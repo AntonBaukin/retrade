@@ -1,0 +1,253 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<web-app xmlns              = 'http://java.sun.com/xml/ns/javaee'
+         xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+         xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+                               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd'
+         version            = '2.5'>
+
+  <display-name>TTS Primary Execution Base (Abstract) Module</display-name>
+
+
+  <!-- =================================================== -->
+  <!-- =         Java Server Faces Configuration         = -->
+  <!-- =================================================== -->
+
+  <context-param>
+    <description>
+      Defines the place where to store the context of the
+      interaction with the user.
+    </description>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>server</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+    <param-value>/WEB-INF/tverts.taglib.xml</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.PROJECT_STAGE</param-name>
+    <param-value>Development</param-value>
+  </context-param>
+
+
+  <!-- =================================================== -->
+  <!-- =                   Listeners                     = -->
+  <!-- =================================================== -->
+
+
+  <!-- Spring Context and Request Listeners -->
+
+  <context-param>
+    <description>
+      Location of Log4J config for Spring Log4J
+      initialization listener.
+    </description>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>/WEB-INF/log4j.xml</param-value>
+  </context-param>
+  
+  <listener>
+    <description>
+      Spring Log4J configuration setup.
+    </description>
+
+    <display-name>Spring Log4J Configurator</display-name>
+    <listener-class>
+      org.springframework.web.util.Log4jConfigListener
+    </listener-class>
+  </listener>
+
+  <listener>
+    <description>
+      Spring framework startup initialization.
+    </description>
+
+    <display-name>Spring Startup Context Listener</display-name>
+    <listener-class>
+      org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+  </listener>
+
+  <listener>
+    <description>
+      Initializes the request context for Spring framework.
+    </description>
+
+    <display-name>Spring Request Context Listener</display-name>
+    <listener-class>
+      org.springframework.web.context.request.RequestContextListener
+    </listener-class>
+  </listener>
+
+  <!-- Web Application Context Initializer -->
+
+  <listener>
+    <description>
+      Crucial, required.
+
+      Initializes the application's modules.
+
+      This listener is a bridge to the collection
+      of listeners defined within the application.
+    </description>
+
+    <display-name>Web Application Context Initializer</display-name>
+    <listener-class>
+      com.tverts.servlet.ServletContextListenerBridge
+    </listener-class>
+  </listener>
+
+  <!-- Web Application Request Initializer -->
+
+  <listener>
+    <description>
+      Crucial, required.
+
+      Binds the pending request with various runtime
+      structures of the application.
+
+      This listener is a bridge to the collection
+      of listeners defined within the application.
+    </description>
+
+    <display-name>Web Application Request Initializer</display-name>
+    <listener-class>
+      com.tverts.servlet.ServletRequestListenerBridge
+    </listener-class>
+  </listener>
+
+  <!-- =================================================== -->
+  <!-- =                     Servlets                    = -->
+  <!-- =================================================== -->
+
+  <!-- Standart JavaServer Faces Servlet -->
+
+  <servlet>
+    <display-name>Java Server Faces 2.x Servlet</display-name>
+    <servlet-name>faces_FacesServlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>faces_FacesServlet</servlet-name>
+    <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- =================================================== -->
+  <!-- =  Filters : external requests processing         = -->
+  <!-- =================================================== -->
+
+  <!-- Hidden Files Filter -->
+
+  <!--
+  <filter>
+    <description>
+      Protects the access to the hidden files.
+      Hidden files are start with dot or in a
+      directory starting with dot.
+    </description>
+
+    <display-name>Hidden Files Filter</display-name>
+    <filter-name>security_HiddenFilesFilter</filter-name>
+    <filter-class>
+      com.abaukin.servlet.HiddenFilesFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>security_HiddenFilesFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  -->
+
+  <!-- Static Resources Filter -->
+
+  <!--
+  <filter>
+    <description>
+      Disables other filters when processing
+      a request to static resource.
+    </description>
+
+    <display-name>Static Resources Filter</display-name>
+    <filter-name>system_StaticResourcesFilter</filter-name>
+    <filter-class>
+      com.abaukin.servlet.StaticResourcesFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>system_StaticResourcesFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  -->
+
+  <!-- Web Application Request Filter -->
+
+  <!--
+  <filter>
+    <description>
+      Provides access to the request to the
+      components of the application. 
+    </description>
+
+    <display-name>Web Application Request Filter</display-name>
+    <filter-name>system_WebApplicationRequestFilter</filter-name>
+    <filter-class>
+      com.abaukin.servlet.WebApplicationRequestFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>system_WebApplicationRequestFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  -->
+
+  <!-- Transaction Scope Filter -->
+
+  <!--
+  <filter>
+    <description>
+      Wraps the request into Spring controlled transaction.
+    </description>
+
+    <display-name>Transaction Scope Filter</display-name>
+    <filter-name>system_TransactionScopeFilter</filter-name>
+    <filter-class>
+      com.abaukin.servlet.TransactionScopeFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>system_TransactionScopeFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  -->
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- ~            JSP Engine Configuration             ~ -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <welcome-file-list>
+    <welcome-file>index.xhtml</welcome-file>
+  </welcome-file-list>
+
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <url-pattern>*.jspf</url-pattern>
+
+      <page-encoding>UTF-8</page-encoding>
+    </jsp-property-group>
+  </jsp-config>
+</web-app>

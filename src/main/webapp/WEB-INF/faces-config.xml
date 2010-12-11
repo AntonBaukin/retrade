@@ -1,0 +1,84 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<faces-config xmlns  = 'http://java.sun.com/xml/ns/javaee'
+  xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+                        http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd'
+  version            = '2.0'>
+
+  <!-- application system properties -->
+
+  <application>
+    <variable-resolver>
+      org.springframework.web.jsf.SpringBeanVariableResolver
+    </variable-resolver>
+
+    <locale-config>
+      <default-locale>ru</default-locale>
+      <supported-locale>ru</supported-locale>
+    </locale-config>
+  </application>
+
+  <!-- formatters -->
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:currency
+    </converter-id>
+
+    <converter-class>
+     com.tverts.faces.formatters.CurrencyFormatter
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:currency-full
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.CurrencyFullFormatter
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:date2str
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.DateToStr
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:datetime2str
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.DateTimeToStr
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:named-date2str
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.NamedDateToStrRu
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:named-datetime2str
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.NamedDateTimeToStrRu
+    </converter-class>
+  </converter>
+
+</faces-config>

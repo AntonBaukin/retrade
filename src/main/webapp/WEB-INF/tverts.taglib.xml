@@ -1,0 +1,100 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<facelet-taglib xmlns = 'http://java.sun.com/xml/ns/javaee'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd'
+   version            = '2.0'>
+
+  <description>
+    Anton Baukin's tags for JSF 2.0 applications.
+  </description>
+  <display-name>
+    Anton Baukin's Tags.
+  </display-name>
+
+  <namespace>uri:abaukin.com</namespace>
+
+
+  <!-- =================================================== -->
+  <!-- =  Core HTML                                      = -->
+  <!-- =================================================== -->
+
+  <!-- cdata -->
+
+  <function>
+    <description>
+      Wraps the text into CDATA section.
+    </description>
+    <display-name>Wraps into CDATA</display-name>
+
+    <function-name>cdata</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String cdata(java.lang.Object)
+    </function-signature>
+  </function>
+
+  
+  <!-- =================================================== -->
+  <!-- =  URLs creators                                  = -->
+  <!-- =================================================== -->
+
+  <!-- url -->
+
+  <function>
+    <description>
+      Adds application context path before the path given.
+    </description>
+    <display-name>Add Context Path</display-name>
+
+    <function-name>url</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String addContextPath(java.lang.String)
+    </function-signature>
+  </function>
+
+  <!-- ctx -->
+
+  <function>
+    <description>
+      Encodes URL with standart Servlets encodeURL() call.
+    </description>
+    <display-name>Encodes URL</display-name>
+
+    <function-name>encodeURL</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String encodeURL(java.lang.String)
+    </function-signature>
+  </function>
+
+
+  <!-- =================================================== -->
+  <!-- =  JavaScript support                             = -->
+  <!-- =================================================== -->
+
+  <!-- jss -->
+
+  <function>
+    <description>
+      Escapes JavaScript strings.
+    </description>
+    <display-name>Escapes JavaScript Strings</display-name>
+
+    <function-name>jss</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String escapeJSString(java.lang.Object)
+    </function-signature>
+  </function>
+
+</facelet-taglib>
