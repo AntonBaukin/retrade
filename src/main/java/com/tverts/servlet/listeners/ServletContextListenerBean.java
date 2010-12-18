@@ -1,6 +1,6 @@
-package com.tverts.servlet;
+package com.tverts.servlet.listeners;
 
-/* standart Java classes */
+/* standard Java classes */
 
 import java.util.ArrayList;
 import java.util.Collections;

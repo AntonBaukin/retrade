@@ -1,6 +1,6 @@
 package com.tverts.faces.formatters;
 
-/* standart Java classes */
+/* standard Java classes */
 
 import java.util.Date;
 

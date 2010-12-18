@@ -46,8 +46,10 @@ public class Functions
 			res.append('/');
 		res.append(path);
 
-		return (path.length() == 0)?(res.toString())
-		  :(RequestPoint.response().encodeURL(res.toString()));
+		//TODO addContextPath() encode URL after filters
+//		return (path.length() == 0)?(res.toString())
+//		  :(RequestPoint.response().encodeURL(res.toString()));
+		return res.toString();
 	}
 
 	public static String encodeURL(String url)

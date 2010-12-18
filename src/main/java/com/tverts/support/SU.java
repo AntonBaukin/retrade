@@ -1,6 +1,6 @@
 package com.tverts.support;
 
-/* standart Java classes */
+/* standard Java classes */
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

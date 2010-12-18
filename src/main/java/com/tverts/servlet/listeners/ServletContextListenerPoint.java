@@ -1,4 +1,4 @@
-package com.tverts.servlet;
+package com.tverts.servlet.listeners;
 
 /**
  * A global point to register Servlet Context Listeners.

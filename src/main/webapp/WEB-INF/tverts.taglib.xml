@@ -1,23 +1,24 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 
-<facelet-taglib xmlns = 'http://java.sun.com/xml/ns/javaee'
+<facelet-taglib version = '2.0'
+   xmlns              = 'http://java.sun.com/xml/ns/javaee'
    xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
-   xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd'
-   version            = '2.0'>
+   xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+     http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd'>
 
   <description>
-    Anton Baukin's tags for JSF 2.0 applications.
+    Tver Trade Systems Tags for JSF 2 applications.
   </description>
   <display-name>
-    Anton Baukin's Tags.
+    Tver Trade Systems Tags
   </display-name>
 
-  <namespace>uri:abaukin.com</namespace>
+  <namespace>uri:tverts.com</namespace>
 
 
-  <!-- =================================================== -->
-  <!-- =  Core HTML                                      = -->
-  <!-- =================================================== -->
+  <!--=================================================
+    =  XHTML                                          =
+    =================================================-->
 
   <!-- cdata -->
 
@@ -36,10 +37,10 @@
     </function-signature>
   </function>
 
-  
-  <!-- =================================================== -->
-  <!-- =  URLs creators                                  = -->
-  <!-- =================================================== -->
+
+  <!--=================================================
+    =  URLs                                           =
+    =================================================-->
 
   <!-- url -->
 
@@ -62,7 +63,7 @@
 
   <function>
     <description>
-      Encodes URL with standart Servlets encodeURL() call.
+      Encodes URL with standard Servlets encodeURL() call.
     </description>
     <display-name>Encodes URL</display-name>
 
@@ -76,9 +77,9 @@
   </function>
 
 
-  <!-- =================================================== -->
-  <!-- =  JavaScript support                             = -->
-  <!-- =================================================== -->
+  <!--=================================================
+    =  JavaScript support                             =
+    =================================================-->
 
   <!-- jss -->
 

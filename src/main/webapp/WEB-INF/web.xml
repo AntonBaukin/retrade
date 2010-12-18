@@ -1,42 +1,34 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 
-<web-app xmlns              = 'http://java.sun.com/xml/ns/javaee'
-         xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
-         xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
-                               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd'
-         version            = '2.5'>
+<web-app version = '2.5'
+  xmlns              = 'http://java.sun.com/xml/ns/javaee'
+  xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd'>
 
-  <display-name>TTS Primary Execution Base (Abstract) Module</display-name>
+  <display-name>
+    Tver TS 'Re Trade' Execution Base (Abstract) Module
+  </display-name>
 
 
-  <!-- =================================================== -->
-  <!-- =         Java Server Faces Configuration         = -->
-  <!-- =================================================== -->
+  <!--====================================================
+    =                      Listeners                     =
+    ====================================================-->
 
-  <context-param>
+  <!-- System Boot Initializer -->
+
+  <listener>
     <description>
-      Defines the place where to store the context of the
-      interaction with the user.
+      The first listener activated during
+      the web application startup. Does not
+      connect components via Spring services.
     </description>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>server</param-value>
-  </context-param>
 
-  <context-param>
-    <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
-    <param-value>/WEB-INF/tverts.taglib.xml</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>javax.faces.PROJECT_STAGE</param-name>
-    <param-value>Development</param-value>
-  </context-param>
-
-
-  <!-- =================================================== -->
-  <!-- =                   Listeners                     = -->
-  <!-- =================================================== -->
-
+    <display-name>System Boot Initializer</display-name>
+    <listener-class>
+      com.tverts.servlet.listeners.SystemBootListener
+    </listener-class>
+  </listener>
 
   <!-- Spring Context and Request Listeners -->
 
@@ -45,6 +37,7 @@
       Location of Log4J config for Spring Log4J
       initialization listener.
     </description>
+
     <param-name>log4jConfigLocation</param-name>
     <param-value>/WEB-INF/log4j.xml</param-value>
   </context-param>
@@ -82,12 +75,37 @@
     </listener-class>
   </listener>
 
+  <!-- Java Server Faces (RI) Initializer -->
+
+  <listener>
+    <description>
+      Loads configuration for JSF RI (Reference Implementation).
+    </description>
+
+    <display-name>Java Server Faces Initializer</display-name>
+    <listener-class>
+      com.sun.faces.config.ConfigureListener
+    </listener-class>
+  </listener>
+
+  <!-- Java Server Faces (RI) Lifecycle Listener -->
+
+  <listener>
+    <description>
+      Provides reaction on web application lyfecycle
+      events within JSF (RI) engine.
+    </description>
+
+    <display-name>Java Server Faces Lifecycle</display-name>
+    <listener-class>
+      com.sun.faces.application.WebappLifecycleListener
+    </listener-class>
+  </listener>
+
   <!-- Web Application Context Initializer -->
 
   <listener>
     <description>
-      Crucial, required.
-
       Initializes the application's modules.
 
       This listener is a bridge to the collection
@@ -96,7 +114,7 @@
 
     <display-name>Web Application Context Initializer</display-name>
     <listener-class>
-      com.tverts.servlet.ServletContextListenerBridge
+      com.tverts.servlet.listeners.ServletContextListenerBridge
     </listener-class>
   </listener>
 
@@ -104,8 +122,6 @@
 
   <listener>
     <description>
-      Crucial, required.
-
       Binds the pending request with various runtime
       structures of the application.
 
@@ -115,15 +131,40 @@
 
     <display-name>Web Application Request Initializer</display-name>
     <listener-class>
-      com.tverts.servlet.ServletRequestListenerBridge
+      com.tverts.servlet.listeners.ServletRequestListenerBridge
     </listener-class>
   </listener>
+
+
+  <!--====================================================
+    =            Java Server Faces Configuration         =
+    ====================================================-->
+
+  <context-param>
+    <param-name>javax.faces.CONFIG_FILES</param-name>
+    <param-value>/WEB-INF/faces-config.xml</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>server</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+    <param-value>/WEB-INF/tverts.taglib.xml</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.PROJECT_STAGE</param-name>
+    <param-value>Development</param-value>
+  </context-param>
 
   <!-- =================================================== -->
   <!-- =                     Servlets                    = -->
   <!-- =================================================== -->
 
-  <!-- Standart JavaServer Faces Servlet -->
+  <!-- JavaServer Faces 2 Servlet -->
 
   <servlet>
     <display-name>Java Server Faces 2.x Servlet</display-name>
@@ -138,105 +179,9 @@
   </servlet-mapping>
 
 
-  <!-- =================================================== -->
-  <!-- =  Filters : external requests processing         = -->
-  <!-- =================================================== -->
-
-  <!-- Hidden Files Filter -->
-
-  <!--
-  <filter>
-    <description>
-      Protects the access to the hidden files.
-      Hidden files are start with dot or in a
-      directory starting with dot.
-    </description>
-
-    <display-name>Hidden Files Filter</display-name>
-    <filter-name>security_HiddenFilesFilter</filter-name>
-    <filter-class>
-      com.abaukin.servlet.HiddenFilesFilter
-    </filter-class>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>security_HiddenFilesFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-  </filter-mapping>
-  -->
-
-  <!-- Static Resources Filter -->
-
-  <!--
-  <filter>
-    <description>
-      Disables other filters when processing
-      a request to static resource.
-    </description>
-
-    <display-name>Static Resources Filter</display-name>
-    <filter-name>system_StaticResourcesFilter</filter-name>
-    <filter-class>
-      com.abaukin.servlet.StaticResourcesFilter
-    </filter-class>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>system_StaticResourcesFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-  </filter-mapping>
-  -->
-
-  <!-- Web Application Request Filter -->
-
-  <!--
-  <filter>
-    <description>
-      Provides access to the request to the
-      components of the application. 
-    </description>
-
-    <display-name>Web Application Request Filter</display-name>
-    <filter-name>system_WebApplicationRequestFilter</filter-name>
-    <filter-class>
-      com.abaukin.servlet.WebApplicationRequestFilter
-    </filter-class>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>system_WebApplicationRequestFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-  </filter-mapping>
-  -->
-
-  <!-- Transaction Scope Filter -->
-
-  <!--
-  <filter>
-    <description>
-      Wraps the request into Spring controlled transaction.
-    </description>
-
-    <display-name>Transaction Scope Filter</display-name>
-    <filter-name>system_TransactionScopeFilter</filter-name>
-    <filter-class>
-      com.abaukin.servlet.TransactionScopeFilter
-    </filter-class>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>system_TransactionScopeFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-  </filter-mapping>
-  -->
-
-  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-  <!-- ~            JSP Engine Configuration             ~ -->
-  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--====================================================
+    = JSP Engine Configuration                           =
+    ====================================================-->
 
   <welcome-file-list>
     <welcome-file>index.xhtml</welcome-file>

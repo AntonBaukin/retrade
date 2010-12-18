@@ -1,6 +1,6 @@
 package com.tverts.support;
 
-/* standart Java classes */
+/* standard Java classes */
 
 import java.util.Calendar;
 import java.util.Date;
