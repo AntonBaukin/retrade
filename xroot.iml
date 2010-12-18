@@ -11,6 +11,9 @@
           <root url="file://$MODULE_DIR$/src/main/resources" />
         </sourceRoots>
       </configuration>
+      <facet type="jsf" name="JSF">
+        <configuration />
+      </facet>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
@@ -24,7 +27,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" exported="" name="Whole" level="project" />
+    <orderEntry type="library" exported="" name="runtime" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="compile" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
