@@ -1,0 +1,32 @@
+package com.tverts.servlet.filters;
+
+/* tverts.com: servlet */
+
+import com.tverts.servlet.RequestPoint;
+
+/**
+ * Binds the response with Servlet related components.
+ * Related to {@code WebApplicationRequestListener}.
+ *
+ * @author anton baukin (abaukin@mail.ru)
+ */
+public class WebApplicationRequestFilter extends FilterBase
+{
+	/* public: Filter interface */
+
+	public void openFilter(FilterTask task)
+	{
+		if(!FilterStage.REQUEST.equals(task.getFilterStage()))
+			return;
+
+		RequestPoint.setResponse(task.getResponse());
+	}
+
+	public void closeFilter(FilterTask task)
+	{
+		if(!FilterStage.REQUEST.equals(task.getFilterStage()))
+			return;
+
+		RequestPoint.setResponse(null);
+	}
+}

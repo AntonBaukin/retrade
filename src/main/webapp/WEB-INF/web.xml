@@ -160,9 +160,10 @@
     <param-value>Development</param-value>
   </context-param>
 
-  <!-- =================================================== -->
-  <!-- =                     Servlets                    = -->
-  <!-- =================================================== -->
+
+  <!--====================================================
+    =                      Servlets                      =
+    ====================================================-->
 
   <!-- JavaServer Faces 2 Servlet -->
 
@@ -177,6 +178,138 @@
     <servlet-name>faces_FacesServlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
+
+
+  <!--====================================================
+    =                      Servlets                      =
+    ====================================================-->
+
+  <!-- Request Filter Bridge -->
+
+  <filter>
+    <description>
+      Connects REQUEST filtering ussued by the web
+      container with the application-level filters.
+
+      This bridge handles only dynamic resources:
+      XHTML (Java Server Faces) and JSP documents.
+    </description>
+
+    <filter-name>filter_RequestBridge</filter-name>
+    <filter-class>
+      com.tverts.servlet.filters.FilterBridge
+    </filter-class>
+
+    <init-param>
+      <description>
+        Defines that this bridge is related to
+        REQUEST filter stage processing.
+      </description>
+
+      <param-name>for</param-name>
+      <param-value>REQUEST</param-value>
+    </init-param>
+    
+    <init-param>
+      <description>
+        Defines Spring controlled Bean name of
+        the application-level filters root reference.
+        The value specified here is the default.
+      </description>
+
+      <param-name>bean</param-name>
+      <param-value>filterPoint</param-value>
+    </init-param>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>filter_RequestBridge</filter-name>
+    <url-pattern>*.xhtml</url-pattern>
+    <url-pattern>*.jsp</url-pattern>
+    <url-pattern>*.jspf</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+  <!-- Include Filter Bridge -->
+
+  <!--
+  <filter>
+    <description>
+      Connects INCLUDE filtering ussued by the web
+      container with the application-level filters.
+    </description>
+
+    <filter-name>filter_IncludeBridge</filter-name>
+    <filter-class>
+      com.tverts.servlet.filters.FilterBridge
+    </filter-class>
+
+    <init-param>
+      <param-name>for</param-name>
+      <param-value>INCLUDE</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>filter_IncludeBridge</filter-name>
+    <url-pattern>*</url-pattern>
+    <dispatcher>INCLUDE</dispatcher>
+  </filter-mapping>
+  -->
+
+  <!-- Forward Filter Bridge -->
+
+  <!--
+  <filter>
+    <description>
+      Connects FORWARD filtering ussued by the web
+      container with the application-level filters.
+    </description>
+
+    <filter-name>filter_ForwardBridge</filter-name>
+    <filter-class>
+      com.tverts.servlet.filters.FilterBridge
+    </filter-class>
+
+    <init-param>
+      <param-name>for</param-name>
+      <param-value>FORWARD</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>filter_ForwardBridge</filter-name>
+    <url-pattern>*</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  -->
+
+  <!-- Error Filter Bridge -->
+
+  <!--
+  <filter>
+    <description>
+      Connects ERROR filtering ussued by the web
+      container with the application-level filters.
+    </description>
+
+    <filter-name>filter_ErrorBridge</filter-name>
+    <filter-class>
+      com.tverts.servlet.filters.FilterBridge
+    </filter-class>
+
+    <init-param>
+      <param-name>for</param-name>
+      <param-value>ERROR</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>filter_ErrorBridge</filter-name>
+    <url-pattern>*</url-pattern>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+  -->
 
 
   <!--====================================================

@@ -29,10 +29,9 @@
     <property name = 'listeners'>
       <list>
 
-        <!-- . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-         . Binds the request to Servlet-related                      .
-         . components of the application.                            .
-         . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .-->
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Binds the request to Servlet-related components.          ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.servlet.listeners.WebApplicationRequestListener'/>
 
       </list>

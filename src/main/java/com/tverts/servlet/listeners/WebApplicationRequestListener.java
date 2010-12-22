@@ -13,7 +13,7 @@ import com.tverts.servlet.RequestPoint;
 
 /**
  * Handles each external access to the application.
- * Binds the request with Servlet-related components.
+ * Binds the request with Servlet related components.
  *
  * @author anton baukin (abaukin@mail.ru)
  */
@@ -32,6 +32,5 @@ public class      WebApplicationRequestListener
 	public void requestDestroyed(ServletRequestEvent event)
 	{
 		RequestPoint.setRootRequest(null);
-		RequestPoint.setResponse(null);
 	}
 }
