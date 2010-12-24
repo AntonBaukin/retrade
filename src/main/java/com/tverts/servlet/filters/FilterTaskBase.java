@@ -5,6 +5,11 @@ package com.tverts.servlet.filters;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Basic properties of a {@link FilterTask}.
+ *
+ * @author anton baukin (abaukin@mail.ru)
+ */
 public abstract class FilterTaskBase implements FilterTask
 {
 	/* public: constructor */

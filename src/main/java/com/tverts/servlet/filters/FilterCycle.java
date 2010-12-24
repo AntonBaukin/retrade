@@ -1,5 +1,16 @@
 package com.tverts.servlet.filters;
 
+/**
+ * Implements a cycle of {@link Filter} invocations
+ * that may be invoked recursively without repeating
+ * the already passed filters, an not loosing a one.
+ *
+ * Terminal filters mostly stands for Servlet Filter
+ * Chain got by {@link FilterBridge}. (To call the next
+ * Servlet Filters of the Web application.)
+ *
+ * @author anton baukin (abaukin@mail.ru)
+ */
 public final class FilterCycle
 {
 	/* public: constructor */

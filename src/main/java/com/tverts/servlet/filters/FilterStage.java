@@ -1,5 +1,10 @@
 package com.tverts.servlet.filters;
 
+/**
+ * A stage of Servlet Filters invocation.
+ *
+ * @author anton baukin (abaukin@mail.ru)
+ */
 public enum FilterStage
 {
 	/**

@@ -11,18 +11,22 @@
       xmlns:x  = 'uri:tverts.com'>
 
 <h:head>
-  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <meta http-equiv = 'Content-Type'   content = 'text/html;charset = UTF-8'/>
+  <meta http-equiv = 'Cache-Control'  content = 'no-cache'/>
+  <meta http-equiv = 'Pragma'         content = 'no-cache'/>
 
-  <title><ui:insert name="page_title"/></title>
+  <link rel = 'icon' type = 'image/ico' href = "${x:url('/images/favicon.ico')}"/>
+
+  <title><ui:insert name = 'page_title'/></title>
 
   <!-- Prototype 1.7 -->
 
-  <script type="text/javascript" charset="UTF-8"
-          src ="${x:url('/scripts/prototype.js')}"></script>
+  <script type = 'text/javascript' charset = 'UTF-8'
+          src = "${x:url('/scripts/prototype.js')}"></script>
 
   <!-- other scripts -->
 
-  <ui:insert name="page_head_scripts"/>
+  <ui:insert name = 'page_head_scripts'/>
 
   <!-- page head styles -->
 
@@ -31,12 +35,12 @@
         href = "${x:url('/styles/styles.css')}"/>
   -->
 
-  <ui:insert name="page_head_styles"/>
+  <ui:insert name = 'page_head_styles'/>
 </h:head>
 
 <h:body>
 
-  <ui:insert name="page_body"/>
+  <ui:insert name = 'page_body'/>
 
 </h:body>
 </html>

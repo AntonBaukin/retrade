@@ -20,7 +20,27 @@ import javax.servlet.http.HttpServletResponse;
 import static com.tverts.spring.SpringPoint.beanOrNull;
 import static com.tverts.support.SU.s2s;
 
-
+/**
+ * Being a Servlet Filter connects Web application
+ * with the application-lever {@link Filter}s.
+ *
+ * Each bridge may be registered for one stage of
+ * servlet filters invocation: request, forward,
+ * include, or exception. This constant MUST be
+ * defined in 'for' init parameter of the filter.
+ *
+ * Bridge finds the filters via root {@link FilterReference}.
+ * Optional parameter 'filters' defines a Spring configured
+ * bean name of the reference. By default it refers
+ * {@link FilterPoint}.
+ *
+ * Note that the same {@link FilterReference} may be
+ * defined for several bridges. (Each {@link Filter})
+ * gets the stage of the filter invocation as a value
+ * of {@link FilterTask#getFilterStage()}.
+ *
+ * @author anton baukin (abaukin@mail.ru)
+ */
 public class      FilterBridge
        implements javax.servlet.Filter
 {
