@@ -5,14 +5,25 @@ package com.tverts.support;
 import java.io.Serializable;
 
 /**
- * Various utitity functions for objects.
+ * Various utility functions for objects.
+ *
+ * @author anton baukin (abaukin@mail.ru)
  */
 public class OU
 {
+	/* public: runnable wrappers  */
+
+	public Runnable unwrap(Runnable task)
+	{
+		while(task instanceof RunnableWrapper)
+			task = ((RunnableWrapper)task).getWrappedTask();
+		return task;
+	}
+
 	/* public: object clones */
 
 	/**
-	 * Makes a shallow copy with standart
+	 * Makes a shallow copy with standard
 	 * {@link Object#clone()} invoked via
 	 * the reflection.
 	 */
