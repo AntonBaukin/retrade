@@ -111,7 +111,13 @@ public class   SingleTaskService
 		return new SingleTaskState(allocateTask());
 	}
 
-	/* protected: ActiveServiceBase (task wrapping) */
+	/* protected: task control & wrapping */
+
+	protected void beforeStopService()
+	{
+		super.beforeStopService();
+		this.breaked = true;
+	}
 
 	protected void openTaskWrapped(Runnable task)
 	{

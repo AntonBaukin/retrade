@@ -166,6 +166,8 @@ public abstract class StatefulServiceBase
 		this.serviceState = state;
 	}
 
+	/* protected: task control */
+
 	protected void         beforeStartService()
 	{}
 

@@ -39,16 +39,7 @@ public final class WaitEmptyFlags
 	{
 		synchronized(mutex)
 		{
-			for(Object flag : flags)
-			{
-				Integer n = this.flags.get(flag);
-				n = (n == null)?(1):(n + 1);
-
-				if(n == 0)
-					this.flags.remove(flag);
-				else
-					this.flags.put(flag, n);
-			}
+			doOccupy(flags);
 		}
 	}
 
@@ -61,28 +52,43 @@ public final class WaitEmptyFlags
 	{
 		synchronized(mutex)
 		{
-			for(Object flag : flags)
-			{
-				Integer n = this.flags.get(flag);
+			doRelease(flags);
+		}
+	}
 
-				//~: we allow negative values
-				//   to handle pre-releases.
-				if(n == null)
-					n = -1;
-				else if(n == 1)
-					n = null;
-				else
-					n = n - 1;
+	/**
+	 * Does release, then occupy in single
+	 * critical section. Note that the
+	 * order means here, as release may actually
+	 * resume threads, what is not possible if
+	 * the occupation is before.
+	 *
+	 * If wait flag is set also will wait as the third
+	 * operation (not exiting the critical section).
+	 */
+	public void    relocc(Object[] release, Object[] occupy, boolean wait)
+	  throws InterruptedException
+	{
+		synchronized(mutex)
+		{
+			doRelease(release);
+			doOccupy (occupy);
 
-				if(n == null)
-					this.flags.remove(flag);
-				else
-					this.flags.put(flag, n);
-			}
+			if(wait && !occupied.isEmpty())
+				mutex.wait();
+		}
+	}
 
-			//?: {all the flags are cleared} notify
-			if(this.flags.isEmpty())
-				mutex.notifyAll();
+	public void    relocc(Object release, Object occupy, boolean wait)
+	  throws InterruptedException
+	{
+		synchronized(mutex)
+		{
+			doRelease(release);
+			doOccupy (occupy);
+
+			if(wait && !occupied.isEmpty())
+				mutex.wait();
 		}
 	}
 
@@ -98,7 +104,7 @@ public final class WaitEmptyFlags
 	{
 		synchronized(mutex)
 		{
-			while(!this.flags.isEmpty())
+			if(!occupied.isEmpty())
 				mutex.wait();
 		}
 	}
@@ -116,15 +122,70 @@ public final class WaitEmptyFlags
 
 		synchronized(mutex)
 		{
-			while(!this.flags.isEmpty())
+			while(!occupied.isEmpty())
 				mutex.wait(timeout);
-			return this.flags.isEmpty();
+			return occupied.isEmpty();
 		}
+	}
+
+	/* private: operations */
+
+	private void   doOccupy(Object... flags)
+	{
+		Integer n;
+
+		for(Object flag : flags)
+			//?: {has no pre-released flag}
+			if((n = released.get(flag)) == null)
+			{
+				n = occupied.get(flag);
+				occupied.put(flag, (n == null)?(1):(n + 1));
+			}
+			else
+			{
+				n = n - 1;
+
+				//?: {have no pre-resumes more}
+				if(n == 0)
+					released.remove(flag);
+				else
+					released.put(flag, n);
+			}
+	}
+
+	private void   doRelease(Object... flags)
+	{
+		Integer n;
+
+		for(Object flag : flags)
+			//?: {have this flag not occupied} add to released
+			if((n = occupied.get(flag)) == null)
+			{
+				n = released.get(flag);
+				released.put(flag, (n == null)?(1):(n + 1));
+			}
+			else
+			{
+				n = n - 1;
+
+				//?: {have no occupations more}
+				if(n == 0)
+					occupied.remove(flag);
+				else
+					occupied.put(flag, n);
+			}
+
+		//?: {all the flags are cleared} notify
+		if(this.occupied.isEmpty())
+			mutex.notifyAll();
 	}
 
 	/* private: mutex state */
 
-	private HashMap<Object, Integer>
-	                     flags = new HashMap<Object, Integer>(7);
-	private final Object mutex = new Object();
+	private HashMap<Object, Integer> occupied =
+	  new HashMap<Object, Integer>(7);
+	private HashMap<Object, Integer> released =
+	  new HashMap<Object, Integer>(7);
+
+	private final Object             mutex    = new Object();
 }
