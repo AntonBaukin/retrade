@@ -179,7 +179,7 @@ public class      FilterBridge
 
 	protected Filter[]        collectFilters()
 	{
-		List<Filter> filters = getFilterReference().dereferFilters();
+		List<Filter> filters = getFilterReference().dereferObjects();
 		return filters.toArray(new Filter[filters.size()]);
 	}
 

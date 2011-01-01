@@ -11,7 +11,7 @@
   <bean name  = 'filterPoint' factory-method = 'getInstance'
         class = 'com.tverts.servlet.filters.FilterPoint'>
 
-    <property name = 'filters'>
+    <property name = 'references'>
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·

@@ -1,8 +1,8 @@
 package com.tverts.servlet.filters;
 
-/* standard Java classes */
+/* com.tverts: objects */
 
-import java.util.List;
+import com.tverts.objects.ObjectsReference;
 
 /**
  * A reference to a list of filters. Needed to
@@ -15,8 +15,5 @@ import java.util.List;
  * @author anton baukin (abaukin@mail.ru)
  */
 public interface FilterReference
-{
-	/* public: FilterReference interface */
-
-	public List<Filter> dereferFilters();
-}
+       extends   ObjectsReference<Filter>
+{}

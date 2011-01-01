@@ -17,7 +17,7 @@ public abstract class FilterBase
 {
 	/* public: FilterReference interface */
 
-	public List<Filter> dereferFilters()
+	public List<Filter> dereferObjects()
 	{
 		return Collections.<Filter>singletonList(this);
 	}
