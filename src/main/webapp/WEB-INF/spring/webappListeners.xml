@@ -14,6 +14,15 @@
     <property name = 'references'>
       <list>
 
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Initializes system services.                              ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.system.services.InitServicesListener'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Starts (active) system services.                          ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.system.services.StartServicesListener'/>
       </list>
     </property>
   </bean>

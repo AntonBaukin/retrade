@@ -1,9 +1,15 @@
 package com.tverts.system.services;
 
+/* standard Java classes */
+
+import java.util.Collections;
+import java.util.List;
+
 /* tverts.com: system */
 
 import com.tverts.system.Service;
 import com.tverts.system.ServiceInfo;
+import com.tverts.system.ServiceReference;
 import com.tverts.system.ServiceStatus;
 
 /* tverts.com: support */
@@ -23,7 +29,8 @@ import static com.tverts.support.SU.s2s;
  * @author anton baukin (abaukin@mail.ru)
  */
 public abstract class ServiceBase
-       implements     Service
+       implements     Service,
+                      ServiceReference
 {
 	/* public: constructor */
 
@@ -43,6 +50,13 @@ public abstract class ServiceBase
 	public ServiceStatus getServiceStatus()
 	{
 		return this.serviceState;
+	}
+
+	/* public: ServiceReference interface */
+
+	public List<Service> dereferObjects()
+	{
+		return Collections.<Service>singletonList(this);
 	}
 
 	/* public: ServiceInfo interface */

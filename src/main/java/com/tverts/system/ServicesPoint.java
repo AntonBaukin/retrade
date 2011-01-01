@@ -1,6 +1,29 @@
 package com.tverts.system;
 
-public class ServicesPoint
+/* standard Java classes */
+
+import java.util.List;
+
+/* Apache Log4J */
+
+import org.apache.log4j.Logger;
+
+/* tverts.com: system services */
+
+import com.tverts.system.services.ServicesList;
+
+/**
+ * Singleton point to access the system services configured
+ * as Spring Beans.
+ *
+ * Note that the services are collected at the configuration
+ * time, when the list of root references is provided.
+ * Consider {@link ServicesList}.
+ *
+ * @author anton baukin (abaukin@mail.ru)
+ */
+public class   ServicesPoint
+       extends ServicesList
 {
 	/* public: Singleton */
 
@@ -15,8 +38,38 @@ public class ServicesPoint
 	protected ServicesPoint()
 	{}
 
+	/* public: log destinations */
 
-	/* private: services */
+	public static final Logger LOG_SERVICE_MAIN =
+	  Logger.getLogger("com.tverts.system.services");
 
-	private Service[] services = new Service[0];
+	public static final Logger LOG_SERVICE_BOOT =
+	  Logger.getLogger("com.tverts.system.services.boot");
+
+	/* public: log utilities */
+
+	public static void appendServicesList (
+	              StringBuilder string,
+	              List<Service> services
+	            )
+	{
+		int len = string.length();
+
+		for(Service service : services) string.
+			append((string.length() != len)?(", "):("")).
+			append(service.getServiceInfo().getServiceName());
+	}
+
+	public static void appendActiveServicesList (
+	              StringBuilder string,
+	              List<Service> services
+	            )
+	{
+		int len = string.length();
+
+		for(Service service : services)
+			if(service.getServiceInfo().isActiveService()) string.
+				append((string.length() != len)?(", "):("")).
+				append(service.getServiceInfo().getServiceName());
+	}
 }
