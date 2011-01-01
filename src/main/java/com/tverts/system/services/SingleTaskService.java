@@ -1,8 +1,8 @@
 package com.tverts.system.services;
 
-/* tverts.com: support */
+/* tverts.com: objects */
 
-import com.tverts.support.RunnableWrapper;
+import com.tverts.objects.RunnableWrapper;
 
 /**
  * An active service that own only one working (task) thread.

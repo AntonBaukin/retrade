@@ -1,8 +1,11 @@
 package com.tverts.system.services;
 
-/* com.tverts: support classes */
+/* tverts.com: objects */
 
-import com.tverts.support.RunnableWrapper;
+import com.tverts.objects.RunnableWrapper;
+
+/* com.tverts: support */
+
 import static com.tverts.support.LO.LANG_RU;
 
 /**

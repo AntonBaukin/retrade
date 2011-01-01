@@ -4,6 +4,10 @@ package com.tverts.support;
 
 import java.io.Serializable;
 
+/* com.tverts: objects */
+
+import com.tverts.objects.RunnableWrapper;
+
 /**
  * Various utility functions for objects.
  *

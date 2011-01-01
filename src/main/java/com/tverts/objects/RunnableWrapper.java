@@ -1,4 +1,4 @@
-package com.tverts.support;
+package com.tverts.objects;
 
 /**
  * Interface of a wrapper of a {@link Runnable} task
