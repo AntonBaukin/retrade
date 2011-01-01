@@ -51,10 +51,18 @@ public class      ObjectsRedirector<O>
 	public void    setReferences(List<ObjectsReference<O>> references)
 	{
 		if((references == null) || references.isEmpty())
-			this.references = Collections.emptyList();
-		else
-			this.references = Collections.unmodifiableList(
-			  new ArrayList<ObjectsReference<O>>(references));
+			references = Collections.emptyList();
+
+		this.references = prepareReferences(references);
+	}
+
+	/* protected: dereferencing */
+
+	protected List<ObjectsReference<O>>
+	               prepareReferences(List<ObjectsReference<O>> references)
+	{
+		return Collections.unmodifiableList(
+		  new ArrayList<ObjectsReference<O>>(references));
 	}
 
 	/* private: the collection of references */

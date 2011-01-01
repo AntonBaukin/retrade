@@ -3,14 +3,13 @@ package com.tverts.servlet.listeners;
 /* Java Servlet api */
 
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 /* tverts.com: servlets */
 
 import com.tverts.servlet.RequestPoint;
 
-public class      SystemBootListener
-       implements ServletContextListener
+public class   SystemBootListener
+       extends ServletContextListenerBase
 {
 	/* public: ServletContextListener interface */
 
@@ -20,5 +19,7 @@ public class      SystemBootListener
 	}
 
 	public void contextDestroyed(ServletContextEvent sce)
-	{}
+	{
+		RequestPoint.setContext(null);
+	}
 }

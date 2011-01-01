@@ -2,8 +2,6 @@ package com.tverts.servlet.listeners;
 
 /* standard Java classes */
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -11,6 +9,10 @@ import java.util.ListIterator;
 
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.FixedObjectsRedirector;
 
 /**
  * Class implements a composite listener.
@@ -29,56 +31,25 @@ import javax.servlet.ServletRequestListener;
  * @author anton baukin (abaukin@mail.ru)
  */
 public class      ServletRequestListenerBean
+       extends    FixedObjectsRedirector<ServletRequestListener>
        implements ServletRequestListener
 {
 	/* public: ServletRequestListener interface */
 
 	public void requestInitialized(ServletRequestEvent sre)
 	{
-		for(ServletRequestListener scl : obtainListeners())
+		for(ServletRequestListener scl : dereferObjects())
 			scl.requestInitialized(sre);
 	}
 
 	public void requestDestroyed(ServletRequestEvent sre)
 	{
+		List<ServletRequestListener>         l =
+		  dereferObjects();
 		ListIterator<ServletRequestListener> i =
-		  obtainListeners().listIterator(obtainListeners().size());
+		  l.listIterator(l.size());
 
 		while(i.hasPrevious())
 			i.previous().requestDestroyed(sre);
 	}
-
-	/* public: Bean interface */
-
-	/**
-	 * A read-only list of the listeners registered.
-	 */
-	public List<ServletRequestListener>
-	            getListeners()
-	{
-		return Collections.unmodifiableList(obtainListeners());
-	}
-
-	public void setListeners(List<ServletRequestListener> listeners)
-	{
-		this.listeners = (listeners == null)?(null):
-		  (new ArrayList<ServletRequestListener>(listeners));
-	}
-
-	/* protected: listeners access */
-
-	protected List<ServletRequestListener> obtainListeners()
-	{
-		return (listeners != null)?(listeners):
-		  (listeners = createListeners());
-	}
-
-	protected List<ServletRequestListener> createListeners()
-	{
-		return new ArrayList<ServletRequestListener>(4);
-	}
-
-	/* private: the listeners */
-
-	private List<ServletRequestListener> listeners;
 }

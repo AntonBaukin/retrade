@@ -3,9 +3,7 @@ package com.tverts.servlet.listeners;
 /* Java Servlet api */
 
 import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /* tverts.com: servlet */
 
@@ -17,8 +15,8 @@ import com.tverts.servlet.RequestPoint;
  *
  * @author anton baukin (abaukin@mail.ru)
  */
-public class      WebApplicationRequestListener
-       implements ServletRequestListener
+public class   WebApplicationRequestListener
+       extends ServletRequestListenerBase
 {
 	/* public: ServletRequestListener interface */
 

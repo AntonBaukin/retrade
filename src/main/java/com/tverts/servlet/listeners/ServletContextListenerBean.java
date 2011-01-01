@@ -2,8 +2,6 @@ package com.tverts.servlet.listeners;
 
 /* standard Java classes */
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -11,6 +9,10 @@ import java.util.ListIterator;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.FixedObjectsRedirector;
 
 /**
  * Class implements a composite listener.
@@ -30,56 +32,25 @@ import javax.servlet.ServletContextListener;
  * @author anton baukin (abaukin@mail.ru) 
  */
 public class      ServletContextListenerBean
+       extends    FixedObjectsRedirector<ServletContextListener>
        implements ServletContextListener
 {
 	/* public: ServletContextListener interface */
 
 	public void contextInitialized(ServletContextEvent sce)
 	{
-		for(ServletContextListener scl : obtainListeners())
+		for(ServletContextListener scl : dereferObjects())
 			scl.contextInitialized(sce);
 	}
 
 	public void contextDestroyed(ServletContextEvent sce)
 	{
+		List<ServletContextListener>         l =
+		  dereferObjects();
 		ListIterator<ServletContextListener> i =
-		  obtainListeners().listIterator(obtainListeners().size());
+		  l.listIterator(l.size());
 
 		while(i.hasPrevious())
 			i.previous().contextDestroyed(sce);
 	}
-
-	/* public: Bean interface */
-
-	/**
-	 * A read-only list of the listeners registered.
-	 */
-	public List<ServletContextListener>
-	            getListeners()
-	{
-		return Collections.unmodifiableList(obtainListeners());
-	}
-
-	public void setListeners(List<ServletContextListener> listeners)
-	{
-		this.listeners = (listeners == null)?(null):
-		  (new ArrayList<ServletContextListener>(listeners));
-	}
-
-	/* protected: listeners access */
-
-	protected List<ServletContextListener> obtainListeners()
-	{
-		return (listeners != null)?(listeners):
-		  (listeners = createListeners());
-	}
-
-	protected List<ServletContextListener> createListeners()
-	{
-		return new ArrayList<ServletContextListener>(4);
-	}
-
-	/* private: the listeners */
-
-	private List<ServletContextListener> listeners;
 }

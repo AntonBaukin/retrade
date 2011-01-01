@@ -4,7 +4,6 @@ package com.tverts.servlet.listeners;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 /* Apache Log4J */
 
@@ -14,8 +13,8 @@ import org.apache.log4j.Logger;
 
 import static com.tverts.support.OU.sig;
 
-public class      TestServletContextListener
-       implements ServletContextListener
+public class   TestServletContextListener
+       extends ServletContextListenerBase
 {
 	/* public: ServletContextListener interface */
 
@@ -75,11 +74,10 @@ public class      TestServletContextListener
 
 /*
 
-
   <bean name  = 'servletContextListenerPoint' factory-method = 'getInstance'
         class = 'com.tverts.servlet.listeners.ServletContextListenerPoint'>
 
-    <property name = 'listeners'>
+    <property name = 'references'>
       <list>
         <bean class = 'com.tverts.servlet.listeners.TestServletContextListener'>
           <property name = 'traceCode' value = 'ZERO'/>
@@ -90,7 +88,7 @@ public class      TestServletContextListener
         </bean>
 
         <bean class = 'com.tverts.servlet.listeners.ServletContextListenerBean'>
-          <property name = 'listeners'>
+          <property name = 'references'>
             <list>
               <bean class = 'com.tverts.servlet.listeners.TestServletContextListener'>
                 <property name = 'traceCode' value = '2.1'/>
@@ -101,7 +99,7 @@ public class      TestServletContextListener
               </bean>
 
               <bean class = 'com.tverts.servlet.listeners.ServletContextListenerBean'>
-                <property name = 'listeners'>
+                <property name = 'references'>
                   <list>
                     <bean class = 'com.tverts.servlet.listeners.TestServletContextListener'>
                       <property name = 'traceCode' value = '2.3.1'/>
@@ -119,7 +117,7 @@ public class      TestServletContextListener
               </bean>
 
               <bean class = 'com.tverts.servlet.listeners.ServletContextListenerBean'>
-                <property name = 'listeners'>
+                <property name = 'references'>
                   <list>
                     <bean class = 'com.tverts.servlet.listeners.TestServletContextListener'>
                       <property name = 'traceCode' value = '2.5.1'/>
@@ -148,14 +146,14 @@ public class      TestServletContextListener
         </bean>
 
         <bean class = 'com.tverts.servlet.listeners.ServletContextListenerBean'>
-          <property name = 'listeners'>
+          <property name = 'references'>
             <list>
               <bean class = 'com.tverts.servlet.listeners.TestServletContextListener'>
                 <property name = 'traceCode' value = '4.1'/>
               </bean>
 
               <bean class = 'com.tverts.servlet.listeners.ServletContextListenerBean'>
-                <property name = 'listeners'>
+                <property name = 'references'>
                   <list>
                     <bean class = 'com.tverts.servlet.listeners.TestServletContextListener'>
                       <property name = 'traceCode' value = '4.2.1'/>

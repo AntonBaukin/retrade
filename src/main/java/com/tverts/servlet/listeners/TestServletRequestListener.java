@@ -3,7 +3,6 @@ package com.tverts.servlet.listeners;
 /* Java Servlet api */
 
 import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 
 /* Apache Log4J */
@@ -19,8 +18,8 @@ import static com.tverts.support.OU.sig;
  *
  * @author anton baukin (abaukin@mail.ru)
  */
-public class      TestServletRequestListener
-       implements ServletRequestListener
+public class   TestServletRequestListener
+       extends ServletRequestListenerBase
 {
 	/* public: ServletRequestListener interface */
 
@@ -85,7 +84,7 @@ public class      TestServletRequestListener
   <bean name  = 'servletRequestListenerPoint' factory-method = 'getInstance'
         class = 'com.tverts.servlet.listeners.ServletRequestListenerPoint'>
 
-    <property name = 'listeners'>
+    <property name = 'references'>
       <list>
         <bean class = 'com.tverts.servlet.listeners.TestServletRequestListener'>
           <property name = 'traceCode' value = 'ZERO'/>
@@ -96,7 +95,7 @@ public class      TestServletRequestListener
         </bean>
 
         <bean class = 'com.tverts.servlet.listeners.ServletRequestListenerBean'>
-          <property name = 'listeners'>
+          <property name = 'references'>
             <list>
               <bean class = 'com.tverts.servlet.listeners.TestServletRequestListener'>
                 <property name = 'traceCode' value = '2.1'/>
@@ -107,7 +106,7 @@ public class      TestServletRequestListener
               </bean>
 
               <bean class = 'com.tverts.servlet.listeners.ServletRequestListenerBean'>
-                <property name = 'listeners'>
+                <property name = 'references'>
                   <list>
                     <bean class = 'com.tverts.servlet.listeners.TestServletRequestListener'>
                       <property name = 'traceCode' value = '2.3.1'/>
@@ -125,7 +124,7 @@ public class      TestServletRequestListener
               </bean>
 
               <bean class = 'com.tverts.servlet.listeners.ServletRequestListenerBean'>
-                <property name = 'listeners'>
+                <property name = 'references'>
                   <list>
                     <bean class = 'com.tverts.servlet.listeners.TestServletRequestListener'>
                       <property name = 'traceCode' value = '2.5.1'/>
@@ -154,14 +153,14 @@ public class      TestServletRequestListener
         </bean>
 
         <bean class = 'com.tverts.servlet.listeners.ServletRequestListenerBean'>
-          <property name = 'listeners'>
+          <property name = 'references'>
             <list>
               <bean class = 'com.tverts.servlet.listeners.TestServletRequestListener'>
                 <property name = 'traceCode' value = '4.1'/>
               </bean>
 
               <bean class = 'com.tverts.servlet.listeners.ServletRequestListenerBean'>
-                <property name = 'listeners'>
+                <property name = 'references'>
                   <list>
                     <bean class = 'com.tverts.servlet.listeners.TestServletRequestListener'>
                       <property name = 'traceCode' value = '4.2.1'/>

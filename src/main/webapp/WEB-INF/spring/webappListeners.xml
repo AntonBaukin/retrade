@@ -11,7 +11,7 @@
   <bean name  = 'servletContextListenerPoint' factory-method = 'getInstance'
         class = 'com.tverts.servlet.listeners.ServletContextListenerPoint'>
 
-    <property name = 'listeners'>
+    <property name = 'references'>
       <list>
 
       </list>
@@ -26,7 +26,7 @@
   <bean name  = 'servletRequestListenerPoint' factory-method = 'getInstance'
         class = 'com.tverts.servlet.listeners.ServletRequestListenerPoint'>
 
-    <property name = 'listeners'>
+    <property name = 'references'>
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
