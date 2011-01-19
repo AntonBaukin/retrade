@@ -17,9 +17,9 @@ public class   SeShProtocolWeb
 	  throws SeShProtocolError, InterruptedException
 	{
 		//0: create the web client
-		createWebClient();
+		installWebClient();
 
-		//1: make initial connetion & the response
+		//1: make initial connection & the response
 		shuntRequest = getWebClient().connect(
 		  createInitialRequest());
 	}
@@ -48,7 +48,7 @@ public class   SeShProtocolWeb
 		return super.closeProtocol();
 	}
 
-	public void            interruptProtocol()
+	public void             interruptProtocol()
 	  throws SeShProtocolError
 	{
 		SeShWebClient client = getWebClient();
@@ -92,8 +92,7 @@ public class   SeShProtocolWeb
 	protected void          releaseWebClient()
 	  throws SeShProtocolError
 	{
-		if(this.webClient == null)
-			throw new IllegalStateException();
+		if(this.webClient == null) return;
 
 		this.webClient.release();
 		this.webClient = null;

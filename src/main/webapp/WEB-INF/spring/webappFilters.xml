@@ -18,6 +18,11 @@
          · Binds the request to Servlet-related components.          ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.servlet.filters.WebApplicationRequestFilter'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Handles Self Shunt requests.                              ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'selfShuntFilter'/>
       </list>
     </property>
   </bean>

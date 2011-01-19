@@ -29,6 +29,9 @@ public interface SeShProtocol
 	 *
 	 * The first (initial) request is made when
 	 * opening the protocol.
+	 *
+	 * Only the protocol invocating thread may
+	 * call this method.
 	 */
 	public void            openProtocol()
 	  throws SeShProtocolError, InterruptedException;
@@ -40,6 +43,9 @@ public interface SeShProtocol
 	 * {@code false}. The cause of the break
 	 * may be either a system error, a critical
 	 * shunt error, or just finishing the shunting.
+	 *
+	 * Only the protocol invocating thread may
+	 * call this method.
 	 */
 	public boolean         sendNextRequest()
 	  throws SeShProtocolError, InterruptedException;
@@ -47,6 +53,9 @@ public interface SeShProtocol
 	/**
 	 * Closes the conversation returning the
 	 * accumulated reports of the invocation.
+	 *
+	 * Only the protocol invocating thread may
+	 * call this method.
 	 */
 	public SelfShuntReport closeProtocol()
 	  throws SeShProtocolError, InterruptedException;
@@ -56,7 +65,7 @@ public interface SeShProtocol
 	 * Drives no effect on a protocol already closed.
 	 *
 	 * This call may be done only from a thread being
-	 * not a thread invocating the protocol.
+	 * NOT a thread invocating the protocol.
 	 */
 	public void            interruptProtocol()
 	  throws SeShProtocolError;

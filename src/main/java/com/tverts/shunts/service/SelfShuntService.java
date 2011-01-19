@@ -7,6 +7,7 @@ import com.tverts.objects.RunnableInterruptible;
 
 /* com.tverts: system services */
 
+import com.tverts.shunts.SelfShuntReport;
 import com.tverts.system.services.BreakingTask;
 import com.tverts.system.services.CycledTaskServiceBase;
 
@@ -150,6 +151,12 @@ public class   SelfShuntService
 		return new ShuntServiceTask(p);
 	}
 
+	/**
+	 * Cycling, self-breaking task.
+	 *
+	 * In each cycle sends the next request to the shunt system.
+	 * Is able to interrupt both the protocol, and the task thread.
+	 */
 	protected class      ShuntServiceTask
 	          implements RunnableInterruptible, BreakingTask
 
@@ -158,6 +165,9 @@ public class   SelfShuntService
 
 		public ShuntServiceTask(SeShProtocol protocol)
 		{
+			if(protocol == null)
+				throw new IllegalArgumentException();
+
 			this.protocol = protocol;
 		}
 
@@ -165,7 +175,46 @@ public class   SelfShuntService
 
 		public void    run()
 		{
+			//~: check the closed status
+			if(closed) return;
 
+			//?: {the cycle is no already opened} do it
+			if(!opened) try
+			{
+				protocol.openProtocol();
+				opened = true;
+			}
+			catch(Throwable e)
+			{
+				handleProtocolError(e);
+				if(closed) return;
+			}
+
+			//!: do the protocol cycle
+			try
+			{
+				closed = !protocol.sendNextRequest();
+			}
+			catch(Throwable e)
+			{
+				handleProtocolError(e);
+			}
+
+			SelfShuntReport report = null;
+
+			//?: {the protocol must be closed} do it
+			if(closed) try
+			{
+				report = protocol.closeProtocol();
+			}
+			catch(Throwable e)
+			{
+				handleProtocolError(e);
+			}
+
+			//?: {closed, has the report} handle it
+			if(report != null)
+				handleShuntReport(report);
 		}
 
 		/* public: RunnableInterruptible interface */
@@ -185,11 +234,15 @@ public class   SelfShuntService
 			{
 				throw new IllegalStateException(e);
 			}
+
+			//!: interrupt the task thread
+			if(interruptor != null)
+				interruptor.interrupt();
 		}
 
 		public void    setInterruptor(Interruptor x)
 		{
-
+			this.interruptor = x;
 		}
 
 		/* public: BreakingTask interface */
@@ -199,10 +252,22 @@ public class   SelfShuntService
 			return closed;
 		}
 
+		/* protected: support routines */
+
+		protected void  handleProtocolError(Throwable e)
+		{
+			this.closed = true;
+		}
+
+		protected void  handleShuntReport(SelfShuntReport report)
+		{
+			//TODO handleShuntReport(), remember critical errors...
+		}
+
 		/* protected: shunts invocation protocol */
 
 		/**
-		 * The protocol to instance incoke the shunts.
+		 * The protocol to instance invoke the shunts.
 		 */
 		protected final SeShProtocol protocol;
 
@@ -211,6 +276,14 @@ public class   SelfShuntService
 		 * May be set only from the task's thread.
 		 */
 		protected volatile boolean   closed;
+
+		/**
+		 * Indicates that the protocol was already
+		 * opened on the first cycle.
+		 */
+		protected boolean            opened;
+
+		protected Interruptor        interruptor;
 	}
 
 	/* private: strategies of the service  */

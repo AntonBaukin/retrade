@@ -134,12 +134,36 @@ public abstract class SingleTaskServiceBase
 		Thread thread = new Thread(task);
 
 		thread.setName(String.format(
-		  "service:%s", getServiceName()));
+		  "service:%s", defineThreadName(task)));
 
 		if(isDaemonService())
 			thread.setDaemon(true);
 
 		return thread;
+	}
+
+	/**
+	 * Returns the name of the service '99.9%'
+	 * unique within the JVM. Note that in an
+	 * application server several applications
+	 * using the same services may be installed,
+	 * hence, they must be distinguished across
+	 * the whole JVM.
+	 *
+	 * This version adds identity hash code
+	 * as the suffix of the service name, after
+	 * '#' character.
+	 */
+	protected String defineThreadName(Runnable task)
+	{
+		String cname = getServiceInfo().getServiceName();
+		String icode = Integer.toString(
+		  System.identityHashCode(this));
+
+		return new StringBuilder(
+		    cname.length() + icode.length() + 2).
+		  append(cname).append('#').append(icode).
+		  toString();
 	}
 
 	/* protected: interruptible tasks support */

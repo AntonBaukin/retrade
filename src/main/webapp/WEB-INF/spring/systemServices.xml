@@ -13,7 +13,10 @@
     <property name = 'references'>
       <list>
 
-
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Self Shunt Service for Web.                               ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'selfShuntServiceWeb'/>
       </list>
     </property>
   </bean>

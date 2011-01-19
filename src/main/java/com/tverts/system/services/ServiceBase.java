@@ -63,7 +63,8 @@ public abstract class ServiceBase
 
 	public String  getServiceName()
 	{
-		return serviceName;
+		return (serviceName != null)?(serviceName)
+		  :(this.getClass().getSimpleName());
 	}
 
 	/**
