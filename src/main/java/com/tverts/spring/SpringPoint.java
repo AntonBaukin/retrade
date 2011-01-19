@@ -6,9 +6,10 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-/* com.tverts: servlets */
+/* com.tverts: servlets, support */
 
 import com.tverts.servlet.RequestPoint;
+import static com.tverts.support.SU.s2s;
 
 /**
  * Point to access Spring context and the beans.
@@ -34,6 +35,9 @@ public class SpringPoint
 
 	public static Object         bean(String name)
 	{
+		if((name = s2s(name)) == null)
+			throw new IllegalArgumentException();
+
 		return getInstance().getSpringContext().getBean(name);
 	}
 
@@ -43,6 +47,9 @@ public class SpringPoint
 	 */
 	public static Object         beanOrNull(String name)
 	{
+		if((name = s2s(name)) == null)
+			throw new IllegalArgumentException();
+
 		try
 		{
 			return getInstance().getSpringContext().getBean(name);

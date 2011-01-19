@@ -63,6 +63,16 @@ public class SU
 		return (s == null)?(null):(s2s(s.toString()));
 	}
 
+	/**
+	 * Returns {@code true} if the string is {@code null},
+	 * empty, or contains only whitespaces.
+	 */
+	public static boolean  sXe(String s)
+	{
+		return (s == null) || (s.length() == 0) ||
+		  (s.trim().length() == 0);
+	}
+
 	public static int      sXl(String... strs)
 	{
 		int size = 0;

@@ -1,0 +1,125 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Self Shunt Point                               =
+    =================================================-->
+
+  <bean name  = 'selfShuntPoint' factory-method = 'getInstance'
+        class = 'com.tverts.shunts.SelfShuntPoint'>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Here all the shunts registered in the system are given    ·
+     · to the implementation level set of shunts.                ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'shuntsSet'>
+      <bean class = 'com.tverts.shunts.sets.SelfShuntsRefsSet'>
+        <property name = 'reference' ref = 'selfShuntsList'/>
+      </bean>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Web Self Shunt Service                         =
+    =================================================-->
+
+  <bean name  = 'selfShuntServiceWeb'
+        class = 'com.tverts.shunts.service.SelfShuntService'>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Root dispatching handler of the shunt requests.           ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'requestsHandler'>
+      <bean class = 'com.tverts.shunts.service.SeShRequestsDispatcher'>
+        <property name = 'handlers'>
+          <map>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Executes initial request to run all the shunt units.      ·
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <entry key = 'com.tverts.shunts.protocol.SeShRequestAll'>
+              <bean class = 'com.tverts.shunts.service.SeShRequestAllHandler'/>
+            </entry>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Executes request to run the next shunt of the sequence.   ·
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <entry key = 'com.tverts.shunts.protocol.SeShRequestsSequence'>
+              <bean class = 'com.tverts.shunts.service.SeShRequestsSequenceHandler'/>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Self Shunts invocation protocol prototype reference.      ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'protocolFactory'>
+      <bean class = 'com.tverts.spring.SpringBeanBinder'>
+        <property name  = 'beanName'
+                  value = 'selfShuntProtocolWeb'/>
+      </bean>
+    </property>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Pauses to cooldown the service.                           ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'openPause'  value = '10000'/>
+    <property name  = 'cyclePause' value = '1000'/>
+  </bean>
+
+  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+   · Self Shunts invocation protocol.                          ·
+   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+  <bean name  = 'selfShuntProtocolWeb' scope = 'prototype'
+        class = 'com.tverts.shunts.protocol.SeShProtocolWeb'/>
+
+
+  <!--=================================================
+    =  Self Shunt Filter for Web Shunt Service        =
+    =================================================-->
+
+  <bean name  = 'selfShuntFilter'
+        class = 'com.tverts.shunts.protocol.SelfShuntFilter'>
+
+    <property name = 'service' ref = 'selfShuntServiceWeb'/>
+  </bean>
+
+
+  <!--=================================================
+    =  External Self Shunts References                =
+    =================================================-->
+
+  <import resource = 'shunts/systemShunts.xml'/>
+  <import resource = 'shunts/particularShunts.xml'/>
+
+
+  <!--=================================================
+    =  Self Shunts References                         =
+    +==================================================
+    |
+    |   Here references to the shunts (also, shunt
+    |   unit objects directly) are collected.
+    |
+    |   Note that it is possible to call subsets of
+    |   shunts. This is based on shunt groups.
+    |
+    |   Do not register not system shunt units here:
+    |   put them in 'particularShunts.xml' file.
+    |
+    +================================================-->
+
+  <bean name  = 'selfShuntsList'
+        class = 'com.tverts.shunts.SelfShuntsList'>
+    <property name = 'references'>
+      <list>
+        <ref bean = 'systemShuntsList'/>
+        <ref bean = 'particularShuntsList'/>
+      </list>
+    </property>
+  </bean>
+</beans>

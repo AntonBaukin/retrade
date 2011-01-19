@@ -47,6 +47,23 @@ public abstract class ActiveServiceBase
 		this.daemonService = daemon;
 	}
 
+	/**
+	 * The pause (in milliseconds) the service makes
+	 * just after starting it's activity. This pause
+	 * allows to reduce the system overload during
+	 * the start: different services really operate
+	 * after a small (maybe, random) delay.
+	 */
+	public long    getOpenPause()
+	{
+		return openPause;
+	}
+
+	public void    setOpenPause(long openPause)
+	{
+		this.openPause = openPause;
+	}
+
 	/* protected: active state implementation */
 
 	protected class   ActiveStateBase
@@ -156,7 +173,8 @@ public abstract class ActiveServiceBase
 
 		public void run()
 		{
-			openTaskWrapped();
+			if(!openTaskWrapped())
+				return;
 
 			try
 			{
@@ -201,9 +219,38 @@ public abstract class ActiveServiceBase
 
 		/* protected: wrapped task execution */
 
-		protected void         openTaskWrapped()
+		/**
+		 * Performs the tasks on the thread entry to the task.
+		 *
+		 * Answers {@code false} to exit the task thread immediately.
+		 * In this case opposite call to {@link #closeTaskWrapped()}
+		 * would not be done!
+		 */
+		protected boolean      openTaskWrapped()
 		{
 			ActiveServiceBase.this.openTaskWrapped(this);
+			return openTaskPause();
+		}
+
+		/**
+		 * Pause made when starting the task. Returns
+		 * {@code false} to exit the task activity.
+		 */
+		protected boolean      openTaskPause()
+		{
+			if(getOpenPause() > 0L) try
+			{
+				synchronized(pauseWaitee())
+				{
+					pauseWaitee().wait(getOpenPause());
+				}
+			}
+			catch(InterruptedException e)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		protected void         closeTaskWrapped()
@@ -220,13 +267,21 @@ public abstract class ActiveServiceBase
 			return (BreakingTask)task;
 		}
 
+		protected Object       pauseWaitee()
+		{
+			return (pauseWaitee != null)?(pauseWaitee):
+			  (pauseWaitee = new Object());
+		}
+
 		/* private: the task */
 
 		private Runnable  task;
 		private Throwable error;
+		private Object    pauseWaitee;
 	}
 
-	/* protected: service  settings */
+	/* protected: service settings */
 
+	private long    openPause;
 	private boolean daemonService;
 }

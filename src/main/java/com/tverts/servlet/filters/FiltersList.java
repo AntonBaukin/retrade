@@ -13,5 +13,4 @@ import com.tverts.objects.ObjectsRedirector;
 public class      FiltersList
        extends    ObjectsRedirector<Filter>
        implements FilterReference
-
 {}

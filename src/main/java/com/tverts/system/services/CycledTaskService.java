@@ -1,109 +1,45 @@
 package com.tverts.system.services;
 
 /**
- * As it's parent {@link SingleTaskService}, this
- * service runs only one thread. But the same
- * task object is invoked infinitely in the cycle
- * until the service is stopped.
- *
- * If the task implements {@link BreakingTask}
- * interface it may define it's own life time.
+ * Implementation of a {@link CycledTaskServiceBase}
+ * that allows to set an external task to run it
+ * in an infinite cycle as a service.
  *
  * @author anton baukin (abaukin@mail.ru)
  */
 public class   CycledTaskService
-       extends SingleTaskService
+       extends CycledTaskServiceBase
 {
-	/* protected: SingleTaskService (service task handling) */
+	/* public: SingleTaskService interface */
 
-	protected Runnable wrapTask(Runnable task)
+	public Runnable getExternalTask()
 	{
-		return new CycledTaskWrapper(task);
+		return externalTask;
 	}
 
-	/* protected: cycled task wrapper */
-
-	protected class   CycledTaskWrapper
-	          extends TaskWrapper
+	public void     setExternalTask(Runnable task)
 	{
-		/* public: constructor */
-
-		public CycledTaskWrapper(Runnable task)
-		{
-			super(task);
-		}
-
-		/* public: Runnable interface */
-
-		public void run()
-		{
-			openTaskWrapped();
-
-			//~: execute the task until the service is stopped
-			while(!CycledTaskService.this.breaked) try
-			{
-				if(cycleBody())
-					break;
-			}
-			catch(Throwable e)
-			{
-				handleCycleError(e);
-
-				//?: {has error} exit the cycle
-				if(getWrappedError() != null)
-					break;
-			}
-
-			//!: exit the task (thread)
-			try
-			{
-				closeTaskWrapped();
-			}
-			catch(Throwable e)
-			{
-				if(getWrappedError() == null)
-					setWrappedError(e);
-			}
-		}
-
-		/* protected: task execution */
-
-		/**
-		 * Invokes the task wrapped. Return {@code true}
-		 * to break the cycle. The possible exceptions
-		 * are handled outside.
-		 */
-		protected boolean cycleBody()
-		  throws Throwable
-		{
-			BreakingTask breaker = unwrapBreakingTask(this);
-
-			//?: {the task had breaked itself} exit the cycle
-			if((breaker != null) && breaker.isTaskBreaked())
-				return true;
-
-			//!: execute the task
-			getWrappedTask().run();
-
-			//~: search the breaker again in case of mutating structure
-			breaker = unwrapBreakingTask(this);
-
-			return (breaker != null) && breaker.isTaskBreaked();
-		}
-
-		protected void    handleCycleError(Throwable e)
-		{
-			CycledTaskService.this.handleCycleError(this, e);
-		}
+		this.externalTask = task;
 	}
 
-	/* protected: wrapped task execution */
+	/* protected: service task handling */
 
-	protected void handleCycleError (
-	                 CycledTaskWrapper task,
-	                 Throwable         error
-	               )
+	/**
+	 * Creates the {@link Runnable} task instance to
+	 * activate the service. By default returns the
+	 * {@link #getExternalTask()} instance, if any.
+	 */
+	protected Runnable createTask()
 	{
-		task.setWrappedError(error);
+		Runnable task = getExternalTask();
+
+		if(task == null) throw new IllegalStateException(
+		  "Cycled Task Service has no external task set!");
+
+		return task;
 	}
+
+	/* private: the external task reference */
+
+	private Runnable externalTask;
 }

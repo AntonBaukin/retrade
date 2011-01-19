@@ -1,0 +1,32 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  System Self Shunts References                  =
+    +==================================================
+    |
+    | Self Shunting Units for the system components.
+    |
+    +================================================-->
+
+  <bean name  = 'systemShuntsList'
+        class = 'com.tverts.shunts.SelfShuntsList'>
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Shunts the self-shunting subsystem itself.                ·
+         · Better to be the first shunt unit registered.             ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfShunts'/>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>
