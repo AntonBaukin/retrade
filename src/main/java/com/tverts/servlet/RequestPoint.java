@@ -24,9 +24,13 @@ public class RequestPoint
 		return context;
 	}
 
+	/**
+	 * Note that is not allowed to chnange the context
+	 * instance directly. Set {@code null} link before.
+	 */
 	public static void setContext(ServletContext ctx)
 	{
-		if(context != null)
+		if((context != null) && (ctx != null))
 			throw new IllegalStateException();
 		context = ctx;
 	}

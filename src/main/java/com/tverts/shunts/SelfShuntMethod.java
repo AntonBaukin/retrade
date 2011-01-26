@@ -27,9 +27,15 @@ public @interface SelfShuntMethod
 	 * Tells that this method is critical.
 	 *
 	 * If an exception is thrown out of a critical
-	 * method, shunt unit invocation is cancelled.
+	 * method, shunt units invocation is cancelled,
+	 * ant whole the shunting is cancelled.
+	 *
+	 * By default the methods are not critical.
+	 * Try to set it {@code true} only when the
+	 * whole system, or the application's logics
+	 * are depend on the components tested here.
 	 */
-	boolean critical()    default true;
+	boolean critical()    default false;
 
 	/**
 	 * Tells to run this method in the subclasses.

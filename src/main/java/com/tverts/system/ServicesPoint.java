@@ -4,10 +4,6 @@ package com.tverts.system;
 
 import java.util.List;
 
-/* Apache Log4J */
-
-import org.apache.log4j.Logger;
-
 /* tverts.com: system services */
 
 import com.tverts.system.services.ServicesList;
@@ -40,11 +36,11 @@ public class   ServicesPoint
 
 	/* public: log destinations */
 
-	public static final Logger LOG_SERVICE_MAIN =
-	  Logger.getLogger("com.tverts.system.services");
+	public static final String LOG_SERVICE_MAIN =
+	  "com.tverts.system.services";
 
-	public static final Logger LOG_SERVICE_BOOT =
-	  Logger.getLogger("com.tverts.system.services.boot");
+	public static final String LOG_SERVICE_BOOT =
+	  "com.tverts.system.services.boot";
 
 	/* public: log utilities */
 
@@ -57,7 +53,7 @@ public class   ServicesPoint
 
 		for(Service service : services) string.
 			append((string.length() != len)?(", "):("")).
-			append(service.getServiceInfo().getServiceName());
+			append(service.getServiceInfo().getServiceSignature());
 	}
 
 	public static void appendActiveServicesList (
@@ -70,6 +66,6 @@ public class   ServicesPoint
 		for(Service service : services)
 			if(service.getServiceInfo().isActiveService()) string.
 				append((string.length() != len)?(", "):("")).
-				append(service.getServiceInfo().getServiceName());
+				append(service.getServiceInfo().getServiceSignature());
 	}
 }

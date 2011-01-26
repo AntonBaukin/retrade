@@ -13,6 +13,15 @@ public interface ServiceInfo
 
 	public String  getServiceName();
 
+	/**
+	 * Service signature is the JVM unique name of the service.
+	 *
+	 * Not obliged, it consist of two parts separated with '#':
+	 * the name of the service, and identity hash of the
+	 * service's object.
+	 */
+	public String  getServiceSignature();
+
 	public String  getServiceTitle(String lang);
 
 	/**

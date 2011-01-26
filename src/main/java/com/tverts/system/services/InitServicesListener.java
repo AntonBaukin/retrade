@@ -9,10 +9,6 @@ import java.util.ListIterator;
 
 import javax.servlet.ServletContextEvent;
 
-/* Apache Log4J */
-
-import org.apache.log4j.Logger;
-
 /* com.tverts: webapp listeners */
 
 import com.tverts.servlet.listeners.ServletContextListenerBase;
@@ -21,6 +17,10 @@ import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 import com.tverts.system.Service;
 import com.tverts.system.ServicesPoint;
+
+/* com.tverts: support */
+
+import com.tverts.support.LU;
 
 /**
  * Handles the first phase of the services bootstrap:
@@ -132,14 +132,14 @@ public class   InitServicesListener
 
 	/* protected: logging */
 
-	protected Logger getLog()
+	protected String getLog()
 	{
 		return ServicesPoint.LOG_SERVICE_BOOT;
 	}
 
 	protected void   logServicesFound(List<Service> services)
 	{
-		if(!getLog().isInfoEnabled()) return;
+		if(!LU.isI(getLog())) return;
 
 		StringBuilder sb = new StringBuilder(128);
 
@@ -147,12 +147,12 @@ public class   InitServicesListener
 		ServicesPoint.appendServicesList(sb, services);
 		sb.append(']');
 
-		getLog().info(sb.toString());
+		LU.I(getLog(), sb.toString());
 	}
 
 	protected void   logServicesStopping(List<Service> services)
 	{
-		if(!getLog().isInfoEnabled()) return;
+		if(!LU.isI(getLog())) return;
 
 		StringBuilder sb = new StringBuilder(128);
 
@@ -160,30 +160,30 @@ public class   InitServicesListener
 		ServicesPoint.appendServicesList(sb, services);
 		sb.append(']');
 
-		getLog().info(sb.toString());
+		LU.I(getLog(), sb.toString());
 	}
 
 	protected void   logServiceInitOpen(Service service)
 	{
-		if(!getLog().isDebugEnabled()) return;
+		if(!LU.isD(getLog())) return;
 
-		getLog().debug(String.format(
+		LU.D(getLog(), String.format(
 		  "initializing system service '%s'...",
 		  service.getServiceInfo().getServiceName()));
 	}
 
 	protected void   logServiceInitClose(Service service)
 	{
-		if(!getLog().isDebugEnabled()) return;
+		if(!LU.isD(getLog())) return;
 
-		getLog().debug(String.format(
+		LU.D(getLog(), String.format(
 		  "initialized system service '%s'!",
 		  service.getServiceInfo().getServiceName()));
 	}
 
 	protected void   logServiceInitClose(ServiceInitError error)
 	{
-		getLog().error(String.format(
+		LU.E(getLog(), String.format(
 		  "error occured when initializing system service '%s'!",
 		  error.getService().getServiceInfo().getServiceName()),
 		  error);
@@ -191,25 +191,25 @@ public class   InitServicesListener
 
 	protected void   logServiceFreeOpen(Service service)
 	{
-		if(!getLog().isDebugEnabled()) return;
+		if(!LU.isD(getLog())) return;
 
-		getLog().debug(String.format(
+		LU.D(getLog(), String.format(
 		  "destroying system service '%s'...",
 		  service.getServiceInfo().getServiceName()));
 	}
 
 	protected void   logServiceFreeClose(Service service)
 	{
-		if(!getLog().isDebugEnabled()) return;
+		if(!LU.isD(getLog())) return;
 
-		getLog().debug(String.format(
+		LU.D(getLog(), String.format(
 		  "destroyed system service '%s'!",
 		  service.getServiceInfo().getServiceName()));
 	}
 
 	protected void   logServiceFreeClose(ServiceInitError error)
 	{
-		getLog().error(String.format(
+		LU.E(getLog(), String.format(
 		  "error occured when destroying system service '%s'!",
 		  error.getService().getServiceInfo().getServiceName()),
 		  error);

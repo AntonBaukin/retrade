@@ -18,6 +18,8 @@ import com.tverts.shunts.SelfShuntUnitReport;
  *
  * Two methods are expected: HTTP and JMS.
  *
+ * TODO: handle critical shunt errors here
+ *
  * @author anton baukin (abaukin@mail.ru)
  */
 public abstract class SeShProtocolBase

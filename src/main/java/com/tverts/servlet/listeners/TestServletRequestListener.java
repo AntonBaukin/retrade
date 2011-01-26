@@ -5,11 +5,9 @@ package com.tverts.servlet.listeners;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
 
-/* Apache Log4J */
-
-import org.apache.log4j.Logger;
-
 /* com.tverts: support */
+
+import com.tverts.support.LU;
 
 import static com.tverts.support.OU.sig;
 
@@ -49,14 +47,14 @@ public class   TestServletRequestListener
 
 	/* protected: logging */
 
-	protected static final Logger LOG =
-	  Logger.getLogger("com.tverts.tests.TestServletRequestListener");
+	protected static final String LOG =
+	  TestServletRequestListener.class.getName();
 
 	protected void logRequestInit(HttpServletRequest request)
 	{
-		if(!LOG.isInfoEnabled()) return;
+		if(!LU.isI(LOG)) return;
 
-		LOG.info(String.format(
+		LU.I(LOG, String.format(
 		  "HTTP request listener [%s] STARTED request #{%s}: \n%s",
 
 		  getTraceCode(), sig(request), request.getRequestURI()
@@ -65,9 +63,9 @@ public class   TestServletRequestListener
 
 	protected void logRequestFree(HttpServletRequest request)
 	{
-		if(!LOG.isInfoEnabled()) return;
+		if(!LU.isI(LOG)) return;
 
-		LOG.info(String.format(
+		LU.I(LOG, String.format(
 		  "HTTP request listener [%s] has DONE request #{%s}",
 
 		  getTraceCode(), sig(request)

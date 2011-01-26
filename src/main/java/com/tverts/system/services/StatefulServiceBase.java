@@ -251,7 +251,7 @@ public abstract class StatefulServiceBase
 			  "%s: operation '%s' can't be issued as the " +
 			  "service is not ready!",
 
-			  sig(), operation));
+			  logsig(), operation));
 	}
 
 	protected void checkInitService()

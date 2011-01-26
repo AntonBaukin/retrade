@@ -3,21 +3,26 @@ package com.tverts.shunts.service;
 /* com.tverts: objects */
 
 import com.tverts.objects.ObjectFactory;
-import com.tverts.objects.RunnableInterruptible;
 
 /* com.tverts: system services */
 
-import com.tverts.shunts.SelfShuntReport;
-import com.tverts.system.services.BreakingTask;
 import com.tverts.system.services.CycledTaskServiceBase;
 
-/* com.tverts: shunts, shunt protocol */
+/* com.tverts: shunts, shunt protocol, reports  */
+
+import com.tverts.shunts.SelfShuntPoint;
+import com.tverts.shunts.SelfShuntReport;
 
 import com.tverts.shunts.protocol.SeShBasicResponse;
 import com.tverts.shunts.protocol.SeShProtocol;
-import com.tverts.shunts.protocol.SeShProtocolError;
 import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShResponse;
+
+import com.tverts.shunts.reports.SeShReportConsumer;
+
+/* com.tverts: support */
+
+import static com.tverts.support.LO.LANG_RU;
 
 /**
  * This complex (active) service resolves all
@@ -41,6 +46,16 @@ import com.tverts.shunts.protocol.SeShResponse;
 public class   SelfShuntService
        extends CycledTaskServiceBase
 {
+	/* public: ServiceBase interface */
+
+	public boolean isActiveService()
+	{
+		return SelfShuntPoint.getInstance().isActive() &&
+		  (getRequestsHandler() != null) &&
+		  (getProtocolFactory() != null) &&
+		  (getReportConsumer()  != null);
+	}
+
 	/* public: requests execution */
 
 	public SeShResponse
@@ -81,7 +96,7 @@ public class   SelfShuntService
 		}
 	}
 
-	/* public: service configuration interface  */
+	/* public: service configuration */
 
 	/**
 	 * An instance of {@link SeShRequestsHandler} strategy of
@@ -117,6 +132,8 @@ public class   SelfShuntService
 	 *
 	 * To shunt the system through different mediad
 	 * (such as HTTP, or JMS)
+	 *
+	 * Without this strategy the service is not active.
 	 */
 	public ObjectFactory<SeShProtocol>
 	            getProtocolFactory()
@@ -129,165 +146,78 @@ public class   SelfShuntService
 		this.protocolFactory = pf;
 	}
 
+	/**
+	 * The strategy of processing the Self Shut Reports
+	 * installed into the service.
+	 *
+	 * Without this strategy the service is not active.
+	 */
+	public SeShReportConsumer
+	            getReportConsumer()
+	{
+		return reportConsumer;
+	}
+
+	public void setReportConsumer(SeShReportConsumer reportConsumer)
+	{
+		this.reportConsumer = reportConsumer;
+	}
+
+	/* public: task & protocol support */
+
+	public SeShProtocol createProtocolInstance()
+	{
+		if(getProtocolFactory() == null)
+			throw new IllegalStateException(String.format(
+			  "%s has no Protocol Factory instance provided " +
+			  "with the configutation!", logsig()));
+
+		SeShProtocol protocol = getProtocolFactory().
+		  createInstance(SeShProtocol.class);
+
+		if(protocol == null)
+			throw new IllegalStateException(String.format(
+			  "%s couldn't create Protocol instance " +
+			  "invoking the Factory!", logsig()));
+
+		return protocol;
+	}
+
+	public void         processShuntReport(SelfShuntReport report)
+	{
+		SeShReportConsumer consumer = getReportConsumer();
+
+		//?: {has report consumer installed} invoke it
+		if(consumer != null)
+			consumer.consumeReport(report);
+	}
+
 	/* protected: shunt service task implementation */
 
 	/**
-	 * Creates {@link ShuntServiceTask} instance.
+	 * Creates {@link SelfShuntServiceTask} instance.
 	 */
-	protected Runnable   createTask()
+	protected Runnable  createTask()
 	{
-		if(getProtocolFactory() == null)
-			throw new IllegalStateException(
-			  "Self Shunt Service has no Protocol Factory instance " +
-			  "provided with the configutation!");
-
-		SeShProtocol p = getProtocolFactory().createInstance(SeShProtocol.class);
-
-		if(p == null)
-			throw new IllegalStateException(
-			  "Self Shunt Service couldn't create Protocol instance " +
-			  "invoking the Factory!");
-
-		return new ShuntServiceTask(p);
+		return new SelfShuntServiceTask(this);
 	}
 
-	/**
-	 * Cycling, self-breaking task.
-	 *
-	 * In each cycle sends the next request to the shunt system.
-	 * Is able to interrupt both the protocol, and the task thread.
-	 */
-	protected class      ShuntServiceTask
-	          implements RunnableInterruptible, BreakingTask
+	/* protected: logging */
 
+	protected String    logsig(String lang)
 	{
-		/* public: constructor */
+		String one = LANG_RU.equals(lang)?
+		  ("Сервис самошунтирования"):("Self Shunt Service");
 
-		public ShuntServiceTask(SeShProtocol protocol)
-		{
-			if(protocol == null)
-				throw new IllegalArgumentException();
+		String two = getServiceName();
+		if(two == null) two = "???";
 
-			this.protocol = protocol;
-		}
-
-		/* public: Runnable interface */
-
-		public void    run()
-		{
-			//~: check the closed status
-			if(closed) return;
-
-			//?: {the cycle is no already opened} do it
-			if(!opened) try
-			{
-				protocol.openProtocol();
-				opened = true;
-			}
-			catch(Throwable e)
-			{
-				handleProtocolError(e);
-				if(closed) return;
-			}
-
-			//!: do the protocol cycle
-			try
-			{
-				closed = !protocol.sendNextRequest();
-			}
-			catch(Throwable e)
-			{
-				handleProtocolError(e);
-			}
-
-			SelfShuntReport report = null;
-
-			//?: {the protocol must be closed} do it
-			if(closed) try
-			{
-				report = protocol.closeProtocol();
-			}
-			catch(Throwable e)
-			{
-				handleProtocolError(e);
-			}
-
-			//?: {closed, has the report} handle it
-			if(report != null)
-				handleShuntReport(report);
-		}
-
-		/* public: RunnableInterruptible interface */
-
-		public void    interrupt()
-		  throws IllegalStateException
-		{
-			//?: {the protocol is already closed} nothing to do
-			if(closed) return;
-
-			//~: interrupt the protocol
-			try
-			{
-				protocol.interruptProtocol();
-			}
-			catch(SeShProtocolError e)
-			{
-				throw new IllegalStateException(e);
-			}
-
-			//!: interrupt the task thread
-			if(interruptor != null)
-				interruptor.interrupt();
-		}
-
-		public void    setInterruptor(Interruptor x)
-		{
-			this.interruptor = x;
-		}
-
-		/* public: BreakingTask interface */
-
-		public boolean isTaskBreaked()
-		{
-			return closed;
-		}
-
-		/* protected: support routines */
-
-		protected void  handleProtocolError(Throwable e)
-		{
-			this.closed = true;
-		}
-
-		protected void  handleShuntReport(SelfShuntReport report)
-		{
-			//TODO handleShuntReport(), remember critical errors...
-		}
-
-		/* protected: shunts invocation protocol */
-
-		/**
-		 * The protocol to instance invoke the shunts.
-		 */
-		protected final SeShProtocol protocol;
-
-		/**
-		 * Indicates that the protocol is closed.
-		 * May be set only from the task's thread.
-		 */
-		protected volatile boolean   closed;
-
-		/**
-		 * Indicates that the protocol was already
-		 * opened on the first cycle.
-		 */
-		protected boolean            opened;
-
-		protected Interruptor        interruptor;
+		return String.format("%s '%s'", one, two);
 	}
 
 	/* private: strategies of the service  */
 
 	private SeShRequestsHandler         requestsHandler;
 	private ObjectFactory<SeShProtocol> protocolFactory;
+	private SeShReportConsumer          reportConsumer;
 }

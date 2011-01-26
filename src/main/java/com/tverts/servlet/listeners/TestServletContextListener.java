@@ -5,13 +5,10 @@ package com.tverts.servlet.listeners;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
-/* Apache Log4J */
-
-import org.apache.log4j.Logger;
-
 /* com.tverts: support */
 
 import static com.tverts.support.OU.sig;
+import com.tverts.support.LU;
 
 public class   TestServletContextListener
        extends ServletContextListenerBase
@@ -42,14 +39,14 @@ public class   TestServletContextListener
 
 	/* protected: logging */
 
-	protected static final Logger LOG =
-	  Logger.getLogger("com.tverts.tests.TestServletContextListener");
+	protected static final String LOG =
+	  TestServletContextListener.class.getName();
 
 	protected void logContextOpened(ServletContext ctx)
 	{
-		if(!LOG.isInfoEnabled()) return;
+		if(!LU.isI(LOG)) return;
 
-		LOG.info(String.format(
+		LU.I(LOG, String.format(
 		  "Webapp context listener [%s] OPENED context #{%s}",
 
 		  getTraceCode(), sig(ctx)
@@ -58,9 +55,9 @@ public class   TestServletContextListener
 
 	protected void logContextReleased(ServletContext ctx)
 	{
-		if(!LOG.isInfoEnabled()) return;
+		if(!LU.isI(LOG)) return;
 
-		LOG.info(String.format(
+		LU.I(LOG, String.format(
 		  "Webapp context listener [%s] RELEASED context #{%s}",
 
 		  getTraceCode(), sig(ctx)

@@ -11,11 +11,16 @@
         class = 'com.tverts.shunts.SelfShuntPoint'>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Makes all the shunt services to be active/inactive.       ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'active' value = 'true'/>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Here all the shunts registered in the system are given    ·
      · to the implementation level set of shunts.                ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'shuntsSet'>
-      <bean class = 'com.tverts.shunts.sets.SelfShuntsRefsSet'>
+      <bean class  = 'com.tverts.shunts.sets.SelfShuntsRefsSet'>
         <property name = 'reference' ref = 'selfShuntsList'/>
       </bean>
     </property>
@@ -29,11 +34,20 @@
   <bean name  = 'selfShuntServiceWeb'
         class = 'com.tverts.shunts.service.SelfShuntService'>
 
+    <property name  = 'serviceName'
+              value = 'selfShuntServiceWeb'/>
+
+    <property name  = 'serviceTitleEn'
+              value = 'Self Shunting Service for Web'/>
+
+    <property name  = 'serviceTitleLo'
+              value = 'Сервис самошунтирования для Web'/>
+
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Root dispatching handler of the shunt requests.           ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'requestsHandler'>
-      <bean class = 'com.tverts.shunts.service.SeShRequestsDispatcher'>
+      <bean class  = 'com.tverts.shunts.service.SeShRequestsDispatcher'>
         <property name = 'handlers'>
           <map>
 
@@ -59,10 +73,17 @@
      · Self Shunts invocation protocol prototype reference.      ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'protocolFactory'>
-      <bean class = 'com.tverts.spring.SpringBeanBinder'>
+      <bean class  = 'com.tverts.spring.SpringBeanBinder'>
         <property name  = 'beanName'
                   value = 'selfShuntProtocolWeb'/>
       </bean>
+    </property>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Logs shunt reports to 'com.tverts.shunts' destination.    ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'reportConsumer'>
+      <bean class  = 'com.tverts.shunts.reports.SeShReportLogger'/>
     </property>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·

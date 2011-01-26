@@ -50,7 +50,7 @@ public abstract class SingleTaskServiceBase
 	{
 		if(task == null)
 			throw new IllegalStateException(String.format(
-			  "%s has no behaviuor task provided!", sig()));
+			  "%s has no behaviuor task provided!", logsig()));
 	}
 
 	/* protected: ActiveServiceBase (active state impl.) */
@@ -133,37 +133,16 @@ public abstract class SingleTaskServiceBase
 	{
 		Thread thread = new Thread(task);
 
-		thread.setName(String.format(
-		  "service:%s", defineThreadName(task)));
-
-		if(isDaemonService())
-			thread.setDaemon(true);
+		thread.setName(defineThreadName(task));
+		thread.setDaemon(isDaemonService());
 
 		return thread;
 	}
 
-	/**
-	 * Returns the name of the service '99.9%'
-	 * unique within the JVM. Note that in an
-	 * application server several applications
-	 * using the same services may be installed,
-	 * hence, they must be distinguished across
-	 * the whole JVM.
-	 *
-	 * This version adds identity hash code
-	 * as the suffix of the service name, after
-	 * '#' character.
-	 */
 	protected String defineThreadName(Runnable task)
 	{
-		String cname = getServiceInfo().getServiceName();
-		String icode = Integer.toString(
-		  System.identityHashCode(this));
-
-		return new StringBuilder(
-		    cname.length() + icode.length() + 2).
-		  append(cname).append('#').append(icode).
-		  toString();
+		return String.format("service:%s",
+		  getServiceInfo().getServiceSignature());
 	}
 
 	/* protected: interruptible tasks support */

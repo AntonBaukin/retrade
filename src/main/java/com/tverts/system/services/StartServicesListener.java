@@ -3,11 +3,16 @@ package com.tverts.system.services;
 /* standard Java classes */
 
 import java.util.List;
+import java.util.ListIterator;
 
 /* com.tverts: system services */
 
 import com.tverts.system.Service;
 import com.tverts.system.ServicesPoint;
+
+/* com.tverts: support */
+
+import com.tverts.support.LU;
 
 /**
  * Handles the second phase of the services bootstrap:
@@ -48,6 +53,24 @@ public class   StartServicesListener
 		}
 	}
 
+	/**
+	 * After stopping the services this method would
+	 * wait until their current activity to stop.
+	 */
+	protected void freeServices(List<Service> services)
+	{
+		super.freeServices(services);
+
+		try
+		{
+			waitServices(services);
+		}
+		catch(InterruptedException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
 	protected void freeService(Service service)
 	{
 		//?: {the service is not active} skip it
@@ -66,8 +89,45 @@ public class   StartServicesListener
 
 			logServiceFreeClose(error);
 
-			//!!!: not thrown
-			//throw error;
+			//NOTE: that possible error is not thrown out of here.
+			//      Else, the rest of the services would not be stopped.
+		}
+	}
+
+	protected void waitServices(List<Service> services)
+	  throws InterruptedException
+	{
+		ListIterator<Service> i =
+		  services.listIterator(services.size());
+
+		while(i.hasPrevious())
+			waitService(i.previous());
+	}
+
+	protected void waitService(Service service)
+	  throws InterruptedException
+	{
+		//?: {the service is not active} skip it
+		if(!service.getServiceInfo().isActiveService())
+			return;
+
+		try
+		{
+			logServiceWaitOpen(service);
+			service.waitService();
+			logServiceWaitClose(service);
+		}
+		catch(InterruptedException e)
+		{
+			//HINT: we just waiting, and were interrupted, so,
+			//      jump out without hesitation...
+
+			throw e;
+		}
+		catch(Throwable e)
+		{
+			ServiceInitError error = new ServiceInitError(service, e);
+			logServiceWaitClose(error);
 		}
 	}
 
@@ -75,7 +135,7 @@ public class   StartServicesListener
 
 	protected void   logServicesFound(List<Service> services)
 	{
-		if(!getLog().isInfoEnabled()) return;
+		if(!LU.isI(getLog())) return;
 
 		StringBuilder sb = new StringBuilder(128);
 
@@ -83,12 +143,12 @@ public class   StartServicesListener
 		ServicesPoint.appendActiveServicesList(sb, services);
 		sb.append(']');
 
-		getLog().info(sb.toString());
+		LU.I(getLog(), sb.toString());
 	}
 
 	protected void   logServicesStopping(List<Service> services)
 	{
-		if(!getLog().isInfoEnabled()) return;
+		if(!LU.isI(getLog())) return;
 
 		StringBuilder sb = new StringBuilder(128);
 
@@ -96,30 +156,30 @@ public class   StartServicesListener
 		ServicesPoint.appendActiveServicesList(sb, services);
 		sb.append(']');
 
-		getLog().info(sb.toString());
+		LU.I(getLog(), sb.toString());
 	}
 
 	protected void   logServiceInitOpen(Service service)
 	{
-		if(!getLog().isDebugEnabled()) return;
+		if(!LU.isD(getLog())) return;
 
-		getLog().debug(String.format(
+		LU.D(getLog(), String.format(
 		  "starting system service '%s'...",
 		  service.getServiceInfo().getServiceName()));
 	}
 
 	protected void   logServiceInitClose(Service service)
 	{
-		if(!getLog().isDebugEnabled()) return;
+		if(!LU.isD(getLog())) return;
 
-		getLog().debug(String.format(
+		LU.D(getLog(), String.format(
 		  "started system service '%s'!",
 		  service.getServiceInfo().getServiceName()));
 	}
 
 	protected void   logServiceInitClose(ServiceInitError error)
 	{
-		getLog().error(String.format(
+		LU.E(getLog(), String.format(
 		  "error occured when starting system service '%s'!",
 		  error.getService().getServiceInfo().getServiceName()),
 		  error);
@@ -127,26 +187,52 @@ public class   StartServicesListener
 
 	protected void   logServiceFreeOpen(Service service)
 	{
-		if(!getLog().isDebugEnabled()) return;
+		if(!LU.isD(getLog())) return;
 
-		getLog().debug(String.format(
+		LU.D(getLog(), String.format(
 		  "stopping system service '%s'...",
 		  service.getServiceInfo().getServiceName()));
 	}
 
 	protected void   logServiceFreeClose(Service service)
 	{
-		if(!getLog().isDebugEnabled()) return;
+		if(!LU.isD(getLog())) return;
 
-		getLog().debug(String.format(
+		LU.D(getLog(), String.format(
 		  "stopped system service '%s'!",
 		  service.getServiceInfo().getServiceName()));
 	}
 
 	protected void   logServiceFreeClose(ServiceInitError error)
 	{
-		getLog().error(String.format(
+		LU.E(getLog(), String.format(
 		  "error occured when stopping system service '%s'!",
+		  error.getService().getServiceInfo().getServiceName()),
+		  error);
+	}
+
+	protected void   logServiceWaitOpen(Service service)
+	{
+		if(!LU.isD(getLog())) return;
+
+		LU.D(getLog(), String.format(
+		  "waiting system service '%s' to stop...",
+		  service.getServiceInfo().getServiceName()));
+	}
+
+	protected void   logServiceWaitClose(Service service)
+	{
+		if(!LU.isD(getLog())) return;
+
+		LU.D(getLog(), String.format(
+		  "system service '%s' threads are stopped!",
+		  service.getServiceInfo().getServiceName()));
+	}
+
+	protected void   logServiceWaitClose(ServiceInitError error)
+	{
+		LU.E(getLog(), String.format(
+		  "error occured when waiting system service '%s' to stop!",
 		  error.getService().getServiceInfo().getServiceName()),
 		  error);
 	}
