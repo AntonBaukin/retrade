@@ -54,22 +54,17 @@ public class   TestServletRequestListener
 	{
 		if(!LU.isI(LOG)) return;
 
-		LU.I(LOG, String.format(
-		  "HTTP request listener [%s] STARTED request #{%s}: \n%s",
-
-		  getTraceCode(), sig(request), request.getRequestURI()
-		));
+		LU.I(LOG, "HTTP request listener [", getTraceCode(),
+		  "] STARTED request #{", sig(request), "}: \n",
+		  request.getRequestURI());
 	}
 
 	protected void logRequestFree(HttpServletRequest request)
 	{
 		if(!LU.isI(LOG)) return;
 
-		LU.I(LOG, String.format(
-		  "HTTP request listener [%s] has DONE request #{%s}",
-
-		  getTraceCode(), sig(request)
-		));
+		LU.I(LOG, "HTTP request listener [", getTraceCode(),
+		  "] has DONE request #{", sig(request), "}");
 	}
 
 	/* private: the code of the listener */

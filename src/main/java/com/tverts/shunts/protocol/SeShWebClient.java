@@ -2,7 +2,7 @@ package com.tverts.shunts.protocol;
 
 /**
  * Implements HTTP conversation with this server.
- * Support class for {@link SeShProtocolWeb}.
+ * Support class for {@link SeShProtocolWebBase}.
  *
  * @author anton baukin (abaukin@mail.ru)
  */

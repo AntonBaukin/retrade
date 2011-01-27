@@ -97,7 +97,7 @@
    · Self Shunts invocation protocol.                          ·
    · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
   <bean name  = 'selfShuntProtocolWeb' scope = 'prototype'
-        class = 'com.tverts.shunts.protocol.SeShProtocolWeb'/>
+        class = 'com.tverts.shunts.protocol.SeShProtocolWebAll'/>
 
 
   <!--=================================================

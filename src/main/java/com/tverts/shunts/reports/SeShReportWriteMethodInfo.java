@@ -84,6 +84,7 @@ public class   SeShReportWriteMethodInfo
 	protected void openUnitReportHead(Writer o, SelfShuntUnitReport ur)
 	  throws IOException
 	{
+		N(o);
 		L(o, "===== unit : ", ur.getUnitName());
 
 		L(o, "==> tasks  ",  statShuntTasks(ur),

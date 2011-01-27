@@ -36,7 +36,7 @@ import com.tverts.support.streams.Base64Encoder;
 
 /**
  * Implements HTTP conversation with this server.
- * Support class for {@link SeShProtocolWeb}.
+ * Support class for {@link SeShProtocolWebBase}.
  *
  * This particular implementation utilizes
  * Apache HTTP Commons component library.

@@ -17,12 +17,42 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Shunts the self-shunting subsystem itself.                ·
-         · Better to be the first shunt unit registered.             ·
+         · Run this shunts to test the shunt subsystem works.        ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'systemShuntsSelfTests'/>
+
+      </list>
+    </property>
+  </bean>
+
+  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+   · Shunts the self-shunting subsystem itself.                ·
+   · Better to be the first shunt unit registered.             ·
+   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+  <bean name  = 'systemShuntsSelfTests'
+        class = 'com.tverts.shunts.SelfShuntsList'>
+    <property name = 'references'>
+      <list>
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfSuccess'/>
+          </property>
+        </bean>
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfFailure'/>
+          </property>
+        </bean>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · As this shunt unit would stop the shunts invocation       ·
+         · with critical error, include it for debugging only!       ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.shunts.SelfShuntTarget'>
           <property name = 'target'>
-            <bean class = 'com.tverts.shunts.ShuntSelfShunts'/>
+            <bean class = 'com.tverts.shunts.ShuntSelfCriticalFailure'/>
           </property>
         </bean>
 

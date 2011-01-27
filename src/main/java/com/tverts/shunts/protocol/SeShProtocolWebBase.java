@@ -1,5 +1,7 @@
 package com.tverts.shunts.protocol;
 
+/* com.tverts: shunts */
+
 import com.tverts.shunts.SelfShuntReport;
 
 /**
@@ -8,8 +10,8 @@ import com.tverts.shunts.SelfShuntReport;
  *
  * @author anton baukin (abaukin@mail.ru)
  */
-public class   SeShProtocolWeb
-       extends SeShProtocolBase
+public abstract class SeShProtocolWebBase
+       extends        SeShProtocolBase
 {
 	/* public: protocol interface */
 
@@ -57,26 +59,12 @@ public class   SeShProtocolWeb
 
 	/* protected: protocol conversation */
 
-	protected SeShRequestInitial
-	                        createInitialRequest()
-	{
-		return new SeShRequestAll();
-	}
-
-	protected SeShRequest   processResponse(SeShResponse r)
-	  throws SeShProtocolError
-	{
-		//?: {has system error}
-		if(r.getSystemError() != null)
-			throw new SeShSystemFailure(r);
-
-		//remember the report
-		if(r.getReport() != null)
-			getUnitReports().add(r.getReport());
-
-		//return the next request
-		return r.getNextRequest();
-	}
+	/**
+	 * Creates the initial request to the shunt system.
+	 * This request defines what actually be tested.
+	 */
+	protected abstract SeShRequestInitial
+	                        createInitialRequest();
 
 	/* protected: web client access */
 
@@ -113,7 +101,7 @@ public class   SeShProtocolWeb
 		return this.webClient;
 	}
 
-	/* protected: protocol state */
+	/* protected, private: protocol state */
 
 	/**
 	 * Current request instance.

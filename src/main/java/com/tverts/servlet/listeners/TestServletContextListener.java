@@ -46,22 +46,16 @@ public class   TestServletContextListener
 	{
 		if(!LU.isI(LOG)) return;
 
-		LU.I(LOG, String.format(
-		  "Webapp context listener [%s] OPENED context #{%s}",
-
-		  getTraceCode(), sig(ctx)
-		));
+		LU.I(LOG, "Webapp context listener [", getTraceCode(),
+		 "] OPENED context #{", sig(ctx), "}");
 	}
 
 	protected void logContextReleased(ServletContext ctx)
 	{
 		if(!LU.isI(LOG)) return;
 
-		LU.I(LOG, String.format(
-		  "Webapp context listener [%s] RELEASED context #{%s}",
-
-		  getTraceCode(), sig(ctx)
-		));
+		LU.I(LOG, "Webapp context listener [", getTraceCode(),
+		 "] RELEASED context #{", sig(ctx), "}");
 	}
 
 	/* private: the code of the listener */

@@ -274,4 +274,45 @@ public class SU
 		return sb.toString();
 	}
 
+	/* public: buffering */
+
+	/**
+	 * Concatenates the objects previously converted
+	 * to strings. Handles {@code null} values just
+	 * skipping them.
+	 *
+	 * Implies some optimizations: handles the objects
+	 * as character sequences, returns the same single
+	 * instance of character sequence, creates the buffer
+	 * of precise size.
+	 */
+	public static CharSequence cat(Object... objs)
+	{
+		Object x = null;
+		int    l = 0;
+
+		//~: define the length of the resulting buffer
+		for(int i = 0;(i < objs.length);i++) if(objs[i] != null)
+		{
+			if(!(objs[i] instanceof CharSequence))
+				objs[i] = objs[i].toString();
+			if(objs[i] == null) continue;
+
+			l += ((CharSequence)objs[i]).length();
+			x  = (x == null)?(objs[i]):(CAT_X);
+		}
+
+		//?: {has only one item in the objects array} return it
+		if((x != null) && (x != CAT_X))
+			return (CharSequence)x;
+
+		//~: write to the buffer
+		StringBuilder s = new StringBuilder(l);
+		for(Object obj : objs) if(obj != null)
+			s.append((CharSequence)obj);
+
+		return s;
+	}
+
+	private static final String CAT_X = "";
 }

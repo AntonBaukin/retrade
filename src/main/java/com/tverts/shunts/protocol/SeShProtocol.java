@@ -69,4 +69,10 @@ public interface SeShProtocol
 	 */
 	public void            interruptProtocol()
 	  throws SeShProtocolError;
+
+	/**
+	 * The (last) system error of the client side
+	 * that was saved while executing the protocol.
+	 */
+	public Throwable       getSystemError();
 }

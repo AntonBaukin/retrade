@@ -5,6 +5,10 @@ package com.tverts.support;
 import com.tverts.support.logs.LogLevel;
 import com.tverts.support.logs.LogPoint;
 
+/* com.tverts: support  */
+
+import static com.tverts.support.SU.cat;
+
 /**
  * Logging support, utilities and wrappers.
  *
@@ -80,89 +84,79 @@ public class LU
 		  getLogStrategy().isLevel(LogLevel.WARN, dest);
 	}
 
-	/**
-	 * {@link LogLevel#WARN} level is enabled?
-	 *
-	 * (Note that error level is always enabled
-	 * in the present implementation.)
-	 */
-	public static boolean  isE(String dest)
-	{
-		return true;
-	}
-
 	/* logging */
 
-	public static void L(LogLevel level, String dest, CharSequence msg)
+	public static void L
+	  (LogLevel level, String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(level, dest, msg);
+		  logMsg(level, dest, cat(msgs));
 	}
 
 	public static void L
-	  (LogLevel level, String dest, CharSequence msg, Throwable err)
+	  (LogLevel level, String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(level, dest, msg, err);
+		  logErr(level, dest, cat(msgs), err);
 	}
 
-	public static void T(String dest, CharSequence msg)
+	public static void T(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.TRACE, dest, msg);
+		  logMsg(LogLevel.TRACE, dest, cat(msgs));
 	}
 
-	public static void T(String dest, CharSequence msg, Throwable err)
+	public static void T(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.TRACE, dest, msg, err);
+		  logErr(LogLevel.TRACE, dest, cat(msgs), err);
 	}
 
-	public static void D(String dest, CharSequence msg)
+	public static void D(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.DEBUG, dest, msg);
+		  logMsg(LogLevel.DEBUG, dest, cat(msgs));
 	}
 
-	public static void D(String dest, CharSequence msg, Throwable err)
+	public static void D(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.DEBUG, dest, msg, err);
+		  logErr(LogLevel.DEBUG, dest, cat(msgs), err);
 	}
 
-	public static void I(String dest, CharSequence msg)
+	public static void I(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.INFO, dest, msg);
+		  logMsg(LogLevel.INFO, dest, cat(msgs));
 	}
 
-	public static void I(String dest, CharSequence msg, Throwable err)
+	public static void I(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.INFO, dest, msg, err);
+		  logErr(LogLevel.INFO, dest, cat(msgs), err);
 	}
 
-	public static void W(String dest, CharSequence msg)
+	public static void W(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.WARN, dest, msg);
+		  logMsg(LogLevel.WARN, dest, cat(msgs));
 	}
 
-	public static void W(String dest, CharSequence msg, Throwable err)
+	public static void W(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.WARN, dest, msg, err);
+		  logErr(LogLevel.WARN, dest, cat(msgs), err);
 	}
 
-	public static void E(String dest, CharSequence msg)
+	public static void E(String dest, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logMsg(LogLevel.ERROR, dest, msg);
+		  logMsg(LogLevel.ERROR, dest, cat(msgs));
 	}
 
-	public static void E(String dest, CharSequence msg, Throwable err)
+	public static void E(String dest, Throwable err, Object... msgs)
 	{
 		LogPoint.getInstance().getLogStrategy().
-		  logErr(LogLevel.ERROR, dest, msg, err);
+		  logErr(LogLevel.ERROR, dest, cat(msgs), err);
 	}
 }

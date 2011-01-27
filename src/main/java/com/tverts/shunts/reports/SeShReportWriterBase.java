@@ -117,6 +117,4 @@ public abstract class SeShReportWriterBase
 		return (m != null)?(m):
 		  SeShReportWriteMethodError.getInstance();
 	}
-
-
 }

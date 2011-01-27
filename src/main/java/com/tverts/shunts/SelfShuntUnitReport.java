@@ -86,9 +86,8 @@ public class      SelfShuntUnitReport
 	public List<SelfShuntTaskReport>
 	                 getTaskReports()
 	{
-		if(taskReports == null)
-			taskReports = new ArrayList<SelfShuntTaskReport>(8);
-		return taskReports;
+		return (taskReports != null)?(taskReports):
+		  (taskReports = createTaskReports());
 	}
 
 	public void      setTaskReports(List<SelfShuntTaskReport> reports)
@@ -148,9 +147,19 @@ public class      SelfShuntUnitReport
 		this.endTime = endTime;
 	}
 
-	/* private: the report attributes */
+	/* protected: misc routines */
+
+	protected List<SelfShuntTaskReport>
+	                 createTaskReports()
+	{
+		return new ArrayList<SelfShuntTaskReport>(8);
+	}
+
+	/* private: aggregated task reports */
 
 	private List<SelfShuntTaskReport> taskReports;
+
+	/* private: the report attributes */
 
 	private String    unitName;
 	private Class     unitClass;

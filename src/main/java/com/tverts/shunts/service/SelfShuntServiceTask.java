@@ -178,60 +178,54 @@ public class      SelfShuntServiceTask
 	{
 		if(!LU.isT(getLog())) return;
 
-		LU.T(getLog(), String.format(
-		  "%s is opening the shunt protocol...",
-		  logsig()));
+		LU.T(getLog(), logsig(),
+		  " is opening the shunt protocol...");
 	}
 
 	protected void   logProtocolOpenSuccess()
 	{
 		if(!LU.isD(getLog())) return;
 
-		LU.D(getLog(), String.format(
-		  "%s: the shunt protocol was opened " +
-		  "successfully!", logsig()));
+		LU.D(getLog(), logsig(),
+		  ": the shunt protocol was opened successfully!");
 	}
 
 	protected void   logProtocolOpenError(Throwable e)
 	{
-		LU.E(getLog(), String.format(
-		  "%s got error while opening the " +
-		  "shunt protocol!", logsig()), e);
+		LU.E(getLog(), e,
+		  logsig(), " got error while opening the shunt protocol!");
 	}
 
 	protected void   logSendNextRequestBefore()
 	{
 		if(!LU.isT(getLog())) return;
 
-		LU.T(getLog(), String.format(
-		  "%s is about to send the next " +
-		  "shunt request...", logsig()));
+		LU.T(getLog(), logsig(),
+		  " is about to send the next shunt request...");
 	}
 
 	protected void   logSendNextRequestSuccess()
 	{
 		if(!LU.isT(getLog())) return;
 
-		LU.T(getLog(), String.format(
-		  "%s had successfully sent the next " +
-		  "shunt request, it will continue: %b",
-		  logsig(), !this.closed));
+		LU.T(getLog(), logsig(),
+		  " had successfully sent the next shunt request, ",
+		  "it will continue: ", !this.closed);
 	}
 
 	protected void   logSendNextRequestError(Throwable e)
 	{
-		LU.E(getLog(), String.format(
-		  "%s got error while sending the next " +
-		  "request via the shunt protocol!", logsig()), e);
+		LU.E(getLog(), e,
+		  logsig(), " got error while sending the next ",
+		  "request via the shunt protocol!");
 	}
 
 	protected void   logProtocolCloseBefore()
 	{
 		if(!LU.isD(getLog())) return;
 
-		LU.D(getLog(), String.format(
-		  "%s: the shunt protocol was closed " +
-		  "successfully!", logsig()));
+		LU.D(getLog(), logsig(),
+		  "%s: the shunt protocol was closed successfully!");
 	}
 
 	protected void   logProtocolCloseSuccess()
@@ -241,9 +235,8 @@ public class      SelfShuntServiceTask
 
 	protected void   logProtocolCloseError(Throwable e)
 	{
-		LU.E(getLog(), String.format(
-		  "%s got error while closing the " +
-		  "shunt protocol!", logsig()), e);
+		LU.E(getLog(), e,
+		  logsig(), " got error while closing the shunt protocol!");
 	}
 
 	protected String logsig()
