@@ -241,7 +241,7 @@ public class      SelfShuntServiceTask
 
 	protected String logsig()
 	{
-		final String LS = "Se-Sh-Srv ";
+		final String LS = "SeSh-Srv ";
 		String       ls = service.getServiceInfo().getServiceSignature();
 
 		return new StringBuilder(LS.length() + ls.length()).

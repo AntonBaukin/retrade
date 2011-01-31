@@ -1,11 +1,14 @@
-package com.tverts.shunts.sets;
+package com.tverts.shunts.service;
 
 /* standard Java classes */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +16,11 @@ import java.util.Set;
 /* com.tverts: shunts */
 
 import com.tverts.shunts.SelfShunt;
+
+/* com.tverts: support */
+
+import static com.tverts.support.SU.a2a;
+import static com.tverts.support.SU.s2s;
 
 /**
  * Deals with the task of naming Shunt Unit instances.
@@ -27,6 +35,48 @@ public abstract class SelfShuntsSetBase
 	public Set<String> enumShunts()
 	{
 		return getShuntsNames().keySet();
+	}
+
+	public Set<String> enumShuntsByGroups(String... groups)
+	{
+		LinkedHashSet<String> res = new LinkedHashSet<String>(17);
+		HashSet<String>       ges = new HashSet<String>(
+		  Arrays.asList(a2a(groups)));
+
+		if(ges.isEmpty()) return res;
+
+		next_entry:
+		for(Map.Entry<String, SelfShunt> se : getShuntsNames().entrySet())
+		{
+			//get the groups of the shunt
+			String[] seg = se.getValue().getShuntGroups();
+			if((seg == null) || (seg.length == 0)) continue;
+
+			for(String g : seg) if(ges.contains(g))
+			{
+				res.add(se.getKey());
+				continue next_entry;
+			}
+		}
+
+		return res;
+	}
+
+	public Set<String> enumShuntsByName(String name)
+	{
+		if((name = s2s(name)) != null)
+			throw new IllegalArgumentException();
+
+		name = new StringBuilder(name.length() + 1).
+		  append(name).append('#').toString();
+
+		LinkedHashSet<String> res = new LinkedHashSet<String>(17);
+
+		for(String key  : getShuntsNames().keySet())
+			if(key.startsWith(name))
+				res.add(key);
+
+		return res;
 	}
 
 	public SelfShunt   getShunt(String key)
@@ -102,7 +152,7 @@ public abstract class SelfShuntsSetBase
 		for(int j = shunts.size() - 1;(j >= 0);j--)
 		{
 			String  n = s2n.get(j); //<-- [j] shunt's name
-			Integer i = n2i.get(n); //<-- name's ocassions
+			Integer i = n2i.get(n); //<-- name's occasions
 
 			//?: {this name is NOT unique} append '#i' to the name
 			if(i != null)

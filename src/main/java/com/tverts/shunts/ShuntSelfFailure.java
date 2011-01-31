@@ -10,6 +10,7 @@ import static org.junit.Assert.fail;
  * @author anton baukin (abaukin@mail.ru)
  */
 @SelfShuntUnit
+@SelfShuntGroups({"system:shunts:success", "system:shunts:all"})
 @SelfShuntDescr(en = "Tests Shunt Subsystem: has not critical failure.")
 public class ShuntSelfFailure extends ShuntSelfSuccess
 {

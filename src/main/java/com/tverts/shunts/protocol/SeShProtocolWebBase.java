@@ -21,9 +21,12 @@ public abstract class SeShProtocolWebBase
 		//0: create the web client
 		installWebClient();
 
-		//1: make initial connection & the response
-		shuntRequest = getWebClient().connect(
-		  createInitialRequest());
+		//1: create the initial request
+		SeShRequestInitial request = createInitialRequest();
+		logInitialRequest(request);
+
+		//2: make initial connection & the response
+		shuntRequest = getWebClient().connect(request);
 	}
 
 	public boolean          sendNextRequest()
@@ -56,15 +59,6 @@ public abstract class SeShProtocolWebBase
 		SeShWebClient client = getWebClient();
 		if(client != null) client.breakClient();
 	}
-
-	/* protected: protocol conversation */
-
-	/**
-	 * Creates the initial request to the shunt system.
-	 * This request defines what actually be tested.
-	 */
-	protected abstract SeShRequestInitial
-	                        createInitialRequest();
 
 	/* protected: web client access */
 

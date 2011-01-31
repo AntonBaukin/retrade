@@ -1,0 +1,44 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Self Shunts Protocol for Web                   =
+    +==================================================
+    |
+    |   This protocol is set to the Web Shunt Service
+    |   when the system starts up.
+    |
+    +================================================-->
+
+  <bean name  = 'selfShuntProtocolFactoryWeb'
+        class = 'com.tverts.spring.SpringBeanBinder'>
+
+    <property name  = 'beanName'
+              value = 'selfShuntProtocolWeb'/>
+  </bean>
+
+  <bean name  = 'selfShuntProtocolWeb' scope = 'prototype'
+        class = 'com.tverts.shunts.protocol.SeShProtocolWebMulti'>
+    <constructor-arg>
+      <bean class = 'com.tverts.shunts.protocol.SeShRequestGroups'>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · The list of groups defining the Self Shunt instances      ·
+         · to invoke after the System startaup.                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+
+        <property name  = 'groups'>
+          <value>
+
+            system:shunts:success,
+            system:shunts:all
+
+          </value>
+        </property>
+      </bean>
+    </constructor-arg>
+  </bean>
+
+</beans>

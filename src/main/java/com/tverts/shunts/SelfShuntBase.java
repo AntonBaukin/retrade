@@ -48,6 +48,18 @@ public abstract class SelfShuntBase
 		return sb.toString();
 	}
 
+	protected static final String[] EMPTY_GROUPS =
+	  new String[0];
+
+	/**
+	 * This default implementation returns an empty
+	 * array of group names.
+	 */
+	public String[]   getShuntGroups()
+	{
+		return EMPTY_GROUPS;
+	}
+
 	public void       runShunt(SelfShuntUnitReport report)
 	{
 		try

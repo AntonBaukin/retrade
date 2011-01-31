@@ -1,4 +1,4 @@
-package com.tverts.shunts.sets;
+package com.tverts.shunts.service;
 
 /* standard Java classes */
 
@@ -34,6 +34,22 @@ public interface SelfShuntsSet
 	 * The set returned is read-only.
 	 */
 	public Set<String>     enumShunts();
+
+	/**
+	 * Returns the ordered set of all the keys
+	 * of the shunts registered in the set
+	 * having at least one of the groups provided.
+	 */
+	public Set<String>     enumShuntsByGroups(String... groups);
+
+	/**
+	 * Returns all the shunts registered having
+	 * the name provided. Note that it is possible
+	 * to have more than one shunt unit with the
+	 * same name, but they would be registered with
+	 * different keys in the key.
+	 */
+	public Set<String>     enumShuntsByName(String name);
 
 	/**
 	 * Returns the shunt registered by the key,

@@ -9,7 +9,7 @@ package com.tverts.shunts.protocol;
 public class   SeShProtocolWebAll
        extends SeShProtocolWebBase
 {
-	/* protected: SeShProtocolWebBase interface */
+	/* protected: SeShProtocolBase interface */
 
 	protected SeShRequestInitial createInitialRequest()
 	{

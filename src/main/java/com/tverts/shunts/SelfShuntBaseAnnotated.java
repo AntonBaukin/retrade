@@ -11,6 +11,7 @@ import java.util.Comparator;
 
 /* com.tverts: support */
 
+import static com.tverts.support.SU.a2a;
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sXe;
 
@@ -26,7 +27,7 @@ public abstract class SelfShuntBaseAnnotated
 {
 	/* public: SelfShunt interface */
 
-	public String  getShuntUnitName()
+	public String   getShuntUnitName()
 	{
 		SelfShuntUnit  su = atShuntUnit();
 
@@ -35,9 +36,15 @@ public abstract class SelfShuntBaseAnnotated
 		return super.getShuntUnitName();
 	}
 
+	public String[] getShuntGroups()
+	{
+		SelfShuntGroups sg = atShuntGroups();
+		return (sg != null)?(a2a(sg.value())):(EMPTY_GROUPS);
+	}
+
 	/* protected: annotation support */
 
-	protected void initUnitReport(SelfShuntUnitReport report)
+	protected void  initUnitReport(SelfShuntUnitReport report)
 	{
 		super.initUnitReport(report);
 
@@ -51,7 +58,7 @@ public abstract class SelfShuntBaseAnnotated
 	}
 
 	protected SelfShuntTaskReport
-	               createReport(Method m)
+	                createReport(Method m)
 	{
 		SelfShuntTaskReport r = super.createReport(m);
 		SelfShuntMethod     a = atMethod(m);
@@ -72,7 +79,7 @@ public abstract class SelfShuntBaseAnnotated
 	}
 
 	protected Collection<Method>
-	               findMethods()
+	                findMethods()
 	{
 		Collection<Method> r = new ArrayList<Method>(4);
 		Class<?>           T = getTarget().getClass();
@@ -94,13 +101,13 @@ public abstract class SelfShuntBaseAnnotated
 		return r;
 	}
 
-	protected void sortMethods(ArrayList<Method> methods)
+	protected void  sortMethods(ArrayList<Method> methods)
 	{
 		Collections.sort(methods, getMethodsComparator());
 	}
 
 	protected MethodsComparator
-	               getMethodsComparator()
+	                getMethodsComparator()
 	{
 		return new MethodsComparator();
 	}
@@ -117,6 +124,12 @@ public abstract class SelfShuntBaseAnnotated
 	{
 		return getTarget().getClass().
 		  getAnnotation(SelfShuntDescr.class);
+	}
+
+	protected SelfShuntGroups atShuntGroups()
+	{
+		return getTarget().getClass().
+		  getAnnotation(SelfShuntGroups.class);
 	}
 
 	/**

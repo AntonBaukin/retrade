@@ -20,11 +20,18 @@
      · to the implementation level set of shunts.                ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'shuntsSet'>
-      <bean class  = 'com.tverts.shunts.sets.SelfShuntsRefsSet'>
+      <bean class  = 'com.tverts.shunts.service.SelfShuntsRefsSet'>
         <property name = 'reference' ref = 'selfShuntsList'/>
       </bean>
     </property>
   </bean>
+
+
+  <!--=================================================
+    =  Self Shunts invocation protocols               =
+    =================================================-->
+
+  <import resource = 'shunts/shuntWhat.xml'/>
 
 
   <!--=================================================
@@ -59,6 +66,22 @@
             </entry>
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Executes initial request to the shunt units               ·
+             · selected by the groups list.                              ·
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <entry key = 'com.tverts.shunts.protocol.SeShRequestGroups'>
+              <bean class = 'com.tverts.shunts.service.SeShRequestGroupsHandler'/>
+            </entry>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Executes initial request to the shunt unit(s)             ·
+             · selected by the shunt name.                               ·
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <entry key = 'com.tverts.shunts.protocol.SeShRequestSingle'>
+              <bean class = 'com.tverts.shunts.service.SeShRequestSingleHandler'/>
+            </entry>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Executes request to run the next shunt of the sequence.   ·
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
             <entry key = 'com.tverts.shunts.protocol.SeShRequestsSequence'>
@@ -72,12 +95,8 @@
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Self Shunts invocation protocol prototype reference.      ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'protocolFactory'>
-      <bean class  = 'com.tverts.spring.SpringBeanBinder'>
-        <property name  = 'beanName'
-                  value = 'selfShuntProtocolWeb'/>
-      </bean>
-    </property>
+    <property name = 'protocolFactory'
+              ref  = 'selfShuntProtocolFactoryWeb'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Logs shunt reports to 'com.tverts.shunts' destination.    ·
@@ -92,12 +111,6 @@
     <property name  = 'openPause'  value = '10000'/>
     <property name  = 'cyclePause' value = '1000'/>
   </bean>
-
-  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-   · Self Shunts invocation protocol.                          ·
-   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-  <bean name  = 'selfShuntProtocolWeb' scope = 'prototype'
-        class = 'com.tverts.shunts.protocol.SeShProtocolWebAll'/>
 
 
   <!--=================================================

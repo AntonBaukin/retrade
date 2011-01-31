@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
  * @author anton baukin (abaukin@mail.ru)
  */
 @SelfShuntUnit
+@SelfShuntGroups({"system:shunts:success", "system:shunts:all"})
 @SelfShuntDescr(en = "Tests Shunt Subsystem: all the methods are successful.")
 public class ShuntSelfSuccess
 {

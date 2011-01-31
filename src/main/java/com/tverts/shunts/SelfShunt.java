@@ -30,7 +30,14 @@ public interface SelfShunt extends Cloneable
 	 * Note that this name has no direct relation with
 	 * Spring Beans names.
 	 */
-	public String getShuntUnitName();
+	public String   getShuntUnitName();
 
-	public void   runShunt(SelfShuntUnitReport report);
+	/**
+	 * Names the shunt groups this unit belonges to.
+	 * The order of the groups has no effect.
+	 * The names are case sensitive.
+	 */
+	public String[] getShuntGroups();
+
+	public void     runShunt(SelfShuntUnitReport report);
 }

@@ -18,7 +18,7 @@ package com.tverts.shunts.protocol;
  * requests.
  *
  * For example, request for a group of shunt
- * units, {@link SeShRequestGroup},
+ * units, {@link SeShRequestGroups},
  * uses the name of the group as the key.
  * For other classes of initial request the
  * same string value as a group name may has
@@ -26,6 +26,5 @@ package com.tverts.shunts.protocol;
  *
  * @author anton baukin (abaukin@mail.ru)
  */
-public interface SeShRequestInitial
-       extends SeShRequest
+public interface SeShRequestInitial extends SeShRequest
 {}

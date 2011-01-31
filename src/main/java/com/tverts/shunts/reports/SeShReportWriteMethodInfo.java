@@ -77,6 +77,7 @@ public class   SeShReportWriteMethodInfo
 	  throws IOException
 	{
 		L(o, "! critical : ", tr.getTaskName());
+		P(o, "  ~~> "); X(o, tr);
 	}
 
 	/* protected: writing sub-methods */

@@ -3,8 +3,10 @@ package com.tverts.support;
 /* standard Java classes */
 
 import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map.Entry;
@@ -61,6 +63,31 @@ public class SU
 	public static String   s2s(CharSequence s)
 	{
 		return (s == null)?(null):(s2s(s.toString()));
+	}
+
+	/**
+	 * Returns an array of not-whitespace-strings
+	 * collected from the array provided.
+	 *
+	 * Omits {@code null} strings.
+	 *
+	 * A copy of the original array is always created.
+	 */
+	public static String[] a2a(String... a)
+	{
+		String[] r;
+		int      i, l = 0;
+
+		for(i = 0;(i < a.length);i++)
+		{
+		   a[i] = s2s(a[i]);
+			if(a[i] != null) l++;
+		}
+
+		i = 0; r = new String[l];
+		for(String s : a) if(s != null) r[i++] = s;
+
+		return r;
 	}
 
 	/**
@@ -286,7 +313,7 @@ public class SU
 	 * instance of character sequence, creates the buffer
 	 * of precise size.
 	 */
-	public static CharSequence cat(Object... objs)
+	public static CharSequence  cat(Object... objs)
 	{
 		Object x = null;
 		int    l = 0;
@@ -315,4 +342,60 @@ public class SU
 	}
 
 	private static final String CAT_X = "";
+
+	/**
+	 * Concatenates the strings using the separator given.
+	 * Returns the resulting buffer.
+	 *
+	 * Omits {@code null} values and empty strings. Trims
+	 * the strings before appending.
+	 *
+	 * If the income buffer is {@code null} creates
+	 * the new one. Else, returnes the given buffer.
+	 *
+	 * If the separator is {@code null}, an empty
+	 * string is taken.
+	 */
+	public static StringBuilder cat
+	  (StringBuilder buf, String sep, Collection<String> a)
+	{
+		int l = 0, x = (buf == null)?(0):(buf.length());
+
+		//?: {has no separater} take an empty string
+		if(sep == null) sep = "";
+
+		//0: define the resulting length
+		for(String s : a) if(s != null)
+			l += s.length() + sep.length();
+
+		//2: ensure the buffer capacity
+		if(buf == null)
+			buf = new StringBuilder(l);
+		else
+			buf.ensureCapacity(x + l);
+
+		//3: append the strings
+		for(String s : a) if((s = s2s(s)) != null)
+			buf.append((buf.length() != x)?(sep):("")).append(s);
+
+		return buf;
+	}
+
+	/**
+	 * Concatenates the strings given using {@code ", "}
+	 * as the separator.
+	 */
+	public static String        a2s(String... strings)
+	{
+		return cat(null, ", ", Arrays.asList(strings)).toString();
+	}
+
+	/**
+	 * Concatenates the strings given using {@code ", "}
+	 * as the separator.
+	 */
+	public static String        a2s(Collection<String> strings)
+	{
+		return cat(null, ", ", strings).toString();
+	}
 }

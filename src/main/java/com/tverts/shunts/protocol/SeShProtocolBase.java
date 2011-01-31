@@ -96,20 +96,28 @@ public abstract class SeShProtocolBase
 
 	/* public: protocol interface */
 
-	public SelfShuntReport              closeProtocol()
+	public SelfShuntReport closeProtocol()
 	  throws SeShProtocolError, InterruptedException
 	{
 		return createShuntReport();
 	}
 
-	public Throwable                    getSystemError()
+	public Throwable       getSystemError()
 	{
 		return this.systemError;
 	}
 
+	/* protected: protocol conversation */
+
+	/**
+	 * Creates the initial request to the shunt system.
+	 * This request defines what actually be tested.
+	 */
+	protected abstract SeShRequestInitial createInitialRequest();
+
 	/* protected: reports handling */
 
-	protected SeShRequest               processResponse(SeShResponse r)
+	protected SeShRequest     processResponse(SeShResponse r)
 	  throws SeShProtocolError
 	{
 		//?: {has system error}
@@ -136,7 +144,7 @@ public abstract class SeShProtocolBase
 	 * the next shunt request instance. This method is invoked
 	 * only when the report instance is defined.
 	 */
-	protected SeShRequest               processUnitReport(SeShResponse r)
+	protected SeShRequest     processUnitReport(SeShResponse r)
 	{
 		//~: (always) remember the report
 		unitReports.add(r.getReport());
@@ -154,7 +162,7 @@ public abstract class SeShProtocolBase
 		return r.getNextRequest();
 	}
 
-	protected SelfShuntReport           createShuntReport()
+	protected SelfShuntReport createShuntReport()
 	{
 		SelfShuntReport report = new SelfShuntReport();
 
@@ -165,7 +173,8 @@ public abstract class SeShProtocolBase
 		return report;
 	}
 
-	protected List<SelfShuntUnitReport> createUnitReports()
+	protected List<SelfShuntUnitReport>
+	                          createUnitReports()
 	{
 		return new ArrayList<SelfShuntUnitReport>(8);
 	}
@@ -179,7 +188,7 @@ public abstract class SeShProtocolBase
 
 	protected String logsig()
 	{
-		return String.format("Se-Sh-Protocol '%s'",
+		return String.format("SeSh-Protocol '%s'",
 		  getClass().getSimpleName());
 	}
 
@@ -189,7 +198,7 @@ public abstract class SeShProtocolBase
 		if(rk != null) rk = SU.s2s(rk.toString());
 		if(rk == null) rk = "UNKNOWN";
 
-		return String.format("Se-Sh-Request [~>%s]", rk);
+		return String.format("SeSh-Request [~>%s]", rk);
 	}
 
 	protected String logsig(SeShResponse r)
@@ -199,7 +208,7 @@ public abstract class SeShProtocolBase
 		if(rk != null) rk = SU.s2s(rk.toString());
 		if(rk == null) rk = "UNKNOWN";
 
-		return String.format("Se-Sh-Response [<~%s]", rk);
+		return String.format("SeSh-Response [<~%s]", rk);
 	}
 
 	protected String logsig(SelfShuntTaskReport tr)
@@ -207,8 +216,8 @@ public abstract class SeShProtocolBase
 		String d = SU.s2s(tr.getDescriptionEn());
 
 		return (d == null)
-		  ?String.format("Se-Sh-Task '%s'", tr.getTaskName())
-		  :String.format("Se-Sh-Task '%s' (%s)", tr.getTaskName(), d);
+		  ?String.format("SeSh-Task '%s'", tr.getTaskName())
+		  :String.format("SeSh-Task '%s' (%s)", tr.getTaskName(), d);
 	}
 
 	protected void   logResponseSystemError(SeShResponse r)
@@ -229,6 +238,14 @@ public abstract class SeShProtocolBase
 	{
 		LU.E(getLog(), logsig(r), " got CRITICAL ERROR within ",
 		  logsig(r), " caused by ", logsig(tr));
+	}
+
+	protected void   logInitialRequest(SeShRequestInitial r)
+	{
+		if(!LU.isI(getLog())) return;
+
+		LU.I(getLog(), logsig(), "created Initial SeSh-Request. \n" +
+		  "Request key: [", r.getSelfShuntKey(), "]");
 	}
 
 	protected void   logNextRequest(SeShResponse r)

@@ -56,6 +56,12 @@
           </property>
         </bean>
 
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfSuccess'/>
+          </property>
+        </bean>
+
       </list>
     </property>
   </bean>

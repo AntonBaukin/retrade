@@ -2,18 +2,17 @@ package com.tverts.shunts.service;
 
 /* standard Java classes */
 
-import java.util.ArrayList;
 import java.util.Set;
 
 /* com.tverts: shunts, shunt protocol */
 
 import com.tverts.shunts.SelfShuntPoint;
-
-import com.tverts.shunts.protocol.SeShBasicResponse;
-import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShRequestAll;
-import com.tverts.shunts.protocol.SeShRequestsSequence;
-import com.tverts.shunts.protocol.SeShResponse;
+
+/* com.tverts: support */
+
+import com.tverts.support.LU;
+import com.tverts.support.SU;
 
 /**
  * Handles initial request to start all the
@@ -22,31 +21,41 @@ import com.tverts.shunts.protocol.SeShResponse;
  *
  * @author anton baukin (abaukin@mail.ru)
  */
-public class      SeShRequestAllHandler
-       implements SeShRequestsHandler
+public class   SeShRequestAllHandler
+       extends SeShInitialRequestsHandlerBase<SeShRequestAll>
 {
-	/* public: SeShRequestsHandler interface */
+	/* protected: SeShInitialRequestsHandlerBase interface */
 
-	public boolean      canHandleRequest(SeShRequest request)
+	protected Class<SeShRequestAll>
+	                 getRequestClass()
 	{
-		return SeShRequestAll.class.getName().equals(
-		  request.getClass().getName());
+		return SeShRequestAll.class;
 	}
 
-	@SuppressWarnings("unchecked")
-	public SeShResponse handleShuntRequest(SeShRequest request)
+	protected Set<String>
+	                 selectShunts(SeShRequestAll req)
 	{
-		SeShBasicResponse res = new SeShBasicResponse(request);
-
-		//~: select all registered shunt units
-		Set<String>       all = SelfShuntPoint.getInstance().
+		return SelfShuntPoint.getInstance().
 		  getShuntsSet().enumShunts();
+	}
 
-		//?: {has al least one shunt unit} create the
-		if(!all.isEmpty())
-			res.setNextRequest(new SeShRequestsSequence(
-			  new ArrayList<String>(all)));
+	/* protected: logging */
 
-		return res;
+	protected String logsig()
+	{
+		return "SeSh-RequestAllHandler";
+	}
+
+	protected void   logSelectionEmpty(SeShRequestAll req, Set<String> shunts)
+	{
+		if(shunts.isEmpty()) LU.W(getLog(), logsig(),
+		  " has found NO shunts registered in the system!");
+	}
+
+	protected void   logSelectionResults(SeShRequestAll req, Set<String> shunts)
+	{
+		LU.W(getLog(), logsig(),
+		  " has found for the following shunts in the system: [\n",
+		  SU.a2s(shunts), "]");
 	}
 }

@@ -72,7 +72,7 @@ public class LU
 	public static boolean  isI(String dest)
 	{
 		return LogPoint.getInstance().
-		  getLogStrategy().isLevel(LogLevel.DEBUG, dest);
+		  getLogStrategy().isLevel(LogLevel.INFO, dest);
 	}
 
 	/**

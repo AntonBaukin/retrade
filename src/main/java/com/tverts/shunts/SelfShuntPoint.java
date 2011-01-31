@@ -1,9 +1,9 @@
 package com.tverts.shunts;
 
-/* com.tverts: shunts (sets) */
+/* com.tverts: shunts (service) */
 
-import com.tverts.shunts.sets.SelfShuntsSet;
-import com.tverts.shunts.sets.SelfShuntsRefsSet;
+import com.tverts.shunts.service.SelfShuntsSet;
+import com.tverts.shunts.service.SelfShuntsRefsSet;
 
 /**
  * Stores shared properties of the
