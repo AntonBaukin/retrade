@@ -28,7 +28,7 @@ public abstract class StatefulServiceBase
 
 	public void initService()
 	{
-		synchronized(getStateMutex())
+		synchronized(this.stateMutex)
 		{
 			if(getState() != null)
 				return;
@@ -40,23 +40,39 @@ public abstract class StatefulServiceBase
 
 	public void startService()
 	{
-		synchronized(getStateMutex())
+		synchronized(this.stateMutex)
 		{
 			checkStartService();
 			beforeStartService();
-			setState(getState().startService());
-			afterStartService();
+
+			try
+			{
+				setState(getState().startService());
+				afterStartService();
+			}
+			catch(Throwable e)
+			{
+				onStartServiceError(e);
+			}
 		}
 	}
 
 	public void stopService()
 	{
-		synchronized(getStateMutex())
+		synchronized(this.stateMutex)
 		{
 			checkStopService();
-			beforeStopService();
-			setState(getState().stopService());
-			afterStopService();
+			Object x = beforeStopService();
+
+			try
+			{
+				setState(getState().stopService());
+				afterStopService(x);
+			}
+			catch(Throwable e)
+			{
+				onStopServiceError(x, e);
+			}
 		}
 	}
 
@@ -66,7 +82,7 @@ public abstract class StatefulServiceBase
 
 	public void freeService()
 	{
-		synchronized(getStateMutex())
+		synchronized(this.stateMutex)
 		{
 			if(getState() == null)
 				return;
@@ -88,7 +104,7 @@ public abstract class StatefulServiceBase
 
 	public String  getStateName(String lang)
 	{
-		synchronized(getStateMutex())
+		synchronized(this.stateMutex)
 		{
 			return (getState() != null)?
 			  (getState().getStateName(lang)):
@@ -98,7 +114,7 @@ public abstract class StatefulServiceBase
 
 	public boolean isReady()
 	{
-		synchronized(getStateMutex())
+		synchronized(this.stateMutex)
 		{
 			return (getState() != null) && getState().isReady();
 		}
@@ -106,7 +122,7 @@ public abstract class StatefulServiceBase
 
 	public boolean isActive()
 	{
-		synchronized(getStateMutex())
+		synchronized(this.stateMutex)
 		{
 			return (getState() != null) && getState().isActive();
 		}
@@ -114,7 +130,7 @@ public abstract class StatefulServiceBase
 
 	public boolean isRunning()
 	{
-		synchronized(getStateMutex())
+		synchronized(this.stateMutex)
 		{
 			return (getState() != null) && getState().isRunning();
 		}
@@ -171,25 +187,44 @@ public abstract class StatefulServiceBase
 	protected void         beforeStartService()
 	{}
 
+	/**
+	 * Invoked on sucessful service start, on error
+	 * {@link #onStartServiceError(Throwable)} is.
+	 */
 	protected void         afterStartService()
 	{}
 
-	protected void         beforeStopService()
-	{}
-
-	protected void         afterStopService()
-	{}
-
-	/* protected: synchronization primitives */
-
-	protected Object         getStateMutex()
+	protected void         onStartServiceError(Throwable e)
 	{
-		return stateMutex;
+		throw new RuntimeException(String.format(
+		  "Unexpected error occured while starting %s!",
+		  logsig()), e);
 	}
 
-	protected WaitEmptyFlags getWaitFlags()
+	/**
+	 * Invoked before stop the service occures.
+	 *
+	 * The returned hint object is then passed to
+	 * {@link #afterStopService(Object)} and
+	 * {@link #onStopServiceError(Object, Throwable)}.
+	 */
+	protected Object       beforeStopService()
 	{
-		return waitFlags;
+		return null;
+	}
+
+	/**
+	 * Invoked on sucessful service stop, on error
+	 * {@link #onStopServiceError(Object, Throwable)} is.
+	 */
+	protected void         afterStopService(Object x)
+	{}
+
+	protected void         onStopServiceError(Object x, Throwable e)
+	{
+		throw new RuntimeException(String.format(
+		  "Unexpected error occured while stopping %s!",
+		  logsig()), e);
 	}
 
 	/* protected: state implementation */
@@ -272,12 +307,12 @@ public abstract class StatefulServiceBase
 		checkServiceReady("free");
 	}
 
-	/* private: service state */
+	/* protected: service state */
 
-	private ServiceState   serviceState;
+	private volatile ServiceState   serviceState;
 
-	/* private: service synchronization */
+	/* protected: service synchronization */
 
-	private Object         stateMutex = new Object();
-	private WaitEmptyFlags waitFlags  = new WaitEmptyFlags();
+	protected final Object          stateMutex = new Object();
+	protected final WaitEmptyFlags  waitFlags  = new WaitEmptyFlags();
 }

@@ -28,12 +28,11 @@
          · The list of groups defining the Self Shunt instances      ·
          · to invoke after the System startaup.                      ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-
-        <property name  = 'groups'>
+        <property name  = 'groupsStr'>
           <value>
 
             system:shunts:success,
-            system:shunts:all
+            <!-- system:shunts:killme -->
 
           </value>
         </property>

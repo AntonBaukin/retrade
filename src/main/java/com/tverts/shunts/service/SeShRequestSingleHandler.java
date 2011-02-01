@@ -51,7 +51,7 @@ public class   SeShRequestSingleHandler
 	{
 		LU.W(getLog(), logsig(),
 		  " has found for the shunt unit name provided: [",
-		  req.getSelfShuntKey(), "] the following shunts: [\n",
+		  req.getSelfShuntKey(), "] the following shunts: \n[",
 		  SU.a2s(shunts), "]");
 	}
 }

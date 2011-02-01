@@ -27,22 +27,19 @@ public class SU
 	 */
 	public static String[] s2a(String s)
 	{
-		s = s2s(s); if(s == null) return new String[0];
+		if((s = s2s(s)) == null)
+			return new String[0];
 
+		String            sx;
 		ArrayList<String> sa = new ArrayList<String>(Arrays.asList(
 		  s.split("(\\s+|[,;])")
 		));
 
 		for(ListIterator<String> i = sa.listIterator();(i.hasNext());)
-		{
-			String sai = i.next();
-			sai = (sai != null)?(sai.trim()):("");
-
-			if(sai.length() != 0)
-				i.set(sai);
+			if((sx = s2s(i.next())) != null)
+				i.set(sx);
 			else
 				i.remove();
-		}
 
 		return sa.toArray(new String[sa.size()]);
 	}

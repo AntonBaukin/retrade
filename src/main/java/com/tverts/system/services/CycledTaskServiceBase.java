@@ -60,7 +60,14 @@ public abstract class CycledTaskServiceBase
 			}
 			catch(Throwable e)
 			{
-				handleCycleError(e);
+				try
+				{
+					handleCycleError(e);
+				}
+				catch(Throwable ee)
+				{
+					setWrappedError(ee);
+				}
 
 				//?: {has error} exit the cycle
 				if(getWrappedError() != null)

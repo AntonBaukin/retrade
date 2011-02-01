@@ -12,12 +12,12 @@ public class   CycledTaskService
 {
 	/* public: SingleTaskService interface */
 
-	public Runnable getExternalTask()
+	public Runnable    getExternalTask()
 	{
 		return externalTask;
 	}
 
-	public void     setExternalTask(Runnable task)
+	public void        setExternalTask(Runnable task)
 	{
 		this.externalTask = task;
 	}
@@ -41,5 +41,5 @@ public class   CycledTaskService
 
 	/* private: the external task reference */
 
-	private Runnable externalTask;
+	private Runnable   externalTask;
 }

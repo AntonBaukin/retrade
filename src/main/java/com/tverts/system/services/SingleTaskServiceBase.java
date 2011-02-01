@@ -106,24 +106,21 @@ public abstract class SingleTaskServiceBase
 
 	/* protected: task control & wrapping */
 
-	protected void beforeStopService()
+	protected Object  beforeStopService()
 	{
-		super.beforeStopService();
 		this.breaked = true;
+		return super.beforeStopService();
 	}
 
-	protected void openTaskWrapped(Runnable task)
+	protected boolean openTaskWrapped(Runnable task)
 	{
-		this.running = true;
-
-		super.openTaskWrapped(task);
+		return (this.running = super.openTaskWrapped(task));
 	}
 
-	protected void closeTaskWrapped(Runnable task)
+	protected void    closeTaskWrapped(Runnable task)
 	{
 		this.running = false;
 		this.breaked = false;
-
 		super.closeTaskWrapped(task);
 	}
 

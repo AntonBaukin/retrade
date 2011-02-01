@@ -8,7 +8,6 @@ import java.util.TreeSet;
 /* com.tverts: support */
 
 import static com.tverts.support.SU.a2s;
-import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.s2a;
 
 /**
@@ -26,8 +25,8 @@ import static com.tverts.support.SU.s2a;
  *
  * @author anton baukin (abaukin@mail.ru)
  */
-public final class SeShRequestGroups
-       implements  SeShRequestInitial
+public class      SeShRequestGroups
+       implements SeShRequestInitial
 {
 	public static final long serialVersionUID = 0L;
 
@@ -35,7 +34,7 @@ public final class SeShRequestGroups
 
 	public Object   getSelfShuntKey()
 	{
-		return a2s(this.groups);
+		return getGroupsStr();
 	}
 
 	/* public: SeShRequestGroups interface */
@@ -50,13 +49,17 @@ public final class SeShRequestGroups
 		Set<String> gset = new TreeSet<String>();
 
 		if(groups != null) for(String g : groups)
-			gset.add(s2s(g));
-		gset.remove(null);
+			gset.add(g);
 
 		this.groups = gset.toArray(new String[gset.size()]);
 	}
 
-	public void     setGroups(String groups)
+	public String   getGroupsStr()
+	{
+		return a2s(this.groups);
+	}
+
+	public void     setGroupsStr(String groups)
 	{
 		this.setGroups(s2a(groups));
 	}

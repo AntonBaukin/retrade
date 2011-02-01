@@ -13,8 +13,8 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton baukin (abaukin@mail.ru)
  */
-public final class SeShRequestSingle
-       implements  SeShRequestInitial
+public class      SeShRequestSingle
+       implements SeShRequestInitial
 {
 	public static final long serialVersionUID = 0L;
 

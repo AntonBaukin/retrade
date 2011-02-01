@@ -29,8 +29,7 @@ import static com.tverts.support.SU.s2s;
  * @author anton baukin (abaukin@mail.ru)
  */
 public abstract class ServiceBase
-       implements     Service,
-                      ServiceReference
+       implements     Service, ServiceReference
 {
 	/* public: constructor */
 

@@ -25,7 +25,7 @@ public abstract class ActiveServiceBase
 	public void    waitService()
 	  throws InterruptedException
 	{
-		getWaitFlags().waitEmptyFlags();
+		this.waitFlags.waitEmptyFlags();
 	}
 
 	/* public: ServiceInfo interface */
@@ -123,16 +123,44 @@ public abstract class ActiveServiceBase
 
 	protected static final String WAIT_FLAG_START = "start";
 
-	protected void beforeStartService()
+	protected void    beforeStartService()
 	{
-		getWaitFlags().occupy(WAIT_FLAG_START);
+		this.waitFlags.occupy(WAIT_FLAG_START);
+	}
+
+	protected void    onStartServiceError(Throwable e)
+	{
+		this.waitFlags.release(WAIT_FLAG_START);
+		super.onStartServiceError(e);
 	}
 
 	protected static final String WAIT_FLAG_STOP  = "stop";
 
-	protected void beforeStopService()
+	/**
+	 * This version of stop brackets method returns
+	 * {@link Boolean#FALSE} when the service was not
+	 * active, here it does nothing more.
+	 *
+	 * If the service was active, accupies the wait flags
+	 * with {@link #WAIT_FLAG_STOP} and returns
+	 * {@link Boolean#TRUE}.
+	 */
+	protected Object  beforeStopService()
 	{
-		getWaitFlags().occupy(WAIT_FLAG_STOP);
+		if(!getState().isActive())
+			return Boolean.FALSE;
+
+		this.waitFlags.occupy(WAIT_FLAG_STOP);
+		return Boolean.TRUE;
+	}
+
+	protected void    onStopServiceError(Object x, Throwable e)
+	{
+		//?: {was active state} release the wait flag
+		if(Boolean.TRUE.equals(x))
+			this.waitFlags.release(WAIT_FLAG_STOP);
+
+		super.onStopServiceError(x, e);
 	}
 
 	/**
@@ -141,10 +169,15 @@ public abstract class ActiveServiceBase
 	 *
 	 * Note that this method must be invoked in
 	 * the overwriting implementations!
+	 *
+	 * Answers {@code false} to exit the task thread
+	 * immediately. In this case opposite call to
+	 * {@link #closeTaskWrapped(Runnable)} is not made.
 	 */
-	protected void openTaskWrapped(Runnable task)
+	protected boolean openTaskWrapped(Runnable task)
 	{
-		getWaitFlags().release(WAIT_FLAG_START);
+		this.waitFlags.release(WAIT_FLAG_START);
+		return true;
 	}
 
 	/**
@@ -154,9 +187,9 @@ public abstract class ActiveServiceBase
 	 * Note that this method must be invoked in
 	 * the overwriting implementations!
 	 */
-	protected void closeTaskWrapped(Runnable task)
+	protected void    closeTaskWrapped(Runnable task)
 	{
-		getWaitFlags().release(WAIT_FLAG_STOP);
+		this.waitFlags.release(WAIT_FLAG_STOP);
 	}
 
 	protected class      TaskWrapper
@@ -178,6 +211,7 @@ public abstract class ActiveServiceBase
 
 			try
 			{
+
 				getWrappedTask().run();
 			}
 			catch(Throwable e)
@@ -228,8 +262,8 @@ public abstract class ActiveServiceBase
 		 */
 		protected boolean      openTaskWrapped()
 		{
-			ActiveServiceBase.this.openTaskWrapped(this);
-			return openTaskPause();
+			return ActiveServiceBase.this.
+			  openTaskWrapped(this) && openTaskPause();
 		}
 
 		/**
@@ -253,6 +287,10 @@ public abstract class ActiveServiceBase
 			return true;
 		}
 
+		/**
+		 * This method is invoked only is the case when
+		 * {@link #openTaskWrapped()} had returned {@code true}.
+		 */
 		protected void         closeTaskWrapped()
 		{
 			ActiveServiceBase.this.closeTaskWrapped(this);

@@ -56,8 +56,8 @@ public class   SeShRequestGroupsHandler
 
 	protected void   logSelectionResults(SeShRequestGroups req, Set<String> shunts)
 	{
-		LU.W(getLog(), logsig(), " has found for the groups provided: \n[",
-		  SU.a2s(req.getGroups()), "] \n the following shunts: [\n",
+		LU.W(getLog(), logsig(), " has found for the groups provided: [",
+		  SU.a2s(req.getGroups()), "] the following shunts: \n[",
 		  SU.a2s(shunts), "]");
 	}
 }

@@ -55,7 +55,7 @@ public class   SeShRequestAllHandler
 	protected void   logSelectionResults(SeShRequestAll req, Set<String> shunts)
 	{
 		LU.W(getLog(), logsig(),
-		  " has found for the following shunts in the system: [\n",
+		  " has found for the following shunts in the system: \n[",
 		  SU.a2s(shunts), "]");
 	}
 }

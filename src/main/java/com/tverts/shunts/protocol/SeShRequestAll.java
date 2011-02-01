@@ -7,8 +7,8 @@ package com.tverts.shunts.protocol;
  *
  * @author anton baukin (abaukin@mail.ru)
  */
-public final class SeShRequestAll
-       implements  SeShRequestInitial
+public class      SeShRequestAll
+       implements SeShRequestInitial
 {
 	public static final long serialVersionUID = 0L;
 
