@@ -4,38 +4,36 @@
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
   <!--=================================================
-    =  Self Shunts Protocol for Web                   =
+    =  Self Shunts Protocols for Web                  =
     +==================================================
     |
-    |   This protocol is set to the Web Shunt Service
-    |   when the system starts up.
+    |   These protocols processing the request sending
+    |   them via HTTP protocol.
     |
     +================================================-->
 
-  <bean name  = 'selfShuntProtocolFactoryWeb'
-        class = 'com.tverts.spring.SpringBeanBinder'>
+  <bean name  = 'selfShuntInitialTasksWeb'
+        class = 'com.tverts.shunts.SelfShuntWhat'>
 
-    <property name  = 'beanName'
-              value = 'selfShuntProtocolWeb'/>
-  </bean>
-
-  <bean name  = 'selfShuntProtocolWeb' scope = 'prototype'
-        class = 'com.tverts.shunts.protocol.SeShProtocolWebMulti'>
     <constructor-arg>
-      <bean class = 'com.tverts.shunts.protocol.SeShRequestGroups'>
 
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · The list of groups defining the Self Shunt instances      ·
-         · to invoke after the System startaup.                      ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <property name  = 'groupsStr'>
-          <value>
+      <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+       · The list of groups defining the Self Shunt instances      ·
+       · to invoke after the System startaup.                      ·
+       · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+      <bean class = 'com.tverts.shunts.protocol.SeShProtocolWebMulti'>
+        <constructor-arg>
+          <bean class = 'com.tverts.shunts.protocol.SeShRequestGroups'>
+            <property name  = 'groupsStr'>
+              <value>
 
-            system:shunts:success,
-            <!-- system:shunts:killme -->
+                system:shunts:success,
+                <!-- system:shunts:killme -->
 
-          </value>
-        </property>
+              </value>
+            </property>
+          </bean>
+        </constructor-arg>
       </bean>
     </constructor-arg>
   </bean>

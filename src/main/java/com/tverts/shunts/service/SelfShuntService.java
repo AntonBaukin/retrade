@@ -1,50 +1,58 @@
 package com.tverts.shunts.service;
 
-/* com.tverts: objects */
-
-import com.tverts.objects.ObjectFactory;
-
 /* com.tverts: system services */
 
-import com.tverts.system.services.CycledTaskServiceBase;
+import com.tverts.system.services.QueueExecutorServiceBase;
 
 /* com.tverts: shunts, shunt protocol, reports  */
 
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntReport;
-
 import com.tverts.shunts.protocol.SeShBasicResponse;
 import com.tverts.shunts.protocol.SeShProtocol;
+import com.tverts.shunts.protocol.SeShProtocolReference;
 import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShResponse;
-
 import com.tverts.shunts.reports.SeShReportConsumer;
 
 /* com.tverts: support */
 
 import static com.tverts.support.LO.LANG_RU;
+import com.tverts.support.LU;
 
 /**
  * This complex (active) service resolves all
- * the tasks needed to query self shunting
- * requests and to actually invoke them.
+ * the issues needed to query self shunting
+ * requests and to actually invoke them in the
+ * background thread.
  *
  * In the active phase this service starts
  * invoking the tests via HTTP protocol.
+ * As a queue executor service this service
+ * is blocked on empty queue of the shunt
+ * protocols.
+ *
+ * The shunt protocols may be added at any time:
+ * before activating the service, and when it
+ * is already active (running).
  *
  * When this service is initialized it is able
- * to handle incoming shunt requests, both initial
- * and the actual.
+ * to handle incoming shunt requests, both initial,
+ * and the sequenced.
  *
  * The shunt service is thread-safe, active when it
  * is properly configured.
  *
  * This service is not designed to be a singleton only.
+ * Several instances are allowed. But as it's behaviour
+ * is controlled by the internal strategies, and with
+ * the protocol abstraction existing this is seemed to
+ * be not demanded in the most cases.
  *
  * @author anton baukin (abaukin@mail.ru)
  */
 public class   SelfShuntService
-       extends CycledTaskServiceBase
+       extends QueueExecutorServiceBase
 {
 	/* public: ServiceBase interface */
 
@@ -52,12 +60,24 @@ public class   SelfShuntService
 	{
 		return SelfShuntPoint.getInstance().isActive() &&
 		  (getRequestsHandler() != null) &&
-		  (getProtocolFactory() != null) &&
 		  (getReportConsumer()  != null);
 	}
 
-	/* public: requests execution */
+	/* public: SelfShuntService primary interface */
 
+	/**
+	 * Adds the Shunt Protocol to the execution queue.
+	 */
+	public void enqueueProtocol(SeShProtocol protocol)
+	{
+		((DequeProvider)this.getTasksProvider()).
+		  appendTask(createProtocolTask(protocol));
+	}
+
+	/**
+	 * Executes Self Shunt Request coming from the service
+	 * (this service) via HTTP, JMS or else media.
+	 */
 	public SeShResponse
 	            executeRequest(SeShRequest request)
 	{
@@ -99,7 +119,7 @@ public class   SelfShuntService
 	/* public: service configuration */
 
 	/**
-	 * An instance of {@link SeShRequestsHandler} strategy of
+	 * An instance of {@link SeShRequestsHandler} strategy
 	 * handling the incoming requests.
 	 *
 	 * By default this instance is not defined, hence the service
@@ -122,31 +142,6 @@ public class   SelfShuntService
 	}
 
 	/**
-	 * Protocol factory implements strategy of sending
-	 * a sequence of shunt requests to the server (this
-	 * server). An instance of protocol is created for
-	 * each activity task (thread) of this service.
-	 *
-	 * At the present time a service instance can have
-	 * only one protocol instance, hence one task thread.
-	 *
-	 * To shunt the system through different mediad
-	 * (such as HTTP, or JMS)
-	 *
-	 * Without this strategy the service is not active.
-	 */
-	public ObjectFactory<SeShProtocol>
-	            getProtocolFactory()
-	{
-		return protocolFactory;
-	}
-
-	public void setProtocolFactory(ObjectFactory<SeShProtocol> pf)
-	{
-		this.protocolFactory = pf;
-	}
-
-	/**
 	 * The strategy of processing the Self Shut Reports
 	 * installed into the service.
 	 *
@@ -163,27 +158,31 @@ public class   SelfShuntService
 		this.reportConsumer = reportConsumer;
 	}
 
-	/* public: task & protocol support */
-
-	public SeShProtocol createProtocolInstance()
+	/**
+	 * Defines the root reference to the Shunt Protocols
+	 * to enqueue right after the service is initialized
+	 * and before it is activated. The reference may be
+	 * not defined.
+	 */
+	public SeShProtocolReference
+	            getInitialTasks()
 	{
-		if(getProtocolFactory() == null)
-			throw new IllegalStateException(String.format(
-			  "%s has no Protocol Factory instance provided " +
-			  "with the configutation!", logsig()));
-
-		SeShProtocol protocol = getProtocolFactory().
-		  createInstance(SeShProtocol.class);
-
-		if(protocol == null)
-			throw new IllegalStateException(String.format(
-			  "%s couldn't create Protocol instance " +
-			  "invoking the Factory!", logsig()));
-
-		return protocol;
+		return initialTasks;
 	}
 
-	public void         processShuntReport(SelfShuntReport report)
+	public void setInitialTasks(SeShProtocolReference initialTasks)
+	{
+		this.initialTasks = initialTasks;
+	}
+
+	/* protected: processing & report handling */
+
+	protected Runnable createProtocolTask(SeShProtocol protocol)
+	{
+		return new ProtocolTask(protocol);
+	}
+
+	protected void     processShuntReport(SelfShuntReport report)
 	{
 		SeShReportConsumer consumer = getReportConsumer();
 
@@ -192,19 +191,199 @@ public class   SelfShuntService
 			consumer.consumeReport(report);
 	}
 
-	/* protected: shunt service task implementation */
+	/* protected: ProtocolTask implementation  */
+
+	protected class ProtocolTask implements Runnable
+	{
+		/* public: constructor */
+
+		public ProtocolTask(SeShProtocol protocol)
+		{
+			this.protocol = protocol;
+		}
+
+		/* public: Runnable interface */
+
+		public void    run()
+		{
+			//?: {the service | task is breaked} quit
+			if(breaked || closed) return;
+
+			boolean opened;
+
+			//0: open the protocol
+			try
+			{
+				logProtocolOpenBefore();
+				protocol.openProtocol();
+				opened = true;
+				logProtocolOpenSuccess();
+			}
+			catch(Throwable e)
+			{
+				handleProtocolOpenError(e);
+				opened = !closed; //<-- the error may be dealt
+			}
+
+			//?: {hadn't opened the protocol} quit now
+			if(!opened) return;
+
+			//~: do the protocol cycle
+			while(!breaked && !closed) try
+			{
+				logSendNextRequestBefore();
+				closed = !protocol.sendNextRequest();
+				logSendNextRequestSuccess();
+			}
+			catch(Throwable e)
+			{
+				handleSendNextRequestError(e);
+			}
+
+			SelfShuntReport report = null;
+
+			//?: {the protocol must be closed} do it
+			if(opened) try
+			{
+				logProtocolCloseBefore();
+				report = protocol.closeProtocol();
+				logProtocolCloseSuccess();
+			}
+			catch(Throwable e)
+			{
+				handleProtocolCloseError(e);
+			}
+
+			//?: {closed, has the report} handle it
+			if(!breaked && (report != null))
+				processShuntReport(report);
+		}
+
+		/* protected: errors handling */
+
+		protected void handleProtocolOpenError(Throwable e)
+		{
+			logProtocolOpenError(e);
+			this.closed = true;
+		}
+
+		protected void handleSendNextRequestError(Throwable e)
+		{
+			logSendNextRequestError(e);
+			this.closed = true;
+		}
+
+		protected void handleProtocolCloseError(Throwable e)
+		{
+			logProtocolCloseError(e);
+			this.closed = true;
+		}
+
+		/* protected: logging */
+
+		protected void logProtocolOpenBefore()
+		{
+			if(!LU.isT(getLog())) return;
+
+			LU.T(getLog(), logsig(),
+			     " is opening the shunt protocol...");
+		}
+
+		protected void logProtocolOpenSuccess()
+		{
+			if(!LU.isD(getLog())) return;
+
+			LU.D(getLog(), logsig(),
+			     ": the shunt protocol was opened successfully!");
+		}
+
+		protected void logProtocolOpenError(Throwable e)
+		{
+			LU.E(getLog(), e,
+			     logsig(), " got error while opening the shunt protocol!");
+		}
+
+		protected void logSendNextRequestBefore()
+		{
+			if(!LU.isT(getLog())) return;
+
+			LU.T(getLog(), logsig(),
+			     " is about to send the next shunt request...");
+		}
+
+		protected void logSendNextRequestSuccess()
+		{
+			if(!LU.isT(getLog())) return;
+
+			LU.T(getLog(), logsig(),
+			     " had successfully sent the next shunt request, ",
+			     "it will continue: ", !this.closed);
+		}
+
+		protected void logSendNextRequestError(Throwable e)
+		{
+			LU.E(getLog(), e,
+			     logsig(), " got error while sending the next ",
+			     "request via the shunt protocol!");
+		}
+
+		protected void logProtocolCloseBefore()
+		{
+			if(!LU.isD(getLog())) return;
+
+			LU.D(getLog(), logsig(),
+			     "%s: the shunt protocol was closed successfully!");
+		}
+
+		protected void logProtocolCloseSuccess()
+		{
+			if(!LU.isT(getLog())) return;
+		}
+
+		protected void logProtocolCloseError(Throwable e)
+		{
+			LU.E(getLog(), e,
+			     logsig(), " got error while closing the shunt protocol!");
+		}
+
+		/* protected: the protocol */
+
+		/**
+		 * The protocol to invoke.
+		 */
+		protected final SeShProtocol protocol;
+
+		/**
+		 * Indicates that the protocol is closed.
+		 * May be set only from the task's thread.
+		 */
+		protected volatile boolean   closed;
+	}
+
+	/* protected: StatefulServiceBase (state control) */
 
 	/**
-	 * Creates {@link SelfShuntServiceTask} instance.
+	 * Adds the initial protocols to the queue.
 	 */
-	protected Runnable  createTask()
+	protected void   afterInitService()
 	{
-		return new SelfShuntServiceTask(this);
+		super.afterInitService();
+
+		SeShProtocolReference pref = getInitialTasks();
+
+		if(pref != null)
+			for(SeShProtocol p : pref.dereferObjects())
+				this.enqueueProtocol(p);
 	}
 
 	/* protected: logging */
 
-	protected String    logsig(String lang)
+	protected String getLog()
+	{
+		return SelfShuntPoint.LOG_SERVICE;
+	}
+
+	protected String logsig(String lang)
 	{
 		String one = LANG_RU.equals(lang)?
 		  ("Сервис самошунтирования"):("Self Shunt Service");
@@ -217,7 +396,7 @@ public class   SelfShuntService
 
 	/* private: strategies of the service  */
 
-	private SeShRequestsHandler         requestsHandler;
-	private ObjectFactory<SeShProtocol> protocolFactory;
-	private SeShReportConsumer          reportConsumer;
+	private SeShRequestsHandler   requestsHandler;
+	private SeShReportConsumer    reportConsumer;
+	private SeShProtocolReference initialTasks;
 }

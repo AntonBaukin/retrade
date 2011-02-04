@@ -35,6 +35,7 @@ public abstract class StatefulServiceBase
 
 			checkInitService();
 			setState(createInitialState());
+			afterInitService();
 		}
 	}
 
@@ -89,6 +90,7 @@ public abstract class StatefulServiceBase
 
 			checkFreeService();
 
+			beforeFreeService();
 			try
 			{
 				getState().freeService();
@@ -184,11 +186,14 @@ public abstract class StatefulServiceBase
 
 	/* protected: task control */
 
+	protected void         afterInitService()
+	{}
+
 	protected void         beforeStartService()
 	{}
 
 	/**
-	 * Invoked on sucessful service start, on error
+	 * Invoked on successful service start, on error
 	 * {@link #onStartServiceError(Throwable)} is.
 	 */
 	protected void         afterStartService()
@@ -202,7 +207,7 @@ public abstract class StatefulServiceBase
 	}
 
 	/**
-	 * Invoked before stop the service occures.
+	 * Invoked before stop the service occurs.
 	 *
 	 * The returned hint object is then passed to
 	 * {@link #afterStopService(Object)} and
@@ -214,7 +219,7 @@ public abstract class StatefulServiceBase
 	}
 
 	/**
-	 * Invoked on sucessful service stop, on error
+	 * Invoked on successful service stop, on error
 	 * {@link #onStopServiceError(Object, Throwable)} is.
 	 */
 	protected void         afterStopService(Object x)
@@ -226,6 +231,9 @@ public abstract class StatefulServiceBase
 		  "Unexpected error occured while stopping %s!",
 		  logsig()), e);
 	}
+
+	protected void         beforeFreeService()
+	{}
 
 	/* protected: state implementation */
 

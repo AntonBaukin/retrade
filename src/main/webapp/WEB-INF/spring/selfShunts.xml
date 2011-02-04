@@ -35,20 +35,43 @@
 
 
   <!--=================================================
+    =  Self Shunts Protocols Collection               =
+    +==================================================
+    |
+    |   The initial protocols to run always when the
+    |   Shunt Service is activated.
+    |
+    +================================================-->
+
+  <bean name  = 'selfShuntInitialTasks'
+        class = 'com.tverts.shunts.SelfShuntWhats'>
+
+    <property name  = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · This collection of initial tasks invoked via HTTP.        ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'selfShuntInitialTasksWeb'/>
+      </list>
+    </property>
+  </bean>
+
+  <!--=================================================
     =  Web Self Shunt Service                         =
     =================================================-->
 
-  <bean name  = 'selfShuntServiceWeb'
+  <bean name  = 'selfShuntService'
         class = 'com.tverts.shunts.service.SelfShuntService'>
 
     <property name  = 'serviceName'
-              value = 'selfShuntServiceWeb'/>
+              value = 'selfShuntService'/>
 
     <property name  = 'serviceTitleEn'
-              value = 'Self Shunting Service for Web'/>
+              value = 'Universal Self Shunting Service'/>
 
     <property name  = 'serviceTitleLo'
-              value = 'Сервис самошунтирования для Web'/>
+              value = 'Универсальный Сервис самошунтирования'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Root dispatching handler of the shunt requests.           ·
@@ -93,10 +116,11 @@
     </property>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Self Shunts invocation protocol prototype reference.      ·
+     · The Shunt Protocols to always run in the service          ·
+     · after it is activated.                                    ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'protocolFactory'
-              ref  = 'selfShuntProtocolFactoryWeb'/>
+    <property name = 'initialTasks'
+              ref  = 'selfShuntInitialTasks'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Logs shunt reports to 'com.tverts.shunts' destination.    ·
@@ -120,7 +144,7 @@
   <bean name  = 'selfShuntFilter'
         class = 'com.tverts.shunts.protocol.SelfShuntFilter'>
 
-    <property name = 'service' ref = 'selfShuntServiceWeb'/>
+    <property name = 'service' ref = 'selfShuntService'/>
   </bean>
 
 

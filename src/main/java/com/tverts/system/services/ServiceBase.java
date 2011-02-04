@@ -10,6 +10,7 @@ import java.util.List;
 import com.tverts.system.Service;
 import com.tverts.system.ServiceInfo;
 import com.tverts.system.ServiceReference;
+import com.tverts.system.ServicesPoint;
 import com.tverts.system.ServiceStatus;
 
 /* tverts.com: support */
@@ -279,6 +280,13 @@ public abstract class ServiceBase
 	{
 		return LANG_RU.equals(lang)?
 		  ("не готов"):("not ready");
+	}
+
+	/* protected: logging */
+
+	protected String getLog()
+	{
+		return ServicesPoint.LOG_SERVICE_MAIN;
 	}
 
 	/**

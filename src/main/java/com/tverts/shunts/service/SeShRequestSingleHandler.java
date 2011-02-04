@@ -14,6 +14,16 @@ import com.tverts.shunts.protocol.SeShRequestSingle;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
 
+/**
+ * Executes {@link SeShRequestSingle} requests.
+ *
+ * Note that despite the type of the request, 'single',
+ * it may invoke more than one Shunt Units. That is
+ * possible as the names of the units must not be unique:
+ * their unique ids are created in {@link SelfShuntsSet}s.
+ *
+ * @author anton baukin (abaukin@mail.ru)
+ */
 public class   SeShRequestSingleHandler
        extends SeShInitialRequestsHandlerBase<SeShRequestSingle>
 {
