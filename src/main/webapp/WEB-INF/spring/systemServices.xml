@@ -16,7 +16,7 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Self Shunt Service for Web.                               ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'selfShuntServiceWeb'/>
+        <ref bean = 'selfShuntService'/>
       </list>
     </property>
   </bean>

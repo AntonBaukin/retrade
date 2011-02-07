@@ -332,7 +332,7 @@ public class   SelfShuntService
 			if(!LU.isD(getLog())) return;
 
 			LU.D(getLog(), logsig(),
-			     "%s: the shunt protocol was closed successfully!");
+			     ": the shunt protocol was closed successfully!");
 		}
 
 		protected void logProtocolCloseSuccess()

@@ -28,7 +28,7 @@
               <value>
 
                 system:shunts:success,
-                <!-- system:shunts:killme -->
+                system:shunts:killme
 
               </value>
             </property>

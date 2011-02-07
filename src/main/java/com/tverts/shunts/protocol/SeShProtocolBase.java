@@ -236,7 +236,7 @@ public abstract class SeShProtocolBase
 
 	protected void   logCriticalError(SeShResponse r, SelfShuntTaskReport tr)
 	{
-		LU.E(getLog(), logsig(r), " got CRITICAL ERROR within ",
+		LU.E(getLog(), " CRITICAL ERROR within ",
 		  logsig(r), " caused by ", logsig(tr));
 	}
 
