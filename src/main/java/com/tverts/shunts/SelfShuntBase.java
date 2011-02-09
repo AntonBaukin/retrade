@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.tverts.support.EX.e2en;
 import static com.tverts.support.EX.e2lo;
+import static com.tverts.support.SU.sLo;
 
 /**
  * As it is in JUnit library, the shunt units
@@ -41,11 +42,7 @@ public abstract class SelfShuntBase
 
 	public String     getShuntUnitName()
 	{
-		StringBuilder sb = new StringBuilder(
-		  getTarget().getClass().getSimpleName());
-
-		sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-		return sb.toString();
+		return sLo(getTarget().getClass().getSimpleName());
 	}
 
 	protected static final String[] EMPTY_GROUPS =

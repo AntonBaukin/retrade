@@ -1,0 +1,26 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Default Genesis Spheres                        =
+    +==================================================
+    |
+    |   These default Genesis Spheres would be invoked
+    |   on the Genesis Service startup.
+    |
+    +================================================-->
+
+  <bean name  = 'defaultGenesisSpheres'
+        class = 'com.tverts.genesis.GenesisSpheres'>
+
+    <property name = 'references'>
+      <list>
+
+
+
+      </list>
+    </property>
+  </bean>
+</beans>

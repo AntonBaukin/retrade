@@ -11,6 +11,11 @@
         class = 'com.tverts.shunts.SelfShuntPoint'>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · The primary Self Shunt Service used by default.           ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'service' ref = 'selfShuntService'/>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Makes all the shunt services to be active/inactive.       ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'active' value = 'true'/>
@@ -58,7 +63,7 @@
   </bean>
 
   <!--=================================================
-    =  Web Self Shunt Service                         =
+    =  Primary Self Shunt Service                     =
     =================================================-->
 
   <bean name  = 'selfShuntService'
@@ -68,10 +73,10 @@
               value = 'selfShuntService'/>
 
     <property name  = 'serviceTitleEn'
-              value = 'Universal Self Shunting Service'/>
+              value = 'Primary Self Shunting Service'/>
 
     <property name  = 'serviceTitleLo'
-              value = 'Универсальный Сервис самошунтирования'/>
+              value = 'Основной Сервис самошунтирования'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Root dispatching handler of the shunt requests.           ·
@@ -132,8 +137,8 @@
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Pauses to cooldown the service.                           ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name  = 'openPause'  value = '10000'/>
-    <property name  = 'cyclePause' value = '1000'/>
+    <property name  = 'openPause'  value = '5000'/>
+    <property name  = 'cyclePause' value = '500'/>
   </bean>
 
 

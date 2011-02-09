@@ -94,12 +94,31 @@ public abstract class SeShProtocolBase
 		this.unitReports = createUnitReports();
 	}
 
-	/* public: protocol interface */
+	/* public: SeShProtocolBase interface */
+
+	public SeShProtocolFinish
+	            getProtocolFinish()
+	{
+		return protocolFinish;
+	}
+
+	public void setProtocolFinish(SeShProtocolFinish protocolFinish)
+	{
+		this.protocolFinish = protocolFinish;
+	}
+
+/* public: protocol interface */
 
 	public SelfShuntReport closeProtocol()
 	  throws SeShProtocolError, InterruptedException
 	{
 		return createShuntReport();
+	}
+
+	public void            finishProtocol(SelfShuntReport report)
+	{
+		if(getProtocolFinish() != null)
+			getProtocolFinish().finishProtocol(report);
 	}
 
 	public Throwable       getSystemError()
@@ -267,5 +286,9 @@ public abstract class SeShProtocolBase
 	 * The system error of the client side that was
 	 * remembered while executing the protocol.
 	 */
-	protected Throwable systemError;
+	protected Throwable                       systemError;
+
+	/* private: finish strategy */
+
+	private SeShProtocolFinish                protocolFinish;
 }

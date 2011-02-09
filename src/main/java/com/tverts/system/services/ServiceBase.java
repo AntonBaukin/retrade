@@ -295,7 +295,8 @@ public abstract class ServiceBase
 	 */
 	protected String logsig(String lang)
 	{
-		String one = LANG_RU.equals(lang)?("сервис"):("service");
+		String one = LANG_RU.equals(lang)?
+		  ("сервис"):("service");
 
 		String two = getServiceName();
 		if(two == null) two = "???";

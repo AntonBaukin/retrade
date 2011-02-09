@@ -2,6 +2,7 @@ package com.tverts.shunts;
 
 /* com.tverts: shunts (service) */
 
+import com.tverts.shunts.service.SelfShuntService;
 import com.tverts.shunts.service.SelfShuntsSet;
 import com.tverts.shunts.service.SelfShuntsRefsSet;
 
@@ -52,36 +53,55 @@ public class SelfShuntPoint
 	/* public: access self shunts properties */
 
 	/**
+	 * The primary Self Shunt Service used in the system.
+	 * This service is used when placing the Self Shunt
+	 * Units via this point.
+	 */
+	public SelfShuntService getService()
+	{
+		return service;
+	}
+
+	public void             setService(SelfShuntService service)
+	{
+		this.service = service;
+	}
+
+	/**
 	 * Shared within all Self Shunt Service instances.
 	 * Tells whether they may run the shunts. If not,
 	 * the services would not be active.
 	 */
-	public boolean       isActive()
+	public boolean          isActive()
 	{
 		return active;
 	}
 
-	public void          setActive(boolean active)
+	public void             setActive(boolean active)
 	{
 		this.active = active;
 	}
 
-	public SelfShuntsSet getShuntsSet()
+	public SelfShuntsSet    getShuntsSet()
 	{
 		return shuntsSet;
 	}
 
-	public void          setShuntsSet(SelfShuntsSet shuntsSet)
+	public void             setShuntsSet(SelfShuntsSet shuntsSet)
 	{
 		if(shuntsSet == null)
 			throw new IllegalArgumentException();
 		this.shuntsSet = shuntsSet;
 	}
 
+	/* private: primary Self Shunt Service reference */
+
+	private SelfShuntService service;
+
 	/* private: self shunts properties */
 
-	private SelfShuntsSet shuntsSet =
+	private SelfShuntsSet    shuntsSet =
 	  new SelfShuntsRefsSet();
 
-	private boolean       active    = true;
+	private boolean          active    = true;
 }

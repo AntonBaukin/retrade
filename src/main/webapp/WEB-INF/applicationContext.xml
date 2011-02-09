@@ -41,5 +41,6 @@
   <import resource = 'spring/webappFilters.xml'/>
   <import resource = 'spring/systemServices.xml'/>
   <import resource = 'spring/selfShunts.xml'/>
+  <import resource = 'spring/genesis.xml'/>
 
 </beans>

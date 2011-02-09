@@ -108,6 +108,23 @@ public class SU
 		return size;
 	}
 
+	/**
+	 * Returns the truncated string where the first
+	 * character (letter) is turned to lower case.
+	 *
+	 * For {@code null} whitespace-empty strings
+	 * returns {@code null}.
+	 */
+	public static String   sLo(String s)
+	{
+		if((s = s2s(s)) == null)
+			return null;
+
+		StringBuilder sb = new StringBuilder(s);
+		sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
+		return sb.toString();
+	}
+
 	/* public: escape routines */
 
 	/**

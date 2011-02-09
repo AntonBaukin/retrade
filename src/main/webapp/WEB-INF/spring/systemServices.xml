@@ -14,11 +14,15 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Self Shunt Service for Web.                               ·
+         · Primary Self Shunt Service.                               ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'selfShuntService'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Genesis Service.                               ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'genesisService'/>
       </list>
     </property>
   </bean>
-
 </beans>

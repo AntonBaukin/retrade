@@ -209,7 +209,8 @@ public class   SelfShuntService
 			//?: {the service | task is breaked} quit
 			if(breaked || closed) return;
 
-			boolean opened;
+			SelfShuntReport report = new SelfShuntReport();
+			boolean         opened;
 
 			//0: open the protocol
 			try
@@ -223,10 +224,24 @@ public class   SelfShuntService
 			{
 				handleProtocolOpenError(e);
 				opened = !closed; //<-- the error may be dealt
+				if(closed) report.setSystemError(e);
 			}
 
 			//?: {hadn't opened the protocol} quit now
-			if(!opened) return;
+			if(!opened) try
+			{
+				logProtocolFinishBefore(report);
+				protocol.finishProtocol(report);
+				logProtocolFinishSuccess(report);
+			}
+			catch(Throwable e)
+			{
+				logProtocolFinishError(e);
+			}
+			finally
+			{
+				return;
+			}
 
 			//~: do the protocol cycle
 			while(!breaked && !closed) try
@@ -238,25 +253,46 @@ public class   SelfShuntService
 			catch(Throwable e)
 			{
 				handleSendNextRequestError(e);
+				if(closed) report.setSystemError(e);
 			}
 
-			SelfShuntReport report = null;
+			boolean reported = false;
 
 			//?: {the protocol must be closed} do it
 			if(opened) try
 			{
 				logProtocolCloseBefore();
-				report = protocol.closeProtocol();
-				logProtocolCloseSuccess();
+				report   = protocol.closeProtocol();
+				reported = true;
+				logProtocolCloseSuccess(report);
 			}
 			catch(Throwable e)
 			{
 				handleProtocolCloseError(e);
+				if(closed) report.setSystemError(e);
 			}
 
 			//?: {closed, has the report} handle it
-			if(!breaked && (report != null))
+			if(!breaked && reported) try
+			{
 				processShuntReport(report);
+			}
+			catch(Throwable e)
+			{
+				report.setSystemError(e);
+			}
+
+			//!: finish the protocol
+			try
+			{
+				logProtocolFinishBefore(report);
+				protocol.finishProtocol(report);
+				logProtocolFinishSuccess(report);
+			}
+			catch(Throwable e)
+			{
+				logProtocolFinishError(e);
+			}
 		}
 
 		/* protected: errors handling */
@@ -286,7 +322,7 @@ public class   SelfShuntService
 			if(!LU.isT(getLog())) return;
 
 			LU.T(getLog(), logsig(),
-			     " is opening the shunt protocol...");
+			  " is opening the shunt protocol...");
 		}
 
 		protected void logProtocolOpenSuccess()
@@ -294,13 +330,13 @@ public class   SelfShuntService
 			if(!LU.isD(getLog())) return;
 
 			LU.D(getLog(), logsig(),
-			     ": the shunt protocol was opened successfully!");
+			  ": the shunt protocol was opened successfully!");
 		}
 
 		protected void logProtocolOpenError(Throwable e)
 		{
-			LU.E(getLog(), e,
-			     logsig(), " got error while opening the shunt protocol!");
+			LU.E(getLog(), e, logsig(),
+			  " got error while opening the shunt protocol!");
 		}
 
 		protected void logSendNextRequestBefore()
@@ -308,7 +344,7 @@ public class   SelfShuntService
 			if(!LU.isT(getLog())) return;
 
 			LU.T(getLog(), logsig(),
-			     " is about to send the next shunt request...");
+			  " is about to send the next shunt request...");
 		}
 
 		protected void logSendNextRequestSuccess()
@@ -316,34 +352,59 @@ public class   SelfShuntService
 			if(!LU.isT(getLog())) return;
 
 			LU.T(getLog(), logsig(),
-			     " had successfully sent the next shunt request, ",
-			     "it will continue: ", !this.closed);
+			  " had successfully sent the next shunt request, ",
+			  "it will continue: ", !this.closed);
 		}
 
 		protected void logSendNextRequestError(Throwable e)
 		{
 			LU.E(getLog(), e,
-			     logsig(), " got error while sending the next ",
-			     "request via the shunt protocol!");
+			  logsig(), " got error while sending the next ",
+			  "request via the shunt protocol!");
 		}
 
 		protected void logProtocolCloseBefore()
 		{
+			if(!LU.isT(getLog())) return;
+
+			LU.T(getLog(), logsig(),
+			  " is going to close the shunt protocol...");
+		}
+
+		protected void logProtocolCloseSuccess(SelfShuntReport report)
+		{
 			if(!LU.isD(getLog())) return;
 
 			LU.D(getLog(), logsig(),
-			     ": the shunt protocol was closed successfully!");
-		}
-
-		protected void logProtocolCloseSuccess()
-		{
-			if(!LU.isT(getLog())) return;
+			  ": the shunt protocol was closed successfully!");
 		}
 
 		protected void logProtocolCloseError(Throwable e)
 		{
-			LU.E(getLog(), e,
-			     logsig(), " got error while closing the shunt protocol!");
+			LU.E(getLog(), e, logsig(),
+			  " got error while closing the shunt protocol!");
+		}
+
+		protected void logProtocolFinishBefore(SelfShuntReport report)
+		{
+			if(!LU.isT(getLog())) return;
+
+			LU.T(getLog(), logsig(),
+			  " is about to finish the shunt protocol...");
+		}
+
+		protected void logProtocolFinishSuccess(SelfShuntReport report)
+		{
+			if(!LU.isT(getLog())) return;
+
+			LU.D(getLog(), logsig(),
+			  ": the shunt protocol was finished successfully!");
+		}
+
+		protected void logProtocolFinishError(Throwable e)
+		{
+			LU.E(getLog(), e, logsig(),
+			 " got error while finishing the shunt protocol!");
 		}
 
 		/* protected: the protocol */

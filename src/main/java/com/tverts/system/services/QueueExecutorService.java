@@ -30,7 +30,7 @@ public class      QueueExecutorService
 	/**
 	 * Adds the task to the end of the queue.
 	 * Execution service is blocked on the queue
-	 * until elements arives.
+	 * until elements arrives.
 	 */
 	public void execute(Runnable task)
 	{

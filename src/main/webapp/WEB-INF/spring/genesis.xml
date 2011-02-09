@@ -1,0 +1,63 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Genesis Point                                  =
+    =================================================-->
+
+  <bean name  = 'genesisPoint' factory-method = 'getInstance'
+        class = 'com.tverts.genesis.GenesisPoint'>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Genesis Service used by default in this Point.            ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'genesisService' ref = 'genesisService'/>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Makes all genesis services to be active/inactive.       ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'active' value = 'true'/>
+
+  </bean>
+
+
+  <!--=================================================
+    =  Self Shunts invocation protocols               =
+    =================================================-->
+
+  <import resource = 'genesis/genesisWhat.xml'/>
+
+
+  <!--=================================================
+    =  Primary Genesis Service                        =
+    =================================================-->
+
+  <bean name  = 'genesisService'
+        class = 'com.tverts.genesis.GenesisService'>
+
+    <property name  = 'serviceName'
+              value = 'genesisService'/>
+
+    <property name  = 'serviceTitleEn'
+              value = 'Primary Genesis Service'/>
+
+    <property name  = 'serviceTitleLo'
+              value = 'Основной Сервис генезиса'/>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · These default Genesis Spheres would be invoked            ·
+     · on the Genesis Service startup.                           ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'genesisSpheres'
+              ref   = 'defaultGenesisSpheres'/>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Pauses to cooldown the service.                           ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'openPause'  value = '15000'/>
+    <property name  = 'cyclePause' value = '250'/>
+  </bean>
+
+</beans>

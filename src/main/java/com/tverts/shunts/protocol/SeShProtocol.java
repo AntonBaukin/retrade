@@ -61,6 +61,25 @@ public interface SeShProtocol
 	  throws SeShProtocolError, InterruptedException;
 
 	/**
+	 * This method is always invoked when processing
+	 * the protocol dependless of whether is was
+	 * successfully opened and (or) closed or not.
+	 * It is done after {@link #closeProtocol()} when
+	 * it is opened, or after {@link #openProtocol()}
+	 * having error raised.
+	 *
+	 * The report argument is always defined. It has
+	 * the shunt report when the protocol was closed,
+	 * and it has only the system error value otherwise.
+	 *
+	 * This method is primary indended to notify the
+	 * components of the system waiting the shunts
+	 * results to come. This call may resume the
+	 * threads waiting.
+	 */
+	public void            finishProtocol(SelfShuntReport report);
+
+	/**
 	 * Interrupts the activity of the protocol.
 	 * Drives no effect on a protocol already closed.
 	 *
