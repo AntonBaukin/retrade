@@ -16,7 +16,7 @@ public interface ServiceInfo
 	/**
 	 * Service signature is the JVM unique name of the service.
 	 *
-	 * Not obliged, it consist of two parts separated with '#':
+	 * False obliged, it consist of two parts separated with '#':
 	 * the name of the service, and identity hash of the
 	 * service's object.
 	 */

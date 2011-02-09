@@ -263,7 +263,7 @@ public abstract class SeShProtocolBase
 	{
 		if(!LU.isI(getLog())) return;
 
-		LU.I(getLog(), logsig(), "created Initial SeSh-Request. \n" +
+		LU.I(getLog(), logsig(), " created Initial SeSh-Request. \n" +
 		  "Request key: [", r.getSelfShuntKey(), "]");
 	}
 

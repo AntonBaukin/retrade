@@ -22,7 +22,7 @@ public class      SeShRequestSingle
 
 	public SeShRequestSingle(String unitName)
 	{
-		if((unitName = s2s(unitName)) != null)
+		if((unitName = s2s(unitName)) == null)
 			throw new IllegalArgumentException();
 
 		this.unitName = unitName;

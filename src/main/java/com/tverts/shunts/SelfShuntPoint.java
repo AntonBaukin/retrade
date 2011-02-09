@@ -1,5 +1,11 @@
 package com.tverts.shunts;
 
+/* com.tverts: shunts (protocol) */
+
+import com.tverts.shunts.protocol.SeShProtocolFinish;
+import com.tverts.shunts.protocol.SeShProtocolWebMulti;
+import com.tverts.shunts.protocol.SeShRequestInitial;
+
 /* com.tverts: shunts (service) */
 
 import com.tverts.shunts.service.SelfShuntService;
@@ -50,7 +56,46 @@ public class SelfShuntPoint
 	public static final String LOG_SYSTEM  =
 	  "com.tverts.shunts.system";
 
-	/* public: access self shunts properties */
+	/* public: Self Shunt Facade */
+
+	public SelfShuntService service()
+	  throws IllegalStateException
+	{
+		SelfShuntService service = getService();
+
+		if(service == null)
+			throw new IllegalStateException(
+			  "Self Shunt Service is not installed!");
+
+		if(!service.getServiceStatus().isActive())
+			throw new IllegalStateException(String.format(
+			  "Self Shunt Service '%s' is not active!",
+			  service.getServiceInfo().getServiceSignature()));
+
+		return service;
+	}
+
+	public void enqueueSelfShuntWeb (
+	              SeShRequestInitial request
+	            )
+	{
+		service().enqueueProtocol(
+		  new SeShProtocolWebMulti(request));
+	}
+
+	public void enqueueSelfShuntWeb (
+	              SeShRequestInitial request,
+	              SeShProtocolFinish finish
+	            )
+	{
+		SeShProtocolWebMulti protocol =
+		  new SeShProtocolWebMulti(request);
+
+		protocol.setProtocolFinish(finish);
+		service().enqueueProtocol(protocol);
+	}
+
+	/* public: access Self Shunts properties */
 
 	/**
 	 * The primary Self Shunt Service used in the system.

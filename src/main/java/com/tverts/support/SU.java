@@ -41,6 +41,9 @@ public class SU
 			else
 				i.remove();
 
+		if(sa.isEmpty())
+			return new String[0];
+
 		return sa.toArray(new String[sa.size()]);
 	}
 

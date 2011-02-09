@@ -64,7 +64,7 @@ public abstract class SelfShuntsSetBase
 
 	public Set<String> enumShuntsByName(String name)
 	{
-		if((name = s2s(name)) != null)
+		if((name = s2s(name)) == null)
 			throw new IllegalArgumentException();
 
 		name = new StringBuilder(name.length() + 1).

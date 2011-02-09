@@ -48,7 +48,7 @@ public abstract class GenesisBase
 
 	/* public: GenesisBase bean interface */
 
-	public void      setPredicate(Predicate predicate)
+	public void      setCondition(Predicate predicate)
 	{
 		this.predicate = predicate;
 	}
@@ -79,6 +79,31 @@ public abstract class GenesisBase
 	public void      setAboutLo(String aboutLo)
 	{
 		this.aboutLo = s2s(aboutLo);
+	}
+
+	public boolean   isAllowed()
+	{
+		Predicate p = getCondition();
+		return (p == null) || p.evalPredicate(this);
+	}
+
+	/* protected: logging */
+
+	protected String getLog()
+	{
+		return GenesisPoint.LOG_GENESIS;
+	}
+
+	protected String logsig(String lang)
+	{
+		return String.format((LO.LANG_RU.equals(lang))?
+		  ("Модуль генезиса '%s'"):("Genesis Unit '%s'"),
+		  getName());
+	}
+
+	protected String logsig()
+	{
+		return logsig(LO.LANG_EN);
 	}
 
 	/* private: parameters of this genesis unit */

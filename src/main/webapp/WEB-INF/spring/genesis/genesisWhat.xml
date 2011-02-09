@@ -18,9 +18,56 @@
     <property name = 'references'>
       <list>
 
-
+        <!-- these genesis units are for test and debug -->
+        <ref bean = 'testGenesisUnits'/>
 
       </list>
     </property>
   </bean>
+
+  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+   · Test genesis units.                                       ·
+   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+  <bean name  = 'testGenesisUnits'
+        class = 'com.tverts.genesis.GenesisList'>
+    <property name = 'references'>
+      <list>
+
+        <!-- simple -->
+        <bean class = 'com.tverts.genesis.TestGenesisUnit'>
+
+          <property name = 'name' value = 'testGenesisUnitSimple'/>
+        </bean>
+
+        <!-- disabled -->
+        <bean class = 'com.tverts.genesis.TestGenesisUnit'>
+
+          <property name = 'name' value = 'testGenesisUnitDisabled'/>
+          <property name = 'disabled' value = 'true'/>
+        </bean>
+
+        <!-- waiting single shunt test -->
+        <bean class = 'com.tverts.genesis.TestGenesisUnit'>
+
+          <property name  = 'name'
+                    value = 'testGenesisUnitWaitingSingleShunt'/>
+
+          <property name  = 'waitSingleShunt'
+                    value = 'shuntSelfSuccess'/>
+        </bean>
+
+        <!-- waiting group of shunt tests -->
+        <bean class = 'com.tverts.genesis.TestGenesisUnit'>
+
+          <property name  = 'name'
+                    value = 'testGenesisUnitWaitingGroupOfShunts'/>
+
+          <property name  = 'waitShuntGroupsStr'
+                    value = 'system:shunts:success,'/>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+
 </beans>

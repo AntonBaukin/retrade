@@ -137,6 +137,13 @@ public class   InitServicesListener
 		return ServicesPoint.LOG_SERVICE_BOOT;
 	}
 
+	protected String logsig(Service service)
+	{
+		return String.format(
+		  "System Service '%s'",
+		  service.getServiceInfo().getServiceName());
+	}
+
 	protected void   logServicesFound(List<Service> services)
 	{
 		if(!LU.isI(getLog())) return;
@@ -163,49 +170,45 @@ public class   InitServicesListener
 		LU.I(getLog(), sb);
 	}
 
-	protected void   logServiceInitOpen(Service service)
+	protected void   logServiceInitOpen(Service s)
+	{
+		if(!LU.isT(getLog())) return;
+
+		LU.T(getLog(), "initializing ", logsig(s), "...");
+	}
+
+	protected void   logServiceInitClose(Service s)
 	{
 		if(!LU.isD(getLog())) return;
 
-		LU.D(getLog(), "initializing system service '",
-		  service.getServiceInfo().getServiceName(), "'...");
+		LU.D(getLog(), "initialized ", logsig(s), "!");
 	}
 
-	protected void   logServiceInitClose(Service service)
+	protected void   logServiceInitClose(ServiceInitError e)
+	{
+		LU.E(getLog(), e,
+		  "error occured when initializing ",
+		  logsig(e.getService()), "!");
+	}
+
+	protected void   logServiceFreeOpen(Service s)
+	{
+		if(!LU.isT(getLog())) return;
+
+		LU.T(getLog(), "destroying ", logsig(s), "...");
+	}
+
+	protected void   logServiceFreeClose(Service s)
 	{
 		if(!LU.isD(getLog())) return;
 
-		LU.D(getLog(), "initialized system service '",
-		  service.getServiceInfo().getServiceName(), "'!");
+		LU.D(getLog(), "destroyed ", logsig(s), "!");
 	}
 
-	protected void   logServiceInitClose(ServiceInitError error)
+	protected void   logServiceFreeClose(ServiceInitError e)
 	{
-		LU.E(getLog(), error,
-		  "error occured when initializing system service '",
-		  error.getService().getServiceInfo().getServiceName(), "'!");
-	}
-
-	protected void   logServiceFreeOpen(Service service)
-	{
-		if(!LU.isD(getLog())) return;
-
-		LU.D(getLog(), "destroying system service '",
-		  service.getServiceInfo().getServiceName(), "'...");
-	}
-
-	protected void   logServiceFreeClose(Service service)
-	{
-		if(!LU.isD(getLog())) return;
-
-		LU.D(getLog(), "destroyed system service '",
-		  service.getServiceInfo().getServiceName(), "'!");
-	}
-
-	protected void   logServiceFreeClose(ServiceInitError error)
-	{
-		LU.E(getLog(), error,
-		  "error occured when destroying system service '",
-		  error.getService().getServiceInfo().getServiceName(), "'!");
+		LU.E(getLog(), e,
+		  "error occured when destroying ",
+		  logsig(e.getService()), "!");
 	}
 }

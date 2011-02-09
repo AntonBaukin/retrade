@@ -21,6 +21,7 @@ import static com.tverts.support.LO.LANG_EN;
 import static com.tverts.support.LO.LANG_LO;
 import static com.tverts.support.LO.LANG_RU;
 import static com.tverts.support.SU.s2s;
+import static com.tverts.support.SU.sLo;
 
 /**
  * Implements basic functions of a Service.
@@ -63,8 +64,8 @@ public abstract class ServiceBase
 
 	public String  getServiceName()
 	{
-		return (serviceName != null)?(serviceName)
-		  :(this.getClass().getSimpleName());
+		return (serviceName != null)?(serviceName):
+		  (sLo(this.getClass().getSimpleName()));
 	}
 
 	public String  getServiceSignature()

@@ -159,73 +159,66 @@ public class   StartServicesListener
 		LU.I(getLog(), sb);
 	}
 
-	protected void   logServiceInitOpen(Service service)
+	protected void   logServiceInitOpen(Service s)
+	{
+		if(!LU.isT(getLog())) return;
+
+		LU.T(getLog(), "starting ", logsig(s), "...");
+	}
+
+	protected void   logServiceInitClose(Service s)
 	{
 		if(!LU.isD(getLog())) return;
 
-		LU.D(getLog(), "starting system service '",
-		  service.getServiceInfo().getServiceName(), "'...");
+		LU.D(getLog(), "started ", logsig(s), "!");
 	}
 
-	protected void   logServiceInitClose(Service service)
+	protected void   logServiceInitClose(ServiceInitError e)
+	{
+		LU.E(getLog(), e,
+		  "error occured when starting ",
+		  logsig(e.getService()), "!");
+	}
+
+	protected void   logServiceFreeOpen(Service s)
+	{
+		if(!LU.isT(getLog())) return;
+
+		LU.T(getLog(), "stopping ", logsig(s), "...");
+	}
+
+	protected void   logServiceFreeClose(Service s)
 	{
 		if(!LU.isD(getLog())) return;
 
-		LU.D(getLog(), "started system service '",
-		  service.getServiceInfo().getServiceName(), "'!");
+		LU.D(getLog(), "stopped ", logsig(s), "!");
 	}
 
-	protected void   logServiceInitClose(ServiceInitError error)
+	protected void   logServiceFreeClose(ServiceInitError e)
 	{
-		LU.E(getLog(), error,
-		  "error occured when starting system service '",
-		  error.getService().getServiceInfo().getServiceName(), "'!");
+		LU.E(getLog(), e,
+		  "error occured when stopping ",
+		  logsig(e.getService()), "!");
 	}
 
-	protected void   logServiceFreeOpen(Service service)
+	protected void   logServiceWaitOpen(Service s)
 	{
-		if(!LU.isD(getLog())) return;
+		if(!LU.isT(getLog())) return;
 
-		LU.D(getLog(), "stopping system service '",
-		  service.getServiceInfo().getServiceName(), "'...");
+		LU.T(getLog(), "waiting ", logsig(s), " to stop...");
 	}
 
-	protected void   logServiceFreeClose(Service service)
+	protected void   logServiceWaitClose(Service s)
 	{
 		if(!LU.isD(getLog())) return;
 
-		LU.D(getLog(), "stopped system service '",
-		  service.getServiceInfo().getServiceName(), "'!");
+		LU.D(getLog(), logsig(s), " threads are stopped!");
 	}
 
-	protected void   logServiceFreeClose(ServiceInitError error)
+	protected void   logServiceWaitClose(ServiceInitError e)
 	{
-		LU.E(getLog(), error,
-		  "error occured when stopping system service ''!",
-		  error.getService().getServiceInfo().getServiceName(), "'!");
-	}
-
-	protected void   logServiceWaitOpen(Service service)
-	{
-		if(!LU.isD(getLog())) return;
-
-		LU.D(getLog(), "waiting system service '",
-		  service.getServiceInfo().getServiceName(), "' to stop...");
-	}
-
-	protected void   logServiceWaitClose(Service service)
-	{
-		if(!LU.isD(getLog())) return;
-
-		LU.D(getLog(), "system service '",
-		  service.getServiceInfo().getServiceName(),
-		  "' threads are stopped!");
-	}
-
-	protected void   logServiceWaitClose(ServiceInitError error)
-	{
-		LU.E(getLog(), error,
-		  "error occured when waiting system service '",
-		  error.getService().getServiceInfo().getServiceName(), "' to stop!");
+		LU.E(getLog(), e,
+		  "error occured when waiting ",
+		  logsig(e.getService()), " to stop!");
 	}
 }

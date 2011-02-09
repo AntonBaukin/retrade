@@ -34,7 +34,7 @@ public class      GenesisSphere
 	protected GenesisSphere(GenesisReference reference)
 	{
 		this.reference = reference;
-		this.setPredicate(createPredicate());
+		this.setCondition(createPredicate());
 	}
 
 	/* public: Genesis interface */
@@ -59,10 +59,20 @@ public class      GenesisSphere
 
 		List<Runnable> tasks = new ArrayList<Runnable>(gens.size());
 		Runnable       task;
+		Predicate      cond;
 
 		//~: invoke the genesis units
 		for(Genesis gen : gens) try
 		{
+			cond = gen.getCondition();
+
+			//?: {Genesis condition failed} skip this unit
+			if((cond != null) && !cond.evalPredicate(gen))
+			{
+				logGenConditionFailed(gen);
+				continue;
+			}
+
 			logGenGenerateBefore(gen);
 			task = gen.generate();
 			logGenGenerateSuccess(gen);
@@ -152,14 +162,6 @@ public class      GenesisSphere
 			throw new RuntimeException(String.format(
 			  "unhandled error occured while invoking %s!",
 			  logsig()), error);
-	}
-
-	/* public: GenesisSphere interface */
-
-	public boolean   isAllowed()
-	{
-		Predicate p = getCondition();
-		return (p != null) && p.evalPredicate(this);
 	}
 
 	/* protected: cleanup composite */
@@ -253,25 +255,20 @@ public class      GenesisSphere
 			{
 				Predicate cond = gen.getCondition();
 
-				if((cond != null) && !cond.evalPredicate(gen))
-					return false;
+				if((cond == null) || cond.evalPredicate(gen))
+					return true;
 			}
 
-			return true;
+			return false;
 		}
 	}
 
 	/* protected: logging */
 
-	protected String getLog()
-	{
-		return GenesisPoint.LOG_GENESIS;
-	}
-
 	protected String logsig(String lang)
 	{
 		//?: {has the default name} return plain variant
-		if(getClass().getName().equalsIgnoreCase(getName()))
+		if(getClass().getSimpleName().equalsIgnoreCase(getName()))
 			return (LO.LANG_RU.equals(lang))?
 			  ("Сфера генезиса"):("Genesis Sphere");
 
@@ -280,15 +277,13 @@ public class      GenesisSphere
 		  getName());
 	}
 
-	protected String logsig()
-	{
-		return logsig(LO.LANG_EN);
-	}
-
 	protected String logsig(Genesis g)
 	{
 		if(g instanceof GenesisSphere)
 			return ((GenesisSphere)g).logsig();
+
+		if(g instanceof GenesisBase)
+			return ((GenesisBase)g).logsig();
 
 		return String.format("Genesis '%s'", g.getName());
 	}
@@ -369,6 +364,14 @@ public class      GenesisSphere
 		  "the aggregated Genesis Unit.");
 	}
 
+	protected void   logGenConditionFailed(Genesis g)
+	{
+		if(!LU.isI(getLog())) return;
+
+		LU.T(getLog(), logsig(g), " [gen]: ",
+		  "SKIP this genesis by condition.");
+	}
+
 	protected void   logGenGenerateBefore(Genesis g)
 	{
 		if(!LU.isT(getLog())) return;
@@ -382,7 +385,7 @@ public class      GenesisSphere
 		if(!LU.isI(getLog())) return;
 
 		LU.T(getLog(), logsig(g), " [gen]: ",
-		  "had successfully passed the generation!");
+		  "had successfully PASSED the generation!");
 	}
 
 	protected void   logGenGenerateError(GenesisError e)
