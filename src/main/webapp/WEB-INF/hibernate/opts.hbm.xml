@@ -1,0 +1,44 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+   '-//Hibernate/Hibernate Configuration DTD//EN'
+   'http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd'>
+
+<!--=================================================
+  =  Hibernate options                              =
+  =================================================-->
+
+
+<hibernate-configuration>
+  <session-factory>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Automatically generate and update database schema.        ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'hibernate.hbm2ddl.auto'>
+      update
+    </property>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · For now this property must be false, else the application ·
+     · would not start due to the implementation issues.         ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'hibernate.validator.apply_to_ddl'>
+      false
+    </property>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · This legacy feature must be explicitly turned off, or     ·
+     · the application would not start as legacy classes exist   ·
+     · in JBoss distribution.                                    ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'hibernate.validator.autoregister_listeners'>
+      false
+    </property>
+
+    <property name = 'hibernate.id.new_generator_mappings'>
+      true
+    </property>
+
+  </session-factory>
+</hibernate-configuration>

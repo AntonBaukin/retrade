@@ -1,0 +1,65 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+   '-//Hibernate/Hibernate Configuration DTD//EN'
+   'http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd'>
+
+<!--=================================================
+  = Transactions and Session Control                =
+  =================================================-->
+
+<hibernate-configuration>
+  <session-factory>
+
+    <!--=================================================
+      =  Transaction Factory                            =
+      +==================================================
+      |
+      | Transaction copuling with the Application Server.
+      |
+      +================================================-->
+
+    <!--
+    <property name = 'hibernate.transaction.factory_class'>
+      org.hibernate.transaction.JTATransactionFactory
+    </property>
+
+    <property name = 'hibernate.transaction.manager_lookup_class'>
+      org.hibernate.transaction.JBossTransactionManagerLookup
+    </property>
+    -->
+
+
+    <!--=================================================
+      =  Session Context Provider (Spring)              =
+      +==================================================
+      |
+      | This crucial parameter links Spring transaction
+      | manager with Hibernate strategy of obtaining
+      | current Session.
+      |
+      +================================================-->
+
+    <property name = 'hibernate.current_session_context_class'>
+      org.springframework.orm.hibernate3.SpringSessionContext
+    </property>
+
+
+    <!--=================================================
+      = Session Control                                 =
+      =================================================-->
+
+    <property name = 'hibernate.transaction.auto_close_session'>
+      true
+    </property>
+
+    <property name = 'hibernate.transaction.flush_before_completion'>
+      true
+    </property>
+
+    <property name = 'hibernate.connection.autocommit'>
+      false
+    </property>
+
+  </session-factory>
+</hibernate-configuration>

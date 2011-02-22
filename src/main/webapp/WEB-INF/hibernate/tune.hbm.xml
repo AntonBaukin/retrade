@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+   '-//Hibernate/Hibernate Configuration DTD//EN'
+   'http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd'>
+
+<!--=================================================
+  =  Hibernate Optiomizations and Hints             =
+  =================================================-->
+
+<hibernate-configuration>
+  <session-factory>
+
+    <!--=================================================
+      =  Second Level Cache: DISABLED                   =
+      +==================================================
+      |
+      | Here we completely disable Second Level Cache!
+      | It is not so benefit whet the application server
+      | runs on the same machine as the database server,
+      | and network latency is negligible.
+      |
+      | When enabling it consider using claster aware
+      | implementation such as JBoss Cache 2.
+      |
+      +================================================-->
+
+    <property name = 'hibernate.cache.use_second_level_cache'>
+      false
+    </property>
+
+    <property name = 'hibernate.cache.use_query_cache'>
+      false
+    </property>
+
+
+    <!--=================================================
+      =  Fetch Optimizations                            =
+      +================================================-->
+
+    <property name = 'hibernate.max_fetch_depth'>
+      1
+    </property>
+
+    <property name = 'hibernate.default_batch_fetch_size'>
+      24
+    </property>
+
+    <property name = 'hibernate.use_identifier_rollback'>
+      true
+    </property>
+   
+  </session-factory>
+</hibernate-configuration>

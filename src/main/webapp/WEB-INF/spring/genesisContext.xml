@@ -18,8 +18,7 @@
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Makes all genesis services to be active/inactive.       ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'active' value = 'true'/>
-
+    <property name = 'active' value = 'false'/>
   </bean>
 
 

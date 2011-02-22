@@ -22,6 +22,24 @@
         </fileset>
       </configuration>
     </facet>
+    <facet type="hibernate" name="Hibernate">
+      <configuration>
+        <datasource-map>
+          <unit-entry name="&lt;anonymous&gt;sessionFactory.xml@497" />
+          <unit-entry name="main:webapp:WEB-INF:hibernate:c3p0.hbm.xml" />
+          <unit-entry name="main:webapp:WEB-INF:hibernate:conn.hbm.xml" />
+          <unit-entry name="main:webapp:WEB-INF:hibernate:hint.hbm.xml" />
+          <unit-entry name="main:webapp:WEB-INF:hibernate:opts.hbm.xml" />
+          <unit-entry name="main:webapp:WEB-INF:hibernate:tune.hbm.xml" />
+          <unit-entry name="main:webapp:WEB-INF:hibernate:txns.hbm.xml" />
+        </datasource-map>
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/c3p0.hbm.xml" />
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/conn.hbm.xml" />
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/opts.hbm.xml" />
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/tune.hbm.xml" />
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/txns.hbm.xml" />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -34,8 +52,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" exported="" name="runtime" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="compile" level="project" />
+    <orderEntry type="library" exported="" name="compile+runtime" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="compile-only" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

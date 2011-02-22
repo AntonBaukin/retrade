@@ -1,0 +1,85 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+   '-//Hibernate/Hibernate Configuration DTD//EN'
+   'http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd'>
+
+<!--=================================================
+  =  Database Connection Parameters                 =
+  =================================================-->
+
+
+<hibernate-configuration>
+  <session-factory>
+
+
+    <!--=================================================
+     =  Connection URL and Credentials                  =
+     ==================================================-->
+
+    <property name = 'hibernate.connection.url'>
+      jdbc:postgresql://localhost/retrade
+    </property>
+
+    <property name = 'hibernate.connection.username'>
+      retrade
+    </property>
+
+    <property name = 'hibernate.connection.password'>
+      retrade
+    </property>
+
+
+    <!--=================================================
+     =  Connection Provider                             =
+     ==================================================-->
+
+    <property name = 'hibernate.connection.provider_class'>
+      org.hibernate.connection.C3P0ConnectionProvider
+    </property>
+
+
+    <!--=================================================
+     =  PostgreSQL Database Driver                      =
+     ==================================================-->
+
+    <property name = 'hibernate.connection.driver_class'>
+      org.postgresql.Driver
+    </property>
+
+    <property name = 'hibernate.dialect'>
+      org.hibernate.dialect.PostgreSQLDialect
+    </property>
+
+
+    <!--=================================================
+     =  JDBC optimizations                              =
+     ==================================================-->
+
+    <property name = 'hibernate.jdbc.batch_versioned_data'>
+      true
+    </property>
+
+    <property name = 'hibernate.jdbc.fetch_size'>
+      24
+    </property>
+
+    <property name = 'hibernate.jdbc.batch_size'>
+      32
+    </property>
+
+
+    <!--=================================================
+     =  Unicode Character Encoding                      =
+     ==================================================-->
+
+    <property name = 'hibernate.connection.useUnicode'>
+      true
+    </property>
+
+    <property name = 'hibernate.connection.characterEncoding'>
+      UTF-8
+    </property>
+
+  </session-factory>
+</hibernate-configuration>

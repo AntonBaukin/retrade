@@ -1,3 +1,5 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
 <beans xmlns          = 'http://www.springframework.org/schema/beans'
    xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
    xsi:schemaLocation = 'http://www.springframework.org/schema/beans
@@ -18,7 +20,7 @@
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Makes all the shunt services to be active/inactive.       ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'active' value = 'true'/>
+    <property name = 'active' value = 'false'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Here all the shunts registered in the system are given    ·

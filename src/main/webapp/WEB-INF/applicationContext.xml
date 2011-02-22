@@ -1,3 +1,5 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
 <beans xmlns          = 'http://www.springframework.org/schema/beans'
    xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
    xmlns:context      = 'http://www.springframework.org/schema/context'
@@ -18,7 +20,7 @@
     =  AspectJ Weaving                                =
     +==================================================
     |
-    |   Required for the declared transaction
+    |   Required for the declared transactions
     |   demarcation to work.
     |
     +================================================-->
@@ -37,10 +39,11 @@
     =  Web Application related Beans                  =
     =================================================-->
 
-  <import resource = 'spring/webappListeners.xml'/>
-  <import resource = 'spring/webappFilters.xml'/>
-  <import resource = 'spring/systemServices.xml'/>
-  <import resource = 'spring/selfShunts.xml'/>
-  <import resource = 'spring/genesis.xml'/>
+  <import resource = 'spring/listenersContext.xml'/>
+  <import resource = 'spring/filtersContext.xml'/>
+  <import resource = 'spring/hibernateContext.xml'/>
+  <import resource = 'spring/servicesContext.xml'/>
+  <import resource = 'spring/shuntsContext.xml'/>
+  <import resource = 'spring/genesisContext.xml'/>
 
 </beans>
