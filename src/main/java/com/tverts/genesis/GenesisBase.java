@@ -15,7 +15,7 @@ import static com.tverts.support.SU.sXe;
 /**
  * Stores basic properties of any {@link Genesis} unit.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class GenesisBase
        implements     Genesis

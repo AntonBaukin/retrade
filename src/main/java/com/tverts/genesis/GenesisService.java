@@ -17,7 +17,7 @@ import com.tverts.support.LU;
  * instances as a {@link Runnable} tasks placed in the
  * execution queue {@link QueueExecutorServiceBase}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   GenesisService
        extends QueueExecutorServiceBase

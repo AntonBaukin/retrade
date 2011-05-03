@@ -10,7 +10,7 @@ package com.tverts.system;
  * When system is shutting down, all the
  * services are first stopped, then freed.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface Service
 {

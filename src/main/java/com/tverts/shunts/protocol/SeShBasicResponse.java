@@ -7,7 +7,7 @@ import com.tverts.shunts.SelfShuntUnitReport;
 /**
  * A {@link SeShResponse} structure.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SeShBasicResponse
        implements SeShResponse

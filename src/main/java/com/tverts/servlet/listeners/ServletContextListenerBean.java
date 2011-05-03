@@ -29,7 +29,7 @@ import com.tverts.objects.FixedObjectsRedirector;
  * initialization structure, it must be invoked
  * only within the thread starting web application.
  *
- * @author anton baukin (abaukin@mail.ru) 
+ * @author anton.baukin@gmail.com
  */
 public class      ServletContextListenerBean
        extends    FixedObjectsRedirector<ServletContextListener>

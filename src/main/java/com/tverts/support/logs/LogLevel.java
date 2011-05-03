@@ -7,7 +7,7 @@ package com.tverts.support.logs;
  * The application is designed to have only these
  * levels.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public enum LogLevel
 {

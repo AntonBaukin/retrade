@@ -13,7 +13,7 @@ import com.tverts.shunts.SelfShuntReport;
  * if single instance woukd be set for
  * several shunt services.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface SeShReportConsumer
 {

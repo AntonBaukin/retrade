@@ -23,7 +23,7 @@ import com.tverts.support.LU;
  * deleting them, then invoke the self shunts or do else
  * things, and after that delete the data at once.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      GenesisSphere
        extends    GenesisBase

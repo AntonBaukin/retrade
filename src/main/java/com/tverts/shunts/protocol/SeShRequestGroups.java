@@ -23,7 +23,7 @@ import static com.tverts.support.SU.s2a;
  * The key of this request is the string with the ordered
  * names of the groups separated by {@code ", "}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SeShRequestGroups
        implements SeShRequestInitial

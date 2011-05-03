@@ -4,7 +4,7 @@ package com.tverts.support.logs;
  * Logging method for a predefined log level.
  * Is to be a part of logging strategy.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface LogMethod
 {

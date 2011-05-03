@@ -9,7 +9,7 @@ package com.tverts.servlet.filters;
  * Chain got by {@link FilterBridge}. (To call the next
  * Servlet Filters of the Web application.)
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public final class FilterCycle
 {

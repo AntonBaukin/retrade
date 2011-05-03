@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Basic properties of a {@link FilterTask}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class FilterTaskBase implements FilterTask
 {

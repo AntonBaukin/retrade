@@ -17,7 +17,7 @@ import com.tverts.system.ServiceReference;
  * time, when the list of root references is provided.
  * Consider {@link FixedObjectsRedirector}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      ServicesList
        extends    FixedObjectsRedirector<Service>

@@ -20,7 +20,7 @@ import java.util.List;
  * key of the shunt within the list. This
  * shunt must be invoked by the service.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SeShRequestsSequence
        implements SeShRequest, Cloneable

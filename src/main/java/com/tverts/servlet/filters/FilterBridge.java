@@ -39,7 +39,7 @@ import static com.tverts.support.SU.s2s;
  * gets the stage of the filter invocation as a value
  * of {@link FilterTask#getFilterStage()}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      FilterBridge
        implements javax.servlet.Filter

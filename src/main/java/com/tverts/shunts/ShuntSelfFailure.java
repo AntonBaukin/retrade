@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 /**
  * Tests Shunt Subsystem: has not critical failure.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
 @SelfShuntGroups({"system:shunts:success"})

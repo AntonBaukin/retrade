@@ -22,7 +22,7 @@ import javax.servlet.ServletRequestListener;
  *
  * @see {@link ServletRequestListenerBean}
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      ServletRequestListenerBridge
        implements ServletRequestListener

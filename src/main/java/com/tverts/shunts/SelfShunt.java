@@ -14,7 +14,7 @@ package com.tverts.shunts;
  * before invoking. If the class is a Serializable, deep
  * clone via serialization would be done.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface SelfShunt extends Cloneable
 {

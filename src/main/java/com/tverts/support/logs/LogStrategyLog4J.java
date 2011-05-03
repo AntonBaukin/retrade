@@ -8,7 +8,7 @@ import org.apache.log4j.Level;
 /**
  * Logging strategy that invokes Log4J loggers.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   LogStrategyLog4J
        extends LogStrategyHolder

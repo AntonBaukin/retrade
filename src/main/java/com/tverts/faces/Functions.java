@@ -8,7 +8,7 @@ import com.tverts.support.SU;
 /**
  * Java Server Faces functions.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class Functions
 {

@@ -25,7 +25,7 @@ import java.util.HashMap;
  * all the flags are removed, the waiting threads are
  * resumed.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public final class WaitEmptyFlags
 {

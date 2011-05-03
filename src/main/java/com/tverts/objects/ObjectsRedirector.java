@@ -11,7 +11,7 @@ import java.util.List;
  * intermediate level of references tree, or as a
  * base class for aome advanced referencing.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      ObjectsRedirector<O>
        implements ObjectsReference<O>

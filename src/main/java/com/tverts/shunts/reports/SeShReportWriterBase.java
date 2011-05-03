@@ -23,7 +23,7 @@ import com.tverts.shunts.SelfShuntReport;
  * parts printed for reports concumed at the
  * same time.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SeShReportWriterBase
        implements     SeShReportConsumer

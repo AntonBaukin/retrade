@@ -9,7 +9,7 @@ package com.tverts.system.services;
  * If the task implements {@link BreakingTask}
  * interface it may define it's own life time.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class CycledTaskServiceBase
        extends        SingleTaskServiceBase

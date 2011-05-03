@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Provides access to the pending HTTP request environment.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class RequestPoint
 {

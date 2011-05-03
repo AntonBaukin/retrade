@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Tests Shunt Subsystem: all the methods are successful.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
 @SelfShuntGroups({"system:shunts:success"})

@@ -9,7 +9,7 @@ import java.io.Writer;
  * Extends writer strategy base to print the
  * report text into string stream (buffer).
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SeShReportStringWriterBase
        extends        SeShReportWriterBase

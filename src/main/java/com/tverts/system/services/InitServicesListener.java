@@ -34,7 +34,7 @@ import com.tverts.support.LU;
  * But changing the list of the services is strongly
  * not recommended!
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   InitServicesListener
        extends ServletContextListenerBase

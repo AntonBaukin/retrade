@@ -7,7 +7,7 @@ package com.tverts.support.logs;
  * instance as Log4J library is the default
  * logging provider of the application.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class LogPoint
 {

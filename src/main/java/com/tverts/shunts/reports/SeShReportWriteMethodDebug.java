@@ -22,7 +22,7 @@ import static com.tverts.support.SU.s2s;
  * and descriptions) of all the shunt units, with
  * all the result stuff are printed.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShReportWriteMethodDebug
        extends SeShReportWriteMethodTrace

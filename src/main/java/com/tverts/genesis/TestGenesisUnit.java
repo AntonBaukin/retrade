@@ -8,7 +8,7 @@ import com.tverts.support.SU;
 /**
  * Tests coupling with the Self Shunt Service.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   TestGenesisUnit
        extends GenesisUnitBase

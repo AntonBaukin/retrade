@@ -17,7 +17,7 @@ import java.util.concurrent.LinkedBlockingDeque;
  * queue. It places special tasks to the queue to unblock
  * the waiting master thread.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class QueueExecutorServiceBase
        extends        ExecutorServiceBase

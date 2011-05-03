@@ -11,7 +11,7 @@ import com.tverts.shunts.protocol.SeShRequestsSequence;
  * Extends Self Shunts Executor to handle
  * {@link SeShRequestsSequence} requests.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShRequestsSequenceHandler
        extends SeShExecutor

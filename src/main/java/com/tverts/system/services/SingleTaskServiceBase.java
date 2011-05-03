@@ -19,7 +19,7 @@ import static com.tverts.support.OU.interruptable;
  * external task object is wrapped into an
  * {@link RunnableWrapper}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SingleTaskServiceBase
        extends        ActiveServiceBase

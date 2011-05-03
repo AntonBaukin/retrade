@@ -9,7 +9,7 @@ import java.util.Date;
 import com.tverts.support.DU;
 
 /**
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class DateToStr extends FormatterBase<Date>
 {

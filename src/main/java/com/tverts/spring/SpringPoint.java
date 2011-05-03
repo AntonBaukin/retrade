@@ -14,7 +14,7 @@ import static com.tverts.support.SU.s2s;
 /**
  * Point to access Spring context and the beans.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class SpringPoint
 {

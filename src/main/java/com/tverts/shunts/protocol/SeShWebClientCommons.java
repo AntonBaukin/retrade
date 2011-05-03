@@ -42,7 +42,7 @@ import com.tverts.support.streams.Base64Encoder;
  * Apache HTTP Commons component library.
  * It supports the conversation using qookies.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShWebClientCommons
        extends SeShWebClientBase

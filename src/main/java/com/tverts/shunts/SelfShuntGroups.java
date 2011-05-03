@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * The annotation has no default value.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 @Target(TYPE) @Retention(RUNTIME)
 public @interface SelfShuntGroups

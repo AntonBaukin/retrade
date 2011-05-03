@@ -7,7 +7,7 @@ package com.tverts.support.logic;
  * The meaning of the context objects fully
  * depends on the area whete the predicate is used.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface Predicate
 {

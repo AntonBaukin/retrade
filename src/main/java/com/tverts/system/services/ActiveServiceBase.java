@@ -15,7 +15,7 @@ import static com.tverts.support.LO.LANG_RU;
  * when defining the start/stop wait
  * support.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class ActiveServiceBase
        extends        StatefulServiceBase

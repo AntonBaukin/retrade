@@ -22,7 +22,7 @@ import javax.servlet.ServletContextListener;
  *
  * @see {@link ServletContextListenerBean}
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      ServletContextListenerBridge
        implements ServletContextListener

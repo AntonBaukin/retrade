@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests {@link QueueExecutorServiceBase} class.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class TestQueueExecutorService
 {

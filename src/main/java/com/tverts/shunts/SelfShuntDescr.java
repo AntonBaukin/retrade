@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Additional annotation to {@link SelfShuntUnit}.
  * Defines the description of the shunt unit.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 @Target(TYPE) @Retention(RUNTIME)
 public @interface SelfShuntDescr

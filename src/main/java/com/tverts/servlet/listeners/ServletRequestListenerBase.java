@@ -16,7 +16,7 @@ import com.tverts.objects.ObjectsReference;
 /**
  * Combines listener with self referencing object.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class ServletRequestListenerBase
        implements     ServletRequestListener,

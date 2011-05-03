@@ -4,7 +4,7 @@ package com.tverts.objects;
  * Interface of a wrapper of a {@link Runnable} task
  * into another task. Allows to access the original one.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface RunnableWrapper extends Runnable
 {

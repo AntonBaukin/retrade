@@ -19,7 +19,7 @@ import com.tverts.shunts.protocol.SeShResponse;
  *
  * This implementation is thread-safe (reentable).
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SeShExecutor
        implements     SeShRequestsHandler

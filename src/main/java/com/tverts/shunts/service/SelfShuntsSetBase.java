@@ -25,7 +25,7 @@ import static com.tverts.support.SU.s2s;
 /**
  * Deals with the task of naming Shunt Unit instances.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SelfShuntsSetBase
        implements     SelfShuntsSet

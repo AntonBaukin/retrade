@@ -8,7 +8,7 @@ import com.tverts.system.Service;
  * Occures in the phases of initialization, start,
  * stop and free of the system services.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   ServiceInitError
        extends RuntimeException

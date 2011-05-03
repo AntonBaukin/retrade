@@ -9,7 +9,7 @@ package com.tverts.objects;
  * This interface does not provide direct link
  * to the thread running the task.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface RunnableInterruptible extends Runnable
 {

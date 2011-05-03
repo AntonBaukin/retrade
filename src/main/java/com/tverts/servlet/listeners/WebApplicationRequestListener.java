@@ -13,7 +13,7 @@ import com.tverts.servlet.RequestPoint;
  * Handles each external access to the application.
  * Binds the request with Servlet related components.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   WebApplicationRequestListener
        extends ServletRequestListenerBase

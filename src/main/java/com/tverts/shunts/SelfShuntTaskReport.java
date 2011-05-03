@@ -8,7 +8,7 @@ import static com.tverts.support.LO.LANG_LO;
  * A report on invocation of a single test task.
  * Mostly it is a method of test unit class.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SelfShuntTaskReport
        implements java.io.Serializable

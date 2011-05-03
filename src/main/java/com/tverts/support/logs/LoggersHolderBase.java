@@ -12,7 +12,7 @@ import static com.tverts.support.SU.s2s;
 /**
  * Implements synchronous operations of a holder.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class LoggersHolderBase
        implements     LoggersHolder

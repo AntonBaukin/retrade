@@ -21,7 +21,7 @@ import com.tverts.shunts.SelfShunt;
  *
  * A set instance must be thread-safe.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface SelfShuntsSet
 {

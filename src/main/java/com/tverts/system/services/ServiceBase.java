@@ -28,7 +28,7 @@ import static com.tverts.support.SU.sLo;
  * Does not provide support for active services.
  * Forwards status and info ports to itself.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class ServiceBase
        implements     Service, ServiceReference

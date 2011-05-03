@@ -20,7 +20,7 @@ import java.util.List;
  * to be invoked in the configuration (system
  * startup) time (better only once).
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   FixedObjectsRedirector<O>
        extends ObjectsRedirector<O>

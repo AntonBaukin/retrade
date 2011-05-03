@@ -8,7 +8,7 @@ import com.tverts.servlet.RequestPoint;
  * Binds the response with Servlet related components.
  * Related to {@code WebApplicationRequestListener}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class WebApplicationRequestFilter extends FilterBase
 {

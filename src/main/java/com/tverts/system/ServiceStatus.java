@@ -4,7 +4,7 @@ package com.tverts.system;
  * Provides access port to the service's
  * runtime state.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface ServiceStatus
 {

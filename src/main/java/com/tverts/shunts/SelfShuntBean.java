@@ -25,7 +25,7 @@ import static com.tverts.support.SU.s2s;
  * to name it in Spring, you may consider
  * {@link SelfShuntTarget} instead of this class.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SelfShuntBean
        extends    SelfShuntBaseAnnotated

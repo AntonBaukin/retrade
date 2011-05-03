@@ -15,7 +15,7 @@ import java.util.TreeMap;
 /**
  * Strings helper functions.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class SU
 {

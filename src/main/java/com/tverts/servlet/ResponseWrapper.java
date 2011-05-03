@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
  * Provides access to a restricted subset of
  * HTTP response object.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class ResponseWrapper
 {

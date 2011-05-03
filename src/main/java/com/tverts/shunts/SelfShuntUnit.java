@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * basic implementation class {@link SelfShuntBase}.
  * Used in {@link SelfShuntBaseAnnotated}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 @Target(TYPE) @Retention(RUNTIME)
 public @interface SelfShuntUnit

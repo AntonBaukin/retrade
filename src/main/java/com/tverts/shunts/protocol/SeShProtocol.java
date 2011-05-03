@@ -17,7 +17,7 @@ import com.tverts.shunts.SelfShuntReport;
  * to be thread save. It must be run within a single
  * thread only.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface SeShProtocol
 {

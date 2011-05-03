@@ -3,7 +3,7 @@ package com.tverts.support.logic;
 /**
  * Predicate that always returns {@code false}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class False implements Predicate
 {

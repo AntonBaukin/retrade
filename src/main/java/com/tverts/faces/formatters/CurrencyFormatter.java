@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import com.tverts.support.SU;
 
 /**
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   CurrencyFormatter 
        extends FormatterBase<BigDecimal>

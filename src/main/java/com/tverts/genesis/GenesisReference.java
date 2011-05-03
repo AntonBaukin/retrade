@@ -8,7 +8,7 @@ import com.tverts.objects.ObjectsReference;
  * Defines a collection of references to
  * {@link Genesis} units.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface GenesisReference
        extends   ObjectsReference<Genesis>

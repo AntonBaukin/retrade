@@ -20,7 +20,7 @@ import com.tverts.support.SU;
  * and are in at least one of the groups stored in the
  * {@link SeShRequestGroups} request given.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShRequestGroupsHandler
        extends SeShInitialRequestsHandlerBase<SeShRequestGroups>

@@ -7,7 +7,7 @@ import java.util.Locale;
 /**
  * Various localization issues.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class LO
 {

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
  * Tests 'classes and interfaces' section of
  * object utilities collection {@link OU}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class TestOUClasses
 {

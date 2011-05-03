@@ -23,7 +23,7 @@ import com.tverts.shunts.SelfShuntReference;
  * So, this class binds the external view on the
  * shunts collection with the internal implementation.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SelfShuntsRefsSet
        extends    SelfShuntsSetBase

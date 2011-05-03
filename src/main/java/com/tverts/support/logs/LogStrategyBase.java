@@ -4,7 +4,7 @@ package com.tverts.support.logs;
  * Dispatches events with logging levels
  * to the the logging strategies aggregated.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class LogStrategyBase
        implements     LogStrategy

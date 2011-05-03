@@ -15,7 +15,7 @@ import com.tverts.mp.WaitEmptyFlags;
  * For classes {@link SingleTaskService} and
  * {@link CycledTaskService}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class TestSingleTaskServices
 {

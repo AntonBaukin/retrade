@@ -11,7 +11,7 @@ import java.util.List;
  * Collects root {@link GenesisReference}s to create
  * a list of {@link GenesisSphere} instabces.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class GenesisSpheres
 {

@@ -3,7 +3,7 @@ package com.tverts.servlet.listeners;
 /**
  * A global point to register Servlet Request Listeners.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   ServletRequestListenerPoint
        extends ServletRequestListenerBean

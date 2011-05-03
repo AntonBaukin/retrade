@@ -12,7 +12,7 @@ import com.tverts.objects.ObjectsReference;
  * from reporting {@code this} object to scanning
  * the class path for {@link SelfShuntUnit} classes.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface SelfShuntReference
        extends   ObjectsReference<SelfShunt>

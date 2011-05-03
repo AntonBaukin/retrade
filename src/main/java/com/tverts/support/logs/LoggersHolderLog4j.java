@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 /**
  * Loggers holder for Log4J loggers.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   LoggersHolderLog4j
        extends LoggersHolderBase

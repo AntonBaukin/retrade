@@ -20,7 +20,7 @@ import static com.tverts.support.SU.sXe;
  * adding support for auto discovering the shunt methods
  * searching the {@link SelfShuntMethod} annotated methods.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SelfShuntBaseAnnotated
        extends        SelfShuntBase

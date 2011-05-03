@@ -33,7 +33,7 @@ import static com.tverts.support.SU.sLo;
  * consists of a number of shunt methods
  * that are invoked in some defined order.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SelfShuntBase
        implements     SelfShunt

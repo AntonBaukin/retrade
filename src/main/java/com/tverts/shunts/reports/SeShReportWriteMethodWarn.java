@@ -15,7 +15,7 @@ import com.tverts.shunts.SelfShuntReport;
  * On the warn level only the summary information
  * on the results is logged.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShReportWriteMethodWarn
        extends SeShReportWriteMethodBase

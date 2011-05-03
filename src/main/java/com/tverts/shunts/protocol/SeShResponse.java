@@ -19,7 +19,7 @@ import com.tverts.shunts.SelfShuntUnitReport;
  * call not all the shunts, but a named subset
  * of the shunts, named shunts group.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface SeShResponse
        extends   java.io.Serializable

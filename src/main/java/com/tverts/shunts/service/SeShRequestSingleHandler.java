@@ -22,7 +22,7 @@ import com.tverts.support.SU;
  * possible as the names of the units must not be unique:
  * their unique ids are created in {@link SelfShuntsSet}s.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShRequestSingleHandler
        extends SeShInitialRequestsHandlerBase<SeShRequestSingle>

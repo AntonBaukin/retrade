@@ -5,7 +5,7 @@ package com.tverts.system.services;
  * that allows to set an external task to run it
  * in an infinite cycle as a service.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   CycledTaskService
        extends CycledTaskServiceBase

@@ -8,7 +8,7 @@ package com.tverts.support.logs;
  *
  * Loggers holder must be thread-safe.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface LoggersHolder
 {

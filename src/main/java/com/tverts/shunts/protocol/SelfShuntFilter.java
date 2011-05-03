@@ -47,7 +47,7 @@ import com.tverts.support.streams.Base64Encoder;
  * As it is must be, the filter instance is
  * thread-safe (reentable).
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SelfShuntFilter
        extends FilterBase

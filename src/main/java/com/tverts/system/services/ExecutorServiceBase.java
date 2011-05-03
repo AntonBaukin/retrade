@@ -16,7 +16,7 @@ import com.tverts.support.LU;
  * to isolate the service from the method of obtaining
  * {@link Runnable} tasks.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class ExecutorServiceBase
        extends        CycledTaskServiceBase

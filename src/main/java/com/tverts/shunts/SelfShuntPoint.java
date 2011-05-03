@@ -16,7 +16,7 @@ import com.tverts.shunts.service.SelfShuntsRefsSet;
  * Stores shared properties of the
  * Self Shunting Subsystem.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class SelfShuntPoint
 {

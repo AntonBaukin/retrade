@@ -8,7 +8,7 @@ import java.util.List;
  * Represents a reference to an ordered collection
  * of typed objects.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface ObjectsReference<O>
 {

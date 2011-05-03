@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * HTTP request handling support.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class REQ
 {

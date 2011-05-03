@@ -28,7 +28,7 @@ import static com.tverts.support.SU.sXe;
  *
  * The order of mapping is preserved.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SeShRequestsDispatcher
        implements SeShRequestsHandler

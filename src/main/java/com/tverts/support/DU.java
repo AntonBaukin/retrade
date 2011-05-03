@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 /**
  * Various date utils.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class DU
 {

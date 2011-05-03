@@ -5,7 +5,7 @@ package com.tverts.system.services;
  * that allows to set an external task to run it
  * as a service.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SingleTaskService
        extends SingleTaskServiceBase

@@ -4,7 +4,7 @@ package com.tverts.shunts.protocol;
  * This protocol implementation runs all the tests
  * registered in the system.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShProtocolWebAll
        extends SeShProtocolWebBase

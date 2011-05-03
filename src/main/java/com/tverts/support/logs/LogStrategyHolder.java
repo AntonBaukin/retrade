@@ -4,7 +4,7 @@ package com.tverts.support.logs;
  * Combines a {@link LogStrategy} with a holder
  * of the loggers, {@link LoggersHolder}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class LogStrategyHolder
        extends        LogStrategyBase

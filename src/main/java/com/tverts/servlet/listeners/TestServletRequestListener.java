@@ -14,7 +14,7 @@ import static com.tverts.support.OU.sig;
 /**
  * Runtime test for {@link ServletRequestListenerBean}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   TestServletRequestListener
        extends ServletRequestListenerBase

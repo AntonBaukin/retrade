@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Marks a method of {@link SelfShunt} to run when
  * the test instance is invoked.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 @Target(METHOD) @Retention(RUNTIME)
 public @interface SelfShuntMethod

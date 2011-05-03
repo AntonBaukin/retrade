@@ -8,7 +8,7 @@ import com.tverts.shunts.SelfShuntReport;
  * Implements stateful HTTP conversation with this system.
  * By default it creates {@link SeShWebClientCommons} client.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SeShProtocolWebBase
        extends        SeShProtocolBase

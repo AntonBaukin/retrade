@@ -5,7 +5,7 @@ package com.tverts.objects;
  * is related with. The result may be a new private
  * instance, or a shared one.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface ObjectFactory<O>
 {

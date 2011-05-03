@@ -9,7 +9,7 @@ import java.util.concurrent.Executor;
  * System Service. Handles unlimited queue
  * of {@link Runnable} tasks.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      QueueExecutorService
        extends    QueueExecutorServiceBase

@@ -23,7 +23,7 @@ import java.util.List;
  * implementations to free shared resources defining
  * {@link #freeShuntEnvironment()}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SelfShuntTarget
        extends    SelfShuntBaseAnnotated

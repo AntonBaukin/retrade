@@ -24,7 +24,7 @@ import static com.tverts.support.SU.s2s;
  *
  * The full list of shunt methods names is also added.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShReportWriteMethodTrace
        extends SeShReportWriteMethodInfo

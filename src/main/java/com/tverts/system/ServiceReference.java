@@ -7,7 +7,7 @@ import com.tverts.objects.ObjectsReference;
 /**
  * A reference to {@link Service}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface ServiceReference
        extends   ObjectsReference<Service>

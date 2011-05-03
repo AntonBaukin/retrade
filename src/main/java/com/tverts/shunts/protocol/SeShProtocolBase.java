@@ -26,7 +26,7 @@ import com.tverts.support.SU;
  *
  * Two methods are expected: HTTP and JMS.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SeShProtocolBase
        implements     SeShProtocol

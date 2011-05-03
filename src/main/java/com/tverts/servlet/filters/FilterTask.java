@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  * invocation. Also has internal reference to the
  * algorithm of filters invocation cycle.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface FilterTask
 {

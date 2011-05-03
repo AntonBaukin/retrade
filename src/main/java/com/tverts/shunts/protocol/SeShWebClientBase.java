@@ -18,7 +18,7 @@ import static com.tverts.support.SU.s2s;
  * Provides implementation base that would
  * be handy for any actual shunts HTTP client.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SeShWebClientBase
        implements     SeShWebClient

@@ -5,7 +5,7 @@ package com.tverts.system.services;
  * execution routines (mostly, cycling) that
  * this task has nothing to do more.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface BreakingTask extends Runnable
 {

@@ -6,7 +6,7 @@ package com.tverts.genesis;
  * the cleanup tasks to invoke to rollback
  * the modifications generated.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class GenesisError extends Exception
 {

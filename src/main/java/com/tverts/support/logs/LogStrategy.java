@@ -3,7 +3,7 @@ package com.tverts.support.logs;
 /**
  * A strategy to write actual logging events.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface LogStrategy
 {

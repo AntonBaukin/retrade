@@ -10,7 +10,7 @@ import java.util.List;
  * {@link FilterReference} returning this instance.
  * It is convenient when registering filters in Spring.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class FilterBase
        implements     Filter, FilterReference

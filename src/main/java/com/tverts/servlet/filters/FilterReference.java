@@ -12,7 +12,7 @@ import com.tverts.objects.ObjectsReference;
  * references are invoked in natural in-depth sequence.
  * (As they are nested in Spring XML file.)
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface FilterReference
        extends   ObjectsReference<Filter>

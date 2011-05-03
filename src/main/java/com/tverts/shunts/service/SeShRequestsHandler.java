@@ -16,7 +16,7 @@ import com.tverts.shunts.protocol.SeShResponse;
  * Request handler must be thread safe (fully
  * reentable).
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface SeShRequestsHandler
 {

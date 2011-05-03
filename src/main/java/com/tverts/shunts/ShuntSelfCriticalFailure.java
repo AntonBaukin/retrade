@@ -8,7 +8,7 @@ import static org.junit.Assert.fail;
  * Tests Shunt Subsystem: raises critical failure.
  * Inlcude this test only when debugging the subsystem.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
 @SelfShuntGroups({"system:shunts:killme"})

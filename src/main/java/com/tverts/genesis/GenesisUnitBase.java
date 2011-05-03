@@ -28,7 +28,7 @@ import com.tverts.support.LU;
  * Provides useful utilities to Genesis
  * implementation.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class GenesisUnitBase
        extends        GenesisBase

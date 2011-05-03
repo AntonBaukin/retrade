@@ -5,7 +5,7 @@ package com.tverts.shunts.protocol;
  * tells to run all the tests discovered in the system
  * and allowed to run.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SeShRequestAll
        implements SeShRequestInitial

@@ -23,7 +23,7 @@ import com.tverts.support.LU;
  * Base class for the initial request handlers.
  * Supports only one precious class of the request.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SeShInitialRequestsHandlerBase
                         <R extends SeShRequestInitial>

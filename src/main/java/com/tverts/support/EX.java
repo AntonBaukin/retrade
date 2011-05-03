@@ -3,7 +3,7 @@ package com.tverts.support;
 /**
  * Exception handling support.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class EX
 {

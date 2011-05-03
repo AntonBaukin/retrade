@@ -16,7 +16,7 @@ import com.tverts.objects.RunnableInterruptible;
 /**
  * Various utility functions for objects.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class OU
 {

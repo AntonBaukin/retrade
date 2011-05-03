@@ -5,7 +5,7 @@ package com.tverts.system;
  * Used for logging and by representation
  * layers.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface ServiceInfo
 {

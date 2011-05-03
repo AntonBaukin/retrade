@@ -25,7 +25,7 @@ import com.tverts.support.LU;
  * {@link InitServicesListener}, operation 'init' means
  * 'start', and 'free' means 'stop'.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   StartServicesListener
        extends InitServicesListener

@@ -12,7 +12,7 @@ import com.tverts.objects.FixedObjectsRedirector;
  * when setting the list of root references via
  * {@link #setReferences(java.util.List)}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SelfShuntsList
        extends    FixedObjectsRedirector<SelfShunt>

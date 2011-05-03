@@ -28,7 +28,7 @@ import com.tverts.objects.FixedObjectsRedirector;
  * This class is thread-safe, and all the listeners
  * of the composite must also be thread-safe.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      ServletRequestListenerBean
        extends    FixedObjectsRedirector<ServletRequestListener>

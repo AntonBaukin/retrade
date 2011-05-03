@@ -14,7 +14,7 @@ import static com.tverts.support.LO.LANG_LO;
  * a unit of tests. The collection is usually scoped
  * within the unit class and (optionally) it's ancestors.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SelfShuntUnitReport
        implements java.io.Serializable

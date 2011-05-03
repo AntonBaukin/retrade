@@ -12,7 +12,7 @@ import com.tverts.servlet.RequestPoint;
  * Binds web application context with Servlet and
  * Java Server Faced support routines.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SystemBootListener
        extends ServletContextListenerBase

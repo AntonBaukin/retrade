@@ -19,7 +19,7 @@ import static com.tverts.support.LO.LANG_RU;
  * Does not couple tightly with active services,
  * but provides some means for them.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class StatefulServiceBase
        extends        ServiceBase

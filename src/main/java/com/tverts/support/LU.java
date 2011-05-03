@@ -12,7 +12,7 @@ import static com.tverts.support.SU.cat;
 /**
  * Logging support, utilities and wrappers.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class LU
 {

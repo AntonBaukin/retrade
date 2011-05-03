@@ -11,7 +11,7 @@ import static com.tverts.support.SU.s2s;
  * The key of this request is the key of
  * the unit name.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SeShRequestSingle
        implements SeShRequestInitial

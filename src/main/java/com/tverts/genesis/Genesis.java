@@ -16,7 +16,7 @@ import com.tverts.support.logic.Predicate;
  * Genesis unit has a condition that defines whether
  * the unit would be actually invoked.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface Genesis
 {

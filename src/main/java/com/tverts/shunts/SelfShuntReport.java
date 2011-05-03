@@ -4,7 +4,7 @@ package com.tverts.shunts;
  * Collects results of Self Shunts
  * invocations sequence.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SelfShuntReport
        implements java.io.Serializable

@@ -8,7 +8,7 @@ package com.tverts.shunts.protocol;
  * request instance more than one time
  * as requests are not modified.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public final class SeShProtocolWebMulti
        extends     SeShProtocolWebBase

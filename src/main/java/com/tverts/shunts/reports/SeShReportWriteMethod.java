@@ -13,7 +13,7 @@ import com.tverts.shunts.SelfShuntReport;
  * A strategy that prints reports for the logging level
  * that this trategy is designed for.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface SeShReportWriteMethod
 {

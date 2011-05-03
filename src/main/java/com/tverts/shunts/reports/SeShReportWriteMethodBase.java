@@ -21,7 +21,7 @@ import static com.tverts.support.SU.s2s;
 /**
  * Self Shunt Report printing strategy basics.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public abstract class SeShReportWriteMethodBase
        implements     SeShReportWriteMethod

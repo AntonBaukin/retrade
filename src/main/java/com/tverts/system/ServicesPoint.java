@@ -16,7 +16,7 @@ import com.tverts.system.services.ServicesList;
  * time, when the list of root references is provided.
  * Consider {@link ServicesList}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   ServicesPoint
        extends ServicesList

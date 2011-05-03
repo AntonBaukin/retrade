@@ -18,7 +18,7 @@ import com.tverts.shunts.SelfShuntUnitReport;
  * are displayed shorter, without shunt unit descriptions.
  * Shunt tasks (methods) are printed only for failed ones.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShReportWriteMethodInfo
        extends SeShReportWriteMethodWarn

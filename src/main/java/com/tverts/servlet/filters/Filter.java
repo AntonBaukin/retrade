@@ -12,7 +12,7 @@ package com.tverts.servlet.filters;
  *
  * A Filter must be thread-safe (reentable).
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public interface Filter
 {

@@ -19,7 +19,7 @@ import com.tverts.support.SU;
  * shunt units configured in the system's
  * {@link SelfShuntPoint}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShRequestAllHandler
        extends SeShInitialRequestsHandlerBase<SeShRequestAll>

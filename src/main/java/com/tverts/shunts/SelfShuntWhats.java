@@ -16,7 +16,7 @@ import com.tverts.shunts.protocol.SeShProtocolReference;
  * running a collection of {@link SelfShunt} Units via
  * some type of media: HTTP, JMS and other.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class      SelfShuntWhats
        extends    ObjectsRedirector<SeShProtocol>

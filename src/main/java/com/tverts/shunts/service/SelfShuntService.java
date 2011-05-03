@@ -49,7 +49,7 @@ import com.tverts.support.LU;
  * the protocol abstraction existing this is seemed to
  * be not demanded in the most cases.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SelfShuntService
        extends QueueExecutorServiceBase

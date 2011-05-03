@@ -12,7 +12,7 @@ import com.tverts.support.LU;
  * Writes shunt report as text to the log destination
  * {@link SelfShuntPoint#LOG_SHARED}.
  *
- * @author anton baukin (abaukin@mail.ru)
+ * @author anton.baukin@gmail.com
  */
 public class   SeShReportLogger
        extends SeShReportStringWriterBase
