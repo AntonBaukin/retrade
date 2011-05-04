@@ -10,7 +10,7 @@ import java.util.List;
 
 /* com.tverts: transactions */
 
-//import com.tverts.system.tx.TxPoint;
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: support */
 
@@ -192,7 +192,7 @@ public abstract class SelfShuntBase
 
 	protected void    doRollback()
 	{
-		//TODO TxPoint.getInstance().setRollbackOnly();
+		TxPoint.getInstance().setRollbackOnly();
 	}
 
 	/* protected: shunt methods discovery */
