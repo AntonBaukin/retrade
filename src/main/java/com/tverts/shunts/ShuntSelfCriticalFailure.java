@@ -12,13 +12,13 @@ import static org.junit.Assert.fail;
  */
 @SelfShuntUnit
 @SelfShuntGroups({"system:shunts:killme"})
-@SelfShuntDescr(en = "Tests Shunt Subsystem: raises critical failure.")
+@SelfShuntDescr("Tests Shunt Subsystem: raises critical failure.")
 public class ShuntSelfCriticalFailure extends ShuntSelfSuccess
 {
 	/* shunt entries */
 
-	@SelfShuntMethod(critical = true,
-	  descrEn = "here critical failure is raised")
+	@SelfShuntMethod(critical = true, descrEn =
+	  "here critical failure is raised")
 	public void testCriticalFailure()
 	{
 		fail("we generate here CRITICAL failure");

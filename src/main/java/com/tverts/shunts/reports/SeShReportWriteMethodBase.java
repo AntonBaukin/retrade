@@ -264,13 +264,9 @@ public abstract class SeShReportWriteMethodBase
 	{
 		int n = 0;
 
-		next_unit:
 		for(SelfShuntUnitReport ur : r.getUnitReports())
-		{
-			for(SelfShuntTaskReport tr : ur.getTaskReports())
-				if(!tr.isSuccess()) break next_unit;
-			n++;
-		}
+			if(ur.isSuccess())
+				n++;
 
 		return n;
 	}
@@ -282,14 +278,9 @@ public abstract class SeShReportWriteMethodBase
 	{
 		int n = 0;
 
-		next_unit:
 		for(SelfShuntUnitReport ur : r.getUnitReports())
-			for(SelfShuntTaskReport tr : ur.getTaskReports())
-				if(!tr.isSuccess())
-				{
-					n++;
-					break next_unit;
-				}
+			if(!ur.isSuccess())
+				n++;
 
 		return n;
 	}
@@ -299,9 +290,8 @@ public abstract class SeShReportWriteMethodBase
 		int n = 0;
 
 		for(SelfShuntUnitReport ur : r.getUnitReports())
-			for(SelfShuntTaskReport tr : ur.getTaskReports())
-				if(!tr.isSuccess() && tr.isCritical())
-					n++;
+			if(!ur.isSuccess() && ur.isCritical())
+				n++;
 
 		return n;
 	}

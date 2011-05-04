@@ -23,5 +23,13 @@ public @interface SelfShuntUnit
 	 * self-shunting unit. Defaults to
 	 * the simple name of the class.
 	 */
-	String name() default "";
+	String  value()  default "";
+
+	/**
+	 * Tells that all the shunt methods of the unit
+	 * are invoked on the same shunt instance. By
+	 * default it is false, and each method works
+	 * with it's own private instance.
+	 */
+	boolean single() default false;
 }

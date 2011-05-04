@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
  */
 @SelfShuntUnit
 @SelfShuntGroups({"system:shunts:success"})
-@SelfShuntDescr(en = "Tests Shunt Subsystem: all the methods are successful.")
+@SelfShuntDescr("Tests Shunt Subsystem: all the methods are successful.")
 public class ShuntSelfSuccess
 {
 	@SelfShuntMethod(

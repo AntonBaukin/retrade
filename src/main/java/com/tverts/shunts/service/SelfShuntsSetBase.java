@@ -89,6 +89,8 @@ public abstract class SelfShuntsSetBase
 	protected Map<String, SelfShunt>
 	                   getShuntsNames()
 	{
+		if(this.shuntsNames == null)
+			updateShuntsNames();
 		return shuntsNames;
 	}
 
@@ -182,6 +184,5 @@ public abstract class SelfShuntsSetBase
 
 	/* private: shunts mapping */
 
-	private Map<String, SelfShunt> shuntsNames =
-	  Collections.emptyMap();
+	private Map<String, SelfShunt> shuntsNames;
 }

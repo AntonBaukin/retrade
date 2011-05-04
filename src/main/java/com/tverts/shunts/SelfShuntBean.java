@@ -57,6 +57,23 @@ public class      SelfShuntBean
 		this.beanName = name;
 	}
 
+	/**
+	 * Tells that all the methods of the shunt unit
+	 * are invoked on the same shunt instance.
+	 *
+	 * If this flag is defined, it takes priority
+	 * over {@link SelfShuntUnit#single()}.
+	 */
+	public Boolean isSingleInstance()
+	{
+		return singleInstance;
+	}
+
+	public void    setSingleInstance(Boolean singleInstance)
+	{
+		this.singleInstance = singleInstance;
+	}
+
 	/* protected: SelfShuntBase interface */
 
 	protected Object  getTarget()
@@ -66,8 +83,14 @@ public class      SelfShuntBean
 
 	protected boolean afterMethod(Method m, SelfShuntTaskReport report)
 	{
-		clearActualTarget();
+		clearActualTarget(false);
 		return super.afterMethod(m, report);
+	}
+
+	protected void    freeShuntEnvironment()
+	{
+		clearActualTarget(true);
+		super.freeShuntEnvironment();
 	}
 
 	/* protected: actual targeting */
@@ -83,16 +106,29 @@ public class      SelfShuntBean
 		return bean(getBeanName());
 	}
 
-	public void       clearActualTarget()
+	protected boolean isActualSingle()
 	{
-		this.actualTarget = null;
+		if(isSingleInstance() != null)
+			return isSingleInstance();
+
+		SelfShuntUnit su = atShuntUnit();
+		return (su != null) && su.single();
+	}
+
+	public void       clearActualTarget(boolean last)
+	{
+		//TODO implement cleanup and startup methods for shunt units
+
+		if(last || !isActualSingle())
+			this.actualTarget = null;
 	}
 
 	/* private: bean reference */
 
-	private String beanName;
+	private String  beanName;
+	private Boolean singleInstance;
 
 	/* private: invocation runtime  */
 
-	private Object actualTarget;
+	private transient Object actualTarget;
 }

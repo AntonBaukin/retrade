@@ -20,7 +20,7 @@
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Makes all the shunt services to be active/inactive.       ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'active' value = 'false'/>
+    <property name = 'active' value = 'true'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Here all the shunts registered in the system are given    ·

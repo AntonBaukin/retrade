@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/* com.tverts: transactions */
+
+//import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: support */
 
 import static com.tverts.support.EX.e2en;
@@ -188,7 +192,7 @@ public abstract class SelfShuntBase
 
 	protected void    doRollback()
 	{
-		//TODO shunts base, doRollback(): set it in hibernate point
+		//TODO TxPoint.getInstance().setRollbackOnly();
 	}
 
 	/* protected: shunt methods discovery */

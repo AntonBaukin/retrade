@@ -31,16 +31,14 @@ public class      SelfShuntsRefsSet
 {
 	/* public: SelfShuntsSet interface */
 
-	public List<SelfShunt>
-	            listShunts()
+	public List<SelfShunt>    listShunts()
 	{
 		return this.dereferObjects();
 	}
 
 	/* public: SelfShuntReference interface */
 
-	public List<SelfShunt>
-	            dereferObjects()
+	public List<SelfShunt>    dereferObjects()
 	{
 		SelfShuntReference ref = getReference();
 
@@ -50,16 +48,14 @@ public class      SelfShuntsRefsSet
 
 	/* public: SelfShuntsRefsSet interface */
 
-	public SelfShuntReference
-	            getReference()
+	public SelfShuntReference getReference()
 	{
 		return reference;
 	}
 
-	public void setReference(SelfShuntReference reference)
+	public void               setReference(SelfShuntReference reference)
 	{
 		this.reference = reference;
-		this.updateShuntsNames();
 	}
 
 	/* private: aggregated shunts reference */

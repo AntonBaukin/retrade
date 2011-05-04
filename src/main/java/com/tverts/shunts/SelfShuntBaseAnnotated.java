@@ -31,8 +31,8 @@ public abstract class SelfShuntBaseAnnotated
 	{
 		SelfShuntUnit  su = atShuntUnit();
 
-		if((su != null) && !sXe(su.name()))
-			return s2s(su.name());
+		if((su != null) && !sXe(su.value()))
+			return s2s(su.value());
 		return super.getShuntUnitName();
 	}
 
@@ -50,10 +50,10 @@ public abstract class SelfShuntBaseAnnotated
 
 		SelfShuntDescr sd = atShuntDescription();
 
-		if((sd != null) && !sXe(sd.en()))
-			report.setDescriptionEn(s2s(sd.en()));
+		if((sd != null) && !sXe(sd.value()))
+			report.setDescriptionEn(s2s(sd.value()));
 
-		if((sd != null) && !sXe(sd.en()))
+		if((sd != null) && !sXe(sd.value()))
 			report.setDescriptionLo(s2s(sd.lo()));
 	}
 

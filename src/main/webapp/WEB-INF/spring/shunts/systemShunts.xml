@@ -34,6 +34,8 @@
     <property name = 'references'>
       <list>
 
+        <!-- system:shunts:success -->
+
         <bean class = 'com.tverts.shunts.SelfShuntTarget'>
           <property name = 'target'>
             <bean class = 'com.tverts.shunts.ShuntSelfSuccess'/>
@@ -46,21 +48,29 @@
           </property>
         </bean>
 
+        <!-- system:shunts:killme -->
+
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · As this shunt unit would stop the shunts invocation       ·
          · with critical error, include it for debugging only!       ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <!--
         <bean class = 'com.tverts.shunts.SelfShuntTarget'>
           <property name = 'target'>
             <bean class = 'com.tverts.shunts.ShuntSelfCriticalFailure'/>
           </property>
         </bean>
+        -->
 
-        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
-          <property name = 'target'>
-            <bean class = 'com.tverts.shunts.ShuntSelfSuccess'/>
+        <!-- system:tx:scopes -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntBean'>
+
+          <property name = 'beanName'>
+            <idref bean = 'shuntTxScopes'/>
           </property>
         </bean>
+
 
       </list>
     </property>

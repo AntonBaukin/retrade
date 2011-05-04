@@ -20,7 +20,7 @@ public @interface SelfShuntDescr
 	/**
 	 * English description text.
 	 */
-	String en();
+	String value();
 
 	/**
 	 * Localized description text.

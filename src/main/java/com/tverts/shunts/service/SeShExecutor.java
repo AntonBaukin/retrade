@@ -10,6 +10,10 @@ import com.tverts.shunts.protocol.SeShBasicResponse;
 import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShResponse;
 
+/* com.tverts: support */
+
+import static com.tverts.support.OU.cloneBest;
+
 /**
  * Base class providing implementation for actual
  * running the Shunt Unit referred from the request.
@@ -26,9 +30,9 @@ public abstract class SeShExecutor
 {
 	/* public: SeShRequestsHandler interface */
 
-	public SeShResponse    handleShuntRequest(SeShRequest request)
+	public SeShResponse handleShuntRequest(SeShRequest request)
 	{
-		Object    shuntKey = request.getSelfShuntKey();
+		Object shuntKey = request.getSelfShuntKey();
 
 		//?: {the key is not defined}
 		if(shuntKey == null)
@@ -43,8 +47,8 @@ public abstract class SeShExecutor
 			  "unique key of unsupported format (not a String), " +
 			  "but of class '%s'!", shuntKey.getClass().getName()));
 
-		SelfShunt shunt    = SelfShuntPoint.getInstance().
-		  getShuntsSet().getShunt(shuntKey.toString());
+		//~: get the copy of the shunt
+		SelfShunt shunt = obtainShunt(shuntKey.toString());
 
 		//?: {this shunt unit does not exist}
 		if(shunt == null)
@@ -68,7 +72,7 @@ public abstract class SeShExecutor
 	protected abstract SeShRequest  findNextRequest
 	  (SelfShunt shunt, SeShRequest request);
 
-	protected SeShResponse executeSelfShunt
+	protected SeShResponse          executeSelfShunt
 	  (SelfShunt shunt, SeShRequest request)
 	  throws Throwable
 	{
@@ -87,6 +91,19 @@ public abstract class SeShExecutor
 		}
 
 		return res;
+	}
+
+	protected SelfShunt             obtainShunt(String shuntKey)
+	{
+		SelfShunt shunt = SelfShuntPoint.getInstance().
+		  getShuntsSet().getShunt(shuntKey.toString());
+
+		return (shunt == null)?(null):(cloneShunt(shunt));
+	}
+
+	protected SelfShunt             cloneShunt(SelfShunt shunt)
+	{
+		return (SelfShunt)cloneBest(shunt);
 	}
 
 	/**
@@ -117,7 +134,7 @@ public abstract class SeShExecutor
 		return res;
 	}
 
-	protected SeShResponse           createErrorResponse
+	protected SeShResponse          createErrorResponse
 	   (SelfShunt shunt, SeShRequest request, Throwable error)
 	{
 		SeShBasicResponse res = new SeShBasicResponse(request);

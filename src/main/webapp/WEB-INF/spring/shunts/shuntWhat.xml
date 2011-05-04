@@ -28,7 +28,8 @@
               <value>
 
                 system:shunts:success,
-                <!--system:shunts:killme-->
+<!--            system:shunts:killme,                               -->
+                system:tx:scopes
 
               </value>
             </property>
