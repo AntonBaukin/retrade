@@ -21,6 +21,20 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.servlet.filters.WebApplicationRequestFilter'/>
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Openes nested Spring transaction scope for the rest of    ·
+         · the chained filters. All the following filters are        ·
+         · in the context of single transaction.                     ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.system.tx.TransactionScopeFilter'>
+
+          <property name = 'scopeBeanName'>
+            <idref bean = 'txScopeBean'/>
+          </property>
+        </bean>
+
+
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Handles Self Shunt requests.                              ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->

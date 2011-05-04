@@ -1,0 +1,29 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Transaction Point                              =
+    +================================================-->
+
+  <bean name  = 'txPoint' factory-method = 'getInstance'
+        class = 'com.tverts.system.tx.TxPoint'/>
+
+
+  <!--=================================================
+    =  Transaction Scope Bean                         =
+    +==================================================
+    |
+    |  Wraps the rest of servlet (filter) chain
+    |  into the regular Spring transaction scope.
+    |
+    +================================================-->
+
+  <bean name  = 'txScopeBean' scope = 'prototype'
+        class = 'com.tverts.system.tx.TransactionScopeBean'/>
+
+</beans>

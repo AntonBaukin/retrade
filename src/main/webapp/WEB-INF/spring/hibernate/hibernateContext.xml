@@ -13,8 +13,7 @@
     =  Hibernate Session Factory                      =
     +================================================-->
 
-  <import resource = 'hibernate/sessionFactory.xml'/>
-
+  <import resource = 'sessionFactory.xml'/>
 
   <!--=================================================
     =  Transaction Manager                            =
@@ -33,5 +32,23 @@
 
     <property name = 'sessionFactory' ref  = 'sessionFactory'/>
   </bean>
+
+
+  <!--=================================================
+    =  Hibernate Point                                =
+    +================================================-->
+
+  <bean name  = 'hiberPoint' factory-method = 'getInstance'
+        class = 'com.tverts.hibery.HiberPoint'>
+
+    <property name = 'sessionFactory' ref  = 'sessionFactory'/>
+  </bean>
+
+
+  <!--=================================================
+    =  Transaction Scope                              =
+    +================================================-->
+
+  <import resource = 'txScope.xml'/>
 
 </beans>
