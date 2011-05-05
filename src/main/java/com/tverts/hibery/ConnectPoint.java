@@ -9,6 +9,11 @@ import java.sql.SQLException;
 
 import org.hibernate.connection.ConnectionProvider;
 
+/**
+ * TODO comment ConnectPoint
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class ConnectPoint
 {
 	/* public: Singleton */

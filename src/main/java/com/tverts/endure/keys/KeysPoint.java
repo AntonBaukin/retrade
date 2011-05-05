@@ -1,7 +1,26 @@
 package com.tverts.endure.keys;
 
+/* standard Java classes */
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * TODO comment KeysPoint
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class KeysPoint
 {
+	/* public: the names of major generators */
+
+	public static final String GEN_PRIME = "primary";
+
+	public static final String GEN_OTHER = "other";
+
 	/* public: Singleton */
 
 	public static KeysPoint getInstance()
@@ -39,6 +58,53 @@ public class KeysPoint
 		this.primaryGenerator = gen;
 	}
 
+	public KeysGenerator getOtherGenerator()
+	{
+		return otherGenerator;
+	}
+
+	public void          setOtherGenerator(KeysGenerator gen)
+	{
+		this.otherGenerator = gen;
+	}
+
+	public Map<String, KeysGenerator>
+	                     getGenerators()
+	{
+		return generators;
+	}
+
+	public void          setGenerators
+	  (Map<String, KeysGenerator> generators)
+	{
+		if((generators == null) || generators.isEmpty())
+			generators = Collections.emptyMap();
+		else
+			generators = Collections.unmodifiableMap(
+			  Collections.synchronizedMap(
+			    new HashMap<String, KeysGenerator>(generators)));
+
+		this.generators = generators;
+	}
+
+	public List<KeysGeneratorBinder>
+	                     getGeneratorBinders()
+	{
+		return generatorBinders;
+	}
+
+	public void          setGeneratorBinders
+	  (List<KeysGeneratorBinder> binders)
+	{
+		if((binders == null) || binders.isEmpty())
+			binders = Collections.emptyList();
+		else
+			binders = Collections.unmodifiableList(
+			  new ArrayList<KeysGeneratorBinder>(binders));
+
+		this.generatorBinders = binders;
+	}
+
 	/* public: access point support */
 
 	public static KeysGenerator facadeGenerator()
@@ -59,6 +125,15 @@ public class KeysPoint
 
 	/* private: point structures */
 
-	private volatile KeysGenerator facadeGenerator;
-	private volatile KeysGenerator primaryGenerator;
+	private KeysGenerator facadeGenerator;
+	private KeysGenerator primaryGenerator;
+	private KeysGenerator otherGenerator;
+
+	/* private: generators & binders */
+
+	private Map<String, KeysGenerator> generators =
+	  Collections.emptyMap();
+
+	private List<KeysGeneratorBinder>  generatorBinders =
+	  Collections.emptyList();
 }

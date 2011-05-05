@@ -8,6 +8,11 @@ import org.hibernate.Session;
 
 import com.tverts.endure.keys.KeysContextStruct;
 
+/**
+ * TODO comment HiberKeysContextStruct
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class      HiberKeysContextStruct
        extends    KeysContextStruct
        implements HiberKeysContext

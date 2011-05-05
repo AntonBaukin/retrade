@@ -13,7 +13,7 @@
     =  Hibernate Session Factory                      =
     +================================================-->
 
-  <import resource = 'sessionFactory.xml'/>
+  <import resource = 'hibernate/sessionFactory.xml'/>
 
   <!--=================================================
     =  Transaction Manager                            =
@@ -49,6 +49,13 @@
     =  Transaction Scope                              =
     +================================================-->
 
-  <import resource = 'txScope.xml'/>
+  <import resource = 'hibernate/txScope.xml'/>
+
+
+  <!--=================================================
+    =  Primary Keys Generators                        =
+    +================================================-->
+
+  <import resource = 'hibernate/keyGens.xml'/>
 
 </beans>

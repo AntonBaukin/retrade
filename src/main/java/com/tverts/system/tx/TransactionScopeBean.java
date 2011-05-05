@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tverts.servlet.filters.FilterTask;
 
+/**
+ * TODO comment TransactionScopeBean
+ *
+ * @author anton.baukin@gmail.com
+ */
 @Scope("prototype")
 public class TransactionScopeBean implements Runnable
 {

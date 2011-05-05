@@ -14,6 +14,11 @@ import com.tverts.spring.SpringPoint;
 
 import static com.tverts.support.SU.s2s;
 
+/**
+ * TODO comment TransactionScopeFilter
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class TransactionScopeFilter extends FilterBase
 {
 	/* public: Filter interface */

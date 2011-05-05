@@ -1,5 +1,10 @@
 package com.tverts.endure.keys;
 
+/**
+ * TODO comment KeysContextStruct
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class KeysContextStruct implements KeysContext
 {
 	/* public: constructor */

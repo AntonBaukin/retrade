@@ -17,6 +17,11 @@ import com.tverts.endure.keys.KeysContext;
 import com.tverts.endure.keys.KeysPoint;
 import com.tverts.hibery.keys.HiberKeysContextStruct;
 
+/**
+ * TODO comment HiberPoint
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class HiberPoint
 {
 	/* public: Singleton */
@@ -68,6 +73,10 @@ public class HiberPoint
 	 * Returns the Hibernate session currently bound to
 	 * the execution context. Provides strict handling:
 	 * if no session bound, an exception is raised.
+	 *
+	 * This session instance is obtained from primary
+	 * session factory. The same factory is injected
+	 * via Spring @Autowire.
 	 */
 	public static Session session()
 	{

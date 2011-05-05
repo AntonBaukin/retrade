@@ -5,6 +5,11 @@ package com.tverts.system.tx;
 import org.springframework.transaction.NoTransactionException;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+/**
+ * TODO comment TxPoint
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class TxPoint
 {
 	/* public: Singleton */
