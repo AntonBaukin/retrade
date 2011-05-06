@@ -51,14 +51,17 @@ public class OU
 	 * {@link Object#clone()} invoked via
 	 * the reflection.
 	 */
-	public static Object clone(Cloneable obj)
+	@SuppressWarnings("unchecked")
+	public static <O extends Cloneable> O
+	                     clone(Cloneable obj)
 	{
 		if(obj == null)
 			return null;
 
 		try
 		{
-			return obj.getClass().getMethod("clone").invoke(obj);
+			return (O)obj.getClass().
+			  getMethod("clone").invoke(obj);
 		}
 		catch(Exception e)
 		{
@@ -69,7 +72,9 @@ public class OU
 	/**
 	 * Makes a deep clone via serialization.
 	 */
-	public static Object cloneDeep(Serializable obj)
+	@SuppressWarnings("unchecked")
+	public static <O extends Serializable> O
+	                     cloneDeep(O obj)
 	{
 		Object res;
 
@@ -98,19 +103,20 @@ public class OU
 			throw new RuntimeException(e);
 		}
 
-		return res;
+		return (O)res;
 	}
 
-	public static Object cloneBest(Object obj)
+	@SuppressWarnings("unchecked")
+	public static <O> O  cloneBest(O obj)
 	{
 		if(obj == null)
 			return null;
 
 		if(obj instanceof Serializable)
-			return cloneDeep((Serializable)obj);
+			return (O)cloneDeep((Serializable)obj);
 
 		if(obj instanceof Cloneable)
-			return clone((Cloneable)obj);
+			return (O)clone((Cloneable)obj);
 
 		throw new IllegalArgumentException(
 		  "don't know how to clone class " + obj.getClass().getName());
@@ -201,5 +207,20 @@ public class OU
 		  obj.getClass().getSimpleName(),
 		  System.identityHashCode(obj)
 		);
+	}
+
+	public static String cls(Object obj)
+	{
+		return cls((obj == null)?(null):(obj.getClass()));
+	}
+
+	public static String cls(Object obj, Class def)
+	{
+		return cls((obj == null)?(def):(obj.getClass()));
+	}
+
+	public static String cls(Class cls)
+	{
+		return (cls == null)?("undefined"):(cls.getName());
 	}
 }

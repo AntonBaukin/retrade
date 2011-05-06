@@ -4,18 +4,21 @@ package com.tverts.hibery;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.SessionFactoryImplementor;
 
 /* Spring Framework */
 
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
-/* com.tverts: endure, hibery + keys */
+/* com.tverts: endure + hibery keys  */
 
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.keys.KeysContext;
 import com.tverts.endure.keys.KeysPoint;
 import com.tverts.hibery.keys.HiberKeysContextStruct;
+
+/* com.tverts: hibery system */
+
+import com.tverts.hibery.system.HiberSystem;
 
 /**
  * TODO comment HiberPoint
@@ -46,17 +49,8 @@ public class HiberPoint
 
 	public void           setSessionFactory(SessionFactory sf)
 	{
-		ConnectPoint.getInstance().setProvider(null);
-
 		this.sessionFactory = sf;
-
-		//?: {this factory provides implementation interface}
-		if(sf instanceof SessionFactoryImplementor)
-		{
-			//~: remember the JDBC connections provider
-			ConnectPoint.getInstance().setProvider(
-			  ((SessionFactoryImplementor)sf).getConnectionProvider());
-		}
+		HiberSystem.getInstance().setSessionFactory(sf);
 	}
 
 	public Session        getSession(boolean allowCreate)

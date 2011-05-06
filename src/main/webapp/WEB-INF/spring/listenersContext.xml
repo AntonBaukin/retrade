@@ -17,6 +17,11 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Activates Database Keys Generators.                       ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.keys.KeysPointActivator'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Initializes system services.                              ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.system.services.InitServicesListener'/>

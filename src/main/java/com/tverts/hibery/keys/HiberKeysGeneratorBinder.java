@@ -6,10 +6,9 @@ import java.util.Properties;
 
 /* Hibernate Persistence Layer */
 
-import org.hibernate.SessionFactory;
-import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
+import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.type.LongType;
 import org.hibernate.type.Type;
 
@@ -18,9 +17,14 @@ import org.hibernate.type.Type;
 import com.tverts.endure.keys.KeysGenerator;
 import com.tverts.endure.keys.KeysGeneratorBinder;
 
+/* com.tverts: hibery system */
+
+import com.tverts.hibery.system.HiberSystem;
+
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.OU;
+import com.tverts.support.SU;
 
 /**
  * TODO comment HiberKeysGeneratorBinder
@@ -32,17 +36,17 @@ public class      HiberKeysGeneratorBinder
 {
 	/* public: KeysGeneratorBinder interface */
 
-	public String           getGeneratorName()
+	public String        getGeneratorName()
 	{
 		return generatorName;
 	}
 
-	public KeysGenerator    getGeneratorBound()
+	public KeysGenerator getGeneratorBound()
 	{
 		return generatorBound;
 	}
 
-	public void             bindGenerator()
+	public void          bindGenerator()
 	{
 		if(getGeneratorBound() != null)
 			throw new IllegalStateException();
@@ -50,55 +54,39 @@ public class      HiberKeysGeneratorBinder
 		if(getGeneratorClass() == null)
 			throw new IllegalStateException();
 
-		if(getSessionFactory() != null)
-			throw new IllegalStateException();
-
 		this.generatorBound = createGenerator();
 	}
 
 	/* public: HiberKeysGeneratorBinder interface */
 
-	public void             setGeneratorName(String name)
+	public void       setGeneratorName(String name)
 	{
-		if((name = s2s(name)) == null)
+		if((name = SU.s2s(name)) == null)
 			throw new IllegalArgumentException();
 		this.generatorName = name;
 	}
 
-	public SessionFactory   getSessionFactory()
-	{
-		return sessionFactory;
-	}
-
-	public void             setSessionFactory(SessionFactory sf)
-	{
-		if(!(sf instanceof SessionFactoryImplementor))
-			throw new IllegalArgumentException();
-		this.sessionFactory = sf;
-	}
-
 	public Class<? extends IdentifierGenerator>
-	                        getGeneratorClass()
+	                  getGeneratorClass()
 	{
 		return generatorClass;
 	}
 
-	public void             setGeneratorClass
+	public void       setGeneratorClass
 	  (Class<? extends IdentifierGenerator> gclass)
 	{
-		if(gclass == null) throw new IllegalArgumentException();
 		this.generatorClass = gclass;
 	}
 
-	public Properties       getProperties()
+	public Properties getProperties()
 	{
 		return (properties != null)?(properties):
 		  (properties = new Properties());
 	}
 
-	public void             setProperties(Properties props)
+	public void       setProperties(Properties props)
 	{
-		this.properties = props;
+		this.properties = OU.clone(props);
 	}
 
 	/* protected: build generator */
@@ -106,6 +94,13 @@ public class      HiberKeysGeneratorBinder
 	protected KeysGenerator createGenerator()
 	{
 		IdentifierGenerator hgen;
+		Properties          props = OU.clone(getProperties());
+		final String        NN    = PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER;
+
+		//?: {has no name normilizer property} set it
+		if(!props.containsKey(NN))
+			props.put(NN, HiberSystem.config().createMappings().
+			  getObjectNameNormalizer());
 
 		try
 		{
@@ -113,9 +108,7 @@ public class      HiberKeysGeneratorBinder
 
 			if(hgen instanceof Configurable)
 				((Configurable)hgen).configure(
-				  getKeyType(), getProperties(),
-				  ((SessionFactoryImplementor)getSessionFactory()).getDialect()
-				);
+				  getKeyType(), props, HiberSystem.dialect());
 		}
 		catch(Exception e)
 		{
@@ -140,8 +133,4 @@ public class      HiberKeysGeneratorBinder
 	private Properties      properties;
 	private Class<? extends IdentifierGenerator>
 	                        generatorClass;
-
-	/* private: hibernate context */
-
-	private SessionFactory  sessionFactory;
 }

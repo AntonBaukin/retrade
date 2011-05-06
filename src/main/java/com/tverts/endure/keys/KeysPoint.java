@@ -123,6 +123,14 @@ public class KeysPoint
 		return gen;
 	}
 
+	public static KeysGenerator otherGenerator()
+	{
+		KeysGenerator gen = getInstance().getOtherGenerator();
+
+		if(gen == null) throw new IllegalStateException();
+		return gen;
+	}
+
 	/* private: point structures */
 
 	private KeysGenerator facadeGenerator;

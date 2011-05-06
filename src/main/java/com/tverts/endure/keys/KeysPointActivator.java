@@ -80,6 +80,7 @@ public class   KeysPointActivator
 		KeysPoint.getInstance().setGenerators(generators);
 
 		assignMajorKeysGenerators(generators);
+		assignFacadeKeysGenerator();
 	}
 
 	protected void assignMajorKeysGenerators
@@ -98,5 +99,14 @@ public class   KeysPointActivator
 		  )
 			KeysPoint.getInstance().setOtherGenerator(
 			  generators.get(KeysPoint.GEN_OTHER));
+	}
+
+	protected void assignFacadeKeysGenerator()
+	{
+		if(KeysPoint.getInstance().getFacadeGenerator() != null)
+			return;
+
+		KeysPoint.getInstance().setFacadeGenerator(
+		  new KeysPointGenerator());
 	}
 }

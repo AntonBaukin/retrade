@@ -4,5 +4,77 @@
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
 
+  <!--=================================================
+    =  Primary Keys Generators Point                  =
+    +================================================-->
+
+  <bean name  = 'keysPoint' factory-method = 'getInstance'
+        class = 'com.tverts.endure.keys.KeysPoint'>
+
+    <property name = 'generatorBinders'>
+      <list>
+
+        <!-- Primary Generator Sequence -->
+
+        <bean class = 'com.tverts.hibery.keys.HiberKeysGeneratorBinder'>
+
+          <property name  = 'generatorName'
+                    value = 'primary'/>
+
+          <property name  = 'generatorClass'
+                    value = 'org.hibernate.id.SequenceHiLoGenerator'/>
+
+          <property name  = 'properties'>
+            <props>
+
+              <prop key = 'sequence'>
+                pkeys_sequence_primary
+              </prop>
+
+              <prop key = 'max_lo'>
+                50
+              </prop>
+
+              <prop key = 'parameters'>
+                increment by 50 start with 1
+              </prop>
+
+            </props>
+          </property>
+        </bean>
+
+
+        <!-- Other Generator Sequence -->
+
+        <bean class = 'com.tverts.hibery.keys.HiberKeysGeneratorBinder'>
+
+          <property name  = 'generatorName'
+                    value = 'other'/>
+
+          <property name  = 'generatorClass'
+                    value = 'org.hibernate.id.SequenceHiLoGenerator'/>
+
+          <property name  = 'properties'>
+            <props>
+
+              <prop key = 'sequence'>
+                pkeys_sequence_other
+              </prop>
+
+              <prop key = 'max_lo'>
+                100
+              </prop>
+
+              <prop key = 'parameters'>
+                increment by 100 start with 1
+              </prop>
+
+            </props>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 
 </beans>
