@@ -48,6 +48,27 @@ public class SU
 	}
 
 	/**
+	 * Splits the string by the separator given.
+	 * Note that whitespaces are not trimmed here.
+	 */
+	public static String[] s2a(String s, char x)
+	{
+		if(s == null) return new String[0];
+
+		ArrayList<String> a = new ArrayList<String>(4);
+
+		for(int i, b = 0;(b < s.length());b = i + 1)
+		{
+			i = s.indexOf(x, b);
+			if(i == -1) i = s.length();
+
+			a.add(s.substring(b, i));
+		}
+
+		return a.toArray(new String[a.size()]);
+	}
+
+	/**
 	 * Checks whether the string is {@code null}
 	 * or has only whitespaces: if so, returns
 	 * {@code null}.
@@ -98,6 +119,11 @@ public class SU
 	{
 		return (s == null) || (s.length() == 0) ||
 		  (s.trim().length() == 0);
+	}
+
+	public static String   sXs(String s)
+	{
+		return (s != null)?(s):("");
 	}
 
 	public static int      sXl(String... strs)
@@ -374,7 +400,7 @@ public class SU
 	 * string is taken.
 	 */
 	public static StringBuilder cat
-	  (StringBuilder buf, String sep, Collection<String> a)
+	  (StringBuilder buf, String sep, Collection<? extends CharSequence> a)
 	{
 		int l = 0, x = (buf == null)?(0):(buf.length());
 
@@ -382,7 +408,7 @@ public class SU
 		if(sep == null) sep = "";
 
 		//0: define the resulting length
-		for(String s : a) if(s != null)
+		for(CharSequence s : a) if(s != null)
 			l += s.length() + sep.length();
 
 		//2: ensure the buffer capacity
@@ -392,7 +418,7 @@ public class SU
 			buf.ensureCapacity(x + l);
 
 		//3: append the strings
-		for(String s : a) if((s = s2s(s)) != null)
+		for(CharSequence s : a) if((s = s2s(s)) != null)
 			buf.append((buf.length() != x)?(sep):("")).append(s);
 
 		return buf;
@@ -402,7 +428,7 @@ public class SU
 	 * Concatenates the strings given using {@code ", "}
 	 * as the separator.
 	 */
-	public static String        a2s(String... strings)
+	public static String        a2s(CharSequence... strings)
 	{
 		return cat(null, ", ", Arrays.asList(strings)).toString();
 	}
@@ -411,7 +437,7 @@ public class SU
 	 * Concatenates the strings given using {@code ", "}
 	 * as the separator.
 	 */
-	public static String        a2s(Collection<String> strings)
+	public static String        a2s(Collection<? extends CharSequence> strings)
 	{
 		return cat(null, ", ", strings).toString();
 	}

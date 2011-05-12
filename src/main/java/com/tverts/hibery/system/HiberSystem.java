@@ -34,6 +34,11 @@ public class HiberSystem
 	protected HiberSystem()
 	{}
 
+	/* public: logging destinations */
+
+	public static final String LOG_HIBER_SYSTEM =
+	  HiberSystem.class.getName();
+
 	/* public: HiberSystem interface */
 
 	public void setSessionFactory(SessionFactory sf)
@@ -92,12 +97,12 @@ public class HiberSystem
 
 	/* public: access connections provider */
 
-	public ConnectionProvider getConnectionProvider()
+	public ConnectionProvider   getConnectionProvider()
 	{
 		return connectionProvider;
 	}
 
-	public Connection         openConnection()
+	public Connection           openConnection()
 	  throws SQLException
 	{
 		ConnectionProvider cp = getConnectionProvider();
@@ -106,7 +111,7 @@ public class HiberSystem
 		return cp.getConnection();
 	}
 
-	public void               closeConnection(Connection connection)
+	public void                 closeConnection(Connection connection)
 	  throws SQLException
 	{
 		if(connection.isClosed())

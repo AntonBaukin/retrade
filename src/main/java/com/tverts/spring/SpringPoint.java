@@ -66,9 +66,9 @@ public class SpringPoint
 	 * the first letter lowercased.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <B> B          bean(Class<B> c1ass)
+	public static <B> B          bean(Class<B> beanClass)
 	{
-		String        sn = c1ass.getSimpleName();
+		String        sn = beanClass.getSimpleName();
 		StringBuilder sb = new StringBuilder(sn);
 
 		sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
@@ -79,11 +79,11 @@ public class SpringPoint
 	 * The same as {@link #bean(Class)}, but returns
 	 * {@code null} if the bean is not registered.
 	 */
-	public static <B> B          beanOrNull(Class<B> c1ass)
+	public static <B> B          beanOrNull(Class<B> beanClass)
 	{
 		try
 		{
-			return bean(c1ass);
+			return bean(beanClass);
 		}
 		catch(NoSuchBeanDefinitionException e)
 		{

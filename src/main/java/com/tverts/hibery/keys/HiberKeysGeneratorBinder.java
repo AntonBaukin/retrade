@@ -2,6 +2,9 @@ package com.tverts.hibery.keys;
 
 /* standard Java classes */
 
+import java.sql.Connection;
+import java.sql.Statement;
+
 import java.util.Properties;
 
 /* Hibernate Persistence Layer */
@@ -23,6 +26,7 @@ import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: support */
 
+import com.tverts.support.LU;
 import com.tverts.support.OU;
 import com.tverts.support.SU;
 
@@ -102,6 +106,7 @@ public class      HiberKeysGeneratorBinder
 			props.put(NN, HiberSystem.config().createMappings().
 			  getObjectNameNormalizer());
 
+		//~: cerate generator instance
 		try
 		{
 			hgen = getGeneratorClass().newInstance();
@@ -115,12 +120,94 @@ public class      HiberKeysGeneratorBinder
 			throw new RuntimeException(e);
 		}
 
+		//~: schema updates to create generator in database
+		if(hgen instanceof PersistentIdentifierGenerator)
+			ensureDatabase((PersistentIdentifierGenerator)hgen);
+
 		return new HiberKeysGeneratorBridge(hgen);
+	}
+
+	protected void          ensureDatabase(PersistentIdentifierGenerator hgen)
+	{
+		//~: create update queries
+		String[]   qs = hgen.sqlCreateStrings(HiberSystem.dialect());
+
+		Connection co;
+		Statement  st;
+
+		//~: open the connection
+		try
+		{
+			co = HiberSystem.getInstance().openConnection();
+			st = co.createStatement();
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(
+			  "Can't open database connection to " +
+			  "create primary keys sequences!", e);
+		}
+
+		Exception er = null;
+
+		try
+		{
+			//~: execute DDL updates
+			for(String q : qs)
+				st.execute(q);
+
+			//!: commit
+			co.commit();
+
+			if(LU.isI(getLog())) LU.I(getLog(), String.format(
+			  "successfully created primary keys sequence '%s'",
+
+			  hgen.generatorKey().toString()));
+		}
+		catch(Exception e)
+		{
+			//!: Here we ignore update errors. We do not check
+			//   whether the sequence already exists.
+		}
+		finally
+		{
+			//~: close the statement
+			try
+			{
+				st.close();
+			}
+			catch(Exception e)
+			{
+				er = e;
+			}
+
+			//~: close the connection
+			try
+			{
+				HiberSystem.getInstance().closeConnection(co);
+			}
+			catch(Exception e)
+			{
+				if(er == null) er = e;
+			}
+		}
+
+		//?: {has connection error} raise it
+		if(er != null) throw new RuntimeException(
+		  "Can't close database connection when " +
+		  "creating primary keys sequences!", er);
 	}
 
 	protected Type          getKeyType()
 	{
 		return LongType.INSTANCE;
+	}
+
+	/* protected: logging */
+
+	protected String        getLog()
+	{
+		return HiberSystem.LOG_HIBER_SYSTEM;
 	}
 
 	/* private: the binder state */

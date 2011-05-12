@@ -1,0 +1,49 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package = 'com.tverts.endure'>
+
+  <class name = 'UnityType' table = 'core_unity_type' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_unity_type'/>
+
+
+    <!-- Type Name (unique with Type Class) -->
+
+    <property name = 'typeName' not-null = 'true'>
+
+      <column name = 'type_name' length = '512'
+        unique-key = 'ux_core_unity_type_classname'/>
+    </property>
+
+
+    <!-- Type Class -->
+
+    <property name = 'typeClass' not-null = 'true'>
+
+      <column name = 'type_class' length = '512'
+        unique-key = 'ux_core_unity_type_classname'/>
+    </property>
+
+
+    <!-- Type Flag -->
+
+    <property name = 'typeFlag' not-null = 'true' type = 'character'>
+
+      <column name = 'type_flag'/>
+    </property>
+
+
+    <!-- System Flag -->
+
+    <property name = 'systemFlag' not-null = 'true' type = 'character'>
+
+      <column name = 'system_flag'/>
+    </property>
+
+  </class>
+</hibernate-mapping>

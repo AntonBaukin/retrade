@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Stores a list references. May be used as a plain
+ * Stores a list of references. May be used as a plain
  * intermediate level of references tree, or as a
  * base class for aome advanced referencing.
  *

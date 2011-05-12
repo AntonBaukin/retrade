@@ -99,13 +99,22 @@ public class HiberPoint
 		  setSession(session);
 	}
 
-	public void           newPrimaryKey(NumericIdentity instance)
+	public static <O extends NumericIdentity> O
+	                      newPrimaryKey(O instance)
 	{
-		newPrimaryKey(instance, session());
+		HiberPoint.getInstance().
+		  newPrimaryKey(instance, session());
+
+		return instance;
 	}
 
 	public void           newPrimaryKey(NumericIdentity instance, Session session)
 	{
+		//?: {already have primary key} do not force change
+		//!: THIS IS PROTOCOL
+		if(instance.getPrimaryKey() != null)
+			return;
+
 		Object primaryKey = KeysPoint.facadeGenerator().
 		  createPrimaryKey(keysContext(instance, session));
 

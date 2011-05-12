@@ -22,7 +22,7 @@
                     value = 'primary'/>
 
           <property name  = 'generatorClass'
-                    value = 'org.hibernate.id.SequenceHiLoGenerator'/>
+                    value = 'com.tverts.hibery.system.SequenceLongKeysCachingGenerator'/>
 
           <property name  = 'properties'>
             <props>
@@ -31,7 +31,7 @@
                 pkeys_sequence_primary
               </prop>
 
-              <prop key = 'max_lo'>
+              <prop key = 'sequence_increment'>
                 50
               </prop>
 
@@ -52,7 +52,7 @@
                     value = 'other'/>
 
           <property name  = 'generatorClass'
-                    value = 'org.hibernate.id.SequenceHiLoGenerator'/>
+                    value = 'com.tverts.hibery.system.SequenceLongKeysCachingGenerator'/>
 
           <property name  = 'properties'>
             <props>
@@ -61,7 +61,7 @@
                 pkeys_sequence_other
               </prop>
 
-              <prop key = 'max_lo'>
+              <prop key = 'sequence_increment'>
                 100
               </prop>
 

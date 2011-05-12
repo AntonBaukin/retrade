@@ -22,6 +22,11 @@
         <bean class = 'com.tverts.endure.keys.KeysPointActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Automatically creates Unity Types.                        ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'unityTypesActivator'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Initializes system services.                              ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.system.services.InitServicesListener'/>
