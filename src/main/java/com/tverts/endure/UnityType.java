@@ -61,7 +61,7 @@ public class UnityType implements PrimaryIdentity
 		this.systemFlag = systemFlag;
 	}
 
-	/* public: UnityType interface (sypport) */
+	/* public: UnityType interface (support) */
 
 	public boolean   isSystem()
 	{

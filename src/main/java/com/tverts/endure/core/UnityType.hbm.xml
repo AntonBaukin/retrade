@@ -14,35 +14,46 @@
 
     <!-- Type Name (unique with Type Class) -->
 
-    <property name = 'typeName' not-null = 'true'>
+    <property name = 'typeName'>
 
-      <column name = 'type_name' length = '512'
-        unique-key = 'ux_core_unity_type_classname'/>
+      <column name = 'type_name' not-null = 'true'
+        length = '512' unique-key = 'ux_core_unity_type_classname'>
+
+        <comment>The name of the type</comment>
+      </column>
     </property>
 
 
     <!-- Type Class -->
 
-    <property name = 'typeClass' not-null = 'true'>
+    <property name = 'typeClass'>
 
-      <column name = 'type_class' length = '512'
-        unique-key = 'ux_core_unity_type_classname'/>
+      <column name = 'type_class' not-null = 'true'
+        length = '512' unique-key = 'ux_core_unity_type_classname'>
+
+        <comment>FQN of the Java class mapping the type</comment>
+      </column>
     </property>
 
 
     <!-- Type Flag -->
 
-    <property name = 'typeFlag' not-null = 'true' type = 'character'>
+    <property name = 'typeFlag'>
 
-      <column name = 'type_flag'/>
+      <column name = 'type_flag' not-null = 'true'>
+        <comment>Flag of the type: entyty, link, attribute, etc.</comment>
+      </column>
+
     </property>
 
 
     <!-- System Flag -->
 
-    <property name = 'systemFlag' not-null = 'true' type = 'character'>
+    <property name = 'systemFlag'>
 
-      <column name = 'system_flag'/>
+      <column name = 'system_flag' not-null = 'true'>
+        <comment>Flag of a system-defined types (S)</comment>
+      </column>
     </property>
 
   </class>

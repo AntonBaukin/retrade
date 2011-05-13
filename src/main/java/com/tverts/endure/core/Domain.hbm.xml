@@ -1,0 +1,24 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <union-subclass name = 'Domain' extends = 'Entity'
+    table = 'core_domain' lazy = 'false'>
+
+
+    <!-- Domain Name -->
+
+    <property name = 'name'>
+
+      <column name = 'domain_name' not-null = 'true'
+        unique = 'true' length = '512'>
+
+        <comment>Unique name of the domain</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>
