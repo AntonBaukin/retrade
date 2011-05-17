@@ -43,7 +43,7 @@
   <import resource = 'spring/servicesContext.xml'/>
   <import resource = 'spring/listenersContext.xml'/>
   <import resource = 'spring/filtersContext.xml'/>
-  <import resource = 'spring/shuntsContext.xml'/>
   <import resource = 'spring/genesisContext.xml'/>
+  <import resource = 'spring/shuntsContext.xml'/>
 
 </beans>

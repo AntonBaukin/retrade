@@ -16,17 +16,17 @@
     <property name  = 'genesisService' ref = 'genesisService'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Makes all genesis services to be active/inactive.       ·
+     · Makes all genesis services to be active/inactive.         ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'active' value = 'false'/>
   </bean>
 
 
   <!--=================================================
-    =  Self Shunts invocation protocols               =
+    =  Genesis Sphere                                 =
     =================================================-->
 
-  <import resource = 'genesis/genesisWhat.xml'/>
+  <import resource = 'genesis/genesisSpheres.xml'/>
 
 
   <!--=================================================

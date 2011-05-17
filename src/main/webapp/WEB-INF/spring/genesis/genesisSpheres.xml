@@ -1,0 +1,56 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Sphere of Genesis Tests                        =
+    +================================================-->
+
+  <import resource = 'testGenesis.xml'/>
+
+
+  <!--=================================================
+    =  Sphere of Domain Model' Core                   =
+    +================================================-->
+
+  <import resource = 'genDomainCore.xml'/>
+
+
+
+  <!--=================================================
+    =  Default Genesis Spheres                        =
+    +==================================================
+    |
+    |   These Genesis Spheres that would be invoked
+    |   on the Genesis Service startup.
+    |
+    |   Overwrite this file in each module having it's
+    |   own unity types.
+    |
+    +================================================-->
+
+  <bean name  = 'defaultGenesisSpheres'
+        class = 'com.tverts.genesis.GenesisSpheres'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Tests of the Genesis                                      ·
+         ·                                                           ·
+         · WARNING: Shunts Service must be active!                   ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'genesisSphereTests'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Domain Model Core                                         ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'genesisSphereTests'/>
+
+      </list>
+    </property>
+  </bean>
+
+</beans>

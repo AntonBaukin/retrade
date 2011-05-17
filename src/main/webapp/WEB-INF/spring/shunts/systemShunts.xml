@@ -54,13 +54,11 @@
          · As this shunt unit would stop the shunts invocation       ·
          · with critical error, include it for debugging only!       ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <!--
         <bean class = 'com.tverts.shunts.SelfShuntTarget'>
           <property name = 'target'>
             <bean class = 'com.tverts.shunts.ShuntSelfCriticalFailure'/>
           </property>
         </bean>
-        -->
 
         <!-- system:tx:scopes -->
 
