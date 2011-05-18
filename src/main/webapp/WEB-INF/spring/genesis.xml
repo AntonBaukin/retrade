@@ -18,7 +18,7 @@
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Makes all genesis services to be active/inactive.         ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'active' value = 'false'/>
+    <property name = 'active' value = 'true'/>
   </bean>
 
 
@@ -50,7 +50,7 @@
      · on the Genesis Service startup.                           ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name  = 'genesisSpheres'
-              ref   = 'defaultGenesisSpheres'/>
+              ref   = 'genesisSpheres'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Pauses to cooldown the service.                           ·

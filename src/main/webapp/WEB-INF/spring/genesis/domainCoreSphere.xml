@@ -1,0 +1,31 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Sphere of Domain Model' Core                   =
+    +==================================================
+    |
+    |  Genereates test data for data processing on
+    |  entities defined in XRoot module.
+    |
+    +================================================-->
+
+  <bean name  = 'domainCoreSphere'
+        class = 'com.tverts.genesis.GenesisSphere'>
+
+    <!-- the list of genesis units in this sphere -->
+    <constructor-arg>
+      <bean class = 'com.tverts.genesis.GenesisList'>
+        <property name = 'references'>
+          <list>
+
+
+          </list>
+        </property>
+      </bean>
+    </constructor-arg>
+  </bean>
+</beans>

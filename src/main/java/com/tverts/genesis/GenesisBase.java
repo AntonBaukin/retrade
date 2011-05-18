@@ -34,6 +34,18 @@ public abstract class GenesisBase
 		return predicate;
 	}
 
+	public Genesis   clone()
+	{
+		try
+		{
+			return (Genesis)super.clone();
+		}
+		catch(CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
 	public String    getName()
 	{
 		return name;

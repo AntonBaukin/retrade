@@ -30,7 +30,7 @@ import com.tverts.support.LU;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class GenesisUnitBase
+public abstract class GenesisPartBase
        extends        GenesisBase
        implements     GenesisReference
 {
@@ -42,6 +42,11 @@ public abstract class GenesisUnitBase
 		  (super.getCondition());
 	}
 
+	public boolean       isTransactional()
+	{
+		return false;
+	}
+
 	/* public: GenesisReference interface */
 
 	public List<Genesis> dereferObjects()
@@ -49,7 +54,7 @@ public abstract class GenesisUnitBase
 		return Collections.<Genesis> singletonList(this);
 	}
 
-	/* public: GenesisUnitBase properties */
+	/* public: GenesisPartBase properties */
 
 	/**
 	 * Disable the unit not to run

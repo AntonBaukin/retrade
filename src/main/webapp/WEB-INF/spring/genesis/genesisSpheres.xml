@@ -7,15 +7,14 @@
     =  Sphere of Genesis Tests                        =
     +================================================-->
 
-  <import resource = 'testGenesis.xml'/>
+  <import resource = 'genesisTests.xml'/>
 
 
   <!--=================================================
-    =  Sphere of Domain Model' Core                   =
+    =  Genesis Spheres of XRoot module                =
     +================================================-->
 
-  <import resource = 'genDomainCore.xml'/>
-
+  <import resource = 'xrootGenesis.xml'/>
 
 
   <!--=================================================
@@ -30,7 +29,7 @@
     |
     +================================================-->
 
-  <bean name  = 'defaultGenesisSpheres'
+  <bean name  = 'genesisSpheres'
         class = 'com.tverts.genesis.GenesisSpheres'>
 
     <property name = 'references'>
@@ -43,11 +42,7 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'genesisSphereTests'/>
 
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Domain Model Core                                         ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'genesisSphereTests'/>
+        <ref bean = 'xrootGenesisSpheres'/>
 
       </list>
     </property>

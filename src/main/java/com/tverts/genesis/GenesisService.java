@@ -36,13 +36,13 @@ public class   GenesisService
 	 * service's queue before it starts. These instances would
 	 * be run further.
 	 */
-	public GenesisSpheres
+	public GenesisSphereReference
 	               getGenesisSpheres()
 	{
 		return genesisSpheres;
 	}
 
-	public void    setGenesisSpheres(GenesisSpheres spheres)
+	public void    setGenesisSpheres(GenesisSphereReference spheres)
 	{
 		this.genesisSpheres = spheres;
 	}
@@ -108,10 +108,10 @@ public class   GenesisService
 	{
 		super.afterInitService();
 
-		GenesisSpheres spheres = getGenesisSpheres();
+		GenesisSphereReference spheres = getGenesisSpheres();
 		if(spheres == null) return;
 
-		for(GenesisSphere sphere : spheres.createGenesisSpheres())
+		for(GenesisSphere sphere : spheres.dereferObjects())
 			enqueueSphere(sphere);
 	}
 
@@ -142,5 +142,5 @@ public class   GenesisService
 
 	/* private: default genesis references */
 
-	private GenesisSpheres genesisSpheres;
+	private GenesisSphereReference genesisSpheres;
 }

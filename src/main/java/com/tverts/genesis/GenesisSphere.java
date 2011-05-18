@@ -3,7 +3,14 @@ package com.tverts.genesis;
 /* standard Java classes */
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
+
+/* Spring framework */
+
+import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: predicates */
 
@@ -27,12 +34,15 @@ import com.tverts.support.LU;
  */
 public class      GenesisSphere
        extends    GenesisBase
-       implements Genesis, Runnable
+       implements GenesisSphereReference, Runnable
 {
 	/* public: constructor */
 
-	protected GenesisSphere(GenesisReference reference)
+	public GenesisSphere(GenesisReference reference)
 	{
+		if(reference == null)
+			throw new IllegalArgumentException();
+
 		this.reference = reference;
 		this.setCondition(createPredicate());
 	}
@@ -43,42 +53,51 @@ public class      GenesisSphere
 	 * Invokes all the {@link Genesis} units accessed by the
 	 * {@link GenesisReference} given.
 	 *
-	 * Note that this call collects the cleanup tasks in the
-	 * opposite order: the cleanup of the last unit invoked
-	 * would be called the first.
+	 * This call never creates own transactional context.
+	 * Consider {@link #run()} with {@link #isTransactional()}.
+	 *
+	 * This call collects the cleanup tasks in the direct order:
+	 * but they are invoked in the opposite one.
 	 */
-	public Runnable  generate()
+	public Runnable generate()
 	  throws GenesisError
 	{
-		List<Genesis>  gens  =
-		  (reference == null)?(null):(reference.dereferObjects());
+		List<Genesis>  gens  = (reference == null)?(null):
+		  (reference.dereferObjects());
 
 		//?: {has no genesis units}
 		if((gens == null) || gens.isEmpty())
 			return null;
 
-		List<Runnable> tasks = new ArrayList<Runnable>(gens.size());
 		Runnable       task;
 		Predicate      cond;
+		List<Runnable> tasks =     //<-- cleanup tasks
+		  new ArrayList<Runnable>(gens.size());
 
 		//~: invoke the genesis units
 		for(Genesis gen : gens) try
 		{
+			//!: clone the original prototype unit
+			gen = gen.clone();
+
+			//~: check the optional condition
 			cond = gen.getCondition();
 
 			//?: {Genesis condition failed} skip this unit
 			if((cond != null) && !cond.evalPredicate(gen))
 			{
-				logGenConditionFailed(gen);
+				logGenConditionFalse(gen);
 				continue;
 			}
 
+			//!: invoke generation
 			logGenGenerateBefore(gen);
 			task = gen.generate();
 			logGenGenerateSuccess(gen);
 
+			//?: {has cleanup task} save it
 			if(task != null)
-				tasks.add(task);
+				tasks.add(task); //<-- invoked from the tail!
 		}
 		catch(GenesisError e)
 		{
@@ -109,8 +128,40 @@ public class      GenesisSphere
 	 * Any exception raised within the task is thrown
 	 * out after the rollback task had been executed.
 	 */
-	public void      run()
-	  throws RuntimeException
+	public void     run()
+	{
+		//?: {the sphere is transactional}
+		if(isTransactional())
+			doRunTx();
+		else
+			doRun();
+	}
+
+	public boolean  isTransactional()
+	{
+		List<Genesis> gens = (reference == null)?(null):
+		  (reference.dereferObjects());
+
+		//?: {has no genesis units}
+		if(gens == null) return false;
+
+		for(Genesis gen : gens)
+			if(gen.isTransactional())
+				return true;
+
+		return false;
+	}
+
+	/* public: GenesisSphereReference interface */
+
+	public List<GenesisSphere> dereferObjects()
+	{
+		return Collections.singletonList(this);
+	}
+
+	/* protected: invocation prototol */
+
+	public void doRun()
 	{
 		//?: {the condition is false} exit now
 		if(!isAllowed())
@@ -164,7 +215,13 @@ public class      GenesisSphere
 			  logsig()), error);
 	}
 
-	/* protected: cleanup composite */
+	@Transactional
+	public void doRunTx()
+	{
+		doRun();
+	}
+
+	/* protected: composite' cleanup */
 
 	/**
 	 * Creates the {@link Runnable} tasks that invokes all
@@ -173,7 +230,7 @@ public class      GenesisSphere
 	 * While invoking delegates the exception handling to
 	 * {@link #handleCleanupInvokeError(Runnable, Throwable)}.
 	 */
-	protected Runnable  createCleanups(List<Runnable> tasks)
+	protected Runnable createCleanups(List<Runnable> tasks)
 	{
 		return ((tasks == null) || tasks.isEmpty())?(null):
 		  (new CleanupsInvoker(tasks));
@@ -184,13 +241,17 @@ public class      GenesisSphere
 	 * to continue the cleanup {@code true}, or to
 	 * break the cleanups invocation cycle.
 	 */
-	protected boolean   handleCleanupInvokeError
+	protected boolean  handleCleanupInvokeError
 	  (Runnable task, Throwable e)
 	{
 		logCleanupInvokeError(task, e);
 		return true;
 	}
 
+	/**
+	 * Invokes the tasks given in the list from the
+	 * tail to the head of the list.
+	 */
 	protected class CleanupsInvoker implements Runnable
 	{
 		/* public: constructor */
@@ -204,8 +265,12 @@ public class      GenesisSphere
 
 		public void run()
 		{
-			for(Runnable task : tasks) try
+			ListIterator<Runnable> itask = Arrays.asList(tasks).
+			  listIterator(tasks.length);
+
+			for(Runnable task = null;(itask.hasPrevious());) try
 			{
+				task = itask.previous();
 				task.run();
 			}
 			catch(Throwable e)
@@ -219,7 +284,6 @@ public class      GenesisSphere
 				catch(Throwable ee)
 				{
 					//!: ignore this error
-
 					logCleanupInvokeError(e);
 				}
 			}
@@ -364,7 +428,7 @@ public class      GenesisSphere
 		  "the aggregated Genesis Unit.");
 	}
 
-	protected void   logGenConditionFailed(Genesis g)
+	protected void   logGenConditionFalse(Genesis g)
 	{
 		if(!LU.isI(getLog())) return;
 
@@ -402,5 +466,5 @@ public class      GenesisSphere
 
 	/* protected: genesis reference */
 
-	protected GenesisReference reference;
+	protected final GenesisReference reference;
 }

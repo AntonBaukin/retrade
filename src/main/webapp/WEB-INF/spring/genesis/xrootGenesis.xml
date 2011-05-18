@@ -3,8 +3,16 @@
    xsi:schemaLocation = 'http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
+
   <!--=================================================
     =  Sphere of Domain Model' Core                   =
+    +===============================================-->
+
+  <import resource = 'domainCoreSphere.xml'/>
+
+
+  <!--=================================================
+    =  Genesis Spheres of XRoot module                =
     +==================================================
     |
     |  Genereates test data for data processing on
@@ -12,12 +20,12 @@
     |
     +================================================-->
 
-  <bean name  = 'genDomainCore'
-        class = 'com.tverts.genesis.GenesisList'>
-
+  <bean name  = 'xrootGenesisSpheres'
+        class = 'com.tverts.genesis.GenesisSpheres'>
     <property name = 'references'>
       <list>
 
+        <ref bean = 'domainCoreSphere'/>
 
       </list>
     </property>

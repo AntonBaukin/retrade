@@ -19,8 +19,9 @@ public class GenesisError extends Exception
 	       )
 	{
 		super(cause);
-		this.genesis = genesis;
-		this.rollbackTask = rollbackTask;
+
+		this.genesis  = genesis;
+		this.rollback = rollbackTask;
 	}
 
 	/* public: GenesisError interface */
@@ -32,11 +33,11 @@ public class GenesisError extends Exception
 
 	public Runnable getRollbackTask()
 	{
-		return rollbackTask;
+		return rollback;
 	}
 
 	/* private: rollback task */
 
 	private Genesis  genesis;
-	private Runnable rollbackTask;
+	private Runnable rollback;
 }

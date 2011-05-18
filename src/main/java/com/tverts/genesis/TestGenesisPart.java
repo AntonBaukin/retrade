@@ -10,8 +10,8 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
-public class   TestGenesisUnit
-       extends GenesisUnitBase
+public class   TestGenesisPart
+       extends GenesisPartBase
 {
 	/* public: Genesis interface */
 
@@ -41,7 +41,7 @@ public class   TestGenesisUnit
 		return null;
 	}
 
-	/* public: TestGenesisUnit properties */
+	/* public: TestGenesisPart properties */
 
 	public String   getWaitSingleShunt()
 	{

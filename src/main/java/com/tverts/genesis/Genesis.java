@@ -9,16 +9,19 @@ import com.tverts.support.logic.Predicate;
  * to generate something in the database in a more
  * complex manner than just invoke {@link Runnable}.
  *
- * Genesis unit must be stateless. It is forbidden
- * to store in the instance the data related to the
- * generation process being no the parameters.
+ * Genesis unit has an optional condition that defines
+ * whether the instance may be actually invoked.
  *
- * Genesis unit has a condition that defines whether
- * the unit would be actually invoked.
+ * Genesis unit may be a stateful object. It is allowed
+ * to store invocation-dependent state in it.
+ *
+ * To bypass the possible concurrent problems the
+ * prototype instance is cloned. Note that condition
+ * check and the generation are on the same instance.
  *
  * @author anton.baukin@gmail.com
  */
-public interface Genesis
+public interface Genesis extends Cloneable
 {
 	/* public: Genesis interface */
 
@@ -34,13 +37,36 @@ public interface Genesis
 	/**
 	 * Actually generates the data. Returns the optional task
 	 * that would be invoked as a cleanup task after all the
-	 * genesis modules of the system are invoked. The undefined
-	 * result means no cleanup task.
+	 * genesis parts of the same {@link GenesisSphere} instance
+	 * are called.
 	 *
-	 * For the details see {@link GenesisSphere} class.
+	 * The tasks are invoked in the opposite order to the genesis
+	 * parts. If an {@link GenesisError} is invoked, it's cleanup
+	 * task also added (to the top of the stack).
 	 */
 	public Runnable  generate()
 	  throws GenesisError;
+
+	/**
+	 * Returns an operational copy of the original
+	 * (prototype) genesis unit.
+	 */
+	public Genesis   clone();
+
+	/**
+	 * Tells whether the genesis unit works in the
+	 * context of a transaction.
+	 *
+	 * If unit is a part of a Genesis Sphere, all
+	 * the transactional parts are invoked in the
+	 * context of the same transaction.
+	 *
+	 * Note that this method must not depend on the
+	 * generation state of the unit. (But may depend
+	 * on constant parameters.) The method may be
+	 * invoked on the original prototype instance.
+	 */
+	public boolean   isTransactional();
 
 	/**
 	 * Returns the name of this Genesis unit. The name
