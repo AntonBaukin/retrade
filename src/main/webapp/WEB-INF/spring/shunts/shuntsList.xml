@@ -5,32 +5,36 @@
 
 
   <!--=================================================
-    =  Self Shunts Protocols of XRoot module          =
+    =  Self Shunts References                         =
     +================================================-->
 
-  <import resource = 'xrootWhat.xml'/>
+  <import resource = 'xrootShunts.xml'/>
 
 
   <!--=================================================
-    =  Self Shunts Protocols Collection               =
+    =  Self Shunts References                         =
     +==================================================
     |
-    |  The initial protocols to run always when the
-    |  Shunt Service is activated.
+    |   Here references to the shunts (also, shunt
+    |   unit objects directly) are collected.
     |
-    |  You must overwrite this file in the modules
-    |  to run additional shunts.
+    |   Note that it is possible to call subsets of
+    |   shunts. This is based on shunt groups.
+    |
+    |   You must overwrite this file in the modules
+    |   to include additional shunts.
     |
     +================================================-->
 
-  <bean name  = 'selfShuntInitialTasks'
-        class = 'com.tverts.shunts.SelfShuntWhats'>
-    <property name  = 'references'>
+  <bean name  = 'selfShuntsList'
+        class = 'com.tverts.shunts.SelfShuntsList'>
+    <property name = 'references'>
       <list>
 
-        <ref bean = 'xrootShuntWhat'/>
+        <ref bean = 'xrootShuntsList'/>
 
       </list>
     </property>
   </bean>
+
 </beans>

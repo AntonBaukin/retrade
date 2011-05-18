@@ -39,11 +39,11 @@
     =  Web Application related Beans                  =
     =================================================-->
 
-  <import resource = 'spring/hibernateContext.xml'/>
-  <import resource = 'spring/servicesContext.xml'/>
-  <import resource = 'spring/listenersContext.xml'/>
-  <import resource = 'spring/filtersContext.xml'/>
-  <import resource = 'spring/genesisContext.xml'/>
-  <import resource = 'spring/shuntsContext.xml'/>
+  <import resource = 'spring/hibernate.xml'/>
+  <import resource = 'spring/services.xml'/>
+  <import resource = 'spring/listeners.xml'/>
+  <import resource = 'spring/filters.xml'/>
+  <import resource = 'spring/genesis.xml'/>
+  <import resource = 'spring/shunts.xml'/>
 
 </beans>

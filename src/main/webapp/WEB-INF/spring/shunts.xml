@@ -5,6 +5,21 @@
    xsi:schemaLocation = 'http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
+
+  <!--=================================================
+    =  Self Shunts References                         =
+    +================================================-->
+
+  <import resource = 'shunts/shuntsList.xml'/>
+
+
+  <!--=================================================
+    =  Self Shunts Invocation Protocols               =
+    =================================================-->
+
+  <import resource = 'shunts/shuntWhat.xml'/>
+
+
   <!--=================================================
     =  Self Shunt Point                               =
     =================================================-->
@@ -33,36 +48,6 @@
     </property>
   </bean>
 
-
-  <!--=================================================
-    =  Self Shunts invocation protocols               =
-    =================================================-->
-
-  <import resource = 'shunts/shuntWhat.xml'/>
-
-
-  <!--=================================================
-    =  Self Shunts Protocols Collection               =
-    +==================================================
-    |
-    |   The initial protocols to run always when the
-    |   Shunt Service is activated.
-    |
-    +================================================-->
-
-  <bean name  = 'selfShuntInitialTasks'
-        class = 'com.tverts.shunts.SelfShuntWhats'>
-
-    <property name  = 'references'>
-      <list>
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · This collection of initial tasks invoked via HTTP.        ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'selfShuntInitialTasksWeb'/>
-      </list>
-    </property>
-  </bean>
 
   <!--=================================================
     =  Primary Self Shunt Service                     =
@@ -152,39 +137,5 @@
         class = 'com.tverts.shunts.protocol.SelfShuntFilter'>
 
     <property name = 'service' ref = 'selfShuntService'/>
-  </bean>
-
-
-  <!--=================================================
-    =  External Self Shunts References                =
-    =================================================-->
-
-  <import resource = 'shunts/systemShunts.xml'/>
-  <import resource = 'shunts/particularShunts.xml'/>
-
-
-  <!--=================================================
-    =  Self Shunts References                         =
-    +==================================================
-    |
-    |   Here references to the shunts (also, shunt
-    |   unit objects directly) are collected.
-    |
-    |   Note that it is possible to call subsets of
-    |   shunts. This is based on shunt groups.
-    |
-    |   Do not register not system shunt units here:
-    |   put them in 'particularShunts.xml' file.
-    |
-    +================================================-->
-
-  <bean name  = 'selfShuntsList'
-        class = 'com.tverts.shunts.SelfShuntsList'>
-    <property name = 'references'>
-      <list>
-        <ref bean = 'systemShuntsList'/>
-        <ref bean = 'particularShuntsList'/>
-      </list>
-    </property>
   </bean>
 </beans>
