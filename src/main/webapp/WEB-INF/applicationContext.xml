@@ -43,6 +43,8 @@
   <import resource = 'spring/services.xml'/>
   <import resource = 'spring/listeners.xml'/>
   <import resource = 'spring/filters.xml'/>
+  <import resource = 'spring/actions.xml'/>
+
   <import resource = 'spring/genesis.xml'/>
   <import resource = 'spring/shunts.xml'/>
 

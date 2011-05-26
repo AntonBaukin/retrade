@@ -17,4 +17,29 @@ public class   RollbackTransaction
 	{
 		super(cause);
 	}
+
+	/* public: RollbackTransaction interface */
+
+	/**
+	 * Returns the transaction context within the
+	 * exception was raised. Note that the context'
+	 * connection to the persistence resources is
+	 * closed and may not be used.
+	 *
+	 * The context may be not defined.
+	 */
+	public TxContext           getTxContext()
+	{
+		return txContext;
+	}
+
+	public RollbackTransaction setTxContext(TxContext tx)
+	{
+		this.txContext = tx;
+		return this;
+	}
+
+	/* private: transaction context */
+
+	private TxContext txContext;
 }

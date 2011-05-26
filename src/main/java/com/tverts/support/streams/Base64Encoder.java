@@ -10,7 +10,7 @@ import java.io.OutputStream;
  * The origination of this class comes from Base64
  * Java project taken from SourceForge.
  *
- * @author Anton Baukin  (abaukin@mail.ru)
+ * @author Anton Baukin  (anton.baukin@gmail.com)
  * @author Robert Harder (rob@iharder.net) 
  */
 public final class Base64Encoder extends OutputStream

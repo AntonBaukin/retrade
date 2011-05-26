@@ -198,12 +198,15 @@ public class OU
 
 	/* public: logging support */
 
+	/**
+	 * TODO move all logging support from OU to LU
+	 */
 	public static String sig(Object obj)
 	{
 		if(obj == null) return "null";
 
 		return String.format(
-		  "%s#%d",
+		  "%s@%d",
 		  obj.getClass().getSimpleName(),
 		  System.identityHashCode(obj)
 		);

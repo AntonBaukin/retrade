@@ -192,7 +192,7 @@ public abstract class SelfShuntBase
 
 	protected void    doRollback()
 	{
-		TxPoint.getInstance().setRollbackOnly();
+		TxPoint.txContext().setRollbackOnly();
 	}
 
 	/* protected: shunt methods discovery */

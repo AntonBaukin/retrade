@@ -27,38 +27,42 @@ public class TxPoint
 
 	/* public: TxPoint interface */
 
-	public boolean isRollbackOnly()
+	public static TxContext txContext()
 	{
-		return Boolean.TRUE.equals(rollbackOnly.get());
+		return TxPoint.getInstance().getTxContextSctrict();
 	}
 
-	public void    setRollbackFlag()
+	/**
+	 * Gives the global transaction context associated
+	 * with the current request to the system.
+	 */
+	public TxContext        getTxContext()
 	{
-		rollbackOnly.set(Boolean.TRUE);
+		return contexts.get();
 	}
 
-	public void    setRollbackOnly()
+	/**
+	 * Returns the global transaction context if it presents,
+	 * or raises {@link IllegalStateException}.
+	 */
+	public TxContext        getTxContextSctrict()
 	{
-		try
-		{
-			TransactionAspectSupport.currentTransactionStatus().
-			  setRollbackOnly();
-		}
-		catch(NoTransactionException e)
-		{
-			throw new IllegalStateException(e);
-		}
+		TxContext tx = contexts.get();
 
-		rollbackOnly.set(Boolean.TRUE);
+		if(tx == null) throw new IllegalStateException();
+		return contexts.get();
 	}
 
-	protected void clearRollbackOnly()
+	protected void          setTxContext(TxContext tx)
 	{
-		rollbackOnly.remove();
+		if(tx == null)
+			contexts.remove();
+		else
+			contexts.set(tx);
 	}
 
 	/* private: rollback only flags */
 
-	private final ThreadLocal<Boolean> rollbackOnly =
-	  new ThreadLocal<Boolean>();
+	private final ThreadLocal<TxContext> contexts =
+	  new ThreadLocal<TxContext>();
 }
