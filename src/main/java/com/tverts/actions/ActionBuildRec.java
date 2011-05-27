@@ -48,11 +48,19 @@ public class ActionBuildRec
 
 	/**
 	 * Tells whether the action building is complete.
-	 * It is true when the action trigger is provided.
+	 * If the flag is set no futher attempts to update
+	 * this record or the aggregated objects may be
+	 * issued by the Actions Subsystem' components.
 	 */
 	public boolean        isComplete()
 	{
-		return (getTrigger() != null);
+		return complete;
+	}
+
+	public ActionBuildRec setComplete()
+	{
+		this.complete = true;
+		return this;
 	}
 
 	/**
@@ -72,8 +80,15 @@ public class ActionBuildRec
 		return context;
 	}
 
+	/**
+	 * Provides the Action Context related to this build.
+	 * Once the context is set it may not be changed.
+	 */
 	public ActionBuildRec setContext(ActionContext context)
 	{
+		if((this.context != null) && (this.context != context))
+			throw new IllegalStateException();
+
 		this.context = context;
 		return this;
 	}
@@ -125,11 +140,14 @@ public class ActionBuildRec
 		return this;
 	}
 
-	/* private: recorded objects */
+	/* private: action build state */
 
 	private ActionTask     initialTask;
 	private ActionContext  context;
 	private ActionTrigger  trigger;
+	private boolean        complete;
+
+	/* private: action build substrategies */
 
 	private ContextCreator contextCreator;
 	private TriggerCreator triggerCreator;

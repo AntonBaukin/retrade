@@ -15,6 +15,13 @@ public interface ActionTask
 
 	public ActionType     getActionType();
 
+	/**
+	 * Returns the central onject this task wants
+	 * to be processed by the actions. Surrounding
+	 * environment may be stored in {@link #getParams()}.
+	 *
+	 * Note that the target may be not defined.
+	 */
 	public Object         getTarget();
 
 	/**

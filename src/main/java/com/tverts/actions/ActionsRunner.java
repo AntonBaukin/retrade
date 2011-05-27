@@ -24,16 +24,15 @@ import com.tverts.support.OU;
 
 
 /**
- * TODO comment ActionTriggerBase
+ * TODO comment ActionsRunner
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class ActionTriggerBase
-       implements     ActionTrigger
+public class ActionsRunner implements ActionTrigger
 {
 	/* public: constructor */
 
-	public ActionTriggerBase(ActionContext context)
+	public ActionsRunner(ActionContext context)
 	{
 		if(context == null)
 			throw new IllegalArgumentException();
@@ -135,7 +134,7 @@ public abstract class ActionTriggerBase
 	  throws Throwable
 	{
 		Iterator<Action> i = getActionContext().
-		  getActionChain().iterator();
+		  getChain().iterator();
 
 		while(i.hasNext())
 			bindAction(i.next());
@@ -146,7 +145,7 @@ public abstract class ActionTriggerBase
 	  throws Throwable
 	{
 		Iterator<Action> i = getActionContext().
-		  getActionChain().iterator();
+		  getChain().iterator();
 
 		while(i.hasNext())
 		{
@@ -162,7 +161,7 @@ public abstract class ActionTriggerBase
 	  throws Throwable
 	{
 		Iterator<Action> i = getActionContext().
-		  getActionChain().iterator();
+		  getChain().iterator();
 
 		while(i.hasNext())
 		{
@@ -177,7 +176,7 @@ public abstract class ActionTriggerBase
 	  throws Throwable
 	{
 		Iterator<Action> i = getActionContext().
-		  getActionChain().iterator();
+		  getChain().iterator();
 
 		while(i.hasNext())
 		{
@@ -353,7 +352,7 @@ public abstract class ActionTriggerBase
 	protected Map        createOpenedActionsMap()
 	{
 		return new IdentityHashMap(
-		  getActionContext().getActionChain().size());
+		  getActionContext().getChain().size());
 	}
 
 	protected Object     createOpener(Action action)
@@ -382,7 +381,7 @@ public abstract class ActionTriggerBase
 	{
 		if(LU.isD(getLog())) LU.D(getLog(),
 		  "started ", logsig(), " with ",
-		  logsig(getActionContext().getActionChain())
+		  logsig(getActionContext().getChain())
 		);
 	}
 

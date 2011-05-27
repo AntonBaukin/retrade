@@ -18,9 +18,9 @@ public interface ActionContext
 	 * Defines the action that had caused this context
 	 * (the actions execution chain).
 	 */
-	public ActionTask  getActionTask();
+	public ActionTask  getTask();
 
-	public ActionChain getActionChain();
+	public ActionChain getChain();
 
 	public ActionTx    getActionTx();
 

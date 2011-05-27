@@ -6,7 +6,7 @@ package com.tverts.actions;
  *
  * @author anton.baukin@gmail.com
  */
-public class ActionBuildersRoot implements ActionBuilder
+public class ActionBuildersRoot extends ActionBuilderSystem
 {
 	/* public: ActionBuilder interface */
 

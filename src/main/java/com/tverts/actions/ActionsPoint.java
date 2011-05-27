@@ -108,12 +108,12 @@ public class ActionsPoint
 		if(context == null)
 			return "action context undefined";
 
-		ActionChain achain = context.getActionChain();
+		ActionChain achain = context.getChain();
 
 		return String.format(
 		  "action context %s with initial %s with queue size %s",
 
-		  OU.sig(context), logsig(context.getActionTask()),
+		  OU.sig(context), logsig(context.getTask()),
 		  (achain == null)?("undefined"):("" + achain.size())
 		);
 	}
