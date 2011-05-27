@@ -56,6 +56,14 @@ public interface Action
 	public ActionTask    getTask();
 
 	/**
+	 * If action does some result (creates and saves instances)
+	 * it is returned here. The result is defined after the
+	 * trigger call. The actual class of the result depends on
+	 * action. It may be a composite structure.
+	 */
+	public Object        getResult();
+
+	/**
 	 * Returns the context bound to this task.
 	 */
 	public ActionContext getContext();

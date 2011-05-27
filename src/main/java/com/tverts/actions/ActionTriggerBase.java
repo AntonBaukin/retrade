@@ -138,7 +138,7 @@ public abstract class ActionTriggerBase
 		  getActionChain().iterator();
 
 		while(i.hasNext())
-			i.next().bind(getActionContext());
+			bindAction(i.next());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -189,6 +189,14 @@ public abstract class ActionTriggerBase
 		}
 	}
 
+	protected void       bindAction(Action action)
+	  throws Throwable
+	{
+		callback(action, ActionPhase.BIND, true, null);
+		action.bind(getActionContext());
+		callback(action, ActionPhase.BIND, false, null);
+	}
+
 	/**
 	 * Openes the action and returns the internal structure
 	 * instance associated with this operation.
@@ -196,9 +204,15 @@ public abstract class ActionTriggerBase
 	protected Object     openAction(Action action)
 	  throws Throwable
 	{
+		Object opener = null;
+
 		try
 		{
+			opener = createOpener(action);
+
+			callback(action, ActionPhase.OPEN, true, opener);
 			action.open();
+			callback(action, ActionPhase.OPEN, false, opener);
 		}
 		catch(ActionError e)
 		{
@@ -210,14 +224,14 @@ public abstract class ActionTriggerBase
 				throw e;
 		}
 
-		return Boolean.TRUE;
+		return opener;
 	}
 
 	protected void       triggerAction(Action action, Object opener)
 	  throws Throwable
 	{
 		//?: {has illegal opener instance}
-		if(!Boolean.TRUE.equals(opener))
+		if(!isOpenerOpened(opener))
 			throw new ActionError("action is not opened").
 			  setAction(action).
 			  setCritical(true).
@@ -225,7 +239,9 @@ public abstract class ActionTriggerBase
 
 		try
 		{
+			callback(action, ActionPhase.TRIGGER, true, opener);
 			action.trigger();
+			callback(action, ActionPhase.TRIGGER, false, opener);
 		}
 		catch(ActionError e)
 		{
@@ -248,17 +264,29 @@ public abstract class ActionTriggerBase
 	  throws Throwable
 	{
 		//?: {wrong open structure instance} exit now
-		if(!Boolean.TRUE.equals(opener)) return;
-		getOpenedActions().put(action, Boolean.FALSE);
+		if(!isOpenerOpened(opener)) return;
+		getOpenedActions().put(action, closeOpener(opener));
 
 		try
 		{
+			callback(action, ActionPhase.CLOSE, true, opener);
 			action.close();
+			callback(action, ActionPhase.CLOSE, true, opener);
 		}
 		catch(Throwable e)
 		{
 			handleCloseError(action, e);
 		}
+	}
+
+	protected void       callback
+	  (Action action, ActionPhase phase, boolean before, Object opener)
+	{
+		ActionCallback ac = action.getTask().getCallback();
+		if(ac == null) return;
+
+		//!: invoke the callback
+		ac.actionCallback(action, phase, before);
 	}
 
 	protected void       handleRunError(ActionPhase phase, Throwable error)
@@ -326,6 +354,21 @@ public abstract class ActionTriggerBase
 	{
 		return new IdentityHashMap(
 		  getActionContext().getActionChain().size());
+	}
+
+	protected Object     createOpener(Action action)
+	{
+		return Boolean.TRUE;
+	}
+
+	protected boolean    isOpenerOpened(Object opener)
+	{
+		return Boolean.TRUE.equals(opener);
+	}
+
+	protected Object     closeOpener(Object opener)
+	{
+		return Boolean.FALSE;
 	}
 
 	/* protected: logging */
