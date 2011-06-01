@@ -61,6 +61,7 @@ public class UnityTypes
 		this.entries   = createEntriesMap();
 	}
 
+
 	/* public: UnityTypes interface */
 
 	public UnityType  getType(Class typeClass, String typeName)
@@ -86,6 +87,26 @@ public class UnityTypes
 		return res;
 	}
 
+	public UnityType  getDistinctType(Class typeClass)
+	{
+		if(typeClass == null)
+			throw new IllegalArgumentException();
+
+		//~> (read lock
+		readLock.lock();
+
+		UnityType res   = null;
+		Entry     entry = entries.get(typeClass);
+
+		if(entry != null)
+			res = entry.getDistinctUnityType();
+
+		//~> read lock)
+		readLock.unlock();
+
+		return res;
+	}
+
 	public Set<Class> getTypesClasses()
 	{
 		//~> (read lock
@@ -100,13 +121,16 @@ public class UnityTypes
 	}
 
 	public Map<String, UnityType>
-	                  getTypes(Class unityClass)
+	                  getTypes(Class typeClass)
 	{
+		if(typeClass == null)
+			throw new IllegalArgumentException();
+
 		//~> (read lock
 		readLock.lock();
 
 		Map<String, UnityType> res   = null;
-		Entry                  entry = entries.get(unityClass);
+		Entry                  entry = entries.get(typeClass);
 
 		if(entry != null)
 			res = entry.getTypes();
@@ -170,6 +194,7 @@ public class UnityTypes
 		writeLock.unlock();
 	}
 
+
 	/* protected: registry entry */
 
 	protected static class Entry
@@ -197,6 +222,12 @@ public class UnityTypes
 		public UnityType getUnityType(String typeName)
 		{
 			return unityTypes.get(typeName);
+		}
+
+		public UnityType getDistinctUnityType()
+		{
+			return (unityTypes.size() != 1)?(null):
+			  (unityTypes.entrySet().iterator().next().getValue());
 		}
 
 		public Map<String, UnityType>

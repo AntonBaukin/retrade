@@ -2,6 +2,7 @@ package com.tverts.actions;
 
 /* standard Java classes */
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 /* com.tverts: support */
@@ -55,6 +56,30 @@ public class ActionsPoint
 
 		return abr.isComplete()?(abr.getTrigger()):(null);
 	}
+
+	public static ActionTrigger action(ActionType atype, Object target)
+	{
+		return action(new ActionTaskStruct(atype).setTarget(target));
+	}
+
+	public ActionTrigger        actionOrNull(ActionType atype, Object target)
+	{
+		return actionOrNull(new ActionTaskStruct(atype).setTarget(target));
+	}
+
+	@SuppressWarnings("unchecked")
+	public ActionTrigger        actionOrNull
+	  (ActionType atype, Object target, Object... params)
+	{
+		HashMap pmap = new HashMap(params.length / 2);
+
+		for(int i = 0;(i < params.length);i += 2)
+			pmap.put(params[i], (i + 1 < params.length)?(params[i + 1]):(null));
+
+		return actionOrNull(new ActionTaskStruct(atype).
+		  setTarget(target).setParams(pmap));
+	}
+
 
 	/* public: ActionsPoint bean interface */
 

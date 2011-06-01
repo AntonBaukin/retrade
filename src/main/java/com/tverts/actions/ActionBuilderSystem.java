@@ -73,7 +73,6 @@ public abstract class ActionBuilderSystem
 	private ContextCreator contextCreator;
 
 
-
 	/* protected: trigger creator strategy */
 
 	protected class TriggerCreatorInternal implements TriggerCreator
@@ -99,6 +98,7 @@ public abstract class ActionBuilderSystem
 
 	private TriggerCreator triggerCreator;
 
+
 	/* protected: factory methods */
 
 	protected ActionTrigger createActionTrigger(ActionBuildRec abr)
@@ -112,7 +112,7 @@ public abstract class ActionBuilderSystem
 
 	protected ActionContext createActionContext(ActionBuildRec abr)
 	{
-		return createActionContext(abr.getInitialTask());
+		return createActionContext(abr.getTask());
 	}
 
 	protected ActionContext createActionContext(ActionTask task)
@@ -139,6 +139,59 @@ public abstract class ActionBuilderSystem
 	protected Map           createActionContextMap(ActionTask task)
 	{
 		return new HashMap(3);
+	}
+
+
+	/* protected: action build support */
+
+	protected boolean isComplete(ActionBuildRec abr)
+	{
+		return abr.isComplete();
+	}
+
+	protected boolean complete(ActionBuildRec abr)
+	{
+		//?: {the action is still not copleted}
+		if(!isComplete(abr))
+			return false;
+
+		//?: {there is no action trigger created} create it here
+		if(abr.getTrigger() == null)
+			abr.setTrigger(createActionTrigger(abr));
+
+		//~: check the completed action validity
+		checkCompleted(abr);
+
+		return true;
+	}
+
+	protected void    checkActionBuildRec(ActionBuildRec abr)
+	{
+		if(abr == null) throw new IllegalArgumentException(
+		  "Action build record is not defined!"
+		);
+
+		checkActionTask(abr.getTask());
+	}
+
+	protected void    checkActionTask(ActionTask task)
+	{
+		if(task == null) throw new IllegalArgumentException(
+		  "Initial Action Task is not defined in the build record!"
+		);
+
+		if(task.getActionType() == null)
+			throw new IllegalArgumentException(
+			  "Action task type is not defined!"
+			);
+	}
+
+	protected void    checkCompleted(ActionBuildRec abr)
+	{
+		//?: {has no action trigger created}
+		if(abr.getTrigger() == null) throw new IllegalStateException(
+		  "Action Build may not ne completed without " +
+		  "Action Trigger instance created!");
 	}
 
 

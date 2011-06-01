@@ -65,8 +65,9 @@ public class ActionBuildRec
 
 	/**
 	 * The initial task that was send to actions system.
+	 * It is always defined.
 	 */
-	public ActionTask     getInitialTask()
+	public ActionTask     getTask()
 	{
 		return initialTask;
 	}

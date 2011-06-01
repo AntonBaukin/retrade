@@ -12,9 +12,9 @@ public class ActionBuildersRoot extends ActionBuilderSystem
 
 	public void buildAction(ActionBuildRec abr)
 	{
-		if(abr == null) throw new IllegalArgumentException();
+		checkActionBuildRec(abr);
 
-		if(abr.isComplete() || (getReference() == null))
+		if((getReference() == null) || complete(abr))
 			return;
 
 		for(ActionBuilder ab : getReference().dereferObjects())
@@ -23,10 +23,11 @@ public class ActionBuildersRoot extends ActionBuilderSystem
 			ab.buildAction(abr);
 
 			//?: {the action build is complete} quit
-			if(abr.isComplete())
+			if(complete(abr))
 				return;
 		}
 	}
+
 
 	/* public: ActionBuildersRoot bean interface */
 

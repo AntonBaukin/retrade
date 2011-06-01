@@ -21,13 +21,27 @@ public class ActionType
 {
 	/* public: system types */
 
-	public static final ActionType S =
-	  new ActionType("save",   Object.class);
+	/**
+	 * Save action type is used to save the instance
+	 * already created. Action builder may also create
+	 * and save automatically related instances.
+	 */
+	public static final ActionType SAVE   =
+	  new ActionType("save", Object.class);
 
-	public static final ActionType U =
+	/**
+	 * Does the same as save type, but the target
+	 * object here is not that to save, but a cause
+	 * object to create, initialize and save the instance
+	 * of the class this action builder is for.
+	 */
+	public static final ActionType CREATE =
+	  new ActionType("create", Object.class);
+
+	public static final ActionType UPDATE =
 	  new ActionType("update", Object.class);
 
-	public static final ActionType D =
+	public static final ActionType DELETE =
 	  new ActionType("delete", Object.class);
 
 

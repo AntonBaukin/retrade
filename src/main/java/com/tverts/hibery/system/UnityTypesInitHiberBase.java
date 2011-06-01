@@ -9,11 +9,15 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 
+/* com.tverts: actions */
+
+import static com.tverts.actions.ActionsPoint.action;
+
 /* com.tverts: endure */
 
 import com.tverts.endure.UnityType;
 import com.tverts.endure.core.GetUnityType;
-import com.tverts.endure.core.SetUnityType;
+import com.tverts.endure.core.SaveUnityType;
 import com.tverts.endure.core.UnityTypesInitBase;
 
 /* com.tverts: hibery */
@@ -57,7 +61,6 @@ public abstract class UnityTypesInitHiberBase
 	protected void ensureEntries(List<ParseEntry> pes)
 	{
 		GetUnityType getUnityType = bean(GetUnityType.class);
-		SetUnityType setUnityType = bean(SetUnityType.class);
 
 		for(ParseEntry pe : pes)
 		{
@@ -91,7 +94,8 @@ public abstract class UnityTypesInitHiberBase
 			//?: {not saved yet} save it
 			if(pe.unityType.getPrimaryKey() == null)
 			{
-				setUnityType.saveUnityType(pe.unityType);
+				//!: save unity type
+				action(SaveUnityType.SAVE, pe.unityType).run();
 
 				if(LU.isI(getLog())) LU.I(getLog(), String.format(
 				  "Saved new system Unity Type '%s' " +

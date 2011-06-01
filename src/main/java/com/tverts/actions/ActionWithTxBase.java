@@ -13,6 +13,13 @@ import org.hibernate.SessionFactory;
  */
 public abstract class ActionWithTxBase extends ActionBase
 {
+	/* public: constructor */
+
+	public ActionWithTxBase(ActionTask task)
+	{
+		super(task);
+	}
+
 	/* public: ActionWithTxBase interface */
 
 	/**
@@ -53,7 +60,7 @@ public abstract class ActionWithTxBase extends ActionBase
 		ActionTx tx = getActionTx();
 
 		if(tx == null) throw new IllegalStateException(
-		  "action has no effective transaction context");
+		  "Action has no effective transaction context!");
 
 		return tx;
 	}
@@ -68,7 +75,7 @@ public abstract class ActionWithTxBase extends ActionBase
 		Session        s = (f == null)?(null):(f.getCurrentSession());
 
 		if(s == null) throw new IllegalStateException(
-		  "action got undefined Hibernate session (factroy)");
+		  "Action got undefined Hibernate session (or factroy)!");
 
 		return s;
 	}

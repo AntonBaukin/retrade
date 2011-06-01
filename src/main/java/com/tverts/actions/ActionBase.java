@@ -18,27 +18,17 @@ import com.tverts.support.OU;
  */
 public abstract class ActionBase implements Action
 {
-	/* public: Action interface (execution phases) */
+	/* public: constructor */
 
-	public Action clone(ActionTask task)
+	public ActionBase(ActionTask task)
 	{
-		ActionBase res;
+		if(task == null)
+			throw new IllegalArgumentException();
 
-		//~: do standard clone
-		try
-		{
-			res = (ActionBase)super.clone();
-		}
-		catch(CloneNotSupportedException e)
-		{
-			throw new IllegalStateException(e);
-		}
-
-		//~: cleanup the fields
-		cloneCleanup(res);
-
-		return res;
+		this.task = task;
 	}
+
+	/* public: Action interface (execution phases) */
 
 	public void   bind(ActionContext context)
 	{
@@ -84,6 +74,7 @@ public abstract class ActionBase implements Action
 	public void   close()
 	{}
 
+
 	/* public: Action interface (the state access) */
 
 	public ActionTask    getTask()
@@ -107,10 +98,12 @@ public abstract class ActionBase implements Action
 		return this.error;
 	}
 
+
 	/* protected: action trigger phase */
 
 	protected abstract void execute()
 	  throws Throwable;
+
 
 	/* protected: action state & execution support */
 
@@ -141,13 +134,85 @@ public abstract class ActionBase implements Action
 		this.error = error;
 	}
 
-	protected void cloneCleanup(ActionBase clone)
+
+	/* protected: action execution helpers */
+
+	protected Object  targetOrNull()
 	{
-		clone.task     = null;
-		clone.context  = null;
-		clone.features = null;
-		clone.error    = null;
+		return getTask().getTarget();
 	}
+
+	@SuppressWarnings("unchecked")
+	protected <O> O   targetOrNull(Class<O> tclass)
+	{
+		Object res = getTask().getTarget();
+
+		//?: {the target is not defined}
+		if(res == null) return null;
+
+		//?: {has wrong target class}
+		if((tclass != null) && !tclass.isAssignableFrom(res.getClass()))
+			throw new IllegalStateException(String.format(
+			  "Action target [%s] can't be cast to class '%s'",
+			  OU.sig(res), tclass.getName()
+			));
+
+		return (O)getTask().getTarget();
+	}
+
+	protected Object  target()
+	{
+		Object res = getTask().getTarget();
+
+		if(res == null) throw new IllegalStateException(
+		  "Action requires the target instance that is undefined!"
+		);
+
+		return res;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <O> O   target(Class<O> tclass)
+	{
+		Object res = target();
+
+		//?: {has wrong target class}
+		if((tclass != null) && !tclass.isAssignableFrom(res.getClass()))
+			throw new IllegalStateException(String.format(
+			  "Action target [%s] can't be cast to class '%s'",
+			  OU.sig(res), tclass.getName()
+			));
+
+		return (O)getTask().getTarget();
+	}
+
+	protected Object  param(Object name)
+	{
+		return getTask().getParams().get(name);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T   param(Object name, Class<T> pclass)
+	{
+		Object res = getTask().getParams().get(name);
+
+		if((res != null) && (pclass != null) &&
+		   !pclass.isAssignableFrom(res.getClass())
+		  )
+			throw new IllegalStateException(String.format(
+			  "Action asked parameter '%s' as of a class '%s', but actual is '%s'!",
+			  (name == null)?("?undefined?"):(name.toString()),
+			  pclass.getName(), res.getClass().getName()
+			));
+
+		return (T)res;
+	}
+
+	protected boolean flag(Object name)
+	{
+		return Boolean.TRUE.equals(param(name));
+	}
+
 
 	/* protected: logging */
 

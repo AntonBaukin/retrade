@@ -9,9 +9,9 @@ import java.util.Map;
  * form a chain, and invocation is done in
  * the defined order.
  *
- * Actions are prototypes. They are never executed
- * on the original instance. Hence, it is allowed
- * to store executonal state between the phases.
+ * Actions are stateful. It is allowed to store
+ * executonal state between the phases in the
+ * action instance.
  *
  * There are fours execution phases. Bind associates the
  * action with the execution context {@link ActionContext}.
@@ -25,8 +25,6 @@ import java.util.Map;
 public interface Action
 {
 	/* public: Action interface (execution phases) */
-
-	public Action clone(ActionTask task);
 
 	public void   bind(ActionContext context);
 

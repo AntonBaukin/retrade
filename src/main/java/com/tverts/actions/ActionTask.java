@@ -13,6 +13,10 @@ public interface ActionTask
 {
 	/* public: ActionTask interface */
 
+	/**
+	 * Defines the type of the action to execute.
+	 * The type is always defined.
+	 */
 	public ActionType     getActionType();
 
 	/**
