@@ -4,6 +4,7 @@ package com.tverts.actions;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /* com.tverts: support */
 
@@ -67,17 +68,11 @@ public class ActionsPoint
 		return actionOrNull(new ActionTaskStruct(atype).setTarget(target));
 	}
 
-	@SuppressWarnings("unchecked")
 	public ActionTrigger        actionOrNull
 	  (ActionType atype, Object target, Object... params)
 	{
-		HashMap pmap = new HashMap(params.length / 2);
-
-		for(int i = 0;(i < params.length);i += 2)
-			pmap.put(params[i], (i + 1 < params.length)?(params[i + 1]):(null));
-
 		return actionOrNull(new ActionTaskStruct(atype).
-		  setTarget(target).setParams(pmap));
+		  setTarget(target).setParams(collectParams(params)));
 	}
 
 
@@ -97,6 +92,7 @@ public class ActionsPoint
 		if(builder == null) throw new IllegalArgumentException();
 		this.rootBuilder = builder;
 	}
+
 
 	/* public static: logging support */
 
@@ -172,6 +168,20 @@ public class ActionsPoint
 		sb.append("}");
 
 		return sb.toString();
+	}
+
+
+	/* public static: misc helpers  */
+
+	@SuppressWarnings("unchecked")
+	public static Map    collectParams(Object... params)
+	{
+		HashMap pmap = new HashMap(params.length / 2);
+
+		for(int i = 0;(i < params.length);i += 2)
+			pmap.put(params[i], (i + 1 < params.length)?(params[i + 1]):(null));
+
+		return pmap;
 	}
 
 	/* private: root builder reference */

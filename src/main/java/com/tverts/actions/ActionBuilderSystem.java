@@ -20,6 +20,7 @@ import com.tverts.system.tx.TxPoint;
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec.ContextCreator;
+import com.tverts.actions.ActionBuildRec.NestedBuilder;
 import com.tverts.actions.ActionBuildRec.TriggerCreator;
 
 
@@ -36,14 +37,48 @@ public abstract class ActionBuilderSystem
 
 	protected void init(ActionBuildRec abr)
 	{
+		//?: {has no nested builder strategy}
+		if(abr.getNestedBuilder() == null)
+			abr.setNestedBuilder(getNestedBuilder());
+
 		//?: {has no context creator strategy}
 		if(abr.getContextCreator() == null)
 			abr.setContextCreator(getContextCreator());
 
-
 		//?: {has no trigger creator strategy}
 		if(abr.getTriggerCreator() == null)
 			abr.setTriggerCreator(getTriggerCreator());
+	}
+
+
+	/* protected: nested builder */
+
+	protected class NestedBuilderInternal implements NestedBuilder
+	{
+		/* public: NestedBuilder interface */
+
+		public ActionBuildRec nestAction(ActionBuildRec abr, ActionTaskNested task)
+		{
+			if(abr  == null) throw new IllegalArgumentException();
+			if(task == null) throw new IllegalArgumentException();
+
+			ActionBuildRec nabr = abr.clone(task);
+
+			//!: invoke this builder on the nested record
+			ActionBuilderSystem.this.buildAction(nabr);
+			return nabr;
+		}
+	}
+
+	protected NestedBuilder  getNestedBuilder()
+	{
+		return (this.nestedBuilder != null)?(this.nestedBuilder):
+		  (this.nestedBuilder = createNestedBuilder());
+	}
+
+	protected NestedBuilder  createNestedBuilder()
+	{
+		return new NestedBuilderInternal();
 	}
 
 
@@ -70,8 +105,6 @@ public abstract class ActionBuilderSystem
 		return new ContextCreatorInternal();
 	}
 
-	private ContextCreator contextCreator;
-
 
 	/* protected: trigger creator strategy */
 
@@ -95,8 +128,6 @@ public abstract class ActionBuilderSystem
 	{
 		return new TriggerCreatorInternal();
 	}
-
-	private TriggerCreator triggerCreator;
 
 
 	/* protected: factory methods */
@@ -355,4 +386,11 @@ public abstract class ActionBuilderSystem
 			super(tx);
 		}
 	}
+
+
+	/* private: substrategies */
+
+	private NestedBuilder  nestedBuilder;
+	private ContextCreator contextCreator;
+	private TriggerCreator triggerCreator;
 }

@@ -17,7 +17,7 @@ import static com.tverts.actions.ActionsPoint.action;
 
 import com.tverts.endure.UnityType;
 import com.tverts.endure.core.GetUnityType;
-import com.tverts.endure.core.SaveUnityType;
+import com.tverts.endure.core.ActUnityType;
 import com.tverts.endure.core.UnityTypesInitBase;
 
 /* com.tverts: hibery */
@@ -95,7 +95,7 @@ public abstract class UnityTypesInitHiberBase
 			if(pe.unityType.getPrimaryKey() == null)
 			{
 				//!: save unity type
-				action(SaveUnityType.SAVE, pe.unityType).run();
+				action(ActUnityType.SAVE, pe.unityType).run();
 
 				if(LU.isI(getLog())) LU.I(getLog(), String.format(
 				  "Saved new system Unity Type '%s' " +

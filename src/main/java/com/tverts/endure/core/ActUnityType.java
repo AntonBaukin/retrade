@@ -23,7 +23,7 @@ import com.tverts.support.OU;
  *
  * @author anton.baukin@gmail.com
  */
-public class SaveUnityType extends ActionBuilderWithTxBase
+public class ActUnityType extends ActionBuilderWithTxBase
 {
 	/* action types */
 
@@ -49,16 +49,12 @@ public class SaveUnityType extends ActionBuilderWithTxBase
 	protected void saveUnityType(ActionBuildRec abr)
 	{
 		//?: {the target is not a united}
-		if(!(targetOrNull(abr) instanceof UnityType))
-			throw new IllegalStateException(String.format(
-			  "Save Unity Type builder may save only UnityType instances, " +
-			  "but not of the class '%s'", OU.cls(targetOrNull(abr))
-			));
+		checkTargetClass(abr, UnityType.class);
 
 		//~: add action to the chain
 		chain(abr).first(new SavePrimaryIdentified(task(abr)));
 
 		//!: complete the build
-		abr.setComplete();
+		complete(abr);
 	}
 }

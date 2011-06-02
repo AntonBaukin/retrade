@@ -12,9 +12,9 @@ public class      ActionTaskNestedWrapped
 {
 	/* public: constructor */
 
-	public ActionTaskNestedWrapped(ActionTask task, ActionTask outerTask)
+	public ActionTaskNestedWrapped(ActionTask outerTask, ActionTask newTask)
 	{
-		super(task);
+		super(newTask);
 
 		if(outerTask == null) throw new IllegalArgumentException();
 		this.outerTask = outerTask;

@@ -5,6 +5,14 @@ package com.tverts.actions;
 import java.util.Collections;
 import java.util.List;
 
+/* com.tverts: actions */
+
+import static com.tverts.actions.ActionsPoint.collectParams;
+
+/* com.tverts: support */
+
+import com.tverts.support.OU;
+
 
 /**
  * This implementation of {@link ActionBuilder} provides
@@ -22,7 +30,96 @@ public abstract class ActionBuilderBase
 		return Collections.<ActionBuilder> singletonList(this);
 	}
 
+
+	/* protected: nested actions invocation */
+
+	protected ActionBuildRec nest(ActionBuildRec abr, ActionTaskNested task)
+	{
+		//?: {has no nested builder}
+		if(abr.getNestedBuilder() == null)
+			throw new IllegalStateException(String.format(
+			  "Action Builder got record without Nested Builder strategy " +
+			  "callback and can't build action task [%s]!",
+			  ActionsPoint.logsig(task)
+			));
+
+		//!: invoke the nested builder
+		return abr.getNestedBuilder().nestAction(abr, task);
+	}
+
+	/**
+	 * Nests the task as {@link #nest(ActionBuildRec, ActionTaskNested)}
+	 * does, and checks whether the action build record is complete.
+	 * If not, {@link IllegalStateException} is raised.
+	 */
+	protected ActionBuildRec xnest(ActionBuildRec abr, ActionTaskNested task)
+	{
+		ActionBuildRec nabr = nest(abr, task);
+
+		//?: {the action build is not complete}
+		if(!nabr.isComplete())
+			throw new IllegalStateException(String.format(
+			  "Action Builder had invoked Nested Builder strategy on the " +
+			  "task [%s], but the build with not complete as required!",
+			  ActionsPoint.logsig(task)
+			));
+
+		return nabr;
+	}
+
+	protected ActionBuildRec nest
+	  (ActionBuildRec abr, ActionType atype, Object target)
+	{
+		return this.nest(abr, new ActionTaskNestedWrapped(abr.getTask(),
+		  new ActionTaskStruct(atype).setTarget(target).
+		    setTx(abr.getTask().getTx())
+		));
+	}
+
+	protected ActionBuildRec xnest
+	  (ActionBuildRec abr, ActionType atype, Object target)
+	{
+		return this.xnest(abr, new ActionTaskNestedWrapped(abr.getTask(),
+		  new ActionTaskStruct(atype).setTarget(target).
+		    setTx(abr.getTask().getTx())
+		));
+	}
+
+	protected ActionBuildRec nest
+	  (ActionBuildRec abr, ActionType atype, Object target, Object... params)
+	{
+		return this.nest(abr, new ActionTaskNestedWrapped(abr.getTask(),
+		  new ActionTaskStruct(atype).setTarget(target).
+		    setParams(collectParams(params)).setTx(abr.getTask().getTx())
+		));
+	}
+
+	protected ActionBuildRec xnest
+	  (ActionBuildRec abr, ActionType atype, Object target, Object... params)
+	{
+		return this.xnest(abr, new ActionTaskNestedWrapped(abr.getTask(),
+		  new ActionTaskStruct(atype).setTarget(target).
+		    setParams(collectParams(params)).setTx(abr.getTask().getTx())
+		));
+	}
+
 	/* protected: action system support */
+
+	protected void          complete(ActionBuildRec abr)
+	{
+		//~: mark the record as completed
+		abr.setComplete();
+
+		//?: {has no action trigger} crete it
+		if(abr.getTrigger() == null)
+			createActionTrigger(abr);
+	}
+
+	protected void          createActionTrigger(ActionBuildRec abr)
+	{
+		if(abr.getTriggerCreator() != null)
+			abr.setTrigger(abr.getTriggerCreator().createTrigger(abr));
+	}
 
 	/**
 	 * Returns the action context recorded, or creates and sets
@@ -88,6 +185,22 @@ public abstract class ActionBuilderBase
 		);
 
 		return res;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void          checkTargetClass(ActionBuildRec abr, Class tclass)
+	{
+		if(tclass == null) throw new IllegalArgumentException();
+
+		Object target = targetOrNull(abr);
+		Class  tarcls = (target == null)?(null):(target.getClass());
+
+		//?: {the target is not a requested class}
+		if((tarcls == null) || !tclass.isAssignableFrom(tarcls))
+			throw new IllegalStateException(String.format(
+			  "Action Builder expects (defined) target of class '%s', " +
+			  "but not of the class '%s'", tclass.getName(), OU.cls(tarcls)
+			));
 	}
 
 	/* protected: various build helpers */

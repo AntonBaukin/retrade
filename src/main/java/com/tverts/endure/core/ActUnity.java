@@ -25,7 +25,7 @@ import com.tverts.support.OU;
  *
  * @author anton.baukin@gmail.com
  */
-public class CreateUnity extends ActionBuilderWithTxBase
+public class ActUnity extends ActionBuilderWithTxBase
 {
 	/* action types */
 
@@ -68,7 +68,7 @@ public class CreateUnity extends ActionBuilderWithTxBase
 	 * By default the new Unity instance is not saved.
 	 */
 	public static final String FORCE_SAVE =
-	  CreateUnity.class.getName() + ": force save";
+	  ActUnity.class.getName() + ": force save";
 
 	/**
 	 * This boolean flag tells not to assign the
@@ -78,7 +78,7 @@ public class CreateUnity extends ActionBuilderWithTxBase
 	 * only when the target has no unity assigned.
 	 */
 	public static final String NOT_ASSIGN =
-	  CreateUnity.class.getName() + ": not assign";
+	  ActUnity.class.getName() + ": not assign";
 
 
 	/* public: ActionBuilder interface */
@@ -95,17 +95,13 @@ public class CreateUnity extends ActionBuilderWithTxBase
 	protected void createUnityAction(ActionBuildRec abr)
 	{
 		//?: {the target is not a united}
-		if(!(targetOrNull(abr) instanceof United))
-			throw new IllegalStateException(String.format(
-			  "Can't create Unity instance for not a United target, but [%s].",
-			  OU.cls(targetOrNull(abr))
-			));
+		checkTargetClass(abr, United.class);
 
 		//~: add action to the chain
 		chain(abr).first(new CreateUnityAction(task(abr)));
 
 		//!: complete the build
-		abr.setComplete();
+		complete(abr);
 	}
 
 	/* public: set unity action */

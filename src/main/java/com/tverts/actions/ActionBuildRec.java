@@ -21,6 +21,19 @@ public class ActionBuildRec
 	/* public: callbacks to action system */
 
 	/**
+	 * Callback to invoke Action Build System on
+	 * the nested task.
+	 *
+	 * This callback must be always defined.
+	 */
+	public static interface NestedBuilder
+	{
+		/* public: NestedBuilder interface */
+
+		public ActionBuildRec nestAction(ActionBuildRec abr, ActionTaskNested task);
+	}
+
+	/**
 	 * If particular action builder does not need
 	 * action context with own (extended) implementation,
 	 * it creates the default one with this callback.
@@ -110,6 +123,21 @@ public class ActionBuildRec
 	}
 
 	/**
+	 * Action system strategy callback to build nested action tasks.
+	 * It is always specified by the action system components.
+	 */
+	public NestedBuilder  getNestedBuilder()
+	{
+		return nestedBuilder;
+	}
+
+	public ActionBuildRec setNestedBuilder(NestedBuilder nestedBuilder)
+	{
+		this.nestedBuilder = nestedBuilder;
+		return this;
+	}
+
+	/**
 	 * Returns the action context creator strategy.
 	 * It is always installed by the action system components.
 	 */
@@ -141,6 +169,20 @@ public class ActionBuildRec
 		return this;
 	}
 
+	public ActionBuildRec clone(ActionTask task)
+	{
+		ActionBuildRec copy = new ActionBuildRec(task);
+
+		copy.context = this.getContext();
+		copy.trigger = this.getTrigger();
+
+		copy.nestedBuilder  = this.getNestedBuilder();
+		copy.contextCreator = this.getContextCreator();
+		copy.triggerCreator = this.getTriggerCreator();
+
+		return copy;
+	}
+
 	/* private: action build state */
 
 	private ActionTask     initialTask;
@@ -150,6 +192,7 @@ public class ActionBuildRec
 
 	/* private: action build substrategies */
 
+	private NestedBuilder  nestedBuilder;
 	private ContextCreator contextCreator;
 	private TriggerCreator triggerCreator;
 }
