@@ -58,20 +58,19 @@ public class   SelfShuntService
 
 	public boolean isActiveService()
 	{
-		return SelfShuntPoint.getInstance().isActive() &&
+		return super.isActiveService() &&
 		  (getRequestsHandler() != null) &&
 		  (getReportConsumer()  != null);
 	}
 
-	/* public: SelfShuntService primary interface */
+	/* public: SelfShuntService (primary) interface */
 
 	/**
 	 * Adds the Shunt Protocol to the execution queue.
 	 */
 	public void enqueueProtocol(SeShProtocol protocol)
 	{
-		((DequeProvider)this.getTasksProvider()).
-		  appendTask(createProtocolTask(protocol));
+		enqueueTask(createProtocolTask(protocol));
 	}
 
 	/**
@@ -116,7 +115,8 @@ public class   SelfShuntService
 		}
 	}
 
-	/* public: service configuration */
+
+	/* public: SelfShuntService (bean) interface */
 
 	/**
 	 * An instance of {@link SeShRequestsHandler} strategy
@@ -174,6 +174,19 @@ public class   SelfShuntService
 	{
 		this.initialTasks = initialTasks;
 	}
+
+
+	/* protected: QueueExecutorServiceBase interface */
+
+	protected void appendInitialTasks()
+	{
+		SeShProtocolReference pref = getInitialTasks();
+		if(pref == null) return;
+
+		for(SeShProtocol p : pref.dereferObjects())
+			this.enqueueProtocol(p);
+	}
+
 
 	/* protected: processing & report handling */
 
@@ -421,21 +434,6 @@ public class   SelfShuntService
 		protected volatile boolean   closed;
 	}
 
-	/* protected: StatefulServiceBase (state control) */
-
-	/**
-	 * Adds the initial protocols to the queue.
-	 */
-	protected void   afterInitService()
-	{
-		super.afterInitService();
-
-		SeShProtocolReference pref = getInitialTasks();
-
-		if(pref != null)
-			for(SeShProtocol p : pref.dereferObjects())
-				this.enqueueProtocol(p);
-	}
 
 	/* protected: logging */
 
@@ -444,7 +442,7 @@ public class   SelfShuntService
 		return SelfShuntPoint.LOG_SERVICE;
 	}
 
-	protected String logsig(String lang)
+	public String    logsig(String lang)
 	{
 		String one = LANG_RU.equals(lang)?
 		  ("Сервис самошунтирования"):("Self Shunt Service");

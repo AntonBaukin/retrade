@@ -112,21 +112,6 @@ public class SelfShuntPoint
 		this.service = service;
 	}
 
-	/**
-	 * Shared within all Self Shunt Service instances.
-	 * Tells whether they may run the shunts. If not,
-	 * the services would not be active.
-	 */
-	public boolean          isActive()
-	{
-		return active;
-	}
-
-	public void             setActive(boolean active)
-	{
-		this.active = active;
-	}
-
 	public SelfShuntsSet    getShuntsSet()
 	{
 		return shuntsSet;
@@ -147,6 +132,4 @@ public class SelfShuntPoint
 
 	private SelfShuntsSet    shuntsSet =
 	  new SelfShuntsRefsSet();
-
-	private boolean          active    = true;
 }

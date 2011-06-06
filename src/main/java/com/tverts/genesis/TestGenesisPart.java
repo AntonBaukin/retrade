@@ -48,6 +48,10 @@ public class   TestGenesisPart
 		return waitSingleShunt;
 	}
 
+	/**
+	 * WARNING: see {@link #waitShuntWeb(
+	 *   com.tverts.shunts.protocol.SeShRequestInitial)}.
+	 */
 	public void     setWaitSingleShunt(String s)
 	{
 		this.waitSingleShunt = SU.s2s(s);
@@ -58,6 +62,10 @@ public class   TestGenesisPart
 		return waitShuntGroups;
 	}
 
+	/**
+	 * WARNING: see {@link #waitShuntWeb(
+	 *   com.tverts.shunts.protocol.SeShRequestInitial)}.
+	 */
 	public void     setWaitShuntGroupsStr(String g)
 	{
 		this.waitShuntGroups = SU.s2a(g);

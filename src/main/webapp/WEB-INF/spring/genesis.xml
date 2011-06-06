@@ -14,11 +14,6 @@
      · Genesis Service used by default in this Point.            ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name  = 'genesisService' ref = 'genesisService'/>
-
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Makes all genesis services to be active/inactive.         ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'active' value = 'true'/>
   </bean>
 
 
@@ -36,6 +31,8 @@
   <bean name  = 'genesisService'
         class = 'com.tverts.genesis.GenesisService'>
 
+    <property name  = 'active' value = 'true'/>
+
     <property name  = 'serviceName'
               value = 'genesisService'/>
 
@@ -51,6 +48,12 @@
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name  = 'genesisSpheres'
               ref   = 'genesisSpheres'/>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Synchronization point: notify Self Shunt Service.         ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'serviceSynch'
+              ref   = 'selfShuntServiceSynch'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Pauses to cooldown the service.                           ·

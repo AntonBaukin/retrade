@@ -72,6 +72,11 @@ public abstract class GenesisPartBase
 
 	/* protected: generation support */
 
+	/**
+	 * Waits exeution of single Self Shunt Request with the name given.
+	 *
+	 * WARNING: see {@link #waitShuntWeb(SeShRequestInitial)}.
+	 */
 	protected SelfShuntReport waitShuntWebSingle(String shuntName)
 	  throws InterruptedException
 	{
@@ -79,6 +84,11 @@ public abstract class GenesisPartBase
 		  new SeShRequestSingle(shuntName));
 	}
 
+	/**
+	 * Waits exeution of the named group of Self Shunt Requests.
+	 *
+	 * WARNING: see {@link #waitShuntWeb(SeShRequestInitial)}.
+	 */
 	protected SelfShuntReport waitShuntWebGroups(String... groups)
 	  throws InterruptedException
 	{
@@ -88,6 +98,14 @@ public abstract class GenesisPartBase
 		return this.waitShuntWeb(request);
 	}
 
+	/**
+	 * Waits until Self Shunt Request is executed by Self Shunt Servive.
+	 *
+	 * WARNING: you may call this method only from genesis units
+	 *   that are not within the initial units of the Genesis Service.
+	 *   In default configuration Shunt Service waits the initial
+	 *   generation to complete and is not operating!
+	 */
 	protected SelfShuntReport waitShuntWeb(SeShRequestInitial request)
 	  throws InterruptedException
 	{

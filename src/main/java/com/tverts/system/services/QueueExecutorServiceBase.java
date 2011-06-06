@@ -32,12 +32,44 @@ public abstract class QueueExecutorServiceBase
 		super(tasksProvider);
 	}
 
+
 	/* protected: ExecutorServiceBase interface */
 
 	protected TasksProvider createTasksProvider()
 	{
 		return new DequeProvider();
 	}
+
+	protected void          enqueueTask(Runnable task)
+	{
+		((DequeProvider)getTasksProvider()).
+		  appendTask(task);
+	}
+
+	/* protected: StatefulServiceBase (state control) */
+
+	/**
+	 * Adds the initial tasks to the queue.
+	 */
+	protected void   afterInitService()
+	{
+		super.afterInitService();
+
+		//~: add initial tasks to the queue
+		appendInitialTasks();
+
+		//~: add the task of the service complete notification
+		appendCompleteNotificationTask();
+	}
+
+	protected void   appendInitialTasks()
+	{}
+
+	protected void   appendCompleteNotificationTask()
+	{
+		enqueueTask(new NotifyServiceCompleted());
+	}
+
 
 	/* public static: Queue Task Provider */
 
@@ -48,6 +80,8 @@ public abstract class QueueExecutorServiceBase
 	 */
 	public static class QueueCommand implements Runnable
 	{
+		/* public: Runnable interface */
+
 		public void run()
 		{}
 	}
@@ -59,6 +93,21 @@ public abstract class QueueExecutorServiceBase
 	 */
 	public static class BreakCommand extends QueueCommand
 	{}
+
+	/**
+	 * Add this command to the queue after the initial tasks
+	 * to notify waiting on the Service Synch that this
+	 * service is completed.
+	 */
+	protected class NotifyServiceCompleted extends QueueCommand
+	{
+		/* public: Runnable interface */
+
+		public void run()
+		{
+			notifyServiceCompleted();
+		}
+	}
 
 	public static class DequeProvider implements TasksProvider
 	{
@@ -154,15 +203,23 @@ public abstract class QueueExecutorServiceBase
 
 		/**
 		 * This plain implementation of commands processing
-		 * returns as-is any break command, and for other
-		 * commands returns {@code null}.
+		 * returns as-is any break command, and runs other
+		 * commands, then returns {@code null}.
 		 *
 		 * Result {@code null} means to select the next
 		 * task from the queue (in the main waiting cycle).
 		 */
 		protected Runnable processCommand(QueueCommand cmd)
 		{
-			return (cmd instanceof BreakCommand)?(cmd):(null);
+			//?: {a break command} return it
+			if(cmd instanceof BreakCommand)
+				return cmd;
+
+			//!: invoke the command
+			cmd.run();
+
+			//~: take the next command
+			return null;
 		}
 
 		/* private: the deque */

@@ -50,7 +50,10 @@ public abstract class CycledTaskServiceBase
 		public void run()
 		{
 			if(!openTaskWrapped())
+			{
+				closeTaskWrapped(false);
 				return;
+			}
 
 			//~: execute the task until the service is stopped
 			while(!CycledTaskServiceBase.this.breaked) try
@@ -77,7 +80,7 @@ public abstract class CycledTaskServiceBase
 			//!: exit the task (thread)
 			try
 			{
-				closeTaskWrapped();
+				closeTaskWrapped(true);
 			}
 			catch(Throwable e)
 			{

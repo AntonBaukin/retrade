@@ -216,7 +216,7 @@ public abstract class ServiceBase
 			return ServiceBase.this.getServiceName();
 		}
 
-		public String getServiceSignature()
+		public String  getServiceSignature()
 		{
 			return ServiceBase.this.getServiceSignature();
 		}
@@ -294,7 +294,7 @@ public abstract class ServiceBase
 	 * Returns the logging name of the service in format:
 	 * <tt>service 'name'</tt>.
 	 */
-	protected String logsig(String lang)
+	public String    logsig(String lang)
 	{
 		String one = LANG_RU.equals(lang)?
 		  ("сервис"):("service");
@@ -305,7 +305,7 @@ public abstract class ServiceBase
 		return String.format("%s '%s'", one, two);
 	}
 
-	protected String logsig()
+	public String    logsig()
 	{
 		return this.logsig(LANG_EN);
 	}

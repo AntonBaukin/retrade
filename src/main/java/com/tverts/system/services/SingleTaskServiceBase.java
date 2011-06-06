@@ -8,6 +8,7 @@ import com.tverts.objects.RunnableWrapper;
 
 /* tverts.com: support */
 
+import com.tverts.support.LU;
 import static com.tverts.support.OU.interruptable;
 
 /**
@@ -83,7 +84,7 @@ public abstract class SingleTaskServiceBase
 
 		public ServiceState  startService()
 		{
-			Thread thread = allocateThread(task);
+			this.thread = allocateThread(task);
 			installInterruptor(task, thread);
 			thread.start();
 			return this;
@@ -91,12 +92,28 @@ public abstract class SingleTaskServiceBase
 
 		public ServiceState  stopService()
 		{
+			//TODO gracefully interrupt the thread!
+
+			//!: interrupt the thread
+			if(thread.isAlive()) try
+			{
+				LU.W(getLog(), logsig(),
+				  " !!!: interrupting the thread of the service!");
+
+				thread.interrupt();
+			}
+			catch(Exception e)
+			{
+				LU.E(getLog(), e, logsig());
+			}
+
 			return createInitialState();
 		}
 
 		/* protected: the task */
 
 		protected final Runnable task;
+		protected Thread         thread;
 	}
 
 	protected ServiceState createActiveState(ServiceState state)

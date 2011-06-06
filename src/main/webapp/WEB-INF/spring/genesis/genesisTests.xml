@@ -39,6 +39,13 @@
             </bean>
 
             <!-- waiting single shunt test -->
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · WARNING: waits for Self Shunt Service causes deadlock     ·
+             ·  when that service waits for initial tasks of Genesis!    ·s
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+
+            <!--
             <bean class = 'com.tverts.genesis.TestGenesisPart'>
 
               <property name  = 'name'
@@ -47,8 +54,16 @@
               <property name  = 'waitSingleShunt'
                         value = 'shuntSelfSuccess'/>
             </bean>
+            -->
 
             <!-- waiting group of shunt tests -->
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · WARNING: waits for Self Shunt Service causes deadlock     ·
+             ·  when that service waits for initial tasks of Genesis!    ·s
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+
+            <!--
             <bean class = 'com.tverts.genesis.TestGenesisPart'>
 
               <property name  = 'name'
@@ -57,6 +72,7 @@
               <property name  = 'waitShuntGroupsStr'
                         value = 'system:shunts:success'/>
             </bean>
+            -->
 
           </list>
         </property>

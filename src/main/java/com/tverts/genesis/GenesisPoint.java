@@ -20,6 +20,7 @@ public class GenesisPoint
 	protected GenesisPoint()
 	{}
 
+
 	/* public: log destinations */
 
 	/**
@@ -35,6 +36,7 @@ public class GenesisPoint
 	 */
 	public static final String LOG_SERVICE =
 	  "com.tverts.genesis.GenesisService";
+
 
 	/* public: GenesisPoint access */
 
@@ -52,21 +54,8 @@ public class GenesisPoint
 		this.genesisService = service;
 	}
 
-	public boolean        isActive()
-	{
-		return active;
-	}
-
-	public void           setActive(boolean active)
-	{
-		this.active = active;
-	}
 
 	/* private: genesis service reference */
 
 	private GenesisService genesisService;
-
-	/* private: genesis properties */
-
-	private boolean        active = true;
 }

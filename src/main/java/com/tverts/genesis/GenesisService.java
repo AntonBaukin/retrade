@@ -26,9 +26,11 @@ public class   GenesisService
 
 	public void    enqueueSphere(GenesisSphere sphere)
 	{
-		((DequeProvider)getTasksProvider()).
-		  appendTask(createGenesisTask(sphere));
+		enqueueTask(createGenesisTask(sphere));
 	}
+
+
+	/* public: GenesisService bean interface */
 
 	/**
 	 * {@link GenesisSpheres} installed into the service creates
@@ -47,12 +49,18 @@ public class   GenesisService
 		this.genesisSpheres = spheres;
 	}
 
-	/* public: ServiceBase interface */
 
-	public boolean isActiveService()
+	/* protected: QueueExecutorServiceBase interface */
+
+	protected void appendInitialTasks()
 	{
-		return GenesisPoint.getInstance().isActive();
+		GenesisSphereReference spheres = getGenesisSpheres();
+		if(spheres == null) return;
+
+		for(GenesisSphere sphere : spheres.dereferObjects())
+			enqueueSphere(sphere);
 	}
+
 
 	/* protected: genesis sphere tasks execution */
 
@@ -99,21 +107,6 @@ public class   GenesisService
 		protected final GenesisSphere sphereTask;
 	}
 
-	/* protected: StatefulServiceBase (state control) */
-
-	/**
-	 * Adds the initial protocols to the queue.
-	 */
-	protected void   afterInitService()
-	{
-		super.afterInitService();
-
-		GenesisSphereReference spheres = getGenesisSpheres();
-		if(spheres == null) return;
-
-		for(GenesisSphere sphere : spheres.dereferObjects())
-			enqueueSphere(sphere);
-	}
 
 	/* protected: logging */
 
@@ -122,7 +115,7 @@ public class   GenesisService
 		return GenesisPoint.LOG_SERVICE;
 	}
 
-	protected String logsig(String lang)
+	public String    logsig(String lang)
 	{
 		String one = LO.LANG_RU.equals(lang)?
 		  ("Сервис Генеизса"):("Genesis Service");

@@ -111,8 +111,10 @@ public final class WaitEmptyFlags
 
 	/**
 	 * The same wait as {@link #waitEmptyFlags()},
-	 * but with the timeout. Returns {@code true} if
-	 * wait operation was successful.
+	 * but with the timeout given. If it is zero,
+	 * does not wait and works as 'try-wait'.
+	 *
+	 * Returns {@code true} if wait operation was successful.
 	 */
 	public boolean waitEmptyFlags(long timeout)
 	  throws InterruptedException
@@ -122,7 +124,7 @@ public final class WaitEmptyFlags
 
 		synchronized(mutex)
 		{
-			while(!occupied.isEmpty())
+			if(!occupied.isEmpty() && (timeout != 0L))
 				mutex.wait(timeout);
 			return occupied.isEmpty();
 		}

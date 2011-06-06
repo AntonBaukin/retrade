@@ -79,10 +79,9 @@ public abstract class ExecutorServiceBase
 
 	/* protected: tasks provider support */
 
-	protected abstract TasksProvider
-	                        createTasksProvider();
+	protected abstract TasksProvider createTasksProvider();
 
-	protected TasksProvider getTasksProvider()
+	protected TasksProvider          getTasksProvider()
 	{
 		return tasksProvider;
 	}

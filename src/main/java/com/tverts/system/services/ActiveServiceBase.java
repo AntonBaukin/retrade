@@ -1,12 +1,19 @@
 package com.tverts.system.services;
 
+/* tverts.com: services (mp) */
+
+import com.tverts.system.mp.ServiceSynch;
+
+
 /* tverts.com: objects */
 
 import com.tverts.objects.RunnableWrapper;
 
 /* com.tverts: support */
 
+import com.tverts.support.LU;
 import static com.tverts.support.LO.LANG_RU;
+
 
 /**
  * Basic layer for an active services.
@@ -22,7 +29,7 @@ public abstract class ActiveServiceBase
 {
 	/* public: Service interface */
 
-	public void    waitService()
+	public void         waitService()
 	  throws InterruptedException
 	{
 		this.waitFlags.waitEmptyFlags();
@@ -30,19 +37,35 @@ public abstract class ActiveServiceBase
 
 	/* public: ServiceInfo interface */
 
-	public boolean isActiveService()
+	public boolean      isActiveService()
 	{
-		return true;
+		return this.active;
 	}
 
-	/* public: properties access (bean) */
 
-	public boolean isDaemonService()
+	/* public: ActiveServiceBase bean interface */
+
+	public void         setActive(boolean active)
+	{
+		this.active = active;
+	}
+
+	public ServiceSynch getServiceSynch()
+	{
+		return serviceSynch;
+	}
+
+	public void         setServiceSynch(ServiceSynch serviceSynch)
+	{
+		this.serviceSynch = serviceSynch;
+	}
+
+	public boolean      isDaemonService()
 	{
 		return daemonService;
 	}
 
-	public void    setDaemonService(boolean daemon)
+	public void         setDaemonService(boolean daemon)
 	{
 		this.daemonService = daemon;
 	}
@@ -54,12 +77,12 @@ public abstract class ActiveServiceBase
 	 * the start: different services really operate
 	 * after a small (maybe, random) delay.
 	 */
-	public long    getOpenPause()
+	public long         getOpenPause()
 	{
 		return openPause;
 	}
 
-	public void    setOpenPause(long openPause)
+	public void         setOpenPause(long openPause)
 	{
 		this.openPause = openPause;
 	}
@@ -176,8 +199,62 @@ public abstract class ActiveServiceBase
 	 */
 	protected boolean openTaskWrapped(Runnable task)
 	{
+		//~: set the start flag
 		this.waitFlags.release(WAIT_FLAG_START);
+
+		//~: wait in the synch point
+		try
+		{
+			waitServiceMayStart();
+		}
+		catch(InterruptedException e)
+		{
+			//!: was interrupted may not start
+			return false;
+		}
+
 		return true;
+	}
+
+	/**
+	 * Invoked from {@link #openTaskWrapped(Runnable)}
+	 * after {@link #WAIT_FLAG_START} flag is set.
+	 */
+	protected void    waitServiceMayStart()
+	  throws InterruptedException
+	{
+		ServiceSynch synch = getServiceSynch();
+		if(synch == null) return;
+
+		if(LU.isI(getLog())) LU.I(getLog(), logsig(),
+		  " waits on the synch point ", synch
+		);
+
+		synch.waitServiceMayStart(this);
+
+		if(LU.isI(getLog())) LU.I(getLog(), logsig(),
+		  " wait on synch point completed!"
+		);
+	}
+
+	/**
+	 * Task of an active service may invoke this method
+	 * to indicate that the service is completed.
+	 *
+	 * The point of work when this call is done depends
+	 * on the design and issues of a service. Abstract
+	 * implementations do not invoke it.
+	 */
+	protected void    notifyServiceCompleted()
+	{
+		ServiceSynch synch = getServiceSynch();
+		if(synch == null) return;
+
+		if(LU.isI(getLog())) LU.I(getLog(), logsig(),
+		  " notify is completed on synch point ", synch
+		);
+
+		synch.serviceCompleted(this);
 	}
 
 	/**
@@ -207,11 +284,13 @@ public abstract class ActiveServiceBase
 		public void run()
 		{
 			if(!openTaskWrapped())
+			{
+				closeTaskWrapped(false);
 				return;
+			}
 
 			try
 			{
-
 				getWrappedTask().run();
 			}
 			catch(Throwable e)
@@ -222,7 +301,7 @@ public abstract class ActiveServiceBase
 			{
 				try
 				{
-					closeTaskWrapped();
+					closeTaskWrapped(true);
 				}
 				catch(Throwable e)
 				{
@@ -257,8 +336,8 @@ public abstract class ActiveServiceBase
 		 * Performs the tasks on the thread entry to the task.
 		 *
 		 * Answers {@code false} to exit the task thread immediately.
-		 * In this case opposite call to {@link #closeTaskWrapped()}
-		 * would not be done!
+		 * In this case opposite call to {@link #closeTaskWrapped(boolean)}
+		 * would also be done.
 		 */
 		protected boolean      openTaskWrapped()
 		{
@@ -288,10 +367,10 @@ public abstract class ActiveServiceBase
 		}
 
 		/**
-		 * This method is invoked only is the case when
-		 * {@link #openTaskWrapped()} had returned {@code true}.
+		 * This method is invoked also is the case when
+		 * {@link #openTaskWrapped()} had returned {@code false}.
 		 */
-		protected void         closeTaskWrapped()
+		protected void         closeTaskWrapped(boolean opened)
 		{
 			ActiveServiceBase.this.closeTaskWrapped(this);
 		}
@@ -318,8 +397,15 @@ public abstract class ActiveServiceBase
 		private Object    pauseWaitee;
 	}
 
-	/* protected: service settings */
+
+	/* private: service synchronization */
+
+	private volatile ServiceSynch serviceSynch;
+
+
+	/* private: service settings */
 
 	private long    openPause;
+	private boolean active;
 	private boolean daemonService;
 }

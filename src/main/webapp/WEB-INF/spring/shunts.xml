@@ -33,11 +33,6 @@
     <property name = 'service' ref = 'selfShuntService'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Makes all the shunt services to be active/inactive.       ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'active' value = 'true'/>
-
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Here all the shunts registered in the system are given    ·
      · to the implementation level set of shunts.                ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
@@ -55,6 +50,8 @@
 
   <bean name  = 'selfShuntService'
         class = 'com.tverts.shunts.service.SelfShuntService'>
+
+    <property name  = 'active' value = 'true'/>
 
     <property name  = 'serviceName'
               value = 'selfShuntService'/>
@@ -121,11 +118,29 @@
       <bean class  = 'com.tverts.shunts.reports.SeShReportLogger'/>
     </property>
 
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Synchronization point: wait Genesis Service completes.    ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'serviceSynch'
+              ref   = 'selfShuntServiceSynch'/>
+
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Pauses to cooldown the service.                           ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name  = 'openPause'  value = '5000'/>
     <property name  = 'cyclePause' value = '500'/>
+  </bean>
+
+
+  <bean name  = 'selfShuntServiceSynch'
+        class = 'com.tverts.system.mp.ServiceWaitPointSynch'>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Means waiting for Genesis Service.                        ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'services'
+              ref  = 'genesisService'/>
   </bean>
 
 
