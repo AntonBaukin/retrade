@@ -37,7 +37,8 @@ import static com.tverts.support.SU.sXe;
  * Class name is a FQN of the class, or a simple
  * name.
  *
- * Type name is any string without the entries separator.
+ * Type name is any string without the entries separator:
+ * ';' in this implementation.
  *
  *
  * @author anton.baukin@gmail.com

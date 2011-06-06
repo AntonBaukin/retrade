@@ -49,6 +49,17 @@ public abstract class ActionWithTxBase extends ActionBase
 		this.actionTx = actionTx;
 	}
 
+
+	/* protected: ActionBase interface */
+
+	protected void openValidate()
+	{
+		super.openValidate();
+
+		//?: has no transaction context
+		tx(); //--> throws illegal state
+	}
+
 	/* protected: access transaction context */
 
 	/**

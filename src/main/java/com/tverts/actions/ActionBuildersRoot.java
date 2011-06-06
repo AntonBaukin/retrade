@@ -12,7 +12,11 @@ public class ActionBuildersRoot extends ActionBuilderSystem
 
 	public void buildAction(ActionBuildRec abr)
 	{
+		//~: check the action task
 		checkActionBuildRec(abr);
+
+		//~: initialize the system callbacks
+		init(abr);
 
 		if((getReference() == null) || complete(abr))
 			return;

@@ -100,9 +100,6 @@ public class ActionBuildRec
 	 */
 	public ActionBuildRec setContext(ActionContext context)
 	{
-		if((this.context != null) && (this.context != context))
-			throw new IllegalStateException();
-
 		this.context = context;
 		return this;
 	}

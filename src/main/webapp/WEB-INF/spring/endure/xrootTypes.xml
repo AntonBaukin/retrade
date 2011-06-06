@@ -5,12 +5,29 @@
 
   <!--=================================================
     =  Unity Types for XRoot Module                   =
-    +===============================================-->
+    +==================================================
+    |
+    |  Format of Unity Types encoding:
+    |
+    |    [ALE] class-name type-name;
+    |
+    |   A  attribute type, L  link type,
+    |   E  entity type (default).
+    |
+    +================================================-->
 
   <bean name  = 'xrootUnityTypes'
         class = 'com.tverts.objects.StringBean'>
     <property name = 'string'>
       <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type of Domain                                      ·
+         ·                                                           ·
+         · WARNING: in present implementation only one type          ·
+         ·  for a Domain may be defined!                             ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.core.Domain   Core: Domain;
 
 
       </value>

@@ -1,0 +1,49 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Unity Type Action Bulders                      =
+    +================================================-->
+
+  <import resource = 'unityType.xml'/>
+
+
+  <!--=================================================
+    =  Unity Action Bulders                           =
+    +================================================-->
+
+  <import resource = 'unity.xml'/>
+
+
+  <!--=================================================
+    =  Domain Action Bulders                          =
+    +================================================-->
+
+  <import resource = 'domain.xml'/>
+
+
+  <!--=================================================
+    =  Domain Model Core Actions                      =
+    +==================================================
+    |
+    |  Overwrite this file in module extends actions
+    |  on Domain Core entities.
+    |
+    +================================================-->
+
+  <bean name  = 'coreActionBuilders'
+        class = 'com.tverts.actions.ActionBuildersList'>
+
+    <property name = 'references'>
+      <list>
+
+        <ref bean = 'coreUnityTypesBuilders'/>
+        <ref bean = 'coreUnityBuilders'/>
+        <ref bean = 'coreDomainBuilders'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

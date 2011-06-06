@@ -22,6 +22,11 @@ public interface ActionContext
 
 	public ActionChain getChain();
 
+	/**
+	 * The Action Transaction Context shared between all the
+	 * action of the chain. Note that an action still may has
+	 * it's own context. The shared context may also be undefined.
+	 */
 	public ActionTx    getActionTx();
 
 	/**

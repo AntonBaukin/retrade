@@ -3,24 +3,19 @@
    xsi:schemaLocation = 'http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
+
   <!--=================================================
-    =  Domain Model Core Actions                      =
-    +==================================================
-    |
-    |  Overwrite this file in module extends actions
-    |  on Domain Core entities.
-    |
+    =  Unity Type Action Bulders                      =
     +================================================-->
 
-  <bean name  = 'domainCoreActionBuilders'
-        class = 'com.tverts.actions.ActionBuildersList'>
+  <bean name  = 'coreUnityTypesBuilders'
+        class = 'com.tverts.actions.ActionBuildersDisp'>
 
-    <property name = 'references'>
-      <list>
+    <property name  = 'targetClass'
+              value = 'com.tverts.endure.UnityType'/>
 
-
-
-      </list>
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.core.ActUnityType'/>
     </property>
   </bean>
 </beans>

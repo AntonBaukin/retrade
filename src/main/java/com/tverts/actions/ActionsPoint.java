@@ -115,11 +115,11 @@ public class ActionsPoint
 			return "action task undefined";
 
 		ActionType atype = task.getActionType();
-		String     stype = (atype == null)?(null):(atype.getTypeName());
+		String     stype = (atype == null)?(null):(atype.toString());
 		if(stype == null) stype = "undefined";
 
 		return String.format(
-		  "action task of type %s on target %s",
+		  "action task of type [%s] on target [%s]",
 		  stype, OU.sig(task.getTarget())
 		);
 	}

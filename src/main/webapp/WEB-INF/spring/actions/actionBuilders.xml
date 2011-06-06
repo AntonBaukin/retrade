@@ -8,7 +8,7 @@
     =  Domain Model Core Actions                      =
     +================================================-->
 
-  <import resource = 'domainCore.xml'/>
+  <import resource = 'core.xml'/>
 
 
   <!--=================================================
@@ -29,7 +29,7 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Action builders for Domain Core entities.                 ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'domainCoreActionBuilders'/>
+        <ref bean = 'coreActionBuilders'/>
 
       </list>
     </property>

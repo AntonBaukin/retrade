@@ -115,11 +115,11 @@ public class ActionsRunner implements ActionTrigger
 
 			//2: trigger phase
 			phase = TRIGGER;
-			phaseOpenActions();
+			phaseTriggerActions();
 
 			//3: close phase
 			phase = CLOSE;
-			phaseOpenActions();
+			phaseCloseActions();
 		}
 		catch(Throwable e)
 		{

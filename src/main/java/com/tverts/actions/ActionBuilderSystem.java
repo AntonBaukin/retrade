@@ -151,7 +151,7 @@ public abstract class ActionBuilderSystem
 		return new ActionContextStruct(task);
 	}
 
-	protected ActionChain   createActionChain(ActionTask task)
+	protected ActionChain   createActionChain()
 	{
 		return new ActionChainAsList();
 	}
@@ -159,15 +159,16 @@ public abstract class ActionBuilderSystem
 	protected ActionTx      selectActionTx(ActionTask task)
 	{
 		return (task.getTx() != null)?(task.getTx()):
-		  (createActionTx(task));
+		  (createDefaultActionTx(task));
 	}
 
-	protected ActionTx      createActionTx(ActionTask task)
+	protected ActionTx      createDefaultActionTx(ActionTask task)
 	{
-		return new ActionTxContext(TxPoint.txContext());
+		TxContext tx = TxPoint.getInstance().getTxContext();
+		return (tx == null)?(null):(new ActionTxContext(tx));
 	}
 
-	protected Map           createActionContextMap(ActionTask task)
+	protected Map           createActionContextMap()
 	{
 		return new HashMap(3);
 	}
@@ -236,8 +237,8 @@ public abstract class ActionBuilderSystem
 		public ActionContextStruct(ActionTask task)
 		{
 			this.task     = task;
-			this.chain    = createActionChain(task);
-			this.actionTx = createActionTx(task);
+			this.chain    = createActionChain();
+			this.actionTx = selectActionTx(task);
 		}
 
 		/* public: ActionContext interface */
@@ -260,7 +261,7 @@ public abstract class ActionBuilderSystem
 		public Map         getContext()
 		{
 			return (context != null)?(context):
-			  (context = createActionContextMap(getTask()));
+			  (context = createActionContextMap());
 		}
 
 		public ActionError getError()

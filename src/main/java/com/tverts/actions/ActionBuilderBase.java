@@ -131,7 +131,7 @@ public abstract class ActionBuilderBase
 
 		//?: {the context is not installed} create it
 		if(res == null)
-			res = createContext(abr);
+			abr.setContext(res = createContext(abr));
 
 		//?: {the context could not be created} error
 		if(res == null) throw new IllegalStateException(

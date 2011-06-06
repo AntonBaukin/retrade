@@ -23,10 +23,14 @@ import com.tverts.endure.UnityType;
 import com.tverts.objects.ObjectsReference;
 import com.tverts.objects.StringsReference;
 
+/* com.tverts: system tx */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: support */
 
-import static com.tverts.support.SU.sXs;
 import static com.tverts.support.SU.cat;
+
 
 /**
  * System startup listener that creates and registers
@@ -90,7 +94,19 @@ public class      UnityTypesActivator
 	@Transactional
 	protected void ensureEntries(List<ParseEntry> pes)
 	{
-		super.ensureEntries(pes);
+		//~: push default transaction context
+		TxPoint.getInstance().setTxContext();
+
+		//~: autobuild
+		try
+		{
+			super.ensureEntries(pes);
+		}
+		finally
+		{
+			//!: pop transaction context
+			TxPoint.getInstance().setTxContext(null);
+		}
 	}
 
 	/* private: unity types encoded */

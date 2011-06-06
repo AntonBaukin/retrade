@@ -91,8 +91,8 @@ public class TransactionScopeBean implements Runnable
 	{
 		TxContext tx = TxPoint.getInstance().getTxContext();
 
-		//!: clear the global transaction context
-		TxPoint.getInstance().setTxContext(null);
+		//!: clear the global transaction contexts
+		TxPoint.getInstance().clearTxContexts();
 
 		//?: {has rollback invocation error}
 		if(error instanceof RollbackTransaction)
