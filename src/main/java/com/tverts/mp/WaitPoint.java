@@ -70,7 +70,8 @@ public final class WaitPoint
 	public void    waitOnPoint(Object... except)
 	  throws InterruptedException
 	{
-		this.waitOnPoint(Arrays.asList(except));
+		this.waitOnPoint((except.length == 0)?(null):
+		  (Arrays.asList(except)));
 	}
 
 	/**
@@ -110,7 +111,8 @@ public final class WaitPoint
 	public boolean waitOnPoint(long timeout, Object... except)
 	  throws InterruptedException
 	{
-		return this.waitOnPoint(timeout, Arrays.asList(except));
+		return this.waitOnPoint(timeout,
+		  (except.length == 0)?(null):(Arrays.asList(except)));
 	}
 
 	/**

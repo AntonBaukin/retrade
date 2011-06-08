@@ -87,6 +87,22 @@ public abstract class ActiveServiceBase
 		this.openPause = openPause;
 	}
 
+	/**
+	 * If the service is not a Daemon, on the system stop
+	 * there would be a graceful shutdown thread created
+	 * that interrupts the thread given after this delay
+	 * (milliseconds). By default is 24 sec.
+	 */
+	public long         getShutdownDelay()
+	{
+		return shutdownDelay;
+	}
+
+	public void         setShutdownDelay(long shutdownDelay)
+	{
+		this.shutdownDelay = shutdownDelay;
+	}
+
 	/* protected: active state implementation */
 
 	protected class   ActiveStateBase
@@ -398,6 +414,102 @@ public abstract class ActiveServiceBase
 	}
 
 
+	/* protected: graceful shutdown */
+
+	protected void gracefulyShutdown(Thread thread)
+	{
+		new GracefulShutdown(thread, getShutdownDelay()).
+		  start();
+	}
+
+	protected class GracefulShutdown extends Thread
+	{
+		/* public: constructor */
+
+		public GracefulShutdown(Thread thread, long delay)
+		{
+			if(thread == null) throw new IllegalArgumentException();
+			if(delay < 0L)     throw new IllegalArgumentException();
+
+			this.thread = thread;
+			this.delay  = delay;
+
+			setDaemon(true);
+			setName(String.format(
+			  "graceful-shutdown: %s", thread.getName()
+			));
+		}
+
+		/* public: GracefulShutdown interface */
+
+		public Thread getThread()
+		{
+			return thread;
+		}
+
+		public long   getDelay()
+		{
+			return delay;
+		}
+
+		/* public: Thread interface */
+
+		public void run()
+		{
+			//~: delay the shutdown
+			delay();
+
+			//!: invoke the shutdown
+			shutdown();
+		}
+
+		/* protected: shutdown internals */
+
+		protected void delay()
+		{
+			final Object waitee = new Object();
+
+			if(delay != 0L) try
+			{
+				synchronized(waitee)
+				{
+					waitee.wait(delay);
+				}
+			}
+			catch(Throwable e)
+			{
+				//~: ignore this error
+
+				LU.E(getLog(), e, getName(),
+				  ": unexpected error while waiting the delay!");
+			}
+		}
+
+		protected void shutdown()
+		{
+			if(thread.isAlive() && !thread.isInterrupted()) try
+			{
+				LU.W(getLog(), "!!!: ", getName(),
+				  ": interrupting thread of service [", logsig(), "]");
+
+				thread.interrupt();
+			}
+			catch(Throwable e)
+			{
+				//~: ignore this error
+
+				LU.E(getLog(), e, getName(),
+				  ": unexpected error while waiting the delay!");
+			}
+		}
+
+		/* protected: shutdown goal */
+
+		protected final Thread thread;
+		protected final long   delay;
+	}
+
+
 	/* private: service synchronization */
 
 	private volatile ServiceSynch serviceSynch;
@@ -406,6 +518,7 @@ public abstract class ActiveServiceBase
 	/* private: service settings */
 
 	private long    openPause;
+	private long    shutdownDelay = 24000L; //<-- 24 sec
 	private boolean active;
 	private boolean daemonService;
 }

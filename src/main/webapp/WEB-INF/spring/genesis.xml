@@ -25,7 +25,7 @@
 
 
   <!--=================================================
-    =  Primary Genesis Service                        =
+    =  (Primary) Genesis Service                      =
     =================================================-->
 
   <bean name  = 'genesisService'
@@ -53,13 +53,25 @@
      · Synchronization point: notify Self Shunt Service.         ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name  = 'serviceSynch'
-              ref   = 'selfShuntServiceSynch'/>
+              ref   = 'genesisServiceSynch'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Pauses to cooldown the service.                           ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name  = 'openPause'  value = '15000'/>
     <property name  = 'cyclePause' value = '250'/>
+  </bean>
+
+
+  <!--=================================================
+    =  (Primary) Genesis Service Synch                =
+    =================================================-->
+
+  <bean name  = 'genesisServiceSynch'
+        class = 'com.tverts.system.mp.ServiceWaitSynch'>
+
+    <property name = 'synchBus'
+              ref  = 'servicesSynchPoint'/>
   </bean>
 
 </beans>

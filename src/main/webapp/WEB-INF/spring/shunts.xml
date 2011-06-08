@@ -45,7 +45,7 @@
 
 
   <!--=================================================
-    =  Primary Self Shunt Service                     =
+    =  (Primary) Self Shunt Service                   =
     =================================================-->
 
   <bean name  = 'selfShuntService'
@@ -133,14 +133,21 @@
   </bean>
 
 
+  <!--=================================================
+    =  (Primary) Self Shunt Service Synch             =
+    =================================================-->
+
   <bean name  = 'selfShuntServiceSynch'
-        class = 'com.tverts.system.mp.ServiceWaitPointSynch'>
+        class = 'com.tverts.system.mp.ServiceWaitSynch'>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Means waiting for Genesis Service.                        ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'services'
               ref  = 'genesisService'/>
+
+    <property name = 'synchBus'
+              ref  = 'servicesSynchPoint'/>
   </bean>
 
 

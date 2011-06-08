@@ -6,7 +6,13 @@ import java.util.List;
 
 /* tverts.com: system services */
 
+import com.tverts.system.services.ServiceBase;
 import com.tverts.system.services.ServicesList;
+
+/* tverts.com: support */
+
+import com.tverts.support.OU;
+
 
 /**
  * Singleton point to access the system services configured
@@ -34,6 +40,7 @@ public class   ServicesPoint
 	protected ServicesPoint()
 	{}
 
+
 	/* public: log destinations */
 
 	public static final String LOG_SERVICE_MAIN =
@@ -42,9 +49,18 @@ public class   ServicesPoint
 	public static final String LOG_SERVICE_BOOT =
 	  "com.tverts.system.services.boot";
 
+
 	/* public: log utilities */
 
-	public static void appendServicesList (
+
+	public static String logsig(Service service)
+	{
+		return (service instanceof ServiceBase)
+		  ?(((ServiceBase)service).logsig())
+		  :(OU.sig(service));
+	}
+
+	public static void   appendServicesList (
 	              StringBuilder string,
 	              List<Service> services
 	            )
@@ -56,7 +72,7 @@ public class   ServicesPoint
 			append(service.getServiceInfo().getServiceSignature());
 	}
 
-	public static void appendActiveServicesList (
+	public static void   appendActiveServicesList (
 	              StringBuilder string,
 	              List<Service> services
 	            )

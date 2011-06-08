@@ -8,7 +8,6 @@ import com.tverts.objects.RunnableWrapper;
 
 /* tverts.com: support */
 
-import com.tverts.support.LU;
 import static com.tverts.support.OU.interruptable;
 
 /**
@@ -84,27 +83,28 @@ public abstract class SingleTaskServiceBase
 
 		public ServiceState  startService()
 		{
+			if(thread != null) throw new IllegalStateException(
+			  "Service thrad is already created!"
+			);
+
+			//~: create the thread
 			this.thread = allocateThread(task);
+
+			//~: install the interruptor
 			installInterruptor(task, thread);
+
+			//!: start the thread
 			thread.start();
+
 			return this;
 		}
 
 		public ServiceState  stopService()
 		{
-			//TODO gracefully interrupt the thread!
-
-			//!: interrupt the thread
-			if(thread.isAlive()) try
+			if(!this.thread.isDaemon())
 			{
-				LU.W(getLog(), logsig(),
-				  " !!!: interrupting the thread of the service!");
-
-				thread.interrupt();
-			}
-			catch(Exception e)
-			{
-				LU.E(getLog(), e, logsig());
+				gracefulyShutdown(this.thread);
+				this.thread = null; //<-- remove the reference
 			}
 
 			return createInitialState();
@@ -155,7 +155,7 @@ public abstract class SingleTaskServiceBase
 
 	protected String defineThreadName(Runnable task)
 	{
-		return String.format("service:%s",
+		return String.format("service: %s",
 		  getServiceInfo().getServiceSignature());
 	}
 
