@@ -74,7 +74,7 @@ public class ActionsCollection
 
 			//?: {entity still has no primary key} generate it
 			if(e.getPrimaryKey() == null)
-				HiberPoint.newPrimaryKey(e);
+				HiberPoint.setPrimaryKey(session(), e);
 		}
 
 		protected void doSave()

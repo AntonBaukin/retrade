@@ -16,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tverts.support.logic.Predicate;
 
+/* com.tverts: system tx */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: support */
 
 import com.tverts.support.LO;
@@ -218,7 +222,18 @@ public class      GenesisSphere
 	@Transactional
 	public void doRunTx()
 	{
-		doRun();
+		//~: push default transaction context
+		TxPoint.getInstance().setTxContext();
+
+		try
+		{
+			doRun();
+		}
+		finally
+		{
+			//!: pop transaction context
+			TxPoint.getInstance().setTxContext(null);
+		}
 	}
 
 	/* protected: composite' cleanup */

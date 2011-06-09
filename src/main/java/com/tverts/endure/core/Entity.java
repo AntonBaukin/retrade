@@ -16,22 +16,29 @@ public abstract class Entity implements United
 
 	public Long getPrimaryKey()
 	{
-		return (unity != null)?(unity.getPrimaryKey()):(null);
+		if((primaryKey == null) && (unity != null))
+			primaryKey = unity.getPrimaryKey();
+
+		return primaryKey;
 	}
 
-	public void setPrimaryKey(Long primaryKey)
+	public void setPrimaryKey(Long pk)
 	{
 		//?: {try to undefine the key}
-		if((primaryKey == null) && (unity != null) &&
-		   (unity.getPrimaryKey() != null)
-		  )
-			throw new IllegalArgumentException();
+		if((pk == null) && (getPrimaryKey() != null))
+			throw new IllegalArgumentException(
+			  "Primary key of an Entity may not be set to undefined!"
+			);
 
 		//?: {try to change the key}
-		if((primaryKey != null) && (unity != null) &&
-		   !primaryKey.equals(unity.getPrimaryKey())
+		if((pk != null) && (getPrimaryKey() != null) &&
+		   !pk.equals(unity.getPrimaryKey())
 		  )
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+			  "Primary key of an Entity may not be changed!"
+			);
+
+		this.primaryKey = pk;
 	}
 
 	/* public: United interface */
@@ -43,13 +50,28 @@ public abstract class Entity implements United
 
 	public void  setUnity(Unity unity)
 	{
-		if(unity == null)
-			throw new IllegalArgumentException();
+		//?: {try to undefine the unity}
+		if((this.unity != null) && (unity == null))
+			throw new IllegalArgumentException(
+			  "Unified mirrow of an Entity may not be set to undefined!"
+			);
+
+		//?: {unity is not defined} nothing to do
+		if(unity == null) return;
+
+		//?: {unity has differ primary key}
+		if((getPrimaryKey() != null) && (unity.getPrimaryKey() != null) &&
+		   !getPrimaryKey().equals(unity.getPrimaryKey())
+		  )
+			throw new IllegalArgumentException(
+			  "Unified mirrow of an Entity may not have differ primary key value!"
+			);
 
 		this.unity = unity;
 	}
 
 	/* private: persistent attributes */
 
+	private Long  primaryKey;
 	private Unity unity;
 }

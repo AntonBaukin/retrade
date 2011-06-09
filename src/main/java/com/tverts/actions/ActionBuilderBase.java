@@ -110,9 +110,16 @@ public abstract class ActionBuilderBase
 		//~: mark the record as completed
 		abr.setComplete();
 
-		//?: {has no action trigger} crete it
-		if(abr.getTrigger() == null)
+		//?: {still need to create a trigger} create it here
+		if(isTriggererNeeded(abr))
 			createActionTrigger(abr);
+	}
+
+	protected boolean       isTriggererNeeded(ActionBuildRec abr)
+	{
+		//?: {has no action trigger & not a nested task}
+		return (abr.getTrigger() == null) &&
+		  !(task(abr) instanceof ActionTaskNested);
 	}
 
 	protected void          createActionTrigger(ActionBuildRec abr)

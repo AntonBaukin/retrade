@@ -20,7 +20,7 @@
     <!-- Unity -->
 
     <one-to-one name = 'unity' foreign-key = 'fk_unified_mirrow'
-      constrained = 'true' outer-join = 'false'/>
+      constrained = 'true' outer-join = 'false' cascade = 'save-update'/>
 
   </class>
 </hibernate-mapping>

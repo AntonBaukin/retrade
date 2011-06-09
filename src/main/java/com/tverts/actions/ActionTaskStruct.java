@@ -2,6 +2,7 @@ package com.tverts.actions;
 
 /* standard Java class */
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,7 +41,8 @@ public class ActionTaskStruct implements ActionTask
 
 	public Map            getParams()
 	{
-		return params;
+		return (params != null)?(params):
+		  (params = new HashMap(1));
 	}
 
 	public ActionTx       getTx()

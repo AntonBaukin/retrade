@@ -3,6 +3,13 @@
    xsi:schemaLocation = 'http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
+  <!--=================================================
+    =  Test Domain Generator                          =
+    +===============================================-->
+
+  <bean name  = 'genTestDomain' factory-method = 'getInstance'
+        class = 'com.tverts.endure.core.GenTestDomain'/>
+
 
   <!--=================================================
     =  Sphere of Domain Model' Core                   =
@@ -22,6 +29,7 @@
         <property name = 'references'>
           <list>
 
+            <ref bean = 'genTestDomain'/>
 
           </list>
         </property>

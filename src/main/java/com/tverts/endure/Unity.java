@@ -14,9 +14,19 @@ public class Unity implements PrimaryIdentity
 		return primaryKey;
 	}
 
-	public void setPrimaryKey(Long primaryKey)
+	public void setPrimaryKey(Long pk)
 	{
-		this.primaryKey = primaryKey;
+		if((this.primaryKey != null) && (pk == null))
+			throw new IllegalArgumentException(
+			  "Primary key of Unity may not be set to undefined!"
+			);
+
+		if((this.primaryKey != null) && !this.primaryKey.equals(pk))
+			throw new IllegalArgumentException(
+			  "Primary key of Unity may not be changed!"
+			);
+
+		this.primaryKey = pk;
 	}
 
 	/* public: Unity bean interface */

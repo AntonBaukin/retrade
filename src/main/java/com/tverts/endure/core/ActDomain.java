@@ -37,7 +37,7 @@ public class ActDomain extends ActionBuilderWithTxBase
 
 	/* public: ActionBuilder interface */
 
-	public void buildAction(ActionBuildRec abr)
+	public void    buildAction(ActionBuildRec abr)
 	{
 		if(SAVE.equals(actionType(abr)))
 		{
@@ -62,8 +62,10 @@ public class ActDomain extends ActionBuilderWithTxBase
 		//~: save the domain
 		chain(abr).first(new SavePrimaryIdentified(task(abr)));
 
-		//~: set domain unity
+		//~: set domain unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr));
+
+		complete(abr);
 	}
 
 	protected void ensureDomain(ActionBuildRec abr)

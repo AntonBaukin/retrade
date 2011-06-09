@@ -181,14 +181,21 @@ public abstract class ActionBuilderSystem
 		return abr.isComplete();
 	}
 
+	protected boolean isTriggererNeeded(ActionBuildRec abr)
+	{
+		//?: {there is no action trigger created & not a nested task}
+		return (abr.getTrigger() == null) &&
+		  !(abr.getTask() instanceof ActionTaskNested);
+	}
+
 	protected boolean complete(ActionBuildRec abr)
 	{
 		//?: {the action is still not copleted}
 		if(!isComplete(abr))
 			return false;
 
-		//?: {there is no action trigger created} create it here
-		if(abr.getTrigger() == null)
+		//?: {need the trigger} create it here
+		if(isTriggererNeeded(abr))
 			abr.setTrigger(createActionTrigger(abr));
 
 		//~: check the completed action validity
@@ -221,7 +228,7 @@ public abstract class ActionBuilderSystem
 	protected void    checkCompleted(ActionBuildRec abr)
 	{
 		//?: {has no action trigger created}
-		if(abr.getTrigger() == null) throw new IllegalStateException(
+		if(isTriggererNeeded(abr)) throw new IllegalStateException(
 		  "Action Build may not ne completed without " +
 		  "Action Trigger instance created!");
 	}

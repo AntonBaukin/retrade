@@ -99,16 +99,22 @@ public class HiberPoint
 		  setSession(session);
 	}
 
-	public static <O extends NumericIdentity> O
-	                      newPrimaryKey(O instance)
+	public static void    setPrimaryKey
+	  (Session session, NumericIdentity instance)
 	{
 		HiberPoint.getInstance().
-		  newPrimaryKey(instance, session());
-
-		return instance;
+		  createPrimaryKey(session, instance, false);
 	}
 
-	public void           newPrimaryKey(NumericIdentity instance, Session session)
+	public static  void   setPrimaryKey
+	  (Session session, NumericIdentity instance, boolean fortest)
+	{
+		HiberPoint.getInstance().
+		  createPrimaryKey(session, instance, fortest);
+	}
+
+	public void           createPrimaryKey
+	  (Session session, NumericIdentity instance, boolean fortest)
 	{
 		//?: {already have primary key} do not force change
 		//!: THIS IS PROTOCOL
@@ -120,6 +126,10 @@ public class HiberPoint
 
 		if(!(primaryKey instanceof Long))
 			throw new IllegalStateException();
+
+		//?: {is a test instance}
+		if(fortest)
+			primaryKey = -(Long)primaryKey;
 
 		instance.setPrimaryKey((Long)primaryKey);
 	}

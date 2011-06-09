@@ -129,7 +129,7 @@ public class   GenesisService
 	protected void   logSphereError(Throwable e)
 	{
 		LU.E(getLog(), e, logsig(),
-		  "ERROR ocurred in Genesis Sphere Unit! ",
+		  " ERROR ocurred in Genesis Sphere Unit! ",
 		  "The service continues it's work...");
 	}
 

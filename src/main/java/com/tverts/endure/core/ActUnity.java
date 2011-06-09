@@ -8,6 +8,10 @@ import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionWithTxBase;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.setPrimaryKey;
+
 /* com.tverts: endure */
 
 import com.tverts.endure.United;
@@ -161,7 +165,14 @@ public class ActUnity extends ActionBuilderWithTxBase
 		{
 			Unity res = new Unity();
 
+			//~: take the primaru key from the target
 			res.setPrimaryKey(target(United.class).getPrimaryKey());
+
+			//?: {target has no primary key yet} generate it
+			if(res.getPrimaryKey() == null)
+				setPrimaryKey(session(), res);
+
+			//~: assign the unity type
 			res.setUnityType(getUnityType());
 
 			return res;

@@ -1,5 +1,9 @@
 package com.tverts.support.logs;
 
+/* standard Java classes */
+
+import java.sql.SQLException;
+
 /* Apache Log4J library */
 
 import org.apache.log4j.Logger;
@@ -53,6 +57,12 @@ public class   LogStrategyLog4J
 		protected void    logErr(Logger logger, CharSequence m, Throwable e)
 		{
 			logger.error(m, e);
+
+			while (
+			  (e instanceof SQLException) &&
+			  (((SQLException)e).getNextException() != null)
+			)
+				logger.error(e = ((SQLException)e).getNextException());
 		}
 	}
 
