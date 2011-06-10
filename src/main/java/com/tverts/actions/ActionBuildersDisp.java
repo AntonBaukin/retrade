@@ -1,5 +1,11 @@
 package com.tverts.actions;
 
+/* com.tverts: actions */
+
+import static com.tverts.actions.ActionBuildersRoot.STEP_TASK;
+import static com.tverts.actions.ActionBuildersRoot.STEP_TARGET;
+
+
 /**
  * TODO comment ActionBuildersDisp
  *
@@ -66,6 +72,10 @@ public class ActionBuildersDisp extends ActionBuilderBase
 		if(getTargetClass() == null)
 			return false;
 
+		//?: {this is not the task step}
+		if(!isBuildStep(abr, null) && !isBuildStep(abr, STEP_TASK))
+			return false;
+
 		Class c = abr.getTask().getActionType().getRefClass();
 
 		return isSubclasses()
@@ -82,6 +92,10 @@ public class ActionBuildersDisp extends ActionBuilderBase
 
 		//?: {there is no target instance}
 		if(abr.getTask().getTarget() == null)
+			return false;
+
+		//?: {this is not the target step}
+		if(!isBuildStep(abr, null) && !isBuildStep(abr, STEP_TARGET))
 			return false;
 
 		Class c = abr.getTask().getTarget().getClass();

@@ -57,7 +57,8 @@ public class ActionBuildRec
 		public ActionTrigger createTrigger(ActionBuildRec abr);
 	}
 
-	/* public: build data access */
+
+	/* public: action build state access */
 
 	/**
 	 * Tells whether the action building is complete.
@@ -120,6 +121,42 @@ public class ActionBuildRec
 	}
 
 	/**
+	 * Returns the task that had caused this actions build.
+	 * This is the task provided by the outer user, or the
+	 * nested task requested from some builder via the nesting.
+	 */
+	public ActionTask     getInitialTask()
+	{
+		return initialTask;
+	}
+
+	public void           setInitialTask(ActionTask initialTask)
+	{
+		this.initialTask = initialTask;
+	}
+
+	/**
+	 * There are composite builders exist that do not build
+	 * actions by themself, but delegate this issue to the
+	 * aggregated ones. Build step allows such a builders
+	 * to make several loops of the sub-bulders calling
+	 * providing this distinct marker objects.
+	 *
+	 * @see {@link ActionBuildersRoot}.
+	 */
+	public Object         getBuildStep()
+	{
+		return buildStep;
+	}
+
+	public void           setBuildStep(Object buildStep)
+	{
+		this.buildStep = buildStep;
+	}
+
+	/* public: action build substrategies access */
+
+	/**
 	 * Action system strategy callback to build nested action tasks.
 	 * It is always specified by the action system components.
 	 */
@@ -180,12 +217,15 @@ public class ActionBuildRec
 		return copy;
 	}
 
+
 	/* private: action build state */
 
 	private ActionTask     initialTask;
 	private ActionContext  context;
 	private ActionTrigger  trigger;
+	private Object         buildStep;
 	private boolean        complete;
+
 
 	/* private: action build substrategies */
 

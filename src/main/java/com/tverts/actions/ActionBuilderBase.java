@@ -115,6 +115,14 @@ public abstract class ActionBuilderBase
 			createActionTrigger(abr);
 	}
 
+	protected boolean       isBuildStep(ActionBuildRec abr, Object step)
+	{
+		Object bs = abr.getBuildStep();
+
+		return ((bs == null) && (step == null)) ||
+		  ((bs != null) && bs.equals(step));
+	}
+
 	protected boolean       isTriggererNeeded(ActionBuildRec abr)
 	{
 		//?: {has no action trigger & not a nested task}

@@ -17,6 +17,10 @@ import static com.tverts.actions.ActionsPoint.action;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
+/* com.tverts: support */
+
+import com.tverts.support.LU;
+
 
 /**
  * Generates test domain with the name 'Test Domain'
@@ -84,18 +88,22 @@ public class GenTestDomain extends GenesisHiberPartBase
 	protected void createTestDomain()
 	{
 		//~: search for the test domain
-		this.testDomain = bean(GetDomain.class).getTestDomain();
+		testDomain = bean(GetDomain.class).getTestDomain();
 
 		//?: {it exists} nothing to do
-		if(this.testDomain != null) return;
+		if(testDomain != null) return;
 
 		//~: create and save new instance
-		this.testDomain = new Domain();
-		setPrimaryKey(session(), this.testDomain, true);
-		this.testDomain.setName("Test Domain");
+		testDomain = new Domain();
+		setPrimaryKey(session(), testDomain, true);
+		testDomain.setName("Test Domain");
 
 		//!: do save
-		action(ActDomain.SAVE, this.testDomain).run();
+		action(ActDomain.SAVE, testDomain).run();
+
+		//~: log success
+		if(LU.isI(getLog())) LU.I(getLog(), logsig(),
+		  " had created Test Domain with PK = ", testDomain.getPrimaryKey());
 	}
 
 	protected void ensureTestDomain()
