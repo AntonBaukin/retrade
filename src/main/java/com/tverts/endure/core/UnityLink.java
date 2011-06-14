@@ -26,6 +26,7 @@ public class UnityLink implements United, UnitingLink
 		this.primaryKey = primaryKey;
 	}
 
+
 	/* public: United interface */
 
 	public Unity     getUnity()
@@ -41,6 +42,7 @@ public class UnityLink implements United, UnitingLink
 		if(unity != null)
 			setLinkType(unity.getUnityType());
 	}
+
 
 	/* public: UnitingLink interface */
 
@@ -106,6 +108,31 @@ public class UnityLink implements United, UnitingLink
 	{
 		this.linkHelper = linkHelper;
 	}
+
+
+	/* public: Object interface */
+
+	public boolean equals(Object l)
+	{
+		if(this == l)
+			return true;
+
+		if(!(l instanceof UnityLink))
+			return false;
+
+		Long k0 = this.getPrimaryKey();
+		Long k1 = ((UnityLink)l).getPrimaryKey();
+
+		return (k0 != null) && k0.equals(k1);
+	}
+
+	public int     hashCode()
+	{
+		Long k0 = this.getPrimaryKey();
+
+		return (k0 == null)?(0):(k0.hashCode());
+	}
+
 
 	/* private: persistent attributes */
 

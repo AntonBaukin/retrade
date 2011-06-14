@@ -1,5 +1,11 @@
 package com.tverts.endure;
 
+/* com.tverts: support */
+
+import static com.tverts.support.OU.cls;
+import static com.tverts.support.SU.s2s;
+
+
 /**
  * TODO comment UnityType
  *
@@ -19,6 +25,7 @@ public class UnityType implements PrimaryIdentity
 		this.primaryKey = primaryKey;
 	}
 
+
 	/* public: UnityType bean interface */
 
 	public String getTypeName()
@@ -28,6 +35,8 @@ public class UnityType implements PrimaryIdentity
 
 	public void   setTypeName(String typeName)
 	{
+		if((typeName = s2s(typeName)) == null)
+			throw new IllegalArgumentException();
 		this.typeName = typeName;
 	}
 
@@ -38,6 +47,7 @@ public class UnityType implements PrimaryIdentity
 
 	public void   setTypeClass(Class typeClass)
 	{
+		if(typeClass == null) throw new IllegalArgumentException();
 		this.typeClass = typeClass;
 	}
 
@@ -60,6 +70,7 @@ public class UnityType implements PrimaryIdentity
 	{
 		this.systemFlag = systemFlag;
 	}
+
 
 	/* public: UnityType interface (support) */
 
@@ -116,6 +127,40 @@ public class UnityType implements PrimaryIdentity
 	{
 		setTypeFlag('A');
 		return this;
+	}
+
+
+	/* public: Object interface */
+
+	public boolean   equals(Object t)
+	{
+		if(this == t)
+			return true;
+
+		if(!(t instanceof UnityType))
+			return false;
+
+		Long k0 = this.getPrimaryKey();
+		Long k1 = ((UnityType)t).getPrimaryKey();
+
+		return (k0 != null) && k0.equals(k1);
+	}
+
+	public int       hashCode()
+	{
+		Long k0 = this.getPrimaryKey();
+
+		return (k0 == null)?(0):(k0.hashCode());
+	}
+
+	public String    toString()
+	{
+		return String.format(
+		  "Unity Type [%c%c] '%s' class '%s'",
+
+		  getSystemFlag(), getTypeFlag(),
+		  getTypeName(), cls(getTypeClass())
+		);
 	}
 
 	/* private: persistent attributes */

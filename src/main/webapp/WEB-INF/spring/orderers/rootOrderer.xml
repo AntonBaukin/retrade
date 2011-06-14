@@ -1,0 +1,40 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Domain Model Core Actions                      =
+    +================================================-->
+
+  <import resource = 'xrootOrderers.xml'/>
+
+
+  <!--=================================================
+    =  Root Ordering Strategy                         =
+    +==================================================
+    |
+    |  Overwrite this file in each module that adds
+    |  own ordering strategies.
+    |
+    +================================================-->
+
+  <bean name  = 'rootOrderer'
+        class = 'com.tverts.endure.order.OrderersDisp'>
+
+    <property name = 'reference' ref = 'rootOrdererReferences'/>
+  </bean>
+
+
+  <bean name  = 'rootOrdererReferences'
+        class = 'com.tverts.endure.order.OrderersList'>
+    <property name = 'references'>
+      <list>
+
+        <ref bean = 'xrootOrderers'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

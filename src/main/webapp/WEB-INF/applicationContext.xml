@@ -36,7 +36,7 @@
 
 
   <!--=================================================
-    =  Web Application related Beans                  =
+    =  Application Subsystems                         =
     =================================================-->
 
   <import resource = 'spring/hibernate.xml'/>
@@ -44,6 +44,7 @@
   <import resource = 'spring/listeners.xml'/>
   <import resource = 'spring/filters.xml'/>
   <import resource = 'spring/actions.xml'/>
+  <import resource = 'spring/orderers.xml'/>
 
   <import resource = 'spring/genesis.xml'/>
   <import resource = 'spring/shunts.xml'/>

@@ -29,7 +29,8 @@ public class Unity implements PrimaryIdentity
 		this.primaryKey = pk;
 	}
 
-	/* public: Unity bean interface */
+
+	/* public: Unity (bean) interface */
 
 	public UnityType getUnityType()
 	{
@@ -43,6 +44,43 @@ public class Unity implements PrimaryIdentity
 
 		this.unityType = unityType;
 	}
+
+
+	/* public: Object interface */
+
+	public boolean equals(Object u)
+	{
+		if(this == u)
+			return true;
+
+		if(!(u instanceof Unity))
+			return false;
+
+		Long k0 = this.getPrimaryKey();
+		Long k1 = ((Unity)u).getPrimaryKey();
+
+		return (k0 != null) && k0.equals(k1);
+	}
+
+	public int     hashCode()
+	{
+		Long k0 = this.getPrimaryKey();
+
+		return (k0 == null)?(0):(k0.hashCode());
+	}
+
+	public String  toString()
+	{
+		String pk = (getPrimaryKey() == null)?("unsaved"):
+		  (getPrimaryKey().toString());
+
+		String ut = (getUnityType() == null)
+		  ?("Unity Type undefined")
+		  :(getUnityType().toString());
+
+		return String.format("Unity[%s] with %s", pk, ut);
+	}
+
 
 	/* private: persistent attributes */
 

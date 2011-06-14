@@ -2,6 +2,7 @@ package com.tverts.endure.core;
 
 /* com.tverts: endure */
 
+import com.tverts.endure.PrimaryIdentity;
 import com.tverts.endure.United;
 import com.tverts.endure.Unity;
 
@@ -41,6 +42,7 @@ public abstract class Entity implements United
 		this.primaryKey = pk;
 	}
 
+
 	/* public: United interface */
 
 	public Unity getUnity()
@@ -69,6 +71,31 @@ public abstract class Entity implements United
 
 		this.unity = unity;
 	}
+
+
+	/* public: Object interface */
+
+	public boolean equals(Object e)
+	{
+		if(this == e)
+			return true;
+
+		if(!(e instanceof PrimaryIdentity))
+			return false;
+
+		Long k0 = this.getPrimaryKey();
+		Long k1 = ((PrimaryIdentity)e).getPrimaryKey();
+
+		return (k0 != null) && k0.equals(k1);
+	}
+
+	public int     hashCode()
+	{
+		Long k0 = this.getPrimaryKey();
+
+		return (k0 == null)?(0):(k0.hashCode());
+	}
+
 
 	/* private: persistent attributes */
 
