@@ -5,6 +5,11 @@ package com.tverts.shunts;
 import java.util.Collections;
 import java.util.List;
 
+/* com.tverts: support */
+
+import static com.tverts.support.OU.cloneBest;
+
+
 /**
  * Allows to invoke arbitrary object annotated
  * with {@link SelfShuntUnit} and with
@@ -31,10 +36,29 @@ public class      SelfShuntTarget
 {
 	/* public: SelfShuntReference interface */
 
-	public List<SelfShunt>
-	               dereferObjects()
+	public List<SelfShunt> dereferObjects()
 	{
 		return Collections.<SelfShunt>singletonList(this);
+	}
+
+	/* public: Cloneable interface */
+
+	public SelfShuntTarget clone()
+	{
+		SelfShuntTarget res = (SelfShuntTarget)super.clone();
+
+		//?: {the target is the same}
+		if(res.getTarget() == getTarget())
+		{
+			//~: try to clone the target
+			Object trg = cloneBest(res.getTarget());
+
+			//?: {has the clone} set it
+			if(trg != null)
+				res.setTarget(trg);
+		}
+
+		return res;
 	}
 
 	/* public: SelfShuntTarget interface */

@@ -25,7 +25,9 @@
 
                 system:shunts:success,
 <!--            system:shunts:killme,                               -->
-                system:tx:scopes
+                system:tx:scopes,
+
+                domain:core:order-index
 
               </value>
             </property>

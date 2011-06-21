@@ -78,7 +78,14 @@ public abstract class SeShReportWriteMethodBase
 	  throws IOException
 	{
 		writeShuntStat(o, r);
+
+		L(o, "=====================================");
+		N(o);
+		N(o);
+
 		writeShuntCriticalErrors(o, r);
+		N(o);
+		N(o);
 	}
 
 	protected void writeUnitReport(Writer o, SelfShuntUnitReport ur)
@@ -134,12 +141,12 @@ public abstract class SeShReportWriteMethodBase
 		N(o);
 		N(o);
 		L(o, "/! Self Shunt Task Critical Error !/");
-
+		N(o);
 		L(o, "==== unit: ", ur.getUnitName(),
 		     ", ~> task ",  tr.getTaskName(),
 		     ": "
 		);
-
+		N(o);
 		E(o, tr);
 		N(o);
 	}

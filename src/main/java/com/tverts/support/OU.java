@@ -106,20 +106,34 @@ public class OU
 		return (O)res;
 	}
 
+	public static <O> O  cloneStrict(O obj)
+	{
+		if(obj == null)
+			return null;
+
+		O res = cloneBest(obj);
+
+		if(res == null)
+			throw new IllegalArgumentException(String.format(
+			  "Don't know how to clone the class '%s'!",
+			  obj.getClass().getName()));
+
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <O> O  cloneBest(O obj)
 	{
 		if(obj == null)
 			return null;
 
-		if(obj instanceof Serializable)
-			return (O)cloneDeep((Serializable)obj);
-
 		if(obj instanceof Cloneable)
 			return (O)clone((Cloneable)obj);
 
-		throw new IllegalArgumentException(
-		  "don't know how to clone class " + obj.getClass().getName());
+		if(obj instanceof Serializable)
+			return (O)cloneDeep((Serializable)obj);
+
+		return null;
 	}
 
 	/* public: classes and interfaces */

@@ -47,16 +47,6 @@ public class   SeShReportWriteMethodInfo
 		N(o);
 	}
 
-	protected void closeShuntReport(Writer o, SelfShuntReport r)
-	  throws IOException
-	{
-		writeShuntStat(o, r);
-
-		L(o, "=====================================");
-		N(o);
-		N(o);
-	}
-
 	protected void openUnitReport(Writer o, SelfShuntUnitReport ur)
 	  throws IOException
 	{

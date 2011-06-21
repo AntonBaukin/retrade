@@ -22,11 +22,6 @@ public class OrderPoint
 
 	/* public: OrderPoint interface */
 
-	public static void order(OrderRequest request)
-	{
-		getInstance().setOrderIndex(request);
-	}
-
 	public void        setOrderIndex(OrderRequest request)
 	{
 		if(request == null) throw new IllegalArgumentException();
@@ -39,6 +34,23 @@ public class OrderPoint
 		  "No order index strategy found for the request: " +
 		  request.toString()
 		);
+	}
+
+	public static void order(OrderRequest request)
+	{
+		getInstance().setOrderIndex(request);
+	}
+
+	public static void orderBefore(OrderIndex instance, OrderIndex reference)
+	{
+		getInstance().setOrderIndex(
+		  new OrderRequest(instance, reference).setBeforeAfter(false));
+	}
+
+	public static void orderAfter(OrderIndex instance, OrderIndex reference)
+	{
+		getInstance().setOrderIndex(
+		  new OrderRequest(instance, reference).setBeforeAfter(true));
 	}
 
 	/* public: OrderPoint (bean) interface */

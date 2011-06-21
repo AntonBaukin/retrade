@@ -18,8 +18,8 @@ import com.tverts.support.OU;
  *
  * It does not store the direct reference to that
  * object because the target class is unknown, and
- * not a {@link Unity}. Thats why it ahs just a copy
- * of the target instence' primary key.
+ * not a {@link Unity}. That's why it ahs just a copy
+ * of the target instance' primary key.
  *
  *
  * @author anton.baukin@gmail.com

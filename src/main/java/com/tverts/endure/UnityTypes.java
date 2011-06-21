@@ -195,6 +195,19 @@ public class UnityTypes
 	}
 
 
+	/* public: UnityTypes simplifications */
+
+	public static UnityType unityType(Class typeClass, String typeName)
+	{
+		return getInstance().getType(typeClass, typeName);
+	}
+
+	public static UnityType unityType(Class typeClass)
+	{
+		return getInstance().getDistinctType(typeClass);
+	}
+
+
 	/* protected: registry entry */
 
 	protected static class Entry

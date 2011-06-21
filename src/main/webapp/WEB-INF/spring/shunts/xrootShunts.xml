@@ -11,6 +11,13 @@
 
 
   <!--=================================================
+    =  Self Shunts of the Domain Core                 =
+    +================================================-->
+
+  <import resource = 'domainCore.xml'/>
+
+
+  <!--=================================================
     =  System Self Shunts References                  =
     +==================================================
     |
@@ -27,6 +34,8 @@
          · Run this shunts to test the shunt subsystem works.        ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'systemShuntsSelfTests'/>
+
+        <ref bean = 'shuntsOnDomainCore'/>
 
       </list>
     </property>

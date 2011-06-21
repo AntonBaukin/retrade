@@ -30,6 +30,11 @@
         com.tverts.endure.core.Domain   Core: Domain;
 
 
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · ShuntOrdering {domain:core:order-index}                   ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.order.ExternalOrder Test: Domain: Order Index
+
       </value>
     </property>
   </bean>

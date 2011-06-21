@@ -12,7 +12,8 @@ import com.tverts.shunts.protocol.SeShResponse;
 
 /* com.tverts: support */
 
-import static com.tverts.support.OU.cloneBest;
+import static com.tverts.support.OU.cloneStrict;
+
 
 /**
  * Base class providing implementation for actual
@@ -103,7 +104,7 @@ public abstract class SeShExecutor
 
 	protected SelfShunt             cloneShunt(SelfShunt shunt)
 	{
-		return (SelfShunt)cloneBest(shunt);
+		return cloneStrict(shunt);
 	}
 
 	/**

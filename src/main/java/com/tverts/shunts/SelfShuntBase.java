@@ -18,6 +18,7 @@ import static com.tverts.support.EX.e2en;
 import static com.tverts.support.EX.e2lo;
 import static com.tverts.support.SU.sLo;
 
+
 /**
  * As it is in JUnit library, the shunt units
  * may be defined via inheritance or by the
@@ -135,13 +136,14 @@ public abstract class SelfShuntBase
 		this.rollbackOnly = rollbackOnly;
 	}
 
+
 	/* public: Cloneable interface */
 
-	public Object     clone()
+	public SelfShuntBase clone()
 	{
 		try
 		{
-			return super.clone();
+			return (SelfShuntBase)super.clone();
 		}
 		catch(CloneNotSupportedException e)
 		{

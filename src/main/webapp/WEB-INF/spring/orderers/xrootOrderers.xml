@@ -14,6 +14,17 @@
     <property name = 'references'>
       <list>
 
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Used by ShuntOrdering (TestOrderer).                      ·
+         ·                                                           ·
+         · WARNING: do not change test orderer parameters as their   ·
+         ·  values are assumed in the shunt unit!                    ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.order.TestOrderer'>
+
+          <property name = 'insertStep'  value = '2'/>
+          <property name = 'spreadLimit' value = '4'/>
+        </bean>
 
       </list>
     </property>

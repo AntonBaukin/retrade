@@ -83,27 +83,34 @@ public class GenTestDomain extends GenesisHiberPartBase
 	}
 
 
-	/* protected: test domain generation & verification*/
+	/* protected: test domain generation & verification */
+
+	protected void setTestDomain(Domain testDomain)
+	{
+		getInstance().testDomain = this.testDomain = testDomain;
+	}
 
 	protected void createTestDomain()
 	{
 		//~: search for the test domain
-		testDomain = bean(GetDomain.class).getTestDomain();
+		Domain d = bean(GetDomain.class).getTestDomain();
+		setTestDomain(d);
 
 		//?: {it exists} nothing to do
-		if(testDomain != null) return;
+		if(d != null) return;
 
 		//~: create and save new instance
-		testDomain = new Domain();
-		setPrimaryKey(session(), testDomain, true);
-		testDomain.setName("Test Domain");
+		setTestDomain(d = new Domain());
+		setPrimaryKey(session(), d, true);
+		d.setName("Test Domain");
 
 		//!: do save
-		action(ActDomain.SAVE, testDomain).run();
+		action(ActDomain.SAVE, d).run();
+
 
 		//~: log success
 		if(LU.isI(getLog())) LU.I(getLog(), logsig(),
-		  " had created Test Domain with PK = ", testDomain.getPrimaryKey());
+		  " had created Test Domain with PK = ", d.getPrimaryKey());
 	}
 
 	protected void ensureTestDomain()

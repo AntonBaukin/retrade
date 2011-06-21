@@ -46,6 +46,10 @@ public class   SeShReportWriteMethodDebug
 	  throws IOException
 	{
 		writeShuntStat(o, r);
+
+		L(o, "=====================================");
+		N(o);
+		N(o);
 	}
 
 	protected void writeTaskReportSuccess

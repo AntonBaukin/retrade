@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
-import com.tverts.endure.UnityTypes;
+import static com.tverts.endure.UnityTypes.unityType;
 
 /* com.tverts: system (tx) */
 
@@ -43,7 +43,10 @@ public abstract class OrdererBase
 	public void          setOrderIndex(OrderRequest request)
 	{
 		if(isThatRequest(request))
+		{
 			orderInTx(request);
+			request.setComplete();
+		}
 	}
 
 	/* public: OrdererReference interface */
@@ -82,13 +85,13 @@ public abstract class OrdererBase
 	 *
 	 * Raises {@link IllegalStateException} if no context bound.
 	 */
-	protected TxContext getTxContext(OrderRequest request)
+	protected TxContext  getTxContext(OrderRequest request)
 	{
 		return (request.getTx() != null)?(request.getTx()):
 		  (getGlobalTxContext());
 	}
 
-	protected TxContext getGlobalTxContext()
+	protected TxContext  getGlobalTxContext()
 	{
 		return TxPoint.txContext();
 	}
@@ -97,7 +100,7 @@ public abstract class OrdererBase
 	 * Returns Hibernate Session bound to the request
 	 * transaction context.
 	 */
-	protected Session   session(OrderRequest request)
+	protected Session    session(OrderRequest request)
 	{
 		SessionFactory f = getTxContext(request).getSessionFactory();
 		Session        s = (f == null)?(null):(f.getCurrentSession());
@@ -122,27 +125,27 @@ public abstract class OrdererBase
 		return request.getReference();
 	}
 
-	protected Unity      owner(OrderRequest request)
+	protected Unity      orderOwner(OrderRequest request)
 	{
 		return request.getOrderOwner();
 	}
 
-	protected UnityType  type(OrderRequest request)
+	protected UnityType  orderType(OrderRequest request)
 	{
 		return request.getOrderType();
 	}
 
 	protected boolean    isType(OrderRequest request, UnityType type)
 	{
-		UnityType t = type(request);
+		UnityType t = orderType(request);
 		return (t != null) && t.equals(type);
 	}
 
 	protected boolean    isType
 	  (OrderRequest request, Class typeClass, String typeName)
 	{
-		UnityType t0 = type(request);
-		UnityType t1 = UnityTypes.getInstance().getType(typeClass, typeName);
+		UnityType t0 = orderType(request);
+		UnityType t1 = unityType(typeClass, typeName);
 
 		return (t0 != null) && t0.equals(t1);
 	}
