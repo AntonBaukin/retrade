@@ -15,16 +15,36 @@ import com.tverts.endure.UnityType;
 
 
 /**
- * This test ordering strategy is for {@link ShuntOrdering}
- * self shunt unit.
+ * Fully implements strategy of defining sparse indices
+ * of an order. Note that this strategy itself does not
+ * check the type of the income request and always says
+ * {@link #isThatRequest(OrderRequest)} {@code true}.
  *
- * It works only for {@link ExternalOrder} instances
- * having 'Test: Ordering' order type. (The owner Test Domain.)
+ * Has two parameters:
+ *  · insert step;
+ *  · spread limit.
+ *
+ * When new item is inserted as the first of the last one
+ * it's index is distanced from the closest item by the
+ * insert step.
+ *
+ * When inserting item in the middle, and there is no
+ * free space between the left and the right borders
+ * of insert, that borders are moved aside. The number
+ * of items to move in one side (left or right) is
+ * defined by spread limit parameter.
+ *
+ *
+ * WARNING. This strategy works on the level of the
+ * database issuing update HQL requests. If there
+ * order items are in the Hibernate Session' cache,
+ * they become invalid. Cleanup the cache before and
+ * after the order updates!
  *
  *
  * @author anton.baukin@gmail.com
  */
-public class TestOrderer extends OrdererBase
+public class OrdererDefault extends OrdererBase
 {
 	/* public: parameters defaults */
 
@@ -35,10 +55,13 @@ public class TestOrderer extends OrdererBase
 
 	/* protected: OrdererBase interface */
 
+	/**
+	 * This strategy does not check the type of the request
+	 * and always returns {@code true}.
+	 */
 	protected boolean isThatRequest(OrderRequest request)
 	{
-		return isAnInstance(request, ExternalOrder.class) &&
-		  isType(request, ExternalOrder.class, "Test: Domain: Order Index");
+		return true;
 	}
 
 	protected void    order(OrderRequest request)

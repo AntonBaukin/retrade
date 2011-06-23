@@ -15,15 +15,27 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Used by ShuntOrdering (TestOrderer).                      ·
+         · Used by ShuntOrdering.                                    ·
          ·                                                           ·
          · WARNING: do not change test orderer parameters as their   ·
          ·  values are assumed in the shunt unit!                    ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.endure.order.TestOrderer'>
+        <bean class = 'com.tverts.endure.order.OrdererTypeChecker'>
 
-          <property name = 'insertStep'  value = '2'/>
-          <property name = 'spreadLimit' value = '4'/>
+          <property name  = 'orderTypeClass'
+                    value = 'com.tverts.endure.order.ExternalOrder'/>
+
+          <property name  = 'orderTypeName'
+                    value = 'Test: Domain: Order Index'/>
+
+          <property name = 'orderer'>
+            <bean class = 'com.tverts.endure.order.OrdererDefault'>
+
+              <property name = 'insertStep'  value = '2'/>
+              <property name = 'spreadLimit' value = '4'/>
+
+            </bean>
+          </property>
         </bean>
 
       </list>

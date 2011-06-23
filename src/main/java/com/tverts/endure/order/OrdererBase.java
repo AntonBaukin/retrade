@@ -25,6 +25,10 @@ import static com.tverts.endure.UnityTypes.unityType;
 import com.tverts.system.tx.TxContext;
 import com.tverts.system.tx.TxPoint;
 
+/* com.tverts: support  */
+
+import static com.tverts.support.SU.s2s;
+
 
 /**
  * Essentials of an {@link Orderer} implementation.
@@ -135,25 +139,39 @@ public abstract class OrdererBase
 		return request.getOrderType();
 	}
 
-	protected boolean    isType(OrderRequest request, UnityType type)
+	protected UnityType  ownerType(OrderRequest request)
 	{
-		UnityType t = orderType(request);
+		return orderOwner(request).getUnityType();
+	}
+
+	protected boolean    isOrderType(OrderRequest request, UnityType type)
+	{
+		return (type != null) && type.equals(orderType(request));
+	}
+
+	protected boolean    isOrderType
+	  (OrderRequest request, Class typeClass, String typeName)
+	{
+		if((typeClass == null) || ((typeName = s2s(typeName)) == null))
+			return false;
+
+		UnityType t = unityType(typeClass, typeName);
+		return (t != null) && t.equals(orderType(request));
+	}
+
+	protected boolean    isOwnerType(OrderRequest request, UnityType type)
+	{
+		UnityType t = ownerType(request);
 		return (t != null) && t.equals(type);
 	}
 
-	protected boolean    isType
+	protected boolean    isOwnerType
 	  (OrderRequest request, Class typeClass, String typeName)
 	{
-		UnityType t0 = orderType(request);
-		UnityType t1 = unityType(typeClass, typeName);
+		if((typeClass == null) || ((typeName = s2s(typeName)) == null))
+			return false;
 
-		return (t0 != null) && t0.equals(t1);
-	}
-
-	@SuppressWarnings("unchecked")
-	protected boolean    isAnInstance(OrderRequest request, Class instanceClass)
-	{
-		return instanceClass.isAssignableFrom(
-		  instance(request).getClass());
+		UnityType t = unityType(typeClass, typeName);
+		return (t != null) && t.equals(ownerType(request));
 	}
 }
