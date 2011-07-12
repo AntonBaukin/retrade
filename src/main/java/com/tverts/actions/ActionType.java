@@ -44,6 +44,9 @@ public class ActionType
 	public static final ActionType DELETE =
 	  new ActionType("delete", Object.class);
 
+	public static final ActionType ENSURE =
+	  new ActionType("ensure", Object.class);
+
 
 	/* public: constructors */
 

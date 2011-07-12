@@ -73,7 +73,7 @@ public abstract class GenesisPartBase
 	/* protected: generation support */
 
 	/**
-	 * Waits exeution of single Self Shunt Request with the name given.
+	 * Waits execution of single Self Shunt Request with the name given.
 	 *
 	 * WARNING: see {@link #waitShuntWeb(SeShRequestInitial)}.
 	 */

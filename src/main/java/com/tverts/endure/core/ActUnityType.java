@@ -4,7 +4,7 @@ package com.tverts.endure.core;
 
 import com.tverts.actions.ActionBuildRec;
 import com.tverts.actions.ActionBuilderWithTxBase;
-import com.tverts.actions.ActionsCollection.SavePrimaryIdentified;
+import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 
 /* com.tverts: endure */
@@ -13,8 +13,6 @@ import com.tverts.actions.ActionType;
 import com.tverts.endure.UnityType;
 
 /* com.tverts: support */
-
-import com.tverts.support.OU;
 
 
 /**
@@ -52,7 +50,7 @@ public class ActUnityType extends ActionBuilderWithTxBase
 		checkTargetClass(abr, UnityType.class);
 
 		//~: add action to the chain
-		chain(abr).first(new SavePrimaryIdentified(task(abr)));
+		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
 		//!: complete the build
 		complete(abr);

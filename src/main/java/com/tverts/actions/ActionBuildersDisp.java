@@ -118,7 +118,7 @@ public class ActionBuildersDisp extends ActionBuilderBase
 		}
 	}
 
-	/* private: dispather selector class  */
+	/* private: dispatcher selector class  */
 
 	private Class   targetClass;
 	private boolean subclasses;

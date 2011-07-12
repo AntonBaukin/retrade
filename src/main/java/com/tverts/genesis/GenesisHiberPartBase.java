@@ -12,7 +12,7 @@ import com.tverts.hibery.HiberPoint;
 
 /**
  * A part of {@link GenesisSphere} that is invoked in
- * a thansactional context.
+ * a transaction context.
  *
  * @author anton.baukin@gmail.com
  */

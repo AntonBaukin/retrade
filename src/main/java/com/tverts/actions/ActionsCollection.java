@@ -2,7 +2,7 @@ package com.tverts.actions;
 
 /* com.tverts: endure */
 
-import com.tverts.endure.PrimaryIdentity;
+import com.tverts.endure.NumericIdentity;
 
 /* com.tverts: hibery */
 
@@ -24,15 +24,15 @@ public class ActionsCollection
 	/* save primary instance */
 
 	/**
-	 * Saves given {@link PrimaryIdentity} instance.
+	 * Saves given {@link NumericIdentity} instance.
 	 * If it has no primary key, the key would be generated.
 	 */
-	public static class SavePrimaryIdentified
+	public static class SaveNumericIdentified
 	       extends      ActionWithTxBase
 	{
 		/* public: constructor */
 
-		public SavePrimaryIdentified(ActionTask task)
+		public SaveNumericIdentified(ActionTask task)
 		{
 			super(task);
 		}
@@ -44,9 +44,9 @@ public class ActionsCollection
 			super.openValidate();
 
 			//?: {the target is not a primary identity}
-			if(!(targetOrNull() instanceof PrimaryIdentity))
+			if(!(targetOrNull() instanceof NumericIdentity))
 				throw new IllegalStateException(String.format(
-				  "Can't save entity of class '%s' not a PrimaryIdentity!",
+				  "Can't save entity of class '%s' not a NumericIdentity!",
 				  OU.cls(targetOrNull())
 				));
 		}
@@ -61,7 +61,7 @@ public class ActionsCollection
 			doSave();
 		}
 
-		public Object getResult()
+		public Object  getResult()
 		{
 			return targetOrNull();
 		}
@@ -70,7 +70,7 @@ public class ActionsCollection
 
 		protected void setPrimaryKey()
 		{
-			PrimaryIdentity e = target(PrimaryIdentity.class);
+			NumericIdentity e = target(NumericIdentity.class);
 
 			//?: {entity still has no primary key} generate it
 			if(e.getPrimaryKey() == null)

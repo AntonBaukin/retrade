@@ -5,11 +5,19 @@ package com.tverts.endure.core;
 import com.tverts.actions.ActionBuildRec;
 import com.tverts.actions.ActionBuilderWithTxBase;
 import com.tverts.actions.ActionType;
-import com.tverts.actions.ActionsCollection.SavePrimaryIdentified;
+import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
+
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.setPrimaryKey;
+
+/* com.tverts: support */
+
+import static com.tverts.support.SU.s2s;
 
 
 /**
- * Domain processing actions builder.
+ * {@link Domain} processing actions builder.
  *
  * @author anton.baukin@gmail.com
  */
@@ -26,13 +34,12 @@ public class ActDomain extends ActionBuilderWithTxBase
 	  ActionType.SAVE;
 
 	/**
-	 * Used while the system is under development.
 	 * Validates the existing (and saved) domain (the target)
 	 * that it has all the surrounding instances needed.
 	 * (Such as lock objects, aggregated values, and etc.)
 	 */
 	public static final ActionType ENSURE =
-	  new ActionType("endure.core.Domain: ensure", Domain.class);
+	  ActionType.ENSURE;
 
 
 	/* public: ActionBuilder interface */
@@ -40,10 +47,7 @@ public class ActDomain extends ActionBuilderWithTxBase
 	public void    buildAction(ActionBuildRec abr)
 	{
 		if(SAVE.equals(actionType(abr)))
-		{
 			saveDomain(abr);
-			return;
-		}
 
 		if(ENSURE.equals(actionType(abr)))
 			ensureDomain(abr);
@@ -59,8 +63,11 @@ public class ActDomain extends ActionBuilderWithTxBase
 		//NOTE that the actions are added to chain here
 		//     as to the stack.
 
+		//~: create domain's areal (is executed last!)
+		xnest(abr, ActDomain.ENSURE, target(abr));
+
 		//~: save the domain
-		chain(abr).first(new SavePrimaryIdentified(task(abr)));
+		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
 		//~: set domain unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr));
@@ -73,7 +80,7 @@ public class ActDomain extends ActionBuilderWithTxBase
 		//?: {target is not a Domain}
 		checkTargetClass(abr, Domain.class);
 
-		//TODO ensure Domain complete
+		//TODO ensure Domain
 
 		complete(abr);
 	}

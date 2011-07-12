@@ -9,6 +9,10 @@ import java.util.List;
 
 import static com.tverts.actions.ActionsPoint.collectParams;
 
+/* com.tverts: endure */
+
+import com.tverts.endure.NumericIdentity;
+
 /* com.tverts: support */
 
 import com.tverts.support.OU;
@@ -191,6 +195,20 @@ public abstract class ActionBuilderBase
 		return abr.getTask().getTarget();
 	}
 
+	@SuppressWarnings("unchecked")
+	protected <T> T         targetOrNull(ActionBuildRec abr, Class<T> c1ass)
+	{
+		Object res = targetOrNull(abr);
+
+		if((res != null) && (c1ass != null) && !c1ass.isAssignableFrom(res.getClass()))
+			throw new IllegalStateException(String.format(
+			  "Action Builder target [%s] is not of a requested class '%s'!",
+			  OU.cls(res), OU.cls(c1ass)
+			));
+
+		return (T)res;
+	}
+
 	protected Object        target(ActionBuildRec abr)
 	{
 		Object res = abr.getTask().getTarget();
@@ -200,6 +218,20 @@ public abstract class ActionBuilderBase
 		);
 
 		return res;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T         target(ActionBuildRec abr, Class<T> c1ass)
+	{
+		Object res = target(abr);
+
+		if((c1ass != null) && !c1ass.isAssignableFrom(res.getClass()))
+			throw new IllegalStateException(String.format(
+			  "Action Builder target [%s] is not of a requested class '%s'!",
+			  OU.cls(res), OU.cls(c1ass)
+			));
+
+		return (T)res;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -216,6 +248,47 @@ public abstract class ActionBuilderBase
 			  "Action Builder expects (defined) target of class '%s', " +
 			  "but not of the class '%s'", tclass.getName(), OU.cls(tarcls)
 			));
+	}
+
+	protected boolean       isTestTarget(ActionBuildRec abr)
+	{
+		Object target = target(abr);
+
+		if(!(target instanceof NumericIdentity))
+			return false;
+
+		Long   trgkey = ((NumericIdentity)target).getPrimaryKey();
+
+		return (trgkey != null) && (trgkey < 0L);
+	}
+
+	protected Object        param(ActionBuildRec abr,Object name)
+	{
+		return task(abr).getParams().get(name);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T         param(ActionBuildRec abr, Object name, Class<T> pclass)
+	{
+		Object res = task(abr).getParams().get(name);
+
+		if((res != null) && (pclass != null) &&
+		   !pclass.isAssignableFrom(res.getClass())
+		  )
+			throw new IllegalStateException(String.format(
+			  "Action Builder asked parameter '%s' as of a class '%s', " +
+			  "but actual is '%s'!",
+
+			  (name == null)?("?undefined?"):(name.toString()),
+			  pclass.getName(), res.getClass().getName()
+			));
+
+		return (T)res;
+	}
+
+	protected boolean       flag(ActionBuildRec abr, Object name)
+	{
+		return Boolean.TRUE.equals(param(abr, name));
 	}
 
 	/* protected: various build helpers */

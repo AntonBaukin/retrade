@@ -24,7 +24,7 @@ import com.tverts.support.LU;
 
 /**
  * Generates test domain with the name 'Test Domain'
- * and negative promary key. There is only one test
+ * and negative primary key. There is only one test
  * domain in the system.
  *
  * @author anton.baukin@gmail.com
@@ -56,7 +56,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 		Domain res = getInstance().getTestDomain();
 
 		if(res == null) throw new IllegalStateException(
-		  "Test Domain is not discovered (generated)!"
+		  "Test Domain is not discovered or generated!"
 		);
 
 		return res;
@@ -70,7 +70,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 	/* public: Genesis interface */
 
-	public Runnable      generate()
+	public Runnable generate()
 	  throws GenesisError
 	{
 		//~: create test domain if it does not exist yet
@@ -85,12 +85,12 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 	/* protected: test domain generation & verification */
 
-	protected void setTestDomain(Domain testDomain)
+	protected void  setTestDomain(Domain testDomain)
 	{
 		getInstance().testDomain = this.testDomain = testDomain;
 	}
 
-	protected void createTestDomain()
+	protected void  createTestDomain()
 	{
 		//~: search for the test domain
 		Domain d = bean(GetDomain.class).getTestDomain();
@@ -113,7 +113,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 		  " had created Test Domain with PK = ", d.getPrimaryKey());
 	}
 
-	protected void ensureTestDomain()
+	protected void  ensureTestDomain()
 	{
 		//TODO ensure test domain
 		//action(ActDomain.ENSURE, this.testDomain).run();
