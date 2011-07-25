@@ -115,8 +115,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 	protected void  ensureTestDomain()
 	{
-		//TODO ensure test domain
-		//action(ActDomain.ENSURE, this.testDomain).run();
+		action(ActDomain.ENSURE, this.testDomain).run();
 	}
 
 

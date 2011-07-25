@@ -53,6 +53,7 @@ public class ActDomain extends ActionBuilderWithTxBase
 			ensureDomain(abr);
 	}
 
+
 	/* protected: action methods */
 
 	protected void saveDomain(ActionBuildRec abr)

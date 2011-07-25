@@ -19,7 +19,7 @@
 
     <!-- Unity -->
 
-    <one-to-one name = 'unity' foreign-key = 'fk_unified_mirrow'
+    <one-to-one name = 'unity' foreign-key = 'fk_unified_mirrow_'
       constrained = 'true' outer-join = 'false' cascade = 'save-update'/>
 
   </class>

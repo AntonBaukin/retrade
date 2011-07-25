@@ -163,7 +163,7 @@ public class      GenesisSphere
 		return Collections.singletonList(this);
 	}
 
-	/* protected: invocation prototol */
+	/* protected: invocation protocol */
 
 	public void doRun()
 	{

@@ -15,11 +15,17 @@ public interface OrderIndex
 {
 	/* public: OrderIndex interface */
 
+	public Long      getPrimaryKey();
+
 	public Unity     getOrderOwner();
 
 	public UnityType getOrderType();
 
-	public long      getOrderIndex();
+	/**
+	 * Returns the order index. Note that it may be
+	 * (temporary) undefined!
+	 */
+	public Long      getOrderIndex();
 
-	public void      setOrderIndex(long oi);
+	public void      setOrderIndex(Long oi);
 }

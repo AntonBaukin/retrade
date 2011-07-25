@@ -134,6 +134,11 @@ public abstract class OrdererBase
 		return request.getOrderOwner();
 	}
 
+	protected Long       orderOwnerID(OrderRequest request)
+	{
+		return request.getOrderOwner().getPrimaryKey();
+	}
+
 	protected UnityType  orderType(OrderRequest request)
 	{
 		return request.getOrderType();
@@ -152,8 +157,10 @@ public abstract class OrdererBase
 	protected boolean    isOrderType
 	  (OrderRequest request, Class typeClass, String typeName)
 	{
-		if((typeClass == null) || ((typeName = s2s(typeName)) == null))
-			return false;
+		if(typeClass == null) return false;
+
+		if((typeName = s2s(typeName)) == null)
+			return typeClass.equals(orderType(request).getTypeClass());
 
 		UnityType t = unityType(typeClass, typeName);
 		return (t != null) && t.equals(orderType(request));
@@ -168,8 +175,10 @@ public abstract class OrdererBase
 	protected boolean    isOwnerType
 	  (OrderRequest request, Class typeClass, String typeName)
 	{
-		if((typeClass == null) || ((typeName = s2s(typeName)) == null))
-			return false;
+		if(typeClass == null) return false;
+
+		if((typeName = s2s(typeName)) == null)
+			return typeClass.equals(ownerType(request).getTypeClass());
 
 		UnityType t = unityType(typeClass, typeName);
 		return (t != null) && t.equals(ownerType(request));

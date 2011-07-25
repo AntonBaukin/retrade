@@ -87,7 +87,7 @@ public class OrdererTypeChecker extends OrdererChecker
 		Class  c = getOrderTypeClass();
 		String n = getOrderTypeName();
 
-		if((c == null) | (n == null))
+		if((c == null) & (n == null))
 			return null;
 
 		return isOrderType(request, c, n);
@@ -98,7 +98,7 @@ public class OrdererTypeChecker extends OrdererChecker
 		Class  c = getOwnerTypeClass();
 		String n = getOwnerTypeName();
 
-		if((c == null) | (n == null))
+		if((c == null) & (n == null))
 			return null;
 
 		return isOwnerType(request, c, n);

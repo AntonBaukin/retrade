@@ -2,6 +2,7 @@ package com.tverts.genesis;
 
 /* Hibernate Persistence Layer */
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -69,6 +70,11 @@ public abstract class GenesisHiberPartBase
 		return (sessionFactory == null)
 		  ?(HiberPoint.session())
 		  :(sessionFactory.getCurrentSession());
+	}
+
+	protected Query        Q(String hql)
+	{
+		return session().createQuery(hql);
 	}
 
 	/* private: database access */

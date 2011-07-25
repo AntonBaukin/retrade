@@ -51,7 +51,7 @@ import static com.tverts.endure.UnityTypes.unityType;
  * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
-@SelfShuntGroups({"domain:core", "domain:core:order-index"})
+@SelfShuntGroups({"domain:core"})
 @SelfShuntDescr("Test Order Index implementation.")
 public class ShuntOrdering extends ShuntPlain
 {
@@ -89,7 +89,7 @@ public class ShuntOrdering extends ShuntPlain
 		ExternalOrder o = newOrder();
 
 		OrderPoint.orderBefore(o, null);
-		assertEquals(0L, o.getOrderIndex());
+		assertEquals((Long)0L, o.getOrderIndex());
 
 		save(o);
 	}
@@ -101,7 +101,7 @@ public class ShuntOrdering extends ShuntPlain
 		ExternalOrder o = newOrder();
 
 		OrderPoint.orderBefore(o, select(0L));
-		assertEquals(-2L, o.getOrderIndex());
+		assertEquals((Long)(-2L), o.getOrderIndex());
 
 		save(o);
 	}
@@ -113,7 +113,7 @@ public class ShuntOrdering extends ShuntPlain
 		ExternalOrder o = newOrder();
 
 		OrderPoint.orderAfter(o, select(0L));
-		assertEquals(2L, o.getOrderIndex());
+		assertEquals((Long)2L, o.getOrderIndex());
 
 		save(o);
 	}
@@ -125,7 +125,7 @@ public class ShuntOrdering extends ShuntPlain
 		ExternalOrder o = newOrder();
 
 		OrderPoint.orderBefore(o, select(0L));
-		assertEquals(-1L, o.getOrderIndex());
+		assertEquals((Long)(-1L), o.getOrderIndex());
 
 		save(o);
 	}
@@ -137,7 +137,7 @@ public class ShuntOrdering extends ShuntPlain
 		ExternalOrder o = newOrder();
 
 		OrderPoint.orderAfter(o, select(0L));
-		assertEquals(1L, o.getOrderIndex());
+		assertEquals((Long)1L, o.getOrderIndex());
 
 		save(o);
 	}
@@ -150,13 +150,13 @@ public class ShuntOrdering extends ShuntPlain
 
 		o = newOrder();
 		OrderPoint.orderBefore(o, select(-2L));
-		assertEquals(-4L, o.getOrderIndex());
+		assertEquals((Long)(-4L), o.getOrderIndex());
 
 		save(o);
 
 		o = newOrder();
 		OrderPoint.orderAfter(o, select(2L));
-		assertEquals(4L, o.getOrderIndex());
+		assertEquals((Long)4L, o.getOrderIndex());
 
 		save(o);
 
@@ -171,7 +171,7 @@ public class ShuntOrdering extends ShuntPlain
 
 		o = newOrder();
 		OrderPoint.orderAfter(o, select(0L));
-		assertEquals(1L, o.getOrderIndex());
+		assertEquals((Long)1L, o.getOrderIndex());
 
 		save(o);
 
@@ -194,7 +194,7 @@ public class ShuntOrdering extends ShuntPlain
 
 		o = newOrder();
 		OrderPoint.orderAfter(o, select(0L));
-		assertEquals(1L, o.getOrderIndex());
+		assertEquals((Long)1L, o.getOrderIndex());
 
 		save(o);
 
@@ -210,7 +210,7 @@ public class ShuntOrdering extends ShuntPlain
 
 		o = newOrder();
 		OrderPoint.orderBefore(o, select(-1));
-		assertEquals(-1L, o.getOrderIndex());
+		assertEquals((Long)(-1L), o.getOrderIndex());
 
 		save(o);
 
@@ -253,7 +253,7 @@ public class ShuntOrdering extends ShuntPlain
 				if(order.isEmpty())
 				{
 					OrderPoint.orderAfter(o, null);
-					assertEquals(0L, o.getOrderIndex());
+					assertEquals((Long)0L, o.getOrderIndex());
 					save(o);
 
 					order.add(o.getOrderInstance());

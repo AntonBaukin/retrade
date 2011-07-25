@@ -13,7 +13,7 @@ import java.util.GregorianCalendar;
  */
 public class DU
 {
-	/* public: arithmetics */
+	/* arithmetic */
 
 	public static int    diffMins(Date one, Date two)
 	{
@@ -58,7 +58,43 @@ public class DU
 		return r + D - d;
 	}
 
-	/* public: formatting routines */
+	public static Date   addDays(Date d, int days)
+	{
+		return new Date(d.getTime() + 1000L * 60 * 60 * 24 *  days);
+	}
+
+	public static Date   addDaysClean(Date d, int days)
+	{
+		return cleanTime(new Date(d.getTime() + 1000L * 60 * 60 * 24 *  days));
+	}
+
+
+	/* helpers */
+
+	public static Date   cleanTime(Date d)
+	{
+		return cleanTime(d, null);
+	}
+
+	public static Date   cleanTime(Date d, Calendar cl)
+	{
+		if(d == null) return null;
+
+		//~: init the calendar
+		if(cl == null) cl = Calendar.getInstance();
+		cl.setTime(d);
+
+		//clear the time parts
+		cl.set(Calendar.HOUR_OF_DAY, 0);
+		cl.set(Calendar.MINUTE,      0);
+		cl.set(Calendar.SECOND,      0);
+		cl.set(Calendar.MILLISECOND, 0);
+
+		return cl.getTime();
+	}
+
+
+	/* formatting */
 
 	public static String date2str(Date d)
 	{

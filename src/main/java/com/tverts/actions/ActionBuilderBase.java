@@ -136,6 +136,10 @@ public abstract class ActionBuilderBase
 
 	protected void          createActionTrigger(ActionBuildRec abr)
 	{
+		//~: ensure action context exist
+		context(abr); //<-- side effect
+
+		//?: {has trigger creator} invoke it
 		if(abr.getTriggerCreator() != null)
 			abr.setTrigger(abr.getTriggerCreator().createTrigger(abr));
 	}
@@ -234,6 +238,16 @@ public abstract class ActionBuilderBase
 		return (T)res;
 	}
 
+	/**
+	 * Returns the class of the target. If the target is not
+	 * defined, the result is {@code Void.class}.
+	 */
+	protected Class         targetClass(ActionBuildRec abr)
+	{
+		Object target = targetOrNull(abr);
+		return (target == null)?(Void.class):(target.getClass());
+	}
+
 	@SuppressWarnings("unchecked")
 	protected void          checkTargetClass(ActionBuildRec abr, Class tclass)
 	{
@@ -291,9 +305,10 @@ public abstract class ActionBuilderBase
 		return Boolean.TRUE.equals(param(abr, name));
 	}
 
+
 	/* protected: various build helpers */
 
-	protected ActionType actionType(ActionBuildRec abr)
+	protected ActionType    actionType(ActionBuildRec abr)
 	{
 		return abr.getTask().getActionType();
 	}

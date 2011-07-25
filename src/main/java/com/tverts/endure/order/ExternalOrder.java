@@ -5,7 +5,6 @@ package com.tverts.endure.order;
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
-import com.tverts.support.OU;
 
 
 /**
@@ -52,12 +51,12 @@ public class      ExternalOrder
 		return orderType;
 	}
 
-	public long      getOrderIndex()
+	public Long      getOrderIndex()
 	{
 		return orderIndex;
 	}
 
-	public void      setOrderIndex(long orderIndex)
+	public void      setOrderIndex(Long orderIndex)
 	{
 		this.orderIndex = orderIndex;
 	}
@@ -115,6 +114,6 @@ public class      ExternalOrder
 
 	private Unity     orderOwner;
 	private UnityType orderType;
-	private long      orderIndex;
+	private Long      orderIndex;
 	private long      orderInstance;
 }

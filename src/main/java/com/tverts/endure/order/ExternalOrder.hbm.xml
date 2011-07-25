@@ -40,8 +40,7 @@
 
     <property name = 'orderIndex'>
 
-      <column name = 'order_index' not-null = 'true'
-        index = 'ix_external_order'>
+      <column name = 'order_index' index = 'ix_external_order'>
 
         <comment>The index within the order space</comment>
       </column>

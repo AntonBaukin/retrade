@@ -5,7 +5,7 @@
 
 
   <!--=================================================
-    =  Domain Model Core Actions                      =
+    =  Ordering strategies of XRoot module            =
     +================================================-->
 
   <import resource = 'xrootOrderers.xml'/>

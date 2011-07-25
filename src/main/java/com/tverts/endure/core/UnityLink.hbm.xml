@@ -14,7 +14,8 @@
 
     <!-- Unity -->
 
-    <many-to-one name = 'unity' foreign-key = 'fk_unity_link_mirrow'>
+    <many-to-one name = 'unity' cascade = 'save-update'
+      foreign-key = 'fk_unity_link_mirrow'>
 
       <column name = 'fk_unity' unique = 'true'>
         <comment>The (unique) Unified Mirrow of the Unity Link</comment>
