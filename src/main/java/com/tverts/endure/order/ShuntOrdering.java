@@ -51,7 +51,7 @@ import static com.tverts.endure.UnityTypes.unityType;
  * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
-@SelfShuntGroups({"domain:core"})
+@SelfShuntGroups({"domain:core", "domain:core:order-index"})
 @SelfShuntDescr("Test Order Index implementation.")
 public class ShuntOrdering extends ShuntPlain
 {

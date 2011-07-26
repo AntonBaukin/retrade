@@ -32,7 +32,7 @@ public @interface SelfShuntMethod
 	 *
 	 * By default the methods are not critical.
 	 * Try to set it {@code true} only when the
-	 * whole system, or the application's logics
+	 * whole system, or the application's logic
 	 * are depend on the components tested here.
 	 */
 	boolean critical()    default false;
@@ -52,6 +52,10 @@ public @interface SelfShuntMethod
 	 * superclass are invoked (in the order of
 	 * inheritance) before the methods of the
 	 * subclasses.
+	 *
+	 * Note that the method without this parameter
+	 * set explicitly, defined within the same class
+	 * are always executed after the ones having it set.
 	 */
 	int     order()       default Integer.MAX_VALUE;
 

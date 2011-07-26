@@ -18,11 +18,7 @@
 
 
   <!--=================================================
-    =  System Self Shunts References                  =
-    +==================================================
-    |
-    | Self Shunting Units for the system components.
-    |
+    =  XRoot Module Shunts References                 =
     +================================================-->
 
   <bean name  = 'xrootShuntsList'

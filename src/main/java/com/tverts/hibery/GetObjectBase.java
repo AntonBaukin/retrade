@@ -4,15 +4,15 @@ package com.tverts.hibery;
 
 import java.io.Serializable;
 
+/* Spring Framework */
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /* Hibernate Persistence Layer */
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-/* Spring Framework */
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -35,27 +35,41 @@ public abstract class GetObjectBase
 	}
 
 
-	/* protected: helping methods */
+	/* protected: HQL helping methods */
 
-	protected Query Q(String hql)
+	protected Session session()
 	{
-		return sessionFactory.getCurrentSession().createQuery(hql);
+		Session session = (sessionFactory != null)
+		  ?(sessionFactory.getCurrentSession())
+		  :(HiberPoint.session());
+
+		//?: {has no session} illegal state
+		if(session == null) throw new IllegalStateException(
+		  "No Hibernate Session instance is bount to the " +
+		  "Get-??? DAO strategy!");
+
+		return session;
+	}
+
+	protected Query   Q(String hql)
+	{
+		return session().createQuery(hql);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <O> O get(Class<O> c1ass, Serializable key)
+	protected <O> O   get(Class<O> c1ass, Serializable key)
 	{
-		return (O)sessionFactory.getCurrentSession().get(c1ass, key);
+		return (O)session().get(c1ass, key);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <O> O load(Class<O> c1ass, Serializable key)
+	protected <O> O   load(Class<O> c1ass, Serializable key)
 	{
-		return (O)sessionFactory.getCurrentSession().load(c1ass, key);
+		return (O)session().load(c1ass, key);
 	}
 
 
-	/* protected: Hibernate Session Factory reference*/
+	/* protected: Hibernate Session Factory reference */
 
 	protected SessionFactory sessionFactory;
 }
