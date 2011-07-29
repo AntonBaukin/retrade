@@ -25,7 +25,7 @@ public abstract class Entity implements United
 
 	public void setPrimaryKey(Long pk)
 	{
-		//?: {try to undefine the key}
+		//?: {try to set undefined key}
 		if((pk == null) && (getPrimaryKey() != null))
 			throw new IllegalArgumentException(
 			  "Primary key of an Entity may not be set to undefined!"

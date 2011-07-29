@@ -40,6 +40,11 @@ public class ActionError extends RuntimeException
 		return this;
 	}
 
+	public Class       getActionClass()
+	{
+		return actionClass;
+	}
+
 	/**
 	 * Returns the action that had caused this error.
 	 * May be not defined if the action is unknown.
@@ -52,6 +57,8 @@ public class ActionError extends RuntimeException
 	public ActionError setAction(Action action)
 	{
 		this.action = action;
+		if(action != null)
+			this.actionClass = action.getClass();
 		return this;
 	}
 
@@ -68,7 +75,8 @@ public class ActionError extends RuntimeException
 
 	/* private: error state */
 
-	private ActionPhase phase;
-	private Action      action;
-	private boolean     critical = true;
+	private ActionPhase      phase;
+	private Class            actionClass;
+	private transient Action action;
+	private boolean          critical = true;
 }

@@ -4,6 +4,7 @@ package com.tverts.endure.core;
 
 import com.tverts.actions.ActionBuildRec;
 import com.tverts.actions.ActionBuilderWithTxBase;
+import com.tverts.actions.ActionsCollection.DeleteEntity;
 import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionWithTxBase;
@@ -41,6 +42,20 @@ public class ActUnity extends ActionBuilderWithTxBase
 	 */
 	public static final ActionType CREATE =
 	  new ActionType("endure.core.Unity: create", Unity.class);
+
+	/**
+	 * Deletes the {@link Unity} instance of the given
+	 * as the action builder task target {@link United}
+	 * instance. The reference to the {@link Unity} is
+	 * set to {@code null}.
+	 *
+	 * Note that this action MAY have no meanings of how
+	 * to chain removing the entities still referring
+	 * the Unity is being deleted. You MAY need to cascade
+	 * all the references present manually.
+	 */
+	public static final ActionType DELETE =
+	  new ActionType("endure.core.Unity: delete", Unity.class);
 
 
 	/* parameters of the action task */
@@ -91,6 +106,9 @@ public class ActUnity extends ActionBuilderWithTxBase
 	{
 		if(CREATE.equals(actionType(abr)))
 			createUnityAction(abr);
+
+		if(DELETE.equals(actionType(abr)))
+			deleteUnityAction(abr);
 	}
 
 
@@ -108,7 +126,20 @@ public class ActUnity extends ActionBuilderWithTxBase
 		complete(abr);
 	}
 
-	/* public: set unity action */
+	protected void deleteUnityAction(ActionBuildRec abr)
+	{
+		//?: {the target is not a united}
+		checkTargetClass(abr, United.class);
+
+		//~: add action to the chain
+		chain(abr).first(new DeleteUnityAction(task(abr)));
+
+		//!: complete the build
+		complete(abr);
+	}
+
+
+	/* set unity action */
 
 	public static class CreateUnityAction
 	       extends      ActionWithTxBase
@@ -163,14 +194,15 @@ public class ActUnity extends ActionBuilderWithTxBase
 
 		protected Unity     createUnity()
 		{
-			Unity res = new Unity();
+			Unity  res = new Unity();
+			United uni = target(United.class);
 
-			//~: take the primaru key from the target
-			res.setPrimaryKey(target(United.class).getPrimaryKey());
+			//?: {target has no primary key yet} create it here
+			if(uni.getPrimaryKey() == null)
+				setPrimaryKey(session(), uni);
 
-			//?: {target has no primary key yet} generate it
-			if(res.getPrimaryKey() == null)
-				setPrimaryKey(session(), res);
+			//~: share the same primary key
+			res.setPrimaryKey(uni.getPrimaryKey());
 
 			//~: assign the unity type
 			res.setUnityType(getUnityType());
@@ -225,5 +257,57 @@ public class ActUnity extends ActionBuilderWithTxBase
 
 		private Unity     result;
 		private UnityType unityType;
+	}
+
+
+	/* delete unity action */
+
+	public static class DeleteUnityAction
+	       extends      DeleteEntity
+	{
+		/* public: constructor */
+
+		public DeleteUnityAction(ActionTask task)
+		{
+			super(task);
+
+			if(!(target() instanceof United))
+				throw new IllegalArgumentException();
+		}
+
+
+		/* public: DeleteEntity (access the parameters) */
+
+		public Object getDeleteTarget()
+		{
+			return (this.unity != null)?(this.unity):
+			  (target(United.class).getUnity());
+		}
+
+		public Unity  getResult()
+		{
+			return this.unity;
+		}
+
+
+		/* protected: DeleteEntity (execution) */
+
+		protected void doDelete()
+		{
+			//~: get the unity to delete
+			this.unity = target(United.class).getUnity();
+			if(this.unity == null) return;
+
+			//~: clear the reference
+			target(United.class).setUnity(null);
+
+			//!: do actual delete
+			doDelete();
+		}
+
+
+		/* protected: the unity reference */
+
+		protected Unity unity;
 	}
 }

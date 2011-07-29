@@ -68,7 +68,7 @@ public class TransactionScopeBean implements Runnable
 		}
 	}
 
-	/* protected: trensaction scope invocation */
+	/* protected: transaction scope invocation */
 
 	protected void checkBeforeScope()
 	{

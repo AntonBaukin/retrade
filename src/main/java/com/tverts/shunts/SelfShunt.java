@@ -25,7 +25,7 @@ public interface SelfShunt extends Cloneable
 	 * not a unique within the system, but is better to be.
 	 *
 	 * Basic implementation returns the simple name of the
-	 * shunt unit class (with first letter lowercased).
+	 * shunt unit class (with first letter lower-cased).
 	 *
 	 * Note that this name has no direct relation with
 	 * Spring Beans names.
@@ -33,7 +33,7 @@ public interface SelfShunt extends Cloneable
 	public String   getShuntUnitName();
 
 	/**
-	 * Names the shunt groups this unit belonges to.
+	 * Names the shunt groups this unit belongs to.
 	 * The order of the groups has no effect.
 	 * The names are case sensitive.
 	 */

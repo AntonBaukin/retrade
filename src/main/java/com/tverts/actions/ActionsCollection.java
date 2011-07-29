@@ -213,7 +213,7 @@ public class ActionsCollection
 		/* protected: order request parameters */
 
 		protected OrderIndex   instance;
-		protected  OrderIndex  reference;
+		protected OrderIndex   reference;
 		protected boolean      beforeAfter;
 
 
@@ -223,4 +223,93 @@ public class ActionsCollection
 	}
 
 
+	/* delete entity */
+
+	/**
+	 * General action of deleting an entity from the database.
+	 */
+	public static class DeleteEntity
+	       extends      ActionWithTxBase
+	{
+		/* public: constructors */
+
+		public DeleteEntity(ActionTask task)
+		{
+			super(task);
+		}
+
+		public DeleteEntity(ActionTask task, Object target)
+		{
+			super(task);
+			this.target = target;
+		}
+
+
+		/* public: DeleteEntity (access the parameters) */
+
+		public Object       getDeleteTarget()
+		{
+			return (this.target != null)?(this.target):
+			  (targetOrNull());
+		}
+
+		public boolean      isFlushBefore()
+		{
+			return flushBefore;
+		}
+
+		public DeleteEntity setFlushBefore(boolean flushBefore)
+		{
+			this.flushBefore = flushBefore;
+			return this;
+		}
+
+		public boolean      isFlushAfter()
+		{
+			return flushAfter;
+		}
+
+		public DeleteEntity setFlushAfter(boolean flushAfter)
+		{
+			this.flushAfter = flushAfter;
+			return this;
+		}
+
+
+		/* protected: ActionBase interface */
+
+		protected void execute()
+		  throws Throwable
+		{
+			if(getDeleteTarget() == null) return;
+
+			if(isFlushBefore())
+				session().flush();
+
+			doDelete();
+
+			if(isFlushAfter())
+				session().flush();
+		}
+
+		protected void doDelete()
+		{
+			session().delete(getDeleteTarget());
+		}
+
+		/**
+		 * Returns the reference to the entity deleted.
+		 */
+		public Object  getResult()
+		{
+			return getDeleteTarget();
+		}
+
+
+		/* private: parameters of the action */
+
+		private Object  target;
+		private boolean flushBefore;
+		private boolean flushAfter;
+	}
 }

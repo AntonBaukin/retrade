@@ -38,6 +38,7 @@ import static com.tverts.support.SU.sLo;
  * consists of a number of shunt methods
  * that are invoked in some defined order.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public abstract class SelfShuntBase
@@ -69,6 +70,8 @@ public abstract class SelfShuntBase
 			initUnitReport(report);
 			initShuntEnvironment();
 
+			report.setSuccess(true);
+
 			for(Method m : collectMethods())
 			{
 				//0: create the report & read the annotation
@@ -85,16 +88,26 @@ public abstract class SelfShuntBase
 				//3: do after tasks
 				if(!afterMethod(m, mr))
 				{
+					//HINT: we have no total success if at least
+					//  one methods shunt fails, but this failure
+					//  may be not so critical to stop shunting.
+
 					report.setSuccess(false);
+
+					//?: {is not a critical error} continue shunting
+					if(!mr.isCritical())
+						continue;
+
+					report.setCritical(true);
+					report.setError(mr.getError());
 					break;
 				}
 			}
-
-			report.setSuccess(true);
 		}
 		catch(Throwable e)
 		{
 			report.setSuccess(false);
+			report.setCritical(true); //<-- system errors are critical
 			report.setError(e);
 		}
 		finally
@@ -115,8 +128,8 @@ public abstract class SelfShuntBase
 
 		report.setEndTime(System.currentTimeMillis());
 
-		if(isRollbackOnly())
-			doRollback();
+		//!: check whether to rollback
+		inspectUnitRollback(report);
 	}
 
 	/* public: SelfShuntBase interface */
@@ -192,7 +205,14 @@ public abstract class SelfShuntBase
 	protected void    freeShuntEnvironment()
 	{}
 
-	protected void    doRollback()
+	protected void    inspectUnitRollback(SelfShuntUnitReport report)
+	{
+		//?: {critically failed the shunt | rollback only} set rollback flag
+		if((!report.isSuccess() && report.isCritical()) || isRollbackOnly())
+			doMarkRollback();
+	}
+
+	protected void    doMarkRollback()
 	{
 		TxPoint.txContext().setRollbackOnly();
 	}
@@ -252,7 +272,6 @@ public abstract class SelfShuntBase
 		catch(Throwable e)
 		{
 			error = e;
-			report.setSuccess(false);
 		}
 
 		report.setEndTime(System.currentTimeMillis());
@@ -297,7 +316,8 @@ public abstract class SelfShuntBase
 		}
 	}
 
+
 	/* private: the state of the shunt */
 
-	private boolean rollbackOnly = true;
+	private boolean rollbackOnly;
 }
