@@ -240,4 +240,31 @@ public class OU
 	{
 		return (cls == null)?("undefined"):(cls.getName());
 	}
+
+	/**
+	 * Asserts that that at least one of the given check
+	 * classes is assignable from the first parameter.
+	 * If no, {@link IllegalStateException} is raised.
+	 */
+	@SuppressWarnings("unchecked")
+	public static void   assignable(Class cls, Class... checks)
+	{
+		if(cls != null) for(Class check : checks)
+			//?: {the class is in the check list}
+			if((check != null) && check.isAssignableFrom(cls))
+				return;
+
+		//?: {the target is not a requested class}
+		throw new IllegalStateException(String.format(
+		  "Class assertion failed: there is no class in the list %s " +
+		  "that is assignable from the class '%s'!",
+
+		  Arrays.asList(checks).toString(), OU.cls(cls)
+		));
+	}
+
+	public static void   assignable(Object obj, Class... checks)
+	{
+		assignable((obj == null)?(null):(obj.getClass()), checks);
+	}
 }

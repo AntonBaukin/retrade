@@ -2,6 +2,7 @@ package com.tverts.actions;
 
 /* standard Java classes */
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +13,10 @@ import static com.tverts.actions.ActionsPoint.collectParams;
 /* com.tverts: endure */
 
 import com.tverts.endure.NumericIdentity;
+
+/* com.tverts: predicates */
+
+import com.tverts.support.logic.Predicate;
 
 /* com.tverts: support */
 
@@ -33,6 +38,19 @@ public abstract class ActionBuilderBase
 	{
 		return Collections.<ActionBuilder> singletonList(this);
 	}
+
+
+	/* shared parameters of the builders */
+
+	/**
+	 * Send this parameter to defines the predicate
+	 * of the actions. See {@link Action#getPredicate()}.
+	 *
+	 * Note that this parameter has no default support,
+	 * and each builder may or may not check and use it.
+	 */
+	public static final String PREDICATE =
+	  ActionBuilderBase.class.getName() + ": predicate";
 
 
 	/* protected: nested actions invocation */
@@ -166,11 +184,9 @@ public abstract class ActionBuilderBase
 
 	protected ActionContext createContext(ActionBuildRec abr)
 	{
-		//?: {the context creator is defined} invoke it
-		if(abr.getContextCreator() != null)
-			return abr.getContextCreator().createContext(abr);
-
-		return null;
+		//?: {the context creator is not defined} nothing to do
+		return (abr.getContextCreator() == null)?(null):
+			(abr.getContextCreator().createContext(abr));
 	}
 
 	/**
@@ -249,19 +265,24 @@ public abstract class ActionBuilderBase
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void          checkTargetClass(ActionBuildRec abr, Class tclass)
+	protected void          checkTargetClass(ActionBuildRec abr, Class... tclasses)
 	{
-		if(tclass == null) throw new IllegalArgumentException();
-
 		Object target = targetOrNull(abr);
 		Class  tarcls = (target == null)?(null):(target.getClass());
 
+		//~: cycle for the check classes
+		for(Class tclass : tclasses)
+			//?: {the class is in the required list}
+			if(tclass.isAssignableFrom(tarcls))
+				return;
+
 		//?: {the target is not a requested class}
-		if((tarcls == null) || !tclass.isAssignableFrom(tarcls))
-			throw new IllegalStateException(String.format(
-			  "Action Builder expects (defined) target of class '%s', " +
-			  "but not of the class '%s'", tclass.getName(), OU.cls(tarcls)
-			));
+		throw new IllegalStateException(String.format(
+		  "Action Builder expects (defined) target of classes %s, " +
+		  "but not of the class '%s'!",
+
+		  Arrays.asList(tclasses).toString(), OU.cls(tarcls)
+		));
 	}
 
 	protected boolean       isTestTarget(ActionBuildRec abr)
@@ -303,6 +324,16 @@ public abstract class ActionBuilderBase
 	protected boolean       flag(ActionBuildRec abr, Object name)
 	{
 		return Boolean.TRUE.equals(param(abr, name));
+	}
+
+	protected Predicate     predicate(ActionBuildRec abr)
+	{
+		Object p = param(abr, PREDICATE);
+
+		if(p != null)
+			OU.assignable(p, Predicate.class);
+
+		return (Predicate)p;
 	}
 
 

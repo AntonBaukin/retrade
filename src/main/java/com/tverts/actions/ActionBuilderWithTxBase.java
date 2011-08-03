@@ -36,7 +36,7 @@ public abstract class ActionBuilderWithTxBase
 	}
 
 	/**
-	 * Returns the effectife transaction context.
+	 * Returns the effective transaction context.
 	 * This is the action context if it is defined,
 	 * or the default one otherwise.
 	 *

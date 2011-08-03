@@ -3,9 +3,9 @@ package com.tverts.endure.core;
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
-import com.tverts.actions.ActionBuilderWithTxBase;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
+import com.tverts.endure.ActionBuilderXRoot;
 
 /* com.tverts: hibery */
 
@@ -21,7 +21,7 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-public class ActDomain extends ActionBuilderWithTxBase
+public class ActDomain extends ActionBuilderXRoot
 {
 	/* action types */
 

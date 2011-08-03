@@ -62,7 +62,7 @@ public class ActionBuildRec
 
 	/**
 	 * Tells whether the action building is complete.
-	 * If the flag is set no futher attempts to update
+	 * If the flag is set no further attempts to update
 	 * this record or the aggregated objects may be
 	 * issued by the Actions Subsystem' components.
 	 */
@@ -102,6 +102,11 @@ public class ActionBuildRec
 	public ActionBuildRec setContext(ActionContext context)
 	{
 		this.context = context;
+
+		//?: {this build record is nested} propagate the context up
+		if((getOuterBuildRec() != null) && (getOuterBuildRec().getContext() == null))
+			getOuterBuildRec().setContext( context);
+
 		return this;
 	}
 
@@ -130,16 +135,32 @@ public class ActionBuildRec
 		return initialTask;
 	}
 
-	public void           setInitialTask(ActionTask initialTask)
+	public ActionBuildRec setInitialTask(ActionTask initialTask)
 	{
 		this.initialTask = initialTask;
+		return this;
+	}
+
+	/**
+	 * If this build record is of a nested action build request,
+	 * the outer action build record is saved here.
+	 */
+	public ActionBuildRec getOuterBuildRec()
+	{
+		return outerBuildRec;
+	}
+
+	public ActionBuildRec setOuterBuildRec(ActionBuildRec abr)
+	{
+		this.outerBuildRec = abr;
+		return this;
 	}
 
 	/**
 	 * There are composite builders exist that do not build
-	 * actions by themself, but delegate this issue to the
+	 * actions on their own, but delegate this issue to the
 	 * aggregated ones. Build step allows such a builders
-	 * to make several loops of the sub-bulders calling
+	 * to make several loops of the sub-builders calling
 	 * providing this distinct marker objects.
 	 *
 	 * @see {@link ActionBuildersRoot}.
@@ -149,12 +170,13 @@ public class ActionBuildRec
 		return buildStep;
 	}
 
-	public void           setBuildStep(Object buildStep)
+	public ActionBuildRec setBuildStep(Object buildStep)
 	{
 		this.buildStep = buildStep;
+		return this;
 	}
 
-	/* public: action build substrategies access */
+	/* public: action build sub-strategies access */
 
 	/**
 	 * Action system strategy callback to build nested action tasks.
@@ -223,11 +245,12 @@ public class ActionBuildRec
 	private ActionTask     initialTask;
 	private ActionContext  context;
 	private ActionTrigger  trigger;
+	private ActionBuildRec outerBuildRec;
 	private Object         buildStep;
 	private boolean        complete;
 
 
-	/* private: action build substrategies */
+	/* private: action build sub-strategies */
 
 	private NestedBuilder  nestedBuilder;
 	private ContextCreator contextCreator;

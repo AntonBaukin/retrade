@@ -25,6 +25,13 @@
 
 
   <!--=================================================
+    =  Aggregated Values Action Bulders               =
+    +================================================-->
+
+  <import resource = 'aggrValue.xml'/>
+
+
+  <!--=================================================
     =  Domain Model Core Actions                      =
     +==================================================
     |
@@ -42,6 +49,7 @@
         <ref bean = 'coreUnityTypesBuilders'/>
         <ref bean = 'coreUnityBuilders'/>
         <ref bean = 'coreDomainBuilders'/>
+        <ref bean = 'aggrValueBuilders'/>
 
       </list>
     </property>

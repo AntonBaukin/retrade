@@ -5,6 +5,10 @@ package com.tverts.actions;
 import java.util.HashMap;
 import java.util.Map;
 
+/* com.tverts: predicates */
+
+import com.tverts.support.logic.Predicate;
+
 /* com.tverts: support */
 
 import com.tverts.support.LU;
@@ -48,8 +52,9 @@ public abstract class ActionBase implements Action
 
 		try
 		{
-			//!: invoke action
-			execute();
+			//?: {predicate allows} invoke the action
+			if(isPredicate())
+				execute();
 		}
 		catch(Throwable e)
 		{
@@ -98,12 +103,35 @@ public abstract class ActionBase implements Action
 		return this.error;
 	}
 
+	public Predicate     getPredicate()
+	{
+		return predicate;
+	}
+
+	public ActionBase    setPredicate(Predicate predicate)
+	{
+		this.predicate = predicate;
+		return this;
+	}
 
 	/* protected: action trigger phase */
 
 	protected abstract void execute()
 	  throws Throwable;
 
+	/**
+	 * Tells whether {@link #execute()} method
+	 * must be actually invoked. May be invoked
+	 * in each phase of action processing.
+	 *
+	 * By default it affects the execution of open
+	 * (validation) and the trigger (execution) phases.
+	 */
+	protected boolean       isPredicate()
+	{
+		return (executing != null)?(executing):(executing = (
+		  (getPredicate() == null) || getPredicate().evalPredicate(this)));
+	}
 
 	/* protected: action state & execution support */
 
@@ -162,28 +190,63 @@ public abstract class ActionBase implements Action
 
 	protected Object  target()
 	{
-		Object res = getTask().getTarget();
+		Object target = getTask().getTarget();
 
-		if(res == null) throw new IllegalStateException(
+		if(target == null) throw new IllegalStateException(
 		  "Action requires the target instance that is undefined!"
 		);
 
-		return res;
+		return target;
+	}
+
+	/**
+	 * While {@link #target()} returns the actual object
+	 * stored in the action task, this call also checks
+	 * whether the target is wrapped or created with
+	 * a delay. It returns the object meant to be a target.
+	 */
+	protected Object  xtarget()
+	{
+		Object target = target();
+
+		if(target instanceof DelayedInstance)
+			target = ((DelayedInstance)target).createInstance(this);
+
+		if(target == null) throw new IllegalStateException(
+		  "Action requires the target instance that is undefined!"
+		);
+
+		return target;
 	}
 
 	@SuppressWarnings("unchecked")
 	protected <O> O   target(Class<O> tclass)
 	{
-		Object res = target();
+		Object target = target();
 
 		//?: {has wrong target class}
-		if((tclass != null) && !tclass.isAssignableFrom(res.getClass()))
+		if((tclass != null) && !tclass.isAssignableFrom(target.getClass()))
 			throw new IllegalStateException(String.format(
 			  "Action target [%s] can't be cast to class '%s'",
-			  OU.sig(res), tclass.getName()
+			  OU.sig(target), tclass.getName()
 			));
 
-		return (O)getTask().getTarget();
+		return (O)target;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <O> O   xtarget(Class<O> tclass)
+	{
+		Object target = xtarget();
+
+		//?: {has wrong target class}
+		if((tclass != null) && !tclass.isAssignableFrom(target.getClass()))
+			throw new IllegalStateException(String.format(
+			  "Action target [%s] can't be cast to class '%s'",
+			  OU.sig(target), tclass.getName()
+			));
+
+		return (O)target;
 	}
 
 	protected Object  param(Object name)
@@ -269,4 +332,6 @@ public abstract class ActionBase implements Action
 	private ActionContext context;
 	private Map           features;
 	private ActionError   error;
+	private Predicate     predicate;
+	private Boolean       executing;
 }

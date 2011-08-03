@@ -16,9 +16,11 @@ import com.tverts.endure.keys.KeysContext;
 import com.tverts.endure.keys.KeysPoint;
 import com.tverts.hibery.keys.HiberKeysContextStruct;
 
-/* com.tverts: hibery system */
+/* com.tverts: hibery + system */
 
 import com.tverts.hibery.system.HiberSystem;
+import com.tverts.system.tx.TxContext;
+
 
 /**
  * TODO comment HiberPoint
@@ -113,6 +115,13 @@ public class HiberPoint
 		  createPrimaryKey(session, instance, fortest);
 	}
 
+	public static void     setPrimaryKey
+	  (TxContext tx, NumericIdentity instance, boolean fortest)
+	{
+		HiberPoint.getInstance().createPrimaryKey(
+		  tx.getSessionFactory().getCurrentSession(), instance, fortest);
+	}
+
 	public void           createPrimaryKey
 	  (Session session, NumericIdentity instance, boolean fortest)
 	{
@@ -133,6 +142,7 @@ public class HiberPoint
 
 		instance.setPrimaryKey((Long)primaryKey);
 	}
+
 
 	/* private: primary database connectivity */
 

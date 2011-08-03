@@ -1,0 +1,80 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr'>
+
+  <union-subclass name = 'AggrValue' extends = 'com.tverts.endure.core.Entity'
+    table = 'aggr_value' lazy = 'false'>
+
+
+    <!-- Owner Unity -->
+
+    <many-to-one name = 'owner' foreign-key = 'fk_aggr_value_owner'>
+
+      <column name = 'fk_owner' not-null = 'true'
+        unique-key = 'ux_aggr_value_owner'>
+
+        <comment>Unity of the instance owning this aggregated value</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Aggregated Value (Unity) Type (de-normilizing) -->
+
+    <many-to-one name = 'aggrType' foreign-key = 'fk_aggr_value_type'
+      unique-key = 'ux_aggr_value_owner'>
+
+      <column name = 'fk_aggr_type' not-null = 'true'>
+        <comment>Duplicate of Aggregate Value Unity Type reference</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Selector ID -->
+
+    <property name = 'selectorID'>
+
+      <column name = 'selector_id' unique-key = 'ux_aggr_value_owner'>
+        <comment>
+          Copy of the primary key of the selector of this aggregated value
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Item ID -->
+
+    <property name = 'aggrItemID'>
+
+      <column name = 'aggr_item_id'>
+        <comment>
+          Copy of the primary key of the component with the actual historical
+          value of the aggregated value
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Value -->
+
+    <property name = 'aggrValue' type = 'big_decimal'>
+
+      <column name = 'aggr_value' precision = '20' scale = '6'>
+        <comment>The aggregated value</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Value -->
+
+    <property name = 'aggrDenom' type = 'big_decimal'>
+
+      <column name = 'aggr_denom' precision = '20' scale = '6'>
+        <comment>The aggregated value plain fraction denominator</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

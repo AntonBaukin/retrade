@@ -62,7 +62,7 @@ public abstract class ActionBuilderSystem
 			if(abr  == null) throw new IllegalArgumentException();
 			if(task == null) throw new IllegalArgumentException();
 
-			ActionBuildRec nabr = abr.clone(task);
+			ActionBuildRec nabr = abr.clone(task).setOuterBuildRec(abr);
 
 			//!: invoke this builder on the nested record
 			ActionBuilderSystem.this.buildAction(nabr);

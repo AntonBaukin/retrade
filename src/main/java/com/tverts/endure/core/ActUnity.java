@@ -3,7 +3,6 @@ package com.tverts.endure.core;
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
-import com.tverts.actions.ActionBuilderWithTxBase;
 import com.tverts.actions.ActionsCollection.DeleteEntity;
 import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionType;
@@ -15,6 +14,9 @@ import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 /* com.tverts: endure */
 
+import com.tverts.actions.DelayedInstance;
+import com.tverts.endure.ActionBuilderXRoot;
+import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.United;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
@@ -30,7 +32,7 @@ import com.tverts.support.OU;
  *
  * @author anton.baukin@gmail.com
  */
-public class ActUnity extends ActionBuilderWithTxBase
+public class ActUnity extends ActionBuilderXRoot
 {
 	/* action types */
 
@@ -41,7 +43,7 @@ public class ActUnity extends ActionBuilderWithTxBase
 	 * that is a {@link United}.
 	 */
 	public static final ActionType CREATE =
-	  new ActionType("endure.core.Unity: create", Unity.class);
+	  new ActionType("create", Unity.class);
 
 	/**
 	 * Deletes the {@link Unity} instance of the given
@@ -55,7 +57,7 @@ public class ActUnity extends ActionBuilderWithTxBase
 	 * all the references present manually.
 	 */
 	public static final ActionType DELETE =
-	  new ActionType("endure.core.Unity: delete", Unity.class);
+	  new ActionType("delete", Unity.class);
 
 
 	/* parameters of the action task */
@@ -116,11 +118,12 @@ public class ActUnity extends ActionBuilderWithTxBase
 
 	protected void createUnityAction(ActionBuildRec abr)
 	{
-		//?: {the target is not a united}
-		checkTargetClass(abr, United.class);
+		//?: {the target is not a United | instance creator}
+		checkTargetClass(abr, United.class, DelayedInstance.class);
 
 		//~: add action to the chain
-		chain(abr).first(new CreateUnityAction(task(abr)));
+		chain(abr).first(new CreateUnityAction(task(abr)).
+		  setPredicate(predicate(abr)));
 
 		//!: complete the build
 		complete(abr);
@@ -132,7 +135,8 @@ public class ActUnity extends ActionBuilderWithTxBase
 		checkTargetClass(abr, United.class);
 
 		//~: add action to the chain
-		chain(abr).first(new DeleteUnityAction(task(abr)));
+		chain(abr).first(new DeleteUnityAction(task(abr)).
+		  setPredicate(predicate(abr)));
 
 		//!: complete the build
 		complete(abr);
@@ -154,21 +158,6 @@ public class ActUnity extends ActionBuilderWithTxBase
 
 		/* public: Action interface */
 
-		public void  open()
-		{
-			super.open();
-
-			//~: automatically find the
-			this.unityType = obtainType();
-
-			//?: {unity type could not be found}
-			if(this.unityType == null)
-				throw new IllegalStateException(String.format(
-				  "Default Unity Builder could not found distinct system Unity " +
-				  "Type for the United instance of class [%s]", OU.cls(target())
-				));
-		}
-
 		public Unity getResult()
 		{
 			return this.result;
@@ -180,12 +169,22 @@ public class ActUnity extends ActionBuilderWithTxBase
 		protected void      execute()
 		  throws Throwable
 		{
+			//~: automatically find the type
+			this.unityType = obtainType();
+
+			//?: {unity type could not be found}
+			if(this.unityType == null)
+				throw new IllegalStateException(String.format(
+				  "Default Unity Builder could not found distinct system Unity " +
+				  "Type for the United instance of class [%s]", OU.cls(xtarget())
+				));
+
 			//~: create the unity instance
 			this.result = createUnity();
 
 			//?: {do assign}
 			if(isAssignUnity())
-				target(United.class).setUnity(getResult());
+				xtarget(United.class).setUnity(this.result);
 
 			//?: {do save unity}
 			if(isSaveUnity())
@@ -194,8 +193,8 @@ public class ActUnity extends ActionBuilderWithTxBase
 
 		protected Unity     createUnity()
 		{
-			Unity  res = new Unity();
-			United uni = target(United.class);
+			Unity           res = new Unity();
+			NumericIdentity uni = xtarget(NumericIdentity.class);
 
 			//?: {target has no primary key yet} create it here
 			if(uni.getPrimaryKey() == null)
@@ -235,7 +234,7 @@ public class ActUnity extends ActionBuilderWithTxBase
 		protected UnityType searchUnityType()
 		{
 			return UnityTypes.getInstance().
-			  getDistinctType(target().getClass());
+			  getDistinctType(xtarget().getClass());
 		}
 
 		protected boolean   isAssignUnity()
@@ -250,7 +249,7 @@ public class ActUnity extends ActionBuilderWithTxBase
 
 		protected void      doSaveUnity()
 		{
-			session().save(getResult());
+			session().save(this.result);
 		}
 
 		/* private: resulting unity */

@@ -3,16 +3,13 @@ package com.tverts.endure.core;
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
-import com.tverts.actions.ActionBuilderWithTxBase;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 
 /* com.tverts: endure */
 
-
+import com.tverts.endure.ActionBuilderXRoot;
 import com.tverts.endure.UnityType;
-
-/* com.tverts: support */
 
 
 /**
@@ -21,7 +18,7 @@ import com.tverts.endure.UnityType;
  *
  * @author anton.baukin@gmail.com
  */
-public class ActUnityType extends ActionBuilderWithTxBase
+public class ActUnityType extends ActionBuilderXRoot
 {
 	/* action types */
 

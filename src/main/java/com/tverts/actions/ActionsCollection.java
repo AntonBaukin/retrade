@@ -54,7 +54,21 @@ public class ActionsCollection
 		public SaveNumericIdentified(ActionTask task, NumericIdentity target)
 		{
 			super(task);
-			this.target = target;
+
+			this.target  = target;
+			this.creator = null;
+		}
+
+		/**
+		 * Saves the {@link NumericIdentity} created by the
+		 * delayed creation strategy.
+		 */
+		public SaveNumericIdentified(ActionTask task, DelayedInstance creator)
+		{
+			super(task);
+
+			this.target  = null;
+			this.creator = creator;
 		}
 
 
@@ -62,10 +76,21 @@ public class ActionsCollection
 
 		public NumericIdentity getSaveTarget()
 		{
-			if(target != null) return target;
+			//?: {the target must be created by strategy}
+			if(creator != null)
+				target = creator.createInstance(this);
+
+			//?: {the target is provided}
+			if(target != null)
+				return target;
 
 			Object t = targetOrNull();
 			return (t instanceof NumericIdentity)?((NumericIdentity)t):(null);
+		}
+
+		public boolean         isDelayedCreation()
+		{
+			return (creator != null);
 		}
 
 
@@ -75,8 +100,13 @@ public class ActionsCollection
 		{
 			super.openValidate();
 
+			//HINT:  for reasons of action chaining we can't
+			//  test the instances that are created on the demand,
+			//  as the creation strategies may rely on the data
+			//  provided from previous trigger runs of the chain.
+
 			//?: {the target is not a primary identity}
-			if(getSaveTarget() == null)
+			if(!isDelayedCreation() && (getSaveTarget() == null))
 				throw new IllegalStateException(String.format(
 				  "Can't save undefined entity, or of the class '%s' " +
 				  "not a NumericIdentity!", OU.cls(targetOrNull())
@@ -119,7 +149,8 @@ public class ActionsCollection
 
 		/* protected: the alternative target */
 
-		protected final NumericIdentity target;
+		protected DelayedInstance creator;
+		protected NumericIdentity target;
 	}
 
 

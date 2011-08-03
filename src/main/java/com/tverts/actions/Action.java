@@ -1,6 +1,13 @@
 package com.tverts.actions;
 
+/* standard Java classes */
+
 import java.util.Map;
+
+/* com.tverts: predicates */
+
+import com.tverts.support.logic.Predicate;
+
 
 /**
  * Action of the System Execution Layer.
@@ -10,7 +17,7 @@ import java.util.Map;
  * the defined order.
  *
  * Actions are stateful. It is allowed to store
- * executonal state between the phases in the
+ * execution state between the phases in the
  * action instance.
  *
  * There are fours execution phases. Bind associates the
@@ -36,7 +43,7 @@ public interface Action
 	 * Cleanups the results of the execution.
 	 *
 	 * Invoked even if the trigger phase fails,
-	 * but open phase was successfull.
+	 * but open phase was successful.
 	 */
 	public void   close();
 
@@ -75,8 +82,30 @@ public interface Action
 	/**
 	 * The error of {@link #trigger()} execution.
 	 * If an exception leaks out of trigger, it is
-	 * regarded as critical execption that stops
+	 * regarded as critical exception that stops
 	 * the whole execution.
 	 */
 	public ActionError   getError();
+
+	/**
+	 * Each action may have the predicate controlling
+	 * whether to execute it or not. As the parameter
+	 * predicate receives this action instance.
+	 *
+	 * If a predicate is not set, or is set and returns
+	 * {@code true}, the action is executed.
+	 *
+	 * Note that predicate controls only the trigger
+	 * phase of the action, not the open or the close ones.
+	 * Use {@link ActionBase#isPredicate()} to check
+	 * the execution status on the close phase.
+	 *
+	 * Important that is not safe to call the predicate
+	 * on the open phase. Predicate may rely on the data
+	 * created in trigger runs of the actions previous
+	 * to this action in the chain. Be careful here!
+	 */
+	public Predicate     getPredicate();
+
+	public Action        setPredicate(Predicate p);
 }
