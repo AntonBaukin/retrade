@@ -1,0 +1,62 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr'>
+
+  <union-subclass name = 'AggrItemVolume' extends = 'AggrItemBase'
+    table = 'aggr_item_volume' lazy = 'false'>
+
+
+    <!-- Volume Positive -->
+
+    <property name = 'volumePositive' type = 'big_decimal'>
+
+      <column name = 'volume_positive' precision = '14' scale = '4'>
+
+        <comment>The volume (amount) added to the aggregated value</comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Negative -->
+
+    <property name = 'volumeNegative' type = 'big_decimal'>
+
+      <column name = 'volume_negative' precision = '14' scale = '4'>
+
+        <comment>The volume (amount) taken from the aggregated value</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggregated Positive -->
+
+    <property name = 'aggrPositive' type = 'big_decimal'>
+
+      <column name = 'aggr_positive' precision = '18' scale = '4'>
+
+        <comment>
+          Historical value aggregating positive volumes of the
+          items before this one
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Aggregated Negative -->
+
+    <property name = 'aggrNegative' type = 'big_decimal'>
+
+      <column name = 'aggr_negative' precision = '18' scale = '4'>
+
+        <comment>
+          Historical value aggregating negative volumes of the
+          items before this one
+        </comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

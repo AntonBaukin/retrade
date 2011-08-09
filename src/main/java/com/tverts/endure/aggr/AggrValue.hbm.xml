@@ -61,7 +61,7 @@
 
     <property name = 'aggrValue' type = 'big_decimal'>
 
-      <column name = 'aggr_value' precision = '20' scale = '6'>
+      <column name = 'aggr_value' precision = '18' scale = '4'>
         <comment>The aggregated value</comment>
       </column>
     </property>
@@ -71,7 +71,7 @@
 
     <property name = 'aggrDenom' type = 'big_decimal'>
 
-      <column name = 'aggr_denom' precision = '20' scale = '6'>
+      <column name = 'aggr_denom' precision = '18' scale = '4'>
         <comment>The aggregated value plain fraction denominator</comment>
       </column>
     </property>

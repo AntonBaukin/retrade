@@ -62,6 +62,12 @@ public class ActionType
 		this.refClass = refClass;
 	}
 
+	public ActionType(Class refClass, String typeName)
+	{
+		this(typeName, refClass);
+	}
+
+
 	/* public: ActionType interface */
 
 	public final String getTypeName()

@@ -362,7 +362,7 @@ public class OrdererDefault extends OrdererBase
 	protected void      findInsertBorders(OrderData odata)
 	{
 		//?: {reference is undefined} insert as the first or the last
-		if(reference(odata) == null)
+		if((reference(odata) == null) || (reference(odata).getOrderIndex() == null))
 		{
 			//?: {beforeAfter = true} as the last
 			if(request(odata).isBeforeAfter())
@@ -387,22 +387,19 @@ public class OrdererDefault extends OrdererBase
 /*
 
 from OrderIndex where ($orderOwner = :orderOwner) and
-  ($orderType = :orderType) and ($orderIndex is not null)
+  ($orderType X :orderType) and ($orderIndex is not null)
   order by $orderIndex asc
 
 */
-		Query q = indexQuery(odata,
+		List r = indexQuery(odata,
 
 "from OrderIndex where ($orderOwner = :orderOwner) and\n" +
-"  ($orderType = :orderType) and ($orderIndex is not null)\n" +
+"  ($orderType X :orderType) and ($orderIndex is not null)\n" +
 "  order by $orderIndex asc"
 
 		).
-		  setLong("orderOwner",      orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setMaxResults(1);
-
-		List  r = q.list();
+		  setMaxResults(1).
+		  list();
 
 		//?: {has right (smallest) border}
 		if(!r.isEmpty())
@@ -415,22 +412,19 @@ from OrderIndex where ($orderOwner = :orderOwner) and
 /*
 
 from OrderIndex where ($orderOwner = :orderOwner) and
-  ($orderType = :orderType) and ($orderIndex is not null)
+  ($orderType X :orderType) and ($orderIndex is not null)
   order by $orderIndex desc
 
 */
-		Query q = indexQuery(odata,
+		List r = indexQuery(odata,
 
 "from OrderIndex where ($orderOwner = :orderOwner) and\n" +
-"  ($orderType = :orderType) and ($orderIndex is not null)\n" +
+"  ($orderType X :orderType) and ($orderIndex is not null)\n" +
 "  order by $orderIndex desc"
 
 		).
-		  setLong("orderOwner",      orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setMaxResults(1);
-
-		List  r = q.list();
+		  setMaxResults(1).
+		  list();
 
 		//?: {has left (biggest) border}
 		if(!r.isEmpty())
@@ -443,24 +437,21 @@ from OrderIndex where ($orderOwner = :orderOwner) and
 /*
 
 from OrderIndex where ($orderOwner = :orderOwner) and
-  ($orderType = :orderType) and ($orderIndex < :orderIndex)
+  ($orderType X :orderType) and ($orderIndex < :orderIndex)
   order by $orderIndex desc
 
 */
 
-		Query q = indexQuery(odata,
+		List r = indexQuery(odata,
 
 "from OrderIndex where ($orderOwner = :orderOwner) and\n" +
-"  ($orderType = :orderType) and ($orderIndex < :orderIndex)\n" +
+"  ($orderType X :orderType) and ($orderIndex < :orderIndex)\n" +
 "  order by $orderIndex desc"
 
 		).
-		  setLong("orderOwner",      orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setLong     ("orderIndex", reference(odata).getOrderIndex()).
-		  setMaxResults(1);
-
-		List  r = q.list();
+		  setLong("orderIndex", reference(odata).getOrderIndex()).
+		  setMaxResults(1).
+		  list();
 
 		//?: {has left border}
 		if(!r.isEmpty())
@@ -476,24 +467,21 @@ from OrderIndex where ($orderOwner = :orderOwner) and
 /*
 
 from OrderIndex where ($orderOwner = :orderOwner) and
-  ($orderType = :orderType) and ($orderIndex > :orderIndex)
+  ($orderType X :orderType) and ($orderIndex > :orderIndex)
   order by $orderIndex asc
 
 */
 
-		Query q = indexQuery(odata,
+		List r = indexQuery(odata,
 
 "from OrderIndex where ($orderOwner = :orderOwner) and\n" +
-"  ($orderType = :orderType) and ($orderIndex > :orderIndex)\n" +
+"  ($orderType X :orderType) and ($orderIndex > :orderIndex)\n" +
 "  order by $orderIndex asc"
 
 		).
-		  setLong     ("orderOwner", orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setLong     ("orderIndex", reference(odata).getOrderIndex()).
-		  setMaxResults(1);
-
-		List  r = q.list();
+		  setLong("orderIndex", reference(odata).getOrderIndex()).
+		  setMaxResults(1).
+		  list();
 
 		//?: {has right border}
 		if(!r.isEmpty())
@@ -531,7 +519,7 @@ from OrderIndex where ($orderOwner = :orderOwner) and
 /*
 
 select $orderIndex from OrderIndex where
-  ($orderOwner = :orderOwner) and ($orderType = :orderType) and
+  ($orderOwner = :orderOwner) and ($orderType X :orderType) and
   ($orderIndex < :orderIndex) order by $orderIndex desc
 
 */
@@ -539,13 +527,11 @@ select $orderIndex from OrderIndex where
 		Query      q = indexQuery(odata,
 
 "select $orderIndex from OrderIndex where\n" +
-"  ($orderOwner = :orderOwner) and ($orderType = :orderType) and\n" +
+"  ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
 "  ($orderIndex < :orderIndex) order by $orderIndex desc"
 
 		).
-		  setLong("orderOwner",      orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setLong     ("orderIndex", odata.getLeft().getOrderIndex()).
+		  setLong("orderIndex", odata.getLeft().getOrderIndex()).
 		  setMaxResults(getSpreadLimit());
 
 		List<Long> r = (List<Long>)q.list();
@@ -561,20 +547,18 @@ select $orderIndex from OrderIndex where
 /*
 
 select $orderIndex from OrderIndex where
-  ($orderOwner = :orderOwner) and ($orderType = :orderType) and
+  ($orderOwner = :orderOwner) and ($orderType X :orderType) and
   ($orderIndex > :orderIndex) order by $orderIndex asc
 
 */
 		q = indexQuery(odata,
 
 "select $orderIndex from OrderIndex where\n" +
-"  ($orderOwner = :orderOwner) and ($orderType = :orderType) and\n" +
+"  ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
 "  ($orderIndex > :orderIndex) order by $orderIndex asc"
 
 		).
-		  setLong("orderOwner",      orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setLong     ("orderIndex", odata.getRight().getOrderIndex()).
+		  setLong("orderIndex", odata.getRight().getOrderIndex()).
 		  setMaxResults(getSpreadLimit());
 
 		r = (List<Long>)q.list();
@@ -631,22 +615,20 @@ select $orderIndex from OrderIndex where
 /*
 
 update OrderIndex set $orderIndex = $orderIndex + :smove
-where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
+where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
   ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)
 
 */
 		Query      q = indexQuery(odata,
 
 "update OrderIndex set $orderIndex = $orderIndex + :smove\n" +
-"where ($orderOwner = :orderOwner) and ($orderType = :orderType) and\n" +
+"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
 "  ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)"
 
 		).
-		  setLong     ("smove",      smove).
-		  setLong     ("orderOwner", orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setLong     ("startIndex", odata.getRight().getOrderIndex()).
-		  setLong     ("endIndex",   spread[spos]);
+		  setLong("smove",      smove).
+		  setLong("startIndex", odata.getRight().getOrderIndex()).
+		  setLong("endIndex",   spread[spos]);
 
 		//!: execute update
 		q.executeUpdate();
@@ -691,22 +673,20 @@ where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
 /*
 
 update OrderIndex set $orderIndex = $orderIndex - :smove
-where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
+where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
   ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)
 
 */
 		Query      q = indexQuery(odata,
 
 "update OrderIndex set $orderIndex = $orderIndex - :smove\n" +
-"where ($orderOwner = :orderOwner) and ($orderType = :orderType) and\n" +
+"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
 "  ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)"
 
 		).
-		  setLong     ("smove",      smove).
-		  setLong     ("orderOwner", orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setLong     ("startIndex", spread[spos]).
-		  setLong     ("endIndex",   odata.getLeft().getOrderIndex());
+		  setLong("smove",      smove).
+		  setLong("startIndex", spread[spos]).
+		  setLong("endIndex",   odata.getLeft().getOrderIndex());
 
 		//!: execute update
 		q.executeUpdate();
@@ -747,7 +727,7 @@ where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
 /*
 
 update OrderIndex set $orderIndex = $orderIndex + :insertStep
-where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
+where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
   ($orderIndex >= :orderIndex)
 
 */
@@ -755,14 +735,12 @@ where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
 		Query      q = indexQuery(odata,
 
 "update OrderIndex set $orderIndex = $orderIndex + :insertStep\n" +
-"where ($orderOwner = :orderOwner) and ($orderType = :orderType) and\n" +
+"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
 "  ($orderIndex >= :orderIndex)"
 
 		).
-		  setLong     ("insertStep", getInsertStep()).
-		  setLong     ("orderOwner", orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setLong     ("orderIndex", odata.getRight().getOrderIndex());
+		  setLong("insertStep", getInsertStep()).
+		  setLong("orderIndex", odata.getRight().getOrderIndex());
 
 		//!: execute update
 		q.executeUpdate();
@@ -785,7 +763,7 @@ where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
 /*
 
 update OrderIndex set $orderIndex = $orderIndex - :insertStep
-where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
+where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
   ($orderIndex <= :orderIndex)
 
 */
@@ -793,14 +771,12 @@ where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
 		Query      q = indexQuery(odata,
 
 "update OrderIndex set $orderIndex = $orderIndex - :insertStep\n" +
-"where ($orderOwner = :orderOwner) and ($orderType = :orderType) and\n" +
+"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
 "  ($orderIndex <= :orderIndex)"
 
 		).
-		  setLong     ("insertStep", getInsertStep()).
-		  setLong     ("orderOwner", orderOwnerID(odata)).
-		  setParameter("orderType",  orderType(odata)).
-		  setLong     ("orderIndex", odata.getLeft().getOrderIndex());
+		  setLong("insertStep", getInsertStep()).
+		  setLong("orderIndex", odata.getLeft().getOrderIndex());
 
 		//!: execute update
 		q.executeUpdate();
@@ -821,16 +797,32 @@ where ($orderOwner = :orderOwner) and ($orderType = :orderType) and
 
 	/* protected: queries building */
 
-	protected Query        indexQuery(OrderData odata, String q)
+	protected Query        indexQuery(OrderData odata, String hql)
 	{
-		return session(request(odata)).createQuery(q.
-
+		String Q = hql.
 		  replace("OrderIndex",  indexClass(odata)).
 		  replace("$orderOwner", getOrderOwnerIDProp()).
 		  replace("$orderType",  getOrderTypeProp()).
-		  replace("$orderIndex", getOrderIndexProp())
+		  replace("$orderIndex", getOrderIndexProp());
 
-		);
+		//?: {has order type defined}
+		if(orderType(odata) != null)
+			Q = Q.replace("X :orderType", "= :orderType");
+		else
+			Q = Q.replace("X :orderType", "is null");
+
+
+		Query q =  session(request(odata)).createQuery(Q);
+
+		//~: set order owner
+		if(Q.indexOf(":orderOwner") != -1)
+			q.setLong("orderOwner", orderOwnerID(odata));
+
+		//~: set order type
+		if(Q.indexOf(":orderType") != -1)
+			q.setParameter("orderType", orderType(odata));
+
+		return q;
 	}
 
 

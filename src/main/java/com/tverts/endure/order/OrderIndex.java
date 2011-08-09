@@ -19,6 +19,13 @@ public interface OrderIndex
 
 	public Unity     getOrderOwner();
 
+	/**
+	 * Returns the type of the order. Each order owner
+	 * may have several lines of order, each having
+	 * it's own distinct type.
+	 *
+	 * Note that it is allows the type to be undefined!
+	 */
 	public UnityType getOrderType();
 
 	/**

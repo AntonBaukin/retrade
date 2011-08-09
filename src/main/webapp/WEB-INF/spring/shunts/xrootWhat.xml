@@ -27,7 +27,7 @@
 <!--            system:shunts:killme,                               -->
                 system:tx:scopes,
 
-<!--            domain:core:order-index                             -->
+                domain:core:order-index
 
               </value>
             </property>
