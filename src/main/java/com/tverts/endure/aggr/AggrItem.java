@@ -32,4 +32,20 @@ public interface AggrItem extends NumericIdentity, OrderIndex
 	 * components of other aggregated values.
 	 */
 	public boolean   isHistorical();
+
+	/**
+	 * Each component of aggregated value is assumed to
+	 * have a source of it's value. (It is still possible
+	 * the source to be not defined.)
+	 *
+	 * The source is a Unity instance in the most cases.
+	 * It is forbidden for the components of the same
+	 * aggregated value to have equal source IDs that
+	 * refer different database objects.
+	 *
+	 *
+	 * @return  the primary key of the source entity
+	 *   of this component.
+	 */
+	public Long      getSourceID();
 }

@@ -1,8 +1,10 @@
-package com.tverts.endure.aggr;
+package com.tverts.endure.aggr.volume;
 
 /* standard Java classes */
 
 import java.math.BigDecimal;
+
+import com.tverts.endure.aggr.AggrItemBase;
 
 
 /**

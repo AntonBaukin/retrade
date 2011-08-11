@@ -44,6 +44,8 @@ public class GetAggrValue extends GetObjectBase
 	@Transactional
 	public AggrValue getAggrValue(Unity owner, UnityType aggrType, Long selectorID)
 	{
+		if(owner == null)     throw new IllegalArgumentException();
+		if(aggrType == null)  throw new IllegalArgumentException();
 
 /*
 
@@ -89,6 +91,20 @@ from AggrValue where (owner = :owner) and
 			return (AggrValue)r.get(0);
 
 		//!: ambiguity
-		throw new IllegalStateException();
+		throw new IllegalStateException(
+		  "There are more than one aggregated value of the type " +
+		  aggrType.toString() + " do exist for owning Unity with primary key " +
+		  owner.getPrimaryKey() + "!");
+	}
+
+	public AggrValue loadAggrValue(Unity owner, UnityType aggrType, Long selectorID)
+	{
+		AggrValue result = getAggrValue(owner, aggrType, selectorID);
+
+		if(result == null) throw new IllegalStateException(
+		  "Couldn't load Aggregated Value of the type " + aggrType.toString() +
+		  " for owning Unity with primary key " + owner.getPrimaryKey() + "!");
+
+		return result;
 	}
 }

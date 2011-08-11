@@ -1,7 +1,10 @@
 package com.tverts.endure.aggr;
 
+/* com.tverts: endure */
+
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
+
 
 /**
  * Convenient abstract implementation of an aggregated
@@ -50,6 +53,16 @@ public abstract class AggrItemBase implements AggrItem
 		this.historyIndex = (h)?(getOrderIndex()):(null);
 	}
 
+	public Long      getSourceID()
+	{
+		return sourceID;
+	}
+
+	public void      setSourceID(Long id)
+	{
+		this.sourceID = id;
+	}
+
 
 	/* public: OrderIndex interface */
 
@@ -94,6 +107,8 @@ public abstract class AggrItemBase implements AggrItem
 
 	private Long      primaryKey;
 	private AggrValue aggrValue;
+	private Long      sourceID;
+
 
 	/* persisted attributes: order indices */
 

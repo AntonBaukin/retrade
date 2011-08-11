@@ -3,11 +3,10 @@
 <!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
    'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
 
-<hibernate-mapping package = 'com.tverts.endure.aggr'>
+<hibernate-mapping package = 'com.tverts.endure.aggr.volume'>
 
-  <union-subclass name = 'AggrItemVolume' extends = 'AggrItemBase'
-    table = 'aggr_item_volume' lazy = 'false'>
-
+  <union-subclass name = 'AggrItemVolume' table = 'aggr_item_volume'
+    extends = 'com.tverts.endure.aggr.AggrItemBase' lazy = 'false'>
 
     <!-- Volume Positive -->
 

@@ -47,6 +47,7 @@ public interface Action
 	 */
 	public void   close();
 
+
 	/* public: Action interface (the state access) */
 
 	/**

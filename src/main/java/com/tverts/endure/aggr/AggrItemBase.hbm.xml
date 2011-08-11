@@ -17,18 +17,32 @@
     <many-to-one name = 'aggrValue' foreign-key = 'fk_aggr_item_value_'>
 
       <column name = 'fk_aggr_value' not-null = 'true'
-        index = 'ix_aggr_item_value_'>
+        index = '_ix_aggr_item_value'>
 
         <comment>The Aggregated Value this item is component of</comment>
       </column>
     </many-to-one>
 
 
+    <!-- Source Primary Key -->
+
+    <property name = 'sourceID'>
+
+      <column name = 'source_id' index = '_ix_aggr_item_source_id'>
+
+        <comment>
+          Copy of the primary key of Unity instance that had
+          originated this component
+        </comment>
+      </column>
+    </property>
+
+
     <!-- Order Index -->
 
     <property name = 'orderIndex'>
 
-      <column name = 'order_index' index = 'ix_aggr_item_order_index_'>
+      <column name = 'order_index' index = '_ix_aggr_item_order_index'>
 
         <comment>The main order index of the component</comment>
       </column>
@@ -39,9 +53,13 @@
 
     <property name = 'historyIndex'>
 
-      <column name = 'history_index' index = 'ix_aggr_item_history_index_'>
+      <column name = 'history_index' index = '_ix_aggr_item_history_index'>
 
-        <comment>The main order index of the component</comment>
+        <comment>
+          The order index of the component carrying historical
+          aggreageted value. It rarely defined, but if is, it
+          always iquals to the main order index
+        </comment>
       </column>
     </property>
   </class>

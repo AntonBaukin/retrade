@@ -2,7 +2,14 @@ package com.tverts.support;
 
 /* standard Java classes */
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+
+import java.math.BigDecimal;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -12,6 +19,11 @@ import java.util.LinkedList;
 
 import com.tverts.objects.RunnableWrapper;
 import com.tverts.objects.RunnableInterruptible;
+
+/* com.tverts: support */
+
+import com.tverts.support.streams.BigDecimalXMLEncoderPersistenceDelegate;
+
 
 /**
  * Various utility functions for objects.
@@ -43,6 +55,7 @@ public class OU
 
 		return null;
 	}
+
 
 	/* public: object clones */
 
@@ -136,6 +149,7 @@ public class OU
 		return null;
 	}
 
+
 	/* public: classes and interfaces */
 
 	public static interface ClassPredicate
@@ -209,6 +223,65 @@ public class OU
 		set.remove(c);
 		return set.toArray(new Class[set.size()]);
 	}
+
+
+	/* public: plain XML serialization */
+
+	public static String  obj2xml(Object bean)
+	{
+		try
+		{
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			XMLEncoder            enc = new XMLEncoder(bos);
+
+			enc.setPersistenceDelegate(BigDecimal.class,
+			  BigDecimalXMLEncoderPersistenceDelegate.getInstance());
+
+			enc.writeObject(bean);
+			enc.close();
+
+			return new String(bos.toByteArray(), "UTF-8");
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(
+			  "Error occured while XML Encoding Java Bean of class " + cls(bean), e);
+		}
+	}
+
+	public static Object  xml2obj(String xml)
+	{
+		if(xml == null) return null;
+
+		try
+		{
+			ByteArrayInputStream bis = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+			XMLDecoder           enc = new XMLDecoder(bis);
+			Object               res = enc.readObject();
+
+			enc.close();
+			return res;
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(
+			  "Error occured while Decoding Java Bean from XML!", e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <O> O   xml2obj(String xml, Class<O> c1ass)
+	{
+		Object res = xml2obj(xml);
+
+		if((res != null) && (c1ass != null) && !c1ass.isAssignableFrom(res.getClass()))
+			throw new IllegalStateException(
+			  "Can't cast XML Decoded instance of class '" + cls(res) + "' to the " +
+			  "required class '" + c1ass.getName() + "'!");
+
+		return (O)res;
+	}
+
 
 	/* public: logging support */
 
