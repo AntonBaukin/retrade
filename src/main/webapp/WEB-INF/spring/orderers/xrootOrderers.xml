@@ -32,7 +32,7 @@
             <bean class = 'com.tverts.endure.order.OrdererDefault'>
 
               <property name = 'insertStep'  value = '2'/>
-              <property name = 'spreadLimit' value = '4'/>
+              <property name = 'spreadLimit' value = '3'/>
 
             </bean>
           </property>

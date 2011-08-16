@@ -4,7 +4,9 @@ package com.tverts.aggr;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /* com.tverts: endure (aggregation) */
 
@@ -28,51 +30,39 @@ public class AggrJob
 {
 	/* public: AggrJob interface */
 
-	public AggrValue getAggrValue()
+	public AggrValue  getAggrValue()
 	{
 		return aggrValue;
 	}
 
-	public AggrJob   setAggrValue(AggrValue aggrValue)
+	public AggrJob    setAggrValue(AggrValue aggrValue)
 	{
 		this.aggrValue = aggrValue;
 		return this;
 	}
 
-	public int       size()
+	public int        size()
 	{
 		return (aggrTasks == null)?(0):(aggrTasks.length);
 	}
 
-	public AggrTask  task(int i)
+	public AggrTask   task(int i)
 	{
 		return aggrTasks[i];
 	}
 
-	public String    error(int i)
+	public AggrJob    setTasks(List<AggrTask> tasks)
 	{
-		return (errors == null)?(null):(errors[i]);
-	}
+		this.aggrTasks    = tasks.toArray(new AggrTask[tasks.size()]);
+		this.tasksClasses = new HashSet<Class>(3);
 
-	public AggrJob   error(int i, String error)
-	{
-		if((errors == null) && (aggrTasks == null))
-			throw new IllegalStateException();
+		for(AggrTask task : tasks)
+			this.tasksClasses.add(task.getClass());
 
-		if(errors == null)
-			errors = new String[aggrTasks.length];
-
-		errors[i] = error;
 		return this;
 	}
 
-	public AggrJob   setTasks(List<AggrTask> tasks)
-	{
-		this.aggrTasks = tasks.toArray(new AggrTask[tasks.size()]);
-		return this;
-	}
-
-	public AggrJob   setRequests(List<AggrRequest> requests)
+	public AggrJob    setRequests(List<AggrRequest> requests)
 	{
 		ArrayList<AggrTask> tasks = new ArrayList<AggrTask>(requests.size());
 
@@ -100,9 +90,52 @@ public class AggrJob
 		return this.setTasks(tasks);
 	}
 
-	public AggrJob   setRequest(AggrRequest request)
+	public AggrJob    setRequest(AggrRequest request)
 	{
 		return setRequests(Collections.singletonList(request));
+	}
+
+	public Set<Class> tasksClasses()
+	{
+		return tasksClasses;
+	}
+
+	public String     error(int i)
+	{
+		return (errors == null)?(null):(errors[i]);
+	}
+
+	public AggrJob    error(int i, String error)
+	{
+		if((errors == null) && (aggrTasks == null))
+			throw new IllegalStateException();
+
+		if(errors == null)
+			errors = new String[aggrTasks.length];
+
+		errors[i] = error;
+		return this;
+	}
+
+	public boolean    complete()
+	{
+		return complete;
+	}
+
+	public AggrJob    complete(boolean complete)
+	{
+		this.complete = complete;
+		return this;
+	}
+
+
+	/* public: Object interface */
+
+	public String     toString()
+	{
+		return String.format(
+		  "Aggregation Job for AggrValue [%d] with aggregation tasks of classes: %s",
+		  getAggrValue().getPrimaryKey(), tasksClasses().toString());
 	}
 
 
@@ -110,5 +143,7 @@ public class AggrJob
 
 	private AggrValue  aggrValue;
 	private AggrTask[] aggrTasks;
+	private Set<Class> tasksClasses;
 	private String[]   errors;
+	private boolean    complete;
 }

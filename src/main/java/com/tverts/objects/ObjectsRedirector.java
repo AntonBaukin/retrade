@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Stores a list of references. May be used as a plain
  * intermediate level of references tree, or as a
- * base class for aome advanced referencing.
+ * base class for some advanced referencing.
  *
  * @author anton.baukin@gmail.com
  */
@@ -56,7 +56,7 @@ public class      ObjectsRedirector<O>
 		this.references = prepareReferences(references);
 	}
 
-	/* protected: dereferencing */
+	/* protected: de-referencing */
 
 	protected List<ObjectsReference<O>>
 	               prepareReferences(List<ObjectsReference<O>> references)

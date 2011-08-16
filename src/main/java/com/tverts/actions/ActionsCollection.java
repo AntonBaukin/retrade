@@ -202,16 +202,10 @@ public class ActionsCollection
 		protected void execute()
 		  throws Throwable
 		{
-			//HINT: before and after the ordering we must
-			//  flush and clear Hibernate session, as ordering
-			//  is made via HQL update queries.
+
 
 			//?: {is the instance already persisted}
 			boolean reload = session().contains(instance);
-
-			//!: save all to the database
-			session().flush();
-			session().clear();
 
 			//?: {instance was persisted} reload it
 			if(reload) instance = (OrderIndex)session().load(
@@ -222,14 +216,10 @@ public class ActionsCollection
 			  setBeforeAfter(isBeforeAfter());
 
 			//HINT: reference instance must be already saved to the
-			//      database and not needed to be reloaded.
+			//      database and not need to be reloaded.
 
 			//!: do order
 			OrderPoint.order(request);
-
-			//!: save all to the database
-			session().flush();
-			session().clear();
 		}
 
 		/**

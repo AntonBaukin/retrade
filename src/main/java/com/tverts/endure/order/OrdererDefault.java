@@ -2,15 +2,25 @@ package com.tverts.endure.order;
 
 /* standard Java classes */
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
 import org.hibernate.Query;
+import org.hibernate.Session;
+
+/* com.tverts: hibery */
+
+import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: endure */
 
 import com.tverts.endure.UnityType;
+import org.hibernate.type.LongType;
 
 /* com.tverts: support */
 
@@ -38,13 +48,6 @@ import static com.tverts.support.SU.s2s;
  * defined by spread limit parameter.
  *
  *
- * WARNING. This strategy works on the level of the
- * database issuing update HQL requests. If there
- * order items are in the Hibernate Session' cache,
- * they become invalid. Cleanup the cache before and
- * after the order updates!
- *
- *
  * @author anton.baukin@gmail.com
  */
 public class OrdererDefault extends OrdererBase
@@ -57,7 +60,7 @@ public class OrdererDefault extends OrdererBase
 
 	public static final long   DEF_INSERT_STEP        = 16384;
 
-	public static final int    DEF_SPREAD_LIMIT       = 16;
+	public static final int    DEF_SPREAD_LIMIT       = 8; //<-- 16 + 1 for both sides
 
 
 	/* protected: OrdererBase interface */
@@ -178,8 +181,13 @@ public class OrdererDefault extends OrdererBase
 
 		public Class        getIndexClass()
 		{
-			return (indexClass != null)?(indexClass):
-			  (indexClass = instance(getRequest()).getClass());
+			if(indexClass != null)
+				return indexClass;
+
+			indexClass = HiberSystem.getInstance().
+			  findActualClass(instance(getRequest()));
+
+			return indexClass;
 		}
 
 		public OrderData    setIndexClass(Class indexClass)
@@ -643,6 +651,10 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 		for(int i = 0;(i < spos);i++)
 			spread[i] += smove;
 
+		//~: reload the indices of the updated rows
+		reloadUpdatedOrderIndices(odata,
+		  odata.getRight().getOrderIndex(), spread[spos] - 1);
+
 		return true;
 	}
 
@@ -701,6 +713,10 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 		for(int i = 0;(i < spread.length);i++)
 			spread[i] -= smove;
 
+		//~: reload the indices of the updated rows
+		reloadUpdatedOrderIndices(odata,
+		  spread[spos] + 1, odata.getLeft().getOrderIndex());
+
 		return true;
 	}
 
@@ -716,14 +732,10 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 	{
 		//~: move the right half
 		spreadMoveOrderRight(odata);
-
-		//~: move the left half
-		//spreadMoveOrderLeft(odata);
 	}
 
 	protected void      spreadMoveOrderRight(OrderData odata)
 	{
-
 /*
 
 update OrderIndex set $orderIndex = $orderIndex + :insertStep
@@ -745,53 +757,105 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 		//!: execute update
 		q.executeUpdate();
 
-
-		//~: set the index of the right border
-		odata.getRight().setOrderIndex(
-		  odata.getRight().getOrderIndex() + getInsertStep()
-		);
-
-		Long[] spread = odata.getRightSpread();
-
 		//~: update the selected spread line
+		Long[] spread = odata.getRightSpread();
 		for(int i = 0;(i < spread.length);i++)
 			spread[i] += getInsertStep();
+
+		//~: reload the indices of the updated rows
+		reloadUpdatedOrderIndices(odata,
+		  odata.getRight().getOrderIndex(), null);
 	}
 
-	protected void      spreadMoveOrderLeft(OrderData odata)
+	@SuppressWarnings("unchecked")
+	protected void      reloadUpdatedOrderIndices
+	  (OrderData odata, Long left, Long right)
 	{
+		//~: get the instances in the persistence context
+		Set entities = HiberSystem.getInstance().
+		  findAttachedEntities(session(odata), odata.getIndexClass());
+
+		//~: remove our goal instance (it is set later)
+		entities.remove(instance(odata));
+
+		//~: remove instances that are on the left
+		for(Iterator i = entities.iterator();(i.hasNext());)
+		{
+			Long oi = ((OrderIndex)i.next()).getOrderIndex();
+
+			if(oi == null)
+			{
+				i.remove();
+				continue;
+			}
+
+			if((left != null) && (oi < left))
+			{
+				i.remove();
+				continue;
+			}
+
+			if((right != null) && (oi > right))
+			{
+				i.remove();
+				continue;
+			}
+		}
+
+		//?: {nothing to update} quit
+		if(entities.isEmpty()) return;
+
+		//~: map the ids of the instances to update
+		HashMap<Long, OrderIndex> updates =
+		  new HashMap<Long, OrderIndex>(entities.size());
+
+		for(Object e : entities)
+			updates.put(((OrderIndex)e).getPrimaryKey(), (OrderIndex)e);
+
 /*
 
-update OrderIndex set $orderIndex = $orderIndex - :insertStep
-where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
-  ($orderIndex <= :orderIndex)
+select oi.id, oi.$orderIndex from OrderIndex oi
+  where oi.id in (:orderIndices)
 
 */
 
-		Query      q = indexQuery(odata,
+		Query           query = indexQuery(odata,
 
-"update OrderIndex set $orderIndex = $orderIndex - :insertStep\n" +
-"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
-"  ($orderIndex <= :orderIndex)"
+"select oi.id, oi.$orderIndex from OrderIndex oi\n" +
+"  where oi.id in (:orderIndices)"
 
-		).
-		  setLong("insertStep", getInsertStep()).
-		  setLong("orderIndex", odata.getLeft().getOrderIndex());
-
-		//!: execute update
-		q.executeUpdate();
-
-
-		//~: set the index of the right border
-		odata.getLeft().setOrderIndex(
-		  odata.getLeft().getOrderIndex() - getInsertStep()
 		);
 
-		Long[] spread = odata.getLeftSpread();
+		ArrayList<Long> qkeys = new ArrayList<Long>(10);
+		Set<Long>       ukeys = updates.keySet();
+		List            inds;
 
-		//~: update the selected spread line
-		for(int i = 0;(i < spread.length);i++)
-			spread[i] -= getInsertStep();
+		while(!updates.isEmpty())
+		{
+			//~: copy first 10 keys (not to overload SQL parser)
+			qkeys.clear();
+			for(Long ukey : ukeys)
+			{
+				qkeys.add(ukey);
+				if(qkeys.size() >= 10) break;
+			}
+
+			//~: execute the query
+			query.setParameterList("orderIndices", qkeys, LongType.INSTANCE);
+			inds = query.list();
+
+			//~: reassign the indices updated
+			for(Object ind : inds)
+			{
+				long id = ((Number)((Object[])ind)[0]).longValue();
+				long oi = ((Number)((Object[])ind)[1]).longValue();
+
+				updates.get(id).setOrderIndex(oi);
+			}
+
+			//~: remove the keys updated
+			ukeys.removeAll(qkeys);
+		}
 	}
 
 
@@ -800,7 +864,7 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 	protected Query        indexQuery(OrderData odata, String hql)
 	{
 		String Q = hql.
-		  replace("OrderIndex",  indexClass(odata)).
+		  replace("OrderIndex",  odata.getIndexClass().getName()).
 		  replace("$orderOwner", getOrderOwnerIDProp()).
 		  replace("$orderType",  getOrderTypeProp()).
 		  replace("$orderIndex", getOrderIndexProp());
@@ -843,6 +907,11 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 		return reference(request(odata));
 	}
 
+	protected Session      session(OrderData odata)
+	{
+		return session(odata.getRequest());
+	}
+
 	protected Long         orderOwnerID(OrderData odata)
 	{
 		return orderOwnerID(request(odata));
@@ -851,18 +920,6 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 	protected UnityType    orderType(OrderData odata)
 	{
 		return orderType(request(odata));
-	}
-
-	protected String       indexClass(OrderData odata)
-	{
-		String name = odata.getIndexClass().getName();
-		int    xind;
-
-		//?: {Java Assist proxy}
-		if((xind = name.indexOf("_$$_")) != -1)
-			name = name.substring(0, xind);
-
-		return name;
 	}
 
 

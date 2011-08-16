@@ -103,6 +103,30 @@ public class AggrPoint
 	 */
 	public void runAggrRequest(AggrJob job)
 	{
-		//TODO run aggregation request!
+		//!: invoke the root aggregator
+		aggregator.aggregate(job);
+
+		//?: {the job was not completed}
+		if(!job.complete()) throw new IllegalStateException(
+		  "Aggregation Subsystem was unable to find strategy able to execute " +
+		  job.toString() + "!");
 	}
+
+	public void setAggregator(Aggregator aggregator)
+	{
+		if(aggregator == null) throw new IllegalArgumentException();
+		this.aggregator = aggregator;
+	}
+
+	/* protected: access aggregator */
+
+	protected Aggregator getAggregator()
+	{
+		return this.aggregator;
+	}
+
+
+	/* private: the aggregator strategy reference */
+
+	private Aggregator aggregator = new AggregatorsRoot();
 }

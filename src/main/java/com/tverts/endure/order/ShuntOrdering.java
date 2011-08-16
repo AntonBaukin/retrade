@@ -27,7 +27,6 @@ import com.tverts.shunts.ShuntPlain;
 
 /* com.tverts: hibery */
 
-import static com.tverts.hibery.HiberPoint.session;
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 /* com.tverts: endure */
@@ -285,6 +284,13 @@ public class ShuntOrdering extends ShuntPlain
 				  "Failed random order test for seed %d, instance number %d!",
 				  seed, inum
 				));
+
+				//!: cleanup the session (or too slow)
+				if((inum % 40) >= 30 + rgen.nextInt(10))
+				{
+					session().flush();
+					session().clear();
+				}
 			}
 
 			//~: create new seed
@@ -330,8 +336,6 @@ public class ShuntOrdering extends ShuntPlain
 	protected void           save(ExternalOrder o)
 	{
 		session().save(o);
-		session().flush();
-		session().clear();
 	}
 
 	protected ExternalOrder  select(long orderIndex)
