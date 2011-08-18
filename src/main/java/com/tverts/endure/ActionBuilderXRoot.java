@@ -23,6 +23,21 @@ import com.tverts.endure.aggr.AggrValue;
 public abstract class ActionBuilderXRoot
        extends        ActionBuilderWithTxBase
 {
+	/* parameters of the actions */
+
+	/**
+	 * Send this parameter to do aggregation synchronous.
+	 *
+	 * WARNING! Be careful with this feature! Synchronous
+	 *   aggregation overpasses the aggregation services,
+	 *   and is not blocked / synchronized. Also, the
+	 *   module issuing this action must have proper
+	 *   registered.
+	 */
+	public static final String SYNCH_AGGR =
+	  ActionBuilderXRoot.class.getName() + ": synchronous aggregation";
+
+
 	/* protected: aggregated values support */
 
 	/**
@@ -39,16 +54,30 @@ public abstract class ActionBuilderXRoot
 	 * target of the build record. It must be
 	 * {@link United} or {@link Unity} instance.
 	 */
-	protected void buildAggrValue (
-	                 ActionBuildRec  abr,
-	                 String          aggrTypeName,
-	                 NumericIdentity selector
-	               )
+	protected void    buildAggrValue (
+	                    ActionBuildRec  abr,
+	                    String          aggrTypeName,
+	                    NumericIdentity selector
+	                  )
 	{
 		xnest(abr, ActAggrValue.CREATE, target(abr),
 
 		  ActAggrValue.VALUE_TYPE, aggrTypeName,
 		  ActAggrValue.SELECTOR,   selector
 		);
+	}
+
+	/**
+	 * Tells whether the aggregation request must be issued
+	 * as synchronous. See {@link #SYNCH_AGGR} parameter,
+	 * by default it is false.
+	 *
+	 * This parameter is checked recursively for the nested
+	 * tasks. You do not need to pass is into the each
+	 * nested task until you want to overwrite it.
+	 */
+	protected boolean isAggrSynch(ActionBuildRec abr)
+	{
+		return flagRecursive(abr, SYNCH_AGGR);
 	}
 }

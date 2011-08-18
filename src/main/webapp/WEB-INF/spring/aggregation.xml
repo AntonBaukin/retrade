@@ -7,23 +7,23 @@
 
 
   <!--=================================================
-    =  Root Orderer                                   =
+    =  Aggregation Strategies References              =
     =================================================-->
 
-  <import resource = 'orderers/orderers.xml'/>
+  <import resource = 'aggr/aggregators.xml'/>
 
 
   <!--=================================================
-    =  Order Point                                    =
+    =  Aggregation Point                              =
     =================================================-->
 
-  <bean name  = 'orderPoint' factory-method = 'getInstance'
-        class = 'com.tverts.endure.order.OrderPoint'>
+  <bean name  = 'aggrPoint' factory-method = 'getInstance'
+        class = 'com.tverts.aggr.AggrPoint'>
 
-    <property name = 'orderer'>
-      <bean class = 'com.tverts.endure.order.OrderersDisp'>
+    <property name = 'aggregator'>
+      <bean class = 'com.tverts.aggr.AggregatorsRoot'>
 
-        <property name = 'reference' ref = 'rootOrdererReferences'/>
+        <property name = 'reference' ref = 'rootAggregatorReferences'/>
       </bean>
     </property>
   </bean>

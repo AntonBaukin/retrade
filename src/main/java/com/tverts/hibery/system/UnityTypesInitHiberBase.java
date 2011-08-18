@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 
 /* com.tverts: actions */
 
-import static com.tverts.actions.ActionsPoint.action;
+import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: endure */
 
@@ -95,7 +95,7 @@ public abstract class UnityTypesInitHiberBase
 			if(pe.unityType.getPrimaryKey() == null)
 			{
 				//!: save unity type
-				action(ActUnityType.SAVE, pe.unityType).run();
+				actionRun(ActUnityType.SAVE, pe.unityType);
 
 				if(LU.isI(getLog())) LU.I(getLog(), String.format(
 				  "Saved new system Unity Type '%s' " +

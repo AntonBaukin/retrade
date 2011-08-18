@@ -202,8 +202,6 @@ public class ActionsCollection
 		protected void execute()
 		  throws Throwable
 		{
-
-
 			//?: {is the instance already persisted}
 			boolean reload = session().contains(instance);
 

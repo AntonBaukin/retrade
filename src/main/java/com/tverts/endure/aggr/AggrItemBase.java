@@ -85,6 +85,10 @@ public abstract class AggrItemBase implements AggrItem
 	public void      setOrderIndex(Long oi)
 	{
 		this.orderIndex = oi;
+
+		//?: {is historical component} update history index
+		if(this.historyIndex != null)
+			this.historyIndex = oi;
 	}
 
 	/**

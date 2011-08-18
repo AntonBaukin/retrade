@@ -1,5 +1,14 @@
 package com.tverts.support;
 
+/* standard Java classes */
+
+import java.io.PrintWriter;
+
+/* com.tverts: supports (streams) */
+
+import com.tverts.support.streams.StringBuilderWriter;
+
+
 /**
  * Exception handling support.
  *
@@ -7,7 +16,7 @@ package com.tverts.support;
  */
 public class EX
 {
-	/* public: other functions */
+	/* other functions */
 
 	/**
 	 * Finds the text of the exception. Useful
@@ -44,6 +53,7 @@ public class EX
 		return r;
 	}
 
+
 	/* public: unwrapping  */
 
 	/**
@@ -58,5 +68,29 @@ public class EX
 				e = e.getCause();
 
 		return e;
+	}
+
+
+	/* error printing */
+
+	public static String    print(Throwable e)
+	{
+		StringBuilder s = new StringBuilder(512);
+
+		print(e, s);
+		return s.toString();
+	}
+
+	public static void      print(Throwable e, StringBuilder s)
+	{
+		String m = e2en(e);
+
+		if(m != null)
+			s.append(m).append('\n');
+
+		PrintWriter p = new PrintWriter(new StringBuilderWriter(s), false);
+
+		e.printStackTrace(p);
+		p.flush();
 	}
 }

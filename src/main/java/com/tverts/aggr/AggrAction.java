@@ -51,9 +51,9 @@ public class AggrAction extends ActionWithTxBase
 		return synch;
 	}
 
-	public AggrAction setSynchronous(boolean asynch)
+	public AggrAction setSynchronous(boolean synch)
 	{
-		this.synch = asynch;
+		this.synch = synch;
 		return this;
 	}
 

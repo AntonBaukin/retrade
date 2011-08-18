@@ -118,13 +118,6 @@ public class AggrPoint
 		this.aggregator = aggregator;
 	}
 
-	/* protected: access aggregator */
-
-	protected Aggregator getAggregator()
-	{
-		return this.aggregator;
-	}
-
 
 	/* private: the aggregator strategy reference */
 

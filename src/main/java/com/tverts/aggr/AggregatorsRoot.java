@@ -35,6 +35,10 @@ public class      AggregatorsRoot
 		{
 			aggregator.aggregate(job);
 
+			//?: {has aggregation error}
+			if(job.error())
+				throw new AggrJobError(job);
+
 			//?: {this aggregator did the job} exit
 			if(job.complete())
 				return;

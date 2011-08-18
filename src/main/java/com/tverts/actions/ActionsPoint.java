@@ -63,6 +63,15 @@ public class ActionsPoint
 		return action(new ActionTaskStruct(atype).setTarget(target));
 	}
 
+	public static ActionTrigger actionRun(ActionType atype, Object target)
+	{
+		ActionTrigger trigger = action(new ActionTaskStruct(atype).
+		  setTarget(target));
+
+		trigger.run();
+		return trigger;
+	}
+
 	public ActionTrigger        actionOrNull(ActionType atype, Object target)
 	{
 		return actionOrNull(new ActionTaskStruct(atype).setTarget(target));
@@ -73,6 +82,16 @@ public class ActionsPoint
 	{
 		return action(new ActionTaskStruct(atype).
 		  setTarget(target).setParams(collectParams(params)));
+	}
+
+	public static ActionTrigger actionRun
+	  (ActionType atype, Object target, Object... params)
+	{
+		ActionTrigger trigger = action(new ActionTaskStruct(atype).
+		  setTarget(target).setParams(collectParams(params)));
+
+		trigger.run();
+		return trigger;
 	}
 
 	public ActionTrigger        actionOrNull

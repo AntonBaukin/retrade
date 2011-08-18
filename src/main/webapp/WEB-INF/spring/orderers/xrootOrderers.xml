@@ -15,7 +15,7 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Used by ShuntOrdering.                                    ·
+         · Used by ShuntOrdering                                     ·
          ·                                                           ·
          · WARNING: do not change test orderer parameters as their   ·
          ·  values are assumed in the shunt unit!                    ·
@@ -37,6 +37,12 @@
             </bean>
           </property>
         </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · General orderer for AggrItemBase subclasses               ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.aggr.OrdererAggrItem'/>
 
       </list>
     </property>

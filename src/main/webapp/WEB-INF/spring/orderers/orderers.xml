@@ -12,20 +12,13 @@
 
 
   <!--=================================================
-    =  Root Ordering Strategy                         =
+    =  Root Ordering Strategies                       =
     +==================================================
     |
     |  Overwrite this file in each module that adds
     |  own ordering strategies.
     |
     +================================================-->
-
-  <bean name  = 'rootOrderer'
-        class = 'com.tverts.endure.order.OrderersDisp'>
-
-    <property name = 'reference' ref = 'rootOrdererReferences'/>
-  </bean>
-
 
   <bean name  = 'rootOrdererReferences'
         class = 'com.tverts.endure.order.OrderersList'>

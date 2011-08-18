@@ -297,9 +297,26 @@ public abstract class ActionBuilderBase
 		return (trgkey != null) && (trgkey < 0L);
 	}
 
-	protected Object        param(ActionBuildRec abr,Object name)
+	protected Object        param(ActionBuildRec abr, Object name)
 	{
 		return task(abr).getParams().get(name);
+	}
+
+	protected Object        paramRecursive(ActionBuildRec abr, Object name)
+	{
+		ActionTask task = task(abr);
+		Object     res  = null;
+
+		while(task != null)
+		{
+			res = task.getParams().get(name);
+			if(res != null) break;
+
+			task = !(task instanceof ActionTaskNested)?(null):
+			  (((ActionTaskNested)task).getOuterTask());
+		}
+
+		return res;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -324,6 +341,11 @@ public abstract class ActionBuilderBase
 	protected boolean       flag(ActionBuildRec abr, Object name)
 	{
 		return Boolean.TRUE.equals(param(abr, name));
+	}
+
+	protected boolean       flagRecursive(ActionBuildRec abr, Object name)
+	{
+		return Boolean.TRUE.equals(paramRecursive(abr, name));
 	}
 
 	protected Predicate     predicate(ActionBuildRec abr)

@@ -43,7 +43,6 @@ public abstract class OrdererBase
 {
 	/* public: Orderer interface */
 
-
 	public void          setOrderIndex(OrderRequest request)
 	{
 		if(isThatRequest(request))
@@ -52,6 +51,7 @@ public abstract class OrdererBase
 			request.setComplete();
 		}
 	}
+
 
 	/* public: OrdererReference interface */
 

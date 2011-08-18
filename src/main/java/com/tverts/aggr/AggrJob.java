@@ -100,6 +100,18 @@ public class AggrJob
 		return tasksClasses;
 	}
 
+	public boolean    error()
+	{
+		if(errors == null)
+			return true;
+
+		for(String error : errors)
+			if(error != null)
+				return true;
+
+		return false;
+	}
+
 	public String     error(int i)
 	{
 		return (errors == null)?(null):(errors[i]);

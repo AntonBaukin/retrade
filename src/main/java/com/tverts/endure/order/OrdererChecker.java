@@ -9,6 +9,15 @@ package com.tverts.endure.order;
 public abstract class OrdererChecker
        extends        OrdererBase
 {
+	/* public: Orderer interface */
+
+	public void    setOrderIndex(OrderRequest request)
+	{
+		if(isThatRequest(request))
+			order(request);
+	}
+
+
 	/* public: OrdererChecker interface */
 
 	public Orderer getOrderer()
