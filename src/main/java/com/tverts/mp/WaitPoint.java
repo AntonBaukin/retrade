@@ -80,7 +80,7 @@ public final class WaitPoint
 	 * Returns {@code true} when all the resources are ready.
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean waitOnPoint(long timeout, Collection except)
+	public boolean waitOnPointTimeout(long timeout, Collection except)
 	  throws InterruptedException
 	{
 		if(timeout < 0L) throw new IllegalArgumentException();
@@ -108,10 +108,10 @@ public final class WaitPoint
 		}
 	}
 
-	public boolean waitOnPoint(long timeout, Object... except)
+	public boolean waitOnPointTimeout(long timeout, Object... except)
 	  throws InterruptedException
 	{
-		return this.waitOnPoint(timeout,
+		return this.waitOnPointTimeout(timeout,
 		  (except.length == 0)?(null):(Arrays.asList(except)));
 	}
 

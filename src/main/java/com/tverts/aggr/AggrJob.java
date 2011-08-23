@@ -14,6 +14,10 @@ import com.tverts.endure.aggr.AggrRequest;
 import com.tverts.endure.aggr.AggrTask;
 import com.tverts.endure.aggr.AggrValue;
 
+/* com.tverts: support */
+
+import static com.tverts.support.AU.indexOfRef;
+
 
 /**
  * Record of aggregation strategy invocation. Represents
@@ -30,14 +34,25 @@ public class AggrJob
 {
 	/* public: AggrJob interface */
 
-	public AggrValue  getAggrValue()
+	public AggrValue  aggrValue()
 	{
 		return aggrValue;
 	}
 
-	public AggrJob    setAggrValue(AggrValue aggrValue)
+	public AggrJob    aggrValue(AggrValue aggrValue)
 	{
 		this.aggrValue = aggrValue;
+		return this;
+	}
+
+	public AggrTx     aggrTx()
+	{
+		return aggrTx;
+	}
+
+	public AggrJob    aggrTx(AggrTx tx)
+	{
+		this.aggrTx = tx;
 		return this;
 	}
 
@@ -48,10 +63,10 @@ public class AggrJob
 
 	public AggrTask   task(int i)
 	{
-		return aggrTasks[i];
+		return ((i < 0) | (i >= aggrTasks.length))?(null):(aggrTasks[i]);
 	}
 
-	public AggrJob    setTasks(List<AggrTask> tasks)
+	public AggrJob    tasks(List<AggrTask> tasks)
 	{
 		this.aggrTasks    = tasks.toArray(new AggrTask[tasks.size()]);
 		this.tasksClasses = new HashSet<Class>(3);
@@ -62,7 +77,7 @@ public class AggrJob
 		return this;
 	}
 
-	public AggrJob    setRequests(List<AggrRequest> requests)
+	public AggrJob    requests(List<AggrRequest> requests)
 	{
 		ArrayList<AggrTask> tasks = new ArrayList<AggrTask>(requests.size());
 
@@ -76,23 +91,23 @@ public class AggrJob
 				throw new IllegalArgumentException();
 
 			//~: assign aggregated value to this job
-			if(getAggrValue() == null)
-				setAggrValue(value);
+			if(aggrValue() == null)
+				aggrValue(value);
 
 			//?: {aggregated value differs}
-			if(!getAggrValue().equals(value))
+			if(!aggrValue().equals(value))
 				throw new IllegalStateException();
 
 			//!: add the task
 			tasks.add(task);
 		}
 
-		return this.setTasks(tasks);
+		return this.tasks(tasks);
 	}
 
-	public AggrJob    setRequest(AggrRequest request)
+	public AggrJob    request(AggrRequest request)
 	{
-		return setRequests(Collections.singletonList(request));
+		return requests(Collections.singletonList(request));
 	}
 
 	public Set<Class> tasksClasses()
@@ -103,7 +118,7 @@ public class AggrJob
 	public boolean    error()
 	{
 		if(errors == null)
-			return true;
+			return false;
 
 		for(String error : errors)
 			if(error != null)
@@ -114,7 +129,13 @@ public class AggrJob
 
 	public String     error(int i)
 	{
-		return (errors == null)?(null):(errors[i]);
+		return (errors == null)?(null):
+		  ((i < 0) | (i >= errors.length))?(null):(errors[i]);
+	}
+
+	public String     error(AggrTask task)
+	{
+		return error(indexOfRef(aggrTasks, task));
 	}
 
 	public AggrJob    error(int i, String error)
@@ -125,8 +146,15 @@ public class AggrJob
 		if(errors == null)
 			errors = new String[aggrTasks.length];
 
-		errors[i] = error;
+		if((i >= 0) & (i < errors.length))
+			errors[i] = error;
+
 		return this;
+	}
+
+	public AggrJob    error(AggrTask task, String error)
+	{
+		return error(indexOfRef(aggrTasks, task), error);
 	}
 
 	public boolean    complete()
@@ -147,13 +175,14 @@ public class AggrJob
 	{
 		return String.format(
 		  "Aggregation Job for AggrValue [%d] with aggregation tasks of classes: %s",
-		  getAggrValue().getPrimaryKey(), tasksClasses().toString());
+		  aggrValue().getPrimaryKey(), tasksClasses().toString());
 	}
 
 
 	/* private: the job components */
 
 	private AggrValue  aggrValue;
+	private AggrTx     aggrTx;
 	private AggrTask[] aggrTasks;
 	private Set<Class> tasksClasses;
 	private String[]   errors;

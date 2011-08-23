@@ -115,7 +115,7 @@ public class HiberPoint
 		  createPrimaryKey(session, instance, fortest);
 	}
 
-	public static void     setPrimaryKey
+	public static void    setPrimaryKey
 	  (TxContext tx, NumericIdentity instance, boolean fortest)
 	{
 		HiberPoint.getInstance().createPrimaryKey(
@@ -143,6 +143,11 @@ public class HiberPoint
 		instance.setPrimaryKey((Long)primaryKey);
 	}
 
+	public static boolean isTestInstance(NumericIdentity instance)
+	{
+		return (instance.getPrimaryKey() != null) &&
+		  (instance.getPrimaryKey() < 0);
+	}
 
 	/* private: primary database connectivity */
 

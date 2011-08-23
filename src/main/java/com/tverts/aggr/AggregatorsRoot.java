@@ -14,7 +14,8 @@ import java.util.List;
  * @author anton.baukin@gmail.com
  */
 public class      AggregatorsRoot
-       implements Aggregator, AggregatorReference
+       extends    AggregationSystem
+       implements AggregatorReference
 {
 	/* public: AggregatorReference interface */
 
@@ -31,6 +32,10 @@ public class      AggregatorsRoot
 		if((getReference() == null) || job.complete())
 			return;
 
+		//~: set the transaction context
+		installAggrTx(job);
+
+		//~: invoke the aggregators referred
 		for(Aggregator aggregator : getReference().dereferObjects())
 		{
 			aggregator.aggregate(job);

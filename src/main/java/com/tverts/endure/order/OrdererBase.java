@@ -14,6 +14,10 @@ import org.hibernate.SessionFactory;
 
 import org.springframework.transaction.annotation.Transactional;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.system.HiberSystem;
+
 /* com.tverts: endure */
 
 import com.tverts.endure.Unity;
@@ -160,7 +164,17 @@ public abstract class OrdererBase
 		if(typeClass == null) return false;
 
 		if((typeName = s2s(typeName)) == null)
-			return typeClass.equals(orderType(request).getTypeClass());
+		{
+			UnityType ot = orderType(request);
+
+			if(ot != null)
+				return typeClass.equals(orderType(request).getTypeClass());
+
+			Class     oc = HiberSystem.getInstance().
+			  findActualClass(instance(request));
+
+			return typeClass.equals(oc);
+		}
 
 		UnityType t = unityType(typeClass, typeName);
 		return (t != null) && t.equals(orderType(request));

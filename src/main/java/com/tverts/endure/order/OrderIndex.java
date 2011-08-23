@@ -24,7 +24,11 @@ public interface OrderIndex
 	 * may have several lines of order, each having
 	 * it's own distinct type.
 	 *
-	 * Note that it is allows the type to be undefined!
+	 *
+	 * WARNING!  Note that it is allowed the type to be
+	 *  undefined. If it is so, the type is not checked
+	 *  at all, and the the instances ordered may have
+	 *  no order type!
 	 */
 	public UnityType getOrderType();
 

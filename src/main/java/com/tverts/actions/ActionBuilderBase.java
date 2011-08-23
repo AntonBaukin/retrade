@@ -10,6 +10,10 @@ import java.util.List;
 
 import static com.tverts.actions.ActionsPoint.collectParams;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.isTestInstance;
+
 /* com.tverts: endure */
 
 import com.tverts.endure.NumericIdentity;
@@ -292,9 +296,7 @@ public abstract class ActionBuilderBase
 		if(!(target instanceof NumericIdentity))
 			return false;
 
-		Long   trgkey = ((NumericIdentity)target).getPrimaryKey();
-
-		return (trgkey != null) && (trgkey < 0L);
+		return isTestInstance((NumericIdentity)target);
 	}
 
 	protected Object        param(ActionBuildRec abr, Object name)

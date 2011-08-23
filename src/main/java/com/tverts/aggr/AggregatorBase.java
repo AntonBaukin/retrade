@@ -8,9 +8,16 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Set;
 
-/* com.tverts: aggregation */
+/* Hibernate Persistence Layer */
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+/* com.tverts: endure (aggregation) */
 
 import com.tverts.endure.aggr.AggrTask;
+import com.tverts.endure.aggr.AggrValue;
 
 /* com.tverts: support */
 
@@ -39,45 +46,65 @@ public abstract class AggregatorBase
 	{
 		//?: {this aggregator can handle the job} invoke it
 		if(isJobSupported(job))
-		{
 			//?: {processed aggregation} mark the job complete
-			if(aggregateJob(job))
+			if(aggregate(createStruct(job)))
 				job.complete(true);
-		}
 	}
-
 
 	/* protected: aggregation */
 
-	protected abstract void aggregate(AggrTask task)
+	protected abstract void aggregateTask(AggrStruct struct)
 	  throws Throwable;
 
 	/**
 	 * Aggregates al the job running the tasks separately.
 	 * Returns true if the task was completed.
 	 */
-	protected boolean       aggregateJob(AggrJob job)
+	protected boolean       aggregate(AggrStruct struct)
 	{
+		//~: check the validity of the aggregation job
+		checkAggrJob(struct);
+
 		//~: run all the tasks separately
-		for(int i = 0;(i < job.size());i++) try
+		for(int i = 0;(i < struct.job.size());i++) try
 		{
 			//?: {got empty task} skip it
-			if(job.task(i) != null)
+			if(struct.job.task(i) == null)
 				continue;
 
 			//!: aggregate the task given
-			aggregate(job.task(i));
+			aggregateTask(struct.task(struct.job.task(i)));
 		}
 		catch(Throwable e)
 		{
-			Boolean r = handleTaskError(job, i, e);
+			Boolean r = handleTaskError(struct, e);
 
-			//?: {the task had ordered to stop}
+			//?: {the task is ordered to stop}
 			if(r != null)
 				return r;
+
+			throw new AggrJobError(e, struct.job);
 		}
 
 		return true;
+	}
+
+	protected void          checkAggrJob(AggrStruct struct)
+	{
+		//?: {the aggregation value is not defined}
+		if(struct.job.aggrValue() == null)
+			throw new IllegalStateException(
+			  "Aggregation Job is not defined!");
+
+		//?: {the transaction context is not defined}
+		if(struct.job.aggrTx() == null)
+			throw new IllegalStateException(
+			  "Aggregation Tx Context is not defined!");
+	}
+
+	protected AggrStruct    createStruct(AggrJob job)
+	{
+		return new AggrStruct(job);
 	}
 
 	/**
@@ -86,15 +113,15 @@ public abstract class AggregatorBase
 	 * the next task.
 	 *
 	 * The defined result is returned as the result of the job processor
-	 * {@link #aggregateJob(AggrJob)}.
+	 * {@link #aggregate(AggrStruct)}.
 	 *
 	 * Note that false result means the it is possible that some else
 	 * aggregator will take this job from it's beginning task, and this
 	 * aggregator must undo all the previous work.
 	 */
-	protected Boolean       handleTaskError(AggrJob job, int i, Throwable e)
+	protected Boolean       handleTaskError(AggrStruct struct, Throwable e)
 	{
-		job.error(i, EX.print(e));
+		struct.job.error(struct.task, EX.print(e));
 		return null;
 	}
 
@@ -116,6 +143,79 @@ public abstract class AggregatorBase
 	protected Set<Class>    getSupportedTasks()
 	{
 		return this.supportedTasks;
+	}
+
+
+	/* public: aggregation structure */
+
+	public class AggrStruct
+	{
+		/* public: constructor */
+
+		public AggrStruct(AggrJob aggrJob)
+		{
+			this.job = aggrJob;
+		}
+
+
+		/* public: assigners */
+
+		public AggrStruct task(AggrTask task)
+		{
+			this.task = task;
+			return this;
+		}
+
+
+		/* public: structure fields */
+
+		public final AggrJob job;
+		public AggrTask      task;
+	}
+
+
+	/* protected: access transaction context & Hibernate session */
+
+	protected AggrTx  tx(AggrStruct struct)
+	{
+		AggrTx tx = struct.job.aggrTx();
+
+		if(tx == null) throw new IllegalStateException(
+		  "Aggregator is not bound to any Transactional Context!"
+		);
+
+		return tx;
+	}
+
+	/**
+	 * Returns Hibernate session of the tx context.
+	 * Raises {@link IllegalStateException} if no session present.
+	 */
+	protected Session session(AggrStruct struct)
+	{
+		SessionFactory f = tx(struct).getSessionFactory();
+		Session        s = (f == null)?(null):(f.getCurrentSession());
+
+		if(s == null) throw new IllegalStateException(
+		  "Aggregator got undefined Hibernate session (or factroy)!");
+
+		return s;
+	}
+
+
+	/* protected: Hibernate querying */
+
+	protected Query   Q(AggrStruct struct, String hql)
+	{
+		return session(struct).createQuery(hql);
+	}
+
+
+	/* protected: helper functions */
+
+	protected AggrValue aggrValue(AggrStruct struct)
+	{
+		return struct.job.aggrValue();
 	}
 
 

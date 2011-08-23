@@ -95,12 +95,13 @@ public class AggrPoint
 	 */
 	public void runAggrRequest(AggrRequest request)
 	{
-		this.runAggrRequest(new AggrJob().setRequest(request));
+		this.runAggrRequest(new AggrJob().request(request));
 	}
 
 	/**
 	 * Does synchronous execution of the aggregation job.
 	 */
+	@Transactional
 	public void runAggrRequest(AggrJob job)
 	{
 		//!: invoke the root aggregator

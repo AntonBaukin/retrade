@@ -161,19 +161,11 @@ public class OrderRequest
 		);
 
 		//~: check the order owner
-		Unity     owner = getInstance().getOrderOwner();
+		Unity owner = getInstance().getOrderOwner();
 
 		if(owner == null) throw new IllegalArgumentException(
 		  "Order Request may not be created on instance having " +
 		  "undefined order owner!"
-		);
-
-		//~: check the order type
-		UnityType otype = getInstance().getOrderType();
-
-		if(otype == null) throw new IllegalArgumentException(
-		  "Order Request may not be created on instance having " +
-		  "undefined order type!"
 		);
 
 		//?: {there is no reference} skip other checks
@@ -186,8 +178,14 @@ public class OrderRequest
 			  "reference are not with the same order owner!"
 			);
 
+		//~: check the order type equals
+		UnityType itype = getInstance().getOrderType();
+		UnityType rtype = getReference().getOrderType();
+
 		//?: {reference order type is not the same}
-		if(!owner.equals(getReference().getOrderOwner()))
+		if(((itype == null) && (rtype != null)) ||
+		   ((itype != null) && !itype.equals(rtype))
+		  )
 			throw new IllegalArgumentException(
 			  "Order Request may not be created on instance and " +
 			  "reference are not with the same order type!"

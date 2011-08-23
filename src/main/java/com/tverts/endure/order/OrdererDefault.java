@@ -394,15 +394,15 @@ public class OrdererDefault extends OrdererBase
 
 /*
 
-from OrderIndex where ($orderOwner = :orderOwner) and
-  ($orderType X :orderType) and ($orderIndex is not null)
+from OrderIndex where ($orderOwner = :orderOwner)
+  $and$orderType=:orderType$ and ($orderIndex is not null)
   order by $orderIndex asc
 
 */
 		List r = indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner) and\n" +
-"  ($orderType X :orderType) and ($orderIndex is not null)\n" +
+"from OrderIndex where ($orderOwner = :orderOwner)\n" +
+"  $and$orderType=:orderType$ and ($orderIndex is not null)\n" +
 "  order by $orderIndex asc"
 
 		).
@@ -419,15 +419,15 @@ from OrderIndex where ($orderOwner = :orderOwner) and
 
 /*
 
-from OrderIndex where ($orderOwner = :orderOwner) and
-  ($orderType X :orderType) and ($orderIndex is not null)
+from OrderIndex where ($orderOwner = :orderOwner)
+  $and$orderType=:orderType$ and ($orderIndex is not null)
   order by $orderIndex desc
 
 */
 		List r = indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner) and\n" +
-"  ($orderType X :orderType) and ($orderIndex is not null)\n" +
+"from OrderIndex where ($orderOwner = :orderOwner) \n" +
+"  $and$orderType=:orderType$ and ($orderIndex is not null)\n" +
 "  order by $orderIndex desc"
 
 		).
@@ -444,16 +444,16 @@ from OrderIndex where ($orderOwner = :orderOwner) and
 
 /*
 
-from OrderIndex where ($orderOwner = :orderOwner) and
-  ($orderType X :orderType) and ($orderIndex < :orderIndex)
+from OrderIndex where ($orderOwner = :orderOwner)
+  $and$orderType=:orderType$ and ($orderIndex < :orderIndex)
   order by $orderIndex desc
 
 */
 
 		List r = indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner) and\n" +
-"  ($orderType X :orderType) and ($orderIndex < :orderIndex)\n" +
+"from OrderIndex where ($orderOwner = :orderOwner) \n" +
+"  $and$orderType=:orderType$ and ($orderIndex < :orderIndex)\n" +
 "  order by $orderIndex desc"
 
 		).
@@ -474,16 +474,16 @@ from OrderIndex where ($orderOwner = :orderOwner) and
 
 /*
 
-from OrderIndex where ($orderOwner = :orderOwner) and
-  ($orderType X :orderType) and ($orderIndex > :orderIndex)
+from OrderIndex where ($orderOwner = :orderOwner)
+  $and$orderType=:orderType$ and ($orderIndex > :orderIndex)
   order by $orderIndex asc
 
 */
 
 		List r = indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner) and\n" +
-"  ($orderType X :orderType) and ($orderIndex > :orderIndex)\n" +
+"from OrderIndex where ($orderOwner = :orderOwner)\n" +
+"  $and$orderType=:orderType$ and ($orderIndex > :orderIndex)\n" +
 "  order by $orderIndex asc"
 
 		).
@@ -527,7 +527,7 @@ from OrderIndex where ($orderOwner = :orderOwner) and
 /*
 
 select $orderIndex from OrderIndex where
-  ($orderOwner = :orderOwner) and ($orderType X :orderType) and
+  ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
   ($orderIndex < :orderIndex) order by $orderIndex desc
 
 */
@@ -535,7 +535,7 @@ select $orderIndex from OrderIndex where
 		Query      q = indexQuery(odata,
 
 "select $orderIndex from OrderIndex where\n" +
-"  ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
+"  ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
 "  ($orderIndex < :orderIndex) order by $orderIndex desc"
 
 		).
@@ -555,14 +555,14 @@ select $orderIndex from OrderIndex where
 /*
 
 select $orderIndex from OrderIndex where
-  ($orderOwner = :orderOwner) and ($orderType X :orderType) and
+  ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
   ($orderIndex > :orderIndex) order by $orderIndex asc
 
 */
 		q = indexQuery(odata,
 
 "select $orderIndex from OrderIndex where\n" +
-"  ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
+"  ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
 "  ($orderIndex > :orderIndex) order by $orderIndex asc"
 
 		).
@@ -623,14 +623,14 @@ select $orderIndex from OrderIndex where
 /*
 
 update OrderIndex set $orderIndex = $orderIndex + :smove
-where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
+where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
   ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)
 
 */
 		Query      q = indexQuery(odata,
 
 "update OrderIndex set $orderIndex = $orderIndex + :smove\n" +
-"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
 "  ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)"
 
 		).
@@ -685,14 +685,14 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 /*
 
 update OrderIndex set $orderIndex = $orderIndex - :smove
-where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
+where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
   ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)
 
 */
 		Query      q = indexQuery(odata,
 
 "update OrderIndex set $orderIndex = $orderIndex - :smove\n" +
-"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
 "  ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)"
 
 		).
@@ -739,7 +739,7 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 /*
 
 update OrderIndex set $orderIndex = $orderIndex + :insertStep
-where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
+where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
   ($orderIndex >= :orderIndex)
 
 */
@@ -747,7 +747,7 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 		Query      q = indexQuery(odata,
 
 "update OrderIndex set $orderIndex = $orderIndex + :insertStep\n" +
-"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
 "  ($orderIndex >= :orderIndex)"
 
 		).
@@ -861,20 +861,22 @@ select oi.id, oi.$orderIndex from OrderIndex oi
 
 	/* protected: queries building */
 
+	protected final String _AND_ORDER_TYPE_EQ_ =
+	  "$and$orderType=:orderType$";
+
 	protected Query        indexQuery(OrderData odata, String hql)
 	{
 		String Q = hql.
 		  replace("OrderIndex",  odata.getIndexClass().getName()).
 		  replace("$orderOwner", getOrderOwnerIDProp()).
-		  replace("$orderType",  getOrderTypeProp()).
 		  replace("$orderIndex", getOrderIndexProp());
 
 		//?: {has order type defined}
-		if(orderType(odata) != null)
-			Q = Q.replace("X :orderType", "= :orderType");
+		if(orderType(odata) == null)
+			Q = Q.replace(_AND_ORDER_TYPE_EQ_, "");
 		else
-			Q = Q.replace("X :orderType", "is null");
-
+			Q = Q.replace(_AND_ORDER_TYPE_EQ_, String.format(
+			  "and (%s = :orderType)", getOrderTypeProp()));
 
 		Query q =  session(request(odata)).createQuery(Q);
 

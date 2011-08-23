@@ -51,8 +51,18 @@ public abstract class GetObjectBase
 		return session;
 	}
 
-	protected Query   Q(String hql)
+	protected Query   Q(String hql, Object... replaces)
 	{
+		for(int i = 0;(i + 1 < replaces.length);i += 2)
+		{
+			String name = replaces[i].toString();
+			String real = (replaces[i + 1] instanceof Class)
+			  ?(((Class)replaces[i + 1]).getName())
+			  :(replaces[i + 1].toString());
+
+			hql = hql.replace(name, real);
+		}
+
 		return session().createQuery(hql);
 	}
 

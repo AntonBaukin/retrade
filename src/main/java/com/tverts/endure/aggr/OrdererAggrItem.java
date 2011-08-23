@@ -27,7 +27,18 @@ public class OrdererAggrItem extends OrdererDefault
 {
 	/* public: parameters defaults */
 
-	public static final String DEF_HISTORY_INDEX_PROP = "historyIndex";
+	public static final String DEF_AGGRITEM_OWNERID_PROP = "aggrValue.id";
+
+	public static final String DEF_HISTORY_INDEX_PROP    = "historyIndex";
+
+
+
+	/* public: constructor */
+
+	public OrdererAggrItem()
+	{
+		setOrderOwnerIDProp(DEF_AGGRITEM_OWNERID_PROP);
+	}
 
 
 	/* public: OrdererAggrItem (bean) interface */
@@ -52,7 +63,7 @@ public class OrdererAggrItem extends OrdererDefault
 		  instance(request).getClass());
 	}
 
-	protected void  spreadMoveOrderRight(OrderData odata)
+	protected void    spreadMoveOrderRight(OrderData odata)
 	{
 /*
 
@@ -89,7 +100,7 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 		  odata.getRight().getOrderIndex(), null);
 	}
 
-	protected Query indexQuery(OrderData odata, String hql)
+	protected Query   indexQuery(OrderData odata, String hql)
 	{
 		return super.indexQuery(odata, hql.
 		  replace("$historyIndex", getHistoryIndexProp())

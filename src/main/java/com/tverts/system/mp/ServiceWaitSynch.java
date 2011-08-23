@@ -141,13 +141,13 @@ public class ServiceWaitSynch
 		 * with the timeout (milliseconds) given. If the timeout
 		 * is zero the call is not blocking.
 		 *
-		 * Returns {@code true} when wait request was successfull,
+		 * Returns {@code true} when wait request was successful,
 		 * and all the services are completed.
 		 */
 		public boolean waitOnPoint(Service service, long timeout)
 		  throws InterruptedException
 		{
-			return this.waitPoint.waitOnPoint(timeout, service);
+			return this.waitPoint.waitOnPointTimeout(timeout, service);
 		}
 
 		/**

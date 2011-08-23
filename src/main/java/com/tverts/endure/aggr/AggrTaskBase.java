@@ -1,5 +1,10 @@
 package com.tverts.endure.aggr;
 
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.NumericIdentity;
+
+
 /**
  * Stores basic properties of an aggregation task.
  *
@@ -50,6 +55,38 @@ public abstract class AggrTaskBase implements AggrTask
 	public void    setBeforeAfter(boolean beforeAfter)
 	{
 		this.beforeAfter = beforeAfter;
+	}
+
+	/**
+	 * Sets the order reference ID and before-after flag
+	 * by the closest reference on the left. If it is
+	 * not defined, tells to insert as the first.
+	 */
+	public void    setOrderRefLeft(NumericIdentity ref)
+	{
+		if(ref == null)
+			setBeforeAfter(false);
+		else
+		{
+			setOrderRefID(ref.getPrimaryKey());
+			setBeforeAfter(true);
+		}
+	}
+
+	/**
+	 * Sets the order reference ID and before-after flag
+	 * by the closest reference on the right. If it is
+	 * not defined, tells to insert as the last.
+	 */
+	public void    setOrderRefRight(NumericIdentity ref)
+	{
+		if(ref == null)
+			setBeforeAfter(true);
+		else
+		{
+			setOrderRefID(ref.getPrimaryKey());
+			setBeforeAfter(false);
+		}
 	}
 
 
