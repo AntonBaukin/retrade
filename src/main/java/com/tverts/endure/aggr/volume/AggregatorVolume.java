@@ -152,10 +152,6 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 		BigDecimal value = aggrValue(struct).getAggrValue();
 		if(value == null) value = BigDecimal.ZERO;
 
-		/**
-		 * HINT: we do subtract, so the signs are negated!
-		 */
-
 		if(item.getVolumePositive() != null)
 			value = value.add(item.getVolumePositive());
 
@@ -196,10 +192,11 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 			AggrItemVolume vitem = (AggrItemVolume)item;
 
 			//~: add to totals
-			if(vitem.getAggrPositive() != null)
-				sumPositive = sumPositive.add(vitem.getAggrPositive());
-			if(vitem.getAggrNegative() != null)
-				sumNegative = sumNegative.add(vitem.getAggrNegative());
+			if(vitem.getVolumePositive() != null)
+				sumPositive = sumPositive.add(vitem.getVolumePositive());
+
+			if(vitem.getVolumeNegative() != null)
+				sumNegative = sumNegative.add(vitem.getVolumeNegative());
 		}
 
 		//>: totals (for aggregated value)
