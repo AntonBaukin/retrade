@@ -48,7 +48,22 @@ public class AggrRequest implements NumericIdentity
 		this.source = source;
 
 		if((this.aggrTask != null) && (source != null))
-			this.aggrTask.setSourceID(source.getPrimaryKey());
+		{
+			this.aggrTask.setSourceKey(source.getPrimaryKey());
+
+			if(source.getUnityType() != null)
+				this.aggrTask.setSourceClass(source.getUnityType().getTypeClass());
+		}
+	}
+
+	public Unity      getOrderRef()
+	{
+		return orderRef;
+	}
+
+	public void       setOrderRef(Unity orderRef)
+	{
+		this.orderRef = orderRef;
 	}
 
 
@@ -64,7 +79,7 @@ public class AggrRequest implements NumericIdentity
 		this.aggrValue = aggrValue;
 
 		if((this.aggrTask != null) && (aggrValue != null))
-			this.aggrTask.setAggrValueID(aggrValue.getPrimaryKey());
+			this.aggrTask.setAggrValueKey(aggrValue.getPrimaryKey());
 	}
 
 	public AggrTask   getAggrTask()
@@ -85,14 +100,18 @@ public class AggrRequest implements NumericIdentity
 
 		//~: fill aggregated value ID
 		if((aggrTask != null) && (this.aggrValue != null))
-			aggrTask.setAggrValueID(this.aggrValue.getPrimaryKey());
+			aggrTask.setAggrValueKey(this.aggrValue.getPrimaryKey());
 
 		//~: fill the source ID
 		if((aggrTask != null) && (this.source != null) &&
-		   (aggrTask.getSourceID() == null)
+		   (aggrTask.getSourceKey() == null)
 		  )
-			aggrTask.setSourceID(this.source.getPrimaryKey());
+		{
+			aggrTask.setSourceKey(this.source.getPrimaryKey());
 
+			if(this.source.getUnityType() != null)
+				aggrTask.setSourceClass(this.source.getUnityType().getTypeClass());
+		}
 	}
 
 	public String     getAggrTaskXML()
@@ -135,6 +154,7 @@ public class AggrRequest implements NumericIdentity
 
 	private Long      primaryKey;
 	private Unity     source;
+	private Unity     orderRef;
 	private AggrValue aggrValue;
 	private AggrTask  aggrTask;
 	private String    errorText;

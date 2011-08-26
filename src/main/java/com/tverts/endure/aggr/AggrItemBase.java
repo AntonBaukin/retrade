@@ -69,7 +69,7 @@ public abstract class AggrItemBase implements AggrItem
 	public Unity     getOrderOwner()
 	{
 		return (getAggrValue() == null)?(null)
-		  :(getAggrValue().getOwner());
+		  :(getAggrValue().getUnity());
 	}
 
 	public UnityType getOrderType()

@@ -14,6 +14,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
 /* com.tverts: endure (aggregation) */
 
 import com.tverts.endure.aggr.AggrTask;
@@ -22,6 +26,7 @@ import com.tverts.endure.aggr.AggrValue;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -205,9 +210,9 @@ public abstract class AggregatorBase
 
 	/* protected: Hibernate querying */
 
-	protected Query   Q(AggrStruct struct, String hql)
+	protected Query   Q(AggrStruct struct, String hql, Object... replaces)
 	{
-		return session(struct).createQuery(hql);
+		return HiberPoint.query(session(struct), hql, replaces);
 	}
 
 

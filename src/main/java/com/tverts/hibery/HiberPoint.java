@@ -2,6 +2,7 @@ package com.tverts.hibery;
 
 /* Hibernate Persistence Layer */
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -20,6 +21,10 @@ import com.tverts.hibery.keys.HiberKeysContextStruct;
 
 import com.tverts.hibery.system.HiberSystem;
 import com.tverts.system.tx.TxContext;
+
+/* com.tverts: support */
+
+import com.tverts.support.SU;
 
 
 /**
@@ -83,6 +88,23 @@ public class HiberPoint
 	{
 		return getInstance().getSession(allowCreate);
 	}
+
+	public static Query query(Session session, String hql, Object... replaces)
+	{
+		for(int i = 0;(i + 1 < replaces.length);i += 2)
+		{
+			String name = replaces[i].toString().trim();
+			String real = (replaces[i + 1] instanceof Class)
+			  ?(((Class)replaces[i + 1]).getSimpleName()) //<-- short name!
+			  :(replaces[i + 1].toString());
+
+			hql = SU.replace(hql, SU.cats(" ", name, " ") ,
+			  SU.cats(" ", real, " "));
+		}
+
+		return session.createQuery(hql);
+	}
+
 
 	/* public static: keys generation support */
 

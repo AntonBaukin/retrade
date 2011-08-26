@@ -26,33 +26,45 @@ public interface AggrTask extends java.io.Serializable
 	 * {@link AggrRequest} automatically installs this value
 	 * to a task when attaching it.
 	 */
-	public Long    getAggrValueID();
+	public Long    getAggrValueKey();
 
-	public void    setAggrValueID(Long id);
+	public void    setAggrValueKey(Long id);
 
-	public Long    getSourceID();
+	public Long    getSourceKey();
 
-	public void    setSourceID(Long id);
+	public void    setSourceKey(Long id);
 
 	/**
-	 * This is primary key of some Unity instance being
-	 * the source for the existing components before
-	 * (or after) those you want to insert the
-	 * component is being created by this task.
-	 *
-	 * Has meaning only for the tasks creating components.
-	 * If not defined, the new component is added to the
-	 * end or to the head of the order according to
-	 * {@link #isBeforeAfter()} flag.
+	 * The (actual leaf) class of the source instance.
+	 * Must be defined if the source exists. (Almost always.)
 	 */
-	public Long    getOrderRefID();
+	public Class   getSourceClass();
 
-	public void    setOrderRefID(Long id);
+	public void    setSourceClass(Class orderClass);
+
+	/**
+	 * This parameter has meaning only for the tasks creating
+	 * components. If not defined, the new component is added
+	 * to the end, or to the head of the order according to
+	 * {@link #isBeforeAfter()} flag.
+	 *
+	 * If defined, this is the primary key of the order
+	 * reference. The crucial thing here is that it is possible
+	 * that the reference itself may have no owned component in
+	 * the aggregated value.
+	 *
+	 * The reference instance must have the save class, owner,
+	 * and order type as the source of the aggregated item
+	 * to create.
+	 */
+	public Long    getOrderKey();
+
+	public void    setOrderKey(Long id);
 
 	/**
 	 * Tells whether to insert before {@code false} or after
 	 * {@code true} the components with source defined by
-	 * {@link #getOrderRefID()}.
+	 * {@link #getOrderKey()}.
 	 *
 	 * If the reference is not defined, before {@code false}
 	 * means to insert as the first item of the order, after

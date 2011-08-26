@@ -386,6 +386,11 @@ public class SU
 
 	private static final String CAT_X = "";
 
+	public static String        cats(Object... objs)
+	{
+		return cat(objs).toString();
+	}
+
 	/**
 	 * Concatenates the strings using the separator given.
 	 * Returns the resulting buffer.
@@ -394,7 +399,7 @@ public class SU
 	 * the strings before appending.
 	 *
 	 * If the income buffer is {@code null} creates
-	 * the new one. Else, returnes the given buffer.
+	 * the new one. Else, returns the given buffer.
 	 *
 	 * If the separator is {@code null}, an empty
 	 * string is taken.
@@ -404,7 +409,7 @@ public class SU
 	{
 		int l = 0, x = (buf == null)?(0):(buf.length());
 
-		//?: {has no separater} take an empty string
+		//?: {has no separator} take an empty string
 		if(sep == null) sep = "";
 
 		//0: define the resulting length
@@ -441,4 +446,45 @@ public class SU
 	{
 		return cat(null, ", ", strings).toString();
 	}
+
+	public static String        replace(String s, String t, Object r)
+	{
+		if((s == null) || (r == null) || (t == null) || (t.length() == 0))
+			return s;
+
+		return (s.indexOf(t) == -1)?(s):(s.replace(t, r.toString()));
+	}
+
+	public static DelayedString delay(Object... items)
+	{
+		return new DelayedString(items);
+	}
+
+
+	/* public static: delayed string */
+
+	public static class DelayedString
+	{
+		/* public: constructor */
+
+		public DelayedString(Object... items)
+		{
+			this.items = items;
+		}
+
+		/* public: Object interface */
+
+		public String toString()
+		{
+			return (result != null)?(result):
+			  (result = cat(items).toString());
+		}
+
+
+		/* private: delayed items + result */
+
+		private Object[] items;
+		private String   result;
+	}
+
 }

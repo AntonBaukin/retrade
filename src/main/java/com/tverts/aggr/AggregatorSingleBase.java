@@ -25,6 +25,10 @@ import com.tverts.endure.order.OrderIndex;
 import com.tverts.endure.order.OrderPoint;
 import com.tverts.endure.order.OrderRequest;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
 
 /**
  * The most of the aggregators do work with a single class
@@ -89,18 +93,19 @@ public abstract class AggregatorSingleBase
 	}
 
 
-	/* protected: queries  */
+	/* protected: queries + order index handling */
 
-	protected Query aggrItemQ(AggrStruct struct, String hql)
+	protected Query          aggrItemQ
+	  (AggrStruct struct, String hql, Object... replaces)
 	{
-		return Q(struct, hql.
-		  replace("AggrItem", getAggrItemClass().getName())
-		);
+		hql = SU.replace(hql, " AggrItem ",
+		  SU.cat(" ", getAggrItemClass().getSimpleName(), " "));
+
+		return Q(struct, hql, replaces);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List<AggrItem>
-	                loadBySource(AggrStruct struct, long sourceID)
+	protected List<AggrItem> loadBySource(AggrStruct struct, long sourceID)
 	{
 /*
 
@@ -119,60 +124,180 @@ order by orderIndex asc
 		  list();
 	}
 
-	protected void  setOrderIndex
+	protected void           setOrderIndex
 	  (AggrStruct struct, AggrTask task, OrderIndex instance)
+	{
+		OrderIndex reference   = findOrderIndexAggrItemReference(struct, task);
+		boolean    beforeAfter = task.isBeforeAfter();
+
+		//HINT: here we invert before-after flag when the reference
+		//   is not found. This is correct, if you check it on an axis...
+
+		if(reference == null)
+			beforeAfter = !beforeAfter;
+
+		//!: issue order request
+		OrderPoint.order(new OrderRequest(instance, reference).
+		  setBeforeAfter(beforeAfter)
+		);
+	}
+
+	protected OrderIndex     findOrderIndexAggrItemReference
+	  (AggrStruct struct, AggrTask task)
+	{
+		//?: {has reference source} do nothing
+		if((task.getOrderKey() == null) || (task.getSourceClass() == null))
+			return null;
+
+		//<: load the present order index of the source
+
+/*
+
+select orderIndex from Source where (primaryKey = :orderKey)
+
+*/
+		Number sourceIndex = (Number) Q (struct,
+
+"select orderIndex from Source where (primaryKey = :orderKey)",
+
+		  "Source", task.getSourceClass()
+
+		).
+		  setLong("orderKey", task.getOrderKey()).
+		  uniqueResult();
+
+		//?: {order index does not exist}
+		if(sourceIndex == null)
+			return null;
+
+		//>: load the present order index of the source
+
+/*
+
+select ai from AggrItem ai, Source so where
+  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceID) and
+  (so.orderIndex <= :sourceIndex)
+order by ai.orderIndex desc
+
+select ai from AggrItem ai, Source so where
+  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceID) and
+  (so.orderIndex >= :sourceIndex)
+order by ai.orderIndex asc
+
+*/
+
+		// HINT: before-after true means to insert after the
+		// source reference, after the component with the
+		// maximum order index before-equal the reference.
+
+		final String Q_MAX =
+
+"select ai from AggrItem ai, Source so where\n" +
+"  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceID) and\n" +
+"  (so.orderIndex <= :sourceIndex)\n" +
+"order by ai.orderIndex desc";
+
+
+		// HINT: before-after false means to insert before the
+		// source reference, before the component with the
+		// minimum order index after-equal the reference.
+
+		final String Q_MIN =
+
+"select ai from AggrItem ai, Source so where\n" +
+"  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceID) and\n" +
+"  (so.orderIndex >= :sourceIndex)\n" +
+"order by ai.orderIndex asc";
+
+
+		//~: execute the query
+		List list = aggrItemQ(struct,
+
+		  (task.isBeforeAfter())?(Q_MAX):(Q_MIN),
+		  "Source", task.getSourceClass()
+
+		).
+		  setParameter("aggrValue",   aggrValue(struct)).
+		  setLong     ("sourceIndex", sourceIndex.longValue()).
+		  setMaxResults(1).
+		  list();
+
+		return (list.isEmpty())?(null):((OrderIndex)list.get(0));
+	}
+
+	protected String         debugSelectIndices(AggrStruct struct)
 	{
 
 /*
 
-from AggrItem where
-  (aggrValue = :aggrValue) and (sourceID = :sourceID)
-order by orderIndex desc
-
-from AggrItem where
-  (aggrValue = :aggrValue) and (sourceID = :sourceID)
-order by orderIndex asc
+select primaryKey, orderIndex, sourceID from AggrItem where
+  aggrValue = :aggrValue order by orderIndex
 
 */
-		OrderIndex reference = null;
+		List list =  aggrItemQ(struct,
 
-		final String Q_MAX =
+"select primaryKey, orderIndex, sourceID from AggrItem where\n" +
+"  aggrValue = :aggrValue order by orderIndex"
 
-"from AggrItem where\n" +
-"  (aggrValue = :aggrValue) and (sourceID = :sourceID)\n" +
-"order by orderIndex desc";
+		).
+		  setParameter("aggrValue",   aggrValue(struct)).
+		  setMaxResults(100).
+		  list();
 
-		final String Q_MIN =
+		StringBuilder s = new StringBuilder(512);
 
-"from AggrItem where\n" +
-"  (aggrValue = :aggrValue) and (sourceID = :sourceID)\n" +
-"order by orderIndex asc";
-
-		//?: {has reference source} try to load it
-		if(task.getOrderRefID() != null)
+		for(Object row : list)
 		{
-			// before-after true means to insert after the
-			// source reference, after the component with the
-			// maximum order index;
+			String pk = ((Object[])row)[0].toString().replace("-", "");
+			String so = ((Object[])row)[2].toString().replace("-", "");
 
-			// before-after false means to insert before the
-			// source reference, before the component with the
-			// minimum order index.
+			String oi = ((Object[])row)[1].toString();
+			if(oi.indexOf('-') == -1) oi = "+" + oi;
 
-			List list = aggrItemQ(struct,(task.isBeforeAfter())?(Q_MAX):(Q_MIN)).
-			  setParameter("aggrValue", aggrValue(struct)).
-			  setLong     ("sourceID",  task.getOrderRefID()).
-			  setMaxResults(1).
-			  list();
-
-			if(!list.isEmpty())
-				reference = (OrderIndex)list.get(0);
+			s.append((s.length() != 0)?("  "):("")).
+			  append(pk).append('@').append(so).append(oi);
 		}
 
-		//!: issue order request
-		OrderPoint.order(new OrderRequest(instance, reference).
-		  setBeforeAfter(task.isBeforeAfter())
-		);
+		return s.toString();
+	}
+
+	protected String         debugSelectSources(AggrStruct struct, AggrTask task)
+	{
+
+/*
+
+select so.id, so.orderIndex from AggrItem ai, Source so where
+  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceID)
+order by so.orderIndex
+
+ */
+
+		List list =  aggrItemQ(struct,
+
+"select so.id, so.orderIndex from AggrItem ai, Source so where\n" +
+"  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceID)\n" +
+"order by so.orderIndex",
+
+		  "Source", task.getSourceClass()
+
+		).
+		  setParameter("aggrValue",   aggrValue(struct)).
+		  setMaxResults(100).
+		  list();
+
+		StringBuilder s = new StringBuilder(512);
+
+		for(Object row : list)
+		{
+			String pk = ((Object[])row)[0].toString().replace("-", "");
+			String oi = ((Object[])row)[1].toString();
+			if(oi.indexOf('-') == -1) oi = "+" + oi;
+
+			s.append((s.length() != 0)?("  "):("")).
+			  append(pk).append(oi);
+		}
+
+		return s.toString();
 	}
 
 

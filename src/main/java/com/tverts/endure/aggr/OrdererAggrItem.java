@@ -11,7 +11,7 @@ import com.tverts.endure.order.OrdererDefault;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -50,7 +50,7 @@ public class OrdererAggrItem extends OrdererDefault
 
 	public void   setHistoryIndexProp(String p)
 	{
-		if((p = s2s(p)) == null) throw new IllegalArgumentException();
+		if((p = SU.s2s(p)) == null) throw new IllegalArgumentException();
 		this.historyIndexProp = p;
 	}
 
@@ -102,8 +102,8 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 
 	protected Query   indexQuery(OrderData odata, String hql)
 	{
-		return super.indexQuery(odata, hql.
-		  replace("$historyIndex", getHistoryIndexProp())
+		return super.indexQuery(odata,
+		  SU.replace(hql, "$historyIndex", getHistoryIndexProp())
 		);
 	}
 

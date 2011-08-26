@@ -64,7 +64,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 	  throws Throwable
 	{
 		//?: {the source entity is undefined} do nothing
-		if(struct.task.getSourceID() == null)
+		if(struct.task.getSourceKey() == null)
 			return;
 
 		//~: evict all the aggregated items currently present
@@ -83,7 +83,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		item.setAggrValue(aggrValue(struct));
 
 		//~: set source ID
-		item.setSourceID(task.getSourceID());
+		item.setSourceID(task.getSourceKey());
 
 		//~: set volume positive
 		item.setVolumePositive(task.getVolumePositive());
@@ -170,14 +170,14 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 	  throws Throwable
 	{
 		//?: {the source entity is undefined} do nothing
-		if(struct.task.getSourceID() == null)
+		if(struct.task.getSourceKey() == null)
 			return;
 
 		//~: evict all the aggregated items currently present
 		evictAggrItems(struct);
 
 		//~: load the items of the source
-		List<AggrItem> items = loadBySource(struct, struct.task.getSourceID());
+		List<AggrItem> items = loadBySource(struct, struct.task.getSourceKey());
 
 		//?: {there are none of them} nothing to do...
 		if(items.isEmpty())

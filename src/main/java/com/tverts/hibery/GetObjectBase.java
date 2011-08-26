@@ -14,6 +14,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
 
 /**
  * Basic implementation of so-called 'Get Object' Spring Bean.
@@ -53,17 +57,7 @@ public abstract class GetObjectBase
 
 	protected Query   Q(String hql, Object... replaces)
 	{
-		for(int i = 0;(i + 1 < replaces.length);i += 2)
-		{
-			String name = replaces[i].toString();
-			String real = (replaces[i + 1] instanceof Class)
-			  ?(((Class)replaces[i + 1]).getName())
-			  :(replaces[i + 1].toString());
-
-			hql = hql.replace(name, real);
-		}
-
-		return session().createQuery(hql);
+		return HiberPoint.query(session(), hql, replaces);
 	}
 
 	@SuppressWarnings("unchecked")

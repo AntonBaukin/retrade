@@ -15,6 +15,7 @@ import org.hibernate.Session;
 
 /* com.tverts: hibery */
 
+import com.tverts.hibery.HiberPoint;
 import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: endure */
@@ -24,7 +25,7 @@ import org.hibernate.type.LongType;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -110,7 +111,7 @@ public class OrdererDefault extends OrdererBase
 
 	public void   setOrderOwnerIDProp(String p)
 	{
-		if((p = s2s(p)) == null) throw new IllegalArgumentException();
+		if((p = SU.s2s(p)) == null) throw new IllegalArgumentException();
 		this.orderOwnerIDProp = p;
 	}
 
@@ -121,7 +122,7 @@ public class OrdererDefault extends OrdererBase
 
 	public void   setOrderTypeProp(String p)
 	{
-		if((p = s2s(p)) == null) throw new IllegalArgumentException();
+		if((p = SU.s2s(p)) == null) throw new IllegalArgumentException();
 		this.orderTypeProp = p;
 	}
 
@@ -132,7 +133,7 @@ public class OrdererDefault extends OrdererBase
 
 	public void   setOrderIndexProp(String p)
 	{
-		if((p = s2s(p)) == null) throw new IllegalArgumentException();
+		if((p = SU.s2s(p)) == null) throw new IllegalArgumentException();
 		this.orderIndexProp = p;
 	}
 
@@ -866,19 +867,20 @@ select oi.id, oi.$orderIndex from OrderIndex oi
 
 	protected Query        indexQuery(OrderData odata, String hql)
 	{
-		String Q = hql.
-		  replace("OrderIndex",  odata.getIndexClass().getName()).
-		  replace("$orderOwner", getOrderOwnerIDProp()).
-		  replace("$orderIndex", getOrderIndexProp());
+		String Q = hql;
+
+		Q = SU.replace(Q, "$orderOwner", getOrderOwnerIDProp());
+		Q = SU.replace(Q, "$orderIndex", getOrderIndexProp());
 
 		//?: {has order type defined}
 		if(orderType(odata) == null)
-			Q = Q.replace(_AND_ORDER_TYPE_EQ_, "");
+			Q = SU.replace(Q, _AND_ORDER_TYPE_EQ_, "");
 		else
-			Q = Q.replace(_AND_ORDER_TYPE_EQ_, String.format(
+			Q = SU.replace(Q, _AND_ORDER_TYPE_EQ_, String.format(
 			  "and (%s = :orderType)", getOrderTypeProp()));
 
-		Query q =  session(request(odata)).createQuery(Q);
+		Query q = HiberPoint.query(session(request(odata)), Q,
+		  "OrderIndex", odata.getIndexClass());
 
 		//~: set order owner
 		if(Q.indexOf(":orderOwner") != -1)

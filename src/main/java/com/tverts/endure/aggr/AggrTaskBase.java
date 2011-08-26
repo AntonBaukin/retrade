@@ -3,6 +3,7 @@ package com.tverts.endure.aggr;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.NumericIdentity;
+import com.tverts.hibery.system.HiberSystem;
 
 
 /**
@@ -17,34 +18,44 @@ public abstract class AggrTaskBase implements AggrTask
 
 	/* public: AggrTask interface */
 
-	public Long    getAggrValueID()
+	public Long    getAggrValueKey()
 	{
 		return aggrValueID;
 	}
 
-	public void    setAggrValueID(Long aggrValueID)
+	public void    setAggrValueKey(Long aggrValueID)
 	{
 		this.aggrValueID = aggrValueID;
 	}
 
-	public Long    getSourceID()
+	public Long    getSourceKey()
 	{
 		return sourceID;
 	}
 
-	public void    setSourceID(Long sourceID)
+	public void    setSourceKey(Long sourceID)
 	{
 		this.sourceID = sourceID;
 	}
 
-	public Long    getOrderRefID()
+	public Long    getOrderKey()
 	{
 		return orderRefID;
 	}
 
-	public void    setOrderRefID(Long orderRefID)
+	public void    setOrderKey(Long orderRefID)
 	{
 		this.orderRefID = orderRefID;
+	}
+
+	public Class   getSourceClass()
+	{
+		return orderClass;
+	}
+
+	public void    setSourceClass(Class orderClass)
+	{
+		this.orderClass = orderClass;
 	}
 
 	public boolean isBeforeAfter()
@@ -68,8 +79,11 @@ public abstract class AggrTaskBase implements AggrTask
 			setBeforeAfter(false);
 		else
 		{
-			setOrderRefID(ref.getPrimaryKey());
+			setOrderKey(ref.getPrimaryKey());
 			setBeforeAfter(true);
+
+			if(getSourceClass() == null)
+				setSourceClass(HiberSystem.getInstance().findActualClass(ref));
 		}
 	}
 
@@ -84,8 +98,11 @@ public abstract class AggrTaskBase implements AggrTask
 			setBeforeAfter(true);
 		else
 		{
-			setOrderRefID(ref.getPrimaryKey());
+			setOrderKey(ref.getPrimaryKey());
 			setBeforeAfter(false);
+
+			if(getSourceClass() == null)
+				setSourceClass(HiberSystem.getInstance().findActualClass(ref));
 		}
 	}
 
@@ -95,5 +112,6 @@ public abstract class AggrTaskBase implements AggrTask
 	private Long    aggrValueID;
 	private Long    sourceID;
 	private Long    orderRefID;
+	private Class   orderClass;
 	private boolean beforeAfter;
 }

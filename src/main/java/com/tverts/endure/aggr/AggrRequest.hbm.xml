@@ -34,6 +34,17 @@
     </many-to-one>
 
 
+    <!-- Order Reference (Unity) -->
+
+    <many-to-one name = 'orderRef' foreign-key = 'fk_aggr_request_order_ref'
+      index = 'ix_aggr_request_order_ref'>
+
+      <column name = 'fk_order_ref'>
+        <comment>Order index Reference (Unity) of this request</comment>
+      </column>
+    </many-to-one>
+
+
     <!-- Aggregation Task (XML serialized) -->
 
     <property name = 'aggrTaskXML' type = 'text'>
