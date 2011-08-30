@@ -223,6 +223,47 @@ public abstract class AggregatorBase
 		return struct.job.aggrValue();
 	}
 
+	protected String    logsig()
+	{
+		return this.getClass().getSimpleName();
+	}
+
+	protected String    logsig(AggrStruct struct)
+	{
+		if(struct.job == null)
+			return String.format("%s, Aggregation job undefined!", logsig());
+
+		if(struct.job.aggrValue() == null)
+			return String.format(
+			  "%s, Aggregated Value undefined, %s.",
+			  logsig(), logsig(struct.task));
+
+		return String.format(
+		  "%s, Aggregated Value [%d], %s",
+
+		  logsig(), struct.job.aggrValue().getPrimaryKey(),
+		  logsig(struct.task)
+		);
+	}
+
+	protected String    logsig(AggrTask task)
+	{
+		if(task == null)
+			return "Aggregation Task undefined";
+
+		return String.format(
+		  "Aggregation Task %s for source %s [%s]!",
+
+		  task.getClass().getSimpleName(),
+
+		  (task.getSourceClass() == null)?("Undefined")
+		    :(task.getSourceClass().getSimpleName()),
+
+		  (task.getSourceKey() == null)?("?"):
+		    (task.getSourceKey().toString())
+		);
+	}
+
 
 	/* private: aggregator support data */
 

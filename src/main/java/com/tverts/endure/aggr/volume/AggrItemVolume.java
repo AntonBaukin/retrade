@@ -4,6 +4,8 @@ package com.tverts.endure.aggr.volume;
 
 import java.math.BigDecimal;
 
+/* com.tverts: endure (aggregation) */
+
 import com.tverts.endure.aggr.AggrItemBase;
 
 

@@ -65,7 +65,8 @@ public class AggregatorVolume extends AggregatorSingleBase
 	{
 		//?: {the source entity is undefined} do nothing
 		if(struct.task.getSourceKey() == null)
-			return;
+			throw new IllegalArgumentException(
+			  "Source is undefined! " + logsig(struct));
 
 		//~: evict all the aggregated items currently present
 		evictAggrItems(struct);
@@ -171,7 +172,8 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 	{
 		//?: {the source entity is undefined} do nothing
 		if(struct.task.getSourceKey() == null)
-			return;
+			throw new IllegalArgumentException(
+			  "Source is undefined! " + logsig(struct));
 
 		//~: evict all the aggregated items currently present
 		evictAggrItems(struct);

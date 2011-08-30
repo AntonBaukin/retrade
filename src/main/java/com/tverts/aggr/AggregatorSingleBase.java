@@ -2,6 +2,8 @@ package com.tverts.aggr;
 
 /* standard Java classes */
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -65,10 +67,13 @@ public abstract class AggregatorSingleBase
 	 * context that are of this aggregated value. If they found,
 	 * flashes the session and then evicts them.
 	 */
-	protected void  evictAggrItems(AggrStruct struct)
+	protected void  evictAggrItems(AggrStruct struct, Collection except)
 	{
 		Set items = HiberSystem.getInstance().
 		  findAttachedEntities(session(struct), getAggrItemClass());
+
+		if((except != null) && except.isEmpty())
+			except = null;
 
 		//~: remove items not of our interest
 		for(Iterator i = items.iterator();(i.hasNext());)
@@ -77,6 +82,13 @@ public abstract class AggregatorSingleBase
 
 			//?: {aggregated value of that item differs}
 			if(!aggrValue(struct).equals(item.getAggrValue()))
+			{
+				i.remove();
+				continue;
+			}
+
+			//?: {the item is in except list}
+			if((except != null) && except.contains(item))
 				i.remove();
 		}
 
@@ -90,6 +102,11 @@ public abstract class AggregatorSingleBase
 		//~: evict all the items left
 		for(Object item : items)
 			session(struct).evict(item);
+	}
+
+	protected void  evictAggrItems(AggrStruct struct, Object... except)
+	{
+		evictAggrItems(struct, Arrays.asList(except));
 	}
 
 
