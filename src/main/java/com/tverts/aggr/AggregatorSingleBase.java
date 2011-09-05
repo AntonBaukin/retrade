@@ -126,18 +126,21 @@ public abstract class AggregatorSingleBase
 	{
 /*
 
-from AggrItem where sourceID = :sourceID
+from AggrItem where
+  (aggrValue = :aggrValue) and (sourceID = :sourceID)
 order by orderIndex asc
 
 
 */
 		return (List<AggrItem>) aggrItemQ(struct,
 
-"from AggrItem where sourceID = :sourceID\n" +
+"from AggrItem where\n" +
+"  (aggrValue = :aggrValue) and (sourceID = :sourceID)\n" +
 "order by orderIndex asc"
 
 		).
-		  setLong("sourceID", sourceID).
+		  setParameter("aggrValue", aggrValue(struct)).
+		  setLong     ("sourceID",  sourceID).
 		  list();
 	}
 

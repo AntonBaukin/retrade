@@ -176,61 +176,83 @@ public class AggregatorRestCost extends AggregatorSingleBase
 	 */
 	protected void       recalcFromLeft(AggrStruct struct, long orderIndex)
 	{
-		AggrItemRestCost c = (AggrItemRestCost)findStartItem(struct, orderIndex);
-		AggrItemRestCost n;
+		AggrItemRestCost p, c;
+		BigDecimal       z, w;
 
-		//?: {there are no buy components} value is undefined!
-		if(c == null)
+
+		//~: take the buy item on the left as previous
+		p = (AggrItemRestCost)findLeftItem(struct, orderIndex);
+
+		//?: {found it} take it's aggregation attributes
+		if(p != null)
 		{
-			aggrValue(struct).setAggrValue(null);
-			aggrValue(struct).setAggrDenom(BigDecimal.ONE);
+			z = p.getAggrCost();
+			w = p.getAggrVolume();
 
-			return;
+			//?: {those attributes are undefined} take (buy) item attributes
+			if((z == null) || (w == null) || (w.signum() != 1))
+			{
+				z = p.getVolumeCost();
+				w = p.getGoodVolume(); //<-- always positive here
+			}
+
+			//~: find the current item as the next
+			c = (AggrItemRestCost)findRightItem(struct, p.getOrderIndex());
+		}
+		//!: previous item not found, take the right as the current
+		else
+		{
+			z = w = null;
+
+			//~: find the current item as the global first
+			c = (AggrItemRestCost)findFirstItem(struct);
 		}
 
-		BigDecimal z = c.getAggrCost();
-		BigDecimal w = c.getAggrVolume();
-		BigDecimal s;
-		int        B = 0; //<-- session buffer size
+		int B = 0; //<-- session buffer size
 
 		//<: repeat for all buy aggregation items
 
-		while(true)
+		while(c != null)
 		{
-			//~: select the next buy item
-			n = (AggrItemRestCost)findRightItem(struct, c.getOrderIndex());
-
-			//?: {current item is the last one} stop the aggregation
-			if(n == null) break;
-
 			//?: {accumulated values are still undefined} take them from the current
 			if((z == null) || (w == null) || (w.signum() != 1))
 			{
 				z = c.getVolumeCost();
 				w = c.getGoodVolume(); //<-- always positive here
 
+				//~: clear item' aggregation attributes
 				c.setAggrCost(null);
-				c.setAggrVolume(w);
+				c.setAggrVolume(null);
 			}
-			//~: assign the accumulated values to the current item
 			else
 			{
-				z = z.add(c.getVolumeCost());
-				w = w.add(c.getGoodVolume());
+				BigDecimal s;
 
+				//aggregate sell volumes between the previous and the current items
+				s = aggrVolumeBetween(struct, p.getOrderIndex(), c.getOrderIndex());
+
+				//?: {has sell items} subtract their volumes
+				if(s != null)
+					w = w.add(s); //<-- 's' is negative
+
+				//?: {the volume became negative} clear aggregated attributes
+				if(w.signum() != 1)
+					z = w = null;
+				//!: add current cost and volume
+				else
+				{
+					z = z.add(c.getVolumeCost());
+					w = w.add(c.getGoodVolume());
+				}
+
+				//~: assign the aggregates
 				c.setAggrCost(z);
 				c.setAggrVolume(w);
 			}
 
-			//~: aggregate the sell items between the current and the next buy
-			s = aggrVolumeBetween(struct, c.getOrderIndex(), n.getOrderIndex());
-			if(s == null) s = BigDecimal.ZERO;
-
-			//HINT: summary sell volume 's' is negative!
-			w = w.add(s); //<-- actually subtract
-
 			//!: move to the next item
-			c = n;
+			p = c;
+			c = (AggrItemRestCost)findRightItem(struct, c.getOrderIndex());
 
 			//<: batch the session
 			B++; if(B < 48) continue; B = 0;
@@ -238,7 +260,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 			//~: flush the session
 			session(struct).flush();
 
-			//~: evict all the items except the current
+			//~: evict all the items except the new current
 			evictAggrItems(struct, c);
 
 			//>: batch the session
@@ -248,7 +270,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 
 		//<: update the aggregated value
 
-		//?: {the aggregated value is not defined}
+		//?: {the aggregation attributes are not defined}
 		if((z == null) || (z.signum() != 1) || (w == null) || (w.signum() != 1))
 		{
 			z = null;
@@ -258,22 +280,6 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		//~: assign the aggregated values
 		aggrValue(struct).setAggrValue(z);
 		aggrValue(struct).setAggrDenom(w);
-	}
-
-	/**
-	 * Searches for the first aggregated component on the left
-	 * (having lower history index and positive volume) to start
-	 * the recalculation from.
-	 */
-	protected AggrItem   findStartItem(AggrStruct struct, long orderIndex)
-	{
-		AggrItem item = findLeftItem(struct, orderIndex);
-
-		//?: {there is no item on the left}
-		if(item == null)
-			item = findFirstItem(struct);
-
-		return item;
 	}
 
 	protected AggrItem   findLeftItem(AggrStruct struct, long orderIndex)
@@ -308,17 +314,20 @@ order by historyIndex desc
 /*
 
 from AggrItem where
+  (aggrValue = :aggrValue) and
   (historyIndex is not null) and (goodVolume > 0)
 order by historyIndex asc
 
 */
 		List list = aggrItemQ(struct,
 
-		                      "from AggrItem where\n" +
-		                      "  (historyIndex is not null) and (goodVolume > 0)\n" +
-		                      "order by historyIndex asc"
+"from AggrItem where\n" +
+"  (aggrValue = :aggrValue) and\n" +
+"  (historyIndex is not null) and (goodVolume > 0)\n" +
+"order by historyIndex asc"
 
 		).
+		  setParameter("aggrValue", aggrValue(struct)).
 		  setMaxResults(1).
 		  list();
 
