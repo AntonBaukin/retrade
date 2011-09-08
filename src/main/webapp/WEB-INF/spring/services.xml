@@ -17,12 +17,12 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Primary Self Shunt Service.                               ·
+         · Primary Self Shunt Service                                ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'selfShuntService'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Genesis Service.                               ·
+         · Genesis Service                                           ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'genesisService'/>
       </list>
