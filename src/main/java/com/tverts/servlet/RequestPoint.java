@@ -25,7 +25,7 @@ public class RequestPoint
 	}
 
 	/**
-	 * Note that is not allowed to chnange the context
+	 * Note that is not allowed to change the context
 	 * instance directly. Set {@code null} link before.
 	 */
 	public static void setContext(ServletContext ctx)
@@ -71,7 +71,7 @@ public class RequestPoint
 	}
 
 	protected static String NO_WEB_ERR =
-	  "thread is not bound to the HTTP request!";
+	  "The thread is not bound to the HTTP request!";
 
 	/**
 	 * Returns wrapper object to HTTP response object

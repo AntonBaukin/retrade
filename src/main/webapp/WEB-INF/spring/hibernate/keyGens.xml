@@ -72,6 +72,37 @@
             </props>
           </property>
         </bean>
+
+
+        <!-- Model Generator Sequence -->
+
+        <bean class = 'com.tverts.hibery.keys.HiberKeysGeneratorBinder'>
+
+          <property name  = 'generatorName'
+                    value = 'model'/>
+
+          <property name  = 'generatorClass'
+                    value = 'com.tverts.hibery.system.SequenceLongKeysCachingGenerator'/>
+
+          <property name  = 'properties'>
+            <props>
+
+              <prop key = 'sequence'>
+                pkeys_sequence_model
+              </prop>
+
+              <prop key = 'sequence_increment'>
+                100
+              </prop>
+
+              <prop key = 'parameters'>
+                increment by 100 start with 1
+              </prop>
+
+            </props>
+          </property>
+        </bean>
+
       </list>
     </property>
   </bean>

@@ -45,6 +45,7 @@
   <import resource = 'spring/filters.xml'/>
   <import resource = 'spring/actions.xml'/>
   <import resource = 'spring/orderers.xml'/>
+  <import resource = 'spring/model.xml'/>
 
   <import resource = 'spring/genesis.xml'/>
   <import resource = 'spring/shunts.xml'/>

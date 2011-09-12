@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * TODO comment KeysPoint
  *
@@ -20,6 +21,13 @@ public class KeysPoint
 	public static final String GEN_PRIME = "primary";
 
 	public static final String GEN_OTHER = "other";
+
+	/**
+	 * This generator is used for data model elements (beans)
+	 * that are not stored in the database directly.
+	 */
+	public static final String GEN_MODEL = "model";
+
 
 	/* public: Singleton */
 
@@ -66,6 +74,18 @@ public class KeysPoint
 	public void          setOtherGenerator(KeysGenerator gen)
 	{
 		this.otherGenerator = gen;
+	}
+
+	public KeysGenerator getGenerator(String name)
+	{
+		KeysGenerator res = generators.get(name);
+
+		//?: {not found it}
+		if(res == null) throw new IllegalStateException(String.format(
+		  "No Keys Generator registered by the name: '%s'!", name
+		));
+
+		return res;
 	}
 
 	public Map<String, KeysGenerator>
