@@ -37,8 +37,15 @@
 
   <!--=================================================
     =  Application Subsystems                         =
-    =================================================-->
+    +==================================================
+    |
+    |  WARNING! When extending this list not forget
+    |  to include the same changes in this file copies
+    |  of all the modules! But do not just copy-past!
+    |
+    +================================================-->
 
+  <import resource = 'system-config.xml'/>
   <import resource = 'spring/hibernate.xml'/>
   <import resource = 'spring/services.xml'/>
   <import resource = 'spring/listeners.xml'/>
