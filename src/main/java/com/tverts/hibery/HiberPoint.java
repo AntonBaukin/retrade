@@ -89,17 +89,45 @@ public class HiberPoint
 		return getInstance().getSession(allowCreate);
 	}
 
-	public static Query query(Session session, String hql, Object... replaces)
+	public static Query   query(Session session, String hql, Object... replaces)
 	{
-		for(int i = 0;(i + 1 < replaces.length);i += 2)
-		{
-			String name = replaces[i].toString().trim();
-			String real = (replaces[i + 1] instanceof Class)
-			  ?(((Class)replaces[i + 1]).getSimpleName()) //<-- short name!
-			  :(replaces[i + 1].toString());
+		StringBuilder s = new StringBuilder(hql);
 
-			hql = SU.replace(hql, SU.cats(" ", name, " ") ,
-			  SU.cats(" ", real, " "));
+		for(int k = 0;(k + 1 < replaces.length);k += 2)
+		{
+			//~: the name to search
+			String n = replaces[k].toString().trim();
+
+			//~: the replacement
+			String r = (replaces[k + 1] instanceof Class)
+			  ?(((Class)replaces[k + 1]).getSimpleName()) //<-- short name!
+			  :(replaces[k + 1].toString());
+
+			//c: for all occurrences of the name
+			for(int i = s.indexOf(n);(i != -1);)
+			{
+				//?: {the previous character is not a whitespace} skip
+				if((i != 0) && !Character.isWhitespace(s.charAt(i - 1)))
+				{
+					i = s.indexOf(n, i + n.length());
+					continue;
+				}
+
+				//?: {the next character is not a whitespace} skip
+				if((i + n.length() < s.length()) &&
+				   !Character.isWhitespace(s.charAt(i + n.length()))
+				  )
+				{
+					i = s.indexOf(n, i + n.length());
+					continue;
+				}
+
+				//!: do replace this occurrence
+				s.replace(i, i + n.length(), r);
+
+				//~: go to the next occurrence
+				i = s.indexOf(n, i + r.length());
+			}
 		}
 
 		return session.createQuery(hql);
