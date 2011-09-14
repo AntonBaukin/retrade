@@ -3,7 +3,7 @@ package com.tverts.hibery.system;
 /* standard Java classes */
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 /* Hibernate Persistence Layer */
 
@@ -18,7 +18,8 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.core.GetUnityType;
 import com.tverts.endure.core.ActUnityType;
-import com.tverts.endure.core.UnityTypesInitBase;
+import com.tverts.endure.types.UnityTypeStruct;
+import com.tverts.endure.types.UnityTypesInitBase;
 
 /* com.tverts: hibery */
 
@@ -31,7 +32,9 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
+import com.tverts.support.OU;
 import com.tverts.support.SU;
+
 
 /**
  * Extends {@link UnityTypesInitBase} as searching for the FQN
@@ -58,79 +61,178 @@ public abstract class UnityTypesInitHiberBase
 	 * Warning: this method must be executed in the
 	 * transactional context!
 	 */
-	protected void ensureEntries(List<ParseEntry> pes)
+	protected void      ensureEntries
+	  (Collection<ParseEntry> pes, Collection<UnityTypeStruct> structs)
 	{
-		GetUnityType getUnityType = bean(GetUnityType.class);
-
+		//~: ensure parsed entries
 		for(ParseEntry pe : pes)
-		{
-			//?: {has no type class found}
-			if(pe.typeClass == null)
-				throw new IllegalStateException(String.format(
-				  "Can't ensure Unity Type of undefined class! " +
-				  "Type name '%s', type class '%s'",
+			ensureEntry(pe);
 
-				  pe.typeName, pe.className
-				));
-
-
-			//?: {has no type name}
-			if(SU.sXe(pe.typeName))
-				throw new IllegalStateException(String.format(
-				  "Can't ensure Unity Type of undefined type name! " +
-				  "Type class '%s'", pe.className
-				));
-
-
-			//~: load the unity type
-			if(pe.unityType == null)
-			  pe.unityType = getUnityType.
-			    findUnityType(pe.typeClass, pe.typeName);
-
-			//?: {not found it} create it
-			if(pe.unityType == null)
-				createUnityType(pe);
-
-			//?: {not saved yet} save it
-			if(pe.unityType.getPrimaryKey() == null)
-			{
-				//!: save unity type
-				actionRun(ActUnityType.SAVE, pe.unityType);
-
-				if(LU.isI(getLog())) LU.I(getLog(), String.format(
-				  "Saved new system Unity Type '%s' " +
-				  "for class [%s] having type flag [%c].",
-
-				  pe.unityType.getTypeName(),
-				  pe.unityType.getTypeClass().getName(),
-				  pe.unityType.getTypeFlag()));
-			}
-		}
+		//~: ensure type descriptors
+		for(UnityTypeStruct s : structs)
+			ensureEntry(s);
 	}
 
-	protected void createUnityType(ParseEntry pe)
+	protected void      ensureEntry(Object e)
+	{
+		//~: find | load the unity type
+		UnityType unityType = findUnityType(e);
+
+		//?: {not found it} create it
+		if(unityType == null)
+			unityType = createUnityType(e);
+
+		//?: {not saved yet} save it
+		if(unityType.getPrimaryKey() == null)
+			saveUnityType(unityType);
+	}
+
+	protected void      checkUnityTypeEntry(Object e)
+	{
+		Class     typeClass = null;
+		String    typeName  = null;
+
+		if(e instanceof ParseEntry)
+		{
+			typeClass = ((ParseEntry)e).typeClass;
+			typeName  = ((ParseEntry)e).typeName;
+		}
+
+		if(e instanceof UnityTypeStruct)
+		{
+			typeClass = ((UnityTypeStruct)e).getTypeClass();
+			typeName  = ((UnityTypeStruct)e).getTypeName();
+		}
+
+		//?: {has no type class found}
+		if(typeClass == null)
+			throw new IllegalStateException(String.format(
+			  "Can't ensure Unity Type of undefined class! " +
+			  "(Type name is '%s'.)", typeName
+			));
+
+
+		//?: {has no type name}
+		if(SU.sXe(typeName))
+			throw new IllegalStateException(String.format(
+			  "Can't ensure Unity Type of undefined type name! " +
+			  "Type class '%s'",  OU.cls(typeClass)
+			));
+	}
+
+	protected UnityType findUnityType(Object entry)
+	{
+		if(entry instanceof ParseEntry)
+			return findUnityType((ParseEntry)entry);
+
+		if(entry instanceof UnityTypeStruct)
+			return findUnityType((UnityTypeStruct)entry);
+
+		throw new IllegalArgumentException();
+	}
+
+	protected UnityType findUnityType(ParseEntry pe)
+	{
+		if(pe.unityType != null)
+			return pe.unityType;
+
+		return pe.unityType = bean(GetUnityType.class).
+		  findUnityType(pe.typeClass, pe.typeName);
+	}
+
+	protected UnityType findUnityType(UnityTypeStruct s)
+	{
+		if(s.getUnityType() != null)
+			return s.getUnityType();
+
+		UnityType r = bean(GetUnityType.class).
+		  findUnityType(s.getTypeClass(), s.getTypeName());
+
+		s.setUnityType(r);
+		return r;
+	}
+
+	protected UnityType createUnityType(Object entry)
+	{
+		if(entry instanceof ParseEntry)
+			return createUnityType((ParseEntry)entry);
+
+		if(entry instanceof UnityTypeStruct)
+			return createUnityType((UnityTypeStruct)entry);
+
+		throw new IllegalArgumentException();
+	}
+
+	protected UnityType createUnityType(ParseEntry pe)
 	{
 		pe.unityType = new UnityType();
 
-		//type name
-		pe.unityType.setTypeName(pe.typeName);
-
-		//type class
+		//~: type class
 		pe.unityType.setTypeClass(pe.typeClass);
 
-		//type flag
+		//~: type name
+		pe.unityType.setTypeName(pe.typeName);
+
+		//~: type flag
 		if(pe.typeFlag != null)
 			pe.unityType.setTypeFlag(pe.typeFlag);
 		else
 			pe.unityType.setEntityType();
 
-		//system flag
+		//~: system flag
 		pe.unityType.setSystem();
+
+		return pe.unityType;
 	}
+
+	protected UnityType createUnityType(UnityTypeStruct s)
+	{
+		UnityType ut = new UnityType();
+		s.setUnityType(ut);
+
+		//~: type class
+		ut.setTypeClass(s.getTypeClass());
+
+		//~: type name
+		ut.setTypeName(s.getTypeName());
+
+		//~: type flag
+		if(s.getTypeFlag() != null)
+			ut.setTypeFlag(s.getTypeFlag());
+		else
+			ut.setEntityType();
+
+		//~: system flag
+		ut.setSystem();
+
+		//~: title
+		ut.setTitle(s.getTitle());
+
+		//~: title localized
+		ut.setTitleLo(s.getTitleLo());
+
+		return ut;
+	}
+
+	protected void      saveUnityType(UnityType unityType)
+	{
+		//!: save unity type
+		actionRun(ActUnityType.SAVE, unityType);
+
+		if(LU.isI(getLog())) LU.I(getLog(), String.format(
+		  "Saved new system Unity Type '%s' " +
+		  "for class [%s] having type flag [%c].",
+
+		  unityType.getTypeName(),
+		  unityType.getTypeClass().getName(),
+		  unityType.getTypeFlag())
+		);
+	}
+
 
 	/* protected: parse entry handling */
 
-	protected void handleEntry(ParseEntry pe)
+	protected void      handleEntry(ParseEntry pe)
 	{
 		if(getSessionFactory() == null)
 			throw new IllegalStateException();
@@ -139,7 +241,7 @@ public abstract class UnityTypesInitHiberBase
 		super.handleEntry(pe);
 	}
 
-	protected void findClassName(ParseEntry pe)
+	protected void      findClassName(ParseEntry pe)
 	{
 		//?: {already have the class defined} quit
 		if(pe.typeClass != null) return;
@@ -171,9 +273,10 @@ public abstract class UnityTypesInitHiberBase
 			pe.className = res.get(0);
 	}
 
+
 	/* protected: logging */
 
-	protected String getLog()
+	protected String    getLog()
 	{
 		return HiberSystem.LOG_HIBER_SYSTEM;
 	}

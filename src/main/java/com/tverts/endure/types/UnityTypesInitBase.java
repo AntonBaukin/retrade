@@ -1,8 +1,9 @@
-package com.tverts.endure.core;
+package com.tverts.endure.types;
 
 /* standard Java classes */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import com.tverts.endure.UnityTypes;
 import static com.tverts.support.SU.s2a;
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sXe;
+
 
 /**
  * Support class for {@link UnityType} initializer.
@@ -228,15 +230,17 @@ public abstract class UnityTypesInitBase
 		throw new UnknownFormatConversionException(es);
 	}
 
+
 	/* protected: unity types registration */
 
-	protected void       registerUnityTypes(List<ParseEntry> pes)
+	protected void       registerUnityTypes
+	  (Collection<ParseEntry> pes, Collection<UnityTypeStruct> structs)
 	{
 		Map<Class, Map<String, UnityType>> types0 =
-		  new HashMap<Class, Map<String, UnityType>>(pes.size());
+		  new HashMap<Class, Map<String, UnityType>>(31);
 
-		//~: collect all unity types in two-layer map
-		for(ParseEntry pe : pes)
+		//c: collect all parse entries
+		if(pes != null) for(ParseEntry pe : pes)
 		{
 			if(pe.unityType == null)
 				continue;
@@ -251,7 +255,23 @@ public abstract class UnityTypesInitBase
 			types1.put(pe.unityType.getTypeName(), pe.unityType);
 		}
 
-		//~: register them
+		//c: collect all the descriptors
+		if(structs != null) for(UnityTypeStruct s : structs)
+		{
+			if(s.getUnityType() == null)
+				continue;
+
+			Map<String, UnityType> types1 =
+			  types0.get(s.getUnityType().getTypeClass());
+
+			if(types1 == null)
+				types0.put(s.getUnityType().getTypeClass(),
+				  types1 = new HashMap<String, UnityType>(5));
+
+			types1.put(s.getUnityType().getTypeName(), s.getUnityType());
+		}
+
+		//!: register them
 		for(Map.Entry<Class, Map<String, UnityType>> e0 : types0.entrySet())
 			UnityTypes.getInstance().setTypes(e0.getKey(), e0.getValue());
 	}

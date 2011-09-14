@@ -47,14 +47,25 @@
     </property>
 
 
-    <!-- System Flag -->
+    <!-- Type Title -->
 
-    <property name = 'systemFlag'>
+    <property name = 'title'>
 
-      <column name = 'system_flag' not-null = 'true'>
-        <comment>Flag of a system-defined types (S)</comment>
+      <column name = 'title' length = '255'>
+        <comment>Type title</comment>
       </column>
     </property>
+
+
+    <!-- Type Title -->
+
+    <property name = 'titleLo'>
+
+      <column name = 'title_lo' length = '255'>
+        <comment>Type title localized</comment>
+      </column>
+    </property>
+
 
   </class>
 </hibernate-mapping>

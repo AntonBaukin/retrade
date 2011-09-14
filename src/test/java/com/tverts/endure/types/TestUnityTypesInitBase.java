@@ -1,4 +1,4 @@
-package com.tverts.endure.core;
+package com.tverts.endure.types;
 
 /* JUnit library */
 

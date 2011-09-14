@@ -2,6 +2,7 @@ package com.tverts.hibery.system;
 
 /* standard Java classes */
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 /* com.tverts: endure */
 
 import com.tverts.endure.UnityType;
+import com.tverts.endure.types.UnityTypeStruct;
+import com.tverts.endure.types.UnityTypeStructReference;
 
 /* com.tverts: objects */
 
@@ -50,6 +53,7 @@ public class      UnityTypesActivator
 		return Collections.<ServletContextListener>singletonList(this);
 	}
 
+
 	/* public: ServletContextListener interface */
 
 	public void contextInitialized(ServletContextEvent sce)
@@ -61,20 +65,27 @@ public class      UnityTypesActivator
 		  getUnityTypes().dereferObjects()).toString();
 
 		//~: parse the encoded string
-		List<ParseEntry> pes = parseWhole(whole);
+		List<ParseEntry>      pes = parseWhole(whole);
 
-		//?: {has no unity types coded} nothing to do
-		if(pes.isEmpty()) return;
+		//~: collect the descriptors
+		List<UnityTypeStruct> uts = (getStructs() == null)
+		  ?(Collections.<UnityTypeStruct> emptyList())
+		  :(getStructs().dereferObjects());
+
+		//?: {has no unity types} nothing to do
+		if(pes.isEmpty() && uts.isEmpty())
+			return;
 
 		//~: create the type instances if needed
-		ensureEntries(pes);
+		ensureEntries(pes, uts);
 
 		//~: register the unity types
-		registerUnityTypes(pes);
+		registerUnityTypes(pes, uts);
 	}
 
 	public void contextDestroyed(ServletContextEvent sce)
 	{}
+
 
 	/* public: UnityTypesActivator interface */
 
@@ -89,18 +100,31 @@ public class      UnityTypesActivator
 		this.unityTypes = unityTypes;
 	}
 
+	public UnityTypeStructReference
+	            getStructs()
+	{
+		return structs;
+	}
+
+	public void setStructs(UnityTypeStructReference structs)
+	{
+		this.structs = structs;
+	}
+
+
 	/* protected: UnityTypesInitHiberBase interface */
 
 	@Transactional
-	protected void ensureEntries(List<ParseEntry> pes)
+	protected void      ensureEntries
+	  (Collection<ParseEntry> pes, Collection<UnityTypeStruct> structs)
 	{
 		//~: push default transaction context
 		TxPoint.getInstance().setTxContext();
 
-		//~: autobuild
 		try
 		{
-			super.ensureEntries(pes);
+			//~: do ensure in the transactional context
+			super.ensureEntries(pes, structs);
 		}
 		finally
 		{
@@ -111,5 +135,6 @@ public class      UnityTypesActivator
 
 	/* private: unity types encoded */
 
-	private StringsReference unityTypes;
+	private StringsReference         unityTypes;
+	private UnityTypeStructReference structs;
 }

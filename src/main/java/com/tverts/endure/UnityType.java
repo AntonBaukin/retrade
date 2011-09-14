@@ -26,7 +26,7 @@ public class UnityType implements PrimaryIdentity
 	}
 
 
-	/* public: UnityType bean interface */
+	/* public: UnityType (bean) interface */
 
 	public String getTypeName()
 	{
@@ -69,6 +69,26 @@ public class UnityType implements PrimaryIdentity
 	public void   setSystemFlag(char systemFlag)
 	{
 		this.systemFlag = systemFlag;
+	}
+
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void   setTitle(String title)
+	{
+		this.title = title;
+	}
+
+	public String getTitleLo()
+	{
+		return titleLo;
+	}
+
+	public void   setTitleLo(String titleLo)
+	{
+		this.titleLo = titleLo;
 	}
 
 
@@ -171,4 +191,7 @@ public class UnityType implements PrimaryIdentity
 	private Class     typeClass;
 	private char      typeFlag;
 	private char      systemFlag;
+
+	private String    title;
+	private String    titleLo;
 }
