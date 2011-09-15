@@ -24,12 +24,24 @@
     </many-to-one>
 
 
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_unity_view_domain'>
+
+      <column name = 'fk_view_domain' not-null = 'true'
+        index = 'ix_unity_view'>
+
+        <comment>The Domain of Unity owning this View</comment>
+      </column>
+    </many-to-one>
+
+
     <!-- View Owner (Unity) -->
 
     <many-to-one name = 'viewOwner' foreign-key = 'fk_unity_view_owner'>
 
       <column name = 'fk_view_owner' not-null = 'true'
-        index = 'ix_unity_view_owner'>
+        index = 'ix_unity_view, ix_unity_view_owner'>
 
         <comment>The Unity owning this View</comment>
       </column>
@@ -45,27 +57,6 @@
         <comment>The (Unity) Type of the View</comment>
       </column>
     </many-to-one>
-
-
-    <!-- View Date -->
-
-    <property name = 'viewDate' type = 'timestamp'>
-
-      <column name = 'view_date' index = 'ix_unity_view_date'>
-        <comment>The creation or last update time of the View</comment>
-      </column>
-    </property>
-
-
-    <!-- View Text Comment -->
-
-    <property name = 'viewText' type = 'text'>
-
-      <column name = 'view_text'>
-        <comment>The comment on the View</comment>
-      </column>
-    </property>
-
 
   </class>
 </hibernate-mapping>

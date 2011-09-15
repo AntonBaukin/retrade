@@ -32,7 +32,7 @@ public class ActionsPoint
 
 	/* public: actions build system  */
 
-	public static ActionTrigger action(ActionTask task)
+	public ActionTrigger        action(ActionTask task)
 	{
 		ActionTrigger trigger = ActionsPoint.getInstance().
 		  actionOrNull(task);
@@ -58,15 +58,15 @@ public class ActionsPoint
 		return abr.isComplete()?(abr.getTrigger()):(null);
 	}
 
-	public static ActionTrigger action(ActionType atype, Object target)
+	public ActionTrigger        action(ActionType atype, Object target)
 	{
 		return action(new ActionTaskStruct(atype).setTarget(target));
 	}
 
 	public static ActionTrigger actionRun(ActionType atype, Object target)
 	{
-		ActionTrigger trigger = action(new ActionTaskStruct(atype).
-		  setTarget(target));
+		ActionTrigger trigger = getInstance().
+		  action(new ActionTaskStruct(atype).setTarget(target));
 
 		trigger.run();
 		return trigger;
@@ -77,7 +77,7 @@ public class ActionsPoint
 		return actionOrNull(new ActionTaskStruct(atype).setTarget(target));
 	}
 
-	public static ActionTrigger action
+	public ActionTrigger        action
 	  (ActionType atype, Object target, Object... params)
 	{
 		return action(new ActionTaskStruct(atype).
@@ -87,8 +87,8 @@ public class ActionsPoint
 	public static ActionTrigger actionRun
 	  (ActionType atype, Object target, Object... params)
 	{
-		ActionTrigger trigger = action(new ActionTaskStruct(atype).
-		  setTarget(target).setParams(collectParams(params)));
+		ActionTrigger trigger = getInstance().
+		  action(atype, target, params);
 
 		trigger.run();
 		return trigger;
@@ -99,6 +99,17 @@ public class ActionsPoint
 	{
 		return actionOrNull(new ActionTaskStruct(atype).
 		  setTarget(target).setParams(collectParams(params)));
+	}
+
+	public static ActionTrigger actionOrNullRun
+	  (ActionType atype, Object target, Object... params)
+	{
+		ActionTrigger trigger = getInstance().
+		  actionOrNull(atype, target, params);
+
+		if(trigger != null)
+			trigger.run();
+		return trigger;
 	}
 
 

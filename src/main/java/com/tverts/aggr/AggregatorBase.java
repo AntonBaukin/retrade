@@ -18,6 +18,11 @@ import org.hibernate.SessionFactory;
 
 import com.tverts.hibery.HiberPoint;
 
+/* com.tverts: actions */
+
+import com.tverts.actions.ActionType;
+import static com.tverts.actions.ActionsPoint.actionOrNullRun;
+
 /* com.tverts: endure (aggregation) */
 
 import com.tverts.endure.aggr.AggrTask;
@@ -49,11 +54,19 @@ public abstract class AggregatorBase
 
 	public void aggregate(AggrJob job)
 	{
+		AggrStruct struct;
+
 		//?: {this aggregator can handle the job} invoke it
 		if(isJobSupported(job))
 			//?: {processed aggregation} mark the job complete
-			if(aggregate(createStruct(job)))
+			if(aggregate(struct = createStruct(job)))
+			{
+				//~: ensure the aggregated value
+				ensureAggrValue(struct);
+
+				//!: mark the job as completed
 				job.complete(true);
+			}
 	}
 
 	/* protected: aggregation */
@@ -94,12 +107,17 @@ public abstract class AggregatorBase
 		return true;
 	}
 
+	protected void          ensureAggrValue(AggrStruct struct)
+	{
+		actionOrNullRun(ActionType.ENSURE, struct.job.aggrValue());
+	}
+
 	protected void          checkAggrJob(AggrStruct struct)
 	{
 		//?: {the aggregation value is not defined}
 		if(struct.job.aggrValue() == null)
 			throw new IllegalStateException(
-			  "Aggregation Job is not defined!");
+			  "Aggregated Value is not defined in the job!");
 
 		//?: {the transaction context is not defined}
 		if(struct.job.aggrTx() == null)

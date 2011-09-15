@@ -9,12 +9,12 @@ public class Unity implements PrimaryIdentity
 {
 	/* public: PrimaryIdentity interface */
 
-	public Long getPrimaryKey()
+	public Long       getPrimaryKey()
 	{
 		return primaryKey;
 	}
 
-	public void setPrimaryKey(Long pk)
+	public void       setPrimaryKey(Long pk)
 	{
 		if((this.primaryKey != null) && (pk == null))
 			throw new IllegalArgumentException(
@@ -32,12 +32,12 @@ public class Unity implements PrimaryIdentity
 
 	/* public: Unity (bean) interface */
 
-	public UnityType getUnityType()
+	public UnityType  getUnityType()
 	{
 		return unityType;
 	}
 
-	public void      setUnityType(UnityType unityType)
+	public void       setUnityType(UnityType unityType)
 	{
 		if(unityType == null)
 			throw new IllegalArgumentException();
@@ -48,7 +48,7 @@ public class Unity implements PrimaryIdentity
 
 	/* public: Object interface */
 
-	public boolean equals(Object u)
+	public boolean    equals(Object u)
 	{
 		if(this == u)
 			return true;
@@ -62,14 +62,14 @@ public class Unity implements PrimaryIdentity
 		return (k0 != null) && k0.equals(k1);
 	}
 
-	public int     hashCode()
+	public int        hashCode()
 	{
 		Long k0 = this.getPrimaryKey();
 
 		return (k0 == null)?(0):(k0.hashCode());
 	}
 
-	public String  toString()
+	public String     toString()
 	{
 		String pk = (getPrimaryKey() == null)?("unsaved"):
 		  (getPrimaryKey().toString());
@@ -84,6 +84,6 @@ public class Unity implements PrimaryIdentity
 
 	/* private: persistent attributes */
 
-	private Long     primaryKey;
-	public UnityType unityType;
+	private Long      primaryKey;
+	private UnityType unityType;
 }

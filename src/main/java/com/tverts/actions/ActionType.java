@@ -44,6 +44,10 @@ public class ActionType
 	public static final ActionType DELETE =
 	  new ActionType("delete", Object.class);
 
+	/**
+	 * This action type means check-update
+	 * with create on demand.
+	 */
 	public static final ActionType ENSURE =
 	  new ActionType("ensure", Object.class);
 

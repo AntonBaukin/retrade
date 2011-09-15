@@ -22,10 +22,6 @@ import com.tverts.hibery.keys.HiberKeysContextStruct;
 import com.tverts.hibery.system.HiberSystem;
 import com.tverts.system.tx.TxContext;
 
-/* com.tverts: support */
-
-import com.tverts.support.SU;
-
 
 /**
  * TODO comment HiberPoint
@@ -100,7 +96,7 @@ public class HiberPoint
 
 			//~: the replacement
 			String r = (replaces[k + 1] instanceof Class)
-			  ?(((Class)replaces[k + 1]).getSimpleName()) //<-- short name!
+			  ?(((Class)replaces[k + 1]).getName())
 			  :(replaces[k + 1].toString());
 
 			//c: for all occurrences of the name
@@ -130,7 +126,7 @@ public class HiberPoint
 			}
 		}
 
-		return session.createQuery(hql);
+		return session.createQuery(s.toString());
 	}
 
 

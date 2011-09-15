@@ -1,9 +1,5 @@
 package com.tverts.endure.core;
 
-/* standard Java classes */
-
-import java.util.Date;
-
 /* com.tverts: endure */
 
 import com.tverts.endure.United;
@@ -20,12 +16,12 @@ public abstract class UnityView implements United
 {
 	/* public: NumericIdentity interface */
 
-	public Long  getPrimaryKey()
+	public Long       getPrimaryKey()
 	{
 		return primaryKey;
 	}
 
-	public void  setPrimaryKey(Long primaryKey)
+	public void       setPrimaryKey(Long primaryKey)
 	{
 		this.primaryKey = primaryKey;
 	}
@@ -33,12 +29,12 @@ public abstract class UnityView implements United
 
 	/* public: United interface */
 
-	public Unity getUnity()
+	public Unity      getUnity()
 	{
 		return unity;
 	}
 
-	public void  setUnity(Unity unity)
+	public void       setUnity(Unity unity)
 	{
 		this.unity = unity;
 	}
@@ -46,12 +42,22 @@ public abstract class UnityView implements United
 
 	/* public: UnityView (bean) interface */
 
-	public Unity     getViewOwner()
+	public Domain     getDomain()
+	{
+		return domain;
+	}
+
+	public void       setDomain(Domain domain)
+	{
+		this.domain = domain;
+	}
+
+	public Unity      getViewOwner()
 	{
 		return viewOwner;
 	}
 
-	public void      setViewOwner(Unity viewOwner)
+	public void       setViewOwner(Unity viewOwner)
 	{
 		this.viewOwner = viewOwner;
 	}
@@ -64,52 +70,23 @@ public abstract class UnityView implements United
 	 * If this view has unity, the view type is allowed
 	 * to differ from the unity' one.
 	 */
-	public UnityType getViewType()
+	public UnityType  getViewType()
 	{
 		return viewType;
 	}
 
-	public void      setViewType(UnityType viewType)
+	public void       setViewType(UnityType viewType)
 	{
 		this.viewType = viewType;
 	}
 
-	/**
-	 * The timestamp of the view creation or last update.
-	 * (Depends on the view use case.) Is not assigned
-	 * by default to the present time.
-	 */
-	public Date      getViewDate()
-	{
-		return viewDate;
-	}
 
-	public void      setViewDate(Date viewDate)
-	{
-		this.viewDate = viewDate;
-	}
-
-	/**
-	 * Additional user comment on the view.
-	 */
-	public String    getViewText()
-	{
-		return viewText;
-	}
-
-	public void      setViewText(String viewText)
-	{
-		this.viewText = viewText;
-	}
-
-
-	/* persisted attributes  */
+	/* persisted attributes */
 
 	private Long      primaryKey;
 	private Unity     unity;
 
+	private Domain    domain;
 	private Unity     viewOwner;
 	private UnityType viewType;
-	private Date      viewDate;
-	private String    viewText;
 }
