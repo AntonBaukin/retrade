@@ -166,6 +166,12 @@ public class UnityType implements PrimaryIdentity
 		return (k0 != null) && k0.equals(k1);
 	}
 
+	public boolean   equals(Class typeClass, String typeName)
+	{
+		return (getTypeClass() != null) && getTypeClass().equals(typeClass) &&
+		  (getTypeName() != null) && getTypeName().equals(typeName);
+	}
+
 	public int       hashCode()
 	{
 		Long k0 = this.getPrimaryKey();

@@ -21,7 +21,7 @@ public class ActionBuildersRoot extends ActionBuilderSystem
 	 * is the first' step marker.
 	 *
 	 * In the first poll loop the dispatchers
-	 * {@link ActionBuildersDisp} must check
+	 * {@link ActionBuilderTypeChecker} must check
 	 * only that the assigned class matches
 	 * the class of {@link ActionType}.
 	 *
@@ -36,7 +36,7 @@ public class ActionBuildersRoot extends ActionBuilderSystem
 	 * is the seconds' step marker.
 	 *
 	 * In the second poll loop the dispatchers
-	 * {@link ActionBuildersDisp} must check
+	 * {@link ActionBuilderTypeChecker} must check
 	 * only that the assigned class matches
 	 * the class of the target.
 	 *

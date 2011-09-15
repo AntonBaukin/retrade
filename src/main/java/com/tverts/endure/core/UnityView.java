@@ -80,6 +80,21 @@ public abstract class UnityView implements United
 		this.viewType = viewType;
 	}
 
+	/**
+	 * The type of the owner. Note that type of entities
+	 * changes rarely. The one notable except is states.
+	 */
+	public UnityType  getOwnerType()
+	{
+		return (ownerType != null)?(ownerType):
+		  (getViewOwner() == null)?(null):(getViewOwner().getUnityType());
+	}
+
+	public void       setOwnerType(UnityType ownerType)
+	{
+		this.ownerType = ownerType;
+	}
+
 
 	/* persisted attributes */
 
@@ -89,4 +104,5 @@ public abstract class UnityView implements United
 	private Domain    domain;
 	private Unity     viewOwner;
 	private UnityType viewType;
+	private UnityType ownerType;
 }

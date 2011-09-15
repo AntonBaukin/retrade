@@ -51,6 +51,15 @@ public class ActionType
 	public static final ActionType ENSURE =
 	  new ActionType("ensure", Object.class);
 
+	/**
+	 * Depending on the actual type of the target
+	 * entity this action type means to update
+	 * the related views. Some targets may update
+	 * the views of the related entities.
+	 */
+	public static final ActionType REVIEW =
+	  new ActionType("review", Object.class);
+
 
 	/* public: constructors */
 
