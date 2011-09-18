@@ -13,6 +13,7 @@ import static com.tverts.actions.ActionsPoint.collectParams;
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.isTestInstance;
+import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: endure */
 
@@ -46,15 +47,9 @@ public abstract class ActionBuilderBase
 
 	/* shared parameters of the builders */
 
-	/**
-	 * Send this parameter to defines the predicate
-	 * of the actions. See {@link Action#getPredicate()}.
-	 *
-	 * Note that this parameter has no default support,
-	 * and each builder may or may not check and use it.
-	 */
-	public static final String PREDICATE =
-	  ActionBuilderBase.class.getName() + ": predicate";
+	public static final String PREDICATE = ActionType.PREDICATE;
+
+	public static final String REVIEWSRC = ActionType.REVIEWSRC;
 
 
 	/* protected: nested actions invocation */
@@ -265,7 +260,9 @@ public abstract class ActionBuilderBase
 	protected Class         targetClass(ActionBuildRec abr)
 	{
 		Object target = targetOrNull(abr);
-		return (target == null)?(Void.class):(target.getClass());
+
+		return (target == null)?(Void.class):
+		  HiberSystem.getInstance().findActualClass(target);
 	}
 
 	@SuppressWarnings("unchecked")

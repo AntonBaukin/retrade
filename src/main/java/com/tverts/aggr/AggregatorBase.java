@@ -61,8 +61,8 @@ public abstract class AggregatorBase
 			//?: {processed aggregation} mark the job complete
 			if(aggregate(struct = createStruct(job)))
 			{
-				//~: ensure the aggregated value
-				ensureAggrValue(struct);
+				//~: update the owner of the aggregated value
+				updateAggrOwner(struct);
 
 				//!: mark the job as completed
 				job.complete(true);
@@ -107,9 +107,12 @@ public abstract class AggregatorBase
 		return true;
 	}
 
-	protected void          ensureAggrValue(AggrStruct struct)
+	protected void          updateAggrOwner(AggrStruct struct)
 	{
-		actionOrNullRun(ActionType.ENSURE, struct.job.aggrValue());
+		actionOrNullRun(ActionType.REVIEW,
+		  struct.job.aggrValue().getOwner(),
+		  ActionType.REVIEWSRC, struct.job.aggrValue()
+		);
 	}
 
 	protected void          checkAggrJob(AggrStruct struct)

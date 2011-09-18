@@ -9,9 +9,9 @@
     +================================================-->
 
   <bean name  = 'aggrValueBuilders'
-        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+        class = 'com.tverts.actions.ActionBuilderActionChecker'>
 
-    <property name  = 'typeClass'
+    <property name  = 'goalClass'
               value = 'com.tverts.endure.aggr.AggrValue'/>
 
     <property name = 'reference'>

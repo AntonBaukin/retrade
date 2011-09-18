@@ -59,15 +59,8 @@ public class ActionBuildersRoot extends ActionBuilderSystem
 		if((getReference() == null) || complete(abr))
 			return;
 
-		for(ActionBuilder ab : getReference().dereferObjects())
-		{
-			//!: delegate the building
-			ab.buildAction(abr);
-
-			//?: {the action build is complete} quit
-			if(complete(abr))
-				return;
-		}
+		//!: do poll the builders
+		poll(abr);
 	}
 
 
@@ -90,13 +83,13 @@ public class ActionBuildersRoot extends ActionBuilderSystem
 	{
 		List<ActionBuilder> abs = getReference().dereferObjects();
 
-		//~: poll the first step
+		//~: poll the task step
 		poll(abs, abr, STEP_TASK);
 
 		//?: {the build is completed} skip second step
 		if(complete(abr)) return;
 
-		//~: poll the second step
+		//~: poll the target step
 		poll(abs, abr, STEP_TARGET);
 	}
 

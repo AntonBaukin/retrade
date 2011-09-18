@@ -9,9 +9,9 @@
     +================================================-->
 
   <bean name  = 'coreUnityBuilders'
-        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+        class = 'com.tverts.actions.ActionBuilderActionChecker'>
 
-    <property name  = 'typeClass'
+    <property name  = 'goalClass'
               value = 'com.tverts.endure.Unity'/>
 
     <property name = 'reference'>

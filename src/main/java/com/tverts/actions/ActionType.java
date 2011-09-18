@@ -5,8 +5,8 @@ package com.tverts.actions;
 import static com.tverts.support.SU.s2s;
 
 /**
- * Action type is introduced to find out what actualy do
- * with the target object given to the execution sybsystem.
+ * Action type is introduced to find out what actually do
+ * with the target object given to the execution subsystem.
  *
  * Type is the pair of the user-defined name and the reference
  * class. The latter may be {@code Object.class} when the
@@ -54,44 +54,66 @@ public class ActionType
 	/**
 	 * Depending on the actual type of the target
 	 * entity this action type means to update
-	 * the related views. Some targets may update
-	 * the views of the related entities.
+	 * the related views. For some targets is are
+	 * to update the views of the related entities.
 	 */
 	public static final ActionType REVIEW =
 	  new ActionType("review", Object.class);
 
 
+	/* shared parameters of the actions */
+
+	/**
+	 * Send this parameter to defines the predicate
+	 * of the actions. See {@link Action#getPredicate()}.
+	 *
+	 * Note that this parameter has no default support,
+	 * and each builder may or may not check and use it.
+	 */
+	public static final String PREDICATE =
+	  ActionType.class.getName() + ": predicate";
+
+	/**
+	 * When building {@link #REVIEW} action this parameter
+	 * MUST be defined to refer the entity had caused the
+	 * views to be refreshed.
+	 */
+	public static final String REVIEWSRC =
+	  ActionType.class.getName() + ": review source";
+
+
 	/* public: constructors */
 
-	public ActionType(String typeName, Class refClass)
+	public ActionType(String actionName, Class goalClass)
 	{
-		if((typeName = s2s(typeName)) == null)
+		if((actionName = s2s(actionName)) == null)
 			throw new IllegalArgumentException();
 
-		if(refClass == null)
+		if(goalClass == null)
 			throw new IllegalArgumentException();
 
-		this.typeName = typeName;
-		this.refClass = refClass;
+		this.actionName = actionName;
+		this.goalClass  = goalClass;
 	}
 
-	public ActionType(Class refClass, String typeName)
+	public ActionType(Class goalClass, String actionName)
 	{
-		this(typeName, refClass);
+		this(actionName, goalClass);
 	}
 
 
 	/* public: ActionType interface */
 
-	public final String getTypeName()
+	public final String getActionName()
 	{
-		return typeName;
+		return actionName;
 	}
 
-	public final Class  getRefClass()
+	public final Class  getGoalClass()
 	{
-		return refClass;
+		return goalClass;
 	}
+
 
 	/* public: Object interface */
 
@@ -100,26 +122,27 @@ public class ActionType
 		return (o == this) || (
 
 		  (o instanceof ActionType) &&
-		  ((ActionType)o).typeName.equals(typeName) &&
-		  ((ActionType)o).refClass.equals(refClass)
+		  ((ActionType)o).actionName.equals(actionName) &&
+		  ((ActionType)o).goalClass.equals(goalClass)
 		);
 	}
 
 	public int     hashCode()
 	{
-		return typeName.hashCode() ^ refClass.hashCode();
+		return actionName.hashCode() ^ goalClass.hashCode();
 	}
 
 	public String  toString()
 	{
 		return String.format(
 		  "action type '%s' on class %s",
-		  typeName, refClass.getName()
+		  actionName, goalClass.getName()
 		);
 	}
 
+
 	/* private: type name */
 
-	private String typeName;
-	private Class  refClass;
+	private String actionName;
+	private Class  goalClass;
 }

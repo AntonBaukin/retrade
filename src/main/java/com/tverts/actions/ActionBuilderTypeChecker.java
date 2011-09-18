@@ -31,24 +31,39 @@ public class   ActionBuilderTypeChecker
 
 	/* public: ActionBuilderTypeChecker bean interface */
 
-	public Class  getTypeClass()
+	public Class   getTypeClass()
 	{
 		return typeClass;
 	}
 
-	public void   setTypeClass(Class typeClass)
+	public void    setTypeClass(Class typeClass)
 	{
 		this.typeClass = typeClass;
 	}
 
-	public String getTypeName()
+	public String  getTypeName()
 	{
 		return typeName;
 	}
 
-	public void   setTypeName(String typeName)
+	public void    setTypeName(String typeName)
 	{
 		this.typeName = s2s(typeName);
+	}
+
+	/**
+	 * When this parameter is set not only the
+	 * direct entities are allowed to pass, but
+	 * their unities also. By default disabled.
+	 */
+	public boolean isMatchUnity()
+	{
+		return matchUnity;
+	}
+
+	public void    setMatchUnity(boolean matchUnity)
+	{
+		this.matchUnity = matchUnity;
 	}
 
 
@@ -82,8 +97,14 @@ public class   ActionBuilderTypeChecker
 
 	protected boolean   isActionTargetClassMatch(ActionBuildRec abr)
 	{
-		return getTypeClass().getName().equals(
-		  target(abr).getClass().getName());
+		String c = targetClass(abr).getName();
+
+		//?: {this is not a unity matched} check the class equals
+		if(!isMatchUnity() || !Unity.class.getName().equals(c))
+			return getTypeClass().getName().equals(c);
+
+		UnityType ut = target(abr, Unity.class).getUnityType();
+		return (ut != null) && ut.getTypeClass().getName().equals(c);
 	}
 
 	protected boolean   isActionTargetUnityTypeMatch(ActionBuildRec abr)
@@ -96,7 +117,9 @@ public class   ActionBuilderTypeChecker
 	{
 		Unity unity = null;
 
-		if(target(abr) instanceof United)
+		if(isMatchUnity() && (target(abr) instanceof Unity))
+			unity = target(abr, Unity.class);
+		else if(target(abr) instanceof United)
 			unity = target(abr, United.class).getUnity();
 
 		return (unity == null)?(null):(unity.getUnityType());
@@ -105,6 +128,7 @@ public class   ActionBuilderTypeChecker
 
 	/* private: dispatcher selector class  */
 
-	private Class  typeClass;
-	private String typeName;
+	private Class   typeClass;
+	private String  typeName;
+	private boolean matchUnity;
 }
