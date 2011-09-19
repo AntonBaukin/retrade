@@ -44,13 +44,18 @@ public abstract class ModelBeanBase implements ModelBean
 
 	/* protected: support interface */
 
-	protected void markUpdated()
+	protected void    markUpdated()
 	{
 		Date ut = getUpdateTime();
 
 		//?: {the time is changed} update the attribute
 		if((ut == null) || (ut.getTime() != System.currentTimeMillis()))
 			this.setUpdateTime(new Date());
+	}
+
+	protected boolean updateq(Object cur, Object tst)
+	{
+		return (cur != null) && !cur.equals(tst);
 	}
 
 

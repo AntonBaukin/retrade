@@ -14,6 +14,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.qb.QueryBuilder;
+
 /* com.tverts: support */
 
 import com.tverts.support.SU;
@@ -70,6 +74,11 @@ public abstract class GetObjectBase
 	protected <O> O   load(Class<O> c1ass, Serializable key)
 	{
 		return (O)session().load(c1ass, key);
+	}
+
+	protected Query   QB(QueryBuilder qb)
+	{
+		return qb.buildQuery(session());
 	}
 
 

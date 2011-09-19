@@ -54,7 +54,7 @@
       outer-join = 'false' lazy = 'false'>
 
       <column name = 'fk_owner_type' not-null = 'true'>
-        <comment>The (Unity) Type of the view owner</comment>
+        <comment>The (Unity) Type of the modelBean owner</comment>
       </column>
     </many-to-one>
 
