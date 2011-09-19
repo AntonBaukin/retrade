@@ -48,17 +48,6 @@
     </many-to-one>
 
 
-    <!-- View (Unity) Type -->
-
-    <many-to-one name = 'viewType' foreign-key = 'fk_unity_view_type'
-      outer-join = 'false' lazy = 'false'>
-
-      <column name = 'fk_view_type' not-null = 'true'>
-        <comment>The (Unity) Type of the View</comment>
-      </column>
-    </many-to-one>
-
-
     <!-- Owner (Unity) Type -->
 
     <many-to-one name = 'ownerType' foreign-key = 'fk_unity_view_owner_type'

@@ -4,7 +4,11 @@ package com.tverts.actions;
 
 import com.tverts.endure.NumericIdentity;
 
-/* com.tverts: endure (ordering) */
+/* com.tverts: endure (core + ordering) */
+
+import com.tverts.endure.United;
+import com.tverts.endure.core.DomainEntity;
+import com.tverts.endure.core.UnityView;
 
 import com.tverts.endure.order.OrderIndex;
 import com.tverts.endure.order.OrderPoint;
@@ -119,6 +123,9 @@ public class ActionsCollection
 			//~: set the primary key
 			setPrimaryKey();
 
+			//~: assign the fields
+			assignSaveTarget();
+
 			//!: save
 			doSave();
 		}
@@ -129,18 +136,26 @@ public class ActionsCollection
 		}
 
 
-		/* protected: execution */
+		/* protected: save execution */
 
-		protected void setPrimaryKey()
+		protected void    setPrimaryKey()
 		{
 			NumericIdentity e = getSaveTarget();
 
 			//?: {entity still has no primary key} generate it
 			if(e.getPrimaryKey() == null)
-				HiberPoint.setPrimaryKey(session(), e);
+				HiberPoint.setPrimaryKey(session(), e, isTestSaveTarget());
 		}
 
-		protected void doSave()
+		protected boolean isTestSaveTarget()
+		{
+			return false;
+		}
+
+		protected void    assignSaveTarget()
+		{}
+
+		protected void    doSave()
 		{
 			//!: invoke save
 			session().save(getSaveTarget());
@@ -151,6 +166,74 @@ public class ActionsCollection
 
 		protected DelayedInstance creator;
 		protected NumericIdentity target;
+	}
+
+
+	/* save view base */
+
+	/**
+	 * Assigns properties of the target {@link UnityView}
+	 * from the given owning entity.
+	 */
+	public static class SaveViewBase
+	       extends      SaveNumericIdentified
+	{
+		/* public: constructors */
+
+		public SaveViewBase(ActionTask task, UnityView view, United viewOwner)
+		{
+			super(task, view);
+			this.viewOwner = viewOwner;
+		}
+
+		public SaveViewBase(ActionTask task, DelayedInstance creator, United viewOwner)
+		{
+			super(task, creator);
+			this.viewOwner = viewOwner;
+		}
+
+
+		/* public: SaveViewBase interface */
+
+		public United     getViewOwner()
+		{
+			return viewOwner;
+		}
+
+
+		/* public: SaveNumericIdentified interface */
+
+		public UnityView  getSaveTarget()
+		{
+			return (UnityView)super.getSaveTarget();
+		}
+
+
+		/* protected: save execution */
+
+		protected boolean isTestSaveTarget()
+		{
+			return HiberPoint.isTestInstance(getViewOwner());
+		}
+
+		protected void    assignSaveTarget()
+		{
+			UnityView v = getSaveTarget();
+			United    o = getViewOwner();
+
+			//~: view domain
+			if(v.getDomain() == null)
+				if(o instanceof DomainEntity)
+					v.setDomain(((DomainEntity)o).getDomain());
+
+			//~: view owner unity
+			v.setViewOwner(o.getUnity());
+		}
+
+
+		/* protected: the view's owner  */
+
+		protected United  viewOwner;
 	}
 
 

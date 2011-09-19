@@ -63,24 +63,6 @@ public abstract class UnityView implements United
 	}
 
 	/**
-	 * The type of the view. It is allowed the same owner
-	 * to have several views of the same type. It is the
-	 * task of the implementation to distinguish them.
-	 *
-	 * If this view has unity, the view type is allowed
-	 * to differ from the unity' one.
-	 */
-	public UnityType  getViewType()
-	{
-		return viewType;
-	}
-
-	public void       setViewType(UnityType viewType)
-	{
-		this.viewType = viewType;
-	}
-
-	/**
 	 * The type of the owner. Note that type of entities
 	 * changes rarely. The one notable except is states.
 	 */
@@ -103,6 +85,5 @@ public abstract class UnityView implements United
 
 	private Domain    domain;
 	private Unity     viewOwner;
-	private UnityType viewType;
 	private UnityType ownerType;
 }

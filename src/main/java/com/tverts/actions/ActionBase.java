@@ -5,6 +5,14 @@ package com.tverts.actions;
 import java.util.HashMap;
 import java.util.Map;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.isTestInstance;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.NumericIdentity;
+
 /* com.tverts: predicates */
 
 import com.tverts.support.logic.Predicate;
@@ -247,6 +255,16 @@ public abstract class ActionBase implements Action
 			));
 
 		return (O)target;
+	}
+
+	protected boolean isTestTarget()
+	{
+		Object target = target();
+
+		if(!(target instanceof NumericIdentity))
+			return false;
+
+		return isTestInstance((NumericIdentity)target);
 	}
 
 	protected Object  param(Object name)

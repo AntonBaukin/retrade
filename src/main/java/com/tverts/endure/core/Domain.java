@@ -9,7 +9,9 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-public class Domain extends Entity
+public class      Domain
+       extends    Entity
+       implements DomainEntity
 {
 	/* public: Domain bean interface */
 
@@ -25,6 +27,15 @@ public class Domain extends Entity
 
 		this.name = name;
 	}
+
+
+	/* public: DomainEntity interface */
+
+	public Domain getDomain()
+	{
+		return this;
+	}
+
 
 	/* private: persistent attributes */
 
