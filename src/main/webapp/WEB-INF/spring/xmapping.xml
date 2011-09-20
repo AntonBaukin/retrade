@@ -19,7 +19,52 @@
     <property name  = 'marshaller'>
       <bean class = 'org.springframework.oxm.jaxb.Jaxb2Marshaller'>
 
-        <property name = 'contextPath' value = 'com.tverts'/>
+        <property name = 'classesToBeBound'
+          value = '#{jaxbConfigurationClasspathScanner.classesArray}'/>
+      </bean>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  JAXB Configuration Classpath Scanner           =
+    =================================================-->
+
+  <bean name  = 'jaxbConfigurationClasspathScanner'
+        class = 'com.tverts.support.cpscan.ClasspathScanner'>
+
+    <property name = 'packages'>
+      <array><value> com.tverts </value></array>
+    </property>
+
+    <property name = 'filter'>
+      <bean class = 'com.tverts.support.cpscan.CPScanFilters'>
+        <property name = 'references'>
+          <list>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Include user model beans                                  ·
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.support.cpscan.CPSFInstanceOf'>
+              <property name  = 'checkClass'
+                        value = 'com.tverts.model.ModelBean'/>
+            </bean>
+
+            <bean class = 'com.tverts.support.cpscan.CPSFAnnotated'>
+              <property name  = 'annotation'
+                        value = 'com.tverts.model.ModelBeanInfo'/>
+            </bean>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Include model data beans                                  ·
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.support.cpscan.CPSFInstanceOf'>
+              <property name  = 'checkClass'
+                        value = 'com.tverts.model.ModelData'/>
+            </bean>
+
+          </list>
+        </property>
       </bean>
     </property>
   </bean>

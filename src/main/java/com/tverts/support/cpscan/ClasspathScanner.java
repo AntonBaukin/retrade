@@ -8,20 +8,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.tverts.objects.StringsReference;
-import com.tverts.support.SU;
+/* Spring Framework (internals) */
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
+/* com.tverts: objects */
+
+import com.tverts.objects.StringsReference;
+
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
+
 /**
  * This system utility class does scanning the classes
  * in the classpath and provides the resulting set.
  *
- * It adopts Spring implementation, but introduses own
- * class filters.
+ * It adopts Spring implementation, but introduces own
+ * class filters {@link CPScanFilter}.
  *
  *
  * @author anton.baukin@gmail.com
