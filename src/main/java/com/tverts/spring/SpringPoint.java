@@ -63,7 +63,7 @@ public class SpringPoint
 	/**
 	 * Returns the Spring bean registered by the name
 	 * taken from the simple name of the class with
-	 * the first letter lowercased.
+	 * the first letter lower-cased.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <B> B          bean(Class<B> beanClass)

@@ -55,7 +55,7 @@ public abstract class ModelStoreBase
 		//?: {undefined result} illegal state
 		if(e == null) throw new IllegalStateException(String.format(
 		  "Model Store was unable to save instance '%s' due " +
-		  "to the internal mapping error!"));
+		  "to the internal mapping error!", OU.cls(bean)));
 
 		return e.getModelBean();
 	}

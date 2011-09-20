@@ -29,9 +29,9 @@ public interface ModelBean extends Serializable
 	 * Assigned automatically by the model and may not
 	 * be changed outside.
 	 */
-	public String getModelKey();
+	public String    getModelKey();
 
-	public void   setModelKey(String key);
+	public void      setModelKey(String key);
 
 	/**
 	 * When the state of this model element is changed,
@@ -41,5 +41,14 @@ public interface ModelBean extends Serializable
 	 * modification time to the remote clients instead
 	 * of the actual content.
 	 */
-	public Date   getUpdateTime();
+	public Date      getUpdateTime();
+
+
+	/* public: ModelBean (data access) interface */
+
+	/**
+	 * Returns the data access object derived from
+	 * this model bean.
+	 */
+	public ModelData modelData();
 }

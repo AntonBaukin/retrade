@@ -54,7 +54,7 @@ public class SimpleModelStore extends ModelStoreBase
 
 			//?: {not found it} add new one
 			if(e == null)
-				entries.put(bean.getModelKey(), new ModelBeanEntry(bean));
+				entries.put(bean.getModelKey(), e = new ModelBeanEntry(bean));
 		}
 
 		return e;
