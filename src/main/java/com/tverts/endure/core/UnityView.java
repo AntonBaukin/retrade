@@ -1,5 +1,10 @@
 package com.tverts.endure.core;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /* com.tverts: endure */
 
 import com.tverts.endure.United;
@@ -12,6 +17,7 @@ import com.tverts.endure.UnityType;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class UnityView implements United
 {
 	/* public: NumericIdentity interface */

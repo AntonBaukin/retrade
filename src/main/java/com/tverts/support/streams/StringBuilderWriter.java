@@ -19,6 +19,19 @@ public final class StringBuilderWriter extends Writer
 		this.buf = buf;
 	}
 
+	public StringBuilderWriter(int capacity)
+	{
+		this(new StringBuilder(capacity));
+	}
+
+
+	/* public: StringBuilderWriter interface */
+
+	public StringBuilder buffer()
+	{
+		return this.buf;
+	}
+
 
 	/* public: Writer interface */
 

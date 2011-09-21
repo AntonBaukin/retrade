@@ -63,6 +63,10 @@ public class TransactionScopeBean implements Runnable
 		}
 		finally
 		{
+			//?: {has no unexpected error} check the task error
+			if(error == null)
+				error = getFilterTask().getError();
+
 			//~: handle the error & do cleanups
 			closeScope(error);
 		}

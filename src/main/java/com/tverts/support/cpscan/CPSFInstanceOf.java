@@ -12,6 +12,10 @@ import org.springframework.core.type.classreading.MetadataReader;
  * Note that the check class itself is excluded.
  *
  *
+ * WARNING! Using this filter is expensive as it
+ * loads all the classes checked! Prefer annotations.
+ *
+ *
  * @author anton.baukin@gmail.com
  */
 public class CPSFInstanceOf extends CPScanFilterBase

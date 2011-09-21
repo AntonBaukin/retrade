@@ -38,35 +38,11 @@
     </property>
 
     <property name = 'filter'>
-      <bean class = 'com.tverts.support.cpscan.CPScanFilters'>
-        <property name = 'references'>
-          <list>
+      <bean class = 'com.tverts.support.cpscan.CPSFAnnotated'>
 
-            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Include user model beans                                  ·
-             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.support.cpscan.CPSFInstanceOf'>
-              <property name  = 'checkClass'
-                        value = 'com.tverts.model.ModelBean'/>
-            </bean>
-
-            <bean class = 'com.tverts.support.cpscan.CPSFAnnotated'>
-              <property name  = 'annotation'
-                        value = 'com.tverts.model.ModelBeanInfo'/>
-            </bean>
-
-            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Include model data beans                                  ·
-             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.support.cpscan.CPSFInstanceOf'>
-              <property name  = 'checkClass'
-                        value = 'com.tverts.model.ModelData'/>
-            </bean>
-
-          </list>
-        </property>
+        <property name  = 'annotation'
+                  value = 'javax.xml.bind.annotation.XmlRootElement'/>
       </bean>
     </property>
   </bean>
-
 </beans>

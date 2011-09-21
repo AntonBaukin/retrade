@@ -66,7 +66,7 @@ public class QueryBuilder extends SelectQuery
 
 	public QueryBuilder nameEntity(String queryName, Class entity)
 	{
-		return nameEntity(entity.getName(), queryName);
+		return nameEntity(queryName, entity.getName());
 	}
 
 	/**

@@ -1,10 +1,11 @@
-<%@page contentType = 'application/xml;charset = UTF-8' trimDirectiveWhitespaces = 'true'%>
+<%@page trimDirectiveWhitespaces = 'true'%>
 
 <%@page import = 'com.tverts.model.ModelAccessPoint'%>
 <%@page import = 'com.tverts.model.ModelBean'%>
 <%@page import = 'com.tverts.model.ModelPoint'%>
 <%@page import = 'com.tverts.objects.XMAPoint'%>
 <%@page import = 'static com.tverts.support.SU.s2s'%>
+<%@page import = 'com.tverts.support.streams.StringBuilderWriter'%>
 
 
 <%
@@ -30,6 +31,20 @@ if(model == null)
 }
 
 //!: do XML mapping
-XMAPoint.writeObject(model, out);
+try
+{
+  StringBuilderWriter sw = new StringBuilderWriter(4096);
+
+  XMAPoint.writeObject(model, sw);
+  sw.close();
+
+  response.setContentType("application/xml;charset=UTF-8");
+  out.write(sw.buffer().toString());
+}
+catch(Exception e)
+{
+  response.setStatus(500);
+  throw new ServletException(e);
+}
 
 %>
