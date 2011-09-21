@@ -7,7 +7,6 @@ import java.util.List;
 /* Spring Framework */
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /* Hibernate Persistence Layer */
 
@@ -41,7 +40,6 @@ public class GetAggrValue extends GetObjectBase
 	 *   when there are more than one Aggregated Value
 	 *   exists for the specified parameters.
 	 */
-	@Transactional
 	public AggrValue getAggrValue(Unity owner, UnityType aggrType, Long selectorID)
 	{
 		if(owner == null)     throw new IllegalArgumentException();

@@ -7,7 +7,6 @@ import java.util.List;
 /* Spring Framework */
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: hibery */
 
@@ -24,7 +23,6 @@ public class GetDomain extends GetObjectBase
 {
 	/* Get Domain */
 
-	@Transactional
 	public Domain getTestDomain()
 	{
 

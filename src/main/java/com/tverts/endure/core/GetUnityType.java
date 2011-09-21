@@ -3,7 +3,6 @@ package com.tverts.endure.core;
 /* Spring Framework */
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: hibery */
 
@@ -24,14 +23,12 @@ public class GetUnityType extends GetObjectBase
 {
 	/* Get UnityType */
 
-	@Transactional
 	public UnityType getUnityType(Long id)
 	{
 		return (UnityType)sessionFactory.getCurrentSession().
 		  get(UnityType.class, id);
 	}
 
-	@Transactional
 	public UnityType findUnityType(Class typeClass, String typeName)
 	{
 /*
