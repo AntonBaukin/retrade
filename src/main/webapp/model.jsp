@@ -1,6 +1,6 @@
 <%@page trimDirectiveWhitespaces = 'true'%>
 
-<%@page import = 'com.tverts.faces.ModelViewBase'%>
+<%@page import = 'com.tverts.faces.ModelView'%>
 <%@page import = 'com.tverts.model.ModelAccessPoint'%>
 <%@page import = 'com.tverts.model.ModelBean'%>
 <%@page import = 'com.tverts.model.ModelPoint'%>
@@ -12,7 +12,7 @@
 <%
 
 ModelPoint point = ModelAccessPoint.model();
-String     param = s2s(request.getParameter(ModelViewBase.MODEL_PARAM));
+String     param = s2s(request.getParameter(ModelView.MODEL_PARAM));
 Object     model = (param == null)?(null):(point.readBean(param));
 
 

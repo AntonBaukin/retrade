@@ -1,5 +1,13 @@
 package com.tverts.faces;
 
+/* standard Java classes */
+
+import java.util.concurrent.atomic.AtomicLong;
+
+/* JavaServer Faces */
+
+import javax.faces.component.UIForm;
+
 /* com.tverts: servlet */
 
 import static com.tverts.servlet.RequestPoint.request;
@@ -20,17 +28,25 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class ModelViewBase
+public abstract class ModelView
 {
 	/* constants */
 
 	/**
 	 * Model key parameter in the HTTP request
 	 */
-	public static final String MODEL_PARAM = "model";
+	public static final String MODEL_PARAM  = "model";
+
+	public static final String VIEWID_PARAM = "view";
 
 
-	/* public: ModelViewBase (view shared) interface */
+	/* public: ModelView (view shared) interface */
+
+	public String    getId()
+	{
+		return (this.id != null)?(this.id):
+		  (this.id = obtainViewId());
+	}
 
 	public ModelBean getModel()
 	{
@@ -77,10 +93,46 @@ public abstract class ModelViewBase
 		return MODEL_PARAM;
 	}
 
+	public String    getViewIdParam()
+	{
+		return VIEWID_PARAM;
+	}
+
+	public UIForm    getForm()
+	{
+		return form;
+	}
+
+	public void      setForm(UIForm form)
+	{
+		this.form = form;
+		if(form == null) return;
+
+		form.setPrependId(false);
+	}
+
 
 	/* protected: view support interface */
 
 	protected abstract ModelBean createModel();
+
+	protected String             obtainViewId()
+	{
+		String id = obtainRequestViewId();
+		if(id == null) id = genViewId();
+		return id;
+	}
+
+	protected String             genViewId()
+	{
+		return String.format(
+		  "v%x", VIEWID.incrementAndGet());
+	}
+
+	protected String             obtainRequestViewId()
+	{
+		return s2s(request().getParameter(getViewIdParam()));
+	}
 
 	protected ModelBean          obtainModel()
 	{
@@ -100,7 +152,15 @@ public abstract class ModelViewBase
 
 
 
-	/* private: model bean reference */
+	/* private: the view state */
 
+	private String    id;
 	private ModelBean model;
+	private UIForm    form;
+
+
+	/* private static: view ids generator  */
+
+	private static AtomicLong VIEWID =
+	  new AtomicLong();
 }

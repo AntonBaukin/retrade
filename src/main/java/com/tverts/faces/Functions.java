@@ -1,9 +1,13 @@
 package com.tverts.faces;
 
-/* abaukin.com */
+/* com.tverts: servlet */
 
 import com.tverts.servlet.RequestPoint;
+
+/* com.tverts: support */
+
 import com.tverts.support.SU;
+
 
 /**
  * Java Server Faces functions.
@@ -26,11 +30,10 @@ public class Functions
 		String x = s.toString();
 
 		return new StringBuilder(x.length() + 12).
-		  append("<![CDATA[").
-		  append(x).
-		  append("]]>").
+		  append("<![CDATA[").append(x).append("]]>").
 		  toString();
 	}
+
 
 	/* public: URLs creators */
 
@@ -50,10 +53,6 @@ public class Functions
 		  :(RequestPoint.response().encodeURL(res.toString()));
 	}
 
-	public static String encodeURL(String url)
-	{
-		return RequestPoint.response().encodeURL(url);
-	}
 
 	/* public: Java Script support */
 
@@ -67,5 +66,15 @@ public class Functions
 	public static String escapeJSString(Object sobj)
 	{
 		return SU.escapeJSString(sobj);
+	}
+
+
+	/* public: model views support  */
+
+	public static String genViewId(ModelView v, String name)
+	{
+		return new StringBuilder(v.getId().length() + name.length() + 1).
+		  append(v.getId()).append('_').append(name).
+		  toString();
 	}
 }

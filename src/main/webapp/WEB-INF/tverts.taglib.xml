@@ -59,23 +59,6 @@
     </function-signature>
   </function>
 
-  <!-- ctx -->
-
-  <function>
-    <description>
-      Encodes URL with standard Servlets encodeURL() call.
-    </description>
-    <display-name>Encodes URL</display-name>
-
-    <function-name>encodeURL</function-name>
-    <function-class>
-      com.tverts.faces.Functions
-    </function-class>
-    <function-signature>
-      java.lang.String encodeURL(java.lang.String)
-    </function-signature>
-  </function>
-
 
   <!--=================================================
     =  JavaScript support                             =
@@ -95,6 +78,28 @@
     </function-class>
     <function-signature>
       java.lang.String escapeJSString(java.lang.Object)
+    </function-signature>
+  </function>
+
+
+  <!--=================================================
+    =  Model Views support                            =
+    =================================================-->
+
+  <!-- vid -->
+
+  <function>
+    <description>
+      Generates node ID based on the view ID.
+    </description>
+    <display-name>Generate View ID for node</display-name>
+
+    <function-name>vid</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String genViewId(com.tverts.faces.ModelView,java.lang.String)
     </function-signature>
   </function>
 
