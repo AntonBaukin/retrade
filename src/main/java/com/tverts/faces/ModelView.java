@@ -28,7 +28,7 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class ModelView
+public abstract class ModelView extends ViewWithModes
 {
 	/* constants */
 
@@ -149,7 +149,6 @@ public abstract class ModelView
 	{
 		return ModelAccessPoint.model();
 	}
-
 
 
 	/* private: the view state */

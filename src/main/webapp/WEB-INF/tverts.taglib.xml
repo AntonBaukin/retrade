@@ -48,14 +48,31 @@
     <description>
       Adds application context path before the path given.
     </description>
-    <display-name>Add Context Path</display-name>
+    <display-name>Relative URL with Context Path</display-name>
 
     <function-name>url</function-name>
     <function-class>
       com.tverts.faces.Functions
     </function-class>
     <function-signature>
-      java.lang.String addContextPath(java.lang.String)
+      java.lang.String encodePath(java.lang.String)
+    </function-signature>
+  </function>
+
+  <!-- absurl -->
+
+  <function>
+    <description>
+      Creates absolute URL adding the context path.
+    </description>
+    <display-name>Absolute URL with Context Path</display-name>
+
+    <function-name>absurl</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String absoluteURL(java.lang.String)
     </function-signature>
   </function>
 

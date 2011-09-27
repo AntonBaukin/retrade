@@ -1,5 +1,9 @@
 package com.tverts.faces;
 
+/* Java Servlet api */
+
+import javax.servlet.http.HttpServletRequest;
+
 /* com.tverts: servlet */
 
 import com.tverts.servlet.RequestPoint;
@@ -37,7 +41,7 @@ public class Functions
 
 	/* public: URLs creators */
 
-	public static String addContextPath(String path)
+	public static String encodePath(String path)
 	{
 		String        cpath = RequestPoint.request().
 		  getContextPath();
@@ -51,6 +55,53 @@ public class Functions
 
 		return (path.length() == 0)?(res.toString())
 		  :(RequestPoint.response().encodeURL(res.toString()));
+	}
+
+	public static String absoluteURL(String path)
+	{
+		HttpServletRequest request = RequestPoint.request();
+		String             scheme  = request.getScheme();
+		String             host    = request.getServerName();
+		String             cpath   = request.getContextPath();
+		int                port    = request.getServerPort();
+
+		if((scheme == null) || "undefined".equalsIgnoreCase(scheme))
+			scheme = "http";
+
+		StringBuilder      result  = new StringBuilder(
+		  scheme.length() + host.length() +
+		  cpath.length()  + path.length() + 8
+		);
+
+		//<: deal with the ports
+
+		if("http".equalsIgnoreCase(scheme)  && (port == 80 ))
+			port = 0;
+
+		if("https".equalsIgnoreCase(scheme) && (port == 443))
+			port = 0;
+
+		//>: deal with the ports
+
+		//~: scheme
+		result.append(scheme).append("://");
+
+		//~: host
+		result.append(host);
+
+		//~: port
+		if(port != 0)
+			result.append(':').append(port);
+
+		//~: context path
+		result.append(cpath);
+
+		//~: path
+		if((path.length() != 0) && (path.charAt(0) != '/'))
+			result.append('/');
+		result.append(path);
+
+		return result.toString();
 	}
 
 
