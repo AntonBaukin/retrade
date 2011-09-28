@@ -103,11 +103,7 @@ public class DU
 		return sb.toString();
 	}
 
-	public static void   date2str (
-	                       Date          d,
-	                       StringBuilder sb,
-	                       Calendar cl
-	                     )
+	public static void   date2str(Date d, StringBuilder sb, Calendar cl)
 	{
 		if(cl == null) cl =  Calendar.getInstance();
 		cl.setTime(d);
@@ -129,11 +125,7 @@ public class DU
 		return sb.toString();
 	}
 
-	public static void   time2str (
-	                       Date          t,
-	                       StringBuilder sb,
-	                       Calendar      cl
-	                     )
+	public static void   time2str(Date t, StringBuilder sb, Calendar cl)
 	{
 		if(cl == null) cl =  Calendar.getInstance();
 		cl.setTime(t);
@@ -143,6 +135,34 @@ public class DU
 		sb.append(':');
 		//minute
 		lennum(cl.get(Calendar.MINUTE), 2, sb);
+	}
+
+	public static Date   str2date(String s)
+	{
+		return str2date(s, null);
+	}
+
+	public static Date   str2date(String s, Calendar cl)
+	{
+		if((s = SU.s2s(s)) == null) return null;
+
+		int d0 = s.indexOf('.');
+		if(d0 == -1) throw new IllegalArgumentException();
+
+		int d1 = s.indexOf('.', d0 + 1);
+		if(d1 == -1) throw new IllegalArgumentException();
+
+		int dd = Integer.parseInt(s.substring(0,      d0));
+		int mm = Integer.parseInt(s.substring(d0 + 1, d1));
+		int yy = Integer.parseInt(s.substring(d1 + 1    ));
+
+		if(cl == null) cl = Calendar.getInstance();
+		cl.clear();
+		cl.set(Calendar.DAY_OF_MONTH, dd);
+		cl.set(Calendar.MONTH,        mm - 1);
+		cl.set(Calendar.YEAR,         yy);
+
+		return cl.getTime();
 	}
 
 	public static void   lennum(int num, int len, StringBuilder sb)
@@ -158,12 +178,8 @@ public class DU
 	 * Writes month as a name. First word is a week day name.
 	 * Parameter 'ws' is used to insert whitespace string.
 	 */
-	public static void   namedDateTimeToStrRu (
-	                       Date          dt,
-	                       StringBuilder sb,
-	                       String        ws,
-	                       Calendar      cl
-	                     )
+	public static void   namedDateTimeToStrRu
+	  (Date dt, StringBuilder sb, String ws, Calendar cl)
 	{
 		if(cl == null) cl =  Calendar.getInstance();
 		cl.setTime(dt);
@@ -185,12 +201,10 @@ public class DU
 		lennum(cl.get(Calendar.YEAR), 4, sb);
 	}
 
-	private static final String[] MONTHS_RU =
+	private static final String[] MONTHS_RU   =
 	{
-	  "Января", "Февраля", "Марта",
-	  "Апреля", "Мая", "Июня", "Июля",
-	  "Августа", "Сентября", "Октября",
-	  "Ноября", "Декабря"
+	  "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля",
+	  "Августа", "Сентября", "Октября", "Ноября", "Декабря"
 	};
 
 	private static final String[] WEEKDAYS_RU =

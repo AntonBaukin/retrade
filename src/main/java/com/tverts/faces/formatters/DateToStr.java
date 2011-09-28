@@ -9,22 +9,35 @@ import java.util.Date;
 import com.tverts.support.DU;
 
 /**
+ * Converter and formatter that supports standard
+ * format of date 'DD.MM.YYYY'.
+ *
+ *
  * @author anton.baukin@gmail.com
  */
-public class DateToStr extends FormatterBase<Date>
+public class DateToStr extends ConverterFormatterBase<Date>
 {
 	public static final DateToStr DATE2STR =
 	  new DateToStr();
 
-	/* public: FormatterBase interface */
 
-	public Class  getExpectedClass()
+	/* protected: formatting */
+
+	protected void    format(Request<Date> request)
+	{
+		request.setString(DU.date2str(request.getValue()));
+	}
+
+	protected Class   getValueClass()
 	{
 		return Date.class;
 	}
 
-	public String format(Date value)
+
+	/* protected: converting */
+
+	protected void    convert(Request<Date> request)
 	{
-		return DU.date2str(value);
+		request.setValue(DU.str2date(request.getString()));
 	}
 }

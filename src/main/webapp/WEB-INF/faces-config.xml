@@ -24,28 +24,8 @@
 
 
   <!--=================================================
-    =  Formatters                                     =
+    =  Converters + Formatters                        =
     =================================================-->
-
-  <converter>
-    <converter-id>
-      com.tverts:fmt:currency
-    </converter-id>
-
-    <converter-class>
-     com.tverts.faces.formatters.CurrencyFormatter
-    </converter-class>
-  </converter>
-
-  <converter>
-    <converter-id>
-      com.tverts:fmt:currency-full
-    </converter-id>
-
-    <converter-class>
-      com.tverts.faces.formatters.CurrencyFullFormatter
-    </converter-class>
-  </converter>
 
   <converter>
     <converter-id>
@@ -54,36 +34,6 @@
 
     <converter-class>
       com.tverts.faces.formatters.DateToStr
-    </converter-class>
-  </converter>
-
-  <converter>
-    <converter-id>
-      com.tverts:fmt:datetime2str
-    </converter-id>
-
-    <converter-class>
-      com.tverts.faces.formatters.DateTimeToStr
-    </converter-class>
-  </converter>
-
-  <converter>
-    <converter-id>
-      com.tverts:fmt:named-date2str
-    </converter-id>
-
-    <converter-class>
-      com.tverts.faces.formatters.NamedDateToStrRu
-    </converter-class>
-  </converter>
-
-  <converter>
-    <converter-id>
-      com.tverts:fmt:named-datetime2str
-    </converter-id>
-
-    <converter-class>
-      com.tverts.faces.formatters.NamedDateTimeToStrRu
     </converter-class>
   </converter>
 
