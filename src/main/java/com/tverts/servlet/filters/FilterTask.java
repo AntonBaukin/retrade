@@ -44,7 +44,7 @@ public interface FilterTask
 	public void        setBreaked();
 
 	/**
-	 * Retuns the exception saved (or raised) in the task
+	 * Returns the exception saved (or raised) in the task
 	 * by one of the filters of the cycle.
 	 */
 	public Throwable   getError();

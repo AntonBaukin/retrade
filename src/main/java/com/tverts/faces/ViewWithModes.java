@@ -21,7 +21,6 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-@ManagedBean @RequestScoped
 public abstract class ViewWithModes
 {
 	/* constants */

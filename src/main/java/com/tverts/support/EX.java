@@ -70,6 +70,19 @@ public class EX
 		return e;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <E extends Throwable> E
+	                        search(Throwable e, Class<E> eclass)
+	{
+		while(e != null)
+			if(eclass.isAssignableFrom(e.getClass()))
+				return (E)e;
+			else
+				e = e.getCause();
+
+		return null;
+	}
+
 
 	/* error printing */
 

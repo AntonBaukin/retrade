@@ -65,8 +65,9 @@ public class Functions
 		String             cpath   = request.getContextPath();
 		int                port    = request.getServerPort();
 
-		if((scheme == null) || "undefined".equalsIgnoreCase(scheme))
-			scheme = "http";
+		if(scheme == null) scheme = "http";
+		if(!"http".equals(scheme) && !"https".equals(scheme))
+			scheme = request.isSecure()?("https"):("http");
 
 		StringBuilder      result  = new StringBuilder(
 		  scheme.length() + host.length() +

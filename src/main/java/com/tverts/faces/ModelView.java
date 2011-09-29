@@ -17,6 +17,7 @@ import static com.tverts.servlet.RequestPoint.request;
 import com.tverts.model.ModelAccessPoint;
 import com.tverts.model.ModelBean;
 import com.tverts.model.ModelPoint;
+import com.tverts.model.NoModelException;
 
 /* com.tverts: support */
 
@@ -83,9 +84,15 @@ public abstract class ModelView extends ViewWithModes
 	 */
 	public boolean   isModelRequested()
 	{
-		ModelBean model = obtainRequestModel();
-		return (model != null) &&
-		  model.getModelKey().equals(getModel().getModelKey());
+		String key = s2s(request().getParameter(getModelParam()));
+		return (key != null) && key.equals(getModel().getModelKey());
+	}
+
+	public String    getCheckModelRequested()
+	{
+		if(!isModelRequested())
+			throw new NoModelException(getModel());
+		return "";
 	}
 
 	public String    getModelParam()

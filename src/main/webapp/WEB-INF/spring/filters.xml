@@ -17,15 +17,21 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Binds the request to Servlet-related components.          ·
+         · Binds the request to Servlet-related components           ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.servlet.filters.WebApplicationRequestFilter'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Sends HTTP redirect to refer actual user model instance   ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.model.NoModelFilter'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Openes nested Spring transaction scope for the rest of    ·
          · the chained filters. All the following filters are        ·
-         · in the context of single transaction.                     ·
+         · in the context of single transaction                      ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.system.tx.TransactionScopeFilter'>
 
@@ -36,7 +42,7 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Handles Self Shunt requests.                              ·
+         · Handles Self Shunt requests                               ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'selfShuntFilter'/>
       </list>
