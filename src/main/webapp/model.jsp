@@ -7,6 +7,7 @@
 <%@page import = 'com.tverts.objects.XMAPoint'%>
 <%@page import = 'static com.tverts.support.SU.s2s'%>
 <%@page import = 'com.tverts.support.streams.StringBuilderWriter'%>
+<%@ page import = "com.tverts.model.DataSelectModel" %>
 
 
 <%
@@ -14,6 +15,24 @@
 ModelPoint point = ModelAccessPoint.model();
 String     param = s2s(request.getParameter(ModelView.MODEL_PARAM));
 Object     model = (param == null)?(null):(point.readBean(param));
+
+
+//~: apply the data selection limits
+if(model instanceof DataSelectModel)
+{
+  int start = Integer.parseInt(s2s(request.getParameter(DataSelectModel.START_PARAM)));
+  int limit = Integer.parseInt(s2s(request.getParameter(DataSelectModel.LIMIT_PARAM)));
+
+  if(start < 0) throw new IllegalArgumentException(
+    "Data selection START parameter is illegal!");
+
+  if((limit <= 0) || (limit > DataSelectModel.LIMIT_MAX))
+    throw new IllegalArgumentException(
+      "Data selection LIMIT parameter is illegal!");
+
+  ((DataSelectModel)model).setDataStart(start);
+  ((DataSelectModel)model).setDataLimit(limit);
+}
 
 
 //?: {model bean implements main interface} access data bean
@@ -30,6 +49,7 @@ if(model == null)
 
   return;
 }
+
 
 //!: do XML mapping
 try
