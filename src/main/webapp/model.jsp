@@ -36,7 +36,10 @@ if(model instanceof DataSelectModel)
 
 //?: {model bean implements main interface} access data bean
 if(model instanceof ModelBean)
-  model = ((ModelBean)model).modelData();
+{
+  Object data = ((ModelBean)model).modelData();
+  if(data != null) model = data;
+}
 
 //?: {no model bean provided}
 if(model == null)

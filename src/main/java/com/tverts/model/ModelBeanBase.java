@@ -42,6 +42,14 @@ public abstract class ModelBeanBase implements ModelBean
 	}
 
 
+	/* public: ModelBean (data access) interface */
+
+	public ModelData  modelData()
+	{
+		return null;
+	}
+
+
 	/* protected: support interface */
 
 	protected void    markUpdated()

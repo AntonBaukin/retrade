@@ -40,6 +40,12 @@ public abstract class ModelView extends ViewWithModes
 
 	public static final String VIEWID_PARAM = "view";
 
+	/**
+	 * Parameter used to refer database entities
+	 * by their primary key.
+	 */
+	public static final String ENTITY_PARAM = "entity";
+
 
 	/* public: ModelView (view shared) interface */
 
@@ -103,6 +109,11 @@ public abstract class ModelView extends ViewWithModes
 	public String    getViewIdParam()
 	{
 		return VIEWID_PARAM;
+	}
+
+	public String    getEntityParam()
+	{
+		return ENTITY_PARAM;
 	}
 
 	public UIForm    getForm()

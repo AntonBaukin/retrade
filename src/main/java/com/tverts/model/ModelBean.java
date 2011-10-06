@@ -48,7 +48,8 @@ public interface ModelBean extends Serializable
 
 	/**
 	 * Returns the data access object derived from
-	 * this model bean.
+	 * this model bean. Undefined result means that
+	 * this model has no data model related.
 	 */
 	public ModelData modelData();
 }
