@@ -1,14 +1,13 @@
 <%@page trimDirectiveWhitespaces = 'true'%>
 
 <%@page import = 'com.tverts.faces.ModelView'%>
+<%@page import = 'com.tverts.model.DataSelectModel'%>
 <%@page import = 'com.tverts.model.ModelAccessPoint'%>
 <%@page import = 'com.tverts.model.ModelBean'%>
 <%@page import = 'com.tverts.model.ModelPoint'%>
 <%@page import = 'com.tverts.objects.XMAPoint'%>
 <%@page import = 'static com.tverts.support.SU.s2s'%>
 <%@page import = 'com.tverts.support.streams.StringBuilderWriter'%>
-<%@ page import = "com.tverts.model.DataSelectModel" %>
-
 
 <%
 

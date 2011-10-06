@@ -15,6 +15,13 @@ public enum ViewMode
 	PAGE,
 
 	/**
+	 * In body mode only the body part (without body tag)
+	 * of the page is displayed. Also no pages shared scripts
+	 * are te be loaded.
+	 */
+	BODY,
+
+	/**
 	 * Means HTTPS POST request made via asynchronous call.
 	 * The content of the page is not shown except the
 	 * validation and request status results.

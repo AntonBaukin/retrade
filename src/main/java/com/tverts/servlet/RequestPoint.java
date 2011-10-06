@@ -101,6 +101,67 @@ public class RequestPoint
 			RequestPoint.response.remove();
 	}
 
+
+	/* public static: utilities */
+
+	public static String formAbsoluteURL(String path, boolean copy_get_query)
+	{
+		HttpServletRequest request = RequestPoint.request();
+		String             scheme  = request.getScheme();
+		String             host    = request.getServerName();
+		String             cpath   = request.getContextPath();
+		int                port    = request.getServerPort();
+
+		if(scheme == null) scheme = "http";
+		if(!"http".equals(scheme) && !"https".equals(scheme))
+			scheme = request.isSecure()?("https"):("http");
+
+		StringBuilder      result  = new StringBuilder(
+		  scheme.length() + host.length() +
+		  cpath.length()  + path.length() + 8
+		);
+
+		//<: deal with the ports
+
+		if("http".equalsIgnoreCase(scheme)  && (port == 80 ))
+			port = 0;
+
+		if("https".equalsIgnoreCase(scheme) && (port == 443))
+			port = 0;
+
+		//>: deal with the ports
+
+		//~: scheme
+		result.append(scheme).append("://");
+
+		//~: host
+		result.append(host);
+
+		//~: port
+		if(port != 0)
+			result.append(':').append(port);
+
+		//~: context path
+		result.append(cpath);
+
+		//~: path
+		if((path.length() != 0) && (path.charAt(0) != '/'))
+			result.append('/');
+		result.append(path);
+
+		//~: add GET parameters
+		if(copy_get_query)
+		{
+			String params = request.getQueryString();
+			if(params != null)
+				result.append('?').append(params);
+		}
+
+		return result.toString();
+	}
+
+
+
 	/* private: requests thread local */
 
 	private static ServletContext                  context;

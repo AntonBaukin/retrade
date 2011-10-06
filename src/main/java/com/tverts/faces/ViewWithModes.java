@@ -2,8 +2,6 @@ package com.tverts.faces;
 
 /* JavaServer Faces */
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 
@@ -72,6 +70,11 @@ public abstract class ViewWithModes
 		PhaseId phase = FacesContext.getCurrentInstance().
 		  getCurrentPhaseId();
 		return !PhaseId.RENDER_RESPONSE.equals(phase);
+	}
+
+	public boolean     isViewModeBody()
+	{
+		return ViewMode.BODY.equals(getViewMode());
 	}
 
 	public boolean     isViewModeAjaxPost()

@@ -26,6 +26,20 @@ public class SystemConfig
 	/* public: SystemConfig (bean) interface */
 
 	/**
+	 * Default grid size.
+	 */
+	public int     getGridSize()
+	{
+		return (gridSize != 0)?(gridSize):(25);
+	}
+
+	public void    setGridSize(int gridSize)
+	{
+		if(gridSize < 1) throw new IllegalArgumentException();
+		this.gridSize = gridSize;
+	}
+
+	/**
 	 * Tells that the application runs in development
 	 * (debug) mode. It has the same functions that
 	 * may be extended to provide additional support
@@ -44,5 +58,6 @@ public class SystemConfig
 
 	/* private: system properties */
 
+	private int     gridSize;
 	private boolean debug;
 }

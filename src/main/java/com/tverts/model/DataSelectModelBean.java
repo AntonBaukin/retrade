@@ -1,5 +1,10 @@
 package com.tverts.model;
 
+/* com.tverts: system */
+
+import com.tverts.system.SystemConfig;
+
+
 /**
  * Contains data select model attributes.
  *
@@ -36,7 +41,7 @@ public abstract class DataSelectModelBean
 		if(dataLimit != null)
 			return dataLimit;
 
-		setDataLimit(20);
+		setDataLimit(SystemConfig.getInstance().getGridSize());
 		return dataLimit;
 	}
 
