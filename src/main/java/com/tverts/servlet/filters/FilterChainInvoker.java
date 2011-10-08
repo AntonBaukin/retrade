@@ -4,6 +4,14 @@ package com.tverts.servlet.filters;
 
 import javax.servlet.FilterChain;
 
+/**
+ * Terminal filter that invokes Servlet
+ * filter chain thus continuing request
+ * processing.
+ *
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class FilterChainInvoker implements Filter
 {
 	/* public: constructor */
@@ -15,6 +23,7 @@ public class FilterChainInvoker implements Filter
 		this.filterChain = filterChain;
 	}
 
+
 	/* public: Filter interface */
 
 	public void openFilter(FilterTask task)
@@ -22,7 +31,7 @@ public class FilterChainInvoker implements Filter
 		try
 		{
 			filterChain.doFilter(
-		     task.getRequest(), task.getResponse());
+			  task.getRequest(), task.getResponse());
 		}
 		catch(Throwable e)
 		{
@@ -33,6 +42,7 @@ public class FilterChainInvoker implements Filter
 
 	public void closeFilter(FilterTask task)
 	{}
+
 
 	/* protected: the chain */
 

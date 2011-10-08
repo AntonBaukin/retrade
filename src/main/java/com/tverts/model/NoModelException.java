@@ -1,5 +1,10 @@
 package com.tverts.model;
 
+/* com.tverts: support */
+
+import com.tverts.support.logs.TransparentException;
+
+
 /**
  * While processing HTTP request, it no model reference
  * provided, or the reference is for obsolete model instance,
@@ -14,7 +19,9 @@ package com.tverts.model;
  *
  * @author anton.baukin@gmail.com
  */
-public class NoModelException extends RuntimeException
+public class      NoModelException
+       extends    RuntimeException
+       implements TransparentException
 {
 	/* public: constructor */
 
