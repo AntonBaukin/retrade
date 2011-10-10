@@ -37,6 +37,14 @@ public abstract class UnityModelView extends ModelView
 		  (entity = getModel().loadEntity());
 	}
 
+	public String            getCheckEntityRequested()
+	{
+		if(getEntity() == null) throw new IllegalStateException(
+		  "The entity referred by model does not exist!");
+		return "";
+	}
+
+
 	/* protected: ModelView interface */
 
 	protected UnityModelBean createModel()
