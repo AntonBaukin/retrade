@@ -20,12 +20,17 @@ public class Functions
 
 	/**
 	 * Wraps the text given into CDATA section.
-	 * If argument is {@code null}, writes
-	 * '<![CDATA[' string.
+	 *
+	 * If argument is boolean true, opens the
+	 * section with. It closes it on false
+	 * argument value. Other values are converted
+	 * to string and wrapped.
 	 */
 	public static String cdata(Object s)
 	{
-		if(s == null) return "<![CDATA[";
+		if(s == null)               return "";
+		if(Boolean.TRUE.equals(s))  return "<![CDATA[";
+		if(Boolean.FALSE.equals(s)) return "]]>";
 
 		String x = s.toString();
 
