@@ -137,6 +137,20 @@ public class DU
 		lennum(cl.get(Calendar.MINUTE), 2, sb);
 	}
 
+	public static String datetime2str(Date d)
+	{
+		if(d == null) return null;
+
+		StringBuilder sb = new StringBuilder(14);
+		Calendar      cl = Calendar.getInstance();
+
+		date2str(d, sb, cl);
+		sb.append(' ');
+		time2str(d, sb, cl);
+
+		return sb.toString();
+	}
+
 	public static Date   str2date(String s)
 	{
 		return str2date(s, null);
