@@ -49,7 +49,7 @@ public abstract class UnityModelView extends ModelView
 
 	protected UnityModelBean createModel()
 	{
-		UnityModelBean model = new UnityModelBean();
+		UnityModelBean model = createModelInstance();
 		Long           key   = obtainPrimaryKeyFromRequest();
 
 		if(key == null) throw new IllegalStateException(
@@ -58,6 +58,11 @@ public abstract class UnityModelView extends ModelView
 
 		model.setPrimaryKey(key);
 		return model;
+	}
+
+	protected UnityModelBean createModelInstance()
+	{
+		return new UnityModelBean();
 	}
 
 
