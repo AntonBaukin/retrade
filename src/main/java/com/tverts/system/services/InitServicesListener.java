@@ -100,7 +100,7 @@ public class   InitServicesListener
 
 	/**
 	 * Note that the services are freed in the reversed order!
-	 * When an error occures, the free cycle is NOT breaked.
+	 * When an error occurs, the free cycle is NOT breaked.
 	 */
 	protected void   freeServices(List<Service> services)
 	{
