@@ -50,7 +50,7 @@ public abstract class UnityModelView extends ModelView
 	protected UnityModelBean createModel()
 	{
 		UnityModelBean model = createModelInstance();
-		Long           key   = obtainPrimaryKeyFromRequest();
+		Long           key   = obtainEntityKeyFromRequest();
 
 		if(key == null) throw new IllegalStateException(
 		  "Can't obtain primary key of entity to " +
@@ -63,15 +63,6 @@ public abstract class UnityModelView extends ModelView
 	protected UnityModelBean createModelInstance()
 	{
 		return new UnityModelBean();
-	}
-
-
-	/* protected: implementation details */
-
-	protected Long           obtainPrimaryKeyFromRequest()
-	{
-		String param = s2s(request().getParameter(ENTITY_PARAM));
-		return (param == null)?(null):(Long.parseLong(param));
 	}
 
 

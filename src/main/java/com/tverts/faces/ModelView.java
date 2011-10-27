@@ -94,10 +94,17 @@ public abstract class ModelView extends ViewWithModes
 		return (key != null) && key.equals(getModel().getModelKey());
 	}
 
-	public String    getCheckModelRequested()
+	public String    getCheckModelRequestedWithRedirect()
 	{
 		if(!isModelRequested())
 			throw new NoModelException(getModel());
+		return "";
+	}
+
+	public String    getCheckModelRequested()
+	{
+		if(!isModelRequested()) throw new IllegalStateException(
+		  "Requested user interface model is gone or not actual!");
 		return "";
 	}
 
@@ -154,13 +161,32 @@ public abstract class ModelView extends ViewWithModes
 
 	protected ModelBean          obtainModel()
 	{
-		return obtainRequestModel();
+		ModelBean model = obtainRequestModel();
+		return isRequestModelMatch(model)?(model):(null);
+	}
+
+	/**
+	 * In the most cases there is only one view (and model)
+	 * per a request. When there are redirects, or in more
+	 * complex pages, the model referred in the request differ
+	 * from the model of secondary view. This check may help
+	 * in the case of redirects.
+	 */
+	protected boolean            isRequestModelMatch(ModelBean model)
+	{
+		return true;
 	}
 
 	protected ModelBean          obtainRequestModel()
 	{
 		String key = s2s(request().getParameter(getModelParam()));
 		return (key == null)?(null):(modelPoint().readBean(key));
+	}
+
+	protected Long               obtainEntityKeyFromRequest()
+	{
+		String param = s2s(request().getParameter(getEntityParam()));
+		return (param == null)?(null):(Long.parseLong(param));
 	}
 
 	protected ModelPoint         modelPoint()

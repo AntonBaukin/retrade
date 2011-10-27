@@ -23,6 +23,13 @@ import com.tverts.support.EX;
  * Catches {@link NoModelException} and redirects the request
  * to the actual model if such is defined in the exception.
  *
+ * WARNING! As HTTP specifies, only GET requests may be
+ *  redirected via 302 response! 307 response is not
+ *  supported transparently for the user.
+ *
+ *  This implementation raises exception on POST redirect.
+ *  Do not use redirect in such manner!
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -59,6 +66,10 @@ public class NoModelFilter extends FilterBase
 
 		//?: {can't send redirect}
 		if((model == null) || task.getResponse().isCommitted())
+			return;
+
+		//?: {not a GET request} 302 redirect is forbidden!
+		if(!"GET".equalsIgnoreCase(task.getRequest().getMethod()))
 			return;
 
 		//~: do the redirect
