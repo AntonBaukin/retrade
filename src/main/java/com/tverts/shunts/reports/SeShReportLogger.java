@@ -8,6 +8,7 @@ import com.tverts.shunts.SelfShuntPoint;
 
 import com.tverts.support.LU;
 
+
 /**
  * Writes shunt report as text to the log destination
  * {@link SelfShuntPoint#LOG_SHARED}.
@@ -17,7 +18,7 @@ import com.tverts.support.LU;
 public class   SeShReportLogger
        extends SeShReportStringWriterBase
 {
-	/* protected: SeShReportStringWriterBase innterface */
+	/* protected: SeShReportStringWriterBase interface */
 
 	protected void writeTrace(StringBuffer text)
 	  throws Exception
@@ -49,6 +50,7 @@ public class   SeShReportLogger
 		LU.E(getLog(), text);
 	}
 
+
 	/* protected: SeShReportWriterBase interface */
 
 	protected boolean isDebugLevel()
@@ -71,10 +73,11 @@ public class   SeShReportLogger
 		return LU.isW(getLog());
 	}
 
+
 	/* protected: logger */
 
 	protected String  getLog()
 	{
-		return SelfShuntPoint.LOG_SHARED;
+		return LU.getLogBased(SelfShuntPoint.LOG_SHARED, this);
 	}
 }

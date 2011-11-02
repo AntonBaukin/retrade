@@ -40,6 +40,7 @@ public abstract class ActionBase implements Action
 		this.task = task;
 	}
 
+
 	/* public: Action interface (execution phases) */
 
 	public void   bind(ActionContext context)
@@ -122,6 +123,7 @@ public abstract class ActionBase implements Action
 		return this;
 	}
 
+
 	/* protected: action trigger phase */
 
 	protected abstract void execute()
@@ -140,6 +142,7 @@ public abstract class ActionBase implements Action
 		return (executing != null)?(executing):(executing = (
 		  (getPredicate() == null) || getPredicate().evalPredicate(this)));
 	}
+
 
 	/* protected: action state & execution support */
 
@@ -299,7 +302,7 @@ public abstract class ActionBase implements Action
 
 	protected String getLog()
 	{
-		return ActionsPoint.LOG_ACTION;
+		return LU.getLogBased(Action.class, this);
 	}
 
 	protected void   logTriggerStarted()
@@ -343,6 +346,7 @@ public abstract class ActionBase implements Action
 	{
 		return ActionsPoint.logsig(context);
 	}
+
 
 	/* private: action state */
 

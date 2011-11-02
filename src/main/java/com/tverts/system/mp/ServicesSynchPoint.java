@@ -123,7 +123,7 @@ public class      ServicesSynchPoint
 
 	protected String getLog()
 	{
-		return ServicesPoint.LOG_SERVICE_MAIN;
+		return LU.getLogBased(ServicesPoint.LOG_SERVICE_MAIN, this);
 	}
 
 

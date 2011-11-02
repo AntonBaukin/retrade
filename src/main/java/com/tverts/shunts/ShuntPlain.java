@@ -18,6 +18,10 @@ import org.hibernate.SessionFactory;
 
 import com.tverts.hibery.HiberPoint;
 
+/* com.tverts: support */
+
+import com.tverts.support.LU;
+
 
 /**
  * Plain Self Shunts are POJO targets for
@@ -90,10 +94,15 @@ public abstract class ShuntPlain
 	}
 
 
+	/* protected: logging */
+
+	protected String  getLog()
+	{
+		return LU.getLogBased(SelfShuntPoint.LOG_SHARED, this);
+	}
 
 
 	/* protected: Hibernate Session Factory reference */
 
 	protected SessionFactory sessionFactory;
-
 }

@@ -61,6 +61,7 @@ public class      HiberKeysGeneratorBinder
 		this.generatorBound = createGenerator();
 	}
 
+
 	/* public: HiberKeysGeneratorBinder interface */
 
 	public void       setGeneratorName(String name)
@@ -92,6 +93,7 @@ public class      HiberKeysGeneratorBinder
 	{
 		this.properties = OU.clone(props);
 	}
+
 
 	/* protected: build generator */
 
@@ -203,17 +205,20 @@ public class      HiberKeysGeneratorBinder
 		return LongType.INSTANCE;
 	}
 
+
 	/* protected: logging */
 
 	protected String        getLog()
 	{
-		return HiberSystem.LOG_HIBER_SYSTEM;
+		return LU.getLogBased(HiberSystem.class, this);
 	}
+
 
 	/* private: the binder state */
 
 	private String          generatorName;
 	private KeysGenerator   generatorBound;
+
 
 	/* private: the binder parameters */
 

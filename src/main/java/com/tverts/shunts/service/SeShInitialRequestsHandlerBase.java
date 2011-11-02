@@ -19,6 +19,7 @@ import com.tverts.shunts.protocol.SeShResponse;
 
 import com.tverts.support.LU;
 
+
 /**
  * Base class for the initial request handlers.
  * Supports only one precious class of the request.
@@ -67,7 +68,7 @@ public abstract class SeShInitialRequestsHandlerBase
 
 	protected String getLog()
 	{
-		return SelfShuntPoint.LOG_SERVICE;
+		return LU.getLogBased(SelfShuntPoint.LOG_SERVICE, this);
 	}
 
 	protected void   logSelection(R req, Set<String> shunts)

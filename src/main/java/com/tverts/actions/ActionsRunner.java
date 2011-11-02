@@ -40,6 +40,7 @@ public class ActionsRunner implements ActionTrigger
 		this.context = context;
 	}
 
+
 	/* public: ActionTrigger interface */
 
 	public ActionContext getActionContext()
@@ -56,6 +57,7 @@ public class ActionsRunner implements ActionTrigger
 	{
 		return true;
 	}
+
 
 	/* public: Runnable interface */
 
@@ -87,6 +89,7 @@ public class ActionsRunner implements ActionTrigger
 		//?: {has handled critical error} not throw it out
 		setSuccess(getActionContext().getError() == null);
 	}
+
 
 	/* protected: trigger execution */
 
@@ -197,7 +200,7 @@ public class ActionsRunner implements ActionTrigger
 	}
 
 	/**
-	 * Openes the action and returns the internal structure
+	 * Opens the action and returns the internal structure
 	 * instance associated with this operation.
 	 */
 	protected Object     openAction(Action action)
@@ -370,11 +373,12 @@ public class ActionsRunner implements ActionTrigger
 		return Boolean.FALSE;
 	}
 
+
 	/* protected: logging */
 
 	protected String getLog()
 	{
-		return ActionsPoint.LOG_ACTION;
+		return LU.getLogBased(Action.class, this);
 	}
 
 	protected void   logRunStart()
@@ -416,6 +420,7 @@ public class ActionsRunner implements ActionTrigger
 	{
 		return ActionsPoint.logsig(chain);
 	}
+
 
 	/* private: trigger state */
 

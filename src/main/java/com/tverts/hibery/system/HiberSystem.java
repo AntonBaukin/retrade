@@ -54,11 +54,6 @@ public class HiberSystem
 	protected HiberSystem()
 	{}
 
-	/* public: logging destinations */
-
-	public static final String LOG_HIBER_SYSTEM =
-	  HiberSystem.class.getName();
-
 
 	/* public: HiberSystem interface */
 

@@ -439,7 +439,7 @@ public class   SelfShuntService
 
 	protected String getLog()
 	{
-		return SelfShuntPoint.LOG_SERVICE;
+		return SelfShuntPoint.LOG_SERVICE.getName();
 	}
 
 	public String    logsig(String lang)

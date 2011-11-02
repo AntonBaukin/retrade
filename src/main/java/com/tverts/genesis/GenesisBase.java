@@ -2,6 +2,7 @@ package com.tverts.genesis;
 
 /* com.tverts: predicates */
 
+import com.tverts.support.LU;
 import com.tverts.support.logic.Predicate;
 
 /* com.tverts: support */
@@ -103,7 +104,7 @@ public abstract class GenesisBase
 
 	protected String getLog()
 	{
-		return GenesisPoint.LOG_GENESIS;
+		return LU.getLogBased(GenesisPoint.LOG_GENESIS, this);
 	}
 
 	protected String logsig(String lang)

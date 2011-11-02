@@ -22,6 +22,7 @@ import com.tverts.system.ServicesPoint;
 
 import com.tverts.support.LU;
 
+
 /**
  * Handles the first phase of the services bootstrap:
  * service initialization and free.
@@ -134,7 +135,7 @@ public class   InitServicesListener
 
 	protected String getLog()
 	{
-		return ServicesPoint.LOG_SERVICE_BOOT;
+		return LU.getLogBased(ServicesPoint.LOG_SERVICE_BOOT, this);
 	}
 
 	protected String logsig(Service service)

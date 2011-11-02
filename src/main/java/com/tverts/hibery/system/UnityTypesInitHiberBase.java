@@ -278,6 +278,6 @@ public abstract class UnityTypesInitHiberBase
 
 	protected String    getLog()
 	{
-		return HiberSystem.LOG_HIBER_SYSTEM;
+		return LU.getLogBased(HiberSystem.class, this);
 	}
 }

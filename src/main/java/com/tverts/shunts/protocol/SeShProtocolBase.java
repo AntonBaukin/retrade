@@ -87,12 +87,14 @@ public abstract class SeShProtocolBase
 		private SeShResponse response;
 	}
 
+
 	/* public: constructor */
 
 	public SeShProtocolBase()
 	{
 		this.unitReports = createUnitReports();
 	}
+
 
 	/* public: SeShProtocolBase interface */
 
@@ -107,7 +109,8 @@ public abstract class SeShProtocolBase
 		this.protocolFinish = protocolFinish;
 	}
 
-/* public: protocol interface */
+
+	/* public: protocol interface */
 
 	public SelfShuntReport closeProtocol()
 	  throws SeShProtocolError, InterruptedException
@@ -126,6 +129,7 @@ public abstract class SeShProtocolBase
 		return this.systemError;
 	}
 
+
 	/* protected: protocol conversation */
 
 	/**
@@ -133,6 +137,7 @@ public abstract class SeShProtocolBase
 	 * This request defines what actually be tested.
 	 */
 	protected abstract SeShRequestInitial createInitialRequest();
+
 
 	/* protected: reports handling */
 
@@ -198,11 +203,12 @@ public abstract class SeShProtocolBase
 		return new ArrayList<SelfShuntUnitReport>(8);
 	}
 
+
 	/* protected: logging */
 
 	protected String getLog()
 	{
-		return SelfShuntPoint.LOG_SYSTEM;
+		return LU.getLogBased(SelfShuntPoint.LOG_SYSTEM, this);
 	}
 
 	protected String logsig()
@@ -277,6 +283,7 @@ public abstract class SeShProtocolBase
 		if(r.getNextRequest() != null) LU.I(getLog(),
 		  logsig(), " got next ", logsig(r.getNextRequest()));
 	}
+
 
 	/* protected: accumulated reports */
 

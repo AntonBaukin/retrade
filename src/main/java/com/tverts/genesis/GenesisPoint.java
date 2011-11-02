@@ -35,7 +35,7 @@ public class GenesisPoint
 	 * not the shunts package.
 	 */
 	public static final String LOG_SERVICE =
-	  "com.tverts.genesis.GenesisService";
+	  GenesisService.class.getName();
 
 
 	/* public: GenesisPoint access */

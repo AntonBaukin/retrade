@@ -20,6 +20,7 @@ import static com.tverts.support.EX.e2lo;
 import static com.tverts.support.LO.LANG_EN;
 import static com.tverts.support.LO.LANG_LO;
 import static com.tverts.support.LO.LANG_RU;
+import com.tverts.support.LU;
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sLo;
 
@@ -287,7 +288,7 @@ public abstract class ServiceBase
 
 	protected String getLog()
 	{
-		return ServicesPoint.LOG_SERVICE_MAIN;
+		return LU.getLogBased(ServicesPoint.LOG_SERVICE_MAIN, this);
 	}
 
 	/**

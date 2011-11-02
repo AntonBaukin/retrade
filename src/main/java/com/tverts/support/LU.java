@@ -84,6 +84,7 @@ public class LU
 		  getLogStrategy().isLevel(LogLevel.WARN, dest);
 	}
 
+
 	/* logging */
 
 	public static void L
@@ -158,5 +159,46 @@ public class LU
 	{
 		LogPoint.getInstance().getLogStrategy().
 		  logErr(LogLevel.ERROR, dest, cat(msgs), err);
+	}
+
+
+	/* logging issues */
+
+	public static String getLogBased(String base, Class cls)
+	{
+		StringBuilder s = new StringBuilder(64);
+
+		if(!SU.sXe(base))
+		{
+			s.append(base);
+			if(!base.endsWith("."))
+				s.append('.');
+		}
+
+		if(s.length() == 0)
+			s.append(cls.getName());
+		else
+			s.append(cls.getSimpleName());
+
+		return s.toString();
+	}
+
+	public static String getLogBased(String base, Object obj)
+	{
+		return getLogBased(base, obj.getClass());
+	}
+
+	public static String getLogBased(Class base, Class cls)
+	{
+		String s = base.getName();
+		int    i = s.lastIndexOf('.');
+		s = (i != -1)?(s.substring(0, i)):(null);
+
+		return getLogBased(s, cls);
+	}
+
+	public static String getLogBased(Class base, Object obj)
+	{
+		return getLogBased(base, obj.getClass());
 	}
 }

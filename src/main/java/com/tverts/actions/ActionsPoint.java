@@ -133,9 +133,6 @@ public class ActionsPoint
 
 	/* public static: logging support */
 
-	public static final String LOG_ACTION =
-	  Action.class.getName();
-
 	public static String logsig(Action action)
 	{
 		if(action == null)

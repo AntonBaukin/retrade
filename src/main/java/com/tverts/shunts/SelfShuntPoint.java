@@ -33,6 +33,7 @@ public class SelfShuntPoint
 	protected SelfShuntPoint()
 	{}
 
+
 	/* public: log destinations */
 
 	/**
@@ -46,8 +47,8 @@ public class SelfShuntPoint
 	 * Note that it's root is the services root,
 	 * not the shunts package.
 	 */
-	public static final String LOG_SERVICE =
-	  "com.tverts.system.services.SelfShuntService";
+	public static final Class  LOG_SERVICE =
+	  SelfShuntService.class;
 
 	/**
 	 * Log destination of various system components
@@ -55,6 +56,7 @@ public class SelfShuntPoint
 	 */
 	public static final String LOG_SYSTEM  =
 	  "com.tverts.shunts.system";
+
 
 	/* public: Self Shunt Facade */
 
@@ -95,6 +97,7 @@ public class SelfShuntPoint
 		service().enqueueProtocol(protocol);
 	}
 
+
 	/* public: access Self Shunts properties */
 
 	/**
@@ -124,9 +127,11 @@ public class SelfShuntPoint
 		this.shuntsSet = shuntsSet;
 	}
 
+
 	/* private: primary Self Shunt Service reference */
 
 	private SelfShuntService service;
+
 
 	/* private: self shunts properties */
 

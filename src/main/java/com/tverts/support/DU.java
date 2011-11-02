@@ -15,16 +15,6 @@ public class DU
 {
 	/* arithmetic */
 
-	public static int    diffMins(Date one, Date two)
-	{
-		Date x, X;
-
-		if(one.after(two)) {x = two; X = one;}
-		else               {x = one; X = two;}
-
-		return (int)((X.getTime() - x.getTime()) / (1000L*60));
-	}
-
 	public static int    diffDays(Date one, Date two)
 	{
 		return diffDays(one, two, null);
@@ -60,12 +50,16 @@ public class DU
 
 	public static Date   addDays(Date d, int days)
 	{
-		return new Date(d.getTime() + 1000L * 60 * 60 * 24 *  days);
+		Calendar cl = Calendar.getInstance();
+
+		cl.setTime(d);
+		cl.add(Calendar.DAY_OF_YEAR, days);
+		return cl.getTime();
 	}
 
 	public static Date   addDaysClean(Date d, int days)
 	{
-		return cleanTime(new Date(d.getTime() + 1000L * 60 * 60 * 24 *  days));
+		return cleanTime(addDays(d, days));
 	}
 
 

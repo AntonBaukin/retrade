@@ -68,9 +68,12 @@ public class      UnityTypesActivator
 		List<ParseEntry>      pes = parseWhole(whole);
 
 		//~: collect the descriptors
-		List<UnityTypeStruct> uts = (getStructs() == null)
-		  ?(Collections.<UnityTypeStruct> emptyList())
-		  :(getStructs().dereferObjects());
+		List<UnityTypeStruct> uts;
+
+		if(getStructs() == null)
+			uts = Collections.emptyList();
+		else
+			uts = getStructs().dereferObjects();
 
 		//?: {has no unity types} nothing to do
 		if(pes.isEmpty() && uts.isEmpty())
