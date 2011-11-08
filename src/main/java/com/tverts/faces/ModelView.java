@@ -2,11 +2,12 @@ package com.tverts.faces;
 
 /* standard Java classes */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
-
-/* JavaServer Faces */
-
-import javax.faces.component.UIForm;
 
 /* com.tverts: servlet */
 
@@ -21,6 +22,8 @@ import com.tverts.model.NoModelException;
 
 /* com.tverts: support */
 
+import static com.tverts.support.SU.a2s;
+import static com.tverts.support.SU.s2a;
 import static com.tverts.support.SU.s2s;
 
 
@@ -47,15 +50,15 @@ public abstract class ModelView extends ViewWithModes
 	public static final String ENTITY_PARAM = "entity";
 
 
-	/* public: ModelView (view shared) interface */
+	/* public: ModelView (access model) interface */
 
-	public String    getId()
+	public String      getId()
 	{
 		return (this.id != null)?(this.id):
 		  (this.id = obtainViewId());
 	}
 
-	public ModelBean getModel()
+	public ModelBean   getModel()
 	{
 		//?: {got the model reference}
 		if(model != null) return model;
@@ -79,61 +82,81 @@ public abstract class ModelView extends ViewWithModes
 		return model;
 	}
 
-	public String    getModelKey()
+	public String      getModelKey()
 	{
 		return getModel().getModelKey();
 	}
 
 	/**
+	 * Returns all the models got by the keys list
+	 * given in the HTTP request. The current model
+	 * may be not in this list.
+	 */
+	public ModelBean[] getRequestedModels()
+	{
+		return (models != null)?(models):
+		  (models = obtainRequestedModels());
+	}
+
+	/**
+	 * Combines all the model keys requested with
+	 * the key of the current model. Allows to remember
+	 * the state in complex multi-view conversations.
+	 */
+	public String      getModelKeys()
+	{
+		if(modelKeys != null)
+			return modelKeys;
+
+		Set<String> keys = obtainRequestedModelKeys();
+		keys.add(getModelKey());
+
+		return (modelKeys = a2s(keys));
+	}
+
+
+	/* public: ModelView (checks) interface */
+
+	/**
 	 * Tells that the model requested in the same model
 	 * (with the same key) that is currently set for the view.
 	 */
-	public boolean   isModelRequested()
+	public boolean     isModelRequested()
 	{
-		String key = s2s(request().getParameter(getModelParam()));
-		return (key != null) && key.equals(getModel().getModelKey());
+		Set<String> keys = obtainRequestedModelKeys();
+		return keys.contains(getModel().getModelKey());
 	}
 
-	public String    getCheckModelRequestedWithRedirect()
+	public String      getCheckModelRequestedWithRedirect()
 	{
 		if(!isModelRequested())
 			throw new NoModelException(getModel());
 		return "";
 	}
 
-	public String    getCheckModelRequested()
+	public String      getCheckModelRequested()
 	{
 		if(!isModelRequested()) throw new IllegalStateException(
 		  "Requested user interface model is gone or not actual!");
 		return "";
 	}
 
-	public String    getModelParam()
+
+	/* public: ModelView (parameter names) interface */
+
+	public String getModelParam()
 	{
 		return MODEL_PARAM;
 	}
 
-	public String    getViewIdParam()
+	public String getViewIdParam()
 	{
 		return VIEWID_PARAM;
 	}
 
-	public String    getEntityParam()
+	public String getEntityParam()
 	{
 		return ENTITY_PARAM;
-	}
-
-	public UIForm    getForm()
-	{
-		return form;
-	}
-
-	public void      setForm(UIForm form)
-	{
-		this.form = form;
-		if(form == null) return;
-
-		form.setPrependId(false);
 	}
 
 
@@ -161,8 +184,10 @@ public abstract class ModelView extends ViewWithModes
 
 	protected ModelBean          obtainModel()
 	{
-		ModelBean model = obtainRequestModel();
-		return isRequestModelMatch(model)?(model):(null);
+		for(ModelBean model : getRequestedModels())
+			if(isRequestModelMatch(model))
+				return model;
+		return null;
 	}
 
 	/**
@@ -177,10 +202,32 @@ public abstract class ModelView extends ViewWithModes
 		return true;
 	}
 
-	protected ModelBean          obtainRequestModel()
+	protected ModelBean[]        obtainRequestedModels()
 	{
-		String key = s2s(request().getParameter(getModelParam()));
-		return (key == null)?(null):(modelPoint().readBean(key));
+		Set<String>     keys = obtainRequestedModelKeys();
+		List<ModelBean> res  = new ArrayList<ModelBean>(keys.size());
+
+		for(String key : keys) if((key = s2s(key)) != null)
+		{
+			ModelBean mb = modelPoint().readBean(key);
+			if(mb != null) res.add(mb);
+		}
+
+		return res.toArray(new ModelBean[res.size()]);
+	}
+
+	public Set<String>           obtainRequestedModelKeys()
+	{
+		//~: get the keys parameter
+		String[]        prms = request().getParameterValues(getModelParam());
+		if(prms == null) prms = new String[0];
+
+		//~: split the keys
+		Set<String>     keys = new LinkedHashSet<String>(prms.length);
+		for(String s : prms) if((s = s2s(s)) != null)
+			keys.addAll(Arrays.asList(s2a(s)));
+
+		return keys;
 	}
 
 	protected Long               obtainEntityKeyFromRequest()
@@ -197,9 +244,10 @@ public abstract class ModelView extends ViewWithModes
 
 	/* private: the view state */
 
-	private String    id;
-	private ModelBean model;
-	private UIForm    form;
+	private String      id;
+	private ModelBean   model;
+	private ModelBean[] models;
+	private String      modelKeys;
 
 
 	/* private static: view ids generator  */

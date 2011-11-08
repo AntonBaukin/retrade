@@ -48,7 +48,7 @@ public class NoModelFilter extends FilterBase
 		//?: {got no model exception} do redirect
 		if(nomoe != null) try
 		{
-			redirectOnNoModel(task, nomoe.getModel());
+			redirectOnNoModel(task, nomoe);
 		}
 		catch(Exception e)
 		{
@@ -59,13 +59,13 @@ public class NoModelFilter extends FilterBase
 
 	/* protected: no model redirecting */
 
-	protected void   redirectOnNoModel(FilterTask task, ModelBean model)
+	protected void   redirectOnNoModel(FilterTask task, NoModelException nomoe)
 	  throws Exception
 	{
 		Throwable error = task.getError();
 
 		//?: {can't send redirect}
-		if((model == null) || task.getResponse().isCommitted())
+		if((nomoe.getModel() == null) || task.getResponse().isCommitted())
 			return;
 
 		//?: {not a GET request} 302 redirect is forbidden!
@@ -73,14 +73,14 @@ public class NoModelFilter extends FilterBase
 			return;
 
 		//~: do the redirect
-		setResponseRedirect(task, model);
+		setResponseRedirect(task, nomoe);
 
 		//!: clear the error
 		if(task.getError() == error)
 			task.setError(null);
 	}
 
-	protected void   setResponseRedirect(FilterTask task, ModelBean model)
+	protected void   setResponseRedirect(FilterTask task, NoModelException nomoe)
 	  throws Exception
 	{
 		//HINT: we add session cookie manually to always be sure...
@@ -95,10 +95,10 @@ public class NoModelFilter extends FilterBase
 		//!: do send the redirect
 		task.getResponse().sendRedirect(
 		  task.getResponse().encodeURL(
-		    createRedirectURL(task, model)));
+		    createRedirectURL(task, nomoe)));
 	}
 
-	protected String createRedirectURL(FilterTask task, ModelBean model)
+	protected String createRedirectURL(FilterTask task, NoModelException nomoe)
 	{
 		String        cp  = task.getRequest().getContextPath();
 		String        uri = task.getRequest().getRequestURI();
@@ -118,7 +118,7 @@ public class NoModelFilter extends FilterBase
 		//?: {has no model parameter in query string} add it
 		if(mi == -1)
 		{
-			res.append(mp).append(model.getModelKey());
+			res.append(mp).append(nomoe.getModelKeys());
 			if(qs.length() != 0)
 				res.append('&').append(qs);
 		}
@@ -129,7 +129,7 @@ public class NoModelFilter extends FilterBase
 			if(ai == -1) ai = qs.length();
 
 			res.append(qs.substring(0, mi + mp.length()));
-			res.append(model.getModelKey());
+			res.append(nomoe.getModelKeys());
 			res.append(qs.substring(ai));
 		}
 

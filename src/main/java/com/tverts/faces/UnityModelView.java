@@ -10,6 +10,7 @@ import com.tverts.endure.United;
 
 /* com.tverts: model */
 
+import com.tverts.model.ModelBean;
 import com.tverts.model.UnityModelBean;
 
 /* com.tverts: support */
@@ -65,6 +66,10 @@ public abstract class UnityModelView extends ModelView
 		return new UnityModelBean();
 	}
 
+	protected boolean isRequestModelMatch(ModelBean model)
+	{
+		return (model instanceof UnityModelBean);
+	}
 
 	/* private: the entity (cached) */
 

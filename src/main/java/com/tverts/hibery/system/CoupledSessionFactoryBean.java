@@ -3,6 +3,7 @@ package com.tverts.hibery.system;
 /* Hibernate Persistence Layer  */
 
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
 
 /* Spring Framework */
 
@@ -19,10 +20,10 @@ public class   CoupledSessionFactoryBean
 {
 	/* protected: LocalSessionFactoryBean interface */
 
-	protected void postProcessConfiguration()
+	protected void postProcessConfiguration(Configuration config)
 	  throws HibernateException
 	{
-		super.postProcessConfiguration();
-		HiberSystem.getInstance().setConfiguration(getConfiguration());
+		super.postProcessConfiguration(config);
+		HiberSystem.getInstance().setConfiguration(config);
 	}
 }

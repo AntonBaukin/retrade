@@ -38,13 +38,30 @@ public class      NoModelException
 
 	/* public: NoModelException interface */
 
-	public ModelBean getModel()
+	public ModelBean        getModel()
 	{
 		return model;
 	}
 
+	/**
+	 * Optional parameter allowing to set the list of the
+	 * model keys to redirect. If set, the model key is not
+	 * added automatically.
+	 */
+	public String           getModelKeys()
+	{
+		return (modelKeys != null)?(modelKeys):
+		  (getModel().getModelKey());
+	}
+
+	public NoModelException setModelKeys(String modelKeys)
+	{
+		this.modelKeys = modelKeys;
+		return this;
+	}
 
 	/* private: actual model reference */
 
 	private ModelBean model;
+	private String    modelKeys;
 }
