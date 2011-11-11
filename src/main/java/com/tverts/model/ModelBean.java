@@ -43,6 +43,10 @@ public interface ModelBean extends Serializable
 	 */
 	public Date      getUpdateTime();
 
+	public boolean   isActive();
+
+	public void      setActive(boolean active);
+
 
 	/* public: ModelBean (data access) interface */
 

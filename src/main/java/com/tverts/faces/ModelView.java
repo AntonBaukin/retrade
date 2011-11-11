@@ -4,6 +4,7 @@ package com.tverts.faces;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,7 @@ import com.tverts.model.NoModelException;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.a2s;
+import static com.tverts.support.SU.cat;
 import static com.tverts.support.SU.s2a;
 import static com.tverts.support.SU.s2s;
 
@@ -98,20 +99,59 @@ public abstract class ModelView extends ViewWithModes
 		  (models = obtainRequestedModels());
 	}
 
+	public ModelBean[] getRequestedActiveModels()
+	{
+		ModelBean[]          rm = getRequestedModels();
+		if(rm == null) return null;
+
+		ArrayList<ModelBean> am = new ArrayList<ModelBean>(Arrays.asList(rm));
+
+		for(Iterator<ModelBean> i = am.iterator();(i.hasNext());)
+			if(!i.next().isActive())
+				i.remove();
+
+		return am.toArray(new ModelBean[am.size()]);
+	}
+
 	/**
 	 * Combines all the model keys requested with
 	 * the key of the current model. Allows to remember
 	 * the state in complex multi-view conversations.
+	 *
+	 * Inactive models are excluded.
 	 */
 	public String      getModelKeys()
 	{
-		if(modelKeys != null)
-			return modelKeys;
+		ModelBean[] am = getRequestedActiveModels();
+		Set<String> ks = new LinkedHashSet<String>(am.length);
 
-		Set<String> keys = obtainRequestedModelKeys();
-		keys.add(getModelKey());
+		for(ModelBean m : am) if(m.isActive())
+			ks.add(m.getModelKey());
 
-		return (modelKeys = a2s(keys));
+		if(getModel().isActive())
+			ks.add(getModel().getModelKey());
+
+		return cat(null, ",", ks).toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <B extends ModelBean> B
+	                   findRequestedModel(Class<B> beanClass)
+	{
+		for(ModelBean m : getRequestedModels())
+			if(beanClass.equals(m.getClass()))
+				return (B)m;
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <B extends ModelBean> B
+	                   findRequestedModelAssignable(Class<B> beanClass)
+	{
+		for(ModelBean m : getRequestedModels())
+			if(beanClass.isAssignableFrom(m.getClass()))
+				return (B)m;
+		return null;
 	}
 
 
@@ -247,7 +287,6 @@ public abstract class ModelView extends ViewWithModes
 	private String      id;
 	private ModelBean   model;
 	private ModelBean[] models;
-	private String      modelKeys;
 
 
 	/* private static: view ids generator  */

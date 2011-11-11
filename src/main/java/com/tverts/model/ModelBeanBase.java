@@ -21,30 +21,40 @@ public abstract class ModelBeanBase implements ModelBean
 
 	/* public: ModelBean (Java Bean) interface */
 
-	public String  getModelKey()
+	public String       getModelKey()
 	{
 		return modelKey;
 	}
 
-	public void    setModelKey(String key)
+	public void         setModelKey(String key)
 	{
 		this.modelKey = key;
 	}
 
-	public Date    getUpdateTime()
+	public Date         getUpdateTime()
 	{
 		return updateTime;
 	}
 
-	public void    setUpdateTime(Date updateTime)
+	public void         setUpdateTime(Date updateTime)
 	{
 		this.updateTime = updateTime;
+	}
+
+	public boolean      isActive()
+	{
+		return active;
+	}
+
+	public void         setActive(boolean active)
+	{
+		this.active = active;
 	}
 
 
 	/* public: ModelBean (data access) interface */
 
-	public ModelData  modelData()
+	public ModelData    modelData()
 	{
 		return null;
 	}
@@ -52,7 +62,7 @@ public abstract class ModelBeanBase implements ModelBean
 
 	/* protected: support interface */
 
-	protected void    markUpdated()
+	protected void      markUpdated()
 	{
 		Date ut = getUpdateTime();
 
@@ -61,14 +71,37 @@ public abstract class ModelBeanBase implements ModelBean
 			this.setUpdateTime(new Date());
 	}
 
-	protected boolean updateq(Object cur, Object tst)
+	protected boolean   updateq(Object cur, Object tst)
 	{
 		return (cur != null) && !cur.equals(tst);
+	}
+
+	protected ModelBean readModelBean(String key)
+	{
+		return ModelAccessPoint.model().readBean(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <B extends ModelBean> B
+	                    readModelBean(String key, Class<B> beanClass)
+	{
+		ModelBean mb = readModelBean(key);
+
+		if((mb != null) && (beanClass != null) &&
+		   !beanClass.isAssignableFrom(mb.getClass())
+		  )
+			throw new IllegalStateException(String.format(
+			  "Model bean requested by the key '%s' is not a class checked [%s]!",
+			  key, beanClass.getName()
+			));
+
+		return (B)mb;
 	}
 
 
 	/* private: attributes */
 
-	private String modelKey;
-	private Date   updateTime;
+	private String  modelKey;
+	private Date    updateTime;
+	private boolean active = true;
 }
