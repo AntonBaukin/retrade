@@ -15,6 +15,10 @@ import com.tverts.endure.Unity;
 import com.tverts.endure.core.GetUnity;
 import com.tverts.endure.core.UnitedAccess;
 
+/* com.tverts: support */
+
+import com.tverts.support.OU;
+
 
 /**
  * This model bean is focused on accessing
@@ -45,6 +49,19 @@ public class UnityModelBean extends ModelBeanBase
 			markUpdated();
 
 		this.primaryKey = primaryKey;
+	}
+
+	public void   setInstance(United instance)
+	{
+		if(instance == null)
+		{
+			setPrimaryKey(null);
+			unitedAccess = null;
+			return;
+		}
+
+		setPrimaryKey(instance.getPrimaryKey());
+		unitedAccess = createAccess(instance);
 	}
 
 
@@ -85,9 +102,18 @@ public class UnityModelBean extends ModelBeanBase
 		if(result == null) return null;
 
 		//~: create the access strategy
-		unitedAccess = new UnitedAccess<United>(result.getPrimaryKey());
+		unitedAccess = createAccess(result);
 
 		return result;
+	}
+
+
+	/* protected: support interface */
+
+	protected ObjectAccess<United> createAccess(United instance)
+	{
+		return OU.timedCache(instance,
+		  new UnitedAccess<United>(instance.getPrimaryKey()));
 	}
 
 

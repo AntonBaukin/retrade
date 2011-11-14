@@ -18,7 +18,6 @@ import java.util.LinkedList;
 /* com.tverts: objects */
 
 import com.tverts.objects.ObjectAccess;
-import com.tverts.objects.ObjectAccessRef;
 import com.tverts.objects.ObjectAccessTimedCache;
 import com.tverts.objects.RunnableWrapper;
 import com.tverts.objects.RunnableInterruptible;
@@ -162,9 +161,9 @@ public class OU
 	}
 
 	public static <O> ObjectAccess<O>
-	                     timedCache(O ref)
+	                     timedCache(O ref, ObjectAccess<O> factory)
 	{
-		return new ObjectAccessTimedCache<O>(new ObjectAccessRef<O>(ref));
+		return new ObjectAccessTimedCache<O>(ref, factory);
 	}
 
 

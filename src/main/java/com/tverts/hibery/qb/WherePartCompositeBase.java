@@ -25,19 +25,19 @@ public abstract class WherePartCompositeBase
 	/* public: WherePartComposite interface */
 
 	public WherePartComposite
-	              addPart(WherePart part)
+	                 addPart(WherePart part)
 	{
 		return this.addPart(null, part);
 	}
 
-	public String lastPartName()
+	public String    lastPartName()
 	{
 		Map.Entry<String, WherePart> p = getLastPart();
 		return (p != null)?(p.getKey()):(null);
 	}
 
 	public WherePartComposite
-	              addPart(String name, WherePart part)
+	                 addPart(String name, WherePart part)
 	{
 		//?: {do remove}
 		if(part == null)
@@ -60,12 +60,25 @@ public abstract class WherePartCompositeBase
 		return this;
 	}
 
-	public String getGlobalPrefix()
+	public WhereText addPart(String name, String query)
+	{
+		WhereText res;
+
+		addPart(name, res = new WhereText(query));
+		return res;
+	}
+
+	public WhereText addPart(String query)
+	{
+		return addPart(null, query);
+	}
+
+	public String    getGlobalPrefix()
 	{
 		return globalPrefix;
 	}
 
-	public void   setGlobalPrefix(String prefix)
+	public void      setGlobalPrefix(String prefix)
 	{
 		this.globalPrefix = prefix = s2s(prefix);
 
@@ -91,7 +104,7 @@ public abstract class WherePartCompositeBase
 			}
 	}
 
-	public void   collectParams(Map<String, Object> result)
+	public void      collectParams(Map<String, Object> result)
 	{
 		collectOwnParams(result);
 		collectAggregatedParams(result);

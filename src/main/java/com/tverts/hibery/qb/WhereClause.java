@@ -26,18 +26,6 @@ public class WhereClause extends WherePartLogic
 		  toString();
 	}
 
-
-	/* public: WherePartComposite interface */
-
-	public WhereText addPart(String query)
-	{
-		WhereText res;
-
-		addPart(res = new WhereText(query));
-		return res;
-	}
-
-
 	/* protected: query building */
 
 	protected String buildWhereText()

@@ -27,6 +27,13 @@ public class      ObjectAccessTimedCache<O>
 		this.factory = factory;
 	}
 
+	public ObjectAccessTimedCache(O instance, ObjectAccess<O> factory)
+	{
+		this.instance = instance;
+		this.factory  = factory;
+		updateTimestamp();
+	}
+
 	protected ObjectAccessTimedCache()
 	{}
 
