@@ -7,14 +7,14 @@ import java.io.Serializable;
 
 /**
  * This special version of object access strategy
- * caches the instance accessed up to 256 milliseconds.
+ * caches the instance accessed up to 250 milliseconds.
  * This allows not to ask for the instance in short periods.
  *
  *
  * @author anton.baukin@gmail.com
  */
-public class      ObjectAccessTimedCache<O>
-       implements ObjectAccess<O>, Serializable
+public final class ObjectAccessTimedCache<O>
+       implements  ObjectAccess<O>, Serializable
 {
 	public static final long serialVersionUID = 0L;
 
@@ -29,29 +29,28 @@ public class      ObjectAccessTimedCache<O>
 
 	public ObjectAccessTimedCache(O instance, ObjectAccess<O> factory)
 	{
-		this.instance = instance;
-		this.factory  = factory;
-		updateTimestamp();
+		this.instance  = instance;
+		this.factory   = factory;
+		this.timestamp = timestamp();
 	}
-
-	protected ObjectAccessTimedCache()
-	{}
 
 
 	/* public: ObjectAccess interface */
 
-	public O                  accessObject()
+	public O                accessObject()
 	{
 		checkTimeout();
 
 		//?: {has no instance yet} access it
 		if(instance != null)
-			prolongateTimestamp();
-		else
+			this.timestamp = timestamp(); //<-- just prolong usage
+		else if(factory != null)
 		{
-			instance = getFactory().accessObject();
-			updateTimestamp();
+			instance = factory.accessObject();
+			this.timestamp = timestamp();
 		}
+		else throw new IllegalStateException(
+		  "ObjectAccessTimedCache has access factory undefined!");
 
 		return instance;
 	}
@@ -59,60 +58,33 @@ public class      ObjectAccessTimedCache<O>
 
 	/* public: ObjectAccessTimedCache interface */
 
-	public ObjectAccess<O>    getFactory()
+	public ObjectAccess<O>  getFactory()
 	{
-		if(factory != null)
-			return factory;
-
-		if((factory = obtainFactory()) == null)
-			throw new IllegalStateException(
-			  "ObjectAccessTimedCache has access factory undefined!");
-
 		return factory;
 	}
 
-	public long               getTimestamp()
+	public long             getTimestamp()
 	{
 		return timestamp;
 	}
 
-	public void               updateTimestamp()
-	{
-		this.timestamp = timestamp();
-	}
-
-	public void               prolongateTimestamp()
+	public void             prolongate()
 	{
 		this.timestamp = timestamp();
 	}
 
 
-	/* protected: extend points */
+	/* private: simple things */
 
-	protected void            checkTimeout()
+	private void            checkTimeout()
 	{
-		if(timestamp != timestamp())
+		if(timestamp() - timestamp > 250L)
 			this.instance = null;
 	}
 
-	protected O               getInstance()
+	private long            timestamp()
 	{
-		return instance;
-	}
-
-	protected void            setInstance(O instance)
-	{
-		this.instance = instance;
-	}
-
-	protected ObjectAccess<O> obtainFactory()
-	{
-		return null;
-	}
-
-	protected long            timestamp()
-	{
-		return System.currentTimeMillis() & ~0xFFL;
+		return System.currentTimeMillis();
 	}
 
 
