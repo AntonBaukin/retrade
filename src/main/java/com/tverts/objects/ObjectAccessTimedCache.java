@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * This special version of object access strategy
- * caches the instance accessed up to 16 milliseconds.
+ * caches the instance accessed up to 256 milliseconds.
  * This allows not to ask for the instance in short periods.
  *
  *
@@ -112,7 +112,7 @@ public class      ObjectAccessTimedCache<O>
 
 	protected long            timestamp()
 	{
-		return System.currentTimeMillis() & ~0xFL;
+		return System.currentTimeMillis() & ~0xFFL;
 	}
 
 
