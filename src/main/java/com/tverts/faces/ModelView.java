@@ -42,8 +42,6 @@ public abstract class ModelView extends ViewWithModes
 	 */
 	public static final String MODEL_PARAM  = "model";
 
-	public static final String VIEWID_PARAM = "view";
-
 	/**
 	 * Parameter used to refer database entities
 	 * by their primary key.
@@ -57,6 +55,11 @@ public abstract class ModelView extends ViewWithModes
 	{
 		return (this.id != null)?(this.id):
 		  (this.id = obtainViewId());
+	}
+
+	public String      getNewViewId()
+	{
+		return String.format("V%x", VIEWID.incrementAndGet());
 	}
 
 	public ModelBean   getModel()
@@ -189,11 +192,6 @@ public abstract class ModelView extends ViewWithModes
 		return MODEL_PARAM;
 	}
 
-	public String getViewIdParam()
-	{
-		return VIEWID_PARAM;
-	}
-
 	public String getEntityParam()
 	{
 		return ENTITY_PARAM;
@@ -206,20 +204,9 @@ public abstract class ModelView extends ViewWithModes
 
 	protected String             obtainViewId()
 	{
-		String id = obtainRequestViewId();
-		if(id == null) id = genViewId();
+		String id = obtainRequestedViewId();
+		if(id == null) id = getNewViewId();
 		return id;
-	}
-
-	protected String             genViewId()
-	{
-		return String.format(
-		  "v%x", VIEWID.incrementAndGet());
-	}
-
-	protected String             obtainRequestViewId()
-	{
-		return s2s(request().getParameter(getViewIdParam()));
 	}
 
 	protected ModelBean          obtainModel()

@@ -23,7 +23,9 @@ public abstract class ViewWithModes
 {
 	/* constants */
 
-	public static final String VMODE_PARAM = "mode";
+	public static final String VIEWID_PARAM = "view";
+
+	public static final String VMODE_PARAM  = "mode";
 
 
 	/* public: ViewWithModes (view mode) interface */
@@ -44,9 +46,23 @@ public abstract class ViewWithModes
 		return getViewMode().toString().toLowerCase();
 	}
 
-	public String      getViewModeParam()
+	/**
+	 * Detects what mode to use to send POST requests
+	 * from the current view mode.
+	 */
+	public ViewMode    getViewModePost()
 	{
-		return VMODE_PARAM;
+		switch(getViewMode())
+		{
+			case PAGE: return ViewMode.PAGE_POST;
+			case BODY: return ViewMode.BODY_POST;
+			default  : return getViewMode();
+		}
+	}
+
+	public String      getViewModePostStr()
+	{
+		return getViewModePost().toString().toLowerCase();
 	}
 
 	public boolean     isViewModePage()
@@ -55,21 +71,27 @@ public abstract class ViewWithModes
 	}
 
 	/**
-	 * This tricky method tells that component may be
-	 * rendered in every JSF phase when page view mode,
-	 * but not rendered on render phase in any other mode.
+	 * This view mode is for Ajax request to the components
+	 * placed in page mode. This components do receive all
+	 * the Faces phases except the render one.
 	 *
-	 * This allows to tell that the component is seen when
-	 * applying request parameters, but not render it further.
+	 * This method tells {@code true} only in regular page
+	 * mode, or in page post mode.
 	 */
 	public boolean     isViewModePageRendered()
 	{
 		if(isViewModePage())
 			return true;
 
-		PhaseId phase = FacesContext.getCurrentInstance().
-		  getCurrentPhaseId();
-		return !PhaseId.RENDER_RESPONSE.equals(phase);
+		if(!isViewModePagePost())
+			return false;
+
+		return !isFacesRenderPhase();
+	}
+
+	public boolean     isViewModePagePost()
+	{
+		return ViewMode.PAGE_POST.equals(getViewMode());
 	}
 
 	public boolean     isViewModeBody()
@@ -77,13 +99,54 @@ public abstract class ViewWithModes
 		return ViewMode.BODY.equals(getViewMode());
 	}
 
-	public boolean     isViewModeAjaxPost()
+	/**
+	 * Having the same idea as page mode rendered,
+	 * this method supports only body and body post
+	 * modes. In body post mode it tell {@code false}
+	 * on the render phase.
+	 */
+	public boolean     isViewModeBodyRendered()
 	{
-		return ViewMode.AJAX_POST.equals(getViewMode());
+		if(isViewModeBody())
+			return true;
+
+		if(!isViewModeBodyPost())
+			return false;
+
+		return !isFacesRenderPhase();
+	}
+
+	public boolean     isViewModeBodyPost()
+	{
+		return ViewMode.BODY_POST.equals(getViewMode());
+	}
+
+	public boolean     isFacesRenderPhase()
+	{
+		return PhaseId.RENDER_RESPONSE.equals(
+		  FacesContext.getCurrentInstance().getCurrentPhaseId());
+	}
+
+
+	/* public: ViewWithModes (parameter names) interface */
+
+	public String      getViewIdParam()
+	{
+		return VIEWID_PARAM;
+	}
+
+	public String      getViewModeParam()
+	{
+		return VMODE_PARAM;
 	}
 
 
 	/* protected: view support interface */
+
+	protected String   obtainRequestedViewId()
+	{
+		return s2s(request().getParameter(getViewIdParam()));
+	}
 
 	protected ViewMode obtainViewMode()
 	{
