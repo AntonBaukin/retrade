@@ -195,6 +195,12 @@ public class HiberPoint
 		  (instance.getPrimaryKey() < 0);
 	}
 
+	public static boolean isTestPrimaryKey(Long pk)
+	{
+		return (pk != null) && (pk < 0);
+	}
+
+
 	/* private: primary database connectivity */
 
 	private volatile SessionFactory sessionFactory;

@@ -18,6 +18,7 @@ import java.util.LinkedList;
 /* com.tverts: objects */
 
 import com.tverts.objects.ObjectAccess;
+import com.tverts.objects.ObjectAccessRef;
 import com.tverts.objects.ObjectAccessTimedCache;
 import com.tverts.objects.RunnableWrapper;
 import com.tverts.objects.RunnableInterruptible;
@@ -153,6 +154,12 @@ public class OU
 
 
 	/* public: factories and object access */
+
+	public static <O> ObjectAccess<O>
+	                     permAcces(O ref)
+	{
+		return new ObjectAccessRef<O>(ref);
+	}
 
 	public static <O> ObjectAccess<O>
 	                     timedCache(ObjectAccess<O> factory)
