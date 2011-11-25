@@ -81,7 +81,7 @@ public abstract class ActionBuilderBase
 		if(!nabr.isComplete())
 			throw new IllegalStateException(String.format(
 			  "Action Builder had invoked Nested Builder strategy on the " +
-			  "task [%s], but the build with not complete as required!",
+			  "task [%s], but the build was not completed as it is required!",
 			  ActionsPoint.logsig(task)
 			));
 
