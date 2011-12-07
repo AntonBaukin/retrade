@@ -87,6 +87,35 @@ public class DU
 		return cl.getTime();
 	}
 
+	public static Date   merge(Date d, Date t)
+	{
+		return merge(d, t, null);
+	}
+
+	public static Date   merge(Date d, Date t, Calendar cl)
+	{
+		if(d == null) return t;
+		if(t == null) return d;
+
+		if(cl == null) cl = Calendar.getInstance();
+
+		cl.setTime(t);
+
+		int hh = cl.get(Calendar.HOUR_OF_DAY);
+		int mm = cl.get(Calendar.MINUTE);
+		int ss = cl.get(Calendar.SECOND);
+		int ms = cl.get(Calendar.MILLISECOND);
+
+		cl.setTime(d);
+
+		cl.set(Calendar.HOUR_OF_DAY,  hh);
+		cl.set(Calendar.MINUTE,       mm);
+		cl.set(Calendar.SECOND,       ss);
+		cl.set(Calendar.MILLISECOND,  ms);
+
+		return cl.getTime();
+	}
+
 
 	/* formatting */
 
@@ -169,6 +198,46 @@ public class DU
 		cl.set(Calendar.DAY_OF_MONTH, dd);
 		cl.set(Calendar.MONTH,        mm - 1);
 		cl.set(Calendar.YEAR,         yy);
+
+		return cl.getTime();
+	}
+
+	public static Date   str2time(String s)
+	{
+		return str2time(s, null);
+	}
+
+	/**
+	 * The format of the time supported is 24 hours timestamp
+	 * HH:mm[:SS[.sss]] with option seconds and milliseconds.
+	 */
+	public static Date   str2time(String s, Calendar cl)
+	{
+		if((s = SU.s2s(s)) == null) return null;
+
+		int sl = s.length();
+		int c0 = s.indexOf(':');
+		if(c0 == -1) throw new IllegalArgumentException();
+
+		int c1 = s.indexOf(':', c0 + 1);
+		if(c1 == -1) c1 = sl;
+
+		int d2 = (c1 == sl)?(-1):(s.indexOf('.', c1 + 1));
+		if(d2 == -1) d2 = sl;
+
+		int hh = Integer.parseInt(s.substring(0,      c0));
+		int mm = Integer.parseInt(s.substring(c0 + 1, c1));
+		int ss = (c1 == sl)?(0):
+		  Integer.parseInt(s.substring(c1 + 1,  d2));
+		int ms = (d2 == sl)?(0):
+		  Integer.parseInt(s.substring(d2 + 1,  sl));
+
+		if(cl == null) cl = Calendar.getInstance();
+		cl.clear();
+		cl.set(Calendar.HOUR_OF_DAY, hh);
+		cl.set(Calendar.MINUTE,      mm);
+		cl.set(Calendar.SECOND,      ss);
+		cl.set(Calendar.MILLISECOND, ms);
 
 		return cl.getTime();
 	}

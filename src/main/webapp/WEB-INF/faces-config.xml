@@ -45,6 +45,16 @@
 
   <converter>
     <converter-id>
+      com.tverts:fmt:time2str
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.TimeToStr
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
       com.tverts:fmt:datetime2str
     </converter-id>
 

@@ -18,4 +18,13 @@ public class CMP
 	{
 		return (n != null) && (BigDecimal.ZERO.compareTo(n) < 0);
 	}
+
+
+	/* general equality */
+
+	public static boolean eq(Object a, Object b)
+	{
+		return ((a == null) && (b == null)) ||
+		  ((a != null) && a.equals(b));
+	}
 }
