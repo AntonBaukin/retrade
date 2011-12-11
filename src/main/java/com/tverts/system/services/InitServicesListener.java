@@ -71,7 +71,7 @@ public class   InitServicesListener
 	/* protected: init stage */
 
 	/**
-	 * When an error occures, the init cycle is breaked with
+	 * When an error occurs, the init cycle is breaked with
 	 * {@link ServiceInitError} exception.
 	 *
 	 * @throws ServiceInitError
