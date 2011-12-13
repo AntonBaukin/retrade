@@ -4,6 +4,11 @@ package com.tverts.servlet.filters;
 
 import com.tverts.servlet.RequestPoint;
 
+/* tverts.com: model */
+
+import com.tverts.model.ModelRequest;
+
+
 /**
  * Binds the response with Servlet related components.
  * Related to {@code WebApplicationRequestListener}.
@@ -28,5 +33,6 @@ public class WebApplicationRequestFilter extends FilterBase
 			return;
 
 		RequestPoint.setResponse(null);
+		ModelRequest.getInstance().clear();
 	}
 }

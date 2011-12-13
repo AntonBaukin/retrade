@@ -40,13 +40,15 @@ public abstract class ModelView extends ViewWithModes
 	/**
 	 * Model key parameter in the HTTP request
 	 */
-	public static final String MODEL_PARAM  = "model";
+	public static final String MODEL_PARAM      = "model";
+
+	public static final String MODEL_REQ_PARAM  = "model-request";
 
 	/**
 	 * Parameter used to refer database entities
 	 * by their primary key.
 	 */
-	public static final String ENTITY_PARAM = "entity";
+	public static final String ENTITY_PARAM     = "entity";
 
 
 	/* public: ModelView (access model) interface */
@@ -190,6 +192,11 @@ public abstract class ModelView extends ViewWithModes
 	public String getModelParam()
 	{
 		return MODEL_PARAM;
+	}
+
+	public String getModelRequestParam()
+	{
+		return MODEL_REQ_PARAM;
 	}
 
 	public String getEntityParam()

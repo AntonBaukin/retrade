@@ -5,6 +5,7 @@
 <%@page import = 'com.tverts.model.ModelAccessPoint'%>
 <%@page import = 'com.tverts.model.ModelBean'%>
 <%@page import = 'com.tverts.model.ModelPoint'%>
+<%@page import = 'com.tverts.model.ModelRequest'%>
 <%@page import = 'com.tverts.objects.XMAPoint'%>
 <%@page import = 'static com.tverts.support.SU.s2s'%>
 <%@page import = 'com.tverts.support.streams.StringBuilderWriter'%>
@@ -15,22 +16,27 @@ ModelPoint point = ModelAccessPoint.model();
 String     param = s2s(request.getParameter(ModelView.MODEL_PARAM));
 Object     model = (param == null)?(null):(point.readBean(param));
 
+//~: set the model request key
+ModelRequest.getInstance().setKey(
+  request.getParameter(ModelView.MODEL_REQ_PARAM));
 
 //~: apply the data selection limits
 if(model instanceof DataSelectModel)
 {
-  int start = Integer.parseInt(s2s(request.getParameter(DataSelectModel.START_PARAM)));
-  int limit = Integer.parseInt(s2s(request.getParameter(DataSelectModel.LIMIT_PARAM)));
+  String  ps = s2s(request.getParameter(DataSelectModel.START_PARAM));
+  String  pl = s2s(request.getParameter(DataSelectModel.LIMIT_PARAM));
+  Integer s  = (ps == null)?(null):Integer.parseInt(ps);
+  Integer l  = (pl == null)?(null):Integer.parseInt(pl);
 
-  if(start < 0) throw new IllegalArgumentException(
-    "Data selection START parameter is illegal!");
+  if((s != null) && (s < 0)) throw new IllegalArgumentException(
+    "Data selection 'start' parameter is illegal!");
 
-  if((limit <= 0) || (limit > DataSelectModel.LIMIT_MAX))
+  if((l != null) && ((l <= 0) || (l > DataSelectModel.LIMIT_MAX)))
     throw new IllegalArgumentException(
-      "Data selection LIMIT parameter is illegal!");
+      "Data selection 'limit' parameter is illegal!");
 
-  ((DataSelectModel)model).setDataStart(start);
-  ((DataSelectModel)model).setDataLimit(limit);
+  if(s != null) ((DataSelectModel)model).setDataStart(s);
+  if(l != null) ((DataSelectModel)model).setDataLimit(l);
 }
 
 
