@@ -71,5 +71,6 @@ public class ModelRequest
 
 	/* private: thread local state */
 
-	private volatile ThreadLocal<String> key;
+	private volatile ThreadLocal<String> key =
+	  new ThreadLocal<String>();
 }
