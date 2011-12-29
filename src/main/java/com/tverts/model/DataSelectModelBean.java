@@ -19,6 +19,26 @@ public abstract class DataSelectModelBean
 
 	/* public: DataSelectModel interface */
 
+	public Long     domain()
+	{
+		if(getDomain() == null) throw new IllegalStateException(
+		  "Domain primary keys is not defined in the bean model " +
+		  getClass().getSimpleName() + "!"
+		);
+
+		return getDomain();
+	}
+
+	public Long     getDomain()
+	{
+		return domain;
+	}
+
+	public void     setDomain(Long domain)
+	{
+		this.domain = domain;
+	}
+
 	public Integer  getDataStart()
 	{
 		if(dataStart != null)
@@ -56,6 +76,7 @@ public abstract class DataSelectModelBean
 
 	/* private: attributes */
 
+	private Long    domain;
 	private Integer dataStart;
 	private Integer dataLimit;
 }
