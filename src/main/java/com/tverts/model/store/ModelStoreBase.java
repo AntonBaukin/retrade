@@ -18,7 +18,7 @@ import static com.tverts.support.SU.s2s;
 
 
 /**
- * TODO comment ModelStoreBase
+ * COMMENT ModelStoreBase
  *
  * @author anton.baukin@gmail.com
  */

@@ -5,7 +5,7 @@ package com.tverts.actions;
 import java.util.Map;
 
 /**
- * TODO comment ActionTask
+ * COMMENT ActionTask
  *
  * @author anton.baukin@gmail.com
  */

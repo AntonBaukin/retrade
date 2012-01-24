@@ -9,7 +9,7 @@ import org.hibernate.Session;
 import com.tverts.endure.keys.KeysContext;
 
 /**
- * TODO comment HiberKeysContext
+ * COMMENT HiberKeysContext
  *
  * @author anton.baukin@gmail.com
  */

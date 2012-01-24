@@ -10,7 +10,7 @@ import java.util.Date;
  * Model Store is a main container of the user's data
  * model parts (beans). It is itself a Java Bean.
  *
- * TODO complete comments on ModelStore
+ * COMMENT complete comments on ModelStore
  *
  *
  * @author anton.baukin@gmail.com

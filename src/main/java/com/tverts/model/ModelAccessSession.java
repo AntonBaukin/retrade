@@ -14,7 +14,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 
 /**
- * TODO comment ModelAccessSession
+ * COMMENT ModelAccessSession
  *
  * @author anton.baukin@gmail.com
  */

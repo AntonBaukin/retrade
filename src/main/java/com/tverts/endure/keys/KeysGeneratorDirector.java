@@ -5,7 +5,7 @@ package com.tverts.endure.keys;
 import static com.tverts.support.OU.cls;
 
 /**
- * TODO comment KeysGeneratorDirector
+ * COMMENT KeysGeneratorDirector
  *
  * @author anton.baukin@gmail.com
  */

@@ -1,7 +1,7 @@
 package com.tverts.endure;
 
 /**
- * TODO comment United
+ * COMMENT United
  *
  * @author anton.baukin@gmail.com
  */

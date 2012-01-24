@@ -14,7 +14,7 @@ import static com.tverts.support.SU.cats;
 
 
 /**
- * TODO comment ModelKeysGenBase
+ * COMMENT ModelKeysGenBase
  *
  * @author anton.baukin@gmail.com
  */

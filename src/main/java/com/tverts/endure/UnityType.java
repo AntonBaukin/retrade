@@ -7,7 +7,7 @@ import static com.tverts.support.SU.s2s;
 
 
 /**
- * TODO comment UnityType
+ * COMMENT UnityType
  *
  * @author anton.baukin@gmail.com
  */

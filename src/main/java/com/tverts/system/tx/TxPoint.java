@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 /**
- * TODO comment TxPoint
+ * COMMENT TxPoint
  *
  * @author anton.baukin@gmail.com
  */

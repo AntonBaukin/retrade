@@ -11,7 +11,7 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 
 /**
- * TODO comment CoupledSessionFactoryBean
+ * COMMENT CoupledSessionFactoryBean
  *
  * @author anton.baukin@gmail.com
  */

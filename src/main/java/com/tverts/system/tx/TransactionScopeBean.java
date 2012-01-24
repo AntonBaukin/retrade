@@ -20,7 +20,7 @@ import com.tverts.servlet.filters.FilterTask;
 import com.tverts.hibery.HiberPoint;
 
 /**
- * TODO comment TransactionScopeBean
+ * COMMENT TransactionScopeBean
  *
  * @author anton.baukin@gmail.com
  */

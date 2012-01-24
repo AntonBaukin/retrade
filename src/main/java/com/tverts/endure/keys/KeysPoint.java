@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 /**
- * TODO comment KeysPoint
+ * COMMENT KeysPoint
  *
  * @author anton.baukin@gmail.com
  */

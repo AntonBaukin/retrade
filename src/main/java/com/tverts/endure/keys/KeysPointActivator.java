@@ -18,7 +18,7 @@ import com.tverts.servlet.listeners.ServletContextListenerBase;
 import static com.tverts.support.SU.sXe;
 
 /**
- * TODO comment KeysPointActivator
+ * COMMENT KeysPointActivator
  *
  * @author anton.baukin@gmail.com
  */

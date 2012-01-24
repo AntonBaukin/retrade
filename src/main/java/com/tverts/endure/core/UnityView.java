@@ -13,7 +13,7 @@ import com.tverts.endure.UnityType;
 
 
 /**
- * TODO comment UnityView
+ * COMMENT UnityView
  *
  * @author anton.baukin@gmail.com
  */

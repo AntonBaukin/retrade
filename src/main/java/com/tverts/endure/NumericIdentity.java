@@ -1,7 +1,7 @@
 package com.tverts.endure;
 
 /**
- * TODO comment NumericIdentity
+ * COMMENT NumericIdentity
  *
  * @author anton.baukin@gmail.com
  */

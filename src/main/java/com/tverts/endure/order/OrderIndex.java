@@ -7,7 +7,7 @@ import com.tverts.endure.UnityType;
 
 
 /**
- * TODO comment OrderIndex
+ * COMMENT OrderIndex
  *
  * @author anton.baukin@gmail.com
  */

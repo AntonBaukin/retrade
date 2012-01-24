@@ -31,7 +31,7 @@ import com.tverts.support.OU;
 import com.tverts.support.SU;
 
 /**
- * TODO comment HiberKeysGeneratorBinder
+ * COMMENT HiberKeysGeneratorBinder
  *
  * @author anton.baukin@gmail.com
  */

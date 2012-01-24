@@ -11,7 +11,7 @@ import org.springframework.core.type.classreading.MetadataReader;
 
 
 /**
- * TODO comment CPScanFilterBase
+ * COMMENT CPScanFilterBase
  *
  * @author anton.baukin@gmail.com
  */

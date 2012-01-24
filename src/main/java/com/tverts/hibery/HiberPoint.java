@@ -24,7 +24,7 @@ import com.tverts.system.tx.TxContext;
 
 
 /**
- * TODO comment HiberPoint
+ * COMMENT HiberPoint
  *
  * @author anton.baukin@gmail.com
  */

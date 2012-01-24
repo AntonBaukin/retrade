@@ -1,7 +1,7 @@
 package com.tverts.endure;
 
 /**
- * TODO comment Unity
+ * COMMENT Unity
  *
  * @author anton.baukin@gmail.com
  */

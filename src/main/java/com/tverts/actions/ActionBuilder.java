@@ -1,7 +1,7 @@
 package com.tverts.actions;
 
 /**
- * TODO comment ActionBuilder
+ * COMMENT ActionBuilder
  *
  * @author anton.baukin@gmail.com
  */

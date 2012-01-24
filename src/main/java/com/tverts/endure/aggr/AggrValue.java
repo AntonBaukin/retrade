@@ -15,7 +15,7 @@ import com.tverts.endure.core.Entity;
  * Aggregated Value is a data facade standing for
  * a collection of aggregation components referring it.
  *
- * TODO complete comments on AggrValue
+ * COMMENT complete comments on AggrValue
  *
  * @author anton.baukin@gmail.com
  */

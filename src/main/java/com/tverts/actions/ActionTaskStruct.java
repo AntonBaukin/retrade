@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO comment ActionTaskStruct
+ * COMMENT ActionTaskStruct
  *
  * @author anton.baukin@gmail.com
  */

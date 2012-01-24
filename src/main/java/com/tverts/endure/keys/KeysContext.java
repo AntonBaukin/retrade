@@ -1,7 +1,7 @@
 package com.tverts.endure.keys;
 
 /**
- * TODO comment KeysContext
+ * COMMENT KeysContext
  *
  * @author anton.baukin@gmail.com
  */

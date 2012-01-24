@@ -3,7 +3,7 @@ package com.tverts.actions;
 /**
  * The stages of action processing.
  *
- * TODO add comments to ActionPhase
+ * COMMENT add comments to ActionPhase
  *
  * @author anton.baukin@gmail.com
  */

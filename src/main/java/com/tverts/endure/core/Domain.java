@@ -5,7 +5,7 @@ package com.tverts.endure.core;
 import static com.tverts.support.SU.s2s;
 
 /**
- * TODO comment Domain
+ * COMMENT Domain
  *
  * @author anton.baukin@gmail.com
  */

@@ -25,7 +25,7 @@ import com.tverts.support.logic.Predicate;
  * Open phase is the initialization, trigger phase does
  * the actual work, and close phase cleanups the results.
  *
- * TODO continue comments on Action
+ * COMMENT continue comments on Action
  *
  * @author anton.baukin@gmail.com
  */

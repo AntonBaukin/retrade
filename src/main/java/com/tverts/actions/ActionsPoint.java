@@ -11,7 +11,7 @@ import java.util.Map;
 import com.tverts.support.OU;
 
 /**
- * TODO comment ActionsPoint
+ * COMMENT ActionsPoint
  *
  * @author anton.baukin@gmail.com
  */

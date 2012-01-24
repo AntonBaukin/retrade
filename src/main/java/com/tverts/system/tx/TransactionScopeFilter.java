@@ -15,7 +15,7 @@ import com.tverts.spring.SpringPoint;
 import static com.tverts.support.SU.s2s;
 
 /**
- * TODO comment TransactionScopeFilter
+ * COMMENT TransactionScopeFilter
  *
  * @author anton.baukin@gmail.com
  */

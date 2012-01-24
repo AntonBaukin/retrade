@@ -12,7 +12,7 @@ import com.tverts.endure.aggr.AggrItemBase;
 /**
  * Component of aggregated value of the Rest Cost.
  *
- * TODO complete comments on AggrItemRestCost
+ * COMMENT complete comments on AggrItemRestCost
  *
  * @author anton.baukin@gmail.com
  */

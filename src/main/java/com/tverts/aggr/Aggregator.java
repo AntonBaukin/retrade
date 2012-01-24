@@ -3,7 +3,7 @@ package com.tverts.aggr;
 /**
  * Aggregation strategy.
  *
- * TODO complete comments on Aggregator
+ * COMMENT complete comments on Aggregator
  *
  *
  * @author anton.baukin@gmail.com

@@ -6,7 +6,7 @@ import java.util.Date;
 
 
 /**
- * TODO comment DelegatingModelPoint
+ * COMMENT DelegatingModelPoint
  *
  * @author anton.baukin@gmail.com
  */

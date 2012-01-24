@@ -16,7 +16,7 @@ import com.tverts.hibery.HiberPoint;
 import org.hibernate.id.IdentifierGenerator;
 
 /**
- * TODO comment HiberKeysGeneratorBridge
+ * COMMENT HiberKeysGeneratorBridge
  *
  * @author anton.baukin@gmail.com
  */

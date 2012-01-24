@@ -12,7 +12,7 @@ import static com.tverts.support.OU.xml2obj;
 
 
 /**
- * TODO comment AggrRequest
+ * COMMENT AggrRequest
  *
  *
  * @author anton.baukin@gmail.com

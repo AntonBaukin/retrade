@@ -8,7 +8,7 @@ import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
 
 /**
- * TODO comment UnityLink
+ * COMMENT UnityLink
  *
  * @author anton.baukin@gmail.com
  */

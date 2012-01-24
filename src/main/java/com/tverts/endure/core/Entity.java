@@ -7,7 +7,7 @@ import com.tverts.endure.United;
 import com.tverts.endure.Unity;
 
 /**
- * TODO comment Entity
+ * COMMENT Entity
  *
  * @author anton.baukin@gmail.com
  */
