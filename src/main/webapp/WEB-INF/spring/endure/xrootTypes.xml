@@ -4,6 +4,13 @@
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
   <!--=================================================
+    =  Unity Types for XRoot Module Locks             =
+    +================================================-->
+
+  <import resource = 'xrootLocks.xml'/>
+
+
+  <!--=================================================
     =  Unity Types for XRoot Module                   =
     +==================================================
     |
@@ -16,7 +23,7 @@
     |
     +================================================-->
 
-  <bean name  = 'xrootUnityTypes'
+  <bean name  = 'xrootCoreTypes'
         class = 'com.tverts.objects.StringBean'>
     <property name = 'string'>
       <value>
@@ -36,6 +43,23 @@
         com.tverts.endure.order.ExternalOrder Test: Domain: Order Index
 
       </value>
+    </property>
+  </bean>
+
+
+  <bean name  = 'xrootUnityTypes'
+        class = 'com.tverts.objects.StringsList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- execution root module core types -->
+        <ref bean = 'xrootCoreTypes'/>
+
+        <!-- execution root module locks types -->
+        <ref bean = 'xrootLocksTypes'/>
+
+      </list>
     </property>
   </bean>
 

@@ -12,6 +12,13 @@
 
 
   <!--=================================================
+    =  Unity Types for XRoot Module Locks             =
+    +================================================-->
+
+  <import resource = 'xrootLocks.xml'/>
+
+
+  <!--=================================================
     =  Unity Types Defined                            =
     +==================================================
     |
@@ -23,18 +30,8 @@
   <bean name  = 'unityTypesActivator'
         class = 'com.tverts.hibery.system.UnityTypesActivator'>
 
-    <property name = 'unityTypes'>
-      <bean class = 'com.tverts.objects.StringsList'>
-        <property name = 'references'>
-          <list>
-
-            <!-- execution root module unity types -->
-            <ref bean = 'xrootUnityTypes'/>
-
-          </list>
-        </property>
-      </bean>
-    </property>
+    <property name = 'unityTypes'
+              ref  = 'xrootUnityTypes'/>
   </bean>
 
 </beans>

@@ -23,6 +23,14 @@ import com.tverts.objects.ObjectAccessTimedCache;
 import com.tverts.objects.RunnableWrapper;
 import com.tverts.objects.RunnableInterruptible;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.system.HiberSystem;
+
+/* com.tverts: endure core */
+
+import com.tverts.endure.PrimaryIdentity;
+
 /* com.tverts: support */
 
 import com.tverts.support.streams.BigDecimalXMLEncoderPersistenceDelegate;
@@ -337,7 +345,7 @@ public class OU
 	/**
 	 * TODO move all logging support from OU to LU
 	 */
-	public static String sig(Object obj)
+	public static String  sig(Object obj)
 	{
 		if(obj == null) return "null";
 
@@ -348,20 +356,35 @@ public class OU
 		);
 	}
 
-	public static String cls(Object obj)
+	public static String  sig(PrimaryIdentity obj)
+	{
+		if(obj == null) return "null";
+
+		return String.format(
+		  "%s[%s]@%d ",
+		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(),
+		  (obj.getPrimaryKey() == null)?("NO KEY"):(obj.getPrimaryKey().toString()),
+		  System.identityHashCode(obj)
+		);
+	}
+
+	public static String  cls(Object obj)
 	{
 		return cls((obj == null)?(null):(obj.getClass()));
 	}
 
-	public static String cls(Object obj, Class def)
+	public static String  cls(Object obj, Class def)
 	{
 		return cls((obj == null)?(def):(obj.getClass()));
 	}
 
-	public static String cls(Class cls)
+	public static String  cls(Class cls)
 	{
 		return (cls == null)?("undefined"):(cls.getName());
 	}
+
+
+	/* public: class checks */
 
 	/**
 	 * Asserts that that at least one of the given check
@@ -369,7 +392,7 @@ public class OU
 	 * If no, {@link IllegalStateException} is raised.
 	 */
 	@SuppressWarnings("unchecked")
-	public static void   assignable(Class cls, Class... checks)
+	public static void    assignable(Class cls, Class... checks)
 	{
 		if(cls != null) for(Class check : checks)
 			//?: {the class is in the check list}
@@ -385,8 +408,16 @@ public class OU
 		));
 	}
 
-	public static void   assignable(Object obj, Class... checks)
+	public static void    assignable(Object obj, Class... checks)
 	{
 		assignable((obj == null)?(null):(obj.getClass()), checks);
+	}
+
+	public static boolean eqcls(Object a, Object b)
+	{
+		if(a == b) return true;
+		if((a == null) || (b == null)) return false;
+
+		return a.getClass().getName().equals(b.getClass().getName());
 	}
 }

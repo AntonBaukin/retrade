@@ -192,12 +192,12 @@ public class HiberPoint
 	public static boolean isTestInstance(NumericIdentity instance)
 	{
 		return (instance.getPrimaryKey() != null) &&
-		  (instance.getPrimaryKey() < 0);
+		  (instance.getPrimaryKey() < 0L);
 	}
 
 	public static boolean isTestPrimaryKey(Long pk)
 	{
-		return (pk != null) && (pk < 0);
+		return (pk != null) && (pk < 0L);
 	}
 
 

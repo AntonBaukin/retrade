@@ -195,8 +195,8 @@ public class UnityType implements PrimaryIdentity
 
 	private String    typeName;
 	private Class     typeClass;
-	private char      typeFlag;
-	private char      systemFlag;
+	private char      typeFlag   = '?';
+	private char      systemFlag = 'S';
 
 	private String    title;
 	private String    titleLo;

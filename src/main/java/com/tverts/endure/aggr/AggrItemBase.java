@@ -5,6 +5,10 @@ package com.tverts.endure.aggr;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
 
+/* com.tverts: support */
+
+import static com.tverts.support.OU.eqcls;
+
 
 /**
  * Convenient abstract implementation of an aggregated
@@ -104,6 +108,27 @@ public abstract class AggrItemBase implements AggrItem
 	public void      setHistoryIndex(Long historyIndex)
 	{
 		this.historyIndex = historyIndex;
+	}
+
+
+	/* public: Object interface */
+
+	public boolean   equals(Object o)
+	{
+		if(this == o) return true;
+		if(!eqcls(this, o)) return false;
+
+		Long k0 = this.getPrimaryKey();
+		Long k1 = ((AggrItemBase)o).getPrimaryKey();
+
+		return (k0 != null) && k0.equals(k1);
+	}
+
+	public int       hashCode()
+	{
+		Long k0 = this.getPrimaryKey();
+
+		return (k0 == null)?(0):(k0.hashCode());
 	}
 
 

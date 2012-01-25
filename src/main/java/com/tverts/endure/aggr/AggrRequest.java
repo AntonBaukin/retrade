@@ -150,6 +150,30 @@ public class AggrRequest implements NumericIdentity
 	}
 
 
+	/* public: Object interface */
+
+	public boolean equals(Object o)
+	{
+		if(this == o)
+			return true;
+
+		if(!(o instanceof AggrRequest))
+			return false;
+
+		Long k0 = this.getPrimaryKey();
+		Long k1 = ((AggrRequest)o).getPrimaryKey();
+
+		return (k0 != null) && k0.equals(k1);
+	}
+
+	public int     hashCode()
+	{
+		Long k0 = this.getPrimaryKey();
+
+		return (k0 == null)?(0):(k0.hashCode());
+	}
+
+
 	/* persisted attributes */
 
 	private Long      primaryKey;

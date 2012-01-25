@@ -7,14 +7,6 @@ import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.endure.ActionBuilderXRoot;
 
-/* com.tverts: hibery */
-
-import static com.tverts.hibery.HiberPoint.setPrimaryKey;
-
-/* com.tverts: support */
-
-import static com.tverts.support.SU.s2s;
-
 
 /**
  * {@link Domain} processing actions builder.
@@ -62,7 +54,7 @@ public class ActDomain extends ActionBuilderXRoot
 		checkTargetClass(abr, Domain.class);
 
 		//NOTE that the actions are added to chain here
-		//     as to the stack.
+		//     as to a stack.
 
 		//~: create domain's areal (is executed last!)
 		xnest(abr, ActDomain.ENSURE, target(abr));
@@ -81,8 +73,15 @@ public class ActDomain extends ActionBuilderXRoot
 		//?: {target is not a Domain}
 		checkTargetClass(abr, Domain.class);
 
-		//TODO ensure Domain
+		//~: ensure domain locks
+		ensureDomainLocks(abr);
 
 		complete(abr);
+	}
+
+	protected void ensureDomainLocks(ActionBuildRec abr)
+	{
+		//~: goods & stores lock
+		ensureLock(abr, Domains.LOCK_XGOODS);
 	}
 }

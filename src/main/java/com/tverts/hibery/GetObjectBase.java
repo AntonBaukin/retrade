@@ -18,16 +18,14 @@ import org.hibernate.SessionFactory;
 
 import com.tverts.hibery.qb.QueryBuilder;
 
-/* com.tverts: support */
-
-import com.tverts.support.SU;
-
 
 /**
  * Basic implementation of so-called 'Get Object' Spring Bean.
  * It implements Data Access Object pattern.
  *
  * Get objects may be a prototype, or a singleton beans.
+ * Consider {@link GetObjectPrototypeBase} subclass to allow
+ * direct session references stored in prototype beans.
  *
  *
  * @author anton.baukin@gmail.com

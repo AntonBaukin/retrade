@@ -84,6 +84,30 @@ public abstract class UnityView implements United
 	}
 
 
+	/* public: Object interface */
+
+	public boolean    equals(Object u)
+	{
+		if(this == u)
+			return true;
+
+		if(!(u instanceof UnityView))
+			return false;
+
+		Long k0 = this.getPrimaryKey();
+		Long k1 = ((UnityView)u).getPrimaryKey();
+
+		return (k0 != null) && k0.equals(k1);
+	}
+
+	public int        hashCode()
+	{
+		Long k0 = this.getPrimaryKey();
+
+		return (k0 == null)?(0):(k0.hashCode());
+	}
+
+
 	/* persisted attributes */
 
 	private Long      primaryKey;
