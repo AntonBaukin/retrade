@@ -20,7 +20,7 @@ import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: support */
 
-import com.tverts.support.OU;
+import com.tverts.support.LU;
 
 
 /**
@@ -113,7 +113,7 @@ public class ActionsCollection
 			if(!isDelayedCreation() && (getSaveTarget() == null))
 				throw new IllegalStateException(String.format(
 				  "Can't save undefined entity, or of the class '%s' " +
-				  "not a NumericIdentity!", OU.cls(targetOrNull())
+				  "not a NumericIdentity!", LU.cls(targetOrNull())
 				));
 		}
 

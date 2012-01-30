@@ -21,6 +21,7 @@ import com.tverts.endure.NumericIdentity;
 
 /* com.tverts: predicates */
 
+import com.tverts.support.LU;
 import com.tverts.support.logic.Predicate;
 
 /* com.tverts: support */
@@ -222,7 +223,7 @@ public abstract class ActionBuilderBase
 		if((res != null) && (c1ass != null) && !c1ass.isAssignableFrom(res.getClass()))
 			throw new IllegalStateException(String.format(
 			  "Action Builder target [%s] is not of a requested class '%s'!",
-			  OU.cls(res), OU.cls(c1ass)
+			  LU.cls(res), LU.cls(c1ass)
 			));
 
 		return (T)res;
@@ -247,7 +248,7 @@ public abstract class ActionBuilderBase
 		if((c1ass != null) && !c1ass.isAssignableFrom(res.getClass()))
 			throw new IllegalStateException(String.format(
 			  "Action Builder target [%s] is not of a requested class '%s'!",
-			  OU.cls(res), OU.cls(c1ass)
+			  LU.cls(res), LU.cls(c1ass)
 			));
 
 		return (T)res;
@@ -282,7 +283,7 @@ public abstract class ActionBuilderBase
 		  "Action Builder expects (defined) target of classes %s, " +
 		  "but not of the class '%s'!",
 
-		  Arrays.asList(tclasses).toString(), OU.cls(tarcls)
+		  Arrays.asList(tclasses).toString(), LU.cls(tarcls)
 		));
 	}
 

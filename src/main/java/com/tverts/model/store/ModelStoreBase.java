@@ -14,6 +14,7 @@ import com.tverts.model.ModelStore;
 /* com.tverts: support */
 
 import com.tverts.support.OU;
+import com.tverts.support.LU;
 import static com.tverts.support.SU.s2s;
 
 
@@ -55,7 +56,7 @@ public abstract class ModelStoreBase
 		//?: {undefined result} illegal state
 		if(e == null) throw new IllegalStateException(String.format(
 		  "Model Store was unable to save instance '%s' due " +
-		  "to the internal mapping error!", OU.cls(bean)));
+		  "to the internal mapping error!", LU.cls(bean)));
 
 		return e.getModelBean();
 	}
@@ -226,7 +227,7 @@ public abstract class ModelStoreBase
 		//?: {the key was not created}
 		if(key == null) throw new IllegalStateException(String.format(
 		  "Model Store was unable to create to create a key for model bean " +
-		  "'%s' with generator '%s'", OU.cls(bean), OU.cls(gen)
+		  "'%s' with generator '%s'", LU.cls(bean), LU.cls(gen)
 		));
 
 		//!: do assign

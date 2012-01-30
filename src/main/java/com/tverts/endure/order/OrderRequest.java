@@ -16,7 +16,7 @@ import com.tverts.system.tx.TxContext;
 
 /* com.tverts: support */
 
-import com.tverts.support.OU;
+import com.tverts.support.LU;
 
 
 /**
@@ -145,7 +145,7 @@ public class OrderRequest
 		return String.format(
 		  "Order Index request for instance [%s] %s reference [%s]",
 
-		  OU.sig(getInstance()), OU.sig(getReference()),
+		  LU.sig(getInstance()), LU.sig(getReference()),
 		  (isBeforeAfter())?("after"):("before")
 		);
 	}

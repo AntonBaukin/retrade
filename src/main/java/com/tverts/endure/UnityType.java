@@ -2,7 +2,7 @@ package com.tverts.endure;
 
 /* com.tverts: support */
 
-import static com.tverts.support.OU.cls;
+import static com.tverts.support.LU.cls;
 import static com.tverts.support.SU.s2s;
 
 

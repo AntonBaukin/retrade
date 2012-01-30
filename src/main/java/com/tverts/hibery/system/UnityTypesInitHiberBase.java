@@ -116,7 +116,7 @@ public abstract class UnityTypesInitHiberBase
 		if(SU.sXe(typeName))
 			throw new IllegalStateException(String.format(
 			  "Can't ensure Unity Type of undefined type name! " +
-			  "Type class '%s'",  OU.cls(typeClass)
+			  "Type class '%s'",  LU.cls(typeClass)
 			));
 	}
 

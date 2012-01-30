@@ -35,7 +35,7 @@ import static com.tverts.shunts.SelfShuntPoint.LOG_SHARED;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
-import static com.tverts.support.OU.sig;
+import static com.tverts.support.LU.sig;
 
 @Component("shuntTxScopes") @Scope("prototype")
 @SelfShuntUnit(single = true)

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.tverts.support.LU;
 
-import static com.tverts.support.OU.sig;
+import static com.tverts.support.LU.sig;
 
 /**
  * Runtime test for {@link ServletRequestListenerBean}.

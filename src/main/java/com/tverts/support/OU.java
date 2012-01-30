@@ -302,7 +302,7 @@ public class OU
 		catch(Exception e)
 		{
 			throw new RuntimeException(
-			  "Error occured while XML Encoding Java Bean of class " + cls(bean), e);
+			  "Error occured while XML Encoding Java Bean of class " + LU.cls(bean), e);
 		}
 	}
 
@@ -333,55 +333,14 @@ public class OU
 
 		if((res != null) && (c1ass != null) && !c1ass.isAssignableFrom(res.getClass()))
 			throw new IllegalStateException(
-			  "Can't cast XML Decoded instance of class '" + cls(res) + "' to the " +
+			  "Can't cast XML Decoded instance of class '" + LU.cls(res) + "' to the " +
 			  "required class '" + c1ass.getName() + "'!");
 
 		return (O)res;
 	}
 
 
-	/* public: logging support */
 
-	/**
-	 * TODO move all logging support from OU to LU
-	 */
-	public static String  sig(Object obj)
-	{
-		if(obj == null) return "null";
-
-		return String.format(
-		  "%s@%d",
-		  obj.getClass().getSimpleName(),
-		  System.identityHashCode(obj)
-		);
-	}
-
-	public static String  sig(PrimaryIdentity obj)
-	{
-		if(obj == null) return "null";
-
-		return String.format(
-		  "%s[%s]@%d ",
-		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(),
-		  (obj.getPrimaryKey() == null)?("NO KEY"):(obj.getPrimaryKey().toString()),
-		  System.identityHashCode(obj)
-		);
-	}
-
-	public static String  cls(Object obj)
-	{
-		return cls((obj == null)?(null):(obj.getClass()));
-	}
-
-	public static String  cls(Object obj, Class def)
-	{
-		return cls((obj == null)?(def):(obj.getClass()));
-	}
-
-	public static String  cls(Class cls)
-	{
-		return (cls == null)?("undefined"):(cls.getName());
-	}
 
 
 	/* public: class checks */
@@ -404,7 +363,7 @@ public class OU
 		  "Class assertion failed: there is no class in the list %s " +
 		  "that is assignable from the class '%s'!",
 
-		  Arrays.asList(checks).toString(), OU.cls(cls)
+		  Arrays.asList(checks).toString(), LU.cls(cls)
 		));
 	}
 

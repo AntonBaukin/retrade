@@ -12,7 +12,7 @@ import com.tverts.model.ModelBean;
 
 /* com.tverts: support */
 
-import com.tverts.support.OU;
+import com.tverts.support.LU;
 import com.tverts.support.SU;
 
 
@@ -90,7 +90,7 @@ public class ModelKeysGenHiber extends ModelKeysGenBase
 		//?: {the key was not created}
 		if(key == null) throw new IllegalStateException(
 		  "Unable to generate model key for the target bean " +
-		  OU.cls(target));
+		  LU.cls(target));
 
 		//?: {the key is long value}
 		if(key instanceof Long)

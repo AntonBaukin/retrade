@@ -193,7 +193,7 @@ public abstract class ActionBase implements Action
 		if((tclass != null) && !tclass.isAssignableFrom(res.getClass()))
 			throw new IllegalStateException(String.format(
 			  "Action target [%s] can't be cast to class '%s'",
-			  OU.sig(res), tclass.getName()
+			  LU.sig(res), tclass.getName()
 			));
 
 		return (O)getTask().getTarget();
@@ -239,7 +239,7 @@ public abstract class ActionBase implements Action
 		if((tclass != null) && !tclass.isAssignableFrom(target.getClass()))
 			throw new IllegalStateException(String.format(
 			  "Action target [%s] can't be cast to class '%s'",
-			  OU.sig(target), tclass.getName()
+			  LU.sig(target), tclass.getName()
 			));
 
 		return (O)target;
@@ -254,7 +254,7 @@ public abstract class ActionBase implements Action
 		if((tclass != null) && !tclass.isAssignableFrom(target.getClass()))
 			throw new IllegalStateException(String.format(
 			  "Action target [%s] can't be cast to class '%s'",
-			  OU.sig(target), tclass.getName()
+			  LU.sig(target), tclass.getName()
 			));
 
 		return (O)target;
@@ -334,7 +334,7 @@ public abstract class ActionBase implements Action
 
 	protected String logsig()
 	{
-		return "action " + OU.sig(this);
+		return "action " + LU.sig(this);
 	}
 
 	protected String logsig(ActionTask task)

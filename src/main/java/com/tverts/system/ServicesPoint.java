@@ -11,7 +11,7 @@ import com.tverts.system.services.ServicesList;
 
 /* tverts.com: support */
 
-import com.tverts.support.OU;
+import com.tverts.support.LU;
 
 
 /**
@@ -57,7 +57,7 @@ public class   ServicesPoint
 	{
 		return (service instanceof ServiceBase)
 		  ?(((ServiceBase)service).logsig())
-		  :(OU.sig(service));
+		  :(LU.sig(service));
 	}
 
 	public static void   appendServicesList (

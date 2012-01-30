@@ -2,7 +2,7 @@ package com.tverts.endure.keys;
 
 /* com.tverts: support */
 
-import static com.tverts.support.OU.cls;
+import static com.tverts.support.LU.cls;
 
 /**
  * COMMENT KeysGeneratorDirector

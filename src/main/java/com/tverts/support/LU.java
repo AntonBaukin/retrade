@@ -1,5 +1,13 @@
 package com.tverts.support;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.system.HiberSystem;
+
+/* com.tverts: endure core */
+
+import com.tverts.endure.PrimaryIdentity;
+
 /* com.tverts: support (logging) */
 
 import com.tverts.support.logs.LogLevel;
@@ -8,6 +16,7 @@ import com.tverts.support.logs.LogPoint;
 /* com.tverts: support  */
 
 import static com.tverts.support.SU.cat;
+
 
 /**
  * Logging support, utilities and wrappers.
@@ -159,6 +168,47 @@ public class LU
 	{
 		LogPoint.getInstance().getLogStrategy().
 		  logErr(LogLevel.ERROR, dest, cat(msgs), err);
+	}
+
+
+    /* public: logging support */
+
+	public static String sig(Object obj)
+	{
+		if(obj == null) return "null";
+
+		return String.format(
+		  "%s@%d",
+		  obj.getClass().getSimpleName(),
+		  System.identityHashCode(obj)
+		);
+	}
+
+	public static String sig(PrimaryIdentity obj)
+	{
+		if(obj == null) return "null";
+
+		return String.format(
+		  "%s[%s]@%d ",
+		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(),
+		  (obj.getPrimaryKey() == null)?("NO KEY"):(obj.getPrimaryKey().toString()),
+		  System.identityHashCode(obj)
+		);
+	}
+
+	public static String cls(Object obj)
+	{
+		return cls((obj == null)?(null):(obj.getClass()));
+	}
+
+	public static String cls(Object obj, Class def)
+	{
+		return cls((obj == null)?(def):(obj.getClass()));
+	}
+
+	public static String cls(Class cls)
+	{
+		return (cls == null)?("undefined"):(cls.getName());
 	}
 
 

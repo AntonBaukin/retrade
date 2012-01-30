@@ -24,7 +24,7 @@ import com.tverts.endure.UnityTypes;
 
 /* com.tverts: support */
 
-import com.tverts.support.OU;
+import com.tverts.support.LU;
 
 
 /**
@@ -176,7 +176,7 @@ public class ActUnity extends ActionBuilderXRoot
 			if(this.unityType == null)
 				throw new IllegalStateException(String.format(
 				  "Default Unity Builder could not found distinct system Unity " +
-				  "Type for the United instance of class [%s]", OU.cls(xtarget())
+				  "Type for the United instance of class [%s]", LU.cls(xtarget())
 				));
 
 			//~: create the unity instance

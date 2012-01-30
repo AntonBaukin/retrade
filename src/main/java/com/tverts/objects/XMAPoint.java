@@ -13,7 +13,7 @@ import org.springframework.oxm.Marshaller;
 
 /* com.tverts: support */
 
-import com.tverts.support.OU;
+import com.tverts.support.LU;
 
 
 /**
@@ -67,7 +67,7 @@ public class XMAPoint
 		{
 			throw new RuntimeException(String.format(
 			  "Error occured when OXM marshalling object of class '%s'",
-			  OU.cls(object)), e);
+			  LU.cls(object)), e);
 		}
 	}
 

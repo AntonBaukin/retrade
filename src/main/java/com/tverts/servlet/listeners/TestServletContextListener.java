@@ -7,7 +7,7 @@ import javax.servlet.ServletContextEvent;
 
 /* com.tverts: support */
 
-import static com.tverts.support.OU.sig;
+import static com.tverts.support.LU.sig;
 import com.tverts.support.LU;
 
 public class   TestServletContextListener

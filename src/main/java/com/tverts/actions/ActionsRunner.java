@@ -398,7 +398,7 @@ public class ActionsRunner implements ActionTrigger
 
 	protected String logsig()
 	{
-		return "action trigger " + OU.sig(this);
+		return "action trigger " + LU.sig(this);
 	}
 
 	protected String logsig(Action action)

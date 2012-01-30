@@ -8,7 +8,7 @@ import java.util.Map;
 
 /* com.tverts: support */
 
-import com.tverts.support.OU;
+import com.tverts.support.LU;
 
 /**
  * COMMENT ActionsPoint
@@ -139,7 +139,7 @@ public class ActionsPoint
 			return "action undefined";
 
 		return String.format(
-		  "action %s with %s", OU.sig(action), logsig(action.getTask())
+		  "action %s with %s", LU.sig(action), logsig(action.getTask())
 		);
 	}
 
@@ -154,7 +154,7 @@ public class ActionsPoint
 
 		return String.format(
 		  "action task of type [%s] on target [%s]",
-		  stype, OU.sig(task.getTarget())
+		  stype, LU.sig(task.getTarget())
 		);
 	}
 
@@ -168,7 +168,7 @@ public class ActionsPoint
 		return String.format(
 		  "action context %s with initial %s with queue size %s",
 
-		  OU.sig(context), logsig(context.getTask()),
+		  LU.sig(context), logsig(context.getTask()),
 		  (achain == null)?("undefined"):("" + achain.size())
 		);
 	}
@@ -182,7 +182,7 @@ public class ActionsPoint
 			return "action chain empty";
 
 		StringBuilder     sb = new StringBuilder(128).
-		  append("action chain ").append(OU.sig(chain)).
+		  append("action chain ").append(LU.sig(chain)).
 		  append(" with size ").append(chain.size());
 
 		Iterator<Action>  ai = chain.iterator();
@@ -193,7 +193,7 @@ public class ActionsPoint
 		//~: print the first 12 actions
 		for(int al = 12;(ai.hasNext() && (al >= 0));al--)//<-- actions limit
 			sb.append((al == 12)?(""):(", ")).
-			   append(OU.sig(ai.next()));
+			   append(LU.sig(ai.next()));
 
 		//?: {has more actions left}
 		if(ai.hasNext())
