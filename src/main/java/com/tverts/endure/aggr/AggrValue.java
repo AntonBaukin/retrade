@@ -49,14 +49,14 @@ public class AggrValue extends Entity
 		this.aggrType = aggrType;
 	}
 
-	public Long       getSelectorID()
+	public Long       getSelectorId()
 	{
-		return selectorID;
+		return selectorId;
 	}
 
-	public void       setSelectorID(Long id)
+	public void       setSelectorId(Long id)
 	{
-		this.selectorID = id;
+		this.selectorId = id;
 	}
 
 	/**
@@ -64,14 +64,14 @@ public class AggrValue extends Entity
 	 * ({@link AggrItem}) with the actual historical
 	 * value of the aggregated value.
 	 */
-	public Long       getAggrItemID()
+	public Long       getAggrItemId()
 	{
-		return aggrItemID;
+		return aggrItemId;
 	}
 
-	public void       setAggrItemID(Long aggrItemID)
+	public void       setAggrItemId(Long aggrItemId)
 	{
-		this.aggrItemID = aggrItemID;
+		this.aggrItemId = aggrItemId;
 	}
 
 	public BigDecimal getAggrValue()
@@ -107,8 +107,8 @@ public class AggrValue extends Entity
 
 	private Unity      owner;
 	private UnityType  aggrType;
-	private Long       selectorID;
-	private Long       aggrItemID;
+	private Long       selectorId;
+	private Long       aggrItemId;
 
 
 	/* persisted attributes: aggregated value (copy) */

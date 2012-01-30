@@ -34,7 +34,7 @@
 
     <!-- Selector ID -->
 
-    <property name = 'selectorID'>
+    <property name = "selectorId">
 
       <column name = 'selector_id' unique-key = 'ux_aggr_value_owner'>
         <comment>
@@ -46,7 +46,7 @@
 
     <!-- Aggr Item ID -->
 
-    <property name = 'aggrItemID'>
+    <property name = "aggrItemId">
 
       <column name = 'aggr_item_id'>
         <comment>

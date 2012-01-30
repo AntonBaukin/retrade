@@ -4,8 +4,9 @@ package com.tverts.endure.aggr;
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: spring */
+/* com.tverts: hibery */
 
+import static com.tverts.hibery.HiberPoint.isTestInstance;
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 /* com.tverts: actions */
@@ -180,7 +181,7 @@ public class ActAggrValue extends ActionBuilderXRoot
 		return new CreateAggrValue(abr);
 	}
 
-	protected class CreateAggrValue implements DelayedInstance
+	public class CreateAggrValue implements DelayedInstance
 	{
 		/* public: constructor */
 
@@ -201,15 +202,15 @@ public class ActAggrValue extends ActionBuilderXRoot
 
 			val = new AggrValue();
 
-			//~: assign the primary key of test instances
-			if(o.getPrimaryKey() < 0L)
-				setPrimaryKey(action.getContext().getActionTx(), val, true);
+			//~: assign the primary key
+			setPrimaryKey(action.getContext().getActionTx(), val,
+			  isTestInstance(o));
 
 			//~: assign the owner
 			val.setOwner(o);
 
 			//~: assign the selector ID
-			val.setSelectorID(s);
+			val.setSelectorId(s);
 
 			return val;
 		}
@@ -247,7 +248,7 @@ public class ActAggrValue extends ActionBuilderXRoot
 		{
 			if(notexists != null) return notexists;
 
-			Unity     o = getOwner(abr);
+			Long      o = getOwner(abr).getPrimaryKey();
 			UnityType t = getValueType(abr);
 			Long      s = getSelector(abr);
 
