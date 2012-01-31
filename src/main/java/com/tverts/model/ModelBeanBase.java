@@ -59,6 +59,26 @@ public abstract class ModelBeanBase implements ModelBean
 		return null;
 	}
 
+	public Long         domain()
+	{
+		if(getDomain() == null) throw new IllegalStateException(
+		  "Domain primary keys is not defined in the bean model " +
+		  getClass().getSimpleName() + "!"
+		);
+
+		return getDomain();
+	}
+
+	public Long         getDomain()
+	{
+		return domain;
+	}
+
+	public void         setDomain(Long domain)
+	{
+		this.domain = domain;
+	}
+
 
 	/* protected: support interface */
 
@@ -103,5 +123,6 @@ public abstract class ModelBeanBase implements ModelBean
 
 	private String  modelKey;
 	private Date    updateTime;
+	private Long    domain;
 	private boolean active = true;
 }
