@@ -62,7 +62,7 @@ public abstract class ModelBeanBase implements ModelBean
 	public Long         domain()
 	{
 		if(getDomain() == null) throw new IllegalStateException(
-		  "Domain primary keys is not defined in the bean model " +
+		  "Domain primary key is not defined in the bean model " +
 		  getClass().getSimpleName() + "!"
 		);
 
