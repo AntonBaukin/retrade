@@ -63,4 +63,24 @@
     </converter-class>
   </converter>
 
+  <converter>
+    <converter-id>
+      com.tverts:fmt:special:json-strings-map-list
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.JSONStringsMapListFormatter
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:special:bool-map-items
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.BoolMapItemsConverter
+    </converter-class>
+  </converter>
+
 </faces-config>
