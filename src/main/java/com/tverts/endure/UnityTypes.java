@@ -199,12 +199,26 @@ public class UnityTypes
 
 	public static UnityType unityType(Class typeClass, String typeName)
 	{
-		return getInstance().getType(typeClass, typeName);
+		UnityType res = getInstance().getType(typeClass, typeName);
+
+		if(res == null) throw new IllegalStateException(String.format(
+		  "No system Unity Type registered for class [%s] having name [%s]!",
+		  typeClass.getName(), typeName
+		));
+
+		return res;
 	}
 
 	public static UnityType unityType(Class typeClass)
 	{
-		return getInstance().getDistinctType(typeClass);
+		UnityType res = getInstance().getDistinctType(typeClass);
+
+		if(res == null) throw new IllegalStateException(String.format(
+		  "No distinct system Unity Type registered for class [%s]!",
+		  typeClass.getName()
+		));
+
+		return res;
 	}
 
 

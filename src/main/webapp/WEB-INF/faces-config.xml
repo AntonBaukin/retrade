@@ -75,11 +75,11 @@
 
   <converter>
     <converter-id>
-      com.tverts:fmt:special:bool-map-items
+      com.tverts:fmt:special:bool-set-items
     </converter-id>
 
     <converter-class>
-      com.tverts.faces.formatters.BoolMapItemsConverter
+      com.tverts.faces.formatters.BoolSetItemsConverter
     </converter-class>
   </converter>
 

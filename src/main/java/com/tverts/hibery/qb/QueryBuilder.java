@@ -2,6 +2,7 @@ package com.tverts.hibery.qb;
 
 /* standard Java classes */
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,9 +39,18 @@ public class QueryBuilder extends SelectQuery
 		Map<String, Object> params =
 		  new HashMap<String, Object>(17);
 
+		//!: collect the parameters
 		getClauseWhere().collectParams(params);
+
+		//~: assign them to the query
 		for(Entry<String, Object> pe : params.entrySet())
-			result.setParameter(pe.getKey(), pe.getValue());
+			if(pe.getValue() instanceof Object[])
+				result.setParameterList(pe.getKey(), (Object[])pe.getValue());
+			else if(pe.getValue() instanceof Collection)
+				result.setParameterList(pe.getKey(), (Collection)pe.getValue());
+			else
+				result.setParameter(pe.getKey(), pe.getValue());
+			
 
 		//~: apply the limits
 		if(getFirstRow() != null)

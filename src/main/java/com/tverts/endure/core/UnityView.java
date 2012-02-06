@@ -83,6 +83,20 @@ public abstract class UnityView implements United
 		this.ownerType = ownerType;
 	}
 
+	/**
+	 * The type of the Unity state. (Only for entities
+	 * having states.)
+	 */
+	public UnityType  getOwnerState()
+	{
+		return ownerState;
+	}
+
+	public void       setOwnerState(UnityType ownerState)
+	{
+		this.ownerState = ownerState;
+	}
+
 
 	/* public: Object interface */
 
@@ -116,4 +130,5 @@ public abstract class UnityView implements United
 	private Domain    domain;
 	private Unity     viewOwner;
 	private UnityType ownerType;
+	private UnityType ownerState;
 }

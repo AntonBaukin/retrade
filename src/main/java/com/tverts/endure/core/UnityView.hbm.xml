@@ -54,7 +54,18 @@
       outer-join = 'false' lazy = 'false'>
 
       <column name = 'fk_owner_type' not-null = 'true'>
-        <comment>The (Unity) Type of the modelBean owner</comment>
+        <comment>The (Unity) Type of the model Bean owner</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Owner State (Unity) Type -->
+
+    <many-to-one name = 'ownerState' foreign-key = 'fk_unity_view_owner_state'
+      outer-join = 'true' lazy = 'false'>
+
+      <column name = 'fk_owner_state' not-null = 'true'>
+        <comment>The (Unity) Type of the state of the model Bean owner</comment>
       </column>
     </many-to-one>
 
