@@ -31,8 +31,34 @@ public class SU
 			return new String[0];
 
 		String            sx;
-		ArrayList<String> sa = new ArrayList<String>(Arrays.asList(
-		  s.split("(\\s+|[,;])")
+		ArrayList<String> sa = new ArrayList<String>(
+		  Arrays.asList(s.split("(\\s+|[,;])")
+		));
+
+		for(ListIterator<String> i = sa.listIterator();(i.hasNext());)
+			if((sx = s2s(i.next())) != null)
+				i.set(sx);
+			else
+				i.remove();
+
+		if(sa.isEmpty())
+			return new String[0];
+
+		return sa.toArray(new String[sa.size()]);
+	}
+
+	/**
+	 * Breaks string into words.
+	 * The words are separated blank characters.
+	 */
+	public static String[] s2aws(String s)
+	{
+		if((s = s2s(s)) == null)
+			return new String[0];
+
+		String            sx;
+		ArrayList<String> sa = new ArrayList<String>(
+		  Arrays.asList(s.split("\\s+")
 		));
 
 		for(ListIterator<String> i = sa.listIterator();(i.hasNext());)

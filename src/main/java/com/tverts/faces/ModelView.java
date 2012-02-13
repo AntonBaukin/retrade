@@ -8,11 +8,14 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 
 /* com.tverts: servlet */
 
 import static com.tverts.servlet.RequestPoint.request;
+
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: model */
 
@@ -71,11 +74,6 @@ public abstract class ModelView extends ViewWithModes
 	{
 		return (this.id != null)?(this.id):
 		  (this.id = obtainViewId());
-	}
-
-	public String      getNewViewId()
-	{
-		return String.format("V%x", VIEWID.incrementAndGet());
 	}
 
 	public ModelBean   getModel()
@@ -225,10 +223,19 @@ public abstract class ModelView extends ViewWithModes
 
 	protected String             obtainViewId()
 	{
+		//~: take value from the request
 		String id = obtainRequestedViewId();
-		if(id == null) id = getNewViewId();
+		if(id != null) return id;
+
+		//~: ask for effective id
+		id = bean(RootView.class).getEffectiveViewId();
+		if(id == null) throw new IllegalStateException(
+		  "No effective Faces View ID was generated!");
+
 		return id;
 	}
+
+
 
 	protected ModelBean          obtainModel()
 	{
@@ -295,10 +302,4 @@ public abstract class ModelView extends ViewWithModes
 	private String      id;
 	private ModelBean   model;
 	private ModelBean[] models;
-
-
-	/* private static: view ids generator  */
-
-	private static AtomicLong VIEWID =
-	  new AtomicLong();
 }

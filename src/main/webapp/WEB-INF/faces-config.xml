@@ -65,6 +65,16 @@
 
   <converter>
     <converter-id>
+      com.tverts:fmt:s2a
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.S2AConverter
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
       com.tverts:fmt:special:json-strings-map-list
     </converter-id>
 
