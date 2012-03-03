@@ -24,4 +24,11 @@ public class Domains
 	 */
 	public static final String LOCK_XGOODS =
 	  "Locks: Domain: Exclusive Goods and Stores Lock";
+
+	/**
+	 * This lock is obtained when inserting new
+	 * IncValue instance.
+	 */
+	public static final String LOCK_CODES  =
+	  "Locks: Domain: Exclusive Codes Lock";
 }

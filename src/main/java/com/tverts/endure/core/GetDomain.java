@@ -26,11 +26,7 @@ public class GetDomain extends GetObjectBase
 	public Domain getTestDomain()
 	{
 
-/*
-
-from Domain d where (d.primaryKey < 0)
-
-*/
+// from Domain d where (d.primaryKey < 0)
 
 		List domains = Q(
 
@@ -40,5 +36,10 @@ from Domain d where (d.primaryKey < 0)
 		  list();
 
 		return (Domain)(domains.isEmpty()?(null):(domains.get(0)));
+	}
+
+	public Domain getDomain(Long id)
+	{
+		return (Domain) session().get(Domain.class, id);
 	}
 }

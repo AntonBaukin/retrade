@@ -70,6 +70,10 @@ public class DU
 		return cleanTime(d, null);
 	}
 
+	/**
+	 * Returns the timestamp of the day
+	 * having all time parts set to zeros.
+	 */
 	public static Date   cleanTime(Date d, Calendar cl)
 	{
 		if(d == null) return null;
@@ -83,6 +87,32 @@ public class DU
 		cl.set(Calendar.MINUTE,      0);
 		cl.set(Calendar.SECOND,      0);
 		cl.set(Calendar.MILLISECOND, 0);
+
+		return cl.getTime();
+	}
+
+	/**
+	 * Returns the timestamp of the day
+	 * being the last its moment.
+	 */
+	public static Date   lastTime(Date d)
+	{
+		return lastTime(d, null);
+	}
+
+	public static Date   lastTime(Date d, Calendar cl)
+	{
+		if(d == null) return null;
+
+		//~: init the calendar
+		if(cl == null) cl = Calendar.getInstance();
+		cl.setTime(d);
+
+		//clear the time parts
+		cl.set(Calendar.HOUR_OF_DAY, 23);
+		cl.set(Calendar.MINUTE,      59);
+		cl.set(Calendar.SECOND,      99);
+		cl.set(Calendar.MILLISECOND, 999);
 
 		return cl.getTime();
 	}

@@ -52,7 +52,6 @@ public class Locks
 	 * Additional lock requests on the same lock instance within
 	 * the same transaction have no effect.
 	 */
-
 	public static void lock(Lock lock, Session session)
 	{
 		if(session == null) session = HiberPoint.session();
@@ -66,7 +65,7 @@ public class Locks
 	}
 
 	/**
-	 *
+	 * Searches for {@link Lock} instance and obtains it.
 	 *
 	 * @return  the lock held.
 	 */

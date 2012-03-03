@@ -1,0 +1,59 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <class name = 'IncValue' table = 'core_inc_value' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_inc_value'/>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_inc_value_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_inc_value'>
+
+        <comment>Domain of (incremented) values</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Incremented Value Type -->
+
+    <many-to-one name = 'valueType' foreign-key = 'fk_inc_value_type'>
+
+      <column name = 'fk_inc_value_type' not-null = 'true'
+        unique-key = 'ux_inc_value'>
+
+        <comment>Type of (incremented) values</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Selector -->
+
+    <property name = 'selector'>
+
+      <column name = 'selector' length = '1024'
+        unique-key = 'ux_inc_value'>
+
+        <comment>Additional selector of (incremented) values</comment>
+      </column>
+    </property>
+
+
+    <!-- Value -->
+
+    <property name = 'value' lazy = 'false'>
+
+      <column name = 'value' not-null = 'true' default = '1'/>
+    </property>
+
+  </class>
+</hibernate-mapping>

@@ -83,5 +83,8 @@ public class ActDomain extends ActionBuilderXRoot
 	{
 		//~: goods & stores lock
 		ensureLock(abr, Domains.LOCK_XGOODS);
+
+		//~: codes lock
+		ensureLock(abr, Domains.LOCK_CODES);
 	}
 }

@@ -17,6 +17,11 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.locks.Lock   Locks: Domain: Exclusive Goods and Stores Lock;
 
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Exclusive Codes Lock                                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.locks.Lock   Locks: Domain: Exclusive Codes Lock;
+
 
       </value>
     </property>
