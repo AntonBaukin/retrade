@@ -111,7 +111,7 @@ public class DU
 		//clear the time parts
 		cl.set(Calendar.HOUR_OF_DAY, 23);
 		cl.set(Calendar.MINUTE,      59);
-		cl.set(Calendar.SECOND,      99);
+		cl.set(Calendar.SECOND,      59);
 		cl.set(Calendar.MILLISECOND, 999);
 
 		return cl.getTime();
