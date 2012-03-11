@@ -70,7 +70,7 @@ public class OrdererAggrItem extends OrdererDefault
 update OrderIndex set
   $orderIndex   = $orderIndex + :insertStep,
   $historyIndex = $orderIndex + :insertStep
-where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
+where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
   ($orderIndex >= :orderIndex)
 
 */
@@ -80,7 +80,7 @@ where ($orderOwner = :orderOwner) and ($orderType X :orderType) and
 "update OrderIndex set\n" +
 "  $orderIndex  = $orderIndex + :insertStep,\n" +
 "  historyIndex = $orderIndex + :insertStep\n" +
-"where ($orderOwner = :orderOwner) and ($orderType X :orderType) and\n" +
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
 "  ($orderIndex >= :orderIndex)"
 
 		).
