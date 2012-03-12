@@ -25,6 +25,7 @@ public class GetUnityType extends GetObjectBase
 
 	public UnityType getUnityType(Long id)
 	{
+		if(id == null) return null;
 		return (UnityType)sessionFactory.getCurrentSession().
 		  get(UnityType.class, id);
 	}
