@@ -85,7 +85,7 @@ public abstract class GenesisPartBase
 	}
 
 	/**
-	 * Waits exeution of the named group of Self Shunt Requests.
+	 * Waits execution of the named group of Self Shunt Requests.
 	 *
 	 * WARNING: see {@link #waitShuntWeb(SeShRequestInitial)}.
 	 */
