@@ -35,6 +35,9 @@ public class AggrItemVolume extends AggrItemBase
 
 	public void       setVolumePositive(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 3))
+			v = v.setScale(3, BigDecimal.ROUND_UNNECESSARY);
+
 		this.volumePositive = v;
 	}
 
@@ -45,6 +48,9 @@ public class AggrItemVolume extends AggrItemBase
 
 	public void       setVolumeNegative(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 3))
+			v = v.setScale(3, BigDecimal.ROUND_UNNECESSARY);
+
 		this.volumeNegative = v;
 	}
 
@@ -55,6 +61,9 @@ public class AggrItemVolume extends AggrItemBase
 
 	public void       setAggrPositive(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 3))
+			v = v.setScale(3, BigDecimal.ROUND_UNNECESSARY);
+
 		this.aggrPositive = v;
 	}
 
@@ -65,6 +74,9 @@ public class AggrItemVolume extends AggrItemBase
 
 	public void       setAggrNegative(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 3))
+			v = v.setScale(3, BigDecimal.ROUND_UNNECESSARY);
+
 		this.aggrNegative = v;
 	}
 
