@@ -25,13 +25,11 @@ import com.tverts.support.OU;
  * one unified mirror and it's entity.
  * It stores just the primary key.
  *
- * As the data model it returns the entity
- * as {@link UnityModelData}.
- *
  *
  * @author anton.baukin@gmail.com
  */
-public class UnityModelBean extends ModelBeanBase
+public abstract class UnityModelBean
+       extends        ModelBeanBase
 {
 	public static final long serialVersionUID = 0L;
 
@@ -55,22 +53,20 @@ public class UnityModelBean extends ModelBeanBase
 	{
 		if(instance == null)
 		{
-			setPrimaryKey(null);
-			unitedAccess = null;
+			setInstanceUndefined();
 			return;
 		}
 
-		setPrimaryKey(instance.getPrimaryKey());
-		unitedAccess = createAccess(instance);
+		if(instance.getPrimaryKey() == null)
+			throw new IllegalArgumentException();
+		setInstanceAccesses(instance);
 	}
 
 
 	/* public: ModelBean (data access) interface */
 
-	public ModelData modelData()
-	{
-		return new UnityModelData(this);
-	}
+	public abstract ModelData modelData();
+
 
 	/* public: support interface */
 
@@ -110,10 +106,23 @@ public class UnityModelBean extends ModelBeanBase
 
 	/* protected: support interface */
 
-	protected ObjectAccess<United> createAccess(United instance)
+	protected void setInstanceUndefined()
+	{
+		setPrimaryKey(null);
+		unitedAccess = null;
+	}
+
+	protected void setInstanceAccesses(United instance)
+	{
+		setPrimaryKey(instance.getPrimaryKey());
+		unitedAccess = createAccess(instance);
+	}
+
+	protected ObjectAccess<United>
+	               createAccess(United instance)
 	{
 		return OU.timedCache(instance,
-		  new UnitedAccess<United>(instance.getPrimaryKey()));
+		  new UnitedAccess<United>(getPrimaryKey()));
 	}
 
 

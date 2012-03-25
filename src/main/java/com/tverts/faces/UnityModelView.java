@@ -1,9 +1,5 @@
 package com.tverts.faces;
 
-/* com.tverts: servlet */
-
-import static com.tverts.servlet.RequestPoint.request;
-
 /* com.tverts: endure */
 
 import com.tverts.endure.United;
@@ -12,10 +8,6 @@ import com.tverts.endure.United;
 
 import com.tverts.model.ModelBean;
 import com.tverts.model.UnityModelBean;
-
-/* com.tverts: support */
-
-import static com.tverts.support.SU.s2s;
 
 
 /**
@@ -35,20 +27,25 @@ public abstract class UnityModelView extends ModelView
 	public United            getEntity()
 	{
 		return (entity != null)?(entity):
-		  (entity = getModel().loadEntity());
+		  (entity = getModel().accessEntity());
 	}
 
 	public String            getCheckEntityRequested()
 	{
 		if(getEntity() == null) throw new IllegalStateException(
 		  "The entity referred by model does not exist!");
+
 		return "";
 	}
 
 
 	/* protected: ModelView interface */
 
-	protected UnityModelBean createModel()
+	protected abstract UnityModelBean
+	                  createModelInstance();
+
+	protected UnityModelBean
+	                  createModel()
 	{
 		UnityModelBean model = createModelInstance();
 		Long           key   = obtainEntityKeyFromRequest();
@@ -61,15 +58,11 @@ public abstract class UnityModelView extends ModelView
 		return model;
 	}
 
-	protected UnityModelBean createModelInstance()
-	{
-		return new UnityModelBean();
-	}
-
 	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof UnityModelBean);
 	}
+
 
 	/* private: the entity (cached) */
 

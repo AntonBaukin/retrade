@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /* Spring Framework */
 
+import com.tverts.endure.NumericIdentity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /* Hibernate Persistence Layer */
@@ -35,9 +36,16 @@ public abstract class GetObjectBase
 	/* public: access Session Factory */
 
 	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory)
+	public void  setSessionFactory(SessionFactory sessionFactory)
 	{
 		this.sessionFactory = sessionFactory;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends NumericIdentity> T
+	             getNumeric(Class<T> c1ass, Long pk)
+	{
+		return (T) session().get(c1ass, pk);
 	}
 
 
