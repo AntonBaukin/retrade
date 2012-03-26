@@ -8,6 +8,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.endure.core.NumericAccess;
 import com.tverts.hibery.system.HiberSystem;
+import com.tverts.hibery.system.SessionedAccess;
 
 /* com.tverts: objects */
 
@@ -137,7 +138,7 @@ public abstract class NumericModelBean
 	@SuppressWarnings("unchecked")
 	protected ObjectAccess createAccess(NumericIdentity instance)
 	{
-		return OU.timedCache(instance, new NumericAccess(
+		return new SessionedAccess(instance, new NumericAccess(
 		  getObjectClass(), getPrimaryKey()));
 	}
 

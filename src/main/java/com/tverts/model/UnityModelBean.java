@@ -4,6 +4,10 @@ package com.tverts.model;
 
 import static com.tverts.spring.SpringPoint.bean;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.system.SessionedAccess;
+
 /* com.tverts: objects */
 
 import com.tverts.objects.ObjectAccess;
@@ -121,7 +125,7 @@ public abstract class UnityModelBean
 	protected ObjectAccess<United>
 	               createAccess(United instance)
 	{
-		return OU.timedCache(instance,
+		return new SessionedAccess<United>(instance,
 		  new UnitedAccess<United>(getPrimaryKey()));
 	}
 
