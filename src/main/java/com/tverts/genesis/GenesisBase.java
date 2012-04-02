@@ -28,12 +28,8 @@ public abstract class GenesisBase
 		this.name = sLo(this.getClass().getSimpleName());
 	}
 
-	/* public: Genesis interface */
 
-	public Predicate getCondition()
-	{
-		return predicate;
-	}
+	/* public: Genesis interface */
 
 	public Genesis   clone()
 	{
@@ -59,12 +55,8 @@ public abstract class GenesisBase
 		return getAboutEn();
 	}
 
-	/* public: GenesisBase bean interface */
 
-	public void      setCondition(Predicate predicate)
-	{
-		this.predicate = predicate;
-	}
+	/* public: GenesisBase bean interface */
 
 	public void      setName(String name)
 	{
@@ -94,11 +86,6 @@ public abstract class GenesisBase
 		this.aboutLo = s2s(aboutLo);
 	}
 
-	public boolean   isAllowed()
-	{
-		Predicate p = getCondition();
-		return (p == null) || p.evalPredicate(this);
-	}
 
 	/* protected: logging */
 
@@ -119,10 +106,10 @@ public abstract class GenesisBase
 		return logsig(LO.LANG_EN);
 	}
 
+
 	/* private: parameters of this genesis unit */
 
-	private Predicate predicate;
-	private String    name;
-	private String    aboutEn;
-	private String    aboutLo;
+	private String name;
+	private String aboutEn;
+	private String aboutLo;
 }

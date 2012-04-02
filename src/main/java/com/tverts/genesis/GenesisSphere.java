@@ -48,7 +48,6 @@ public class      GenesisSphere
 			throw new IllegalArgumentException();
 
 		this.reference = reference;
-		this.setCondition(createPredicate());
 	}
 
 	/* public: Genesis interface */
@@ -83,16 +82,6 @@ public class      GenesisSphere
 		{
 			//!: clone the original prototype unit
 			gen = gen.clone();
-
-			//~: check the optional condition
-			cond = gen.getCondition();
-
-			//?: {Genesis condition failed} skip this unit
-			if((cond != null) && !cond.evalPredicate(gen))
-			{
-				logGenConditionFalse(gen);
-				continue;
-			}
 
 			//!: invoke generation
 			logGenGenerateBefore(gen);
@@ -167,13 +156,6 @@ public class      GenesisSphere
 
 	public void doRun()
 	{
-		//?: {the condition is false} exit now
-		if(!isAllowed())
-		{
-			logRunNotAllowed();
-			return;
-		}
-
 		Runnable  cleanup = null;
 		Throwable error   = null;
 
@@ -307,39 +289,6 @@ public class      GenesisSphere
 		/* protected: tasks iterator */
 
 		protected final Runnable[] tasks;
-	}
-
-	/* protected: or predicate */
-
-	protected Predicate createPredicate()
-	{
-		return new OrPredicate();
-	}
-
-	protected class OrPredicate implements Predicate
-	{
-		/* public: Predicate interface */
-
-		public boolean evalPredicate(Object ctx)
-		{
-			List<Genesis> gens = (reference == null)?(null):
-			  (reference.dereferObjects());
-
-			//?: {has no genesis units}
-			if((gens == null) || gens.isEmpty())
-				return false;
-
-			//~: ask the unit's conditions
-			for(Genesis gen : gens)
-			{
-				Predicate cond = gen.getCondition();
-
-				if((cond == null) || cond.evalPredicate(gen))
-					return true;
-			}
-
-			return false;
-		}
 	}
 
 	/* protected: logging */

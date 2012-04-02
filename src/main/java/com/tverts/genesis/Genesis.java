@@ -1,9 +1,5 @@
 package com.tverts.genesis;
 
-/* com.tverts: predicates */
-
-import com.tverts.support.logic.Predicate;
-
 /**
  * Genesis defines an abstraction that is intended
  * to generate something in the database in a more
@@ -24,15 +20,6 @@ import com.tverts.support.logic.Predicate;
 public interface Genesis extends Cloneable
 {
 	/* public: Genesis interface */
-
-	/**
-	 * Returns the predicate that controls the execution
-	 * of this generation unit. If it is not {@code null},
-	 * it is invoked with the context instance of this
-	 * genesis unit. The genesis is allowed if the predicate
-	 * returns {@code true}.
-	 */
-	public Predicate getCondition();
 
 	/**
 	 * Actually generates the data. Returns the optional task

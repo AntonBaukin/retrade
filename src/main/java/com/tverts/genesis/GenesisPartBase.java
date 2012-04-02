@@ -36,12 +36,6 @@ public abstract class GenesisPartBase
 {
 	/* public: Genesis interface */
 
-	public Predicate     getCondition()
-	{
-		return (isDisabled())?(False.getInstance()):
-		  (super.getCondition());
-	}
-
 	public boolean       isTransactional()
 	{
 		return false;
