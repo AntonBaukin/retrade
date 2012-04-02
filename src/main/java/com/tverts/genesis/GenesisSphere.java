@@ -2,19 +2,12 @@ package com.tverts.genesis;
 
 /* standard Java classes */
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 
 /* Spring framework */
 
 import org.springframework.transaction.annotation.Transactional;
-
-/* com.tverts: predicates */
-
-import com.tverts.support.logic.Predicate;
 
 /* com.tverts: system tx */
 
@@ -25,14 +18,17 @@ import com.tverts.system.tx.TxPoint;
 import com.tverts.support.LO;
 import com.tverts.support.LU;
 
+
 /**
- * Sphere is a collection of {@link Genesis} instances,
+ * Sphere is a composite of {@link Genesis} instances,
  * a {@link Runnable} and a {@link Genesis} instance itself.
  *
- * Sphere defines the scope of genesis units. Within this
- * scope the units may accumulate (generate) the data not
- * deleting them, then invoke the self shunts or do else
- * things, and after that delete the data at once.
+ * Sphere creates own transactional context only when
+ * it is not nested in outer composite. (The outer
+ * genesis context is undefined.)
+ *
+ * Note that the genesis context of the sphere
+ * is shared between all the invocations.
  *
  * @author anton.baukin@gmail.com
  */
@@ -50,50 +46,32 @@ public class      GenesisSphere
 		this.reference = reference;
 	}
 
+
 	/* public: Genesis interface */
 
 	/**
-	 * Invokes all the {@link Genesis} units accessed by the
-	 * {@link GenesisReference} given.
-	 *
-	 * This call collects the cleanup tasks in the direct order:
-	 * but they are invoked in the opposite one.
+	 * Invokes all the {@link Genesis} units accessed
+	 * by the {@link GenesisReference} constructed with.
 	 */
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		List<Genesis>  gens  = (reference == null)?(null):
-		  (reference.dereferObjects());
+		//~: nest the context
+		ctx = nestContext(ctx);
 
-		//?: {has no genesis units}
-		if((gens == null) || gens.isEmpty())
-			return;
-
-		Runnable       task;
-		Predicate      cond;
-
-		//~: invoke the genesis units
-		for(Genesis gen : gens) try
+		//~: generate in the own context
+		try
 		{
-			//!: clone the original prototype unit
-			gen = gen.clone();
-
-			//!: invoke generation
-			logGenGenerateBefore(gen);
-			gen.generate(ctx.stack(this));
-			logGenGenerateSuccess(gen);
+			logGenerateBefore(ctx);
+			doGenDispTx(nestContext(ctx));
+			logGenerateSuccess(ctx);
 		}
 		catch(GenesisError e)
 		{
-			logGenGenerateError(e);
-			throw new GenesisError(e.getCause(), gen);
-		}
-		catch(Throwable e)
-		{
-			logGenGenerateError(gen, e);
-			throw new GenesisError(e, gen);
+			throw e;
 		}
 	}
+
 
 	/* public: Runnable interface */
 
@@ -106,7 +84,15 @@ public class      GenesisSphere
 	 */
 	public void     run()
 	{
-		doRunTx();
+		try
+		{
+			this.generate(null);
+		}
+		catch(GenesisError e)
+		{
+			throw new RuntimeException(String.format(
+			  "Unhandled error occured in Genesis %s!", logsig()), e);
+		}
 	}
 
 
@@ -117,47 +103,34 @@ public class      GenesisSphere
 		return Collections.singletonList(this);
 	}
 
+
 	/* protected: invocation protocol */
 
-	public void doRun()
+	protected GenCtx   nestContext(GenCtx outer)
 	{
-		Throwable error   = null;
+		return (outer != null)?(outer.stack(this)):
+		  new GenCtxBase(this);
+	}
 
-		//~: invoke the generation
-		try
-		{
-			logRunGenerateBefore();
-			generate(null);
-			logRunGenerateSuccess();
-		}
-		catch(GenesisError e)
-		{
-			error   = e.getCause();
-
-			logRunGenerateError(e);
-		}
-		catch(Throwable e)
-		{
-			error = e;
-			logRunGenerateError(e);
-		}
-
-		//?: {has an error} throw it out
-		if(error != null)
-			throw new RuntimeException(String.format(
-			  "unhandled error occured while invoking %s!",
-			  logsig()), error);
+	protected void     doGenDispTx(GenCtx ctx)
+	  throws GenesisError
+	{
+		if(ctx.getOuter() == null)
+			doGenTx(ctx);
+		else
+			doGen(ctx);
 	}
 
 	@Transactional
-	public void doRunTx()
+	protected void     doGenTx(GenCtx ctx)
+	  throws GenesisError
 	{
 		//~: push default transaction context
 		TxPoint.getInstance().setTxContext();
 
 		try
 		{
-			doRun();
+			doGen(ctx);
 		}
 		finally
 		{
@@ -165,89 +138,44 @@ public class      GenesisSphere
 			TxPoint.getInstance().setTxContext(null);
 		}
 	}
-
-	/* protected: composite' cleanup */
-
-	/**
-	 * Creates the {@link Runnable} tasks that invokes all
-	 * the tasks of the list provided in the reversed order.
-	 *
-	 * While invoking delegates the exception handling to
-	 * {@link #handleCleanupInvokeError(Runnable, Throwable)}.
-	 */
-	protected Runnable createCleanups(List<Runnable> tasks)
+	
+	protected void     doGen(GenCtx ctx)
+	  throws GenesisError
 	{
-		return ((tasks == null) || tasks.isEmpty())?(null):
-		  (new CleanupsInvoker(tasks));
-	}
+		List<Genesis> gens = reference.dereferObjects();
 
-	/**
-	 * Processes the cleanup error and tells whether
-	 * to continue the cleanup {@code true}, or to
-	 * break the cleanups invocation cycle.
-	 */
-	protected boolean  handleCleanupInvokeError
-	  (Runnable task, Throwable e)
-	{
-		logCleanupInvokeError(task, e);
-		return true;
-	}
+		//?: {has no genesis units}
+		if((gens == null) || gens.isEmpty())
+			return;
 
-	/**
-	 * Invokes the tasks given in the list from the
-	 * tail to the head of the list.
-	 */
-	protected class CleanupsInvoker implements Runnable
-	{
-		/* public: constructor */
-
-		public CleanupsInvoker(List<Runnable> tasks)
+		//~: invoke the genesis units
+		for(Genesis gen : gens) try
 		{
-			this.tasks = tasks.toArray(new Runnable[tasks.size()]);
+			//!: clone the original (prototype) unit
+			gen = gen.clone();
+
+			//!: invoke generation
+			logGenGenerateBefore(ctx, gen);
+			gen.generate(ctx);
+			logGenGenerateSuccess(ctx, gen);
 		}
-
-		/* public: Runnable interface */
-
-		public void run()
+		catch(GenesisError e)
 		{
-			ListIterator<Runnable> itask = Arrays.asList(tasks).
-			  listIterator(tasks.length);
-
-			for(Runnable task = null;(itask.hasPrevious());) try
-			{
-				task = itask.previous();
-				task.run();
-			}
-			catch(Throwable e)
-			{
-				try
-				{
-					//?: {do break the cleanup cycle}
-					if(!handleCleanupInvokeError(task, e))
-						break;
-				}
-				catch(Throwable ee)
-				{
-					//!: ignore this error
-					logCleanupInvokeError(e);
-				}
-			}
+			logGenGenerateError(e.getCtx(), e.getGenesis(), e.getCause());
+			throw e;
 		}
-
-		/* protected: tasks iterator */
-
-		protected final Runnable[] tasks;
+		catch(Throwable e)
+		{
+			logGenGenerateError(ctx, gen, e);
+			throw new GenesisError(e, gen, ctx);
+		}
 	}
+
 
 	/* protected: logging */
 
 	protected String logsig(String lang)
 	{
-		//?: {has the default name} return plain variant
-		if(getClass().getSimpleName().equalsIgnoreCase(getName()))
-			return (LO.LANG_RU.equals(lang))?
-			  ("Сфера генезиса"):("Genesis Sphere");
-
 		return String.format((LO.LANG_RU.equals(lang))?
 		  ("Сфера генезиса '%s'"):("Genesis Sphere '%s'"),
 		  getName());
@@ -264,119 +192,47 @@ public class      GenesisSphere
 		return String.format("Genesis '%s'", g.getName());
 	}
 
+
 	/* protected: logging (Runnable) */
 
-	protected void   logRunNotAllowed()
+	protected void   logGenerateBefore(GenCtx ctx)
 	{
-		if(!LU.isI(getLog())) return;
+		if(!LU.isT(log(ctx))) return;
 
-		LU.I(getLog(), logsig(), " [run]: ",
-		  "the Predicate DID NOT allow to run this genesis unit!" );
+		if(ctx.getOuter() == null)
+			LU.T(log(ctx), logsig(), " opening sphere in own Tx...");
+		else
+			LU.T(log(ctx), logsig(), " opening sphere in outer Tx...");
 	}
 
-	protected void   logRunGenerateBefore()
+	protected void   logGenerateSuccess(GenCtx ctx)
 	{
-		if(!LU.isT(getLog())) return;
+		if(!LU.isI(log(ctx))) return;
 
-		LU.T(getLog(), logsig(), " [run]: ",
-		  "is about to run generate procedure...");
+		LU.T(log(ctx), logsig(), " closed sphere with success!");
 	}
 
-	protected void   logRunGenerateSuccess()
+	protected void   logGenGenerateBefore(GenCtx ctx, Genesis g)
 	{
-		if(!LU.isI(getLog())) return;
+		if(!LU.isT(log(ctx))) return;
 
-		LU.T(getLog(), logsig(), " [run]: ",
-		  "had successfully passed the generation!");
+		LU.T(log(ctx), logsig(), " starting ", logsig(g));
 	}
 
-	protected void   logRunGenerateError(GenesisError e)
+	protected void   logGenGenerateSuccess(GenCtx ctx, Genesis g)
 	{
-		LU.E(getLog(), e.getCause(), logsig(e.getGenesis()), " [run]: ",
-		  "ERROR occured while generating! ");
+		if(!LU.isI(log(ctx))) return;
+
+		LU.T(log(ctx), logsig(), " success on ", logsig(g), "!");
 	}
 
-	protected void   logRunGenerateError(Throwable e)
+	protected void   logGenGenerateError(GenCtx ctx, Genesis g, Throwable e)
 	{
-		LU.E(getLog(), e, logsig(), " [run]: ",
-		  "ERROR occured while generating! ");
+		LU.E(log(ctx), e, logsig(), " error with ", logsig(g), "!");
 	}
 
-	protected void   logRunCleanupBefore(Runnable cleanup)
-	{
-		if(!LU.isT(getLog())) return;
 
-		LU.T(getLog(), logsig(), " [run]: ",
-		  "is about to run the cleanup procedure [",
-		  cleanup.getClass().getSimpleName(), "]...");
-	}
+	/* private: genesis reference */
 
-	protected void   logRunCleanupSuccess()
-	{
-		if(!LU.isI(getLog())) return;
-
-		LU.I(getLog(), logsig(), " [run]: ",
-		     "cleanup succeed!");
-	}
-
-	protected void   logRunCleanupError(Throwable e)
-	{
-		LU.E(getLog(), e, logsig(), " [run]: ",
-		  "ERROR occured while doing cleanup! ");
-	}
-
-	protected void   logCleanupInvokeError(Runnable task, Throwable e)
-	{
-		LU.E(getLog(), e, logsig(), " [run]: ",
-		  "ERROR occured while invoking cleanup strategy of ",
-		  "the aggregated Genesis Unit. The task is: ",
-		  (task == null)?("UNDEFINED"):(task.getClass().getSimpleName()));
-	}
-
-	protected void   logCleanupInvokeError(Throwable e)
-	{
-		LU.E(getLog(), e, logsig(), " [run]: ",
-		  "ERROR occured while invoking cleanup strategy of ",
-		  "the aggregated Genesis Unit.");
-	}
-
-	protected void   logGenConditionFalse(Genesis g)
-	{
-		if(!LU.isI(getLog())) return;
-
-		LU.T(getLog(), logsig(g), " [gen]: ",
-		  "SKIP this genesis by condition.");
-	}
-
-	protected void   logGenGenerateBefore(Genesis g)
-	{
-		if(!LU.isT(getLog())) return;
-
-		LU.T(getLog(), logsig(g), " [gen]: ",
-		  "is about to run generate procedure...");
-	}
-
-	protected void   logGenGenerateSuccess(Genesis g)
-	{
-		if(!LU.isI(getLog())) return;
-
-		LU.T(getLog(), logsig(g), " [gen]: ",
-		  "had successfully PASSED the generation!");
-	}
-
-	protected void   logGenGenerateError(GenesisError e)
-	{
-		LU.E(getLog(), e.getCause(), logsig(e.getGenesis()), " [run]: ",
-		  "ERROR occured while generating! ");
-	}
-
-	protected void   logGenGenerateError(Genesis g, Throwable e)
-	{
-		LU.E(getLog(), e.getCause(), logsig(g), " [run]: ",
-		  "ERROR occured while generating! ");
-	}
-
-	/* protected: genesis reference */
-
-	protected final GenesisReference reference;
+	private GenesisReference reference;
 }

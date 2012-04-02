@@ -108,7 +108,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 
 		//~: log success
-		if(LU.isI(getLog())) LU.I(getLog(), logsig(),
+		if(LU.isI(log())) LU.I(log(), logsig(),
 		  " had created Test Domain with PK = ", d.getPrimaryKey());
 	}
 

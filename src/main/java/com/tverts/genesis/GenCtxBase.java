@@ -109,7 +109,7 @@ public class GenCtxBase implements GenCtx, Cloneable
 	public String  log()
 	{
 		if(log == null)
-			log = Genesis.class.getName();
+			log = GenesisPoint.LOG_GENESIS;
 		return log;
 	}
 

@@ -12,15 +12,12 @@ public class GenesisError extends Exception
 {
 	/* public: constructors */
 
-	public GenesisError(Throwable cause, Genesis genesis)
+	public GenesisError(Throwable cause, Genesis genesis, GenCtx ctx)
 	{
-		this(null, cause, genesis);
-	}
+		super(cause);
 
-	public GenesisError(String msg, Throwable cause, Genesis genesis)
-	{
-		super(msg, cause);
-		this.genesis  = genesis;
+		this.genesis = genesis;
+		this.ctx     = ctx;
 	}
 
 
@@ -31,8 +28,14 @@ public class GenesisError extends Exception
 		return genesis;
 	}
 
+	public GenCtx   getCtx()
+	{
+		return ctx;
+	}
+
 
 	/* private: the Genesis unit reference */
 
 	private Genesis genesis;
+	private GenCtx  ctx;
 }

@@ -59,6 +59,8 @@ public interface GenCtx
 	/**
 	 * Returns the default logging destination
 	 * that generator may use.
+	 *
+	 * Note that the result is always defined.
 	 */
 	public String  log();
 }

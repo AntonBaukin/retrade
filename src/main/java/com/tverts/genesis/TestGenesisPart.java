@@ -15,10 +15,10 @@ public class   TestGenesisPart
 {
 	/* public: Genesis interface */
 
-	public void generate(GenCtx ctx)
+	public void      generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		LU.I(getLog(), logsig(), ": generated!");
+		LU.I(log(), logsig(), ": generated!");
 
 		if(getWaitSingleShunt() != null) try
 		{
@@ -26,7 +26,7 @@ public class   TestGenesisPart
 		}
 		catch(InterruptedException e)
 		{
-			throw new GenesisError(e, this);
+			throw new GenesisError(e, this, ctx);
 		}
 
 		if(getWaitShuntGroups() != null) try
@@ -35,13 +35,13 @@ public class   TestGenesisPart
 		}
 		catch(InterruptedException e)
 		{
-			throw new GenesisError(e, this);
+			throw new GenesisError(e, this, ctx);
 		}
 	}
 
 	/* public: TestGenesisPart properties */
 
-	public String   getWaitSingleShunt()
+	public String    getWaitSingleShunt()
 	{
 		return waitSingleShunt;
 	}
@@ -50,12 +50,12 @@ public class   TestGenesisPart
 	 * WARNING: see {@link #waitShuntWeb(
 	 *   com.tverts.shunts.protocol.SeShRequestInitial)}.
 	 */
-	public void     setWaitSingleShunt(String s)
+	public void      setWaitSingleShunt(String s)
 	{
 		this.waitSingleShunt = SU.s2s(s);
 	}
 
-	public String[] getWaitShuntGroups()
+	public String[]  getWaitShuntGroups()
 	{
 		return waitShuntGroups;
 	}
@@ -64,7 +64,7 @@ public class   TestGenesisPart
 	 * WARNING: see {@link #waitShuntWeb(
 	 *   com.tverts.shunts.protocol.SeShRequestInitial)}.
 	 */
-	public void     setWaitShuntGroupsStr(String g)
+	public void      setWaitShuntGroupsStr(String g)
 	{
 		this.waitShuntGroups = SU.s2a(g);
 	}

@@ -15,14 +15,10 @@ import com.tverts.shunts.protocol.SeShRequestInitial;
 import com.tverts.shunts.protocol.SeShRequestGroups;
 import com.tverts.shunts.protocol.SeShRequestSingle;
 
-/* com.tverts: predicates */
-
-import com.tverts.support.logic.False;
-import com.tverts.support.logic.Predicate;
-
 /* com.tverts: support */
 
 import com.tverts.support.LU;
+
 
 /**
  * Provides useful utilities to Genesis
@@ -41,21 +37,6 @@ public abstract class GenesisPartBase
 		return Collections.<Genesis> singletonList(this);
 	}
 
-	/* public: GenesisPartBase properties */
-
-	/**
-	 * Disable the unit not to run
-	 * it in any condition.
-	 */
-	public boolean       isDisabled()
-	{
-		return disabled;
-	}
-
-	public void          setDisabled(boolean disabled)
-	{
-		this.disabled = disabled;
-	}
 
 	/* protected: generation support */
 
@@ -86,7 +67,7 @@ public abstract class GenesisPartBase
 	}
 
 	/**
-	 * Waits until Self Shunt Request is executed by Self Shunt Servive.
+	 * Waits until Self Shunt Request is executed by Self Shunt Service.
 	 *
 	 * WARNING: you may call this method only from genesis units
 	 *   that are not within the initial units of the Genesis Service.
@@ -113,10 +94,10 @@ public abstract class GenesisPartBase
 		return finish.getReport();
 	}
 
+
 	/* protected: wait shunt finish */
 
-	protected class      WaitShuntFinish
-	          implements SeShProtocolFinish
+	protected class WaitShuntFinish implements SeShProtocolFinish
 	{
 		/* public: SeShProtocolFinish interface */
 
@@ -138,25 +119,22 @@ public abstract class GenesisPartBase
 		private SelfShuntReport report;
 	}
 
+
 	/* protected: logging */
 
 	protected void   logWaitShuntStart(SeShRequestInitial request)
 	{
-		if(!LU.isI(getLog())) return;
+		if(!LU.isI(log())) return;
 
-		LU.I(getLog(), logsig(),
-		  " WAITING for Shunt Unit to finish: [",
-		  request.getSelfShuntKey(), "]...");
+		LU.I(log(), logsig(),
+		  " waiting for Shunt Unit to finish: ",
+		  request.getSelfShuntKey(), "...");
 	}
 
 	protected void   logWaitShuntDone()
 	{
-		if(!LU.isI(getLog())) return;
+		if(!LU.isI(log())) return;
 
-		LU.I(getLog(), logsig(), ": DONE waiting");
+		LU.I(log(), logsig(), "... done waiting shunt!");
 	}
-
-	/* private: the state of the unit */
-
-	private boolean disabled;
 }

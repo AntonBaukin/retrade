@@ -27,7 +27,7 @@ public class GenesisPoint
 	 * General lof that may be used within the Shunt Units.
 	 */
 	public static final String LOG_GENESIS  =
-	  "com.tverts.genesis";
+	  Genesis.class.getName();
 
 	/**
 	 * Log destination for the Self Shunt Service.

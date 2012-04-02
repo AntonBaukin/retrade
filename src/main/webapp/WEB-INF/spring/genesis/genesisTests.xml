@@ -28,15 +28,6 @@
               <property name = 'name' value = 'testGenesisUnitSimple'/>
             </bean>
 
-            <!-- disabled -->
-            <bean class = 'com.tverts.genesis.TestGenesisPart'>
-
-              <property name  = 'name'
-                        value = 'testGenesisUnitDisabled'/>
-
-              <property name  = 'disabled'
-                        value = 'true'/>
-            </bean>
 
             <!-- waiting single shunt test -->
 

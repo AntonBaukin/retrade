@@ -89,9 +89,14 @@ public abstract class GenesisBase
 
 	/* protected: logging */
 
-	protected String getLog()
+	protected String log()
 	{
-		return LU.getLogBased(GenesisPoint.LOG_GENESIS, this);
+		return LU.getLogBased(Genesis.class, this);
+	}
+
+	protected String log(GenCtx ctx)
+	{
+		return ctx.log();
 	}
 
 	protected String logsig(String lang)
