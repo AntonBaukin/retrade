@@ -59,7 +59,7 @@ public class      GenesisSphere
 	 * This call collects the cleanup tasks in the direct order:
 	 * but they are invoked in the opposite one.
 	 */
-	public void generate()
+	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
 		List<Genesis>  gens  = (reference == null)?(null):
@@ -80,7 +80,7 @@ public class      GenesisSphere
 
 			//!: invoke generation
 			logGenGenerateBefore(gen);
-			gen.generate();
+			gen.generate(ctx.stack(this));
 			logGenGenerateSuccess(gen);
 		}
 		catch(GenesisError e)
@@ -127,7 +127,7 @@ public class      GenesisSphere
 		try
 		{
 			logRunGenerateBefore();
-			this.generate();
+			generate(null);
 			logRunGenerateSuccess();
 		}
 		catch(GenesisError e)

@@ -15,7 +15,7 @@ public class   TestGenesisPart
 {
 	/* public: Genesis interface */
 
-	public void generate()
+	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
 		LU.I(getLog(), logsig(), ": generated!");

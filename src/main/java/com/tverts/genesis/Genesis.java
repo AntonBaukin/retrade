@@ -24,7 +24,7 @@ public interface Genesis extends Cloneable
 	/**
 	 * Generates the data.
 	 */
-	public void    generate()
+	public void    generate(GenCtx ctx)
 	  throws GenesisError;
 
 	/**

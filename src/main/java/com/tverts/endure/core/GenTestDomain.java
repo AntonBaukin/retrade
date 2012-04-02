@@ -14,6 +14,7 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: genesis */
 
+import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
@@ -70,7 +71,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 	/* public: Genesis interface */
 
-	public void generate()
+	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
 		//~: create test domain if it does not exist yet
