@@ -35,7 +35,7 @@ public interface Genesis extends Cloneable
 
 	/**
 	 * Returns the name of this Genesis unit. The name
-	 * may be not unique.
+	 * may be not unique. It is always defined.
 	 */
 	public String  getName();
 

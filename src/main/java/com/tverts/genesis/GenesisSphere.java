@@ -106,14 +106,28 @@ public class      GenesisSphere
 
 	/* public: GenesisSphere (bean) interface */
 
-	public Long getSeed()
+	public Long    getSeed()
 	{
 		return seed;
 	}
 
-	public void setSeed(Long seed)
+	public void    setSeed(Long seed)
 	{
 		this.seed = seed;
+	}
+
+	/**
+	 * Explicitly tells Sphere not to create
+	 * own transaction. By default is false.
+	 */
+	public boolean isNoTx()
+	{
+		return noTx;
+	}
+
+	public void    setNoTx(boolean noTx)
+	{
+		this.noTx = noTx;
 	}
 
 
@@ -136,7 +150,7 @@ public class      GenesisSphere
 	protected void     doGenDispTx(GenCtx ctx)
 	  throws GenesisError
 	{
-		if(ctx.getOuter() == null)
+		if((ctx.getOuter() == null) && !isNoTx())
 			doGenTx(ctx);
 		else
 			doGen(ctx);
@@ -258,5 +272,6 @@ public class      GenesisSphere
 
 	/* private: sphere parameters */
 
-	private Long seed;
+	private Long    seed;
+	private boolean noTx;
 }

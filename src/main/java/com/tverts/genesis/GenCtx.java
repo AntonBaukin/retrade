@@ -51,6 +51,12 @@ public interface GenCtx
 	public Object  get(Object p);
 
 	/**
+	 * Returns the parameter checking it's type.
+	 * The result is also checked to be defined.
+	 */
+	public <T> T   get(Object p, Class<T> cls);
+
+	/**
 	 * Rewrites the context parameter with
 	 * the new value returning the old one.
 	 */

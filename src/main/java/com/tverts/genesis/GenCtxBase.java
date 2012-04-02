@@ -97,6 +97,21 @@ public class GenCtxBase implements GenCtx, Cloneable
 	}
 
 	@SuppressWarnings("unchecked")
+	public <T> T   get(Object p, Class<T> cls)
+	{
+		Object v = get(p);
+
+		if(v == null) throw new IllegalStateException(
+		  "Parameter [" + p + "] is not defined!");
+
+		if(!cls.isAssignableFrom(v.getClass()))
+			throw new IllegalStateException(
+		  "Parameter [" + p + "] is not a " + cls.getName() + "!");
+		
+		return (T) v;
+	}
+
+	@SuppressWarnings("unchecked")
 	public Object  set(Object p, Object v)
 	{
 		if(params == null)
