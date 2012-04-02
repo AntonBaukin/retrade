@@ -82,7 +82,7 @@ public class      GenesisSphere
 	 * Any exception raised within the task is thrown
 	 * out after the rollback task had been executed.
 	 */
-	public void     run()
+	public void run()
 	{
 		try
 		{
@@ -104,12 +104,33 @@ public class      GenesisSphere
 	}
 
 
+	/* public: GenesisSphere (bean) interface */
+
+	public Long getSeed()
+	{
+		return seed;
+	}
+
+	public void setSeed(Long seed)
+	{
+		this.seed = seed;
+	}
+
+
 	/* protected: invocation protocol */
 
 	protected GenCtx   nestContext(GenCtx outer)
 	{
-		return (outer != null)?(outer.stack(this)):
-		  new GenCtxBase(this);
+		if(outer != null)
+			return outer.stack(this);
+
+		GenCtxBase res = new GenCtxBase(this);
+
+		//~: random seed
+		if(getSeed() != null)
+			res.setGen(getSeed());
+
+		return res;
 	}
 
 	protected void     doGenDispTx(GenCtx ctx)
@@ -142,11 +163,9 @@ public class      GenesisSphere
 	protected void     doGen(GenCtx ctx)
 	  throws GenesisError
 	{
+		//~: obtain genesis units
 		List<Genesis> gens = reference.dereferObjects();
-
-		//?: {has no genesis units}
-		if((gens == null) || gens.isEmpty())
-			return;
+		if((gens == null) || gens.isEmpty()) return;
 
 		//~: invoke the genesis units
 		for(Genesis gen : gens) try
@@ -235,4 +254,9 @@ public class      GenesisSphere
 	/* private: genesis reference */
 
 	private GenesisReference reference;
+
+
+	/* private: sphere parameters */
+
+	private Long seed;
 }

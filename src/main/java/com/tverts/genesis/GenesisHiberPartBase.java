@@ -32,6 +32,7 @@ public abstract class GenesisHiberPartBase
 		return obj;
 	}
 
+
 	/* public: GenesisHiberPartBase bean interface */
 
 	/**
@@ -52,6 +53,7 @@ public abstract class GenesisHiberPartBase
 		this.sessionFactory = sf;
 	}
 
+
 	/* protected: access Hibernate session */
 
 	protected Session      session()
@@ -71,6 +73,7 @@ public abstract class GenesisHiberPartBase
 	{
 		return session().createQuery(hql);
 	}
+
 
 	/* private: database access */
 
