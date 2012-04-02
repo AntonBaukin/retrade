@@ -18,11 +18,9 @@ public class DaysGenDisp extends GenesisPartBase
 {
 	/* public: Genesis interface */
 
-	public Runnable generate()
+	public void generate()
 	  throws GenesisError
-	{
-		return null;
-	}
+	{}
 
 
 	/* public static: Genesis struct */

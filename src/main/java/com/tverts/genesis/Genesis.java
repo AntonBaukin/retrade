@@ -22,23 +22,16 @@ public interface Genesis extends Cloneable
 	/* public: Genesis interface */
 
 	/**
-	 * Actually generates the data. Returns the optional task
-	 * that would be invoked as a cleanup task after all the
-	 * genesis parts of the same {@link GenesisSphere} instance
-	 * are called.
-	 *
-	 * The tasks are invoked in the opposite order to the genesis
-	 * parts. If an {@link GenesisError} is invoked, it's cleanup
-	 * task also added (to the top of the stack).
+	 * Generates the data.
 	 */
-	public Runnable  generate()
+	public void    generate()
 	  throws GenesisError;
 
 	/**
 	 * Returns an operational copy of the original
 	 * (prototype) genesis unit.
 	 */
-	public Genesis   clone();
+	public Genesis clone();
 
 	/**
 	 * Tells whether the genesis unit works in the
@@ -53,16 +46,16 @@ public interface Genesis extends Cloneable
 	 * on constant parameters.) The method may be
 	 * invoked on the original prototype instance.
 	 */
-	public boolean   isTransactional();
+	public boolean isTransactional();
 
 	/**
 	 * Returns the name of this Genesis unit. The name
 	 * may be not unique.
 	 */
-	public String    getName();
+	public String  getName();
 
 	/**
 	 * Tells what this genesis actually generates.
 	 */
-	public String    getAbout(String lang);
+	public String  getAbout(String lang);
 }

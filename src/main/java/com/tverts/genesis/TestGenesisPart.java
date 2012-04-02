@@ -15,7 +15,7 @@ public class   TestGenesisPart
 {
 	/* public: Genesis interface */
 
-	public Runnable generate()
+	public void generate()
 	  throws GenesisError
 	{
 		LU.I(getLog(), logsig(), ": generated!");
@@ -26,7 +26,7 @@ public class   TestGenesisPart
 		}
 		catch(InterruptedException e)
 		{
-			throw new GenesisError(e, this, null);
+			throw new GenesisError(e, this);
 		}
 
 		if(getWaitShuntGroups() != null) try
@@ -35,10 +35,8 @@ public class   TestGenesisPart
 		}
 		catch(InterruptedException e)
 		{
-			throw new GenesisError(e, this, null);
+			throw new GenesisError(e, this);
 		}
-
-		return null;
 	}
 
 	/* public: TestGenesisPart properties */

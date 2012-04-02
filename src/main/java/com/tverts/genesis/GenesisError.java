@@ -10,19 +10,19 @@ package com.tverts.genesis;
  */
 public class GenesisError extends Exception
 {
-	/* public: constructor */
+	/* public: constructors */
 
-	public GenesisError (
-	         Throwable cause,
-	         Genesis   genesis,
-	         Runnable  rollbackTask
-	       )
+	public GenesisError(Throwable cause, Genesis genesis)
 	{
-		super(cause);
-
-		this.genesis  = genesis;
-		this.rollback = rollbackTask;
+		this(null, cause, genesis);
 	}
+
+	public GenesisError(String msg, Throwable cause, Genesis genesis)
+	{
+		super(msg, cause);
+		this.genesis  = genesis;
+	}
+
 
 	/* public: GenesisError interface */
 
@@ -31,13 +31,8 @@ public class GenesisError extends Exception
 		return genesis;
 	}
 
-	public Runnable getRollbackTask()
-	{
-		return rollback;
-	}
 
-	/* private: rollback task */
+	/* private: the Genesis unit reference */
 
-	private Genesis  genesis;
-	private Runnable rollback;
+	private Genesis genesis;
 }

@@ -70,7 +70,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 	/* public: Genesis interface */
 
-	public Runnable generate()
+	public void generate()
 	  throws GenesisError
 	{
 		//~: create test domain if it does not exist yet
@@ -78,8 +78,6 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 		//~: ensure the domain related entities exists
 		ensureTestDomain();
-
-		return null;
 	}
 
 

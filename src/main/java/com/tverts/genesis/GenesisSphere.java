@@ -62,7 +62,7 @@ public class      GenesisSphere
 	 * This call collects the cleanup tasks in the direct order:
 	 * but they are invoked in the opposite one.
 	 */
-	public Runnable generate()
+	public void generate()
 	  throws GenesisError
 	{
 		List<Genesis>  gens  = (reference == null)?(null):
@@ -70,12 +70,10 @@ public class      GenesisSphere
 
 		//?: {has no genesis units}
 		if((gens == null) || gens.isEmpty())
-			return null;
+			return;
 
 		Runnable       task;
 		Predicate      cond;
-		List<Runnable> tasks =     //<-- cleanup tasks
-		  new ArrayList<Runnable>(gens.size());
 
 		//~: invoke the genesis units
 		for(Genesis gen : gens) try
@@ -85,31 +83,19 @@ public class      GenesisSphere
 
 			//!: invoke generation
 			logGenGenerateBefore(gen);
-			task = gen.generate();
+			gen.generate();
 			logGenGenerateSuccess(gen);
-
-			//?: {has cleanup task} save it
-			if(task != null)
-				tasks.add(task); //<-- invoked from the tail!
 		}
 		catch(GenesisError e)
 		{
-			//?: {has rollback task} add it
-			if(e.getRollbackTask() != null)
-				tasks.add(e.getRollbackTask());
-
 			logGenGenerateError(e);
-			throw new GenesisError(e.getCause(), gen,
-			  createCleanups(tasks));
+			throw new GenesisError(e.getCause(), gen);
 		}
 		catch(Throwable e)
 		{
 			logGenGenerateError(gen, e);
-			throw new GenesisError(e, gen,
-			  createCleanups(tasks));
+			throw new GenesisError(e, gen);
 		}
-
-		return createCleanups(tasks);
 	}
 
 	/* public: Runnable interface */
@@ -156,19 +142,17 @@ public class      GenesisSphere
 
 	public void doRun()
 	{
-		Runnable  cleanup = null;
 		Throwable error   = null;
 
 		//~: invoke the generation
 		try
 		{
 			logRunGenerateBefore();
-			cleanup = this.generate();
+			this.generate();
 			logRunGenerateSuccess();
 		}
 		catch(GenesisError e)
 		{
-			cleanup = e.getRollbackTask();
 			error   = e.getCause();
 
 			logRunGenerateError(e);
@@ -177,21 +161,6 @@ public class      GenesisSphere
 		{
 			error = e;
 			logRunGenerateError(e);
-		}
-
-		//?: {has cleanup task} invoke it
-		if(cleanup != null) try
-		{
-			logRunCleanupBefore(cleanup);
-			cleanup.run();
-			logRunCleanupSuccess();
-		}
-		catch(Throwable e)
-		{
-			if(error == null)
-				error = e;
-
-			logRunCleanupError(e);
 		}
 
 		//?: {has an error} throw it out
