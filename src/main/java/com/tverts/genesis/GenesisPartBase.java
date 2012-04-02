@@ -34,13 +34,6 @@ public abstract class GenesisPartBase
        extends        GenesisBase
        implements     GenesisReference
 {
-	/* public: Genesis interface */
-
-	public boolean       isTransactional()
-	{
-		return false;
-	}
-
 	/* public: GenesisReference interface */
 
 	public List<Genesis> dereferObjects()

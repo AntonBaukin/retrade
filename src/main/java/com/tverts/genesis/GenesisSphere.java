@@ -56,9 +56,6 @@ public class      GenesisSphere
 	 * Invokes all the {@link Genesis} units accessed by the
 	 * {@link GenesisReference} given.
 	 *
-	 * This call never creates own transactional context.
-	 * Consider {@link #run()} with {@link #isTransactional()}.
-	 *
 	 * This call collects the cleanup tasks in the direct order:
 	 * but they are invoked in the opposite one.
 	 */
@@ -109,27 +106,9 @@ public class      GenesisSphere
 	 */
 	public void     run()
 	{
-		//?: {the sphere is transactional}
-		if(isTransactional())
-			doRunTx();
-		else
-			doRun();
+		doRunTx();
 	}
 
-	public boolean  isTransactional()
-	{
-		List<Genesis> gens = (reference == null)?(null):
-		  (reference.dereferObjects());
-
-		//?: {has no genesis units}
-		if(gens == null) return false;
-
-		for(Genesis gen : gens)
-			if(gen.isTransactional())
-				return true;
-
-		return false;
-	}
 
 	/* public: GenesisSphereReference interface */
 

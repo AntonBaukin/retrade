@@ -34,21 +34,6 @@ public interface Genesis extends Cloneable
 	public Genesis clone();
 
 	/**
-	 * Tells whether the genesis unit works in the
-	 * context of a transaction.
-	 *
-	 * If unit is a part of a Genesis Sphere, all
-	 * the transactional parts are invoked in the
-	 * context of the same transaction.
-	 *
-	 * Note that this method must not depend on the
-	 * generation state of the unit. (But may depend
-	 * on constant parameters.) The method may be
-	 * invoked on the original prototype instance.
-	 */
-	public boolean isTransactional();
-
-	/**
 	 * Returns the name of this Genesis unit. The name
 	 * may be not unique.
 	 */

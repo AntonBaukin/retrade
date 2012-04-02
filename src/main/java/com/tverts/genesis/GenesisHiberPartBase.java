@@ -22,11 +22,6 @@ public abstract class GenesisHiberPartBase
 {
 	/* public: Genesis interface */
 
-	public boolean         isTransactional()
-	{
-		return true;
-	}
-
 	public Genesis         clone()
 	{
 		GenesisHiberPartBase obj =
