@@ -44,7 +44,7 @@ public class GenCtxBase implements GenCtx, Cloneable
 
 	public Random  gen()
 	{
-		return null;
+		return (gen != null)?(gen):(gen = new Random());
 	}
 
 	public GenCtx  stack(Genesis owner)

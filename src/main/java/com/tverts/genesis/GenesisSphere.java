@@ -63,7 +63,7 @@ public class      GenesisSphere
 		try
 		{
 			logGenerateBefore(ctx);
-			doGenDispTx(nestContext(ctx));
+			doGenDispTx(ctx);
 			logGenerateSuccess(ctx);
 		}
 		catch(GenesisError e)
