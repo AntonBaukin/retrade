@@ -1,10 +1,5 @@
 package com.tverts.genesis;
 
-/* com.tverts: predicates */
-
-import com.tverts.support.LU;
-import com.tverts.support.logic.Predicate;
-
 /* com.tverts: support */
 
 import com.tverts.support.LO;
@@ -12,6 +7,7 @@ import com.tverts.support.LO;
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sLo;
 import static com.tverts.support.SU.sXe;
+
 
 /**
  * Stores basic properties of any {@link Genesis} unit.
@@ -88,11 +84,6 @@ public abstract class GenesisBase
 
 
 	/* protected: logging */
-
-	protected String log()
-	{
-		return LU.getLogBased(Genesis.class, this);
-	}
 
 	protected String log(GenCtx ctx)
 	{

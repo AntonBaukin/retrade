@@ -43,27 +43,27 @@ public abstract class GenesisPartBase
 	/**
 	 * Waits execution of single Self Shunt Request with the name given.
 	 *
-	 * WARNING: see {@link #waitShuntWeb(SeShRequestInitial)}.
+	 * WARNING: see {@link #waitShuntWeb(GenCtx, SeShRequestInitial)}.
 	 */
-	protected SelfShuntReport waitShuntWebSingle(String shuntName)
+	protected SelfShuntReport waitShuntWebSingle(GenCtx ctx, String shuntName)
 	  throws InterruptedException
 	{
 		return this.waitShuntWeb(
-		  new SeShRequestSingle(shuntName));
+		  ctx, new SeShRequestSingle(shuntName));
 	}
 
 	/**
 	 * Waits execution of the named group of Self Shunt Requests.
 	 *
-	 * WARNING: see {@link #waitShuntWeb(SeShRequestInitial)}.
+	 * WARNING: see {@link #waitShuntWeb(GenCtx, SeShRequestInitial)}.
 	 */
-	protected SelfShuntReport waitShuntWebGroups(String... groups)
+	protected SelfShuntReport waitShuntWebGroups(GenCtx ctx, String... groups)
 	  throws InterruptedException
 	{
 		SeShRequestGroups request = new SeShRequestGroups();
 
 		request.setGroups(groups);
-		return this.waitShuntWeb(request);
+		return this.waitShuntWeb(ctx, request);
 	}
 
 	/**
@@ -74,12 +74,12 @@ public abstract class GenesisPartBase
 	 *   In default configuration Shunt Service waits the initial
 	 *   generation to complete and is not operating!
 	 */
-	protected SelfShuntReport waitShuntWeb(SeShRequestInitial request)
+	protected SelfShuntReport waitShuntWeb(GenCtx ctx, SeShRequestInitial request)
 	  throws InterruptedException
 	{
 		final WaitShuntFinish finish = new WaitShuntFinish();
 
-		logWaitShuntStart(request);
+		logWaitShuntStart(ctx, request);
 
 		synchronized(finish)
 		{
@@ -90,7 +90,7 @@ public abstract class GenesisPartBase
 			finish.wait();
 		}
 
-		logWaitShuntDone();
+		logWaitShuntDone(ctx);
 		return finish.getReport();
 	}
 
@@ -122,19 +122,19 @@ public abstract class GenesisPartBase
 
 	/* protected: logging */
 
-	protected void   logWaitShuntStart(SeShRequestInitial request)
+	protected void   logWaitShuntStart(GenCtx ctx, SeShRequestInitial request)
 	{
-		if(!LU.isI(log())) return;
+		if(!LU.isI(log(ctx))) return;
 
-		LU.I(log(), logsig(),
+		LU.I(log(ctx), logsig(),
 		  " waiting for Shunt Unit to finish: ",
 		  request.getSelfShuntKey(), "...");
 	}
 
-	protected void   logWaitShuntDone()
+	protected void   logWaitShuntDone(GenCtx ctx)
 	{
-		if(!LU.isI(log())) return;
+		if(!LU.isI(log(ctx))) return;
 
-		LU.I(log(), logsig(), "... done waiting shunt!");
+		LU.I(log(ctx), logsig(), "... done waiting shunt!");
 	}
 }

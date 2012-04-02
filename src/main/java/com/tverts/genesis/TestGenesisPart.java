@@ -5,6 +5,7 @@ package com.tverts.genesis;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
 
+
 /**
  * Tests coupling with the Self Shunt Service.
  *
@@ -18,11 +19,11 @@ public class   TestGenesisPart
 	public void      generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		LU.I(log(), logsig(), ": generated!");
+		LU.I(log(ctx), logsig(), ": generated!");
 
 		if(getWaitSingleShunt() != null) try
 		{
-			waitShuntWebSingle(getWaitSingleShunt());
+			waitShuntWebSingle(ctx, getWaitSingleShunt());
 		}
 		catch(InterruptedException e)
 		{
@@ -31,13 +32,14 @@ public class   TestGenesisPart
 
 		if(getWaitShuntGroups() != null) try
 		{
-			waitShuntWebGroups(getWaitShuntGroups());
+			waitShuntWebGroups(ctx, getWaitShuntGroups());
 		}
 		catch(InterruptedException e)
 		{
 			throw new GenesisError(e, this, ctx);
 		}
 	}
+
 
 	/* public: TestGenesisPart properties */
 
@@ -47,7 +49,7 @@ public class   TestGenesisPart
 	}
 
 	/**
-	 * WARNING: see {@link #waitShuntWeb(
+	 * WARNING: see {@link #waitShuntWeb(GenCtx,
 	 *   com.tverts.shunts.protocol.SeShRequestInitial)}.
 	 */
 	public void      setWaitSingleShunt(String s)
@@ -61,13 +63,14 @@ public class   TestGenesisPart
 	}
 
 	/**
-	 * WARNING: see {@link #waitShuntWeb(
+	 * WARNING: see {@link #waitShuntWeb(GenCtx,
 	 *   com.tverts.shunts.protocol.SeShRequestInitial)}.
 	 */
 	public void      setWaitShuntGroupsStr(String g)
 	{
 		this.waitShuntGroups = SU.s2a(g);
 	}
+
 
 	/* protected: logging */
 
@@ -79,6 +82,7 @@ public class   TestGenesisPart
 		return String.format("%s '%s'",
 		  getClass().getSimpleName(), getName());
 	}
+
 
 	/* private: parameters of the test unit */
 

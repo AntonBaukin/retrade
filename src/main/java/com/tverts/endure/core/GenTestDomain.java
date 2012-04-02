@@ -75,7 +75,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 	  throws GenesisError
 	{
 		//~: create test domain if it does not exist yet
-		createTestDomain();
+		createTestDomain(ctx);
 
 		//~: ensure the domain related entities exists
 		ensureTestDomain();
@@ -89,7 +89,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 		getInstance().testDomain = this.testDomain = testDomain;
 	}
 
-	protected void  createTestDomain()
+	protected void  createTestDomain(GenCtx ctx)
 	{
 		//~: search for the test domain
 		Domain d = bean(GetDomain.class).getTestDomain();
@@ -108,7 +108,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 
 		//~: log success
-		if(LU.isI(log())) LU.I(log(), logsig(),
+		if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
 		  " had created Test Domain with PK = ", d.getPrimaryKey());
 	}
 
