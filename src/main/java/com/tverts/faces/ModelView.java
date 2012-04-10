@@ -187,7 +187,8 @@ public abstract class ModelView extends ViewWithModes
 	public String      getCheckModelRequestedWithRedirect()
 	{
 		if(!isModelRequested())
-			throw new NoModelException(getModel());
+			throw new NoModelException(getModel()).
+			  setModelKeys(getModelKeys());
 		return "";
 	}
 
