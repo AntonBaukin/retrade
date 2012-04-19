@@ -91,6 +91,9 @@ public abstract class ModelBeanBase implements ModelBean
 			this.setUpdateTime(new Date());
 	}
 
+	/**
+	 * TODO check that all model beans do test updateeq()!
+	 */
 	protected boolean   updateq(Object cur, Object tst)
 	{
 		return (cur != null) && !cur.equals(tst);
