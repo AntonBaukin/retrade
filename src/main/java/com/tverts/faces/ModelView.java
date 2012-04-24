@@ -292,6 +292,18 @@ public abstract class ModelView extends ViewWithModes
 		return (param == null)?(null):(Long.parseLong(param));
 	}
 
+	protected Long               obtainEntityKeyFromRequestStrict()
+	{
+		Long res = obtainEntityKeyFromRequest();
+
+		if(res == null) throw new IllegalStateException(
+		  "Can't obtain primary key of entity for the model " +
+		  "bean instance from the HTTP request!");
+
+		return res;
+	}
+
+
 	protected ModelPoint         modelPoint()
 	{
 		return ModelAccessPoint.model();

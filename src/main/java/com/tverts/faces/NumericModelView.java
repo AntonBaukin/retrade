@@ -49,16 +49,12 @@ public abstract class NumericModelView extends ModelView
 	protected NumericModelBean
 	                  createModel()
 	{
-		Long             key   = obtainEntityKeyFromRequest();
-
-		if(key == null) throw new IllegalStateException(
-		  "Can't obtain primary key of entity to " +
-		  "preview from the HTTP request!");
-
+		Long             key   = obtainEntityKeyFromRequestStrict();
 		NumericModelBean model = createModelInstance(key);
 
 		if(model.getPrimaryKey() == null)
 			model.setPrimaryKey(key);
+
 		return model;
 	}
 
