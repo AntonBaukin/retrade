@@ -116,23 +116,24 @@ public class SU
 	 * Returns an array of not-whitespace-strings
 	 * collected from the array provided.
 	 *
-	 * Omits {@code null} strings.
+	 * Omits {@code null} strings. Returns always
+	 * not {@code null}!
 	 *
 	 * A copy of the original array is always created.
 	 */
-	public static String[] a2a(String... a)
+	public static String[] a2a(String[] a)
 	{
+		if(a == null) return new String[0];
+
 		String[] r;
-		int      i, l = 0;
+		int      i = 0, l = 0;
 
-		for(i = 0;(i < a.length);i++)
-		{
-		   a[i] = s2s(a[i]);
-			if(a[i] != null) l++;
-		}
+		for(String s : a)
+			if(!sXe(s)) l++;
 
-		i = 0; r = new String[l];
-		for(String s : a) if(s != null) r[i++] = s;
+		r = new String[l];
+		for(String s : a)
+			if(!sXe(s)) r[i++] = s2s(s);
 
 		return r;
 	}
