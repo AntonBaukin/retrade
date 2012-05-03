@@ -24,8 +24,10 @@ import com.tverts.model.ModelBean;
 import com.tverts.model.ModelPoint;
 import com.tverts.model.NoModelException;
 
-/* com.tverts: genesis */
+/* com.tverts: endure (core) */
 
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.GetDomain;
 import com.tverts.endure.core.GenTestDomain; //!: TEMP
 
 /* com.tverts: support */
@@ -68,6 +70,18 @@ public abstract class ModelView extends ViewWithModes
 	public Long        getDomainKey()
 	{
 		return GenTestDomain.testDomain().getPrimaryKey();
+	}
+
+	public Domain      loadDomain()
+	{
+		Long   k = getDomainKey();
+		Domain d = (k == null)?(null):
+		  bean(GetDomain.class).getDomain(k);
+
+		if(d == null) throw new IllegalStateException(
+		  "Can't define working Domain!");
+
+		return d;
 	}
 
 	public String      getId()
