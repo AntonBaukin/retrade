@@ -9,6 +9,10 @@ import javax.faces.event.PhaseId;
 
 import static com.tverts.servlet.RequestPoint.request;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: support */
 
 import static com.tverts.support.SU.s2s;
@@ -26,6 +30,15 @@ public abstract class ViewWithModes
 	public static final String VIEWID_PARAM = "view";
 
 	public static final String VMODE_PARAM  = "mode";
+
+
+	/* public: ViewWithModes (id) interface */
+
+	public String      getId()
+	{
+		return (this.id != null)?(this.id):
+		  (this.id = obtainViewId());
+	}
 
 
 	/* public: ViewWithModes (view mode) interface */
@@ -148,6 +161,20 @@ public abstract class ViewWithModes
 		return s2s(request().getParameter(getViewIdParam()));
 	}
 
+	protected String   obtainViewId()
+	{
+		//~: take value from the request
+		String id = obtainRequestedViewId();
+		if(id != null) return id;
+
+		//~: ask for effective id
+		id = bean(RootView.class).getEffectiveViewId();
+		if(id == null) throw new IllegalStateException(
+		  "No effective Faces View ID was generated!");
+
+		return id;
+	}
+
 	protected ViewMode obtainViewMode()
 	{
 		return obtainRequestViewMode();
@@ -167,5 +194,6 @@ public abstract class ViewWithModes
 
 	/* private: the view state */
 
+	private String   id;
 	private ViewMode viewMode;
 }

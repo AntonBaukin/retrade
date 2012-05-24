@@ -84,12 +84,6 @@ public abstract class ModelView extends ViewWithModes
 		return d;
 	}
 
-	public String      getId()
-	{
-		return (this.id != null)?(this.id):
-		  (this.id = obtainViewId());
-	}
-
 	public ModelBean   getModel()
 	{
 		//?: {got the model reference}
@@ -236,22 +230,6 @@ public abstract class ModelView extends ViewWithModes
 
 	protected abstract ModelBean createModel();
 
-	protected String             obtainViewId()
-	{
-		//~: take value from the request
-		String id = obtainRequestedViewId();
-		if(id != null) return id;
-
-		//~: ask for effective id
-		id = bean(RootView.class).getEffectiveViewId();
-		if(id == null) throw new IllegalStateException(
-		  "No effective Faces View ID was generated!");
-
-		return id;
-	}
-
-
-
 	protected ModelBean          obtainModel()
 	{
 		for(ModelBean model : getRequestedModels())
@@ -317,7 +295,6 @@ public abstract class ModelView extends ViewWithModes
 		return res;
 	}
 
-
 	protected ModelPoint         modelPoint()
 	{
 		return ModelAccessPoint.model();
@@ -326,7 +303,6 @@ public abstract class ModelView extends ViewWithModes
 
 	/* private: the view state */
 
-	private String      id;
 	private ModelBean   model;
 	private ModelBean[] models;
 }

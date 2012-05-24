@@ -81,7 +81,7 @@ public class Functions
 
 	/* public: model views support  */
 
-	public static String genViewId(ModelView v, String name)
+	public static String genViewId(ViewWithModes v, String name)
 	{
 		return new StringBuilder(v.getId().length() + name.length() + 1).
 		  append(v.getId()).append('_').append(name).
