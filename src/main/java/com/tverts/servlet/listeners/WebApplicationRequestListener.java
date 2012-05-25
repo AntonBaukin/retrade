@@ -23,8 +23,13 @@ public class   WebApplicationRequestListener
 	public void requestInitialized(ServletRequestEvent event)
 	{
 		if(event.getServletRequest() instanceof HttpServletRequest)
+		{
 			RequestPoint.setRootRequest(
 			  (HttpServletRequest)event.getServletRequest());
+
+			//~: generate the HTTP session
+			((HttpServletRequest)event.getServletRequest()).getSession(true);
+		}
 	}
 
 	public void requestDestroyed(ServletRequestEvent event)
