@@ -34,6 +34,13 @@ public class RootView extends ViewWithModes
 
 	public static final String EXTJSDOMAIN_PARAM = "extjs_domain";
 
+	/**
+	 * Position within the desktop layout panels. The default
+	 * value is {@code null} string, and the real place is defined
+	 * by the implementation (the desktop center).
+	 */
+	public static final String EXTJSPOS_PARAM    = "extjs_desktop_position";
+
 
 	/* public: access shared view state */
 
@@ -51,6 +58,16 @@ public class RootView extends ViewWithModes
 	public String    getExtjsDomainParam()
 	{
 		return EXTJSDOMAIN_PARAM;
+	}
+
+	public String    getExtjsPosition()
+	{
+		return obtainExtjsPositionFromRequest();
+	}
+
+	public String    getExtjsPositionParam()
+	{
+		return EXTJSPOS_PARAM;
 	}
 
 	public String    getExtjsDomain()
@@ -76,6 +93,11 @@ public class RootView extends ViewWithModes
 	protected String obtainExtjsDomainFromRequest()
 	{
 		return s2s(request().getParameter(getExtjsDomainParam()));
+	}
+
+	protected String obtainExtjsPositionFromRequest()
+	{
+		return s2s(request().getParameter(getExtjsPositionParam()));
 	}
 
 
