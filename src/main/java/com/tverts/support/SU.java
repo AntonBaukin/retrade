@@ -462,7 +462,8 @@ public class SU
 	 */
 	public static String        a2s(CharSequence... strings)
 	{
-		return cat(null, ", ", Arrays.asList(strings)).toString();
+		return (strings ==  null)?(null):
+		  cat(null, ", ", Arrays.asList(strings)).toString();
 	}
 
 	/**
