@@ -3,6 +3,8 @@ package com.tverts.endure.cats;
 /* standard Java classes */
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 
 /* Java XML Binding */
 
@@ -57,6 +59,13 @@ public class CatItemView implements Serializable
 
 	public CatItemView init(Object obj)
 	{
+		if(obj instanceof Object[])
+			obj = Arrays.asList((Object[])obj);
+
+		if(obj instanceof Collection)
+			for(Object sub : (Collection)obj)
+				this.init(sub);
+
 		if(obj instanceof CatItem)
 			return init((CatItem)obj);
 
