@@ -76,6 +76,9 @@ public class ActDomain extends ActionBuilderXRoot
 		//~: ensure domain locks
 		ensureDomainLocks(abr);
 
+		//~: ensure the aggregated values
+		ensureDomainAggrValues(abr);
+
 		complete(abr);
 	}
 
@@ -86,5 +89,11 @@ public class ActDomain extends ActionBuilderXRoot
 
 		//~: codes lock
 		ensureLock(abr, Domains.LOCK_CODES);
+	}
+
+	protected void ensureDomainAggrValues(ActionBuildRec abr)
+	{
+		//~: build aggregated value of all the contractors debt balance
+		buildAggrValue(abr, Domains.AGGRVAL_CONTRACTORS_BALANCE, null);
 	}
 }

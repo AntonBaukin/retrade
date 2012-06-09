@@ -19,6 +19,7 @@ import com.tverts.hibery.GetObjectBase;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.UnityType;
+import com.tverts.endure.UnityTypes;
 
 
 /**
@@ -94,6 +95,12 @@ from AggrValue where (owner.id = :owner) and
 		  owner + "!");
 	}
 
+	public AggrValue getAggrValue(Long owner, String aggrType, Long selectorId)
+	{
+		return getAggrValue(owner,
+		  UnityTypes.unityType(AggrValue.class, aggrType), selectorId);
+	}
+
 	public AggrValue loadAggrValue(Long owner, UnityType aggrType, Long selectorId)
 	{
 		AggrValue result = getAggrValue(owner, aggrType, selectorId);
@@ -103,5 +110,11 @@ from AggrValue where (owner.id = :owner) and
 		  " for owning Unity with primary key " + owner + "!");
 
 		return result;
+	}
+
+	public AggrValue loadAggrValue(Long owner, String aggrType, Long selectorId)
+	{
+		return loadAggrValue(owner,
+		  UnityTypes.unityType(AggrValue.class, aggrType), selectorId);
 	}
 }

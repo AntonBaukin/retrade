@@ -3,12 +3,6 @@
    xsi:schemaLocation = 'http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
-  <!--=================================================
-    =  Unity Types for XRoot Module Locks             =
-    +================================================-->
-
-  <import resource = 'xrootLocks.xml'/>
-
 
   <!--=================================================
     =  Unity Types for XRoot Module                   =
@@ -47,6 +41,52 @@
   </bean>
 
 
+  <!--=================================================
+    =  Unity Types for XRoot Module Locks             =
+    +================================================-->
+
+  <bean name  = 'xrootLocksTypes'
+        class = 'com.tverts.objects.StringBean'>
+    <property name = 'string'>
+      <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Exclusive Goods and Stores Lock                           ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.locks.Lock   Locks: Domain: Exclusive Goods and Stores Lock;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Exclusive Codes Lock                                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.locks.Lock   Locks: Domain: Exclusive Codes Lock;
+
+
+      </value>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Unity Types for XRoot Module Aggregated Values =
+    +================================================-->
+
+  <bean name  = 'xrootAggrValuesTypes'
+        class = 'com.tverts.objects.StringBean'>
+    <property name = 'string'>
+      <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Summary Debts of all the Contractors                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.AggrValue   ReTrade: Aggr Value: Contractors Debt Balance;
+
+
+      </value>
+    </property>
+  </bean>
+
+
+
   <bean name  = 'xrootUnityTypes'
         class = 'com.tverts.objects.StringsList'>
 
@@ -58,6 +98,9 @@
 
         <!-- execution root module locks types -->
         <ref bean = 'xrootLocksTypes'/>
+
+        <!-- execution root module aggregated values types -->
+        <ref bean = 'xrootAggrValuesTypes'/>
 
       </list>
     </property>

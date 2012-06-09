@@ -31,4 +31,21 @@ public class Domains
 	 */
 	public static final String LOCK_CODES  =
 	  "Locks: Domain: Exclusive Codes Lock";
+
+
+	/* types of aggregated values */
+
+	/**
+	 * Aggregation value of summary debts of all the
+	 * contractors.
+	 *
+	 * Positive value is the amount of money the
+	 * contractors must pay. Negative is the amount
+	 * to pay to the contractors.
+	 *
+	 * This value is attached to the Domain.
+	 */
+	public static final String AGGRVAL_CONTRACTORS_BALANCE  =
+	  "ReTrade: Aggr Value: Contractors Debt Balance";
+
 }

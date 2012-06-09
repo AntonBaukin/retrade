@@ -12,8 +12,7 @@ import static com.tverts.support.OU.xml2obj;
 
 
 /**
- * COMMENT AggrRequest
- *
+ * Stored in the database request to the aggregation engine.
  *
  * @author anton.baukin@gmail.com
  */
@@ -35,8 +34,9 @@ public class AggrRequest implements NumericIdentity
 	/* public: AggrRequest (source) interface */
 
 	/**
-	 * Source Unity of the request. Source originates
-	 * the request. Without it the request is not needed.
+	 * Source Unity of the request. It may be defined
+	 * for entities with existing Unity mirror.
+	 * Re
 	 */
 	public Unity      getSource()
 	{

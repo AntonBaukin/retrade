@@ -46,6 +46,11 @@ public class AggrAction extends ActionWithTxBase
 		return this;
 	}
 
+	public boolean    isEmpty()
+	{
+		return this.requests.isEmpty();
+	}
+
 	public boolean    isSynchronous()
 	{
 		return synch;
