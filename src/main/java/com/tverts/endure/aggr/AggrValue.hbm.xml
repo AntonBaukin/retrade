@@ -61,18 +61,38 @@
 
     <property name = 'aggrValue' type = 'big_decimal'>
 
-      <column name = 'aggr_value' precision = '18' scale = '4'>
+      <column name = 'aggr_value' precision = '19' scale = '5'>
         <comment>The aggregated value</comment>
       </column>
     </property>
 
 
-    <!-- Aggr Value -->
+    <!-- Aggr Value Denominator -->
 
     <property name = 'aggrDenom' type = 'big_decimal'>
 
-      <column name = 'aggr_denom' precision = '18' scale = '4'>
+      <column name = 'aggr_denom' precision = '19' scale = '5'>
         <comment>The aggregated value plain fraction denominator</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Value Positive -->
+
+    <property name = 'aggrPositive' type = 'big_decimal'>
+
+      <column name = 'aggr_value_pos' precision = '19' scale = '5'>
+        <comment>The aggregated value positive part</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Value Negative -->
+
+    <property name = 'aggrNegative' type = 'big_decimal'>
+
+      <column name = 'aggr_value_neg' precision = '19' scale = '5'>
+        <comment>The aggregated value negative part</comment>
       </column>
     </property>
 

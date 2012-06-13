@@ -12,7 +12,7 @@
 
     <property name = 'goodVolume' type = 'big_decimal'>
 
-      <column name = 'good_volume' precision = '14' scale = '4'>
+      <column name = 'good_volume' precision = '15' scale = '3'>
 
         <comment>
           The volume (amount) added to or removed from the aggregated value
@@ -25,7 +25,7 @@
 
     <property name = 'volumeCost' type = 'big_decimal'>
 
-      <column name = 'volume_cost' precision = '16' scale = '4'>
+      <column name = 'volume_cost' precision = '17' scale = '5'>
 
         <comment>The (price) cost of the volume (amount)</comment>
       </column>
@@ -36,7 +36,7 @@
 
     <property name = 'aggrVolume' type = 'big_decimal'>
 
-      <column name = 'aggr_volume' precision = '18' scale = '4'>
+      <column name = 'aggr_volume' precision = '19' scale = '3'>
 
         <comment>Attribute of aggregated component: summary volume</comment>
       </column>
@@ -47,7 +47,7 @@
 
     <property name = 'aggrCost' type = 'big_decimal'>
 
-      <column name = 'aggr_cost' precision = '20' scale = '4'>
+      <column name = 'aggr_cost' precision = '21' scale = '5'>
 
         <comment>
           Attribute of aggregated component: the cost of

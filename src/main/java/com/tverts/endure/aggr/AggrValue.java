@@ -102,6 +102,26 @@ public class AggrValue extends Entity
 		this.aggrDenom = v;
 	}
 
+	public BigDecimal getAggrPositive()
+	{
+		return aggrPositive;
+	}
+
+	public void       setAggrPositive(BigDecimal v)
+	{
+		this.aggrPositive = v;
+	}
+
+	public BigDecimal getAggrNegative()
+	{
+		return aggrNegative;
+	}
+
+	public void       setAggrNegative(BigDecimal v)
+	{
+		this.aggrNegative = v;
+	}
+
 
 	/* persisted attributes: relations */
 
@@ -115,4 +135,6 @@ public class AggrValue extends Entity
 
 	private BigDecimal aggrValue;
 	private BigDecimal aggrDenom = BigDecimal.ONE;
+	private BigDecimal aggrPositive;
+	private BigDecimal aggrNegative;
 }

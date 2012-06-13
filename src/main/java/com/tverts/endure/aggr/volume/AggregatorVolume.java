@@ -150,16 +150,21 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 
 		//<: recalculate the aggregated value
 
-		BigDecimal value = aggrValue(struct).getAggrValue();
-		if(value == null) value = BigDecimal.ZERO;
+		BigDecimal p = aggrValue(struct).getAggrPositive();
+		BigDecimal n = aggrValue(struct).getAggrNegative();
+
+		if(p == null) p = BigDecimal.ZERO;
+		if(n == null) n = BigDecimal.ZERO;
 
 		if(item.getVolumePositive() != null)
-			value = value.add(item.getVolumePositive());
+			p = p.add(item.getVolumePositive());
 
 		if(item.getVolumeNegative() != null)
-			value = value.subtract(item.getVolumeNegative());
+			n = n.add(item.getVolumeNegative());
 
-		aggrValue(struct).setAggrValue(value);
+      aggrValue(struct).setAggrPositive(p);
+		aggrValue(struct).setAggrNegative(n);
+      aggrValue(struct).setAggrValue(p.subtract(n));
 
 		//>: recalculate the aggregated value
 	}
@@ -273,17 +278,18 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 
 		//<: recalculate the aggregated value
 
-		BigDecimal value = aggrValue(struct).getAggrValue();
-		if(value == null) value = BigDecimal.ZERO;
+		BigDecimal p = aggrValue(struct).getAggrPositive();
+		BigDecimal n = aggrValue(struct).getAggrNegative();
 
-		/**
-		 * HINT: we do subtract, so the signs are negated!
-		 */
+		if(p == null) p = BigDecimal.ZERO;
+		if(n == null) n = BigDecimal.ZERO;
 
-		value = value.subtract(sumPositive);
-		value = value.add(sumNegative);
+		p = p.subtract(sumPositive);
+		n = n.subtract(sumNegative);
 
-		aggrValue(struct).setAggrValue(value);
+		aggrValue(struct).setAggrPositive(p);
+		aggrValue(struct).setAggrNegative(n);
+		aggrValue(struct).setAggrValue(p.subtract(n));
 
 		//>: recalculate the aggregated value
 	}
