@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 /* com.tverts: hibery */
 
 import com.tverts.hibery.GetObjectBase;
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: support */
 
@@ -53,7 +54,7 @@ from Property where (name = :name) and
 	/**
 	 * Returns the system-wide property within the area.
 	 */
-	public Property get(String name, String area)
+	public Property get(String area, String name)
 	{
 		if(sXe(area)) return this.get(name);
 		if(sXe(name)) throw new IllegalArgumentException();
@@ -80,7 +81,7 @@ from Property where (name = :name) and
 	/**
 	 * Returns the domain-wide property.
 	 */
-	public Property get(String name, Long domain)
+	public Property get(Long domain, String name)
 	{
 		if(domain == null) return this.get(name);
 		if(sXe(name))      throw new IllegalArgumentException();
@@ -107,19 +108,19 @@ from Property where (name = :name) and
 	/**
 	 * Returns the domain-wide property within the area.
 	 */
-	public Property get(String name, Domain domain)
+	public Property get(Domain domain, String name)
 	{
 		if(domain == null) return this.get(name);
-		return this.get(name, domain.getPrimaryKey());
+		return this.get(domain.getPrimaryKey(), name);
 	}
 
 	/**
 	 * Returns the domain-wide property.
 	 */
-	public Property get(String name, String area, Long domain)
+	public Property get(Long domain, String area, String name )
 	{
-		if(sXe(area))      return this.get(name, domain);
-		if(domain == null) return this.get(name, area);
+		if(sXe(area))      return this.get(domain, name);
+		if(domain == null) return this.get(area, name);
 		if(sXe(name))      throw new IllegalArgumentException();
 
 /*
@@ -145,10 +146,30 @@ from Property where (name = :name) and
 	/**
 	 * Returns the domain-wide property.
 	 */
-	public Property get(String name, String area, Domain domain)
+	public Property get(Domain domain, String area, String name)
 	{
-		if(domain == null) return this.get(name, area);
-		return this.get(name, area, domain.getPrimaryKey());
+		if(domain == null) return this.get(area, name);
+		return this.get(domain.getPrimaryKey(), area, name);
+	}
+
+	/**
+	 * Get or Create. Returns the domain-wide property.
+	 */
+	public Property goc(Domain domain, String area, String name)
+	{
+		Property res = this.get(domain, area, name);
+		if(res != null) return res;
+
+		//~: assign the alternative key
+		res = new Property();
+		res.setName(name);
+		res.setArea(area);
+		res.setDomain(domain);
+
+		//!: save it
+		this.save(res);
+
+		return res;
 	}
 
 	/**
@@ -159,14 +180,23 @@ from Property where (name = :name) and
 	public Property get(Property prop)
 	{
 		return (prop == null)?(null):this.get(
-		  prop.getName(), prop.getArea(), prop.getDomain()
+		  prop.getDomain(), prop.getArea(), prop.getName()
 		);
 	}
 
 	public GetProps save(Property prop)
 	{
 		if(prop == null) throw new IllegalArgumentException();
+
+		//?: {has no primary key}
+		if(prop.getPrimaryKey() == null)
+			HiberPoint.setPrimaryKey(session(), prop,
+			  (prop.getDomain() != null) && HiberPoint.
+			    isTestInstance(prop.getDomain()));
+
+		//!: do save
 		session().save(prop);
+
 		return this;
 	}
 
@@ -177,8 +207,8 @@ from Property where (name = :name) and
 
 		//?: {a new instance} save it
 		if(got == null)
-			session().save(prop);
-		//e: do merge
+			this.save(prop);
+		//:: do merge
 		else
 		{
 			got.setType(prop.getType());
@@ -190,7 +220,7 @@ from Property where (name = :name) and
 	}
 
 
-	/* Values Access */
+	/* Values Read */
 
 	public String  string(Property p)
 	{
@@ -265,7 +295,7 @@ from Property where (name = :name) and
 			return this;
 		}
 
-		if(p.getType() == null)
+		if((p.getType() == null) || sXe(p.getValue()))
 			p.setType(bean.getClass());
 		p.setValue(obj2xml(bean));
 

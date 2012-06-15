@@ -39,9 +39,10 @@
     <!-- Domain reference -->
 
     <many-to-one name = 'domain' lazy = 'proxy'
-      foreign-key = 'fk_property_domain' index = 'ix_property_domain'>
+      foreign-key = 'fk_property_domain'>
 
-      <column name = 'fk_domain' unique-key = 'ux_property'>
+      <column name = 'fk_domain'
+        unique-key = 'ux_property' index = 'ix_property_domain'>
 
         <comment>The (optional) Domain where the property set</comment>
       </column>
@@ -50,13 +51,13 @@
 
     <!-- Value Type -->
 
-    <many-to-one name = 'type'>
+    <property name = 'type'>
 
-      <column name = 'value_type' not-null = 'true'>
+      <column name = 'value_type' length = '1024'>
 
         <comment>The Java class name of the value type</comment>
       </column>
-    </many-to-one>
+    </property>
 
 
     <!-- Value (as string) -->
