@@ -3,6 +3,7 @@ package com.tverts.endure.aggr.cost;
 /* standard Java classes */
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /* com.tverts: hibery */
@@ -93,8 +94,8 @@ public class AggregatorRestCost extends AggregatorSingleBase
 
 		//?: {the order index is undefined} illegal state
 		if(item.getOrderIndex() == null)
-			throw new IllegalStateException(
-			  "Order index is undefined! " + logsig(struct));
+			throw new IllegalStateException(logsig(struct) +
+			  ": order index is undefined!");
 
 		//?: {the volume is positive} set historical value
 		if(item.getGoodVolume().signum() == 1)
@@ -136,15 +137,17 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		if(items.isEmpty())
 			return;
 
-		//~: search the smallest order index
-
+		//~: search for the smallest order index
 		Long orderIndex = null;
 
 		for(AggrItem item : items)
-			if(item.getOrderIndex() != null)
-				orderIndex = (orderIndex == null)?(item.getOrderIndex()):
-				  (orderIndex < item.getOrderIndex())?(orderIndex):
-				    (item.getOrderIndex());
+		{
+			if(item.getOrderIndex() == null)
+				throw new IllegalStateException();
+
+			if((orderIndex == null) || (orderIndex > item.getOrderIndex()))
+				orderIndex = item.getOrderIndex();
+		}
 
 		//<: delete and evict those items
 
@@ -177,8 +180,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 	protected void       recalcFromLeft(AggrStruct struct, long orderIndex)
 	{
 		AggrItemRestCost p, c;
-		BigDecimal       z, w;
-
+		BigDecimal       s, w;
 
 		//~: take the buy item on the left as previous
 		p = (AggrItemRestCost)findLeftItem(struct, orderIndex);
@@ -186,100 +188,141 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		//?: {found it} take it's aggregation attributes
 		if(p != null)
 		{
-			z = p.getAggrCost();
+			s = (p.getRestCost() == null)?(null):(new BigDecimal(p.getRestCost()));
 			w = p.getAggrVolume();
 
 			//?: {those attributes are undefined} take (buy) item attributes
-			if((z == null) || (w == null) || (w.signum() != 1))
+			if((s == null) || (w == null) || (w.signum() != 1))
 			{
-				z = p.getVolumeCost();
 				w = p.getGoodVolume(); //<-- always positive here
+				if((w == null) || (w.signum() != 1))
+					throw new IllegalStateException();
+				s = p.getVolumeCost().divide(w);
 			}
 
 			//~: find the current item as the next
-			c = (AggrItemRestCost)findRightItem(struct, p.getOrderIndex());
+			checkHistoryIndex(p);
+			c = (AggrItemRestCost)findRightItem(struct, p.getHistoryIndex());
 		}
 		//!: previous item not found, take the right as the current
 		else
 		{
-			z = w = null;
+			s = w = null;
 
 			//~: find the current item as the global first
 			c = (AggrItemRestCost)findFirstItem(struct);
 		}
 
-		int B = 0; //<-- session buffer size
-
-		//<: repeat for all buy aggregation items
-
-		while(c != null)
+		//?: {there are no buy items present}
+		if(c == null)
 		{
-			//?: {accumulated values are still undefined} take them from the current
-			if((z == null) || (w == null) || (w.signum() != 1))
+			//?: {there are no buy items at all} the value is undefined
+			if(p == null)
+				setAggrValue(struct, null);
+			else
 			{
-				z = c.getVolumeCost();
+				//~: here s == previous item' good cost
+				if(s == null) throw new IllegalArgumentException();
+				setAggrValue(struct, s);
+			}
+
+			return;
+		}
+
+		//~: recalculate the delta volume in range [p, c]
+		if(p == null)
+			c.setDeltaVolume(null);
+		else
+		{
+			//~: it must be for buy items
+			checkHistoryIndex(c);
+
+			c.setDeltaVolume(summSellVolumesBetween(struct,
+			  p.getHistoryIndex(), c.getHistoryIndex()));
+		}
+
+
+		List<AggrItemRestCost> batch =
+		  new ArrayList<AggrItemRestCost>(64);
+
+		//c: for all the buy items on the right
+		for(Object id : selectRightItems(struct, c.getHistoryIndex()))
+		{
+			//~: load the current item
+			c = (AggrItemRestCost) session(struct).
+			  load(AggrItemRestCost.class, (Long)id);
+
+			//~: it must be for buy items
+			checkHistoryIndex(c);
+
+			//?: {accumulated value is still undefined} take it from the current
+			if(s == null)
+			{
 				w = c.getGoodVolume(); //<-- always positive here
+				if((w == null) || (w.signum() != 1))
+					throw new IllegalStateException();
+				s = c.getVolumeCost().divide(w);
 
 				//~: clear item' aggregation attributes
-				c.setAggrCost(null);
-				c.setAggrVolume(null);
+				c.setRestCost(null); c.setAggrVolume(null);
 			}
 			else
 			{
-				BigDecimal s;
+				//~: delta volume = sell volumes of sell item, it is negative!
+				if(c.getDeltaVolume() != null)
+					w = w.add(c.getDeltaVolume());
 
-				//aggregate sell volumes between the previous and the current items
-				s = aggrVolumeBetween(struct, p.getOrderIndex(), c.getOrderIndex());
+				//~: the volume become negative
+				if(w.signum() != 1) w = null;
 
-				//?: {has sell items} subtract their volumes
-				if(s != null)
-					w = w.add(s); //<-- 's' is negative
-
-				//?: {the volume became negative} clear aggregated attributes
-				if(w.signum() != 1)
-					z = w = null;
-				//!: add current cost and volume
+				if(w == null)
+					s = null; //<-- clear the rest cost value
 				else
 				{
-					z = z.add(c.getVolumeCost());
-					w = w.add(c.getGoodVolume());
+					//~: buy volumes are always positive
+					if(c.getGoodVolume().signum() < 0)
+						throw new IllegalStateException();
+					if(c.getVolumeCost().signum() < 0)
+						throw new IllegalStateException();
+
+					BigDecimal w1 = w.add(c.getGoodVolume());
+
+					s = s.multiply(w).add(c.getVolumeCost());
+					s = s.divide(w1, 255, BigDecimal.ROUND_HALF_UP);
+					w = w1;
+
+					//~: make the precision < 255 (to store as string with '.')
+					s = roundCostValue(s);
 				}
 
-				//~: assign the aggregates
-				c.setAggrCost(z);
+				//!: update this (buy) aggregation item
+				c.setRestCost((s == null)?(null):(s.toString()));
 				c.setAggrVolume(w);
+
+				//<: batch the session
+				batch.add(c); if(batch.size() < 128) continue;
+
+				//~: flush the session
+				session(struct).flush();
+
+				//~: evict all the items batched
+				for(AggrItemRestCost i : batch)
+					session(struct).evict(i);
+				batch.clear();
+
+				//>: batch the session
 			}
-
-			//!: move to the next item
-			p = c;
-			c = (AggrItemRestCost)findRightItem(struct, c.getOrderIndex());
-
-			//<: batch the session
-			B++; if(B < 48) continue; B = 0;
-
-			//~: flush the session
-			session(struct).flush();
-
-			//~: evict all the items except the new current
-			evictAggrItems(struct, c);
-
-			//>: batch the session
 		}
 
-		//>: repeat for all buy aggregation items
+		//!: write the results
+		setAggrValue(struct, s);
 
-		//<: update the aggregated value
+		//~: flush the session
+		session(struct).flush();
 
-		//?: {the aggregation attributes are not defined}
-		if((z == null) || (z.signum() != 1) || (w == null) || (w.signum() != 1))
-		{
-			z = null;
-			w = BigDecimal.ONE;
-		}
-
-		//~: assign the aggregated values
-		aggrValue(struct).setAggrValue(z);
-		aggrValue(struct).setAggrDenom(w);
+		//~: evict all the items batched
+		for(AggrItemRestCost i : batch)
+			session(struct).evict(i);
 	}
 
 	protected AggrItem   findLeftItem(AggrStruct struct, long orderIndex)
@@ -361,25 +404,51 @@ order by historyIndex asc
 	}
 
 	/**
-	 * Aggregates the volume of the items between the two
+	 * Returns ids of all the items with defined history index
+	 * greater or equal to the given one.
+	 */
+	protected List       selectRightItems(AggrStruct struct, long orderIndex)
+	{
+/*
+
+select id from AggrItem where
+  (aggrValue = :aggrValue) and (historyIndex >= :orderIndex)
+order by historyIndex asc
+
+*/
+		return aggrItemQ(struct,
+
+"select id from AggrItem where\n" +
+"  (aggrValue = :aggrValue) and (historyIndex >= :orderIndex)\n" +
+"order by historyIndex asc"
+
+		).
+		  setParameter("aggrValue",  aggrValue(struct)).
+		  setLong     ("orderIndex", orderIndex).
+		  setMaxResults(1).
+		  list();
+	}
+
+	/**
+	 * Aggregates the volume of sell items between the two
 	 * items defined by their indices. The border items
 	 * are excluded from the selection.
 	 */
-	protected BigDecimal aggrVolumeBetween
+	protected BigDecimal summSellVolumesBetween
 	  (AggrStruct struct, long leftIndex, long rightIndex)
 	{
 
 /*
 
 select sum(goodVolume) from AggrItem where
-  (aggrValue = :aggrValue) and
+  (aggrValue = :aggrValue) and (goodVolume < 0) and
   (orderIndex > :leftIndex) and (orderIndex < :rightIndex)
 
 */
 		return (BigDecimal) aggrItemQ(struct,
 
 "select sum(goodVolume) from AggrItem where\n" +
-"  (aggrValue = :aggrValue) and\n" +
+"  (aggrValue = :aggrValue) and (goodVolume < 0) and\n" +
 "  (orderIndex > :leftIndex) and (orderIndex < :rightIndex)"
 
 		).
@@ -387,5 +456,36 @@ select sum(goodVolume) from AggrItem where
 		  setLong     ("leftIndex",  leftIndex).
 		  setLong     ("rightIndex", rightIndex).
 		  uniqueResult();
+	}
+
+	protected void       setAggrValue(AggrStruct struct, BigDecimal s)
+	{
+		if(s != null)
+			s = s.setScale(5, BigDecimal.ROUND_HALF_UP);
+		aggrValue(struct).setAggrValue(s);
+
+		//~: the denominator is always 1
+		aggrValue(struct).setAggrDenom(BigDecimal.ONE);
+	}
+
+	protected void       checkHistoryIndex(AggrItemRestCost item)
+	{
+		if((item.getHistoryIndex() == null) ||
+		   !item.getHistoryIndex().equals(item.getOrderIndex())
+		  )
+			throw new IllegalStateException("AggrItemRestCost [" +
+			  item.getPrimaryKey() + "] has wrong history index!");
+	}
+
+	protected BigDecimal roundCostValue(BigDecimal v)
+	{
+		int p = v.precision();
+		if(p <= 254) return v;
+
+		int s = v.scale() - (p - 254);
+		if(s < 0) throw new IllegalStateException("Decimal value [" +
+		  v.toString() + "] is too large for Rest cost storage!");
+
+		return v.setScale(s, BigDecimal.ROUND_HALF_UP);
 	}
 }

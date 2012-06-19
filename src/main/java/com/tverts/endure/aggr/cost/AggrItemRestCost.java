@@ -40,6 +40,25 @@ public class AggrItemRestCost extends AggrItemBase
 		this.volumeCost = v;
 	}
 
+	/**
+	 * A 255-length string (one character for '.') to
+	 * store rounded decimal value of 'Z' component.
+	 * Stored in buy items.
+	 */
+	public String     getRestCost()
+	{
+		return restCost;
+	}
+
+	public void       setRestCost(String v)
+	{
+		this.restCost = v;
+	}
+
+	/**
+	 * Aggregated volume balance of buy minus sell
+	 * items. Stored in buy items.
+	 */
 	public BigDecimal getAggrVolume()
 	{
 		return aggrVolume;
@@ -50,16 +69,21 @@ public class AggrItemRestCost extends AggrItemBase
 		this.aggrVolume = v;
 	}
 
-	public BigDecimal getAggrCost()
+	/**
+	 * Summary value of all sell items between the
+	 * closest left and right buy items. Take volume
+	 * of the left item and the delta of the right
+	 * one to get the volume of the right.
+	 */
+	public BigDecimal getDeltaVolume()
 	{
-		return aggrCost;
+		return deltaVolume;
 	}
 
-	public void       setAggrCost(BigDecimal v)
+	public void       setDeltaVolume(BigDecimal deltaVolume)
 	{
-		this.aggrCost = v;
+		this.deltaVolume = deltaVolume;
 	}
-
 
 	/* persisted attributes: component data  */
 
@@ -69,6 +93,7 @@ public class AggrItemRestCost extends AggrItemBase
 
 	/* persisted attributes: aggregated values */
 
+	private String     restCost;
 	private BigDecimal aggrVolume;
-	private BigDecimal aggrCost;
+	private BigDecimal deltaVolume;
 }

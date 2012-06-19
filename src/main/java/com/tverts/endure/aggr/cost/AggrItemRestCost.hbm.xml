@@ -12,7 +12,7 @@
 
     <property name = 'goodVolume' type = 'big_decimal'>
 
-      <column name = 'good_volume' precision = '15' scale = '3'>
+      <column name = 'good_volume' precision = '12' scale = '3'>
 
         <comment>
           The volume (amount) added to or removed from the aggregated value
@@ -25,9 +25,23 @@
 
     <property name = 'volumeCost' type = 'big_decimal'>
 
-      <column name = 'volume_cost' precision = '17' scale = '5'>
+      <column name = 'volume_cost' precision = '16' scale = '5'>
 
         <comment>The (price) cost of the volume (amount)</comment>
+      </column>
+    </property>
+
+
+    <!-- Rest Cost -->
+
+    <property name = 'restCost' type = 'string'>
+
+      <column name = 'rest_cost' length = '255'>
+
+        <comment>
+          Attribute of aggregated component: rest cost
+          decimal values stored as a string
+        </comment>
       </column>
     </property>
 
@@ -43,15 +57,16 @@
     </property>
 
 
-    <!-- Aggregated Cost -->
+    <!-- Volume Delta -->
 
-    <property name = 'aggrCost' type = 'big_decimal'>
+    <property name = 'deltaVolume' type = 'big_decimal'>
 
-      <column name = 'aggr_cost' precision = '21' scale = '5'>
+      <column name = 'delta_volume' precision = '19' scale = '3'>
 
         <comment>
-          Attribute of aggregated component: the cost of
-          all the volume aggregated
+          Attribute of aggregated component:
+          summary volume of sell items between the
+          two nearest components
         </comment>
       </column>
     </property>
