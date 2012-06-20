@@ -36,11 +36,11 @@
 
     <property name = 'restCost' type = 'string'>
 
-      <column name = 'rest_cost' length = '255'>
+      <column name = 'rest_cost' length = '64'>
 
         <comment>
           Attribute of aggregated component: rest cost
-          decimal values stored as a string
+          decimal value stored as a string
         </comment>
       </column>
     </property>

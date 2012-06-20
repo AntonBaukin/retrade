@@ -147,14 +147,27 @@ order by orderIndex asc
 	protected void           setOrderIndex
 	  (AggrStruct struct, AggrTask task, OrderIndex instance)
 	{
-		OrderIndex reference   = findOrderIndexAggrItemReference(struct, task);
+		OrderIndex reference   = null;
 		boolean    beforeAfter = task.isBeforeAfter();
 
-		//HINT: here we invert before-after flag when the reference
-		//   is not found. This is correct, if you check it on an axis...
+		if(task.getOrderKey() != null)
+		{
+			//HINT:  assume we have beforeAfter = true.
+			//
+			//  The reference source (i.e. the Invoice to insert after
+			//  it) is defined (task.getOrderKey() != null), but there
+			//  are no aggr items of this invoice or any other previous
+			//  invoices. In this case we must insert the item as the
+			//  first one by setting beforeAfter =  false;
 
-		if(reference == null)
-			beforeAfter = !beforeAfter;
+			reference = findOrderIndexAggrItemReference(struct, task);
+
+			if(reference == null)
+				beforeAfter = !beforeAfter;
+
+			//HINT: when the order key is undefined the outer callee
+			//  tells correct flag to insert as the first or the last.
+		}
 
 		//!: issue order request
 		OrderPoint.order(new OrderRequest(instance, reference).
@@ -165,9 +178,12 @@ order by orderIndex asc
 	protected OrderIndex     findOrderIndexAggrItemReference
 	  (AggrStruct struct, AggrTask task)
 	{
-		//?: {has reference source} do nothing
-		if((task.getOrderKey() == null) || (task.getSourceClass() == null))
+		//?: {has no reference source} do nothing
+		if(task.getOrderKey() == null)
 			return null;
+
+		if(task.getSourceClass() == null)
+			throw new IllegalStateException();
 
 		//<: load the present order index of the source
 
@@ -188,7 +204,10 @@ select orderIndex from Source where (primaryKey = :orderKey)
 
 		//?: {order index does not exist}
 		if(sourceIndex == null)
-			return null;
+			throw new IllegalStateException(String.format(
+			  "No %s instance [%d] exists as aggregation order reference!",
+			  task.getSourceClass().getSimpleName(), task.getSourceKey()
+			));
 
 		//>: load the present order index of the source
 

@@ -41,7 +41,7 @@ public class AggrItemRestCost extends AggrItemBase
 	}
 
 	/**
-	 * A 255-length string (one character for '.') to
+	 * A 64-length string (one character for '.') to
 	 * store rounded decimal value of 'Z' component.
 	 * Stored in buy items.
 	 */
