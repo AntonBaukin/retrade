@@ -95,7 +95,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		item.setVolumeCost(task.getVolumeCost());
 
 		//~: set order index
-		setOrderIndex(struct, task, item);
+		setOrderIndex(struct, item);
 
 		//?: {the order index is undefined} illegal state
 		if(item.getOrderIndex() == null)
@@ -194,21 +194,21 @@ public class AggregatorRestCost extends AggregatorSingleBase
 	 */
 	protected void       recalcFromLeft(AggrStruct struct, long orderIndex)
 	{
-		debug(struct, "==== recalc (", aggrValue(struct), ", ", orderIndex, ")");
+		//debug(struct, "==== recalc (", aggrValue(struct), ", ", orderIndex, ")");
 
 		AggrItemRestCost p, c;
 		BigDecimal       s, w;
 
 		//~: take the buy item on the left as previous
 		p = (AggrItemRestCost)findLeftItem(struct, orderIndex);
-		debug(struct, "p = ", p);
+		//debug(struct, "p = ", p);
 
 		//?: {found it} take it's aggregation attributes
 		if(p != null)
 		{
 			s = (p.getRestCost() == null)?(null):(new BigDecimal(p.getRestCost()));
 			w = p.getAggrVolume();
-			debug(struct, "(p != null), s = ", s, " w = ", w);
+			//debug(struct, "(p != null), s = ", s, " w = ", w);
 
 			//?: {those attributes are undefined} take (buy) item attributes
 			if((s == null) || (w == null) || (w.signum() != 1))
@@ -217,13 +217,13 @@ public class AggregatorRestCost extends AggregatorSingleBase
 				if((w == null) || (w.signum() != 1))
 					throw new IllegalStateException();
 				s = p.getVolumeCost().divide(w);
-				debug(struct, "(p != null) & (s == null), s = ", s, " w = ", w);
+				//debug(struct, "(p != null) & (s == null), s = ", s, " w = ", w);
 			}
 
 			//~: find the current item as the next
 			checkHistoryIndex(p);
 			c = (AggrItemRestCost)findRightItem(struct, p.getHistoryIndex());
-			debug(struct, "(p != null), c = ", c);
+			//debug(struct, "(p != null), c = ", c);
 		}
 		//!: previous item not found, take the right as the current
 		else
@@ -232,7 +232,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 
 			//~: find the current item as the global first
 			c = (AggrItemRestCost)findFirstItem(struct);
-			debug(struct, "(p == null), c = ", c);
+			//debug(struct, "(p == null), c = ", c);
 		}
 
 		//?: {there are no buy items present}
@@ -242,14 +242,14 @@ public class AggregatorRestCost extends AggregatorSingleBase
 			if(p == null)
 			{
 				setAggrValue(struct, null);
-				debug(struct, "(c == null) & (p == null), c = ", c);
+				//debug(struct, "(c == null) & (p == null), c = ", c);
 			}
 			else
 			{
 				//~: here s == previous item' good cost
 				if(s == null) throw new IllegalArgumentException();
 				setAggrValue(struct, s);
-				debug(struct, "(c == null) & (p != null), s = ", s);
+				//debug(struct, "(c == null) & (p != null), s = ", s);
 			}
 
 			return;
@@ -260,7 +260,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		  new ArrayList<AggrItemRestCost>(64);
 
 		List rights = selectRightItems(struct, c.getHistoryIndex());
-		debug(struct, " right items: ", rights);
+		//debug(struct, " right items: ", rights);
 
 		//c: for all the buy items on the right
 		for(Object id : rights)
@@ -282,16 +282,16 @@ public class AggregatorRestCost extends AggregatorSingleBase
 
 				//~: clear item' aggregation attributes
 				c.setRestCost(null); c.setAggrVolume(null);
-				debug(struct, "(s == null), c = ", c, " cleared! s = ", s, ", w = ", w);
+				//debug(struct, "(s == null), c = ", c, " cleared! s = ", s, ", w = ", w);
 			}
 			else
 			{
-				debug(struct, "(s != null), c = ", c, ", d = ", c.getDeltaVolume());
+				//debug(struct, "(s != null), c = ", c, ", d = ", c.getDeltaVolume());
 
 				//~: delta volume = sell volumes of sell item, it is negative!
 				if(c.getDeltaVolume() != null)
 				{
-					debug(struct, "w = ", w, ", w + d = ", w.add(c.getDeltaVolume()));
+					//debug(struct, "w = ", w, ", w + d = ", w.add(c.getDeltaVolume()));
 					w = w.add(c.getDeltaVolume());
 				}
 
@@ -299,13 +299,13 @@ public class AggregatorRestCost extends AggregatorSingleBase
 				if(w.signum() != 1)
 				{
 					w = null;
-					debug(struct, "(w <= 0), w = null");
+					//debug(struct, "(w <= 0), w = null");
 				}
 
 				if(w == null)
 				{
 					s = null; //<-- clear the rest cost value
-					debug(struct, "(w == null), s = null");
+					//debug(struct, "(w == null), s = null");
 				}
 				else
 				{
@@ -316,7 +316,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 						throw new IllegalStateException();
 
 					BigDecimal w1 = w.add(c.getGoodVolume());
-					debug(struct, "v = ", c.getGoodVolume(), ", w + v = ", w1);
+					//debug(struct, "v = ", c.getGoodVolume(), ", w + v = ", w1);
 
 					s = s.multiply(w).add(c.getVolumeCost());
 					s = s.divide(w1, 64, BigDecimal.ROUND_HALF_UP);
@@ -329,11 +329,11 @@ public class AggregatorRestCost extends AggregatorSingleBase
 				//!: update this (buy) aggregation item
 				c.setRestCost((s == null)?(null):(s.toString()));
 				c.setAggrVolume(w);
-				debug(struct, "c.cost = ", s, ", c.volume = ", w);
+				//debug(struct, "c.cost = ", s, ", c.volume = ", w);
 
 				//<: batch the session
 				batch.add(c); if(batch.size() < 128) continue;
-				debug(struct, "batched!");
+				//debug(struct, "batched!");
 
 				//~: flush the session
 				session(struct).flush();
@@ -455,9 +455,9 @@ order by historyIndex asc
 		  list();
 	}
 
-	protected void      recalcDeltaCenter(AggrStruct struct, long orderIndex)
+	protected void       recalcDeltaCenter(AggrStruct struct, long orderIndex)
 	{
-		debug(struct, "==== recalc delta center(", aggrValue(struct), ", ", orderIndex, ")");
+		//debug(struct, "==== recalc delta center(", aggrValue(struct), ", ", orderIndex, ")");
 
 		AggrItemRestCost r = (AggrItemRestCost)findRightItem(struct, orderIndex);
 		if(r != null) checkHistoryIndex(r);
@@ -472,7 +472,7 @@ order by historyIndex asc
 		else if(l != null)
 			c = (AggrItemRestCost)findRightItem(struct, l.getHistoryIndex());
 
-		debug(struct, "l = ", l, ", c = ", c, ", r = ", r);
+		//debug(struct, "l = ", l, ", c = ", c, ", r = ", r);
 
 		//~: this is mostly not possible when correct usage
 		if((c == l) | (c == r)) c = null;
@@ -490,7 +490,7 @@ order by historyIndex asc
 				r.setDeltaVolume(summSellVolumesTill(struct,
 				  r.getHistoryIndex()));
 
-			debug(struct, "delta r = ", r.getDeltaVolume());
+			//debug(struct, "delta r = ", r.getDeltaVolume());
 		}
 
 		//~: recalculate delta of the center item
@@ -503,7 +503,7 @@ order by historyIndex asc
 				c.setDeltaVolume(summSellVolumesTill(struct,
 				  c.getHistoryIndex()));
 
-			debug(struct, "delta c = ", c.getDeltaVolume());
+			//debug(struct, "delta c = ", c.getDeltaVolume());
 		}
 
 		//~: flash the session
@@ -513,22 +513,22 @@ order by historyIndex asc
 		if(r != null) session(struct).evict(r);
 	}
 
-	protected void      recalcDeltaRight(AggrStruct struct, long orderIndex)
+	protected void       recalcDeltaRight(AggrStruct struct, long orderIndex)
 	{
-		debug(struct, "==== recalc delta right(", aggrValue(struct), ", ", orderIndex, ")");
+		//debug(struct, "==== recalc delta right(", aggrValue(struct), ", ", orderIndex, ")");
 
 		AggrItemRestCost r = (AggrItemRestCost)findRightItem(struct, orderIndex);
 		if(r != null) checkHistoryIndex(r);
 
 		if(r == null)
 		{
-			debug(struct, "r = null");
+			//debug(struct, "r = null");
 			return;
 		}
 
 		AggrItemRestCost l = (AggrItemRestCost)
 		  findLeftItem(struct, r.getHistoryIndex());
-		debug(struct, "r = ", r, ", l = ", l);
+		//debug(struct, "r = ", r, ", l = ", l);
 
 		//~: recalculate the delta volume in range [p, c]
 
@@ -538,7 +538,7 @@ order by historyIndex asc
 		else
 			r.setDeltaVolume(summSellVolumesBetween(struct,
 			  l.getHistoryIndex(), r.getHistoryIndex()));
-		debug(struct, "delta = ", r.getDeltaVolume());
+		//debug(struct, "delta = ", r.getDeltaVolume());
 
 		//~: flash the session
 		session(struct).flush();
@@ -551,7 +551,7 @@ order by historyIndex asc
 	 * items defined by their indices. The border items
 	 * are excluded from the selection.
 	 */
-	protected BigDecimal summSellVolumesBetween
+	protected BigDecimal  summSellVolumesBetween
 	  (AggrStruct struct, long leftIndex, long rightIndex)
 	{
 
@@ -575,7 +575,7 @@ select sum(goodVolume) from AggrItem where
 		  uniqueResult();
 	}
 
-	protected BigDecimal summSellVolumesTill
+	protected BigDecimal  summSellVolumesTill
 	  (AggrStruct struct, long rightIndex)
 	{
 
@@ -598,7 +598,7 @@ select sum(goodVolume) from AggrItem where
 		  uniqueResult();
 	}
 
-	protected void       setAggrValue(AggrStruct struct, BigDecimal s)
+	protected void        setAggrValue(AggrStruct struct, BigDecimal s)
 	{
 		if(s != null)
 			s = s.setScale(5, BigDecimal.ROUND_HALF_UP);
@@ -608,7 +608,7 @@ select sum(goodVolume) from AggrItem where
 		aggrValue(struct).setAggrDenom(BigDecimal.ONE);
 	}
 
-	protected void       checkHistoryIndex(AggrItemRestCost item)
+	protected void        checkHistoryIndex(AggrItemRestCost item)
 	{
 		if((item.getHistoryIndex() == null) ||
 		   !item.getHistoryIndex().equals(item.getOrderIndex())
@@ -617,7 +617,7 @@ select sum(goodVolume) from AggrItem where
 			  item.getPrimaryKey() + "] has wrong history index!");
 	}
 
-	protected BigDecimal roundCostValue(BigDecimal v)
+	protected BigDecimal  roundCostValue(BigDecimal v)
 	{
 		int p = v.precision();
 		if(p <= 63) return v;
@@ -629,7 +629,7 @@ select sum(goodVolume) from AggrItem where
 		return v.setScale(s, BigDecimal.ROUND_HALF_UP);
 	}
 
-	private void         debug(AggrStruct s, Object... msgs)
+	private void          debug(AggrStruct s, Object... msgs)
 	{
 		//if(aggrValue(s).getPrimaryKey() != -211L) return;
 
@@ -643,10 +643,10 @@ select sum(goodVolume) from AggrItem where
 		LU.D(this.getClass().getName(), msgs);
 	}
 
-//	private static int   debugInvokeShuntI;
+//	private static int    debugInvokeShuntI;
 //
 //	@SuppressWarnings("unchecked")
-//	private void         debugInvokeShunt(AggrStruct struct)
+//	private void          debugInvokeShunt(AggrStruct struct)
 //	{
 //		try
 //		{

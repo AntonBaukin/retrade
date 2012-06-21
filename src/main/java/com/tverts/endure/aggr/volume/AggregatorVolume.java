@@ -35,6 +35,11 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 	public AggregatorVolume()
 	{
+		this(false);
+	}
+
+	public AggregatorVolume(boolean ordering)
+	{
 		setSupportedTasks(
 
 		  AggrTaskVolumeCreate.class,
@@ -42,6 +47,15 @@ public class AggregatorVolume extends AggregatorSingleBase
 		);
 
 		setAggrItemClass(AggrItemVolume.class);
+		this.ordering = ordering;
+	}
+
+
+	/* public: AggregatorVolume interface */
+
+	public final boolean isOrdering()
+	{
+		return this.ordering;
 	}
 
 
@@ -93,7 +107,13 @@ public class AggregatorVolume extends AggregatorSingleBase
 		item.setVolumeNegative(task.getVolumeNegative());
 
 		//~: set order index
-		setOrderIndex(struct, task, item);
+		if(isOrdering())
+		{
+			setOrderIndex(struct, item);
+
+			if(item.getOrderIndex() == null) throw new IllegalStateException(
+			  logsig(struct) + ": order index is undefined!");
+		}
 
 		//!: do save the item
 		session(struct).save(item);
@@ -107,6 +127,8 @@ public class AggregatorVolume extends AggregatorSingleBase
 		//>: create and save aggregated value item
 
 		//<: update the historical values
+		if(isOrdering())
+		{
 
 /*
 
@@ -118,7 +140,7 @@ update AggrItem set
 where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 
 */
-		Query query = aggrItemQ(struct,
+			Query query = aggrItemQ(struct,
 
 "update AggrItem set\n" +
 "\n" +
@@ -127,24 +149,25 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 "\n" +
 "where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)"
 
-		).
-		  setParameter("aggrValue",  aggrValue(struct)).
-		  setParameter("orderIndex", item.getOrderIndex());
+			).
+			  setParameter("aggrValue",  aggrValue(struct)).
+			  setParameter("orderIndex", item.getOrderIndex());
 
-		//?: {has positive addition}
-		if(item.getVolumePositive() != null)
-			query.setBigDecimal("aggrPositive", item.getVolumePositive());
-		else
-			query.setBigDecimal("aggrPositive", BigDecimal.ZERO);
+			//?: {has positive addition}
+			if(item.getVolumePositive() != null)
+				query.setBigDecimal("aggrPositive", item.getVolumePositive());
+			else
+				query.setBigDecimal("aggrPositive", BigDecimal.ZERO);
 
-		//?: {has negative addition}
-		if(item.getVolumeNegative() != null)
-			query.setBigDecimal("aggrNegative", item.getVolumeNegative());
-		else
-			query.setBigDecimal("aggrNegative", BigDecimal.ZERO);
+			//?: {has negative addition}
+			if(item.getVolumeNegative() != null)
+				query.setBigDecimal("aggrNegative", item.getVolumeNegative());
+			else
+				query.setBigDecimal("aggrNegative", BigDecimal.ZERO);
 
-		//!: execute the update
-		query.executeUpdate();
+			//!: execute the update
+			query.executeUpdate();
+		}
 
 		//>: update the historical values
 
@@ -222,6 +245,9 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 
 		//<: issue update on the historical values
 
+		if(isOrdering())
+		{
+
 /*
 
 update AggrItem set
@@ -233,7 +259,7 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 
 */
 
-		Query query = aggrItemQ(struct,
+			Query query = aggrItemQ(struct,
 
 "update AggrItem set\n" +
 "\n" +
@@ -242,36 +268,45 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 "\n" +
 "where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)"
 
-		).
-		  setParameter("aggrValue", aggrValue(struct));
+			).
+			  setParameter("aggrValue", aggrValue(struct));
 
-		/**
-		 * HINT: we update on each item separately as
-		 *   the items may be (not in the practice) messed up
-		 *   with the historical values.
-		 */
 
-		for(AggrItem item : items)
-		{
-			AggrItemVolume vitem = (AggrItemVolume)item;
+			// HINT: we update on each item separately as
+			//   the items may be (not in the practice) messed up
+			//   with the historical values.
 
-			//~: query: positive subtraction
-			if(vitem.getAggrPositive() != null)
-				query.setBigDecimal("aggrPositive", vitem.getAggrPositive());
-			else
-				query.setBigDecimal("aggrPositive", BigDecimal.ZERO);
+			for(AggrItem item : items)
+			{
+				if(item.getOrderIndex() == null)
+					throw new IllegalStateException(String.format(
+					  "%s: item [%d] of Volume aggregated value [%d] " +
+					  "has order index undefined!",
 
-			//~: query: negative subtraction
-			if(vitem.getAggrNegative() != null)
-				query.setBigDecimal("aggrNegative", vitem.getAggrNegative());
-			else
-				query.setBigDecimal("aggrNegative", BigDecimal.ZERO);
+					  logsig(struct), item.getPrimaryKey(),
+					  aggrValue(struct).getPrimaryKey()
+					));
 
-			//~: query: order index
-			query.setLong("orderIndex", vitem.getOrderIndex());
+				AggrItemVolume vitem = (AggrItemVolume)item;
 
-			//!: execute that query
-			query.executeUpdate();
+				//~: query: positive subtraction
+				if(vitem.getAggrPositive() != null)
+					query.setBigDecimal("aggrPositive", vitem.getAggrPositive());
+				else
+					query.setBigDecimal("aggrPositive", BigDecimal.ZERO);
+
+				//~: query: negative subtraction
+				if(vitem.getAggrNegative() != null)
+					query.setBigDecimal("aggrNegative", vitem.getAggrNegative());
+				else
+					query.setBigDecimal("aggrNegative", BigDecimal.ZERO);
+
+				//~: query: order index
+				query.setLong("orderIndex", vitem.getOrderIndex());
+
+				//!: execute that query
+				query.executeUpdate();
+			}
 		}
 
 		//>: issue update on the historical values
@@ -293,4 +328,9 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 
 		//>: recalculate the aggregated value
 	}
+
+
+	/* private: aggregator parameters */
+
+	private boolean ordering;
 }
