@@ -1,10 +1,5 @@
 package com.tverts.endure.aggr;
 
-/* com.tverts: endure (core) */
-
-import com.tverts.endure.NumericIdentity;
-import com.tverts.hibery.system.HiberSystem;
-
 
 /**
  * Stores basic properties of an aggregation task.
@@ -33,85 +28,25 @@ public abstract class AggrTaskBase implements AggrTask
 		return sourceID;
 	}
 
-	public void    setSourceKey(Long sourceID)
+	public void    setSourceKey(Long key)
 	{
-		this.sourceID = sourceID;
-	}
-
-	public Long    getOrderKey()
-	{
-		return orderRefID;
-	}
-
-	public void    setOrderKey(Long orderRefID)
-	{
-		this.orderRefID = orderRefID;
+		this.sourceID = key;
 	}
 
 	public Class   getSourceClass()
 	{
-		return orderClass;
+		return sourceClass;
 	}
 
-	public void    setSourceClass(Class orderClass)
+	public void    setSourceClass(Class sourceClass)
 	{
-		this.orderClass = orderClass;
-	}
-
-	public boolean isBeforeAfter()
-	{
-		return beforeAfter;
-	}
-
-	public void    setBeforeAfter(boolean beforeAfter)
-	{
-		this.beforeAfter = beforeAfter;
-	}
-
-	/**
-	 * Sets the order reference ID and before-after flag
-	 * by the closest reference on the left. If it is
-	 * not defined, tells to insert as the first.
-	 */
-	public void    setOrderRefLeft(NumericIdentity ref)
-	{
-		if(ref == null)
-			setBeforeAfter(false);
-		else
-		{
-			setOrderKey(ref.getPrimaryKey());
-			setBeforeAfter(true);
-
-			if(getSourceClass() == null)
-				setSourceClass(HiberSystem.getInstance().findActualClass(ref));
-		}
-	}
-
-	/**
-	 * Sets the order reference ID and before-after flag
-	 * by the closest reference on the right. If it is
-	 * not defined, tells to insert as the last.
-	 */
-	public void    setOrderRefRight(NumericIdentity ref)
-	{
-		if(ref == null)
-			setBeforeAfter(true);
-		else
-		{
-			setOrderKey(ref.getPrimaryKey());
-			setBeforeAfter(false);
-
-			if(getSourceClass() == null)
-				setSourceClass(HiberSystem.getInstance().findActualClass(ref));
-		}
+		this.sourceClass = sourceClass;
 	}
 
 
 	/* private: task properties */
 
-	private Long    aggrValueID;
-	private Long    sourceID;
-	private Long    orderRefID;
-	private Class   orderClass;
-	private boolean beforeAfter;
+	private Long   aggrValueID;
+	private Long   sourceID;
+	private Class  sourceClass;
 }

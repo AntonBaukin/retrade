@@ -56,16 +56,6 @@ public class AggrRequest implements NumericIdentity
 		}
 	}
 
-	public Unity      getOrderRef()
-	{
-		return orderRef;
-	}
-
-	public void       setOrderRef(Unity orderRef)
-	{
-		this.orderRef = orderRef;
-	}
-
 
 	/* public: AggrRequest (value + task) interface */
 
@@ -178,7 +168,6 @@ public class AggrRequest implements NumericIdentity
 
 	private Long      primaryKey;
 	private Unity     source;
-	private Unity     orderRef;
 	private AggrValue aggrValue;
 	private AggrTask  aggrTask;
 	private String    errorText;
