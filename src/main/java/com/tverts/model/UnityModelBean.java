@@ -47,9 +47,6 @@ public abstract class UnityModelBean
 
 	public void   setPrimaryKey(Long primaryKey)
 	{
-		if(!updateq(this.primaryKey, primaryKey))
-			markUpdated();
-
 		this.primaryKey = primaryKey;
 	}
 

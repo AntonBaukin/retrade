@@ -31,14 +31,14 @@ public abstract class ModelBeanBase implements ModelBean
 		this.modelKey = key;
 	}
 
-	public Date         getUpdateTime()
+	public Date         getReadTime()
 	{
-		return updateTime;
+		return readTime;
 	}
 
-	public void         setUpdateTime(Date updateTime)
+	public void         setReadTime(Date readTime)
 	{
-		this.updateTime = updateTime;
+		this.readTime = readTime;
 	}
 
 	public boolean      isActive()
@@ -82,21 +82,13 @@ public abstract class ModelBeanBase implements ModelBean
 
 	/* protected: support interface */
 
-	protected void      markUpdated()
+	protected void      markRead()
 	{
-		Date ut = getUpdateTime();
+		Date ut = getReadTime();
 
 		//?: {the time is changed} update the attribute
 		if((ut == null) || (ut.getTime() != System.currentTimeMillis()))
-			this.setUpdateTime(new Date());
-	}
-
-	/**
-	 * TODO check that all model beans do test updateeq()!
-	 */
-	protected boolean   updateq(Object cur, Object tst)
-	{
-		return (cur != null) && !cur.equals(tst);
+			this.setReadTime(new Date());
 	}
 
 	protected ModelBean readModelBean(String key)
@@ -125,7 +117,7 @@ public abstract class ModelBeanBase implements ModelBean
 	/* private: attributes */
 
 	private String  modelKey;
-	private Date    updateTime;
+	private Date    readTime;
 	private Long    domain;
 	private boolean active = true;
 }

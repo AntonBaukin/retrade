@@ -21,35 +21,22 @@ public abstract class DataSelectModelBean
 
 	public Integer  getDataStart()
 	{
-		if(dataStart != null)
-			return dataStart;
-
-		setDataStart(0);
-		return dataStart;
+		return (dataStart != null)?(dataStart):(0);
 	}
 
 	public void     setDataStart(Integer dataStart)
 	{
-		if(!updateq(this.dataStart, dataStart))
-			markUpdated();
-
 		this.dataStart = dataStart;
 	}
 
 	public Integer  getDataLimit()
 	{
-		if(dataLimit != null)
-			return dataLimit;
-
-		setDataLimit(SystemConfig.getInstance().getGridSize());
-		return dataLimit;
+		return (dataLimit != null)?(dataLimit):
+		  SystemConfig.getInstance().getGridSize();
 	}
 
 	public void     setDataLimit(Integer dataLimit)
 	{
-		if(!updateq(this.dataLimit, dataLimit))
-			markUpdated();
-
 		this.dataLimit = dataLimit;
 	}
 

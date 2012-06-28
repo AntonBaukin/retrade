@@ -41,7 +41,7 @@ public interface ModelBean extends Serializable
 	 * modification time to the remote clients instead
 	 * of the actual content.
 	 */
-	public Date      getUpdateTime();
+	public Date getReadTime();
 
 	public boolean   isActive();
 
