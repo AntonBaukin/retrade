@@ -22,15 +22,19 @@ import org.hibernate.LockOptions;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.EntityEntry;
-import org.hibernate.engine.PersistenceContext;
-import org.hibernate.engine.SessionFactoryImplementor;
-import org.hibernate.engine.SessionImplementor;
+import org.hibernate.engine.spi.EntityEntry;
+import org.hibernate.engine.spi.PersistenceContext;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.util.IdentityMap;
+import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
+
+
+/* Apache Commons Collections */
+
+import org.apache.commons.collections.map.IdentityMap;
 
 
 /**
@@ -125,8 +129,8 @@ public class HiberSystem
 			throw new IllegalArgumentException();
 
 		HashSet  result   = new HashSet(31);
-		Iterator entities = IdentityMap.keyIterator(
-		  ((SessionImplementor)session).getPersistenceContext().getEntityEntries());
+		Iterator entities = new IdentityMap(((SessionImplementor)session).
+		  getPersistenceContext().getEntityEntries()).keySet().iterator();
 
 		while(entities.hasNext())
 		{

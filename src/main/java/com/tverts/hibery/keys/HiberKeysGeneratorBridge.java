@@ -3,7 +3,7 @@ package com.tverts.hibery.keys;
 /* Hibernate Persistence Layer */
 
 import org.hibernate.Session;
-import org.hibernate.engine.SessionImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 
 /* com.tverts: endure keys */
 

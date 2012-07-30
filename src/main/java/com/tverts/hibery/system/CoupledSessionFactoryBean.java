@@ -2,12 +2,12 @@ package com.tverts.hibery.system;
 
 /* Hibernate Persistence Layer  */
 
-import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.SessionFactory;
 
 /* Spring Framework */
 
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 
 
 /**
@@ -20,10 +20,9 @@ public class   CoupledSessionFactoryBean
 {
 	/* protected: LocalSessionFactoryBean interface */
 
-	protected void postProcessConfiguration(Configuration config)
-	  throws HibernateException
-	{
-		super.postProcessConfiguration(config);
-		HiberSystem.getInstance().setConfiguration(config);
-	}
+    protected SessionFactory buildSessionFactory(LocalSessionFactoryBuilder config)
+    {
+        HiberSystem.getInstance().setConfiguration(config);
+        return super.buildSessionFactory(config);
+    }
 }

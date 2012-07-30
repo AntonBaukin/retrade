@@ -9,11 +9,11 @@ import java.util.Properties;
 
 import org.hibernate.MappingException;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.SessionImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.SequenceGenerator;
 import org.hibernate.type.LongType;
 import org.hibernate.type.Type;
-import org.hibernate.util.PropertiesHelper;
+
 
 /**
  * This generator uses database sequence to efficiently
@@ -51,7 +51,8 @@ public final class SequenceLongKeysCachingGenerator
 		super.configure(type, params, dialect);
 
 		//~: read sequence increment option
-		seqinc = PropertiesHelper.getInt(PARAM_INCR, params, 0);
+		Object sseqinc = params.get(PARAM_INCR);
+		seqinc = (sseqinc == null)?(0):Integer.parseInt(sseqinc.toString());
 
 		if(seqinc < 1) throw new MappingException(
 		  "SequenceLongKeysCachingGenerator's parameter " +

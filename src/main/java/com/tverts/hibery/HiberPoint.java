@@ -6,10 +6,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-/* Spring Framework */
-
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-
 /* com.tverts: endure + hibery keys  */
 
 import com.tverts.endure.NumericIdentity;
@@ -56,12 +52,15 @@ public class HiberPoint
 		HiberSystem.getInstance().setSessionFactory(sf);
 	}
 
-	public Session        getSession(boolean allowCreate)
+	public Session        getSession()
 	{
 		SessionFactory sf = getSessionFactory();
 		if(sf == null) throw new IllegalStateException();
 
-		return SessionFactoryUtils.getSession(sf, allowCreate);
+		Session res = sf.getCurrentSession();
+		if(res == null) throw new IllegalStateException(
+		  "Spring @Transaction context was not opened! No Session!");
+		return res;
 	}
 
 	/* public static: primary database connectivity support */
@@ -77,12 +76,7 @@ public class HiberPoint
 	 */
 	public static Session session()
 	{
-		return getInstance().getSession(false);
-	}
-
-	public static Session session(boolean allowCreate)
-	{
-		return getInstance().getSession(allowCreate);
+		return getInstance().getSession();
 	}
 
 	public static Query   query(Session session, String hql, Object... replaces)
