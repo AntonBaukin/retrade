@@ -3,13 +3,14 @@
 <jboss-deployment-structure>
   <deployment>
 
-    <exclusions>
+    <dependencies>
+      <module name="com.tverts"/>
+    </dependencies>
 
+    <exclusions>
       <module name = 'org.jboss.logging'/>
       <module name = 'org.apache.log4j'/>
     </exclusions>
-
-    <!--<local-last value = 'true'/>-->
 
   </deployment>
 </jboss-deployment-structure>
