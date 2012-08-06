@@ -12,6 +12,7 @@ import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+
 /**
  * Strings helper functions.
  *
@@ -180,6 +181,19 @@ public class SU
 		sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
 		return sb.toString();
 	}
+
+	public static String   sFl(String s, int len)
+	{
+		if(s.length() >= len) return s;
+
+		StringBuilder sb = new StringBuilder(len);
+		sb.append(s);
+
+		while(sb.length() < len)
+			sb.append(' ');
+		return sb.toString();
+	}
+
 
 	/* public: escape routines */
 
@@ -377,41 +391,17 @@ public class SU
 	 * Concatenates the objects previously converted
 	 * to strings. Handles {@code null} values just
 	 * skipping them.
-	 *
-	 * Implies some optimizations: handles the objects
-	 * as character sequences, returns the same single
-	 * instance of character sequence, creates the buffer
-	 * of precise size.
 	 */
 	public static CharSequence  cat(Object... objs)
 	{
-		Object x = null;
-		int    l = 0;
-
-		//~: define the length of the resulting buffer
-		for(int i = 0;(i < objs.length);i++) if(objs[i] != null)
-		{
-			if(!(objs[i] instanceof CharSequence))
-				objs[i] = objs[i].toString();
-			if(objs[i] == null) continue;
-
-			l += ((CharSequence)objs[i]).length();
-			x  = (x == null)?(objs[i]):(CAT_X);
-		}
-
-		//?: {has only one item in the objects array} return it
-		if((x != null) && (x != CAT_X))
-			return (CharSequence)x;
+		int l = _cslen_(objs); if(l == 0) l = 32;
 
 		//~: write to the buffer
 		StringBuilder s = new StringBuilder(l);
-		for(Object obj : objs) if(obj != null)
-			s.append((CharSequence)obj);
+		_csapnd_(objs, s);
 
 		return s;
 	}
-
-	private static final String CAT_X = "";
 
 	public static String        cats(Object... objs)
 	{
@@ -515,4 +505,37 @@ public class SU
 		private String   result;
 	}
 
+
+	/* private: helpers */
+
+	private static int  _cslen_(Object cs)
+	{
+		if(cs instanceof CharSequence)
+			return ((CharSequence)cs).length();
+
+		int l = 0;
+
+		if(cs instanceof Collection)
+			for(Object s : (Collection)cs)
+				l += _cslen_(s);
+		else if(cs instanceof Object[])
+			for(Object s : (Object[])cs)
+				l += _cslen_(s);
+
+		return l;
+	}
+
+	private static void  _csapnd_(Object cs, StringBuilder sb)
+	{
+		if(cs instanceof CharSequence)
+			sb.append((CharSequence)cs);
+		else if(cs instanceof Collection)
+			for(Object s : (Collection)cs)
+				_csapnd_(s, sb);
+		else if(cs instanceof Object[])
+			for(Object s : (Object[])cs)
+				_csapnd_(s, sb);
+		else if(cs != null)
+			sb.append(cs);
+	}
 }
