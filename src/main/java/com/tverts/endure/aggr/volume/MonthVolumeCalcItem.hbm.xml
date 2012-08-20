@@ -1,0 +1,56 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr.volume'>
+
+  <union-subclass name = 'MonthVolumeCalcItem' table = 'aggr_calc_volume_month'
+    extends = 'com.tverts.endure.aggr.calc.AggrCalcItemBase' lazy = 'false'>
+
+
+    <!-- Year -->
+
+    <property name = 'year'>
+
+      <column name = 'calc_year' index = 'ix_aggr_calc_volume_month'>
+
+        <comment>The year of the month</comment>
+      </column>
+    </property>
+
+
+    <!-- Month -->
+
+    <property name = 'month'>
+
+      <column name = 'calc_month' index = 'ix_aggr_calc_volume_month'>
+
+        <comment>The month within the year. Starts from 0 (January)</comment>
+      </column>
+    </property>
+
+
+    <!-- Summary Volume Positive -->
+
+    <property name = 'volumePositive' type = 'big_decimal'>
+
+      <column name = 'volume_positive' precision = '21' scale = '5'>
+
+        <comment>The summary volume (amount) added within this month</comment>
+      </column>
+    </property>
+
+
+    <!-- Summary Volume Negative -->
+
+    <property name = 'volumeNegative' type = 'big_decimal'>
+
+      <column name = 'volume_negative' precision = '21' scale = '5'>
+
+        <comment>The summary volume (amount) taken within this month</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

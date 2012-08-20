@@ -14,6 +14,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: hibery */
 
 import com.tverts.hibery.HiberPoint;
@@ -23,15 +27,21 @@ import com.tverts.hibery.HiberPoint;
 import com.tverts.actions.ActionType;
 import static com.tverts.actions.ActionsPoint.actionOrNullRun;
 
+/* com.tverts: aggregation calculations  */
+
+import com.tverts.aggr.calc.AggrCalcReference;
+import com.tverts.aggr.calc.AggrCalculator;
+
 /* com.tverts: endure (aggregation) */
 
 import com.tverts.endure.aggr.AggrTask;
 import com.tverts.endure.aggr.AggrValue;
+import com.tverts.endure.aggr.GetAggrValue;
+import com.tverts.endure.aggr.calc.AggrCalc;
 
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.SU;
 
 
 /**
@@ -69,6 +79,20 @@ public abstract class AggregatorBase
 			}
 	}
 
+
+	/* public: AggregatorBase (bean) interface */
+
+	public AggrCalcReference getCalculators()
+	{
+		return calculators;
+	}
+
+	public void setCalculators(AggrCalcReference calculators)
+	{
+		this.calculators = calculators;
+	}
+
+
 	/* protected: aggregation */
 
 	protected abstract void aggregateTask(AggrStruct struct)
@@ -92,6 +116,9 @@ public abstract class AggregatorBase
 
 			//!: aggregate the task given
 			aggregateTask(struct.task(struct.job.task(i)));
+
+			//~: do the calculations
+			calculations(struct);
 		}
 		catch(Throwable e)
 		{
@@ -101,10 +128,34 @@ public abstract class AggregatorBase
 			if(r != null)
 				return r;
 
-			throw new AggrJobError(e, struct.job);
+			throw new AggrJobError(e, struct);
 		}
 
 		return true;
+	}
+
+	protected void          calculations(AggrStruct struct)
+	{
+		//~: obtain the calculations strategies
+		List<AggrCalculator> acs = (getCalculators() == null)?(null):
+		  getCalculators().dereferObjects();
+		if((acs == null) || acs.isEmpty()) return;
+
+
+		//~: get the related calculated values
+		if(struct.calcs == null)
+			struct.calcs = bean(GetAggrValue.class).
+			  getAggrCalcs(aggrValue(struct));
+
+		if(struct.calcs == null)
+			struct.calcs = Collections.emptyList();
+		if(struct.calcs.isEmpty()) return;
+
+
+		//~: invoke strategies on the related calculations
+		for(AggrCalc calc : struct.calcs)
+			for(AggrCalculator ac : acs)
+				ac.calculate(struct.calc(calc));
 	}
 
 	protected void          updateAggrOwner(AggrStruct struct)
@@ -186,17 +237,35 @@ public abstract class AggregatorBase
 
 		/* public: assigners */
 
+		public AggrTask   task()
+		{
+			return this.task;
+		}
+
 		public AggrStruct task(AggrTask task)
 		{
 			this.task = task;
 			return this;
 		}
 
+		public AggrCalc   calc()
+		{
+			return this.calc;
+		}
+
+		public AggrStruct calc(AggrCalc calc)
+		{
+			this.calc = calc;
+			return this;
+		}
+
 
 		/* public: structure fields */
 
-		public final AggrJob job;
-		public AggrTask      task;
+		public final AggrJob  job;
+		public AggrTask       task;
+		public AggrCalc       calc;
+		public List<AggrCalc> calcs;
 	}
 
 
@@ -288,5 +357,6 @@ public abstract class AggregatorBase
 
 	/* private: aggregator support data */
 
-	private Set<Class> supportedTasks = Collections.emptySet();
+	private Set<Class>        supportedTasks = Collections.emptySet();
+	private AggrCalcReference calculators;
 }

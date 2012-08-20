@@ -5,18 +5,22 @@ package com.tverts.objects;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
- * Stores string value as a referenceable bean.
+ * Stores string value as a reference bean.
  *
  * @author anton.baukin@gmail.com
  */
 public class      StringBean
        implements CharSequence, StringsReference
 {
+	/* public: StringsReference interface */
+
 	public List<CharSequence> dereferObjects()
 	{
 		return Collections.singletonList(string);
 	}
+
 
 	/* public: access string value */
 
@@ -30,6 +34,7 @@ public class      StringBean
 		if(string == null) throw new IllegalArgumentException();
 		this.string = string;
 	}
+
 
 	/* public: CharSequence interface */
 
@@ -65,6 +70,7 @@ public class      StringBean
 	{
 		return string.hashCode();
 	}
+
 
 	/* private: string value */
 

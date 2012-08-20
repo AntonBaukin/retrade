@@ -21,6 +21,10 @@ import com.tverts.hibery.GetObjectBase;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 
+/* com.tverts: endure (aggregation calculation)s */
+
+import com.tverts.endure.aggr.calc.AggrCalc;
+
 
 /**
  * Loads {@link AggrValue} instances.
@@ -116,5 +120,21 @@ from AggrValue where (owner.id = :owner) and
 	{
 		return loadAggrValue(owner,
 		  UnityTypes.unityType(AggrValue.class, aggrType), selectorId);
+	}
+
+
+	/* Get Aggregation Calculation (general) */
+
+	@SuppressWarnings("unchecked")
+	public List<AggrCalc> getAggrCalcs(AggrValue av)
+	{
+
+// from AggrCalc where aggrValue = :av
+
+		return (List<AggrCalc>) Q(
+		  "from AggrCalc where aggrValue = :av"
+		).
+		  setParameter("av", av).
+		  list();
 	}
 }
