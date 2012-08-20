@@ -11,6 +11,7 @@ import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 /* com.tverts: actions */
 
 import static com.tverts.actions.ActionsPoint.actionRun;
+import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
@@ -104,7 +105,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 		d.setName("Test Domain");
 
 		//!: do save
-		actionRun(ActDomain.SAVE, d);
+		actionRun(ActionType.SAVE, d);
 
 
 		//~: log success
@@ -114,7 +115,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 
 	protected void  ensureTestDomain()
 	{
-		actionRun(ActDomain.ENSURE, this.testDomain);
+		actionRun(ActionType.ENSURE, this.testDomain);
 	}
 
 

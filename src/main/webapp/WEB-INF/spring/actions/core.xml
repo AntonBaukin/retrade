@@ -18,13 +18,6 @@
 
 
   <!--=================================================
-    =  Domain Action Bulders                          =
-    +================================================-->
-
-  <import resource = 'domain.xml'/>
-
-
-  <!--=================================================
     =  Aggregated Values Action Bulders               =
     +================================================-->
 
@@ -48,7 +41,6 @@
 
         <ref bean = 'coreUnityTypesBuilders'/>
         <ref bean = 'coreUnityBuilders'/>
-        <ref bean = 'coreDomainBuilders'/>
         <ref bean = 'aggrValueBuilders'/>
 
       </list>

@@ -72,19 +72,9 @@
 
   <bean name  = 'xrootAggrValuesTypes'
         class = 'com.tverts.objects.StringBean'>
-    <property name = 'string'>
-      <value>
 
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Summary Debts of all the Contractors                      ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.aggr.AggrValue   ReTrade: Aggr Value: Contractors Debt Balance;
-
-
-      </value>
-    </property>
+    <property name = 'string' value = ''/>
   </bean>
-
 
 
   <bean name  = 'xrootUnityTypes'
