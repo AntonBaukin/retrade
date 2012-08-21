@@ -1,5 +1,10 @@
 package com.tverts.endure;
 
+/* standard Java classes */
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -75,17 +80,22 @@ public abstract class ActionBuilderXRoot
 	 * target of the build record. It must be
 	 * {@link United} or {@link Unity} instance.
 	 */
+	@SuppressWarnings("unchecked")
 	protected void    buildAggrValue (
 	                    ActionBuildRec  abr,
 	                    String          aggrTypeName,
-	                    NumericIdentity selector
+	                    NumericIdentity selector,
+	                    Object...       params
 	                  )
 	{
-		xnest(abr, ActAggrValue.CREATE, target(abr),
+		ArrayList ps = new ArrayList(4 + params.length);
 
-		  ActAggrValue.VALUE_TYPE, aggrTypeName,
-		  ActAggrValue.SELECTOR,   selector
-		);
+		ps.add(ActAggrValue.VALUE_TYPE); ps.add(aggrTypeName);
+		ps.add(ActAggrValue.SELECTOR);   ps.add(selector);
+		ps.addAll(Arrays.asList(params));
+
+		xnest(abr, ActAggrValue.CREATE, target(abr),
+		  ps.toArray(new Object[ps.size()]));
 	}
 
 	/**

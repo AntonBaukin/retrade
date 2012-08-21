@@ -73,7 +73,16 @@
   <bean name  = 'xrootAggrValuesTypes'
         class = 'com.tverts.objects.StringBean'>
 
-    <property name = 'string' value = ''/>
+    <property name = 'string'>
+      <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Groups the volume items by the months and summarises them ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.calc.AggrCalc   Aggr Calc: Volume: Monthly;
+
+      </value>
+    </property>
   </bean>
 
 

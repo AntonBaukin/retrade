@@ -25,6 +25,7 @@ import com.tverts.endure.UnityTypes;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
+import com.tverts.support.logic.Predicate;
 
 
 /**
@@ -121,9 +122,13 @@ public class ActUnity extends ActionBuilderXRoot
 		//?: {the target is not a United | instance creator}
 		checkTargetClass(abr, United.class, DelayedInstance.class);
 
+		//~: obtain the creation predicate
+		Predicate p = predicate(abr);
+		if((p == null) && (target(abr) instanceof DelayedInstance))
+			p = target(abr, DelayedInstance.class);
+
 		//~: add action to the chain
-		chain(abr).first(new CreateUnityAction(task(abr)).
-		  setPredicate(predicate(abr)));
+		chain(abr).first(new CreateUnityAction(task(abr)).setPredicate(p));
 
 		//!: complete the build
 		complete(abr);

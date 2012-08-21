@@ -137,4 +137,24 @@ from AggrValue where (owner.id = :owner) and
 		  setParameter("av", av).
 		  list();
 	}
+
+	public AggrCalc       getAggrCalcs(AggrValue av, UnityType calcType)
+	{
+
+/*
+
+from AggrCalc where (aggrValue = :av)
+  and (unity.type = :calcType)
+
+*/
+		return (AggrCalc) Q(
+
+"from AggrCalc where (aggrValue = :av)\n" +
+"  and (unity.type = :calcType)"
+
+		).
+		  setParameter("av",       av).
+		  setParameter("calcType", calcType).
+		  uniqueResult();
+	}
 }

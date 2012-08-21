@@ -1,5 +1,11 @@
 package com.tverts.endure.aggr;
 
+/* standard Java classes */
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -27,9 +33,10 @@ import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
 
-/* com.tverts: predicates */
+/* com.tverts: endure (aggregation calculations) */
 
-import com.tverts.support.logic.Predicate;
+import com.tverts.endure.aggr.calc.ActAggrCalc;
+import com.tverts.endure.aggr.calc.AggrCalc;
 
 /* com.tverts: support */
 
@@ -39,7 +46,6 @@ import static com.tverts.support.OU.assignable;
 /**
  * This builder of actions is for create and save
  * aggregated value ({@link AggrValue) instances.
- *
  *
  * @author anton.baukin@gmail.com
  */
@@ -93,32 +99,61 @@ public class ActAggrValue extends ActionBuilderXRoot
 	public static final String SELECTOR   =
 	  ActAggrValue.class.getName() + ": aggr value selector";
 
+	/**
+	 * Create Aggregation Calculations over this aggregated
+	 * value sending this parameter. It is a single string,
+	 * or an array, or a collection of strings with Unity
+	 * Type names (class {@link AggrCalc}) of the calculations
+	 * to create.
+	 *
+	 * The calculations are created on demand.
+	 */
+	public static final String CALCS      =
+	  ActAggrValue.class.getName() + ": aggregation calculations";
+
 
 	/* public: ActionBuilder interface */
 
 	public void buildAction(ActionBuildRec abr)
 	{
 		if(CREATE.equals(actionType(abr)))
-			createAggrItem(abr);
+			createAggrValue(abr);
 	}
 
 
 	/* create aggregated value */
 
-	protected void      createAggrItem(ActionBuildRec abr)
+	protected void      createAggrValue(ActionBuildRec abr)
 	{
-		Predicate       p = createExistsPredicate(abr);
-		DelayedInstance v = createAggrValue(abr);
+		DelayedInstance v = createBuilder(abr);
+
+		//~: create and save the calculations
+		if(param(abr, CALCS) != null)
+			createAggrCalcs(abr, v);
 
 		//~: save the value
 		chain(abr).first(new SaveNumericIdentified(task(abr), v).
-		  setPredicate(p));
+		  setPredicate(v));
 
 		//~: set aggr value unity (is executed first!)
-		xnest(abr, ActUnity.CREATE, v, PREDICATE, p,
+		xnest(abr, ActUnity.CREATE, v,
 		  ActUnity.UNITY_TYPE, getValueType(abr));
 
 		complete(abr);
+	}
+
+	protected void      createAggrCalcs(ActionBuildRec abr, DelayedInstance v)
+	{
+		Object calcs = param(abr, CALCS);
+
+		if(calcs instanceof Object[])
+			calcs = Arrays.asList((Object[])calcs);
+		else if(!(calcs instanceof Collection))
+			calcs = Collections.singletonList(calcs);
+
+		//~: delegate the creation
+		for(Object calc : (Collection)calcs)
+			xnest(abr, ActAggrCalc.CREATE, v, ActAggrCalc.CALC_TYPE, calc);
 	}
 
 	protected Unity     getOwner(ActionBuildRec abr)
@@ -176,7 +211,7 @@ public class ActAggrValue extends ActionBuilderXRoot
 
 	/* delayed creator of aggregated value */
 
-	protected DelayedInstance createAggrValue(ActionBuildRec abr)
+	protected DelayedInstance createBuilder(ActionBuildRec abr)
 	{
 		return new CreateAggrValue(abr);
 	}
@@ -193,9 +228,14 @@ public class ActAggrValue extends ActionBuilderXRoot
 
 		/* public: DelayedInstance interface */
 
-		public NumericIdentity createInstance(Action action)
+		public AggrValue createInstance(Action action)
 		{
-			if(val != null) return val;
+			//~: call predicate as side-effect of test loading
+			evalPredicate(null);
+
+			//?: {already created | loaded}
+			if(val != null)
+				return val;
 
 			Unity o = getOwner(abr);
 			Long  s = getSelector(abr);
@@ -215,32 +255,11 @@ public class ActAggrValue extends ActionBuilderXRoot
 			return val;
 		}
 
-
-		/* protected: action build record */
-
-		protected final ActionBuildRec abr;
-
-		/* protected: the value created */
-
-		protected AggrValue            val;
-	}
-
-
-	/* create aggregated value predicate */
-
-	protected Predicate createExistsPredicate(ActionBuildRec abr)
-	{
-		return new IsValueExist(abr);
-	}
-
-	protected class IsValueExist implements Predicate
-	{
-		/* public: constructor */
-
-		public IsValueExist(ActionBuildRec abr)
+		public AggrValue getInstance()
 		{
-			this.abr = abr;
+			return val;
 		}
+
 
 		/* public: Predicate interface */
 
@@ -252,7 +271,8 @@ public class ActAggrValue extends ActionBuilderXRoot
 			UnityType t = getValueType(abr);
 			Long      s = getSelector(abr);
 
-			return notexists = (bean(GetAggrValue.class).getAggrValue(o, t, s) == null);
+			this.val = bean(GetAggrValue.class).getAggrValue(o, t, s);
+			return this.notexists = (this.val == null);
 		}
 
 
@@ -261,8 +281,9 @@ public class ActAggrValue extends ActionBuilderXRoot
 		protected final ActionBuildRec abr;
 
 
-		/* protected: check state */
+		/* protected: the value created */
 
-		protected Boolean              notexists;
+		protected AggrValue val;
+		protected Boolean   notexists;
 	}
 }

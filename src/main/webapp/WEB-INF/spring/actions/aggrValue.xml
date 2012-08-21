@@ -18,4 +18,20 @@
       <bean class = 'com.tverts.endure.aggr.ActAggrValue'/>
     </property>
   </bean>
+
+
+  <!--=================================================
+    =  Calculations over Aggregation Action Bulders   =
+    +================================================-->
+
+  <bean name  = 'aggrCalcsBuilders'
+        class = 'com.tverts.actions.ActionBuilderActionChecker'>
+
+    <property name  = 'goalClass'
+              value = 'com.tverts.endure.aggr.calc.AggrCalc'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.aggr.calc.ActAggrCalc'/>
+    </property>
+  </bean>
 </beans>
