@@ -44,7 +44,7 @@ public class ActAggrCalc extends ActionBuilderXRoot
 	/* action types */
 
 	public static final ActionType CREATE =
-	  ActionType.CREATE;
+	  new ActionType("create-calc", AggrValue.class);
 
 
 	/* parameters of the action task */

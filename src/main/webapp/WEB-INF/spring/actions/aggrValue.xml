@@ -15,23 +15,15 @@
               value = 'com.tverts.endure.aggr.AggrValue'/>
 
     <property name = 'reference'>
-      <bean class = 'com.tverts.endure.aggr.ActAggrValue'/>
-    </property>
-  </bean>
+      <bean class = 'com.tverts.actions.ActionBuildersList'>
 
-
-  <!--=================================================
-    =  Calculations over Aggregation Action Bulders   =
-    +================================================-->
-
-  <bean name  = 'aggrCalcsBuilders'
-        class = 'com.tverts.actions.ActionBuilderActionChecker'>
-
-    <property name  = 'goalClass'
-              value = 'com.tverts.endure.aggr.calc.AggrCalc'/>
-
-    <property name = 'reference'>
-      <bean class = 'com.tverts.endure.aggr.calc.ActAggrCalc'/>
+        <property name = 'references'>
+          <list>
+            <bean class = 'com.tverts.endure.aggr.ActAggrValue'/>
+            <bean class = 'com.tverts.endure.aggr.calc.ActAggrCalc'/>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 </beans>

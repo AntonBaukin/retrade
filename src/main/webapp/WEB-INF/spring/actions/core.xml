@@ -42,7 +42,6 @@
         <ref bean = 'coreUnityTypesBuilders'/>
         <ref bean = 'coreUnityBuilders'/>
         <ref bean = 'aggrValueBuilders'/>
-        <ref bean = 'aggrCalcsBuilders'/>
 
       </list>
     </property>

@@ -16,5 +16,5 @@ public class AggrCalcs
 	 * Groups the volume items by the months and summarises them.
 	 */
 	public static final String AGGR_CALC_VOL_MONTH =
-	  "com.tverts.endure.aggr.calc.AggrCalc   Aggr Calc: Volume: Monthly";
+	  "Aggr Calc: Volume: Monthly";
 }

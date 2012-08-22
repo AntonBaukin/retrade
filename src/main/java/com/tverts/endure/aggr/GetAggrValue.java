@@ -144,13 +144,13 @@ from AggrValue where (owner.id = :owner) and
 /*
 
 from AggrCalc where (aggrValue = :av)
-  and (unity.type = :calcType)
+  and (unity.unityType = :calcType)
 
 */
 		return (AggrCalc) Q(
 
 "from AggrCalc where (aggrValue = :av)\n" +
-"  and (unity.type = :calcType)"
+"  and (unity.unityType = :calcType)"
 
 		).
 		  setParameter("av",       av).
