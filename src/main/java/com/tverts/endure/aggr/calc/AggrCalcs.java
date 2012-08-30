@@ -9,7 +9,7 @@ package com.tverts.endure.aggr.calc;
  */
 public class AggrCalcs
 {
-	/* types */
+	/* Calculation Types */
 
 	/**
 	 * Calculation over the aggregated volume value.
@@ -17,4 +17,15 @@ public class AggrCalcs
 	 */
 	public static final String AGGR_CALC_VOL_MONTH =
 	  "Aggr Calc: Volume: Monthly";
+
+
+
+	/* Shared Parameters */
+
+	/**
+	 * Timestamp of the aggregation source object.
+	 * Used by date range calculators.
+	 */
+	public static final String PARAM_SOURCE_TIME =
+	  AggrCalcs.class.getName() + ": param: source timestamp";
 }

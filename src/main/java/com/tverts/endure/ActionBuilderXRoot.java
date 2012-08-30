@@ -80,7 +80,6 @@ public abstract class ActionBuilderXRoot
 	 * target of the build record. It must be
 	 * {@link United} or {@link Unity} instance.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void    buildAggrValue (
 	                    ActionBuildRec  abr,
 	                    String          aggrTypeName,
@@ -88,7 +87,7 @@ public abstract class ActionBuilderXRoot
 	                    Object...       params
 	                  )
 	{
-		ArrayList ps = new ArrayList(4 + params.length);
+		ArrayList<Object> ps = new ArrayList<Object>(4 + params.length);
 
 		ps.add(ActAggrValue.VALUE_TYPE); ps.add(aggrTypeName);
 		ps.add(ActAggrValue.SELECTOR);   ps.add(selector);

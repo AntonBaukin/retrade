@@ -41,7 +41,7 @@ import com.tverts.endure.aggr.AggrValue;
  * @author anton.baukin@gmail.com
  */
 public abstract class AggrCalcBase
-       implements     AggrCalculator
+       implements     AggrCalculator, AggrCalcReference
 {
 	/* public: AggrCalcBase (bean) interface */
 
@@ -61,13 +61,21 @@ public abstract class AggrCalcBase
 	public void calculate(AggrStruct struct)
 	{
 		if(isCalc(struct))
-			doCalc(struct);
+			calc(struct);
+	}
+
+
+	/* public: AggrCalcReference interface */
+
+	public List<AggrCalculator> dereferObjects()
+	{
+		return Collections.<AggrCalculator> singletonList(this);
 	}
 
 
 	/* protected: calculations */
 
-	protected abstract void doCalc(AggrStruct struct);
+	protected abstract void calc(AggrStruct struct);
 
 	protected boolean       isCalc(AggrStruct struct)
 	{

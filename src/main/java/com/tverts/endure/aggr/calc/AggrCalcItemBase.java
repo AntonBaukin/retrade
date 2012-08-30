@@ -2,7 +2,7 @@ package com.tverts.endure.aggr.calc;
 
 /* com.tverts: endure core */
 
-import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.NumericBase;
 
 
 /**
@@ -10,21 +10,8 @@ import com.tverts.endure.NumericIdentity;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class AggrCalcItemBase implements NumericIdentity
+public abstract class AggrCalcItemBase extends NumericBase
 {
-	/* public: NumericIdentity interface */
-
-	public Long     getPrimaryKey()
-	{
-		return primaryKey;
-	}
-
-	public void     setPrimaryKey(Long primaryKey)
-	{
-		this.primaryKey = primaryKey;
-	}
-
-
 	/* public: AggrCalcItem (bean) interface */
 
 	public AggrCalc getAggrCalc()
@@ -38,31 +25,7 @@ public abstract class AggrCalcItemBase implements NumericIdentity
 	}
 
 
-	/* public: Object interface */
-
-	public boolean equals(Object o)
-	{
-		if(this == o)
-			return true;
-
-		if(!this.getClass().equals(o.getClass()))
-			return false;
-
-		Long k0 = this.getPrimaryKey();
-		Long k1 = ((NumericIdentity)o).getPrimaryKey();
-
-		return (k0 != null) && k0.equals(k1);
-	}
-
-	public int     hashCode()
-	{
-		Long k0 = this.getPrimaryKey();
-		return (k0 == null)?(0):(k0.hashCode());
-	}
-
-
 	/* persisted attributes */
 
-	private Long     primaryKey;
 	private AggrCalc aggrCalc;
 }

@@ -124,6 +124,9 @@ public class AggregatorVolume extends AggregatorSingleBase
 		//!: evict the item
 		session(struct).evict(item);
 
+		//~: link the items for the calculations
+		struct.items(item);
+
 		//>: create and save aggregated value item
 
 		//<: update the historical values
@@ -185,9 +188,9 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 		if(item.getVolumeNegative() != null)
 			n = n.add(item.getVolumeNegative());
 
-      aggrValue(struct).setAggrPositive(p);
+		aggrValue(struct).setAggrPositive(p);
 		aggrValue(struct).setAggrNegative(n);
-      aggrValue(struct).setAggrValue(p.subtract(n));
+		aggrValue(struct).setAggrValue(p.subtract(n));
 
 		//>: recalculate the aggregated value
 	}
@@ -242,6 +245,8 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 		for(AggrItem item : items)
 			session(struct).evict(item);
 
+		//~: link the items for the calculations
+		struct.items(items);
 
 		//<: issue update on the historical values
 

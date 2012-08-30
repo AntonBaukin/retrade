@@ -2,7 +2,9 @@ package com.tverts.aggr;
 
 /* standard Java classes */
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Collections;
@@ -27,17 +29,18 @@ import com.tverts.hibery.HiberPoint;
 import com.tverts.actions.ActionType;
 import static com.tverts.actions.ActionsPoint.actionOrNullRun;
 
-/* com.tverts: aggregation calculations  */
-
-import com.tverts.aggr.calc.AggrCalcReference;
-import com.tverts.aggr.calc.AggrCalculator;
-
 /* com.tverts: endure (aggregation) */
 
+import com.tverts.endure.aggr.AggrItem;
 import com.tverts.endure.aggr.AggrTask;
 import com.tverts.endure.aggr.AggrValue;
 import com.tverts.endure.aggr.GetAggrValue;
 import com.tverts.endure.aggr.calc.AggrCalc;
+
+/* com.tverts: aggregation calculations  */
+
+import com.tverts.aggr.calc.AggrCalcReference;
+import com.tverts.aggr.calc.AggrCalculator;
 
 /* com.tverts: support */
 
@@ -237,23 +240,58 @@ public abstract class AggregatorBase
 
 		/* public: assigners */
 
-		public AggrTask   task()
+		public AggrTask       task()
 		{
 			return this.task;
 		}
 
-		public AggrStruct task(AggrTask task)
+		/**
+		 * Sets the new task. Clears all the objects
+		 * related to the previous one.
+		 */
+		public AggrStruct     task(AggrTask task)
 		{
-			this.task = task;
+			if(this.task == task) return this;
+
+			this.task  = task;
+			this.items = null;
+
+			//HINT: calculations relate to the value, not task
+
 			return this;
 		}
 
-		public AggrCalc   calc()
+		/**
+		 * Returns the list of items affected by the task.
+		 */
+		public List<AggrItem> items()
+		{
+			return (this.items != null)?(items):
+			   Collections.<AggrItem> emptyList();
+		}
+
+		public AggrStruct     items(Collection<AggrItem> items)
+		{
+			this.items = (items == null)?(null):
+			  (new ArrayList<AggrItem>(items));
+
+			return this;
+		}
+
+		public AggrStruct     items(AggrItem... items)
+		{
+			this.items = (items.length == 0)?(null):
+			  (new ArrayList<AggrItem>(Arrays.asList(items)));
+
+			return this;
+		}
+
+		public AggrCalc       calc()
 		{
 			return this.calc;
 		}
 
-		public AggrStruct calc(AggrCalc calc)
+		public AggrStruct     calc(AggrCalc calc)
 		{
 			this.calc = calc;
 			return this;
@@ -264,6 +302,7 @@ public abstract class AggregatorBase
 
 		public final AggrJob  job;
 		public AggrTask       task;
+		public List<AggrItem> items;
 		public AggrCalc       calc;
 		public List<AggrCalc> calcs;
 	}
