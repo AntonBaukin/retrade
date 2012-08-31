@@ -185,17 +185,17 @@ public class DaysGenDisp extends GenesisPartBase
 
 	/* protected: generation support */
 
-	protected Date  findFirstGenDate(GenCtx ctx)
+	protected Date    findFirstGenDate(GenCtx ctx)
 	{
 		return DU.addDaysClean(new Date(), -getDays());
 	}
 
-	protected Date  findLastGenDate(GenCtx ctx)
+	protected Date    findLastGenDate(GenCtx ctx)
 	{
 		return DU.cleanTime(new Date());
 	}
 
-	protected void  genObjectsTxDisp(GenCtx ctx, Date day)
+	protected void    genObjectsTxDisp(GenCtx ctx, Date day)
 	  throws GenesisError
 	{
 		if(isDayTx())
@@ -205,51 +205,49 @@ public class DaysGenDisp extends GenesisPartBase
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	protected void  genObjectsTx(GenCtx ctx, Date day)
+	protected void    genObjectsTx(GenCtx ctx, Date day)
 	  throws GenesisError
 	{
 		genObjects(ctx, day);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void  genObjects(GenCtx ctx, Date day)
+	protected void    genObjects(GenCtx ctx, Date day)
 	  throws GenesisError
 	{
 		//~: set the day parameter of the context
 		ctx.set(DAY, day);
 
-		Map inds = new IdentityHashMap(getEntries().length);
-		int objn = genObjsNumber(ctx);
+		//~: select the generator entries
+		Entry[] entries = selectEntries(ctx, genObjsNumber(ctx));
+		Map     inds    = new IdentityHashMap(getEntries().length);
 
 		//~: put initial indices (needed for logging)
 		for(Entry e : getEntries())
-		   inds.put(e, 1);
+		   inds.put(e, 0);
 
 		//c: for all the objects number of the day
-		for(int obji = 1;(obji <= objn);obji++)
+		for(int ei = 0;(ei < entries.length);ei++)
 		{
-			//~: select the next generator entry by it's weight
-			Entry e = selectEntry(ctx);
-
 			//~: find the present per-day index
-			int   i = (Integer)inds.get(e);
-			inds.put(e, i + 1);
+			int i = (Integer)inds.get(entries[ei]);
+			inds.put(entries[ei], i + 1);
 
 			//~: and store it in the context
-			ctx.set(DAYI, i); //<-- starting from 1, not 0
+			ctx.set(DAYI, i + 1); //<-- starting from 1, not 0
 
 			//~: generate the in-day time
-			ctx.set(TIME, genDayTime(ctx, day, obji, objn));
+			ctx.set(TIME, genDayTime(ctx, day, ei + 1, entries.length));
 
 			//!: call the genesis unit
-			callGenesis(ctx, e);
+			callGenesis(ctx, entries[ei]);
 		}
 
 		//~: write to the log
 		logGen(ctx, day, inds);
 	}
 
-	protected void  callGenesis(GenCtx ctx, Entry e)
+	protected void    callGenesis(GenCtx ctx, Entry e)
 	  throws GenesisError
 	{
 		if(e.getGenesis() == null)
@@ -262,16 +260,16 @@ public class DaysGenDisp extends GenesisPartBase
 		g.generate(ctx.stack(this));
 	}
 
-	protected void  logGen(GenCtx ctx, Date day, Map inds)
+	protected void    logGen(GenCtx ctx, Date day, Map inds)
 	{
 		if(LU.isI(log(ctx))) for(Entry e : getEntries())
 			LU.I(log(ctx), DU.date2str(day),
 			     " genesis ", e.getGenesis().getName(),
-			     " invoked times: ", ((Integer)inds.get(e) - 1)
+			     " invoked times: ", ((Integer)inds.get(e))
 			);
 	}
 
-	protected int   genObjsNumber(GenCtx ctx)
+	protected int     genObjsNumber(GenCtx ctx)
 	{
 		if(getObjMin() > getObjMax())
 			throw new IllegalStateException();
@@ -282,29 +280,53 @@ public class DaysGenDisp extends GenesisPartBase
 		return getObjMin() +
 		  ctx.gen().nextInt(getObjMax() - getObjMin() + 1);
 	}
-	
-	protected Entry selectEntry(GenCtx ctx)
-	{
-		int b, w = 0;
 
+	/**
+	 * Chooses random entries with the number given.
+	 * Each entry would be selected at least once!
+	 * And the resulting array may have the length bigger.
+	 */
+	protected Entry[] selectEntries(GenCtx ctx, int length)
+	{
+		//~: set the length
+		if(length < getEntries().length)
+			length = getEntries().length;
+
+		Entry[] result = new Entry[length];
+
+		//~: select all the entries at least once
+		for(int i = 0;(i < getEntries().length);i++)
+			result[i] = getEntries()[i];
+
+		//~: get total weight
+		int W = 0;
 		for(Entry e : getEntries())
 			if(e.getWeight() <= 0) throw new IllegalStateException();
-			else w += e.getWeight();
+			else W += e.getWeight();
 
-		b = ctx.gen().nextInt(w); w = 0;
+		//~: select other entries in random
+		next: for(int i = getEntries().length;(i < length);i++)
+		{
+			int x = 0, w = ctx.gen().nextInt(W);
 
-		for(Entry e : getEntries())
-			if((w += e.getWeight()) >= b)
-				return e;
+			for(Entry e : getEntries())
+				if((x += e.getWeight()) >= w)
+				{
+					result[i] = e;
+					continue next;
+				}
 
-		throw new IllegalStateException();
+			throw new IllegalStateException();
+		}
+
+		return result;
 	}
 
 	/**
 	 * Parameter {@code i} is in-day index from
 	 * {@code 1} to {@code max} inclusive.
 	 */
-	protected Date  genDayTime(GenCtx ctx, Date day, int i, int max)
+	protected Date    genDayTime(GenCtx ctx, Date day, int i, int max)
 	{
 		Calendar cl = Calendar.getInstance();
 		int      TD = 24 * 60; //<-- minutes in a day
