@@ -84,7 +84,7 @@ public class DaysGenDisp extends GenesisPartBase
 		//c: generate till the last day
 		while(!curDay.after(endDay))
 		{
-			genObjects(ctx, curDay);
+			genObjectsTxDisp(ctx, curDay);
 			curDay = DU.addDaysClean(curDay, +1);
 		}
 	}

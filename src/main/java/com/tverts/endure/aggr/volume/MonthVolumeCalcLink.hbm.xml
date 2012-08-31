@@ -6,7 +6,7 @@
 <hibernate-mapping package = 'com.tverts.endure.aggr.volume'>
 
   <class name = 'MonthVolumeCalcLink' lazy = 'false'
-    table = 'aggr_calc_link_volume_month'>
+    table = 'aggr_calc_volume_month_link'>
 
 
     <!-- Primary Key -->
@@ -32,7 +32,8 @@
     <property name = 'aggrItem'>
 
       <column name = 'aggr_item' not-null = 'true'
-        unique-key = 'ux_calc_link_volume_month'>
+        unique-key = 'ux_calc_link_volume_month'
+        index      = 'ix_calc_link_volume_month_item'>
 
         <comment>Aggregated Volume Item reference</comment>
       </column>

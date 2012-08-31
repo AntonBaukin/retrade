@@ -5,7 +5,7 @@
 
 <hibernate-mapping package = 'com.tverts.endure.aggr.volume'>
 
-  <union-subclass name = 'MonthVolumeCalcItem' table = 'aggr_calc_volume_month'
+  <union-subclass name = 'MonthVolumeCalcItem' table = 'aggr_calc_volume_month_item'
     extends = 'com.tverts.endure.aggr.calc.AggrCalcItemBase' lazy = 'false'>
 
 
