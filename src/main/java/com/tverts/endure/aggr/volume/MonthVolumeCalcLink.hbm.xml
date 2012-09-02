@@ -44,7 +44,7 @@
 
     <property name = 'volumePositive' type = 'big_decimal'>
 
-      <column name = 'volume_positive' precision = '12' scale = '3'>
+      <column name = 'volume_positive' precision = '16' scale = '5'>
 
         <comment>The volume (amount) added</comment>
       </column>
@@ -55,7 +55,7 @@
 
     <property name = 'volumeNegative' type = 'big_decimal'>
 
-      <column name = 'volume_negative' precision = '12' scale = '3'>
+      <column name = 'volume_negative' precision = '16' scale = '5'>
 
         <comment>The volume (amount) removed</comment>
       </column>

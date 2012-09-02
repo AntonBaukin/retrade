@@ -222,12 +222,14 @@ from MonthVolumeCalcLink where (aggrItem = :aggrItem)
 		int cp = item.getVolumePositive().compareTo(BigDecimal.ZERO);
 
 		//?: {the volumes are wrong}
-		if((cn < 0) || (cp < 0)) new IllegalStateException(String.format(
-		  "MonthVolumeCalcItem [%d] in AggrCalc [%d] of AggrValue [%d] " +
-		  "has negative aggregated volumes!",
-		  item.getPrimaryKey(), aggrCalc(struct).getPrimaryKey(),
-		  aggrValue(struct).getPrimaryKey()
-		));
+		if((cn < 0) || (cp < 0))
+			throw new IllegalStateException(String.format(
+			  "MonthVolumeCalcItem [%d] in AggrCalc [%d] of AggrValue [%d] " +
+			  "has negative aggregated volumes!",
+
+			  item.getPrimaryKey(), aggrCalc(struct).getPrimaryKey(),
+			  aggrValue(struct).getPrimaryKey()
+			));
 
 		//?: {the volumes become zeros} delete the item
 		if((cn == 0) && (cp == 0))
