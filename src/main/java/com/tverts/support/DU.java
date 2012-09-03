@@ -178,6 +178,17 @@ public class DU
 		return sb.toString();
 	}
 
+	public static String monthAbbr(Date d)
+	{
+		Calendar cl = Calendar.getInstance();
+		cl.setTime(d);
+
+		return new StringBuilder(8).
+		  append(MONTHS_ABBR_RU[cl.get(Calendar.MONTH)]).
+		  append(' ').append(cl.get(Calendar.YEAR)).
+		  toString();
+	}
+
 	public static void   time2str(Date t, StringBuilder sb, Calendar cl)
 	{
 		if(cl == null) cl =  Calendar.getInstance();
@@ -312,6 +323,12 @@ public class DU
 	{
 	  "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля",
 	  "Августа", "Сентября", "Октября", "Ноября", "Декабря"
+	};
+
+	private static final String[] MONTHS_ABBR_RU   =
+	{
+	  "Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл",
+	  "Авг", "Сен", "Окт", "Ноя", "Дек"
 	};
 
 	private static final String[] WEEKDAYS_RU =

@@ -60,10 +60,41 @@ order by ci.year, ci.month
 		  list();
 	}
 
+	public MonthVolumeCalcItem getMonthVolumeCalcItem
+	  (AggrValue aggrValue, UnityType calcType, int year, int month)
+	{
+
+/*
+
+select ci from MonthVolumeCalcItem ci join ci.aggrCalc ac where
+  (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)
+  and (ci.year = :year) and (ci.month = :month)
+
+*/
+		return (MonthVolumeCalcItem) Q(
+
+"select ci from MonthVolumeCalcItem ci join ci.aggrCalc ac where\n" +
+"  (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)\n" +
+"  and (ci.year = :year) and (ci.month = :month)"
+
+		).
+		  setParameter("aggrValue", aggrValue).
+		  setParameter("calcType",  calcType).
+		  setInteger  ("year",      year).
+		  setInteger  ("month",     month).
+		  uniqueResult();
+	}
 
 	public List<MonthVolumeCalcItem> getMonthVolumeCalcItems(AggrValue aggrValue)
 	{
 		return getMonthVolumeCalcItems(aggrValue, UnityTypes.unityType(
 		  AggrCalc.class, AggrCalcs.AGGR_CALC_VOL_MONTH));
+	}
+
+	public MonthVolumeCalcItem getMonthVolumeCalcItem
+	  (AggrValue aggrValue, int year, int month)
+	{
+		return getMonthVolumeCalcItem(aggrValue, UnityTypes.unityType(
+		  AggrCalc.class, AggrCalcs.AGGR_CALC_VOL_MONTH), year, month);
 	}
 }
