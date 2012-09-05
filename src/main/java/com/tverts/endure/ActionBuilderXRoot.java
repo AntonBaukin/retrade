@@ -258,7 +258,7 @@ public abstract class ActionBuilderXRoot
 			if(owner.getUnity() == null)
 				throw new IllegalStateException(String.format(
 				  "Can't ensure lock of type %s owned by the United " +
-				  "instace [%s] having no Unity mirrow!",
+				  "instace [%s] having no Unity mirror!",
 				  type.toString(), owner.getPrimaryKey()
 				));
 

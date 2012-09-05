@@ -15,10 +15,10 @@
     <!-- Unity -->
 
     <many-to-one name = 'unity' cascade = 'save-update'
-      foreign-key = 'fk_unity_link_mirrow'>
+      foreign-key = 'fk_unity_link_mirror'>
 
       <column name = 'fk_unity' unique = 'true'>
-        <comment>The (unique) Unified Mirrow of the Unity Link</comment>
+        <comment>The (unique) Unified Mirror of the Unity Link</comment>
       </column>
     </many-to-one>
 

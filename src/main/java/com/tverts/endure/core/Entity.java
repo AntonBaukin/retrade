@@ -55,7 +55,7 @@ public abstract class Entity implements United
 		//?: {try to undefine the unity}
 		if((this.unity != null) && (unity == null))
 			throw new IllegalArgumentException(
-			  "Unified mirrow of an Entity may not be set to undefined!"
+			  "Unified mirror of an Entity may not be set to undefined!"
 			);
 
 		//?: {unity is not defined} nothing to do
@@ -66,7 +66,7 @@ public abstract class Entity implements United
 		   !getPrimaryKey().equals(unity.getPrimaryKey())
 		  )
 			throw new IllegalArgumentException(
-			  "Unified mirrow of an Entity may not have differ primary key value!"
+			  "Unified mirror of an Entity may not have differ primary key value!"
 			);
 
 		this.unity = unity;
