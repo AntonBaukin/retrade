@@ -1,5 +1,9 @@
 package com.tverts.actions;
 
+/* standard Java classes */
+
+import java.lang.reflect.Modifier;
+
 /* com.tverts: actions */
 
 import static com.tverts.actions.ActionBuildersRoot.STEP_TARGET;
@@ -97,14 +101,23 @@ public class   ActionBuilderTypeChecker
 
 	protected boolean   isActionTargetClassMatch(ActionBuildRec abr)
 	{
-		String c = targetClass(abr).getName();
-
 		//?: {this is not a unity matched} check the class equals
-		if(!isMatchUnity() || !Unity.class.getName().equals(c))
-			return getTypeClass().getName().equals(c);
+		if(!isMatchUnity() || !Unity.class.equals(targetClass(abr)))
+			return isActionTargetClassMatch(getTypeClass(), targetClass(abr));
 
 		UnityType ut = target(abr, Unity.class).getUnityType();
-		return (ut != null) && ut.getTypeClass().getName().equals(c);
+		return (ut != null) &&
+		  isActionTargetClassMatch(getTypeClass(), ut.getTypeClass());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected boolean   isActionTargetClassMatch(Class need, Class got)
+	{
+		boolean abstr = need.isInterface() ||
+		  Modifier.isAbstract(need.getModifiers());
+
+		//?: {the class is abstract} use instance of
+		return (abstr)?(need.isAssignableFrom(got)):(need.equals(got));
 	}
 
 	protected boolean   isActionTargetUnityTypeMatch(ActionBuildRec abr)
