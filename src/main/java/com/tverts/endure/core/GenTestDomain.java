@@ -40,11 +40,17 @@ public class GenTestDomain extends GenesisHiberPartBase
 		return INSTANCE;
 	}
 
-	private static final GenTestDomain INSTANCE =
-	  new GenTestDomain();
+	private static volatile GenTestDomain INSTANCE;
 
 	protected GenTestDomain()
-	{}
+	{
+		synchronized(GenTestDomain.class)
+		{
+			if(INSTANCE != null)
+				throw new IllegalStateException();
+			INSTANCE = this;
+		}
+	}
 
 
 	/* public: access test domain */
@@ -77,9 +83,6 @@ public class GenTestDomain extends GenesisHiberPartBase
 	{
 		//~: create test domain if it does not exist yet
 		createTestDomain(ctx);
-
-		//~: ensure the domain related entities exists
-		ensureTestDomain();
 	}
 
 
@@ -107,15 +110,9 @@ public class GenTestDomain extends GenesisHiberPartBase
 		//!: do save
 		actionRun(ActionType.SAVE, d);
 
-
 		//~: log success
 		if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
 		  " had created Test Domain with PK = ", d.getPrimaryKey());
-	}
-
-	protected void  ensureTestDomain()
-	{
-		actionRun(ActionType.ENSURE, this.testDomain);
 	}
 
 
