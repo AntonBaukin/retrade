@@ -144,6 +144,17 @@ public class SU
 		return (s != null)?(s):("");
 	}
 
+	public static int      sXl(Object... objs)
+	{
+		int size = 0;
+
+		if(objs != null) for(Object s : objs)
+			if(s instanceof CharSequence)
+				size += ((CharSequence)s).length();
+
+		return size;
+	}
+
 	public static int      sXl(String... strs)
 	{
 		int size = 0;
@@ -447,6 +458,24 @@ public class SU
 		return cat(objs).toString();
 	}
 
+	public static String        scat(String sep, Object... objs)
+	{
+		StringBuilder s = new StringBuilder(
+		  sep.length() * objs.length + sXl(objs));
+
+		for(Object o : objs) if(o != null)
+		{
+			String x = o.toString().trim();
+			if(x.length() == 0) continue;
+
+			if(s.length() != 0)
+				s.append(sep);
+			s.append(x);
+		}
+
+		return s.toString();
+	}
+
 	/**
 	 * Concatenates the strings using the separator given.
 	 * Returns the resulting buffer.
@@ -509,7 +538,7 @@ public class SU
 		if((s == null) || (r == null) || (t == null) || (t.length() == 0))
 			return s;
 
-		return (s.indexOf(t) == -1)?(s):(s.replace(t, r.toString()));
+		return !s.contains(t)?(s):(s.replace(t, r.toString()));
 	}
 
 	public static DelayedString delay(Object... items)
