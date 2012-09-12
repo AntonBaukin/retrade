@@ -5,6 +5,10 @@ package com.tverts.genesis;
 import java.util.Random;
 import java.util.Set;
 
+/* Hibernate Persistence Layer */
+
+import org.hibernate.Session;
+
 
 /**
  * The context of generation call.
@@ -69,4 +73,6 @@ public interface GenCtx
 	 * Note that the result is always defined.
 	 */
 	public String  log();
+
+	public Session session();
 }

@@ -8,6 +8,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+/* Hibernate Persistence Layer */
+
+import org.hibernate.Session;
+
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
 
 /**
  * Straight implementation of {@link GenCtx}.
@@ -26,7 +34,7 @@ public class GenCtxBase implements GenCtx, Cloneable
 	public GenCtxBase(Genesis owner, GenCtx outer)
 	{
 		this.owner = owner;
-		this.outer   = outer;
+		this.outer = outer;
 	}
 
 
@@ -128,6 +136,16 @@ public class GenCtxBase implements GenCtx, Cloneable
 		return log;
 	}
 
+	public Session session()
+	{
+		Session res = (session != null)?(session):
+		  (outer == null)?(null):(outer.session());
+
+		if(res == null)
+			res = HiberPoint.session();
+		return res;
+	}
+
 
 	/* public: GenCtxBase interface */
 	
@@ -149,6 +167,12 @@ public class GenCtxBase implements GenCtx, Cloneable
 		return this;
 	}
 
+	public GenCtxBase setSession(Session session)
+	{
+		this.session = session;
+		return this;
+	}
+
 
 	/* private: context state */
 
@@ -157,4 +181,5 @@ public class GenCtxBase implements GenCtx, Cloneable
 	private Random  gen;
 	private Map     params;
 	private String  log;
+	private Session session;
 }

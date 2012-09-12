@@ -165,10 +165,19 @@ public class      GenesisSphere
 
 		try
 		{
+			//~: bind the session to the context
+			if(ctx instanceof GenCtxBase)
+				((GenCtxBase)ctx).setSession(TxPoint.getInstance().
+				  getTxContextStrict().getSessionFactory().getCurrentSession());
+
 			doGen(ctx);
 		}
 		finally
 		{
+			//~: unbind the session from the context
+			if(ctx instanceof GenCtxBase)
+				((GenCtxBase)ctx).setSession(null);
+
 			//!: pop transaction context
 			TxPoint.getInstance().setTxContext(null);
 		}
