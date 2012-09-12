@@ -139,16 +139,6 @@ public class SU
 		return r;
 	}
 
-	/**
-	 * Returns {@code true} if the string is {@code null},
-	 * empty, or contains only whitespaces.
-	 */
-	public static boolean  sXe(String s)
-	{
-		return (s == null) || (s.length() == 0) ||
-		  (s.trim().length() == 0);
-	}
-
 	public static String   sXs(String s)
 	{
 		return (s != null)?(s):("");
@@ -192,6 +182,58 @@ public class SU
 		while(sb.length() < len)
 			sb.append(' ');
 		return sb.toString();
+	}
+
+	public static int      digit(char c)
+	{
+		return "0123456789".indexOf(c);
+	}
+
+	public static int      digit(CharSequence s, int i)
+	{
+		if((s == null) || (i >= s.length())) return -1;
+		return digit(s.charAt(i));
+	}
+
+	public static char     digit(int i)
+	{
+		if((i < 0) | (i > 9)) return '\0';
+		return "0123456789".charAt(i);
+	}
+
+
+	/* public: comparisons */
+
+	/**
+	 * Returns {@code true} if the string is {@code null},
+	 * empty, or contains only whitespaces.
+	 */
+	public static boolean sXe(String s)
+	{
+		return (s == null) || (s.length() == 0) ||
+		  (s.trim().length() == 0);
+	}
+
+	/**
+	 * Compares the characters with ending position exclusive.
+	 */
+	public static boolean eq(CharSequence x, CharSequence y, int b, int e)
+	{
+		if((x == null) && (y == null)) return true;
+		if((x == null) || (y == null)) return false;
+
+		int xl = x.length(), yl = y.length();
+
+		for(int i = b;(i < e);i++)
+		{
+			//?: {both are longer then the check segment}
+			if((i >= xl) && (i >= yl))
+				return true;
+
+			if((i >= xl) || (i >= yl) || (x.charAt(i) != y.charAt(i)))
+				return false;
+		}
+		return true;
 	}
 
 
@@ -337,11 +379,8 @@ public class SU
 	 * ('.xx') and thousands separator ('ts') given that
 	 * may be {@code null}.
 	 */
-	public static String formatCurrency (
-	                       BigDecimal    n,
-	                       String        ts,
-	                       StringBuilder sb
-	                     )
+	public static String formatCurrency
+	  (BigDecimal n, String ts, StringBuilder sb)
 	{
 		boolean ng = (n.compareTo(BigDecimal.ZERO) < 0);
 		if(ng) n = n.negate();
@@ -525,7 +564,7 @@ public class SU
 		return l;
 	}
 
-	private static void  _csapnd_(Object cs, StringBuilder sb)
+	private static void _csapnd_(Object cs, StringBuilder sb)
 	{
 		if(cs instanceof CharSequence)
 			sb.append((CharSequence)cs);
