@@ -1,0 +1,49 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.cats'>
+
+  <class name = 'CatItemBase' abstract = 'true' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_cat_item'/>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_cat_item_domain_'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_cat_item_code_'>
+
+        <comment>Domain where the Catalogue (Item) registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code' lazy = 'false'>
+
+      <column name = 'ux_code' not-null = 'true' length = '256'
+        unique-key = 'ux_cat_item_code_'>
+
+        <comment>Unique (within the Domain) code of the Catalogue Item</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'cat_item_name' not-null = 'true' length = '1024'>
+        <comment>The name of the Catalogue Item</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
