@@ -3,6 +3,7 @@ package com.tverts.endure.cats;
 /* tverts.com: endure (core) */
 
 import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
 
 
@@ -25,4 +26,6 @@ public interface CatItem extends NumericIdentity, DomainEntity
 	public String  getName();
 
 	public void    setName(String name);
+
+	public void    setDomain(Domain domain);
 }

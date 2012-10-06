@@ -190,7 +190,7 @@ public class ReadCatItems<C extends CatItem>
 
 	protected String          nameAttr()
 	{
-		return "code";
+		return "name";
 	}
 
 	protected String          codeTag()
@@ -200,7 +200,7 @@ public class ReadCatItems<C extends CatItem>
 
 	protected String          nameTag()
 	{
-		return "code";
+		return "name";
 	}
 
 	protected CatItemState<C> createState()
