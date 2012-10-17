@@ -19,15 +19,13 @@
       |
       +================================================-->
 
-    <!--
     <property name = 'hibernate.transaction.factory_class'>
-      org.hibernate.transaction.JTATransactionFactory
+      org.hibernate.engine.transaction.internal.jta.JtaTransactionFactory
     </property>
 
-    <property name = 'hibernate.transaction.manager_lookup_class'>
-      org.hibernate.transaction.JBossTransactionManagerLookup
+    <property name = 'hibernate.transaction.jta.platform'>
+      org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform
     </property>
-    -->
 
 
     <!--=================================================
@@ -50,7 +48,7 @@
       =================================================-->
 
     <property name = 'hibernate.transaction.auto_close_session'>
-      true
+      false
     </property>
 
     <property name = 'hibernate.transaction.flush_before_completion'>

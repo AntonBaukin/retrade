@@ -14,19 +14,11 @@
 
 
     <!--=================================================
-     =  Connection URL and Credentials                  =
+     =  'Re Trade' Database Datasource                  =
      ==================================================-->
 
-    <property name = 'hibernate.connection.url'>
-      jdbc:postgresql://localhost/retrade
-    </property>
-
-    <property name = 'hibernate.connection.username'>
-      retrade
-    </property>
-
-    <property name = 'hibernate.connection.password'>
-      retrade
+    <property name = 'hibernate.connection.datasource'>
+      java:/databases/ReTrade
     </property>
 
 
@@ -35,7 +27,7 @@
      ==================================================-->
 
     <property name = 'hibernate.connection.provider_class'>
-      org.hibernate.connection.C3P0ConnectionProvider
+      org.hibernate.service.jdbc.connections.internal.DatasourceConnectionProviderImpl
     </property>
 
 
@@ -48,7 +40,7 @@
     </property>
 
     <property name = 'hibernate.dialect'>
-      org.hibernate.dialect.PostgreSQLDialect
+      org.hibernate.dialect.PostgreSQL82Dialect
     </property>
 
 
