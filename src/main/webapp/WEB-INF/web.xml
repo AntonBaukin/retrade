@@ -76,7 +76,7 @@
   </listener>
 
   <!-- Java Server Faces (RI) Initializer -->
-
+  <!--
   <listener>
     <description>
       Loads configuration for JSF RI (Reference Implementation).
@@ -87,6 +87,7 @@
       com.sun.faces.config.ConfigureListener
     </listener-class>
   </listener>
+  -->
 
   <!-- Java Server Faces (RI) Lifecycle Listener -->
 

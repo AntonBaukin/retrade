@@ -10,6 +10,7 @@
     <exclusions>
       <module name = 'org.jboss.logging'/>
       <module name = 'org.apache.log4j'/>
+      <module name = 'org.apache.commons.logging'/>
     </exclusions>
 
   </deployment>
