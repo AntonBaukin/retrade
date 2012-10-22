@@ -64,6 +64,53 @@ public class ServicesSystem implements Servicer
 		}
 	}
 
+	/**
+	 * Services the event. May be invoked directly by
+	 * the client components, but intended for system
+	 * usages. Service messages (events) executor
+	 * invokes this method.
+	 *
+	 * Consider sending the events {@link #send(Event)}
+	 * rather than process them directly!
+	 */
+	public void service(Event event)
+	{
+		if(event == null)
+			return;
+
+		try
+		{
+			lock().readLock().lock();
+
+
+			//?: {broadcast the event}
+			if(SU.sXe(event.getService()))
+				broadcast(event);
+			else
+			{
+				Service service = getServicesMap().
+				  get(event.getService());
+
+				if(service == null)
+					LU.E(getLog(), eventTypeLog(event),
+					  " refers unknown service '%s'!",
+					  event.getService());
+
+				//~: invoke the service
+				if(service != null)
+					invoke(service, event);
+			}
+		}
+		catch(Throwable e)
+		{
+			LU.E(getLog(), e);
+		}
+		finally
+		{
+			lock().readLock().unlock();
+		}
+	}
+
 
 	/* public: Servicer interface */
 
@@ -82,7 +129,10 @@ public class ServicesSystem implements Servicer
 
 	public void     send(Event event)
 	{
+		if(getMessager() == null) throw new IllegalStateException(
+		  "Z-Services System has no Service Messager configured!");
 
+		getMessager().sendEvent(event);
 	}
 
 	public String[] services()
@@ -101,6 +151,16 @@ public class ServicesSystem implements Servicer
 
 	/* public: ServicesSystem (bean) interface */
 
+	public ServiceMessager getMessager()
+	{
+		return messager;
+	}
+
+	public void setMessager(ServiceMessager messager)
+	{
+		this.messager = messager;
+	}
+
 	public ServiceReference getReference()
 	{
 		return reference;
@@ -109,6 +169,39 @@ public class ServicesSystem implements Servicer
 	public void setReference(ServiceReference reference)
 	{
 		this.reference = reference;
+	}
+
+
+	/* protected: servicing */
+
+	protected void broadcast(Event event)
+	{
+		for(String suid : services()) try
+		{
+			getServicesMap().get(suid).service(event);
+		}
+		catch(Throwable e)
+		{
+			logError(suid, e, event);
+		}
+	}
+
+	protected void invoke(Service service, Event event)
+	{
+		try
+		{
+			service.service(event);
+		}
+		catch(Throwable e)
+		{
+			logError(service.uid(), e, event);
+		}
+	}
+
+	protected void logError(String suid, Throwable e, Event event)
+	{
+		LU.E(getLog(), e, " error in service '", suid,
+		  "' while processing ", eventTypeLog(event), '!');
 	}
 
 
@@ -249,6 +342,15 @@ public class ServicesSystem implements Servicer
 		return lock;
 	}
 
+	protected String               eventTypeLog(Event event)
+	{
+		return (event == null)?("event UNDEFINED"):
+		  (event.getEventType() == null)
+		    ?String.format("event class %s", event.getClass().getName())
+		    :String.format("event class %s type %s",
+		      event.getClass().getName(), event.getEventType().getName());
+	}
+
 
 	/* protected: logging */
 
@@ -266,5 +368,6 @@ public class ServicesSystem implements Servicer
 	private Map<String, Service> services;
 	private String[]             ordered;
 
+	private ServiceMessager      messager;
 	private ServiceReference     reference;
 }

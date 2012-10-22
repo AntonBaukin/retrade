@@ -10,6 +10,9 @@ package com.tverts.system.zservices;
  * with each other sending events via
  * {@link Servicer} coordinator.
  *
+ * Service must be synchronized.
+ * Better, fully reentable.
+ *
  *
  * @author anton.baukin@gmail.com
  */
