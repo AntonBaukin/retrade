@@ -19,13 +19,66 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Primary Self Shunt Service                                ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <!--
         <ref bean = 'selfShuntService'/>
+        -->
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Genesis Service                                           ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <!--
         <ref bean = 'genesisService'/>
+        -->
       </list>
+    </property>
+  </bean>
+
+
+  <bean name  = 'zServicesPoint' factory-method = 'getInstance'
+        class = 'com.tverts.system.zservices.ServicesPoint'>
+
+    <property name = 'system' ref = 'servicesSystem'/>
+  </bean>
+
+  <bean name  = 'servicesSystem'
+        class = 'com.tverts.system.zservices.ServicesSystem'>
+
+    <property name = 'reference'>
+      <bean class  = 'com.tverts.system.zservices.ServicesList'>
+        <property name = 'references'>
+          <list>
+
+            <bean class = 'com.tverts.system.zservices.TestService'>
+              <property name = 'UID' value = 'ztest-a'/>
+            </bean>
+
+            <bean class = 'com.tverts.system.zservices.TestService'>
+              <property name = 'UID' value = 'ztest-f'/>
+              <property name = 'depends' value = 'ztest-b, ztest-e'/>
+            </bean>
+
+            <bean class = 'com.tverts.system.zservices.TestService'>
+              <property name = 'UID' value = 'ztest-e'/>
+              <property name = 'depends' value = 'ztest-a, ztest-d'/>
+            </bean>
+
+            <bean class = 'com.tverts.system.zservices.TestService'>
+              <property name = 'UID' value = 'ztest-d'/>
+              <property name = 'depends' value = 'ztest-a, ztest-c'/>
+            </bean>
+
+            <bean class = 'com.tverts.system.zservices.TestService'>
+              <property name = 'UID' value = 'ztest-c'/>
+              <property name = 'depends' value = 'ztest-a, ztest-b'/>
+            </bean>
+
+            <bean class = 'com.tverts.system.zservices.TestService'>
+              <property name = 'UID' value = 'ztest-b'/>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 

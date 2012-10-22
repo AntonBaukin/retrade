@@ -17,24 +17,33 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Activates Database Keys Generators.                       ·
+         · Activates Database Keys Generators                        ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.endure.keys.KeysPointActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Automatically creates Unity Types.                        ·
+         · Automatically creates Unity Types                         ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'unityTypesActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Initializes system services.                              ·
+         · Initializes system services                               ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <!--
         <bean class = 'com.tverts.system.services.InitServicesListener'/>
+        -->
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Starts (active) system services.                          ·
+         · Starts (active) system services                           ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <!--
         <bean class = 'com.tverts.system.services.StartServicesListener'/>
+        -->
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Initializes system z-services                               ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.system.zservices.InitServicesListener'/>
       </list>
     </property>
   </bean>
@@ -51,7 +60,7 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Binds the request to Servlet-related components.          ·
+         · Binds the request to Servlet-related components           ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.servlet.listeners.WebApplicationRequestListener'/>
 
