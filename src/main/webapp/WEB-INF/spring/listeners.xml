@@ -41,9 +41,15 @@
         -->
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Initializes system z-services                               ·
+         · Initializes system z-services                             ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.system.zservices.InitServicesListener'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Last listener! System is ready                            ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.system.SystemReadyListener'/>
+
       </list>
     </property>
   </bean>

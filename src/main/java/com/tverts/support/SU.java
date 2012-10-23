@@ -23,8 +23,8 @@ public class SU
 	/* public: simplifications */
 
 	/**
-	 * Breaks string into words. The words are separated
-	 * with ' ', ',', ';' characters.
+	 * Breaks string into words. The words
+	 * are separated by ',' ';' characters.
 	 */
 	public static String[] s2a(String s)
 	{
@@ -33,7 +33,7 @@ public class SU
 
 		String            sx;
 		ArrayList<String> sa = new ArrayList<String>(
-		  Arrays.asList(s.split("(\\s+|[,;])")
+		  Arrays.asList(s.split("[,;]")
 		));
 
 		for(ListIterator<String> i = sa.listIterator();(i.hasNext());)
@@ -49,8 +49,8 @@ public class SU
 	}
 
 	/**
-	 * Breaks string into words.
-	 * The words are separated blank characters.
+	 * Breaks string into words. The words
+	 * are separated by blank characters.
 	 */
 	public static String[] s2aws(String s)
 	{

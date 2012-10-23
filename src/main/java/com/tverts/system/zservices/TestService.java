@@ -1,5 +1,10 @@
 package com.tverts.system.zservices;
 
+/* com.tverts: z-services */
+
+import com.tverts.system.zservices.events.EventBase;
+import com.tverts.system.zservices.events.SystemReady;
+
 /* com.tverts: support (logging) */
 
 import com.tverts.support.LU;
@@ -56,19 +61,12 @@ public class TestService extends ServiceBase
 
 	public void service(Event event)
 	{
-		if(!(event instanceof TestEvent))
-		{
-			LU.I(getLog(), "Test Service ", uid(),
-			     " got unknown message of type: ", eventType(event)
-			);
-
-			return;
-		}
-
-		LU.I(getLog(), "Test Service ", uid(), " got ",
-		  isBroadcast(event)?("broadcast"):(""), " message: ",
-		  ((TestEvent)event).getMessage()
-		);
+		if     (event instanceof TestEvent)
+			serviceTest((TestEvent)event);
+		else if(event instanceof SystemReady)
+			serviceReady((SystemReady)event);
+		else
+			serviceOther(event);
 	}
 
 
@@ -84,6 +82,75 @@ public class TestService extends ServiceBase
 		this.depends = SU.s2a(depends);
 	}
 
+	public void     setMessages(String messages)
+	{
+		this.messages = SU.s2a(messages);
+	}
+
+
+	/* protected: servicing */
+
+	protected void serviceTest(TestEvent event)
+	{
+		LU.I(getLog(), "Test Service ", uid(), " got ",
+		  isBroadcast(event)?("broadcast"):(""), " message: ",
+		  event.getMessage()
+		);
+
+		sendNextMsg();
+	}
+
+	protected void serviceReady(SystemReady event)
+	{
+		LU.I(getLog(), "Test Service ", uid(), " got ready event...");
+
+		sendNextMsg();
+	}
+
+	protected void serviceOther(Event event)
+	{
+		LU.I(getLog(), "Test Service ", uid(),
+		  " got unknown message of type: ", eventType(event)
+		);
+	}
+
+	protected void sendNextMsg()
+	{
+		if(msgsend >= messages.length)
+			return;
+
+		sendMsg(messages[msgsend++]);
+	}
+
+	protected void sendMsg(String msg)
+	{
+		if(SU.sXe(msg)) return;
+
+		String s = "";
+		String m = msg;
+		int    a = msg.indexOf('@');
+
+		if(a != -1)
+		{
+			m = msg.substring(0, a).trim();
+			s = msg.substring(a + 1).trim();
+		}
+
+		if(SU.sXe(m)) return;
+		if(SU.sXe(s)) s = null;
+
+
+		TestEvent e = new TestEvent();
+
+		e.setService(s);
+		e.setMessage(String.format(
+		  "%s > %s: %s", uid(), (s == null)?("*"):(s), m
+		));
+
+		servicer().send(e);
+	}
+
+
 	/* protected: logging */
 
 	protected String getLog()
@@ -92,7 +159,9 @@ public class TestService extends ServiceBase
 	}
 
 
-	/* private: dependencies */
+	/* dependencies & messages */
 
 	private String[] depends;
+	private String[] messages;
+	private int      msgsend;
 }

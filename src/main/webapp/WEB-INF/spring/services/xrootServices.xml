@@ -1,0 +1,20 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Services List of XRoot Module                  =
+    +================================================-->
+
+  <bean name  = 'xrootServicesList'
+        class = 'com.tverts.system.zservices.ServicesList'>
+    <property name = 'references'>
+      <list>
+
+
+      </list>
+    </property>
+  </bean>
+</beans>

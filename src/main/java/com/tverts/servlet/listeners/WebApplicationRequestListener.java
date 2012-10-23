@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.tverts.servlet.RequestPoint;
 
+/* tverts.com: system */
+
+import com.tverts.system.JTAPoint;
+
+
 /**
  * Handles each external access to the application.
  * Binds the request with Servlet related components.
@@ -22,6 +27,9 @@ public class   WebApplicationRequestListener
 
 	public void requestInitialized(ServletRequestEvent event)
 	{
+		//~: clean JTA bindings
+		JTAPoint.jta().clean();
+
 		if(event.getServletRequest() instanceof HttpServletRequest)
 		{
 			RequestPoint.setRootRequest(
@@ -35,5 +43,8 @@ public class   WebApplicationRequestListener
 	public void requestDestroyed(ServletRequestEvent event)
 	{
 		RequestPoint.setRootRequest(null);
+
+		//~: clean JTA bindings
+		JTAPoint.jta().clean();
 	}
 }

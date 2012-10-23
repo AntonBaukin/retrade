@@ -1,4 +1,9 @@
-package com.tverts.system.zservices;
+package com.tverts.system.zservices.events;
+
+/* com.tverts: services */
+
+import com.tverts.system.zservices.Event;
+
 
 /**
  * Implementation base of an {@link Event}.

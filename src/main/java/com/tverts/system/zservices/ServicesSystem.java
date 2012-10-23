@@ -48,15 +48,17 @@ public class ServicesSystem implements Servicer
 			//1: order the services
 			this.ordered  = orderServices();
 
-			LU.I(getLog(), " Z-Services order: ",
+			LU.I(getLog(), "  Z-Services order: ",
 			  SU.scat(", ", (Object[])this.ordered));
 
 			//2: init the services
 			for(String suid : this.ordered)
 			{
 				this.services.get(suid).init(this);
-				LU.I(getLog(), " initialized service: ", suid);
+				LU.I(getLog(), "  initialized service: ", suid);
 			}
+
+			LU.I(getLog(), "all Z-Services initialized!");
 		}
 		finally
 		{
@@ -129,10 +131,10 @@ public class ServicesSystem implements Servicer
 
 	public void     send(Event event)
 	{
-		if(getMessager() == null) throw new IllegalStateException(
+		if(getMessenger() == null) throw new IllegalStateException(
 		  "Z-Services System has no Service Messager configured!");
 
-		getMessager().sendEvent(event);
+		getMessenger().sendEvent(event);
 	}
 
 	public String[] services()
@@ -151,14 +153,14 @@ public class ServicesSystem implements Servicer
 
 	/* public: ServicesSystem (bean) interface */
 
-	public ServiceMessager getMessager()
+	public ServiceMessenger getMessenger()
 	{
-		return messager;
+		return messenger;
 	}
 
-	public void setMessager(ServiceMessager messager)
+	public void setMessenger(ServiceMessenger messenger)
 	{
-		this.messager = messager;
+		this.messenger = messenger;
 	}
 
 	public ServiceReference getReference()
@@ -368,6 +370,6 @@ public class ServicesSystem implements Servicer
 	private Map<String, Service> services;
 	private String[]             ordered;
 
-	private ServiceMessager      messager;
+	private ServiceMessenger     messenger;
 	private ServiceReference     reference;
 }

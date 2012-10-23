@@ -9,7 +9,7 @@ package com.tverts.system.zservices;
  *
  * @author anton.baukin@gmail.com
  */
-public interface ServiceMessager
+public interface ServiceMessenger
 {
 	/* public: ServiceMessager interface */
 
