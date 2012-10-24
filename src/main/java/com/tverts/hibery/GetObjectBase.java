@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /* Spring Framework */
 
-import com.tverts.endure.NumericIdentity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /* Hibernate Persistence Layer */
@@ -18,6 +17,15 @@ import org.hibernate.SessionFactory;
 /* com.tverts: hibery */
 
 import com.tverts.hibery.qb.QueryBuilder;
+
+/* com.tverts: system (transactions) */
+
+import com.tverts.system.tx.TxContext;
+import com.tverts.system.tx.TxPoint;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.NumericIdentity;
 
 
 /**
@@ -53,16 +61,16 @@ public abstract class GetObjectBase
 
 	protected Session session()
 	{
-		Session session = (sessionFactory != null)
-		  ?(sessionFactory.getCurrentSession())
-		  :(HiberPoint.session());
+		Session session = null;
 
-		//?: {has no session} illegal state
-		if(session == null) throw new IllegalStateException(
-		  "No Hibernate Session instance is bount to the " +
-		  "Get-??? DAO strategy!");
+		TxContext tx = TxPoint.getInstance().getTxContext();
+		if((tx != null) && (tx.getSessionFactory() != null))
+			session = tx.getSessionFactory().getCurrentSession();
 
-		return session;
+		if((session == null) && (sessionFactory != null))
+			session = sessionFactory.getCurrentSession();
+
+		return (session != null)?(session):HiberPoint.session();
 	}
 
 	protected Query   Q(String hql, Object... replaces)

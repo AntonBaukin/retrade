@@ -85,7 +85,7 @@ public class TxPoint
 	 * Creates default transaction context and pushes it to the stack.
 	 *
 	 * Remember that tx context is not an actual transactional resources,
-	 * but a collection of inderect references to actual resources controlled
+	 * but a collection of indirect references to actual resources controlled
 	 * by Spring kernel and the application server. So, the default context
 	 * is just a number of default references.
 	 */

@@ -47,6 +47,7 @@
 
   <import resource = 'system-config.xml'/>
   <import resource = 'spring/hibernate.xml'/>
+  <import resource = 'spring/tx.xml'/>
   <import resource = 'spring/services.xml'/>
   <import resource = 'spring/listeners.xml'/>
   <import resource = 'spring/filters.xml'/>
