@@ -5,17 +5,9 @@ package com.tverts.system.zservices.queues;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
-/* Enterprise Java Beans */
+/* com.tverts: spring */
 
-import javax.ejb.TransactionAttribute;
-
-/* com.tverts: services */
-
-import com.tverts.system.zservices.ServicesPoint;
-
-/* com.tverts: support */
-
-import com.tverts.support.LU;
+import static com.tverts.spring.SpringPoint.bean;
 
 
 /**
@@ -31,17 +23,9 @@ public class EventsListenerMDBean implements MessageListener
 {
 	/* public: MessageListener interface */
 
-	@TransactionAttribute
 	public void onMessage(Message msg)
 	{
-		LU.I(getLog(), "got z-services event!");
-	}
-
-
-	/* protected: logging */
-
-	protected String getLog()
-	{
-		return ServicesPoint.LOG_SERVICE_MAIN;
+		((EventsListenerBean)bean(EventsListenerBean.BEAN_NAME)).
+		  takeEventMessage(msg);
 	}
 }

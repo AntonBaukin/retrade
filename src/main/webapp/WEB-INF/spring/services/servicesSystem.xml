@@ -25,4 +25,13 @@
 
     <property name = 'reference' ref = 'servicesList'/>
   </bean>
+
+
+  <!--=================================================
+    =  Listener of Z-Services Bus                     =
+    +================================================-->
+
+  <bean name  = 'zServicesBusListener'
+        class = 'com.tverts.system.zservices.queues.PlainEventsListenerBean'/>
+
 </beans>

@@ -155,7 +155,7 @@ public class JMSMessenger implements ServiceMessenger
 	{
 		//~: create the message by the protocol
 		Message msg = JMSProtocol.getInstance().
-		  encapsulate(session, event);
+		  message(session, event);
 
 		//!: send the message
 		session.createProducer(locateQueue()).

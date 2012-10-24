@@ -93,7 +93,7 @@ public class TestService extends ServiceBase
 	protected void serviceTest(TestEvent event)
 	{
 		LU.I(getLog(), "Test Service ", uid(), " got ",
-		  isBroadcast(event)?("broadcast"):(""), " message: ",
+		  isBroadcast(event)?("broadcast "):(""), "message: ",
 		  event.getMessage()
 		);
 
@@ -116,7 +116,7 @@ public class TestService extends ServiceBase
 
 	protected void sendNextMsg()
 	{
-		if(msgsend >= messages.length)
+		if((messages == null) || (msgsend >= messages.length))
 			return;
 
 		sendMsg(messages[msgsend++]);

@@ -56,7 +56,7 @@ public class JMSProtocol
 
 	/* public: protocol implementation */
 
-	public Message encapsulate(Session session, Event event)
+	public Message message(Session session, Event event)
 	  throws Exception
 	{
 		ObjectMessage msg = session.createObjectMessage(event);
@@ -88,5 +88,32 @@ public class JMSProtocol
 		}
 
 		return msg;
+	}
+
+	public Event   event(Message msg)
+	  throws Exception
+	{
+		final String ERR = "Unknown Z-Service Event encapsulation format!";
+
+		if(!(msg instanceof ObjectMessage))
+			throw new IllegalStateException(ERR);
+
+		Object res = ((ObjectMessage)msg).getObject();
+
+		if(!(res instanceof Event))
+			throw new IllegalStateException(ERR);
+		return (Event)res;
+	}
+
+	public String  readService(Message msg)
+	  throws Exception
+	{
+		return msg.getStringProperty(SERVICE);
+	}
+
+	public String  readEventType(Message msg)
+	  throws Exception
+	{
+		return msg.getStringProperty(EVENTYPE);
 	}
 }
