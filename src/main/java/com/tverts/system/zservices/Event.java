@@ -21,9 +21,7 @@ public interface Event extends java.io.Serializable
 	 * Returns the Service UID this event is for.
 	 * Broadcast events has this field undefined.
 	 */
-	public String  getService();
-
-	public void    setService(String suid);
+	public String getService();
 
 	/**
 	 * Event instance may be a container (wrapper)
@@ -34,7 +32,5 @@ public interface Event extends java.io.Serializable
 	 * If event type is not defined, the class of
 	 * the event instance is the type.
 	 */
-	public Class   getEventType();
-
-	public void    setEventType(Class etype);
+	public Class  getEventType();
 }

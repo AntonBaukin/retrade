@@ -198,7 +198,13 @@ public class      GenesisSphere
 
 			//!: invoke generation
 			logGenGenerateBefore(ctx, gen);
+
+			//~: generate
 			gen.generate(ctx);
+
+			//~: flush the session
+			ctx.session().flush();
+
 			logGenGenerateSuccess(ctx, gen);
 		}
 		catch(GenesisError e)

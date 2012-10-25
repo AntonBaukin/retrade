@@ -31,16 +31,7 @@
   <bean name  = 'genesisService'
         class = 'com.tverts.genesis.GenesisService'>
 
-    <property name  = 'active' value = 'true'/>
-
-    <property name  = 'serviceName'
-              value = 'genesisService'/>
-
-    <property name  = 'serviceTitleEn'
-              value = 'Primary Genesis Service'/>
-
-    <property name  = 'serviceTitleLo'
-              value = 'Основной Сервис генезиса'/>
+    <property name  = 'UID' value = 'GenesisService'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · These default Genesis Spheres would be invoked            ·
@@ -49,29 +40,5 @@
     <property name  = 'genesisSpheres'
               ref   = 'genesisSpheres'/>
 
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Synchronization point: notify Self Shunt Service.         ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name  = 'serviceSynch'
-              ref   = 'genesisServiceSynch'/>
-
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Pauses to cooldown the service.                           ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name  = 'openPause'  value = '15000'/>
-    <property name  = 'cyclePause' value = '250'/>
   </bean>
-
-
-  <!--=================================================
-    =  (Primary) Genesis Service Synch                =
-    =================================================-->
-
-  <bean name  = 'genesisServiceSynch'
-        class = 'com.tverts.system.mp.ServiceWaitSynch'>
-
-    <property name = 'synchBus'
-              ref  = 'servicesSynchPoint'/>
-  </bean>
-
 </beans>

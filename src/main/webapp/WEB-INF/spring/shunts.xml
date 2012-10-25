@@ -122,8 +122,10 @@
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Synchronization point: wait Genesis Service completes.    ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <!--
     <property name  = 'serviceSynch'
               ref   = 'selfShuntServiceSynch'/>
+              -->
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Pauses to cooldown the service.                           ·
@@ -132,23 +134,6 @@
     <property name  = 'cyclePause' value = '500'/>
   </bean>
 
-
-  <!--=================================================
-    =  (Primary) Self Shunt Service Synch             =
-    =================================================-->
-
-  <bean name  = 'selfShuntServiceSynch'
-        class = 'com.tverts.system.mp.ServiceWaitSynch'>
-
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Means waiting for Genesis Service.                        ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'services'
-              ref  = 'genesisService'/>
-
-    <property name = 'synchBus'
-              ref  = 'servicesSynchPoint'/>
-  </bean>
 
 
   <!--=================================================

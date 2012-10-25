@@ -1,45 +1,36 @@
 package com.tverts.genesis;
 
-/* standard Java classes */
-
 /* com.tverts: system services */
 
-import com.tverts.system.services.QueueExecutorServiceBase;
+import com.tverts.support.SU;
+import com.tverts.system.zservices.Event;
+import com.tverts.system.zservices.ServiceBase;
+import com.tverts.system.zservices.events.SystemReady;
+import com.tverts.system.zservices.events.ServiceEventBase;
 
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.LO;
 import com.tverts.support.LU;
 
+
 /**
- * Genesis Service allows to run {@link GenesisSphere}
- * instances as a {@link Runnable} tasks placed in the
- * execution queue {@link QueueExecutorServiceBase}.
+ * When Genesis Service receives {@link SystemReady}
+ * event it sends GenesisEvent to itself. Upon that
+ * event it collects all the {@link GenesisSphere}s
+ * referenced and sequentially runs them.
+ *
+ * When all the Genesis Spheres are done, the service
+ * broadcasts {@link GenesisDone} event.
+ *
  *
  * @author anton.baukin@gmail.com
  */
-public class   GenesisService
-       extends QueueExecutorServiceBase
+public class GenesisService extends ServiceBase
 {
-	/* public: GenesisService interface */
+	/* public: GenesisService (bean) interface */
 
-	public void    enqueueSphere(GenesisSphere sphere)
-	{
-		enqueueTask(createGenesisTask(sphere));
-	}
-
-
-	/* public: GenesisService bean interface */
-
-	/**
-	 * {@link GenesisSpheres} installed into the service creates
-	 * the initial {@link GenesisSphere} instances to add to the
-	 * service's queue before it starts. These instances would
-	 * be run further.
-	 */
-	public GenesisSphereReference
-	               getGenesisSpheres()
+	public GenesisSphereReference getGenesisSpheres()
 	{
 		return genesisSpheres;
 	}
@@ -50,61 +41,88 @@ public class   GenesisService
 	}
 
 
-	/* protected: QueueExecutorServiceBase interface */
+	/* public: Service interface */
 
-	protected void appendInitialTasks()
+	public void service(Event event)
+	{
+		if(event instanceof SystemReady)
+			scheduler();
+
+		if(event instanceof StartGenesis)
+			generate();
+	}
+
+
+	/* protected: service work steps */
+
+	public static class StartGenesis extends ServiceEventBase
+	{
+		public static final long serialVersionUID = 0L;
+	}
+
+	protected void scheduler()
+	{
+		self(new StartGenesis());
+
+		LU.I(getLog(), uid(), " scheduled genesis...");
+	}
+
+	protected void generate()
 	{
 		GenesisSphereReference spheres = getGenesisSpheres();
 		if(spheres == null) return;
 
-		for(GenesisSphere sphere : spheres.dereferObjects())
-			enqueueSphere(sphere);
-	}
+		Throwable error = null;
 
-
-	/* protected: genesis sphere tasks execution */
-
-	protected Runnable createGenesisTask(GenesisSphere sphere)
-	{
-		return new GenesisTaskWrapper(sphere);
-	}
-
-	protected void     handleGenesisError(Throwable e)
-	{
-		logSphereError(EX.xrt(e));
-	}
-
-	/* protected: Genesis Task Wrapper */
-
-	protected class GenesisTaskWrapper implements Runnable
-	{
-		/* public: constructor */
-
-		public GenesisTaskWrapper(GenesisSphere sphereTask)
+		LU.I(getLog(), uid(), " starting genesis...");
+		for(GenesisSphere sphere : spheres.dereferObjects()) try
 		{
-			if(sphereTask == null)
-				throw new IllegalArgumentException();
-
-			this.sphereTask = sphereTask;
+			generate(sphere);
+		}
+		catch(BreakGenesis e)
+		{
+			logGenesisBreak();
+			error = e.getCause();
+			break;
 		}
 
-		/* public: Runnable interface */
+		if(error == null)
+			success();
+		else
+			throw new RuntimeException(
+			  "Genesis failed! Service aborts generation!", error);
+	}
 
-		public void run()
+	protected void generate(GenesisSphere sphere)
+	{
+		try
 		{
-			try
-			{
-				this.sphereTask.run();
-			}
-			catch(Throwable e)
-			{
-				handleGenesisError(e);
-			}
+			sphere.run();
 		}
+		catch(Throwable e)
+		{
+			handleGenesisError(sphere, e);
+		}
+	}
 
-		/* protected: the task */
+	protected void success()
+	{
+		LU.I(getLog(), uid(), " genesis successfully completed!");
+		broadcast(new GenesisDone());
+	}
 
-		protected final GenesisSphere sphereTask;
+	public static class BreakGenesis extends RuntimeException
+	{
+		public BreakGenesis(Throwable cause)
+		{
+			super(cause);
+		}
+	}
+
+	protected void handleGenesisError(GenesisSphere sphere, Throwable e)
+	{
+		logSphereError(sphere, EX.xrt(e));
+		throw new BreakGenesis(e);
 	}
 
 
@@ -115,23 +133,18 @@ public class   GenesisService
 		return GenesisPoint.LOG_SERVICE;
 	}
 
-	public String    logsig(String lang)
+	protected void   logSphereError(GenesisSphere sphere, Throwable e)
 	{
-		String one = LO.LANG_RU.equals(lang)?
-		  ("Сервис Генеизса"):("Genesis Service");
-
-		String two = getServiceName();
-		if(two == null) two = "???";
-
-		return String.format("%s '%s'", one, two);
+		LU.E(getLog(), e, uid(), ": error ocurred in Genesis Sphere Unit [",
+		  SU.sXe(sphere.getName())?("not named"):(sphere.getName()), "]!");
 	}
 
-	protected void   logSphereError(Throwable e)
+	protected void   logGenesisBreak()
 	{
-		LU.E(getLog(), e, logsig(),
-		  " ERROR ocurred in Genesis Sphere Unit! ",
-		  "The service continues it's work...");
+		LU.E(getLog(), "genesis spheres execution ",
+		 "was breaked due to the previous errors!");
 	}
+
 
 	/* private: default genesis references */
 

@@ -23,6 +23,8 @@
   <bean name  = 'domainCoreSphere'
         class = 'com.tverts.genesis.GenesisSphere'>
 
+    <property name = 'name' value = 'Domain Sphere'/>
+
     <!-- the list of genesis units in this sphere -->
     <constructor-arg>
       <bean class = 'com.tverts.genesis.GenesisList'>

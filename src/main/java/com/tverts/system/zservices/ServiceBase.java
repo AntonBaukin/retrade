@@ -5,6 +5,11 @@ package com.tverts.system.zservices;
 import java.util.Collections;
 import java.util.List;
 
+/* com.tverts: system services (events) */
+
+import com.tverts.system.zservices.events.EventBase;
+import com.tverts.system.zservices.events.ServiceEventBase;
+
 /* com.tverts: support */
 
 import com.tverts.support.SU;
@@ -73,13 +78,46 @@ public abstract class ServiceBase
 		return this.servicer;
 	}
 
-	protected Class    eventType(Event event)
+	protected void     send(Event event)
+	{
+		if(event instanceof ServiceEventBase)
+			((ServiceEventBase)event).setSourceService(uid());
+
+		servicer().send(event);
+	}
+
+	protected void     send(String suid, EventBase event)
+	{
+		if((suid != null) && SU.sXe(event.getService()))
+				((EventBase)event).setService(suid);
+
+		send(event);
+	}
+
+	/**
+	 * Sends event to this service (self-call).
+	 */
+	protected void     self(EventBase event)
+	{
+		send(uid(), event);
+	}
+
+	protected void     broadcast(Event event)
+	{
+		if(!SU.sXe(event.getService()))
+			if(event instanceof EventBase)
+				((EventBase)event).setService(null);
+
+		send(event);
+	}
+
+	protected Class    type(Event event)
 	{
 		return (event.getEventType() != null)
 		  ?(event.getEventType()):(event.getClass());
 	}
 
-	protected boolean  isBroadcast(Event event)
+	protected boolean  isBroadcasted(Event event)
 	{
 		return SU.sXe(event.getService());
 	}

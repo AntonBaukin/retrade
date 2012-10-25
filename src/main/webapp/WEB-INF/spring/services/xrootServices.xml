@@ -13,6 +13,10 @@
     <property name = 'references'>
       <list>
 
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Genesis Service                                           ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'genesisService'/>
 
       </list>
     </property>

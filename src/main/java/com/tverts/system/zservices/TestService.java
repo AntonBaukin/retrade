@@ -1,9 +1,17 @@
 package com.tverts.system.zservices;
 
+/* Spring Framework */
+
+import org.springframework.transaction.annotation.Transactional;
+
 /* com.tverts: z-services */
 
 import com.tverts.system.zservices.events.EventBase;
 import com.tverts.system.zservices.events.SystemReady;
+
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: support (logging) */
 
@@ -93,7 +101,7 @@ public class TestService extends ServiceBase
 	protected void serviceTest(TestEvent event)
 	{
 		LU.I(getLog(), "Test Service ", uid(), " got ",
-		  isBroadcast(event)?("broadcast "):(""), "message: ",
+		  isBroadcasted(event)?("broadcast "):(""), "message: ",
 		  event.getMessage()
 		);
 
@@ -110,7 +118,7 @@ public class TestService extends ServiceBase
 	protected void serviceOther(Event event)
 	{
 		LU.I(getLog(), "Test Service ", uid(),
-		  " got unknown message of type: ", eventType(event)
+		  " got unknown message of type: ", type(event)
 		);
 	}
 
@@ -122,9 +130,15 @@ public class TestService extends ServiceBase
 		sendMsg(messages[msgsend++]);
 	}
 
+	@Transactional
 	protected void sendMsg(String msg)
 	{
 		if(SU.sXe(msg)) return;
+
+		//~: cause the transaction to begin
+		HiberPoint.session().createQuery(
+		  "select count(*) from UnityType"
+		).uniqueResult();
 
 		String s = "";
 		String m = msg;

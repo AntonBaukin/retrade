@@ -1,5 +1,10 @@
 package com.tverts.system.zservices;
 
+/* com.tverts: system services (events) */
+
+import com.tverts.system.zservices.events.EventBase;
+
+
 /**
  * Singleton point to access the system services
  * configured as Spring Beans and registered and
@@ -46,7 +51,8 @@ public class ServicesPoint
 
 	public static ServicesPoint  send(String service, Event event)
 	{
-		event.setService(service);
+		if(event instanceof EventBase)
+			((EventBase)event).setService(service);
 		system().send(event);
 
 		return getInstance();
@@ -54,7 +60,8 @@ public class ServicesPoint
 
 	public static ServicesPoint  broadcast(Event event)
 	{
-		event.setService(null);
+		if(event instanceof EventBase)
+			((EventBase)event).setService(null);
 		system().send(event);
 
 		return getInstance();
