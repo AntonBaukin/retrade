@@ -259,7 +259,7 @@ public class      GenesisSphere
 
 		LU.T(log(ctx), logsig(), " closed sphere with success!");
 	}
-
+	        c
 	protected void   logGenGenerateBefore(GenCtx ctx, Genesis g)
 	{
 		if(!LU.isT(log(ctx))) return;
