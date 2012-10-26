@@ -65,36 +65,26 @@ public class SelfShuntPoint
 	{
 		SelfShuntService service = getService();
 
-		if(service == null)
-			throw new IllegalStateException(
-			  "Self Shunt Service is not installed!");
-
-		if(!service.getServiceStatus().isActive())
-			throw new IllegalStateException(String.format(
-			  "Self Shunt Service '%s' is not active!",
-			  service.getServiceInfo().getServiceSignature()));
+		if(service == null)throw new IllegalStateException(
+		  "Self-Shunt Service is not installed!");
 
 		return service;
 	}
 
-	public void enqueueSelfShuntWeb (
-	              SeShRequestInitial request
-	            )
+	public void executeSelfShuntWeb(SeShRequestInitial request)
 	{
-		service().enqueueProtocol(
+		service().executeProtocol(
 		  new SeShProtocolWebMulti(request));
 	}
 
-	public void enqueueSelfShuntWeb (
-	              SeShRequestInitial request,
-	              SeShProtocolFinish finish
-	            )
+	public void executeSelfShuntWeb
+	  (SeShRequestInitial request, SeShProtocolFinish finish)
 	{
 		SeShProtocolWebMulti protocol =
 		  new SeShProtocolWebMulti(request);
 
 		protocol.setProtocolFinish(finish);
-		service().enqueueProtocol(protocol);
+		service().executeProtocol(protocol);
 	}
 
 

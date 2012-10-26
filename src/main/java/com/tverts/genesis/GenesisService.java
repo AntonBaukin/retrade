@@ -2,7 +2,6 @@ package com.tverts.genesis;
 
 /* com.tverts: system services */
 
-import com.tverts.support.SU;
 import com.tverts.system.zservices.Event;
 import com.tverts.system.zservices.ServiceBase;
 import com.tverts.system.zservices.events.SystemReady;
@@ -12,6 +11,7 @@ import com.tverts.system.zservices.events.ServiceEventBase;
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
+import com.tverts.support.SU;
 
 
 /**
@@ -64,7 +64,7 @@ public class GenesisService extends ServiceBase
 	{
 		self(new StartGenesis());
 
-		LU.I(getLog(), uid(), " scheduled genesis...");
+		LU.I(getLog(), logsig(), " scheduled genesis...");
 	}
 
 	protected void generate()
@@ -74,7 +74,7 @@ public class GenesisService extends ServiceBase
 
 		Throwable error = null;
 
-		LU.I(getLog(), uid(), " starting genesis...");
+		LU.I(getLog(), logsig(), " starting genesis...");
 		for(GenesisSphere sphere : spheres.dereferObjects()) try
 		{
 			generate(sphere);
@@ -107,7 +107,7 @@ public class GenesisService extends ServiceBase
 
 	protected void success()
 	{
-		LU.I(getLog(), uid(), " genesis successfully completed!");
+		LU.I(getLog(), logsig(), " genesis successfully completed!");
 		broadcast(new GenesisDone());
 	}
 
@@ -135,13 +135,13 @@ public class GenesisService extends ServiceBase
 
 	protected void   logSphereError(GenesisSphere sphere, Throwable e)
 	{
-		LU.E(getLog(), e, uid(), ": error ocurred in Genesis Sphere Unit [",
+		LU.E(getLog(), e, logsig(), ": error ocurred in Genesis Sphere Unit [",
 		  SU.sXe(sphere.getName())?("not named"):(sphere.getName()), "]!");
 	}
 
 	protected void   logGenesisBreak()
 	{
-		LU.E(getLog(), "genesis spheres execution ",
+		LU.E(getLog(), logsig(), ": genesis spheres execution ",
 		 "was breaked due to the previous errors!");
 	}
 

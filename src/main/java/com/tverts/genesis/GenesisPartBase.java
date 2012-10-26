@@ -84,7 +84,7 @@ public abstract class GenesisPartBase
 		synchronized(finish)
 		{
 			SelfShuntPoint.getInstance().
-			  enqueueSelfShuntWeb(request, finish);
+			  executeSelfShuntWeb(request, finish);
 
 			//!: wait for the shunt to finish
 			finish.wait();

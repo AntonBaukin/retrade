@@ -18,6 +18,12 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'genesisService'/>
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Self-Shunt Service                                        ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'selfShuntService'/>
+
       </list>
     </property>
   </bean>

@@ -51,16 +51,10 @@
   <bean name  = 'selfShuntService'
         class = 'com.tverts.shunts.service.SelfShuntService'>
 
-    <property name  = 'active' value = 'true'/>
+    <property name  = 'UID' value = 'Self-Shunt Service'/>
 
-    <property name  = 'serviceName'
-              value = 'selfShuntService'/>
-
-    <property name  = 'serviceTitleEn'
-              value = 'Primary Self Shunting Service'/>
-
-    <property name  = 'serviceTitleLo'
-              value = 'Основной Сервис самошунтирования'/>
+    <property name  = 'genesisService'
+              value = 'Genesis Service'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Root dispatching handler of the shunt requests.           ·
@@ -118,22 +112,7 @@
       <bean class  = 'com.tverts.shunts.reports.SeShReportLogger'/>
     </property>
 
-
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Synchronization point: wait Genesis Service completes.    ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <!--
-    <property name  = 'serviceSynch'
-              ref   = 'selfShuntServiceSynch'/>
-              -->
-
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Pauses to cooldown the service.                           ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name  = 'openPause'  value = '5000'/>
-    <property name  = 'cyclePause' value = '500'/>
   </bean>
-
 
 
   <!--=================================================

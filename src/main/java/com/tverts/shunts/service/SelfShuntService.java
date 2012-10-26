@@ -2,9 +2,14 @@ package com.tverts.shunts.service;
 
 /* com.tverts: system services */
 
-import com.tverts.system.services.QueueExecutorServiceBase;
+import com.tverts.system.zservices.Event;
+import com.tverts.system.zservices.ServiceBase;
 
-/* com.tverts: shunts, shunt protocol, reports  */
+/* com.tverts: genesis */
+
+import com.tverts.genesis.GenesisDone;
+
+/* com.tverts: self-shunts (core, protocol, reports) */
 
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntReport;
@@ -17,8 +22,9 @@ import com.tverts.shunts.reports.SeShReportConsumer;
 
 /* com.tverts: support */
 
-import static com.tverts.support.LO.LANG_RU;
 import com.tverts.support.LU;
+import com.tverts.support.SU;
+
 
 /**
  * This complex (active) service resolves all
@@ -51,34 +57,24 @@ import com.tverts.support.LU;
  *
  * @author anton.baukin@gmail.com
  */
-public class   SelfShuntService
-       extends QueueExecutorServiceBase
+public class SelfShuntService extends ServiceBase
 {
-	/* public: ServiceBase interface */
-
-	public boolean isActiveService()
-	{
-		return super.isActiveService() &&
-		  (getRequestsHandler() != null) &&
-		  (getReportConsumer()  != null);
-	}
-
-	/* public: SelfShuntService (primary) interface */
+	/* public: SelfShuntService (shunts) interface */
 
 	/**
-	 * Adds the Shunt Protocol to the execution queue.
+	 * Synchronously executes the Shunt Protocol
+	 * given sending shunt requests to this service.
 	 */
-	public void enqueueProtocol(SeShProtocol protocol)
+	public void         executeProtocol(SeShProtocol protocol)
 	{
-		enqueueTask(createProtocolTask(protocol));
+		createProtocolTask(protocol).run();
 	}
 
 	/**
 	 * Executes Self Shunt Request coming from the service
 	 * (this service) via HTTP, JMS or else media.
 	 */
-	public SeShResponse
-	            executeRequest(SeShRequest request)
+	public SeShResponse executeRequest(SeShRequest request)
 	{
 		SeShRequestsHandler handler = getRequestsHandler();
 
@@ -116,7 +112,38 @@ public class   SelfShuntService
 	}
 
 
+	/* public: Service interface */
+
+	public void     service(Event event)
+	{
+		if(event instanceof GenesisDone)
+			service((GenesisDone) event);
+	}
+
+	public String[] depends()
+	{
+		if(SU.sXe(getGenesisService()))
+			return null;
+
+		return new String[] { getGenesisService() };
+	}
+
+
 	/* public: SelfShuntService (bean) interface */
+
+	/**
+	 * If you want this service to explicitly depend
+	 * of Genesis Service, set those Service UID.
+	 */
+	public String getGenesisService()
+	{
+		return genesisService;
+	}
+
+	public void setGenesisService(String genesisService)
+	{
+		this.genesisService = genesisService;
+	}
 
 	/**
 	 * An instance of {@link SeShRequestsHandler} strategy
@@ -130,8 +157,7 @@ public class   SelfShuntService
 	 * It is expected that here would be set an instance of class
 	 * {@link SeShRequestsDispatcher}.
 	 */
-	public SeShRequestsHandler
-	            getRequestsHandler()
+	public SeShRequestsHandler getRequestsHandler()
 	{
 		return requestsHandler;
 	}
@@ -147,8 +173,7 @@ public class   SelfShuntService
 	 *
 	 * Without this strategy the service is not active.
 	 */
-	public SeShReportConsumer
-	            getReportConsumer()
+	public SeShReportConsumer getReportConsumer()
 	{
 		return reportConsumer;
 	}
@@ -164,8 +189,7 @@ public class   SelfShuntService
 	 * and before it is activated. The reference may be
 	 * not defined.
 	 */
-	public SeShProtocolReference
-	            getInitialTasks()
+	public SeShProtocolReference getInitialTasks()
 	{
 		return initialTasks;
 	}
@@ -176,15 +200,28 @@ public class   SelfShuntService
 	}
 
 
-	/* protected: QueueExecutorServiceBase interface */
+	/* protected: service work steps */
 
-	protected void appendInitialTasks()
+	protected void     service(GenesisDone event)
 	{
+		LU.I(getServicesLog(), logsig(), " recieved GenesisDone event from '",
+		  event.getSourceService(), "'...");
+
+		//?: {this is not a Genesis Service configured}
+		if(!SU.sXe(getGenesisService()))
+			if(!getGenesisService().equals(event.getSourceService()))
+				return;
+
+		//!: do the genesis of all the initial tasks
 		SeShProtocolReference pref = getInitialTasks();
 		if(pref == null) return;
 
+		LU.I(getServicesLog(), logsig(), " starting initial Self-Shunts...");
+
 		for(SeShProtocol p : pref.dereferObjects())
-			this.enqueueProtocol(p);
+			this.executeProtocol(p);
+
+		LU.I(getServicesLog(), logsig(), " initial Self-Shunts completed!");
 	}
 
 
@@ -204,6 +241,7 @@ public class   SelfShuntService
 			consumer.consumeReport(report);
 	}
 
+
 	/* protected: ProtocolTask implementation  */
 
 	protected class ProtocolTask implements Runnable
@@ -220,7 +258,7 @@ public class   SelfShuntService
 		public void    run()
 		{
 			//?: {the service | task is breaked} quit
-			if(breaked || closed) return;
+			if(this.closed) return;
 
 			SelfShuntReport report = new SelfShuntReport();
 			boolean         opened;
@@ -236,8 +274,8 @@ public class   SelfShuntService
 			catch(Throwable e)
 			{
 				handleProtocolOpenError(e);
-				opened = !closed; //<-- the error may be dealt
-				if(closed) report.setSystemError(e);
+				opened = !this.closed; //<-- the error may be dealt
+				if(this.closed) report.setSystemError(e);
 			}
 
 			//?: {hadn't opened the protocol} quit now
@@ -246,33 +284,31 @@ public class   SelfShuntService
 				logProtocolFinishBefore(report);
 				protocol.finishProtocol(report);
 				logProtocolFinishSuccess(report);
+				return;
 			}
 			catch(Throwable e)
 			{
 				logProtocolFinishError(e);
-			}
-			finally
-			{
 				return;
 			}
 
 			//~: do the protocol cycle
-			while(!breaked && !closed) try
+			while(!this.closed) try
 			{
 				logSendNextRequestBefore();
-				closed = !protocol.sendNextRequest();
+				this.closed = !protocol.sendNextRequest();
 				logSendNextRequestSuccess();
 			}
 			catch(Throwable e)
 			{
 				handleSendNextRequestError(e);
-				if(closed) report.setSystemError(e);
+				if(this.closed) report.setSystemError(e);
 			}
 
 			boolean reported = false;
 
 			//?: {the protocol must be closed} do it
-			if(opened) try
+			try
 			{
 				logProtocolCloseBefore();
 				report   = protocol.closeProtocol();
@@ -282,11 +318,11 @@ public class   SelfShuntService
 			catch(Throwable e)
 			{
 				handleProtocolCloseError(e);
-				if(closed) report.setSystemError(e);
+				if(this.closed) report.setSystemError(e);
 			}
 
-			//?: {closed, has the report} handle it
-			if(!breaked && reported) try
+			//?: {this.closed, has the report} handle it
+			if(reported) try
 			{
 				processShuntReport(report);
 			}
@@ -442,16 +478,11 @@ public class   SelfShuntService
 		return SelfShuntPoint.LOG_SERVICE.getName();
 	}
 
-	public String    logsig(String lang)
-	{
-		String one = LANG_RU.equals(lang)?
-		  ("Сервис самошунтирования"):("Self Shunt Service");
 
-		String two = getServiceName();
-		if(two == null) two = "???";
+	/* private: genesis service uid */
 
-		return String.format("%s '%s'", one, two);
-	}
+	private String                genesisService;
+
 
 	/* private: strategies of the service  */
 

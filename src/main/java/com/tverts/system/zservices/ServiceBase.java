@@ -123,6 +123,30 @@ public abstract class ServiceBase
 	}
 
 
+	/* protected: logging */
+
+	protected String getLog()
+	{
+		return ServicesPoint.LOG_SERVICE_MAIN;
+	}
+
+	protected String getServicesLog()
+	{
+		return ServicesPoint.LOG_SERVICE_MAIN;
+	}
+
+	private volatile String logsig;
+
+	protected String logsig()
+	{
+		if(logsig != null)
+			return logsig;
+
+		return logsig = uid().toLowerCase().contains("service")?(uid())
+		  :String.format("Service '%s'", uid());
+	}
+
+
 	/* service state */
 
 	private String   UID;
