@@ -15,6 +15,7 @@ import org.hibernate.SessionFactory;
  * transaction actually starts. hence, it never stores
  * direct references to the transactional resources.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public interface TxContext
@@ -22,7 +23,7 @@ public interface TxContext
 	/* public: TxContext interface */
 
 	/**
-	 * The factry of Hibernate sessions to access
+	 * The factory of Hibernate sessions to access
 	 * the system' primary database.
 	 */
 	public SessionFactory getSessionFactory();

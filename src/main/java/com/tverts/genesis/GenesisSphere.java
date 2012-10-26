@@ -13,6 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tverts.system.tx.TxPoint;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
 /* com.tverts: support */
 
 import com.tverts.support.LO;
@@ -170,6 +174,10 @@ public class      GenesisSphere
 				((GenCtxBase)ctx).setSession(TxPoint.getInstance().
 				  getTxContextStrict().getSessionFactory().getCurrentSession());
 
+			//~: check Hibernate sessions
+			checkCtxSession(ctx);
+
+			//~: invoke the generation
 			doGen(ctx);
 		}
 		finally
@@ -219,6 +227,18 @@ public class      GenesisSphere
 		}
 	}
 
+	protected void     checkCtxSession(GenCtx ctx)
+	{
+		if(ctx.session() == null)
+			throw new IllegalStateException(
+			  "Genesis Sphere got Context without Hibernate Session bount!");
+
+		if(HiberPoint.session() != ctx.session())
+			throw new IllegalStateException(
+			  "Genesis Sphere has two Hibernate Sessions messed " +
+			  "in the Generation Context Vs globally accessed one!");
+	}
+
 
 	/* protected: logging */
 
@@ -259,7 +279,7 @@ public class      GenesisSphere
 
 		LU.T(log(ctx), logsig(), " closed sphere with success!");
 	}
-	        c
+
 	protected void   logGenGenerateBefore(GenCtx ctx, Genesis g)
 	{
 		if(!LU.isT(log(ctx))) return;
