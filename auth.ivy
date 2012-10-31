@@ -1,0 +1,58 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ivy-module version = '2.0'
+  xmlns:xsi = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:noNamespaceSchemaLocation = 'http://ant.apache.org/ivy/schemas/ivy.xsd'>
+
+  <info organisation = 'com.tverts' module = 'auth'
+        revision = '1.0' status = 'integration'>
+
+    <ivyauthor name = 'Anton Baukin'
+       url = 'mailto:anton.baukin@gmail.com'/>
+
+    <description>
+      'Re Trade' System authentication module.
+    </description>
+  </info>
+
+  <configurations>
+
+    <conf name    = 'runtime'
+      description = 'The runtime modules not needed to compile.'/>
+
+    <conf name    = 'compile'/>
+
+    <conf name    = 'test'
+      extends     = 'compile, runtime'
+      visibility  = 'private'/>
+
+    <conf name    = 'sources'
+      visibility  = 'private'
+      description = 'The sources retrieved during the initialization.'/>
+
+  </configurations>
+
+
+  <dependencies defaultconfmapping = '*->@(*)'>
+
+
+    <!-- Servlet 3.0 [server provided] -->
+
+    <dependency
+      org  = 'javax.servlet'
+      name = 'javax.servlet-api'
+      rev  = '3.0.1'
+      conf = 'sources; compile -> master'/>
+
+
+    <!-- JUnit 4.8.x [manually provided] -->
+
+    <dependency transitive = 'false'
+      org  = 'junit'
+      name = 'junit'
+      rev  = '4.8.2'
+      conf = 'sources; compile -> master'/>
+
+  </dependencies>
+
+</ivy-module>

@@ -1,0 +1,62 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<project xmlns:ivy = 'antlib:org.apache.ivy.ant'
+         name      = 'auth'
+         default   = 'auth-all'>
+
+  <!-- root target -->
+
+  <target name    = 'auth-all'
+          depends = 'package'/>
+
+
+  <!-- ?debug -->
+
+  <condition property = '?debug'>
+    <not><isset property = 'release'/></not>
+  </condition>
+
+
+  <!--=================================================
+    = Project shared variables                        =
+    =================================================-->
+
+  <property  name  = 'shared'
+             value = 'false'/>
+
+  <property  name  = 'rootdir'
+             value = '${basedir}/..'/>
+
+  <property  name  = 'buildir'
+             value = '${rootdir}/build'/>
+
+  <property  name  = 'cmplibs'
+             value = '${buildir}/.authcmp'/>
+
+  <property  name  = 'tstlibs'
+             value = '${buildir}/.authtst'/>
+
+  <property  name  = 'runlibs'
+             value = '${buildir}/.authrun'/>
+
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+   | Build module reference                                  |
+   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+  <import file = '../build/bldmd.xml'/>
+
+
+  <!--=================================================
+    = tasks:  init-ivy                                =
+    =================================================-->
+
+  <!-- shared task + overwrite -->
+  <target name    = 'init-ivy-module'
+          depends = 'init-ivy-base'>
+
+    <ivy:resolve resolveId = 'auth'
+      file = 'auth.ivy'/>
+  </target>
+
+</project>
