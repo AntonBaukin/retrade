@@ -8,10 +8,10 @@
         revision = '1.0' status = 'integration'>
 
     <ivyauthor name = 'Anton Baukin'
-       url  = 'mailto:abaukin@mail.ru'/>
+       url = 'mailto:anton.baukin@mail.ru'/>
 
     <description>
-      TTS System execution root module.
+      'Re Trade' System execution root module.
     </description>
   </info>
 
