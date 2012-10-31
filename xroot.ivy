@@ -4,11 +4,11 @@
   xmlns:xsi = 'http://www.w3.org/2001/XMLSchema-instance'
   xsi:noNamespaceSchemaLocation = 'http://ant.apache.org/ivy/schemas/ivy.xsd'>
 
-  <info organisation = 'ru.tver.tts' module = 'xroot'
+  <info organisation = 'com.tverts' module = 'xroot'
         revision = '1.0' status = 'integration'>
 
     <ivyauthor name = 'Anton Baukin'
-       url = 'mailto:anton.baukin@mail.ru'/>
+       url = 'mailto:anton.baukin@gmail.com'/>
 
     <description>
       'Re Trade' System execution root module.
