@@ -39,6 +39,9 @@
   <property  name  = 'runlibs'
              value = '${buildir}/.authrun'/>
 
+  <property  name  = 'devdir'
+             value = '${buildir}/dev-auth'/>
+
 
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
    | Build module reference                                  |
