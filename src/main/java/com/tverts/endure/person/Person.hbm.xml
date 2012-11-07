@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.person'>
+
+  <union-subclass name = 'Person' extends = 'com.tverts.endure.core.Entity'
+    table = 'core_person' lazy = 'false'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_core_person_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        index = 'ix_core_person_domain'>
+
+        <comment>Domain where the Person is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Last Name -->
+
+    <property name = 'lastName'>
+
+      <column name = 'last_name' not-null = 'true' length = '512'>
+        <comment>Last name of the Person</comment>
+      </column>
+    </property>
+
+
+    <!-- First Name -->
+
+    <property name = 'firstName'>
+
+      <column name = 'first_name' length = '512'>
+        <comment>First name of the Person</comment>
+      </column>
+    </property>
+
+
+    <!-- Middle Name -->
+
+    <property name = 'middleName'>
+
+      <column name = 'middle_name' length = '512'>
+        <comment>Middle name of the Person</comment>
+      </column>
+    </property>
+
+
+    <!-- Gender -->
+
+    <property name = 'gender'>
+
+      <column name = 'gender'>
+        <comment>The gender of the person ('M' of 'F')</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

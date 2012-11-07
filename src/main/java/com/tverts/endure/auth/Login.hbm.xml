@@ -1,0 +1,88 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.auth'>
+
+  <union-subclass name = 'Login' extends = 'com.tverts.endure.core.Entity'
+    table = 'auth_login' lazy = 'true'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_login_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_login'>
+
+        <comment>Domain where the Computer is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Login -->
+
+    <property name = 'login'>
+
+      <column name = 'ux_login' not-null = 'true' length = '512'
+        unique-key = 'ux_login'>
+
+        <comment>Unique (within the Domain) login string</comment>
+      </column>
+    </property>
+
+
+    <!-- Person reference -->
+
+    <many-to-one name = 'person' foreign-key = 'fk_login_person'>
+
+      <column name = 'fk_person' index = 'ix_login_person'>
+
+        <comment>The Person owning this Login</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Computer reference -->
+
+    <many-to-one name = 'computer' foreign-key = 'fk_login_computer'>
+
+      <column name = 'fk_computer' index = 'ix_login_computer'>
+
+        <comment>The external computer system this Login is assigned</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Password Hash -->
+
+    <property name = 'passhash' type = 'string'>
+
+      <column name = 'passhash' not-null = 'true' length = '40'>
+        <comment>HEX string with 20-byte SHA-1 hash of the password</comment>
+      </column>
+    </property>
+
+
+    <!-- Create Time -->
+
+    <property name = 'createTime' type = 'timestamp'>
+
+      <column name = 'create_time' not-null = 'true'>
+        <comment>The timestamp the login was created</comment>
+      </column>
+    </property>
+
+
+    <!-- Close Time -->
+
+    <property name = 'closeTime' type = 'timestamp'>
+
+      <column name = 'close_time'>
+        <comment>The timestamp the login was closed</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

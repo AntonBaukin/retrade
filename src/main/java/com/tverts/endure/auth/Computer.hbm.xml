@@ -1,0 +1,56 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.auth'>
+
+  <union-subclass name = 'Computer' extends = 'com.tverts.endure.core.Entity'
+    table = 'auth_computer' lazy = 'false'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_computer_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_computer_code'>
+
+        <comment>Domain where the Computer is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '256'
+        unique-key = 'ux_computer_code'>
+
+        <comment>Unique (within the Domain) code of the Computer</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'computer_name' not-null = 'true' length = '1024'>
+        <comment>The name of the Computer</comment>
+      </column>
+    </property>
+
+
+    <!-- Comment -->
+
+    <property name = 'comment' type = 'text'>
+
+      <column name = 'computer_comment'>
+        <comment>The comment on the Computer</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

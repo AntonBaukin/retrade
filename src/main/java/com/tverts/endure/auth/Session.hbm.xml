@@ -1,0 +1,90 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.auth'>
+
+  <class name = 'Session' table = 'auth_session' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_session'/>
+
+
+    <!-- Login reference -->
+
+    <many-to-one name = 'login' foreign-key = 'fk_session_login'>
+
+      <column name = 'fk_login' not-null = 'true'
+        index = 'ix_session_login'>
+
+        <comment>Login this Session is created for</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Session ID -->
+
+    <property name = 'sessionId' type = 'string'>
+
+      <column name = 'session_id' length = '512'
+        not-null = 'true' unique = 'true'>
+
+        <comment>System-unique alternative key (SID) of the Session</comment>
+      </column>
+    </property>
+
+
+    <!-- Password Hash -->
+
+    <property name = 'sessionKey' type = 'string'>
+
+      <column name = 'session_key' not-null = 'true' length = '40'>
+        <comment>HEX string with 20-byte computed private session key</comment>
+      </column>
+    </property>
+
+
+    <!-- Create Time -->
+
+    <property name = 'createTime' type = 'timestamp'>
+
+      <column name = 'create_time' not-null = 'true'>
+        <comment>The timestamp the Session was created</comment>
+      </column>
+    </property>
+
+
+    <!-- Access Time -->
+
+    <property name = 'accessTime' type = 'timestamp'>
+
+      <column name = 'access_time'>
+        <comment>The timestamp the last request with this Session</comment>
+      </column>
+    </property>
+
+
+    <!-- Close Time -->
+
+    <property name = 'closeTime' type = 'timestamp'>
+
+      <column name = 'close_time'>
+        <comment>The timestamp the Session was closed</comment>
+      </column>
+    </property>
+
+
+    <!-- Sequence Number -->
+
+    <property name = 'sequence'>
+
+      <column name = 'sequence_number' not-null = 'true'>
+
+        <comment>An integer value incremented with each valid request</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
