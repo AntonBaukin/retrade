@@ -167,19 +167,21 @@ public class AuthProtocol implements Cloneable
 		}
 
 		//~: Rs
-		String Rs = param("Rs");
-		if(Rs == null)
+		if(param("Rs") == null)
 			return "Send Rs parameter.";
+		byte[] Rs = Encodings.hex2bytes(param("Rs").toCharArray());
+		if(Rs.length != 20)
+			return "Rs (server random) must have 20 bytes.";
 
 
 		//~: HRs
 		String HRs = param("HRs");
-		if(Rs == null)
+		if(HRs == null)
 			return "Send HRs parameter.";
 
 		//!: validate HRs
 		String xHRs = digest.signHex(
-		  stime, xkey, Rs.toCharArray()
+		  stime, xkey, Rs
 		);
 
 		if(!xHRs.equals(HRs))
@@ -207,7 +209,7 @@ public class AuthProtocol implements Cloneable
 
 			String P  = dbc.getPassword(domain, login);
 			String xH = digest.signHex(
-			  Rc, Rs.toCharArray(), param("domain"), login, P.toCharArray()
+			  Rc, Rs, param("domain"), login, P.toCharArray()
 			);
 
 			if(!xH.equals(H))
@@ -220,7 +222,7 @@ public class AuthProtocol implements Cloneable
 
 			//~: create private session key
 			String skey = digest.signHex(
-			  Rc, Rs, sid, P
+			  Rc, Rs, sid, P.toCharArray()
 			);
 
 			//!: save session key to the database

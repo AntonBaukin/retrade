@@ -46,6 +46,70 @@ public class TestAuthProtocol
 		client.login();
 	}
 
+	@Test
+	public void testStepTouch()
+	  throws Exception
+	{
+		TestAuthClient client = new TestAuthClient();
+
+		client.setLogin("first");
+		client.setPassword("pass-first");
+
+		client.greet();
+		client.login();
+		client.touch();
+	}
+
+	@Test
+	public void testStepClose()
+	  throws Exception
+	{
+		TestAuthClient client = new TestAuthClient();
+
+		client.setLogin("third");
+		client.setPassword("pass:third");
+
+		client.greet();
+		client.login();
+		client.touch();
+		client.close();
+
+		//~: test closed session
+		AuthError error = null;
+		try
+		{
+			client.touch();
+		}
+		catch(AuthError e)
+		{
+			error = e;
+		}
+		assertNotNull(error);
+	}
+
+	@Test
+	public void testWrongPassword()
+	  throws Exception
+	{
+		TestAuthClient client = new TestAuthClient();
+
+		client.setLogin("third");
+		client.setPassword("pass!third");
+
+		client.greet();
+
+		AuthError error = null;
+		try
+		{
+			client.login();
+		}
+		catch(AuthError e)
+		{
+			error = e;
+		}
+		assertNotNull(error);
+	}
+
 
 	/* protected: authentication protocol */
 
@@ -128,7 +192,7 @@ public class TestAuthProtocol
 		{
 			if(Boolean.TRUE.equals(commit))
 				if(txsession != null)
-					sessions.put(txsession.getSessionKey(), txsession);
+					sessions.put(txsession.getSessionId(), txsession);
 		}
 
 
@@ -151,7 +215,7 @@ public class TestAuthProtocol
 			assertNotNull(session.getSessionId());
 
 			AuthSession s = (txsession != null)?(txsession):
-			  (txsession = sessions.get(session.getSessionKey()));
+			  (txsession = sessions.get(session.getSessionId()));
 
 			if(s == null)
 			{
@@ -318,6 +382,60 @@ public class TestAuthProtocol
 			sessionKey = authDigest.signHex(
 			  Rc, Rs, sid, passhash.toCharArray()
 			);
+		}
+
+		public void touch()
+		{
+			HashMap<String, String> params =
+			  new HashMap<String, String>(5);
+
+			//~: session id
+			assertNotNull(sid);
+			params.put("sid", sid);
+
+			//~: sequence
+			params.put("sequence", Long.toString(++sequence));
+
+			//~: main signature
+
+			assertNotNull(sessionKey);
+			String H = authDigest.signHex(
+			  sid, sequence, sessionKey.toCharArray()
+			);
+
+			params.put("H", H);
+
+			//!: invoke the touch step
+			params.put("step", "touch");
+			String status = invokeProtocol(params);
+			assertEquals("touched", status);
+		}
+
+		public void close()
+		{
+			HashMap<String, String> params =
+			  new HashMap<String, String>(5);
+
+			//~: session id
+			assertNotNull(sid);
+			params.put("sid", sid);
+
+			//~: sequence
+			params.put("sequence", Long.toString(++sequence));
+
+			//~: main signature
+
+			assertNotNull(sessionKey);
+			String H = authDigest.signHex(
+			  sid, sequence, sessionKey.toCharArray()
+			);
+
+			params.put("H", H);
+
+			//!: invoke the touch step
+			params.put("step", "close");
+			String status = invokeProtocol(params);
+			assertEquals("closed", status);
 		}
 
 
