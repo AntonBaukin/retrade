@@ -25,11 +25,25 @@
 
 
   <!--=================================================
+    =  Action Bulders for Authentification            =
+    +================================================-->
+
+  <import resource = 'auth.xml'/>
+
+
+  <!--=================================================
+    =  Person Action Bulders                          =
+    +================================================-->
+
+  <import resource = 'person.xml'/>
+
+
+  <!--=================================================
     =  Domain Model Core Actions                      =
     +==================================================
     |
-    |  Overwrite this file in module extends actions
-    |  on Domain Core entities.
+    |  Overwrite this file in module adds or replaces
+    |  actions on Domain Core entities.
     |
     +================================================-->
 
@@ -42,6 +56,8 @@
         <ref bean = 'coreUnityTypesBuilders'/>
         <ref bean = 'coreUnityBuilders'/>
         <ref bean = 'aggrValueBuilders'/>
+        <ref bean = 'authComputerBuilders'/>
+        <ref bean = 'corePersonBuilders'/>
 
       </list>
     </property>

@@ -19,7 +19,17 @@ import static com.tverts.support.SU.catif;
  */
 public class Auth
 {
-	/* display names */
+	/* types of the authentication entities */
+
+	public static final String TYPE_COMPUTER =
+	  "Core: Auth: Computer";
+
+	public static final String TYPE_LOGIN    =
+	  "Core: Auth: Login";
+
+
+
+	/* display names helpers */
 
 	public static String name(Computer c)
 	{

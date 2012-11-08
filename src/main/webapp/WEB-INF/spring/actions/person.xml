@@ -1,0 +1,21 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Person Action Bulders                          =
+    +================================================-->
+
+  <bean name  = 'corePersonBuilders'
+        class = 'com.tverts.actions.ActionBuilderActionChecker'>
+
+    <property name  = 'goalClass'
+              value = 'com.tverts.endure.person.Person'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.person.ActPerson'/>
+    </property>
+  </bean>
+</beans>
