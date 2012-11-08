@@ -476,6 +476,19 @@ public class SU
 		return s.toString();
 	}
 
+	public static String        catif(Object test, Object... objs)
+	{
+		if(test == null) return "";
+
+		if((test instanceof String) && sXe((String) test))
+			return "";
+
+		if((test instanceof Boolean) && Boolean.FALSE.equals(test))
+			return "";
+
+		return cats(objs);
+	}
+
 	/**
 	 * Concatenates the strings using the separator given.
 	 * Returns the resulting buffer.
@@ -512,6 +525,12 @@ public class SU
 			buf.append((buf.length() != x)?(sep):("")).append(s);
 
 		return buf;
+	}
+
+	public static StringBuilder cat
+	  (StringBuilder buf, String sep, CharSequence... a)
+	{
+		return cat(buf, sep, Arrays.asList(a));
 	}
 
 	/**

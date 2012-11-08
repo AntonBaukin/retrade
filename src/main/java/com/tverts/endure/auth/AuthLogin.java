@@ -4,10 +4,10 @@ package com.tverts.endure.auth;
 
 import java.util.Date;
 
-/* com.tverts: endure (core + persons) */
+/* com.tverts: endure (core + catalogues + persons) */
 
+import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.core.Domain;
-import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.Entity;
 import com.tverts.endure.person.Person;
 
@@ -23,7 +23,7 @@ import com.tverts.endure.person.Person;
  *
  * @author anton.baukin@gmail.com
  */
-public class Login extends Entity implements DomainEntity
+public class AuthLogin extends Entity implements CatItem
 {
 	/* public: UserLogin (bean) properties */
 
@@ -61,14 +61,38 @@ public class Login extends Entity implements DomainEntity
 		this.computer = computer;
 	}
 
-	public String    getLogin()
+	/**
+	 * Login string code unique within the domain.
+	 * When AuthLogin is being closed, the code
+	 * is concatenated with the close time.
+	 */
+	public String    getCode()
 	{
 		return login;
 	}
 
-	public void      setLogin(String login)
+	public void      setCode(String login)
 	{
 		this.login = login;
+	}
+
+	public String    getName()
+	{
+		if(name != null)
+			return name;
+
+		if(getPerson() != null)
+			return name = Auth.name(getPerson());
+
+		if(getComputer() != null)
+			return name = Auth.name(getComputer());
+
+		return null;
+	}
+
+	public void      setName(String name)
+	{
+		this.name = name;
 	}
 
 	public String    getPasshash()
@@ -109,6 +133,7 @@ public class Login extends Entity implements DomainEntity
 	private Computer computer;
 
 	private String   login;
+	private String   name;
 	private String   passhash;
 
 	private Date     createTime;

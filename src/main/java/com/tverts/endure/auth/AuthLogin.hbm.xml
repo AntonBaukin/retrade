@@ -5,7 +5,7 @@
 
 <hibernate-mapping package = 'com.tverts.endure.auth'>
 
-  <union-subclass name = 'Login' extends = 'com.tverts.endure.core.Entity'
+  <union-subclass name = 'AuthLogin' extends = 'com.tverts.endure.core.Entity'
     table = 'auth_login' lazy = 'true'>
 
 
@@ -21,9 +21,9 @@
     </many-to-one>
 
 
-    <!-- Login -->
+    <!-- Code (login string) -->
 
-    <property name = 'login'>
+    <property name = 'code'>
 
       <column name = 'ux_login' not-null = 'true' length = '512'
         unique-key = 'ux_login'>
@@ -55,11 +55,23 @@
     </many-to-one>
 
 
+    <!-- Name -->
+
+    <property name = 'name' type = 'string'>
+
+      <column name = 'login_name' not-null = 'true' length = '1024'>
+
+        <comment>The name of the Login based on the Person or the Computer name</comment>
+      </column>
+    </property>
+
+
     <!-- Password Hash -->
 
     <property name = 'passhash' type = 'string'>
 
       <column name = 'passhash' not-null = 'true' length = '40'>
+
         <comment>HEX string with 20-byte SHA-1 hash of the password</comment>
       </column>
     </property>
@@ -70,6 +82,7 @@
     <property name = 'createTime' type = 'timestamp'>
 
       <column name = 'create_time' not-null = 'true'>
+
         <comment>The timestamp the login was created</comment>
       </column>
     </property>
@@ -80,6 +93,7 @@
     <property name = 'closeTime' type = 'timestamp'>
 
       <column name = 'close_time'>
+
         <comment>The timestamp the login was closed</comment>
       </column>
     </property>
