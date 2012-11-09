@@ -85,6 +85,10 @@ public abstract class GenesisBase
 
 	/* protected: logging */
 
+	/**
+	 * Returns the logging destination
+	 * of this Genesis unit.
+	 */
 	protected String log(GenCtx ctx)
 	{
 		return ctx.log();

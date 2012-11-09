@@ -27,6 +27,7 @@ import static com.tverts.endure.core.GenTestDomain.testDomain;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
 import com.tverts.support.SU;
 import com.tverts.support.xml.SaxProcessor;
 
@@ -95,7 +96,14 @@ public class GenTestUsers extends GenesisHiberPartBase
 		StateComputer s = gs.computer;
 		Computer      c = bean(GetAuthLogin.class).
 		  getComputer(testDomain().getPrimaryKey(), s.code);
-		if(c != null) return false;
+
+		if(c != null)
+		{
+			LU.I(log(ctx), logsig(), " found computer with code '",
+			  s.code, "' already existing in the database.");
+
+			return false;
+		}
 
 		s.computer = c = new Computer();
 
@@ -105,6 +113,12 @@ public class GenTestUsers extends GenesisHiberPartBase
 		c.setComment(s.comment);
 
 		actionRun(ActionType.SAVE, c);
+
+		LU.I(log(ctx), logsig(), " created computer with code '",
+		  s.code, "' ", (gs.login == null)?("without login."):
+		    (" with login '" + gs.login.code + "'.")
+		);
+
 		return true;
 	}
 
@@ -112,9 +126,18 @@ public class GenTestUsers extends GenesisHiberPartBase
 	  throws GenesisError
 	{
 		StatePerson s = gs.person;
-		Person      p = bean(GetAuthLogin.class).
-		  getPersonByLogin(testDomain().getPrimaryKey(), gs.login.code);
-		if(p != null) return false;
+		Person      p = (gs.login == null)?(null):
+		  bean(GetAuthLogin.class).getPersonByLogin(
+		    testDomain().getPrimaryKey(), gs.login.code);
+
+		if(p != null)
+		{
+			LU.I(log(ctx), logsig(), " found person '", Auth.name(p),
+			 "' with login '", gs.login.code,
+			 "' already existing in the database.");
+
+			return false;
+		}
 
 		s.person = p = new Person();
 
@@ -125,6 +148,12 @@ public class GenTestUsers extends GenesisHiberPartBase
 		p.setGender(s.gender);
 
 		actionRun(ActionType.SAVE, p);
+
+		LU.I(log(ctx), logsig(), " created person '", Auth.name(p),
+		  (gs.login == null)?("without login."):
+		    ("' with login '" + gs.login.code + "' already exists in the database.")
+		);
+
 		return true;
 	}
 

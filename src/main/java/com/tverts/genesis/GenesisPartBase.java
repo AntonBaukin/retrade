@@ -116,7 +116,7 @@ public abstract class GenesisPartBase
 
 		/* private: report reference */
 
-		private SelfShuntReport report;
+		private volatile SelfShuntReport report;
 	}
 
 
