@@ -56,6 +56,11 @@ public class ActLogin extends ActionBuilderXRoot
 		//?: {target is not a login}
 		checkTargetClass(abr, AuthLogin.class);
 
+		//~: set create time
+		AuthLogin l = target(abr, AuthLogin.class);
+		if(l.getCreateTime() == null)
+			l.setCreateTime(new java.util.Date());
+
 		//~: save the store
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
 

@@ -10,6 +10,7 @@ import com.tverts.actions.ActionWithTxBase;
 
 /* com.tverts: hibery */
 
+import static com.tverts.hibery.HiberPoint.isTestInstance;
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 /* com.tverts: endure */
@@ -203,7 +204,7 @@ public class ActUnity extends ActionBuilderXRoot
 
 			//?: {target has no primary key yet} create it here
 			if(uni.getPrimaryKey() == null)
-				setPrimaryKey(session(), uni);
+				setPrimaryKey(session(), uni, isTestInstance(uni));
 
 			//~: share the same primary key
 			res.setPrimaryKey(uni.getPrimaryKey());

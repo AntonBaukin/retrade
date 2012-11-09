@@ -63,6 +63,11 @@ public class SaxEvent<State>
 		return qName;
 	}
 
+	public String          attr(String qname)
+	{
+		return attrs.getValue(qname);
+	}
+
 	public Attributes      attrs()
 	{
 		return attrs;

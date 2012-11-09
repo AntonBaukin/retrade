@@ -6,16 +6,20 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-/* com.tverts: endure + hibery keys  */
+/* com.tverts: endure (core) */
 
+import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.keys.KeysContext;
 import com.tverts.endure.keys.KeysPoint;
+
+/* com.tverts: hibery */
+
 import com.tverts.hibery.keys.HiberKeysContextStruct;
-
-/* com.tverts: hibery + system */
-
 import com.tverts.hibery.system.HiberSystem;
+
+/* com.tverts: system */
+
 import com.tverts.system.tx.TxContext;
 
 
@@ -166,7 +170,6 @@ public class HiberPoint
 	  (Session session, NumericIdentity instance, boolean fortest)
 	{
 		//?: {already have primary key} do not force change
-		//!: THIS IS PROTOCOL
 		if(instance.getPrimaryKey() != null)
 			return;
 
@@ -185,8 +188,13 @@ public class HiberPoint
 
 	public static boolean isTestInstance(NumericIdentity instance)
 	{
-		return (instance.getPrimaryKey() != null) &&
-		  (instance.getPrimaryKey() < 0L);
+		if(instance.getPrimaryKey() != null)
+			return (instance.getPrimaryKey() < 0L);
+
+		if(instance instanceof DomainEntity)
+			return isTestInstance(((DomainEntity) instance).getDomain());
+
+		return false;
 	}
 
 	public static boolean isTestPrimaryKey(Long pk)

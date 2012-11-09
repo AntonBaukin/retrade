@@ -20,6 +20,14 @@ public class GenesisError extends Exception
 		this.ctx     = ctx;
 	}
 
+	public GenesisError(Genesis genesis, GenCtx ctx, Throwable cause)
+	{
+		super(cause);
+
+		this.genesis = genesis;
+		this.ctx     = ctx;
+	}
+
 
 	/* public: GenesisError interface */
 

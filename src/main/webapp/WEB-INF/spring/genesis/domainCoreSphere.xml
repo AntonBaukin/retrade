@@ -31,7 +31,8 @@
         <property name = 'references'>
           <list>
 
-            <ref bean = 'genTestDomain'/>
+            <ref  bean  = 'genTestDomain'/>
+            <bean class = 'com.tverts.endure.auth.GenTestUsers'/>
 
           </list>
         </property>

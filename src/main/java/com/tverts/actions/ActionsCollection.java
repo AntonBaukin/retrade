@@ -149,7 +149,7 @@ public class ActionsCollection
 
 		protected boolean isTestSaveTarget()
 		{
-			return false;
+			return HiberPoint.isTestInstance(getSaveTarget());
 		}
 
 		protected void    assignSaveTarget()

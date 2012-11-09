@@ -9,9 +9,9 @@
     +================================================-->
 
   <bean name  = 'corePersonBuilders'
-        class = 'com.tverts.actions.ActionBuilderActionChecker'>
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
 
-    <property name  = 'goalClass'
+    <property name  = 'typeClass'
               value = 'com.tverts.endure.person.Person'/>
 
     <property name = 'reference'>

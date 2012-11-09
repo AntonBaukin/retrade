@@ -9,9 +9,9 @@
     +================================================-->
 
   <bean name  = 'authComputerBuilders'
-        class = 'com.tverts.actions.ActionBuilderActionChecker'>
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
 
-    <property name  = 'goalClass'
+    <property name  = 'typeClass'
               value = 'com.tverts.endure.auth.Computer'/>
 
     <property name = 'reference'>
@@ -20,9 +20,9 @@
   </bean>
 
   <bean name  = 'authLoginBuilders'
-        class = 'com.tverts.actions.ActionBuilderActionChecker'>
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
 
-    <property name  = 'goalClass'
+    <property name  = 'typeClass'
               value = 'com.tverts.endure.auth.AuthLogin'/>
 
     <property name = 'reference'>

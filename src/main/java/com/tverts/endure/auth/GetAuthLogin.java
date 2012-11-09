@@ -56,4 +56,41 @@ public class GetAuthLogin extends GetObjectBase
 		  setParameter("person", person).
 		  list();
 	}
+
+
+	/* Get Authentication Related Entities */
+
+	public Computer getComputer(Long domain, String code)
+	{
+
+// from Computer where (domain.id = :domain) and (code = :code)
+
+		return (Computer) Q(
+
+"from Computer where (domain.id = :domain) and (code = :code)"
+
+		).
+		  setLong  ("domain", domain).
+		  setString("code",   code).
+		  uniqueResult();
+	}
+
+	public Person getPersonByLogin(Long domain, String login)
+	{
+/*
+
+select p from AuthLogin al join al.person p where
+  (al.domain.id = :domain) and (al.code = :login)
+
+*/
+		return (Person) Q(
+
+"select p from AuthLogin al join al.person p where\n" +
+"  (al.domain.id = :domain) and (al.code = :login)"
+
+		).
+		  setLong  ("domain", domain).
+		  setString("login",  login).
+		  uniqueResult();
+	}
 }

@@ -34,25 +34,25 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · ShuntOrdering {domain:core:order-index}                   ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.order.ExternalOrder Test: Domain: Order Index
+        com.tverts.endure.order.ExternalOrder Test: Domain: Order Index;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Record About a Human                                      ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.person.Person   Core: Person
+        com.tverts.endure.person.Person   Core: Person;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · External Computer System client registration              ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.auth.Computer   Core: Auth: Computer
+        com.tverts.endure.auth.Computer   Core: Auth: Computer;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Authentication Login                                      ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.auth.AuthLogin   Core: Auth: Login
+        com.tverts.endure.auth.AuthLogin   Core: Auth: Login;
 
       </value>
     </property>
