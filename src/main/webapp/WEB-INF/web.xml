@@ -1,0 +1,78 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<web-app version = '3.0'
+  xmlns              = 'http://java.sun.com/xml/ns/javaee'
+  xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd'>
+
+  <display-name>
+    Tver TS 'Re Trade' Authentication Application
+  </display-name>
+
+
+  <!--====================================================
+    =                      Servlets                      =
+    ====================================================-->
+
+  <!-- Authentication Session Servlet -->
+
+  <servlet>
+    <display-name>ReTrade Authentication Servlet</display-name>
+    <servlet-name>auth_AuthenticationServlet</servlet-name>
+    <servlet-class>com.tverts.auth.server.AuthServlet</servlet-class>
+
+    <init-param>
+      <description>
+        (System parameter.) JNDI name of 'Re Trade'
+        Database Datasorce configured in the server.
+      </description>
+
+      <param-name>datasource-name</param-name>
+      <param-value>
+        java:/databases/ReTradeDirect
+      </param-value>
+    </init-param>
+
+    <init-param>
+      <description>
+        Authentication Protocol steps timeout in seconds.
+      </description>
+
+      <param-name>auth-timeout</param-name>
+      <param-value>60</param-value>
+    </init-param>
+
+    <init-param>
+      <description>
+        Authentication Session timeout in seconds.
+      </description>
+
+      <param-name>session-timeout</param-name>
+      <param-value>14400</param-value>
+    </init-param>
+
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>auth_AuthenticationServlet</servlet-name>
+    <url-pattern>/servlet/session</url-pattern>
+  </servlet-mapping>
+
+
+  <!--====================================================
+    =             Server Provided Resources              =
+    ====================================================-->
+
+  <resource-ref>
+    <description>
+      ReTrade DatabaseDatasource
+    </description>
+
+    <res-ref-name>java:/databases/ReTradeDirect</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+
+</web-app>

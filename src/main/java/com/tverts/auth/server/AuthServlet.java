@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Enumeration;
+import javax.sql.DataSource;
 
 /* Java Servlets */
 
@@ -16,6 +17,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+/* Java Naming */
+
+import javax.naming.InitialContext;
 
 
 /**
@@ -103,7 +108,56 @@ public class AuthServlet extends GenericServlet
 	/* protected: initialization */
 
 	protected void initAuthConfig()
-	{}
+	{
+		//~: configure the data source
+		configDatasource();
+
+		//~: config authentication timeout
+		configAuthTimeout();
+
+		//~: config session timeout
+		configSessionTimeout();
+	}
+
+	protected void configDatasource()
+	{
+		String name = getInitParameter("datasource-name");
+		if(name == null) throw new IllegalStateException(
+		  "The required parameter 'datasource-name' is not configured " +
+		  "in the web.xml, AuthServlet section!");
+
+		try
+		{
+			InitialContext ctx = new InitialContext();
+			DataSource     ds  = (DataSource) ctx.lookup(name);
+
+			AuthConfig.INSTANCE.setDataSource(ds);
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(
+			  "Error occured during AuthServlet initialization when " +
+			  "accessing ReTrade Database datasource!", e);
+		}
+	}
+
+	protected void configAuthTimeout()
+	{
+		String p = getInitParameter("auth-timeout");
+		if(p == null) return;
+
+		AuthConfig.INSTANCE.
+		  setAuthTimeout(1000L*Long.parseLong(p));
+	}
+
+	protected void configSessionTimeout()
+	{
+		String p = getInitParameter("session-timeout");
+		if(p == null) return;
+
+		AuthConfig.INSTANCE.
+		  setSessionTimeout(1000L*Long.parseLong(p));
+	}
 
 	protected void initAuthProtocol()
 	{
