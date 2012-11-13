@@ -7,9 +7,11 @@
 
   <class name = 'AuthSession' table = 'auth_session' lazy = 'false'>
 
-    <!-- Primary Key -->
+    <!-- Session ID (Primary Key) -->
 
-    <id name = 'primaryKey' column = 'pk_session'/>
+    <id name = 'sessionId'>
+      <column name = 'session_id' length = '16'/>
+    </id>
 
 
     <!-- Login reference -->
@@ -22,18 +24,6 @@
         <comment>Login this Session is created for</comment>
       </column>
     </many-to-one>
-
-
-    <!-- Session ID -->
-
-    <property name = 'sessionId' type = 'string'>
-
-      <column name = 'session_id' length = '512'
-        not-null = 'true' unique = 'true'>
-
-        <comment>System-unique alternative key (SID) of the Session</comment>
-      </column>
-    </property>
 
 
     <!-- Password Hash -->

@@ -4,17 +4,13 @@ package com.tverts.endure.auth;
 
 import java.util.Date;
 
-/* com.tverts: endure (core) */
-
-import com.tverts.endure.NumericBase;
-
 
 /**
  * Session of the authenticated user.
  *
  * @author anton.baukin@gmail.com
  */
-public class AuthSession extends NumericBase
+public class AuthSession
 {
 	/* public: Session (bean) properties */
 
@@ -28,6 +24,11 @@ public class AuthSession extends NumericBase
 		this.login = login;
 	}
 
+	/**
+	 * The primary key of the session record.
+	 * Sessions are created by the authentication
+	 * application.
+	 */
 	public String    getSessionId()
 	{
 		return sessionId;
@@ -86,6 +87,34 @@ public class AuthSession extends NumericBase
 	public void      setSequence(long sequence)
 	{
 		this.sequence = sequence;
+	}
+
+
+	/* public: Object interface */
+
+	public boolean   equals(Object o)
+	{
+		if(this == o)
+			return true;
+
+		if(!this.getClass().equals(o.getClass()))
+			return false;
+
+		String k0 = this.getSessionId();
+		String k1 = ((AuthSession)o).getSessionId();
+
+		return (k0 != null) && k0.equals(k1);
+	}
+
+	public int        hashCode()
+	{
+		String k0 = this.getSessionId();
+		return (k0 == null)?(0):(k0.hashCode());
+	}
+
+	public String     toString()
+	{
+		return String.format("Auth Session [%s]", getSessionId());
 	}
 
 
