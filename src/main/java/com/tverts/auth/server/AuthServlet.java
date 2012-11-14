@@ -39,7 +39,7 @@ public class AuthServlet extends GenericServlet
 		if(!(req instanceof HttpServletRequest))
 			throw new IllegalStateException();
 
-		if(!(req instanceof HttpServletResponse))
+		if(!(res instanceof HttpServletResponse))
 			throw new IllegalStateException();
 
 		this.service((HttpServletRequest)req, (HttpServletResponse)res);
@@ -67,6 +67,7 @@ public class AuthServlet extends GenericServlet
 		//~: create output writer
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(256);
 		Writer writer = new OutputStreamWriter(bos, "ASCII");
+		protocol.setWriter(writer);
 
 		//!: invoke the protocol
 		protocol.invoke();
