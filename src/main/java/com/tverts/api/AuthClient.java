@@ -2,6 +2,7 @@ package com.tverts.api;
 
 /* standard Java classes */
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -127,7 +128,7 @@ public class AuthClient
 
 		//~: insert port number
 		int pi = url.indexOf(':', 7);
-		if(pi == 4) //<-- http:
+		if(pi == -1) //<-- http:
 		{
 			pi  = url.indexOf('/', 7); //<-- after "http://"
 			url = url.substring(0, pi) + ":80" + url.substring(pi);
@@ -138,13 +139,13 @@ public class AuthClient
 
 		int ci = url.indexOf('/', 7);
 		if(ci == url.length() - 1)
-			url += "/auth/";
+			url += "auth/";
 
 		this.url = url;
 		return this;
 	}
 
-	public Long       getDomain()
+	public String     getDomain()
 	{
 		return domain;
 	}
@@ -152,8 +153,11 @@ public class AuthClient
 	/**
 	 * Integer value with the client domain key.
 	 */
-	public AuthClient initDomain(long domain)
+	public AuthClient initDomain(String domain)
 	{
+		if((domain = s2s(domain)) == null)
+			throw new IllegalArgumentException();
+
 		this.domain = domain;
 		return this;
 	}
@@ -207,6 +211,21 @@ public class AuthClient
 	public String     getSessionId()
 	{
 		return sessionId;
+	}
+
+	public Integer    getTimeout()
+	{
+		return timeout;
+	}
+
+	/**
+	 * Optional parameter of socket timeout
+	 * in milliseconds.
+	 */
+	public AuthClient initTimeout(Integer timeout)
+	{
+		this.timeout = timeout;
+		return this;
 	}
 
 
@@ -342,7 +361,7 @@ public class AuthClient
 		//~: issue close step (the check)
 		try
 		{
-			String status = request("close", null);
+			String status = request("touch", null);
 
 			if(!"touched".equals(status))
 				throw new AuthError(String.format(
@@ -400,14 +419,7 @@ public class AuthClient
 	protected String stepGreet()
 	  throws Exception
 	{
-		//~: HTTP GET greet
-		String greet = s2s(get(getURL() +
-		  "servlet/session?step=greet").toString());
-
-		if(greet == null) throw new IllegalStateException(
-		  "Recieved empty greet response from Authentication Server!");
-
-		return greet;
+		return gets(getURL() + "servlet/session?step=greet");
 	}
 
 	protected void   stepLogin(String greet)
@@ -445,19 +457,19 @@ public class AuthClient
 
 		//!: calculate the checksum
 		String H   = digestHex(
-		  Rc, Rs, getDomain(), getDomain(), P
+		  Rc, Rs, getDomain(), getLogin(), P
 		);
 
 		//~: login URL
 		String url = String.format(
-		  "%sservlet/session?step=login&%s&domain=%d&login=%s&Rc=%s&H=%s",
+		  "%sservlet/session?step=login&%s&domain=%s&login=%s&Rc=%s&H=%s",
 
 		  getURL(), greet, getDomain(), getLogin(),
-		  bytes2hex(Rc), H
+		  new String(bytes2hex(Rc)), H
 		);
 
 		//!: invoke the server
-		String sid = s2es(get(url).toString());
+		String sid = s2es(gets(url));
 
 		//~: decode Session ID
 		if(sid.startsWith("sid="))
@@ -472,7 +484,7 @@ public class AuthClient
 
 		//!: calculate the private session key
 		sessionKey = digest(
-		  Rc, Rs, sid, P
+		  Rc, Rs, sessionId, P
 		);
 	}
 
@@ -500,7 +512,7 @@ public class AuthClient
 		);
 
 		//!: issue the request
-		return s2s(get(url).toString());
+		return s2s(gets(url));
 	}
 
 
@@ -540,6 +552,44 @@ public class AuthClient
 		return new URL(url).getContent();
 	}
 
+	protected String   gets(String url)
+	  throws Exception
+	{
+		Exception   er = null;
+		InputStream is = (InputStream) get(url);
+		String      re = null;
+
+		try
+		{
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(128);
+			byte[]                buf = new byte[64];
+
+			for(int sz;((sz = is.read(buf)) > 0);)
+				bos.write(buf, 0, sz);
+			bos.close();
+
+			re = new String(bos.toByteArray(), "UTF-8");
+		}
+		catch(Exception e)
+		{
+			er = e;
+		}
+		finally
+		{
+			try
+			{
+				is.close();
+			}
+			catch(Exception e)
+			{
+				if(er == null) er = e;
+			}
+		}
+
+		if(er != null) throw er;
+		return re;
+	}
+
 	/**
 	 * Issues HTTP POST request with the streaming
 	 * processor given.
@@ -559,6 +609,8 @@ public class AuthClient
 			//~: set connection parameters
 			co.setDoOutput(streamer.isRequestStream());
 			co.setUseCaches(false);
+			if(getTimeout() != null)
+				co.setConnectTimeout(getTimeout());
 
 			//~: set HTTP parameters and headers
 			co.setRequestMethod("POST");
@@ -814,10 +866,11 @@ public class AuthClient
 
 	/* private: initialization parameters */
 
-	private volatile String url;
-	private volatile Long   domain;
-	private volatile String login;
-	private volatile String passhash;
+	private volatile String     url;
+	private volatile String     domain;
+	private volatile String     login;
+	private volatile String     passhash;
+	private volatile Integer    timeout;
 
 
 	/* authentication session state */

@@ -33,7 +33,6 @@
           <unit-entry name="main:webapp:WEB-INF:hibernate:tune.hbm.xml" />
           <unit-entry name="main:webapp:WEB-INF:hibernate:txns.hbm.xml" />
         </datasource-map>
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/c3p0.hbm.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/conn.hbm.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/opts.hbm.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/tune.hbm.xml" />
@@ -45,16 +44,15 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$">
+    <content url="file://$MODULE_DIR$/src">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" exported="" name="compile+runtime" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="compile-only" level="project" />
+    <orderEntry type="library" exported="" name="runtime-xroot" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="compile-xroot" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
