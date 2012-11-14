@@ -410,8 +410,10 @@ public class AuthProtocol implements Cloneable
 			if(sequence <= session.getSequence())
 				return MSG;
 
+
+			//HINT: access time (server time) is not updated here!
+
 			//!: update the session sequence
-			session.setServerTime(System.currentTimeMillis());
 			session.setSequence(sequence);
 			session.setClosed(true);
 

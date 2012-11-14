@@ -400,26 +400,21 @@ insert into auth_session (
 			throw new IllegalArgumentException();
 
 		//~: timestamp
-		long timestamp = System.currentTimeMillis();
+		long timestamp     = System.currentTimeMillis();
 
 		//~: close timestamp
-		Timestamp closets = !session.isClosed()?(null)
+		Timestamp closets  = !session.isClosed()?(null)
 		  :(new Timestamp(timestamp));
 
 		//~: access timestamp
-		Timestamp accessts = (session.getServerTime() < timestamp)
-		  ?(new Timestamp(timestamp))
-		  :(new Timestamp(session.getServerTime()));
-		session.setServerTime(accessts.getTime());
-
-
+		Timestamp accessts = new Timestamp(session.getServerTime());
 
 		try
 		{
 
 /*
 
-update auth_login set
+update auth_session set
   access_time = ?, close_time = ?,
   sequence_number = ?
 where (session_id = ?) and (close_time is null)
@@ -427,10 +422,10 @@ where (session_id = ?) and (close_time is null)
 */
 			PreparedStatement ps = connection.prepareStatement(
 
-"update auth_login set\n" +
+"update auth_session set\n" +
 "  access_time = ?, close_time = ?,\n" +
 "  sequence_number = ?\n" +
-"where session_id = ?"
+"where (session_id = ?) and (close_time is null)"
 
 			);
 
@@ -442,6 +437,9 @@ where (session_id = ?) and (close_time is null)
 
 			//[3]: sequence number
 			ps.setLong     (3, session.getSequence());
+
+			//[]: Session ID
+			ps.setString   (4, session.getSessionId());
 
 
 			//!: execute
