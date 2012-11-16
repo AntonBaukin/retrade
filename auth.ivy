@@ -45,6 +45,21 @@
       conf = 'sources; compile -> master'/>
 
 
+    <!-- XML, OXM [manually provided] -->
+
+    <dependency
+      org  = 'javax.xml.bind'
+      name = 'jaxb-api'
+      rev  = '2.2.4'
+      conf = 'sources; compile -> master'/>
+
+    <dependency
+      org  = 'com.sun.xml.bind'
+      name = 'jaxb-impl'
+      rev  = '2.2.4'
+      conf = 'sources; compile -> master'/>
+
+
     <!-- JUnit 4.8.x [manually provided] -->
 
     <dependency transitive = 'false'
