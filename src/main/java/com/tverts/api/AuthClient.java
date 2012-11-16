@@ -20,8 +20,20 @@ import java.util.concurrent.atomic.AtomicLong;
  * Create the client instance, login, then send
  * the requests to the remote system.
  *
- * This requests methods of the class are
- * thread-safe. Authentication ones are not!
+ * The authentication client is not thread safe
+ * by the nature of the protocol: each request
+ * has the incremented sequence number private
+ * to a session, and the server denies the
+ * requests with the number lower then the
+ * previously received valid request.
+ *
+ * If you send several requests in concurrent,
+ * they may reach the server not in the order
+ * of creating requests.
+ *
+ * You have to implement requests queueing
+ * for multi-threaded applications or just
+ * block the concurrent requests.
  *
  * Authentication protocol does not require
  * a secured connection to login. The request
@@ -381,6 +393,44 @@ public class AuthClient
 	}
 
 
+	/* public: requests processing */
+
+	/**
+	 * Sends authenticated request to the server.
+	 *
+	 * Server-generated errors are returned in
+	 * the resulting {@link Pong} object, unlike
+	 * the {@link #xrequest(Ping)} method.
+	 */
+	public Pong request(Ping ping)
+	  throws AuthError
+	{
+		//~: check the session exists
+		String err = checkSession();
+		if(err != null)
+			throw new AuthError(err).setAuthClient(this).
+			  setAuthStep("validate");
+
+		return null;
+	}
+
+	/**
+	 * Sends authenticated request to the server.
+	 *
+	 * Server-side processing errors are reported
+	 * as {@link PongError} exceptions.
+	 */
+	public Pong xrequest(Ping ping)
+	  throws AuthError, PongError
+	{
+		Pong pong = this.request(ping);
+
+		if(pong.getError() != null)
+			throw new PongError(ping, pong);
+		return pong;
+	}
+
+
 	/* protected: authentication parts */
 
 	protected String checkBeforeLogin()
@@ -519,30 +569,6 @@ public class AuthClient
 	/* protected: HTTP communications */
 
 	/**
-	 * Processor of HTTP POST request and response streams.
-	 */
-	public static interface PostStreamer
-	{
-		/* public: PostStreamer interface */
-
-		/**
-		 * Tells whether the POST request
-		 * would contain request body.
-		 */
-		public boolean isRequestStream();
-
-		/**
-		 * Writes the request content body
-		 * to POST to the remote server.
-		 */
-		public void    writeRequest(OutputStream os)
-		  throws Exception;
-
-		public void    readResponse(String contentType, InputStream is)
-		  throws Exception;
-	}
-
-	/**
 	 * Issues HTTP GET request returning the content
 	 * object depending on the response MIME type.
 	 */
@@ -591,105 +617,154 @@ public class AuthClient
 	}
 
 	/**
-	 * Issues HTTP POST request with the streaming
-	 * processor given.
+	 * Issues HTTP POST request with the optional
+	 * request bytes written as the request body.
+	 *
+	 * The bytes returned from the server are
+	 * the result of the call.
 	 */
-	protected void     post(String url, PostStreamer streamer)
+	protected byte[]   post(String url, byte[] request)
 	  throws Exception
 	{
-		Exception         er = null;
-		byte[]            bf = new byte[512];
-		OutputStream      ou = null;
-		InputStream       in = null;
-		HttpURLConnection co = (HttpURLConnection)
+		//~: take next sequence number
+		long   seqnum = sequence.incrementAndGet();
+
+		byte[] digest = digest((Object) request);
+
+		//!: calculate the checksum
+		String H      = digestHex(
+		  sessionId, seqnum, sessionKey, digest
+		);
+
+
+		//<: update the URL
+		{
+			StringBuilder s = new StringBuilder(url.length() + 48).
+			  append(url);
+
+			if(url.indexOf('?') == -1) s.append('?');
+			else s.append('&');
+
+			//~: session id
+			s.append("sid=").append(sessionId);
+
+			//~: sequence number
+			s.append("&sequence=").append(sessionId);
+
+			//~: checksum value
+			s.append("&H=").append(H);
+
+			url = s.toString();
+		}
+
+		//>: update the URL
+
+
+		//<: communicate with the server
+
+		byte[]            result  = null;
+		Exception         error   = null;
+		OutputStream      ostream = null;
+		InputStream       istream = null;
+		HttpURLConnection connect = (HttpURLConnection)
 		  new URL(url).openConnection();
 
 		try
 		{
-			//~: set connection parameters
-			co.setDoOutput(streamer.isRequestStream());
-			co.setUseCaches(false);
+			//~: set HTTP + connection parameters
+			connect.setRequestMethod("POST");
+			connect.setDoOutput(request != null);
+			connect.setUseCaches(false);
 			if(getTimeout() != null)
-				co.setConnectTimeout(getTimeout());
+				connect.setConnectTimeout(getTimeout());
 
-			//~: set HTTP parameters and headers
-			co.setRequestMethod("POST");
-			co.setRequestProperty("Content-type", "application/octet-stream");
-
-			//~: write the request body
-			if(co.getDoOutput())
+			//?: {has request content}
+			if(request != null)
 			{
-				ou = co.getOutputStream();
+				//~: set the HTTP headers
+				connect.setRequestProperty("Content-Type",   "application/octet-stream");
+				connect.setRequestProperty("Content-Length", Integer.toString(request.length));
 
-				//~: write the request
-				streamer.writeRequest(ou);
+				//~: write the request body
+				ostream = connect.getOutputStream();
+				ostream.write(request);
 
+				//~: close the output stream
 				try
 				{
-					ou.flush();
-					ou.close();
+					ostream.flush();
+					ostream.close();
 				}
 				finally
 				{
-					ou = null;
+					ostream = null;
 				}
 			}
 
 			//~: get the response stream
-			in = co.getInputStream();
+			istream = connect.getInputStream();
 
 			//?: {HTTP response code is not 200}
-			if(co.getResponseCode() != 200)
+			if(connect.getResponseCode() != 200)
 				throw new IllegalStateException(String.format(
 				  "Authentication server at URL [%s] had returned " +
 				  "error HTTP status code [%d], message is: [%s]!",
 
-				  url, co.getResponseCode(), s2es(co.getResponseMessage())
+				  url, connect.getResponseCode(), s2es(connect.getResponseMessage())
 				));
 
-			//!: read the server response
-			streamer.readResponse(co.getContentType(), in);
+			//~: read the server response
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(256);
+			byte[]                buf = new byte[256];
+
+			for(int sz;((sz = istream.read(buf)) > 0);)
+				bos.write(buf, 0, sz);
+			bos.close();
+			result = bos.toByteArray();
 		}
 		catch(Exception e)
 		{
-			er = e;
+			error = e;
 		}
 		finally
 		{
 			//~: close the output stream
-			if(ou != null) try
+			if(ostream != null) try
 			{
-				ou.close();
+				ostream.close();
 			}
 			catch(Exception e)
 			{
-				if(er == null) er = e;
+				if(error == null) error = e;
 			}
 
 			//~: close the input stream
-			if(in != null) try
+			if(istream != null) try
 			{
-				in.close();
+				istream.close();
 			}
 			catch(Exception e)
 			{
-				if(er == null) er = e;
+				if(error == null) error = e;
 			}
 
 			//~: close the connection
-			if(co != null) try
+			if(connect != null) try
 			{
-				co.disconnect();
+				connect.disconnect();
 			}
 			catch(Exception e)
 			{
-				if(er == null) er = e;
+				if(error == null) error = e;
 			}
 		}
 
-		if(er != null)
-			throw er;
+		if(error != null)
+			throw error;
 
+		//>: communicate with the server
+
+		return result;
 	}
 
 
