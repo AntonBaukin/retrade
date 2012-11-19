@@ -32,7 +32,7 @@ public final class AuthDigest
 
 		try
 		{
-			for(Object v : values)
+			for(Object v : values) if(v != null)
 			{
 				if(v instanceof Long)
 				{
@@ -62,6 +62,16 @@ public final class AuthDigest
 				if(v instanceof CharSequence) try
 				{
 					digest.update(v.toString().getBytes("UTF-8"));
+					continue;
+				}
+				catch(Exception e)
+				{
+					throw new RuntimeException(e);
+				}
+
+				if(v instanceof BytesStream) try
+				{
+					((BytesStream)v).digest(digest);
 					continue;
 				}
 				catch(Exception e)

@@ -8,7 +8,6 @@ import java.util.Map;
 
 /* JUnit library */
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -26,14 +25,14 @@ public class TestAuthProtocol
 {
 	/* test entry points */
 
-	@Test
+	@org.junit.Test
 	public void testStepGreet()
 	  throws Exception
 	{
 		new TestAuthClient().greet();
 	}
 
-	@Test
+	@org.junit.Test
 	public void testStepLogin()
 	  throws Exception
 	{
@@ -46,7 +45,7 @@ public class TestAuthProtocol
 		client.login();
 	}
 
-	@Test
+	@org.junit.Test
 	public void testStepTouch()
 	  throws Exception
 	{
@@ -60,7 +59,7 @@ public class TestAuthProtocol
 		client.touch();
 	}
 
-	@Test
+	@org.junit.Test
 	public void testStepClose()
 	  throws Exception
 	{
@@ -87,7 +86,7 @@ public class TestAuthProtocol
 		assertNotNull(error);
 	}
 
-	@Test
+	@org.junit.Test
 	public void testWrongPassword()
 	  throws Exception
 	{

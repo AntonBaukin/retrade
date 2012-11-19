@@ -31,6 +31,16 @@ public class AuthProtocol implements Cloneable
 		this.writer = writer;
 	}
 
+	public void   setPing(BytesStream ping)
+	{
+		this.ping = ping;
+	}
+
+	public void   setPong(BytesStream pong)
+	{
+		this.pong = pong;
+	}
+
 	public String getError()
 	{
 		return error;
@@ -39,7 +49,20 @@ public class AuthProtocol implements Cloneable
 	public void   invoke()
 	  throws IOException
 	{
-		this.error = dispatch();
+		if(this.request)
+			this.error = request();
+		else
+			this.error = dispatch();
+	}
+
+	public void   setRequest(boolean request)
+	{
+		this.request = request;
+	}
+
+	public void   setReceive(boolean receive)
+	{
+		this.receive = receive;
 	}
 
 	public void   initPrototype(DbConnect dbcPrototype)
@@ -68,7 +91,7 @@ public class AuthProtocol implements Cloneable
 	}
 
 
-	/* protocol implementation */
+	/* authentication protocol implementation */
 
 	protected String dispatch()
 	  throws IOException
@@ -411,7 +434,7 @@ public class AuthProtocol implements Cloneable
 				return MSG;
 
 
-			//HINT: access time (server time) is not updated here!
+			//HINT: access time (server time) is not updated on close!
 
 			//!: update the session sequence
 			session.setSequence(sequence);
@@ -422,6 +445,113 @@ public class AuthProtocol implements Cloneable
 
 			//~: write the success
 			writer.write("closed");
+		}
+		catch(Throwable e)
+		{
+			// txc = false; <-- close is committed always
+			throw new RuntimeException(e);
+		}
+		finally
+		{
+			dbc.disconnect(txc);
+		}
+
+		return null;
+	}
+
+
+	/* requests implementation */
+
+	protected String request()
+	{
+		//~: sid
+		String sid = param("sid");
+		if(sid == null)
+			return "Send Session ID (sid) parameter.";
+
+		//~: parse sequence number
+		long sequence;
+		if(param("sequence") == null)
+			return "Send sequence number (sequence) parameter.";
+
+		try
+		{
+			sequence = Long.parseLong(param("sequence"));
+		}
+		catch(NumberFormatException e)
+		{
+			return "Parameter sequence (sequence number) must be a long number.";
+		}
+
+		//~: H (request signature)
+		String H = param("H");
+		if(H == null)
+			return "Send H (request signature) parameter.";
+
+		//~: connect to the database
+		Boolean   txc = null;
+		DbConnect dbc = createDbConnect();
+		dbc.connect();
+
+		//~: error text
+		final String MSG = "Wrong H signature.";
+
+		try
+		{
+			//~: load the session
+			AuthSession session = new AuthSession();
+			session.setSessionId(sid);
+			dbc.loadSession(session);
+
+			//?: {session is closed / not exists}
+			if(session.isClosed())
+				return MSG; //!: do not expose actual session state
+
+			if(session.getSessionKey() == null)
+				throw new IllegalStateException();
+
+			//~: payload digest
+			byte[] pd = null;
+			if(ping.length() != 0L)
+				pd = digest.sign(ping);
+
+			//~: check the signature
+			String xH = digest.signHex(
+			  sid, sequence, session.getSessionKey().toCharArray(),
+			  (this.receive)?("receive"):("request"), pd
+			);
+
+			if(!xH.equals(H))
+				return MSG;
+
+			//?: {session timed out}
+			long stimeout = System.currentTimeMillis() - session.getServerTime();
+			if(stimeout > AuthConfig.INSTANCE.getSessionTimeout())
+				return MSG;
+
+			//~: check sequence number
+			if(sequence <= session.getSequence())
+				return MSG;
+
+
+			//!: update the session sequence
+			session.setSequence(sequence);
+			session.setServerTime(System.currentTimeMillis());
+
+			dbc.touchSession(session);
+			txc = true;
+
+
+			//?: {this is a receive Ping}
+			if(this.receive)
+			{
+
+			}
+			//!: handle a request Pong
+			else
+			{
+
+			}
 		}
 		catch(Throwable e)
 		{
@@ -499,7 +629,11 @@ public class AuthProtocol implements Cloneable
 
 	private Map<String, String> params;
 	private Writer              writer;
+	private BytesStream         ping;
+	private BytesStream         pong;
 	private String              error;
+	private boolean             request;
+	private boolean             receive;
 
 
 	/* (prototype state): shared state */

@@ -48,12 +48,40 @@ public class AuthServlet extends GenericServlet
 	public void service(HttpServletRequest req, HttpServletResponse res)
 	  throws ServletException, IOException
 	{
-		if(!"get".equalsIgnoreCase(req.getMethod()))
-		{
-			res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			return;
-		}
+		String  path = req.getPathInfo();
+		boolean get  = "GET".equalsIgnoreCase(req.getMethod());
+		boolean post = "POST".equalsIgnoreCase(req.getMethod());
 
+
+		//?: {authentication session request}
+		if(get && path.endsWith("/session"))
+			session(req, res);
+		//?: {request object processing}
+		else if(post && path.endsWith("/request"))
+			request(req, res, false);
+		//?: {receive object processing}
+		else if(post && path.endsWith("/receive"))
+			request(req, res, true);
+		else
+			res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+	}
+
+	public void init()
+	  throws ServletException
+	{
+		//~: read configuration parameters
+		initAuthConfig();
+
+		//~: create the protocol prototype
+		initAuthProtocol();
+	}
+
+
+	/* protected: servicing */
+
+	protected void session(HttpServletRequest req, HttpServletResponse res)
+	  throws ServletException, IOException
+	{
 		//~: create auth protocol instance
 		AuthProtocol protocol = protocolPrototype.clone();
 
@@ -95,14 +123,67 @@ public class AuthServlet extends GenericServlet
 		res.getOutputStream().write(buffer);
 	}
 
-	public void init()
-	  throws ServletException
+	protected void request(HttpServletRequest req, HttpServletResponse res, boolean recieve)
+	  throws ServletException, IOException
 	{
-		//~: read configuration parameters
-		initAuthConfig();
+		//~: create auth protocol instance
+		AuthProtocol protocol = protocolPrototype.clone();
 
-		//~: create the protocol prototype
-		initAuthProtocol();
+		//~: assign income parameters
+		for(Enumeration<String> i = req.getParameterNames();(i.hasMoreElements());)
+		{
+			String p = i.nextElement();
+			protocol.setParameter(p, req.getParameter(p));
+		}
+
+		BytesStream is = null;
+		BytesStream os = null;
+
+		try
+		{
+			//~: set request processing mode
+			protocol.setRequest(true);
+			protocol.setReceive(recieve);
+
+			//~: read the input object
+			is = new BytesStream();
+			is.write(req.getInputStream());
+			protocol.setPing(is);
+
+			//~: create output stream
+			os = new BytesStream();
+			protocol.setPong(os);
+
+			//!: invoke the protocol
+			protocol.invoke();
+
+			//~: set prevent caching headers
+			res.setHeader("Cache-Control",
+			  "no-store, no-cache, must-revalidate, max-age=0");
+			res.setHeader("Pragma", "no-cache");
+
+			//?: {has protocol error}
+			if(protocol.getError() != null)
+			{
+				res.sendError(HttpServletResponse.SC_FORBIDDEN, protocol.getError());
+				return;
+			}
+
+			//~: content type (bytes)
+			res.setHeader("Content-Type",   "application/octet-stream");
+			res.setHeader("Content-Length", Long.toString(os.length()));
+
+			//!: copy the content to the output
+			os.copy(res.getOutputStream());
+		}
+		finally
+		{
+			if(is != null)
+				is.close();
+
+			if(os != null)
+				os.close();
+		}
 	}
 
 

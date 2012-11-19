@@ -57,7 +57,10 @@
 
   <servlet-mapping>
     <servlet-name>auth_AuthenticationServlet</servlet-name>
+
     <url-pattern>/servlet/session</url-pattern>
+    <url-pattern>/servlet/request</url-pattern>
+    <url-pattern>/servlet/receive</url-pattern>
   </servlet-mapping>
 
 
