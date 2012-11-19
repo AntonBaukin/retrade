@@ -20,6 +20,12 @@ public class PongError extends RuntimeException
 		this.pong = pong;
 	}
 
+	public PongError(Throwable cause, Ping ping)
+	{
+		super(cause);
+		this.ping = ping;
+	}
+
 
 	/* public: PongError interface */
 

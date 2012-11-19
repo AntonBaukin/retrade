@@ -2,15 +2,24 @@ package com.tverts.api;
 
 /* standard Java classes */
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
+
+/* Java API for XML Binding */
+
+import javax.xml.bind.JAXBContext;
+
 
 
 /**
@@ -48,8 +57,9 @@ public class AuthClient
 
 	public AuthClient()
 	{
-		this.sequence = new AtomicLong();
-		this.random   = createRandom();
+		this.sequence    = new AtomicLong();
+		this.random      = createRandom();
+		this.jaxbContext = createJAXBContext();
 	}
 
 
@@ -401,6 +411,9 @@ public class AuthClient
 	 * Server-generated errors are returned in
 	 * the resulting {@link Pong} object, unlike
 	 * the {@link #xrequest(Ping)} method.
+	 *
+	 * Note that not a receiving Pings would produce
+	 * undefined Ping results in the most cases.
 	 */
 	public Pong request(Ping ping)
 	  throws AuthError
@@ -411,7 +424,111 @@ public class AuthClient
 			throw new AuthError(err).setAuthClient(this).
 			  setAuthStep("validate");
 
-		return null;
+		//~: Ping type: request | receive
+		boolean receive = (ping.getRequest() == null);
+
+		//~: request type
+		if(!receive)
+			ping.setType(ping.getRequest().getClass().getName());
+
+
+		//<: create POST payload
+
+		byte[] payload = null;
+
+		//?: {a receiving ping}
+		if(receive && (ping.getKey() != null)) try
+		{
+			payload = ping.getKey().getBytes("UTF-8");
+		}
+		catch(Exception e)
+		{
+			throw new IllegalStateException(
+			  "Error occured while writing Ping key as UTF-8 string!", e);
+		}
+
+		//?: {a requesting ping} write the Ping object as XML
+		if(!receive) try
+		{
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(256);
+			OutputStreamWriter    osw = new OutputStreamWriter(bos, "UTF-8");
+
+			//~: write the object to the stream
+			getJAXBContext().createMarshaller().
+			  marshal(ping, osw); //!: write the Ping itself
+
+			//~: get the result bytes
+			osw.flush();  osw.close();
+			payload = bos.toByteArray();
+		}
+		catch(Exception e)
+		{
+			throw new IllegalStateException(
+			  "Error occured while writing Ping object into XML!", e);
+		}
+
+		//>: create POST payload
+
+
+		//!: create the URL
+		StringBuilder url = new StringBuilder(getURL().length() + 24).
+		  append(getURL());
+
+		//?: {a receiving ping}
+		if(receive)
+			url.append("/servlet/receive");
+		else
+			url.append("/servlet/request");
+
+		//!: send the request
+		try
+		{
+			payload = post(url.toString(),
+			  receive?("receive"):("request"), payload);
+		}
+		catch(Exception e)
+		{
+			throw new IllegalStateException(
+			  "Error occured while executing " +
+			  "POST HTTP request to the server!", e
+			);
+		}
+
+		if((payload != null) && (payload.length == 0))
+			payload = null;
+
+
+		//?: {it is not a receive Ping} expected nothing in request post result
+		if(!receive && (payload == null))
+			return null;
+
+		if(payload == null)
+			throw new IllegalStateException(
+			  "Server had returned empty response Pong object bytes!");
+
+		//<: xml to object
+		Object pong;
+
+		try
+		{
+			InputStreamReader isr = new InputStreamReader(
+			  new ByteArrayInputStream(payload), "UTF-8");
+
+			pong = getJAXBContext().createUnmarshaller().unmarshal(
+			  new InputStreamReader(new ByteArrayInputStream(payload), "UTF-8"));
+		}
+		catch(Exception e)
+		{
+			throw new IllegalStateException(
+			  "Error occured while reading Pong object from XML!", e);
+		}
+		//>: xml to object
+
+		if(!(pong instanceof Pong))
+			throw new IllegalStateException(
+			  "Server had returned not a Pong instance!");
+
+		return (Pong)pong;
 	}
 
 	/**
@@ -423,9 +540,22 @@ public class AuthClient
 	public Pong xrequest(Ping ping)
 	  throws AuthError, PongError
 	{
-		Pong pong = this.request(ping);
+		Pong pong;
 
-		if(pong.getError() != null)
+		try
+		{
+			pong = this.request(ping);
+		}
+		catch(AuthError e)
+		{
+			throw e;
+		}
+		catch(RuntimeException e)
+		{
+			throw new PongError(e, ping);
+		}
+
+		if((pong != null) && (pong.getError() != null))
 			throw new PongError(ping, pong);
 		return pong;
 	}
@@ -623,7 +753,7 @@ public class AuthClient
 	 * The bytes returned from the server are
 	 * the result of the call.
 	 */
-	protected byte[]   post(String url, byte[] request)
+	protected byte[]   post(String url, String opcode, byte[] request)
 	  throws Exception
 	{
 		//~: take next sequence number
@@ -633,7 +763,7 @@ public class AuthClient
 
 		//!: calculate the checksum
 		String H      = digestHex(
-		  sessionId, seqnum, sessionKey, digest
+		  sessionId, seqnum, sessionKey, opcode, digest
 		);
 
 
@@ -656,7 +786,6 @@ public class AuthClient
 
 			url = s.toString();
 		}
-
 		//>: update the URL
 
 
@@ -765,6 +894,47 @@ public class AuthClient
 		//>: communicate with the server
 
 		return result;
+	}
+
+
+	/* protected: JAXB support */
+
+	protected JAXBContext getJAXBContext()
+	{
+		return this.jaxbContext;
+	}
+
+	protected JAXBContext createJAXBContext()
+	{
+		try
+		{
+			//<: read list file (with packages names)
+
+			URL list = AuthClient.class.getResource("jaxb.list");
+			if(list == null) throw new IllegalStateException(
+			  "Can't find jaxb.list file!");
+
+			StringBuilder  sb = new StringBuilder(1024);
+			BufferedReader br = new BufferedReader(
+			  new InputStreamReader(list.openStream(), "UTF-8"), 256);
+			String         s;
+
+			while((s = br.readLine()) != null)
+				if((s = s2s(s)) != null)
+					sb.append((sb.length() == 0)?(""):(":")).append(s);
+			br.close();
+
+			//>: read list file
+
+
+			//!: create the context
+			return JAXBContext.newInstance(sb.toString());
+		}
+		catch(Exception e)
+		{
+			throw new IllegalStateException(
+			  "Can't create AuthClient (API) JAXB Context!", e);
+		}
 	}
 
 
@@ -954,4 +1124,9 @@ public class AuthClient
 	private volatile byte[]     sessionKey; //<-- private session key
 	private volatile AtomicLong sequence;   //<-- incremented sequence of the requests
 	private final Random        random;     //<-- secure random of the client
+
+
+	/* authentication session state */
+
+	private volatile JAXBContext jaxbContext;
 }

@@ -44,8 +44,8 @@ public class Pong
 	}
 
 	/**
-	 * Response object. Assigned always
-	 * when there is no error.
+	 * Response object. Assigned only
+	 * for the receiving Pings.
 	 */
 	public Object getObject()
 	{

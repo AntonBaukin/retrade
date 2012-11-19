@@ -12,6 +12,20 @@ import javax.xml.bind.annotation.XmlRootElement;
  * be a Java Bean compatible with JAXB
  * Object-XML mapping protocol.
  *
+ * If the request object is undefined, this
+ * Ping request is for receiving the result
+ * of the previous request object sent
+ * in this session.
+ *
+ * When receiving the response the server
+ * would return the next undelivered
+ * result object. After this the result
+ * is marked and not sent again. But it
+ * is still possible within some period
+ * of time to get the same instance again
+ * by sending receiving Ping with the
+ * key set to the key request of interest.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -23,6 +37,12 @@ public class Ping
 	/**
 	 * Optional key of the request assigned
 	 * by the client. Length may not exceed 255.
+	 *
+	 * For receiving Pings set the key undefined
+	 * to return the next undelivered response.
+	 *
+	 * Define the key to return the ready response
+	 * regardless the delivery mark.
 	 */
 	public String  getKey()
 	{
@@ -49,7 +69,12 @@ public class Ping
 	}
 
 	/**
-	 * The request object.
+	 * The request object instance. When it is
+	 * specified, the server would place it
+	 * in the processing queue for the execution.
+	 *
+	 * If the request is undefined, this Ping
+	 * instance is a response receiver.
 	 */
 	public Object  getRequest()
 	{
