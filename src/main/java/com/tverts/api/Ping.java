@@ -43,6 +43,13 @@ public class Ping
 	 *
 	 * Define the key to return the ready response
 	 * regardless the delivery mark.
+	 *
+	 * WARNING! The key may not be a string starting
+	 * with "@" and followed by integer number. Else,
+	 * database store collisions are possible.
+	 *
+	 * NOTE! The defined key must be unique within
+	 * the session.
 	 */
 	public String  getKey()
 	{

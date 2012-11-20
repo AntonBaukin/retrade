@@ -1,0 +1,91 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.auth'>
+
+  <class name = 'ExecRequest' table = 'exec_request' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_exec_request'/>
+
+
+    <!-- Session ID -->
+
+    <property name = 'sessionId' type = 'string'>
+
+      <column name = 'session_id' not-null = 'true' length = '16'
+        unique-key = 'ux_exec_request'>
+
+        <comment>Copy of the primary key of the AuthSession object</comment>
+      </column>
+    </property>
+
+
+    <!-- Client Key -->
+
+    <property name = 'clientKey' type = 'string'>
+
+      <column name = 'client_key' not-null = 'true' length = '255'
+        unique-key = 'ux_exec_request'>
+
+        <comment>The key assigned by the client, or the primary key combined string</comment>
+      </column>
+    </property>
+
+
+    <!-- Request Object (BLOB) -->
+
+    <property name = 'request' type = 'blob'>
+
+      <column name = 'request_object' not-null = 'true'>
+        <comment>The request Ping object as UTF-8 XML text.</comment>
+      </column>
+    </property>
+
+
+    <!-- Response Object (BLOB) -->
+
+    <property name = 'response' type = 'blob'>
+
+      <column name = 'response_object'>
+        <comment>The response Pong object as UTF-8 XML text.</comment>
+      </column>
+    </property>
+
+
+    <!-- Error Flag -->
+
+    <property name = 'error'>
+
+      <column name = 'has_error' not-null = 'true' default = 'false'>
+        <comment>Flag indicating that respone Pong object has error</comment>
+      </column>
+    </property>
+
+
+    <!-- Request Time -->
+
+    <property name = 'requestTime' type = 'timestamp'>
+
+      <column name = 'request_time' not-null = 'true'>
+        <comment>The timestamp of the request</comment>
+      </column>
+    </property>
+
+
+    <!-- Response Time -->
+
+    <property name = 'responseTime' type = 'timestamp'>
+
+      <column name = 'response_time'
+        index = 'ix_exec_request_response_time'>
+
+        <comment>The timestamp of the response</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
