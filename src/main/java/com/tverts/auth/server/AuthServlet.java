@@ -173,8 +173,12 @@ public class AuthServlet extends GenericServlet
 			res.setHeader("Content-Type",   "application/octet-stream");
 			res.setHeader("Content-Length", Long.toString(os.length()));
 
+			if((protocol.getPongHash() != null) && (os.length() != 0L))
+				res.setHeader("Auth-Digest", protocol.getPongHash());
+
 			//!: copy the content to the output
 			os.copy(res.getOutputStream());
+			res.getOutputStream().flush();
 		}
 		finally
 		{
@@ -184,6 +188,11 @@ public class AuthServlet extends GenericServlet
 			if(os != null)
 				os.close();
 		}
+
+		//HINT: we commit the invocation to the database
+		//  after the data were sent to the client.
+
+		protocol.commit(); //<-- separate transaction!
 	}
 
 

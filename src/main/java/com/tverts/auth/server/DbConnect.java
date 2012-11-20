@@ -79,7 +79,7 @@ public class DbConnect implements Cloneable
 	}
 
 
-	/* public: DbConnect (data access) interface */
+	/* public: DbConnect (authentication) interface */
 
 	public void   initDatabase()
 	{
@@ -130,6 +130,7 @@ public class DbConnect implements Cloneable
 	}
 
 	public String getPassword(Long domain, String login)
+	  throws SQLException
 	{
 		if(connection == null)
 			throw new IllegalStateException();
@@ -145,34 +146,27 @@ select lo.passhash from auth_login lo where
 
 */
 
-		try
-		{
-			PreparedStatement ps = connection.prepareStatement(
+		PreparedStatement ps = connection.prepareStatement(
 
-"select lo.passhash from auth_login lo where\n" +
-"  (lo.fk_domain = ?) and (lo.ux_login = ?) and\n" +
-"  (lo.close_time is null)"
+  "select lo.passhash from auth_login lo where\n" +
+  "  (lo.fk_domain = ?) and (lo.ux_login = ?) and\n" +
+  "  (lo.close_time is null)"
 
-			);
+		);
 
-			ps.setLong  (1, domain);
-			ps.setString(2, login);
+		ps.setLong  (1, domain);
+		ps.setString(2, login);
 
-			ps.execute();
-			if(ps.getResultSet().next())
-				result = ps.getResultSet().getString(1);
-
-			ps.close();
-		}
-		catch(SQLException e)
-		{
-			throw new RuntimeException(e);
-		}
+		ps.execute();
+		if(ps.getResultSet().next())
+			result = ps.getResultSet().getString(1);
+		ps.close();
 
 		return result;
 	}
 
 	public void   loadSession(AuthSession session)
+	  throws SQLException
 	{
 		if(connection == null)
 			throw new IllegalStateException();
@@ -190,62 +184,56 @@ where (se.session_id = ?)
 
 */
 
-		try
+		PreparedStatement ps = connection.prepareStatement(
+
+  "select se.close_time, lo.fk_domain, lo.ux_login,\n" +
+  "  se.access_time, se.session_key, se.sequence_number\n" +
+  "from auth_session se join auth_login lo\n" +
+  "  on se.fk_login = lo.pk_entity\n" +
+  "where (se.session_id = ?)"
+
+		);
+
+		ps.setString(1, session.getSessionId());
+		ps.execute();
+
+		ResultSet rs = ps.getResultSet();
+
+		//?: {the session is not found}
+		if(!rs.next())
 		{
-			PreparedStatement ps = connection.prepareStatement(
-
-"select se.close_time, lo.fk_domain, lo.ux_login,\n" +
-"  se.access_time, se.session_key, se.sequence_number\n" +
-"from auth_session se join auth_login lo\n" +
-"  on se.fk_login = lo.pk_entity\n" +
-"where (se.session_id = ?)"
-
-			);
-
-			ps.setString(1, session.getSessionId());
-			ps.execute();
-
-			ResultSet rs = ps.getResultSet();
-
-			//?: {the session is not found}
-			if(!rs.next())
-			{
-				session.setClosed(true);
-
-				ps.close();
-				return;
-			}
-
-			//[1]: is closed
-			rs.getTimestamp(1);
-			session.setClosed(!rs.wasNull());
-
-			//[2]: domain
-			session.setDomain(rs.getLong(2));
-
-			//[3]: login
-			session.setLogin(rs.getString(3));
-
-			//[4]: server time
-			Timestamp ts = rs.getTimestamp(4);
-			if(!rs.wasNull())
-				session.setServerTime(ts.getTime());
-
-			//[5]: session key
-			session.setSessionKey(rs.getString(5));
-
-			//[6]: sequence number
-			session.setSequence(rs.getLong(6));
+			session.setClosed(true);
 
 			ps.close();
+			return;
 		}
-		catch(SQLException e)
-		{
-			throw new RuntimeException(e);
-		}
+
+		//[1]: is closed
+		rs.getTimestamp(1);
+		session.setClosed(!rs.wasNull());
+
+		//[2]: domain
+		session.setDomain(rs.getLong(2));
+
+		//[3]: login
+		session.setLogin(rs.getString(3));
+
+		//[4]: server time
+		Timestamp ts = rs.getTimestamp(4);
+		if(!rs.wasNull())
+			session.setServerTime(ts.getTime());
+
+		//[5]: session key
+		session.setSessionKey(rs.getString(5));
+
+		//[6]: sequence number
+		session.setSequence(rs.getLong(6));
+
+		ps.close();
 	}
 
 	public void   saveSession(AuthSession session)
+	  throws SQLException
 	{
 		if(connection == null)
 			throw new IllegalStateException();
@@ -268,7 +256,7 @@ where (se.session_id = ?)
 
 		//~: close time
 		Timestamp closets  = (!session.isClosed())?(null)
-		  :(new Timestamp(timestamp));
+		                                          :(new Timestamp(timestamp));
 
 		//~: access timestamp
 		Timestamp accessts = (session.getServerTime() < timestamp)
@@ -276,9 +264,7 @@ where (se.session_id = ?)
 		  :(new Timestamp(session.getServerTime()));
 		session.setServerTime(accessts.getTime());
 
-		try
-		{
-			//~: search for the login
+		//~: search for the login
 
 /*
 
@@ -287,35 +273,35 @@ select lo.pk_entity from auth_login lo where
   (lo.close_time is null)
 
 */
-			long              lo;
-			PreparedStatement ps = connection.prepareStatement(
+		long              lo;
+		PreparedStatement ps = connection.prepareStatement(
 
-"select lo.pk_entity from auth_login lo where\n" +
-"  (lo.fk_domain = ?) and (lo.ux_login = ?) and\n" +
-"  (lo.close_time is null)"
+  "select lo.pk_entity from auth_login lo where\n" +
+  "  (lo.fk_domain = ?) and (lo.ux_login = ?) and\n" +
+  "  (lo.close_time is null)"
 
-			);
+);
 
-			ps.setLong  (1, session.getDomain());
-			ps.setString(2, session.getLogin());
-			ps.execute();
+		ps.setLong  (1, session.getDomain());
+		ps.setString(2, session.getLogin());
+		ps.execute();
 
-			//?: {no actual login found}
-			if(!ps.getResultSet().next())
-			{
-				ps.close();
-
-				throw new IllegalStateException(String.format(
-				  "No actual record found for domain [%d] and login '%s'!",
-				  session.getDomain(), session.getLogin()
-				));
-			}
-
-			lo = ps.getResultSet().getLong(1);
+		//?: {no actual login found}
+		if(!ps.getResultSet().next())
+		{
 			ps.close();
 
+			throw new IllegalStateException(String.format(
+			  "No actual record found for domain [%d] and login '%s'!",
+			  session.getDomain(), session.getLogin()
+			));
+		}
 
-			//~: save the session
+		lo = ps.getResultSet().getLong(1);
+		ps.close();
+
+
+		//~: save the session
 /*
 
 insert into auth_session (
@@ -327,56 +313,52 @@ insert into auth_session (
 ) values (?, ?, ?, ?, ?, ?, ?)
 
 */
-			ps = connection.prepareStatement(
+		ps = connection.prepareStatement(
 
-"insert into auth_session (\n" +
-"\n" +
-"  session_id, fk_login, session_key,\n" +
-"  create_time, access_time, close_time,\n" +
-"  sequence_number\n" +
-"\n" +
-") values (?, ?, ?, ?, ?, ?, ?)"
+  "insert into auth_session (\n" +
+  "\n" +
+  "  session_id, fk_login, session_key,\n" +
+  "  create_time, access_time, close_time,\n" +
+  "  sequence_number\n" +
+  "\n" +
+  ") values (?, ?, ?, ?, ?, ?, ?)"
 
-			);
+		);
 
-			//[1]: session_id (primary key)
-			ps.setString(1, session.getSessionId());
+		//[1]: session_id (primary key)
+		ps.setString(1, session.getSessionId());
 
-			//[2]: login
-			ps.setLong(2, lo);
+		//[2]: login
+		ps.setLong(2, lo);
 
-			//[3]: session key
-			ps.setString(3, session.getSessionKey());
+		//[3]: session key
+		ps.setString(3, session.getSessionKey());
 
-			//[4]: create time
-			ps.setTimestamp(4, new Timestamp(timestamp));
+		//[4]: create time
+		ps.setTimestamp(4, new Timestamp(timestamp));
 
-			//[5]: access time
-			ps.setTimestamp(5, accessts);
+		//[5]: access time
+		ps.setTimestamp(5, accessts);
 
-			//[6]: close time
-			ps.setTimestamp(6, closets);
+		//[6]: close time
+		ps.setTimestamp(6, closets);
 
-			//[7]: sequence number
-			ps.setLong(7, session.getSequence());
+		//[7]: sequence number
+		ps.setLong(7, session.getSequence());
 
 
-			//!: execute insert
-			if(ps.executeUpdate() != 1)
-			{
-				ps.close();
-				throw new IllegalStateException();
-			}
-
-			ps.close();
-		}
-		catch(SQLException e)
+		//!: execute insert
+		if(ps.executeUpdate() != 1)
 		{
-			throw new RuntimeException(e);
+			ps.close();
+			throw new IllegalStateException();
 		}
+
+		ps.close();
 	}
 
 	public void   touchSession(AuthSession session)
+	  throws SQLException
 	{
 		if(connection == null)
 			throw new IllegalStateException();
@@ -394,8 +376,6 @@ insert into auth_session (
 		//~: access timestamp
 		Timestamp accessts = new Timestamp(session.getServerTime());
 
-		try
-		{
 
 /*
 
@@ -405,42 +385,105 @@ update auth_session set
 where (session_id = ?) and (close_time is null)
 
 */
-			PreparedStatement ps = connection.prepareStatement(
+		PreparedStatement ps = connection.prepareStatement(
 
-"update auth_session set\n" +
-"  access_time = ?, close_time = ?,\n" +
-"  sequence_number = ?\n" +
-"where (session_id = ?) and (close_time is null)"
+  "update auth_session set\n" +
+  "  access_time = ?, close_time = ?,\n" +
+  "  sequence_number = ?\n" +
+  "where (session_id = ?) and (close_time is null)"
 
-			);
+		);
 
-			//[1]: access time
-			ps.setTimestamp(1, accessts);
+		//[1]: access time
+		ps.setTimestamp(1, accessts);
 
-			//[2]: close time
-			ps.setTimestamp(2, closets);
+		//[2]: close time
+		ps.setTimestamp(2, closets);
 
-			//[3]: sequence number
-			ps.setLong     (3, session.getSequence());
+		//[3]: sequence number
+		ps.setLong     (3, session.getSequence());
 
-			//[]: Session ID
-			ps.setString   (4, session.getSessionId());
+		//[]: Session ID
+		ps.setString   (4, session.getSessionId());
 
 
-			//!: execute
-			if(ps.executeUpdate() != 1)
-			{
-				ps.close();
-				throw new IllegalStateException();
-			}
-
-			ps.close();
-
-		}
-		catch(SQLException e)
+		//!: execute
+		if(ps.executeUpdate() != 1)
 		{
-			throw new RuntimeException(e);
+			ps.close();
+			throw new IllegalStateException();
 		}
+
+		ps.close();
+	}
+
+
+	/* public: DbConnect (requests) interface */
+
+	public Runnable receive(AuthSession session, String clientKey, BytesStream output)
+	  throws SQLException
+	{
+		return null;
+	}
+
+	public void     request(AuthSession session, BytesStream input)
+	  throws SQLException
+	{
+		//~: get next primary key value
+
+		PreparedStatement ps;
+		long              pk;
+
+
+// select nextval('pkeys_exec_request')
+
+		ps = connection.prepareStatement(
+
+  "select nextval('pkeys_exec_request')"
+
+		);
+
+		ps.execute();
+		ps.getResultSet().next();
+		pk = ps.getResultSet().getLong(1);
+		ps.close();
+
+
+		//~: insert the record
+
+/*
+
+insert into exec_request  (
+
+  pk_exec_request, fk_domain, session_id,
+  client_key, request_object, requestTime
+
+) values (?, ?, ?, ?, ?, ?)
+
+*/
+		ps = connection.prepareStatement(
+
+  "insert into exec_request  (\n" +
+  "\n" +
+  "  pk_exec_request, fk_domain, session_id,\n" +
+  "  client_key, request_object, requestTime\n" +
+  "\n" +
+  ") values (?, ?, ?, ?, ?, ?)"
+
+		);
+
+		//[1]: primary key
+		ps.setLong(1, pk);
+
+		//[2]: domain
+		ps.setLong(2, session.getDomain());
+
+		//[3]: Session ID
+		ps.setString(3, session.getSessionId());
+
+		//[4]: client key
+		//if(client)
+
 	}
 
 

@@ -2,6 +2,7 @@ package com.tverts.auth.server;
 
 /* standard Java classes */
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
@@ -41,9 +42,24 @@ public class AuthProtocol implements Cloneable
 		this.pong = pong;
 	}
 
+	public String getPongHash()
+	{
+		return pongHash;
+	}
+
 	public String getError()
 	{
 		return error;
+	}
+
+	public void   setRequest(boolean request)
+	{
+		this.request = request;
+	}
+
+	public void   setReceive(boolean receive)
+	{
+		this.receive = receive;
 	}
 
 	public void   invoke()
@@ -55,14 +71,19 @@ public class AuthProtocol implements Cloneable
 			this.error = dispatch();
 	}
 
-	public void   setRequest(boolean request)
+	/**
+	 * Call this method after invoking request-receive
+	 * actions and all the response (Pong) data were
+	 * sent to the client.
+	 *
+	 * This delayed commit reduces the probability
+	 * of marking execution requests as delivered
+	 * on broken in-the-middle connections.
+	 */
+	public void   commit()
 	{
-		this.request = request;
-	}
-
-	public void   setReceive(boolean receive)
-	{
-		this.receive = receive;
+		if(invokeCommit != null)
+			invokeCommit.run();
 	}
 
 	public void   initPrototype(DbConnect dbcPrototype)
@@ -515,9 +536,12 @@ public class AuthProtocol implements Cloneable
 			if(ping.length() != 0L)
 				pd = digest.sign(ping);
 
+			//~: session key characters (for hash check)
+			char[] skey = session.getSessionKey().toCharArray();
+
 			//~: check the signature
 			String xH = digest.signHex(
-			  sid, sequence, session.getSessionKey().toCharArray(),
+			  sid, sequence, skey,
 			  (this.receive)?("receive"):("request"), pd
 			);
 
@@ -545,13 +569,27 @@ public class AuthProtocol implements Cloneable
 			//?: {this is a receive Ping}
 			if(this.receive)
 			{
+				//~: get the client key (from HTTP POST body)
+				ByteArrayOutputStream bos =
+				  new ByteArrayOutputStream((int) ping.length());
+				ping.copy(bos);
+				bos.close();
 
+				String clientKey = new String(bos.toByteArray(), "UTF-8");
+
+				//!: do receive
+				invokeCommit = dbc.receive(session, clientKey, pong);
+
+				//~: calculate the resulting message digest
+				if(pong.length() != 0)
+					pongHash = digest.signHex(
+					  sid, sequence, skey, digest.sign(pong)
+					);
 			}
-			//!: handle a request Pong
+			//!: handle a request Ping
 			else
-			{
-
-			}
+				//!: save the request into the database
+				dbc.request(session, ping);
 		}
 		catch(Throwable e)
 		{
@@ -634,6 +672,8 @@ public class AuthProtocol implements Cloneable
 	private Writer              writer;
 	private BytesStream         ping;
 	private BytesStream         pong;
+	private String              pongHash;
+	private Runnable            invokeCommit;
 	private String              error;
 	private boolean             request;
 	private boolean             receive;
