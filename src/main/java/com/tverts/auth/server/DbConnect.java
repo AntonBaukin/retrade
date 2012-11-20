@@ -86,7 +86,7 @@ public class DbConnect implements Cloneable
 		try
 		{
 			createSequence("auth_protocol_index");
-			createSequence("auth_request_key");
+			createSequence("pkeys_exec_request");
 		}
 		catch(SQLException e)
 		{

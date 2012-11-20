@@ -4,6 +4,7 @@ package com.tverts.auth.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Random;
 
 /* JUnit library */
@@ -32,6 +33,8 @@ public class TestSupportClasses
 			gen.nextBytes(src);
 
 			BytesStream bs = new BytesStream();
+			InputStream is = bs.inputStream();
+			BytesStream xs = new BytesStream();
 			int         po = 0;
 			int         sz = src.length;
 
@@ -43,16 +46,17 @@ public class TestSupportClasses
 					bs.write(new ByteArrayInputStream(src, po, s));
 				else
 					bs.write(src, po, s);
-
 				po += s; sz -= s;
+
+				xs.write(is);
 			}
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(src.length);
+			bs.copy(bos); bos.close(); bs.close();
+			assertArrayEquals(src, bos.toByteArray());
 
-			bs.copy(bos);
-			bos.close();
-			bs.close();
-
+			bos = new ByteArrayOutputStream(src.length);
+			xs.copy(bos); bos.close(); xs.close();
 			assertArrayEquals(src, bos.toByteArray());
 		}
 	}

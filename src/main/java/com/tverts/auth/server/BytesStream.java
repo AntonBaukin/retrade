@@ -25,7 +25,7 @@ public final class BytesStream extends OutputStream
 	/**
 	 * Copies the bytes written to the stream given.
 	 */
-	public void copy(OutputStream stream)
+	public void        copy(OutputStream stream)
 	  throws IOException
 	{
 		if(buffers == null)
@@ -43,7 +43,7 @@ public final class BytesStream extends OutputStream
 	 * Writes all the bytes from the stream given.
 	 * The stream is not closed in this call.
 	 */
-	public void write(InputStream stream)
+	public void        write(InputStream stream)
 	  throws IOException
 	{
 		byte[] buf = ByteBuffers.INSTANCE.get();
@@ -60,7 +60,7 @@ public final class BytesStream extends OutputStream
 		}
 	}
 
-	public long length()
+	public long        length()
 	  throws IOException
 	{
 		if(buffers == null)
@@ -69,7 +69,7 @@ public final class BytesStream extends OutputStream
 		return this.length;
 	}
 
-	public void digest(MessageDigest md)
+	public void        digest(MessageDigest md)
 	  throws IOException
 	{
 		if(buffers == null)
@@ -81,6 +81,11 @@ public final class BytesStream extends OutputStream
 		byte[] last = buffers.get(buffers.size() - 1);
 		for(byte[] buf : buffers)
 			md.update(buf, 0, (buf == last)?(position):(buf.length));
+	}
+
+	public InputStream inputStream()
+	{
+		return new Stream();
 	}
 
 
@@ -144,6 +149,89 @@ public final class BytesStream extends OutputStream
 		buffers = null;
 	}
 
+
+	/* Input Stream */
+
+	private class Stream extends InputStream
+	{
+		/* public: InputStream interface */
+
+		public int     read()
+		  throws IOException
+		{
+			if(byte1 == null)
+				byte1 = new byte[1];
+
+			int x = this.read(byte1, 0, 1);
+			return (x <= 0)?(-1):(byte1[0] & 0xFF);
+		}
+
+		public int     read(byte[] b, int off, int len)
+		  throws IOException
+		{
+			if(b == null)
+				throw new NullPointerException();
+			if((off < 0) | (len < 0) | (len > b.length - off))
+				throw new IndexOutOfBoundsException();
+
+			if(buffers == null)
+				throw new IOException("ByteStream is closed!");
+			if(bufind  == -1)
+				throw new IOException("Input Stream of ByteStream is closed!");
+
+			if(buffers.isEmpty())
+				return -1;
+
+			int got = 0;
+
+			while(len != 0)
+			{
+				byte[] buf = buffers.get(bufind);
+				int    sz;
+
+				//?: {it is the current buffer}
+				if(bufind == buffers.size() - 1)
+				{
+					if(bufpos == position)
+						break;
+
+					sz = position - bufpos;
+				}
+				//!: it is one of the fully filled buffers
+				else if(bufpos == buf.length)
+				{
+					bufind++; bufpos = 0;
+					continue;
+				}
+				else
+					sz = buf.length - bufpos;
+
+				if(sz > len) sz = len;
+				System.arraycopy(buf, bufpos, b, off, sz);
+				bufpos += sz; off += sz; len -= sz; got += sz;
+			}
+
+			return (got == 0)?(-1):(got);
+		}
+
+		public void   close()
+		  throws IOException
+		{
+			this.bufind = -1;
+		}
+
+		public boolean markSupported()
+		{
+			return false;
+		}
+
+
+		/* private: read position */
+
+		private int    bufind;
+		private int    bufpos;
+		private byte[] byte1;
+	}
 
 
 	/* private: list of buffers */
