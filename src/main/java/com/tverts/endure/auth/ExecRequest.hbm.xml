@@ -68,16 +68,6 @@
     </property>
 
 
-    <!-- Error Flag -->
-
-    <property name = 'error'>
-
-      <column name = 'has_error' not-null = 'true' default = 'false'>
-        <comment>Flag indicating that respone Pong object has error</comment>
-      </column>
-    </property>
-
-
     <!-- Request Time -->
 
     <property name = 'requestTime' type = 'timestamp'>
@@ -96,6 +86,26 @@
         index = 'ix_exec_request_response_time'>
 
         <comment>The timestamp of the response</comment>
+      </column>
+    </property>
+
+
+    <!-- Error Flag -->
+
+    <property name = 'error'>
+
+      <column name = 'has_error' not-null = 'true' default = 'false'>
+        <comment>Flag indicating that respone Pong object has error</comment>
+      </column>
+    </property>
+
+
+    <!-- Delivered Flag -->
+
+    <property name = 'delivered'>
+
+      <column name = 'was_delivered' not-null = 'true' default = 'false'>
+        <comment>Flag indicating that respone Pong object was sent to the client</comment>
       </column>
     </property>
 

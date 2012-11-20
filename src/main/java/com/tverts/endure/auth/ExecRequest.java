@@ -104,16 +104,6 @@ public class ExecRequest
 		this.response = response;
 	}
 
-	public boolean  isError()
-	{
-		return error;
-	}
-
-	public void     setError(boolean error)
-	{
-		this.error = error;
-	}
-
 	/**
 	 * Timestamp of the request.
 	 */
@@ -141,6 +131,26 @@ public class ExecRequest
 		this.responseTime = responseTime;
 	}
 
+	public boolean  isError()
+	{
+		return error;
+	}
+
+	public void     setError(boolean error)
+	{
+		this.error = error;
+	}
+
+	public boolean  isDelivered()
+	{
+		return delivered;
+	}
+
+	public void     setDelivered(boolean delivered)
+	{
+		this.delivered = delivered;
+	}
+
 
 	/* persisted properties */
 
@@ -150,8 +160,8 @@ public class ExecRequest
 	private String  clientKey;
 	private byte[]  request;
 	private byte[]  response;
-	private boolean error;
-
 	private Date    requestTime;
 	private Date    responseTime;
+	private boolean error;
+	private boolean delivered;
 }
