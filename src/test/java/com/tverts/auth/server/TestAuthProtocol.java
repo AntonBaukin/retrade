@@ -197,6 +197,9 @@ public class TestAuthProtocol
 
 		/* public: DbConnect (data access) interface */
 
+		public void   initProtocol()
+		{}
+
 		public String nextSidPrefix()
 		{
 			return Long.toHexString(sid++);

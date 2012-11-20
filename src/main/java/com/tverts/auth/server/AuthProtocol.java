@@ -607,6 +607,9 @@ public class AuthProtocol implements Cloneable
 
 		try
 		{
+			//~: initialize the database
+			dbc.initDatabase();
+
 			//~: generate the next Session ID prefix
 			sid = dbc.nextSidPrefix();
 			xtx = true;

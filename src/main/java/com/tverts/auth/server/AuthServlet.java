@@ -48,7 +48,7 @@ public class AuthServlet extends GenericServlet
 	public void service(HttpServletRequest req, HttpServletResponse res)
 	  throws ServletException, IOException
 	{
-		String  path = req.getPathInfo();
+		String  path = req.getRequestURI();
 		boolean get  = "GET".equalsIgnoreCase(req.getMethod());
 		boolean post = "POST".equalsIgnoreCase(req.getMethod());
 

@@ -63,19 +63,4 @@
     <url-pattern>/servlet/receive</url-pattern>
   </servlet-mapping>
 
-
-  <!--====================================================
-    =             Server Provided Resources              =
-    ====================================================-->
-
-  <resource-ref>
-    <description>
-      ReTrade DatabaseDatasource
-    </description>
-
-    <res-ref-name>java:/databases/ReTradeDirect</res-ref-name>
-    <res-type>javax.sql.DataSource</res-type>
-    <res-auth>Container</res-auth>
-  </resource-ref>
-
 </web-app>

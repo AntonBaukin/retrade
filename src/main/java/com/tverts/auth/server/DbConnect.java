@@ -81,6 +81,20 @@ public class DbConnect implements Cloneable
 
 	/* public: DbConnect (data access) interface */
 
+	public void   initDatabase()
+	{
+		try
+		{
+			createSequence("auth_protocol_index");
+			createSequence("auth_request_key");
+		}
+		catch(SQLException e)
+		{
+			throw new RuntimeException(
+			  "Error occurred while initializing Database for Auth Protocol!", e);
+		}
+	}
+
 	public String nextSidPrefix()
 	{
 		if(connection == null)
@@ -91,35 +105,6 @@ public class DbConnect implements Cloneable
 
 		try
 		{
-
-// select true from pg_class where relname = 'auth_protocol_index'
-
-			ps = connection.prepareStatement(
-
-"select true from pg_class where relname = 'auth_protocol_index'"
-
-			);
-
-			ps.execute();
-
-			boolean exists = ps.getResultSet().next();
-			ps.close();
-
-			//?: {there is no such sequence yet} create it
-			if(!exists)
-			{
-
-// create sequence auth_protocol_index minvalue 1 no cycle
-
-				ps = connection.prepareStatement(
-
-				  "create sequence auth_protocol_index minvalue 1 no cycle"
-
-				);
-
-				ps.execute();
-				ps.close();
-			}
 
 			//!: select the next value
 
@@ -474,6 +459,47 @@ where (session_id = ?) and (close_time is null)
 		{
 			throw new IllegalStateException(e);
 		}
+	}
+
+
+	/* protected: database support */
+
+	protected void createSequence(String name)
+	  throws SQLException
+	{
+		PreparedStatement ps;
+
+
+// select true from pg_class where (relname = ?)
+
+		ps = connection.prepareStatement(
+
+  "select true from pg_class where (relname = ?)"
+
+		);
+
+		ps.setString(1, name);
+		ps.execute();
+
+		boolean exists = ps.getResultSet().next();
+		ps.close();
+
+		//?: {there is no such sequence yet} create it
+		if(!exists)
+		{
+
+// create sequence NAME minvalue 1 no cycle
+
+			ps = connection.prepareStatement(
+
+  "create sequence " + name + " minvalue 1 no cycle"
+
+			);
+
+			ps.execute();
+			ps.close();
+		}
+
 	}
 
 
