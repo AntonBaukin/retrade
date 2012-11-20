@@ -2,7 +2,6 @@ package com.tverts.endure.auth;
 
 /* standard Java classes */
 
-import java.sql.Blob;
 import java.util.Date;
 
 
@@ -20,7 +19,7 @@ public class ExecRequest
 	/**
 	 * Primary key of the request assigned by
 	 * the authentication application had placed
-	 * the request from 'auth_request_key' sequence.
+	 * the request from 'pkeys_exec_request' sequence.
 	 */
 	public Long     getPrimaryKey()
 	{
@@ -30,6 +29,16 @@ public class ExecRequest
 	public void     setPrimaryKey(Long primaryKey)
 	{
 		this.primaryKey = primaryKey;
+	}
+
+	public Long     getDomain()
+	{
+		return domain;
+	}
+
+	public void     setDomain(Long domain)
+	{
+		this.domain = domain;
 	}
 
 	/**
@@ -70,12 +79,12 @@ public class ExecRequest
 	 * The request Ping object as UTF-8 XML text.
 	 * Must be always assigned.
 	 */
-	public Blob     getRequest()
+	public byte[]   getRequest()
 	{
 		return request;
 	}
 
-	public void     setRequest(Blob request)
+	public void     setRequest(byte[] request)
 	{
 		this.request = request;
 	}
@@ -85,12 +94,12 @@ public class ExecRequest
 	 * Assigned when the request processing is
 	 * complete, and there is no error.
 	 */
-	public Blob     getResponse()
+	public byte[]   getResponse()
 	{
 		return response;
 	}
 
-	public void     setResponse(Blob response)
+	public void     setResponse(byte[] response)
 	{
 		this.response = response;
 	}
@@ -136,10 +145,11 @@ public class ExecRequest
 	/* persisted properties */
 
 	private Long    primaryKey;
+	private Long    domain;
 	private String  sessionId;
 	private String  clientKey;
-	private Blob    request;
-	private Blob    response;
+	private byte[]  request;
+	private byte[]  response;
 	private boolean error;
 
 	private Date    requestTime;

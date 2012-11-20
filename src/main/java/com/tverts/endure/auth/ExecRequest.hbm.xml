@@ -12,9 +12,21 @@
     <id name = 'primaryKey' column = 'pk_exec_request'/>
 
 
+    <!-- Domain -->
+
+    <property name = 'domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_exec_request'>
+
+        <comment>Copy of the primary key of the Domain</comment>
+      </column>
+    </property>
+
+
     <!-- Session ID -->
 
-    <property name = 'sessionId' type = 'string'>
+    <property name = 'sessionId' type = 'string' lazy = 'false'>
 
       <column name = 'session_id' not-null = 'true' length = '16'
         unique-key = 'ux_exec_request'>
@@ -26,7 +38,7 @@
 
     <!-- Client Key -->
 
-    <property name = 'clientKey' type = 'string'>
+    <property name = 'clientKey' type = 'string' lazy = 'false'>
 
       <column name = 'client_key' not-null = 'true' length = '255'
         unique-key = 'ux_exec_request'>
@@ -36,22 +48,22 @@
     </property>
 
 
-    <!-- Request Object (BLOB) -->
+    <!-- Request Object (bytes) -->
 
-    <property name = 'request' type = 'blob'>
+    <property name = 'request' type = 'binary'>
 
       <column name = 'request_object' not-null = 'true'>
-        <comment>The request Ping object as UTF-8 XML text.</comment>
+        <comment>The request Ping object as UTF-8 XML text</comment>
       </column>
     </property>
 
 
-    <!-- Response Object (BLOB) -->
+    <!-- Response Object (bytes) -->
 
-    <property name = 'response' type = 'blob'>
+    <property name = 'response' type = 'binary'>
 
       <column name = 'response_object'>
-        <comment>The response Pong object as UTF-8 XML text.</comment>
+        <comment>The response Pong object as UTF-8 XML text</comment>
       </column>
     </property>
 
