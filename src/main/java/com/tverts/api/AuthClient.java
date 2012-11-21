@@ -637,8 +637,6 @@ public class AuthClient
 
 		//!: invoke the server
 		String sid = s2es(gets(url));
-		System.out.println(sid);
-		System.out.println(gets(url));
 
 		//~: decode Session ID
 		if(sid.startsWith("sid="))
