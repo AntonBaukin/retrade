@@ -2,6 +2,8 @@ package com.tverts.auth.server;
 
 /* standard Java classes */
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -420,13 +422,168 @@ where (session_id = ?) and (close_time is null)
 
 	/* public: DbConnect (requests) interface */
 
-	public Runnable receive(AuthSession session, String clientKey, BytesStream output)
-	  throws SQLException
+	public static class AuthRequest
 	{
-		return null;
+		/* public: Request bean interface */
+
+		public AuthSession  getSession()
+		{
+			return session;
+		}
+
+		public AuthRequest  setSession(AuthSession session)
+		{
+			this.session = session;
+			return this;
+		}
+
+		public String       getClientKey()
+		{
+			return clientKey;
+		}
+
+		public AuthRequest  setClientKey(String clientKey)
+		{
+			this.clientKey = clientKey;
+			return this;
+		}
+
+		public BytesStream  getInput()
+		{
+			return input;
+		}
+
+		public AuthRequest  setInput(BytesStream input)
+		{
+			this.input = input;
+			return this;
+		}
+
+		public BytesStream  getOutput()
+		{
+			return output;
+		}
+
+		public AuthRequest  setOutput(BytesStream output)
+		{
+			this.output = output;
+			return this;
+		}
+
+		public Runnable     getCommit()
+		{
+			return commit;
+		}
+
+		public AuthRequest  setCommit(Runnable commit)
+		{
+			this.commit = commit;
+			return this;
+		}
+
+		/**
+		 * This flag is set on receive request when the
+		 * client key is set and the request is still
+		 * pending: the request record exists, but no
+		 * response object is written.
+		 */
+		public boolean     isHasRecord()
+		{
+			return hasRecord;
+		}
+
+		public AuthRequest setHasRecord(boolean hasRecord)
+		{
+			this.hasRecord = hasRecord;
+			return this;
+		}
+
+		/* private: request state */
+
+		private AuthSession session;
+		private String      clientKey;
+		private BytesStream input;
+		private BytesStream output;
+		private Runnable    commit;
+		private boolean     hasRecord;
 	}
 
-	public void     request(AuthSession session, BytesStream input)
+
+	public void receive(AuthRequest ar)
+	  throws SQLException, IOException
+	{
+/*
+
+select er.pk_exec_request, er.response_object
+from exec_request er where
+  (er.fk_domain = ?) and (er.session_id = ?) and
+  (er.was_delivered = false) and (er.response_time is not null)
+order by er.response_time limit 1
+
+select er.pk_exec_request, er.response_object
+from exec_request er where
+  (er.fk_domain = ?) and (er.session_id = ?) and
+  (er.client_key = ?)
+
+*/
+		final String A =
+
+"select er.pk_exec_request, er.response_object\n" +
+"from exec_request er where\n" +
+"  (er.fk_domain = ?) and (er.session_id = ?) and\n" +
+"  (er.was_delivered = false) and (er.response_time is not null)\n" +
+"order by er.response_time limit 1";
+
+		final String B =
+
+"select er.pk_exec_request, er.response_object\n" +
+"from exec_request er where\n" +
+"  (er.fk_domain = ?) and (er.session_id = ?) and\n" +
+"  (er.client_key = ?)";
+
+		PreparedStatement ps = connection.prepareStatement(
+		  (ar.getClientKey() == null)?(A):(B)
+		);
+
+		//[1]: domain key
+		ps.setLong(1, ar.getSession().getDomain());
+
+		//[2]: Session ID
+		ps.setString(2, ar.getSession().getSessionId());
+
+		//[3]: client key
+		if(ar.getClientKey() != null)
+			ps.setString(3, ar.getClientKey());
+
+		//!: execute query
+		ResultSet rs = ps.executeQuery();
+
+		//?: {no record found}
+		if(!rs.next())
+		{
+			rs.close(); ps.close();
+			return;
+		}
+		else
+			ar.setHasRecord(true);
+
+		//[1]: exec request key
+		long rkey = rs.getLong(1);
+
+		//[2]: read the response object (XML bytes)
+		InputStream is;  if((is = rs.getBinaryStream(2)) != null)
+		{
+			ar.getOutput().write(is);
+			is.close();
+
+			//!: set delivery commit post-operation
+			ar.setCommit(new ReceiveCommit(this, rkey));
+		}
+
+		rs.close(); ps.close();
+	}
+
+	public void request(AuthRequest ar)
 	  throws SQLException
 	{
 		//~: get next primary key value
@@ -456,7 +613,7 @@ where (session_id = ?) and (close_time is null)
 insert into exec_request  (
 
   pk_exec_request, fk_domain, session_id,
-  client_key, request_object, requestTime
+  client_key, request_time, request_object
 
 ) values (?, ?, ?, ?, ?, ?)
 
@@ -466,7 +623,7 @@ insert into exec_request  (
   "insert into exec_request  (\n" +
   "\n" +
   "  pk_exec_request, fk_domain, session_id,\n" +
-  "  client_key, request_object, requestTime\n" +
+  "  client_key, request_time, request_object\n" +
   "\n" +
   ") values (?, ?, ?, ?, ?, ?)"
 
@@ -476,14 +633,29 @@ insert into exec_request  (
 		ps.setLong(1, pk);
 
 		//[2]: domain
-		ps.setLong(2, session.getDomain());
+		ps.setLong(2, ar.getSession().getDomain());
 
 		//[3]: Session ID
-		ps.setString(3, session.getSessionId());
+		ps.setString(3, ar.getSession().getSessionId());
 
 		//[4]: client key
-		//if(client)
+		ps.setString(4, ar.getClientKey());
 
+		//[5]: request time
+		ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+
+		//[6]: request object bytes
+		ps.setBinaryStream(6, ar.getInput().inputStream());
+
+
+		//!: execute
+		if(ps.executeUpdate() != 1)
+		{
+			ps.close();
+			throw new IllegalStateException();
+		}
+
+		ps.close();
 	}
 
 
@@ -542,6 +714,81 @@ insert into exec_request  (
 			ps.execute();
 			ps.close();
 		}
+	}
+
+	protected void commitReceive(long request)
+	  throws SQLException
+	{
+
+/*
+
+update exec_request set was_delivered = true where
+  (pk_exec_request = ?) and (was_delivered = false)
+
+*/
+		PreparedStatement ps = connection.prepareStatement(
+
+"update exec_request set was_delivered = true where \n" +
+"  (pk_exec_request = ?) and (was_delivered = false)"
+
+		);
+
+		//[1]: exec request key
+		ps.setLong(1, request);
+
+		//!: execute
+		if(ps.executeUpdate() != 1)
+		{
+			ps.close();
+			throw new IllegalStateException();
+		}
+
+		ps.close();
+	}
+
+	protected static class ReceiveCommit implements Runnable
+	{
+		/* public: constructor */
+
+		public ReceiveCommit(DbConnect dbc, Long request)
+		{
+			this.dbc     = dbc;
+			this.request = request;
+		}
+
+
+		/* public: Runnable interface */
+
+		public void run()
+		{
+			boolean commit = false;
+
+			try
+			{
+				//~: connect to the database
+				dbc.connect();
+
+				//!: execute receive commit
+				dbc.commitReceive(request);
+				commit = true;
+			}
+			catch(SQLException e)
+			{
+				throw new RuntimeException(String.format(
+				  "Unable to commit Execution Request Receive [%d]!",
+				  request
+				), e);
+			}
+			finally
+			{
+				dbc.disconnect(commit);
+			}
+		}
+
+		/* private: commit parameters */
+
+		private DbConnect dbc;
+		private Long      request;
 
 	}
 

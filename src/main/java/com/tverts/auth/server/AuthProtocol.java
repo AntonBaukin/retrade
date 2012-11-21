@@ -2,12 +2,24 @@ package com.tverts.auth.server;
 
 /* standard Java classes */
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+
+/* SAX */
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+/* com.tverts: authentication server */
+
+import com.tverts.auth.server.DbConnect.AuthRequest;
 
 
 /**
@@ -88,12 +100,15 @@ public class AuthProtocol implements Cloneable
 
 	public void   initPrototype(DbConnect dbcPrototype)
 	{
-		this.dbConnect = dbcPrototype;
-		this.sidpfx    = initSid();
-		this.sidsfx    = new AtomicLong();
-		this.random    = new AuthRandom();
-		this.digest    = new AuthDigest();
-		this.xkey      = initSkey(this.random);
+		this.dbConnect  = dbcPrototype;
+		this.sidpfx     = initSid();
+		this.sidsfx     = new AtomicLong();
+		this.random     = new AuthRandom();
+		this.digest     = new AuthDigest();
+		this.xkey       = initSkey(this.random);
+
+		//~: create SAX parser factory
+		this.saxFactory = createSAXFactory();
 	}
 
 
@@ -262,7 +277,7 @@ public class AuthProtocol implements Cloneable
 			//>: check the user password
 
 			//!: generate the Session ID
-			String sid  = nextSid(dbc);
+			String sid  = nextSid();
 
 			//~: create private session key
 			String skey = digest.signHex(
@@ -557,6 +572,20 @@ public class AuthProtocol implements Cloneable
 			if(sequence <= session.getSequence())
 				return MSG;
 
+			String clientKey = null;
+
+			//~: parse & validate the Ping XML
+			if(ping.length() != 0L) try
+			{
+				PingHandler ph = new PingHandler();
+
+				parseXML(ph, ping);
+				clientKey = ph.getClientKey();
+			}
+			catch(Exception e)
+			{
+				return "Ping XML file has invalid format!";
+			}
 
 			//!: update the session sequence
 			session.setSequence(sequence);
@@ -569,16 +598,13 @@ public class AuthProtocol implements Cloneable
 			//?: {this is a receive Ping}
 			if(this.receive)
 			{
-				//~: get the client key (from HTTP POST body)
-				ByteArrayOutputStream bos =
-				  new ByteArrayOutputStream((int) ping.length());
-				ping.copy(bos);
-				bos.close();
-
-				String clientKey = new String(bos.toByteArray(), "UTF-8");
-
 				//!: do receive
-				invokeCommit = dbc.receive(session, clientKey, pong);
+				AuthRequest ar = new AuthRequest().
+				  setSession(session).setOutput(pong).
+				  setClientKey(clientKey);
+
+				dbc.receive(ar);
+				invokeCommit = ar.getCommit();
 
 				//~: calculate the resulting message digest
 				if(pong.length() != 0)
@@ -589,7 +615,8 @@ public class AuthProtocol implements Cloneable
 			//!: handle a request Ping
 			else
 				//!: save the request into the database
-				dbc.request(session, ping);
+				dbc.request(new AuthRequest().setSession(session).
+				  setInput(ping).setClientKey(clientKey));
 		}
 		catch(Throwable e)
 		{
@@ -625,7 +652,7 @@ public class AuthProtocol implements Cloneable
 		return dbConnect.clone();
 	}
 
-	protected String    nextSid(DbConnect dbc)
+	protected String    nextSid()
 	{
 		if(sidpfx == null)
 			throw new IllegalStateException();
@@ -663,6 +690,87 @@ public class AuthProtocol implements Cloneable
 	protected byte[]    initSkey(AuthRandom random)
 	{
 		return random.randomBytes(20);
+	}
+
+	protected SAXParserFactory
+	                    createSAXFactory()
+	{
+		SAXParserFactory f = SAXParserFactory.newInstance();
+
+		f.setNamespaceAware(false);
+		f.setValidating(false);
+		f.setXIncludeAware(false);
+
+		return f;
+	}
+
+	protected void      parseXML(DefaultHandler handler, BytesStream stream)
+	  throws Exception
+	{
+		SAXParser parser;
+
+		synchronized(this.saxFactory)
+		{
+			parser = saxFactory.newSAXParser();
+		}
+
+		parser.parse(stream.inputStream(), handler);
+	}
+
+
+	/* Ping XML handler */
+
+	public static class PingHandler extends DefaultHandler
+	{
+		/* public: PingHandler interface */
+
+		public String getClientKey()
+		{
+			return clientKey;
+		}
+
+
+		/* public: DefaultHandler interface */
+
+		public void startElement(String uri, String lname, String tag, Attributes attr)
+		  throws SAXException
+		{
+			level++;
+
+			if((level == 1) && "key".equals(tag))
+				isbuf = true;
+		}
+
+		public void endElement(String uri, String lname, String tag)
+		  throws SAXException
+		{
+			if((level == 1) && "key".equals(tag))
+			{
+				clientKey = buf.toString().trim();
+				if(clientKey.isEmpty()) clientKey = null;
+
+				isbuf = false; buf.delete(0, buf.length());
+			}
+
+			level--;
+		}
+
+		public void characters(char[] chs, int off, int len)
+		  throws SAXException
+		{
+			if(isbuf) buf.append(chs, off, len);
+		}
+
+		/* protected: handler state */
+
+		protected StringBuilder buf = new StringBuilder(128);
+		protected int           level;
+		protected boolean       isbuf;
+
+
+		/* protected: handler state */
+
+		protected String        clientKey;
 	}
 
 
@@ -703,4 +811,7 @@ public class AuthProtocol implements Cloneable
 	 * sending signed stateless messages.
 	 */
 	private byte[]       xkey;
+
+	private volatile SAXParserFactory
+	                     saxFactory;
 }
