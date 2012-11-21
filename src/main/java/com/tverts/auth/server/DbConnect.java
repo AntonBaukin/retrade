@@ -650,6 +650,10 @@ from exec_request er where
 		pk = ps.getResultSet().getLong(1);
 		ps.close();
 
+		//?: {has no client key} create own
+		if(ar.getClientKey() == null)
+			ar.setClientKey("@" + pk);
+
 
 		//~: insert the record
 
@@ -690,7 +694,15 @@ insert into exec_request  (
 		ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 
 		//[6]: request object bytes
-		ps.setBinaryStream(6, ar.getInput().inputStream());
+		try
+		{
+			ps.setBinaryStream(6, ar.getInput().inputStream(),
+			  (int) ar.getInput().length());
+		}
+		catch(IOException e)
+		{
+			throw new SQLException(e);
+		}
 
 
 		//!: execute

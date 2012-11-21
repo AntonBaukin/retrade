@@ -662,8 +662,8 @@ public class AuthProtocol implements Cloneable
 		if(sidpfx == null)
 			throw new IllegalStateException();
 
-		return sidpfx + '_' +
-		  Long.toHexString(sidsfx.incrementAndGet());
+		return sidpfx + '_' + Long.toHexString(
+		  sidsfx.incrementAndGet()).toUpperCase();
 	}
 
 	protected String    initSid()
