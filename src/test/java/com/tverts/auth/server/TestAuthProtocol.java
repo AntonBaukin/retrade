@@ -197,22 +197,27 @@ public class TestAuthProtocol
 
 		/* public: DbConnect (data access) interface */
 
-		public void   initProtocol()
+		public void    initProtocol()
 		{}
 
-		public String nextSidPrefix()
+		public String  nextSidPrefix()
 		{
 			return Long.toHexString(sid++);
 		}
 
-		public String getPassword(Long domain, String login)
+		public String  getPassword(Long domain, String login)
 		{
 			if(domain != -1L)
 				return null;
 			return passwords.get(login);
 		}
 
-		public void   loadSession(AuthSession session)
+		public boolean existsRs(Long domain, String login, String Rs)
+		{
+			return false;
+		}
+
+		public void    loadSession(AuthSession session)
 		{
 			assertNotNull(session.getSessionId());
 
@@ -228,7 +233,7 @@ public class TestAuthProtocol
 			s.copyTo(session);
 		}
 
-		public void   saveSession(AuthSession session)
+		public void    saveSession(AuthSession session)
 		{
 			assertNotNull(session.getSessionId());
 			assertNotSame(0L, session.getDomain());
@@ -240,7 +245,7 @@ public class TestAuthProtocol
 			txsession = session.clone();
 		}
 
-		public void   touchSession(AuthSession session)
+		public void    touchSession(AuthSession session)
 		{
 			assertNotNull(session.getSessionId());
 			if(txsession == null)
@@ -258,7 +263,7 @@ public class TestAuthProtocol
 
 		/* public: TestDbConnect interface */
 
-		public void addLogin(String login, String pass)
+		public void    addLogin(String login, String pass)
 		{
 			passwords.put(login, authDigest.signHex(pass));
 		}

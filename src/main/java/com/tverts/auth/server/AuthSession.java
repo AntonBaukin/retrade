@@ -82,6 +82,15 @@ public class AuthSession implements Cloneable, java.io.Serializable
 		this.sequence = sequence;
 	}
 
+	public String getRs()
+	{
+		return Rs;
+	}
+
+	public void setRs(String rs)
+	{
+		Rs = rs;
+	}
 
 	/* public: Cloneable interface */
 
@@ -106,6 +115,7 @@ public class AuthSession implements Cloneable, java.io.Serializable
 		session.setServerTime(getServerTime());
 		session.setSessionKey(getSessionKey());
 		session.setSequence(getSequence());
+		session.setRs(getRs());
 	}
 
 
@@ -118,4 +128,5 @@ public class AuthSession implements Cloneable, java.io.Serializable
 	private long    serverTime;
 	private String  sessionKey;
 	private long    sequence;
+	private String  Rs;
 }

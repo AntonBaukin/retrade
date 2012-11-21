@@ -276,6 +276,10 @@ public class AuthProtocol implements Cloneable
 
 			//>: check the user password
 
+			//~: check the session Rs already exists
+			if(dbc.existsRs(domain, login, param("Rs")))
+				return "This session already exists!";
+
 			//!: generate the Session ID
 			String sid  = nextSid();
 
@@ -292,6 +296,7 @@ public class AuthProtocol implements Cloneable
 			session.setLogin(login);
 			session.setServerTime(System.currentTimeMillis());
 			session.setSessionKey(skey);
+			session.setRs(param("Rs"));
 
 			dbc.saveSession(session);
 

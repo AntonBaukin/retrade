@@ -43,7 +43,7 @@ public class DbConnect implements Cloneable
 
 	/* public: DbConnect (connection) interface */
 
-	public void connect()
+	public void    connect()
 	{
 		try
 		{
@@ -58,7 +58,7 @@ public class DbConnect implements Cloneable
 		}
 	}
 
-	public void disconnect(Boolean commit)
+	public void    disconnect(Boolean commit)
 	{
 		if(connection != null) try
 		{
@@ -83,7 +83,7 @@ public class DbConnect implements Cloneable
 
 	/* public: DbConnect (authentication) interface */
 
-	public void   initDatabase()
+	public void    initDatabase()
 	{
 		try
 		{
@@ -97,7 +97,7 @@ public class DbConnect implements Cloneable
 		}
 	}
 
-	public String nextSidPrefix()
+	public String  nextSidPrefix()
 	{
 		if(connection == null)
 			throw new IllegalStateException();
@@ -131,7 +131,7 @@ public class DbConnect implements Cloneable
 		return Long.toString(si);
 	}
 
-	public String getPassword(Long domain, String login)
+	public String  getPassword(Long domain, String login)
 	  throws SQLException
 	{
 		if(connection == null)
@@ -167,7 +167,44 @@ select lo.passhash from auth_login lo where
 		return result;
 	}
 
-	public void   loadSession(AuthSession session)
+	public boolean existsRs(Long domain, String login, String Rs)
+	  throws SQLException
+	{
+/*
+
+select true from auth_session se join auth_login lo
+  on se.fk_login = lo.pk_entity
+where (lo.fk_domain = ?) and (lo.ux_login = ?) and
+  (se.server_random = ?)
+
+*/
+		PreparedStatement ps = connection.prepareStatement(
+
+"select true from auth_session se join auth_login lo\n" +
+"  on se.fk_login = lo.pk_entity\n" +
+"where (lo.fk_domain = ?) and (lo.ux_login = ?) and\n" +
+"  (se.server_random = ?)"
+
+		);
+
+		//[1]: domain
+		ps.setLong(1, domain);
+
+		//[2]: login
+		ps.setString(2, login);
+
+		//[3]: Rs
+		ps.setString(3, Rs);
+
+		//!: execute the query
+		ps.execute();
+		boolean result = ps.getResultSet().next();
+		ps.close();
+
+		return result;
+	}
+
+	public void    loadSession(AuthSession session)
 	  throws SQLException
 	{
 		if(connection == null)
@@ -179,7 +216,8 @@ select lo.passhash from auth_login lo where
 /*
 
 select se.close_time, lo.fk_domain, lo.ux_login,
-  se.access_time, se.session_key, se.sequence_number
+  se.access_time, se.session_key,
+  se.sequence_number, se.server_random
 from auth_session se join auth_login lo
   on se.fk_login = lo.pk_entity
 where (se.session_id = ?)
@@ -188,11 +226,12 @@ where (se.session_id = ?)
 
 		PreparedStatement ps = connection.prepareStatement(
 
-  "select se.close_time, lo.fk_domain, lo.ux_login,\n" +
-  "  se.access_time, se.session_key, se.sequence_number\n" +
-  "from auth_session se join auth_login lo\n" +
-  "  on se.fk_login = lo.pk_entity\n" +
-  "where (se.session_id = ?)"
+"select se.close_time, lo.fk_domain, lo.ux_login,\n" +
+"  se.access_time, se.session_key,\n" +
+"  se.sequence_number, se.server_random\n" +
+"from auth_session se join auth_login lo\n" +
+"  on se.fk_login = lo.pk_entity\n" +
+"where (se.session_id = ?)"
 
 		);
 
@@ -231,10 +270,13 @@ where (se.session_id = ?)
 		//[6]: sequence number
 		session.setSequence(rs.getLong(6));
 
+		//[7]: Rs
+		session.setRs(rs.getString(7));
+
 		ps.close();
 	}
 
-	public void   saveSession(AuthSession session)
+	public void    saveSession(AuthSession session)
 	  throws SQLException
 	{
 		if(connection == null)
@@ -310,20 +352,20 @@ insert into auth_session (
 
   session_id, fk_login, session_key,
   create_time, access_time, close_time,
-  sequence_number
+  sequence_number, server_random
 
-) values (?, ?, ?, ?, ?, ?, ?)
+) values (?, ?, ?, ?, ?, ?, ?, ?)
 
 */
 		ps = connection.prepareStatement(
 
-  "insert into auth_session (\n" +
-  "\n" +
-  "  session_id, fk_login, session_key,\n" +
-  "  create_time, access_time, close_time,\n" +
-  "  sequence_number\n" +
-  "\n" +
-  ") values (?, ?, ?, ?, ?, ?, ?)"
+"insert into auth_session (\n" +
+"\n" +
+"  session_id, fk_login, session_key,\n" +
+"  create_time, access_time, close_time,\n" +
+"  sequence_number, server_random\n" +
+"\n" +
+") values (?, ?, ?, ?, ?, ?, ?, ?)"
 
 		);
 
@@ -348,6 +390,9 @@ insert into auth_session (
 		//[7]: sequence number
 		ps.setLong(7, session.getSequence());
 
+		//[8]: Rs
+		ps.setString(8, session.getRs());
+
 
 		//!: execute insert
 		if(ps.executeUpdate() != 1)
@@ -359,7 +404,7 @@ insert into auth_session (
 		ps.close();
 	}
 
-	public void   touchSession(AuthSession session)
+	public void    touchSession(AuthSession session)
 	  throws SQLException
 	{
 		if(connection == null)
@@ -509,7 +554,7 @@ where (session_id = ?) and (close_time is null)
 	}
 
 
-	public void receive(AuthRequest ar)
+	public void    receive(AuthRequest ar)
 	  throws SQLException, IOException
 	{
 /*
@@ -583,7 +628,7 @@ from exec_request er where
 		rs.close(); ps.close();
 	}
 
-	public void request(AuthRequest ar)
+	public void    request(AuthRequest ar)
 	  throws SQLException
 	{
 		//~: get next primary key value
