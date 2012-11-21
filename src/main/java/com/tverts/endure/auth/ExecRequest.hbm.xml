@@ -78,6 +78,18 @@
     </property>
 
 
+    <!-- Delivered Flag -->
+
+    <property name = 'delivered'>
+
+      <column name = 'was_delivered' not-null = 'true' default = 'false'
+        index = 'ix_exec_request_response_time'>
+
+        <comment>Flag indicating that respone Pong object was sent to the client</comment>
+      </column>
+    </property>
+
+
     <!-- Response Time -->
 
     <property name = 'responseTime' type = 'timestamp'>
@@ -96,16 +108,6 @@
 
       <column name = 'has_error' not-null = 'true' default = 'false'>
         <comment>Flag indicating that respone Pong object has error</comment>
-      </column>
-    </property>
-
-
-    <!-- Delivered Flag -->
-
-    <property name = 'delivered'>
-
-      <column name = 'was_delivered' not-null = 'true' default = 'false'>
-        <comment>Flag indicating that respone Pong object was sent to the client</comment>
       </column>
     </property>
 

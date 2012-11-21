@@ -32,7 +32,7 @@ import javax.xml.bind.JAXBContext;
  * The authentication client is not thread safe
  * by the nature of the protocol: each request
  * has the incremented sequence number private
- * to a session, and the server denies the
+ * to the session, and the server denies the
  * requests with the number lower then the
  * previously received valid request.
  *
@@ -42,7 +42,8 @@ import javax.xml.bind.JAXBContext;
  *
  * You have to implement requests queueing
  * for multi-threaded applications or just
- * block the concurrent requests.
+ * block the concurrent requests manually.
+ * This implementation has no internal locks.
  *
  * Authentication protocol does not require
  * a secured connection to login. The request
@@ -413,7 +414,7 @@ public class AuthClient
 	 * the {@link #xrequest(Ping)} method.
 	 *
 	 * Note that not a receiving Pings would produce
-	 * undefined Ping results in the most cases.
+	 * {@code null} Ping results in the most cases.
 	 */
 	public Pong request(Ping ping)
 	  throws AuthError
@@ -434,21 +435,10 @@ public class AuthClient
 
 		//<: create POST payload
 
-		byte[] payload = null;
-
-		//?: {a receiving ping}
-		if(receive && (ping.getKey() != null)) try
-		{
-			payload = ping.getKey().getBytes("UTF-8");
-		}
-		catch(Exception e)
-		{
-			throw new IllegalStateException(
-			  "Error occured while writing Ping key as UTF-8 string!", e);
-		}
+		byte[] payload;
 
 		//?: {a requesting ping} write the Ping object as XML
-		if(!receive) try
+		try
 		{
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(256);
 			OutputStreamWriter    osw = new OutputStreamWriter(bos, "UTF-8");
@@ -494,17 +484,14 @@ public class AuthClient
 			);
 		}
 
+		//?: {has no bytes}
 		if((payload != null) && (payload.length == 0))
 			payload = null;
 
 
-		//?: {it is not a receive Ping} expected nothing in request post result
-		if(!receive && (payload == null))
-			return null;
-
+		//?: {the response is empty} no resulting Pong
 		if(payload == null)
-			throw new IllegalStateException(
-			  "Server had returned empty response Pong object bytes!");
+			return null;
 
 		//<: xml to object
 		Object pong;
@@ -850,6 +837,24 @@ public class AuthClient
 				bos.write(buf, 0, sz);
 			bos.close();
 			result = bos.toByteArray();
+
+			//~: validate the response
+			if(result.length != 0)
+			{
+				String authDigest = connect.getHeaderField("Auth-Digest");
+
+				if(authDigest == null)
+					throw new IllegalStateException(
+					  "Server response has no Auth-Digest header!");
+
+				String xAD = digestHex(
+				  sessionId, seqnum, sessionKey, digest((Object) result)
+				);
+
+				if(!xAD.equals(authDigest))
+					throw new IllegalStateException(
+					  "Detected Auth-Digest mismatch in the server response!");
+			}
 		}
 		catch(Exception e)
 		{
