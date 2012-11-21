@@ -49,6 +49,21 @@ public class AuthSession
 		this.sessionKey = sessionKey;
 	}
 
+	/**
+	 * Server-generated random 20 bytes as HEX-string.
+	 * Stored in the database not to allow sending
+	 * repeated login requests with the same Rs.
+	 */
+	public String    getServerRandom()
+	{
+		return serverRandom;
+	}
+
+	public void      setServerRandom(String serverRandom)
+	{
+		this.serverRandom = serverRandom;
+	}
+
 	public Date      getCreateTime()
 	{
 		return createTime;
@@ -123,6 +138,7 @@ public class AuthSession
 	private AuthLogin login;
 	private String    sessionId;
 	private String    sessionKey;
+	private String    serverRandom;
 
 	private Date      createTime;
 	private Date      accessTime;
