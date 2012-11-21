@@ -416,7 +416,7 @@ public class AuthClient
 	 * Note that not a receiving Pings would produce
 	 * {@code null} Ping results in the most cases.
 	 */
-	public Pong request(Ping ping)
+	public Pong send(Ping ping)
 	  throws AuthError
 	{
 		//~: check the session exists
@@ -466,9 +466,9 @@ public class AuthClient
 
 		//?: {a receiving ping}
 		if(receive)
-			url.append("/servlet/receive");
+			url.append("servlet/receive");
 		else
-			url.append("/servlet/request");
+			url.append("servlet/request");
 
 		//!: send the request
 		try
@@ -524,14 +524,14 @@ public class AuthClient
 	 * Server-side processing errors are reported
 	 * as {@link PongError} exceptions.
 	 */
-	public Pong xrequest(Ping ping)
+	public Pong xsend(Ping ping)
 	  throws AuthError, PongError
 	{
 		Pong pong;
 
 		try
 		{
-			pong = this.request(ping);
+			pong = this.send(ping);
 		}
 		catch(AuthError e)
 		{
@@ -766,7 +766,7 @@ public class AuthClient
 			s.append("sid=").append(sessionId);
 
 			//~: sequence number
-			s.append("&sequence=").append(sessionId);
+			s.append("&sequence=").append(seqnum);
 
 			//~: checksum value
 			s.append("&H=").append(H);

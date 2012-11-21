@@ -1,5 +1,10 @@
 package com.tverts.api;
 
+/* com.tverts: api (core) */
+
+import com.tverts.api.core.StatusQuery;
+
+
 /**
  * Simple console application to invoke
  * {@link AuthClient} implementation.
@@ -40,6 +45,17 @@ public class TestAuthClient
 
 		//~: touch the session
 		client.touch();
+
+
+		//<: send test requests
+
+		Ping ping = new Ping();
+		ping.setRequest(new StatusQuery());
+
+		client.send(ping);
+
+		//>: send test requests
+
 
 		//~: close the session
 		client.close();
