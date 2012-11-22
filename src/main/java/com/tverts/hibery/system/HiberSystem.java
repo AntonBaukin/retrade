@@ -241,7 +241,11 @@ public class HiberSystem
 		ConnectionProvider cp = getConnectionProvider();
 
 		if(cp == null) throw new IllegalStateException();
-		return cp.getConnection();
+
+		Connection         co = cp.getConnection();
+
+		co.setAutoCommit(false);
+		return co;
 	}
 
 	public void                 closeConnection(Connection connection)

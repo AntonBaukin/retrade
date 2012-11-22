@@ -131,14 +131,14 @@ public class ExecRequest
 		this.responseTime = responseTime;
 	}
 
-	public boolean  isError()
+	public boolean  isExecuted()
 	{
-		return error;
+		return executed;
 	}
 
-	public void     setError(boolean error)
+	public void     setExecuted(boolean executed)
 	{
-		this.error = error;
+		this.executed = executed;
 	}
 
 	public boolean  isDelivered()
@@ -162,6 +162,6 @@ public class ExecRequest
 	private byte[]  response;
 	private Date    requestTime;
 	private Date    responseTime;
-	private boolean error;
+	private boolean executed;
 	private boolean delivered;
 }

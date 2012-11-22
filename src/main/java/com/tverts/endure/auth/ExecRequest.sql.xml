@@ -1,0 +1,29 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<tasks>
+
+  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+   · Create index (ix_exec_request_flags)                      ·
+   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+  <task class   = 'com.tverts.hibery.sql.QueryIf'
+        dialect = 'PostgreSQL82Dialect'>
+
+    <if empty = 'true'>
+
+      select true from pg_indexes where
+        (tablename = 'exec_request') and
+        (indexname = 'ix_exec_request_flags')
+
+    </if>
+
+    <query>
+
+      create index ix_exec_request_flags on exec_request (
+
+        is_executed, was_delivered, pk_exec_request
+      )
+
+    </query>
+  </task>
+
+</tasks>

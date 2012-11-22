@@ -22,23 +22,14 @@
         <bean class = 'com.tverts.endure.keys.KeysPointActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Executes SQL queries related to Hibernate files           ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.hibery.sql.HiberSQLActivator'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Automatically creates Unity Types                         ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'unityTypesActivator'/>
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Initializes system services                               ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <!--
-        <bean class = 'com.tverts.system.services.InitServicesListener'/>
-        -->
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Starts (active) system services                           ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <!--
-        <bean class = 'com.tverts.system.services.StartServicesListener'/>
-        -->
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Initializes system z-services                             ·

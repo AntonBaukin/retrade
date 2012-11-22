@@ -103,12 +103,12 @@ public class      HiberKeysGeneratorBinder
 		Properties          props = OU.clone(getProperties());
 		final String        NN    = PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER;
 
-		//?: {has no name normilizer property} set it
+		//?: {has no name normalizer property} set it
 		if(!props.containsKey(NN))
 			props.put(NN, HiberSystem.config().createMappings().
 			  getObjectNameNormalizer());
 
-		//~: cerate generator instance
+		//~: create generator instance
 		try
 		{
 			hgen = getGeneratorClass().newInstance();
