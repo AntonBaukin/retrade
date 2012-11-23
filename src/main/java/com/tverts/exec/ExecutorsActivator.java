@@ -1,22 +1,22 @@
-package com.tverts.system.zservices;
+package com.tverts.exec;
 
-/* com.tverts: webapp listeners */
+/* com.tverts: servlet (listeners) */
 
 import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 
 /**
- * Initializes Z-Services System in the Point.
+ * Activates Root Executor of the ExecPoint.
  *
  * @author anton.baukin@gmail.com
  */
-public class   InitServicesListener
+public class   ExecutorsActivator
        extends ServletContextListenerBase
 {
 	/* protected: ServletContextListenerBase interface */
 
 	protected void init()
 	{
-		ServicesPoint.system().init();
+		ExecPoint.getInstance().activate();
 	}
 }

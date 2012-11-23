@@ -3,27 +3,33 @@ package com.tverts.servlet.listeners;
 /* Java Servlet api */
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
 
 /* com.tverts: support */
 
 import static com.tverts.support.LU.sig;
 import com.tverts.support.LU;
 
+/**
+ * Simple test of the application
+ * initialization listeners.
+ *
+ * @author anton.baukin@gmail.com
+ */
 public class   TestServletContextListener
        extends ServletContextListenerBase
 {
-	/* public: ServletContextListener interface */
+	/* protected: ServletContextListenerBase interface */
 
-	public void contextInitialized(ServletContextEvent sce)
+	protected void init()
 	{
-		logContextOpened(sce.getServletContext());
+		logContextOpened(getEvent().getServletContext());
 	}
 
-	public void contextDestroyed(ServletContextEvent sce)
+	protected void destroy()
 	{
-		logContextReleased(sce.getServletContext());
+		logContextReleased(getEvent().getServletContext());
 	}
+
 
 	/* public: bean interface */
 

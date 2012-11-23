@@ -5,10 +5,6 @@ package com.tverts.endure.keys;
 import java.util.HashMap;
 import java.util.Map;
 
-/* Java Servlet api */
-
-import javax.servlet.ServletContextEvent;
-
 /* com.tverts: servlet (listeners) */
 
 import com.tverts.servlet.listeners.ServletContextListenerBase;
@@ -17,23 +13,24 @@ import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 import static com.tverts.support.SU.sXe;
 
+
 /**
- * COMMENT KeysPointActivator
+ * Builds database sequences used to create
+ * primary keys of the entities.
+ *
  *
  * @author anton.baukin@gmail.com
  */
 public class   KeysPointActivator
        extends ServletContextListenerBase
 {
-	/* public: ServletContextListener interface */
+	/* protected: ServletContextListenerBase interface */
 
-	public void contextInitialized(ServletContextEvent sce)
+	protected void init()
 	{
 		bindKeysGenerators();
 	}
 
-	public void contextDestroyed(ServletContextEvent sce)
-	{}
 
 	/* protected: keys generators binding */
 

@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/* Java Servlet api */
-
-import javax.servlet.ServletContextEvent;
-
 /* Hibernate Persistence Layer */
 
 import org.hibernate.mapping.PersistentClass;
@@ -51,9 +47,9 @@ public class   HiberSQLActivator
        extends ServletContextListenerBase
 {
 
-	/* public: ServletContextListener interface */
+	/* protected: ServletContextListenerBase interface */
 
-	public void contextInitialized(ServletContextEvent sce)
+	protected void init()
 	{
 		List<String> files;
 
@@ -113,9 +109,6 @@ public class   HiberSQLActivator
 		if(e != null) throw new RuntimeException(
 		  "Error occured while invoking SQL tasks on the system startup!", e);
 	}
-
-	public void contextDestroyed(ServletContextEvent sce)
-	{}
 
 
 	/* protected: sql tasks execution */

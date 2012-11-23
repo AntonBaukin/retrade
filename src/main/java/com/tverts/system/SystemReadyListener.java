@@ -1,9 +1,5 @@
 package com.tverts.system;
 
-/* Java Servlet api */
-
-import javax.servlet.ServletContextEvent;
-
 /* com.tverts: webapp listeners */
 
 import com.tverts.servlet.listeners.ServletContextListenerBase;
@@ -24,14 +20,11 @@ import com.tverts.system.zservices.events.SystemReady;
 public class   SystemReadyListener
        extends ServletContextListenerBase
 {
-	/* public: ServletContextListener interface */
+	/* protected: ServletContextListenerBase interface */
 
-	public void contextInitialized(ServletContextEvent sce)
+	protected void init()
 	{
 		//~: send services notification
 		ServicesPoint.broadcast(new SystemReady());
 	}
-
-	public void contextDestroyed(ServletContextEvent sce)
-	{}
 }

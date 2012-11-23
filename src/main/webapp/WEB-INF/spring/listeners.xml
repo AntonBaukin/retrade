@@ -32,6 +32,11 @@
         <ref bean = 'unityTypesActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Registers Executors                                       ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.exec.ExecutorsActivator'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Initializes system z-services                             ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.system.zservices.InitServicesListener'/>
