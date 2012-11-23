@@ -562,8 +562,8 @@ where (session_id = ?) and (close_time is null)
 select er.pk_exec_request, er.response_object
 from exec_request er where
   (er.fk_domain = ?) and (er.session_id = ?) and
-  (er.was_delivered = false) and (er.is_executed = true)
-order by er.request_time limit 1
+  (er.is_executed = true) and (er.was_delivered = false)
+order by er.pk_exec_request limit 1
 
 select er.pk_exec_request, er.response_object
 from exec_request er where
@@ -576,8 +576,8 @@ from exec_request er where
 "select er.pk_exec_request, er.response_object\n" +
 "from exec_request er where\n" +
 "  (er.fk_domain = ?) and (er.session_id = ?) and\n" +
-"  (er.was_delivered = false) and (er.is_executed = true)\n" +
-"order by er.request_time limit 1";
+"  (er.is_executed = true) and (er.was_delivered = false)\n" +
+"order by er.pk_exec_request limit 1";
 
 		final String B =
 
@@ -620,12 +620,12 @@ from exec_request er where
 		{
 			ar.getOutput().write(is);
 			is.close();
-
-			//!: set delivery commit post-operation
-			ar.setCommit(new ReceiveCommit(this, rkey));
 		}
 
 		rs.close(); ps.close();
+
+		//!: set delivery commit post-operation
+		ar.setCommit(new ReceiveCommit(this, rkey));
 	}
 
 	public void    request(AuthRequest ar)
