@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlType(name = "requests-status-query")
+@XmlType(name = "urn:com.tverts:retrade:core:status-query")
 public class StatusQuery
 {
 	/* public: StatusQuery (bean) interface */
@@ -58,17 +58,32 @@ public class StatusQuery
 	}
 
 	/**
-	 * Flag to return also completed (executed)
-	 * Ping requests. Unset by default.
+	 * Flag to also return executed (completed)
+	 * Ping requests. Unset (false) by default.
 	 */
-	public boolean isIncludeCompleted()
+	public Boolean getIncludeExecuted()
 	{
-		return includeCompleted;
+		return includeExecuted;
 	}
 
-	public void setIncludeCompleted(boolean includeCompleted)
+	public void setIncludeExecuted(Boolean includeExecuted)
 	{
-		this.includeCompleted = includeCompleted;
+		this.includeExecuted = includeExecuted;
+	}
+
+	/**
+	 * Flag to skip executed Ping requests
+	 * having Pong responses already delivered.
+	 * Unset (false) by default.
+	 */
+	public Boolean getSkipDelivered()
+	{
+		return skipDelivered;
+	}
+
+	public void setSkipDelivered(Boolean skipDelivered)
+	{
+		this.skipDelivered = skipDelivered;
 	}
 
 
@@ -77,5 +92,6 @@ public class StatusQuery
 	private Long    firstResult;
 	private Long    resultsLimit;
 	private String  requestKey;
-	private boolean includeCompleted;
+	private Boolean includeExecuted;
+	private Boolean skipDelivered;
 }

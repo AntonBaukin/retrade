@@ -70,7 +70,8 @@
 
     <property name = 'passhash' type = 'string'>
 
-      <column name = 'passhash' not-null = 'true' length = '40'>
+      <column name = 'passhash' not-null = 'true'
+        length = '40' sql-type = 'character(40)'>
 
         <comment>HEX string with 20-byte SHA-1 hash of the password</comment>
       </column>

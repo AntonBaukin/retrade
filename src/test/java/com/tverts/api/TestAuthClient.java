@@ -47,14 +47,16 @@ public class TestAuthClient
 		client.touch();
 
 
-		//<: send test requests
+		//~: send test request
 
 		Ping ping = new Ping();
 		ping.setRequest(new StatusQuery());
 
-		client.send(ping);
+		//client.send(ping);
 
-		//>: send test requests
+		//~: receive the results
+		ping = new Ping();
+		Pong pong = client.send(ping);
 
 
 		//~: close the session
