@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.transaction.NoTransactionException;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-/* com.tverts: hybery */
+/* com.tverts: hibery */
 
 import com.tverts.hibery.HiberPoint;
 
@@ -23,23 +23,23 @@ import com.tverts.system.tx.TxPoint.TxContextCreator;
  * session within @Transactional scope as a
  * {@link TxContext} instance.
  *
- * It always marks the transaction as to rollback only
- * via call to Spring' {@code TransactionAspectSupport}.
+ * It allows mark the transaction as to rollback only
+ * and calls Spring' {@code TransactionAspectSupport}.
  *
- * Restricted contexts are used in the system components
+ * Default contexts are used in the system components
  * not bound to an actual user request.
  *
  *
  * @author anton.baukin@gmail.com
  */
-class RestrictedTxContext implements TxContext
+class SystemTxContext implements TxContext
 {
 	/* constructor */
 
-	private RestrictedTxContext(SessionFactory sf)
+	private SystemTxContext(SessionFactory sf)
 	{
 		if(sf == null) throw new IllegalArgumentException(
-		  "Restricted Tx Context can't be cerated without valid " +
+		  "System Tx Context can't be created without valid " +
 		  "Hibernate Session Factory provided!"
 		);
 
@@ -52,7 +52,7 @@ class RestrictedTxContext implements TxContext
 
 		public TxContext createTxContext()
 		{
-			return new RestrictedTxContext(
+			return new SystemTxContext(
 			  HiberPoint.getInstance().getSessionFactory());
 		}
 	};

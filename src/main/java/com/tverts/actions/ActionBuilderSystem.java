@@ -396,7 +396,7 @@ public abstract class ActionBuilderSystem
 	}
 
 
-	/* private: substrategies */
+	/* private: sub-strategies */
 
 	private NestedBuilder  nestedBuilder;
 	private ContextCreator contextCreator;

@@ -4,6 +4,10 @@ package com.tverts.system.tx;
 
 import java.util.ArrayList;
 
+/* Hibernate Persistence Layer */
+
+import org.hibernate.Session;
+
 
 /**
  * COMMENT TxPoint
@@ -31,6 +35,25 @@ public class TxPoint
 	public static TxContext txContext()
 	{
 		return TxPoint.getInstance().getTxContextStrict();
+	}
+
+	public static Session   txSession()
+	{
+		TxContext ctx = txContext();
+		if(ctx.getSessionFactory() == null)
+			throw new IllegalStateException(String.format(
+			  "Tx Context of class [%s] has no " +
+			  "Hibernate Session Factory assigned!",
+			  ctx.getClass().getSimpleName()
+			));
+
+		Session   res = ctx.getSessionFactory().getCurrentSession();
+		if(res == null) throw new IllegalStateException(
+		  "Hibernate Session Factory assigned to Tx Context " +
+		  "is not linked to the actual Session instance!"
+		);
+
+		return res;
 	}
 
 	/**
@@ -134,13 +157,15 @@ public class TxPoint
 		this.txCreator = txCreator;
 	}
 
-/* private: thread bound contexts stacks */
+
+	/* private: thread bound contexts stacks */
 
 	private final ThreadLocal<ArrayList<TxContext>>
 	  contexts = new ThreadLocal<ArrayList<TxContext>>();
 
+
 	/* private: default contexts creator */
 
 	private volatile TxContextCreator txCreator =
-	  RestrictedTxContext.CREATOR;
+	  SystemTxContext.CREATOR;
 }

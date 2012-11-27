@@ -129,6 +129,18 @@ public class ServicesSystem implements Servicer
 		}
 	}
 
+	public Service  xservice(String suid)
+	{
+		Service service = service(suid);
+
+		if(service == null)
+			throw new IllegalStateException(String.format(
+			  "Service ID with ID '%s' does not exist!", suid
+			));
+
+		return service;
+	}
+
 	public void     send(Event event)
 	{
 		if(getMessenger() == null) throw new IllegalStateException(

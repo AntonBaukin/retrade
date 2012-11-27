@@ -8,8 +8,9 @@ import javax.jms.Message;
 
 import com.tverts.support.LU;
 
-/* com.tverts: services */
+/* com.tverts: system (tx + services) */
 
+import com.tverts.system.tx.TxPoint;
 import com.tverts.system.zservices.Event;
 import com.tverts.system.zservices.ServicesPoint;
 
@@ -30,8 +31,6 @@ public class      PlainEventsListenerBean
 
 	public void takeEventMessage(Message msg)
 	{
-		Throwable error = null;
-
 		try
 		{
 			//~: extract the event
@@ -42,7 +41,7 @@ public class      PlainEventsListenerBean
 		}
 		catch(Throwable e)
 		{
-			error = null;
+			//!: ignore this error
 		}
 	}
 
@@ -58,8 +57,19 @@ public class      PlainEventsListenerBean
 	protected void  process(Event event)
 	  throws Throwable
 	{
-		//!: directly send the event to the service
-		ServicesPoint.system().service(event);
+		//~: push default transaction context
+		TxPoint.getInstance().setTxContext();
+
+		try
+		{
+			//!: directly send the event to the service
+			ServicesPoint.system().service(event);
+		}
+		finally
+		{
+			//!: pop transaction context
+			TxPoint.getInstance().setTxContext(null);
+		}
 	}
 
 	protected void  rollbackMessage(Throwable error, Message msg)

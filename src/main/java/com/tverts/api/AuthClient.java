@@ -411,7 +411,7 @@ public class AuthClient
 	 *
 	 * Server-generated errors are returned in
 	 * the resulting {@link Pong} object, unlike
-	 * the {@link #xrequest(Ping)} method.
+	 * the {@link #xsend(Ping)} method.
 	 *
 	 * Note that not a receiving Pings would produce
 	 * {@code null} Ping results in the most cases.
