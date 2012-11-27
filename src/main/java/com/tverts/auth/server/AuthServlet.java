@@ -2,7 +2,6 @@ package com.tverts.auth.server;
 
 /* standard Java classes */
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -93,8 +92,8 @@ public class AuthServlet extends GenericServlet
 		}
 
 		//~: create output writer
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(256);
-		Writer writer = new OutputStreamWriter(bos, "ASCII");
+		BytesStream stream = new BytesStream();
+		Writer      writer = new OutputStreamWriter(stream, "ASCII");
 		protocol.setWriter(writer);
 
 		//!: invoke the protocol
@@ -107,20 +106,27 @@ public class AuthServlet extends GenericServlet
 		//?: {has protocol error}
 		if(protocol.getError() != null)
 		{
+			stream.close();
 			res.sendError(HttpServletResponse.SC_FORBIDDEN, protocol.getError());
 			return;
 		}
 
 		//~: get resulting bytes
-		writer.flush(); writer.close();
-		byte[] buffer = bos.toByteArray();
+		writer.flush();
 
 		//~: content type (plain text)
 		res.setHeader("Content-Type", "text/plain;charset=US-ASCII");
-		res.setIntHeader("Content-Length", buffer.length);
+		res.setIntHeader("Content-Length", (int) stream.length());
 
 		//~: write the response on success
-		res.getOutputStream().write(buffer);
+		try
+		{
+			stream.copy(res.getOutputStream());
+		}
+		finally
+		{
+			stream.close();
+		}
 	}
 
 	protected void request(HttpServletRequest req, HttpServletResponse res, boolean recieve)

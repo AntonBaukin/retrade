@@ -40,6 +40,53 @@ public final class BytesStream extends OutputStream
 	}
 
 	/**
+	 * Copies the bytes to the array given and returns
+	 * the number of bytes actually copied.
+	 *
+	 * @param off  the offset within the argument array.
+	 */
+	public int         copy(byte[] a, int off, int len)
+	  throws IOException
+	{
+		if(buffers == null)
+			throw new IOException("ByteStream is closed!");
+
+		if(buffers.isEmpty())
+			return 0;
+
+		int    res  = 0;
+		byte[] last = buffers.get(buffers.size() - 1);
+
+		for(byte[] buf : buffers)
+		{
+			int sz = (buf == last)?(position):(buf.length);
+			if(sz > len) sz = len;
+
+			System.arraycopy(buf, 0, a, off, sz);
+			off += sz; len -= sz; res += sz;
+
+			if(len == 0) break;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Returns a copy of the bytes written.
+	 */
+	public byte[]      bytes()
+	  throws IOException
+	{
+		byte[] res = new byte[(int) length()];
+		int    csz = copy(res, 0, res.length);
+
+		if(res.length != csz)
+			throw new IllegalStateException(
+			  "Error in BytesStream.copy(bytes) implementation!");
+		return res;
+	}
+
+	/**
 	 * Writes all the bytes from the stream given.
 	 * The stream is not closed in this call.
 	 */
@@ -141,7 +188,6 @@ public final class BytesStream extends OutputStream
 	}
 
 	public void close()
-	  throws IOException
 	{
 		if(buffers == null) return;
 
