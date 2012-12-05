@@ -16,14 +16,15 @@ public class CPSFAnnotated extends CPScanFilterBase
 {
 	/* public: CPSFInstanceOf (bean) interface */
 
-	public Class   getAnnotation()
+	public Class[] getAnnotations()
 	{
-		return annotation;
+		return annotations;
 	}
 
-	public void    setAnnotation(Class annotation)
+	public void    setAnnotations(Class[] annotations)
 	{
-		this.annotation = annotation;
+		if(annotations == null)  annotations = new Class[0];
+		this.annotations = annotations;
 	}
 
 
@@ -31,18 +32,17 @@ public class CPSFAnnotated extends CPScanFilterBase
 
 	public boolean isClassOfInterest(MetadataReader mr)
 	{
-		if((getAnnotation() == null) || !getAnnotation().isAnnotation())
-			return false;
-
 		if(!isAllowedClass(mr))
 			return false;
 
-		return mr.getAnnotationMetadata().hasAnnotation(
-		  getAnnotation().getName());
+		for(Class acls : getAnnotations())
+			if(mr.getAnnotationMetadata().hasAnnotation(acls.getName()))
+				return true;
+		return false;
 	}
 
 
 	/* private: parameters of the filter */
 
-	private Class annotation;
+	private Class[] annotations = new Class[0];
 }

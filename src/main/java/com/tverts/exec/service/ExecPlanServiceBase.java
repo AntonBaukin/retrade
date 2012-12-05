@@ -25,6 +25,9 @@ public abstract class ExecPlanServiceBase
 	{
 		if(event instanceof SystemReady)
 			systemReady();
+
+		if(event instanceof ExecPlanEvent)
+			servicePlan();
 	}
 
 	public String[] depends()

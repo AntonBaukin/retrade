@@ -2,7 +2,6 @@ package com.tverts.exec.service;
 
 /* Spring Framework */
 
-import com.tverts.exec.ExecPoint;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +15,10 @@ import com.tverts.system.zservices.ServiceBase;
 import com.tverts.system.tx.TxPoint;
 import static com.tverts.system.tx.TxPoint.txContext;
 import static com.tverts.system.tx.TxPoint.txSession;
+
+/* com.tverts: execution */
+
+import com.tverts.exec.ExecPoint;
 
 /* com.tverts: endure (authentication) */
 
@@ -51,7 +54,7 @@ public class ExecRunService extends ServiceBase
 	protected void executeEvent(ExecRunEvent e)
 	{
 		//?: {this task is not addressed directly}
-		if(!uid().equals(e.getSourceService()))
+		if(!uid().equals(e.getService()))
 			return;
 
 		//~: execute the task

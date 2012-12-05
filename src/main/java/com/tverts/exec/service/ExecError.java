@@ -35,6 +35,11 @@ public class ExecError extends RuntimeException
 		super(message, cause);
 	}
 
+	public ExecError(Throwable cause)
+	{
+		super(cause);
+	}
+
 
 	/* public: ExecError interface */
 

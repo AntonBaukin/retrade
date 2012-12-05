@@ -277,7 +277,7 @@ public class ServicesSystem implements Servicer
 				if(!getServicesMap().containsKey(depend))
 					throw new IllegalArgumentException(String.format(
 					  "Error during Z-Services System build: service '%s' depends" +
-					  "on not existing service '%s'!", service.uid(), depend
+					  " on not existing service '%s'!", service.uid(), depend
 					));
 
 			//~: add to the dependency map

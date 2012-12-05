@@ -70,7 +70,7 @@ public class   PlainExecPlanService
 
 		//?: {all the threads are busy} nothing to plan now
 		if(limit <= 0)
-			return false; //<-- resume with a pause
+			return true; //<-- resume with a pause
 
 /*
 
@@ -120,7 +120,7 @@ order by er.id
 		for(Object tid : added)
 			sendTask((Long)tid);
 
-		return false; //<-- achieved the limit
+		return true; //<-- achieved the limit (make a pause)
 	}
 
 	protected Object  threadsMutex()

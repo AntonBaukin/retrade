@@ -28,4 +28,37 @@
     </property>
   </bean>
 
+
+  <!--=================================================
+    =  Execution Planning Service                     =
+    =================================================-->
+
+  <bean name  = 'execPlanService'
+        class = 'com.tverts.exec.service.PlainExecPlanService'>
+
+    <property name  = 'UID'
+              value = 'Execution Planning Service'/>
+
+    <property name  = 'execService'
+              value = 'Execution Run Service'/>
+
+    <property name  = 'threadsLimit'
+              value = '32'/>
+
+    <property name  = 'waitPause'
+              value = '250'/>
+  </bean>
+
+
+  <!--=================================================
+    =  Execution Run Service                          =
+    =================================================-->
+
+  <bean name  = 'execRunService'
+        class = 'com.tverts.exec.service.ExecRunService'>
+
+    <property name  = 'UID'
+              value = 'Execution Run Service'/>
+  </bean>
+
 </beans>

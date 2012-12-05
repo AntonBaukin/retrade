@@ -52,11 +52,11 @@ public class TestAuthClient
 		Ping ping = new Ping();
 		ping.setRequest(new StatusQuery());
 
-		//client.send(ping);
+		client.send(ping);
 
 		//~: receive the results
-		ping = new Ping();
-		Pong pong = client.send(ping);
+//		ping = new Ping();
+//		Pong pong = client.send(ping);
 
 
 		//~: close the session

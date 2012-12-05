@@ -40,8 +40,14 @@
     <property name = 'filter'>
       <bean class = 'com.tverts.support.cpscan.CPSFAnnotated'>
 
-        <property name  = 'annotation'
-                  value = 'javax.xml.bind.annotation.XmlRootElement'/>
+        <property name  = 'annotations'>
+          <array>
+
+            <value>javax.xml.bind.annotation.XmlRootElement</value>
+            <value>javax.xml.bind.annotation.XmlType</value>
+
+          </array>
+        </property>
       </bean>
     </property>
   </bean>

@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlType(name = "urn:com.tverts:retrade:core:status-query")
+@XmlType(namespace = "urn:com.tverts:retrade:core:status-query")
 public class StatusQuery
 {
 	/* public: StatusQuery (bean) interface */

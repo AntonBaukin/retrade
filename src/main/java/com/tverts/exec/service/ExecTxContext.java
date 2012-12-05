@@ -51,11 +51,17 @@ public class      ExecTxContext
 			return domainCache;
 
 
-// select er.domain from ExecRequest er where (er.id = :pk)
+/*
+
+select do from Domain do, ExecRequest er where
+  (er.id = :pk) and (do.id = er.domain)
+
+*/
 
 		return domainCache = (Domain) txSession().createQuery(
 
-"select er.domain from ExecRequest er where (er.id = :pk)"
+"select do from Domain do, ExecRequest er where\n" +
+"  (er.id = :pk) and (do.id = er.domain)"
 
 		).
 		  setLong("pk", requestKey).
