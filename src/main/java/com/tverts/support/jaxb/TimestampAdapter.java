@@ -2,8 +2,8 @@ package com.tverts.support.jaxb;
 
 /* standard Java classes */
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /* Java XML Binding */
 
@@ -12,11 +12,11 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * Used in JAXB annotation to format timestamp
- * values as 'DD:MM:YYYY HH:mm'.
+ * values as 'DD:MM:YYYY HH:mm:ss.SSS'.
  *
  * @author anton.baukin@gmail.com
  */
-public final class DateTimeAdapter
+public final class TimestampAdapter
        extends     XmlAdapter<String, Date>
 {
 	/* public: XmlAdapter interface */
@@ -32,8 +32,9 @@ public final class DateTimeAdapter
 		return f.parse(v);
 	}
 
+
 	/* private: the formatter used */
 
 	private final SimpleDateFormat f =
-	  new SimpleDateFormat("dd.MM.yyyy HH:mm");
+	  new SimpleDateFormat("dd.MM.yyyy HH:mm:ss.SSS");
 }
