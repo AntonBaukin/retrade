@@ -56,7 +56,7 @@
     <property name = 'gender'>
 
       <column name = 'gender'>
-        <comment>The gender of the person ('M' of 'F')</comment>
+        <comment>The gender of the person (M of F)</comment>
       </column>
     </property>
 
