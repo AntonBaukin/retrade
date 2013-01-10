@@ -18,7 +18,7 @@ import org.hibernate.SessionFactory;
  *
  * @author anton.baukin@gmail.com
  */
-public interface TxContext
+public interface Tx
 {
 	/* public: TxContext interface */
 

@@ -18,13 +18,15 @@ import com.tverts.endure.keys.KeysPoint;
 import com.tverts.hibery.keys.HiberKeysContextStruct;
 import com.tverts.hibery.system.HiberSystem;
 
-/* com.tverts: system */
+/* com.tverts: system transactions */
 
-import com.tverts.system.tx.TxContext;
+import com.tverts.system.tx.Tx;
 
 
 /**
- * COMMENT HiberPoint
+ * Singleton with static interface to access
+ * system-wide primary database via Hibernate.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -160,7 +162,7 @@ public class HiberPoint
 	}
 
 	public static void    setPrimaryKey
-	  (TxContext tx, NumericIdentity instance, boolean fortest)
+	  (Tx tx, NumericIdentity instance, boolean fortest)
 	{
 		HiberPoint.getInstance().createPrimaryKey(
 		  tx.getSessionFactory().getCurrentSession(), instance, fortest);

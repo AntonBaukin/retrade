@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 
 /* com.tverts: system transactions */
 
-import com.tverts.system.tx.TxContext;
+import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
 
 
@@ -43,9 +43,9 @@ public abstract class ActionBuilderWithTxBase
 	 * Note that it is possible the context to be undefined.
 	 * It is when there is no global context.
 	 */
-	protected TxContext getTxOrNull(ActionBuildRec abr)
+	protected Tx getTxOrNull(ActionBuildRec abr)
 	{
-		TxContext tx = getActionTx(abr);
+		Tx tx = getActionTx(abr);
 		return (tx != null)?(tx):(getDefaultTx(abr));
 	}
 
@@ -53,9 +53,9 @@ public abstract class ActionBuilderWithTxBase
 	 * Returns the existing {@link #getTxOrNull(ActionBuildRec)},
 	 * or raises {@link IllegalStateException}.
 	 */
-	protected TxContext tx(ActionBuildRec abr)
+	protected Tx tx(ActionBuildRec abr)
 	{
-		TxContext tx = getTxOrNull(abr);
+		Tx tx = getTxOrNull(abr);
 
 		if(tx == null) throw new IllegalStateException(
 		  "Action Builder got a task without transaction context, " +
@@ -64,7 +64,7 @@ public abstract class ActionBuilderWithTxBase
 		return tx;
 	}
 
-	protected TxContext getDefaultTx(ActionBuildRec abr)
+	protected Tx getDefaultTx(ActionBuildRec abr)
 	{
 		return TxPoint.getInstance().getTxContext();
 	}

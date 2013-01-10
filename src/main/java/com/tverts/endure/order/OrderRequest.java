@@ -12,7 +12,7 @@ import com.tverts.endure.UnityType;
 
 /* com.tverts: system (tx) */
 
-import com.tverts.system.tx.TxContext;
+import com.tverts.system.tx.Tx;
 
 /* com.tverts: support */
 
@@ -90,12 +90,12 @@ public class OrderRequest
 	 * Provides optional transaction context. If not specified,
 	 * the global one would be used as default.
 	 */
-	public TxContext    getTx()
+	public Tx getTx()
 	{
 		return tx;
 	}
 
-	public OrderRequest setTx(TxContext tx)
+	public OrderRequest setTx(Tx tx)
 	{
 		this.tx = tx;
 		return this;
@@ -203,7 +203,7 @@ public class OrderRequest
 
 	private OrderIndex instance;
 	private OrderIndex reference;
-	private TxContext  tx;
+	private Tx tx;
 	private Map        params;
 	private boolean    beforeAfter;
 

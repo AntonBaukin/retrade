@@ -6,7 +6,7 @@ import java.util.Date;
 
 /* com.tverts: system transactions */
 
-import com.tverts.system.tx.TxContext;
+import com.tverts.system.tx.Tx;
 
 /* com.tverts: endure (core + authentication) */
 
@@ -22,7 +22,7 @@ import com.tverts.endure.core.Domain;
  *
  * @author anton.baukin@gmail.com
  */
-public interface ExecTx extends TxContext
+public interface ExecTx extends Tx
 {
 	/* public: ExecTx interface */
 

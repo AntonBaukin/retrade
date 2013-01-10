@@ -2,9 +2,9 @@ package com.tverts.aggr;
 
 /* com.tverts: system (transactions) */
 
-import com.tverts.system.tx.TxContext;
-import com.tverts.system.tx.TxContextWrapper;
+import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
+import com.tverts.system.tx.TxWrapper;
 
 
 /**
@@ -33,12 +33,12 @@ public abstract class AggregationSystem
 	/* protected: aggregation transaction context implementation */
 
 	protected static class AggrTxContext
-	          extends      TxContextWrapper
+	          extends TxWrapper
 	          implements   AggrTx
 	{
 		/* public: constructor */
 
-		public AggrTxContext(TxContext tx)
+		public AggrTxContext(Tx tx)
 		{
 			super(tx);
 		}

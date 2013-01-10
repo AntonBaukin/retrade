@@ -143,7 +143,7 @@ public class ExecRunService extends ServiceBase
 			return;
 
 		//!: create execution Tx context
-		ExecTx tx = createExecTx(request);
+		ExecTxContext tx = createExecTx(request);
 
 		try
 		{
@@ -177,7 +177,7 @@ public class ExecRunService extends ServiceBase
 	}
 
 	/**
-	 * This method is invoked within {@link ExecTx} context.
+	 * This method is invoked within {@link ExecTxContext} context.
 	 */
 	protected void   executeTaskTx(ExecRequest request)
 	  throws Throwable
@@ -217,7 +217,7 @@ public class ExecRunService extends ServiceBase
 		request.setResponseTime(new java.util.Date());
 	}
 
-	protected ExecTx createExecTx(ExecRequest request)
+	protected ExecTxContext createExecTx(ExecRequest request)
 	{
 		ExecTxContext ctx = new ExecTxContext(txContext());
 

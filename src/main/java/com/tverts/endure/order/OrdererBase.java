@@ -26,7 +26,7 @@ import static com.tverts.endure.UnityTypes.unityType;
 
 /* com.tverts: system (tx) */
 
-import com.tverts.system.tx.TxContext;
+import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: support  */
@@ -93,13 +93,13 @@ public abstract class OrdererBase
 	 *
 	 * Raises {@link IllegalStateException} if no context bound.
 	 */
-	protected TxContext  getTxContext(OrderRequest request)
+	protected Tx getTxContext(OrderRequest request)
 	{
 		return (request.getTx() != null)?(request.getTx()):
 		  (getGlobalTxContext());
 	}
 
-	protected TxContext  getGlobalTxContext()
+	protected Tx getGlobalTxContext()
 	{
 		return TxPoint.txContext();
 	}

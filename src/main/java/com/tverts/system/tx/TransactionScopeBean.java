@@ -19,8 +19,13 @@ import com.tverts.servlet.filters.FilterTask;
 
 import com.tverts.hibery.HiberPoint;
 
+
 /**
- * COMMENT TransactionScopeBean
+ * When HTTP request comes to the system,
+ * it creates an instance of these bean and
+ * invokes it, thus creating transactional
+ * scope, with the callback (filter) given.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -93,7 +98,7 @@ public class TransactionScopeBean implements Runnable
 
 	protected void closeScope(Throwable error)
 	{
-		TxContext tx = TxPoint.getInstance().getTxContext();
+		Tx tx = TxPoint.getInstance().getTxContext();
 
 		//!: clear the global transaction contexts
 		TxPoint.getInstance().clearTxContexts();
@@ -121,16 +126,16 @@ public class TransactionScopeBean implements Runnable
 
 	/* protected: transactional context implementation */
 
-	protected TxContext createTxContext()
+	protected Tx createTxContext()
 	{
-		TxContextScope res = new TxContextScope();
+		TxScope res = new TxScope();
 
 		res.setSessionFactory(
 		  HiberPoint.getInstance().getSessionFactory());
 		return res;
 	}
 
-	protected class TxContextScope implements TxContext
+	protected class TxScope implements Tx
 	{
 		/* public: TxContext interface */
 

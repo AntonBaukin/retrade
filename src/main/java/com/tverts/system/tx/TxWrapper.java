@@ -4,16 +4,17 @@ package com.tverts.system.tx;
 
 import org.hibernate.SessionFactory;
 
+
 /**
  * Wrapper of transaction context.
  *
  * @author anton.baukin@gmail.com
  */
-public class TxContextWrapper implements TxContext
+public class TxWrapper implements Tx
 {
 	/* public: constructor */
 
-	public TxContextWrapper(TxContext tx)
+	public TxWrapper(Tx tx)
 	{
 		if(tx == null) throw new IllegalArgumentException();
 		this.tx = tx;
@@ -41,7 +42,8 @@ public class TxContextWrapper implements TxContext
 		tx.setRollbackOnly();
 	}
 
+
 	/* protected: the context wrapped */
 
-	protected final TxContext tx;
+	protected final Tx tx;
 }

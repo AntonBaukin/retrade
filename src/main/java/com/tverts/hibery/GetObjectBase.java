@@ -20,7 +20,7 @@ import com.tverts.hibery.qb.QueryBuilder;
 
 /* com.tverts: system (transactions) */
 
-import com.tverts.system.tx.TxContext;
+import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure (core) */
@@ -63,7 +63,7 @@ public abstract class GetObjectBase
 	{
 		Session session = null;
 
-		TxContext tx = TxPoint.getInstance().getTxContext();
+		Tx tx = TxPoint.getInstance().getTxContext();
 		if((tx != null) && (tx.getSessionFactory() != null))
 			session = tx.getSessionFactory().getCurrentSession();
 

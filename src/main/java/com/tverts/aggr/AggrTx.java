@@ -2,7 +2,7 @@ package com.tverts.aggr;
 
 /* com.tverts: system transactions */
 
-import com.tverts.system.tx.TxContext;
+import com.tverts.system.tx.Tx;
 
 
 /**
@@ -10,5 +10,5 @@ import com.tverts.system.tx.TxContext;
  *
  * @author anton.baukin@gmail.com
  */
-public interface AggrTx extends TxContext
+public interface AggrTx extends Tx
 {}

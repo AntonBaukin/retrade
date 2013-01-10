@@ -10,7 +10,7 @@ import org.hibernate.Session;
 
 
 /**
- * COMMENT TxPoint
+ * Point to access current transaction provider.
  *
  * @author anton.baukin@gmail.com
  */
@@ -32,14 +32,14 @@ public class TxPoint
 
 	/* public: TxPoint interface */
 
-	public static TxContext txContext()
+	public static Tx        txContext()
 	{
 		return TxPoint.getInstance().getTxContextStrict();
 	}
 
 	public static Session   txSession()
 	{
-		TxContext ctx = txContext();
+		Tx ctx = txContext();
 		if(ctx.getSessionFactory() == null)
 			throw new IllegalStateException(String.format(
 			  "Tx Context of class [%s] has no " +
@@ -61,9 +61,9 @@ public class TxPoint
 	 * with the current request to the system. The result
 	 * may be undefined.
 	 */
-	public TxContext        getTxContext()
+	public Tx getTxContext()
 	{
-		ArrayList<TxContext> s = contexts.get();
+		ArrayList<Tx> s = contexts.get();
 		return s.isEmpty()?(null):(s.get(s.size() - 1));
 	}
 
@@ -71,9 +71,9 @@ public class TxPoint
 	 * Returns the global transaction context if it presents,
 	 * or raises {@link IllegalStateException}.
 	 */
-	public TxContext        getTxContextStrict()
+	public Tx getTxContextStrict()
 	{
-		TxContext tx = this.getTxContext();
+		Tx tx = this.getTxContext();
 
 		if(tx == null) throw new IllegalStateException(
 		  "Global transaction context is not defined!"
@@ -88,13 +88,13 @@ public class TxPoint
 	 * Note that push the same tx instance places new
 	 * item to the stack, and corresponding pop is needed.
 	 */
-	public void             setTxContext(TxContext tx)
+	public void             setTxContext(Tx tx)
 	{
-		ArrayList<TxContext> s = contexts.get();
+		ArrayList<Tx> s = contexts.get();
 
 		//?: {has no contexts stack yet} create it
 		if(s == null)
-			contexts.set(s = new ArrayList<TxContext>(1));
+			contexts.set(s = new ArrayList<Tx>(1));
 
 		//?: {has context defined} add to the end (the top)
 		if(tx != null)
@@ -114,7 +114,7 @@ public class TxPoint
 	 */
 	public void             setTxContext()
 	{
-		TxContext tx = getTxCreator().createTxContext();
+		Tx tx = getTxCreator().createTxContext();
 
 		//?: {was unable to create tx context}
 		if(tx == null) throw new IllegalStateException(
@@ -140,7 +140,7 @@ public class TxPoint
 	{
 		/* public: TxContextCreator interface */
 
-		public TxContext createTxContext();
+		public Tx createTxContext();
 	}
 
 
@@ -160,12 +160,12 @@ public class TxPoint
 
 	/* private: thread bound contexts stacks */
 
-	private final ThreadLocal<ArrayList<TxContext>>
-	  contexts = new ThreadLocal<ArrayList<TxContext>>();
+	private final ThreadLocal<ArrayList<Tx>>
+	  contexts = new ThreadLocal<ArrayList<Tx>>();
 
 
 	/* private: default contexts creator */
 
 	private volatile TxContextCreator txCreator =
-	  SystemTxContext.CREATOR;
+	  SystemTx.CREATOR;
 }

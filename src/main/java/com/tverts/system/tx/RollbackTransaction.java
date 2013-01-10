@@ -1,9 +1,11 @@
 package com.tverts.system.tx;
 
 /**
- * Orders to rollback the transaction. This exception
- * not passes the transational layer if no cause
- * exception does presend.
+ * Orders to rollback the transaction.
+ *
+ * This exception never passes the transactional
+ * layer until a cause (real) exception is present.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -28,18 +30,18 @@ public class   RollbackTransaction
 	 *
 	 * The context may be not defined.
 	 */
-	public TxContext           getTxContext()
+	public Tx getTxContext()
 	{
-		return txContext;
+		return tx;
 	}
 
-	public RollbackTransaction setTxContext(TxContext tx)
+	public RollbackTransaction setTxContext(Tx tx)
 	{
-		this.txContext = tx;
+		this.tx = tx;
 		return this;
 	}
 
 	/* private: transaction context */
 
-	private TxContext txContext;
+	private Tx tx;
 }

@@ -13,9 +13,9 @@ import org.apache.commons.collections.iterators.ReverseListIterator;
 
 /* com.tverts: system (transactions) */
 
-import com.tverts.system.tx.TxContext;
-import com.tverts.system.tx.TxContextWrapper;
+import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
+import com.tverts.system.tx.TxWrapper;
 
 /* com.tverts: actions */
 
@@ -164,7 +164,7 @@ public abstract class ActionBuilderSystem
 
 	protected ActionTx      createDefaultActionTx(ActionTask task)
 	{
-		TxContext tx = TxPoint.getInstance().getTxContext();
+		Tx tx = TxPoint.getInstance().getTxContext();
 		return (tx == null)?(null):(new ActionTxContext(tx));
 	}
 
@@ -384,12 +384,12 @@ public abstract class ActionBuilderSystem
 	/* protected static: action transaction context */
 
 	protected static class ActionTxContext
-	          extends      TxContextWrapper
+	          extends TxWrapper
 	          implements   ActionTx
 	{
 		/* public: constructor */
 
-		public ActionTxContext(TxContext tx)
+		public ActionTxContext(Tx tx)
 		{
 			super(tx);
 		}

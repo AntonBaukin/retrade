@@ -6,8 +6,8 @@ import java.util.Date;
 
 /* com.tverts: system (transactions) */
 
-import com.tverts.system.tx.TxContext;
-import com.tverts.system.tx.TxContextWrapper;
+import com.tverts.system.tx.Tx;
+import com.tverts.system.tx.TxWrapper;
 import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: endure (core + authentication) */
@@ -18,17 +18,15 @@ import com.tverts.endure.core.Domain;
 
 
 /**
- * Implementation of {@link ExecTx} transaction context.
+ * Implementation of {@link ExecTxContext} transaction context.
  *
  * @author anton.baukin@gmail.com
  */
-public class      ExecTxContext
-       extends    TxContextWrapper
-       implements ExecTx
+public class ExecTxContext extends TxWrapper implements ExecTx
 {
 	/* public: constructor */
 
-	public ExecTxContext(TxContext tx)
+	public ExecTxContext(Tx tx)
 	{
 		super(tx);
 	}

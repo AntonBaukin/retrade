@@ -21,7 +21,7 @@ import com.tverts.system.tx.TxPoint.TxContextCreator;
 /**
  * Restricted transaction context shows Hibernate
  * session within @Transactional scope as a
- * {@link TxContext} instance.
+ * {@link Tx} instance.
  *
  * It allows mark the transaction as to rollback only
  * and calls Spring' {@code TransactionAspectSupport}.
@@ -32,11 +32,11 @@ import com.tverts.system.tx.TxPoint.TxContextCreator;
  *
  * @author anton.baukin@gmail.com
  */
-class SystemTxContext implements TxContext
+class SystemTx implements Tx
 {
 	/* constructor */
 
-	private SystemTxContext(SessionFactory sf)
+	private SystemTx(SessionFactory sf)
 	{
 		if(sf == null) throw new IllegalArgumentException(
 		  "System Tx Context can't be created without valid " +
@@ -50,9 +50,9 @@ class SystemTxContext implements TxContext
 	{
 		/* public: TxContextCreator interface */
 
-		public TxContext createTxContext()
+		public Tx createTxContext()
 		{
-			return new SystemTxContext(
+			return new SystemTx(
 			  HiberPoint.getInstance().getSessionFactory());
 		}
 	};
