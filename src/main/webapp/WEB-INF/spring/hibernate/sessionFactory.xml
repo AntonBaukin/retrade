@@ -11,7 +11,7 @@
     +================================================-->
 
   <bean name  = 'sessionFactory'
-        class = 'com.tverts.hibery.system.CoupledSessionFactoryBean'>
+        class = 'org.springframework.orm.hibernate4.LocalSessionFactoryBean'>
 
     <property name = 'configLocations'>
       <array>

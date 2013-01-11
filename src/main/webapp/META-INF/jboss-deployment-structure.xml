@@ -13,5 +13,9 @@
       <module name = 'org.apache.commons.logging'/>
     </exclusions>
 
+    <resources>
+      <resource-root path = "/META-INF"/>
+    </resources>
+
   </deployment>
 </jboss-deployment-structure>
