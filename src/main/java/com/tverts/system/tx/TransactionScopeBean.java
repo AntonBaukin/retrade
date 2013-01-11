@@ -45,6 +45,7 @@ public class TransactionScopeBean implements Runnable
 		return this;
 	}
 
+
 	/* public: Runnable interface */
 
 	@Transactional(rollbackFor = Throwable.class)
@@ -76,6 +77,7 @@ public class TransactionScopeBean implements Runnable
 			closeScope(error);
 		}
 	}
+
 
 	/* protected: transaction scope invocation */
 
@@ -124,63 +126,14 @@ public class TransactionScopeBean implements Runnable
 			throw new RollbackTransaction().setTxContext(tx);
 	}
 
+
 	/* protected: transactional context implementation */
 
 	protected Tx createTxContext()
 	{
-		TxScope res = new TxScope();
-
-		res.setSessionFactory(
-		  HiberPoint.getInstance().getSessionFactory());
-		return res;
+		return SystemTx.CREATOR.createTxContext();
 	}
 
-	protected class TxScope implements Tx
-	{
-		/* public: TxContext interface */
-
-		public SessionFactory getSessionFactory()
-		{
-			return this.sessionFactory;
-		}
-
-		public boolean        isRollbackOnly()
-		{
-			return this.rollbackOnly;
-		}
-
-		public void           setRollbackFlag()
-		{
-			this.rollbackOnly = true;
-		}
-
-		public void           setRollbackOnly()
-		{
-			setRollbackFlag();
-
-			try
-			{
-				TransactionAspectSupport.currentTransactionStatus().
-				  setRollbackOnly();
-			}
-			catch(NoTransactionException e)
-			{
-				throw new IllegalStateException(e);
-			}
-		}
-
-		/* public: TxContextScope interface */
-
-		public void setSessionFactory(SessionFactory sf)
-		{
-			this.sessionFactory = sf;
-		}
-
-		/* private: the context state */
-
-		private SessionFactory sessionFactory;
-		private boolean        rollbackOnly;
-	}
 
 	/* private: nested invocation cycles */
 

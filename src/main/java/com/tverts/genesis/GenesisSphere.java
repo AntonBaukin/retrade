@@ -13,10 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tverts.system.tx.TxPoint;
 
-/* com.tverts: hibery */
-
-import com.tverts.hibery.HiberPoint;
-
 /* com.tverts: support */
 
 import com.tverts.support.LO;
@@ -233,7 +229,7 @@ public class      GenesisSphere
 			throw new IllegalStateException(
 			  "Genesis Sphere got Context without Hibernate Session bount!");
 
-		if(HiberPoint.session() != ctx.session())
+		if(TxPoint.txSession() != ctx.session())
 			throw new IllegalStateException(
 			  "Genesis Sphere has two Hibernate Sessions messed " +
 			  "in the Generation Context Vs globally accessed one!");

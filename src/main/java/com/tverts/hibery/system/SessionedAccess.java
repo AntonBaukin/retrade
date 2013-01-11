@@ -4,9 +4,9 @@ package com.tverts.hibery.system;
 
 import java.io.Serializable;
 
-/* com.tverts: hibery */
+/* com.tverts: system (tx) */
 
-import com.tverts.hibery.HiberPoint;
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: objects */
 
@@ -16,7 +16,7 @@ import com.tverts.objects.ObjectAccess;
 /**
  * This object access strategy checks whether
  * the instance cached is still in the session
- * of the {@link HiberPoint}. If not so, the
+ * of the {@link TxPoint}. If not so, the
  * instance is accesses again via the factory.
  *
  *
@@ -59,7 +59,7 @@ public class      SessionedAccess<O>
 		if(instance == null)
 			return accessInstance();
 
-		if(!HiberPoint.session().contains(instance))
+		if(!TxPoint.txSession().contains(instance))
 			return accessInstance();
 
 		return instance;

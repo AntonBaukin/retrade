@@ -6,8 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: hibery */
 
-import static com.tverts.hibery.HiberPoint.session;
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
+
+/* com.tverts: system (tx) */
+
+import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: endure (aggregation) */
 
@@ -74,10 +77,10 @@ public class AggrPoint
 		//  still have positive primary key!
 
 		//~: set the primary key
-		setPrimaryKey(session(), request);
+		setPrimaryKey(txSession(), request);
 
 		//!: do save the object
-		session().save(request);
+		txSession().save(request);
 	}
 
 	/**

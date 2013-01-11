@@ -12,8 +12,12 @@ import com.tverts.endure.keys.KeysGenerator;
 
 /* com.tverts: hibery */
 
-import com.tverts.hibery.HiberPoint;
 import org.hibernate.id.IdentifierGenerator;
+
+/* com.tverts: system (tx) */
+
+import static com.tverts.system.tx.TxPoint.txSession;
+
 
 /**
  * COMMENT HiberKeysGeneratorBridge
@@ -44,7 +48,7 @@ public final class HiberKeysGeneratorBridge
 			session = ((HiberKeysContext)context).getSession();
 
 		if(session == null)
-			session = HiberPoint.session();
+			session = txSession();
 
 		if(!(session instanceof SessionImplementor))
 			throw new IllegalStateException();

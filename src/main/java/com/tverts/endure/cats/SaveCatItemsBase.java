@@ -8,6 +8,10 @@ import org.hibernate.Session;
 
 import com.tverts.hibery.HiberPoint;
 
+/* com.tverts: system (tx) */
+
+import static com.tverts.system.tx.TxPoint.txSession;
+
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionsPoint;
@@ -70,8 +74,7 @@ public class      SaveCatItemsBase<C extends CatItem>
 
 	protected Session       session()
 	{
-		return (session != null)?(session):
-		  HiberPoint.session();
+		return (session != null)?(session):(txSession());
 	}
 
 	@SuppressWarnings("unchecked")

@@ -70,7 +70,12 @@ public abstract class GetObjectBase
 		if((session == null) && (sessionFactory != null))
 			session = sessionFactory.getCurrentSession();
 
-		return (session != null)?(session):HiberPoint.session();
+		if(session == null) throw new IllegalStateException(String.format(
+		  "%s is not bound to active Tx (transaction)!",
+		  getClass().getSimpleName()
+		));
+
+		return session;
 	}
 
 	protected Query   Q(String hql, Object... replaces)

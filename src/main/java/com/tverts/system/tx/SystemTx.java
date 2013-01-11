@@ -19,7 +19,7 @@ import com.tverts.system.tx.TxPoint.TxContextCreator;
 
 
 /**
- * Restricted transaction context shows Hibernate
+ * Initial transaction context shows Hibernate
  * session within @Transactional scope as a
  * {@link Tx} instance.
  *

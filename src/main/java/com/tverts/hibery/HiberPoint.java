@@ -71,20 +71,6 @@ public class HiberPoint
 
 	/* public static: primary database connectivity support */
 
-	/**
-	 * Returns the Hibernate session currently bound to
-	 * the execution context. Provides strict handling:
-	 * if no session bound, an exception is raised.
-	 *
-	 * This session instance is obtained from primary
-	 * session factory. The same factory is injected
-	 * via Spring @Autowire.
-	 */
-	public static Session session()
-	{
-		return getInstance().getSession();
-	}
-
 	public static Query   query(Session session, String hql, Object... replaces)
 	{
 		StringBuilder s = new StringBuilder(hql);
@@ -134,7 +120,7 @@ public class HiberPoint
 
 	public KeysContext    keysContext(Object instance)
 	{
-		return keysContext(instance, session());
+		return keysContext(instance, getInstance().getSession());
 	}
 
 	public KeysContext    keysContext(Object instance, Session session)

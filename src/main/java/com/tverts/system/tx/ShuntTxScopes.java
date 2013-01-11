@@ -19,9 +19,9 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/* com.tverts: hibernate */
+/* com.tverts: system (tx) */
 
-import static com.tverts.hibery.HiberPoint.session;
+import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: self-shunting */
 
@@ -36,6 +36,7 @@ import static com.tverts.shunts.SelfShuntPoint.LOG_SHARED;
 
 import com.tverts.support.LU;
 import static com.tverts.support.LU.sig;
+
 
 @Component("shuntTxScopes") @Scope("prototype")
 @SelfShuntUnit(single = true)
@@ -70,7 +71,7 @@ public class ShuntTxScopes
 	public void testMainTransactionScope()
 	{
 		checkCurrentSession();
-		this.session = session();
+		this.session = txSession();
 	}
 
 	private Session sessionNested;
@@ -89,10 +90,10 @@ public class ShuntTxScopes
 
 		assertTrue(
 		  "Nested Hibernate session must differ from the outer one!",
-		  session() != this.session
+		  txSession() != this.session
 		);
 
-		this.sessionNested = session();
+		this.sessionNested = txSession();
 	}
 
 	@Transactional
@@ -107,14 +108,14 @@ public class ShuntTxScopes
 
 		assertTrue(
 		  "We still have the nested session active!",
-		  session() != this.sessionNested
+		  txSession() != this.sessionNested
 		);
 
 		checkCurrentSession();
 
 		assertTrue(
 		  "We must have the same session continued.",
-		  session() == this.session
+		  txSession() == this.session
 		);
 	}
 
@@ -127,12 +128,12 @@ public class ShuntTxScopes
 
 		assertNotNull(
 		  "Hibernate session provided by HiberPoint must be defined!",
-		  session()
+		  txSession()
 		);
 
 		assertTrue(
 		  "HiberPoint.session() == SessionFactory.getCurrentSession()",
-		  session() == sessionFactory.getCurrentSession()
+		  txSession() == sessionFactory.getCurrentSession()
 		);
 	}
 }

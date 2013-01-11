@@ -10,9 +10,9 @@ import org.hibernate.Session;
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: hibery */
+/* com.tverts: system (tx) */
 
-import com.tverts.hibery.HiberPoint;
+import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: endure core */
 
@@ -54,7 +54,8 @@ public class Locks
 	 */
 	public static void lock(Lock lock, Session session)
 	{
-		if(session == null) session = HiberPoint.session();
+		if(session == null)
+			session = txSession();
 
 		//!: do lock nowait
 		session.buildLockRequest(LockOptions.UPGRADE).
@@ -71,7 +72,8 @@ public class Locks
 	 */
 	public static Lock lock(Long owner, UnityType type, Session session)
 	{
-		if(session == null) session = HiberPoint.session();
+		if(session == null)
+			session = txSession();
 
 		GetLock get = bean(GetLock.class);
 		get.setSession(session);

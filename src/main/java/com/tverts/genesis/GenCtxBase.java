@@ -12,9 +12,9 @@ import java.util.Set;
 
 import org.hibernate.Session;
 
-/* com.tverts: hibery */
+/* com.tverts: system (tx) */
 
-import com.tverts.hibery.HiberPoint;
+import static com.tverts.system.tx.TxPoint.txSession;
 
 
 /**
@@ -22,7 +22,7 @@ import com.tverts.hibery.HiberPoint;
  *
  * @author anton.baukin@gmail.com
  */
-public class GenCtxBase implements GenCtx, Cloneable
+public class GenCtxBase implements GenCtx
 {
 	/* public: constructor */
 
@@ -142,7 +142,7 @@ public class GenCtxBase implements GenCtx, Cloneable
 		  (outer == null)?(null):(outer.session());
 
 		if(res == null)
-			res = HiberPoint.session();
+			res = txSession();
 		return res;
 	}
 

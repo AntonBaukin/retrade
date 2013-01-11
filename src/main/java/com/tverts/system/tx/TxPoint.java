@@ -47,7 +47,7 @@ public class TxPoint
 			  ctx.getClass().getSimpleName()
 			));
 
-		Session   res = ctx.getSessionFactory().getCurrentSession();
+		Session res = ctx.getSessionFactory().getCurrentSession();
 		if(res == null) throw new IllegalStateException(
 		  "Hibernate Session Factory assigned to Tx Context " +
 		  "is not linked to the actual Session instance!"
@@ -64,7 +64,8 @@ public class TxPoint
 	public Tx getTxContext()
 	{
 		ArrayList<Tx> s = contexts.get();
-		return s.isEmpty()?(null):(s.get(s.size() - 1));
+		return (s == null)?(null):
+		  (s.isEmpty())?(null):(s.get(s.size() - 1));
 	}
 
 	/**

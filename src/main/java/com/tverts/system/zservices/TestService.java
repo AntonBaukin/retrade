@@ -4,14 +4,14 @@ package com.tverts.system.zservices;
 
 import org.springframework.transaction.annotation.Transactional;
 
+/* com.tverts: system (tx) */
+
+import static com.tverts.system.tx.TxPoint.txSession;
+
 /* com.tverts: z-services */
 
 import com.tverts.system.zservices.events.EventBase;
 import com.tverts.system.zservices.events.SystemReady;
-
-/* com.tverts: hibery */
-
-import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: support (logging) */
 
@@ -136,7 +136,7 @@ public class TestService extends ServiceBase
 		if(SU.sXe(msg)) return;
 
 		//~: cause the transaction to begin
-		HiberPoint.session().createQuery(
+		txSession().createQuery(
 		  "select count(*) from UnityType"
 		).uniqueResult();
 

@@ -14,9 +14,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-/* com.tverts: hibery */
+/* com.tverts: system (tx) */
 
-import com.tverts.hibery.HiberPoint;
+import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: support */
 
@@ -65,8 +65,7 @@ public abstract class ShuntPlain
 	protected Session session()
 	{
 		Session session = (sessionFactory != null)
-		  ?(sessionFactory.getCurrentSession())
-		  :(HiberPoint.session());
+		  ?(sessionFactory.getCurrentSession()):txSession();
 
 		//?: {has no session} illegal state
 		if(session == null) throw new IllegalStateException(

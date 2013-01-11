@@ -6,9 +6,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-/* com.tverts: hibernate */
+/* com.tverts: system (tx) */
 
-import com.tverts.hibery.HiberPoint;
+import com.tverts.system.tx.TxPoint;
 
 
 /**
@@ -38,7 +38,7 @@ public abstract class GenesisHiberPartBase
 	/**
 	 * You may specify the Session Factory explicitly.
 	 * By default the session is accessed by the call
-	 * {@link HiberPoint#session()}.
+	 * {@link TxPoint#txSession()}.
 	 *
 	 * Once the session is obtained, it is not changed
 	 * during the whole generation.
@@ -64,9 +64,8 @@ public abstract class GenesisHiberPartBase
 
 	protected Session      obtainSession()
 	{
-		return (sessionFactory == null)
-		  ?(HiberPoint.session())
-		  :(sessionFactory.getCurrentSession());
+		return (sessionFactory == null)?(TxPoint.txSession()):
+		  (sessionFactory.getCurrentSession());
 	}
 
 	protected Query        Q(String hql)

@@ -32,7 +32,6 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
-import com.tverts.support.OU;
 import com.tverts.support.SU;
 
 
@@ -51,6 +50,7 @@ public abstract class UnityTypesInitHiberBase
 	{
 		return HiberPoint.getInstance().getSessionFactory();
 	}
+
 
 	/* protected: unity types storing */
 
@@ -254,8 +254,7 @@ public abstract class UnityTypesInitHiberBase
 
 		ArrayList<String> res = new ArrayList<String>(1);
 
-		String className = new StringBuilder(1 + pe.simpleName.length()).
-		  append('.').append(pe.simpleName).toString();
+		String className = "." + pe.simpleName;
 
 		//~: search for the entities with the same simple name
 		for(String en : getSessionFactory().getAllClassMetadata().keySet())
