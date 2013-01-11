@@ -10,12 +10,9 @@ import org.hibernate.SessionFactory;
 
 import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.NumericIdentity;
-import com.tverts.endure.keys.KeysContext;
-import com.tverts.endure.keys.KeysPoint;
 
 /* com.tverts: hibery */
 
-import com.tverts.hibery.keys.HiberKeysContextStruct;
 import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: system transactions */
@@ -118,60 +115,25 @@ public class HiberPoint
 
 	/* public static: keys generation support */
 
-	public KeysContext    keysContext(Object instance)
-	{
-		return keysContext(instance, getInstance().getSession());
-	}
-
-	public KeysContext    keysContext(Object instance, Session session)
-	{
-		if(instance == null)
-			throw new IllegalArgumentException();
-
-		return new HiberKeysContextStruct(instance.getClass()).
-		  setSavedInstance(instance).
-		  setSession(session);
-	}
-
 	public static void    setPrimaryKey
 	  (Session session, NumericIdentity instance)
 	{
-		HiberPoint.getInstance().
+		HiberSystem.getInstance().
 		  createPrimaryKey(session, instance, false);
 	}
 
 	public static  void   setPrimaryKey
 	  (Session session, NumericIdentity instance, boolean fortest)
 	{
-		HiberPoint.getInstance().
+		HiberSystem.getInstance().
 		  createPrimaryKey(session, instance, fortest);
 	}
 
 	public static void    setPrimaryKey
 	  (Tx tx, NumericIdentity instance, boolean fortest)
 	{
-		HiberPoint.getInstance().createPrimaryKey(
+		HiberSystem.getInstance().createPrimaryKey(
 		  tx.getSessionFactory().getCurrentSession(), instance, fortest);
-	}
-
-	public void           createPrimaryKey
-	  (Session session, NumericIdentity instance, boolean fortest)
-	{
-		//?: {already have primary key} do not force change
-		if(instance.getPrimaryKey() != null)
-			return;
-
-		Object primaryKey = KeysPoint.facadeGenerator().
-		  createPrimaryKey(keysContext(instance, session));
-
-		if(!(primaryKey instanceof Long))
-			throw new IllegalStateException();
-
-		//?: {is a test instance}
-		if(fortest)
-			primaryKey = -(Long)primaryKey;
-
-		instance.setPrimaryKey((Long)primaryKey);
 	}
 
 	public static boolean isTestInstance(NumericIdentity instance)

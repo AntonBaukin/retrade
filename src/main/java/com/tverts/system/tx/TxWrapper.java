@@ -1,49 +1,20 @@
 package com.tverts.system.tx;
 
-/* Hibernate Persistence Layer */
-
-import org.hibernate.SessionFactory;
-
-
 /**
- * Wrapper of transaction context.
+ * Transaction Wrapper does not expose new
+ * or a nested transaction. It wraps the existing
+ * one with extended interface related to the area
+ * the transaction is used.
+ *
+ * Wrapping transaction has the same transaction
+ * number ({@link #txn()}).
+ *
  *
  * @author anton.baukin@gmail.com
  */
-public class TxWrapper implements Tx
+public interface TxWrapper extends Tx
 {
-	/* public: constructor */
+	/* public: TxWrapper interface */
 
-	public TxWrapper(Tx tx)
-	{
-		if(tx == null) throw new IllegalArgumentException();
-		this.tx = tx;
-	}
-
-	/* public: TxContext interface */
-
-	public SessionFactory getSessionFactory()
-	{
-		return tx.getSessionFactory();
-	}
-
-	public boolean        isRollbackOnly()
-	{
-		return tx.isRollbackOnly();
-	}
-
-	public void           setRollbackFlag()
-	{
-		tx.setRollbackFlag();
-	}
-
-	public void           setRollbackOnly()
-	{
-		tx.setRollbackOnly();
-	}
-
-
-	/* protected: the context wrapped */
-
-	protected final Tx tx;
+	public Tx getWrappedTx();
 }

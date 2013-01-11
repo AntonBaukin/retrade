@@ -7,7 +7,7 @@ import java.util.Date;
 /* com.tverts: system (transactions) */
 
 import com.tverts.system.tx.Tx;
-import com.tverts.system.tx.TxWrapper;
+import com.tverts.system.tx.TxWrapperBase;
 import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: endure (core + authentication) */
@@ -22,7 +22,7 @@ import com.tverts.endure.core.Domain;
  *
  * @author anton.baukin@gmail.com
  */
-public class ExecTxContext extends TxWrapper implements ExecTx
+public class ExecTxContext extends TxWrapperBase implements ExecTx
 {
 	/* public: constructor */
 

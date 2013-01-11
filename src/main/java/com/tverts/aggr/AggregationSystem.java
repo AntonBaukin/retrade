@@ -4,7 +4,7 @@ package com.tverts.aggr;
 
 import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
-import com.tverts.system.tx.TxWrapper;
+import com.tverts.system.tx.TxWrapperBase;
 
 
 /**
@@ -33,7 +33,7 @@ public abstract class AggregationSystem
 	/* protected: aggregation transaction context implementation */
 
 	protected static class AggrTxContext
-	          extends TxWrapper
+	          extends      TxWrapperBase
 	          implements   AggrTx
 	{
 		/* public: constructor */

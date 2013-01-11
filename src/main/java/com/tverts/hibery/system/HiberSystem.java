@@ -31,10 +31,23 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
 
-
 /* Apache Commons Collections */
 
 import org.apache.commons.collections.map.IdentityMap;
+
+/* com.tverts: hibery */
+
+import com.tverts.hibery.keys.HiberKeysContextStruct;
+import com.tverts.endure.keys.KeysPoint;
+
+/* com.tverts: system (tx) */
+
+import com.tverts.system.tx.Tx;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.keys.KeysContext;
 
 
 /**
@@ -59,7 +72,7 @@ public class HiberSystem
 	{}
 
 
-	/* public: HiberSystem interface */
+	/* public: HiberSystem (bean) interface */
 
 	public void setSessionFactory(SessionFactory sf)
 	{
@@ -91,9 +104,54 @@ public class HiberSystem
 	}
 
 
+	/* public: primary keys generation */
+
+	public KeysContext keysContext(Object instance, Session session)
+	{
+		if(instance == null)
+			throw new IllegalArgumentException();
+
+		return new HiberKeysContextStruct(instance.getClass()).
+		  setSavedInstance(instance).
+		  setSession(session);
+	}
+
+	public void        createPrimaryKey
+	  (Session session, NumericIdentity instance, boolean fortest)
+	{
+		//?: {already have primary key} do not force change
+		if(instance.getPrimaryKey() != null)
+			return;
+
+		Object primaryKey = KeysPoint.facadeGenerator().
+		  createPrimaryKey(keysContext(instance, session));
+
+		if(!(primaryKey instanceof Long))
+			throw new IllegalStateException();
+
+		//?: {is a test instance}
+		if(fortest)
+			primaryKey = -(Long)primaryKey;
+
+		instance.setPrimaryKey((Long)primaryKey);
+	}
+
+	public long        createTxNumber(SessionFactory sf, Tx tx)
+	{
+		Session session = sf.getCurrentSession();
+
+		if(session == null) throw new IllegalStateException(
+		  "Hibernate Session Factpry has no Session " +
+		  "bound to the current thread!");
+
+		return (Long) KeysPoint.facadeGenerator().
+		  createPrimaryKey(keysContext(tx, session));
+	}
+
+
 	/* public: enhanced routines */
 
-	public Class      findActualClass(Object instance)
+	public Class       findActualClass(Object instance)
 	{
 		if(instance == null)
 			return null;
@@ -123,7 +181,7 @@ public class HiberSystem
 	 * instances actual.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> Set<T> findAttachedEntities(Session session, Class<T> entityClass)
+	public <T> Set<T>  findAttachedEntities(Session session, Class<T> entityClass)
 	{
 		if(!(session instanceof SessionImplementor))
 			throw new IllegalArgumentException();
@@ -153,7 +211,7 @@ public class HiberSystem
 	 * WARNING!  This implementation is experimental.
 	 *   Always do test it's using!
 	 */
-	public <T> Set<T> reloadAttachedEntities
+	public <T> Set<T>  reloadAttachedEntities
 	  (Session session, Class<T> entityClass, Collection<? extends T> excluded)
 	{
 		//~: find the entities to reload

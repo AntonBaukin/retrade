@@ -10,7 +10,9 @@ import java.util.Map;
 
 
 /**
- * COMMENT KeysPoint
+ * Point to access strategies of generating database
+ * entities primary keys and the transactions numbers.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -19,6 +21,8 @@ public class KeysPoint
 	/* public: the names of major generators */
 
 	public static final String GEN_PRIME = "primary";
+
+	public static final String GEN_TXN   = "txn";
 
 	public static final String GEN_OTHER = "other";
 
@@ -64,6 +68,18 @@ public class KeysPoint
 		if(this.primaryGenerator != null)
 			throw new IllegalStateException();
 		this.primaryGenerator = gen;
+	}
+
+	public KeysGenerator getTxnGenerator()
+	{
+		return txnGenerator;
+	}
+
+	public void          setTxnGenerator(KeysGenerator txnGenerator)
+	{
+		if(this.txnGenerator != null)
+			throw new IllegalStateException();
+		this.txnGenerator = txnGenerator;
 	}
 
 	public KeysGenerator getOtherGenerator()
@@ -125,6 +141,7 @@ public class KeysPoint
 		this.generatorBinders = binders;
 	}
 
+
 	/* public: access point support */
 
 	public static KeysGenerator facadeGenerator()
@@ -155,6 +172,7 @@ public class KeysPoint
 
 	private KeysGenerator facadeGenerator;
 	private KeysGenerator primaryGenerator;
+	private KeysGenerator txnGenerator;
 	private KeysGenerator otherGenerator;
 
 	/* private: generators & binders */

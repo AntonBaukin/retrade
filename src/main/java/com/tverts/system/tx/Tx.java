@@ -15,12 +15,23 @@ import org.hibernate.SessionFactory;
  * transaction actually starts. hence, it never stores
  * direct references to the transactional resources.
  *
+ * Tx Context may be used only by the thread created it!
+ *
  *
  * @author anton.baukin@gmail.com
  */
 public interface Tx
 {
 	/* public: TxContext interface */
+
+	/**
+	 * The transaction number. Created on demand
+	 * for the updating transactions.
+	 *
+	 * The number is selected from database' atomic
+	 * sequence that is not bound to a transaction.
+	 */
+	public long           txn();
 
 	/**
 	 * The factory of Hibernate sessions to access

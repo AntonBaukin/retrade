@@ -32,12 +32,12 @@ public class TxPoint
 
 	/* public: TxPoint interface */
 
-	public static Tx        txContext()
+	public static Tx      txContext()
 	{
 		return TxPoint.getInstance().getTxContextStrict();
 	}
 
-	public static Session   txSession()
+	public static Session txSession()
 	{
 		Tx ctx = txContext();
 		if(ctx.getSessionFactory() == null)
@@ -61,7 +61,7 @@ public class TxPoint
 	 * with the current request to the system. The result
 	 * may be undefined.
 	 */
-	public Tx getTxContext()
+	public Tx             getTxContext()
 	{
 		ArrayList<Tx> s = contexts.get();
 		return (s == null)?(null):
@@ -72,7 +72,7 @@ public class TxPoint
 	 * Returns the global transaction context if it presents,
 	 * or raises {@link IllegalStateException}.
 	 */
-	public Tx getTxContextStrict()
+	public Tx             getTxContextStrict()
 	{
 		Tx tx = this.getTxContext();
 
@@ -89,7 +89,7 @@ public class TxPoint
 	 * Note that push the same tx instance places new
 	 * item to the stack, and corresponding pop is needed.
 	 */
-	public void             setTxContext(Tx tx)
+	public void           setTxContext(Tx tx)
 	{
 		ArrayList<Tx> s = contexts.get();
 
@@ -113,7 +113,7 @@ public class TxPoint
 	 * by Spring kernel and the application server. So, the default context
 	 * is just a number of default references.
 	 */
-	public void             setTxContext()
+	public void           setTxContext()
 	{
 		Tx tx = getTxCreator().createTxContext();
 
@@ -126,7 +126,7 @@ public class TxPoint
 		this.setTxContext(tx);
 	}
 
-	protected void          clearTxContexts()
+	protected void        clearTxContexts()
 	{
 		contexts.remove();
 	}

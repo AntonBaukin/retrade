@@ -39,6 +39,7 @@ public final class SequenceLongKeysCachingGenerator
 	 */
 	public static final String PARAM_INCR = "sequence_increment";
 
+
 	/* public: SequenceGenerator interface */
 
 	public void configure(Type type, Properties params, Dialect dialect)
@@ -72,12 +73,13 @@ public final class SequenceLongKeysCachingGenerator
 		return ++xvalue; //<-- increment, then return
 	}
 
+
 	/* private: the state of the generator */
 
-	private Long svalue;
-	private long xvalue;
+	private Long         svalue;
+	private long         xvalue;
 
 	/* private: parameters of the generator */
 
-	private int  seqinc;
+	private volatile int seqinc;
 }

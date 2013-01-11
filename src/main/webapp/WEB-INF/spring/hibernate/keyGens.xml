@@ -44,6 +44,47 @@
         </bean>
 
 
+        <!-- Transaction Numbers Generator -->
+
+        <bean class = 'com.tverts.hibery.keys.HiberKeysGeneratorBinder'>
+
+          <property name  = 'generatorName'
+                    value = 'txn'/>
+
+          <property name  = 'generatorClass'
+                    value = 'com.tverts.hibery.system.SequenceLongKeysCachingGenerator'/>
+
+          <property name  = 'properties'>
+            <props>
+
+              <prop key = 'sequence'>
+                txn_sequence
+              </prop>
+
+              <!--  ===============================================x
+
+                WARNING! Transaction numbers may be incremented
+                  by value > 1 (cached) only when one application
+                  (instance) access the database!
+
+                As write transactions are rare, caching Tx numbers
+                has no performance gain, and it is better to be off.
+
+               x==================================================-->
+
+              <prop key = 'sequence_increment'>
+                1
+              </prop>
+
+              <prop key = 'parameters'>
+                increment by 1 start with 1
+              </prop>
+
+            </props>
+          </property>
+        </bean>
+
+
         <!-- Other Generator Sequence -->
 
         <bean class = 'com.tverts.hibery.keys.HiberKeysGeneratorBinder'>

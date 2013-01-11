@@ -20,7 +20,9 @@ import static com.tverts.system.tx.TxPoint.txSession;
 
 
 /**
- * COMMENT HiberKeysGeneratorBridge
+ * Key generation strategy that invokes the
+ * {@link IdentifierGenerator} provided.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -34,6 +36,7 @@ public final class HiberKeysGeneratorBridge
 		if(generator == null) throw new IllegalArgumentException();
 		this.generator = generator;
 	}
+
 
 	/* public: KeysGenerator interface */
 
@@ -54,8 +57,10 @@ public final class HiberKeysGeneratorBridge
 			throw new IllegalStateException();
 
 		return generator.generate(
-		  (SessionImplementor)session, context.getSavedInstance());
+		  (SessionImplementor)session,
+		  context.getSavedInstance());
 	}
+
 
 	/* private: hibernate generator */
 

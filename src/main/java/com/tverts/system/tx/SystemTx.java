@@ -2,6 +2,7 @@ package com.tverts.system.tx;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.hibery.system.HiberSystem;
 import org.hibernate.SessionFactory;
 
 /* Spring framework */
@@ -23,11 +24,11 @@ import com.tverts.system.tx.TxPoint.TxContextCreator;
  * session within @Transactional scope as a
  * {@link Tx} instance.
  *
- * It allows mark the transaction as to rollback only
- * and calls Spring' {@code TransactionAspectSupport}.
+ * It allows mark the transaction as to rollback only,
+ * it calls Spring' {@code TransactionAspectSupport}.
  *
- * Default contexts are used in the system components
- * not bound to an actual user request.
+ * Initial transaction context is in the most cases
+ * the first context created.
  *
  *
  * @author anton.baukin@gmail.com
@@ -57,7 +58,17 @@ class SystemTx implements Tx
 		}
 	};
 
+
 	/* public: TxContext interface */
+
+	public long           txn()
+	{
+		if(txn != null)
+			return txn;
+
+		return (txn = HiberSystem.getInstance().
+		  createTxNumber(sessionFactory, this));
+	}
 
 	public SessionFactory getSessionFactory()
 	{
@@ -89,8 +100,10 @@ class SystemTx implements Tx
 		}
 	}
 
+
 	/* private: the context state */
 
 	private SessionFactory sessionFactory;
+	private Long           txn;
 	private boolean        rollbackOnly;
 }

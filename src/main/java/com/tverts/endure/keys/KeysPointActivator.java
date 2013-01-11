@@ -90,6 +90,15 @@ public class   KeysPointActivator
 			KeysPoint.getInstance().setPrimaryGenerator(
 			  generators.get(KeysPoint.GEN_PRIME));
 
+
+		//?: {has no transactions numbers generator}
+		if((KeysPoint.getInstance().getTxnGenerator() == null) &&
+		   generators.containsKey(KeysPoint.GEN_TXN)
+		  )
+			KeysPoint.getInstance().setTxnGenerator(
+			  generators.get(KeysPoint.GEN_TXN));
+
+
 		//?: {has no other generator}
 		if((KeysPoint.getInstance().getOtherGenerator() == null) &&
 		   generators.containsKey(KeysPoint.GEN_OTHER)

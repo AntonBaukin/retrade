@@ -1,8 +1,13 @@
 package com.tverts.endure.keys;
 
+/* com.tverts: system (tx) */
+
+import com.tverts.system.tx.Tx;
+
 /* com.tverts: endure */
 
 import com.tverts.endure.PrimaryIdentity;
+
 
 /**
  * Default facade generator selecting the generator
@@ -32,6 +37,7 @@ public class KeysPointGenerator extends KeysGeneratorDirector
 		return selectGenerator(context, cls);
 	}
 
+
 	/* protected: generator selection */
 
 	protected KeysGenerator selectGenerator(KeysContext ctx, Class cls)
@@ -39,6 +45,10 @@ public class KeysPointGenerator extends KeysGeneratorDirector
 		//?: {this class is of primary generator}
 		if(PrimaryIdentity.class.isAssignableFrom(cls))
 			return KeysPoint.getInstance().getPrimaryGenerator();
+
+		//?: {this is a transaction context}
+		if(Tx.class.isAssignableFrom(cls))
+			return KeysPoint.getInstance().getTxnGenerator();
 
 		return KeysPoint.getInstance().getOtherGenerator();
 	}

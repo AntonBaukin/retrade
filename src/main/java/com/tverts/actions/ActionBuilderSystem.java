@@ -9,13 +9,13 @@ import java.util.Map;
 
 /* Apache Commons Collections */
 
+import com.tverts.system.tx.TxWrapperBase;
 import org.apache.commons.collections.iterators.ReverseListIterator;
 
 /* com.tverts: system (transactions) */
 
 import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
-import com.tverts.system.tx.TxWrapper;
 
 /* com.tverts: actions */
 
@@ -384,7 +384,7 @@ public abstract class ActionBuilderSystem
 	/* protected static: action transaction context */
 
 	protected static class ActionTxContext
-	          extends TxWrapper
+	          extends      TxWrapperBase
 	          implements   ActionTx
 	{
 		/* public: constructor */
