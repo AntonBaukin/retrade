@@ -7,45 +7,22 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 /* com.tverts: endure */
 
-import com.tverts.endure.United;
+import com.tverts.endure.UnitedBase;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
 
 
 /**
- * COMMENT UnityView
+ * Unity view is abstraction of an object
+ * that aggregates the attributes ans state
+ * of the related {@link Unity} instance.
+ *
  *
  * @author anton.baukin@gmail.com
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class UnityView implements United
+public abstract class UnityView extends UnitedBase
 {
-	/* public: NumericIdentity interface */
-
-	public Long       getPrimaryKey()
-	{
-		return primaryKey;
-	}
-
-	public void       setPrimaryKey(Long primaryKey)
-	{
-		this.primaryKey = primaryKey;
-	}
-
-
-	/* public: United interface */
-
-	public Unity      getUnity()
-	{
-		return unity;
-	}
-
-	public void       setUnity(Unity unity)
-	{
-		this.unity = unity;
-	}
-
-
 	/* public: UnityView (bean) interface */
 
 	public Domain     getDomain()
@@ -98,34 +75,7 @@ public abstract class UnityView implements United
 	}
 
 
-	/* public: Object interface */
-
-	public boolean    equals(Object u)
-	{
-		if(this == u)
-			return true;
-
-		if(!(u instanceof UnityView))
-			return false;
-
-		Long k0 = this.getPrimaryKey();
-		Long k1 = ((UnityView)u).getPrimaryKey();
-
-		return (k0 != null) && k0.equals(k1);
-	}
-
-	public int        hashCode()
-	{
-		Long k0 = this.getPrimaryKey();
-
-		return (k0 == null)?(0):(k0.hashCode());
-	}
-
-
-	/* persisted attributes */
-
-	private Long      primaryKey;
-	private Unity     unity;
+	/* persisted attributes & links */
 
 	private Domain    domain;
 	private Unity     viewOwner;

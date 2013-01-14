@@ -3,47 +3,22 @@ package com.tverts.endure.core;
 /* com.tverts: endure */
 
 import com.tverts.endure.United;
+import com.tverts.endure.UnitedBase;
 import com.tverts.endure.UnitingLink;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
 
+
 /**
- * COMMENT UnityLink
+ * General link between two {@link United}
+ * instances (having unified mirrors).
  *
  * @author anton.baukin@gmail.com
  */
-public class UnityLink implements United, UnitingLink
+public class      UnityLink
+       extends    UnitedBase
+       implements UnitingLink
 {
-	/* public: PrimaryIdentity interface */
-
-	public Long      getPrimaryKey()
-	{
-		return primaryKey;
-	}
-
-	public void      setPrimaryKey(Long primaryKey)
-	{
-		this.primaryKey = primaryKey;
-	}
-
-
-	/* public: United interface */
-
-	public Unity     getUnity()
-	{
-		return unity;
-	}
-
-	public void      setUnity(Unity unity)
-	{
-		this.unity = unity;
-
-		//!: set the link type to be the same
-		if(unity != null)
-			setLinkType(unity.getUnityType());
-	}
-
-
 	/* public: UnitingLink interface */
 
 	public UnityType getLinkType()
@@ -88,7 +63,7 @@ public class UnityLink implements United, UnitingLink
 	public long      getLinkGroup()
 	{
 		return (linkGroup != 0L)?(linkGroup):
-		  (primaryKey != null)?(primaryKey):(0L);
+		  (getPrimaryKey() != null)?(getPrimaryKey()):(0L);
 	}
 
 	public void      setLinkGroup(long linkGroup)
@@ -110,35 +85,8 @@ public class UnityLink implements United, UnitingLink
 	}
 
 
-	/* public: Object interface */
+	/* persistent attributes & links */
 
-	public boolean equals(Object l)
-	{
-		if(this == l)
-			return true;
-
-		if(!(l instanceof UnityLink))
-			return false;
-
-		Long k0 = this.getPrimaryKey();
-		Long k1 = ((UnityLink)l).getPrimaryKey();
-
-		return (k0 != null) && k0.equals(k1);
-	}
-
-	public int     hashCode()
-	{
-		Long k0 = this.getPrimaryKey();
-
-		return (k0 == null)?(0):(k0.hashCode());
-	}
-
-
-	/* private: persistent attributes */
-
-	private Long      primaryKey;
-
-	private Unity     unity;
 	private UnityType linkType;
 	private Unity     owner;
 	private Unity     linked;

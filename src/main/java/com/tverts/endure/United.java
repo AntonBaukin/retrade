@@ -1,7 +1,15 @@
 package com.tverts.endure;
 
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.core.Entity;
+
+
 /**
- * COMMENT United
+ * While {@link Entity} subclass requires an instance
+ * to have the unified mirror {@link Unity}, {@link United}
+ * instance has this relation optionally.
+ *
  *
  * @author anton.baukin@gmail.com
  */

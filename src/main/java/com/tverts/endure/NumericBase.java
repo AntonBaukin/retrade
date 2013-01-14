@@ -27,6 +27,8 @@ public abstract class NumericBase implements NumericIdentity
 		if(this == o)
 			return true;
 
+		if(o == null) return false;
+
 		if(!this.getClass().equals(o.getClass()))
 			return false;
 
