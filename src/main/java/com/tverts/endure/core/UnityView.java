@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 /* com.tverts: endure */
 
-import com.tverts.endure.UnitedBase;
+import com.tverts.endure.UnitedTxBase;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
 
@@ -21,7 +21,8 @@ import com.tverts.endure.UnityType;
  * @author anton.baukin@gmail.com
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class UnityView extends UnitedBase
+public abstract class UnityView
+       extends        UnitedTxBase
 {
 	/* public: UnityView (bean) interface */
 

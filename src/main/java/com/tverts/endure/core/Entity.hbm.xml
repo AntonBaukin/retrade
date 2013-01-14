@@ -17,10 +17,23 @@
     </id>
 
 
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = '_ix_entity_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
     <!-- Unity -->
 
-    <one-to-one name = 'unity' foreign-key = 'fk_unified_mirror_'
-      constrained = 'true' outer-join = 'false' cascade = 'save-update'/>
+    <one-to-one name = 'unity' constrained = 'true'
+      outer-join = 'false' cascade = 'save-update'
+      foreign-key = 'fk_unified_mirror_'/>
 
   </class>
 </hibernate-mapping>

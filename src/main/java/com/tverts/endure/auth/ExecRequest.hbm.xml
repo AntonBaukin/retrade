@@ -12,6 +12,18 @@
     <id name = 'primaryKey' column = 'pk_exec_request'/>
 
 
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_exec_request_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
     <!-- Domain -->
 
     <property name = 'domain'>

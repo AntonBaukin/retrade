@@ -4,6 +4,10 @@ package com.tverts.endure.auth;
 
 import java.util.Date;
 
+/* com.tverts: endure (core)*/
+
+import com.tverts.endure.TxEntity;
+
 
 /**
  * Request to the query execution service.
@@ -12,8 +16,29 @@ import java.util.Date;
  *
  * @author anton.baukin@gmail.com
  */
-public class ExecRequest
+public class ExecRequest implements TxEntity
 {
+	/* public: TxEntity interface */
+
+	/**
+	 * In this class the transaction number is set
+	 * only by the execution service, but not by
+	 * the authentication server that had created
+	 * the instance!
+	 */
+	public long getTxn()
+	{
+		return txn;
+	}
+
+	private long txn;
+
+	public void setTxn(long txn)
+	{
+		this.txn = txn;
+	}
+
+
 	/* public: ExecRequest (bean) interface */
 
 	/**

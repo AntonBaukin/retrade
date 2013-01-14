@@ -1,11 +1,20 @@
 package com.tverts.endure;
 
 /**
- * COMMENT Unity
+ * Unified Mirror object.
+ *
+ * {@link United} instances may have the mirror
+ * that is 1-to-1 related.
+ *
+ * If instance of arbitrary type need refer United
+ * instance of else type, it need refer that's
+ * mirror. It is useful for system instances
+ * linked with many different types.
+ *
  *
  * @author anton.baukin@gmail.com
  */
-public class Unity implements PrimaryIdentity
+public class Unity implements PrimaryIdentity, TxEntity
 {
 	/* public: PrimaryIdentity interface */
 
@@ -43,6 +52,25 @@ public class Unity implements PrimaryIdentity
 			throw new IllegalArgumentException();
 
 		this.unityType = unityType;
+	}
+
+
+	/* public: TxEntity interface */
+
+	/**
+	 * Transaction number of unified mirror must
+	 * have the same value as the cause instance.
+	 */
+	public long getTxn()
+	{
+		return txn;
+	}
+
+	private long txn;
+
+	public void setTxn(long txn)
+	{
+		this.txn = txn;
 	}
 
 

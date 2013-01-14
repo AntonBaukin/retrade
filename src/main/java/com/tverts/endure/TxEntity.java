@@ -12,6 +12,8 @@ package com.tverts.endure;
  * But in this case the application must manually
  * update the value.
  *
+ * Transaction value 0 means it is not set yet.
+ *
  *
  * @author anton.baukin@gmail.com
  */

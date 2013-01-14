@@ -2,7 +2,7 @@ package com.tverts.endure.core;
 
 /* com.tverts: endure */
 
-import com.tverts.endure.UnitedBase;
+import com.tverts.endure.UnitedTxBase;
 
 
 /**
@@ -16,5 +16,6 @@ import com.tverts.endure.UnitedBase;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class Entity extends UnitedBase
+public abstract class Entity
+       extends        UnitedTxBase
 {}

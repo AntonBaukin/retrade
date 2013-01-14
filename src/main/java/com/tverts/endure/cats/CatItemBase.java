@@ -3,6 +3,7 @@ package com.tverts.endure.cats;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.NumericBase;
+import com.tverts.endure.TxEntity;
 import com.tverts.endure.core.Domain;
 
 
@@ -12,20 +13,10 @@ import com.tverts.endure.core.Domain;
  * @author anton.baukin@gmail.com
  */
 public abstract class CatItemBase
-  extends        NumericBase
-  implements     CatItem
+       extends        NumericBase
+       implements     CatItem, TxEntity
 {
 	/* public: CatItemBase (bean) interface */
-
-	public Long    getPrimaryKey()
-	{
-		return primaryKey;
-	}
-
-	public void    setPrimaryKey(Long primaryKey)
-	{
-		this.primaryKey = primaryKey;
-	}
 
 	public Domain  getDomain()
 	{
@@ -58,9 +49,23 @@ public abstract class CatItemBase
 	}
 
 
-	/* primary key + domain reference */
+	/* public: TxEntity interface */
 
-	private Long   primaryKey;
+	public long getTxn()
+	{
+		return txn;
+	}
+
+	private long txn;
+
+	public void setTxn(long txn)
+	{
+		this.txn = txn;
+	}
+
+
+	/* domain reference */
+
 	private Domain domain;
 
 

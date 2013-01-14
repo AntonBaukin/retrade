@@ -12,6 +12,18 @@
     <id name = 'primaryKey' column = 'pk_cat_item'/>
 
 
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = '_ix_cat_item_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
     <!-- Domain reference -->
 
     <many-to-one name = 'domain' foreign-key = 'fk_cat_item_domain_'>
