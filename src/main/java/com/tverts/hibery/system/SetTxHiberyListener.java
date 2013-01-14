@@ -8,6 +8,7 @@ import org.hibernate.event.spi.SaveOrUpdateEventListener;
 /* com.tverts: system (tx) */
 
 import com.tverts.system.tx.Tx;
+import com.tverts.system.tx.TxPoint;
 
 
 /**
@@ -25,6 +26,6 @@ public class      SetTxHiberyListener
 
 	public void onSaveOrUpdate(SaveOrUpdateEvent event)
 	{
-		//TODO  set entities Tx Number!
+		TxPoint.txn(event.getEntity());
 	}
 }

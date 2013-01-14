@@ -2,7 +2,7 @@ package com.tverts.system.tx;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.hibery.system.HiberSystem;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 /* Spring framework */
@@ -13,6 +13,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 /* com.tverts: hibery */
 
 import com.tverts.hibery.HiberPoint;
+import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: system tx */
 
@@ -68,6 +69,17 @@ class SystemTx implements Tx
 
 		return (txn = HiberSystem.getInstance().
 		  createTxNumber(sessionFactory, this));
+	}
+
+	public void           free()
+	{
+		if(!isRollbackOnly())
+		{
+			Session session = TxPoint.txSession(this);
+
+			session.flush();
+			session.clear();
+		}
 	}
 
 	public SessionFactory getSessionFactory()

@@ -30,6 +30,11 @@ public class TxWrapperBase implements TxWrapper
 		return tx.txn();
 	}
 
+	public void           free()
+	{
+		tx.free();
+	}
+
 	public SessionFactory getSessionFactory()
 	{
 		return tx.getSessionFactory();

@@ -33,6 +33,8 @@ public interface Tx
 	 */
 	public long           txn();
 
+	public void           free();
+
 	/**
 	 * The factory of Hibernate sessions to access
 	 * the system' primary database.

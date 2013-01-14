@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.TxEntity;
+
 
 /**
  * Point to access current transaction provider.
@@ -39,7 +43,11 @@ public class TxPoint
 
 	public static Session txSession()
 	{
-		Tx ctx = txContext();
+		return txSession(txContext());
+	}
+
+	public static Session txSession(Tx ctx)
+	{
 		if(ctx.getSessionFactory() == null)
 			throw new IllegalStateException(String.format(
 			  "Tx Context of class [%s] has no " +
@@ -54,6 +62,26 @@ public class TxPoint
 		);
 
 		return res;
+	}
+
+	/**
+	 * Updates the Transaction Number of the instance given
+	 * with the value taken from the current transaction context.
+	 */
+	public static void    txn(Object obj)
+	{
+		if(!(obj instanceof TxEntity))
+			return;
+
+		((TxEntity)obj).setTxn(txContext().txn());
+	}
+
+	public static void    txn(Tx tx, Object obj)
+	{
+		if(!(obj instanceof TxEntity))
+			return;
+
+		((TxEntity)obj).setTxn(tx.txn());
 	}
 
 	/**
@@ -102,7 +130,14 @@ public class TxPoint
 			s.add(tx);
 		//?: {pop context query}
 		else if(!s.isEmpty())
+		{
+			//~: free the context
+			tx = s.get(s.size() - 1);
+			tx.free();
+
+			//~: remove the context
 			s.remove(s.size() - 1);
+		}
 	}
 
 	/**
@@ -128,6 +163,18 @@ public class TxPoint
 
 	protected void        clearTxContexts()
 	{
+		ArrayList<Tx> s = contexts.get();
+
+		while(!s.isEmpty())
+		{
+			//~: free the context
+			Tx tx = s.get(s.size() - 1);
+			tx.free();
+
+			//~: remove the context
+			s.remove(s.size() - 1);
+		}
+
 		contexts.remove();
 	}
 
