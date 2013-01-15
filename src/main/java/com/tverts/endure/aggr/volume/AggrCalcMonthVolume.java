@@ -6,6 +6,10 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
+/* com.tverts: system (txn) */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.isTestInstance;
@@ -70,6 +74,10 @@ public class AggrCalcMonthVolume extends AggrCalcBase
 			//!: create the link
 			createMonthVolumeCalcLink(struct, citem, (AggrItemVolume)item);
 		}
+
+		//~: touch the item
+		if(citem != null)
+			TxPoint.txn(tx(struct), citem);
 	}
 
 	protected void calcDelete(AggrStruct struct)
@@ -234,6 +242,9 @@ from MonthVolumeCalcLink where (aggrItem = :aggrItem)
 		//?: {the volumes become zeros} delete the item
 		if((cn == 0) && (cp == 0))
 			session(struct).delete(item);
+		else
+			//~: touch the item
+			TxPoint.txn(tx(struct), item);
 	}
 
 

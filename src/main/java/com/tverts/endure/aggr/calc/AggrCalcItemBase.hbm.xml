@@ -9,7 +9,19 @@
 
     <!-- Primary Key -->
 
-    <id name = 'primaryKey' column = 'pk_aggr_item'/>
+    <id name = 'primaryKey' column = 'pk_aggr_calc_item'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = '_ix_aggr_calc_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
 
 
     <!-- Aggregation Calculation -->

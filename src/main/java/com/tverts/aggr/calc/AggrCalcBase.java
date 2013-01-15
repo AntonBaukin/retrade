@@ -7,10 +7,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.tverts.objects.StringsReference;
+/* Hibernate Persistence Layer */
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+/* com.tverts: system (tx) */
+
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: hibery */
 
@@ -27,6 +32,10 @@ import com.tverts.endure.aggr.calc.AggrCalc;
 import com.tverts.endure.aggr.AggrTask;
 import com.tverts.endure.aggr.AggrTaskBase;
 import com.tverts.endure.aggr.AggrValue;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.StringsReference;
 
 
 /**
@@ -61,7 +70,13 @@ public abstract class AggrCalcBase
 	public void calculate(AggrStruct struct)
 	{
 		if(isCalc(struct))
+		{
+			//~: do the calculations
 			calc(struct);
+
+			//~: touch the calculation instance
+			touchCalc(struct);
+		}
 	}
 
 
@@ -101,6 +116,11 @@ public abstract class AggrCalcBase
 		}
 
 		return calcTypesSet;
+	}
+
+	protected void          touchCalc(AggrStruct struct)
+	{
+		TxPoint.txn(tx(struct), struct.calc());
 	}
 
 

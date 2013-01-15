@@ -20,6 +20,10 @@ import org.hibernate.SessionFactory;
 
 import static com.tverts.spring.SpringPoint.bean;
 
+/* com.tverts: system (tx) */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: hibery */
 
 import com.tverts.hibery.HiberPoint;
@@ -74,6 +78,9 @@ public abstract class AggregatorBase
 			//?: {processed aggregation} mark the job complete
 			if(aggregate(struct = createStruct(job)))
 			{
+				//~: touch the aggregated value instance
+				touchAggrValue(struct);
+
 				//~: update the owner of the aggregated value
 				updateAggrOwner(struct);
 
@@ -102,7 +109,7 @@ public abstract class AggregatorBase
 	  throws Throwable;
 
 	/**
-	 * Aggregates al the job running the tasks separately.
+	 * Aggregates the job running the tasks separately.
 	 * Returns true if the task was completed.
 	 */
 	protected boolean       aggregate(AggrStruct struct)
@@ -159,6 +166,12 @@ public abstract class AggregatorBase
 		for(AggrCalc calc : struct.calcs)
 			for(AggrCalculator ac : acs)
 				ac.calculate(struct.calc(calc));
+		struct.calc(null);
+	}
+
+	protected void          touchAggrValue(AggrStruct struct)
+	{
+		TxPoint.txn(struct.job.aggrTx(), struct.job.aggrValue());
 	}
 
 	protected void          updateAggrOwner(AggrStruct struct)
@@ -291,6 +304,9 @@ public abstract class AggregatorBase
 			return this.calc;
 		}
 
+		/**
+		 * Assignes the calculation (temporary).
+		 */
 		public AggrStruct     calc(AggrCalc calc)
 		{
 			this.calc = calc;

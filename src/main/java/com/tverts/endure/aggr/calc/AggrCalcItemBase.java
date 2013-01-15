@@ -3,6 +3,7 @@ package com.tverts.endure.aggr.calc;
 /* com.tverts: endure core */
 
 import com.tverts.endure.NumericBase;
+import com.tverts.endure.TxEntity;
 
 
 /**
@@ -10,7 +11,9 @@ import com.tverts.endure.NumericBase;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class AggrCalcItemBase extends NumericBase
+public abstract class AggrCalcItemBase
+       extends        NumericBase
+       implements     TxEntity
 {
 	/* public: AggrCalcItem (bean) interface */
 
@@ -22,6 +25,21 @@ public abstract class AggrCalcItemBase extends NumericBase
 	public void     setAggrCalc(AggrCalc aggrCalc)
 	{
 		this.aggrCalc = aggrCalc;
+	}
+
+
+	/* public: TxEntity interface */
+
+	public long getTxn()
+	{
+		return txn;
+	}
+
+	private long txn;
+
+	public void setTxn(long txn)
+	{
+		this.txn = txn;
 	}
 
 
