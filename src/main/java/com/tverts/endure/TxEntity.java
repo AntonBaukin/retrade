@@ -21,7 +21,7 @@ public interface TxEntity
 {
 	/* public: TxEntity interface */
 
-	public long getTxn();
+	public Long getTxn();
 
-	public void setTxn(long txn);
+	public void setTxn(Long txn);
 }

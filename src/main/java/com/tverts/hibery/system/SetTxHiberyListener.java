@@ -26,6 +26,6 @@ public class      SetTxHiberyListener
 
 	public void onSaveOrUpdate(SaveOrUpdateEvent event)
 	{
-		TxPoint.txn(event.getEntity());
+		TxPoint.txn(event.getObject());
 	}
 }

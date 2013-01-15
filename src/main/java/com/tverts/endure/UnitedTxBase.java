@@ -13,9 +13,9 @@ public abstract class UnitedTxBase
 {
 	/* public: TxEntity interface */
 
-	public long getTxn()
+	public Long getTxn()
 	{
-		return txn;
+		return (txn == 0L)?(null):(txn);
 	}
 
 	private long txn;
@@ -24,11 +24,11 @@ public abstract class UnitedTxBase
 	 * When updated, transaction number is also
 	 * copied to the unified mirror.
 	 */
-	public void setTxn(long txn)
+	public void setTxn(Long txn)
 	{
-		this.txn = txn;
+		this.txn = (txn == null)?(0L):(txn);
 
-		if((getUnity() != null) && (getUnity().getTxn() != txn))
+		if((getUnity() != null) && (txn != null) && !txn.equals(getUnity().getTxn()))
 			getUnity().setTxn(txn);
 	}
 
@@ -39,7 +39,7 @@ public abstract class UnitedTxBase
 	{
 		super.setUnity(unity);
 
-		if((unity != null) && (unity.getTxn() != getTxn()))
+		if((unity != null) && (txn != 0L) && !getTxn().equals(unity.getTxn()))
 			if(unity.getTxn() > getTxn())
 				this.txn = unity.getTxn();
 			else

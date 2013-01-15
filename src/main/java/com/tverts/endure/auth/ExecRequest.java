@@ -26,16 +26,16 @@ public class ExecRequest implements TxEntity
 	 * the authentication server that had created
 	 * the instance!
 	 */
-	public long getTxn()
+	public Long getTxn()
 	{
-		return txn;
+		return (txn == 0L)?(null):(txn);
 	}
 
 	private long txn;
 
-	public void setTxn(long txn)
+	public void setTxn(Long txn)
 	{
-		this.txn = txn;
+		this.txn = (txn == null)?(0L):(txn);
 	}
 
 

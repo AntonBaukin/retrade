@@ -48,6 +48,7 @@ public class HiberSystemIntegration implements Integrator
 	@SuppressWarnings("unchecked")
 	protected void registerEventListeners(EventListenerRegistry er)
 	{
-		er.appendListeners(EventType.SAVE_UPDATE, SetTxHiberyListener.class);
+		er.prependListeners(EventType.SAVE,   SetTxHiberyListener.class);
+		er.prependListeners(EventType.UPDATE, SetTxHiberyListener.class);
 	}
 }
