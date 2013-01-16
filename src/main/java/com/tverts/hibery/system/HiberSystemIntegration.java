@@ -48,7 +48,14 @@ public class HiberSystemIntegration implements Integrator
 	@SuppressWarnings("unchecked")
 	protected void registerEventListeners(EventListenerRegistry er)
 	{
-		er.prependListeners(EventType.SAVE,   SetTxHiberyListener.class);
+		//HINT: in present Hibernate implementation we must call
+		//  SetTx listener before default SAVE listener. Otherwise,
+		//  save state would be reserved, and later updates ineffective.
+		//  Additional SAVE_UPDATE listener is used when cascading.
+		//  SetTx listener has enough performance to ignore repeated calls.
+
+		er.prependListeners(EventType.SAVE, SetTxHiberyListener.class);
 		er.prependListeners(EventType.UPDATE, SetTxHiberyListener.class);
+		er.prependListeners(EventType.SAVE_UPDATE, SetTxHiberyListener.class);
 	}
 }
