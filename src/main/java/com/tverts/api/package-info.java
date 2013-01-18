@@ -1,12 +1,12 @@
 
 @XmlSchema(
-  namespace = "urn:tverts.com:api:terminal", xmlns = {
-    @XmlNs(prefix = "term", namespaceURI = "urn:tverts.com:api:terminal"),
+  namespace = "urn:tverts.com:api:core", xmlns = {
+    @XmlNs(prefix = "api",  namespaceURI = "urn:tverts.com:api:core"),
     @XmlNs(prefix = "xsi",  namespaceURI = "http://www.w3.org/2001/XMLSchema-instance"),
     @XmlNs(prefix = "xs",   namespaceURI = "http://www.w3.org/2001/XMLSchema")
   }
 )
-package com.tverts.api.term;
+package com.tverts.api;
 
 
 /* Java API for XML Binding */

@@ -1,8 +1,19 @@
 package com.tverts.api.core;
 
+/* standard Java classes */
+
+import java.util.List;
+
 /* Java API for XML Binding */
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
+
+/* com.tverts: api */
+
+import com.tverts.api.LimitedQuery;
 
 
 /**
@@ -13,11 +24,12 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlType(namespace = "urn:com.tverts:retrade:core:status-query")
-public class StatusQuery
+@XmlType(name = "select-pings-states")
+public class SelectPingsStates implements LimitedQuery
 {
-	/* public: StatusQuery (bean) interface */
+	/* public: GetExecTasks (bean) interface */
 
+	@XmlAttribute(name = "first-result")
 	public Long getFirstResult()
 	{
 		return firstResult;
@@ -28,6 +40,7 @@ public class StatusQuery
 		this.firstResult = firstResult;
 	}
 
+	@XmlAttribute(name = "results-limit")
 	public Long getResultsLimit()
 	{
 		return resultsLimit;
@@ -47,6 +60,7 @@ public class StatusQuery
 	 * Set this key to get the status of the particular
 	 * Ping request sent with the client key assigned.
 	 */
+	@XmlElement(name = "request-key")
 	public String getRequestKey()
 	{
 		return requestKey;
@@ -61,6 +75,7 @@ public class StatusQuery
 	 * Flag to also return executed (completed)
 	 * Ping requests. Unset (false) by default.
 	 */
+	@XmlAttribute(name = "include-executed")
 	public Boolean getIncludeExecuted()
 	{
 		return includeExecuted;
@@ -76,6 +91,7 @@ public class StatusQuery
 	 * having Pong responses already delivered.
 	 * Unset (false) by default.
 	 */
+	@XmlAttribute(name = "skip-delivered")
 	public Boolean getSkipDelivered()
 	{
 		return skipDelivered;
@@ -86,6 +102,18 @@ public class StatusQuery
 		this.skipDelivered = skipDelivered;
 	}
 
+	@XmlElement(name = "ping-state")
+	@XmlElementWrapper(name = "result")
+	public List<PingState> getPings()
+	{
+		return pings;
+	}
+
+	public void setPings(List<PingState> pings)
+	{
+		this.pings = pings;
+	}
+
 
 	/* query parameters */
 
@@ -94,4 +122,9 @@ public class StatusQuery
 	private String  requestKey;
 	private Boolean includeExecuted;
 	private Boolean skipDelivered;
+
+
+	/* the result */
+
+	private List<PingState> pings;
 }

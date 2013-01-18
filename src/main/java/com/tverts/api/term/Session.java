@@ -11,6 +11,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/* com.tverts: api */
+
+import com.tverts.api.TimestampAdapter;
+
 
 /**
  * Session of a sell terminal.

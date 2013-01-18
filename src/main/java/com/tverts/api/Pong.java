@@ -2,7 +2,10 @@ package com.tverts.api;
 
 /* Java API for XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 
 
 /**
@@ -12,6 +15,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "pong")
+@XmlType(propOrder = {
+  "key", "type", "object", "error", "stack"
+})
 public class Pong
 {
 	/* public: Pong (bean) interface */
@@ -20,6 +26,7 @@ public class Pong
 	 * The client-assigned key sent
 	 * in the {@link Ping} request.
 	 */
+	@XmlElement(name = "key")
 	public String getKey()
 	{
 		return key;
@@ -33,6 +40,7 @@ public class Pong
 	/**
 	 * The class of the response object.
 	 */
+	@XmlElement(name = "type")
 	public String getType()
 	{
 		return type;
@@ -47,6 +55,7 @@ public class Pong
 	 * Response object. Assigned only
 	 * for the receiving Pings.
 	 */
+	@XmlElement(name = "response")
 	public Object getObject()
 	{
 		return object;
@@ -62,6 +71,7 @@ public class Pong
 	 * Always defined in the case of errors.
 	 * Undefined value means successive processing.
 	 */
+	@XmlElement(name = "error")
 	public String getError()
 	{
 		return error;
@@ -78,6 +88,7 @@ public class Pong
 	 * debug mode. May be undefined for
 	 * security and privacy reasons.
 	 */
+	@XmlElement(name = "error-stack")
 	public String getStack()
 	{
 		return stack;

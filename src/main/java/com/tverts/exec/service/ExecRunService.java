@@ -119,7 +119,7 @@ public class ExecRunService extends ServiceBase
 	 * Executes the request in it's own transaction.
 	 */
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	protected void executeTaskTx(long taskKey)
+	protected void          executeTaskTx(long taskKey)
 	  throws Throwable
 	{
 		//~: load the request
@@ -179,7 +179,7 @@ public class ExecRunService extends ServiceBase
 	/**
 	 * This method is invoked within {@link ExecTxContext} context.
 	 */
-	protected void   executeTaskTx(ExecRequest request)
+	protected void          executeTaskTx(ExecRequest request)
 	  throws Throwable
 	{
 		Object object;
@@ -215,6 +215,9 @@ public class ExecRunService extends ServiceBase
 		//!: mark the request as executed
 		request.setExecuted(true);
 		request.setResponseTime(new java.util.Date());
+
+		//~: transaction number
+		TxPoint.txn(request);
 	}
 
 	protected ExecTxContext createExecTx(ExecRequest request)
@@ -226,10 +229,12 @@ public class ExecRunService extends ServiceBase
 	}
 
 	/**
-	 * These call is executed in the context
-	 * of the current transaction.
+	 * These call is executed in the context of the transaction
+	 * that selects the execution requests as we can't rely upon
+	 * the separated execution transaction where the session
+	 * may be broken.
 	 */
-	protected void commitError(long taskKey, Throwable error)
+	protected void          commitError(long taskKey, Throwable error)
 	{
 		//~: load the request
 		ExecRequest request = (ExecRequest) txSession().
@@ -240,6 +245,9 @@ public class ExecRunService extends ServiceBase
 
 		//!: mark it as executed
 		request.setExecuted(true);
+
+		//~: transaction number
+		TxPoint.txn(request);
 
 		//?: {is execution error}
 		if(error instanceof ExecError)

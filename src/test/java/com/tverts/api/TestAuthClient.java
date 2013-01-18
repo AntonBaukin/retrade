@@ -2,7 +2,7 @@ package com.tverts.api;
 
 /* com.tverts: api (core) */
 
-import com.tverts.api.core.StatusQuery;
+import com.tverts.api.core.SelectPingsStates;
 
 
 /**
@@ -50,7 +50,7 @@ public class TestAuthClient
 		//~: send test request
 
 		Ping ping = new Ping();
-		ping.setRequest(new StatusQuery());
+		ping.setRequest(new SelectPingsStates());
 
 		client.send(ping);
 

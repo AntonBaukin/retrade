@@ -16,10 +16,10 @@
 
     <property name = 'txn'>
 
-      <column name = 'txn' not-null = 'true'
+      <column name = 'txn'
         index = 'ix_exec_request_txn'>
 
-        <comment>Transaction Number (txn)</comment>
+        <comment>Transaction Number (txn), set when executed</comment>
       </column>
     </property>
 

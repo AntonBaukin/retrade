@@ -1,4 +1,4 @@
-package com.tverts.api.core;
+package com.tverts.api;
 
 /**
  * Query to return a sub-list of ordered data.

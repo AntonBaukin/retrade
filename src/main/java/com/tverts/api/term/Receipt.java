@@ -14,6 +14,10 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/* com.tverts: api */
+
+import com.tverts.api.TimestampAdapter;
+
 
 /**
  * A cheque (sell terminal receipt)

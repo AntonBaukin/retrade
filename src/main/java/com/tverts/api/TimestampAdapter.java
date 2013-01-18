@@ -1,4 +1,4 @@
-package com.tverts.api.term;
+package com.tverts.api;
 
 /* standard Java classes */
 

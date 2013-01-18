@@ -2,7 +2,9 @@ package com.tverts.api;
 
 /* Java API for XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -30,6 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "ping")
+@XmlType(propOrder = {
+  "key", "type", "request"
+})
 public class Ping
 {
 	/* public: Ping (bean) interface */
@@ -51,6 +56,7 @@ public class Ping
 	 * NOTE! The defined key must be unique within
 	 * the session.
 	 */
+	@XmlElement(name = "key")
 	public String  getKey()
 	{
 		return key;
@@ -65,6 +71,7 @@ public class Ping
 	 * The name of the request object class.
 	 * Assigned automatically. Checked by the server.
 	 */
+	@XmlElement(name = "type")
 	public String  getType()
 	{
 		return type;
@@ -83,6 +90,7 @@ public class Ping
 	 * If the request is undefined, this Ping
 	 * instance is a response receiver.
 	 */
+	@XmlElement(name = "request")
 	public Object  getRequest()
 	{
 		return request;
