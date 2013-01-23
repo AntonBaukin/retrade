@@ -10,6 +10,7 @@ import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: system (tx) */
 
+import static com.tverts.system.tx.TxPoint.txn;
 import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: actions */
@@ -110,8 +111,13 @@ from CatItem ci where (ci.domain = :domain)
 
 		//0: do try save via actions system first
 		if(ActionsPoint.actionOrNullRun(ActionType.SAVE, item) == null)
+		{
+			//~: assign transaction number
+			txn(item);
+
 			//1: save in a plain
 			session().save(item);
+		}
 	}
 
 	public void             ensure(C stored, C item)

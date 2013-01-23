@@ -148,6 +148,9 @@ from MonthVolumeCalcItem where (aggrCalc = :aggrCalc)
 		setPrimaryKey(session(struct), item,
 		  isTestInstance(aggrCalc(struct)));
 
+		//~: set transaction number
+		TxPoint.txn(tx(struct), item);
+
 		//~: calculation link
 		item.setAggrCalc(aggrCalc(struct));
 

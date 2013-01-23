@@ -5,7 +5,6 @@ package com.tverts.hibery.system;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.event.service.spi.EventListenerRegistry;
-import org.hibernate.event.spi.EventType;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.metamodel.source.MetadataImplementor;
 import org.hibernate.service.spi.SessionFactoryServiceRegistry;
@@ -47,15 +46,5 @@ public class HiberSystemIntegration implements Integrator
 
 	@SuppressWarnings("unchecked")
 	protected void registerEventListeners(EventListenerRegistry er)
-	{
-		//HINT: in present Hibernate implementation we must call
-		//  SetTx listener before default SAVE listener. Otherwise,
-		//  save state would be reserved, and later updates ineffective.
-		//  Additional SAVE_UPDATE listener is used when cascading.
-		//  SetTx listener has enough performance to ignore repeated calls.
-
-		er.prependListeners(EventType.SAVE, SetTxHiberyListener.class);
-		er.prependListeners(EventType.UPDATE, SetTxHiberyListener.class);
-		er.prependListeners(EventType.SAVE_UPDATE, SetTxHiberyListener.class);
-	}
+	{}
 }

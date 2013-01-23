@@ -8,6 +8,10 @@ import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionWithTxBase;
 
+/* com.tverts: system (tx) */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.isTestInstance;
@@ -205,6 +209,9 @@ public class ActUnity extends ActionBuilderXRoot
 			//?: {target has no primary key yet} create it here
 			if(uni.getPrimaryKey() == null)
 				setPrimaryKey(session(), uni, isTestInstance(uni));
+
+			//~: assign transaction number
+			TxPoint.txn(tx(), res);
 
 			//~: share the same primary key
 			res.setPrimaryKey(uni.getPrimaryKey());

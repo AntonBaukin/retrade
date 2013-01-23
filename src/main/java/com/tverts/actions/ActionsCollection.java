@@ -1,5 +1,13 @@
 package com.tverts.actions;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
+/* com.tverts: system (tx) */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.NumericIdentity;
@@ -13,10 +21,6 @@ import com.tverts.endure.core.UnityView;
 import com.tverts.endure.order.OrderIndex;
 import com.tverts.endure.order.OrderPoint;
 import com.tverts.endure.order.OrderRequest;
-
-/* com.tverts: hibery */
-
-import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: support */
 
@@ -125,6 +129,9 @@ public class ActionsCollection
 
 			//~: assign the fields
 			assignSaveTarget();
+
+			//~: set the transaction number
+			TxPoint.txn(tx(), getSaveTarget());
 
 			//!: save
 			doSave();
