@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Payload object that is sent to the server.
+ * Envelope object that is sent to the server.
  *
  * Contains the request object that must
  * be a Java Bean compatible with JAXB
@@ -89,6 +89,9 @@ public class Ping
 	 *
 	 * If the request is undefined, this Ping
 	 * instance is a response receiver.
+	 *
+	 * {@link Payload} instances are frequently
+	 * used as the requests.
 	 */
 	@XmlElement(name = "request")
 	public Object  getRequest()

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Payload object that is received from the server
+ * Envelope object that is received from the server
  * as the response to {@link Ping} request.
  *
  * @author anton.baukin@gmail.com

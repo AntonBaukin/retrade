@@ -13,13 +13,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 /* Java API for XML Binding */
 
 import javax.xml.bind.JAXBContext;
-
 
 
 /**
@@ -60,7 +63,28 @@ public class AuthClient
 	{
 		this.sequence    = new AtomicLong();
 		this.random      = createRandom();
-		this.jaxbContext = createJAXBContext();
+		this.jaxbContext = prepareJAXBContext(null);
+	}
+
+	public AuthClient(JAXBContext jaxbContext)
+	{
+		this.sequence    = new AtomicLong();
+		this.random      = createRandom();
+		this.jaxbContext = jaxbContext;
+	}
+
+	/**
+	 * Creates JAXB Context adding files with the
+	 * package listings specific to your application.
+	 *
+	 * Note that standard lists 'core.jaxb' and
+	 * 'retrade.jaxb' are already included.
+	 */
+	public AuthClient(Collection<URL> jaxbs)
+	{
+		this.sequence    = new AtomicLong();
+		this.random      = createRandom();
+		this.jaxbContext = prepareJAXBContext(jaxbs);
 	}
 
 
@@ -498,9 +522,6 @@ public class AuthClient
 
 		try
 		{
-			InputStreamReader isr = new InputStreamReader(
-			  new ByteArrayInputStream(payload), "UTF-8");
-
 			pong = getJAXBContext().createUnmarshaller().unmarshal(
 			  new InputStreamReader(new ByteArrayInputStream(payload), "UTF-8"));
 		}
@@ -545,6 +566,14 @@ public class AuthClient
 		if((pong != null) && (pong.getError() != null))
 			throw new PongError(ping, pong);
 		return pong;
+	}
+
+
+	/* public: client support */
+
+	public JAXBContext getJAXBContext()
+	{
+		return jaxbContext;
 	}
 
 
@@ -904,35 +933,64 @@ public class AuthClient
 
 	/* protected: JAXB support */
 
-	protected JAXBContext getJAXBContext()
+	protected JAXBContext prepareJAXBContext(Collection<URL> jaxbs)
 	{
-		return this.jaxbContext;
+		ArrayList<URL> urls = new ArrayList<URL>(2);
+
+		//~: core URL required
+		URL core = AuthClient.class.getResource("core.jaxb");
+		if(core == null) throw new IllegalStateException(
+			"Can't find core.jaxb file!");
+		urls.add(core);
+
+		//~: retrade URL is optional
+		URL retrade = AuthClient.class.getResource("retrade.jaxb");
+		if(retrade != null)
+			urls.add(retrade);
+
+		//~: append user-defined
+		if(jaxbs != null)
+			urls.addAll(jaxbs);
+
+		return createJAXBContext(urls);
 	}
 
-	protected JAXBContext createJAXBContext()
+	protected JAXBContext createJAXBContext(Collection<URL> jaxbs)
 	{
-		try
+		HashSet<String> ps = new HashSet<String>(7);
+
+		//~: read all the package listing files
+		for(URL jaxb : jaxbs) try
 		{
-			//<: read list file (with packages names)
+			if(jaxb == null) throw new IllegalArgumentException();
 
-			URL list = AuthClient.class.getResource("jaxb.list");
-			if(list == null) throw new IllegalStateException(
-			  "Can't find jaxb.list file!");
-
-			StringBuilder  sb = new StringBuilder(1024);
 			BufferedReader br = new BufferedReader(
-			  new InputStreamReader(list.openStream(), "UTF-8"), 256);
+			  new InputStreamReader(jaxb.openStream(), "UTF-8"), 256);
 			String         s;
 
 			while((s = br.readLine()) != null)
 				if((s = s2s(s)) != null)
-					sb.append((sb.length() == 0)?(""):(":")).append(s);
+					ps.add(s);
 			br.close();
+		}
+		catch(Exception e)
+		{
+			throw new IllegalStateException(
+			  "Error occured when reading *.jaxb package listing file " +
+			  "by URL = " + jaxb, e);
+		}
 
-			//>: read list file
+		//~: form the packages list separated with ':'
+		String[]       pl = ps.toArray(new String[ps.size()]);
+		StringBuilder  sb = new StringBuilder(1024);
 
+		Arrays.sort(pl);
+		for(String s : pl)
+			sb.append((sb.length() == 0)?(""):(":")).append(s);
 
-			//!: create the context
+		//!: create the context
+		try
+		{
 			return JAXBContext.newInstance(sb.toString());
 		}
 		catch(Exception e)
