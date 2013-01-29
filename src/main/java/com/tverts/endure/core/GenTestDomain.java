@@ -1,5 +1,9 @@
 package com.tverts.endure.core;
 
+/* standard Java classe */
+
+import java.util.List;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -56,15 +60,32 @@ public class GenTestDomain extends GenesisHiberPartBase
 	/* public: access test domain */
 
 	/**
-	 * Returns the test domain, or raises {@link IllegalStateException}
-	 * if it is not created/discovered.
+	 * Returns the primary test domain, or raises
+	 * {@link IllegalStateException} if it is not
+	 * created or discovered.
 	 */
 	public static Domain testDomain()
 	{
 		Domain res = getInstance().getTestDomain();
 
 		if(res == null) throw new IllegalStateException(
-		  "Test Domain is not discovered or generated!"
+		  "Primary test Domain is not discovered or generated!"
+		);
+
+		return res;
+	}
+
+	/**
+	 * Returns the empty test domain, or raises
+	 * {@link IllegalStateException}
+	 * if it is not created/discovered.
+	 */
+	public static Domain emptyDomain()
+	{
+		Domain res = getInstance().getEmptyDomain();
+
+		if(res == null) throw new IllegalStateException(
+		  "Empty test Domain is not discovered or generated!"
 		);
 
 		return res;
@@ -75,48 +96,95 @@ public class GenTestDomain extends GenesisHiberPartBase
 		return testDomain;
 	}
 
+	public Domain        getEmptyDomain()
+	{
+		return emptyDomain;
+	}
+
 
 	/* public: Genesis interface */
 
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		//~: create test domain if it does not exist yet
-		createTestDomain(ctx);
+		List<Domain> domains = bean(GetDomain.class).
+		  getTestDomains();
+
+		final String NAME0 = "Тестовый домен";
+		final String NAMEE = "Пустой домен";
+
+		//~: test (primary) domain
+		Domain d = findDomain(ctx, domains, NAME0);
+
+		if(d != null)
+			setTestDomain(d);
+		else
+			setTestDomain(createTestDomain(ctx, NAME0));
+
+		//~: empty domain
+		d = findDomain(ctx, domains, NAMEE);
+
+		if(d != null)
+			setEmptyDomain(d);
+		else
+			setEmptyDomain(createTestDomain(ctx, NAMEE));
 	}
 
 
 	/* protected: test domain generation & verification */
 
-	protected void  setTestDomain(Domain testDomain)
+	protected void   setTestDomain(Domain testDomain)
 	{
 		getInstance().testDomain = this.testDomain = testDomain;
 	}
 
-	protected void  createTestDomain(GenCtx ctx)
+	protected void  setEmptyDomain(Domain emptyDomain)
 	{
-		//~: search for the test domain
-		Domain d = bean(GetDomain.class).getTestDomain();
-		setTestDomain(d);
+		this.emptyDomain = emptyDomain;
+	}
 
-		//?: {it exists} nothing to do
-		if(d != null) return;
+	protected Domain findDomain(GenCtx ctx, List<Domain> domains, String name)
+	{
+		Domain r = null;
 
+		for(Domain d : domains)
+			if(name.equals(d.getName()))
+			{
+				r = d;
+				break;
+			}
+
+		if(r != null) if(LU.isI(log(ctx)))
+			LU.I(log(ctx), logsig(),
+			     " found Test Domain '", name, "', key = ",
+			     r.getPrimaryKey()
+			);
+
+		return r;
+	}
+
+	protected Domain createTestDomain(GenCtx ctx, String name)
+	{
 		//~: create and save new instance
-		setTestDomain(d = new Domain());
+		Domain d = new Domain();
 		setPrimaryKey(session(), d, true);
-		d.setName("Test Domain");
+		d.setName(name);
 
 		//!: do save
 		actionRun(ActionType.SAVE, d);
 
 		//~: log success
 		if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
-		  " had created Test Domain with PK = ", d.getPrimaryKey());
+		  " created Test Domain '", name, "', key = ",
+		  d.getPrimaryKey()
+		);
+
+		return d;
 	}
 
 
 	/* protected: test domain reference */
 
 	private Domain testDomain;
+	private Domain emptyDomain;
 }
