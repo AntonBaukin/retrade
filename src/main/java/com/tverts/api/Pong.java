@@ -1,11 +1,14 @@
 package com.tverts.api;
 
+/* standard Java classes */
+
+import java.io.Serializable;
+
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 
 
 /**
@@ -18,8 +21,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {
   "key", "type", "object", "error", "stack"
 })
-public class Pong
+public class Pong implements Serializable
 {
+	public static final long serialVersionUID = 0L;
+
+
 	/* public: Pong (bean) interface */
 
 	/**

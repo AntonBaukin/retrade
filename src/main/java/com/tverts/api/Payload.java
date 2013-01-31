@@ -2,6 +2,7 @@ package com.tverts.api;
 
 /* standard Java classes */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +24,13 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = "package")
 @XmlType(propOrder = {
-  "version", "tx", "operation", "object", "list"
+  "version", "txMin", "txMax", "first", "more",
+  "operation", "object", "list"
 })
-public class Payload
+public class Payload implements Serializable
 {
+	public static final long serialVersionUID = 0L;
+
 	@XmlAttribute(name = "version")
 	public String getVersion()
 	{
@@ -39,28 +43,59 @@ public class Payload
 	}
 
 	/**
-	 * Transaction number. For data requests
-	 * means Tx number of the data already
-	 * available, and the response must contain
-	 * only data of the later updates.
+	 * Transaction borders of the range [Tx-min; Tx-max].
+	 * (Tx-max border is optional.)
 	 *
-	 * When receiving the data, Tx number is the
-	 * oldest transaction updated that data.
+	 * When selecting huge amount of data in several
+	 * requests to the server, you need to control that
+	 * updates from transactions between the requests
+	 * not to interfere the results. With Tx borders
+	 * you filter out that updates, but some malicious
+	 * effects are still possible!
 	 *
-	 * Set this attribute to request transfer
+	 * Set this attributes to request transfer
 	 * returning the data deltas.
 	 */
-	@XmlAttribute(name = "tx")
-	public Long getTx()
+	@XmlAttribute(name = "tx-min")
+	public Long getTxMin()
 	{
-		return tx;
+		return txMin;
 	}
 
-	public void setTx(Long tx)
+	public void setTxMin(Long txMin)
 	{
-		this.tx = tx;
+		this.txMin = txMin;
 	}
 
+	@XmlAttribute(name = "tx-max")
+	public Long getTxMax()
+	{
+		return txMax;
+	}
+
+	public void setTxMax(Long txMax)
+	{
+		this.txMax = txMax;
+	}
+
+	/**
+	 * Set offset in the list request. Note that combining
+	 * this attribute with Tx borders may not guarantee
+	 * transaction coherence if rows may be deleted.
+	 *
+	 * But in the system top-level objects may not be deleted,
+	 * but only marked as removed.
+	 */
+	@XmlAttribute(name = "first")
+	public Long getFirst()
+	{
+		return first;
+	}
+
+	public void setFirst(Long first)
+	{
+		this.first = first;
+	}
 
 	/**
 	 * Object with the request-response operation.
@@ -109,9 +144,12 @@ public class Payload
 
 	/* payload object */
 
-	private String version;
-	private Long   tx;
-	private Object operation;
-	private Object object;
-	private List   list = new ArrayList(0);
+	private String  version;
+	private Long    txMin;
+	private Long    txMax;
+	private Long    first;
+	private Object  operation;
+	private Object  object;
+	private List    list = new ArrayList(0);
+	private boolean more;
 }

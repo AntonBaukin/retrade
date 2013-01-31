@@ -11,10 +11,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
-/* com.tverts: api */
-
-import com.tverts.api.LimitedQuery;
-
 
 /**
  * Query to get the status of the requests execution
@@ -25,7 +21,7 @@ import com.tverts.api.LimitedQuery;
  * @author anton.baukin@gmail.com
  */
 @XmlType(name = "select-pings-states")
-public class SelectPingsStates implements LimitedQuery
+public class SelectPingsStates
 {
 	/* public: GetExecTasks (bean) interface */
 

@@ -1,5 +1,9 @@
 package com.tverts.api;
 
+/* standard Java classes */
+
+import java.io.Serializable;
+
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
@@ -35,8 +39,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {
   "key", "type", "request"
 })
-public class Ping
+public class Ping implements Serializable
 {
+	public static final long serialVersionUID = 0L;
+
+
 	/* public: Ping (bean) interface */
 
 	/**

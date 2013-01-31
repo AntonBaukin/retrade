@@ -25,6 +25,17 @@ public class SystemConfig
 
 	/* public: SystemConfig (bean) interface */
 
+	public int getSelectLimit()
+	{
+		return (selectLimit == 0)?(32):(selectLimit);
+	}
+
+	public void setSelectLimit(int selectLimit)
+	{
+		if(selectLimit < 0) throw new IllegalArgumentException();
+		this.selectLimit = selectLimit;
+	}
+
 	/**
 	 * Default grid size.
 	 */
@@ -58,6 +69,7 @@ public class SystemConfig
 
 	/* private: system properties */
 
+	private int     selectLimit;
 	private int     gridSize;
 	private boolean debug;
 }

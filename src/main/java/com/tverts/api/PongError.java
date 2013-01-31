@@ -10,6 +10,9 @@ package com.tverts.api;
  */
 public class PongError extends RuntimeException
 {
+	public static final long serialVersionUID = 0L;
+
+
 	/* public: constructor */
 
 	public PongError(Ping ping, Pong pong)
