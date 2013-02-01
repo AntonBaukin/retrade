@@ -5,6 +5,15 @@ package com.tverts.exec;
 import java.util.Collections;
 import java.util.List;
 
+/* Hibernate Persistence Layer */
+
+import org.hibernate.Session;
+
+/* com.tverts: execution */
+
+import com.tverts.exec.service.ExecTx;
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: support */
 
 import static com.tverts.support.SU.s2s;
@@ -30,12 +39,26 @@ public abstract class ExecutorBase
 
 	public String getName()
 	{
-		return name;
+		return (name != null)?(name):
+		  this.getClass().getSimpleName();
 	}
 
 	public void   setName(String name)
 	{
 		this.name = name;
+	}
+
+
+	/* protected: execution support */
+
+	protected ExecTx  tx()
+	{
+		return (ExecTx) TxPoint.txContext();
+	}
+
+	protected Session session()
+	{
+		return TxPoint.txSession(tx());
 	}
 
 

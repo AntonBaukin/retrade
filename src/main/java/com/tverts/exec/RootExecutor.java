@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
 
 /**
  * Composite executor that invokes the executors
@@ -33,6 +37,12 @@ public class RootExecutor implements Executor
 
 			for(Executor ex : exs)
 			{
+				if(SU.sXe(ex.getName()))
+					throw new IllegalStateException(String.format(
+					  "Executor of class %s has empty name!",
+					  ex.getClass().getSimpleName()
+					));
+
 				if(registry.containsKey(ex.getName()))
 					throw new IllegalStateException(String.format(
 					  "Executor with name '%s' is already registered " +

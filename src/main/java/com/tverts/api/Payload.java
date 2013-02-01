@@ -24,8 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = "package")
 @XmlType(propOrder = {
-  "version", "txMin", "txMax", "first", "more",
-  "operation", "object", "list"
+  "version", "operation", "object", "list"
 })
 public class Payload implements Serializable
 {
@@ -40,61 +39,6 @@ public class Payload implements Serializable
 	public void setVersion(String version)
 	{
 		this.version = version;
-	}
-
-	/**
-	 * Transaction borders of the range [Tx-min; Tx-max].
-	 * (Tx-max border is optional.)
-	 *
-	 * When selecting huge amount of data in several
-	 * requests to the server, you need to control that
-	 * updates from transactions between the requests
-	 * not to interfere the results. With Tx borders
-	 * you filter out that updates, but some malicious
-	 * effects are still possible!
-	 *
-	 * Set this attributes to request transfer
-	 * returning the data deltas.
-	 */
-	@XmlAttribute(name = "tx-min")
-	public Long getTxMin()
-	{
-		return txMin;
-	}
-
-	public void setTxMin(Long txMin)
-	{
-		this.txMin = txMin;
-	}
-
-	@XmlAttribute(name = "tx-max")
-	public Long getTxMax()
-	{
-		return txMax;
-	}
-
-	public void setTxMax(Long txMax)
-	{
-		this.txMax = txMax;
-	}
-
-	/**
-	 * Set offset in the list request. Note that combining
-	 * this attribute with Tx borders may not guarantee
-	 * transaction coherence if rows may be deleted.
-	 *
-	 * But in the system top-level objects may not be deleted,
-	 * but only marked as removed.
-	 */
-	@XmlAttribute(name = "first")
-	public Long getFirst()
-	{
-		return first;
-	}
-
-	public void setFirst(Long first)
-	{
-		this.first = first;
 	}
 
 	/**
@@ -145,11 +89,7 @@ public class Payload implements Serializable
 	/* payload object */
 
 	private String  version;
-	private Long    txMin;
-	private Long    txMax;
-	private Long    first;
 	private Object  operation;
 	private Object  object;
 	private List    list = new ArrayList(0);
-	private boolean more;
 }
