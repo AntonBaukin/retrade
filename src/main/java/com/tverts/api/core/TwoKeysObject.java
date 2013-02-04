@@ -11,7 +11,7 @@ package com.tverts.api.core;
  * external keys as more then one
  * integration database may exist.
  */
-public interface TwoKeysObject
+public interface TwoKeysObject extends TxObject
 {
 	/* public: TwoKeysObject interface */
 
@@ -21,14 +21,6 @@ public interface TwoKeysObject
 	public Long    getPkey();
 
 	public void    setPkey(Long pkey);
-
-	/**
-	 * Transaction number of last insert-update
-	 * operation in ReTrade system.
-	 */
-	public Long    getTx();
-
-	public void    setTx(Long tx);
 
 	/**
 	 * Primary key in an external system.

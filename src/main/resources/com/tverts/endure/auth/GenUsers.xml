@@ -2,30 +2,8 @@
 
 <users>
 
-  <computer code="server:exchange:01" name="Сервер обмена с терминалами 01">
-    <comment>
-Тестовый сервер обмена с терминалами 01.
-Расположен в отделении 'А' по адресу г. Тверь, п-кт Чайковского, д. 90.
-Телефон +7-920-630-8620 (Алексей Беспечный).
-    </comment>
-
-    <login password="good doomsday!"/>
+  <computer code="System" name="System User">
+    <login password="password"/>
   </computer>
-
-
-  <person first-name="Андрей" middle-name="Николаевич" last-name="Потапенко" gender="M">
-
-    <login code="apotapenko" password="bobafet"/>
-  </person>
-
-  <person first-name="Ольга" middle-name="Алексеевна" last-name="Петрова" gender="F">
-
-    <login code="opetrova" password="космополитен"/>
-  </person>
-
-  <person first-name="Тестовый" last-name="Пользователь">
-
-    <login code="tester" password="password"/>
-  </person>
 
 </users>
