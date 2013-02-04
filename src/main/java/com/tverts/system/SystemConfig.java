@@ -25,15 +25,15 @@ public class SystemConfig
 
 	/* public: SystemConfig (bean) interface */
 
-	public int getSelectLimit()
+	public int     getDumpLimit()
 	{
-		return (selectLimit == 0)?(32):(selectLimit);
+		return (dumpLimit == 0)?(512):(dumpLimit);
 	}
 
-	public void setSelectLimit(int selectLimit)
+	public void    setDumpLimit(int dumpLimit)
 	{
-		if(selectLimit < 0) throw new IllegalArgumentException();
-		this.selectLimit = selectLimit;
+		if(dumpLimit < 0) throw new IllegalArgumentException();
+		this.dumpLimit = dumpLimit;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class SystemConfig
 
 	/* private: system properties */
 
-	private int     selectLimit;
+	private int dumpLimit;
 	private int     gridSize;
 	private boolean debug;
 }

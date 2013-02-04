@@ -16,7 +16,7 @@
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Default select limit
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name  = 'selectLimit' value = '128'/>
+    <property name  = 'dumpLimit' value = '1024'/>
 
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·

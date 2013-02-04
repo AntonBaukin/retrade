@@ -29,17 +29,18 @@ import javax.xml.bind.annotation.XmlType;
 public class DumpEntities implements Serializable
 {
 	/**
-	 * The Unity Type (leaf) class name.
+	 * Class of API entity to dump. The server selects
+	 * proper database entity class associated.
 	 */
-	@XmlElement(name = "unity-class", required = true)
-	public Class getUnityClass()
+	@XmlElement(name = "entity-class", required = true)
+	public Class getEntityClass()
 	{
-		return unityClass;
+		return entityClass;
 	}
 
-	public void setUnityClass(Class unityClass)
+	public void setEntityClass(Class entityClass)
 	{
-		this.unityClass = unityClass;
+		this.entityClass = entityClass;
 	}
 
 	/**
@@ -134,7 +135,7 @@ public class DumpEntities implements Serializable
 
 	/* select parameters */
 
-	private Class  unityClass;
+	private Class  entityClass;
 	private String unityType;
 
 	private Long   minTx;
