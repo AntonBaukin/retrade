@@ -26,6 +26,9 @@ public abstract class ExecPlanServiceBase
 		if(event instanceof SystemReady)
 			systemReady();
 
+		if(event instanceof ExecDoneEvent)
+			execDone((ExecDoneEvent)event);
+
 		if(event instanceof ExecPlanEvent)
 			servicePlan();
 	}
@@ -85,6 +88,8 @@ public abstract class ExecPlanServiceBase
 	 * Only one thread may enter it.
 	 */
 	protected abstract boolean sendNextRequests();
+
+	protected abstract void    execDone(ExecDoneEvent e);
 
 
 	/* protected: servicing infrastructure */

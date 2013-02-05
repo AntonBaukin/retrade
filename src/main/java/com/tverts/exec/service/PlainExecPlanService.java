@@ -123,6 +123,15 @@ order by er.id
 		return true; //<-- achieved the limit (make a pause)
 	}
 
+	protected void execDone(ExecDoneEvent e)
+	{
+		synchronized(threadsMutex())
+		{
+			pendingTasks.remove(
+			  e.getRunEvent().getTaskKey());
+		}
+	}
+
 	protected Object  threadsMutex()
 	{
 		return threadsMutex;

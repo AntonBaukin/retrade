@@ -87,15 +87,18 @@ public abstract class EntitiesDumperBase
 	protected boolean   isThatRequest(DumpEntities de)
 	{
 		return getEntityClass().equals(de.getEntityClass()) && (
-		  (getUnityType() == null) ||
-		  getUnityType().equals(de.getUnityType())
+		  ((getUnityType() == null) && (de.getUnityType() == null)) ||
+		  ((getUnityType() != null) && getUnityType().equals(de.getUnityType()))
 		);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected List      selectWrapEntities(DumpEntities de)
 	{
-		List sel = selectEntities(de);
+		List sel = (de.getUnityType() == null)
+		  ?(selectEntitiesByClass(de))
+		  :(selectEntitiesByType(de));
+
 		List res = new ArrayList(sel.size());
 
 		for(Object src : sel)
@@ -123,7 +126,7 @@ public abstract class EntitiesDumperBase
 		Number txn = (Number) query( session(),
 
 		  "select max(e.txn) from EntityClass e",
-		  "EntityClass", unityType(de).getTypeClass()
+		  "EntityClass", getUnityClass()
 		).
 		  uniqueResult();
 
@@ -136,7 +139,7 @@ public abstract class EntitiesDumperBase
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List      selectEntities(DumpEntities de)
+	protected List      selectEntitiesByType(DumpEntities de)
 	{
 		UnityType ut    = unityType(de);
 		long      minTx = (de.getMinTx() == null)?(0L):
@@ -161,6 +164,39 @@ order by e.id
 "order by e.id",
 
 		"EntityClass", ut.getTypeClass()
+
+		).
+		  setLong     ("minPk",     de.getMinPkey()).
+		  setParameter("domain",    tx().getDomain()).
+		  setParameter("unityType", ut).
+		  setLong     ("minTx",     minTx).
+		  setLong     ("maxTx",     maxTx).
+		  setMaxResults(getDumpLimit(de)).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected List      selectEntitiesByClass(DumpEntities de)
+	{
+		long minTx = (de.getMinTx() == null)?(0L):(de.getMinTx() + 1);
+		long maxTx = de.getMaxTx();
+
+/*
+
+select e from EntityClass e where
+  (e.id > :minPk) and (e.domain = :domain) and
+  (e.txn between :minTx and :maxTx)
+order by e.id
+
+ */
+		return query( session(),
+
+"select e from EntityClass e where\n" +
+"  (e.id > :minPk) and (e.domain = :domain) and\n" +
+"  (e.txn between :minTx and :maxTx)\n" +
+"order by e.id",
+
+		"EntityClass", getUnityClass()
 
 		).
 		  setLong     ("minPk",  de.getMinPkey()).

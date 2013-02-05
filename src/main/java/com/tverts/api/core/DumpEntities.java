@@ -45,8 +45,9 @@ public class DumpEntities implements Serializable
 
 	/**
 	 * The Unity Type name.
+	 * Undefined for not a United entities.
 	 */
-	@XmlElement(name = "unity-type", required = true)
+	@XmlElement(name = "unity-type")
 	public String getUnityType()
 	{
 		return unityType;

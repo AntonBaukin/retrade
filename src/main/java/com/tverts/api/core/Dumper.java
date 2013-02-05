@@ -25,8 +25,6 @@ public class Dumper
 
 		if(unityType != null)
 			unityType = unityType.trim();
-		if(unityType == null)
-			throw new IllegalArgumentException();
 
 		this.entityClass = entityClass;
 		this.unityType   = unityType;
@@ -97,9 +95,7 @@ public class Dumper
 
 		de.setEntityClass(getEntityClass());
 		de.setUnityType(getUnityType());
-
-		if(getPrevTx() != null)
-			de.setMinTx(getPrevTx() + 1);
+		de.setMinTx(getPrevTx());
 
 		//?: {initial request} gte the maximum Tx
 		if(prev == null)
@@ -116,6 +112,10 @@ public class Dumper
 
 			//!: send request for the first bunch of data
 			de.setMaxTx(this.maxTx = pd.getMaxTx());
+
+			//~: set the lowest negative value to support test domains
+			de.setMinPkey(this.minKey = Long.MIN_VALUE);
+
 			return de;
 		}
 
@@ -137,7 +137,9 @@ public class Dumper
 			objects.put(key, obj);
 		}
 
+		de.setMaxTx(this.maxTx);
 		de.setMinPkey(minKey);
+
 		return de;
 	}
 
