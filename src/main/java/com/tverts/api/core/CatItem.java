@@ -19,7 +19,9 @@ import javax.xml.bind.annotation.XmlType;
   "pkey", "tx", "xkey", "removed", "code", "name"
 })
 public class      CatItem
-       implements Serializable, TwoKeysObject
+       implements Serializable,
+                  TxObject, TwoKeysObject,
+                  CodedObject, RemovableObject
 {
 	public static final long serialVersionUID = 0L;
 
