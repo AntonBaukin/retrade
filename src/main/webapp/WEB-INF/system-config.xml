@@ -14,9 +14,9 @@
         class = 'com.tverts.system.SystemConfig'>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Default select limit
+     · Default select limit for dump operations
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name  = 'dumpLimit' value = '1024'/>
+    <property name  = 'dumpLimit' value = '128'/>
 
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
