@@ -532,6 +532,11 @@ public class AuthClient
 		}
 		//>: xml to object
 
+		//?: {got server-side error}
+		if(pong instanceof ExecError)
+			throw new RuntimeException(((ExecError)pong).getText());
+
+		//?: {unexpected result object}
 		if(!(pong instanceof Pong))
 			throw new IllegalStateException(
 			  "Server had returned not a Pong instance!");
@@ -565,6 +570,57 @@ public class AuthClient
 
 		if((pong != null) && (pong.getError() != null))
 			throw new PongError(ping, pong);
+		return pong;
+	}
+
+	/**
+	 * Sends authenticated request to the server.
+	 * Then waits for the response from the server.
+	 * If the timeout is zero, waits infinitely.
+	 *
+	 * Note that pong response of the first send
+	 * operation is omitted (it contains not the
+	 * results, but the error status).
+	 *
+	 * If check flag is set, the ping key (if present)
+	 * is then checked, and if the response returns
+	 * pong with else key, an exception is thrown.
+	 * This allows the user to check that the response
+	 * is precisely for the request sent.
+	 */
+	public Pong xwait(Ping ping, boolean check, long timeout)
+	  throws AuthError, PongError, InterruptedException
+	{
+		//!: ping
+		xsend(ping);
+
+		//c: wait for the pong
+		Pong         pong     = null;
+		final Object waitee   = new Object();
+		boolean      infinite = (timeout <= 0L);
+
+		while(infinite || (timeout > 0L))
+		{
+			pong = xsend(new Ping());
+			if(pong != null) break;
+
+			synchronized(waitee)
+			{
+				waitee.wait(100L);
+				timeout -= 100L;
+			}
+		}
+
+		//~: check the returned key
+		if((pong != null) && check && (ping.getKey() != null))
+			if(!ping.getKey().equals(pong.getKey()))
+				throw new IllegalStateException(String.format(
+				  "Error occured while waiting the Pong response from the server: " +
+				  "the Pong key must be [%s], but is was [%s]!",
+
+				  ping.getKey(), (pong.getKey() == null)?("UNDEFINED"):(pong.getKey())
+				));
+
 		return pong;
 	}
 

@@ -14,6 +14,10 @@ import org.hibernate.Session;
 import com.tverts.exec.service.ExecTx;
 import com.tverts.system.tx.TxPoint;
 
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.core.Domain;
+
 /* com.tverts: support */
 
 import static com.tverts.support.SU.s2s;
@@ -59,6 +63,11 @@ public abstract class ExecutorBase
 	protected Session session()
 	{
 		return TxPoint.txSession(tx());
+	}
+
+	protected Domain  domain()
+	{
+		return tx().getDomain();
 	}
 
 

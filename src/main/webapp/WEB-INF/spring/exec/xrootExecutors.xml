@@ -15,9 +15,15 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Executor of API Ping Requests                             ·
+         · Executor of API Ping requests
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.exec.service.PingExecutor'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Dispatcher of API UpdateEntities requests
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.exec.api.UpdateEntitiesDispatcher'/>
 
       </list>
     </property>

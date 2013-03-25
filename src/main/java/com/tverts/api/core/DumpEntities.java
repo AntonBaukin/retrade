@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-
 /**
  * Dumps United entities (having Unity)
  * by their Unity Type (the leaf class
@@ -28,6 +27,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "select-entity")
 public class DumpEntities implements Serializable
 {
+	public static final long serialVersionUID = 0L;
+
+
 	/**
 	 * Class of API entity to dump. The server selects
 	 * proper database entity class associated.

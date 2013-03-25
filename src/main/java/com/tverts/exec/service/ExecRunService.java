@@ -253,8 +253,12 @@ public class ExecRunService extends ServiceBase
 		if(error instanceof ExecError)
 			result = ((ExecError)error).getResult();
 
-		//?: {the result exists} try convert it
-		if(result != null) try
+		//?: {has no result} write error as the text
+		if(result == null)
+			result = new com.tverts.api.ExecError(EX.print(error));
+
+		//~: write result as XML bean
+		try
 		{
 			rbytes = XMAPoint.writeObject(result);
 		}
