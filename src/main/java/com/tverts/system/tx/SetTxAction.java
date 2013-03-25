@@ -23,12 +23,18 @@ public class SetTxAction extends ActionWithTxBase
 		super(task);
 	}
 
+	public SetTxAction(ActionTask task, Object target)
+	{
+		super(task);
+		this.target = target;
+	}
+
 
 	/* public: Action interface */
 
 	public Object  getResult()
 	{
-		return target();
+		return (target != null)?(target):target();
 	}
 
 
@@ -37,6 +43,11 @@ public class SetTxAction extends ActionWithTxBase
 	protected void execute()
 	  throws Throwable
 	{
-		TxPoint.txn(tx(), target());
+		TxPoint.txn(tx(), getResult());
 	}
+
+
+	/* private: alternative target */
+
+	private Object target;
 }

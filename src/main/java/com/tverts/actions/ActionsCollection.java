@@ -156,7 +156,15 @@ public class ActionsCollection
 
 		protected boolean isTestSaveTarget()
 		{
-			return HiberPoint.isTestInstance(getSaveTarget());
+			Object target  = getSaveTarget();
+			Object context = targetOrNull();
+
+			//?: {the target differs from it's context} see the context
+			if((target != context) && (context instanceof NumericIdentity))
+				HiberPoint.isTestInstance((NumericIdentity)context);
+
+			return (!(target instanceof NumericIdentity))?(false):
+			  HiberPoint.isTestInstance((NumericIdentity)target);
 		}
 
 		protected void    assignSaveTarget()
