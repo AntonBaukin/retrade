@@ -18,6 +18,8 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.tverts.api.core.TwoKeysObject;
+
 
 /**
  * Collects properties of the entities
@@ -109,9 +111,46 @@ public class BeansHandler
 			if(!ha)
 				return false;
 
-			if(this.differs(ia.next(), ib.next()))
+			//?: {it is a collection of 2-keyed objects}
+			Object oa = ia.next();
+			if(oa instanceof TwoKeysObject)
+				return xdiffers(a, b);
+
+			if(this.differs(oa, ib.next()))
 				return true;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean    xdiffers(Iterable a, Iterable b)
+	  throws Exception
+	{
+		Map<Long, Object> xkeys = new HashMap<Long, Object>(17);
+
+		//~: map keys of first collection
+		for(Iterator i = a.iterator();(i.hasNext());)
+		{
+			TwoKeysObject o = (TwoKeysObject) i.next();
+
+			xkeys.put(o.getPkey(), o);
+		}
+
+		//~: inspect second collection
+		for(Iterator i = b.iterator();(i.hasNext());)
+		{
+			TwoKeysObject o = (TwoKeysObject) i.next();
+
+			//?: {no object with this key}
+			if(!xkeys.containsKey(o.getPkey()))
+				return true;
+
+			//?: {the objects differ}
+			if(this.differs(xkeys.remove(o.getPkey()), o))
+				return true;
+		}
+
+		//?: {there are keys left}
+		return !xkeys.isEmpty();
 	}
 
 	@SuppressWarnings("unchecked")
