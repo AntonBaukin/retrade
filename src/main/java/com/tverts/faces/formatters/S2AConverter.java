@@ -20,10 +20,15 @@ public class S2AConverter extends ConverterFormatterBase<String[]>
 
 	/* protected: formatting */
 
+	@SuppressWarnings("unchecked")
 	protected void  format(Request<String[]> request)
 	{
-		request.setString(SU.cat(null, " ",
-		  request.getValue()).toString());
+		Object v = request.getValue();
+
+		if(v instanceof String)
+			request.setString((String)v);
+		if(v instanceof Object[])
+			request.setString(SU.scat(" ", (Object[])request.getValue()));
 	}
 
 	protected Class getValueClass()
