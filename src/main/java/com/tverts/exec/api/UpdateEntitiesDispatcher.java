@@ -31,7 +31,7 @@ public class UpdateEntitiesDispatcher extends ExecutorBase
 
 		//c: execute each holder of the update list
 		for(Holder h : ((UpdateEntities)request).getEntities())
-			ExecPoint.execute(h);
+			ExecPoint.execute(new UpdateHolder(h));
 
 		return Boolean.TRUE;
 	}

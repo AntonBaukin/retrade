@@ -29,11 +29,11 @@ public abstract class UpdateEntityBase extends ExecutorBase
 	public Object execute(Object request)
 	  throws ExecError
 	{
-		//?: {is a Holder}
-		if(!(request instanceof Holder))
+		//?: {is not an update holder operation}
+		if(!(request instanceof UpdateHolder))
 			return null;
 
-		Holder h = (Holder) request;
+		Holder h = ((UpdateHolder)request).getHolder();
 
 		//?: {is a not known entity}
 		if((h.getEntity() == null) || !isKnown(h))

@@ -25,6 +25,12 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.exec.api.UpdateEntitiesDispatcher'/>
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Dispatcher of API InsertEntities requests
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.exec.api.InsertEntitiesDispatcher'/>
+
       </list>
     </property>
   </bean>

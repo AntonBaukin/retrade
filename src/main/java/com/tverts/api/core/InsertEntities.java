@@ -18,8 +18,8 @@ import javax.xml.bind.annotation.XmlType;
  * on the server side. The objects may be of
  * different Unity Types.
  */
-@XmlType(name = "update-entities")
-public class UpdateEntities implements Serializable
+@XmlType(name = "insert-entities")
+public class InsertEntities implements Serializable
 {
 	public static final long serialVersionUID = 0L;
 

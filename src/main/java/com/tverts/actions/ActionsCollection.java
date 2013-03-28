@@ -161,10 +161,16 @@ public class ActionsCollection
 
 			//?: {the target differs from it's context} see the context
 			if((target != context) && (context instanceof NumericIdentity))
-				HiberPoint.isTestInstance((NumericIdentity)context);
+				return checkTestInstance(context);
 
-			return (!(target instanceof NumericIdentity))?(false):
-			  HiberPoint.isTestInstance((NumericIdentity)target);
+			return checkTestInstance(target);
+		}
+
+		protected boolean checkTestInstance(Object obj)
+		{
+			//?: {the domain is for tests}
+			return (obj instanceof NumericIdentity) &&
+			  HiberPoint.isTestInstance((NumericIdentity)obj);
 		}
 
 		protected void    assignSaveTarget()
