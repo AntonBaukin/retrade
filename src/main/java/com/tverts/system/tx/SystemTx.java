@@ -67,8 +67,13 @@ class SystemTx implements Tx
 		if(txn != null)
 			return txn;
 
-		return (txn = HiberSystem.getInstance().
-		  createTxNumber(sessionFactory, this));
+		return (txn = newTxn());
+	}
+
+	public long           newTxn()
+	{
+		return HiberSystem.getInstance().
+		  createTxNumber(sessionFactory, this);
 	}
 
 	public void           free()

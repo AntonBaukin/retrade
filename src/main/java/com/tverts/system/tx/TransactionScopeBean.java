@@ -1,23 +1,13 @@
 package com.tverts.system.tx;
 
-/* Hibernate Persistence Layer */
-
-import org.hibernate.SessionFactory;
-
 /* Spring framework */
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.NoTransactionException;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 /* com.tverts: servlet filters */
 
 import com.tverts.servlet.filters.FilterTask;
-
-/* com.tverts: hibery */
-
-import com.tverts.hibery.HiberPoint;
 
 
 /**
@@ -131,7 +121,8 @@ public class TransactionScopeBean implements Runnable
 
 	protected Tx createTxContext()
 	{
-		return SystemTx.CREATOR.createTxContext();
+		return TxPoint.getInstance().
+		  getTxCreator().createTxContext();
 	}
 
 

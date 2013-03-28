@@ -12,6 +12,7 @@ import com.tverts.api.core.DumpEntities;
 /* com.tverts: system */
 
 import com.tverts.system.SystemConfig;
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: hibery */
 
@@ -118,23 +119,15 @@ public abstract class EntitiesDumperBase
 		  getUnityClass(), de.getUnityType());
 	}
 
+	/**
+	 * This implementation generates the next Tx number.
+	 * When dumping more than one entity type, set this
+	 * number in the following requests to prevent
+	 * referring entities of newer transactions.
+	 */
 	protected Object    selectTxBoundaries(DumpEntities de)
 	{
-
-// select max(e.txn) from EntityClass e
-
-		Number txn = (Number) query( session(),
-
-		  "select max(e.txn) from EntityClass e",
-		  "EntityClass", getUnityClass()
-		).
-		  uniqueResult();
-
-		if(txn != null)
-			de.setMaxTx(txn.longValue());
-		else
-			de.setMaxTx(0L);
-
+		de.setMaxTx(TxPoint.getInstance().newTxn());
 		return de;
 	}
 

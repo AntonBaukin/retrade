@@ -84,6 +84,26 @@ public class TxPoint
 		((TxEntity)obj).setTxn(tx.txn());
 	}
 
+	public long           newTxn()
+	{
+		ArrayList<Tx> s = contexts.get();
+		Long          n = null;
+
+		if(s != null) for(Tx tx : s)
+			if(tx instanceof SystemTx)
+			{
+				n = ((SystemTx)tx).newTxn();
+				break;
+			}
+
+		if(n == null) throw new IllegalStateException(
+		  "New Transaction Number may no be generated as " +
+		  "there is no System Tx in the contexts stack!"
+		);
+
+		return n;
+	}
+
 	/**
 	 * Gives the global transaction context associated
 	 * with the current request to the system. The result

@@ -1,4 +1,4 @@
-package com.tverts.api.core;
+package com.tverts.api.support;
 
 /* standard Java classes */
 
@@ -8,6 +8,8 @@ import java.util.Map;
 /* com.tverts: api */
 
 import com.tverts.api.Payload;
+import com.tverts.api.core.DumpEntities;
+import com.tverts.api.core.TwoKeysObject;
 
 
 /**
@@ -58,9 +60,10 @@ public class Dumper
 		return prevTx;
 	}
 
-	public void       setPrevTx(Long prevTx)
+	public Dumper     setPrevTx(Long prevTx)
 	{
 		this.prevTx = prevTx;
+		return this;
 	}
 
 
@@ -78,9 +81,24 @@ public class Dumper
 	 * till the future dump operation to select
 	 * only the modified objects.
 	 */
-	public long         getMaxTx()
+	public Long         getMaxTx()
 	{
 		return maxTx;
+	}
+
+	/**
+	 * When dumping several types of entities,
+	 * set the maximum transaction number to
+	 * restrict all the entities to the same
+	 * period of the system life.
+	 *
+	 * Warning! This is actually needed, or
+	 * broken-obsolete references may occur!
+	 */
+	public Dumper       setMaxTx(Long maxTx)
+	{
+		this.maxTx = maxTx;
+		return this;
 	}
 
 	/**
@@ -97,16 +115,27 @@ public class Dumper
 		de.setUnityType(getUnityType());
 		de.setMinTx(getPrevTx());
 
-		//?: {initial request} gte the maximum Tx
+		//?: {initial request} get max Tx | got it provided
 		if(prev == null)
+		{
+			//?: {Tx boundaries are provided} request the data
+			if(getMaxTx() != null)
+			{
+				de.setMaxTx(getMaxTx());
+
+				//~: set the lowest negative value to support test domains
+				de.setMinPkey(this.minKey = Long.MIN_VALUE);
+			}
+
 			return de;
+		}
 
 		//?: {the answer on the initial max-Tx request}
 		if(prev.getObject() instanceof DumpEntities)
 		{
 			DumpEntities pd = (DumpEntities)prev.getObject();
 
-			//?: {the server has no data} (almost impossible)
+			//?: {the server has empty database}
 			if(pd.getMaxTx() == null)
 				return null;
 
@@ -153,7 +182,7 @@ public class Dumper
 
 	/* strategy state */
 
-	protected long              maxTx;
+	protected Long              maxTx;
 	protected long              minKey;
 	protected Map<Long, Object> objects =
 	  new HashMap<Long, Object>();
