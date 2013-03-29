@@ -16,11 +16,9 @@ import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure (core) */
 
+import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.core.Domain;
-
-/* com.tverts: support */
-
-import static com.tverts.support.SU.s2s;
+import com.tverts.endure.core.DomainEntity;
 
 
 /**
@@ -68,6 +66,21 @@ public abstract class ExecutorBase
 	protected Domain  domain()
 	{
 		return tx().getDomain();
+	}
+
+	protected void    checkDomain(Object obj)
+	{
+		if(!(obj instanceof DomainEntity))
+			return;
+
+		if(!domain().equals(((DomainEntity)obj).getDomain()))
+			throw new IllegalStateException(String.format(
+			  "Security Error: the entity of type [%s] " +
+			  "with key [%d] is not of the client Domain!",
+
+			  obj.getClass().getSimpleName(),
+			  ((NumericIdentity)obj).getPrimaryKey()
+			));
 	}
 
 

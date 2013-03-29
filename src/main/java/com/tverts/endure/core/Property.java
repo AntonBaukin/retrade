@@ -25,26 +25,6 @@ public class Property implements NumericIdentity
 		this.primaryKey = primaryKey;
 	}
 
-	public String  getName()
-	{
-		return name;
-	}
-
-	public void    setName(String name)
-	{
-		this.name = name;
-	}
-
-	public String  getArea()
-	{
-		return area;
-	}
-
-	public void    setArea(String area)
-	{
-		this.area = area;
-	}
-
 	public Domain  getDomain()
 	{
 		return domain;
@@ -55,14 +35,27 @@ public class Property implements NumericIdentity
 		this.domain = domain;
 	}
 
-	public Class   getType()
+	/**
+	 * Names the properties area. Default value is "".
+	 */
+	public String  getArea()
 	{
-		return type;
+		return (area == null)?(""):(area);
 	}
 
-	public void    setType(Class type)
+	public void    setArea(String area)
 	{
-		this.type = type;
+		this.area = area;
+	}
+
+	public String  getName()
+	{
+		return name;
+	}
+
+	public void    setName(String name)
+	{
+		this.name = name;
 	}
 
 	public String  getValue()

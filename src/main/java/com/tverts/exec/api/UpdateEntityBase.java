@@ -5,11 +5,6 @@ package com.tverts.exec.api;
 import com.tverts.exec.ExecError;
 import com.tverts.exec.ExecutorBase;
 
-/* com.tverts: endure (core) */
-
-import com.tverts.endure.NumericIdentity;
-import com.tverts.endure.core.DomainEntity;
-
 /* com.tverts: api */
 
 import com.tverts.api.core.Holder;
@@ -106,20 +101,5 @@ public abstract class UpdateEntityBase extends ExecutorBase
 	{
 		//sec: check the domain
 		checkDomain(obj);
-	}
-
-	protected void             checkDomain(Object obj)
-	{
-		if(!(obj instanceof DomainEntity))
-			return;
-
-		if(!domain().equals(((DomainEntity)obj).getDomain()))
-			throw new IllegalStateException(String.format(
-			  "Security Error: the entity of type [%s] " +
-			  "with key [%d] is not of the client Domain!",
-
-			  obj.getClass().getSimpleName(),
-			  ((NumericIdentity)obj).getPrimaryKey()
-			));
 	}
 }

@@ -27,100 +27,28 @@ public class GetProps extends GetObjectBase
 	/* Properties Loader */
 
 	/**
-	 * Returns the system-wide property.
-	 */
-	public Property get(String name)
-	{
-		if(sXe(name)) throw new IllegalArgumentException();
-
-/*
-
-from Property where (name = :name) and
-  (area is null) and (domain is null)
-
-*/
-
-
-		return (Property) session().createQuery(
-
-"from Property where (name = :name) and\n" +
-"  (area is null) and (domain is null)"
-
-		).
-		  setString("name", name).
-		  uniqueResult();
-	}
-
-	/**
-	 * Returns the system-wide property within the area.
-	 */
-	public Property get(String area, String name)
-	{
-		if(sXe(area)) return this.get(name);
-		if(sXe(name)) throw new IllegalArgumentException();
-
-/*
-
-from Property where (name = :name) and
-  (area = :area) and (domain is null)
-
-*/
-
-
-		return (Property) session().createQuery(
-
-		  "from Property where (name = :name) and\n" +
-		  "  (area = :area) and (domain is null)"
-
-		).
-		  setString("name", name).
-		  setString("area", area).
-		  uniqueResult();
-	}
-
-	/**
 	 * Returns the domain-wide property.
 	 */
 	public Property get(Long domain, String name)
 	{
-		if(domain == null) return this.get(name);
-		if(sXe(name))      throw new IllegalArgumentException();
-
-/*
-
-from Property where (name = :name) and
-  (area is null) and (domain.id = :domain)
-
-*/
-
-
-		return (Property) session().createQuery(
-
-"from Property where (name = :name) and\n" +
-"  (area is null) and (domain.id = :domain)"
-
-		).
-		  setString("name", name).
-		  setLong("domain", domain).
-		  uniqueResult();
-	}
-
-	/**
-	 * Returns the domain-wide property within the area.
-	 */
-	public Property get(Domain domain, String name)
-	{
-		if(domain == null) return this.get(name);
-		return this.get(domain.getPrimaryKey(), name);
+		return this.get(domain, "", name);
 	}
 
 	/**
 	 * Returns the domain-wide property.
 	 */
-	public Property get(Long domain, String area, String name )
+	public Property get(Domain domain, String name)
 	{
-		if(sXe(area))      return this.get(domain, name);
-		if(domain == null) return this.get(area, name);
+		return this.get(domain, "", name);
+	}
+
+	/**
+	 * Returns the property of the domain area.
+	 */
+	public Property get(Long domain, String area, String name)
+	{
+		if(sXe(area)) area = "";
+		if(domain == null) throw new IllegalArgumentException();
 		if(sXe(name))      throw new IllegalArgumentException();
 
 /*
@@ -144,16 +72,15 @@ from Property where (name = :name) and
 	}
 
 	/**
-	 * Returns the domain-wide property.
+	 * Returns the property of the domain area.
 	 */
 	public Property get(Domain domain, String area, String name)
 	{
-		if(domain == null) return this.get(area, name);
 		return this.get(domain.getPrimaryKey(), area, name);
 	}
 
 	/**
-	 * Get or Create. Returns the domain-wide property.
+	 * Get or Create: returns the property of the domain area.
 	 */
 	public Property goc(Domain domain, String area, String name)
 	{
@@ -186,7 +113,13 @@ from Property where (name = :name) and
 
 	public GetProps save(Property prop)
 	{
-		if(prop == null) throw new IllegalArgumentException();
+		if(prop == null)
+			throw new IllegalArgumentException();
+		if(prop.getDomain() == null)
+			throw new IllegalArgumentException();
+		if(sXe(prop.getName()))
+			throw new IllegalArgumentException();
+
 
 		//?: {has no primary key}
 		if(prop.getPrimaryKey() == null)
@@ -211,7 +144,6 @@ from Property where (name = :name) and
 		//:: do merge
 		else
 		{
-			got.setType(prop.getType());
 			got.setValue(prop.getValue());
 			got.setObject(prop.getObject());
 		}
@@ -261,28 +193,28 @@ from Property where (name = :name) and
 
 	public GetProps set(Property p, String v)
 	{
-		p.setType(String.class);
+		//p.setType(String.class);
 		p.setValue(v);
 		return this;
 	}
 
 	public GetProps set(Property p, Integer v)
 	{
-		p.setType(Integer.class);
+		//p.setType(Integer.class);
 		p.setValue((v == null)?(null):(v.toString()));
 		return this;
 	}
 
 	public GetProps set(Property p, Long v)
 	{
-		p.setType(Long.class);
+		//p.setType(Long.class);
 		p.setValue((v == null)?(null):(v.toString()));
 		return this;
 	}
 
 	public GetProps set(Property p, Boolean v)
 	{
-		p.setType(Boolean.class);
+		//p.setType(Boolean.class);
 		p.setValue((v == null)?(null):(v.toString()));
 		return this;
 	}
@@ -295,8 +227,8 @@ from Property where (name = :name) and
 			return this;
 		}
 
-		if((p.getType() == null) || sXe(p.getValue()))
-			p.setType(bean.getClass());
+		//if((p.getType() == null) || sXe(p.getValue()))
+		//	p.setType(bean.getClass());
 		p.setValue(obj2xml(bean));
 
 		return this;

@@ -185,7 +185,7 @@ public class UnityType implements PrimaryIdentity
 		  "Unity Type [%c%c] '%s' class '%s'",
 
 		  getSystemFlag(), getTypeFlag(),
-		  getTypeName(), cls(getTypeClass())
+		  getTypeName(), getTypeClass().getSimpleName()
 		);
 	}
 

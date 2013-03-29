@@ -83,8 +83,13 @@ public class DaysGenDisp extends GenesisPartBase
 		//c: generate till the last day
 		while(!curDay.after(endDay))
 		{
+			//~: set the day parameter of the context
+			ctx.set(DAY, curDay);
+
 			genObjectsTxDisp(ctx, curDay);
 			curDay = DU.addDaysClean(curDay, +1);
+
+			ctx.set(DAY, null);
 		}
 	}
 
@@ -213,15 +218,17 @@ public class DaysGenDisp extends GenesisPartBase
 
 		//!: invoke day generation
 		genObjects(ctx, day);
+
+		//~: mark that day
+		for(Entry e : getEntries())
+			if(e.getGenesis() instanceof DaysGenPart)
+				((DaysGenPart)e.getGenesis()).markDayGenerated(ctx);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void    genObjects(GenCtx ctx, Date day)
 	  throws GenesisError
 	{
-		//~: set the day parameter of the context
-		ctx.set(DAY, day);
-
 		//~: select the generator entries
 		Entry[] entries = selectEntries(ctx, genObjsNumber(ctx));
 		Map     inds    = new IdentityHashMap(getEntries().length);
@@ -245,6 +252,8 @@ public class DaysGenDisp extends GenesisPartBase
 
 			//!: call the genesis unit
 			callGenesis(ctx, entries[ei]);
+
+			ctx.set(TIME, null);
 		}
 
 		//~: write to the log
@@ -259,6 +268,11 @@ public class DaysGenDisp extends GenesisPartBase
 
 		//~: clone the genesis before the invocation
 		Genesis g = e.getGenesis().clone();
+
+		//?: {there was generation for this day}
+		if(g instanceof DaysGenPart)
+			if(!((DaysGenPart)g).isDayClear(ctx))
+				return;
 
 		//!: call it in the context stacked
 		g.generate(ctx.stack(this));

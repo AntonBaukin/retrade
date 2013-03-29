@@ -12,6 +12,31 @@
     <id name = 'primaryKey' column = 'pk_inc_value'/>
 
 
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' lazy = 'proxy'
+      foreign-key = 'fk_property_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_property' index = 'ix_property_domain'>
+
+        <comment>The Domain where the property set</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Property Name Area -->
+
+    <property name = 'area'>
+
+      <column name = 'property_area' length = '512' not-null = 'true'
+        unique-key = 'ux_property' index = 'ix_property_area'>
+
+        <comment>The (optional) area of the property names</comment>
+      </column>
+    </property>
+
+
     <!-- Property Name -->
 
     <property name = 'name'>
@@ -20,42 +45,6 @@
         unique-key = 'ux_property'>
 
         <comment>The name of the property</comment>
-      </column>
-    </property>
-
-
-    <!-- Property Name Area -->
-
-    <property name = 'area'>
-
-      <column name = 'property_area' length = '512'
-        unique-key = 'ux_property' index = 'ix_property_area'>
-
-        <comment>The (optional) area of the property names</comment>
-      </column>
-    </property>
-
-
-    <!-- Domain reference -->
-
-    <many-to-one name = 'domain' lazy = 'proxy'
-      foreign-key = 'fk_property_domain'>
-
-      <column name = 'fk_domain'
-        unique-key = 'ux_property' index = 'ix_property_domain'>
-
-        <comment>The (optional) Domain where the property set</comment>
-      </column>
-    </many-to-one>
-
-
-    <!-- Value Type -->
-
-    <property name = 'type'>
-
-      <column name = 'value_type' length = '1024'>
-
-        <comment>The Java class name of the value type</comment>
       </column>
     </property>
 
