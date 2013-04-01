@@ -215,7 +215,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 				w = p.getGoodVolume(); //<-- always positive here
 				if((w == null) || (w.signum() != 1))
 					throw new IllegalStateException();
-				s = p.getVolumeCost().divide(w);
+				s = divs(p.getVolumeCost(), w);
 				//debug(struct, "(p != null) & (s == null), s = ", s, " w = ", w);
 			}
 
@@ -277,7 +277,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 				w = c.getGoodVolume(); //<-- always positive here
 				if((w == null) || (w.signum() != 1))
 					throw new IllegalStateException();
-				s = c.getVolumeCost().divide(w);
+				s = divs(c.getVolumeCost(), w);
 
 				//~: clear item' aggregation attributes
 				c.setRestCost(null); c.setAggrVolume(null);
@@ -310,7 +310,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 					//debug(struct, "(w <= 0), w = v = ", c.getGoodVolume());
 
 					w = c.getGoodVolume();
-					s = c.getVolumeCost().divide(c.getGoodVolume());
+					s = divs(c.getVolumeCost(), c.getGoodVolume());
 				}
 				else
 				{
@@ -318,7 +318,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 					//debug(struct, "v = ", c.getGoodVolume(), ", w + v = ", w1);
 
 					s = s.multiply(w).add(c.getVolumeCost());
-					s = s.divide(w1, 64, BigDecimal.ROUND_HALF_UP);
+					s = divs(s, w1);
 					w = w1;
 
 					//~: make the precision < 64 (to store as string with '.')
@@ -395,9 +395,9 @@ order by historyIndex asc
 */
 		List list = aggrItemQ(struct,
 
-"from AggrItem where\n" +
-"  (aggrValue = :aggrValue) and (historyIndex is not null)\n" +
-"order by historyIndex asc"
+		                      "from AggrItem where\n" +
+		                      "  (aggrValue = :aggrValue) and (historyIndex is not null)\n" +
+		                      "order by historyIndex asc"
 
 		).
 		  setParameter("aggrValue", aggrValue(struct)).
@@ -423,8 +423,8 @@ order by historyIndex asc
 "order by historyIndex asc"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong     ("orderIndex", orderIndex).
+		  setParameter("aggrValue", aggrValue(struct)).
+		  setLong("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  list();
 
@@ -589,20 +589,32 @@ select sum(goodVolume) from AggrItem where
 */
 		return (BigDecimal) aggrItemQ(struct,
 
-"select sum(goodVolume) from AggrItem where\n" +
-"  (aggrValue = :aggrValue) and (goodVolume < 0) and\n" +
-"  (orderIndex < :rightIndex)"
+		                              "select sum(goodVolume) from AggrItem where\n" +
+		                              "  (aggrValue = :aggrValue) and (goodVolume < 0) and\n" +
+		                              "  (orderIndex < :rightIndex)"
 
 		).
-		  setParameter("aggrValue",  aggrValue(struct)).
+		  setParameter("aggrValue", aggrValue(struct)).
 		  setLong     ("rightIndex", rightIndex).
 		  uniqueResult();
+	}
+
+	protected BigDecimal  divs(BigDecimal n, BigDecimal d)
+	{
+		BigDecimal r = n.divide(d, 64, BigDecimal.ROUND_HALF_EVEN);
+
+		if(r.precision() >= 64) //<-- 1 reserved for '.'
+			r = r.setScale(
+			  64 - 1 - (r.precision() - 64),
+			  BigDecimal.ROUND_HALF_EVEN);
+
+		return r;
 	}
 
 	protected void        setAggrValue(AggrStruct struct, BigDecimal s)
 	{
 		if(s != null)
-			s = s.setScale(5, BigDecimal.ROUND_HALF_UP);
+			s = s.setScale(5, BigDecimal.ROUND_HALF_EVEN);
 		aggrValue(struct).setAggrValue(s);
 
 		//~: the denominator is always 1
@@ -627,7 +639,7 @@ select sum(goodVolume) from AggrItem where
 		if(s < 0) throw new IllegalStateException("Decimal value [" +
 		  v.toString() + "] is too large for Rest cost storage!");
 
-		return v.setScale(s, BigDecimal.ROUND_HALF_UP);
+		return v.setScale(s, BigDecimal.ROUND_HALF_EVEN);
 	}
 
 

@@ -94,6 +94,23 @@ public class ActionsPoint
 		return trigger;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static ActionTrigger actionRun
+	  (ActionType atype, Object target, Map params)
+	{
+		//~: pack them to array
+		Object[]  ap = new Object[params.size() * 2];
+		int       ai = 0;
+
+		for(Object p : params.keySet())
+		{
+			ap[ai++] = p;
+			ap[ai++] = params.get(p);
+		}
+
+		return actionRun(atype, target, ap);
+	}
+
 	public ActionTrigger        actionOrNull
 	  (ActionType atype, Object target, Object... params)
 	{
