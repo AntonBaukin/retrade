@@ -1,9 +1,5 @@
 package com.tverts.endure.core;
 
-/* standard Java classe */
-
-import java.util.List;
-
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -86,13 +82,8 @@ public class GenTestDomain extends GenesisHiberPartBase
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		List<Domain> domains = bean(GetDomain.class).
-		  getTestDomains();
-
-		final String NAME0 = "Тестовый домен";
-
 		//~: test (primary) domain
-		Domain d = findDomain(ctx, domains, NAME0);
+		Domain d = findDomain(ctx);
 
 		if(d != null)
 			setTestDomain(d);
@@ -108,24 +99,28 @@ public class GenTestDomain extends GenesisHiberPartBase
 		getInstance().testDomain = this.testDomain = testDomain;
 	}
 
-	protected Domain findDomain(GenCtx ctx, List<Domain> domains, String name)
+	protected Domain findDomain(GenCtx ctx)
 	{
-		Domain r = null;
+		Domain d = bean(GetDomain.class).
+		  getDomain(getDomainCode());
+		if(d == null) return null;
 
-		for(Domain d : domains)
-			if(name.equals(d.getName()))
-			{
-				r = d;
-				break;
-			}
+		LU.I(log(ctx), logsig(),
+		  " found test Domain pkey [", d.getPrimaryKey(),
+		  "] code [", d.getCode(), "] name [", d.getName(), "]"
+		);
 
-		if(r != null) if(LU.isI(log(ctx)))
-			LU.I(log(ctx), logsig(),
-			     " found Test Domain '", name, "', key = ",
-			     r.getPrimaryKey()
-			);
+		return d;
+	}
 
-		return r;
+	protected String getDomainCode()
+	{
+		return "Test";
+	}
+
+	protected String getDomainName()
+	{
+		return "Основной тестовый Домен";
 	}
 
 	protected Domain createTestDomain(GenCtx ctx)
@@ -135,10 +130,10 @@ public class GenTestDomain extends GenesisHiberPartBase
 		setPrimaryKey(session(), d, true);
 
 		//~: code
-		d.setCode("Test");
+		d.setCode(getDomainCode());
 
 		//~: name
-		d.setName("Основной тестовый Домен");
+		d.setName(getDomainName());
 
 		//!: do save
 		actionRun(ActionType.SAVE, d);
