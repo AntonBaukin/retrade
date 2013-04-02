@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 
 import com.tverts.hibery.GetObjectBase;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
 
 /**
  * Loads {@link Domain} instances.
@@ -22,6 +26,29 @@ import com.tverts.hibery.GetObjectBase;
 public class GetDomain extends GetObjectBase
 {
 	/* Get Domain */
+
+	public Domain      getDomain(Long pk)
+	{
+		return (pk == null)?(null):
+		  (Domain) session().get(Domain.class, pk);
+	}
+
+	public Domain      getDomain(String code)
+	{
+		if(SU.sXe(code))
+			throw new IllegalArgumentException();
+
+
+// from Domain where (codeux = :code)
+
+		return (Domain) Q(
+
+"from Domain where (codeux = :code)"
+
+		).
+		  setString("code", SU.sXs(code).toLowerCase()).
+		  uniqueResult();
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Domain> getTestDomains()
@@ -35,10 +62,5 @@ public class GetDomain extends GetObjectBase
 
 		).
 		  list();
-	}
-
-	public Domain getDomain(Long id)
-	{
-		return (Domain) session().get(Domain.class, id);
 	}
 }

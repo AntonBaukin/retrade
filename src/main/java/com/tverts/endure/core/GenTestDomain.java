@@ -75,30 +75,9 @@ public class GenTestDomain extends GenesisHiberPartBase
 		return res;
 	}
 
-	/**
-	 * Returns the empty test domain, or raises
-	 * {@link IllegalStateException}
-	 * if it is not created/discovered.
-	 */
-	public static Domain emptyDomain()
-	{
-		Domain res = getInstance().getEmptyDomain();
-
-		if(res == null) throw new IllegalStateException(
-		  "Empty test Domain is not discovered or generated!"
-		);
-
-		return res;
-	}
-
 	public Domain        getTestDomain()
 	{
 		return testDomain;
-	}
-
-	public Domain        getEmptyDomain()
-	{
-		return emptyDomain;
 	}
 
 
@@ -111,7 +90,6 @@ public class GenTestDomain extends GenesisHiberPartBase
 		  getTestDomains();
 
 		final String NAME0 = "Тестовый домен";
-		final String NAMEE = "Пустой домен";
 
 		//~: test (primary) domain
 		Domain d = findDomain(ctx, domains, NAME0);
@@ -119,15 +97,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 		if(d != null)
 			setTestDomain(d);
 		else
-			setTestDomain(createTestDomain(ctx, NAME0));
-
-		//~: empty domain
-		d = findDomain(ctx, domains, NAMEE);
-
-		if(d != null)
-			setEmptyDomain(d);
-		else
-			setEmptyDomain(createTestDomain(ctx, NAMEE));
+			setTestDomain(createTestDomain(ctx));
 	}
 
 
@@ -136,11 +106,6 @@ public class GenTestDomain extends GenesisHiberPartBase
 	protected void   setTestDomain(Domain testDomain)
 	{
 		getInstance().testDomain = this.testDomain = testDomain;
-	}
-
-	protected void  setEmptyDomain(Domain emptyDomain)
-	{
-		this.emptyDomain = emptyDomain;
 	}
 
 	protected Domain findDomain(GenCtx ctx, List<Domain> domains, String name)
@@ -163,20 +128,25 @@ public class GenTestDomain extends GenesisHiberPartBase
 		return r;
 	}
 
-	protected Domain createTestDomain(GenCtx ctx, String name)
+	protected Domain createTestDomain(GenCtx ctx)
 	{
 		//~: create and save new instance
 		Domain d = new Domain();
 		setPrimaryKey(session(), d, true);
-		d.setName(name);
+
+		//~: code
+		d.setCode("Test");
+
+		//~: name
+		d.setName("Основной тестовый Домен");
 
 		//!: do save
 		actionRun(ActionType.SAVE, d);
 
 		//~: log success
 		if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
-		  " created Test Domain '", name, "', key = ",
-		  d.getPrimaryKey()
+		  " created test Domain pkey [", d.getPrimaryKey(),
+		  "] code [", d.getCode(), "], name [", d.getName(), "]"
 		);
 
 		return d;
@@ -186,5 +156,4 @@ public class GenTestDomain extends GenesisHiberPartBase
 	/* protected: test domain reference */
 
 	private Domain testDomain;
-	private Domain emptyDomain;
 }

@@ -9,14 +9,34 @@
     table = 'core_domain' lazy = 'false'>
 
 
+    <!-- Domain Code -->
+
+    <property name = 'code'>
+
+      <column name = 'domain_code' not-null = 'true' length = '512'>
+        <comment>Code of the Domain (unique as caseless)</comment>
+      </column>
+    </property>
+
+
+    <!-- Domain Code (Unique) -->
+
+    <property name = 'codeux'>
+
+      <column name = 'ux_code' not-null = 'true'
+        length = '512' unique = 'true'>
+
+        <comment>Lower-cased (unique) code of the domain</comment>
+      </column>
+    </property>
+
+
     <!-- Domain Name -->
 
     <property name = 'name'>
 
-      <column name = 'domain_name' not-null = 'true'
-        unique = 'true' length = '512'>
-
-        <comment>Unique name of the domain</comment>
+      <column name = 'name' not-null = 'true' length = '1024'>
+        <comment>Display name of the Domain</comment>
       </column>
     </property>
 
