@@ -3,6 +3,7 @@ package com.tverts.support;
 /* standard Java classes */
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -26,5 +27,11 @@ public class CMP
 	{
 		return ((a == null) && (b == null)) ||
 		  ((a != null) && a.equals(b));
+	}
+
+	public static boolean eq(Date a, Date b)
+	{
+		return ((a == null) && (b == null)) ||
+		  ((a != null) && (a.getTime() == b.getTime()));
 	}
 }

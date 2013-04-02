@@ -397,16 +397,19 @@ public class OrdererDefault extends OrdererBase
 
 from OrderIndex where ($orderOwner = :orderOwner)
   $and$orderType=:orderType$ and ($orderIndex is not null)
-  order by $orderIndex asc
+  and (id <> :invoice)
+order by $orderIndex asc
 
 */
 		List r = indexQuery(odata,
 
 "from OrderIndex where ($orderOwner = :orderOwner)\n" +
 "  $and$orderType=:orderType$ and ($orderIndex is not null)\n" +
-"  order by $orderIndex asc"
+"  and (id <> :invoice)\n" +
+"order by $orderIndex asc"
 
 		).
+		  setLong("invoice", odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
@@ -422,16 +425,19 @@ from OrderIndex where ($orderOwner = :orderOwner)
 
 from OrderIndex where ($orderOwner = :orderOwner)
   $and$orderType=:orderType$ and ($orderIndex is not null)
-  order by $orderIndex desc
+  and (id <> :invoice)
+order by $orderIndex desc
 
 */
 		List r = indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner) \n" +
+"from OrderIndex where ($orderOwner = :orderOwner)\n" +
 "  $and$orderType=:orderType$ and ($orderIndex is not null)\n" +
-"  order by $orderIndex desc"
+"  and (id <> :invoice)\n" +
+"order by $orderIndex desc"
 
 		).
+		  setLong("invoice", odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
@@ -447,18 +453,21 @@ from OrderIndex where ($orderOwner = :orderOwner)
 
 from OrderIndex where ($orderOwner = :orderOwner)
   $and$orderType=:orderType$ and ($orderIndex < :orderIndex)
-  order by $orderIndex desc
+  and (id <> :invoice)
+order by $orderIndex desc
 
 */
 
 		List r = indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner) \n" +
+"from OrderIndex where ($orderOwner = :orderOwner)\n" +
 "  $and$orderType=:orderType$ and ($orderIndex < :orderIndex)\n" +
-"  order by $orderIndex desc"
+"  and (id <> :invoice)\n" +
+"order by $orderIndex desc"
 
 		).
 		  setLong("orderIndex", reference(odata).getOrderIndex()).
+		  setLong("invoice",    odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
@@ -477,7 +486,8 @@ from OrderIndex where ($orderOwner = :orderOwner)
 
 from OrderIndex where ($orderOwner = :orderOwner)
   $and$orderType=:orderType$ and ($orderIndex > :orderIndex)
-  order by $orderIndex asc
+  and (id <> :invoice)
+order by $orderIndex asc
 
 */
 
@@ -485,10 +495,12 @@ from OrderIndex where ($orderOwner = :orderOwner)
 
 "from OrderIndex where ($orderOwner = :orderOwner)\n" +
 "  $and$orderType=:orderType$ and ($orderIndex > :orderIndex)\n" +
-"  order by $orderIndex asc"
+"  and (id <> :invoice)\n" +
+"order by $orderIndex asc"
 
 		).
 		  setLong("orderIndex", reference(odata).getOrderIndex()).
+		  setLong("invoice",    odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
@@ -799,7 +811,7 @@ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
 			if((right != null) && (oi > right))
 			{
 				i.remove();
-				continue;
+				//continue;
 			}
 		}
 
@@ -883,11 +895,11 @@ select oi.id, oi.$orderIndex from OrderIndex oi
 		  "OrderIndex", odata.getIndexClass());
 
 		//~: set order owner
-		if(Q.indexOf(":orderOwner") != -1)
+		if(Q.contains(":orderOwner"))
 			q.setLong("orderOwner", orderOwnerID(odata));
 
 		//~: set order type
-		if(Q.indexOf(":orderType") != -1)
+		if(Q.contains(":orderType"))
 			q.setParameter("orderType", orderType(odata));
 
 		return q;

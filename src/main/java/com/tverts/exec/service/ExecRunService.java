@@ -87,7 +87,7 @@ public class ExecRunService extends ServiceBase
 	{
 		try
 		{
-			executeTaskTx(taskKey);
+			executeTaskPrepare(taskKey);
 		}
 		catch(StateException e)
 		{
@@ -114,12 +114,7 @@ public class ExecRunService extends ServiceBase
 		}
 	}
 
-
-	/**
-	 * Executes the request in it's own transaction.
-	 */
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	protected void          executeTaskTx(long taskKey)
+	protected void          executeTaskPrepare(long taskKey)
 	  throws Throwable
 	{
 		//~: load the request
@@ -142,6 +137,18 @@ public class ExecRunService extends ServiceBase
 		if(request.getRequest() == null)
 			return;
 
+		//!: do execute the request in separated transaction
+		executeTaskTx(request);
+	}
+
+	/**
+	 * Executes the request in it's own transaction
+	 * ({@link ExecTxContext} context)
+	 */
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	protected void          executeTaskTx(ExecRequest request)
+	  throws Throwable
+	{
 		//!: create execution Tx context
 		ExecTxContext tx = createExecTx(request);
 
@@ -150,7 +157,8 @@ public class ExecRunService extends ServiceBase
 			//~: push execution transactional context
 			TxPoint.getInstance().setTxContext(tx);
 
-			executeTaskTx(request);
+			//!: actually execute
+			executeTaskDo(request);
 		}
 		catch(Throwable e)
 		{
@@ -176,10 +184,7 @@ public class ExecRunService extends ServiceBase
 		}
 	}
 
-	/**
-	 * This method is invoked within {@link ExecTxContext} context.
-	 */
-	protected void          executeTaskTx(ExecRequest request)
+	protected void          executeTaskDo(ExecRequest request)
 	  throws Throwable
 	{
 		Object object;
@@ -212,7 +217,7 @@ public class ExecRunService extends ServiceBase
 			), e );
 		}
 
-		//!: mark the request as executed
+		//~: mark the request as executed
 		request.setExecuted(true);
 		request.setResponseTime(new java.util.Date());
 
@@ -280,6 +285,9 @@ public class ExecRunService extends ServiceBase
 		//~: set the response
 		request.setResponse(rbytes);
 		request.setResponseTime(new java.util.Date());
+
+		//~: transaction number
+		TxPoint.txn(request);
 
 		//!: flush the session
 		txSession().flush();
