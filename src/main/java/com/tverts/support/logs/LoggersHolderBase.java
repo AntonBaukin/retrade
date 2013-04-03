@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import static com.tverts.support.SU.s2s;
 
+
 /**
  * Implements synchronous operations of a holder.
  *
@@ -24,6 +25,7 @@ public abstract class LoggersHolderBase
 		this.loggers = createLoggersMap();
 		this.mutex   = obtainStoreMutex();
 	}
+
 
 	/* public: LoggersHolder interface */
 
@@ -44,6 +46,7 @@ public abstract class LoggersHolderBase
 		}
 	}
 
+
 	/* protected: synchronous storing */
 
 	protected abstract Object
@@ -59,6 +62,7 @@ public abstract class LoggersHolderBase
 	{
 		return new Object();
 	}
+
 
 	/* protected: the store */
 

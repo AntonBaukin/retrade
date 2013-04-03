@@ -7,6 +7,7 @@ package com.tverts.support.logs;
  * The application is designed to have only these
  * levels.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public enum LogLevel
@@ -25,7 +26,7 @@ public enum LogLevel
 	},
 
 	/**
-	 * The application tells somthing important.
+	 * The application tells something important.
 	 */
 	WARN
 	{
@@ -71,6 +72,7 @@ public enum LogLevel
 		}
 	};
 
+
 	/* public: log level integer value */
 
 	/**
@@ -92,7 +94,7 @@ public enum LogLevel
 	 * The less value is the more details are printed.
 	 *
 	 * This value may be used as an index of an array
-	 * that maps the levels to somethig.
+	 * that maps the levels to something.
 	 */
 	public abstract int level();
 }

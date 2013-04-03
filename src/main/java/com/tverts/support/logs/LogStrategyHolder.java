@@ -9,17 +9,17 @@ package com.tverts.support.logs;
 public abstract class LogStrategyHolder
        extends        LogStrategyBase
 {
-	/* public: constructror */
+	/* public: constructor */
 
 	public LogStrategyHolder()
 	{
 		this.loggersHolder = createDefaultLoggersHolder();
 	}
 
+
 	/* public: LogStrategyHolder interface */
 
-	public LoggersHolder
-	            getLoggersHolder()
+	public LoggersHolder getLoggersHolder()
 	{
 		return loggersHolder;
 	}
@@ -32,6 +32,7 @@ public abstract class LogStrategyHolder
 		this.loggersHolder = loggersHolder;
 	}
 
+
 	/* protected: creating the default holder */
 
 	protected abstract LoggersHolder
@@ -39,6 +40,7 @@ public abstract class LogStrategyHolder
 
 	protected abstract Class
 	            getLoggersClass();
+
 
 	/* protected: LogMethodBase */
 
@@ -92,6 +94,7 @@ public abstract class LogStrategyHolder
 		protected abstract void
 		            logErr(L logger, CharSequence m, Throwable e);
 	}
+
 
 	/* private: the holder */
 

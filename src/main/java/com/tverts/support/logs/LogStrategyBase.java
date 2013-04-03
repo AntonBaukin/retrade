@@ -19,6 +19,7 @@ public abstract class LogStrategyBase
 			if(m == null) throw new IllegalStateException();
 	}
 
+
 	/* public: LogStrategy interface */
 
 	public boolean  isLevel(LogLevel l, String d)
@@ -47,6 +48,7 @@ public abstract class LogStrategyBase
 		  "logging level, but at least ERROR level must be allowed!");
 	}
 
+
 	/* protected: creating the strategies */
 
 	/**
@@ -55,6 +57,7 @@ public abstract class LogStrategyBase
 	 * entries are forbidden.
 	 */
 	protected abstract LogMethod[] createLogMethods();
+
 
 	/* protected: the strategies */
 

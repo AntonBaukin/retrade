@@ -7,6 +7,7 @@ package com.tverts.support.logs;
  * instance as Log4J library is the default
  * logging provider of the application.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public class LogPoint
@@ -24,23 +25,29 @@ public class LogPoint
 	protected LogPoint()
 	{}
 
+
 	/* public: LogPoint interface */
 
-	public LogStrategy getLogStrategy()
+	public LocalLogStrategy getLogStrategy()
 	{
-		return logStrategy;
+		return strategy;
 	}
 
-	public void        setLogStrategy(LogStrategy logStrategy)
+	/**
+	 * Sets the logging strategy given as the fallback
+	 * (default) strategy of {@link LocalLogStrategy}.
+	 */
+	public void setLogStrategy(LogStrategy ls)
 	{
-		if(logStrategy == null)
+		if(ls == null)
 			throw new IllegalArgumentException();
 
-		this.logStrategy = logStrategy;
+		this.strategy = new LocalLogStrategy(ls);
 	}
+
 
 	/* public: LogPoint interface */
 
-	private LogStrategy logStrategy =
-	  new LogStrategyLog4J();
+	private LocalLogStrategy strategy =
+	  new LocalLogStrategy(new LogStrategyLog4J());
 }
