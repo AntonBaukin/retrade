@@ -17,6 +17,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
+import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
 import org.hibernate.Session;
@@ -171,6 +172,16 @@ public class HiberSystem
 		return result;
 	}
 
+	public Object      unproxy(Object instance)
+	{
+		if(!(instance instanceof HibernateProxy))
+			return instance;
+
+		Hibernate.initialize(instance);
+		return ((HibernateProxy)instance).
+		  getHibernateLazyInitializer().getImplementation();
+	}
+
 	/**
 	 * Returns all the entities of the given exact class,
 	 * (but not it's subclasses!), that are stored in the
@@ -297,12 +308,11 @@ public class HiberSystem
 	  throws SQLException
 	{
 		ConnectionProvider cp = getConnectionProvider();
-
 		if(cp == null) throw new IllegalStateException();
 
 		Connection         co = cp.getConnection();
-
 		co.setAutoCommit(false);
+
 		return co;
 	}
 

@@ -5,8 +5,15 @@ package com.tverts.actions;
 import java.util.HashMap;
 import java.util.Map;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.system.HiberSystem;
+
+
 /**
- * COMMENT ActionTaskStruct
+ * Parameter for actions build system.
+ * Passed to action builders.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -21,6 +28,7 @@ public class ActionTaskStruct implements ActionTask
 
 		this.actionType = actionType;
 	}
+
 
 	/* public: ActionTask interface */
 
@@ -50,11 +58,12 @@ public class ActionTaskStruct implements ActionTask
 		return tx;
 	}
 
+
 	/* public: ActionTaskStruct interface */
 
 	public ActionTaskStruct setTarget(Object target)
 	{
-		this.target = target;
+		this.target = HiberSystem.getInstance().unproxy(target);
 		return this;
 	}
 
