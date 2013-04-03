@@ -21,8 +21,8 @@ import com.tverts.genesis.GenesisHiberPartBase;
 
 /* com.tverts: endure (core + persons) */
 
+import com.tverts.endure.core.Domain;
 import com.tverts.endure.person.Person;
-import static com.tverts.endure.core.GenTestDomain.testDomain;
 
 /* com.tverts: support */
 
@@ -95,7 +95,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 	{
 		StateComputer s = gs.computer;
 		Computer      c = bean(GetAuthLogin.class).
-		  getComputer(testDomain().getPrimaryKey(), s.code);
+		  getComputer(ctx.get(Domain.class).getPrimaryKey(), s.code);
 
 		if(c != null)
 		{
@@ -107,7 +107,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		s.computer = c = new Computer();
 
-		c.setDomain(testDomain());
+		c.setDomain(ctx.get(Domain.class));
 		c.setCode(s.code);
 		c.setName(s.name);
 		c.setComment(s.comment);
@@ -128,7 +128,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 		StatePerson s = gs.person;
 		Person      p = (gs.login == null)?(null):
 		  bean(GetAuthLogin.class).getPersonByLogin(
-		    testDomain().getPrimaryKey(), gs.login.code);
+		    ctx.get(Domain.class).getPrimaryKey(), gs.login.code);
 
 		if(p != null)
 		{
@@ -141,7 +141,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		s.person = p = new Person();
 
-		p.setDomain(testDomain());
+		p.setDomain(ctx.get(Domain.class));
 		p.setLastName(s.lastName);
 		p.setFirstName(s.firstName);
 		p.setMiddleName(s.middleName);
@@ -179,7 +179,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 			throw new RuntimeException(e);
 		}
 
-		l.setDomain(testDomain());
+		l.setDomain(ctx.get(Domain.class));
 		l.setCode(s.login.code);
 		l.setPasshash(p);
 

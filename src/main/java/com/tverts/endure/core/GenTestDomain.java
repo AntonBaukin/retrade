@@ -22,58 +22,45 @@ import com.tverts.genesis.GenesisHiberPartBase;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
+import com.tverts.support.SU;
 
 
 /**
- * Generates test domain with the name 'Test Domain'
- * and negative primary key. There is only one test
- * domain in the system.
+ * Generates test domain with the configured code
+ * and the name. System test domain (created by
+ * default by Genesis Service) has code 'Test'.
+ *
+ * Note that this genesis unit is always invoked
+ * the first. It saves the domain in the context
+ * as {@link GenCtx#set(Object)}.
+ *
  *
  * @author anton.baukin@gmail.com
  */
 public class GenTestDomain extends GenesisHiberPartBase
 {
-	/* public: Singleton */
+	/* public: configuration parameters */
 
-	public static GenTestDomain getInstance()
+	public String getDomainCode()
 	{
-		return INSTANCE;
+		return domainCode;
 	}
 
-	private static volatile GenTestDomain INSTANCE;
-
-	protected GenTestDomain()
+	public void   setDomainCode(String v)
 	{
-		synchronized(GenTestDomain.class)
-		{
-			if(INSTANCE != null)
-				throw new IllegalStateException();
-			INSTANCE = this;
-		}
+		if(SU.sXe(v)) throw new IllegalArgumentException();
+		this.domainCode = SU.s2s(v);
 	}
 
-
-	/* public: access test domain */
-
-	/**
-	 * Returns the primary test domain, or raises
-	 * {@link IllegalStateException} if it is not
-	 * created or discovered.
-	 */
-	public static Domain testDomain()
+	public String getDomainName()
 	{
-		Domain res = getInstance().getTestDomain();
-
-		if(res == null) throw new IllegalStateException(
-		  "Primary test Domain is not discovered or generated!"
-		);
-
-		return res;
+		return domainName;
 	}
 
-	public Domain        getTestDomain()
+	public void   setDomainName(String v)
 	{
-		return testDomain;
+		if(SU.sXe(v)) throw new IllegalArgumentException();
+		this.domainName = SU.s2s(v);
 	}
 
 
@@ -82,21 +69,21 @@ public class GenTestDomain extends GenesisHiberPartBase
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		//~: test (primary) domain
+		//~: find domain by the code
 		Domain d = findDomain(ctx);
 
 		if(d != null)
-			setTestDomain(d);
+			setTestDomain(ctx, d);
 		else
-			setTestDomain(createTestDomain(ctx));
+			setTestDomain(ctx, createTestDomain(ctx));
 	}
 
 
 	/* protected: test domain generation & verification */
 
-	protected void   setTestDomain(Domain testDomain)
+	protected void   setTestDomain(GenCtx ctx, Domain domain)
 	{
-		getInstance().testDomain = this.testDomain = testDomain;
+		ctx.set(domain);
 	}
 
 	protected Domain findDomain(GenCtx ctx)
@@ -111,16 +98,6 @@ public class GenTestDomain extends GenesisHiberPartBase
 		);
 
 		return d;
-	}
-
-	protected String getDomainCode()
-	{
-		return "Test";
-	}
-
-	protected String getDomainName()
-	{
-		return "Основной тестовый Домен";
 	}
 
 	protected Domain createTestDomain(GenCtx ctx)
@@ -148,7 +125,8 @@ public class GenTestDomain extends GenesisHiberPartBase
 	}
 
 
-	/* protected: test domain reference */
+	/* private: generation parameters */
 
-	private Domain testDomain;
+	private String domainCode;
+	private String domainName;
 }

@@ -25,17 +25,20 @@ import com.tverts.shunts.SelfShuntMethod;
 import com.tverts.shunts.SelfShuntUnit;
 import com.tverts.shunts.ShuntPlain;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
-/* com.tverts: endure */
+/* com.tverts: endure (core) */
 
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.core.Domain;
-import com.tverts.endure.core.GenTestDomain;
-
+import com.tverts.endure.core.GetDomain;
 import static com.tverts.endure.UnityTypes.unityType;
 
 
@@ -66,7 +69,8 @@ public class ShuntOrdering extends ShuntPlain
 	public void testBegin()
 	{
 		//~: access the test domain
-		Domain testDomain = GenTestDomain.testDomain();
+		//TODO: Self-Shunt on Test Domain
+		Domain testDomain = bean(GetDomain.class).getDomain("Test");
 		assertNotNull("Test Domain", testDomain);
 		orderOwner = testDomain.getUnity();
 

@@ -21,9 +21,9 @@ import com.tverts.system.tx.TxPoint;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.UnityType;
+import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.GetProps;
 import com.tverts.endure.core.Property;
-import static com.tverts.endure.core.GenTestDomain.testDomain;
 
 /* com.tverts: support */
 
@@ -112,7 +112,7 @@ public abstract class GenesisHiberPartBase
 
 		//~: access generation property
 		GetProps g = bean(GetProps.class);
-		Property p = g.goc(testDomain(), "Genesis", key);
+		Property p = g.goc(ctx.get(Domain.class), "Genesis", key);
 
 		//?: {there was generation for this day}
 		if(g.bool(p) != null)
@@ -152,7 +152,7 @@ public abstract class GenesisHiberPartBase
 
 		//~: access generation property
 		GetProps g = bean(GetProps.class);
-		Property p = g.goc(testDomain(), "Genesis", key);
+		Property p = g.goc(ctx.get(Domain.class), "Genesis", key);
 
 		ctx.set(key, true);  //<-- cache the result
 		g.set(p, true);      //<-- set the property

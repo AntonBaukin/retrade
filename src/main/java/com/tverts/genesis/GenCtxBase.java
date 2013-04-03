@@ -10,6 +10,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.hibery.system.HiberSystem;
 import org.hibernate.Session;
 
 /* com.tverts: system (tx) */
@@ -25,6 +26,13 @@ import static com.tverts.system.tx.TxPoint.txSession;
 public class GenCtxBase implements GenCtx
 {
 	/* public: constructor */
+
+	/**
+	 * Creates root genesis context.
+	 * Installed by Genesis Service.
+	 */
+	public GenCtxBase()
+	{}
 
 	public GenCtxBase(Genesis owner)
 	{
@@ -127,6 +135,31 @@ public class GenCtxBase implements GenCtx
 		if(v == null)
 			return params.remove(p);
 		return params.put(p, v);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T   get(Class<T> cls)
+	{
+		if(cls == null)
+			throw new IllegalArgumentException();
+		if(params == null)
+			return null;
+
+		Object res = params.get(cls);
+		if((res != null) && !cls.equals(res.getClass()))
+			throw new IllegalStateException();
+
+		return (T) res;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T   set(T obj)
+	{
+		if(obj == null)
+			throw new IllegalArgumentException();
+
+		Class cls = HiberSystem.getInstance().findActualClass(obj);
+		return (T) this.set(cls, obj);
 	}
 
 	public String  log()

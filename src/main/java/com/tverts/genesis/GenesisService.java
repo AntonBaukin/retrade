@@ -73,11 +73,12 @@ public class GenesisService extends ServiceBase
 		if(spheres == null) return;
 
 		Throwable error = null;
+		GenCtx    ctx   = new GenCtxBase();
 
 		LU.I(getLog(), logsig(), " starting genesis...");
 		for(GenesisSphere sphere : spheres.dereferObjects()) try
 		{
-			generate(sphere);
+			generate(sphere, ctx);
 		}
 		catch(BreakGenesis e)
 		{
@@ -93,11 +94,11 @@ public class GenesisService extends ServiceBase
 			  "Genesis failed! Service aborts generation!", error);
 	}
 
-	protected void generate(GenesisSphere sphere)
+	protected void generate(GenesisSphere sphere, GenCtx ctx)
 	{
 		try
 		{
-			sphere.run();
+			sphere.generate(ctx);
 		}
 		catch(Throwable e)
 		{

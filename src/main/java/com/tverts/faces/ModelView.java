@@ -28,7 +28,6 @@ import com.tverts.model.NoModelException;
 
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.GetDomain;
-import com.tverts.endure.core.GenTestDomain; //!: TEMP
 
 /* com.tverts: support */
 
@@ -65,11 +64,12 @@ public abstract class ModelView extends ViewWithModes
 	/**
 	 * Finds the domain the current request is for.
 	 *
-	 * TODO return non-test domain in model views!
+	 * TODO return not Test domain in model views!
 	 */
 	public Long        getDomainKey()
 	{
-		return GenTestDomain.testDomain().getPrimaryKey();
+		return bean(GetDomain.class).
+		  getDomain("Test").getPrimaryKey();
 	}
 
 	public Domain      loadDomain()

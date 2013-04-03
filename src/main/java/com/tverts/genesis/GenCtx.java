@@ -40,7 +40,9 @@ public interface GenCtx
 	 *
 	 * Note that the new context shares
 	 * the same parameters set and the
-	 * generator {@link #gen()}.
+	 * generator {@link #gen()}. This
+	 * allows to pass data between the
+	 * Genesis Spheres.
 	 */
 	public GenCtx  stack(Genesis owner);
 
@@ -61,10 +63,21 @@ public interface GenCtx
 	public <T> T   get(Object p, Class<T> cls);
 
 	/**
+	 * Returns instance of the class given.
+	 */
+	public <T> T   get(Class<T> cls);
+
+	/**
 	 * Rewrites the context parameter with
 	 * the new value returning the old one.
 	 */
 	public Object  set(Object p, Object v);
+
+	/**
+	 * Sets the object using it's class as the
+	 * key parameter. Returns old instance.
+	 */
+	public <T> T   set(T obj);
 
 	/**
 	 * Returns the default logging destination

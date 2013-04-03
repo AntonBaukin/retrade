@@ -34,7 +34,7 @@ import com.tverts.support.LU;
  */
 public class      GenesisSphere
        extends    GenesisBase
-       implements GenesisSphereReference, Runnable
+       implements GenesisSphereReference
 {
 	/* public: constructor */
 
@@ -69,29 +69,6 @@ public class      GenesisSphere
 		catch(GenesisError e)
 		{
 			throw e;
-		}
-	}
-
-
-	/* public: Runnable interface */
-
-	/**
-	 * Invokes all the genesis phases: condition
-	 * check, generation and the cleanup.
-	 *
-	 * Any exception raised within the task is thrown
-	 * out after the rollback task had been executed.
-	 */
-	public void run()
-	{
-		try
-		{
-			this.generate(null);
-		}
-		catch(GenesisError e)
-		{
-			throw new RuntimeException(String.format(
-			  "Unhandled error occured in Genesis %s!", logsig()), e);
 		}
 	}
 
