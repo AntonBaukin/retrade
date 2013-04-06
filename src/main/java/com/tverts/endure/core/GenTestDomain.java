@@ -19,6 +19,10 @@ import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
+/* com.tverts: objects */
+
+import com.tverts.objects.Param;
+
 /* com.tverts: support */
 
 import com.tverts.support.LU;
@@ -41,6 +45,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 {
 	/* public: configuration parameters */
 
+	@Param(required = true)
 	public String getDomainCode()
 	{
 		return domainCode;
@@ -52,6 +57,7 @@ public class GenTestDomain extends GenesisHiberPartBase
 		this.domainCode = SU.s2s(v);
 	}
 
+	@Param(required = true)
 	public String getDomainName()
 	{
 		return domainName;

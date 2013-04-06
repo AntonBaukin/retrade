@@ -1,11 +1,19 @@
 package com.tverts.genesis;
 
+/* standard Java classes */
+
+import java.util.ArrayList;
+
 /* com.tverts: system services */
 
 import com.tverts.system.zservices.Event;
 import com.tverts.system.zservices.ServiceBase;
 import com.tverts.system.zservices.events.SystemReady;
 import com.tverts.system.zservices.events.ServiceEventBase;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.ObjectParam;
 
 /* com.tverts: support */
 
@@ -96,13 +104,50 @@ public class GenesisService extends ServiceBase
 
 	protected void generate(GenesisSphere sphere, GenCtx ctx)
 	{
+		//!: clone the prototype sphere
+		GenesisSphere clone = sphere.clone();
+
+		//~: assign the parameters
+		assignParameters(clone);
+
+		//!: do generate
 		try
 		{
-			sphere.generate(ctx);
+			clone.generate(ctx);
 		}
 		catch(Throwable e)
 		{
-			handleGenesisError(sphere, e);
+			handleGenesisError(clone, e);
+		}
+	}
+
+	protected void assignParameters(GenesisSphere sphere)
+	{
+		ArrayList<ObjectParam> params =
+		  new ArrayList<ObjectParam>(16);
+
+		//~: collect the parameters
+		sphere.parameters(params);
+
+		//~: assign & log them
+		StringBuilder sb = new StringBuilder(64);
+		for(ObjectParam p : params)
+		{
+			//~: describe the parameter
+			sb.delete(0, sb.length());
+			sb.append(" [");
+
+			if(!p.isWrite())
+				sb.append("Read-Only ");
+			if(!p.isRead())
+				sb.append("Write-Only ");
+			if(p.isRequired())
+				sb.append("Required ");
+			sb.append("Parameter] ");
+
+			//~: log the value existing | assigned
+			LU.I(getLog(), logsig(), sb,
+			  p.getName(), " = [", p.getString(), "]");
 		}
 	}
 

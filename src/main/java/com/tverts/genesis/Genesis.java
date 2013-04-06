@@ -1,5 +1,14 @@
 package com.tverts.genesis;
 
+/* standard Java classes */
+
+import java.util.List;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.ObjectParam;
+
+
 /**
  * Genesis defines an abstraction that is intended
  * to generate something in the database in a more
@@ -43,4 +52,17 @@ public interface Genesis extends Cloneable
 	 * Tells what this genesis actually generates.
 	 */
 	public String  getAbout(String lang);
+
+	/**
+	 * Collects the parameters of this Genesis,
+	 * and aggregated in composites.
+	 *
+	 * Note that parameters call on an original
+	 * prototype Genesis will affect that prototype.
+	 * It is common to call it for read-only purposes.
+	 *
+	 * Call this method on a clone before invoking it
+	 * to assign (write) the parameters.
+	 */
+	public void    parameters(List<ObjectParam> params);
 }

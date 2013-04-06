@@ -42,7 +42,7 @@ import com.tverts.support.streams.BigDecimalXMLEncoderPersistenceDelegate;
  */
 public class OU
 {
-	/* public: runnable wrappers */
+	/* runnable wrappers */
 
 	public static Runnable unwrap(Runnable task)
 	{
@@ -67,7 +67,7 @@ public class OU
 	}
 
 
-	/* public: object clones */
+	/* object clones */
 
 	/**
 	 * Makes a shallow copy with standard
@@ -160,7 +160,7 @@ public class OU
 	}
 
 
-	/* public: factories and object access */
+	/* factories and object access */
 
 	public static <O> ObjectAccess<O>
 	                     permAcces(O ref)
@@ -169,11 +169,11 @@ public class OU
 	}
 
 
-	/* public: classes and interfaces */
+	/* classes and interfaces */
 
 	public static interface ClassPredicate
 	{
-		/* public: ClassPredicate interface */
+		/* ClassPredicate interface */
 
 		public boolean isThatClass(Class c);
 	}
@@ -269,7 +269,7 @@ public class OU
 	}
 
 
-	/* public: plain XML serialization */
+	/* plain XML serialization */
 
 	public static String  obj2xml(Object bean)
 	{
@@ -327,10 +327,7 @@ public class OU
 	}
 
 
-
-
-
-	/* public: class checks */
+	/* class checks */
 
 	/**
 	 * Asserts that that at least one of the given check

@@ -2,16 +2,28 @@ package com.tverts.genesis;
 
 /* standard Java classes */
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 /* Spring framework */
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-/* com.tverts: system tx */
+/* Hibernate Persistence Layer */
+
+import org.hibernate.Session;
+
+/* com.tverts: system (transactions) */
 
 import com.tverts.system.tx.TxPoint;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.ObjectParam;
+import com.tverts.objects.Param;
 
 /* com.tverts: support */
 
@@ -53,9 +65,16 @@ public class      GenesisSphere
 	 * Invokes all the {@link Genesis} units accessed
 	 * by the {@link GenesisReference} constructed with.
 	 */
-	public void generate(GenCtx ctx)
+	public void          generate(GenCtx ctx)
 	  throws GenesisError
 	{
+		//!: can't invoke on the prototype
+		if(this.objects == null)
+			throw new IllegalStateException(String.format(
+			  "Can't invoke Genesis Sphere [%s] as it is a prototype!",
+			  this.getName()
+			));
+
 		//~: nest the context
 		ctx = nestContext(ctx);
 
@@ -72,6 +91,82 @@ public class      GenesisSphere
 		}
 	}
 
+	public GenesisSphere clone()
+	{
+		GenesisSphere sphere = (GenesisSphere)super.clone();
+
+		//~: clear the references for the clone
+		sphere.reference = null;
+
+		//~: aggregated Genesis items
+		Genesis[] objects = this.objects;
+
+		//?: {this is a prototype}
+		if(this.reference != null)
+		{
+			List<Genesis> gens =
+			  this.reference.dereferObjects();
+
+			if(gens != null)
+				objects = gens.toArray(new Genesis[gens.size()]);
+		}
+
+		if(objects == null)
+			objects = new Genesis[0];
+
+		//~: clone the items
+		for(int i = 0;(i < objects.length);i++)
+			objects[i] = objects[i].clone();
+
+		//~: assign them to the result
+		sphere.objects = objects;
+
+		return sphere;
+	}
+
+	public void          parameters(List<ObjectParam> params)
+	{
+		//~: add this sphere own parameters
+		super.parameters(params);
+
+		List<Genesis> gens = null;
+
+		//?: {this is a clone}
+		if(this.objects != null)
+			gens = Arrays.asList(this.objects);
+		else if(this.reference != null)
+			gens = this.reference.dereferObjects();
+
+		if(gens == null) return;
+
+		//~: collect the parameters of the nested instances
+		ArrayList<ObjectParam> tmp = new ArrayList<ObjectParam>(16);
+		for(Genesis g : gens)
+		{
+			//~: collect the parameters
+			tmp.clear(); g.parameters(tmp);
+
+			//~: change the names
+			StringBuilder sb = new StringBuilder(32);
+			for(ObjectParam p : tmp)
+			{
+				sb.delete(0, sb.length());
+
+				if(g.getName() != null)
+					sb.append(g.getName());
+				else
+					sb.append('?').append(g.getClass().getSimpleName());
+
+				//~: prefix the name
+				sb.append(" : ").append(p.getName());
+				p.setName(sb.toString());
+			}
+
+			//~: add that parameters
+			params.addAll(tmp);
+		}
+	}
+
 
 	/* public: GenesisSphereReference interface */
 
@@ -83,6 +178,7 @@ public class      GenesisSphere
 
 	/* public: GenesisSphere (bean) interface */
 
+	@Param
 	public Long    getSeed()
 	{
 		return seed;
@@ -94,17 +190,19 @@ public class      GenesisSphere
 	}
 
 	/**
-	 * Explicitly tells Sphere not to create
-	 * own transaction. By default is false.
+	 * Tells this Genesis Sphere to create own
+	 * transaction even if an external exists.
+	 * By default is is false.
 	 */
-	public boolean isNoTx()
+	@Param
+	public boolean isOwnTx()
 	{
-		return noTx;
+		return ownTx;
 	}
 
-	public void    setNoTx(boolean noTx)
+	public void    setOwnTx(boolean ownTx)
 	{
-		this.noTx = noTx;
+		this.ownTx = ownTx;
 	}
 
 
@@ -127,27 +225,30 @@ public class      GenesisSphere
 	protected void     doGenDispTx(GenCtx ctx)
 	  throws GenesisError
 	{
-		if((ctx.getOuter() == null) && !isNoTx())
+		//?: {need to create own transaction}
+		if((ctx.getOuter() == null) || isOwnTx())
 			doGenTx(ctx);
 		else
 			doGen(ctx);
 	}
 
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	protected void     doGenTx(GenCtx ctx)
 	  throws GenesisError
 	{
-		//~: push default transaction context
+		//~: remember the external session
+		Session session = ctx.session();
+
+		//~: push default tx-context for this new transaction
 		TxPoint.getInstance().setTxContext();
 
 		try
 		{
 			//~: bind the session to the context
 			if(ctx instanceof GenCtxBase)
-				((GenCtxBase)ctx).setSession(TxPoint.getInstance().
-				  getTxContextStrict().getSessionFactory().getCurrentSession());
+				((GenCtxBase)ctx).setSession(TxPoint.txSession());
 
-			//~: check Hibernate sessions
+			//~: check Hibernate session
 			checkCtxSession(ctx);
 
 			//~: invoke the generation
@@ -155,24 +256,20 @@ public class      GenesisSphere
 		}
 		finally
 		{
-			//~: unbind the session from the context
-			if(ctx instanceof GenCtxBase)
-				((GenCtxBase)ctx).setSession(null);
-
 			//!: pop transaction context
 			TxPoint.getInstance().setTxContext(null);
+
+			//~: restore the original session of the context
+			if(ctx instanceof GenCtxBase)
+				((GenCtxBase)ctx).setSession(session);
 		}
 	}
 	
 	protected void     doGen(GenCtx ctx)
 	  throws GenesisError
 	{
-		//~: obtain genesis units
-		List<Genesis> gens = reference.dereferObjects();
-		if((gens == null) || gens.isEmpty()) return;
-
 		//~: invoke the genesis units
-		for(Genesis gen : gens) try
+		for(Genesis gen : this.objects) try
 		{
 			//!: clone the original (prototype) unit
 			gen = gen.clone();
@@ -272,14 +369,16 @@ public class      GenesisSphere
 		LU.E(log(ctx), e, logsig(), " error with ", logsig(g), "!");
 	}
 
-
-	/* private: genesis reference */
-
-	private GenesisReference reference;
-
-
 	/* private: sphere parameters */
 
 	private Long    seed;
-	private boolean noTx;
+	private boolean ownTx;
+
+	/* private: genesis reference */
+
+	//!: for the prototype only
+	private GenesisReference reference;
+
+	//!: for cloned sphere only
+	private Genesis[]        objects;
 }

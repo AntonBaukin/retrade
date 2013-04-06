@@ -1,5 +1,14 @@
 package com.tverts.genesis;
 
+/* standard Java classes */
+
+import java.util.List;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.ObjectParam;
+import com.tverts.objects.ObjectParams;
+
 /* com.tverts: support */
 
 import com.tverts.support.LO;
@@ -49,6 +58,29 @@ public abstract class GenesisBase
 		if(LO.LANG_LO.equals(lang) && !sXe(getAboutLo()))
 			return getAboutLo();
 		return getAboutEn();
+	}
+
+	public void      parameters(List<ObjectParam> params)
+	{
+		StringBuilder sb = new StringBuilder(32);
+		ObjectParam[] ps = ObjectParams.find(this);
+
+		for(ObjectParam p : ps)
+		{
+			sb.delete(0, sb.length());
+
+			if(getName() != null)
+				sb.append(getName());
+			else
+				sb.append('?').append(getClass().getSimpleName());
+
+			//~: assign property name
+			sb.append('.').append(p.getName());
+			p.setName(sb.toString());
+
+			//~: add the parameter
+			params.add(p);
+		}
 	}
 
 

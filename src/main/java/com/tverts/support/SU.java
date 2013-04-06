@@ -4,11 +4,15 @@ package com.tverts.support;
 
 import java.math.BigDecimal;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
@@ -717,6 +721,205 @@ public class SU
 		}
 	}
 
+
+	/* string to value translations */
+
+	public static Object  s2v(Class t, String s)
+	{
+		if(t == null) throw new IllegalArgumentException();
+		if(sXe(s))    return null;
+
+		S2V s2v = S2V_MAP.get(t);
+		if(s2v == null) throw new IllegalStateException(String.format(
+		  "Don't know how to convert to type [%s] string [%s]!",
+		  t.getName(), s
+		));
+
+		try
+		{
+			return s2v.s2v(t, s2s(s));
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static interface S2V
+	{
+		public Object s2v(Class t, String s)
+		  throws Exception;
+	}
+
+	public static final Map<Class, S2V> S2V_MAP;
+
+	private static final Object[] S2VS = new Object[]
+	{
+	  //strings
+	  CharSequence.class, String.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return s;
+		  }
+	  },
+
+	  //integers
+	  int.class, Integer.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return Integer.valueOf(s);
+		  }
+	  },
+
+	  //longs
+	  long.class, Long.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return Long.valueOf(s);
+		  }
+	  },
+
+	  //floats
+	  float.class, Float.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return Float.valueOf(s);
+		  }
+	  },
+
+	  //doubles
+	  double.class, Double.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return Double.valueOf(s);
+		  }
+	  },
+
+	  //boolean
+	  boolean.class, Boolean.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return Boolean.valueOf(s);
+		  }
+	  },
+
+	  //decimals
+	  BigDecimal.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return new BigDecimal(s);
+		  }
+	  },
+
+	  //big integers
+	  BigInteger.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return new BigInteger(s);
+		  }
+	  },
+
+	  //short integers
+	  short.class, Short.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return Short.valueOf(s);
+		  }
+	  },
+
+	  //bytes
+	  byte.class, Byte.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				return Byte.valueOf(s);
+		  }
+	  },
+
+	  //characters
+	  char.class, Character.class,
+
+	  new S2V()
+	  {
+		  public Object s2v(Class t, String s)
+		    throws Exception
+		  {
+				if(s.length() != 1)
+					throw new IllegalArgumentException(String.format(
+					  "String [%s] is too long to be character!", s
+					));
+				return s.charAt(0);
+		  }
+	  }
+	};
+
+	static
+	{
+		HashMap<Class, S2V> map =
+		  new HashMap<Class, S2V>(11);
+
+		ArrayList<Class>    cls =
+		  new ArrayList<Class>(2);
+
+		for(Object o : S2VS)
+			if(o instanceof Class)
+				cls.add((Class)o);
+			else if(o instanceof S2V)
+			{
+				if(cls.isEmpty())
+					throw new IllegalStateException();
+
+				for(Class c : cls)
+					map.put(c, (S2V)o);
+				cls.clear();
+			}
+			else
+				throw new IllegalStateException();
+
+		if(!cls.isEmpty())
+			throw new IllegalStateException();
+
+		S2V_MAP = Collections.unmodifiableMap(map);
+	}
 
 	/* private: helpers */
 
