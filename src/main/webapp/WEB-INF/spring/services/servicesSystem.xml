@@ -21,7 +21,7 @@
     +================================================-->
 
   <bean name  = 'servicesSystem'
-        class = 'com.tverts.system.zservices.ServicesSystem'>
+        class = 'com.tverts.system.services.ServicesSystem'>
 
     <property name = 'reference' ref = 'servicesList'/>
   </bean>
@@ -32,6 +32,6 @@
     +================================================-->
 
   <bean name  = 'zServicesBusListener'
-        class = 'com.tverts.system.zservices.queues.PlainEventsListenerBean'/>
+        class = 'com.tverts.system.services.queues.PlainEventsListenerBean'/>
 
 </beans>

@@ -1,4 +1,4 @@
-package com.tverts.system.zservices.queues;
+package com.tverts.system.services.queues;
 
 /* Java Messaging */
 
@@ -18,8 +18,8 @@ import static com.tverts.system.JTAPoint.jta;
 
 /* com.tverts: services */
 
-import com.tverts.system.zservices.Event;
-import com.tverts.system.zservices.ServiceMessenger;
+import com.tverts.system.services.Event;
+import com.tverts.system.services.ServiceMessenger;
 
 
 /**

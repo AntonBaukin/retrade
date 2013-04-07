@@ -1,4 +1,4 @@
-package com.tverts.system.zservices.events;
+package com.tverts.system.services.events;
 
 /**
  * This event is sent to the services when

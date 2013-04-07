@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: services */
 
-import com.tverts.system.zservices.Event;
-import com.tverts.system.zservices.ServiceBase;
+import com.tverts.system.services.Event;
+import com.tverts.system.services.ServiceBase;
 
 /* com.tverts: system (tx) */
 

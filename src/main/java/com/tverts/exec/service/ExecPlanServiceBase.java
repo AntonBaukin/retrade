@@ -2,10 +2,10 @@ package com.tverts.exec.service;
 
 /* com.tverts: services */
 
-import com.tverts.system.zservices.Event;
-import com.tverts.system.zservices.ServiceBase;
-import com.tverts.system.zservices.ServicesPoint;
-import com.tverts.system.zservices.events.SystemReady;
+import com.tverts.system.services.Event;
+import com.tverts.system.services.ServiceBase;
+import com.tverts.system.services.ServicesPoint;
+import com.tverts.system.services.events.SystemReady;
 
 
 /**

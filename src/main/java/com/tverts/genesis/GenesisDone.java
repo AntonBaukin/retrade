@@ -2,7 +2,7 @@ package com.tverts.genesis;
 
 /* com.tverts: system services */
 
-import com.tverts.system.zservices.events.ServiceEventBase;
+import com.tverts.system.services.events.ServiceEventBase;
 
 
 /**

@@ -2,8 +2,8 @@ package com.tverts.shunts.service;
 
 /* com.tverts: system services */
 
-import com.tverts.system.zservices.Event;
-import com.tverts.system.zservices.ServiceBase;
+import com.tverts.system.services.Event;
+import com.tverts.system.services.ServiceBase;
 
 /* com.tverts: genesis */
 

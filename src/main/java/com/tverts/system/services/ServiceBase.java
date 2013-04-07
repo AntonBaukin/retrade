@@ -1,4 +1,4 @@
-package com.tverts.system.zservices;
+package com.tverts.system.services;
 
 /* standard Java classes */
 
@@ -7,8 +7,8 @@ import java.util.List;
 
 /* com.tverts: system services (events) */
 
-import com.tverts.system.zservices.events.EventBase;
-import com.tverts.system.zservices.events.ServiceEventBase;
+import com.tverts.system.services.events.EventBase;
+import com.tverts.system.services.events.ServiceEventBase;
 
 /* com.tverts: support */
 

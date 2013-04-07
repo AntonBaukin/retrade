@@ -21,7 +21,7 @@
     +================================================-->
 
   <bean name  = 'servicesList'
-        class = 'com.tverts.system.zservices.ServicesList'>
+        class = 'com.tverts.system.services.ServicesList'>
     <property name = 'references'>
       <list>
         <ref bean = 'xrootServicesList'/>

@@ -1,4 +1,4 @@
-package com.tverts.system.zservices;
+package com.tverts.system.services;
 
 /**
  * Event that is sent to a {@link Service} instance.

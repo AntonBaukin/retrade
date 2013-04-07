@@ -1,4 +1,4 @@
-package com.tverts.system.zservices;
+package com.tverts.system.services;
 
 /**
  * Z-Services are system components that
@@ -18,7 +18,7 @@ package com.tverts.system.zservices;
  */
 public interface Service
 {
-	/* public: ZService interface */
+	/* public: Service interface */
 
 	/**
 	 * Returns application-unique name code

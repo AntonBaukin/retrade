@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 /* com.tverts: system services */
 
-import com.tverts.system.zservices.Event;
-import com.tverts.system.zservices.ServiceBase;
-import com.tverts.system.zservices.events.SystemReady;
-import com.tverts.system.zservices.events.ServiceEventBase;
+import com.tverts.system.services.Event;
+import com.tverts.system.services.ServiceBase;
+import com.tverts.system.services.events.SystemReady;
+import com.tverts.system.services.events.ServiceEventBase;
 
 /* com.tverts: objects */
 

@@ -1,4 +1,4 @@
-package com.tverts.system.zservices.queues;
+package com.tverts.system.services.queues;
 
 /* Java Messaging */
 

@@ -1,4 +1,4 @@
-package com.tverts.system.zservices;
+package com.tverts.system.services;
 
 /* Spring Framework */
 
@@ -10,8 +10,8 @@ import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: z-services */
 
-import com.tverts.system.zservices.events.EventBase;
-import com.tverts.system.zservices.events.SystemReady;
+import com.tverts.system.services.events.EventBase;
+import com.tverts.system.services.events.SystemReady;
 
 /* com.tverts: support (logging) */
 

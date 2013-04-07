@@ -6,8 +6,8 @@ import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 /* com.tverts: z-services */
 
-import com.tverts.system.zservices.ServicesPoint;
-import com.tverts.system.zservices.events.SystemReady;
+import com.tverts.system.services.ServicesPoint;
+import com.tverts.system.services.events.SystemReady;
 
 
 /**

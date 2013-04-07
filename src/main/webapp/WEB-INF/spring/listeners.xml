@@ -39,7 +39,7 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Initializes system z-services                             ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.system.zservices.InitServicesListener'/>
+        <bean class = 'com.tverts.system.services.InitServicesListener'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Last listener! System is ready                            ·

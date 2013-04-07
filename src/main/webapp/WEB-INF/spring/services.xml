@@ -13,8 +13,8 @@
   <import resource = 'services/servicesSystem.xml'/>
 
 
-  <bean name  = 'zServicesPoint' factory-method = 'getInstance'
-        class = 'com.tverts.system.zservices.ServicesPoint'>
+  <bean name  = "servicesPoint" factory-method = 'getInstance'
+        class = 'com.tverts.system.services.ServicesPoint'>
 
     <property name = 'system' ref = 'servicesSystem'/>
   </bean>

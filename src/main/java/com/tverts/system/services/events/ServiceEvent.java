@@ -1,8 +1,8 @@
-package com.tverts.system.zservices.events;
+package com.tverts.system.services.events;
 
 /* com.tverts: system services */
 
-import com.tverts.system.zservices.Event;
+import com.tverts.system.services.Event;
 
 /**
  * Event sent from a Z-Service. Stores the UID

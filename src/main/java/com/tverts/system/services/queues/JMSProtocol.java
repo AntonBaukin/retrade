@@ -1,4 +1,4 @@
-package com.tverts.system.zservices.queues;
+package com.tverts.system.services.queues;
 
 /* Java Messaging */
 
@@ -8,8 +8,8 @@ import javax.jms.Session;
 
 /* com.tverts: services */
 
-import com.tverts.system.zservices.DelayedEvent;
-import com.tverts.system.zservices.Event;
+import com.tverts.system.services.DelayedEvent;
+import com.tverts.system.services.Event;
 
 /* com.tverts: support */
 

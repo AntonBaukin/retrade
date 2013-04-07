@@ -1,8 +1,8 @@
-package com.tverts.system.zservices.events;
+package com.tverts.system.services.events;
 
 /* com.tverts: services */
 
-import com.tverts.system.zservices.Event;
+import com.tverts.system.services.Event;
 
 
 /**
