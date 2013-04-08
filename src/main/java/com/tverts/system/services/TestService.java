@@ -101,7 +101,7 @@ public class TestService extends ServiceBase
 	protected void serviceTest(TestEvent event)
 	{
 		LU.I(getLog(), "Test Service ", uid(), " got ",
-		  isBroadcasted(event)?("broadcast "):(""), "message: ",
+		  broadcasted(event)?("broadcast "):(""), "message: ",
 		  event.getMessage()
 		);
 

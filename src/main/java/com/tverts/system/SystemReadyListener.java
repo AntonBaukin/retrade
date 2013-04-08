@@ -6,6 +6,7 @@ import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 /* com.tverts: z-services */
 
+import com.tverts.system.services.MainService;
 import com.tverts.system.services.ServicesPoint;
 import com.tverts.system.services.events.SystemReady;
 
@@ -24,7 +25,8 @@ public class   SystemReadyListener
 
 	protected void init()
 	{
-		//~: send services notification
-		ServicesPoint.broadcast(new SystemReady());
+		//~: send notification to Main Service
+		ServicesPoint.send(
+		  MainService.NAME, new SystemReady());
 	}
 }

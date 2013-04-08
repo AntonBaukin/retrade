@@ -3,6 +3,12 @@
    xsi:schemaLocation = 'http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
+  <!--=================================================
+    =  The Main Service                               =
+    +================================================-->
+
+  <import resource = 'mainService.xml'/>
+
 
   <!--=================================================
     =  Services List of XRoot Module                  =
@@ -24,6 +30,7 @@
         class = 'com.tverts.system.services.ServicesList'>
     <property name = 'references'>
       <list>
+        <ref bean = 'mainService'/>
         <ref bean = 'xrootServicesList'/>
       </list>
     </property>

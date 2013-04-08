@@ -117,9 +117,14 @@ public abstract class ServiceBase
 		  ?(event.getEventType()):(event.getClass());
 	}
 
-	protected boolean  isBroadcasted(Event event)
+	protected boolean  broadcasted(Event event)
 	{
 		return SU.sXe(event.getService());
+	}
+
+	protected boolean  mine(Event event)
+	{
+		return this.uid().equals(event.getService());
 	}
 
 

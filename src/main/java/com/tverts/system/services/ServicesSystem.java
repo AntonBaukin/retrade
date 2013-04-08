@@ -45,6 +45,11 @@ public class ServicesSystem implements Servicer
 			//0: build the services map
 			this.services = buildServicesMap();
 
+			//?: {there is no Main Service registered}
+			if(!this.services.containsKey(MainService.NAME))
+				throw new IllegalStateException(
+				  "No Main Service is registered in the system!");
+
 			//1: order the services
 			this.ordered  = orderServices();
 
@@ -194,6 +199,10 @@ public class ServicesSystem implements Servicer
 		{
 			getServicesMap().get(suid).service(event);
 		}
+		catch(BreakBroadcast e)
+		{
+			return;
+		}
 		catch(Throwable e)
 		{
 			logError(suid, e, event);
@@ -321,10 +330,10 @@ public class ServicesSystem implements Servicer
 		}
 
 		//~: sort by the dependencies
-		ArrayList<String> sorded =
+		ArrayList<String> sorted =
 		  new ArrayList<String>(closures.keySet());
 
-		Collections.sort(sorded, new Comparator<String>()
+		Collections.sort(sorted, new Comparator<String>()
 		{
 			public int compare(String suidL, String suidR)
 			{
@@ -341,8 +350,11 @@ public class ServicesSystem implements Servicer
 			}
 		});
 
+		//~: Main Service always goes the first
+		sorted.remove(MainService.NAME);
+		result.add(0, MainService.NAME);
 
-		result.addAll(sorded);
+		result.addAll(sorted);
 		return result.toArray(new String[result.size()]);
 	}
 

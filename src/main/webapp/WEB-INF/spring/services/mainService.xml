@@ -1,0 +1,28 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  The Main Service                               =
+    +================================================-->
+
+  <bean name  = 'mainService'
+        class = 'com.tverts.system.services.MainService'>
+    <property name = 'reference'>
+      <bean class = 'com.tverts.system.services.events.EventRunList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Reacts on the System Start
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.system.services.events.SystemReadyRun'/>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+</beans>

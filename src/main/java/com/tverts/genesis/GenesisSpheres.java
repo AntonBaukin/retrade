@@ -6,7 +6,7 @@ import com.tverts.objects.ObjectsRedirector;
 
 /**
  * Collects root {@link GenesisReference}s to create
- * a list of {@link GenesisSphere} instabces.
+ * a list of {@link GenesisSphere} instances.
  *
  * @author anton.baukin@gmail.com
  */
