@@ -153,9 +153,9 @@ public class      GenesisSphere
 				sb.delete(0, sb.length());
 
 				if(g.getName() != null)
-					sb.append(g.getName());
+					sb.append(this.getName());
 				else
-					sb.append('?').append(g.getClass().getSimpleName());
+					sb.append('?').append(this.getClass().getSimpleName());
 
 				//~: prefix the name
 				sb.append(" : ").append(p.getName());

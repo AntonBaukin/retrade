@@ -4,13 +4,6 @@
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
   <!--=================================================
-    =  Sphere of Genesis Tests                        =
-    +================================================-->
-
-  <import resource = 'genesisTests.xml'/>
-
-
-  <!--=================================================
     =  Genesis Spheres of XRoot module                =
     +================================================-->
 
@@ -34,13 +27,6 @@
 
     <property name = 'references'>
       <list>
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Tests of the Genesis                                      ·
-         ·                                                           ·
-         · WARNING: Shunts Service must be active!                   ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'genesisSphereTests'/>
 
         <ref bean = 'xrootGenesisSpheres'/>
 

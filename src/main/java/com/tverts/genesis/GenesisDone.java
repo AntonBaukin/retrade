@@ -15,4 +15,22 @@ import com.tverts.system.services.events.ServiceEventBase;
 public class GenesisDone extends ServiceEventBase
 {
 	public static final long serialVersionUID = 0L;
+
+
+	/* public: GenesisDone (bean) interface */
+
+	public GenesisEvent getEvent()
+	{
+		return event;
+	}
+
+	public void setEvent(GenesisEvent event)
+	{
+		this.event = event;
+	}
+
+
+	/* the original genesis event */
+
+	private GenesisEvent event;
 }

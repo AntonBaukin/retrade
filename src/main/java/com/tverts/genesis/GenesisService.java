@@ -3,12 +3,14 @@ package com.tverts.genesis;
 /* standard Java classes */
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /* com.tverts: system services */
 
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
-import com.tverts.system.services.events.SystemReady;
 import com.tverts.system.services.events.ServiceEventBase;
 
 /* com.tverts: objects */
@@ -23,19 +25,30 @@ import com.tverts.support.SU;
 
 
 /**
- * When Genesis Service receives {@link SystemReady}
- * event it sends GenesisEvent to itself. Upon that
- * event it collects all the {@link GenesisSphere}s
- * referenced and sequentially runs them.
+ * When Genesis Service receives {@link GenesisEvent}
+ * event, it collects all the {@link GenesisSphere}s
+ * referenced, select those specified in the event,
+ * and runs them.
  *
  * When all the Genesis Spheres are done, the service
- * broadcasts {@link GenesisDone} event.
+ * notifies MainService with {@link GenesisDone} event.
  *
  *
  * @author anton.baukin@gmail.com
  */
 public class GenesisService extends ServiceBase
 {
+	/* Genesis Break Error */
+
+	public static class BreakGenesis extends RuntimeException
+	{
+		public BreakGenesis(Throwable cause)
+		{
+			super(cause);
+		}
+	}
+
+
 	/* public: GenesisService (bean) interface */
 
 	public GenesisSphereReference getGenesisSpheres()
@@ -53,11 +66,8 @@ public class GenesisService extends ServiceBase
 
 	public void service(Event event)
 	{
-		if(event instanceof SystemReady)
-			scheduler();
-
-		if(event instanceof StartGenesis)
-			generate();
+		if(event instanceof GenesisEvent)
+			generate((GenesisEvent) event);
 	}
 
 
@@ -68,25 +78,28 @@ public class GenesisService extends ServiceBase
 		public static final long serialVersionUID = 0L;
 	}
 
-	protected void scheduler()
+	protected void generate(GenesisEvent event)
 	{
-		self(new StartGenesis());
+		//~: select the spheres
+		List<GenesisSphere> spheres =
+		  new ArrayList<GenesisSphere>(4);
+		selectSpheres(event, spheres);
 
-		LU.I(getLog(), logsig(), " scheduled genesis...");
-	}
+		//?: {has no spheres selected}
+		if(spheres.isEmpty())
+			throw new IllegalStateException(
+			  "Genesis Event has no Spheres named!");
 
-	protected void generate()
-	{
-		GenesisSphereReference spheres = getGenesisSpheres();
-		if(spheres == null) return;
+		LU.I(getLog(), logsig(), " starting genesis for Spheres ",
+		  SU.scat("; ", event.getSpheres()));
 
+		//~: invoke the spheres
 		Throwable error = null;
 		GenCtx    ctx   = new GenCtxBase();
 
-		LU.I(getLog(), logsig(), " starting genesis...");
-		for(GenesisSphere sphere : spheres.dereferObjects()) try
+		for(GenesisSphere sphere : spheres) try
 		{
-			generate(sphere, ctx);
+			generate(event, sphere, ctx);
 		}
 		catch(BreakGenesis e)
 		{
@@ -95,20 +108,76 @@ public class GenesisService extends ServiceBase
 			break;
 		}
 
+		//?: {has no error}
 		if(error == null)
-			success();
+			success(event);
 		else
 			throw new RuntimeException(
 			  "Genesis failed! Service aborts generation!", error);
 	}
 
-	protected void generate(GenesisSphere sphere, GenCtx ctx)
+	protected void selectSpheres(GenesisEvent event, List<GenesisSphere> spheres)
+	{
+		GenesisSphereReference ref = getGenesisSpheres();
+		List<GenesisSphere>    gss = (spheres == null)?(null):
+		  ref.dereferObjects();
+
+		//?: {no spheres configured}
+		if((gss == null) || gss.isEmpty())
+			throw new IllegalStateException(logsig() +
+			  " has no Spheres configured!");
+
+		//~: map the spheres by the names
+		Map<String, GenesisSphere> smap =
+		  new HashMap<String, GenesisSphere>(
+		    event.getSpheres().size());
+
+		for(GenesisSphere gs : gss)
+		{
+			//?: {has no name}
+			if(SU.sXe(gs.getName()))
+				throw new IllegalStateException(String.format(
+				  "%s: Genesis Sphere of class '%s' has Name undefined!",
+				  logsig(), gs.getName()
+				));
+
+			//?: {already has this sphere}
+			if(smap.containsKey(SU.s2s(gs.getName())))
+				throw new IllegalStateException(String.format(
+				  "%s already has Genesis Sphere named [%s]!",
+				  logsig(), SU.s2s(gs.getName())
+				));
+
+			//~: put
+			smap.put(SU.s2s(gs.getName()), gs);
+		}
+
+		//~: select the spheres
+		for(String name : event.getSpheres())
+		{
+			//?: {the name is empty}
+			if(SU.sXe(name))
+				throw new IllegalStateException();
+
+			//?: {has no such name}
+			if(!smap.containsKey(SU.s2s(name)))
+				throw new IllegalStateException(String.format(
+				  "%s has no Genesis Sphere named [%s]!",
+				  logsig(), SU.s2s(name)
+				));
+
+			//!: add  to the result
+			spheres.add(smap.get(SU.s2s(name)));
+		}
+	}
+
+	protected void generate(GenesisEvent event, GenesisSphere sphere, GenCtx ctx)
 	{
 		//!: clone the prototype sphere
 		GenesisSphere clone = sphere.clone();
 
 		//~: assign the parameters
-		assignParameters(clone);
+		assignParameters(event, clone);
 
 		//!: do generate
 		try
@@ -121,10 +190,19 @@ public class GenesisService extends ServiceBase
 		}
 	}
 
-	protected void assignParameters(GenesisSphere sphere)
+	protected void assignParameters(GenesisEvent event, GenesisSphere sphere)
 	{
 		ArrayList<ObjectParam> params =
 		  new ArrayList<ObjectParam>(16);
+
+		//~: trim the event parameters
+		{
+			Map<String, String> ps = new HashMap<String, String>(1);
+			for(String pn : event.getParams().keySet())
+				if(!pn.equals(SU.s2s(pn)))
+					ps.put(SU.s2s(pn), event.getParams().get(pn));
+			event.getParams().putAll(ps);
+		}
 
 		//~: collect the parameters
 		sphere.parameters(params);
@@ -145,24 +223,31 @@ public class GenesisService extends ServiceBase
 				sb.append("Required ");
 			sb.append("Parameter] ");
 
+			//?: {has this parameter in the event} assign it
+			if(event.getParams().containsKey(p.getName()))
+				p.setString(event.getParams().get(p.getName()));
+
 			//~: log the value existing | assigned
 			LU.I(getLog(), logsig(), sb,
 			  p.getName(), " = [", p.getString(), "]");
+
+			//?: {required parameter has no value}
+			if(p.isRequired() && (p.getValue() == null))
+				throw new IllegalStateException(String.format(
+				  "Required parameter [%s] has no value!", p.getName()
+				));
 		}
 	}
 
-	protected void success()
+	protected void success(GenesisEvent event)
 	{
 		LU.I(getLog(), logsig(), " genesis successfully completed!");
-		broadcast(new GenesisDone());
-	}
 
-	public static class BreakGenesis extends RuntimeException
-	{
-		public BreakGenesis(Throwable cause)
-		{
-			super(cause);
-		}
+		//~: create & send the event
+		GenesisDone done = new GenesisDone();
+		done.setEvent(event);
+
+		main(done);
 	}
 
 	protected void handleGenesisError(GenesisSphere sphere, Throwable e)

@@ -95,6 +95,15 @@ public abstract class ServiceBase
 	}
 
 	/**
+	 * Send the event to Main service.
+	 */
+	protected void     main(EventBase event)
+	{
+		event.setService(MainService.NAME);
+		send(event);
+	}
+
+	/**
 	 * Sends event to this service (self-call).
 	 */
 	protected void     self(EventBase event)

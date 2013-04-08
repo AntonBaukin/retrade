@@ -75,7 +75,7 @@ public abstract class GenesisBase
 				sb.append('?').append(getClass().getSimpleName());
 
 			//~: assign property name
-			sb.append('.').append(p.getName());
+			sb.append(" (").append(p.getName()).append(')');
 			p.setName(sb.toString());
 
 			//~: add the parameter

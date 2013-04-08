@@ -100,8 +100,8 @@ public class ServicesSystem implements Servicer
 
 				if(service == null)
 					LU.E(getLog(), eventTypeLog(event),
-					  " refers unknown service '%s'!",
-					  event.getService());
+					  " refers unknown service [",
+					  event.getService(), "]!");
 
 				//~: invoke the service
 				if(service != null)
