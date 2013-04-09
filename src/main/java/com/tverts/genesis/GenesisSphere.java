@@ -2,7 +2,6 @@ package com.tverts.genesis;
 
 /* standard Java classes */
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -79,16 +78,9 @@ public class      GenesisSphere
 		ctx = nestContext(ctx);
 
 		//~: generate in the own context
-		try
-		{
-			logGenerateBefore(ctx);
-			doGenDispTx(ctx);
-			logGenerateSuccess(ctx);
-		}
-		catch(GenesisError e)
-		{
-			throw e;
-		}
+		logGenerateBefore(ctx);
+		doGenDispTx(ctx);
+		logGenerateSuccess(ctx);
 	}
 
 	public GenesisSphere clone()
@@ -137,34 +129,9 @@ public class      GenesisSphere
 		else if(this.reference != null)
 			gens = this.reference.dereferObjects();
 
-		if(gens == null) return;
-
 		//~: collect the parameters of the nested instances
-		ArrayList<ObjectParam> tmp = new ArrayList<ObjectParam>(16);
-		for(Genesis g : gens)
-		{
-			//~: collect the parameters
-			tmp.clear(); g.parameters(tmp);
-
-			//~: change the names
-			StringBuilder sb = new StringBuilder(32);
-			for(ObjectParam p : tmp)
-			{
-				sb.delete(0, sb.length());
-
-				if(g.getName() != null)
-					sb.append(this.getName());
-				else
-					sb.append('?').append(this.getClass().getSimpleName());
-
-				//~: prefix the name
-				sb.append(" : ").append(p.getName());
-				p.setName(sb.toString());
-			}
-
-			//~: add that parameters
-			params.addAll(tmp);
-		}
+		if(gens != null) for(Genesis g : gens)
+			addNestedParameters(params, g);
 	}
 
 

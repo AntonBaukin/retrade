@@ -5,11 +5,18 @@ package com.tverts.genesis;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 
 /* Spring framework */
 
 import org.springframework.transaction.annotation.Transactional;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.ObjectParam;
+import com.tverts.objects.ObjectParams;
+import com.tverts.objects.Param;
 
 /* com.tverts: support */
 
@@ -93,6 +100,38 @@ public class DaysGenDisp extends GenesisPartBase
 		}
 	}
 
+	public void parameters(List<ObjectParam> params)
+	{
+		super.parameters(params);
+
+		//~: collect the entries parameters
+		for(Entry e : getEntries())
+		{
+			//~: add entry parameters
+			ObjectParam[] eps = ObjectParams.find(e);
+			StringBuilder sb  = new StringBuilder(32);
+			for(ObjectParam ep : eps)
+			{
+				sb.delete(0, sb.length());
+
+				//~: dispatcher (as a genesis) name
+				sb.append(getGenesisParamPrefix(this));
+				sb.append(" : [Entry] ");
+
+				//~: prefix the name
+				sb.append(getGenesisParamPrefix(e.getGenesis()));
+				sb.append(" (").append(ep.getName()).append(')');
+
+				//!: add entry parameter
+				ep.setName(sb.toString());
+				params.add(ep);
+			}
+
+			//~: add genesis parameters
+			addNestedParameters(params, e.getGenesis());
+		}
+	}
+
 
 	/* public: DaysGenDisp (bean) interface */
 
@@ -106,6 +145,7 @@ public class DaysGenDisp extends GenesisPartBase
 		this.entries = entries;
 	}
 
+	@Param
 	public int      getDays()
 	{
 		return days;
@@ -116,6 +156,7 @@ public class DaysGenDisp extends GenesisPartBase
 		this.days = days;
 	}
 
+	@Param
 	public int      getObjMin()
 	{
 		return objMin;
@@ -126,6 +167,7 @@ public class DaysGenDisp extends GenesisPartBase
 		this.objMin = objMin;
 	}
 
+	@Param
 	public int      getObjMax()
 	{
 		return objMax;
@@ -142,6 +184,7 @@ public class DaysGenDisp extends GenesisPartBase
 	 * allows to insert data for long terms without
 	 * overloading the database write buffer.
 	 */
+	@Param
 	public boolean  isDayTx()
 	{
 		return dayTx;
@@ -169,6 +212,7 @@ public class DaysGenDisp extends GenesisPartBase
 			this.genesis = genesis;
 		}
 
+		@Param
 		public int     getWeight()
 		{
 			return weight;

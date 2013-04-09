@@ -2,6 +2,8 @@ package com.tverts.genesis;
 
 /* standard Java classes */
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /* com.tverts: objects */
@@ -62,25 +64,8 @@ public abstract class GenesisBase
 
 	public void      parameters(List<ObjectParam> params)
 	{
-		StringBuilder sb = new StringBuilder(32);
-		ObjectParam[] ps = ObjectParams.find(this);
-
-		for(ObjectParam p : ps)
-		{
-			sb.delete(0, sb.length());
-
-			if(getName() != null)
-				sb.append(getName());
-			else
-				sb.append('?').append(getClass().getSimpleName());
-
-			//~: assign property name
-			sb.append(" (").append(p.getName()).append(')');
-			p.setName(sb.toString());
-
-			//~: add the parameter
-			params.add(p);
-		}
+		addOwnParameters(params,
+		  Arrays.asList(ObjectParams.find(this)));
 	}
 
 
@@ -112,6 +97,62 @@ public abstract class GenesisBase
 	public void      setAboutLo(String aboutLo)
 	{
 		this.aboutLo = s2s(aboutLo);
+	}
+
+
+	/* protected: support for parameters */
+
+	protected void      addOwnParameters
+	  (List<ObjectParam> dest, List<ObjectParam> params)
+	{
+		StringBuilder sb = new StringBuilder(32);
+
+		for(ObjectParam p : params)
+		{
+			sb.delete(0, sb.length());
+
+			//~: this genesis name
+			sb.append(getGenesisParamPrefix(this));
+
+			//~: assign property name
+			sb.append(" (").append(p.getName()).append(')');
+			p.setName(sb.toString());
+
+			//~: add the parameter
+			dest.add(p);
+		}
+	}
+
+	protected void      addNestedParameters
+	  (List<ObjectParam> dest, Genesis g)
+	{
+		List<ObjectParam> tmp = new ArrayList<ObjectParam>(4);
+		StringBuilder     sb  = new StringBuilder(32);
+
+		//~: collect the parameters
+		g.parameters(tmp);
+
+		//~: change the names
+		for(ObjectParam p : tmp)
+		{
+			sb.delete(0, sb.length());
+
+			//~: this genesis name
+			sb.append(getGenesisParamPrefix(this));
+
+			//~: prefix the name
+			sb.append(" : ").append(p.getName());
+			p.setName(sb.toString());
+		}
+
+		//~: add that parameters
+		dest.addAll(tmp);
+	}
+
+	protected String    getGenesisParamPrefix(Genesis g)
+	{
+		return (g.getName() != null)?(g.getName()):
+		  String.format("?%s", g.getClass().getSimpleName());
 	}
 
 
