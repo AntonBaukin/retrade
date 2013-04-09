@@ -11,7 +11,6 @@ import java.util.Map;
 
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
-import com.tverts.system.services.events.ServiceEventBase;
 
 /* com.tverts: objects */
 
@@ -72,11 +71,6 @@ public class GenesisService extends ServiceBase
 
 
 	/* protected: service work steps */
-
-	public static class StartGenesis extends ServiceEventBase
-	{
-		public static final long serialVersionUID = 0L;
-	}
 
 	protected void generate(GenesisEvent event)
 	{

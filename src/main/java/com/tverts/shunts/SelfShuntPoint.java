@@ -2,7 +2,6 @@ package com.tverts.shunts;
 
 /* com.tverts: shunts (protocol) */
 
-import com.tverts.shunts.protocol.SeShProtocolFinish;
 import com.tverts.shunts.protocol.SeShProtocolWebMulti;
 import com.tverts.shunts.protocol.SeShRequestInitial;
 
@@ -75,16 +74,6 @@ public class SelfShuntPoint
 	{
 		service().executeProtocol(
 		  new SeShProtocolWebMulti(request));
-	}
-
-	public void executeSelfShuntWeb
-	  (SeShRequestInitial request, SeShProtocolFinish finish)
-	{
-		SeShProtocolWebMulti protocol =
-		  new SeShProtocolWebMulti(request);
-
-		protocol.setProtocolFinish(finish);
-		service().executeProtocol(protocol);
 	}
 
 

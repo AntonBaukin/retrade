@@ -278,20 +278,6 @@ public class SelfShuntService extends ServiceBase
 				if(this.closed) report.setSystemError(e);
 			}
 
-			//?: {hadn't opened the protocol} quit now
-			if(!opened) try
-			{
-				logProtocolFinishBefore(report);
-				protocol.finishProtocol(report);
-				logProtocolFinishSuccess(report);
-				return;
-			}
-			catch(Throwable e)
-			{
-				logProtocolFinishError(e);
-				return;
-			}
-
 			//~: do the protocol cycle
 			while(!this.closed) try
 			{
@@ -329,18 +315,6 @@ public class SelfShuntService extends ServiceBase
 			catch(Throwable e)
 			{
 				report.setSystemError(e);
-			}
-
-			//!: finish the protocol
-			try
-			{
-				logProtocolFinishBefore(report);
-				protocol.finishProtocol(report);
-				logProtocolFinishSuccess(report);
-			}
-			catch(Throwable e)
-			{
-				logProtocolFinishError(e);
 			}
 		}
 
@@ -432,28 +406,6 @@ public class SelfShuntService extends ServiceBase
 		{
 			LU.E(getLog(), e, logsig(),
 			  " got error while closing the shunt protocol!");
-		}
-
-		protected void logProtocolFinishBefore(SelfShuntReport report)
-		{
-			if(!LU.isT(getLog())) return;
-
-			LU.T(getLog(), logsig(),
-			  " is about to finish the shunt protocol...");
-		}
-
-		protected void logProtocolFinishSuccess(SelfShuntReport report)
-		{
-			if(!LU.isT(getLog())) return;
-
-			LU.D(getLog(), logsig(),
-			  ": the shunt protocol was finished successfully!");
-		}
-
-		protected void logProtocolFinishError(Throwable e)
-		{
-			LU.E(getLog(), e, logsig(),
-			 " got error while finishing the shunt protocol!");
 		}
 
 		/* protected: the protocol */

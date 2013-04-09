@@ -125,7 +125,7 @@ public abstract class SelfShuntsSetBase
 
 		//get original names
 		for(int i = 0;(i < shunts.size());i++)
-			s2n.put(i, shunts.get(i).getShuntUnitName());
+			s2n.put(i, shunts.get(i).getName());
 
 		//map this names to the number of occasions
 		for(String name : s2n.values())

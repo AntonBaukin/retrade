@@ -18,13 +18,16 @@ import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
 
+
 /**
- * Some general issues of shunt protocol.
+ * Some general issues of Shunt Protocol.
  *
  * The implementation is not coupled with
  * the actual method of invoking the shunts.
  *
- * Two methods are expected: HTTP and JMS.
+ * Two methods are expected to implement:
+ * HTTP and JMS.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -36,11 +39,11 @@ public abstract class SeShProtocolBase
 	/**
 	 * Means that the server is not available
 	 * by the TCP ports provided by the config.
-	 *
 	 */
 	public static class SeShConnectionFailed
 	       extends      SeShProtocolError
 	{}
+
 
 	/**
 	 * General failure when invoking HTTP request
@@ -49,6 +52,8 @@ public abstract class SeShProtocolBase
 	public static class SeShServletFailure
 	       extends      SeShProtocolError
 	{
+		/* public: constructors */
+
 		public SeShServletFailure(String message)
 		{
 			super(message);
@@ -59,6 +64,7 @@ public abstract class SeShProtocolBase
 			super(message, cause);
 		}
 	}
+
 
 	/**
 	 * Denotes a system error on the self shunting
@@ -75,6 +81,7 @@ public abstract class SeShProtocolBase
 			this.response = response;
 		}
 
+
 		/* public: SeShSystemFailure interface */
 
 		public SeShResponse getResponse()
@@ -82,7 +89,8 @@ public abstract class SeShProtocolBase
 			return response;
 		}
 
-		/* private: the request */
+
+		/* private: the response */
 
 		private SeShResponse response;
 	}
@@ -96,32 +104,12 @@ public abstract class SeShProtocolBase
 	}
 
 
-	/* public: SeShProtocolBase interface */
-
-	public SeShProtocolFinish
-	            getProtocolFinish()
-	{
-		return protocolFinish;
-	}
-
-	public void setProtocolFinish(SeShProtocolFinish protocolFinish)
-	{
-		this.protocolFinish = protocolFinish;
-	}
-
-
 	/* public: protocol interface */
 
 	public SelfShuntReport closeProtocol()
 	  throws SeShProtocolError, InterruptedException
 	{
 		return createShuntReport();
-	}
-
-	public void            finishProtocol(SelfShuntReport report)
-	{
-		if(getProtocolFinish() != null)
-			getProtocolFinish().finishProtocol(report);
 	}
 
 	public Throwable       getSystemError()
@@ -294,8 +282,4 @@ public abstract class SeShProtocolBase
 	 * remembered while executing the protocol.
 	 */
 	protected Throwable                       systemError;
-
-	/* private: finish strategy */
-
-	private SeShProtocolFinish                protocolFinish;
 }

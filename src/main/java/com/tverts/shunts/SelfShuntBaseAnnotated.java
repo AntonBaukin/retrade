@@ -27,13 +27,13 @@ public abstract class SelfShuntBaseAnnotated
 {
 	/* public: SelfShunt interface */
 
-	public String   getShuntUnitName()
+	public String getName()
 	{
 		SelfShuntUnit  su = atShuntUnit();
 
 		if((su != null) && !sXe(su.value()))
 			return s2s(su.value());
-		return super.getShuntUnitName();
+		return super.getName();
 	}
 
 	public String[] getShuntGroups()

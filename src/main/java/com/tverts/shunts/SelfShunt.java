@@ -1,7 +1,7 @@
 package com.tverts.shunts;
 
 /**
- * Marks test to be a self-shunts test. Such tests
+ * Marks test to be a Self-Shunt test. Such tests
  * are run on the system activation after all
  * subsystems and services are activated.
  *
@@ -13,6 +13,7 @@ package com.tverts.shunts;
  * to be thread-safe. They are not reused. The are cloned
  * before invoking. If the class is a Serializable, deep
  * clone via serialization would be done.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -30,14 +31,19 @@ public interface SelfShunt extends Cloneable
 	 * Note that this name has no direct relation with
 	 * Spring Beans names.
 	 */
-	public String   getShuntUnitName();
+	public String    getName();
+
+	public SelfShunt clone();
 
 	/**
 	 * Names the shunt groups this unit belongs to.
 	 * The order of the groups has no effect.
 	 * The names are case sensitive.
 	 */
-	public String[] getShuntGroups();
+	public String[]  getShuntGroups();
 
-	public void     runShunt(SelfShuntUnitReport report);
+	/**
+	 * Invoked on the cloned instance of the unit.
+	 */
+	public void      shunt(SelfShuntCtx ctx);
 }

@@ -3,6 +3,7 @@ package com.tverts.shunts.service;
 /* com.tverts: shunts, shunt protocol */
 
 import com.tverts.shunts.SelfShunt;
+import com.tverts.shunts.SelfShuntCtx;
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntUnitReport;
 
@@ -84,7 +85,11 @@ public abstract class SeShExecutor
 
 		try
 		{
-			shunt.runShunt(res.getReport());
+			SelfShuntCtx ctx = new SelfShuntCtx(
+			  null, res.getReport(), null, false
+			);
+
+			shunt.shunt(ctx);
 		}
 		catch(Throwable e)
 		{
@@ -111,7 +116,7 @@ public abstract class SeShExecutor
 	 * Handles unexpected execution error, not that is detected
 	 * in the shunt unit's procedures itself (assertions).
 	 *
-	 * This implementation allows to continue shunting reraising
+	 * This implementation allows to continue shunting re-raising
 	 * the exception given.
 	 */
 	protected SeShResponse          handleExecError

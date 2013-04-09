@@ -4,10 +4,11 @@ package com.tverts.shunts.protocol;
 
 import com.tverts.shunts.SelfShuntReport;
 
+
 /**
  * Self shunting protocol abstracts the tasks
  * of sending Self Shunt Requests to the server
- * (mean this server) and collecting the responses.
+ * (this server) and collecting the responses.
  *
  * The transport of and conversation state of
  * invoking the shunts sequence are aggregated
@@ -16,6 +17,7 @@ import com.tverts.shunts.SelfShuntReport;
  * Protocol is a stateful object. It is not designed
  * to be thread save. It must be run within a single
  * thread only.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -30,7 +32,7 @@ public interface SeShProtocol
 	 * The first (initial) request is made when
 	 * opening the protocol.
 	 *
-	 * Only the protocol invocating thread may
+	 * Only the protocol processing thread may
 	 * call this method.
 	 */
 	public void            openProtocol()
@@ -44,7 +46,7 @@ public interface SeShProtocol
 	 * may be either a system error, a critical
 	 * shunt error, or just finishing the shunting.
 	 *
-	 * Only the protocol invocating thread may
+	 * Only the protocol processing thread may
 	 * call this method.
 	 */
 	public boolean         sendNextRequest()
@@ -54,37 +56,15 @@ public interface SeShProtocol
 	 * Closes the conversation returning the
 	 * accumulated reports of the invocation.
 	 *
-	 * Only the protocol invocating thread may
+	 * Only the protocol processing thread may
 	 * call this method.
 	 */
 	public SelfShuntReport closeProtocol()
 	  throws SeShProtocolError, InterruptedException;
 
 	/**
-	 * This method is always invoked when processing
-	 * the protocol dependless of whether is was
-	 * successfully opened and (or) closed or not.
-	 * It is done after {@link #closeProtocol()} when
-	 * it is opened, or after {@link #openProtocol()}
-	 * having error raised.
-	 *
-	 * The report argument is always defined. It has
-	 * the shunt report when the protocol was closed,
-	 * and it has only the system error value otherwise.
-	 *
-	 * This method is primary indended to notify the
-	 * components of the system waiting the shunts
-	 * results to come. This call may resume the
-	 * threads waiting.
-	 */
-	public void            finishProtocol(SelfShuntReport report);
-
-	/**
 	 * Interrupts the activity of the protocol.
 	 * Drives no effect on a protocol already closed.
-	 *
-	 * This call may be done only from a thread being
-	 * NOT a thread invocating the protocol.
 	 */
 	public void            interruptProtocol()
 	  throws SeShProtocolError;

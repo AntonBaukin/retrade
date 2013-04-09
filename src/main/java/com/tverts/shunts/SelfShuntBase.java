@@ -46,7 +46,7 @@ public abstract class SelfShuntBase
 {
 	/* public: SelfShunt interface */
 
-	public String     getShuntUnitName()
+	public String getName()
 	{
 		return sLo(getTarget().getClass().getSimpleName());
 	}
@@ -63,14 +63,14 @@ public abstract class SelfShuntBase
 		return EMPTY_GROUPS;
 	}
 
-	public void       runShunt(SelfShuntUnitReport report)
+	public void shunt(SelfShuntCtx ctx)
 	{
 		try
 		{
-			initUnitReport(report);
+			initUnitReport(ctx.getReport());
 			initShuntEnvironment();
 
-			report.setSuccess(true);
+			ctx.getReport().setSuccess(true);
 
 			for(Method m : collectMethods())
 			{
@@ -80,7 +80,7 @@ public abstract class SelfShuntBase
 				//1: do before tasks
 				if(!beforeMethod(m, mr))
 					continue;
-				report.getTaskReports().add(mr);
+				ctx.getReport().getTaskReports().add(mr);
 
 				//2: invoke the method
 				callMethod(m, mr);
@@ -92,23 +92,23 @@ public abstract class SelfShuntBase
 					//  one methods shunt fails, but this failure
 					//  may be not so critical to stop shunting.
 
-					report.setSuccess(false);
+					ctx.getReport().setSuccess(false);
 
 					//?: {is not a critical error} continue shunting
 					if(!mr.isCritical())
 						continue;
 
-					report.setCritical(true);
-					report.setError(mr.getError());
+					ctx.getReport().setCritical(true);
+					ctx.getReport().setError(mr.getError());
 					break;
 				}
 			}
 		}
 		catch(Throwable e)
 		{
-			report.setSuccess(false);
-			report.setCritical(true); //<-- system errors are critical
-			report.setError(e);
+			ctx.getReport().setSuccess(false);
+			ctx.getReport().setCritical(true); //<-- system errors are critical
+			ctx.getReport().setError(e);
 		}
 		finally
 		{
@@ -118,19 +118,21 @@ public abstract class SelfShuntBase
 			}
 			catch(Throwable e)
 			{
-				if(report.getError() == null)
+				if(ctx.getReport().getError() == null)
 				{
-					report.setSuccess(false);
-					report.setError(e);
+					ctx.getReport().setSuccess(false);
+					ctx.getReport().setError(e);
 				}
 			}
 		}
 
-		report.setEndTime(System.currentTimeMillis());
+		ctx.getReport().setEndTime(
+		  System.currentTimeMillis());
 
 		//!: check whether to rollback
-		inspectUnitRollback(report);
+		inspectUnitRollback(ctx.getReport());
 	}
+
 
 	/* public: SelfShuntBase interface */
 
@@ -170,7 +172,7 @@ public abstract class SelfShuntBase
 	{
 		report.setRunTime(System.currentTimeMillis());
 		report.setUnitClass(getTarget().getClass());
-		report.setUnitName(getShuntUnitName());
+		report.setUnitName(getName());
 	}
 
 	/**
