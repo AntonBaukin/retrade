@@ -10,6 +10,7 @@ package com.tverts.shunts.protocol;
  * object always comes as the result of the
  * call.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public interface SeShRequest

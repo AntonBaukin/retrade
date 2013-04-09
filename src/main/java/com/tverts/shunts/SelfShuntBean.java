@@ -3,18 +3,21 @@ package com.tverts.shunts;
 /* standard Java classes */
 
 import java.lang.reflect.Method;
-
 import java.util.Collections;
 import java.util.List;
 
-/* com.tverts: spring, support */
+/* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
+
+/* com.tverts: spring */
+
 import static com.tverts.support.SU.s2s;
+
 
 /**
  * Allows to refer by name a Spring bean to invoke
- * as the target of shunt unit. This class is for
+ * as the target of Shunt Unit. This class is for
  * prototype beans specially: after each method
  * invoked, the reference is cleared, and then
  * obtained again for the next shunt method call.
@@ -25,6 +28,7 @@ import static com.tverts.support.SU.s2s;
  * to name it in Spring, you may consider
  * {@link SelfShuntTarget} instead of this class.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public class      SelfShuntBean
@@ -33,13 +37,13 @@ public class      SelfShuntBean
 {
 	/* public: SelfShuntReference interface */
 
-	public List<SelfShunt>
-	               dereferObjects()
+	public List<SelfShunt> dereferObjects()
 	{
 		return Collections.<SelfShunt>singletonList(this);
 	}
 
-	/* public: SelfShuntBean interface */
+
+	/* public: SelfShuntBean (bean) interface */
 
 	/**
 	 * Defines the name of Spring bean to target.
@@ -74,6 +78,7 @@ public class      SelfShuntBean
 		this.singleInstance = singleInstance;
 	}
 
+
 	/* protected: SelfShuntBase interface */
 
 	protected Object  getTarget()
@@ -92,6 +97,7 @@ public class      SelfShuntBean
 		clearActualTarget(true);
 		super.freeShuntEnvironment();
 	}
+
 
 	/* protected: actual targeting */
 
@@ -123,10 +129,12 @@ public class      SelfShuntBean
 			this.actualTarget = null;
 	}
 
+
 	/* private: bean reference */
 
 	private String  beanName;
 	private Boolean singleInstance;
+
 
 	/* private: invocation runtime  */
 

@@ -22,8 +22,9 @@ public interface SelfShunt extends Cloneable
 	/* public: SelfShunt interface */
 
 	/**
-	 * Returns the name of the shunt. This name may be
-	 * not a unique within the system, but is better to be.
+	 * Returns the name of the shunt. It must be unique
+	 * within the system when the shunt is configured
+	 * by the parameters.
 	 *
 	 * Basic implementation returns the simple name of the
 	 * shunt unit class (with first letter lower-cased).
@@ -33,14 +34,14 @@ public interface SelfShunt extends Cloneable
 	 */
 	public String    getName();
 
-	public SelfShunt clone();
-
 	/**
 	 * Names the shunt groups this unit belongs to.
 	 * The order of the groups has no effect.
 	 * The names are case sensitive.
 	 */
-	public String[]  getShuntGroups();
+	public String[]  getGroups();
+
+	public SelfShunt clone();
 
 	/**
 	 * Invoked on the cloned instance of the unit.

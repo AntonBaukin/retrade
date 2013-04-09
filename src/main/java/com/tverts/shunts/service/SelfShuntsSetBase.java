@@ -49,7 +49,7 @@ public abstract class SelfShuntsSetBase
 		for(Map.Entry<String, SelfShunt> se : getShuntsNames().entrySet())
 		{
 			//get the groups of the shunt
-			String[] seg = se.getValue().getShuntGroups();
+			String[] seg = se.getValue().getGroups();
 			if((seg == null) || (seg.length == 0)) continue;
 
 			for(String g : seg) if(ges.contains(g))

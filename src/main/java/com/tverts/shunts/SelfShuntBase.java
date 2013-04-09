@@ -16,6 +16,7 @@ import com.tverts.system.tx.TxPoint;
 
 import static com.tverts.support.EX.e2en;
 import static com.tverts.support.EX.e2lo;
+import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sLo;
 
 
@@ -46,32 +47,54 @@ public abstract class SelfShuntBase
 {
 	/* public: SelfShunt interface */
 
-	public String getName()
+	public String    getName()
 	{
-		return sLo(getTarget().getClass().getSimpleName());
+		return (this.name != null)?(this.name):(getNameDefault());
 	}
 
-	protected static final String[] EMPTY_GROUPS =
-	  new String[0];
+	/**
+	 * The Self-Shunt Unit name to configure via Spring.
+	 */
+	public void      setName(String name)
+	{
+		this.name = s2s(name);
+	}
 
 	/**
 	 * This default implementation returns an empty
 	 * array of group names.
 	 */
-	public String[]   getShuntGroups()
+	public String[]  getGroups()
 	{
 		return EMPTY_GROUPS;
 	}
 
-	public void shunt(SelfShuntCtx ctx)
+	public SelfShunt clone()
 	{
 		try
 		{
+			return (SelfShuntBase)super.clone();
+		}
+		catch(CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void      shunt(SelfShuntCtx ctx)
+	{
+		try
+		{
+			//~: init the report
 			initUnitReport(ctx.getReport());
+
+			//~: init the environment
 			initShuntEnvironment();
 
+			//~: set the default success status
 			ctx.getReport().setSuccess(true);
 
+			//c: for all shunt methods
 			for(Method m : collectMethods())
 			{
 				//0: create the report & read the annotation
@@ -79,7 +102,9 @@ public abstract class SelfShuntBase
 
 				//1: do before tasks
 				if(!beforeMethod(m, mr))
-					continue;
+					continue; //<-- this method must be skipped
+
+				//~: add to the tasks report
 				ctx.getReport().getTaskReports().add(mr);
 
 				//2: invoke the method
@@ -89,7 +114,7 @@ public abstract class SelfShuntBase
 				if(!afterMethod(m, mr))
 				{
 					//HINT: we have no total success if at least
-					//  one methods shunt fails, but this failure
+					//  one shunt methods fails, but this failure
 					//  may be not so critical to stop shunting.
 
 					ctx.getReport().setSuccess(false);
@@ -98,14 +123,17 @@ public abstract class SelfShuntBase
 					if(!mr.isCritical())
 						continue;
 
+					//!: mark critical error
 					ctx.getReport().setCritical(true);
 					ctx.getReport().setError(mr.getError());
+
 					break;
 				}
 			}
 		}
 		catch(Throwable e)
 		{
+			//~: set shunt system internal error
 			ctx.getReport().setSuccess(false);
 			ctx.getReport().setCritical(true); //<-- system errors are critical
 			ctx.getReport().setError(e);
@@ -126,6 +154,7 @@ public abstract class SelfShuntBase
 			}
 		}
 
+		//~: mark shunt end timestamp
 		ctx.getReport().setEndTime(
 		  System.currentTimeMillis());
 
@@ -140,6 +169,9 @@ public abstract class SelfShuntBase
 	 * Tells that the transactions this shunt unit
 	 * was participated must not be committed, and
 	 * they must be marked for rollback only.
+	 *
+	 * This flag has meaning only when the Shunt
+	 * Context is not read-only.
 	 */
 	public boolean    isRollbackOnly()
 	{
@@ -152,27 +184,85 @@ public abstract class SelfShuntBase
 	}
 
 
-	/* public: Cloneable interface */
+	/* protected: basic implementation */
 
-	public SelfShuntBase clone()
+	/**
+	 * Returns the default name of the Unit
+	 * when no distinct name is configured.
+	 */
+	protected String  getNameDefault()
 	{
-		try
-		{
-			return (SelfShuntBase)super.clone();
-		}
-		catch(CloneNotSupportedException e)
-		{
-			throw new RuntimeException(e);
-		}
+		return sLo(getTarget().getClass().getSimpleName());
 	}
+
 
 	/* protected: shunt unit invocation */
 
 	protected void    initUnitReport(SelfShuntUnitReport report)
 	{
+		//~: timestamp
 		report.setRunTime(System.currentTimeMillis());
+
+		//~: shunt class name
 		report.setUnitClass(getTarget().getClass());
+
+		//~: the shunt name
 		report.setUnitName(getName());
+	}
+
+	protected void    initShuntEnvironment()
+	  throws Exception
+	{}
+
+	protected void    freeShuntEnvironment()
+	{}
+
+	protected void    inspectUnitRollback(SelfShuntUnitReport report)
+	{
+		//?: {critically failed the shunt | rollback only} set rollback flag
+		if((!report.isSuccess() && report.isCritical()) || isRollbackOnly())
+			doMarkRollback();
+	}
+
+	protected void    doMarkRollback()
+	{
+		TxPoint.txContext().setRollbackOnly();
+	}
+
+
+	/* protected: shunt methods discovery */
+
+	/**
+	 * This method collects all shunt methods.
+	 * The result is used to create a list.
+	 */
+	protected abstract Collection<Method> findMethods();
+
+	/**
+	 * Defines the order to call the shunt methods.
+	 */
+	protected abstract void sortMethods(ArrayList<Method> methods);
+
+	protected List<Method>  collectMethods()
+	{
+		ArrayList<Method> res =
+		  new ArrayList<Method>(findMethods());
+
+		sortMethods(res);
+		return res;
+	}
+
+
+	/* protected: shunt methods invocation */
+
+	/**
+	 * Performs tasks before the method invocation.
+	 * Tells whether the method must be invoked.
+	 */
+	protected boolean beforeMethod(Method m, SelfShuntTaskReport report)
+	  throws Exception
+	{
+		return true;
 	}
 
 	/**
@@ -200,62 +290,6 @@ public abstract class SelfShuntBase
 		return r;
 	}
 
-	protected void    initShuntEnvironment()
-	  throws Exception
-	{}
-
-	protected void    freeShuntEnvironment()
-	{}
-
-	protected void    inspectUnitRollback(SelfShuntUnitReport report)
-	{
-		//?: {critically failed the shunt | rollback only} set rollback flag
-		if((!report.isSuccess() && report.isCritical()) || isRollbackOnly())
-			doMarkRollback();
-	}
-
-	protected void    doMarkRollback()
-	{
-		TxPoint.txContext().setRollbackOnly();
-	}
-
-	/* protected: shunt methods discovery */
-
-	/**
-	 * This method collects all shunt methods.
-	 * The result is used to create a list.
-	 */
-	protected abstract Collection<Method>
-	                  findMethods();
-
-	/**
-	 * Defines the order to call the shunt methods.
-	 */
-	protected abstract void
-	                  sortMethods(ArrayList<Method> methods);
-
-	protected List<Method>
-	                  collectMethods()
-	{
-		ArrayList<Method> res = new ArrayList<Method>(
-		  findMethods());
-
-		sortMethods(res);
-		return res;
-	}
-
-	/* protected: shunt methods invocation */
-
-	/**
-	 * Performs tasks before the method invocation.
-	 * Tells whether the method must be invoked.
-	 */
-	protected boolean beforeMethod(Method m, SelfShuntTaskReport report)
-	  throws Exception
-	{
-		return true;
-	}
-
 	/**
 	 * Calls the method on the {@link #getTarget()}.
 	 */
@@ -263,9 +297,10 @@ public abstract class SelfShuntBase
 	{
 		Throwable error = null;
 
-		//invoke the test method
+		//~: invoke the test method
 		try
 		{
+			//~: mark the task (method) run time
 			report.setRunTime(System.currentTimeMillis());
 
 			//!: invoke the method on the target
@@ -276,6 +311,7 @@ public abstract class SelfShuntBase
 			error = e;
 		}
 
+		//~: mark the task (method) finish time
 		report.setEndTime(System.currentTimeMillis());
 
 		//?: {has no error}
@@ -319,7 +355,18 @@ public abstract class SelfShuntBase
 	}
 
 
+	/* private: the name of the shunt */
+
+	private String  name;
+
+
 	/* private: the state of the shunt */
 
 	private boolean rollbackOnly;
+
+
+	/* private: misc */
+
+	protected static final String[] EMPTY_GROUPS =
+	  new String[0];
 }

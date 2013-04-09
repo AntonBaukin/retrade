@@ -28,6 +28,7 @@ import static com.tverts.support.OU.cloneBest;
  * implementations to free shared resources defining
  * {@link #freeShuntEnvironment()}.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public class      SelfShuntTarget
@@ -40,6 +41,7 @@ public class      SelfShuntTarget
 	{
 		return Collections.<SelfShunt>singletonList(this);
 	}
+
 
 	/* public: Cloneable interface */
 
@@ -61,6 +63,7 @@ public class      SelfShuntTarget
 		return res;
 	}
 
+
 	/* public: SelfShuntTarget interface */
 
 	public Object getTarget()
@@ -76,16 +79,22 @@ public class      SelfShuntTarget
 	public void   setTarget(Object target)
 	{
 		if(target == null)
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(String.format(
+			  "Self Shunt Target of Unit [%s] is not defined!", getName()
+			));
 
 		this.target = target;
 
+		//?: {has no annotation}
 		if(atShuntUnit() == null)
 			throw new IllegalArgumentException(String.format(
-			  "SelfShuntTarget can't be created for the class '%s'" +
-			  "that is not annotated width @SelfShuntUnit!",
-			  target.getClass().getName()));
+			  "Self Shunt Target of Unit [%s] can't be created for " +
+			  "class '%s' as it's not annotated width @SelfShuntUnit!",
+
+			  getName(), target.getClass().getName()
+			));
 	}
+
 
 	/* private: the target */
 

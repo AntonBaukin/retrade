@@ -15,10 +15,12 @@ import static com.tverts.support.SU.a2a;
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sXe;
 
+
 /**
- * Based on {@link SelfShuntBase}, this class extends it
- * adding support for auto discovering the shunt methods
- * searching the {@link SelfShuntMethod} annotated methods.
+ * This class extends {@link SelfShuntBase} adding support
+ * for auto discovering the shunt methods searching the
+ * {@link SelfShuntMethod} annotated methods.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -27,22 +29,26 @@ public abstract class SelfShuntBaseAnnotated
 {
 	/* public: SelfShunt interface */
 
-	public String getName()
-	{
-		SelfShuntUnit  su = atShuntUnit();
-
-		if((su != null) && !sXe(su.value()))
-			return s2s(su.value());
-		return super.getName();
-	}
-
-	public String[] getShuntGroups()
+	public String[]  getGroups()
 	{
 		SelfShuntGroups sg = atShuntGroups();
 		return (sg != null)?(a2a(sg.value())):(EMPTY_GROUPS);
 	}
 
-	/* protected: annotation support */
+
+	/* protected: basic implementation */
+
+	protected String getNameDefault()
+	{
+		SelfShuntUnit  su = atShuntUnit();
+
+		if((su != null) && !sXe(su.value()))
+			return s2s(su.value());
+		return super.getNameDefault();
+	}
+
+
+	/* protected: shunt unit invocation */
 
 	protected void  initUnitReport(SelfShuntUnitReport report)
 	{
@@ -50,40 +56,24 @@ public abstract class SelfShuntBaseAnnotated
 
 		SelfShuntDescr sd = atShuntDescription();
 
+		//~: unit description (English) by the annotation
 		if((sd != null) && !sXe(sd.value()))
 			report.setDescriptionEn(s2s(sd.value()));
 
+		//~: unit description (local) by the annotation
 		if((sd != null) && !sXe(sd.value()))
 			report.setDescriptionLo(s2s(sd.lo()));
 	}
 
-	protected SelfShuntTaskReport
-	                createReport(Method m)
-	{
-		SelfShuntTaskReport r = super.createReport(m);
-		SelfShuntMethod     a = atMethod(m);
 
-		if(a != null)
-			r.setCritical(a.critical());
+	/* protected: shunt methods discovery */
 
-		if((a != null) && !sXe(a.name()))
-			r.setTaskName(s2s(a.name()));
-
-		if((a != null) && !sXe(a.descrEn()))
-			r.setDescriptionEn(s2s(a.descrEn()));
-
-		if((a != null) && !sXe(a.descrLo()))
-			r.setDescriptionLo(s2s(a.descrLo()));
-
-		return r;
-	}
-
-	protected Collection<Method>
-	                findMethods()
+	protected Collection<Method> findMethods()
 	{
 		Collection<Method> r = new ArrayList<Method>(4);
 		Class<?>           T = getTarget().getClass();
 
+		//c: for all methods of the target class
 		for(Method m : T.getMethods())
 		{
 			SelfShuntMethod a = atMethod(m);
@@ -101,16 +91,43 @@ public abstract class SelfShuntBaseAnnotated
 		return r;
 	}
 
-	protected void  sortMethods(ArrayList<Method> methods)
+	protected void               sortMethods(ArrayList<Method> methods)
 	{
 		Collections.sort(methods, getMethodsComparator());
 	}
 
-	protected MethodsComparator
-	                getMethodsComparator()
+	protected MethodsComparator  getMethodsComparator()
 	{
 		return new MethodsComparator();
 	}
+
+
+	/* protected: shunt methods invocation */
+
+	protected SelfShuntTaskReport createReport(Method m)
+	{
+		SelfShuntTaskReport r = super.createReport(m);
+		SelfShuntMethod     a = atMethod(m);
+
+		//~: critical flag
+		if(a != null)
+			r.setCritical(a.critical());
+
+		//~: task name (overwrites the method name)
+		if((a != null) && !sXe(a.name()))
+			r.setTaskName(s2s(a.name()));
+
+		//~: task (method) description (English) by the annotation
+		if((a != null) && !sXe(a.descrEn()))
+			r.setDescriptionEn(s2s(a.descrEn()));
+
+		//~: task (method) description (local) by the annotation
+		if((a != null) && !sXe(a.descrLo()))
+			r.setDescriptionLo(s2s(a.descrLo()));
+
+		return r;
+	}
+
 
 	/* protected: annotations handling */
 
@@ -161,10 +178,11 @@ public abstract class SelfShuntBaseAnnotated
 		}
 	}
 
-	/* protected: methods comparator */
 
-	protected static class MethodsComparator
-	          implements   Comparator<Method>
+	/* public: methods comparator */
+
+	public static class MethodsComparator
+	       implements   Comparator<Method>
 	{
 		public int compare(Method m1, Method m2)
 		{
