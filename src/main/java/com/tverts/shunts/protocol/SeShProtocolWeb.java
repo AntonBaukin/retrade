@@ -11,8 +11,8 @@ package com.tverts.shunts.protocol;
  *
  * @author anton.baukin@gmail.com
  */
-public final class SeShProtocolWeb
-       extends     SeShProtocolWebBase
+public class   SeShProtocolWeb
+       extends SeShProtocolWebBase
 {
 	/* public: constructor */
 

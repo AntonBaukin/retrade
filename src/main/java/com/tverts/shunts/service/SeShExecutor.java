@@ -35,6 +35,10 @@ public abstract class SeShExecutor
 
 	public SeShResponse handleShuntRequest(SeShRequest request)
 	{
+		//?: {this request is not known}
+		if(!isKnownRequest(request))
+			return null;
+
 		Object shuntKey = request.getSelfShuntKey();
 
 		//?: {the key is not defined}

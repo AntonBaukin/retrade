@@ -1,15 +1,11 @@
 package com.tverts.shunts;
 
-/* com.tverts: shunts (protocol) */
-
-import com.tverts.shunts.protocol.SeShProtocolWeb;
-import com.tverts.shunts.protocol.SeShRequestInitial;
-
 /* com.tverts: shunts (service) */
 
 import com.tverts.shunts.service.SelfShuntService;
 import com.tverts.shunts.service.SelfShuntsSet;
 import com.tverts.shunts.service.SelfShuntsRefsSet;
+
 
 /**
  * Stores shared properties of the
@@ -57,49 +53,18 @@ public class SelfShuntPoint
 	  "com.tverts.shunts.system";
 
 
-	/* public: Self Shunt Facade */
-
-	public SelfShuntService service()
-	  throws IllegalStateException
-	{
-		SelfShuntService service = getService();
-
-		if(service == null)throw new IllegalStateException(
-		  "Self-Shunt Service is not installed!");
-
-		return service;
-	}
-
-	public void executeSelfShuntWeb(SeShRequestInitial request)
-	{
-		service().executeProtocol(
-		  new SeShProtocolWeb(request));
-	}
-
-
 	/* public: access Self Shunts properties */
 
 	/**
-	 * The primary Self Shunt Service used in the system.
-	 * This service is used when placing the Self Shunt
-	 * Units via this point.
+	 * Globally assigned set of all the Self-Shunts
+	 * written for the system.
 	 */
-	public SelfShuntService getService()
-	{
-		return service;
-	}
-
-	public void             setService(SelfShuntService service)
-	{
-		this.service = service;
-	}
-
-	public SelfShuntsSet    getShuntsSet()
+	public SelfShuntsSet getShuntsSet()
 	{
 		return shuntsSet;
 	}
 
-	public void             setShuntsSet(SelfShuntsSet shuntsSet)
+	public void setShuntsSet(SelfShuntsSet shuntsSet)
 	{
 		if(shuntsSet == null)
 			throw new IllegalArgumentException();
@@ -107,13 +72,8 @@ public class SelfShuntPoint
 	}
 
 
-	/* private: primary Self Shunt Service reference */
-
-	private SelfShuntService service;
-
-
 	/* private: self shunts properties */
 
-	private SelfShuntsSet    shuntsSet =
+	private SelfShuntsSet shuntsSet =
 	  new SelfShuntsRefsSet();
 }

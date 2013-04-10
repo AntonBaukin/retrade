@@ -1,22 +1,29 @@
 package com.tverts.shunts.service;
 
+/* standard Java classes */
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 /* com.tverts: system services */
 
-import com.tverts.shunts.protocol.SeShResponseBase;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
-
-/* com.tverts: genesis */
-
-import com.tverts.genesis.GenesisDone;
+import com.tverts.system.services.Servicer;
 
 /* com.tverts: self-shunts (core, protocol, reports) */
 
+import com.tverts.shunts.SelfShunt;
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntReport;
 import com.tverts.shunts.protocol.SeShProtocol;
+import com.tverts.shunts.protocol.SeShProtocolWeb;
 import com.tverts.shunts.protocol.SeShRequest;
+import com.tverts.shunts.protocol.SeShRequestGroups;
 import com.tverts.shunts.protocol.SeShResponse;
+import com.tverts.shunts.protocol.SeShResponseBase;
 import com.tverts.shunts.reports.SeShReportConsumer;
 
 /* com.tverts: support */
@@ -26,38 +33,41 @@ import com.tverts.support.SU;
 
 
 /**
- * This complex (active) service resolves all
- * the issues needed to query self shunting
- * requests and to actually invoke them in the
- * background thread.
+ * Self-Shunting Service is to invoke (Shunt Protocols)
+ * and handle the requests coming from the Shunt income
+ * servlet (actually, a filter).
  *
- * In the active phase this service starts
- * invoking the tests via HTTP protocol.
- * As a queue executor service this service
- * is blocked on empty queue of the shunt
- * protocols.
- *
- * The shunt protocols may be added at any time:
- * before activating the service, and when it
- * is already active (running).
- *
- * When this service is initialized it is able
- * to handle incoming shunt requests, both initial,
- * and the sequenced.
- *
- * The shunt service is thread-safe, active when it
- * is properly configured.
- *
- * This service is not designed to be a singleton only.
- * Several instances are allowed. But as it's behaviour
- * is controlled by the internal strategies, and with
- * the protocol abstraction existing this is seemed to
- * be not demanded in the most cases.
  *
  * @author anton.baukin@gmail.com
  */
 public class SelfShuntService extends ServiceBase
 {
+	/* public: Service interface */
+
+	public void init(Servicer servicer)
+	{
+		super.init(servicer);
+
+		//?: {has no handler configured}
+		if(this.handler == null)
+			throw new IllegalArgumentException(String.format(
+			  "%s has no Requests Handler strategy configured!", logsig()
+			));
+
+		//?: {has no reports consumer configured}
+		if(this.consumer == null)
+			throw new IllegalArgumentException(String.format(
+			  "%s has no Reports Consuming strategy configured!", logsig()
+			));
+
+		//~: log the shunts existing
+		logShuntsExisting();
+
+		//~: log the groups existing
+		logGroupsExisting();
+	}
+
+
 	/* public: SelfShuntService (shunts) interface */
 
 	/**
@@ -75,18 +85,11 @@ public class SelfShuntService extends ServiceBase
 	 */
 	public SeShResponse executeRequest(SeShRequest request)
 	{
-		SeShRequestsHandler handler = getRequestsHandler();
-
 		try
 		{
 			//?: {the request is undefined}
 			if(request == null) throw new IllegalArgumentException(
 			  "Self Shunt request argument is undefined!");
-
-			//?: {there is no handler}
-			if(handler == null) throw new IllegalStateException(
-			  "Self Shunt Service has no request handling " +
-			  "strategy installed!");
 
 			//!: invoke handler strategy
 			SeShResponse res = handler.handleShuntRequest(request);
@@ -111,37 +114,17 @@ public class SelfShuntService extends ServiceBase
 		}
 	}
 
+
 	/* public: Service interface */
 
-	public void     service(Event event)
+	public void service(Event event)
 	{
-		if(event instanceof GenesisDone)
-			service((GenesisDone) event);
-	}
+		//~: create the protocol
+		SeShProtocol protocol = createProtocol(event);
 
-	public String[] depends()
-	{
-		if(SU.sXe(getGenesisService()))
-			return null;
-
-		return new String[] { getGenesisService() };
-	}
-
-
-	/* public: SelfShuntService (bean) interface */
-
-	/**
-	 * If you want this service to explicitly depend
-	 * of Genesis Service, set those Service UID.
-	 */
-	public String getGenesisService()
-	{
-		return genesisService;
-	}
-
-	public void setGenesisService(String genesisService)
-	{
-		this.genesisService = genesisService;
+		//?: {made it}
+		if(protocol != null)
+			executeProtocol(protocol);
 	}
 
 	/**
@@ -156,14 +139,10 @@ public class SelfShuntService extends ServiceBase
 	 * It is expected that here would be set an instance of class
 	 * {@link SeShRequestsDispatcher}.
 	 */
-	public SeShRequestsHandler getRequestsHandler()
-	{
-		return requestsHandler;
-	}
-
 	public void setRequestsHandler(SeShRequestsHandler handler)
 	{
-		this.requestsHandler = handler;
+		if(handler == null) throw new IllegalArgumentException();
+		this.handler = handler;
 	}
 
 	/**
@@ -172,39 +151,39 @@ public class SelfShuntService extends ServiceBase
 	 *
 	 * Without this strategy the service is not active.
 	 */
-	public SeShReportConsumer getReportConsumer()
+	public void setReportConsumer(SeShReportConsumer consumer)
 	{
-		return reportConsumer;
-	}
-
-	public void setReportConsumer(SeShReportConsumer reportConsumer)
-	{
-		this.reportConsumer = reportConsumer;
+		if(consumer == null) throw new IllegalArgumentException();
+		this.consumer = consumer;
 	}
 
 
-	/* protected: service work steps */
+	/* protected: protocols creation */
 
-	protected void     service(GenesisDone event)
+	protected SeShProtocol createProtocol(Event event)
 	{
-//		LU.I(getServicesLog(), logsig(), " recieved GenesisDone event from '",
-//		  event.getSourceService(), "'...");
-//
-//		//?: {this is not a Genesis Service configured}
-//		if(!SU.sXe(getGenesisService()))
-//			if(!getGenesisService().equals(event.getSourceService()))
-//				return;
-//
-//		//!: do the genesis of all the initial tasks
-//		SeShProtocolReference pref = getInitialTasks();
-//		if(pref == null) return;
-//
-//		LU.I(getServicesLog(), logsig(), " starting initial Self-Shunts...");
-//
-//		for(SeShProtocol p : pref.dereferObjects())
-//			this.executeProtocol(p);
-//
-//		LU.I(getServicesLog(), logsig(), " initial Self-Shunts completed!");
+		//?: {shunt the groups given}
+		if(event instanceof SelfShuntGroupsEvent)
+		{
+			SeShRequestGroups request = new SeShRequestGroups();
+			List<String>      groups  = ((SelfShuntGroupsEvent)event).getGroups();
+
+			//~: assign the groups
+			request.setGroups(SU.a2a(
+			  groups.toArray(new String[groups.size()])
+			));
+
+			//?: {has no groups defined}
+			if(request.getGroups().length == 0)
+				throw new IllegalArgumentException(String.format(
+				  "%s has empty Self-Shunt Groups list!",
+				  event.getClass().getSimpleName()
+				));
+
+			return new SeShProtocolWeb(request);
+		}
+
+		return null;
 	}
 
 
@@ -217,17 +196,15 @@ public class SelfShuntService extends ServiceBase
 
 	protected void     processShuntReport(SelfShuntReport report)
 	{
-		SeShReportConsumer consumer = getReportConsumer();
-
 		//?: {has report consumer installed} invoke it
 		if(consumer != null)
 			consumer.consumeReport(report);
 	}
 
 
-	/* protected: ProtocolTask implementation  */
+	/* public: ProtocolTask implementation  */
 
-	protected class ProtocolTask implements Runnable
+	public class ProtocolTask implements Runnable
 	{
 		/* public: constructor */
 
@@ -244,20 +221,17 @@ public class SelfShuntService extends ServiceBase
 			if(this.closed) return;
 
 			SelfShuntReport report = new SelfShuntReport();
-			boolean         opened;
 
 			//0: open the protocol
 			try
 			{
 				logProtocolOpenBefore();
 				protocol.openProtocol();
-				opened = true;
 				logProtocolOpenSuccess();
 			}
 			catch(Throwable e)
 			{
 				handleProtocolOpenError(e);
-				opened = !this.closed; //<-- the error may be dealt
 				if(this.closed) report.setSystemError(e);
 			}
 
@@ -413,14 +387,32 @@ public class SelfShuntService extends ServiceBase
 		return SelfShuntPoint.LOG_SERVICE.getName();
 	}
 
+	protected void   logShuntsExisting()
+	{
+		Set<String> shunts = SelfShuntPoint.getInstance().
+		  getShuntsSet().enumShunts();
 
-	/* private: genesis service uid */
+		LU.I(getLog(), " following Self-Shunts found: [\n\n",
+		  SU.scat("\n", shunts), "\n\n]\n"
+		);
+	}
 
-	private String              genesisService;
+	protected void   logGroupsExisting()
+	{
+		TreeSet<String> groups = new TreeSet<String>();
+
+		//c: for all the shunts registered
+		for(SelfShunt shunt : SelfShuntPoint.getInstance().getShuntsSet().listShunts())
+			groups.addAll(Arrays.asList(SU.a2a(shunt.getGroups())));
+
+		LU.I(getLog(), logsig(), " following Self-Shunt Groups found: [\n\n",
+		  SU.scat("\n", groups), "\n\n]\n"
+		);
+	}
 
 
-	/* private: strategies of the service  */
+	/* protected: strategies of the service  */
 
-	private SeShRequestsHandler requestsHandler;
-	private SeShReportConsumer  reportConsumer;
+	protected SeShRequestsHandler handler;
+	protected SeShReportConsumer  consumer;
 }

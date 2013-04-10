@@ -20,12 +20,7 @@
   <bean name  = 'selfShuntPoint' factory-method = 'getInstance'
         class = 'com.tverts.shunts.SelfShuntPoint'>
 
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · The primary Self Shunt Service used by default.           ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'service' ref = 'selfShuntService'/>
-
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+      <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Here all the shunts registered in the system are given    ·
      · to the implementation level set of shunts.                ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
@@ -45,9 +40,6 @@
         class = 'com.tverts.shunts.service.SelfShuntService'>
 
     <property name  = 'UID' value = 'Self-Shunt Service'/>
-
-    <property name  = 'genesisService'
-              value = 'Genesis Service'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Root dispatching handler of the shunt requests.           ·

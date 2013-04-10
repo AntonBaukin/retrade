@@ -466,22 +466,34 @@ public class SU
 		return cat(objs).toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static String        scat(String sep, Object... objs)
 	{
 		StringBuilder s = new StringBuilder(
 		  sep.length() * objs.length + sXl(objs));
 
+		scat(s, sep, Arrays.asList(objs));
+		return s.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void         scat(StringBuilder s, String sep, Collection objs)
+	{
 		for(Object o : objs) if(o != null)
 		{
-			String x = o.toString().trim();
-			if(x.length() == 0) continue;
+			if(o instanceof Object[])
+				o = Arrays.asList((Object[])o);
+
+			if(o instanceof Collection)
+			{
+				scat(s, sep, (Collection)o);
+				continue;
+			}
 
 			if(s.length() != 0)
 				s.append(sep);
-			s.append(x);
+			s.append(o);
 		}
-
-		return s.toString();
 	}
 
 	public static String        catif(Object test, Object... objs)
