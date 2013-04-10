@@ -14,13 +14,6 @@
 
 
   <!--=================================================
-    =  Self Shunts Invocation Protocols               =
-    =================================================-->
-
-  <import resource = 'shunts/shuntWhat.xml'/>
-
-
-  <!--=================================================
     =  Self Shunt Point                               =
     =================================================-->
 
@@ -97,13 +90,6 @@
         </property>
       </bean>
     </property>
-
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · The Shunt Protocols to always run in the service          ·
-     · after it is activated.                                    ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'initialTasks'
-              ref  = 'selfShuntInitialTasks'/>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Logs shunt reports to 'com.tverts.shunts' destination.    ·

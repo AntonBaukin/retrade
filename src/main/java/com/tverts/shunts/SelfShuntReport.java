@@ -11,18 +11,18 @@ public class      SelfShuntReport
 {
 	public static final long serialVersionUID = 0L;
 
+
 	/* public: report properties access */
 
 	/**
 	 * Reports on each Self Shunt invocation.
 	 */
-	public SelfShuntUnitReport[]
-	                 getUnitReports()
+	public SelfShuntUnitReport[] getUnitReports()
 	{
 		return unitReports;
 	}
 
-	public void      setUnitReports(SelfShuntUnitReport[] reports)
+	public void setUnitReports(SelfShuntUnitReport[] reports)
 	{
 		this.unitReports = reports;
 	}
@@ -40,10 +40,11 @@ public class      SelfShuntReport
 		return systemError;
 	}
 
-	public void      setSystemError(Throwable systemError)
+	public void setSystemError(Throwable systemError)
 	{
 		this.systemError = systemError;
 	}
+
 
 	/* private: the results */
 

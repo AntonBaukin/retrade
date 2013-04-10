@@ -4,6 +4,7 @@ package com.tverts.shunts;
 
 import static com.tverts.support.LO.LANG_LO;
 
+
 /**
  * A report on invocation of a single test task.
  * Mostly it is a method of test unit class.
@@ -14,6 +15,7 @@ public class      SelfShuntTaskReport
        implements java.io.Serializable
 {
 	public static final long serialVersionUID = 0L;
+
 
 	/* public: definitive properties */
 
@@ -141,6 +143,7 @@ public class      SelfShuntTaskReport
 		this.errorTextLo = errorText;
 	}
 
+
 	/* public: invocation time */
 
 	public long      getRunTime()
@@ -162,6 +165,7 @@ public class      SelfShuntTaskReport
 	{
 		this.endTime = endTime;
 	}
+
 
 	/* private: the report attributes */
 

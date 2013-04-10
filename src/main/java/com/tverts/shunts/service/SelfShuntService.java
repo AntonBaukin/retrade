@@ -183,45 +183,29 @@ public class SelfShuntService extends ServiceBase
 		this.reportConsumer = reportConsumer;
 	}
 
-	/**
-	 * Defines the root reference to the Shunt Protocols
-	 * to enqueue right after the service is initialized
-	 * and before it is activated. The reference may be
-	 * not defined.
-	 */
-	public SeShProtocolReference getInitialTasks()
-	{
-		return initialTasks;
-	}
-
-	public void setInitialTasks(SeShProtocolReference initialTasks)
-	{
-		this.initialTasks = initialTasks;
-	}
-
 
 	/* protected: service work steps */
 
 	protected void     service(GenesisDone event)
 	{
-		LU.I(getServicesLog(), logsig(), " recieved GenesisDone event from '",
-		  event.getSourceService(), "'...");
-
-		//?: {this is not a Genesis Service configured}
-		if(!SU.sXe(getGenesisService()))
-			if(!getGenesisService().equals(event.getSourceService()))
-				return;
-
-		//!: do the genesis of all the initial tasks
-		SeShProtocolReference pref = getInitialTasks();
-		if(pref == null) return;
-
-		LU.I(getServicesLog(), logsig(), " starting initial Self-Shunts...");
-
-		for(SeShProtocol p : pref.dereferObjects())
-			this.executeProtocol(p);
-
-		LU.I(getServicesLog(), logsig(), " initial Self-Shunts completed!");
+//		LU.I(getServicesLog(), logsig(), " recieved GenesisDone event from '",
+//		  event.getSourceService(), "'...");
+//
+//		//?: {this is not a Genesis Service configured}
+//		if(!SU.sXe(getGenesisService()))
+//			if(!getGenesisService().equals(event.getSourceService()))
+//				return;
+//
+//		//!: do the genesis of all the initial tasks
+//		SeShProtocolReference pref = getInitialTasks();
+//		if(pref == null) return;
+//
+//		LU.I(getServicesLog(), logsig(), " starting initial Self-Shunts...");
+//
+//		for(SeShProtocol p : pref.dereferObjects())
+//			this.executeProtocol(p);
+//
+//		LU.I(getServicesLog(), logsig(), " initial Self-Shunts completed!");
 	}
 
 
@@ -433,12 +417,11 @@ public class SelfShuntService extends ServiceBase
 
 	/* private: genesis service uid */
 
-	private String                genesisService;
+	private String              genesisService;
 
 
 	/* private: strategies of the service  */
 
-	private SeShRequestsHandler   requestsHandler;
-	private SeShReportConsumer    reportConsumer;
-	private SeShProtocolReference initialTasks;
+	private SeShRequestsHandler requestsHandler;
+	private SeShReportConsumer  reportConsumer;
 }

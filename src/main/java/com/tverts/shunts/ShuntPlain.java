@@ -4,15 +4,10 @@ package com.tverts.shunts;
 
 import java.io.Serializable;
 
-/* Spring Framework */
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 /* Hibernate Persistence Layer */
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /* com.tverts: system (tx) */
 
@@ -50,29 +45,11 @@ public abstract class ShuntPlain
 		}
 	}
 
-
-	/* public: access Session Factory */
-
-	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory)
-	{
-		this.sessionFactory = sessionFactory;
-	}
-
-
 	/* protected: HQL helping methods */
 
 	protected Session session()
 	{
-		Session session = (sessionFactory != null)
-		  ?(sessionFactory.getCurrentSession()):txSession();
-
-		//?: {has no session} illegal state
-		if(session == null) throw new IllegalStateException(
-		  "No Hibernate Session instance is bount to the " +
-		  "Self Shunt Unit!");
-
-		return session;
+		return txSession();
 	}
 
 	protected Query   Q(String hql)
@@ -99,9 +76,4 @@ public abstract class ShuntPlain
 	{
 		return LU.getLogBased(SelfShuntPoint.LOG_SHARED, this);
 	}
-
-
-	/* protected: Hibernate Session Factory reference */
-
-	protected SessionFactory sessionFactory;
 }

@@ -14,12 +14,14 @@ import static com.tverts.support.LO.LANG_LO;
  * a unit of tests. The collection is usually scoped
  * within the unit class and (optionally) it's ancestors.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public class      SelfShuntUnitReport
        implements java.io.Serializable
 {
 	public static final long serialVersionUID = 0L;
+
 
 	/* public: definitive properties */
 
@@ -80,6 +82,7 @@ public class      SelfShuntUnitReport
 	{
 		this.descriptionLo = descriptionLo;
 	}
+
 
 	/* public: invocation results properties */
 
@@ -147,6 +150,7 @@ public class      SelfShuntUnitReport
 		this.endTime = endTime;
 	}
 
+
 	/* protected: misc routines */
 
 	protected List<SelfShuntTaskReport>
@@ -155,9 +159,11 @@ public class      SelfShuntUnitReport
 		return new ArrayList<SelfShuntTaskReport>(8);
 	}
 
+
 	/* private: aggregated task reports */
 
 	private List<SelfShuntTaskReport> taskReports;
+
 
 	/* private: the report attributes */
 

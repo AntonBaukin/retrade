@@ -4,15 +4,10 @@ package com.tverts.hibery;
 
 import java.io.Serializable;
 
-/* Spring Framework */
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 /* Hibernate Persistence Layer */
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /* com.tverts: hibery */
 
@@ -20,8 +15,7 @@ import com.tverts.hibery.qb.QueryBuilder;
 
 /* com.tverts: system (transactions) */
 
-import com.tverts.system.tx.Tx;
-import com.tverts.system.tx.TxPoint;
+import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: endure (core) */
 
@@ -43,15 +37,9 @@ public abstract class GetObjectBase
 {
 	/* public: access Session Factory */
 
-	@Autowired
-	public void  setSessionFactory(SessionFactory sessionFactory)
-	{
-		this.sessionFactory = sessionFactory;
-	}
-
 	@SuppressWarnings("unchecked")
 	public <T extends NumericIdentity> T
-	             getNumeric(Class<T> c1ass, Long pk)
+	                  getNumeric(Class<T> c1ass, Long pk)
 	{
 		return (T) session().get(c1ass, pk);
 	}
@@ -61,21 +49,7 @@ public abstract class GetObjectBase
 
 	protected Session session()
 	{
-		Session session = null;
-
-		Tx tx = TxPoint.getInstance().getTxContext();
-		if((tx != null) && (tx.getSessionFactory() != null))
-			session = tx.getSessionFactory().getCurrentSession();
-
-		if((session == null) && (sessionFactory != null))
-			session = sessionFactory.getCurrentSession();
-
-		if(session == null) throw new IllegalStateException(String.format(
-		  "%s is not bound to active Tx (transaction)!",
-		  getClass().getSimpleName()
-		));
-
-		return session;
+		return txSession();
 	}
 
 	protected Query   Q(String hql, Object... replaces)
@@ -99,9 +73,4 @@ public abstract class GetObjectBase
 	{
 		return qb.buildQuery(session());
 	}
-
-
-	/* protected: Hibernate Session Factory reference */
-
-	protected SessionFactory sessionFactory;
 }
