@@ -25,6 +25,7 @@ import static com.tverts.support.OU.cloneStrict;
  *
  * This implementation is thread-safe (reentable).
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public abstract class SeShExecutor
@@ -37,10 +38,9 @@ public abstract class SeShExecutor
 		Object shuntKey = request.getSelfShuntKey();
 
 		//?: {the key is not defined}
-		if(shuntKey == null)
-			throw new IllegalArgumentException(
-			  "Self Shunts Executor got request with the Shunt Unit's " +
-			  "unique key undefined!");
+		if(shuntKey == null) throw new IllegalArgumentException(
+		  "Self Shunts Executor got request with the Shunt Unit's " +
+		  "unique key undefined!");
 
 		//?: {the key has unsupported format}
 		if(!(shuntKey instanceof String))
@@ -53,12 +53,12 @@ public abstract class SeShExecutor
 		SelfShunt shunt = obtainShunt(shuntKey.toString());
 
 		//?: {this shunt unit does not exist}
-		if(shunt == null)
-			throw new IllegalArgumentException(String.format(
-			  "Self Shunts Executor got request with the Shunt Unit's " +
-			  "unique key '%s' not mapped to actual unit instance!",
-			  shuntKey.toString()));
+		if(shunt == null) throw new IllegalArgumentException(String.format(
+		  "Self Shunts Executor got request with the Shunt Unit's " +
+		  "unique key '%s' not mapped to actual unit instance!", shuntKey.toString()
+		));
 
+		//!: execute the shunt
 		try
 		{
 			return executeSelfShunt(shunt, request);
@@ -69,7 +69,10 @@ public abstract class SeShExecutor
 		}
 	}
 
+
 	/* protected: Shunt Unit execution */
+
+	protected abstract boolean      isKnownRequest(SeShRequest req);
 
 	protected abstract SeShRequest  findNextRequest
 	  (SelfShunt shunt, SeShRequest request);
@@ -102,7 +105,7 @@ public abstract class SeShExecutor
 	protected SelfShunt             obtainShunt(String shuntKey)
 	{
 		SelfShunt shunt = SelfShuntPoint.getInstance().
-		  getShuntsSet().getShunt(shuntKey.toString());
+		  getShuntsSet().getShunt(shuntKey);
 
 		return (shunt == null)?(null):(cloneShunt(shunt));
 	}
@@ -135,7 +138,10 @@ public abstract class SeShExecutor
 	{
 		SeShResponseBase res = new SeShResponseBase(request);
 
+		//~: find the next request
 		res.setNextRequest(findNextRequest(shunt, request));
+
+		//~: create empty report
 		res.setReport(new SelfShuntUnitReport());
 		return res;
 	}

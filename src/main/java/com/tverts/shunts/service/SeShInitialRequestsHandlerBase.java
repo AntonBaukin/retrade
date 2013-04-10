@@ -11,58 +11,64 @@ import com.tverts.shunts.SelfShuntPoint;
 
 import com.tverts.shunts.protocol.SeShResponseBase;
 import com.tverts.shunts.protocol.SeShRequest;
-import com.tverts.shunts.protocol.SeShRequestInitial;
 import com.tverts.shunts.protocol.SeShRequestsSequence;
 import com.tverts.shunts.protocol.SeShResponse;
 
 /* com.tverts: support */
 
 import com.tverts.support.LU;
+import com.tverts.support.SU;
 
 
 /**
  * Base class for the initial request handlers.
- * Supports only one precious class of the request.
  *
  * @author anton.baukin@gmail.com
  */
 public abstract class SeShInitialRequestsHandlerBase
-                        <R extends SeShRequestInitial>
        implements     SeShRequestsHandler
 {
 	/* public: SeShRequestsHandler interface */
 
-	public boolean      canHandleRequest(SeShRequest request)
-	{
-		return (request instanceof SeShRequestInitial) &&
-		  getRequestClass().getName().equals(
-		    request.getClass().getName());
-	}
-
 	@SuppressWarnings("unchecked")
-	public SeShResponse handleShuntRequest(SeShRequest request)
+	public SeShResponse handleShuntRequest(SeShRequest req)
 	{
-		SeShResponseBase res = new SeShResponseBase(request);
+		//?: {this request is not known}
+		if(!isKnownRequest(req))
+			return null;
 
 		//~: select all registered shunt units
-		Set<String>       sel = selectShunts((R)request);
+		Set<String>  sel = selectShunts(req);
+
+		//~: create the response
+		SeShResponse res = createResponse(req, sel);
+
+		//~: log the selection
+		logSelection(req, sel);
+
+		return res;
+	}
+
+
+	/* protected: request handling */
+
+	protected abstract boolean     isKnownRequest(SeShRequest req);
+
+	protected abstract Set<String> selectShunts(SeShRequest req);
+
+	protected SeShResponse         createResponse(SeShRequest req, Set<String> sel)
+	{
+		//~: create the response base
+		SeShResponseBase res = new SeShResponseBase(req);
 
 		//?: {has al least one shunt unit} create the
 		if(!sel.isEmpty())
 			res.setNextRequest(new SeShRequestsSequence(
 			  new ArrayList<String>(sel)));
 
-		logSelection((R)request, sel);
 		return res;
 	}
 
-	/* protected: request handling support */
-
-	protected abstract Class<R>
-	                 getRequestClass();
-
-	protected abstract Set<String>
-                    selectShunts(R req);
 
 	/* protected: logging */
 
@@ -71,15 +77,17 @@ public abstract class SeShInitialRequestsHandlerBase
 		return LU.getLogBased(SelfShuntPoint.LOG_SERVICE, this);
 	}
 
-	protected void   logSelection(R req, Set<String> shunts)
+	protected String logsig()
 	{
-		if(shunts.isEmpty() && !LU.isW(getLog()))
-			return;
+		return getClass().getSimpleName();
+	}
 
+	protected void   logSelection(SeShRequest req, Set<String> shunts)
+	{
 		//?: {found no shunts}
 		if(shunts.isEmpty())
 		{
-			logSelectionEmpty(req, shunts);
+			logSelectionEmpty(req);
 			return;
 		}
 
@@ -89,9 +97,15 @@ public abstract class SeShInitialRequestsHandlerBase
 		logSelectionResults(req, shunts);
 	}
 
-	protected void   logSelectionEmpty(R req, Set<String> shunts)
-	{}
+	protected void   logSelectionEmpty(SeShRequest req)
+	{
+		LU.W(getLog(), logsig(), " had found no shunts registered in the system!");
+	}
 
-	protected void   logSelectionResults(R req, Set<String> shunts)
-	{}
+	protected void   logSelectionResults(SeShRequest req, Set<String> shunts)
+	{
+		LU.W(getLog(), logsig(), " had found for the following shunts in the system:",
+		  " \n[", SU.a2s(shunts), "]"
+		);
+	}
 }

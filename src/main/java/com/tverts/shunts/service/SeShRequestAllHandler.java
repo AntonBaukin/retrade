@@ -4,15 +4,12 @@ package com.tverts.shunts.service;
 
 import java.util.Set;
 
-/* com.tverts: shunts, shunt protocol */
+/* com.tverts: shunts + shunt protocol */
 
 import com.tverts.shunts.SelfShuntPoint;
+import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShRequestAll;
 
-/* com.tverts: support */
-
-import com.tverts.support.LU;
-import com.tverts.support.SU;
 
 /**
  * Handles initial request to start all the
@@ -22,40 +19,18 @@ import com.tverts.support.SU;
  * @author anton.baukin@gmail.com
  */
 public class   SeShRequestAllHandler
-       extends SeShInitialRequestsHandlerBase<SeShRequestAll>
+       extends SeShInitialRequestsHandlerBase
 {
-	/* protected: SeShInitialRequestsHandlerBase interface */
+	/* protected: request handling */
 
-	protected Class<SeShRequestAll>
-	                 getRequestClass()
+	protected boolean     isKnownRequest(SeShRequest req)
 	{
-		return SeShRequestAll.class;
+		return (req instanceof SeShRequestAll);
 	}
 
-	protected Set<String>
-	                 selectShunts(SeShRequestAll req)
+	protected Set<String> selectShunts(SeShRequest req)
 	{
 		return SelfShuntPoint.getInstance().
 		  getShuntsSet().enumShunts();
-	}
-
-	/* protected: logging */
-
-	protected String logsig()
-	{
-		return "SeSh-RequestAllHandler";
-	}
-
-	protected void   logSelectionEmpty(SeShRequestAll req, Set<String> shunts)
-	{
-		if(shunts.isEmpty()) LU.W(getLog(), logsig(),
-		  " has found NO shunts registered in the system!");
-	}
-
-	protected void   logSelectionResults(SeShRequestAll req, Set<String> shunts)
-	{
-		LU.W(getLog(), logsig(),
-		  " has found for the following shunts in the system: \n[",
-		  SU.a2s(shunts), "]");
 	}
 }

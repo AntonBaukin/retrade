@@ -55,38 +55,29 @@
     <property name = 'requestsHandler'>
       <bean class  = 'com.tverts.shunts.service.SeShRequestsDispatcher'>
         <property name = 'handlers'>
-          <map>
+          <list>
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Executes initial request to run all the shunt units.      ·
+             · Executes request to run the next shunt of the sequence
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <entry key = 'com.tverts.shunts.protocol.SeShRequestAll'>
-              <bean class = 'com.tverts.shunts.service.SeShRequestAllHandler'/>
-            </entry>
+            <bean class = 'com.tverts.shunts.service.SeShRequestsSequenceHandler'/>
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Executes initial request to the shunt units               ·
-             · selected by the groups list.                              ·
+             · Executes Run All Shunt Units
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <entry key = 'com.tverts.shunts.protocol.SeShRequestGroups'>
-              <bean class = 'com.tverts.shunts.service.SeShRequestGroupsHandler'/>
-            </entry>
+            <bean class = 'com.tverts.shunts.service.SeShRequestAllHandler'/>
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Executes initial request to the shunt unit(s)             ·
-             · selected by the shunt name.                               ·
+             · Executes Run Shunt Units with Groups
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <entry key = 'com.tverts.shunts.protocol.SeShRequestSingle'>
-              <bean class = 'com.tverts.shunts.service.SeShRequestSingleHandler'/>
-            </entry>
+            <bean class = 'com.tverts.shunts.service.SeShRequestGroupsHandler'/>
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Executes request to run the next shunt of the sequence.   ·
+             · Executes Run named Shunt Unit(s)
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <entry key = 'com.tverts.shunts.protocol.SeShRequestsSequence'>
-              <bean class = 'com.tverts.shunts.service.SeShRequestsSequenceHandler'/>
-            </entry>
-          </map>
+            <bean class = 'com.tverts.shunts.service.SeShRequestSingleHandler'/>
+
+          </list>
         </property>
       </bean>
     </property>
@@ -110,4 +101,5 @@
 
     <property name = 'service' ref = 'selfShuntService'/>
   </bean>
+
 </beans>

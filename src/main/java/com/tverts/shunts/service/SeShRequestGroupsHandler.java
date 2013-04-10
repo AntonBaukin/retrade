@@ -7,6 +7,7 @@ import java.util.Set;
 /* com.tverts: shunts, shunt protocol */
 
 import com.tverts.shunts.SelfShuntPoint;
+import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShRequestGroups;
 
 /* com.tverts: support */
@@ -14,50 +15,47 @@ import com.tverts.shunts.protocol.SeShRequestGroups;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
 
+
 /**
  * Handles initial request to start the shunt units
  * configured in the system's {@link SelfShuntPoint}
  * and are in at least one of the groups stored in the
  * {@link SeShRequestGroups} request given.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public class   SeShRequestGroupsHandler
-       extends SeShInitialRequestsHandlerBase<SeShRequestGroups>
+       extends SeShInitialRequestsHandlerBase
 {
-	/* protected: SeShInitialRequestsHandlerBase interface */
+	/* protected: request handling */
 
-	protected Class<SeShRequestGroups>
-	                  getRequestClass()
+	protected boolean     isKnownRequest(SeShRequest req)
 	{
-		return SeShRequestGroups.class;
+		return (req instanceof SeShRequestGroups);
 	}
 
-	protected Set<String>
-	                  selectShunts(SeShRequestGroups req)
+	protected Set<String> selectShunts(SeShRequest req)
 	{
-		return SelfShuntPoint.getInstance().
-		  getShuntsSet().enumShuntsByGroups(req.getGroups());
+		return SelfShuntPoint.getInstance().getShuntsSet().
+		  enumShuntsByGroups(((SeShRequestGroups)req).getGroups());
 	}
+
 
 	/* protected: logging */
 
-	protected String logsig()
+	protected void   logSelectionEmpty(SeShRequest req)
 	{
-		return "SeSh-RequestGroupsHandler";
+		LU.W(getLog(), logsig(), " has found NO shunts for the groups provided:",
+		  " \n[", SU.a2s(((SeShRequestGroups)req).getGroups()), "]"
+		);
 	}
 
-	protected void   logSelectionEmpty(SeShRequestGroups req, Set<String> shunts)
-	{
-		if(shunts.isEmpty()) LU.W(getLog(), logsig(),
-		  " has found NO shunts for the groups provided: \n[",
-		  SU.a2s(req.getGroups()), "]");
-	}
-
-	protected void   logSelectionResults(SeShRequestGroups req, Set<String> shunts)
+	protected void   logSelectionResults(SeShRequest req, Set<String> shunts)
 	{
 		LU.W(getLog(), logsig(), " has found for the groups provided: [",
-		  SU.a2s(req.getGroups()), "] the following shunts: \n[",
-		  SU.a2s(shunts), "]");
+		  SU.a2s(((SeShRequestGroups)req).getGroups()),
+		  "] the following shunts: \n[", SU.a2s(shunts), "]"
+		);
 	}
 }

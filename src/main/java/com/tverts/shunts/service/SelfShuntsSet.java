@@ -14,12 +14,13 @@ import com.tverts.shunts.SelfShunt;
  *
  * Each shunt unit instance has a set-unique key
  * that is formed of a key provided by the
- * shunt (ususlly, the shunt class simple name,
+ * shunt (usually, the shunt class simple name,
  * or a name defined by the annotation), that
  * may be combined with the string to make the
  * name unique (some sort of index).
  *
  * A set instance must be thread-safe.
+ *
  *
  * @author anton.baukin@gmail.com
  */

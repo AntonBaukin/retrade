@@ -10,6 +10,7 @@ import java.util.List;
 import com.tverts.shunts.SelfShunt;
 import com.tverts.shunts.SelfShuntReference;
 
+
 /**
  * This class links {@link SelfShuntsSet} with
  * {@link SelfShuntReference} object.
@@ -22,6 +23,7 @@ import com.tverts.shunts.SelfShuntReference;
  *
  * So, this class binds the external view on the
  * shunts collection with the internal implementation.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -36,6 +38,7 @@ public class      SelfShuntsRefsSet
 		return this.dereferObjects();
 	}
 
+
 	/* public: SelfShuntReference interface */
 
 	public List<SelfShunt>    dereferObjects()
@@ -46,17 +49,19 @@ public class      SelfShuntsRefsSet
 		return ref.dereferObjects();
 	}
 
-	/* public: SelfShuntsRefsSet interface */
+
+	/* public: SelfShuntsRefsSet (bean) interface */
 
 	public SelfShuntReference getReference()
 	{
 		return reference;
 	}
 
-	public void               setReference(SelfShuntReference reference)
+	public void setReference(SelfShuntReference reference)
 	{
 		this.reference = reference;
 	}
+
 
 	/* private: aggregated shunts reference */
 

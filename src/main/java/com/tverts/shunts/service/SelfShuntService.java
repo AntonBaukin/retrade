@@ -88,17 +88,18 @@ public class SelfShuntService extends ServiceBase
 			  "Self Shunt Service has no request handling " +
 			  "strategy installed!");
 
-			//?: {handler can't take the request}
-			if(!handler.canHandleRequest(request))
-				throw new IllegalArgumentException(String.format(
-				  "Self Shunt Service can't execute the request of " +
-				  "the class '%s' having the key '%s'!",
-
-				  request.getClass().getName(),
-				  request.getSelfShuntKey()));
-
 			//!: invoke handler strategy
-			return handler.handleShuntRequest(request);
+			SeShResponse res = handler.handleShuntRequest(request);
+
+			//?: {handler can't take the request}
+			if(res == null) throw new IllegalArgumentException(String.format(
+			  "Self Shunt Service can't execute the request of " +
+			  "the class '%s' having the key '%s'!",
+
+			  request.getClass().getName(), request.getSelfShuntKey()
+			));
+
+			return res;
 		}
 		catch(Throwable e)
 		{
@@ -109,7 +110,6 @@ public class SelfShuntService extends ServiceBase
 			return response;
 		}
 	}
-
 
 	/* public: Service interface */
 

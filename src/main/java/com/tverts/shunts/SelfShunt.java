@@ -22,9 +22,10 @@ public interface SelfShunt extends Cloneable
 	/* public: SelfShunt interface */
 
 	/**
-	 * Returns the name of the shunt. It must be unique
-	 * within the system when the shunt is configured
-	 * by the parameters.
+	 * Returns the name of the shunt. It may be not unique
+	 * within the system, and Shunt System would assign
+	 * the unique ones, but some mess is possible when
+	 * configuring shunts with parameters.
 	 *
 	 * Basic implementation returns the simple name of the
 	 * shunt unit class (with first letter lower-cased).

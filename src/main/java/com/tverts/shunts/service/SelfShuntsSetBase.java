@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /* com.tverts: shunts */
@@ -22,8 +23,9 @@ import com.tverts.shunts.SelfShunt;
 import static com.tverts.support.SU.a2a;
 import static com.tverts.support.SU.s2s;
 
+
 /**
- * Deals with the task of naming Shunt Unit instances.
+ * Solves the task of naming Shunt Unit instances.
  *
  * @author anton.baukin@gmail.com
  */
@@ -39,17 +41,18 @@ public abstract class SelfShuntsSetBase
 
 	public Set<String> enumShuntsByGroups(String... groups)
 	{
-		LinkedHashSet<String> res = new LinkedHashSet<String>(17);
-		HashSet<String>       ges = new HashSet<String>(
-		  Arrays.asList(a2a(groups)));
+		LinkedHashSet<String> res =
+		  new LinkedHashSet<String>(17);
 
+		HashSet<String>       ges =
+		  new HashSet<String>(Arrays.asList(a2a(groups)));
 		if(ges.isEmpty()) return res;
 
 		next_entry:
-		for(Map.Entry<String, SelfShunt> se : getShuntsNames().entrySet())
+		for(Entry<String, SelfShunt> se : getShuntsNames().entrySet())
 		{
-			//get the groups of the shunt
-			String[] seg = se.getValue().getGroups();
+			//~: get the groups of the shunt
+			String[] seg = a2a(se.getValue().getGroups());
 			if((seg == null) || (seg.length == 0)) continue;
 
 			for(String g : seg) if(ges.contains(g))
@@ -67,13 +70,15 @@ public abstract class SelfShuntsSetBase
 		if((name = s2s(name)) == null)
 			throw new IllegalArgumentException();
 
-		name = new StringBuilder(name.length() + 1).
-		  append(name).append('#').toString();
+		//~: prefix of shunts with same names
+		String namei = name + '#';
 
-		LinkedHashSet<String> res = new LinkedHashSet<String>(17);
+		LinkedHashSet<String> res   =
+		  new LinkedHashSet<String>(3);
 
-		for(String key  : getShuntsNames().keySet())
-			if(key.startsWith(name))
+		//c: for all the shunts
+		for(String key : getShuntsNames().keySet())
+			if(key.equals(name) || key.startsWith(namei))
 				res.add(key);
 
 		return res;
@@ -84,68 +89,62 @@ public abstract class SelfShuntsSetBase
 		return getShuntsNames().get(key);
 	}
 
+
 	/* protected: shunts names mapping */
 
-	protected Map<String, SelfShunt>
-	                   getShuntsNames()
+	protected Map<String, SelfShunt> getShuntsNames()
 	{
 		if(this.shuntsNames == null)
-			updateShuntsNames();
+		{
+			List<SelfShunt> shunts = listShunts();
+
+			if(shunts.isEmpty())
+				this.shuntsNames = Collections.emptyMap();
+			else
+				this.shuntsNames = wrapShuntsNames(
+				  buildShuntsNames(shunts));
+		}
+
 		return shuntsNames;
 	}
 
-	protected void     updateShuntsNames()
-	{
-		List<SelfShunt> shunts = this.listShunts();
-
-		if(shunts.isEmpty())
-			this.shuntsNames = Collections.emptyMap();
-		else
-			this.shuntsNames = wrapShuntsNames(
-			  buildShuntsNames(shunts));
-	}
-
-	protected Map<String, SelfShunt>
-	                   wrapShuntsNames(Map<String, SelfShunt> names)
+	protected Map<String, SelfShunt> wrapShuntsNames(Map<String, SelfShunt> names)
 	{
 		return Collections.unmodifiableMap(
 		  Collections.synchronizedMap(names));
 	}
 
-	protected Map<String, SelfShunt>
-	                   buildShuntsNames(List<SelfShunt> shunts)
+	protected Map<String, SelfShunt> buildShuntsNames(List<SelfShunt> shunts)
 	{
 		//~maps: shunt name -> number of instances with this name
 		HashMap<String, Integer> n2i =
 		  new HashMap<String, Integer>(1 + shunts.size()*10/100);
 
-		//~maps: shunt index within the list -> original shunt name
+		//map: shunt index within the list -> original shunt name
 		HashMap<Integer, String> s2n =
 		  new HashMap<Integer, String>(shunts.size());
 
-		//get original names
+		//~: get original names
 		for(int i = 0;(i < shunts.size());i++)
 			s2n.put(i, shunts.get(i).getName());
 
-		//map this names to the number of occasions
+		//map: this names to the number of occasions
 		for(String name : s2n.values())
 		{
 			Integer i = n2i.get(name);
 			n2i.put(name, (i == null)?(1):(i + 1));
 		}
 
-		final Integer ONE = 1;
-
-		//mark removed with 1 ocassion
+		//~: remove with 1 occasion
 		for(Map.Entry<String,Integer> e : n2i.entrySet())
-			if(ONE.equals(e.getValue()))
+			if(((Integer)1).equals(e.getValue()))
 				e.setValue(null);
 
-		ArrayList<String>        nms = new ArrayList<String>(
+		//~: the names
+		ArrayList<String> nms = new ArrayList<String>(
 		    Collections.nCopies(shunts.size(), (String)null));
 
-		StringBuilder            nWi =
-		  new StringBuilder(32);
+		StringBuilder     nWi = new StringBuilder(32);
 
 		//HINT: here we go in the reversed order to make units
 		//      with the same name to have indices grow
@@ -153,7 +152,7 @@ public abstract class SelfShuntsSetBase
 
 		for(int j = shunts.size() - 1;(j >= 0);j--)
 		{
-			String  n = s2n.get(j); //<-- [j] shunt's name
+			String  n = s2n.get(j); //<-- [j] shunt name
 			Integer i = n2i.get(n); //<-- name's occasions
 
 			//?: {this name is NOT unique} append '#i' to the name
@@ -173,8 +172,8 @@ public abstract class SelfShuntsSetBase
 			nms.set(j, n);
 		}
 
-		//craate the resulting ordered map
-		Map<String, SelfShunt>   res =
+		//~: create the resulting ordered map
+		Map<String, SelfShunt> res =
 		  new LinkedHashMap<String, SelfShunt>(shunts.size());
 
 		for(int i = 0;(i < shunts.size());i++)
@@ -182,7 +181,8 @@ public abstract class SelfShuntsSetBase
 		return res;
 	}
 
+
 	/* private: shunts mapping */
 
-	private Map<String, SelfShunt> shuntsNames;
+	private volatile Map<String, SelfShunt> shuntsNames;
 }
