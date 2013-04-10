@@ -18,6 +18,7 @@ import com.tverts.shunts.SelfShuntUnitReport;
 import static com.tverts.support.EX.e2en;
 import static com.tverts.support.SU.s2s;
 
+
 /**
  * Self Shunt Report printing strategy basics.
  *
@@ -31,15 +32,21 @@ public abstract class SeShReportWriteMethodBase
 	public void writeSeShReport(SelfShuntReport r, Writer o)
 	  throws IOException
 	{
+		//~: open the report
 		openShuntReport(o, r);
 
+		//?: {has Shunt system error}
 		if(r.getSystemError() != null)
 			writeSystemError(o, r);
 
+		//c: write the unit reports
 		for(SelfShuntUnitReport ur : r.getUnitReports())
 			writeUnitReport(o, ur);
+
+		//~: close the report
 		closeShuntReport(o, r);
 	}
+
 
 	/* protected: writing sub-methods */
 
@@ -151,7 +158,8 @@ public abstract class SeShReportWriteMethodBase
 		N(o);
 	}
 
-	/* protected: printing help */
+
+	/* protected: printing helpers */
 
 	/**
 	 * Writes the objects converting them with
@@ -259,6 +267,7 @@ public abstract class SeShReportWriteMethodBase
 		pw.close();
 		L(o, sw.getBuffer());
 	}
+
 
 	/* protected: statistics calculation */
 

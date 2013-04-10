@@ -5,6 +5,7 @@ package com.tverts.shunts.reports;
 import java.io.StringWriter;
 import java.io.Writer;
 
+
 /**
  * Extends writer strategy base to print the
  * report text into string stream (buffer).

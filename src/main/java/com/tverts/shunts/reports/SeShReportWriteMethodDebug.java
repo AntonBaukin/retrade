@@ -15,12 +15,14 @@ import com.tverts.shunts.SelfShuntUnitReport;
 
 import static com.tverts.support.SU.s2s;
 
+
 /**
  * Self Shunt Report printing strategy for DEBUG level.
  *
  * On the debug level all the methods (with the name
  * and descriptions) of all the shunt units, with
  * all the result stuff are printed.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -86,6 +88,7 @@ public class   SeShReportWriteMethodDebug
 		P(o, "  ~~> "); E(o, tr);
 		N(o);
 	}
+
 
 	/* protected: writing sub-methods */
 

@@ -4,14 +4,16 @@ package com.tverts.shunts.reports;
 
 import com.tverts.shunts.SelfShuntReport;
 
+
 /**
  * Processes the report generated as the result
- * of self shunts invocation.
+ * of Self-Shunts invocation.
  *
  * Some implementations of report consumers
  * may be thread-safe, but this is required
- * if single instance woukd be set for
- * several shunt services.
+ * if single instance would be set for
+ * several Shunt Services.
+ *
  *
  * @author anton.baukin@gmail.com
  */

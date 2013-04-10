@@ -9,11 +9,13 @@ import java.io.Writer;
 
 import com.tverts.shunts.SelfShuntReport;
 
+
 /**
  * Self Shunt Report printing strategy for WARN level.
  *
  * On the warn level only the summary information
  * on the results is logged.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -32,6 +34,7 @@ public class   SeShReportWriteMethodWarn
 
 	protected SeShReportWriteMethodWarn()
 	{}
+
 
 	/* protected: SeShReportWriteMethodBase interface */
 

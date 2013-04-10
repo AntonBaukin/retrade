@@ -11,12 +11,14 @@ import com.tverts.shunts.SelfShuntReport;
 import com.tverts.shunts.SelfShuntTaskReport;
 import com.tverts.shunts.SelfShuntUnitReport;
 
+
 /**
  * Self Shunt Report printing strategy for INFO level.
  *
  * The info level is as the trace, but the results
  * are displayed shorter, without shunt unit descriptions.
  * Shunt tasks (methods) are printed only for failed ones.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -35,6 +37,7 @@ public class   SeShReportWriteMethodInfo
 
 	protected SeShReportWriteMethodInfo()
 	{}
+
 
 	/* protected: SeShReportWriteMethodBase interface */
 
@@ -69,6 +72,7 @@ public class   SeShReportWriteMethodInfo
 		L(o, "! critical : ", tr.getTaskName());
 		P(o, "  ~~> "); X(o, tr);
 	}
+
 
 	/* protected: writing sub-methods */
 

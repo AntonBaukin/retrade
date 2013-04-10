@@ -9,9 +9,11 @@ import java.io.Writer;
 
 import com.tverts.shunts.SelfShuntReport;
 
+
 /**
- * A strategy that prints reports for the logging level
- * that this trategy is designed for.
+ * A strategy that prints reports for the logging
+ * level this strategy is designed for.
+ *
  *
  * @author anton.baukin@gmail.com
  */

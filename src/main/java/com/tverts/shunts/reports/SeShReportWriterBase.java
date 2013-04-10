@@ -8,9 +8,10 @@ import java.io.Writer;
 
 import com.tverts.shunts.SelfShuntReport;
 
+
 /**
- * Prints the report as a text. Supports four levels
- * of detalization: DEBUG, TRACE, INFO and WARN.
+ * Prints the report as a text. Supports four
+ * logging levels: DEBUG, TRACE, INFO and WARN.
  *
  * For each log lever there is a write strategy
  * {@link SeShReportWriteMethod}. If no defined,
@@ -18,10 +19,11 @@ import com.tverts.shunts.SelfShuntReport;
  *
  * This basic implementation is thread-safe if
  * the installed report write methods and the
- * writer stream are. The writer stream bust
- * be a string buffer to prevent mess of text
- * parts printed for reports concumed at the
- * same time.
+ * writer stream are safe. The writer stream
+ * must be a string buffer to prevent mess of
+ * text parts printed for reports consumed
+ * at the same time.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -34,9 +36,13 @@ public abstract class SeShReportWriterBase
 	{
 		try
 		{
+			//~: open the writer
 			Writer out = openOut();
 
+			//~: select the write method & do write
 			selectWriteMethod().writeSeShReport(report, out);
+
+			//!: close the writer
 			closeOut(out);
 		}
 		catch(Exception e)
@@ -44,6 +50,7 @@ public abstract class SeShReportWriterBase
 			handleOutError(e);
 		}
 	}
+
 
 	/* protected: log levels */
 
@@ -54,6 +61,7 @@ public abstract class SeShReportWriterBase
 	protected abstract boolean isInfoLevel();
 
 	protected abstract boolean isWarnLevel();
+
 
 	/* protected: printing stream */
 
@@ -67,6 +75,7 @@ public abstract class SeShReportWriterBase
 	{
 		throw new RuntimeException(e);
 	}
+
 
 	/* protected: printing method selection */
 

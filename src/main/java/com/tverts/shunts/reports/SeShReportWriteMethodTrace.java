@@ -7,13 +7,13 @@ import java.io.Writer;
 
 /* com.tverts: shunts */
 
-import com.tverts.shunts.SelfShuntReport;
 import com.tverts.shunts.SelfShuntTaskReport;
 import com.tverts.shunts.SelfShuntUnitReport;
 
 /* com.tverts: support */
 
 import static com.tverts.support.SU.s2s;
+
 
 /**
  * Self Shunt Report printing strategy for TRACE level.
@@ -23,6 +23,7 @@ import static com.tverts.support.SU.s2s;
  * methods is aggregated.
  *
  * The full list of shunt methods names is also added.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -42,6 +43,7 @@ public class   SeShReportWriteMethodTrace
 	protected SeShReportWriteMethodTrace()
 	{}
 
+
 	/* protected: SeShReportWriteMethodInfo interface */
 
 	protected void openUnitReportFoot(Writer o, SelfShuntUnitReport ur)
@@ -55,6 +57,7 @@ public class   SeShReportWriteMethodTrace
 		N(o);
 
 	}
+
 
 	/* protected: SeShReportWriteMethodBase interface */
 
