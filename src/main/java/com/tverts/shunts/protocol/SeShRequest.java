@@ -27,4 +27,14 @@ public interface SeShRequest
 	 * keys are not registered in the system.
 	 */
 	public Object getSelfShuntKey();
+
+	/**
+	 * Provides the ID of Self-Shunt Context
+	 * associated with this request.
+	 *
+	 * (Assigned by the protocol.)
+	 */
+	public String getContextUID();
+
+	public void   setContextUID(String uid);
 }

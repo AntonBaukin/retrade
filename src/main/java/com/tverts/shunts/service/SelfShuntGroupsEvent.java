@@ -5,10 +5,6 @@ package com.tverts.shunts.service;
 import java.util.ArrayList;
 import java.util.List;
 
-/* com.tverts: system services (events) */
-
-import com.tverts.system.services.events.EventBase;
-
 
 /**
  * Event to Self-Shunt Service to create
@@ -20,7 +16,8 @@ import com.tverts.system.services.events.EventBase;
  *
  * @author anton.baukin@gmail.com
  */
-public class SelfShuntGroupsEvent extends EventBase
+public class   SelfShuntGroupsEvent
+       extends SelfShuntEvent
 {
 	public static final long serialVersionUID = 0L;
 

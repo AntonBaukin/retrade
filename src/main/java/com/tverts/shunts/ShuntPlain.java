@@ -9,9 +9,18 @@ import java.io.Serializable;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: system (tx) */
 
 import static com.tverts.system.tx.TxPoint.txSession;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.GetDomain;
 
 /* com.tverts: support */
 
@@ -44,6 +53,44 @@ public abstract class ShuntPlain
 			throw new RuntimeException(e);
 		}
 	}
+
+
+	/* protected: context handling */
+
+	protected SelfShuntCtx ctx()
+	{
+		SelfShuntCtx ctx = SelfShuntPoint.getInstance().context();
+
+		//?: {there is no context}
+		if(ctx == null) throw new IllegalStateException(
+		  "Self-Shunt Context is not assigned to the shunting thread!");
+
+		return ctx;
+	}
+
+	private Domain         domain()
+	{
+		//?: {there is no domain key}
+		if(ctx().getDomain() == null)
+			throw new IllegalStateException(String.format(
+			  "Self-Shunt Context with UID [%s] has no Domain key defined!",
+			  ctx().getUID()
+			));
+
+		//~: load the domain
+		Domain domain = bean(GetDomain.class).
+		  getDomain(ctx().getDomain());
+
+		//?: {not found it}
+		if(domain == null)
+			throw new IllegalStateException(String.format(
+			  "Self-Shunt Context with UID [%s] refers Domain key [%d]" +
+			  " that is not found!", ctx().getUID(), ctx().getDomain()
+			));
+
+		return domain;
+	}
+
 
 	/* protected: HQL helping methods */
 

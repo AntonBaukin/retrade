@@ -22,4 +22,19 @@ public class      SeShRequestAll
 	{
 		return SeShRequestAll.class.getSimpleName();
 	}
+
+	public String getContextUID()
+	{
+		return contextUID;
+	}
+
+	public void   setContextUID(String contextUID)
+	{
+		this.contextUID = contextUID;
+	}
+
+
+	/* private: the state of the protocol */
+
+	private String contextUID;
 }

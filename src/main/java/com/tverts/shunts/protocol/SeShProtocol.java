@@ -2,6 +2,7 @@ package com.tverts.shunts.protocol;
 
 /* com.tverts: shunts */
 
+import com.tverts.shunts.SelfShuntCtx;
 import com.tverts.shunts.SelfShuntReport;
 
 
@@ -35,7 +36,7 @@ public interface SeShProtocol
 	 * Only the protocol processing thread may
 	 * call this method.
 	 */
-	public void            openProtocol()
+	public void            openProtocol(SelfShuntCtx ctx)
 	  throws SeShProtocolError, InterruptedException;
 
 	/**

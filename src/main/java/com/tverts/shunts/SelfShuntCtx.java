@@ -12,15 +12,9 @@ public class SelfShuntCtx implements java.io.Serializable
 
 	/* public: constructor */
 
-	public SelfShuntCtx(
-	    String uid,  SelfShuntUnitReport report,
-	    Long domain, boolean readonly
-	  )
+	public SelfShuntCtx(String uid)
 	{
-		this.uid      = uid;
-		this.report   = report;
-		this.domain   = domain;
-		this.readonly = readonly;
+		this.uid = uid;
 	}
 
 
@@ -28,11 +22,40 @@ public class SelfShuntCtx implements java.io.Serializable
 
 	/**
 	 * Returns ID of this Shunt Context unique
-	 * within the system single run.
+	 * within the system at the runtime.
 	 */
-	public String getUID()
+	public final String        getUID()
 	{
 		return uid;
+	}
+
+	/**
+	 * Defines the Domain the tests must be done for.
+	 */
+	public Long                getDomain()
+	{
+		return domain;
+	}
+
+	public SelfShuntCtx        setDomain(Long domain)
+	{
+		this.domain = domain;
+		return this;
+	}
+
+	/**
+	 * If this flag set, Self-Shunt MUST not update
+	 * the data of the Domain, buy only read them!
+	 */
+	public boolean             isReadonly()
+	{
+		return readonly;
+	}
+
+	public SelfShuntCtx        setReadonly()
+	{
+		this.readonly = true;
+		return this;
 	}
 
 	public SelfShuntUnitReport getReport()
@@ -40,28 +63,21 @@ public class SelfShuntCtx implements java.io.Serializable
 		return report;
 	}
 
-	/**
-	 * Defines the Domain the tests must be done for.
-	 */
-	public Long getDomain()
+	public SelfShuntCtx        setReport(SelfShuntUnitReport report)
 	{
-		return domain;
+		this.report = report;
+		return this;
 	}
 
-	/**
-	 * If this flag set, Self-Shunt MUST not update
-	 * the data of the Domain, buy only read them!
-	 */
-	public boolean isReadonly()
-	{
-		return readonly;
-	}
+
+	/* private: context parameters */
+
+	private String  uid;
+	private Long    domain;
+	private boolean readonly;
 
 
 	/* private: context state */
 
-	private String              uid;
 	private SelfShuntUnitReport report;
-	private Long                domain;
-	private boolean             readonly;
 }

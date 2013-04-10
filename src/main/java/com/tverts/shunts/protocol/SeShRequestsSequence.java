@@ -43,12 +43,23 @@ public class      SeShRequestsSequence
 		this.shunts = shunts.toArray();
 	}
 
+
 	/* public: SeShRequest interface */
 
 	public Object getSelfShuntKey()
 	{
 		return (position >= shunts.length)?(null)
 		  :(shunts[position]);
+	}
+
+	public String getContextUID()
+	{
+		return contextUID;
+	}
+
+	public void   setContextUID(String contextUID)
+	{
+		this.contextUID = contextUID;
 	}
 
 
@@ -63,6 +74,7 @@ public class      SeShRequestsSequence
 	{
 		return (++position < shunts.length);
 	}
+
 
 	/* public: Cloneable interface */
 
@@ -82,7 +94,10 @@ public class      SeShRequestsSequence
 		}
 	}
 
-	/* protected: the sequence and the position */
+
+	/* protected: the state of the protocol */
+
+	protected String         contextUID;
 
 	/**
 	 * The read-only array of shunt units keys.

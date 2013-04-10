@@ -41,6 +41,16 @@ public class      SeShRequestGroups
 		return getGroupsStr();
 	}
 
+	public String   getContextUID()
+	{
+		return contextUID;
+	}
+
+	public void     setContextUID(String contextUID)
+	{
+		this.contextUID = contextUID;
+	}
+
 
 	/* public: SeShRequestGroups interface */
 
@@ -71,7 +81,8 @@ public class      SeShRequestGroups
 	}
 
 
-	/* private: the group names */
+	/* private: the protocol parameters */
 
+	private String   contextUID;
 	private String[] groups = new String[0];
 }

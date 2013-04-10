@@ -85,23 +85,45 @@ public abstract class SeShExecutor
 	  (SelfShunt shunt, SeShRequest request)
 	  throws Throwable
 	{
+		SelfShuntCtx ctx = null;
 		SeShResponse res = createResponse(shunt, request);
 
 		//HINT: with correct implementation a Shunt Unit may not
-		//      allow an exception to sneak out the run procedure.
+		//  allow an exception to sneak out the run procedure.
 
 		try
 		{
-			SelfShuntCtx ctx = new SelfShuntCtx(
-			  null, res.getReport(), null, false
-			);
+			//~: get current context
+			ctx = selfShuntCtx();
 
+			//~: assign the report to the context
+			ctx.setReport(res.getReport());
+
+			//!: do shunt
 			shunt.shunt(ctx);
 		}
 		catch(Throwable e)
 		{
 			handleExecError(shunt, res, e);
 		}
+		finally
+		{
+			//~: clear the report of the context
+			if(ctx != null)
+				ctx.setReport(null);
+		}
+
+		return res;
+	}
+
+	protected SelfShuntCtx          selfShuntCtx()
+	{
+		SelfShuntCtx res = SelfShuntPoint.getInstance().context();
+
+		//?: {there is no context}
+		if(res == null) throw new IllegalStateException(
+		  "There is no Self-Shunt Context instance assiciated " +
+		  "with the invokig thread!");
 
 		return res;
 	}

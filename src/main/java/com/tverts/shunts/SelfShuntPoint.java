@@ -53,7 +53,7 @@ public class SelfShuntPoint
 	  "com.tverts.shunts.system";
 
 
-	/* public: access Self Shunts properties */
+	/* public: SelfShuntPoint (bean) interface */
 
 	/**
 	 * Globally assigned set of all the Self-Shunts
@@ -72,8 +72,38 @@ public class SelfShuntPoint
 	}
 
 
-	/* private: self shunts properties */
+	/* public: SelfShuntPoint (access Context) interface */
+
+	/**
+	 * Returns Self-Shunt Context assigned
+	 * to the invoking thread.
+	 */
+	public SelfShuntCtx context()
+	{
+		return context.get();
+	}
+
+	/**
+	 * Assigns or removes (when undefined)
+	 * Self-Shunt Context to the invoking thread.
+	 */
+	public void         setContext(SelfShuntCtx ctx)
+	{
+		if(ctx == null)
+			context.remove();
+		else
+			context.set(ctx);
+	}
+
+
+	/* private: the set of shunts */
 
 	private SelfShuntsSet shuntsSet =
 	  new SelfShuntsRefsSet();
+
+
+	/* private: thread local context */
+
+	private ThreadLocal<SelfShuntCtx> context =
+	  new ThreadLocal<SelfShuntCtx>();
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 /* com.tverts: shunts */
 
+import com.tverts.shunts.SelfShuntCtx;
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntReport;
 import com.tverts.shunts.SelfShuntTaskReport;
@@ -105,6 +106,12 @@ public abstract class SeShProtocolBase
 
 
 	/* public: protocol interface */
+
+	public void openProtocol(SelfShuntCtx ctx)
+	  throws SeShProtocolError, InterruptedException
+	{
+		this.context = ctx;
+	}
 
 	public SelfShuntReport closeProtocol()
 	  throws SeShProtocolError, InterruptedException
@@ -273,7 +280,9 @@ public abstract class SeShProtocolBase
 	}
 
 
-	/* protected: accumulated reports */
+	/* protected: protocol state */
+
+	protected SelfShuntCtx                    context;
 
 	protected final List<SelfShuntUnitReport> unitReports;
 

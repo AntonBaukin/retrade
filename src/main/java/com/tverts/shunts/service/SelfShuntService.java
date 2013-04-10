@@ -3,9 +3,13 @@ package com.tverts.shunts.service;
 /* standard Java classes */
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicLong;
 
 /* com.tverts: system services */
 
@@ -16,6 +20,7 @@ import com.tverts.system.services.Servicer;
 /* com.tverts: self-shunts (core, protocol, reports) */
 
 import com.tverts.shunts.SelfShunt;
+import com.tverts.shunts.SelfShuntCtx;
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntReport;
 import com.tverts.shunts.protocol.SeShProtocol;
@@ -44,7 +49,7 @@ public class SelfShuntService extends ServiceBase
 {
 	/* public: Service interface */
 
-	public void init(Servicer servicer)
+	public void         init(Servicer servicer)
 	{
 		super.init(servicer);
 
@@ -71,26 +76,37 @@ public class SelfShuntService extends ServiceBase
 	/* public: SelfShuntService (shunts) interface */
 
 	/**
-	 * Synchronously executes the Shunt Protocol
-	 * given sending shunt requests to this service.
-	 */
-	public void         executeProtocol(SeShProtocol protocol)
-	{
-		createProtocolTask(protocol).run();
-	}
-
-	/**
 	 * Executes Self Shunt Request coming from the service
 	 * (this service) via HTTP, JMS or else media.
 	 */
 	public SeShResponse executeRequest(SeShRequest request)
 	{
+		//?: {the request is undefined}
+		if(request == null) throw new IllegalArgumentException(
+		  "Self-Shunt Request argument is undefined!");
+
+		//?: {request has no Context UID}
+		if(request.getContextUID() == null)
+			throw new IllegalStateException(String.format(
+			  "Self-Shunt Request with key [%s] has no Context UID!",
+			  request.getSelfShuntKey()
+			));
+
+		//~: obtain the context
+		SelfShuntCtx ctx = getContext(request.getContextUID());
+		if(ctx == null) throw new IllegalStateException(String.format(
+		  "Self-Shunt Request with key [%s] refers Context " +
+		  "by UID [%s] that is doesn't exist!",
+
+		  request.getSelfShuntKey(), request.getContextUID()
+		));
+
+		//~: set the context to the point
+		SelfShuntPoint.getInstance().setContext(ctx);
+
+		//~: execute the request
 		try
 		{
-			//?: {the request is undefined}
-			if(request == null) throw new IllegalArgumentException(
-			  "Self Shunt request argument is undefined!");
-
 			//!: invoke handler strategy
 			SeShResponse res = handler.handleShuntRequest(request);
 
@@ -112,19 +128,41 @@ public class SelfShuntService extends ServiceBase
 			response.setSystemError(e);
 			return response;
 		}
+		finally
+		{
+			//~: clear the context from the point
+			SelfShuntPoint.getInstance().setContext(null);
+		}
 	}
 
 
 	/* public: Service interface */
 
-	public void service(Event event)
+	public void         service(Event event)
 	{
+		if(!(event instanceof SelfShuntEvent))
+			return;
+
 		//~: create the protocol
 		SeShProtocol protocol = createProtocol(event);
 
-		//?: {made it}
-		if(protocol != null)
-			executeProtocol(protocol);
+		//?: {the event is not supported} do nothing
+		if(protocol == null) return;
+
+		//~: create the context
+		SelfShuntCtx ctx = createContext((SelfShuntEvent)event);
+		saveContext(ctx);
+
+		//~: execute the protocol
+		try
+		{
+			createProtocolTask(ctx, protocol).run();
+		}
+		finally
+		{
+			//~: remove the context
+			removeContext(ctx.getUID());
+		}
 	}
 
 	/**
@@ -189,9 +227,9 @@ public class SelfShuntService extends ServiceBase
 
 	/* protected: processing & report handling */
 
-	protected Runnable createProtocolTask(SeShProtocol protocol)
+	protected Runnable createProtocolTask(SelfShuntCtx ctx, SeShProtocol protocol)
 	{
-		return new ProtocolTask(protocol);
+		return new ProtocolTask(ctx, protocol);
 	}
 
 	protected void     processShuntReport(SelfShuntReport report)
@@ -202,16 +240,60 @@ public class SelfShuntService extends ServiceBase
 	}
 
 
+	/* protected: Self-Shunt Context handling */
+
+	protected SelfShuntCtx createContext(SelfShuntEvent event)
+	{
+		SelfShuntCtx ctx = new SelfShuntCtx(
+		  contextIdPrefix + contextIdNumber.incrementAndGet()
+		);
+
+		//~: domain
+		ctx.setDomain(event.getDomain());
+
+		//~: readonly
+		if(event.isReadonly())
+			ctx.setReadonly();
+
+		return ctx;
+	}
+
+	protected void         saveContext(SelfShuntCtx ctx)
+	{
+		contexts.put(ctx.getUID(), ctx);
+	}
+
+	protected SelfShuntCtx getContext(String uid)
+	{
+		SelfShuntCtx ctx = contexts.get(uid);
+
+		//?: {the context is not found}
+		if(ctx == null)
+			throw new IllegalStateException(String.format(
+			  "No Self-Shunt Context with UID [%s] present!", uid
+			));
+
+		return ctx;
+	}
+
+	protected void         removeContext(String uid)
+	{
+		contexts.remove(uid);
+	}
+
+
 	/* public: ProtocolTask implementation  */
 
 	public class ProtocolTask implements Runnable
 	{
 		/* public: constructor */
 
-		public ProtocolTask(SeShProtocol protocol)
+		public ProtocolTask(SelfShuntCtx context, SeShProtocol protocol)
 		{
+			this.context  = context;
 			this.protocol = protocol;
 		}
+
 
 		/* public: Runnable interface */
 
@@ -226,7 +308,7 @@ public class SelfShuntService extends ServiceBase
 			try
 			{
 				logProtocolOpenBefore();
-				protocol.openProtocol();
+				protocol.openProtocol(context);
 				logProtocolOpenSuccess();
 			}
 			catch(Throwable e)
@@ -275,6 +357,7 @@ public class SelfShuntService extends ServiceBase
 			}
 		}
 
+
 		/* protected: errors handling */
 
 		protected void handleProtocolOpenError(Throwable e)
@@ -294,6 +377,7 @@ public class SelfShuntService extends ServiceBase
 			logProtocolCloseError(e);
 			this.closed = true;
 		}
+
 
 		/* protected: logging */
 
@@ -365,7 +449,13 @@ public class SelfShuntService extends ServiceBase
 			  " got error while closing the shunt protocol!");
 		}
 
+
 		/* protected: the protocol */
+
+		/**
+		 * The Self-Shunt Context of the execution.
+		 */
+		protected final SelfShuntCtx context;
 
 		/**
 		 * The protocol to invoke.
@@ -415,4 +505,16 @@ public class SelfShuntService extends ServiceBase
 
 	protected SeShRequestsHandler handler;
 	protected SeShReportConsumer  consumer;
+
+
+	/* private: runtime state of the service */
+
+	private Map<String, SelfShuntCtx> contexts        =
+	  Collections.synchronizedMap(new HashMap<String, SelfShuntCtx>(1));
+
+	private final String              contextIdPrefix =
+	  Long.toHexString(System.currentTimeMillis()).toUpperCase() + "-";
+
+	private final AtomicLong          contextIdNumber =
+	  new AtomicLong();
 }

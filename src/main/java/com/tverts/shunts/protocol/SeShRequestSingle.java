@@ -38,8 +38,19 @@ public class      SeShRequestSingle
 		return unitName;
 	}
 
+	public String getContextUID()
+	{
+		return contextUID;
+	}
 
-	/* private: the unit name */
+	public void   setContextUID(String contextUID)
+	{
+		this.contextUID = contextUID;
+	}
 
+
+	/* private: the protocol parameters */
+
+	private String contextUID;
 	private String unitName;
 }

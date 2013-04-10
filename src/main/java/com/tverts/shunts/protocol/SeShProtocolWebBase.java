@@ -2,7 +2,9 @@ package com.tverts.shunts.protocol;
 
 /* com.tverts: shunts */
 
+import com.tverts.shunts.SelfShuntCtx;
 import com.tverts.shunts.SelfShuntReport;
+
 
 /**
  * Implements stateful HTTP conversation
@@ -17,9 +19,11 @@ public abstract class SeShProtocolWebBase
 {
 	/* public: protocol interface */
 
-	public void             openProtocol()
+	public void             openProtocol(SelfShuntCtx ctx)
 	  throws SeShProtocolError, InterruptedException
 	{
+		super.openProtocol(ctx);
+
 		//0: create the web client
 		installWebClient();
 
@@ -37,6 +41,10 @@ public abstract class SeShProtocolWebBase
 		//?: {there is no next request} exit the protocol
 		if(shuntRequest == null)
 			return false;
+
+		//~: assign the Context UID
+		if(context != null)
+			shuntRequest.setContextUID(context.getUID());
 
 		//!: issue the request
 		SeShResponse response = getWebClient().
