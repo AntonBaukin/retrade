@@ -9,7 +9,7 @@ import java.util.Set;
 
 import com.tverts.shunts.SelfShuntPoint;
 
-import com.tverts.shunts.protocol.SeShBasicResponse;
+import com.tverts.shunts.protocol.SeShResponseBase;
 import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShRequestInitial;
 import com.tverts.shunts.protocol.SeShRequestsSequence;
@@ -42,7 +42,7 @@ public abstract class SeShInitialRequestsHandlerBase
 	@SuppressWarnings("unchecked")
 	public SeShResponse handleShuntRequest(SeShRequest request)
 	{
-		SeShBasicResponse res = new SeShBasicResponse(request);
+		SeShResponseBase res = new SeShResponseBase(request);
 
 		//~: select all registered shunt units
 		Set<String>       sel = selectShunts((R)request);

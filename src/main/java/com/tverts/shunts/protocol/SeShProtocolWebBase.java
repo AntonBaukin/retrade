@@ -5,8 +5,10 @@ package com.tverts.shunts.protocol;
 import com.tverts.shunts.SelfShuntReport;
 
 /**
- * Implements stateful HTTP conversation with this system.
- * By default it creates {@link SeShWebClientCommons} client.
+ * Implements stateful HTTP conversation
+ * with this system. By default it creates
+ * {@link SeShWebClientCommons} client.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -40,7 +42,7 @@ public abstract class SeShProtocolWebBase
 		SeShResponse response = getWebClient().
 		  request(shuntRequest);
 
-		//process the response
+		//~: process the response
 		shuntRequest = processResponse(response);
 
 		return (shuntRequest != null);
@@ -59,6 +61,7 @@ public abstract class SeShProtocolWebBase
 		SeShWebClient client = getWebClient();
 		if(client != null) client.breakClient();
 	}
+
 
 	/* protected: web client access */
 
@@ -94,6 +97,7 @@ public abstract class SeShProtocolWebBase
 	{
 		return this.webClient;
 	}
+
 
 	/* protected, private: protocol state */
 

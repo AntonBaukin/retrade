@@ -7,7 +7,7 @@ import com.tverts.shunts.SelfShuntCtx;
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntUnitReport;
 
-import com.tverts.shunts.protocol.SeShBasicResponse;
+import com.tverts.shunts.protocol.SeShResponseBase;
 import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShResponse;
 
@@ -133,7 +133,7 @@ public abstract class SeShExecutor
 	protected SeShResponse          createResponse
 	   (SelfShunt shunt, SeShRequest request )
 	{
-		SeShBasicResponse res = new SeShBasicResponse(request);
+		SeShResponseBase res = new SeShResponseBase(request);
 
 		res.setNextRequest(findNextRequest(shunt, request));
 		res.setReport(new SelfShuntUnitReport());
@@ -143,7 +143,7 @@ public abstract class SeShExecutor
 	protected SeShResponse          createErrorResponse
 	   (SelfShunt shunt, SeShRequest request, Throwable error)
 	{
-		SeShBasicResponse res = new SeShBasicResponse(request);
+		SeShResponseBase res = new SeShResponseBase(request);
 
 		res.setSystemError(error);
 		return res;

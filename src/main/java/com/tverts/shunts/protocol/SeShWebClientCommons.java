@@ -46,7 +46,7 @@ import com.tverts.support.streams.Base64Encoder;
  *
  * This particular implementation utilizes
  * Apache HTTP Commons component library.
- * It supports the conversation using qookies.
+ * It supports the conversation using cookies.
  *
  * @author anton.baukin@gmail.com
  */
@@ -359,6 +359,7 @@ public class   SeShWebClientCommons
 
 		return p;
 	}
+
 
 	/* private: HTTP client */
 

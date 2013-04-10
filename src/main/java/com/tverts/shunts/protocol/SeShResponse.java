@@ -5,7 +5,7 @@ package com.tverts.shunts.protocol;
 import com.tverts.shunts.SelfShuntUnitReport;
 
 /**
- * A response from the Self Shunt Service.
+ * A response from the Self-Shunt Service.
  * It reports the status of invoking request.
  *
  * The organization of shunts invocation
@@ -17,7 +17,8 @@ import com.tverts.shunts.SelfShuntUnitReport;
  *
  * The present implementation does allow to
  * call not all the shunts, but a named subset
- * of the shunts, named shunts group.
+ * of the shunts, or named shunts group.
+ *
  *
  * @author anton.baukin@gmail.com
  */

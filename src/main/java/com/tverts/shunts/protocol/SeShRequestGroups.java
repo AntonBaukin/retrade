@@ -2,6 +2,7 @@ package com.tverts.shunts.protocol;
 
 /* standard Java classes */
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -9,6 +10,7 @@ import java.util.TreeSet;
 
 import static com.tverts.support.SU.a2s;
 import static com.tverts.support.SU.s2a;
+
 
 /**
  * Initial request to call a sequence of self shunt
@@ -21,7 +23,8 @@ import static com.tverts.support.SU.s2a;
  * no effect.
  *
  * The key of this request is the string with the ordered
- * names of the groups separated by {@code ", "}.
+ * names of the groups separated by ', '.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -30,12 +33,14 @@ public class      SeShRequestGroups
 {
 	public static final long serialVersionUID = 0L;
 
+
 	/* public: SeShRequest interface */
 
 	public Object   getSelfShuntKey()
 	{
 		return getGroupsStr();
 	}
+
 
 	/* public: SeShRequestGroups interface */
 
@@ -48,10 +53,11 @@ public class      SeShRequestGroups
 	{
 		Set<String> gset = new TreeSet<String>();
 
-		if(groups != null) for(String g : groups)
-			gset.add(g);
+		if(groups != null)
+			gset.addAll(Arrays.asList(groups));
 
-		this.groups = gset.toArray(new String[gset.size()]);
+		this.groups = gset.toArray(
+		  new String[gset.size()]);
 	}
 
 	public String   getGroupsStr()
@@ -64,7 +70,8 @@ public class      SeShRequestGroups
 		this.setGroups(s2a(groups));
 	}
 
-	/* private: the group name */
+
+	/* private: the group names */
 
 	private String[] groups = new String[0];
 }

@@ -14,6 +14,7 @@ import com.tverts.shunts.protocol.SeShProtocolBase.SeShSystemFailure;
 import static com.tverts.support.SU.s2a;
 import static com.tverts.support.SU.s2s;
 
+
 /**
  * Provides implementation base that would
  * be handy for any actual shunts HTTP client.
@@ -75,6 +76,7 @@ public abstract class SeShWebClientBase
 
 	public void         release()
 	{}
+
 
 	/* public: client parameters */
 
@@ -198,13 +200,11 @@ public abstract class SeShWebClientBase
 		this.reconnPause = reconnPause;
 	}
 
+
 	/* protected: connection issues */
 
-	protected abstract SeShResponse
-	                  sendRequest (
-	                    String      port,
-	                    SeShRequest request
-	                  )
+	protected abstract SeShResponse sendRequest
+	  (String port, SeShRequest request)
 	  throws SeShProtocolError, InterruptedException;
 
 	/**
@@ -215,11 +215,8 @@ public abstract class SeShWebClientBase
 	 * Hint: the system error of the response provided
 	 * is already handled outside of this call.
 	 */
-	protected SeShResponse
-	                  connectionAttempt (
-	                    String             port,
-	                    SeShRequestInitial request
-	                  )
+	protected SeShResponse          connectionAttempt
+	  (String port, SeShRequestInitial request)
 	  throws SeShProtocolError, InterruptedException
 	{
 		try
@@ -283,7 +280,8 @@ public abstract class SeShWebClientBase
 		return waitee;
 	}
 
-	/* private: protocol parameters access*/
+
+	/* private: protocol parameters */
 
 	private String   shuntServlet = DEF_SERVLET;
 	private String[] ports        = DEF_PORTS;
@@ -291,6 +289,7 @@ public abstract class SeShWebClientBase
 	private int      connTimeout  = DEF_CONN_TIMEOUT;
 	private int      connAttempts = DEF_CONN_ATTEMPTS;
 	private int      reconnPause  = DEF_RECONN_PAUSE;
+
 
 	/* protected + private: protocol state */
 

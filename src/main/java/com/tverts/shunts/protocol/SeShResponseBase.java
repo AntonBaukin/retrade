@@ -4,22 +4,24 @@ package com.tverts.shunts.protocol;
 
 import com.tverts.shunts.SelfShuntUnitReport;
 
+
 /**
  * A {@link SeShResponse} structure.
  *
  * @author anton.baukin@gmail.com
  */
-public class      SeShBasicResponse
-       implements SeShResponse
+public class SeShResponseBase implements SeShResponse
 {
 	public static final long serialVersionUID = 0L;
 
+
 	/* public: constructor */
 
-	public SeShBasicResponse(SeShRequest thisRequest)
+	public SeShResponseBase(SeShRequest thisRequest)
 	{
 		this.thisRequest = thisRequest;
 	}
+
 
 	/* public: SeShResponse interface */
 
@@ -43,7 +45,8 @@ public class      SeShBasicResponse
 		return systemError;
 	}
 
-	/* public: SeShBasicResponse (bean access) */
+
+	/* public: SeShBasicResponse (bean) interface */
 
 	public void setNextRequest(SeShRequest nextRequest)
 	{
@@ -60,7 +63,8 @@ public class      SeShBasicResponse
 		this.systemError = e;
 	}
 
-	/* private: fields of the response */
+
+	/* private: response data */
 
 	private SeShRequest         thisRequest;
 	private SeShRequest         nextRequest;

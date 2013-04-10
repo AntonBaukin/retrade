@@ -2,6 +2,7 @@ package com.tverts.shunts.service;
 
 /* com.tverts: system services */
 
+import com.tverts.shunts.protocol.SeShResponseBase;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
@@ -13,9 +14,7 @@ import com.tverts.genesis.GenesisDone;
 
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntReport;
-import com.tverts.shunts.protocol.SeShBasicResponse;
 import com.tverts.shunts.protocol.SeShProtocol;
-import com.tverts.shunts.protocol.SeShProtocolReference;
 import com.tverts.shunts.protocol.SeShRequest;
 import com.tverts.shunts.protocol.SeShResponse;
 import com.tverts.shunts.reports.SeShReportConsumer;
@@ -103,8 +102,8 @@ public class SelfShuntService extends ServiceBase
 		}
 		catch(Throwable e)
 		{
-			SeShBasicResponse response =
-			  new SeShBasicResponse(request);
+			SeShResponseBase response =
+			  new SeShResponseBase(request);
 
 			response.setSystemError(e);
 			return response;

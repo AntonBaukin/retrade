@@ -5,11 +5,11 @@ package com.tverts.shunts.protocol;
 import java.util.List;
 
 /**
- * While it is not expected that a request
- * to self shunting service to be modified,
- * nobody told that it is not possible to
- * clone the original request before sending
- * it as the next one.
+ * While it is not expected that a Request
+ * to Self-Shunting Service to be modified,
+ * nobody told that it is forbidden to clone
+ * the original request before sending it
+ * as the next one.
  *
  * Shunt requests sequence contains the list
  * of all the shunts are left to invoke.
@@ -20,6 +20,7 @@ import java.util.List;
  * key of the shunt within the list. This
  * shunt must be invoked by the service.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public class      SeShRequestsSequence
@@ -27,12 +28,14 @@ public class      SeShRequestsSequence
 {
 	public static final long serialVersionUID = 0L;
 
+
 	/* public: constructor */
 
 	/**
 	 * Creates the sequence with the copy of the
 	 * shunt unit keys given.
 	 */
+	@SuppressWarnings("unchecked")
 	public SeShRequestsSequence(List shunts)
 	{
 		if(shunts == null)
@@ -47,6 +50,7 @@ public class      SeShRequestsSequence
 		return (position >= shunts.length)?(null)
 		  :(shunts[position]);
 	}
+
 
 	/* public: SeShRequestsSequence interface */
 

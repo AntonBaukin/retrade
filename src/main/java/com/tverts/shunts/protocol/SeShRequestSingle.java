@@ -11,12 +11,14 @@ import static com.tverts.support.SU.s2s;
  * The key of this request is the key of
  * the unit name.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public class      SeShRequestSingle
        implements SeShRequestInitial
 {
 	public static final long serialVersionUID = 0L;
+
 
 	/* public: constructor */
 
@@ -28,12 +30,14 @@ public class      SeShRequestSingle
 		this.unitName = unitName;
 	}
 
+
 	/* public: SeShRequest interface */
 
 	public Object getSelfShuntKey()
 	{
 		return unitName;
 	}
+
 
 	/* private: the unit name */
 

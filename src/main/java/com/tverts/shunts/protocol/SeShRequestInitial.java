@@ -24,7 +24,9 @@ package com.tverts.shunts.protocol;
  * same string value as a group name may has
  * completely else meaning.
  *
+ *
  * @author anton.baukin@gmail.com
  */
-public interface SeShRequestInitial extends SeShRequest
+public interface SeShRequestInitial
+       extends   SeShRequest
 {}

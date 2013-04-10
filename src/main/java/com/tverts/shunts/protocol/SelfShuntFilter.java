@@ -25,6 +25,7 @@ import static com.tverts.support.SU.s2s;
 import com.tverts.support.streams.Base64Decoder;
 import com.tverts.support.streams.Base64Encoder;
 
+
 /**
  * Over the comments the shunt processing servlet
  * is sometimes named. But there is no such a
@@ -46,6 +47,7 @@ import com.tverts.support.streams.Base64Encoder;
  *
  * As it is must be, the filter instance is
  * thread-safe (reentable).
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -71,14 +73,14 @@ public class   SelfShuntFilter
 	public void closeFilter(FilterTask task)
 	{}
 
+
 	/* public: parameters of the filter */
 
 	/**
 	 * Refers a Self Shunt Service this filter
 	 * works with. Has no default value.
 	 */
-	public SelfShuntService
-	            getService()
+	public SelfShuntService getService()
 	{
 		return service;
 	}
@@ -91,6 +93,11 @@ public class   SelfShuntFilter
 		this.service = service;
 	}
 
+	/**
+	 * The name of the "servlet". This servlet (or JSP)
+	 * doesn't exist actually, but there must be some
+	 * server path name to be handled by this filer.
+	 */
 	public static final String DEF_SERVLET   =
 	  "/self-shunt.jsp";
 
@@ -116,6 +123,7 @@ public class   SelfShuntFilter
 
 		this.shuntServlet = shuntServlet;
 	}
+
 
 	/* protected: request handling */
 
@@ -161,13 +169,14 @@ public class   SelfShuntFilter
 		//2: {has an error} create the response with error
 		if(error != null)
 		{
-			response = new SeShBasicResponse(request);
-			((SeShBasicResponse)response).setSystemError(error);
+			response = new SeShResponseBase(request);
+			((SeShResponseBase)response).setSystemError(error);
 		}
 
 		//3: write the response to the servlet result
 		writeResponse(task, response);
 	}
+
 
 	/* protected: filter request issues */
 
@@ -271,10 +280,7 @@ public class   SelfShuntFilter
 	 * that is set when the request came with this
 	 * transfer encoding header.
 	 */
-	protected void        writeResponse (
-	               FilterTask   task,
-	               SeShResponse response
-	             )
+	protected void        writeResponse(FilterTask task,SeShResponse response)
 	  throws Exception
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
@@ -308,6 +314,7 @@ public class   SelfShuntFilter
 			task.getResponse().addHeader(
 			  "Content-Transfer-Encoding", "base64");
 	}
+
 
 	/* private: parameters of the filter */
 
