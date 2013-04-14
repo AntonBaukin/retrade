@@ -9,7 +9,6 @@ import com.tverts.system.services.events.ServiceEventBase;
  * {@link GenesisService} broadcasts this
  * event after the generation completed.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public class GenesisDone extends ServiceEventBase
@@ -29,8 +28,19 @@ public class GenesisDone extends ServiceEventBase
 		this.event = event;
 	}
 
+	public Long getDomain()
+	{
+		return domain;
+	}
+
+	public void setDomain(Long domain)
+	{
+		this.domain = domain;
+	}
+
 
 	/* the original genesis event */
 
 	private GenesisEvent event;
+	private Long         domain;
 }

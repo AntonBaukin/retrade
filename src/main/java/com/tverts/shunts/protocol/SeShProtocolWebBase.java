@@ -31,6 +31,10 @@ public abstract class SeShProtocolWebBase
 		SeShRequestInitial request = createInitialRequest();
 		logInitialRequest(request);
 
+		//~: assign the Context UID
+		if(context != null)
+			request.setContextUID(context.getUID());
+
 		//2: make initial connection & the response
 		shuntRequest = getWebClient().connect(request);
 	}

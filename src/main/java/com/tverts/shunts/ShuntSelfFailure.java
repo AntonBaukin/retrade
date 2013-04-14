@@ -4,19 +4,20 @@ package com.tverts.shunts;
 
 import static org.junit.Assert.fail;
 
+
 /**
  * Tests Shunt Subsystem: has not critical failure.
  *
  * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
-@SelfShuntGroups({"system:shunts:success"})
+@SelfShuntGroups({"system:shunts:failure"})
 @SelfShuntDescr("Tests Shunt Subsystem: has not critical failure.")
 public class ShuntSelfFailure extends ShuntSelfSuccess
 {
 	/* shunt entries */
 
-	@SelfShuntMethod(descrEn =
+	@SelfShuntMethod(critical = false, descrEn =
 	  "here assertion failure is raised")
 	public void testFailure()
 	{

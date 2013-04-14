@@ -4,14 +4,15 @@ package com.tverts.shunts;
 
 import static org.junit.Assert.fail;
 
+
 /**
  * Tests Shunt Subsystem: raises critical failure.
- * Inlcude this test only when debugging the subsystem.
+ * Include this test only when debugging the subsystem.
  *
  * @author anton.baukin@gmail.com
  */
 @SelfShuntUnit
-@SelfShuntGroups({"system:shunts:killme"})
+@SelfShuntGroups({"system:shunts:critical-failure"})
 @SelfShuntDescr("Tests Shunt Subsystem: raises critical failure.")
 public class ShuntSelfCriticalFailure extends ShuntSelfSuccess
 {

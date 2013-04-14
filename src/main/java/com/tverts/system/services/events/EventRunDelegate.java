@@ -33,6 +33,10 @@ public abstract class EventRunDelegate
 			//~: clone the event
 			EventBase e = OU.cloneBest(getEvent());
 
+			//~: update the event
+			e = updateEvent(e, event);
+			if(e == null) return false;
+
 			//?: {has no target service}
 			if(getTargetService(event) == null)
 				broadcast(e);
@@ -42,6 +46,7 @@ public abstract class EventRunDelegate
 
 		return false;
 	}
+
 
 	/* public: EventRunDelegate interface */
 
@@ -77,6 +82,11 @@ public abstract class EventRunDelegate
 	protected String           getTargetService(Event event)
 	{
 		return this.getService();
+	}
+
+	protected EventBase        updateEvent(EventBase res, Event event)
+	{
+		return res;
 	}
 
 

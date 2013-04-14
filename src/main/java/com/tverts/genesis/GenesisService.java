@@ -9,6 +9,7 @@ import java.util.Map;
 
 /* com.tverts: system services */
 
+import com.tverts.endure.core.Domain;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
@@ -104,7 +105,7 @@ public class GenesisService extends ServiceBase
 
 		//?: {has no error}
 		if(error == null)
-			success(event);
+			success(ctx, event);
 		else
 			throw new RuntimeException(
 			  "Genesis failed! Service aborts generation!", error);
@@ -233,13 +234,17 @@ public class GenesisService extends ServiceBase
 		}
 	}
 
-	protected void success(GenesisEvent event)
+	protected void success(GenCtx ctx, GenesisEvent event)
 	{
 		LU.I(getLog(), logsig(), " genesis successfully completed!");
 
 		//~: create & send the event
 		GenesisDone done = new GenesisDone();
 		done.setEvent(event);
+
+		//~: domain
+		if(ctx.get(Domain.class) != null)
+			done.setDomain(ctx.get(Domain.class).getPrimaryKey());
 
 		main(done);
 	}

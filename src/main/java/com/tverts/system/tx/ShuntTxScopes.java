@@ -40,7 +40,7 @@ import static com.tverts.support.LU.sig;
 
 @Component("shuntTxScopes") @Scope("prototype")
 @SelfShuntUnit(single = true)
-@SelfShuntGroups({"system:tx:scopes", "system:db:connect"})
+@SelfShuntGroups({"system", "system:tx", "system:tx:scopes"})
 @SelfShuntDescr("Tests binding the Spring Declarative " +
  "Tx Management Layer with Hibernate Database Connectivity.")
 public class ShuntTxScopes

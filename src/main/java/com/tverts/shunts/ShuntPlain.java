@@ -68,7 +68,7 @@ public abstract class ShuntPlain
 		return ctx;
 	}
 
-	private Domain         domain()
+	protected Domain       domain()
 	{
 		//?: {there is no domain key}
 		if(ctx().getDomain() == null)

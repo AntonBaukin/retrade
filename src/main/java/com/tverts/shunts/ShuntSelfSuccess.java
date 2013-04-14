@@ -4,37 +4,40 @@ package com.tverts.shunts;
 
 import static org.junit.Assert.assertEquals;
 
+
 /**
  * Tests Shunt Subsystem: all the methods are successful.
  *
  * @author anton.baukin@gmail.com
  */
-@SelfShuntUnit
-@SelfShuntGroups({"system:shunts:success"})
+@SelfShuntUnit(single = true)
+@SelfShuntGroups({"system", "system:shunts", "system:shunts:success"})
 @SelfShuntDescr("Tests Shunt Subsystem: all the methods are successful.")
 public class ShuntSelfSuccess
 {
 	@SelfShuntMethod(
 	  order = 0, critical = true, inherit = true,
-	  descrEn = "1 = 1 success (first)")
+	  descrEn = "first success")
 	public void testFirstSuccess()
 	{
-		assertEquals(1, 1);
+		assertEquals(++i, 1);
 	}
 
 	@SelfShuntMethod(
 	  order = 1, critical = true, inherit = true,
-	  descrEn = "2 = 1 + 1 success (second)")
+	  descrEn = "second success")
 	public void testSecondSuccess()
 	{
-		assertEquals(2, 1 + 1);
+		assertEquals(++i, 2);
 	}
 
 	@SelfShuntMethod(
 	  order = 2, critical = true, inherit = true,
-	  descrEn = "2 = 5 / 2 success (third)")
+	  descrEn = "third success")
 	public void testThirdSuccess()
 	{
-		assertEquals(2, 5 / 2);
+		assertEquals(++i, 3);
 	}
+
+	private int i;
 }

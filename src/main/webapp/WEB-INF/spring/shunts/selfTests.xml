@@ -26,13 +26,17 @@
           </property>
         </bean>
 
+
+        <!-- system:shunts:failure -->
+
         <bean class = 'com.tverts.shunts.SelfShuntTarget'>
           <property name = 'target'>
             <bean class = 'com.tverts.shunts.ShuntSelfFailure'/>
           </property>
         </bean>
 
-        <!-- system:shunts:killme -->
+
+        <!-- system:shunts:critical-failure -->
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · As this shunt unit would stop the shunts invocation       ·
@@ -43,6 +47,16 @@
             <bean class = 'com.tverts.shunts.ShuntSelfCriticalFailure'/>
           </property>
         </bean>
+
+
+        <!-- system:shunts:context -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfContext'/>
+          </property>
+        </bean>
+
 
         <!-- system:tx:scopes -->
 
