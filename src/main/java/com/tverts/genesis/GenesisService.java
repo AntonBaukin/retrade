@@ -204,6 +204,8 @@ public class GenesisService extends ServiceBase
 
 		//~: assign & log them
 		StringBuilder sb = new StringBuilder(64);
+		boolean       rw;
+
 		for(ObjectParam p : params)
 		{
 			//~: describe the parameter
@@ -219,12 +221,12 @@ public class GenesisService extends ServiceBase
 			sb.append("Parameter] ");
 
 			//?: {has this parameter in the event} assign it
-			if(event.getParams().containsKey(p.getName()))
+			if(rw = event.getParams().containsKey(p.getName()))
 				p.setString(event.getParams().get(p.getName()));
 
 			//~: log the value existing | assigned
-			LU.I(getLog(), logsig(), sb,
-			  p.getName(), " = [", p.getString(), "]");
+			LU.I(getLog(), sb, p.getName(),
+			  (rw)?(" [SET]"):(" [DEF]"), " = [", p.getString(), "]");
 
 			//?: {required parameter has no value}
 			if(p.isRequired() && (p.getValue() == null))

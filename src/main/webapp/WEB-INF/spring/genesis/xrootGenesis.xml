@@ -8,7 +8,7 @@
     =  Sphere of Domain Model' Core                   =
     +===============================================-->
 
-  <import resource = 'domainCoreSphere.xml'/>
+  <import resource = 'coreTestDomainSphere.xml'/>
 
 
   <!--=================================================
@@ -25,7 +25,7 @@
     <property name = 'references'>
       <list>
 
-        <ref bean = 'domainCoreSphere'/>
+        <ref bean = 'coreTestDomainSphere'/>
 
       </list>
     </property>

@@ -13,10 +13,10 @@
     |
     +================================================-->
 
-  <bean name  = 'domainCoreSphere'
+  <bean name  = 'coreTestDomainSphere'
         class = 'com.tverts.genesis.GenesisSphere'>
 
-    <property name = 'name' value = 'Core'/>
+    <property name = 'name' value = 'Core Test'/>
 
     <!-- the list of genesis units in this sphere -->
     <constructor-arg>
