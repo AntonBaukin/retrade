@@ -107,8 +107,7 @@ public class GenesisService extends ServiceBase
 		if(error == null)
 			success(ctx, event);
 		else
-			throw new RuntimeException(
-			  "Genesis failed! Service aborts generation!", error);
+			error(ctx, event, error);
 	}
 
 	protected void selectSpheres(GenesisEvent event, List<GenesisSphere> spheres)
@@ -240,8 +239,10 @@ public class GenesisService extends ServiceBase
 	{
 		LU.I(getLog(), logsig(), " genesis successfully completed!");
 
-		//~: create & send the event
+		//~: create & send done event
 		GenesisDone done = new GenesisDone();
+
+		//~: source generation event
 		done.setEvent(event);
 
 		//~: domain
@@ -249,6 +250,20 @@ public class GenesisService extends ServiceBase
 			done.setDomain(ctx.get(Domain.class).getPrimaryKey());
 
 		main(done);
+	}
+
+	protected void error(GenCtx ctx, GenesisEvent event, Throwable error)
+	{
+		//~: create & send failure event
+		GenesisFailed failed = new GenesisFailed();
+
+		//~: source generation event
+		failed.setEvent(event);
+
+		//~: the error
+		failed.setError(error);
+
+		main(failed);
 	}
 
 	protected void handleGenesisError(GenesisSphere sphere, Throwable e)

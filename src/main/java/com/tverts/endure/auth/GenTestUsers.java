@@ -33,7 +33,7 @@ import com.tverts.support.xml.SaxProcessor;
 
 
 /**
- * Reads 'GenUsers.xml' file with the users
+ * Reads 'GenTestUsers.xml' file with the users
  * of the Test Domain. Creates the instances.
  *
  * @author anton.baukin@gmail.com
@@ -45,9 +45,9 @@ public class GenTestUsers extends GenesisHiberPartBase
 	public void    generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		Object url = getClass().getResource("GenUsers.xml");
+		Object url = getClass().getResource("GenTestUsers.xml");
 		if(url == null) throw new GenesisError(this, ctx,
-		  new IllegalStateException("No 'GenUsers.xml' file found!"));
+		  new IllegalStateException("No 'GenTestUsers.xml' file found!"));
 
 		try
 		{
@@ -72,11 +72,11 @@ public class GenTestUsers extends GenesisHiberPartBase
 	{
 		if((s.computer == null) && (s.person == null))
 			throw new IllegalStateException(
-			  "Set <computer> or <person> tag in 'GenUsers.xml' file!");
+			  "Set <computer> or <person> tag in 'GenTestUsers.xml' file!");
 
 		if(s.login == null) throw new IllegalStateException(
 		  "Set <login> into <computer>, <person> " +
-		  "tags in 'GenUsers.xml' file!");
+		  "tags in 'GenTestUsers.xml' file!");
 
 		if((s.login.code == null) && (s.computer != null))
 			s.login.code = s.computer.code;
@@ -133,8 +133,8 @@ public class GenTestUsers extends GenesisHiberPartBase
 		if(p != null)
 		{
 			LU.I(log(ctx), logsig(), " found person '", Auth.name(p),
-			 "' with login '", gs.login.code,
-			 "' already existing in the database.");
+			 "' with login [", gs.login.code,
+			 "] already existing in the database.");
 
 			return false;
 		}
@@ -151,7 +151,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		LU.I(log(ctx), logsig(), " created person '", Auth.name(p),
 		  (gs.login == null)?("without login."):
-		    ("' with login '" + gs.login.code + "' already exists in the database.")
+		    ("' with login [" + gs.login.code + "].")
 		);
 
 		return true;

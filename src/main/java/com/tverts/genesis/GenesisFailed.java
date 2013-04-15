@@ -6,12 +6,12 @@ import com.tverts.system.services.events.ServiceEventBase;
 
 
 /**
- * {@link GenesisService} sends this event to
- * Main Service after the generation completed.
+ * {@link GenesisService} sends this event to Main Service
+ * after the generation was breaked due an error.
  *
  * @author anton.baukin@gmail.com
  */
-public class GenesisDone extends ServiceEventBase
+public class GenesisFailed extends ServiceEventBase
 {
 	public static final long serialVersionUID = 0L;
 
@@ -28,19 +28,19 @@ public class GenesisDone extends ServiceEventBase
 		this.event = event;
 	}
 
-	public Long getDomain()
+	public Throwable getError()
 	{
-		return domain;
+		return error;
 	}
 
-	public void setDomain(Long domain)
+	public void setError(Throwable error)
 	{
-		this.domain = domain;
+		this.error = error;
 	}
 
 
 	/* the original genesis event */
 
 	private GenesisEvent event;
-	private Long         domain;
+	private Throwable    error;
 }

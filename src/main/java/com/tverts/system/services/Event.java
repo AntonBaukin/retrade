@@ -10,7 +10,7 @@ package com.tverts.system.services;
  * receives the event after the referred one.
  *
  * Event must be as Serializable Java Bean.
-
+ *
  * @author anton.baukin@gmail.com
  */
 public interface Event extends java.io.Serializable

@@ -146,7 +146,7 @@ public class GenCtxBase implements GenCtx
 			return null;
 
 		Object res = params.get(cls);
-		if((res != null) && !cls.equals(res.getClass()))
+			if((res != null) && !cls.isAssignableFrom(res.getClass()))
 			throw new IllegalStateException();
 
 		return (T) res;

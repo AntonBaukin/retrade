@@ -145,7 +145,8 @@ public class ExecRunService extends ServiceBase
 	 * Executes the request in it's own transaction
 	 * ({@link ExecTxContext} context)
 	 */
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Throwable.class,
+	  propagation = Propagation.REQUIRES_NEW)
 	protected void          executeTaskTx(ExecRequest request)
 	  throws Throwable
 	{

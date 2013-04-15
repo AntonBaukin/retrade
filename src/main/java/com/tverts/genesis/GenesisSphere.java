@@ -199,7 +199,8 @@ public class      GenesisSphere
 			doGen(ctx);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = Throwable.class,
+	  propagation = Propagation.REQUIRES_NEW)
 	protected void     doGenTx(GenCtx ctx)
 	  throws GenesisError
 	{
@@ -228,7 +229,11 @@ public class      GenesisSphere
 
 			//~: restore the original session of the context
 			if(ctx instanceof GenCtxBase)
-				((GenCtxBase)ctx).setSession(session);
+				//?: {there was differ external session}
+				if(session != ctx.session())
+					((GenCtxBase)ctx).setSession(session);
+				else
+					((GenCtxBase)ctx).setSession(null);
 		}
 	}
 	
@@ -339,7 +344,7 @@ public class      GenesisSphere
 	/* private: sphere parameters */
 
 	private Long    seed;
-	private boolean ownTx;
+	private boolean ownTx = true;
 
 	/* private: genesis reference */
 

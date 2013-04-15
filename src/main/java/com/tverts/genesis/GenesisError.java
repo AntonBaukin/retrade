@@ -44,6 +44,6 @@ public class GenesisError extends Exception
 
 	/* private: the Genesis unit reference */
 
-	private Genesis genesis;
-	private GenCtx  ctx;
+	private transient Genesis genesis;
+	private transient GenCtx  ctx;
 }
