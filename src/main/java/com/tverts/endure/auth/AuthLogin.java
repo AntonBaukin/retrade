@@ -10,6 +10,7 @@ import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.Entity;
 import com.tverts.endure.person.Person;
+import com.tverts.endure.person.Persons;
 
 
 /**
@@ -82,7 +83,7 @@ public class AuthLogin extends Entity implements CatItem
 			return name;
 
 		if(getPerson() != null)
-			return name = Auth.name(getPerson());
+			return name = Persons.name(getPerson());
 
 		if(getComputer() != null)
 			return name = Auth.name(getComputer());

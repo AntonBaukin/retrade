@@ -209,7 +209,7 @@ public class GenesisService extends ServiceBase
 		{
 			//~: describe the parameter
 			sb.delete(0, sb.length());
-			sb.append(" [");
+			sb.append("[");
 
 			if(!p.isWrite())
 				sb.append("Read-Only ");

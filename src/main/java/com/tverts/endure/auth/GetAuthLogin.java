@@ -27,6 +27,26 @@ public class GetAuthLogin extends GetObjectBase
 {
 	/* Get Authentication Logins */
 
+	public AuthLogin getLogin(Long domain, String code)
+	{
+
+// from AuthLogin where (domain.id = :domain) and (code = :code)
+
+		return (AuthLogin) Q(
+
+"from AuthLogin where (domain.id = :domain) and (code = :code)"
+
+		).
+		  setLong  ("domain", domain).
+		  setString("code",   code).
+		  uniqueResult();
+	}
+
+	public AuthLogin getSystemLogin(Long domain)
+	{
+		return getLogin(domain, Auth.SYSTEM_USER);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<AuthLogin> getLogins(Computer computer)
 	{
@@ -75,7 +95,7 @@ public class GetAuthLogin extends GetObjectBase
 		  uniqueResult();
 	}
 
-	public Person getPersonByLogin(Long domain, String login)
+	public Person   getPersonByLogin(Long domain, String login)
 	{
 /*
 

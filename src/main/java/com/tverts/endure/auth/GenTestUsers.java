@@ -23,12 +23,12 @@ import com.tverts.genesis.GenesisHiberPartBase;
 
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.person.Person;
+import com.tverts.endure.person.Persons;
 
 /* com.tverts: support */
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
-import com.tverts.support.SU;
 import com.tverts.support.xml.SaxProcessor;
 
 
@@ -132,7 +132,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		if(p != null)
 		{
-			LU.I(log(ctx), logsig(), " found person '", Auth.name(p),
+			LU.I(log(ctx), logsig(), " found person '", Persons.name(p),
 			 "' with login [", gs.login.code,
 			 "] already existing in the database.");
 
@@ -149,7 +149,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		actionRun(ActionType.SAVE, p);
 
-		LU.I(log(ctx), logsig(), " created person '", Auth.name(p),
+		LU.I(log(ctx), logsig(), " created person '", Persons.name(p),
 		  (gs.login == null)?("without login."):
 		    ("' with login [" + gs.login.code + "].")
 		);
@@ -161,33 +161,41 @@ public class GenTestUsers extends GenesisHiberPartBase
 	  throws GenesisError
 	{
 		AuthLogin     l = new AuthLogin();
-		MessageDigest d = (MessageDigest) ctx.get(MessageDigest.class);
+		MessageDigest d = ctx.get(MessageDigest.class);
 		String        p;
 
+		//~: encode the password
 		try
 		{
 			if(d == null) ctx.set(MessageDigest.class, d =
 			  MessageDigest.getInstance("SHA-1"));
 
-			d.reset();
-			p = new String(SU.bytes2hex(
-			  d.digest(s.login.password.getBytes("UTF-8"))
-			));
+			p = Auth.passwordHash(d, s.login.password);
 		}
 		catch(Exception e)
 		{
 			throw new RuntimeException(e);
 		}
 
+		//~: domain
 		l.setDomain(ctx.get(Domain.class));
+
+		//~: code
 		l.setCode(s.login.code);
+
+		//~: password hash
 		l.setPasshash(p);
 
+		//~: computer
 		if(s.computer != null)
 			l.setComputer(s.computer.computer);
+
+		//~: person
 		if(s.person != null)
 			l.setPerson(s.person.person);
 
+
+		//!: do save
 		actionRun(ActionType.SAVE, l);
 	}
 

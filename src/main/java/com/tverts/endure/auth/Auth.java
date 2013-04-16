@@ -1,14 +1,15 @@
 package com.tverts.endure.auth;
 
-/* com.tverts: endure (persons) */
+/* standard Java classes */
 
-import com.tverts.endure.person.Person;
+import java.security.MessageDigest;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.cat;
+import static com.tverts.support.SU.bytes2hex;
 import static com.tverts.support.SU.cats;
 import static com.tverts.support.SU.catif;
+import static com.tverts.support.SU.sXe;
 
 
 /**
@@ -28,17 +29,42 @@ public class Auth
 	  "Core: Auth: Login";
 
 
+	/* system codes */
 
-	/* display names helpers */
+	/**
+	 * Defines code of {@link AuthLogin} that
+	 * is automatically created in each Domain.
+	 * As default, this login refers a Computer.
+	 */
+	public static final String SYSTEM_USER = "System";
+
+
+	/* display name helpers */
 
 	public static String name(Computer c)
 	{
-		return cats(catif(c.getCode(), "[", c.getCode(), "], "), c.getName());
+		return cats(catif(c.getCode(),
+		  "[", c.getCode(), "], "), c.getName());
 	}
 
-	public static String name(Person p)
+
+	/* login helpers */
+
+	public static String passwordHash(MessageDigest d, String p)
 	{
-		return cat(null, " ", p.getFirstName(),
-		  p.getMiddleName(), p.getLastName()).toString();
+		if(sXe(p)) throw new IllegalArgumentException();
+
+		try
+		{
+			d.reset();
+
+			return new String(bytes2hex(
+			  d.digest(p.getBytes("UTF-8"))
+			));
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

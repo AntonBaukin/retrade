@@ -27,7 +27,7 @@
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Create Test Domain
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.endure.core.GenTestDomain'>
+            <bean class = 'com.tverts.endure.core.GenCoreDomain'>
               <property name = 'name' value = 'Domain'/>
             </bean>
 
