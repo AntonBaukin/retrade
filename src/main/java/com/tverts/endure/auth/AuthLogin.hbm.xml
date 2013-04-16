@@ -16,7 +16,7 @@
       <column name = 'fk_domain' not-null = 'true'
         unique-key = 'ux_login'>
 
-        <comment>Domain where the Computer is registered</comment>
+        <comment>Domain where the Login is registered</comment>
       </column>
     </many-to-one>
 
@@ -50,7 +50,7 @@
 
       <column name = 'fk_computer' index = 'ix_login_computer'>
 
-        <comment>The external computer system this Login is assigned</comment>
+        <comment>The computer (process, task, etc.) this Login is assigned</comment>
       </column>
     </many-to-one>
 

@@ -198,7 +198,7 @@ public class AuthClient
 	}
 
 	/**
-	 * Integer value with the client domain key.
+	 * String code with the client domain key.
 	 */
 	public AuthClient initDomain(String domain)
 	{
