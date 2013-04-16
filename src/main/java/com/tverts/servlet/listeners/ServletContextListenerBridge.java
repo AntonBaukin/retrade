@@ -5,6 +5,11 @@ package com.tverts.servlet.listeners;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+/* com.tverts: system */
+
+import com.tverts.system.SystemClassLoader;
+
+
 /**
  * As a {@link ServletContextListener} class this
  * class must be registered in 'web.xml' file.
@@ -20,6 +25,7 @@ import javax.servlet.ServletContextListener;
  * To register different listeners you must
  * create subclasses and refer other point.
  *
+ *
  * @see {@link ServletContextListenerBean}
  *
  * @author anton.baukin@gmail.com
@@ -31,13 +37,36 @@ public class      ServletContextListenerBridge
 
 	public void contextInitialized(ServletContextEvent sce)
 	{
-		getListenerPoint().contextInitialized(sce);
+		//~: bind system class loader
+		SystemClassLoader.bind();
+
+		try
+		{
+			getListenerPoint().contextInitialized(sce);
+		}
+		finally
+		{
+			//~: unbind system class loader
+			SystemClassLoader.unbind();
+		}
 	}
 
 	public void contextDestroyed(ServletContextEvent sce)
 	{
-		getListenerPoint().contextDestroyed(sce);
+		//~: bind system class loader
+		SystemClassLoader.bind();
+
+		try
+		{
+			getListenerPoint().contextDestroyed(sce);
+		}
+		finally
+		{
+			//~: unbind system class loader
+			SystemClassLoader.unbind();
+		}
 	}
+
 
 	/* protected: access point */
 

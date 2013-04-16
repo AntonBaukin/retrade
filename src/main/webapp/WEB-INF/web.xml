@@ -30,6 +30,7 @@
     </listener-class>
   </listener>
 
+
   <!-- Spring Context and Request Listeners -->
 
   <context-param>
@@ -49,9 +50,9 @@
 
     <display-name>Spring Log4J Configurator</display-name>
     <listener-class>
-      org.springframework.web.util.Log4jConfigListener
+      com.tverts.spring.Log4jConfigListener
     </listener-class>
-  </listener>
+   </listener>
 
   <listener>
     <description>
@@ -60,7 +61,7 @@
 
     <display-name>Spring Startup Context Listener</display-name>
     <listener-class>
-      org.springframework.web.context.ContextLoaderListener
+      com.tverts.spring.ContextLoaderListener
     </listener-class>
   </listener>
 
@@ -71,23 +72,10 @@
 
     <display-name>Spring Request Context Listener</display-name>
     <listener-class>
-      org.springframework.web.context.request.RequestContextListener
+      com.tverts.spring.RequestContextListener
     </listener-class>
   </listener>
 
-  <!-- Java Server Faces (RI) Initializer -->
-  <!--
-  <listener>
-    <description>
-      Loads configuration for JSF RI (Reference Implementation).
-    </description>
-
-    <display-name>Java Server Faces Initializer</display-name>
-    <listener-class>
-      com.sun.faces.config.ConfigureListener
-    </listener-class>
-  </listener>
-  -->
 
   <!-- Java Server Faces (RI) Lifecycle Listener -->
 
@@ -99,9 +87,10 @@
 
     <display-name>Java Server Faces Lifecycle</display-name>
     <listener-class>
-      com.sun.faces.application.WebappLifecycleListener
+      com.tverts.faces.system.WebappLifecycleListener
     </listener-class>
   </listener>
+
 
   <!-- Web Application Context Initializer -->
 
@@ -179,7 +168,7 @@
   <servlet>
     <display-name>Java Server Faces 2.x Servlet</display-name>
     <servlet-name>faces_FacesServlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <servlet-class>com.tverts.faces.system.FacesServletWrapper</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 

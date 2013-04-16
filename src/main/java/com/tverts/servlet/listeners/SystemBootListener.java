@@ -1,28 +1,40 @@
 package com.tverts.servlet.listeners;
 
+/* Java Servlet api */
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 /* tverts.com: servlets */
 
 import com.tverts.servlet.RequestPoint;
 
+/* tverts.com: system */
+
+import com.tverts.system.SystemClassLoader;
+
 
 /**
+ * Prepares the system to work.
+ *
  * Binds web application context with Servlet and
  * Java Server Faced support routines.
  *
  *
  * @author anton.baukin@gmail.com
  */
-public class   SystemBootListener
-       extends ServletContextListenerBase
+public class      SystemBootListener
+       implements ServletContextListener
 {
-	/* protected: ServletContextListenerBase interface */
+	/* public: ServletContextListener interface */
 
-	protected void init()
+	public void contextInitialized(ServletContextEvent event)
 	{
-		RequestPoint.setContext(getEvent().getServletContext());
+		SystemClassLoader.init();
+		RequestPoint.setContext(event.getServletContext());
 	}
 
-	protected void destroy()
+	public void contextDestroyed(ServletContextEvent event)
 	{
 		RequestPoint.setContext(null);
 	}

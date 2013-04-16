@@ -5,6 +5,11 @@ package com.tverts.servlet.listeners;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 
+/* com.tverts: system */
+
+import com.tverts.system.SystemClassLoader;
+
+
 /**
  * As a {@link ServletRequestListener} class this
  * class must be registered in 'web.xml' file.
@@ -20,6 +25,7 @@ import javax.servlet.ServletRequestListener;
  * To register different listeners you must
  * create subclasses and refer other point.
  *
+ *
  * @see {@link ServletRequestListenerBean}
  *
  * @author anton.baukin@gmail.com
@@ -31,13 +37,36 @@ public class      ServletRequestListenerBridge
 
 	public void requestInitialized(ServletRequestEvent sre)
 	{
-		getListenerPoint().requestInitialized(sre);
+		//~: bind system class loader
+		SystemClassLoader.bind();
+
+		try
+		{
+			getListenerPoint().requestInitialized(sre);
+		}
+		finally
+		{
+			//~: unbind system class loader
+			SystemClassLoader.unbind();
+		}
 	}
 
 	public void requestDestroyed(ServletRequestEvent sre)
 	{
-		getListenerPoint().requestDestroyed(sre);
+		//~: bind system class loader
+		SystemClassLoader.bind();
+
+		try
+		{
+			getListenerPoint().requestDestroyed(sre);
+		}
+		finally
+		{
+			//~: unbind system class loader
+			SystemClassLoader.unbind();
+		}
 	}
+
 
 	/* protected: access point */
 

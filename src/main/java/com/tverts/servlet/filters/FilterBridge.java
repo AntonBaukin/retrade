@@ -15,10 +15,18 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/* com.tverts: spring, support */
+/* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.beanOrNull;
+
+/* com.tverts: system */
+
+import com.tverts.system.SystemClassLoader;
+
+/* com.tverts: support */
+
 import static com.tverts.support.SU.s2s;
+
 
 /**
  * Being a Servlet Filter connects Web application
@@ -39,6 +47,7 @@ import static com.tverts.support.SU.s2s;
  * gets the stage of the filter invocation as a value
  * of {@link FilterTask#getFilterStage()}.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public class      FilterBridge
@@ -53,39 +62,73 @@ public class      FilterBridge
 	            )
 	  throws IOException, ServletException
 	{
-		//?: {wrong call context} skip it
-		if(!(request  instanceof HttpServletRequest ) ||
-		   !(response instanceof HttpServletResponse)
-		  )
+		//~: bind system class loader
+		SystemClassLoader.bind();
+
+		try
 		{
-			chain.doFilter(request, response);
-			return;
+			//?: {wrong call context} skip it
+			if(!(request  instanceof HttpServletRequest ) ||
+			   !(response instanceof HttpServletResponse)
+			  )
+			{
+				chain.doFilter(request, response);
+				return;
+			}
+
+			//create the filter task
+			FilterTask task = createTask(
+			  (HttpServletRequest)request,
+			  (HttpServletResponse)response,
+			  chain);
+
+			//!: process the task
+			processTask(task);
 		}
-
-		//create the filter task
-		FilterTask task = createTask(
-		  (HttpServletRequest)request,
-		  (HttpServletResponse)response,
-		  chain);
-
-		//!: process the task
-		processTask(task);
+		finally
+		{
+			//~: unbind system class loader
+			SystemClassLoader.unbind();
+		}
 	}
 
 	public void init(FilterConfig cfg)
 	  throws ServletException
 	{
-		filterStage     = configFilterStage(cfg);
-		filterReference = configFilterReference(cfg);
-		filters         = collectFilters();
+		//~: bind system class loader
+		SystemClassLoader.bind();
+
+		try
+		{
+			filterStage     = configFilterStage(cfg);
+			filterReference = configFilterReference(cfg);
+			filters         = collectFilters();
+		}
+		finally
+		{
+			//~: unbind system class loader
+			SystemClassLoader.unbind();
+		}
 	}
 
 	public void destroy()
 	{
-		filterStage     = null;
-		filterReference = null;
-		filters         = null;
+		//~: bind system class loader
+		SystemClassLoader.bind();
+
+		try
+		{
+			filterStage     = null;
+			filterReference = null;
+			filters         = null;
+		}
+		finally
+		{
+			//~: unbind system class loader
+			SystemClassLoader.unbind();
+		}
 	}
+
 
 	/* protected: filter processing */
 
