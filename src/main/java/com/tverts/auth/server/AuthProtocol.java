@@ -175,18 +175,9 @@ public class AuthProtocol implements Cloneable
 	  throws IOException
 	{
 		//~: parse the domain
-		long domain;
-		if(param("domain") == null)
+		String domain = param("domain");
+		if(domain == null)
 			return "Send domain parameter.";
-
-		try
-		{
-			domain = Long.parseLong(param("domain"));
-		}
-		catch(NumberFormatException e)
-		{
-			return "Domain must be a long number.";
-		}
 
 		//~: login
 		String login = param("login");
@@ -263,12 +254,17 @@ public class AuthProtocol implements Cloneable
 		{
 			//<: check the user password
 
+			//~: lookup in the database
+			Object[] DP = dbc.getDomainPassword(domain, login);
+			if(DP == null)
+				return "Wrong H signature."; //<-- not to allow logins scan
+
 			//HINT: user password is stored in the database
 			//  as SHA-1 signature in HEX string.
 
-			String P  = dbc.getPassword(domain, login);
-			String xH = digest.signHex(
-			  Rc, Rs, param("domain"), login, P.toCharArray()
+			String   P  = (String) DP[1];
+			String   xH = digest.signHex(
+			  Rc, Rs, domain, login, P.toCharArray()
 			);
 
 			if(!xH.equals(H))
@@ -292,7 +288,7 @@ public class AuthProtocol implements Cloneable
 			AuthSession session = new AuthSession();
 
 			session.setSessionId(sid);
-			session.setDomain(domain);
+			session.setDomain((Long) DP[0]);
 			session.setLogin(login);
 			session.setServerTime(System.currentTimeMillis());
 			session.setSessionKey(skey);

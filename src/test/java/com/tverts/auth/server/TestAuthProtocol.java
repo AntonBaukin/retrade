@@ -197,7 +197,7 @@ public class TestAuthProtocol
 
 		/* public: DbConnect (data access) interface */
 
-		public void    initProtocol()
+		public void    initDatabase()
 		{}
 
 		public String  nextSidPrefix()
@@ -205,14 +205,20 @@ public class TestAuthProtocol
 			return Long.toHexString(sid++);
 		}
 
-		public String  getPassword(Long domain, String login)
+		public Object[] getDomainPassword(String domain, String login)
 		{
-			if(domain != -1L)
+			if(!"Test".equals(domain))
 				return null;
-			return passwords.get(login);
+
+			Object[] res = new Object[2];
+
+			res[0] = -1L;
+			res[1] = passwords.get(login);
+
+			return res;
 		}
 
-		public boolean existsRs(Long domain, String login, String Rs)
+		public boolean existsRs(String domain, String login, String Rs)
 		{
 			return false;
 		}
@@ -292,7 +298,6 @@ public class TestAuthProtocol
 	{
 		/* public: TestAuthClient interface */
 
-
 		public void setLogin(String login)
 		{
 			this.login = login;
@@ -346,7 +351,7 @@ public class TestAuthProtocol
 			  new HashMap<String, String>(7);
 
 			//~: domain
-			params.put("domain", "-1");
+			params.put("domain", "Test");
 
 			//~: login
 			assertNotNull(login);
@@ -369,7 +374,7 @@ public class TestAuthProtocol
 			//~: calculate H
 			assertNotNull(passhash);
 			String H = authDigest.signHex(
-			  Rc, Rs, "-1", login, passhash.toCharArray()
+			  Rc, Rs, "Test", login, passhash.toCharArray()
 			);
 
 			params.put("H", H);

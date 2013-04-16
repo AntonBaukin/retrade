@@ -83,7 +83,7 @@ public class DbConnect implements Cloneable
 
 	/* public: DbConnect (authentication) interface */
 
-	public void    initDatabase()
+	public void     initDatabase()
 	{
 		try
 		{
@@ -97,7 +97,7 @@ public class DbConnect implements Cloneable
 		}
 	}
 
-	public String  nextSidPrefix()
+	public String   nextSidPrefix()
 	{
 		if(connection == null)
 			throw new IllegalStateException();
@@ -131,64 +131,96 @@ public class DbConnect implements Cloneable
 		return Long.toString(si);
 	}
 
-	public String  getPassword(Long domain, String login)
+	/**
+	 * Returns array where [0] is Long primary key of the
+	 * Domain, and [1] String is the password hash.
+	 */
+	public Object[] getDomainPassword(String domainCode, String login)
 	  throws SQLException
 	{
 		if(connection == null)
 			throw new IllegalStateException();
 
-		String result = null;
+		Object[] result = null;
 
 
 /*
 
-select lo.passhash from auth_login lo where
-  (lo.fk_domain = ?) and (lo.ux_login = ?) and
+select lo.fk_domain, lo.passhash from
+  auth_login lo
+    join
+  core_domain d
+    on (lo.fk_domain = d.pk_entity)
+where
+  (d.domain_code = ?) and (lo.ux_login = ?) and
   (lo.close_time is null)
 
 */
 
 		PreparedStatement ps = connection.prepareStatement(
 
-  "select lo.passhash from auth_login lo where\n" +
-  "  (lo.fk_domain = ?) and (lo.ux_login = ?) and\n" +
-  "  (lo.close_time is null)"
+"select lo.fk_domain, lo.passhash from\n" +
+"  auth_login lo\n" +
+"    join\n" +
+"  core_domain d\n" +
+"    on (lo.fk_domain = d.pk_entity)\n" +
+"where\n" +
+"  (d.domain_code = ?) and (lo.ux_login = ?) and\n" +
+"  (lo.close_time is null)"
 
 		);
 
-		ps.setLong  (1, domain);
+		ps.setString(1, domainCode);
 		ps.setString(2, login);
 
 		ps.execute();
 		if(ps.getResultSet().next())
-			result = ps.getResultSet().getString(1);
+		{
+			result    = new Object[2];
+			result[0] = ps.getResultSet().getLong(1);
+			result[1] = ps.getResultSet().getString(2);
+		}
 		ps.close();
 
 		return result;
 	}
 
-	public boolean existsRs(Long domain, String login, String Rs)
+	public boolean  existsRs(String domainCode, String login, String Rs)
 	  throws SQLException
 	{
 /*
 
-select true from auth_session se join auth_login lo
-  on se.fk_login = lo.pk_entity
-where (lo.fk_domain = ?) and (lo.ux_login = ?) and
+select true from
+  auth_session se
+    join
+  auth_login lo
+    on (se.fk_login = lo.pk_entity)
+    join
+  core_domain d
+    on (lo.fk_domain = d.pk_entity)
+where
+  (d.domain_code = ?) and (lo.ux_login = ?) and
   (se.server_random = ?)
 
 */
 		PreparedStatement ps = connection.prepareStatement(
 
-"select true from auth_session se join auth_login lo\n" +
-"  on se.fk_login = lo.pk_entity\n" +
-"where (lo.fk_domain = ?) and (lo.ux_login = ?) and\n" +
+"select true from\n" +
+"  auth_session se\n" +
+"    join\n" +
+"  auth_login lo\n" +
+"    on (se.fk_login = lo.pk_entity)\n" +
+"    join\n" +
+"  core_domain d\n" +
+"    on (lo.fk_domain = d.pk_entity)\n" +
+"where\n" +
+"  (d.domain_code = ?) and (lo.ux_login = ?) and\n" +
 "  (se.server_random = ?)"
 
 		);
 
 		//[1]: domain
-		ps.setLong(1, domain);
+		ps.setString(1, domainCode);
 
 		//[2]: login
 		ps.setString(2, login);
@@ -204,7 +236,7 @@ where (lo.fk_domain = ?) and (lo.ux_login = ?) and
 		return result;
 	}
 
-	public void    loadSession(AuthSession session)
+	public void     loadSession(AuthSession session)
 	  throws SQLException
 	{
 		if(connection == null)
@@ -276,7 +308,7 @@ where (se.session_id = ?)
 		ps.close();
 	}
 
-	public void    saveSession(AuthSession session)
+	public void     saveSession(AuthSession session)
 	  throws SQLException
 	{
 		if(connection == null)
@@ -404,7 +436,7 @@ insert into auth_session (
 		ps.close();
 	}
 
-	public void    touchSession(AuthSession session)
+	public void     touchSession(AuthSession session)
 	  throws SQLException
 	{
 		if(connection == null)
