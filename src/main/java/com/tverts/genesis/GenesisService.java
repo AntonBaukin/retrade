@@ -85,8 +85,8 @@ public class GenesisService extends ServiceBase
 			throw new IllegalStateException(
 			  "Genesis Event has no Spheres named!");
 
-		LU.I(getLog(), logsig(), " starting genesis for Spheres ",
-		  SU.scat("; ", event.getSpheres()));
+		LU.I(getLog(), logsig(), " starting genesis for Spheres [",
+		  SU.scat("; ", event.getSpheres()), "]");
 
 		//~: invoke the spheres
 		Throwable error = null;

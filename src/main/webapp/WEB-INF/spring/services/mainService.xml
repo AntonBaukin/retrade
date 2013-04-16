@@ -20,6 +20,43 @@
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
             <bean class = 'com.tverts.system.services.events.SystemReadyRun'/>
 
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Generates System Domain
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.system.services.events.EventRunOnSystemStart'>
+
+              <property name = 'service' value = 'Genesis Service'/>
+
+              <!-- the event to send -->
+              <property name = 'event'>
+                <bean class = 'com.tverts.genesis.GenesisEvent'>
+
+                  <!-- Genesis Spheres -->
+                  <property name = 'spheres'>
+                    <list>
+                      <value>System Domain</value>
+                    </list>
+                  </property>
+
+                  <!-- parameters -->
+                  <property name = 'params'>
+                    <map>
+
+                      <entry key   = 'System Domain (Seed)'
+                             value = '1'/>
+
+                      <entry key   = 'System Domain : Domain (DomainCode)'
+                             value = 'System'/>
+
+                      <entry key   = 'System Domain : Domain (DomainName)'
+                             value = 'System Tasks Domain'/>
+
+                    </map>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+
           </list>
         </property>
       </bean>
