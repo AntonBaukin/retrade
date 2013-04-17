@@ -4,15 +4,14 @@ package com.tverts.hibery.system;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /* Hibernate Persistence Layer */
@@ -28,13 +27,10 @@ import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.PersistenceContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.internal.util.collections.IdentitySet;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
-
-/* Apache Commons Collections */
-
-import org.apache.commons.collections.map.IdentityMap;
 
 /* com.tverts: hibery */
 
@@ -75,6 +71,7 @@ public class HiberSystem
 
 	/* public: HiberSystem (bean) interface */
 
+	@SuppressWarnings("deprecation")
 	public void setSessionFactory(SessionFactory sf)
 	{
 		this.sessionFactory     = sf;
@@ -197,13 +194,15 @@ public class HiberSystem
 		if(!(session instanceof SessionImplementor))
 			throw new IllegalArgumentException();
 
-		HashSet  result   = new HashSet(31);
-		Iterator entities = new IdentityMap(((SessionImplementor)session).
-		  getPersistenceContext().getEntityEntries()).keySet().iterator();
+		Set result = new IdentitySet(31);
 
-		while(entities.hasNext())
+		//~: get the entries of the context
+		Entry<Object, EntityEntry>[] entries = ((SessionImplementor)session).
+		  getPersistenceContext().reentrantSafeEntityEntries();
+
+		for(Entry<Object, EntityEntry> e : entries)
 		{
-			Object entity = entities.next();
+			Object entity = e.getKey();
 
 			//?: {this entity is persisted normally}
 			if(session.contains(entity))
@@ -299,33 +298,27 @@ public class HiberSystem
 
 	/* public: access connections provider */
 
-	public ConnectionProvider   getConnectionProvider()
-	{
-		return connectionProvider;
-	}
-
-	public Connection           openConnection()
+	public Connection openConnection()
 	  throws SQLException
 	{
-		ConnectionProvider cp = getConnectionProvider();
-		if(cp == null) throw new IllegalStateException();
+		if(connectionProvider == null)
+			throw new IllegalStateException();
 
-		Connection         co = cp.getConnection();
+		Connection co = connectionProvider.getConnection();
 		co.setAutoCommit(false);
 
 		return co;
 	}
 
-	public void                 closeConnection(Connection connection)
+	public void       closeConnection(Connection connection)
 	  throws SQLException
 	{
 		if(connection.isClosed())
 			return;
 
-		ConnectionProvider cp = getConnectionProvider();
-
-		if(cp == null) throw new IllegalStateException();
-		cp.closeConnection(connection);
+		if(connectionProvider == null)
+			throw new IllegalStateException();
+		connectionProvider.closeConnection(connection);
 	}
 
 

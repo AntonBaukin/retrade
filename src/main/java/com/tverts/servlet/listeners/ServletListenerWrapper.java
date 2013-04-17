@@ -195,7 +195,7 @@ public abstract class ServletListenerWrapper
 
 	protected void           ensureListener()
 	{
-		synchronized(this.getClass())
+		synchronized(this)
 		{
 			if(listener != null)
 				return;
@@ -242,12 +242,16 @@ public abstract class ServletListenerWrapper
 	/* private: listener instance */
 
 	private volatile Object  listener;
-	private volatile boolean isc;
-	private volatile boolean isr;
-	private volatile boolean cic;
-	private volatile boolean ric;
-	private volatile Method  cim;
-	private volatile Method  cdm;
-	private volatile Method  rim;
-	private volatile Method  rdm;
+
+	//~: ServletContextListener
+	private volatile boolean isc; //<-- is context listened
+	private volatile boolean cic; //<-- direct interface
+	private volatile Method  cim; //<-- init method
+	private volatile Method  cdm; //<-- destroy method
+
+	//~: ServletRequestListener
+	private volatile boolean isr; //<-- is request listened
+	private volatile boolean ric; //<-- direct interface
+	private volatile Method  rim; //<-- init method
+	private volatile Method  rdm; //<-- destroy method
 }
