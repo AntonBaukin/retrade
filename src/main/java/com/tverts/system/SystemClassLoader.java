@@ -72,8 +72,8 @@ public final class SystemClassLoader extends ClassLoader
 	 */
 	public static void bind()
 	{
-		if(Thread.currentThread().getContextClassLoader() == INSTANCE.getParent())
-			Thread.currentThread().setContextClassLoader(INSTANCE);
+		//if(Thread.currentThread().getContextClassLoader() == INSTANCE.getParent())
+		//	Thread.currentThread().setContextClassLoader(INSTANCE);
 	}
 
 	public static void unbind()

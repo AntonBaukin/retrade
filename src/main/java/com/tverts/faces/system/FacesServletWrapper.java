@@ -31,7 +31,7 @@ public class FacesServletWrapper implements Servlet
 {
 	/* public: Servlet interface */
 
-	public void init(ServletConfig config)
+	public void          init(ServletConfig config)
 	  throws ServletException
 	{
 		//~: bind system class loader
@@ -54,7 +54,7 @@ public class FacesServletWrapper implements Servlet
 		}
 	}
 
-	public void   destroy()
+	public void          destroy()
 	{
 		//~: bind system class loader
 		SystemClassLoader.bind();
@@ -89,7 +89,7 @@ public class FacesServletWrapper implements Servlet
 		}
 	}
 
-	public void service(ServletRequest req, ServletResponse res)
+	public void          service(ServletRequest req, ServletResponse res)
 	  throws ServletException, IOException
 	{
 		//~: bind system class loader
@@ -106,7 +106,7 @@ public class FacesServletWrapper implements Servlet
 		}
 	}
 
-	public String getServletInfo()
+	public String        getServletInfo()
 	{
 		//~: bind system class loader
 		SystemClassLoader.bind();
