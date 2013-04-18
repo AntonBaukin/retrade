@@ -17,13 +17,13 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Binds the request to Servlet-related components           ·
+         · Binds the request to Servlet-related components
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.servlet.filters.WebApplicationRequestFilter'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Sends HTTP redirect to refer actual user model instance   ·
+         · Sends HTTP redirect to refer actual user model instance
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.model.NoModelFilter'/>
 
@@ -42,9 +42,16 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Handles Self Shunt requests                               ·
+         · Handles Self Shunt requests
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'selfShuntFilter'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Filter as Request Listener for Faces
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.faces.system.FacesRequestListenerFilter'/>
+
       </list>
     </property>
   </bean>

@@ -118,6 +118,7 @@
     </listener-class>
   </listener>
 
+
   <!-- Web Application Request Initializer -->
 
   <listener>
@@ -190,7 +191,7 @@
     <display-name>JavaServer Faces 2.x Phony Servlet</display-name>
     <servlet-name>faces_FacesPhonyServlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <load-on-startup>0</load-on-startup>
+    <enabled>false</enabled>
   </servlet>
 
   <servlet-mapping>
