@@ -1,12 +1,8 @@
 package com.tverts.spring;
 
-/* Java Servlet api */
-
-import javax.servlet.ServletContextListener;
-
 /* com.tverts: servlets */
 
-import com.tverts.servlet.listeners.ContextListenerWrapper;
+import com.tverts.servlet.listeners.ServletListenerWrapper;
 
 
 /**
@@ -14,9 +10,10 @@ import com.tverts.servlet.listeners.ContextListenerWrapper;
  *
  * @author anton.baukin@gmail.com
  */
-public class ContextLoaderListener extends ContextListenerWrapper
+public class   ContextLoaderListener
+       extends ServletListenerWrapper
 {
-	protected Class<? extends ServletContextListener> getListenerClass()
+	protected Class getListenerClass()
 	{
 		return org.springframework.web.context.ContextLoaderListener.class;
 	}

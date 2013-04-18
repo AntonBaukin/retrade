@@ -60,9 +60,14 @@ public final class SystemClassLoader extends ClassLoader
 	 */
 	public static void init()
 	{
-		INSTANCE = new SystemClassLoader(
-		  Thread.currentThread().getContextClassLoader()
-		);
+		synchronized(SystemClassLoader.class)
+		{
+			if(INSTANCE != null) return;
+
+			INSTANCE = new SystemClassLoader(
+			  Thread.currentThread().getContextClassLoader()
+			);
+		}
 	}
 
 	/**
@@ -72,14 +77,36 @@ public final class SystemClassLoader extends ClassLoader
 	 */
 	public static void bind()
 	{
-		//if(Thread.currentThread().getContextClassLoader() == INSTANCE.getParent())
-		//	Thread.currentThread().setContextClassLoader(INSTANCE);
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+		if((cl == INSTANCE) | (cl == INSTANCE.getParent()))
+		{
+			//~: increment counter
+			Integer i = INSTANCE.binds.get();
+			i = (i == null)?(1):(i + 1);
+			INSTANCE.binds.set(i);
+
+			//~: do bind
+			if(i == 1)
+				Thread.currentThread().setContextClassLoader(INSTANCE);
+		}
 	}
 
 	public static void unbind()
 	{
 		if(Thread.currentThread().getContextClassLoader() == INSTANCE)
-			Thread.currentThread().setContextClassLoader(INSTANCE.getParent());
+		{
+			//~: decrement counter
+			Integer i = INSTANCE.binds.get();
+			if((i == null) || (i <= 0))
+				throw new IllegalStateException();
+			i = (i == 1)?(null):(i - 1);
+			INSTANCE.binds.set(i);
+
+			//~: do unbind
+			if(i == null)
+				Thread.currentThread().setContextClassLoader(INSTANCE.getParent());
+		}
 	}
 
 
@@ -130,4 +157,10 @@ public final class SystemClassLoader extends ClassLoader
 
 		delegateAddTransformer.setAccessible(true);
 	}
+
+
+	/* private: bind counter */
+
+	private ThreadLocal<Integer> binds =
+	  new ThreadLocal<Integer>();
 }

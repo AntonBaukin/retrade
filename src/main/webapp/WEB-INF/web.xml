@@ -1,8 +1,6 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 
 <web-app version = '3.0'
-  metadata-complete  = 'true'
-
   xmlns              = 'http://java.sun.com/xml/ns/javaee'
   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
   xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
@@ -79,21 +77,29 @@
   </listener>
 
 
-  <!-- Java Server Faces (RI) Lifecycle Listener -->
+  <!-- Java Server Faces (Mojarra RI) Listener -->
 
-  <!--
   <listener>
     <description>
-      Provides reaction on web application lyfecycle
-      events within JSF (RI) engine.
+      JavaServer Faces initialization configuration listener.
     </description>
 
-    <display-name>Java Server Faces Lifecycle</display-name>
+    <display-name>Java Server Faces Configure</display-name>
+    <listener-class>
+      com.tverts.faces.system.FacesConfigureListener
+    </listener-class>
+  </listener>
+
+  <listener>
+    <description>
+      JavaServer Faces application lifecycle listener.
+    </description>
+
+    <display-name>Java Server Faces Configure</display-name>
     <listener-class>
       com.tverts.faces.system.WebappLifecycleListener
     </listener-class>
   </listener>
-  -->
 
 
   <!-- Web Application Context Initializer -->
@@ -168,19 +174,34 @@
     ====================================================-->
 
   <!-- JavaServer Faces 2 Servlet -->
-  <!--
   <servlet>
-    <display-name>Java Server Faces 2.x Servlet</display-name>
+    <display-name>JavaServer Faces 2.x Servlet</display-name>
     <servlet-name>faces_FacesServlet</servlet-name>
     <servlet-class>com.tverts.faces.system.FacesServletWrapper</servlet-class>
     <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!--
+   * HINT: this servlet is needed, because Mojarra RI
+   *   searches it by exact class match, and don't start
+   *   JSF implementation, if it's absent.
+   -->
+  <servlet>
+    <display-name>JavaServer Faces 2.x Phony Servlet</display-name>
+    <servlet-name>faces_FacesPhonyServlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>0</load-on-startup>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>faces_FacesServlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
-  -->
+
+  <servlet-mapping>
+    <servlet-name>faces_FacesPhonyServlet</servlet-name>
+    <url-pattern>/nowhere</url-pattern>
+  </servlet-mapping>
 
 
   <!--====================================================
