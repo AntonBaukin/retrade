@@ -364,9 +364,11 @@ public class AuthProtocol implements Cloneable
 			if(session.getSessionKey() == null)
 				throw new IllegalStateException();
 
+			char[] skey = session.getSessionKey().toCharArray();
+
 			//~: check the signature
 			String xH = digest.signHex(
-			  sid, sequence, session.getSessionKey().toCharArray()
+			  sid, sequence, skey
 			);
 
 			if(!xH.equals(H))
@@ -385,6 +387,13 @@ public class AuthProtocol implements Cloneable
 			session.setServerTime(System.currentTimeMillis());
 			session.setSequence(sequence);
 
+			//?: {has bind parameter} secure bind key
+			if(param("bind") != null)
+				session.setBind(digest.signHex(
+				  sid, sequence, param("bind"), skey
+				));
+
+			//!: touch the session in the database
 			dbc.touchSession(session);
 
 			//~: write the success

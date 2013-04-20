@@ -247,9 +247,9 @@ where
 
 /*
 
-select se.close_time, lo.fk_domain, lo.ux_login,
-  se.access_time, se.session_key,
-  se.sequence_number, se.server_random
+select se.close_time, lo.fk_domain,
+  lo.ux_login, se.access_time, se.session_key,
+  se.sequence_number, se.server_random, se.bind_key
 from auth_session se join auth_login lo
   on se.fk_login = lo.pk_entity
 where (se.session_id = ?)
@@ -258,9 +258,9 @@ where (se.session_id = ?)
 
 		PreparedStatement ps = connection.prepareStatement(
 
-"select se.close_time, lo.fk_domain, lo.ux_login,\n" +
-"  se.access_time, se.session_key,\n" +
-"  se.sequence_number, se.server_random\n" +
+"select se.close_time, lo.fk_domain,\n" +
+"  lo.ux_login, se.access_time, se.session_key,\n" +
+"  se.sequence_number, se.server_random, se.bind_key\n" +
 "from auth_session se join auth_login lo\n" +
 "  on se.fk_login = lo.pk_entity\n" +
 "where (se.session_id = ?)"
@@ -304,6 +304,9 @@ where (se.session_id = ?)
 
 		//[7]: Rs
 		session.setRs(rs.getString(7));
+
+		//[8]: bind key
+		session.setBind(rs.getString(8));
 
 		ps.close();
 	}
@@ -460,16 +463,16 @@ insert into auth_session (
 
 update auth_session set
   access_time = ?, close_time = ?,
-  sequence_number = ?
+  sequence_number = ?, bind_key = ?
 where (session_id = ?) and (close_time is null)
 
 */
 		PreparedStatement ps = connection.prepareStatement(
 
-  "update auth_session set\n" +
-  "  access_time = ?, close_time = ?,\n" +
-  "  sequence_number = ?\n" +
-  "where (session_id = ?) and (close_time is null)"
+"update auth_session set\n" +
+"  access_time = ?, close_time = ?,\n" +
+"  sequence_number = ?, bind_key = ?\n" +
+"where (session_id = ?) and (close_time is null)"
 
 		);
 
@@ -482,8 +485,11 @@ where (session_id = ?) and (close_time is null)
 		//[3]: sequence number
 		ps.setLong     (3, session.getSequence());
 
-		//[]: Session ID
-		ps.setString   (4, session.getSessionId());
+		//[4]: bind key
+		ps.setString   (4, session.getBind());
+
+		//[5]: Session ID
+		ps.setString   (5, session.getSessionId());
 
 
 		//!: execute
