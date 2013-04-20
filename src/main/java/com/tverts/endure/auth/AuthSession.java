@@ -104,6 +104,23 @@ public class AuthSession
 		this.sequence = sequence;
 	}
 
+	/**
+	 * Bind key allows client to transfer security
+	 * token from Authentication server to Web
+	 * one. Server and client do calculate this
+	 * private bind key separately. After the first
+	 * usage, the key must be removed from the database
+	 */
+	public String    getBind()
+	{
+		return bind;
+	}
+
+	public void      setBind(String bind)
+	{
+		this.bind = bind;
+	}
+
 
 	/* public: Object interface */
 
@@ -121,13 +138,13 @@ public class AuthSession
 		return (k0 != null) && k0.equals(k1);
 	}
 
-	public int        hashCode()
+	public int       hashCode()
 	{
 		String k0 = this.getSessionId();
 		return (k0 == null)?(0):(k0.hashCode());
 	}
 
-	public String     toString()
+	public String    toString()
 	{
 		return String.format("Auth Session [%s]", getSessionId());
 	}
@@ -144,4 +161,5 @@ public class AuthSession
 	private Date      accessTime;
 	private Date      closeTime;
 	private long      sequence;
+	private String    bind;
 }
