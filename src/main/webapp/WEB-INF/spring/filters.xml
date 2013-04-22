@@ -25,7 +25,7 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Secured access filter and login page Redirector
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.secure.filters.NoSessionFilter'/>
+        <bean class = 'com.tverts.secure.filters.LoginFilter'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·

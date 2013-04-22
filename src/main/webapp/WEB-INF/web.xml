@@ -249,9 +249,7 @@
   
   <filter-mapping>
     <filter-name>filter_RequestBridge</filter-name>
-    <url-pattern>*.xhtml</url-pattern>
-    <url-pattern>*.jsp</url-pattern>
-    <url-pattern>*.jspf</url-pattern>
+    <url-pattern>/go/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
 
@@ -342,7 +340,7 @@
     ====================================================-->
 
   <welcome-file-list>
-    <welcome-file>index.xhtml</welcome-file>
+    <welcome-file>/go/index</welcome-file>
   </welcome-file-list>
 
   <jsp-config>

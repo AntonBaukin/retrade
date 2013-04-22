@@ -15,7 +15,8 @@ import com.tverts.hibery.qb.QueryBuilder;
 
 /* com.tverts: system (transactions) */
 
-import static com.tverts.system.tx.TxPoint.txSession;
+import com.tverts.system.tx.Tx;
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure (core) */
 
@@ -49,7 +50,14 @@ public abstract class GetObjectBase
 
 	protected Session session()
 	{
-		return txSession();
+		Tx tx = TxPoint.getInstance().getTxContext();
+
+		//?: {has context bound}
+		if(tx != null)
+			return TxPoint.txSession(tx);
+
+		//~: direct Hibernate session access
+		return HiberPoint.getInstance().getSession();
 	}
 
 	protected Query   Q(String hql, Object... replaces)

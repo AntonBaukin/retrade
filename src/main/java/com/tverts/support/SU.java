@@ -267,7 +267,7 @@ public class SU
 	 */
 	public static String   escapeJSString(Object sobj)
 	{
-		if(sobj == null) return null;
+		if(sobj == null) return "";
 
 		CharSequence  s = (sobj instanceof CharSequence)
 		  ?((CharSequence)sobj):(sobj.toString());

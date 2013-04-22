@@ -34,6 +34,13 @@ public class SecSession implements Serializable
 	  "SecSession : Auth Session";
 
 	/**
+	 * Attribute of (Long) key of the Domain
+	 * to log in. Without a domain login is impossible.
+	 */
+	public static String ATTR_DOMAIN_PKEY  =
+	  "SecSession : Domain key";
+
+	/**
 	 * Java time (Long) this session was created.
 	 */
 	public static String ATTR_CREATE_TIME  =

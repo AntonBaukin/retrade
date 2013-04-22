@@ -33,7 +33,7 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
-public class NoSessionFilter extends FilterBase
+public class LoginFilter extends FilterBase
 {
 	/* public: FilterBase interface */
 
@@ -53,6 +53,7 @@ public class NoSessionFilter extends FilterBase
 		if(!"GET".equalsIgnoreCase(task.getRequest().getMethod())) try
 		{
 			task.getResponse().sendError(403);
+			task.setBreaked();
 			return;
 		}
 		catch(Exception e)
@@ -65,10 +66,26 @@ public class NoSessionFilter extends FilterBase
 		  getParameter(getBindParameter()));
 
 		//?: {has bind} try it
-		if(!SU.sXe(bind))
-			//?: {the session was bound} proceed the request
-			if(bindSession(task, bind))
-				return;
+		if(!SU.sXe(bind)) try
+		{
+			//?: {the session was not bound} forbid directly
+			if(!bindSession(task, bind))
+				task.getResponse().sendError(403);
+			//!: send bound status
+			else
+			{
+				task.getResponse().setStatus(200);
+				task.getResponse().setContentType("text/plain;charset=UTF-8");
+				task.getResponse().getOutputStream().print("bound");
+			}
+
+			task.setBreaked();
+			return;
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 
 		//!: redirect to login
 		redirectLogin(task);
@@ -111,6 +128,28 @@ public class NoSessionFilter extends FilterBase
 	{
 		if(SU.sXe(s)) throw new IllegalArgumentException();
 		this.loginPage = SU.s2s(s);
+	}
+
+	public String getDomainAttr()
+	{
+		return domainAttr;
+	}
+
+	public void setDomainAttr(String s)
+	{
+		if(SU.sXe(s)) throw new IllegalArgumentException();
+		this.domainAttr = SU.s2s(s);
+	}
+
+	public String getDomainPath()
+	{
+		return domainPath;
+	}
+
+	public void setDomainPath(String s)
+	{
+		if(SU.sXe(s)) throw new IllegalArgumentException();
+		this.domainPath = SU.s2s(s);
 	}
 
 
@@ -169,7 +208,7 @@ public class NoSessionFilter extends FilterBase
 		//!: erase the bind
 		int x = HiberPoint.getInstance().getSession().createQuery(
 
-"update AuthSession set bind = null where (id = :id)"
+		  "update AuthSession set bind = null where (id = :id)"
 		).
 		  setString("id", (String)id).
 		  executeUpdate();
@@ -187,11 +226,37 @@ public class NoSessionFilter extends FilterBase
 		secs.setExpireStrategy(getExpireStrategy());
 		secs.getExpireStrategy().touch(secs);
 
+		//~: find the domain key
+
+/*
+
+select d.id from AuthSession au
+  join au.login l join l.domain d
+where (au.id = :id)
+
+ */
+		Object d = HiberPoint.getInstance().getSession().createQuery(
+
+"select d.id from AuthSession au\n" +
+"  join au.login l join l.domain d\n" +
+"where (au.id = :id)"
+
+		).
+		  setString("id", (String)id).
+		  uniqueResult();
+
+		//~: set domain
+		if(d == null) throw new IllegalStateException();
+		secs.attr(SecSession.ATTR_DOMAIN_PKEY, (Long)d);
+
 		return secs;
 	}
 
 	protected void       redirectLogin(FilterTask task)
 	{
+		//~: find the domain
+		defineDomain(task);
+
 		try
 		{
 			//~: forward to the login page
@@ -207,10 +272,72 @@ public class NoSessionFilter extends FilterBase
 		}
 	}
 
+	protected void       defineDomain(FilterTask task)
+	{
+		//~: lookup the secured session
+		SecSession secs = (task.getRequest().getSession(false) == null)?(null):
+		  (SecSession) task.getRequest().getSession().
+		    getAttribute(SecSession.class.getName());
+
+		//~: the domain code
+		String dcode = null;
+		Long   dkey  = (secs == null)?(null):
+		  (Long) secs.attr(SecSession.ATTR_DOMAIN_PKEY);
+
+		//?: {request has login domain path}
+		StringBuilder s = new StringBuilder(
+		  task.getRequest().getContextPath());
+
+		if(getDomainPath().charAt(0) != '/')
+			s.append('/');
+		s.append(getDomainPath());
+		if(s.charAt(s.length() - 1) != '/')
+			s.append('/');
+
+		String x = s.toString();
+		String u = task.getRequest().getRequestURI();
+
+		//?: {request refers the domain}
+		if(u.startsWith(x))
+		{
+			u = SU.s2s(u.substring(x.length()));
+			if(u != null) dcode = u;
+		}
+		//!: {session stores Domain key}
+		else if(dkey != null)
+			dcode = domainCode(dkey);
+
+		//?: {thr domain is defined} save it in the request
+		if(!SU.sXe(dcode))
+			task.getRequest().setAttribute(getDomainAttr(), SU.s2s(dcode));
+	}
+
+	/**
+	 * Returns the code of the domain. Note that this method
+	 * is invoked here when there was valid session, but
+	 * it had expired. Second transaction is so allowed.
+	 */
+	@Transactional
+	protected String     domainCode(Long pkey)
+	{
+
+// select code from Domain where (id = :id)
+
+		return (String) HiberPoint.getInstance().
+		  getSession().createQuery(
+
+"select code from Domain where (id = :id)"
+		).
+		  setLong("id", pkey).
+		  uniqueResult();
+	}
+
 
 	/* filter parameters */
 
 	private ExpireStrategy expireStrategy = new TimeExpireStrategy();
 	private String         bindParameter  = "retrade-session-bind";
+	private String         domainAttr     = "retrade-domain-name";
 	private String         loginPage      = "/.items/login.jsp";
+	private String         domainPath     = "/go/login/";
 }
