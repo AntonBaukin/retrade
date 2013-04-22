@@ -79,34 +79,44 @@ public final class SystemClassLoader extends ClassLoader
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
-		if((cl == INSTANCE) | (cl == INSTANCE.getParent()))
-		{
-			//~: increment counter
-			Integer i = INSTANCE.binds.get();
-			i = (i == null)?(1):(i + 1);
-			INSTANCE.binds.set(i);
+		//~: bind counter
+		Integer n = INSTANCE.bindn.get();
+		n = (n == null)?(1):(n + 1);
+		INSTANCE.bindn.set(n);
 
-			//~: do bind
-			if(i == 1)
+		//~: bind index
+		Integer i = INSTANCE.bindi.get();
+
+		//?: {the thread is not bound yet}
+		if(i == null)
+			//?: {that class loader} do bind
+			if(cl == INSTANCE.getParent())
+			{
 				Thread.currentThread().setContextClassLoader(INSTANCE);
-		}
+				INSTANCE.bindi.set(n);
+			}
 	}
 
 	public static void unbind()
 	{
-		if(Thread.currentThread().getContextClassLoader() == INSTANCE)
-		{
-			//~: decrement counter
-			Integer i = INSTANCE.binds.get();
-			if((i == null) || (i <= 0))
-				throw new IllegalStateException();
-			i = (i == 1)?(null):(i - 1);
-			INSTANCE.binds.set(i);
+		//~: bind index
+		Integer i = INSTANCE.bindi.get();
 
-			//~: do unbind
-			if(i == null)
-				Thread.currentThread().setContextClassLoader(INSTANCE.getParent());
+		//~: bind counter
+		Integer n = INSTANCE.bindn.get();
+		if((n == null) || (n <= 0))
+			throw new IllegalStateException();
+
+		//?: {it is that index} do unbind
+		if(n.equals(i))
+		{
+			Thread.currentThread().setContextClassLoader(INSTANCE.getParent());
+			INSTANCE.bindi.set(null);
 		}
+
+		//~: decrement counter
+		n = (n == 1)?(null):(n - 1);
+		INSTANCE.bindn.set(n);
 	}
 
 
@@ -161,6 +171,13 @@ public final class SystemClassLoader extends ClassLoader
 
 	/* private: bind counter */
 
-	private ThreadLocal<Integer> binds =
-	  new ThreadLocal<Integer>();
+	/**
+	 * The number of bind invocations.
+	 */
+	private ThreadLocal<Integer> bindn = new ThreadLocal<Integer>();
+
+	/**
+	 * Bind invocation when system class loader was actually attached.
+	 */
+	private ThreadLocal<Integer> bindi = new ThreadLocal<Integer>();
 }

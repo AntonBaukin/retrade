@@ -23,6 +23,12 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Secured access filter and login page Redirector
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.filters.NoSessionFilter'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Sends HTTP redirect to refer actual user model instance
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.model.NoModelFilter'/>

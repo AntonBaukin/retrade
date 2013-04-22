@@ -19,6 +19,9 @@ import com.tverts.objects.ObjectAccess;
 public class      AccessModelBean<M extends ModelBean>
        implements ObjectAccess<M>, Serializable
 {
+	public static final long serialVersionUID = 0L;
+
+
 	/* public: constructor */
 
 	public AccessModelBean(String key)

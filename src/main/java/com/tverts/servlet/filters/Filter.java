@@ -5,12 +5,13 @@ package com.tverts.servlet.filters;
  *
  * But there is one major difference: while
  * a Servlet Filter must invoke the chain of
- * filters to countinue filtering, thus creating
+ * filters to continue filtering, thus creating
  * a stack of filters call, this filter may
  * either return immediately, or continue
  * the filters chain recursively.
  *
  * A Filter must be thread-safe (reentable).
+ *
  *
  * @author anton.baukin@gmail.com
  */

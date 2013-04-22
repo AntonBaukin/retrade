@@ -27,6 +27,11 @@ public class REQ
 		  adr.matches("127(.\\d\\d?\\d?){3,3}");    //<-- IPv4, b
 	}
 
+	public static boolean isLocalhost()
+	{
+		return isLocalhost(RequestPoint.request());
+	}
+
 	/**
 	 * Returns the substring from the request URI where
 	 * the context path prefix is removed, and the
@@ -42,9 +47,7 @@ public class REQ
 
 		//?: {this request is to the default context}
 		if(ctx.length() == 0)
-			return (uri.charAt(0) == '/')?(uri):
-			  new StringBuilder(uri.length() + 1).
-			    append('/').append(uri).toString();
+			return (uri.charAt(0) == '/')?(uri):("/" + uri);
 
 		if((uri.charAt(0) != '/') && (ctx.charAt(0) == '/'))
 			ctx = ctx.substring(1);
@@ -59,9 +62,13 @@ public class REQ
 		if(uri.length() == 0) return "/";
 
 		if(uri.charAt(0) != '/')
-			uri = new StringBuilder(uri.length() + 1).
-			  append('/').append(uri).toString();
+			uri = "/" + uri;
 
 		return uri;
+	}
+
+	public static  String getRequestPath()
+	{
+		return getRequestPath(RequestPoint.request());
 	}
 }

@@ -14,15 +14,62 @@ import javax.servlet.http.HttpSession;
  */
 public class RequestPoint
 {
-	/* public static: RequestPoint interface  */
+	/* public static: RequestPoint (read) interface  */
 
-	public static ServletContext
-	                   context()
+	public static ServletContext     context()
 	{
 		if(context == null)
 			throw new IllegalStateException(NO_WEB_ERR);
 		return context;
 	}
+
+	public static HttpSession        session()
+	{
+		return request().getSession();
+	}
+
+	/**
+	 * Returns the root request. Raises exception if
+	 * the thread is not bound to a the pending request.
+	 */
+	public static HttpServletRequest request()
+	  throws IllegalStateException
+	{
+		HttpServletRequest res = request.get();
+
+		if(res == null)
+			throw new IllegalStateException(NO_WEB_ERR);
+		return res;
+	}
+
+	public static HttpServletRequest requestOrNull()
+	{
+		return request.get();
+	}
+
+	protected static String NO_WEB_ERR =
+	  "The thread is not bound to the HTTP request!";
+
+	/**
+	 * Returns wrapper object to HTTP response object
+	 * of current HTTP request.
+	 */
+	public static ResponseWrapper    response()
+	{
+		ResponseWrapper res = response.get();
+
+		if(res == null)
+			throw new IllegalStateException(NO_WEB_ERR);
+		return res;
+	}
+
+	public static ResponseWrapper    responseOrNull()
+	{
+		return response.get();
+	}
+
+
+	/* public static: RequestPoint (write) interface  */
 
 	/**
 	 * Note that is not allowed to change the context
@@ -35,62 +82,12 @@ public class RequestPoint
 		context = ctx;
 	}
 
-	public static HttpSession
-	                   session()
-	{
-		return request().getSession();
-	}
-
-	/**
-	 * Returns the root request. Raises exception if
-	 * the thread is not bound to a the pending request.
-	 */
-	public static HttpServletRequest
-	                   request()
-	  throws IllegalStateException
-	{
-		HttpServletRequest res = request.get();
-
-		if(res == null)
-			throw new IllegalStateException(NO_WEB_ERR);
-		return res;
-	}
-
-	public static HttpServletRequest
-	                   requestOrNull()
-	{
-		return request.get();
-	}
-
 	public static void setRootRequest(HttpServletRequest request)
 	{
 		if(request != null)
 			RequestPoint.request.set(request);
 		else
 			RequestPoint.request.remove();
-	}
-
-	protected static String NO_WEB_ERR =
-	  "The thread is not bound to the HTTP request!";
-
-	/**
-	 * Returns wrapper object to HTTP response object
-	 * of current HTTP request.
-	 */
-	public static ResponseWrapper
-	                   response()
-	{
-		ResponseWrapper res = response.get();
-
-		if(res == null)
-			throw new IllegalStateException(NO_WEB_ERR);
-		return res;
-	}
-
-	public static ResponseWrapper
-	                   responseOrNull()
-	{
-		return response.get();
 	}
 
 	public static void setResponse(HttpServletResponse response)
@@ -159,7 +156,6 @@ public class RequestPoint
 
 		return result.toString();
 	}
-
 
 
 	/* private: requests thread local */
