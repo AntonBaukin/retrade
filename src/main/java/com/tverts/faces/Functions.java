@@ -63,6 +63,25 @@ public class Functions
 		return RequestPoint.formAbsoluteURL(path, false);
 	}
 
+	public static String goPath(String path)
+	{
+		String cp = RequestPoint.request(0).getContextPath();
+
+		if(SU.sXe(path))
+		{
+			path = RequestPoint.request(0).getRequestURI();
+			path = path.substring(cp.length());
+
+			if(path.startsWith("/go/"))
+				path = path.substring(4);
+		}
+
+		if(path.charAt(0) == '/')
+			path = path.substring(1);
+
+		return cp + "/go/" + path;
+	}
+
 
 	/* public: Java Script support */
 

@@ -59,13 +59,14 @@
     </function-signature>
   </function>
 
+
   <!-- absurl -->
 
   <function>
     <description>
       Creates absolute URL adding the context path.
     </description>
-    <display-name>Absolute URL with Context Path</display-name>
+    <display-name>Absolute URL</display-name>
 
     <function-name>absurl</function-name>
     <function-class>
@@ -73,6 +74,25 @@
     </function-class>
     <function-signature>
       java.lang.String absoluteURL(java.lang.String)
+    </function-signature>
+  </function>
+
+
+  <!-- go -->
+
+  <function>
+    <description>
+      Creates go-link based on path given (context excluded),
+      or the root request URI.
+    </description>
+    <display-name>Go-link with Context Path</display-name>
+
+    <function-name>go</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String goPath(java.lang.String)
     </function-signature>
   </function>
 
