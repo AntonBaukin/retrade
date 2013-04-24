@@ -184,18 +184,35 @@ public class TxPoint
 	protected void        clearTxContexts()
 	{
 		ArrayList<Tx> s = contexts.get();
+		Throwable     e = null;
 
 		while(!s.isEmpty())
 		{
-			//~: free the context
 			Tx tx = s.get(s.size() - 1);
-			tx.free();
 
-			//~: remove the context
-			s.remove(s.size() - 1);
+			//~: free the context
+			try
+			{
+				tx.free();
+			}
+			catch(Throwable err)
+			{
+				e = err;
+			}
+			finally
+			{
+				//~: remove the context
+				s.remove(s.size() - 1);
+			}
 		}
 
 		contexts.remove();
+
+		//?: {has error} throw it
+		if(e instanceof RuntimeException)
+			throw (RuntimeException)e;
+		else if(e != null)
+			throw new RuntimeException(e);
 	}
 
 

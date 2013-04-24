@@ -1,0 +1,46 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Go Filter: JavaServer Faces (*.xhtml)          =
+    =================================================-->
+
+  <import resource = 'go-faces.xml'/>
+
+
+  <!--=================================================
+    =  Go Filter: JavaServer Pages (*.jsp[f])         =
+    =================================================-->
+
+  <import resource = 'go-pages.xml'/>
+
+
+  <!--=================================================
+    =  Go Filters                                     =
+    =================================================-->
+
+  <bean name  = 'goFilters' class = 'com.tverts.servlet.filters.FiltersList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Go JavaServer Pages
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'goServerPages'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Go JavaServer Faces
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'goServerFaces'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

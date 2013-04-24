@@ -21,7 +21,7 @@ public class Functions
 	/**
 	 * Wraps the text given into CDATA section.
 	 *
-	 * If argument is boolean true, opens the
+	 * If argument is boolean true, opened the
 	 * section with. It closes it on false
 	 * argument value. Other values are converted
 	 * to string and wrapped.

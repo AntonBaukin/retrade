@@ -1,5 +1,11 @@
 package com.tverts.servlet;
 
+/* standard Java classes */
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 /* Java Servlet api */
 
 import javax.servlet.ServletContext;
@@ -7,95 +13,209 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 /**
- * Provides access to the pending HTTP request environment.
+ * Provides access to HTTP request environment.
  *
  * @author anton.baukin@gmail.com
  */
 public class RequestPoint
 {
-	/* public static: RequestPoint (read) interface  */
+	/* Singletone */
+
+	public static final RequestPoint INSTANCE =
+	  new RequestPoint();
+
+	public static RequestPoint getInstance()
+	{
+		return INSTANCE;
+	}
+
+
+	/* static: RequestPoint (read) interface */
+
+	public static final String NO_WEB_ERR =
+	  "The thread is not bound to the HTTP request!";
 
 	public static ServletContext     context()
 	{
-		if(context == null)
+		if(INSTANCE.getContext() == null)
 			throw new IllegalStateException(NO_WEB_ERR);
-		return context;
+		return INSTANCE.getContext();
+	}
+
+	/**
+	 * Returns the number of requests are in the stack.
+	 */
+	public static int                requests()
+	{
+		List<HttpServletRequest> r = INSTANCE.getRequests();
+		return (r == null)?(0):(r.size());
+	}
+
+	/**
+	 * Returns the number of responses are in the stack.
+	 */
+	public static int                responses()
+	{
+		List<ResponseWrapper> r = INSTANCE.getResponses();
+		return (r == null)?(0):(r.size());
+	}
+
+	/**
+	 * Returns the request on the top of the stack.
+	 */
+	public static HttpServletRequest request()
+	{
+		List<HttpServletRequest> r = INSTANCE.getRequests();
+
+		if((r == null) || r.isEmpty())
+			throw new IllegalStateException(NO_WEB_ERR);
+		return r.get(r.size() - 1);
+	}
+
+	/**
+	 * Returns the request in the given position
+	 * of the stack. Index 0 is root request.
+	 */
+	public static HttpServletRequest request(int i)
+	{
+		List<HttpServletRequest> r = INSTANCE.getRequests();
+
+		if((r == null) || r.isEmpty())
+			throw new IllegalStateException(NO_WEB_ERR);
+		return r.get(i);
 	}
 
 	public static HttpSession        session()
 	{
-		return request().getSession();
+		return request().getSession(false);
 	}
 
 	/**
-	 * Returns the root request. Raises exception if
-	 * the thread is not bound to a the pending request.
-	 */
-	public static HttpServletRequest request()
-	  throws IllegalStateException
-	{
-		HttpServletRequest res = request.get();
-
-		if(res == null)
-			throw new IllegalStateException(NO_WEB_ERR);
-		return res;
-	}
-
-	public static HttpServletRequest requestOrNull()
-	{
-		return request.get();
-	}
-
-	protected static String NO_WEB_ERR =
-	  "The thread is not bound to the HTTP request!";
-
-	/**
-	 * Returns wrapper object to HTTP response object
-	 * of current HTTP request.
+	 * Returns the response wrapper
+	 * on the top of the stack.
 	 */
 	public static ResponseWrapper    response()
 	{
-		ResponseWrapper res = response.get();
+		List<ResponseWrapper> r = INSTANCE.getResponses();
 
-		if(res == null)
+		if((r == null) || r.isEmpty())
 			throw new IllegalStateException(NO_WEB_ERR);
-		return res;
+		return r.get(r.size() - 1);
 	}
 
-	public static ResponseWrapper    responseOrNull()
+	/**
+	 * Returns the request in the given position
+	 * of the stack. Index 0 is root request.
+	 */
+	public static ResponseWrapper    response(int i)
 	{
-		return response.get();
+		List<ResponseWrapper> r = INSTANCE.getResponses();
+
+		if((r == null) || r.isEmpty())
+			throw new IllegalStateException(NO_WEB_ERR);
+		return r.get(i);
 	}
 
 
-	/* public static: RequestPoint (write) interface  */
+	/* public: RequestPoint (instance read) interface  */
+
+	public ServletContext            getContext()
+	{
+		return context;
+	}
+
+	public List<HttpServletRequest>  getRequests()
+	{
+		return this.requests.get();
+	}
+
+	public List<ResponseWrapper>     getResponses()
+	{
+		return this.responses.get();
+	}
+
+
+	/* public: RequestPoint (instance write) interface  */
 
 	/**
 	 * Note that is not allowed to change the context
 	 * instance directly. Set {@code null} link before.
 	 */
-	public static void setContext(ServletContext ctx)
+	public void setContext(ServletContext ctx)
 	{
 		if((context != null) && (ctx != null))
 			throw new IllegalStateException();
 		context = ctx;
 	}
 
-	public static void setRootRequest(HttpServletRequest request)
+	/**
+	 * Puts the request into the stack.
+	 * To pop request pass null.
+	 */
+	public void setRequest(HttpServletRequest request)
 	{
-		if(request != null)
-			RequestPoint.request.set(request);
+		List<HttpServletRequest> requests = this.requests.get();
+
+		//?: {pop request}
+		if(request == null)
+		{
+			//?: {the stack is empty}
+			if((requests == null) || requests.isEmpty())
+				throw new IllegalStateException(NO_WEB_ERR);
+
+			//!: pop
+			requests.remove(requests.size() - 1);
+
+			//?: {no more left} clear the local
+			if(requests.isEmpty())
+				this.requests.remove();
+		}
+		//!: put request
 		else
-			RequestPoint.request.remove();
+		{
+			//?: {the stack is empty}
+			if(requests == null)
+				this.requests.set(requests = new ArrayList<HttpServletRequest>(4));
+
+			//!: put the request
+			requests.add(request);
+		}
 	}
 
-	public static void setResponse(HttpServletResponse response)
+	/**
+	 * Puts the response (wrapped) into the stack.
+	 * To pop response pass null.
+	 */
+	public void setResponse(HttpServletResponse response)
 	{
-		if(response != null)
-			RequestPoint.response.set(new ResponseWrapper(response));
+		List<ResponseWrapper> responses = this.responses.get();
+
+		//?: {pop response}
+		if(response == null)
+		{
+			//?: {the stack is empty}
+			if((responses == null) || responses.isEmpty())
+				throw new IllegalStateException(NO_WEB_ERR);
+
+			//!: pop
+			responses.remove(responses.size() - 1);
+
+			//?: {no more left} clear the local
+			if(responses.isEmpty())
+				this.responses.remove();
+		}
+		//!: put response
 		else
-			RequestPoint.response.remove();
+		{
+			//?: {the stack is empty}
+			if(responses == null)
+				this.responses.set(responses = new ArrayList<ResponseWrapper>(4));
+
+			//!: put the response wrapper
+			responses.add(new ResponseWrapper(response));
+		}
 	}
 
 
@@ -160,11 +280,11 @@ public class RequestPoint
 
 	/* private: requests thread local */
 
-	private static ServletContext                  context;
+	private ServletContext context;
 
-	private static ThreadLocal<HttpServletRequest> request =
-	  new ThreadLocal<HttpServletRequest>();
+	private ThreadLocal<List<HttpServletRequest>> requests  =
+	  new ThreadLocal<List<HttpServletRequest>>();
 
-	private static ThreadLocal<ResponseWrapper>    response =
-	  new ThreadLocal<ResponseWrapper>();
+	private ThreadLocal<List<ResponseWrapper>>    responses =
+	  new ThreadLocal<List<ResponseWrapper>>();
 }

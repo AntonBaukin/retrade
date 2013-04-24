@@ -5,6 +5,8 @@ package com.tverts.system;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /* Spring Framework */
 
@@ -71,52 +73,35 @@ public final class SystemClassLoader extends ClassLoader
 	}
 
 	/**
-	 * Binds this class loader to the the thread given.
-	 * Works only when the current class loader is that
-	 * existing on the initialization.
+	 * Binds System Class Loader to the the thread given.
 	 */
 	public static void bind()
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
-		//~: bind counter
-		Integer n = INSTANCE.bindn.get();
-		n = (n == null)?(1):(n + 1);
-		INSTANCE.bindn.set(n);
+		//~: put in stack
+		List<ClassLoader> binds = INSTANCE.binds.get();
+		if(binds == null)
+			INSTANCE.binds.set(binds = new ArrayList<ClassLoader>(8));
+		binds.add(cl);
 
-		//~: bind index
-		Integer i = INSTANCE.bindi.get();
-
-		//?: {the thread is not bound yet}
-		if(i == null)
-			//?: {that class loader} do bind
-			if(cl == INSTANCE.getParent())
-			{
-				Thread.currentThread().setContextClassLoader(INSTANCE);
-				INSTANCE.bindi.set(n);
-			}
+		//~: set system class loader
+		//if(cl != INSTANCE)
+		//	Thread.currentThread().setContextClassLoader(INSTANCE);
 	}
 
 	public static void unbind()
 	{
-		//~: bind index
-		Integer i = INSTANCE.bindi.get();
-
-		//~: bind counter
-		Integer n = INSTANCE.bindn.get();
-		if((n == null) || (n <= 0))
+		List<ClassLoader> binds = INSTANCE.binds.get();
+		if((binds == null) || binds.isEmpty())
 			throw new IllegalStateException();
 
-		//?: {it is that index} do unbind
-		if(n.equals(i))
-		{
-			Thread.currentThread().setContextClassLoader(INSTANCE.getParent());
-			INSTANCE.bindi.set(null);
-		}
+		//~: pop the original class loader
+		ClassLoader cl = binds.remove(binds.size() - 1);
 
-		//~: decrement counter
-		n = (n == 1)?(null):(n - 1);
-		INSTANCE.bindn.set(n);
+		//~: set it
+		//if(cl != INSTANCE)
+		//	Thread.currentThread().setContextClassLoader(cl);
 	}
 
 
@@ -169,15 +154,11 @@ public final class SystemClassLoader extends ClassLoader
 	}
 
 
-	/* private: bind counter */
+	/* private: bind stack */
 
 	/**
-	 * The number of bind invocations.
+	 * The class loaders stack.
 	 */
-	private ThreadLocal<Integer> bindn = new ThreadLocal<Integer>();
-
-	/**
-	 * Bind invocation when system class loader was actually attached.
-	 */
-	private ThreadLocal<Integer> bindi = new ThreadLocal<Integer>();
+	private ThreadLocal<List<ClassLoader>> binds =
+	  new ThreadLocal<List<ClassLoader>>();
 }

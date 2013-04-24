@@ -13,6 +13,10 @@ import com.tverts.servlet.RequestPoint;
 
 import com.tverts.system.JTAPoint;
 
+/* tverts.com: model */
+
+import com.tverts.model.ModelRequest;
+
 
 /**
  * Handles each external access to the application.
@@ -27,24 +31,37 @@ public class   WebApplicationRequestListener
 
 	public void requestInitialized(ServletRequestEvent event)
 	{
-		//~: clean JTA bindings
-		JTAPoint.jta().clean();
+		if(!(event.getServletRequest() instanceof HttpServletRequest))
+			return;
 
-		if(event.getServletRequest() instanceof HttpServletRequest)
+		//?: {there are no requests in the stack}
+		if(RequestPoint.requests() == 0)
 		{
-			RequestPoint.setRootRequest(
-			  (HttpServletRequest)event.getServletRequest());
+			//~: clean JTA bindings
+			JTAPoint.jta().clean();
 
-			//~: generate the HTTP session
-			((HttpServletRequest)event.getServletRequest()).getSession(true);
+			//~: clear the model
+			ModelRequest.getInstance().clear();
 		}
+
+		//!: put the request
+		RequestPoint.getInstance().setRequest(
+		  (HttpServletRequest)event.getServletRequest());
 	}
 
 	public void requestDestroyed(ServletRequestEvent event)
 	{
-		RequestPoint.setRootRequest(null);
+		//!: pop the request
+		RequestPoint.getInstance().setRequest(null);
 
-		//~: clean JTA bindings
-		JTAPoint.jta().clean();
+		//?: {there are no requests in the stack}
+		if(RequestPoint.requests() == 0)
+		{
+			//~: clean JTA bindings
+			JTAPoint.jta().clean();
+
+			//~: clear the model
+			ModelRequest.getInstance().clear();
+		}
 	}
 }

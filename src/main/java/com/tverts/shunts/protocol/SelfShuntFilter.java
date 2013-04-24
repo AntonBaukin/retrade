@@ -12,6 +12,7 @@ import java.io.OutputStream;
 
 import com.tverts.servlet.REQ;
 import com.tverts.servlet.filters.FilterBase;
+import com.tverts.servlet.filters.FilterStage;
 import com.tverts.servlet.filters.FilterTask;
 
 /* tverts.com: shunt (service) */
@@ -99,7 +100,7 @@ public class   SelfShuntFilter
 	 * server path name to be handled by this filer.
 	 */
 	public static final String DEF_SERVLET   =
-	  "/self-shunt.jsp";
+	  "/go/self-shunt";
 
 	/**
 	 * The virtual path to the shunt processing servlet.
@@ -187,7 +188,8 @@ public class   SelfShuntFilter
 	 */
 	protected boolean isShuntRequest(FilterTask task)
 	{
-		return isShuntPath(task) && isShuntContentType(task);
+		return FilterStage.REQUEST.equals(task.getFilterStage()) &&
+		  isShuntPath(task) && isShuntContentType(task);
 	}
 
 	protected boolean isShuntPath(FilterTask task)

@@ -6,6 +6,7 @@ import javax.servlet.http.Cookie;
 
 /* tverts.com: servlet */
 
+import static com.tverts.servlet.RequestPoint.request;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterTask;
 
@@ -69,7 +70,7 @@ public class NoModelFilter extends FilterBase
 			return;
 
 		//?: {not a GET request} 302 redirect is forbidden!
-		if(!"GET".equalsIgnoreCase(task.getRequest().getMethod()))
+		if(!"GET".equalsIgnoreCase(request(0).getMethod()))
 			return;
 
 		//~: do the redirect
@@ -85,10 +86,10 @@ public class NoModelFilter extends FilterBase
 	{
 		//HINT: we add session cookie manually to always be sure...
 		Cookie cookie = new Cookie("JSESSIONID",
-		  task.getRequest().getSession().getId());
+		  request(0).getSession().getId());
 
-		cookie.setSecure(task.getRequest().isSecure());
-		cookie.setPath(task.getRequest().getContextPath());
+		cookie.setSecure(request(0).isSecure());
+		cookie.setPath(request(0).getContextPath());
 		task.getResponse().addCookie(cookie);
 
 
@@ -100,10 +101,10 @@ public class NoModelFilter extends FilterBase
 
 	protected String createRedirectURL(FilterTask task, NoModelException nomoe)
 	{
-		String        cp  = task.getRequest().getContextPath();
-		String        uri = task.getRequest().getRequestURI();
+		String        cp  = request(0).getContextPath();
+		String        uri = request(0).getRequestURI();
 		String        url = Functions.absoluteURL(uri.substring(cp.length()));
-		String        qs  = task.getRequest().getQueryString();
+		String        qs  = request(0).getQueryString();
 		String        mp  = ModelView.MODEL_PARAM + '=';
 		StringBuilder res;
 

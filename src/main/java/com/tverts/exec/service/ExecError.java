@@ -10,7 +10,7 @@ package com.tverts.exec.service;
  * When it catches this exception, it first
  * tries to save the result object in the
  * context of initial transaction, and if
- * this attempt fails, opens new connection
+ * this attempt fails, opened new connection
  * to the database and saves there.
  *
  * Exceptions of other types got by the

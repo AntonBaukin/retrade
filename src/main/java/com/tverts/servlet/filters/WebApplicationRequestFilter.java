@@ -4,10 +4,6 @@ package com.tverts.servlet.filters;
 
 import com.tverts.servlet.RequestPoint;
 
-/* tverts.com: model */
-
-import com.tverts.model.ModelRequest;
-
 
 /**
  * Binds the response with Servlet related components.
@@ -21,18 +17,13 @@ public class WebApplicationRequestFilter extends FilterBase
 
 	public void openFilter(FilterTask task)
 	{
-		if(!FilterStage.REQUEST.equals(task.getFilterStage()))
-			return;
-
-		RequestPoint.setResponse(task.getResponse());
+		RequestPoint.getInstance().setRequest(task.getRequest());
+		RequestPoint.getInstance().setResponse(task.getResponse());
 	}
 
 	public void closeFilter(FilterTask task)
 	{
-		if(!FilterStage.REQUEST.equals(task.getFilterStage()))
-			return;
-
-		RequestPoint.setResponse(null);
-		ModelRequest.getInstance().clear();
+		RequestPoint.getInstance().setResponse(null);
+		RequestPoint.getInstance().setRequest(null);
 	}
 }

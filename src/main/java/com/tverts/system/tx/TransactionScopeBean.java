@@ -20,7 +20,7 @@ import com.tverts.servlet.filters.FilterTask;
  * @author anton.baukin@gmail.com
  */
 @Scope("prototype")
-public class TransactionScopeBean implements Runnable
+public class TransactionScopeBean
 {
 	/* public: TransactionScopeBean interface */
 
@@ -40,6 +40,7 @@ public class TransactionScopeBean implements Runnable
 
 	@Transactional(rollbackFor = Throwable.class)
 	public void run()
+	  throws Throwable
 	{
 		Throwable error = null;
 
@@ -64,8 +65,27 @@ public class TransactionScopeBean implements Runnable
 				error = getFilterTask().getError();
 
 			//~: handle the error & do cleanups
-			closeScope(error);
+			try
+			{
+				closeScope(error);
+			}
+			catch(Exception e)
+			{
+				if(error == null)
+					error = e;
+			}
 		}
+
+		//?: {has error} report it to the filter
+		if((error != null) && (getFilterTask().getError() == null))
+		{
+			getFilterTask().setError(error);
+			getFilterTask().setBreaked();
+		}
+
+		//?: {has error} throw it
+		if(error != null)
+			throw error;
 	}
 
 

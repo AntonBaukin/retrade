@@ -253,9 +253,9 @@
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
 
+
   <!-- Include Filter Bridge -->
 
-  <!--
   <filter>
     <description>
       Connects INCLUDE filtering ussued by the web
@@ -278,11 +278,10 @@
     <url-pattern>*</url-pattern>
     <dispatcher>INCLUDE</dispatcher>
   </filter-mapping>
-  -->
+
 
   <!-- Forward Filter Bridge -->
 
-  <!--
   <filter>
     <description>
       Connects FORWARD filtering ussued by the web
@@ -305,7 +304,7 @@
     <url-pattern>*</url-pattern>
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
-  -->
+
 
   <!-- Error Filter Bridge -->
 

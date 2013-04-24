@@ -31,11 +31,11 @@ public class      SystemBootListener
 	public void contextInitialized(ServletContextEvent event)
 	{
 		SystemClassLoader.init();
-		RequestPoint.setContext(event.getServletContext());
+		RequestPoint.getInstance().setContext(event.getServletContext());
 	}
 
 	public void contextDestroyed(ServletContextEvent event)
 	{
-		RequestPoint.setContext(null);
+		RequestPoint.getInstance().setContext(null);
 	}
 }

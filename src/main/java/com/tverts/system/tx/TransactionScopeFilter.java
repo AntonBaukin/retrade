@@ -15,7 +15,10 @@ import com.tverts.spring.SpringPoint;
 import static com.tverts.support.SU.s2s;
 
 /**
- * COMMENT TransactionScopeFilter
+ * Filter that wraps the root web request
+ * with transaction scopes nesting the
+ * filter processing.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -23,15 +26,15 @@ public class TransactionScopeFilter extends FilterBase
 {
 	/* public: Filter interface */
 
-	public void openFilter(FilterTask task)
+	public void   openFilter(FilterTask task)
 	{
 		if(!FilterStage.REQUEST.equals(task.getFilterStage()))
 			return;
 
 		try
 		{
-			accessBean().setFilterTask(task).
-			  run();
+			//!: run tx-scopes bean
+			accessBean().setFilterTask(task).run();
 		}
 		catch(RollbackTransaction e)
 		{
@@ -46,7 +49,7 @@ public class TransactionScopeFilter extends FilterBase
 		}
 	}
 
-	public void closeFilter(FilterTask task)
+	public void   closeFilter(FilterTask task)
 	{}
 
 	/* public: TransactionScopeFilter interface */
