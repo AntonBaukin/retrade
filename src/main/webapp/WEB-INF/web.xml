@@ -360,4 +360,9 @@
       <page-encoding>UTF-8</page-encoding>
     </jsp-property-group>
   </jsp-config>
+
+  <session-config>
+    <!-- 480 minutes -->
+    <session-timeout>480</session-timeout>
+  </session-config>
 </web-app>
