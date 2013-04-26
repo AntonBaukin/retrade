@@ -38,7 +38,7 @@
      · Model Access Strategy                                     ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name  = 'modelAccess'>
-      <bean class = 'com.tverts.model.ModelAccessSession'>
+      <bean class = 'com.tverts.model.ModelAccessMemory'>
 
         <property name  = 'modelBean'>
           <idref bean = 'modelPointPrototype'/>

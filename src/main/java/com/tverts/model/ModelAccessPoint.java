@@ -4,7 +4,6 @@ package com.tverts.model;
  * Entry point to access the model attached to the user
  * request to the system. The model is created on demand.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public class ModelAccessPoint
@@ -47,6 +46,7 @@ public class ModelAccessPoint
 
 		this.modelAccess = modelAccess;
 	}
+
 
 	/* private: point entries */
 

@@ -1,5 +1,9 @@
 package com.tverts.secure.filters;
 
+/* Java Servlet api */
+
+import javax.servlet.http.Cookie;
+
 /* Spring framework */
 
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +18,9 @@ import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterStage;
 import com.tverts.servlet.filters.FilterTask;
 
-/* com.tverts: secure sessions */
+/* com.tverts: secure */
 
+import com.tverts.secure.SecPoint;
 import com.tverts.secure.session.ExpireStrategy;
 import com.tverts.secure.session.SecSession;
 import com.tverts.secure.session.TimeExpireStrategy;
@@ -42,6 +47,9 @@ public class LoginFilter extends FilterBase
 		//?: {is not an external call}
 		if(!FilterStage.REQUEST.equals(task.getFilterStage()))
 			return;
+
+		//!: clear the session (just for safe)
+		SecPoint.getInstance().setSecSession(null);
 
 		//?: {user has session}
 		if(task.getRequest().getSession(false) != null)
@@ -92,7 +100,23 @@ public class LoginFilter extends FilterBase
 	}
 
 	public void closeFilter(FilterTask task)
-	{}
+	{
+		//?: {is not an external call}
+		if(!FilterStage.REQUEST.equals(task.getFilterStage()))
+			return;
+
+		try
+		{
+			//~: save the session as bytes
+			SecSession secs = SecPoint.getInstance().getSecSession();
+			if(secs != null) save(task, secs);
+		}
+		finally
+		{
+			//!: unbind from the current thread
+			SecPoint.getInstance().setSecSession(null);
+		}
+	}
 
 
 	/* public: NoSessionFilter (bean) interface */
@@ -141,31 +165,68 @@ public class LoginFilter extends FilterBase
 		this.domainAttr = SU.s2s(s);
 	}
 
-	public String getDomainPath()
+	public String getLoginPath()
 	{
-		return domainPath;
+		return loginPath;
 	}
 
-	public void setDomainPath(String s)
+	public void setLoginPath(String s)
 	{
 		if(SU.sXe(s)) throw new IllegalArgumentException();
-		this.domainPath = SU.s2s(s);
+		this.loginPath = SU.s2s(s);
 	}
 
 
 	/* protected: filtering procedures */
+
+	protected SecSession restore(FilterTask task)
+	{
+		//?: {has no web session}
+		if(task.getRequest().getSession(false) == null)
+			return null;
+
+		return (SecSession) task.getRequest().
+		  getSession().getAttribute(SecSession.class.getName());
+
+		//~: lookup the secured session
+		//byte[]     data = (byte[]) task.getRequest().
+		//  getSession().getAttribute(SecSession.class.getName());
+
+		//~: restore the object from the session
+		//return (data == null)?(null):
+		//  OU.bytes2obj(data, SecSession.class);
+	}
+
+	protected void       save(FilterTask task, SecSession secs)
+	{
+		//task.getRequest().getSession().setAttribute(
+		//  SecSession.class.getName(), OU.obj2bytes(secs)
+		//);
+
+		task.getRequest().getSession().setAttribute(
+		  SecSession.class.getName(), secs
+		);
+	}
 
 	/**
 	 * Returns true if the session had expired.
 	 */
 	protected boolean    checkExpired(FilterTask task)
 	{
-		//~: lookup the secured session
-		SecSession secs = (SecSession) task.getRequest().
-		  getSession().getAttribute(SecSession.class.getName());
+		//~: restore from the web session
+		SecSession secs = restore(task);
 
-		//?: {has no one} regard as expired
-		return (secs == null) || getExpireStrategy().isExpired(secs);
+		//~: bind to the point
+		SecPoint.getInstance().setSecSession(secs);
+
+		//?: {has no session | expired}
+		if((secs == null) || secs.getExpireStrategy().isExpired(secs))
+			return true;
+
+		//!: touch the session
+		secs.getExpireStrategy().touch(secs);
+
+		return false;
 	}
 
 	/**
@@ -174,12 +235,17 @@ public class LoginFilter extends FilterBase
 	protected boolean    bindSession(FilterTask task, String bind)
 	{
 		//~: check the bind + create the secured session
-		SecSession secs = checkBind(bind);
+		SecSession secs = checkBind(task, bind);
 
-		//~: save it in the web session
+		//?: {bind is valid & created new secure session}
 		if(secs != null)
-			task.getRequest().getSession().
-			  setAttribute(SecSession.class.getName(), secs);
+		{
+			//~: save it in the web session
+			save(task, secs);
+
+			//~: bind to the point
+			SecPoint.getInstance().setSecSession(secs);
+		}
 
 		return (secs != null);
 	}
@@ -188,7 +254,7 @@ public class LoginFilter extends FilterBase
 	 * Returns new {@link SecSession} if the bind provided is valid.
 	 */
 	@Transactional
-	protected SecSession checkBind(String bind)
+	protected SecSession checkBind(FilterTask task, String bind)
 	{
 
 // select id from AuthSession where (bind = :bind)
@@ -249,6 +315,9 @@ where (au.id = :id)
 		if(d == null) throw new IllegalStateException();
 		secs.attr(SecSession.ATTR_DOMAIN_PKEY, (Long)d);
 
+		//~: set domain cookie
+		setDomainCookie(task, (Long)d);
+
 		return secs;
 	}
 
@@ -275,22 +344,20 @@ where (au.id = :id)
 	protected void       defineDomain(FilterTask task)
 	{
 		//~: lookup the secured session
-		SecSession secs = (task.getRequest().getSession(false) == null)?(null):
-		  (SecSession) task.getRequest().getSession().
-		    getAttribute(SecSession.class.getName());
+		SecSession secs  = SecPoint.getInstance().getSecSession();
 
 		//~: the domain code
-		String dcode = null;
-		Long   dkey  = (secs == null)?(null):
+		String     dcode = null;
+		Long       dkey  = (secs == null)?(null):
 		  (Long) secs.attr(SecSession.ATTR_DOMAIN_PKEY);
 
 		//?: {request has login domain path}
 		StringBuilder s = new StringBuilder(
 		  task.getRequest().getContextPath());
 
-		if(getDomainPath().charAt(0) != '/')
+		if(getLoginPath().charAt(0) != '/')
 			s.append('/');
-		s.append(getDomainPath());
+		s.append(getLoginPath());
 		if(s.charAt(s.length() - 1) != '/')
 			s.append('/');
 
@@ -303,8 +370,13 @@ where (au.id = :id)
 			u = SU.s2s(u.substring(x.length()));
 			if(u != null) dcode = u;
 		}
-		//!: {session stores Domain key}
-		else if(dkey != null)
+
+		//?: {lookup cookie}
+		if(SU.sXe(dcode) && (dkey == null))
+			dkey = getDomainCookie(task);
+
+		//!: {has Domain key}
+		if(SU.sXe(dcode) && (dkey != null))
 			dcode = domainCode(dkey);
 
 		//?: {thr domain is defined} save it in the request
@@ -332,12 +404,36 @@ where (au.id = :id)
 		  uniqueResult();
 	}
 
+	protected void       setDomainCookie(FilterTask task, Long domain)
+	{
+		Cookie cookie = new Cookie("ReTradeDomain", domain.toString());
+
+		cookie.setSecure(task.getRequest().isSecure());
+		cookie.setPath(task.getRequest().getContextPath());
+		task.getResponse().addCookie(cookie);
+	}
+
+	protected Long       getDomainCookie(FilterTask task)
+	{
+		Cookie[] cookies = task.getRequest().getCookies();
+
+		if(cookies != null) for(Cookie cookie : cookies)
+			if("ReTradeDomain".equals(cookie.getName())) try
+			{
+				return Long.parseLong(cookie.getValue());
+			}
+			catch(Exception e)
+			{}
+
+		return null;
+	}
+
 
 	/* filter parameters */
 
 	private ExpireStrategy expireStrategy = new TimeExpireStrategy();
 	private String         bindParameter  = "retrade-session-bind";
 	private String         domainAttr     = "retrade-domain-name";
-	private String         loginPage      = "/.items/login.jsp";
-	private String         domainPath     = "/go/login/";
+	private String         loginPage      = "/login.jsp";
+	private String         loginPath      = "/go/login/";
 }

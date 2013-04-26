@@ -7,6 +7,8 @@ import java.beans.XMLEncoder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import java.math.BigDecimal;
@@ -22,17 +24,10 @@ import com.tverts.objects.ObjectAccessRef;
 import com.tverts.objects.RunnableWrapper;
 import com.tverts.objects.RunnableInterruptible;
 
-/* com.tverts: hibery */
-
-import com.tverts.hibery.system.HiberSystem;
-
-/* com.tverts: endure core */
-
-import com.tverts.endure.PrimaryIdentity;
-
 /* com.tverts: support */
 
 import com.tverts.support.streams.BigDecimalXMLEncoderPersistenceDelegate;
+import com.tverts.support.streams.BytesStream;
 
 
 /**
@@ -327,6 +322,64 @@ public class OU
 	}
 
 
+	/* Java serialization */
+
+	public static byte[]  obj2bytes(Object  obj)
+	{
+		BytesStream bs = new BytesStream();
+
+		try
+		{
+			ObjectOutputStream os = new ObjectOutputStream(bs);
+
+			os.writeObject(obj);
+			os.flush();
+
+			byte[] res = bs.bytes();
+			os.close();
+
+			return res;
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		finally
+		{
+			bs.close();
+		}
+	}
+
+	public static Object  bytes2obj(byte[] bytes)
+	{
+		try
+		{
+			ObjectInputStream is = new ObjectInputStream(
+			  new ByteArrayInputStream(bytes));
+
+			return (Serializable) is.readObject();
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <O> O   bytes2obj(byte[] bytes, Class<O> cls)
+	{
+		Object obj = bytes2obj(bytes);
+
+		if((obj != null) && !cls.isAssignableFrom(obj.getClass()))
+			throw new IllegalStateException(String.format(
+			  "Deserialized object of class [%s], but expected [%s]!",
+			  cls.getName(), obj.getClass().getName()
+			));
+
+		return (O) obj;
+	}
+
+
 	/* class checks */
 
 	/**
@@ -358,9 +411,7 @@ public class OU
 
 	public static boolean eqcls(Object a, Object b)
 	{
-		if(a == b) return true;
-		if((a == null) || (b == null)) return false;
-
-		return a.getClass().getName().equals(b.getClass().getName());
+		return (a == b) || !((a == null) || (b == null)) &&
+		  a.getClass().getName().equals(b.getClass().getName());
 	}
 }

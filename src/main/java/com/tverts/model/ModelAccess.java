@@ -1,7 +1,7 @@
 package com.tverts.model;
 
 /**
- * Incapsulates strategy of accessing user model (point).
+ * Incapsulates strategy of accessing user Model Point.
  * The access parameters are defined implicitly by the
  * system query context.
  *

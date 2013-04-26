@@ -28,6 +28,7 @@ import com.tverts.model.NoModelException;
 
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.GetDomain;
+import com.tverts.secure.SecPoint;
 
 /* com.tverts: support */
 
@@ -62,14 +63,11 @@ public abstract class ModelView extends ViewWithModes
 	/* public: ModelView (access model) interface */
 
 	/**
-	 * Finds the domain the current request is for.
-	 *
-	 * TODO return not Test domain in model views!
+	 * Finds the Domain the current request is for.
 	 */
 	public Long        getDomainKey()
 	{
-		return bean(GetDomain.class).
-		  getDomain("Test").getPrimaryKey();
+		return SecPoint.domain();
 	}
 
 	public Domain      loadDomain()

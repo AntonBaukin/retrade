@@ -151,7 +151,7 @@
 
   <context-param>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>server</param-value>
+    <param-value>client</param-value>
   </context-param>
 
   <context-param>
@@ -362,7 +362,7 @@
   </jsp-config>
 
   <session-config>
-    <!-- 480 minutes -->
-    <session-timeout>480</session-timeout>
+    <!-- 5760 minutes = 8 days -->
+    <session-timeout>5760</session-timeout>
   </session-config>
 </web-app>

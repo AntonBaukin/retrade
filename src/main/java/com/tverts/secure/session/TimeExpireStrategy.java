@@ -1,5 +1,10 @@
 package com.tverts.secure.session;
 
+/* com.tverts: system */
+
+import com.tverts.system.SystemConfig;
+
+
 /**
  * Expire Strategy checking the session
  * inactivity time.
@@ -53,21 +58,22 @@ public class TimeExpireStrategy implements ExpireStrategy
 
 	/**
 	 * Defines session expire timeout in minutes.
-	 * By default, it is 2 hours (120).
+	 * By default, it is {@link SystemConfig#getSessionTime()}.
 	 */
 	public int  getTimeout()
 	{
-		return timeout;
+		return (timeout != null)?(timeout):
+		  SystemConfig.getInstance().getSessionTime();
 	}
 
 	public void setTimeout(int timeout)
 	{
-		if(timeout <= 0) throw new IllegalArgumentException();
-		this.timeout = timeout;
+		if(timeout < 0) throw new IllegalArgumentException();
+		this.timeout = (timeout == 0)?(null):(timeout);
 	}
 
 
 	/* default timeout */
 
-	private int timeout = 60 * 2; //<-- default 2 hours
+	private Integer timeout;
 }

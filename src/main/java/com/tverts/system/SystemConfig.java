@@ -25,6 +25,22 @@ public class SystemConfig
 
 	/* public: SystemConfig (bean) interface */
 
+	/**
+	 * Tells that the application runs in development
+	 * (debug) mode. It has the same functions that
+	 * may be extended to provide additional support
+	 * for the developer.
+	 */
+	public boolean isDebug()
+	{
+		return debug;
+	}
+
+	public void    setDebug(boolean debug)
+	{
+		this.debug = debug;
+	}
+
 	public int     getDumpLimit()
 	{
 		return (dumpLimit == 0)?(512):(dumpLimit);
@@ -51,25 +67,25 @@ public class SystemConfig
 	}
 
 	/**
-	 * Tells that the application runs in development
-	 * (debug) mode. It has the same functions that
-	 * may be extended to provide additional support
-	 * for the developer.
+	 * Defines the default length of Login Sessions
+	 * in minutes. Default is 120 (2 hours).
 	 */
-	public boolean isDebug()
+	public int     getSessionTime()
 	{
-		return debug;
+		return (sessionTime == 0)?(120):(sessionTime);
 	}
 
-	public void    setDebug(boolean debug)
+	public void    setSessionTime(int st)
 	{
-		this.debug = debug;
+		if(st < 0) throw new IllegalArgumentException();
+		this.sessionTime = st;
 	}
 
 
 	/* private: system properties */
 
-	private int dumpLimit;
-	private int     gridSize;
 	private boolean debug;
+	private int     dumpLimit;
+	private int     gridSize;
+	private int     sessionTime;
 }
