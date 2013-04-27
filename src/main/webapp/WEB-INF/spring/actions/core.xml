@@ -58,6 +58,7 @@
         <ref bean = 'aggrValueBuilders'/>
         <ref bean = 'authComputerBuilders'/>
         <ref bean = 'authLoginBuilders'/>
+        <ref bean = 'authSessionBuilders'/>
         <ref bean = 'corePersonBuilders'/>
 
       </list>

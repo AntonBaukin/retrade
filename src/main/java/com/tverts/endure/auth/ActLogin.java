@@ -85,7 +85,8 @@ public class ActLogin extends ActionBuilderXRoot
 			  login.getPrimaryKey(), login.getCode()
 			));
 
-
+		//~: close the login
+		chain(abr).first(new CloseAuthLoginAction(task(abr)));
 
 		complete(abr);
 	}
@@ -135,5 +136,4 @@ public class ActLogin extends ActionBuilderXRoot
 			));
 		}
 	}
-
 }

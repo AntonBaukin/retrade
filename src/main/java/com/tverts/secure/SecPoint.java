@@ -1,5 +1,19 @@
 package com.tverts.secure;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
+/* com.tverts: actions */
+
+import static com.tverts.actions.ActionsPoint.actionRun;
+
+/* com.tverts: endure (auth) */
+
+import com.tverts.endure.auth.ActAuthSession;
+import com.tverts.endure.auth.AuthSession;
+import com.tverts.endure.auth.GetAuthLogin;
+
 /* com.tverts: secure */
 
 import com.tverts.secure.session.SecSession;
@@ -46,6 +60,20 @@ public final class SecPoint
 		));
 
 		return domain;
+	}
+
+	public static void       closeSecSession()
+	{
+		//~: set the closed attribute
+		secSession().attr(SecSession.ATTR_CLOSED, true);
+
+		//~: execute Auth Login close action
+		AuthSession session = bean(GetAuthLogin.class).
+		  getAuthSession((String) secSession().attr(SecSession.ATTR_AUTH_SESSION));
+
+		//?: {session exists and is not closed yet}
+		if((session != null) && (session.getCloseTime() == null))
+			actionRun(ActAuthSession.CLOSE, session);
 	}
 
 

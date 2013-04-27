@@ -67,6 +67,12 @@ public class SecSession implements Serializable
 	public static String ATTR_LIFE_TIME    =
 	  "SecSession : life time";
 
+	/**
+	 * Tells that the session is manually closed.
+	 */
+	public static String ATTR_CLOSED       =
+	  "SecSession : closed";
+
 
 	/* public: constructor */
 

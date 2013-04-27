@@ -215,12 +215,17 @@ public class LoginFilter extends FilterBase
 	{
 		//~: restore from the web session
 		SecSession secs = restore(task);
+		if(secs == null) return true;
 
 		//~: bind to the point
 		SecPoint.getInstance().setSecSession(secs);
 
+		//?: is manually closed
+		if(Boolean.TRUE.equals(secs.attr(SecSession.ATTR_CLOSED)))
+			return true;
+
 		//?: {has no session | expired}
-		if((secs == null) || secs.getExpireStrategy().isExpired(secs))
+		if(secs.getExpireStrategy().isExpired(secs))
 			return true;
 
 		//!: touch the session
@@ -257,12 +262,20 @@ public class LoginFilter extends FilterBase
 	protected SecSession checkBind(FilterTask task, String bind)
 	{
 
-// select id from AuthSession where (bind = :bind)
-// update AuthSession set bind = null where (id = :id)
+/*
+
+select id from AuthSession where
+  (bind = :bind) and (closeTime is null)
+
+update AuthSession set bind = null where (id = :id)
+
+*/
 
 		Object id = HiberPoint.getInstance().getSession().createQuery(
 
-"select id from AuthSession where (bind = :bind)"
+"select id from AuthSession where\n" +
+"  (bind = :bind) and (closeTime is null)"
+
 		).
 		  setString("bind", bind).
 		  uniqueResult();

@@ -17,6 +17,10 @@ import static com.tverts.servlet.RequestPoint.request;
 
 import com.tverts.faces.ViewWithModes;
 
+/* com.tverts: secured */
+
+import com.tverts.secure.SecPoint;
+
 /* com.tverts: support */
 
 import static com.tverts.support.SU.s2s;
@@ -40,6 +44,15 @@ public class RootView extends ViewWithModes
 	 * by the implementation (the desktop center).
 	 */
 	public static final String EXTJSPOS_PARAM    = "extjs_desktop_position";
+
+
+	/* global actions */
+
+	public String doLogoff()
+	{
+		SecPoint.closeSecSession();
+		return null;
+	}
 
 
 	/* public: access shared view state */

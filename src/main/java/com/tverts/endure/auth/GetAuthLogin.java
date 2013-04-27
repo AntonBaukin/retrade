@@ -113,4 +113,13 @@ select p from AuthLogin al join al.person p where
 		  setString("login",  login).
 		  uniqueResult();
 	}
+
+
+	/* Get Authentication Session */
+
+	public AuthSession getAuthSession(String pkey)
+	{
+		return (pkey == null)?(null):
+		  (AuthSession) session().get(AuthSession.class, pkey);
+	}
 }

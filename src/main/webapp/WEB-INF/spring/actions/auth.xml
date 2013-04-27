@@ -30,4 +30,15 @@
     </property>
   </bean>
 
+  <bean name  = 'authSessionBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.auth.AuthSession'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.auth.ActAuthSession'/>
+    </property>
+  </bean>
+
 </beans>
