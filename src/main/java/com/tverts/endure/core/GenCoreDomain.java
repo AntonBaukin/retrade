@@ -273,7 +273,7 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		return sys;
 	}
 
-	protected void     setPassword(GenCtx ctx, AuthLogin sys)
+	protected void      setPassword(GenCtx ctx, AuthLogin sys)
 	{
 		//?: {has no password configured}
 		if(SU.sXe(getSystemPassword()))

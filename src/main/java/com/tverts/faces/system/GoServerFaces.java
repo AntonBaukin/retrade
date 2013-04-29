@@ -7,7 +7,7 @@ import javax.servlet.ServletRequestEvent;
 /* com.tverts: servlets */
 
 import com.tverts.servlet.filters.FilterTask;
-import com.tverts.servlet.filters.GoFilterBase;
+import com.tverts.servlet.filters.GoPageFilterBase;
 
 
 /**
@@ -22,7 +22,7 @@ import com.tverts.servlet.filters.GoFilterBase;
  *
  * @author anton.baukin@gmail.com
  */
-public class GoServerFaces extends GoFilterBase
+public class GoServerFaces extends GoPageFilterBase
 {
 	/* public: Filter interface */
 

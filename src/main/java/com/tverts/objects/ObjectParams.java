@@ -3,8 +3,14 @@ package com.tverts.objects;
 /* standard Java classes */
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.core.Property;
 
 /* com.tverts: support */
 
@@ -146,6 +152,12 @@ public class ObjectParams
 			}
 		}
 
+		@SuppressWarnings("unchecked")
+		public Map     extensions()
+		{
+			return (extensions != null)?(extensions):
+			  (extensions = new HashMap(1));
+		}
 
 		/* the state */
 
@@ -154,6 +166,7 @@ public class ObjectParams
 		protected final Method write;
 		private String         name;
 		private String         descr;
+		private Map            extensions;
 		private boolean        required;
 	}
 
@@ -164,13 +177,15 @@ public class ObjectParams
 	 * Finds {@link Param}-annotated methods of the object
 	 * given, and creates {@link ReflectedParameter} for them.
 	 */
+	@SuppressWarnings("unchecked")
 	public static ObjectParam[] find(Object obj)
 	{
 		if(obj == null)
 			return null;
 
-		// 0 = "description",  1 = read-only,
-		// 2 = write-only,     3 = required
+		// 0 = name, 1 = "description",
+		// 2 = read-only, 3 = write-only,
+		// 4 = required
 		TreeMap<String, Object[]> ps =
 		  new TreeMap<String, Object[]>();
 
@@ -210,10 +225,6 @@ public class ObjectParams
 				if(x.charAt(0) == Character.toUpperCase(x.charAt(0)))
 					n = x;
 
-			//?: {name is defined by the annotation}
-			if((a != null) && !SU.sXe(a.name()))
-				n = SU.s2s(a.name());
-
 			//?: {this is a precise read-method}
 			if(!Void.class.equals(t) && (m.getParameterTypes().length == 0))
 				rs.put(n, m);
@@ -237,24 +248,26 @@ public class ObjectParams
 
 			//~: create the array
 			Object[] p = ps.get(n);
-			if(p == null)
-				ps.put(n, p = new Object[4]);
+			if(p == null) ps.put(n, p = new Object[5]);
 
-			//[0]: set the description
+			//[0]: name
+			p[0] = SU.sXe(a.name())?(n):SU.s2s(a.name());
+
+			//[1]: set the description
 			if(!SU.sXe(a.descr()))
-				p[0] = a.descr();
+				p[1] = a.descr();
 
-			//[1]: {read-only}
+			//[2]: {read-only}
 			if(a.readonly())
-				p[1] = true;
-
-			//[2]: {write-only}
-			if(a.writeonly())
 				p[2] = true;
 
-			//[3]: {required}
-			if(a.required())
+			//[3]: {write-only}
+			if(a.writeonly())
 				p[3] = true;
+
+			//[4]: {required}
+			if(a.required())
+				p[4] = true;
 		}
 
 		//~: create the result
@@ -264,11 +277,11 @@ public class ObjectParams
 			Object[] p = ps.get(n);
 
 			//?: {read-only} clear writer
-			if(Boolean.TRUE.equals(p[1]))
+			if(Boolean.TRUE.equals(p[2]))
 				ws.remove(n);
 
 			//?: {write-only} clear reader
-			if(Boolean.TRUE.equals(p[2]))
+			if(Boolean.TRUE.equals(p[3]))
 				rs.remove(n);
 
 			//?: {read-only & write-only}
@@ -283,18 +296,76 @@ public class ObjectParams
 			  new ReflectedParameter(obj, rs.get(n), ws.get(n));
 
 			//~: name
-			op.setName(n);
+			op.setName((String)p[0]);
+			op.extensions().put("property", op.getName());
 
 			//~: description
-			op.setDescr((String)p[0]);
+			op.setDescr((String)p[1]);
 
 			//~: required
-			op.setRequired(Boolean.TRUE.equals(p[3]));
+			op.setRequired(Boolean.TRUE.equals(p[4]));
 
 			//~: assign
 			r[i++] = op;
 		}
 
 		return r;
+	}
+
+
+	/* endure properties convert helper */
+
+	/**
+	 * Invoke this function after {@link #find(Object)} call
+	 * to extend the parameters found with the {@link Param}
+	 * annotation binding {@link Property}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static void       extendProps(Collection<ObjectParam> params)
+	{
+		//~: extend with @Prop annotations
+		for(ObjectParam op : params) if(op instanceof ReflectedParameter)
+		{
+			Prop ar = null, aw = null;
+
+			//~: see @Prop of read method
+			if(((ReflectedParameter)op).read != null)
+				ar = ((ReflectedParameter)op).read.getAnnotation(Prop.class);
+
+			//~: see @Prop of write method
+			if(((ReflectedParameter)op).write != null)
+				aw = ((ReflectedParameter)op).write.getAnnotation(Prop.class);
+
+			if(aw != null)
+				op.extensions().put(Prop.class, aw);
+			if(ar != null)
+				op.extensions().put(Prop.class, ar);
+		}
+
+		//~: create the properties
+		for(ObjectParam op : params) if(op instanceof ReflectedParameter)
+		{
+			//~: @Prop annotation
+			Prop a = (Prop) op.extensions().get(Prop.class);
+			if(a == null) continue;
+
+			//~: the original name
+			String name = (String) op.extensions().get("property");
+			if(SU.sXe(name)) throw new IllegalStateException();
+
+			//?: annotation rewrites the name
+			if(!SU.sXe(a.name()))
+				name = a.name();
+
+			//~: create the property
+			Property p = new Property();
+			op.extensions().put(Property.class, p);
+
+			//~: name
+			p.setName(name);
+
+			//~: area
+			p.setArea(SU.s2s(a.area()));
+		}
 	}
 }

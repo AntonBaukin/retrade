@@ -30,15 +30,14 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Go JavaServer Pages
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'goServerPages'/>
-
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Go JavaServer Faces
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'goServerFaces'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Go JavaServer Pages
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'goServerPages'/>
 
       </list>
     </property>

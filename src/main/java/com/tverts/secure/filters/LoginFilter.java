@@ -55,7 +55,14 @@ public class LoginFilter extends FilterBase
 		if(task.getRequest().getSession(false) != null)
 			//?: {session had not expired} proceed the request
 			if(!checkExpired(task))
-				return;
+			{
+				String path = task.getRequest().getRequestURI().
+				  substring(task.getRequest().getContextPath().length());
+
+				//?: {this is not a direct request for login page}
+				if(!path.startsWith(getLoginPath()))
+					return;
+			}
 
 		//?: {only GET are allowed} forbid directly
 		if(!"GET".equalsIgnoreCase(task.getRequest().getMethod())) try

@@ -1,5 +1,10 @@
 package com.tverts.objects;
 
+/* standard Java classes */
+
+import java.util.Map;
+
+
 /**
  * Exposes parameter of an object and provides
  * methods to read and write it.
@@ -51,4 +56,10 @@ public interface ObjectParam
 	 * and assigns it.
 	 */
 	public void    setString(String s);
+
+	/**
+	 * The map of parameter extensions
+	 * added while the processing.
+	 */
+	public Map     extensions();
 }

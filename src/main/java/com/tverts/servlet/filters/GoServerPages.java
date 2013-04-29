@@ -8,7 +8,7 @@ package com.tverts.servlet.filters;
  *
  * @author anton.baukin@gmail.com
  */
-public class GoServerPages extends GoFilterBase
+public class GoServerPages extends GoPageFilterBase
 {
 	/* protected: GoFilterBase interface */
 

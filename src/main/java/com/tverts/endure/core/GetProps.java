@@ -100,6 +100,20 @@ from Property where (name = :name) and
 	}
 
 	/**
+	 * Get or Create: returns the property of the domain area.
+	 * If the property exists in the database, new instance.
+	 */
+	public Property goc(Property p)
+	{
+		Property res = this.get(p);
+		if(res != null) return res;
+
+		//!: save it
+		this.save(p);
+		return p;
+	}
+
+	/**
 	 * Searches for the property instance with the same
 	 * alternative key (name + area + domain) as of the
 	 * property instance given.
