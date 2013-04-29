@@ -8,8 +8,10 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import static com.tverts.actions.ActionsPoint.actionRun;
 
-/* com.tverts: endure (auth) */
+/* com.tverts: endure (core + auth) */
 
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.GetDomain;
 import com.tverts.endure.auth.ActAuthSession;
 import com.tverts.endure.auth.AuthSession;
 import com.tverts.endure.auth.GetAuthLogin;
@@ -74,6 +76,33 @@ public final class SecPoint
 		//?: {session exists and is not closed yet}
 		if((session != null) && (session.getCloseTime() == null))
 			actionRun(ActAuthSession.CLOSE, session);
+	}
+
+	public static Domain     loadDomain()
+	{
+		Domain d = bean(GetDomain.class).getDomain(domain());
+
+		if(d == null) throw new IllegalStateException(String.format(
+		  "Domain pkey [%d] doesn't exist!", domain()
+		));
+
+		return d;
+	}
+
+	/**
+	 * Code of the System Domain.
+	 */
+	public static final String SYSTEM_DOMAIN = "System";
+
+	public static boolean    isSystemDomain()
+	{
+		return SYSTEM_DOMAIN.equals(loadDomain().getCode());
+	}
+
+	public static void       checkSystemDomain()
+	{
+		if(!isSystemDomain())
+			throw new IllegalStateException("System Domain only!");
 	}
 
 
