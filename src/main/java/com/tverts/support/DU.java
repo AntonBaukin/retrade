@@ -82,7 +82,7 @@ public class DU
 		if(cl == null) cl = Calendar.getInstance();
 		cl.setTime(d);
 
-		//clear the time parts
+		//~: clear the time parts
 		cl.set(Calendar.HOUR_OF_DAY, 0);
 		cl.set(Calendar.MINUTE,      0);
 		cl.set(Calendar.SECOND,      0);
@@ -108,7 +108,7 @@ public class DU
 		if(cl == null) cl = Calendar.getInstance();
 		cl.setTime(d);
 
-		//clear the time parts
+		//~: clear the time parts
 		cl.set(Calendar.HOUR_OF_DAY, 23);
 		cl.set(Calendar.MINUTE,      59);
 		cl.set(Calendar.SECOND,      59);
@@ -152,29 +152,34 @@ public class DU
 	public static String date2str(Date d)
 	{
 		StringBuilder sb = new StringBuilder(10);
-		date2str(d, sb, null);
+		Calendar      cl = Calendar.getInstance();
+		cl.setTime(d);
+
+		date2str(sb, cl);
 		return sb.toString();
 	}
 
-	public static void   date2str(Date d, StringBuilder sb, Calendar cl)
+	public static void   date2str(StringBuilder sb, Calendar cl)
 	{
-		if(cl == null) cl =  Calendar.getInstance();
-		cl.setTime(d);
-
-		//day
+		//~: day
 		lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
 		sb.append('.');
-		//month
+
+		//~: month
 		lennum(cl.get(Calendar.MONTH) + 1, 2, sb);
 		sb.append('.');
-		//year
+
+		//~: year
 		lennum(cl.get(Calendar.YEAR), 4, sb);
 	}
 
 	public static String time2str(Date t)
 	{
 		StringBuilder sb = new StringBuilder(5);
-		time2str(t, sb, null);
+		Calendar      cl = Calendar.getInstance();
+		cl.setTime(t);
+
+		time2str(sb, cl);
 		return sb.toString();
 	}
 
@@ -183,21 +188,17 @@ public class DU
 		Calendar cl = Calendar.getInstance();
 		cl.setTime(d);
 
-		return new StringBuilder(8).
-		  append(MONTHS_ABBR_RU[cl.get(Calendar.MONTH)]).
-		  append(' ').append(cl.get(Calendar.YEAR)).
-		  toString();
+		return MONTHS_ABBR_RU[cl.get(Calendar.MONTH)] +
+		  ' ' + cl.get(Calendar.YEAR);
 	}
 
-	public static void   time2str(Date t, StringBuilder sb, Calendar cl)
+	public static void   time2str(StringBuilder sb, Calendar cl)
 	{
-		if(cl == null) cl =  Calendar.getInstance();
-		cl.setTime(t);
-
-		//hour
+		//~: hour
 		lennum(cl.get(Calendar.HOUR_OF_DAY), 2, sb);
 		sb.append(':');
-		//minute
+
+		//~: minute
 		lennum(cl.get(Calendar.MINUTE), 2, sb);
 	}
 
@@ -208,21 +209,25 @@ public class DU
 		StringBuilder sb = new StringBuilder(14);
 		Calendar      cl = Calendar.getInstance();
 
-		date2str(d, sb, cl);
+		cl.setTime(d);
+		date2str(sb, cl);
 		sb.append(' ');
-		time2str(d, sb, cl);
+		time2str(sb, cl);
 
 		return sb.toString();
 	}
 
 	public static Date   str2date(String s)
 	{
-		return str2date(s, null);
+		Calendar cl = Calendar.getInstance();
+		str2date(s, cl);
+		return cl.getTime();
 	}
 
-	public static Date   str2date(String s, Calendar cl)
+	public static void   str2date(String s, Calendar cl)
 	{
-		if((s = SU.s2s(s)) == null) return null;
+		if(cl == null) throw new IllegalArgumentException();
+		if((s = SU.s2s(s)) == null) return;
 
 		int d0 = s.indexOf('.');
 		if(d0 == -1) throw new IllegalArgumentException();
@@ -234,27 +239,26 @@ public class DU
 		int mm = Integer.parseInt(s.substring(d0 + 1, d1));
 		int yy = Integer.parseInt(s.substring(d1 + 1    ));
 
-		if(cl == null) cl = Calendar.getInstance();
-		cl.clear();
 		cl.set(Calendar.DAY_OF_MONTH, dd);
 		cl.set(Calendar.MONTH,        mm - 1);
 		cl.set(Calendar.YEAR,         yy);
-
-		return cl.getTime();
 	}
 
 	public static Date   str2time(String s)
 	{
-		return str2time(s, null);
+		Calendar cl = Calendar.getInstance();
+		str2time(s, cl);
+		return cl.getTime();
 	}
 
 	/**
 	 * The format of the time supported is 24 hours timestamp
 	 * HH:mm[:SS[.sss]] with option seconds and milliseconds.
 	 */
-	public static Date   str2time(String s, Calendar cl)
+	public static void   str2time(String s, Calendar cl)
 	{
-		if((s = SU.s2s(s)) == null) return null;
+		if(cl == null) throw new IllegalArgumentException();
+		if((s = SU.s2s(s)) == null) return;
 
 		int sl = s.length();
 		int c0 = s.indexOf(':');
@@ -273,14 +277,10 @@ public class DU
 		int ms = (d2 == sl)?(0):
 		  Integer.parseInt(s.substring(d2 + 1,  sl));
 
-		if(cl == null) cl = Calendar.getInstance();
-		cl.clear();
 		cl.set(Calendar.HOUR_OF_DAY, hh);
 		cl.set(Calendar.MINUTE,      mm);
 		cl.set(Calendar.SECOND,      ss);
 		cl.set(Calendar.MILLISECOND, ms);
-
-		return cl.getTime();
 	}
 
 	public static void   lennum(int num, int len, StringBuilder sb)
@@ -302,20 +302,20 @@ public class DU
 		if(cl == null) cl =  Calendar.getInstance();
 		cl.setTime(dt);
 
-		//week day
+		//~: week day
 		sb.append(WEEKDAYS_RU[cl.get(Calendar.DAY_OF_WEEK)]).
 		   append(',').append(ws);
 
-		//day
+		//~: day
 		lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
 		sb.append('.');
 
-		//month as name
+		//~: month as name
 		sb.append(ws).
 		   append(MONTHS_RU[cl.get(Calendar.MONTH)]).
 		   append(ws);
 
-		//year
+		//~: year
 		lennum(cl.get(Calendar.YEAR), 4, sb);
 	}
 
