@@ -28,7 +28,6 @@ import static com.tverts.support.SU.s2s;
  * Responds on {@link GenesisDone} event
  * by sending the event configured.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public class   RunEventOnGenesisDone

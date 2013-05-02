@@ -32,7 +32,7 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Secured access filter and login page Redirector
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.secure.filters.LoginFilter'/>
+        <bean class = 'com.tverts.secure.system.LoginFilter'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·

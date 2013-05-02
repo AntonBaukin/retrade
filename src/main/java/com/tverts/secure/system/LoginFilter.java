@@ -1,4 +1,4 @@
-package com.tverts.secure.filters;
+package com.tverts.secure.system;
 
 /* Java Servlet api */
 
@@ -14,6 +14,7 @@ import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: servlet (filters) */
 
+import com.tverts.servlet.REQ;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterStage;
 import com.tverts.servlet.filters.FilterTask;
@@ -67,6 +68,10 @@ public class LoginFilter extends FilterBase
 		//?: {only GET are allowed} forbid directly
 		if(!"GET".equalsIgnoreCase(task.getRequest().getMethod())) try
 		{
+			//?: {this is a localhost request} allow it
+			if(REQ.isLocalhost(task.getRequest()))
+				return;
+
 			task.getResponse().sendError(403);
 			task.setBreaked();
 			return;
@@ -101,6 +106,10 @@ public class LoginFilter extends FilterBase
 		{
 			throw new RuntimeException(e);
 		}
+
+		//?: {this is a localhost request} allow it
+		if(REQ.isLocalhost(task.getRequest()))
+			return;
 
 		//!: redirect to login
 		redirectLogin(task);

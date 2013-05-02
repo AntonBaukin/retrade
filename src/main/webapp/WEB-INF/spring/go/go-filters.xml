@@ -30,9 +30,16 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Login processor for localhost requests
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.system.LocalLoginFilter'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Go JavaServer Faces
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'goServerFaces'/>
+
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Go JavaServer Pages
