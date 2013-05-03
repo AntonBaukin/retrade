@@ -3,6 +3,7 @@ package com.tverts.genesis;
 /* standard Java classes */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
 /* com.tverts: system services */
 
 import com.tverts.endure.core.Domain;
+import com.tverts.objects.ObjectParamView;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
@@ -49,6 +51,31 @@ public class GenesisService extends ServiceBase
 	}
 
 
+	/* public: GenesisService (main) interface */
+
+	/**
+	 * Collects parameters views on the spheres named.
+	 */
+	public ObjectParamView[] parameters(Collection<String> spheres)
+	{
+		//~: select the spheres
+		List<GenesisSphere> sps = new ArrayList<GenesisSphere>(4);
+		selectSpheres(spheres, sps);
+
+		//~: collect the parameters of spheres selected
+		List<ObjectParam> ps = new ArrayList<ObjectParam>(16);
+		for(GenesisSphere sp : sps)
+			sp.parameters(ps);
+
+		//~: translate into views
+		ObjectParamView[] res = new ObjectParamView[ps.size()];
+		for(int i = 0;(i < res.length);i++)
+			res[i] = new ObjectParamView().init(ps.get(i));
+
+		return res;
+	}
+
+
 	/* public: GenesisService (bean) interface */
 
 	public GenesisSphereReference getGenesisSpheres()
@@ -76,8 +103,7 @@ public class GenesisService extends ServiceBase
 	protected void generate(GenesisEvent event)
 	{
 		//~: select the spheres
-		List<GenesisSphere> spheres =
-		  new ArrayList<GenesisSphere>(4);
+		List<GenesisSphere> spheres = new ArrayList<GenesisSphere>(4);
 		selectSpheres(event, spheres);
 
 		//?: {has no spheres selected}
@@ -112,6 +138,11 @@ public class GenesisService extends ServiceBase
 
 	protected void selectSpheres(GenesisEvent event, List<GenesisSphere> spheres)
 	{
+		selectSpheres(event.getSpheres(), spheres);
+	}
+
+	protected void selectSpheres(Collection<String> names, List<GenesisSphere> spheres)
+	{
 		GenesisSphereReference ref = getGenesisSpheres();
 		List<GenesisSphere>    gss = (spheres == null)?(null):
 		  ref.dereferObjects();
@@ -123,8 +154,7 @@ public class GenesisService extends ServiceBase
 
 		//~: map the spheres by the names
 		Map<String, GenesisSphere> smap =
-		  new HashMap<String, GenesisSphere>(
-		    event.getSpheres().size());
+		  new HashMap<String, GenesisSphere>(names.size());
 
 		for(GenesisSphere gs : gss)
 		{
@@ -147,7 +177,7 @@ public class GenesisService extends ServiceBase
 		}
 
 		//~: select the spheres
-		for(String name : event.getSpheres())
+		for(String name : names)
 		{
 			//?: {the name is empty}
 			if(SU.sXe(name))

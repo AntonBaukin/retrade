@@ -159,6 +159,7 @@ public class ObjectParams
 			  (extensions = new HashMap(1));
 		}
 
+
 		/* the state */
 
 		protected final Object object;
@@ -321,7 +322,7 @@ public class ObjectParams
 	 * annotation binding {@link Property}.
 	 */
 	@SuppressWarnings("unchecked")
-	public static void       extendProps(Collection<ObjectParam> params)
+	public static void extendProps(Collection<ObjectParam> params)
 	{
 		//~: extend with @Prop annotations
 		for(ObjectParam op : params) if(op instanceof ReflectedParameter)
