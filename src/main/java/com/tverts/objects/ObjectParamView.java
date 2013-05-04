@@ -97,6 +97,7 @@ public class ObjectParamView implements Serializable
 		descr    = p.getDescr();
 		required = p.isRequired();
 		readOnly = !p.isWrite();
+		value    = p.getString();
 
 		return this;
 	}
