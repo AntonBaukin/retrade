@@ -34,6 +34,8 @@ public class InfoLogBuffer implements LogStrategy
 
 	public void     logMsg(LogLevel l, String d, CharSequence m)
 	{
+		if(!isLevel(l, d)) return;
+
 		String lv = l.toString();
 
 		//~: level
