@@ -105,6 +105,15 @@ public final class SecPoint
 			throw new IllegalStateException("System Domain only!");
 	}
 
+	public static Domain     loadSystemDomain()
+	{
+		Domain d =  bean(GetDomain.class).getDomain(SYSTEM_DOMAIN);
+
+		if(d == null) throw new IllegalStateException(
+		  "No System Domain present!");
+		return d;
+	}
+
 
 	/* public: SecPoint (access) interface */
 

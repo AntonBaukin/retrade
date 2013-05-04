@@ -62,11 +62,11 @@
 
     <!-- Value (as serialized value) -->
 
-    <property name = 'object' type = 'clob'>
+    <property name = 'object' type = 'text'>
 
       <column name = 'property_object'>
 
-        <comment>The property value as a serialized string</comment>
+        <comment>The property value as a huge (object) string</comment>
       </column>
     </property>
 

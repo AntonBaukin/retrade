@@ -170,7 +170,7 @@ from Property where (name = :name) and
 
 	public String  string(Property p)
 	{
-		return p.getValue();
+		return (p.getValue() != null)?(p.getValue()):(p.getObject());
 	}
 
 	public Integer integer(Property p)
@@ -194,12 +194,14 @@ from Property where (name = :name) and
 
 	public Object  bean(Property p)
 	{
-		return xml2obj(p.getObject());
+		String s = this.string(p);
+		return (s == null)?(null):xml2obj(s);
 	}
 
-	public <O> O   bean(Property p, Class<O> c1ass)
+	public <O> O   bean(Property p, Class<O> cls)
 	{
-		return xml2obj(p.getObject(), c1ass);
+		String s = this.string(p);
+		return (s == null)?(null):xml2obj(s, cls);
 	}
 
 
@@ -207,44 +209,40 @@ from Property where (name = :name) and
 
 	public GetProps set(Property p, String v)
 	{
-		//p.setType(String.class);
-		p.setValue(v);
+		p.setValue(null);
+		p.setObject(null);
+
+		if(v != null) if(v.length() <= 2048)
+			p.setValue(v);
+		else
+			p.setObject(v);
+
 		return this;
 	}
 
 	public GetProps set(Property p, Integer v)
 	{
-		//p.setType(Integer.class);
-		p.setValue((v == null)?(null):(v.toString()));
-		return this;
+		return this.set(p,
+		  (v == null)?(null):(v.toString())
+		);
 	}
 
 	public GetProps set(Property p, Long v)
 	{
-		//p.setType(Long.class);
-		p.setValue((v == null)?(null):(v.toString()));
-		return this;
+		return this.set(p,
+		  (v == null)?(null):(v.toString())
+		);
 	}
 
 	public GetProps set(Property p, Boolean v)
 	{
-		//p.setType(Boolean.class);
-		p.setValue((v == null)?(null):(v.toString()));
-		return this;
+		return this.set(p,
+		  (v == null)?(null):(v.toString())
+		);
 	}
 
 	public GetProps bean(Property p, Object bean)
 	{
-		if(bean == null)
-		{
-			p.setObject(null);
-			return this;
-		}
-
-		//if((p.getType() == null) || sXe(p.getValue()))
-		//	p.setType(bean.getClass());
-		p.setValue(obj2xml(bean));
-
-		return this;
+		return this.set(p, obj2xml(bean));
 	}
 }

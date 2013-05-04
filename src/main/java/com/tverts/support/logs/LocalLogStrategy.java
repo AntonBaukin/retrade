@@ -57,6 +57,20 @@ public final class LocalLogStrategy implements LogStrategy
 			locals.set(ls);
 	}
 
+	public LogStrategy tee()
+	{
+		LogStrategy ls = this.get();
+		return !(ls instanceof TeeLog)?(null):(((TeeLog)ls).a());
+	}
+
+	public void        tee(LogStrategy ls)
+	{
+		if(ls == null)
+			this.set(null);
+		else
+			this.set(new TeeLog(ls, fallback));
+	}
+
 
 	/* public: LogStrategy interface */
 

@@ -202,6 +202,24 @@ public class DU
 		lennum(cl.get(Calendar.MINUTE), 2, sb);
 	}
 
+	public static void   timefull2str(StringBuilder sb, Calendar cl)
+	{
+		//~: hour
+		lennum(cl.get(Calendar.HOUR_OF_DAY), 2, sb);
+		sb.append(':');
+
+		//~: minute
+		lennum(cl.get(Calendar.MINUTE), 2, sb);
+		sb.append(':');
+
+		//~: seconds
+		lennum(cl.get(Calendar.SECOND), 2, sb);
+		sb.append('.');
+
+		//~: milliseconds
+		lennum(cl.get(Calendar.MILLISECOND), 3, sb);
+	}
+
 	public static String datetime2str(Date d)
 	{
 		if(d == null) return null;
@@ -215,6 +233,16 @@ public class DU
 		time2str(sb, cl);
 
 		return sb.toString();
+	}
+
+	public static void   timestamp2str(StringBuilder sb, Calendar cl)
+	{
+		//~: date
+		date2str(sb, cl);
+		sb.append(' ');
+
+		//~: time (full)
+		timefull2str(sb, cl);
 	}
 
 	public static Date   str2date(String s)

@@ -8,22 +8,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: system services */
 
-import com.tverts.endure.core.Domain;
-import com.tverts.objects.ObjectParamView;
+import com.tverts.support.logs.LogStrategy;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
+
+/* com.tverts: secure */
+
+import static com.tverts.secure.SecPoint.loadSystemDomain;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.GetDomain;
+import com.tverts.endure.core.GetProps;
+import com.tverts.endure.core.Property;
 
 /* com.tverts: objects */
 
 import com.tverts.objects.ObjectParam;
+import com.tverts.objects.ObjectParamView;
 
 /* com.tverts: support */
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
+
+/* com.tverts: support (logging) */
+
+import com.tverts.support.logs.InfoLogBuffer;
+import com.tverts.support.logs.LogPoint;
 
 
 /**
@@ -93,14 +113,77 @@ public class GenesisService extends ServiceBase
 
 	public void service(Event event)
 	{
-		if(event instanceof GenesisEvent)
-			generate((GenesisEvent) event);
+		if(!(event instanceof GenesisEvent))
+			return;
+
+		//~: create the context
+		GenCtx ctx = createContext((GenesisEvent) event);
+
+		//~: open genesis
+		openGenesis((GenesisEvent) event, ctx);
+
+		//!: generate
+		try
+		{
+			generate((GenesisEvent) event, ctx);
+		}
+		finally
+		{
+			//~: close the genesis
+			closeGenesis((GenesisEvent) event, ctx);
+		}
 	}
 
 
 	/* protected: service work steps */
 
-	protected void generate(GenesisEvent event)
+	protected GenCtx createContext(GenesisEvent event)
+	{
+		return new GenCtxBase();
+	}
+
+	protected void   openGenesis(GenesisEvent event, GenCtx ctx)
+	{
+		//~: tee the log
+		LogPoint.getInstance().getLogStrategy().
+		  tee(new InfoLogBuffer());
+
+		//~: open log
+		LU.I(getLog(), logsig(), " starting genesis for Spheres [",
+		  SU.scat("; ", event.getSpheres()), "]");
+	}
+
+	protected void   closeGenesis(GenesisEvent event, GenCtx ctx)
+	{
+		LogStrategy   ls = LogPoint.getInstance().getLogStrategy().tee();
+		StringBuilder bf = null;
+
+		//!: clear local log tee
+		LogPoint.getInstance().getLogStrategy().tee(null);
+
+		//~: get the log buffer
+		bf = ((InfoLogBuffer)ls).getBuffer();
+
+		//~: get domain from context
+		Domain domain = ctx.get(Domain.class);
+		String logkey = "Log";
+
+		//?: {has no domain} take the system
+		if(domain == null)
+		{
+			domain = loadSystemDomain();
+			logkey = "Log Unknown";
+		}
+
+		//~: get log property
+		GetProps g = bean(GetProps.class);
+		Property p = g.goc(domain, "Genesis", logkey);
+
+		//~: set the log text
+		g.set(p, bf.toString());
+	}
+
+	protected void   generate(GenesisEvent event, GenCtx ctx)
 	{
 		//~: select the spheres
 		List<GenesisSphere> spheres = new ArrayList<GenesisSphere>(4);
@@ -111,12 +194,8 @@ public class GenesisService extends ServiceBase
 			throw new IllegalStateException(
 			  "Genesis Event has no Spheres named!");
 
-		LU.I(getLog(), logsig(), " starting genesis for Spheres [",
-		  SU.scat("; ", event.getSpheres()), "]");
-
 		//~: invoke the spheres
 		Throwable error = null;
-		GenCtx    ctx   = new GenCtxBase();
 
 		for(GenesisSphere sphere : spheres) try
 		{
@@ -136,12 +215,12 @@ public class GenesisService extends ServiceBase
 			error(ctx, event, error);
 	}
 
-	protected void selectSpheres(GenesisEvent event, List<GenesisSphere> spheres)
+	protected void   selectSpheres(GenesisEvent event, List<GenesisSphere> spheres)
 	{
 		selectSpheres(event.getSpheres(), spheres);
 	}
 
-	protected void selectSpheres(Collection<String> names, List<GenesisSphere> spheres)
+	protected void   selectSpheres(Collection<String> names, List<GenesisSphere> spheres)
 	{
 		GenesisSphereReference ref = getGenesisSpheres();
 		List<GenesisSphere>    gss = (spheres == null)?(null):
@@ -195,7 +274,7 @@ public class GenesisService extends ServiceBase
 		}
 	}
 
-	protected void generate(GenesisEvent event, GenesisSphere sphere, GenCtx ctx)
+	protected void   generate(GenesisEvent event, GenesisSphere sphere, GenCtx ctx)
 	{
 		//!: clone the prototype sphere
 		GenesisSphere clone = sphere.clone();
@@ -214,7 +293,7 @@ public class GenesisService extends ServiceBase
 		}
 	}
 
-	protected void assignParameters(GenesisEvent event, GenesisSphere sphere)
+	protected void   assignParameters(GenesisEvent event, GenesisSphere sphere)
 	{
 		ArrayList<ObjectParam> params =
 		  new ArrayList<ObjectParam>(16);
@@ -265,7 +344,7 @@ public class GenesisService extends ServiceBase
 		}
 	}
 
-	protected void success(GenCtx ctx, GenesisEvent event)
+	protected void   success(GenCtx ctx, GenesisEvent event)
 	{
 		LU.I(getLog(), logsig(), " genesis successfully completed!");
 
@@ -282,8 +361,11 @@ public class GenesisService extends ServiceBase
 		main(done);
 	}
 
-	protected void error(GenCtx ctx, GenesisEvent event, Throwable error)
+	protected void   error(GenCtx ctx, GenesisEvent event, Throwable error)
 	{
+		//~: save error in the context
+		ctx.set(Throwable.class, error);
+
 		//~: create & send failure event
 		GenesisFailed failed = new GenesisFailed();
 
@@ -296,7 +378,7 @@ public class GenesisService extends ServiceBase
 		main(failed);
 	}
 
-	protected void handleGenesisError(GenesisSphere sphere, Throwable e)
+	protected void   handleGenesisError(GenesisSphere sphere, Throwable e)
 	{
 		logSphereError(sphere, EX.xrt(e));
 		throw new BreakGenesis(e);

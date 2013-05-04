@@ -21,6 +21,19 @@ public final class TeeLog implements LogStrategy
 	}
 
 
+	/* public: TeeLog interface */
+
+	public LogStrategy a()
+	{
+		return a;
+	}
+
+	public LogStrategy b()
+	{
+		return b;
+	}
+
+
 	/* public: LogStrategy interface */
 
 	public boolean  isLevel(LogLevel l, String d)
