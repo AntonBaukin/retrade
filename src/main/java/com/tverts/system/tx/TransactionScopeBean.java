@@ -69,18 +69,11 @@ public class TransactionScopeBean
 			{
 				closeScope(error);
 			}
-			catch(Exception e)
+			catch(Throwable e)
 			{
 				if(error == null)
 					error = e;
 			}
-		}
-
-		//?: {has error} report it to the filter
-		if((error != null) && (getFilterTask().getError() == null))
-		{
-			getFilterTask().setError(error);
-			getFilterTask().setBreaked();
 		}
 
 		//?: {has error} throw it

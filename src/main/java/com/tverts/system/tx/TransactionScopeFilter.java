@@ -40,7 +40,10 @@ public class TransactionScopeFilter extends FilterBase
 		{
 			//?: {has nested error} don't ignore it
 			if(e.getCause() != null)
+			{
 				task.setError(e.getCause());
+				task.setBreaked();
+			}
 		}
 		catch(Throwable e)
 		{
