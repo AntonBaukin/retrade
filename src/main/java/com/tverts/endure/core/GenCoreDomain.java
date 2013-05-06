@@ -153,7 +153,7 @@ public class GenCoreDomain extends GenesisHiberPartBase
 	{
 		//~: create and save new instance
 		Domain d = new Domain();
-		setPrimaryKey(session(), d, true);
+		setPrimaryKey(session(), d, isTestDomain());
 
 		//~: code
 		d.setCode(getDomainCode());

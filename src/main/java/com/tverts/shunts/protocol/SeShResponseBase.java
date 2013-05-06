@@ -45,6 +45,16 @@ public class SeShResponseBase implements SeShResponse
 		return systemError;
 	}
 
+	public String              getLogText()
+	{
+		return logText;
+	}
+
+	public void                setLogText(String logText)
+	{
+		this.logText = logText;
+	}
+
 
 	/* public: SeShBasicResponse (bean) interface */
 
@@ -70,4 +80,5 @@ public class SeShResponseBase implements SeShResponse
 	private SeShRequest         nextRequest;
 	private SelfShuntUnitReport report;
 	private Throwable           systemError;
+	private String              logText;
 }

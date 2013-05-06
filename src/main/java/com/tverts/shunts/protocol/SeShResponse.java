@@ -54,4 +54,7 @@ public interface SeShResponse
 	 * servlet.
 	 */
 	public Throwable           getSystemError();
+
+	public String              getLogText();
+	public void                setLogText(String log);
 }

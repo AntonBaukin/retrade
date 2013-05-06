@@ -17,6 +17,20 @@ import com.tverts.support.EX;
  */
 public class InfoLogBuffer implements LogStrategy
 {
+	/* public: constructors */
+
+	public InfoLogBuffer()
+	{
+		buffer = new StringBuilder(2048);
+	}
+
+	public InfoLogBuffer(StringBuilder buffer)
+	{
+		if(buffer == null) throw new IllegalArgumentException();
+		this.buffer = buffer;
+	}
+
+
 	/* public: InfoLogBuffer interface */
 
 	public StringBuilder getBuffer()
@@ -70,6 +84,5 @@ public class InfoLogBuffer implements LogStrategy
 
 	/* the buffer */
 
-	protected final StringBuilder buffer =
-	  new StringBuilder(2048);
+	protected final StringBuilder buffer;
 }

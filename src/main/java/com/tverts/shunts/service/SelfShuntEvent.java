@@ -44,6 +44,16 @@ public abstract class SelfShuntEvent
 		this.readonly = readonly;
 	}
 
+	public String getLogParam()
+	{
+		return logParam;
+	}
+
+	public void setLogParam(String logParam)
+	{
+		this.logParam = logParam;
+	}
+
 	public Map<String, String> getParams()
 	{
 		return params;
@@ -59,8 +69,9 @@ public abstract class SelfShuntEvent
 
 	/* private: the event parameters */
 
-	private Long                domain;
-	private boolean             readonly;
+	private Long    domain;
+	private boolean readonly;
+	private String  logParam;
 
 	private Map<String, String> params =
 	  new HashMap<String, String>(1);

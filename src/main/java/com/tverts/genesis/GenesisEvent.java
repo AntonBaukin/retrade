@@ -11,6 +11,10 @@ import java.util.Map;
 
 import com.tverts.system.services.events.EventBase;
 
+/* com.tverts: support */
+
+import static com.tverts.support.SU.s2s;
+
 
 /**
  * Service event to start Genesis on
@@ -54,11 +58,29 @@ public class GenesisEvent extends EventBase
 		  new HashMap<String, String>(3);
 	}
 
+	/**
+	 * The name of log parameter in 'Genesis' area
+	 * to save log after the generation.
+	 *
+	 * By default is undefined, and no log is saved.
+	 */
+	public String getLogParam()
+	{
+		return logParam;
+	}
+
+	public void setLogParam(String logParam)
+	{
+		this.logParam = s2s(logParam);
+	}
+
 
 	/* private: parameters of the event */
 
 	private List<String> spheres =
 	  new ArrayList<String>(2);
+
+	private String logParam;
 
 	private Map<String, String> params =
 	  new HashMap<String, String>(3);

@@ -101,6 +101,7 @@ public abstract class SeShProtocolBase
 
 	public SeShProtocolBase()
 	{
+		this.prototolLog = new StringBuilder(2048);
 		this.unitReports = createUnitReports();
 	}
 
@@ -124,6 +125,11 @@ public abstract class SeShProtocolBase
 		return this.systemError;
 	}
 
+	public StringBuilder   getPrototolLog()
+	{
+		return prototolLog;
+	}
+
 
 	/* protected: protocol conversation */
 
@@ -139,6 +145,10 @@ public abstract class SeShProtocolBase
 	protected SeShRequest     processResponse(SeShResponse r)
 	  throws SeShProtocolError
 	{
+		//?: {response has log text} add it
+		if(r.getLogText() != null)
+			getPrototolLog().append(r.getLogText());
+
 		//?: {has system error}
 		if(r.getSystemError() != null)
 		{
@@ -282,13 +292,17 @@ public abstract class SeShProtocolBase
 
 	/* protected: protocol state */
 
-	protected SelfShuntCtx                    context;
-
-	protected final List<SelfShuntUnitReport> unitReports;
+	protected SelfShuntCtx  context;
 
 	/**
 	 * The system error of the client side that was
 	 * remembered while executing the protocol.
 	 */
-	protected Throwable                       systemError;
+	protected Throwable     systemError;
+
+	protected StringBuilder prototolLog;
+
+	protected final List<SelfShuntUnitReport> unitReports;
+
+
 }

@@ -20,7 +20,9 @@
   <bean name  = 'selfShuntPoint' factory-method = 'getInstance'
         class = 'com.tverts.shunts.SelfShuntPoint'>
 
-      <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+    <property name = 'service' ref = 'selfShuntService'/>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Here all the shunts registered in the system are given    ·
      · to the implementation level set of shunts.                ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->

@@ -14,7 +14,6 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: system services */
 
-import com.tverts.support.logs.LogStrategy;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
@@ -25,7 +24,6 @@ import static com.tverts.secure.SecPoint.loadSystemDomain;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.core.Domain;
-import com.tverts.endure.core.GetDomain;
 import com.tverts.endure.core.GetProps;
 import com.tverts.endure.core.Property;
 
@@ -44,6 +42,7 @@ import com.tverts.support.SU;
 
 import com.tverts.support.logs.InfoLogBuffer;
 import com.tverts.support.logs.LogPoint;
+import com.tverts.support.logs.LogStrategy;
 
 
 /**
@@ -144,9 +143,12 @@ public class GenesisService extends ServiceBase
 
 	protected void   openGenesis(GenesisEvent event, GenCtx ctx)
 	{
-		//~: tee the log
-		LogPoint.getInstance().getLogStrategy().
-		  tee(new InfoLogBuffer());
+		//?: {has log parameter} tee the log
+		if(event.getLogParam() != null)
+		{
+			LogPoint.getInstance().getLogStrategy().
+			  tee(new InfoLogBuffer());
+		}
 
 		//~: open log
 		LU.I(getLog(), logsig(), " starting genesis for Spheres [",
@@ -155,8 +157,12 @@ public class GenesisService extends ServiceBase
 
 	protected void   closeGenesis(GenesisEvent event, GenCtx ctx)
 	{
+		//?: {has no log parameter} do nothing
+		if(event.getLogParam() == null)
+			return;
+
 		LogStrategy   ls = LogPoint.getInstance().getLogStrategy().tee();
-		StringBuilder bf = null;
+		StringBuilder bf;
 
 		//!: clear local log tee
 		LogPoint.getInstance().getLogStrategy().tee(null);
@@ -166,18 +172,14 @@ public class GenesisService extends ServiceBase
 
 		//~: get domain from context
 		Domain domain = ctx.get(Domain.class);
-		String logkey = "Log";
 
 		//?: {has no domain} take the system
 		if(domain == null)
-		{
 			domain = loadSystemDomain();
-			logkey = "Log Unknown";
-		}
 
 		//~: get log property
 		GetProps g = bean(GetProps.class);
-		Property p = g.goc(domain, "Genesis", logkey);
+		Property p = g.goc(domain, "Genesis", event.getLogParam());
 
 		//~: set the log text
 		g.set(p, bf.toString());

@@ -2,14 +2,16 @@ package com.tverts.shunts.service;
 
 /* standard Java classes */
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicLong;
+
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: system services */
 
@@ -17,9 +19,15 @@ import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 import com.tverts.system.services.Servicer;
 
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.GetDomain;
+import com.tverts.endure.core.GetProps;
+import com.tverts.endure.core.Property;
+
 /* com.tverts: self-shunts (core, protocol, reports) */
 
-import com.tverts.shunts.SelfShunt;
 import com.tverts.shunts.SelfShuntCtx;
 import com.tverts.shunts.SelfShuntPoint;
 import com.tverts.shunts.SelfShuntReport;
@@ -35,6 +43,11 @@ import com.tverts.shunts.reports.SeShReportConsumer;
 
 import com.tverts.support.LU;
 import com.tverts.support.SU;
+
+/* com.tverts: support (logging) */
+
+import com.tverts.support.logs.InfoLogBuffer;
+import com.tverts.support.logs.LogPoint;
 
 
 /**
@@ -107,6 +120,10 @@ public class SelfShuntService extends ServiceBase
 		//~: execute the request
 		try
 		{
+			//~: tee the log
+			LogPoint.getInstance().getLogStrategy().
+			  tee(new InfoLogBuffer());
+
 			//!: invoke handler strategy
 			SeShResponse res = handler.handleShuntRequest(request);
 
@@ -117,6 +134,10 @@ public class SelfShuntService extends ServiceBase
 
 			  request.getClass().getName(), request.getSelfShuntKey()
 			));
+
+			//~: get the log
+			res.setLogText(((InfoLogBuffer) LogPoint.getInstance().
+			  getLogStrategy().tee()).getBuffer().toString());
 
 			return res;
 		}
@@ -130,6 +151,9 @@ public class SelfShuntService extends ServiceBase
 		}
 		finally
 		{
+			//~: clear local log tee
+			LogPoint.getInstance().getLogStrategy().tee(null);
+
 			//~: clear the context from the point
 			SelfShuntPoint.getInstance().setContext(null);
 		}
@@ -156,7 +180,7 @@ public class SelfShuntService extends ServiceBase
 		//~: execute the protocol
 		try
 		{
-			createProtocolTask(ctx, protocol).run();
+			createProtocolTask(ctx, protocol, (SelfShuntEvent)event).run();
 		}
 		finally
 		{
@@ -227,9 +251,10 @@ public class SelfShuntService extends ServiceBase
 
 	/* protected: processing & report handling */
 
-	protected Runnable createProtocolTask(SelfShuntCtx ctx, SeShProtocol protocol)
+	protected Runnable createProtocolTask
+	  (SelfShuntCtx ctx, SeShProtocol protocol, SelfShuntEvent event)
 	{
-		return new ProtocolTask(ctx, protocol);
+		return new ProtocolTask(ctx, protocol, event);
 	}
 
 	protected void     processShuntReport(SelfShuntReport report)
@@ -288,12 +313,13 @@ public class SelfShuntService extends ServiceBase
 	{
 		/* public: constructor */
 
-		public ProtocolTask(SelfShuntCtx context, SeShProtocol protocol)
+		public ProtocolTask
+		  (SelfShuntCtx context, SeShProtocol protocol, SelfShuntEvent event)
 		{
 			this.context  = context;
 			this.protocol = protocol;
+			this.event    = event;
 		}
-
 
 		/* public: Runnable interface */
 
@@ -302,9 +328,39 @@ public class SelfShuntService extends ServiceBase
 			//?: {the service | task is breaked} quit
 			if(this.closed) return;
 
-			SelfShuntReport report = new SelfShuntReport();
+			SelfShuntReport report  = new SelfShuntReport();
 
-			//0: open the protocol
+			try
+			{
+				//~: tee the logger
+				if(protocol.getPrototolLog() != null)
+					LogPoint.getInstance().getLogStrategy().
+					  tee(new InfoLogBuffer(protocol.getPrototolLog()));
+
+				//~: open the protocol
+				openProtocol(report);
+
+				//~: do the protocol cycles
+				doProtocolCycles(report);
+
+				//~: close the protocol
+				closeProtocol(report);
+			}
+			finally
+			{
+				//!: clear local log tee
+				LogPoint.getInstance().getLogStrategy().tee(null);
+			}
+
+			//~: save the protocol log
+			saveProtocolLog();
+		}
+
+
+		/* protected: protocol handling phases */
+
+		protected void openProtocol(SelfShuntReport report)
+		{
 			try
 			{
 				logProtocolOpenBefore();
@@ -316,8 +372,11 @@ public class SelfShuntService extends ServiceBase
 				handleProtocolOpenError(e);
 				if(this.closed) report.setSystemError(e);
 			}
+		}
 
-			//~: do the protocol cycle
+		protected void doProtocolCycles(SelfShuntReport report)
+		{
+
 			while(!this.closed) try
 			{
 				logSendNextRequestBefore();
@@ -329,7 +388,10 @@ public class SelfShuntService extends ServiceBase
 				handleSendNextRequestError(e);
 				if(this.closed) report.setSystemError(e);
 			}
+		}
 
+		protected void closeProtocol(SelfShuntReport report)
+		{
 			boolean reported = false;
 
 			//?: {the protocol must be closed} do it
@@ -355,6 +417,31 @@ public class SelfShuntService extends ServiceBase
 			{
 				report.setSystemError(e);
 			}
+		}
+
+		protected void saveProtocolLog()
+		{
+			//?: {has no log parameter} nothing to do
+			if(event.getLogParam() == null)
+				return;
+
+			//?: {has no log buffer}
+			if(protocol.getPrototolLog() == null)
+				return;
+
+			//?: {has no domain}
+			if(context.getDomain() == null)
+				return;
+
+			//~: get log property
+			Domain   d = bean(GetDomain.class).getDomain(context.getDomain());
+			if(d == null) throw new IllegalStateException();
+
+			GetProps g = bean(GetProps.class);
+			Property p = g.goc(d, "Self-Shunt", event.getLogParam());
+
+			//~: set the log text
+			g.set(p, protocol.getPrototolLog().toString());
 		}
 
 
@@ -455,18 +542,23 @@ public class SelfShuntService extends ServiceBase
 		/**
 		 * The Self-Shunt Context of the execution.
 		 */
-		protected final SelfShuntCtx context;
+		protected final SelfShuntCtx   context;
 
 		/**
 		 * The protocol to invoke.
 		 */
-		protected final SeShProtocol protocol;
+		protected final SeShProtocol   protocol;
+
+		/**
+		 * Self Shunt Event this prototol was created for.
+		 */
+		protected final SelfShuntEvent event;
 
 		/**
 		 * Indicates that the protocol is closed.
 		 * May be set only from the task's thread.
 		 */
-		protected volatile boolean   closed;
+		protected volatile boolean     closed;
 	}
 
 
@@ -489,14 +581,9 @@ public class SelfShuntService extends ServiceBase
 
 	protected void   logGroupsExisting()
 	{
-		TreeSet<String> groups = new TreeSet<String>();
-
-		//c: for all the shunts registered
-		for(SelfShunt shunt : SelfShuntPoint.getInstance().getShuntsSet().listShunts())
-			groups.addAll(Arrays.asList(SU.a2a(shunt.getGroups())));
-
 		LU.I(getLog(), logsig(), " following Self-Shunt Groups found: [\n\n",
-		  SU.scat("\n", groups), "\n\n]\n"
+		  SU.scat("\n", SelfShuntPoint.getInstance().collectShuntsGroups()),
+		  "\n\n]\n"
 		);
 	}
 

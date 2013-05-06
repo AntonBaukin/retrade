@@ -202,6 +202,17 @@ public class DU
 		lennum(cl.get(Calendar.MINUTE), 2, sb);
 	}
 
+	public static String timefull2str(Date d)
+	{
+		StringBuilder s = new StringBuilder(24);
+		Calendar      c = Calendar.getInstance();
+
+		if(d != null) c.setTime(d);
+		timestamp2str(s, c);
+
+		return s.toString();
+	}
+
 	public static void   timefull2str(StringBuilder sb, Calendar cl)
 	{
 		//~: hour

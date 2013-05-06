@@ -75,4 +75,6 @@ public interface SeShProtocol
 	 * that was saved while executing the protocol.
 	 */
 	public Throwable       getSystemError();
+
+	public StringBuilder   getPrototolLog();
 }
