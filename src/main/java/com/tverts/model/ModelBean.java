@@ -33,16 +33,6 @@ public interface ModelBean extends Serializable
 
 	public void      setModelKey(String key);
 
-	/**
-	 * When the state of this model element is changed,
-	 * it must update the last modification timestamp.
-	 *
-	 * Note that this value may be send as a last
-	 * modification time to the remote clients instead
-	 * of the actual content.
-	 */
-	public Date getReadTime();
-
 	public boolean   isActive();
 
 	public void      setActive(boolean active);

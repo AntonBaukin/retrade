@@ -1,10 +1,12 @@
 <%@page trimDirectiveWhitespaces = 'true'%>
 
+<%@page import = 'static com.tverts.spring.SpringPoint.beanOrNull'%>
 <%@page import = 'com.tverts.faces.ModelView'%>
 <%@page import = 'com.tverts.model.DataSelectModel'%>
 <%@page import = 'com.tverts.model.ModelAccessPoint'%>
 <%@page import = 'com.tverts.model.ModelBean'%>
 <%@page import = 'com.tverts.model.ModelPoint'%>
+<%@page import = 'com.tverts.model.ModelProvider'%>
 <%@page import = 'com.tverts.model.ModelRequest'%>
 <%@page import = 'com.tverts.objects.XMAPoint'%>
 <%@page import = 'static com.tverts.support.SU.s2s'%>
@@ -12,13 +14,31 @@
 
 <%
 
-ModelPoint point = ModelAccessPoint.model();
-String     param = s2s(request.getParameter(ModelView.MODEL_PARAM));
-Object     model = (param == null)?(null):(point.readBean(param));
-
 //~: set the model request key
 ModelRequest.getInstance().setKey(
   request.getParameter(ModelView.MODEL_REQ_PARAM));
+
+String    param = s2s(request.getParameter(ModelView.MODEL_PARAM));
+ModelBean model = null;
+Object    data  = null;
+
+//?: {has model parameters} access via the model point
+if(param != null)
+  model = ModelAccessPoint.model().readBean(param);
+//~: check the model provider requested
+else
+{
+  Object provider = null;
+  param = s2s(request.getParameter(ModelView.MODEL_PROVIDER));
+
+  //?: {has parameter} get the provider bean
+  if(param != null)
+    provider = beanOrNull(param);
+
+  //?: {has provider} get the model
+  if(provider instanceof ModelProvider)
+    model = ((ModelProvider)provider).provideModel();
+}
 
 //~: apply the data selection limits
 if(model instanceof DataSelectModel)
@@ -40,20 +60,17 @@ if(model instanceof DataSelectModel)
 }
 
 
-//?: {model bean implements main interface} access data bean
-if(model instanceof ModelBean)
-{
-  Object data = ((ModelBean)model).modelData();
-  if(data != null) model = data;
-}
+//?: {has model} access data bean
+if(model != null)
+  data = ((ModelBean)model).modelData();
 
 //?: {no model bean provided}
-if(model == null)
+if(data == null)
 {
   if(param == null)
-    response.sendError(404, "No model bean was specified!");
+    response.sendError(404, "No model bean (or provider) were specified!");
   else
-    response.sendError(404, "Specified model bean was not found!");
+    response.sendError(404, "Specified model bean (or provider) was not found!");
 
   return;
 }
@@ -64,7 +81,7 @@ try
 {
   StringBuilderWriter sw = new StringBuilderWriter(4096);
 
-  XMAPoint.writeObject(model, sw);
+  XMAPoint.writeObject(data, sw);
   sw.close();
 
   response.setContentType("application/xml;charset=UTF-8");

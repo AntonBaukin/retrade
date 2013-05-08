@@ -16,7 +16,7 @@ public interface DataSelectModel
 	 * The name of HTTP request parameter to change
 	 * the limit stored in the model.
 	 *
-	 * WARNING! Not allow for the limit to be to big!
+	 * WARNING! Not allow for the limit to be too big!
 	 */
 	public static final String LIMIT_PARAM  = "limit";
 

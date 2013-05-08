@@ -280,32 +280,39 @@ public class LoginFilter extends FilterBase
 
 /*
 
-select id from AuthSession where
-  (bind = :bind) and (closeTime is null)
+select se.id, lo.id from
+  AuthSession se join se.login lo
+where (se.bind = :bind) and
+  (se.closeTime is null) and (lo.closeTime is null)
 
 update AuthSession set bind = null where (id = :id)
 
 */
 
-		Object id = HiberPoint.getInstance().getSession().createQuery(
+		Object row = HiberPoint.getInstance().getSession().createQuery(
 
-"select id from AuthSession where\n" +
-"  (bind = :bind) and (closeTime is null)"
+"select se.id, lo.id from\n" +
+"  AuthSession se join se.login lo\n" +
+"where (se.bind = :bind) and\n" +
+"  (se.closeTime is null) and (lo.closeTime is null)"
 
 		).
 		  setString("bind", bind).
 		  uniqueResult();
 
 		//?: {not found it}
-		if(id == null)
+		if(row == null)
 			return null;
+
+		String id = (String)((Object[])row)[0];
+		Long   lo = (Long)((Object[])row)[1];
 
 		//!: erase the bind
 		int x = HiberPoint.getInstance().getSession().createQuery(
 
 		  "update AuthSession set bind = null where (id = :id)"
 		).
-		  setString("id", (String)id).
+		  setString("id", id).
 		  executeUpdate();
 
 		//?: {not updated that row}
@@ -315,7 +322,10 @@ update AuthSession set bind = null where (id = :id)
 		SecSession secs = new SecSession();
 
 		//~: auth id
-		secs.attr(SecSession.ATTR_AUTH_SESSION, (String)id);
+		secs.attr(SecSession.ATTR_AUTH_SESSION, id);
+
+		//~: login key
+		secs.attr(SecSession.ATTR_AUTH_LOGIN, lo);
 
 		//~: set expire strategy + touch
 		secs.setExpireStrategy(getExpireStrategy());

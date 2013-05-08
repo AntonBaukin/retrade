@@ -22,6 +22,7 @@ import static com.tverts.spring.SpringPoint.bean;
 import com.tverts.model.ModelAccessPoint;
 import com.tverts.model.ModelBean;
 import com.tverts.model.ModelPoint;
+import com.tverts.model.ModelProvider;
 import com.tverts.model.NoModelException;
 
 /* com.tverts: endure (core) */
@@ -42,14 +43,22 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class ModelView extends ViewWithModes
+public abstract class ModelView
+       extends        ViewWithModes
+       implements     ModelProvider
 {
 	/* constants */
 
 	/**
-	 * Model key parameter in the HTTP request
+	 * HTTP request parameter with the model key.
 	 */
 	public static final String MODEL_PARAM      = "model";
+
+	/**
+	 * HTTP request parameter with the name of
+	 * Spring Bean that provides the data.
+	 */
+	public static final String MODEL_PROVIDER   = "model-provider";
 
 	public static final String MODEL_REQ_PARAM  = "model-request";
 
@@ -104,6 +113,11 @@ public abstract class ModelView extends ViewWithModes
 		  "accessed by the URL [%s]!", request().getRequestURL().toString()));
 
 		return model;
+	}
+
+	public ModelBean   provideModel()
+	{
+		return getModel();
 	}
 
 	public String      getModelKey()
@@ -211,6 +225,11 @@ public abstract class ModelView extends ViewWithModes
 	public String getModelParam()
 	{
 		return MODEL_PARAM;
+	}
+
+	public String getModelProviderParam()
+	{
+		return MODEL_PROVIDER;
 	}
 
 	public String getModelRequestParam()

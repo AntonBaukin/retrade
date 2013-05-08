@@ -1,10 +1,5 @@
 package com.tverts.model;
 
-/* standard Java classes */
-
-import java.util.Date;
-
-
 /**
  * Implementation base for model beans. Note that
  * this class is also serializable what is not
@@ -29,16 +24,6 @@ public abstract class ModelBeanBase implements ModelBean
 	public void         setModelKey(String key)
 	{
 		this.modelKey = key;
-	}
-
-	public Date         getReadTime()
-	{
-		return readTime;
-	}
-
-	public void         setReadTime(Date readTime)
-	{
-		this.readTime = readTime;
 	}
 
 	public boolean      isActive()
@@ -82,15 +67,6 @@ public abstract class ModelBeanBase implements ModelBean
 
 	/* protected: support interface */
 
-	protected void      markRead()
-	{
-		Date ut = getReadTime();
-
-		//?: {the time is changed} update the attribute
-		if((ut == null) || (ut.getTime() != System.currentTimeMillis()))
-			this.setReadTime(new Date());
-	}
-
 	protected ModelBean readModelBean(String key)
 	{
 		return ModelAccessPoint.model().readBean(key);
@@ -117,7 +93,6 @@ public abstract class ModelBeanBase implements ModelBean
 	/* private: attributes */
 
 	private String  modelKey;
-	private Date    readTime;
 	private Long    domain;
 	private boolean active = true;
 }

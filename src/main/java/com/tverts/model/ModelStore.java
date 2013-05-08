@@ -10,9 +10,6 @@ import java.util.Date;
  * Model Store is a main container of the user's data
  * model parts (beans). It is itself a Java Bean.
  *
- * COMMENT complete comments on ModelStore
- *
- *
  * @author anton.baukin@gmail.com
  */
 public interface ModelStore extends Serializable
@@ -54,4 +51,11 @@ public interface ModelStore extends Serializable
 	 * the runtime environment only.
 	 */
 	public Date      accessReadTime(String key);
+
+	/**
+	 * If the model bean defined by the key was
+	 * created by logged in user, returns the
+	 * Auth Login primary key.
+	 */
+	public Long      accessLogin(String key);
 }

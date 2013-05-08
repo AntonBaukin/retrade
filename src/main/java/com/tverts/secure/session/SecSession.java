@@ -9,6 +9,7 @@ import java.util.Map;
 
 /* com.tverts: endure (authentication) */
 
+import com.tverts.endure.auth.AuthLogin;
 import com.tverts.endure.auth.AuthSession;
 
 
@@ -31,6 +32,14 @@ public class SecSession implements Serializable
 	 * secured access session.
 	 */
 	public static String ATTR_AUTH_SESSION =
+	  "SecSession : Auth Session";
+
+	/**
+	 * Attribute of (Long) primary key of the
+	 * {@link AuthLogin} bound to this
+	 * secured access session.
+	 */
+	public static String ATTR_AUTH_LOGIN   =
 	  "SecSession : Auth Session";
 
 	/**

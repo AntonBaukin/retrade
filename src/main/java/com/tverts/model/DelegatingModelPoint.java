@@ -55,6 +55,11 @@ public class DelegatingModelPoint implements ModelPoint
 		return modelStore().accessReadTime(key);
 	}
 
+	public Long      accessLogin(String key)
+	{
+		return modelStore().accessLogin(key);
+	}
+
 
 	/* protected: delegation support */
 

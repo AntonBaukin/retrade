@@ -64,6 +64,24 @@ public final class SecPoint
 		return domain;
 	}
 
+	public static Long       login()
+	{
+		Long login = (Long) secSession().
+		  attr(SecSession.ATTR_AUTH_LOGIN);
+
+		if(login == null) throw new IllegalStateException(String.format(
+		  "Secure Session for Auth [%s] has no Login key!",
+		  (String) secSession().attr(SecSession.ATTR_AUTH_SESSION)
+		));
+
+		return login;
+	}
+
+	public static Long       loginOrNull()
+	{
+		return (Long) secSession().attr(SecSession.ATTR_AUTH_LOGIN);
+	}
+
 	public static void       closeSecSession()
 	{
 		//~: set the closed attribute

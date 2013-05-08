@@ -2,6 +2,7 @@ package com.tverts.model.store;
 
 /* standard Java classes */
 
+import java.io.Serializable;
 import java.util.Date;
 
 /* com.tverts: model */
@@ -13,13 +14,18 @@ import com.tverts.model.ModelStore;
 
 /* com.tverts: support */
 
+import com.tverts.secure.SecPoint;
 import com.tverts.support.OU;
 import com.tverts.support.LU;
 import static com.tverts.support.SU.s2s;
 
 
 /**
- * COMMENT ModelStoreBase
+ * Implementation base for Model Beans
+ * storage. Helps to handle beans,
+ * but misses the storage, activation,
+ * passivation, or garbage collection.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -58,6 +64,9 @@ public abstract class ModelStoreBase
 		  "Model Store was unable to save instance '%s' due " +
 		  "to the internal mapping error!", LU.cls(bean)));
 
+		//sec: auth login
+		e.setLogin(SecPoint.loginOrNull());
+
 		return e.getModelBean();
 	}
 
@@ -71,6 +80,13 @@ public abstract class ModelStoreBase
 
 		//?: {it does not exist} nothing to do
 		if(e == null) return null;
+
+		//sec: check the login
+		Long login = SecPoint.loginOrNull();
+		if((login != null) && !login.equals(e.getLogin()))
+			throw new IllegalStateException(String.format(
+			  "Model Bean [%s] was not created by this user!", key
+			));
 
 		//!: update the entry timestamp
 		e.updateReadTime();
@@ -86,6 +102,16 @@ public abstract class ModelStoreBase
 		//~: find the entry
 		ModelBeanEntry e = findEntry(key);
 		return (e == null)?(null):(e.getReadTime());
+	}
+
+	public Long      accessLogin(String key)
+	{
+		//~: check the key
+		key = checkKey(key);
+
+		//~: find the entry
+		ModelBeanEntry e = findEntry(key);
+		return (e == null)?(null):(e.getLogin());
 	}
 
 
@@ -104,8 +130,11 @@ public abstract class ModelStoreBase
 
 	/* public: bean entry */
 
-	public static class ModelBeanEntry
+	public static class ModelBeanEntry implements Serializable
 	{
+		public static final long serialVersionUID = 0L;
+
+
 		/* public: constructors */
 
 		public ModelBeanEntry()
@@ -114,7 +143,7 @@ public abstract class ModelStoreBase
 		public ModelBeanEntry(ModelBean modelBean)
 		{
 			this.modelBean = modelBean;
-			updateReadTime();
+			this.updateReadTime();
 		}
 
 
@@ -149,11 +178,26 @@ public abstract class ModelStoreBase
 				setReadTime(new Date());
 		}
 
+		/**
+		 * Primary key of Auth Login of the user
+		 * had created this model. Used for security.
+		 */
+		public Long      getLogin()
+		{
+			return login;
+		}
+
+		public void      setLogin(Long login)
+		{
+			this.login = login;
+		}
+
 
 		/* private: entry attributes */
 
 		private ModelBean modelBean;
 		private Date      readTime;
+		private Long      login;
 	}
 
 
