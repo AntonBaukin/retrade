@@ -20,6 +20,7 @@ public abstract class ActionWithTxBase extends ActionBase
 		super(task);
 	}
 
+
 	/* public: ActionWithTxBase interface */
 
 	/**
@@ -50,25 +51,17 @@ public abstract class ActionWithTxBase extends ActionBase
 	}
 
 
-	/* protected: ActionBase interface */
-
-	protected void openValidate()
-	{
-		super.openValidate();
-
-		//?: has no transaction context
-		tx(); //--> throws illegal state
-	}
-
-	/* protected: access transaction context */
+	/* public: access transaction context */
 
 	/**
 	 * Returns the action tx, or raises
 	 * {@link IllegalStateException}.
 	 */
-	protected ActionTx tx()
+	public ActionTx tx()
 	{
-		ActionTx tx = getActionTx();
+		ActionTx tx = getActionOwnTx();
+		if(tx == null)
+			tx = getActionTx();
 
 		if(tx == null) throw new IllegalStateException(
 		  "Action has no effective transaction context!");
@@ -80,7 +73,7 @@ public abstract class ActionWithTxBase extends ActionBase
 	 * Returns Hibernate session of the tx context.
 	 * Raises {@link IllegalStateException} if no session present.
 	 */
-	protected Session  session()
+	public Session  session()
 	{
 		SessionFactory f = tx().getSessionFactory();
 		Session        s = (f == null)?(null):(f.getCurrentSession());
@@ -90,6 +83,18 @@ public abstract class ActionWithTxBase extends ActionBase
 
 		return s;
 	}
+
+
+	/* protected: ActionBase interface */
+
+	protected void openValidate()
+	{
+		super.openValidate();
+
+		//?: has no transaction context
+		tx(); //--> throws illegal state
+	}
+
 
 	/* private: session factory reference */
 

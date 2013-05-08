@@ -82,7 +82,7 @@ public class ActionsCollection
 
 		/* public: SaveNumericIdentified interface */
 
-		public NumericIdentity getSaveTarget()
+		public NumericIdentity       getSaveTarget()
 		{
 			//?: {the target must be created by strategy}
 			if(creator != null)
@@ -96,9 +96,20 @@ public class ActionsCollection
 			return (t instanceof NumericIdentity)?((NumericIdentity)t):(null);
 		}
 
-		public boolean         isDelayedCreation()
+		public boolean               isDelayedCreation()
 		{
 			return (creator != null);
+		}
+
+		public boolean               isForceTest()
+		{
+			return forceTest;
+		}
+
+		public SaveNumericIdentified setForceTest(boolean forceTest)
+		{
+			this.forceTest = forceTest;
+			return this;
 		}
 
 
@@ -156,6 +167,8 @@ public class ActionsCollection
 
 		protected boolean isTestSaveTarget()
 		{
+			if(isForceTest()) return true;
+
 			Object target  = getSaveTarget();
 			Object context = targetOrNull();
 
@@ -187,6 +200,11 @@ public class ActionsCollection
 
 		protected DelayedInstance creator;
 		protected NumericIdentity target;
+
+
+		/* private: save parameters */
+
+		private boolean forceTest;
 	}
 
 

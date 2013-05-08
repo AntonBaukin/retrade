@@ -5,7 +5,8 @@ package com.tverts.support.logic;
  * and returns boolean result of it's evaluation.
  *
  * The meaning of the context objects fully
- * depends on the area whete the predicate is used.
+ * depends on the area where the predicate is used.
+ *
  *
  * @author anton.baukin@gmail.com
  */

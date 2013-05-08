@@ -18,7 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * Integrating application links the pair.
  *
- * Mark with it a get-method of the Retrade Long
+ * Mark with it a get-method of the ReTrade Long
  * primary key. The x-keys pair property of then
  * must start with 'X'. For example, getMeasure()
  * and getXMeasure().

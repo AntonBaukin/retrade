@@ -5,7 +5,7 @@ package com.tverts.actions;
 import java.util.Map;
 
 /**
- * COMMENT ActionTask
+ * Task of action to execute.
  *
  * @author anton.baukin@gmail.com
  */
@@ -20,11 +20,11 @@ public interface ActionTask
 	public ActionType     getActionType();
 
 	/**
-	 * Returns the central onject this task wants
+	 * Returns the central object this task wants
 	 * to be processed by the actions. Surrounding
 	 * environment may be stored in {@link #getParams()}.
 	 *
-	 * Note that the target may be not defined.
+	 * Note that the target may be undefined.
 	 */
 	public Object         getTarget();
 
