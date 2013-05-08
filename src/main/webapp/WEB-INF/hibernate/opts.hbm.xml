@@ -19,6 +19,10 @@
       update
     </property>
 
+    <property name = 'hibernate.schema_update.unique_constraint_strategy'>
+      RECREATE_QUIETLY
+    </property>
+
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · For now this property must be false, else the application ·
      · would not start due to the implementation issues.         ·
