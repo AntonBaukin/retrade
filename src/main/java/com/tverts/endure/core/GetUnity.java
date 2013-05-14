@@ -27,17 +27,19 @@ public class GetUnity extends GetObjectBase
 {
 	/* Get Unity */
 
-	public Unity  getUnity(Long primaryKey)
+	public Unity  getUnity(Long pk)
 	{
-		return (Unity)session().get(Unity.class, primaryKey);
+		return (pk == null)?(null):
+		  (Unity) session().get(Unity.class, pk);
 	}
 
 	/**
 	 * Loads the actual instance having this
 	 * Unity object as it's unified mirror.
 	 */
-	public United getUnited(Long primaryKey)
+	public United getUnited(Long pk)
 	{
+		if(pk == null) return null;
 
 /*
 
@@ -51,7 +53,7 @@ select ut from Unity u join u.unityType ut
 "  where u.primaryKey = :primaryKey"
 
 		).
-		  setLong("primaryKey", primaryKey).
+		  setLong("primaryKey", pk).
 		  uniqueResult();
 
 		//?: {not found it}
@@ -61,14 +63,14 @@ select ut from Unity u join u.unityType ut
 		if(!ut.isEntityType())
 			throw new IllegalStateException(String.format(
 			  "Requested United instance [%d] has Unity type not " +
-			  "of an entity, but: %s!", primaryKey, ut.toString()));
+			  "of an entity, but: %s!", pk, ut.toString()));
 
 		//?: {not a united class}
 		if(!United.class.isAssignableFrom(ut.getTypeClass()))
 			throw new IllegalStateException(String.format(
 			  "Requested United instance [%d] has Unity type not " +
-			  "of United class, but: %s!", primaryKey, ut.toString()));
+			  "of United class, but: %s!", pk, ut.toString()));
 
-		return (United)(session().get(ut.getTypeClass(), primaryKey));
+		return (United)(session().get(ut.getTypeClass(), pk));
 	}
 }
