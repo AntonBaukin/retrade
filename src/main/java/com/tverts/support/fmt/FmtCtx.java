@@ -2,12 +2,12 @@ package com.tverts.support.fmt;
 
 /* standard Java classes  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -60,17 +60,18 @@ public class FmtCtx
 	public FmtCtx     set(Object flag)
 	{
 		if(flags == null)
-			flags = new HashSet(4);
+			flags = new ArrayList(4);
+
+		//?: {this flag is already }
+		int i = flags.indexOf(flag);
+		if(i != -1) return this;
+		flags.add(flag);
 
 		//?: {composite flag}
 		if(flag instanceof Object[])
-		{
 			for(Object f : (Object[]) flag)
 				this.set(f);
-			return this;
-		}
 
-		flags.add(flag);
 		return this;
 	}
 
@@ -101,5 +102,5 @@ public class FmtCtx
 
 	private Object object;
 	private Map    params;
-	private Set flags;
+	private List   flags;
 }

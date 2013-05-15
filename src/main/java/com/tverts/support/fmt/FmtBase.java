@@ -26,7 +26,7 @@ public abstract class FmtBase
 
 	public String fmt(FmtCtx ctx)
 	{
-		return null;
+		return !isKnown(ctx)?(null):(format(ctx));
 	}
 
 
