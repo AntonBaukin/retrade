@@ -3,8 +3,9 @@ package com.tverts.support;
 /* standard Java classes */
 
 import java.math.BigDecimal;
-
 import java.math.BigInteger;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -265,7 +266,7 @@ public class SU
 	 * protected XML text properly with CDATA
 	 * sections.
 	 */
-	public static String   escapeJSString(Object sobj)
+	public static String  jss(Object sobj)
 	{
 		if(sobj == null) return "";
 
@@ -477,7 +478,7 @@ public class SU
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void         scat(StringBuilder s, String sep, Collection objs)
+	public static void          scat(StringBuilder s, String sep, Collection objs)
 	{
 		for(Object o : objs) if(o != null)
 		{
@@ -730,6 +731,37 @@ public class SU
 		{
 			HEX2BYTES[((int)hex[j]) & 0xFF] = j;
 			HEX2BYTES[((int)HEX[j]) & 0xFF] = j;
+		}
+	}
+
+
+	/* URL encoding */
+
+	public static String urle(String s)
+	{
+		if(s == null) return null;
+
+		try
+		{
+			return URLEncoder.encode(s, "UTF-8");
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String urld(String s)
+	{
+		if(s == null) return null;
+
+		try
+		{
+			return URLDecoder.decode(s, "UTF-8");
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
 		}
 	}
 

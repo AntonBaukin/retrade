@@ -17,6 +17,10 @@ import static com.tverts.actions.ActionPhase.CLOSE;
 import static com.tverts.actions.ActionPhase.OPEN;
 import static com.tverts.actions.ActionPhase.TRIGGER;
 
+/* com.tverts: transactions */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: support */
 
 import com.tverts.support.LU;
@@ -189,6 +193,9 @@ public class ActionsRunner implements ActionTrigger
 			if(getOpenedActions().containsKey(action))
 				closeAction(action, getOpenedActions().get(action));
 		}
+
+		//~: flush the session
+		TxPoint.txSession(getActionContext().getActionTx()).flush();
 	}
 
 	protected void       bindAction(Action action)

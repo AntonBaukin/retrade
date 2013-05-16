@@ -27,6 +27,11 @@ public class GetAuthLogin extends GetObjectBase
 {
 	/* Get Authentication Logins */
 
+	public AuthLogin getLogin(Long pk)
+	{
+		return (AuthLogin) session().get(AuthLogin.class, pk);
+	}
+
 	public AuthLogin getLogin(Long domain, String code)
 	{
 

@@ -8,7 +8,7 @@ import java.util.Map;
 /* com.tverts: support */
 
 import static com.tverts.support.SU.s2s;
-import static com.tverts.support.SU.escapeJSString;
+import static com.tverts.support.SU.jss;
 
 
 /**
@@ -57,13 +57,13 @@ public class   JSONStringsMapListFormatter
 			if(s.length() != 1) s.append(", ");
 
 			//~: write key
-			s.append('\'').append(escapeJSString(k)).append('\'');
+			s.append('\'').append(jss(k)).append('\'');
 
 			//~: ', '
 			s.append(", ");
 
 			//~: write value
-			s.append('\'').append(escapeJSString(x)).append('\'');
+			s.append('\'').append(jss(x)).append('\'');
 		}
 
 		s.append(']');

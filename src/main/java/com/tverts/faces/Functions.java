@@ -94,7 +94,7 @@ public class Functions
 	 */
 	public static String escapeJSString(Object sobj)
 	{
-		return SU.escapeJSString(sobj);
+		return SU.jss(sobj);
 	}
 
 
