@@ -14,7 +14,7 @@ import com.tverts.endure.UnityType;
 
 /**
  * Unity view is abstraction of an object
- * that aggregates the attributes ans state
+ * that aggregates the attributes and state
  * of the related {@link Unity} instance.
  *
  *
