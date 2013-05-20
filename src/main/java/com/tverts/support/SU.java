@@ -477,8 +477,14 @@ public class SU
 		return s.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void          scat(StringBuilder s, String sep, Collection objs)
+	{
+		_scat(s, s.length(), sep, objs);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void         _scat
+	  (StringBuilder s, int l, String sep, Collection objs)
 	{
 		for(Object o : objs) if(o != null)
 		{
@@ -487,15 +493,17 @@ public class SU
 
 			if(o instanceof Collection)
 			{
-				scat(s, sep, (Collection)o);
+				_scat(s, l, sep, (Collection)o);
 				continue;
 			}
 
-			if(s.length() != 0)
+			if(s.length() != l)
 				s.append(sep);
 			s.append(o);
 		}
 	}
+
+
 
 	public static String        catif(Object test, Object... objs)
 	{
