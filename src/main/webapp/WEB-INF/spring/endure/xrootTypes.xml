@@ -54,6 +54,12 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.auth.AuthLogin   Core: Auth: Login;
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Security Rule                                             ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.secure.SecRule   Secure: Rule;
+
       </value>
     </property>
   </bean>

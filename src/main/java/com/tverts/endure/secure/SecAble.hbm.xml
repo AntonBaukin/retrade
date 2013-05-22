@@ -1,0 +1,40 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.secure'>
+
+  <class name = 'SecAble' table = 'sec_able' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_sec_able'/>
+
+
+    <!-- Login reference -->
+
+    <many-to-one name = 'login' foreign-key = 'fk_sec_able_login'>
+
+      <column name = 'fk_login' not-null = 'true'
+        index = 'ix_sec_able_login'>
+
+        <comment>The user Login having this rule available</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Security Rule reference -->
+
+    <many-to-one name = 'rule' foreign-key = 'fk_sec_able_rule'>
+
+      <column name = 'fk_rule' not-null = 'true'
+        index = 'ix_sec_able_rule'>
+
+        <comment>Security Rule able for the user</comment>
+      </column>
+    </many-to-one>
+
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,70 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.secure'>
+
+  <class name = 'SecRule' table = 'sec_rule' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_sec_rule'/>
+
+
+    <!-- Unity reference -->
+
+    <many-to-one name = 'unity' cascade = 'save-update'
+      foreign-key = 'fk_sec_rule_mirror'>
+
+      <column name = 'fk_unity' unique = 'true' not-null = 'true'>
+        <comment>The (unique) Unified Mirror of the Security Rule</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_sec_rule_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'>
+        <comment>Domain where the Secure Rule is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Related reference -->
+
+    <many-to-one name = 'related' foreign-key = 'fk_sec_rule_related'>
+
+      <column name = 'fk_related' not-null = 'true'
+        index = 'ix_sec_rule_related'>
+
+        <comment>The Unified Mirror of the related entity</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Security Force -->
+
+    <property name = 'force'>
+
+      <column name = 'sec_force' length = '512' not-null = 'true'
+        index = 'ix_sec_rule_sec_force'>
+
+        <comment>Security Force Key (at the application runtime)</comment>
+      </column>
+    </property>
+
+
+    <!-- Data XML Object -->
+
+    <property name = 'data' type = 'text'>
+
+      <column name = 'rule_data'>
+        <comment>Optional data object as XML text</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
