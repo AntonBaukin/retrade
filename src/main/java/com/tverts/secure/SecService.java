@@ -5,6 +5,7 @@ package com.tverts.secure;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /* com.tverts: system services */
 
@@ -24,8 +25,13 @@ import com.tverts.secure.force.SecForce;
 import com.tverts.event.Reactor;
 import com.tverts.event.ReactorRef;
 
+/* com.tverts: system (transactions) */
+
+import static com.tverts.system.tx.TxPoint.txSession;
+
 /* com.tverts: support */
 
+import static com.tverts.support.SU.cats;
 import static com.tverts.support.SU.sXe;
 
 
@@ -62,26 +68,8 @@ public class      SecService
 	{
 		super.init(servicer);
 
-		//~: inspect the forces
-		List<SecForce>  forces = this.forces.dereferObjects();
-		HashSet<String> uids   = new HashSet<String>(17);
-
-		for(SecForce f : forces)
-		{
-			if(sXe(f.uid()))
-				throw new IllegalStateException(String.format(
-				  "Security Force with class '%s' has no UID assigned!",
-				  f.getClass().getName()
-				));
-
-			if(uids.contains(f.uid()))
-				throw new IllegalStateException(String.format(
-				  "Security Force with class '%s' has UID [%s] already assigned!",
-				  f.getClass().getName(), f.uid()
-				));
-
-			uids.add(f.uid());
-		}
+		//~: inspect the rules existing
+		checkRules();
 	}
 
 
@@ -91,20 +79,6 @@ public class      SecService
 	{
 		for(SecForce f : forces.dereferObjects())
 			f.react(event);
-	}
-
-
-	/* protected: security implementation */
-
-	protected void onSystemReady()
-	{
-		initForces();
-	}
-
-	protected void initForces()
-	{
-		for(SecForce f : forces.dereferObjects())
-			f.init();
 	}
 
 
@@ -125,6 +99,60 @@ public class      SecService
 	{
 		if(forces == null) throw new IllegalArgumentException();
 		this.forces = forces;
+	}
+
+
+	/* protected: security implementation */
+
+	protected void onSystemReady()
+	{
+		initForces();
+	}
+
+	protected void initForces()
+	{
+		for(SecForce f : forces.dereferObjects())
+			f.init();
+	}
+
+	protected void checkUIDs(Set<String> uids)
+	{
+		for(SecForce f : forces.dereferObjects())
+		{
+			if(sXe(f.uid()))
+				throw new IllegalStateException(String.format(
+				  "Security Force with class '%s' has no UID assigned!",
+				  f.getClass().getName()
+				));
+
+			if(uids.contains(f.uid()))
+				throw new IllegalStateException(String.format(
+				  "Security Force with class '%s' has UID [%s] already assigned!",
+				  f.getClass().getName(), f.uid()
+				));
+
+			uids.add(f.uid());
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void checkRules()
+	{
+		//~: check and collect UIDs
+		Set<String> forces = new HashSet<String>(17);
+		checkUIDs(forces);
+
+		// select distinct r.force from SecRule r
+
+		Set<String> found = new HashSet<String>((List<String>) txSession().
+		  createQuery("select distinct r.force from SecRule r").list());
+
+		//?: {has unknown forces}
+		found.removeAll(forces);
+		if(!found.isEmpty())
+			throw new IllegalStateException(cats(
+			  "There are Secure Rules having unknown forces: ", found
+			));
 	}
 
 

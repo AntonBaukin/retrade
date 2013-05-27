@@ -38,7 +38,7 @@ public class CreatedEvent extends ActiveEventBase
 
 	/* protected: ActiveEventBase interface */
 
-	protected void act()
+	protected void actBefore()
 	{
 		if(isFlushSession())
 			session().flush();

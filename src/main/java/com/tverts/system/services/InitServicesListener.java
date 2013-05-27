@@ -1,5 +1,10 @@
 package com.tverts.system.services;
 
+/* Spring Framework */
+
+import com.tverts.system.tx.TxPoint;
+import org.springframework.transaction.annotation.Transactional;
+
 /* com.tverts: webapp listeners */
 
 import com.tverts.servlet.listeners.ServletContextListenerBase;
@@ -15,8 +20,19 @@ public class   InitServicesListener
 {
 	/* protected: ServletContextListenerBase interface */
 
+	@Transactional(rollbackFor = Throwable.class)
 	protected void init()
 	{
-		ServicesPoint.system().init();
+		TxPoint.getInstance().setTxContext();
+
+		try
+		{
+			//!: init the services system
+			ServicesPoint.system().init();
+		}
+		finally
+		{
+			TxPoint.getInstance().setTxContext(null);
+		}
 	}
 }

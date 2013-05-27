@@ -494,13 +494,30 @@ public class ActionsCollection
 
 		protected void execute()
 		{
-			//?: {active event} do action
-			if(getEvent() instanceof ActiveEvent)
-				((ActiveEvent)getEvent()).act(this);
+			Throwable error = null;
 
+			//?: {active event} do action before
+			if(getEvent() instanceof ActiveEvent)
+				((ActiveEvent)getEvent()).actBefore(this);
 
 			//!: trigger the event
-			EventPoint.react(getEvent());
+			try
+			{
+				EventPoint.react(getEvent());
+			}
+			catch(Throwable e)
+			{
+				error = e;
+			}
+
+			//?: {active event} do action after
+			if(getEvent() instanceof ActiveEvent)
+				((ActiveEvent)getEvent()).actAfter(error);
+			//~: handle the error
+			else if(error instanceof RuntimeException)
+				throw (RuntimeException) error;
+			else if(error != null)
+				throw new RuntimeException(error);
 		}
 
 

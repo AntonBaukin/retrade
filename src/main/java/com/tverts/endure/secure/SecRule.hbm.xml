@@ -49,7 +49,7 @@
 
     <property name = 'force'>
 
-      <column name = 'sec_force' length = '512' not-null = 'true'
+      <column name = 'sec_force' length = '2048' not-null = 'true'
         index = 'ix_sec_rule_sec_force'>
 
         <comment>Security Force Key (at the application runtime)</comment>

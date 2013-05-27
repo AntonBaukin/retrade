@@ -453,12 +453,8 @@ public class SU
 	 */
 	public static CharSequence  cat(Object... objs)
 	{
-		int l = _cslen_(objs); if(l == 0) l = 32;
-
-		//~: write to the buffer
-		StringBuilder s = new StringBuilder(l);
-		_csapnd_(objs, s);
-
+		StringBuilder s = new StringBuilder(sXl(objs));
+		scat(s, "", Arrays.asList(objs));
 		return s;
 	}
 
@@ -971,38 +967,5 @@ public class SU
 			throw new IllegalStateException();
 
 		S2V_MAP = Collections.unmodifiableMap(map);
-	}
-
-	/* private: helpers */
-
-	private static int  _cslen_(Object cs)
-	{
-		if(cs instanceof CharSequence)
-			return ((CharSequence)cs).length();
-
-		int l = 0;
-
-		if(cs instanceof Collection)
-			for(Object s : (Collection)cs)
-				l += _cslen_(s);
-		else if(cs instanceof Object[])
-			for(Object s : (Object[])cs)
-				l += _cslen_(s);
-
-		return l;
-	}
-
-	private static void _csapnd_(Object cs, StringBuilder sb)
-	{
-		if(cs instanceof CharSequence)
-			sb.append((CharSequence)cs);
-		else if(cs instanceof Collection)
-			for(Object s : (Collection)cs)
-				_csapnd_(s, sb);
-		else if(cs instanceof Object[])
-			for(Object s : (Object[])cs)
-				_csapnd_(s, sb);
-		else if(cs != null)
-			sb.append(cs);
 	}
 }

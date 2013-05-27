@@ -37,16 +37,30 @@ public abstract class ActiveEventBase
 
 	/* public: ActiveEvent interface */
 
-	public void act(ActionWithTxBase action)
+	public void    actBefore(ActionWithTxBase action)
 	{
 		this.action = action;
-		this.act();
+		this.actBefore();
+	}
+
+	public void    actAfter(Throwable error)
+	{
+		if(error instanceof RuntimeException)
+			throw (RuntimeException) error;
+		else if(error != null)
+			throw new RuntimeException(error);
+		else
+			actAfter();
 	}
 
 
 	/* protected: action execution */
 
-	protected abstract void    act();
+	protected void actBefore()
+	{}
+
+	protected void actAfter()
+	{}
 
 	protected ActionWithTxBase action()
 	{

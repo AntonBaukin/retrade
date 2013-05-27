@@ -15,5 +15,14 @@ public interface ActiveEvent extends Event
 {
 	/* public: ActiveEvent interface */
 
-	public void act(ActionWithTxBase action);
+	/**
+	 * Invoked before this event processing.
+	 */
+	public void actBefore(ActionWithTxBase action);
+
+	/**
+	 * Invoked after this event processing.
+	 * Error argument is defined in the case of error.
+	 */
+	public void actAfter(Throwable error);
 }
