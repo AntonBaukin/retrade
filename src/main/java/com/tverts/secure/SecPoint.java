@@ -47,6 +47,12 @@ public final class SecPoint
 	public static final String KEY_DELETE = "delete";
 
 
+	/* log destinations */
+
+	public static final String LOG_SEC    =
+	  "com.tverts.secure";
+
+
 	/* public: SecPoint (static) interface */
 
 	public static SecSession secSession()

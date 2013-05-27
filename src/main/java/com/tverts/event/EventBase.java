@@ -5,6 +5,8 @@ package com.tverts.event;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.tverts.endure.NumericIdentity;
+
 
 /**
  * System lifecycle Event implementation base.
@@ -62,6 +64,27 @@ public abstract class EventBase implements Event
 		if(isRecycled())
 			cycle++;
 		this.recycled = false;
+	}
+
+	public String  logText()
+	{
+		StringBuilder s = new StringBuilder(32);
+
+		//~: event class name
+		s.append('[').
+		  append(this.getClass().getSimpleName()).
+		//~: target class name
+		  append("] on target [").
+		  append(target().getClass().getSimpleName()).
+		  append(']');
+
+		//~: target primary key
+		if(target() instanceof NumericIdentity)
+			s.append(" pkey [").
+			  append(((NumericIdentity)target()).getPrimaryKey()).
+			  append(']');
+
+		return s.toString();
 	}
 
 

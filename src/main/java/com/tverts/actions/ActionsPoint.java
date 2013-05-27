@@ -11,7 +11,8 @@ import java.util.Map;
 import com.tverts.support.LU;
 
 /**
- * COMMENT ActionsPoint
+ * Point to build actions on the application
+ * domain, and to run them.
  *
  * @author anton.baukin@gmail.com
  */
@@ -29,6 +30,7 @@ public class ActionsPoint
 
 	protected ActionsPoint()
 	{}
+
 
 	/* public: actions build system  */
 
@@ -234,6 +236,7 @@ public class ActionsPoint
 
 		return pmap;
 	}
+
 
 	/* private: root builder reference */
 

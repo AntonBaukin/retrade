@@ -55,4 +55,10 @@ public interface Event
 	 * cycle. New cycle may be started if requested.
 	 */
 	public void    commit();
+
+	/**
+	 * Returns the text to write to the log,
+	 * or null not to log the event.
+	 */
+	public String  logText();
 }

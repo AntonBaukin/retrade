@@ -11,16 +11,21 @@ import com.tverts.system.tx.TxPoint;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.NumericIdentity;
-
-/* com.tverts: endure (core + ordering) */
-
 import com.tverts.endure.United;
 import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.UnityView;
 
+/* com.tverts: endure (ordering) */
+
 import com.tverts.endure.order.OrderIndex;
 import com.tverts.endure.order.OrderPoint;
 import com.tverts.endure.order.OrderRequest;
+
+/* com.tverts: events */
+
+import com.tverts.event.ActiveEvent;
+import com.tverts.event.Event;
+import com.tverts.event.EventPoint;
 
 /* com.tverts: support */
 
@@ -452,5 +457,55 @@ public class ActionsCollection
 		private Object  target;
 		private boolean flushBefore;
 		private boolean flushAfter;
+	}
+
+
+	/* event action */
+
+	public static class EventAction extends ActionWithTxBase
+	{
+		/* constructor */
+
+		public EventAction(ActionTask task, Event event)
+		{
+			super(task);
+			if(event == null) throw new IllegalArgumentException();
+			this.event = event;
+		}
+
+
+		/* public: EventAction interface */
+
+		public Event   getEvent()
+		{
+			return event;
+		}
+
+
+		/* public: Object interface */
+
+		public Object  getResult()
+		{
+			return getEvent();
+		}
+
+
+		/* protected: ActionBase interface */
+
+		protected void execute()
+		{
+			//?: {active event} do action
+			if(getEvent() instanceof ActiveEvent)
+				((ActiveEvent)getEvent()).act(this);
+
+
+			//!: trigger the event
+			EventPoint.react(getEvent());
+		}
+
+
+		/* the event */
+
+		private Event event;
 	}
 }

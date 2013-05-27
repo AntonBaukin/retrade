@@ -19,6 +19,11 @@ import com.tverts.hibery.system.HiberSystem;
 
 import com.tverts.endure.NumericIdentity;
 
+/* com.tverts: events */
+
+import com.tverts.event.CreatedEvent;
+import com.tverts.event.Event;
+
 /* com.tverts: predicates */
 
 import com.tverts.support.LU;
@@ -124,6 +129,7 @@ public abstract class ActionBuilderBase
 		    setParams(collectParams(params)).setTx(abr.getTask().getTx())
 		));
 	}
+
 
 	/* protected: action system support */
 
@@ -289,12 +295,8 @@ public abstract class ActionBuilderBase
 
 	protected boolean       isTestTarget(ActionBuildRec abr)
 	{
-		Object target = target(abr);
-
-		if(!(target instanceof NumericIdentity))
-			return false;
-
-		return isTestInstance((NumericIdentity)target);
+		return (target(abr) instanceof NumericIdentity) &&
+		  isTestInstance((NumericIdentity) target(abr));
 	}
 
 	protected Object        param(ActionBuildRec abr, Object name)
@@ -356,6 +358,32 @@ public abstract class ActionBuilderBase
 			OU.assignable(p, Predicate.class);
 
 		return (Predicate)p;
+	}
+
+
+	/* protected: domain events support */
+
+	protected Action        eventAction(ActionBuildRec abr, Event event)
+	{
+		return new ActionsCollection.EventAction(abr.getTask(), event);
+	}
+
+	protected void          reactCreated(ActionBuildRec abr)
+	{
+		react(abr, new CreatedEvent(
+		  target(abr, NumericIdentity.class)));
+	}
+
+	/**
+	 * Creates event action for the event given and
+	 * inserts it as the first event to run. (Note
+	 * this when adding action to the chain!)
+	 */
+	protected void          react(ActionBuildRec abr, Event event)
+	{
+		chain(abr).first(
+		  new ActionsCollection.EventAction(abr.getTask(), event)
+		);
 	}
 
 
