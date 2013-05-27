@@ -4,6 +4,10 @@ package com.tverts.system.services.queues;
 
 import javax.jms.Message;
 
+/* Spring Framework */
+
+import org.springframework.transaction.annotation.Transactional;
+
 /* com.tverts: support */
 
 import com.tverts.support.LU;
@@ -54,6 +58,7 @@ public class      PlainEventsListenerBean
 		return JMSProtocol.getInstance().event(msg);
 	}
 
+	@Transactional(rollbackFor = Throwable.class)
 	protected void  process(Event event)
 	  throws Throwable
 	{

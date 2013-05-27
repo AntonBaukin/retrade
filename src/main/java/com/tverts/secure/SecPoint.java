@@ -40,6 +40,13 @@ public final class SecPoint
 	}
 
 
+	/* security keys */
+
+	public static final String KEY_VIEW   = "view";
+	public static final String KEY_EDIT   = "edit";
+	public static final String KEY_DELETE = "delete";
+
+
 	/* public: SecPoint (static) interface */
 
 	public static SecSession secSession()

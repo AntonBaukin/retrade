@@ -1,7 +1,9 @@
 package com.tverts.event;
 
 /**
- * Event of the system lifecycle.
+ * Event of the domain model lifecycle.
+ * Note that such events has no relation
+ * to System Services Events.
  *
  * Events are not thread-safe and
  * are processed by one thread only.

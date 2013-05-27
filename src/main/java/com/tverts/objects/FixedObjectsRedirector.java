@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * This variant of {@link ObjectsRedirector} does
- * actual dereferencing not at the call time of
+ * actual de-referencing not at the call time of
  * {@link #dereferObjects()}, but when the initial
  * list of references is provided at call of
  * {@link #setReferences(List)}.
@@ -25,19 +25,13 @@ import java.util.List;
 public class   FixedObjectsRedirector<O>
        extends ObjectsRedirector<O>
 {
-	/* public: constructor */
-
-	public FixedObjectsRedirector()
-	{
-		this.derefered = Collections.emptyList();
-	}
-
 	/* public: ObjectsReference interface */
 
 	public List<O> dereferObjects()
 	{
 		return getDereferedObjects();
 	}
+
 
 	/* public: ObjectsRedirector interface */
 
@@ -51,7 +45,8 @@ public class   FixedObjectsRedirector<O>
 		this.derefered = dereferObjectsPrepare();
 	}
 
-	/* protected: dereferencing */
+
+	/* protected: de-referencing */
 
 	protected List<O> getDereferedObjects()
 	{
@@ -65,10 +60,13 @@ public class   FixedObjectsRedirector<O>
 
 	protected List<O> dereferObjectsPrepare()
 	{
-		return dereferObjectsActual();
+		List<O> res = dereferObjectsActual();
+		return (res != null)?(res):
+		  Collections.<O> emptyList();
 	}
 
-	/* private: prepared dereferenced list */
+	/* private: prepared de-referenced list */
 
-	private List<O> derefered;
+	private List<O> derefered =
+	  Collections.emptyList();
 }

@@ -16,13 +16,6 @@ import java.util.List;
 public class      ObjectsRedirector<O>
        implements ObjectsReference<O>
 {
-	/* public: constructor */
-
-	public ObjectsRedirector()
-	{
-		this.references = Collections.emptyList();
-	}
-
 	/* public: ObjectsReference interface */
 
 	public List<O> dereferObjects()
@@ -34,13 +27,13 @@ public class      ObjectsRedirector<O>
 		return res;
 	}
 
+
 	/* public: ObjectsRedirector interface */
 
 	/**
 	 * Returns a read-only list of the aggregated references.
 	 */
-	public List<ObjectsReference<O>>
-	               getReferences()
+	public List<ObjectsReference<O>> getReferences()
 	{
 		return references;
 	}
@@ -48,7 +41,7 @@ public class      ObjectsRedirector<O>
 	/**
 	 * Saves a copy of the references list provided.
 	 */
-	public void    setReferences(List<ObjectsReference<O>> references)
+	public void setReferences(List<ObjectsReference<O>> references)
 	{
 		if((references == null) || references.isEmpty())
 			references = Collections.emptyList();
@@ -56,16 +49,19 @@ public class      ObjectsRedirector<O>
 		this.references = prepareReferences(references);
 	}
 
+
 	/* protected: de-referencing */
 
-	protected List<ObjectsReference<O>>
-	               prepareReferences(List<ObjectsReference<O>> references)
+	protected List<ObjectsReference<O>> prepareReferences
+	  (List<ObjectsReference<O>> references)
 	{
 		return Collections.unmodifiableList(
 		  new ArrayList<ObjectsReference<O>>(references));
 	}
 
+
 	/* private: the collection of references */
 
-	private List<ObjectsReference<O>> references;
+	private List<ObjectsReference<O>> references =
+	  Collections.emptyList();;
 }

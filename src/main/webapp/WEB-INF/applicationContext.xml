@@ -54,6 +54,8 @@
   <import resource = 'spring/xmapping.xml'/>
   <import resource = 'spring/actions.xml'/>
   <import resource = 'spring/orderers.xml'/>
+  <import resource = 'spring/secure.xml'/>
+  <import resource = 'spring/events.xml'/>
   <import resource = 'spring/model.xml'/>
   <import resource = 'spring/executors.xml'/>
   <import resource = 'spring/formatters.xml'/>
