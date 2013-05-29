@@ -71,6 +71,12 @@ select ut from Unity u join u.unityType ut
 			  "Requested United instance [%d] has Unity type not " +
 			  "of United class, but: %s!", pk, ut.toString()));
 
-		return (United)(session().get(ut.getTypeClass(), pk));
+		return (United) session().get(ut.getTypeClass(), pk);
+	}
+
+	public United getUnited(Unity u)
+	{
+		return (United) session().get(
+		  u.getUnityType().getTypeClass(), u.getPrimaryKey());
 	}
 }

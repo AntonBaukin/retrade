@@ -32,6 +32,13 @@
 
 
   <!--=================================================
+    =  Action Bulders for Secure                      =
+    +================================================-->
+
+  <import resource = 'secure.xml'/>
+
+
+  <!--=================================================
     =  Person Action Bulders                          =
     +================================================-->
 
@@ -59,6 +66,8 @@
         <ref bean = 'authComputerBuilders'/>
         <ref bean = 'authLoginBuilders'/>
         <ref bean = 'authSessionBuilders'/>
+        <ref bean = 'secKeyBuilders'/>
+        <ref bean = 'secRuleBuilders'/>
         <ref bean = 'corePersonBuilders'/>
 
       </list>

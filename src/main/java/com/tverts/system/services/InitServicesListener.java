@@ -2,12 +2,15 @@ package com.tverts.system.services;
 
 /* Spring Framework */
 
-import com.tverts.system.tx.TxPoint;
 import org.springframework.transaction.annotation.Transactional;
 
-/* com.tverts: webapp listeners */
+/* com.tverts: servlet (webapp listeners) */
 
 import com.tverts.servlet.listeners.ServletContextListenerBase;
+
+/* com.tverts: system (transactions) */
+
+import com.tverts.system.tx.TxPoint;
 
 
 /**

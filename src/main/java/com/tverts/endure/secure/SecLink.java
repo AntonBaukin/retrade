@@ -4,6 +4,8 @@ package com.tverts.endure.secure;
 
 import com.tverts.endure.NumericBase;
 import com.tverts.endure.Unity;
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.DomainEntity;
 
 
 /**
@@ -19,7 +21,9 @@ import com.tverts.endure.Unity;
  *
  * @author anton.baukin@gmail.com
  */
-public class SecLink extends NumericBase
+public class      SecLink
+       extends    NumericBase
+       implements DomainEntity
 {
 	/* public: SecLink (bean) interface */
 
@@ -68,6 +72,15 @@ public class SecLink extends NumericBase
 		if((deny != 0) & (deny != 1))
 			throw new IllegalArgumentException();
 		this.deny = deny;
+	}
+
+
+	/* public: DomainEntity interface */
+
+	public Domain getDomain()
+	{
+		return (getRule() == null)?(null):
+		  getRule().getDomain();
 	}
 
 

@@ -33,6 +33,7 @@ import static com.tverts.system.tx.TxPoint.txSession;
 
 import static com.tverts.support.SU.cats;
 import static com.tverts.support.SU.sXe;
+import static com.tverts.support.SU.scat;
 
 
 /**
@@ -151,7 +152,8 @@ public class      SecService
 		found.removeAll(forces);
 		if(!found.isEmpty())
 			throw new IllegalStateException(cats(
-			  "There are Secure Rules having unknown forces: ", found
+			  "There are Secure Rules having unknown forces: [",
+			  scat("], [", found), "]!"
 			));
 	}
 

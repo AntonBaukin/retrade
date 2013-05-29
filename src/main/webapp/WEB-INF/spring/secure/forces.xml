@@ -7,26 +7,10 @@
 
 
   <!--=================================================
-    =  XRoot Module Security Forces                   =
-    =================================================-->
-
-  <import resource = 'xrootForces.xml'/>
-
-
-  <!--=================================================
     =  Secure Forces List                             =
     =================================================-->
 
-  <bean name  = 'secForcesList' class = 'com.tverts.secure.force.SecForces'>
-    <property name = 'references'>
-      <list>
+  <bean name  = 'secForcesList'
+        class = 'com.tverts.secure.force.SecForces'/>
 
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · XRoot Module Security Forces                              ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'secXRootForcesList'/>
-
-      </list>
-    </property>
-  </bean>
 </beans>

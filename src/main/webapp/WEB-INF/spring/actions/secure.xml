@@ -1,0 +1,34 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for Secure                      =
+    +================================================-->
+
+  <bean name  = 'secKeyBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.secure.SecKey'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.secure.ActSecKey'/>
+    </property>
+  </bean>
+
+
+  <bean name  = 'secRuleBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.secure.SecRule'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.secure.ActSecRule'/>
+    </property>
+  </bean>
+
+</beans>
