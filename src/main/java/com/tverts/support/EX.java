@@ -118,4 +118,27 @@ public class EX
 		e.printStackTrace(p);
 		p.flush();
 	}
+
+
+	/* exceptions */
+
+	public static RuntimeException state(Object... msg)
+	{
+		return new IllegalStateException(SU.cats(msg));
+	}
+
+	public static RuntimeException state(Throwable cause, Object... msg)
+	{
+		return new IllegalStateException(SU.cats(msg), cause);
+	}
+
+	public static RuntimeException arg(Object... msg)
+	{
+		return new IllegalArgumentException(SU.cats(msg));
+	}
+
+	public static RuntimeException arg(Throwable cause, Object... msg)
+	{
+		return new IllegalArgumentException(SU.cats(msg), cause);
+	}
 }

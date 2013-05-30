@@ -21,15 +21,17 @@ import com.tverts.support.logic.Predicate;
 
 
 /**
- * Action Builder for Secure Keys.
+ * Action Builder for Secure Links.
  *
  * @author anton.baukin@gmail.com
  */
-public class ActSecKey extends ActionBuilderXRoot
+public class ActSecLink extends ActionBuilderXRoot
 {
 	/**
-	 * Checks whether the key given exists
-	 * (by it's unique name), and saves, if not.
+	 * Checks whether the given Secure Link exists
+	 * and saves, if not. The triple of (key,
+	 * rule, and target), but not deny-allow flag
+	 * is compared.
 	 */
 	public static final ActionType ENSURE =
 	  ActionType.ENSURE;
@@ -40,35 +42,36 @@ public class ActSecKey extends ActionBuilderXRoot
 	public void    buildAction(ActionBuildRec abr)
 	{
 		if(ENSURE.equals(actionType(abr)))
-			ensureSecKey(abr);
+			ensureSecLink(abr);
 	}
 
 
 	/* protected: action methods */
 
-	protected void ensureSecKey(ActionBuildRec abr)
+	protected void ensureSecLink(ActionBuildRec abr)
 	{
-		//?: {target is not a Secure Key}
-		checkTargetClass(abr, SecKey.class);
+		//?: {target is not a Secure Link}
+		checkTargetClass(abr, SecLink.class);
 
-		//~: save the key
+		//~: save the link
 		chain(abr).first(new SaveNumericIdentified(task(abr)).
-		  setPredicate(new SecKeyMissing()));
+		  setPredicate(new SecLinkMissing()));
 
 		complete(abr);
 	}
 
 
-	/* secure key existing predicate */
+	/* secure able existing predicate */
 
-	protected static class SecKeyMissing implements Predicate
+	protected static class SecLinkMissing implements Predicate
 	{
 		public boolean evalPredicate(Object ctx)
 		{
-			SecKey k = (SecKey) ((ActionWithTxBase)ctx).
+			SecLink l = (SecLink) ((ActionWithTxBase)ctx).
 			  getTask().getTarget();
 
-			return (bean(GetSecure.class).getSecKey(k.getName()) == null);
+			return (bean(GetSecure.class).getSecLink(
+			  l.getKey(), l.getRule(), l.getTarget().getPrimaryKey()) == null);
 		}
 	}
 }

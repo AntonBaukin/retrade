@@ -5,7 +5,7 @@ package com.tverts.secure.force;
 import com.tverts.event.CreatedEvent;
 import com.tverts.event.Event;
 
-/* com.tverts: endure (core) */
+/* com.tverts: endure (core + secure) */
 
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.secure.SecRule;
@@ -65,6 +65,11 @@ public class DomainKeyForce extends SecForceBase
 		if(event instanceof CreatedEvent)
 			if(event.target() instanceof Domain)
 				reactDomainCreated((Domain)event.target(), (CreatedEvent) event);
+
+		//?: {ask force event}
+		if(event instanceof AskSecForceEvent)
+			if(uid().equals(((AskSecForceEvent)event).getForce()))
+				reactAskForce((AskSecForceEvent)event);
 	}
 
 
@@ -97,17 +102,34 @@ public class DomainKeyForce extends SecForceBase
 
 	protected void reactDomainCreated(Domain d, CreatedEvent e)
 	{
-		//~: save the rule
+		//~: create the rule
 		SecRule rule = new SecRule();
 
 		//~: domain is being created
 		rule.setDomain(d);
 
-		//!: save
+		//!: save it
 		saveRule(rule);
+
+		//~: create the link (with the domain)
+		ensureLink(getSecKey(), rule, d, true);
+
 
 		LU.D(getLog(), logsig(), " acts on create Domain [", d.getPrimaryKey(),
 		 "], saved rule [", rule.getPrimaryKey(), ']');
+	}
+
+	protected void reactAskForce(AskSecForceEvent e)
+	{
+		//~: load the domain rule
+		Long    domain = e.target().getDomain().getPrimaryKey();
+		SecRule rule   = loadDomainRule(domain);
+
+		//!: ensure the able
+		ensureAble(rule, e.target());
+
+		LU.D(getLog(), logsig(), " now able for login [",
+		  e.target().getCode(), ']');
 	}
 
 

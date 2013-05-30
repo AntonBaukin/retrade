@@ -33,16 +33,25 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 import com.tverts.event.EventPoint;
 
-/* com.tverts: endure (core + secure) */
+/* com.tverts: endure (core + auth + secure) */
 
+import com.tverts.endure.United;
 import com.tverts.endure.core.GetUnity;
+import com.tverts.endure.auth.AuthLogin;
+import com.tverts.endure.secure.GetSecure;
+import com.tverts.endure.secure.SecAble;
 import com.tverts.endure.secure.SecKey;
+import com.tverts.endure.secure.SecLink;
 import com.tverts.endure.secure.SecRule;
 
 /* com.tverts: secure */
 
 import com.tverts.secure.SecKeys;
 import com.tverts.secure.SecPoint;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -124,10 +133,8 @@ public abstract class SecForceBase
 	{
 		SecKey key = SecKeys.INSTANCE.key(name);
 
-		if(key == null) throw new IllegalStateException(String.format(
-		  "%s requested Secure Key [%s] that doesn't exist!",
-		  logsig(), name
-		));
+		if(key == null) throw EX.state(logsig(),
+		  " requested Secure Key [", name, "] that doesn't exist!");
 
 		return key;
 	}
@@ -162,6 +169,65 @@ public abstract class SecForceBase
 
 		//!: act save
 		actionRun(ActionType.SAVE, rule);
+	}
+
+	protected SecRule loadDomainRule(Long domain)
+	{
+		List<SecRule> rules = bean(GetSecure.class).
+		  selectRules(domain, uid());
+
+		if(rules.isEmpty())
+			throw EX.state(logsig(), " has no Domain Rules!");
+
+		if(rules.size() != 1)
+			throw EX.state(logsig(), " has multiple Domain Rules!");
+
+		if(!domain.equals(rules.get(0).getRelated().getPrimaryKey()))
+			throw EX.state(logsig(), " has Rule targeting not a Domain!");
+
+		return rules.get(0);
+	}
+
+	protected boolean isAble(SecRule rule, AuthLogin login)
+	{
+		return bean(GetSecure.class).hasAbles(rule, login);
+	}
+
+	protected void    ensureLink(String key, SecRule rule, United target, boolean allow)
+	{
+		SecLink link = new SecLink();
+
+		//~: secure key
+		link.setKey(key(key));
+
+		//~: rule
+		link.setRule(rule);
+
+		//~: target unity
+		if(target.getUnity() == null)
+			throw EX.state(logsig(), " Sec Link target [",
+			  target.getPrimaryKey(), "] has no Unified Mirror!"
+			);
+		link.setTarget(target.getUnity());
+
+		//~: deny-allow
+		if(!allow) link.setDeny();
+
+
+		//!: ensure the link
+		actionRun(ActionType.ENSURE, link);
+	}
+
+	protected void    ensureAble(SecRule rule, AuthLogin login)
+	{
+		//~: create able instance
+		SecAble able = new SecAble();
+
+		able.setRule(rule);
+		able.setLogin(login);
+
+		//!: ensure the action
+		actionRun(ActionType.ENSURE, able);
 	}
 
 

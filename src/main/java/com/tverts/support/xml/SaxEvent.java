@@ -48,6 +48,16 @@ public class SaxEvent<State>
 		return !sXe(lName)?(lName):!sXe(qName)?(qName):("");
 	}
 
+	public boolean         tag(String... names)
+	{
+		String tag = this.tag();
+
+		for(String name : names)
+			if(name.equals(tag))
+				return true;
+		return false;
+	}
+
 	public String          uri()
 	{
 		return uri;

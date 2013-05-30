@@ -2,22 +2,20 @@
 
 <users>
 
-  <!--
-  <computer code = "System" name = "System User">
-    <login password = "password"/>
-  </computer>
-  -->
-
   <person gender = "M" last-name = "Иванов"
     first-name = "Максим" middle-name = "Николаевич">
 
     <login code = "ivanov" password = "password"/>
+
+    <secure force = 'domain: view: documents'/>
+
   </person>
 
   <person gender = "F" last-name = "Толстая"
     first-name = "Фёкла" middle-name = "Никитична">
 
     <login code = "tolstaya" password = "password"/>
+
   </person>
 
 </users>

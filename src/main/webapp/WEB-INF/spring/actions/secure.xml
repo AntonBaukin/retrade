@@ -31,4 +31,28 @@
     </property>
   </bean>
 
+
+  <bean name  = 'secAbleBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.secure.SecAble'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.secure.ActSecAble'/>
+    </property>
+  </bean>
+
+
+  <bean name  = 'secLinkBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.secure.SecLink'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.secure.ActSecLink'/>
+    </property>
+  </bean>
+
 </beans>

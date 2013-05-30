@@ -74,6 +74,11 @@ public class      SecLink
 		this.deny = deny;
 	}
 
+	public void setDeny()
+	{
+		this.setDeny((byte)1);
+	}
+
 
 	/* public: DomainEntity interface */
 

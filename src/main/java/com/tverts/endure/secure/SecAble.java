@@ -3,6 +3,8 @@ package com.tverts.endure.secure;
 /* com.tverts: endure (core + auth) */
 
 import com.tverts.endure.NumericBase;
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.auth.AuthLogin;
 
 
@@ -17,7 +19,9 @@ import com.tverts.endure.auth.AuthLogin;
  *
  * @author anton.baukin@gmail.com
  */
-public class SecAble extends NumericBase
+public class      SecAble
+       extends    NumericBase
+       implements DomainEntity
 {
 	/* public: SecAble (bean) interface */
 
@@ -39,6 +43,15 @@ public class SecAble extends NumericBase
 	public void setRule(SecRule rule)
 	{
 		this.rule = rule;
+	}
+
+
+	/* public: DomainEntity interface */
+
+	public Domain getDomain()
+	{
+		return (getLogin() != null)?(getLogin().getDomain()):
+		  (getRule() != null)?(getRule().getDomain()):(null);
 	}
 
 

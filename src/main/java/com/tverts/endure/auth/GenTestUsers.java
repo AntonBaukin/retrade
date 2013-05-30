@@ -3,6 +3,8 @@ package com.tverts.endure.auth;
 /* standard Java classes */
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
 
 /* com.tverts: spring */
 
@@ -19,6 +21,14 @@ import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
+/* com.tverts: events */
+
+import com.tverts.event.EventPoint;
+
+/* com.tverts: secure */
+
+import com.tverts.secure.force.AskSecForceEvent;
+
 /* com.tverts: endure (core + persons) */
 
 import com.tverts.endure.core.Domain;
@@ -29,6 +39,7 @@ import com.tverts.endure.person.Persons;
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
+import static com.tverts.support.SU.cats;
 import com.tverts.support.xml.SaxProcessor;
 
 
@@ -195,8 +206,28 @@ public class GenTestUsers extends GenesisHiberPartBase
 			l.setPerson(s.person.person);
 
 
-		//!: do save
+		//!: do save the login
 		actionRun(ActionType.SAVE, l);
+
+		//~: flush the session
+		session().flush();
+
+		//~: create secure instances
+		secure(ctx, s, l);
+	}
+
+	protected void    secure(GenCtx ctx, GenState s, AuthLogin l)
+	  throws GenesisError
+	{
+		//?: {there is no security entries}
+		if(s.secEntries == null) return;
+
+		//c: create ask force event
+		for(SecEntry se : s.secEntries)
+			EventPoint.react( //<-- !: send it
+			  new AskSecForceEvent(l).
+			  setForce(se.force)
+			);
 	}
 
 
@@ -227,12 +258,19 @@ public class GenTestUsers extends GenesisHiberPartBase
 		public Person    person;
 	}
 
+	protected static class SecEntry
+	{
+		public String force;
+	}
+
 	protected static class GenState
 	{
-		public StateLogin    login;
-		public StateComputer computer;
-		public StatePerson   person;
+		public StateLogin     login;
+		public StateComputer  computer;
+		public StatePerson    person;
+		public List<SecEntry> secEntries;
 	}
+
 
 
 	/* protected: xml handler */
@@ -258,7 +296,8 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		protected void open()
 		{
-			if((level() == 1) && "computer".equals(event().tag()))
+			//~: <computer>
+			if((level() == 1) && event().tag("computer"))
 			{
 				state().computer = new StateComputer();
 
@@ -266,7 +305,8 @@ public class GenTestUsers extends GenesisHiberPartBase
 				state().computer.name = event().attr("name");
 			}
 
-			if((level() == 1) && "person".equals(event().tag()))
+			//~: <person>
+			if((level() == 1) && event().tag("person"))
 			{
 				state().person = new StatePerson();
 
@@ -279,10 +319,31 @@ public class GenTestUsers extends GenesisHiberPartBase
 				  (gender.length() == 1)?(gender.charAt(0)):(null);
 			}
 
-			if((level() == 2) && "login".equals(event().tag()))
+			//~: (<computer> | <person>) <login>
+			if((level() == 2) && event().tag("login"))
 			{
 				state(1).login.code = event().attr("code");
 				state(1).login.password = event().attr("password");
+			}
+
+			//~: (<computer> | <person>) <secure>
+			if((level() == 2) && event().tag("secure"))
+			{
+				//~: force attribute
+				String force = event().attr("force");
+
+				if(force == null) throw new IllegalStateException(cats(
+				  "Gen Test Users, login [", state(1).login.code,
+				  "] has <secure force = '?'> undefined!"
+				));
+
+				//~: create secure entry
+				SecEntry e = new SecEntry();
+				e.force = force;
+
+				if(state(1).secEntries == null)
+					state(1).secEntries = new ArrayList<SecEntry>(4);
+				state(1).secEntries.add(e);
 			}
 		}
 

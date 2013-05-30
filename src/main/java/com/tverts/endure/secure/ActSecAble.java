@@ -21,15 +21,16 @@ import com.tverts.support.logic.Predicate;
 
 
 /**
- * Action Builder for Secure Keys.
+ * Action Builder for Secure Ables.
  *
  * @author anton.baukin@gmail.com
  */
-public class ActSecKey extends ActionBuilderXRoot
+public class ActSecAble extends ActionBuilderXRoot
 {
 	/**
-	 * Checks whether the key given exists
-	 * (by it's unique name), and saves, if not.
+	 * Checks whether the given Secure Able exists
+	 * and saves, if not. Note that the assign set
+	 * of the Able is also checked.
 	 */
 	public static final ActionType ENSURE =
 	  ActionType.ENSURE;
@@ -40,35 +41,38 @@ public class ActSecKey extends ActionBuilderXRoot
 	public void    buildAction(ActionBuildRec abr)
 	{
 		if(ENSURE.equals(actionType(abr)))
-			ensureSecKey(abr);
+			ensureSecAble(abr);
 	}
 
 
 	/* protected: action methods */
 
-	protected void ensureSecKey(ActionBuildRec abr)
+	protected void ensureSecAble(ActionBuildRec abr)
 	{
-		//?: {target is not a Secure Key}
-		checkTargetClass(abr, SecKey.class);
+		//?: {target is not a Secure Able}
+		checkTargetClass(abr, SecAble.class);
 
-		//~: save the key
+		//~: save the able
 		chain(abr).first(new SaveNumericIdentified(task(abr)).
-		  setPredicate(new SecKeyMissing()));
+		  setPredicate(new SecAbleMissing()));
 
 		complete(abr);
 	}
 
 
-	/* secure key existing predicate */
+	/* secure able existing predicate */
 
-	protected static class SecKeyMissing implements Predicate
+	/**
+	 * TODO support assign sets of Secure Ables
+	 */
+	protected static class SecAbleMissing implements Predicate
 	{
 		public boolean evalPredicate(Object ctx)
 		{
-			SecKey k = (SecKey) ((ActionWithTxBase)ctx).
+			SecAble a = (SecAble) ((ActionWithTxBase)ctx).
 			  getTask().getTarget();
 
-			return (bean(GetSecure.class).getSecKey(k.getName()) == null);
+			return !bean(GetSecure.class).hasAbles(a.getRule(), a.getLogin());
 		}
 	}
 }
