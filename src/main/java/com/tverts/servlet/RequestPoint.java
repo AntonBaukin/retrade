@@ -5,7 +5,6 @@ package com.tverts.servlet;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /* Java Servlet api */
 
 import javax.servlet.ServletContext;
@@ -74,6 +73,12 @@ public class RequestPoint
 		return r.get(r.size() - 1);
 	}
 
+	public static HttpServletRequest requestOrNull()
+	{
+		List<HttpServletRequest> r = INSTANCE.getRequests();
+		return ((r == null) || r.isEmpty())?(null):(r.get(r.size() - 1));
+	}
+
 	/**
 	 * Returns the request in the given position
 	 * of the stack. Index 0 is root request.
@@ -90,6 +95,12 @@ public class RequestPoint
 	public static HttpSession        session()
 	{
 		return request().getSession(false);
+	}
+
+	public static HttpSession        sessionOrNull()
+	{
+		HttpServletRequest request = requestOrNull();
+		return (request == null)?(null):(request.getSession(false));
 	}
 
 	/**

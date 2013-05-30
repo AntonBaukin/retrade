@@ -1,8 +1,17 @@
 package com.tverts.secure;
 
+/* Java Servlet api */
+
+import javax.servlet.http.HttpSession;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
+
+/* com.tverts: servlet */
+
+import com.tverts.endure.secure.GetSecure;
+import com.tverts.servlet.RequestPoint;
 
 /* com.tverts: actions */
 
@@ -13,12 +22,18 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.GetDomain;
 import com.tverts.endure.auth.ActAuthSession;
+import com.tverts.endure.auth.Auth;
+import com.tverts.endure.auth.AuthLogin;
 import com.tverts.endure.auth.AuthSession;
 import com.tverts.endure.auth.GetAuthLogin;
 
 /* com.tverts: secure */
 
 import com.tverts.secure.session.SecSession;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -59,7 +74,7 @@ public final class SecPoint
 	{
 		SecSession secs = INSTANCE.getSecSession();
 
-		if(secs == null) throw new IllegalStateException(
+		if(secs == null) throw EX.state(
 		  "No Secure Session instance is bound to the current thread!");
 		return secs;
 	}
@@ -69,10 +84,11 @@ public final class SecPoint
 		Long domain = (Long) secSession().
 		  attr(SecSession.ATTR_DOMAIN_PKEY);
 
-		if(domain == null) throw new IllegalStateException(String.format(
-		  "Secure Session for Auth [%s] has no Domain key!",
-		  (String) secSession().attr(SecSession.ATTR_AUTH_SESSION)
-		));
+		if(domain == null) throw EX.state(
+		  "Secure Session for Auth [",
+		  secSession().attr(SecSession.ATTR_AUTH_SESSION),
+		  "] has no Domain key!"
+		);
 
 		return domain;
 	}
@@ -82,10 +98,11 @@ public final class SecPoint
 		Long login = (Long) secSession().
 		  attr(SecSession.ATTR_AUTH_LOGIN);
 
-		if(login == null) throw new IllegalStateException(String.format(
-		  "Secure Session for Auth [%s] has no Login key!",
-		  (String) secSession().attr(SecSession.ATTR_AUTH_SESSION)
-		));
+		if(login == null) throw EX.state(
+		  "Secure Session for Auth [",
+		  secSession().attr(SecSession.ATTR_AUTH_SESSION),
+		  "] has no Login key!"
+		);
 
 		return login;
 	}
@@ -113,11 +130,22 @@ public final class SecPoint
 	{
 		Domain d = bean(GetDomain.class).getDomain(domain());
 
-		if(d == null) throw new IllegalStateException(String.format(
-		  "Domain pkey [%d] doesn't exist!", domain()
-		));
+		if(d == null) throw EX.state(
+		  "Domain pkey [", domain(), "] doesn't exist!"
+		);
 
 		return d;
+	}
+
+	public static AuthLogin  loadLogin()
+	{
+		AuthLogin l = bean(GetAuthLogin.class).getLogin(login());
+
+		if(l == null) throw EX.state(
+		  "Auth Login pkey [", login(), "] doesn't exist!"
+		);
+
+		return l;
 	}
 
 	/**
@@ -130,19 +158,55 @@ public final class SecPoint
 		return SYSTEM_DOMAIN.equals(loadDomain().getCode());
 	}
 
+
+	private static final String SESSION_SYSTEM_ATTR =
+	  SecPoint.class.getName() + ": system login";
+
+	public static boolean    isSystemLogin()
+	{
+		//~: inspect the session cache
+		HttpSession session = RequestPoint.sessionOrNull();
+		if(session != null)
+		{
+			Boolean x = (Boolean) session.getAttribute(SESSION_SYSTEM_ATTR);
+			if(x != null) return x;
+		}
+
+		//~: check the System name
+		boolean res = Auth.SYSTEM_USER.equals(loadLogin().getCode());;
+
+		//?: {has session} cache
+		if(session != null)
+			session.setAttribute(SESSION_SYSTEM_ATTR, res);
+
+		return res;
+	}
+
 	public static void       checkSystemDomain()
 	{
 		if(!isSystemDomain())
-			throw new IllegalStateException("System Domain only!");
+			throw EX.state("System Domain only!");
 	}
 
 	public static Domain     loadSystemDomain()
 	{
 		Domain d =  bean(GetDomain.class).getDomain(SYSTEM_DOMAIN);
 
-		if(d == null) throw new IllegalStateException(
-		  "No System Domain present!");
+		if(d == null) throw EX.state("No System Domain present!");
 		return d;
+	}
+
+
+	/* public: SecPoint (security checks) interface */
+
+	/**
+	 * Checks whether current user has access
+	 * with the key named to the Domain.
+	 */
+	public static boolean    isSecure(String key)
+	{
+		return isSystemLogin() || bean(GetSecure.class).
+		  isSecure(login(), domain(), SecKeys.secKey(key));
 	}
 
 

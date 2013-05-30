@@ -107,4 +107,41 @@ from SecLink sl where (sl.key = :k) and
 		  setLong     ("t", target).
 		  uniqueResult();
 	}
+
+
+
+	/* security checks */
+
+	/**
+	 * The Key on the Target entity is allowed when there is
+	 * at least one allowing Link from that target by the key.
+	 * (Link allows when it's deny = 0, forbids when deny = 1)
+	 *
+	 * And there is no deny Links to the same target.
+	 *
+	 * Links are selected by the Rules Able for the user.
+	 */
+	public boolean isSecure(Long login, Long target, SecKey key)
+	{
+/*
+
+ select max(sl.deny) from SecLink sl join sl.rule sr, SecAble ab
+ where (sl.key = :key) and (sl.target.id = :target) and
+   (sr = ab.rule) and (ab.login.id = :login)
+
+*/
+		Number n = (Number) Q(
+
+"select max(sl.deny) from SecLink sl join sl.rule sr, SecAble ab\n" +
+"where (sl.key = :key) and (sl.target.id = :target) and\n" +
+"  (sr = ab.rule) and (ab.login.id = :login)"
+
+		).
+		  setParameter("key",    key).
+		  setLong     ("target", target).
+		  setLong     ("login",  login).
+		  uniqueResult();
+
+		return (n != null) && (n.intValue() == 0);
+	}
 }

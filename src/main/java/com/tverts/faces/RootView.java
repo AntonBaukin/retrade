@@ -95,6 +95,14 @@ public class RootView extends ViewWithModes
 	}
 
 
+	/* public: security issues */
+
+	public boolean   isSecure(String key)
+	{
+		return SecPoint.isSecure(key);
+	}
+
+
 	/* protected: view support interface */
 
 	protected String obtainExtjsDomain()
