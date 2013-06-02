@@ -126,6 +126,16 @@ public class AuthLogin extends Entity implements CatItem
 		this.closeTime = closeTime;
 	}
 
+	public String    getDescr()
+	{
+		return descr;
+	}
+
+	public void      setDescr(String descr)
+	{
+		this.descr = descr;
+	}
+
 
 	/* persisted attributes */
 
@@ -139,4 +149,6 @@ public class AuthLogin extends Entity implements CatItem
 
 	private Date     createTime;
 	private Date     closeTime;
+
+	private String   descr;
 }

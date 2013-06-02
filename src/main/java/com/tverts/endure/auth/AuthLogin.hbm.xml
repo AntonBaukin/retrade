@@ -99,5 +99,15 @@
       </column>
     </property>
 
+
+    <!-- Description -->
+
+    <property name = 'descr' type = 'text'>
+
+      <column name = 'descr'>
+        <comment>The comment on this Login (User)</comment>
+      </column>
+    </property>
+
   </union-subclass>
 </hibernate-mapping>

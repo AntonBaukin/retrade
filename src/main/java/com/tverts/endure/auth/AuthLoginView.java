@@ -74,6 +74,46 @@ public class AuthLoginView extends CatItemView
 		this.typeNameLo = typeNameLo;
 	}
 
+	public String getDescr()
+	{
+		return descr;
+	}
+
+	public void setDescr(String descr)
+	{
+		this.descr = descr;
+	}
+
+	public String getLastName()
+	{
+		return lastName;
+	}
+
+	public void setLastName(String lastName)
+	{
+		this.lastName = lastName;
+	}
+
+	public String getFirstName()
+	{
+		return firstName;
+	}
+
+	public void setFirstName(String firstName)
+	{
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName()
+	{
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName)
+	{
+		this.middleName = middleName;
+	}
+
 
 	/* public: initialization interface */
 
@@ -109,11 +149,18 @@ public class AuthLoginView extends CatItemView
 		//~: close time
 		closeTime = l.getCloseTime();
 
+		//~: description
+		descr = l.getDescr();
+
 		return this;
 	}
 
 	public AuthLoginView init(Person p)
 	{
+		this.lastName   = p.getLastName();
+		this.firstName  = p.getFirstName();
+		this.middleName = p.getMiddleName();
+
 		return this;
 	}
 
@@ -130,4 +177,9 @@ public class AuthLoginView extends CatItemView
 
 	private String typeName;
 	private String typeNameLo;
+	private String descr;
+
+	private String lastName;
+	private String firstName;
+	private String middleName;
 }
