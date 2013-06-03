@@ -56,7 +56,10 @@ public class Auth
 
 		try
 		{
-			d.reset();
+			if(d != null)
+				d.reset();
+			else
+				d = MessageDigest.getInstance("SHA-1");
 
 			return new String(bytes2hex(
 			  d.digest(p.getBytes("UTF-8"))

@@ -30,11 +30,33 @@ public class ActLogin extends ActionBuilderXRoot
 {
 	/* action types */
 
-	public static final ActionType SAVE   =
+	public static final ActionType SAVE     =
 	  ActionType.SAVE;
 
-	public static final ActionType CLOSE  =
+	public static final ActionType CLOSE    =
 	  new ActionType(AuthLogin.class, "close");
+
+	/**
+	 * Update password (and login code).
+	 */
+	public static final ActionType PASSWORD =
+	  new ActionType(AuthLogin.class, "password");
+
+
+	/* parameters */
+
+	/**
+	 * New login code (optional) of action
+	 * {@link #PASSWORD}.
+	 */
+	public static final String PARAM_LOGIN    =
+	  ActLogin.class.getName() + ": login";
+
+	/**
+	 * New password hash of action {@link #PASSWORD}.
+	 */
+	public static final String PARAM_PASSHASH =
+	  ActLogin.class.getName() + ": password";
 
 
 	/* public: ActionBuilder interface */
@@ -46,6 +68,9 @@ public class ActLogin extends ActionBuilderXRoot
 
 		if(CLOSE.equals(actionType(abr)))
 			closeLogin(abr);
+
+		if(PASSWORD.equals(actionType(abr)))
+			changeLoginPassword(abr);
 	}
 
 
@@ -87,6 +112,20 @@ public class ActLogin extends ActionBuilderXRoot
 
 		//~: close the login
 		chain(abr).first(new CloseAuthLoginAction(task(abr)));
+
+		complete(abr);
+	}
+
+	protected void changeLoginPassword(ActionBuildRec abr)
+	{
+		//?: {target is not a login}
+		checkTargetClass(abr, AuthLogin.class);
+
+		//~: change the login, or password
+		chain(abr).first(new ChangeLoginPasswordAction(task(abr)).
+		  setLoginCode(param(abr, PARAM_LOGIN, String.class)).
+		  setPasshash(param(abr, PARAM_PASSHASH, String.class))
+		);
 
 		complete(abr);
 	}
@@ -135,5 +174,62 @@ public class ActLogin extends ActionBuilderXRoot
 			  DU.datetime2str(login.getCloseTime())
 			));
 		}
+	}
+
+
+	/* set login password action */
+
+	public static class ChangeLoginPasswordAction
+	       extends      ActionWithTxBase
+	{
+		/* public: constructor */
+
+		public ChangeLoginPasswordAction(ActionTask task)
+		{
+			super(task);
+		}
+
+
+		/* public: UpdateLoginPassword (bean) interface */
+
+		public ChangeLoginPasswordAction setLoginCode(String loginCode)
+		{
+			this.loginCode = loginCode;
+			return this;
+		}
+
+		public ChangeLoginPasswordAction setPasshash(String passhash)
+		{
+			this.passhash = passhash;
+			return this;
+		}
+
+
+		/* public: Action interface */
+
+		public AuthLogin getResult()
+		{
+			return target(AuthLogin.class);
+		}
+
+		protected void   execute()
+		  throws Throwable
+		{
+			AuthLogin login = target(AuthLogin.class);
+
+			//~: login code
+			if(loginCode != null)
+				login.setCode(loginCode);
+
+			//~: password hash
+			if(passhash != null)
+				login.setPasshash(passhash);
+		}
+
+
+		/* protected: login & password */
+
+		protected String loginCode;
+		protected String passhash;
 	}
 }

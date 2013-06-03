@@ -38,4 +38,14 @@ public class AU
 
 		return -1;
 	}
+
+
+	/* byte operation */
+
+	public static void xor(byte[] res, byte[] a)
+	{
+		int l = Math.min(res.length, a.length);
+		for(int i = 0;(i < l);i++)
+			res[i] ^= a[i];
+	}
 }
