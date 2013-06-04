@@ -24,6 +24,16 @@ public class EditPasswordModelBean extends ModelBeanBase
 		this.authLogin = authLogin;
 	}
 
+	public Long getLoginDomain()
+	{
+		return loginDomain;
+	}
+
+	public void setLoginDomain(Long loginDomain)
+	{
+		this.loginDomain = loginDomain;
+	}
+
 	public String getLoginCode()
 	{
 		return loginCode;
@@ -44,10 +54,22 @@ public class EditPasswordModelBean extends ModelBeanBase
 		this.passhash = passhash;
 	}
 
+	public boolean isCreating()
+	{
+		return creating;
+	}
+
+	public void setCreating(boolean creating)
+	{
+		this.creating = creating;
+	}
+
 
 	/* private: attributes */
 
-	private Long   authLogin;
-	private String loginCode;
-	private String passhash;
+	private Long    authLogin;
+	private Long    loginDomain;
+	private String  loginCode;
+	private String  passhash;
+	private boolean creating;
 }
