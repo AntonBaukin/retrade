@@ -157,6 +157,9 @@ public class GenTestUsers extends GenesisHiberPartBase
 		p.setFirstName(s.firstName);
 		p.setMiddleName(s.middleName);
 		p.setGender(s.gender);
+		p.setEmail(s.email);
+		p.setPhoneMob(s.phoneMob);
+		p.setPhoneWork(s.phoneWork);
 
 		actionRun(ActionType.SAVE, p);
 
@@ -254,6 +257,9 @@ public class GenTestUsers extends GenesisHiberPartBase
 		public String    firstName;
 		public String    middleName;
 		public Character gender;
+		public String    email;
+		public String    phoneMob;
+		public String    phoneWork;
 
 		public Person    person;
 	}
@@ -282,6 +288,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 		{
 			this.ctx = ctx;
 		}
+
 
 		/* protected: SaxProcessor interface */
 
@@ -317,6 +324,10 @@ public class GenTestUsers extends GenesisHiberPartBase
 				String gender             = event().attr("gender");
 				state().person.gender     = (gender == null)?(null):
 				  (gender.length() == 1)?(gender.charAt(0)):(null);
+
+				state().person.email      = event().attr("email");
+				state().person.phoneMob   = event().attr("mobile-phone");
+				state().person.phoneWork  = event().attr("work-phone");
 			}
 
 			//~: (<computer> | <person>) <login>

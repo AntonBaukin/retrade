@@ -6,6 +6,7 @@ import java.util.Date;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -114,6 +115,47 @@ public class AuthLoginView extends CatItemView
 		this.middleName = middleName;
 	}
 
+	@XmlElement(name = "genderMale")
+	public Boolean getMale()
+	{
+		return male;
+	}
+
+	public void setMale(Boolean male)
+	{
+		this.male = male;
+	}
+
+	public String getEmail()
+	{
+		return email;
+	}
+
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
+	public String getPhoneMob()
+	{
+		return phoneMob;
+	}
+
+	public void setPhoneMob(String phoneMob)
+	{
+		this.phoneMob = phoneMob;
+	}
+
+	public String getPhoneWork()
+	{
+		return phoneWork;
+	}
+
+	public void setPhoneWork(String phoneWork)
+	{
+		this.phoneWork = phoneWork;
+	}
+
 
 	/* public: initialization interface */
 
@@ -160,6 +202,10 @@ public class AuthLoginView extends CatItemView
 		this.lastName   = p.getLastName();
 		this.firstName  = p.getFirstName();
 		this.middleName = p.getMiddleName();
+		this.male       = (p.getGender() == null)?(null):(p.getGender().equals('M'));
+		this.email      = p.getEmail();
+		this.phoneMob   = p.getPhoneMob();
+		this.phoneWork  = p.getPhoneWork();
 
 		return this;
 	}
@@ -172,14 +218,18 @@ public class AuthLoginView extends CatItemView
 
 	/* login attributes */
 
-	private Date   createTime;
-	private Date   closeTime;
+	private Date    createTime;
+	private Date    closeTime;
 
-	private String typeName;
-	private String typeNameLo;
-	private String descr;
+	private String  typeName;
+	private String  typeNameLo;
+	private String  descr;
 
-	private String lastName;
-	private String firstName;
-	private String middleName;
+	private String  lastName;
+	private String  firstName;
+	private String  middleName;
+	private Boolean male;
+	private String  email;
+	private String  phoneMob;
+	private String  phoneWork;
 }

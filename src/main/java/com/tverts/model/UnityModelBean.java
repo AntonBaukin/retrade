@@ -1,5 +1,10 @@
 package com.tverts.model;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -19,10 +24,6 @@ import com.tverts.endure.Unity;
 import com.tverts.endure.core.GetUnity;
 import com.tverts.endure.core.UnitedAccess;
 
-/* com.tverts: support */
-
-import com.tverts.support.OU;
-
 
 /**
  * This model bean is focused on accessing
@@ -32,14 +33,15 @@ import com.tverts.support.OU;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class UnityModelBean
-       extends        ModelBeanBase
+@XmlRootElement(name = "unity-model")
+public class UnityModelBean extends ModelBeanBase
 {
 	public static final long serialVersionUID = 0L;
 
 
 	/* public: UnityModelBean interface */
 
+	@XmlElement(name = "objectKey")
 	public Long   getPrimaryKey()
 	{
 		return primaryKey;
@@ -66,7 +68,10 @@ public abstract class UnityModelBean
 
 	/* public: ModelBean (data access) interface */
 
-	public abstract ModelData modelData();
+	public ModelData modelData()
+	{
+		return null;
+	}
 
 
 	/* public: support interface */

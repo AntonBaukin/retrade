@@ -8,16 +8,19 @@ import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionWithTxBase;
 
-/* com.tverts: endure (core) */
+/* com.tverts: endure (core + persons) */
 
 import com.tverts.endure.ActionBuilderXRoot;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
+import com.tverts.endure.person.ActPerson;
+import com.tverts.endure.person.Person;
 
 /* com.tverts: support */
 
 import com.tverts.support.DU;
+import com.tverts.support.EX;
 
 
 /**
@@ -42,6 +45,14 @@ public class ActLogin extends ActionBuilderXRoot
 	public static final ActionType PASSWORD =
 	  new ActionType(AuthLogin.class, "password");
 
+	/**
+	 * Update (or create) Person of the Login.
+	 * If Login already refers a Computer,
+	 * the latter would not be removed.
+	 */
+	public static final ActionType PERSON   =
+	  new ActionType(AuthLogin.class, "person");
+
 
 	/* parameters */
 
@@ -58,6 +69,12 @@ public class ActLogin extends ActionBuilderXRoot
 	public static final String PARAM_PASSHASH =
 	  ActLogin.class.getName() + ": password";
 
+	/**
+	 * @see {@link ActPerson#PARAM_PERSON}
+	 */
+	public static final String PARAM_PERSON   =
+	  ActPerson.PARAM_PERSON;
+
 
 	/* public: ActionBuilder interface */
 
@@ -71,6 +88,9 @@ public class ActLogin extends ActionBuilderXRoot
 
 		if(PASSWORD.equals(actionType(abr)))
 			changeLoginPassword(abr);
+
+		if(PERSON.equals(actionType(abr)))
+			updatePerson(abr);
 	}
 
 
@@ -104,11 +124,10 @@ public class ActLogin extends ActionBuilderXRoot
 		AuthLogin login = target(abr, AuthLogin.class);
 
 		//?: {the login is already closed}
-		if(login.getCloseTime() != null)
-			throw new IllegalStateException(String.format(
-			  "Authentication Login [%d] '%s' is already closed!",
-			  login.getPrimaryKey(), login.getCode()
-			));
+		if(login.getCloseTime() != null) throw EX.state(
+		  "Authentication Login [", login.getPrimaryKey(),
+		  "] '", login.getCode(), "' is already closed!"
+		);
 
 		//~: close the login
 		chain(abr).first(new CloseAuthLoginAction(task(abr)));
@@ -126,6 +145,41 @@ public class ActLogin extends ActionBuilderXRoot
 		  setLoginCode(param(abr, PARAM_LOGIN, String.class)).
 		  setPasshash(param(abr, PARAM_PASSHASH, String.class))
 		);
+
+		complete(abr);
+	}
+
+	protected void updatePerson(ActionBuildRec abr)
+	{
+		//?: {target is not a login}
+		checkTargetClass(abr, AuthLogin.class);
+
+		AuthLogin login = target(abr, AuthLogin.class);
+
+		//?: {login has person} update it
+		if(login.getPerson() != null)
+			xnest(abr, ActPerson.UPDATE, login.getPerson(),
+			  PARAM_PERSON, param(abr, PARAM_PERSON)
+			);
+		//!: create new person
+		else
+		{
+			Person p = new Person();
+
+			//~: domain of the login
+			p.setDomain(login.getDomain());
+
+			//2: update the person
+			xnest(abr, ActPerson.UPDATE, p,
+			 PARAM_PERSON, param(abr, PARAM_PERSON)
+			);
+
+			//1: assign the person
+			chain(abr).first(new AssignLoginPersonAction(task(abr)).setPerson(p));
+
+			//0: save the person
+			xnest(abr, ActPerson.SAVE, p);
+		}
 
 		complete(abr);
 	}
@@ -231,5 +285,56 @@ public class ActLogin extends ActionBuilderXRoot
 
 		protected String loginCode;
 		protected String passhash;
+	}
+
+
+	/* assign person action */
+
+	public static class AssignLoginPersonAction
+	       extends      ActionWithTxBase
+	{
+		/* public: constructor */
+
+		public AssignLoginPersonAction(ActionTask task)
+		{
+			super(task);
+		}
+
+
+		/* public: AssignLoginPersonAction (bean) interface */
+
+		public AssignLoginPersonAction setPerson(Person person)
+		{
+			this.person = person;
+			return this;
+		}
+
+
+		/* public: Action interface */
+
+		public AuthLogin getResult()
+		{
+			return target(AuthLogin.class);
+		}
+
+		protected void   execute()
+		  throws Throwable
+		{
+			AuthLogin login = target(AuthLogin.class);
+
+			//?: {login has person} illegal state
+			if(login.getPerson() != null) throw EX.state(
+			  "Auth Login [", login.getPrimaryKey(),
+			  "] already has a Person assigned!"
+			);
+
+			login.setPerson(person);
+			session().flush();
+		}
+
+
+		/* the person */
+
+		private Person person;
 	}
 }

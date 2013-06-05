@@ -3,7 +3,10 @@
 <users>
 
   <person gender = "M" last-name = "Иванов"
-    first-name = "Максим" middle-name = "Николаевич">
+    first-name = "Максим" middle-name = "Николаевич"
+    email = "mivanov@gmail.com"
+    mobile-phone = "+79206589536"
+    work-phone = "+74822365785">
 
     <login code = "ivanov" password = "password"/>
 
@@ -12,7 +15,10 @@
   </person>
 
   <person gender = "F" last-name = "Толстая"
-    first-name = "Фёкла" middle-name = "Никитична">
+    first-name = "Фёкла" middle-name = "Никитична"
+    email = "ftolstaya@mail.ru"
+    mobile-phone = "+79042568741"
+    work-phone = "+74822589621">
 
     <login code = "tolstaya" password = "password"/>
 

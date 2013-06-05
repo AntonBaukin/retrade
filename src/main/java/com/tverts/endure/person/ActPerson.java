@@ -46,6 +46,16 @@ public class ActPerson extends ActionBuilderXRoot
 	  ActionType.UPDATE;
 
 
+	/* parameters */
+
+	/**
+	 * Parameter to edit Person with
+	 * {@link EditPersonModelBean}.
+	 */
+	public static final String PARAM_PERSON =
+	  ActPerson.class.getName() + ": person";
+
+
 	/* public: ActionBuilder interface */
 
 	public void    buildAction(ActionBuildRec abr)
@@ -65,10 +75,10 @@ public class ActPerson extends ActionBuilderXRoot
 		//?: {target is not a Person}
 		checkTargetClass(abr, Person.class);
 
-		//~: save the store
+		//~: save the person
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
-		//~: set store unity (is executed first!)
+		//~: set person unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr),
 		  ActUnity.UNITY_TYPE, getUnityType());
 
@@ -97,7 +107,8 @@ public class ActPerson extends ActionBuilderXRoot
 
 	protected Action    createUpdateAction(ActionBuildRec abr)
 	{
-		return new UpdatePersonAction(task(abr));
+		return new UpdatePersonAction(task(abr)).
+		  setEditModel(param(abr, PARAM_PERSON, EditPersonModelBean.class));
 	}
 
 
@@ -114,6 +125,15 @@ public class ActPerson extends ActionBuilderXRoot
 		}
 
 
+		/* public: UpdatePersonAction (bean) interface */
+
+		public UpdatePersonAction setEditModel(EditPersonModelBean editModel)
+		{
+			this.editModel = editModel;
+			return this;
+		}
+
+
 		/* public: Action interface */
 
 		public Person  getResult()
@@ -124,6 +144,10 @@ public class ActPerson extends ActionBuilderXRoot
 		protected void execute()
 		  throws Throwable
 		{
+			//~: update from the edit model
+			if(editModel != null)
+				editModel.copy(target(Person.class));
+
 			//~: update the logins
 			updateLogins();
 		}
@@ -140,5 +164,10 @@ public class ActPerson extends ActionBuilderXRoot
 				//~: clear the name, then update it on save
 				login.setName(null);
 		}
+
+
+		/* private: parameters */
+
+		private EditPersonModelBean editModel;
 	}
 }

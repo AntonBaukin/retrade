@@ -21,31 +21,22 @@
     </many-to-one>
 
 
-    <!-- Last Name -->
+    <!-- Last, First, Middle Names -->
 
     <property name = 'lastName'>
-
-      <column name = 'last_name' not-null = 'true' length = '255'>
+      <column name = 'last_name'>
         <comment>Last name of the Person</comment>
       </column>
     </property>
 
-
-    <!-- First Name -->
-
     <property name = 'firstName'>
-
-      <column name = 'first_name' length = '255'>
+      <column name = 'first_name'>
         <comment>First name of the Person</comment>
       </column>
     </property>
 
-
-    <!-- Middle Name -->
-
     <property name = 'middleName'>
-
-      <column name = 'middle_name' length = '255'>
+      <column name = 'middle_name'>
         <comment>Middle name of the Person</comment>
       </column>
     </property>
@@ -54,11 +45,32 @@
     <!-- Gender -->
 
     <property name = 'gender'>
-
       <column name = 'gender'>
         <comment>The gender of the person (M of F)</comment>
       </column>
     </property>
+
+
+    <!-- Email, Mobile Phone, Work Phone -->
+
+    <property name = 'email'>
+      <column name = 'email'>
+        <comment>The Person e-mail</comment>
+      </column>
+    </property>
+
+    <property name = 'phoneMob'>
+      <column name = 'phone_mob'>
+        <comment>The Person mobile (cell) phone</comment>
+      </column>
+    </property>
+
+    <property name = 'phoneWork'>
+      <column name = 'phone_work'>
+        <comment>The Person work phone</comment>
+      </column>
+    </property>
+
 
   </union-subclass>
 </hibernate-mapping>

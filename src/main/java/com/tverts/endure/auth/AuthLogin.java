@@ -84,8 +84,7 @@ public class AuthLogin extends Entity implements CatItem
 
 		if(getPerson() != null)
 			return name = Persons.name(getPerson());
-
-		if(getComputer() != null)
+		else if(getComputer() != null)
 			return name = Auth.name(getComputer());
 
 		return null;
