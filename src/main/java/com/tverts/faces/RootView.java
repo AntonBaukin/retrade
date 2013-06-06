@@ -13,11 +13,7 @@ import org.springframework.stereotype.Component;
 
 import static com.tverts.servlet.RequestPoint.request;
 
-/* com.tverts: faces */
-
-import com.tverts.faces.ViewWithModes;
-
-/* com.tverts: secured */
+/* com.tverts: secure */
 
 import com.tverts.secure.SecPoint;
 
@@ -95,12 +91,6 @@ public class RootView extends ViewWithModes
 	}
 
 
-	/* public: security issues */
-
-	public boolean   isSecure(String key)
-	{
-		return SecPoint.isSecure(key);
-	}
 
 
 	/* protected: view support interface */

@@ -1,5 +1,10 @@
 package com.tverts.secure;
 
+/* standard Java classes */
+
+import java.util.Collection;
+import java.util.HashSet;
+
 /* Java Servlet api */
 
 import javax.servlet.http.HttpSession;
@@ -10,14 +15,13 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: servlet */
 
-import com.tverts.endure.secure.GetSecure;
 import com.tverts.servlet.RequestPoint;
 
 /* com.tverts: actions */
 
 import static com.tverts.actions.ActionsPoint.actionRun;
 
-/* com.tverts: endure (core + auth) */
+/* com.tverts: endure (core + auth + secure) */
 
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.GetDomain;
@@ -26,6 +30,8 @@ import com.tverts.endure.auth.Auth;
 import com.tverts.endure.auth.AuthLogin;
 import com.tverts.endure.auth.AuthSession;
 import com.tverts.endure.auth.GetAuthLogin;
+import com.tverts.endure.secure.GetSecure;
+import com.tverts.endure.secure.SecKey;
 
 /* com.tverts: secure */
 
@@ -34,6 +40,7 @@ import com.tverts.secure.session.SecSession;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import static com.tverts.support.SU.s2s;
 
 
 /**
@@ -160,7 +167,7 @@ public final class SecPoint
 
 
 	private static final String SESSION_SYSTEM_ATTR =
-	  SecPoint.class.getName() + ": system login";
+	  SecPoint.class.getName() + ": system login: ";
 
 	public static boolean    isSystemLogin()
 	{
@@ -168,18 +175,18 @@ public final class SecPoint
 		HttpSession session = RequestPoint.sessionOrNull();
 		if(session != null)
 		{
-			Boolean x = (Boolean) session.getAttribute(SESSION_SYSTEM_ATTR);
-			if(x != null) return x;
+			Long x = (Long) session.getAttribute(SESSION_SYSTEM_ATTR + domain());
+			if(x != null) return x.equals(login());
 		}
 
-		//~: check the System name
-		boolean res = Auth.SYSTEM_USER.equals(loadLogin().getCode());;
+		//~: load the System login
+		AuthLogin system = bean(GetAuthLogin.class).getSystemLogin(domain());
 
 		//?: {has session} cache
-		if(session != null)
-			session.setAttribute(SESSION_SYSTEM_ATTR, res);
+		if((system != null) && (session != null))
+			session.setAttribute(SESSION_SYSTEM_ATTR + domain(), system.getPrimaryKey());
 
-		return res;
+		return (system != null) && system.getPrimaryKey().equals(login());
 	}
 
 	public static void       checkSystemDomain()
@@ -207,6 +214,22 @@ public final class SecPoint
 	{
 		return isSystemLogin() || bean(GetSecure.class).
 		  isSecure(login(), domain(), SecKeys.secKey(key));
+	}
+
+	/**
+	 * Returns true when at least one of the keys is
+	 * allowed, and not simultaneously forbidden.
+	 */
+	public static boolean    isAnySecure(Collection<String> keys)
+	{
+		if(isSystemLogin()) return true;
+
+		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
+		for(String key : keys) if((key = s2s(key)) != null)
+			skeys.add(SecKeys.secKey(key));
+
+		return bean(GetSecure.class).
+		  isAnySecure(login(), domain(), skeys);
 	}
 
 

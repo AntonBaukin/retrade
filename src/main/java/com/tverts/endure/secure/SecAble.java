@@ -1,5 +1,9 @@
 package com.tverts.endure.secure;
 
+/* standard Java classes */
+
+import java.util.Date;
+
 /* com.tverts: endure (core + auth) */
 
 import com.tverts.endure.NumericBase;
@@ -45,6 +49,17 @@ public class      SecAble
 		this.rule = rule;
 	}
 
+	public Date getAbleTime()
+	{
+		return (ableTime != null)?(ableTime):
+		  (ableTime = new Date());
+	}
+
+	public void setAbleTime(Date ableTime)
+	{
+		this.ableTime = ableTime;
+	}
+
 
 	/* public: DomainEntity interface */
 
@@ -59,4 +74,5 @@ public class      SecAble
 
 	private AuthLogin login;
 	private SecRule   rule;
+	private Date      ableTime;
 }

@@ -35,5 +35,16 @@
       </column>
     </many-to-one>
 
+
+    <!-- Able Assignment Time -->
+
+    <property name = 'ableTime' type = 'timestamp'>
+
+      <column name = 'able_time' not-null = 'true'>
+
+        <comment>Ability assignment timestamp</comment>
+      </column>
+    </property>
+
   </class>
 </hibernate-mapping>

@@ -1,5 +1,9 @@
 package com.tverts.faces;
 
+/* standard Java classes */
+
+import java.util.Arrays;
+
 /* JavaServer Faces */
 
 import javax.faces.context.FacesContext;
@@ -13,9 +17,15 @@ import static com.tverts.servlet.RequestPoint.request;
 
 import static com.tverts.spring.SpringPoint.bean;
 
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
+
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import static com.tverts.support.SU.s2s;
+import static com.tverts.support.SU.s2a;
 
 
 /**
@@ -38,6 +48,30 @@ public abstract class ViewWithModes
 	{
 		return (this.id != null)?(this.id):
 		  (this.id = obtainViewId());
+	}
+
+
+	/* public: security issues */
+
+	public boolean     isSecure(String key)
+	{
+		return SecPoint.isSecure(key);
+	}
+
+	public void        forceSecure(String key)
+	{
+		if(!SecPoint.isSecure(key))
+			throw EX.forbid();
+	}
+
+	/**
+	 * Checks whether any of the keys given is secure.
+	 * All the keys are encoded into single string and
+	 * separated with ';' character.
+	 */
+	public boolean     isAnySecure(String keys)
+	{
+		return SecPoint.isAnySecure(Arrays.asList(s2a(keys, ';')));
 	}
 
 
@@ -93,13 +127,8 @@ public abstract class ViewWithModes
 	 */
 	public boolean     isViewModePageRendered()
 	{
-		if(isViewModePage())
-			return true;
-
-		if(!isViewModePagePost())
-			return false;
-
-		return !isFacesRenderPhase();
+		return isViewModePage() ||
+		  isViewModePagePost() && !isFacesRenderPhase();
 	}
 
 	public boolean     isViewModePagePost()
@@ -120,13 +149,8 @@ public abstract class ViewWithModes
 	 */
 	public boolean     isViewModeBodyRendered()
 	{
-		if(isViewModeBody())
-			return true;
-
-		if(!isViewModeBodyPost())
-			return false;
-
-		return !isFacesRenderPhase();
+		return isViewModeBody() ||
+		  isViewModeBodyPost() && !isFacesRenderPhase();
 	}
 
 	public boolean     isViewModeBodyPost()
@@ -169,7 +193,7 @@ public abstract class ViewWithModes
 
 		//~: ask for effective id
 		id = bean(RootView.class).getEffectiveViewId();
-		if(id == null) throw new IllegalStateException(
+		if(id == null) throw EX.state(
 		  "No effective Faces View ID was generated!");
 
 		return id;

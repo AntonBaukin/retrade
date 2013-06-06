@@ -3,6 +3,7 @@ package com.tverts.endure.secure;
 /* standard Java classes */
 
 import java.util.List;
+import java.util.Set;
 
 /* Spring Framework */
 
@@ -143,5 +144,39 @@ from SecLink sl where (sl.key = :k) and
 		  uniqueResult();
 
 		return (n != null) && (n.intValue() == 0);
+	}
+
+	/**
+	 * This method works as or operator on calls of
+	 * {@link #isSecure(Long, Long, SecKey)}.
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean isAnySecure(Long login, Long target, Set<SecKey> keys)
+	{
+/*
+
+ select max(sl.deny) from SecLink sl join sl.rule sr, SecAble ab
+ where (sl.key in (:keys)) and (sl.target.id = :target) and
+   (sr = ab.rule) and (ab.login.id = :login)
+ group by sl.key
+
+*/
+		List<Number> ns = (List<Number>) Q(
+
+"select max(sl.deny) from SecLink sl join sl.rule sr, SecAble ab\n" +
+" where (sl.key in (:keys)) and (sl.target.id = :target) and\n" +
+"   (sr = ab.rule) and (ab.login.id = :login)\n" +
+" group by sl.key"
+
+		).
+		  setParameterList("keys", keys).
+		  setLong("target", target).
+		  setLong("login",  login).
+		  list();
+
+		for(Number n : ns)
+			if(n.intValue() == 0)
+				return true;
+		return false;
 	}
 }

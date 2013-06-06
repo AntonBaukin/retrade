@@ -23,6 +23,10 @@ import static com.tverts.spring.SpringPoint.beanOrNull;
 
 import com.tverts.system.SystemClassLoader;
 
+/* com.tverts: secure */
+
+import com.tverts.secure.ForbiddenException;
+
 /* com.tverts: support */
 
 import static com.tverts.support.SU.s2s;
@@ -84,6 +88,34 @@ public class      FilterBridge
 
 			//!: process the task
 			processTask(task);
+		}
+		catch(Throwable e)
+		{
+			ForbiddenException fe = null;
+
+			if(e instanceof ServletException)
+				if(e.getCause() instanceof ForbiddenException)
+					fe = (ForbiddenException) e.getCause();
+
+			//?: {not a forbidden | unable to reset}
+			if((fe == null) || response.isCommitted())
+				if(e instanceof ServletException)
+					throw (ServletException)e;
+				else if(e instanceof IOException)
+					throw (IOException)e;
+				else if(e instanceof RuntimeException)
+					throw (RuntimeException)e;
+				else
+					throw new ServletException(e);
+
+
+			response.reset(); //<-- reset the buffer
+
+			//~: send 403 HTTP error
+			if(response instanceof HttpServletResponse)
+				((HttpServletResponse)response).sendError(
+				  HttpServletResponse.SC_FORBIDDEN, fe.getMessage()
+				);
 		}
 		finally
 		{

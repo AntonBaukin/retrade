@@ -11,6 +11,8 @@
     <login code = "ivanov" password = "password"/>
 
     <secure force = 'domain: view: documents'/>
+    <secure force = 'domain: view: goods'/>
+    <secure force = 'domain: view: stores'/>
 
   </person>
 
@@ -21,6 +23,9 @@
     work-phone = "+74822589621">
 
     <login code = "tolstaya" password = "password"/>
+
+    <secure force = 'domain: view: stores'/>
+    <secure force = 'domain: view: price-lists'/>
 
   </person>
 

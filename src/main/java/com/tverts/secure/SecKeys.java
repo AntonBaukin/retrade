@@ -51,7 +51,7 @@ public class SecKeys
 
 		if(key == null)
 			throw new IllegalStateException(String.format(
-			  "Ne Secure Key [%s] exists!", name));
+			  "No Secure Key [%s] exists!", name));
 
 		return key;
 	}

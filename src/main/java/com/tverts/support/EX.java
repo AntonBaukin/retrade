@@ -4,6 +4,10 @@ package com.tverts.support;
 
 import java.io.PrintWriter;
 
+/* com.tverts: secure */
+
+import com.tverts.secure.ForbiddenException;
+
 /* com.tverts: supports */
 
 import com.tverts.support.logs.TransparentException;
@@ -140,5 +144,10 @@ public class EX
 	public static RuntimeException arg(Throwable cause, Object... msg)
 	{
 		return new IllegalArgumentException(SU.cats(msg), cause);
+	}
+
+	public static RuntimeException forbid(Object... msg)
+	{
+		return new ForbiddenException(SU.s2s(SU.cats(msg)));
 	}
 }
