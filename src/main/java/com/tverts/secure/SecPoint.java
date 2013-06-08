@@ -216,6 +216,12 @@ public final class SecPoint
 		  isSecure(login(), domain(), SecKeys.secKey(key));
 	}
 
+	public static boolean    isSecure(Long target, String key)
+	{
+		return isSystemLogin() || bean(GetSecure.class).
+		  isSecure(login(), target, SecKeys.secKey(key));
+	}
+
 	/**
 	 * Returns true when at least one of the keys is
 	 * allowed, and not simultaneously forbidden.
@@ -230,6 +236,18 @@ public final class SecPoint
 
 		return bean(GetSecure.class).
 		  isAnySecure(login(), domain(), skeys);
+	}
+
+	public static boolean    isAnySecure(Long target, Collection<String> keys)
+	{
+		if(isSystemLogin()) return true;
+
+		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
+		for(String key : keys) if((key = s2s(key)) != null)
+			skeys.add(SecKeys.secKey(key));
+
+		return bean(GetSecure.class).
+		  isAnySecure(login(), target, skeys);
 	}
 
 

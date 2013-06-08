@@ -10,9 +10,16 @@
 
     <login code = "ivanov" password = "password"/>
 
-    <secure force = 'domain: view: documents'/>
     <secure force = 'domain: view: goods'/>
     <secure force = 'domain: view: stores'/>
+
+    <secure force = 'domain: view: documents'/>
+    <secure force = 'domain: view: all invoices'/>
+    <secure force = 'domain: forbid view: sell invoices'/>
+    <secure force = 'domain: edit: all invoices'/>
+    <secure force = 'domain: forbid edit: sell invoices'/>
+    <secure force = 'domain: forbid edit: fixed move invoices'/>
+    <secure force = 'domain: fix: buy invoices'/>
 
   </person>
 
@@ -24,8 +31,15 @@
 
     <login code = "tolstaya" password = "password"/>
 
+    <secure force = 'domain: view: goods'/>
     <secure force = 'domain: view: stores'/>
     <secure force = 'domain: view: price-lists'/>
+
+    <secure force = 'domain: view: documents'/>
+    <secure force = 'domain: view: sell invoices'/>
+    <secure force = 'domain: edit: sell invoices'/>
+    <secure force = 'domain: forbid edit: fixed sell invoices'/>
+    <secure force = 'domain: fix: sell invoices'/>
 
   </person>
 

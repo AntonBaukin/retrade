@@ -27,10 +27,12 @@ import com.tverts.system.tx.TxPoint;
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionType;
+import static com.tverts.actions.ActionsPoint.actionResult;
 import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: events */
 
+import com.tverts.event.Event;
 import com.tverts.event.EventPoint;
 
 /* com.tverts: endure (core + auth + secure) */
@@ -52,6 +54,7 @@ import com.tverts.secure.SecPoint;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
 
 
 /**
@@ -213,9 +216,29 @@ public abstract class SecForceBase
 		//~: deny-allow
 		if(!allow) link.setDeny();
 
-
 		//!: ensure the link
-		actionRun(ActionType.ENSURE, link);
+		link = actionResult(actionRun(ActionType.ENSURE, link), SecLink.class);
+
+		if(link != null) LU.D(getLog(), logsig(), " ensured " ,
+		  (allow)?("ALLOW"):("FORBID"), " '", key, "' link [", link.getPrimaryKey(),
+		  "] on target ", target.getClass().getSimpleName(),
+		  " [", target.getPrimaryKey(), ']'
+		);
+	}
+
+	protected void    removeLink(String key, SecRule rule, United target)
+	{
+		SecLink link = bean(GetSecure.class).
+		  getSecLink(key(key), rule, target.getPrimaryKey());
+		if(link == null) return;
+
+		//!: delete the link
+		actionRun(ActionType.DELETE, link);
+
+		LU.D(getLog(), logsig(), " removed '", key, "' link [",
+		  link.getPrimaryKey(), "] on target ",
+		  target.getClass().getSimpleName(), " [", target.getPrimaryKey(), ']'
+		);
 	}
 
 	protected void    ensureAble(SecRule rule, AuthLogin login)
@@ -253,6 +276,20 @@ public abstract class SecForceBase
 	protected Query   QB(QueryBuilder qb)
 	{
 		return qb.buildQuery(session());
+	}
+
+
+	/* protected: checks support */
+
+	protected boolean ise(Event e, Class<? extends Event> cls)
+	{
+		return cls.isAssignableFrom(e.getClass());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected boolean ist(Event e, Class cls)
+	{
+		return cls.isAssignableFrom(e.target().getClass());
 	}
 
 

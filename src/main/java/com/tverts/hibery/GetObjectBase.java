@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.secure.SecPoint;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -18,9 +19,14 @@ import com.tverts.hibery.qb.QueryBuilder;
 import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
 
-/* com.tverts: endure (core) */
+/* com.tverts: endure (core + secure) */
 
 import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.secure.SecKey;
+
+/* com.tverts: secure */
+
+import com.tverts.secure.SecKeys;
 
 
 /**
@@ -80,5 +86,44 @@ public abstract class GetObjectBase
 	protected Query   QB(QueryBuilder qb)
 	{
 		return qb.buildQuery(session());
+	}
+
+
+	/* protected: secured restrictions */
+
+	protected void    secureByKey(QueryBuilder qb, String idpath, String key)
+	{
+		//~: get the key
+		SecKey skey = SecKeys.INSTANCE.key(key);
+		if(skey == null) return; //<-- soft variant (if no such forces)
+
+		secureByKey(qb, idpath, skey, SecPoint.login());
+	}
+
+	protected void    secureByKey
+	  (QueryBuilder qb, String idpath, SecKey key, Long login)
+	{
+		if(SecPoint.isSystemLogin()) return;
+
+
+/*
+
+ 0 = (select max(secLink.deny) from SecLink secLink
+   join secLink.rule secRule, SecAble secAble
+   where (secLink.key = :key) and (secLink.target.id = ID) and
+   (secRule = secAble.rule) and (secAble.login.id = :login))
+
+*/
+		final String Q =
+
+"0 = (select max(secLink.deny) from SecLink secLink" +
+"   join secLink.rule secRule, SecAble secAble" +
+"   where (secLink.key = :key) and (secLink.target.id = ID) and" +
+"   (secRule = secAble.rule) and (secAble.login.id = :login))";
+
+		//~: domain
+		qb.getClauseWhere().addPart(Q.replace("ID", idpath)).
+		  param("key",   key).
+		  param("login", login);
 	}
 }

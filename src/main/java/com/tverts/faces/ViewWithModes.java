@@ -21,6 +21,10 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.secure.SecPoint;
 
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.NumericIdentity;
+
 /* com.tverts: support */
 
 import com.tverts.support.EX;
@@ -58,9 +62,31 @@ public abstract class ViewWithModes
 		return SecPoint.isSecure(key);
 	}
 
+	public boolean     isSecureEntity(NumericIdentity e, String key)
+	{
+		return SecPoint.isSecure(e.getPrimaryKey(), key);
+	}
+
+	public boolean     isSecureEntityKey(Long pk, String key)
+	{
+		return SecPoint.isSecure(pk, key);
+	}
+
 	public void        forceSecure(String key)
 	{
 		if(!SecPoint.isSecure(key))
+			throw EX.forbid();
+	}
+
+	public void        forceSecureEntity(NumericIdentity e, String key)
+	{
+		if(!SecPoint.isSecure(e.getPrimaryKey(), key))
+			throw EX.forbid();
+	}
+
+	public void        forceSecureEntityKey(Long pk, String key)
+	{
+		if(!SecPoint.isSecure(pk, key))
 			throw EX.forbid();
 	}
 

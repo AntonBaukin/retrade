@@ -131,6 +131,22 @@ public class ActionsPoint
 		return trigger;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <O> O         actionResult(ActionTrigger trigger, Class<O> cls)
+	{
+		for(Action o : trigger.getActionContext().getChain())
+		{
+			Object obj = o.getResult();
+
+			if((obj != null) && cls.isAssignableFrom(obj.getClass()))
+			{
+				return (O)obj;
+			}
+		}
+
+		return null;
+	}
+
 
 	/* public: ActionsPoint bean interface */
 

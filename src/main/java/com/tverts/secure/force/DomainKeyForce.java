@@ -8,6 +8,7 @@ import com.tverts.event.Event;
 /* com.tverts: endure (core + secure) */
 
 import com.tverts.endure.core.Domain;
+import com.tverts.endure.secure.SecLink;
 import com.tverts.endure.secure.SecRule;
 
 /* com.tverts: support */
@@ -30,7 +31,7 @@ public class DomainKeyForce extends SecForceBase
 {
 	/* public: SecForce interface */
 
-	public void   init()
+	public void    init()
 	{
 		if(sXe(getSecKey()))
 			throw new IllegalStateException(String.format(
@@ -42,14 +43,14 @@ public class DomainKeyForce extends SecForceBase
 			LU.I(getLog(), logsig(), " created sec key [", getSecKey(), ']');
 	}
 
-	public String getTitle(SecRule rule)
+	public String  getTitle(SecRule rule)
 	{
 		return (title == null)?(null):(title.format(
 		  rule.getDomain().getCode()
 		));
 	}
 
-	public String getDescr(SecRule rule)
+	public String  getDescr(SecRule rule)
 	{
 		return (descr == null)?(null):(descr.format(
 		  rule.getDomain().getCode()
@@ -59,12 +60,11 @@ public class DomainKeyForce extends SecForceBase
 
 	/* public: Reactor interface */
 
-	public void   react(Event event)
+	public void    react(Event event)
 	{
 		//?: {Domain created event}
-		if(event instanceof CreatedEvent)
-			if(event.target() instanceof Domain)
-				reactDomainCreated((Domain)event.target(), (CreatedEvent) event);
+		if(ise(event, CreatedEvent.class) && ist(event, Domain.class))
+			reactDomainCreated((Domain)event.target(), (CreatedEvent)event);
 
 		//?: {ask force event}
 		if(event instanceof AskSecForceEvent)
@@ -75,32 +75,54 @@ public class DomainKeyForce extends SecForceBase
 
 	/* public: DomainKeyForce (bean) interface */
 
-	public String getSecKey()
+	public String  getSecKey()
 	{
 		return secKey;
 	}
 
-	public void   setSecKey(String secKey)
+	public void    setSecKey(String secKey)
 	{
 		this.secKey = secKey;
 	}
 
-	public void   setRuleTitleFmt(String fmt)
+	public void    setRuleTitleFmt(String fmt)
 	{
 		this.title = ((fmt = s2s(fmt)) == null)?(null):
 		  new TextFormat(fmt);
 	}
 
-	public void   setRuleDescrFmt(String fmt)
+	public void    setRuleDescrFmt(String fmt)
 	{
 		this.descr = ((fmt = s2s(fmt)) == null)?(null):
 		  new TextFormat(fmt);
 	}
 
+	public boolean isForbid()
+	{
+		return forbid;
+	}
+
+	public void    setForbid(boolean forbid)
+	{
+		this.forbid = forbid;
+	}
+
 
 	/* protected: reactions */
 
-	protected void reactDomainCreated(Domain d, CreatedEvent e)
+	protected void    reactDomainCreated(Domain d, CreatedEvent e)
+	{
+		//~: create & save the rule
+		SecRule rule = saveDomainRule(d);
+
+		LU.D(getLog(), logsig(), " acts on create Domain [", d.getPrimaryKey(),
+		 "], saved rule [", rule.getPrimaryKey(), ']');
+
+		//~: create the link (with the domain)
+		linkRuleWithDomain(rule);
+	}
+
+	protected SecRule saveDomainRule(Domain d)
 	{
 		//~: create the rule
 		SecRule rule = new SecRule();
@@ -111,15 +133,20 @@ public class DomainKeyForce extends SecForceBase
 		//!: save it
 		saveRule(rule);
 
-		//~: create the link (with the domain)
-		ensureLink(getSecKey(), rule, d, true);
-
-
-		LU.D(getLog(), logsig(), " acts on create Domain [", d.getPrimaryKey(),
-		 "], saved rule [", rule.getPrimaryKey(), ']');
+		return rule;
 	}
 
-	protected void reactAskForce(AskSecForceEvent e)
+	/**
+	 * Creates {@link SecLink} for the Domain. This
+	 * link is actually needed only for System Domain
+	 * as only there the list of Domains is.
+	 */
+	protected void    linkRuleWithDomain(SecRule rule)
+	{
+		ensureLink(getSecKey(), rule, rule.getDomain(), !isForbid());
+	}
+
+	protected void    reactAskForce(AskSecForceEvent e)
 	{
 		//~: load the domain rule
 		Long    domain = e.target().getDomain().getPrimaryKey();
@@ -138,4 +165,5 @@ public class DomainKeyForce extends SecForceBase
 	private String     secKey;
 	private TextFormat title;
 	private TextFormat descr;
+	private boolean    forbid;
 }

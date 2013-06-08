@@ -122,6 +122,7 @@ from SecLink sl where (sl.key = :k) and
 	 *
 	 * Links are selected by the Rules Able for the user.
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean isSecure(Long login, Long target, SecKey key)
 	{
 /*
@@ -142,6 +143,29 @@ from SecLink sl where (sl.key = :k) and
 		  setLong     ("target", target).
 		  setLong     ("login",  login).
 		  uniqueResult();
+
+
+
+/*
+
+--> debug -->
+
+select sl.id from SecLink sl join sl.rule sr, SecAble ab
+ where (sl.key = :key) and (sl.target.id = :target) and
+   (sr = ab.rule) and (ab.login.id = :login) and (sl.deny = 1)
+
+*/
+		List x = (List) (((n == null) || (n.intValue() == 0))?(null): Q(
+
+"select sl.id from SecLink sl join sl.rule sr, SecAble ab\n" +
+" where (sl.key = :key) and (sl.target.id = :target) and\n" +
+"   (sr = ab.rule) and (ab.login.id = :login) and (sl.deny = 1)"
+
+		).
+		  setParameter("key",    key).
+		  setLong     ("target", target).
+		  setLong     ("login",  login).
+		  list());
 
 		return (n != null) && (n.intValue() == 0);
 	}

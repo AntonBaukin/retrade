@@ -18,11 +18,13 @@ import com.tverts.hibery.system.HiberSystem;
 /* com.tverts: endure */
 
 import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.StatefulEntity;
 
 /* com.tverts: events */
 
 import com.tverts.event.CreatedEvent;
 import com.tverts.event.Event;
+import com.tverts.event.StateChangedEvent;
 
 /* com.tverts: predicates */
 
@@ -372,6 +374,12 @@ public abstract class ActionBuilderBase
 	{
 		react(abr, new CreatedEvent(
 		  target(abr, NumericIdentity.class)));
+	}
+
+	protected void          reactStateChanged(ActionBuildRec abr)
+	{
+		react(abr, new StateChangedEvent(
+		  target(abr, StatefulEntity.class)));
 	}
 
 	/**

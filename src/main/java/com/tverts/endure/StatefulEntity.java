@@ -5,7 +5,7 @@ package com.tverts.endure;
  *
  * @author anton.baukin@gmail.com
  */
-public interface StatefulEntity
+public interface StatefulEntity extends NumericIdentity
 {
 	/* public: StatefulEntity interface */
 

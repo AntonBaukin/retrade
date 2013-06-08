@@ -8,6 +8,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.actions.ActionBuildRec;
 import com.tverts.actions.ActionWithTxBase;
+import com.tverts.actions.ActionsCollection.DeleteEntity;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 
@@ -36,6 +37,9 @@ public class ActSecLink extends ActionBuilderXRoot
 	public static final ActionType ENSURE =
 	  ActionType.ENSURE;
 
+	public static final ActionType DELETE =
+	  ActionType.DELETE;
+
 
 	/* public: ActionBuilder interface */
 
@@ -43,6 +47,9 @@ public class ActSecLink extends ActionBuilderXRoot
 	{
 		if(ENSURE.equals(actionType(abr)))
 			ensureSecLink(abr);
+
+		if(DELETE.equals(actionType(abr)))
+			deleteSecLink(abr);
 	}
 
 
@@ -56,6 +63,17 @@ public class ActSecLink extends ActionBuilderXRoot
 		//~: save the link
 		chain(abr).first(new SaveNumericIdentified(task(abr)).
 		  setPredicate(new SecLinkMissing()));
+
+		complete(abr);
+	}
+
+	protected void deleteSecLink(ActionBuildRec abr)
+	{
+		//?: {target is not a Secure Link}
+		checkTargetClass(abr, SecLink.class);
+
+		//~: delete the link
+		chain(abr).first(new DeleteEntity(task(abr)));
 
 		complete(abr);
 	}
