@@ -14,9 +14,7 @@ import com.tverts.endure.secure.SecRule;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
-import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sXe;
-import com.tverts.support.fmt.TextFormat;
 
 
 /**
@@ -45,16 +43,12 @@ public class DomainKeyForce extends SecForceBase
 
 	public String  getTitle(SecRule rule)
 	{
-		return (title == null)?(null):(title.format(
-		  rule.getDomain().getCode()
-		));
+		return getTitle();
 	}
 
 	public String  getDescr(SecRule rule)
 	{
-		return (descr == null)?(null):(descr.format(
-		  rule.getDomain().getCode()
-		));
+		return getDescr();
 	}
 
 
@@ -83,18 +77,6 @@ public class DomainKeyForce extends SecForceBase
 	public void    setSecKey(String secKey)
 	{
 		this.secKey = secKey;
-	}
-
-	public void    setRuleTitleFmt(String fmt)
-	{
-		this.title = ((fmt = s2s(fmt)) == null)?(null):
-		  new TextFormat(fmt);
-	}
-
-	public void    setRuleDescrFmt(String fmt)
-	{
-		this.descr = ((fmt = s2s(fmt)) == null)?(null):
-		  new TextFormat(fmt);
 	}
 
 	public boolean isForbid()
@@ -162,8 +144,6 @@ public class DomainKeyForce extends SecForceBase
 
 	/* private: security key */
 
-	private String     secKey;
-	private TextFormat title;
-	private TextFormat descr;
-	private boolean    forbid;
+	private String  secKey;
+	private boolean forbid;
 }
