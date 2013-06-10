@@ -2,10 +2,10 @@ package com.tverts.endure.secure;
 
 /* com.tverts: endure (core) */
 
-import com.tverts.endure.UnitedBase;
 import com.tverts.endure.Unity;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
+import com.tverts.endure.core.Entity;
 
 /* com.tverts: secure (force) */
 
@@ -24,7 +24,7 @@ import com.tverts.secure.force.SecForce;
  * @author anton.baukin@gmail.com
  */
 public class      SecRule
-       extends    UnitedBase
+       extends    Entity
        implements DomainEntity
 {
 	/* public: SecRule (bean) interface */

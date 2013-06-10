@@ -6,11 +6,9 @@ import java.util.Date;
 
 /* com.tverts: endure (core) */
 
-import com.tverts.endure.NumericBase;
-import com.tverts.endure.PrimaryIdentity;
-import com.tverts.endure.TxEntity;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
+import com.tverts.endure.core.Entity;
 
 
 /**
@@ -25,8 +23,8 @@ import com.tverts.endure.core.DomainEntity;
  * @author anton.baukin@gmail.com
  */
 public class      SecSet
-       extends    NumericBase
-       implements PrimaryIdentity, DomainEntity, TxEntity
+       extends    Entity
+       implements DomainEntity
 {
 	/* public: SecSet (bean) interface */
 
@@ -40,14 +38,14 @@ public class      SecSet
 		this.domain = domain;
 	}
 
-	public String getCode()
+	public String getName()
 	{
-		return code;
+		return name;
 	}
 
-	public void setCode(String code)
+	public void setName(String code)
 	{
-		this.code = code;
+		this.name = code;
 	}
 
 	public Date getCreateTime()
@@ -89,7 +87,7 @@ public class      SecSet
 	/* secure set attributes */
 
 	private Domain domain;
-	private String code;
+	private String name;
 	private Date   createTime;
 	private String comment;
 }

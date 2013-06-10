@@ -77,17 +77,17 @@ public class GetSecure extends GetObjectBase
 		return (SecSet) session().get(SecSet.class, pk);
 	}
 
-	public SecSet getSecSet(Long domain, String code)
+	public SecSet getSecSet(Long domain, String name)
 	{
-		if((code = s2s(code)) == null) code = "";
+		if((name = s2s(name)) == null) name = "";
 
-// from SecSet where (domain.id = :domain) and (code = :code)
+// from SecSet where (domain.id = :domain) and (name = :name)
 
 		return (SecSet) Q(
-"  from SecSet where (domain.id = :domain) and (code = :code)"
+"  from SecSet where (domain.id = :domain) and (name = :name)"
 		).
 		  setLong("domain", domain).
-		  setString("code", code).
+		  setString("name", name).
 		  uniqueResult();
 	}
 

@@ -23,42 +23,48 @@
       <value>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Unity Type of Domain                                      ·
-         ·                                                           ·
-         · WARNING: in present implementation only one type          ·
-         ·  for a Domain may be defined!                             ·
+         · Unity Type of Domain
+         ·
+         · WARNING: in present implementation only one type
+         ·  for a Domain may be defined!
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.core.Domain   Core: Domain;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · ShuntOrdering {domain:core:order-index}                   ·
+         · ShuntOrdering {domain:core:order-index}
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.order.ExternalOrder Test: Domain: Order Index;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Record About a Human                                      ·
+         · Record About a Human
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.person.Person   Core: Person;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · External Computer System client registration              ·
+         · External Computer System client registration
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.auth.Computer   Core: Auth: Computer;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Authentication Login                                      ·
+         · Authentication Login
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.auth.AuthLogin   Core: Auth: Login;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Security Rule                                             ·
+         · Secure Rule
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.secure.SecRule   Secure: Rule;
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Secure Set
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.secure.SecSet   Secure: Set;
 
       </value>
     </property>

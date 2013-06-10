@@ -5,31 +5,15 @@
 
 <hibernate-mapping package = 'com.tverts.endure.secure'>
 
-  <class name = 'SecSet' lazy = 'false' table = 'sec_set'>
-
-    <!-- Primary Key -->
-
-    <id name = 'primaryKey' column = 'pk_set_set'/>
-
-
-    <!-- Transaction Number -->
-
-    <property name = 'txn'>
-
-      <column name = 'txn' not-null = 'true'
-        index = 'ix_sec_set_txn'>
-
-        <comment>Transaction Number (txn)</comment>
-      </column>
-    </property>
-
+  <union-subclass name = 'SecSet' extends = 'com.tverts.endure.core.Entity'
+    table = 'sec_set' lazy = 'false'>
 
     <!-- Domain reference -->
 
     <many-to-one name = 'domain' foreign-key = 'fk_sec_set_domain'>
 
       <column name = 'fk_domain' not-null = 'true'
-        unique-key = 'ux_sec_set_code'>
+        unique-key = 'ux_sec_set_name'>
 
         <comment>Domain where this Secure Set is in</comment>
       </column>
@@ -38,10 +22,10 @@
 
     <!-- Code -->
 
-    <property name = 'code' lazy = 'false'>
+    <property name = "name" lazy = 'false'>
 
-      <column name = 'ux_code' not-null = 'true' length = '2048'
-        unique-key = 'ux_sec_set_code'>
+      <column name = 'ux_name' not-null = 'true' length = '2048'
+        unique-key = 'ux_sec_set_name'>
 
         <comment>Unique (within the Domain) code (name) of the Secure Set</comment>
       </column>
@@ -67,5 +51,5 @@
       </column>
     </property>
 
-  </class>
+  </union-subclass>
 </hibernate-mapping>

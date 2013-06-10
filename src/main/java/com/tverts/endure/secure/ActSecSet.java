@@ -14,6 +14,7 @@ import com.tverts.actions.ActionType;
 /* com.tverts: endure core */
 
 import com.tverts.endure.ActionBuilderXRoot;
+import com.tverts.endure.core.ActUnity;
 
 /* com.tverts: support */
 
@@ -57,9 +58,15 @@ public class ActSecSet extends ActionBuilderXRoot
 		if(target(abr, SecSet.class).getCreateTime() == null)
 			target(abr, SecSet.class).setCreateTime(new java.util.Date());
 
-		//~: save the key
+		//~: set exists predicate
+		Predicate p = new SecSetMissing();
+
+		//~: save the set
 		chain(abr).first(new SaveNumericIdentified(task(abr)).
-		  setPredicate(new SecSetMissing()));
+		  setPredicate(p));
+
+		//~: set set unity (is executed first!)
+		xnest(abr, ActUnity.CREATE, target(abr), PREDICATE, p);
 
 		complete(abr);
 	}
@@ -71,21 +78,26 @@ public class ActSecSet extends ActionBuilderXRoot
 	{
 		public boolean evalPredicate(Object ctx)
 		{
+			if(result != null) return result;
+
 			SecSet s = (SecSet) ((ActionWithTxBase)ctx).
 			  getTask().getTarget();
 
 			//~: search for the existing set
 			SecSet x = bean(GetSecure.class).
-			  getSecSet(s.getDomain().getPrimaryKey(), s.getCode());
-			if(x == null) return true;
+			  getSecSet(s.getDomain().getPrimaryKey(), s.getName());
+			if(x == null) return result = true;
 
 			//~: init the task set
 			s.setPrimaryKey(x.getPrimaryKey());
+			s.setUnity(x.getUnity());
 			s.setCreateTime(x.getCreateTime());
 			s.setComment(x.getComment());
 			s.setTxn(x.getTxn());
 
-			return false;
+			return result = false;
 		}
+
+		protected Boolean result;
 	}
 }

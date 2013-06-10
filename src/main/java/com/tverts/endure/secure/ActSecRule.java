@@ -46,7 +46,7 @@ public class ActSecRule extends ActionBuilderXRoot
 		//~: save the rule
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
-		//~: set domain unity (is executed first!)
+		//~: set rule unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr));
 
 		complete(abr);

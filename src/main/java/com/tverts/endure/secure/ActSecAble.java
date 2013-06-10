@@ -62,7 +62,7 @@ public class ActSecAble extends ActionBuilderXRoot
 			s.setDomain(able.getDomain());
 
 			//~: default name
-			s.setCode("");
+			s.setName("");
 		}
 
 		//~: save the able
