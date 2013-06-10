@@ -19,6 +19,7 @@ import com.tverts.endure.auth.AuthLogin;
 
 /* com.tverts: support */
 
+import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sXe;
 
 
@@ -69,10 +70,33 @@ public class GetSecure extends GetObjectBase
 	}
 
 
+	/* Secure Sets */
+
+	public SecSet getSecSet(Long pk)
+	{
+		return (SecSet) session().get(SecSet.class, pk);
+	}
+
+	public SecSet getSecSet(Long domain, String code)
+	{
+		if((code = s2s(code)) == null) code = "";
+
+// from SecSet where (domain.id = :domain) and (code = :code)
+
+		return (SecSet) Q(
+"  from SecSet where (domain.id = :domain) and (code = :code)"
+		).
+		  setLong("domain", domain).
+		  setString("code", code).
+		  uniqueResult();
+	}
+
+
 	/* Secure Able */
 
 	public boolean hasAbles(SecRule r, AuthLogin l)
 	{
+
 // select 1 from SecAble a where (a.rule = :r) and (a.login = :l)
 
 		return !Q(
@@ -82,6 +106,20 @@ public class GetSecure extends GetObjectBase
 		  setParameter("l", l).
 		  setMaxResults(1).
 		  list().isEmpty();
+	}
+
+	public SecAble getSecAble(Long rule, Long login, Long set)
+	{
+
+// from SecAble a where (a.rule.id = :r) and (a.login.id = :l) and (a.set.id = :s)
+
+		return (SecAble) Q(
+"  from SecAble a where (a.rule.id = :r) and (a.login.id = :l) and (a.set.id = :s)"
+		).
+		  setLong("r", rule).
+		  setLong("l", login).
+		  setLong("s", set).
+		  uniqueResult();
 	}
 
 

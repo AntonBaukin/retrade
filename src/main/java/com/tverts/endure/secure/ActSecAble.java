@@ -52,9 +52,25 @@ public class ActSecAble extends ActionBuilderXRoot
 		//?: {target is not a Secure Able}
 		checkTargetClass(abr, SecAble.class);
 
+		//?: {has no Secure Set} create the default
+		SecAble able = target(abr, SecAble.class);
+		if(able.getSet() == null)
+		{
+			SecSet s; able.setSet(s = new SecSet());
+
+			//~: domain
+			s.setDomain(able.getDomain());
+
+			//~: default name
+			s.setCode("");
+		}
+
 		//~: save the able
 		chain(abr).first(new SaveNumericIdentified(task(abr)).
 		  setPredicate(new SecAbleMissing()));
+
+		//~: ensure the set first
+		xnest(abr, ActionType.ENSURE, able.getSet());
 
 		complete(abr);
 	}
@@ -62,9 +78,6 @@ public class ActSecAble extends ActionBuilderXRoot
 
 	/* secure able existing predicate */
 
-	/**
-	 * TODO support assign sets of Secure Ables
-	 */
 	protected static class SecAbleMissing implements Predicate
 	{
 		public boolean evalPredicate(Object ctx)
@@ -72,7 +85,18 @@ public class ActSecAble extends ActionBuilderXRoot
 			SecAble a = (SecAble) ((ActionWithTxBase)ctx).
 			  getTask().getTarget();
 
-			return !bean(GetSecure.class).hasAbles(a.getRule(), a.getLogin());
+			//~: search for the existing able
+			SecAble x = bean(GetSecure.class).getSecAble(
+			  a.getRule().getPrimaryKey(), a.getLogin().getPrimaryKey(),
+			  a.getSet().getPrimaryKey()
+			);
+			if(x == null) return true;
+
+			//~: init the task able
+			a.setPrimaryKey(x.getPrimaryKey());
+			a.setAbleTime(x.getAbleTime());
+
+			return false;
 		}
 	}
 }

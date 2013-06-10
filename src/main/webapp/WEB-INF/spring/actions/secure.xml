@@ -32,6 +32,18 @@
   </bean>
 
 
+  <bean name  = 'secSetBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.secure.SecSet'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.secure.ActSecSet'/>
+    </property>
+  </bean>
+
+
   <bean name  = 'secAbleBuilders'
         class = 'com.tverts.actions.ActionBuilderTypeChecker'>
 

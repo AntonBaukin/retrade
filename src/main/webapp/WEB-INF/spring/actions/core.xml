@@ -68,6 +68,7 @@
         <ref bean = 'authSessionBuilders'/>
         <ref bean = 'secKeyBuilders'/>
         <ref bean = 'secRuleBuilders'/>
+        <ref bean = 'secSetBuilders'/>
         <ref bean = 'secAbleBuilders'/>
         <ref bean = 'secLinkBuilders'/>
         <ref bean = 'corePersonBuilders'/>

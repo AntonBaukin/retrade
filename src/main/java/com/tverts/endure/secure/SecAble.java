@@ -49,6 +49,16 @@ public class      SecAble
 		this.rule = rule;
 	}
 
+	public SecSet getSet()
+	{
+		return set;
+	}
+
+	public void setSet(SecSet set)
+	{
+		this.set = set;
+	}
+
 	public Date getAbleTime()
 	{
 		return (ableTime != null)?(ableTime):
@@ -74,5 +84,6 @@ public class      SecAble
 
 	private AuthLogin login;
 	private SecRule   rule;
+	private SecSet    set;
 	private Date      ableTime;
 }

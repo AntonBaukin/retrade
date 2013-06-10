@@ -1,0 +1,71 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.secure'>
+
+  <class name = 'SecSet' lazy = 'false' table = 'sec_set'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_set_set'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_sec_set_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_sec_set_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_sec_set_code'>
+
+        <comment>Domain where this Secure Set is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code' lazy = 'false'>
+
+      <column name = 'ux_code' not-null = 'true' length = '2048'
+        unique-key = 'ux_sec_set_code'>
+
+        <comment>Unique (within the Domain) code (name) of the Secure Set</comment>
+      </column>
+    </property>
+
+
+    <!-- Create Time  -->
+
+    <property name = 'createTime' type = 'timestamp'>
+
+      <column name = 'create_time' not-null = 'true'>
+        <comment>This Secure Set creation timestamp</comment>
+      </column>
+    </property>
+
+
+    <!-- Comment -->
+
+    <property name = 'comment' type = 'text'>
+
+      <column name = 'set_comment'>
+        <comment>Comment on this Secure Set</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
