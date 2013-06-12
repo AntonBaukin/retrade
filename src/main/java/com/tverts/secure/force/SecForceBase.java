@@ -81,32 +81,11 @@ public abstract class SecForceBase
 		return this.uid;
 	}
 
-	public String getTitle()
-	{
-		return title;
-	}
-
-	public String getDescr()
-	{
-		return descr;
-	}
-
-
 	/* public: SecForceBase (bean) interface */
 
-	public void setUID(String uid)
+	public void   setUID(String uid)
 	{
 		this.uid = uid;
-	}
-
-	public void setTitle(String title)
-	{
-		this.title = title;
-	}
-
-	public void setDescr(String descr)
-	{
-		this.descr = descr;
 	}
 
 
@@ -326,6 +305,4 @@ public abstract class SecForceBase
 	/* security force attributes */
 
 	private String uid;
-	private String title;
-	private String descr;
 }

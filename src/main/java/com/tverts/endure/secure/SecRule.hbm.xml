@@ -36,9 +36,29 @@
     <property name = 'force'>
 
       <column name = 'sec_force' length = '2048' not-null = 'true'
-        index = 'ix_sec_rule_sec_force'>
+        index = 'ix_sec_rule_force'>
 
-        <comment>Security Force Key (at the application runtime)</comment>
+        <comment>Secure Force Key (at the application runtime)</comment>
+      </column>
+    </property>
+
+
+    <!-- Title -->
+
+    <property name = 'title'>
+
+      <column name = 'title' length = '2048' not-null = 'true'>
+
+        <comment>The title of Secure Rule</comment>
+      </column>
+    </property>
+
+    <property name = 'titleLo'>
+
+      <column name = 'title_lo' length = '2048' not-null = 'true'
+        index = 'ix_sec_rule_title_lo'>
+
+        <comment>The lower-cased title of Secure Rule</comment>
       </column>
     </property>
 

@@ -39,10 +39,24 @@ public abstract class UnitedTxBase
 	{
 		super.setUnity(unity);
 
-		if((unity != null) && (txn != 0L) && !getTxn().equals(unity.getTxn()))
-			if(unity.getTxn() > getTxn())
-				this.txn = unity.getTxn();
-			else
-				unity.setTxn(getTxn());
+		if((unity == null) || (this.getTxn() == null) && (unity.getTxn() == null))
+			return;
+
+		if((this.getTxn() == null) && (unity.getTxn() != null))
+		{
+			this.setTxn(unity.getTxn());
+			return;
+		}
+
+		if((this.getTxn() != null) && (unity.getTxn() == null))
+		{
+			unity.setTxn(this.getTxn());
+			return;
+		}
+
+		if(unity.getTxn() > getTxn())
+			this.txn = unity.getTxn();
+		else
+			unity.setTxn(getTxn());
 	}
 }

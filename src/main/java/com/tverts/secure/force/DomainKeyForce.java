@@ -14,6 +14,7 @@ import com.tverts.endure.secure.SecRule;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
+import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sXe;
 
 
@@ -39,11 +40,6 @@ public class DomainKeyForce extends SecForceBase
 		//?: {the key was actually created}
 		if(ensureKey(getSecKey()))
 			LU.I(getLog(), logsig(), " created sec key [", getSecKey(), ']');
-	}
-
-	public String  getTitle(SecRule rule)
-	{
-		return getTitle();
 	}
 
 	public String  getDescr(SecRule rule)
@@ -89,6 +85,26 @@ public class DomainKeyForce extends SecForceBase
 		this.forbid = forbid;
 	}
 
+	public String  getTitle()
+	{
+		return title;
+	}
+
+	public void    setTitle(String title)
+	{
+		this.title = s2s(title);
+	}
+
+	public String  getDescr()
+	{
+		return descr;
+	}
+
+	public void    setDescr(String descr)
+	{
+		this.descr = s2s(descr);
+	}
+
 
 	/* protected: reactions */
 
@@ -111,6 +127,10 @@ public class DomainKeyForce extends SecForceBase
 
 		//~: domain is being created
 		rule.setDomain(d);
+
+		//~: title
+		if(rule.getTitle() == null)
+			rule.setTitle(this.getTitle());
 
 		//!: save it
 		saveRule(rule);
@@ -142,8 +162,10 @@ public class DomainKeyForce extends SecForceBase
 	}
 
 
-	/* private: security key */
+	/* private: force parameters */
 
 	private String  secKey;
 	private boolean forbid;
+	private String  title;
+	private String  descr;
 }

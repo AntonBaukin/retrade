@@ -3,14 +3,14 @@ package com.tverts.secure;
 /* standard Java classes */
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /* com.tverts: system services */
 
-import com.tverts.secure.force.SecForceRef;
-import com.tverts.secure.force.SecForces;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 import com.tverts.system.services.Servicer;
@@ -19,6 +19,8 @@ import com.tverts.system.services.events.SystemReady;
 /* com.tverts: secure */
 
 import com.tverts.secure.force.SecForce;
+import com.tverts.secure.force.SecForceRef;
+import com.tverts.secure.force.SecForces;
 
 /* com.tverts: events */
 
@@ -71,6 +73,12 @@ public class      SecService
 
 		//~: inspect the rules existing
 		checkRules();
+
+		//~: map the forces
+		List<SecForce> forlst = this.forces.dereferObjects();
+		this.formap = new HashMap<String, SecForce>(forlst.size());
+		for(SecForce f : forlst)
+			this.formap.put(f.uid(), f);
 	}
 
 
@@ -96,10 +104,24 @@ public class      SecService
 		};
 	}
 
-	public void setForces(SecForceRef forces)
+	public void       setForces(SecForceRef forces)
 	{
 		if(forces == null) throw new IllegalArgumentException();
 		this.forces = forces;
+	}
+
+
+	/* public: SecService (support) interface */
+
+	public String[] forces()
+	{
+		return formap.keySet().
+		  toArray(new String[formap.size()]);
+	}
+
+	public SecForce force(String uid)
+	{
+		return this.formap.get(uid);
 	}
 
 
@@ -160,5 +182,6 @@ public class      SecService
 
 	/* private: security forces */
 
-	private SecForceRef forces = new SecForces();
+	private SecForceRef           forces = new SecForces();
+	private Map<String, SecForce> formap = new HashMap<String, SecForce>();
 }

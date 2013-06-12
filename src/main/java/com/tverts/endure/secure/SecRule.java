@@ -67,6 +67,28 @@ public class      SecRule
 		this.force = force;
 	}
 
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void setTitle(String title)
+	{
+		this.title = title;
+		this.titleLo = null;
+	}
+
+	public String getTitleLo()
+	{
+		return (titleLo != null)?(titleLo):
+		  (title == null)?(null):(titleLo = title.toLowerCase());
+	}
+
+	public void setTitleLo(String titleLo)
+	{
+		this.titleLo = titleLo;
+	}
+
 	/**
 	 * Data of the rule. At the most cases,
 	 * XML represented Java Bean object.
@@ -87,5 +109,7 @@ public class      SecRule
 	private Domain domain;
 	private Unity  related;
 	private String force;
+	private String title;
+	private String titleLo;
 	private String data;
 }

@@ -36,11 +36,5 @@ public interface SecForce extends Reactor
 	 */
 	public void   init();
 
-	public String getTitle();
-
-	public String getTitle(SecRule rule);
-
-	public String getDescr();
-
 	public String getDescr(SecRule rule);
 }
