@@ -1,5 +1,11 @@
 package com.tverts.endure.secure;
 
+/* standard Java classes */
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -7,17 +13,20 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
+import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionWithTxBase;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 
-/* com.tverts: endure core */
+/* com.tverts: endure (core) */
 
 import com.tverts.endure.ActionBuilderXRoot;
 import com.tverts.endure.core.ActUnity;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 import com.tverts.support.logic.Predicate;
 
 
@@ -37,6 +46,13 @@ public class ActSecSet extends ActionBuilderXRoot
 	public static final ActionType ENSURE =
 	  ActionType.ENSURE;
 
+	/**
+	 * Removes the Secure Set moving all the
+	 * Ables referring to to the default Set.
+	 */
+	public static final ActionType DELETE =
+	  ActionType.DELETE;
+
 
 	/* public: ActionBuilder interface */
 
@@ -44,6 +60,9 @@ public class ActSecSet extends ActionBuilderXRoot
 	{
 		if(ENSURE.equals(actionType(abr)))
 			ensureSecSet(abr);
+
+		if(DELETE.equals(actionType(abr)))
+			deleteSecSet(abr);
 	}
 
 
@@ -67,6 +86,21 @@ public class ActSecSet extends ActionBuilderXRoot
 
 		//~: set set unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr), PREDICATE, p);
+
+		complete(abr);
+	}
+
+	protected void deleteSecSet(ActionBuildRec abr)
+	{
+		//?: {target is not a Secure Set}
+		checkTargetClass(abr, SecSet.class);
+
+		//?: {can't remove the default set}
+		if(SU.sXe(target(abr, SecSet.class).getName()))
+			throw EX.state("Can't delete the default Secure Set!");
+
+		//~: delete the set
+		chain(abr).first(new DeleteSelSetAction(task(abr)));
 
 		complete(abr);
 	}
@@ -99,5 +133,62 @@ public class ActSecSet extends ActionBuilderXRoot
 		}
 
 		protected Boolean result;
+	}
+
+
+	/* delete action */
+
+	protected static class DeleteSelSetAction
+	          extends      ActionWithTxBase
+	{
+		/* public: constructor */
+
+		public DeleteSelSetAction(ActionTask task)
+		{
+			super(task);
+		}
+
+
+		/* public: Action interface */
+
+		public Object  getResult()
+		{
+			return target();
+		}
+
+
+		/* protected: ActionBase interface */
+
+		protected void execute()
+		  throws Throwable
+		{
+			SecSet    set  = target(SecSet.class);
+			GetSecure get  = bean(GetSecure.class);
+
+			//~: get the default set
+			SecSet    def  = get.getDefaultSecSet(
+			  set.getDomain().getPrimaryKey());
+
+			//~: find ables that refer the same rules as the default set
+			Set<Long> dups = new HashSet<Long>(
+			  get.findSecAblesWithDuplicates(set, def));
+
+			//!: do remove that ables (as duplicates)
+			for(Long id : dups)
+				session().delete(session().load(SecAble.class, id));
+
+
+			//~: get all the ables referring
+			List<Long> all = get.findSecAbles(set);
+
+			//~: update ables that do not have duplicate
+			for(Long id : all) if(!dups.contains(id))
+				((SecAble) session().load(SecAble.class, id)).setSet(def);
+
+
+			//!: do remove the set
+			session().flush();
+			session().delete(set);
+		}
 	}
 }

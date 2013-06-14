@@ -19,6 +19,7 @@ import com.tverts.endure.auth.AuthLogin;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.sXe;
 
@@ -41,7 +42,7 @@ public class GetSecure extends GetObjectBase
 
 	public SecKey getSecKey(String name)
 	{
-		if(sXe(name)) throw new IllegalArgumentException();
+		if(sXe(name)) throw EX.arg();
 
 		// from SecKey where (name = :name)
 
@@ -74,7 +75,8 @@ public class GetSecure extends GetObjectBase
 
 	public SecSet getSecSet(Long pk)
 	{
-		return (SecSet) session().get(SecSet.class, pk);
+		return (pk == null)?(null):
+		  (SecSet) session().get(SecSet.class, pk);
 	}
 
 	public SecSet getSecSet(Long domain, String name)
@@ -89,6 +91,16 @@ public class GetSecure extends GetObjectBase
 		  setLong("domain", domain).
 		  setString("name", name).
 		  uniqueResult();
+	}
+
+	public SecSet getDefaultSecSet(Long domain)
+	{
+		SecSet res = getSecSet(domain, "");
+
+		if(res == null) throw EX.state("Domain [", domain,
+		  "] has no default Secure Set!");
+
+		return res;
 	}
 
 
@@ -120,6 +132,43 @@ public class GetSecure extends GetObjectBase
 		  setLong("l", login).
 		  setLong("s", set).
 		  uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> findSecAbles(SecSet set)
+	{
+
+// select a.id from SecAble a where (a.set = :set)
+
+		return (List<Long>) Q(
+
+"  select a.id from SecAble a where (a.set = :set)"
+
+		).
+		  setParameter("set", set).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> findSecAblesWithDuplicates(SecSet set, SecSet check)
+	{
+
+/*
+
+ select a1.id from SecAble a1 where (a1.set = :set) and
+   a1.rule in (select a2.rule from SecAble a2 where (a2.set = :check))
+
+ */
+
+		return (List<Long>) Q(
+
+" select a1.id from SecAble a1 where (a1.set = :set) and\n" +
+"  a1.rule in (select a2.rule from SecAble a2 where (a2.set = :check))"
+
+		).
+		  setParameter("set",   set).
+		  setParameter("check", check).
+		  list();
 	}
 
 
@@ -182,8 +231,6 @@ from SecLink sl where (sl.key = :k) and
 		  setLong     ("login",  login).
 		  uniqueResult();
 
-
-
 /*
 
 --> debug -->
@@ -192,7 +239,7 @@ select sl.id from SecLink sl join sl.rule sr, SecAble ab
  where (sl.key = :key) and (sl.target.id = :target) and
    (sr = ab.rule) and (ab.login.id = :login) and (sl.deny = 1)
 
-*/
+
 		List x = (List) (((n == null) || (n.intValue() == 0))?(null): Q(
 
 "select sl.id from SecLink sl join sl.rule sr, SecAble ab\n" +
@@ -204,6 +251,7 @@ select sl.id from SecLink sl join sl.rule sr, SecAble ab
 		  setLong     ("target", target).
 		  setLong     ("login",  login).
 		  list());
+*/
 
 		return (n != null) && (n.intValue() == 0);
 	}
