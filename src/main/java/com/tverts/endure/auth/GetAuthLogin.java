@@ -12,9 +12,17 @@ import org.springframework.stereotype.Component;
 
 import com.tverts.hibery.GetObjectBase;
 
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
+
 /* com.tverts: endure (persons) */
 
 import com.tverts.endure.person.Person;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -52,6 +60,17 @@ public class GetAuthLogin extends GetObjectBase
 		return getLogin(domain, Auth.SYSTEM_USER);
 	}
 
+	public AuthLogin getSystemLoginStrict(Long domain)
+	{
+		AuthLogin login = getLogin(domain, Auth.SYSTEM_USER);
+
+		if(login == null) throw EX.state(
+		  "System Login is not found in Domain [", domain, "]!"
+		);
+
+		return login;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<AuthLogin> getLogins(Computer computer)
 	{
@@ -79,6 +98,30 @@ public class GetAuthLogin extends GetObjectBase
 
 		).
 		  setParameter("person", person).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<AuthLogin> getSelectedLogins(Long domain, String selset)
+	{
+
+/*
+
+ from AuthLogin l where (l.domain.id = :domain) and l.id in
+   (select si.object from SelItem si join si.selSet ss
+     where (ss.name = :set) and (ss.login.id = :login))
+
+*/
+		return (List<AuthLogin>) Q(
+
+"from AuthLogin l where (l.domain.id = :domain) and l.id in\n" +
+"   (select si.object from SelItem si join si.selSet ss\n" +
+"     where (ss.name = :set) and (ss.login.id = :login))"
+
+		).
+		  setLong("domain", domain).
+		  setLong("login",  SecPoint.login()).
+		  setString("set",  selset).
 		  list();
 	}
 

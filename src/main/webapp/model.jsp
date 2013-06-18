@@ -18,27 +18,29 @@
 ModelRequest.getInstance().setKey(
   request.getParameter(ModelView.MODEL_REQ_PARAM));
 
-String    param = s2s(request.getParameter(ModelView.MODEL_PARAM));
+String    param = s2s(request.getParameter(ModelView.MODEL_PROVIDER));
 ModelBean model = null;
 Object    data  = null;
 
-//?: {has model parameters} access via the model point
+//?: {has model provider}
 if(param != null)
-  model = ModelAccessPoint.model().readBean(param);
-//~: check the model provider requested
-else
 {
-  Object provider = null;
-  param = s2s(request.getParameter(ModelView.MODEL_PROVIDER));
-
-  //?: {has parameter} get the provider bean
-  if(param != null)
-    provider = beanOrNull(param);
+  Object provider = beanOrNull(param);
 
   //?: {has provider} get the model
   if(provider instanceof ModelProvider)
     model = ((ModelProvider)provider).provideModel();
 }
+
+//?: {model not provided & has model parameter} access via the model point
+if(model == null)
+{
+  param = s2s(request.getParameter(ModelView.MODEL_PARAM));
+
+  if(param != null)
+     model = ModelAccessPoint.model().readBean(param);
+}
+
 
 //~: apply the data selection limits
 if(model instanceof DataSelectModel)

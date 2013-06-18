@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 
 import com.tverts.hibery.GetObjectBase;
 
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
+
 /* com.tverts: endure (auth) */
 
 import com.tverts.endure.auth.AuthLogin;
@@ -56,6 +60,11 @@ public class GetSecure extends GetObjectBase
 
 	/* Secure Rules */
 
+	public SecRule getSecRule(Long pk)
+	{
+		return (SecRule) session().get(SecRule.class, pk);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<SecRule> selectRules(Long domain, String force)
 	{
@@ -67,6 +76,193 @@ public class GetSecure extends GetObjectBase
 		).
 		  setLong("domain", domain).
 		  setString("force", force).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> findSetAbleRules(Long login, Long secSet)
+	{
+/*
+
+ select r.id from SecAble a join a.rule r where
+   (a.login.id = :login) and (a.set.id = :set)
+
+ */
+		return (List<Long>) Q(
+
+"select r.id from SecAble a join a.rule r where\n" +
+"  (a.login.id = :login) and (a.set.id = :set)"
+
+		).
+		  setLong("login", login).
+		  setLong("set",   secSet).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SecAble> findSetAbles(Long login, Long secSet)
+	{
+
+// from SecAble a where (a.login.id = :login) and (a.set.id = :set)
+		return (List<SecAble>) Q(
+
+"  from SecAble a where (a.login.id = :login) and (a.set.id = :set)"
+
+		).
+		  setLong("login", login).
+		  setLong("set",   secSet).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SecAble> findLoginAblesOfSelectedRules
+	  (Long login, Long secSet, String selset)
+	{
+/*
+
+ select a from SecAble a join a.rule r where
+  (a.login.id = :login) and (a.set.id = :set) and
+  r.id in (select si.object from SelItem si join si.selSet ss
+    where (ss.name = :set) and (ss.login.id = :xlogin))
+
+ */
+		return (List<SecAble>) Q(
+
+"select a from SecAble a join a.rule r where\n" +
+"  (a.login.id = :login) and (a.set.id = :set) and\n" +
+"  r.id in (select si.object from SelItem si join si.selSet ss\n" +
+"    where (ss.name = :xset) and (ss.login.id = :xlogin))"
+
+		).
+		  setLong("login",  login).
+		  setLong("set",    secSet).
+		  setString("xset", selset).
+		  setLong("xlogin", SecPoint.login()).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SecAble> findLoginAblesOfSelectedRules(Long login, String selset)
+	{
+/*
+
+ select a from SecAble a join a.rule r where
+  (a.login.id = :login) and r.id in
+    (select si.object from SelItem si join si.selSet ss
+      where (ss.name = :xset) and (ss.login.id = :xlogin))
+
+ */
+		return (List<SecAble>) Q(
+
+"select a from SecAble a join a.rule r where\n" +
+"  (a.login.id = :login) and r.id in\n" +
+"    (select si.object from SelItem si join si.selSet ss\n" +
+"      where (ss.name = :xset) and (ss.login.id = :xlogin))"
+
+		).
+		  setLong("login",  login).
+		  setString("xset", selset).
+		  setLong("xlogin", SecPoint.login()).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> findSelectedRules(Long domain, String selset)
+	{
+
+/*
+
+ select r.id from SecRule r where (r.domain.id = :domain) and
+   r.id in (select si.object from SelItem si join si.selSet ss
+     where (ss.name = :set) and (ss.login.id = :login))
+
+ */
+		return (List<Long>) Q(
+
+"select r.id from SecRule r where (r.domain.id = :domain) and\n" +
+"   r.id in (select si.object from SelItem si join si.selSet ss\n" +
+"     where (ss.name = :set) and (ss.login.id = :login))"
+
+		).
+		  setLong("domain", domain).
+		  setLong("login",  SecPoint.login()).
+		  setString("set",  selset).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> findSelectedSetsRules(Long domain, String selset)
+	{
+
+/*
+
+ select distinct r.id from SecAble a join a.rule r join a.set s
+   where (r.domain = :domain) and
+     s.id in (select si.object from SelItem si join si.selSet ss
+       where (ss.name = :set) and (ss.login.id = :login))
+
+ */
+		return (List<Long>) Q(
+
+"select distinct r.id from SecAble a join a.rule r join a.set s\n" +
+"   where (r.domain = :domain) and\n" +
+"     s.id in (select si.object from SelItem si join si.selSet ss\n" +
+"       where (ss.name = :set) and (ss.login.id = :login))"
+
+		).
+		  setLong("domain", domain).
+		  setLong("login",  SecPoint.login()).
+		  setString("set",  selset).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> findSelectedLoginsRules(Long domain, String selset)
+	{
+
+/*
+
+ select distinct r.id from SecAble a join a.rule r where
+   (r.domain = :domain) and a.login.id in
+     (select si.object from SelItem si join si.selSet ss
+        where (ss.name = :set) and (ss.login.id = :login))
+
+ */
+		return (List<Long>) Q(
+
+"select distinct r.id from SecAble a join a.rule r where\n" +
+"   (r.domain = :domain) and a.login.id in\n" +
+"     (select si.object from SelItem si join si.selSet ss\n" +
+"        where (ss.name = :set) and (ss.login.id = :login))"
+
+		).
+		  setLong("domain", domain).
+		  setLong("login",  SecPoint.login()).
+		  setString("set",  selset).
+		  list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SecSet> findSelectedSets(Long domain, String selset)
+	{
+
+/*
+
+ from SecSet s where (s.domain = :domain) and
+   s.id in (select si.object from SelItem si join si.selSet ss
+      where (ss.name = :set) and (ss.login.id = :login))
+
+ */
+		return (List<SecSet>) Q(
+
+"from SecSet s where (s.domain = :domain) and\n" +
+"   s.id in (select si.object from SelItem si join si.selSet ss\n" +
+"      where (ss.name = :set) and (ss.login.id = :login))"
+
+		).
+		  setLong("domain", domain).
+		  setLong("login",  SecPoint.login()).
+		  setString("set",  selset).
 		  list();
 	}
 
@@ -118,6 +314,11 @@ public class GetSecure extends GetObjectBase
 		  setParameter("l", l).
 		  setMaxResults(1).
 		  list().isEmpty();
+	}
+
+	public SecAble getSecAble(Long pk)
+	{
+		return (SecAble) session().get(SecAble.class, pk);
 	}
 
 	public SecAble getSecAble(Long rule, Long login, Long set)

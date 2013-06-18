@@ -2,7 +2,6 @@ package com.tverts.endure.auth;
 
 /* com.tverts: formatter */
 
-import static com.tverts.support.SU.cats;
 import com.tverts.support.fmt.FmtBase;
 import com.tverts.support.fmt.FmtCtx;
 
@@ -21,7 +20,17 @@ public class AuthLoginFmt extends FmtBase
 
 	protected String  format(FmtCtx ctx)
 	{
-		AuthLogin l = (AuthLogin) ctx.obj();
-		return cats("Пользователь [", l.getCode(), "] ", l.getName());
+		AuthLogin     l = (AuthLogin) ctx.obj();
+		StringBuilder s = new StringBuilder(64);
+
+		if(ctx.is(TYPE))
+			s.append("Пользователь ");
+
+		if(ctx.is(CODE))
+			s.append('[').append(l.getCode()).append("] ");
+
+		s.append(l.getName());
+
+		return s.toString();
 	}
 }

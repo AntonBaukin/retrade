@@ -69,16 +69,6 @@ public class SecAbleView implements Serializable
 		this.setName = setName;
 	}
 
-	public String getSetComment()
-	{
-		return setComment;
-	}
-
-	public void setSetComment(String setComment)
-	{
-		this.setComment = setComment;
-	}
-
 	public String getForce()
 	{
 		return force;
@@ -158,8 +148,7 @@ public class SecAbleView implements Serializable
 
 	public SecAbleView init(SecSet s)
 	{
-		setName    = sXe(s.getName())?("По умолчанию"):(s.getName());
-		setComment = s.getComment();
+		setName = sXe(s.getName())?("По умолчанию"):(s.getName());
 
 		return this;
 	}
@@ -170,7 +159,6 @@ public class SecAbleView implements Serializable
 	private Long   objectKey;
 	private Date   ableTime;
 	private String setName;
-	private String setComment;
 
 
 	/* secure rule attributes */

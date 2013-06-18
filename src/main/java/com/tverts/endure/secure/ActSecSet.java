@@ -18,10 +18,12 @@ import com.tverts.actions.ActionWithTxBase;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 
-/* com.tverts: endure (core) */
+/* com.tverts: endure (core + auth) */
 
 import com.tverts.endure.ActionBuilderXRoot;
 import com.tverts.endure.core.ActUnity;
+import com.tverts.endure.auth.AuthLogin;
+import com.tverts.endure.auth.GetAuthLogin;
 
 /* com.tverts: support */
 
@@ -48,10 +50,42 @@ public class ActSecSet extends ActionBuilderXRoot
 
 	/**
 	 * Removes the Secure Set moving all the
-	 * Ables referring to to the default Set.
+	 * Ables referring to it the default Set.
 	 */
 	public static final ActionType DELETE =
 	  ActionType.DELETE;
+
+	/**
+	 * Assigns the rules of this Secure Set to the
+	 * login defined by {@link #LOGIN} parameter.
+	 */
+	public static final ActionType GRANT  =
+	  new ActionType(SecSet.class, "grant");
+
+	/**
+	 * Revokes the rule ables of this Secure Set
+	 * and the login defined by {@link #LOGIN} parameter.
+	 */
+	public static final ActionType REVOKE =
+	  new ActionType(SecSet.class, "revoke");
+
+	/**
+	 * Synchronizes the rule ables of this Secure Set
+	 * and the login defined by {@link #LOGIN} parameter.
+	 */
+	public static final ActionType SYNCH  =
+	  new ActionType(SecSet.class, "synch");
+
+
+	/* parameters */
+
+	/**
+	 * Defines {@link AuthLogin} instance to
+	 * grant (able) the rules of this set.
+	 */
+	public static final String  LOGIN =
+	  ActSecSet.class.getName() + ": login";
+
 
 
 	/* public: ActionBuilder interface */
@@ -63,6 +97,15 @@ public class ActSecSet extends ActionBuilderXRoot
 
 		if(DELETE.equals(actionType(abr)))
 			deleteSecSet(abr);
+
+		if(GRANT.equals(actionType(abr)))
+			grantSecSet(abr);
+
+		if(REVOKE.equals(actionType(abr)))
+			revokeSecSet(abr);
+
+		if(SYNCH.equals(actionType(abr)))
+			synchSecSet(abr);
 	}
 
 
@@ -101,6 +144,124 @@ public class ActSecSet extends ActionBuilderXRoot
 
 		//~: delete the set
 		chain(abr).first(new DeleteSelSetAction(task(abr)));
+
+		complete(abr);
+	}
+
+	protected void grantSecSet(ActionBuildRec abr)
+	{
+		//?: {target is not a Secure Set}
+		checkTargetClass(abr, SecSet.class);
+
+		GetSecure get = bean(GetSecure.class);
+		SecSet    set = target(abr, SecSet.class);
+		AuthLogin lgn = param(abr, LOGIN, AuthLogin.class);
+		if(lgn == null) throw EX.state("AuthLogin (LOGIN) parameter is missing!");
+
+		//~: system login (of the set domain)
+		Long      sys = bean(GetAuthLogin.class).
+		  getSystemLogin(set.getDomain().getPrimaryKey()).getPrimaryKey();
+
+		//~: load the rules of this set
+		Set<Long>  all = new HashSet<Long>(
+		  get.findSetAbleRules(sys, set.getPrimaryKey()));
+
+		//~: load the rules able for the user in this set
+		List<Long> got = get.findSetAbleRules(
+		  lgn.getPrimaryKey(), set.getPrimaryKey());
+
+		//~: assign the missing rules
+		all.removeAll(got);
+		for(Long rule : all)
+		{
+			SecAble able = new SecAble();
+
+			//~: login
+			able.setLogin(lgn);
+
+			//~: rule
+			able.setRule(get.getSecRule(rule));
+
+			//~: set
+			able.setSet(set);
+
+			//!: save it
+			xnest(abr, ActionType.SAVE, able);
+		}
+
+		complete(abr);
+	}
+
+	protected void revokeSecSet(ActionBuildRec abr)
+	{
+		//?: {target is not a Secure Set}
+		checkTargetClass(abr, SecSet.class);
+
+		GetSecure get = bean(GetSecure.class);
+		SecSet    set = target(abr, SecSet.class);
+		AuthLogin lgn = param(abr, LOGIN, AuthLogin.class);
+		if(lgn == null) throw EX.state("AuthLogin (LOGIN) parameter is missing!");
+
+		//~: load the ables for the user in this set
+		List<SecAble> ables = get.findSetAbles(
+		  lgn.getPrimaryKey(), set.getPrimaryKey());
+
+		//~: assign the missing rules
+		for(SecAble able : ables)
+			xnest(abr, ActionType.DELETE, able);
+
+		complete(abr);
+	}
+
+	protected void synchSecSet(ActionBuildRec abr)
+	{
+		//?: {target is not a Secure Set}
+		checkTargetClass(abr, SecSet.class);
+
+		GetSecure get = bean(GetSecure.class);
+		SecSet    set = target(abr, SecSet.class);
+		AuthLogin lgn = param(abr, LOGIN, AuthLogin.class);
+		if(lgn == null) throw EX.state("AuthLogin (LOGIN) parameter is missing!");
+
+		//~: system login (of the set domain)
+		Long      sys = bean(GetAuthLogin.class).
+		  getSystemLogin(set.getDomain().getPrimaryKey()).getPrimaryKey();
+
+		//~: load the ables for the user in this set
+		List<SecAble> got = get.findSetAbles(
+		  lgn.getPrimaryKey(), set.getPrimaryKey());
+
+		//~: get rules of current ables of the set
+		Set<Long> curules = new HashSet<Long>(
+		  get.findSetAbleRules(sys, set.getPrimaryKey()));
+
+		//~: remove the ables with rules missing in the current
+		for(SecAble a : got)
+			if(!curules.contains(a.getRule().getPrimaryKey()))
+				xnest(abr, ActionType.DELETE, a);
+
+		//~: collect the rules of able sets
+		Set<Long> gotrules = new HashSet<Long>(got.size());
+		for(SecAble a : got) gotrules.add(a.getRule().getPrimaryKey());
+
+		//~: add the rules not able to the login
+		for(Long rule : curules)
+			if(!gotrules.contains(rule))
+			{
+				SecAble able = new SecAble();
+
+				//~: login
+				able.setLogin(lgn);
+
+				//~: able rule
+				able.setRule(get.getSecRule(rule));
+
+				//~: set
+				able.setSet(set);
+
+				//!: ensure it
+				xnest(abr, ActionType.ENSURE, able);
+			}
 
 		complete(abr);
 	}

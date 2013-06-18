@@ -8,6 +8,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.actions.ActionBuildRec;
 import com.tverts.actions.ActionWithTxBase;
+import com.tverts.actions.ActionsCollection.DeleteEntity;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 
@@ -35,6 +36,12 @@ public class ActSecAble extends ActionBuilderXRoot
 	public static final ActionType ENSURE =
 	  ActionType.ENSURE;
 
+	public static final ActionType SAVE   =
+	  ActionType.SAVE;
+
+	public static final ActionType DELETE =
+	  ActionType.DELETE;
+
 
 	/* public: ActionBuilder interface */
 
@@ -42,6 +49,12 @@ public class ActSecAble extends ActionBuilderXRoot
 	{
 		if(ENSURE.equals(actionType(abr)))
 			ensureSecAble(abr);
+
+		if(SAVE.equals(actionType(abr)))
+			saveSecAble(abr);
+
+		if(DELETE.equals(actionType(abr)))
+			deleteSecAble(abr);
 	}
 
 
@@ -54,7 +67,7 @@ public class ActSecAble extends ActionBuilderXRoot
 
 		//?: {has no Secure Set} create the default
 		SecAble able = target(abr, SecAble.class);
-		if(able.getSet() == null)
+		boolean setx = (able.getSet() == null); if(setx)
 		{
 			SecSet s; able.setSet(s = new SecSet());
 
@@ -69,8 +82,30 @@ public class ActSecAble extends ActionBuilderXRoot
 		chain(abr).first(new SaveNumericIdentified(task(abr)).
 		  setPredicate(new SecAbleMissing()));
 
-		//~: ensure the set first
-		xnest(abr, ActionType.ENSURE, able.getSet());
+		//?: {the default set was created here} ensure it
+		if(setx) xnest(abr, ActionType.ENSURE, able.getSet());
+
+		complete(abr);
+	}
+
+	protected void saveSecAble(ActionBuildRec abr)
+	{
+		//?: {target is not a Secure Able}
+		checkTargetClass(abr, SecAble.class);
+
+		//~: save the able
+		chain(abr).first(new SaveNumericIdentified(task(abr)));
+
+		complete(abr);
+	}
+
+	protected void deleteSecAble(ActionBuildRec abr)
+	{
+		//?: {target is not a Secure Able}
+		checkTargetClass(abr, SecAble.class);
+
+		//~: delete the able
+		chain(abr).first(new DeleteEntity(task(abr)));
 
 		complete(abr);
 	}
