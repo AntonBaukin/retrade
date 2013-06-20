@@ -66,7 +66,8 @@ public class HiberPoint
 		return res;
 	}
 
-	/* public static: primary database connectivity support */
+
+	/* public static: basic tasks support */
 
 	public static Query   query(Session session, String hql, Object... replaces)
 	{
@@ -110,6 +111,12 @@ public class HiberPoint
 		}
 
 		return session.createQuery(s.toString());
+	}
+
+	public static Class   type(Object obj)
+	{
+		return (obj == null)?(null):
+		  HiberSystem.getInstance().findActualClass(obj);
 	}
 
 

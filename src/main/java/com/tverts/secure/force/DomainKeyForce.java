@@ -1,5 +1,9 @@
 package com.tverts.secure.force;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: events */
 
 import com.tverts.event.CreatedEvent;
@@ -8,6 +12,7 @@ import com.tverts.event.Event;
 /* com.tverts: endure (core + secure) */
 
 import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.GetDomain;
 import com.tverts.endure.secure.SecLink;
 import com.tverts.endure.secure.SecRule;
 
@@ -40,6 +45,11 @@ public class DomainKeyForce extends SecForceBase
 		//?: {the key was actually created}
 		if(ensureKey(getSecKey()))
 			LU.I(getLog(), logsig(), " created sec key [", getSecKey(), ']');
+
+		//~: ensure for all the domains
+		for(Domain d : bean(GetDomain.class).getAllDomains())
+			ensureForDomain(d);
+
 	}
 
 	public String  getDescr(SecRule rule)
@@ -110,8 +120,22 @@ public class DomainKeyForce extends SecForceBase
 
 	protected void    reactDomainCreated(Domain d, CreatedEvent e)
 	{
+		ensureForDomain(d);
+	}
+
+	protected void    ensureForDomain(Domain d)
+	{
+		SecRule rule = findDomainRule(d.getPrimaryKey());
+		if(rule != null)
+		{
+			LU.D(getLog(), logsig(), " ensured Domain [", d.getPrimaryKey(),
+			 "], found rule [", rule.getPrimaryKey(), ']');
+
+			return;
+		}
+
 		//~: create & save the rule
-		SecRule rule = saveDomainRule(d);
+		rule = saveDomainRule(d);
 
 		LU.D(getLog(), logsig(), " acts on create Domain [", d.getPrimaryKey(),
 		 "], saved rule [", rule.getPrimaryKey(), ']');

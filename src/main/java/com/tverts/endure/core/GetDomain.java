@@ -27,13 +27,13 @@ public class GetDomain extends GetObjectBase
 {
 	/* Get Domain */
 
-	public Domain      getDomain(Long pk)
+	public Domain getDomain(Long pk)
 	{
 		return (pk == null)?(null):
 		  (Domain) session().get(Domain.class, pk);
 	}
 
-	public Domain      getDomain(String code)
+	public Domain getDomain(String code)
 	{
 		if(SU.sXe(code))
 			throw new IllegalArgumentException();
@@ -48,6 +48,12 @@ public class GetDomain extends GetObjectBase
 		).
 		  setString("code", SU.sXs(code).toLowerCase()).
 		  uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Domain> getAllDomains()
+	{
+		return (List<Domain>) Q("from Domain").list();
 	}
 
 	@SuppressWarnings("unchecked")

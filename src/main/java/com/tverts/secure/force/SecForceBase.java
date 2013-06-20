@@ -155,14 +155,24 @@ public abstract class SecForceBase
 
 	protected SecRule loadDomainRule(Long domain)
 	{
+		SecRule rule = findDomainRule(domain);
+
+		if(rule == null)
+			throw EX.state(logsig(), " has no Domain Rules in [", domain, "]!");
+
+		return rule;
+	}
+
+	protected SecRule findDomainRule(Long domain)
+	{
 		List<SecRule> rules = bean(GetSecure.class).
 		  selectRules(domain, uid());
 
 		if(rules.isEmpty())
-			throw EX.state(logsig(), " has no Domain Rules!");
+			return null;
 
 		if(rules.size() != 1)
-			throw EX.state(logsig(), " has multiple Domain Rules!");
+			throw EX.state(logsig(), " has multiple Domain Rules in [", domain, "]!");
 
 		if(!domain.equals(rules.get(0).getRelated().getPrimaryKey()))
 			throw EX.state(logsig(), " has Rule targeting not a Domain!");
@@ -200,7 +210,7 @@ public abstract class SecForceBase
 
 		if(link != null) LU.D(getLog(), logsig(), " ensured " ,
 		  (allow)?("ALLOW"):("FORBID"), " '", key, "' link [", link.getPrimaryKey(),
-		  "] on target ", target.getClass().getSimpleName(),
+		  "] on target ", HiberPoint.type(target).getSimpleName(),
 		  " [", target.getPrimaryKey(), ']'
 		);
 	}
@@ -216,7 +226,8 @@ public abstract class SecForceBase
 
 		LU.D(getLog(), logsig(), " removed '", key, "' link [",
 		  link.getPrimaryKey(), "] on target ",
-		  target.getClass().getSimpleName(), " [", target.getPrimaryKey(), ']'
+		  HiberPoint.type(target).getSimpleName(),
+		  " [", target.getPrimaryKey(), ']'
 		);
 	}
 

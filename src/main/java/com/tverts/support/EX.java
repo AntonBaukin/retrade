@@ -150,4 +150,9 @@ public class EX
 	{
 		return new ForbiddenException(SU.s2s(SU.cats(msg)));
 	}
+
+	public static RuntimeException unop(Object... msg)
+	{
+		return new UnsupportedOperationException(SU.s2s(SU.cats(msg)));
+	}
 }
