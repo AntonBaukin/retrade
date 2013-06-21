@@ -106,10 +106,13 @@ public class ActLogin extends ActionBuilderXRoot
 		if(l.getCreateTime() == null)
 			l.setCreateTime(new java.util.Date());
 
-		//~: save the store
+		//~: send created event
+		reactCreated(abr);
+
+		//~: save the login
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
-		//~: set store unity (is executed first!)
+		//~: set login unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr),
 		  ActUnity.UNITY_TYPE, getUnityType());
 
