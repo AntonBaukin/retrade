@@ -7,6 +7,7 @@ import java.util.List;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.endure.secure.SecSet;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -32,6 +33,7 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: events */
 
+import com.tverts.event.AbleEvent;
 import com.tverts.event.Event;
 import com.tverts.event.EventPoint;
 
@@ -146,11 +148,21 @@ public abstract class SecForceBase
 			rule.setForce(this.uid());
 
 		//~: related unity (Domain by default)
-		if((rule.getDomain() != null) && (rule.getRelated() == null))
+		if(rule.getRelated() == null)
 			rule.setRelated(rule.getDomain().getUnity());
+
+		//?: {hidden rule without title} set empty string
+		if(rule.isHidden() && (rule.getTitle() == null))
+			rule.setTitle("");
 
 		//!: act save
 		actionRun(ActionType.SAVE, rule);
+
+		if(LU.isD(getLog())) LU.D(getLog(), logsig(), " saved ",
+		  rule.isHidden()?("hidden "):(""), "rule on target ",
+		  rule.getRelated().getUnityType().getTypeClass().getSimpleName(),
+		  " [", rule.getRelated().getPrimaryKey(), "]"
+		);
 	}
 
 	protected SecRule loadDomainRule(Long domain)
@@ -166,7 +178,7 @@ public abstract class SecForceBase
 	protected SecRule findDomainRule(Long domain)
 	{
 		List<SecRule> rules = bean(GetSecure.class).
-		  selectRules(domain, uid());
+		  selectRelatedRules(domain, uid());
 
 		if(rules.isEmpty())
 			return null;
@@ -176,6 +188,21 @@ public abstract class SecForceBase
 
 		if(!domain.equals(rules.get(0).getRelated().getPrimaryKey()))
 			throw EX.state(logsig(), " has Rule targeting not a Domain!");
+
+		return rules.get(0);
+	}
+
+	protected SecRule findRelatedRule(Long related)
+	{
+		List<SecRule> rules = bean(GetSecure.class).
+		  selectRelatedRules(related, uid());
+
+		if(rules.isEmpty())
+			return null;
+
+		if(rules.size() != 1)
+			throw EX.state(logsig(), " has multiple Related Rules ",
+			  "for entity with pkey [", related, "]!");
 
 		return rules.get(0);
 	}
@@ -231,16 +258,38 @@ public abstract class SecForceBase
 		);
 	}
 
-	protected void    ensureAble(SecRule rule, AuthLogin login)
+	protected void    ensureAble(SecRule rule, AuthLogin login, SecSet set)
 	{
 		//~: create able instance
 		SecAble able = new SecAble();
 
-		able.setRule(rule);
+		//~: login
 		able.setLogin(login);
+
+		//~: rule
+		able.setRule(rule);
+
+		//~: set
+		able.setSet(set);
+
 
 		//!: ensure the action
 		actionRun(ActionType.ENSURE, able);
+	}
+
+	protected void    revokeAble(SecRule rule, Long login, Long set)
+	{
+		//?: {has no set} take the default
+		if(set == null) set = bean(GetSecure.class).getDefaultSecSet(
+		  rule.getDomain().getPrimaryKey()).getPrimaryKey();
+
+		//~: find able instance
+		SecAble able = bean(GetSecure.class).
+		  getSecAble(rule.getPrimaryKey(), login, set);
+
+		//?: {found it} delete
+		if(able != null)
+			actionRun(ActionType.DELETE, able);
 	}
 
 
@@ -280,6 +329,20 @@ public abstract class SecForceBase
 	protected boolean ist(Event e, Class cls)
 	{
 		return cls.isAssignableFrom(e.target().getClass());
+	}
+
+	protected boolean isOwnAble(Event e)
+	{
+		return (e instanceof AbleEvent) &&
+		  uid().equals(((SecAble) e.target()).getRule().getForce());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected boolean isAbleRelated(Event e, Class cls)
+	{
+		return (e instanceof AbleEvent) && cls.isAssignableFrom(
+		  ((SecAble) e.target()).getRule().getRelated().getUnityType().getTypeClass()
+		);
 	}
 
 

@@ -65,16 +65,26 @@ public class GetSecure extends GetObjectBase
 		return (SecRule) session().get(SecRule.class, pk);
 	}
 
+	/**
+	 * Finds the rules that related the Domain itself.
+	 * (Called as Domain, or root Rules.)
+	 */
 	@SuppressWarnings("unchecked")
-	public List<SecRule> selectRules(Long domain, String force)
+	public List<SecRule> selectRelatedRules(Long related, String force)
 	{
 
-// from SecRule where (domain.id = :domain) and (force = :force)
+/*
+
+ from SecRule where (related.id = :related) and (force = :force)
+
+*/
 
 		return (List<SecRule>) Q(
-"  from SecRule where (domain.id = :domain) and (force = :force)"
+
+"from SecRule where (related.id = :related) and (force = :force)"
+
 		).
-		  setLong("domain", domain).
+		  setLong("related", related).
 		  setString("force", force).
 		  list();
 	}
@@ -104,6 +114,7 @@ public class GetSecure extends GetObjectBase
 	{
 
 // from SecAble a where (a.login.id = :login) and (a.set.id = :set)
+
 		return (List<SecAble>) Q(
 
 "  from SecAble a where (a.login.id = :login) and (a.set.id = :set)"
@@ -223,17 +234,17 @@ public class GetSecure extends GetObjectBase
 /*
 
  select distinct r.id from SecAble a join a.rule r where
-   (r.domain = :domain) and a.login.id in
+   (r.domain = :domain) and (r.hidden = false) and a.login.id in
      (select si.object from SelItem si join si.selSet ss
-        where (ss.name = :set) and (ss.login.id = :login))
+       where (ss.name = :set) and (ss.login.id = :login))
 
  */
 		return (List<Long>) Q(
 
 "select distinct r.id from SecAble a join a.rule r where\n" +
-"   (r.domain = :domain) and a.login.id in\n" +
-"     (select si.object from SelItem si join si.selSet ss\n" +
-"        where (ss.name = :set) and (ss.login.id = :login))"
+"  (r.domain = :domain) and (r.hidden = false) and a.login.id in\n" +
+"    (select si.object from SelItem si join si.selSet ss\n" +
+"      where (ss.name = :set) and (ss.login.id = :login))"
 
 		).
 		  setLong("domain", domain).

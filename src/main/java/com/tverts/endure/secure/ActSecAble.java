@@ -16,6 +16,10 @@ import com.tverts.actions.ActionType;
 
 import com.tverts.endure.ActionBuilderXRoot;
 
+/* com.tverts: events */
+
+import com.tverts.event.AbleEvent;
+
 /* com.tverts: support */
 
 import com.tverts.support.logic.Predicate;
@@ -45,7 +49,7 @@ public class ActSecAble extends ActionBuilderXRoot
 
 	/* public: ActionBuilder interface */
 
-	public void    buildAction(ActionBuildRec abr)
+	public void       buildAction(ActionBuildRec abr)
 	{
 		if(ENSURE.equals(actionType(abr)))
 			ensureSecAble(abr);
@@ -60,27 +64,23 @@ public class ActSecAble extends ActionBuilderXRoot
 
 	/* protected: action methods */
 
-	protected void ensureSecAble(ActionBuildRec abr)
+	protected void    ensureSecAble(ActionBuildRec abr)
 	{
 		//?: {target is not a Secure Able}
 		checkTargetClass(abr, SecAble.class);
 
 		//?: {has no Secure Set} create the default
 		SecAble able = target(abr, SecAble.class);
-		boolean setx = (able.getSet() == null); if(setx)
-		{
-			SecSet s; able.setSet(s = new SecSet());
+		boolean setx = initDefaultSet(able);
 
-			//~: domain
-			s.setDomain(able.getDomain());
+		//~: the predicate
+		SecAbleMissing p = new SecAbleMissing();
 
-			//~: default name
-			s.setName("");
-		}
+		//~: able granted event  <-- executed after save
+		react(abr, p, new AbleEvent(true, able));
 
 		//~: save the able
-		chain(abr).first(new SaveNumericIdentified(task(abr)).
-		  setPredicate(new SecAbleMissing()));
+		chain(abr).first(new SaveNumericIdentified(task(abr)).setPredicate(p));
 
 		//?: {the default set was created here} ensure it
 		if(setx) xnest(abr, ActionType.ENSURE, able.getSet());
@@ -88,18 +88,28 @@ public class ActSecAble extends ActionBuilderXRoot
 		complete(abr);
 	}
 
-	protected void saveSecAble(ActionBuildRec abr)
+	protected void    saveSecAble(ActionBuildRec abr)
 	{
 		//?: {target is not a Secure Able}
 		checkTargetClass(abr, SecAble.class);
 
+		//?: {has no Secure Set} create the default
+		SecAble able = target(abr, SecAble.class);
+		boolean setx = initDefaultSet(able);
+
+		//~: able granted event  <-- executed after save
+		react(abr, null, new AbleEvent(true, able));
+
 		//~: save the able
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
+
+		//?: {the default set was created here} ensure it
+		if(setx) xnest(abr, ActionType.ENSURE, able.getSet());
 
 		complete(abr);
 	}
 
-	protected void deleteSecAble(ActionBuildRec abr)
+	protected void    deleteSecAble(ActionBuildRec abr)
 	{
 		//?: {target is not a Secure Able}
 		checkTargetClass(abr, SecAble.class);
@@ -107,7 +117,27 @@ public class ActSecAble extends ActionBuilderXRoot
 		//~: delete the able
 		chain(abr).first(new DeleteEntity(task(abr)));
 
+		//~: able revoked event  <-- executed before delete
+		react(abr, null, new AbleEvent(false,
+		  target(abr, SecAble.class)));
+
 		complete(abr);
+	}
+
+	protected boolean initDefaultSet(SecAble able)
+	{
+		if(able.getSet() != null)
+			return false;
+
+		SecSet s; able.setSet(s = new SecSet());
+
+		//~: domain
+		s.setDomain(able.getDomain());
+
+		//~: default name
+		s.setName("");
+
+		return true;
 	}
 
 
@@ -117,21 +147,26 @@ public class ActSecAble extends ActionBuilderXRoot
 	{
 		public boolean evalPredicate(Object ctx)
 		{
+			if(result != null) return result;
+
 			SecAble a = (SecAble) ((ActionWithTxBase)ctx).
 			  getTask().getTarget();
 
 			//~: search for the existing able
 			SecAble x = bean(GetSecure.class).getSecAble(
-			  a.getRule().getPrimaryKey(), a.getLogin().getPrimaryKey(),
+			  a.getRule().getPrimaryKey(),
+			  a.getLogin().getPrimaryKey(),
 			  a.getSet().getPrimaryKey()
 			);
-			if(x == null) return true;
+			if(x == null) return result = true;
 
 			//~: init the task able
 			a.setPrimaryKey(x.getPrimaryKey());
 			a.setAbleTime(x.getAbleTime());
 
-			return false;
+			return result = false;
 		}
+
+		private Boolean result;
 	}
 }

@@ -43,6 +43,21 @@
     </property>
 
 
+    <!-- Hidden Rule flag -->
+
+    <property name = 'hidden' type = 'boolean'>
+
+      <column name = 'is_hidden' not-null = 'true'
+        index = 'ix_sec_rule_title_lo'>
+
+        <comment>
+          Hidden rules are not visible in UI and maintained by Forces for their
+          special needs. Hidden rules has system information titles.
+        </comment>
+      </column>
+    </property>
+
+
     <!-- Title -->
 
     <property name = 'title'>

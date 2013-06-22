@@ -67,6 +67,23 @@ public class      SecRule
 		this.force = force;
 	}
 
+	/**
+	 * Hidden rules are not visible in UI
+	 * and maintained by Forces for their
+	 * special needs.
+	 *
+	 * Hidden rules has system information titles.
+	 */
+	public boolean isHidden()
+	{
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden)
+	{
+		this.hidden = hidden;
+	}
+
 	public String getTitle()
 	{
 		return title;
@@ -106,10 +123,12 @@ public class      SecRule
 
 	/* rule attributes & links */
 
-	private Domain domain;
-	private Unity  related;
-	private String force;
-	private String title;
-	private String titleLo;
-	private String data;
+	private Domain  domain;
+	private Unity   related;
+	private String  force;
+	private boolean hidden;
+
+	private String  title;
+	private String  titleLo;
+	private String  data;
 }

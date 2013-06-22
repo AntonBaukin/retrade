@@ -179,7 +179,7 @@ public class DomainKeyForce extends SecForceBase
 		SecRule rule   = loadDomainRule(domain);
 
 		//!: ensure the able
-		ensureAble(rule, e.target());
+		ensureAble(rule, e.target(), null);
 
 		LU.D(getLog(), logsig(), " now able for login [",
 		  e.target().getCode(), ']');

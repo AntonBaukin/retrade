@@ -365,20 +365,21 @@ public abstract class ActionBuilderBase
 
 	/* protected: domain events support */
 
-	protected Action        eventAction(ActionBuildRec abr, Event event)
+	protected ActionBase    eventAction(ActionBuildRec abr, Event event)
 	{
-		return new ActionsCollection.EventAction(abr.getTask(), event);
+		return new ActionsCollection.
+		  EventAction(abr.getTask(), event);
 	}
 
 	protected void          reactCreated(ActionBuildRec abr)
 	{
-		react(abr, new CreatedEvent(
+		react(abr, null, new CreatedEvent(
 		  target(abr, NumericIdentity.class)));
 	}
 
 	protected void          reactStateChanged(ActionBuildRec abr)
 	{
-		react(abr, new StateChangedEvent(
+		react(abr, null, new StateChangedEvent(
 		  target(abr, StatefulEntity.class)));
 	}
 
@@ -387,10 +388,10 @@ public abstract class ActionBuilderBase
 	 * inserts it as the first event to run. (Note
 	 * this when adding action to the chain!)
 	 */
-	protected void          react(ActionBuildRec abr, Event event)
+	protected void          react(ActionBuildRec abr, Predicate p, Event event)
 	{
-		chain(abr).first(
-		  new ActionsCollection.EventAction(abr.getTask(), event)
+		chain(abr).first(new ActionsCollection.
+		  EventAction(abr.getTask(), event).setPredicate(p)
 		);
 	}
 
