@@ -51,7 +51,7 @@
 
     <property name = 'title'>
 
-      <column name = 'title' length = '256'>
+      <column name = 'title' length = '255'>
         <comment>Type title</comment>
       </column>
     </property>
@@ -61,7 +61,7 @@
 
     <property name = 'titleLo'>
 
-      <column name = 'title_lo' length = '256'>
+      <column name = 'title_lo' length = '255'>
         <comment>Type title localized</comment>
       </column>
     </property>

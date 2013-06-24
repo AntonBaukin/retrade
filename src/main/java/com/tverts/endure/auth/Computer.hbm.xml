@@ -25,7 +25,7 @@
 
     <property name = 'code'>
 
-      <column name = 'ux_code' not-null = 'true' length = '256'
+      <column name = 'ux_code' not-null = 'true' length = '255'
         unique-key = 'ux_computer_code'>
 
         <comment>Unique (within the Domain) code of the Computer</comment>

@@ -40,7 +40,7 @@
 
     <property name = 'code' lazy = 'false'>
 
-      <column name = 'ux_code' not-null = 'true' length = '256'
+      <column name = 'ux_code' not-null = 'true' length = '255'
         unique-key = 'ux_cat_item_code_'>
 
         <comment>Unique (within the Domain) code of the Catalogue Item</comment>
