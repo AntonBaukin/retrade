@@ -64,4 +64,22 @@ public class GetTree extends GetObjectBase
 		  setString("code", code).
 		  uniqueResult();
 	}
+
+
+	/* Get Tree Items */
+
+	public TreeItem getTreeItem(Long folder, Long unity)
+	{
+
+// from TreeItem where (folder.id = :folder) and (item.id = :unity)
+
+		return (TreeItem) Q(
+
+"  from TreeItem where (folder.id = :folder) and (item.id = :unity)"
+
+		).
+		  setLong("folder", folder).
+		  setLong("unity",  unity).
+		  uniqueResult();
+	}
 }
