@@ -46,6 +46,13 @@
 
 
   <!--=================================================
+    =  Action Bulders for Trees                       =
+    +================================================-->
+
+  <import resource = 'tree.xml'/>
+
+
+  <!--=================================================
     =  Domain Model Core Actions                      =
     +==================================================
     |
@@ -72,6 +79,7 @@
         <ref bean = 'secAbleBuilders'/>
         <ref bean = 'secLinkBuilders'/>
         <ref bean = 'corePersonBuilders'/>
+        <ref bean = 'treeDomainBuilders'/>
 
       </list>
     </property>

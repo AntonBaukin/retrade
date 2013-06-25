@@ -134,8 +134,7 @@ public abstract class ActionBase implements Action
 	 * must be actually invoked. May be invoked
 	 * in each phase of action processing.
 	 *
-	 * By default it affects the execution of open
-	 * (validation) and the trigger (execution) phases.
+	 * By default it affects the execution phase only.
 	 */
 	protected boolean       isPredicate()
 	{
