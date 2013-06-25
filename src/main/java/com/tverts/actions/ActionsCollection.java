@@ -30,6 +30,7 @@ import com.tverts.event.EventPoint;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
+import com.tverts.support.logic.Predicate;
 
 
 /**
@@ -40,6 +41,22 @@ import com.tverts.support.LU;
  */
 public class ActionsCollection
 {
+	/* ensure predicate */
+
+	public static interface EnsurePredicate extends Predicate
+	{
+		/* public: EnsurePredicate interface */
+
+		/**
+		 * Invoked only after predicate evaluation.
+		 * If instance already exists (and predicate had
+		 * returned false), must return that instance
+		 * to be the result of action execution.
+		 */
+		public NumericIdentity getExistingInstance();
+	}
+
+
 	/* save primary instance */
 
 	/**
@@ -155,7 +172,15 @@ public class ActionsCollection
 
 		public Object  getResult()
 		{
-			return getSaveTarget();
+			NumericIdentity e = null;
+
+			if(getPredicate() instanceof EnsurePredicate)
+				e = ((EnsurePredicate)getPredicate()).getExistingInstance();
+
+			if(e == null)
+				e =  getSaveTarget();
+
+			return e;
 		}
 
 

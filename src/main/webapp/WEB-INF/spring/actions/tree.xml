@@ -19,4 +19,16 @@
     </property>
   </bean>
 
+
+  <bean name  = 'treeFolderBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.tree.TreeFolder'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.tree.ActTreeFolder'/>
+    </property>
+  </bean>
+
 </beans>

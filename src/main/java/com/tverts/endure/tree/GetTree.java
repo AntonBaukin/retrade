@@ -46,4 +46,22 @@ public class GetTree extends GetObjectBase
 		  UnityTypes.unityType(TreeDomain.class, type)
 		);
 	}
+
+
+	/* Get Tree Folders */
+
+	public TreeFolder getFolder(Long treeDomain, String code)
+	{
+
+// from TreeFolder where (domain.id = :domain) and (code = :code)
+
+		return (TreeFolder) Q(
+
+"  from TreeFolder where (domain.id = :domain) and (code = :code)"
+
+		).
+		  setLong("domain", treeDomain).
+		  setString("code", code).
+		  uniqueResult();
+	}
 }

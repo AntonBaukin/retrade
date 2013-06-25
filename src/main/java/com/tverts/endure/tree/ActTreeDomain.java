@@ -25,7 +25,7 @@ import com.tverts.support.logic.Predicate;
 
 
 /**
- * Actions builder on a {@link TreeDomain} entities.
+ * Actions builder on {@link TreeDomain} entities.
  *
  * @author anton.baukin@gmail.com
  */
@@ -115,10 +115,10 @@ public class ActTreeDomain extends ActionBuilderXRoot
 
 		public boolean evalPredicate(Object ctx)
 		{
-			TreeDomain tf = (TreeDomain) ((Action) ctx).getTask().getTarget();
+			TreeDomain td = (TreeDomain) ((Action) ctx).getTask().getTarget();
 
 			return (bean(GetTree.class).
-			  getDomain(tf.getDomain().getPrimaryKey(), treeType) == null);
+			  getDomain(td.getDomain().getPrimaryKey(), treeType) == null);
 		}
 
 		protected final UnityType treeType;

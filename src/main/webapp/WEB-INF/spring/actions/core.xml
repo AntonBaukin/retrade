@@ -80,6 +80,7 @@
         <ref bean = 'secLinkBuilders'/>
         <ref bean = 'corePersonBuilders'/>
         <ref bean = 'treeDomainBuilders'/>
+        <ref bean = 'treeFolderBuilders'/>
 
       </list>
     </property>

@@ -37,17 +37,6 @@
     </many-to-one>
 
 
-    <!-- Parent Tree Folder reference -->
-
-    <many-to-one name = 'parent' foreign-key = 'fk_tree_folder_parent'>
-
-      <column name = 'fk_parent' index = 'ix_tree_folder_parent'>
-
-        <comment>Parent Folder of this Folder (not for roots) </comment>
-      </column>
-    </many-to-one>
-
-
     <!-- Code -->
 
     <property name = 'code' lazy = 'false'>
@@ -68,6 +57,17 @@
         <comment>The name of the Folder</comment>
       </column>
     </property>
+
+
+    <!-- Parent Tree Folder reference -->
+
+    <many-to-one name = 'parent' foreign-key = 'fk_tree_folder_parent'>
+
+      <column name = 'fk_parent' index = 'ix_tree_folder_parent'>
+
+        <comment>Parent Folder of this Folder (not for roots) </comment>
+      </column>
+    </many-to-one>
 
   </class>
 </hibernate-mapping>
