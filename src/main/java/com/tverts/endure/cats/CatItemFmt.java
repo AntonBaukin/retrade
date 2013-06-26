@@ -21,7 +21,8 @@ public class CatItemFmt extends FmtBase
 {
 	protected boolean isKnown(Object obj)
 	{
-		return (obj instanceof CatItem);
+		return (obj instanceof CatItem) ||
+		  (obj instanceof NamedEntity) && (obj instanceof CodedEntity);
 	}
 
 	protected boolean isFlags(FmtCtx ctx)
@@ -32,12 +33,19 @@ public class CatItemFmt extends FmtBase
 	protected String  format(FmtCtx ctx)
 	{
 		StringBuilder s = new StringBuilder(64);
-		CatItem       o = (CatItem) ctx.obj();
+
+		String        c = (ctx.obj() instanceof CatItem)
+		  ?(((CatItem) ctx.obj()).getCode())
+		  :(((CodedEntity) ctx.obj()).getCode());
+
+		String        n = (ctx.obj() instanceof CatItem)
+		  ?(((CatItem) ctx.obj()).getName())
+		  :(((NamedEntity) ctx.obj()).getName());
 
 		//?: {unity type name}
-		if(ctx.is(TYPE) && (o instanceof United))
+		if(ctx.is(TYPE) && (ctx.obj() instanceof United))
 		{
-			Unity     u = ((United)o).getUnity();
+			Unity     u = ((United) ctx.obj()).getUnity();
 			UnityType t = (u == null)?(null):(u.getUnityType());
 
 			if(t != null) if(t.getTitleLo() != null)
@@ -50,10 +58,11 @@ public class CatItemFmt extends FmtBase
 		}
 
 		//~: code
-		s.append('№').append(o.getCode()).append(' ');
+		if(ctx.is(CODE))
+			s.append('[').append(c).append("] ");
 
 		//~: name
-		s.append(o.getName());
+		s.append(n);
 
 		return s.toString();
 	}

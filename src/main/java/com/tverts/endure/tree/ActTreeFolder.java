@@ -99,17 +99,20 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		//?: {target is not a Tree Folder}
 		checkTargetClass(abr, TreeFolder.class);
 
+		//?: {set test primary key}
+		TreeFolder f = target(abr, TreeFolder.class);
+		if((f.getPrimaryKey() == null))
+			if(isTestInstance(f.getDomain()))
+				setPrimaryKey(session(abr), f, true);
+
 		//~: folder missing predicate
 		Predicate p = !ensure?(null):(new TreeFolderMissing());
 
 		//~: save the folder
-		chain(abr).first(new SaveNumericIdentified(task(abr)).
-		  setForceTest(isTestInstance(target(abr, TreeFolder.class).getDomain())).
-		  setPredicate(p)
-		);
+		chain(abr).first(new SaveNumericIdentified(task(abr)).setPredicate(p));
 
 		//~: set tree domain unity (is executed first!)
-		xnest(abr, ActUnity.CREATE, target(abr),
+		xnest(abr, ActUnity.CREATE, f,
 		  PREDICATE, p, ActUnity.UNITY_TYPE, getUnityType(abr)
 		);
 

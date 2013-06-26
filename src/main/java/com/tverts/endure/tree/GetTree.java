@@ -17,6 +17,10 @@ import com.tverts.hibery.GetObjectBase;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Loads {@link TreeDomain}, {@link TreeFolder},
@@ -82,6 +86,17 @@ public class GetTree extends GetObjectBase
 		  list();
 	}
 
+	public List<TreeFolder> selectFolders(Long domain, String treeType)
+	{
+		//~: find domain
+		TreeDomain td = getDomain(domain, treeType);
+		if(td == null) throw EX.state(
+		  "Domain [", domain, "] has no Tree Domain named [",
+		  treeType, "]!"
+		);
+
+		return selectFolders(td);
+	}
 
 	/* Get Tree Items */
 

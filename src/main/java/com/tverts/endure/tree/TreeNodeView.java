@@ -56,6 +56,16 @@ public class TreeNodeView implements java.io.Serializable
 		this.parentKey = parentKey;
 	}
 
+	public Long getItemKey()
+	{
+		return itemKey;
+	}
+
+	public void setItemKey(Long itemKey)
+	{
+		this.itemKey = itemKey;
+	}
+
 	public String getCode()
 	{
 		return code;
@@ -139,6 +149,8 @@ public class TreeNodeView implements java.io.Serializable
 		if(u instanceof NamedEntity)
 			name = ((NamedEntity)u).getName();
 
+		itemKey = u.getPrimaryKey();
+
 		return this;
 	}
 
@@ -147,6 +159,7 @@ public class TreeNodeView implements java.io.Serializable
 
 	private Long    objectKey;
 	private Long    parentKey;
+	private Long    itemKey;
 	private String  code;
 	private String  name;
 	private boolean leaf;

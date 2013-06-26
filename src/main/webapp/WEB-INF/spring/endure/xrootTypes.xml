@@ -44,12 +44,6 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Tree Folder
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.tree.TreeFolder   Core: Tree Folder;
-
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · External Computer System client registration
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.auth.Computer   Core: Auth: Computer;
