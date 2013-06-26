@@ -233,7 +233,7 @@ public abstract class SecForceBase
 		if(!allow) link.setDeny();
 
 		//!: ensure the link
-		link = actionResult(actionRun(ActionType.ENSURE, link), SecLink.class);
+		link = actionResult(SecLink.class, actionRun(ActionType.ENSURE, link));
 
 		if(link != null) LU.D(getLog(), logsig(), " ensured " ,
 		  (allow)?("ALLOW"):("FORBID"), " '", key, "' link [", link.getPrimaryKey(),

@@ -1,10 +1,10 @@
 package com.tverts.endure.tree;
 
-/* com.tverts: endure (core) */
+/* com.tverts: endure (core + catalogues) */
 
-import com.tverts.endure.NumericBase;
-import com.tverts.endure.PrimaryIdentity;
-import com.tverts.endure.TxEntity;
+import com.tverts.endure.core.Entity;
+import com.tverts.endure.cats.CodedEntity;
+import com.tverts.endure.cats.NamedEntity;
 
 
 /**
@@ -13,8 +13,8 @@ import com.tverts.endure.TxEntity;
  * @author anton.baukin@gmail.com
  */
 public class      TreeFolder
-       extends    NumericBase
-       implements PrimaryIdentity, TxEntity
+       extends    Entity
+       implements CodedEntity, NamedEntity
 {
 	/* public: TreeFolder (bean) interface */
 
@@ -59,21 +59,6 @@ public class      TreeFolder
 	public void setName(String name)
 	{
 		this.name = name;
-	}
-
-
-	/* public: TxEntity interface */
-
-	public Long getTxn()
-	{
-		return (txn == 0L)?(null):(txn);
-	}
-
-	private long txn;
-
-	public void setTxn(Long txn)
-	{
-		this.txn = (txn == null)?(0L):(txn);
 	}
 
 

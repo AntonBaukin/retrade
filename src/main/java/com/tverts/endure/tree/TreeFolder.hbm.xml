@@ -5,24 +5,8 @@
 
 <hibernate-mapping package = 'com.tverts.endure.tree'>
 
-  <class name = 'TreeFolder' lazy = 'true' table = 'tree_folder'>
-
-
-    <!-- Primary Key -->
-
-    <id name = 'primaryKey' column = 'pk_tree_folder'/>
-
-
-    <!-- Transaction Number -->
-
-    <property name = 'txn'>
-
-      <column name = 'txn' not-null = 'true'
-        index = 'ix_tree_folder_txn'>
-
-        <comment>Transaction Number (txn)</comment>
-      </column>
-    </property>
+  <union-subclass name = 'TreeFolder' extends = 'com.tverts.endure.core.Entity'
+    table = 'tree_folder' lazy = 'true'>
 
 
     <!-- Tree Domain reference -->
@@ -69,5 +53,5 @@
       </column>
     </many-to-one>
 
-  </class>
+  </union-subclass>
 </hibernate-mapping>

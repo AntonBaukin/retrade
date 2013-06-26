@@ -1,5 +1,9 @@
 package com.tverts.endure.tree;
 
+/* standard Java classes */
+
+import java.util.List;
+
 /* Spring Framework */
 
 import org.springframework.stereotype.Component;
@@ -63,6 +67,19 @@ public class GetTree extends GetObjectBase
 		  setLong("domain", treeDomain).
 		  setString("code", code).
 		  uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TreeFolder> selectFolders(TreeDomain domain)
+	{
+
+// from TreeFolder where (domain = :domain)
+
+		return (List<TreeFolder>) Q(
+		  "from TreeFolder where (domain = :domain)"
+		).
+		  setParameter("domain", domain).
+		  list();
 	}
 
 

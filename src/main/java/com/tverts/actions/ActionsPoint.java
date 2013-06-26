@@ -132,7 +132,7 @@ public class ActionsPoint
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <O> O         actionResult(ActionTrigger trigger, Class<O> cls)
+	public static <O> O         actionResult(Class<O> cls, ActionTrigger trigger)
 	{
 		for(Action o : trigger.getActionContext().getChain())
 		{

@@ -15,17 +15,12 @@ import com.tverts.endure.core.DomainEntity;
  *
  * @author anton.baukin@gmail.com
  */
-public interface CatItem extends NumericIdentity, DomainEntity
+public interface CatItem
+        extends  NumericIdentity,
+                 DomainEntity,
+                 CodedEntity, NamedEntity
 {
-	/* public: CatItem (bean) interface */
+	/* public: CatItem interface */
 
-	public String  getCode();
-
-	public void    setCode(String code);
-
-	public String  getName();
-
-	public void    setName(String name);
-
-	public void    setDomain(Domain domain);
+	public void setDomain(Domain domain);
 }

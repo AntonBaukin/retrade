@@ -24,6 +24,9 @@ import com.tverts.actions.ActionType;
 import com.tverts.endure.ActionBuilderXRoot;
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.United;
+import com.tverts.endure.UnityType;
+import com.tverts.endure.UnityTypes;
+import com.tverts.endure.core.ActUnity;
 
 /* com.tverts: support */
 
@@ -59,6 +62,12 @@ public class ActTreeFolder extends ActionBuilderXRoot
 
 
 	/* parameters */
+
+	/**
+	 * Unity Type of the Folder to add.
+	 */
+	public static final String PARAM_TYPE =
+	  ActTreeFolder.class.getName() + ": type";
 
 	/**
 	 * Parameter with {@link United} instance to
@@ -99,6 +108,11 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		  setPredicate(p)
 		);
 
+		//~: set tree domain unity (is executed first!)
+		xnest(abr, ActUnity.CREATE, target(abr),
+		  PREDICATE, p, ActUnity.UNITY_TYPE, getUnityType(abr)
+		);
+
 		complete(abr);
 	}
 
@@ -115,6 +129,23 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		chain(abr).first(new AddToFolderAction(task(abr), u));
 
 		complete(abr);
+	}
+
+
+	/* protected: actions build support */
+
+	protected UnityType getUnityType(ActionBuildRec abr)
+	{
+		Object type = param(abr, PARAM_TYPE);
+
+		if(type instanceof UnityType)
+			return (UnityType) type;
+
+		if(type instanceof String)
+			return UnityTypes.unityType(TreeFolder.class, (String)type);
+
+		throw EX.state(getClass().getSimpleName(),
+		  " has no Tree Folder Type parameter!");
 	}
 
 
