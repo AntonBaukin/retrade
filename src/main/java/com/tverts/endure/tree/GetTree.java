@@ -58,6 +58,11 @@ public class GetTree extends GetObjectBase
 
 	/* Get Tree Folders */
 
+	public TreeFolder getFolder(Long pk)
+	{
+		return (TreeFolder) session().get(TreeFolder.class, pk);
+	}
+
 	public TreeFolder getFolder(Long treeDomain, String code)
 	{
 
