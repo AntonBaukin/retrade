@@ -213,10 +213,12 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		protected void execute()
 		  throws Throwable
 		{
+			TreeFolder folder = target(TreeFolder.class);
+			boolean    testit = isTestInstance(folder);
+
 			//~: search the item already existing in the folder
 			item = bean(GetTree.class).getTreeItem(
-			  target(TreeFolder.class).getPrimaryKey(),
-			  unity.getPrimaryKey()
+			  folder.getPrimaryKey(), unity.getPrimaryKey()
 			);
 
 			//?: {found it} nothing to do
@@ -226,18 +228,41 @@ public class ActTreeFolder extends ActionBuilderXRoot
 			item = new TreeItem();
 
 			//~: primary key
-			setPrimaryKey(session(), item,
-			  isTestInstance(target(TreeFolder.class)));
+			setPrimaryKey(session(), item, testit);
 
 			//~: folder
-			item.setFolder(target(TreeFolder.class));
+			item.setFolder(folder);
 
 			//~: item unity
 			item.setItem(unity.getUnity());
 
 
-			//!: do save
+			//!: do save the item
 			session().save(item);
+
+
+			//~: save cross-links
+			TreeFolder f = folder;
+
+			while(f != null)
+			{
+				TreeCross c = new TreeCross();
+
+				//~: primary key
+				setPrimaryKey(session(), c, testit);
+
+				//~: folder
+				c.setFolder(f);
+
+				//~: item
+				c.setItem(item);
+
+				//!: save the cross
+				session().save(c);
+
+				//~: go to the upper folder
+				f = f.getParent();
+			}
 		}
 
 

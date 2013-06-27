@@ -1,0 +1,41 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.tree'>
+
+  <class name = 'TreeCross' lazy = 'true' table = 'tree_cross'>
+
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_tree_cross'/>
+
+
+    <!-- Tree Folder reference -->
+
+    <many-to-one name = 'folder' foreign-key = 'fk_tree_cross_folder'>
+
+      <column name = 'fk_folder' not-null = 'true'
+        unique-key = 'ux_tree_cross_item'>
+
+        <comment>Tree Folder linked with the Item</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Item reference -->
+
+    <many-to-one name = 'item' foreign-key = 'fk_tree_cross_item'
+      cascade = 'delete'>
+
+      <column name = 'fk_item' not-null = 'true'
+        unique-key = 'ux_tree_cross_item' index = 'ix_tree_cross_item'>
+
+        <comment>Tree Item crossed with it's Folder ancestors</comment>
+      </column>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>
