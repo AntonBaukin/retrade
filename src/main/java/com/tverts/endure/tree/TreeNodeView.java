@@ -21,6 +21,10 @@ import com.tverts.endure.cats.NamedEntity;
  * as intermediate node, or a {@link TreeItem} as
  * a leaf node.
  *
+ * This view is also used to update the tree. In this
+ * case primary keys of items and folders may be like
+ * "$\d+": the key of a new folder or item.
+ *
  *
  * @author anton.baukin@gmail.com
  */
@@ -32,26 +36,26 @@ public class TreeNodeView implements java.io.Serializable
 
 	/* public: bean interface */
 
-	/**
-	 * Primary key of Folder (if not leaf),
-	 * or Item (if leaf).
-	 */
-	public Long getObjectKey()
+	public String getObjectKey()
 	{
 		return objectKey;
 	}
 
-	public void setObjectKey(Long objectKey)
+	public void setObjectKey(String objectKey)
 	{
 		this.objectKey = objectKey;
 	}
 
-	public Long getParentKey()
+	public String getParentKey()
 	{
 		return parentKey;
 	}
 
-	public void setParentKey(Long parentKey)
+	/**
+	 * Primary key of Folder (if not leaf),
+	 * or Item (if leaf).
+	 */
+	public void setParentKey(String parentKey)
 	{
 		this.parentKey = parentKey;
 	}
@@ -122,9 +126,9 @@ public class TreeNodeView implements java.io.Serializable
 
 	public TreeNodeView init(TreeFolder f)
 	{
-		objectKey = f.getPrimaryKey();
+		objectKey = f.getPrimaryKey().toString();
 		parentKey = (f.getParent() == null)?(null):
-		  (f.getParent().getPrimaryKey());
+		  (f.getParent().getPrimaryKey().toString());
 
 		code      = f.getCode();
 		name      = f.getName();
@@ -134,8 +138,8 @@ public class TreeNodeView implements java.io.Serializable
 
 	public TreeNodeView init(TreeItem i)
 	{
-		objectKey = i.getPrimaryKey();
-		parentKey = i.getFolder().getPrimaryKey();
+		objectKey = i.getPrimaryKey().toString();
+		parentKey = i.getFolder().getPrimaryKey().toString();
 		leaf      = true;
 
 		return this;
@@ -157,8 +161,8 @@ public class TreeNodeView implements java.io.Serializable
 
 	/* tree node properties */
 
-	private Long    objectKey;
-	private Long    parentKey;
+	private String  objectKey;
+	private String  parentKey;
 	private Long    itemKey;
 	private String  code;
 	private String  name;
