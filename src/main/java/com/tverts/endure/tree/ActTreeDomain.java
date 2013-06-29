@@ -35,6 +35,7 @@ import com.tverts.actions.ActionWithTxBase;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.ActionBuilderXRoot;
+import com.tverts.endure.United;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
@@ -72,6 +73,14 @@ public class ActTreeDomain extends ActionBuilderXRoot
 	public static final ActionType UPDATE_FOLDERS =
 	  new ActionType(TreeDomain.class, "update-folders");
 
+	/**
+	 * Removes {@link United} instance defined
+	 * by the parameter {@link #PARAM_ITEM}
+	 * from all the folders of the tree.
+	 */
+	public static final ActionType DELETE_ITEM    =
+	  new ActionType(TreeDomain.class, "delete-item");
+
 
 	/* parameters */
 
@@ -89,6 +98,12 @@ public class ActTreeDomain extends ActionBuilderXRoot
 	public static final String PARAM_FOLDERS =
 	  ActTreeFolder.class.getName() + ": folders";
 
+	/**
+	 * {@link United} instance to process.
+	 */
+	public static final String PARAM_ITEM    =
+	  ActTreeFolder.class.getName() + ": item";
+
 
 	/* public: ActionBuilder interface */
 
@@ -102,6 +117,9 @@ public class ActTreeDomain extends ActionBuilderXRoot
 
 		if(UPDATE_FOLDERS.equals(actionType(abr)))
 			updateTreeFolders(abr);
+
+		if(DELETE_ITEM.equals(actionType(abr)))
+			deleteItemFromAllFolders(abr);
 	}
 
 
@@ -150,6 +168,23 @@ public class ActTreeDomain extends ActionBuilderXRoot
 		complete(abr);
 	}
 
+	protected void deleteItemFromAllFolders(ActionBuildRec abr)
+	{
+		//?: {target is not a Tree Domain}
+		checkTargetClass(abr, TreeDomain.class);
+
+		//?: {has no folder type parameter}
+		if(param(abr, ActTreeFolder.PARAM_ITEM) == null)
+			throw EX.arg("No Unity Item parameter set!");
+
+		//~: remove the item
+		chain(abr).first(new DeleteItemFromAllFolders(task(abr),
+		  param(abr, PARAM_ITEM, United.class)
+		));
+
+		complete(abr);
+	}
+
 
 	/* protected: actions build support */
 
@@ -193,12 +228,12 @@ public class ActTreeDomain extends ActionBuilderXRoot
 	}
 
 
-	/* existing predicate */
+	/* action to update tree folders */
 
 	protected static class UpdateTreeFoldersAction
 	          extends      ActionWithTxBase
 	{
-		/* constrictor */
+		/* constructor */
 
 		public UpdateTreeFoldersAction(ActionTask task)
 		{
@@ -477,5 +512,65 @@ public class ActTreeDomain extends ActionBuilderXRoot
 
 		private Collection<TreeNodeView> nodes;
 		private Object folderType;
+	}
+
+
+	/* action to remove United from any folders */
+
+	protected static class DeleteItemFromAllFolders
+	          extends      ActionWithTxBase
+	{
+		/* constructor */
+
+		public DeleteItemFromAllFolders(ActionTask task, United unity)
+		{
+			super(task);
+			this.unity = unity;
+		}
+
+
+		/* public: action interface */
+
+		public Object getResult()
+		{
+			return unity;
+		}
+
+
+		/* protected: ActionBase interface */
+
+		protected void   execute()
+		  throws Throwable
+		{
+			TreeDomain domain = target(TreeDomain.class);
+
+			//~: load tree items affected
+			List<TreeItem> items = bean(GetTree.class).
+			  getTreeItems(domain, unity.getPrimaryKey());
+
+// delete from TreeCross where (item.id = :item)
+
+			Query query = session().createQuery(
+"  delete from TreeCross where (item.id = :item)"
+			);
+
+			//~: delete them
+			for(TreeItem i : items)
+			{
+				//~: delete the crosses
+				query.setLong("item", i.getPrimaryKey()).executeUpdate();
+
+				session().delete(i);
+
+			}
+
+			//~: flush the results
+			session().flush();
+		}
+
+
+		/* the united instance to remove */
+
+		private United unity;
 	}
 }

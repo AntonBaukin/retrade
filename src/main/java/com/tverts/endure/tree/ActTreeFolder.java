@@ -184,7 +184,7 @@ public class ActTreeFolder extends ActionBuilderXRoot
 	}
 
 
-	/* folder item exists predicate */
+	/* action to add United to the folder */
 
 	protected static class AddToFolderAction
 	          extends      ActionWithTxBase

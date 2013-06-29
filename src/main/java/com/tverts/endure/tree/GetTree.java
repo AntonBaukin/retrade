@@ -103,6 +103,7 @@ public class GetTree extends GetObjectBase
 		return selectFolders(td);
 	}
 
+
 	/* Get Tree Items */
 
 	public TreeItem getTreeItem(Long folder, Long unity)
@@ -118,5 +119,21 @@ public class GetTree extends GetObjectBase
 		  setLong("folder", folder).
 		  setLong("unity",  unity).
 		  uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TreeItem> getTreeItems(TreeDomain domain, Long unity)
+	{
+
+// from TreeItem where (folder.domain = :domain) and (item.id = :unity)
+
+		return (List<TreeItem>) Q(
+
+"  from TreeItem where (folder.domain = :domain) and (item.id = :unity)"
+
+		).
+		  setParameter("domain", domain).
+		  setLong     ("unity",  unity).
+		  list();
 	}
 }

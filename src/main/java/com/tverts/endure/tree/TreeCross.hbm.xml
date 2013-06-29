@@ -27,8 +27,7 @@
 
     <!-- Item reference -->
 
-    <many-to-one name = 'item' foreign-key = 'fk_tree_cross_item'
-      cascade = 'delete'>
+    <many-to-one name = 'item' foreign-key = 'fk_tree_cross_item'>
 
       <column name = 'fk_item' not-null = 'true'
         unique-key = 'ux_tree_cross_item' index = 'ix_tree_cross_item'>
