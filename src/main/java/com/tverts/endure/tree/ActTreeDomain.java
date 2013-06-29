@@ -26,10 +26,11 @@ import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 import com.tverts.actions.Action;
 import com.tverts.actions.ActionBuildRec;
+import static com.tverts.actions.ActionsPoint.actionRun;
 import com.tverts.actions.ActionTask;
-import com.tverts.actions.ActionWithTxBase;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
+import com.tverts.actions.ActionWithTxBase;
 
 /* com.tverts: endure (core) */
 
@@ -63,6 +64,10 @@ public class ActTreeDomain extends ActionBuilderXRoot
 	/**
 	 * Updates the Folders tree (not the Items!)
 	 * using {@link #PARAM_FOLDERS} parameter.
+	 *
+	 * This action must has parameter
+	 * {@link ActTreeFolder#PARAM_TYPE}
+	 * with type of new folders.
 	 */
 	public static final ActionType UPDATE_FOLDERS =
 	  new ActionType(TreeDomain.class, "update-folders");
@@ -132,9 +137,15 @@ public class ActTreeDomain extends ActionBuilderXRoot
 		if((folders == null) || folders.isEmpty())
 			throw EX.arg("No (or empty) Folders collection (PARAM_FOLDERS) given!");
 
+		//?: {has no folder type parameter}
+		if(param(abr, ActTreeFolder.PARAM_TYPE) == null)
+			throw EX.arg("No Folders Type parameter!");
+
 		//~: update the domain
-		chain(abr).first(new UpdateTreeFoldersAction(task(abr),
-		  (Collection<TreeNodeView>) folders));
+		chain(abr).first(new UpdateTreeFoldersAction(task(abr)).
+		  setNodes((Collection<TreeNodeView>) folders).
+		  setFolderType(param(abr, ActTreeFolder.PARAM_TYPE))
+		);
 
 		complete(abr);
 	}
@@ -189,12 +200,24 @@ public class ActTreeDomain extends ActionBuilderXRoot
 	{
 		/* constrictor */
 
-		public UpdateTreeFoldersAction
-		  (ActionTask task, Collection<TreeNodeView> nodes)
+		public UpdateTreeFoldersAction(ActionTask task)
 		{
 			super(task);
-			if(nodes == null) throw EX.arg();
+		}
+
+
+		/* public: bean interface */
+
+		public UpdateTreeFoldersAction setNodes(Collection<TreeNodeView> nodes)
+		{
 			this.nodes = nodes;
+			return this;
+		}
+
+		public UpdateTreeFoldersAction setFolderType(Object folderType)
+		{
+			this.folderType = folderType;
+			return this;
 		}
 
 
@@ -284,7 +307,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			//2: insert new folders
 			for(TreeNodeView n : nodes)
 			{
-				//~: skip new folders
+				//~: skip existing folders
 				if(!n.getObjectKey().startsWith("$"))
 					continue;
 
@@ -308,7 +331,9 @@ public class ActTreeDomain extends ActionBuilderXRoot
 				f.setName(n.getName());
 
 				//!: save it
-				session().save(f);
+				actionRun(ActTreeFolder.SAVE, f,
+				  ActTreeFolder.PARAM_TYPE, folderType
+				);
 
 				fkeys.put(f.getPrimaryKey().toString(), f);
 				fkeys.put(n.getObjectKey(), f); //<-- also it's $-key
@@ -339,7 +364,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			for(TreeNodeView n : nodes)
 			{
 				TreeFolder f = fkeys.get(n.getObjectKey());
-				boolean    e = false;
+				boolean    e;
 
 				if(n.getParentKey() == null)
 				{
@@ -357,7 +382,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 					if(f.getParent() == null) throw EX.arg(
 					  "Parent Folder [", n.getParentKey(), "] not found!");
 
-					e = (p != null) && !p.equals(f.getParent());
+					e = (p == null) || !p.equals(f.getParent());
 				}
 
 				//~: execute query to delete crosses coming through this folder
@@ -451,5 +476,6 @@ public class ActTreeDomain extends ActionBuilderXRoot
 		/* the views parameter */
 
 		private Collection<TreeNodeView> nodes;
+		private Object folderType;
 	}
 }
