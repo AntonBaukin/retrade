@@ -3,6 +3,7 @@
 <%@page import = 'static com.tverts.spring.SpringPoint.beanOrNull'%>
 <%@page import = 'com.tverts.faces.ModelView'%>
 <%@page import = 'com.tverts.model.DataSelectModel'%>
+<%@page import = 'com.tverts.model.DataSortModel'%>
 <%@page import = 'com.tverts.model.ModelAccessPoint'%>
 <%@page import = 'com.tverts.model.ModelBean'%>
 <%@page import = 'com.tverts.model.ModelPoint'%>
@@ -59,6 +60,22 @@ if(model instanceof DataSelectModel)
 
   if(s != null) ((DataSelectModel)model).setDataStart(s);
   if(l != null) ((DataSelectModel)model).setDataLimit(l);
+}
+
+
+//~: apply sort properties
+if(model instanceof DataSortModel)
+{
+  ((DataSortModel)model).clearSort();
+
+  for(int i = 0;;i++)
+  {
+    String p = s2s(request.getParameter("sortProperty" + i));
+    String d = s2s(request.getParameter("sortDesc" + i));
+    if(p == null) break;
+
+    ((DataSortModel)model).addSort(p, "true".equals(d));
+  }
 }
 
 
