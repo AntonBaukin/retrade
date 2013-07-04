@@ -322,7 +322,7 @@ public class DU
 		cl.set(Calendar.MILLISECOND, ms);
 	}
 
-	public static void   lennum(int num, int len, StringBuilder sb)
+	private static void  lennum(int num, int len, StringBuilder sb)
 	{
 		String str = Integer.toString(num);
 

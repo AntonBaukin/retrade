@@ -221,6 +221,19 @@ public class SU
 		return "0123456789".charAt(i);
 	}
 
+	public static String   lenum(int len, long num)
+	{
+		String        n = Long.toString(num);
+		StringBuilder s = new StringBuilder(
+		  (len > n.length())?(len):(n.length()));
+
+		for(int i = n.length();(i < len); i++)
+			s.append('0');
+		s.append(n);
+
+		return s.toString();
+	}
+
 
 	/* public: comparisons */
 
