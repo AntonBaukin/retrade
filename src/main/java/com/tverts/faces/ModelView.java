@@ -33,6 +33,7 @@ import com.tverts.secure.SecPoint;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import static com.tverts.support.SU.cat;
 import static com.tverts.support.SU.s2a;
 import static com.tverts.support.SU.s2s;
@@ -85,8 +86,20 @@ public abstract class ModelView
 		Domain d = (k == null)?(null):
 		  bean(GetDomain.class).getDomain(k);
 
-		if(d == null) throw new IllegalStateException(
-		  "Can't define working Domain!");
+		if(d == null) throw EX.state(
+		  "Can't obtain Model View working Domain!");
+
+		return d;
+	}
+
+	public Domain      loadModelDomain()
+	{
+		Long   k = getModel().getDomain();
+		Domain d = (k == null)?(null):
+		  bean(GetDomain.class).getDomain(k);
+
+		if(d == null) throw EX.state(
+		  "Can't obtain Model Domain!");
 
 		return d;
 	}

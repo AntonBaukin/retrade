@@ -93,4 +93,14 @@
     </converter-class>
   </converter>
 
+  <converter>
+    <converter-id>
+      com.tverts:fmt:decimal
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.DecimalConverter
+    </converter-class>
+  </converter>
+
 </faces-config>

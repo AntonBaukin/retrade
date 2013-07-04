@@ -72,16 +72,16 @@ public class CatItemView implements Serializable
 		return this;
 	}
 
-	public CatItemView init(CatItem ts)
+	public CatItemView init(CatItem ci)
 	{
 		//~: primary key
-		this.objectKey = ts.getPrimaryKey();
+		this.objectKey = ci.getPrimaryKey();
 
 		//~: code
-		this.code = ts.getCode();
+		this.code = ci.getCode();
 
 		//~: name
-		this.name = ts.getName();
+		this.name = ci.getName();
 
 		return this;
 	}

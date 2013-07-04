@@ -37,6 +37,8 @@ public interface ModelBean extends Serializable
 
 	public void      setActive(boolean active);
 
+	public Long      getDomain();
+
 
 	/* public: ModelBean (data access) interface */
 
