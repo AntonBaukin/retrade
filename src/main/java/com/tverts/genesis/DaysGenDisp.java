@@ -21,6 +21,7 @@ import com.tverts.objects.Param;
 /* com.tverts: support */
 
 import com.tverts.support.DU;
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 
 
@@ -76,8 +77,8 @@ public class DaysGenDisp extends GenesisPartBase
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		if(getEntries() == null) throw new IllegalStateException();
-		if(getDays() <= 0) throw new IllegalStateException();
+		if(getEntries() == null) throw EX.state();
+		if(getDays() <= 0) throw EX.state();
 
 		//~: the start day (inclusive)
 		Date curDay  = findFirstGenDate(ctx);
@@ -277,14 +278,14 @@ public class DaysGenDisp extends GenesisPartBase
 		Entry[] entries = selectEntries(ctx, genObjsNumber(ctx));
 		Map     inds    = new IdentityHashMap(getEntries().length);
 
-		//~: put initial indices (needed for logging)
+		//~: put initial in-day indices
 		for(Entry e : getEntries())
-		   inds.put(e, 0);
+			inds.put(e, 0);
 
 		//c: for all the objects number of the day
 		for(int ei = 0;(ei < entries.length);ei++)
 		{
-			//~: find the present per-day index
+			//~: find present per-day index
 			int i = (Integer)inds.get(entries[ei]);
 			inds.put(entries[ei], i + 1);
 
@@ -308,7 +309,7 @@ public class DaysGenDisp extends GenesisPartBase
 	  throws GenesisError
 	{
 		if(e.getGenesis() == null)
-			throw new IllegalStateException();
+			throw EX.state();
 
 		//~: clone the genesis before the invocation
 		Genesis g = e.getGenesis().clone();
@@ -334,40 +335,30 @@ public class DaysGenDisp extends GenesisPartBase
 	protected int     genObjsNumber(GenCtx ctx)
 	{
 		if(getObjMin() > getObjMax())
-			throw new IllegalStateException();
+			throw EX.state();
 
 		if(getObjMin() <= 0)
-			throw new IllegalStateException();
+			throw EX.state();
 
 		return getObjMin() +
 		  ctx.gen().nextInt(getObjMax() - getObjMin() + 1);
 	}
 
 	/**
-	 * Chooses random entries with the number given.
-	 * Each entry would be selected at least once!
-	 * And the resulting array may have the length bigger.
+	 * Chooses random entries with of number given
+	 * depending on their weights.
 	 */
 	protected Entry[] selectEntries(GenCtx ctx, int length)
 	{
-		//~: set the length
-		if(length < getEntries().length)
-			length = getEntries().length;
-
 		Entry[] result = new Entry[length];
 
-		//~: select all the entries at least once
-		for(int i = 0;(i < getEntries().length);i++)
-			result[i] = getEntries()[i];
-
 		//~: get total weight
-		int W = 0;
-		for(Entry e : getEntries())
-			if(e.getWeight() <= 0) throw new IllegalStateException();
+		int W = 0; for(Entry e : getEntries())
+			if(e.getWeight() <= 0) throw EX.state();
 			else W += e.getWeight();
 
 		//~: select other entries in random
-		next: for(int i = getEntries().length;(i < length);i++)
+		next: for(int i = 0;(i < length);i++)
 		{
 			int x = 0, w = ctx.gen().nextInt(W);
 
@@ -378,7 +369,7 @@ public class DaysGenDisp extends GenesisPartBase
 					continue next;
 				}
 
-			throw new IllegalStateException();
+			throw EX.state();
 		}
 
 		return result;
