@@ -25,6 +25,11 @@ import com.tverts.endure.aggr.calc.AggrCalcs;
 import com.tverts.aggr.AggregatorBase.AggrStruct;
 import com.tverts.aggr.calc.AggrCalcBase;
 
+/* com.tverts: support */
+
+import com.tverts.support.DU;
+import com.tverts.support.EX;
+
 
 /**
  * Calculator on {@link AggrItemVolume} items.
@@ -59,20 +64,20 @@ public class AggrCalcMonthVolume extends AggrCalcBase
 		if(sourceTime(struct) == null)
 			return;
 
-		MonthVolumeCalcItem citem = null;
+		DatePeriodVolumeCalcItem citem = null;
 
 		for(AggrItem item : struct.items()) if(item instanceof AggrItemVolume)
 		{
 			//?: {calc item is not loaded yet}
 			if(citem == null)
-				citem = loadMonthVolumeCalcItem(struct);
+				citem = loadDatePeriodVolumeCalcItem(struct);
 
 			//?: {calc item does not exist}
 			if(citem == null)
-				citem = createMonthVolumeCalcItem(struct);
+				citem = createDatePeriodVolumeCalcItem(struct);
 
 			//!: create the link
-			createMonthVolumeCalcLink(struct, citem, (AggrItemVolume)item);
+			createDatePeriodVolumeCalcLink(struct, citem, (AggrItemVolume)item);
 		}
 
 		//~: touch the item
@@ -85,16 +90,16 @@ public class AggrCalcMonthVolume extends AggrCalcBase
 		for(AggrItem item : struct.items()) if(item instanceof AggrItemVolume)
 		{
 			//~: load the link
-			MonthVolumeCalcLink link  =
-			  loadMonthVolumeCalcLink(struct, (AggrItemVolume)item);
+			DatePeriodVolumeCalcLink link  =
+			  loadDatePeriodVolumeCalcLink(struct, (AggrItemVolume)item);
 
 			//?: {not founded}
-			if(link == null) throw new IllegalStateException(String.format(
-			  "MonthVolumeCalcLink was not created for AggrItemVolume [%d] " +
-			  "in AggrCalc [%d] of AggrValue [%d]!",
-			  item.getPrimaryKey(), aggrCalc(struct).getPrimaryKey(),
-			  aggrValue(struct).getPrimaryKey()
-			));
+			if(link == null) throw EX.state(
+			  "DatePeriodVolumeCalcLink was not created for AggrItemVolume [",
+			  item.getPrimaryKey(), "] in AggrCalc [",
+			  aggrCalc(struct).getPrimaryKey(), "] of AggrValue [",
+			  aggrValue(struct).getPrimaryKey(), "]!"
+			);
 
 			//~: recalculate the item
 			if(link.getVolumeNegative() != null)
@@ -111,38 +116,65 @@ public class AggrCalcMonthVolume extends AggrCalcBase
 			session(struct).delete(link);
 
 			//~: update the item
-			updateMonthVolumeCalcItem(struct, link.getCalcItem());
+			updateDatePeriodVolumeCalcItem(struct, link.getCalcItem());
 		}
 	}
 
-	protected MonthVolumeCalcItem
-	               loadMonthVolumeCalcItem(AggrStruct struct)
+	protected DatePeriodVolumeCalcItem
+	               loadDatePeriodVolumeCalcItem(AggrStruct struct)
 	{
 		Calendar cl = Calendar.getInstance();
 		cl.setTime(sourceTime(struct));
 
+		int year = cl.get(Calendar.YEAR);
+		int day  = DU.monthDay(year, cl.get(Calendar.MONTH));
+
 /*
 
-from MonthVolumeCalcItem where (aggrCalc = :aggrCalc)
-  and (year = :year) and (month = :month)
+ from DatePeriodVolumeCalcItem where (aggrCalc = :aggrCalc)
+   and (year = :year) and (day = :day)
 
- */
-		return (MonthVolumeCalcItem) Q(struct,
+*/
 
-"from MonthVolumeCalcItem where (aggrCalc = :aggrCalc)\n" +
-"  and (year = :year) and (month = :month)"
+
+		return (DatePeriodVolumeCalcItem) Q(struct,
+
+"from DatePeriodVolumeCalcItem where (aggrCalc = :aggrCalc)\n" +
+"  and (year = :year) and (day = :day)"
 
 		).
 		  setParameter("aggrCalc", aggrCalc(struct)).
-		  setInteger("year", cl.get(Calendar.YEAR)).
-		  setInteger("month", cl.get(Calendar.MONTH)).
+		  setInteger  ("year",     year).
+		  setInteger  ("day",      day).
 		  uniqueResult();
 	}
 
-	protected MonthVolumeCalcItem
-	               createMonthVolumeCalcItem(AggrStruct struct)
+	protected DatePeriodVolumeCalcLink
+	               loadDatePeriodVolumeCalcLink
+	  (AggrStruct struct, AggrItemVolume aitem)
 	{
-		MonthVolumeCalcItem item = new MonthVolumeCalcItem();
+/*
+
+ from DatePeriodVolumeCalcLink where (aggrItem = :aggrItem)
+   and (calcItem.aggrCalc = :aggrCalc)
+
+*/
+		return (DatePeriodVolumeCalcLink) Q(struct,
+
+"from DatePeriodVolumeCalcLink where (aggrItem = :aggrItem)\n" +
+"  and (calcItem.aggrCalc = :aggrCalc)"
+
+		).
+		  setParameter("aggrItem", aitem.getPrimaryKey()).
+		  setParameter("aggrCalc", aggrCalc(struct)).
+		  uniqueResult();
+	}
+
+	protected DatePeriodVolumeCalcItem
+	               createDatePeriodVolumeCalcItem(AggrStruct struct)
+	{
+		DatePeriodVolumeCalcItem item =
+		  new DatePeriodVolumeCalcItem();
 
 		//~: set primary key
 		setPrimaryKey(session(struct), item,
@@ -154,12 +186,12 @@ from MonthVolumeCalcItem where (aggrCalc = :aggrCalc)
 		//~: calculation link
 		item.setAggrCalc(aggrCalc(struct));
 
-		//~: year + month
+		//~: year + month day
 		Calendar cl = Calendar.getInstance();
 		cl.setTime(sourceTime(struct));
 
 		item.setYear(cl.get(Calendar.YEAR));
-		item.setMonth(cl.get(Calendar.MONTH));
+		item.setDay(DU.monthDay(item.getYear(), cl.get(Calendar.MONTH)));
 
 		//~: volumes
 		item.setVolumeNegative(BigDecimal.ZERO);
@@ -171,10 +203,11 @@ from MonthVolumeCalcItem where (aggrCalc = :aggrCalc)
 		return item;
 	}
 
-	protected void createMonthVolumeCalcLink
-	  (AggrStruct struct, MonthVolumeCalcItem citem, AggrItemVolume aitem)
+	protected void createDatePeriodVolumeCalcLink
+	  (AggrStruct struct, DatePeriodVolumeCalcItem citem, AggrItemVolume aitem)
 	{
-		MonthVolumeCalcLink link = new MonthVolumeCalcLink();
+		DatePeriodVolumeCalcLink link =
+		  new DatePeriodVolumeCalcLink();
 
 		//~: set primary key
 		setPrimaryKey(session(struct), link,
@@ -205,42 +238,19 @@ from MonthVolumeCalcItem where (aggrCalc = :aggrCalc)
 			  add(link.getVolumePositive()));
 	}
 
-	protected MonthVolumeCalcLink
-	               loadMonthVolumeCalcLink
-	  (AggrStruct struct, AggrItemVolume aitem)
-	{
-/*
-
-from MonthVolumeCalcLink where (aggrItem = :aggrItem)
-  and (calcItem.aggrCalc = :aggrCalc)
-
- */
-		return (MonthVolumeCalcLink) Q(struct,
-
-"from MonthVolumeCalcLink where (aggrItem = :aggrItem)\n" +
-"  and (calcItem.aggrCalc = :aggrCalc)"
-
-		).
-		  setParameter("aggrItem", aitem.getPrimaryKey()).
-		  setParameter("aggrCalc", aggrCalc(struct)).
-		  uniqueResult();
-	}
-
-	protected void updateMonthVolumeCalcItem
-	  (AggrStruct struct, MonthVolumeCalcItem item)
+	protected void updateDatePeriodVolumeCalcItem
+	  (AggrStruct struct, DatePeriodVolumeCalcItem item)
 	{
 		int cn = item.getVolumeNegative().compareTo(BigDecimal.ZERO);
 		int cp = item.getVolumePositive().compareTo(BigDecimal.ZERO);
 
 		//?: {the volumes are wrong}
-		if((cn < 0) || (cp < 0))
-			throw new IllegalStateException(String.format(
-			  "MonthVolumeCalcItem [%d] in AggrCalc [%d] of AggrValue [%d] " +
-			  "has negative aggregated volumes!",
-
-			  item.getPrimaryKey(), aggrCalc(struct).getPrimaryKey(),
-			  aggrValue(struct).getPrimaryKey()
-			));
+		if((cn < 0) || (cp < 0)) throw EX.state(
+		  "DatePeriodVolumeCalcItem [", item.getPrimaryKey(),
+		  "] in AggrCalc [", aggrCalc(struct).getPrimaryKey(),
+		  "] of AggrValue [", aggrValue(struct).getPrimaryKey(),
+		  "] has negative aggregated volumes!"
+		);
 
 		//?: {the volumes become zeros} delete the item
 		if((cn == 0) && (cp == 0))

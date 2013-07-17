@@ -305,7 +305,7 @@ public abstract class AggregatorBase
 		}
 
 		/**
-		 * Assignes the calculation (temporary).
+		 * Assigns the calculation for temporary needs.
 		 */
 		public AggrStruct     calc(AggrCalc calc)
 		{

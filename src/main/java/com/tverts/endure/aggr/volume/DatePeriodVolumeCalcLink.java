@@ -10,22 +10,26 @@ import com.tverts.endure.NumericBase;
 
 
 /**
- * Reference items between {@link MonthVolumeCalcItem}
+ * Reference items between {@link DatePeriodVolumeCalcItem}
  * (1, the reference owner) and {@link AggrItemVolume}
  * (N, the linked end).
  *
+ * Note that this is not a real link to {@link AggrItemVolume},
+ * but a copy of it's primary key.
+ *
+ *
  * @author anton.baukin@gmail.com
  */
-public class MonthVolumeCalcLink extends NumericBase
+public class DatePeriodVolumeCalcLink extends NumericBase
 {
 	/* public: MonthVolumeCalcLink (bean) interface */
 
-	public MonthVolumeCalcItem getCalcItem()
+	public DatePeriodVolumeCalcItem getCalcItem()
 	{
 		return calcItem;
 	}
 
-	public void setCalcItem(MonthVolumeCalcItem calcItem)
+	public void setCalcItem(DatePeriodVolumeCalcItem calcItem)
 	{
 		this.calcItem = calcItem;
 	}
@@ -63,9 +67,9 @@ public class MonthVolumeCalcLink extends NumericBase
 
 	/* persisted attributes */
 
-	private MonthVolumeCalcItem calcItem;
-	private Long                aggrItem;
+	private DatePeriodVolumeCalcItem calcItem;
+	private Long                     aggrItem;
 
-	private BigDecimal          volumePositive;
-	private BigDecimal          volumeNegative;
+	private BigDecimal               volumePositive;
+	private BigDecimal               volumeNegative;
 }

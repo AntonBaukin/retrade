@@ -63,6 +63,49 @@ public class DU
 	}
 
 
+	/* date-time queries */
+
+	/**
+	 * Returns the timestamp of the day
+	 * being the last its moment.
+	 */
+	public static Date   lastTime(Date d)
+	{
+		return lastTime(d, null);
+	}
+
+	public static Date   lastTime(Date d, Calendar cl)
+	{
+		if(d == null) return null;
+
+		//~: init the calendar
+		if(cl == null) cl = Calendar.getInstance();
+		cl.setTime(d);
+
+		//~: clear the time parts
+		cl.set(Calendar.HOUR_OF_DAY, 23);
+		cl.set(Calendar.MINUTE,      59);
+		cl.set(Calendar.SECOND,      59);
+		cl.set(Calendar.MILLISECOND, 999);
+
+		return cl.getTime();
+	}
+
+	/**
+	 * Returns the first day of the month given.
+	 * 0 month is January, 0 day is January, 1st.
+	 */
+	public static int    monthDay(int year, int month)
+	{
+		Calendar cl = Calendar.getInstance();
+
+		cl.set(Calendar.YEAR,  year);
+		cl.set(Calendar.MONTH, month);
+
+		return cl.get(Calendar.DAY_OF_YEAR) - 1;
+	}
+
+
 	/* helpers */
 
 	public static Date   cleanTime(Date d)
@@ -87,32 +130,6 @@ public class DU
 		cl.set(Calendar.MINUTE,      0);
 		cl.set(Calendar.SECOND,      0);
 		cl.set(Calendar.MILLISECOND, 0);
-
-		return cl.getTime();
-	}
-
-	/**
-	 * Returns the timestamp of the day
-	 * being the last its moment.
-	 */
-	public static Date   lastTime(Date d)
-	{
-		return lastTime(d, null);
-	}
-
-	public static Date   lastTime(Date d, Calendar cl)
-	{
-		if(d == null) return null;
-
-		//~: init the calendar
-		if(cl == null) cl = Calendar.getInstance();
-		cl.setTime(d);
-
-		//~: clear the time parts
-		cl.set(Calendar.HOUR_OF_DAY, 23);
-		cl.set(Calendar.MINUTE,      59);
-		cl.set(Calendar.SECOND,      59);
-		cl.set(Calendar.MILLISECOND, 999);
 
 		return cl.getTime();
 	}

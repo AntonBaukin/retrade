@@ -107,9 +107,14 @@
       <value>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Groups the volume items by the months and summarises them ·
+         · Groups the volume items by months
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.aggr.calc.AggrCalc   Aggr Calc: Volume: Monthly;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Groups the volume items by weeks
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.calc.AggrCalc   Aggr Calc: Volume: Weekly;
 
       </value>
     </property>

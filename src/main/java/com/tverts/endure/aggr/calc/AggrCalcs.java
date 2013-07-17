@@ -18,6 +18,13 @@ public class AggrCalcs
 	public static final String AGGR_CALC_VOL_MONTH =
 	  "Aggr Calc: Volume: Monthly";
 
+	/**
+	 * Calculation over the aggregated volume value.
+	 * Groups the volume items by the months and summarises them.
+	 */
+	public static final String AGGR_CALC_VOL_WEEK  =
+	  "Aggr Calc: Volume: Weekly";
+
 
 
 	/* Shared Parameters */

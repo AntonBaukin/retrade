@@ -20,6 +20,10 @@ import com.tverts.endure.aggr.AggrValue;
 import com.tverts.endure.aggr.calc.AggrCalc;
 import com.tverts.endure.aggr.calc.AggrCalcs;
 
+/* com.tverts: support */
+
+import com.tverts.support.DU;
+
 
 /**
  * Loads object specific to Aggregated Values with
@@ -37,22 +41,23 @@ public class GetAggrVolume extends GetObjectBase
 	 * Returns all the items ordered by (year, month).
 	 */
 	@SuppressWarnings("unchecked")
-	public List<MonthVolumeCalcItem> getMonthVolumeCalcItems
+	public List<DatePeriodVolumeCalcItem> getDatePeriodVolumeCalcItems
 	  (AggrValue aggrValue, UnityType calcType)
 	{
 
 /*
 
-select ci from MonthVolumeCalcItem ci join ci.aggrCalc ac where
-  (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)
-order by ci.year, ci.month
+ select ci from DatePeriodVolumeCalcItem ci join ci.aggrCalc ac where
+   (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)
+ order by ci.year, ci.day
 
 */
-		return (List<MonthVolumeCalcItem>) Q(
 
-"select ci from MonthVolumeCalcItem ci join ci.aggrCalc ac where\n" +
+		return (List<DatePeriodVolumeCalcItem>) Q(
+
+"select ci from DatePeriodVolumeCalcItem ci join ci.aggrCalc ac where\n" +
 "  (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)\n" +
-"order by ci.year, ci.month"
+"order by ci.year, ci.day"
 
 		).
 		  setParameter("aggrValue", aggrValue).
@@ -60,41 +65,41 @@ order by ci.year, ci.month
 		  list();
 	}
 
-	public MonthVolumeCalcItem getMonthVolumeCalcItem
-	  (AggrValue aggrValue, UnityType calcType, int year, int month)
+	public DatePeriodVolumeCalcItem getDatePeriodVolumeCalcItem
+	  (AggrValue aggrValue, UnityType calcType, int year, int day)
 	{
 
 /*
 
-select ci from MonthVolumeCalcItem ci join ci.aggrCalc ac where
-  (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)
-  and (ci.year = :year) and (ci.month = :month)
+ select ci from DatePeriodVolumeCalcItem ci join ci.aggrCalc ac where
+   (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType) and
+   (ci.year = :year) and (ci.day = :day)
 
 */
-		return (MonthVolumeCalcItem) Q(
+		return (DatePeriodVolumeCalcItem) Q(
 
-"select ci from MonthVolumeCalcItem ci join ci.aggrCalc ac where\n" +
-"  (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)\n" +
-"  and (ci.year = :year) and (ci.month = :month)"
+"select ci from DatePeriodVolumeCalcItem ci join ci.aggrCalc ac where\n" +
+"  (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType) and\n" +
+"  (ci.year = :year) and (ci.day = :day)"
 
 		).
 		  setParameter("aggrValue", aggrValue).
 		  setParameter("calcType",  calcType).
 		  setInteger  ("year",      year).
-		  setInteger  ("month",     month).
+		  setInteger  ("day",       day).
 		  uniqueResult();
 	}
 
-	public List<MonthVolumeCalcItem> getMonthVolumeCalcItems(AggrValue aggrValue)
+	public List<DatePeriodVolumeCalcItem> getMonthVolumeCalcItems(AggrValue aggrValue)
 	{
-		return getMonthVolumeCalcItems(aggrValue, UnityTypes.unityType(
+		return getDatePeriodVolumeCalcItems(aggrValue, UnityTypes.unityType(
 		  AggrCalc.class, AggrCalcs.AGGR_CALC_VOL_MONTH));
 	}
 
-	public MonthVolumeCalcItem getMonthVolumeCalcItem
+	public DatePeriodVolumeCalcItem getMonthVolumeCalcItem
 	  (AggrValue aggrValue, int year, int month)
 	{
-		return getMonthVolumeCalcItem(aggrValue, UnityTypes.unityType(
-		  AggrCalc.class, AggrCalcs.AGGR_CALC_VOL_MONTH), year, month);
+		return getDatePeriodVolumeCalcItem(aggrValue, UnityTypes.unityType(
+		  AggrCalc.class, AggrCalcs.AGGR_CALC_VOL_MONTH), year, DU.monthDay(year, month));
 	}
 }
