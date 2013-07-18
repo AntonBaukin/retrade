@@ -40,4 +40,9 @@ public class   AggrCalcWeekVolume
 
 		return cl.get(Calendar.DAY_OF_YEAR) - 1;
 	}
+
+	protected int calcLength(AggrStruct struct)
+	{
+		return 7;
+	}
 }

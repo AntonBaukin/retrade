@@ -63,6 +63,14 @@ public class SimpleModelBean extends ModelBeanBase
 	}
 
 
+	/* public: ModelBean (data access) interface */
+
+	public ModelData    modelData()
+	{
+		return get(ModelData.class, ModelData.class);
+	}
+
+
 	/* the map */
 
 	private Map<Serializable, Serializable> map =

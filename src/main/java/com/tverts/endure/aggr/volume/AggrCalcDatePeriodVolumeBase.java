@@ -58,6 +58,7 @@ public abstract class AggrCalcDatePeriodVolumeBase
 
 	protected abstract int calcYear(AggrStruct struct);
 	protected abstract int calcDay(AggrStruct struct);
+	protected abstract int calcLength(AggrStruct struct);
 
 	protected void calcCreate(AggrStruct struct)
 	{
@@ -179,6 +180,7 @@ public abstract class AggrCalcDatePeriodVolumeBase
 
 		item.setYear(calcYear(struct));
 		item.setDay(calcDay(struct));
+		item.setLength(calcLength(struct));
 
 		//~: volumes
 		item.setVolumeNegative(BigDecimal.ZERO);

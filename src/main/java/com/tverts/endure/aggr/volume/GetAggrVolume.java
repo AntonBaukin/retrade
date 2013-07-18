@@ -49,7 +49,7 @@ public class GetAggrVolume extends GetObjectBase
 
  select ci from DatePeriodVolumeCalcItem ci join ci.aggrCalc ac where
    (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)
- order by ci.year, ci.day
+ order by ci.aggrCalc.id, ci.year, ci.day
 
 */
 
@@ -57,7 +57,7 @@ public class GetAggrVolume extends GetObjectBase
 
 "select ci from DatePeriodVolumeCalcItem ci join ci.aggrCalc ac where\n" +
 "  (ac.aggrValue = :aggrValue) and (ac.unity.unityType = :calcType)\n" +
-"order by ci.year, ci.day"
+"order by ci.aggrCalc.id, ci.year, ci.day"
 
 		).
 		  setParameter("aggrValue", aggrValue).
@@ -101,5 +101,11 @@ public class GetAggrVolume extends GetObjectBase
 	{
 		return getDatePeriodVolumeCalcItem(aggrValue, UnityTypes.unityType(
 		  AggrCalc.class, AggrCalcs.AGGR_CALC_VOL_MONTH), year, DU.monthDay(year, month));
+	}
+
+	public List<DatePeriodVolumeCalcItem> getWeekVolumeCalcItems(AggrValue aggrValue)
+	{
+		return getDatePeriodVolumeCalcItems(aggrValue, UnityTypes.unityType(
+		  AggrCalc.class, AggrCalcs.AGGR_CALC_VOL_WEEK));
 	}
 }

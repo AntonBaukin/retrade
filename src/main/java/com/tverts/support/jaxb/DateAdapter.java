@@ -15,7 +15,7 @@ import com.tverts.support.DU;
 
 /**
  * Used in JAXB annotation to format date
- * values as 'DD:MM:YYYY'.
+ * values as 'DD.MM.YYYY'.
  *
  * @author anton.baukin@gmail.com
  */

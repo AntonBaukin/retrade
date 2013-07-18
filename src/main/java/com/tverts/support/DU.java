@@ -105,6 +105,14 @@ public class DU
 		return cl.get(Calendar.DAY_OF_YEAR) - 1;
 	}
 
+	public static int    monthLength(Date d)
+	{
+		Calendar cl = Calendar.getInstance();
+		cl.setTime(d);
+
+		return cl.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+
 	public static Date   weekMonday(Date d)
 	{
 		Calendar cl = Calendar.getInstance();
@@ -136,12 +144,16 @@ public class DU
 		cl.setTime(d);
 
 		//~: clear the time parts
+		cleanTime(cl);
+		return cl.getTime();
+	}
+
+	public static void   cleanTime(Calendar cl)
+	{
 		cl.set(Calendar.HOUR_OF_DAY, 0);
 		cl.set(Calendar.MINUTE,      0);
 		cl.set(Calendar.SECOND,      0);
 		cl.set(Calendar.MILLISECOND, 0);
-
-		return cl.getTime();
 	}
 
 	public static Date   merge(Date d, Date t)

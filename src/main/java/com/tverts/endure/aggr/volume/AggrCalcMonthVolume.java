@@ -38,4 +38,9 @@ public class   AggrCalcMonthVolume
 
 		return DU.monthDay(cl.get(Calendar.YEAR), cl.get(Calendar.MONTH));
 	}
+
+	protected int calcLength(AggrStruct struct)
+	{
+		return DU.monthLength(sourceTime(struct));
+	}
 }

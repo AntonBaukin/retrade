@@ -3,10 +3,16 @@ package com.tverts.endure.aggr.volume;
 /* standard Java classes */
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 
 /* com.tverts: endure (aggregation) */
 
 import com.tverts.endure.aggr.calc.AggrCalcItemBase;
+
+/* com.tverts: support */
+
+import com.tverts.support.DU;
 
 
 /**
@@ -48,6 +54,17 @@ public class DatePeriodVolumeCalcItem extends AggrCalcItemBase
 	public void       setDay(int day)
 	{
 		this.day = day;
+	}
+
+	public Date       dayDate()
+	{
+		Calendar cl = Calendar.getInstance();
+		DU.cleanTime(cl);
+
+		cl.set(Calendar.YEAR, year);
+		cl.set(Calendar.DAY_OF_YEAR, day + 1);
+
+		return cl.getTime();
 	}
 
 	/**
