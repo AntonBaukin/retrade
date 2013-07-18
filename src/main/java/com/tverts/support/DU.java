@@ -105,6 +105,16 @@ public class DU
 		return cl.get(Calendar.DAY_OF_YEAR) - 1;
 	}
 
+	public static Date   weekMonday(Date d)
+	{
+		Calendar cl = Calendar.getInstance();
+		cl.setTime(d);
+
+		while(cl.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY)
+			cl.add(Calendar.DAY_OF_YEAR, -1);
+		return cl.getTime();
+	}
+
 
 	/* helpers */
 

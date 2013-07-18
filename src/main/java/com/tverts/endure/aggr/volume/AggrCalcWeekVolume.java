@@ -14,19 +14,21 @@ import com.tverts.support.DU;
 
 
 /**
- * Groups {@link AggrItemVolume} items by months.
+ * Groups {@link AggrItemVolume} items by weeks.
+ *
+ * Note that a week may overlap the year border!
+ * (The length of each week is 7 days.)
+ *
  *
  * @author anton.baukin@gmail.com
  */
-public class   AggrCalcMonthVolume
+public class   AggrCalcWeekVolume
        extends AggrCalcDatePeriodVolumeBase
 {
-	/* protected: AggrCalcDatePeriodVolumeBase interface */
-
 	protected int calcYear(AggrStruct struct)
 	{
 		Calendar cl = Calendar.getInstance();
-		cl.setTime(sourceTime(struct));
+		cl.setTime(DU.weekMonday(sourceTime(struct)));
 
 		return cl.get(Calendar.YEAR);
 	}
@@ -34,8 +36,8 @@ public class   AggrCalcMonthVolume
 	protected int calcDay(AggrStruct struct)
 	{
 		Calendar cl = Calendar.getInstance();
-		cl.setTime(sourceTime(struct));
+		cl.setTime(DU.weekMonday(sourceTime(struct)));
 
-		return DU.monthDay(cl.get(Calendar.YEAR), cl.get(Calendar.MONTH));
+		return cl.get(Calendar.DAY_OF_YEAR) - 1;
 	}
 }
