@@ -43,9 +43,54 @@ public class AggrTaskVolumeCreate extends AggrTaskBase
 		this.volumeNegative = volumeNegative;
 	}
 
+	public BigDecimal getAggrPositive()
+	{
+		return aggrPositive;
+	}
+
+	public void       setAggrPositive(BigDecimal aggrPositive)
+	{
+		this.aggrPositive = aggrPositive;
+	}
+
+	public BigDecimal getAggrNegative()
+	{
+		return aggrNegative;
+	}
+
+	public void       setAggrNegative(BigDecimal aggrNegative)
+	{
+		this.aggrNegative = aggrNegative;
+	}
+
+	/**
+	 * Fixes the given aggregated volumes as the value
+	 * of the aggregation. Preceding aggregation items
+	 * has no effect.
+	 *
+	 * Fixed task must have {@link #getAggrPositive()}
+	 * and-or {@link #getAggrNegative()} defined, and
+	 * undefined {@link #getVolumePositive()} and
+	 * {@link #getVolumeNegative()}.
+	 *
+	 * @see  {@link AggrItemVolume#isAggrFixed()}.
+	 */
+	public boolean    isAggrFixed()
+	{
+		return aggrFixed;
+	}
+
+	public void       setAggrFixed(boolean aggrFixed)
+	{
+		this.aggrFixed = aggrFixed;
+	}
+
 
 	/* private: the volumes */
 
 	private BigDecimal volumePositive;
 	private BigDecimal volumeNegative;
+	private BigDecimal aggrPositive;
+	private BigDecimal aggrNegative;
+	private boolean    aggrFixed;
 }

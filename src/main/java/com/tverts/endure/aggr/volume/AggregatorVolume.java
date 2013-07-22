@@ -5,10 +5,6 @@ package com.tverts.endure.aggr.volume;
 import java.math.BigDecimal;
 import java.util.List;
 
-/* Hibernate Persistence Layer */
-
-import org.hibernate.Query;
-
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.isTestInstance;
@@ -21,6 +17,10 @@ import com.tverts.aggr.AggregatorSingleBase;
 /* com.tverts: endure (aggregation) */
 
 import com.tverts.endure.aggr.AggrItem;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -77,15 +77,21 @@ public class AggregatorVolume extends AggregatorSingleBase
 	protected void aggregateTaskCreate(AggrStruct struct)
 	  throws Throwable
 	{
+		//~: create and save aggregated value item
+		AggrItemVolume item = createItem(struct);
+		saveItem(struct, item);
+
+		//~: recalculate the aggregated value
+		updateAggrValueCreate(struct, item);
+	}
+
+	protected AggrItemVolume
+	               createItem(AggrStruct struct)
+	{
 		//?: {the source entity is undefined} do nothing
 		if(struct.task.getSourceKey() == null)
-			throw new IllegalArgumentException(
-			  "Source is undefined! " + logsig(struct));
+			throw EX.state(logsig(struct), ": source is undefined!");
 
-		//~: evict all the aggregated items currently present
-		evictAggrItems(struct);
-
-		//<: create and save aggregated value item
 
 		AggrTaskVolumeCreate task = (AggrTaskVolumeCreate)struct.task;
 		AggrItemVolume       item = new AggrItemVolume();
@@ -97,8 +103,8 @@ public class AggregatorVolume extends AggregatorSingleBase
 		//~: set aggregated value
 		item.setAggrValue(aggrValue(struct));
 
-		//~: set source ID
-		item.setSourceID(task.getSourceKey());
+		//~: set source key
+		item.setSourceKey(task.getSourceKey());
 
 		//~: set volume positive
 		item.setVolumePositive(task.getVolumePositive());
@@ -106,14 +112,56 @@ public class AggregatorVolume extends AggregatorSingleBase
 		//~: set volume negative
 		item.setVolumeNegative(task.getVolumeNegative());
 
+		//?: {fixed historical value}
+		if(task.isAggrFixed())
+		{
+			//~: {volume + must be undefined}
+			if(item.getVolumePositive() != null)
+				throw EX.arg(logsig(struct),
+				  ": volume positive is defined for fixed item!");
+
+			//~: {volume - must be undefined}
+			if(item.getVolumeNegative() != null)
+				throw EX.arg(logsig(struct),
+				  ": volume negative is defined for fixed item!");
+
+			//~: {aggregation must be defined}
+			if((task.getAggrPositive() == null) && (task.getAggrNegative() == null))
+				throw EX.arg(logsig(struct), ": aggregation positive or-and negative ",
+				  "is undefined for fixed item!");
+
+			//~: assign the history values
+			item.setAggrPositive(task.getAggrPositive());
+			item.setAggrNegative(task.getAggrNegative());
+			item.setAggrFixed(true);
+		}
+
 		//~: set order index
 		if(isOrdering())
 		{
 			setOrderIndex(struct, item);
 
-			if(item.getOrderIndex() == null) throw new IllegalStateException(
-			  logsig(struct) + ": order index is undefined!");
+			//?: {is historical}
+			if(task.isAggrFixed())
+				item.setHistoryIndex(item.getOrderIndex());
 		}
+		//?: {fixed historical requested}
+		else if(task.isAggrFixed())
+			throw EX.state(logsig(struct), ": requested aggregation with ",
+			  "fixed historical item, but aggregator doesn't support ordering!");
+
+		//?: {history item is not simultaneously fixed}
+		if((item.getHistoryIndex() != null) && !item.isAggrFixed())
+			throw EX.state(logsig(struct), ": only fixed item may be historical",
+			  " in this implementation!");
+
+		return item;
+	}
+
+	protected void saveItem(AggrStruct struct, AggrItemVolume item)
+	{
+		//~: evict all the aggregated items currently present
+		evictAggrItems(struct);
 
 		//!: do save the item
 		session(struct).save(item);
@@ -126,73 +174,58 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		//~: link the items for the calculations
 		struct.items(item);
+	}
 
-		//>: create and save aggregated value item
-
-		//<: update the historical values
-		if(isOrdering())
-		{
-
-/*
-
-update AggrItem set
-
-  aggrPositive = aggrPositive + :aggrPositive,
-  aggrNegative = aggrNegative + :aggrNegative
-
-where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
-
-*/
-			Query query = aggrItemQ(struct,
-
-"update AggrItem set\n" +
-"\n" +
-"  aggrPositive = aggrPositive + :aggrPositive,\n" +
-"  aggrNegative = aggrNegative + :aggrNegative\n" +
-"\n" +
-"where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)"
-
-			).
-			  setParameter("aggrValue",  aggrValue(struct)).
-			  setParameter("orderIndex", item.getOrderIndex());
-
-			//?: {has positive addition}
-			if(item.getVolumePositive() != null)
-				query.setBigDecimal("aggrPositive", item.getVolumePositive());
-			else
-				query.setBigDecimal("aggrPositive", BigDecimal.ZERO);
-
-			//?: {has negative addition}
-			if(item.getVolumeNegative() != null)
-				query.setBigDecimal("aggrNegative", item.getVolumeNegative());
-			else
-				query.setBigDecimal("aggrNegative", BigDecimal.ZERO);
-
-			//!: execute the update
-			query.executeUpdate();
-		}
-
-		//>: update the historical values
-
-		//<: recalculate the aggregated value
-
+	protected void updateAggrValueCreate(AggrStruct struct, AggrItemVolume item)
+	{
+		//~: current value
 		BigDecimal p = aggrValue(struct).getAggrPositive();
 		BigDecimal n = aggrValue(struct).getAggrNegative();
 
 		if(p == null) p = BigDecimal.ZERO;
 		if(n == null) n = BigDecimal.ZERO;
 
-		if(item.getVolumePositive() != null)
-			p = p.add(item.getVolumePositive());
+		//~: find fixed item on the right
+		AggrItemVolume r = findFixedItemRight(struct, item.getOrderIndex());
 
-		if(item.getVolumeNegative() != null)
-			n = n.add(item.getVolumeNegative());
+
+		//?: {there is no fixed history value on the right}
+		if(r == null)
+			//?: {item is a fixed history value} assign it and recalculate
+			if(item.isAggrFixed())
+			{
+				//~: assign
+				p = item.getAggrPositive();
+				n = item.getAggrNegative();
+
+				if(p == null) p = BigDecimal.ZERO;
+				if(n == null) n = BigDecimal.ZERO;
+
+				//~: recalculate plain items on the right
+				BigDecimal[] s = summItemsRight(struct, item.getOrderIndex());
+
+				if(s[0] != null)
+					p = p.add(s[0]);
+				if(s[1] != null)
+					n = n.add(s[1]);
+			}
+			//~: this is a plain item
+			else
+			{
+				if(item.getVolumePositive() != null)
+					p = p.add(item.getVolumePositive());
+
+				if(item.getVolumeNegative() != null)
+					n = n.add(item.getVolumeNegative());
+			}
+
+		//~: assign the value components
+		if(p == null) p = BigDecimal.ZERO;
+		if(n == null) n = BigDecimal.ZERO;
 
 		aggrValue(struct).setAggrPositive(p);
 		aggrValue(struct).setAggrNegative(n);
 		aggrValue(struct).setAggrValue(p.subtract(n));
-
-		//>: recalculate the aggregated value
 	}
 
 
@@ -201,40 +234,36 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 	protected void aggregateTaskDelete(AggrStruct struct)
 	  throws Throwable
 	{
+		//~: find items to delete
+		List<AggrItem> items = findItemsToDelete(struct);
+
+		//?: {there are none of them} nothing to do...
+		if(items.isEmpty()) return;
+
+		//~: delete them first!
+		deleteItems(struct, items);
+
+		//~: recalculate the aggregated value
+		updateAggrValueDelete(struct, items);
+	}
+
+	protected List<AggrItem>
+	               findItemsToDelete(AggrStruct struct)
+	{
 		//?: {the source entity is undefined} do nothing
 		if(struct.task.getSourceKey() == null)
-			throw new IllegalArgumentException(
-			  "Source is undefined! " + logsig(struct));
+			throw EX.state(logsig(struct), ": source is undefined!");
 
 		//~: evict all the aggregated items currently present
 		evictAggrItems(struct);
 
 		//~: load the items of the source
-		List<AggrItem> items = loadBySource(struct, struct.task.getSourceKey());
+		return loadBySource(struct, struct.task.getSourceKey());
+	}
 
-		//?: {there are none of them} nothing to do...
-		if(items.isEmpty())
-			return;
-
-		//<: totals (for aggregated value)
-		BigDecimal sumPositive = BigDecimal.ZERO;
-		BigDecimal sumNegative = BigDecimal.ZERO;
-
-		for(AggrItem item : items)
-		{
-			AggrItemVolume vitem = (AggrItemVolume)item;
-
-			//~: add to totals
-			if(vitem.getVolumePositive() != null)
-				sumPositive = sumPositive.add(vitem.getVolumePositive());
-
-			if(vitem.getVolumeNegative() != null)
-				sumNegative = sumNegative.add(vitem.getVolumeNegative());
-		}
-
-		//>: totals (for aggregated value)
-
-		//!: delete that items
+	protected void deleteItems(AggrStruct struct, List<AggrItem> items)
+	{
+		//!: delete that items first
 		for(AggrItem item : items)
 			session(struct).delete(item);
 
@@ -247,91 +276,134 @@ where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
 
 		//~: link the items for the calculations
 		struct.items(items);
+	}
 
-		//<: issue update on the historical values
-
-		if(isOrdering())
-		{
-
-/*
-
-update AggrItem set
-
-  aggrPositive = aggrPositive - :aggrPositive,
-  aggrNegative = aggrNegative - :aggrNegative
-
-where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)
-
-*/
-
-			Query query = aggrItemQ(struct,
-
-"update AggrItem set\n" +
-"\n" +
-"  aggrPositive = aggrPositive - :aggrPositive,\n" +
-"  aggrNegative = aggrNegative - :aggrNegative\n" +
-"\n" +
-"where (aggrValue = :aggrValue) and (historyIndex > :orderIndex)"
-
-			).
-			  setParameter("aggrValue", aggrValue(struct));
-
-
-			// HINT: we update on each item separately as
-			//   the items may be (not in the practice) messed up
-			//   with the historical values.
-
-			for(AggrItem item : items)
-			{
-				if(item.getOrderIndex() == null)
-					throw new IllegalStateException(String.format(
-					  "%s: item [%d] of Volume aggregated value [%d] " +
-					  "has order index undefined!",
-
-					  logsig(struct), item.getPrimaryKey(),
-					  aggrValue(struct).getPrimaryKey()
-					));
-
-				AggrItemVolume vitem = (AggrItemVolume)item;
-
-				//~: query: positive subtraction
-				if(vitem.getAggrPositive() != null)
-					query.setBigDecimal("aggrPositive", vitem.getAggrPositive());
-				else
-					query.setBigDecimal("aggrPositive", BigDecimal.ZERO);
-
-				//~: query: negative subtraction
-				if(vitem.getAggrNegative() != null)
-					query.setBigDecimal("aggrNegative", vitem.getAggrNegative());
-				else
-					query.setBigDecimal("aggrNegative", BigDecimal.ZERO);
-
-				//~: query: order index
-				query.setLong("orderIndex", vitem.getOrderIndex());
-
-				//!: execute that query
-				query.executeUpdate();
-			}
-		}
-
-		//>: issue update on the historical values
-
-		//<: recalculate the aggregated value
-
+	protected void updateAggrValueDelete
+	  (AggrStruct struct, List<AggrItem> items)
+	{
+		//~: current value
 		BigDecimal p = aggrValue(struct).getAggrPositive();
 		BigDecimal n = aggrValue(struct).getAggrNegative();
+
+
+		//~: the the most right fixed history value
+		AggrItemVolume r = findFixedItemLeft(struct, Long.MAX_VALUE);
+
+		//?: {it exists} take it
+		if(r != null)
+		{
+			p = r.getAggrPositive();
+			n = r.getAggrNegative();
+		}
 
 		if(p == null) p = BigDecimal.ZERO;
 		if(n == null) n = BigDecimal.ZERO;
 
-		p = p.subtract(sumPositive);
-		n = n.subtract(sumNegative);
+		//~: effect items on the right of it
+		for(AggrItem item : items)
+		{
+			AggrItemVolume i = (AggrItemVolume)item;
+
+			if(i.getVolumePositive() != null)
+				p = p.subtract(i.getVolumePositive());
+
+			if(i.getVolumeNegative() != null)
+				n = n.subtract(i.getVolumeNegative());
+		}
+
+		if(p == null) p = BigDecimal.ZERO;
+		if(n == null) n = BigDecimal.ZERO;
+
+		//~: the component became sub zero
+		if((BigDecimal.ZERO.compareTo(p) > 0) || (BigDecimal.ZERO.compareTo(n) > 0))
+			throw EX.state( logsig(struct),
+			  " delete operation for source [",
+			  struct.task.getSourceKey(), "] class ",
+			  struct.task.getSourceClass().getSimpleName(),
+			  "] made value component to become below zero!"
+			);
 
 		aggrValue(struct).setAggrPositive(p);
 		aggrValue(struct).setAggrNegative(n);
 		aggrValue(struct).setAggrValue(p.subtract(n));
+	}
 
-		//>: recalculate the aggregated value
+
+	/* protected: aggregation helpers */
+
+	protected AggrItemVolume findFixedItemLeft(AggrStruct struct, Long orderIndex)
+	{
+
+/*
+
+ from AggrItem where (aggrValue = :aggrValue) and
+   (historyIndex < :orderIndex)
+ order by historyIndex desc
+
+ */
+		AggrItemVolume i = (AggrItemVolume) aggrItemQ(struct,
+
+"from AggrItem where (aggrValue = :aggrValue) and\n" +
+"  (historyIndex < :orderIndex)\n" +
+"order by historyIndex desc"
+
+		).
+		  setParameter("aggrValue",  aggrValue(struct)).
+		  setLong("orderIndex", orderIndex).
+		  setMaxResults(1).
+		  uniqueResult();
+
+		if((i != null) && !i.isAggrFixed()) throw EX.state(logsig(struct),
+		  ": history aggregated item [", i.getPrimaryKey(), "] is not a fixed!");
+		return i;
+	}
+
+	protected AggrItemVolume findFixedItemRight(AggrStruct struct, Long orderIndex)
+	{
+
+/*
+
+ from AggrItem where (aggrValue = :aggrValue) and
+   (historyIndex > :orderIndex)
+ order by historyIndex asc
+
+ */
+		AggrItemVolume i = (AggrItemVolume) aggrItemQ(struct,
+
+"from AggrItem where (aggrValue = :aggrValue) and\n" +
+"  (historyIndex > :orderIndex)\n" +
+"order by historyIndex asc"
+
+		).
+		  setParameter("aggrValue",  aggrValue(struct)).
+		  setLong("orderIndex", orderIndex).
+		  setMaxResults(1).
+		  uniqueResult();
+
+		if((i != null) && !i.isAggrFixed()) throw EX.state(logsig(struct),
+		  ": history aggregated item [", i.getPrimaryKey(), "] is not a fixed!");
+		return i;
+	}
+
+	protected BigDecimal[]   summItemsRight(AggrStruct struct, Long orderIndex)
+	{
+/*
+
+ select sum(volumePositive), sum(volumeNegative)
+ from AggrItem where (aggrValue = :aggrValue) and
+   (orderIndex > :orderIndex) and (historyIndex is null)
+
+ */
+		return (BigDecimal[]) aggrItemQ(struct,
+
+"select sum(volumePositive), sum(volumeNegative)\n" +
+"from AggrItem where (aggrValue = :aggrValue) and\n" +
+"  (orderIndex > :orderIndex) and (historyIndex is null)"
+
+		).
+		  setParameter("aggrValue",  aggrValue(struct)).
+		  setLong("orderIndex", orderIndex).
+		  uniqueResult();
 	}
 
 

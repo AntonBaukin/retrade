@@ -26,9 +26,9 @@
 
     <!-- Source Primary Key -->
 
-    <property name = 'sourceID'>
+    <property name = "sourceKey">
 
-      <column name = 'source_id' index = '_ix_aggr_item_source_id'>
+      <column name = 'source_key' index = '_ix_aggr_item_source_id'>
 
         <comment>
           Copy of the primary key of Unity instance that had

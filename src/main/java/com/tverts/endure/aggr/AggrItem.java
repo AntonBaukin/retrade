@@ -47,5 +47,5 @@ public interface AggrItem extends NumericIdentity, OrderIndex
 	 * @return  the primary key of the source entity
 	 *   of this component.
 	 */
-	public Long      getSourceID();
+	public Long      getSourceKey();
 }

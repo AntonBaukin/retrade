@@ -25,13 +25,13 @@ import com.tverts.hibery.system.HiberSystem;
 import com.tverts.endure.Unity;
 import com.tverts.endure.core.GetUnity;
 import com.tverts.endure.aggr.AggrItem;
-import com.tverts.endure.aggr.AggrTask;
 import com.tverts.endure.order.OrderIndex;
 import com.tverts.endure.order.OrderPoint;
 import com.tverts.endure.order.OrderRequest;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -51,11 +51,10 @@ public abstract class AggregatorSingleBase
 	protected Class<? extends AggrItem>
 	                getAggrItemClass()
 	{
-		if(aggrItemClass == null)
-			throw new IllegalStateException(String.format(
-			  "Aggregator %s has no aggregation item class defined!",
-			  this.getClass().getSimpleName()
-			));
+		if(aggrItemClass == null) throw EX.state(
+		  "Aggregator ", this.getClass().getSimpleName(),
+		  " has no aggregation item class defined!"
+		);
 
 		return aggrItemClass;
 	}
@@ -125,12 +124,12 @@ public abstract class AggregatorSingleBase
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List<AggrItem> loadBySource(AggrStruct struct, long sourceID)
+	protected List<AggrItem> loadBySource(AggrStruct struct, long sourceKey)
 	{
 /*
 
 from AggrItem where
-  (aggrValue = :aggrValue) and (sourceID = :sourceID)
+  (aggrValue = :aggrValue) and (sourceKey = :sourceKey)
 order by orderIndex asc
 
 
@@ -138,12 +137,12 @@ order by orderIndex asc
 		return (List<AggrItem>) aggrItemQ(struct,
 
 "from AggrItem where\n" +
-"  (aggrValue = :aggrValue) and (sourceID = :sourceID)\n" +
+"  (aggrValue = :aggrValue) and (sourceKey = :sourceKey)\n" +
 "order by orderIndex asc"
 
 		).
 		  setParameter("aggrValue", aggrValue(struct)).
-		  setLong     ("sourceID",  sourceID).
+		  setLong     ("sourceKey",  sourceKey).
 		  list();
 	}
 
@@ -186,6 +185,9 @@ order by orderIndex asc
 		OrderPoint.order(new OrderRequest(instance, reference).
 		  setBeforeAfter(reference == null)
 		);
+
+		if(instance.getOrderIndex() == null)
+			throw EX.state(logsig(struct), ": order index is undefined!");
 	}
 
 	/**
@@ -198,33 +200,30 @@ order by orderIndex asc
 	{
 		Class sourceClass = findSourceClass(struct);
 
-		if(sourceClass == null) throw new IllegalStateException(
-		  logsig(struct) + " couldn't find aggregation item source class!"
+		if(sourceClass == null) throw EX.state(
+		  logsig(struct), ": couldn't find aggregation item source class!"
 		);
 
 		//<: load the present order index of the source
 
-/*
 
-select orderIndex from Source where (primaryKey = :sourceKey)
+// select so.orderIndex from Source so where (so.primaryKey = :sourceKey)
 
-*/
-		Number sourceIndex = (Number) Q (struct,
+		String Q =
+"  select so.orderIndex from Source so where (so.primaryKey = :sourceKey)";
 
-"select orderIndex from Source where (primaryKey = :sourceKey)",
+		if(struct.task.getOrderPath() != null)
+			Q = Q.replace("so.orderIndex", "so." + struct.task.getOrderPath());
 
-		  "Source", sourceClass
-
-		).
+		Number sourceIndex = (Number) Q(struct, Q, "Source", sourceClass).
 		  setLong("sourceKey", struct.task.getSourceKey()).
 		  uniqueResult();
 
 		//?: {order index does not exist}
 		if(sourceIndex == null)
-			throw new IllegalStateException(String.format(
-			  "%s instance [%d] has no order index defined!",
-			  sourceClass.getSimpleName(), struct.task.getSourceKey()
-			));
+			throw EX.state(sourceClass.getSimpleName(), " instance [",
+			  struct.task.getSourceKey(), "] has no order index defined!"
+			);
 
 		//>: load the present order index of the source
 
@@ -236,25 +235,25 @@ select orderIndex from Source where (primaryKey = :sourceKey)
 
 /*
 
-select ai from AggrItem ai, Source so where
-  (ai.aggrValue = :aggrValue) and
-  (so.primaryKey = ai.sourceID) and
-  (so.orderIndex > :sourceIndex)
-order by ai.orderIndex asc
+ select ai from AggrItem ai, Source so where
+   (ai.aggrValue = :aggrValue) and
+   (so.primaryKey = ai.sourceKey) and
+   (so.orderIndex > :sourceIndex)
+ order by ai.orderIndex asc
 
 */
-
-		//~: execute the query
-		List list = aggrItemQ(struct,
-
+		Q =
 "select ai from AggrItem ai, Source so where\n" +
 "  (ai.aggrValue = :aggrValue) and\n" +
-"  (so.primaryKey = ai.sourceID) and\n" +
+"  (so.primaryKey = ai.sourceKey) and\n" +
 "  (so.orderIndex > :sourceIndex)\n" +
-"order by ai.orderIndex asc",
+"order by ai.orderIndex asc";
 
-		  "Source", sourceClass
-		).
+		if(struct.task.getOrderPath() != null)
+			Q = Q.replace("so.orderIndex", "so." + struct.task.getOrderPath());
+
+		//~: execute the query
+		List list = aggrItemQ(struct, Q, "Source", sourceClass).
 		  setParameter("aggrValue",   aggrValue(struct)).
 		  setLong     ("sourceIndex", sourceIndex.longValue()).
 		  setMaxResults(1).
@@ -269,7 +268,7 @@ order by ai.orderIndex asc
 			return struct.task.getSourceClass();
 
 		if(struct.task.getSourceKey() == null)
-			throw new IllegalStateException();
+			throw EX.state();
 
 		Unity u = bean(GetUnity.class).getUnity(
 		  struct.task.getSourceKey());
@@ -282,13 +281,13 @@ order by ai.orderIndex asc
 
 /*
 
-select primaryKey, orderIndex, sourceID from AggrItem where
+select primaryKey, orderIndex, sourceKey from AggrItem where
   aggrValue = :aggrValue order by orderIndex
 
 */
 		List list =  aggrItemQ(struct,
 
-"select primaryKey, orderIndex, sourceID from AggrItem where\n" +
+"select primaryKey, orderIndex, sourceKey from AggrItem where\n" +
 "  aggrValue = :aggrValue order by orderIndex"
 
 		).
@@ -319,7 +318,7 @@ select primaryKey, orderIndex, sourceID from AggrItem where
 /*
 
 select so.id, so.orderIndex from AggrItem ai, Source so where
-  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceID)
+  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceKey)
 order by so.orderIndex
 
  */
@@ -327,7 +326,7 @@ order by so.orderIndex
 		List list =  aggrItemQ(struct,
 
 "select so.id, so.orderIndex from AggrItem ai, Source so where\n" +
-"  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceID)\n" +
+"  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceKey)\n" +
 "order by so.orderIndex",
 
 		  "Source", struct.task.getSourceClass()

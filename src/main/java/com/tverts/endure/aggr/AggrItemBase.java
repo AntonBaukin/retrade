@@ -52,19 +52,14 @@ public abstract class AggrItemBase implements AggrItem
 		return (getHistoryIndex() != null);
 	}
 
-	public void      setHistorical(boolean h)
+	public Long      getSourceKey()
 	{
-		this.historyIndex = (h)?(getOrderIndex()):(null);
+		return sourceKey;
 	}
 
-	public Long      getSourceID()
+	public void      setSourceKey(Long id)
 	{
-		return sourceID;
-	}
-
-	public void      setSourceID(Long id)
-	{
-		this.sourceID = id;
+		this.sourceKey = id;
 	}
 
 
@@ -136,7 +131,7 @@ public abstract class AggrItemBase implements AggrItem
 
 	private Long      primaryKey;
 	private AggrValue aggrValue;
-	private Long      sourceID;
+	private Long      sourceKey;
 
 
 	/* persisted attributes: order indices */

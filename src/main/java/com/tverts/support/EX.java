@@ -155,4 +155,12 @@ public class EX
 	{
 		return new UnsupportedOperationException(SU.s2s(SU.cats(msg)));
 	}
+
+	public static RuntimeException wrap(Throwable cause, Object... msg)
+	{
+		String s = SU.s2s(SU.cats(msg));
+		if(s == null) s = e2en(cause);
+
+		return new RuntimeException(s, cause);
+	}
 }

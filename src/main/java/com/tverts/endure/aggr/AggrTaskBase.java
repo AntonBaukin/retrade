@@ -31,12 +31,12 @@ public abstract class AggrTaskBase implements AggrTask
 
 	public Long    getSourceKey()
 	{
-		return sourceID;
+		return sourceKey;
 	}
 
 	public void    setSourceKey(Long key)
 	{
-		this.sourceID = key;
+		this.sourceKey = key;
 	}
 
 	public Class   getSourceClass()
@@ -47,6 +47,16 @@ public abstract class AggrTaskBase implements AggrTask
 	public void    setSourceClass(Class sourceClass)
 	{
 		this.sourceClass = sourceClass;
+	}
+
+	public String  getOrderPath()
+	{
+		return orderPath;
+	}
+
+	public void    setOrderPath(String orderPath)
+	{
+		this.orderPath = orderPath;
 	}
 
 
@@ -90,7 +100,8 @@ public abstract class AggrTaskBase implements AggrTask
 	/* private: task properties */
 
 	private Long   aggrValueID;
-	private Long   sourceID;
+	private Long   sourceKey;
 	private Class  sourceClass;
+	private String orderPath;
 	private Map    params;
 }

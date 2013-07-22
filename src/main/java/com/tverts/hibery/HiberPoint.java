@@ -2,6 +2,7 @@ package com.tverts.hibery;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.support.LU;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,6 +19,10 @@ import com.tverts.hibery.system.HiberSystem;
 /* com.tverts: system transactions */
 
 import com.tverts.system.tx.Tx;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -58,10 +63,10 @@ public class HiberPoint
 	public Session        getSession()
 	{
 		SessionFactory sf = getSessionFactory();
-		if(sf == null) throw new IllegalStateException();
+		if(sf == null) throw EX.state();
 
 		Session res = sf.getCurrentSession();
-		if(res == null) throw new IllegalStateException(
+		if(res == null) throw EX.state(
 		  "Spring @Transaction context was not opened! No Session!");
 		return res;
 	}
@@ -110,7 +115,14 @@ public class HiberPoint
 			}
 		}
 
-		return session.createQuery(s.toString());
+		try
+		{
+			return session.createQuery(s.toString());
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e, "Error occurred while building Query: [", s, "]!");
+		}
 	}
 
 	public static Class   type(Object obj)

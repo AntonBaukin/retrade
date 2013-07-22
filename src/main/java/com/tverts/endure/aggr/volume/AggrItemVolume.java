@@ -72,6 +72,30 @@ public class AggrItemVolume extends AggrItemBase
 		this.aggrNegative = v;
 	}
 
+	/**
+	 * Tells that this historical value is fixed.
+	 *
+	 * If true, {@link #getAggrPositive()} and-or
+	 * {@link #getAggrNegative()} must be set,
+	 * and the aggregator must support ordering!
+	 *
+	 * Fixed values are never modified when previous
+	 * items are inserted-updated-deleted.
+	 *
+	 * The aggregated value equals to the last fixed
+	 * historical value with updates of all the
+	 * following items.
+	 */
+	public boolean    isAggrFixed()
+	{
+		return aggrFixed;
+	}
+
+	public void       setAggrFixed(boolean aggrFixed)
+	{
+		this.aggrFixed = aggrFixed;
+	}
+
 
 	/* persisted attributes: the volumes */
 
@@ -80,4 +104,5 @@ public class AggrItemVolume extends AggrItemBase
 
 	private BigDecimal aggrPositive;
 	private BigDecimal aggrNegative;
+	private boolean    aggrFixed;
 }

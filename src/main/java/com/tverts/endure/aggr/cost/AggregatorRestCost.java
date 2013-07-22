@@ -80,8 +80,8 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		//~: set aggregated value
 		item.setAggrValue(aggrValue(struct));
 
-		//~: set source ID
-		item.setSourceID(task.getSourceKey());
+		//~: set source key
+		item.setSourceKey(task.getSourceKey());
 
 		//~: the good volume
 		item.setGoodVolume(task.getGoodVolume());
@@ -92,14 +92,9 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		//~: set order index
 		setOrderIndex(struct, item);
 
-		//?: {the order index is undefined} illegal state
-		if(item.getOrderIndex() == null)
-			throw new IllegalStateException(logsig(struct) +
-			  ": order index is undefined!");
-
 		//?: {the volume is positive} set historical value
 		if(item.getGoodVolume().signum() == 1)
-			item.setHistorical(true);
+			item.setHistoryIndex(item.getOrderIndex());
 
 		//!: do save the item
 		session(struct).save(item);

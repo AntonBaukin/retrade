@@ -36,9 +36,24 @@ public interface AggrTask extends java.io.Serializable
 
 	/**
 	 * The (actual leaf) class of the source instance.
-	 * Must be defined if the source exists. (Almost always.)
+	 * Must be defined if the source key is.
 	 */
 	public Class   getSourceClass();
 
-	public void    setSourceClass(Class orderClass);
+	public void    setSourceClass(Class sourceClass);
+
+	/**
+	 * If the source instance has no own order index,
+	 * set the path (including the property name) to
+	 * the source class.
+	 *
+	 * Example: let A refers B (with b) having standard
+	 * order index property, A instance is the source,
+	 * the path is 'b.orderIndex'.
+	 *
+	 * Note to omit prefix dot.
+	 */
+	public String  getOrderPath();
+
+	public void    setOrderPath(String path);
 }

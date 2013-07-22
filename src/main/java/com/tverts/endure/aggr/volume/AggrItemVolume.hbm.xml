@@ -57,5 +57,21 @@
       </column>
     </property>
 
+
+    <!-- Aggregated Fixed Flag -->
+
+    <property name = 'aggrFixed'>
+
+      <column name = 'is_fixed' not-null = 'true'>
+        <comment>
+          Tells that this historical aggregated value is fixed.
+          Fixed values are never modified when previous items are
+          inserted-updated-deleted. The aggregated value equals to
+          the last fixed historical value with updates of all the
+          following items.
+        </comment>
+      </column>
+    </property>
+
   </union-subclass>
 </hibernate-mapping>
