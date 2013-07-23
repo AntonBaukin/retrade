@@ -36,7 +36,9 @@
 
     <property name = "selectorId">
 
-      <column name = 'selector_id' unique-key = 'ux_aggr_value_owner'>
+      <column name = 'selector_id' index = 'ix_aggr_value_selector'
+        unique-key = 'ux_aggr_value_owner'>
+
         <comment>
           Copy of the primary key of the selector of this aggregated value
         </comment>
