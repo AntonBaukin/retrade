@@ -20,6 +20,11 @@ public class CMP
 		return (n != null) && (BigDecimal.ZERO.compareTo(n) < 0);
 	}
 
+	public static boolean greZero(BigDecimal n)
+	{
+		return (n != null) && (BigDecimal.ZERO.compareTo(n) <= 0);
+	}
+
 
 	/* general equality */
 

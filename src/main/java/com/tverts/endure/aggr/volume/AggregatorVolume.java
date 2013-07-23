@@ -394,7 +394,7 @@ public class AggregatorVolume extends AggregatorSingleBase
    (orderIndex > :orderIndex) and (historyIndex is null)
 
  */
-		return (BigDecimal[]) aggrItemQ(struct,
+		Object[] res = (Object[]) aggrItemQ(struct,
 
 "select sum(volumePositive), sum(volumeNegative)\n" +
 "from AggrItem where (aggrValue = :aggrValue) and\n" +
@@ -404,6 +404,10 @@ public class AggregatorVolume extends AggregatorSingleBase
 		  setParameter("aggrValue",  aggrValue(struct)).
 		  setLong("orderIndex", orderIndex).
 		  uniqueResult();
+
+		return new BigDecimal[] {
+		  (BigDecimal) res[0], (BigDecimal) res[1]
+		};
 	}
 
 
