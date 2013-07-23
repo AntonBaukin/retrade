@@ -44,7 +44,7 @@ public class GetAggrValue extends GetObjectBase
 	 *   when there are more than one Aggregated Value
 	 *   exists for the specified parameters.
 	 */
-	public AggrValue getAggrValue(Long owner, UnityType aggrType, Long selectorId)
+	public AggrValue getAggrValue(Long owner, UnityType aggrType, Long selectorKey)
 	{
 		if(owner == null)     throw new IllegalArgumentException();
 		if(aggrType == null)  throw new IllegalArgumentException();
@@ -52,24 +52,24 @@ public class GetAggrValue extends GetObjectBase
 /*
 
 from AggrValue where (owner.id = :owner) and
-  (aggrType = :aggrType) and (selectorId is null)
+  (aggrType = :aggrType) and (selectorKey is null)
 
 from AggrValue where (owner.id = :owner) and
-  (aggrType = :aggrType) and (selectorId = :selectorId)
+  (aggrType = :aggrType) and (selectorKey = :selectorKey)
 
 */
 
 		final String Q1 =
 
 "from AggrValue where (owner.id = :owner) and\n" +
-"  (aggrType = :aggrType) and (selectorId is null)";
+"  (aggrType = :aggrType) and (selectorKey is null)";
 
 		final String Q2 =
 
 "from AggrValue where (owner.id = :owner) and\n" +
-"  (aggrType = :aggrType) and (selectorId = :selectorId)";
+"  (aggrType = :aggrType) and (selectorKey = :selectorKey)";
 
-		Query        q  = Q((selectorId == null)?(Q1):(Q2));
+		Query        q  = Q((selectorKey == null)?(Q1):(Q2));
 
 		//HINT: we expect 0 or 1 instances, but have to detect more.
 		q.setMaxResults(2);
@@ -77,8 +77,8 @@ from AggrValue where (owner.id = :owner) and
 		q.setLong     ("owner",    owner);
 		q.setParameter("aggrType", aggrType);
 
-		if(selectorId != null)
-			q.setLong  ("selectorId", selectorId);
+		if(selectorKey != null)
+			q.setLong  ("selectorKey", selectorKey);
 
 		//~:
 		List         r = q.list();
@@ -99,15 +99,15 @@ from AggrValue where (owner.id = :owner) and
 		  owner + "!");
 	}
 
-	public AggrValue getAggrValue(Long owner, String aggrType, Long selectorId)
+	public AggrValue getAggrValue(Long owner, String aggrType, Long selectorKey)
 	{
 		return getAggrValue(owner,
-		  UnityTypes.unityType(AggrValue.class, aggrType), selectorId);
+		  UnityTypes.unityType(AggrValue.class, aggrType), selectorKey);
 	}
 
-	public AggrValue loadAggrValue(Long owner, UnityType aggrType, Long selectorId)
+	public AggrValue loadAggrValue(Long owner, UnityType aggrType, Long selectorKey)
 	{
-		AggrValue result = getAggrValue(owner, aggrType, selectorId);
+		AggrValue result = getAggrValue(owner, aggrType, selectorKey);
 
 		if(result == null) throw new IllegalStateException(
 		  "Couldn't load Aggregated Value of the type " + aggrType.toString() +
@@ -116,10 +116,10 @@ from AggrValue where (owner.id = :owner) and
 		return result;
 	}
 
-	public AggrValue loadAggrValue(Long owner, String aggrType, Long selectorId)
+	public AggrValue loadAggrValue(Long owner, String aggrType, Long selectorKey)
 	{
 		return loadAggrValue(owner,
-		  UnityTypes.unityType(AggrValue.class, aggrType), selectorId);
+		  UnityTypes.unityType(AggrValue.class, aggrType), selectorKey);
 	}
 
 

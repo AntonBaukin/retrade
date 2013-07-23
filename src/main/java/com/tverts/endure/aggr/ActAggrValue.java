@@ -249,8 +249,8 @@ public class ActAggrValue extends ActionBuilderXRoot
 			//~: assign the owner
 			val.setOwner(o);
 
-			//~: assign the selector ID
-			val.setSelectorId(s);
+			//~: assign the selector key
+			val.setSelectorKey(s);
 
 			return val;
 		}

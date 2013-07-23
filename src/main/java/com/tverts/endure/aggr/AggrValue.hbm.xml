@@ -34,26 +34,13 @@
 
     <!-- Selector ID -->
 
-    <property name = "selectorId">
+    <property name = "selectorKey">
 
-      <column name = 'selector_id' index = 'ix_aggr_value_selector'
+      <column name = 'selector_key' index = 'ix_aggr_value_selector'
         unique-key = 'ux_aggr_value_owner'>
 
         <comment>
           Copy of the primary key of the selector of this aggregated value
-        </comment>
-      </column>
-    </property>
-
-
-    <!-- Aggr Item ID -->
-
-    <property name = "aggrItemId">
-
-      <column name = 'aggr_item_id'>
-        <comment>
-          Copy of the primary key of the component with the actual historical
-          value of the aggregated value
         </comment>
       </column>
     </property>
