@@ -106,8 +106,6 @@ select
     join
   core_unity_type ut
     on u.fk_unity_type = ut.pk_unity_type
-
  order by ut.title_lo, avt.title_lo
-
 
 -->
