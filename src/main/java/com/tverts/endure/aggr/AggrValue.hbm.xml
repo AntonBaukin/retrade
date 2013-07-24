@@ -87,3 +87,27 @@
 
   </union-subclass>
 </hibernate-mapping>
+
+<!--
+
+select
+  u.pk_unity as "owner key",
+  ut.title_lo as "owner type",
+  avt.type_name as "aggr type",
+  av.aggr_value, av.aggr_value_pos, aggr_value_neg
+    from
+  aggr_value av
+    join
+  core_unity_type avt
+    on avt.pk_unity_type = av.fk_aggr_type
+    join
+  core_unity u
+    on u.pk_unity = av.fk_owner
+    join
+  core_unity_type ut
+    on u.fk_unity_type = ut.pk_unity_type
+
+ order by ut.title_lo, avt.title_lo
+
+
+-->

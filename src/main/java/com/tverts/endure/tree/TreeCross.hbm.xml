@@ -32,7 +32,7 @@
       <column name = 'fk_item' not-null = 'true'
         unique-key = 'ux_tree_cross_item' index = 'ix_tree_cross_item'>
 
-        <comment>Tree Item crossed with it's Folder ancestors</comment>
+        <comment>Tree Item crossed with its Folder ancestors</comment>
       </column>
     </many-to-one>
 

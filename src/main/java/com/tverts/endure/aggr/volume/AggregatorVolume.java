@@ -28,6 +28,21 @@ import com.tverts.support.EX;
  * Does aggregation for {@link AggrTaskVolumeCreate} and
  * {@link AggrTaskVolumeDelete} tasks.
  *
+ * This implementation supports so-called fixed history
+ * volume items. Such an item stores not a history value
+ * maintained for it's moment, but a real-world volume
+ * that must be assigned as the aggregated value regarding
+ * the following plain items. Each new fixed history item
+ * overwrites the previous one.
+ *
+ * Phony volume delta of fixed history item is a difference
+ * between the expected aggregated volume expected at that
+ * moment with the real-world one. Positive or negative
+ * volume attributes hold the volumes needed to add to the
+ * expected volume to be equal to the real-world one stored
+ * in the aggregated attributes.
+ *
+ *
  * @author anton.baukin@gmail.com
  */
 public class AggregatorVolume extends AggregatorSingleBase
@@ -84,6 +99,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		//~: recalculate the aggregated value
 		updateAggrValueCreate(struct, item);
+		session(struct).flush();
 	}
 
 	protected AggrItemVolume
@@ -162,16 +178,11 @@ public class AggregatorVolume extends AggregatorSingleBase
 	protected void saveItem(AggrStruct struct, AggrItemVolume item)
 	{
 		//~: evict all the aggregated items currently present
+		session(struct).flush();
 		evictAggrItems(struct);
 
 		//!: do save the item
 		session(struct).save(item);
-
-		//!: flush the session
-		session(struct).flush();
-
-		//!: evict the item
-		session(struct).evict(item);
 
 		//~: link the items for the calculations
 		struct.items(item);
@@ -211,8 +222,8 @@ public class AggregatorVolume extends AggregatorSingleBase
 				}
 
 				//~: left summary
-				slp = x(p.subtract(lp).subtract(s[0]));
-				sln = x(n.subtract(ln).subtract(s[1]));
+				slp = p.subtract(lp).subtract(s[0]);
+				sln = n.subtract(ln).subtract(s[1]);
 
 				//~: z - is the item to insert
 				BigDecimal zp = x(z.getAggrPositive());
@@ -328,9 +339,6 @@ public class AggregatorVolume extends AggregatorSingleBase
 		//?: {there are none of them} nothing to do...
 		if(items.isEmpty()) return;
 
-		//~: delete them first!
-		deleteItems(struct, items);
-
 		//~: recalculate the aggregated value
 		deleteItems(struct, items);
 	}
@@ -343,6 +351,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 			throw EX.state(logsig(struct), ": source is undefined!");
 
 		//~: evict all the aggregated items currently present
+		session(struct).flush();
 		evictAggrItems(struct);
 
 		//~: load the items of the source
