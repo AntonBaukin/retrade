@@ -20,6 +20,7 @@ import com.tverts.endure.aggr.AggrItem;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 
 
@@ -176,55 +177,142 @@ public class AggregatorVolume extends AggregatorSingleBase
 		struct.items(item);
 	}
 
-	protected void updateAggrValueCreate(AggrStruct struct, AggrItemVolume item)
+	protected void updateAggrValueCreate(AggrStruct struct, AggrItemVolume z)
 	{
 		//~: current value
-		BigDecimal p = aggrValue(struct).getAggrPositive();
-		BigDecimal n = aggrValue(struct).getAggrNegative();
-
-		if(p == null) p = BigDecimal.ZERO;
-		if(n == null) n = BigDecimal.ZERO;
+		BigDecimal     p = x(aggrValue(struct).getAggrPositive());
+		BigDecimal     n = x(aggrValue(struct).getAggrNegative());
 
 		//~: find fixed item on the right
-		AggrItemVolume r = findFixedItemRight(struct, item.getOrderIndex());
-
+		AggrItemVolume r = findFixedItemRight(struct, z.getOrderIndex());
 
 		//?: {there is no fixed history value on the right}
 		if(r == null)
-			//?: {item is a fixed history value} assign it and recalculate
-			if(item.isAggrFixed())
+		{
+			//?: {item is a fixed history value}
+			if(z.isAggrFixed())
 			{
-				//~: assign
-				p = item.getAggrPositive();
-				n = item.getAggrNegative();
+				//<: calculate this item deltas
 
-				if(p == null) p = BigDecimal.ZERO;
-				if(n == null) n = BigDecimal.ZERO;
+				//~: summarize plain items on the right
+				BigDecimal[]   s = summItems(struct, z.getOrderIndex(), Long.MAX_VALUE);
 
-				//~: recalculate plain items on the right
-				BigDecimal[] s = summItemsRight(struct, item.getOrderIndex());
+				//~: find left fixed item
+				AggrItemVolume l = findFixedItemLeft(struct, z.getOrderIndex());
+				BigDecimal     lp, ln, slp, sln;
 
-				if(s[0] != null)
-					p = p.add(s[0]);
-				if(s[1] != null)
-					n = n.add(s[1]);
+				//~: left initial value
+				if(l == null)
+					lp = ln = BigDecimal.ZERO;
+				else
+				{
+					lp = x(l.getAggrPositive());
+					ln = x(l.getAggrNegative());
+				}
+
+				//~: left summary
+				slp = x(p.subtract(lp).subtract(s[0]));
+				sln = x(n.subtract(ln).subtract(s[1]));
+
+				//~: z - is the item to insert
+				BigDecimal zp = x(z.getAggrPositive());
+				BigDecimal zn = x(z.getAggrNegative());
+
+				//~: the deltas
+				BigDecimal dp = zp.add(ln).add(sln);
+				BigDecimal dn = zn.add(lp).add(slp);
+
+				//~: normalize delta
+				BigDecimal d  = dp.subtract(dn);
+
+				if(CMP.greZero(d)) {dp = d; dn = BigDecimal.ZERO;}
+				else               {dn = d.negate(); dp = BigDecimal.ZERO;}
+
+				//~: assign it to the item
+				z.setVolumePositive(dp);
+				z.setVolumeNegative(dn);
+
+				//>: calculate this item deltas
+
+				//~: assign aggregated value
+				p = zp.add(s[0]);
+				n = zn.add(s[1]);
 			}
 			//~: this is a plain item
 			else
 			{
-				if(item.getVolumePositive() != null)
-					p = p.add(item.getVolumePositive());
-
-				if(item.getVolumeNegative() != null)
-					n = n.add(item.getVolumeNegative());
+				p = p.add(x(z.getVolumePositive()));
+				n = n.add(x(z.getVolumeNegative()));
 			}
+		}
+		//~: update the volume deltas of the fixed items
+		else
+		{
+			//?: {item is a fixed history value}
+			if(z.isAggrFixed())
+			{
+				//~: summarize plain items on the right (till r)
+				BigDecimal[]   s = summItems(struct,
+				  z.getOrderIndex(), r.getOrderIndex());
+
+				//~: right final value
+				BigDecimal rp  = x(r.getAggrPositive());
+				BigDecimal rn  = x(r.getAggrNegative());
+				BigDecimal drp = x(r.getVolumePositive());
+				BigDecimal drn = x(r.getVolumeNegative());
+
+				//~: z - is the item to insert
+				BigDecimal zp  = x(z.getAggrPositive());
+				BigDecimal zn  = x(z.getAggrNegative());
+
+				//~: the deltas of z
+				BigDecimal dzp = zp.add(rn).add(drp).add(s[0]);
+				BigDecimal dzn = zn.add(rp).add(drn).add(s[1]);
+
+				BigDecimal d   = dzp.subtract(dzn);
+
+				if(CMP.greZero(d)) {dzp = d; dzn = BigDecimal.ZERO;}
+				else               {dzn = d.negate(); dzp = BigDecimal.ZERO;}
+
+				z.setVolumePositive(dzp);
+				z.setVolumeNegative(dzn);
+
+				//~: the deltas of right
+				drp = rp.add(zn).add(s[1]);
+				drn = rn.add(zp).add(s[0]);
+				d   = drp.subtract(drn);
+
+				if(CMP.greZero(d)) {drp = d; drn = BigDecimal.ZERO;}
+				else               {drn = d.negate(); drp = BigDecimal.ZERO;}
+
+				r.setVolumePositive(drp);
+				r.setVolumeNegative(drn);
+			}
+			//~: this is a plain item
+			else
+			{
+				//~: update the deltas
+				BigDecimal dp = x(r.getVolumePositive());
+				BigDecimal dn = x(r.getVolumeNegative());
+
+				dp = dp.add(x(z.getVolumeNegative()));
+				dn = dn.add(x(z.getVolumePositive()));
+
+				//~: normalize delta
+				BigDecimal d  = dp.subtract(dn);
+
+				if(CMP.greZero(d)) {dp = d; dn = BigDecimal.ZERO;}
+				else               {dn = d.negate(); dp = BigDecimal.ZERO;}
+
+				//~: assign it to the right fixed item
+				r.setVolumePositive(dp);
+				r.setVolumeNegative(dn);
+			}
+		}
 
 		//~: assign the value components
-		if(p == null) p = BigDecimal.ZERO;
-		if(n == null) n = BigDecimal.ZERO;
-
-		aggrValue(struct).setAggrPositive(p);
-		aggrValue(struct).setAggrNegative(n);
+		aggrValue(struct).setAggrPositive(x(p));
+		aggrValue(struct).setAggrNegative(x(n));
 		aggrValue(struct).setAggrValue(p.subtract(n));
 	}
 
@@ -244,7 +332,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		deleteItems(struct, items);
 
 		//~: recalculate the aggregated value
-		updateAggrValueDelete(struct, items);
+		deleteItems(struct, items);
 	}
 
 	protected List<AggrItem>
@@ -263,66 +351,69 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 	protected void deleteItems(AggrStruct struct, List<AggrItem> items)
 	{
-		//!: delete that items first
+		//c: proceed item-by-item
 		for(AggrItem item : items)
+		{
+			//!: delete that item first
 			session(struct).delete(item);
-
-		//!: flush the session
-		session(struct).flush();
-
-		//!: evict the items
-		for(AggrItem item : items)
+			session(struct).flush();
 			session(struct).evict(item);
 
-		//~: link the items for the calculations
-		struct.items(items);
+			//~: link the item for the calculations
+			struct.items(items);
+
+			//~: update the aggregated value
+			updateAggrValueDelete(struct, (AggrItemVolume) item);
+		}
 	}
 
-	protected void updateAggrValueDelete
-	  (AggrStruct struct, List<AggrItem> items)
+	protected void updateAggrValueDelete(AggrStruct struct, AggrItemVolume z)
 	{
 		//~: current value
-		BigDecimal p = aggrValue(struct).getAggrPositive();
-		BigDecimal n = aggrValue(struct).getAggrNegative();
+		BigDecimal     p = x(aggrValue(struct).getAggrPositive());
+		BigDecimal     n = x(aggrValue(struct).getAggrNegative());
 
+		//~: find fixed item on the right
+		AggrItemVolume r = findFixedItemRight(struct, z.getOrderIndex());
 
-		//~: the the most right fixed history value
-		AggrItemVolume r = findFixedItemLeft(struct, Long.MAX_VALUE);
-
-		//?: {it exists} take it
-		if(r != null)
+		//?: {there is no fixed history value on the right}
+		if(r == null)
 		{
-			p = r.getAggrPositive();
-			n = r.getAggrNegative();
+			//HINT: this equation is valid for both fixed
+			//  and plain items!
+
+			p = p.subtract(x(z.getVolumePositive()));
+			n = n.subtract(x(z.getVolumeNegative()));
+		}
+		//~: update the volume deltas of right item
+		else
+		{
+			BigDecimal drp = x(r.getVolumePositive());
+			BigDecimal drn = x(r.getVolumeNegative());
+
+			//HINT: this equation is valid for both fixed
+			//  and plain items!
+
+			drp = drp.add(x(z.getVolumePositive()));
+			drn = drn.add(x(z.getVolumeNegative()));
+
+			BigDecimal d   = drp.subtract(drn);
+
+			if(CMP.greZero(d)) {drp = d; drn = BigDecimal.ZERO;}
+			else               {drn = d.negate(); drp = BigDecimal.ZERO;}
+
+			r.setVolumePositive(drp);
+			r.setVolumeNegative(drn);
 		}
 
-		if(p == null) p = BigDecimal.ZERO;
-		if(n == null) n = BigDecimal.ZERO;
+		//HINT: with fixed historical items present, the components
+		//  of the aggregated value due to the subtraction may become
+		//  sub zero. There is nothing to do here, but to normalize...
 
-		//~: effect items on the right of it
-		for(AggrItem item : items)
-		{
-			AggrItemVolume i = (AggrItemVolume)item;
+		if(!CMP.greZero(p)) {n = n.subtract(p); p = BigDecimal.ZERO;}
+		if(!CMP.greZero(n)) {p = p.subtract(n); n = BigDecimal.ZERO;}
 
-			if(i.getVolumePositive() != null)
-				p = p.subtract(i.getVolumePositive());
-
-			if(i.getVolumeNegative() != null)
-				n = n.subtract(i.getVolumeNegative());
-		}
-
-		if(p == null) p = BigDecimal.ZERO;
-		if(n == null) n = BigDecimal.ZERO;
-
-		//~: the component became sub zero
-		if((BigDecimal.ZERO.compareTo(p) > 0) || (BigDecimal.ZERO.compareTo(n) > 0))
-			throw EX.state( logsig(struct),
-			  " delete operation for source [",
-			  struct.task.getSourceKey(), "] class ",
-			  struct.task.getSourceClass().getSimpleName(),
-			  "] made value component to become below zero!"
-			);
-
+		//~: assign the value components
 		aggrValue(struct).setAggrPositive(p);
 		aggrValue(struct).setAggrNegative(n);
 		aggrValue(struct).setAggrValue(p.subtract(n));
@@ -331,7 +422,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 	/* protected: aggregation helpers */
 
-	protected AggrItemVolume findFixedItemLeft(AggrStruct struct, Long orderIndex)
+	protected AggrItemVolume  findFixedItemLeft(AggrStruct struct, Long orderIndex)
 	{
 
 /*
@@ -349,7 +440,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong("orderIndex", orderIndex).
+		  setLong     ("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  uniqueResult();
 
@@ -358,7 +449,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		return i;
 	}
 
-	protected AggrItemVolume findFixedItemRight(AggrStruct struct, Long orderIndex)
+	protected AggrItemVolume  findFixedItemRight(AggrStruct struct, Long orderIndex)
 	{
 
 /*
@@ -376,7 +467,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong("orderIndex", orderIndex).
+		  setLong     ("orderIndex", orderIndex).
 		  setMaxResults(1).
 		  uniqueResult();
 
@@ -385,29 +476,43 @@ public class AggregatorVolume extends AggregatorSingleBase
 		return i;
 	}
 
-	protected BigDecimal[]   summItemsRight(AggrStruct struct, Long orderIndex)
+	protected BigDecimal[]    summItems(AggrStruct struct, Long b, Long e)
 	{
 /*
 
  select sum(volumePositive), sum(volumeNegative)
  from AggrItem where (aggrValue = :aggrValue) and
-   (orderIndex > :orderIndex) and (historyIndex is null)
+   (orderIndex > :b) and (orderIndex < :e) and
+   (historyIndex is null)
 
  */
 		Object[] res = (Object[]) aggrItemQ(struct,
 
 "select sum(volumePositive), sum(volumeNegative)\n" +
 "from AggrItem where (aggrValue = :aggrValue) and\n" +
-"  (orderIndex > :orderIndex) and (historyIndex is null)"
+"  (orderIndex > :b) and (orderIndex < :e) and\n" +
+"  (historyIndex is null)"
 
 		).
 		  setParameter("aggrValue",  aggrValue(struct)).
-		  setLong("orderIndex", orderIndex).
+		  setLong     ("b",          b).
+		  setLong     ("e",          e).
 		  uniqueResult();
 
 		return new BigDecimal[] {
-		  (BigDecimal) res[0], (BigDecimal) res[1]
+		  x((BigDecimal) res[0]),
+		  x((BigDecimal) res[1])
 		};
+	}
+
+	private static BigDecimal x(BigDecimal n)
+	{
+		if(n == null)
+			return BigDecimal.ZERO;
+
+		if(BigDecimal.ZERO.compareTo(n) > 0)
+			throw EX.state();
+		return n;
 	}
 
 
