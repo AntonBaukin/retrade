@@ -18,6 +18,23 @@ import java.util.ListIterator;
  */
 public class StringsSeparated implements StringsReference
 {
+	/* public: constructors */
+
+	public StringsSeparated()
+	{}
+
+	public StringsSeparated(String string)
+	{
+		this.string = string;
+	}
+
+	public StringsSeparated(String regexp, String string)
+	{
+		this.regexp = regexp;
+		this.string = string;
+	}
+
+
 	/* public: StringsReference interface */
 
 	public List<CharSequence> dereferObjects()
@@ -63,6 +80,7 @@ public class StringsSeparated implements StringsReference
 		if(regexp == null) throw new IllegalArgumentException();
 		this.regexp = regexp;
 	}
+
 
 	/* private: string value */
 

@@ -368,6 +368,11 @@ public abstract class AggregatorBase
 		return struct.job.aggrValue();
 	}
 
+	protected String    getLog()
+	{
+		return this.getClass().getName();
+	}
+
 	protected String    logsig()
 	{
 		return this.getClass().getSimpleName();

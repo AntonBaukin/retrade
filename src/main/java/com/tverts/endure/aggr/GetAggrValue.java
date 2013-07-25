@@ -138,7 +138,7 @@ from AggrValue where (owner.id = :owner) and
 		  list();
 	}
 
-	public AggrCalc       getAggrCalcs(AggrValue av, UnityType calcType)
+	public AggrCalc       getAggrCalc(AggrValue av, UnityType calcType)
 	{
 
 /*

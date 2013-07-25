@@ -179,7 +179,7 @@ public class ActAggrCalc extends ActionBuilderXRoot
 			if(notexists != null) return notexists;
 
 			this.calc = bean(GetAggrValue.class).
-			  getAggrCalcs(aggrValue(), calcType(abr));
+			  getAggrCalc(aggrValue(), calcType(abr));
 
 			return this.notexists = (this.calc == null);
 		}

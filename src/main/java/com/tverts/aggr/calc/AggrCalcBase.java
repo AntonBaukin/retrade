@@ -191,6 +191,14 @@ public abstract class AggrCalcBase
 	}
 
 
+	/* protected: logging */
+
+	protected String    getLog()
+	{
+		return this.getClass().getName();
+	}
+
+
 	/* private: parameters of the strategy */
 
 	private StringsReference     calcTypes;
