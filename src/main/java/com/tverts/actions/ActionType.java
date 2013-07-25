@@ -135,8 +135,8 @@ public class ActionType
 	public String  toString()
 	{
 		return String.format(
-		  "action type '%s' on class %s",
-		  actionName, goalClass.getName()
+		  "'%s' on class %s",
+		  actionName, goalClass.getSimpleName()
 		);
 	}
 

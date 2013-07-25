@@ -2,6 +2,7 @@ package com.tverts.support;
 
 /* com.tverts: hibery */
 
+import com.tverts.endure.NumericIdentity;
 import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: endure core */
@@ -177,11 +178,15 @@ public class LU
 	{
 		if(obj == null) return "null";
 
-		return String.format(
-		  "%s@%d",
-		  obj.getClass().getSimpleName(),
-		  System.identityHashCode(obj)
-		);
+		StringBuilder s = new StringBuilder(64).
+		  append(obj.getClass().getSimpleName());
+
+		if(obj instanceof NumericIdentity)
+			s.append(" [").append(((NumericIdentity)obj).getPrimaryKey()).append(']');
+		else
+			s.append('@').append(System.identityHashCode(obj));
+
+		return s.toString();
 	}
 
 	public static String sig(PrimaryIdentity obj)

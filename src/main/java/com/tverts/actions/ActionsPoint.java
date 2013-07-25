@@ -8,7 +8,9 @@ import java.util.Map;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
+
 
 /**
  * Point to build actions on the application
@@ -39,18 +41,16 @@ public class ActionsPoint
 		ActionTrigger trigger = ActionsPoint.getInstance().
 		  actionOrNull(task);
 
-		if(trigger == null) throw new IllegalStateException(
-		  "Action point couldn't build an action for " + logsig(task)
-		);
+		if(trigger == null)
+			throw EX.state("Action point couldn't build an action for ", logsig(task));
 
 		return trigger;
 	}
 
 	public ActionTrigger        actionOrNull(ActionTask task)
 	{
-		if(task == null) throw new IllegalArgumentException(
-		  "Can't create action on the task undefined!"
-		);
+		if(task == null)
+			throw EX.state("Can't create action on the task undefined!");
 
 		ActionBuildRec abr = new ActionBuildRec(task);
 
@@ -161,7 +161,7 @@ public class ActionsPoint
 
 	public void          setRootBuilder(ActionBuilder builder)
 	{
-		if(builder == null) throw new IllegalArgumentException();
+		if(builder == null) throw EX.state();
 		this.rootBuilder = builder;
 	}
 
