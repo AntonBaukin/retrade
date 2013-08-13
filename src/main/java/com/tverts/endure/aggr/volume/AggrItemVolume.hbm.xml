@@ -75,3 +75,20 @@
 
   </union-subclass>
 </hibernate-mapping>
+
+
+<!--
+
+select
+  vi.order_index as "oi",
+  vi.history_index as "hi",
+  vi.volume_positive as "v+",
+  vi.volume_negative as "v-",
+  vi.aggr_positive as "s+",
+  vi.aggr_negative as "s-",
+  vi.source_key as "src"
+from aggr_item_volume vi
+where (vi.fk_aggr_value = -321)
+order by order_index
+
+-->

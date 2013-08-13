@@ -2,12 +2,13 @@ package com.tverts.endure.aggr;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.endure.order.OrderRequest;
 import org.hibernate.Query;
 
 /* com.tverts: endure (ordering) */
 
 import com.tverts.endure.order.OrdererDefault;
+import com.tverts.endure.order.OrderIndex;
+import com.tverts.endure.order.OrderRequest;
 
 /* com.tverts: support */
 
@@ -63,41 +64,68 @@ public class OrdererAggrItem extends OrdererDefault
 		  instance(request).getClass());
 	}
 
-	protected void    spreadMoveOrderRight(OrderData odata)
+	protected String  spreadReservePlaceRightQuery()
 	{
 /*
 
-update OrderIndex set
-  $orderIndex   = $orderIndex + :insertStep,
-  $historyIndex = $orderIndex + :insertStep
-where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
-  ($orderIndex >= :orderIndex)
+ update OrderIndex set
+   $orderIndex   = $orderIndex   + :smove,
+   $historyIndex = $historyIndex + :smove
+ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
+   ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)
 
 */
-
-		Query q = indexQuery(odata,
+		return
 
 "update OrderIndex set\n" +
-"  $orderIndex  = $orderIndex + :insertStep,\n" +
-"  historyIndex = $orderIndex + :insertStep\n" +
+"  $orderIndex   = $orderIndex   + :smove,\n" +
+"  $historyIndex = $historyIndex + :smove\n" +
 "where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
-"  ($orderIndex >= :orderIndex)"
+"  ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)";
 
-		).
-		  setLong("insertStep", getInsertStep()).
-		  setLong("orderIndex", odata.getRight().getOrderIndex());
+	}
 
-		//!: execute update
-		q.executeUpdate();
+	protected String  spreadReservePlaceLeftQuery()
+	{
+/*
 
-		//~: update the selected spread line
-		Long[] spread = odata.getRightSpread();
-		for(int i = 0;(i < spread.length);i++)
-			spread[i] += getInsertStep();
+ update OrderIndex set
+   $orderIndex   = $orderIndex   - :smove,
+   $historyIndex = $historyIndex - :smove
+ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
+   ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)
 
-		//~: reload the indices of the updated rows
-		reloadUpdatedOrderIndices(odata,
-		  odata.getRight().getOrderIndex(), null);
+*/
+		return
+
+"update OrderIndex set\n" +
+"  $orderIndex   = $orderIndex   - :smove,\n" +
+"  $historyIndex = $historyIndex - :smove\n" +
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
+"  ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)";
+
+	}
+
+	protected String  spreadMoveOrderRightQuery()
+	{
+
+/*
+
+ update OrderIndex set
+   $orderIndex   = $orderIndex   + :insertStep,
+   $historyIndex = $historyIndex + :insertStep
+ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
+   ($orderIndex >= :orderIndex)
+
+*/
+		return
+
+"update OrderIndex set\n" +
+"  $orderIndex   = $orderIndex   + :insertStep,\n" +
+"  $historyIndex = $historyIndex + :insertStep\n" +
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
+"  ($orderIndex >= :orderIndex)";
+
 	}
 
 	protected Query   indexQuery(OrderData odata, String hql)
@@ -105,6 +133,15 @@ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
 		return super.indexQuery(odata,
 		  SU.replace(hql, "$historyIndex", getHistoryIndexProp())
 		);
+	}
+
+	protected void    updateOrderIndex(OrderIndex entity, long oi)
+	{
+		entity.setOrderIndex(oi);
+
+		//~: update the history index
+		if(((AggrItemBase)entity).isHistorical())
+			((AggrItemBase)entity).setHistoryIndex(oi);
 	}
 
 

@@ -149,28 +149,16 @@ order by orderIndex asc
 	protected void           setOrderIndex
 	  (AggrStruct struct, OrderIndex instance)
 	{
-//		OrderIndex reference   = null;
-//		boolean    beforeAfter = task.isBeforeAfter();
-//
-//		if(task.getOrderKey() != null)
-//		{
-//			//HINT:  assume we have beforeAfter = true.
-//			//
-//			//  The reference source (i.e. the Invoice to insert after
-//			//  it) is defined (task.getOrderKey() != null), but there
-//			//  are no aggr items of this invoice or any other previous
-//			//  invoices. In this case we must insert the item as the
-//			//  first one by setting beforeAfter =  false;
-//
-//			reference = findOrderIndexAggrItemReference(struct, task);
-//
-//			if(reference == null)
-//				beforeAfter = !beforeAfter;
-//
-//			//HINT: when the order key is undefined the outer callee
-//			//  tells correct flag to insert as the first or the last.
-//		}
+		OrderIndex reference = findOrderIndexAggrItemReference(struct);
 
+		setOrderIndex(struct, instance,
+		  findOrderIndexAggrItemReference(struct)
+		);
+	}
+
+	protected void           setOrderIndex
+	  (AggrStruct struct, OrderIndex instance, OrderIndex referenceBefore)
+	{
 		// HINT:  find reference function returns aggr item
 		//  to insert before. If such instance exists before-after
 		//  flag must be set false.
@@ -179,11 +167,9 @@ order by orderIndex asc
 		//  instance is currently the last in the order, and we
 		//  must insert the item as the last: the flag is true.
 
-		OrderIndex reference = findOrderIndexAggrItemReference(struct);
-
 		//!: issue order request
-		OrderPoint.order(new OrderRequest(instance, reference).
-		  setBeforeAfter(reference == null)
+		OrderPoint.order(new OrderRequest(instance, referenceBefore).
+		  setBeforeAfter(referenceBefore == null)
 		);
 
 		if(instance.getOrderIndex() == null)

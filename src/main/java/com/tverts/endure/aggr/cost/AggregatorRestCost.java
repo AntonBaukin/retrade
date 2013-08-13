@@ -19,6 +19,10 @@ import com.tverts.aggr.AggregatorSingleBase;
 
 import com.tverts.endure.aggr.AggrItem;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Does aggregation for {@link AggrTaskRestCostCreate} and
@@ -62,8 +66,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 	{
 		//?: {the source entity is undefined} do nothing
 		if(struct.task.getSourceKey() == null)
-			throw new IllegalArgumentException(
-			  "Source is undefined! " + logsig(struct));
+			throw EX.state("Source is undefined! ", logsig(struct));
 
 		//~: evict all the aggregated items currently present
 		evictAggrItems(struct);
@@ -127,8 +130,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 	{
 		//?: {the source entity is undefined} do nothing
 		if(struct.task.getSourceKey() == null)
-			throw new IllegalArgumentException(
-			  "Source is undefined! " + logsig(struct));
+			throw EX.state("Source is undefined! ", logsig(struct));
 
 		//~: evict all the aggregated items currently present
 		evictAggrItems(struct);
@@ -146,7 +148,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		for(AggrItem item : items)
 		{
 			if(item.getOrderIndex() == null)
-				throw new IllegalStateException();
+				throw EX.state();
 
 			if((orderIndex == null) || (orderIndex > item.getOrderIndex()))
 				orderIndex = item.getOrderIndex();
@@ -209,7 +211,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 			{
 				w = p.getGoodVolume(); //<-- always positive here
 				if((w == null) || (w.signum() != 1))
-					throw new IllegalStateException();
+					throw EX.state();
 				s = divs(p.getVolumeCost(), w);
 				//debug(struct, "(p != null) & (s == null), s = ", s, " w = ", w);
 			}
@@ -241,7 +243,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 			else
 			{
 				//~: here s == previous item' good cost
-				if(s == null) throw new IllegalArgumentException();
+				if(s == null) throw EX.state();
 				setAggrValue(struct, s);
 				//debug(struct, "(c == null) & (p != null), s = ", s);
 			}
@@ -271,7 +273,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 			{
 				w = c.getGoodVolume(); //<-- always positive here
 				if((w == null) || (w.signum() != 1))
-					throw new IllegalStateException();
+					throw EX.state();
 				s = divs(c.getVolumeCost(), w);
 
 				//~: clear item' aggregation attributes
@@ -287,7 +289,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 				{
 					//~: sell volumes are always negative
 					if(c.getDeltaVolume().signum() != -1)
-						throw new IllegalStateException();
+						throw EX.state();
 
 					//debug(struct, "w = ", w, ", w + d = ", w.add(c.getDeltaVolume()));
 					w = w.add(c.getDeltaVolume());
@@ -295,9 +297,9 @@ public class AggregatorRestCost extends AggregatorSingleBase
 
 				//~: buy volumes are always positive
 				if(c.getGoodVolume().signum() < 0)
-					throw new IllegalStateException();
+					throw EX.state();
 				if(c.getVolumeCost().signum() < 0)
-					throw new IllegalStateException();
+					throw EX.state();
 
 				//?: {the volume is negative} take the cost from buy price
 				if((w == null) || (w.signum() != 1))
@@ -621,8 +623,8 @@ select sum(goodVolume) from AggrItem where
 		if((item.getHistoryIndex() == null) ||
 		   !item.getHistoryIndex().equals(item.getOrderIndex())
 		  )
-			throw new IllegalStateException("AggrItemRestCost [" +
-			  item.getPrimaryKey() + "] has wrong history index!");
+			throw EX.state("AggrItemRestCost [", item.getPrimaryKey(),
+			  "] has wrong history index!");
 	}
 
 	protected BigDecimal  roundCostValue(BigDecimal v)
@@ -631,8 +633,8 @@ select sum(goodVolume) from AggrItem where
 		if(p <= 63) return v;
 
 		int s = v.scale() - (p - 63);
-		if(s < 0) throw new IllegalStateException("Decimal value [" +
-		  v.toString() + "] is too large for Rest cost storage!");
+		if(s < 0) throw EX.state("Decimal value [", v.toString(),
+		  "] is too large for Rest cost storage!");
 
 		return v.setScale(s, BigDecimal.ROUND_HALF_EVEN);
 	}

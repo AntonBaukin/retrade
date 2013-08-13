@@ -59,7 +59,7 @@ public class OrdererDefault extends OrdererBase
 	public static final String DEF_ORDER_TYPE_PROP    = "orderType";
 	public static final String DEF_ORDER_INDEX_PROP   = "orderIndex";
 
-	public static final long   DEF_INSERT_STEP        = 16384;
+	public static final long   DEF_INSERT_STEP        = 8;
 
 	public static final int    DEF_SPREAD_LIMIT       = 8; //<-- 16 + 1 for both sides
 
@@ -611,6 +611,23 @@ select $orderIndex from OrderIndex where
 		return r | l;
 	}
 
+	protected String    spreadReservePlaceRightQuery()
+	{
+/*
+
+ update OrderIndex set $orderIndex = $orderIndex + :smove
+ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
+   ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)
+
+*/
+		return
+
+"update OrderIndex set $orderIndex = $orderIndex + :smove\n" +
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
+"  ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)";
+
+	}
+
 	protected boolean   spreadReservePlaceRight(OrderData odata)
 	{
 		Long[] spread = odata.getRightSpread();
@@ -633,20 +650,7 @@ select $orderIndex from OrderIndex where
 		//~: issue UPDATE moving right all the items in the
 		//   range of [right, spread[spos])
 
-/*
-
-update OrderIndex set $orderIndex = $orderIndex + :smove
-where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
-  ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)
-
-*/
-		Query      q = indexQuery(odata,
-
-"update OrderIndex set $orderIndex = $orderIndex + :smove\n" +
-"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
-"  ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)"
-
-		).
+		Query q = indexQuery(odata, spreadReservePlaceRightQuery()).
 		  setLong("smove",      smove).
 		  setLong("startIndex", odata.getRight().getOrderIndex()).
 		  setLong("endIndex",   spread[spos]);
@@ -669,6 +673,23 @@ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
 		  odata.getRight().getOrderIndex(), spread[spos] - 1);
 
 		return true;
+	}
+
+	protected String    spreadReservePlaceLeftQuery()
+	{
+/*
+
+ update OrderIndex set $orderIndex = $orderIndex - :smove
+ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
+   ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)
+
+*/
+		return
+
+"update OrderIndex set $orderIndex = $orderIndex - :smove\n" +
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
+"  ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)";
+
 	}
 
 	protected boolean   spreadReservePlaceLeft(OrderData odata)
@@ -695,20 +716,7 @@ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
 		//~: issue UPDATE moving left all the items in the
 		//   range of (spread[spos], left]
 
-/*
-
-update OrderIndex set $orderIndex = $orderIndex - :smove
-where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
-  ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)
-
-*/
-		Query      q = indexQuery(odata,
-
-"update OrderIndex set $orderIndex = $orderIndex - :smove\n" +
-"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
-"  ($orderIndex > :startIndex) and ($orderIndex <= :endIndex)"
-
-		).
+		Query q = indexQuery(odata, spreadReservePlaceLeftQuery()).
 		  setLong("smove",      smove).
 		  setLong("startIndex", spread[spos]).
 		  setLong("endIndex",   odata.getLeft().getOrderIndex());
@@ -747,23 +755,27 @@ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
 		spreadMoveOrderRight(odata);
 	}
 
-	protected void      spreadMoveOrderRight(OrderData odata)
+	protected String    spreadMoveOrderRightQuery()
 	{
+
 /*
 
-update OrderIndex set $orderIndex = $orderIndex + :insertStep
-where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
-  ($orderIndex >= :orderIndex)
+ update OrderIndex set $orderIndex = $orderIndex + :insertStep
+ where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
+   ($orderIndex >= :orderIndex)
 
 */
-
-		Query      q = indexQuery(odata,
+		return
 
 "update OrderIndex set $orderIndex = $orderIndex + :insertStep\n" +
-"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
-"  ($orderIndex >= :orderIndex)"
+" where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
+"   ($orderIndex >= :orderIndex)";
 
-		).
+	}
+
+	protected void      spreadMoveOrderRight(OrderData odata)
+	{
+		Query q = indexQuery(odata, spreadMoveOrderRightQuery()).
 		  setLong("insertStep", getInsertStep()).
 		  setLong("orderIndex", odata.getRight().getOrderIndex());
 
@@ -863,12 +875,17 @@ select oi.id, oi.$orderIndex from OrderIndex oi
 				long id = ((Number)((Object[])ind)[0]).longValue();
 				long oi = ((Number)((Object[])ind)[1]).longValue();
 
-				updates.get(id).setOrderIndex(oi);
+				updateOrderIndex(updates.get(id), oi);
 			}
 
 			//~: remove the keys updated
 			ukeys.removeAll(qkeys);
 		}
+	}
+
+	protected void      updateOrderIndex(OrderIndex entity, long oi)
+	{
+		entity.setOrderIndex(oi);
 	}
 
 

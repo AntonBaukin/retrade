@@ -92,6 +92,7 @@
 
 select
   u.pk_unity as "owner key",
+  av.pk_entity as "av key",
   ut.title_lo as "owner type",
   avt.type_name as "aggr type",
   av.aggr_value, av.aggr_value_pos, aggr_value_neg
