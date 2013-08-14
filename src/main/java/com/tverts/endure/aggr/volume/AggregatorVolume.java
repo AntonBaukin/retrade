@@ -3,6 +3,7 @@ package com.tverts.endure.aggr.volume;
 /* standard Java classes */
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /* com.tverts: hibery */
@@ -167,7 +168,10 @@ public class AggregatorVolume extends AggregatorSingleBase
 		//~: set order index
 		setOrderIndex(struct, item);
 
-		//?: {is historical}
+		//HINT: order operation loads surrounding items
+		clearCachedItems(struct, item);
+
+		//?: {is fixed historical item}
 		if(task.isAggrFixed())
 			item.setHistoryIndex(item.getOrderIndex());
 
@@ -181,10 +185,6 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 	protected void saveItem(AggrStruct struct, AggrItemVolume item)
 	{
-		//~: evict all the aggregated items currently present
-		session(struct).flush();
-		evictAggrItems(struct);
-
 		//!: do save the item
 		session(struct).save(item);
 
@@ -192,8 +192,17 @@ public class AggregatorVolume extends AggregatorSingleBase
 		struct.items(item);
 	}
 
+	protected void clearCachedItems(AggrStruct struct, AggrItemVolume item)
+	{
+		//~: flush the session and evict side-effect items
+		session(struct).flush();
+		evictAggrItems(struct, item);
+	}
+
 	protected void updateAggrValueCreate(AggrStruct struct, AggrItemVolume z)
 	{
+		clearCachedItems(struct, z);
+
 		//~: current value
 		BigDecimal     p = x(aggrValue(struct).getAggrPositive());
 		BigDecimal     n = x(aggrValue(struct).getAggrNegative());
@@ -338,7 +347,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 	  throws Throwable
 	{
 		//~: find items to delete
-		List<AggrItem> items = findItemsToDelete(struct);
+		List<Long> items = findItemsToDelete(struct);
 
 		//?: {there are none of them} nothing to do...
 		if(items.isEmpty()) return;
@@ -347,33 +356,32 @@ public class AggregatorVolume extends AggregatorSingleBase
 		deleteItems(struct, items);
 	}
 
-	protected List<AggrItem>
-	               findItemsToDelete(AggrStruct struct)
+	protected List<Long> findItemsToDelete(AggrStruct struct)
 	{
 		//?: {the source entity is undefined} do nothing
 		if(struct.task.getSourceKey() == null)
 			throw EX.state(logsig(struct), ": source is undefined!");
 
-		//~: evict all the aggregated items currently present
-		session(struct).flush();
-		evictAggrItems(struct);
-
 		//~: load the items of the source
-		return loadBySource(struct, struct.task.getSourceKey());
+		return loadKeysBySource(struct, struct.task.getSourceKey());
 	}
 
-	protected void deleteItems(AggrStruct struct, List<AggrItem> items)
+	protected void deleteItems(AggrStruct struct, List<Long> items)
 	{
+		List<AggrItem> a = new ArrayList<AggrItem>(items.size());
+
 		//c: proceed item-by-item
-		for(AggrItem item : items)
+		for(Long key : items)
 		{
+			AggrItemVolume item = (AggrItemVolume) session(struct).
+			  load(AggrItemVolume.class, key);
+
 			//!: delete that item first
 			session(struct).delete(item);
 			session(struct).flush();
 			session(struct).evict(item);
 
-			//~: link the item for the calculations
-			struct.items(items);
+			a.add(item);
 
 			//~: update the aggregated value
 			updateAggrValueDelete(struct, (AggrItemVolume) item);
@@ -385,6 +393,9 @@ public class AggregatorVolume extends AggregatorSingleBase
 			session(struct).flush();
 			evictAggrItems(struct);
 		}
+
+		//~: link the item for the calculations
+		struct.items(a);
 	}
 
 	protected void updateAggrValueDelete(AggrStruct struct, AggrItemVolume z)

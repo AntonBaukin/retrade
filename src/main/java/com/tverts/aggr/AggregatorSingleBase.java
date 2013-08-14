@@ -146,6 +146,29 @@ order by orderIndex asc
 		  list();
 	}
 
+	@SuppressWarnings("unchecked")
+	protected List<Long>     loadKeysBySource(AggrStruct struct, long sourceKey)
+	{
+/*
+
+ select id from AggrItem where
+   (aggrValue = :aggrValue) and (sourceKey = :sourceKey)
+ order by orderIndex asc
+
+
+*/
+		return (List<Long>) aggrItemQ(struct,
+
+"select id from AggrItem where\n" +
+"  (aggrValue = :aggrValue) and (sourceKey = :sourceKey)\n" +
+"order by orderIndex asc"
+
+		).
+		  setParameter("aggrValue", aggrValue(struct)).
+		  setLong     ("sourceKey",  sourceKey).
+		  list();
+	}
+
 	protected void           setOrderIndex
 	  (AggrStruct struct, OrderIndex instance)
 	{

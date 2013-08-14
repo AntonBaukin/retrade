@@ -59,7 +59,7 @@ public class OrdererDefault extends OrdererBase
 	public static final String DEF_ORDER_TYPE_PROP    = "orderType";
 	public static final String DEF_ORDER_INDEX_PROP   = "orderIndex";
 
-	public static final long   DEF_INSERT_STEP        = 8;
+	public static final long   DEF_INSERT_STEP        = 256;
 
 	public static final int    DEF_SPREAD_LIMIT       = 8; //<-- 16 + 1 for both sides
 
