@@ -82,6 +82,7 @@
 select
   vi.order_index as "oi",
   vi.history_index as "hi",
+  vi.is_fixed as "fx",
   vi.volume_positive as "v+",
   vi.volume_negative as "v-",
   vi.aggr_positive as "s+",
@@ -89,6 +90,6 @@ select
   vi.source_key as "src"
 from aggr_item_volume vi
 where (vi.fk_aggr_value = -321)
-order by order_index
+order by vi.order_index
 
 -->

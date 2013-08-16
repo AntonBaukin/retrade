@@ -25,6 +25,12 @@ public class CMP
 		return (n != null) && (BigDecimal.ZERO.compareTo(n) <= 0);
 	}
 
+	public static boolean eq(BigDecimal a, BigDecimal b)
+	{
+		return ((a == null) && (b == null)) ||
+		  ((a != null) && (b != null) && (a.compareTo(b) == 0));
+	}
+
 
 	/* general equality */
 

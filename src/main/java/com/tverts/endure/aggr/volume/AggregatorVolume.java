@@ -111,7 +111,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		updateAggrValueCreate(struct, item);
 
 		//~: update helper history items
-		//updateHelperHistoryItems(struct, (AggrItemVolume) item, true);
+		updateHelperHistoryItems(struct, (AggrItemVolume)item, true);
 	}
 
 	protected AggrItemVolume
@@ -343,7 +343,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 	/* protected: aggregate delete task */
 
-	protected void aggregateTaskDelete(AggrStruct struct)
+	protected void       aggregateTaskDelete(AggrStruct struct)
 	  throws Throwable
 	{
 		//~: find items to delete
@@ -366,7 +366,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		return loadKeysBySource(struct, struct.task.getSourceKey());
 	}
 
-	protected void deleteItems(AggrStruct struct, List<Long> items)
+	protected void       deleteItems(AggrStruct struct, List<Long> items)
 	{
 		List<AggrItem> a = new ArrayList<AggrItem>(items.size());
 
@@ -387,7 +387,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 			updateAggrValueDelete(struct, (AggrItemVolume) item);
 
 			//~: update helper history items
-			//updateHelperHistoryItems(struct, (AggrItemVolume) item, false);
+			updateHelperHistoryItems(struct, (AggrItemVolume) item, false);
 
 			//~: evict all the aggregated items currently present
 			session(struct).flush();
@@ -398,7 +398,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		struct.items(a);
 	}
 
-	protected void updateAggrValueDelete(AggrStruct struct, AggrItemVolume z)
+	protected void       updateAggrValueDelete(AggrStruct struct, AggrItemVolume z)
 	{
 		//~: current value
 		BigDecimal     p = x(aggrValue(struct).getAggrPositive());
@@ -459,7 +459,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 	protected void updateHelperHistoryItems
 	  (AggrStruct struct, AggrItemVolume z, boolean create)
 	{
-		session(struct).flush();
+		clearCachedItems(struct, z);
 
 		//~: find surrounding history items
 		AggrItemVolume[] su = findHistoryLeftRight(struct,
@@ -534,8 +534,8 @@ public class AggregatorVolume extends AggregatorSingleBase
 		BigDecimal[] s = summItems(struct, b, item.getOrderIndex());
 
 		p = p.add(x(s[0])); n = n.add(x(s[1]));
-		item.setVolumePositive(p);
-		item.setVolumeNegative(n);
+		item.setAggrPositive(p);
+		item.setAggrNegative(n);
 
 		//!: save the item
 		session(struct).save(item);
