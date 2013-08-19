@@ -338,6 +338,9 @@ public class AggregatorVolume extends AggregatorSingleBase
 		aggrValue(struct).setAggrPositive(x(p));
 		aggrValue(struct).setAggrNegative(x(n));
 		aggrValue(struct).setAggrValue(p.subtract(n));
+
+		//~: update helper history items
+		updateHelperHistoryItems(struct, z, r, true);
 	}
 
 
@@ -448,6 +451,9 @@ public class AggregatorVolume extends AggregatorSingleBase
 		aggrValue(struct).setAggrPositive(p);
 		aggrValue(struct).setAggrNegative(n);
 		aggrValue(struct).setAggrValue(p.subtract(n));
+
+		//~: update helper history items
+		updateHelperHistoryItems(struct, z, r, false);
 
 		//!: flush the result
 		session(struct).flush();
@@ -590,6 +596,102 @@ public class AggregatorVolume extends AggregatorSingleBase
 			//?: {exceed 2N} do insert
 			if(nb + nc >= N*2)
 				insertHelperHistoryItem(struct, l, (nb + nc)/2);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void updateHelperHistoryItems
+	  (AggrStruct struct, AggrItemVolume z, AggrItemVolume r, boolean create)
+	{
+		long li = z.getOrderIndex() + 1; //<-- exclude it
+		long ri = (r == null)?(Long.MAX_VALUE):(r.getOrderIndex());
+
+		//?: {item is plain}
+		if(!z.isAggrFixed())
+		{
+			BigDecimal vp = x(z.getVolumePositive());
+			BigDecimal vn = x(z.getVolumeNegative());
+/*
+
+ update AggrItemVolume set
+   aggrPositive = aggrPositive + :vp,
+   aggrNegative = aggrNegative + :vn
+ where (aggrValue = :aggrValue) and (aggrFixed = false)
+   and (historyIndex between :left and :right)
+
+ */
+			String     QP =
+
+"update AggrItemVolume set\n" +
+"  aggrPositive = aggrPositive + :vp,\n" +
+"  aggrNegative = aggrNegative + :vn\n" +
+"where (aggrValue = :aggrValue) and (aggrFixed = false)\n" +
+"  and (historyIndex between :left and :right)";
+
+			//?: {removed} do subtract
+			if(!create)
+				QP = QP.replace('+', '-');
+
+			aggrItemQ(struct, QP).
+			  setParameter ("aggrValue",  aggrValue(struct)).
+			  setBigDecimal("vp",         vp).
+			  setBigDecimal("vn",         vn).
+			  setLong      ("left",       li).
+			  setLong      ("right",      ri).
+			  executeUpdate();
+		}
+		//~: {item is fixed history}
+		else
+		{
+			BigDecimal ap = x(z.getAggrPositive());
+			BigDecimal an = x(z.getAggrNegative());
+
+			//?: {item was removed} search the left fixed
+			if(!create)
+			{
+				AggrItemVolume l = findFixedItemLeft(struct, z.getOrderIndex());
+				li = (l == null)?(Long.MIN_VALUE):(l.getOrderIndex() + 1);
+				ap = x((l == null)?(null):(l.getAggrPositive()));
+				an = x((l == null)?(null):(l.getAggrNegative()));
+			}
+
+/*
+
+ select g.id, sum(x.volumePositive), sum(x.volumeNegative) from
+   AggrItemVolume g join g.aggrValue av, AggrItemVolume x
+ where (av = :aggrValue) and (av.id = x.aggrValue.id) and (g.aggrFixed = false)
+   and (x.historyIndex is null) and (g.historyIndex between :left and :right)
+   and (x.orderIndex between :left and g.historyIndex)
+ group by g.id
+
+ */
+			List<Object[]> items = (List<Object[]>) aggrItemQ(struct,
+
+"select g.id, sum(x.volumePositive), sum(x.volumeNegative) from\n" +
+"  AggrItemVolume g join g.aggrValue av, AggrItemVolume x\n" +
+"where (av = :aggrValue) and (av.id = x.aggrValue.id) and (g.aggrFixed = false)\n" +
+"  and (x.historyIndex is null) and (g.historyIndex between :left and :right)\n" +
+"  and (x.orderIndex between :left and g.historyIndex)\n" +
+"group by g.id"
+
+			).
+			  setParameter("aggrValue",  aggrValue(struct)).
+			  setLong     ("left",       li).
+			  setLong     ("right",      ri).
+			  list();
+
+			//c: for all helper history items
+			for(Object[] item : items)
+			{
+				BigDecimal     sp = x(item[1]);
+				BigDecimal     sn = x(item[2]);
+				AggrItemVolume vi = (AggrItemVolume) session(struct).
+				  load(AggrItemVolume.class, (Long) item[0]);
+
+				//~: update the aggregated volume
+				vi.setAggrPositive(ap.add(sp));
+				vi.setAggrNegative(an.add(sn));
+			}
 		}
 	}
 
@@ -772,14 +874,17 @@ public class AggregatorVolume extends AggregatorSingleBase
 		  uniqueResult()).intValue();
 	}
 
-	private static BigDecimal  x(BigDecimal n)
+	private static BigDecimal  x(Object n)
 	{
 		if(n == null)
 			return BigDecimal.ZERO;
 
-		if(BigDecimal.ZERO.compareTo(n) > 0)
+		if(!(n instanceof BigDecimal))
+			throw EX.arg();
+		if(BigDecimal.ZERO.compareTo((BigDecimal)n) > 0)
 			throw EX.state();
-		return n;
+
+		return (BigDecimal)n;
 	}
 
 
