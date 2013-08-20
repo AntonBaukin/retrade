@@ -6,13 +6,6 @@
 
   <!--=================================================
     =  Self Shunts of the Domain Core                 =
-    +==================================================
-    |
-    |  Tests of the implementation within packages:
-    |
-    |    com.tverts.endure.core,
-    |    com.tverts.endure.order
-    |
     +================================================-->
 
   <bean name  = 'shuntsOnDomainCore'
