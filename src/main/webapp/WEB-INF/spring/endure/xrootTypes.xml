@@ -32,12 +32,6 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · ShuntOrdering {domain:core:order-index}
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.order.ExternalOrder Test: Domain: Order Index;
-
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Record About a Human
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.person.Person   Core: Person;
