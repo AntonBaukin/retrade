@@ -17,7 +17,8 @@
     <many-to-one name = 'unity' cascade = 'save-update'
       foreign-key = 'fk_unity_link_mirror'>
 
-      <column name = 'fk_unity' unique = 'true'>
+      <column name = 'fk_unity' unique-key = 'ux_unity_link_unity'>
+
         <comment>The (unique) Unified Mirror of the Unity Link</comment>
       </column>
     </many-to-one>

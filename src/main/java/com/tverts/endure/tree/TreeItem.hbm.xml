@@ -18,7 +18,7 @@
     <many-to-one name = 'folder' foreign-key = 'fk_tree_item_folder'>
 
       <column name = 'fk_folder' not-null = 'true'
-        unique-key = 'ux_tree_item_unity'>
+        unique-key = 'ux_tree_item_reference'>
 
         <comment>Tree Folder where the Item is assigned in</comment>
       </column>
@@ -30,7 +30,7 @@
     <many-to-one name = 'item' foreign-key = 'fk_tree_item_unity'>
 
       <column name = 'fk_unity' not-null = 'true'
-        unique-key = 'ux_tree_item_unity' index = 'ix_tree_item_unity'>
+        unique-key = 'ux_tree_item_reference' index = 'ix_tree_item_unity'>
 
         <comment>Tree Unity instance reference</comment>
       </column>

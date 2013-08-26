@@ -15,8 +15,8 @@
     <!-- Unique Key Name -->
 
     <property name = 'name'>
-      <column name = 'ux_name' length = '2048'
-        not-null = 'true' unique = 'true'>
+      <column name = 'ux_name' length = '2048' not-null = 'true'
+        unique-key = 'ux_sec_key_name'>
 
         <comment>Unique name of the Security Key</comment>
       </column>

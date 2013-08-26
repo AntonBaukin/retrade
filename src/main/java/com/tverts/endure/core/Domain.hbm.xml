@@ -23,8 +23,8 @@
 
     <property name = 'codeux'>
 
-      <column name = 'ux_code' not-null = 'true'
-        length = '512' unique = 'true'>
+      <column name = 'ux_code' not-null = 'true' length = '512'
+        unique-key = 'ux_domain_code'>
 
         <comment>Lower-cased (unique) code of the domain</comment>
       </column>

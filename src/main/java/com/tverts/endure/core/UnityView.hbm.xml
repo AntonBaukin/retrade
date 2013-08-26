@@ -30,7 +30,8 @@
     <many-to-one name = 'unity' cascade = 'save-update'
       foreign-key = 'fk_unity_view_mirror'>
 
-      <column name = 'fk_unity' unique = 'true'>
+      <column name = 'fk_unity' unique-key = 'ux_unity_view_unity'>
+
         <comment>The (unique) Unified Mirror of the Unity View</comment>
       </column>
     </many-to-one>
@@ -40,7 +41,7 @@
 
     <many-to-one name = 'domain' foreign-key = 'fk_unity_view_domain'>
 
-      <column name = 'fk_view_domain' not-null = 'true'
+      <column name = 'fk_domain' not-null = 'true'
         index = 'ix_unity_view'>
 
         <comment>The Domain of Unity owning this View</comment>
