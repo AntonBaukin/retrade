@@ -4,6 +4,7 @@ package com.tverts.hibery.keys;
 
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.id.SequenceGenerator;
 
 /* com.tverts: endure keys */
 
@@ -17,6 +18,10 @@ import org.hibernate.id.IdentifierGenerator;
 /* com.tverts: system (tx) */
 
 import static com.tverts.system.tx.TxPoint.txSession;
+
+/* com.tverts: support */
+
+import com.tverts.support.LU;
 
 
 /**
@@ -56,9 +61,20 @@ public final class HiberKeysGeneratorBridge
 		if(!(session instanceof SessionImplementor))
 			throw new IllegalStateException();
 
-		return generator.generate(
+		Object key = generator.generate(
 		  (SessionImplementor)session,
 		  context.getSavedInstance());
+
+		String seq = !(generator instanceof SequenceGenerator)?(null):
+		  ((SequenceGenerator)generator).getSequenceName();
+
+		if(LU.isD(KeysGenerator.class.getName())) LU.D(
+		  KeysGenerator.class.getName(),
+		  context.getSavedInstance().getClass().getSimpleName(),
+		  " pk-> [", key, "] sequence [", seq, "]"
+		);
+
+		return key;
 	}
 
 

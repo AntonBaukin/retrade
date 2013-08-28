@@ -10,12 +10,19 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.hibery.system.HiberSystem;
 import org.hibernate.Session;
+
+/* com.tverts: hibery */
+
+import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: system (tx) */
 
 import static com.tverts.system.tx.TxPoint.txSession;
+
+/* com.tverts: support */
+
+import com.tverts.support.LU;
 
 
 /**
@@ -60,7 +67,7 @@ public class GenCtxBase implements GenCtx
 
 	public Random  gen()
 	{
-		return (gen != null)?(gen):(gen = new Random());
+		return (gen != null)?(gen):(gen = createGen(null));
 	}
 
 	public GenCtx  stack(Genesis owner)
@@ -84,7 +91,7 @@ public class GenCtxBase implements GenCtx
 		}
 		
 		if(gen == null)    //<-- create it to share
-			gen = new Random();
+			gen = createGen(null);
 
 		//~: share gen
 		res.gen = gen;
@@ -190,7 +197,7 @@ public class GenCtxBase implements GenCtx
 
 	public GenCtxBase setGen(Long seed)
 	{
-		this.gen = (seed == null)?(new Random()):(new Random(seed));
+		this.gen = createGen(seed);
 		return this;
 	}
 
@@ -204,6 +211,18 @@ public class GenCtxBase implements GenCtx
 	{
 		this.session = session;
 		return this;
+	}
+
+
+	/* protected: support */
+
+	protected Random  createGen(Long seed)
+	{
+		if(seed == null)
+			seed = System.currentTimeMillis();
+
+		LU.I(log(), "using seed = ", seed);
+		return new Random(seed);
 	}
 
 

@@ -177,14 +177,11 @@ public class      GenesisSphere
 
 	protected GenCtx   nestContext(GenCtx outer)
 	{
-		if(outer != null)
-			return outer.stack(this);
-
-		GenCtxBase res = new GenCtxBase(this);
+		GenCtx res = (outer != null)?(outer.stack(this)):(new GenCtxBase(this));
 
 		//~: random seed
-		if(getSeed() != null)
-			res.setGen(getSeed());
+		if((getSeed() != null) && (res instanceof GenCtxBase))
+			((GenCtxBase)res).setGen(getSeed());
 
 		return res;
 	}
