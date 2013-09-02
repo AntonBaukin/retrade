@@ -124,6 +124,14 @@ public class EX
 	}
 
 
+	/* assertions */
+
+	public static void assertx(boolean x, Object... msg)
+	{
+		if(!x) throw new AssertionError(SU.cats(msg));
+	}
+
+
 	/* exceptions */
 
 	public static RuntimeException state(Object... msg)
