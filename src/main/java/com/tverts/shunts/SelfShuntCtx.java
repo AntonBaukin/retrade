@@ -1,5 +1,11 @@
 package com.tverts.shunts;
 
+/* standard Java classes */
+
+import java.util.HashMap;
+import java.util.Map;
+
+
 /**
  * The context of Self-Shunt invocation.
  *
@@ -58,6 +64,28 @@ public class SelfShuntCtx implements java.io.Serializable
 		return this;
 	}
 
+	/**
+	 * Generation context state. It is defined
+	 * only when Shunt was activated by Genesis
+	 * Done event what is true when the system
+	 * starting up via Main Service, but not
+	 * valid for Shunts activated from the UI.
+	 *
+	 * Note that only Serializable parameters
+	 * are passed from the genesis.
+	 */
+	@SuppressWarnings("unchecked")
+	public Map                 getGenCtx()
+	{
+		return (genCtx != null)?(genCtx):
+		  (genCtx = new HashMap());
+	}
+
+	public void                setGenCtx(Map genCtx)
+	{
+		this.genCtx = genCtx;
+	}
+
 	public SelfShuntUnitReport getReport()
 	{
 		return report;
@@ -75,6 +103,7 @@ public class SelfShuntCtx implements java.io.Serializable
 	private String  uid;
 	private Long    domain;
 	private boolean readonly;
+	private Map genCtx;
 
 
 	/* private: context state */

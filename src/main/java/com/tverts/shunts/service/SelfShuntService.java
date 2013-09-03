@@ -280,6 +280,9 @@ public class SelfShuntService extends ServiceBase
 		if(event.isReadonly())
 			ctx.setReadonly();
 
+		//~: exported genesis context parameters
+		ctx.setGenCtx(event.getGenCtx());
+
 		return ctx;
 	}
 

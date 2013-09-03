@@ -61,8 +61,15 @@ public class   RunEventOnGenesisDone
 
 	protected EventBase updateEvent(EventBase res, Event event)
 	{
+		GenesisDone gde = (GenesisDone) event;
+
 		if(res instanceof SelfShuntEvent)
-			((SelfShuntEvent)res).setDomain(((GenesisDone)event).getDomain());
+		{
+			SelfShuntEvent sse = (SelfShuntEvent) res;
+
+			sse.setDomain(gde.getDomain());
+			sse.setGenCtx(gde.getGenCtx());
+		}
 
 		return res;
 	}

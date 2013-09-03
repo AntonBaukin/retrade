@@ -54,6 +54,16 @@ public abstract class SelfShuntEvent
 		this.logParam = logParam;
 	}
 
+	public Map getGenCtx()
+	{
+		return genCtx;
+	}
+
+	public void setGenCtx(Map genCtx)
+	{
+		this.genCtx = genCtx;
+	}
+
 	public Map<String, String> getParams()
 	{
 		return params;
@@ -72,6 +82,7 @@ public abstract class SelfShuntEvent
 	private Long    domain;
 	private boolean readonly;
 	private String  logParam;
+	private Map     genCtx;
 
 	private Map<String, String> params =
 	  new HashMap<String, String>(1);

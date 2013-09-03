@@ -159,7 +159,8 @@ public class      GenesisSphere
 	/**
 	 * Tells this Genesis Sphere to create own
 	 * transaction even if an external exists.
-	 * By default is is false.
+	 *
+	 * By default is is true!
 	 */
 	@Param
 	public boolean isOwnTx()

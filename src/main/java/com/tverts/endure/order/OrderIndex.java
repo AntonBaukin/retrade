@@ -7,7 +7,17 @@ import com.tverts.endure.UnityType;
 
 
 /**
- * COMMENT OrderIndex
+ * Some entities are stored in the database with
+ * the defined order: if so, they must implement
+ * the interface following.
+ *
+ * Entities of the same class (in the same table),
+ * may have different order type, that's in general
+ * depends on the entity type and else matters.
+ *
+ * Order owner is an entity (such as a Domain instance)
+ * that defined a namespace of the order.
+ *
  *
  * @author anton.baukin@gmail.com
  */

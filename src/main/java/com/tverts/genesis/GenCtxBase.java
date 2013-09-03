@@ -4,6 +4,7 @@ package com.tverts.genesis;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -96,11 +97,15 @@ public class GenCtxBase implements GenCtx
 		//~: share gen
 		res.gen = gen;
 
-		if(params == null) //<-- create them to share
-			params = new HashMap(7);
+		if(params == null)   //<-- create them to share
+			params = new HashMap(17);
 
-		//~: share the parameters
-		res.params = params;
+		if(exported == null) //<-- ...
+			exported = new HashSet(3);
+
+		//~: share the parameters & exported
+		res.params   = params;
+		res.exported = exported;
 
 		//~: log
 		res.log = log;
@@ -112,6 +117,13 @@ public class GenCtxBase implements GenCtx
 	{
 		return (params != null)?(params.keySet()):
 		  Collections.emptySet();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Set     exported()
+	{
+		return (exported != null)?(exported):
+		  (exported = new HashSet());
 	}
 
 	public Object  get(Object p)
@@ -167,6 +179,14 @@ public class GenCtxBase implements GenCtx
 
 		Class cls = HiberSystem.getInstance().findActualClass(obj);
 		return (T) this.set(cls, obj);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void    export(Object key)
+	{
+		if(exported == null)
+			exported = new HashSet(3);
+		exported.add(key);
 	}
 
 	public String  log()
@@ -232,6 +252,7 @@ public class GenCtxBase implements GenCtx
 	private GenCtx  outer;
 	private Random  gen;
 	private Map     params;
+	private Set     exported;
 	private String  log;
 	private Session session;
 }

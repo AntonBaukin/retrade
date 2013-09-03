@@ -52,6 +52,17 @@ public interface GenCtx
 	public Set     params();
 
 	/**
+	 * Returns the names of the context state
+	 * parameters exported to the Genesis clients
+	 * (via events subsystem).
+	 *
+	 * Note that the key and the value of the
+	 * parameter must be a serializable Java Beans
+	 * or standard types, such as Strings and Classes.
+	 */
+	public Set     exported();
+
+	/**
 	 * Returns the context parameter.
 	 */
 	public Object  get(Object p);
@@ -78,6 +89,11 @@ public interface GenCtx
 	 * key parameter. Returns old instance.
 	 */
 	public <T> T   set(T obj);
+
+	/**
+	 * Exports the context parameter key.
+	 */
+	public void    export(Object key);
 
 	/**
 	 * Returns the default logging destination

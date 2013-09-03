@@ -1,5 +1,9 @@
 package com.tverts.genesis;
 
+/* standard Java classes */
+
+import java.util.Map;
+
 /* com.tverts: system services */
 
 import com.tverts.system.services.events.ServiceEventBase;
@@ -38,9 +42,20 @@ public class GenesisDone extends ServiceEventBase
 		this.domain = domain;
 	}
 
+	public Map getGenCtx()
+	{
+		return genCtx;
+	}
+
+	public void setGenCtx(Map genCtx)
+	{
+		this.genCtx = genCtx;
+	}
+
 
 	/* the original genesis event */
 
 	private GenesisEvent event;
 	private Long         domain;
+	private Map          genCtx;
 }

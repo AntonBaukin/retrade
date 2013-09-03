@@ -2,11 +2,13 @@ package com.tverts.genesis;
 
 /* standard Java classes */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /* com.tverts: spring */
 
@@ -346,6 +348,7 @@ public class GenesisService extends ServiceBase
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void   success(GenCtx ctx, GenesisEvent event)
 	{
 		LU.I(getLog(), logsig(), " genesis successfully completed!");
@@ -359,6 +362,11 @@ public class GenesisService extends ServiceBase
 		//~: domain
 		if(ctx.get(Domain.class) != null)
 			done.setDomain(ctx.get(Domain.class).getPrimaryKey());
+
+		//~: context state (as the event parameters)
+		Map params = new HashMap(11);
+		collectGenExportedState(ctx, params);
+		done.setGenCtx(params);
 
 		main(done);
 	}
@@ -384,6 +392,28 @@ public class GenesisService extends ServiceBase
 	{
 		logSphereError(sphere, EX.xrt(e));
 		throw new BreakGenesis(e);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void   collectGenExportedState(GenCtx ctx, Map map)
+	{
+		Set keys = ctx.exported();
+		Set all  = ctx.params();
+
+		for(Object key : keys) if(key instanceof Serializable)
+		{
+			Object val = ctx.get(key);
+
+			//?: {the key does not exist now}
+			if((val == null) && !all.contains(key))
+				continue;
+
+			//~: {value must be also serializable}
+			if((val != null) && !(val instanceof Serializable))
+				continue;
+
+			map.put(key, val);
+		}
 	}
 
 
