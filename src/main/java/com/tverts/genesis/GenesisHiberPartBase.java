@@ -8,7 +8,11 @@ import java.util.Date;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+
+/* Spring framework */
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: spring */
 
@@ -28,6 +32,7 @@ import com.tverts.endure.core.Property;
 /* com.tverts: support */
 
 import static com.tverts.support.DU.date2str;
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 
 
@@ -42,53 +47,20 @@ public abstract class GenesisHiberPartBase
 {
 	/* public: Genesis interface */
 
-	public Genesis         clone()
+	public Genesis    clone()
 	{
-		GenesisHiberPartBase obj =
-		  (GenesisHiberPartBase)super.clone();
-
-		//~: clear the session (for additional protection)
-		obj.session = null;
-		return obj;
-	}
-
-
-	/* public: GenesisHiberPartBase bean interface */
-
-	/**
-	 * You may specify the Session Factory explicitly.
-	 * By default the session is accessed by the call
-	 * {@link TxPoint#txSession()}.
-	 *
-	 * Once the session is obtained, it is not changed
-	 * during the whole generation.
-	 */
-	public SessionFactory  getSessionFactory()
-	{
-		return sessionFactory;
-	}
-
-	public void            setSessionFactory(SessionFactory sf)
-	{
-		this.sessionFactory = sf;
+		return (GenesisHiberPartBase) super.clone();
 	}
 
 
 	/* protected: access Hibernate session */
 
-	protected Session      session()
+	protected Session session()
 	{
-		return (session != null)?(session):
-		  (session = obtainSession());
+		return TxPoint.txSession();
 	}
 
-	protected Session      obtainSession()
-	{
-		return (sessionFactory == null)?(TxPoint.txSession()):
-		  (sessionFactory.getCurrentSession());
-	}
-
-	protected Query        Q(String hql)
+	protected Query   Q(String hql)
 	{
 		return session().createQuery(hql);
 	}
@@ -101,7 +73,7 @@ public abstract class GenesisHiberPartBase
 	 * whether there are objects of the type generated
 	 * are already present at the inquired day.
 	 */
-	protected boolean      isGenDispDayClear(GenCtx ctx, UnityType ut)
+	protected boolean isGenDispDayClear(GenCtx ctx, UnityType ut)
 	{
 		//~: create the key
 		String key = createGenDispDayKey(ctx, ut);
@@ -131,7 +103,7 @@ public abstract class GenesisHiberPartBase
 		return true;
 	}
 
-	protected String       createGenDispDayKey(GenCtx ctx, UnityType ut)
+	protected String  createGenDispDayKey(GenCtx ctx, UnityType ut)
 	{
 		return String.format(
 		  "%s: day [%s]; type [%s]",
@@ -145,7 +117,7 @@ public abstract class GenesisHiberPartBase
 	/**
 	 * Marks the day as it were the generation.
 	 */
-	protected void         markGenDispDay(GenCtx ctx, UnityType ut)
+	protected void    markGenDispDay(GenCtx ctx, UnityType ut)
 	{
 		//~: create the key
 		String key = createGenDispDayKey(ctx, ut);
@@ -159,8 +131,54 @@ public abstract class GenesisHiberPartBase
 	}
 
 
-	/* private: database access */
+	/* protected: special operations */
 
-	private SessionFactory    sessionFactory;
-	private transient Session session;
+	@Transactional(rollbackFor = Throwable.class,
+	  propagation = Propagation.REQUIRES_NEW)
+	protected void    nestTx(GenCtx ctx, Runnable run)
+	{
+		//~: remember the external session
+		Session   session = ctx.session();
+		Throwable error   = null;
+
+		//~: push default tx-context for this new transaction
+		TxPoint.getInstance().setTxContext();
+
+		try
+		{
+			//~: bind the session to the context
+			if(ctx instanceof GenCtxBase)
+				((GenCtxBase)ctx).setSession(TxPoint.txSession());
+
+			//!: run the operation
+			run.run();
+		}
+		catch(Throwable e)
+		{
+			error = e;
+		}
+		finally
+		{
+			//!: pop transaction context
+			try
+			{
+				TxPoint.getInstance().setTxContext(null);
+			}
+			catch(Throwable e)
+			{
+				if(error == null) error = e;
+			}
+
+			//~: restore the original session of the context
+			if(ctx instanceof GenCtxBase)
+				//?: {there was differ external session}
+				if(session != ctx.session())
+					((GenCtxBase)ctx).setSession(session);
+				else
+					((GenCtxBase)ctx).setSession(null);
+		}
+
+		if(error != null)
+			throw EX.wrap(EX.xrt(error));
+	}
 }

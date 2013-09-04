@@ -152,11 +152,8 @@ public class TxPoint
 		else if(!s.isEmpty())
 		{
 			//~: free the context
-			tx = s.get(s.size() - 1);
+			tx = s.remove(s.size() - 1);
 			tx.free();
-
-			//~: remove the context
-			s.remove(s.size() - 1);
 		}
 	}
 
