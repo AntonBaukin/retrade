@@ -158,6 +158,7 @@ public abstract class OrdererBase
 		return (type != null) && type.equals(orderType(request));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected boolean    isOrderType
 	  (OrderRequest request, Class typeClass, String typeName)
 	{
@@ -173,7 +174,7 @@ public abstract class OrdererBase
 			Class     oc = HiberSystem.getInstance().
 			  findActualClass(instance(request));
 
-			return typeClass.equals(oc);
+			return typeClass.isAssignableFrom(oc);
 		}
 
 		UnityType t = unityType(typeClass, typeName);

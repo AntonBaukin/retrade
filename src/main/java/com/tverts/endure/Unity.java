@@ -106,7 +106,7 @@ public class Unity implements PrimaryIdentity, TxEntity
 		  ?("Unity Type undefined")
 		  :(getUnityType().toString());
 
-		return String.format("Unity[%s] with %s", pk, ut);
+		return String.format("Unity [%s] with %s", pk, ut);
 	}
 
 
