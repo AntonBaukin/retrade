@@ -60,8 +60,7 @@ public class OrdererAggrItem extends OrdererDefault
 
 	protected boolean isThatRequest(OrderRequest request)
 	{
-		return AggrItemBase.class.isAssignableFrom(
-		  instance(request).getClass());
+		return AggrItemBase.class.isAssignableFrom(orderClass(request));
 	}
 
 	protected String  spreadReservePlaceRightQuery()

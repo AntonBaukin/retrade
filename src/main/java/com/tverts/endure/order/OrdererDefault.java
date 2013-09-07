@@ -25,6 +25,7 @@ import org.hibernate.type.LongType;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -79,6 +80,9 @@ public class OrdererDefault extends OrdererBase
 	{
 		//~: create order strategy' data
 		OrderData odata = createOrderData(request);
+
+		//!: flush the objects to the database
+		session(odata).flush();
 
 		//~: find the insert borders
 		findInsertBorders(odata);
@@ -182,13 +186,8 @@ public class OrdererDefault extends OrdererBase
 
 		public Class        getIndexClass()
 		{
-			if(indexClass != null)
-				return indexClass;
-
-			indexClass = HiberSystem.getInstance().
-			  findActualClass(instance(getRequest()));
-
-			return indexClass;
+			return (indexClass != null)?(indexClass):
+			  (indexClass = HiberPoint.type(getRequest().getInstance()));
 		}
 
 		public OrderData    setIndexClass(Class indexClass)
@@ -263,10 +262,21 @@ public class OrdererDefault extends OrdererBase
 			return this;
 		}
 
+		public OrderIndex   getReference()
+		{
+			return (reference != null)?(reference):(request.getReference());
+		}
+
+		public void         setReference(OrderIndex reference)
+		{
+			this.reference = reference;
+		}
+
 
 		/* private: ordering data */
 
 		private OrderRequest request;
+		private OrderIndex   reference;
 		private Class        indexClass;
 
 
@@ -371,7 +381,7 @@ public class OrdererDefault extends OrdererBase
 	protected void      findInsertBorders(OrderData odata)
 	{
 		//?: {reference is undefined} insert as the first or the last
-		if((reference(odata) == null) || (reference(odata).getOrderIndex() == null))
+		if(reference(odata) == null)
 		{
 			//?: {beforeAfter = true} as the last
 			if(request(odata).isBeforeAfter())
@@ -383,6 +393,15 @@ public class OrdererDefault extends OrdererBase
 			return;
 		}
 
+		EX.assertx(
+		  (reference(odata).getOrderIndex() != null),
+		  "Order reference ", odata.getIndexClass().getSimpleName(),
+		  " [", reference(odata).getPrimaryKey(), "] has order index undefined!"
+		);
+
+		//!: ensure the order index of the reference
+		ensureReferenceOrderIndex(odata);
+
 		//?: {before the reference}
 		if(request(odata).isBeforeAfter())
 			findInsertBorderAfter(odata);
@@ -390,123 +409,127 @@ public class OrdererDefault extends OrdererBase
 			findInsertBorderBefore(odata);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void      findInsertBorderLeft(OrderData odata)
 	{
 
 /*
 
-from OrderIndex where ($orderOwner = :orderOwner)
-  $and$orderType=:orderType$ and ($orderIndex is not null)
-  and (id <> :invoice)
-order by $orderIndex asc
+ select o, o.$orderIndex from OrderIndex o where
+   (o.$orderOwner = :orderOwner) and (o.id <> :target)
+   $and$orderType=:orderType$ and (o.$orderIndex is not null)
+ order by o.$orderIndex asc
 
-*/
-		List r = indexQuery(odata,
+ */
+		List<Object[]> r = (List<Object[]>) indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner)\n" +
-"  $and$orderType=:orderType$ and ($orderIndex is not null)\n" +
-"  and (id <> :invoice)\n" +
-"order by $orderIndex asc"
+"select o, o.$orderIndex from OrderIndex o where\n" +
+"  (o.$orderOwner = :orderOwner) and (o.id <> :target)\n" +
+"  $and$orderType=:orderType$ and (o.$orderIndex is not null)\n" +
+"order by o.$orderIndex asc"
 
 		).
-		  setLong("invoice", odata.getRequest().getInstance().getPrimaryKey()).
+		  setLong("target", odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
 		//?: {has right (smallest) border}
 		if(!r.isEmpty())
-			odata.setRight((OrderIndex)r.get(0));
+			odata.setRight(ensureOrderIndex(odata, r.get(0)));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void      findInsertBorderRight(OrderData odata)
 	{
 
 /*
 
-from OrderIndex where ($orderOwner = :orderOwner)
-  $and$orderType=:orderType$ and ($orderIndex is not null)
-  and (id <> :invoice)
-order by $orderIndex desc
+ select o, o.$orderIndex from OrderIndex o where
+   (o.$orderOwner = :orderOwner) and (o.id <> :target)
+   $and$orderType=:orderType$ and (o.$orderIndex is not null)
+ order by o.$orderIndex desc
 
-*/
-		List r = indexQuery(odata,
+ */
+		List<Object[]> r = (List<Object[]>) indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner)\n" +
-"  $and$orderType=:orderType$ and ($orderIndex is not null)\n" +
-"  and (id <> :invoice)\n" +
-"order by $orderIndex desc"
+"select o, o.$orderIndex from OrderIndex o where\n" +
+"  (o.$orderOwner = :orderOwner) and (o.id <> :target)\n" +
+"  $and$orderType=:orderType$ and (o.$orderIndex is not null)\n" +
+"order by o.$orderIndex desc"
 
 		).
-		  setLong("invoice", odata.getRequest().getInstance().getPrimaryKey()).
+		  setLong("target", odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
 		//?: {has left (biggest) border}
 		if(!r.isEmpty())
-			odata.setLeft((OrderIndex)r.get(0));
+			odata.setLeft(ensureOrderIndex(odata, r.get(0)));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void      findInsertBorderBefore(OrderData odata)
 	{
 
 /*
 
-from OrderIndex where ($orderOwner = :orderOwner)
-  $and$orderType=:orderType$ and ($orderIndex < :orderIndex)
-  and (id <> :invoice)
-order by $orderIndex desc
+ select o, o.$orderIndex from OrderIndex o where
+   (o.$orderOwner = :orderOwner) and (o.id <> :target)
+   $and$orderType=:orderType$ and (o.$orderIndex < :orderIndex)
+ order by o.$orderIndex desc
 
-*/
+ */
 
-		List r = indexQuery(odata,
+		List<Object[]> r = (List<Object[]>) indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner)\n" +
-"  $and$orderType=:orderType$ and ($orderIndex < :orderIndex)\n" +
-"  and (id <> :invoice)\n" +
-"order by $orderIndex desc"
+"select o, o.$orderIndex from OrderIndex o where\n" +
+"  (o.$orderOwner = :orderOwner) and (o.id <> :target)\n" +
+"  $and$orderType=:orderType$ and (o.$orderIndex < :orderIndex)\n" +
+"order by o.$orderIndex desc"
 
 		).
 		  setLong("orderIndex", reference(odata).getOrderIndex()).
-		  setLong("invoice",    odata.getRequest().getInstance().getPrimaryKey()).
+		  setLong("target",     odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
 		//?: {has left border}
 		if(!r.isEmpty())
-			odata.setLeft((OrderIndex)r.get(0));
+			odata.setLeft(ensureOrderIndex(odata, r.get(0)));
 
 		//~: right border is the reference
 		odata.setRight(reference(odata));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void      findInsertBorderAfter(OrderData odata)
 	{
 
 /*
 
-from OrderIndex where ($orderOwner = :orderOwner)
-  $and$orderType=:orderType$ and ($orderIndex > :orderIndex)
-  and (id <> :invoice)
-order by $orderIndex asc
+ select o, o.$orderIndex from OrderIndex o where
+   (o.$orderOwner = :orderOwner) and (o.id <> :target)
+   $and$orderType=:orderType$ and (o.$orderIndex > :orderIndex)
+ order by o.$orderIndex asc
 
-*/
+ */
 
-		List r = indexQuery(odata,
+		List<Object[]> r = (List<Object[]>) indexQuery(odata,
 
-"from OrderIndex where ($orderOwner = :orderOwner)\n" +
-"  $and$orderType=:orderType$ and ($orderIndex > :orderIndex)\n" +
-"  and (id <> :invoice)\n" +
-"order by $orderIndex asc"
+"select o, o.$orderIndex from OrderIndex o where\n" +
+"  (o.$orderOwner = :orderOwner) and (o.id <> :target)\n" +
+"  $and$orderType=:orderType$ and (o.$orderIndex > :orderIndex)\n" +
+"order by o.$orderIndex asc"
 
 		).
 		  setLong("orderIndex", reference(odata).getOrderIndex()).
-		  setLong("invoice",    odata.getRequest().getInstance().getPrimaryKey()).
+		  setLong("target",     odata.getRequest().getInstance().getPrimaryKey()).
 		  setMaxResults(1).
 		  list();
 
 		//?: {has right border}
 		if(!r.isEmpty())
-			odata.setRight((OrderIndex)r.get(0));
+			odata.setRight(ensureOrderIndex(odata, r.get(0)));
 
 		//~: left border is the reference
 		odata.setLeft(reference(odata));
@@ -539,11 +562,11 @@ order by $orderIndex asc
 
 /*
 
-select $orderIndex from OrderIndex where
-  ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
-  ($orderIndex < :orderIndex) order by $orderIndex desc
+ select $orderIndex from OrderIndex where
+   ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
+   ($orderIndex < :orderIndex) order by $orderIndex desc
 
-*/
+ */
 
 		Query      q = indexQuery(odata,
 
@@ -567,11 +590,11 @@ select $orderIndex from OrderIndex where
 
 /*
 
-select $orderIndex from OrderIndex where
-  ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
-  ($orderIndex > :orderIndex) order by $orderIndex asc
+ select $orderIndex from OrderIndex where
+   ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
+   ($orderIndex > :orderIndex) order by $orderIndex asc
 
-*/
+ */
 		q = indexQuery(odata,
 
 "select $orderIndex from OrderIndex where\n" +
@@ -619,7 +642,7 @@ select $orderIndex from OrderIndex where
  where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
    ($orderIndex >= :startIndex) and ($orderIndex < :endIndex)
 
-*/
+ */
 		return
 
 "update OrderIndex set $orderIndex = $orderIndex + :smove\n" +
@@ -764,12 +787,12 @@ select $orderIndex from OrderIndex where
  where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and
    ($orderIndex >= :orderIndex)
 
-*/
+ */
 		return
 
 "update OrderIndex set $orderIndex = $orderIndex + :insertStep\n" +
-" where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
-"   ($orderIndex >= :orderIndex)";
+"where ($orderOwner = :orderOwner) $and$orderType=:orderType$ and\n" +
+"  ($orderIndex >= :orderIndex)";
 
 	}
 
@@ -839,10 +862,10 @@ select $orderIndex from OrderIndex where
 
 /*
 
-select oi.id, oi.$orderIndex from OrderIndex oi
-  where oi.id in (:orderIndices)
+ select oi.id, oi.$orderIndex from OrderIndex oi
+   where oi.id in (:orderIndices)
 
-*/
+ */
 
 		Query           query = indexQuery(odata,
 
@@ -896,7 +919,9 @@ select oi.id, oi.$orderIndex from OrderIndex oi
 
 	protected Query        indexQuery(OrderData odata, String hql)
 	{
-		String Q = hql;
+		String  Q = hql;
+		//?: query has OrderIndex alias 'o'
+		boolean A = hql.contains("o.$orderIndex");
 
 		Q = SU.replace(Q, "$orderOwner", getOrderOwnerIDProp());
 		Q = SU.replace(Q, "$orderIndex", getOrderIndexProp());
@@ -906,7 +931,7 @@ select oi.id, oi.$orderIndex from OrderIndex oi
 			Q = SU.replace(Q, _AND_ORDER_TYPE_EQ_, "");
 		else
 			Q = SU.replace(Q, _AND_ORDER_TYPE_EQ_, String.format(
-			  "and (%s = :orderType)", getOrderTypeProp()));
+			  "and (%s%s = :orderType)", A?("o."):(""), getOrderTypeProp()));
 
 		Query q = HiberPoint.query(session(request(odata)), Q,
 		  "OrderIndex", odata.getIndexClass());
@@ -932,12 +957,12 @@ select oi.id, oi.$orderIndex from OrderIndex oi
 
 	protected OrderIndex   instance(OrderData odata)
 	{
-		return instance(request(odata));
+		return odata.getRequest().getInstance();
 	}
 
 	protected OrderIndex   reference(OrderData odata)
 	{
-		return reference(request(odata));
+		return odata.getReference();
 	}
 
 	protected Session      session(OrderData odata)
@@ -953,6 +978,54 @@ select oi.id, oi.$orderIndex from OrderIndex oi
 	protected UnityType    orderType(OrderData odata)
 	{
 		return orderType(request(odata));
+	}
+
+	protected void         ensureReferenceOrderIndex(OrderData odata)
+	{
+
+// select o.$orderIndex from OrderIndex o where (o.id = :pk)
+
+		Long oi = (Long) indexQuery(odata,
+
+"select o.$orderIndex from OrderIndex o where (o.id = :pk)"
+
+		).
+		  setLong("pk", reference(odata).getPrimaryKey()).
+		  uniqueResult();
+
+		EX.assertx(oi != null);
+
+		odata.setReference(ensureOrderIndex(odata,
+		  new Object[] { reference(odata), oi }
+		));
+	}
+
+	protected OrderIndex   ensureOrderIndex(OrderData odata, Object[] row)
+	{
+		OrderIndex o = null;
+		Long       i = null;
+
+		for(Object x : row)
+		{
+			if(x instanceof OrderIndex)
+				o = (OrderIndex) x;
+			if(x instanceof Long)
+				i = (Long) x;
+		}
+
+		if((o == null) || (i == null)) throw EX.state();
+
+		//?: {cached instance has the same index} no problems
+		if(i.equals(o.getOrderIndex()))
+			return o;
+
+		//~: evict those instance
+		session(odata).flush();
+		session(odata).evict(o);
+
+		//!: reload it
+		return (OrderIndex) session(odata).load(
+		  odata.getIndexClass(), o.getPrimaryKey());
 	}
 
 

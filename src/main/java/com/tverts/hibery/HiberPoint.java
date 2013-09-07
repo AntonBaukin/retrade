@@ -125,6 +125,9 @@ public class HiberPoint
 		}
 	}
 
+	/**
+	 * Returns the actual class of the instance.
+	 */
 	public static Class   type(Object obj)
 	{
 		return (obj == null)?(null):

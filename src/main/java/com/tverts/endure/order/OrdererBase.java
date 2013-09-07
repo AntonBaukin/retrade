@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: hibery */
 
-import com.tverts.hibery.system.HiberSystem;
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: endure */
 
@@ -123,16 +123,6 @@ public abstract class OrdererBase
 
 	/* protected: helping methods */
 
-	protected OrderIndex instance(OrderRequest request)
-	{
-		return request.getInstance();
-	}
-
-	protected OrderIndex reference(OrderRequest request)
-	{
-		return request.getReference();
-	}
-
 	protected Unity      orderOwner(OrderRequest request)
 	{
 		return request.getOrderOwner();
@@ -141,6 +131,11 @@ public abstract class OrdererBase
 	protected Long       orderOwnerID(OrderRequest request)
 	{
 		return request.getOrderOwner().getPrimaryKey();
+	}
+
+	protected Class      orderClass(OrderRequest request)
+	{
+		return HiberPoint.type(request.getInstance());
 	}
 
 	protected UnityType  orderType(OrderRequest request)
@@ -171,8 +166,7 @@ public abstract class OrdererBase
 			if(ot != null)
 				return typeClass.equals(orderType(request).getTypeClass());
 
-			Class     oc = HiberSystem.getInstance().
-			  findActualClass(instance(request));
+			Class     oc = HiberPoint.type(request.getInstance());
 
 			return typeClass.isAssignableFrom(oc);
 		}
