@@ -330,4 +330,35 @@ public abstract class ActionBuilderXRoot
 
 		protected Lock            lock;
 	}
+
+
+	/* delayed key */
+
+	public static class EntityKey implements DelayedKey
+	{
+		/* constructor */
+
+		public EntityKey(NumericIdentity entity)
+		{
+			this.entity = entity;
+		}
+
+
+		/* public: DelayedKey interface */
+
+		public Long delayedKey()
+		{
+			return entity.getPrimaryKey();
+		}
+
+
+		/* entity */
+
+		protected NumericIdentity entity;
+	}
+
+	protected DelayedKey delayKey(NumericIdentity entity)
+	{
+		return new EntityKey(entity);
+	}
 }

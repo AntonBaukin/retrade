@@ -76,6 +76,8 @@ public class AggrAction extends ActionWithTxBase
 	protected void    execute()
 	  throws Throwable
 	{
+		session().flush();
+
 		//~: sequentially add all the requests
 		for(AggrRequest request : this.requests)
 			AggrPoint.aggr(request, synch);

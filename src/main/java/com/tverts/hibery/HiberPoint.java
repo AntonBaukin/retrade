@@ -2,7 +2,6 @@ package com.tverts.hibery;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.support.LU;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,6 +22,7 @@ import com.tverts.system.tx.Tx;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
 
 
 /**
