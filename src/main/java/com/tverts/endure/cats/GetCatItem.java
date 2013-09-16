@@ -40,7 +40,7 @@ select count(ci.id) from CatItem ci where
   (ci.domain = :domain)
 
 */
-		return ((Number) Q(
+		return ((Number) QR(
 
 "select count(ci.id) from CatItem ci where\n" +
 "  (ci.domain.id = :domain)",
@@ -63,7 +63,7 @@ from CatItem ci where (ci.domain = :domain)
   and (ci.code = :code)
 
 */
-		return (CatItem) Q(
+		return (CatItem) QR(
 
 "from CatItem ci where (ci.domain = :domain)\n" +
 "  and (ci.code = :code)",
@@ -81,7 +81,7 @@ from CatItem ci where (ci.domain = :domain)
 
 // from CatItem ci where (ci.domain = :domain)
 
-		return (CatItem) Q(
+		return (CatItem) QR(
 
 "from CatItem ci where (ci.domain = :domain)",
 

@@ -3,6 +3,7 @@ package com.tverts.support;
 /* standard Java classes */
 
 import java.io.PrintWriter;
+import java.util.Collection;
 
 /* com.tverts: secure */
 
@@ -135,6 +136,18 @@ public class EX
 	{
 		if(x == null) throw new AssertionError(SU.cats(msg));
 		return x;
+	}
+
+	public static void  asserte(Collection c, Object... msg)
+	{
+		if((c == null) || c.isEmpty())
+			throw new AssertionError(SU.cats(msg));
+	}
+
+	public static void  asserte(Object[] a, Object... msg)
+	{
+		if((a == null) || (a.length == 0))
+			throw new AssertionError(SU.cats(msg));
 	}
 
 

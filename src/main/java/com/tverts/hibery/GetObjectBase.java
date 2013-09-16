@@ -3,6 +3,7 @@ package com.tverts.hibery;
 /* standard Java classes */
 
 import java.io.Serializable;
+import java.util.List;
 
 /* Hibernate Persistence Layer */
 
@@ -27,6 +28,10 @@ import com.tverts.endure.secure.SecKey;
 /* com.tverts: secure */
 
 import com.tverts.secure.SecKeys;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -66,7 +71,13 @@ public abstract class GetObjectBase
 		return HiberPoint.getInstance().getSession();
 	}
 
-	protected Query   Q(String hql, Object... replaces)
+	protected Query   Q(String hql, Object... params)
+	{
+		return HiberPoint.params(
+		  HiberPoint.query(session(), hql), params);
+	}
+
+	protected Query   QR(String hql, Object... replaces)
 	{
 		return HiberPoint.query(session(), hql, replaces);
 	}
@@ -81,6 +92,23 @@ public abstract class GetObjectBase
 	protected <O> O   load(Class<O> c1ass, Serializable key)
 	{
 		return (O)session().load(c1ass, key);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> List<T> list(Class<T> cls, String hql, Object... params)
+	{
+		EX.assertn(cls);
+		return (List<T>) Q(hql, params).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T   object(Class<T> cls, String hql, Object... params)
+	{
+		Object res = Q(hql, params).uniqueResult();
+
+		EX.assertn(cls);
+		EX.assertx((res == null) || cls.isAssignableFrom(res.getClass()));
+		return (T) res;
 	}
 
 	protected Query   QB(QueryBuilder qb)

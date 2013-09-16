@@ -1,5 +1,10 @@
 package com.tverts.hibery;
 
+/* standard Java classes */
+
+import java.math.BigDecimal;
+import java.util.Collection;
+
 /* Hibernate Persistence Layer */
 
 import org.hibernate.Query;
@@ -22,7 +27,6 @@ import com.tverts.system.tx.Tx;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.LU;
 
 
 /**
@@ -125,6 +129,41 @@ public class HiberPoint
 		}
 	}
 
+	public static Query   params(Query q, Object... params)
+	{
+		EX.assertx((params.length & 1) == 0);
+
+		for(int i = 0;(i < params.length);i += 2)
+		{
+			EX.assertx(params[i] instanceof String);
+			EX.assertn(params[i + 1]);
+
+			String p = (String) params[i];
+			Object v = params[i + 1];
+
+			if(v instanceof Collection)
+				q.setParameterList(p, (Collection)v);
+			else if(v instanceof Object[])
+				q.setParameterList(p, (Object[])v);
+			else if(v instanceof CharSequence)
+				q.setString(p, v.toString());
+			else if(v instanceof Long)
+				q.setLong(p, (Long)v);
+			else if(v instanceof Integer)
+				q.setInteger(p, (Integer)v);
+			else if(v instanceof BigDecimal)
+				q.setBigDecimal(p, (BigDecimal)v);
+			else if(v instanceof Boolean)
+				q.setBoolean(p, (Boolean)v);
+			else if(v instanceof Character)
+				q.setCharacter(p, (Character)v);
+			else
+				q.setParameter(p, v);
+		}
+
+		return q;
+	}
+
 	/**
 	 * Returns the actual class of the instance.
 	 */
@@ -163,10 +202,8 @@ public class HiberPoint
 		if(instance.getPrimaryKey() != null)
 			return (instance.getPrimaryKey() < 0L);
 
-		if(instance instanceof DomainEntity)
-			return isTestInstance(((DomainEntity) instance).getDomain());
-
-		return false;
+		return (instance instanceof DomainEntity) &&
+		  isTestInstance(((DomainEntity)instance).getDomain());
 	}
 
 	public static boolean isTestPrimaryKey(Long pk)
