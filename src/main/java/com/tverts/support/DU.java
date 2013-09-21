@@ -212,6 +212,27 @@ public class DU
 		lennum(cl.get(Calendar.YEAR), 4, sb);
 	}
 
+	/**
+	 * Converts the date as 'YYYYMMDD' string.
+	 */
+	public static String date2strsys(Date d)
+	{
+		StringBuilder sb = new StringBuilder(8);
+		Calendar      cl = Calendar.getInstance();
+		cl.setTime(d);
+
+		//~: year
+		lennum(cl.get(Calendar.YEAR), 4, sb);
+
+		//~: month
+		lennum(cl.get(Calendar.MONTH) + 1, 2, sb);
+
+		//~: day
+		lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
+
+		return sb.toString();
+	}
+
 	public static String time2str(Date t)
 	{
 		StringBuilder sb = new StringBuilder(5);

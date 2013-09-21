@@ -131,10 +131,10 @@ public class OU
 
 		O res = cloneBest(obj);
 
-		if(res == null)
-			throw new IllegalArgumentException(String.format(
-			  "Don't know how to clone the class '%s'!",
-			  obj.getClass().getName()));
+		if(res == null) throw EX.arg(
+		  "Don't know how to clone the class '",
+		  obj.getClass().getName(), "'!"
+		);
 
 		return res;
 	}
@@ -314,9 +314,9 @@ public class OU
 		Object res = xml2obj(xml);
 
 		if((res != null) && (c1ass != null) && !c1ass.isAssignableFrom(res.getClass()))
-			throw new IllegalStateException(
-			  "Can't cast XML Decoded instance of class '" + LU.cls(res) + "' to the " +
-			  "required class '" + c1ass.getName() + "'!");
+			throw EX.state("Can't cast XML Decoded instance of class '",
+			  LU.cls(res), "' to the ", "required class '", c1ass.getName(), "'!"
+			);
 
 		return (O)res;
 	}
@@ -371,10 +371,9 @@ public class OU
 		Object obj = bytes2obj(bytes);
 
 		if((obj != null) && !cls.isAssignableFrom(obj.getClass()))
-			throw new IllegalStateException(String.format(
-			  "Deserialized object of class [%s], but expected [%s]!",
-			  cls.getName(), obj.getClass().getName()
-			));
+			throw EX.state("Deserialized object of class [",
+			  cls.getName(), "], but expected [", obj.getClass().getName(), "]!"
+			);
 
 		return (O) obj;
 	}
@@ -396,12 +395,10 @@ public class OU
 				return;
 
 		//?: {the target is not a requested class}
-		throw new IllegalStateException(String.format(
-		  "Class assertion failed: there is no class in the list %s " +
-		  "that is assignable from the class '%s'!",
-
-		  Arrays.asList(checks).toString(), LU.cls(cls)
-		));
+		throw EX.state("Class assertion failed: there is no class in the list ",
+		  Arrays.asList(checks).toString(),
+		  "that is assignable from the class '", LU.cls(cls), "'!"
+		);
 	}
 
 	public static void    assignable(Object obj, Class... checks)
