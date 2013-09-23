@@ -113,6 +113,17 @@ public class OrderRequest
 		return this;
 	}
 
+	public Class        getIndexClass()
+	{
+		return indexClass;
+	}
+
+	public OrderRequest setIndexClass(Class indexClass)
+	{
+		this.indexClass = indexClass;
+		return this;
+	}
+
 
 	/* public: OrderRequest (state) interface */
 
@@ -153,7 +164,7 @@ public class OrderRequest
 
 	/* protected: order request internals */
 
-	protected void checkIndices()
+	protected void      checkIndices()
 	{
 		//?: {instance is not defined}
 		if(getInstance() == null) throw new IllegalArgumentException(
@@ -192,7 +203,7 @@ public class OrderRequest
 			);
 	}
 
-	protected void assignState()
+	protected void      assignState()
 	{
 		this.orderOwner = getInstance().getOrderOwner();
 		this.orderType  = getInstance().getOrderType();
@@ -203,7 +214,7 @@ public class OrderRequest
 
 	private OrderIndex instance;
 	private OrderIndex reference;
-	private Tx tx;
+	private Tx         tx;
 	private Map        params;
 	private boolean    beforeAfter;
 
@@ -212,5 +223,6 @@ public class OrderRequest
 
 	private Unity      orderOwner;
 	private UnityType  orderType;
+	private Class      indexClass;
 	private boolean    complete;
 }

@@ -173,6 +173,7 @@ public class OrdererDefault extends OrdererBase
 		public OrderData(OrderRequest request)
 		{
 			if(request == null) throw new IllegalArgumentException();
+
 			this.request = request;
 		}
 
@@ -187,6 +188,7 @@ public class OrdererDefault extends OrdererBase
 		public Class        getIndexClass()
 		{
 			return (indexClass != null)?(indexClass):
+			  (request.getIndexClass() != null)?(request.getIndexClass()):
 			  (indexClass = HiberPoint.type(getRequest().getInstance()));
 		}
 
@@ -393,8 +395,7 @@ public class OrdererDefault extends OrdererBase
 			return;
 		}
 
-		EX.assertx(
-		  (reference(odata).getOrderIndex() != null),
+		EX.assertn(reference(odata).getOrderIndex(),
 		  "Order reference ", odata.getIndexClass().getSimpleName(),
 		  " [", reference(odata).getPrimaryKey(), "] has order index undefined!"
 		);
@@ -993,7 +994,7 @@ public class OrdererDefault extends OrdererBase
 		  setLong("pk", reference(odata).getPrimaryKey()).
 		  uniqueResult();
 
-		EX.assertx(oi != null);
+		EX.assertn(oi);
 
 		odata.setReference(ensureOrderIndex(odata,
 		  new Object[] { reference(odata), oi }

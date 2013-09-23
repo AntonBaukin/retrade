@@ -348,6 +348,17 @@ public class ActionsCollection
 			return this;
 		}
 
+		public Class         getIndexClass()
+		{
+			return indexClass;
+		}
+
+		public SetOrderIndex setIndexClass(Class indexClass)
+		{
+			this.indexClass = indexClass;
+			return this;
+		}
+
 
 		/* protected: ActionBase interface */
 
@@ -363,6 +374,7 @@ public class ActionsCollection
 
 			//~: create the request
 			request = new OrderRequest(instance, reference).
+			  setIndexClass(getIndexClass()).
 			  setBeforeAfter(isBeforeAfter());
 
 			//HINT: reference instance must be already saved to the
@@ -385,6 +397,7 @@ public class ActionsCollection
 
 		protected OrderIndex   instance;
 		protected OrderIndex   reference;
+		protected Class        indexClass;
 		protected boolean      beforeAfter;
 
 

@@ -129,12 +129,14 @@ public class EX
 
 	public static void  assertx(boolean x, Object... msg)
 	{
-		if(!x) throw new AssertionError(SU.cats(msg));
+		if(x == false)
+			throw new AssertionError(SU.cats(msg));
 	}
 
 	public static <T> T assertn(T x, Object... msg)
 	{
-		if(x == null) throw new AssertionError(SU.cats(msg));
+		if(x == null)
+			throw new AssertionError(SU.cats(msg));
 		return x;
 	}
 
