@@ -34,6 +34,12 @@ public class ActionsPoint
 	{}
 
 
+	/* constants */
+
+	public static final String SYNCH_AGGR =
+	  ActionsPoint.class.getName() + ": synchronous aggregation";
+
+
 	/* public: actions build system  */
 
 	public ActionTrigger        action(ActionTask task)

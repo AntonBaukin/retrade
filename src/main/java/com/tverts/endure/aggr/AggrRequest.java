@@ -2,6 +2,7 @@ package com.tverts.endure.aggr;
 
 /* com.tverts: endure */
 
+import com.tverts.endure.DelayedEntity;
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.Unity;
 
@@ -40,7 +41,8 @@ public class AggrRequest implements NumericIdentity
 	 */
 	public Unity      getSource()
 	{
-		return source;
+		return (source != null)?(source):(accessSource == null)?(null):
+		  (source = (Unity) accessSource.accessEntity());
 	}
 
 	public void       setSource(Unity source)
@@ -54,6 +56,11 @@ public class AggrRequest implements NumericIdentity
 			if(source.getUnityType() != null)
 				this.aggrTask.setSourceClass(source.getUnityType().getTypeClass());
 		}
+	}
+
+	public void       setSource(DelayedEntity accessSource)
+	{
+		this.accessSource = accessSource;
 	}
 
 
@@ -166,9 +173,10 @@ public class AggrRequest implements NumericIdentity
 
 	/* persisted attributes */
 
-	private Long      primaryKey;
-	private Unity     source;
-	private AggrValue aggrValue;
-	private AggrTask  aggrTask;
-	private String    errorText;
+	private Long          primaryKey;
+	private Unity         source;
+	private DelayedEntity accessSource;
+	private AggrValue     aggrValue;
+	private AggrTask      aggrTask;
+	private String        errorText;
 }

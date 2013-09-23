@@ -18,6 +18,7 @@ import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 import com.tverts.actions.ActionBuildRec;
 import com.tverts.actions.ActionBuilderWithTxBase;
+import com.tverts.actions.ActionsPoint;
 import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionWithTxBase;
 
@@ -61,7 +62,7 @@ public abstract class ActionBuilderXRoot
 	 *   registered.
 	 */
 	public static final String SYNCH_AGGR =
-	  ActionBuilderXRoot.class.getName() + ": synchronous aggregation";
+	  ActionsPoint.SYNCH_AGGR;
 
 
 	/* protected: aggregated values support */

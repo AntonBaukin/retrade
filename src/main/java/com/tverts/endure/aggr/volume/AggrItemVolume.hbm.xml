@@ -92,4 +92,23 @@ from aggr_item_volume vi
 where (vi.fk_aggr_value = -321)
 order by vi.order_index
 
+
+select
+  vi.fk_aggr_value as "AV",
+  vi.order_index as "vi-oi",
+  vi.volume_positive as "v+",
+  vi.volume_negative as "v-",
+  vi.source_key as "inv",
+  i.order_index as "inv-oi",
+  ut.title_lo as "inv type"
+from
+  aggr_item_volume vi
+    join
+  retrade_invoice i
+    on (vi.source_key = i.pk_entity)
+    join
+  core_unity_type ut
+    on (ut.pk_unity_type = i.fk_invoice_type)
+order by vi.fk_aggr_value desc, vi.order_index
+
 -->

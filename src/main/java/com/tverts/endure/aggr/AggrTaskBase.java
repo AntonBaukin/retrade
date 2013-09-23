@@ -109,10 +109,11 @@ public abstract class AggrTaskBase implements AggrTask
 
 	/* private: task properties */
 
-	private Long       aggrValueID;
-	private Long       sourceKey;
-	private DelayedKey sourceDelayed;
-	private Class      sourceClass;
-	private String     orderPath;
-	private Map        params;
+	private Long   aggrValueID;
+	private Long   sourceKey;
+	private Class  sourceClass;
+	private String orderPath;
+	private Map    params;
+
+	private transient DelayedKey sourceDelayed;
 }
