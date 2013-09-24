@@ -140,4 +140,24 @@
     </function-signature>
   </function>
 
+
+  <!--=================================================
+    =  Collections and iterations                     =
+    =================================================-->
+
+  <function>
+    <description>
+      Converts Map Entries Set to List.
+    </description>
+    <display-name>Map As List</display-name>
+
+    <function-name>mapAsList</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.util.List mapAsList(java.util.Map)
+    </function-signature>
+  </function>
+
 </facelet-taglib>

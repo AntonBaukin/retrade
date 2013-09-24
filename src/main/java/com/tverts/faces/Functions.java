@@ -1,5 +1,12 @@
 package com.tverts.faces;
 
+/* standard Java classes */
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /* com.tverts: servlet */
 
 import com.tverts.servlet.RequestPoint;
@@ -83,7 +90,7 @@ public class Functions
 	}
 
 
-	/* public: Java Script support */
+	/* public: JavaScript support */
 
 	/**
 	 * Escapes string to place into Java Script
@@ -105,5 +112,16 @@ public class Functions
 		return new StringBuilder(v.getId().length() + name.length() + 1).
 		  append(v.getId()).append('_').append(name).
 		  toString();
+	}
+
+
+	/* public: collections and iterations */
+
+	@SuppressWarnings("unchecked")
+	public static List   mapAsList(Map map)
+	{
+		return ((map == null) || map.isEmpty())
+		  ?(Collections.emptyList())
+		  :(new ArrayList(map.entrySet()));
 	}
 }
