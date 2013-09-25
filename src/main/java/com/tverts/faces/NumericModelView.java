@@ -55,6 +55,9 @@ public abstract class NumericModelView extends ModelView
 		if(model.getPrimaryKey() == null)
 			model.setPrimaryKey(key);
 
+		if(model.getDomain() == null)
+			model.setDomain(getDomainKey());
+
 		return model;
 	}
 
