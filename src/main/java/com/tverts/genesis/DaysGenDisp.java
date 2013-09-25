@@ -10,6 +10,7 @@ import java.util.Map;
 
 /* Spring framework */
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: objects */
@@ -253,7 +254,7 @@ public class DaysGenDisp extends GenesisPartBase
 			genObjects(ctx, day);
 	}
 
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	protected void    genObjectsTx(GenCtx ctx, Date day)
 	  throws GenesisError
 	{
