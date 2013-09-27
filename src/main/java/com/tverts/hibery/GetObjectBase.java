@@ -7,7 +7,6 @@ import java.util.List;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.secure.SecPoint;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -28,6 +27,7 @@ import com.tverts.endure.secure.SecKey;
 /* com.tverts: secure */
 
 import com.tverts.secure.SecKeys;
+import com.tverts.secure.SecPoint;
 
 /* com.tverts: support */
 
