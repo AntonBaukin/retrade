@@ -74,7 +74,13 @@ public abstract class UnityModelView extends ModelView
 		  "Can't obtain primary key of entity to ",
 		  "preview from the HTTP request!");
 
+		//~: primary key
 		model.setPrimaryKey(key);
+
+		//~: domain
+		if(model.getDomain() == null)
+			model.setDomain(getDomainKey());
+
 		return model;
 	}
 
