@@ -12,8 +12,7 @@ import static com.tverts.actions.ActionsPoint.collectParams;
 
 /* com.tverts: hibery */
 
-import static com.tverts.hibery.HiberPoint.isTestInstance;
-import com.tverts.hibery.system.HiberSystem;
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: endure */
 
@@ -270,8 +269,7 @@ public abstract class ActionBuilderBase
 	{
 		Object target = targetOrNull(abr);
 
-		return (target == null)?(Void.class):
-		  HiberSystem.getInstance().findActualClass(target);
+		return (target == null)?(Void.class):(HiberPoint.type(target));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -298,7 +296,7 @@ public abstract class ActionBuilderBase
 	protected boolean       isTestTarget(ActionBuildRec abr)
 	{
 		return (target(abr) instanceof NumericIdentity) &&
-		  isTestInstance((NumericIdentity) target(abr));
+		  HiberPoint.isTestInstance((NumericIdentity) target(abr));
 	}
 
 	protected Object        param(ActionBuildRec abr, Object name)
