@@ -207,7 +207,7 @@ public class HiberSystem
 			//?: {this entity is persisted normally}
 			if(session.contains(entity))
 				//?: {it is exact the same class}
-				if(entityClass.equals(findActualClass(entity)))
+				if(entityClass.isAssignableFrom(findActualClass(entity)))
 					result.add(entity);
 		}
 

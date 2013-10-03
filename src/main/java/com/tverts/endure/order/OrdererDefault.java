@@ -728,7 +728,7 @@ public class OrdererDefault extends OrdererBase
 			//?: {is there at least one free slot available} found it!
 
 			//HINT: the order is descending
-			if((smove = spread[spos] - spread[spos - 1]) > 1L)
+			if((smove = spread[spos - 1] - spread[spos]) > 1L)
 				break;
 
 		//?: {not found free slot} nothing to do here

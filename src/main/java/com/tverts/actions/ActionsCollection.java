@@ -359,6 +359,12 @@ public class ActionsCollection
 			return this;
 		}
 
+		public SetOrderIndex setTester(Runnable tester)
+		{
+			this.tester = tester;
+			return this;
+		}
+
 
 		/* protected: ActionBase interface */
 
@@ -380,8 +386,16 @@ public class ActionsCollection
 			//HINT: reference instance must be already saved to the
 			//      database and not need to be reloaded.
 
+			//debug: do test order before
+			if(tester != null)
+				tester.run();
+
 			//!: do order
 			OrderPoint.order(request);
+
+			//debug: do test order after
+			if(tester != null)
+				tester.run();
 		}
 
 		/**
@@ -399,6 +413,7 @@ public class ActionsCollection
 		protected OrderIndex   reference;
 		protected Class        indexClass;
 		protected boolean      beforeAfter;
+		protected Runnable     tester;
 
 
 		/* protected: order request parameters */
