@@ -99,8 +99,9 @@ public class DU
 	{
 		Calendar cl = Calendar.getInstance();
 
-		cl.set(Calendar.YEAR,  year);
-		cl.set(Calendar.MONTH, month);
+		cl.set(Calendar.YEAR,         year);
+		cl.set(Calendar.MONTH,        month);
+		cl.set(Calendar.DAY_OF_MONTH, 1);
 
 		return cl.get(Calendar.DAY_OF_YEAR) - 1;
 	}

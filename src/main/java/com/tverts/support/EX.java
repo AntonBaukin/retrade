@@ -155,6 +155,11 @@ public class EX
 
 	/* exceptions */
 
+	public static AssertionError   ass(Object... msg)
+	{
+		return new AssertionError(SU.cats(msg));
+	}
+
 	public static RuntimeException state(Object... msg)
 	{
 		return new IllegalStateException(SU.cats(msg));
