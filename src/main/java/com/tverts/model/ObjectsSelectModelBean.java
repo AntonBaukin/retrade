@@ -41,6 +41,16 @@ public abstract class ObjectsSelectModelBean
 		this.selSet = selSet;
 	}
 
+	public boolean  isWithSelSet()
+	{
+		return withSelSet;
+	}
+
+	public void     setWithSelSet(boolean withSelSet)
+	{
+		this.withSelSet = withSelSet;
+	}
+
 
 	/* public: support interface */
 
@@ -53,6 +63,7 @@ public abstract class ObjectsSelectModelBean
 
 	/* private: objects search attributes */
 
-	private String searchNames;
-	private String selSet;
+	private String  searchNames;
+	private String  selSet;
+	private boolean withSelSet;
 }
