@@ -254,14 +254,9 @@ public class DaysGenDisp extends GenesisPartBase
 			genObjects(ctx, day);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	protected void    genObjectsTx(GenCtx ctx, Date day)
 	  throws GenesisError
 	{
-		//~: clear the session
-		ctx.session().flush();
-		ctx.session().clear();
-
 		//!: invoke day generation
 		genObjects(ctx, day);
 
@@ -306,6 +301,8 @@ public class DaysGenDisp extends GenesisPartBase
 		logGen(ctx, day, inds);
 	}
 
+	@Transactional(rollbackFor = Throwable.class,
+	  propagation = Propagation.REQUIRES_NEW)
 	protected void    callGenesis(GenCtx ctx, Entry e)
 	  throws GenesisError
 	{

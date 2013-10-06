@@ -581,6 +581,12 @@ public class SU
 		  cat(null, ", ", Arrays.asList(strings)).toString();
 	}
 
+	public static String        a2s(String[] strings)
+	{
+		return (strings ==  null)?(null):
+		  cat(null, ", ", Arrays.asList(strings)).toString();
+	}
+
 	/**
 	 * Concatenates the strings given using {@code ", "}
 	 * as the separator.
