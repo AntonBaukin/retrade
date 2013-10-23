@@ -134,6 +134,12 @@ public class ActionsCollection
 			return this;
 		}
 
+		public SaveNumericIdentified setOwner(NumericIdentity owner)
+		{
+			this.owner = owner;
+			return this;
+		}
+
 
 		/* protected: ActionBase interface */
 
@@ -199,14 +205,20 @@ public class ActionsCollection
 		{
 			if(isForceTest()) return true;
 
-			Object target  = getSaveTarget();
-			Object context = targetOrNull();
+			Object  target  = getSaveTarget();
+			Object  context = targetOrNull();
+			boolean result  = false;
+
+			//?: {there is an owner}
+			if(this.owner != null)
+				result = checkTestInstance(this.owner);
+			if(result) return true;
 
 			//?: {the target differs from it's context} see the context
 			if((target != context) && (context instanceof NumericIdentity))
-				return checkTestInstance(context);
+				result = checkTestInstance(context);
 
-			return checkTestInstance(target);
+			return result || checkTestInstance(target);
 		}
 
 		protected boolean checkTestInstance(Object obj)
@@ -230,6 +242,7 @@ public class ActionsCollection
 
 		protected DelayedInstance creator;
 		protected NumericIdentity target;
+		protected NumericIdentity owner;
 
 
 		/* private: save parameters */
