@@ -477,18 +477,20 @@ select sl.id from SecLink sl join sl.rule sr, SecAble ab
 	{
 /*
 
- select max(sl.deny) from SecLink sl join sl.rule sr, SecAble ab
+ select max(sl.deny), sl.key.id from
+   SecLink sl join sl.rule sr, SecAble ab
  where (sl.key in (:keys)) and (sl.target.id = :target) and
    (sr = ab.rule) and (ab.login.id = :login)
- group by sl.key
+ group by sl.key.id
 
 */
-		List<Number> ns = (List<Number>) Q(
+		List<Object[]> ns = (List<Object[]>) Q(
 
-"select max(sl.deny) from SecLink sl join sl.rule sr, SecAble ab\n" +
-" where (sl.key in (:keys)) and (sl.target.id = :target) and\n" +
-"   (sr = ab.rule) and (ab.login.id = :login)\n" +
-" group by sl.key"
+"select max(sl.deny), sl.key.id from\n" +
+"  SecLink sl join sl.rule sr, SecAble ab\n" +
+"where (sl.key in (:keys)) and (sl.target.id = :target) and\n" +
+"  (sr = ab.rule) and (ab.login.id = :login)\n" +
+"group by sl.key.id"
 
 		).
 		  setParameterList("keys", keys).
@@ -496,9 +498,58 @@ select sl.id from SecLink sl join sl.rule sr, SecAble ab
 		  setLong("login",  login).
 		  list();
 
-		for(Number n : ns)
-			if(n.intValue() == 0)
+		for(Object[] x : ns)
+		{
+			Number n = (Number)x[0];
+
+			if((n != null) && (n.intValue() == 0))
 				return true;
+		}
 		return false;
+	}
+
+
+	/**
+	 * This method works as and operator on calls of
+	 * {@link #isSecure(Long, Long, SecKey)}.
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean isAllSecure(Long login, Long target, Set<SecKey> keys)
+	{
+/*
+
+ select sum(sl.deny), sl.key.id from
+   SecLink sl join sl.rule sr, SecAble ab
+ where (sl.key in (:keys)) and (sl.target.id = :target) and
+   (sr = ab.rule) and (ab.login.id = :login)
+ group by sl.key.id
+
+*/
+		List<Object[]> ns = (List<Object[]>) Q(
+
+"select sum(sl.deny), sl.key.id from\n" +
+"  SecLink sl join sl.rule sr, SecAble ab\n" +
+"where (sl.key in (:keys)) and (sl.target.id = :target) and\n" +
+"  (sr = ab.rule) and (ab.login.id = :login)\n" +
+"group by sl.key.id"
+
+		).
+		  setParameterList("keys", keys).
+		  setLong("target", target).
+		  setLong("login",  login).
+		  list();
+
+		if(ns.size() != keys.size())
+			return false;
+
+		for(Object[] x : ns)
+		{
+			Number n = (Number)x[0];
+
+			if((n == null) || (n.intValue() != 0))
+				return false;
+		}
+
+		return true;
 	}
 }

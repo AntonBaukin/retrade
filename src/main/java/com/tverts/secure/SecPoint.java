@@ -250,6 +250,33 @@ public final class SecPoint
 		  isAnySecure(login(), target, skeys);
 	}
 
+	/**
+	 * Returns true when all the keys are allowed.
+	 */
+	public static boolean    isAllSecure(Collection<String> keys)
+	{
+		if(isSystemLogin()) return true;
+
+		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
+		for(String key : keys) if((key = s2s(key)) != null)
+			skeys.add(SecKeys.secKey(key));
+
+		return bean(GetSecure.class).
+		  isAllSecure(login(), domain(), skeys);
+	}
+
+	public static boolean    isAllSecure(Long target, Collection<String> keys)
+	{
+		if(isSystemLogin()) return true;
+
+		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
+		for(String key : keys) if((key = s2s(key)) != null)
+			skeys.add(SecKeys.secKey(key));
+
+		return bean(GetSecure.class).
+		  isAllSecure(login(), target, skeys);
+	}
+
 
 	/* public: SecPoint (access) interface */
 

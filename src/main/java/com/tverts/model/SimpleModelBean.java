@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: support */
 
@@ -17,6 +20,8 @@ import com.tverts.support.EX;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlType(name = "model")
+@SuppressWarnings("unchecked")
 public class SimpleModelBean extends ModelBeanBase
 {
 	public static final long serialVersionUID = 0L;
@@ -24,12 +29,12 @@ public class SimpleModelBean extends ModelBeanBase
 
 	/* public: bean interface */
 
-	public Map<Serializable, Serializable> getMap()
+	public Map       getMap()
 	{
 		return map;
 	}
 
-	public void setMap(Map<Serializable, Serializable> map)
+	public void      setMap(Map map)
 	{
 		if(map == null)
 			map = new HashMap<Serializable, Serializable>(5);
@@ -39,13 +44,12 @@ public class SimpleModelBean extends ModelBeanBase
 
 	/* public: support interface */
 
-	public Serializable get(Serializable key)
+	public Object    get(Object key)
 	{
 		return map.get(key);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> T        get(Serializable key, Class<T> cls)
+	public <T> T     get(Object key, Class<T> cls)
 	{
 		Object res = map.get(key);
 
@@ -57,7 +61,7 @@ public class SimpleModelBean extends ModelBeanBase
 		return (T) res;
 	}
 
-	public Serializable put(Serializable key, Serializable val)
+	public Object    put(Object key, Object val)
 	{
 		return map.put(key, val);
 	}
@@ -65,7 +69,7 @@ public class SimpleModelBean extends ModelBeanBase
 
 	/* public: ModelBean (data access) interface */
 
-	public ModelData    modelData()
+	public ModelData modelData()
 	{
 		return get(ModelData.class, ModelData.class);
 	}
@@ -73,6 +77,5 @@ public class SimpleModelBean extends ModelBeanBase
 
 	/* the map */
 
-	private Map<Serializable, Serializable> map =
-	  new HashMap<Serializable, Serializable>(5);
+	private Map map = new HashMap<Serializable, Serializable>(5);
 }

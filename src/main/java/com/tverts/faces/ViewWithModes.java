@@ -28,7 +28,6 @@ import com.tverts.endure.NumericIdentity;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import static com.tverts.support.SU.a2a;
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.s2a;
 
@@ -103,12 +102,19 @@ public abstract class ViewWithModes
 
 	public boolean     isAnySecureEntity(NumericIdentity e, String keys)
 	{
-		String[] ks = a2a(s2a(keys, ';'));
+		return SecPoint.isAnySecure(
+		  e.getPrimaryKey(), Arrays.asList(s2a(keys, ';')));
+	}
 
-		for(String k : ks)
-			if(isSecureEntity(e, k))
-				return true;
-		return false;
+	public boolean     isAllSecure(String keys)
+	{
+		return SecPoint.isAllSecure(Arrays.asList(s2a(keys, ';')));
+	}
+
+	public boolean     isAllSecureEntity(NumericIdentity e, String keys)
+	{
+		return SecPoint.isAllSecure(
+		  e.getPrimaryKey(), Arrays.asList(s2a(keys, ';')));
 	}
 
 	public void        forceAnySecure(String keys)
