@@ -262,18 +262,24 @@ public abstract class ModelView
 
 	protected ModelBean          obtainModel()
 	{
-		for(ModelBean model : getRequestedModels())
-			if(isRequestModelMatch(model))
-				return model;
+		ModelBean[] mbs = getRequestedModels();
+
+		for(int i = mbs.length - 1;(i >= 0);i++)
+			if(isRequestModelMatch(mbs[i]))
+				return mbs[i];
 		return null;
 	}
 
 	/**
-	 * In the most cases there is only one view (and model)
-	 * per a request. When there are redirects, or in more
-	 * complex pages, the model referred in the request differ
-	 * from the model of secondary view. This check may help
-	 * in the case of redirects.
+	 * In many cases there is only one view (and model)
+	 * per a request. When there are redirects, or in complex
+	 * interactions, such as wizards, the model referred in the
+	 * request differ from the model of previous views. This check
+	 * may help in the case of redirects.
+	 *
+	 * Note that the check is done in the reverse order of
+	 * the models provided, and you may stack several model
+	 * of the same type: the latest would be taken.
 	 */
 	protected boolean            isRequestModelMatch(ModelBean model)
 	{
