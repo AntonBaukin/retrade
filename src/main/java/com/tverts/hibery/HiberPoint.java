@@ -173,6 +173,20 @@ public class HiberPoint
 		  HiberSystem.getInstance().findActualClass(obj);
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <E> E   unproxy(E e)
+	{
+		return (E) HiberSystem.getInstance().unproxy(e);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <E> E   unproxyDeeply(Session s, E e)
+	{
+		return (E) HiberSystem.getInstance().unproxyDeeply(
+		  s.getSessionFactory(), e, null
+		);
+	}
+
 
 	/* public static: keys generation support */
 

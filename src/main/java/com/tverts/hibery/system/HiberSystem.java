@@ -10,6 +10,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -169,14 +172,104 @@ public class HiberSystem
 		return result;
 	}
 
-	public Object      unproxy(Object instance)
+	public Object      unproxy(Object e)
 	{
-		if(!(instance instanceof HibernateProxy))
-			return instance;
+		if(!(e instanceof HibernateProxy))
+			return e;
 
-		Hibernate.initialize(instance);
-		return ((HibernateProxy)instance).
+		Hibernate.initialize(e);
+		return ((HibernateProxy)e).
 		  getHibernateLazyInitializer().getImplementation();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Object      unproxyDeeply(SessionFactory f, Object e, Map closure)
+	{
+		if(e == null) return null;
+
+		if(closure == null)
+			closure = new IdentityHashMap(17);
+
+		//?: {contained in the closure}
+		Object x = closure.get(e);
+		if(x != null) return x;
+
+		//?: {it is a list | set}
+		if((e instanceof List) || (e instanceof Set))
+		{
+			//HINT: collections may not be shared between the entities loaded,
+			//  and we do not put them into the closure.
+
+			Collection r = (e instanceof List)
+			  ?(new ArrayList(((Collection)e).size()))
+			  :(new HashSet(((Collection)e).size()));
+			boolean    y = false;
+
+			for(Iterator i = ((Collection)e).iterator();(i.hasNext());)
+			{
+				Object v = unproxyDeeply(f, (x = i.next()), closure);
+
+				if(v != x) y = true;
+				r.add(v);
+			}
+
+			//?: {was changed} update it
+			return (y)?(r):(e);
+		}
+
+		//?: {it is a map}
+		if(e instanceof Map)
+		{
+			//HINT: maps may not be shared between the entities loaded,
+			//  and we do not put them into the closure.
+
+			Map     r = new HashMap(((Map) e).size());
+			boolean y = false;
+
+			for(Iterator i = ((Map)e).entrySet().iterator();(i.hasNext());)
+			{
+				Map.Entry m = (Map.Entry) i.next();
+
+				Object    k = unproxyDeeply(f, (x = m.getKey()), closure);
+				if(k != x) y = true;
+
+				Object    v = unproxyDeeply(f, (x = m.getValue()), closure);
+				if(v != x) y = true;
+
+				r.put(k, v);
+			}
+
+			//?: {was changed} update it
+			return (y)?(r):(e);
+		}
+
+		//?: {not of out entity class} return as is
+		if(!e.getClass().getName().startsWith("com.tverts"))
+			return e;
+
+		//~: un-proxy it
+		x = unproxy(e); closure.put(e, x);
+		e = x;          closure.put(e, e);
+
+		ClassMetadata m = f.getClassMetadata(e.getClass());
+		if(m == null) return e;
+
+		//c: for all the properties (not having dots: are system)
+		for(String p : m.getPropertyNames()) if(p.indexOf('.') == -1)
+		{
+			Object v = m.getPropertyValue(e, p);
+			if(v == null) continue;
+
+			//~: lookup the closure
+			if((x = closure.get(v)) == null)
+				x = unproxyDeeply(f, v, closure);
+
+			//?: {instance was changed} update it
+			if(v != x)
+				m.setPropertyValue(e, p, x);
+		}
+
+		return e;
 	}
 
 	/**

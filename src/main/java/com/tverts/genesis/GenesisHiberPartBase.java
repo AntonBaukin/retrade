@@ -55,6 +55,9 @@ public abstract class GenesisHiberPartBase
 
 	/* protected: access Hibernate session */
 
+	/**
+	 * TODO implement as session(GenCtx)
+	 */
 	protected Session session()
 	{
 		return TxPoint.txSession();
