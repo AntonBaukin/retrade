@@ -264,7 +264,7 @@ public abstract class ModelView
 	{
 		ModelBean[] mbs = getRequestedModels();
 
-		for(int i = mbs.length - 1;(i >= 0);i++)
+		for(int i = mbs.length - 1;(i >= 0);i--)
 			if(isRequestModelMatch(mbs[i]))
 				return mbs[i];
 		return null;
