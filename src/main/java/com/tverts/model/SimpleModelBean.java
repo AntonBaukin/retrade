@@ -8,6 +8,7 @@ import java.util.Map;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: support */
@@ -31,7 +32,7 @@ public class SimpleModelBean extends ModelBeanBase
 
 	public Map       getMap()
 	{
-		return map;
+		return (map != null)?(map):(map = new HashMap(3));
 	}
 
 	public void      setMap(Map map)
@@ -41,17 +42,28 @@ public class SimpleModelBean extends ModelBeanBase
 		this.map = map;
 	}
 
+	@XmlTransient
+	public ModelData getData()
+	{
+		return data;
+	}
+
+	public void      setData(ModelData data)
+	{
+		this.data = data;
+	}
+
 
 	/* public: support interface */
 
-	public Object    get(Object key)
+	public Object    get(Serializable key)
 	{
-		return map.get(key);
+		return getMap().get(key);
 	}
 
-	public <T> T     get(Object key, Class<T> cls)
+	public <T> T     get(Serializable key, Class<T> cls)
 	{
-		Object res = map.get(key);
+		Object res = getMap().get(key);
 
 		if((res != null) && !cls.isAssignableFrom(res.getClass()))
 			throw EX.state("Key [", key, "] maps object of class [",
@@ -61,9 +73,9 @@ public class SimpleModelBean extends ModelBeanBase
 		return (T) res;
 	}
 
-	public Object    put(Object key, Object val)
+	public Object    put(Serializable key, Serializable val)
 	{
-		return map.put(key, val);
+		return getMap().put(key, val);
 	}
 
 
@@ -71,11 +83,13 @@ public class SimpleModelBean extends ModelBeanBase
 
 	public ModelData modelData()
 	{
-		return get(ModelData.class, ModelData.class);
+		return (data != null)?(data):
+		  get(ModelData.class, ModelData.class);
 	}
 
 
-	/* the map */
+	/* the map & data */
 
-	private Map map = new HashMap<Serializable, Serializable>(5);
+	private Map       map;
+	private ModelData data;
 }
