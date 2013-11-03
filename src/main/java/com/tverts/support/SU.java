@@ -153,6 +153,7 @@ public class SU
 		return (s != null)?(s):("");
 	}
 
+	@SuppressWarnings("unchecked")
 	public static int      sXl(Object... objs)
 	{
 		int size = 0;
@@ -160,6 +161,12 @@ public class SU
 		if(objs != null) for(Object s : objs)
 			if(s instanceof CharSequence)
 				size += ((CharSequence)s).length();
+			else if(s instanceof Object[])
+				for(Object x : (Object[])s)
+					size += sXl(x);
+			else if(s instanceof Collection)
+				for(Object x : (Collection)s)
+					size += sXl(x);
 
 		return size;
 	}
@@ -511,8 +518,6 @@ public class SU
 			s.append(o);
 		}
 	}
-
-
 
 	public static String        catif(Object test, Object... objs)
 	{
