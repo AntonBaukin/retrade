@@ -79,7 +79,6 @@ public class DaysGenDisp extends GenesisPartBase
 	  throws GenesisError
 	{
 		if(getEntries() == null) throw EX.state();
-		if(getDays() <= 0) throw EX.state();
 
 		//~: the start day (inclusive)
 		Date curDay  = findFirstGenDate(ctx);
@@ -145,17 +144,6 @@ public class DaysGenDisp extends GenesisPartBase
 	public void     setEntries(Entry[] entries)
 	{
 		this.entries = entries;
-	}
-
-	@Param
-	public int      getDays()
-	{
-		return days;
-	}
-
-	public void     setDays(int days)
-	{
-		this.days = days;
 	}
 
 	@Param
@@ -237,7 +225,7 @@ public class DaysGenDisp extends GenesisPartBase
 
 	protected Date    findFirstGenDate(GenCtx ctx)
 	{
-		return DU.addDaysClean(new Date(), -getDays());
+		return EX.assertn(ctx.get(Date.class));
 	}
 
 	protected Date    findLastGenDate(GenCtx ctx)
@@ -394,7 +382,6 @@ public class DaysGenDisp extends GenesisPartBase
 	/* private: parameters of the generator */
 
 	private Entry[] entries;
-	private int     days;
 	private int     objMin;
 	private int     objMax;
 	private boolean dayTx;
