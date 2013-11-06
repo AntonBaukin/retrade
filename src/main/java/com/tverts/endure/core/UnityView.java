@@ -55,6 +55,8 @@ public abstract class UnityView
 		this.ownerType = ownerType;
 	}
 
+
+
 	/**
 	 * The type of the Unity state. (Only for entities
 	 * having states.)
