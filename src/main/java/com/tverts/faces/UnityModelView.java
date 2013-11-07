@@ -84,11 +84,6 @@ public abstract class UnityModelView extends ModelView
 		return model;
 	}
 
-	protected boolean isRequestModelMatch(ModelBean model)
-	{
-		return (model instanceof UnityModelBean);
-	}
-
 
 	/* private: the entity (cached) */
 
