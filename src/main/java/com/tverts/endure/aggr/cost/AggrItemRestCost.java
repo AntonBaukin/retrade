@@ -27,6 +27,9 @@ public class AggrItemRestCost extends AggrItemBase
 
 	public void       setGoodVolume(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 8))
+			v = v.setScale(8);
+
 		this.goodVolume = v;
 	}
 
@@ -37,6 +40,9 @@ public class AggrItemRestCost extends AggrItemBase
 
 	public void       setVolumeCost(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 10))
+			v = v.setScale(10);
+
 		this.volumeCost = v;
 	}
 
@@ -66,6 +72,9 @@ public class AggrItemRestCost extends AggrItemBase
 
 	public void       setAggrVolume(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 8))
+			v = v.setScale(8);
+
 		this.aggrVolume = v;
 	}
 
@@ -80,9 +89,12 @@ public class AggrItemRestCost extends AggrItemBase
 		return deltaVolume;
 	}
 
-	public void       setDeltaVolume(BigDecimal deltaVolume)
+	public void       setDeltaVolume(BigDecimal v)
 	{
-		this.deltaVolume = deltaVolume;
+		if((v != null) && (v.scale() != 8))
+			v = v.setScale(8);
+
+		this.deltaVolume = v;
 	}
 
 	/* persisted attributes: component data  */

@@ -79,7 +79,7 @@
 
     <property name = 'volumePositive' type = 'big_decimal'>
 
-      <column name = 'volume_positive' precision = '21' scale = '5'>
+      <column name = 'volume_positive' precision = '22' scale = '10'>
 
         <comment>The summary volume (amount) added within the period</comment>
       </column>
@@ -90,7 +90,7 @@
 
     <property name = 'volumeNegative' type = 'big_decimal'>
 
-      <column name = 'volume_negative' precision = '21' scale = '5'>
+      <column name = 'volume_negative' precision = '22' scale = '10'>
 
         <comment>The summary volume (amount) taken within the period</comment>
       </column>

@@ -66,6 +66,9 @@ public class AggrValue extends Entity
 
 	public void       setAggrValue(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 10))
+			v = v.setScale(10);
+
 		this.aggrValue = v;
 	}
 
@@ -84,6 +87,9 @@ public class AggrValue extends Entity
 
 	public void       setAggrDenom(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 10))
+			v = v.setScale(10);
+
 		this.aggrDenom = v;
 	}
 
@@ -94,6 +100,9 @@ public class AggrValue extends Entity
 
 	public void       setAggrPositive(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 10))
+			v = v.setScale(10);
+
 		this.aggrPositive = v;
 	}
 
@@ -104,6 +113,9 @@ public class AggrValue extends Entity
 
 	public void       setAggrNegative(BigDecimal v)
 	{
+		if((v != null) && (v.scale() != 10))
+			v = v.setScale(10);
+
 		this.aggrNegative = v;
 	}
 

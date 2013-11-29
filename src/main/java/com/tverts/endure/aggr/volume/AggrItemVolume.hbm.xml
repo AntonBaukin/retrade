@@ -12,7 +12,7 @@
 
     <property name = 'volumePositive' type = 'big_decimal'>
 
-      <column name = 'volume_positive' precision = '17' scale = '5'>
+      <column name = 'volume_positive' precision = '20' scale = '10'>
 
         <comment>The volume (amount) added to the aggregated value</comment>
       </column>
@@ -23,7 +23,7 @@
 
     <property name = 'volumeNegative' type = 'big_decimal'>
 
-      <column name = 'volume_negative' precision = '17' scale = '5'>
+      <column name = 'volume_negative' precision = '20' scale = '10'>
 
         <comment>The volume (amount) taken from the aggregated value</comment>
       </column>
@@ -34,7 +34,7 @@
 
     <property name = 'aggrPositive' type = 'big_decimal'>
 
-      <column name = 'aggr_positive' precision = '21' scale = '5'>
+      <column name = 'aggr_positive' precision = '22' scale = '10'>
 
         <comment>
           Historical value aggregating positive volumes of the
@@ -48,7 +48,7 @@
 
     <property name = 'aggrNegative' type = 'big_decimal'>
 
-      <column name = 'aggr_negative' precision = '21' scale = '5'>
+      <column name = 'aggr_negative' precision = '22' scale = '10'>
 
         <comment>
           Historical value aggregating negative volumes of the

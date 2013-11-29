@@ -88,9 +88,12 @@ public class DatePeriodVolumeCalcItem extends AggrCalcItemBase
 		return volumePositive;
 	}
 
-	public void       setVolumePositive(BigDecimal volumePositive)
+	public void       setVolumePositive(BigDecimal v)
 	{
-		this.volumePositive = volumePositive;
+		if((v != null) && (v.scale() != 10))
+			v = v.setScale(10);
+
+		this.volumePositive = v;
 	}
 
 	public BigDecimal getVolumeNegative()
@@ -98,9 +101,12 @@ public class DatePeriodVolumeCalcItem extends AggrCalcItemBase
 		return volumeNegative;
 	}
 
-	public void       setVolumeNegative(BigDecimal volumeNegative)
+	public void       setVolumeNegative(BigDecimal v)
 	{
-		this.volumeNegative = volumeNegative;
+		if((v != null) && (v.scale() != 10))
+			v = v.setScale(10);
+
+		this.volumeNegative = v;
 	}
 
 

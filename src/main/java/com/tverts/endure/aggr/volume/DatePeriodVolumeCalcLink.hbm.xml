@@ -42,7 +42,7 @@
 
     <property name = 'volumePositive' type = 'big_decimal'>
 
-      <column name = 'volume_positive' precision = '16' scale = '5'>
+      <column name = 'volume_positive' precision = '20' scale = '10'>
 
         <comment>The volume (amount) added by the linked Aggr Item</comment>
       </column>
@@ -53,7 +53,7 @@
 
     <property name = 'volumeNegative' type = 'big_decimal'>
 
-      <column name = 'volume_negative' precision = '16' scale = '5'>
+      <column name = 'volume_negative' precision = '20' scale = '10'>
 
         <comment>The volume (amount) removed by the linked Aggr Item</comment>
       </column>
