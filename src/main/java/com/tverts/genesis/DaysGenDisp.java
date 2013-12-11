@@ -78,7 +78,7 @@ public class DaysGenDisp extends GenesisPartBase
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		if(getEntries() == null) throw EX.state();
+		EX.asserte(getEntries());
 
 		//~: the start day (inclusive)
 		Date curDay  = findFirstGenDate(ctx);
@@ -99,6 +99,10 @@ public class DaysGenDisp extends GenesisPartBase
 
 			ctx.set(DAY, null);
 		}
+
+		//?: {has test} run it
+		if(getTest() != null)
+			getTest().testGenesis(ctx);
 	}
 
 	public void parameters(List<ObjectParam> params)
@@ -183,6 +187,16 @@ public class DaysGenDisp extends GenesisPartBase
 	public void     setDayTx(boolean dayTx)
 	{
 		this.dayTx = dayTx;
+	}
+
+	public GenTest  getTest()
+	{
+		return test;
+	}
+
+	public void     setTest(GenTest test)
+	{
+		this.test = test;
 	}
 
 
@@ -385,4 +399,5 @@ public class DaysGenDisp extends GenesisPartBase
 	private int     objMin;
 	private int     objMax;
 	private boolean dayTx;
+	private GenTest test;
 }
