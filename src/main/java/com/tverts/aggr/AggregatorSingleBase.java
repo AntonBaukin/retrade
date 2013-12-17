@@ -285,80 +285,80 @@ order by orderIndex asc
 		return (u == null)?(null):(u.getUnityType().getTypeClass());
 	}
 
-	protected String         debugSelectIndices(AggrStruct struct)
-	{
+//	protected String         debugSelectIndices(AggrStruct struct)
+//	{
+//
+///*
+//
+//select primaryKey, orderIndex, sourceKey from AggrItem where
+//  aggrValue = :aggrValue order by orderIndex
+//
+//*/
+//		List list =  aggrItemQ(struct,
+//
+//"select primaryKey, orderIndex, sourceKey from AggrItem where\n" +
+//"  aggrValue = :aggrValue order by orderIndex"
+//
+//		).
+//		  setParameter("aggrValue",   aggrValue(struct)).
+//		  setMaxResults(100).
+//		  list();
+//
+//		StringBuilder s = new StringBuilder(512);
+//
+//		for(Object row : list)
+//		{
+//			String pk = ((Object[])row)[0].toString().replace("-", "");
+//			String so = ((Object[])row)[2].toString().replace("-", "");
+//
+//			String oi = ((Object[])row)[1].toString();
+//			if(oi.indexOf('-') == -1) oi = "+" + oi;
+//
+//			s.append((s.length() != 0)?("  "):("")).
+//			  append(pk).append('@').append(so).append(oi);
+//		}
+//
+//		return s.toString();
+//	}
 
-/*
-
-select primaryKey, orderIndex, sourceKey from AggrItem where
-  aggrValue = :aggrValue order by orderIndex
-
-*/
-		List list =  aggrItemQ(struct,
-
-"select primaryKey, orderIndex, sourceKey from AggrItem where\n" +
-"  aggrValue = :aggrValue order by orderIndex"
-
-		).
-		  setParameter("aggrValue",   aggrValue(struct)).
-		  setMaxResults(100).
-		  list();
-
-		StringBuilder s = new StringBuilder(512);
-
-		for(Object row : list)
-		{
-			String pk = ((Object[])row)[0].toString().replace("-", "");
-			String so = ((Object[])row)[2].toString().replace("-", "");
-
-			String oi = ((Object[])row)[1].toString();
-			if(oi.indexOf('-') == -1) oi = "+" + oi;
-
-			s.append((s.length() != 0)?("  "):("")).
-			  append(pk).append('@').append(so).append(oi);
-		}
-
-		return s.toString();
-	}
-
-	protected String         debugSelectSources(AggrStruct struct)
-	{
-
-/*
-
-select so.id, so.orderIndex from AggrItem ai, Source so where
-  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceKey)
-order by so.orderIndex
-
- */
-
-		List list =  aggrItemQ(struct,
-
-"select so.id, so.orderIndex from AggrItem ai, Source so where\n" +
-"  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceKey)\n" +
-"order by so.orderIndex",
-
-		  "Source", struct.task.getSourceClass()
-
-		).
-		  setParameter("aggrValue",   aggrValue(struct)).
-		  setMaxResults(100).
-		  list();
-
-		StringBuilder s = new StringBuilder(512);
-
-		for(Object row : list)
-		{
-			String pk = ((Object[])row)[0].toString().replace("-", "");
-			String oi = ((Object[])row)[1].toString();
-			if(oi.indexOf('-') == -1) oi = "+" + oi;
-
-			s.append((s.length() != 0)?("  "):("")).
-			  append(pk).append(oi);
-		}
-
-		return s.toString();
-	}
+//	protected String         debugSelectSources(AggrStruct struct)
+//	{
+//
+///*
+//
+//select so.id, so.orderIndex from AggrItem ai, Source so where
+//  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceKey)
+//order by so.orderIndex
+//
+// */
+//
+//		List list =  aggrItemQ(struct,
+//
+//"select so.id, so.orderIndex from AggrItem ai, Source so where\n" +
+//"  (ai.aggrValue = :aggrValue) and (so.primaryKey = ai.sourceKey)\n" +
+//"order by so.orderIndex",
+//
+//		  "Source", struct.task.getSourceClass()
+//
+//		).
+//		  setParameter("aggrValue",   aggrValue(struct)).
+//		  setMaxResults(100).
+//		  list();
+//
+//		StringBuilder s = new StringBuilder(512);
+//
+//		for(Object row : list)
+//		{
+//			String pk = ((Object[])row)[0].toString().replace("-", "");
+//			String oi = ((Object[])row)[1].toString();
+//			if(oi.indexOf('-') == -1) oi = "+" + oi;
+//
+//			s.append((s.length() != 0)?("\n"):("")).
+//			  append(pk).append(oi);
+//		}
+//
+//		return s.toString();
+//	}
 
 
 	/* private: aggregation item class */

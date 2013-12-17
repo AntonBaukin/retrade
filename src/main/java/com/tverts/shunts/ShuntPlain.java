@@ -70,6 +70,10 @@ public abstract class ShuntPlain
 
 	protected Domain       domain()
 	{
+		//?: {domain is directly set}
+		if(domain != null)
+			return domain;
+
 		//?: {there is no domain key}
 		if(ctx().getDomain() == null)
 			throw new IllegalStateException(String.format(
@@ -89,6 +93,12 @@ public abstract class ShuntPlain
 			));
 
 		return domain;
+	}
+
+	public ShuntPlain      setDomain(Domain domain)
+	{
+		this.domain = domain;
+		return this;
 	}
 
 
@@ -123,4 +133,9 @@ public abstract class ShuntPlain
 	{
 		return LU.getLogBased(SelfShuntPoint.LOG_SHARED, this);
 	}
+
+
+	/* private: additional parameters */
+
+	private Domain domain;
 }

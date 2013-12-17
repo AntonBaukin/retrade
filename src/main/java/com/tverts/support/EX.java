@@ -63,7 +63,8 @@ public class EX
 	/* public: unwrapping  */
 
 	/**
-	 * Removes the {@link RuntimeException} wrappers.
+	 * Removes the {@link RuntimeException} wrappers
+	 * having no own message.
 	 */
 	public static Throwable xrt(Throwable e)
 	{
@@ -71,7 +72,23 @@ public class EX
 			if(e.getCause() == null)
 				return e;
 			else
-				e = e.getCause();
+			{
+				String  a = e.getMessage();
+				String  b = e.getCause().getMessage();
+
+				//?: {message is not set}
+				boolean x = (a == null);
+
+				//?: {not null -> messages are the same}
+				if(!x)  x = CMP.eq(a, b);
+
+				//?: {not -> check as toString()}
+				if(!x)  x = CMP.eq(a, e.getCause().toString());
+
+				//?: {remove wrapper}
+				if(x) e = e.getCause();
+				else  return e;
+			}
 
 		return e;
 	}
@@ -193,7 +210,15 @@ public class EX
 	public static RuntimeException wrap(Throwable cause, Object... msg)
 	{
 		String s = SU.s2s(SU.cats(msg));
-		if(s == null) s = e2en(cause);
+
+		//?: {has no own message}
+		if(s == null)
+			//?: {is runtime itself} do not wrap
+			if(cause instanceof RuntimeException)
+				return (RuntimeException) cause;
+			//~: just take it's message
+			else
+				s = e2en(cause);
 
 		return new RuntimeException(s, cause);
 	}
