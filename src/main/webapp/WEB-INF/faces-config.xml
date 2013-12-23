@@ -12,9 +12,11 @@
     =================================================-->
 
   <application>
+    <!--
     <variable-resolver>
       org.springframework.web.jsf.SpringBeanVariableResolver
     </variable-resolver>
+    -->
 
     <locale-config>
       <default-locale>ru</default-locale>

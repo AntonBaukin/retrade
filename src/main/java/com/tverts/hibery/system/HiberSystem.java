@@ -85,8 +85,8 @@ public class HiberSystem
 		{
 			//~: remember the JDBC connections provider
 
-			this.connectionProvider =
-			  (((SessionFactoryImplementor)sf).getConnectionProvider());
+			this.connectionProvider = (((SessionFactoryImplementor)sf).
+			  getJdbcServices().getConnectionProvider());
 		}
 
 		if(sf != null) try

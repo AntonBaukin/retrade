@@ -11,9 +11,6 @@
           <root url="file://$MODULE_DIR$/src/main/resources" />
         </sourceRoots>
       </configuration>
-      <facet type="jsf" name="JSF">
-        <configuration />
-      </facet>
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
@@ -33,6 +30,7 @@
           <unit-entry name="main:webapp:WEB-INF:hibernate:tune.hbm.xml" />
           <unit-entry name="main:webapp:WEB-INF:hibernate:txns.hbm.xml" />
         </datasource-map>
+        <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/conn.hbm.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/opts.hbm.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate/tune.hbm.xml" />
