@@ -16,7 +16,7 @@ import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: hibery */
 
-import static com.tverts.hibery.HiberPoint.query;
+import com.tverts.hibery.qb.QueryBuilder;
 
 /* com.tverts: endure (core) */
 
@@ -26,6 +26,10 @@ import com.tverts.endure.UnityTypes;
 /* com.tverts: execution */
 
 import com.tverts.exec.ExecutorBase;
+
+/* com.tverts: support */
+
+import com.tverts.support.CMP;
 
 
 /**
@@ -87,10 +91,8 @@ public abstract class EntitiesDumperBase
 
 	protected boolean   isThatRequest(DumpEntities de)
 	{
-		return getEntityClass().equals(de.getEntityClass()) && (
-		  ((getUnityType() == null) && (de.getUnityType() == null)) ||
-		  ((getUnityType() != null) && getUnityType().equals(de.getUnityType()))
-		);
+		return CMP.eq(getEntityClass(), de.getEntityClass()) &&
+		  CMP.eq(getUnityType(), de.getUnityType());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -148,22 +150,43 @@ select e from EntityClass e where
 order by e.id
 
  */
-		return query( session(),
+		QueryBuilder qb = new QueryBuilder();
 
-"select e from EntityClass e where\n" +
-"  (e.id > :minPk) and (e.domain = :domain) and\n" +
-"  (e.unity.unityType = :unityType) and\n" +
-"  (e.txn between :minTx and :maxTx)\n" +
-"order by e.id",
+		//~: from clause
+		qb.nameEntity("EntityClass", ut.getTypeClass());
+		qb.setClauseFrom("EntityClass e");
 
-		"EntityClass", ut.getTypeClass()
+		//~: select clause
+		qb.setClauseSelect("e");
 
+		//~: order by clause
+		qb.setClauseOrderBy("e.id");
+
+
+		//~: minimum key limit
+		qb.getClauseWhere().addPart(
+		  "e.id > :minPk"
 		).
-		  setLong     ("minPk",     de.getMinPkey()).
-		  setParameter("domain",    tx().getDomain()).
-		  setParameter("unityType", ut).
-		  setLong     ("minTx",     minTx).
-		  setLong     ("maxTx",     maxTx).
+		  param("minPk", de.getMinPkey());
+
+		//~: Tx boundaries
+		qb.getClauseWhere().addPart(
+		  "e.txn between :minTx and :maxTx"
+		).
+		  param("minTx", minTx).
+		  param("maxTx", maxTx);
+
+		//~: unity type
+		qb.getClauseWhere().addPart(
+		  "e.unity.unityType = :unityType"
+		).
+		  param("unityType", ut);
+
+		//~: restrict the domain
+		restrictDumpDomain(qb, de);
+
+		//!: select
+		return qb.buildQuery(session()).
 		  setMaxResults(getDumpLimit(de)).
 		  list();
 	}
@@ -182,22 +205,48 @@ select e from EntityClass e where
 order by e.id
 
  */
-		return query( session(),
+		QueryBuilder qb = new QueryBuilder();
 
-"select e from EntityClass e where\n" +
-"  (e.id > :minPk) and (e.domain = :domain) and\n" +
-"  (e.txn between :minTx and :maxTx)\n" +
-"order by e.id",
+		//~: from clause
+		qb.nameEntity("EntityClass", getUnityClass());
+		qb.setClauseFrom("EntityClass e");
 
-		"EntityClass", getUnityClass()
+		//~: select clause
+		qb.setClauseSelect("e");
 
+		//~: order by clause
+		qb.setClauseOrderBy("e.id");
+
+
+		//~: minimum key limit
+		qb.getClauseWhere().addPart(
+		  "e.id > :minPk"
 		).
-		  setLong     ("minPk",  de.getMinPkey()).
-		  setParameter("domain", tx().getDomain()).
-		  setLong     ("minTx",  minTx).
-		  setLong     ("maxTx",  maxTx).
+		  param("minPk", de.getMinPkey());
+
+		//~: Tx boundaries
+		qb.getClauseWhere().addPart(
+		  "e.txn between :minTx and :maxTx"
+		).
+		  param("minTx", minTx).
+		  param("maxTx", maxTx);
+
+		//~: restrict the domain
+		restrictDumpDomain(qb, de);
+
+		//!: select
+		return qb.buildQuery(session()).
 		  setMaxResults(getDumpLimit(de)).
 		  list();
+	}
+
+	protected void      restrictDumpDomain(QueryBuilder qb, DumpEntities de)
+	{
+		//~: assume entity is a DomainEntity
+		qb.getClauseWhere().addPart(
+		  "e.domain = :domain"
+		).
+		  param("domain", tx().getDomain());
 	}
 
 	protected int       getDumpLimit(DumpEntities de)

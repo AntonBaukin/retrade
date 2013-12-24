@@ -17,6 +17,10 @@ import org.hibernate.Query;
 
 import static com.tverts.spring.SpringPoint.bean;
 
+/* com.tverts: transactions */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.isTestInstance;
@@ -66,7 +70,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 	 * Updates the Folders tree (not the Items!)
 	 * using {@link #PARAM_FOLDERS} parameter.
 	 *
-	 * This action must has parameter
+	 * This action must have parameter
 	 * {@link ActTreeFolder#PARAM_TYPE}
 	 * with type of new folders.
 	 */
@@ -334,6 +338,9 @@ public class ActTreeDomain extends ActionBuilderXRoot
 
 				f.setCode(n.getCode());
 				fcodes.put(n.getCode(), f);
+
+				//~: update transaction number
+				TxPoint.txn(tx(), f);
 			}
 
 			//~: flush new codes to db (without parents, for now)
@@ -423,6 +430,9 @@ public class ActTreeDomain extends ActionBuilderXRoot
 				//~: execute query to delete crosses coming through this folder
 				if(e && !n.getObjectKey().startsWith("$"))
 					query.setLong("folder", f.getPrimaryKey()).executeUpdate();
+
+				//~: update transaction number
+				TxPoint.txn(tx(), f);
 			}
 
 			//4: inspect cyclic dependencies
@@ -442,7 +452,15 @@ public class ActTreeDomain extends ActionBuilderXRoot
 
 			//5: update the names
 			for(TreeNodeView n : nodes)
-				fkeys.get(n.getObjectKey()).setName(n.getName());
+			{
+				TreeFolder f = fkeys.get(n.getObjectKey());
+
+				//~: name
+				f.setName(n.getName());
+
+				//~: update transaction number
+				TxPoint.txn(tx(), f);
+			}
 
 			//~: flush the last updates
 			session().flush();

@@ -9,6 +9,10 @@ import static com.tverts.spring.SpringPoint.bean;
 import static com.tverts.hibery.HiberPoint.isTestInstance;
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
+/* com.tverts: transactions */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: actions */
 
 import com.tverts.actions.Action;
@@ -236,6 +240,8 @@ public class ActTreeFolder extends ActionBuilderXRoot
 			//~: item unity
 			item.setItem(unity.getUnity());
 
+			//~: transaction number
+			TxPoint.txn(tx(), item);
 
 			//!: do save the item
 			session().save(item);

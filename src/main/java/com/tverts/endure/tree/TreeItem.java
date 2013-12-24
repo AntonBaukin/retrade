@@ -2,7 +2,7 @@ package com.tverts.endure.tree;
 
 /* com.tverts: endure (core) */
 
-import com.tverts.endure.NumericBase;
+import com.tverts.endure.NumericTxBase;
 import com.tverts.endure.Unity;
 
 
@@ -16,7 +16,7 @@ import com.tverts.endure.Unity;
  *
  * @author anton.baukin@gmail.com
  */
-public class TreeItem extends NumericBase
+public class TreeItem extends NumericTxBase
 {
 	/* public: TreeItem interface */
 

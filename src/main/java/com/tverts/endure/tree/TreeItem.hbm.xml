@@ -13,6 +13,18 @@
     <id name = 'primaryKey' column = 'pk_tree_item'/>
 
 
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_tree_item_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
     <!-- Tree Folder reference -->
 
     <many-to-one name = 'folder' foreign-key = 'fk_tree_item_folder'>
