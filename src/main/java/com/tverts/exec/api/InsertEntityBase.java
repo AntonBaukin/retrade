@@ -9,6 +9,10 @@ import com.tverts.exec.ExecutorBase;
 
 import com.tverts.api.core.Holder;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Helper superclass for {@link InsertEntityBase} executors.
@@ -33,7 +37,7 @@ public abstract class InsertEntityBase extends ExecutorBase
 			return null;
 
 		//~: insert the entity
-		return insert(h.getEntity());
+		return insert((InsertHolder)request);
 	}
 
 
@@ -45,5 +49,13 @@ public abstract class InsertEntityBase extends ExecutorBase
 	 */
 	protected abstract boolean isKnown(Holder holder);
 
-	protected abstract Long    insert(Object source);
+	protected Long insert(Object source)
+	{
+		throw EX.unop();
+	}
+
+	protected Long insert(InsertHolder h)
+	{
+		return insert(h.getHolder().getEntity());
+	}
 }

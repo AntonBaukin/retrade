@@ -19,6 +19,7 @@ import com.tverts.exec.ExecPoint;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -50,6 +51,9 @@ public class PingExecutor extends ExecutorBase
 		{
 			pong.setError(EX.e2en(e));
 			pong.setStack(EX.print(e));
+
+			if(SU.sXe(pong.getError()))
+				pong.setError("Unexpected error had occured!");
 
 			throw new ExecError(e).setResult(pong);
 		}

@@ -18,6 +18,10 @@ import com.tverts.api.core.Holder;
 import com.tverts.api.core.InsertEntities;
 import com.tverts.api.core.XKeys;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Dispatches API request {@link InsertEntities}
@@ -40,20 +44,20 @@ public class InsertEntitiesDispatcher extends ExecutorBase
 		  ((InsertEntities)request).getEntities().size());
 
 		//c: execute each holder of the update list
+		Object ctx = null;
 		for(Holder h : ((InsertEntities)request).getEntities())
 		{
-			Object e = h.getEntity();
-			if(e == null) throw new IllegalArgumentException(
-			  "Insert Holder entity is undefined!");
+			Object       e = EX.assertn(h.getEntity(), "Insert Holder entity is undefined!");
+			InsertHolder i = new InsertHolder().setHolder(h).setContext(ctx);
 
 			//!: execute insert
-			Object k = ExecPoint.execute(new InsertHolder(h));
+			Object k = ExecPoint.execute(i);
+			ctx = i.getContext();
 
-			if(!(k instanceof Long))
-				throw new IllegalStateException(String.format(
-				  "Holder Entity (class %s) operation must return " +
-				  "Long primary key!", e.getClass().getName()
-				));
+			if(!(k instanceof Long)) throw EX.state(
+			  "Holder Entity (class ", e.getClass().getName(),
+			  ") operation must return Long primary key!"
+			);
 
 			//~: add the keys pair
 			XKeys x = new XKeys();

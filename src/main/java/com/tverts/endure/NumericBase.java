@@ -1,5 +1,7 @@
 package com.tverts.endure;
 
+import com.tverts.hibery.HiberPoint;
+
 /**
  * Base class for some simple persistent objects.
  *
@@ -29,7 +31,7 @@ public abstract class NumericBase implements NumericIdentity
 
 		if(o == null) return false;
 
-		if(!this.getClass().equals(o.getClass()))
+		if(!this.getClass().equals(HiberPoint.type(o)))
 			return false;
 
 		Long k0 = this.getPrimaryKey();

@@ -19,17 +19,6 @@ public class InsertHolder implements Serializable
 	public static final long serialVersionUID = 0L;
 
 
-	/* constructors */
-
-	public InsertHolder()
-	{}
-
-	public InsertHolder(Holder holder)
-	{
-		this.holder = holder;
-	}
-
-
 	/* public: UpdateHolder interface */
 
 	public Holder getHolder()
@@ -37,12 +26,26 @@ public class InsertHolder implements Serializable
 		return holder;
 	}
 
-	public void   setHolder(Holder holder)
+	public InsertHolder setHolder(Holder holder)
 	{
 		this.holder = holder;
+		return this;
 	}
 
-	/* the holder */
+	public Object getContext()
+	{
+		return context;
+	}
+
+	public InsertHolder setContext(Object context)
+	{
+		this.context = context;
+		return this;
+	}
+
+
+	/* the holder & and the context */
 
 	private Holder holder;
+	private Object context;
 }
