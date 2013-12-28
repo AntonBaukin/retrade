@@ -121,19 +121,31 @@ public class GetTree extends GetObjectBase
 		  uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<TreeItem> getTreeItems(TreeDomain domain, Long unity)
 	{
 
 // from TreeItem where (folder.domain = :domain) and (item.id = :unity)
 
-		return (List<TreeItem>) Q(
+		return list(TreeItem.class,
 
-"  from TreeItem where (folder.domain = :domain) and (item.id = :unity)"
+"  from TreeItem where (folder.domain = :domain) and (item.id = :unity)",
 
-		).
-		  setParameter("domain", domain).
-		  setLong     ("unity",  unity).
-		  list();
+		  "domain", domain,
+		  "unity",  unity
+		);
+	}
+
+	public List<TreeCross> getCrossItems(TreeDomain domain, Long unity)
+	{
+
+// from TreeCross where (folder.domain = :domain) and (item.item.id = :unity)
+
+		return list(TreeCross.class,
+
+"  from TreeCross where (folder.domain = :domain) and (item.item.id = :unity)",
+
+		  "domain", domain,
+		  "unity",  unity
+		);
 	}
 }

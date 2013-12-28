@@ -20,22 +20,22 @@ public class TreeItem extends NumericTxBase
 {
 	/* public: TreeItem interface */
 
-	public TreeFolder getFolder()
+	public TreeFolder  getFolder()
 	{
 		return folder;
 	}
 
-	public void setFolder(TreeFolder folder)
+	public void        setFolder(TreeFolder folder)
 	{
 		this.folder = folder;
 	}
 
-	public Unity getItem()
+	public Unity       getItem()
 	{
 		return item;
 	}
 
-	public void setItem(Unity item)
+	public void        setItem(Unity item)
 	{
 		this.item = item;
 	}

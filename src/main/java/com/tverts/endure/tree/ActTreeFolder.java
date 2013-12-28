@@ -1,5 +1,9 @@
 package com.tverts.endure.tree;
 
+/* standard Java classes */
+
+import java.util.List;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -59,7 +63,11 @@ public class ActTreeFolder extends ActionBuilderXRoot
 	 *
 	 * Note that the instance is not removed
 	 * from any of the Folders of the same
-	 * Tree Domain.
+	 * Tree Domain unless {@link #PARAM_SINGLE}
+	 * flag is set to true.
+	 *
+	 * Also note that if item already exists in
+	 * the folder, no other items would be removed.
 	 */
 	public static final ActionType ADD    =
 	  new ActionType(TreeFolder.class, "add");
@@ -70,15 +78,24 @@ public class ActTreeFolder extends ActionBuilderXRoot
 	/**
 	 * Unity Type of the Folder to add.
 	 */
-	public static final String PARAM_TYPE =
+	public static final String PARAM_TYPE   =
 	  ActTreeFolder.class.getName() + ": type";
 
 	/**
 	 * Parameter with {@link United} instance to
 	 * add to this Folder.
 	 */
-	public static final String PARAM_ITEM =
+	public static final String PARAM_ITEM   =
 	  ActTreeFolder.class.getName() + ": item";
+
+	/**
+	 * Flag of add item to the folder action.
+	 * If set, before adding all items to the
+	 * same entity are first removed from all
+	 * the folders of the tree.
+	 */
+	public static final String PARAM_SINGLE =
+	  ActTreeFolder.class.getName() + ": single item only";
 
 
 	/* public: ActionBuilder interface */
@@ -133,7 +150,8 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		if(u == null) throw EX.arg("No Unity (PARAM_ITEM) set!");
 
 		//~: add item to the folder
-		chain(abr).first(new AddToFolderAction(task(abr), u));
+		chain(abr).first(new AddToFolderAction(task(abr), u).
+		  setSingle(flag(abr, PARAM_SINGLE)));
 
 		complete(abr);
 	}
@@ -202,10 +220,22 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		}
 
 
+		/* public: AddToFolderAction interface */
+
+		public AddToFolderAction setSingle(boolean single)
+		{
+			this.single = single;
+			return this;
+		}
+
+
 		/* public: Action interface */
 
 		protected TreeItem item;
 
+		/**
+		 * Returns the item was created or found existing.
+		 */
 		public Object getResult()
 		{
 			return item;
@@ -215,7 +245,6 @@ public class ActTreeFolder extends ActionBuilderXRoot
 		/* public: ActionBase interface */
 
 		protected void execute()
-		  throws Throwable
 		{
 			TreeFolder folder = target(TreeFolder.class);
 			boolean    testit = isTestInstance(folder);
@@ -227,6 +256,9 @@ public class ActTreeFolder extends ActionBuilderXRoot
 
 			//?: {found it} nothing to do
 			if(item != null) return;
+
+			//?: {single item instance only}
+			if(single) makeSingle();
 
 			//~: create new item
 			item = new TreeItem();
@@ -271,9 +303,29 @@ public class ActTreeFolder extends ActionBuilderXRoot
 			}
 		}
 
+		protected void makeSingle()
+		{
+			TreeFolder      folder  = target(TreeFolder.class);
+
+			//~: remove the cross items
+			List<TreeCross> crosses = bean(GetTree.class).
+			  getCrossItems(folder.getDomain(), unity.getPrimaryKey());
+
+			for(TreeCross c : crosses)
+				session().delete(c);
+
+			//~: remove the items
+			List<TreeItem>  items   = bean(GetTree.class).
+			  getTreeItems(folder.getDomain(), unity.getPrimaryKey());
+
+			for(TreeItem i : items)
+				session().delete(i);
+		}
+
 
 		/* the unity to add to the folder */
 
 		protected final United unity;
+		protected boolean      single;
 	}
 }

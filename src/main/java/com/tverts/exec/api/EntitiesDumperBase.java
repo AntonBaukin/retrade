@@ -98,9 +98,9 @@ public abstract class EntitiesDumperBase
 	@SuppressWarnings("unchecked")
 	protected List      selectWrapEntities(DumpEntities de)
 	{
-		List sel = (de.getUnityType() == null)
-		  ?(selectEntitiesByClass(de))
-		  :(selectEntitiesByType(de));
+		List sel = isSelectByType(de)
+		  ?(selectEntitiesByType(de))
+		  :(selectEntitiesByClass(de));
 
 		List res = new ArrayList(sel.size());
 
@@ -112,13 +112,17 @@ public abstract class EntitiesDumperBase
 		}
 
 		return res;
-
 	}
 
 	protected UnityType unityType(DumpEntities de)
 	{
 		return UnityTypes.unityType(
 		  getUnityClass(), de.getUnityType());
+	}
+
+	protected boolean   isSelectByType(DumpEntities de)
+	{
+		return (de.getUnityType() != null);
 	}
 
 	/**
