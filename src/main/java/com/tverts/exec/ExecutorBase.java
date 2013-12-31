@@ -20,6 +20,10 @@ import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * A basic implementation of {@link Executor}.
@@ -73,14 +77,14 @@ public abstract class ExecutorBase
 		if(!(obj instanceof DomainEntity))
 			return;
 
-		if(!domain().equals(((DomainEntity)obj).getDomain()))
-			throw new IllegalStateException(String.format(
-			  "Security Error: the entity of type [%s] " +
-			  "with key [%d] is not of the client Domain!",
+		EX.assertx(
+		  domain().equals(((DomainEntity)obj).getDomain()),
 
-			  obj.getClass().getSimpleName(),
-			  ((NumericIdentity)obj).getPrimaryKey()
-			));
+		  "Wrong domain! The entity of class [",
+		  obj.getClass().getSimpleName(), "] with primary key [",
+		  ((NumericIdentity)obj).getPrimaryKey(),
+		  "] is not of the client domain!"
+		);
 	}
 
 

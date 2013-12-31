@@ -189,6 +189,9 @@ order by e.id
 		//~: restrict the domain
 		restrictDumpDomain(qb, de);
 
+		//~: user-defined restrictions
+		restrictDump(qb, de);
+
 		//!: select
 		return qb.buildQuery(session()).
 		  setMaxResults(getDumpLimit(de)).
@@ -238,6 +241,9 @@ order by e.id
 		//~: restrict the domain
 		restrictDumpDomain(qb, de);
 
+		//~: user-defined restrictions
+		restrictDump(qb, de);
+
 		//!: select
 		return qb.buildQuery(session()).
 		  setMaxResults(getDumpLimit(de)).
@@ -258,6 +264,8 @@ order by e.id
 		return SystemConfig.getInstance().getDumpLimit();
 	}
 
+	protected void      restrictDump(QueryBuilder qb, DumpEntities de)
+	{}
 
 	/* configuration */
 
