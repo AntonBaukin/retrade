@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * Used in JAXB annotation to format timestamp
- * values as 'DD:MM:YYYY HH:mm:ss.SSS'.
+ * values as 'dd.MM.yyyy HH:mm:ss.SSS'.
  *
  * @author anton.baukin@gmail.com
  */
