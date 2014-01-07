@@ -630,6 +630,11 @@ select sum(goodVolume) from AggrItem where
 	protected BigDecimal  roundCostValue(BigDecimal v)
 	{
 		int p = v.precision();
+
+		//?: {value has zero integer part} consider '0.'
+		if(BigDecimal.ONE.compareTo(v) == +1)
+			p += 1; //<-- we reserve only for '0', not '.' as string length <= 64
+
 		if(p <= 63) return v;
 
 		int s = v.scale() - (p - 63);

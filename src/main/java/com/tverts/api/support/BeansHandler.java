@@ -113,7 +113,7 @@ public class BeansHandler
 
 			//?: {it is a collection of 2-keyed objects}
 			Object oa = ia.next();
-			if(oa instanceof TwoKeysObject)
+			if((oa instanceof TwoKeysObject) && (((TwoKeysObject)oa).getPkey() != null))
 				return xdiffers(a, b);
 
 			if(this.differs(oa, ib.next()))
@@ -132,6 +132,7 @@ public class BeansHandler
 		{
 			TwoKeysObject o = (TwoKeysObject) i.next();
 
+			if(o.getPkey() == null) throw new IllegalArgumentException();
 			xkeys.put(o.getPkey(), o);
 		}
 
@@ -139,6 +140,7 @@ public class BeansHandler
 		for(Iterator i = b.iterator();(i.hasNext());)
 		{
 			TwoKeysObject o = (TwoKeysObject) i.next();
+			if(o.getPkey() == null) throw new IllegalArgumentException();
 
 			//?: {no object with this key}
 			if(!xkeys.containsKey(o.getPkey()))
