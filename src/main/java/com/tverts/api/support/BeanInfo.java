@@ -17,6 +17,7 @@ import java.util.Set;
 
 /* com.tverts: api */
 
+import com.tverts.api.core.Ignore;
 import com.tverts.api.core.TwoKeysObject;
 import com.tverts.api.core.TxObject;
 import com.tverts.api.core.XKeyPair;
@@ -161,13 +162,26 @@ public class BeanInfo
 	{
 		excludeElseProperties(pds);
 
+		//~: remove transaction number
 		if(TxObject.class.isAssignableFrom(getType()))
 			removeProperty(pds, "tx", true);
 
+		//~: remove primary and x-keys
 		if(TwoKeysObject.class.isAssignableFrom(getType()))
 		{
 			removeProperty(pds, "pkey", true);
 			removeProperty(pds, "xkey", true);
+		}
+
+		//~: remove properties marked as @Ignore
+		for(Iterator<PropertyDescriptor> it = pds.iterator();(it.hasNext());)
+		{
+			PropertyDescriptor pd = it.next();
+			if(pd.getReadMethod() == null) continue;
+
+			if(pd.getReadMethod() != null)
+				if(pd.getReadMethod().isAnnotationPresent(Ignore.class))
+					it.remove();
 		}
 	}
 
