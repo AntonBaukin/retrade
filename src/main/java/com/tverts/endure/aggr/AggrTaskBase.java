@@ -6,9 +6,15 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
 /* com.tverts: endure core */
 
-import com.tverts.endure.DelayedKey;
+import com.tverts.endure.DelayedEntity;
+import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.Unity;
 
 
 /**
@@ -35,8 +41,13 @@ public abstract class AggrTaskBase implements AggrTask
 
 	public Long    getSourceKey()
 	{
-		return (sourceKey != null)?(sourceKey):(sourceDelayed == null)?(null):
-		  (sourceKey = sourceDelayed.delayedKey());
+		if(sourceKey != null)
+			return sourceKey;
+
+		if(sourceDelayed != null)
+			sourceKey = sourceDelayed.accessEntity().getPrimaryKey();
+
+		return sourceKey;
 	}
 
 	public void    setSourceKey(Long key)
@@ -44,13 +55,26 @@ public abstract class AggrTaskBase implements AggrTask
 		this.sourceKey = key;
 	}
 
-	public void    setSourceKey(DelayedKey key)
+	public void    setSourceKey(DelayedEntity key)
 	{
 		this.sourceDelayed = key;
 	}
 
 	public Class   getSourceClass()
 	{
+		if(sourceClass != null)
+			return sourceClass;
+
+		if(sourceDelayed != null)
+		{
+			NumericIdentity e = sourceDelayed.accessEntity();
+
+			if(e instanceof Unity)
+				sourceClass = ((Unity)e).getUnityType().getTypeClass();
+			else if(e != null)
+				sourceClass = HiberPoint.type(e);
+		}
+
 		return sourceClass;
 	}
 
@@ -107,6 +131,19 @@ public abstract class AggrTaskBase implements AggrTask
 	}
 
 
+	/* private: Object interface */
+
+	private void writeObject(java.io.ObjectOutputStream os)
+	  throws java.io.IOException
+	{
+		//~: side-effect of the delayed source
+		getSourceKey();
+		getSourceClass();
+
+		os.defaultWriteObject();
+	}
+
+
 	/* private: task properties */
 
 	private Long   aggrValueID;
@@ -115,5 +152,5 @@ public abstract class AggrTaskBase implements AggrTask
 	private String orderPath;
 	private Map    params;
 
-	private transient DelayedKey sourceDelayed;
+	private transient DelayedEntity sourceDelayed;
 }

@@ -333,33 +333,14 @@ public abstract class ActionBuilderXRoot
 	}
 
 
-	/* delayed key */
-
-	public static class EntityKey implements DelayedKey
+	protected DelayedEntity delayEntity(final NumericIdentity entity)
 	{
-		/* constructor */
-
-		public EntityKey(NumericIdentity entity)
+		return new DelayedEntity()
 		{
-			this.entity = entity;
-		}
-
-
-		/* public: DelayedKey interface */
-
-		public Long delayedKey()
-		{
-			return entity.getPrimaryKey();
-		}
-
-
-		/* entity */
-
-		protected NumericIdentity entity;
-	}
-
-	protected DelayedKey delayKey(NumericIdentity entity)
-	{
-		return new EntityKey(entity);
+			public NumericIdentity accessEntity()
+			{
+				return entity;
+			}
+		};
 	}
 }

@@ -8,6 +8,7 @@ import com.tverts.endure.Unity;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import static com.tverts.support.OU.obj2xml;
 import static com.tverts.support.OU.xml2obj;
 
@@ -37,7 +38,6 @@ public class AggrRequest implements NumericIdentity
 	/**
 	 * Source Unity of the request. It may be defined
 	 * for entities with existing Unity mirror.
-	 * Re
 	 */
 	public Unity      getSource()
 	{
@@ -51,16 +51,20 @@ public class AggrRequest implements NumericIdentity
 
 		if((this.aggrTask != null) && (source != null))
 		{
-			this.aggrTask.setSourceKey(source.getPrimaryKey());
+			this.aggrTask.setSourceKey(EX.assertn(
+			  source.getPrimaryKey()));
 
-			if(source.getUnityType() != null)
-				this.aggrTask.setSourceClass(source.getUnityType().getTypeClass());
+			this.aggrTask.setSourceClass(EX.assertn(
+			  source.getUnityType()).getTypeClass());
 		}
 	}
 
-	public void       setSource(DelayedEntity accessSource)
+	public void       setSource(DelayedEntity access)
 	{
-		this.accessSource = accessSource;
+		this.accessSource = access;
+
+		if((this.aggrTask instanceof AggrTaskBase) && (access != null))
+			((AggrTaskBase)this.aggrTask).setSourceKey(access);
 	}
 
 
@@ -95,20 +99,15 @@ public class AggrRequest implements NumericIdentity
 		//  But we do not load that instances by their keys
 		//  as database context is not assumed.
 
-		//~: fill aggregated value ID
+		//~: set aggregated value key
 		if((aggrTask != null) && (this.aggrValue != null))
 			aggrTask.setAggrValueKey(this.aggrValue.getPrimaryKey());
 
-		//~: fill the source ID
-		if((aggrTask != null) && (this.source != null) &&
-		   (aggrTask.getSourceKey() == null)
-		  )
-		{
-			aggrTask.setSourceKey(this.source.getPrimaryKey());
-
-			if(this.source.getUnityType() != null)
-				aggrTask.setSourceClass(this.source.getUnityType().getTypeClass());
-		}
+		//~: set the source key
+		if(aggrTask != null) if(this.source != null)
+			aggrTask.setSourceKey(EX.assertn(this.source.getPrimaryKey()));
+		else if((this.accessSource != null) && (aggrTask instanceof AggrTaskBase))
+			((AggrTaskBase)aggrTask).setSourceKey(this.accessSource);
 	}
 
 	public String     getAggrTaskXML()
@@ -149,7 +148,7 @@ public class AggrRequest implements NumericIdentity
 
 	/* public: Object interface */
 
-	public boolean equals(Object o)
+	public boolean    equals(Object o)
 	{
 		if(this == o)
 			return true;
@@ -163,7 +162,7 @@ public class AggrRequest implements NumericIdentity
 		return (k0 != null) && k0.equals(k1);
 	}
 
-	public int     hashCode()
+	public int        hashCode()
 	{
 		Long k0 = this.getPrimaryKey();
 

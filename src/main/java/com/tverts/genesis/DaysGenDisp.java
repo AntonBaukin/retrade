@@ -354,7 +354,7 @@ public class DaysGenDisp extends GenesisPartBase
 
 		//~: get total weight
 		int W = 0; for(Entry e : getEntries())
-			if(e.getWeight() <= 0) throw EX.state();
+			if(e.getWeight() < 0) throw EX.state();
 			else W += e.getWeight();
 
 		//~: select other entries in random
