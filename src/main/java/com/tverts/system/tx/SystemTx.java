@@ -78,12 +78,17 @@ class SystemTx implements Tx
 
 	public void           free()
 	{
-		if(!isRollbackOnly())
+		if(!isRollbackOnly()) try
 		{
 			Session session = TxPoint.txSession(this);
 
 			session.flush();
 			session.clear();
+		}
+		catch(RuntimeException e)
+		{
+			//~: for debug purposes...
+			throw e;
 		}
 	}
 

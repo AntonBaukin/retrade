@@ -15,6 +15,10 @@ import java.math.BigDecimal;
 public class   DecimalConverter
        extends ConverterFormatterBase<BigDecimal>
 {
+	public static final DecimalConverter INSTANCE =
+	  new DecimalConverter();
+
+
 	/* protected: ConverterFormatterBase interface */
 
 	protected Class getValueClass()
@@ -22,10 +26,8 @@ public class   DecimalConverter
 		return BigDecimal.class;
 	}
 
-	protected void  format(Request<BigDecimal> request)
+	public String   format(BigDecimal d)
 	{
-		BigDecimal d = request.getValue();
-
 		//~: strip trailing zeros
 		d = d.stripTrailingZeros();
 
@@ -33,7 +35,12 @@ public class   DecimalConverter
 		if(d.scale() < 2)
 			d = d.setScale(2);
 
-		request.setString(d.toString());
+		return d.toString();
+	}
+
+	protected void  format(Request<BigDecimal> request)
+	{
+		request.setString(format(request.getValue()));
 	}
 
 	protected void  convert(Request<BigDecimal> request)

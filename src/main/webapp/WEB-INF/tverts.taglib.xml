@@ -160,4 +160,25 @@
     </function-signature>
   </function>
 
+
+  <!--=================================================
+    =  Formatting of various data types               =
+    =================================================-->
+
+  <function>
+    <description>
+      Formats a Big Decimal to currency
+      value with trailing '.00'.
+    </description>
+    <display-name>Big Decimal Currency</display-name>
+
+    <function-name>currency</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String currency(java.lang.Object)
+    </function-signature>
+  </function>
+
 </facelet-taglib>

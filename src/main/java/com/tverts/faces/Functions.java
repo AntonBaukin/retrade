@@ -2,6 +2,7 @@ package com.tverts.faces;
 
 /* standard Java classes */
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +11,10 @@ import java.util.Map;
 /* com.tverts: servlet */
 
 import com.tverts.servlet.RequestPoint;
+
+/* com.tverts: faces */
+
+import com.tverts.faces.formatters.DecimalConverter;
 
 /* com.tverts: support */
 
@@ -39,11 +44,7 @@ public class Functions
 		if(Boolean.TRUE.equals(s))  return "<![CDATA[";
 		if(Boolean.FALSE.equals(s)) return "]]>";
 
-		String x = s.toString();
-
-		return new StringBuilder(x.length() + 12).
-		  append("<![CDATA[").append(x).append("]]>").
-		  toString();
+		return "<![CDATA[" + s.toString() + "]]>";
 	}
 
 
@@ -109,9 +110,7 @@ public class Functions
 
 	public static String genViewId(ViewWithModes v, String name)
 	{
-		return new StringBuilder(v.getId().length() + name.length() + 1).
-		  append(v.getId()).append('_').append(name).
-		  toString();
+		return v.getId() + '_' + name;
 	}
 
 
@@ -123,5 +122,20 @@ public class Functions
 		return ((map == null) || map.isEmpty())
 		  ?(Collections.emptyList())
 		  :(new ArrayList(map.entrySet()));
+	}
+
+
+	/* public: various data types */
+
+	public static String currency(Object x)
+	{
+		if(x == null) return "";
+
+		if((x instanceof Number) && !(x instanceof BigDecimal))
+			x = x.toString();
+		if(!(x instanceof BigDecimal))
+			x = new BigDecimal(x.toString());
+
+		return DecimalConverter.INSTANCE.format((BigDecimal)x);
 	}
 }
