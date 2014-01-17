@@ -4,6 +4,10 @@ package com.tverts.faces.formatters;
 
 import java.math.BigDecimal;
 
+/* com.tverts: support */
+
+import com.tverts.support.CMP;
+
 
 /**
  * Formats and converts {@link BigDecimal}
@@ -29,7 +33,10 @@ public class   DecimalConverter
 	public String   format(BigDecimal d)
 	{
 		//~: strip trailing zeros
-		d = d.stripTrailingZeros();
+		if(CMP.eqZero(d))
+			d = BigDecimal.ZERO;
+		else
+			d = d.stripTrailingZeros();
 
 		//?: {has no '.00'} add them
 		if(d.scale() < 2)
