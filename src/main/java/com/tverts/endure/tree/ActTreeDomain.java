@@ -2,7 +2,6 @@ package com.tverts.endure.tree;
 
 /* standard Java classes */
 
-import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -517,7 +516,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 		  throws Exception
 		{
 			if(tempCodeGen == null)
-				tempCodeGen = new SecureRandom();
+				tempCodeGen = new Random();
 
 			byte[] code = new byte[127];
 			tempCodeGen.nextBytes(code);
