@@ -11,9 +11,48 @@
   </display-name>
 
 
-  <!--====================================================
-    =                      Servlets                      =
-    ====================================================-->
+  <!--==================================================
+  =                    Initialization                  =
+  ===================================================-->
+
+  <context-param>
+    <description>
+      (System parameter.) JNDI name of 'Re Trade'
+      Database Datasorce configured in the server.
+    </description>
+
+    <param-name>retrade.auth.datasource</param-name>
+    <param-value>
+      openejb:/Resource/ReTradeDatabaseDirect
+    </param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      Authentication Protocol steps timeout in seconds.
+    </description>
+
+    <param-name>retrade.auth.auth-timeout</param-name>
+    <param-value>60</param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      Authentication Session timeout in seconds.
+    </description>
+
+    <param-name>retrade.auth.session-timeout</param-name>
+    <param-value>14400</param-value>
+  </context-param>
+
+  <listener>
+    <listener-class>com.tverts.auth.server.AuthInit</listener-class>
+  </listener>
+
+
+  <!--==================================================
+  =                      Servlets                      =
+  ===================================================-->
 
   <!-- Authentication Session Servlet -->
 
@@ -21,38 +60,6 @@
     <display-name>ReTrade Authentication Servlet</display-name>
     <servlet-name>auth_AuthenticationServlet</servlet-name>
     <servlet-class>com.tverts.auth.server.AuthServlet</servlet-class>
-
-    <init-param>
-      <description>
-        (System parameter.) JNDI name of 'Re Trade'
-        Database Datasorce configured in the server.
-      </description>
-
-      <param-name>datasource-name</param-name>
-      <param-value>
-        java:/databases/ReTradeDirect
-      </param-value>
-    </init-param>
-
-    <init-param>
-      <description>
-        Authentication Protocol steps timeout in seconds.
-      </description>
-
-      <param-name>auth-timeout</param-name>
-      <param-value>60</param-value>
-    </init-param>
-
-    <init-param>
-      <description>
-        Authentication Session timeout in seconds.
-      </description>
-
-      <param-name>session-timeout</param-name>
-      <param-value>14400</param-value>
-    </init-param>
-
-    <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
@@ -62,5 +69,17 @@
     <url-pattern>/servlet/request</url-pattern>
     <url-pattern>/servlet/receive</url-pattern>
   </servlet-mapping>
+
+
+  <!--==================================================
+  =               Application Resource                 =
+  ===================================================-->
+
+  <!--
+  <resource-ref>
+    <res-ref-name>ReTradeDatabase</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+  </resource-ref>
+  -->
 
 </web-app>
