@@ -24,7 +24,7 @@
     </property>
 
     <property name = 'hibernate.transaction.jta.platform'>
-      org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform
+      org.apache.openejb.hibernate.OpenEJBJtaPlatform
     </property>
 
 

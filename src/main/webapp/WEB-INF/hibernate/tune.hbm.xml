@@ -46,9 +46,5 @@
       24
     </property>
 
-    <property name = 'hibernate.use_identifier_rollback'>
-      true
-    </property>
-   
   </session-factory>
 </hibernate-configuration>

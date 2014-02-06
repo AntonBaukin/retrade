@@ -25,10 +25,7 @@
         class = 'org.springframework.transaction.jta.JtaTransactionManager'>
 
     <property name  = 'transactionManagerName'
-              value = 'java:jboss/TransactionManager'/>
-
-    <property name  = 'userTransactionName'
-              value = 'java:comp/UserTransaction'/>
+              value = 'openejb:/TransactionManager'/>
 
   </bean>
 </beans>

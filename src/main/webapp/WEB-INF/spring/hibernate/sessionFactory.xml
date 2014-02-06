@@ -15,7 +15,6 @@
 
     <property name = 'configLocations'>
       <array>
-   <!-- <value>/WEB-INF/hibernate/c3p0.hbm.xml</value> -->
         <value>/WEB-INF/hibernate/conn.hbm.xml</value>
         <value>/WEB-INF/hibernate/opts.hbm.xml</value>
         <value>/WEB-INF/hibernate/tune.hbm.xml</value>

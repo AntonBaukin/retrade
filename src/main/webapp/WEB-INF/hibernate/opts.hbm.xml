@@ -33,8 +33,7 @@
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · This legacy feature must be explicitly turned off, or     ·
-     · the application would not start as legacy classes exist   ·
-     · in JBoss distribution.                                    ·
+     · the application would not start if legacy classes exist.  ·
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'hibernate.validator.autoregister_listeners'>
       false

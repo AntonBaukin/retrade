@@ -362,7 +362,7 @@
   </jsp-config>
 
   <session-config>
-    <!-- 5760 minutes = 8 days -->
+    <!-- 5760 minutes = 4 days -->
     <session-timeout>5760</session-timeout>
   </session-config>
 </web-app>
