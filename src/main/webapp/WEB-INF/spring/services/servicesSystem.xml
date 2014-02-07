@@ -24,6 +24,18 @@
         class = 'com.tverts.system.services.ServicesSystem'>
 
     <property name = 'reference' ref = 'servicesList'/>
+
+    <property name = 'messenger'>
+      <bean class  = 'com.tverts.system.services.queues.JMSMessenger'>
+
+        <property name  = 'connectionFactory'
+                  value = 'openejb:/Resource/ConnectLocalMemoryMessagesBroker'/>
+
+        <property name  = 'queueName'
+                  value = 'openejb:/Resource/ReTradeServiceBus'/>
+
+      </bean>
+    </property>
   </bean>
 
 
@@ -31,7 +43,7 @@
     =  Listener of Z-Services Bus                     =
     +================================================-->
 
-  <bean name  = 'zServicesBusListener'
+  <bean name  = 'servicesBusListener'
         class = 'com.tverts.system.services.queues.PlainEventsListenerBean'/>
 
 </beans>

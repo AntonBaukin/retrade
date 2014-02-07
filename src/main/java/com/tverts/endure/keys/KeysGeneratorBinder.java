@@ -1,7 +1,8 @@
 package com.tverts.endure.keys;
 
 /**
- * COMMENT KeysGeneratorBinder
+ * Strategy to access entities primary keys
+ * generation strategy.
  *
  * @author anton.baukin@gmail.com
  */

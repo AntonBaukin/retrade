@@ -28,7 +28,6 @@ import com.tverts.support.LU;
  * Key generation strategy that invokes the
  * {@link IdentifierGenerator} provided.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public final class HiberKeysGeneratorBridge

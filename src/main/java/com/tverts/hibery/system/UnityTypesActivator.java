@@ -13,6 +13,7 @@ import javax.servlet.ServletContextListener;
 
 /* Spring Framework */
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: endure */
@@ -117,7 +118,8 @@ public class      UnityTypesActivator
 
 	/* protected: UnityTypesInitHiberBase interface */
 
-	@Transactional
+	@Transactional(rollbackFor = Throwable.class,
+	  propagation = Propagation.REQUIRES_NEW)
 	protected void      ensureEntries
 	  (Collection<ParseEntry> pes, Collection<UnityTypeStruct> structs)
 	{
@@ -135,6 +137,7 @@ public class      UnityTypesActivator
 			TxPoint.getInstance().setTxContext(null);
 		}
 	}
+
 
 	/* private: unity types encoded */
 

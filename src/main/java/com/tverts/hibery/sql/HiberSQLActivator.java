@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/* Spring framework */
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 /* Hibernate Persistence Layer */
 
 import org.hibernate.mapping.PersistentClass;
@@ -28,7 +33,8 @@ import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -51,63 +57,40 @@ public class   HiberSQLActivator
 
 	protected void init()
 	{
-		List<String> files;
-
 		//~: search files with SQL tasks
-		try
+		List<String> files; try
 		{
 			files = searchFiles();
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
-			throw new RuntimeException(
-			  "Error occured while seaching '*.sql.xml' files with SQL tasks!", e);
+			throw EX.wrap(e, "Error occured while seaching '*.sql.xml'",
+			  " files with SQL tasks!"
+			);
 		}
 
-		Exception  e = null;
-		Connection c = null;
-
+		//~: parse the tasks of the files
+		List<SQLTask> tasks = new ArrayList<SQLTask>(16);
 		for(String file : files) try
 		{
-			if(c == null)
-				c = HiberSystem.getInstance().openConnection();
-			executeFile(file, c);
+			prepareFile(file, tasks);
 		}
-		catch(Exception x)
+		catch(Throwable e)
 		{
-			e = x;
-			break;
+			throw EX.wrap(e, "Error occured when prepearing ",
+			  "SQL tasks in file [", file, "]!"
+			);
 		}
 
-		//?: {rollback}
-		if((c != null) && (e != null)) try
+		//!: execute the tasks
+		if(!tasks.isEmpty()) try
 		{
-			c.rollback();
+			executeTasksTx(tasks);
 		}
-		catch(Exception x)
-		{}
-
-		//?: {commit}
-		if((c != null) && (e == null)) try
+		catch(Throwable e)
 		{
-			c.commit();
+			throw EX.wrap(e, "Error occured when executing SQL task!");
 		}
-		catch(Exception x)
-		{
-			e = x;
-		}
-
-		if(c != null) try
-		{
-			HiberSystem.getInstance().closeConnection(c);
-		}
-		catch(Exception x)
-		{
-			if(e == null) e = x;
-		}
-
-		if(e != null) throw new RuntimeException(
-		  "Error occured while invoking SQL tasks on the system startup!", e);
 	}
 
 
@@ -131,7 +114,7 @@ public class   HiberSQLActivator
 		return res;
 	}
 
-	protected void         executeFile(String url, Connection c)
+	protected void         prepareFile(String url, List<SQLTask> tasks)
 	  throws Exception
 	{
 		Document xml = parseXML(url);
@@ -140,37 +123,49 @@ public class   HiberSQLActivator
 		for(Element n : xml.getRootElement().getChildren("task"))
 		{
 			//~: get task class name
-			String tclsn = s2s(n.getAttributeValue("class"));
-			if(tclsn == null) throw new IllegalStateException(String.format(
-			  "SQL Tasks file [%s] <task> tag has no 'class' attribute!", url));
+			String tclsn = EX.assertn( SU.s2s(n.getAttributeValue("class")),
+			  "SQL Tasks file [", url, "] <task> tag has no 'class' attribute!"
+			);
 
 			//~: load the class
-			Class  tcls  = null;
-
-			try
+			Class tcls; try
 			{
 				tcls = Thread.currentThread().
 				  getContextClassLoader().loadClass(tclsn);
 			}
 			catch(Exception e)
-			{}
+			{
+				tcls = null;
+			}
 
-			if(tcls == null) throw new IllegalStateException(String.format(
-			  "SQL Tasks file [%s] <task> tag has unknown " +
-			  "'class' value: [%s]!", url, tclsn));
+			if(tcls == null) throw EX.ass("SQL Tasks file [", url,
+			  "] <task> tag has unknown 'class' value: [", tclsn, "]!"
+			);
 
 			//~: create the task instance
-			Object task  = tcls.newInstance();
-			if(!(task instanceof SQLTask)) throw new IllegalStateException(
-			  String.format("SQL Tasks file [%s] <task> tag has 'class' value: " +
-			   "[%s] of not a SQLTask class!", url, tclsn));
+			Object task; try
+			{
+				task = tcls.newInstance();
+			}
+			catch(Throwable w)
+			{
+				throw EX.wrap(w, "SQL Tasks file [", url,
+				  "] <task> tag with 'class' value: [", tclsn,
+				  "]; couldn't create class instance! "
+				);
+			}
 
+			//?: {not a SQL Task}
+			if(!(task instanceof SQLTask)) throw EX.ass(
+			  "SQL Tasks file [", url, "] <task> tag has 'class' value: [",
+			  tclsn, "] of not a SQLTask interface!"
+			);
 
 			//~: configure the task
 			((SQLTask)task).configure(n);
 
-			//!: execute the task
-			((SQLTask)task).execute(c);
+			//!: enqueue the task
+			tasks.add((SQLTask)task);
 		}
 	}
 
@@ -180,6 +175,37 @@ public class   HiberSQLActivator
 		if(builder == null)
 			builder = new SAXBuilder();
 		return builder.build(new URL(url));
+	}
+
+	@Transactional(rollbackFor = Throwable.class,
+	  propagation = Propagation.REQUIRES_NEW)
+	protected void         executeTasksTx(List<SQLTask> tasks)
+	  throws Exception
+	{
+		//~: open the connection
+		Connection con = HiberSystem.getInstance().openConnection();
+
+		//c: execute the tasks given
+		for(SQLTask task : tasks) try
+		{
+			task.execute(con);
+		}
+		catch(Throwable e)
+		{
+			//~: try to release the connection
+			try
+			{
+				HiberSystem.getInstance().closeConnection(con);
+			}
+			catch(Throwable e2) {}
+
+			//~: report the error
+			throw EX.wrap(e, "Error in SQL Task of class: [",
+			  task.getClass().getName(), "]!");
+		}
+
+		//~: close the connection
+		HiberSystem.getInstance().closeConnection(con);
 	}
 
 

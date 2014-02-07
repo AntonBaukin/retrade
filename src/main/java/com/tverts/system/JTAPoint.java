@@ -1,5 +1,11 @@
 package com.tverts.system;
 
+/* standard Java classes */
+
+import java.io.InputStream;
+import java.util.Hashtable;
+import java.util.Properties;
+
 /* Java Naming */
 
 import javax.naming.InitialContext;
@@ -8,7 +14,6 @@ import javax.naming.InitialContext;
 /**
  * Provides access to JavaEE-JTA environment
  * bound to the local thread.
- *
  *
  * @author anton.baukin@gmail.com
  */
@@ -41,7 +46,7 @@ public class JTAPoint
 
 		if(result == null) try
 		{
-			result = new InitialContext();
+			result = buildContext();
 			initialContext.set(result);
 		}
 		catch(Exception e)
@@ -69,6 +74,46 @@ public class JTAPoint
 	{
 		initialContext.remove();
 	}
+
+
+	/* protected: initial context */
+
+	@SuppressWarnings("unchecked")
+	protected InitialContext buildContext()
+	  throws Exception
+	{
+		Hashtable env;
+
+		//?: {has environment}
+		synchronized(this.getClass())
+		{
+			if(contextEnvironment == null)
+			{
+				InputStream jp = Thread.currentThread().getContextClassLoader().
+				  getResourceAsStream("jndi.properties");
+
+				if(jp == null)
+					contextEnvironment = new Hashtable();
+				else try
+				{
+					Properties p = new Properties();
+					p.load(jp);
+					contextEnvironment = new Hashtable(p);
+				}
+				finally
+				{
+					jp.close();
+				}
+			}
+
+			env = new Hashtable(contextEnvironment);
+		}
+
+		return new InitialContext(env);
+	}
+
+	private static Hashtable contextEnvironment;
+
 
 	/* thread bound variables */
 

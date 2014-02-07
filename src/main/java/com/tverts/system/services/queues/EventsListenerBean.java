@@ -21,7 +21,7 @@ public interface EventsListenerBean
 	 * (Bus) Events.
 	 */
 	public static final String BEAN_NAME =
-	  "zServicesBusListener";
+	  "servicesBusListener";
 
 
 	/* public: EventsListenerBean interface */

@@ -19,6 +19,7 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.support.EX;
 import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
@@ -398,7 +399,7 @@ public class HiberSystem
 			throw new IllegalStateException();
 
 		Connection co = connectionProvider.getConnection();
-		co.setAutoCommit(false);
+		EX.assertx(!co.getAutoCommit(), "Got JTA Connection with Auto-Commit!");
 
 		return co;
 	}

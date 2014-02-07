@@ -79,6 +79,7 @@
 
   <!-- Java Server Faces (Mojarra RI) Listener -->
 
+  <!--
   <listener>
     <description>
       JavaServer Faces initialization configuration listener.
@@ -89,6 +90,7 @@
       com.sun.faces.config.ConfigureListener
     </listener-class>
   </listener>
+  -->
 
   <listener>
     <description>
@@ -188,30 +190,13 @@
   <servlet>
     <display-name>JavaServer Faces 2.x Servlet</display-name>
     <servlet-name>faces_FacesServlet</servlet-name>
-    <servlet-class>com.tverts.faces.system.FacesServletWrapper</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <!--
-   * HINT: this servlet is needed, because Mojarra RI
-   *   searches it by exact class match, and don't start
-   *   JSF implementation, if it's absent.
-   -->
-  <servlet>
-    <display-name>JavaServer Faces 2.x Phony Servlet</display-name>
-    <servlet-name>faces_FacesPhonyServlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <enabled>false</enabled>
+    <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>faces_FacesServlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>faces_FacesPhonyServlet</servlet-name>
-    <url-pattern>/nowhere</url-pattern>
   </servlet-mapping>
 
 

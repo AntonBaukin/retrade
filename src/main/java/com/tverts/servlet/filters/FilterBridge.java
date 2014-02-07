@@ -25,7 +25,8 @@ import com.tverts.secure.ForbiddenException;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -86,9 +87,18 @@ public class      FilterBridge
 		{
 			ForbiddenException fe = null;
 
+			//~: unwrap the error
+			e = EX.xrt(e);
+
+			//?: {forbidden | servlet wrapper}
+			if(e instanceof ForbiddenException)
+				fe = (ForbiddenException)e;
 			if(e instanceof ServletException)
-				if(e.getCause() instanceof ForbiddenException)
-					fe = (ForbiddenException) e.getCause();
+			{
+				Throwable x = EX.xrt(e.getCause());
+				if(x instanceof ForbiddenException)
+					fe = (ForbiddenException)x;
+			}
 
 			//?: {not a forbidden | unable to reset}
 			if((fe == null) || response.isCommitted())
@@ -166,7 +176,7 @@ public class      FilterBridge
 
 	protected FilterStage     configFilterStage(FilterConfig cfg)
 	{
-		String stage = s2s(cfg.getInitParameter(PARAM_STAGE));
+		String stage = SU.s2s(cfg.getInitParameter(PARAM_STAGE));
 
 		if(stage == null)
 			throw new IllegalStateException(String.format(
@@ -193,7 +203,7 @@ public class      FilterBridge
 
 	protected FilterReference configFilterReference(FilterConfig cfg)
 	{
-		String name = s2s(cfg.getInitParameter(PARAM_REFERENCE));
+		String name = SU.s2s(cfg.getInitParameter(PARAM_REFERENCE));
 
 		//?: {the bean name is not set} use FilterPoint
 		if(name == null)

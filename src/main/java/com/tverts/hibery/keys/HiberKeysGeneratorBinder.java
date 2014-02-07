@@ -4,8 +4,12 @@ package com.tverts.hibery.keys;
 
 import java.sql.Connection;
 import java.sql.Statement;
-
 import java.util.Properties;
+
+/* Spring framework */
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /* Hibernate Persistence Layer */
 
@@ -26,12 +30,15 @@ import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.OU;
 import com.tverts.support.SU;
 
+
 /**
- * COMMENT HiberKeysGeneratorBinder
+ * Access strategy wrapping Hibernate
+ * Identifier Generator implementation.
  *
  * @author anton.baukin@gmail.com
  */
@@ -52,11 +59,8 @@ public class      HiberKeysGeneratorBinder
 
 	public void          bindGenerator()
 	{
-		if(getGeneratorBound() != null)
-			throw new IllegalStateException();
-
-		if(getGeneratorClass() == null)
-			throw new IllegalStateException();
+		EX.assertx(getGeneratorBound() == null);
+		EX.assertn(getGeneratorClass());
 
 		this.generatorBound = createGenerator();
 	}
@@ -66,8 +70,7 @@ public class      HiberKeysGeneratorBinder
 
 	public void       setGeneratorName(String name)
 	{
-		if((name = SU.s2s(name)) == null)
-			throw new IllegalArgumentException();
+		EX.assertn(name = SU.s2s(name));
 		this.generatorName = name;
 	}
 
@@ -119,71 +122,53 @@ public class      HiberKeysGeneratorBinder
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 
 		//~: schema updates to create generator in database
-		if(hgen instanceof PersistentIdentifierGenerator)
+		if(hgen instanceof PersistentIdentifierGenerator) try
+		{
 			ensureDatabase((PersistentIdentifierGenerator)hgen);
+		}
+		catch(Exception e)
+		{
+			LU.D(getLog(), "seemed exists primary keys sequence [",
+			  ((PersistentIdentifierGenerator)hgen).generatorKey().toString(), "]?..");
+		}
 
 		return new HiberKeysGeneratorBridge(hgen);
 	}
 
+	@Transactional(rollbackFor = Throwable.class,
+	  propagation = Propagation.REQUIRES_NEW)
 	protected void          ensureDatabase(PersistentIdentifierGenerator hgen)
+	  throws Exception
 	{
 		//~: create update queries
 		String[]   qs = hgen.sqlCreateStrings(HiberSystem.dialect());
 
-		Connection co;
-		Statement  st;
-
 		//~: open the connection
-		try
-		{
-			co = HiberSystem.getInstance().openConnection();
-			st = co.createStatement();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException(
-			  "Can't open database connection to " +
-			  "create primary keys sequences!", e);
-		}
+		Connection co = HiberSystem.getInstance().openConnection();
+		Statement  st = co.createStatement();
+		Exception  er = null;
 
-		Exception er = null;
+		//HINT: we do not check whether the sequence already exist,
+		//  so new transaction is required to ignore the error!
 
+		//~: execute the queries
 		try
 		{
 			//~: execute DDL updates
 			for(String q : qs)
 				st.execute(q);
-
-			//!: commit
-			co.commit();
-
-			if(LU.isI(getLog())) LU.I(getLog(), String.format(
-			  "successfully created primary keys sequence '%s'",
-
-			  hgen.generatorKey().toString()));
 		}
 		catch(Exception e)
 		{
-			//!: Here we ignore update errors. We do not check
-			//   whether the sequence already exists.
+			throw er = e;
 		}
 		finally
 		{
-			//~: close the statement
-			try
-			{
-				st.close();
-			}
-			catch(Exception e)
-			{
-				er = e;
-			}
-
-			//~: close the connection
+			//~: try to release the connection
 			try
 			{
 				HiberSystem.getInstance().closeConnection(co);
@@ -194,10 +179,12 @@ public class      HiberKeysGeneratorBinder
 			}
 		}
 
-		//?: {has connection error} raise it
-		if(er != null) throw new RuntimeException(
-		  "Can't close database connection when " +
-		  "creating primary keys sequences!", er);
+		//?: {got error} seems sequence exists
+		if(er != null)
+			throw er;
+
+		LU.I(getLog(), "successfully created primary keys sequence [",
+		  hgen.generatorKey().toString(), "]");
 	}
 
 	protected Type          getKeyType()

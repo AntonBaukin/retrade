@@ -1,7 +1,8 @@
 package com.tverts.endure.keys;
 
 /**
- * COMMENT KeysGenerator
+ * Strategy to generate new primary keys
+ * for a persistent entity within the context given.
  *
  * @author anton.baukin@gmail.com
  */
