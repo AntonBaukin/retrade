@@ -50,7 +50,8 @@ public class DbConnect implements Cloneable
 			connection = dataSource.getConnection();
 
 			//!: disable auto commits
-			connection.setAutoCommit(false);
+			if(connection.getAutoCommit())
+				connection.setAutoCommit(false);
 		}
 		catch(Exception e)
 		{
