@@ -5,10 +5,6 @@ package com.tverts.servlet.listeners;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-/* com.tverts: system */
-
-import com.tverts.system.SystemClassLoader;
-
 
 /**
  * As a {@link ServletContextListener} class this
@@ -37,34 +33,12 @@ public class      ServletContextListenerBridge
 
 	public void contextInitialized(ServletContextEvent sce)
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
-		try
-		{
-			getListenerPoint().contextInitialized(sce);
-		}
-		finally
-		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
-		}
+		getListenerPoint().contextInitialized(sce);
 	}
 
 	public void contextDestroyed(ServletContextEvent sce)
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
-		try
-		{
-			getListenerPoint().contextDestroyed(sce);
-		}
-		finally
-		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
-		}
+		getListenerPoint().contextDestroyed(sce);
 	}
 
 

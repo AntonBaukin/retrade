@@ -22,7 +22,7 @@ import com.tverts.objects.FixedObjectsRedirector;
  * of all the composites (a tree of listeners)
  * are invoked in-depth.
  *
- * When deinitializing the request the listeners 
+ * When de-initializing the request the listeners
  * are invoked in the reversed order.
  *
  * This class is thread-safe, and all the listeners

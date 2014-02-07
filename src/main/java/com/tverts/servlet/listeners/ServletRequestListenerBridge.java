@@ -5,10 +5,6 @@ package com.tverts.servlet.listeners;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 
-/* com.tverts: system */
-
-import com.tverts.system.SystemClassLoader;
-
 
 /**
  * As a {@link ServletRequestListener} class this
@@ -37,34 +33,12 @@ public class      ServletRequestListenerBridge
 
 	public void requestInitialized(ServletRequestEvent sre)
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
-		try
-		{
-			getListenerPoint().requestInitialized(sre);
-		}
-		finally
-		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
-		}
+		getListenerPoint().requestInitialized(sre);
 	}
 
 	public void requestDestroyed(ServletRequestEvent sre)
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
-		try
-		{
-			getListenerPoint().requestDestroyed(sre);
-		}
-		finally
-		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
-		}
+		getListenerPoint().requestDestroyed(sre);
 	}
 
 

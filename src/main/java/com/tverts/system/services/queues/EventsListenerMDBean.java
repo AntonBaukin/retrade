@@ -9,10 +9,6 @@ import javax.jms.MessageListener;
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: system */
-
-import com.tverts.system.SystemClassLoader;
-
 
 /**
  * Message-Driven Bean listening Z-Services
@@ -29,19 +25,8 @@ public class EventsListenerMDBean implements MessageListener
 
 	public void onMessage(Message msg)
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
-		try
-		{
-			//~: invoke the bean
-			((EventsListenerBean)bean(EventsListenerBean.BEAN_NAME)).
-			  takeEventMessage(msg);
-		}
-		finally
-		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
-		}
+		//~: invoke the bean
+		((EventsListenerBean)bean(EventsListenerBean.BEAN_NAME)).
+		  takeEventMessage(msg);
 	}
 }

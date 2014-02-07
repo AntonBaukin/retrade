@@ -9,10 +9,6 @@ import javax.servlet.ServletContextListener;
 
 import com.tverts.servlet.RequestPoint;
 
-/* tverts.com: system */
-
-import com.tverts.system.SystemClassLoader;
-
 
 /**
  * Prepares the system to work.
@@ -30,7 +26,6 @@ public class      SystemBootListener
 
 	public void contextInitialized(ServletContextEvent event)
 	{
-		SystemClassLoader.init();
 		RequestPoint.getInstance().setContext(event.getServletContext());
 	}
 

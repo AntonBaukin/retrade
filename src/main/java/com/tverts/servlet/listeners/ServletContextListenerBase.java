@@ -10,10 +10,6 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-/* com.tverts: system */
-
-import com.tverts.system.SystemClassLoader;
-
 /* com.tverts: objects */
 
 import com.tverts.objects.ObjectsReference;
@@ -40,37 +36,27 @@ public abstract class ServletContextListenerBase
 
 	public void contextInitialized(ServletContextEvent sce)
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
 		try
 		{
 			this.event = sce;
 			this.init();
-			this.event = null;
 		}
 		finally
 		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
+			this.event = null;
 		}
 	}
 
 	public void contextDestroyed(ServletContextEvent sce)
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
 		try
 		{
 			this.event = sce;
 			this.destroy();
-			this.event = null;
 		}
 		finally
 		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
+			this.event = null;
 		}
 	}
 

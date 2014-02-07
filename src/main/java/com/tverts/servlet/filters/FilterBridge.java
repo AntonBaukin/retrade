@@ -19,10 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.tverts.spring.SpringPoint.beanOrNull;
 
-/* com.tverts: system */
-
-import com.tverts.system.SystemClassLoader;
-
 /* com.tverts: secure */
 
 import com.tverts.secure.ForbiddenException;
@@ -66,9 +62,6 @@ public class      FilterBridge
 	            )
 	  throws IOException, ServletException
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
 		try
 		{
 			//?: {wrong call context} skip it
@@ -117,48 +110,21 @@ public class      FilterBridge
 				  HttpServletResponse.SC_FORBIDDEN, fe.getMessage()
 				);
 		}
-		finally
-		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
-		}
 	}
 
 	public void init(FilterConfig cfg)
 	  throws ServletException
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
-		try
-		{
-			filterStage     = configFilterStage(cfg);
-			filterReference = configFilterReference(cfg);
-			filters         = collectFilters();
-		}
-		finally
-		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
-		}
+		filterStage     = configFilterStage(cfg);
+		filterReference = configFilterReference(cfg);
+		filters         = collectFilters();
 	}
 
 	public void destroy()
 	{
-		//~: bind system class loader
-		SystemClassLoader.bind();
-
-		try
-		{
-			filterStage     = null;
-			filterReference = null;
-			filters         = null;
-		}
-		finally
-		{
-			//~: unbind system class loader
-			SystemClassLoader.unbind();
-		}
+		filterStage     = null;
+		filterReference = null;
+		filters         = null;
 	}
 
 

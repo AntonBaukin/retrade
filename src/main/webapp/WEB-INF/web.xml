@@ -50,7 +50,7 @@
 
     <display-name>Spring Log4J Configurator</display-name>
     <listener-class>
-      com.tverts.spring.Log4jConfigListener
+      org.springframework.web.util.Log4jConfigListener
     </listener-class>
    </listener>
 
@@ -61,7 +61,7 @@
 
     <display-name>Spring Startup Context Listener</display-name>
     <listener-class>
-      com.tverts.spring.ContextLoaderListener
+      org.springframework.web.context.ContextLoaderListener
     </listener-class>
   </listener>
 
@@ -72,7 +72,7 @@
 
     <display-name>Spring Request Context Listener</display-name>
     <listener-class>
-      com.tverts.spring.RequestContextListener
+      org.springframework.web.context.request.RequestContextListener
     </listener-class>
   </listener>
 
@@ -86,7 +86,7 @@
 
     <display-name>Java Server Faces Configure</display-name>
     <listener-class>
-      com.tverts.faces.system.FacesConfigureListener
+      com.sun.faces.config.ConfigureListener
     </listener-class>
   </listener>
 
@@ -97,7 +97,7 @@
 
     <display-name>Java Server Faces Configure</display-name>
     <listener-class>
-      com.tverts.faces.system.WebappLifecycleListener
+      com.sun.faces.application.WebappLifecycleListener
     </listener-class>
   </listener>
 
