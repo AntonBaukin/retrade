@@ -6,17 +6,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/* Spring framework */
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 /* Hibernate Persistence Layer */
 
 import org.hibernate.Session;
 
-/* com.tverts: system (transactions) */
+/* com.tverts: (spring + tx) */
 
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: objects */
@@ -26,6 +23,7 @@ import com.tverts.objects.Param;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LO;
 import com.tverts.support.LU;
 
@@ -187,44 +185,46 @@ public class      GenesisSphere
 		return res;
 	}
 
-	protected void     doGenDispTx(GenCtx ctx)
+	protected void     doGenDispTx(final GenCtx ctx)
 	  throws GenesisError
 	{
-		//?: {need to create own transaction}
-		if((ctx.getOuter() == null) || isOwnTx())
-			doGenTx(ctx);
-		else
+		Session   session = null;
+		Throwable error   = null;
+
+		//?: {NOT need to create own transaction}
+		if((ctx.getOuter() != null) && !isOwnTx())
 			doGen(ctx);
-	}
-
-	@Transactional(rollbackFor = Throwable.class,
-	  propagation = Propagation.REQUIRES_NEW)
-	protected void     doGenTx(GenCtx ctx)
-	  throws GenesisError
-	{
-		//~: remember the external session
-		Session session = ctx.session();
-
-		//~: push default tx-context for this new transaction
-		TxPoint.getInstance().setTxContext();
-
-		try
+		else try
 		{
+			//~: remember the external session
+			session = ctx.session();
+
 			//~: bind the session to the context
 			if(ctx instanceof GenCtxBase)
 				((GenCtxBase)ctx).setSession(TxPoint.txSession());
 
-			//~: check Hibernate session
-			checkCtxSession(ctx);
-
-			//~: invoke the generation
-			doGen(ctx);
+			//~: run in new transaction
+			bean(TxBean.class).setNew(true).execute(new Runnable()
+			{
+				public void run()
+				{
+					try
+					{
+						doGenTx(ctx);
+					}
+					catch(Throwable e)
+					{
+						throw EX.wrap(e);
+					}
+				}
+			});
+		}
+		catch(Throwable e)
+		{
+			error = EX.xrt(e);
 		}
 		finally
 		{
-			//!: pop transaction context
-			TxPoint.getInstance().setTxContext(null);
-
 			//~: restore the original session of the context
 			if(ctx instanceof GenCtxBase)
 				//?: {there was differ external session}
@@ -233,6 +233,22 @@ public class      GenesisSphere
 				else
 					((GenCtxBase)ctx).setSession(null);
 		}
+
+		//?: {there were genesis error}
+		if(error instanceof GenesisError)
+			throw (GenesisError)error;
+		else if(error != null)
+			throw new GenesisError(this, ctx, error);
+	}
+
+	protected void     doGenTx(GenCtx ctx)
+	  throws GenesisError
+	{
+		//~: check Hibernate session
+		checkCtxSession(ctx);
+
+		//~: invoke the generation
+		doGen(ctx);
 	}
 	
 	protected void     doGen(GenCtx ctx)

@@ -12,6 +12,10 @@ import org.hibernate.Session;
 
 import com.tverts.endure.TxEntity;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Point to access current transaction provider.
@@ -48,20 +52,15 @@ public class TxPoint
 
 	public static Session txSession(Tx ctx)
 	{
-		if(ctx.getSessionFactory() == null)
-			throw new IllegalStateException(String.format(
-			  "Tx Context of class [%s] has no " +
-			  "Hibernate Session Factory assigned!",
-			  ctx.getClass().getSimpleName()
-			));
-
-		Session res = ctx.getSessionFactory().getCurrentSession();
-		if(res == null) throw new IllegalStateException(
-		  "Hibernate Session Factory assigned to Tx Context " +
-		  "is not linked to the actual Session instance!"
+		EX.assertn( ctx.getSessionFactory(),
+		  "Tx Context of class [", ctx.getClass().getSimpleName(),
+		  "] has no Hibernate Session Factory assigned!"
 		);
 
-		return res;
+		return EX.assertn( ctx.getSessionFactory().getCurrentSession(),
+		  "Hibernate Session Factory assigned to Tx Context ",
+		  "is not linked to the actual Session instance!"
+		);
 	}
 
 	/**
@@ -96,12 +95,10 @@ public class TxPoint
 				break;
 			}
 
-		if(n == null) throw new IllegalStateException(
-		  "New Transaction Number may no be generated as " +
+		return EX.assertn(n,
+		  "New Transaction Number may no be generated as ",
 		  "there is no System Tx in the contexts stack!"
 		);
-
-		return n;
 	}
 
 	/**
@@ -122,13 +119,7 @@ public class TxPoint
 	 */
 	public Tx             getTxContextStrict()
 	{
-		Tx tx = this.getTxContext();
-
-		if(tx == null) throw new IllegalStateException(
-		  "Global transaction context is not defined!"
-		);
-
-		return tx;
+		return EX.assertn(this.getTxContext(), "Transaction context is not defined!");
 	}
 
 	/**
@@ -136,24 +127,28 @@ public class TxPoint
 	 * set tx instance to push, set {@code null} to pop.
 	 * Note that push the same tx instance places new
 	 * item to the stack, and corresponding pop is needed.
+	 *
+	 * TODO involve special clean method instead of setTxContext(null)
 	 */
 	public void           setTxContext(Tx tx)
 	{
 		ArrayList<Tx> s = contexts.get();
 
-		//?: {has no contexts stack yet} create it
-		if(s == null)
-			contexts.set(s = new ArrayList<Tx>(1));
-
-		//?: {has context defined} add to the end (the top)
+		//?: {push new context}
 		if(tx != null)
-			s.add(tx);
-		//?: {pop context query}
-		else if(!s.isEmpty())
 		{
-			//~: free the context
+			//?: {has no contexts stack yet} create it
+			if(s == null) contexts.set(s = new ArrayList<Tx>(4));
+			s.add(tx);
+		}
+		//~: {pop context}
+		else if((s != null) && !s.isEmpty())
+		{
 			tx = s.remove(s.size() - 1);
-			tx.free();
+			tx.free(); //<-- and free it
+
+			if(s.isEmpty())
+				contexts.remove();
 		}
 	}
 
@@ -165,17 +160,15 @@ public class TxPoint
 	 * by Spring kernel and the application server. So, the default context
 	 * is just a number of default references.
 	 */
-	public void           setTxContext()
+	public Tx             setTxContext()
 	{
-		Tx tx = getTxCreator().createTxContext();
-
-		//?: {was unable to create tx context}
-		if(tx == null) throw new IllegalStateException(
+		Tx tx = EX.assertn( getTxCreator().createTxContext(),
 		  "Tx Point was unable to create defualt Transaction Context!"
 		);
 
 		//~: push the tx created
 		this.setTxContext(tx);
+		return tx;
 	}
 
 	protected void        clearTxContexts()
@@ -183,7 +176,7 @@ public class TxPoint
 		ArrayList<Tx> s = contexts.get();
 		Throwable     e = null;
 
-		while(!s.isEmpty())
+		if(s != null) while(!s.isEmpty())
 		{
 			Tx tx = s.get(s.size() - 1);
 
@@ -206,10 +199,7 @@ public class TxPoint
 		contexts.remove();
 
 		//?: {has error} throw it
-		if(e instanceof RuntimeException)
-			throw (RuntimeException)e;
-		else if(e != null)
-			throw new RuntimeException(e);
+		if(e != null) throw EX.wrap(e);
 	}
 
 
@@ -226,17 +216,16 @@ public class TxPoint
 	}
 
 
-	/* public: TxPoint bean interface */
+	/* public: TxPoint (bean) interface */
 
 	public TxContextCreator getTxCreator()
 	{
 		return txCreator;
 	}
 
-	public void             setTxCreator(TxContextCreator txCreator)
+	public void setTxCreator(TxContextCreator txCreator)
 	{
-		if(txCreator == null) throw new  IllegalArgumentException();
-		this.txCreator = txCreator;
+		this.txCreator = EX.assertn(txCreator);
 	}
 
 

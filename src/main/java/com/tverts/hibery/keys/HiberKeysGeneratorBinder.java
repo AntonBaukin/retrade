@@ -6,11 +6,6 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Properties;
 
-/* Spring framework */
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 /* Hibernate Persistence Layer */
 
 import org.hibernate.id.Configurable;
@@ -18,6 +13,11 @@ import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.type.LongType;
 import org.hibernate.type.Type;
+
+/* com.tverts: (spring + tx) */
+
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 
 /* com.tverts: endure keys */
 
@@ -128,9 +128,26 @@ public class      HiberKeysGeneratorBinder
 		//~: schema updates to create generator in database
 		if(hgen instanceof PersistentIdentifierGenerator) try
 		{
-			ensureDatabase((PersistentIdentifierGenerator)hgen);
+			final PersistentIdentifierGenerator pig =
+			  (PersistentIdentifierGenerator)hgen;
+
+			//!:  ------------------> MUST
+			bean(TxBean.class).setNew(true).execute(new Runnable()			{
+				public void run()
+				{
+					try
+					{
+						ensureDatabaseTx(pig);
+					}
+					catch(Throwable e)
+					{
+						throw EX.wrap(e);
+					}
+				}
+			}
+			);
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
 			LU.D(getLog(), "seemed exists primary keys sequence [",
 			  ((PersistentIdentifierGenerator)hgen).generatorKey().toString(), "]?..");
@@ -139,9 +156,11 @@ public class      HiberKeysGeneratorBinder
 		return new HiberKeysGeneratorBridge(hgen);
 	}
 
-	@Transactional(rollbackFor = Throwable.class,
-	  propagation = Propagation.REQUIRES_NEW)
-	protected void          ensureDatabase(PersistentIdentifierGenerator hgen)
+	/**
+	 * WARNING: we do not check whether the sequence already exist.
+	 *   New transaction is required to ignore the error!
+	 */
+	protected void          ensureDatabaseTx(PersistentIdentifierGenerator hgen)
 	  throws Exception
 	{
 		//~: create update queries
@@ -151,9 +170,6 @@ public class      HiberKeysGeneratorBinder
 		Connection co = HiberSystem.getInstance().openConnection();
 		Statement  st = co.createStatement();
 		Exception  er = null;
-
-		//HINT: we do not check whether the sequence already exist,
-		//  so new transaction is required to ignore the error!
 
 		//~: execute the queries
 		try

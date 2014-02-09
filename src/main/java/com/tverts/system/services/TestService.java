@@ -1,19 +1,11 @@
 package com.tverts.system.services;
 
-/* Spring Framework */
-
-import org.springframework.transaction.annotation.Transactional;
-
-/* com.tverts: system (tx) */
-
-import static com.tverts.system.tx.TxPoint.txSession;
-
 /* com.tverts: z-services */
 
 import com.tverts.system.services.events.EventBase;
 import com.tverts.system.services.events.SystemReady;
 
-/* com.tverts: support (logging) */
+/* com.tverts: support */
 
 import com.tverts.support.LU;
 import com.tverts.support.SU;
@@ -111,7 +103,6 @@ public class TestService extends ServiceBase
 	protected void serviceReady(SystemReady event)
 	{
 		LU.I(getLog(), "Test Service ", uid(), " got ready event...");
-
 		sendNextMsg();
 	}
 
@@ -130,15 +121,9 @@ public class TestService extends ServiceBase
 		sendMsg(messages[msgsend++]);
 	}
 
-	@Transactional
 	protected void sendMsg(String msg)
 	{
 		if(SU.sXe(msg)) return;
-
-		//~: cause the transaction to begin
-		txSession().createQuery(
-		  "select count(*) from UnityType"
-		).uniqueResult();
 
 		String s = "";
 		String m = msg;
@@ -152,7 +137,6 @@ public class TestService extends ServiceBase
 
 		if(SU.sXe(m)) return;
 		if(SU.sXe(s)) s = null;
-
 
 		TestEvent e = new TestEvent();
 

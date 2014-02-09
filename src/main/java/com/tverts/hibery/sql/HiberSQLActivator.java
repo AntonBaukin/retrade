@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/* Spring framework */
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 /* Hibernate Persistence Layer */
 
 import org.hibernate.mapping.PersistentClass;
@@ -22,6 +17,11 @@ import org.hibernate.mapping.PersistentClass;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
+
+/* com.tverts: (spring + tx) */
+
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 
 /* com.tverts: servlet (listeners) */
 
@@ -70,7 +70,7 @@ public class   HiberSQLActivator
 		}
 
 		//~: parse the tasks of the files
-		List<SQLTask> tasks = new ArrayList<SQLTask>(16);
+		final List<SQLTask> tasks = new ArrayList<SQLTask>(16);
 		for(String file : files) try
 		{
 			prepareFile(file, tasks);
@@ -83,14 +83,20 @@ public class   HiberSQLActivator
 		}
 
 		//!: execute the tasks
-		if(!tasks.isEmpty()) try
+		if(!tasks.isEmpty()) bean(TxBean.class).execute(new Runnable()
 		{
-			executeTasksTx(tasks);
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e, "Error occured when executing SQL task!");
-		}
+			public void run()
+			{
+				try
+				{
+					executeTasksTx(tasks);
+				}
+				catch(Throwable e)
+				{
+					throw EX.wrap(e, "Error occured when executing SQL task!");
+				}
+			}
+		});
 	}
 
 
@@ -177,8 +183,6 @@ public class   HiberSQLActivator
 		return builder.build(new URL(url));
 	}
 
-	@Transactional(rollbackFor = Throwable.class,
-	  propagation = Propagation.REQUIRES_NEW)
 	protected void         executeTasksTx(List<SQLTask> tasks)
 	  throws Exception
 	{

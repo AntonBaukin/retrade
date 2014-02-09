@@ -33,6 +33,19 @@ public class GetDomain extends GetObjectBase
 		  (Domain) session().get(Domain.class, pk);
 	}
 
+	public String getDomainCode(Long domain)
+	{
+
+// select code from Domain where (id = :domain)
+
+		return object(String.class,
+
+"  select code from Domain where (id = :domain)",
+
+		  "domain", domain
+		);
+	}
+
 	public Domain getDomain(String code)
 	{
 		if(SU.sXe(code))

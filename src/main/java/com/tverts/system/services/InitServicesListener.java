@@ -1,16 +1,13 @@
 package com.tverts.system.services;
 
-/* Spring Framework */
-
-import org.springframework.transaction.annotation.Transactional;
-
-/* com.tverts: servlet (webapp listeners) */
+/* com.tverts: servlet (servlet) */
 
 import com.tverts.servlet.listeners.ServletContextListenerBase;
 
-/* com.tverts: system (transactions) */
+/* com.tverts: (spring + tx) */
 
-import com.tverts.system.tx.TxPoint;
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 
 
 /**
@@ -23,19 +20,15 @@ public class   InitServicesListener
 {
 	/* protected: ServletContextListenerBase interface */
 
-	@Transactional(rollbackFor = Throwable.class)
 	protected void init()
 	{
-		TxPoint.getInstance().setTxContext();
-
-		try
+		bean(TxBean.class).execute(new Runnable()
 		{
-			//!: init the services system
-			ServicesPoint.system().init();
-		}
-		finally
-		{
-			TxPoint.getInstance().setTxContext(null);
-		}
+			public void run()
+			{
+				//!: init the services system
+				ServicesPoint.system().init();
+			}
+		});
 	}
 }

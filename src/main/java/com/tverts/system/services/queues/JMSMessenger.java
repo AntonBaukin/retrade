@@ -8,18 +8,20 @@ import javax.jms.Message;
 import javax.jms.Queue;
 import javax.jms.Session;
 
-/* Spring Framework */
+/* com.tverts: (spring + system) */
 
-import org.springframework.transaction.annotation.Transactional;
-
-/* com.tverts: system */
-
+import static com.tverts.spring.SpringPoint.bean;
 import static com.tverts.system.JTAPoint.jta;
+import com.tverts.system.tx.TxBean;
 
 /* com.tverts: services */
 
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceMessenger;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -32,48 +34,48 @@ public class JMSMessenger implements ServiceMessenger
 {
 	/* public: ServiceMessager interface */
 
-	@Transactional
-	public void sendEvent(Event event)
+	public void sendEvent(final Event event)
 	{
-		if(event == null)
-			throw new IllegalArgumentException();
+		EX.assertn(event);
 
-		//~: obtain the connection
-		Connection conn  = obtainConnection();
-		Throwable  error = null;
-
-		try
+		bean(TxBean.class).execute(new Runnable()
 		{
-			//~: create JMS session
-			Session session = conn.createSession(
-			  true, Session.AUTO_ACKNOWLEDGE);
-
-			//!: send the message
-			send(session, event);
-
-			//NOTE: that in JTA-XA transactions we can't commit sessions!
-		}
-		catch(Throwable e)
-		{
-			error = e;
-		}
-		finally
-		{
-			//~: close the connection
-			try
+			public void run()
 			{
-				conn.close();
-			}
-			catch(Throwable e)
-			{
-				if(error == null) error = e;
-			}
-		}
+				Connection conn  = obtainConnection();
+				Throwable  error = null;
 
-		//?: {has error}
-		if(error != null) throw new RuntimeException(
-		  "Error occurred while sending JMS Message " +
-		  "into Z-Services Bus Queue!", error);
+				try
+				{
+					//~: create JMS session
+					Session session = conn.createSession(
+					  true, Session.AUTO_ACKNOWLEDGE);
+
+					//!: send the message
+					send(session, event);
+				}
+				catch(Throwable e)
+				{
+					error = e;
+				}
+				finally
+				{
+					try
+					{
+						conn.close();
+					}
+					catch(Throwable e)
+					{
+						if(error == null) error = e;
+					}
+				}
+
+				//?: {has error}
+				if(error != null) throw EX.wrap(error,
+				  "Error occurred while sending JMS Message ",
+				  "into Z-Services Bus Queue!");
+			}
+		});
 	}
 
 

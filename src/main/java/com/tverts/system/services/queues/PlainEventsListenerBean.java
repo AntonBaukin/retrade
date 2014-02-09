@@ -4,19 +4,21 @@ package com.tverts.system.services.queues;
 
 import javax.jms.Message;
 
-/* Spring Framework */
-
-import org.springframework.transaction.annotation.Transactional;
-
 /* com.tverts: support */
 
 import com.tverts.support.LU;
 
-/* com.tverts: system (tx + services) */
+/* com.tverts: (services + spring + tx) */
 
-import com.tverts.system.tx.TxPoint;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServicesPoint;
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -33,19 +35,37 @@ public class      PlainEventsListenerBean
 {
 	/* public: EventsListenerBean interface */
 
-	public void takeEventMessage(Message msg)
+	public void takeEventMessage(final Message msg)
 	{
 		try
 		{
 			//~: extract the event
-			Event event = extractEvent(msg);
+			final Event event = extractEvent(msg);
 
-			//~: process the event
-			process(event);
+			//~: execute it
+			bean(TxBean.class).execute(new Runnable()
+			{
+				public void run()
+				{
+					try
+					{
+						//~: process the event
+						process(event);
+					}
+					catch(Throwable e)
+					{
+						throw EX.wrap(e);
+					}
+				}
+			});
+
+			//~: commit the message
+			commitMessage(msg);
 		}
 		catch(Throwable e)
 		{
-			//!: ignore this error
+			//~: rollback the message
+			rollbackMessage(e, msg);
 		}
 	}
 
@@ -58,23 +78,10 @@ public class      PlainEventsListenerBean
 		return JMSProtocol.getInstance().event(msg);
 	}
 
-	@Transactional(rollbackFor = Throwable.class)
 	protected void  process(Event event)
 	  throws Throwable
 	{
-		//~: push default transaction context
-		TxPoint.getInstance().setTxContext();
-
-		try
-		{
-			//!: directly send the event to the service
-			ServicesPoint.system().service(event);
-		}
-		finally
-		{
-			//!: pop transaction context
-			TxPoint.getInstance().setTxContext(null);
-		}
+		ServicesPoint.system().service(event);
 	}
 
 	protected void  rollbackMessage(Throwable error, Message msg)
@@ -95,9 +102,9 @@ public class      PlainEventsListenerBean
 		}
 		catch(Throwable e)
 		{
-			LU.E(getLog(), e, " error occurred when committing " +
+			LU.E(getLog(), e, "error occurred when committing",
 			  " message of Z-Serivices Queue in the listener! ",
-			  logMessage(msg), '.');
+			  logMessage(msg));
 		}
 	}
 
@@ -114,10 +121,9 @@ public class      PlainEventsListenerBean
 	{
 		try
 		{
-			return String.format(
-			  "JMS message for service '%s' with event type [%s]",
-			  JMSProtocol.getInstance().readService(msg),
-			  JMSProtocol.getInstance().readEventType(msg)
+			return SU.cats(
+			  "JMS message for service [", JMSProtocol.getInstance().readService(msg),
+			  "] with event type [", JMSProtocol.getInstance().readEventType(msg), "]"
 			);
 		}
 		catch(Throwable e)

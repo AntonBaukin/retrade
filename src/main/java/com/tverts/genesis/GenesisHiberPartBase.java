@@ -9,17 +9,10 @@ import java.util.Date;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-/* Spring framework */
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-/* com.tverts: spring */
+/* com.tverts: (spring + tx) */
 
 import static com.tverts.spring.SpringPoint.bean;
-
-/* com.tverts: system (tx) */
-
+import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure (core) */
@@ -31,7 +24,7 @@ import com.tverts.endure.core.Property;
 
 /* com.tverts: support */
 
-import static com.tverts.support.DU.date2str;
+import com.tverts.support.DU;
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 
@@ -45,14 +38,6 @@ import com.tverts.support.LU;
 public abstract class GenesisHiberPartBase
        extends        GenesisPartBase
 {
-	/* public: Genesis interface */
-
-	public Genesis    clone()
-	{
-		return (GenesisHiberPartBase) super.clone();
-	}
-
-
 	/* protected: access Hibernate session */
 
 	/**
@@ -112,7 +97,7 @@ public abstract class GenesisHiberPartBase
 		  "%s: day [%s]; type [%s]",
 
 		  ut.getClass().getSimpleName(),
-		  date2str(ctx.get(DaysGenDisp.DAY, Date.class)),
+		  DU.date2str(ctx.get(DaysGenDisp.DAY, Date.class)),
 		  ut.getTypeName()
 		);
 	}
@@ -134,18 +119,13 @@ public abstract class GenesisHiberPartBase
 	}
 
 
-	/* protected: special operations */
+	/* protected: batched operation */
 
-	@Transactional(rollbackFor = Throwable.class,
-	  propagation = Propagation.REQUIRES_NEW)
 	protected void    nestTx(GenCtx ctx, Runnable run)
 	{
 		//~: remember the external session
 		Session   session = ctx.session();
 		Throwable error   = null;
-
-		//~: push default tx-context for this new transaction
-		TxPoint.getInstance().setTxContext();
 
 		try
 		{
@@ -153,8 +133,8 @@ public abstract class GenesisHiberPartBase
 			if(ctx instanceof GenCtxBase)
 				((GenCtxBase)ctx).setSession(TxPoint.txSession());
 
-			//!: run the operation
-			run.run();
+			//!: run the operation in a new transaction
+			bean(TxBean.class).setNew(true).execute(run);
 		}
 		catch(Throwable e)
 		{
@@ -162,16 +142,6 @@ public abstract class GenesisHiberPartBase
 		}
 		finally
 		{
-			//!: pop transaction context
-			try
-			{
-				TxPoint.getInstance().setTxContext(null);
-			}
-			catch(Throwable e)
-			{
-				if(error == null) error = e;
-			}
-
 			//~: restore the original session of the context
 			if(ctx instanceof GenCtxBase)
 				//?: {there was differ external session}

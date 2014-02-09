@@ -22,7 +22,7 @@ public class TxBean
 {
 	/* public: execution interface */
 
-	public void   execute(Runnable task)
+	public void      execute(Runnable task)
 	{
 		EX.assertn(task);
 
@@ -121,8 +121,8 @@ public class TxBean
 	{
 		Tx tx = TxPoint.getInstance().getTxContext();
 
-		//!: pop the nested transaction contexts
-		TxPoint.getInstance().clearTxContexts();
+		//!: pop the nested transaction context
+		TxPoint.getInstance().setTxContext(null);
 
 		//~: unwrap the error
 		error = EX.xrt(error);

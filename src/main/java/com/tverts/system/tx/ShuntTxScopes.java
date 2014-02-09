@@ -10,17 +10,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
+/* com.tverts: system (spring + tx) */
 
-/* JUnit */
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-/* com.tverts: system (tx) */
-
+import static com.tverts.spring.SpringPoint.bean;
 import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: self-shunting */
@@ -34,106 +27,118 @@ import static com.tverts.shunts.SelfShuntPoint.LOG_SHARED;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
-import static com.tverts.support.LU.sig;
 
 
-@Component("shuntTxScopes") @Scope("prototype")
+/**
+ * Tests Tx-Scopes Bean. Note that Self-Shunts are
+ * executed in the same way as an ordinary HTTP
+ * requests, so outer Tx already exists.
+ *
+ *
+ * @author anton.baukin@gmail.com.
+ */
+@Component @Scope("prototype")
 @SelfShuntUnit(single = true)
-@SelfShuntGroups({"system", "system:tx", "system:tx:scopes"})
+@SelfShuntGroups({"system", "system:tx"})
 @SelfShuntDescr("Tests binding the Spring Declarative " +
  "Tx Management Layer with Hibernate Database Connectivity.")
 public class ShuntTxScopes
 {
 	@Autowired
-	private SessionFactory sessionFactory;
+	protected SessionFactory sessionFactory;
+
 
 	@SelfShuntMethod(order = 10, critical = true, descrEn =
 	  "Is SessionFactory was injected via @Autowired?")
 	public void testAutowired()
 	{
-		assertNotNull(
-		  "SessionFactory must be injected to the private field",
-		  sessionFactory
-		);
+		EX.assertn(sessionFactory, "SessionFactory must be injected to the private field");
 
-		if(LU.isD(LOG_SHARED)) LU.D(LOG_SHARED, String.format(
-		  "ShuntTxScopes: @Autowired [%s] SessionFactory",
-		  sig(sessionFactory)
-		));
+		LU.D(LOG_SHARED, "ShuntTxScopes: @Autowired [",
+		  LU.sig(sessionFactory), "] SessionFactory"
+		);
 	}
 
 	private Session session;
 
-	@Transactional
 	@SelfShuntMethod(order = 20, critical = true, descrEn =
 	  "Checks the main transaction.")
-	public void testMainTransactionScope()
+	public void testTransactionScopeMain()
 	{
-		checkCurrentSession();
-		this.session = txSession();
+		bean(TxBean.class).execute(new Runnable()
+		{
+			public void run()
+			{
+				checkCurrentSession();
+				session = txSession();
+			}
+		});
 	}
 
 	private Session sessionNested;
 
-	@Transactional(propagation = REQUIRES_NEW)
 	@SelfShuntMethod(order = 30, critical = true, descrEn =
 	  "Creates and tests a nested transaction scope.")
 	public void testTransactionScopeNested()
 	{
-		assertNotNull(
-		  "Outer (main) Hibernate session scope must exist!",
-		  this.session
-		);
+		EX.assertn(this.session, "Outer (main) Hibernate session scope must exist!");
 
-		checkCurrentSession();
 
-		assertTrue(
-		  "Nested Hibernate session must differ from the outer one!",
-		  txSession() != this.session
-		);
+		bean(TxBean.class).setNew(true).execute(new Runnable()
+		{
+			public void run()
+			{
+				checkCurrentSession();
 
-		this.sessionNested = txSession();
+				EX.assertx(txSession() != session,
+				  "Nested Hibernate session must differ from the outer one!"
+				);
+
+				sessionNested = txSession();
+			}
+		});
+
 	}
 
-	@Transactional
 	@SelfShuntMethod(order = 40, critical = true, descrEn =
 	  "Checks the outer scope is the same after the nested scope.")
 	public void testTransactionScopeContinue()
 	{
-		assertNotNull(
-		  "Outer (main) Hibernate session scope must exist!",
-		  this.session
-		);
+		EX.assertn(this.session, "Outer (main) Hibernate session scope must exist!");
 
-		assertTrue(
-		  "We still have the nested session active!",
-		  txSession() != this.sessionNested
+		EX.assertx(txSession() != this.sessionNested,
+		  "We still have the nested session active!"
 		);
 
 		checkCurrentSession();
 
-		assertTrue(
-		  "We must have the same session continued.",
-		  txSession() == this.session
-		);
+		bean(TxBean.class).execute(new Runnable()
+		{
+			public void run()
+			{
+				checkCurrentSession();
+
+				EX.assertx( txSession() == session,
+				  "We must have the same session continued!"
+				);
+			}
+		});
 	}
 
 	protected void checkCurrentSession()
 	{
-		assertNotNull(
-		  "Hibernate session provided by SessionFactory must be defined!",
-		  sessionFactory.getCurrentSession()
+		EX.assertn( sessionFactory.getCurrentSession(),
+		  "Hibernate session provided by SessionFactory must be defined!"
 		);
 
-		assertNotNull(
-		  "Hibernate session provided by HiberPoint must be defined!",
-		  txSession()
+		EX.assertn(txSession(),
+		           "Hibernate session provided by HiberPoint must be defined!"
 		);
 
-		assertTrue(
-		  "HiberPoint.session() == SessionFactory.getCurrentSession()",
-		  txSession() == sessionFactory.getCurrentSession()
+		EX.assertx( txSession() == sessionFactory.getCurrentSession(),
+		  "HiberPoint.session() != SessionFactory.getCurrentSession()"
 		);
 	}
 }

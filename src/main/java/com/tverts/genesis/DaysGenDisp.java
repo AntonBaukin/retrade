@@ -8,10 +8,10 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
-/* Spring framework */
+/* com.tverts: (spring + tx) */
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 
 /* com.tverts: objects */
 
@@ -303,32 +303,57 @@ public class DaysGenDisp extends GenesisPartBase
 		logGen(ctx, day, inds);
 	}
 
-	@Transactional(rollbackFor = Throwable.class,
-	  propagation = Propagation.REQUIRES_NEW)
-	protected void    callGenesis(GenCtx ctx, Entry e)
+	protected void    callGenesis(final GenCtx ctx, Entry e)
 	  throws GenesisError
 	{
-		if(e.getGenesis() == null)
-			throw EX.state();
+		EX.assertn(e.getGenesis());
 
 		//~: clone the genesis before the invocation
-		Genesis g = e.getGenesis().clone();
+		final Genesis g = e.getGenesis().clone();
+		final Genesis s = this;
+		Throwable     x = null;
 
-		//?: {there was generation for this day}
-		if(g instanceof DaysGenPart)
-			if(!((DaysGenPart)g).isDayClear(ctx))
-				return;
+		try
+		{
+			bean(TxBean.class).setNew(true).execute(new Runnable()
+			{
+				public void run()
+				{
+					//?: {there was generation for this day}
+					if(g instanceof DaysGenPart)
+						if(!((DaysGenPart)g).isDayClear(ctx))
+							return;
 
-		//!: call it in the context stacked
-		g.generate(ctx.stack(this));
+					//!: call it in the context stacked
+					try
+					{
+						g.generate(ctx.stack(s));
+					}
+					catch(GenesisError e)
+					{
+						throw EX.wrap(e);
+					}
+				}
+			});
+		}
+		catch(Throwable x2)
+		{
+			x = EX.xrt(x2);
+		}
+
+		//?: {there were genesis error}
+		if(x instanceof GenesisError)
+			throw (GenesisError)x;
+		else if(x != null)
+			throw new GenesisError(this, ctx, x);
 	}
 
 	protected void    logGen(GenCtx ctx, Date day, Map inds)
 	{
 		if(LU.isI(log(ctx))) for(Entry e : getEntries())
 			LU.I(log(ctx), DU.date2str(day),
-			     " genesis ", e.getGenesis().getName(),
-			     " invoked times: ", ((Integer)inds.get(e))
+			  " genesis ", e.getGenesis().getName(),
+			  " invoked times: ", inds.get(e)
 			);
 	}
 

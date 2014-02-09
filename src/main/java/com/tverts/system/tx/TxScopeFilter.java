@@ -44,6 +44,11 @@ public class TxScopeFilter extends FilterBase
 			task.setError(e);
 			task.setBreaked();
 		}
+		finally
+		{
+			//!: remove all the transactional contexts
+			TxPoint.getInstance().clearTxContexts();
+		}
 	}
 
 	public void closeFilter(FilterTask task)

@@ -11,10 +11,10 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-/* Spring Framework */
+/* com.tverts: (spring + tx) */
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 
 /* com.tverts: endure */
 
@@ -27,9 +27,6 @@ import com.tverts.endure.types.UnityTypeStructReference;
 import com.tverts.objects.ObjectsReference;
 import com.tverts.objects.StringsReference;
 
-/* com.tverts: system tx */
-
-import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: support */
 
@@ -118,24 +115,23 @@ public class      UnityTypesActivator
 
 	/* protected: UnityTypesInitHiberBase interface */
 
-	@Transactional(rollbackFor = Throwable.class,
-	  propagation = Propagation.REQUIRES_NEW)
 	protected void      ensureEntries
+	  (final Collection<ParseEntry> pes, final Collection<UnityTypeStruct> structs)
+	{
+		//~: do ensure in the transactional context
+		bean(TxBean.class).execute(new Runnable()
+		{
+			public void run()
+			{
+				ensureEntriesDo(pes, structs);
+			}
+		});
+	}
+
+	protected void      ensureEntriesDo
 	  (Collection<ParseEntry> pes, Collection<UnityTypeStruct> structs)
 	{
-		//~: push default transaction context
-		TxPoint.getInstance().setTxContext();
-
-		try
-		{
-			//~: do ensure in the transactional context
-			super.ensureEntries(pes, structs);
-		}
-		finally
-		{
-			//!: pop transaction context
-			TxPoint.getInstance().setTxContext(null);
-		}
+		super.ensureEntries(pes, structs);
 	}
 
 

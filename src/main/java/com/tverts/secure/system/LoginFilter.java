@@ -4,13 +4,10 @@ package com.tverts.secure.system;
 
 import javax.servlet.http.Cookie;
 
-/* Spring framework */
+/* com.tverts: (spring + tx) */
 
-import org.springframework.transaction.annotation.Transactional;
-
-/* com.tverts: hibery */
-
-import com.tverts.hibery.HiberPoint;
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 
 /* com.tverts: servlet (filters) */
 
@@ -18,6 +15,11 @@ import com.tverts.servlet.REQ;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterStage;
 import com.tverts.servlet.filters.FilterTask;
+
+/* com.tverts: endure (core + auth) */
+
+import com.tverts.endure.core.GetDomain;
+import com.tverts.endure.auth.GetAuthLogin;
 
 /* com.tverts: secure */
 
@@ -28,6 +30,7 @@ import com.tverts.secure.session.TimeExpireStrategy;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -274,90 +277,32 @@ public class LoginFilter extends FilterBase
 	/**
 	 * Returns new {@link SecSession} if the bind provided is valid.
 	 */
-	@Transactional
-	protected SecSession checkBind(FilterTask task, String bind)
+	protected SecSession checkBind(FilterTask task, final String bind)
 	{
+		final SecSession[] ses = new SecSession[1];
 
-/*
+		//~: bind the secure session
+		bean(TxBean.class).execute(new Runnable()
+		{
+			public void run()
+			{
+				ses[0] = bean(GetAuthLogin.class).checkBind(bind);
+			}
+		});
 
-select se.id, lo.id from
-  AuthSession se join se.login lo
-where (se.bind = :bind) and
-  (se.closeTime is null) and (lo.closeTime is null)
-
-update AuthSession set bind = null where (id = :id)
-
-*/
-
-		Object row = HiberPoint.getInstance().getSession().createQuery(
-
-"select se.id, lo.id from\n" +
-"  AuthSession se join se.login lo\n" +
-"where (se.bind = :bind) and\n" +
-"  (se.closeTime is null) and (lo.closeTime is null)"
-
-		).
-		  setString("bind", bind).
-		  uniqueResult();
-
-		//?: {not found it}
-		if(row == null)
+		//?: {not bound}
+		if(ses[0] == null)
 			return null;
 
-		String id = (String)((Object[])row)[0];
-		Long   lo = (Long)((Object[])row)[1];
-
-		//!: erase the bind
-		int x = HiberPoint.getInstance().getSession().createQuery(
-
-		  "update AuthSession set bind = null where (id = :id)"
-		).
-		  setString("id", id).
-		  executeUpdate();
-
-		//?: {not updated that row}
-		if(x != 1) return null;
-
-		//~: create the session
-		SecSession secs = new SecSession();
-
-		//~: auth id
-		secs.attr(SecSession.ATTR_AUTH_SESSION, id);
-
-		//~: login key
-		secs.attr(SecSession.ATTR_AUTH_LOGIN, lo);
-
 		//~: set expire strategy + touch
-		secs.setExpireStrategy(getExpireStrategy());
-		secs.getExpireStrategy().touch(secs);
-
-		//~: find the domain key
-
-/*
-
-select d.id from AuthSession au
-  join au.login l join l.domain d
-where (au.id = :id)
-
- */
-		Object d = HiberPoint.getInstance().getSession().createQuery(
-
-"select d.id from AuthSession au\n" +
-"  join au.login l join l.domain d\n" +
-"where (au.id = :id)"
-
-		).
-		  setString("id", (String)id).
-		  uniqueResult();
-
-		//~: set domain
-		if(d == null) throw new IllegalStateException();
-		secs.attr(SecSession.ATTR_DOMAIN_PKEY, (Long)d);
+		ses[0].setExpireStrategy(getExpireStrategy());
+		ses[0].getExpireStrategy().touch(ses[0]);
 
 		//~: set domain cookie
-		setDomainCookie(task, (Long)d);
+		Long domain = (Long) EX.assertn(ses[0].attr(SecSession.ATTR_DOMAIN_PKEY));
+		setDomainCookie(task, domain);
 
-		return secs;
+		return ses[0];
 	}
 
 	protected void       redirectLogin(FilterTask task)
@@ -428,19 +373,19 @@ where (au.id = :id)
 	 * is invoked here when there was valid session, but
 	 * it had expired. Second transaction is so allowed.
 	 */
-	@Transactional
-	protected String     domainCode(Long pkey)
+	protected String     domainCode(final Long pkey)
 	{
+		final String[] res = new String[1];
 
-// select code from Domain where (id = :id)
+		bean(TxBean.class).execute(new Runnable()
+		{
+			public void run()
+			{
+				res[0] = bean(GetDomain.class).getDomainCode(pkey);
+			}
+		});
 
-		return (String) HiberPoint.getInstance().
-		  getSession().createQuery(
-
-"select code from Domain where (id = :id)"
-		).
-		  setLong("id", pkey).
-		  uniqueResult();
+		return res[0];
 	}
 
 	protected void       setDomainCookie(FilterTask task, Long domain)

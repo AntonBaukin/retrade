@@ -15,8 +15,9 @@ import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/* com.tverts: support (logging) */
+/* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
 
@@ -46,9 +47,9 @@ public class ServicesSystem implements Servicer
 			this.services = buildServicesMap();
 
 			//?: {there is no Main Service registered}
-			if(!this.services.containsKey(MainService.NAME))
-				throw new IllegalStateException(
-				  "No Main Service is registered in the system!");
+			EX.assertx( this.services.containsKey(MainService.NAME),
+			  "No Main Service is registered in the system!"
+			);
 
 			//1: order the services
 			this.ordered  = orderServices();
@@ -82,8 +83,7 @@ public class ServicesSystem implements Servicer
 	 */
 	public void service(Event event)
 	{
-		if(event == null)
-			return;
+		EX.assertn(event);
 
 		try
 		{
@@ -110,7 +110,7 @@ public class ServicesSystem implements Servicer
 		}
 		catch(Throwable e)
 		{
-			LU.E(getLog(), e);
+			throw EX.wrap(e);
 		}
 		finally
 		{
@@ -136,20 +136,16 @@ public class ServicesSystem implements Servicer
 
 	public Service  xservice(String suid)
 	{
-		Service service = service(suid);
-
-		if(service == null)
-			throw new IllegalStateException(String.format(
-			  "Service ID with ID '%s' does not exist!", suid
-			));
-
-		return service;
+		return EX.assertn( service(suid),
+		  "Service ID with ID [", suid, "] does not exist!"
+		);
 	}
 
 	public void     send(Event event)
 	{
-		if(getMessenger() == null) throw new IllegalStateException(
-		  "Z-Services System has no Service Messager configured!");
+		EX.assertn( getMessenger(),
+		  "Z-Services System has no Service Messager configured!"
+		);
 
 		getMessenger().sendEvent(event);
 	}
@@ -232,11 +228,7 @@ public class ServicesSystem implements Servicer
 
 	protected Map<String, Service> getServicesMap()
 	{
-		if(services == null) throw new IllegalStateException(
-		  "Z-Services System was not initialized!"
-		);
-
-		return services;
+		return EX.assertn(services, "Z-Services System was not initialized!");
 	}
 
 	protected Map<String, Service> buildServicesMap()
@@ -253,10 +245,10 @@ public class ServicesSystem implements Servicer
 			if(!map.containsKey(service.uid()))
 				map.put(service.uid(), service);
 			//!: service with duplicate UID
-			else throw new IllegalStateException(String.format(
-			  "Error during Z-Services System build: service '%s' is " +
-			  "already registered!", service.uid()
-			));
+			else throw EX.state(
+			  "Error during Z-Services System build: service [",
+			  service.uid(), "] is already registered!"
+			);
 
 		return map;
 	}
@@ -283,11 +275,10 @@ public class ServicesSystem implements Servicer
 
 			//~: check the services do present
 			for(String depend : depends)
-				if(!getServicesMap().containsKey(depend))
-					throw new IllegalArgumentException(String.format(
-					  "Error during Z-Services System build: service '%s' depends" +
-					  " on not existing service '%s'!", service.uid(), depend
-					));
+				EX.assertx( getServicesMap().containsKey(depend),
+				  "Error during Z-Services System build: service [", service.uid(),
+				  "] depends on not existing service [", depend, "]!"
+				);
 
 			//~: add to the dependency map
 			depmap.put(service.uid(),
@@ -311,16 +302,13 @@ public class ServicesSystem implements Servicer
 				String iuid = inspects.iterator().next();
 				inspects.remove(iuid);
 
-				if(closure.contains(iuid))
-					continue;
+				if(closure.contains(iuid)) continue;
 				closure.add(iuid);
 
-				if(iuid.equals(suid))
-					throw new IllegalStateException(String.format(
-					  "Error during Z-Services System build: service '%s' " +
-					  "has cyclyc dependency on itself via '%s' service!",
-					  suid, iuid
-					));
+				EX.assertx( !iuid.equals(suid),
+				  "Error during Z-Services System build: service [", suid,
+				  "] has cyclyc dependency on itself via [", iuid, "] service!"
+				);
 
 				if(depmap.containsKey(iuid))
 					inspects.addAll(depmap.get(iuid));

@@ -10,10 +10,6 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-/* Spring framework */
-
-import org.springframework.transaction.annotation.Transactional;
-
 /* com.tverts: hibery */
 
 import com.tverts.hibery.HiberPoint;
@@ -78,9 +74,11 @@ public abstract class OrdererBase
 	 */
 	protected abstract void    order(OrderRequest request);
 
-	@Transactional
 	protected void             orderInTx(OrderRequest request)
 	{
+		//!: require transactional context
+		TxPoint.txContext();
+
 		this.order(request);
 	}
 
