@@ -26,10 +26,11 @@
 
 
   <!--=================================================
-    =  Transaction Scope                              =
+    =  Transaction Point                              =
     +================================================-->
 
-  <import resource = 'hibernate/txScope.xml'/>
+  <bean name  = 'txPoint' factory-method = 'getInstance'
+        class = 'com.tverts.system.tx.TxPoint'/>
 
 
   <!--=================================================

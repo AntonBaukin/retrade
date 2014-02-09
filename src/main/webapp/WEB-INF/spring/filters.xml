@@ -46,12 +46,7 @@
          · the chained filters. All the following filters are        ·
          · in the context of single transaction                      ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.system.tx.TransactionScopeFilter'>
-
-          <property name = 'scopeBeanName'>
-            <idref bean = 'txScopeBean'/>
-          </property>
-        </bean>
+        <bean class = 'com.tverts.system.tx.TxScopeFilter'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·

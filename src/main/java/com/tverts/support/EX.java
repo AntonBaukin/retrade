@@ -68,7 +68,7 @@ public class EX
 	 */
 	public static Throwable xrt(Throwable e)
 	{
-		while(e instanceof RuntimeException)
+		while((e != null) && RuntimeException.class.equals(e.getClass()))
 			if(e.getCause() == null)
 				return e;
 			else
