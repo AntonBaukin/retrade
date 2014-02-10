@@ -36,12 +36,12 @@
   <dependencies defaultconfmapping = '*->@(*)'>
 
 
-    <!-- Servlet 3.0 [server provided] -->
+    <!-- Servlet 3.1 [server provided] -->
 
     <dependency
       org  = 'javax.servlet'
       name = 'javax.servlet-api'
-      rev  = '3.0.1'
+      rev  = '3.1.0'
       conf = 'sources; compile -> master'/>
 
 
@@ -50,22 +50,22 @@
     <dependency
       org  = 'javax.xml.bind'
       name = 'jaxb-api'
-      rev  = '2.2.4'
+      rev  = '2.2.11'
       conf = 'sources; compile -> master'/>
 
     <dependency
       org  = 'com.sun.xml.bind'
       name = 'jaxb-impl'
-      rev  = '2.2.4'
+      rev  = '2.2.7'
       conf = 'sources; compile -> master'/>
 
 
-    <!-- JUnit 4.8.x [manually provided] -->
+    <!-- JUnit 4.11 [manually provided] -->
 
     <dependency transitive = 'false'
       org  = 'junit'
       name = 'junit'
-      rev  = '4.8.2'
+      rev  = '4.11'
       conf = 'sources; compile -> master'/>
 
   </dependencies>
