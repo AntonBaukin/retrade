@@ -94,14 +94,14 @@ public class GetSecure extends GetObjectBase
 	{
 /*
 
- select r.id from SecAble a join a.rule r where
-   (a.login.id = :login) and (a.set.id = :set)
+ select r.id from SecAble a join a.rule r join a.set s where
+   (a.login.id = :login) and (s.id = :set)
 
  */
 		return (List<Long>) Q(
 
-"select r.id from SecAble a join a.rule r where\n" +
-"  (a.login.id = :login) and (a.set.id = :set)"
+"select r.id from SecAble a join a.rule r join a.set s where\n" +
+"  (a.login.id = :login) and (s.id = :set)"
 
 		).
 		  setLong("login", login).
@@ -113,11 +113,11 @@ public class GetSecure extends GetObjectBase
 	public List<SecAble> findSetAbles(Long login, Long secSet)
 	{
 
-// from SecAble a where (a.login.id = :login) and (a.set.id = :set)
+// select a from SecAble a join a.set s where (a.login.id = :login) and (s.id = :set)
 
 		return (List<SecAble>) Q(
 
-"  from SecAble a where (a.login.id = :login) and (a.set.id = :set)"
+"  select a from SecAble a join a.set s where (a.login.id = :login) and (s.id = :set)"
 
 		).
 		  setLong("login", login).
@@ -131,18 +131,18 @@ public class GetSecure extends GetObjectBase
 	{
 /*
 
- select a from SecAble a join a.rule r where
-  (a.login.id = :login) and (a.set.id = :set) and
+ select a from SecAble a join a.rule r join a.set s where
+  (a.login.id = :login) and (s.id = :set) and
   r.id in (select si.object from SelItem si join si.selSet ss
     where (ss.name = :set) and (ss.login.id = :xlogin))
 
  */
 		return (List<SecAble>) Q(
 
-"select a from SecAble a join a.rule r where\n" +
-"  (a.login.id = :login) and (a.set.id = :set) and\n" +
-"  r.id in (select si.object from SelItem si join si.selSet ss\n" +
-"    where (ss.name = :xset) and (ss.login.id = :xlogin))"
+"select a from SecAble a join a.rule r join a.set s where\n" +
+" (a.login.id = :login) and (s.id = :set) and\n" +
+" r.id in (select si.object from SelItem si join si.selSet ss\n" +
+"   where (ss.name = :set) and (ss.login.id = :xlogin))"
 
 		).
 		  setLong("login",  login).
@@ -335,10 +335,18 @@ public class GetSecure extends GetObjectBase
 	public SecAble getSecAble(Long rule, Long login, Long set)
 	{
 
-// from SecAble a where (a.rule.id = :r) and (a.login.id = :l) and (a.set.id = :s)
+/*
+
+ select a from SecAble a join a.set s where (a.rule.id = :r) and
+   (a.login.id = :l) and (s.id = :s)
+
+ */
 
 		return (SecAble) Q(
-"  from SecAble a where (a.rule.id = :r) and (a.login.id = :l) and (a.set.id = :s)"
+
+"select a from SecAble a join a.set s where (a.rule.id = :r) and \n" +
+"  (a.login.id = :l) and (s.id = :s)"
+
 		).
 		  setLong("r", rule).
 		  setLong("l", login).
@@ -350,11 +358,11 @@ public class GetSecure extends GetObjectBase
 	public List<Long> findSecAbles(SecSet set)
 	{
 
-// select a.id from SecAble a where (a.set = :set)
+// select a.id from SecAble a join a.set s where (s = :set)
 
 		return (List<Long>) Q(
 
-"  select a.id from SecAble a where (a.set = :set)"
+"  select a.id from SecAble a join a.set s where (s = :set)"
 
 		).
 		  setParameter("set", set).
@@ -367,15 +375,15 @@ public class GetSecure extends GetObjectBase
 
 /*
 
- select a1.id from SecAble a1 where (a1.set = :set) and
-   a1.rule in (select a2.rule from SecAble a2 where (a2.set = :check))
+ select a1.id from SecAble a1 join a1.set s1 where (s1 = :set) and
+   a1.rule in (select a2.rule from SecAble a2 join a2.set s2 where (s2 = :check))
 
  */
 
 		return (List<Long>) Q(
 
-" select a1.id from SecAble a1 where (a1.set = :set) and\n" +
-"  a1.rule in (select a2.rule from SecAble a2 where (a2.set = :check))"
+"select a1.id from SecAble a1 join a1.set s1 where (s1 = :set) and\n" +
+"  a1.rule in (select a2.rule from SecAble a2 join a2.set s2 where (s2 = :check))"
 
 		).
 		  setParameter("set",   set).
