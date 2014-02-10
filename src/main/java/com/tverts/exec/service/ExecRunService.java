@@ -129,7 +129,7 @@ public class ExecRunService extends ServiceBase
 		//!: do execute the request in separated transaction
 		try
 		{
-			bean(TxBean.class).setNew(true).execute(new Runnable()
+			bean(TxBean.class).setNew().execute(new Runnable()
 			{
 				public void run()
 				{

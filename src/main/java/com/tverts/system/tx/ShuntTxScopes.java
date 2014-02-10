@@ -86,7 +86,7 @@ public class ShuntTxScopes
 		EX.assertn(this.session, "Outer (main) Hibernate session scope must exist!");
 
 
-		bean(TxBean.class).setNew(true).execute(new Runnable()
+		bean(TxBean.class).setNew().execute(new Runnable()
 		{
 			public void run()
 			{

@@ -52,9 +52,9 @@ public class TxBean
 
 	/* public: configuration interface */
 
-	public TxBean setNew(boolean requireNew)
+	public TxBean setNew()
 	{
-		this.requireNew = requireNew;
+		this.requireNew = true;
 		return this;
 	}
 

@@ -140,7 +140,7 @@ from IncValue iv where (iv.domain = :domain) and
 	{
 		final long[] res = new long[1];
 
-		bean(TxBean.class).setNew(true).execute(new Runnable()
+		bean(TxBean.class).setNew().execute(new Runnable()
 		{
 			public void run()
 			{

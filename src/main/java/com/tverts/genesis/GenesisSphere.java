@@ -200,7 +200,7 @@ public class      GenesisSphere
 			session = ctx.session();
 
 			//~: run in new transaction
-			bean(TxBean.class).setNew(true).execute(new Runnable()
+			bean(TxBean.class).setNew().execute(new Runnable()
 			{
 				public void run()
 				{
