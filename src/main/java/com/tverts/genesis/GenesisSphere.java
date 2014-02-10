@@ -199,10 +199,6 @@ public class      GenesisSphere
 			//~: remember the external session
 			session = ctx.session();
 
-			//~: bind the session to the context
-			if(ctx instanceof GenCtxBase)
-				((GenCtxBase)ctx).setSession(TxPoint.txSession());
-
 			//~: run in new transaction
 			bean(TxBean.class).setNew(true).execute(new Runnable()
 			{
@@ -210,6 +206,10 @@ public class      GenesisSphere
 				{
 					try
 					{
+						//~: bind the session to the context
+						if(ctx instanceof GenCtxBase)
+							((GenCtxBase)ctx).setSession(TxPoint.txSession());
+
 						doGenTx(ctx);
 					}
 					catch(Throwable e)

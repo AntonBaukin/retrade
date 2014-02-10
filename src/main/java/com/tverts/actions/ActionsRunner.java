@@ -3,12 +3,7 @@ package com.tverts.actions;
 /* standard Java classes */
 
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.Map;
-
-/* Spring framework */
-
-import org.springframework.transaction.annotation.Transactional;
 
 /* com.tverts: actions */
 
@@ -19,16 +14,16 @@ import static com.tverts.actions.ActionPhase.TRIGGER;
 
 /* com.tverts: transactions */
 
+import com.tverts.support.EX;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: support */
 
 import com.tverts.support.LU;
-import com.tverts.support.OU;
 
 
 /**
- * COMMENT ActionsRunner
+ * Straight implementation of actions chain invocation.
  *
  * @author anton.baukin@gmail.com
  */
@@ -38,10 +33,7 @@ public class ActionsRunner implements ActionTrigger
 
 	public ActionsRunner(ActionContext context)
 	{
-		if(context == null)
-			throw new IllegalArgumentException();
-
-		this.context = context;
+		this.context = EX.assertn(context);
 	}
 
 
@@ -69,10 +61,7 @@ public class ActionsRunner implements ActionTrigger
 	{
 		try
 		{
-			if(isTransactional())
-				doRunTx();
-			else
-				doRun();
+			doRun();
 		}
 		catch(Throwable e)
 		{
@@ -96,13 +85,6 @@ public class ActionsRunner implements ActionTrigger
 
 
 	/* protected: trigger execution */
-
-	@Transactional
-	protected void       doRunTx()
-	  throws Throwable
-	{
-		doRun();
-	}
 
 	protected void       doRun()
 	  throws Throwable
@@ -140,59 +122,36 @@ public class ActionsRunner implements ActionTrigger
 	protected void       phaseBindContext()
 	  throws Throwable
 	{
-		Iterator<Action> i = getActionContext().
-		  getChain().iterator();
-
-		while(i.hasNext())
-			bindAction(i.next());
+		for(Action action : getActionContext().getChain())
+			bindAction(action);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void       phaseOpenActions()
 	  throws Throwable
 	{
-		Iterator<Action> i = getActionContext().
-		  getChain().iterator();
-
-		while(i.hasNext())
-		{
-			Action action = i.next();
-
-			//!: open the action
+		for(Action action : getActionContext().getChain())
 			getOpenedActions().put(
-			  action, openAction(action));
-		}
+			  action, openAction(action)
+			);
 	}
 
 	protected void       phaseTriggerActions()
 	  throws Throwable
 	{
-		Iterator<Action> i = getActionContext().
-		  getChain().iterator();
-
-		while(i.hasNext())
-		{
-			Action action = i.next();
-
-			//!: trigger the action
+		for(Action action : getActionContext().getChain())
 			triggerAction(action, getOpenedActions().get(action));
-		}
 	}
 
 	protected void       phaseCloseActions()
 	  throws Throwable
 	{
-		Iterator<Action> i = getActionContext().
-		  getChain().iterator();
-
-		while(i.hasNext())
-		{
-			Action action = i.next();
-
+		for(Action action : getActionContext().getChain())
 			//?: {has this action opened} close it
 			if(getOpenedActions().containsKey(action))
+			{
 				closeAction(action, getOpenedActions().get(action));
-		}
+			}
 
 		//~: flush the session
 		TxPoint.txSession(getActionContext().getActionTx()).flush();
@@ -301,10 +260,11 @@ public class ActionsRunner implements ActionTrigger
 	protected void       handleRunError(ActionPhase phase, Throwable error)
 	  throws Throwable
 	{
-		LU.E(getLog(), error,
-		  "Error occured while handling phase '",
-		  phase, "' of actions chain execution! With ",
-		  logsig(getActionContext()), ".");
+		EX.assertn(error);
+
+		LU.E(getLog(), error, "Error occured while handling phase [",
+		  phase, "] of actions chain execution! With ", logsig(getActionContext()), "!"
+		);
 
 		//?: {open | trigger phase} close the actions opened
 		if(OPEN.equals(phase) || TRIGGER.equals(phase)) try
@@ -312,9 +272,9 @@ public class ActionsRunner implements ActionTrigger
 			//!: close ignoring possible errors
 			phaseCloseActions();
 		}
-		finally
+		catch(Throwable e)
 		{
-			throw error;
+			//~: ignore  this error
 		}
 
 		//!: default behaviour for bind and close phases

@@ -1,9 +1,5 @@
 package com.tverts.aggr;
 
-/* Spring Framework */
-
-import org.springframework.transaction.annotation.Transactional;
-
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
@@ -64,7 +60,6 @@ public class AggrPoint
 	 * Note that the service may be not installed in
 	 * this module, this does no matter.
 	 */
-	@Transactional
 	public void postAggrRequest(AggrRequest request)
 	{
 		if(request.getAggrValue() == null)
@@ -104,7 +99,6 @@ public class AggrPoint
 	/**
 	 * Does synchronous execution of the aggregation job.
 	 */
-	@Transactional
 	public void runAggrRequest(AggrJob job)
 	{
 		//!: invoke the root aggregator

@@ -3,8 +3,11 @@ package com.tverts.endure.core;
 /* Spring Framework */
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+
+/* com.tverts: spring + tx */
+
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 
 /* Hibernate Persistence Layer */
 
@@ -129,9 +132,22 @@ from IncValue iv where (iv.domain = :domain) and
 		return r;
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public long txIncValue(Domain d, UnityType type, String selector, int delta)
+	/**
+	 * Increments in a separated transaction.
+	 */
+	public long txIncValue(
+	  final Domain d, final UnityType type, final String selector, final int delta)
 	{
-		return incValue(d, type, selector, delta);
+		final long[] res = new long[1];
+
+		bean(TxBean.class).setNew(true).execute(new Runnable()
+		{
+			public void run()
+			{
+				res[0] = incValue(d, type, selector, delta);
+			}
+		});
+
+		return res[0];
 	}
 }

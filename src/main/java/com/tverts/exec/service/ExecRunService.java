@@ -1,20 +1,15 @@
 package com.tverts.exec.service;
 
-/* Spring Framework */
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 /* com.tverts: services */
 
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
-/* com.tverts: system (tx) */
+/* com.tverts: spring + tx */
 
+import static com.tverts.spring.SpringPoint.bean;
+import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
-import static com.tverts.system.tx.TxPoint.txContext;
-import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: execution */
 
@@ -118,35 +113,47 @@ public class ExecRunService extends ServiceBase
 	  throws Throwable
 	{
 		//~: load the request
-		ExecRequest request = (ExecRequest) txSession().
+		final ExecRequest request = (ExecRequest) TxPoint.txSession().
 		  get(ExecRequest.class, taskKey);
 
 		//?: {does not exist}
-		if(request == null)
-			throw new StateException(String.format(
-			  "Exec Task [%d] does not exist!", taskKey
-			));
+		EX.assertn(request, "Exec Task [", taskKey, "] does not exist!");
 
 		//?: {the request is already executed}
-		if(request.isExecuted())
-			throw new StateException(String.format(
-			  "Exec Task [%d] is already executed!", taskKey
-			));
+		EX.assertx(!request.isExecuted(), "Exec Task [", taskKey, "] is already executed");
 
 		//?: {there is not request object} nothing to do
 		if(request.getRequest() == null)
 			return;
 
 		//!: do execute the request in separated transaction
-		executeTaskTx(request);
+		try
+		{
+			bean(TxBean.class).setNew(true).execute(new Runnable()
+			{
+				public void run()
+				{
+					try
+					{
+						executeTaskTx(request);
+					}
+					catch(Throwable e)
+					{
+						throw EX.wrap(e);
+					}
+				}
+			});
+		}
+		catch(Throwable e)
+		{
+			throw EX.xrt(e);
+		}
 	}
 
 	/**
 	 * Executes the request in it's own transaction
 	 * ({@link ExecTxContext} context)
 	 */
-	@Transactional(rollbackFor = Throwable.class,
-	  propagation = Propagation.REQUIRES_NEW)
 	protected void          executeTaskTx(ExecRequest request)
 	  throws Throwable
 	{
@@ -166,10 +173,10 @@ public class ExecRunService extends ServiceBase
 			try
 			{
 				//!: set rollback only
-				txContext().setRollbackOnly();
+				tx.setRollbackOnly();
 
 				//~: clear the session
-				txSession().clear();
+				TxPoint.txSession(tx).clear();
 			}
 			catch(Throwable e2)
 			{
@@ -180,7 +187,7 @@ public class ExecRunService extends ServiceBase
 		}
 		finally
 		{
-			//!: pop tx context
+			//!: pop execution tx context
 			TxPoint.getInstance().setTxContext(null);
 		}
 	}
@@ -228,7 +235,7 @@ public class ExecRunService extends ServiceBase
 
 	protected ExecTxContext createExecTx(ExecRequest request)
 	{
-		ExecTxContext ctx = new ExecTxContext(txContext());
+		ExecTxContext ctx = new ExecTxContext(TxPoint.txContext());
 
 		ctx.init(request);
 		return ctx;
@@ -243,7 +250,7 @@ public class ExecRunService extends ServiceBase
 	protected void          commitError(long taskKey, Throwable error)
 	{
 		//~: load the request
-		ExecRequest request = (ExecRequest) txSession().
+		ExecRequest request = (ExecRequest) TxPoint.txSession().
 		  load(ExecRequest.class, taskKey);
 
 		Object      result  = null;
@@ -291,6 +298,6 @@ public class ExecRunService extends ServiceBase
 		TxPoint.txn(request);
 
 		//!: flush the session
-		txSession().flush();
+		TxPoint.txSession().flush();
 	}
 }

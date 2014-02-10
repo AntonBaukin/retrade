@@ -20,6 +20,7 @@ public class   RollbackTransaction
 		super(cause);
 	}
 
+
 	/* public: RollbackTransaction interface */
 
 	/**
@@ -41,7 +42,8 @@ public class   RollbackTransaction
 		return this;
 	}
 
+
 	/* private: transaction context */
 
-	private Tx tx;
+	private transient Tx tx;
 }

@@ -112,9 +112,12 @@ public class TxBean
 		  getTxCreator().createTxContext();
 	}
 
-	protected void openTxScope()
+	protected Tx   openTxScope()
 	{
-		TxPoint.getInstance().setTxContext(createTxContext());
+		Tx tx = createTxContext();
+
+		TxPoint.getInstance().setTxContext(tx);
+		return tx;
 	}
 
 	protected void closeTxScope(Throwable error)

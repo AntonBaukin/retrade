@@ -121,7 +121,7 @@ public abstract class GenesisHiberPartBase
 
 	/* protected: batched operation */
 
-	protected void    nestTx(GenCtx ctx, Runnable run)
+	protected void    nestTx(final GenCtx ctx, final Runnable run)
 	{
 		//~: remember the external session
 		Session   session = ctx.session();
@@ -129,12 +129,18 @@ public abstract class GenesisHiberPartBase
 
 		try
 		{
-			//~: bind the session to the context
-			if(ctx instanceof GenCtxBase)
-				((GenCtxBase)ctx).setSession(TxPoint.txSession());
-
 			//!: run the operation in a new transaction
-			bean(TxBean.class).setNew(true).execute(run);
+			bean(TxBean.class).setNew(true).execute(new Runnable()
+			{
+				public void run()
+				{
+					//~: bind the session to the context
+					if(ctx instanceof GenCtxBase)
+						((GenCtxBase)ctx).setSession(TxPoint.txSession());
+
+					run.run();
+				}
+			});
 		}
 		catch(Throwable e)
 		{
