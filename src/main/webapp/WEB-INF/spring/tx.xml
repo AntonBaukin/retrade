@@ -21,11 +21,15 @@
   <tx:annotation-driven mode = 'aspectj'
     transaction-manager = 'transactionManager'/>
 
-  <bean name  = 'transactionManager'
-        class = 'org.springframework.transaction.jta.JtaTransactionManager'>
+
+  <bean name  = 'transactionManager' factory-method = 'getInstance'
+        class = 'com.tverts.spring.system.SpringTransactionManager'>
 
     <property name  = 'transactionManagerName'
               value = 'openejb:/TransactionManager'/>
 
+    <property name  = 'jndiTemplate'>
+      <bean class = 'com.tverts.spring.system.LocalJNDITemplate'/>
+    </property>
   </bean>
 </beans>

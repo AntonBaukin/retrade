@@ -27,7 +27,7 @@
      ==================================================-->
 
     <property name = 'hibernate.connection.provider_class'>
-      org.hibernate.service.jdbc.connections.internal.DatasourceConnectionProviderImpl
+      org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl
     </property>
 
 
@@ -35,14 +35,8 @@
      =  PostgreSQL Database Driver                      =
      ==================================================-->
 
-    <!--
-    <property name = 'hibernate.connection.driver_class'>
-      org.postgresql.Driver
-    </property>
-    -->
-
     <property name = 'hibernate.dialect'>
-      org.hibernate.dialect.PostgreSQL82Dialect
+      org.hibernate.dialect.PostgreSQL9Dialect
     </property>
 
 

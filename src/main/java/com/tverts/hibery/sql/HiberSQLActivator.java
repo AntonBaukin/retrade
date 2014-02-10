@@ -3,7 +3,6 @@ package com.tverts.hibery.sql;
 /* standard Java classes */
 
 import java.net.URL;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +21,7 @@ import org.jdom2.input.SAXBuilder;
 
 import static com.tverts.spring.SpringPoint.bean;
 import com.tverts.system.tx.TxBean;
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: servlet (listeners) */
 
@@ -186,30 +186,17 @@ public class   HiberSQLActivator
 	protected void         executeTasksTx(List<SQLTask> tasks)
 	  throws Exception
 	{
-		//~: open the connection
-		Connection con = HiberSystem.getInstance().openConnection();
-
 		//c: execute the tasks given
 		for(SQLTask task : tasks) try
 		{
-			task.execute(con);
+			task.execute(TxPoint.txSession());
 		}
 		catch(Throwable e)
 		{
-			//~: try to release the connection
-			try
-			{
-				HiberSystem.getInstance().closeConnection(con);
-			}
-			catch(Throwable e2) {}
-
 			//~: report the error
 			throw EX.wrap(e, "Error in SQL Task of class: [",
 			  task.getClass().getName(), "]!");
 		}
-
-		//~: close the connection
-		HiberSystem.getInstance().closeConnection(con);
 	}
 
 

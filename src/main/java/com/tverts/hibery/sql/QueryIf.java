@@ -2,13 +2,14 @@ package com.tverts.hibery.sql;
 
 /* standard Java classes */
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+/* Hibernate Persistence Layer */
+
+import org.hibernate.Session;
 
 /* Java DOM */
 
@@ -65,59 +66,32 @@ public class QueryIf extends SQLTaskBase
 
 	/* protected: SQLTaskBase interface */
 
-	protected boolean required(Connection connection)
-	  throws SQLException
+	@SuppressWarnings("unchecked")
+	protected boolean required(Session session)
 	{
-		if(!super.required(connection))
+		if(!super.required(session))
 			return false;
 
-		Statement s = null;
-
-		for(int i = 0;(i < ifs.size());i++) try
+		for(int i = 0;(i < ifs.size());i++)
 		{
 			//~: true when the result must be empty
-			boolean empty = empties.contains(i);
+			boolean  empty  = empties.contains(i);
 
-			if(s == null)
-				s = connection.createStatement();
-			s.execute(ifs.get(i));
-
-			if(s.getResultSet() == null)
-				throw new IllegalStateException(
-				  "SQL If-Task condition must be a select query!");
-
-			//~: true when the result is not empty
-			boolean gotit = s.getResultSet().next();
+			//~: execute select
+			List result = session.createSQLQuery(ifs.get(i)).list();
 
 			//?: {not that emptiness}
-			if(gotit == empty)
+			if(result.isEmpty() != empty)
 				return false;
-		}
-		finally
-		{
-			if(s != null)
-				s.close();
 		}
 
 		return true;
 	}
 
-	protected void act(Connection connection)
-	  throws SQLException
+	protected void act(Session session)
 	{
-		Statement s = null;
-
-		for(String q : queries) try
-		{
-			if(s == null)
-				s = connection.createStatement();
-			s.execute(q);
-		}
-		finally
-		{
-			if(s != null)
-				s.close();
-		}
+		for(String q : queries)
+			session.createSQLQuery(q).executeUpdate();
 	}
 
 

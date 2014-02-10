@@ -2,8 +2,6 @@ package com.tverts.hibery.system;
 
 /* standard Java classes */
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,7 +17,6 @@ import java.util.Set;
 
 /* Hibernate Persistence Layer */
 
-import com.tverts.support.EX;
 import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
@@ -34,7 +31,6 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.internal.util.collections.IdentitySet;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
 
 /* com.tverts: hibery */
 
@@ -78,17 +74,7 @@ public class HiberSystem
 	@SuppressWarnings("deprecation")
 	public void setSessionFactory(SessionFactory sf)
 	{
-		this.sessionFactory     = sf;
-		this.connectionProvider = null;
-
-		//?: {this factory provides implementation interface}
-		if(sf instanceof SessionFactoryImplementor)
-		{
-			//~: remember the JDBC connections provider
-
-			this.connectionProvider = (((SessionFactoryImplementor)sf).
-			  getJdbcServices().getConnectionProvider());
-		}
+		this.sessionFactory  = sf;
 
 		if(sf != null) try
 		{
@@ -390,32 +376,6 @@ public class HiberSystem
 	}
 
 
-	/* public: access connections provider */
-
-	public Connection openConnection()
-	  throws SQLException
-	{
-		if(connectionProvider == null)
-			throw new IllegalStateException();
-
-		Connection co = connectionProvider.getConnection();
-		EX.assertx(!co.getAutoCommit(), "Got JTA Connection with Auto-Commit!");
-
-		return co;
-	}
-
-	public void       closeConnection(Connection connection)
-	  throws SQLException
-	{
-		if(connection.isClosed())
-			return;
-
-		if(connectionProvider == null)
-			throw new IllegalStateException();
-		connectionProvider.closeConnection(connection);
-	}
-
-
 	/* public: hibernate system survey */
 
 	public Set<Class>             getMappedClasses()
@@ -493,9 +453,8 @@ public class HiberSystem
 
 	/* private: hibernate system points */
 
-	private SessionFactory     sessionFactory;
-	private Configuration      configuration;
-	private ConnectionProvider connectionProvider;
+	private SessionFactory         sessionFactory;
+	private Configuration          configuration;
 
 
 	/* private: hibernate system survey */

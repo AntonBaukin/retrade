@@ -12,7 +12,7 @@ import javax.naming.InitialContext;
 
 
 /**
- * Provides access to JavaEE-JTA environment
+ * Provides access to Java EE JTA environment
  * bound to the local thread.
  *
  * @author anton.baukin@gmail.com
@@ -57,29 +57,8 @@ public class JTAPoint
 		return result;
 	}
 
-
-	/* public: JTAPoint (system) interface */
-
-	/**
-	 * Cleans the thread-bound variables.
-	 * They would be filled on demand.
-	 *
-	 * Invoke this method as the first action
-	 * of the thread income, and as the last one
-	 * before exiting.
-	 *
-	 * Multiple invocations are allowed.
-	 */
-	public void clean()
-	{
-		initialContext.remove();
-	}
-
-
-	/* protected: initial context */
-
 	@SuppressWarnings("unchecked")
-	protected InitialContext buildContext()
+	public InitialContext buildContext()
 	  throws Exception
 	{
 		Hashtable env;
@@ -112,11 +91,29 @@ public class JTAPoint
 		return new InitialContext(env);
 	}
 
-	private static Hashtable contextEnvironment;
+
+	/* public: JTAPoint (system) interface */
+
+	/**
+	 * Cleans the thread-bound variables.
+	 * They would be filled on demand.
+	 *
+	 * Invoke this method as the first action
+	 * of the thread income, and as the last one
+	 * before exiting.
+	 *
+	 * Multiple invocations are allowed.
+	 */
+	public void clean()
+	{
+		initialContext.remove();
+	}
 
 
-	/* thread bound variables */
+	/* thread + static variables */
 
 	private ThreadLocal<InitialContext> initialContext =
 	  new ThreadLocal<InitialContext>();
+
+	private static Hashtable contextEnvironment;
 }

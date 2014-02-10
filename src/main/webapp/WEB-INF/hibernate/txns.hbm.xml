@@ -24,7 +24,7 @@
     </property>
 
     <property name = 'hibernate.transaction.jta.platform'>
-      org.apache.openejb.hibernate.OpenEJBJtaPlatform
+      com.tverts.spring.system.SpringBoundPlatform
     </property>
 
 

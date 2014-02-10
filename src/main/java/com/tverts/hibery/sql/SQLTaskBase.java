@@ -1,9 +1,8 @@
 package com.tverts.hibery.sql;
 
-/* standard Java classes */
+/* Hibernate Persistence Layer */
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.hibernate.Session;
 
 /* Java DOM */
 
@@ -44,24 +43,21 @@ public abstract class SQLTaskBase implements SQLTask
 		  node.getAttributeValue("dialect"));
 	}
 
-	public void       execute(Connection connection)
-	  throws SQLException
+	public void       execute(Session session)
 	{
-		if(required(connection))
-			act(connection);
+		if(required(session))
+			act(session);
 	}
 
 
 	/* protected: execution */
 
-	protected boolean required(Connection connection)
-	  throws SQLException
+	protected boolean required(Session session)
 	{
 		return isSameDialect();
 	}
 
-	protected void    act(Connection connection)
-	  throws SQLException
+	protected void    act(Session session)
 	{}
 
 	protected boolean isSameDialect()

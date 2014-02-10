@@ -1,9 +1,8 @@
 package com.tverts.hibery.sql;
 
-/* standard Java classes */
+/* Hibernate Persistence Layer */
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.hibernate.Session;
 
 /* Java DOM */
 
@@ -23,6 +22,5 @@ public interface SQLTask
 
 	public void configure(Element node);
 
-	public void execute(Connection connection)
-	  throws SQLException;
+	public void execute(Session session);
 }

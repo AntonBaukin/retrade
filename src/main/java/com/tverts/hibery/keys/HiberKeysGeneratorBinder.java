@@ -2,8 +2,6 @@ package com.tverts.hibery.keys;
 
 /* standard Java classes */
 
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.Properties;
 
 /* Hibernate Persistence Layer */
@@ -18,6 +16,7 @@ import org.hibernate.type.Type;
 
 import static com.tverts.spring.SpringPoint.bean;
 import com.tverts.system.tx.TxBean;
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure keys */
 
@@ -131,7 +130,7 @@ public class      HiberKeysGeneratorBinder
 			final PersistentIdentifierGenerator pig =
 			  (PersistentIdentifierGenerator)hgen;
 
-			//!:  ------------------> MUST
+			//!:  ------------> MUST
 			bean(TxBean.class).setNew().execute(new Runnable()			{
 				public void run()
 				{
@@ -164,40 +163,11 @@ public class      HiberKeysGeneratorBinder
 	  throws Exception
 	{
 		//~: create update queries
-		String[]   qs = hgen.sqlCreateStrings(HiberSystem.dialect());
+		String[] qs = hgen.sqlCreateStrings(HiberSystem.dialect());
 
-		//~: open the connection
-		Connection co = HiberSystem.getInstance().openConnection();
-		Statement  st = co.createStatement();
-		Exception  er = null;
-
-		//~: execute the queries
-		try
-		{
-			//~: execute DDL updates
-			for(String q : qs)
-				st.execute(q);
-		}
-		catch(Exception e)
-		{
-			throw er = e;
-		}
-		finally
-		{
-			//~: try to release the connection
-			try
-			{
-				HiberSystem.getInstance().closeConnection(co);
-			}
-			catch(Exception e)
-			{
-				if(er == null) er = e;
-			}
-		}
-
-		//?: {got error} seems sequence exists
-		if(er != null)
-			throw er;
+		//~: execute DDL updates
+		for(String q : qs)
+			TxPoint.txSession().createSQLQuery(q).executeUpdate();
 
 		LU.I(getLog(), "successfully created primary keys sequence [",
 		  hgen.generatorKey().toString(), "]");
