@@ -38,11 +38,6 @@
         </activation-config-property>
 
       </activation-config>
-
-      <resource-ref>
-        <res-ref-name>ConnectLocalMemoryMessagesBroker</res-ref-name>
-        <res-type>javax.jms.ConnectionFactory</res-type>
-      </resource-ref>
     </message-driven>
 
   </enterprise-beans>
