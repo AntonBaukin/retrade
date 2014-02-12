@@ -77,7 +77,7 @@ select au from AuthSession au, ExecRequest er where
   (er.id = :pk) and (au.id = er.sessionId)
 
 */
-		sessionCache = (AuthSession) txSession().createQuery(
+		sessionCache = (AuthSession) txSession(this).createQuery(
 
 "select au from AuthSession au, ExecRequest er where\n" +
 "  (er.id = :pk) and (au.id = er.sessionId)"

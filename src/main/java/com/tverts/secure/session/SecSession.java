@@ -91,18 +91,41 @@ public class SecSession implements Serializable
 		this.attrs = Collections.synchronizedMap(new HashMap());
 	}
 
+	/**
+	 * TODO create SecSession from AuthSession with expire checks
+	 */
+	public SecSession(AuthSession a)
+	{
+		//~: auth session key
+		attr(ATTR_AUTH_SESSION, a.getSessionId());
+
+		//~: login key
+		attr(ATTR_AUTH_LOGIN, a.getLogin().getPrimaryKey());
+
+		//~: domain key
+		attr(ATTR_DOMAIN_PKEY, a.getLogin().getDomain().getPrimaryKey());
+
+		//~: create time
+		attr(ATTR_CREATE_TIME, a.getCreateTime());
+
+		//~: touch time
+		attr(ATTR_TOUCH_TIME, a.getAccessTime());
+	}
+
 
 	/* public: Expire Strategy (attributes) interface */
 
 	@SuppressWarnings("unchecked")
 	public Serializable   attr(Serializable key)
 	{
-		return (Serializable) attrs.get(key);
+		return (Serializable)((attrs == null)?(null):(attrs.get(key)));
 	}
 
 	@SuppressWarnings("unchecked")
 	public Serializable   attr(Serializable key, Serializable val)
 	{
+		if(attrs == null)
+			attrs = new HashMap(7);
 		return (Serializable) attrs.put(key, val);
 	}
 

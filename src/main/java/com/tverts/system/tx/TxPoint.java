@@ -38,11 +38,18 @@ public class TxPoint
 	{}
 
 
-	/* public: TxPoint interface */
+	/* public: TxPoint (static) interface */
 
 	public static Tx      txContext()
 	{
 		return TxPoint.getInstance().getTxContextStrict();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends Tx> T
+	                      txContext(Class<T> cls)
+	{
+		return (T) TxPoint.getInstance().getTxContext(cls);
 	}
 
 	public static Session txSession()
@@ -83,7 +90,10 @@ public class TxPoint
 		((TxEntity)obj).setTxn(tx.txn());
 	}
 
-	public long           newTxn()
+
+	/* public: TxPoint (instance) interface */
+
+	public long    newTxn()
 	{
 		ArrayList<Tx> s = contexts.get();
 		Long          n = null;
@@ -106,18 +116,30 @@ public class TxPoint
 	 * with the current request to the system. The result
 	 * may be undefined.
 	 */
-	public Tx             getTxContext()
+	public Tx      getTxContext()
 	{
 		ArrayList<Tx> s = contexts.get();
 		return (s == null)?(null):
 		  (s.isEmpty())?(null):(s.get(s.size() - 1));
 	}
 
+	public Tx      getTxContext(Class<? extends Tx> cls)
+	{
+		ArrayList<Tx> s = contexts.get();
+		if(s == null) return null;
+
+		for(int i = s.size() - 1;(i >= 0);i--)
+			if(cls.isAssignableFrom(s.get(i).getClass()))
+				return s.get(i);
+
+		return null;
+	}
+
 	/**
 	 * Returns the global transaction context if it presents,
 	 * or raises {@link IllegalStateException}.
 	 */
-	public Tx             getTxContextStrict()
+	public Tx      getTxContextStrict()
 	{
 		return EX.assertn(this.getTxContext(), "Transaction context is not defined!");
 	}
@@ -130,7 +152,7 @@ public class TxPoint
 	 *
 	 * TODO involve special clean method instead of setTxContext(null)
 	 */
-	public void           setTxContext(Tx tx)
+	public void    setTxContext(Tx tx)
 	{
 		ArrayList<Tx> s = contexts.get();
 
@@ -160,7 +182,7 @@ public class TxPoint
 	 * by Spring kernel and the application server. So, the default context
 	 * is just a number of default references.
 	 */
-	public Tx             setTxContext()
+	public Tx      setTxContext()
 	{
 		Tx tx = EX.assertn( getTxCreator().createTxContext(),
 		  "Tx Point was unable to create defualt Transaction Context!"
@@ -171,7 +193,7 @@ public class TxPoint
 		return tx;
 	}
 
-	protected void        clearTxContexts()
+	protected void clearTxContexts()
 	{
 		ArrayList<Tx> s = contexts.get();
 		Throwable     e = null;

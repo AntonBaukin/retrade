@@ -22,7 +22,7 @@ public class TxBean
 {
 	/* public: execution interface */
 
-	public void      execute(Runnable task)
+	public void   execute(Runnable task)
 	{
 		EX.assertn(task);
 
@@ -39,12 +39,9 @@ public class TxBean
 
 			//?: {is pure rollback} not re-throw
 			if(e instanceof RollbackTransaction)
-				if(e.getCause() == null)
-					e = null;
+				e = e.getCause(); //<-- roll back may be not an error
 
-			if(e instanceof RuntimeException)
-				throw (RuntimeException)e;
-			else if(e != null)
+			if(e != null)
 				throw EX.wrap(e);
 		}
 	}

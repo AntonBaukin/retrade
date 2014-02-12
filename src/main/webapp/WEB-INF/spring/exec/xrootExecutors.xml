@@ -31,6 +31,12 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.exec.api.InsertEntitiesDispatcher'/>
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · System tasks
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.exec.api.system.ExecSelfShunt'/>
+
       </list>
     </property>
   </bean>

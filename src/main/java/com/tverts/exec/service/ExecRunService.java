@@ -11,6 +11,11 @@ import static com.tverts.spring.SpringPoint.bean;
 import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
 
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
+import com.tverts.secure.session.SecSession;
+
 /* com.tverts: execution */
 
 import com.tverts.exec.ExecPoint;
@@ -165,6 +170,9 @@ public class ExecRunService extends ServiceBase
 			//~: push execution transactional context
 			TxPoint.getInstance().setTxContext(tx);
 
+			//~: bind secure session
+			SecPoint.getInstance().setSecSession(createSecSession(tx));
+
 			//!: actually execute
 			executeTaskDo(request);
 		}
@@ -187,7 +195,10 @@ public class ExecRunService extends ServiceBase
 		}
 		finally
 		{
-			//!: pop execution tx context
+			//~: unbind secure session
+			SecPoint.getInstance().setSecSession(null);
+
+			//~: pop execution tx context
 			TxPoint.getInstance().setTxContext(null);
 		}
 	}
@@ -239,6 +250,11 @@ public class ExecRunService extends ServiceBase
 
 		ctx.init(request);
 		return ctx;
+	}
+
+	protected SecSession    createSecSession(ExecTxContext tx)
+	{
+		return new SecSession(tx.getAuthSession());
 	}
 
 	/**

@@ -26,7 +26,6 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.GetDomain;
 import com.tverts.endure.auth.ActAuthSession;
-import com.tverts.endure.auth.Auth;
 import com.tverts.endure.auth.AuthLogin;
 import com.tverts.endure.auth.AuthSession;
 import com.tverts.endure.auth.GetAuthLogin;
@@ -79,11 +78,9 @@ public final class SecPoint
 
 	public static SecSession secSession()
 	{
-		SecSession secs = INSTANCE.getSecSession();
-
-		if(secs == null) throw EX.state(
-		  "No Secure Session instance is bound to the current thread!");
-		return secs;
+		return EX.assertn( INSTANCE.getSecSession(),
+		  "No Secure Session instance is bound to the current thread!"
+		);
 	}
 
 	public static Long       domain()
