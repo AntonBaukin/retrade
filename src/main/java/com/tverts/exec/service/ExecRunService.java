@@ -134,20 +134,25 @@ public class ExecRunService extends ServiceBase
 		//!: do execute the request in separated transaction
 		try
 		{
-			bean(TxBean.class).setNew().execute(new Runnable()
-			{
-				public void run()
+			//?: {already in execution-tx} just invoke
+			if(TxPoint.txContext(ExecTxContext.class) != null)
+				executeTaskTx(request);
+			//!: execute in the scopes (with new transaction)
+			else
+				bean(TxBean.class).setNew().execute(new Runnable()
 				{
-					try
+					public void run()
 					{
-						executeTaskTx(request);
+						try
+						{
+							executeTaskTx(request);
+						}
+						catch(Throwable e)
+						{
+							throw EX.wrap(e);
+						}
 					}
-					catch(Throwable e)
-					{
-						throw EX.wrap(e);
-					}
-				}
-			});
+				});
 		}
 		catch(Throwable e)
 		{
