@@ -5,9 +5,14 @@ package com.tverts.hibery.system;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.event.service.spi.EventListenerRegistry;
+import org.hibernate.event.spi.EventType;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.metamodel.source.MetadataImplementor;
 import org.hibernate.service.spi.SessionFactoryServiceRegistry;
+
+/* com.tverts: hibery (events) */
+
+import com.tverts.hibery.system.events.OnPostLoadEvent;
 
 
 /**
@@ -46,5 +51,7 @@ public class HiberSystemIntegration implements Integrator
 
 	@SuppressWarnings("unchecked")
 	protected void registerEventListeners(EventListenerRegistry er)
-	{}
+	{
+		er.appendListeners(EventType.POST_LOAD, new OnPostLoadEvent());
+	}
 }

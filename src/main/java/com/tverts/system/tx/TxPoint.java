@@ -31,7 +31,7 @@ public class TxPoint
 		return INSTANCE;
 	}
 
-	private static final TxPoint INSTANCE =
+	public static final TxPoint INSTANCE =
 	  new TxPoint();
 
 	protected TxPoint()
@@ -119,8 +119,7 @@ public class TxPoint
 	public Tx      getTxContext()
 	{
 		ArrayList<Tx> s = contexts.get();
-		return (s == null)?(null):
-		  (s.isEmpty())?(null):(s.get(s.size() - 1));
+		return ((s == null) || s.isEmpty())?(null):(s.get(s.size() - 1));
 	}
 
 	public Tx      getTxContext(Class<? extends Tx> cls)

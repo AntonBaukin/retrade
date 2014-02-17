@@ -2,6 +2,8 @@ package com.tverts.system.tx;
 
 /* standard Java classes */
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 /* Hibernate Persistence Layer */
@@ -124,6 +126,29 @@ class SystemTx implements Tx
 		return this.txid;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <I> void        set(Class<I> cls, I instance)
+	{
+		EX.assertx((cls != null) && ((instance == null) ||
+		  cls.isAssignableFrom(instance.getClass()))
+		);
+
+		if(instance != null)
+		{
+			if(adapts == null)
+				adapts = new HashMap(3);
+			adapts.put(cls, instance);
+		}
+		else if(adapts != null)
+			adapts.remove(cls);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <I> I           get(Class<I> cls)
+	{
+		return (I)((adapts == null)?(null):(adapts.get(cls)));
+	}
+
 
 	/* private: the context state */
 
@@ -131,6 +156,7 @@ class SystemTx implements Tx
 	private Long           txn;
 	private String         txid;
 	private boolean        rollbackOnly;
+	private Map            adapts;
 
 
 

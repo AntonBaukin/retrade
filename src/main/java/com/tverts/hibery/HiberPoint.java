@@ -10,6 +10,8 @@ import java.util.Collection;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.engine.spi.PersistenceContext;
+import org.hibernate.engine.spi.SessionImplementor;
 
 /* com.tverts: endure (core) */
 
@@ -217,29 +219,22 @@ public class HiberPoint
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void    evict(Session s, Collection objs)
+	public static void    readOnly(Session s, Collection objs)
 	{
+		PersistenceContext pc = ((SessionImplementor)s).
+		  getPersistenceContext();
+
 		for(Object o : objs)
-			s.evict(o);
+			pc.setReadOnly(o, true);
 	}
 
-	public static void    evict(Session s, Object... objs)
+	public static void    readOnly(Session s, Object... objs)
 	{
-		for(Object o : objs)
-			s.evict(o);
-	}
+		PersistenceContext pc = ((SessionImplementor)s).
+		  getPersistenceContext();
 
-	@SuppressWarnings("unchecked")
-	public static void    read(Session s, Collection objs)
-	{
 		for(Object o : objs)
-			s.setReadOnly(o, true);
-	}
-
-	public static void    read(Session s, Object... objs)
-	{
-		for(Object o : objs)
-			s.setReadOnly(o, true);
+			pc.setReadOnly(o, true);
 	}
 
 

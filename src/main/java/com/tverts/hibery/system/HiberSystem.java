@@ -409,6 +409,25 @@ public class HiberSystem
 		  getNumberOfManagedEntities();
 	}
 
+	public static Map<String, Integer>
+	                  debugContextStat(Session s)
+	{
+		Map<String, Integer> res = new HashMap<String, Integer>(101);
+
+		//~: get the entries of the context
+		Entry<Object, EntityEntry>[] entries = ((SessionImplementor)s).
+		  getPersistenceContext().reentrantSafeEntityEntries();
+
+		for(Entry<Object, EntityEntry> e : entries)
+		{
+			Integer n = res.get(e.getValue().getEntityName());
+			n = (n == null)?(1):(n + 1);
+			res.put(e.getValue().getEntityName(), n);
+		}
+
+		return res;
+	}
+
 
 	/* protected: hibernate system survey */
 

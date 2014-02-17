@@ -11,6 +11,10 @@ import com.tverts.api.core.Holder;
 import com.tverts.api.core.TwoKeysObject;
 import com.tverts.api.core.UpdateEntities;
 
+/* com.tverts: system (tx) */
+
+import com.tverts.system.tx.Tx;
+
 
 /**
  * Helper superclass for {@link UpdateEntities} executors.
@@ -82,6 +86,9 @@ public abstract class UpdateEntityBase extends ExecutorBase
 		  getClass().getSimpleName(), h.getEntity().getClass().getName()
 		));
 
+		//~: setup the tx-context
+		setupTxContext(tx());
+
 		//~: get the instance
 		Object object = session().get(getUnityClass(h), pk);
 
@@ -96,6 +103,9 @@ public abstract class UpdateEntityBase extends ExecutorBase
 
 		return object;
 	}
+
+	protected void             setupTxContext(Tx tx)
+	{}
 
 	protected void             checkEntity(Object obj)
 	{

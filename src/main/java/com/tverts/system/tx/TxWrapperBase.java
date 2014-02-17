@@ -60,6 +60,16 @@ public class TxWrapperBase implements TxWrapper
 		return tx.txid();
 	}
 
+	public <I> I          get(Class<I> cls)
+	{
+		return tx.get(cls);
+	}
+
+	public <I> void       set(Class<I> cls, I instance)
+	{
+		tx.set(cls, instance);
+	}
+
 
 	/* public: TxWrapper interface */
 

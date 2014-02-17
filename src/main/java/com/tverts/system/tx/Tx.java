@@ -62,4 +62,11 @@ public interface Tx
 	 * Identifier of the transaction object.
 	 */
 	public String         txid();
+
+	/**
+	 * Adapts the context to the given interface.
+	 */
+	public <I> void       set(Class<I> cls, I instance);
+
+	public <I> I          get(Class<I> cls);
 }
