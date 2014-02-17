@@ -57,4 +57,9 @@ public interface Tx
 	 * rollback the transaction.
 	 */
 	public void           setRollbackOnly();
+
+	/**
+	 * Identifier of the transaction object.
+	 */
+	public String         txid();
 }

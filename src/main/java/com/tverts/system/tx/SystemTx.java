@@ -2,6 +2,8 @@ package com.tverts.system.tx;
 
 /* Hibernate Persistence Layer */
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -15,9 +17,14 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import com.tverts.hibery.HiberPoint;
 import com.tverts.hibery.system.HiberSystem;
 
-/* com.tverts: system tx */
+/* com.tverts: system (tx) */
 
 import com.tverts.system.tx.TxPoint.TxContextCreator;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -40,29 +47,19 @@ class SystemTx implements Tx
 
 	private SystemTx(SessionFactory sf)
 	{
-		if(sf == null) throw new IllegalArgumentException(
-		  "System Tx Context can't be created without valid " +
+		this.sessionFactory = EX.assertn( sf,
+		  "System Tx Context can't be created without valid ",
 		  "Hibernate Session Factory provided!"
 		);
 
-		this.sessionFactory = sf;
+		this.txid = SU.cats(TXID.incrementAndGet(), '-',
+		  SU.i2h(System.currentTimeMillis()));
 	}
-
-	static final TxContextCreator CREATOR = new TxContextCreator()
-	{
-		/* public: TxContextCreator interface */
-
-		public Tx createTxContext()
-		{
-			return new SystemTx(
-			  HiberPoint.getInstance().getSessionFactory());
-		}
-	};
 
 
 	/* public: TxContext interface */
 
-	public long           txn()
+	public long            txn()
 	{
 		if(txn != null)
 			return txn;
@@ -70,13 +67,13 @@ class SystemTx implements Tx
 		return (txn = newTxn());
 	}
 
-	public long           newTxn()
+	public long            newTxn()
 	{
 		return HiberSystem.getInstance().
 		  createTxNumber(sessionFactory, this);
 	}
 
-	public void           free()
+	public void            free()
 	{
 		if(!isRollbackOnly()) try
 		{
@@ -92,22 +89,22 @@ class SystemTx implements Tx
 		}
 	}
 
-	public SessionFactory getSessionFactory()
+	public SessionFactory  getSessionFactory()
 	{
 		return this.sessionFactory;
 	}
 
-	public boolean        isRollbackOnly()
+	public boolean         isRollbackOnly()
 	{
 		return this.rollbackOnly;
 	}
 
-	public void           setRollbackFlag()
+	public void            setRollbackFlag()
 	{
 		setRollbackOnly();
 	}
 
-	public void           setRollbackOnly()
+	public void            setRollbackOnly()
 	{
 		this.rollbackOnly = true;
 
@@ -122,10 +119,34 @@ class SystemTx implements Tx
 		}
 	}
 
+	public String          txid()
+	{
+		return this.txid;
+	}
+
 
 	/* private: the context state */
 
 	private SessionFactory sessionFactory;
 	private Long           txn;
+	private String         txid;
 	private boolean        rollbackOnly;
+
+
+
+	/* private: static context */
+
+	static final TxContextCreator CREATOR = new TxContextCreator()
+	{
+		/* public: TxContextCreator interface */
+
+		public Tx createTxContext()
+		{
+			return new SystemTx(
+			  HiberPoint.getInstance().getSessionFactory());
+		}
+	};
+
+	static final AtomicLong TXID =
+	  new AtomicLong();
 }

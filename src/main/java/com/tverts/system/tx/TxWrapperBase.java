@@ -55,6 +55,11 @@ public class TxWrapperBase implements TxWrapper
 		tx.setRollbackOnly();
 	}
 
+	public String         txid()
+	{
+		return tx.txid();
+	}
+
 
 	/* public: TxWrapper interface */
 

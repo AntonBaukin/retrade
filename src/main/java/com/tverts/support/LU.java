@@ -17,6 +17,7 @@ import com.tverts.support.logs.LogPoint;
 /* com.tverts: support  */
 
 import static com.tverts.support.SU.cat;
+import static com.tverts.support.SU.lenum;
 
 
 /**
@@ -41,6 +42,15 @@ public class LU
 	 */
 	public static final LogLevel[] LEVELS    =
 	  LogLevel.LEVELS;
+
+
+	/* special logging destinations */
+
+	/**
+	 * Destination for debugging purposes.
+	 */
+	public static final String LOG_DEBUG =
+	  "com.tverts.debug";
 
 
 	/* access logging levels */
@@ -178,26 +188,23 @@ public class LU
 	{
 		if(obj == null) return "null";
 
-		StringBuilder s = new StringBuilder(64).
-		  append(obj.getClass().getSimpleName());
-
 		if(obj instanceof NumericIdentity)
-			s.append(" [").append(((NumericIdentity)obj).getPrimaryKey()).append(']');
-		else
-			s.append('@').append(System.identityHashCode(obj));
+			return sig((NumericIdentity) obj);
 
-		return s.toString();
+		return SU.cats(
+		  obj.getClass().getSimpleName(), '@',
+		  SU.i2h(System.identityHashCode(obj))
+		);
 	}
 
-	public static String sig(PrimaryIdentity obj)
+	public static String sig(NumericIdentity obj)
 	{
 		if(obj == null) return "null";
 
-		return String.format(
-		  "%s[%s]@%d ",
-		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(),
+		return SU.cats(
+		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(), " [",
 		  (obj.getPrimaryKey() == null)?("NO KEY"):(obj.getPrimaryKey().toString()),
-		  System.identityHashCode(obj)
+		  "]@", SU.i2h(System.identityHashCode(obj))
 		);
 	}
 
@@ -255,5 +262,15 @@ public class LU
 	public static String getLogBased(Class base, Object obj)
 	{
 		return getLogBased(base, obj.getClass());
+	}
+
+	public static String td(long initial)
+	{
+		long   d = System.currentTimeMillis() - initial;
+		String z = lenum(3, d % 1000);
+		String s = lenum(2, (d / 1000) % 60);
+		String m = Long.toString(d / 60000);
+
+		return m + ':' + s + '.' + z;
 	}
 }

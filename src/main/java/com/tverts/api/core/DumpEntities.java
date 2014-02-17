@@ -136,6 +136,30 @@ public class DumpEntities implements Serializable
 	}
 
 
+
+	/* public: Object interface */
+
+	public String toString()
+	{
+		StringBuilder s = new StringBuilder(128);
+		s.append(getClass().getSimpleName());
+
+		if(entityClass != null)
+			s.append(" -> ").append(entityClass.getSimpleName());
+
+		if(unityType != null)
+			s.append(" {").append(unityType).append('}');
+
+		if((minTx != null) || (maxTx != null)) s.
+		  append(" tx-[").append((minTx == null)?(""):("" + minTx)).
+		  append(',').append((maxTx == null)?(""):("" + maxTx)).append(']');
+
+		s.append(" > ").append(minPkey);
+
+		return s.toString();
+	}
+
+
 	/* select parameters */
 
 	private Class  entityClass;

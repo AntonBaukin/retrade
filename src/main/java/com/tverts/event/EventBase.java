@@ -5,7 +5,13 @@ package com.tverts.event;
 import java.util.HashMap;
 import java.util.Map;
 
+/* com.tverts: endure */
+
 import com.tverts.endure.NumericIdentity;
+
+/* com.tverts: support */
+
+import com.tverts.support.LU;
 
 
 /**
@@ -70,9 +76,8 @@ public abstract class EventBase implements Event
 	{
 		StringBuilder s = new StringBuilder(32);
 
-		//~: event class name
-		s.append('[').
-		  append(this.getClass().getSimpleName()).
+		//~: event signature
+		s.append('[').append(LU.sig(this)).
 		//~: target class name
 		  append("] on target [").
 		  append(target().getClass().getSimpleName()).

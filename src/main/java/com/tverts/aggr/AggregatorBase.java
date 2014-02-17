@@ -69,24 +69,29 @@ public abstract class AggregatorBase
 
 	/* public: Aggregator interface */
 
+	/**
+	 * TODO turn on aggregation!
+	 */
 	public void aggregate(AggrJob job)
 	{
 		AggrStruct struct;
 
 		//?: {this aggregator can handle the job} invoke it
 		if(isJobSupported(job))
+			job.complete(true);
+
 			//?: {processed aggregation} mark the job complete
-			if(aggregate(struct = createStruct(job)))
-			{
-				//~: touch the aggregated value instance
-				touchAggrValue(struct);
-
-				//~: update the owner of the aggregated value
-				updateAggrOwner(struct);
-
-				//!: mark the job as completed
-				job.complete(true);
-			}
+//			if(aggregate(struct = createStruct(job)))
+//			{
+//				//~: touch the aggregated value instance
+//				touchAggrValue(struct);
+//
+//				//~: update the owner of the aggregated value
+//				updateAggrOwner(struct);
+//
+//				//!: mark the job as completed
+//				job.complete(true);
+//			}
 	}
 
 

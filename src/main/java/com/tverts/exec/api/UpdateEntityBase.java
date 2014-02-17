@@ -102,4 +102,9 @@ public abstract class UpdateEntityBase extends ExecutorBase
 		//sec: check the domain
 		checkDomain(obj);
 	}
+
+	protected String           getLog()
+	{
+		return getClass().getName();
+	}
 }

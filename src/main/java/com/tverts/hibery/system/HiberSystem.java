@@ -40,6 +40,7 @@ import com.tverts.endure.keys.KeysPoint;
 /* com.tverts: system (tx) */
 
 import com.tverts.system.tx.Tx;
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure (core) */
 
@@ -392,6 +393,20 @@ public class HiberSystem
 	{
 		Set<Class> ds = descendants.get(entityClass);
 		return (ds != null) && !ds.isEmpty();
+	}
+
+
+	/* public: hibernate system debug */
+
+	public static int debugContextSize()
+	{
+		return debugContextSize(TxPoint.txSession());
+	}
+
+	public static int debugContextSize(Session s)
+	{
+		return ((SessionImplementor)s).getPersistenceContext().
+		  getNumberOfManagedEntities();
 	}
 
 

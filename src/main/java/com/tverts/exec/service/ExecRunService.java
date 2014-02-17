@@ -11,6 +11,11 @@ import static com.tverts.spring.SpringPoint.bean;
 import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
 
+/* com.tverts: api */
+
+import com.tverts.api.Payload;
+import com.tverts.api.Ping;
+
 /* com.tverts: secure */
 
 import com.tverts.secure.SecPoint;
@@ -136,16 +141,20 @@ public class ExecRunService extends ServiceBase
 		{
 			//?: {already in execution-tx} just invoke
 			if(TxPoint.txContext(ExecTxContext.class) != null)
-				executeTaskTx(request);
-			//!: execute in the scopes (with new transaction)
+				executeTaskTx(request, null);
+			//~: execute in the scopes (with new transaction)
 			else
+			{
+				final String[] txid = new String[1];
+				long           td   = System.currentTimeMillis();
+
 				bean(TxBean.class).setNew().execute(new Runnable()
 				{
 					public void run()
 					{
 						try
 						{
-							executeTaskTx(request);
+							executeTaskTx(request, txid);
 						}
 						catch(Throwable e)
 						{
@@ -153,6 +162,10 @@ public class ExecRunService extends ServiceBase
 						}
 					}
 				});
+
+				if(LU.isD(getExLog()))
+					LU.D(getExLog(), ")-[", txid[0], "]-tx in ", LU.td(td));
+			}
 		}
 		catch(Throwable e)
 		{
@@ -164,7 +177,7 @@ public class ExecRunService extends ServiceBase
 	 * Executes the request in it's own transaction
 	 * ({@link ExecTxContext} context)
 	 */
-	protected void          executeTaskTx(ExecRequest request)
+	protected void          executeTaskTx(ExecRequest request, String[] txid)
 	  throws Throwable
 	{
 		//!: create execution Tx context
@@ -174,6 +187,10 @@ public class ExecRunService extends ServiceBase
 		{
 			//~: push execution transactional context
 			TxPoint.getInstance().setTxContext(tx);
+			if(txid != null) txid[0] = tx.txid();
+
+			if(LU.isD(getExLog()))
+				LU.D(getExLog(), "tx-[", txid[0], "]-(");
 
 			//~: bind secure session
 			SecPoint.getInstance().setSecSession(createSecSession(tx));
@@ -224,6 +241,8 @@ public class ExecRunService extends ServiceBase
 			  "Can't translate XML to Java Object!", e
 			);
 		}
+
+		if(LU.isD(getExLog())) LU.D(getExLog(), "request [", logsig(object), ']');
 
 		//~: execute the request object
 		object = ExecPoint.execute(object);
@@ -320,5 +339,33 @@ public class ExecRunService extends ServiceBase
 
 		//!: flush the session
 		TxPoint.txSession().flush();
+	}
+
+
+	/* protected: logging */
+
+	protected String getExLog()
+	{
+		return this.getClass().getName();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected String logsig(Object request)
+	{
+		if(!(request instanceof Ping))
+			return LU.sig(request);
+
+		Object obj = ((Ping)request).getRequest();
+		if(obj == null) return LU.sig(request);
+
+		if(!(obj instanceof Payload))
+			return LU.sig(obj);
+
+		Object op = ((Payload)obj).getOperation();
+		if(op == null) return LU.sig(obj);
+
+		String st = op.toString();
+		String xs = op.getClass().getName() + "@" + Integer.toHexString(op.hashCode());
+		return ((st != null) && !st.equals(xs))?(st):LU.sig(op);
 	}
 }

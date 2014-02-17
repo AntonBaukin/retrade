@@ -49,13 +49,18 @@ public abstract class InsertEntityBase extends ExecutorBase
 	 */
 	protected abstract boolean isKnown(Holder holder);
 
-	protected Long insert(Object source)
+	protected Long   insert(Object source)
 	{
 		throw EX.unop();
 	}
 
-	protected Long insert(InsertHolder h)
+	protected Long   insert(InsertHolder h)
 	{
 		return insert(h.getHolder().getEntity());
+	}
+
+	protected String getLog()
+	{
+		return getClass().getName();
 	}
 }

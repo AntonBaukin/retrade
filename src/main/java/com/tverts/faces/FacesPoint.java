@@ -2,8 +2,8 @@ package com.tverts.faces;
 
 /* JavaServer Faces */
 
-
 import javax.faces.context.FacesContext;
+
 
 /**
  * Provides utility operations helping with JSF.

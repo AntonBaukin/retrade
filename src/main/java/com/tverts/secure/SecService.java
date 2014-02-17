@@ -33,6 +33,7 @@ import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: support */
 
+import com.tverts.support.LU;
 import static com.tverts.support.SU.cats;
 import static com.tverts.support.SU.sXe;
 import static com.tverts.support.SU.scat;
@@ -86,8 +87,22 @@ public class      SecService
 
 	public void react(com.tverts.event.Event event)
 	{
+		long td = System.currentTimeMillis();
+
 		for(SecForce f : forces.dereferObjects())
+		{
+			long xd = System.currentTimeMillis();
+
 			f.react(event);
+
+			if((System.currentTimeMillis() - xd > 100L) && LU.isD(getLog()))
+				LU.D(getLog(), "secure force ", f.getClass().getSimpleName(),
+				  " uid [", f.uid(), "] took ", LU.td(xd), '!'
+				);
+		}
+
+		if((System.currentTimeMillis() - td > 200L)  && LU.isD(getLog()))
+		  LU.D(getLog(), "secure for event ", LU.sig(event), " took ", LU.td(td));
 	}
 
 

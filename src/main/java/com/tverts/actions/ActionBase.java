@@ -61,9 +61,23 @@ public abstract class ActionBase implements Action
 
 		try
 		{
+			long    td = System.currentTimeMillis();
+			boolean ok = isPredicate();
+
+			if(System.currentTimeMillis() - td > 150L) LU.D(LU.LOG_DEBUG,
+			  getClass().getSimpleName(), " evaluation of predicate ",
+			  (getPredicate() == null)?(""):(getPredicate().getClass().getSimpleName()),
+			  " took ", LU.td(td), '!');
+
 			//?: {predicate allows} invoke the action
-			if(isPredicate())
+			if(ok)
+			{
+				td = System.currentTimeMillis();
 				execute();
+
+				if(System.currentTimeMillis() - td > 250L) LU.D(LU.LOG_DEBUG,
+				  getClass().getSimpleName(), " execution took ", LU.td(td), '!');
+			}
 		}
 		catch(Throwable e)
 		{

@@ -37,6 +37,29 @@ public class UpdateEntities implements Serializable
 	}
 
 
+	/* public: Object interface */
+
+	public String toString()
+	{
+		StringBuilder s = new StringBuilder(128);
+		s.append(getClass().getSimpleName());
+
+		//~: take the first holder
+		Holder h = ((entities == null) || entities.isEmpty())?(null):(entities.get(0));
+		if(h == null) return s.toString();
+
+		s.append(" [").append(entities.size()).append(']');
+
+		if(h.getTypeClass() != null)
+			s.append(" -> ").append(h.getTypeClass().getSimpleName());
+
+		if(h.getTypeName() != null)
+			s.append(" {").append(h.getTypeName()).append('}');
+
+		return s.toString();
+	}
+
+
 	/* the entities */
 
 	private List<Holder> entities =

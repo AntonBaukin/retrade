@@ -223,11 +223,9 @@ public abstract class SecForceBase
 		link.setRule(rule);
 
 		//~: target unity
-		if(target.getUnity() == null)
-			throw EX.state(logsig(), " Sec Link target [",
-			  target.getPrimaryKey(), "] has no Unified Mirror!"
-			);
-		link.setTarget(target.getUnity());
+		link.setTarget(EX.assertn(target.getUnity(), logsig(),
+		  " Sec Link target [", target.getPrimaryKey(), "] has no Unified Mirror!"
+		));
 
 		//~: deny-allow
 		if(!allow) link.setDeny();

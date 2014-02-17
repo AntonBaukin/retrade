@@ -644,6 +644,61 @@ public class SU
 
 	/* hexadecimal strings */
 
+	public static String  i2h(int n)
+	{
+		char[] s = new char[9];
+		int    m = 0; if(n < 0) { m = 1; n = -n; s[0] = '-'; }
+
+		//~: translate
+		for(int i = m, j = 28;(j >= 0);j -= 4, i++)
+			s[i] = BYTES2HEX[ (n >>> j) & 0x0F ];
+
+		//~: index leading zeros
+		int x; for(x = m;(x < 9);x++)
+			if(s[x] != '0') break;
+		x -= m;
+
+		//~: move to that positions
+		if(x != 0) for(int i = m;(i + x < 9);i++)
+			s[i] = s[i + x];
+
+		//~: the valuable length
+		int l = 9 - (1 - m) - x;
+		if(l == 0) { s[0] = '0'; l = 1; }
+
+		return new String(s, 0, l);
+	}
+
+	public static String  i2h(long n)
+	{
+		char[] s = new char[17];
+		int    m = 0; if(n < 0) { m = 1; n = -n; s[0] = '-'; }
+
+		//~: translate
+		for(int i = m, j = 60;(j >= 0);j -= 4, i++)
+			s[i] = BYTES2HEX[ (int)(n >>> j) & 0x0F ];
+
+		//~: index leading zeros
+		int x; for(x = m;(x < 17);x++)
+			if(s[x] != '0') break;
+		x -= m;
+
+		//~: move to that positions
+		if(x != 0) for(int i = m;(i + x < 17);i++)
+			s[i] = s[i + x];
+
+		//~: the valuable length
+		int l = 17 - (1 - m) - x;
+		if(l == 0) { s[0] = '0'; l = 1; }
+
+		return new String(s, 0, l);
+	}
+
+	public static void main(String[] argv)
+	{
+		int a = 0;
+	}
+
 	public static char[]  bytes2hex(byte[] a)
 	{
 		if(a == null) return null;
