@@ -5,6 +5,11 @@ package com.tverts.actions;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+/* com.tverts: hibery + tx */
+
+import com.tverts.hibery.HiberPoint;
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: actions */
 
 import static com.tverts.actions.ActionPhase.BIND;
@@ -148,6 +153,9 @@ public class ActionsRunner implements ActionTrigger
 			{
 				closeAction(action, getOpenedActions().get(action));
 			}
+
+		//~: flush the session
+		HiberPoint.flush(TxPoint.txSession(getActionContext().getActionTx()));
 	}
 
 	protected void       bindAction(Action action)

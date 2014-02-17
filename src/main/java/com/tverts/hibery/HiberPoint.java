@@ -197,30 +197,13 @@ public class HiberPoint
 	 */
 	public static final Object CLEAR = new Object();
 
-	/**
-	 * Flush flag that explicitly tells
-	 * to flush the whole session.
-	 *
-	 * Note that this operation is ineffective
-	 * for huge persistent contexts!
-	 *
-	 * This flag is implicitly set when
-	 * {@link #CLEAR} is set.
-	 */
-	public static final Object FLUSH = new Object();
-
 	public static void    flush(Session s, Object... opts)
 	{
 		//?: {clear session}
 		boolean clear = false;
 		for(Object opt : opts) clear = clear || (opt == CLEAR);
 
-		//?: {flush all}
-		boolean flush = clear;
-		for(Object opt : opts) flush = flush || (opt == FLUSH);
-
 		//~: flush operation
-		if(flush)
 		{
 			long td = System.currentTimeMillis();
 			s.flush();
