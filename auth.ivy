@@ -62,11 +62,11 @@
 
     <!-- JUnit 4.11 [manually provided] -->
 
-    <dependency transitive = 'false'
+    <dependency
       org  = 'junit'
       name = 'junit'
       rev  = '4.11'
-      conf = 'sources; compile -> master'/>
+      conf = 'sources; compile -> compile, master'/>
 
   </dependencies>
 
