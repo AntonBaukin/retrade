@@ -112,8 +112,8 @@ public class DomainUnityForce extends DomainKeyForce
 		long td = System.currentTimeMillis();
 		ensureUnityLink((United)e.target());
 
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(getLog()))
-			LU.D(getLog(), getClass().getSimpleName(), ".reactUnityCreated(",
+		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactUnityCreated(",
 			  LU.sig(e), ") took ", LU.td(td), '!'
 			);
 	}

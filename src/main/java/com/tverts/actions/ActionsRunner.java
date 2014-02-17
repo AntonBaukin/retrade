@@ -12,13 +12,17 @@ import static com.tverts.actions.ActionPhase.CLOSE;
 import static com.tverts.actions.ActionPhase.OPEN;
 import static com.tverts.actions.ActionPhase.TRIGGER;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.system.HiberSystem;
+
 /* com.tverts: transactions */
 
-import com.tverts.support.EX;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 
 
@@ -154,7 +158,14 @@ public class ActionsRunner implements ActionTrigger
 			}
 
 		//~: flush the session
+		long td = System.currentTimeMillis();
 		TxPoint.txSession(getActionContext().getActionTx()).flush();
+
+		if(System.currentTimeMillis() - td > 250L) LU.D(LU.LOGT,
+		  getClass().getSimpleName(), " session flush took ", LU.td(td),
+		  ", session size is ", HiberSystem.debugContextSize(
+		    TxPoint.txSession(getActionContext().getActionTx()))
+		);
 	}
 
 	protected void       bindAction(Action action)

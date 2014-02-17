@@ -20,7 +20,6 @@ import com.tverts.support.logic.Predicate;
 /* com.tverts: support */
 
 import com.tverts.support.LU;
-import com.tverts.support.OU;
 
 
 /**
@@ -64,7 +63,7 @@ public abstract class ActionBase implements Action
 			long    td = System.currentTimeMillis();
 			boolean ok = isPredicate();
 
-			if(System.currentTimeMillis() - td > 150L) LU.D(LU.LOG_DEBUG,
+			if(System.currentTimeMillis() - td > 150L) LU.D(LU.LOGT,
 			  getClass().getSimpleName(), " evaluation of predicate ",
 			  (getPredicate() == null)?(""):(getPredicate().getClass().getSimpleName()),
 			  " took ", LU.td(td), '!');
@@ -75,7 +74,7 @@ public abstract class ActionBase implements Action
 				td = System.currentTimeMillis();
 				execute();
 
-				if(System.currentTimeMillis() - td > 250L) LU.D(LU.LOG_DEBUG,
+				if(System.currentTimeMillis() - td > 250L) LU.D(LU.LOGT,
 				  getClass().getSimpleName(), " execution took ", LU.td(td), '!');
 			}
 		}

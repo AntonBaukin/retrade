@@ -123,8 +123,8 @@ public class DomainKeyForce extends SecForceBase
 		long td = System.currentTimeMillis();
 		ensureForDomain(d);
 
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(getLog()))
-			LU.D(getLog(), getClass().getSimpleName(), ".reactDomainCreated(",
+		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactDomainCreated(",
 			  LU.sig(e), ") took ", LU.td(td), '!'
 			);
 	}
@@ -192,8 +192,8 @@ public class DomainKeyForce extends SecForceBase
 		LU.D(getLog(), logsig(), " now able for login [",
 		  e.target().getCode(), ']');
 
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(getLog()))
-			LU.D(getLog(), getClass().getSimpleName(), ".reactAskForce(",
+		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactAskForce(",
 			  LU.sig(e), ") took ", LU.td(td), '!'
 			);
 	}

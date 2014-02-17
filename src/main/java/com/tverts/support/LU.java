@@ -49,8 +49,14 @@ public class LU
 	/**
 	 * Destination for debugging purposes.
 	 */
-	public static final String LOG_DEBUG =
+	public static final String LOGD =
 	  "com.tverts.debug";
+
+	/**
+	 * Log destination for performance time measures.
+	 */
+	public static final String LOGT =
+	  "com.tverts.timing";
 
 
 	/* access logging levels */
@@ -202,9 +208,9 @@ public class LU
 		if(obj == null) return "null";
 
 		return SU.cats(
-		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(), " [",
+		  HiberSystem.getInstance().findActualClass(obj).getSimpleName(), '{',
 		  (obj.getPrimaryKey() == null)?("NO KEY"):(obj.getPrimaryKey().toString()),
-		  "]@", SU.i2h(System.identityHashCode(obj))
+		  "}@", SU.i2h(System.identityHashCode(obj))
 		);
 	}
 

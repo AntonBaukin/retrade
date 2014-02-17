@@ -79,17 +79,17 @@ public class ActionsPoint
 		ActionTrigger trigger = getInstance().
 		  action(new ActionTaskStruct(atype).setTarget(target));
 
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(LOG))
-			LU.D(LOG, "build action [", atype.getActionName(), "] on target [",
-			  LU.sig(target), ") took ", LU.td(td), '!');
+		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+			LU.D(LU.LOGT, "build action [", atype.getActionName(), "] on target [",
+			  LU.sig(target), "] took ", LU.td(td), '!');
 
 		//~: run the trigger
 		td = System.currentTimeMillis();
 		trigger.run();
 
-		if((System.currentTimeMillis() - td > 250L) && LU.isD(LOG))
-			LU.D(LOG, "run action [", atype.getActionName(), "] on target [",
-			  LU.sig(target), ") took ", LU.td(td), '!');
+		if((System.currentTimeMillis() - td > 250L) && LU.isD(LU.LOGT))
+			LU.D(LU.LOGT, "run action [", atype.getActionName(), "] on target [",
+			  LU.sig(target), "] took ", LU.td(td), '!');
 
 		return trigger;
 	}
@@ -187,9 +187,6 @@ public class ActionsPoint
 
 
 	/* public static: logging support */
-
-	public static final String LOG =
-	  ActionsPoint.class.getName();
 
 	public static String logsig(Action action)
 	{

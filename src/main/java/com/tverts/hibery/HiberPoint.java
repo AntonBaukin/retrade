@@ -187,6 +187,11 @@ public class HiberPoint
 		);
 	}
 
+	public static void    flush(Session s)
+	{
+		s.flush();
+	}
+
 
 	/* public static: keys generation support */
 

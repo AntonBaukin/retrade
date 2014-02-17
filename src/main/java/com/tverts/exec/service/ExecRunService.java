@@ -163,8 +163,8 @@ public class ExecRunService extends ServiceBase
 					}
 				});
 
-				if(LU.isD(getExLog()))
-					LU.D(getExLog(), ")-[", txid[0], "]-tx in ", LU.td(td));
+				if(LU.isD(LU.LOGT))
+					LU.D(LU.LOGT, ")-[", txid[0], "]-tx in ", LU.td(td));
 			}
 		}
 		catch(Throwable e)
@@ -189,8 +189,8 @@ public class ExecRunService extends ServiceBase
 			TxPoint.getInstance().setTxContext(tx);
 			if(txid != null) txid[0] = tx.txid();
 
-			if(LU.isD(getExLog()))
-				LU.D(getExLog(), "tx-[", txid[0], "]-(");
+			if(LU.isD(LU.LOGT))
+				LU.D(LU.LOGT, "tx-[", txid[0], "]-(");
 
 			//~: bind secure session
 			SecPoint.getInstance().setSecSession(createSecSession(tx));
