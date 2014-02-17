@@ -80,7 +80,7 @@ class SystemTx implements Tx
 		if(!isRollbackOnly()) try
 		{
 			Session session = TxPoint.txSession(this);
-			HiberPoint.flush(session, true);
+			HiberPoint.flush(session, HiberPoint.CLEAR);
 		}
 		catch(RuntimeException e)
 		{

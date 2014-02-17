@@ -188,19 +188,75 @@ public class HiberPoint
 		);
 	}
 
-	public static void    flush(Session s)
-	{
-		long td = System.currentTimeMillis();
-		s.flush();
 
-		if(System.currentTimeMillis() - td > 150L)
-			LU.D(LU.LOGT, "session.flush() took ", LU.td(td), '!');
+	/* public static: session flush-related operations */
+
+	/**
+	 * Flush flag that orders to clear
+	 * the session after the flash.
+	 */
+	public static final Object CLEAR = new Object();
+
+	/**
+	 * Flush flag that explicitly tells
+	 * to flush the whole session.
+	 *
+	 * Note that this operation is ineffective
+	 * for huge persistent contexts!
+	 *
+	 * This flag is implicitly set when
+	 * {@link #CLEAR} is set.
+	 */
+	public static final Object FLUSH = new Object();
+
+	public static void    flush(Session s, Object... opts)
+	{
+		//?: {clear session}
+		boolean clear = false;
+		for(Object opt : opts) clear = clear || (opt == CLEAR);
+
+		//?: {flush all}
+		boolean flush = clear;
+		for(Object opt : opts) flush = flush || (opt == FLUSH);
+
+		//~: flush operation
+		if(flush)
+		{
+			long td = System.currentTimeMillis();
+			s.flush();
+
+			if(System.currentTimeMillis() - td > 150L)
+				LU.D(LU.LOGT, "session.flush() took ", LU.td(td), '!');
+		}
+
+		//?: {clear session}
+		if(clear) s.clear();
 	}
 
-	public static void    flush(Session s, boolean clear)
+	@SuppressWarnings("unchecked")
+	public static void    evict(Session s, Collection objs)
 	{
-		flush(s);
-		if(clear) s.clear();
+		for(Object o : objs)
+			s.evict(o);
+	}
+
+	public static void    evict(Session s, Object... objs)
+	{
+		for(Object o : objs)
+			s.evict(o);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void    read(Session s, Collection objs)
+	{
+		for(Object o : objs)
+			s.setReadOnly(o, true);
+	}
+
+	public static void    read(Session s, Object... objs)
+	{
+		for(Object o : objs)
+			s.setReadOnly(o, true);
 	}
 
 

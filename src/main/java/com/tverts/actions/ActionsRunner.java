@@ -12,15 +12,6 @@ import static com.tverts.actions.ActionPhase.CLOSE;
 import static com.tverts.actions.ActionPhase.OPEN;
 import static com.tverts.actions.ActionPhase.TRIGGER;
 
-/* com.tverts: hibery */
-
-import static com.tverts.hibery.HiberPoint.flush;
-import com.tverts.hibery.system.HiberSystem;
-
-/* com.tverts: transactions */
-
-import com.tverts.system.tx.TxPoint;
-
 /* com.tverts: support */
 
 import com.tverts.support.EX;
@@ -157,9 +148,6 @@ public class ActionsRunner implements ActionTrigger
 			{
 				closeAction(action, getOpenedActions().get(action));
 			}
-
-		//~: flush the session
-		flush(TxPoint.txSession(getActionContext().getActionTx()));
 	}
 
 	protected void       bindAction(Action action)
