@@ -8,6 +8,7 @@ import java.util.List;
 
 /* com.tverts: hibery */
 
+import static com.tverts.hibery.HiberPoint.flush;
 import static com.tverts.hibery.HiberPoint.isTestInstance;
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
@@ -103,7 +104,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		session(struct).save(item);
 
 		//!: flush the session
-		session(struct).flush();
+		flush(session(struct));
 
 		//!: evict the item
 		session(struct).evict(item);
@@ -161,7 +162,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 			session(struct).delete(item);
 
 		//!: flush the session
-		session(struct).flush();
+		flush(session(struct));
 
 		//!: evict the items
 		for(AggrItem item : items)
@@ -332,7 +333,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 				//debug(struct, "batched!");
 
 				//~: flush the session
-				session(struct).flush();
+				flush(session(struct));
 
 				//~: evict all the items batched
 				for(AggrItemRestCost i : batch)
@@ -347,7 +348,7 @@ public class AggregatorRestCost extends AggregatorSingleBase
 		setAggrValue(struct, s);
 
 		//~: flush the session
-		session(struct).flush();
+		flush(session(struct));
 
 		//~: evict all the items batched
 		for(AggrItemRestCost i : batch)
@@ -505,7 +506,7 @@ order by historyIndex asc
 		}
 
 		//~: flash the session
-		session(struct).flush();
+		flush(session(struct));
 		if(l != null) session(struct).evict(l);
 		if(c != null) session(struct).evict(c);
 		if(r != null) session(struct).evict(r);
@@ -539,7 +540,7 @@ order by historyIndex asc
 		//debug(struct, "delta = ", r.getDeltaVolume());
 
 		//~: flash the session
-		session(struct).flush();
+		flush(session(struct));
 		if(l != null) session(struct).evict(l);
 		session(struct).evict(r);
 	}
@@ -692,7 +693,7 @@ select sum(goodVolume) from AggrItem where
 //	@SuppressWarnings("unchecked")
 //	private String[]      debugSelectItems(AggrStruct struct)
 //	{
-//		session(struct).flush();
+//		flush(session(struct));
 //		evictAggrItems(struct);
 //
 ///*
@@ -741,7 +742,7 @@ select sum(goodVolume) from AggrItem where
 //			session(struct).evict(rc);
 //		}
 //
-//		session(struct).flush();
+//		flush(session(struct));
 //
 //		return r;
 //	}

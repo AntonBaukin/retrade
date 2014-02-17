@@ -1,5 +1,9 @@
 package com.tverts.endure.auth;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.flush;
+
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
@@ -332,7 +336,7 @@ public class ActLogin extends ActionBuilderXRoot
 			);
 
 			login.setPerson(person);
-			session().flush();
+			flush(session());
 		}
 
 

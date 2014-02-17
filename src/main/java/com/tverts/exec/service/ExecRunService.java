@@ -5,6 +5,10 @@ package com.tverts.exec.service;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.flush;
+
 /* com.tverts: spring + tx */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -190,7 +194,7 @@ public class ExecRunService extends ServiceBase
 			if(txid != null) txid[0] = tx.txid();
 
 			if(LU.isD(LU.LOGT))
-				LU.D(LU.LOGT, "tx-[", txid[0], "]-(");
+				LU.D(LU.LOGT, "tx-[", tx.txid(), "]-(");
 
 			//~: bind secure session
 			SecPoint.getInstance().setSecSession(createSecSession(tx));
@@ -338,7 +342,7 @@ public class ExecRunService extends ServiceBase
 		TxPoint.txn(request);
 
 		//!: flush the session
-		TxPoint.txSession().flush();
+		flush(TxPoint.txSession());
 	}
 
 

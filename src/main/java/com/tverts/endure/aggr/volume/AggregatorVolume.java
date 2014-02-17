@@ -8,6 +8,7 @@ import java.util.List;
 
 /* com.tverts: hibery */
 
+import static com.tverts.hibery.HiberPoint.flush;
 import static com.tverts.hibery.HiberPoint.isTestInstance;
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
@@ -195,7 +196,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 	protected void clearCachedItems(AggrStruct struct, AggrItemVolume item)
 	{
 		//~: flush the session and evict side-effect items
-		session(struct).flush();
+		flush(session(struct));
 		evictAggrItems(struct, item);
 	}
 
@@ -381,7 +382,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 			//!: delete that item first
 			session(struct).delete(item);
-			session(struct).flush();
+			flush(session(struct));
 			session(struct).evict(item);
 
 			a.add(item);
@@ -393,7 +394,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 			updateHelperHistoryItems(struct, (AggrItemVolume) item, false);
 
 			//~: evict all the aggregated items currently present
-			session(struct).flush();
+			flush(session(struct));
 			evictAggrItems(struct);
 		}
 
@@ -456,7 +457,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		updateHelperHistoryItems(struct, z, r, false);
 
 		//!: flush the result
-		session(struct).flush();
+		flush(session(struct));
 	}
 
 
@@ -511,7 +512,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 		}
 
 		//!: flush the result
-		session(struct).flush();
+		flush(session(struct));
 	}
 
 	protected void insertHelperHistoryItem
@@ -545,7 +546,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 		//!: save the item
 		session(struct).save(item);
-		session(struct).flush();
+		flush(session(struct));
 	}
 
 	protected void deleteHelperHistoryItem
@@ -570,7 +571,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 			//!: delete the left
 			session(struct).delete(l);
-			session(struct).flush();
+			flush(session(struct));
 
 			//?: {exceed 2N} do insert
 			if(na + nb >= N*2)
@@ -591,7 +592,7 @@ public class AggregatorVolume extends AggregatorSingleBase
 
 			//!: delete the right
 			session(struct).delete(r);
-			session(struct).flush();
+			flush(session(struct));
 
 			//?: {exceed 2N} do insert
 			if(nb + nc >= N*2)

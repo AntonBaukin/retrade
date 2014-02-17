@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.flush;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -348,7 +352,7 @@ public class ActSecSet extends ActionBuilderXRoot
 
 
 			//!: do remove the set
-			session().flush();
+			flush(session());
 			session().delete(set);
 		}
 	}

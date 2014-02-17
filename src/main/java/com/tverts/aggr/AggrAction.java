@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.flush;
+
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionTask;
@@ -76,7 +80,7 @@ public class AggrAction extends ActionWithTxBase
 	protected void    execute()
 	  throws Throwable
 	{
-		session().flush();
+		flush(session());
 
 		//~: sequentially add all the requests
 		for(AggrRequest request : this.requests)

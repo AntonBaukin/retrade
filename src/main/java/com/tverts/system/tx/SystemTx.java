@@ -1,8 +1,10 @@
 package com.tverts.system.tx;
 
-/* Hibernate Persistence Layer */
+/* standard Java classes */
 
 import java.util.concurrent.atomic.AtomicLong;
+
+/* Hibernate Persistence Layer */
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -78,9 +80,7 @@ class SystemTx implements Tx
 		if(!isRollbackOnly()) try
 		{
 			Session session = TxPoint.txSession(this);
-
-			session.flush();
-			session.clear();
+			HiberPoint.flush(session, true);
 		}
 		catch(RuntimeException e)
 		{

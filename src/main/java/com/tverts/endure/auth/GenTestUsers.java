@@ -6,6 +6,10 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.flush;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -213,7 +217,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 		actionRun(ActionType.SAVE, l);
 
 		//~: flush the session
-		session().flush();
+		flush(session());
 
 		//~: create secure instances
 		secure(ctx, s, l);

@@ -1,5 +1,9 @@
 package com.tverts.event;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.flush;
+
 /* com.tverts: endure */
 
 import com.tverts.endure.NumericIdentity;
@@ -41,7 +45,7 @@ public class CreatedEvent extends ActiveEventBase
 	protected void actBefore()
 	{
 		if(isFlushSession())
-			session().flush();
+			flush(session());
 	}
 
 

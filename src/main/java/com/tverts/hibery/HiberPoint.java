@@ -27,6 +27,7 @@ import com.tverts.system.tx.Tx;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
 
 
 /**
@@ -189,7 +190,17 @@ public class HiberPoint
 
 	public static void    flush(Session s)
 	{
+		long td = System.currentTimeMillis();
 		s.flush();
+
+		if(System.currentTimeMillis() - td > 150L)
+			LU.D(LU.LOGT, "session.flush() took ", LU.td(td), '!');
+	}
+
+	public static void    flush(Session s, boolean clear)
+	{
+		flush(s);
+		if(clear) s.clear();
 	}
 
 

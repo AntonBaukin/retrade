@@ -18,6 +18,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: hibery */
 
+import static com.tverts.hibery.HiberPoint.flush;
 import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: endure (core + aggregation + order) */
@@ -99,7 +100,7 @@ public abstract class AggregatorSingleBase
 			return;
 
 		//!: flush the session
-		session(struct).flush();
+		flush(session(struct));
 
 		//~: evict all the items left
 		for(Object item : items)

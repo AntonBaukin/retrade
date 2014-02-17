@@ -10,6 +10,10 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.flush;
+
 /* com.tverts: (spring + tx) */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -267,7 +271,7 @@ public class      GenesisSphere
 			gen.generate(ctx);
 
 			//~: flush the session
-			ctx.session().flush();
+			flush(ctx.session());
 
 			logGenGenerateSuccess(ctx, gen);
 		}

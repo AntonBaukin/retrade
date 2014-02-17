@@ -496,12 +496,12 @@ public class ActionsCollection
 			if(getDeleteTarget() == null) return;
 
 			if(isFlushBefore())
-				session().flush();
+				HiberPoint.flush(session());
 
 			doDelete();
 
 			if(isFlushAfter())
-				session().flush();
+				HiberPoint.flush(session());
 		}
 
 		protected void doDelete()

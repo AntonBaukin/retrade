@@ -12,6 +12,10 @@ import java.util.Random;
 
 import org.hibernate.Query;
 
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.flush;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -292,7 +296,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 				fcodes.put(f.getCode(), f);
 
 			//~: flush session updates
-			session().flush();
+			flush(session());
 
 			//0: set temporary codes for all the updated folders (with codes changed)
 			for(TreeNodeView n : nodes)
@@ -314,7 +318,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			}
 
 			//~: flush temp codes to db
-			session().flush();
+			flush(session());
 
 			//1: reset codes back
 			for(TreeNodeView n : nodes)
@@ -343,7 +347,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			}
 
 			//~: flush new codes to db (without parents, for now)
-			session().flush();
+			flush(session());
 
 			//2: insert new folders
 			for(TreeNodeView n : nodes)
@@ -383,7 +387,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			}
 
 			//~: flush new folders to db
-			session().flush();
+			flush(session());
 
 /*
 
@@ -462,7 +466,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			}
 
 			//~: flush the last updates
-			session().flush();
+			flush(session());
 
 			//<6: create cross-references (for items without them)
 
@@ -582,7 +586,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			}
 
 			//~: flush the results
-			session().flush();
+			flush(session());
 		}
 
 
