@@ -82,7 +82,7 @@ public class OrdererDefault extends OrdererBase
 		OrderData odata = createOrderData(request);
 
 		//!: flush the objects to the database
-		HiberPoint.flush(session(odata));
+		//HiberPoint.flush(session(odata));
 
 		//~: find the insert borders
 		findInsertBorders(odata);

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /* Hibernate Persistence Layer */
 
+import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
 /* com.tverts: endure (core) */
@@ -64,10 +65,16 @@ public class TxPoint
 		  "] has no Hibernate Session Factory assigned!"
 		);
 
-		return EX.assertn( ctx.getSessionFactory().getCurrentSession(),
+		Session res = EX.assertn( ctx.getSessionFactory().getCurrentSession(),
 		  "Hibernate Session Factory assigned to Tx Context ",
 		  "is not linked to the actual Session instance!"
 		);
+
+		//?: {not a manual flush mode}
+		if(!FlushMode.MANUAL.equals(res.getFlushMode()))
+			res.setFlushMode(FlushMode.MANUAL);
+
+		return res;
 	}
 
 	/**
