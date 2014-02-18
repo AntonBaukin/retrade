@@ -78,20 +78,20 @@ public abstract class AggregatorBase
 
 		//?: {this aggregator can handle the job} invoke it
 		if(isJobSupported(job))
-			job.complete(true);
+//			job.complete(true);
 
-//			//?: {processed aggregation} mark the job complete
-//			if(aggregate(struct = createStruct(job)))
-//			{
-//				//~: touch the aggregated value instance
-//				touchAggrValue(struct);
-//
-//				//~: update the owner of the aggregated value
-//				updateAggrOwner(struct);
-//
-//				//!: mark the job as completed
-//				job.complete(true);
-//			}
+			//?: {processed aggregation} mark the job complete
+			if(aggregate(struct = createStruct(job)))
+			{
+				//~: touch the aggregated value instance
+				touchAggrValue(struct);
+
+				//~: update the owner of the aggregated value
+				updateAggrOwner(struct);
+
+				//!: mark the job as completed
+				job.complete(true);
+			}
 	}
 
 
