@@ -109,13 +109,13 @@ public class DomainUnityForce extends DomainKeyForce
 
 	protected void       reactUnityCreated(CreatedEvent e)
 	{
-		long td = System.currentTimeMillis();
+//		long td = System.currentTimeMillis();
 		ensureUnityLink((United)e.target());
 
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
-			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactUnityCreated(",
-			  LU.sig(e), ") took ", LU.td(td), '!'
-			);
+//		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+//			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactUnityCreated(",
+//			  LU.sig(e), ") took ", LU.td(td), '!'
+//			);
 	}
 
 	protected void       ensureUnityLink(United u)

@@ -120,13 +120,13 @@ public class DomainKeyForce extends SecForceBase
 
 	protected void    reactDomainCreated(Domain d, CreatedEvent e)
 	{
-		long td = System.currentTimeMillis();
+//		long td = System.currentTimeMillis();
 		ensureForDomain(d);
 
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
-			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactDomainCreated(",
-			  LU.sig(e), ") took ", LU.td(td), '!'
-			);
+//		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+//			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactDomainCreated(",
+//			  LU.sig(e), ") took ", LU.td(td), '!'
+//			);
 	}
 
 	protected void    ensureForDomain(Domain d)
@@ -180,7 +180,7 @@ public class DomainKeyForce extends SecForceBase
 
 	protected void    reactAskForce(AskSecForceEvent e)
 	{
-		long td = System.currentTimeMillis();
+//		long td = System.currentTimeMillis();
 
 		//~: load the domain rule
 		Long    domain = e.target().getDomain().getPrimaryKey();
@@ -192,10 +192,10 @@ public class DomainKeyForce extends SecForceBase
 		LU.D(getLog(), logsig(), " now able for login [",
 		  e.target().getCode(), ']');
 
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
-			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactAskForce(",
-			  LU.sig(e), ") took ", LU.td(td), '!'
-			);
+//		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+//			LU.D(LU.LOGT, getClass().getSimpleName(), ".reactAskForce(",
+//			  LU.sig(e), ") took ", LU.td(td), '!'
+//			);
 	}
 
 

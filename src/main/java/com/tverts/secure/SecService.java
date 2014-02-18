@@ -87,22 +87,22 @@ public class      SecService
 
 	public void react(com.tverts.event.Event event)
 	{
-		long td = System.currentTimeMillis();
+//		long td = System.currentTimeMillis();
 
 		for(SecForce f : forces.dereferObjects())
 		{
-			long xd = System.currentTimeMillis();
+//			long xd = System.currentTimeMillis();
 
 			f.react(event);
 
-			if((System.currentTimeMillis() - xd > 100L) && LU.isD(LU.LOGT))
-				LU.D(LU.LOGT, "secure force ", f.getClass().getSimpleName(),
-				  " uid [", f.uid(), "] took ", LU.td(xd), '!'
-				);
+//			if((System.currentTimeMillis() - xd > 100L) && LU.isD(LU.LOGT))
+//				LU.D(LU.LOGT, "secure force ", f.getClass().getSimpleName(),
+//				  " uid [", f.uid(), "] took ", LU.td(xd), '!'
+//				);
 		}
 
-		if((System.currentTimeMillis() - td > 200L) && LU.isD(LU.LOGT))
-		  LU.D(LU.LOGT, "secure for event ", LU.sig(event), " took ", LU.td(td));
+//		if((System.currentTimeMillis() - td > 200L) && LU.isD(LU.LOGT))
+//		  LU.D(LU.LOGT, "secure for event ", LU.sig(event), " took ", LU.td(td));
 	}
 
 
