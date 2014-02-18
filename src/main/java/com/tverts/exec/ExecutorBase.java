@@ -59,12 +59,13 @@ public abstract class ExecutorBase
 
 	protected ExecTx  tx()
 	{
-		return (ExecTx) TxPoint.txContext();
+		return TxPoint.txContext(ExecTx.class);
 	}
 
 	protected Session session()
 	{
-		return TxPoint.txSession(tx());
+		//HINT: a context may be nested into exec-tx!
+		return TxPoint.txSession();
 	}
 
 	protected Domain  domain()

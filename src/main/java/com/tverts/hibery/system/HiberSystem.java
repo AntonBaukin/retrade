@@ -28,6 +28,7 @@ import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.PersistenceContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.Status;
 import org.hibernate.internal.util.collections.IdentitySet;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
@@ -410,7 +411,7 @@ public class HiberSystem
 	}
 
 	public static Map<String, Integer>
-	                  debugContextStat(Session s)
+	                  debugContextStat(Session s, Boolean readOnly)
 	{
 		Map<String, Integer> res = new HashMap<String, Integer>(101);
 
@@ -420,9 +421,14 @@ public class HiberSystem
 
 		for(Entry<Object, EntityEntry> e : entries)
 		{
-			Integer n = res.get(e.getValue().getEntityName());
-			n = (n == null)?(1):(n + 1);
-			res.put(e.getValue().getEntityName(), n);
+			String  n = e.getValue().getEntityName();
+			boolean r = Status.READ_ONLY.equals(e.getValue().getStatus());
+
+			if((readOnly != null) && !readOnly.equals(r)) continue;
+
+			Integer i = res.get(e.getValue().getEntityName());
+			i = (i == null)?(1):(i + 1);
+			res.put(e.getValue().getEntityName(), i);
 		}
 
 		return res;
