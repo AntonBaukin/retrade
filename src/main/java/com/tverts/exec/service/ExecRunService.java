@@ -342,7 +342,7 @@ public class ExecRunService extends ServiceBase
 		TxPoint.txn(request);
 
 		//!: flush the session
-		flush(TxPoint.txSession());
+		//flush(TxPoint.txSession());
 	}
 
 

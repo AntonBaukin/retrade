@@ -51,5 +51,5 @@ public class CreatedEvent extends ActiveEventBase
 
 	/* private: event properties */
 
-	private boolean flushSession = true;
+	private boolean flushSession;
 }

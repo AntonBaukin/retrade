@@ -336,7 +336,7 @@ public class ActLogin extends ActionBuilderXRoot
 			);
 
 			login.setPerson(person);
-			flush(session());
+			//flush(session());
 		}
 
 

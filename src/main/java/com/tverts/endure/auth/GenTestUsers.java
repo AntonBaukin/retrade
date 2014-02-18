@@ -217,7 +217,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 		actionRun(ActionType.SAVE, l);
 
 		//~: flush the session
-		flush(session());
+		//flush(session());
 
 		//~: create secure instances
 		secure(ctx, s, l);

@@ -586,7 +586,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			}
 
 			//~: flush the results
-			flush(session());
+			//flush(session());
 		}
 
 
