@@ -3,7 +3,7 @@ package com.tverts.endure.aggr;
 /* com.tverts: endure */
 
 import com.tverts.endure.DelayedEntity;
-import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.NumericBase;
 import com.tverts.endure.Unity;
 
 /* com.tverts: support */
@@ -18,21 +18,8 @@ import static com.tverts.support.OU.xml2obj;
  *
  * @author anton.baukin@gmail.com
  */
-public class AggrRequest implements NumericIdentity
+public class AggrRequest extends NumericBase
 {
-	/* public: NumericIdentity interface */
-
-	public Long       getPrimaryKey()
-	{
-		return primaryKey;
-	}
-
-	public void       setPrimaryKey(Long primaryKey)
-	{
-		this.primaryKey = primaryKey;
-	}
-
-
 	/* public: AggrRequest (source) interface */
 
 	/**
@@ -85,12 +72,16 @@ public class AggrRequest implements NumericIdentity
 
 	public AggrTask   getAggrTask()
 	{
+		if((aggrTask == null) && (aggrTaskXML != null))
+			aggrTask = xml2obj(aggrTaskXML, AggrTask.class);
+
 		return aggrTask;
 	}
 
 	public void       setAggrTask(AggrTask aggrTask)
 	{
 		this.aggrTask = aggrTask;
+		this.aggrTaskClass = this.aggrTaskXML = null;
 
 		//HINT: here we copy the fields from the task to
 		//  this request and vice versa. But a task stores
@@ -112,13 +103,14 @@ public class AggrRequest implements NumericIdentity
 
 	public String     getAggrTaskXML()
 	{
-		return (getAggrTask() == null)?(null):
-		  obj2xml(getAggrTask());
+		if((aggrTaskXML == null) && (aggrTask != null))
+			aggrTaskXML = obj2xml(aggrTask);
+		return aggrTaskXML;
 	}
 
 	public void       setAggrTaskXML(String xml)
 	{
-		setAggrTask(xml2obj(xml, AggrTask.class));
+		this.aggrTaskXML = xml;
 	}
 
 	/**
@@ -126,14 +118,17 @@ public class AggrRequest implements NumericIdentity
 	 * Used by the aggregation scheduler when selecting requests
 	 * to execute.
 	 */
-	public Class      getAggrTaskClass()
+	public String     getAggrTaskClass()
 	{
-		return (this.aggrTask == null)?(null):
-		  (this.aggrTask.getClass());
+		if((aggrTaskClass == null) && (aggrTask != null))
+			aggrTaskClass = aggrTask.getClass().getName();
+		return aggrTaskClass;
 	}
 
-	public void       setAggrTaskClass(Class aggrTaskClass)
-	{}
+	public void       setAggrTaskClass(String aggrTaskClass)
+	{
+		this.aggrTaskClass = aggrTaskClass;
+	}
 
 	public String     getErrorText()
 	{
@@ -146,36 +141,13 @@ public class AggrRequest implements NumericIdentity
 	}
 
 
-	/* public: Object interface */
-
-	public boolean    equals(Object o)
-	{
-		if(this == o)
-			return true;
-
-		if(!(o instanceof AggrRequest))
-			return false;
-
-		Long k0 = this.getPrimaryKey();
-		Long k1 = ((AggrRequest)o).getPrimaryKey();
-
-		return (k0 != null) && k0.equals(k1);
-	}
-
-	public int        hashCode()
-	{
-		Long k0 = this.getPrimaryKey();
-
-		return (k0 == null)?(0):(k0.hashCode());
-	}
-
-
 	/* persisted attributes */
 
-	private Long          primaryKey;
 	private Unity         source;
 	private DelayedEntity accessSource;
 	private AggrValue     aggrValue;
 	private AggrTask      aggrTask;
+	private String        aggrTaskXML;
+	private String        aggrTaskClass;
 	private String        errorText;
 }

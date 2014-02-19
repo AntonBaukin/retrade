@@ -40,7 +40,7 @@
 
       <column name = 'aggr_task_xml' not-null = 'true'>
 
-        <comment>UTF-8 XML encoded Java Bean of the aggregation request task</comment>
+        <comment>XML-encoded Java Bean of the aggregation request task</comment>
       </column>
     </property>
 
@@ -51,7 +51,7 @@
 
       <column name = 'aggr_task_class' not-null = 'true'>
 
-        <comment>Name of Java class of the aggregated task</comment>
+        <comment>Name of Java class of the Aggregated Task (written as XML)</comment>
       </column>
     </property>
 
