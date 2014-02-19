@@ -6,7 +6,8 @@ import java.util.Map;
 
 
 /**
- * COMMENT ActionContext
+ * Context of actions chain execution.
+ * Shared between the action instances of the chain.
  *
  * @author anton.baukin@gmail.com
  */

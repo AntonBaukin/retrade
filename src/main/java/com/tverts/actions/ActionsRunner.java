@@ -155,7 +155,9 @@ public class ActionsRunner implements ActionTrigger
 			}
 
 		//~: flush the session
-		HiberPoint.flush(TxPoint.txSession(getActionContext().getActionTx()));
+		if(!Boolean.TRUE.equals(getActionContext().getTask().
+		  getParams().get(ActionsPoint.NO_FLUSH)))
+			HiberPoint.flush(TxPoint.txSession(getActionContext().getActionTx()));
 	}
 
 	protected void       bindAction(Action action)

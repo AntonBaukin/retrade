@@ -6,10 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/* com.tverts: hibery */
-
-import static com.tverts.hibery.HiberPoint.flush;
-
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -282,9 +278,13 @@ public class ActSecSet extends ActionBuilderXRoot
 			SecSet s = (SecSet) ((ActionWithTxBase)ctx).
 			  getTask().getTarget();
 
-			//~: search for the existing set
-			SecSet x = bean(GetSecure.class).
-			  getSecSet(s.getDomain().getPrimaryKey(), s.getName());
+			//?: {has this in the context}
+			SecSet x = (SecSet)((ActionWithTxBase)ctx).getActionTx().val(s.altKey());
+
+			//~: search in the database
+			if(x == null) x = bean(GetSecure.class).getSecSet(
+			  s.getDomain().getPrimaryKey(), s.getName());
+
 			if(x == null) return result = true;
 
 			//~: init the task set

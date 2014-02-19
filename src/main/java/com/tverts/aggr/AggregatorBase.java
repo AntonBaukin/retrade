@@ -69,17 +69,12 @@ public abstract class AggregatorBase
 
 	/* public: Aggregator interface */
 
-	/**
-	 * TODO turn on aggregation!
-	 */
 	public void aggregate(AggrJob job)
 	{
 		AggrStruct struct;
 
 		//?: {this aggregator can handle the job} invoke it
 		if(isJobSupported(job))
-//			job.complete(true);
-
 			//?: {processed aggregation} mark the job complete
 			if(aggregate(struct = createStruct(job)))
 			{

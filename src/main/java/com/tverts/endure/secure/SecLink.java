@@ -2,10 +2,15 @@ package com.tverts.endure.secure;
 
 /* com.tverts: endure (core) */
 
+import com.tverts.endure.AltIdentity;
 import com.tverts.endure.NumericBase;
 import com.tverts.endure.Unity;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
+
+/* com.tverts: support */
+
+import com.tverts.support.SU;
 
 
 /**
@@ -23,36 +28,36 @@ import com.tverts.endure.core.DomainEntity;
  */
 public class      SecLink
        extends    NumericBase
-       implements DomainEntity
+       implements DomainEntity, AltIdentity
 {
 	/* public: SecLink (bean) interface */
 
-	public SecRule getRule()
+	public SecRule  getRule()
 	{
 		return rule;
 	}
 
-	public void setRule(SecRule rule)
+	public void     setRule(SecRule rule)
 	{
 		this.rule = rule;
 	}
 
-	public Unity getTarget()
+	public Unity    getTarget()
 	{
 		return target;
 	}
 
-	public void setTarget(Unity target)
+	public void     setTarget(Unity target)
 	{
 		this.target = target;
 	}
 
-	public SecKey getKey()
+	public SecKey   getKey()
 	{
 		return key;
 	}
 
-	public void setKey(SecKey key)
+	public void     setKey(SecKey key)
 	{
 		this.key = key;
 	}
@@ -62,19 +67,19 @@ public class      SecLink
 	 * the Key is actually forbidden (when 1).
 	 * Value 0 (default) means the action is allowed.
 	 */
-	public byte getDeny()
+	public byte     getDeny()
 	{
 		return deny;
 	}
 
-	public void setDeny(byte deny)
+	public void     setDeny(byte deny)
 	{
 		if((deny != 0) & (deny != 1))
 			throw new IllegalArgumentException();
 		this.deny = deny;
 	}
 
-	public void setDeny()
+	public void     setDeny()
 	{
 		this.setDeny((byte)1);
 	}
@@ -82,10 +87,24 @@ public class      SecLink
 
 	/* public: DomainEntity interface */
 
-	public Domain getDomain()
+	public Domain   getDomain()
 	{
 		return (getRule() == null)?(null):
 		  getRule().getDomain();
+	}
+
+
+	/* public: AltIdentity interface */
+
+	public Object   altKey()
+	{
+		return SU.cats(
+		  "class=",   getClass().getSimpleName(),
+		  "&rule=",   rule.getPrimaryKey(),
+		  "&target=", target.getPrimaryKey(),
+		  "&seckey=", key.getPrimaryKey(),
+		  "&deny=",   (deny == 1)
+		);
 	}
 
 

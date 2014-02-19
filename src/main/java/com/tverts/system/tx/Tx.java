@@ -69,4 +69,14 @@ public interface Tx
 	public <I> void       set(Class<I> cls, I instance);
 
 	public <I> I          get(Class<I> cls);
+
+	public Object         val(Object key);
+
+	/**
+	 * Updates the value of the context.
+	 *
+	 * Values of all the contexts in the stack
+	 * are shared in the default wrapper implementation.
+	 */
+	public void           val(Object key, Object val);
 }

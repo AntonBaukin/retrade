@@ -1,15 +1,23 @@
 package com.tverts.actions;
 
+/* standard Java classes */
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /* com.tverts: hibery */
 
 import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: system (tx) */
 
+import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure (core) */
 
+import com.tverts.endure.AltIdentity;
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.United;
 import com.tverts.endure.core.DomainEntity;
@@ -29,6 +37,7 @@ import com.tverts.event.EventPoint;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.logic.Predicate;
 
@@ -106,16 +115,23 @@ public class ActionsCollection
 
 		public NumericIdentity       getSaveTarget()
 		{
-			//?: {the target must be created by strategy}
-			if(creator != null)
-				target = creator.createInstance(this);
-
 			//?: {the target is provided}
 			if(target != null)
 				return target;
 
-			Object t = targetOrNull();
-			return (t instanceof NumericIdentity)?((NumericIdentity)t):(null);
+			//?: {the target must be created by strategy}
+			if(creator != null)
+			{
+				target = creator.createInstance(this);
+
+				//?: {created it}
+				if(target != null)
+					return target;
+			}
+
+			Object xtarget = targetOrNull();
+			return (xtarget instanceof NumericIdentity)?
+			  ((NumericIdentity)xtarget):(null);
 		}
 
 		public boolean               isDelayedCreation()
@@ -140,10 +156,22 @@ public class ActionsCollection
 			return this;
 		}
 
+		@SuppressWarnings("unchecked")
+		public SaveNumericIdentified setVals(Object... vals)
+		{
+			EX.assertx((vals.length % 2) == 0);
+			this.vals = new HashMap(vals.length / 2);
+
+			for(int i = 0;(i + 1 < vals.length);i += 2)
+				this.vals.put(vals[i], vals[i+1]);
+
+			return this;
+		}
+
 
 		/* protected: ActionBase interface */
 
-		protected void openValidate()
+		protected void    openValidate()
 		{
 			super.openValidate();
 
@@ -153,14 +181,13 @@ public class ActionsCollection
 			//  provided from previous trigger runs of the chain.
 
 			//?: {the target is not a primary identity}
-			if(!isDelayedCreation() && (getSaveTarget() == null))
-				throw new IllegalStateException(String.format(
-				  "Can't save undefined entity, or of the class '%s' " +
-				  "not a NumericIdentity!", LU.cls(targetOrNull())
-				));
+			EX.assertx( isDelayedCreation() || (getSaveTarget() != null),
+			  "Can't save undefined entity, or class '",
+			  LU.cls(targetOrNull()), "' is not a Numeric Identity!"
+			);
 		}
 
-		protected void execute()
+		protected void    execute()
 		  throws Throwable
 		{
 			//~: set the primary key
@@ -174,9 +201,12 @@ public class ActionsCollection
 
 			//!: save
 			doSave();
+
+			//~: set the values in the context
+			setVals();
 		}
 
-		public Object  getResult()
+		public Object     getResult()
 		{
 			NumericIdentity e = null;
 
@@ -237,6 +267,19 @@ public class ActionsCollection
 			session().save(getSaveTarget());
 		}
 
+		protected void    setVals()
+		{
+			Tx tx = tx();
+
+			//~: the values provided
+			if(vals != null) for(Object e : vals.entrySet())
+				tx.val(((Entry)e).getKey(), ((Entry)e).getValue());
+
+			//?: {saved target has altered key}
+			if(getSaveTarget() instanceof AltIdentity)
+				tx.val(((AltIdentity)getSaveTarget()).altKey(), getSaveTarget());
+		}
+
 
 		/* protected: the alternative target */
 
@@ -248,6 +291,7 @@ public class ActionsCollection
 		/* private: save parameters */
 
 		private boolean forceTest;
+		private Map     vals;
 	}
 
 
@@ -461,8 +505,10 @@ public class ActionsCollection
 
 		public Object       getDeleteTarget()
 		{
-			return (this.target != null)?(this.target):
-			  (targetOrNull());
+			if(target == null)
+				target = targetOrNull();
+
+			return target;
 		}
 
 		public boolean      isFlushBefore()
@@ -487,18 +533,43 @@ public class ActionsCollection
 			return this;
 		}
 
+		@SuppressWarnings("unchecked")
+		public DeleteEntity setVals(Object... vals)
+		{
+			EX.assertx((vals.length % 2) == 0);
+			this.vals = new HashMap(vals.length / 2);
+
+			for(int i = 0;(i + 1 < vals.length);i += 2)
+				this.vals.put(vals[i], vals[i+1]);
+
+			return this;
+		}
+
+		/**
+		 * Returns the reference to the entity deleted.
+		 */
+		public Object       getResult()
+		{
+			return getDeleteTarget();
+		}
+
 
 		/* protected: ActionBase interface */
 
 		protected void execute()
 		  throws Throwable
 		{
-			if(getDeleteTarget() == null) return;
+			if(getDeleteTarget() == null)
+				return;
 
 			if(isFlushBefore())
 				HiberPoint.flush(session());
 
+			//~: issue delete operation
 			doDelete();
+
+			//~: set the values
+			setVals();
 
 			if(isFlushAfter())
 				HiberPoint.flush(session());
@@ -509,12 +580,16 @@ public class ActionsCollection
 			session().delete(getDeleteTarget());
 		}
 
-		/**
-		 * Returns the reference to the entity deleted.
-		 */
-		public Object  getResult()
+		protected void setVals()
 		{
-			return getDeleteTarget();
+			Tx tx = tx();
+
+			if(vals != null) for(Object e : vals.entrySet())
+				tx.val(((Entry)e).getKey(), ((Entry)e).getValue());
+
+			//?: {saved target has altered key}
+			if(getDeleteTarget() instanceof AltIdentity)
+				tx.val(((AltIdentity)getDeleteTarget()).altKey(), null);
 		}
 
 
@@ -523,6 +598,7 @@ public class ActionsCollection
 		private Object  target;
 		private boolean flushBefore;
 		private boolean flushAfter;
+		private Map     vals;
 	}
 
 

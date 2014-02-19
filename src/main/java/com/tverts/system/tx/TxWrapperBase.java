@@ -70,6 +70,16 @@ public class TxWrapperBase implements TxWrapper
 		tx.set(cls, instance);
 	}
 
+	public Object         val(Object key)
+	{
+		return tx.val(key);
+	}
+
+	public void           val(Object key, Object val)
+	{
+		tx.val(key, val);
+	}
+
 
 	/* public: TxWrapper interface */
 

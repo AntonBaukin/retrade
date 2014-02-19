@@ -6,9 +6,14 @@ import java.util.Date;
 
 /* com.tverts: endure (core) */
 
+import com.tverts.endure.AltIdentity;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.Entity;
+
+/* com.tverts: support */
+
+import com.tverts.support.SU;
 
 
 /**
@@ -24,46 +29,46 @@ import com.tverts.endure.core.Entity;
  */
 public class      SecSet
        extends    Entity
-       implements DomainEntity
+       implements DomainEntity, AltIdentity
 {
 	/* public: SecSet (bean) interface */
 
-	public Domain getDomain()
+	public Domain  getDomain()
 	{
 		return domain;
 	}
 
-	public void setDomain(Domain domain)
+	public void    setDomain(Domain domain)
 	{
 		this.domain = domain;
 	}
 
-	public String getName()
+	public String  getName()
 	{
 		return name;
 	}
 
-	public void setName(String code)
+	public void    setName(String code)
 	{
 		this.name = code;
 	}
 
-	public Date getCreateTime()
+	public Date    getCreateTime()
 	{
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime)
+	public void    setCreateTime(Date createTime)
 	{
 		this.createTime = createTime;
 	}
 
-	public String getComment()
+	public String  getComment()
 	{
 		return comment;
 	}
 
-	public void setComment(String comment)
+	public void    setComment(String comment)
 	{
 		this.comment = comment;
 	}
@@ -71,16 +76,28 @@ public class      SecSet
 
 	/* public: TxEntity interface */
 
-	public Long getTxn()
+	public Long    getTxn()
 	{
 		return (txn == 0L)?(null):(txn);
 	}
 
 	private long txn;
 
-	public void setTxn(Long txn)
+	public void    setTxn(Long txn)
 	{
 		this.txn = (txn == null)?(0L):(txn);
+	}
+
+
+	/* public: AltIdentity interface */
+
+	public Object  altKey()
+	{
+		return SU.cats(
+		  "class=",   getClass().getSimpleName(),
+		  "&domain=", domain.getPrimaryKey(),
+		  "&name=",   SU.sXs(name)
+		);
 	}
 
 

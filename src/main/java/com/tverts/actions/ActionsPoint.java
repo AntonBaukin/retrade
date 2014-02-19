@@ -39,26 +39,24 @@ public class ActionsPoint
 	public static final String SYNCH_AGGR =
 	  ActionsPoint.class.getName() + ": synchronous aggregation";
 
+	public static final String NO_FLUSH   =
+	  ActionsPoint.class.getName() + ": skip session flush";
+
 
 	/* public: actions build system  */
 
 	public ActionTrigger        action(ActionTask task)
 	{
-		ActionTrigger trigger = ActionsPoint.getInstance().
-		  actionOrNull(task);
-
-		if(trigger == null)
-			throw EX.state("Action point couldn't build an action for ", logsig(task));
-
-		return trigger;
+		return EX.assertn(
+		  ActionsPoint.getInstance().actionOrNull(task),
+		  "Action point couldn't build an action for ", logsig(task)
+		);
 	}
 
 	public ActionTrigger        actionOrNull(ActionTask task)
 	{
-		if(task == null)
-			throw EX.state("Can't create action on the task undefined!");
-
-		ActionBuildRec abr = new ActionBuildRec(task);
+		ActionBuildRec abr = new ActionBuildRec(EX.assertn(task,
+		  "Can't create action on the task undefined!"));
 
 		//!: invoke the root builder
 		getRootBuilder().buildAction(abr);
@@ -73,25 +71,7 @@ public class ActionsPoint
 
 	public static ActionTrigger actionRun(ActionType atype, Object target)
 	{
-		//~: build the action
-		long td = System.currentTimeMillis();
-
-		ActionTrigger trigger = getInstance().
-		  action(new ActionTaskStruct(atype).setTarget(target));
-
-		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
-			LU.D(LU.LOGT, "build action [", atype.getActionName(), "] on target [",
-			  LU.sig(target), "] took ", LU.td(td), '!');
-
-		//~: run the trigger
-		td = System.currentTimeMillis();
-		trigger.run();
-
-		if((System.currentTimeMillis() - td > 250L) && LU.isD(LU.LOGT))
-			LU.D(LU.LOGT, "run action [", atype.getActionName(), "] on target [",
-			  LU.sig(target), "] took ", LU.td(td), '!');
-
-		return trigger;
+		return actionRun(atype, target, true, null);
 	}
 
 	public ActionTrigger        actionOrNull(ActionType atype, Object target)
@@ -103,51 +83,64 @@ public class ActionsPoint
 	  (ActionType atype, Object target, Object... params)
 	{
 		return action(new ActionTaskStruct(atype).
-		  setTarget(target).setParams(collectParams(params)));
+		  setTarget(target).setParams(collectParams(params))
+		);
 	}
 
 	public static ActionTrigger actionRun
 	  (ActionType atype, Object target, Object... params)
 	{
-		ActionTrigger trigger = getInstance().
-		  action(atype, target, params);
-
-		trigger.run();
-		return trigger;
+		return actionRun(atype, target, true, collectParams(params));
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ActionTrigger actionRun
-	  (ActionType atype, Object target, Map params)
+	public static ActionTrigger actionRun(ActionType atype, Object target, Map params)
 	{
-		//~: pack them to array
-		Object[]  ap = new Object[params.size() * 2];
-		int       ai = 0;
-
-		for(Object p : params.keySet())
-		{
-			ap[ai++] = p;
-			ap[ai++] = params.get(p);
-		}
-
-		return actionRun(atype, target, ap);
+		return actionRun(atype, target, true, params);
 	}
 
 	public ActionTrigger        actionOrNull
 	  (ActionType atype, Object target, Object... params)
 	{
 		return actionOrNull(new ActionTaskStruct(atype).
-		  setTarget(target).setParams(collectParams(params)));
+		  setTarget(target).setParams(collectParams(params))
+		);
 	}
 
 	public static ActionTrigger actionOrNullRun
 	  (ActionType atype, Object target, Object... params)
 	{
-		ActionTrigger trigger = getInstance().
-		  actionOrNull(atype, target, params);
+		return actionRun(atype, target, false, collectParams(params));
+	}
 
-		if(trigger != null)
-			trigger.run();
+	@SuppressWarnings("unchecked")
+	public static ActionTrigger actionRun
+	  (ActionType atype, Object target, boolean required, Map params)
+	{
+		//~: build the actions (trigger)
+		long          td      = System.currentTimeMillis();
+		ActionTask    task    = new ActionTaskStruct(atype).
+		  setTarget(target).setParams(params);
+		ActionTrigger trigger = getInstance().actionOrNull(task);
+
+		if((System.currentTimeMillis() - td > 100L) && LU.isD(LU.LOGT))
+			LU.D(LU.LOGT, "build action [", atype.getActionName(), "] on target [",
+			  LU.sig(target), "] took ", LU.td(td), '!');
+
+		//?: {not found}
+		if(trigger == null) if(required)
+			throw EX.ass("Action point couldn't build an action for ", logsig(task));
+		else
+			return null;
+
+		//!: execute the trigger
+		td = System.currentTimeMillis();
+		trigger.run();
+
+		if((System.currentTimeMillis() - td > 250L) && LU.isD(LU.LOGT))
+			LU.D(LU.LOGT, "run action [", atype.getActionName(), "] on target [",
+			  LU.sig(target), "] took ", LU.td(td), '!');
+
 		return trigger;
 	}
 
@@ -181,8 +174,7 @@ public class ActionsPoint
 
 	public void          setRootBuilder(ActionBuilder builder)
 	{
-		if(builder == null) throw EX.state();
-		this.rootBuilder = builder;
+		this.rootBuilder = EX.assertn(builder);
 	}
 
 

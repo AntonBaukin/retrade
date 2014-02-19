@@ -152,12 +152,17 @@ public class ActSecAble extends ActionBuilderXRoot
 			SecAble a = (SecAble) ((ActionWithTxBase)ctx).
 			  getTask().getTarget();
 
+			//?: {has this in the context}
+			SecAble x = (SecAble)((ActionWithTxBase)ctx).getActionTx().val(a.altKey());
+
 			//~: search for the existing able
-			SecAble x = bean(GetSecure.class).getSecAble(
+			if(x == null) x = bean(GetSecure.class).getSecAble(
 			  a.getRule().getPrimaryKey(),
 			  a.getLogin().getPrimaryKey(),
 			  a.getSet().getPrimaryKey()
 			);
+
+			//?: {not exists}
 			if(x == null) return result = true;
 
 			//~: init the task able

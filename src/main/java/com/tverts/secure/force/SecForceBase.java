@@ -30,6 +30,7 @@ import com.tverts.system.tx.TxPoint;
 import com.tverts.actions.ActionType;
 import static com.tverts.actions.ActionsPoint.actionResult;
 import static com.tverts.actions.ActionsPoint.actionRun;
+import static com.tverts.actions.ActionsPoint.NO_FLUSH;
 
 /* com.tverts: events */
 
@@ -106,7 +107,7 @@ public abstract class SecForceBase
 		key.setName(name);
 
 		//!: run ensure action
-		actionRun(ActionType.ENSURE, key);
+		actionRun(ActionType.ENSURE, key, NO_FLUSH, true);
 
 		//~: cache the key saved
 		SecKeys.INSTANCE.cache(key);
@@ -156,7 +157,7 @@ public abstract class SecForceBase
 			rule.setTitle("");
 
 		//!: act save
-		actionRun(ActionType.SAVE, rule);
+		actionRun(ActionType.SAVE, rule, NO_FLUSH, true);
 
 		if(LU.isD(getLog())) LU.D(getLog(), logsig(), " saved ",
 		  rule.isHidden()?("hidden "):(""), "rule on target ",
@@ -231,7 +232,8 @@ public abstract class SecForceBase
 		if(!allow) link.setDeny();
 
 		//!: ensure the link
-		link = actionResult(SecLink.class, actionRun(ActionType.ENSURE, link));
+		link = actionResult(SecLink.class,
+		  actionRun(ActionType.ENSURE, link, NO_FLUSH, true));
 
 		if(link != null) LU.D(getLog(), logsig(), " ensured " ,
 		  (allow)?("ALLOW"):("FORBID"), " '", key, "' link [", link.getPrimaryKey(),
@@ -247,7 +249,7 @@ public abstract class SecForceBase
 		if(link == null) return;
 
 		//!: delete the link
-		actionRun(ActionType.DELETE, link);
+		actionRun(ActionType.DELETE, link, NO_FLUSH, true);
 
 		LU.D(getLog(), logsig(), " removed '", key, "' link [",
 		  link.getPrimaryKey(), "] on target ",
@@ -270,9 +272,8 @@ public abstract class SecForceBase
 		//~: set
 		able.setSet(set);
 
-
-		//!: ensure the action
-		actionRun(ActionType.ENSURE, able);
+		//!: ensure the able
+		actionRun(ActionType.ENSURE, able, NO_FLUSH, true);
 	}
 
 	protected void    revokeAble(SecRule rule, Long login, Long set)
@@ -287,7 +288,7 @@ public abstract class SecForceBase
 
 		//?: {found it} delete
 		if(able != null)
-			actionRun(ActionType.DELETE, able);
+			actionRun(ActionType.DELETE, able, NO_FLUSH, true);
 	}
 
 

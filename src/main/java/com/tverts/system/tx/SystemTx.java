@@ -149,6 +149,27 @@ class SystemTx implements Tx
 		return (I)((adapts == null)?(null):(adapts.get(cls)));
 	}
 
+	@SuppressWarnings("unchecked")
+	public Object          val(Object key)
+	{
+		return (vals == null)?(null):(vals.get(key));
+	}
+
+	@SuppressWarnings("unchecked")
+	public void            val(Object key, Object val)
+	{
+		EX.assertn(key);
+
+		if(val != null)
+		{
+			if(vals == null)
+				vals = new HashMap(7);
+			vals.put(key, val);
+		}
+		else if(vals != null)
+			vals.remove(key);
+	}
+
 
 	/* private: the context state */
 
@@ -157,6 +178,7 @@ class SystemTx implements Tx
 	private String         txid;
 	private boolean        rollbackOnly;
 	private Map            adapts;
+	private Map            vals;
 
 
 

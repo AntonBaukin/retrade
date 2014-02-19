@@ -88,6 +88,11 @@ public class ActSecLink extends ActionBuilderXRoot
 			SecLink l = (SecLink) ((ActionWithTxBase)ctx).
 			  getTask().getTarget();
 
+			//?: {has this in the context}
+			if(((ActionWithTxBase)ctx).getActionTx().val(l.altKey()) != null)
+				return false;
+
+			//~: lookup in the database
 			return (bean(GetSecure.class).getSecLink(
 			  l.getKey(), l.getRule(), l.getTarget().getPrimaryKey()) == null);
 		}

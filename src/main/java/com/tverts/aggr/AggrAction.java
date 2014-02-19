@@ -77,14 +77,17 @@ public class AggrAction extends ActionWithTxBase
 
 	/* protected: ActionBase interface */
 
+	/**
+	 * TODO turn on aggregation!
+	 */
 	protected void    execute()
 	  throws Throwable
 	{
-		flush(session());
-
-		//~: sequentially add all the requests
-		for(AggrRequest request : this.requests)
-			AggrPoint.aggr(request, synch);
+//		flush(session());
+//
+//		//~: sequentially add all the requests
+//		for(AggrRequest request : this.requests)
+//			AggrPoint.aggr(request, synch);
 	}
 
 

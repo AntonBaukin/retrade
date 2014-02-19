@@ -6,10 +6,15 @@ import java.util.Date;
 
 /* com.tverts: endure (core + auth) */
 
+import com.tverts.endure.AltIdentity;
 import com.tverts.endure.NumericBase;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.auth.AuthLogin;
+
+/* com.tverts: support */
+
+import com.tverts.support.SU;
 
 
 /**
@@ -25,47 +30,47 @@ import com.tverts.endure.auth.AuthLogin;
  */
 public class      SecAble
        extends    NumericBase
-       implements DomainEntity
+       implements DomainEntity, AltIdentity
 {
 	/* public: SecAble (bean) interface */
 
-	public AuthLogin getLogin()
+	public AuthLogin  getLogin()
 	{
 		return login;
 	}
 
-	public void setLogin(AuthLogin login)
+	public void       setLogin(AuthLogin login)
 	{
 		this.login = login;
 	}
 
-	public SecRule getRule()
+	public SecRule    getRule()
 	{
 		return rule;
 	}
 
-	public void setRule(SecRule rule)
+	public void       setRule(SecRule rule)
 	{
 		this.rule = rule;
 	}
 
-	public SecSet getSet()
+	public SecSet     getSet()
 	{
 		return set;
 	}
 
-	public void setSet(SecSet set)
+	public void       setSet(SecSet set)
 	{
 		this.set = set;
 	}
 
-	public Date getAbleTime()
+	public Date       getAbleTime()
 	{
 		return (ableTime != null)?(ableTime):
 		  (ableTime = new Date());
 	}
 
-	public void setAbleTime(Date ableTime)
+	public void       setAbleTime(Date ableTime)
 	{
 		this.ableTime = ableTime;
 	}
@@ -73,10 +78,23 @@ public class      SecAble
 
 	/* public: DomainEntity interface */
 
-	public Domain getDomain()
+	public Domain     getDomain()
 	{
 		return (getLogin() != null)?(getLogin().getDomain()):
 		  (getRule() != null)?(getRule().getDomain()):(null);
+	}
+
+
+	/* public: AltIdentity interface */
+
+	public Object     altKey()
+	{
+		return SU.cats(
+		  "class=",   getClass().getSimpleName(),
+		  "&login=",  login.getPrimaryKey(),
+		  "&rule=",   rule.getPrimaryKey(),
+		  "&secset=", set.getPrimaryKey()
+		);
 	}
 
 
