@@ -14,8 +14,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
-import static com.tverts.support.SU.sXe;
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -69,7 +69,7 @@ public class UnityTypes
 		if(typeClass == null)
 			throw new IllegalArgumentException();
 
-		if((typeName = s2s(typeName)) == null)
+		if((typeName = SU.s2s(typeName)) == null)
 			throw new IllegalArgumentException();
 
 		//~> (read lock
@@ -147,7 +147,7 @@ public class UnityTypes
 		if(typeClass == null)
 			throw new IllegalArgumentException();
 
-		if((typeName = s2s(typeName)) == null)
+		if((typeName = SU.s2s(typeName)) == null)
 			throw new IllegalArgumentException();
 
 		//~> (write lock
@@ -199,6 +199,9 @@ public class UnityTypes
 
 	public static UnityType unityType(Class typeClass, String typeName)
 	{
+		EX.assertn(typeClass, "Unity Type class must be provided!");
+		EX.assertn(typeName,  "Unity Type name must be provided!");
+
 		UnityType res = getInstance().getType(typeClass, typeName);
 
 		if(res == null) throw new IllegalStateException(String.format(
@@ -282,7 +285,7 @@ public class UnityTypes
 			{
 				Map.Entry<String, UnityType> e = ei.next();
 
-				if(sXe(e.getKey()) || (e.getValue() == null))
+				if(SU.sXe(e.getKey()) || (e.getValue() == null))
 					ei.remove();
 			}
 		}

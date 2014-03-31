@@ -144,29 +144,36 @@ public class EX
 
 	/* assertions */
 
-	public static void  assertx(boolean x, Object... msg)
+	public static void   assertx(boolean x, Object... msg)
 	{
 		if(x == false)
-			throw new AssertionError(SU.cats(msg));
+			throw ass(msg);
 	}
 
-	public static <T> T assertn(T x, Object... msg)
+	public static <T> T  assertn(T x, Object... msg)
 	{
 		if(x == null)
-			throw new AssertionError(SU.cats(msg));
+			throw ass(msg);
 		return x;
 	}
 
-	public static void  asserte(Collection c, Object... msg)
+	public static void   asserte(Collection c, Object... msg)
 	{
 		if((c == null) || c.isEmpty())
-			throw new AssertionError(SU.cats(msg));
+			throw ass(msg);
 	}
 
-	public static void  asserte(Object[] a, Object... msg)
+	public static void   asserte(Object[] a, Object... msg)
 	{
 		if((a == null) || (a.length == 0))
-			throw new AssertionError(SU.cats(msg));
+			throw ass(msg);
+	}
+
+	public static String asserts(String s, Object... msg)
+	{
+		if((s == null) || (s.length() != s.trim().length()))
+			throw ass(msg);
+		return s;
 	}
 
 
@@ -174,6 +181,8 @@ public class EX
 
 	public static AssertionError   ass(Object... msg)
 	{
+		String s = SU.s2s(SU.cats(msg));
+		if(s == null) return new AssertionError();
 		return new AssertionError(SU.cats(msg));
 	}
 

@@ -10,9 +10,7 @@ import com.tverts.system.services.events.SystemReady;
 
 /**
  * Implementation base of service to plan the
- * execution of execution requests stored
- * in the database.
- *
+ * execution of the requests stored in the database.
  *
  * @author anton.baukin@gmail.com
  */

@@ -58,8 +58,8 @@
   <import resource = 'spring/events.xml'/>
   <import resource = 'spring/model.xml'/>
   <import resource = 'spring/executors.xml'/>
+  <import resource = 'spring/datas.xml'/>
   <import resource = 'spring/formatters.xml'/>
-
   <import resource = 'spring/genesis.xml'/>
   <import resource = 'spring/shunts.xml'/>
 
