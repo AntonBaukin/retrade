@@ -2,12 +2,15 @@ package com.tverts.data;
 
 /* Java */
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -45,7 +48,7 @@ public class Datas
 
 	/* public: access interface */
 
-	public void       setReference(DataSourceReference reference)
+	public void         setReference(DataSourceReference reference)
 	{
 		EX.assertx(sources.isEmpty());
 
@@ -67,9 +70,34 @@ public class Datas
 		}
 	}
 
-	public DataSource getSource(String did)
+	public DataSource   getSource(String did)
 	{
 		return sources.get(did);
+	}
+
+	public DataSource[] copySources()
+	{
+		DataSource[] res = new DataSource[sources.size()];
+		res = sources.values().toArray(res);
+
+		Arrays.sort(res, new Comparator<DataSource>()
+		{
+			public int compare(DataSource a, DataSource b)
+			{
+				String na = a.getNameLo();
+				String nb = b.getNameLo();
+
+				if(SU.sXe(na) || SU.sXe(nb))
+				{
+					na = a.getName();
+					nb = b.getName();
+				}
+
+				return na.compareToIgnoreCase(nb);
+			}
+		});
+
+		return res;
 	}
 
 

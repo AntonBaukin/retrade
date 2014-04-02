@@ -89,13 +89,18 @@ public abstract class DataSourceBase
 		this.uiPath = EX.assertn(SU.s2s(uiPath));
 	}
 
+	public boolean isSystem()
+	{
+		return true;
+	}
+
 
 	/* private: instance configuration */
 
-	private String did;
-	private String name;
-	private String nameLo;
-	private String descr;
-	private String descrLo;
-	private String uiPath;
+	private String  did;
+	private String  name;
+	private String  nameLo;
+	private String  descr;
+	private String  descrLo;
+	private String  uiPath;
 }

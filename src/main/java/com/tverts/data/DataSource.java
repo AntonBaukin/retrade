@@ -63,4 +63,6 @@ public interface DataSource
 	 * The context given has the data minimum.
 	 */
 	public Object    provideData(DataCtx ctx);
+
+	public boolean   isSystem();
 }
