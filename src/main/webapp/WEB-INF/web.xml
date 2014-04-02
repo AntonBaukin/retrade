@@ -215,6 +215,20 @@
   </servlet-mapping>
 
 
+  <!-- Binary Data Download Servlet -->
+
+  <servlet>
+    <display-name>Binary Data Download Servlet</display-name>
+    <servlet-name>retrade_DownloadServlet</servlet-name>
+    <servlet-class>com.tverts.servlet.DownloadServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>retrade_DownloadServlet</servlet-name>
+    <url-pattern>/download</url-pattern>
+  </servlet-mapping>
+
+
   <!--====================================================
     =                      Filters                       =
     ====================================================-->

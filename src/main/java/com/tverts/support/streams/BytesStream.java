@@ -176,6 +176,17 @@ public final class BytesStream extends OutputStream
 		return this;
 	}
 
+	public boolean     isNotClose()
+	{
+		return notClose;
+	}
+
+	public BytesStream setNotClose(boolean notClose)
+	{
+		this.notClose = notClose;
+		return this;
+	}
+
 
 	/* public: OutputStream interface */
 
@@ -241,7 +252,8 @@ public final class BytesStream extends OutputStream
 
 	public void close()
 	{
-		if(buffers == null) return;
+		if((buffers == null) | notClose)
+			return;
 
 		if(notCloseNext)
 		{
@@ -350,6 +362,7 @@ public final class BytesStream extends OutputStream
 	private long              length;
 	private long              limit;
 	private boolean           notCloseNext;
+	private boolean           notClose;
 
 	private byte[]            byte1;
 }

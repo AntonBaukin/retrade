@@ -1,9 +1,11 @@
 package com.tverts.servlet;
 
-/* Java Servlets */
+/* Java */
 
 import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
+
+/* Java Servlets */
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
@@ -47,7 +49,7 @@ import com.tverts.support.streams.BytesStream;
  */
 public class ModelServlet extends GenericServlet
 {
-	/* public: GenericServlet interface */
+	/* public: Generic Servlet */
 
 	public void service(ServletRequest xreq, ServletResponse xres)
 	  throws java.io.IOException, ServletException

@@ -1,12 +1,13 @@
 package com.tverts.model;
 
-/* standard Java classes */
+/* com.tverts: support */
 
-import java.util.Date;
+import com.tverts.support.EX;
 
 
 /**
- * COMMENT DelegatingModelPoint
+ * This Model Store just wraps else Store
+ * to support additional isolation.
  *
  * @author anton.baukin@gmail.com
  */
@@ -17,47 +18,27 @@ public class DelegatingModelPoint implements ModelPoint
 
 	/* public: DelegatingModelPoint (bean) interface */
 
-	public ModelStore getModelStore()
+	public void       setModelStore(ModelStore store)
 	{
-		return modelStore;
-	}
-
-	public void       setModelStore(ModelStore modelStore)
-	{
-		this.modelStore = modelStore;
+		this.modelStore = EX.assertn(store);
 	}
 
 
 	/* public: ModelStore (not Java Bean) interface */
 
-	public ModelBean findBean(String key)
-	{
-		return modelStore().findBean(key);
-	}
-
-	public ModelBean addBean(ModelBean bean)
+	public ModelBean  addBean(ModelBean bean)
 	{
 		return modelStore().addBean(bean);
 	}
 
-	public ModelBean removeBean(String key)
+	public ModelBean  removeBean(String key)
 	{
 		return modelStore().removeBean(key);
 	}
 
-	public ModelBean readBean(String key)
+	public ModelBean  readBean(String key)
 	{
 		return modelStore().readBean(key);
-	}
-
-	public Date      accessReadTime(String key)
-	{
-		return modelStore().accessReadTime(key);
-	}
-
-	public Long      accessLogin(String key)
-	{
-		return modelStore().accessLogin(key);
 	}
 
 
@@ -65,11 +46,10 @@ public class DelegatingModelPoint implements ModelPoint
 
 	protected ModelStore modelStore()
 	{
-		//?: {the store model is not assigned} illegal state
-		if(this.modelStore == null) throw new IllegalStateException(
-		  "Delegating Model Point has no Model Store strategy installed!");
-
-		return this.modelStore;
+		//?: {the store model is not assigned}
+		return EX.assertn(this.modelStore,
+		  "Delegating Model Point has no Model Store strategy installed!"
+		);
 	}
 
 

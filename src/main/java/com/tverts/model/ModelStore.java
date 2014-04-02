@@ -16,8 +16,6 @@ public interface ModelStore extends Serializable
 {
 	/* public: ModelStore (not Java Bean) interface */
 
-	public ModelBean findBean(String key);
-
 	/**
 	 * Adds the bean instance to the model.
 	 *
@@ -42,20 +40,4 @@ public interface ModelStore extends Serializable
 	 * of the bean is automatically set to the present.
 	 */
 	public ModelBean readBean(String key);
-
-	/**
-	 * Returns the timestamp of the last read operation
-	 * on the model bean registered by the key given.
-	 *
-	 * Note that this property is transient and for
-	 * the runtime environment only.
-	 */
-	public Date      accessReadTime(String key);
-
-	/**
-	 * If the model bean defined by the key was
-	 * created by logged in user, returns the
-	 * Auth Login primary key.
-	 */
-	public Long      accessLogin(String key);
 }

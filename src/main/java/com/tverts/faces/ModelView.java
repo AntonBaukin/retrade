@@ -46,6 +46,7 @@ public abstract class ModelView
 		return getModel();
 	}
 
+
 	/* public: ModelView (access model) interface */
 
 	public ModelBean   getModel()
@@ -65,23 +66,19 @@ public abstract class ModelView
 			modelPoint().addBean(model);
 
 		//?: {the model is not defined}
-		if(model == null) throw new IllegalStateException(String.format(
-		  "User data Model bean instance can't be created for the view " +
-		  "accessed by the URL [%s]!", request().getRequestURL().toString()));
-
-		return model;
+		return EX.assertn(model, "User data Model bean instance can't be created ",
+		  "for the view accessed by the URL [", request().getRequestURL(), "]!"
+		);
 	}
 
 	public Domain      loadModelDomain()
 	{
-		Long   k = getModel().getDomain();
-		Domain d = (k == null)?(null):
-		           bean(GetDomain.class).getDomain(k);
+		Long k = getModel().getDomain();
 
-		if(d == null) throw EX.state(
-		  "Can't obtain Model Domain!");
-
-		return d;
+		return EX.assertn(
+		  (k == null)?(null):(bean(GetDomain.class).getDomain(k)),
+		  "Can't obtain Model Domain!"
+		);
 	}
 
 	public String      getModelKey()
