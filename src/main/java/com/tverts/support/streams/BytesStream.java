@@ -1,12 +1,16 @@
 package com.tverts.support.streams;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -15,12 +19,41 @@ import java.util.ArrayList;
  *
  * This implementation is not thread-safe!
  *
+ * Stream supports bytes limit. It is guaranteed
+ * that when {@link StreamLimitGained} is raised,
+ * the buffer length equals it (but not for limit
+ * set operation {@link #limit(long)}).
+ *
  *
  * @author anton.baukin@gmail.com
  */
 public final class BytesStream extends OutputStream
 {
 	/* public: BytesStream interface */
+
+	/**
+	 * Makes the stream limited in the bytes length
+	 * if the limit is greater than zero.
+	 *
+	 * Checks the current length against the limit
+	 * and raises {@link StreamLimitGained}.
+	 */
+	public BytesStream limit(long limit)
+	  throws IOException
+	{
+		this.limit = limit;
+
+		//?: {is limit gained}
+		if((limit != 0L) && (this.length() > limit))
+			throw new StreamLimitGained(this, limit);
+
+		return this;
+	}
+
+	public long        limit()
+	{
+		return this.limit;
+	}
 
 	/**
 	 * Copies the bytes written to the stream given.
@@ -80,9 +113,10 @@ public final class BytesStream extends OutputStream
 		byte[] res = new byte[(int) length()];
 		int    csz = copy(res, 0, res.length);
 
-		if(res.length != csz)
-			throw new IllegalStateException(
-			  "Error in BytesStream.copy(bytes) implementation!");
+		EX.assertx(res.length == csz,
+		  "Error in BytesStream.copy(bytes) implementation!"
+		);
+
 		return res;
 	}
 
@@ -108,11 +142,7 @@ public final class BytesStream extends OutputStream
 	}
 
 	public long        length()
-	  throws IOException
 	{
-		if(buffers == null)
-			throw new IOException("ByteStream is closed!");
-
 		return this.length;
 	}
 
@@ -133,6 +163,17 @@ public final class BytesStream extends OutputStream
 	public InputStream inputStream()
 	{
 		return new Stream();
+	}
+
+	public boolean     isNotCloseNext()
+	{
+		return notCloseNext;
+	}
+
+	public BytesStream setNotCloseNext(boolean notCloseNext)
+	{
+		this.notCloseNext = notCloseNext;
+		return this;
 	}
 
 
@@ -156,6 +197,11 @@ public final class BytesStream extends OutputStream
 
 		while(len > 0)
 		{
+			//?: {limit is reached}
+			if((this.limit != 0L) && (this.length >= this.limit))
+				throw new StreamLimitGained(this, limit, b, off, len);
+
+			//?: {no a buffer}
 			if(buffers.isEmpty())
 			{
 				buffers.add(ByteBuffers.INSTANCE.get());
@@ -165,6 +211,7 @@ public final class BytesStream extends OutputStream
 			byte[] x = buffers.get(buffers.size() - 1);
 			int    s = x.length - position;
 
+			//?: {has no free space in the current buffer}
 			if(s == 0)
 			{
 				buffers.add(ByteBuffers.INSTANCE.get());
@@ -172,7 +219,12 @@ public final class BytesStream extends OutputStream
 				continue;
 			}
 
+			//?: {restrict free space to the length left}
 			if(s > len) s = len;
+
+			//?: {restrict copy}
+			if((this.limit != 0L) && (s + this.length > this.limit))
+				s = (int)(this.limit - this.length);
 
 			System.arraycopy(b, off, x, position, s);
 			off += s; len -= s; position += s;
@@ -190,6 +242,12 @@ public final class BytesStream extends OutputStream
 	public void close()
 	{
 		if(buffers == null) return;
+
+		if(notCloseNext)
+		{
+			notCloseNext = false;
+			return;
+		}
 
 		ByteBuffers.INSTANCE.free(buffers);
 		buffers = null;
@@ -215,8 +273,7 @@ public final class BytesStream extends OutputStream
 		public int     read(byte[] b, int off, int len)
 		  throws IOException
 		{
-			if(b == null)
-				throw new NullPointerException();
+			EX.assertn(b);
 			if((off < 0) | (len < 0) | (len > b.length - off))
 				throw new IndexOutOfBoundsException();
 
@@ -291,6 +348,8 @@ public final class BytesStream extends OutputStream
 	 */
 	private int               position;
 	private long              length;
+	private long              limit;
+	private boolean           notCloseNext;
 
 	private byte[]            byte1;
 }

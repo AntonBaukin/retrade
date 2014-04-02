@@ -78,7 +78,8 @@ public class      FilterBridge
 			FilterTask task = createTask(
 			  (HttpServletRequest)request,
 			  (HttpServletResponse)response,
-			  chain);
+			  chain
+			);
 
 			//!: process the task
 			processTask(task);
@@ -234,6 +235,7 @@ public class      FilterBridge
 		return filters.toArray(new Filter[filters.size()]);
 	}
 
+
 	/* protected: FilterTask implementation */
 
 	protected FilterTask  createTask (
@@ -247,6 +249,7 @@ public class      FilterBridge
 		task.setRequest(request);
 		task.setResponse(response);
 		task.setFilterCycle(createFilterCycle(task, chain));
+
 		return task;
 	}
 
@@ -257,8 +260,10 @@ public class      FilterBridge
 	{
 		FilterCycle result = new FilterCycle(task, filters);
 		result.setTerminal(new FilterChainInvoker(chain));
+
 		return result;
 	}
+
 
 	protected static class Task extends FilterTaskBase
 	{
@@ -269,6 +274,7 @@ public class      FilterBridge
 			super(filterStage);
 		}
 
+
 		/* public: FilterTask interface */
 
 		public void continueCycle()
@@ -276,23 +282,25 @@ public class      FilterBridge
 			filterCycle.continueCycle();
 		}
 
+
 		/* public: Task interface */
 
 		public void setFilterCycle(FilterCycle filterCycle)
 		{
-			if(this.filterCycle != null)
-				throw new IllegalStateException();
+			EX.assertx(this.filterCycle == null);
 			this.filterCycle = filterCycle;
 		}
 
-	/* protected: the cycle */
+
+		/* protected: the cycle */
 
 		private FilterCycle filterCycle;
 	}
 
+
 	/* private: parameters of the bridge */
 
-	private FilterStage     filterStage;
-	private FilterReference filterReference;
-	private Filter[]        filters;
+	private FilterStage       filterStage;
+	private FilterReference   filterReference;
+	private volatile Filter[] filters;
 }

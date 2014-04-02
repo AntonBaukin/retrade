@@ -3,6 +3,7 @@ package com.tverts.objects;
 /* standard Java classes */
 
 import java.io.ByteArrayInputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
@@ -14,6 +15,7 @@ import javax.xml.transform.stream.StreamSource;
 
 /* Spring Framework */
 
+import com.tverts.support.EX;
 import com.tverts.support.streams.BytesStream;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
@@ -99,26 +101,77 @@ public class XMAPoint
 		writeObject(object, new StreamResult(stream));
 	}
 
+	/**
+	 * Write the object to the raw stream given in UTF-8.
+	 * Note that the stream is closed (also, in the case of error)!
+	 */
+	public static void   writeObject(Object object, OutputStream stream)
+	{
+		Throwable error  = null;
+		boolean   closed = false;
+
+		try
+		{
+			Writer wr = new OutputStreamWriter(stream, "UTF-8");
+			writeObject(object, wr);
+			wr.close();
+			closed = true;
+		}
+		catch(Throwable e)
+		{
+			error = e;
+		}
+		finally
+		{
+			if(!closed) try
+			{
+				stream.close();
+			}
+			catch(Throwable e)
+			{
+				if(error == null) error = e;
+			}
+		}
+
+		if(error != null)
+			throw EX.wrap(error);
+	}
+
+	public static void   writeObject(Object object, BytesStream stream)
+	{
+		//~: prevent close on the exit
+		boolean notclose = stream.isNotCloseNext();
+
+		try
+		{
+			//~: write the instance
+			Writer wr = new OutputStreamWriter(stream, "UTF-8");
+			writeObject(object, wr);
+
+			stream.setNotCloseNext(true);
+			wr.close(); //<-- without the bytes stream
+
+			//~: restore original not-close flag
+			stream.setNotCloseNext(notclose);
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e);
+		}
+	}
+
 	public static byte[] writeObject(Object object)
 	{
 		BytesStream bs = new BytesStream();
 
 		try
 		{
-			Writer   wr = new OutputStreamWriter(bs, "UTF-8");
-
-			writeObject(object, wr);
-			wr.flush();
-
+			writeObject(object, bs);
 			return bs.bytes();
 		}
-		catch(RuntimeException e)
+		catch(Throwable e)
 		{
-			throw e;
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 		finally
 		{
