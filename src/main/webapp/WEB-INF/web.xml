@@ -226,6 +226,7 @@
   <servlet-mapping>
     <servlet-name>retrade_DownloadServlet</servlet-name>
     <url-pattern>/download</url-pattern>
+    <url-pattern>/download/*</url-pattern>
   </servlet-mapping>
 
 
@@ -276,6 +277,7 @@
     <url-pattern>/go/*</url-pattern>
     <url-pattern>/model</url-pattern>
     <url-pattern>/download</url-pattern>
+    <url-pattern>/download/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
 

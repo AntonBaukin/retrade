@@ -22,9 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.tverts.spring.SpringPoint.beanOrNull;
 
-/* com.tverts: servlet */
+/* com.tverts: objects */
 
-import com.tverts.servlet.BinarySource.Biny;
+import com.tverts.objects.BinarySource;
+import com.tverts.objects.BinarySource.Biny;
 
 /* com.tverts: model */
 

@@ -1,16 +1,20 @@
 package com.tverts.servlet;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.List;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -38,8 +42,7 @@ public class RequestPoint
 
 	public static ServletContext     context()
 	{
-		if(INSTANCE.getContext() == null)
-			throw new IllegalStateException(NO_WEB_ERR);
+		EX.assertn(INSTANCE.getContext(), NO_WEB_ERR);
 		return INSTANCE.getContext();
 	}
 
@@ -68,8 +71,7 @@ public class RequestPoint
 	{
 		List<HttpServletRequest> r = INSTANCE.getRequests();
 
-		if((r == null) || r.isEmpty())
-			throw new IllegalStateException(NO_WEB_ERR);
+		EX.assertx((r != null) && !r.isEmpty(), NO_WEB_ERR);
 		return r.get(r.size() - 1);
 	}
 
@@ -87,8 +89,7 @@ public class RequestPoint
 	{
 		List<HttpServletRequest> r = INSTANCE.getRequests();
 
-		if((r == null) || r.isEmpty())
-			throw new IllegalStateException(NO_WEB_ERR);
+		EX.assertx((r != null) && !r.isEmpty(), NO_WEB_ERR);
 		return r.get(i);
 	}
 
@@ -111,8 +112,7 @@ public class RequestPoint
 	{
 		List<ResponseWrapper> r = INSTANCE.getResponses();
 
-		if((r == null) || r.isEmpty())
-			throw new IllegalStateException(NO_WEB_ERR);
+		EX.assertx((r != null) && !r.isEmpty(), NO_WEB_ERR);
 		return r.get(r.size() - 1);
 	}
 
@@ -124,9 +124,18 @@ public class RequestPoint
 	{
 		List<ResponseWrapper> r = INSTANCE.getResponses();
 
-		if((r == null) || r.isEmpty())
-			throw new IllegalStateException(NO_WEB_ERR);
+		EX.assertx((r != null) && !r.isEmpty(), NO_WEB_ERR);
 		return r.get(i);
+	}
+
+	public static String             param(String name)
+	{
+		return request().getParameter(name);
+	}
+
+	public static String[]           params(String name)
+	{
+		return request().getParameterValues(name);
 	}
 
 
@@ -156,8 +165,7 @@ public class RequestPoint
 	 */
 	public void setContext(ServletContext ctx)
 	{
-		if((context != null) && (ctx != null))
-			throw new IllegalStateException();
+		EX.assertx((context == null) | (ctx == null));
 		context = ctx;
 	}
 
@@ -173,8 +181,7 @@ public class RequestPoint
 		if(request == null)
 		{
 			//?: {the stack is empty}
-			if((requests == null) || requests.isEmpty())
-				throw new IllegalStateException(NO_WEB_ERR);
+			EX.assertx((requests != null) && !requests.isEmpty(), NO_WEB_ERR);
 
 			//!: pop
 			requests.remove(requests.size() - 1);
@@ -207,8 +214,7 @@ public class RequestPoint
 		if(response == null)
 		{
 			//?: {the stack is empty}
-			if((responses == null) || responses.isEmpty())
-				throw new IllegalStateException(NO_WEB_ERR);
+			EX.assertx((responses != null) && !responses.isEmpty(), NO_WEB_ERR);
 
 			//!: pop
 			responses.remove(responses.size() - 1);

@@ -1,9 +1,11 @@
-package com.tverts.servlet;
+package com.tverts.objects;
 
 /* Java */
 
 import java.io.IOException;
 import java.io.OutputStream;
+
+import com.tverts.servlet.Download;
 
 
 /**
@@ -36,8 +38,9 @@ public interface BinarySource
 		/**
 		 * Opens the output stream. May be invoked only once!
 		 * The flags defines the features of the stream.
-		 * It is allowed to close the stream once,
-		 * or not to close it at all.
+		 *
+		 * It is allowed to close the stream any number
+		 * of times, or not to close it at all.
 		 */
 		public OutputStream stream(int flags)
 		  throws IOException;
@@ -54,6 +57,10 @@ public interface BinarySource
 		 *
 		 * For HTTP request: sets the header.
 		 * 'Content-Type' stands for MIME-type.
+		 *
+		 * Also, 'Content-Disposition' header
+		 * defines the name of the file and
+		 * orders to download and save it.
 		 *
 		 * Note that in HTTP implementation the
 		 * names of the headers are case-sensitive!
