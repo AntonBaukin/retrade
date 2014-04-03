@@ -165,7 +165,7 @@ select ut from Unity u join u.unityType ut
 		qb.setClauseFrom("Entity e");
 
 		//~: select clause
-		qb.setClauseSelect("count(e.id)");
+		qb.setClauseSelect("e");
 
 		//~: order by clause
 		if(mb.getOrderBy() != null)

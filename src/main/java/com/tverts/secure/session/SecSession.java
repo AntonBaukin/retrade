@@ -40,7 +40,7 @@ public class SecSession implements Serializable
 	 * secured access session.
 	 */
 	public static String ATTR_AUTH_LOGIN   =
-	  "SecSession : Auth Session";
+	  "SecSession : Auth Login";
 
 	/**
 	 * Attribute of (Long) key of the Domain
