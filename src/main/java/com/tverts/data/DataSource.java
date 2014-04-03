@@ -1,6 +1,9 @@
 package com.tverts.data;
 
+/* com.tverts: model */
+
 import com.tverts.model.ModelBean;
+
 
 /**
  * Data Source is a strategy of obtaining

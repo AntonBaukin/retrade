@@ -212,6 +212,10 @@ public class DownloadServlet extends GenericServlet
 				if(!SU.sXe(e.getValue()))
 					res.setHeader(e.getKey(), e.getValue());
 
+			//~: content disposition
+			if(SU.sXe(headers.get("Content-Disposition")))
+				res.setHeader("Content-Disposition", "attachment;");
+
 			//~: content type
 			String ct = SU.s2s(headers.get("Content-Type"));
 			if(ct == null) ct = "application/octet-stream";

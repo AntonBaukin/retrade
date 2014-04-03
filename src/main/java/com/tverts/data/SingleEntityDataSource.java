@@ -82,14 +82,14 @@ public class SingleEntityDataSource extends DataSourceBase
 	public ModelBean createModel(DataCtx ctx)
 	{
 		//~: session id
-		String sid = EX.assertn(ctx.getSessionID(),
+		String sid = EX.assertn(ctx.getSecSession(),
 		  "Authentication Session is required for this Data Source!"
 		);
 
 		//~: auth session
 		AuthSession au = EX.assertn(
-		  bean(GetAuthLogin.class).getAuthSession(ctx.getSessionID()),
-		  "Authentication Session [", ctx.getSessionID(), "] is not found!"
+		  bean(GetAuthLogin.class).getAuthSession(ctx.getSecSession()),
+		  "Authentication Session [", ctx.getSecSession(), "] is not found!"
 		);
 
 		//~: create the model bean

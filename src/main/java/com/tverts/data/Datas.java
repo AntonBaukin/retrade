@@ -2,15 +2,26 @@ package com.tverts.data;
 
 /* Java */
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+/* com.tverts: execution */
+
+import com.tverts.exec.ExecPoint;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.XMAPoint;
+
 /* com.tverts: support */
 
 import com.tverts.support.EX;
 import com.tverts.support.SU;
+import com.tverts.support.streams.BytesStream;
 
 
 /**
@@ -36,13 +47,117 @@ public class Datas
 
 	/* public: support interface */
 
-	public static DataSource source(String did)
+	public static DataSource  source(String did)
 	{
 		EX.asserts(did, "Valid Data Source ID must be provided!");
 
 		return EX.assertn(INSTANCE.getSource(did),
 		  "Data Source with DID [", did, "] is not registered!"
 		);
+	}
+
+	/**
+	 * Passes the data object given to the execution
+	 * subsystem to obtain it's XML representation.
+	 *
+	 * If data object is string, converts it to UTF-8 bytes.
+	 * If data object is an array of bytes, writes them to
+	 * the resulting stream. If data object is Bytes Stream,
+	 * returns it without any further actions.
+	 *
+	 * Else, invokes the execution layer. If it returns
+	 * null result, as the final attempt, tries to convert
+	 * the data object directly using {@link XMAPoint}.
+	 *
+	 * Interesting moment: this function works recursively
+	 * in the case the execution layer had returned
+	 * a defined instance.
+	 */
+	public static BytesStream stream(Object data)
+	{
+		//?: {is a bytes stream}
+		if(data instanceof BytesStream)
+			return (BytesStream)data;
+
+		//?: {is a string}
+		if(data instanceof String) try
+		{
+			data = ((String)data).getBytes("UTF-8");
+		}
+		catch(IOException e)
+		{
+			throw EX.wrap(e);
+		}
+
+		//?: {is a bytes array}
+		if(data instanceof byte[]) try
+		{
+			BytesStream stream = new BytesStream();
+			stream.write((byte[]) data);
+			return stream;
+		}
+		catch(IOException e)
+		{
+			throw EX.wrap(e);
+		}
+
+		//~: execute the data object
+		Object xdata = ExecPoint.execute(data);
+
+		//?: {has data result}
+		if(xdata != null)
+			return stream(xdata);
+
+		//~: write the object mapped to XML
+		BytesStream stream = new BytesStream();
+		XMAPoint.writeObject(data, stream);
+		return stream;
+	}
+
+	/**
+	 * The same as {@link #stream(Object)},
+	 * but is optimized for bytes array.
+	 *
+	 * Also note that input Bytes Stream
+	 * is closed here.
+	 */
+	public static byte[]      bytes(Object data)
+	{
+		//?: {is a bytes array}
+		if(data instanceof byte[])
+			return (byte[]) data;
+
+		//?: {is a string}
+		if(data instanceof String) try
+		{
+			return ((String)data).getBytes("UTF-8");
+		}
+		catch(IOException e)
+		{
+			throw EX.wrap(e);
+		}
+
+		//?: {is a bytes stream}
+		if(data instanceof BytesStream) try
+		{
+			byte[] bytes = ((BytesStream)data).bytes();
+			((BytesStream)data).close();
+			return bytes;
+		}
+		catch(IOException e)
+		{
+			throw EX.wrap(e);
+		}
+
+		//~: execute the data object
+		Object xdata = ExecPoint.execute(data);
+
+		//?: {has data result}
+		if(xdata != null)
+			return bytes(xdata);
+
+		//~: write the object mapped to XML
+		return XMAPoint.writeObject(data);
 	}
 
 

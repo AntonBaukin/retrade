@@ -61,6 +61,8 @@ public interface BinarySource
 		 * Also, 'Content-Disposition' header
 		 * defines the name of the file and
 		 * orders to download and save it.
+		 * It is set automatically, but you
+		 * may overwrite it.
 		 *
 		 * Note that in HTTP implementation the
 		 * names of the headers are case-sensitive!
