@@ -1,0 +1,84 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.report'>
+
+  <class name = 'ReportRequest' table = 'report_request' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_report_request'/>
+
+
+    <!-- Report Template -->
+
+    <many-to-one name = 'template' foreign-key = 'fk_report_request_template'>
+
+      <column name = 'fk_template' not-null = 'true'
+        index = 'ix_report_request_template'>
+
+        <comment>The template of this report request</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Report Owner -->
+
+    <many-to-one name = 'owner' foreign-key = 'fk_report_request_owner'>
+
+      <column name = 'fk_owner' not-null = 'true'
+        index = 'ix_report_request_owner'>
+
+        <comment>The user had requested this report, or the System user</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Request Time -->
+
+    <property name = 'time' type = 'timestamp'>
+
+      <column name = 'request_time' index = 'ix_report_request_time'>
+        <comment>The time this request had been issued</comment>
+      </column>
+    </property>
+
+
+    <!-- Data Source Model -->
+
+    <property name = 'model' type = 'text'>
+
+      <column name = 'model_object'>
+
+        <comment>
+          The XML-serialized UI Model Java Bean created by
+          the Data Source of the template from a configuration
+          interface. Used to build the data object of the report
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Is Loaded Flag -->
+
+    <property name = 'loaded'>
+
+      <column name = 'is_loaded' not-null = 'true'>
+        <comment>Flag set when the report was loaded by the user</comment>
+      </column>
+    </property>
+
+
+    <!-- The Report File -->
+
+    <property name = 'report' type = 'binary'>
+
+      <column name = 'report_file'>
+        <comment>The resulting report file</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

@@ -1,4 +1,4 @@
-package com.tverts.data;
+package com.tverts.endure.report;
 
 /**
  * Supported formats of the report documents.

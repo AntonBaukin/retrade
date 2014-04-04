@@ -60,6 +60,12 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.secure.SecSet   Secure: Set;
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Report Template
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.report.ReportTemplate   Report: Template;
+
       </value>
     </property>
   </bean>
