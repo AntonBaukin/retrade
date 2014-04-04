@@ -76,14 +76,14 @@ public final class SecPoint
 
 	/* public: SecPoint (static) interface */
 
-	public static SecSession secSession()
+	public static SecSession  secSession()
 	{
 		return EX.assertn( INSTANCE.getSecSession(),
 		  "No Secure Session instance is bound to the current thread!"
 		);
 	}
 
-	public static Long       domain()
+	public static Long        domain()
 	{
 		Long domain = (Long) secSession().
 		  attr(SecSession.ATTR_DOMAIN_PKEY);
@@ -97,7 +97,7 @@ public final class SecPoint
 		return domain;
 	}
 
-	public static Long       login()
+	public static Long        login()
 	{
 		Long login = (Long) secSession().
 		  attr(SecSession.ATTR_AUTH_LOGIN);
@@ -111,12 +111,12 @@ public final class SecPoint
 		return login;
 	}
 
-	public static Long       loginOrNull()
+	public static Long        loginOrNull()
 	{
 		return (Long) secSession().attr(SecSession.ATTR_AUTH_LOGIN);
 	}
 
-	public static void       closeSecSession()
+	public static void        closeSecSession()
 	{
 		//~: set the closed attribute
 		secSession().attr(SecSession.ATTR_CLOSED, true);
@@ -130,7 +130,7 @@ public final class SecPoint
 			actionRun(ActAuthSession.CLOSE, session);
 	}
 
-	public static Domain     loadDomain()
+	public static Domain      loadDomain()
 	{
 		Domain d = bean(GetDomain.class).getDomain(domain());
 
@@ -141,7 +141,17 @@ public final class SecPoint
 		return d;
 	}
 
-	public static AuthLogin  loadLogin()
+	public static AuthSession loadAuthSession()
+	{
+		return EX.assertn(bean(GetAuthLogin.class).getAuthSession(
+		  (String) secSession().attr(SecSession.ATTR_AUTH_SESSION)),
+
+		  "Auth Session [", secSession().attr(SecSession.ATTR_AUTH_SESSION),
+		  "] is not found in the database!"
+		);
+	}
+
+	public static AuthLogin   loadLogin()
 	{
 		AuthLogin l = bean(GetAuthLogin.class).getLogin(login());
 
@@ -157,7 +167,7 @@ public final class SecPoint
 	 */
 	public static final String SYSTEM_DOMAIN = "System";
 
-	public static boolean    isSystemDomain()
+	public static boolean     isSystemDomain()
 	{
 		return SYSTEM_DOMAIN.equals(loadDomain().getCode());
 	}
@@ -166,7 +176,7 @@ public final class SecPoint
 	private static final String SESSION_SYSTEM_ATTR =
 	  SecPoint.class.getName() + ": system login: ";
 
-	public static boolean    isSystemLogin()
+	public static boolean     isSystemLogin()
 	{
 		//~: inspect the session cache
 		HttpSession session = RequestPoint.sessionOrNull();
@@ -186,13 +196,13 @@ public final class SecPoint
 		return (system != null) && system.getPrimaryKey().equals(login());
 	}
 
-	public static void       checkSystemDomain()
+	public static void        checkSystemDomain()
 	{
 		if(!isSystemDomain())
 			throw EX.state("System Domain only!");
 	}
 
-	public static Domain     loadSystemDomain()
+	public static Domain      loadSystemDomain()
 	{
 		Domain d =  bean(GetDomain.class).getDomain(SYSTEM_DOMAIN);
 
@@ -207,13 +217,13 @@ public final class SecPoint
 	 * Checks whether current user has access
 	 * with the key named to the Domain.
 	 */
-	public static boolean    isSecure(String key)
+	public static boolean     isSecure(String key)
 	{
 		return isSystemLogin() || bean(GetSecure.class).
 		  isSecure(login(), domain(), SecKeys.secKey(key));
 	}
 
-	public static boolean    isSecure(Long target, String key)
+	public static boolean     isSecure(Long target, String key)
 	{
 		return isSystemLogin() || bean(GetSecure.class).
 		  isSecure(login(), target, SecKeys.secKey(key));
@@ -223,7 +233,7 @@ public final class SecPoint
 	 * Returns true when at least one of the keys is
 	 * allowed, and not simultaneously forbidden.
 	 */
-	public static boolean    isAnySecure(Collection<String> keys)
+	public static boolean     isAnySecure(Collection<String> keys)
 	{
 		if(isSystemLogin()) return true;
 
@@ -235,7 +245,7 @@ public final class SecPoint
 		  isAnySecure(login(), domain(), skeys);
 	}
 
-	public static boolean    isAnySecure(Long target, Collection<String> keys)
+	public static boolean     isAnySecure(Long target, Collection<String> keys)
 	{
 		if(isSystemLogin()) return true;
 
@@ -250,7 +260,7 @@ public final class SecPoint
 	/**
 	 * Returns true when all the keys are allowed.
 	 */
-	public static boolean    isAllSecure(Collection<String> keys)
+	public static boolean     isAllSecure(Collection<String> keys)
 	{
 		if(isSystemLogin()) return true;
 
@@ -262,7 +272,7 @@ public final class SecPoint
 		  isAllSecure(login(), domain(), skeys);
 	}
 
-	public static boolean    isAllSecure(Long target, Collection<String> keys)
+	public static boolean     isAllSecure(Long target, Collection<String> keys)
 	{
 		if(isSystemLogin()) return true;
 

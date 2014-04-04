@@ -39,6 +39,16 @@ public class AdaptedEntitiesSelected extends DataSelectModelBean
 
 	/* public: bean interface */
 
+	public String getDataSource()
+	{
+		return dataSource;
+	}
+
+	public void setDataSource(String dataSource)
+	{
+		this.dataSource = dataSource;
+	}
+
 	public String getSelSet()
 	{
 		return selSet;
@@ -104,8 +114,11 @@ public class AdaptedEntitiesSelected extends DataSelectModelBean
 	/* public: initialization */
 
 	public AdaptedEntitiesSelected init
-	  (Long domain, Long login, UnityType type, Adapter adapter)
+	  (String dataSource, Long domain, Long login, UnityType type, Adapter adapter)
 	{
+		//~: data source
+		this.dataSource = EX.asserts(dataSource);
+
 		//~: domain
 		setDomain(EX.assertn(domain));
 
@@ -132,6 +145,7 @@ public class AdaptedEntitiesSelected extends DataSelectModelBean
 
 	/* private: the model state */
 
+	private String  dataSource;
 	private String  selSet;
 	private Long    login;
 	private Long    unityType;

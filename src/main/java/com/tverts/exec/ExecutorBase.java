@@ -59,7 +59,9 @@ public abstract class ExecutorBase
 
 	protected ExecTx  tx()
 	{
-		return TxPoint.txContext(ExecTx.class);
+		return EX.assertn( TxPoint.txContext(ExecTx.class),
+		  "No Execution Transaction Context is bound!"
+		);
 	}
 
 	protected Session session()
@@ -86,6 +88,20 @@ public abstract class ExecutorBase
 		  ((NumericIdentity)obj).getPrimaryKey(),
 		  "] is not of the client domain!"
 		);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T   val(Class<T> key)
+	{
+		Object x = tx().val(key);
+		EX.assertx((x == null) || key.isAssignableFrom(x.getClass()));
+		return (T) x;
+	}
+
+	protected void    val(Object key_val)
+	{
+		EX.assertn(key_val);
+		tx().val(key_val.getClass(), key_val);
 	}
 
 

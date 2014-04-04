@@ -1,5 +1,16 @@
 package com.tverts.exec;
 
+/* com.tverts: execution service */
+
+import com.tverts.exec.service.ExecTx;
+import com.tverts.exec.service.ExecTxContext;
+
+/* com.tverts: system (transactions) */
+
+import com.tverts.system.tx.Tx;
+import com.tverts.system.tx.TxPoint;
+
+
 /**
  * Point to invoke execution subsystem.
  *
@@ -23,15 +34,44 @@ public class ExecPoint
 
 	/* public: ExecPoint (singleton) interface */
 
-	public static Object   execute(Object request)
+	public static Object execute(Object request)
 	  throws ExecError
 	{
-		return getInstance().executor.execute(request);
+		return INSTANCE.executor.execute(request);
 	}
 
-	public static Executor getExecutor(String name)
+	/**
+	 * Executes the task in an {@link ExecTx} context.
+	 * External {@link Tx} context must exist!
+	 *
+	 * If there is an execution context,
+	 * new one is not created.
+	 */
+	public static Object executeTx(Object request)
+	  throws ExecError
 	{
-		return getInstance().executor.getExecutor(name);
+		//~: lookup the existing context
+		ExecTx etx = TxPoint.txContext(ExecTx.class);
+		ExecTx xtx = etx;
+
+		//?: {not found it} create the new one
+		if(xtx == null)
+		{
+			xtx = new ExecTxContext(TxPoint.txContext()).init();
+			TxPoint.INSTANCE.setTxContext(xtx);
+		}
+
+		//~: execute the request
+		try
+		{
+			return INSTANCE.executor.execute(request);
+		}
+		finally
+		{
+			//?: {created own context} pop it
+			if(xtx != etx)
+				TxPoint.INSTANCE.setTxContext(null);
+		}
 	}
 
 

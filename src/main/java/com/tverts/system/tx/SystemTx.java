@@ -163,11 +163,15 @@ class SystemTx implements Tx
 		if(val != null)
 		{
 			if(vals == null)
-				vals = new HashMap(7);
+				vals = new HashMap(3);
 			vals.put(key, val);
 		}
 		else if(vals != null)
+		{
 			vals.remove(key);
+			if(vals.isEmpty())
+				vals = null;
+		}
 	}
 
 

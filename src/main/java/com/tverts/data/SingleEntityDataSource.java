@@ -94,7 +94,7 @@ public class SingleEntityDataSource extends DataSourceBase
 
 		//~: create the model bean
 		return new AdaptedEntitiesSelected().init(
-		  ctx.getDomain(), au.getLogin().getPrimaryKey(),
+		  did(), ctx.getDomain(), au.getLogin().getPrimaryKey(),
 		  UnityTypes.unityType(typeClass, typeName),
 		  adapter
 		);

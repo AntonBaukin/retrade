@@ -3,7 +3,6 @@ package com.tverts.data;
 /* Java */
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -102,7 +101,7 @@ public class Datas
 		}
 
 		//~: execute the data object
-		Object xdata = ExecPoint.execute(data);
+		Object xdata = ExecPoint.executeTx(data);
 
 		//?: {has data result}
 		if(xdata != null)
@@ -150,7 +149,7 @@ public class Datas
 		}
 
 		//~: execute the data object
-		Object xdata = ExecPoint.execute(data);
+		Object xdata = ExecPoint.executeTx(data);
 
 		//?: {has data result}
 		if(xdata != null)

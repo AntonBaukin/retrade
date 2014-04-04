@@ -4,6 +4,10 @@ package com.tverts.exec.service;
 
 import java.util.Date;
 
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
+
 /* com.tverts: system (transactions) */
 
 import com.tverts.system.tx.Tx;
@@ -34,10 +38,25 @@ public class ExecTxContext extends TxWrapperBase implements ExecTx
 
 	/* public: ExecTxContext interface */
 
-	public void init(ExecRequest request)
+	public ExecTxContext init(ExecRequest request)
 	{
 		this.requestKey  = request.getPrimaryKey();
 		this.requestTime = request.getRequestTime();
+
+		return this;
+	}
+
+	/**
+	 * Initializes the context with the authentication
+	 * session of the currently executed request.
+	 */
+	public ExecTxContext init()
+	{
+		this.domainCache  = SecPoint.loadDomain();
+		this.sessionCache = SecPoint.loadAuthSession();
+		this.requestTime  = new Date();
+
+		return this;
 	}
 
 
