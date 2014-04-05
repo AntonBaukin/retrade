@@ -78,6 +78,18 @@ public abstract class DataSelectModelBean
 		sortDelegate.setSortDesc(sortDesc);
 	}
 
+	public String    getFirstSortProp()
+	{
+		String[] sp = getSortProps();
+		return ((sp == null) || (sp.length == 0))?(null):(sp[0]);
+	}
+
+	public String    getFirstSortDir()
+	{
+		boolean[] sd = getSortDesc();
+		return ((sd == null) || (sd.length == 0))?(null):sd[0]?("desc"):("asc");
+	}
+
 
 	/* private: attributes */
 

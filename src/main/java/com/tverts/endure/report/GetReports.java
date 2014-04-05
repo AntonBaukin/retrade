@@ -3,7 +3,6 @@ package com.tverts.endure.report;
 /* Java */
 
 import java.util.List;
-import java.util.Set;
 
 /* Spring Framework */
 
@@ -13,18 +12,12 @@ import org.springframework.stereotype.Component;
 
 import com.tverts.hibery.GetObjectBase;
 import com.tverts.hibery.qb.QueryBuilder;
-
-/* com.tverts: secure */
-
-import com.tverts.secure.SecPoint;
-
-/* com.tverts: endure (auth) */
-
-import com.tverts.endure.auth.AuthLogin;
+import com.tverts.hibery.qb.WhereLogic;
+import com.tverts.hibery.qb.WherePartLogic;
 
 /* com.tverts: support */
 
-import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -56,6 +49,9 @@ public class GetReports extends GetObjectBase
 		).
 		  param("domain", mb.domain());
 
+		//~: filter by the words
+		restrictTemplates(qb, mb.getSearchWords());
+
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
 
@@ -72,12 +68,18 @@ public class GetReports extends GetObjectBase
 		qb.setClauseSelect("rt");
 
 		//~: order by clause
-		if("code".equals(mb.getSortOrder()))
-			qb.setClauseOrderBy("lower(rt.code)");
-		else if("code".equals(mb.getSortOrder()))
-			qb.setClauseOrderBy("lower(rt.name)");
-		else if("did".equals(mb.getSortOrder()))
-			qb.setClauseOrderBy("lower(rt.did)");
+		if("name".equals(mb.getFirstSortProp()))
+			qb.setClauseOrderBy("lower(rt.name) " + mb.getFirstSortDir());
+		else if("did".equals(mb.getFirstSortProp()))
+			qb.setClauseOrderBy("lower(rt.did) " + mb.getFirstSortDir());
+		else if("code".equals(mb.getFirstSortProp()))
+			qb.setClauseOrderBy("lower(rt.code) " + mb.getFirstSortDir());
+		else
+			qb.setClauseOrderBy("lower(rt.code) asc");
+
+		//~: the limits
+		qb.setFirstRow(mb.getDataStart());
+		qb.setLimit(mb.getDataLimit());
 
 
 		//~: restrict the domain
@@ -86,6 +88,28 @@ public class GetReports extends GetObjectBase
 		).
 		  param("domain", mb.domain());
 
+		//~: filter by the words
+		restrictTemplates(qb, mb.getSearchWords());
+
 		return (List<ReportTemplate>) QB(qb).list();
+	}
+
+
+	/* private: support methods */
+
+	private void restrictTemplates(QueryBuilder qb, String[] words)
+	{
+		if(words != null) for(String w : words) if((w = SU.s2s(w)) != null)
+		{
+			w = "%" + w.toLowerCase() + "%";
+
+			WherePartLogic p = new WherePartLogic().setOp(WhereLogic.OR);
+
+			p.addPart("lower(rt.code) like :w").param("w", w);
+			p.addPart("lower(rt.name) like :w").param("w", w);
+			p.addPart("lower(rt.did) like :w").param("w", w);
+
+			qb.getClauseWhere().addPart(p);
+		}
 	}
 }
