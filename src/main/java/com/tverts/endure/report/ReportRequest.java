@@ -88,18 +88,33 @@ public class      ReportRequest
 	}
 
 	/**
-	 * Set when the user had downloaded the report result.
-	 * In this case the system may remove the report
-	 * not waiting the download timeout.
+	 * Set to the primary key when the user had
+	 * downloaded the report file. In this case
+	 * the system may remove the report not
+	 * waiting the download timeout.
 	 */
-	public boolean isLoaded()
+	public Long getLoaded()
 	{
 		return loaded;
 	}
 
-	public void setLoaded(boolean loaded)
+	public void setLoaded(Long loaded)
 	{
 		this.loaded = loaded;
+	}
+
+	/**
+	 * Set to the primary key when the report
+	 * file is produced.
+	 */
+	public Long getReady()
+	{
+		return ready;
+	}
+
+	public void setReady(Long ready)
+	{
+		this.ready = ready;
 	}
 
 	/**
@@ -123,6 +138,7 @@ public class      ReportRequest
 	private Date           time;
 	private String         model;
 	private ReportFormat   format;
-	private boolean        loaded;
+	private Long           loaded;
+	private Long           ready;
 	private byte[]         report;
 }

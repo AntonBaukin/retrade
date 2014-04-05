@@ -45,6 +45,16 @@ public class ReportTemplate extends Entity implements CatItem
 		this.name = name;
 	}
 
+	public boolean isSystem()
+	{
+		return system;
+	}
+
+	public void setSystem(boolean system)
+	{
+		this.system = system;
+	}
+
 	/**
 	 * The Data Source ID.
 	 */
@@ -56,6 +66,16 @@ public class ReportTemplate extends Entity implements CatItem
 	public void   setDid(String dataSource)
 	{
 		this.did = dataSource;
+	}
+
+	public String getRemarks()
+	{
+		return remarks;
+	}
+
+	public void setRemarks(String remarks)
+	{
+		this.remarks = remarks;
 	}
 
 	public byte[] getTemplate()
@@ -71,9 +91,11 @@ public class ReportTemplate extends Entity implements CatItem
 
 	/* persisted attributes */
 
-	private Domain domain;
-	private String code;
-	private String name;
-	private String did;
-	private byte[] template;
+	private Domain  domain;
+	private String  code;
+	private String  name;
+	private boolean system;
+	private String  remarks;
+	private String  did;
+	private byte[]  template;
 }

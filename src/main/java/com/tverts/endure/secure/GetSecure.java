@@ -1,6 +1,6 @@
 package com.tverts.endure.secure;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.List;
 import java.util.Set;
@@ -24,8 +24,7 @@ import com.tverts.endure.auth.AuthLogin;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import static com.tverts.support.SU.s2s;
-import static com.tverts.support.SU.sXe;
+import com.tverts.support.SU;
 
 
 /**
@@ -34,7 +33,7 @@ import static com.tverts.support.SU.sXe;
  *
  * @author anton.baukin@gmail.com
  */
-@Component("getSecure")
+@Component
 public class GetSecure extends GetObjectBase
 {
 	/* Secure Keys */
@@ -46,7 +45,7 @@ public class GetSecure extends GetObjectBase
 
 	public SecKey getSecKey(String name)
 	{
-		if(sXe(name)) throw EX.arg();
+		if(SU.sXe(name)) throw EX.arg();
 
 		// from SecKey where (name = :name)
 
@@ -288,7 +287,7 @@ public class GetSecure extends GetObjectBase
 
 	public SecSet getSecSet(Long domain, String name)
 	{
-		if((name = s2s(name)) == null) name = "";
+		if((name = SU.s2s(name)) == null) name = "";
 
 // from SecSet where (domain.id = :domain) and (name = :name)
 

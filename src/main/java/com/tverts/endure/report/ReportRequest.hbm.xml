@@ -40,7 +40,7 @@
 
     <property name = 'time' type = 'timestamp'>
 
-      <column name = 'request_time' index = 'ix_report_request_time'>
+      <column name = 'request_time'>
         <comment>The time this request had been issued</comment>
       </column>
     </property>
@@ -65,8 +65,20 @@
 
     <property name = 'loaded'>
 
-      <column name = 'is_loaded' not-null = 'true'>
-        <comment>Flag set when the report was loaded by the user</comment>
+      <column name = 'is_loaded' index = 'ix_report_request_loaded'>
+
+        <comment>Set to the PK when the report was loaded by the user</comment>
+      </column>
+    </property>
+
+
+    <!-- Is Ready Flag -->
+
+    <property name = 'ready'>
+
+      <column name = 'is_ready' index = 'ix_report_request_ready'>
+
+        <comment>Set to the PK when the report file is assigned</comment>
       </column>
     </property>
 

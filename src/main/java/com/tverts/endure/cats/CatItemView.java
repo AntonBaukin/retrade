@@ -1,6 +1,6 @@
 package com.tverts.endure.cats;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 import java.util.Arrays;

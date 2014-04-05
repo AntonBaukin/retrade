@@ -44,6 +44,29 @@
     </property>
 
 
+    <!-- Is System Flag -->
+
+    <property name = 'system'>
+
+      <column name = 'is_system' not-null = 'true'>
+        <comment>
+          Flag telling that this report is required for the system,
+          and hence may not be removed by a user
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'remarks'>
+        <comment>The remarks on this template</comment>
+      </column>
+    </property>
+
+
     <!-- Data Source ID -->
 
     <property name = 'did'>

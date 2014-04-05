@@ -74,6 +74,10 @@ public class ModelServlet extends GenericServlet
 		ModelBean model = null;
 		Object    data  = null;
 
+		//~: set the model request key
+		ModelRequest.getInstance().setKey(
+		  req.getParameter(ModelView.MODEL_REQ_PARAM));
+
 		//?: {has model provider}
 		if(param != null)
 		{
@@ -129,30 +133,22 @@ public class ModelServlet extends GenericServlet
 			}
 		}
 
-		//~: set the model req key
-		ModelRequest.getInstance().setKey(
-		  req.getParameter(ModelView.MODEL_REQ_PARAM));
+		//?: {has model} access data bean
+		if(model != null)
+			data = ((ModelBean)model).modelData();
 
-		try
+		//?: {no model bean provided}
+		if(data == null)
 		{
-			//?: {has model} access data bean
-			if(model != null)
-				data = ((ModelBean)model).modelData();
+			if(param == null)
+				res.sendError(404, "No model bean (or provider) were specified!");
+			else
+				res.sendError(404, "Specified model bean (or provider) was not found!");
 
-			//?: {no model bean provided}
-			if(data == null)
-			{
-				if(param == null)
-					res.sendError(404, "No model bean (or provider) were specified!");
-				else
-					res.sendError(404, "Specified model bean (or provider) was not found!");
-
-				return;
-			}
-		}
-		finally
-		{
+			//~: release the model request key
 			ModelRequest.getInstance().setKey(null);
+
+			return;
 		}
 
 		//~: do write model data as XML
@@ -187,6 +183,10 @@ public class ModelServlet extends GenericServlet
 		}
 		finally
 		{
+			//~: release the model request key
+			ModelRequest.getInstance().setKey(null);
+
+			//~: close the in-memory buffer
 			bytes.close();
 		}
 	}
