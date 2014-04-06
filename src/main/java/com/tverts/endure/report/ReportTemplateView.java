@@ -7,8 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /* com.tverts: endure (catalogues) */
 
+import com.tverts.data.Datas;
 import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.cats.CatItemView;
+
+/* com.tverts: data sources */
+
+import com.tverts.data.DataSource;
 
 
 /**
@@ -54,6 +59,16 @@ public class ReportTemplateView extends CatItemView
 		this.remarks = remarks;
 	}
 
+	public String getSourceName()
+	{
+		return sourceName;
+	}
+
+	public void setSourceName(String sourceName)
+	{
+		this.sourceName = sourceName;
+	}
+
 
 	/* public: initialization */
 
@@ -69,6 +84,10 @@ public class ReportTemplateView extends CatItemView
 		this.system = rt.isSystem();
 		this.remarks = rt.getRemarks();
 
+		//~: data source
+		DataSource src = Datas.INSTANCE.getSource(this.did);
+		this.sourceName = (src == null)?(null):(src.getNameLo());
+
 		return this;
 	}
 
@@ -78,4 +97,5 @@ public class ReportTemplateView extends CatItemView
 	private String  did;
 	private boolean system;
 	private String  remarks;
+	private String  sourceName;
 }

@@ -85,7 +85,7 @@
 
     <!-- The Report File -->
 
-    <property name = 'report' type = 'binary'>
+    <property name = 'report' type = 'binary' lazy = 'true'>
 
       <column name = 'report_file'>
         <comment>The resulting report file</comment>

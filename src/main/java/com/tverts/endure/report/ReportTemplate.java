@@ -78,6 +78,16 @@ public class ReportTemplate extends Entity implements CatItem
 		this.remarks = remarks;
 	}
 
+	public boolean isReady()
+	{
+		return ready;
+	}
+
+	public void setReady(boolean ready)
+	{
+		this.ready = ready;
+	}
+
 	public byte[] getTemplate()
 	{
 		return template;
@@ -86,6 +96,7 @@ public class ReportTemplate extends Entity implements CatItem
 	public void   setTemplate(byte[] template)
 	{
 		this.template = template;
+		this.ready = (template != null);
 	}
 
 
@@ -97,5 +108,6 @@ public class ReportTemplate extends Entity implements CatItem
 	private boolean system;
 	private String  remarks;
 	private String  did;
+	private boolean ready;
 	private byte[]  template;
 }

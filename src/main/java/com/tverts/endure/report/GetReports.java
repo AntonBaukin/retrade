@@ -6,6 +6,7 @@ import java.util.List;
 
 /* Spring Framework */
 
+import com.tverts.support.EX;
 import org.springframework.stereotype.Component;
 
 /* com.tverts: hibery */
@@ -30,6 +31,42 @@ import com.tverts.support.SU;
 public class GetReports extends GetObjectBase
 {
 	/* Get Report Templates */
+
+	public ReportTemplate getReportTemplate(long pk)
+	{
+		return get(ReportTemplate.class, pk);
+	}
+
+	public ReportTemplate getReportTemplate (Long domain, String code)
+	{
+		EX.assertn(domain);
+		EX.asserts(code);
+
+// from ReportTemplate rt where (rt.domain.id = :domain) and (rt .code = :code)
+
+		return object( ReportTemplate.class,
+
+"  from ReportTemplate rt where (rt.domain.id = :domain) and (rt .code = :code)",
+
+		  "domain", domain,
+		  "code",   code
+		);
+	}
+
+	public boolean hasReportRequests(long template)
+	{
+
+// select rr.id from ReportRequest rr where (rr.template.id = :template)
+
+		return !Q(
+
+"  select rr.id from ReportRequest rr where (rr.template.id = :template)"
+
+		).
+		  setLong("template", template).
+		  setMaxResults(1).
+		  list().isEmpty();
+	}
 
 	public int countTemplates(ReportsSelectModelBean mb)
 	{
@@ -71,7 +108,9 @@ public class GetReports extends GetObjectBase
 		if("name".equals(mb.getFirstSortProp()))
 			qb.setClauseOrderBy("lower(rt.name) " + mb.getFirstSortDir());
 		else if("did".equals(mb.getFirstSortProp()))
-			qb.setClauseOrderBy("lower(rt.did) " + mb.getFirstSortDir());
+			qb.setClauseOrderBy(SU.cats(
+			 "lower(rt.did) ", mb.getFirstSortDir(), ", lower(rt.name)"
+			));
 		else if("code".equals(mb.getFirstSortProp()))
 			qb.setClauseOrderBy("lower(rt.code) " + mb.getFirstSortDir());
 		else

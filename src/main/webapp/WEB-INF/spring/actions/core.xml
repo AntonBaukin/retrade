@@ -53,6 +53,13 @@
 
 
   <!--=================================================
+    =  Action Bulders for Data Sources and Reports    =
+    +================================================-->
+
+  <import resource = 'reports.xml'/>
+
+
+  <!--=================================================
     =  Domain Model Core Actions                      =
     +==================================================
     |
@@ -81,6 +88,7 @@
         <ref bean = 'corePersonBuilders'/>
         <ref bean = 'treeDomainBuilders'/>
         <ref bean = 'treeFolderBuilders'/>
+        <ref bean = 'reportTemplatesBuilders'/>
 
       </list>
     </property>

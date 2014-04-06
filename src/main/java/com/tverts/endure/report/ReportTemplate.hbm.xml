@@ -78,5 +78,25 @@
       </column>
     </property>
 
+
+    <!-- Is Ready Flag -->
+
+    <property name = 'ready'>
+
+      <column name = 'is_ready' not-null = 'true'>
+        <comment>Assigned when the template has the file attached</comment>
+      </column>
+    </property>
+
+
+    <!-- Template File -->
+
+    <property name = 'template' type = 'binary' lazy = 'true'>
+
+      <column name = 'template_file'>
+        <comment>The template file</comment>
+      </column>
+    </property>
+
   </union-subclass>
 </hibernate-mapping>
