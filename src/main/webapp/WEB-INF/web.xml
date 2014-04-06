@@ -230,6 +230,20 @@
   </servlet-mapping>
 
 
+  <!-- Files Upload Servlet -->
+
+  <servlet>
+    <display-name>Files Upload Servlet</display-name>
+    <servlet-name>retrade_UploadServlet</servlet-name>
+    <servlet-class>com.tverts.servlet.UploadServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>retrade_UploadServlet</servlet-name>
+    <url-pattern>/upload</url-pattern>
+  </servlet-mapping>
+
+
   <!--====================================================
     =                      Filters                       =
     ====================================================-->

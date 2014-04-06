@@ -116,12 +116,7 @@ public class DownloadServlet extends GenericServlet
 
 	/* protected: accessing binary data */
 
-	protected boolean isSupported(Object target)
-	{
-		return (target instanceof Download) || (target instanceof BinarySource);
-	}
-
-	protected void    invoke
+	protected void  invoke
 	  (HttpServletRequest req, HttpServletResponse res, Object provider)
 	  throws java.io.IOException, ServletException
 	{
