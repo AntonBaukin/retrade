@@ -31,6 +31,7 @@ import static com.tverts.spring.SpringPoint.beanOrNull;
 
 /* com.tverts: servlets */
 
+import com.tverts.servlet.DownloadServlet.BinyHTTP;
 import com.tverts.servlet.Upload.UploadCtx;
 
 /* com.tverts: model */
@@ -62,7 +63,7 @@ public class UploadServlet extends GenericServlet
 {
 	/* public: Generic Servlet */
 
-	public void service(ServletRequest xreq, ServletResponse xres)
+	public void    service(ServletRequest xreq, ServletResponse xres)
 	  throws java.io.IOException, ServletException
 	{
 		if(!(xreq instanceof HttpServletRequest))
@@ -112,11 +113,21 @@ public class UploadServlet extends GenericServlet
 			  param, "] is not a supported file upload strategy!");
 		}
 
+		if(upload == null)
+		{
+			res.sendError(HttpServletResponse.SC_BAD_REQUEST,
+			  "Upload destination strategy (bean, or model) is not specified!"
+			);
+		}
+
 		//~: invoke the upload strategy
 		invoke(req, (Upload)upload);
+
+		//~: commit the results
+		commit(req, res, (Upload)upload);
 	}
 
-	protected void  invoke(HttpServletRequest req, Upload upload)
+	protected void invoke(HttpServletRequest req, Upload upload)
 	  throws java.io.IOException, ServletException
 	{
 		//?: {this is a multi-part request}
@@ -145,9 +156,19 @@ public class UploadServlet extends GenericServlet
 			//~: invoke the strategy
 			upload.upload(ctx);
 		}
+	}
 
-		//!: commit the strategy
-		upload.commit();
+	protected void commit(HttpServletRequest req, HttpServletResponse res, Upload upload)
+	  throws java.io.IOException, ServletException
+	{
+		BinyHTTP biny = new BinyHTTP(req, res).
+		  setDownload(false);
+
+		//~: commit the strategy
+		upload.commitUpload(biny);
+
+		//~: feed the results
+		biny.feed();
 	}
 
 
@@ -197,11 +218,6 @@ public class UploadServlet extends GenericServlet
 			return request.getHeader(name);
 		}
 
-		public boolean     isLast()
-		{
-			return true;
-		}
-
 		public InputStream stream()
 		  throws IOException
 		{
@@ -218,6 +234,15 @@ public class UploadServlet extends GenericServlet
 			return null;
 		}
 
+		public String      fieldName()
+		{
+			return null;
+		}
+
+		public int         index()
+		{
+			return 0;
+		}
 
 		/* the request & the internal state */
 
@@ -254,18 +279,20 @@ public class UploadServlet extends GenericServlet
 			}
 
 			//?: {no iterator is opened yet}
-			if(iterator == null)
+			boolean zero = false; if(iterator == null)
+			{
 				iterator = UPLOAD.getItemIterator(request);
+				zero = true;
+			}
 
-			//~: seek for the next file item
-			while(iterator.hasNext())
+			//~: {has the next file item}
+			if(iterator.hasNext())
 			{
 				//~: open the next file
 				this.file = iterator.next();
 
-				//?: {it is a field} skip it
-				if(this.file.isFormField())
-					continue;
+				//?: {not just opened}
+				if(!zero) index++; //<-- increment the index
 
 				return true;
 			}
@@ -275,18 +302,6 @@ public class UploadServlet extends GenericServlet
 
 
 		/* public: Upload Context */
-
-		public boolean     isLast()
-		{
-			try
-			{
-				return !EX.assertn(this.iterator).hasNext();
-			}
-			catch(Exception e)
-			{
-				throw EX.wrap(e);
-			}
-		}
 
 		public InputStream stream()
 		  throws IOException
@@ -305,6 +320,16 @@ public class UploadServlet extends GenericServlet
 			return SU.s2s(EX.assertn(this.file).getName());
 		}
 
+		public String      fieldName()
+		{
+			return SU.s2s(EX.assertn(this.file).getFieldName());
+		}
+
+		public int         index()
+		{
+			return index;
+		}
+
 
 		/* the state of the strategy */
 
@@ -313,5 +338,6 @@ public class UploadServlet extends GenericServlet
 
 		protected FileItemIterator iterator;
 		protected FileItemStream   file;
+		protected int              index;
 	}
 }

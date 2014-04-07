@@ -167,15 +167,10 @@ public class DownloadServlet extends GenericServlet
 			this.stream = binary;
 
 			//?: {use deflation}
-			if((flags & DEFLATE) != 0)
+			if(((flags & DEFLATE) != 0) && REQ.isGunZIPAllowed(req))
 			{
-				String ae = SU.sXs(req.getHeader("Accept-Encoding")).toLowerCase();
-
-				if(ae.contains("gzip"))
-				{
-					this.stream = new GZIPOutputStream(stream);
-					headers.put("Content-Encoding", "gzip");
-				}
+				this.stream = new GZIPOutputStream(stream);
+				headers.put("Content-Encoding", "gzip");
 			}
 
 			return this.stream;
@@ -199,6 +194,12 @@ public class DownloadServlet extends GenericServlet
 
 		/* public: Binary Data Context for HTTP */
 
+		public BinyHTTP     setDownload(boolean download)
+		{
+			this.download = download;
+			return this;
+		}
+
 		public void         feed()
 		  throws IOException, ServletException
 		{
@@ -208,7 +209,7 @@ public class DownloadServlet extends GenericServlet
 					res.setHeader(e.getKey(), e.getValue());
 
 			//~: content disposition
-			if(SU.sXe(headers.get("Content-Disposition")))
+			if(download && SU.sXe(headers.get("Content-Disposition")))
 				res.setHeader("Content-Disposition", "attachment;");
 
 			//~: content type
@@ -238,6 +239,11 @@ public class DownloadServlet extends GenericServlet
 
 		protected final HttpServletRequest  req;
 		protected final HttpServletResponse res;
+
+
+		/* protected: configuration */
+
+		protected boolean download = true;
 
 
 		/* protected: context state */

@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
+/* com.tverts: objects */
+
+import com.tverts.objects.BinarySource.Biny;
+
 
 /**
  * Interface of strategy to upload
@@ -19,8 +23,6 @@ import java.util.Set;
  */
 public interface Upload
 {
-	/* public: Upload */
-
 	/**
 	 * The context of uploading the files of
 	 * multi-part and body HTTP POST requests.
@@ -39,14 +41,6 @@ public interface Upload
 
 		public String      header(String name);
 
-		/**
-		 * Tells that this content item is the last.
-		 * For multi-part requests this is the final
-		 * block of the request. For body requests
-		 * this is the whole body of the POST.
-		 */
-		public boolean     isLast();
-
 		public InputStream stream()
 		  throws IOException;
 
@@ -58,12 +52,21 @@ public interface Upload
 		 * but this is not guaranteed also...
 		 */
 		public String      fileName();
+
+		public String      fieldName();
+
+		/**
+		 * The position of this file (or field) in the stream.
+		 */
+		public int         index();
 	}
 
+
+	/* public: Upload interface */
 
 	public void upload(UploadCtx ctx)
 	  throws IOException;
 
-	public void commit()
+	public void commitUpload(Biny biny)
 	  throws IOException;
 }

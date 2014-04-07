@@ -158,14 +158,10 @@ public class ModelServlet extends GenericServlet
 			OutputStream stream = bytes;
 
 			//?: {supports Gun-ZIP}
+			if(REQ.isGunZIPAllowed(req))
 			{
-				String ae = SU.sXs(req.getHeader("Accept-Encoding")).toLowerCase();
-
-				if(ae.contains("gzip"))
-				{
-					stream = new GZIPOutputStream(stream);
-					res.addHeader("Content-Encoding", "gzip");
-				}
+				stream = new GZIPOutputStream(stream);
+				res.addHeader("Content-Encoding", "gzip");
 			}
 
 			//~: model -> XML

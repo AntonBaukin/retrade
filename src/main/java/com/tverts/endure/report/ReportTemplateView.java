@@ -69,6 +69,16 @@ public class ReportTemplateView extends CatItemView
 		this.sourceName = sourceName;
 	}
 
+	public boolean isReady()
+	{
+		return ready;
+	}
+
+	public void setReady(boolean ready)
+	{
+		this.ready = ready;
+	}
+
 
 	/* public: initialization */
 
@@ -83,6 +93,7 @@ public class ReportTemplateView extends CatItemView
 		this.did = rt.getDid();
 		this.system = rt.isSystem();
 		this.remarks = rt.getRemarks();
+		this.ready = rt.isReady();
 
 		//~: data source
 		DataSource src = Datas.INSTANCE.getSource(this.did);
@@ -98,4 +109,5 @@ public class ReportTemplateView extends CatItemView
 	private boolean system;
 	private String  remarks;
 	private String  sourceName;
+	private boolean ready;
 }

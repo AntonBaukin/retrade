@@ -4,6 +4,11 @@ package com.tverts.servlet;
 
 import javax.servlet.http.HttpServletRequest;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
+
 /**
  * HTTP request handling support.
  *
@@ -11,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class REQ
 {
-	/* public: find request properties */
+	/* request properties */
 
 	/**
 	 * Tells whether the request comes from the local host.
@@ -38,7 +43,7 @@ public class REQ
 	 * characters till the path parameters or the query
 	 * parameters is left. The string always starts with '/'.
 	 */
-	public static  String getRequestPath(HttpServletRequest r)
+	public static String  getRequestPath(HttpServletRequest r)
 	{
 		String uri = r.getRequestURI();
 		if(uri.length() == 0) return "/";
@@ -67,8 +72,13 @@ public class REQ
 		return uri;
 	}
 
-	public static  String getRequestPath()
+	public static String  getRequestPath()
 	{
 		return getRequestPath(RequestPoint.request());
+	}
+
+	public static boolean isGunZIPAllowed(HttpServletRequest r)
+	{
+		return SU.sXs(r.getHeader("Accept-Encoding")).toLowerCase().contains("gzip");
 	}
 }

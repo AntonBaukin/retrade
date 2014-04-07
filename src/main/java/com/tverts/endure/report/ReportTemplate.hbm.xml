@@ -94,7 +94,7 @@
     <property name = 'template' type = 'binary' lazy = 'true'>
 
       <column name = 'template_file'>
-        <comment>The template file</comment>
+        <comment>The template file. Note, that it is Gun-ZIPped!</comment>
       </column>
     </property>
 
