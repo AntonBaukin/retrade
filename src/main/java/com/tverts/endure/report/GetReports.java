@@ -134,6 +134,86 @@ public class GetReports extends GetObjectBase
 	}
 
 
+	/* Get Report Requests */
+
+	public ReportRequest getReportRequest(long pk)
+	{
+		return get(ReportRequest.class, pk);
+	}
+
+	public int countRequests(ReportsSelectModelBean mb)
+	{
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("Request", ReportRequest.class);
+		qb.setClauseFrom("Request rr join rr.template rt");
+
+		//~: select clause
+		qb.setClauseSelect("count(rt.id)");
+
+
+		//~: restrict the domain
+		qb.getClauseWhere().addPart(
+		  "rt.domain.id = :domain"
+		).
+		  param("domain", mb.domain());
+
+		//~: filter templates by the words
+		restrictTemplates(qb, mb.getSearchWords());
+
+		return ((Number) QB(qb).uniqueResult()).intValue();
+	}
+
+	/**
+	 * Returns array of:
+	 * [0] report request;
+	 * [1] report template.
+	 */
+	@SuppressWarnings("unchecked")
+	public List selectRequests(ReportsSelectModelBean mb)
+	{
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("Request", ReportRequest.class);
+		qb.setClauseFrom("Request rr join rr.template rt");
+
+		//~: select clause
+		qb.setClauseSelect("rr, rt");
+
+		//~: order by clause
+		if("time".equals(mb.getFirstSortProp()))
+			qb.setClauseOrderBy("rr.time " + mb.getFirstSortDir());
+		else if("templateName".equals(mb.getFirstSortProp()))
+			qb.setClauseOrderBy("lower(rt.name) " + mb.getFirstSortDir());
+		else if("templateDid".equals(mb.getFirstSortProp()))
+			qb.setClauseOrderBy(SU.cats(
+			 "lower(rt.did) ", mb.getFirstSortDir(), ", rr.time"
+			));
+		else if("templateCode".equals(mb.getFirstSortProp()))
+			qb.setClauseOrderBy("lower(rt.code) " + mb.getFirstSortDir());
+		else
+			qb.setClauseOrderBy("rr.time asc");
+
+		//~: the limits
+		qb.setFirstRow(mb.getDataStart());
+		qb.setLimit(mb.getDataLimit());
+
+
+		//~: restrict the domain
+		qb.getClauseWhere().addPart(
+		  "rt.domain.id = :domain"
+		).
+		  param("domain", mb.domain());
+
+		//~: filter templates by the words
+		restrictTemplates(qb, mb.getSearchWords());
+
+		return QB(qb).list();
+	}
+
+
 	/* private: support methods */
 
 	private void restrictTemplates(QueryBuilder qb, String[] words)

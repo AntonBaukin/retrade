@@ -22,6 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.tverts.spring.SpringPoint.beanOrNull;
 
+/* com.tverts: secure */
+
+import com.tverts.secure.ForbiddenException;
+
 /* com.tverts: objects */
 
 import com.tverts.objects.BinarySource;
@@ -130,7 +134,15 @@ public class DownloadServlet extends GenericServlet
 			BinyHTTP biny = new BinyHTTP(req, res);
 
 			//~: generate the data
-			((BinarySource)provider).download(biny);
+			try
+			{
+				((BinarySource)provider).download(biny);
+			}
+			catch(ForbiddenException e)
+			{
+				res.sendError(HttpServletResponse.SC_FORBIDDEN, EX.e2en(e));
+				return;
+			}
 
 			//~: feed the data
 			biny.feed();
@@ -178,7 +190,10 @@ public class DownloadServlet extends GenericServlet
 
 		public String       get(String param)
 		{
-			return req.getParameter(param);
+			String res = req.getParameter(param);
+
+			//?: {has no such a parameter} take a header
+			return (res != null)?(res):SU.s2s(req.getHeader(param));
 		}
 
 		public String       set(String param, String value)
@@ -189,6 +204,11 @@ public class DownloadServlet extends GenericServlet
 				return headers.remove(param);
 			else
 				return headers.put(param, value);
+		}
+
+		public void         status(Object status)
+		{
+			this.status = status;
 		}
 
 
@@ -208,9 +228,9 @@ public class DownloadServlet extends GenericServlet
 				if(!SU.sXe(e.getValue()))
 					res.setHeader(e.getKey(), e.getValue());
 
-			//~: content disposition
-			if(download && SU.sXe(headers.get("Content-Disposition")))
-				res.setHeader("Content-Disposition", "attachment;");
+			//?: {has status code}
+			if(status instanceof Integer)
+				res.setStatus((Integer) status);
 
 			//~: content type
 			String ct = SU.s2s(headers.get("Content-Type"));
@@ -223,13 +243,21 @@ public class DownloadServlet extends GenericServlet
 			//~: content length
 			res.setContentLength((int) binary.length());
 
+			//~: content disposition
+			if(download && (binary.length() != 0L))
+				if(SU.sXe(headers.get("Content-Disposition")))
+					res.setHeader("Content-Disposition", "attachment;");
+
 			//~: copy to the output stream
 			try
 			{
-				binary.copy(res.getOutputStream());
+				if(binary.length() != 0L)
+					binary.copy(res.getOutputStream());
 			}
 			finally
 			{
+				binary.setNotClose(false);
+				binary.setNotCloseNext(false);
 				binary.close();
 			}
 		}
@@ -251,5 +279,6 @@ public class DownloadServlet extends GenericServlet
 		protected final BytesStream         binary;
 		protected OutputStream              stream;
 		protected final Map<String, String> headers;
+		protected Object                    status;
 	}
 }

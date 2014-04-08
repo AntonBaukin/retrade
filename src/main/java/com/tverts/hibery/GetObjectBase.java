@@ -85,12 +85,13 @@ public abstract class GetObjectBase
 	@SuppressWarnings("unchecked")
 	protected <O> O   get(Class<O> c1ass, Serializable key)
 	{
-		return (O)session().get(c1ass, key);
+		return (key == null)?(null):((O)session().get(c1ass, key));
 	}
 
 	@SuppressWarnings("unchecked")
 	protected <O> O   load(Class<O> c1ass, Serializable key)
 	{
+		EX.assertn(key, "Loading [", c1ass.getName(), "] with undefined key!");
 		return (O)session().load(c1ass, key);
 	}
 

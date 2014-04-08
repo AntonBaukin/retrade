@@ -47,7 +47,8 @@ public interface BinarySource
 
 		/**
 		 * Returns the request parameter.
-		 * For HTTP request: the parameter.
+		 * For HTTP request: the parameter,
+		 * or a header.
 		 */
 		public String       get(String param);
 
@@ -68,6 +69,12 @@ public interface BinarySource
 		 * names of the headers are case-sensitive!
 		 */
 		public String       set(String param, String value);
+
+		/**
+		 * The resulting status. For HTTP requests
+		 * this is the code of the response.
+		 */
+		public void         status(Object status);
 	}
 
 	public void download(Biny biny)

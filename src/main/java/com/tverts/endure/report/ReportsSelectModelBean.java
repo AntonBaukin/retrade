@@ -43,6 +43,7 @@ public abstract class ReportsSelectModelBean
 		this.searchWordsStr = SU.s2s(s);
 	}
 
+
 	/* private: model attributes */
 
 	private String searchWordsStr;
