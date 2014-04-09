@@ -19,4 +19,16 @@
     </property>
   </bean>
 
+
+  <bean name  = 'reportRequestsBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.report.ReportRequest'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.report.ActReportRequest'/>
+    </property>
+  </bean>
+
 </beans>

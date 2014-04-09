@@ -1,6 +1,6 @@
 package com.tverts.system.services;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +12,7 @@ import com.tverts.system.services.events.ServiceEventBase;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -27,10 +28,7 @@ public abstract class ServiceBase
 
 	public String   uid()
 	{
-		if(this.UID == null) throw new IllegalStateException(
-		  "Service UID was not assigned!");
-
-		return this.UID;
+		return EX.asserts(this.UID, "Service UID was not assigned!");
 	}
 
 	public String[] depends()
@@ -69,13 +67,9 @@ public abstract class ServiceBase
 
 	protected Servicer servicer()
 	{
-		if(this.servicer == null)
-			throw new IllegalStateException(String.format(
-			  "Service '%s' was not initialized by the Service System!",
-			  getUID()
-			));
-
-		return this.servicer;
+		return EX.assertn(this.servicer, "Service [", UID,
+		  "] was not initialized by the Service System!"
+		);
 	}
 
 	protected void     send(Event event)

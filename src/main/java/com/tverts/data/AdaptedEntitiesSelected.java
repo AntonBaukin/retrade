@@ -2,15 +2,15 @@ package com.tverts.data;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlTransient;
 
 /* com.tverts: endure (core) */
-
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.tverts.endure.UnityType;
 
 /* com.tverts: models */
 
+import com.tverts.endure.report.ReportFormat;
 import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
 
@@ -32,7 +32,9 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com.
  */
-public class AdaptedEntitiesSelected extends DataSelectModelBean
+public class      AdaptedEntitiesSelected
+       extends    DataSelectModelBean
+       implements ReportModel
 {
 	public static final long serialVersionUID = 0L;
 
@@ -47,6 +49,26 @@ public class AdaptedEntitiesSelected extends DataSelectModelBean
 	public void setDataSource(String dataSource)
 	{
 		this.dataSource = dataSource;
+	}
+
+	public Long getTemplate()
+	{
+		return template;
+	}
+
+	public void setTemplate(Long template)
+	{
+		this.template = template;
+	}
+
+	public ReportFormat getFormat()
+	{
+		return (format == null)?(ReportFormat.PDF):(format);
+	}
+
+	public void setFormat(ReportFormat format)
+	{
+		this.format = format;
 	}
 
 	public String getSelSet()
@@ -114,16 +136,16 @@ public class AdaptedEntitiesSelected extends DataSelectModelBean
 	/* public: initialization */
 
 	public AdaptedEntitiesSelected init
-	  (String dataSource, Long domain, Long login, UnityType type, Adapter adapter)
+	  (String dataSource, DataCtx ctx, Adapter adapter, UnityType type)
 	{
 		//~: data source
 		this.dataSource = EX.asserts(dataSource);
 
 		//~: domain
-		setDomain(EX.assertn(domain));
+		setDomain(EX.assertn(ctx.getDomain()));
 
 		//~: the login
-		this.login = EX.assertn(login);
+		this.login = EX.assertn(ctx.getLogin());
 
 		//~: the unity type of the entities
 		this.unityType = EX.assertn(type).getPrimaryKey();
@@ -145,11 +167,13 @@ public class AdaptedEntitiesSelected extends DataSelectModelBean
 
 	/* private: the model state */
 
-	private String  dataSource;
-	private String  selSet;
-	private Long    login;
-	private Long    unityType;
-	private Long    entity;
-	private Adapter adapter;
-	private String  orderBy;
+	private String       dataSource;
+	private Long         template;
+	private ReportFormat format;
+	private String       selSet;
+	private Long         login;
+	private Long         unityType;
+	private Long         entity;
+	private Adapter      adapter;
+	private String       orderBy;
 }

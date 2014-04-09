@@ -159,6 +159,21 @@ public class Datas
 		return XMAPoint.writeObject(data);
 	}
 
+	public static byte[]      bytes(ReportModel model)
+	{
+		//?: {model has no data source assigned}
+		EX.assertn(model.getDataSource());
+
+		//~: take it & get the data
+		DataSource src  = source(model.getDataSource());
+		Object     data = EX.assertn(src.provideData(model),
+		  "Data Source [", src.did(), "] was not able to provide data for Model Bean [",
+		  model.getClass().getName(), "] with key [", model.getModelKey(), "]!"
+		);
+
+		return bytes(data);
+	}
+
 
 	/* public: access interface */
 

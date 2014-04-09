@@ -1,18 +1,8 @@
 package com.tverts.data;
 
-/* Java XML Binding */
-
-import javax.xml.bind.annotation.XmlTransient;
-
-/* com.tverts: spring */
-
-import static com.tverts.spring.SpringPoint.bean;
-
-/* com.tverts: endure (auth) */
+/* com.tverts: endure (core) */
 
 import com.tverts.endure.UnityTypes;
-import com.tverts.endure.auth.AuthSession;
-import com.tverts.endure.auth.GetAuthLogin;
 
 /* com.tverts: models */
 
@@ -45,33 +35,32 @@ public class SingleEntityDataSource extends DataSourceBase
 {
 	/* public: bean interface */
 
-	public Class getTypeClass()
+	public Class   getTypeClass()
 	{
 		return typeClass;
 	}
 
-	public void setTypeClass(Class typeClass)
+	public void    setTypeClass(Class typeClass)
 	{
 		this.typeClass = typeClass;
 	}
 
-	public String getTypeName()
+	public String  getTypeName()
 	{
 		return typeName;
 	}
 
-	public void setTypeName(String typeName)
+	public void    setTypeName(String typeName)
 	{
 		this.typeName = EX.assertn(SU.s2s(typeName));
 	}
 
-	@XmlTransient
 	public Adapter getAdapter()
 	{
 		return adapter;
 	}
 
-	public void setAdapter(Adapter adapter)
+	public void    setAdapter(Adapter adapter)
 	{
 		this.adapter = adapter;
 	}
@@ -81,22 +70,9 @@ public class SingleEntityDataSource extends DataSourceBase
 
 	public ModelBean createModel(DataCtx ctx)
 	{
-		//~: session id
-		String sid = EX.assertn(ctx.getSecSession(),
-		  "Authentication Session is required for this Data Source!"
-		);
-
-		//~: auth session
-		AuthSession au = EX.assertn(
-		  bean(GetAuthLogin.class).getAuthSession(ctx.getSecSession()),
-		  "Authentication Session [", ctx.getSecSession(), "] is not found!"
-		);
-
-		//~: create the model bean
 		return new AdaptedEntitiesSelected().init(
-		  did(), ctx.getDomain(), au.getLogin().getPrimaryKey(),
-		  UnityTypes.unityType(typeClass, typeName),
-		  adapter
+		  did(), ctx, adapter,
+		  UnityTypes.unityType(typeClass, typeName)
 		);
 	}
 

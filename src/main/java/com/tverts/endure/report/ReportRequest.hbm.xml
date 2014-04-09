@@ -61,6 +61,25 @@
     </property>
 
 
+    <!-- Report Format -->
+
+    <property name = 'format'>
+
+      <column name = 'report_format' not-null = 'true'>
+        <comment>The format of the report file to produce</comment>
+      </column>
+
+      <type name = 'org.hibernate.type.EnumType'>
+
+        <param name = 'enumClass'>
+          com.tverts.endure.report.ReportFormat
+        </param>
+
+        <param name = 'useNamed'>true</param>
+      </type>
+    </property>
+
+
     <!-- Is Loaded Flag -->
 
     <property name = 'loaded'>

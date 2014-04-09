@@ -45,6 +45,16 @@ public class DataCtx implements Serializable
 		this.domain = domain;
 	}
 
+	public Long    getLogin()
+	{
+		return login;
+	}
+
+	public void    setLogin(Long login)
+	{
+		this.login = login;
+	}
+
 	public Date    getRequestTime()
 	{
 		return requestTime;
@@ -55,11 +65,6 @@ public class DataCtx implements Serializable
 		this.requestTime = requestTime;
 	}
 
-	/**
-	 * Returns the authentication Session ID
-	 * of the user issuing the request.
-	 * Undefined for the system requests.
-	 */
 	public String  getSecSession()
 	{
 		return secSession;
@@ -119,6 +124,9 @@ public class DataCtx implements Serializable
 		//~: domain
 		this.domain = SecPoint.domain();
 
+		//~: login
+		this.login = SecPoint.login();
+
 		//~: current time
 		this.requestTime = new Date();
 
@@ -133,6 +141,7 @@ public class DataCtx implements Serializable
 	/* private: the context data */
 
 	private Long   domain;
+	private Long   login;
 	private Date   requestTime;
 	private String secSession;
 	private Map    params;

@@ -89,6 +89,7 @@
         <ref bean = 'treeDomainBuilders'/>
         <ref bean = 'treeFolderBuilders'/>
         <ref bean = 'reportTemplatesBuilders'/>
+        <ref bean = 'reportRequestsBuilders'/>
 
       </list>
     </property>
