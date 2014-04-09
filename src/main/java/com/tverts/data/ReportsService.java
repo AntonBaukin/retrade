@@ -6,10 +6,15 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: system (services + tx) */
 
-import com.tverts.support.streams.BytesStream;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 import com.tverts.system.tx.TxBean;
+import com.tverts.system.tx.TxPoint;
+
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
+import com.tverts.secure.session.SecSession;
 
 /* com.tverts: actions */
 
@@ -33,6 +38,7 @@ import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.OU;
 import com.tverts.support.SU;
+import com.tverts.support.streams.BytesStream;
 
 
 /**
@@ -87,10 +93,10 @@ public class ReportsService extends ServiceBase
 		if(!r.getTemplate().isReady())
 			return false;
 
-		//~: auth login
-		r.setOwner(EX.assertn(
-		  bean(GetAuthLogin.class).getLogin(m.getLogin()),
-		  "Report Model [", m.getModelKey(), "] has unknown login assigned!"
+		//~: auth session
+		r.setAuthSession(EX.assertn(
+		  bean(GetAuthLogin.class).getAuthSession(m.getSecSession()),
+		  "No Auth Session [", m.getSecSession(), "] is found!"
 		));
 
 		//~: report request time (now)
@@ -124,11 +130,15 @@ public class ReportsService extends ServiceBase
 		//?: {the template is not ready}
 		EX.assertx(rt.isReady());
 
-		//~: auth login
-		r.setOwner(EX.assertn(
-		  bean(GetAuthLogin.class).getLogin(ctx.getLogin()),
-		  "No Auth Login [", ctx.getLogin(), "] is found!"
+		//~: auth session
+		r.setAuthSession(EX.assertn(
+		  bean(GetAuthLogin.class).getAuthSession(ctx.getSecSession()),
+		  "No Auth Session [", ctx.getSecSession(), "] is found!"
 		));
+
+		//sec: {login is the same}
+		if(!r.getAuthSession().getLogin().getPrimaryKey().equals(ctx.getLogin()))
+			throw EX.forbid("May not create report for user not of Auth Session!");
 
 		//~: report request time (now)
 		r.setTime(new java.util.Date());
@@ -157,7 +167,7 @@ public class ReportsService extends ServiceBase
 		if(r == null) return;
 
 		//?: {the request is already done}
-		if(r.getReady() != null) return;
+		if(r.isReady()) return;
 
 		try
 		{
@@ -173,6 +183,11 @@ public class ReportsService extends ServiceBase
 			//~: the model data
 			Object model = (r.getModel() == null)?(null):
 			  OU.xml2obj(r.getModel());
+
+			//~: set secure session
+			SecPoint.INSTANCE.setSecSession(
+			  new SecSession(r.getAuthSession())
+			);
 
 			//~: get the report data
 			Object data; if(SU.sXe(src.getUiPath()))
@@ -210,6 +225,9 @@ public class ReportsService extends ServiceBase
 
 				//~: make the report bytes
 				r.setReport(makeReport(r.getTemplate().getTemplate(), stream));
+
+				//~: remove the report model
+				r.setModel(null);
 			}
 		}
 		catch(Throwable e)
@@ -225,9 +243,17 @@ public class ReportsService extends ServiceBase
 			catch(Exception e2)
 			{}
 		}
+		finally
+		{
+			//!: clear secure session
+			SecPoint.INSTANCE.setSecSession(null);
+		}
 
-		//!: mark the report as ready
-		r.setReady(r.getPrimaryKey());
+		//~: mark the report as ready
+		r.setReady(true);
+
+		//~: update the tx-number
+		TxPoint.txn(r);
 	}
 
 

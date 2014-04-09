@@ -8,10 +8,15 @@ import java.util.Date;
 /* com.tverts: secure */
 
 import com.tverts.secure.SecPoint;
+import com.tverts.secure.session.SecSession;
 
 /* com.tverts: endure (reports) */
 
 import com.tverts.endure.report.ReportRequest;
+
+/* com.tverts: endure support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -50,6 +55,21 @@ public class DataCtx implements Serializable
 	public void    setLogin(Long login)
 	{
 		this.login = login;
+	}
+
+	/**
+	 * Returns the authentication Session ID
+	 * of the user issuing the request.
+	 * Undefined for the system requests.
+	 */
+	public String  getSecSession()
+	{
+		return secSession;
+	}
+
+	public void    setSecSession(String secSession)
+	{
+		this.secSession = secSession;
 	}
 
 	public Date    getRequestTime()
@@ -91,6 +111,11 @@ public class DataCtx implements Serializable
 		//~: login
 		this.login = SecPoint.login();
 
+		//~: secure session
+		this.secSession = EX.asserts((String) SecPoint.secSession().
+		 attr(SecSession.ATTR_AUTH_SESSION)
+		);
+
 		//~: current time
 		this.requestTime = new Date();
 
@@ -103,7 +128,10 @@ public class DataCtx implements Serializable
 		this.domain = r.getDomain().getPrimaryKey();
 
 		//~: login
-		this.login = r.getOwner().getPrimaryKey();
+		this.login = r.getAuthSession().getLogin().getPrimaryKey();
+
+		//~: authentication session
+		this.secSession = r.getAuthSession().getSessionId();
 
 		//~: request time
 		this.requestTime = r.getTime();
@@ -121,4 +149,5 @@ public class DataCtx implements Serializable
 	private Long   login;
 	private Date   requestTime;
 	private Object params;
+	private String secSession;
 }

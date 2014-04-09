@@ -158,8 +158,8 @@ public class ReportRequestView implements Serializable
 		this.objectKey = r.getPrimaryKey();
 		this.time = r.getTime();
 		this.format = r.getFormat().name();
-		this.ready = (r.getReady() != null);
-		this.loaded = (r.getLoaded() != null);
+		this.ready = r.isReady();
+		this.loaded = r.isLoaded();
 
 		return this;
 	}

@@ -12,6 +12,19 @@
     <id name = 'primaryKey' column = 'pk_report_request'/>
 
 
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_report_request_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+
     <!-- Report Template -->
 
     <many-to-one name = 'template' foreign-key = 'fk_report_request_template'>
@@ -24,14 +37,14 @@
     </many-to-one>
 
 
-    <!-- Report Owner -->
+    <!-- Authentication Session -->
 
-    <many-to-one name = 'owner' foreign-key = 'fk_report_request_owner'>
+    <many-to-one name = 'authSession' foreign-key = 'fk_report_request_auth'>
 
-      <column name = 'fk_owner' not-null = 'true'
-        index = 'ix_report_request_owner'>
+      <column name = 'fk_auth_session' not-null = 'true'
+        index = 'ix_report_request_auth'>
 
-        <comment>The user had requested this report, or the System user</comment>
+        <comment>The Authentication Session of the user created the request</comment>
       </column>
     </many-to-one>
 
@@ -40,7 +53,8 @@
 
     <property name = 'time' type = 'timestamp'>
 
-      <column name = 'request_time'>
+      <column name = 'request_time' index = 'ix_report_request_time'>
+
         <comment>The time this request had been issued</comment>
       </column>
     </property>
@@ -84,9 +98,8 @@
 
     <property name = 'loaded'>
 
-      <column name = 'is_loaded' index = 'ix_report_request_loaded'>
-
-        <comment>Set to the PK when the report was loaded by the user</comment>
+      <column name = 'is_loaded' not-null = 'true'>
+        <comment>Set to true when the report was loaded by the user</comment>
       </column>
     </property>
 
@@ -95,9 +108,8 @@
 
     <property name = 'ready'>
 
-      <column name = 'is_ready' index = 'ix_report_request_ready'>
-
-        <comment>Set to the PK when the report file is assigned</comment>
+      <column name = 'is_ready' not-null = 'true'>
+        <comment>Set to true when the report file is assigned</comment>
       </column>
     </property>
 

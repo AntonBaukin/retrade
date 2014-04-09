@@ -14,7 +14,7 @@ public interface ReportModel extends ModelBean
 {
 	/* public: Report Model interface */
 
-	public Long         getLogin();
+	public String       getSecSession();
 
 	public String       getDataSource();
 

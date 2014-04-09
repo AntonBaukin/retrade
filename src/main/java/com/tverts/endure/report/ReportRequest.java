@@ -7,9 +7,11 @@ import java.util.Date;
 /* com.tverts: endure (core + auth) */
 
 import com.tverts.endure.NumericBase;
+import com.tverts.endure.TxEntity;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.auth.AuthLogin;
+import com.tverts.endure.auth.AuthSession;
 
 /* com.tverts: data sources */
 
@@ -23,7 +25,7 @@ import com.tverts.data.ReportFormat;
  */
 public class      ReportRequest
        extends    NumericBase
-       implements DomainEntity
+       implements DomainEntity, TxEntity
 {
 	public Domain getDomain()
 	{
@@ -40,19 +42,14 @@ public class      ReportRequest
 		this.template = template;
 	}
 
-	/**
-	 * The user had issued this request.
-	 * For internal reports must refer
-	 * the system user ('System' login).
-	 */
-	public AuthLogin getOwner()
+	public AuthSession getAuthSession()
 	{
-		return owner;
+		return authSession;
 	}
 
-	public void setOwner(AuthLogin owner)
+	public void setAuthSession(AuthSession authSession)
 	{
-		this.owner = owner;
+		this.authSession = authSession;
 	}
 
 	/**
@@ -94,31 +91,30 @@ public class      ReportRequest
 	}
 
 	/**
-	 * Set to the primary key when the user had
-	 * downloaded the report file. In this case
-	 * the system may remove the report not
-	 * waiting the download timeout.
+	 * True when the user had downloaded the
+	 * report file. In this case the system
+	 * may remove the report not waiting
+	 * the download timeout.
 	 */
-	public Long getLoaded()
+	public boolean isLoaded()
 	{
 		return loaded;
 	}
 
-	public void setLoaded(Long loaded)
+	public void setLoaded(boolean loaded)
 	{
 		this.loaded = loaded;
 	}
 
 	/**
-	 * Set to the primary key when the report
-	 * file is produced.
+	 * True when the report file is produced.
 	 */
-	public Long getReady()
+	public boolean isReady()
 	{
 		return ready;
 	}
 
-	public void setReady(Long ready)
+	public void setReady(boolean ready)
 	{
 		this.ready = ready;
 	}
@@ -137,14 +133,29 @@ public class      ReportRequest
 	}
 
 
+	/* public: TxEntity interface */
+
+	public Long getTxn()
+	{
+		return (txn == 0L)?(null):(txn);
+	}
+
+	private long txn;
+
+	public void setTxn(Long txn)
+	{
+		this.txn = (txn == null)?(0L):(txn);
+	}
+
+
 	/* persisted attributes */
 
 	private ReportTemplate template;
-	private AuthLogin      owner;
+	private AuthSession    authSession;
 	private Date           time;
 	private String         model;
 	private ReportFormat   format;
-	private Long           loaded;
-	private Long           ready;
+	private boolean        loaded;
+	private boolean        ready;
 	private byte[]         report;
 }

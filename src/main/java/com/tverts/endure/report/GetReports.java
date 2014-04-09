@@ -144,11 +144,11 @@ public class GetReports extends GetObjectBase
 	public List<Long> selectReportsToMake()
 	{
 
-// select rr.id from ReportRequest where (rr.ready is null) order by rr.id
+// select r.id from ReportRequest r where (r.ready = false) order by r.time
 
 		return list(Long.class,
 
-"  select rr.id from ReportRequest where (rr.ready is null) order by rr.id"
+"  select r.id from ReportRequest r where (r.ready = false) order by r.time"
 
 		);
 	}

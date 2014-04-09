@@ -30,10 +30,12 @@ public class TxWrapperBase implements TxWrapper
 		return tx.txn();
 	}
 
+	/**
+	 * Wrapping context does not close
+	 * the external context.
+	 */
 	public void           free()
-	{
-		tx.free();
-	}
+	{}
 
 	public SessionFactory getSessionFactory()
 	{
@@ -91,5 +93,5 @@ public class TxWrapperBase implements TxWrapper
 
 	/* protected: the context wrapped */
 
-	private final Tx tx;
+	protected final Tx tx;
 }

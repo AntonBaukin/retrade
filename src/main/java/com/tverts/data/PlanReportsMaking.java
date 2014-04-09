@@ -7,6 +7,7 @@ import java.util.List;
 /* com.tverts: servlets */
 
 import com.tverts.endure.report.GetReports;
+import com.tverts.objects.Result;
 import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 /* com.tverts: (spring + tx) */
@@ -29,23 +30,20 @@ public class PlanReportsMaking extends ServletContextListenerBase
 {
 	protected void init()
 	{
-		bean(TxBean.class).execute(new Runnable()
-		                           {
-			                           public void run()
-			                           {
-				                           initTx();
-			                           }
-		                           }
-		);
-	}
+		final Result<List<Long>> reports =
+		  new Result<List<Long>>();
 
-	protected void initTx()
-	{
 		//~: select the reports
-		List<Long> reports = bean(GetReports.class).selectReportsToMake();
+		bean(TxBean.class).execute(new Runnable()
+		{
+			public void run()
+			{
+				reports.set(bean(GetReports.class).selectReportsToMake());
+			}
+		});
 
 		//c: send event for each of them
-		for(Long id : reports)
+		for(Long id : reports.get())
 			ServicesPoint.send(Datas.SERVICE, new MakeReportEvent(id));
 	}
 }

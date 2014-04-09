@@ -14,33 +14,39 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Execution Planning Service                                ·
+         · Execution Planning Service
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'execPlanService'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Execution Run Service                                     ·
+         · Execution Run Service
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'execRunService'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Security Service                                          ·
+         · Security Service
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'secService'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Genesis Service                                           ·
+         · Genesis Service
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'genesisService'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Self-Shunt Service                                        ·
+         · Self-Shunt Service
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'selfShuntService'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Reports Service
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'reportsService'/>
 
       </list>
     </property>

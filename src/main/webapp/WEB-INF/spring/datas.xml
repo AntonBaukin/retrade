@@ -22,4 +22,16 @@
     <property name = 'reference'
               ref  = 'datasList'/>
   </bean>
+
+
+  <!--=================================================
+    =  Reports Service                                =
+    =================================================-->
+
+  <bean name  = 'reportsService' factory-method = 'getInstance'
+        class = 'com.tverts.data.ReportsService'>
+
+    <property name  = 'UID' value = 'Reports Service'/>
+  </bean>
+
 </beans>

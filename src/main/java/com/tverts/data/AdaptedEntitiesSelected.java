@@ -80,6 +80,17 @@ public class      AdaptedEntitiesSelected
 		this.selSet = SU.sXs(SU.s2s(selSet));
 	}
 
+	@XmlTransient
+	public String getSecSession()
+	{
+		return secSession;
+	}
+
+	public void setSecSession(String secSession)
+	{
+		this.secSession = secSession;
+	}
+
 	public Long getLogin()
 	{
 		return login;
@@ -143,6 +154,9 @@ public class      AdaptedEntitiesSelected
 		//~: domain
 		setDomain(EX.assertn(ctx.getDomain()));
 
+		//~: secure session
+		this.secSession = EX.asserts(ctx.getSecSession());
+
 		//~: the login
 		this.login = EX.assertn(ctx.getLogin());
 
@@ -170,6 +184,7 @@ public class      AdaptedEntitiesSelected
 	private Long         template;
 	private ReportFormat format;
 	private String       selSet;
+	private String       secSession;
 	private Long         login;
 	private Long         unityType;
 	private Long         entity;
