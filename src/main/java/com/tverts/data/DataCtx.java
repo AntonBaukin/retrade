@@ -4,17 +4,10 @@ package com.tverts.data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /* com.tverts: secure */
 
 import com.tverts.secure.SecPoint;
-import com.tverts.secure.session.SecSession;
-
-/* com.tverts: support */
-
-import com.tverts.support.EX;
 
 
 /**
@@ -65,50 +58,18 @@ public class DataCtx implements Serializable
 		this.requestTime = requestTime;
 	}
 
-	public String  getSecSession()
-	{
-		return secSession;
-	}
-
-	public void    setSecSession(String secSession)
-	{
-		this.secSession = secSession;
-	}
-
-	public Map     getParams()
+	/**
+	 * Additional parameters given as
+	 * a serializable Java Bean.
+	 */
+	public Object  getParams()
 	{
 		return params;
 	}
 
-	public void    setParams(Map params)
+	public void    setParams(Object params)
 	{
 		this.params = params;
-	}
-
-
-	/* public: support interface */
-
-	public Object  param(Object key)
-	{
-		return (params == null)?(null):(params.get(key));
-	}
-
-	public DataCtx param(Serializable key, Serializable val)
-	{
-		EX.assertn(key);
-
-		if(params == null)
-			params = new HashMap(5);
-
-		if(val == null)
-			params.remove(key);
-		else
-			params.put(key, val);
-
-		if(params.isEmpty())
-			params = null;
-
-		return this;
 	}
 
 
@@ -116,8 +77,7 @@ public class DataCtx implements Serializable
 
 	/**
 	 * Initializes the data context Domain and
-	 * the Secure Session from the data of
-	 * currently pending web request.
+	 * the Login from the current web request.
 	 */
 	public DataCtx init()
 	{
@@ -130,10 +90,6 @@ public class DataCtx implements Serializable
 		//~: current time
 		this.requestTime = new Date();
 
-		//~: secure session
-		this.secSession = EX.asserts(
-		  (String) SecPoint.secSession().attr(SecSession.ATTR_AUTH_SESSION));
-
 		return this;
 	}
 
@@ -143,6 +99,5 @@ public class DataCtx implements Serializable
 	private Long   domain;
 	private Long   login;
 	private Date   requestTime;
-	private String secSession;
-	private Map    params;
+	private Object params;
 }

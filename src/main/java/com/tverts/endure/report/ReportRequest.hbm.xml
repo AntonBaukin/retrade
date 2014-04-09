@@ -48,7 +48,7 @@
 
     <!-- Data Source Model -->
 
-    <property name = 'model' type = 'text'>
+    <property name = 'model' type = 'text' lazy = 'true'>
 
       <column name = 'model_object'>
 

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -80,5 +81,39 @@ public class REQ
 	public static boolean isGunZIPAllowed(HttpServletRequest r)
 	{
 		return SU.sXs(r.getHeader("Accept-Encoding")).toLowerCase().contains("gzip");
+	}
+
+	/**
+	 * Adds the parameters to the given URL string
+	 * without encoding it.
+	 */
+	public static String  param(String url, Object... nv)
+	{
+		StringBuilder x = new StringBuilder(url.length() + 64).append(url);
+
+		//?: {has no '?'}
+		if(url.indexOf('?') == -1)
+			x.append('?');
+
+		//?: {has parameters}
+		if(x.charAt(x.length() - 1) != '?')
+			x.append('&');
+
+		//c: for each (name + value) pair
+		for(int i = 0;(i < nv.length);i += 2)
+		{
+			EX.assertx(i + 1 < nv.length);
+			if(i != 0) x.append('&');
+
+			//~: parameter name
+			EX.assertx(nv[i] instanceof CharSequence);
+			x.append(nv[i]);
+
+			//?: {has value}
+			String v = (nv[i+1] == null)?(""):(SU.sXs(nv[i+1].toString()));
+			if(!v.isEmpty()) x.append('=').append(v);
+		}
+
+		return x.toString();
 	}
 }

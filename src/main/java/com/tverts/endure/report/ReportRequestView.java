@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: support */
 
-import com.tverts.support.jaxb.TimestampAdapter;
+import com.tverts.support.jaxb.DateTimeAdapter;
 
 
 /**
@@ -41,7 +41,7 @@ public class ReportRequestView implements Serializable
 		this.objectKey = objectKey;
 	}
 
-	@XmlJavaTypeAdapter(TimestampAdapter.class)
+	@XmlJavaTypeAdapter(DateTimeAdapter.class)
 	public Date getTime()
 	{
 		return time;
