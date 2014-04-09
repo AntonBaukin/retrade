@@ -4,10 +4,16 @@ package com.tverts.endure.report;
 
 import java.util.Date;
 
+/* com.tverts: endure (core + auth) */
+
 import com.tverts.endure.NumericBase;
-import com.tverts.endure.auth.AuthLogin;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
+import com.tverts.endure.auth.AuthLogin;
+
+/* com.tverts: data sources */
+
+import com.tverts.data.ReportFormat;
 
 
 /**

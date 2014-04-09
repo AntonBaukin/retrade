@@ -10,7 +10,6 @@ import com.tverts.endure.UnityType;
 
 /* com.tverts: models */
 
-import com.tverts.endure.report.ReportFormat;
 import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
 

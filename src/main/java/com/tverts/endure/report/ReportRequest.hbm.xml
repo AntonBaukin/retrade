@@ -72,7 +72,7 @@
       <type name = 'org.hibernate.type.EnumType'>
 
         <param name = 'enumClass'>
-          com.tverts.endure.report.ReportFormat
+          com.tverts.data.ReportFormat
         </param>
 
         <param name = 'useNamed'>true</param>

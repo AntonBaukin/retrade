@@ -4,10 +4,6 @@ package com.tverts.data;
 
 import com.tverts.model.ModelBean;
 
-/* com.tverts: endure (reports) */
-
-import com.tverts.endure.report.ReportFormat;
-
 
 /**
  * UI Model that is for creating Report Requests.
