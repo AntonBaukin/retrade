@@ -44,6 +44,12 @@ public class Datas
 	{}
 
 
+	/* constants */
+
+	public static final String SERVICE =
+	  ReportsService.SERVICE_UID;
+
+
 	/* public: support interface */
 
 	public static DataSource  source(String did)

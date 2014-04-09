@@ -41,6 +41,19 @@ public enum ReportFormat
 		{
 			return "application/vnd.ms-excel";
 		}
+	},
+
+	/**
+	 * Indicates that error had occurred during
+	 * the report making, and the resulting data
+	 * are the stack trance of that error.
+	 */
+	ERROR
+	{
+		public String contentType()
+		{
+			return "text/plain;charset=UTF-8";
+		}
 	};
 
 

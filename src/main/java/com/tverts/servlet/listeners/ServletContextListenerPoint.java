@@ -8,16 +8,16 @@ package com.tverts.servlet.listeners;
 public class   ServletContextListenerPoint
        extends ServletContextListenerBean
 {
-	/* public: Singleton */
+	/* Servlet Context Listener Point Singleton */
+
+	public static final ServletContextListenerPoint INSTANCE =
+	  new ServletContextListenerPoint();
 
 	public static ServletContextListenerPoint getInstance()
 	{
 		return INSTANCE;
 	}
 
-	private static final ServletContextListenerPoint INSTANCE =
-	  new ServletContextListenerPoint();
-
-	protected ServletContextListenerPoint()
+	private ServletContextListenerPoint()
 	{}
 }

@@ -17,32 +17,37 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Activates Database Keys Generators                        ·
+         · Activates Database Keys Generators
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.endure.keys.KeysPointActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Executes SQL queries related to Hibernate files           ·
+         · Executes SQL queries related to Hibernate files
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.hibery.sql.HiberSQLActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Automatically creates Unity Types                         ·
+         · Automatically creates Unity Types
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'unityTypesActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Registers Executors                                       ·
+         · Registers Executors
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.exec.ExecutorsActivator'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Initializes system z-services                             ·
+         · Initializes system services
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.system.services.InitServicesListener'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Last listener! System is ready                            ·
+         · Requests to make reports not ready yet
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.data.PlanReportsMaking'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Last listener! System is ready
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.system.SystemReadyListener'/>
 

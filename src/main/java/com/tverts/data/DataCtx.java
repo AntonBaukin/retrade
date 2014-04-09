@@ -9,6 +9,10 @@ import java.util.Date;
 
 import com.tverts.secure.SecPoint;
 
+/* com.tverts: endure (reports) */
+
+import com.tverts.endure.report.ReportRequest;
+
 
 /**
  * The context of accessing the data.
@@ -89,6 +93,23 @@ public class DataCtx implements Serializable
 
 		//~: current time
 		this.requestTime = new Date();
+
+		return this;
+	}
+
+	public DataCtx init(ReportRequest r, Object params)
+	{
+		//~: domain
+		this.domain = r.getDomain().getPrimaryKey();
+
+		//~: login
+		this.login = r.getOwner().getPrimaryKey();
+
+		//~: request time
+		this.requestTime = r.getTime();
+
+		//~: parameter model
+		this.params = params;
 
 		return this;
 	}

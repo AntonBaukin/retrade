@@ -11,6 +11,7 @@ package com.tverts.system.services;
  *
  * Event must be as Serializable Java Bean.
  *
+ *
  * @author anton.baukin@gmail.com
  */
 public interface Event extends java.io.Serializable

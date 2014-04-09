@@ -141,6 +141,18 @@ public class GetReports extends GetObjectBase
 		return get(ReportRequest.class, pk);
 	}
 
+	public List<Long> selectReportsToMake()
+	{
+
+// select rr.id from ReportRequest where (rr.ready is null) order by rr.id
+
+		return list(Long.class,
+
+"  select rr.id from ReportRequest where (rr.ready is null) order by rr.id"
+
+		);
+	}
+
 	public int countRequests(ReportsSelectModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();

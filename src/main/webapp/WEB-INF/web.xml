@@ -79,19 +79,6 @@
 
   <!-- Java Server Faces (Mojarra RI) Listener -->
 
-  <!--
-  <listener>
-    <description>
-      JavaServer Faces initialization configuration listener.
-    </description>
-
-    <display-name>Java Server Faces Configure</display-name>
-    <listener-class>
-      com.sun.faces.config.ConfigureListener
-    </listener-class>
-  </listener>
-  -->
-
   <listener>
     <description>
       JavaServer Faces application lifecycle listener.

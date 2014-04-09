@@ -83,7 +83,7 @@ public abstract class ServiceBase
 	protected void     send(String suid, EventBase event)
 	{
 		if((suid != null) && SU.sXe(event.getService()))
-				((EventBase)event).setService(suid);
+			((EventBase)event).setService(suid);
 
 		send(event);
 	}
