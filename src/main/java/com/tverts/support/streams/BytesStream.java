@@ -243,6 +243,18 @@ public final class BytesStream extends OutputStream
 		}
 	}
 
+	public void erase()
+	  throws IOException
+	{
+		if(buffers == null)
+			throw new IOException("ByteStream is closed!");
+
+		ByteBuffers.INSTANCE.free(buffers);
+		buffers.clear();
+
+		length = position = 0;
+	}
+
 	public void flush()
 	  throws IOException
 	{

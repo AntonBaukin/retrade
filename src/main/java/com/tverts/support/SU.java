@@ -241,6 +241,17 @@ public class SU
 		return s.toString();
 	}
 
+	public static char     first(CharSequence s)
+	{
+		return (s.length() == 0)?('\0'):(s.charAt(0));
+	}
+
+	public static char     last(CharSequence s)
+	{
+		int l = s.length();
+		return (l == 0)?('\0'):(s.charAt(l - 1));
+	}
+
 
 	/* public: comparisons */
 

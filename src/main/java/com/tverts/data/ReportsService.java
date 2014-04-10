@@ -213,7 +213,7 @@ public class ReportsService extends ServiceBase
 			//~: make report in the external service
 			else
 			{
-				//~: represent the data as a stream
+				//~: represent the data as a gun-zipped stream
 				BytesStream stream = Datas.stream(data);
 
 				//?: {has no bytes}
@@ -224,7 +224,9 @@ public class ReportsService extends ServiceBase
 				);
 
 				//~: make the report bytes
-				r.setReport(makeReport(r.getTemplate().getTemplate(), stream));
+				r.setReport(makeReport(
+				  r.getTemplate().getTemplate(), stream, r.getFormat()
+				));
 
 				//~: remove the report model
 				r.setModel(null);
@@ -274,20 +276,38 @@ public class ReportsService extends ServiceBase
 		self(new MakeReportEvent(r.getPrimaryKey()));
 	}
 
-	protected byte[] makeReport(byte[] template, BytesStream xml)
+	protected byte[] makeReport(byte[] template, BytesStream xml, ReportFormat fmt)
 	{
+		BytesStream  result = new BytesStream();
+		ReportClient client = bean(ReportClient.class).
+		  setReport(template).  //<-- gun-zipped template
+		  setData(xml).         //<-- gun-zipped xml data
+		  setResult(result).    //<-- resulting bytes
+		  setFormat(fmt);
+
 		try
 		{
-			return xml.bytes();
+			//!: call the server
+			client.request();
+
+			return result.bytes();
 		}
 		catch(Throwable e)
 		{
-			throw EX.wrap(e, "Unexpected error occurred while making report ",
-			  "in the external reporting server!"
-			);
+			String error = "Error occurred while making the report!";
+
+			if(result.length() != 0L) try
+			{
+				error += '\n' + new String(result.bytes(), "UTF-8");
+			}
+			catch(Exception e2)
+			{}
+
+			throw EX.wrap(e, error);
 		}
 		finally
 		{
+			result.close();
 			xml.close();
 		}
 	}

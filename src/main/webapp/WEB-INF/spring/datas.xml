@@ -34,4 +34,17 @@
     <property name  = 'UID' value = 'Reports Service'/>
   </bean>
 
+
+  <!--=================================================
+    =  Reports Server Client Prototype                =
+    =================================================-->
+
+  <bean name  = 'reportClient' scope = 'prototype'
+        class = 'com.tverts.data.ReportClient'>
+
+    <property name  = 'host' value = 'localhost'/>
+    <property name  = 'port' value = '8080'/>
+
+  </bean>
+
 </beans>

@@ -2,11 +2,15 @@ package com.tverts.data;
 
 /* Java */
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 /* com.tverts: execution */
 
@@ -19,6 +23,7 @@ import com.tverts.objects.XMAPoint;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.IO;
 import com.tverts.support.SU;
 import com.tverts.support.streams.BytesStream;
 
@@ -77,17 +82,21 @@ public class Datas
 	 * Interesting moment: this function works recursively
 	 * in the case the execution layer had returned
 	 * a defined instance.
+	 *
+	 * Note that the resulting bytes are gun-zipped!
 	 */
 	public static BytesStream stream(Object data)
 	{
+		InputStream i = null;
+
 		//?: {is a bytes stream}
 		if(data instanceof BytesStream)
-			return (BytesStream)data;
+			i = ((BytesStream)data).inputStream();
 
 		//?: {is a string}
-		if(data instanceof String) try
+		else if(data instanceof String) try
 		{
-			data = ((String)data).getBytes("UTF-8");
+			i = new ByteArrayInputStream(((String)data).getBytes("UTF-8"));
 		}
 		catch(IOException e)
 		{
@@ -95,33 +104,50 @@ public class Datas
 		}
 
 		//?: {is a bytes array}
-		if(data instanceof byte[]) try
+		else if(data instanceof byte[])
+			i = new ByteArrayInputStream((byte[]) data);
+
+		//?: {has no input stream bytes}
+		if(i == null)
 		{
-			BytesStream stream = new BytesStream();
-			stream.write((byte[]) data);
-			return stream;
+			//~: execute the data object
+			Object xdata = ExecPoint.executeTx(data);
+
+			//?: {has data result}
+			if(xdata != null)
+				return stream(xdata);
+		}
+
+		//~: stream the result
+		try
+		{
+			//~: gun-zipped bytes
+			BytesStream  s = new BytesStream();
+			OutputStream o = new GZIPOutputStream(s);
+			s.setNotCloseNext(true);
+
+			//?: {has bytes}
+			if(i != null)
+				IO.pump(i, o);
+			//~: write the object mapped to XML
+			else
+				XMAPoint.writeObject(data, o);
+
+			//~: close the deflation stream
+			o.close(); //<-- but not the bytes stream
+
+			return s;
 		}
 		catch(IOException e)
 		{
 			throw EX.wrap(e);
 		}
-
-		//~: execute the data object
-		Object xdata = ExecPoint.executeTx(data);
-
-		//?: {has data result}
-		if(xdata != null)
-			return stream(xdata);
-
-		//~: write the object mapped to XML
-		BytesStream stream = new BytesStream();
-		XMAPoint.writeObject(data, stream);
-		return stream;
 	}
 
 	/**
 	 * The same as {@link #stream(Object)},
-	 * but is optimized for bytes array.
+	 * but is optimized for bytes array,
+	 * and not gun-zipped.
 	 *
 	 * Also note that input Bytes Stream
 	 * is closed here.
