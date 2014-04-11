@@ -79,6 +79,16 @@ public class ReportTemplateView extends CatItemView
 		this.ready = ready;
 	}
 
+	public boolean isHasUI()
+	{
+		return hasUI;
+	}
+
+	public void setHasUI(boolean hasUI)
+	{
+		this.hasUI = hasUI;
+	}
+
 
 	/* public: initialization */
 
@@ -98,6 +108,7 @@ public class ReportTemplateView extends CatItemView
 		//~: data source
 		DataSource src = Datas.INSTANCE.getSource(this.did);
 		this.sourceName = (src == null)?(null):(src.getNameLo());
+		this.hasUI = (src == null)?(false):(src.getUiPath() != null);
 
 		return this;
 	}
@@ -110,4 +121,5 @@ public class ReportTemplateView extends CatItemView
 	private String  remarks;
 	private String  sourceName;
 	private boolean ready;
+	private boolean hasUI;
 }
