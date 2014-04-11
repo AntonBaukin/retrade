@@ -1,6 +1,6 @@
 package com.tverts.hibery.qb;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -131,14 +131,13 @@ public class QueryBuilder extends SelectQuery
 
 	/* protected: entity names support */
 
-	protected Map<String, String>
-	                    getEntityNames()
+	protected Map<String, String> getEntityNames()
 	{
 		return (entityNames != null)?(entityNames):
 		  (entityNames = new HashMap<String, String>(5));
 	}
 
-	protected void      nameEntities(StringBuilder s)
+	protected void nameEntities(StringBuilder s)
 	{
 		//c: for all named entities
 		for(Entry<String, String> e : getEntityNames().entrySet())

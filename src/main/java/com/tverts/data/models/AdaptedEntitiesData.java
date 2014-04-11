@@ -1,4 +1,4 @@
-package com.tverts.data;
+package com.tverts.data.models;
 
 /* Java */
 
@@ -72,7 +72,7 @@ public class AdaptedEntitiesData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List getEntities()
 	{
-		Adapter adt = EX.assertn(model.getAdapter());
+		Adapter      adt = EX.assertn(model.getAdapter());
 		List<United> sel = bean(GetUnity.class).select(model);
 		List         res = new ArrayList(sel.size());
 

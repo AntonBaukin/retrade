@@ -1,6 +1,6 @@
 package com.tverts.hibery.qb;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Map;
 
@@ -15,8 +15,7 @@ public interface WherePart
 {
 	/* public: WherePart interface */
 
-	public Map<String, Object>
-	              getParams();
+	public Map<String, Object> getParams();
 
 	/**
 	 * Allows to specify a prefix of the parameters that would

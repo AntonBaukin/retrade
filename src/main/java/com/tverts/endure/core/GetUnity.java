@@ -16,8 +16,6 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.hibery.GetObjectBase;
 import com.tverts.hibery.qb.QueryBuilder;
-import com.tverts.hibery.qb.WhereLogic;
-import com.tverts.hibery.qb.WherePartLogic;
 
 /* com.tverts: endure */
 
@@ -27,7 +25,7 @@ import com.tverts.endure.UnityType;
 
 /* com.tverts: data */
 
-import com.tverts.data.AdaptedEntitiesSelected;
+import com.tverts.data.models.AdaptedEntitiesSelected;
 
 /* com.tverts: support */
 
@@ -145,6 +143,10 @@ select ut from Unity u join u.unityType ut
 		  param("set",   SU.sXs(mb.getSelSet())).
 		  param("login", EX.assertn(mb.getLogin()));
 
+		//~: model-provided restrictions
+		if(mb.getQuery() != null)
+			mb.getQuery().tuneQuery(qb);
+
 
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
@@ -166,10 +168,6 @@ select ut from Unity u join u.unityType ut
 
 		//~: select clause
 		qb.setClauseSelect("e");
-
-		//~: order by clause
-		if(mb.getOrderBy() != null)
-			qb.setClauseOrderBy(mb.getOrderBy());
 
 		//~: the selection limits
 		qb.setFirstRow(mb.getDataStart());
@@ -198,6 +196,10 @@ select ut from Unity u join u.unityType ut
 		).
 		  param("set",   SU.sXs(mb.getSelSet())).
 		  param("login", EX.assertn(mb.getLogin()));
+
+		//~: model-provided restrictions
+		if(mb.getQuery() != null)
+			mb.getQuery().tuneQuery(qb);
 
 
 		return (List<United>) QB(qb).list();

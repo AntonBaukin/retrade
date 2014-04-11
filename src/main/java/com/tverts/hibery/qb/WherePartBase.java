@@ -1,6 +1,6 @@
 package com.tverts.hibery.qb;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +20,7 @@ public abstract class WherePartBase
 {
 	/* public: WherePart interface */
 
-	public Map<String, Object>
-	              getParams()
+	public Map<String, Object> getParams()
 	{
 		return (params != null)?(params):
 		  (params = new HashMap<String, Object>(5));

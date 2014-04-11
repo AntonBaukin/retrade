@@ -1,12 +1,15 @@
-package com.tverts.data;
+package com.tverts.data.models;
 
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlTransient;
 
-/* com.tverts: endure (core) */
+/* com.tverts: hibery */
 
-import com.tverts.endure.UnityType;
+import com.tverts.data.DataCtx;
+import com.tverts.data.ReportFormat;
+import com.tverts.data.ReportModel;
+import com.tverts.hibery.qb.TuneQuery;
 
 /* com.tverts: models */
 
@@ -16,6 +19,10 @@ import com.tverts.model.ModelData;
 /* com.tverts: objects */
 
 import com.tverts.objects.Adapter;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.UnityType;
 
 /* com.tverts: support */
 
@@ -132,21 +139,21 @@ public class      AdaptedEntitiesSelected
 		this.adapter = adapter;
 	}
 
-	public String getOrderBy()
+	@XmlTransient
+	public TuneQuery getQuery()
 	{
-		return orderBy;
+		return query;
 	}
 
-	public void setOrderBy(String orderBy)
+	public void setQuery(TuneQuery query)
 	{
-		this.orderBy = orderBy;
+		this.query = query;
 	}
 
 
 	/* public: initialization */
 
-	public AdaptedEntitiesSelected init
-	  (String dataSource, DataCtx ctx, Adapter adapter, UnityType type)
+	public AdaptedEntitiesSelected init(String dataSource, DataCtx ctx, UnityType type)
 	{
 		//~: data source
 		this.dataSource = EX.asserts(dataSource);
@@ -162,9 +169,6 @@ public class      AdaptedEntitiesSelected
 
 		//~: the unity type of the entities
 		this.unityType = EX.assertn(type).getPrimaryKey();
-
-		//~: the adaptor
-		this.adapter = EX.assertn(adapter);
 
 		return this;
 	}
@@ -189,5 +193,5 @@ public class      AdaptedEntitiesSelected
 	private Long         unityType;
 	private Long         entity;
 	private Adapter      adapter;
-	private String       orderBy;
+	private TuneQuery    query;
 }
