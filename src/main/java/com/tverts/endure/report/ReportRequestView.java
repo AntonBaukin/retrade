@@ -159,7 +159,7 @@ public class ReportRequestView implements Serializable
 		this.time = r.getTime();
 		this.format = r.getFormat().name();
 		this.ready = r.isReady();
-		this.loaded = r.isLoaded();
+		this.loaded = (r.getLoadTime() != null);
 
 		return this;
 	}

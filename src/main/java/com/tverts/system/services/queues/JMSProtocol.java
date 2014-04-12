@@ -77,13 +77,14 @@ public class JMSProtocol
 		if(event instanceof DelayedEvent)
 		{
 			long et = ((DelayedEvent)event).getEventTime();
+			long td = et - System.currentTimeMillis();
 
-			if(et > System.currentTimeMillis())
+			if(td > 0L)
 			{
 				msg.setLongProperty(EXECTIME, et);
 
-				//~: HornetQ support
-				msg.setLongProperty("_HQ_SCHED_DELIVERY", et);
+				//~: ActiveMQ support
+				msg.setLongProperty("AMQ_SCHEDULED_DELAY", td);
 			}
 		}
 

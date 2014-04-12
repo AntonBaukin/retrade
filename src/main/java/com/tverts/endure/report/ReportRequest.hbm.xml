@@ -94,12 +94,13 @@
     </property>
 
 
-    <!-- Is Loaded Flag -->
+    <!-- Load Time -->
 
-    <property name = 'loaded'>
+    <property name = 'loadTime' type = 'timestamp'>
 
-      <column name = 'is_loaded' not-null = 'true'>
-        <comment>Set to true when the report was loaded by the user</comment>
+      <column name = 'load_time' index = 'ix_report_request_load_time'>
+
+        <comment>The time this request had been loaded by the user</comment>
       </column>
     </property>
 

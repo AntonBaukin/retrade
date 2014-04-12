@@ -2,12 +2,15 @@ package com.tverts.data;
 
 /* com.tverts: spring */
 
+import java.util.Date;
+
 import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: system (services + tx) */
 
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
+import com.tverts.system.services.Servicer;
 import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
 
@@ -69,7 +72,7 @@ public class ReportsService extends ServiceBase
 	  "Reports Service";
 
 
-	/* public: Reports Service */
+	/* public: Reports Service (main) */
 
 	/**
 	 * Executed in own transaction: saves the
@@ -79,7 +82,7 @@ public class ReportsService extends ServiceBase
 	 * has no report file assigned, and no request
 	 * may be created.
 	 */
-	public boolean plan(ReportModel m)
+	public boolean   plan(ReportModel m)
 	{
 		final ReportRequest r = new ReportRequest();
 
@@ -120,7 +123,7 @@ public class ReportsService extends ServiceBase
 	 * the reports with the data sources without
 	 * web configuration interface.
 	 */
-	public void    plan(ReportTemplate rt, ReportFormat fmt, DataCtx ctx)
+	public void      plan(ReportTemplate rt, ReportFormat fmt, DataCtx ctx)
 	{
 		final ReportRequest r = new ReportRequest();
 
@@ -154,8 +157,15 @@ public class ReportsService extends ServiceBase
 		plan(r);
 	}
 
-	public void    service(Event event)
+	public void      service(Event event)
 	{
+		//?: {clear reports event}
+		if(event instanceof ReportsCleanEvent)
+		{
+			serviceClean((ReportsCleanEvent)event);
+			return;
+		}
+
 		if(!(event instanceof MakeReportEvent))
 			return;
 
@@ -258,6 +268,55 @@ public class ReportsService extends ServiceBase
 		TxPoint.txn(r);
 	}
 
+	public void      init(Servicer servicer)
+	{
+		super.init(servicer);
+
+		//~: erase the reports
+		ReportsCleanEvent e = new ReportsCleanEvent();
+		e.setErase(true);
+		serviceClean(e);
+
+		//~: cleanup the reports
+		e.setErase(false);
+		serviceClean(e);
+	}
+
+
+	/* public: Reports Service (config) */
+
+	public int       getCleanupTimeout()
+	{
+		return cleanupTimeout;
+	}
+
+	/**
+	 * The timeout in minutes to remove ready and
+	 * downloaded by the user report requests.
+	 * Defaults to 15 minutes.
+	 */
+	public void      setCleanupTimeout(int t)
+	{
+		EX.assertx(t >= 0);
+		this.cleanupTimeout = t;
+	}
+
+	public int       getEraseTimeout()
+	{
+		return eraseTimeout;
+	}
+
+	/**
+	 * The timeout in hours to remove any report
+	 * request regardless it is ready or loaded.
+	 * Defaults to 48 hours.
+	 */
+	public void      setEraseTimeout(int t)
+	{
+		EX.assertx(t >= 0);
+		this.eraseTimeout = t;
+	}
+
 
 	/* protected: service internals */
 
@@ -311,4 +370,74 @@ public class ReportsService extends ServiceBase
 			xml.close();
 		}
 	}
+
+	protected void   serviceClean(ReportsCleanEvent e)
+	{
+		//?: {erase event}
+		if(e.isErase())
+			erase();
+		//~: do cleanup
+		else
+			cleanup();
+
+		//~: plan the next event
+		e.setEventTime( System.currentTimeMillis() + 1000L * 60 *
+		  (e.isErase()?(60 * eraseTimeout):(cleanupTimeout))
+		);
+
+		self(e);
+	}
+
+	protected void   cleanup()
+	{
+
+// delete from ReportRequest where (loadTime < :time)
+
+
+		long tm = System.currentTimeMillis() -
+		  1000L * 60 * cleanupTimeout; //<-- in minutes
+
+		//~: execute the update query
+		int n = TxPoint.txSession().createQuery(
+
+"  delete from ReportRequest where (loadTime < :time)"
+
+		).
+		  setTimestamp("time", new Date(tm)).
+		  executeUpdate();
+
+		LU.I(getLog(), "cleaned up loadaed reports, removed [", n, "]");
+	}
+
+	protected void   erase()
+	{
+		EX.assertx(eraseTimeout > 0);
+
+// delete from ReportRequest where (time <= :time)
+
+		long tm = System.currentTimeMillis() -
+		  1000L * 60 * 60 * eraseTimeout; //<-- in hours
+
+		//~: execute the update query
+		int n = TxPoint.txSession().createQuery(
+
+"  delete from ReportRequest where (time <= :time)"
+
+		).
+		  setTimestamp("time", new Date(tm)).
+		  executeUpdate();
+
+		LU.I(getLog(), "erased obsolete reports, removed [", n, "]");
+	}
+
+	protected String getLog()
+	{
+		return "com.tverts.system.services." + getClass().getSimpleName();
+	}
+
+
+	/* private: service parameters */
+
+	private int cleanupTimeout = 15; //<-- 15 minutes
+	private int eraseTimeout   = 48; //<-- 48 hours
 }

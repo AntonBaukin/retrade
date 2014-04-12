@@ -91,19 +91,17 @@ public class      ReportRequest
 	}
 
 	/**
-	 * True when the user had downloaded the
-	 * report file. In this case the system
-	 * may remove the report not waiting
-	 * the download timeout.
+	 * Set to the time when the user
+	 * had downloaded the report file.
 	 */
-	public boolean isLoaded()
+	public Date getLoadTime()
 	{
-		return loaded;
+		return loadTime;
 	}
 
-	public void setLoaded(boolean loaded)
+	public void setLoadTime(Date loadTime)
 	{
-		this.loaded = loaded;
+		this.loadTime = loadTime;
 	}
 
 	/**
@@ -155,7 +153,7 @@ public class      ReportRequest
 	private Date           time;
 	private String         model;
 	private ReportFormat   format;
-	private boolean        loaded;
+	private Date           loadTime;
 	private boolean        ready;
 	private byte[]         report;
 }
