@@ -8,6 +8,10 @@ import java.util.Map;
 
 /* JUnit library */
 
+import com.tverts.auth.server.support.AuthDigest;
+import com.tverts.auth.server.support.AuthRandom;
+import com.tverts.auth.server.support.Encodings;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -114,10 +118,10 @@ public class TestAuthProtocol
 
 	private static AuthProtocol protocolPrototype;
 
-	private static AuthDigest   authDigest =
+	private static AuthDigest authDigest =
 	  new AuthDigest();
 
-	private static AuthRandom   authRandom =
+	private static AuthRandom authRandom =
 	  new AuthRandom();
 
 	protected static class AuthError extends RuntimeException

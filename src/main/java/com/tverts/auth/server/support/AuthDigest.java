@@ -1,6 +1,6 @@
-package com.tverts.auth.server;
+package com.tverts.auth.server.support;
 
-/* standard Java classes */
+/* Java */
 
 import java.lang.ref.WeakReference;
 import java.security.MessageDigest;
@@ -55,7 +55,7 @@ public final class AuthDigest
 
 				if(v instanceof char[])
 				{
-					digest.update(Encodings.hex2bytes((char[]) v));
+					digest.update(Encodings.hex2bytes((char[])v));
 					continue;
 				}
 

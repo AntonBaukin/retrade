@@ -1,6 +1,6 @@
 package com.tverts.auth.server;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.IOException;
 import java.io.Writer;
@@ -13,13 +13,17 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.tverts.auth.server.support.AuthDigest;
+import com.tverts.auth.server.support.AuthRandom;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-/* com.tverts: authentication server */
+/* com.tverts: auth support */
 
 import com.tverts.auth.server.DbConnect.AuthRequest;
+import com.tverts.auth.server.support.BytesStream;
+import com.tverts.auth.server.support.Encodings;
 
 
 /**

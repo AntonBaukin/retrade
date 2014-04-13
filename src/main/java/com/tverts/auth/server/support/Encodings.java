@@ -1,4 +1,4 @@
-package com.tverts.auth.server;
+package com.tverts.auth.server.support;
 
 /**
  * Support class for transfer encodings.

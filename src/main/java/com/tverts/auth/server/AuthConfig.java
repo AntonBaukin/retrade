@@ -1,9 +1,14 @@
 package com.tverts.auth.server;
 
-/* standard Java classes */
-
+/* Java */
 
 import javax.sql.DataSource;
+
+/* Java Messaging */
+
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
+
 
 /**
  * Stores configuration parameters of the
@@ -61,7 +66,9 @@ public class AuthConfig
 
 	/* authentication parameters */
 
-	private DataSource dataSource;
+	private DataSource        dataSource;
+	private ConnectionFactory connectionFactory;
+	private Queue             execRequestQueue;
 
 	private long       authTimeout    = 60 * 1000L;          //<-- 1 minute
 	private long       sessionTimeout = 4 * 60 * 60 * 1000L; //<-- 4 hours

@@ -1,6 +1,6 @@
 package com.tverts.auth.server;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.InputStream;
 import java.net.URL;

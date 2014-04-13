@@ -45,6 +45,15 @@
       conf = 'sources; compile -> master'/>
 
 
+    <!-- Java Messaging [server provided] -->
+
+    <dependency
+      org  = 'javax.jms'
+      name = 'javax.jms-api'
+      rev  = '2.0'
+      conf = 'sources; compile -> master'/>
+
+
     <!-- XML, OXM [manually provided] -->
 
     <dependency

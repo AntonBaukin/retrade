@@ -9,8 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
 import javax.sql.DataSource;
+
+/* com.tverts: auth support */
+
+import com.tverts.auth.server.support.BytesStream;
 
 
 /**
@@ -532,7 +535,7 @@ where (session_id = ?) and (close_time is null)
 			return this;
 		}
 
-		public BytesStream  getInput()
+		public BytesStream getInput()
 		{
 			return input;
 		}

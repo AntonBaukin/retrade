@@ -1,6 +1,6 @@
-package com.tverts.auth.server;
+package com.tverts.auth.server.support;
 
-/* standard Java classes */
+/* Java */
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.tverts.auth.server;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -15,6 +15,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+/* com.tverts: auth support */
+
+import com.tverts.auth.server.support.BytesStream;
 
 
 /**
