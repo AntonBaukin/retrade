@@ -1,6 +1,6 @@
 package com.tverts.support;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.PrintWriter;
 import java.util.Collection;

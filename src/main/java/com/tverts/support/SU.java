@@ -1,6 +1,6 @@
 package com.tverts.support;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -703,11 +703,6 @@ public class SU
 		if(l == 0) { s[0] = '0'; l = 1; }
 
 		return new String(s, 0, l);
-	}
-
-	public static void main(String[] argv)
-	{
-		int a = 0;
 	}
 
 	public static char[]  bytes2hex(byte[] a)
