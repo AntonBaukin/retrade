@@ -1,5 +1,10 @@
 package com.tverts.auth.server;
 
+/* com.tverts: auth support */
+
+import com.tverts.auth.server.support.EX;
+
+
 /**
  * Class with the state of the authentication session.
  *
@@ -113,7 +118,7 @@ public class AuthSession implements Cloneable, java.io.Serializable
 		}
 		catch(CloneNotSupportedException e)
 		{
-			throw new IllegalStateException(e);
+			throw EX.wrap(e);
 		}
 	}
 

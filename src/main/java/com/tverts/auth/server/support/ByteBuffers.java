@@ -41,7 +41,7 @@ public final class ByteBuffers
 
 	public void   free(byte[] buf)
 	{
-		if(buf == null) throw new IllegalArgumentException();
+		EX.assertn(buf);
 
 		synchronized(this)
 		{
@@ -57,9 +57,8 @@ public final class ByteBuffers
 
 	public void   free(Collection<byte[]> bufs)
 	{
-		if(bufs == null) throw new IllegalArgumentException();
-		for(byte[] buf : bufs)
-			if(buf == null) throw new IllegalArgumentException();
+		for(byte[] buf : EX.assertn(bufs))
+			EX.assertn(buf);
 
 		synchronized(this)
 		{

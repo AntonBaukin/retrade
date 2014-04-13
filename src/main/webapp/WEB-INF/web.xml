@@ -17,7 +17,26 @@
 
   <context-param>
     <description>
-      (System parameter.) JNDI name of 'Re Trade'
+      Authentication Protocol steps timeout in seconds.
+    </description>
+
+    <param-name>retrade.auth.auth-timeout</param-name>
+    <param-value>60</param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      Authentication Session timeout in seconds.
+      (Defaults to 4 hours.)
+    </description>
+
+    <param-name>retrade.auth.session-timeout</param-name>
+    <param-value>14400</param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      (System parameter.) JNDI name of 'Re-Trade'
       Database Datasorce configured in the server.
     </description>
 
@@ -29,20 +48,26 @@
 
   <context-param>
     <description>
-      Authentication Protocol steps timeout in seconds.
+      (System parameter.) JNDI name of 'Re-Trade' Execution
+      Notifications Queue configured in the server.
     </description>
 
-    <param-name>retrade.auth.auth-timeout</param-name>
-    <param-value>60</param-value>
+    <param-name>retrade.auth.exec-queue</param-name>
+    <param-value>
+      openejb:/Resource/ReTradeExecNotify
+    </param-value>
   </context-param>
 
   <context-param>
     <description>
-      Authentication Session timeout in seconds.
+      (System parameter.) JNDI name of
+      JMS Connection Factory.
     </description>
 
-    <param-name>retrade.auth.session-timeout</param-name>
-    <param-value>14400</param-value>
+    <param-name>retrade.auth.jms-conn-factory</param-name>
+    <param-value>
+      openejb:/Resource/ConnectLocalMemoryMessagesBroker
+    </param-value>
   </context-param>
 
   <listener>

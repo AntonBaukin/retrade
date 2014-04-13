@@ -15,13 +15,14 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.tverts.auth.server.support.AuthDigest;
 import com.tverts.auth.server.support.AuthRandom;
+import com.tverts.auth.server.support.EX;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /* com.tverts: auth support */
 
-import com.tverts.auth.server.DbConnect.AuthRequest;
+import com.tverts.auth.server.Connect.AuthRequest;
 import com.tverts.auth.server.support.BytesStream;
 import com.tverts.auth.server.support.Encodings;
 
@@ -102,9 +103,9 @@ public class AuthProtocol implements Cloneable
 			invokeCommit.run();
 	}
 
-	public void   initPrototype(DbConnect dbcPrototype)
+	public void   initPrototype(Connect dbcPrototype)
 	{
-		this.dbConnect  = dbcPrototype;
+		this.connect = dbcPrototype;
 		this.sidpfx     = initSid();
 		this.sidsfx     = new AtomicLong();
 		this.random     = new AuthRandom();
@@ -126,7 +127,7 @@ public class AuthProtocol implements Cloneable
 		}
 		catch(CloneNotSupportedException e)
 		{
-			throw new IllegalStateException(e);
+			throw EX.wrap(e);
 		}
 	}
 
@@ -251,7 +252,7 @@ public class AuthProtocol implements Cloneable
 
 		//~: connect to the database
 		Boolean   txc = null;
-		DbConnect dbc = createDbConnect();
+		Connect dbc = createDbConnect();
 		dbc.connect();
 
 		try
@@ -309,7 +310,7 @@ public class AuthProtocol implements Cloneable
 		catch(Throwable e)
 		{
 			txc = false;
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 		finally
 		{
@@ -348,7 +349,7 @@ public class AuthProtocol implements Cloneable
 
 		//~: connect to the database
 		Boolean   txc = null;
-		DbConnect dbc = createDbConnect();
+		Connect dbc = createDbConnect();
 		dbc.connect();
 
 		//~: error text
@@ -365,8 +366,7 @@ public class AuthProtocol implements Cloneable
 			if(session.isClosed())
 				return MSG; //!: do not expose actual session state
 
-			if(session.getSessionKey() == null)
-				throw new IllegalStateException();
+			EX.asserts(session.getSessionKey());
 
 			char[] skey = session.getSessionKey().toCharArray();
 
@@ -407,7 +407,7 @@ public class AuthProtocol implements Cloneable
 		catch(Throwable e)
 		{
 			txc = false;
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 		finally
 		{
@@ -446,7 +446,7 @@ public class AuthProtocol implements Cloneable
 
 		//~: connect to the database
 		Boolean   txc = null;
-		DbConnect dbc = createDbConnect();
+		Connect dbc = createDbConnect();
 		dbc.connect();
 
 		//~: error text
@@ -463,8 +463,7 @@ public class AuthProtocol implements Cloneable
 			if(session.isClosed())
 				return MSG; //!: do not expose actual session state
 
-			if(session.getSessionKey() == null)
-				throw new IllegalStateException();
+			EX.asserts(session.getSessionKey());
 
 			//~: check the signature
 			String xH = digest.signHex(
@@ -499,7 +498,7 @@ public class AuthProtocol implements Cloneable
 		catch(Throwable e)
 		{
 			// txc = false; <-- close is committed always
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 		finally
 		{
@@ -540,7 +539,7 @@ public class AuthProtocol implements Cloneable
 
 		//~: connect to the database
 		Boolean   txc = null;
-		DbConnect dbc = createDbConnect();
+		Connect dbc = createDbConnect();
 		dbc.connect();
 
 		//~: error text
@@ -557,8 +556,7 @@ public class AuthProtocol implements Cloneable
 			if(session.isClosed())
 				return MSG; //!: do not expose actual session state
 
-			if(session.getSessionKey() == null)
-				throw new IllegalStateException();
+			EX.asserts(session.getSessionKey());
 
 			//~: payload digest
 			byte[] pd = null;
@@ -635,7 +633,7 @@ public class AuthProtocol implements Cloneable
 		catch(Throwable e)
 		{
 			// txc = false; <-- close is committed always
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 		finally
 		{
@@ -661,24 +659,21 @@ public class AuthProtocol implements Cloneable
 		return v;
 	}
 
-	protected DbConnect createDbConnect()
+	protected Connect createDbConnect()
 	{
-		return dbConnect.clone();
+		return connect.clone();
 	}
 
 	protected String    nextSid()
 	{
-		if(sidpfx == null)
-			throw new IllegalStateException();
-
-		return sidpfx + '_' + Long.toHexString(
+		return EX.assertn(sidpfx) + '_' + Long.toHexString(
 		  sidsfx.incrementAndGet()).toUpperCase();
 	}
 
 	protected String    initSid()
 	{
 		//~: connect to the database
-		DbConnect dbc = createDbConnect();
+		Connect dbc = createDbConnect();
 		dbc.connect();
 
 		String    sid;
@@ -806,7 +801,7 @@ public class AuthProtocol implements Cloneable
 	/**
 	 * The prototype database connection.
 	 */
-	private DbConnect    dbConnect;
+	private Connect connect;
 
 	/**
 	 * Session Id consists of the two parts:

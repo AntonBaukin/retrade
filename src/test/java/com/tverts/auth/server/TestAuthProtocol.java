@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Tests {@link AuthProtocol} implementation
- * with in-memory {@link DbConnect}.
+ * with in-memory {@link Connect}.
  *
  * @author anton.baukin@gmail.com
  */
@@ -170,7 +170,7 @@ public class TestAuthProtocol
 		return protocol;
 	}
 
-	protected static DbConnect    createDbConnect()
+	protected static Connect createDbConnect()
 	{
 		TestDbConnect dbc = new TestDbConnect();
 
@@ -184,7 +184,7 @@ public class TestAuthProtocol
 
 	/* test database connection */
 
-	protected static class TestDbConnect extends DbConnect
+	protected static class TestDbConnect extends Connect
 	{
 		/* public: DbConnect (connection) interface */
 

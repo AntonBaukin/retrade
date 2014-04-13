@@ -80,9 +80,9 @@ public final class BytesStream extends OutputStream
 		byte[] res = new byte[(int) length()];
 		int    csz = copy(res, 0, res.length);
 
-		if(res.length != csz)
-			throw new IllegalStateException(
-			  "Error in BytesStream.copy(bytes) implementation!");
+		EX.assertx( (res.length == csz),
+		  "Error in BytesStream.copy(bytes) implementation!");
+
 		return res;
 	}
 

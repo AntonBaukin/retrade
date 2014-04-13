@@ -66,7 +66,7 @@ public final class AuthDigest
 				}
 				catch(Exception e)
 				{
-					throw new RuntimeException(e);
+					throw EX.wrap(e); 
 				}
 
 				if(v instanceof BytesStream) try
@@ -76,10 +76,10 @@ public final class AuthDigest
 				}
 				catch(Exception e)
 				{
-					throw new RuntimeException(e);
+					throw EX.wrap(e); 
 				}
 
-				throw new IllegalArgumentException();
+				throw EX.arg();
 			}
 
 			result = digest.digest();
@@ -124,7 +124,7 @@ public final class AuthDigest
 		}
 		catch(Exception e)
 		{
-			throw new IllegalStateException(e);
+			throw EX.wrap(e);
 		}
 	}
 

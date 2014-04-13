@@ -39,6 +39,26 @@ public class AuthConfig
 		this.dataSource = dataSource;
 	}
 
+	public ConnectionFactory getConnectionFactory()
+	{
+		return connectionFactory;
+	}
+
+	public void setConnectionFactory(ConnectionFactory connectionFactory)
+	{
+		this.connectionFactory = connectionFactory;
+	}
+
+	public Queue getExecRequestQueue()
+	{
+		return execRequestQueue;
+	}
+
+	public void setExecRequestQueue(Queue execRequestQueue)
+	{
+		this.execRequestQueue = execRequestQueue;
+	}
+
 	/**
 	 * Authentication timeout is a maximum pause
 	 * between the protocol steps invocation.

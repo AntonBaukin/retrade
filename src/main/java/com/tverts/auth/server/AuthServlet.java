@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 /* com.tverts: auth support */
 
 import com.tverts.auth.server.support.BytesStream;
+import com.tverts.auth.server.support.EX;
 
 
 /**
@@ -35,10 +36,10 @@ public class AuthServlet extends GenericServlet
 	  throws ServletException, IOException
 	{
 		if(!(req instanceof HttpServletRequest))
-			throw new IllegalStateException();
+			throw EX.arg();
 
 		if(!(res instanceof HttpServletResponse))
-			throw new IllegalStateException();
+			throw EX.arg();
 
 		this.service((HttpServletRequest)req, (HttpServletResponse)res);
 	}

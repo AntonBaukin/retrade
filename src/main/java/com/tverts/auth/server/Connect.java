@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 /* com.tverts: auth support */
 
 import com.tverts.auth.server.support.BytesStream;
+import com.tverts.auth.server.support.EX;
 
 
 /**
@@ -29,16 +30,16 @@ import com.tverts.auth.server.support.BytesStream;
  *
  * @author anton.baukin@gmail.com
  */
-public class DbConnect implements Cloneable
+public class Connect implements Cloneable
 {
 	/* public: constructors */
 
-	public DbConnect(DataSource dataSource)
+	public Connect(DataSource dataSource)
 	{
 		this.dataSource = dataSource;
 	}
 
-	public DbConnect()
+	public Connect()
 	{
 		this(AuthConfig.INSTANCE.getDataSource());
 	}
@@ -58,7 +59,7 @@ public class DbConnect implements Cloneable
 		}
 		catch(Exception e)
 		{
-			throw new IllegalStateException(e);
+			throw EX.wrap(e);
 		}
 	}
 
@@ -76,7 +77,7 @@ public class DbConnect implements Cloneable
 		}
 		catch(Exception e)
 		{
-			throw new IllegalStateException(e);
+			throw EX.wrap(e);
 		}
 		finally
 		{
@@ -96,15 +97,14 @@ public class DbConnect implements Cloneable
 		}
 		catch(SQLException e)
 		{
-			throw new RuntimeException(
-			  "Error occurred while initializing Database for Auth Protocol!", e);
+			throw EX.wrap(e, "Error occurred while ",
+			  "initializing Database for Auth Protocol!");
 		}
 	}
 
 	public String   nextSidPrefix()
 	{
-		if(connection == null)
-			throw new IllegalStateException();
+		EX.assertn(connection);
 
 		PreparedStatement ps;
 		long              si;
@@ -129,7 +129,7 @@ public class DbConnect implements Cloneable
 		}
 		catch(SQLException e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 
 		return Long.toString(si);
@@ -142,8 +142,7 @@ public class DbConnect implements Cloneable
 	public Object[] getDomainPassword(String domainCode, String login)
 	  throws SQLException
 	{
-		if(connection == null)
-			throw new IllegalStateException();
+		EX.assertn(connection);
 
 		Object[] result = null;
 
@@ -243,11 +242,8 @@ where
 	public void     loadSession(AuthSession session)
 	  throws SQLException
 	{
-		if(connection == null)
-			throw new IllegalStateException();
-
-		if((session == null) || session.getSessionId() == null)
-			throw new IllegalArgumentException();
+		EX.assertn(connection);
+		EX.asserts(EX.assertn(session).getSessionId());
 
 /*
 
@@ -318,20 +314,11 @@ where (se.session_id = ?)
 	public void     saveSession(AuthSession session)
 	  throws SQLException
 	{
-		if(connection == null)
-			throw new IllegalStateException();
-
-		if((session == null) || session.getSessionId() == null)
-			throw new IllegalArgumentException();
-
-		if(session.getDomain() == 0L)
-			throw new IllegalArgumentException();
-
-		if(session.getLogin() == null)
-			throw new IllegalArgumentException();
-
-		if(session.getSessionKey() == null)
-			throw new IllegalArgumentException();
+		EX.assertn(connection);
+		EX.asserts(EX.assertn(session).getSessionId());
+		EX.assertx(session.getDomain() != 0L);
+		EX.assertn(session.getLogin());
+		EX.asserts(session.getSessionKey());
 
 
 		//~: timestamp
@@ -339,7 +326,7 @@ where (se.session_id = ?)
 
 		//~: close time
 		Timestamp closets  = (!session.isClosed())?(null)
-		                                          :(new Timestamp(timestamp));
+		  :(new Timestamp(timestamp));
 
 		//~: access timestamp
 		Timestamp accessts = (session.getServerTime() < timestamp)
@@ -374,10 +361,9 @@ select lo.pk_entity from auth_login lo where
 		{
 			ps.close();
 
-			throw new IllegalStateException(String.format(
-			  "No actual record found for domain [%d] and login '%s'!",
-			  session.getDomain(), session.getLogin()
-			));
+			throw EX.state("No actual record found for domain [",
+			  session.getDomain(), "] and login [", session.getLogin(), "]!"
+			);
 		}
 
 		lo = ps.getResultSet().getLong(1);
@@ -437,7 +423,7 @@ insert into auth_session (
 		if(ps.executeUpdate() != 1)
 		{
 			ps.close();
-			throw new IllegalStateException();
+			throw EX.state();
 		}
 
 		ps.close();
@@ -446,11 +432,8 @@ insert into auth_session (
 	public void     touchSession(AuthSession session)
 	  throws SQLException
 	{
-		if(connection == null)
-			throw new IllegalStateException();
-
-		if((session == null) || session.getSessionId() == null)
-			throw new IllegalArgumentException();
+		EX.assertn(connection);
+		EX.asserts(EX.assertn(session).getSessionId());
 
 		//~: timestamp
 		long timestamp     = System.currentTimeMillis();
@@ -500,7 +483,7 @@ where (session_id = ?) and (close_time is null)
 		if(ps.executeUpdate() != 1)
 		{
 			ps.close();
-			throw new IllegalStateException();
+			throw EX.state();
 		}
 
 		ps.close();
@@ -751,7 +734,7 @@ insert into exec_request  (
 		if(ps.executeUpdate() != 1)
 		{
 			ps.close();
-			throw new IllegalStateException();
+			throw EX.state();
 		}
 
 		ps.close();
@@ -760,18 +743,18 @@ insert into exec_request  (
 
 	/* public: Cloneable interface */
 
-	public DbConnect clone()
+	public Connect clone()
 	{
 		try
 		{
-			DbConnect dbc  = (DbConnect) super.clone();
+			Connect dbc  = (Connect) super.clone();
 			dbc.connection = null;
 
 			return dbc;
 		}
 		catch(CloneNotSupportedException e)
 		{
-			throw new IllegalStateException(e);
+			throw EX.wrap(e);
 		}
 	}
 
@@ -839,7 +822,7 @@ update exec_request set was_delivered = true where
 		if(ps.executeUpdate() != 1)
 		{
 			ps.close();
-			throw new IllegalStateException();
+			throw EX.state();
 		}
 
 		ps.close();
@@ -849,7 +832,7 @@ update exec_request set was_delivered = true where
 	{
 		/* public: constructor */
 
-		public ReceiveCommit(DbConnect dbc, Long request)
+		public ReceiveCommit(Connect dbc, Long request)
 		{
 			this.dbc     = dbc;
 			this.request = request;
@@ -873,10 +856,8 @@ update exec_request set was_delivered = true where
 			}
 			catch(SQLException e)
 			{
-				throw new RuntimeException(String.format(
-				  "Unable to commit Execution Request Receive [%d]!",
-				  request
-				), e);
+				throw EX.wrap(e, "Unable to commit Execution Request Receive [",
+				  request, "]!");
 			}
 			finally
 			{
@@ -886,7 +867,7 @@ update exec_request set was_delivered = true where
 
 		/* private: commit parameters */
 
-		private DbConnect dbc;
+		private Connect dbc;
 		private Long      request;
 
 	}
