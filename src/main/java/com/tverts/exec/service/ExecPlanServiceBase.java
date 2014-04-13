@@ -116,7 +116,7 @@ public abstract class ExecPlanServiceBase
 		ExecPlanEvent e = new ExecPlanEvent();
 		if(withPause) e.setEventDelay(getWaitPause());
 
-		self(e);
+		//self(e);
 	}
 
 	protected void    planNextExecution(boolean reentered, boolean empty)
