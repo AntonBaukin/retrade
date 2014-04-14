@@ -5,6 +5,7 @@ package com.tverts.system.services.queues;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Message;
+import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 
@@ -42,14 +43,14 @@ public class JMSMessenger implements ServiceMessenger
 		{
 			public void run()
 			{
-				Connection conn  = obtainConnection();
-				Throwable  error = null;
+				Throwable  error   = null;
+				Connection conn    = obtainConnection();
+				Session    session = null;
 
 				try
 				{
 					//~: create JMS session
-					Session session = conn.createSession(
-					  true, Session.AUTO_ACKNOWLEDGE);
+					session = conn.createSession(true, Session.AUTO_ACKNOWLEDGE);
 
 					//!: send the message
 					send(session, event);
@@ -60,6 +61,17 @@ public class JMSMessenger implements ServiceMessenger
 				}
 				finally
 				{
+					//~: close the session
+					if(session != null) try
+					{
+						session.close();
+					}
+					catch(Throwable e)
+					{
+						if(error == null) error = e;
+					}
+
+					//~: close the connection
 					try
 					{
 						conn.close();
@@ -113,10 +125,8 @@ public class JMSMessenger implements ServiceMessenger
 		}
 		catch(Exception e)
 		{
-			throw new IllegalStateException(String.format(
-			  "Can't locate Z-Services Queue by the JNDI name [%s]!",
-			  getQueueName()
-			));
+			throw EX.state("Can't locate Z-Services Queue by the JNDI name [",
+			  getQueueName(), "]!");
 		}
 	}
 
@@ -132,10 +142,8 @@ public class JMSMessenger implements ServiceMessenger
 		}
 		catch(Exception e)
 		{
-			throw new IllegalStateException(String.format(
-			  "Can't locate Z-Services JMS Connection Factory " +
-			  "by the JNDI name [%s]!", getConnectionFactory()
-			));
+			throw EX.state("Can't locate Z-Services JMS Connection Factory ",
+			  "by the JNDI name [", getConnectionFactory(), "]!");
 		}
 
 		//~: get the connection
@@ -145,23 +153,41 @@ public class JMSMessenger implements ServiceMessenger
 		}
 		catch(Exception e)
 		{
-			throw new IllegalStateException(String.format(
-			  "Can't obtain JMS Connection from Factory " +
-			  "by the JNDI name [%s]!", getConnectionFactory()
-			));
+			throw EX.state("Can't obtain JMS Connection from Factory ",
+			  "by the JNDI name [", getConnectionFactory(), "]!");
 		}
 	}
 
 	protected void       send(Session session, Event event)
-	  throws Exception
+	  throws Throwable
 	{
 		//~: create the message by the protocol
-		Message msg = JMSProtocol.getInstance().
+		Message         m = JMSProtocol.getInstance().
 		  message(session, event);
 
-		//!: send the message
-		session.createProducer(locateQueue()).
-		  send(msg);
+		MessageProducer p = session.createProducer(locateQueue());
+		Throwable       x = null;
+
+		//~: send the message
+		try
+		{
+			p.send(m);
+		}
+		catch(Throwable e)
+		{
+			x = e;
+		}
+		finally
+		{
+			try
+			{
+				p.close();
+			}
+			catch(Throwable e)
+			{
+				if(x == null) x = e;
+			}
+		}
 	}
 
 

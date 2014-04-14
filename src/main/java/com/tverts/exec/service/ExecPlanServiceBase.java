@@ -7,6 +7,10 @@ import com.tverts.system.services.ServiceBase;
 import com.tverts.system.services.ServicesPoint;
 import com.tverts.system.services.events.SystemReady;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Implementation base of service to plan the
@@ -17,6 +21,10 @@ import com.tverts.system.services.events.SystemReady;
 public abstract class ExecPlanServiceBase
        extends        ServiceBase
 {
+	public static final String SERVICE_NAME =
+	  "Execution Planning Service";
+
+
 	/* public: Service interface */
 
 	public void     service(Event event)
@@ -50,8 +58,7 @@ public abstract class ExecPlanServiceBase
 
 	public void   setExecService(String execService)
 	{
-		if(execService == null) throw new IllegalArgumentException();
-		this.execService = execService;
+		this.execService = EX.assertn(execService);
 	}
 
 	/**
@@ -66,7 +73,7 @@ public abstract class ExecPlanServiceBase
 
 	public void   setWaitPause(long waitPause)
 	{
-		if(waitPause < 0L) throw new IllegalArgumentException();
+		EX.assertx(waitPause >= 0L);
 		this.waitPause = waitPause;
 	}
 
@@ -76,7 +83,7 @@ public abstract class ExecPlanServiceBase
 	/**
 	 * Inspects ths databases and selects the next
 	 * execution tasks to execute. Sends the event
-	 * to execution service.
+	 * to the execution service.
 	 *
 	 * Returns true when there are no more requests
 	 * left in the database and available for
@@ -98,30 +105,15 @@ public abstract class ExecPlanServiceBase
 		checkService();
 
 		//~: start planning
-		planNextExecution(false);
+		self(new ExecPlanEvent());
 	}
 
 	protected void    checkService()
 	{
-		if(getExecService() == null)
-			throw new IllegalStateException(
-			  "Execution Service ID is not configured!");
+		EX.assertn(getExecService(), "Execution Service ID is not configured!");
 
 		//~: error on missing service
 		ServicesPoint.system().xservice(getExecService());
-	}
-
-	protected void    planNextExecution(boolean withPause)
-	{
-		ExecPlanEvent e = new ExecPlanEvent();
-		if(withPause) e.setEventDelay(getWaitPause());
-
-		//self(e);
-	}
-
-	protected void    planNextExecution(boolean reentered, boolean empty)
-	{
-		planNextExecution(!reentered && empty);
 	}
 
 	protected void    servicePlan()
@@ -130,8 +122,9 @@ public abstract class ExecPlanServiceBase
 		if(!enterService())
 			return;
 
-		boolean reentered;
-		boolean empty;
+		boolean empty;      //<-- true when there is no requests more
+		boolean reentered;  //<-- false when there no execution events received
+		                    //    while processing the pending ones
 
 		try
 		{
@@ -143,8 +136,9 @@ public abstract class ExecPlanServiceBase
 			reentered = leaveService();
 		}
 
-		//!: plan the next execution
-		planNextExecution(reentered, empty);
+		//~: plan the next execution
+		if(!empty || reentered)
+			self(new ExecPlanEvent());
 	}
 
 	/**
@@ -156,7 +150,7 @@ public abstract class ExecPlanServiceBase
 	 */
 	protected boolean enterService()
 	{
-		synchronized(enterMutex())
+		synchronized(enterMutex)
 		{
 			enterRequests++;
 			if(enterRequests == 1)
@@ -175,21 +169,16 @@ public abstract class ExecPlanServiceBase
 	{
 		boolean result;
 
-		synchronized(enterMutex())
+		synchronized(enterMutex)
 		{
 			enterRequests--;
-			result = (enterRequests > 1);
+			result = (enterRequests > 0);
 
 			//!: clear the requests number
 			enterRequests = 0;
 		}
 
 		return result;
-	}
-
-	protected Object  enterMutex()
-	{
-		return enterMutex;
 	}
 
 	protected void    sendTask(long taskKey)

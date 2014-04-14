@@ -5,4 +5,8 @@
     deployment-id = 'ReTrade_ZServicesBusListener'
     container-id  = 'LocalMemoryMessageBeans'/>
 
+  <ejb-deployment ejb-name = 'ExecutionNotifyListener'
+    deployment-id = 'ReTrade_ExecutionNotifyListener'
+    container-id  = 'LocalMemoryMessageBeans'/>
+
 </openejb-jar>
