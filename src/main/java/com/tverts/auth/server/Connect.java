@@ -653,7 +653,7 @@ from exec_request er where
 		ar.setCommit(new ReceiveCommit(this, rkey));
 	}
 
-	public void    request(AuthRequest ar)
+	public long    request(AuthRequest ar)
 	  throws SQLException
 	{
 		//~: get next primary key value
@@ -738,6 +738,7 @@ insert into exec_request  (
 		}
 
 		ps.close();
+		return pk;
 	}
 
 

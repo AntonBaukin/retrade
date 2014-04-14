@@ -40,6 +40,7 @@ public class AuthInit implements ServletContextListener
 	public void contextInitialized(ServletContextEvent sce)
 	{
 		//~: init naming context
+		initNamingContext();
 
 		//~: read configuration parameters
 		initAuthConfig(sce.getServletContext());
@@ -63,7 +64,7 @@ public class AuthInit implements ServletContextListener
 	/* protected: initialization */
 
 	@SuppressWarnings("unchecked")
-	protected void initNamingContext(ServletContext ctx)
+	protected void initNamingContext()
 	{
 		try
 		{
@@ -96,6 +97,10 @@ public class AuthInit implements ServletContextListener
 	{
 		//~: configure the data source
 		initDataSource(ctx);
+
+		//~: configure the queue
+		initConnFactory(ctx);
+		initNotifyQueue(ctx);
 
 		//~: config authentication timeout
 		configAuthTimeout(ctx);

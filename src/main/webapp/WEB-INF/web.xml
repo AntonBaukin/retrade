@@ -95,16 +95,4 @@
     <url-pattern>/servlet/receive</url-pattern>
   </servlet-mapping>
 
-
-  <!--==================================================
-  =               Application Resource                 =
-  ===================================================-->
-
-  <!--
-  <resource-ref>
-    <res-ref-name>ReTradeDatabase</res-ref-name>
-    <res-type>javax.sql.DataSource</res-type>
-  </resource-ref>
-  -->
-
 </web-app>

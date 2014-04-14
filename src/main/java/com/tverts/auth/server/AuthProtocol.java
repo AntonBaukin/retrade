@@ -8,6 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+/* Java Messaging */
+
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.Message;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+
 /* SAX */
 
 import javax.xml.parsers.SAXParser;
@@ -626,9 +634,15 @@ public class AuthProtocol implements Cloneable
 			}
 			//!: handle a request Ping
 			else
-				//!: save the request into the database
-				dbc.request(new AuthRequest().setSession(session).
-				  setInput(ping).setClientKey(clientKey));
+			{
+				//~: save the request into the database
+				long pk = dbc.request(new AuthRequest().setSession(session).
+					 setInput(ping).setClientKey(clientKey)
+				);
+
+				//~: notify the executor
+				notifyExecutor(pk);
+			}
 		}
 		catch(Throwable e)
 		{
@@ -641,6 +655,83 @@ public class AuthProtocol implements Cloneable
 		}
 
 		return null;
+	}
+
+	protected void   notifyExecutor(long pk)
+	  throws Throwable
+	{
+		//~: connection factory
+		ConnectionFactory cf = EX.assertn(
+		  AuthConfig.INSTANCE.getConnectionFactory(),
+		  "No JMS Connection Factory is configured!"
+		);
+
+		//?: {has no queue}
+		EX.assertn(AuthConfig.INSTANCE.getExecRequestQueue(),
+		  "No Requests Execute Notification Queue is configured!"
+		);
+
+		//~: open the connection
+		Throwable       x = null;
+		Connection      c = cf.createConnection();
+		Session         s = null;
+		MessageProducer p = null;
+
+		try
+		{
+			//~: start the connection
+			c.start();
+
+			//~: create jms session & the producer
+			s = c.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			p = s.createProducer(AuthConfig.INSTANCE.getExecRequestQueue());
+
+			//~: create the message
+			Message m = s.createMessage();
+			m.setLongProperty("com_tverts_exec_requestID", pk);
+
+			//!: send it
+			p.send(m);
+		}
+		catch(Throwable e)
+		{
+			x = e;
+		}
+		finally
+		{
+			//~: close message producer
+			if(p != null) try
+			{
+				p.close();
+			}
+			catch(Throwable e)
+			{
+				if(x == null) x = e;
+			}
+
+			//~: close the session
+			if(s != null) try
+			{
+				s.close();
+			}
+			catch(Throwable e)
+			{
+				if(x == null) x = e;
+			}
+
+			//~: close the connection
+			try
+			{
+				c.close();
+			}
+			catch(Throwable e)
+			{
+				if(x == null) x = e;
+			}
+		}
+
+		if(x != null)
+			throw x;
 	}
 
 
