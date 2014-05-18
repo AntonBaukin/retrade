@@ -53,56 +53,57 @@ body
   #login-enter-disabled, #login-enter-enabled
 {
   position: absolute;
-  margin: -250px 0 0 -250px;
+  margin: -2.75in 0 0 -2.75in;
   top: 50%; left: 50%;
-  width: 500px; height: 500px;
+  width: 5.5in; height: 5.5in;
 }
 
 #nojs-content
 {
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/nojs.png');
+  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/nojs.svg');
 }
 
 #nodomain-content
 {
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/nodomain.png');
+  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/nodomain.svg');
+  display: none;
 }
 
 #login-base
 {
   position: relative; z-index: 16;
-  width: 500px; height: 500px;
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/base.png');
+  width: 5.5in; height: 5.5in;
+  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/base.svg');
 }
 
 #login-fields-area
 {
   position: absolute; z-index: 32;
-  left: 252px; top: 169px;
-  width: 244px; height: 161px;
+  left: 0; top: 0;
+  width: 5.5in; height: 3in;
 }
 
 #login-enter-disabled
 {
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/enter-disabled.png');
+  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/enter-disabled.svg');
   z-index: 20;
 }
 
 #login-enter-enabled
 {
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/enter-enabled.png');
+  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/enter-enabled.svg');
   z-index: 22;
 }
 
 #login, #password, #password-shader
 {
-  position: absolute; left: 34px;
-  width: 179px; height: 23px;
+  position: absolute; left: 1.72in;
+  width: 2.04in; height: 0.25in;
   border: none; text-align: center;
   background-color: transparent;
   margin: 0; padding: 0;
   font-family: 'Georgia', serif;
-  font-size: 18px;
+  font-size: 0.208in;
 }
 
 #login.notempty, #password.notempty
@@ -112,12 +113,12 @@ body
 
 #login
 {
-  top: 28px;
+  top: 2.095in;
 }
 
 #password, #password-shader
 {
-  top: 70px;
+  top: 2.535in;
 }
 
 #password-shader
@@ -133,8 +134,8 @@ body
 #login-enter, #login-enter-title
 {
   position: absolute;
-  left: 90px; top: 112px;
-  width: 68px; height: 28px;
+  left: 2.4in; top: 3.065in;
+  width: 0.68in; height: 0.32in;
 }
 
 #login-enter
@@ -145,8 +146,8 @@ body
 .preload-image
 {
   position: absolute; overflow: hidden;
-  left: -9999px; top: -9999px;
-  height: 1px; width: 1px;
+  left: -999in; top: -999in;
+  height: 1in; width: 1in;
 }
 
 *:focus /* prevent field focus highlights */
@@ -317,7 +318,7 @@ body
 
   <!-- [pre-load images] -->
   <img alt = "!" class = "preload-image"
-     src = '<%=request.getContextPath()%>/resources/images/login/enter-enabled.png'/>
+     src = '<%=request.getContextPath()%>/resources/images/login/enter-enabled.svg'/>
 
 </body>
 </html>
