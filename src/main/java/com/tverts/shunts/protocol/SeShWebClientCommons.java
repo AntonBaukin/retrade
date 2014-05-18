@@ -48,6 +48,8 @@ import com.tverts.support.streams.Base64Encoder;
  * Apache HTTP Commons component library.
  * It supports the conversation using cookies.
  *
+ * TODO eliminate Apache HTTP from Self-Shunts!
+ *
  * @author anton.baukin@gmail.com
  */
 public class   SeShWebClientCommons
@@ -127,6 +129,7 @@ public class   SeShWebClientCommons
 
 		return result;
 	}
+
 
 	/* protected: request and response processing */
 
@@ -323,6 +326,7 @@ public class   SeShWebClientCommons
 		  res.getStatusLine().getStatusCode(),
 		  res.getStatusLine().getReasonPhrase()));
 	}
+
 
 	/* protected: HttpClient creation */
 
