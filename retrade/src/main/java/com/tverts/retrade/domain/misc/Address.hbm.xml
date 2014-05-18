@@ -1,0 +1,109 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.misc'>
+
+  <class name = 'Address' table = 'retrade_address' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_address'/>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain'
+      foreign-key = 'fk_address_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        index = 'ix_address_domain'>
+
+        <comment>Domain owning this Address</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Country -->
+
+    <property name = 'country'>
+      <column name = 'country' length = '128'>
+        <comment>The Country (optional)</comment>
+      </column>
+    </property>
+
+
+    <!-- Province -->
+
+    <property name = 'province'>
+      <column name = 'province' length = '255'>
+        <comment>The Country Region, Province... (optional)</comment>
+      </column>
+    </property>
+
+
+    <!-- District -->
+
+    <property name = 'district'>
+      <column name = 'district' length = '255'>
+        <comment>The District of Province (optional)</comment>
+      </column>
+    </property>
+
+
+    <!-- Settlement -->
+
+    <property name = 'settlement'>
+      <column name = 'settlement' not-null = 'true' length = '512'>
+        <comment>The Settlement, Town, Village... (required)</comment>
+      </column>
+    </property>
+
+
+    <!-- Street -->
+
+    <property name = 'street'>
+      <column name = 'street' length = '512'>
+        <comment>The Street (optional)</comment>
+      </column>
+    </property>
+
+
+    <!-- Building -->
+
+    <property name = 'building'>
+      <column name = 'building' not-null = 'true' length = '128'>
+        <comment>The Building within the Settlement+Street (required)</comment>
+      </column>
+    </property>
+
+
+    <!-- Office -->
+
+    <property name = 'office'>
+      <column name = 'office' length = '128'>
+        <comment>The Office of the Building (optional)</comment>
+      </column>
+    </property>
+
+
+    <!-- Postal Index -->
+
+    <property name = 'postalIndex'>
+      <column name = 'postal_index' length = '64'>
+        <comment>The Postal Index (optional, but recommended)</comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+      <column name = 'remarks'>
+        <comment>Arbitrary comments on the Address</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

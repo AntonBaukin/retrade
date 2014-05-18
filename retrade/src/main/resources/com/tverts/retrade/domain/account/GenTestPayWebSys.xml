@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pay-web-systems>
+
+  <item code="webmoney" name="WebMoney (webmoney.ru)"/>
+
+  <item>
+    <code>yandex</code>
+    <name>Яндекс Деньги (money.yandex.ru)</name>
+  </item>
+
+  <item code="qiwi">
+    <name>QIWI Кошелёк (w.qiwi.com)</name>
+  </item>
+
+
+  <!--
+  <item code="webmoney">
+    WebMoney (webmoney.ru)
+  </item>
+
+  <item code="yandex">
+    Яндекс Деньги (money.yandex.ru)
+  </item>
+
+  <item code="qiwi">
+    QIWI Кошелёк (w.qiwi.com)
+  </item>
+  -->
+
+</pay-web-systems>

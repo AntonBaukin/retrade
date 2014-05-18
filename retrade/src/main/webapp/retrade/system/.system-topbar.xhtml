@@ -1,0 +1,164 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <!-- [application main topbar -->
+
+  <x:component coid = "${z:vid(localView, 'main_topbar')}">
+
+    <f:facet name = "extjs-props">
+
+      region: 'north', frame: false, border:false,
+      margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+      bodyCls: 'retrade-desktop-panel-topbar retrade-transparent-panel',
+      layout: {type: 'hbox', align: 'middle'}
+    </f:facet>
+
+
+    <!-- [system main menu -->
+
+    <x:component coid = "${z:vid(localView, 'system-main-menu-button')}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', flex: 0, text: 'Система',
+        margin: extjsf.dpts(0, 2, 0, 0), height: extjsf.dpt(22),
+        icon: "${z:url('/resources/icons/retrade_system_16.png')}",
+        componentCls: 'retrade-button-22pt',
+        showSeparator: false
+      </f:facet>
+
+      <x:menu coid = "${z:vid(localView, 'system-main-menu')}">
+
+        <f:facet name = "extjs-props">
+          showSeparator: false
+        </f:facet>
+
+        <x:component coid = "${z:vid(localView, 'system-main-menu-domains')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Домены', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/retrade_domain_16.png')}"
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'system-main-menu-logoff-sep')}">
+          <f:facet name = "extjs-props">
+            xtype: 'menuseparator'
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'system-main-menu-logoff')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Выйти', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/logoff_16.png')}"
+          </f:facet>
+
+          <x:menu coid = "${z:vid(localView, 'system-main-menu-logoff-confirm-menu')}">
+
+            <f:facet name = "extjs-props">
+              showSeparator: false
+            </f:facet>
+
+            <x:component coid = "${z:vid(localView, 'system-main-menu-logoff-confirm')}">
+
+              <f:facet name = "extjs-props">
+                text: 'Подтверждаю', xtype: 'menuitem',
+                cls: 'retrade-menuitem-noicon retrade-menuitem-centered'
+              </f:facet>
+            </x:component>
+          </x:menu>
+        </x:component>
+      </x:menu>
+    </x:component>
+
+    <!-- logoff server call -->
+    <x:action-call coid = "${z:vid(localView, 'system-main-menu-logoff-confirm-script')}"
+      action = "#{rootView.doLogoff}"/>
+
+    <!-- retrade main menu] -->
+
+
+    <!-- [topbar extention point] -->
+
+    <x:component coid = "${z:vid(localView, 'main_topbar_ext')}">
+
+      <f:facet name = "extjs-props">
+
+        border: false, frame: false, flex: 0,
+        bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.dpts(0, 0, 0, 6)
+
+      </f:facet>
+    </x:component>
+
+    <ui:insert name = 'topbar-buttons'/>
+
+
+    <!-- [notifications area -->
+
+    <x:component coid = "${z:vid(localView, 'main_topbar_notifications')}">
+
+      <f:facet name = "extjs-props">
+
+        flex: 1, border: false, frame: false,
+        bodyCls: 'retrade-notifications-panel',
+        height: extjsf.dpt(20)
+
+      </f:facet>
+    </x:component>
+
+    <!-- notifications area] -->
+  </x:component>
+
+  <!-- application main topbar] -->
+
+
+  <!-- [topbar scripts -->
+
+  <script type = "text/javascript">
+
+    //~: attach top bar panel to the desktop
+    ReTrade.desktop.controller('center').mainTopbar(
+      "${z:vid(localView, 'main_topbar')}", '${rootView.extjsDomain}')
+
+    //~: set the top bar extension point
+    ReTrade.desktop.controller('center').mainTopbarExt(
+      "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
+
+    //~: logoff
+    extjsf.bindHandler("${z:vid(localView, 'system-main-menu-logoff-confirm')}",
+      '${rootView.extjsDomain}', function()
+    {
+      extjsf.bindHandler("${z:vid(localView, 'system-main-menu-logoff-confirm-script')}", '${rootView.extjsDomain}')({
+        success: ZeT.timeout(500, function()
+        {
+          window.location.replace("${z:url('/go/index')}")
+        })
+      })
+    })
+
+    //~: open domains root panel
+    extjsf.bindHandler("${z:vid(localView, 'system-main-menu-domains')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:system-main-menu:domains:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/system/domains')}", {
+        'domain': domain
+      })
+    })
+
+  </script>
+
+  <!-- topbar scripts] -->
+
+</ui:component>

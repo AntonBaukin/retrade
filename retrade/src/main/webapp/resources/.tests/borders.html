@@ -1,0 +1,129 @@
+﻿<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetobj.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetbor.js"></script>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../borders.css"/>
+
+</head>
+
+<body>
+
+<script type = "text/javascript">
+//<![CDATA[
+
+//<: create manually
+
+var opts = ZeT.Border.full({classes: 'retrade-bo4Ssoftpale-XYZ'});
+ZeT.assert(opts)
+
+var node = ZeT.Layout.proc(new ZeT.Border.Full(opts))();
+ZeT.assert(ZeTD.isn(node))
+ZeT.assert(ZeT.struct(node))
+ZeT.assert(ZeTD.isn(ZeT.struct(node).content))
+ZeT.struct(node).content.innerHTML = 'the border test<br/> this is...';
+
+document.body.appendChild(node)
+
+//>: create manually
+
+//<: create as pipe call
+
+node = ZeT.Layout.procPipeCall(
+
+ ZeT.Layout.Proc.Node,
+ {html: '<span>This border is created by the pipe!</span>'},
+
+ ZeT.Layout.Fill,
+ {styles: { color: 'white', fontWeight: 'bolder'}},
+
+ ZeT.Border.Full,
+ ZeT.Border.full({classes: 'retrade-bo4Sbrickred-XYZ'})
+
+);
+
+document.body.appendChild(node)
+
+
+//>: create as pipe call
+
+
+
+//]]>
+</script>
+
+<!--<table id = "" border = "0" cellpadding = "0" cellspacing = "0">
+  <tbody>
+  <tr>
+    <td class = "test-ltc"><div/></td>
+    <td>
+      <table style = "width: 100%;" border = "0" cellpadding = "0" cellspacing = "0">
+        <tbody>
+        <tr>
+          <td class = "test-ltr" style = "width: 0.0001%;"><div/></td>
+          <td class = "test-thh" style = "width: 99.9999%;"></td>
+          <td class = "test-rtl" style = "width: 0.0001%;"><div/></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+    <td class = "test-rtc"><div/></td>
+  </tr>
+  <tr>
+    <td class = "test-lvu"><div/></td>
+    <td></td>
+    <td class = "test-rvu"><div/></td>
+  </tr>
+  <tr>
+    <td class = "test-lvm"></td>
+    <td>
+      <div class = "test-xcnt">
+        <table border = "0" cellpadding = "0" cellspacing = "0">
+          <tbody>
+          <tr>
+            <td class = "test-cnt">the test</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </td>
+    <td class = "test-rvm"></td>
+  </tr>
+  <tr>
+    <td class = "test-lvd"><div/></td>
+    <td></td>
+    <td class = "test-rvd"><div/></td>
+  </tr>
+  <tr>
+    <td class = "test-lbc"><div/></td>
+    <td>
+      <table style = "width: 100%;" border = "0" cellpadding = "0" cellspacing = "0">
+        <tbody>
+        <tr>
+          <td class = "test-lbr" style = "width: 0.0001%;"><div/></td>
+          <td class = "test-bhh" style = "width: 99.9999%;"></td>
+          <td class = "test-rbl" style = "width: 0.0001%;"><div/></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+    <td class = "test-rbc"><div/></td>
+  </tr>
+  </tbody>
+</table>-->
+
+</body>
+</html>

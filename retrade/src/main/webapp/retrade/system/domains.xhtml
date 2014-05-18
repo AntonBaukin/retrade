@@ -1,0 +1,374 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesSystemDomainsView}"/>
+
+  ${facesSystemDesktopView.checkSystemDomain}
+  ${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+  <!-- [content: domains -->
+
+  <x:root-panel coid = "${z:vid(v, 'domains_root')}" domainOwner = "true">
+
+    <f:facet name = "extjs-props">
+      title: 'Домены системы',
+      layout: {type: 'vbox', align: 'stretch'}
+    </f:facet>
+
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+      <!-- [create menu-button -->
+
+      <x:component coid = "${z:vid(v, 'domains-create-menu-button')}">
+
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Создать'
+        </f:facet>
+
+        <x:menu coid = "${z:vid(v, 'domains-create-menu')}">
+
+          <f:facet name = "extjs-props">
+            showSeparator: false
+          </f:facet>
+
+          <x:component coid = "${z:vid(v, 'domains-create-domain')}">
+
+            <f:facet name = "extjs-props">
+              text: 'Домен обычный', xtype: 'menuitem',
+              icon: "${z:url('/resources/icons/retrade_domain_16.png')}"
+            </f:facet>
+          </x:component>
+
+          <x:component coid = "${z:vid(v, 'domains-create-test-domain')}">
+
+            <f:facet name = "extjs-props">
+              text: 'Домен тестовый', xtype: 'menuitem',
+              icon: "${z:url('/resources/icons/retrade_test_domain_16.png')}"
+            </f:facet>
+          </x:component>
+
+          <x:component coid = "${z:vid(v, 'domains-create-login-person')}">
+
+            <f:facet name = "extjs-props">
+              text: 'Пользователя', xtype: 'menuitem',
+              icon: "${z:url('/resources/icons/person_16.png')}"
+            </f:facet>
+          </x:component>
+        </x:menu>
+      </x:component>
+
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}').
+       retradeCreateDomain = function(isTestDomain)
+    {
+      //~: create the window
+      var domain  = 'inline-wnd:' + "${z:vid(v, 'domains-create-domain')}:" + new Date().getTime();
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        title: 'Загрузка...', layout: 'fit',
+
+        loader: {
+          url: "${z:url('/go/retrade/system/create-domain')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${v.viewModeParam}': 'body',
+            '${v.viewIdParam}': '${v.id}',
+            '${rootView.extjsDomainParam}': domain,
+            'testDomain': !!isTestDomain
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
+
+      //~: place it
+      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
+      content.clearComponent()
+      content.component().add(winmain.component())
+    }
+
+    extjsf.bindHandler("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}', function()
+    {
+        extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}').retradeCreateDomain()
+    })
+
+    extjsf.bindHandler("${z:vid(v, 'domains-create-test-domain')}", '${rootView.extjsDomain}', function()
+    {
+        extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}').retradeCreateDomain(true)
+    })
+
+      //]]>
+      </script>
+
+      <!-- create menu-button] -->
+
+
+      <!-- [self-shunt button -->
+
+      <x:component coid = "${z:vid(v, 'self_shunt')}">
+
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Тест', margin: extjsf.dpts(0, 0, 0, 6),
+          tooltipType: 'title', tooltip: 'Выберете домен для тестирования и нажмите'
+        </f:facet>
+      </x:component>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bindHandler("${z:vid(v, 'self_shunt')}", '${rootView.extjsDomain}', function()
+    {
+      //~: get the selected row
+      var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var sel  = grid.component().getSelectionModel().getSelection();
+      if(!sel || sel.length != 1) return;
+      sel = sel[0].getId();
+
+      //~: create the window
+      var domain  = 'inline-wnd:' + "${z:vid(v, 'self_shunt')}:" + sel + ':' + new Date().getTime();
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        title: 'Загрузка...', layout: 'fit',
+
+        loader: {
+          url: "${z:url('/go/retrade/system/self-shunt')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${v.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain,
+            '${v.entityParam}': sel
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
+
+      //~: place it
+      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
+      content.clearComponent()
+      content.component().add(winmain.component())
+    })
+
+      //]]>
+      </script>
+
+      <!-- self-shunt button] -->
+
+
+      <!-- [show logins button -->
+
+      <x:component coid = "${z:vid(v, 'show_logins')}">
+
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Пользователи', margin: extjsf.dpts(0, 0, 0, 6),
+          tooltipType: 'title', tooltip: 'Выберете домен и нажмите для просмотра пользователей'
+        </f:facet>
+      </x:component>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bindHandler("${z:vid(v, 'show_logins')}", '${rootView.extjsDomain}', function()
+    {
+      //~: get the selected row
+      var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var sel  = grid.component().getSelectionModel().getSelection();
+      if(!sel || sel.length != 1) return;
+      sel = sel[0].getId();
+
+      //~: create the window
+      var domain  = 'inline-wnd:' + "${z:vid(v, 'show_logins')}:" + sel + ':' + new Date().getTime();
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        title: 'Загрузка...', layout: 'fit',
+
+        loader: {
+          url: "${z:url('/go/retrade/system/logins')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${v.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain,
+            '${v.entityParam}': sel
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
+
+      //~: place it
+      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
+      content.clearComponent()
+      content.component().add(winmain.component())
+    })
+
+      //]]>
+      </script>
+
+      <!-- show logins button] -->
+
+
+      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [filter domains field -->
+
+      <x:action-call coid = "${z:vid(v, 'search_domains_script')}"
+        action = "#{v.doSearchDomains}">
+
+        <f:facet name = "action-params">
+          '${v.modelParam}': '${v.modelKeys}'
+        </f:facet>
+      </x:action-call>
+
+      <x:text-field coid = "${z:vid(v, 'search_domains')}"
+        value = "#{v.searchNames}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.dpts(1, 0, 1, 4),
+          width:  extjsf.ex(24)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Поиск'
+        </f:facet>
+      </x:text-field>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search_domains')}", '${rootView.extjsDomain}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      ZeT.timeout(1000, function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        extjsf.bindHandler("${z:vid(v, 'search_domains_script')}", '${rootView.extjsDomain}')({
+          params: {searchDomains: sv}, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'domainsStore')}").loadPage(1)
+        }})
+      })
+    })
+
+      //]]>
+      </script>
+
+      <!-- filter domains field] -->
+
+    </f:facet>
+
+    <!-- toolbar] -->
+
+
+    <!-- [domains table -->
+
+    <x:data-store storeId = "${z:vid(v, 'domainsStore')}"
+      modelView = "${v}" pageSize = "5">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.CatItemView'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.DomainView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}"
+      storeId = "${z:vid(v, 'domainsStore')}">
+
+      <f:facet name = "grid-props">
+
+        preventHeader: true, height: extjsf.dpt(160),
+        pager: true, sortableColumns: false,
+        columns: ZeT.defined('retrade.columns.CatItemView'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+
+  extjsf.bind("${z:vid(v, 'search_domains_script')}", '${rootView.extjsDomain}').success(function()
+  {
+    Ext.data.StoreManager.lookup("${z:vid(v, 'domainsStore')}").loadPage(1)
+  })
+
+    </script>
+
+    <!-- domains table] -->
+
+
+    <!-- [operation content -->
+
+    <x:component coid = "${z:vid(v, '_operation-content-splitter')}">
+      <f:facet name = "extjs-props">
+        xtype: 'splitter', collapsible: false
+      </f:facet>
+    </x:component>
+
+    <x:component coid = "${z:vid(v, 'operation-content')}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-back-panel', flex: 1, layout: 'fit'
+      </f:facet>
+    </x:component>
+
+    <!-- operation content] -->
+
+  </x:root-panel>
+
+  <!-- content: domains] -->
+
+</ui:define>
+</ui:decorate>
+
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true" target = "${z:vid(v, 'search_domains_script')}"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

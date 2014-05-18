@@ -1,0 +1,58 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
+
+  <union-subclass name = 'PriceList' extends = 'com.tverts.endure.core.Entity'
+    table = 'retrade_price_list' lazy = 'false'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_price_list_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_price_list_code'>
+
+        <comment>Domain where the Price List is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '64'
+        unique-key = 'ux_price_list_code'>
+
+        <comment>Unique (within the Domain) code of the Price List</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'price_list_name' not-null = 'true' length = '512'>
+
+        <comment>The name of the Price List</comment>
+      </column>
+    </property>
+
+
+    <!-- Parent Price List -->
+
+    <many-to-one name = 'parent' foreign-key = 'fk_price_list_parent'>
+
+      <column name = 'fk_parent' index = 'ix_price_list_parent'>
+
+        <comment>Parent Price List of this one</comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <union-subclass name = 'MoveGood' extends = 'InvGood' lazy = 'true'
+    table = 'retrade_invoice_good_move'>
+
+
+    <!-- Invoice Move Data [bi, list, slave] -->
+
+    <many-to-one name = 'data' foreign-key = 'fk_invoice_good_data_move'
+      insert = 'false' update = 'false' not-null = 'true'>
+
+      <column name = 'fk_invoice_data' not-null = 'true'
+        index = 'ix_invoice_good_data_move'>
+
+        <comment>Reference to the Invoice (Move) Data owning this good position</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Move On Flag -->
+
+    <property name = 'moveOn'>
+
+      <column name = 'move_on'>
+
+        <comment>
+          Null means the move operation, true means place-only,
+          and false means take-only operations
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Need-Calc Flag -->
+
+    <property name = 'needCalc'>
+
+      <column name = 'need_calc'>
+
+        <comment>
+          Need-calc flag in Move Invoice Good tells whether
+          this move position must be calculated by the Good
+          Unit Calculation formula if such does present
+        </comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

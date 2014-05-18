@@ -1,0 +1,37 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for ReTrade Firm                =
+    +================================================-->
+
+  <bean name  = 'retradeFirmBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.firm.Firm'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.firm.ActFirm'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for ReTrade Contractor          =
+    +================================================-->
+
+  <bean name  = 'retradeContractorBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.firm.Contractor'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.firm.ActContractor'/>
+    </property>
+  </bean>
+</beans>

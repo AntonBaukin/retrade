@@ -1,0 +1,145 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.sells'>
+
+  <class name = 'SellReceipt' table = 'retrade_sell_receipt'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_sell_receipt'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_sell_receipt_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Sells Session [bi, list, slave] -->
+
+    <many-to-one name = 'session' foreign-key = 'fk_sell_receipt_session'
+      insert = 'false' update = 'false' not-null = 'true'>
+
+      <column name = 'fk_session' not-null = 'true'
+        unique-key = 'ux_sell_receipt_session'>
+
+        <comment>Sells Session the Receipt was issued by</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'receipt_code' not-null = 'true' length = '255'
+        unique-key = 'ux_sell_receipt_session'>
+
+        <comment>Code of the Receipt (unique at within the Session)</comment>
+      </column>
+    </property>
+
+
+    <!-- Timestamp -->
+
+    <property name = 'time' type = 'timestamp'>
+
+      <column name = 'receipt_time' not-null = 'true'
+        index = 'ix_receipt_time'>
+
+        <comment>Timestamp of the Receipt</comment>
+      </column>
+    </property>
+
+
+    <!-- Income -->
+
+    <property name = 'income' type = 'big_decimal'>
+
+      <column name = 'income' precision = '22' scale = '10'>
+
+        <comment>
+          Summary of the sold goods volumes cost of the Reciept.
+          (The amount of money the Domain will get from this Receipt.)
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Goods [bi, list, master] -->
+
+    <list name = 'goods' cascade = 'all-delete-orphan' lazy = 'true'>
+
+      <key column = 'fk_receipt' not-null = 'true'/>
+
+      <list-index>
+        <column name = 'good_index'>
+
+          <comment>The index of the Good in the Receipt</comment>
+        </column>
+      </list-index>
+
+      <one-to-many class = 'GoodSell'/>
+    </list>
+
+
+    <!-- Payment Type Flag -->
+
+    <property name = 'payFlag'>
+
+      <column name = 'pay_flag' not-null = 'true'>
+        <comment>
+          Payment operation flags separated with - character.
+          Letter C stands for cash; B - for bank payments.
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Payment Operation (XML serialized bean) -->
+
+    <property name = 'payOpStr' type = 'text'>
+
+      <column name = 'payop' not-null = 'true'>
+
+        <comment>Payment operation object written as XML serialized Java Bean</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
+
+<!--
+
+select
+  po.pay_order_code as "session code",
+  sr.receipt_code   as "receipt code",
+  sr.receipt_time   as "receipt time",
+  sr.income         as "total",
+  sr.pay_flag       as "payed via"
+from
+    retrade_sell_receipt sr
+  join
+    retrade_pay_order po
+  on
+    (sr.fk_session = po.pk_pay_order)
+  join
+    retrade_sells_session ss
+  on
+    (po.pk_pay_order = ss.pk_sells_session)
+  join
+    retrade_sells_desk sd
+  on
+    (sd.pk_entity = ss.fk_sells_desk)
+order by po.pay_order_time, sr.receipt_time
+
+-->

@@ -1,0 +1,221 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <c:set var = "v" scope = "request" value = "${facesSystemSelfShuntView}"/>
+
+  ${facesSystemDesktopView.checkSystemDomain}
+  ${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle('${z:jss(v.windowTitle)}')
+
+  </script>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-inline-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-default-small-red',
+
+        handler : function()
+        {
+          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').component();
+          cmp.findParentByType('panel').remove(cmp, true)
+        }
+
+      </f:facet>
+    </x:component>
+
+    <!-- close window button] -->
+
+    <x:component coid = "${z:vid(v, '_tb_fill0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button -->
+
+    <x:component coid = "${z:vid(v, 'submit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Начать',
+        cls: 'ux-btn-default-small-green'
+      </f:facet>
+    </x:component>
+
+    <x:winaction-delegate coid = "${z:vid(v, 'submit_done')}"
+      action = "#{v.gotoSelfShuntLog}">
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '${v.modelKeys}',
+        '${v.viewIdParam}': '${v.id}'
+      </f:facet>
+    </x:winaction-delegate>
+
+    <!-- submit button] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [shunts form -->
+
+  <x:form-panel modelView = "${v}"
+    coid = "${z:vid(v, 'self_shunt_form')}">
+
+    <f:facet name = "extjs-props">
+
+      region: 'center', border: false, frame: false,
+      cls: 'retrade-content-panel', bodyCls: 'retrade-content-panel',
+      padding: extjsf.pts(4, 4, 4, 4), autoScroll: true,
+      layout: {type: 'table', columns: 2}
+    </f:facet>
+
+
+    <!-- [updatable check-box -->
+
+    <x:checkbox-field coid = "${z:vid(v, 'updating')}"
+      value = "#{v.updating}">
+
+      <f:facet name = "extjs-props">
+        disabled: #{not v.testDomain},
+        cellCls: 'retrade-self-shunt-groups-checkbox-box-cell'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'вносить изменения',
+        cellCls: 'retrade-form-label-cell retrade-self-shunt-groups-checkbox-label-cell'
+      </f:facet>
+    </x:checkbox-field>
+
+    <!-- updatable check-box] -->
+
+
+    <!-- [shunt groups caption -->
+
+    <x:html coid = "${z:vid(v, '_self_shunt_groups_caption')}">
+
+      <f:facet name = "extjs-props">
+        colspan: 2
+      </f:facet>
+
+      <div class = "retrade-form-fieldset-caption" style = "margin: 8pt 0 2pt 4pt">
+          Выберете группы тестов
+      </div>
+    </x:html>
+
+    <!-- shunt groups caption] -->
+
+
+    <!-- [special: submit action] -->
+
+    <h:commandButton id = "submit_action" value = "submit" style = "display: none;"
+      action = "#{v.doSelfShunt}"/>
+
+  </x:form-panel>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${rootView.extjsDomain}').GROUPS = [];
+
+  //~: form submit
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  {
+    var form = extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${rootView.extjsDomain}');
+
+    //~: submit the form
+    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
+      success: extjsf.bindHandler("${z:vid(v, 'submit_done')}", '${rootView.extjsDomain}')
+    })
+  })
+
+  //]]>
+  </script>
+
+  <ui:repeat var = "g" value = "#{v.allShuntGroups}">
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${rootView.extjsDomain}').GROUPS.push({
+      name: "#{z:jss(g)}", checked: 'true' == "#{v.isGroupSelected(g)}"
+    })
+
+    //]]>
+    </script>
+
+  </ui:repeat>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  Ext.onReady(function()
+  {
+     var form = extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${rootView.extjsDomain}');
+
+     Ext.Array.each(form.GROUPS, function(group, i)
+     {
+         var id = "${z:vid(v, 'self_shunt_group_')}" + i;
+
+         var label = Ext.create('Ext.form.Label', {
+           text: group.name, forId: id,
+           cellCls: 'retrade-self-shunt-groups-checkbox-label-cell'
+         });
+
+         var field = Ext.create('Ext.form.field.Checkbox', {
+           inputId: id, inputValue: 'true', checked: group.checked,
+           name: 'selfShuntGroup_' + group.name,
+           hideLabel: true, cellCls: 'retrade-self-shunt-groups-checkbox-box-cell'
+         });
+
+         form.component().add(field)
+         form.component().add(label)
+     })
+  })
+
+  //]]>
+  </script>
+
+  <!-- shunts form] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

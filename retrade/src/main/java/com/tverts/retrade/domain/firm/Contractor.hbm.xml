@@ -1,0 +1,70 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.firm'>
+
+  <union-subclass name = 'Contractor' extends = 'com.tverts.endure.core.Entity'
+    table = 'retrade_contractor' lazy = 'true'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_contractor_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_contractor_code'>
+
+        <comment>Domain where the Contractor is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code' lazy = 'false'>
+
+      <column name = 'ux_code' not-null = 'true' length = '64'
+        unique-key = 'ux_contractor_code'>
+
+        <comment>Unique (within the Domain) code of the Contractor</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name' lazy = 'false'>
+
+      <column name = 'contractor_name' not-null = 'true' length = '512'>
+
+        <comment>The name of the Contractor catalogue item</comment>
+      </column>
+    </property>
+
+
+    <!-- Name Processed -->
+
+    <property name = 'nameProc' lazy = 'false'>
+
+      <column name = 'contractor_name_proc' not-null = 'true' length = '512'
+        index = 'ix_contractor_name_proc'>
+
+        <comment>The processed name of the Contractor catalogue item</comment>
+      </column>
+    </property>
+
+
+
+    <!-- Firm reference -->
+
+    <many-to-one name = 'firm' foreign-key = 'fk_contractor_firm'>
+
+      <column name = 'fk_firm' index = 'ix_contractor_firm'>
+        <comment>The Firm of this Contractor</comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

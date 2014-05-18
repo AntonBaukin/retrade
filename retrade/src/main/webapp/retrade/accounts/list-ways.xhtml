@@ -1,0 +1,235 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesPayWaysView}"/>
+
+${v.forceSecure('view: payways')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:root-panel coid = "${z:vid(v, 'payways_root')}"
+    position = "#{rootView.extjsPosition}">
+
+    <f:facet name = "extjs-props">
+      title: 'Учётные счета'
+    </f:facet>
+
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [own payways only checkbox] -->
+
+      <x:checkbox-field coid = "${z:vid(v, 'own-payways-only')}"
+        value = "#{v.model.ownOnly}">
+
+        <f:facet name = "label-props">
+          labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 0),
+          html: "&lt;span title = 'Отобразить в таблице только собственные счета'&gt;Только собственные&lt;/span&gt;"
+        </f:facet>
+      </x:checkbox-field>
+
+
+      <!-- [filter payways by names -->
+
+      <x:action-call coid = "${z:vid(v, 'search_payways_script')}"
+        action = "#{v.doSearchPayWays}">
+
+        <f:facet name = "action-params">
+          '${v.modelParam}': '${v.modelKeys}',
+          'ownPayWaysOnly': ZeT.delay(function()
+          {
+            return extjsf.bind("${z:vid(v, 'own-payways-only')}", '${rootView.extjsDomain}').value();
+          })
+
+        </f:facet>
+      </x:action-call>
+
+      <x:text-field coid = "${z:vid(v, 'search_names')}"
+        value = "#{v.model.searchNames}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.dpts(1, 0, 1, 4),
+          width:  extjsf.ex(24)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'поиск', margin: extjsf.pts(1, 0, 1, 8)
+        </f:facet>
+      </x:text-field>
+
+
+      <x:component coid = "${z:vid(v, 'search-by-selset')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', enableToggle: true,
+          width: 30, componentCls: 'retrade-icon-24',
+          margin: extjsf.dpts(1, 0, 1, 6),
+          icon: "${z:url('/resources/icons/selset_24.png')}",
+          tooltipType: 'title', tooltip: 'Ограничить текущей выборкой по контрагентам, учётным и платёжным счетам'
+
+        </f:facet>
+      </x:component>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+
+    extjsf.bind("${z:vid(v, 'own-payways-only')}", '${rootView.extjsDomain}').on('change', function()
+    {
+      extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').retradeSearchNames(false)
+    })
+
+    extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').on('change', function()
+    {
+      extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').retradeSearchNames(true)
+    })
+
+    extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    {
+      extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').retradeSearchNames(false)
+    })
+
+    extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').retradeSearchNames = function(setdelay)
+    {
+      var f  = extjsf.component("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}');
+      var sv = f.extjsfBind.searchValue = ZeTS.trim(f.getValue());
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchNames: sv };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search_payways_script')}", '${rootView.extjsDomain}')({
+          params: params, success: function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'payways')}").loadPage(1)
+        }})
+      }
+
+      if(setdelay) setTimeout(fn, 1000); else fn()
+    }
+
+      //]]>
+      </script>
+
+      <!-- filter payways by names] -->
+
+    </f:facet>
+
+    <!-- toolbar] -->
+
+
+    <!-- [payways table -->
+
+    <x:data-store storeId = "${z:vid(v, 'payways')}"
+      modelView = "${v}" pageSize = "30">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.PayWayView'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.PayWayView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'payways')}">
+
+      <f:facet name = "grid-props">
+        columns: ZeT.defined('retrade.columns.PayWayViewWithFirm'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+        pager: true, sortableColumns: false, region: 'center'
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    on('itemdblclick', function(comp, rec, node, row, event)
+  {
+    var domain  = 'wnd:' + "${z:vid(v, 'view_payway')}:" + rec.getId();
+    var winmain = extjsf.bind('winmain', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      'event': event, widthpt: 520, heightpt: 360
+    })
+
+
+    if(winmain)
+    {
+      winmain.component().toFront()
+      winmain.component().setPagePosition(box.x, box.y)
+      winmain.component().expand()
+      return;
+    }
+
+    winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+      xtype: 'window', title: 'Загрузка...',
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', autoShow: true, collapsible: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/accounts/info-way')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true,
+
+        params: {
+          '${v.viewModeParam}': 'body',
+          '${rootView.extjsDomainParam}': domain,
+          '${v.entityParam}': rec.getId()
+        }
+      }
+    })
+
+    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+  })
+
+    </script>
+
+    <!-- payways table] -->
+
+  </x:root-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

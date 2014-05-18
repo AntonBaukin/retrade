@@ -1,0 +1,308 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns = 'http://www.w3.org/1999/xhtml'
+  xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+
+  <!-- [documents filter form -->
+
+  <x:form-panel modelView = "${localView}" coid = "${z:vid(localView, 'docs_filter_form')}">
+
+    <f:facet name = "extjs-props">
+
+      region: 'north', frame: true, border: false,
+      collapsible: false, hidden: ${not defaultShown},
+      preventHeader: true, margin: extjsf.dpts(2, 1, 2, 1),
+      layout: {type: 'hbox', align: 'middle'}
+    </f:facet>
+
+
+    <!-- [filter dates -->
+
+    <x:component coid = "${z:vid(localView, '_filter_form_dates0')}"
+      rendered = "#{not datesHidden}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', frame: false, border: false,
+        bodyCls: 'retrade-transparent-panel',
+        margin: extjsf.dpts(0, 12, 0, 0),
+        layout: {type: 'hbox', align: 'middle'}
+      </f:facet>
+
+      <x:component coid = "${z:vid(localView, '_filter_form_dates1')}">
+
+        <f:facet name = "extjs-props">
+
+          xtype: 'panel', frame: false, border: false,
+          bodyCls: 'retrade-transparent-panel',
+          bodyPadding: extjsf.dpts(2, 0, 0, 2),
+          layout: {type: 'table', columns: 2}
+        </f:facet>
+
+        <x:date-field coid = "${z:vid(localView, 'min_date')}" value = "#{filterModel.minDate}">
+          <f:facet name = "extjs-props">
+            margin: extjsf.dpts(0, 0, 0, 4)
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'от', cellCls: 'retrade-form-label-cell'
+          </f:facet>
+        </x:date-field>
+
+        <x:date-field coid = "${z:vid(localView, 'max_date')}" value = "#{filterModel.maxDate}">
+          <f:facet name = "extjs-props">
+            margin: extjsf.dpts(2, 0, 0, 4)
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'до', cellCls: 'retrade-form-label-cell retrade-main-docs-filter-date_max-cell'
+          </f:facet>
+        </x:date-field>
+
+      </x:component>
+    </x:component>
+
+    <!-- filter dates] -->
+
+
+    <!-- [filter doc types -->
+
+    <x:component coid = "${z:vid(localView, 'filter-form-doc-types-menu-button')}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', text: 'Тип документа', height: extjsf.dpt(22),
+        tooltipType: 'title', tooltip: 'Выберете типы отображаемых документов',
+        icon: "${z:url('/resources/icons/document_16.png')}",
+        componentCls: 'retrade-button-22pt',
+        margin: extjsf.dpts(0, 12, 0, 0)
+
+      </f:facet>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+  extjsf.bind("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}').
+    onDocTypeItemClick = function(item, event)
+  {
+    var menu = extjsf.component("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}');
+    var subs = menu.query('menucheckitem');
+
+    if(event.ctrlKey) Ext.Array.each(subs, function(i)
+    {
+      if(i != item) i.setChecked(!item.checked, true)
+    })
+
+    var any = false; Ext.Array.each(subs, function(i)
+    {
+      any = any || i.checked;
+    })
+
+    if(!any) Ext.Array.each(subs, function(i)
+    {
+      if(i != item) i.setChecked(true, true)
+    })
+
+    if(!any && (subs.length == 1))
+      item.setChecked(true, true)
+  }
+      //]]>
+      </script>
+
+      <x:menu coid = "${z:vid(localView, 'filter-form-doc-types-menu')}">
+
+        <f:facet name = "extjs-props">
+          showSeparator: false
+        </f:facet>
+
+        <ui:repeat value = "#{z:mapAsList(filterModel.docTypesLabels)}" var = "e">
+
+          <c:set var = 'menuid' value = '_filter_form_doc_types_menu_#{e.key}'/>
+
+          <x:component coid = "${z:vid(localView, menuid)}">
+            <f:facet name = "extjs-props">
+              xtype: 'menucheckitem', text: '#{z:jss(e.value)}',
+              checked: #{filterModel.docTypes.contains(e.key)},
+              tooltipType: 'title', tooltip: 'Удерживайте Ctrl (Meta), чтобы обратить выделение',
+
+              listeners: { click:
+                extjsf.bind("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}').onDocTypeItemClick
+              }
+            </f:facet>
+          </x:component>
+        </ui:repeat>
+      </x:menu>
+    </x:component>
+
+    <x:hidden-field coid = "${z:vid(localView, 'filter-form-doc-types-str')}"
+       value = "#{filterModel.docTypesStr}"/>
+
+    <!-- filter doc types] -->
+
+
+    <!-- [filter doc states -->
+
+    <x:component coid = "${z:vid(localView, '_filter_form_doc_states')}"
+      rendered = "#{not statesHidden}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', frame: false, border: false,
+        bodyCls: 'retrade-content-panel', align: 'stretch',
+        layout: {type: 'table', columns: 2},
+        margin: extjsf.dpts(0, 12, 0, 0)
+
+      </f:facet>
+
+      <x:checkbox-field coid = "${z:vid(localView, 'filter-form-doc-states-fixed')}"
+        value = "#{filterModel.fixedState}">
+
+        <f:facet name = "label-props">
+
+          cellCls: 'retrade-form-label-cell', margin: extjsf.dpts(0, 0, 0, 4),
+          html: "&lt;span title = 'Отображать проведённые документы'&gt;проведён&lt;/span&gt;"
+        </f:facet>
+
+        <f:facet name = "extjs-props">
+
+          listeners: { change: function(f, val)
+          {
+            var other = extjsf.component("${z:vid(localView, 'filter-form-doc-states-edit')}", '${rootView.extjsDomain}');
+            if(!val) if(!other.getValue()) other.setValue(true)
+          }}
+
+        </f:facet>
+      </x:checkbox-field>
+
+      <x:checkbox-field coid = "${z:vid(localView, 'filter-form-doc-states-edit')}"
+        value = "#{filterModel.editState}">
+
+        <f:facet name = "label-props">
+
+          cellCls: 'retrade-form-label-cell', margin: extjsf.dpts(0, 0, 0, 4),
+          html: "&lt;span title = 'Отображать редактируемые документы'&gt;редакт-ся&lt;/span&gt;"
+
+        </f:facet>
+
+        <f:facet name = "extjs-props">
+
+          listeners: { change: function(f, val)
+          {
+            var other = extjsf.component("${z:vid(localView, 'filter-form-doc-states-fixed')}", '${rootView.extjsDomain}');
+            if(!val) if(!other.getValue()) other.setValue(true)
+          }}
+
+        </f:facet>
+      </x:checkbox-field>
+    </x:component>
+
+    <!-- filter doc states] -->
+
+
+    <x:component coid = "${z:vid(localView, '_filter_form_doc_types_fill_right')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false,
+        width: extjsf.dpt(8), flex: 3,
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [with selection set -->
+
+    <x:component coid = "${z:vid(localView, '_with-selset')}">
+
+      <f:facet name = "extjs-props">
+
+        bodyCls: 'retrade-transparent-panel',
+        border: false, frame: false,
+        layout: {type: 'table', columns: 2}
+
+      </f:facet>
+
+      <x:component coid = "${z:vid(localView, 'with-selset-check')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', enableToggle: true,
+          width: extjsf.dpt(10, 24), height: extjsf.dpt(22),
+          componentCls: 'retrade-icon-24 retrade-button-22pt',
+          icon: "${z:url('/resources/icons/selset_24.png')}",
+          tooltipType: 'title', tooltip: 'Отображать только документы текущей выборки',
+          pressed: #{filterModel.withSelSet}
+
+        </f:facet>
+      </x:component>
+
+      <x:hidden-field coid = "${z:vid(localView, 'with-selset-with')}"
+        value = "#{filterModel.withSelSet}"/>
+
+      <x:hidden-field coid = "${z:vid(localView, 'with-selset-name')}"
+        value = "#{filterModel.selSet}"/>
+
+    </x:component>
+
+    <!-- with selection set] -->
+
+
+    <!-- [submit (refresh) button -->
+
+    <x:component coid = "${z:vid(localView, 'docs-filter-refresh')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', text : 'Применить',
+        icon: "${z:url('/resources/icons/recycle_16.png')}",
+        height: extjsf.dpt(22), componentCls: 'retrade-button-22pt',
+        margin: extjsf.dpts(0, 0, 0, 6)
+
+      </f:facet>
+    </x:component>
+
+    <script type = "text/javascript">
+      //<![CDATA[
+
+      extjsf.bindHandler("${z:vid(localView, 'docs-filter-refresh')}", '${rootView.extjsDomain}', function()
+      {
+        //~: document types encoded
+        var doctstr = extjsf.bind("${z:vid(localView, 'filter-form-doc-types-str')}", '${rootView.extjsDomain}');
+        var docmenu = extjsf.component("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}');
+        var docsubs = docmenu.query('menucheckitem');
+        var docsels = [];
+
+        var docxstr = '_filter_form_doc_types_menu_';
+        Ext.Array.each(docsubs, function(i)
+        {
+          if(!i.checked) return;
+
+          var j = i.id.indexOf(docxstr);
+          if(j != -1)  docsels.push(i.id.substring(j + docxstr.length))
+        })
+
+        doctstr.value(docsels.join(','))
+
+        //~: selection set
+        var cselset = extjsf.component("${z:vid(localView, 'with-selset-check')}", '${rootView.extjsDomain}');
+        var wselset = extjsf.bind("${z:vid(localView, 'with-selset-with')}", '${rootView.extjsDomain}');
+        var nselset = extjsf.bind("${z:vid(localView, 'with-selset-name')}", '${rootView.extjsDomain}');
+
+        wselset.value(cselset.pressed)
+        nselset.value(!cselset.pressed?(''):(ReTrade.selset.selset))
+
+        extjsf.bind("${z:vid(localView, 'docs_filter_form')}", '${rootView.extjsDomain}').
+          submitForm({'${localView.viewModeParam}': '${localView.viewModePostStr}'})
+      })
+
+      //]]>
+    </script>
+
+    <!-- submit (refresh) button] -->
+
+  </x:form-panel>
+
+  <!-- documents filter form] -->
+
+</ui:component>

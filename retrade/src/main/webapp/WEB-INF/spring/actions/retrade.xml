@@ -1,0 +1,131 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Domain Action Bulders                          =
+    +================================================-->
+
+  <import resource = 'domain.xml'/>
+
+
+  <!--=================================================
+    =  Firm and Contractor Action Bulders             =
+    +================================================-->
+
+  <import resource = 'firm.xml'/>
+
+
+  <!--=================================================
+    =  ReTrade Goods Action Bulders                   =
+    +================================================-->
+
+  <import resource = 'goods.xml'/>
+
+
+  <!--=================================================
+    =  Action Bulders for ReTrade Invoices            =
+    +================================================-->
+
+  <import resource = 'invoice.xml'/>
+
+
+  <!--=================================================
+    =  Action Bulders for ReTrade Payments            =
+    +================================================-->
+
+  <import resource = 'payment.xml'/>
+
+
+  <!--=================================================
+    =  Action Bulders for ReTrade Sells               =
+    +================================================-->
+
+  <import resource = 'sells.xml'/>
+
+
+  <!--=================================================
+    =  Action Bulders for ReTrade Views               =
+    +================================================-->
+
+  <import resource = 'views.xml'/>
+
+
+  <!--=================================================
+    =  Action Bulders for Other Objects               =
+    +================================================-->
+
+  <import resource = 'other.xml'/>
+
+
+  <!--=================================================
+    =  Retrade Domain Model Actions                   =
+    +================================================-->
+
+  <bean name  = 'retradeActionBuilders'
+        class = 'com.tverts.actions.ActionBuildersList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- Domain -->
+
+        <ref bean = 'retradeDomainBuilders'/>
+
+
+        <!-- Firms -->
+
+        <ref bean = 'retradeFirmBuilders'/>
+        <ref bean = 'retradeContractorBuilders'/>
+
+
+        <!-- Goods -->
+
+        <ref bean = 'retradeMeasureUnitBuilders'/>
+        <ref bean = 'retradePriceListBuilders'/>
+        <ref bean = 'retradeGoodUnitBuilders'/>
+        <ref bean = 'retradeGoodCalcBuilders'/>
+        <ref bean = 'retradeTradeStoreBuilders'/>
+        <ref bean = 'retradeRepriceBuilders'/>
+
+
+        <!-- Invoices -->
+
+        <ref bean = 'retradeInvoiceBuilders'/>
+
+
+        <!-- Payments -->
+
+        <ref bean = 'retradeInvoiceBillBuilders'/>
+        <ref bean = 'retradeFirmOrderBuilders'/>
+        <ref bean = 'retradeAccountBuilders'/>
+        <ref bean = 'retradePayWayBuilders'/>
+        <ref bean = 'retradePayItBuilders'/>
+        <ref bean = 'retradeSettlingBuilders'/>
+
+
+        <!-- Sells -->
+
+        <ref bean = 'retradePayDeskBuilders'/>
+        <ref bean = 'retradeSellsDeskBuilders'/>
+        <ref bean = 'retradeSellsSessionBuilders'/>
+        <ref bean = 'retradeSellsPaymentBuilders'/>
+
+
+        <!-- Views -->
+
+        <ref bean = 'retradeViewsBuilders'/>
+
+
+        <!-- Selection Set -->
+
+        <ref bean = 'retradeSelSetBuilders'/>
+
+      </list>
+    </property>
+  </bean>
+
+
+</beans>

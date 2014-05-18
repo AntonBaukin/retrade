@@ -1,0 +1,272 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <c:set var = "v" scope = "request" value = "${facesSystemCreateDomainView}"/>
+
+  ${facesSystemDesktopView.checkSystemDomain}
+  ${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle('${z:jss(v.windowTitle)}')
+
+  </script>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-inline-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-default-small-red',
+
+        handler : function()
+        {
+          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').component();
+          cmp.findParentByType('panel').remove(cmp, true)
+        }
+
+      </f:facet>
+    </x:component>
+
+    <!-- close window button] -->
+
+    <x:component coid = "${z:vid(v, '_tb_fill_create_domain0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button -->
+
+    <x:component coid = "${z:vid(v, 'submit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Создать',
+        cls: 'ux-btn-default-small-green'
+      </f:facet>
+    </x:component>
+
+    <x:winaction-delegate coid = "${z:vid(v, 'submit_done')}"
+      action = "#{v.gotoDoneCreateDomain}">
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '${v.modelKeys}',
+        '${v.viewIdParam}': '${v.id}'
+      </f:facet>
+    </x:winaction-delegate>
+
+    <!-- submit button] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [creation form -->
+
+  <x:form-panel modelView = "${v}"
+    coid = "${z:vid(v, 'create_domain_form')}">
+
+    <f:facet name = "extjs-props">
+
+      region: 'center', border: false, frame: false,
+      cls: 'retrade-content-panel', bodyCls: 'retrade-content-panel',
+      padding: extjsf.pts(4, 4, 4, 4), autoScroll: true,
+      layout: {type: 'vbox', align: 'stretch'}
+    </f:facet>
+
+
+    <!-- [code and name fields -->
+
+    <x:component coid = "${z:vid(v, '_code_and_name_fields')}">
+
+      <f:facet name = "extjs-props">
+
+        border: false, frame: false,
+        bodyCls: 'retrade-content-panel',
+        padding: extjsf.pts(2, 0, 2, 0),
+        layout: {type: 'hbox', align: 'middle'}
+      </f:facet>
+
+      <!-- [code field -->
+
+      <x:text-field coid = "${z:vid(v, 'domain-code')}"
+        value = "#{v.domainCode}">
+
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(22), margin: extjsf.pts(1, 8, 1, 4)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Код', cls: 'retrade-form-label-cell'
+        </f:facet>
+      </x:text-field>
+
+      <!-- code field] -->
+
+
+      <!-- [name field -->
+
+      <x:text-field coid = "${z:vid(v, 'domain-name')}"
+        value = "#{v.domainName}">>
+
+        <f:facet name = "extjs-props">
+          flex: 1, minWidth: extjsf.ex(22),
+          margin: extjsf.pts(1, 0, 1, 4)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Название', cls: 'retrade-form-label-cell'
+        </f:facet>
+      </x:text-field>
+
+      <!-- name field] -->
+        
+    </x:component>
+
+    <!-- code and name fields] -->
+
+
+    <!-- [special: submit action] -->
+
+    <h:commandButton id = "submit_action" value = "submit" style = "display: none;"
+      action = "#{v.doCreateDomain}"/>
+
+  </x:form-panel>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}').REST_PARAMS = [];
+
+  //~: form validation
+  extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}').is_form_valid = function()
+  {
+    var d = extjsf.bind("${z:vid(v, 'domain-code')}", '${rootView.extjsDomain}');
+    var n = extjsf.bind("${z:vid(v, 'domain-name')}", '${rootView.extjsDomain}');
+    var v = true;
+
+
+    if(ZeTS.ises(d.value()))
+    {
+        v = false;
+        d.component().markInvalid('Задайте код домена!')
+    }
+
+    if(ZeTS.ises(n.value()))
+    {
+        v = false;
+        n.component().markInvalid('Задайте имя домена!')
+    }
+
+    return v;
+  }
+
+  //~: form submit
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  {
+    var form = extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}');
+
+    //~: validate the invoice
+    if(!form.is_form_valid()) return;
+
+    //~: submit the form
+    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
+      success: extjsf.bindHandler("${z:vid(v, 'submit_done')}", '${rootView.extjsDomain}')
+    })
+  })
+
+  //]]>
+  </script>
+
+  <ui:repeat var = "p" value = "#{v.restParams}">
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}').REST_PARAMS.push({
+       name: "#{z:jss(p)}", value: "#{v.getParam(p)}"
+    })
+
+    //]]>
+    </script>
+
+  </ui:repeat>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  Ext.onReady(function()
+  {
+     var form = extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}');
+     Ext.Array.each(form.REST_PARAMS, function(param, i)
+     {
+         var id = "${z:vid(v, 'create_domain_param_')}" + i;
+
+         var label = Ext.create('Ext.form.Label', {
+           text: param.name, forId: id, margin: extjsf.pts(6, 0, 2, 0)
+         });
+
+         var field = Ext.create('Ext.form.field.Text', {
+           inputId: id, hideLabel: true,
+           name: "createDomainParam_" + param.name,
+           value: param.value
+         });
+
+         form.component().add(label)
+         form.component().add(field)
+     })
+  })
+
+  //]]>
+  </script>
+
+  <!-- creation form] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "#{v.domainCreateValid}">
+
+      <ui:fragment rendered = "#{v.domainExists}">
+
+        <field target = "${z:vid(v, 'domain-code')}">
+          <error>
+              Домен с указанным кодом существует!
+              (Регистр букв не имеет значения.)
+          </error>
+        </field>
+      </ui:fragment>
+    </validation>
+  </ui:define>
+</ui:decorate>
+</ui:component>

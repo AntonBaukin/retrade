@@ -1,0 +1,366 @@
+<goods>
+
+  <folder code = "ФР" name = "Фрукты">
+
+    <folder code = "ФР-ЯБЛ" name = "Яблоки">
+
+      <good code = "000901" cost = "45.50">
+        <name>яблоки (Молдова)</name>
+        <measure code="кг" integer="false" name="килограммы"
+          class-code="166" class-unit="1.0"/>
+      </good>
+
+      <good code = "000902" cost = "64.20">
+        <name>яблоки (семеринка)</name>
+        <measure code = "кг"/>
+      </good>
+
+      <good code = "000903" cost = "58.30">
+        <name>яблоки (глостер, Польша)</name>
+        <measure code = "кг"/>
+      </good>
+
+    </folder>
+
+
+    <folder code = "ФР-АПЕ" name = "Апельсины">
+
+      <good code = "000904" cost = "52">
+        <name>апельсины (Египет)</name>
+        <measure code = "кг"/>
+      </good>
+
+      <good code = "000905" cost = "48">
+        <name>апельсины (Морокко)</name>
+        <measure code = "кг"/>
+      </good>
+
+    </folder>
+
+
+    <folder code = "ФР-ВИН" name = "Виноград">
+
+      <good code = "000906" cost = "145.30">
+        <name>виноград (кардинал)</name>
+        <measure code = "кг"/>
+      </good>
+
+      <good code = "000907" cost = "132.40">
+        <name>виноград (дамские пальчики)</name>
+        <measure code = "кг"/>
+      </good>
+
+      <good code = "000908" cost = "110.50">
+        <name>виноград (киш-миш зеленый)</name>
+        <measure code = "кг"/>
+      </good>
+
+      <good code = "000909" cost = "125.60">
+        <name>виноград (киш-миш черный)</name>
+        <measure code = "кг"/>
+      </good>
+
+    </folder>
+
+
+    <good code = "000910" cost = "112.55">
+      <name>ананасы</name>
+      <measure integer = "true" code = "шт" name = "штука" class-code = "796"/>
+    </good>
+
+    <good code = "000911" cost = "85.65">
+      <name>киви</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000912" cost = "34.20">
+      <name>бананы</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000913" cost = "120.50">
+      <name>клубника</name>
+      <measure code = "кг"/>
+    </good>
+
+  </folder>
+
+
+  <folder code = "ОВ" name = "Овощи">
+
+    <good code = "000914" cost = "28.60">
+      <name>морковь</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000915" cost = "18.30">
+      <name>картофель</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000916" cost = "26.20">
+      <name>капуста</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000917" cost = "36.50">
+      <name>свекла</name>
+      <measure code = "кг"/>
+    </good>
+
+    <folder code = "ОВ-ЗЕЛ" name = "Зелень">
+
+      <good code = "000918" cost = "16.58">
+        <name>петрушка</name>
+        <measure code = "100гр" name = "100 грамм"
+          integer = "false" class-code = "166" class-unit = "0.1"/>
+      </good>
+
+      <good code = "000919" cost = "16.58">
+        <name>укроп</name>
+        <measure code = "100гр"/>
+      </good>
+
+      <good code = "000920" cost = "12.45">
+        <name>лук зелёный</name>
+        <measure code = "100гр"/>
+      </good>
+
+    </folder>
+
+    <good code = "000921" cost = "32.20">
+      <name>лук репчатый</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000922" cost = "16.58">
+      <name>чеснок</name>
+      <measure code = "100гр"/>
+    </good>
+
+    <good code = "000923" cost = "74.85">
+      <name>редис (красный)</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000924" cost = "38.40">
+      <name>репа зеленая</name>
+      <measure code = "кг"/>
+    </good>
+
+
+    <folder code = "ОВ-ПЕР" name = "Перец">
+
+      <good code = "000925" cost = "89.90">
+        <name>перец (Краснодар)</name>
+        <measure code = "кг"/>
+      </good>
+
+      <good code = "000926" cost = "115.80">
+        <name>перец чили</name>
+        <measure code = "кг"/>
+      </good>
+
+      <good code = "000927" cost = "135.90">
+        <name>перец красный</name>
+        <measure code = "кг"/>
+      </good>
+    </folder>
+
+  </folder>
+
+  <folder code = "ХБ" name = "Хлебобулочные изделия">
+
+    <folder code = "ХБ-ХЛЕ" name = "Хлеб">
+
+      <good code = "000928" cost = "12.55">
+        <name>хлеб ржаной</name>
+        <measure code = "100гр"/>
+      </good>
+
+      <good code = "000929" cost = "24.60">
+        <name>батон нарезной</name>
+        <measure code = "шт"/>
+      </good>
+
+      <good code = "000930" cost = "14.60">
+        <name>хлеб отрубной</name>
+        <measure code = "100гр"/>
+      </good>
+
+      <good code = "000931" cost = "16.84">
+        <name>хлеб бородинский</name>
+        <measure code = "100гр"/>
+      </good>
+
+    </folder>
+
+    <folder code = "ХБ-ВЫП" name = "Выпечка">
+
+      <good code = "000932" cost = "38.16">
+        <name>баранки</name>
+        <measure integer = "true" code = "уп" name = "упаковка"
+           class-code = "778"/>
+      </good>
+
+      <good code = "000933" cost = "24.15">
+        <name>ватрушка с творогом</name>
+        <measure code = "100гр"/>
+      </good>
+
+      <good code = "000934" cost = "18.10">
+        <name>рогалик</name>
+        <measure code = "100гр"/>
+      </good>
+
+      <good code = "000935" cost = "23.10">
+        <name>круассан с шоколадом</name>
+        <measure code = "100гр"/>
+      </good>
+
+      <good code = "000936" cost = "26.80">
+        <name>круассан с повидлом</name>
+        <measure code = "100гр"/>
+      </good>
+    </folder>
+  </folder>
+
+  <folder code = "МЯСО" name = "Мясные изделия">
+
+    <good code = "000801" cost = "356.50">
+      <name>говядина</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000802" cost = "298.75">
+      <name>свинина</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000803" cost = "135.95">
+      <name>курица (тушка)</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000804" cost = "175.25">
+      <name>курица (филе)</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000805" cost = "145.45">
+      <name>курица (ножки)</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000806">
+      <name>курица (суповая основа)</name>
+      <measure code = "кг"/>
+    </good>
+
+    <good code = "000807" cost = "195.54">
+      <name>фарш мясной</name>
+      <measure code = "кг"/>
+
+      <calc semi-ready = "true">
+        <good code = "000801" volume = "2.000"/>
+        <good code = "000802" volume = "0.550"/>
+        <good code = "000928" volume = "0.200"/>
+        <good code = "000922" volume = "0.050"/>
+      </calc>
+    </good>
+
+  </folder>
+
+  <folder code = "СУП-ОСН" name = "Суповые основы">
+
+    <good code = "000811">
+      <name>фрикадельки</name>
+      <measure code = "кг"/>
+
+      <calc semi-ready = "false">
+        <good code = "000807" volume = "1.0"/>
+      </calc>
+    </good>
+
+    <good code = "000812" cost = "">
+      <name>куриный бульон (основа)</name>
+      <measure code = "л" name = "литры" class-code = "112"/>
+
+      <calc semi-ready = "false">
+        <good code = "000919" volume = "0.200"/>
+        <good code = "000921" volume = "1.500"/>
+        <good code = "000922" volume = "0.100"/>
+        <good code = "000806" volume = "0.350"/>
+      </calc>
+    </good>
+
+    <good code = "000813">
+      <name>говядина отварная</name>
+      <measure code = "кг"/>
+
+      <derived good = "000807" semi-ready = "false"
+        sub-code = "отв" volume = "1.0"/>
+
+    </good>
+
+  </folder>
+
+
+  <folder code = "СУПЫ" name = "Супы">
+
+    <good code = "000821" cost = "28.80">
+      <name>суп с фрикадельками</name>
+      <measure code = "100мл" name = "100 миллилитров"
+          integer = "false" class-code = "112" class-unit = "0.1"/>
+
+      <calc>
+        <good code = "000811" volume = "0.020"/>
+        <good code = "000812" volume = "0.060"/>
+        <good code = "000914" volume = "0.005"/>
+        <good code = "000915" volume = "0.015"/>
+      </calc>
+    </good>
+
+    <good code = "000822" cost = "34.36">
+      <name>борщ</name>
+      <measure code = "100мл"/>
+
+      <calc>
+        <good code = "000813" volume = "0.010"/>
+        <good code = "000812" volume = "0.050"/>
+        <good code = "000915" volume = "0.020"/>
+        <good code = "000916" volume = "0.020"/>
+      </calc>
+    </good>
+
+  </folder>
+
+
+  <folder code = "НАП" name = "Напитки">
+
+    <good code = "000701" cost = "55.00">
+      <name>кока-кола (розлив)</name>
+      <measure code = "л"/>
+    </good>
+
+    <good code = "000702" cost = "45.00">
+      <name>кока-кола (0.5 стакан)</name>
+      <measure code = "л"/>
+      <measure code = "0.5 ст" name = "0.5л стакан"
+        integer = "true" class-code = "112" class-unit = "0.5"/>
+
+      <derived good = "000701" semi-ready = "false"
+        sub-code = "0.5" volume = "0.5"/>
+    </good>
+
+    <good code = "000703" cost = "38.00">
+      <name>кока-кола (100мл лёд)</name>
+      <measure code = "100мл"/>
+
+      <derived good = "000701" semi-ready = "false"
+        sub-code = "0.1 лёд" volume = "0.1"/>
+    </good>
+
+  </folder>
+
+</goods>

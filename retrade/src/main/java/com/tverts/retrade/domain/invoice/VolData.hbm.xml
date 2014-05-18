@@ -1,0 +1,32 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <joined-subclass name = 'VolData' extends = 'InvoiceData' lazy = 'true'
+    table = 'retrade_invoice_data_vol'>
+
+    <!-- Join Key -->
+
+    <key column = 'pk_invoice_data_vol' foreign-key = 'fk_invoice_data_vol'/>
+
+
+    <!-- Invoice (Volume) Goods [bi, list, master] -->
+
+    <list name = 'goods' cascade = 'save-update' lazy = 'true'>
+
+      <key column = 'fk_invoice_data' not-null = 'true'/>
+
+      <list-index>
+        <column name = 'good_index'>
+          <comment>The index of the Good in the Invoice (Data) list</comment>
+        </column>
+      </list-index>
+
+      <one-to-many class = 'VolGood'/>
+    </list>
+
+  </joined-subclass>
+</hibernate-mapping>

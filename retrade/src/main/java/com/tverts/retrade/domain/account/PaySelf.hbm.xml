@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.account'>
+
+  <joined-subclass name = 'PaySelf' extends = 'PayIt'
+     lazy = 'false' table = 'retrade_pay_self'>
+
+    <!-- Join Key -->
+
+    <key column = 'pk_pay_self' foreign-key = 'fk_pay_self'/>
+
+  </joined-subclass>
+</hibernate-mapping>

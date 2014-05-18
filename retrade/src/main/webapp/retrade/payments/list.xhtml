@@ -1,0 +1,374 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesPaymentsView}"/>
+
+${v.forceSecure('view: payments')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:root-panel coid = "${z:vid(v, 'payments_root')}"
+    position = "#{rootView.extjsPosition}">
+
+    <f:facet name = "extjs-props">
+      title: 'Платежи'
+    </f:facet>
+
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: 'fit', bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+      <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'search')}">
+
+        <f:facet name = "extjs-props">
+
+          frame: false, border: false, preventHeader: true,
+          preventHeader: true, layout: {type: 'hbox', align: 'middle'},
+          bodyCls: 'retrade-toolbar-inline-panel'
+
+        </f:facet>
+
+
+        <!-- [min and max dates -->
+
+        <x:date-field coid = "${z:vid(v, 'min-date')}" value = "#{v.model.minDate}">
+          <f:facet name = "label-props">
+            text: 'От', cellCls: 'retrade-form-label-cell',
+            margin: extjsf.dpts(0, 2, 0, 0)
+          </f:facet>
+        </x:date-field>
+
+        <x:date-field coid = "${z:vid(v, 'max-date')}" value = "#{v.model.maxDate}">
+          <f:facet name = "label-props">
+            text: 'до', cellCls: 'retrade-form-label-cell',
+            margin: extjsf.dpts(0, 2, 0, 6)
+          </f:facet>
+        </x:date-field>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+ extjsf.bind("${z:vid(v, 'min-date')}", '${rootView.extjsDomain}').on('change', function()
+ {
+   extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+ })
+
+ extjsf.bind("${z:vid(v, 'max-date')}", '${rootView.extjsDomain}').on('change', function()
+ {
+   extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+ })
+
+        //]]>
+        </script>
+
+        <!-- min and max dates] -->
+
+
+        <!-- [projection types -->
+
+        <x:component coid = "${z:vid(v, 'proj-types-menu-button')}">
+
+          <f:facet name = "extjs-props">
+
+            xtype: 'button', text: 'Тип выборки',
+            tooltipType: 'title', tooltip: 'Выберете типы выборки отображаемых документов',
+            icon: "${z:url('/resources/icons/payment_16.png')}",
+            margin: extjsf.dpts(0, 12, 0, 6)
+
+          </f:facet>
+
+          <x:menu coid = "${z:vid(v, 'proj-types-menu')}">
+
+            <f:facet name = "extjs-props">
+              showSeparator: false
+            </f:facet>
+
+            <ui:repeat value = "#{z:mapAsList(v.model.projectionsLabels)}" var = "e">
+
+              <c:set var = 'menuid' value = 'proj-types-menu-#{e.key}'/>
+
+              <x:component coid = "${z:vid(v, menuid)}">
+                <f:facet name = "extjs-props">
+                  xtype: 'menucheckitem', text: '#{z:jss(e.value)}',
+                  checked: #{v.model.projection == e.key}
+                </f:facet>
+              </x:component>
+
+              <script type = "text/javascript">
+              //<![CDATA[
+
+  extjsf.bind("${z:vid(v, menuid)}", '${rootView.extjsDomain}').on('checkchange', function(it, checked)
+  {
+    if(!checked) { it.setChecked(true, true); return; }
+
+    var its = it.parentMenu.query('menucheckitem');
+    Ext.Array.each(its, function(i)
+    {
+      if(i !== it) i.setChecked(false, true)
+    })
+
+
+    //<: replace grid columns
+
+    var grid = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var cols = extjsf.support.gridColumns(grid);
+    var news = ZeT.defined('retrade.columns.PaymentView' + ZeTS.first('#{e.key}').toUpperCase() + '#{e.key}'.substring(1))();
+
+    for(var b = 0;(b < cols.length);b++)
+      //?: {not an action column}
+      if(!ZeT.isf(cols[b].enableAction)) break;
+
+    for(var i = b;(i < cols.length);i++)
+      //?: {not an action column} remove it
+      if(!ZeT.isf(cols[i].enableAction))
+        grid.headerCt.remove(cols[i])
+
+    for(i = 0;(i < news.length);i++)
+      grid.headerCt.insert(b + i, Ext.create('Ext.grid.column.Column', news[i]))
+    grid.getView().refresh()
+
+    //>: replace grid columns
+
+
+    extjsf.bind("${z:vid(v, 'projection')}", '${rootView.extjsDomain}').value('#{e.key}')
+    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+  })
+
+              //]]>
+              </script>
+            </ui:repeat>
+          </x:menu>
+        </x:component>
+
+        <x:hidden-field coid = "${z:vid(v, 'projection')}"
+          value = "#{v.model.projection}"/>
+
+        <!-- projection types] -->
+
+
+        <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+          <f:facet name = "extjs-props">
+            xtype: 'panel', flex: 1, frame: false, border: false,
+            bodyCls: 'retrade-toolbar-inline-panel'
+          </f:facet>
+        </x:component>
+
+
+        <!-- [income and expense payments -->
+
+        <x:checkbox-field coid = "${z:vid(v, 'with-income')}"
+          value = "#{v.model.withIncome}">
+
+          <f:facet name = "label-props">
+            labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 0),
+            html: "&lt;span title = 'Отобразить в таблице приходные платежи'&gt;приход&lt;/span&gt;"
+          </f:facet>
+        </x:checkbox-field>
+
+        <x:checkbox-field coid = "${z:vid(v, 'with-expense')}"
+          value = "#{v.model.withExpense}">
+
+          <f:facet name = "label-props">
+            labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 6),
+            html: "&lt;span title = 'Отобразить в таблице расходные платежи'&gt;расход&lt;/span&gt;"
+          </f:facet>
+        </x:checkbox-field>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}').on('change', function(x)
+  {
+    var y = extjsf.component("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}');
+    if(y.retradeSetValue) return;
+
+    x.retradeSetValue = true;
+    if(!y.retradeSetValue && !x.getRawValue() && !y.getRawValue()) y.setValue(true)
+    x.retradeSetValue = false;
+
+    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+  })
+
+  extjsf.bind("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}').on('change', function(y)
+  {
+    var x = extjsf.component("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}');
+    if(x.retradeSetValue) return;
+
+    y.retradeSetValue = true;
+    if(!x.retradeSetValue && !x.getRawValue() && !y.getRawValue()) x.setValue(true)
+    y.retradeSetValue = false;
+
+    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+  })
+
+        //]]>
+        </script>
+
+        <!-- income and expense payments] -->
+
+
+        <!-- [search names -->
+
+        <x:text-field coid = "${z:vid(v, 'search-names')}"
+          value = "#{v.model.searchNames}">
+
+          <f:facet name = "extjs-props">
+            margin: extjsf.dpts(1, 0, 1, 4),
+            width:  extjsf.ex(24)
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'поиск', margin: extjsf.pts(1, 0, 1, 8)
+          </f:facet>
+        </x:text-field>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'search-names')}", '${rootView.extjsDomain}').on('change', function(f, sv)
+  {
+    sv = f.extjsfBind.searchValue = ZeTS.trim(sv);
+
+    ZeT.timeout(1000, function()
+    {
+      //?: {search string was changed} discard
+      if(f.extjsfBind.searchValue != sv) return;
+
+      extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+    })
+  })
+
+        //]]>
+        </script>
+
+        <!-- search names] -->
+
+
+        <!-- [search by selection set -->
+
+        <x:component coid = "${z:vid(v, 'search-by-selset')}">
+          <f:facet name = "extjs-props">
+
+            xtype: 'button', enableToggle: true,
+            width: 30, componentCls: 'retrade-icon-24',
+            margin: extjsf.dpts(1, 0, 1, 6),
+            icon: "${z:url('/resources/icons/selset_24.png')}",
+            tooltipType: 'title', tooltip: 'Ограничить текущей выборкой по контрагентам, учётным и платёжным счетам',
+            pressed: #{v.model.withSelSet}
+
+          </f:facet>
+        </x:component>
+
+        <x:hidden-field coid = "${z:vid(v, 'search-by-selset-field')}"
+           value = "#{v.model.selSet}"/>
+
+        <x:hidden-field coid = "${z:vid(v, 'search-by-selset-with')}"
+           value = "#{v.model.withSelSet}"/>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').on('toggle', function(b, v)
+  {
+    extjsf.component("${z:vid(v, 'search-by-selset-with')}", '${rootView.extjsDomain}').setValue(v)
+    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+  })
+        //]]>
+        </script>
+
+        <!-- search by selection set] -->
+
+      </x:form-panel>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm = function()
+  {
+    var grid = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var cols = extjsf.support.gridColumns(grid);
+
+    //?: display income column
+    var i = extjsf.support.columnIndexByDataIndex(grid, 'income');
+    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.component("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}').getValue())
+
+    //?: display expense column
+    i = extjsf.support.columnIndexByDataIndex(grid, 'expense');
+    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.component("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}').getValue())
+
+
+    //~: with the selection set button checked
+    extjsf.bind("${z:vid(v, 'search-by-selset-field')}", '${rootView.extjsDomain}').
+      value(ReTrade.selset.selset)
+
+    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').
+      submitForm({'${v.viewModeParam}': '${v.viewModePostStr}', success: function()
+    {
+      Ext.data.StoreManager.lookup("${z:vid(v, 'payments')}").loadPage(1)
+    }})
+  }
+
+      //]]>
+      </script>
+
+      <!-- filter payments by names] -->
+
+    </f:facet>
+
+    <!-- toolbar] -->
+
+
+    <!-- [payments table -->
+
+    <x:data-store storeId = "${z:vid(v, 'payments')}"
+      modelView = "${v}" pageSize = "30">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.PaymentView'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.PaymentView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'payments')}">
+
+      <f:facet name = "grid-props">
+        columns: ZeT.defined('retrade.columns.PaymentViewGen'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+        pager: true, sortableColumns: false, region: 'center'
+      </f:facet>
+    </x:data-grid>
+
+    <!-- payments table] -->
+
+  </x:root-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

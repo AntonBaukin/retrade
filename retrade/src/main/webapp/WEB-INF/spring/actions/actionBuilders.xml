@@ -1,0 +1,51 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Domain Model Core Actions                      =
+    +================================================-->
+
+  <import resource = 'core.xml'/>
+
+
+  <!--=================================================
+    =  Retrade ReTrade Domain Model Actions           =
+    +================================================-->
+
+  <import resource = 'retrade.xml'/>
+
+
+  <!--=================================================
+    =  Top Level Action Builders                      =
+    +==================================================
+    |
+    |  Overwrite this file in each module that adds
+    |  top-level action build dispatchers.
+    |
+    +================================================-->
+
+  <bean name  = 'topLevelActionBuilders'
+        class = 'com.tverts.actions.ActionBuildersList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Action builders for Domain Core entities.                 ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'coreActionBuilders'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Action builders for ReTrade entities.               ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = "retradeActionBuilders"/>
+
+      </list>
+    </property>
+
+  </bean>
+</beans>

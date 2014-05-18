@@ -1,0 +1,119 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  ReTrade Module Executors                       =
+    +================================================-->
+
+  <bean name  = 'retradeExecutorsList'
+        class = 'com.tverts.exec.ExecutorsList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Measure Units
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpMeasures'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.UpdateMeasure'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertMeasure'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Good Units
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpGoods'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.UpdateGood'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertGood'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Derived Goods and Calculations
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpDerived'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpCalcs'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertDerived'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertCalc'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Goods Tree Folders and Items
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpFolders'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpItems'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertFolder'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertItem'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.UpdateFolder'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Price Lists and Prices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpPriceLists'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpPrices'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertPriceList'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertPrice'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.UpdatePriceList'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Trade Stores
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.goods.DumpStores'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.UpdateStore'/>
+        <bean class = 'com.tverts.retrade.exec.api.goods.InsertStore'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Contractors (Firms)
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.firms.DumpFirms'/>
+        <bean class = 'com.tverts.retrade.exec.api.firms.InsertFirm'/>
+        <bean class = 'com.tverts.retrade.exec.api.firms.UpdateFirm'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Buy Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.invoices.DumpInvoices'>
+          <property name  = 'name'      value = 'Dump Invoices Buy'/>
+          <property name  = 'unityType' value = 'ReTrade: Invoice: Buy'/>
+        </bean>
+
+        <bean class = 'com.tverts.retrade.exec.api.invoices.UpdateBuyInvoice'/>
+        <bean class = 'com.tverts.retrade.exec.api.invoices.InsertBuyInvoice'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Move Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.invoices.DumpInvoices'>
+          <property name  = 'name'      value = 'Dump Invoices Move'/>
+          <property name  = 'unityType' value = 'ReTrade: Invoice: Move'/>
+        </bean>
+
+        <bean class = 'com.tverts.retrade.exec.api.invoices.UpdateMoveInvoice'/>
+        <bean class = 'com.tverts.retrade.exec.api.invoices.InsertMoveInvoice'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Sell Invoices
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.invoices.DumpInvoices'>
+          <property name  = 'name'      value = 'Dump Invoices Sell'/>
+          <property name  = 'unityType' value = 'ReTrade: Invoice: Sell'/>
+        </bean>
+
+        <bean class = 'com.tverts.retrade.exec.api.invoices.UpdateSellInvoice'/>
+        <bean class = 'com.tverts.retrade.exec.api.invoices.InsertSellInvoice'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Sells Desks, Sessions, Receipts
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.exec.api.sells.DumpSellsDesks'/>
+        <bean class = 'com.tverts.retrade.exec.api.sells.InsertSellsDesk'/>
+        <bean class = 'com.tverts.retrade.exec.api.sells.DumpSellsSessions'/>
+        <bean class = 'com.tverts.retrade.exec.api.sells.InsertSellsSession'/>
+        <bean class = 'com.tverts.retrade.exec.api.sells.UpdateSellsSession'/>
+        <bean class = 'com.tverts.retrade.exec.api.sells.DumpSellReceipts'/>
+        <bean class = 'com.tverts.retrade.exec.api.sells.InsertSellReceipt'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

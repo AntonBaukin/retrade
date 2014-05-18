@@ -1,0 +1,36 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.account'>
+
+  <joined-subclass name = 'PayFirm' extends = 'PayIt'
+     lazy = 'false' table = 'retrade_pay_firm'>
+
+    <!-- Join Key -->
+
+    <key column = 'pk_pay_firm' foreign-key = 'fk_pay_firm'/>
+
+  </joined-subclass>
+</hibernate-mapping>
+
+<!--
+
+select c.contractor_name, a.account_name, pw.pay_way_name from
+  retrade_account a
+    join
+  retrade_contractor c
+    on (a.fk_contractor = c.pk_entity)
+    join
+  retrade_pay_it pi
+    on (pi.fk_account = a.pk_entity)
+    join
+  retrade_pay_firm pf
+    on (pf.pk_pay_firm = pi.pk_pay_it)
+    join
+  retrade_pay_way pw
+    on (pi.fk_pay_way = pw.pk_pay_way)
+order by c.contractor_name_proc, lower(a.account_name)
+
+-->

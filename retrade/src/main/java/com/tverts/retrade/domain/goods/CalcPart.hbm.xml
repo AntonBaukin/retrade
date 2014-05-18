@@ -1,0 +1,67 @@
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.goods'>
+
+  <class name = 'CalcPart' table = 'retrade_calc_part' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_calc_part'/>
+
+
+    <!-- Good Calculation reference [bi, list, slave] -->
+
+    <many-to-one name = 'goodCalc' foreign-key = 'fk_part_calc'
+      insert = 'false' update = 'false'>
+
+      <column name = 'fk_good_calc' not-null = 'true'
+        index = 'ix_part_calc'>
+
+        <comment>The Good Calculation this Part is of</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Unit reference -->
+
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_calc_part_unit'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        index = 'ix_calc_part_unit'>
+
+        <comment>The Good Unit this Part refers</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Volume -->
+
+    <property name = 'volume' type = 'big_decimal'>
+
+      <column name = 'part_volume' precision = '18' scale = '8'>
+
+        <comment>
+          The volume (amount) of Good Unit referred needed to
+          create 1 unit of the Good owning the calculation
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Semi-Ready flag -->
+
+    <property name = 'semiReady'>
+
+      <column name = 'semi_ready'>
+        <comment>
+          If this flag is defined, it overwrites the same
+          flag of the Calculation. It tells whether to
+          stop recursive good build process when the Good
+          Unit referred is itself a product
+        </comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

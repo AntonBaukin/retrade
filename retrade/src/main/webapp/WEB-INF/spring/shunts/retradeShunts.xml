@@ -1,0 +1,104 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  ReTrade Module Shunts References               =
+    +================================================-->
+
+  <bean name  = 'retradeShuntsList'
+        class = 'com.tverts.shunts.SelfShuntsList'>
+    <property name = 'references'>
+      <list>
+
+        <!-- retrade:invoices:buy-sell -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.retrade.domain.invoice.shunts.ShuntInvoicesBuySell'>
+
+              <property name = 'seed'    value = ''/>
+              <property name = 'percent' value = '50.0'/>
+              <property name = 'invmax'  value = '0'/>
+              <property name = 'redate'  value = 'false'/>
+
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- retrade:invoices:type (move) -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.retrade.domain.invoice.shunts.ShuntInvoicesType'>
+
+              <property name = 'seed'     value = ''/>
+              <property name = 'percent'  value = '50.0'/>
+              <property name = 'invmax'   value = '0'/>
+
+              <property name = 'typeName' value = 'ReTrade: Invoice: Move'/>
+
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- retrade:invoices:type (volume checks) -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.retrade.domain.invoice.shunts.ShuntInvoicesType'>
+
+              <property name = 'seed'     value = ''/>
+              <property name = 'percent'  value = '50.0'/>
+              <property name = 'invmax'   value = '0'/>
+
+              <property name = 'typeName' value = 'ReTrade: Invoice: Volume Check'/>
+
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- retrade:aggr:invoices -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+
+            <bean class = 'com.tverts.retrade.domain.invoice.shunts.ShuntInvoicesAggr'>
+
+              <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+               · HINT: this value is configured in AggregatorVolume
+               · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+              <property name = 'volumeHistoryStep' value = '8'/>
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- retrade:payment:bills -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+
+            <bean class = 'com.tverts.retrade.domain.payment.ShuntInvoicesBills'/>
+          </property>
+        </bean>
+
+
+        <!-- retrade:payment:orders:invoices -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+
+            <bean class = 'com.tverts.retrade.domain.payment.ShuntInvoicesPayments'/>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>

@@ -1,0 +1,410 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Domain-Level Forces                            =
+    =================================================-->
+
+  <bean name  = 'secForcesOnDomain' class = 'com.tverts.secure.force.SecForces'>
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Contractors
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: contractors'/>
+
+          <property name  = 'secKey'
+                    value = 'view: contractors'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр контрагентов'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пункта меню и таблицы контрагентов домена,
+              но не определяет, какие именно контрагенты доступны для просмотра.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Goods (and Measures)
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: goods'/>
+
+          <property name  = 'secKey'
+                    value = 'view: goods'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр товаров'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пунктов меню и справочников
+              товаров и единиц измерения домена, а также каталога товаров.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Edit Goods (and Measures)
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: edit: goods'/>
+
+          <property name  = 'secKey'
+                    value = 'edit: goods'/>
+
+
+          <property name  = 'title'
+                    value = 'Редактирование товаров'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет добавлять, редактировать и удалять элементы
+              справочников товаров и единиц измерения, а также каталога товаров.
+            </value>
+          </property>
+        </bean>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Edit Goods Codes
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: edit: goods codes'/>
+
+          <property name  = 'secKey'
+                    value = 'edit: goods codes'/>
+
+
+          <property name  = 'title'
+                    value = 'Редактирование кодов товаров'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет изменять код товара
+              при его создании и редактировании.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Stores
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: stores'/>
+
+          <property name  = 'secKey'
+                    value = 'view: stores'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр складов'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пункта меню и
+              справочника складов.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Edit Stores
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: edit: stores'/>
+
+          <property name  = 'secKey'
+                    value = 'edit: stores'/>
+
+
+          <property name  = 'title'
+                    value = 'Редактирование складов'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет добавлять, редактировать и удалять элементы
+              справочника складов.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Price Lists
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: price-lists'/>
+
+          <property name  = 'secKey'
+                    value = 'view: price-lists'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр прайс-листов'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пункта меню и
+              справочника прайс-листов.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Edit Price Lists
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: edit: price-lists'/>
+
+          <property name  = 'secKey'
+                    value = 'edit: price-lists'/>
+
+
+          <property name  = 'title'
+                    value = 'Редактирование прайс-листов'/>
+
+          <property name  = 'descr'>
+            <value>
+              Позволяет добавлять, редактировать и удалять элементы
+              справочника прайс-листов.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Documents
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: documents'/>
+
+          <property name  = 'secKey'
+                    value = 'view: documents'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр документов'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пункта меню и таблицы документов,
+              но не определяет, какие именно документы доступны для просмотра.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Price Change Documents
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: price change documents'/>
+
+          <property name  = 'secKey'
+                    value = 'view: price change documents'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр документов изменения цен'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пункта меню и таблицы документов изменения цен
+              домена, но не определяет, какие именно документы доступны для просмотра.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Create Invoice Buy
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: create: invoice: buy'/>
+
+          <property name  = 'secKey'
+                    value = 'create: invoice: buy'/>
+
+
+          <property name  = 'title'
+                    value = 'Создание накладной закупки'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за возможность отобразить форму создания
+              накладной закупки, но не определяет, на какие склады
+              возможна закупка, каких групп товаров, а также доступно
+              ли будет редактирование накладной и её проведение.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Create Invoice Sell
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: create: invoice: sell'/>
+
+          <property name  = 'secKey'
+                    value = 'create: invoice: sell'/>
+
+
+          <property name  = 'title'
+                    value = 'Создание накладной продажи'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за возможность отобразить форму создания
+              накладной продажи, но не определяет, с каких складов
+              возможна продажа, каких групп товаров, а также доступно
+              ли будет редактирование накладной и её проведение.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Create Invoice Move
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: create: invoice: move'/>
+
+          <property name  = 'secKey'
+                    value = 'create: invoice: move'/>
+
+
+          <property name  = 'title'
+                    value = 'Создание накладной перемещения'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за возможность отобразить форму создания
+              накладной перемещения, но не определяет, с каких на какие
+              склады возможно перемещение, каких групп товаров, а также
+              доступно ли будет редактирование накладной и её проведение.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Create Price Change Document
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: create: price change document'/>
+
+          <property name  = 'secKey'
+                    value = 'create: price change document'/>
+
+
+          <property name  = 'title'
+                    value = 'Создание документа изменения цен'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за возможность отобразить форму создания
+              документа изменения цен, но не определяет, цены каких групп
+              товаров можно изменять и по каким прайс-листам, а также
+              доступно ли будет редактирование документа и его проведение.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Accounts
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: accounts'/>
+
+          <property name  = 'secKey'
+                    value = 'view: accounts'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр счетов'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пунктов меню и таблиц
+              собственных счетов и счетов контрагентов
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · View Payments
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: view: payments'/>
+
+          <property name  = 'secKey'
+                    value = 'view: payments'/>
+
+
+          <property name  = 'title'
+                    value = 'Просмотр платежей'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за отображение пунктов меню и таблиц платежей
+              по учётным и расчетным счетам.
+            </value>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>

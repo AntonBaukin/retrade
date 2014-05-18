@@ -1,0 +1,843 @@
+/*===============================================================+
+ |                                                               |
+ |   CSS for ReTrade Application                                 |
+ |                                   / anton.baukin@gmail.com /  |
+ +===============================================================*/
+
+
+/* html items */
+
+*:focus /* prevent field focus highlights */
+{
+  outline: 0;
+}
+
+::-ms-clear, ::-ms-reveal /* remove IE field actions */
+{
+  display: none;
+}
+
+.unselectable-text
+{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+
+/* panels */
+
+.retrade-toolbar-panel, .retrade-toolbar-inline-panel
+{
+  background-color: #fffbf7;
+}
+
+.retrade-status-panel
+{
+  background-color: #f7faff;
+}
+
+.retrade-back-panel, .retrade-desktop-panel-center .retrade-desktop-panel-content
+{
+  background-color: #e0e0e0;
+}
+
+.retrade-desktop-panel-left, .retrade-desktop-panel-right,
+  .retrade-desktop-panel-left .retrade-desktop-panel-content,
+  .retrade-desktop-panel-right .retrade-desktop-panel-content
+{
+  background-color: #f2f5f6;
+}
+
+.retrade-desktop-panel-topbar
+{
+  background-color: transparent;
+}
+
+.retrade-content-panel
+{
+  background-color: #f1f1f1;
+}
+
+.retrade-text-panel
+{
+  background-color: #fcfcfc;
+}
+
+.retrade-notifications-panel
+{
+  background-color: #e0e0e0;
+}
+
+.retrade-transparent-panel
+{
+  background-color: transparent;
+}
+
+.retrade-toolbar-inline-comment
+{
+  font-family: 'Tahoma', sans-serif;
+  font-size: 9pt; font-style: italic;
+  white-space: nowrap; overflow: hidden;
+  cursor: default;
+}
+
+
+/* formatters */
+
+span.retrade-currency-sep
+{
+  padding-left: 0.5ex;
+}
+
+
+/* form fields */
+
+input.x-form-field.x-form-checkbox.x-form-cb
+{
+  margin: 0; vertical-align: middle;
+}
+
+textarea.x-form-textarea
+{
+  font-family: 'Tahoma', 'Arial', 'Verdana', sans-serif;
+  font-size: 12px;
+}
+
+td.x-form-item-body.x-form-cb-wrap
+{
+  vertical-align: middle;
+}
+
+.x-form-type-checkbox.x-item-disabled input,
+  .x-form-type-checkbox.x-item-disabled label
+{
+  cursor: default;
+}
+
+.retrade-form-label-cell
+{
+  white-space: nowrap; letter-spacing: 0.1pt;
+  font-size: 11pt; font-weight: bolder;
+  cursor: default;
+}
+
+.retrade-form-light-label-cell
+{
+  white-space: nowrap; letter-spacing: 0.08pt;
+  font-size: 10pt; font-weight: normal;
+  cursor: default;
+}
+
+label.retrade-form-label-cell, .retrade-form-label-cell label,
+  label.retrade-form-light-label-cell, .retrade-form-light-label-cell label
+{
+  cursor: pointer;
+}
+
+.retrade-form-label-big
+{
+  text-transform: uppercase;
+  font-size: 9pt; letter-spacing: 0.4pt;
+}
+
+.retrade-form-fieldset-caption
+{
+  font-family: 'Tahoma', sans-serif;
+  font-size: 11pt; font-weight: bolder;
+  white-space: nowrap; overflow: hidden;
+  background-color: transparent;
+  cursor: default;
+}
+
+.retrade-width-100pc
+{
+  width: 100%;
+}
+
+table.retrade-align-right.x-field
+{
+  margin-left: auto;
+}
+
+tr.x-boundlist-item td
+{
+  font-size: 12px; padding: 1pt;
+}
+
+
+/* buttons */
+
+.retrade-button-22pt span.x-btn-icon-el
+{
+  margin: 3pt 2pt 0 2pt;
+}
+
+.retrade-button-22pt span.x-btn-inner
+{
+  margin-left: 2pt;
+}
+
+.retrade-icon-24 .x-btn-icon-el
+{
+  width: 24px;
+}
+
+
+/* menus */
+
+div.retrade-menuitem-centered
+{
+  text-align: center;
+}
+
+.retrade-menuitem-noicon div.x-menu-item-icon
+{
+  display: none;
+}
+
+.retrade-menuitem-noicon a.x-menu-item-link
+{
+  padding-left: 8px;
+}
+
+.retrade-menuitem-noicon span.x-menu-item-text
+{
+  padding-right: 8px;
+  margin-right: 0;
+}
+
+
+/* grids */
+
+img.x-action-col-icon.x-item-disabled
+{
+  cursor: default;
+}
+
+img.x-action-col-icon.x-item-disabled.retrade-icon-not-disable
+{
+  opacity: 1;
+}
+
+td.x-grid-cell.x-grid-cell-selected
+{
+  background-color: #e8e1d6;
+}
+
+.retrade-grid-not-mark-dirty td.x-grid-cell.x-grid-dirty-cell
+{
+  background-image: none;
+}
+
+
+/* message box */
+
+.retrade-message-box-ask-warning-icon
+{
+  background: no-repeat url('icons/say_warning_48.png');
+}
+
+.retrade-message-box-ask-warning div.x-form-display-field
+{
+  font-family: 'Tahoma', sans-serif;
+  font-size: 10pt; font-style: normal;
+  font-weight: normal; line-height: normal;
+  text-align: left;
+}
+
+/* events */
+
+table.retrade-desktop-event
+{
+  position: absolute; top: 0; right: 0;
+  cursor: default;
+}
+
+div.retrade-desktop-event-content
+{
+  max-width: 180pt;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 10pt; font-style: normal;
+}
+
+div.retrade-desktop-event-content.retrade-desktop-event-error-content
+{
+  color: #fafafa; font-weight: bolder;
+}
+
+
+/* table layouts */
+
+td.retrade-table-cell-top
+{
+  vertical-align: top;
+}
+
+td.retrade-table-cell-right
+{
+  text-align: right;
+}
+
+td.retrade-table-cell-bottom
+{
+  vertical-align: bottom;
+}
+
+td.retrade-table-cell-middle
+{
+  vertical-align: middle;
+}
+
+td.retrade-table-cell-100pc
+{
+  width: 100%;
+}
+
+
+/* error area */
+
+.retrade-error-div
+{
+  font-family: 'Tahoma', sans-serif;
+  font-weight: normal; font-size: 10pt;
+  padding: 2pt; color: #ff3333;
+  background-color:white;
+}
+
+.retrade-error-div .retrade-error-text
+{
+  background-image: url("../extjs/resources/themes/images/gray/grid/invalid_line.gif");
+  background-repeat: repeat-x; background-position: center bottom; padding-bottom: 1pt;
+}
+
+img.retrade-error-image-small
+{
+  width: 16px; height: 16px; border: none; margin-right: 2pt; vertical-align: top;
+  background: url("../extjs/resources/themes/images/gray/form/exclamation.gif") no-repeat;
+}
+
+
+/* warning panel */
+
+.retrade-warning-panel
+{
+  background-color: #fffbef;
+}
+
+.retrade-warning-panel-sub
+{
+  border: none; background-color: #fffbef;
+}
+
+td.retrade-warning-table-icon
+{
+  vertical-align: top; width: 64px;
+}
+
+td.retrade-warning-table-icon div
+{
+  width: 48px; height: 48px; margin: 8px;
+  background-image: url(icons/say_warning_48.png)
+}
+
+td.retrade-warning-table-text div
+{
+  font-family: 'Tahoma', sans-serif;
+  font-weight: normal; font-size: 10pt;
+  text-align: left; white-space: nowrap;
+  margin: 4pt 12pt 4pt 10pt;
+}
+
+.retrade-warning-table-text hr
+{
+  height: 1px; background-color: #5e5e5e;
+  border: 0; margin: 14pt 24pt 6pt 0;
+}
+
+td.retrade-warning-table-buttons
+{
+  padding: 8pt 0 0 0;
+}
+
+
+/* info panel */
+
+table.retrade-info-table
+{
+  width: 100%; border: none;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+table.retrade-info-table.retrade-info-table-short
+{
+  width: 0.01%;
+}
+
+table.retrade-info-table caption,
+ div.retrade-info-div .retrade-info-caption
+{
+  font-family: 'Tahoma', sans-serif;
+  font-weight: bolder; font-size: 10pt;
+  text-align: left; white-space: nowrap;
+  margin: 2pt 0 4pt 0;
+}
+
+table.retrade-info-table td
+{
+  vertical-align: middle;
+}
+
+td.retrade-info-title
+{
+  width: 0.01%;
+}
+
+td.retrade-info-title div, .retrade-info-title-label,
+ div.retrade-info-div .retrade-info-title
+{
+  white-space: nowrap; margin: 0 4pt 0 7pt;
+  font-size: 11pt; font-weight: bolder;
+  letter-spacing: 0.1pt; cursor: default;
+}
+
+label.retrade-info-title-label
+{
+  cursor: pointer;
+}
+
+td.retrade-info-title:first-child div,
+ .retrade-info-title-label:first-child,
+ div.retrade-info-div:first-child .retrade-info-title
+{
+  margin-left: 0;
+}
+
+td.retrade-info-value div,
+ .retrade-info-div .retrade-info-value
+{
+  white-space: nowrap; padding: 1pt 2pt 1pt 2pt;
+  font-size: 11pt; background-color: #fafafa;
+}
+
+span.retrade-info-value
+{
+  white-space: nowrap; padding: 1pt 2pt 1pt 2pt;
+  font-size: 11pt; background-color: #fafafa;
+}
+
+.retrade-info-div .retrade-info-value-message-hard
+{
+  font-style: italic; color: #c61122;
+}
+
+div.retrade-info-div
+{
+  display: inline-block; white-space: nowrap;
+}
+
+td.retrade-info-value-small-text div
+{
+  font-family: 'Tahoma', sans-serif; font-size: 9pt;
+  white-space: nowrap; overflow: hidden;
+  background-color: transparent;
+}
+
+hr.retrade-info-hr
+{
+  margin: 6pt 0;
+  height: 4px; text-align: center;
+  border-left: none; border-right: none;
+  border-top: dashed #bfbfbf 1px;
+  border-bottom: solid #a5a5a5 1px;
+}
+
+.retrade-info-status-red
+{
+  font-family: 'Tahoma', sans-serif; font-size: 9pt;
+  white-space: nowrap; overflow: hidden;
+  color: #c61122; background-color: transparent;
+  font-weight: bolder; text-transform: uppercase;
+}
+
+
+/* check boxes [retrade/index] */
+
+.retrade-main-docs-filter-date_max-cell
+{
+  text-align: right;
+}
+
+
+/* info panel [retrade/invoices/info-*] */
+
+table.retrade-invoice-info-table-contractor,
+  table.retrade-invoice-info-table-store
+{
+  margin-top: 2pt; width: 100%;
+}
+
+table.retrade-invoice-info-table-sells-session
+{
+  margin-top: 2pt; width: 0.01%;
+}
+
+div.retrade-info-value-invoice-state,
+  td.retrade-info-value-invoice-state div,
+  td.retrade-info-value-invoice-altered div
+{
+  font-size: 9pt; font-weight: bold;
+  letter-spacing: 0.2pt; text-align: right;
+  text-transform: uppercase; color: red;
+  background-color: transparent; cursor: default;
+}
+
+td.retrade-info-value-invoice-altered
+{
+  padding-left: 6pt;
+}
+
+table.retrade-info-table-invoice-code,
+  table.retrade-invoice-info-table-summ,
+  table.retrade-invoice-info-table-state
+{
+  width: 0.01%;
+}
+
+td.retrade-info-value-invoice-move-store,
+  td.retrade-info-value-invoice-move-source
+{
+  width: 100%;
+}
+
+td.retrade-info-value-invoice-move-store div,
+  td.retrade-info-value-invoice-move-source div
+{
+  font-family: 'Tahoma', sans-serif; font-size: 9pt;
+  margin-bottom: 1.5pt; white-space: nowrap; overflow: hidden;
+  background-color: transparent;
+}
+
+
+/* info panel [retrade/invoices/edit-buy-sell] */
+
+
+.retrade-info-div-invoice .retrade-info-value-invoice-contractor
+{
+  font-size: 10pt;
+}
+
+
+/* info panels [retrade/invoices/.good-edit-*] */
+
+table.retrade-info-table-good-edit-good-unit caption.retrade-info-caption
+{
+  font-size: 11px;
+}
+
+table.retrade-info-table-good-edit-price-list caption.retrade-info-caption
+{
+  font-size: 11px;
+}
+
+table.retrade-info-table-good-edit-good-unit .retrade-info-title div,
+  table.retrade-info-table-good-edit-good-unit .retrade-info-value div,
+  table.retrade-info-table-good-edit-price-list .retrade-info-title div,
+  table.retrade-info-table-good-edit-price-list .retrade-info-value div
+{
+  font-weight: normal; font-size: 10pt;
+}
+
+table.retrade-info-table-good-edit-good-unit .retrade-info-value-good-unit-name div
+{
+  margin-top: 2pt; white-space: normal;
+}
+
+table.retrade-info-table.retrade-info-table-good-edit-price-list
+{
+  margin-bottom: 4pt;
+}
+
+.retrade-content-panel.retrade-info-table-good-edit-price-list label
+{
+  font-size: 12px;
+}
+
+table.retrade-info-table.retrade-info-table-good-edit-price-list caption
+{
+  margin-bottom: 2pt;
+}
+
+
+/* info panel [retrade/price-lists/history] */
+
+td.retrade-info-fill-price-history-good-code
+{
+  width: 100%;
+}
+
+td.retrade-info-title-price-history-good-name,
+  td.retrade-info-value-price-history-good-name
+{
+  padding-top: 2pt;
+}
+
+td.retrade-info-title.retrade-info-title-price-history-good-price div
+{
+  color: red;
+}
+
+table.retrade-info-table.retrade-info-table-price-history-good-name
+{
+  width: 0.01%;
+}
+
+
+/* info panel [retrade/reprice-docs/info] */
+
+table.retrade-info-table.retrade-info-table-reprice-doc
+{
+  width: 0.01%;
+}
+
+td.retrade-info-value.retrade-info-value-reprice-reason div
+{
+  font-size: 11px; white-space: normal;
+}
+
+
+/* info panel [retrade/reprice-docs/edit-change] */
+
+.retrade-reprice-change-form label
+{
+  font-size: 12px;
+}
+
+table.retrade-info-table-edit-change-good-unit .retrade-info-title div,
+  table.retrade-info-table-edit-change-good-unit .retrade-info-value div
+{
+  font-weight: normal; font-size: 10pt;
+}
+
+table.retrade-info-table-edit-change-good-unit caption.retrade-info-caption
+{
+  font-size: 11px;
+}
+
+
+table.retrade-info-table-edit-change-good-unit td.retrade-info-value-good-unit-name,
+  table.retrade-info-table-edit-change-good-unit td.retrade-info-title-good-unit-price,
+  table.retrade-info-table-edit-change-good-unit td.retrade-info-value-good-unit-price
+{
+  padding-top: 2pt;
+}
+
+table.retrade-info-table-edit-change-good-unit td.retrade-info-value-good-unit-price div
+{
+  background-color: #fffee6;
+}
+
+table.retrade-info-table-edit-change-good-unit td.retrade-info-value-good-unit-rcost div
+{
+  background-color: #fff1ef;
+}
+
+
+/* info panel [retrade/firms/info-main] */
+
+table.retrade-info-table-contractor-cat0
+{
+  margin-top: 4pt; width: 0.01%;
+}
+
+table.retrade-info-table-contractor-cat1
+{
+  margin-top: 2pt; margin-bottom: 4pt;
+}
+
+td.retrade-info-value-contractor-name
+{
+  width: 100%;
+}
+
+td.retrade-info-value-contractor-type
+{
+  vertical-align: middle;
+}
+
+.retrade-info-value-contractor-type span.retrade-info-value
+{
+  text-transform: uppercase; font-size: 10pt;
+  background-color: transparent;
+}
+
+table.retrade-info-table-contractor-money
+{
+  margin: 4pt 0 4pt 0; width: 0.01%;
+}
+
+td.retrade-info-title-contractor-money-month
+{
+  border: 1px solid #fafafa;
+  text-align: center;
+}
+
+td.retrade-info-title-contractor-money-month-sep div
+{
+  width: 8pt;
+}
+
+td.retrade-info-value-contractor-expense
+{
+  padding-top: 2pt; padding-bottom: 2pt;
+}
+
+td.retrade-info-value-contractor-income div,
+  td.retrade-info-value-contractor-expense div,
+  td.retrade-info-value-contractor-balance div
+{
+  text-align: right; padding-left: 1ex;
+  min-width: 8ex;
+}
+
+td.retrade-info-value-contractor-income div
+{
+  color: #6495ed;
+}
+
+td.retrade-info-value-contractor-expense div
+{
+  color: #c61122;
+}
+
+
+/* create domain log [retrade/system/create-domain-log] */
+
+.retrade-create-domain-log-wait-msg
+{
+  position: absolute;
+  left: 0; top: 50%; width: 100%;
+  text-align: center;
+  cursor: default;
+}
+
+.retrade-create-domain-log-text
+{
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: scroll;
+  cursor: default;
+  white-space: pre;
+  font-family: monospace;
+}
+
+
+/* self shunt [retrade/system/self-shunt] */
+
+.retrade-self-shunt-groups-checkbox-box-cell
+{
+  padding: 2pt 6pt 2pt 6pt; width: 0.1%;
+}
+
+.retrade-self-shunt-groups-checkbox-label-cell,
+  .retrade-form-label-cell.retrade-self-shunt-groups-checkbox-label-cell
+{
+  padding: 2pt 0 2pt 0; width: 99.9%;
+  cursor: pointer;
+}
+
+
+/* [retrade/settings/users] */
+
+div.retrade-settings-users-data-info table.retrade-info-table
+{
+  width: 0.01%; margin: 2pt;
+}
+
+div.retrade-settings-users-data-nocomment
+{
+  padding: 2pt; position: absolute;
+  background-color: #fcfcfc; cursor: default;
+}
+
+div.retrade-settings-users-data-comment
+{
+  padding: 2pt; position: absolute;
+  height: 100%; width: 100%;
+  overflow-y: auto; overflow-x: hidden;
+  background-color: #fcfcfc; cursor: default;
+  white-space: pre-wrap;
+}
+
+
+/* [retrade/settings/secure-rules] */
+
+div.retrade-settings-secure-rule-descr
+{
+  font-family: 'Tahoma', sans-serif; font-size: 10pt;
+  padding: 2pt; position: absolute;
+  height: 100%; width: 100%; cursor: default;
+  overflow-y: auto; overflow-x: hidden;
+}
+
+/* [retrade/settings/secure-sets] */
+
+div.retrade-settings-secure-set-nocomment
+{
+  padding: 2pt; position: absolute;
+  background-color: #fcfcfc; cursor: default;
+  overflow-y: auto; overflow-x: hidden;
+}
+
+div.retrade-settings-secure-set-comment
+{
+  padding: 2pt; position: absolute;
+  height: 100%; width: 100%;
+  overflow-y: auto; overflow-x: hidden;
+  background-color: #fcfcfc; cursor: default;
+  white-space: pre-wrap;
+}
+
+
+/* [retrade/goods/edit-good] */
+
+table.retrade-good-info-table-type
+{
+  width: 0.01%;
+}
+
+td.retrade-good-info-value-derived,
+  td.retrade-good-info-value-type
+{
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+/* [retrade/goods/good-calc-info] */
+
+td.retrade-info-value-derived-good-measure,
+  td.retrade-info-value-derived-good-super-name
+{
+  width: 100%;
+}
+
+td.retrade-info-value-derived-good-measure div
+{
+  background-color: transparent;
+  font-weight: bolder;
+  margin-left: 4pt;
+}
+
+td.retrade-info-value-derived-good-super-name div
+{
+  margin-left: 4pt; display: inline-block;
+}
+
+td.retrade-info-table-derived-good-info-sep div
+{
+  height: 2pt;
+}

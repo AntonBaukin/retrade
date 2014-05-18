@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.goods'>
+
+  <union-subclass name = 'GoodUnit' extends = 'com.tverts.endure.core.Entity'
+    table = 'retrade_good_unit' lazy = 'false'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_good_unit_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_good_unit_code'>
+
+        <comment>Domain where the Good Unit is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '64'
+        unique-key = 'ux_good_unit_code'>
+
+        <comment>Unique (within the Domain) code of the Good Unit</comment>
+      </column>
+    </property>
+
+
+    <!-- Measure Unit reference -->
+
+    <many-to-one name = 'measure' lazy = 'proxy'
+      foreign-key = 'fk_good_unit_measure'>
+
+      <column name = 'fk_measure_unit' not-null = 'true'>
+
+        <comment>The Measure unit of this Good Unit</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'good_name' not-null = 'true' length = '512'>
+
+        <comment>The name of the good</comment>
+      </column>
+    </property>
+
+
+    <!-- Name (in lower case) -->
+
+    <property name = 'nameLower'>
+
+      <column name = 'good_name_lower' not-null = 'true'
+        length = '512' index = 'ix_good_name'>
+
+        <comment>The name of the good in lower case</comment>
+      </column>
+    </property>
+
+
+    <!-- Good Calculation reference -->
+
+    <many-to-one name = 'goodCalc' foreign-key = 'fk_good_calc'>
+
+      <column name = 'fk_good_calc' index = 'ix_good_calc'>
+
+        <comment>
+          When Good Unit refers a Calculation, it is a product.
+          Products may not be bought as the are the result of
+          the Domain owner company work. But semi-ready flag of
+          the Calculation alters this meaning
+        </comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

@@ -1,0 +1,145 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+  <x:root-panel coid = "${z:vid(rootView, 'goods-stores-prices')}"
+     position = "#{rootView.extjsPosition}">
+
+
+    <f:facet name = "extjs-props">
+      title: 'Товары', layout: {type: 'vbox', align: 'stretch'}
+    </f:facet>
+
+    <!-- [upper content: goods -->
+
+    <x:component coid = "${z:vid(rootView, 'goods-content')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 2, frame: false, border: false,
+        bodyCls: 'retrade-back-panel', layout: 'fit'
+      </f:facet>
+    </x:component>
+
+    <!-- upper content: goods] -->
+
+
+    <x:component coid = "${z:vid(rootView, '_middle_splitter')}">
+      <f:facet name = "extjs-props">
+        xtype: 'splitter', collapsible: true
+      </f:facet>
+    </x:component>
+
+
+    <!-- [lower content: stores and prices layout -->
+
+    <x:component coid = "${z:vid(rootView, '_stores-prices-layout')}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        layout: {type: 'hbox', align: 'stretch'}
+      </f:facet>
+
+
+      <!-- [stores -->
+
+      <x:component coid = "${z:vid(rootView, 'stores-content')}">
+        <f:facet name = "extjs-props">
+
+          title: 'Склады',
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-back-panel', layout: 'fit'
+        </f:facet>
+      </x:component>
+
+      <!-- stores] -->
+
+
+      <x:component coid = "${z:vid(rootView, '_stores_prices_splitter')}">
+        <f:facet name = "extjs-props">
+          xtype: 'splitter', collapsible: false
+        </f:facet>
+      </x:component>
+
+
+      <!-- [price lists -->
+
+      <x:component coid = "${z:vid(rootView, 'prices-content')}">
+        <f:facet name = "extjs-props">
+
+          title: 'Прайс листы',
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-back-panel', layout: 'fit'
+        </f:facet>
+      </x:component>
+
+      <!-- price lists] -->
+
+    </x:component>
+
+    <!-- lower content: stores and prices layout] -->
+
+  </x:root-panel>
+
+
+  <script type = "text/javascript">
+
+  Ext.onReady(function()
+  {
+    function load(url, bind, domain, next)
+    {
+      extjsf.defineBind('onload', domain, function(root)
+      {
+        bind.component().add(root.component())
+        if(next) next()
+      })
+
+      Ext.create('Ext.ComponentLoader', {
+        target: bind.component(), 'url': url,
+        ajaxOptions: {method: 'GET'}, autoLoad: true, scripts: true, params: {
+          '${rootView.viewModeParam}': '${rootView.viewModeStr}',
+          '${rootView.extjsDomainParam}': domain
+        }
+      })
+    }
+
+    var prev = null;
+
+    //~: load goods
+    if("${rootView.isSecure('view: goods')}" == 'true')
+      prev =  ZeT.fbind(load, this, "${z:url('/go/retrade/goods/list')}",
+        extjsf.bind("${z:vid(rootView, 'goods-content')}", '${rootView.extjsDomain}'),
+        extjsf.tempDomain('desktop-content:retrade-goods-stores-prices:goods:'), prev
+      );
+
+    //~: load stores
+    if("${rootView.isSecure('view: stores')}" == 'true')
+      prev = ZeT.fbind(load, this, "${z:url('/go/retrade/stores/list')}",
+        extjsf.bind("${z:vid(rootView, 'stores-content')}", '${rootView.extjsDomain}'),
+        extjsf.tempDomain('desktop-content:retrade-goods-stores-prices:stores:'), prev
+      );
+
+    //~: load price lists
+    if("${rootView.isSecure('view: price-lists')}" == 'true')
+      prev = ZeT.fbind(load, this, "${z:url('/go/retrade/price-lists/list')}",
+        extjsf.bind("${z:vid(rootView, 'prices-content')}", '${rootView.extjsDomain}'),
+        extjsf.tempDomain('desktop-content:retrade-goods-stores-prices:prices:'), prev
+      );
+
+    //~: invoke the loads chain
+    if(prev) prev()
+  })
+
+  </script>
+
+</ui:define>
+</ui:decorate>
+</ui:component>

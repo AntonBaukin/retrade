@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.account'>
+
+  <class name = 'PayIt' table = 'retrade_pay_it' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_pay_it'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_pay_it_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity reference -->
+
+    <many-to-one name = 'unity' cascade = 'save-update'
+      foreign-key = 'fk_pay_it_mirror'>
+
+      <column name = 'fk_unity' not-null = 'true'
+        unique-key = 'ux_pay_it_unity'>
+
+        <comment>The (unique) Unified Mirror of the Payment Link</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Account reference -->
+
+    <many-to-one name = 'account' foreign-key = 'fk_pay_it_account'>
+
+      <column name = 'fk_account' not-null = 'true'
+        unique-key = 'ux_pay_it'>
+
+        <comment>The Account linked with Payment Way</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Payment Way reference -->
+
+    <many-to-one name = 'payWay' foreign-key = 'fk_pay_it_way'>
+
+      <column name = 'fk_pay_way' not-null = 'true'
+        unique-key = 'ux_pay_it' index = 'ix_pay_it_way'>
+
+        <comment>The Payment Way linked with Account</comment>
+      </column>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>

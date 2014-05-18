@@ -1,0 +1,128 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.sells'>
+
+  <class name = 'GoodSell' table = 'retrade_good_sell' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_good_sell'/>
+
+
+    <!-- Receipt [bi, list, slave] -->
+
+    <many-to-one name = 'receipt' foreign-key = 'fk_good_sell_receipt'
+      insert = 'false' update = 'false' not-null = 'true'>
+
+      <column name = 'fk_receipt' not-null = 'true'
+        index = 'ix_good_sell_receipt'>
+
+        <comment>Receipt this sell is part of</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- TradeStore reference -->
+
+    <many-to-one name = 'store' foreign-key = 'fk_good_sell_store'>
+
+      <column name = 'fk_store' not-null = 'true'
+        index = 'ix_good_sell_store'>
+
+        <comment>The Trade Store the good volume was removed from</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Unit reference -->
+
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_good_sell_unit'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        index = 'ix_good_sell_unit'>
+
+        <comment>The Good Unit (name and measure of the good)</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Price reference -->
+
+    <many-to-one name = 'goodPrice' foreign-key = 'fk_good_sell_price'>
+
+      <column name = 'fk_good_price' index = 'ix_good_sell_price'>
+
+        <comment>The Good Price (if was set by the Price List)</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Volume -->
+
+    <property name = 'volume' type = 'big_decimal'>
+
+      <column name = 'good_volume' precision = '18' scale = '8'>
+
+        <comment>The volume (amount) of the good taken from the Store</comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Cost (volume * price) -->
+
+    <property name = 'cost' type = 'big_decimal'>
+
+      <column name = 'volume_cost' precision = '20' scale = '10'>
+
+        <comment>The the cost of the whole volume</comment>
+      </column>
+    </property>
+
+
+    <!-- Payment Flag -->
+
+    <property name = 'payFlag'>
+
+      <column name = 'pay_flag' sql-type = 'character(1)'>
+
+        <comment>
+          Denotes the method of payment:
+            B  for bank payment;
+            C  for cash payment.
+        </comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
+
+
+<!--
+
+select
+  sr.receipt_code   as "receipt ",
+  st.store_name     as "store",
+  gu.good_name      as "good",
+  gs.good_volume    as "volume",
+  mu.ux_code        as "measure",
+  gs.volume_cost    as "volume cost"
+from
+  retrade_good_sell gs
+    join
+  retrade_sell_receipt sr
+    on (gs.fk_receipt = sr.pk_sell_receipt)
+    join
+  retrade_trade_store st
+    on (gs.fk_store = st.pk_entity)
+    join
+  retrade_good_unit gu
+    on (gs.fk_good_unit = gu.pk_entity)
+    join
+  retrade_measure_unit mu
+    on (gu.fk_measure_unit = mu.pk_cat_item)
+order by sr.receipt_time, sr.receipt_code, gs.good_index
+
+-->

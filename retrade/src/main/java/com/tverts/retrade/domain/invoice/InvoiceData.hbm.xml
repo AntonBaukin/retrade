@@ -1,0 +1,69 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <class name = 'InvoiceData' lazy = 'true'
+    table = 'retrade_invoice_data'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_invoice_data'>
+
+      <generator class = 'foreign'>
+        <param name = 'property'>invoice</param>
+      </generator>
+    </id>
+
+
+    <!-- Invoice (one-bi, to-one, master) -->
+
+    <one-to-one name = 'invoice' constrained = 'true'
+      outer-join = 'false' foreign-key = 'fk_invoice_data'/>
+
+
+    <!-- Trade Store -->
+
+    <many-to-one name = 'store' foreign-key = 'fk_invoice_data_store'>
+
+      <column name = 'fk_store' not-null = 'true'
+        index = 'ix_invoice_data_store'>
+
+        <comment>
+          The store where the goods are associated with
+          (stored to, moved to, soled from)
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Sub Type -->
+
+    <property name = 'subType'>
+
+      <column name = 'sub_type'>
+
+        <comment>Character denoting the type of an altered Invoice</comment>
+      </column>
+    </property>
+
+
+    <!-- Invoice Resulting Goods [bi, list, master] -->
+
+    <list name = "resGoods" cascade = 'save-update' lazy = 'true'>
+
+      <key column = 'fk_invoice_data' not-null = 'true'/>
+
+      <list-index>
+        <column name = 'good_index'>
+          <comment>The index of the Result Good in the Invoice (Data) list</comment>
+        </column>
+      </list-index>
+
+      <one-to-many class = 'ResGood'/>
+    </list>
+
+  </class>
+</hibernate-mapping>

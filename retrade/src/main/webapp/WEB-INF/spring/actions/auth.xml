@@ -1,0 +1,44 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for Authentification            =
+    +================================================-->
+
+  <bean name  = 'authComputerBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.auth.Computer'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.auth.ActComputer'/>
+    </property>
+  </bean>
+
+  <bean name  = 'authLoginBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.auth.AuthLogin'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.auth.ActLogin'/>
+    </property>
+  </bean>
+
+  <bean name  = 'authSessionBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.auth.AuthSession'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.auth.ActAuthSession'/>
+    </property>
+  </bean>
+
+</beans>

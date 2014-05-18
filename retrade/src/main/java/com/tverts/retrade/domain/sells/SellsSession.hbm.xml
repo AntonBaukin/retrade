@@ -1,0 +1,94 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.sells'>
+
+  <joined-subclass name = 'SellsSession' lazy = 'true'
+    extends = 'com.tverts.retrade.domain.payment.PayOrder'
+    table = 'retrade_sells_session'>
+
+    <!-- Join Key -->
+
+    <key column = 'pk_sells_session' foreign-key = 'fk_sells_session'/>
+
+
+    <!-- Close Time -->
+
+    <property name = 'closeTime' type = 'timestamp'>
+
+      <column name = 'close_time'>
+        <comment>Timestamp when the Sells Session was closed</comment>
+      </column>
+    </property>
+
+
+    <!-- Sells Desk -->
+
+    <many-to-one name = 'sellsDesk' foreign-key = 'fk_sells_session_desk'>
+
+      <column name = 'fk_sells_desk' not-null = 'true'
+        index = 'ix_sells_session_desk'>
+
+        <comment>The Sells Desk (terminal) the Session was active in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Pay Desk -->
+
+    <many-to-one name = 'payDesk' foreign-key = 'fk_sells_session_pay_desk'>
+
+      <column name = 'fk_pay_desk' not-null = 'true'
+        index = 'ix_sells_session_pay_desk'>
+
+        <comment>
+          The Payments Desk had assigned to Sells Desk
+          while the Session was active
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Receipts [bi, list, master] -->
+
+    <list name = 'receipts' cascade = 'all-delete-orphan' lazy = 'true'>
+
+      <key column = 'fk_session' not-null = 'true'/>
+
+      <list-index>
+        <column name = 'receipt_index'>
+
+          <comment>The index of the Receipt in its Sells Session</comment>
+        </column>
+      </list-index>
+
+      <one-to-many class = 'SellReceipt'/>
+    </list>
+
+  </joined-subclass>
+</hibernate-mapping>
+
+
+<!--
+
+select
+  po.pay_order_time as "time",
+  po.pay_order_code as "code",
+  po.total_income   as "income",
+  po.actual_income  as "payed",
+  sd.desk_name      as "sells desk name"
+from
+    retrade_pay_order po
+  join
+    retrade_sells_session ss
+  on
+    (po.pk_pay_order = ss.pk_sells_session)
+  join
+    retrade_sells_desk sd
+  on
+    (sd.pk_entity = ss.fk_sells_desk)
+order by po.pay_order_time
+
+-->

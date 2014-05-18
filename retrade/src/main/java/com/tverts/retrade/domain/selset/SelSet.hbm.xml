@@ -1,0 +1,42 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.selset'>
+
+  <class name = 'SelSet' table = 'retrade_sel_set' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_sel_set'/>
+
+
+    <!-- Auth Login reference -->
+
+    <many-to-one name = 'login' foreign-key = 'fk_sel_set_login'>
+
+      <column name = 'fk_login' not-null = 'true'
+        unique-key = 'ux_sel_set'>
+
+        <comment>The Auth Login this Selection Set is for</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Name -->
+
+    <property name = 'name' type = 'string' length = '32'>
+
+      <column name = 'ux_name' not-null = 'true'
+        unique-key = 'ux_sel_set'>
+
+        <comment>
+          The name of the Selection Set.
+          Default name is an empty string.
+        </comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,43 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'>
+
+  <ui:decorate template = '/retrade/.items/desktop.xhtml'
+    xmlns    = 'http://www.w3.org/1999/xhtml'
+    xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+    xmlns:z  = 'uri:tverts.com'>
+
+    <ui:param name = "desktopView" value = "#{facesDesktopView}"/>
+
+    <ui:define name = "page-title">
+      ТТС РеТрейд™
+    </ui:define>
+
+
+    <!-- [application main topbar] -->
+    <ui:define name = "main-topbar">
+
+      <ui:decorate template = "/retrade/.items/main-topbar.xhtml">
+
+        <ui:param name = "localView" value = "#{facesSystemDesktopView}"/>
+      </ui:decorate>
+    </ui:define>
+
+
+    <!-- [load center content] -->
+    <ui:define name = "center_content">
+
+      <ui:fragment rendered = "${rootView.isSecure('view: documents')}">
+        <script type = "text/javascript">
+
+ReTrade.desktop.onReady(function()
+{
+  ReTrade.desktop.loadDesktopPanel("${z:url('/go/retrade/docs/documents')}")
+})
+
+        </script>
+      </ui:fragment>
+    </ui:define>
+
+  </ui:decorate>
+</ui:component>

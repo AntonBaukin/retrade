@@ -1,0 +1,471 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesContractorView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle('${z:jss(v.winmainTitleInfo)}')
+
+    ReTrade.desktop.prevsizeComp({name: 'winmain', domain: '${rootView.extjsDomain}'})
+
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: {type: 'vbox', align: 'stretch'},
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button] -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+
+        handler : function()
+        {
+          extjsf.bind('winmain', '${rootView.extjsDomain}').
+            component().close()
+        }
+
+      </f:facet>
+    </x:component>
+
+
+    <!-- [goto invoices button] -->
+
+    <x:winaction-button coid = "${z:vid(v, 'show_invoices')}"
+      action = "#{v.gotoInvoices}">
+
+      <f:facet name = "extjs-props">
+        text: 'Накладные', margin: extjsf.pts(0, 0, 0, 4)
+      </f:facet>
+
+      <f:facet name = "action-params">
+        'method'           : 'GET',
+        '${v.modelParam}'  : '${v.modelKey}'
+      </f:facet>
+    </x:winaction-button>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [display aggregations -->
+
+    <x:component coid = "${z:vid(v, 'display-aggregations')}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отобразить'
+      </f:facet>
+
+      <x:menu coid = "${z:vid(v, 'display-aggregations-menu')}">
+
+        <f:facet name = "extjs-props">
+          showSeparator: false
+        </f:facet>
+
+        <x:component coid = "${z:vid(v, 'display-aggregations-table-montly')}">
+          <f:facet name = "extjs-props">
+            text: 'Таблица по месяцам', xtype: 'menuitem',
+            cls: 'retrade-menuitem-noicon'
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(v, 'display-aggregations-chart-montly')}">
+          <f:facet name = "extjs-props">
+            text: 'График по месяцам', xtype: 'menuitem',
+            cls: 'retrade-menuitem-noicon'
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(v, 'display-aggregations-table-weekly')}">
+          <f:facet name = "extjs-props">
+            text: 'Таблица по неделям', xtype: 'menuitem',
+            cls: 'retrade-menuitem-noicon'
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(v, 'display-aggregations-chart-weekly')}">
+          <f:facet name = "extjs-props">
+            text: 'График по неделям', xtype: 'menuitem',
+            cls: 'retrade-menuitem-noicon'
+          </f:facet>
+        </x:component>
+
+      </x:menu>
+    </x:component>
+
+    <!-- display aggregations] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [contractor catalog item view -->
+
+  <x:html coid = "${z:vid(v, '_contractor_view_cat')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', frame: true,
+      margin: extjsf.pts(1, 1, 1, 1)
+
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-contractor-cat0"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-contractor-code">
+          <div>Код</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-contractor-code">
+          <div>#{v.entity.code}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-contractor-type">
+          <div>Тип</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-contractor-type">
+          <span class = "retrade-info-value">#{v.contractorType}</span>
+        </td>
+      </tr>
+    </table>
+
+    <table class = "retrade-info-table retrade-info-table-contractor-cat1"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-contractor-name">
+          <div>Название</div>
+        </td>
+        <td class = "retrade-info-value-small-text retrade-info-value-contractor-name">
+          <div>#{v.entity.name}</div>
+        </td>
+      </tr>
+    </table>
+
+  </x:html>
+
+  <!-- contractor catalog item view] -->
+
+
+  <!-- [contractor debts by months -->
+
+  <x:data-store storeId = "${z:vid(v, 'debtsMontly')}"
+    modelProvider = "facesContractorView"
+    modelRequest  = "debts-monthly"
+    modelKey      = "${v.modelKeys}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.AggrVolumeView'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.AggrVolumeView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid-debts-montly')}"
+    storeId = "${z:vid(v, 'debtsMontly')}">
+
+    <f:facet name = "grid-props">
+
+      title: 'Оборот купли-продажи по месяцам',
+      columns: ZeT.defined('retrade.columns.ContractorsDebtsMonthly'),
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+      pager: false, sortableColumns: true, flex: 1
+
+    </f:facet>
+  </x:data-grid>
+
+
+  <x:component coid = "${z:vid(v, 'chart-debts-montly')}">
+    <f:facet name = "extjs-props">
+
+      hidden: true, flex: 1, layout: 'fit',
+      cls: 'retrade-content-panel',
+      title: 'Оборот купли-продажи по месяцам'
+
+    </f:facet>
+
+    <x:component coid = "${z:vid(v, '_chart-debts-montly')}">
+      <f:facet name = "extjs-props">
+
+      xtype: 'chart', animate: false, border: false,
+      margin: extjsf.pts(1, 1, 1, 1),
+      legend: { position: 'bottom' },
+
+      store: "${z:vid(v, 'debtsMontly')}",
+
+      axes: [
+
+        {
+          type: 'Numeric', position: 'left', grid: false,
+          fields: ['volumePositive', 'volumeNegative'],
+          minimum: 0, adjustMinimumByMajorUnit: true,
+        },
+
+        {
+          type: 'Category', position: 'bottom', grid: true,
+          fields: ['dateMonthYear'],
+          label: { rotate: { degrees: 270 }}
+        }
+      ],
+
+      series: [
+        {
+          type: 'line', axis: 'left',
+          xField: 'dateMonthYear', yField: 'volumePositive',
+          highlight: { size: 2, radius: 2 },
+          markerConfig: { type: 'cross', size: 4, radius: 4, 'stroke-width': 0 },
+          title: 'Продано контрагенту'
+        },
+
+        {
+          type: 'line', axis: 'left',
+          xField: 'dateMonthYear', yField: 'volumeNegative',
+          highlight: { size: 2, radius: 2 },
+          markerConfig: { type: 'circle', size: 4, radius: 4, 'stroke-width': 0 },
+          title: 'Куплено у контрагента'
+        }
+      ]
+
+      </f:facet>
+    </x:component>
+  </x:component>
+
+  <!-- contractor debts by months] -->
+
+
+  <!-- [contractor debts by weeks -->
+
+  <x:data-store storeId = "${z:vid(v, 'debtsWeekly')}"
+    modelProvider = "facesContractorView"
+    modelRequest  = "debts-weekly"
+    modelKey      = "${v.modelKeys}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.AggrVolumeView', autoLoad: false
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.AggrVolumeView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid-debts-weekly')}"
+    storeId = "${z:vid(v, 'debtsWeekly')}">
+
+    <f:facet name = "grid-props">
+
+      title: 'Оборот купли-продажи по неделям', hidden: true,
+      columns: ZeT.defined('retrade.columns.ContractorsDebts'),
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+      pager: false, sortableColumns: true, flex: 1
+
+    </f:facet>
+  </x:data-grid>
+
+  <x:component coid = "${z:vid(v, 'chart-debts-weekly')}">
+    <f:facet name = "extjs-props">
+
+      hidden: true, flex: 1, layout: 'fit',
+      cls: 'retrade-content-panel',
+      title: 'Оборот купли-продажи по неделям'
+
+    </f:facet>
+
+    <x:component coid = "${z:vid(v, '_chart-debts-weekly')}">
+      <f:facet name = "extjs-props">
+
+      xtype: 'chart', animate: false, border: false,
+      margin: extjsf.pts(1, 1, 1, 1),
+      legend: { position: 'bottom' },
+
+      store: "${z:vid(v, 'debtsWeekly')}",
+
+      axes: [
+
+        {
+          type: 'Numeric', position: 'left', grid: false,
+          fields: ['volumePositive', 'volumeNegative'],
+          minimum: 0, adjustMinimumByMajorUnit: true,
+        },
+
+        {
+          type: 'Category', position: 'bottom', grid: true,
+          fields: ['date'],
+          label: { rotate: { degrees: 270 }, renderer: Ext.util.Format.dateRenderer('d.m.Y') }
+        }
+      ],
+
+      series: [
+        {
+          type: 'line', axis: 'left',
+          xField: 'date', yField: 'volumePositive',
+          highlight: { size: 2, radius: 2 },
+          markerConfig: { type: 'cross', size: 4, radius: 4, 'stroke-width': 0 },
+          title: 'Продано контрагенту'
+        },
+
+        {
+          type: 'line', axis: 'left',
+          xField: 'date', yField: 'volumeNegative',
+          highlight: { size: 2, radius: 2 },
+          markerConfig: { type: 'circle', size: 4, radius: 4, 'stroke-width': 0 },
+          title: 'Куплено у контрагента'
+        }
+      ]
+
+      </f:facet>
+    </x:component>
+  </x:component>
+
+  <!-- contractor debts by weeks] -->
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: hide all the displays
+  extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays = function()
+  {
+    var IDS = ['grid-debts-montly', 'chart-debts-montly', 'grid-debts-weekly', 'chart-debts-weekly'];
+
+    Ext.Array.each(IDS, function(id)
+    {
+      extjsf.component("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${rootView.extjsDomain}').hide()
+    })
+  }                               
+                                                   
+  //~: table by months
+  extjsf.bindHandler("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}', function()
+  {
+     extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays()
+
+     extjsf.component("${z:vid(v, 'grid-debts-montly')}", '${rootView.extjsDomain}').show()
+     extjsf.component("${z:vid(v, 'debtsMontly')}", '${rootView.extjsDomain}').load()
+  })
+
+  //~: chart by months
+  extjsf.bindHandler("${z:vid(v, 'display-aggregations-chart-montly')}", '${rootView.extjsDomain}', function()
+  {
+     extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays()
+
+     extjsf.component("${z:vid(v, 'chart-debts-montly')}", '${rootView.extjsDomain}').show()
+     extjsf.component("${z:vid(v, 'debtsMontly')}", '${rootView.extjsDomain}').load()
+  })
+
+  //~: table by weeks
+  extjsf.bindHandler("${z:vid(v, 'display-aggregations-table-weekly')}", '${rootView.extjsDomain}', function()
+  {
+     extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays()
+
+     extjsf.component("${z:vid(v, 'grid-debts-weekly')}", '${rootView.extjsDomain}').show()
+     extjsf.component("${z:vid(v, 'debtsWeekly')}", '${rootView.extjsDomain}').load()
+  })
+
+  //~: chart by weeks
+  extjsf.bindHandler("${z:vid(v, 'display-aggregations-chart-weekly')}", '${rootView.extjsDomain}', function()
+  {
+     extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays()
+
+     extjsf.component("${z:vid(v, 'chart-debts-weekly')}", '${rootView.extjsDomain}').show()
+     extjsf.component("${z:vid(v, 'debtsWeekly')}", '${rootView.extjsDomain}').load()
+  })
+
+  //]]>
+  </script>
+
+
+  <!-- [firm status bar -->
+
+  <f:facet name = "status-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: 'fit', bodyCls: 'retrade-status-panel'
+  </f:facet>
+
+
+  <f:facet name = "status">
+
+    <x:component coid = "${z:vid(v, '_sb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-status-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [firm summ -->
+
+    <x:html coid = "${z:vid(v, '_firm_balance')}">
+      <f:facet name = "extjs-props">
+        frame: false, border: false
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-firm-info-status-balance"
+        cellpadding = "0" cellspacing = "0" border = "0">
+
+        <tr>
+          <td style = "width: 100%"><div></div></td>
+          <td class = "retrade-info-title retrade-firm-info-status-balance-delta">
+            <div title = 'Разница между продажами данному контрагенту и закупками у него'>Сальдо</div>
+          </td>
+          <td class = "retrade-info-value retrade-firm-info-status-balance-delta">
+            <div>#{v.getBalance()}</div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+    <!-- invoice summ] -->
+
+  </f:facet>
+
+  <!-- firm status bar] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

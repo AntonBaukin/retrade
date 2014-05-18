@@ -1,0 +1,205 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesRepriceDocView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle('${z:jss(v.winmainTitleInfo)}')
+
+  </script>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button -->
+
+    <x:component coid = "${z:vid(v, 'close_window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+
+        handler : function()
+        {
+          extjsf.bind('winmain', '${rootView.extjsDomain}').
+            component().close()
+        }
+
+      </f:facet>
+    </x:component>
+
+    <!-- close window button] -->
+
+
+    <!-- [price change document is not fixed -->
+
+    <c:if test = "${not v.documentFixed}">
+
+      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [fix price change document -->
+
+      <x:winaction-button coid = "${z:vid(v, 'fix_invoice')}"
+        action = "#{v.doFixReprice}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(0, 4, 0, 0),
+          text: 'Провести'
+        </f:facet>
+
+        <f:facet name = "action-params">
+
+          '${v.modelParam}'  : '${v.modelKey}'
+        </f:facet>
+      </x:winaction-button>
+
+      <!-- fix price change document] -->
+
+
+      <!-- [goto edit button -->
+
+      <x:winaction-button coid = "${z:vid(v, 'edit_reprice')}"
+        action = "#{v.gotoEditReprice}">
+
+        <f:facet name = "extjs-props">
+          text: 'Редактировать'
+        </f:facet>
+
+        <f:facet name = "action-params">
+
+          'method'           : 'GET',
+          '${v.modelParam}'  : '${v.modelKey}',
+          '${v.entityParam}' : '${v.model.objectKey}'
+        </f:facet>
+      </x:winaction-button>
+
+      <!-- goto edit button] -->
+
+    </c:if>
+
+    <!-- price change document is not fixed] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [price change document info -->
+
+  <x:html coid = "${z:vid(v, 'reprice_info')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', region: 'north',
+      frame: true, margin: extjsf.pts(1, 0, 0, 0)
+
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-reprice-doc"
+      cellpadding = "0" cellspacing = "0" border = "0" >
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-reprice-code">
+          <div>Код</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-reprice-code">
+          <div>#{v.numeric.code}</div>
+        </td>
+
+        <c:if test = "${v.documentFixed}">
+
+          <td class = "retrade-info-title retrade-info-title-reprice-time">
+            <div>Время</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-reprice-time">
+            <div>#{v.changeTime}</div>
+          </td>
+        </c:if>
+      </tr>
+    </table>
+
+    <table class = "retrade-info-table retrade-info-table-reprice-price-list"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-reprice-price-list">
+          <div>Прайс лист</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-reprice-price-list">
+          <div>#{v.priceList}</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-reprice-reason">
+          <div>Основание</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-reprice-reason">
+          <div>#{v.numeric.changeReason}</div>
+        </td>
+      </tr>
+    </table>
+  </x:html>
+
+  <!-- price change document info] -->
+
+
+  <!-- [price changes table -->
+
+  <x:data-store storeId = "${z:vid(v, 'priceChanges')}"
+    modelView = "${v}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodPriceHistory'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.PriceChange')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'priceChanges')}">
+
+    <f:facet name = "grid-props">
+
+      region: 'center', margin: extjsf.pts(1, 0, 0, 0),
+      columns: ZeT.defined('retrade.columns.PriceChange'),
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+      pager: false, sortableColumns: false
+
+    </f:facet>
+  </x:data-grid>
+
+  <!-- price changes table] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+</ui:component>

@@ -1,0 +1,378 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesGoodEditView}"/>
+
+${rootView.forceSecure('view: goods')}
+${v.checkModelRequested}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle("#{z:jss(v.calcWindowTitle)}")
+
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: 'fit', bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [goto good edit button] -->
+
+    <x:winaction-button coid = "${z:vid(v, 'goto_back')}"
+      action = "#{v.gotoWhere('calc-back')}">
+
+      <f:facet name = "extjs-props">
+        text: 'Назад'
+      </f:facet>
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '#{v.modelKeys}'
+      </f:facet>
+    </x:winaction-button>
+
+
+    <!-- [view-edit comment] -->
+
+    <x:component coid = "${z:vid(v, 'edit-comment')}">
+      <f:facet name = "extjs-props">
+        hidden: #{v.historyCalc or empty v.calcView},
+        xtype: 'button', enableToggle: true,
+        text: 'Комментарий', margin: extjsf.dpts(0, 4, 0, 4),
+        tooltipType: 'title', tooltip: 'Просмотреть (и изменить) комментарий о формуле. Изменения вступят в силу при сохранении товара!'
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [goto calc history button] -->
+
+    <x:winaction-button coid = "${z:vid(v, 'goto-calcs-history')}"
+      action = "#{v.gotoWhere('calcs-history')}">
+
+      <f:facet name = "extjs-props">
+        hidden: #{v.historyCalc or empty v.goodView.objectKey},
+        text: 'История', margin: extjsf.dpts(0, 0, 0, 4),
+        tooltipType: 'title', tooltip: 'Отобразить список прежних версий формулы'
+      </f:facet>
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '#{v.modelKeys}'
+      </f:facet>
+    </x:winaction-button>
+
+
+    <!-- [goto edit calculation button] -->
+
+    <x:winaction-button coid = "${z:vid(v, 'goto-calc-edit')}"
+      action = "#{v.gotoWhere('calc-edit')}">
+
+      <f:facet name = "extjs-props">
+                                   /*  edit: goods; edit: goods calcs */
+        disabled: #{not v.isAllSecure('edit: goods')},
+        text: 'Изменить', margin: extjsf.dpts(0, 0, 0, 4),
+        tooltipType: 'title', tooltip: 'Изменить (или создать новую) формулу на основе данной'
+      </f:facet>
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '#{v.modelKeys}'
+      </f:facet>
+    </x:winaction-button>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [calc status bar -->
+
+  <f:facet name = "status-props">
+    hidden: #{empty v.goodView.objectKey or empty v.calcView},
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-status-panel'
+  </f:facet>
+
+
+  <f:facet name = "status">
+
+    <!-- [derived] -->
+
+    <x:html coid = "${z:vid(v, '_derived')}" rendered = "#{v.calcView.derived}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-good-info-table-derived"
+        cellpadding = "0" cellspacing = "0" border = "0">
+
+        <tr>
+          <td class = "retrade-info-value-small-text retrade-good-info-value-derived">
+            <div>производный</div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+
+    <x:component coid = "${z:vid(v, '_sb_fill_0')}">
+     <f:facet name = "extjs-props">
+       xtype: 'panel', flex: 1, border: false,
+       bodyCls: 'retrade-status-panel'
+     </f:facet>
+    </x:component>
+
+
+    <!-- [good calc type] -->
+
+    <x:html coid = "${z:vid(v, '_good_type')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-good-info-table-type"
+             cellpadding = "0" cellspacing = "0" border = "0" align = "right">
+
+        <tr>
+          <td class = "retrade-info-value-small-text retrade-good-info-value-type">
+            <div>
+              <ui:fragment rendered = "#{not v.material and not v.semiReady}">
+                продукт/ингредиент
+              </ui:fragment>
+
+              <ui:fragment rendered = "#{not v.material and v.semiReady}">
+                полуфабрикат
+              </ui:fragment>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+  </f:facet>
+
+  <!-- calc status bar] -->
+
+
+  <!-- [calculation parts | derived info -->
+
+  <x:component coid = "${z:vid(v, 'main-layout')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'panel', region: 'center', border: false,
+      bodyCls: 'retrade-transparent-panel',
+      layout: 'fit', margin: extjsf.pts(1, 0, 0, 0)
+    </f:facet>
+
+  <!-- [calc parts table -->
+
+  <x:data-store storeId = "${z:vid(v, 'calcParts')}"
+    modelProvider = "facesGoodEditView" modelRequest  = "parts"
+    modelKey = "#{v.modelKeys}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodCalcPartView'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodCalcPartView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'calcParts')}">
+
+    <f:facet name = "grid-props">
+      hidden: #{v.calcView.derived}, sortableColumns: false,
+      columns: ZeT.defined('retrade.columns.GoodCalcPartView')
+    </f:facet>
+  </x:data-grid>
+
+  <!-- calc parts] -->
+
+
+  <!-- [derived good info -->
+
+  <x:component coid = "${z:vid(v, '_main_layout')}">
+
+    <f:facet name = "extjs-props">
+
+      hidden: #{not v.calcView.derived},
+      xtype: 'panel', border: false,
+      bodyPadding: extjsf.pt(2),
+      bodyCls: 'retrade-content-panel',
+      layout: {type: 'vbox', align: 'stretch'}
+
+    </f:facet>
+
+
+    <x:component coid = "${z:vid(v, '_main_layout_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
+
+
+    <x:html coid = "${z:vid(v, 'derived_info')}">
+
+      <table class = "retrade-info-table retrade-info-table-derived-good-info"
+        cellpadding = "0" cellspacing = "0" border = "0">
+
+        <tr>
+          <td class = "retrade-info-title retrade-info-title-derived-good-code">
+            <div>Суб-код</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-derived-good-code">
+            <div>#{v.calcView.subCode}</div>
+          </td>
+
+          <td class = "retrade-info-title retrade-info-title-derived-good-volume">
+            <div>объём</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-derived-good-volume">
+            <div>#{v.calcView.subVolume}</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-derived-good-measure">
+            <div>#{v.calcView.superGoodMeasure}</div>
+          </td>
+        </tr>
+
+        <tr><td colspan = "5" class = "retrade-info-table-derived-good-info-sep"><div></div></td></tr>
+
+        <tr>
+          <td class = "retrade-info-title retrade-info-title-derived-good-super-code">
+            <div>Товар</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-derived-good-super-code">
+            <div>#{v.calcView.superGoodCode}</div>
+          </td>
+
+          <td colspan = "3" class = "retrade-info-value retrade-info-value-derived-good-super-name">
+            <div>#{v.calcView.superGoodName}</div>
+          </td>
+        </tr>
+      </table>
+
+    </x:html>
+
+    <x:component coid = "${z:vid(v, '_main_layout_fill_1')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
+
+  </x:component>
+
+  <!-- derived good info] -->
+
+  </x:component>
+
+  <!-- calculation parts | derived info] -->
+
+
+  <!-- [cal comment text area] -->
+
+  <x:component coid = "${z:vid(v, 'calc-comment')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'textarea', flex: 1, margin: extjsf.pt(1),
+      region: 'center', hidden: true,
+      overflowX: 'hidden', overflowY: 'auto',
+      value: "#{z:jss(v.calcView.remarks)}"
+
+    </f:facet>
+  </x:component>
+
+  <x:action-call coid = "${z:vid(v, 'calc-comment-script')}"
+    action = "#{v.doRemarkCalc}">
+
+    <f:facet name = "action-params">
+      '${v.modelParam}': '${v.modelKeys}'
+    </f:facet>
+  </x:action-call>
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: adjust window size
+  extjsf.bind("${z:vid(v, 'main-layout')}", '${rootView.extjsDomain}').on('boxready', function()
+  {
+     extjsf.component('winmain', '${rootView.extjsDomain}').
+       setSize(extjsf.pt(360), extjsf.pt(200))
+  })
+
+  //~: toggle edit comment
+  extjsf.bind("${z:vid(v, 'edit-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+  {
+    var ml = extjsf.component("${z:vid(v, 'main-layout')}", '${rootView.extjsDomain}');
+    var co = extjsf.component("${z:vid(v, 'calc-comment')}", '${rootView.extjsDomain}');
+
+    ml.setVisible(!btn.pressed)
+    co.setVisible(btn.pressed)
+    btn.setText((btn.pressed)?('Применить'):('Комментарий'))
+
+    //?: {hide the comment & post it}
+    if(btn.pressed) co.retradeInitialValue = v; else
+    {
+      var v; co.setValue(v = ZeTS.trim(co.getValue()))
+
+      //?: {not changed} not post
+      if(v == co.retradeInitialValue) return;
+
+      extjsf.bindHandler("${z:vid(v, 'calc-comment-script')}", '${rootView.extjsDomain}')({
+        params: { remarks: v }
+      })
+    }
+  })
+
+  //]]>
+  </script>
+
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

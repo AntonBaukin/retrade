@@ -1,0 +1,272 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<ui:decorate template = '/resources/.view-modes/page.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_title'>
+  <ui:insert name = 'page-title'/>
+</ui:define>
+
+<ui:define name = 'page_body'>
+
+<x:viewport coid = "${z:vid(desktopView, 'desktop')}">
+
+  <f:facet name = "extjs-props">
+    layout: {type: 'hbox', align: 'stretch'}
+  </f:facet>
+
+
+  <!-- [desktop left panel -->
+
+  <x:component coid = "${z:vid(desktopView, 'desktop_left')}">
+
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', flex: 1,
+      frame: false, border: false, layout: 'border',
+      animCollapse: false, collapseDirection: 'left',
+      hideCollapseTool: true, titleCollapse: true,
+      bodyCls: 'retrade-desktop-panel retrade-desktop-panel-left'
+    </f:facet>
+
+    <script type = "text/javascript">
+
+      ReTrade.desktop.bindPanel('left', "${z:vid(desktopView, 'desktop_left')}", '${rootView.extjsDomain}')
+
+    </script>
+
+
+    <!-- [left topbar -->
+
+    <x:component coid = "${z:vid(desktopView, 'left_topbar')}">
+
+      <f:facet name = "extjs-props">
+
+        region: 'north', frame: false, border:false,
+        margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+        bodyCls: 'retrade-desktop-panel-topbar',
+        layout: {type: 'hbox', align: 'middle'}
+      </f:facet>
+    </x:component>
+
+
+    <script type = "text/javascript">
+
+  ReTrade.desktop.controller('left').mainTopbar("${z:vid(desktopView, 'left_topbar')}", '${rootView.extjsDomain}')
+  ReTrade.desktop.controller('left').mainTopbarExt("${z:vid(desktopView, 'left_topbar')}", '${rootView.extjsDomain}')
+
+    </script>
+
+    <!-- left topbar] -->
+
+
+    <!-- [left content -->
+
+    <x:component coid = "${z:vid(desktopView, 'left_panel')}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', region: 'center',
+        frame: false, border: false, layout: 'fit',
+        bodyCls: 'retrade-desktop-panel-content'
+      </f:facet>
+
+      <script type = "text/javascript">
+
+  ReTrade.desktop.controller('left').contentPanel("${z:vid(desktopView, 'left_panel')}", '${rootView.extjsDomain}')
+
+      </script>
+
+
+      <!-- [direct content of the center panel] -->
+      <ui:insert name = 'center_content_direct'/>
+
+    </x:component>
+
+
+    <!-- [direct content of the left panel] -->
+    <ui:insert name = 'left_content_direct'/>
+
+    <!-- left content] -->
+
+  </x:component>
+
+
+  <!-- desktop left panel] -->
+
+
+  <x:component coid = "${z:vid(desktopView, '_desktop_left_splitter')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'splitter', collapsible: true, collapseTarget: 'prev'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [desktop center item  -->
+
+  <x:component coid = "${z:vid(desktopView, 'desktop_center')}">
+
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', minWidth: 256, width: 786,
+      bodyCls: 'retrade-desktop-panel retrade-desktop-panel-center',
+      frame: false, border: false, layout: 'border'
+    </f:facet>
+
+
+    <script type = "text/javascript">
+
+ ReTrade.desktop.bindPanel('center', "${z:vid(desktopView, 'desktop_center')}", '${rootView.extjsDomain}')
+
+    </script>
+
+
+    <!-- [desktop main topbar] -->
+    <ui:insert name = 'main-topbar'/>
+
+
+    <!-- [content panel] -->
+
+    <x:component coid = "${z:vid(desktopView, 'root_panel')}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', region: 'center',
+        frame: false, border: false, layout: 'fit',
+        bodyCls: 'retrade-desktop-panel-content'
+      </f:facet>
+
+      <script type = "text/javascript">
+
+  ReTrade.desktop.controller('center').contentPanel("${z:vid(desktopView, 'root_panel')}", '${rootView.extjsDomain}')
+
+      </script>
+
+
+      <!-- [direct content of the center panel] -->
+      <ui:insert name = 'center_content_direct'/>
+
+    </x:component>
+  </x:component>
+
+
+
+  <!-- desktop center item] -->
+
+
+  <x:component coid = "${z:vid(desktopView, '_desktop_right_splitter')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'splitter', collapsible: true
+    </f:facet>
+  </x:component>
+
+
+  <!-- [desktop right panel -->
+
+  <x:component coid = "${z:vid(desktopView, 'desktop_right')}">
+
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', flex: 1,
+      frame: false, border: false, layout: 'border',
+      animCollapse: false, collapseDirection: 'right',
+      hideCollapseTool: true, titleCollapse: true,
+      bodyCls: 'retrade-desktop-panel retrade-desktop-panel-right'
+    </f:facet>
+
+    <script type = "text/javascript">
+
+      ReTrade.desktop.bindPanel('right', "${z:vid(desktopView, 'desktop_right')}", '${rootView.extjsDomain}')
+
+    </script>
+
+
+    <!-- [right topbar -->
+
+    <x:component coid = "${z:vid(desktopView, 'right_topbar')}">
+
+      <f:facet name = "extjs-props">
+
+        region: 'north', frame: false, border:false,
+        margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+        bodyCls: 'retrade-desktop-panel-topbar',
+        layout: {type: 'hbox', align: 'middle'}
+      </f:facet>
+    </x:component>
+
+
+    <script type = "text/javascript">
+
+  ReTrade.desktop.controller('right').mainTopbar("${z:vid(desktopView, 'right_topbar')}", '${rootView.extjsDomain}')
+  ReTrade.desktop.controller('right').mainTopbarExt("${z:vid(desktopView, 'right_topbar')}", '${rootView.extjsDomain}')
+
+    </script>
+
+    <!-- right topbar] -->
+
+
+    <!-- [right content -->
+
+    <x:component coid = "${z:vid(desktopView, 'right_panel')}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', region: 'center',
+        frame: false, border: false, layout: 'fit',
+        bodyCls: 'retrade-desktop-panel-content'
+      </f:facet>
+
+      <script type = "text/javascript">
+
+  ReTrade.desktop.controller('right').contentPanel("${z:vid(desktopView, 'right_panel')}", '${rootView.extjsDomain}')
+
+      </script>
+
+
+      <!-- [direct content of the center panel] -->
+      <ui:insert name = 'center_content_direct'/>
+
+    </x:component>
+
+
+    <!-- [direct content of the right panel] -->
+    <ui:insert name = 'right_content_direct'/>
+
+    <!-- right content] -->
+
+  </x:component>
+
+
+  <!-- desktop left panel] -->
+
+</x:viewport>
+
+  <!-- [delayed content of the left panel] -->
+  <ui:insert name = 'left_content'/>
+
+  <!-- [delayed content of the center panel] -->
+  <ui:insert name = 'center_content'/>
+
+  <!-- [delayed content of the right panel] -->
+  <ui:insert name = 'right_content'/>
+
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/page_post.xhtml'
+  xmlns = 'http://tverts.com/retrade/webapp/response'>
+
+  <!-- [content of post response] -->
+  <ui:insert name = 'post_response'/>
+
+</ui:decorate>
+</ui:component>

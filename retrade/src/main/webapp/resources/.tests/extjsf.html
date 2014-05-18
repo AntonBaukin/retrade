@@ -1,0 +1,108 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetobj.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../extjsf.js"></script>
+
+</head>
+
+<body>
+<script type = "text/javascript">
+//<![CDATA[
+
+  //<: components binding
+
+  extjsf.defineBind('panel')
+
+  var on_change_invoked = false;
+
+  window.onloads = [];
+  window.onload = function()
+  {
+    var fs = window.onloads;
+    for(var i = 0;(i < fs.length);i++)
+      fs[i].call()
+  }
+
+  window.onloads.push(function()
+  {
+    var items = extjsf.bind('panel').extjsItems();
+
+    ZeT.assert(!!items)
+    ZeT.assert(items.length == 1)
+
+    ZeT.assert(!!items[0].listeners);
+
+    var f = items[0].listeners['change'];
+    ZeT.assert(ZeT.isf(f))
+
+    f('field', 'oval', 'nval', 'opts')
+    ZeT.assert(on_change_invoked)
+  })
+
+  extjsf.defineBind('field').extjsProps({
+
+    xtype: 'textfield',
+    name: 'textfield1',
+    fieldLabel: 'Text field',
+    value: 'Text field value'
+
+  })
+
+  function on_change(field, oval, nval, opts)
+  {
+    ZeT.assert(field === 'field')
+    ZeT.assert(oval  === 'oval')
+    ZeT.assert(nval  === 'nval')
+    ZeT.assert(opts  === 'opts')
+
+    ZeT.assert(this && this._extjs_props)
+    on_change_invoked = true;
+  }
+
+  extjsf.bind('field').on('change', on_change)
+  extjsf.bind('panel').addItem('field')
+
+  //>: components binding
+
+
+  //<: CSS ex and pt
+
+  window.onloads.push(function()
+  {
+    var ex2  = extjsf.ex(2);
+    ZeT.assert(!!ex2)
+
+    var pt20 = extjsf.pt(20);
+    ZeT.assert(!!pt20)
+
+    var exsA = extjsf.exs(1, 2, 3, 4);
+    ZeT.assert(!!exsA.length)
+
+    var exsB = extjsf.exs(true, 1, 2, 3, 4);
+    ZeT.assert(!!exsB.length)
+
+    var eptA = extjsf.pts(10, 20, 30, 40);
+    ZeT.assert(!!eptA.length)
+
+    var eptB = extjsf.pts(true, 10, 20, 30, 40);
+    ZeT.assert(!!eptB.length)
+  })
+
+  //>: CSS ex and pt
+
+//]]>
+</script>
+
+<div style = 'width:26pt; height:6pt; background-color: orange;'></div>
+
+</body>
+</html>

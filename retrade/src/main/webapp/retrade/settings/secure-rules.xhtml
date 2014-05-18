@@ -1,0 +1,224 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <c:set var = "v" scope = "request" value = "${facesSettingsSecureRulesView}"/>
+
+  ${v.forceSecure('secure: view: rules')}
+  ${v.checkModelRequestedWithRedirect}
+
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:root-panel coid = "${z:vid(v, 'settings_secure_rules')}" position = "#{rootView.extjsPosition}">
+
+  <f:facet name = "extjs-props">
+    title: 'Правила доступа к системе',
+    layout: {type: 'vbox', align: 'stretch'}
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-inline-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [filter rules field -->
+
+    <x:action-call coid = "${z:vid(v, 'search-rules-script')}"
+      action = "#{v.doSearchRules}">
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '${v.modelKeys}'
+      </f:facet>
+    </x:action-call>
+
+    <x:text-field coid = "${z:vid(v, 'search-rules')}"
+      value = "#{v.searchNames}">
+
+      <f:facet name = "extjs-props">
+        margin: extjsf.dpts(1, 0, 1, 4),
+        width:  extjsf.ex(24)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Поиск'
+      </f:facet>
+    </x:text-field>
+
+    <!-- filter rules field] -->
+
+
+    <!-- [restrict to selection set -->
+
+    <x:component coid = "${z:vid(v, 'search-rules-selset')}">
+      <f:facet name = "extjs-props">
+
+       xtype: 'button', enableToggle: true,
+       width: 30, componentCls: 'retrade-icon-24',
+       margin: extjsf.dpts(1, 0, 1, 6),
+       icon: "${z:url('/resources/icons/selset_24.png')}",
+       tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+     </f:facet>
+    </x:component>
+
+    <!-- restrict to selection set] -->
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-rules')}", '${rootView.extjsDomain}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      ZeT.timeout(1000, function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchRules: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search-rules-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'rulesStore')}").load()
+        }})
+      })
+    })
+
+    extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').on('click', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search-rules')}", '${rootView.extjsDomain}').value();
+        var params = { searchLogins: names };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search-rules-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'rulesStore')}").load()
+        }})
+    })
+
+    //]]>
+    </script>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [rule description text -->
+
+
+  <x:html coid = "${z:vid(v, '_secure_rule_descr')}">
+    <f:facet name = "extjs-props">
+       xtype: 'panel', border: false, height: extjsf.pt(32),
+       bodyCls: 'retrade-content-panel'
+    </f:facet>
+
+    <div id = "${z:vid(v, 'secure-rule-descr')}"
+      class = "retrade-settings-secure-rule-descr">
+
+      Каждое правило доступа имеет свою область действия. Выделите правило
+      в списке, чтобы узнать его назначение. Вы также можете назначить правило
+      пользователям в текущей выборке (во множество по умолчанию; повторного
+      назначения не будет).
+
+    </div>
+  </x:html>
+
+
+  <!-- rule description text] -->
+
+  <x:component coid = "${z:vid(v, '_secure_rule_descr_spliter')}">
+    <f:facet name = "extjs-props">
+      xtype: 'splitter', collapsible: false
+    </f:facet>
+  </x:component>
+
+  <!-- [secure rules list -->
+
+  <x:data-store storeId = "${z:vid(v, 'rulesStore')}" modelView = "${v}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.SecRuleView'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.SecRuleView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+    storeId = "${z:vid(v, 'rulesStore')}">
+
+    <f:facet name = "grid-props">
+
+      preventHeader: true, flex: 1,
+      pager: true, hideHeaders: true,
+      columns: ZeT.defined('retrade.columns.SecRuleView'),
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+
+    </f:facet>
+  </x:data-grid>
+
+  <!-- secure rules list] -->
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function(grid, selected)
+  {
+    var m = (selected.length == 1) && selected[0];
+    var n = Ext.get("${z:vid(v, 'secure-rule-descr')}");
+
+    if(!m) n.setHTML(grid.retradeAboutComment); else
+    {
+      if(!grid.retradeAboutComment)
+        grid.retradeAboutComment = n.getHTML();
+      n.setHTML(Ext.String.htmlEncode(m.get('descr')))
+    }
+
+  })
+
+  //]]>
+  </script>
+
+
+</x:root-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

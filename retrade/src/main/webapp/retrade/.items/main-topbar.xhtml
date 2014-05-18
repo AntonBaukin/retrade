@@ -1,0 +1,869 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <!-- [application main topbar -->
+
+  <x:component coid = "${z:vid(localView, 'main_topbar')}">
+
+    <f:facet name = "extjs-props">
+
+      region: 'north', frame: false, border:false,
+      margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+      bodyCls: 'retrade-desktop-panel-topbar retrade-transparent-panel',
+      layout: {type: 'hbox', align: 'middle'}
+    </f:facet>
+
+
+    <!-- [retrade main menu -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-main-menu-button')}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', flex: 0, text: 'РеТрейд',
+        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        icon: "${z:url('/resources/icons/retrade_16.png')}",
+        componentCls: 'retrade-button-22pt'
+
+      </f:facet>
+
+      <x:menu coid = "${z:vid(localView, 'retrade-main-menu')}">
+
+        <f:facet name = "extjs-props">
+          showSeparator: false
+        </f:facet>
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-docs')}">
+
+          <f:facet name = "extjs-props">
+
+            text: 'Основные документы', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/document_16.png')}",
+            disabled: ${not rootView.isSecure('view: documents')}
+
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-reprice-docs')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Документы изменения цен', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/price_delta_16.png')}",
+            disabled: ${not rootView.isSecure('view: price change documents')}
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-payments')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Платёжные документы', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/payment_16.png')}",
+            disabled: ${not rootView.isSecure('view: payments')}
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-datas')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Данные и отчёты', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/datas_16.png')}"
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-my-reports')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Мои отчёты', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/my_reports_16.png')}"
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Настройки', xtype: 'menuitem', hideOnClick: false,
+            icon: "${z:url('/resources/icons/retrade_system_16.png')}"
+          </f:facet>
+
+          <x:menu coid = "${z:vid(localView, 'retrade-main-menu-settings-menu')}">
+
+            <f:facet name = "extjs-props">
+              showSeparator: false
+            </f:facet>
+
+            <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings-users')}">
+
+              <f:facet name = "extjs-props">
+                text: 'Пользователи', xtype: 'menuitem',
+                icon: "${z:url('/resources/icons/user_16.png')}",
+                disabled: ${not rootView.isSecure('secure: view: auth logins')}
+              </f:facet>
+            </x:component>
+
+            <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings-secure-rules')}">
+
+              <f:facet name = "extjs-props">
+                text: 'Правила доступа', xtype: 'menuitem',
+                icon: "${z:url('/resources/icons/secure_rule_16.png')}",
+                disabled: ${not rootView.isSecure('secure: view: rules')}
+              </f:facet>
+            </x:component>
+
+            <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings-secure-sets')}">
+
+              <f:facet name = "extjs-props">
+                text: 'Множества правил ', xtype: 'menuitem',
+                icon: "${z:url('/resources/icons/secure_set_16.png')}",
+                disabled: ${not rootView.isSecure('secure: view: sets')}
+              </f:facet>
+            </x:component>
+          </x:menu>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-logoff-sep')}">
+          <f:facet name = "extjs-props">
+            xtype: 'menuseparator'
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-logoff')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Выйти', xtype: 'menuitem', hideOnClick: false,
+            icon: "${z:url('/resources/icons/logoff_16.png')}"
+          </f:facet>
+
+          <x:menu coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-menu')}">
+
+            <f:facet name = "extjs-props">
+              showSeparator: false
+            </f:facet>
+
+            <x:component coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm')}">
+
+              <f:facet name = "extjs-props">
+                text: 'Подтверждаю', xtype: 'menuitem',
+                cls: 'retrade-menuitem-noicon retrade-menuitem-centered'
+              </f:facet>
+            </x:component>
+          </x:menu>
+        </x:component>
+      </x:menu>
+    </x:component>
+
+    <!-- logoff server call -->
+    <x:action-call coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}"
+      action = "#{rootView.doLogoff}"/>
+
+    <!-- retrade main menu] -->
+
+
+    <!-- [catalogues menu -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-catalogues-menu-button')}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'button', flex: 0, text: 'Справочники',
+        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        icon: "${z:url('/resources/icons/catalogues_16.png')}",
+        componentCls: 'retrade-button-22pt'
+      </f:facet>
+
+      <x:menu coid = "${z:vid(localView, 'retrade-catalogues-menu')}">
+
+        <f:facet name = "extjs-props">
+          showSeparator: false
+        </f:facet>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods')}">
+          <f:facet name = "extjs-props">
+
+            text: 'Товары', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/good_16.png')}",
+            disabled: ${not rootView.isSecure('view: goods')}
+
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods-tree')}">
+          <f:facet name = "extjs-props">
+
+            text: 'Каталог товаров', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/tree_expand_16.png')}",
+            disabled: ${not rootView.isSecure('view: goods')}
+
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods-measures')}">
+          <f:facet name = "extjs-props">
+
+            text: 'Единицы измерения', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/measure_16.png')}",
+            disabled: ${not rootView.isSecure('view: goods')}
+
+           </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-trade-stores')}">
+          <f:facet name = "extjs-props">
+
+            text: 'Склады', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/store_16.png')}",
+            disabled: ${not rootView.isSecure('view: stores')}
+
+           </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-trade-price-lists')}">
+          <f:facet name = "extjs-props">
+
+            text: 'Прайс-листы', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/price_list_16.png')}",
+            disabled: ${not rootView.isSecure('view: price-lists')}
+
+           </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-firms')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Контрагенты', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/contractor_16.png')}",
+            disabled: ${not rootView.isSecure('view: contractors')}
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-accounts')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Учётные счета', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/coins_sigma_16.png')}",
+            disabled: ${not rootView.isSecure('view: accounts')}
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-pay-ways')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Платёжные счета', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/coins_dot_16.png')}",
+            disabled: ${not rootView.isSecure('view: accounts')}
+          </f:facet>
+        </x:component>
+
+      </x:menu>
+    </x:component>
+
+    <!-- catalogues menu] -->
+
+
+    <!-- [create document menu -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-create-doc-menu-button')}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', flex: 0, text: 'Создать',
+        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        icon: "${z:url('/resources/icons/issue_plus_16.png')}",
+        componentCls: 'retrade-button-22pt'
+      </f:facet>
+
+      <x:menu coid = "${z:vid(localView, 'retrade-create-doc-menu')}">
+
+        <f:facet name = "extjs-props">
+          showSeparator: false
+        </f:facet>
+
+        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-buy')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Накладную закупки', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/listpad_plus_16.png')}",
+            disabled: ${not rootView.isSecure('create: invoice: buy')}
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-sell')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Накладную продажи', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/listpad_minus_16.png')}",
+            disabled: ${not rootView.isSecure('create: invoice: sell')}
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-move')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Накладную перемещения', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/listpad_arrow_out_16.png')}",
+            disabled: ${not rootView.isSecure('create: invoice: move')}
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-auto-produce')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Накладную авто-производства', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/produce_16.png')}"
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-free-produce')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Накладную производства', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/produce_16.png')}"
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-correction')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Накладную корректировки', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/correction_16.png')}"
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'retrade-create-reprice-doc')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Документ изменения цен', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/price_delta_16.png')}",
+            disabled: ${not rootView.isSecure('create: price change document')}
+          </f:facet>
+        </x:component>
+      </x:menu>
+    </x:component>
+
+    <!-- create document menu] -->
+
+
+    <!-- [selection set button] -->
+    <ui:decorate template = "selset.xhtml">
+      <ui:param name = "localView" value = "#{localView}"/>
+    </ui:decorate>
+
+    <!-- [topbar extention point] -->
+
+    <x:component coid = "${z:vid(localView, 'main_topbar_ext')}">
+
+      <f:facet name = "extjs-props">
+
+        border: false, frame: false, flex: 0,
+        bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.dpts(0, 0, 0, 6)
+
+      </f:facet>
+    </x:component>
+
+    <ui:insert name = 'topbar-buttons'/>
+
+
+    <!-- [notifications area -->
+
+    <x:component coid = "${z:vid(localView, 'main_topbar_notifications')}">
+
+      <f:facet name = "extjs-props">
+
+        flex: 1, border: false, frame: false,
+        bodyCls: 'retrade-notifications-panel',
+        height: extjsf.dpt(20)
+
+      </f:facet>
+    </x:component>
+
+    <!-- notifications area] -->
+  </x:component>
+
+  <!-- application main topbar] -->
+
+
+  <!-- [topbar scripts -->
+
+  <script type = "text/javascript">
+
+    //~: attach top bar panel to the desktop
+    ReTrade.desktop.controller('center').mainTopbar(
+      "${z:vid(localView, 'main_topbar')}", '${rootView.extjsDomain}')
+
+    //~: set the top bar extension point
+    ReTrade.desktop.controller('center').mainTopbarExt(
+      "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
+
+    //~: logoff
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm')}",
+      '${rootView.extjsDomain}', function()
+    {
+      extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${rootView.extjsDomain}')({
+        success: ZeT.timeout(500, function()
+        {
+          window.location.replace("${z:url('/go/index')}")
+        })
+      })
+    })
+
+    //~: open contractors root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-firms')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:firms:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/firms/list')}", {
+        'domain': domain
+      })
+    })
+
+    //~: open accounts root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-accounts')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:accounts:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/accounts/list')}", {
+        'domain': domain
+      })
+    })
+
+    //~: open payment ways root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-pay-ways')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:pay-ways:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/accounts/list-ways')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open goods + stores + price lists root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-goods')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:goods-stores-prices:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/goods/goods-stores-prices')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open goods tree
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-goods-tree')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:goods-tree:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/goods/goods-tree')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open measures in window
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-goods-measures')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-main-menu:measures');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: (Ext.getBody().getWidth() - extjsf.pt(360)) / 2,
+        width: extjsf.pt(360), height: extjsf.pt(240),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/goods/list-measures')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //:~ open stores in window
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-trade-stores')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-main-menu:stores');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: (Ext.getBody().getWidth() - extjsf.pt(360)) / 2,
+        width: extjsf.pt(360), height: extjsf.pt(240),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/stores/list-win')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //:~ open price lists tree root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-trade-price-lists')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:price-lists-tree:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/price-lists/lists-tree')}", {
+        'domain': domain
+      })
+    })
+
+    //~: open documents root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-docs')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:docs:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/docs/documents')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open price changes root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-reprice-docs')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:reprice-docs:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/reprice-docs/list')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open payments root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-payments')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:payments:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/payments/list')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open data sources and reports root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-datas')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:datas:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/datas/list')}", {
+        'domain': domain
+      })
+    })
+
+    //~: open user report requests in a window
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-my-reports')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = 'wnd:retrade-main-menu:my-reports';
+
+      var box     = ReTrade.desktop.calcWindowBox({
+        x: (Ext.getBody().getWidth()  - extjsf.pt(560)) / 2,
+        y: (Ext.getBody().getHeight() - extjsf.pt(260)) / 2,
+        widthpt: 560, heightpt: 260
+      })
+
+      var winmain = extjsf.bind('winmain', domain); if(winmain)
+      {
+        winmain.component().toFront()
+        winmain.component().setPagePosition(box.x, box.y)
+        winmain.component().expand()
+        return;
+      }
+
+      winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: box.x, y: box.y, width: box.width, height: box.height,
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/datas/my-reports')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //:~ open settings - users
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-settings-users')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:settings:users:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/settings/users')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open settings - secure rules
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-settings-secure-rules')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:settings:secure-rules:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/settings/secure-rules')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open settings - secure sets
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-settings-secure-sets')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:settings:secure-sets:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/settings/secure-sets')}", {
+        'domain': domain
+      })
+    })
+
+
+    //~: create buy invoice
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-buy')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-buy:');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/invoices/create-buy')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //~: create sell invoice
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-sell')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-sell:');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/invoices/create-sell')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //~: create move invoice
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-move')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-move:');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/invoices/create-move')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //~: create auto produce invoice
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-auto-produce')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-move:');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/invoices/create-move')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain,
+            'invoice-type': 'auto'
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //~: create free produce invoice
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-free-produce')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-move:');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/invoices/create-move')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain,
+            'invoice-type': 'free'
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //~: create correction invoice
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-correction')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-move:');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/invoices/create-move')}",
+          ajaxOptions: {method: 'GET'},
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain,
+            'invoice-type': 'correct'
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //~: create price change document
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-reprice-doc')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:reprice-doc:');
+      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+        xtype: 'window', title: 'Загрузка...',
+        x: extjsf.pt(105), width: extjsf.pt(520), height: extjsf.pt(360),
+        layout: 'fit', autoShow: true, collapsible: true,
+
+        loader: {
+          url: "${z:url('/go/retrade/reprice-docs/edit')}",
+          ajaxOptions: { method: 'GET' },
+          autoLoad: true, scripts: true,
+
+          params: {
+            '${localView.viewModeParam}': 'body',
+            '${rootView.extjsDomainParam}': domain,
+            create: true
+          }
+        }
+      })
+
+      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+  </script>
+  <!-- topbar scripts] -->
+
+</ui:component>

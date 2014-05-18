@@ -1,0 +1,474 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesGoodEditView}"/>
+
+${rootView.forceSecure('view: goods')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle("#{z:jss(v.editWindowTitle)}")
+
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: {type: 'vbox', align: 'stretch'},
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+   <!-- [close window button] -->
+
+   <x:component coid = "${z:vid(v, 'close-window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-default-small-red',
+
+        handler : function()
+        {
+          extjsf.bind('winmain', '${rootView.extjsDomain}').
+            component().close()
+        }
+      </f:facet>
+   </x:component>
+
+
+   <!-- [goto calculation button] -->
+
+   <x:component coid = "${z:vid(v, 'goto-calc')}">
+    <f:facet name = "extjs-props">
+                                 /*  edit: goods; edit: goods calcs */
+      disabled: #{not v.isAllSecure('edit: goods')},
+      xtype:'button', text: 'Производство',
+      margin: extjsf.dpts(0, 4, 0, 4),
+      tooltipType: 'title', tooltip: 'Перейти к формуле (рецепту) производства продукта или полуфабриката'
+    </f:facet>
+   </x:component>
+
+   <x:winaction-delegate coid = "${z:vid(v, 'goto-calc-script')}"
+     action = "#{v.gotoWhere('calc')}">
+
+     <f:facet name = "action-params">
+       '${v.modelParam}': '#{v.modelKeys}'
+     </f:facet>
+   </x:winaction-delegate>
+
+
+   <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+     <f:facet name = "extjs-props">
+       xtype: 'panel', flex: 1, border: false,
+       bodyCls: 'retrade-toolbar-inline-panel'
+     </f:facet>
+   </x:component>
+
+
+   <!-- [submit button] -->
+
+   <x:component coid = "${z:vid(v, 'submit')}">
+    <f:facet name = "extjs-props">
+      disabled: #{not v.isSecure('edit: goods')},
+      xtype:'button', text: 'Сохранить',
+      cls: 'ux-btn-default-small-green'
+    </f:facet>
+   </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [good status bar -->
+
+  <f:facet name = "status-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-status-panel'
+  </f:facet>
+
+
+  <f:facet name = "status">
+
+    <!-- [derived] -->
+
+    <x:html coid = "${z:vid(v, '_derived')}" rendered = "#{v.calcView.derived}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-good-info-table-derived"
+        cellpadding = "0" cellspacing = "0" border = "0">
+
+        <tr>
+          <td class = "retrade-info-value-small-text retrade-good-info-value-derived">
+            <div>производный</div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+
+    <x:component coid = "${z:vid(v, '_sb_fill_0')}">
+     <f:facet name = "extjs-props">
+       xtype: 'panel', flex: 1, border: false,
+       bodyCls: 'retrade-status-panel'
+     </f:facet>
+    </x:component>
+
+
+    <!-- [good type] -->
+
+    <x:html coid = "${z:vid(v, '_good_type')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', frame: false, border: false
+      </f:facet>
+
+      <table class = "retrade-info-table retrade-good-info-table-type"
+        cellpadding = "0" cellspacing = "0" border = "0">
+
+        <tr>
+          <td class = "retrade-info-value-small-text retrade-good-info-value-type">
+            <div>
+              <ui:fragment rendered = "#{v.material}">
+                сырьё/товар
+              </ui:fragment>
+
+              <ui:fragment rendered = "#{not v.material and not v.semiReady}">
+                продукт/ингредиент
+              </ui:fragment>
+
+              <ui:fragment rendered = "#{not v.material and v.semiReady}">
+                полуфабрикат
+              </ui:fragment>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+  </f:facet>
+
+  <!-- good status bar] -->
+
+
+  <!-- [good edit form -->
+
+  <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'good-form')}">
+
+    <f:facet name = "extjs-props">
+
+      region: 'center', border: false,
+      bodyPadding: extjsf.pt(4),
+      bodyCls: 'retrade-content-panel',
+      layout: { type: 'vbox', align: 'stretch' }
+
+    </f:facet>
+
+
+    <!-- [code and name line -->
+
+    <x:component coid = "${z:vid(v, '_good_form_layout')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'panel', border: false,
+        layout: { type: 'table', columns: 4 },
+        bodyCls: 'retrade-transparent-panel',
+        margin: extjsf.dpts(8, 0, 4, 0)
+
+      </f:facet>
+
+
+      <!-- [good code view] -->
+
+      <x:text-field coid = "${z:vid(v, 'code')}"
+         value = "#{v.goodCode}">
+
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(12),
+          disabled: #{not v.isAllSecure('edit: goods; edit: goods codes')},
+          allowBlank: false, validator: function()
+          {
+            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+          }
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Код', cellCls: 'retrade-form-label-cell',
+          margin: extjsf.dpts(0, 4, 0, 0)
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [measure unit code] -->
+
+      <x:drop-list coid = "${z:vid(v, 'measure')}"
+        labels = "#{v.measuresLabels}"
+        value  = "#{v.goodView.measureKey}">
+
+        <f:facet name = "drop-props">
+          disabled: #{not v.isSecure('edit: goods')},
+          width: extjsf.ex(12), matchFieldWidth: false,
+          cellCls: 'retrade-table-cell-100pc', allowBlank: false
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'ед. изм.',
+          cellCls: 'retrade-form-label-cell',
+          margin: extjsf.pts(0, 4, 0, 4)
+        </f:facet>
+      </x:drop-list>
+
+      <!-- measure unit code] -->
+
+
+      <x:component coid = "${z:vid(v, '_good_form_sep0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', border: false,
+          bodyCls: 'retrade-transparent-panel',
+          height: extjsf.pt(8), colspan: 4
+        </f:facet>
+      </x:component>
+
+
+      <!-- [good name view] -->
+
+      <x:text-field coid = "${z:vid(v, 'name')}"
+         value = "#{v.goodView.goodName}">
+
+        <f:facet name = "extjs-props">
+          disabled: #{not v.isSecure('edit: goods')},
+          allowBlank: false, colspan: 3,
+          cellCls: 'retrade-table-cell-100pc',
+          fieldCls: 'retrade-width-100pc', width: '100%'
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Имя', cellCls: 'retrade-form-label-cell',
+          margin: extjsf.dpts(0, 4, 0, 0)
+        </f:facet>
+      </x:text-field>
+
+
+      <x:component coid = "${z:vid(v, '_good_form_sep1')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', border: false,
+          bodyCls: 'retrade-transparent-panel',
+          colspan: 4, height: extjsf.pt(#{(empty v.goodView.objectKey)?(6):(16)})
+        </f:facet>
+      </x:component>
+
+
+      <!-- [add to selection set -->
+
+      <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}" value = "">
+
+        <f:facet name = "extjs-props">
+          hidden: 'false' == "#{v.model.selSetAble}",
+          checked: !!extjsf.bind('winmain', '${rootView.extjsDomain}').retradeAddSelSetChecked,
+          cls: 'retrade-align-right', fieldStyle: { marginRight: '4pt' }
+        </f:facet>
+
+        <f:facet name = "label-props">
+          hidden: 'false' == "#{v.model.selSetAble}",
+          cellCls: 'retrade-table-cell-100pc', colspan: 3,
+          html: "&lt;span title = 'Добавить созданный товар в текущую выборку?'&gt;добавить в выборку&lt;/span&gt;"
+        </f:facet>
+      </x:checkbox-field>
+
+      <!-- add to selection set] -->
+
+      <x:component coid = "${z:vid(v, '_good_form_sep2')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', border: false,
+          bodyCls: 'retrade-transparent-panel',
+          colspan: 4, height: extjsf.pt(12),
+          hidden: 'false' == "#{empty v.goodView.objectKey}"
+        </f:facet>
+      </x:component>
+
+    </x:component>
+
+
+    <!-- [selection set] -->
+
+    <x:hidden-field coid = "${z:vid(v, 'selset')}" value = "#{v.selSet}"/>
+
+
+    <!-- [special: submit action] -->
+    <h:commandButton id = "${z:vid(v, 'submit-action')}" value = "submit" style = "display: none;"
+      action = "#{v.doCommitEdit}"/>
+
+  </x:form-panel>
+
+
+  <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
+    action = "#{v.doCheckCodeExists}">
+
+    <f:facet name = "action-params">
+      '${v.modelParam}': '${v.modelKeys}'
+    </f:facet>
+  </x:action-call>
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: adjust window size
+  extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').on('boxready', function()
+  {
+     var win = extjsf.component('winmain', '${rootView.extjsDomain}');
+     var wht = win.body.getHeight();
+     var frm = extjsf.component("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}');
+     var fht = frm.getBox().height;
+
+     win.setSize(
+       extjsf.pt(280),
+       win.setHeight(win.getHeight() - (wht - fht))
+     )
+  })
+
+  //~: validate on code change
+  extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)
+  {
+     var fb = f.extjsfBind;
+     fb.retradeCodeCheck = v; fb.validityStatus = true;
+
+     if(ZeTS.trim(v) != v)
+       fb.validityStatus = 'Код не может начинаться или оканчиваться пробелами!';
+     if(f.validate() !== true) return;
+
+     ZeT.timeout(1000, function()
+     {
+       if(fb.retradeCodeCheck != v) return;
+
+       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+          params: { code : fb.retradeCodeCheck }, failure: function()
+          {
+            fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
+            if(ZeTS.ises(fb.validityStatus)) fb.validityStatus = true;
+            f.validate()
+          }
+       })
+     })
+  })
+
+
+  //~: submit the form
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  {
+    var form = extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}');
+    if(!form.component().isValid()) return;
+
+
+    //?: {has selection set checked}
+    var addss = extjsf.component("${z:vid(v, 'add-to-selset')}", '${rootView.extjsDomain}');
+    var ssnam = extjsf.component("${z:vid(v, 'selset')}", '${rootView.extjsDomain}');
+
+    if(addss.getValue() && addss.isVisible())
+      ssnam.setValue(ReTrade.selset.selset)
+
+
+    //!: submit the form
+    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
+      command: "${z:vid(v, 'submit-action')}", success: function()
+      {
+        var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}');
+        winmain.retradeEditDone = true;
+        winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible());
+
+        extjsf.bindHandler("${z:vid(v, 'close-window')}", '${rootView.extjsDomain}')()
+      }
+    })
+  })
+
+  //~: go to the calculation
+  extjsf.bindHandler("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}', function()
+  {
+    var form = extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}');
+
+    //!: submit the form with go to
+    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
+      params: {immediate: true}, success: function()
+      {
+        extjsf.bindHandler("${z:vid(v, 'goto-calc-script')}", '${rootView.extjsDomain}')()
+      }
+    })
+  })
+
+
+  //~: submit on enter for text fields
+  Ext.Array.forEach([ 'code', 'measure', 'name' ],
+    function(id)
+    {
+       extjsf.bind("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${rootView.extjsDomain}').on('specialkey', function(f, e)
+       {
+         if(e.getKey() == e.ENTER)
+           extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')()
+         else if(e.getKey() == e.ESC)
+           extjsf.bindHandler("${z:vid(v, 'close-window')}", '${rootView.extjsDomain}')()
+       })
+    })
+
+  //]]>
+  </script>
+
+  <!-- good edit form] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "#{v.formValid}">
+
+      <ui:fragment rendered = "#{v.codeExists}">
+        <field target = "${z:vid(v, 'code')}">
+          <error>Указанный код уже используется в другом Товаре!</error>
+        </field>
+      </ui:fragment>
+
+    </validation>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+   <ui:fragment rendered = "#{not empty v.goodAddedKey and v.model.selSetAble}">
+   <script>
+   //<![CDATA[
+
+ ReTrade.selset.items([#{v.goodAddedKey}], true).reloadStore()
+
+   //]]>
+   </script>
+   </ui:fragment>
+  </ui:define>
+</ui:decorate>
+</ui:component>

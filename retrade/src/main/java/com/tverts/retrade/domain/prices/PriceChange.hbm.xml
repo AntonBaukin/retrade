@@ -1,0 +1,83 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
+
+  <class name = 'PriceChange' table = 'retrade_price_change' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_price_change'/>
+
+
+    <!-- Price Change Document reference -->
+
+    <many-to-one name = 'repriceDoc' foreign-key = 'fk_price_change_doc'>
+
+      <column name = 'fk_reprice_doc' not-null = 'true'
+        unique-key = 'ux_price_change'>
+
+        <comment>The Price Change Document this entry is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Unit reference -->
+
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_price_change_good_price'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        unique-key = 'ux_price_change' index = 'ix_price_change_good'>
+
+        <comment>The Good Unit of the Price List this entry affecting</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Change Time -->
+
+    <property name = 'changeTime' type = 'timestamp'>
+
+      <column name = 'change_time' index = 'ix_price_change_time'>
+        <comment>The price change actual time</comment>
+      </column>
+    </property>
+
+
+    <!-- Price -->
+
+    <property name = 'priceOld' type = 'big_decimal'>
+
+      <column name = 'price_old'
+        precision = '12' scale = '2'>
+
+        <comment>The price was when changing it</comment>
+      </column>
+    </property>
+
+
+    <!-- Price -->
+
+    <property name = 'priceNew' type = 'big_decimal'>
+
+      <column name = 'price_new' not-null = 'true'
+        precision = '12' scale = '2'>
+
+        <comment>The price to assign (was assigned)</comment>
+      </column>
+    </property>
+
+
+    <!-- Index in Price Change Document -->
+
+    <property name = 'docIndex'>
+
+      <column name = 'doc_index' not-null = 'true'>
+        <comment>Index in Price Change Document</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

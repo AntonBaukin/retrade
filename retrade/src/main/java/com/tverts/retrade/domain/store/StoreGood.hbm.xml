@@ -1,0 +1,119 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.store'>
+
+  <class name = 'StoreGood' table = 'retrade_store_good' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_store_good'/>
+
+
+    <!-- Trade Store reference -->
+
+    <many-to-one name = 'store' foreign-key = 'fk_good_store'>
+
+      <column name = 'fk_store' not-null = 'true'
+        index = 'ix_good_store'>
+
+        <comment>The Trade Store the good volume was added to or removed from</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Invoice State reference  -->
+
+    <many-to-one name = 'invoiceState' foreign-key = 'fk_store_good_state'
+      insert = 'false' update = 'false' not-null = 'true'>
+
+      <column name = 'fk_invoice_state' not-null = 'true'
+        index = 'ix_store_good_state'>
+
+        <comment>Reference to the (fixed) Invoice state owning this good</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Good Unit reference -->
+
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_store_good_unit'>
+
+      <column name = 'fk_good_unit' not-null = 'true'
+        index = 'ix_store_good_unit'>
+
+        <comment>The Good Unit (name and measure of the good)</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Volume Positive -->
+
+    <property name = 'volumePositive' type = 'big_decimal'>
+
+      <column name = 'good_volume_positive' precision = '18' scale = '8'>
+
+        <comment>The volume (amount) of the good added to the store</comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Negative -->
+
+    <property name = 'volumeNegative' type = 'big_decimal'>
+
+      <column name = 'good_volume_negative' precision = '18' scale = '8'>
+
+        <comment>The volume (amount) of the good removed from the store</comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Left -->
+
+    <property name = 'volumeLeft' type = 'big_decimal'>
+
+      <column name = 'good_volume_left' precision = '20' scale = '8'>
+
+        <comment>
+          The volume (amount) of the good left in the store.
+          Used in Volume Check Invoices.
+        </comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
+
+
+<!--
+
+select
+  sg.fk_good_unit as "good",
+  sg.fk_store     as "store",
+  av.pk_entity    as "av",
+  count(*)        as "fixes count"
+from retrade_store_good sg, aggr_value av
+where (sg.good_volume_left is not null) and
+ (av.fk_owner = sg.fk_store) and (av.selector_key = sg.fk_good_unit)
+group by "good", "store", "av"
+
+
+select
+  sg.good_volume_positive as "v+",
+  sg.good_volume_negative as "v-",
+  sg.good_volume_left as "left"
+from
+  retrade_store_good sg
+    join
+  retrade_invoice_state s
+    on (sg.fk_invoice_state = s.pk_invoice_state)
+    join
+  retrade_invoice i
+    on (s.fk_invoice = i.pk_entity)
+where (sg.fk_good_unit = -198) and (sg.fk_store = -189)
+order by order_index
+
+-->

@@ -1,0 +1,95 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
+
+  <class name = 'RepriceDoc' table = 'retrade_reprice_doc' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_reprice_doc'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_reprice_doc_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_reprice_doc_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_reprice_doc_code'>
+
+        <comment>Domain where the price change document is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '64'
+        unique-key = 'ux_reprice_doc_code'>
+
+        <comment>Unique (within the Domain) code of the price change document</comment>
+      </column>
+    </property>
+
+
+    <!-- Price List reference -->
+
+    <many-to-one name = 'priceList' lazy = 'proxy'
+      foreign-key = 'fk_reprice_doc_price_list'>
+
+      <column name = 'fk_price_list' not-null = 'true'
+        index = 'ix_reprice_doc_price_list'>
+
+        <comment>The Price List which positions are modified</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Change Time -->
+
+    <property name = 'changeTime' type = 'timestamp'>
+
+      <column name = 'change_time' index = 'ix_reprice_doc_time'>
+        <comment>The price change actual time</comment>
+      </column>
+    </property>
+
+
+    <!-- Change Reason -->
+
+    <property name = 'changeReason'>
+
+      <column name = 'change_reason' length = '1024'>
+        <comment>The reason (external, business) of the change action</comment>
+      </column>
+    </property>
+
+
+    <!-- Changes (set, bi, slave) -->
+
+    <list name = 'changes' inverse = 'true' cascade = 'save-update' lazy = 'true'>
+
+      <key column = 'fk_reprice_doc'/>
+      <list-index column = 'doc_index'/>
+
+      <one-to-many class = 'com.tverts.retrade.domain.prices.PriceChange'/>
+    </list>
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,81 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.sells'>
+
+  <union-subclass name = 'PayDesk' extends = 'com.tverts.endure.core.Entity'
+    table = 'retrade_pay_desk' lazy = 'true'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_pay_desk_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'>
+        <comment>Domain where the Payment Desk is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Pay Self: Bank and Cash Payment Ways -->
+
+    <many-to-one name = 'payBank' foreign-key = 'fk_pay_desk_bank'>
+
+      <column name = 'fk_pay_bank' index = 'ix_pay_desk_bank'>
+
+        <comment>
+          Self Payment Way for Bank.
+          (Optional for POS terminals without credit cards.)
+        </comment>
+      </column>
+    </many-to-one>
+
+    <many-to-one name = 'payCash' foreign-key = 'fk_pay_desk_cash'>
+
+      <column name = 'fk_pay_cash' index = 'ix_pay_desk_cash'>
+
+        <comment>
+          Self Payment Way for Cash.
+          (Optional for POS terminals with cashless tranfers only.)
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Name and Remarks -->
+
+    <property name = 'name'>
+
+      <column name = 'desk_name' length = '512' not-null = 'true'>
+        <comment>Name of the Payment Desk</comment>
+      </column>
+    </property>
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'desk_remarks'>
+        <comment>Comments on the Payment Desk</comment>
+      </column>
+    </property>
+
+
+    <!-- Open and Close dates -->
+
+    <property name = 'openDate' type = 'date'>
+
+      <column name = 'open_date' not-null = 'true'>
+        <comment>The date this Payment Desk was opened</comment>
+      </column>
+    </property>
+
+    <property name = 'closeDate' type = 'date'>
+
+      <column name = 'close_date'>
+        <comment>The date this Payment Desk was closed</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

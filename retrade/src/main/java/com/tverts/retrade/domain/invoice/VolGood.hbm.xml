@@ -1,0 +1,25 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <union-subclass name = 'VolGood' extends = 'InvGood' lazy = 'true'
+    table = 'retrade_invoice_good_vol'>
+
+
+    <!-- Invoice Volume Data [bi, list, slave] -->
+
+    <many-to-one name = 'data' foreign-key = 'fk_invoice_good_data_vol'
+      insert = 'false' update = 'false' not-null = 'true'>
+
+      <column name = 'fk_invoice_data' not-null = 'true'
+        index = 'ix_invoice_good_data_vol'>
+
+        <comment>Reference to the Invoice (Volume) Data owning this good position</comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

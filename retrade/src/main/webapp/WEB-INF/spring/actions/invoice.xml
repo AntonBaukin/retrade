@@ -1,0 +1,49 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for ReTrade Invoices            =
+    +================================================-->
+
+  <bean name  = 'retradeInvoiceBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.actions.ActionBuildersList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- Buy-Sell Invoices -->
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceBuySellSave'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceBuySellUpdate'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceBuySellFix'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceEdit'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceBuySellAggr'/>
+
+            <!-- Move Invoices -->
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceMoveSave'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceMoveUpdate'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceMoveFix'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActInvoiceMoveAggr'/>
+
+            <!-- Volume Checks -->
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActVolumeCheckSave'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActVolumeCheckUpdate'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActVolumeCheckFix'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.actions.ActVolumeCheckAggr'/>
+
+            <!-- Sells Invoices -->
+            <bean class = 'com.tverts.retrade.domain.sells.ActSellsInvoice'/>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+</beans>

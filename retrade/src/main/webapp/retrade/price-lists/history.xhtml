@@ -1,0 +1,213 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesGoodPriceView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle('${z:jss(v.winmainTitleHistory)}')
+
+  </script>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+
+    <!-- [back to price list button -->
+
+    <x:winaction-button coid = "${z:vid(v, 'back')}"
+      action = "#{v.gotoPriceList}">
+
+      <f:facet name = "extjs-props">
+        text: 'Назад'
+      </f:facet>
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '#{v.modelKeys}'
+      </f:facet>
+    </x:winaction-button>
+
+    <!-- back to price list button] -->
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [filter dates form -->
+
+    <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'filter-form-dates')}">
+
+      <f:facet name = "extjs-props">
+
+        frame: false, border: false,
+        margin: extjsf.dpts(1, 0, 1, 12),
+        bodyCls: 'retrade-toolbar-panel',
+        layout: {type: 'table', columns: 4}
+      </f:facet>
+
+      <x:date-field coid = "${z:vid(v, 'min_date')}" value = "#{v.model.minDate}">
+
+        <f:facet name = "label-props">
+          text: 'Дата с', cellCls: 'retrade-form-light-label-cell',
+          margin: extjsf.dpts(0, 4, 0, 0)
+        </f:facet>
+      </x:date-field>
+
+      <x:date-field coid = "${z:vid(v, 'max_date')}" value = "#{v.model.maxDate}">
+
+        <f:facet name = "label-props">
+          text: 'по', cellCls: 'retrade-form-light-label-cell',
+          margin: extjsf.dpts(0, 4, 0, 6)
+        </f:facet>
+      </x:date-field>
+
+      <script type = "text/javascript">
+
+  extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${rootView.extjsDomain}').success(function()
+  {
+    Ext.data.StoreManager.lookup("${z:vid(v, 'historyData')}").loadPage(1)
+  })
+
+  //~: on min date change -> post the form
+  extjsf.bind("${z:vid(v, 'min_date')}", '${rootView.extjsDomain}').on('change',
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${rootView.extjsDomain}').
+      bindSubmitForm({'${v.viewModeParam}': '${v.viewModePostStr}'}))
+
+  //~: on max date change -> post the form
+  extjsf.bind("${z:vid(v, 'max_date')}", '${rootView.extjsDomain}').on('change',
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${rootView.extjsDomain}').
+      bindSubmitForm({'${v.viewModeParam}': '${v.viewModePostStr}'}))
+
+      </script>
+
+    </x:form-panel>
+
+    <!-- filter dates form] -->
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [history info -->
+
+  <x:html coid = "${z:vid(v, 'history_info')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', region: 'north',
+      frame: true, margin: extjsf.pts(1, 1, 0, 1)
+
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-price-history-good"
+           cellpadding = "0" cellspacing = "0" border = "0">
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-price-history-good-code">
+          <div>Товар код</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-price-history-good-code">
+          <div>#{v.good.code}</div>
+        </td>
+
+        <td class = "retrade-info-fill-price-history-good-code"/>
+
+        <td class = "retrade-info-title retrade-info-title-price-history-good-price">
+          <div>Цена</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-price-history-good-price">
+          <div>#{v.goodPrice}</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-price-history-good-name">
+          <div>наименование</div>
+        </td>
+        <td colspan = "4">
+
+          <table class = "retrade-info-table retrade-info-table-price-history-good-name"
+                 cellpadding = "0" cellspacing = "0" border = "0">
+            <tr>
+              <td class = "retrade-info-value retrade-info-value-price-history-good-name">
+                <div>#{v.good.name}</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </x:html>
+
+  <!-- history info] -->
+
+
+  <!-- [history data grid -->
+
+  <x:data-store storeId = "${z:vid(v, 'historyData')}" modelView = "${v}" pageSize = "10">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodPriceHistory'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodPriceHistory')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'history_data')}"
+    storeId = "${z:vid(v, 'historyData')}">
+
+    <f:facet name = "grid-props">
+      region: 'center', title: 'История цен',
+      margin: extjsf.pts(2, 1, 1, 1),
+      columns: ZeT.defined('retrade.columns.GoodPriceHistory'),
+      pager: true, sortableColumns: false
+    </f:facet>
+  </x:data-grid>
+
+  <!-- history data grid] -->
+
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true" target = "${z:vid(v, 'filter-form-dates')}"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

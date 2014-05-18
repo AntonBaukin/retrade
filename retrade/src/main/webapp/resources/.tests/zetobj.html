@@ -1,0 +1,172 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+  <meta http-equiv = 'Content-Type'   content = 'text/html;charset=UTF-8'/>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetobj.js"></script>
+
+</head>
+
+<body>
+<script type = "text/javascript">
+//<![CDATA[
+
+
+//<: function bind
+
+var fbind_one = function(a, b, c)
+{
+  return this + (a || 0) + (b || 0) + (c || 0);
+}
+
+var fbind_two = ZeT.fbind(fbind_one, -9);
+
+ZeT.assert(fbind_one.call(1, 2, 3, 4) == 10)
+ZeT.assert(fbind_two.call(100) == -9)
+ZeT.assert(fbind_two.call(100, 9) == 0)
+ZeT.assert(fbind_two.call(100, 2, 3, 4) == 0)
+
+//>: function bind
+
+
+//<: function wrapping
+
+var fwrap_one = function(a, b)
+{
+  return this + a + b;
+}
+
+var fwrap_two = ZeT.fwrap(fwrap_one, function(f, a, b)
+{
+  return this * a * b * f.call(this, a, b);
+})
+
+ZeT.assert(fwrap_one.call(2, 3, 4) == 9)
+ZeT.assert(fwrap_two.call(2, 3, 4) == 216) // 2 * 3 * 4 * (2 + 3 + 4)
+
+//>: function wrapping
+
+
+//<: class implementation
+
+var ClassOne = ZeT.defineClass('ClassOne',
+{
+  init : function(a, b, c)
+  {
+    this.value = a + b + c;
+  },
+
+  calc : function(n)
+  {
+    return this.value * n;
+  }
+})
+
+var ClassTwo = ZeT.defineClass('ClassTwo', 'ClassOne',
+{
+  init : function($super, a, b, c)
+  {
+    $super(a, b, c)
+    this.value *= a + b + c;
+  }
+})
+
+ZeT.assert(new ClassOne(1, 2, 3).value ==  6) //<--  1 + 2 + 3
+ZeT.assert(new ClassTwo(1, 2, 3).value == 36) //<-- (1 + 2 + 3) ^ 2
+
+ZeT.extendClass('ClassTwo',
+{
+  calc : function($super, n)
+  {
+    return $super(n) - n;
+  }
+})
+
+// (1 + 2 + 3) ^ 2 * n - n  (n = 2)
+ZeT.assert(ZeT.createInstance('ClassTwo', 1, 2, 3).calc(2) == 70)
+
+//>: class implementation
+
+
+//<: ZeT.singleInstance()
+
+ZeT.singleInstance('calcThree', 'ClassTwo', {
+
+ calc : function($super, n)
+ {
+    return $super(n) - n;
+ }
+
+},
+
+  1, 2, 3 //<-- arguments for the constructor
+)
+
+// class two calc (2) = 70  -  n = 2
+ZeT.assert(ZeT.defined('calcThree').calc(2) == 68)
+
+//>: ZeT.singleInstance()
+
+
+//<: define instance
+
+ZeT.defineInstance('two', 'ClassTwo', 1, 2, 3)
+
+ZeT.assert(ZeT.defined('two') != null)
+ZeT.assert(ZeT.defined('two').calc(2) == 70)
+
+//>: define instance
+
+
+//<: te$st functions
+
+ZeT.assert(!ZeT.i$x({a: {b: {c: false}}},  'a', 'b', 'c'))
+ZeT.assert(ZeT.i$x({a: {b: {c: undefined}}},  'a', 'b', 'c'))
+ZeT.assert(ZeT.i$x({a: {b: {c: null}}},  'a', 'b', 'c'))
+ZeT.assert(ZeT.i$x({a: {b: {c: null}}},  'a', 'c'))
+
+ZeT.assert(!ZeT.i$xtrue({a: {b: {c: false}}},  'a', 'b', 'c'))
+ZeT.assert(ZeT.i$xtrue({a: {b: {c: true}}},  'a', 'b', 'c'))
+ZeT.assert(ZeT.i$xtrue({a: {b: {c: true}}},  'a', 'd', 'c'))
+
+//>: te$st functions
+
+
+//<: string functions
+
+ZeT.assert(ZeTS.ises())
+ZeT.assert(ZeTS.ises(''))
+ZeT.assert(ZeTS.ises(' '))
+ZeT.assert(ZeTS.ises('   \t\n  \n'))
+ZeT.assert(!ZeTS.ises(' 0 '))
+ZeT.assert(!ZeTS.ises(' -'))
+ZeT.assert(!ZeTS.ises('- '))
+ZeT.assert("0123456789".endsWith('789'))
+
+//>: string functions
+
+
+//<: string functions
+
+ZeT.assert(ZeT.isn(1.1))
+ZeT.assert(!ZeT.isn({}))
+ZeT.assert(!ZeT.isn('1'))
+ZeT.assert(ZeT.isi(101))
+ZeT.assert(!ZeT.isi(10.1))
+ZeT.assert(!ZeT.isi('10'))
+ZeT.assert(!ZeT.isi({}))
+
+//>: number tests
+
+
+//]]>
+</script>
+
+</body>
+</html>

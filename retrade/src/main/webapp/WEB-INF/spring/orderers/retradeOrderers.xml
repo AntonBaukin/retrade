@@ -1,0 +1,55 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Ordering strategies of ReTrade module          =
+    +================================================-->
+
+  <bean name  = 'retradeOrderers'
+        class = 'com.tverts.endure.order.OrderersList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Invoice ordering strategy
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.order.OrdererTypeChecker'>
+
+          <property name  = 'orderTypeClass'
+                    value = 'com.tverts.retrade.domain.invoice.Invoice'/>
+
+          <property name = 'orderer'>
+            <bean class = 'com.tverts.endure.order.OrdererDefault'>
+
+              <property name = 'orderOwnerIDProp' value = 'domain.id'/>
+
+            </bean>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Payments orderer
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.order.OrdererTypeChecker'>
+
+          <property name  = 'orderTypeClass'
+                    value = 'com.tverts.retrade.domain.payment.Payment'/>
+
+          <property name = 'orderer'>
+            <bean class = 'com.tverts.endure.order.OrdererDefault'>
+
+              <property name = 'orderOwnerIDProp' value = 'domain.id'/>
+
+            </bean>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>

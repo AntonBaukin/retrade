@@ -1,0 +1,30 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesInvoiceBuyCreate}"/>
+
+<ui:decorate template = '.edit-buy.xhtml'
+  xmlns    = 'http://www.w3.org/1999/xhtml'>
+
+  <ui:define name = "page_body_ext">
+    <script type="text/javascript">
+
+  //~: replace cancel button's handler
+  extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}', function()
+  {
+    extjsf.component('winmain', '${rootView.extjsDomain}').close()
+  })
+
+  //~: edit done action (close the window)
+  extjsf.bindHandler("${z:vid(v, 'submit-done')}", '${rootView.extjsDomain}', function()
+  {
+    extjsf.component('winmain', '${rootView.extjsDomain}').close()
+  })
+
+    </script>
+  </ui:define>
+
+</ui:decorate>
+</ui:component>

@@ -1,0 +1,163 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesDocumentsView}"/>
+
+${rootView.forceSecure('view: documents')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+  <!-- [content: documents -->
+
+  <x:root-panel coid = "${z:vid(v, 'documents_root')}" position = "#{rootView.extjsPosition}">
+
+    <f:facet name = "extjs-props">
+      title: 'Документы'
+    </f:facet>
+
+    <!-- [topbar buttons -->
+
+    <f:facet name = "topbar">
+
+      <!-- [show filter button -->
+
+      <x:component coid = "${z:vid(v, 'show-docs-filter')}">
+
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', flex: 0, text: 'Фильтр', enableToggle: true,
+          margin: extjsf.dpts(0, 2, 0, 0), height: extjsf.dpt(22),
+          icon: "${z:url('/resources/icons/filter_16.png')}",
+          componentCls: 'retrade-button-22pt'
+        </f:facet>
+
+      </x:component>
+
+      <!-- show filter button] -->
+
+    </f:facet>
+
+    <!-- topbar buttons] -->
+
+
+    <!-- [documents filter form] -->
+
+    <ui:decorate template = "../.items/docs-filter.xhtml">
+
+      <ui:param name = "localView" value = "${v}"/>
+      <ui:param name = "filterModel" value = "${v.model}"/>
+    </ui:decorate>
+
+
+    <!-- [documents table -->
+
+    <x:data-store storeId = "${z:vid(v, 'documentsViews')}"
+      modelView = "${v}" pageSize = "30">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.DocumentView'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.DocumentView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'documentsViews')}">
+
+      <f:facet name = "grid-props">
+        region: 'center', preventHeader: true,
+        columns: ZeT.defined('retrade.columns.DocumentView'),
+        pager: true, sortableColumns: false
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}').on('toggle', function()
+  {
+    var form = extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${rootView.extjsDomain}');
+    form.component().setVisible(this['pressed'])
+  })
+
+  extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${rootView.extjsDomain}').success(function()
+  {
+    Ext.data.StoreManager.lookup("${z:vid(v, 'documentsViews')}").loadPage(1)
+  })
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    on('itemdblclick', function(comp, rec, node, row, event)
+  {
+    var domain  = 'wnd:' + "${z:vid(v, 'view_document')}:" + rec.getId();
+    var winmain = extjsf.bind('winmain', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      'event': event, widthpt: 480, heightpt: 360, '+xpt': -80, '-ypt': 20
+    })
+
+    if(winmain)
+    {
+      winmain.component().toFront()
+      winmain.component().setPagePosition(box.x, box.y)
+      winmain.component().expand()
+      return;
+    }
+
+    winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+      xtype: 'window', title: 'Загрузка...',
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', autoShow: true, collapsible: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/docs/docdisp')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true,
+
+        params: {
+          '${v.viewModeParam}': 'body',
+          '${rootView.extjsDomainParam}': domain,
+          '${v.entityParam}': rec.getId()
+        }
+      }
+    })
+
+    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+  })
+
+    //]]>
+    </script>
+
+    <!-- documents table] -->
+
+  </x:root-panel>
+
+  <!-- content: documents] -->
+
+</ui:define>
+</ui:decorate>
+
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true" target = "${z:vid(v, 'docs_filter_form')}"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

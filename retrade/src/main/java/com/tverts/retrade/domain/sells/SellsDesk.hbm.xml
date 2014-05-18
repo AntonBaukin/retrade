@@ -1,0 +1,65 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.sells'>
+
+  <union-subclass name = 'SellsDesk' extends = 'com.tverts.endure.core.Entity'
+    table = 'retrade_sells_desk' lazy = 'true'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_sells_desk_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_sells_desk_code'>
+
+        <comment>Domain where the Sells Desk is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '255'
+        unique-key = 'ux_sells_desk_code'>
+
+        <comment>Unique (within the Domain) code of the Sells Desk</comment>
+      </column>
+    </property>
+
+
+    <!-- Payments Desk reference -->
+
+    <many-to-one name = 'payDesk' foreign-key = 'fk_sells_desk_pay'>
+
+      <column name = 'fk_pay_desk' not-null = 'true'
+        index = 'ix_sells_desk_pay'>
+
+        <comment>Payments Desk of this sells terminal</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Name and Remarks -->
+
+    <property name = 'name'>
+
+      <column name = 'desk_name' length = '512' not-null = 'true'>
+        <comment>Name of the Sells Desk</comment>
+      </column>
+    </property>
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'desk_remarks'>
+        <comment>Comments on the Sells Desk</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

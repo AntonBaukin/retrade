@@ -1,0 +1,192 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesSellReceiptView}"/>
+
+${v.checkModelRequestedWithRedirect}
+${v.checkEntityRequested}
+${v.forceSecureSellsSession('view')}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle('${z:jss(v.winmainTitleInfo)}')
+
+  </script>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [goto sells session button] -->
+
+    <x:winaction-button coid = "${z:vid(v, 'show_session')}"
+      action = "#{v.gotoSellsSession}">
+
+      <f:facet name = "extjs-props">
+        text: 'Назад'
+      </f:facet>
+
+      <f:facet name = "action-params">
+        'method'           : 'GET',
+        '${v.modelParam}'  : '${v.modelKeys}'
+      </f:facet>
+    </x:winaction-button>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [status bar -->
+
+  <f:facet name = "status-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'vbox', align: 'stretch'},
+    bodyCls: 'retrade-status-panel'
+  </f:facet>
+
+
+  <f:facet name = "status">
+
+    <x:html coid = "${z:vid(v, 'receipt_status')}">
+      <f:facet name = "extjs-props">
+        frame: false, border: false
+      </f:facet>
+
+
+      <table class = "retrade-info-table retrade-invoice-info-table-summ"
+        cellpadding = "0" cellspacing = "0" border = "0" align = "right">
+
+        <tr>
+          <ui:fragment rendered = "#{not empty v.sellReceipt.payOp().payCash}">
+            <td class = "retrade-info-title retrade-info-title-invoice-summ">
+              <div>Оплачено наличными</div>
+            </td>
+            <td class = "retrade-info-value retrade-info-value-invoice-summ">
+              <div>#{z:currency(v.sellReceipt.payOp().payCash)}</div>
+            </td>
+          </ui:fragment>
+
+          <ui:fragment rendered = "#{not empty v.sellReceipt.payOp().payBank}">
+            <td class = "retrade-info-title retrade-info-title-invoice-summ">
+              <div>
+                #{(empty v.sellReceipt.payOp().payCash)?("Оплачено"):("")} картой
+              </div>
+            </td>
+            <td class = "retrade-info-value retrade-info-value-invoice-summ">
+              <div>#{z:currency(v.sellReceipt.payOp().payBank)}</div>
+            </td>
+          </ui:fragment>
+        </tr>
+      </table>
+    </x:html>
+
+  </f:facet>
+
+  <!-- status bar] -->
+
+
+  <!-- [receipt fields view -->
+
+  <x:html coid = "${z:vid(v, 'receipt_info')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', frame: true, region: 'north',
+      margin: extjsf.pts(1, 1, 0, 1)
+
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-short retrade-info-table-sell-receipt-code"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-sell-receipt-code">
+          <div>Код</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-sell-receipt-code">
+          <div>#{v.sellReceipt.code}</div>
+        </td>
+
+        <ui:fragment rendered = "#{not empty v.sellReceipt.payOp().deskIndex}">
+          <td class = "retrade-info-title retrade-info-title-sell-receipt-index">
+            <div>Индекс</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-sell-receipt-index">
+            <div>#{v.sellReceipt.payOp().deskIndex}</div>
+          </td>
+        </ui:fragment>
+
+        <td class = "retrade-info-title retrade-info-title-sell-receipt-time">
+          <div>Время</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-sell-receipt-time">
+          <div>
+            <h:outputText value = "#{v.sellReceipt.time}">
+              <f:converter converterId = "com.tverts:fmt:datetime2str"/>
+            </h:outputText>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+  </x:html>
+
+  <!-- receipt fields view] -->
+
+
+  <!-- [goods table -->
+
+  <x:data-store storeId = "${z:vid(v, 'receiptGoods')}" modelView = "${v}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodUnitView'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodSellView')
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'receiptGoods')}">
+
+    <f:facet name = "grid-props">
+      region: 'center', title: 'Проданные товары',
+      margin: extjsf.pts(2, 1, 1, 1),
+      columns: ZeT.defined('retrade.columns.GoodSellView'),
+      sortableColumns: false
+    </f:facet>
+  </x:data-grid>
+
+  <!-- goods table] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+</ui:component>

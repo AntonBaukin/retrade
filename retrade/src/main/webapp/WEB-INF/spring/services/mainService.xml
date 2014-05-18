@@ -1,0 +1,225 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  The Main Service                               =
+    +================================================-->
+
+  <bean name  = 'mainService'
+        class = 'com.tverts.system.services.MainService'>
+    <property name = 'reference'>
+      <bean class = 'com.tverts.system.services.events.EventRunList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Reacts on the System Start
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.system.services.events.SystemReadyRun'/>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Generates System Domain
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.system.services.events.EventRunOnSystemStart'>
+
+              <property name = 'service' value = 'Genesis Service'/>
+
+              <!-- the event to send -->
+              <property name = 'event'>
+                <bean class = 'com.tverts.genesis.GenesisEvent'>
+
+                  <!-- Genesis Spheres -->
+                  <property name = 'spheres'>
+                    <list>
+                      <value>System Domain</value>
+                    </list>
+                  </property>
+
+                  <!-- parameters -->
+                  <property name = 'params'>
+                    <map>
+
+                      <entry key   = 'System Domain (Seed)'
+                             value = '1'/>
+
+                      <entry key   = 'System Domain : Domain (DomainCode)'
+                             value = 'System'/>
+
+                      <entry key   = 'System Domain : Domain (DomainName)'
+                             value = 'Системный домен'/>
+
+                      <entry key   = 'System Domain : Domain (IndexPage)'
+                             value = '/go/retrade/system/index'/>
+
+                    </map>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Generates Test Import Domain (after System Domain)
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>
+
+              <property name = 'service'    value = 'Genesis Service'/>
+
+              <!-- domain code to test -->
+              <property name = 'testDomain' value = 'System'/>
+
+              <!-- the event to send -->
+              <property name = 'event'>
+                <bean class = 'com.tverts.genesis.GenesisEvent'>
+
+                  <!-- Genesis Spheres -->
+                  <property name = 'spheres'>
+                    <list>
+                      <value>Ordinary Domain</value>
+                    </list>
+                  </property>
+
+                  <!-- parameters -->
+                  <property name = 'params'>
+                    <map>
+
+                      <!-- (Test Domain) Core Sphere -->
+
+                      <entry key   = 'Ordinary Domain (Seed)'
+                             value = '1'/>
+
+                      <entry key   = 'Ordinary Domain : Domain (DomainCode)'
+                             value = 'Import'/>
+
+                      <entry key   = 'Ordinary Domain : Domain (DomainName)'
+                             value = 'Тестовый домен импорта'/>
+
+                      <entry key   = 'Ordinary Domain : Domain (TestDomain)'
+                             value = 'true'/>
+
+                    </map>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Generates Main Test Domain (after Import Domain)
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>
+
+              <property name = 'service'    value = 'Genesis Service'/>
+
+              <!-- domain code to test -->
+              <property name = 'testDomain' value = 'Import'/>
+
+              <!-- the event to send -->
+              <property name = 'event'>
+                <bean class = 'com.tverts.genesis.GenesisEvent'>
+
+                  <!-- Genesis Spheres -->
+                  <property name = 'spheres'>
+                    <list>
+                      <value>Core Test</value>
+                      <value>ReTrade Test Catalogs</value>
+                      <value>ReTrade Test Documents</value>
+                      <value>ReTrade Test Invoices Fix</value>
+                      <value>ReTrade Test Payments</value>
+                    </list>
+                  </property>
+
+                  <!-- parameters -->
+                  <property name = 'params'>
+                    <map>
+
+
+                      <!-- (Test Domain) Core Sphere -->
+
+                      <entry key   = 'Core Test (Seed)'
+                             value = '11'/>
+
+                      <entry key   = 'Core Test : Domain (DomainCode)'
+                             value = 'Test'/>
+
+                      <entry key   = 'Core Test : Domain (DomainName)'
+                             value = 'Первичный тестовый домен'/>
+
+                      <entry key   = 'Core Test : Domain (DaysBack)'
+                             value = '15'/>
+
+
+                      <!-- (Test Domain) Catalogs -->
+
+                      <entry key   = 'ReTrade Test Catalogs (Seed)'
+                             value = '1'/>
+
+
+                      <!-- (Test Domain) Documents -->
+
+                      <entry key   = 'ReTrade Test Documents (Seed)'
+                             value = '3'/>
+
+
+                      <!-- (Test Domain) Test Invoices Fix -->
+
+                      <entry key   = 'ReTrade Test Invoices Fix (Seed)'
+                             value = '5'/>
+
+
+                      <!-- (Test Domain) Payments -->
+
+                      <entry key   = 'ReTrade Test Payments (Seed)'
+                             value = '7'/>
+
+                    </map>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Shunts Main Test Domain
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>
+
+              <property name = 'service'    value = 'Self-Shunt Service'/>
+
+              <!-- domain code to test -->
+              <property name = 'testDomain' value = 'Test'/>
+
+              <!-- the event to send -->
+              <property name = 'event'>
+                <bean class = 'com.tverts.shunts.service.SelfShuntGroupsEvent'>
+
+                  <!-- Shunt Groups -->
+                  <property name = 'groups'>
+                    <list>
+
+                      <!-- System Tests -->
+                      <value>system:shunts:success</value>
+                      <value>system:tx:scopes</value>
+                      <value>system:shunts:context</value>
+
+
+                      <!-- ReTrade Domain Tests -->
+                      <value>retrade:invoices</value>
+                      <value>retrade:payment</value>
+                      <value>retrade:aggr</value>
+
+                    </list>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+</beans>

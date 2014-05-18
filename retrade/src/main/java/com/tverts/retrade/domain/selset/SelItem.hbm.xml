@@ -1,0 +1,39 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.selset'>
+
+  <class name = 'SelItem' table = 'retrade_sel_item' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_sel_item'/>
+
+
+    <!-- Selection Set reference -->
+
+    <many-to-one name = 'selSet' foreign-key = 'fk_sel_set'>
+
+      <column name = 'fk_sel_set' not-null = 'true'
+        unique-key = 'ux_sel_item'>
+
+        <comment>The Selection Set this Item is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Object key -->
+
+    <property name = 'object' type = 'long'>
+
+      <column name = 'object_key' not-null = 'true'
+        unique-key = 'ux_sel_item'>
+
+        <comment>Copy of the primary key of an United entity</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

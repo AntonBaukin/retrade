@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<xs:schema targetNamespace = "http://tverts.com/retrade/webapp/response"
+           xmlns:xs = "http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name = "response">
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element ref = "validation" minOccurs = "0" maxOccurs = "1"/>
+        <xs:element ref = "scripts" minOccurs = "0" maxOccurs = "1"/>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name = "validation">
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element name = "field" maxOccurs = "unbounded">
+          <xs:complexType>
+            <xs:sequence>
+
+              <xs:element name = "error" minOccurs = "1" maxOccurs = "1"
+                type = "xs:string"/>
+
+              <xs:element name = "script" maxOccurs = "1"
+                type = "xs:string"/>
+            </xs:sequence>
+
+            <xs:attribute name = "target" use = "required"
+              type = "xs:string"/>
+
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name = "script" maxOccurs = "1"
+          type = "xs:string"/>
+
+      </xs:sequence>
+
+      <xs:attribute name = "success" use = "required"
+        type = "xs:boolean"/>
+
+      <xs:attribute name = "target" type = "xs:string"/>
+
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name = "scripts">
+    <xs:complexType mixed = "true">
+      <xs:sequence>
+
+        <xs:element name = "script" maxOccurs = "unbounded"
+          type = "xs:string"/>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

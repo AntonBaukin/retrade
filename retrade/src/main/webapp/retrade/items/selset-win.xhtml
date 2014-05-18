@@ -1,0 +1,268 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesSelSetView}"/>
+
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:winmain coid = "${z:vid(v, 'winmain-selset')}"
+    domainOwner = 'false' winmainName = 'winmain-selset'>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+      extjsf.bind('winmain-selset', '${rootView.extjsDomain}').
+        component().setTitle('${z:jss(v.windowTitle)}')
+
+    //]]>
+    </script>
+
+    <f:facet name = "extjs-props">
+       layout: 'fit', bodyCls: 'retrade-back-panel'
+    </f:facet>
+
+
+    <!-- [selection set edit form -->
+
+    <x:form-panel coid = "${z:vid(v, 'winmain-selset-edit')}"
+      modelView = "${v}">
+
+      <f:facet name = "extjs-props">
+
+        hidden: #{not v.editMode}, border: false,
+        frame: false, bodyCls: 'retrade-content-panel',
+        layout: {type: 'vbox', align: 'stretch'}
+
+      </f:facet>
+
+      <!-- [cancel + save buttons -->
+
+      <x:component coid = "${z:vid(v, '_winmain-selset-edit-buttons')}">
+
+        <f:facet name = "extjs-props">
+
+          border: false, frame: false,
+          bodyCls: 'retrade-toolbar-inline-panel',
+          layout: {type: 'hbox', align: 'middle'},
+          bodyPadding: extjsf.pt(2)
+
+        </f:facet>
+
+        <x:component coid = "${z:vid(v, 'winmain-selset-edit-cancel')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Отмена',
+            cls: 'ux-btn-default-small-red'
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(v, '_winmain-selset-edit-buttons_fill')}">
+          <f:facet name = "extjs-props">
+            flex: 1, frame: false, border: false,
+            bodyCls: 'retrade-transparent-panel'
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(v, 'winmain-selset-edit-submit')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Сохранить',
+            cls: 'ux-btn-default-small-green'
+          </f:facet>
+        </x:component>
+
+      </x:component>
+
+      <!-- cancel + save buttons] -->
+
+
+      <!-- [name field -->
+
+      <x:component coid = "${z:vid(v, '_winmain-selset-edit-name')}">
+        <f:facet name = "extjs-props">
+
+          border: false, frame: false,
+          bodyCls: 'retrade-transparent-panel',
+          layout: {type: 'hbox', align: 'middle'},
+          margin: extjsf.pts(8, 2, 0, 2)
+
+        </f:facet>
+
+        <x:text-field coid = "${z:vid(v, 'winmain-selset-edit-name')}"
+          value = "#{v.selSetNameEdit}">
+
+          <f:facet name = "extjs-props">
+            disabled: #{v.defaultSelSet}, flex: 1
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'Имя', margin: extjsf.pts(0, 4, 0, 0),
+            cls: 'retrade-info-title-label'
+          </f:facet>
+        </x:text-field>
+      </x:component>
+
+      <!-- name field] -->
+
+      <!-- [edit mode hidden] -->
+      <x:hidden-field coid = "${z:vid(v, 'winmain-selset-edit-mode')}"
+         value = "true"/>
+
+      <!-- [submit action] -->
+      <h:commandButton id = "submit_action" value = "submit" style = "display: none;"
+        action = "#{v.doEditSelSet}"/>
+
+    </x:form-panel>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-cancel')}", '${rootView.extjsDomain}', function()
+    {
+       var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
+       var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
+
+       edit.component().hide()
+       grid.component().show()
+    })
+
+    extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-submit')}", '${rootView.extjsDomain}', function()
+    {
+       var form = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
+       var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
+       var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
+
+       //~: submit the form
+       form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
+         success: function()
+         {
+           edit.component().hide()
+           grid.component().show()
+         }
+       })
+    })
+
+    //]]>
+    </script>
+
+    <!-- selection set edit form] -->
+
+
+    <!-- [selection set table -->
+
+    <x:data-grid coid = "${z:vid(v, 'selset-grid')}"
+      storeId = "${z:vid(v, 'selSetStore')}">
+
+      <f:facet name = "grid-props">
+        hidden: #{v.editMode}, pager: true, hideHeaders: true,
+        columns: ZeT.defined('retrade.columns.SelSetView'),
+      </f:facet>
+    </x:data-grid>
+
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}').on('added', function(grid)
+    {
+      //~: add action column to remove items from teh set
+      grid.headerCt.insert(0, Ext.create('Ext.grid.column.Action', {
+        width: 28, flex:0, align: 'center',
+        hideable: false, draggable: false,
+        resizable: false, menuDisabled: true, items: [{
+          icon: "${z:url('/resources/icons/selset_column_del_16.png')}",
+          handler: function(grid, row)
+          {
+             var rec = grid.getStore().getAt(row);
+             extjsf.bindHandler("${z:vid(v, 'script_selset_del_object')}", '${rootView.extjsDomain}')({
+              params: { '${v.entityParam}': rec.getId() }, success: function()
+              {
+                Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").load()
+              }
+            })
+          }
+        }]
+      }))
+
+      //~: reload the set store
+      ZeT.timeout(100, function() { grid.getStore().loadPage(1) })
+    })
+
+    //]]>
+    </script>
+
+    <!-- selection set table] -->
+
+  </x:winmain>
+
+  <ui:fragment rendered = "#{v.renderItems}">
+    <script type = "text/javascript">
+    //<![CDATA[
+
+ReTrade.selset.items([#{v.selSetItems}])
+
+    //]]>
+    </script>
+  </ui:fragment>
+
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "#{v.success}">
+
+      <ui:fragment rendered = "#{v.editMode and v.editNameExists}">
+
+        <field target = "${z:vid(v, 'winmain-selset-edit-name')}">
+          <error>
+              Выборка с указанным именем существует!
+              Имя не должно быть пустым.
+          </error>
+        </field>
+      </ui:fragment>
+    </validation>
+
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+    <ui:fragment rendered = "#{v.renderItems}">
+      <script>
+      //<![CDATA[
+
+ReTrade.selset.items([#{v.selSetItems}])
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+    <ui:fragment rendered = "#{v.updatedMenu}">
+      <script>
+      //<![CDATA[
+
+extjsf.bind('winmain-selset', '${rootView.extjsDomain}').
+  component().setTitle('${z:jss(v.windowTitle)}')
+
+ReTrade.selset.buildMenu(#{v.selSetMenuModel})
+
+      //]]>
+      </script>
+    </ui:fragment>
+  </ui:define>
+
+</ui:decorate>
+</ui:component>

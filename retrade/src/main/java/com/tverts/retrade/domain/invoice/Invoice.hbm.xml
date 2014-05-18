@@ -1,0 +1,106 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.invoice'>
+
+  <union-subclass name = 'Invoice' extends = 'com.tverts.endure.core.Entity'
+    table = 'retrade_invoice' lazy = 'true'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_invoice_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_invoice_code'>
+
+        <comment>Domain where the Invoice is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Invoice (Unity) Type (de-normalizing) -->
+
+    <many-to-one name = 'invoiceType' foreign-key = 'fk_invoice_type'>
+
+      <column name = 'fk_invoice_type' not-null = 'true'
+        unique-key = 'ux_invoice_code'>
+
+        <comment>Duplicate of Invoice Unity Type reference</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '64'
+        unique-key = 'ux_invoice_code'>
+
+        <comment>Unique (within Domain and Type) code of the Invoice</comment>
+      </column>
+    </property>
+
+
+    <!-- Invoice State (bi, one-to-one, slave) -->
+
+    <one-to-one name = 'invoiceState' property-ref = 'invoice'/>
+
+
+    <!-- Invoice Data (bi, one-to-one, slave) -->
+
+    <one-to-one name = 'invoiceData' cascade = 'save-update'/>
+
+
+    <!-- Invoice Date -->
+
+    <property name = 'invoiceDate' type = 'timestamp'>
+
+      <column name = 'invoice_date' not-null = 'true'
+        index = 'ix_invoice_date'>
+
+        <comment>The date (timestamp) of the Invoice</comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'remarks'>
+        <comment>The comment on the Invoice</comment>
+      </column>
+    </property>
+
+
+    <!-- Invoice Order Type (Unity Type) -->
+
+    <many-to-one name = 'orderType' foreign-key = 'fk_invoice_order_type'>
+
+      <column name = 'fk_order_type' not-null = 'true'
+        index = 'ix_invoice_order'>
+
+        <comment>Invoice Order Type</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Order Index -->
+
+    <property name = 'orderIndex'>
+
+      <column name = 'order_index' index = 'ix_invoice_order'>
+
+        <comment>
+          The index within the order space of owning Domain and
+          the Invoice order type
+        </comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

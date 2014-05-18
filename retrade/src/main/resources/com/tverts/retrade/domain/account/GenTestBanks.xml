@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<banks amount="500">
+  <bank><id>040173701</id><account>30101810200000000701</account><name>ФИЛИАЛ ОАО КБ &quot;МАСТ-БАНК&quot; &quot;БАРНАУЛЬСКИЙ&quot;</name></bank>
+  <bank><id>040173707</id><account>30101810000000000707</account><name>БАРНАУЛЬСКИЙ ФИЛИАЛ КБ &quot;ЕВРОТРАСТ&quot; (ЗАО)</name></bank>
+  <bank><id>040173709</id><account>30101810600000000709</account><name>ФИЛИАЛ ОАО &quot;БИНБАНК&quot; В БАРНАУЛЕ</name></bank>
+  <bank><id>040173713</id><account>30101810900000000713</account><name>ФИЛИАЛ ООО &quot;ЭКСПОБАНК&quot; В Г. БАРНАУЛЕ</name></bank>
+  <bank><id>040173720</id><account>30101810100000000720</account><name>БАРНАУЛЬСКИЙ ФИЛИАЛ ОАО &quot;АК БАРС&quot; БАНК</name></bank>
+  <bank><id>040173725</id><account>30101810600000000725</account><name>АКБ &quot;АЛТАЙБИЗНЕС-БАНК&quot; (ОАО)</name></bank>
+  <bank><id>040173733</id><account>30101810100000000733</account><name>АЛТАЙСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>040173735</id><account>30101810700000000735</account><name>БАРНАУЛЬСКИЙ Ф-Л БАНКА&quot;ВОЗРОЖДЕНИЕ&quot;(ОАО)</name></bank>
+  <bank><id>040173739</id><account>30101810900000000739</account><name>ФИЛИАЛ НБ &quot;ТРАСТ&quot; (ОАО) В Г.БАРНАУЛ</name></bank>
+  <bank><id>040173742</id><account>30101810900000000742</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.БАРНАУЛ</name></bank>
+  <bank><id>040173743</id><account>30101810200000000743</account><name>ОАО КБ &quot;ФОРБАНК&quot;</name></bank>
+  <bank><id>040173745</id><account>30101810800000000745</account><name>&quot;СИБСОЦБАНК&quot; ООО</name></bank>
+  <bank><id>040173749</id><account>30101810000000000749</account><name>ООО &quot;КБ &quot;ТАЛЬМЕНКА-БАНК&quot;</name></bank>
+  <bank><id>040173753</id><account>30101810300000000753</account><name>Ф-Л ГПБ (ОАО) В Г.БАРНАУЛЕ</name></bank>
+  <bank><id>040173754</id><account>30101810600000000754</account><name>АКБ &quot;ЗЕРНОБАНК&quot; (ЗАО)</name></bank>
+  <bank><id>040173757</id><account>30101810500000000757</account><name>ФИЛИАЛ &quot;АЛТАЙСКИЙ&quot; ОАО КБ &quot;АГРОПРОМКРЕДИТ&quot;</name></bank>
+  <bank><id>040173762</id><account>30101810100000000762</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; (ООО) В БАРНАУЛЕ</name></bank>
+  <bank><id>040173765</id><account>30101810000000000765</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.БАРНАУЛЕ</name></bank>
+  <bank><id>040173766</id><account>30101810300000000766</account><name>БАРНАУЛЬСКИЙ ФИЛИАЛ ЗАО &quot;ТУСАРБАНК&quot;</name></bank>
+  <bank><id>040173771</id><account>30101810900000000771</account><name>ООО КБ &quot;АЛТАЙКАПИТАЛБАНК&quot;</name></bank>
+  <bank><id>040173773</id><account>30101810500000000773</account><name>АЛТАЙСКИЙ ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot;</name></bank>
+  <bank><id>040173774</id><account>30101810800000000774</account><name>ФИЛИАЛ ОАО &quot;ТРАНСКРЕДИТБАНК&quot; В Г. БАРНАУЛЕ</name></bank>
+  <bank><id>040173779</id><account>30101810300000000779</account><name>БАРНАУЛЬСКИЙ ФИЛИАЛ &quot;НОМОС-БАНКА&quot; (ОАО)</name></bank>
+  <bank><id>040173788</id><account>30101810100000000788</account><name>ФИЛИАЛ &quot;АЛТАЙСКИЙ&quot; ОАО БАНК &quot;ЗАПАДНЫЙ&quot;</name></bank>
+  <bank><id>040304513</id><account>30101810900000000513</account><name>ФИЛИАЛ ЗАО БАНК ЗЕНИТ СОЧИ В Г.АНАПА</name></bank>
+  <bank><id>040306739</id><account>30101810500000000739</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г. АРМАВИР</name></bank>
+  <bank><id>040313716</id><account>30101810000000000716</account><name>ОАО &quot;ГЕЛЕНДЖИК-БАНК&quot;</name></bank>
+  <bank><id>040313720</id><account>30101810300000000720</account><name>ФИЛИАЛ &quot;ЧЕРНОМОРСКИЙ&quot; ОАО БАНК &quot;ЗАПАДНЫЙ&quot;</name></bank>
+  <bank><id>040323790</id><account>30101810300000000790</account><name>КУБАНСКИЙ ФИЛИАЛ ОАО АПБ&quot;ЕКАТЕРИНИНСКИЙ&quot;</name></bank>
+  <bank><id>040326819</id><account>30101810800000000819</account><name>ООО КБ &quot;ФИНАНС БИЗНЕС БАНК&quot;</name></bank>
+  <bank><id>040349516</id><account>30101810500000000516</account><name>ОАО &quot;КРАЙИНВЕСТБАНК&quot;</name></bank>
+  <bank><id>040349521</id><account>30101810100000000521</account><name>ФИЛИАЛ ОАО &quot;ВБРР&quot; В Г.КРАСНОДАРЕ</name></bank>
+  <bank><id>040349523</id><account>30101810700000000523</account><name>ФАКБ &quot;РОССИЙСКИЙ КАПИТАЛ&quot; (ОАО) КРАСНОДАРСКИЙ</name></bank>
+  <bank><id>040349524</id><account>30101810000000000524</account><name>ФКБ &quot;ПЕТРОКОММЕРЦ&quot; В Г.КРАСНОДАРЕ</name></bank>
+  <bank><id>040349530</id><account>30101810900000000530</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ЗАО &quot;ТУСАРБАНК&quot;</name></bank>
+  <bank><id>040349532</id><account>30101810500000000532</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; В КРАСНОДАРЕ</name></bank>
+  <bank><id>040349536</id><account>30101810700000000536</account><name>КРАСНОДАРСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>040349541</id><account>30101810300000000541</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ОАО &quot;МТС-БАНК&quot;</name></bank>
+  <bank><id>040349542</id><account>30101810600000000542</account><name>КРАСНОДАРСКИЙ Ф-Л АКБ &quot;СОЮЗ&quot;(ОАО)</name></bank>
+  <bank><id>040349548</id><account>30101810400000000548</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ЗАО ЮНИКРЕДИТ БАНК</name></bank>
+  <bank><id>040349550</id><account>30101810100000000550</account><name>ФИЛИАЛ N8 ОАО КБ &quot;ЦЕНТР-ИНВЕСТ&quot;</name></bank>
+  <bank><id>040349551</id><account>30101810400000000551</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ОАО АКБ &quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>040349553</id><account>30101810000000000553</account><name>КУБАНСКИЙ ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot;</name></bank>
+  <bank><id>040349556</id><account>30101810900000000556</account><name>ЮЖНЫЙ ФИЛИАЛ ЗАО &quot;РАЙФФАЙЗЕНБАНК&quot;</name></bank>
+  <bank><id>040349564</id><account>30101810400000000564</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ОАО &quot;НББ&quot;</name></bank>
+  <bank><id>040349565</id><account>30101810700000000565</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ЗАО КБ &quot;КЕДР&quot;</name></bank>
+  <bank><id>040349569</id><account>30101810900000000569</account><name>АКБ &quot;КРЫЛОВСКИЙ&quot; (ОАО)</name></bank>
+  <bank><id>040349576</id><account>30101810100000000576</account><name>ФИЛИАЛ КРУ ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>040349585</id><account>30101810900000000585</account><name>ФИЛИАЛ N 2351 ВТБ 24 (ЗАО)</name></bank>
+  <bank><id>040349596</id><account>30101810300000000596</account><name>ФИЛИАЛ ОАО БАНК &quot;РОСТ&quot; В Г. КРАСНОДАРЕ</name></bank>
+  <bank><id>040349602</id><account>30101810100000000602</account><name>ОТДЕЛЕНИЕ N8619 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>040349700</id><account>30101810400000000700</account><name>ФИЛИАЛ &quot;ЮЖНЫЙ&quot; ОАО &quot;УРАЛСИБ&quot;</name></bank>
+  <bank><id>040349711</id><account>30101810800000000711</account><name>ФИЛИАЛ ЗАО &quot;БАНК ЖИЛФИНАНС&quot; В Г.КРАСНОДАРЕ</name></bank>
+  <bank><id>040349715</id><account>30101810000000000715</account><name>БАНК &quot;ПЕРВОМАЙСКИЙ&quot; (ЗАО)</name></bank>
+  <bank><id>040349718</id><account>30101810900000000718</account><name>ЗАО &quot;КУБАНЬТОРГБАНК&quot;</name></bank>
+  <bank><id>040349721</id><account>30101810900000000721</account><name>ФИЛИАЛ ОАО &quot;БИНБАНК&quot; В КРАСНОДАРЕ</name></bank>
+  <bank><id>040349722</id><account>30101810200000000722</account><name>КБ &quot;КУБАНЬ КРЕДИТ&quot; ООО</name></bank>
+  <bank><id>040349732</id><account>30101810300000000732</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ &quot;НОМОС-БАНКА&quot; (ОАО)</name></bank>
+  <bank><id>040349734</id><account>30101810900000000734</account><name>Ф-Л &quot;КРАСНОДАРСКИЙ&quot; ОАО &quot;БАЛТИНВЕСТБАНК&quot;</name></bank>
+  <bank><id>040349736</id><account>30101810500000000736</account><name>ФИЛИАЛ &quot;КРАСНОДАРСКИЙ&quot; ОАО &quot;УБРИР&quot;</name></bank>
+  <bank><id>040349745</id><account>30101810300000000745</account><name>КБ &quot;КУБАНСКИЙ УНИВЕРСАЛЬНЫЙ БАНК&quot; (ООО)</name></bank>
+  <bank><id>040349748</id><account>30103810800000000748</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ НКО &quot;ИНКАХРАН&quot; (ОАО)</name></bank>
+  <bank><id>040349749</id><account>30101810500000000749</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ &quot;ТКБ&quot; (ЗАО)</name></bank>
+  <bank><id>040349752</id><account>30101810500000000752</account><name>ФИЛИАЛ ОАО &quot;ГУТА-БАНК&quot; В Г. КРАСНОДАРЕ</name></bank>
+  <bank><id>040349764</id><account>30101810200000000764</account><name>ФИЛИАЛ &quot;КРАСНОДАРСКИЙ&quot; ОАО БАНК &quot;ОТКРЫТИЕ&quot;</name></bank>
+  <bank><id>040349765</id><account>30101810500000000765</account><name>Ф-Л &quot;КРАСНОДАРСКИЙ&quot; АКИБ &quot;ОБРАЗОВАНИЕ&quot; (ЗАО)</name></bank>
+  <bank><id>040349772</id><account>30101810700000000772</account><name>ОАО АБ &quot;КУБАНЬБАНК&quot;</name></bank>
+  <bank><id>040349781</id><account>30101810500000000781</account><name>Ф-Л ГПБ (ОАО) В Г.КРАСНОДАРЕ</name></bank>
+  <bank><id>040349795</id><account>30101810800000000795</account><name>ФИЛИАЛ &quot;КРАСНОДАР&quot; АКБ &quot;НРБАНК&quot; (ОАО)</name></bank>
+  <bank><id>040349808</id><account>30101810700000000808</account><name>ООО КБ &quot;НОВОПОКРОВСКИЙ&quot;</name></bank>
+  <bank><id>040349815</id><account>30101810900000000815</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ОАО &quot;РОСДОРБАНК&quot;</name></bank>
+  <bank><id>040349830</id><account>30101810600000000830</account><name>ЗАО &quot;ЮМК БАНК&quot;</name></bank>
+  <bank><id>040349838</id><account>30101810000000000838</account><name>КРФ ОАО &quot;СМП БАНК&quot;</name></bank>
+  <bank><id>040349841</id><account>30101810000000000841</account><name>ФАКБ &quot;АБСОЛЮТ БАНК&quot; (ЗАО) В Г.КРАСНОДАРЕ</name></bank>
+  <bank><id>040349875</id><account>30101810500000000875</account><name>ФИЛИАЛ &quot;КРАСНОДАРСКИЙ&quot; ЗАО КБ &quot;РОСИНТЕРБАНК&quot;</name></bank>
+  <bank><id>040349909</id><account>30101810900000000909</account><name>ООО КБ &quot;ВНЕШФИНБАНК&quot;</name></bank>
+  <bank><id>040349938</id><account>30101810900000000938</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ОАО &quot;АК БАРС&quot; БАНК</name></bank>
+  <bank><id>040349947</id><account>30101810700000000947</account><name>ФИЛИАЛ &quot;КУБАНЬ&quot; ООО &quot;УРАЛКАПИТАЛБАНК&quot;</name></bank>
+  <bank><id>040349949</id><account>30101810300000000949</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ЗАО &quot;НЕФТЕПРОМБАНК&quot;</name></bank>
+  <bank><id>040349966</id><account>30101810600000000966</account><name>ОАО &quot;ЮГ-ИНВЕСТБАНК&quot;</name></bank>
+  <bank><id>040349978</id><account>30101810300000000978</account><name>КРАСНОДАРСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>040349981</id><account>30101810300000000981</account><name>ЗАО &quot;ИБК&quot;</name></bank>
+  <bank><id>040349987</id><account>30101810100000000987</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.КРАСНОДАРЕ</name></bank>
+  <bank><id>040349994</id><account>30101810300000000994</account><name>КРАСНОДАРСКИЙ Ф БАНКА&quot;ВОЗРОЖДЕНИЕ&quot;(ОАО)</name></bank>
+  <bank><id>040349999</id><account>30101810800000000999</account><name>ФМКБ &quot;МАК-БАНК&quot; (ООО) В Г.КРАСНОДАРЕ</name></bank>
+  <bank><id>040362539</id><account>30101810900000000539</account><name>АФИПСКИЙ ФИЛИАЛ БАНКА &quot;КЛИЕНТСКИЙ&quot; (ОАО)</name></bank>
+  <bank><id>040362757</id><account>30101810300000000757</account><name>ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot; В Г.КРАСНОДАР</name></bank>
+  <bank><id>040364518</id><account>30101810200000000518</account><name>ТУАПСИНСКИЙ ФИЛИАЛ ОАО &quot;ЛИПЕЦККОМБАНК&quot;</name></bank>
+  <bank><id>040373951</id><account>30101810500000000951</account><name>ТИХОРЕЦКИЙ ФИЛИАЛ ОАО &quot;ЮГ-ИНВЕСТБАНК&quot;</name></bank>
+  <bank><id>040393780</id><account>30101810300000000780</account><name>ФИЛИАЛ ЗАО АКБ &quot;ГАЗБАНК&quot; В Г.ЕЙСКЕ</name></bank>
+  <bank><id>040395515</id><account>30101810100000000515</account><name>НОВОРОССИЙСКИЙ ФИЛИАЛ ОАО КБ СТРОЙКРЕДИТ</name></bank>
+  <bank><id>040395559</id><account>30101810700000000559</account><name>ФИЛИАЛ &quot;НОВОРОССИЙСКИЙ&quot; ОАО &quot;ОТП БАНК&quot;</name></bank>
+  <bank><id>040395702</id><account>30101810900000000702</account><name>ФИЛИАЛ МОРСКОГО БАНКА (ОАО) В Г.НОВОРОССИЙСК</name></bank>
+  <bank><id>040395704</id><account>30101810500000000704</account><name>НОВОРОССИЙСКИЙ ФИЛИАЛ БАНК-Т (ОАО)</name></bank>
+  <bank><id>040395726</id><account>30101810300000000726</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г. НОВОРОССИЙСК</name></bank>
+  <bank><id>040395833</id><account>30101810400000000833</account><name>НОВОРОССИЙСКИЙ Ф БАНКА&quot;ВОЗРОЖДЕНИЕ&quot;(ОАО)</name></bank>
+  <bank><id>040395901</id><account>30101810400000000901</account><name>НВФ ОАО &quot;СМП БАНК&quot;</name></bank>
+  <bank><id>040395919</id><account>30101810900000000919</account><name>НОВОРОССИЙСК Ф ООО КБ &quot;НАЦИОНАЛЬНЫЙ СТАНДАРТ&quot;</name></bank>
+  <bank><id>040395988</id><account>30101810300000000988</account><name>ФКБ &quot;ПЕТРОКОММЕРЦ&quot; В Г.НОВОРОССИЙСКЕ</name></bank>
+  <bank><id>040395993</id><account>30101810900000000993</account><name>ФИЛИАЛ &quot;НОВОРОССИЙСКИЙ&quot; ОАО &quot;СОБИНБАНК&quot;</name></bank>
+  <bank><id>040396055</id><account>30111810000000000055</account><name>НАЦИОНАЛЬНЫЙ БАНК РЕСПУБЛИКИ АБХАЗИЯ</name></bank>
+  <bank><id>040396554</id><account>30101810100000000554</account><name>СОЧИНСКИЙ ФИЛИАЛ КБ &quot;РЭБ&quot; (ЗАО)</name></bank>
+  <bank><id>040396701</id><account>30101810500000000701</account><name>ФИЛИАЛ КБ &quot;АЛЬТА-БАНК&quot; (ЗАО) В Г.СОЧИ</name></bank>
+  <bank><id>040396703</id><account>30101810100000000703</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г. СОЧИ</name></bank>
+  <bank><id>040396717</id><account>30101810400000000717</account><name>ЗАО БАНК ЗЕНИТ СОЧИ</name></bank>
+  <bank><id>040396756</id><account>30101810500000000756</account><name>Ф-Л &quot;СОЧИ&quot; ОАО БАНК &quot;НАРОДНЫЙ КРЕДИТ&quot;</name></bank>
+  <bank><id>040396759</id><account>30101810400000000759</account><name>ФИЛИАЛ ОАО &quot;ТРАНСКРЕДИТБАНК&quot; В Г. СОЧИ</name></bank>
+  <bank><id>040396768</id><account>30101810200000000768</account><name>СОЧИНСКИЙ ФИЛИАЛ ООО &quot;ВНЕШПРОМБАНК&quot;</name></bank>
+  <bank><id>040396799</id><account>30101810800000000799</account><name>ФИЛИАЛ ООО КБ &quot;ОПМ-БАНК&quot; В Г.СОЧИ</name></bank>
+  <bank><id>040396805</id><account>30101810600000000805</account><name>ФИЛИАЛ ЗАО СБЕРКРЕД БАНК В Г.СОЧИ</name></bank>
+  <bank><id>040396844</id><account>30101810700000000844</account><name>КОНКУРСНЫЙ УПРАВЛЯЮЩИЙ ООО КИИБ &quot;СОЧИ&quot;</name></bank>
+  <bank><id>040396916</id><account>30101810900000000916</account><name>СОЧИНСКИЙ ФИЛИАЛ ООО &quot;КБ &quot;МЕЖТРАСТБАНК&quot;</name></bank>
+  <bank><id>040396936</id><account>30101810100000000936</account><name>СФ ООО КБЦА</name></bank>
+  <bank><id>040396996</id><account>30101810700000000996</account><name>СОЧИНСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>040407345</id><account>30101810700000000345</account><name>ЖЕЛЕЗНОГОРСКИЙ ФИЛИАЛ ООО &quot;ВНЕШПРОМБАНК&quot;</name></bank>
+  <bank><id>040407388</id><account>30101810000000000388</account><name>ВОСТОЧНО-СИБИРСКИЙ ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot;</name></bank>
+  <bank><id>040407415</id><account>30101810300000000415</account><name>КРАСНОЯРСКАЯ ДИРЕКЦИЯ ЗАО КБ &quot;КЕДР&quot;</name></bank>
+  <bank><id>040407447</id><account>30101810200000000447</account><name>ФИЛИАЛ АКБ &quot;ЛЕГИОН&quot; (ОАО) В Г.КРАСНОЯРСК</name></bank>
+  <bank><id>040407503</id><account>30101810500000000503</account><name>Ф-Л &quot;КРАСНОЯРСКИЙ&quot; ОАО БАНК &quot;НАРОДНЫЙ КРЕДИТ&quot;</name></bank>
+  <bank><id>040407505</id><account>30101810100000000505</account><name>ФИЛИАЛ &quot;КРАСНОЯРСКИЙ&quot; ОАО БАНК &quot;ОТКРЫТИЕ&quot;</name></bank>
+  <bank><id>040407555</id><account>30101810600000000555</account><name>ФИЛИАЛ ББР БАНКА, Г.КРАСНОЯРСК</name></bank>
+  <bank><id>040407567</id><account>30101810300000000567</account><name>ФИЛИАЛ ОАО БАНК &quot;РОСТ&quot; В Г.КРАСНОЯРСКЕ</name></bank>
+  <bank><id>040407592</id><account>30101810100000000592</account><name>СФ ОАО АКБ &quot;МЕЖДУНАРОДНЫЙ ФИНАНСОВЫЙ КЛУБ&quot;</name></bank>
+  <bank><id>040407599</id><account>30101810200000000599</account><name>КРФ ОАО &quot;МДМ БАНК&quot;</name></bank>
+  <bank><id>040407627</id><account>30101810800000000627</account><name>ВОСТОЧНО-СИБИРСКИЙ БАНК СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>040407650</id><account>30101810000000000650</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ ОАО АКБ &quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>040407686</id><account>30103810700000000686</account><name>НКО КРАСНОЯРСКИЙ КРАЕВОЙ РАСЧЕТНЫЙ ЦЕНТР ООО</name></bank>
+  <bank><id>040407699</id><account>30101810100000000699</account><name>СИБИРСКИЙ ФИЛИАЛ ОАО КБ &quot;ВОСТОЧНЫЙ&quot;</name></bank>
+  <bank><id>040407702</id><account>30101810000000000702</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ АКБ&quot;ЛАНТА-БАНК&quot;(ЗАО)</name></bank>
+  <bank><id>040407704</id><account>30101810600000000704</account><name>ФИЛИАЛ &quot;ТРАНСКРЕДИТБАНКА&quot; В Г.КРАСНОЯРСКЕ</name></bank>
+  <bank><id>040407707</id><account>30101810500000000707</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ &quot;НОТА-БАНК&quot; (ОАО)</name></bank>
+  <bank><id>040407751</id><account>30101810200000000751</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; В КРАСНОЯРСКЕ</name></bank>
+  <bank><id>040407777</id><account>30101810200000000777</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.КРАСНОЯРСКЕ</name></bank>
+  <bank><id>040407795</id><account>30101810800000000795</account><name>АКБ &quot;ЕНИСЕЙ&quot; (ОАО)</name></bank>
+  <bank><id>040407816</id><account>30101810200000000816</account><name>ООО КБ &quot;СТРОМКОМБАНК&quot;</name></bank>
+  <bank><id>040407853</id><account>30101810700000000853</account><name>КРАСН.Ф-Л ЗАО АИКБ &quot;ЕНИСЕЙСК.ОБЪЕД.БАНК&quot;</name></bank>
+  <bank><id>040407862</id><account>30101810500000000862</account><name>ФКБ &quot;СДМ-БАНК&quot; (ОАО) В Г.КРАСНОЯРСКЕ</name></bank>
+  <bank><id>040407877</id><account>30101810100000000877</account><name>Ф-Л ГПБ (ОАО) В Г. КРАСНОЯРСКЕ</name></bank>
+  <bank><id>040407911</id><account>30101810600000000911</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ БАНКА &quot;КЛИЕНТСКИЙ&quot; (ОАО)</name></bank>
+  <bank><id>040407914</id><account>30101810500000000914</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ &quot;БРАТСКОГО АНКБ&quot; ОАО</name></bank>
+  <bank><id>040407915</id><account>30101810800000000915</account><name>КРАСНОЯРСКИЙ Ф-Л АКБ &quot;СОЮЗ&quot; (ОАО)</name></bank>
+  <bank><id>040407921</id><account>30101810700000000921</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ ОАО &quot;МТС-БАНК&quot;</name></bank>
+  <bank><id>040407923</id><account>30101810300000000923</account><name>КРАСНОЯРСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>040407926</id><account>30101810200000000926</account><name>ФИЛИАЛ ОАО АКБ &quot;ЮГРА&quot; В Г.КРАСНОЯРСКЕ</name></bank>
+  <bank><id>040407937</id><account>30103810200000000937</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ НКО &quot;ИНКАХРАН&quot; (ОАО)</name></bank>
+  <bank><id>040407940</id><account>30101810600000000940</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ ЗАО &quot;РАЙФФАЙЗЕНБАНК&quot;</name></bank>
+  <bank><id>040407967</id><account>30101810900000000967</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>040407969</id><account>30101810500000000969</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ ОАО &quot;АК БАРС&quot; БАНК</name></bank>
+  <bank><id>040407977</id><account>30101810000000000977</account><name>ФИЛИАЛ &quot;КРАСНОЯРСКИЙ&quot; ОАО &quot;АЛЬФА-БАНК&quot;</name></bank>
+  <bank><id>040407990</id><account>30101810100000000990</account><name>КРАСНОЯРСКИЙ ФИЛИАЛ &quot;НОМОС-БАНКА&quot; (ОАО)</name></bank>
+  <bank><id>040407996</id><account>30101810900000000996</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.КРАСНОЯРСК</name></bank>
+  <bank><id>040452720</id><account>30101810600000000720</account><name>КБ &quot;КАНСКИЙ&quot; ООО</name></bank>
+  <bank><id>040484888</id><account>30101810200000000888</account><name>Ф-Л &quot;ВИТАС БАНК&quot; КРАСНОЯРСК ООО &quot;ВИТАС БАНК&quot;</name></bank>
+  <bank><id>040484999</id><account>30101810500000000999</account><name>ФИЛИАЛ &quot;КРАСНОЯРСКИЙ&quot; КБ &quot;ИНТЕРКОММЕРЦ&quot; (ООО)</name></bank>
+  <bank><id>040485488</id><account>30101810500000000488</account><name>ФОАО &quot;ДАЛЬНЕВОСТОЧНЫЙ БАНК&quot; &quot;КРАСНОЯРСКИЙ&quot;</name></bank>
+  <bank><id>040485666</id><account>30101810500000000666</account><name>ЗАО АИКБ &quot;ЕНИСЕЙСКИЙ ОБЪЕДИНЕННЫЙ БАНК&quot;</name></bank>
+  <bank><id>040485910</id><account>30101810900000000910</account><name>ФИЛИАЛ ООО &quot;ПРОМСЕРВИСБАНК&quot; В Г.КРАСНОЯРСКЕ</name></bank>
+  <bank><id>040495497</id><account>30101810600000000497</account><name>НОРИЛЬСКИЙ ФИЛИАЛ &quot;НОМОС-БАНКА&quot; (ОАО)</name></bank>
+  <bank><id>040495499</id><account>30101810200000000499</account><name>НОРИЛЬСКИЙ ФИЛИАЛ ЗАО КБ &quot;КЕДР&quot;</name></bank>
+  <bank><id>040495551</id><account>30101810300000000551</account><name>ФИЛИАЛ АКБ &quot;ЛЕГИОН&quot; (ОАО) В Г.НОРИЛЬСК</name></bank>
+  <bank><id>040502840</id><account>30101810200000000840</account><name>ФИЛИАЛ ОАО КБ &quot;САММИТ БАНК&quot; В Г. ВЛАДИВОСТОКЕ</name></bank>
+  <bank><id>040502858</id><account>30101810700000000858</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г. ВЛАДИВОСТОКЕ</name></bank>
+  <bank><id>040502865</id><account>30101810900000000865</account><name>Ф &quot;МУНИЦИПАЛЬНЫЙ КАМЧАТПРОФИТБАНК&quot; (ЗАО)</name></bank>
+  <bank><id>040502870</id><account>30101810500000000870</account><name>ПРИМОРСКИЙ ФИЛИАЛ ОАО АКБ &quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>040502879</id><account>30101810200000000879</account><name>ФИЛИАЛ МОРСКОГО БАНКА (ОАО) В Г. ВЛАДИВОСТОК</name></bank>
+  <bank><id>040502880</id><account>30101810600000000880</account><name>ДВ ФИЛИАЛ ОАО &quot;РОЯЛ КРЕДИТ БАНК&quot;</name></bank>
+  <bank><id>040502883</id><account>30101810500000000883</account><name>ДАЛЬНЕВОСТОЧНЫЙ ФИЛИАЛ ЗАО &quot;БАНК ИНТЕЗА&quot;</name></bank>
+  <bank><id>040502884</id><account>30101810800000000884</account><name>ФИЛИАЛ ОАО &quot;ТРАНСКРЕДИТБАНК&quot; В Г.ВЛАДИВОСТОКЕ</name></bank>
+  <bank><id>040502885</id><account>30101810100000000885</account><name>ВЛАДИВОСТОКСКИЙ ФИЛИАЛ ЗАО &quot;СОЛИД БАНК&quot;</name></bank>
+  <bank><id>040502886</id><account>30101810400000000886</account><name>Ф-Л ГПБ (ОАО) В Г. ВЛАДИВОСТОКЕ</name></bank>
+  <bank><id>040502887</id><account>30101810700000000887</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; (ООО) ВО ВЛАДИВОСТОКЕ</name></bank>
+  <bank><id>040502888</id><account>30101810000000000888</account><name>ФИЛИАЛ N 12 АКБ МОСОБЛБАНК ОАО</name></bank>
+  <bank><id>040507301</id><account>30103810700000000301</account><name>ЗАО НКО МРЦ</name></bank>
+  <bank><id>040507601</id><account>30101810800000000601</account><name>ОТДЕЛЕНИЕ N8635 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>040507705</id><account>30101810900000000705</account><name>ОАО&quot;ДАЛЬНЕВОСТОЧНЫЙ БАНК&quot;</name></bank>
+  <bank><id>040507711</id><account>30101810800000000711</account><name>КУ ООО КБ &quot;ВББ&quot;</name></bank>
+  <bank><id>040507713</id><account>30101810400000000713</account><name>ЗАО &quot;ДАЛТА-БАНК&quot;</name></bank>
+  <bank><id>040507717</id><account>30101810600000000717</account><name>ООО &quot;ПРИМТЕРКОМБАНК&quot;</name></bank>
+  <bank><id>040507795</id><account>30101810800000000795</account><name>ОАО АКБ &quot;ПРИМОРЬЕ&quot;</name></bank>
+  <bank><id>040507803</id><account>30101810200000000803</account><name>ОАО СКБ ПРИМОРЬЯ &quot;ПРИМСОЦБАНК&quot;</name></bank>
+  <bank><id>040507841</id><account>30101810000000000841</account><name>ФИЛИАЛ &quot;ПРИМОРСКИЙ&quot; КБ &quot;БФГ-КРЕДИТ&quot;</name></bank>
+  <bank><id>040507848</id><account>30101810100000000848</account><name>ВЛАДИВОСТОКСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>040507861</id><account>30101810200000000861</account><name>ПРИМОРСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>040507862</id><account>30101810500000000862</account><name>ФКБ &quot;ДАЛЬКОМБАНК&quot; ПРИМОРСКИЙ</name></bank>
+  <bank><id>040507864</id><account>30101810100000000864</account><name>ВЛАДИВОСТОКСКИЙ ФИЛИАЛ ЗАО КБ &quot;КЕДР&quot;</name></bank>
+  <bank><id>040507867</id><account>30101810000000000867</account><name>ФИЛИАЛ ББР БАНКА, Г.ВЛАДИВОСТОК</name></bank>
+  <bank><id>040507871</id><account>30101810300000000871</account><name>ДАЛЬНЕВОСТОЧНЫЙ ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot;</name></bank>
+  <bank><id>040507872</id><account>30101810600000000872</account><name>ФИЛИАЛ &quot;АТБ&quot; (ОАО) В Г. ВЛАДИВОСТОК</name></bank>
+  <bank><id>040508855</id><account>30101810200000000855</account><name>ФСКБ ПРИМОРЬЯ &quot;ПРИМСОЦБАНК&quot; В Г.УССУРИЙСКЕ</name></bank>
+  <bank><id>040510859</id><account>30101810500000000859</account><name>ФИЛИАЛ НАХОДКА КБ &quot;ПРИСКО КАПИТАЛ БАНК&quot;</name></bank>
+  <bank><id>040518780</id><account>30101810400000000780</account><name>ОАО КБ &quot;САММИТ БАНК&quot;</name></bank>
+  <bank><id>040701702</id><account>30101810600000000702</account><name>ФИЛИАЛ В Г.БУДЕННОВСК ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>040701737</id><account>30101810400000000737</account><name>ФАИК ПСБ&quot;СТАВРОПОЛЬЕ&quot;ОАО В Г.БУДЕННОВСКЕ</name></bank>
+  <bank><id>040702660</id><account>30101810600000000660</account><name>СЕВЕРО-КАВКАЗСКИЙ БАНК ОАО &quot;СБЕРБАНК РОССИИ&quot;</name></bank>
+  <bank><id>040702701</id><account>30101810200000000701</account><name>СТАВРОПОЛЬСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>040702703</id><account>30101810800000000703</account><name>ФИЛИАЛ СКРУ ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>040702710</id><account>30101810000000000710</account><name>СТАВРОПОЛЬСКИЙ ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot;</name></bank>
+  <bank><id>040702714</id><account>30101810200000000714</account><name>СТАВРОПОЛЬСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>040702715</id><account>30101810500000000715</account><name>СТАВРОПОЛЬСКИЙ ФИЛИАЛ ОАО &quot;МТС-БАНК&quot;</name></bank>
+  <bank><id>040702719</id><account>30101810700000000719</account><name>ФИЛИАЛ ОАО &quot;БИНБАНК&quot; В СТАВРОПОЛЕ</name></bank>
+  <bank><id>040702727</id><account>30101810200000000727</account><name>ФИЛИАЛ &quot;СТАВРОПОЛЬ&quot; АКБ &quot;НРБАНК&quot; (ОАО)</name></bank>
+  <bank><id>040702734</id><account>30101810400000000734</account><name>ФИЛИАЛ N4 ОАО КБ &quot;ЦЕНТР-ИНВЕСТ&quot;</name></bank>
+  <bank><id>040702750</id><account>30101810400000000750</account><name>СТАВРОПОЛЬСКИЙ ФИЛИАЛ ЗАО ЮНИКРЕДИТ БАНКА</name></bank>
+  <bank><id>040702752</id><account>30101810000000000752</account><name>ФИЛИАЛ &quot;СТАВРОПОЛЬСКИЙ&quot; ОАО &quot;АЛЬФА-БАНК&quot;</name></bank>
+  <bank><id>040702754</id><account>30101810600000000754</account><name>Ф-Л ГПБ (ОАО) В Г. СТАВРОПОЛЕ</name></bank>
+  <bank><id>040702756</id><account>30101810200000000756</account><name>ФЗАО АКБ &quot;ЭКСПРЕСС-ВОЛГА&quot; В Г.СТАВРОПОЛЬ</name></bank>
+  <bank><id>040702757</id><account>30101810500000000757</account><name>СЕВЕРО-КАВКАЗСКИЙ ФИЛИАЛ ЗАО КБ &quot;РУБЛЕВ&quot;</name></bank>
+  <bank><id>040702760</id><account>30101810500000000760</account><name>СТАВРОПОЛЬПРОМСТРОЙБАНК-ОАО</name></bank>
+  <bank><id>040702762</id><account>30101810100000000762</account><name>СТАВРОПОЛЬСКИЙ Ф БАНКА&quot;ВОЗРОЖДЕНИЕ&quot;(ОАО)</name></bank>
+  <bank><id>040702763</id><account>30101810400000000763</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.СТАВРОПОЛЬ</name></bank>
+  <bank><id>040702764</id><account>30101810700000000764</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot;(ООО) В Г.СТАВРОПОЛЬ</name></bank>
+  <bank><id>040702765</id><account>30101810000000000765</account><name>СТАВРОПОЛЬСКИЙ ФИЛИАЛ ОАО АКБ &quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>040702769</id><account>30101810200000000769</account><name>ФАКБ &quot;ИНВЕСТТОРГБАНК&quot; (ОАО) &quot;СТАВРОПОЛЬСКИЙ&quot;</name></bank>
+  <bank><id>040702773</id><account>30101810500000000773</account><name>СТАВРОПОЛЬСКИЙ Ф-Л ОАО &quot;ПРОМСВЯЗЬБАНК&quot;</name></bank>
+  <bank><id>040702784</id><account>30101810900000000784</account><name>СТАВРОПОЛЬСКИЙ ФИЛИАЛ ОАО КБ &quot;ЕВРОСИТИБАНК&quot;</name></bank>
+  <bank><id>040702786</id><account>30101810500000000786</account><name>ФИЛИАЛ &quot;СТАВРОПОЛЬСКИЙ&quot; ОАО &quot;СОБИНБАНК&quot;</name></bank>
+  <bank><id>040702787</id><account>30101810800000000787</account><name>ФИЛИАЛ АКБ ЕВРОФИНАНС МОСНАРБАНК,СТАВРОПОЛЬ</name></bank>
+  <bank><id>040702788</id><account>30101810100000000788</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.СТАВРОПОЛЕ</name></bank>
+  <bank><id>040702791</id><account>30101810100000000791</account><name>СТАФ ОАО &quot;МДМ БАНК&quot;</name></bank>
+  <bank><id>040702798</id><account>30101810200000000798</account><name>СЕВЕРО-КАВКАЗСКИЙ ФИЛИАЛ ОАО КБ &quot;ВОСТОЧНЫЙ&quot;</name></bank>
+  <bank><id>040704779</id><account>30101810100000000779</account><name>ФИЛИАЛ АКБ &quot;ЛЕГИОН&quot; (ОАО)В Г.НЕВИННОМЫССК</name></bank>
+  <bank><id>040708705</id><account>30101810800000000705</account><name>ФИЛИАЛ НБ &quot;ТРАСТ&quot;(ОАО)В Г.ПЯТИГОРСК</name></bank>
+  <bank><id>040708726</id><account>30101810300000000726</account><name>ФИЛИАЛ ЗАО &quot;РУССТРОЙБАНК&quot; Г.ПЯТИГОРСК</name></bank>
+  <bank><id>040708732</id><account>30101810200000000732</account><name>ФИЛИАЛ БАНКА&quot;НОВЫЙ СИМВОЛ&quot;(ЗАО) ЖЕЛЕЗНОВОДСК</name></bank>
+  <bank><id>040708733</id><account>30101810500000000733</account><name>КУ ЗАО &quot;ВЭЛКОМБАНК&quot; ГК &quot;АСВ&quot;</name></bank>
+  <bank><id>040708744</id><account>30101810900000000744</account><name>КБ &quot;КОНТИНЕНТАЛЬ&quot;ООО</name></bank>
+  <bank><id>040708746</id><account>30101810500000000746</account><name>ФАИК ПСБ&quot;СТАВРОПОЛЬЕ&quot;-ОАО В Г.ПЯТИГОРСКЕ</name></bank>
+  <bank><id>040708774</id><account>30101810200000000774</account><name>ОАО КБ &quot;ЕВРОСИТИБАНК&quot;</name></bank>
+  <bank><id>040708775</id><account>30101810500000000775</account><name>ООО КБ &quot;ГРИС-БАНК&quot;</name></bank>
+  <bank><id>040708776</id><account>30101810800000000776</account><name>ФКБ &quot;БУМ-БАНК&quot;, ООО В Г. ПЯТИГОРСК</name></bank>
+  <bank><id>040708777</id><account>30101810100000000777</account><name>ФИЛИАЛ &quot;ПЯТИГОРСКИЙ&quot; ООО &quot;ДАГЭНЕРГОБАНК&quot;</name></bank>
+  <bank><id>040708790</id><account>30101810200000000790</account><name>ФИЛИАЛ &quot;ПЯТИГОРСКИЙ&quot; ОАО КБ &quot;ЕВРОСИТИБАНК&quot;</name></bank>
+  <bank><id>040714745</id><account>30103810500000000745</account><name>НКО &quot;АССИГНАЦИЯ&quot; ООО</name></bank>
+  <bank><id>040715738</id><account>30101810600000000738</account><name>ФАИК ПСБ&quot;СТАВРОПОЛЬЕ&quot;ОАО В Г.КИСЛОВОДСКЕ</name></bank>
+  <bank><id>040717797</id><account>30124810800000000797</account><name>НКО &quot;ЗЕЛЕНОКУМСКАЯ&quot; (ОАО)</name></bank>
+  <bank><id>040724712</id><account>30101810000000000712</account><name>ООО &quot;РУСБС&quot;</name></bank>
+  <bank><id>040724747</id><account>30101810800000000747</account><name>ФАИК ПСБ&quot;СТАВРОПОЛЬЕ&quot;- ОАО В Г.ЕССЕНТУКИ</name></bank>
+  <bank><id>040724780</id><account>30101810100000000780</account><name>ФИЛИАЛ В Г.ЕССЕНТУКИ АКБ &quot;ЛАНТА-БАНК&quot; (ЗАО)</name></bank>
+  <bank><id>040813608</id><account>30101810600000000608</account><name>ДАЛЬНЕВОСТОЧНЫЙ БАНК ОАО &quot;СБЕРБАНК РОССИИ&quot;</name></bank>
+  <bank><id>040813700</id><account>30101810100000000700</account><name>КБ &quot;УССУРИ&quot; ОАО</name></bank>
+  <bank><id>040813703</id><account>30101810000000000703</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.ХАБАРОВСК</name></bank>
+  <bank><id>040813714</id><account>30101810400000000714</account><name>ФИЛИАЛ &quot;ХАБАРОВСКИЙ&quot; ОАО &quot;СКБ-БАНК&quot;</name></bank>
+  <bank><id>040813715</id><account>30101810700000000715</account><name>ХАБАРОВСКИЙ Ф-Л БАНКА &quot;ВОЗРОЖДЕНИЕ&quot;(ОАО)</name></bank>
+  <bank><id>040813718</id><account>30101810600000000718</account><name>ОАО &quot;ДАЛЬКОМБАНК&quot;</name></bank>
+  <bank><id>040813727</id><account>30101810400000000727</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.ХАБАРОВСКЕ</name></bank>
+  <bank><id>040813733</id><account>30101810300000000733</account><name>ХАБАРОВСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>040813737</id><account>30101810500000000737</account><name>ОАО &quot;НОМОС-РЕГИОБАНК&quot;</name></bank>
+  <bank><id>040813744</id><account>30101810700000000744</account><name>ДАЛЬНЕВОСТОЧНЫЙ Ф-Л ОАО &quot;ПРОМСВЯЗЬБАНК&quot;</name></bank>
+  <bank><id>040813757</id><account>30101810700000000757</account><name>ФИЛИАЛ &quot;ДАЛЬНЕВОСТОЧНЫЙ&quot; ОАО &quot;ОТП БАНК&quot;</name></bank>
+  <bank><id>040813762</id><account>30101810300000000762</account><name>КУ ОАО АКБ &quot;ГРАД-БАНК&quot; - ГК &quot;АСВ&quot;</name></bank>
+  <bank><id>040813770</id><account>30101810800000000770</account><name>ФИЛИАЛ &quot;ХАБАРОВСКИЙ&quot; ОАО &quot;АЛЬФА-БАНК&quot;</name></bank>
+  <bank><id>040813774</id><account>30101810000000000774</account><name>ХАБАРОВСКИЙ ФИЛИАЛ ООО &quot;ВНЕШПРОМБАНК&quot;</name></bank>
+  <bank><id>040813783</id><account>30101810800000000783</account><name>ХАБАРОВСКИЙ ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot;</name></bank>
+  <bank><id>040813796</id><account>30101810800000000796</account><name>ДАЛЬНЕВОСТОЧНЫЙ ФИЛИАЛ ЗАО &quot;РАЙФФАЙЗЕНБАНК&quot;</name></bank>
+  <bank><id>040813805</id><account>30101810500000000805</account><name>ХАБАРОВСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>040813812</id><account>30101810700000000812</account><name>ДАЛЬНЕВОСТОЧНЫЙ ФИЛИАЛ ООО &quot;ХКФ БАНК&quot;</name></bank>
+  <bank><id>040813813</id><account>30101810000000000813</account><name>ХАБАРОВСКИЙ ФИЛИАЛ ОАО &quot;РГС БАНК&quot;</name></bank>
+  <bank><id>040813823</id><account>30101810100000000823</account><name>Ф-Л ГПБ (ОАО) В Г.ХАБАРОВСКЕ</name></bank>
+  <bank><id>040813825</id><account>30101810700000000825</account><name>ХФ ОАО &quot;МДМ БАНК&quot;</name></bank>
+  <bank><id>040813827</id><account>30101810300000000827</account><name>ФИЛИАЛ N 2754 ВТБ 24 (ЗАО)</name></bank>
+  <bank><id>040813844</id><account>30101810600000000844</account><name>ФИЛИАЛ НБ &quot;ТРАСТ&quot; (ОАО) В Г.ХАБАРОВСК</name></bank>
+  <bank><id>040813846</id><account>30101810200000000846</account><name>ХАБАРОВСКИЙ ФИЛИАЛ ОАО &quot;БАЛТИЙСКИЙ БАНК&quot;</name></bank>
+  <bank><id>040813848</id><account>30101810800000000848</account><name>ФОАО &quot;ДАЛЬНЕВОСТОЧНЫЙ БАНК&quot; &quot;ХАБАРОВСКИЙ&quot;</name></bank>
+  <bank><id>040813852</id><account>30101810100000000852</account><name>ФИЛИАЛ ОАО &quot;ТРАНСКРЕДИТБАНК&quot; В Г.ХАБАРОВСКЕ</name></bank>
+  <bank><id>040813864</id><account>30101810800000000864</account><name>ХАБАРОВСКИЙ ФИЛИАЛ АКБ &quot;БАНК КИТАЯ (ЭЛОС)&quot;</name></bank>
+  <bank><id>040813867</id><account>30103810300000000867</account><name>ХАБАРОВСКИЙ ФИЛИАЛ НКО &quot;ИНКАХРАН&quot; (ОАО)</name></bank>
+  <bank><id>040813870</id><account>30101810700000000870</account><name>ФАКБ &quot;ИНВЕСТТОРГБАНК&quot; (ОАО) &quot;ХАБАРОВСКИЙ&quot;</name></bank>
+  <bank><id>040813878</id><account>30101810100000000878</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; (ООО) В ХАБАРОВСКЕ</name></bank>
+  <bank><id>040813886</id><account>30101810600000000886</account><name>ДАЛЬНЕВОСТОЧНЫЙ ФИЛИАЛ ОАО КБ &quot;ВОСТОЧНЫЙ&quot;</name></bank>
+  <bank><id>040813896</id><account>30101810700000000896</account><name>ФСКБ ПРИМОРЬЯ &quot;ПРИМСОЦБАНК&quot; В Г.ХАБАРОВСКЕ</name></bank>
+  <bank><id>040813899</id><account>30101810600000000899</account><name>ФИЛИАЛ &quot;АТБ&quot; (ОАО) В Г.ХАБАРОВСК</name></bank>
+  <bank><id>040825773</id><account>30101810800000000773</account><name>ОАО &quot;РОЯЛ КРЕДИТ БАНК&quot;</name></bank>
+  <bank><id>040825789</id><account>30101810700000000789</account><name>ФКБ ОАО &quot;ДАЛЬКОМБАНК&quot; КОМСОМОЛЬСКИЙ-НА/А</name></bank>
+  <bank><id>041012603</id><account>30101810200000000603</account><name>ОТДЕЛЕНИЕ N8636 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>041012713</id><account>30101810200000000713</account><name>ФИЛИАЛ ОАО &quot;ТРАНСКРЕДИТБАНК&quot; В БЛАГОВЕЩЕНСКЕ</name></bank>
+  <bank><id>041012715</id><account>30101810800000000715</account><name>АМУРСКИЙ ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot;</name></bank>
+  <bank><id>041012716</id><account>30101810100000000716</account><name>ФИЛИАЛ ООО &quot;ПРОМСЕРВИСБАНК&quot; В Г.БЛАГОВЕЩЕНСКЕ</name></bank>
+  <bank><id>041012718</id><account>30101810700000000718</account><name>ОАО КБ &quot;ВОСТОЧНЫЙ&quot;</name></bank>
+  <bank><id>041012722</id><account>30101810000000000722</account><name>ФКБ &quot;ДАЛЬКОМБАНК&quot; БЛАГОВЕЩЕНСКИЙ</name></bank>
+  <bank><id>041012731</id><account>30101810800000000731</account><name>АМУРСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>041012733</id><account>30101810400000000733</account><name>ФИЛИАЛ &quot;АМУРСКИЙ&quot; ОАО &quot;ТЭМБР-БАНК&quot;</name></bank>
+  <bank><id>041012745</id><account>30101810100000000745</account><name>КУ ОАО &quot;ВОСТОККРЕДИТБАНК&quot;</name></bank>
+  <bank><id>041012762</id><account>30101810400000000762</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.БЛАГОВЕЩЕНСКЕ</name></bank>
+  <bank><id>041012764</id><account>30101810000000000764</account><name>АМУРСКИЙ ФИЛИАЛ ООО &quot;КРОНА-БАНК&quot;</name></bank>
+  <bank><id>041012765</id><account>30101810300000000765</account><name>&quot;АЗИАТСКО-ТИХООКЕАНСКИЙ БАНК&quot; (ОАО)</name></bank>
+  <bank><id>041012778</id><account>30101810300000000778</account><name>БЛАГОВЕЩЕНСКИЙ ФИЛИАЛ ОАО АКБ&quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>041013708</id><account>30101810500000000708</account><name>ФКБ &quot;ДАЛЬКОМБАНК&quot; ТЫНДИНСКИЙ</name></bank>
+  <bank><id>041102701</id><account>30101810200000000701</account><name>Ф-Л &quot;КОСМОДРОМ-ПЛЕСЕЦК&quot; ОАО &quot;ФОНДСЕРВИСБАНК&quot;</name></bank>
+  <bank><id>041106603</id><account>30101810500000000603</account><name>ФИЛИАЛ ООО &quot;ПРОМСЕРВИСБАНК&quot; В Г.КОРЯЖМА</name></bank>
+  <bank><id>041106708</id><account>30101810900000000708</account><name>КОТЛАССКИЙ ФКБ &quot;СЕВЕРГАЗБАНК&quot;</name></bank>
+  <bank><id>041117309</id><account>30103810400000000309</account><name>ЗАО &quot;СЕВЕРНАЯ КЛИРИНГОВАЯ ПАЛАТА&quot;</name></bank>
+  <bank><id>041117601</id><account>30101810100000000601</account><name>ОТДЕЛЕНИЕ N8637 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>041117705</id><account>30101810200000000705</account><name>ФИЛИАЛ N 5 АКБ МОСОБЛБАНК ОАО</name></bank>
+  <bank><id>041117708</id><account>30101810100000000708</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.АРХАНГЕЛЬСКЕ</name></bank>
+  <bank><id>041117720</id><account>30101810900000000720</account><name>АРХАНГЕЛЬСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>041117724</id><account>30101810100000000724</account><name>ФИЛИАЛ &quot;АРХАНГЕЛЬСКИЙ&quot; ОАО &quot;СОБИНБАНК&quot;</name></bank>
+  <bank><id>041117725</id><account>30101810400000000725</account><name>ФИЛИАЛ ООО КБ &quot;БАНК БФТ&quot; В Г.АРХАНГЕЛЬСКЕ</name></bank>
+  <bank><id>041117744</id><account>30101810300000000744</account><name>АРХАНГЕЛЬСКИЙ ФКБ &quot;СЕВЕРНЫЙ КРЕДИТ&quot; (ОАО)</name></bank>
+  <bank><id>041117746</id><account>30101810900000000746</account><name>Ф-Л &quot;АРХАНГЕЛЬСКИЙ&quot; ОАО &quot;БАЛТИНВЕСТБАНК&quot;</name></bank>
+  <bank><id>041117748</id><account>30101810500000000748</account><name>ФИЛИАЛ СЗРУ ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>041117756</id><account>30101810000000000756</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.АРХАНГЕЛЬСК</name></bank>
+  <bank><id>041117759</id><account>30101810900000000759</account><name>ФАКБ &quot;РОССИЙСКИЙ КАПИТАЛ&quot; (ОАО) АРХАНГЕЛЬСКИЙ</name></bank>
+  <bank><id>041117766</id><account>30101810100000000766</account><name>ФМКБ &quot;МАК-БАНК&quot; (ООО) В Г.АРХАНГЕЛЬСКЕ</name></bank>
+  <bank><id>041117770</id><account>30101810400000000770</account><name>ЗАО СТРОЙКОМБАНК</name></bank>
+  <bank><id>041117772</id><account>30101810000000000772</account><name>АРХАНГЕЛЬСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>041117790</id><account>30101810600000000790</account><name>АРХАНГЕЛЬСКИЙ ФИЛИАЛ ООО &quot;ВНЕШПРОМБАНК&quot;</name></bank>
+  <bank><id>041117793</id><account>30101810500000000793</account><name>АРХАНГЕЛЬСКИЙ ФИЛИАЛ ОАО &quot;ФОНДСЕРВИСБАНК&quot;</name></bank>
+  <bank><id>041117903</id><account>30101810400000000903</account><name>АРХАНГЕЛЬСКИЙ ФКБ &quot;СЕВЕРГАЗБАНК&quot;</name></bank>
+  <bank><id>041117916</id><account>30101810400000000916</account><name>ФКБ &quot;ПЕТРОКОММЕРЦ&quot; В Г.АРХАНГЕЛЬСКЕ</name></bank>
+  <bank><id>041117945</id><account>30101810400000000945</account><name>АРХАНГЕЛЬСКИЙ ФИЛИАЛ КБ &quot;РЭБ&quot; (ЗАО)</name></bank>
+  <bank><id>041117958</id><account>30101810400000000958</account><name>ФИЛИАЛ &quot;СУДОХОДНЫЙ&quot; ЗАО БАНК &quot;СОВЕТСКИЙ&quot;</name></bank>
+  <bank><id>041117974</id><account>30101810400000000974</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; (ООО) В АРХАНГЕЛЬСКЕ</name></bank>
+  <bank><id>041117987</id><account>30101810400000000987</account><name>АРХАНГЕЛЬСКИЙ ФИЛИАЛ ОАО &quot;БАЛТИЙСКИЙ БАНК&quot;</name></bank>
+  <bank><id>041203501</id><account>30103810900000000501</account><name>РНКО &quot;ФРЦ&quot; ЗАО</name></bank>
+  <bank><id>041203602</id><account>30101810500000000602</account><name>ОТДЕЛЕНИЕ N8625 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>041203703</id><account>30101810700000000703</account><name>ФИЛИАЛ &quot;ТРАНСКРЕДИТБАНКА&quot; В Г.АСТРАХАНИ</name></bank>
+  <bank><id>041203709</id><account>30101810500000000709</account><name>Ф-Л ГПБ (ОАО) В Г.АСТРАХАНИ</name></bank>
+  <bank><id>041203710</id><account>30101810900000000710</account><name>ФИЛИАЛ ОАО КБ &quot;ЭЛЛИПС БАНК&quot; &quot;АСТРАХАНСКИЙ&quot;</name></bank>
+  <bank><id>041203711</id><account>30101810200000000711</account><name>ОАО БАНК &quot;ККБ&quot;</name></bank>
+  <bank><id>041203712</id><account>30101810500000000712</account><name>ФИЛИАЛ В Г.АСТРАХАНИ ЗАО &quot;МБ БАНК&quot;</name></bank>
+  <bank><id>041203715</id><account>30101810400000000715</account><name>ОАО ЕАТПБАНК</name></bank>
+  <bank><id>041203726</id><account>30101810800000000726</account><name>ОАО АГРОИНКОМБАНК</name></bank>
+  <bank><id>041203729</id><account>30101810700000000729</account><name>ОАО ВКАБАНК</name></bank>
+  <bank><id>041203738</id><account>30101810500000000738</account><name>АСТРАХАНСКИЙ ФИЛИАЛ ОАО АКБ &quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>041203746</id><account>30101810000000000746</account><name>ФИЛИАЛ ЗАО &quot;РСКБ&quot; В Г.АСТРАХАНЬ</name></bank>
+  <bank><id>041203749</id><account>30101810900000000749</account><name>АСТРАХАНСКИЙ ФИЛИАЛ КБ &quot;ЕВРОТРАСТ&quot; (ЗАО)</name></bank>
+  <bank><id>041203757</id><account>30101810400000000757</account><name>АСТРАХАНСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>041203763</id><account>30101810300000000763</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.АСТРАХАНИ</name></bank>
+  <bank><id>041203773</id><account>30101810400000000773</account><name>АСТРАХАНСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>041203785</id><account>30101810100000000785</account><name>ФИЛИАЛ ПРУ ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>041203788</id><account>30101810000000000788</account><name>АСТРАХАНСКИЙ ФИЛИАЛ КБ &quot;РЭБ&quot; (ЗАО)</name></bank>
+  <bank><id>041203789</id><account>30101810300000000789</account><name>ФИЛИАЛ N4 АКБ МОСОБЛБАНК ОАО</name></bank>
+  <bank><id>041203792</id><account>30101810300000000792</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.АСТРАХАНЬ</name></bank>
+  <bank><id>041203796</id><account>30101810500000000796</account><name>ФИЛИАЛ &quot;ПОВОЛЖСКИЙ&quot; ООО КБ &quot;МОНОЛИТ&quot;</name></bank>
+  <bank><id>041403633</id><account>30101810100000000633</account><name>ОТДЕЛЕНИЕ N8592 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>041403701</id><account>30101810100000000701</account><name>ЗАО УКБ &quot;БЕЛГОРОДСОЦБАНК&quot;</name></bank>
+  <bank><id>041403737</id><account>30101810200000000737</account><name>ОАО &quot;БЕЛГОРОДПРОМСТРОЙБАНК&quot;</name></bank>
+  <bank><id>041403740</id><account>30101810200000000740</account><name>БЕЛГОРОДСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>041403747</id><account>30101810300000000747</account><name>ОАО &quot;СЕВЕРИНВЕСТБАНК&quot;</name></bank>
+  <bank><id>041403757</id><account>30101810400000000757</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.БЕЛГОРОДЕ</name></bank>
+  <bank><id>041403759</id><account>30101810000000000759</account><name>ФИЛИАЛ В Г.БЕЛГОРОД ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>041403775</id><account>30101810000000000775</account><name>БЕЛГОРОДСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>041403783</id><account>30101810500000000783</account><name>ЗАО &quot;ВЭЛТОН БАНК&quot;</name></bank>
+  <bank><id>041403787</id><account>30101810700000000787</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.БЕЛГОРОД</name></bank>
+  <bank><id>041403800</id><account>30101810700000000800</account><name>Ф-Л ГПБ (ОАО) В Г. БЕЛГОРОДЕ</name></bank>
+  <bank><id>041403802</id><account>30101810300000000802</account><name>БФ ЗАО КБ &quot;РУСНАРБАНК&quot;</name></bank>
+  <bank><id>041403810</id><account>30101810800000000810</account><name>БЕЛГОРОДСКИЙ ФИЛИАЛ АБ &quot;РОССИЯ&quot;</name></bank>
+  <bank><id>041403816</id><account>30101810600000000816</account><name>Ф-Л &quot;БЕЛГОРОДСКИЙ&quot; ООО КБ &quot;ИНТЕРКАПИТАЛ-БАНК&quot;</name></bank>
+  <bank><id>041424711</id><account>30101810700000000711</account><name>СТАРООСКОЛЬСКИЙ Ф-Л ЗАО УКБ &quot;БЕЛГОРОДСОЦБАНК&quot;</name></bank>
+  <bank><id>041424725</id><account>30101810000000000725</account><name>ООО &quot;ОСКОЛБАНК&quot;</name></bank>
+  <bank><id>041424756</id><account>30101810600000000756</account><name>БЕЛГОРОДСКИЙ Ф ООО КБ &quot;НАЦИОНАЛЬНЫЙ СТАНДАРТ&quot;</name></bank>
+  <bank><id>041424774</id><account>30101810200000000774</account><name>СТАРООСКОЛЬСКИЙ ФИЛИАЛ ОАО &quot;ЛИПЕЦККОМБАНК&quot;</name></bank>
+  <bank><id>041424780</id><account>30101810100000000780</account><name>ФИЛИАЛ ОАО КБ &quot;МАСТ-БАНК&quot; В Г. СТАРЫЙ ОСКОЛ</name></bank>
+  <bank><id>041501601</id><account>30101810400000000601</account><name>ОТДЕЛЕНИЕ N8605 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>041501706</id><account>30101810800000000706</account><name>КАБ &quot;БЕЖИЦА-БАНК&quot; ОАО</name></bank>
+  <bank><id>041501707</id><account>30101810100000000707</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.БРЯНСКЕ</name></bank>
+  <bank><id>041501712</id><account>30101810700000000712</account><name>ФИЛИАЛ ОАО КБ &quot;СТРОЙКРЕДИТ&quot; В Г.БРЯНСКЕ</name></bank>
+  <bank><id>041501714</id><account>30101810300000000714</account><name>ФИЛИАЛ ОАО БАНК &quot;РОСТ&quot; В Г.БРЯНСКЕ</name></bank>
+  <bank><id>041501716</id><account>30101810900000000716</account><name>ФИЛИАЛ &quot;БРЯНСК&quot; АКБ &quot;НРБАНК&quot; (ОАО)</name></bank>
+  <bank><id>041501717</id><account>30101810200000000717</account><name>ФИЛИАЛ ОАО &quot;ТРАНСКРЕДИТБАНК&quot; В Г.БРЯНСКЕ</name></bank>
+  <bank><id>041501729</id><account>30101810900000000729</account><name>БРЯНСКИЙ ФИЛИАЛ &quot;ТКБ&quot; (ЗАО)</name></bank>
+  <bank><id>041501747</id><account>30101810500000000747</account><name>БРЯНСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>041501751</id><account>30101810800000000751</account><name>БРЯНСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>041501754</id><account>30101810700000000754</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.БРЯНСК</name></bank>
+  <bank><id>041501755</id><account>30101810000000000755</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; (ООО) В БРЯНСКЕ</name></bank>
+  <bank><id>041501756</id><account>30101810300000000756</account><name>ФАКБ &quot;ИНВЕСТТОРГБАНК&quot; (ОАО) &quot;БРЯНСКИЙ&quot;</name></bank>
+  <bank><id>041501758</id><account>30101810900000000758</account><name>Ф-Л ГПБ (ОАО) В Г.БРЯНСКЕ</name></bank>
+  <bank><id>041501759</id><account>30101810200000000759</account><name>ФИЛИАЛ В Г. БРЯНСК ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>041501772</id><account>30101810300000000772</account><name>БФ ОАО &quot;СМП БАНК&quot;</name></bank>
+  <bank><id>041501787</id><account>30101810900000000787</account><name>БРЯНСКИЙ ФИЛИАЛ АПБ &quot;СОЛИДАРНОСТЬ&quot;</name></bank>
+  <bank><id>041501790</id><account>30101810900000000790</account><name>ФИЛИАЛ БРЯНСКИЙ ОАО &quot;ЮНИКОРБАНК&quot;</name></bank>
+  <bank><id>041708602</id><account>30101810000000000602</account><name>ОТДЕЛЕНИЕ N8611 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>041708703</id><account>30101810200000000703</account><name>ВЛАДИМИРСКИЙ ФИЛИАЛ АПБ &quot;СОЛИДАРНОСТЬ&quot;</name></bank>
+  <bank><id>041708706</id><account>30101810100000000706</account><name>ЗАО &quot;ВЛАДБИЗНЕСБАНК&quot;</name></bank>
+  <bank><id>041708708</id><account>30101810700000000708</account><name>ООО &quot;ВЛАДПРОМБАНК&quot;</name></bank>
+  <bank><id>041708716</id><account>30101810200000000716</account><name>ФИЛИАЛ ВРУ ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>041708720</id><account>30101810500000000720</account><name>ФИЛИАЛ ОАО БАНК &quot;РОСТ&quot; В Г.ВЛАДИМИРЕ</name></bank>
+  <bank><id>041708724</id><account>30101810700000000724</account><name>ВЛАДИМИРСКИЙ ФИЛИАЛ ОАО АКБ &quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>041708730</id><account>30101810600000000730</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г. ВЛАДИМИР</name></bank>
+  <bank><id>041708741</id><account>30101810000000000741</account><name>ФАКБ &quot;ИНВЕСТТОРГБАНК&quot; (ОАО) &quot;ПОКРОВСКИЙ&quot;</name></bank>
+  <bank><id>041708751</id><account>30101810100000000751</account><name>ФИЛИАЛ N16 АКБ МОСОБЛБАНК ОАО</name></bank>
+  <bank><id>041708758</id><account>30101810200000000758</account><name>ВЛАДИМИРСКИЙ Ф-Л ЗАО МКБ &quot;МОСКОМПРИВАТБАНК&quot;</name></bank>
+  <bank><id>041708760</id><account>30101810900000000760</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.ВЛАДИМИРЕ</name></bank>
+  <bank><id>041708761</id><account>30101810200000000761</account><name>ФИЛИАЛ НБ &quot;ТРАСТ&quot; (ОАО) В Г. ВЛАДИМИР</name></bank>
+  <bank><id>041708764</id><account>30101810100000000764</account><name>ФИЛИАЛ &quot;ОПОЛЬЕ&quot; ЗАО &quot;РЕСПУБЛИКАНСКИЙ БАНК&quot;</name></bank>
+  <bank><id>041708772</id><account>30101810600000000772</account><name>ВЛАДИМИРСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>041708777</id><account>30101810100000000777</account><name>ВЛАДИМИРСКИЙ ФИЛИАЛ ОАО АКБ &quot;РОСБАНК&quot;</name></bank>
+  <bank><id>041708778</id><account>30101810400000000778</account><name>ФИЛИАЛ ОАО КБ &quot;МАСТ-БАНК&quot; В Г.ВЛАДИМИРЕ</name></bank>
+  <bank><id>041708779</id><account>30101810700000000779</account><name>ФИЛИАЛ &quot;ВЛАДИМИРСКИЙ&quot; ОАО &quot;ТЭМБР-БАНК&quot;</name></bank>
+  <bank><id>041708780</id><account>30101810100000000780</account><name>ФИЛИАЛ АКБ &quot;ЛЕГИОН&quot;(ОАО)В ГОРОДЕ ВЛАДИМИР</name></bank>
+  <bank><id>041718737</id><account>30101810000000000737</account><name>ОАО КОМБАНК &quot;ОКСКИЙ&quot;</name></bank>
+  <bank><id>041806647</id><account>30101810100000000647</account><name>ОТДЕЛЕНИЕ N8621 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>041806701</id><account>30101810800000000701</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ЗАО ЮНИКРЕДИТ БАНК</name></bank>
+  <bank><id>041806702</id><account>30101810100000000702</account><name>ФИЛИАЛ ОАО &quot;МБСП&quot; В ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041806703</id><account>30101810400000000703</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ &quot;РИАБАНК&quot; (ЗАО)</name></bank>
+  <bank><id>041806704</id><account>30101810700000000704</account><name>ФИЛИАЛ КБ &quot;АЛЬТА-БАНК&quot; (ЗАО) В Г.ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041806706</id><account>30101810300000000706</account><name>ФИЛИАЛ ОАО БАНК &quot;РОСТ&quot; В Г.ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041806707</id><account>30101810600000000707</account><name>ФИЛИАЛ ОАО АКБ &quot;РФА&quot; В Г.ВОЛГОГРАД</name></bank>
+  <bank><id>041806708</id><account>30101810900000000708</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ АБ &quot;РОССИЯ&quot;</name></bank>
+  <bank><id>041806709</id><account>30101810200000000709</account><name>ВФ ОАО &quot;СМП БАНК&quot;</name></bank>
+  <bank><id>041806710</id><account>30101810600000000710</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ЗАО ГКБ &quot;АВТОГРАДБАНК&quot;</name></bank>
+  <bank><id>041806715</id><account>30101810100000000715</account><name>ЮЖНЫЙ Ф-Л ОАО &quot;ПРОМСВЯЗЬБАНК&quot;</name></bank>
+  <bank><id>041806718</id><account>30101810000000000718</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ОАО &quot;АБ &quot;ПУШКИНО&quot;</name></bank>
+  <bank><id>041806762</id><account>30101810700000000762</account><name>ФИЛИАЛ ВОЛРУ ОАО &quot;МИНБ&quot;</name></bank>
+  <bank><id>041806779</id><account>30101810900000000779</account><name>Ф-Л ГПБ (ОАО) В Г.ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041806791</id><account>30101810700000000791</account><name>ОАО КБ &quot;РУСЮГБАНК&quot;</name></bank>
+  <bank><id>041806799</id><account>30101810100000000799</account><name>ОАО &quot;АКБ&quot;КОР&quot;</name></bank>
+  <bank><id>041806808</id><account>30101810800000000808</account><name>КУ ОАО &quot;ВОЛГО-ДОН БАНК&quot;-ГК &quot;АСВ&quot;</name></bank>
+  <bank><id>041806813</id><account>30101810400000000813</account><name>ВФ АКБ &quot;ИРС&quot; (ЗАО)</name></bank>
+  <bank><id>041806824</id><account>30101810800000000824</account><name>ВОЛГОГРАДСКИЙ Ф БАНКА&quot;ВОЗРОЖДЕНИЕ&quot;(ОАО)</name></bank>
+  <bank><id>041806831</id><account>30101810000000000831</account><name>ОАО НОКССБАНК</name></bank>
+  <bank><id>041806835</id><account>30101810200000000835</account><name>Ф.ЗАО АКБ&quot;ЭКСПРЕСС-ВОЛГА&quot;В Г.ВОЛГОГРАД</name></bank>
+  <bank><id>041806852</id><account>30101810500000000852</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041806863</id><account>30101810900000000863</account><name>ВОЛГОГРАДСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>041806868</id><account>30101810400000000868</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; В ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041806869</id><account>30101810700000000869</account><name>ФИЛИАЛ &quot;ВОЛГОГРАДСКИЙ&quot; ООО КБ &quot;ФДБ&quot;</name></bank>
+  <bank><id>041806870</id><account>30101810100000000870</account><name>ФИЛИАЛ N 9 ОАО КБ &quot;ЦЕНТР-ИНВЕСТ&quot;</name></bank>
+  <bank><id>041806871</id><account>30101810400000000871</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ОАО &quot;ВКБ&quot;</name></bank>
+  <bank><id>041806872</id><account>30101810700000000872</account><name>ФИЛИАЛ ОАО &quot;ТРАНСКРЕДИТБАНК&quot;В Г.ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041806874</id><account>30101810300000000874</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ОАО АКБ&quot;РОСБАНК&quot;</name></bank>
+  <bank><id>041806875</id><account>30101810600000000875</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ЗАО &quot;ТУСАРБАНК&quot;</name></bank>
+  <bank><id>041806879</id><account>30101810800000000879</account><name>ФИЛИАЛ ОАО &quot;БИНБАНК&quot; В ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041806881</id><account>30101810500000000881</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ОАО &quot;БАЛТИЙСКИЙ БАНК&quot;</name></bank>
+  <bank><id>041806884</id><account>30101810400000000884</account><name>ФКБ &quot;МОСКОММЕРЦБАНК&quot; (ОАО) Г.ВОЛГОГРАД</name></bank>
+  <bank><id>041806886</id><account>30101810000000000886</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ОАО &quot;МТС-БАНК&quot;</name></bank>
+  <bank><id>041806887</id><account>30101810300000000887</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>041806888</id><account>30101810600000000888</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ &quot;МАСТЕР-БАНК&quot; (ОАО)</name></bank>
+  <bank><id>041806892</id><account>30101810900000000892</account><name>ФАКБ &quot;ИНВЕСТТОРГБАНК&quot; (ОАО)&quot;ВОЛГОГРАДСКИЙ&quot;</name></bank>
+  <bank><id>041806893</id><account>30101810200000000893</account><name>ФИЛИАЛ ЗАО &quot;РУССТРОЙБАНК&quot; Г.ВОЛГОГРАД</name></bank>
+  <bank><id>041806894</id><account>30101810500000000894</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ОАО АКБ &quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>041806895</id><account>30101810800000000895</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ КБ &quot;ВЕБРР&quot; (ООО)</name></bank>
+  <bank><id>041806897</id><account>30101810400000000897</account><name>ФИЛИАЛ &quot;ВОЛГОГРАД&quot; АКБ &quot;НРБАНК&quot; (ОАО)</name></bank>
+  <bank><id>041806898</id><account>30101810700000000898</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ ЗАО КБ &quot;СИТИБАНК&quot;</name></bank>
+  <bank><id>041806901</id><account>30101810600000000901</account><name>ВОЛГОГРАДСКИЙ ФИЛИАЛ &quot;НОМОС-БАНКА&quot; (ОАО)</name></bank>
+  <bank><id>041806904</id><account>30101810500000000904</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.ВОЛГОГРАД</name></bank>
+  <bank><id>041814815</id><account>30101810500000000815</account><name>ОАО КБ &quot;МИХАЙЛОВСКИЙ ПЖСБ&quot;</name></bank>
+  <bank><id>041817774</id><account>30101810600000000774</account><name>УРЮПИНСКИЙ ФИЛИАЛ ОАО АКБ &quot;СЕЛЬМАШБАНК&quot;</name></bank>
+  <bank><id>041822861</id><account>30101810300000000861</account><name>ФИЛИАЛ ООО КБ &quot;НАРАТБАНК&quot; В Г.КАМЫШИНЕ</name></bank>
+  <bank><id>041824853</id><account>30101810600000000853</account><name>ФКБ &quot;ПЕТРОКОММЕРЦ&quot; В Г.ВОЛГОГРАДЕ</name></bank>
+  <bank><id>041824883</id><account>30101810900000000883</account><name>ФИЛИАЛ &quot;ВОЛГОГРАДСКИЙ&quot; ОАО АКБ &quot;АВАНГАРД&quot;</name></bank>
+  <bank><id>041856860</id><account>30101810500000000860</account><name>ВОЛЖСКИЙ ФИЛИАЛ АКБ &quot;НЗБАНК&quot;, ОАО</name></bank>
+  <bank><id>041856885</id><account>30101810200000000885</account><name>ФИЛИАЛ &quot;ВОЛЖСКИЙ&quot; АКБ &quot;ИНТРАСТБАНК&quot; (ОАО)</name></bank>
+  <bank><id>041856890</id><account>30101810800000000890</account><name>ФИЛИАЛ &quot;ВОЛЖСКИЙ&quot; ОАО &quot;СКБ-БАНК&quot;</name></bank>
+  <bank><id>041908733</id><account>30101810500000000733</account><name>ВЕЛИКОУСТЮГСКИЙ ФКБ &quot;СЕВЕРГАЗБАНК&quot;</name></bank>
+  <bank><id>041909644</id><account>30101810900000000644</account><name>ОТДЕЛЕНИЕ N8638 СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>041909707</id><account>30101810300000000707</account><name>&quot;СЕВЕРСТРОЙБАНК&quot; ОАО</name></bank>
+  <bank><id>041909708</id><account>30103810200000000708</account><name>НКО &quot;КРЕДИТАЛЬЯНС&quot; (ООО)</name></bank>
+  <bank><id>041909717</id><account>30101810400000000717</account><name>ЗАО БАНК &quot;ВОЛОГДАБАНК&quot;</name></bank>
+  <bank><id>041909722</id><account>30101810000000000722</account><name>ФИЛИАЛ ВОЛОГОДСКИЙ ОАО БАНК ВТБ</name></bank>
+  <bank><id>041909736</id><account>30101810300000000736</account><name>ВОЛОГОДСКИЙ ФИЛИАЛ ОАО &quot;БАНК МОСКВЫ&quot;</name></bank>
+  <bank><id>041909740</id><account>30103810200000000740</account><name>ООО НКО &quot;ВОЛОГДА-КРЕДИТ&quot;</name></bank>
+  <bank><id>041909747</id><account>30101810700000000747</account><name>ВОЛОГОДСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>041909760</id><account>30101810800000000760</account><name>ЗАО &quot;БАНК ВОЛОГЖАНИН&quot;</name></bank>
+  <bank><id>041909769</id><account>30101810500000000769</account><name>БАНК &quot;СЕВЕРНЫЙ КРЕДИТ&quot; (ОАО)</name></bank>
+  <bank><id>041909772</id><account>30101810500000000772</account><name>ОАО &quot;ПРОМЭНЕРГОБАНК&quot;</name></bank>
+  <bank><id>041909781</id><account>30101810300000000781</account><name>ФИЛИАЛ &quot;ВОЛОГОДСКИЙ&quot; ОАО &quot;СКБ-БАНК&quot;</name></bank>
+  <bank><id>041909782</id><account>30101810600000000782</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.ВОЛОГДА</name></bank>
+  <bank><id>041909785</id><account>30101810500000000785</account><name>СЕВЕРНЫЙ ФИЛИАЛ ЗАО КБ &quot;РУБЛЕВ&quot;</name></bank>
+  <bank><id>041909786</id><account>30101810800000000786</account><name>ОАО КБ &quot;СЕВЕРГАЗБАНК&quot;</name></bank>
+  <bank><id>041909793</id><account>30101810000000000793</account><name>ФИЛИАЛ ООО КБ &quot;БАНК БФТ&quot; В Г.ВОЛОГДЕ</name></bank>
+  <bank><id>041946719</id><account>30101810500000000719</account><name>ЧЕРЕПОВЕЦКИЙ ФКБ &quot;СЕВЕРГАЗБАНК&quot;</name></bank>
+  <bank><id>041946739</id><account>30101810700000000739</account><name>ФИЛИАЛ НБ &quot;ТРАСТ&quot; (ОАО) В Г.ЧЕРЕПОВЕЦ</name></bank>
+  <bank><id>041946747</id><account>30101810200000000747</account><name>ОАО &quot;МЕТКОМБАНК&quot;</name></bank>
+  <bank><id>041946748</id><account>30101810500000000748</account><name>ОАО КОМСОЦБАНК &quot;БУМЕРАНГ&quot;</name></bank>
+  <bank><id>041946797</id><account>30101810700000000797</account><name>ФИЛИАЛ ОАО &quot;ПРОМЭНЕРГОБАНК&quot;В Г.ЧЕРЕПОВЦЕ</name></bank>
+  <bank><id>041946799</id><account>30101810300000000799</account><name>ЧЕРЕПОВЕЦКИЙ ФКБ &quot;СЕВЕРНЫЙ КРЕДИТ&quot; (ОАО)</name></bank>
+  <bank><id>042007453</id><account>30101810100000000453</account><name>ФИЛИАЛ ОАО &quot;УРАЛСИБ&quot; В Г.ВОРОНЕЖ</name></bank>
+  <bank><id>042007677</id><account>30101810300000000677</account><name>ВОРОНЕЖСКИЙ ФИЛИАЛ АБ &quot;РОССИЯ&quot;</name></bank>
+  <bank><id>042007681</id><account>30101810600000000681</account><name>ЦЕНТРАЛЬНО-ЧЕРНОЗЕМНЫЙ БАНК СБЕРБАНКА РОССИИ</name></bank>
+  <bank><id>042007707</id><account>30101810500000000707</account><name>ОАО БАНК &quot;ВОРОНЕЖ&quot;</name></bank>
+  <bank><id>042007709</id><account>30101810100000000709</account><name>ВОРОНЕЖСКИЙ ФИЛИАЛ ЗАО ЮНИКРЕДИТ БАНК</name></bank>
+  <bank><id>042007711</id><account>30101810800000000711</account><name>ФИЛИАЛ АКБ &quot;ИНТРАСТБАНК&quot; (ОАО) В Г. ВОРОНЕЖЕ</name></bank>
+  <bank><id>042007726</id><account>30101810400000000726</account><name>ФИЛИАЛ &quot;ВОРОНЕЖСКИЙ&quot; ОАО БАНК &quot;ЗАПАДНЫЙ&quot;</name></bank>
+  <bank><id>042007730</id><account>30101810700000000730</account><name>ВФ ОАО &quot;МДМ БАНК&quot;</name></bank>
+  <bank><id>042007731</id><account>30101810000000000731</account><name>ОАО &quot;АРКСБАНК&quot;</name></bank>
+  <bank><id>042007732</id><account>30101810300000000732</account><name>ВОРОНЕЖСКИЙ ФИЛИАЛ КБ &quot;РОСПРОМБАНК&quot; (ООО)</name></bank>
+  <bank><id>042007737</id><account>30101810800000000737</account><name>ВОРОНЕЖСКИЙ ФИЛИАЛ &quot;ТКБ&quot; (ЗАО)</name></bank>
+  <bank><id>042007738</id><account>30101810100000000738</account><name>ФИЛИАЛ N3652 ВТБ 24 (ЗАО)</name></bank>
+  <bank><id>042007741</id><account>30101810100000000741</account><name>ФКБ &quot;ЮНИАСТРУМ БАНК&quot; (ООО) В ВОРОНЕЖЕ</name></bank>
+  <bank><id>042007742</id><account>30101810400000000742</account><name>ВОРОНЕЖСКИЙ ФИЛИАЛ ОАО АКБ &quot;СВЯЗЬ-БАНК&quot;</name></bank>
+  <bank><id>042007755</id><account>30101810400000000755</account><name>ФЗАО АКБ &quot;ЭКСПРЕСС-ВОЛГА&quot; В Г.ВОРОНЕЖЕ</name></bank>
+  <bank><id>042007767</id><account>30101810100000000767</account><name>ФИЛИАЛ &quot;ВОРОНЕЖ&quot; АКБ &quot;НРБАНК&quot; (ОАО)</name></bank>
+  <bank><id>042007769</id><account>30101810700000000769</account><name>ФИЛИАЛ ОАО &quot;АКИБАНК&quot; В Г. ВОРОНЕЖ</name></bank>
+  <bank><id>042007771</id><account>30101810400000000771</account><name>ФАКБ &quot;ИНВЕСТТОРГБАНК&quot; (ОАО) &quot;ВОРОНЕЖСКИЙ&quot;</name></bank>
+  <bank><id>042007778</id><account>30101810500000000778</account><name>ФКБ &quot;СДМ-БАНК&quot; (ОАО) В Г.ВОРОНЕЖЕ</name></bank>
+  <bank><id>042007781</id><account>30101810500000000781</account><name>ВОРОНЕЖСКИЙ ФИЛИАЛ &quot;НОМОС-БАНКА&quot; (ОАО)</name></bank>
+  <bank><id>042007787</id><account>30101810300000000787</account><name>Ф-Л КБ &quot;ТРАСТ КАПИТАЛ БАНК&quot; ЗАО В Г.ВОРОНЕЖЕ</name></bank>
+  <bank><id>042007801</id><account>30103810200000000801</account><name>ВОРОНЕЖСКИЙ ФИЛИАЛ НКО &quot;ИНКАХРАН&quot; (ОАО)</name></bank>
+  <bank><id>042007803</id><account>30101810200000000803</account><name>ФИЛИАЛ &quot;ВОРОНЕЖСКИЙ&quot; ОАО БАНК &quot;ОТКРЫТИЕ&quot;</name></bank>
+  <bank><id>042007804</id><account>30101810500000000804</account><name>ВОРОНЕЖСКИЙ ФИЛИАЛ ЗАО КБ &quot;ЭКСПЕРТ БАНК&quot;</name></bank>
+  <bank><id>042007807</id><account>30101810400000000807</account><name>ВОРОНЕЖСКИЙ Ф-Л БАНКА&quot;ВОЗРОЖДЕНИЕ&quot;(ОАО)</name></bank>
+  <bank><id>042007809</id><account>30101810000000000809</account><name>ФИЛИАЛ ОАО БАНК &quot;РОСТ&quot; В Г. ВОРОНЕЖЕ</name></bank>
+  <bank><id>042007810</id><account>30101810400000000810</account><name>ФИЛИАЛ ОАО &quot;ТРАНСКРЕДИТБАНК&quot; В Г.ВОРОНЕЖЕ</name></bank>
+  <bank><id>042007811</id><account>30101810700000000811</account><name>ВОРОНЕЖСКИЙ РФ ОАО &quot;РОССЕЛЬХОЗБАНК&quot;</name></bank>
+  <bank><id>042007812</id><account>30103810600000000812</account><name>ОАО РНКО &quot;ФБ&quot;</name></bank>
+  <bank><id>042007823</id><account>30101810400000000823</account><name>ФИЛИАЛ &quot;ВОРОНЕЖСКИЙ&quot; ОАО &quot;УБРИР&quot;</name></bank>
+  <bank><id>042007835</id><account>30101810100000000835</account><name>ФИЛИАЛ ОАО БАНК ВТБ В Г.ВОРОНЕЖЕ</name></bank>
+  <bank><id>042007839</id><account>30124810400000000839</account><name>ОАО НДКО &quot;МЦМ&quot;</name></bank>
+  <bank><id>042007842</id><account>30101810300000000842</account><name>ФКБ &quot;ИНВЕСТИЦИОННЫЙ СОЮЗ&quot; (ООО) В Г. ВОРОНЕЖ</name></bank>
+  <bank><id>042007849</id><account>30101810400000000849</account><name>Ф.&quot;ВОРОНЕЖ&quot; ЗАО &quot;БАНК РУССКИЙ СТАНДАРТ&quot;</name></bank>
+</banks>

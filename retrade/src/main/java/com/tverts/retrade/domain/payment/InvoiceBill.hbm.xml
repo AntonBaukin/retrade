@@ -1,0 +1,102 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.payment'>
+
+  <class name = 'InvoiceBill' table = 'retrade_invoice_bill' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_invoice_bill'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_invoice_bill_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Contractor reference -->
+
+    <many-to-one name = "contractor" foreign-key = 'fk_invoice_bill_contractor'>
+
+      <column name = 'fk_contractor' not-null = 'true'
+        index = 'ix_invoice_bill_contractor'>
+
+        <comment>The Contractor of the Invoice the Bill is for</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Firm Order reference -->
+
+    <many-to-one name = "order" foreign-key = 'fk_invoice_bill_order'>
+
+      <column name = 'fk_order' index = 'ix_invoice_bill_order'>
+
+        <comment>The Firm Order this Bill is included in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Invoice reference -->
+
+    <many-to-one name = "invoice" foreign-key = 'fk_invoice_bill_invoice'>
+
+      <column name = 'fk_invoice' not-null = 'true'
+        unique-key = 'ux_invoice_bill'>
+
+        <comment>The Invoice to bill</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Expense -->
+
+    <property name = 'expense' type = 'big_decimal'>
+
+      <column name = 'expense' precision = '22' scale = '10'>
+
+        <comment>
+          The amount of money Domain is payed from the Contractor.
+          (Total cost of the Buy Invoice.)
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Income -->
+
+    <property name = 'income' type = 'big_decimal'>
+
+      <column name = 'income' precision = '22' scale = '10'>
+
+        <comment>
+          The amount of money Domain to pay to the Contractor.
+          (Total cost of the Sell Invoice.)
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Effective flag -->
+
+    <property name = 'effective'>
+
+      <column name = 'is_effective' not-null = 'true'>
+
+        <comment>Tells that the Invoice of this Bill is fixed</comment>
+      </column>
+    </property>
+
+
+  </class>
+</hibernate-mapping>

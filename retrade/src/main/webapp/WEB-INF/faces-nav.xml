@@ -1,0 +1,597 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<faces-config version = '2.0'
+  xmlns              = 'http://java.sun.com/xml/ns/javaee'
+  xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd'>
+
+
+  <!--=================================================
+    =  Navigation Rules                               =
+    +================================================-->
+
+
+  <!-- [retrade/invoices/info-buy] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/info-buy.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-fixed</from-outcome>
+      <to-view-id>/retrade/invoices/ask-edit.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/invoices/edit-buy.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/info-sell] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/info-sell.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-fixed</from-outcome>
+      <to-view-id>/retrade/invoices/ask-edit.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/invoices/edit-sell.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/info-move] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/info-move.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-fixed</from-outcome>
+      <to-view-id>/retrade/invoices/ask-edit.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/invoices/edit-move.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/ask-edit] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/ask-edit.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-buy</from-outcome>
+      <to-view-id>/retrade/invoices/edit-buy.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-sell</from-outcome>
+      <to-view-id>/retrade/invoices/edit-sell.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-move</from-outcome>
+      <to-view-id>/retrade/invoices/edit-move.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>cancel-edit-buy</from-outcome>
+      <to-view-id>/retrade/invoices/info-buy.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>cancel-edit-sell</from-outcome>
+      <to-view-id>/retrade/invoices/info-sell.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>cancel-edit-move</from-outcome>
+      <to-view-id>/retrade/invoices/info-move.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/edit-buy] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/edit-buy.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>cancel-edit</from-outcome>
+      <to-view-id>/retrade/invoices/info-buy.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit</from-outcome>
+      <to-view-id>/retrade/invoices/info-buy.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-date</from-outcome>
+      <to-view-id>/retrade/invoices/edit-date.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-contractor</from-outcome>
+      <to-view-id>/retrade/invoices/edit-contractor.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/edit-sell] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/edit-sell.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>cancel-edit</from-outcome>
+      <to-view-id>/retrade/invoices/info-sell.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit</from-outcome>
+      <to-view-id>/retrade/invoices/info-sell.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-date</from-outcome>
+      <to-view-id>/retrade/invoices/edit-date.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-contractor</from-outcome>
+      <to-view-id>/retrade/invoices/edit-contractor.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/edit-move] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/edit-move.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>cancel-edit</from-outcome>
+      <to-view-id>/retrade/invoices/info-move.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit</from-outcome>
+      <to-view-id>/retrade/invoices/info-move.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-date</from-outcome>
+      <to-view-id>/retrade/invoices/edit-date.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/edit-date] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/edit-date.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>done-edit-buy</from-outcome>
+      <to-view-id>/retrade/invoices/edit-buy.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-sell</from-outcome>
+      <to-view-id>/retrade/invoices/edit-sell.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-move</from-outcome>
+      <to-view-id>/retrade/invoices/edit-move.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-buy-create</from-outcome>
+      <to-view-id>/retrade/invoices/create-buy.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-sell-create</from-outcome>
+      <to-view-id>/retrade/invoices/create-sell.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-move-create</from-outcome>
+      <to-view-id>/retrade/invoices/create-move.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/edit-contractor] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/edit-contractor.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>done-edit-buy</from-outcome>
+      <to-view-id>/retrade/invoices/edit-buy.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-sell</from-outcome>
+      <to-view-id>/retrade/invoices/edit-sell.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-buy-create</from-outcome>
+      <to-view-id>/retrade/invoices/create-buy.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-sell-create</from-outcome>
+      <to-view-id>/retrade/invoices/create-sell.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/create-sell] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/create-sell.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-date</from-outcome>
+      <to-view-id>/retrade/invoices/edit-date.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-contractor</from-outcome>
+      <to-view-id>/retrade/invoices/edit-contractor.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/create-buy] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/create-buy.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-date</from-outcome>
+      <to-view-id>/retrade/invoices/edit-date.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-contractor</from-outcome>
+      <to-view-id>/retrade/invoices/edit-contractor.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/invoices/create-move] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/create-move.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-date</from-outcome>
+      <to-view-id>/retrade/invoices/edit-date.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/price-lists/info] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/price-lists/info.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>prices-history</from-outcome>
+      <to-view-id>/retrade/price-lists/history.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/price-lists/history] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/price-lists/history.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>price-list</from-outcome>
+      <to-view-id>/retrade/price-lists/info.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/reprice-docs/info] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/reprice-docs/info.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-reprice</from-outcome>
+      <to-view-id>/retrade/reprice-docs/edit.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/reprice-docs/edit] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/reprice-docs/edit.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>cancel-edit</from-outcome>
+      <to-view-id>/retrade/reprice-docs/info.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/firms/info-main] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/firms/info-main.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>invoices</from-outcome>
+      <to-view-id>/retrade/firms/info-invoices.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/firms/info-invoices] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/firms/info-invoices.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>info-main</from-outcome>
+      <to-view-id>/retrade/firms/info-main.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/system/create-domain] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/system/create-domain.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>done</from-outcome>
+      <to-view-id>/retrade/system/create-domain-log.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/system/self-shunt] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/system/self-shunt.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>done</from-outcome>
+      <to-view-id>/retrade/system/self-shunt-log.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/goods/list-measures] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/goods/list-measures.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/goods/edit-measure.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>create</from-outcome>
+      <to-view-id>/retrade/goods/edit-measure.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/goods/edit-measure] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/goods/edit-measure.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>cancel</from-outcome>
+      <to-view-id>/retrade/goods/list-measures.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/stores/list-win] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/stores/list-win.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/stores/edit.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>create</from-outcome>
+      <to-view-id>/retrade/stores/edit.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/stores/edit] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/stores/edit.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>cancel</from-outcome>
+      <to-view-id>/retrade/stores/list-win.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/price-lists/list-win] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/price-lists/list-win.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/price-lists/edit.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>create</from-outcome>
+      <to-view-id>/retrade/price-lists/edit.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/price-lists/edit] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/price-lists/edit.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>cancel</from-outcome>
+      <to-view-id>/retrade/price-lists/list-win.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/sells/invoice-info] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/sells/invoice-info.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>session</from-outcome>
+      <to-view-id>/retrade/sells/session-info.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/sells/session-info] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/sells/session-info.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>invoice</from-outcome>
+      <to-view-id>/retrade/sells/invoice-info.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>receipt</from-outcome>
+      <to-view-id>/retrade/sells/receipt-info.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>session-invoices</from-outcome>
+      <to-view-id>/retrade/sells/session-invoices.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/sells/receipt-info] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/sells/receipt-info.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>session</from-outcome>
+      <to-view-id>/retrade/sells/session-info.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/sells/session-invoices] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/sells/session-invoices.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>session</from-outcome>
+      <to-view-id>/retrade/sells/session-info.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/goods/edit-good] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/goods/edit-good.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>calc</from-outcome>
+      <to-view-id>/retrade/goods/good-calc-info.xhtml</to-view-id>
+    </navigation-case>
+    
+    <navigation-case>
+      <from-outcome>calc-edit</from-outcome>
+      <to-view-id>/retrade/goods/good-calc-edit.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/goods/good-calc-info] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/goods/good-calc-info.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/goods/edit-good.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>calc-edit</from-outcome>
+      <to-view-id>/retrade/goods/good-calc-edit.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>history</from-outcome>
+      <to-view-id>/retrade/goods/good-calcs-history.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/goods/good-calcs-history] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/goods/good-calcs-history.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>calc</from-outcome>
+      <to-view-id>/retrade/goods/good-calc-info.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/goods/good-calc-edit] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/goods/good-calc-edit.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>calc</from-outcome>
+      <to-view-id>/retrade/goods/good-calc-info.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/goods/edit-good.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+</faces-config>

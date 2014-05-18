@@ -1,0 +1,141 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<project xmlns:ivy = 'antlib:org.apache.ivy.ant'
+         name      = 'retrade'
+         default   = 'retrade-all'>
+
+  <!-- root target -->
+
+  <target name    = 'retrade-all'
+          depends = 'package'/>
+
+
+  <!--=================================================
+    = xroot variables                                 =
+    =================================================-->
+
+  <property name  = 'xroot-base'
+            value = '${basedir}/../xroot'/>
+
+  <property name  = 'xroot-build'
+            value = '${xroot-base}/build.xml'/>
+
+  <property name  = 'xroot-target'
+            value = '${xroot-base}/target'/>
+
+  <property name  = 'xroot-classes'
+            value = '${xroot-target}/classes'/>
+
+  <property name  = 'xroot-test-classes'
+            value = '${xroot-target}/test-classes'/>
+
+
+  <!--=================================================
+    = tasks:  compile                                 =
+    =================================================-->
+
+  <target name    = 'compile'
+          depends = 'compile-xroot, compile-retrade'/>
+
+  <target name    = 'compile-xroot'>
+
+    <ant antfile     = '${xroot-build}'
+         target      = 'compile'
+         dir         = '${xroot-base}'
+         inheritall  = 'false'
+         inheritrefs = 'false'/>
+  </target>
+
+  <target name    = 'compile-retrade'
+          depends = 'init-cmp'>
+
+    <javac srcdir   = '${module-base}/src/main/java'
+           destdir  = '${module-classes}'
+           encoding = 'UTF-8'
+           debug    = '${?debug}' includeAntRuntime = 'false'
+           source   = '1.6' target = '1.6'>
+
+      <classpath refid = 'module-classpath'/>
+      <classpath refid = 'retrade-classpath'/>
+    </javac>
+    
+  <copy todir = '${module-classes}'>
+      <fileset dir = '${module-base}/src/main/java'
+        erroronmissingdir = 'false'>
+
+        <exclude name = '**/*.java'/>
+        <include name = '**/*'/>
+      </fileset>
+    </copy>
+  </target>
+
+  <path id = 'retrade-classpath'>
+    <path path = '${xroot-classes}'/>
+  </path>
+
+  <target name    = 'compile-tests'
+          depends = 'compile-tests-xroot, compile-tests-retrade'/>
+
+  <target name    = 'compile-tests-xroot'>
+
+    <ant antfile     = '${xroot-build}'
+         target      = 'compile-tests'
+         dir         = '${xroot-base}'
+         inheritall  = 'false'
+         inheritrefs = 'false'/>
+  </target>
+
+  <target name    = 'compile-tests-retrade'
+          depends = 'compile, init-tst'>
+
+    <javac srcdir   = '${module-base}/src/test/java'
+           destdir  = '${module-test-classes}'
+           encoding = 'UTF-8'
+           debug    = 'true' includeAntRuntime = 'false'
+           source   = '1.6'  target = '1.6'>
+
+      <classpath refid = 'module-tests-classpath'/>
+      <classpath refid = 'retrade-tests-classpath'/>
+    </javac>
+  </target>
+
+  <path id = 'retrade-tests-classpath'>
+    <path path = '${xroot-classes}'/>
+    <path path = '${xroot-test-classes}'/>
+  </path>
+
+
+  <!--=================================================
+    = tasks:  package                                 =
+    =================================================-->
+
+  <target name    = 'package'
+          depends = 'copy-retrade-module, package-web-module'/>
+
+  <target name = 'copy-retrade-module'
+    depends    = 'copy-xroot-module, copy-web-module'/>
+
+  <target name    = 'copy-xroot-module'>
+
+    <ant antfile     = '${xroot-build}'
+         target      = 'copy-web-module'
+         dir         = '${xroot-base}'
+         inheritall  = 'false'
+         inheritrefs = 'false'>
+
+      <property name  = 'module-package-dir'
+                value = '${module-package-dir}'/>
+
+      <property name  = 'delete-web-dir'
+                value = 'true'/>
+    </ant>
+  </target>
+
+
+  <!--=================================================
+    = import:  shared build tasks                    =
+    =================================================-->
+
+  <import file = '../build/bldmd.xml'/>
+
+</project>

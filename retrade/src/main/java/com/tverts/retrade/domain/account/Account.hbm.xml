@@ -1,0 +1,73 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.retrade.domain.account'>
+
+  <union-subclass name = 'Account' extends = 'com.tverts.endure.core.Entity'
+    table = 'retrade_account' lazy = 'true'>
+
+
+    <!-- Contractor reference -->
+
+    <many-to-one name = 'contractor'
+      foreign-key = 'fk_account_contractor'>
+
+      <column name = 'fk_contractor'
+        unique-key = 'ux_account'>
+
+        <comment>
+          The Contractor this Account is for.
+          (Undefined for own accounts.)
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain'
+      foreign-key = 'fk_account_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_account'>
+
+        <comment>Domain where the Account is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'account_code' not-null = 'true'
+        unique-key = 'ux_account'>
+
+        <comment>Code of the Account</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'account_name' length = '512'>
+        <comment>Name of the Account</comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'remarks'>
+        <comment>The description of the Account</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>
