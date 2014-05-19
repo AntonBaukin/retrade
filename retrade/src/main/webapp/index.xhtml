@@ -10,14 +10,14 @@
     <ui:param name = "desktopView" value = "#{facesDesktopView}"/>
 
     <ui:define name = "page-title">
-      ТТС РеТрейд™
+      ТТС Bakery, a.k.a.
     </ui:define>
 
 
     <!-- [application main topbar] -->
     <ui:define name = "main-topbar">
 
-      <ui:decorate template = "/retrade/.items/main-topbar.xhtml">
+      <ui:decorate template = "/retrade/.items/client-topbar.xhtml">
 
         <ui:param name = "localView" value = "#{facesSystemDesktopView}"/>
       </ui:decorate>
@@ -27,7 +27,7 @@
     <!-- [load center content] -->
     <ui:define name = "center_content">
 
-      <ui:fragment rendered = "${rootView.isSecure('view: documents')}">
+      <ui:fragment>
         <script type = "text/javascript">
 
 ReTrade.desktop.onReady(function()

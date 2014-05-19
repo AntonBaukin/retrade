@@ -157,8 +157,6 @@
     </x:component>
   </x:component>
 
-
-
   <!-- desktop center item] -->
 
 
@@ -245,10 +243,31 @@
 
   </x:component>
 
-
-  <!-- desktop left panel] -->
+  <!-- desktop right panel] -->
 
 </x:viewport>
+
+<script type = "text/javascript">
+  //<![CDATA[
+
+  //~: register ready point for desktop initial size
+  ReTrade.desktop.readyPoint('ReTrade.desktop.initial-size')
+
+  //~: collapse the left-right panels if screen is too small
+  Ext.onReady(function()
+  {
+    var inw = Ext.get(document.body).getWidth() / extjsf.inch(1);
+    if(inw < 11.0) {
+      ReTrade.desktop.panels.left.component().collapse()
+      ReTrade.desktop.panels.right.component().collapse()
+    }
+
+    ReTrade.desktop.readyPoint('ReTrade.desktop.initial-size', true)
+  })
+
+  //]]>
+</script>
+
 
   <!-- [delayed content of the left panel] -->
   <ui:insert name = 'left_content'/>

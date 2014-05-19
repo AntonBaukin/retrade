@@ -1,0 +1,113 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <!-- [application main topbar -->
+
+  <x:component coid = "${z:vid(localView, 'main_topbar')}">
+
+    <f:facet name = "extjs-props">
+
+      region: 'north', frame: false, border:false,
+      margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+      bodyCls: 'retrade-desktop-panel-topbar retrade-transparent-panel',
+      layout: {type: 'hbox', align: 'middle'}
+    </f:facet>
+
+
+    <!-- [logoff server call] -->
+    <x:action-call coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}"
+      action = "#{rootView.doLogoff}"/>
+
+
+    <!-- [retrade main menu] -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-main-menu-button')}">
+
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', flex: 0, text: 'РеТрейд',
+        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        icon: "${z:url('/resources/icons/retrade_16.png')}",
+        componentCls: 'retrade-button-22pt'
+
+      </f:facet>
+    </x:component>
+
+
+    <!-- [goods] -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-catalogues-menu-button')}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'button', flex: 0, text: 'Справочники',
+        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        icon: "${z:url('/resources/icons/catalogues_16.png')}",
+        componentCls: 'retrade-button-22pt'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [selection set button] -->
+    <ui:decorate template = "selset.xhtml">
+      <ui:param name = "localView" value = "#{localView}"/>
+    </ui:decorate>
+
+
+    <!-- [topbar extention point -->
+
+    <x:component coid = "${z:vid(localView, 'main_topbar_ext')}">
+
+      <f:facet name = "extjs-props">
+
+        border: false, frame: false, flex: 0,
+        bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.dpts(0, 0, 0, 6)
+
+      </f:facet>
+    </x:component>
+
+    <ui:insert name = 'topbar-buttons'/>
+
+    <!-- topbar extention point] -->
+
+
+    <!-- [notifications area] -->
+
+    <x:component coid = "${z:vid(localView, 'main_topbar_notifications')}">
+
+      <f:facet name = "extjs-props">
+
+        flex: 1, border: false, frame: false,
+        bodyCls: 'retrade-notifications-panel',
+        height: extjsf.dpt(20)
+
+      </f:facet>
+    </x:component>
+
+  </x:component>
+
+
+  <!-- [topbar scripts -->
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    //~: attach top bar panel to the desktop
+    ReTrade.desktop.controller('center').mainTopbar(
+      "${z:vid(localView, 'main_topbar')}", '${rootView.extjsDomain}')
+
+    //~: set the top bar extension point
+    ReTrade.desktop.controller('center').mainTopbarExt(
+      "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
+
+  //]]>
+  </script>
+  <!-- topbar scripts] -->
+
+</ui:component>

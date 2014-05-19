@@ -372,25 +372,38 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		return this;
 	},
 
+	/**
+	 * Ready point is an extension point added to the desktop
+	 * to allow various nested components to tell the desktop
+	 * are they ready or not. When all the points are ready,
+	 * desktop fires ready event. This allows client code
+	 * to activate when all complex layout is ready.
+	 *
+	 * Note that the name of the point must be unique.
+	 * Ready argument must be a boolean, or undefined.
+	 */
 	readyPoint        : function(name, ready)
 	{
-		if(!this._ready_points) this._ready_points = [];
+		ZeT.assert(ZeT.isu(ready) || ZeT.isb(ready))
 
-		for(var i = 0;(i < this._ready_points.length);i++)
-			if(this._ready_points[i].name === name)
-				this._ready_points[i].ready = ready;
-		if(i == this._ready_points.length)
-			this._ready_points.push({ name : name, ready: ready })
+		//~: add the point if it absents
+		if(!this._ready_points) this._ready_points = {};
+		var rp = this._ready_points[name];
+		if(rp) rp.ready = !!ready;
+		else this._ready_points[name] = { 'name': name, 'ready': ready };
 
+		//~: inspect whether all are ready
+		var keys = ZeT.keys(this._ready_points);
 		this._ready_go = true;
-		for(i = 0;(i < this._ready_points.length);i++)
-			if(!this._ready_points[i].ready)
+		for(var i = 0;(i < keys.length);i++)
+			if(!this._ready_points[keys[i]].ready)
 			{ this._ready_go = false; break; }
 
+		//?: {all are ready} go!
 		if(this._ready_go && this._ready_fs)
 		{
 			var fs = this._ready_fs;
-			this._ready_fs = null;
+			this._ready_fs = null; //<-- !: clear ready callbacks list
 
 			for(i = 0;(i < fs.length);i++)
 				fs[i]()
@@ -674,17 +687,17 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 		//~: add <<
 		tools.push({ xtype: 'tool', type: 'left',
-		  handler: ZeT.fbind(this._move_left, this)
+		  handler: ZeT.fbind(this._move_left, this),
+		  margin: extjsf.pts(0, 8, 0, 2)
 		})
 
-		var margin = extjsf.pts(0, 0, 0, 2)
+		var m = extjsf.pts(0, 0, 0, 2)
 		if(this.bind().extjsPropsRaw()['closable'])
-			margin = extjsf.pts(0, 8, 0, 2);
+			m = extjsf.pts(0, 8, 0, 2);
 
 		//~: add >>
 		tools.push({ xtype: 'tool', type: 'right',
-		  handler: ZeT.fbind(this._move_right, this),
-		  'margin': margin
+		  handler: ZeT.fbind(this._move_right, this), margin: m
 		})
 	},
 

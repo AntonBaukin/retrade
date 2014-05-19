@@ -343,6 +343,9 @@ var extjsf = ZeT.define('extjsf',
 	/**
 	 * Returns the integer number of pixels in
 	 * the given (float) number of CSS ex-size.
+	 *
+	 * Argument 'vpx' if defined just adds the
+	 * given number of plain pixels to the result.
 	 */
 	ex               : function(v, vpx)
 	{
@@ -379,6 +382,9 @@ var extjsf = ZeT.define('extjsf',
 	/**
 	 * Returns the integer number of pixels in
 	 * the given (float) number of CSS pt-size.
+	 *
+	 * Argument 'vpx' if defined just adds the
+	 * given number of plain pixels to the result.
 	 */
 	pt               : function(v, vpx)
 	{
@@ -410,6 +416,11 @@ var extjsf = ZeT.define('extjsf',
 	dpts             : function()
 	{
 		return ZeT.delay(ZeT.fbinda(this.pts, this, arguments));
+	},
+
+	inch             : function(v, vpx)
+	{
+		return this._css_sz(2, 'in', v) + (ZeT.isn(vpx)?(vpx):(0));
 	},
 
 	_css_sz          : function(width, units, v)
