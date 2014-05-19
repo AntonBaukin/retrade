@@ -17,15 +17,35 @@
 
  <ui:define name = 'page_body'>
 
+
+ <!-- [selection set button] -->
+
  <x:component coid = "${z:vid(v, 'retrade-selset-button')}">
 
    <f:facet name = "extjs-props">
 
-     xtype: 'splitbutton', enableToggle: true,
-     height: extjsf.dpt(22), width: 50,
-     icon: "${z:url('/resources/icons/selset_24.png')}",
-     componentCls: 'retrade-button-22pt retrade-icon-24', showSeparator: false,
+     xtype: 'button', enableToggle: true,
+     width: extjsf.dpt(10, 24), height: extjsf.dpt(22),
+     icon: "${z:url('/resources/icons/selset.svg')}",
+     componentCls: 'retrade-button-22pt retrade-icon-24',
+     margin: extjsf.dpts(0, 2, 0, 0),
      tooltipType: 'title', tooltip: 'Режим выборки данных'
+
+    </f:facet>
+
+ </x:component>
+
+
+ <!-- [selection set button+menu -->
+
+ <x:component coid = "${z:vid(v, 'retrade-selset-menu-button')}">
+
+   <f:facet name = "extjs-props">
+
+     xtype: 'button', width: extjsf.dpt(12), height: extjsf.dpt(22),
+     cls: 'retrade-selset-menu-button retrade-button-menu-no-arrow',
+     icon: "${z:url('/resources/icons/button-menu-arrow.svg')}",
+     componentCls: 'retrade-button-22pt',
 
     </f:facet>
 
@@ -40,7 +60,7 @@
 
         <f:facet name = "extjs-props">
           text: 'Свойства', xtype: 'menuitem',
-          icon: "${z:url('/resources/icons/selset_edit_16.png')}",
+          icon: "${z:url('/resources/icons/selset-edit.svg')}",
           tooltipType: 'title', tooltip: 'Свойства текущей выборки'
         </f:facet>
       </x:component>
@@ -49,7 +69,7 @@
 
         <f:facet name = "extjs-props">
           text: 'Добавить', xtype: 'menuitem', hideOnClick: false,
-          icon: "${z:url('/resources/icons/selset_plus_16.png')}",
+          icon: "${z:url('/resources/icons/selset-plus.svg')}",
           tooltipType: 'title', tooltip: 'Добавить новую выборку'
         </f:facet>
       </x:component>
@@ -58,7 +78,7 @@
 
         <f:facet name = "extjs-props">
           text: 'Удалить', xtype: 'menuitem', hideOnClick: false,
-          icon: "${z:url('/resources/icons/selset_minus_16.png')}",
+          icon: "${z:url('/resources/icons/selset-minus.svg')}",
           tooltipType: 'title', tooltip: 'Удалить текущую выборку'
         </f:facet>
       </x:component>
@@ -67,7 +87,7 @@
 
         <f:facet name = "extjs-props">
           text: 'Очистить', xtype: 'menuitem',
-          icon: "${z:url('/resources/icons/selset_clear_16.png')}",
+          icon: "${z:url('/resources/icons/selset-clear.svg')}",
           tooltipType: 'title', tooltip: 'Очистить текущую выборку'
         </f:facet>
       </x:component>
@@ -81,11 +101,32 @@
     </x:menu>
  </x:component>
 
+ <script type = "text/javascript">
+ //<![CDATA[
+
+ extjsf.bind("${z:vid(v, 'retrade-selset-menu-button')}", '${rootView.extjsDomain}').on('added', function(b1)
+  {
+    var b0 = extjsf.component("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}');
+    var al = b1.menu.getAlignToXY;
+
+    b1.menu.getAlignToXY = function()
+    {
+      var xy = al.apply(this, arguments);
+      xy[0] -= (b1.getX() - b0.getX());
+      return xy;
+    }
+  })
+
+ //]]>
+ </script>
+
+ <!-- selection set button+menu] -->
+
 
  <!-- [selection set data store -->
 
  <x:data-store storeId = "${z:vid(v, 'selSetStore')}"
-   modelView = "${v}" pageSize = "5">
+   modelView = "${v}" pageSize = "12">
 
    <f:facet name = "store-props">
      model: 'retrade.model.CatItemView', autoLoad: false
@@ -188,8 +229,8 @@
     menu("${z:vid(v, 'retrade-selset-menu')}").
     buildMenu(#{v.selSetMenuModel}).
     url('winmain', "${z:url('/go/retrade/items/selset-win')}").
-    url('action-column-icon', "${z:url('/resources/icons/selset_column_16.png')}").
-    url('checked-column-icon', "${z:url('/resources/icons/selset_column_checked_16.png')}").
+    url('action-column-icon', "${z:url('/resources/icons/selcol.svg')}").
+    url('checked-column-icon', "${z:url('/resources/icons/selcol-checked.svg')}").
     url('unhandled-column-icon', "${z:url('/resources/images/1px.png')}")
 
   //~: selection set add script
@@ -217,10 +258,15 @@
   Ext.onReady(function()
   {
     var place = ReTrade.selset.place(); if(!place) return;
-    var bind  = extjsf.bind("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}');
+    var btn   = extjsf.bind("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}');
+    var menu  = extjsf.bind("${z:vid(v, 'retrade-selset-menu-button')}", '${rootView.extjsDomain}');
 
-    if(!place.component()) place.addItem(bind)
-    else place.component().add(bind.extjsProps())
+    if(!place.component())
+      place.addItem(btn).addItem(menu)
+    else {
+      place.component().add(btn.extjsProps())
+      place.component().add(menu.extjsProps())
+    }
 
     //!: synchronize on the desktop
     ReTrade.desktop.readyPoint('ReTrade.selset', true)

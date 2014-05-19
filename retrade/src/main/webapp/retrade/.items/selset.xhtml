@@ -7,12 +7,14 @@
   xmlns:z  = 'uri:tverts.com'>
 
  <x:component coid = "${z:vid(localView, 'retrade-selset-place')}">
-
    <f:facet name = "extjs-props">
 
-     xtype: 'panel', layout: 'fit', border: false, frame: false,
-     padding: 0, margin: 0, bodyCls: 'retrade-transparent-panel'
-    </f:facet>
+     border: false, frame: false,
+     padding: 0, margin: 0,
+     layout: { type: 'hbox', align: 'stretch'},
+     bodyCls: 'retrade-transparent-panel'
+
+   </f:facet>
  </x:component>
 
  <script type = "text/javascript">

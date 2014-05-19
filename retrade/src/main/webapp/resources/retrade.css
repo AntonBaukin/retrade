@@ -85,7 +85,7 @@
 }
 
 
-/* formatters */
+/* formats */
 
 span.retrade-currency-sep
 {
@@ -183,6 +183,11 @@ tr.x-boundlist-item td
 .retrade-icon-24 .x-btn-icon-el
 {
   width: 24px;
+}
+
+.retrade-button-menu-no-arrow span.x-btn-arrow
+{
+  padding: 0; background-image: none;
 }
 
 
@@ -360,6 +365,34 @@ td.retrade-warning-table-text div
 td.retrade-warning-table-buttons
 {
   padding: 8pt 0 0 0;
+}
+
+
+/* selection set & window  */
+
+.retrade-selset-menu-button span.x-btn-icon-el
+{
+  padding-left: 0; display: block;
+  margin-left: -3px; margin-right: 0;
+  left: 50%; width: 6px;
+}
+
+.retrade-selset-window.x-window-default,
+  .retrade-selset-window .x-window-header-default
+{
+  background-color: #A4C3DE;
+}
+
+.retrade-selset-window .x-window-header-default .x-tool-img
+{
+  background-color: transparent;
+}
+
+.retrade-selset-window .x-panel-body.retrade-back-panel,
+  .retrade-selset-window .x-panel-body.retrade-back-panel .x-toolbar
+
+{
+  background: #BCDDF9 none;
 }
 
 

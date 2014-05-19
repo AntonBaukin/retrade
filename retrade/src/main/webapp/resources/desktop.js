@@ -1324,8 +1324,6 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 		//!: load selection set window in the same (root) domain
 		var winmain = this.winmain();
-		var tbtn    = this.toggleButton();
-		var pbox    = { widthpt: 320, heightpt: 140 };
 
 		if(winmain)
 		{
@@ -1334,15 +1332,6 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			return;
 		}
 
-		if(tbtn)
-		{
-			var xy = tbtn.getXY();
-			var wh = tbtn.getSize();
-			pbox.x = xy[0] + wh.width  + 2;
-			pbox.y = xy[1] + wh.height + 2;
-		}
-
-		var box    = ReTrade.desktop.calcWindowBox(pbox);
 		var params = {
 		  mode: 'body', domain: self.domain(),
 		  view: self.view(), model: self.model()
@@ -1354,8 +1343,9 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		winmain = extjsf.defineBind('winmain-selset', this.domain()).extjsProps({
 
 		  xtype: 'window', title: 'Загрузка выборки...',
-		  x: box.x, y: box.y, width: box.width, height: box.height,
-		  layout: 'fit', collapsible: true, autoShow: true,
+		  width: extjsf.pt(400), height: extjsf.pt(240),
+		  layout: 'fit', collapsible: false, autoShow: true,
+		  cls: 'retrade-selset-window',
 
 		  loader: {
 		    url: self.url('winmain'), ajaxOptions: {method: 'GET'},
@@ -1364,11 +1354,14 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		})
 
 		//~: close window listener
-		winmain.on('beforeclose', ZeT.fbind(this.toggle, this,
-		  { active: false, windowClosing: true }))
+		winmain.on('beforeclose', function()
+		{
+			self.toggle({ active: false, windowClosing: true })
+		})
 
 		//~: create window & load the content
 		winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+		winmain.component().alignTo(document.body, 'r-r')
 	},
 
 	_close_wnd        : function(opts)
