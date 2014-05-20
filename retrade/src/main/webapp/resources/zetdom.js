@@ -281,7 +281,7 @@ ZeT.Struct = ZeT.defineClass('ZeT.Struct', {
 		if(ZeT.iss(node))
 			node = ZeTD.n(node);
 
-		if(ZeTD.isxn(node)) throw 'ZeT.Struct: structure is not ' +
+		if(!ZeTD.isxn(node)) throw 'ZeT.Struct: structure is not ' +
 		  'bount to an existing DOM node!';
 
 		return node;

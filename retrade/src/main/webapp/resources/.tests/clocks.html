@@ -1,0 +1,57 @@
+﻿<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetobj.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../clocks.js"></script>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../clocks.css"/>
+
+
+  <style type = "text/css">
+
+#clocks-a
+{
+  position: absolute; left: 50%; top: 50%;
+  margin-left: -1.8in; margin-top: -0.7in;
+  width: 3.6in; height: 1.4in;
+}
+
+#clocks-b
+{
+  position: absolute; left: 50%; top: 20%;
+  margin-left: -45px;
+  width: 90px; height: 35px;
+}
+
+
+  </style>
+
+</head>
+<body>
+
+
+<script type = "text/javascript">
+//<![CDATA[
+
+new ReTrade.Clocks({ parent: document.body, node: 'clocks-a', start: true, test: true })
+
+new ReTrade.Clocks({ parent: document.body, node: 'clocks-b', start: true })
+
+
+//]]>
+</script>
+
+</body>
+</html>
