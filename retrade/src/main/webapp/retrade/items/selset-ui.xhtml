@@ -18,31 +18,13 @@
  <ui:define name = 'page_body'>
 
 
- <!-- [selection set button] -->
-
- <x:component coid = "${z:vid(v, 'retrade-selset-button')}">
-
-   <f:facet name = "extjs-props">
-
-     xtype: 'button', enableToggle: true,
-     width: extjsf.dpt(10, 24), height: extjsf.dpt(22),
-     icon: "${z:url('/resources/icons/selset.svg')}",
-     componentCls: 'retrade-button-22pt retrade-icon-24',
-     margin: extjsf.dpts(0, 2, 0, 0),
-     tooltipType: 'title', tooltip: 'Режим выборки данных'
-
-    </f:facet>
-
- </x:component>
-
-
  <!-- [selection set button+menu -->
 
  <x:component coid = "${z:vid(v, 'retrade-selset-menu-button')}">
 
    <f:facet name = "extjs-props">
 
-     xtype: 'button', width: extjsf.dpt(12), height: extjsf.dpt(22),
+     xtype: 'button', width: extjsf.dpt(12), height: 30,
      cls: 'retrade-selset-menu-button retrade-button-menu-no-arrow',
      icon: "${z:url('/resources/icons/button-menu-arrow.svg')}",
      componentCls: 'retrade-button-22pt',
@@ -112,7 +94,7 @@
     b1.menu.getAlignToXY = function()
     {
       var xy = al.apply(this, arguments);
-      xy[0] -= (b1.getX() - b0.getX());
+      //xy[0] -= (b1.getX() - b0.getX());
       return xy;
     }
   })
@@ -121,6 +103,22 @@
  </script>
 
  <!-- selection set button+menu] -->
+
+
+ <!-- [selection set button] -->
+
+ <x:component coid = "${z:vid(v, 'retrade-selset-button')}">
+   <f:facet name = "extjs-props">
+
+     xtype: 'button', enableToggle: true,
+     width: extjsf.dpt(10, 24), height: 30,
+     icon: "${z:url('/resources/icons/selset.svg')}",
+     componentCls: 'retrade-button-22pt retrade-icon-24',
+     margin: extjsf.dpts(0, 0, 0, 2),
+     tooltipType: 'title', tooltip: 'Режим выборки данных'
+
+    </f:facet>
+ </x:component>
 
 
  <!-- [selection set data store -->
@@ -262,10 +260,10 @@
     var menu  = extjsf.bind("${z:vid(v, 'retrade-selset-menu-button')}", '${rootView.extjsDomain}');
 
     if(!place.component())
-      place.addItem(btn).addItem(menu)
+      place.addItem(menu).addItem(btn)
     else {
-      place.component().add(btn.extjsProps())
       place.component().add(menu.extjsProps())
+      place.component().add(btn.extjsProps())
     }
 
     //!: synchronize on the desktop

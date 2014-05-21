@@ -36,7 +36,7 @@ ${v.checkModelRequestedWithRedirect}
         <f:facet name = "extjs-props">
 
           xtype: 'button', flex: 0, text: 'Фильтр', enableToggle: true,
-          margin: extjsf.dpts(0, 2, 0, 0), height: extjsf.dpt(22),
+          margin: extjsf.dpts(0, 2, 0, 0), height: 30,
           icon: "${z:url('/resources/icons/filter_16.png')}",
           componentCls: 'retrade-button-22pt'
         </f:facet>
@@ -77,9 +77,12 @@ ${v.checkModelRequestedWithRedirect}
       storeId = "${z:vid(v, 'documentsViews')}">
 
       <f:facet name = "grid-props">
+
         region: 'center', preventHeader: true,
         columns: ZeT.defined('retrade.columns.DocumentView'),
+        selModel: extjsf.delayCreate('Ext.ux.selection.No'),
         pager: true, sortableColumns: false
+
       </f:facet>
     </x:data-grid>
 

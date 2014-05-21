@@ -66,11 +66,6 @@
   background-color: #fcfcfc;
 }
 
-.retrade-notifications-panel
-{
-  background-color: #e0e0e0;
-}
-
 .retrade-transparent-panel
 {
   background-color: transparent;
@@ -172,7 +167,7 @@ tr.x-boundlist-item td
 
 .retrade-button-22pt span.x-btn-icon-el
 {
-  margin: 3pt 2pt 0 2pt;
+  margin: 4px 2px 0 3px;
 }
 
 .retrade-button-22pt span.x-btn-inner
@@ -188,6 +183,15 @@ tr.x-boundlist-item td
 .retrade-button-menu-no-arrow span.x-btn-arrow
 {
   padding: 0; background-image: none;
+}
+
+.retrade-buttons-sep-line
+{
+  width: 4px; height: 100%;
+  background-color: #f3f3f3;
+  border: 1px solid #ececec;
+  border-right-color: #bfbfbf;
+  border-bottom-color: #bfbfbf;
 }
 
 
@@ -380,7 +384,7 @@ td.retrade-warning-table-buttons
 .retrade-selset-window.x-window-default,
   .retrade-selset-window .x-window-header-default
 {
-  background-color: #A4C3DE;
+  background-color: #c1c8dc;
 }
 
 .retrade-selset-window .x-window-header-default .x-tool-img
@@ -390,9 +394,13 @@ td.retrade-warning-table-buttons
 
 .retrade-selset-window .x-panel-body.retrade-back-panel,
   .retrade-selset-window .x-panel-body.retrade-back-panel .x-toolbar
-
 {
-  background: #BCDDF9 none;
+  background: #d8e1f2 none;
+}
+
+.retrade-selset-window .x-grid-row-alt .x-grid-td
+{
+  background: #f6f6ff;
 }
 
 

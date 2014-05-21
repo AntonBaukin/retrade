@@ -13,9 +13,10 @@
     <f:facet name = "extjs-props">
 
       region: 'north', frame: false, border:false,
-      margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+      margin: extjsf.dpts(0, 2, 0, 2), height: 35,
       bodyCls: 'retrade-desktop-panel-topbar retrade-transparent-panel',
       layout: {type: 'hbox', align: 'middle'}
+
     </f:facet>
 
 
@@ -26,7 +27,7 @@
       <f:facet name = "extjs-props">
 
         xtype: 'button', flex: 0, text: 'РеТрейд',
-        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        margin: extjsf.dpts(0, 6, 0, 0), height: 30,
         icon: "${z:url('/resources/icons/retrade_16.png')}",
         componentCls: 'retrade-button-22pt'
 
@@ -175,7 +176,7 @@
 
       <f:facet name = "extjs-props">
         xtype: 'button', flex: 0, text: 'Справочники',
-        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        margin: extjsf.dpts(0, 6, 0, 0), height: 30,
         icon: "${z:url('/resources/icons/catalogues_16.png')}",
         componentCls: 'retrade-button-22pt'
       </f:facet>
@@ -284,7 +285,7 @@
       <f:facet name = "extjs-props">
 
         xtype: 'button', flex: 0, text: 'Создать',
-        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        margin: extjsf.dpts(0, 6, 0, 0), height: 30,
         icon: "${z:url('/resources/icons/issue_plus_16.png')}",
         componentCls: 'retrade-button-22pt'
       </f:facet>
@@ -384,7 +385,7 @@
 
     <!-- [notifications area -->
 
-    <x:component coid = "${z:vid(localView, 'main_topbar_notifications')}">
+    <x:component coid = "${z:vid(localView, 'desktop-topbar-right-block')}">
 
       <f:facet name = "extjs-props">
 

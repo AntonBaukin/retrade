@@ -13,7 +13,7 @@
     <f:facet name = "extjs-props">
 
       region: 'north', frame: false, border:false,
-      margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+      margin: extjsf.dpts(0, 2, 0, 2), height: 35,
       bodyCls: 'retrade-desktop-panel-topbar retrade-transparent-panel',
       layout: {type: 'hbox', align: 'middle'}
     </f:facet>
@@ -31,7 +31,7 @@
       <f:facet name = "extjs-props">
 
         xtype: 'button', flex: 0, text: 'РеТрейд',
-        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        margin: extjsf.dpts(0, 6, 0, 0), height: 30,
         icon: "${z:url('/resources/icons/retrade_16.png')}",
         componentCls: 'retrade-button-22pt'
 
@@ -45,49 +45,82 @@
 
       <f:facet name = "extjs-props">
         xtype: 'button', flex: 0, text: 'Справочники',
-        margin: extjsf.dpts(0, 6, 0, 0), height: extjsf.dpt(22),
+        margin: extjsf.dpts(0, 0, 0, 0), height: 30,
         icon: "${z:url('/resources/icons/catalogues_16.png')}",
         componentCls: 'retrade-button-22pt'
       </f:facet>
     </x:component>
 
 
-    <!-- [selection set button] -->
-    <ui:decorate template = "selset.xhtml">
-      <ui:param name = "localView" value = "#{localView}"/>
-    </ui:decorate>
+    <!-- [topbar extention point] -->
+
+    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_left')}">
+      <f:facet name = "extjs-props">
+        height: 22, width: 4,
+        margin: extjsf.dpts(0, 8, 0, 8)
+      </f:facet>
+
+      <div class = "retrade-buttons-sep-line"/>
+    </x:html>
 
 
-    <!-- [topbar extention point -->
+    <!-- [buttons linked directly] -->
+    <ui:insert name = 'topbar-buttons'/>
+
 
     <x:component coid = "${z:vid(localView, 'main_topbar_ext')}">
-
       <f:facet name = "extjs-props">
 
-        border: false, frame: false, flex: 0,
+        border: false, frame: false, flex: 1,
         bodyCls: 'retrade-transparent-panel',
-        layout: {type: 'hbox', align: 'middle'},
-        margin: extjsf.dpts(0, 0, 0, 6)
+        layout: {type: 'hbox', align: 'middle'}
 
       </f:facet>
     </x:component>
 
-    <ui:insert name = 'topbar-buttons'/>
+
+    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_right')}">
+      <f:facet name = "extjs-props">
+        height: 22, width: 4,
+        margin: extjsf.dpts(0, 8, 0, 8)
+      </f:facet>
+
+      <div class = "retrade-buttons-sep-line"/>
+    </x:html>
 
     <!-- topbar extention point] -->
 
 
-    <!-- [notifications area] -->
+    <!-- [right controls block -->
 
-    <x:component coid = "${z:vid(localView, 'main_topbar_notifications')}">
-
+    <x:component coid = "${z:vid(localView, 'desktop-topbar-right-block')}">
       <f:facet name = "extjs-props">
 
-        flex: 1, border: false, frame: false,
-        bodyCls: 'retrade-notifications-panel',
-        height: extjsf.dpt(20)
+        border: false, frame: false,
+        bodyPadding: 0, margin: 0, height: 35,
+        bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'}
 
       </f:facet>
+
+
+      <!-- [selection set button] -->
+      <ui:decorate template = "selset.xhtml">
+        <ui:param name = "localView" value = "#{localView}"/>
+      </ui:decorate>
+
+      <!-- [desktop clocks] -->
+      <x:html coid = "${z:vid(localView, 'desktop-topbar-clocks')}">
+        <f:facet name = "extjs-props">
+          bodyCls: 'retrade-transparent-panel',
+          margin: extjsf.dpts(0, 0, 0, 4)
+        </f:facet>
+
+        <div id = "${z:vid(rootView, 'desktop-clocks-area')}"
+          style = "width: 90px; height: 35px;"></div>
+
+      </x:html>
+
     </x:component>
 
   </x:component>
@@ -105,6 +138,17 @@
     //~: set the top bar extension point
     ReTrade.desktop.controller('center').mainTopbarExt(
       "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
+
+    //~: setup the desktop clocks
+    Ext.onReady(function()
+    {
+      if(ReTrade.desktop.clocks) return;
+
+      ReTrade.desktop.clocks = new ReTrade.Clocks({ start: true,
+        parent: "${z:vid(rootView, 'desktop-clocks-area')}",
+        node: "${z:vid(rootView, 'desktop-clocks')}"
+      })
+    })
 
   //]]>
   </script>
