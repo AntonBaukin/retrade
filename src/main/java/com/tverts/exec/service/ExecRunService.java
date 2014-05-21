@@ -5,10 +5,6 @@ package com.tverts.exec.service;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
-/* com.tverts: hibery */
-
-import static com.tverts.hibery.HiberPoint.flush;
-
 /* com.tverts: spring + tx */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -237,7 +233,7 @@ public class ExecRunService extends ServiceBase
 		//~: get the request object from XML
 		try
 		{
-			object = XMAPoint.readObject(request.getRequest());
+			object = XMAPoint.readObject(false, Object.class, request.getRequest());
 		}
 		catch(Throwable e)
 		{
@@ -254,7 +250,7 @@ public class ExecRunService extends ServiceBase
 		//?: {has response object} try write it
 		if(object != null) try
 		{
-			request.setResponse(XMAPoint.writeObject(object));
+			request.setResponse(XMAPoint.writeObject(false, object));
 		}
 		catch(Throwable e)
 		{
@@ -317,7 +313,7 @@ public class ExecRunService extends ServiceBase
 		//~: write result as XML bean
 		try
 		{
-			rbytes = XMAPoint.writeObject(result);
+			rbytes = XMAPoint.writeObject(false, result);
 		}
 		catch(Throwable e)
 		{

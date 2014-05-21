@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: api */
 
-import com.tverts.api.TimestampAdapter;
+import com.tverts.api.support.TimestampAdapter;
 
 
 /**

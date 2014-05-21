@@ -188,7 +188,7 @@ public class Datas
 			return bytes(xdata);
 
 		//~: write the object mapped to XML
-		return XMAPoint.writeObject(data);
+		return XMAPoint.writeObject(false, data);
 	}
 
 	public static byte[]      bytes(ReportModel model)

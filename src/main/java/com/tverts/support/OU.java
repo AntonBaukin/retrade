@@ -37,7 +37,7 @@ import com.tverts.support.streams.BytesStream;
  */
 public class OU
 {
-	/* runnable wrappers */
+	/* Runnable Wrappers */
 
 	public static Runnable unwrap(Runnable task)
 	{
@@ -62,7 +62,7 @@ public class OU
 	}
 
 
-	/* object clones */
+	/* Object Clones */
 
 	/**
 	 * Makes a shallow copy with standard
@@ -155,16 +155,15 @@ public class OU
 	}
 
 
-	/* factories and object access */
+	/* Factories and Object Access */
 
-	public static <O> ObjectAccess<O>
-	                     permAcces(O ref)
+	public static <O> ObjectAccess<O> permAcces(O ref)
 	{
 		return new ObjectAccessRef<O>(ref);
 	}
 
 
-	/* classes and interfaces */
+	/* Classes and Interfaces */
 
 	public static interface ClassPredicate
 	{
@@ -264,7 +263,7 @@ public class OU
 	}
 
 
-	/* plain XML serialization */
+	/* Java Bean XML Serialization */
 
 	public static String  obj2xml(Object bean)
 	{
@@ -322,7 +321,7 @@ public class OU
 	}
 
 
-	/* Java serialization */
+	/* Java Serialization */
 
 	public static byte[]  obj2bytes(Object  obj)
 	{
@@ -379,7 +378,7 @@ public class OU
 	}
 
 
-	/* class checks */
+	/* Class Checks */
 
 	/**
 	 * Asserts that that at least one of the given check

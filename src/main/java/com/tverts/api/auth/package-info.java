@@ -2,6 +2,7 @@
 @XmlSchema(
   namespace = "urn:tverts.com:api:auth", xmlns = {
     @XmlNs(prefix = "auth", namespaceURI = "urn:tverts.com:api:auth"),
+    @XmlNs(prefix = "cli",  namespaceURI = "urn:tverts.com:api:clients"),
     @XmlNs(prefix = "xsi",  namespaceURI = "http://www.w3.org/2001/XMLSchema-instance"),
     @XmlNs(prefix = "xs",   namespaceURI = "http://www.w3.org/2001/XMLSchema")
   }

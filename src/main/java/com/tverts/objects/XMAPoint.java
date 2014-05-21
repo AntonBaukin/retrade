@@ -3,11 +3,13 @@ package com.tverts.objects;
 /* standard Java classes */
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
@@ -15,14 +17,14 @@ import javax.xml.transform.stream.StreamSource;
 
 /* Spring Framework */
 
-import com.tverts.support.EX;
-import com.tverts.support.streams.BytesStream;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 
 /* com.tverts: support */
 
 import com.tverts.support.LU;
+import com.tverts.support.EX;
+import com.tverts.support.streams.BytesStream;
 
 
 /**
@@ -79,9 +81,7 @@ public class XMAPoint
 
 	public static void   writeObject(Object object, Result result)
 	{
-		Marshaller m = getInstance().getMarshaller();
-
-		if(m == null) throw new IllegalStateException(
+		Marshaller m = EX.assertn( getInstance().getMarshaller(),
 		  "Can't transform Object to XML as no root marshaller set!");
 
 		try
@@ -90,9 +90,9 @@ public class XMAPoint
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(String.format(
-			  "Error occured when OXM marshalling object of class '%s'!",
-			  LU.cls(object)), e);
+			throw EX.wrap(e, "Error occured when OXM marshalling ",
+			  "object of class [", LU.cls(object), "]!"
+			);
 		}
 	}
 
@@ -129,7 +129,7 @@ public class XMAPoint
 			}
 			catch(Throwable e)
 			{
-				if(error == null) error = e;
+				error = e;
 			}
 		}
 
@@ -160,13 +160,24 @@ public class XMAPoint
 		}
 	}
 
-	public static byte[] writeObject(Object object)
+	public static byte[] writeObject(boolean gzip, Object object)
 	{
 		BytesStream bs = new BytesStream();
 
 		try
 		{
-			writeObject(object, bs);
+			OutputStream os = (!gzip)?(bs):(new GZIPOutputStream(bs));
+
+			//~: encode
+			writeObject(object, os);
+
+			//~: close the deflating stream only
+			if(gzip)
+			{
+				bs.setNotCloseNext(true);
+				os.close();
+			}
+
 			return bs.bytes();
 		}
 		catch(Throwable e)
@@ -181,10 +192,9 @@ public class XMAPoint
 
 	public static Object readObject(Source source)
 	{
-		Unmarshaller m = getInstance().getUnmarshaller();
-
-		if(m == null) throw new IllegalStateException(
-		  "Can't recover Object from XML as no root unmarshaller set!");
+		Unmarshaller m = EX.assertn( getInstance().getUnmarshaller(),
+		  "Can't recover Object from XML as no root unmarshaller set!"
+		);
 
 		try
 		{
@@ -192,8 +202,7 @@ public class XMAPoint
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(
-			  "Error occured when unmarshalling OXM document!", e);
+			throw EX.wrap(e, "Error occured when unmarshalling OXM document!");
 		}
 	}
 
@@ -202,17 +211,31 @@ public class XMAPoint
 		return readObject(new StreamSource(stream));
 	}
 
-	public static Object readObject(byte[] bytes)
+	@SuppressWarnings("unchecked")
+	public static <T> T  readObject(boolean gzip, Class<T> cls, byte[] bytes)
 	{
+		InputStream is = new ByteArrayInputStream(bytes);
+
 		try
 		{
-			return readObject(new StreamSource(
-			  new ByteArrayInputStream(bytes)
-			));
+			//?: {data are gun-zipped}
+			if(gzip) is = new GZIPInputStream(is);
+
+			//~: decode the object
+			Object res = readObject(new StreamSource(is));
+			is.close();
+
+			//~: check the result
+			EX.assertx( (res == null) || cls.isAssignableFrom(res.getClass()),
+			  "JAXB-XML mapped object of class [", LU.cls(res),
+			  "] is not of the request class [", LU.cls(cls), "]!"
+			);
+
+			return (T) res;
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 	}
 

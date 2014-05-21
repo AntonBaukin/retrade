@@ -30,17 +30,16 @@
     work-phone = "+74822589621">
 
     <login code = "tolstaya" password = "password"/>
+    <firm>Ф-01</firm>
+  </person>
 
-    <secure force = 'domain: view: goods'/>
-    <secure force = 'domain: view: stores'/>
-    <secure force = 'domain: view: price-lists'/>
+  <person gender = "M" last-name = "Навальный"
+    first-name = "Алексей" middle-name = "Анатольевич"
+    email = "alaxei.navalny@mail.google.com"
+    work-phone = "+74822459861">
 
-    <secure force = 'domain: view: documents'/>
-    <secure force = 'domain: view: sell invoices'/>
-    <secure force = 'domain: edit: sell invoices'/>
-    <secure force = 'domain: forbid edit: fixed sell invoices'/>
-    <secure force = 'domain: fix: sell invoices'/>
-
+    <login code = "navalny" password = "password"/>
+    <firm>Ф-00</firm>
   </person>
 
 </users>
