@@ -39,14 +39,6 @@
 
             </bean>
 
-
-            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Generate the test Users
-             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.endure.auth.GenTestUsers'>
-              <property name = 'name' value = 'Users'/>
-            </bean>
-
           </list>
         </property>
       </bean>

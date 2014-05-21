@@ -74,7 +74,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 	  throws GenesisError
 	{
 		//~: create test PriceLists
-		createTestPriceLists(ctx);
+		//createTestPriceLists(ctx);
 
 		//~: good units map
 		ctx.set(CTX_GOODS_MAP, new HashMap<String, GoodUnit>(11));
@@ -364,8 +364,8 @@ public class GenTestGoods extends GenesisHiberPartBase
 		);
 
 		//~: generate & save the prices
-		if(!sXe(prc))
-			genGoodUnitPrices(ctx, gu, new BigDecimal(prc));
+		//if(!sXe(prc))
+		//	genGoodUnitPrices(ctx, gu, new BigDecimal(prc));
 
 		//~: log success
 		LU.I(log(ctx), logsig(), " created test Good Unit [",

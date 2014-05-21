@@ -28,7 +28,7 @@
 
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Create test Measures, Goods, and Prices
+             · Create test Measures & Goods
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
             <bean class = 'com.tverts.retrade.domain.goods.GenTestGoods'>
               <property name = 'name' value = 'Goods'/>
@@ -40,6 +40,13 @@
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
             <bean class = 'com.tverts.retrade.domain.firm.GenTestContractors'>
               <property name = 'name' value = 'Contractors'/>
+            </bean>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Generate test Users
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.endure.auth.GenTestUsers'>
+              <property name = 'name' value = 'Users'/>
             </bean>
 
           </list>
