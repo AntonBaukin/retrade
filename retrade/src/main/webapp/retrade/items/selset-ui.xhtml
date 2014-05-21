@@ -26,7 +26,7 @@
 
      xtype: 'button', width: extjsf.dpt(12), height: 30,
      cls: 'retrade-selset-menu-button retrade-button-menu-no-arrow',
-     icon: "${z:url('/resources/icons/button-menu-arrow.svg')}",
+     iconCls: 'retrade-button-menu-arrow',
      componentCls: 'retrade-button-22pt',
 
     </f:facet>
@@ -42,7 +42,7 @@
 
         <f:facet name = "extjs-props">
           text: 'Свойства', xtype: 'menuitem',
-          icon: "${z:url('/resources/icons/selset-edit.svg')}",
+          iconCls: 'retrade-selset-menu-edit',
           tooltipType: 'title', tooltip: 'Свойства текущей выборки'
         </f:facet>
       </x:component>
@@ -51,7 +51,7 @@
 
         <f:facet name = "extjs-props">
           text: 'Добавить', xtype: 'menuitem', hideOnClick: false,
-          icon: "${z:url('/resources/icons/selset-plus.svg')}",
+          iconCls: 'retrade-selset-menu-plus',
           tooltipType: 'title', tooltip: 'Добавить новую выборку'
         </f:facet>
       </x:component>
@@ -60,7 +60,7 @@
 
         <f:facet name = "extjs-props">
           text: 'Удалить', xtype: 'menuitem', hideOnClick: false,
-          icon: "${z:url('/resources/icons/selset-minus.svg')}",
+          iconCls: 'retrade-selset-menu-minus',
           tooltipType: 'title', tooltip: 'Удалить текущую выборку'
         </f:facet>
       </x:component>
@@ -69,7 +69,7 @@
 
         <f:facet name = "extjs-props">
           text: 'Очистить', xtype: 'menuitem',
-          icon: "${z:url('/resources/icons/selset-clear.svg')}",
+          iconCls: 'retrade-selset-menu-clear',
           tooltipType: 'title', tooltip: 'Очистить текущую выборку'
         </f:facet>
       </x:component>
@@ -226,10 +226,7 @@
     toggleButton("${z:vid(v, 'retrade-selset-button')}").
     menu("${z:vid(v, 'retrade-selset-menu')}").
     buildMenu(#{v.selSetMenuModel}).
-    url('winmain', "${z:url('/go/retrade/items/selset-win')}").
-    url('action-column-icon', "${z:url('/resources/icons/selcol.svg')}").
-    url('checked-column-icon', "${z:url('/resources/icons/selcol-checked.svg')}").
-    url('unhandled-column-icon', "${z:url('/resources/images/1px.png')}")
+    url('winmain', "${z:url('/go/retrade/items/selset-win')}")
 
   //~: selection set add script
   ReTrade.selset.adder(function(id, remove)

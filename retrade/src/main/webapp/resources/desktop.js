@@ -1238,7 +1238,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			     self._sel_col_rnd(this, rec)
 			  },
 			  resizable: false, menuDisabled: true, items: [{
-			    icon: self.url('action-column-icon'),
+			    iconCls: 'retrade-selcol-add',
 			    handler: ZeT.fbind(self._add_object, self)
 			  }]
 			}))
@@ -1491,14 +1491,14 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		if(!id || rec.get('selsetDisabled'))
 		{
 			col.items[0].disabled = true;
-			col.items[0].icon = this.url('unhandled-column-icon');
+			col.items[0].iconCls = 'retrade-selcol-none';
 
 			return;
 		}
 
 		var on = this._items && (this._items[id] === true);
-		if(on) col.items[0].icon = this.url('checked-column-icon');
-		else   col.items[0].icon = this.url('action-column-icon');
+		if(on) col.items[0].iconCls = 'retrade-selcol-checked';
+		else   col.items[0].iconCls = 'retrade-selcol-add';
 
 		col.items[0].disabled = false;
 	},
