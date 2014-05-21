@@ -39,128 +39,8 @@
   <script type = 'text/javascript' charset = 'UTF-8'
      src = '<%=request.getContextPath()%>/resources/login.js'></script>
 
-  <style type ="text/css">
-
-body
-{
-  background-color: #f8f8f8;
-  padding: 0; margin: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-}
-
-#nojs-content, #nodomain-content, #login-layout,
-  #login-enter-disabled, #login-enter-enabled
-{
-  position: absolute;
-  margin: -2.75in 0 0 -2.75in;
-  top: 50%; left: 50%;
-  width: 5.5in; height: 5.5in;
-}
-
-#nojs-content
-{
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/nojs.svg');
-}
-
-#nodomain-content
-{
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/nodomain.svg');
-  display: none;
-}
-
-#login-base
-{
-  position: relative; z-index: 16;
-  width: 5.5in; height: 5.5in;
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/base.svg');
-}
-
-#login-fields-area
-{
-  position: absolute; z-index: 32;
-  left: 0; top: 0;
-  width: 5.5in; height: 3in;
-}
-
-#login-enter-disabled
-{
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/enter-disabled.svg');
-  z-index: 20;
-}
-
-#login-enter-enabled
-{
-  background: no-repeat url('<%=request.getContextPath()%>/resources/images/login/enter-enabled.svg');
-  z-index: 22;
-}
-
-#login, #password, #password-shader
-{
-  position: absolute; left: 1.72in;
-  width: 2.04in; height: 0.25in;
-  border: none; text-align: center;
-  background-color: transparent;
-  margin: 0; padding: 0;
-  font-family: 'Georgia', serif;
-  font-size: 0.208in;
-}
-
-#login.notempty, #password.notempty
-{
-  background-color: #f8f8f8;
-}
-
-#login
-{
-  top: 2.095in;
-}
-
-#password, #password-shader
-{
-  top: 2.535in;
-}
-
-#password-shader
-{
-  background-color: #f8f8f8;
-}
-
-#password.shaked
-{
-  background-color: transparent;
-}
-
-#login-enter, #login-enter-title
-{
-  position: absolute;
-  left: 2.4in; top: 3.065in;
-  width: 0.68in; height: 0.32in;
-}
-
-#login-enter
-{
-  cursor: pointer;
-}
-
-.preload-image
-{
-  position: absolute; overflow: hidden;
-  left: -999in; top: -999in;
-  height: 1in; width: 1in;
-}
-
-*:focus /* prevent field focus highlights */
-{
-  outline: 0;
-}
-
-::-ms-clear, ::-ms-reveal /* remove IE field actions */
-{
-  display: none;
-}
-
-  </style>
+  <link type = 'text/css' rel = 'stylesheet'
+     href = '<%=request.getContextPath()%>/resources/login.css'/>
 
 </head>
 
@@ -182,14 +62,14 @@ body
   <div id = "nodomain-content" style = "display: none;"></div>
 
   <script type = "text/javascript">
-    //<![CDATA[
+  //<![CDATA[
 
     var RETRADE_DOMAIN = '<%=SU.jss(request.getAttribute("retrade-domain-name"))%>';
 
     if(!RETRADE_DOMAIN.length)
       $('#nodomain-content').show()
 
-    //]]>
+  //]]>
   </script>
 
   <!-- no domain image-message] -->
@@ -221,7 +101,7 @@ body
   </div>
 
   <script type = "text/javascript">
-    //<![CDATA[
+  //<![CDATA[
 
     if(RETRADE_DOMAIN.length)
       $('#login-layout').show()
@@ -310,15 +190,10 @@ body
     //~: initial activation
     $(document).ready(login_password_activate)
 
-    //]]>
+  //]]>
   </script>
 
   <!-- login form] -->
-
-
-  <!-- [pre-load images] -->
-  <img alt = "!" class = "preload-image"
-     src = '<%=request.getContextPath()%>/resources/images/login/enter-enabled.svg'/>
 
 </body>
 </html>
