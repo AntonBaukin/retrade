@@ -24,30 +24,30 @@
       action = "#{rootView.doLogoff}"/>
 
 
-    <!-- [retrade main menu] -->
+    <!-- [goods prices] -->
 
-    <x:component coid = "${z:vid(localView, 'retrade-main-menu-button')}">
-
+    <x:component coid = "${z:vid(localView, 'retrade-goods-prices')}">
       <f:facet name = "extjs-props">
 
-        xtype: 'button', flex: 0, text: 'РеТрейд',
+        xtype: 'button', flex: 0, text: 'Цены',
         margin: extjsf.dpts(0, 6, 0, 0), height: 30,
-        icon: "${z:url('/resources/icons/retrade_16.png')}",
+        iconCls: 'retrade-prices-icon',
         componentCls: 'retrade-button-22pt'
 
       </f:facet>
     </x:component>
 
 
-    <!-- [goods] -->
+    <!-- [goods tree] -->
 
-    <x:component coid = "${z:vid(localView, 'retrade-catalogues-menu-button')}">
-
+    <x:component coid = "${z:vid(localView, 'retrade-goods-tree')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', flex: 0, text: 'Справочники',
+
+        xtype: 'button', flex: 0, text: 'Товары',
         margin: extjsf.dpts(0, 0, 0, 0), height: 30,
-        icon: "${z:url('/resources/icons/catalogues_16.png')}",
+        iconCls: 'retrade-goods-icon',
         componentCls: 'retrade-button-22pt'
+
       </f:facet>
     </x:component>
 

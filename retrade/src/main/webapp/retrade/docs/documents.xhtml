@@ -32,15 +32,14 @@ ${v.checkModelRequestedWithRedirect}
       <!-- [show filter button -->
 
       <x:component coid = "${z:vid(v, 'show-docs-filter')}">
-
         <f:facet name = "extjs-props">
 
           xtype: 'button', flex: 0, text: 'Фильтр', enableToggle: true,
           margin: extjsf.dpts(0, 2, 0, 0), height: 30,
-          icon: "${z:url('/resources/icons/filter_16.png')}",
+          iconCls: 'retrade-document-filter-icon',
           componentCls: 'retrade-button-22pt'
-        </f:facet>
 
+        </f:facet>
       </x:component>
 
       <!-- show filter button] -->

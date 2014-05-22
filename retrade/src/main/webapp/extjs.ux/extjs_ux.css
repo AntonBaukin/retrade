@@ -17,6 +17,11 @@ div.x-form-item, table.x-table-form-item
   margin-bottom: 0;
 }
 
+a.x-btn-icon.x-btn-over
+{
+  background: transparent;
+}
+
 
 /* Ext.ux.form.TriCheckbox */
 
