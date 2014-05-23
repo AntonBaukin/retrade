@@ -14,6 +14,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.tverts.genesis.GenCtx;
 
+/* com.tverts: endure (persons) */
+
+import com.tverts.endure.person.Firm;
+
 
 /**
  * Read generated (test) Contractors from

@@ -75,9 +75,8 @@
         <ref bean = 'retradeDomainBuilders'/>
 
 
-        <!-- Firms -->
+        <!-- Contractors -->
 
-        <ref bean = 'retradeFirmBuilders'/>
         <ref bean = 'retradeContractorBuilders'/>
 
 

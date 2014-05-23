@@ -1,10 +1,11 @@
 package com.tverts.retrade.domain.firm;
 
-/* com.tverts: endure (core + catalogues) */
+/* com.tverts: endure (core + catalogues + persons) */
 
-import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.Entity;
+import com.tverts.endure.cats.CatItem;
+import com.tverts.endure.person.Firm;
 
 
 /**

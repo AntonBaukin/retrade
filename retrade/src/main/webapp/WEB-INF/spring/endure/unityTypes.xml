@@ -54,7 +54,10 @@
         <property name = 'references'>
           <list>
 
-            <!-- primary module unity types -->
+            <!-- core module unity types -->
+            <ref bean = 'xrootUnityTypeStructs'/>
+
+            <!-- ReTrade module unity types -->
             <ref bean = 'retradeUnityTypeStructs'/>
 
           </list>

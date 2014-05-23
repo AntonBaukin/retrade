@@ -13,10 +13,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.tverts.endure.aggr.AggrValue;
 
-/* com.tverts: endure domain (catalogs) */
+/* com.tverts: endure domain (catalogs + persons) */
 
 import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.cats.CatItemView;
+import com.tverts.endure.person.Firm;
 
 
 /**

@@ -38,26 +38,6 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Firm                                                      ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
-
-          <property name  = 'typeClass'
-                    value = 'com.tverts.retrade.domain.firm.Firm'/>
-
-          <property name  = 'typeName'
-                    value = 'ReTrade: Firms: Firm'/>
-
-          <property name  = 'title'
-                    value = 'Organization'/>
-
-          <property name  = 'titleLo'
-                    value = 'Организация'/>
-
-        </bean>
-
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Contractor                                                ·
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.endure.types.UnityTypeStruct'>

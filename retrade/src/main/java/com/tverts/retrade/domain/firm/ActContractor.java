@@ -10,11 +10,13 @@ import com.tverts.actions.ActionBuildRec;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 
-/* com.tverts: endure (core + aggregation) */
+/* com.tverts: endure (core + aggregation + persons) */
 
 import com.tverts.endure.core.ActUnity;
 import com.tverts.endure.aggr.ActAggrValue;
 import com.tverts.endure.aggr.calc.AggrCalcs;
+import com.tverts.endure.person.ActFirm;
+import com.tverts.endure.person.Firm;
 
 /* com.tverts: hibery */
 

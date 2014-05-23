@@ -58,7 +58,7 @@ public class DumpFirms extends EntitiesDumperBase
 
 	protected Class  getUnityClass()
 	{
-		return com.tverts.retrade.domain.firm.Firm.class;
+		return com.tverts.endure.person.Firm.class;
 	}
 
 	protected Class  getEntityClass()

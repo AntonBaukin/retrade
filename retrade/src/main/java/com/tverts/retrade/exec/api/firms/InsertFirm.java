@@ -72,7 +72,7 @@ public class InsertFirm extends InsertEntityBase
 		d.setName(s.getName());
 
 		//~: create firm
-		d.setFirm(new com.tverts.retrade.domain.firm.Firm());
+		d.setFirm(new com.tverts.endure.person.Firm());
 
 		//~: firm short name
 		d.getFirm().setShortName(s.getName());

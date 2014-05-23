@@ -8,7 +8,7 @@
     =  The Main Service                               =
     +================================================-->
 
-  <bean name  = 'mainService'
+  <bean name  = 'mainService' factory-method = 'getInstance'
         class = 'com.tverts.system.services.MainService'>
     <property name = 'reference'>
       <bean class = 'com.tverts.system.services.events.EventRunList'>
@@ -126,9 +126,9 @@
                     <list>
                       <value>Core Test</value>
                       <value>ReTrade Test Catalogs</value>
-                      <value>ReTrade Test Documents</value>
-                      <value>ReTrade Test Invoices Fix</value>
-                      <value>ReTrade Test Payments</value>
+                  <!--<value>ReTrade Test Documents</value>-->
+                  <!--<value>ReTrade Test Invoices Fix</value>-->
+                  <!--<value>ReTrade Test Payments</value>-->
                     </list>
                   </property>
 

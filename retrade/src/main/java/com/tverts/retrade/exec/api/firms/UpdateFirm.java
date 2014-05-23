@@ -47,7 +47,7 @@ public class UpdateFirm extends UpdateEntityBase
 
 		//?: {create new firm}
 		boolean saveFirm = (d.getFirm() == null);
-		if(saveFirm) d.setFirm(new com.tverts.retrade.domain.firm.Firm());
+		if(saveFirm) d.setFirm(new com.tverts.endure.person.Firm());
 
 		//~: assign the contractor' firm
 		InsertFirm.assignFirm(d, s);
