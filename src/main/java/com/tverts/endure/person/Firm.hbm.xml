@@ -1,0 +1,72 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.person'>
+
+  <union-subclass name = 'Firm' extends = 'com.tverts.endure.core.Entity'
+    table = 'core_firm' lazy = 'false'>
+
+
+    <!-- Short Name -->
+
+    <property name = "shortName">
+
+      <column name = 'short_name' length = '512'>
+        <comment>Short variant of the Firm name</comment>
+      </column>
+    </property>
+
+
+    <!-- Full Name -->
+
+    <property name = 'fullName'>
+
+      <column name = 'full_name' not-null = 'true' length = '2048'>
+        <comment>The Firm full name</comment>
+      </column>
+    </property>
+
+
+    <!-- Tax Number -->
+
+    <property name = 'taxNumber'>
+
+      <column name = 'tax_number' length = '32'>
+        <comment>The Firm tax number</comment>
+      </column>
+    </property>
+
+
+    <!-- Tax Code -->
+
+    <property name = 'taxCode'>
+
+      <column name = 'tax_code' length = '32'>
+        <comment>The Firm tax code</comment>
+      </column>
+    </property>
+
+
+    <!-- Address String -->
+
+    <property name = 'addressString'>
+
+      <column name = 'address_string' length = '1024'>
+        <comment>The Firm address printed in string</comment>
+      </column>
+    </property>
+
+
+    <!-- Pnones String -->
+
+    <property name = 'phonesString'>
+
+      <column name = 'phones_string' length = '1024'>
+        <comment>The Firm phones printed in string</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

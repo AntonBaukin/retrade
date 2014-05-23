@@ -26,7 +26,11 @@ public class   SystemReadyListener
 	protected void init()
 	{
 		//~: send notification to Main Service
-		ServicesPoint.send(
-		  MainService.NAME, new SystemReady());
+		ServicesPoint.send(MainService.NAME, new SystemReady());
+	}
+
+	protected void destroy()
+	{
+		MainService.INSTANCE.stopping();
 	}
 }

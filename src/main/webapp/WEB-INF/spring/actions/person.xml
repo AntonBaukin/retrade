@@ -18,4 +18,21 @@
       <bean class = 'com.tverts.endure.person.ActPerson'/>
     </property>
   </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Firm                        =
+    +================================================-->
+
+  <bean name  = 'coreFirmBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.person.Firm'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.person.ActFirm'/>
+    </property>
+  </bean>
+
 </beans>

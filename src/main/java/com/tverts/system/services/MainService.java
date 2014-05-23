@@ -9,6 +9,11 @@ import java.util.List;
 
 import com.tverts.system.services.events.EventRun;
 import com.tverts.system.services.events.EventRunReference;
+import com.tverts.system.services.events.SystemReady;
+
+/* com.tverts: support */
+
+import com.tverts.support.LU;
 
 
 /**
@@ -31,13 +36,21 @@ import com.tverts.system.services.events.EventRunReference;
 public class      MainService
        implements Service, ServiceReference
 {
+	public static final MainService INSTANCE =
+	  new MainService();
+
+	public static MainService getInstance()
+	{
+		return INSTANCE;
+	}
+
+
+	/* public: Service interface */
+
 	/**
 	 * The fixed name of Main service.
 	 */
 	public static final String NAME = "Main";
-
-
-	/* public: Service interface */
 
 	public String   uid()
 	{
@@ -62,9 +75,22 @@ public class      MainService
 
 	public void     service(Event event)
 	{
+		//~: invoke the nested strategies
 		for(EventRun run : runs)
 			if(run.run(event))
 				break;
+	}
+
+	public void     started()
+	{
+		this.systemReady = true;
+		LU.W(getLog(), "system is now ready!");
+	}
+
+	public void     stopping()
+	{
+		this.systemReady = false;
+		LU.W(getLog(), "system is going to shutdown...");
 	}
 
 
@@ -77,6 +103,11 @@ public class      MainService
 
 
 	/* public: MainService (bean) interface */
+
+	public boolean isSystemReady()
+	{
+		return systemReady;
+	}
 
 	public EventRunReference getReference()
 	{
@@ -101,9 +132,15 @@ public class      MainService
 		return res.toArray(new EventRun[res.size()]);
 	}
 
+	protected String     getLog()
+	{
+		return ServicesPoint.LOG_SERVICE_MAIN;
+	}
+
 
 	/* private: event handlers reference */
 
 	private EventRunReference reference;
 	private EventRun[]        runs;
+	private volatile boolean  systemReady;
 }

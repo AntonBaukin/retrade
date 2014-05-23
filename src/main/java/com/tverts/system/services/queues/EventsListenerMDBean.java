@@ -9,6 +9,18 @@ import javax.jms.MessageListener;
 
 import static com.tverts.spring.SpringPoint.bean;
 
+/* com.tverts: system */
+
+import com.tverts.system.JTAPoint;
+import com.tverts.system.services.MainService;
+import com.tverts.system.services.ServicesPoint;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.LU;
+import com.tverts.support.SU;
+
 
 /**
  * Message-Driven Bean listening Z-Services
@@ -25,8 +37,43 @@ public class EventsListenerMDBean implements MessageListener
 
 	public void onMessage(Message msg)
 	{
+		//?: {the system is not ready yet}
+		if(!MainService.INSTANCE.isSystemReady())
+		{
+			//!: rollback the transaction
+			try
+			{
+				JTAPoint.jta().tx().setRollbackOnly();
+			}
+			catch(Throwable e)
+			{
+				throw EX.wrap(e, "System is not ready to handle Queue messages, ",
+				  "but transaction rollback was not possible!"
+				);
+			}
+
+			try
+			{
+				String  et = msg.getStringProperty(JMSProtocol.EVENTYPE);
+				String  id = msg.getStringProperty(JMSProtocol.SERVICE);
+				boolean bc = msg.getBooleanProperty(JMSProtocol.BROADCAST);
+
+				LU.W(ServicesPoint.LOG_SERVICE_BOOT,
+				  "message of type [", SU.sXe(et)?("UNKNOWN"):(et), "] ",
+				  (bc)?("broadcasted"):SU.cat("sent to [", id, "]"),
+				  " was rolled back as the system is not ready yet!"
+				);
+			}
+			catch(Throwable e)
+			{
+				throw EX.wrap(e);
+			}
+
+			return;
+		}
+
 		//~: invoke the bean
-		((EventsListenerBean)bean(EventsListenerBean.BEAN_NAME)).
+		((EventsListenerBean) bean(EventsListenerBean.BEAN_NAME)).
 		  takeEventMessage(msg);
 	}
 }

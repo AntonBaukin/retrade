@@ -1,14 +1,19 @@
 package com.tverts.system;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.Properties;
 
-/* Java Naming */
+/* Java Naming + Transactions */
 
 import javax.naming.InitialContext;
+import javax.transaction.UserTransaction;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -40,7 +45,7 @@ public class JTAPoint
 
 	/* public: JTAPoint interface */
 
-	public InitialContext namingContext()
+	public InitialContext  namingContext()
 	{
 		InitialContext result = initialContext.get();
 
@@ -51,14 +56,14 @@ public class JTAPoint
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
-	public InitialContext buildContext()
+	public InitialContext  buildContext()
 	  throws Exception
 	{
 		Hashtable env;
@@ -89,6 +94,26 @@ public class JTAPoint
 		}
 
 		return new InitialContext(env);
+	}
+
+	public UserTransaction tx()
+	{
+		try
+		{
+			//~: get the context
+			InitialContext ctx = this.namingContext();
+
+			//~: lookup
+			return (UserTransaction) ctx.lookup("java:comp/UserTransaction");
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e);
+		}
+		finally
+		{
+			this.clean();
+		}
 	}
 
 

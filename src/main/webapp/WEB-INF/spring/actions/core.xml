@@ -74,20 +74,47 @@
     <property name = 'references'>
       <list>
 
+        <!-- Unity -->
+
         <ref bean = 'coreUnityTypesBuilders'/>
         <ref bean = 'coreUnityBuilders'/>
+
+
+        <!-- Aggregated Values -->
+
         <ref bean = 'aggrValueBuilders'/>
+
+
+        <!-- Authentication -->
+
         <ref bean = 'authComputerBuilders'/>
         <ref bean = 'authLoginBuilders'/>
         <ref bean = 'authSessionBuilders'/>
+
+
+        <!-- Secure -->
+
         <ref bean = 'secKeyBuilders'/>
         <ref bean = 'secRuleBuilders'/>
         <ref bean = 'secSetBuilders'/>
         <ref bean = 'secAbleBuilders'/>
         <ref bean = 'secLinkBuilders'/>
+
+
+        <!-- Persons and Firms -->
+
         <ref bean = 'corePersonBuilders'/>
+        <ref bean = 'coreFirmBuilders'/>
+
+
+        <!-- Trees -->
+
         <ref bean = 'treeDomainBuilders'/>
         <ref bean = 'treeFolderBuilders'/>
+
+
+        <!-- Reports -->
+
         <ref bean = 'reportTemplatesBuilders'/>
         <ref bean = 'reportRequestsBuilders'/>
 

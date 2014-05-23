@@ -8,7 +8,7 @@
     =  The Main Service                               =
     +================================================-->
 
-  <bean name  = 'mainService'
+  <bean name  = 'mainService' factory-method = 'getInstance'
         class = 'com.tverts.system.services.MainService'>
     <property name = 'reference'>
       <bean class = 'com.tverts.system.services.events.EventRunList'>

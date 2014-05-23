@@ -70,6 +70,9 @@ public class ServicesSystem implements Servicer
 		{
 			lock().writeLock().unlock();
 		}
+
+		//~: allow main service
+		MainService.INSTANCE.started();
 	}
 
 	/**

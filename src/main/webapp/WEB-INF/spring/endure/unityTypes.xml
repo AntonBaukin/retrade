@@ -25,6 +25,20 @@
 
     <property name = 'unityTypes'
               ref  = 'xrootUnityTypes'/>
+
+    <!-- unity types descriptors -->
+    <property name = 'structs'>
+      <bean class = 'com.tverts.endure.types.UnityTypeStructsList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- primary module unity types -->
+            <ref bean = 'xrootUnityTypeStructs'/>
+
+          </list>
+        </property>
+      </bean>
+    </property>
   </bean>
 
 </beans>

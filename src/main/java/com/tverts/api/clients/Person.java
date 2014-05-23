@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 /* com.tverts: api */
 
 import com.tverts.api.core.TwoKeysObject;
+import com.tverts.api.core.XKeyPair;
 import com.tverts.api.support.CharAdapter;
 
 
@@ -150,5 +151,31 @@ public class Person implements TwoKeysObject
 	public void setPhoneWork(String phoneWork)
 	{
 		this.phoneWork = phoneWork;
+	}
+
+	@XmlElement(name = "phone-work")
+	//@XKeyPair(type = Firm.class)
+	public Long getFirmKey()
+	{
+		return firmKey;
+	}
+
+	private Long firmKey;
+
+	public void setFirmKey(Long firmKey)
+	{
+		this.firmKey = firmKey;
+	}
+
+	public String getFirmXKey()
+	{
+		return firmXKey;
+	}
+
+	private String firmXKey;
+
+	public void setFirmXKey(String firmXKey)
+	{
+		this.firmXKey = firmXKey;
 	}
 }
