@@ -706,7 +706,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		protected void open()
 		{
 			//~: <folder>
-			if(event().tag("folder"))
+			if(event().istag("folder"))
 			{
 				EX.asserte(state(1).folders);
 
@@ -726,7 +726,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			}
 
 			//~: <good> | <good> <calc> <good>
-			if(event().tag("good"))
+			if(event().istag("good"))
 			{
 				StateGood sg = EX.assertn(state(1).good);
 
@@ -761,7 +761,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			}
 
 			//~: <good> <measure>
-			if(event().tag("measure"))
+			if(event().istag("measure"))
 			{
 				StateGood sg = EX.assertn(state(1).good);
 
@@ -775,7 +775,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			}
 
 			//~: <good> <derived>
-			if(event().tag("derived"))
+			if(event().istag("derived"))
 			{
 				StateGood sg = EX.assertn(state(1).good);
 				EX.assertx(sg.calc == null);
@@ -803,7 +803,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			}
 
 			//~: <good> <calc>
-			if(event().tag("calc"))
+			if(event().istag("calc"))
 			{
 				StateGood sg = EX.assertn(state(1).good);
 				EX.assertx(sg.calc == null);
@@ -819,7 +819,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		protected void close()
 		{
 			//~: <good> </name>
-			if(event().tag("name") && (state(1).good != null))
+			if(event().istag("name") && (state(1).good != null))
 			{
 				StateGood sg = state(1).good;
 
@@ -829,14 +829,14 @@ public class GenTestGoods extends GenesisHiberPartBase
 			}
 
 			//~: <good> </calc>
-			if(event().tag("calc"))
+			if(event().istag("calc"))
 			{
 				StateGood sg = EX.assertn(state(1).good);
 				EX.assertn(sg.calc).incalc = false;
 			}
 
 			//~: </good>
-			if(event().tag("good"))
+			if(event().istag("good"))
 			{
 				StateGood sg = EX.assertn(state(1).good);
 
@@ -852,7 +852,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			}
 
 			//~: </folder>
-			if(event().tag("folder"))
+			if(event().istag("folder"))
 			{
 				EX.assertx(!state(1).folders.isEmpty());
 

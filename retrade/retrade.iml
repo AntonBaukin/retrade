@@ -37,7 +37,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/main/webapp/extjs/resources/themes" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Java" jdkType="JavaSDK" />
     <orderEntry type="module" module-name="xroot" exported="" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
