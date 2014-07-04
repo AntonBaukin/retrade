@@ -6,10 +6,6 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
-/* com.tverts: hibery */
-
-import static com.tverts.hibery.HiberPoint.flush;
-
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -43,7 +39,6 @@ import com.tverts.endure.person.Persons;
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
-import static com.tverts.support.SU.cats;
 import com.tverts.support.xml.SaxProcessor;
 
 
@@ -60,9 +55,10 @@ public class GenTestUsers extends GenesisHiberPartBase
 	public void    generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		Object url = getClass().getResource("GenTestUsers.xml");
-		if(url == null) throw new GenesisError(this, ctx,
-		  new IllegalStateException("No 'GenTestUsers.xml' file found!"));
+		Object url = EX.assertn(
+		  getClass().getResource("GenTestUsers.xml"),
+		  "No GenTestUsers.xml file found!"
+		);
 
 		try
 		{
@@ -82,19 +78,19 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 	/* protected: generation callback */
 
-	protected void    generate(GenCtx ctx, GenState s)
+	protected void generate(GenCtx ctx, GenState s)
 	  throws GenesisError
 	{
-		if((s.computer == null) && (s.person == null))
-			throw new IllegalStateException(
-			  "Set <computer> or <person> tag in 'GenTestUsers.xml' file!");
+		EX.assertn(s.login, "Person or computer has no login!");
 
-		if(s.login == null) throw new IllegalStateException(
-		  "Set <login> into <computer>, <person> " +
-		  "tags in 'GenTestUsers.xml' file!");
+		EX.assertx(
+		  ((s.computer != null) && (s.person == null)) ||
+		  ((s.computer == null) && (s.person != null))
+		);
 
-		if((s.login.code == null) && (s.computer != null))
-			s.login.code = s.computer.code;
+		//?: {take login from computer code}
+		if((s.computer != null) && (s.login.code == null))
+			s.login.code = EX.asserts(s.computer.getCode());
 
 		if(s.computer != null)
 			if(saveComputer(ctx, s))
@@ -108,30 +104,30 @@ public class GenTestUsers extends GenesisHiberPartBase
 	protected boolean saveComputer(GenCtx ctx, GenState gs)
 	  throws GenesisError
 	{
-		StateComputer s = gs.computer;
-		Computer      c = bean(GetAuthLogin.class).
-		  getComputer(ctx.get(Domain.class).getPrimaryKey(), s.code);
+		Computer c = bean(GetAuthLogin.class).getComputer(
+		  ctx.get(Domain.class).getPrimaryKey(),
+		  gs.computer.getCode()
+		);
 
 		if(c != null)
 		{
-			LU.I(log(ctx), logsig(), " found computer with code '",
-			  s.code, "' already existing in the database.");
+			LU.I(log(ctx), logsig(), " computer with code [",
+			  gs.computer.getCode(), "] already exists");
 
 			return false;
 		}
 
-		s.computer = c = new Computer();
+		gs.computerEntity = c = new Computer();
 
 		c.setDomain(ctx.get(Domain.class));
-		c.setCode(s.code);
-		c.setName(s.name);
-		c.setComment(s.comment);
+		c.setCode(gs.computer.getCode());
+		c.setName(gs.computer.getName());
+		c.setComment(gs.computer.getComment());
 
 		actionRun(ActionType.SAVE, c);
 
-		LU.I(log(ctx), logsig(), " created computer with code '",
-		  s.code, "' ", (gs.login == null)?("without login."):
-		    (" with login '" + gs.login.code + "'.")
+		LU.I(log(ctx), logsig(), " created computer with code [",
+		  c.getCode(), "] with login [", gs.login.code, "]"
 		);
 
 		return true;
@@ -140,42 +136,40 @@ public class GenTestUsers extends GenesisHiberPartBase
 	protected boolean savePerson(GenCtx ctx, GenState gs)
 	  throws GenesisError
 	{
-		StatePerson s = gs.person;
-		Person      p = (gs.login == null)?(null):
-		  bean(GetAuthLogin.class).getPersonByLogin(
-		    ctx.get(Domain.class).getPrimaryKey(), gs.login.code);
+		Person p = bean(GetAuthLogin.class).getPersonByLogin(
+		  ctx.get(Domain.class).getPrimaryKey(),
+		  gs.login.code
+		);
 
 		if(p != null)
 		{
-			LU.I(log(ctx), logsig(), " found person '", Persons.name(p),
-			 "' with login [", gs.login.code,
-			 "] already existing in the database.");
+			LU.I(log(ctx), logsig(), " person ", Persons.name(p),
+			 " with login [", gs.login.code, "] already exists");
 
 			return false;
 		}
 
-		s.person = p = new Person();
+		gs.personEntity = p = new Person();
 
 		p.setDomain(ctx.get(Domain.class));
-		p.setLastName(s.lastName);
-		p.setFirstName(s.firstName);
-		p.setMiddleName(s.middleName);
-		p.setGender(s.gender);
-		p.setEmail(s.email);
-		p.setPhoneMob(s.phoneMob);
-		p.setPhoneWork(s.phoneWork);
+		p.setLastName(gs.person.getLastName());
+		p.setFirstName(gs.person.getFirstName());
+		p.setMiddleName(gs.person.getMiddleName());
+		p.setGender(gs.person.getGender());
+		p.setEmail(gs.person.getEmail());
+		p.setPhoneMob(gs.person.getPhoneMobile());
+		p.setPhoneWork(gs.person.getPhoneWork());
 
 		actionRun(ActionType.SAVE, p);
 
-		LU.I(log(ctx), logsig(), " created person '", Persons.name(p),
-		  (gs.login == null)?("without login."):
-		    ("' with login [" + gs.login.code + "].")
+		LU.I(log(ctx), logsig(), " created person ",
+		  Persons.name(p), " with login [" + gs.login.code + "]"
 		);
 
 		return true;
 	}
 
-	protected void    saveLogin(GenCtx ctx, GenState s)
+	protected void saveLogin(GenCtx ctx, GenState s)
 	  throws GenesisError
 	{
 		AuthLogin     l = new AuthLogin();
@@ -205,19 +199,16 @@ public class GenTestUsers extends GenesisHiberPartBase
 		l.setPasshash(p);
 
 		//~: computer
-		if(s.computer != null)
-			l.setComputer(s.computer.computer);
+		if(s.computerEntity != null)
+			l.setComputer(s.computerEntity);
 
 		//~: person
-		if(s.person != null)
-			l.setPerson(s.person.person);
+		if(s.personEntity != null)
+			l.setPerson(s.personEntity);
 
 
 		//!: do save the login
 		actionRun(ActionType.SAVE, l);
-
-		//~: flush the session
-		//flush(session());
 
 		//~: create secure instances
 		secure(ctx, s, l);
@@ -227,10 +218,10 @@ public class GenTestUsers extends GenesisHiberPartBase
 	  throws GenesisError
 	{
 		//?: {there is no security entries}
-		if(s.secEntries == null) return;
+		if(s.secures == null) return;
 
 		//c: create ask force event
-		for(SecEntry se : s.secEntries)
+		for(Secure se : s.secures)
 			EventPoint.react( //<-- !: send it
 			  new AskSecForceEvent(l).
 			  setForce(se.force)
@@ -240,57 +231,36 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 	/* protected: xml handler states */
 
-	protected static class StateLogin
+	protected static class Login
 	{
 		public String code;
 		public String password;
 	}
 
-	protected static class StateComputer
-	{
-		public String code;
-		public String name;
-		public String comment;
-
-		public Computer computer;
-	}
-
-	protected static class StatePerson
-	{
-		public String    lastName;
-		public String    firstName;
-		public String    middleName;
-		public Character gender;
-		public String    email;
-		public String    phoneMob;
-		public String    phoneWork;
-
-		public Person    person;
-	}
-
-	protected static class SecEntry
+	protected static class Secure
 	{
 		public String force;
 	}
 
 	protected static class GenState
 	{
-		public StateLogin     login;
-		public StateComputer  computer;
-		public StatePerson    person;
-		public List<SecEntry> secEntries;
+		public Login login;
+		public com.tverts.api.clients.Person person;
+		public com.tverts.api.clients.Computer computer;
+		public Person personEntity;
+		public Computer computerEntity;
+		public List<Secure> secures;
 	}
-
 
 
 	/* protected: xml handler */
 
-	protected class   ReadTestUsers
-	          extends SaxProcessor<GenState>
+	protected class ReadTestUsers extends SaxProcessor<GenState>
 	{
 		public ReadTestUsers(GenCtx ctx)
 		{
 			this.ctx = ctx;
+			this.collectTags = true;
 		}
 
 
@@ -298,83 +268,75 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		protected void createState()
 		{
-			if(level() == 1)
+			//?: <person> | <computer>
+			if(istag(1, "person", "computer"))
+			{
 				event().state(new GenState());
 
-			if((level() == 2) && "login".equals(event().tag()))
-				state(1).login = new StateLogin();
+				//?: <person>
+				if(istag("person"))
+					state().person = new com.tverts.api.clients.Person();
+				//?: <computer>
+				else if(istag("computer"))
+					state().computer = new com.tverts.api.clients.Computer();
+			}
+
+			//?: (<person> | <computer>) <login>
+			else if(istag(2, "login"))
+				state(1).login = new Login();
+
+			else
+				throw wrong();
 		}
 
 		protected void open()
 		{
-			//~: <computer>
-			if((level() == 1) && event().tag("computer"))
-			{
-				state().computer = new StateComputer();
-
-				state().computer.code = event().attr("code");
-				state().computer.name = event().attr("name");
-			}
-
-			//~: <person>
-			if((level() == 1) && event().tag("person"))
-			{
-				state().person = new StatePerson();
-
-				state().person.lastName   = event().attr("last-name");
-				state().person.middleName = event().attr("middle-name");
-				state().person.firstName  = event().attr("first-name");
-
-				String gender             = event().attr("gender");
-				state().person.gender     = (gender == null)?(null):
-				  (gender.length() == 1)?(gender.charAt(0)):(null);
-
-				state().person.email      = event().attr("email");
-				state().person.phoneMob   = event().attr("mobile-phone");
-				state().person.phoneWork  = event().attr("work-phone");
-			}
-
 			//~: (<computer> | <person>) <login>
-			if((level() == 2) && event().tag("login"))
+			if(istag(2, "login"))
 			{
-				state(1).login.code = event().attr("code");
-				state(1).login.password = event().attr("password");
+				state(1).login.code = attr("code");
+				state(1).login.password = EX.asserts(
+				  attr("password"), "Login password is undefined!"
+				);
 			}
 
 			//~: (<computer> | <person>) <secure>
-			if((level() == 2) && event().tag("secure"))
+			else if(istag(2, "secure"))
 			{
 				//~: force attribute
-				String force = event().attr("force");
-
-				if(force == null) throw new IllegalStateException(cats(
+				String force = EX.asserts(attr("force"),
 				  "Gen Test Users, login [", state(1).login.code,
 				  "] has <secure force = '?'> undefined!"
-				));
+				);
 
 				//~: create secure entry
-				SecEntry e = new SecEntry();
+				Secure e = new Secure();
 				e.force = force;
 
-				if(state(1).secEntries == null)
-					state(1).secEntries = new ArrayList<SecEntry>(4);
-				state(1).secEntries.add(e);
+				if(state(1).secures == null)
+					state(1).secures = new ArrayList<Secure>(4);
+				state(1).secures.add(e);
 			}
 		}
 
 		protected void close()
 		{
-			if((level() == 2) && "comment".equals(event().tag()))
-				if(state(1).computer != null)
-					state(1).computer.comment = event().text().trim();
+			//?: <computer>
+			if(istag(1, "computer"))
+				requireFillClearTags(state().computer, "code", "name");
 
-			if((level() == 1) && (state() != null)) try
+			//?: <person>
+			else if(istag(1, "person"))
+				requireFillClearTags(state().person, "last-name", "first-name");
+
+			//?: {<computer> | <person>}
+			if(level(1)) try
 			{
 				generate(ctx, state());
 			}
-			catch(Exception e)
+			catch(Throwable e)
 			{
-				throw new RuntimeException(e);
+				throw EX.wrap(e);
 			}
 		}
 

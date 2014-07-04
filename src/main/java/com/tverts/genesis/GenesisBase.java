@@ -170,7 +170,7 @@ public abstract class GenesisBase
 	protected String logsig(String lang)
 	{
 		return String.format((LO.LANG_RU.equals(lang))?
-		  ("Модуль генезиса '%s'"):("Genesis Unit '%s'"),
+		  ("Модуль генезиса {%s}"):("Genesis Unit {%s}"),
 		  getName());
 	}
 

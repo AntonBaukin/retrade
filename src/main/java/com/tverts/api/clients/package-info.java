@@ -1,7 +1,7 @@
 
 @XmlSchema(
-  namespace = "urn:tverts.com:api:clients", xmlns = {
-    @XmlNs(prefix = "cli", namespaceURI = "urn:tverts.com:api:clients"),
+  namespace = "urn:tverts.com:api", xmlns = {
+    @XmlNs(prefix = "api", namespaceURI = "urn:tverts.com:api"),
     @XmlNs(prefix = "xsi", namespaceURI = "http://www.w3.org/2001/XMLSchema-instance"),
     @XmlNs(prefix = "xs",  namespaceURI = "http://www.w3.org/2001/XMLSchema")
   }

@@ -9,6 +9,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import static com.tverts.support.SU.sXe;
 
 
@@ -45,17 +46,28 @@ public class SaxEvent<State>
 
 	public String          tag()
 	{
-		return !sXe(lName)?(lName):!sXe(qName)?(qName):("");
+		if(!sXe(lName))
+			return lName;
+		else if(!sXe(qName))
+			return qName;
+		else
+			throw EX.state("XML event has no tag name!");
 	}
 
-	public boolean         tag(String... names)
+	public boolean         istag(String... names)
 	{
 		String tag = this.tag();
 
 		for(String name : names)
 			if(name.equals(tag))
 				return true;
+
 		return false;
+	}
+
+	public boolean         istag(int level, String... names)
+	{
+		return (level == level()) && istag(names);
 	}
 
 	public String          uri()

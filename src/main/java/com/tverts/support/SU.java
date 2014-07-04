@@ -388,6 +388,37 @@ public class SU
 
 		return sb.toString();
 	}
+
+	public static String   camelize(String s)
+	{
+		if(s == null) return null;
+
+		//?: {has no dash}
+		if(s.indexOf('-') == -1)
+			return s;
+
+		//~: seek and destroy...
+		StringBuilder x = new StringBuilder(s.length());
+		boolean       d = false; //<-- true when had dash
+
+		for(int i = 0;(i < s.length());i++)
+		{
+			char c = x.charAt(i);
+
+			if(c == 'd')
+			{
+				d = true;
+				continue;
+			}
+
+			if(d) c = Character.toUpperCase(c);
+			d = false;
+
+			x.append(c);
+		}
+
+		return x.toString();
+	}
 	
 	private static char[]   XESC_SYMS = new char[]
 	  {'<',    '>',    '\"',     '\'',     '&'};
@@ -422,6 +453,7 @@ public class SU
 				return i;
 		return -1;
 	}
+
 
 	/* public: formatting routines */
 
@@ -474,6 +506,7 @@ public class SU
 
 		return sb.toString();
 	}
+
 
 	/* public: buffering */
 
@@ -857,7 +890,7 @@ public class SU
 
 	/* string to value translations */
 
-	public static Object  s2v(Class t, String s)
+	public static Object s2v(Class t, String s)
 	{
 		if(t == null) throw new IllegalArgumentException();
 		if(sXe(s))    return null;

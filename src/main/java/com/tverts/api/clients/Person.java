@@ -11,15 +11,18 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 /* com.tverts: api */
 
 import com.tverts.api.core.TwoKeysObject;
-import com.tverts.api.core.XKeyPair;
 import com.tverts.api.support.CharAdapter;
+import com.tverts.api.support.EX;
 
 
 /**
- * Data about a Person registered in the system.
+ * Data about a Person
+ * registered in the system.
  */
 @XmlRootElement(name = "person")
-@XmlType(name = "person")
+@XmlType(name = "person", propOrder = {
+  "pkey", "xkey", ""
+})
 public class Person implements TwoKeysObject
 {
 	@XmlAttribute(name = "pkey")
@@ -109,9 +112,10 @@ public class Person implements TwoKeysObject
 
 	private Character gender;
 
-	public void setGender(Character gender)
+	public void setGender(Character g)
 	{
-		this.gender = gender;
+		EX.assertx((g == null) || (g == 'F') || (g == 'M'));
+		this.gender = g;
 	}
 
 	@XmlElement(name = "email")

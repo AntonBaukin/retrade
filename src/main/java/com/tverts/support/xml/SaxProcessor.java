@@ -1,7 +1,13 @@
 package com.tverts.support.xml;
 
-/* standard Java classes */
+/* Java */
 
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import javax.xml.parsers.SAXParserFactory;
 
 /* SAX Parser */
@@ -9,6 +15,11 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -77,12 +88,6 @@ public abstract class SaxProcessor<State>
 	protected void            done(SaxEvent<State> root)
 	{}
 
-	protected SaxStack<State> stack()
-	{
-		return (this.stack != null)?(this.stack):
-		  (this.stack = createStack());
-	}
-
 	protected SaxStack<State> createStack()
 	{
 		return new SaxStackBase<State>();
@@ -100,9 +105,9 @@ public abstract class SaxProcessor<State>
 	}
 
 
-	/* public: document handler implementation */
+	/* protected: document handler implementation */
 
-	public class SaxHandler extends DefaultHandler
+	protected class SaxHandler extends DefaultHandler
 	{
 		/* public: DefaultHandler interface */
 
@@ -138,33 +143,168 @@ public abstract class SaxProcessor<State>
 	}
 
 
+	/* protected: access tags */
+
+	/**
+	 * Set this flag to collect the text
+	 * values of all the tags processed.
+	 * Tags are used to simplify assigning
+	 * object attributes.
+	 */
+	protected boolean collectTags;
+
+	protected String           tag(String name)
+	{
+		return (tags == null)?(null):(tags.get(name));
+	}
+
+	protected void             tag(String name, String text)
+	{
+		//?: {has no text} delete the tag
+		if((text = SU.s2s(text)) == null)
+		{
+			if(tags != null)
+				tags.remove(name);
+		}
+		//~: {text is not empty} add tag
+		else
+		{
+			if(tags == null)
+				tags = new HashMap<String, String>(11);
+
+			tags.put(name, text);
+		}
+	}
+
+	protected Set<String>      tags()
+	{
+		return tags.keySet();
+	}
+
+	protected void             clearTags()
+	{
+		this.tags = null;
+	}
+
+	protected void             requireTags(String... names)
+	{
+		for(String name : names) EX.assertx(
+		  (tags != null) && tags.containsKey(name),
+		  "Required text tag <", name, "> does not present!"
+		);
+	}
+
+	protected void             fillWithTags(Object obj)
+	{
+		EX.assertn(obj);
+
+		//?: {has no tags}
+		if((tags == null) || tags.isEmpty())
+			return;
+
+		//~: collect the names
+		Map<String, String> names =
+		  new HashMap<String, String>(tags.size());
+		for(String tag : tags.keySet())
+			names.put(SU.camelize(tag), tag);
+
+		//~: process the objects
+		try
+		{
+			PropertyDescriptor[] pds = Introspector.
+			  getBeanInfo(obj.getClass()).getPropertyDescriptors();
+
+			for(PropertyDescriptor pd : pds)
+			{
+				Method wm = pd.getWriteMethod();
+				if(wm == null) continue;
+
+				String tag   = names.get(pd.getName());
+				if(tag == null) continue;
+
+				String text  = EX.asserts(tags.get(tag));
+				Object value = SU.s2v(pd.getPropertyType(), text);
+				EX.assertn(value);
+
+				wm.invoke(obj, value);
+			}
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e);
+		}
+	}
+
+	protected void             requireFillClearTags(Object obj, String... required)
+	{
+		requireTags(required);
+		fillWithTags(obj);
+		clearTags();
+	}
+
+
 	/* protected: helpers */
+
+	protected final SaxStack<State> stack()
+	{
+		return (this.stack != null)?(this.stack):
+		  (this.stack = createStack());
+	}
 
 	/**
 	 * Level of the top event.
 	 */
-	protected int              level()
+	protected final int             level()
 	{
 		return stack().size() - 1;
 	}
 
-	protected SaxEvent<State>  event()
+	protected final boolean         level(int level)
+	{
+		return (stack().size() - 1) == level;
+	}
+
+	protected final boolean         istag(String... names)
+	{
+		return stack().top().istag(names);
+	}
+
+	protected final boolean         istag(int level, String... names)
+	{
+		return stack().top().istag(level, names);
+	}
+
+	protected final String          attr(String qname)
+	{
+		return stack().top().attr(qname);
+	}
+
+	protected final SaxEvent<State> event()
 	{
 		return stack().top();
 	}
 
-	protected State            state()
+	protected final State           state()
 	{
 		return stack().top().state();
 	}
 
-	protected State            state(int i)
+	protected final State           state(int i)
 	{
 		return stack().get(i).state();
 	}
 
+	protected RuntimeException      wrong()
+	{
+		return EX.state(
+		  "Unknown (wrong) tag at level [",
+		  level(), "]: <", event().tag(), ">!"
+		);
+	}
 
-	/* private: events stack */
 
-	private SaxStack<State> stack;
+	/* private: events stack + tags */
+
+	private SaxStack<State>     stack;
+	private Map<String, String> tags;
 }

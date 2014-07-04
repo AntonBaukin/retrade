@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <users>
+  <person>
+    <gender>M</gender>
+    <last-name>Иванов</last-name>
+    <first-name>Максим</first-name>
+    <middle-name>Николаевич</middle-name>
+    <initials>М. Н.</initials>
 
-  <person gender = "M" last-name = "Иванов"
-    first-name = "Максим" middle-name = "Николаевич"
-    email = "mivanov@gmail.com"
-    mobile-phone = "+79206589536"
-    work-phone = "+74822365785">
+    <email>mivanov@gmail.com</email>
+    <mobile-phone>+79206589536</mobile-phone>
+    <work-phone>+74822365785</work-phone>
 
-    <login code = "ivanov" password = "password"/>
+    <login code = "Ivanov" password = "password"/>
 
     <secure force = 'domain: view: goods'/>
     <secure force = 'domain: view: stores'/>
-
     <secure force = 'domain: view: documents'/>
     <secure force = 'domain: view: all invoices'/>
     <secure force = 'domain: forbid view: sell invoices'/>
@@ -20,26 +23,48 @@
     <secure force = 'domain: forbid edit: sell invoices'/>
     <secure force = 'domain: forbid edit: fixed move invoices'/>
     <secure force = 'domain: fix: buy invoices'/>
-
   </person>
 
-  <person gender = "F" last-name = "Толстая"
-    first-name = "Фёкла" middle-name = "Никитична"
-    email = "ftolstaya@mail.ru"
-    mobile-phone = "+79042568741"
-    work-phone = "+74822589621">
 
-    <login code = "tolstaya" password = "password"/>
-    <firm>Ф-01</firm>
+  <person>
+    <gender>F</gender>
+    <last-name>Толстая</last-name>
+    <first-name>Фёкла</first-name>
+    <middle-name>Никитична</middle-name>
+    <initials>Ф. Н.</initials>
+
+    <email>ftolstaya@mail.ru</email>
+    <mobile-phone>+79042568741</mobile-phone>
+    <work-phone>+74822589621</work-phone>
+
+    <login code = "Tolstaya" password = "password"/>
+    <firmXKey>Ф-01</firmXKey>
   </person>
 
-  <person gender = "M" last-name = "Навальный"
-    first-name = "Алексей" middle-name = "Анатольевич"
-    email = "alaxei.navalny@mail.google.com"
-    work-phone = "+74822459861">
 
-    <login code = "navalny" password = "password"/>
-    <firm>Ф-00</firm>
+  <person>
+    <gender>M</gender>
+    <last-name>Навальный</last-name>
+    <first-name>Алексей</first-name>
+    <middle-name>Анатольевич</middle-name>
+    <initials>А. А.</initials>
+
+    <email>alaxei.navalny@mail.google.com</email>
+    <work-phone>+74822459861</work-phone>
+
+    <login code = "Navalny" password = "password"/>
+    <firmXKey>Ф-00</firmXKey>
   </person>
 
+
+  <computer>
+    <code>Integrator</code>
+    <name>Intergation Client</name>
+
+    <comment>
+      Used to import data into the system, or export it.
+    </comment>
+
+    <login code = "Integrator" password = "password"/>
+  </computer>
 </users>
