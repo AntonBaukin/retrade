@@ -124,6 +124,10 @@ public abstract class SaxProcessor<State>
 
 		public void endElement(String uri, String lname, String qname)
 		{
+			//?: {collect tags}
+			if(collectTags)
+				tag(stack().top());
+
 			//~: close the event in the handler
 			close();
 
@@ -153,12 +157,12 @@ public abstract class SaxProcessor<State>
 	 */
 	protected boolean collectTags;
 
-	protected String           tag(String name)
+	protected String      tag(String name)
 	{
 		return (tags == null)?(null):(tags.get(name));
 	}
 
-	protected void             tag(String name, String text)
+	protected void        tag(String name, String text)
 	{
 		//?: {has no text} delete the tag
 		if((text = SU.s2s(text)) == null)
@@ -176,17 +180,22 @@ public abstract class SaxProcessor<State>
 		}
 	}
 
-	protected Set<String>      tags()
+	protected void        tag(SaxEvent<State> e)
+	{
+		tag(e.tag(), e.text());
+	}
+
+	protected Set<String> tags()
 	{
 		return tags.keySet();
 	}
 
-	protected void             clearTags()
+	protected void        clearTags()
 	{
 		this.tags = null;
 	}
 
-	protected void             requireTags(String... names)
+	protected void        requireTags(String... names)
 	{
 		for(String name : names) EX.assertx(
 		  (tags != null) && tags.containsKey(name),
@@ -194,7 +203,7 @@ public abstract class SaxProcessor<State>
 		);
 	}
 
-	protected void             fillWithTags(Object obj)
+	protected void        fillWithTags(Object obj)
 	{
 		EX.assertn(obj);
 
@@ -235,7 +244,7 @@ public abstract class SaxProcessor<State>
 		}
 	}
 
-	protected void             requireFillClearTags(Object obj, String... required)
+	protected void        requireFillClearTags(Object obj, String... required)
 	{
 		requireTags(required);
 		fillWithTags(obj);

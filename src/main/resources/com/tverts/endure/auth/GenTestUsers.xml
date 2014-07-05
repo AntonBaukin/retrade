@@ -9,8 +9,8 @@
     <initials>М. Н.</initials>
 
     <email>mivanov@gmail.com</email>
-    <mobile-phone>+79206589536</mobile-phone>
-    <work-phone>+74822365785</work-phone>
+    <phone-mobile>+79206589536</phone-mobile>
+    <phone-work>+74822365785</phone-work>
 
     <login code = "Ivanov" password = "password"/>
 
@@ -34,8 +34,8 @@
     <initials>Ф. Н.</initials>
 
     <email>ftolstaya@mail.ru</email>
-    <mobile-phone>+79042568741</mobile-phone>
-    <work-phone>+74822589621</work-phone>
+    <phone-mobile>+79042568741</phone-mobile>
+    <phone-work>+74822589621</phone-work>
 
     <login code = "Tolstaya" password = "password"/>
     <firmXKey>Ф-01</firmXKey>
@@ -50,7 +50,7 @@
     <initials>А. А.</initials>
 
     <email>alaxei.navalny@mail.google.com</email>
-    <work-phone>+74822459861</work-phone>
+    <phone-work>+74822459861</phone-work>
 
     <login code = "Navalny" password = "password"/>
     <firmXKey>Ф-00</firmXKey>

@@ -78,7 +78,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 	/* protected: generation callback */
 
-	protected void generate(GenCtx ctx, GenState s)
+	protected void    generate(GenCtx ctx, GenState s)
 	  throws GenesisError
 	{
 		EX.assertn(s.login, "Person or computer has no login!");
@@ -169,7 +169,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 		return true;
 	}
 
-	protected void saveLogin(GenCtx ctx, GenState s)
+	protected void    saveLogin(GenCtx ctx, GenState s)
 	  throws GenesisError
 	{
 		AuthLogin     l = new AuthLogin();
@@ -284,9 +284,6 @@ public class GenTestUsers extends GenesisHiberPartBase
 			//?: (<person> | <computer>) <login>
 			else if(istag(2, "login"))
 				state(1).login = new Login();
-
-			else
-				throw wrong();
 		}
 
 		protected void open()
@@ -344,5 +341,11 @@ public class GenTestUsers extends GenesisHiberPartBase
 		/* genesis context */
 
 		private GenCtx ctx;
+	}
+
+	public static void main(String[] argv)
+	  throws Exception
+	{
+		new GenTestUsers().generate(null);
 	}
 }

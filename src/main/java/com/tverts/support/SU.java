@@ -403,9 +403,9 @@ public class SU
 
 		for(int i = 0;(i < s.length());i++)
 		{
-			char c = x.charAt(i);
+			char c = s.charAt(i);
 
-			if(c == 'd')
+			if(c == '-')
 			{
 				d = true;
 				continue;
