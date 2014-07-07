@@ -17,6 +17,7 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
+import com.tverts.api.clients.Person;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
@@ -32,8 +33,8 @@ import com.tverts.secure.force.AskSecForceEvent;
 /* com.tverts: endure (core + persons) */
 
 import com.tverts.endure.core.Domain;
-import com.tverts.endure.person.Person;
 import com.tverts.endure.person.Persons;
+import com.tverts.endure.person.PersonEntity;
 
 /* com.tverts: support */
 
@@ -136,34 +137,35 @@ public class GenTestUsers extends GenesisHiberPartBase
 	protected boolean savePerson(GenCtx ctx, GenState gs)
 	  throws GenesisError
 	{
-		Person p = bean(GetAuthLogin.class).getPersonByLogin(
+		PersonEntity pe = bean(GetAuthLogin.class).getPersonByLogin(
 		  ctx.get(Domain.class).getPrimaryKey(),
 		  gs.login.code
 		);
 
-		if(p != null)
+		if(pe != null)
 		{
-			LU.I(log(ctx), logsig(), " person ", Persons.name(p),
+			LU.I(log(ctx), logsig(), " person ", Persons.name(pe),
 			 " with login [", gs.login.code, "] already exists");
 
 			return false;
 		}
 
-		gs.personEntity = p = new Person();
+		gs.personEntity = pe = new PersonEntity();
+		Person p = pe.getOx();
 
-		p.setDomain(ctx.get(Domain.class));
+		pe.setDomain(ctx.get(Domain.class));
 		p.setLastName(gs.person.getLastName());
 		p.setFirstName(gs.person.getFirstName());
 		p.setMiddleName(gs.person.getMiddleName());
 		p.setGender(gs.person.getGender());
 		p.setEmail(gs.person.getEmail());
-		p.setPhoneMob(gs.person.getPhoneMobile());
+		p.setPhoneMobile(gs.person.getPhoneMobile());
 		p.setPhoneWork(gs.person.getPhoneWork());
 
-		actionRun(ActionType.SAVE, p);
+		actionRun(ActionType.SAVE, pe);
 
 		LU.I(log(ctx), logsig(), " created person ",
-		  Persons.name(p), " with login [" + gs.login.code + "]"
+		  Persons.name(pe), " with login [" + gs.login.code + "]"
 		);
 
 		return true;
@@ -247,7 +249,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 		public Login login;
 		public com.tverts.api.clients.Person person;
 		public com.tverts.api.clients.Computer computer;
-		public Person personEntity;
+		public PersonEntity personEntity;
 		public Computer computerEntity;
 		public List<Secure> secures;
 	}

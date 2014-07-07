@@ -19,7 +19,7 @@ import com.tverts.secure.session.SecSession;
 
 /* com.tverts: endure (persons) */
 
-import com.tverts.endure.person.Person;
+import com.tverts.endure.person.PersonEntity;
 
 /* com.tverts: support */
 
@@ -88,7 +88,7 @@ public class GetAuthLogin extends GetObjectBase
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<AuthLogin> getLogins(Person person)
+	public List<AuthLogin> getLogins(PersonEntity person)
 	{
 
 // from AuthLogin where (person = :person)
@@ -144,7 +144,7 @@ public class GetAuthLogin extends GetObjectBase
 		  uniqueResult();
 	}
 
-	public Person   getPersonByLogin(Long domain, String login)
+	public PersonEntity getPersonByLogin(Long domain, String login)
 	{
 /*
 
@@ -152,7 +152,7 @@ select p from AuthLogin al join al.person p where
   (al.domain.id = :domain) and (al.code = :login)
 
 */
-		return (Person) Q(
+		return (PersonEntity) Q(
 
 "select p from AuthLogin al join al.person p where\n" +
 "  (al.domain.id = :domain) and (al.code = :login)"

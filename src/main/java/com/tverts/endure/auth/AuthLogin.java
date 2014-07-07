@@ -9,12 +9,12 @@ import java.util.Date;
 import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.Entity;
-import com.tverts.endure.person.Person;
+import com.tverts.endure.person.PersonEntity;
 import com.tverts.endure.person.Persons;
 
 
 /**
- * System login account for a human {@link Person},
+ * System login account for a {@link PersonEntity},
  * or a {@link Computer} (external) system.
  *
  * Note that a person or a computer may have
@@ -38,12 +38,12 @@ public class AuthLogin extends Entity implements CatItem
 		this.domain = domain;
 	}
 
-	public Person    getPerson()
+	public PersonEntity getPerson()
 	{
 		return person;
 	}
 
-	public void      setPerson(Person person)
+	public void      setPerson(PersonEntity person)
 	{
 		if((this.computer != null) && (person != null))
 			throw new IllegalStateException();
@@ -138,9 +138,9 @@ public class AuthLogin extends Entity implements CatItem
 
 	/* persisted attributes */
 
-	private Domain   domain;
-	private Person   person;
-	private Computer computer;
+	private Domain       domain;
+	private PersonEntity person;
+	private Computer     computer;
 
 	private String   login;
 	private String   name;

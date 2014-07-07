@@ -31,7 +31,7 @@ import com.tverts.endure.auth.GetAuthLogin;
 
 
 /**
- * Actions builder on a {@link Person} entities.
+ * Actions builder on a {@link PersonEntity} entities.
  *
  * @author anton.baukin@gmail.com
  */
@@ -73,7 +73,7 @@ public class ActPerson extends ActionBuilderXRoot
 	protected void savePerson(ActionBuildRec abr)
 	{
 		//?: {target is not a Person}
-		checkTargetClass(abr, Person.class);
+		checkTargetClass(abr, PersonEntity.class);
 
 		//~: save the person
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
@@ -88,7 +88,7 @@ public class ActPerson extends ActionBuilderXRoot
 	protected void updatePerson(ActionBuildRec abr)
 	{
 		//?: {target is not a Person}
-		checkTargetClass(abr, Person.class);
+		checkTargetClass(abr, PersonEntity.class);
 
 		//~: add update action
 		chain(abr).first(createUpdateAction(abr));
@@ -102,7 +102,7 @@ public class ActPerson extends ActionBuilderXRoot
 	protected UnityType getUnityType()
 	{
 		return UnityTypes.unityType(
-		  Person.class, Persons.TYPE_PERSON);
+		  PersonEntity.class, Persons.TYPE_PERSON);
 	}
 
 	protected Action    createUpdateAction(ActionBuildRec abr)
@@ -136,9 +136,9 @@ public class ActPerson extends ActionBuilderXRoot
 
 		/* public: Action interface */
 
-		public Person  getResult()
+		public PersonEntity getResult()
 		{
-			return target(Person.class);
+			return target(PersonEntity.class);
 		}
 
 		protected void execute()
@@ -146,7 +146,7 @@ public class ActPerson extends ActionBuilderXRoot
 		{
 			//~: update from the edit model
 			if(editModel != null)
-				editModel.copy(target(Person.class));
+				editModel.copy(target(PersonEntity.class));
 
 			//~: update the logins
 			updateLogins();
@@ -158,7 +158,7 @@ public class ActPerson extends ActionBuilderXRoot
 		protected void updateLogins()
 		{
 			List<AuthLogin> logins = bean(GetAuthLogin.class).
-			  getLogins(target(Person.class));
+			  getLogins(target(PersonEntity.class));
 
 			for(AuthLogin login : logins)
 				//~: clear the name, then update it on save

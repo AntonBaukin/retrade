@@ -1,9 +1,5 @@
 package com.tverts.endure.auth;
 
-/* com.tverts: hibery */
-
-import static com.tverts.hibery.HiberPoint.flush;
-
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
@@ -19,7 +15,7 @@ import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
 import com.tverts.endure.person.ActPerson;
-import com.tverts.endure.person.Person;
+import com.tverts.endure.person.PersonEntity;
 
 /* com.tverts: support */
 
@@ -171,7 +167,7 @@ public class ActLogin extends ActionBuilderXRoot
 		//!: create new person
 		else
 		{
-			Person p = new Person();
+			PersonEntity p = new PersonEntity();
 
 			//~: domain of the login
 			p.setDomain(login.getDomain());
@@ -310,7 +306,7 @@ public class ActLogin extends ActionBuilderXRoot
 
 		/* public: AssignLoginPersonAction (bean) interface */
 
-		public AssignLoginPersonAction setPerson(Person person)
+		public AssignLoginPersonAction setPerson(PersonEntity person)
 		{
 			this.person = person;
 			return this;
@@ -342,6 +338,6 @@ public class ActLogin extends ActionBuilderXRoot
 
 		/* the person */
 
-		private Person person;
+		private PersonEntity person;
 	}
 }

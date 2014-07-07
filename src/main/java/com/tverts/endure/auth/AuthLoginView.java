@@ -10,10 +10,15 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+
+/* com.tverts: api */
+
+import com.tverts.api.clients.Person;
+
 /* com.tverts: endure (catalogues + persons) */
 
 import com.tverts.endure.cats.CatItemView;
-import com.tverts.endure.person.Person;
+import com.tverts.endure.person.PersonEntity;
 
 /* com.tverts: support */
 
@@ -197,14 +202,16 @@ public class AuthLoginView extends CatItemView
 		return this;
 	}
 
-	public AuthLoginView init(Person p)
+	public AuthLoginView init(PersonEntity pe)
 	{
+		Person p = pe.getOx();
+
 		this.lastName   = p.getLastName();
 		this.firstName  = p.getFirstName();
 		this.middleName = p.getMiddleName();
 		this.male       = (p.getGender() == null)?(null):(p.getGender().equals('M'));
 		this.email      = p.getEmail();
-		this.phoneMob   = p.getPhoneMob();
+		this.phoneMob   = p.getPhoneMobile();
 		this.phoneWork  = p.getPhoneWork();
 
 		return this;

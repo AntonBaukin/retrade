@@ -12,7 +12,7 @@
         class = 'com.tverts.actions.ActionBuilderTypeChecker'>
 
     <property name  = 'typeClass'
-              value = 'com.tverts.endure.person.Person'/>
+              value = 'com.tverts.endure.person.PersonEntity'/>
 
     <property name = 'reference'>
       <bean class = 'com.tverts.endure.person.ActPerson'/>

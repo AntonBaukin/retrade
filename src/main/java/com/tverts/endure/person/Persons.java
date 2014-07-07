@@ -1,5 +1,9 @@
 package com.tverts.endure.person;
 
+/* com.tverts: api */
+
+import com.tverts.api.clients.Person;
+
 /* com.tverts: support */
 
 import static com.tverts.support.SU.cat;
@@ -21,8 +25,10 @@ public class Persons
 
 	/* display name helpers */
 
-	public static String name(Person p)
+	public static String name(PersonEntity pe)
 	{
+		Person p = pe.getOx();
+
 		return cat(null, " ", p.getLastName(),
 		  p.getFirstName(), p.getMiddleName()).toString();
 	}

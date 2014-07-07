@@ -6,6 +6,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/* com.tverts: api */
+
+import com.tverts.api.clients.Person;
+
 /* com.tverts: model */
 
 import com.tverts.model.UnityModelBean;
@@ -16,7 +20,7 @@ import static com.tverts.support.SU.s2s;
 
 
 /**
- * Edit state of a {@link Person}.
+ * Edit state of a {@link PersonEntity}.
  *
  * Note that entity referred by this model
  * may be a Person, or an Auth Login.
@@ -116,27 +120,32 @@ public class EditPersonModelBean extends UnityModelBean
 
 	/* public: initialization */
 
-	public EditPersonModelBean init(Person p)
+	public EditPersonModelBean init(PersonEntity pe)
 	{
+		Person p = pe.getOx();
+
 		lastName = p.getLastName();
 		firstName = p.getFirstName();
 		middleName = p.getMiddleName();
 		male = (p.getGender() == null)?(null):(p.getGender().equals('M'));
 		email = p.getEmail();
-		phoneMob = p.getPhoneMob();
+		phoneMob = p.getPhoneMobile();
 		phoneWork = p.getPhoneWork();
 
 		return this;
 	}
 
-	public EditPersonModelBean copy(Person p)
+	public EditPersonModelBean copy(PersonEntity pe)
 	{
+		Person p = pe.getOx();
+		pe.updateOx();
+
 		p.setLastName(lastName);
 		p.setFirstName(firstName);
 		p.setMiddleName(middleName);
 		p.setGender((male == null)?(null):Boolean.TRUE.equals(male)?('M'):('F'));
 		p.setEmail(email);
-		p.setPhoneMob(phoneMob);
+		p.setPhoneMobile(phoneMob);
 		p.setPhoneWork(phoneWork);
 
 		return this;
