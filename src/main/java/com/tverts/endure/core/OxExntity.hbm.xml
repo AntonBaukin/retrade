@@ -1,0 +1,25 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <union-subclass name = 'OxEntity' abstract = 'true' extends = 'Entity'>
+
+
+    <!-- Object Extraction -->
+
+    <property name = 'oxBytes'>
+
+      <column name = 'oxbytes' sql-type = 'bytes'>
+        <comment>
+          Entity-related data object written to XML and enflated with Gun-ZIP
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.OxBytesType'/>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>
