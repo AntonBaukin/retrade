@@ -11,6 +11,10 @@ import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.OxEntity;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
 
 /**
  * A physical person registered in the system.
@@ -33,6 +37,7 @@ public class      PersonEntity
 	public void setOx(Person ox)
 	{
 		super.setOx(ox);
+		this.oxSearch = null;
 	}
 
 	public void updateOx()
@@ -43,6 +48,16 @@ public class      PersonEntity
 
 	public String getOxSearch()
 	{
+		if(oxSearch == null)
+		{
+			Person p = getOx();
+
+			oxSearch = SU.catx(
+			  p.getLastName(), p.getFirstName(), p.getMiddleName(),
+			  p.getEmail(), p.getPhoneMobile(), p.getPhoneWork()
+			);
+		}
+
 		return oxSearch;
 	}
 

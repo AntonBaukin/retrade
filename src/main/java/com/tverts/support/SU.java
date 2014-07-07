@@ -621,6 +621,15 @@ public class SU
 	}
 
 	/**
+	 * Concatenation for Ox-Search texts.
+	 */
+	public static String        catx(Object... objs)
+	{
+		String s = scat("\n", objs);
+		return s.isEmpty()?(null):(s);
+	}
+
+	/**
 	 * Concatenates the strings given using {@code ", "}
 	 * as the separator.
 	 */
