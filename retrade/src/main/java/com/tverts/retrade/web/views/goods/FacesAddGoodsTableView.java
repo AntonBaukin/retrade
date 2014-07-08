@@ -190,7 +190,7 @@ public class FacesAddGoodsTableView extends ModelView
 		}
 
 		//~: new selection set items keys
-		this.addedKeys = SU.scat(",", keys);
+		this.addedKeys = SU.scats(",", keys);
 
 		return null;
 	}

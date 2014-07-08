@@ -81,12 +81,12 @@ public class SellPayOp implements Serializable
 	 */
 	public String      payFlag()
 	{
-		return SU.sXs(SU.scat("-",
+		return SU.sXs(SU.scats("-",
 
-		  (getPayCash() == null)?(null):("C"),
-		  (getPayBank() == null)?(null):("B")
+			 (getPayCash() == null)?(null):("C"),
+			 (getPayBank() == null)?(null):("B")
 
-		));
+		  ));
 	}
 
 

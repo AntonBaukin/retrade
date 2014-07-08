@@ -176,8 +176,8 @@ public class ShuntInvoicesAggr extends ShuntPlain
 					throw EX.ass(
 					  "Not all Store [", store.getPrimaryKey(), "] Goods [",
 					  good, "] has corresponding Aggr Volume Items!",
-					  "\nHas item, but no good: [", SU.scat(", ", vres), "]",
-					  "\nHas good, but no item: [", SU.scat(", ", ires), "]"
+					  "\nHas item, but no good: [", SU.scats(", ", vres), "]",
+					  "\nHas good, but no item: [", SU.scats(", ", ires), "]"
 					);
 				}
 

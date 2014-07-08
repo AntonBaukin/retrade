@@ -127,7 +127,7 @@ public class      Address
 
 	public String toString()
 	{
-		return SU.scat(", ",
+		return SU.scats(", ",
 		  postalIndex, country, province, district,
 		  settlement, street, building, office
 		);
@@ -135,7 +135,7 @@ public class      Address
 
 	public String toShorterString()
 	{
-		return SU.scat(", ",
+		return SU.scats(", ",
 		  province, settlement, street, building, office
 		);
 	}
