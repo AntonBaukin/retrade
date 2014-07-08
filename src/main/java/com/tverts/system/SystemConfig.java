@@ -1,5 +1,10 @@
 package com.tverts.system;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
+
 /**
  * Provides configuration information global
  * to all the layers of the application.
@@ -36,6 +41,8 @@ public class SystemConfig
 		return debug;
 	}
 
+	private boolean debug;
+
 	public void    setDebug(boolean debug)
 	{
 		this.debug = debug;
@@ -46,9 +53,11 @@ public class SystemConfig
 		return (dumpLimit == 0)?(512):(dumpLimit);
 	}
 
+	private int dumpLimit;
+
 	public void    setDumpLimit(int dumpLimit)
 	{
-		if(dumpLimit < 0) throw new IllegalArgumentException();
+		EX.assertx(dumpLimit >= 0);
 		this.dumpLimit = dumpLimit;
 	}
 
@@ -60,9 +69,11 @@ public class SystemConfig
 		return (gridSize != 0)?(gridSize):(25);
 	}
 
+	private int gridSize;
+
 	public void    setGridSize(int gridSize)
 	{
-		if(gridSize < 1) throw new IllegalArgumentException();
+		EX.assertx(gridSize >= 1);
 		this.gridSize = gridSize;
 	}
 
@@ -75,17 +86,11 @@ public class SystemConfig
 		return (sessionTime == 0)?(120):(sessionTime);
 	}
 
+	private int sessionTime;
+
 	public void    setSessionTime(int st)
 	{
-		if(st < 0) throw new IllegalArgumentException();
+		EX.assertx(st >= 0);
 		this.sessionTime = st;
 	}
-
-
-	/* private: system properties */
-
-	private boolean debug;
-	private int     dumpLimit;
-	private int     gridSize;
-	private int     sessionTime;
 }

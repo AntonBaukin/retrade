@@ -124,7 +124,6 @@ public class      ReportTemplateModelBean
 		//~: the streamed bytes
 		BytesStream stream = new BytesStream();
 
-
 		try
 		{
 			//~: gun-zip the template

@@ -1,8 +1,11 @@
 package com.tverts.data;
 
-/* com.tverts: spring */
+/* Java */
 
 import java.util.Date;
+import java.util.List;
+
+/* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
 
@@ -10,7 +13,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
-import com.tverts.system.services.Servicer;
+import com.tverts.system.services.events.SystemReady;
 import com.tverts.system.tx.TxBean;
 import com.tverts.system.tx.TxPoint;
 
@@ -159,6 +162,13 @@ public class ReportsService extends ServiceBase
 
 	public void      service(Event event)
 	{
+		//?: {system is ready}
+		if(event instanceof SystemReady)
+		{
+			onSystemReady();
+			return;
+		}
+
 		//?: {clear reports event}
 		if(event instanceof ReportsCleanEvent)
 		{
@@ -266,20 +276,6 @@ public class ReportsService extends ServiceBase
 
 		//~: update the tx-number
 		TxPoint.txn(r);
-	}
-
-	public void      init(Servicer servicer)
-	{
-		super.init(servicer);
-
-		//~: erase the reports
-		ReportsCleanEvent e = new ReportsCleanEvent();
-		e.setErase(true);
-		serviceClean(e);
-
-		//~: cleanup the reports
-		e.setErase(false);
-		serviceClean(e);
 	}
 
 
@@ -428,6 +424,38 @@ public class ReportsService extends ServiceBase
 		  executeUpdate();
 
 		LU.I(getLog(), "erased obsolete reports, removed [", n, "]");
+	}
+
+	protected void   onSystemReady()
+	{
+		//~: cleanup obsolete reports
+		cleanupObsolete();
+
+		//~: plan the reports making
+		planReportsMaking();
+	}
+
+	protected void   cleanupObsolete()
+	{
+		//~: erase the reports
+		ReportsCleanEvent e = new ReportsCleanEvent();
+		e.setErase(true);
+		serviceClean(e);
+
+		//~: cleanup the reports
+		e.setErase(false);
+		serviceClean(e);
+	}
+
+	protected void   planReportsMaking()
+	{
+		//~: select the reports
+		List<Long> reports = bean(GetReports.class).
+		  selectReportsToMake();
+
+		//c: send event for each of them
+		for(Long id : reports)
+			self(new MakeReportEvent(id));
 	}
 
 	protected String getLog()

@@ -124,7 +124,7 @@ public class Datas
 			//~: gun-zipped bytes
 			BytesStream  s = new BytesStream();
 			OutputStream o = new GZIPOutputStream(s);
-			s.setNotCloseNext(true);
+			s.setNotClose(true);
 
 			//?: {has bytes}
 			if(i != null)
@@ -136,6 +136,7 @@ public class Datas
 			//~: close the deflation stream
 			o.close(); //<-- but not the bytes stream
 
+			s.setNotClose(false);
 			return s;
 		}
 		catch(IOException e)

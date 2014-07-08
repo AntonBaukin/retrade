@@ -256,9 +256,7 @@ public class DownloadServlet extends GenericServlet
 			}
 			finally
 			{
-				binary.setNotClose(false);
-				binary.setNotCloseNext(false);
-				binary.close();
+				binary.closeAlways();
 			}
 		}
 

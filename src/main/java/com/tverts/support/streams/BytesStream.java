@@ -277,6 +277,12 @@ public final class BytesStream extends OutputStream
 		buffers = null;
 	}
 
+	public void closeAlways()
+	{
+		this.notClose = this.notCloseNext = false;
+		this.close();
+	}
+
 
 	/* Input Stream */
 

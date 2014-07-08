@@ -183,7 +183,7 @@ public class ModelServlet extends GenericServlet
 			ModelRequest.getInstance().setKey(null);
 
 			//~: close the in-memory buffer
-			bytes.close();
+			bytes.closeAlways();
 		}
 	}
 }

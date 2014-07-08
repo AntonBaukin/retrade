@@ -42,12 +42,7 @@
         <bean class = 'com.tverts.system.services.InitServicesListener'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Requests to make reports not ready yet
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.data.PlanReportsMaking'/>
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Last listener! System is ready
+         · Report System is ready
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.system.SystemReadyListener'/>
 

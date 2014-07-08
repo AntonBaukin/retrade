@@ -17,7 +17,6 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
-import com.tverts.api.clients.Person;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
@@ -29,6 +28,10 @@ import com.tverts.event.EventPoint;
 /* com.tverts: secure */
 
 import com.tverts.secure.force.AskSecForceEvent;
+
+/* com.tverts: endure api */
+
+import com.tverts.api.clients.Person;
 
 /* com.tverts: endure (core + persons) */
 
@@ -151,17 +154,14 @@ public class GenTestUsers extends GenesisHiberPartBase
 		}
 
 		gs.personEntity = pe = new PersonEntity();
-		Person p = pe.getOx();
 
+		//=: domain
 		pe.setDomain(ctx.get(Domain.class));
-		p.setLastName(gs.person.getLastName());
-		p.setFirstName(gs.person.getFirstName());
-		p.setMiddleName(gs.person.getMiddleName());
-		p.setGender(gs.person.getGender());
-		p.setEmail(gs.person.getEmail());
-		p.setPhoneMobile(gs.person.getPhoneMobile());
-		p.setPhoneWork(gs.person.getPhoneWork());
 
+		//=: person data
+		pe.setOx(gs.person);
+
+		//!: save the person
 		actionRun(ActionType.SAVE, pe);
 
 		LU.I(log(ctx), logsig(), " created person ",
@@ -246,8 +246,8 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 	protected static class GenState
 	{
-		public Login login;
-		public com.tverts.api.clients.Person person;
+		public Login  login;
+		public Person person;
 		public com.tverts.api.clients.Computer computer;
 		public PersonEntity personEntity;
 		public Computer computerEntity;
@@ -343,11 +343,5 @@ public class GenTestUsers extends GenesisHiberPartBase
 		/* genesis context */
 
 		private GenCtx ctx;
-	}
-
-	public static void main(String[] argv)
-	  throws Exception
-	{
-		new GenTestUsers().generate(null);
 	}
 }

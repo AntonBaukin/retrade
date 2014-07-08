@@ -21,7 +21,9 @@ import com.tverts.api.support.EX;
  */
 @XmlRootElement(name = "person")
 @XmlType(name = "person", propOrder = {
-  "pkey", "xkey", ""
+  "pkey", "xkey", "firmKey", "XFirmKey",
+  "lastName", "firstName", "middleName", "initials",
+  "gender", "email", "phoneMobile", "phoneWork"
 })
 public class Person implements TwoKeysObject
 {
@@ -49,6 +51,32 @@ public class Person implements TwoKeysObject
 	public void setXkey(String xkey)
 	{
 		this.xkey = xkey;
+	}
+
+	@XmlElement(name = "phone-work")
+	//@XKeyPair(type = Firm.class)
+	public Long getFirmKey()
+	{
+		return firmKey;
+	}
+
+	private Long firmKey;
+
+	public void setFirmKey(Long firmKey)
+	{
+		this.firmKey = firmKey;
+	}
+
+	public String getXFirmKey()
+	{
+		return XFirmKey;
+	}
+
+	private String XFirmKey;
+
+	public void setXFirmKey(String XFirmKey)
+	{
+		this.XFirmKey = XFirmKey;
 	}
 
 	@XmlElement(name = "last-name")
@@ -155,31 +183,5 @@ public class Person implements TwoKeysObject
 	public void setPhoneWork(String phoneWork)
 	{
 		this.phoneWork = phoneWork;
-	}
-
-	@XmlElement(name = "phone-work")
-	//@XKeyPair(type = Firm.class)
-	public Long getFirmKey()
-	{
-		return firmKey;
-	}
-
-	private Long firmKey;
-
-	public void setFirmKey(Long firmKey)
-	{
-		this.firmKey = firmKey;
-	}
-
-	public String getFirmXKey()
-	{
-		return firmXKey;
-	}
-
-	private String firmXKey;
-
-	public void setFirmXKey(String firmXKey)
-	{
-		this.firmXKey = firmXKey;
 	}
 }

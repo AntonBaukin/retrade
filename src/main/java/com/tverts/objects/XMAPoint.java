@@ -163,6 +163,7 @@ public class XMAPoint
 	public static byte[] writeObject(boolean gzip, Object object)
 	{
 		BytesStream bs = new BytesStream();
+		bs.setNotClose(true);
 
 		try
 		{
@@ -171,12 +172,8 @@ public class XMAPoint
 			//~: encode
 			writeObject(object, os);
 
-			//~: close the deflating stream only
-			if(gzip)
-			{
-				bs.setNotCloseNext(true);
+			if(gzip) //<-- close the deflating stream only
 				os.close();
-			}
 
 			return bs.bytes();
 		}
@@ -186,7 +183,7 @@ public class XMAPoint
 		}
 		finally
 		{
-			bs.close();
+			bs.closeAlways();
 		}
 	}
 
