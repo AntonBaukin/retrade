@@ -515,7 +515,7 @@ public class SU
 	 * to strings. Handles {@code null} values just
 	 * skipping them.
 	 */
-	public static CharSequence  cat(Object... objs)
+	public static StringBuilder cat(Object... objs)
 	{
 		StringBuilder s = new StringBuilder(sXl(objs));
 		scat(s, "", Arrays.asList(objs));
@@ -528,13 +528,22 @@ public class SU
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String        scat(String sep, Object... objs)
+	public static String        scats(String sep, Object... objs)
 	{
 		StringBuilder s = new StringBuilder(
 		  sep.length() * objs.length + sXl(objs));
 
 		scat(s, sep, Arrays.asList(objs));
 		return s.toString();
+	}
+
+	public static StringBuilder scat(StringBuilder s, String sep, Object... objs)
+	{
+		if(s == null) s = new StringBuilder(
+		  sep.length() * objs.length + sXl(objs));
+
+		scat(s, sep, Arrays.asList(objs));
+		return s;
 	}
 
 	public static void          scat(StringBuilder s, String sep, Collection objs)
@@ -625,8 +634,14 @@ public class SU
 	 */
 	public static String        catx(Object... objs)
 	{
-		String s = scat("\n", objs);
-		return s.isEmpty()?(null):(s);
+		StringBuilder s = scat(null, "\f", objs);
+		int l = s.length(); if(l == 0) return null;
+
+		//~: turn to lower-case
+		for(int i = 0;(i < s.length());i++)
+			s.setCharAt(i, Character.toLowerCase(s.charAt(i)));
+
+		return s.toString();
 	}
 
 	/**

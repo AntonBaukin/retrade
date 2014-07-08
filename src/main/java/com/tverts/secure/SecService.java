@@ -11,6 +11,7 @@ import java.util.Set;
 
 /* com.tverts: system services */
 
+import com.tverts.support.SU;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 import com.tverts.system.services.Servicer;
@@ -33,10 +34,8 @@ import static com.tverts.system.tx.TxPoint.txSession;
 
 /* com.tverts: support */
 
-import com.tverts.support.LU;
 import static com.tverts.support.SU.cats;
 import static com.tverts.support.SU.sXe;
-import static com.tverts.support.SU.scat;
 
 
 /**
@@ -190,7 +189,7 @@ public class      SecService
 		if(!found.isEmpty())
 			throw new IllegalStateException(cats(
 			  "There are Secure Rules having unknown forces: [",
-			  scat("], [", found), "]!"
+			  SU.scats("], [", found), "]!"
 			));
 	}
 

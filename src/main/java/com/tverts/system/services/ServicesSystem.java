@@ -55,7 +55,7 @@ public class ServicesSystem implements Servicer
 			this.ordered  = orderServices();
 
 			LU.I(getLog(), "  Z-Services order: ",
-			  SU.scat(", ", (Object[])this.ordered));
+			  SU.scats(", ", (Object[])this.ordered));
 
 			//2: init the services
 			for(String suid : this.ordered)

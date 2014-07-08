@@ -28,7 +28,7 @@ public class S2AConverter extends ConverterFormatterBase<String[]>
 		if(v instanceof String)
 			request.setString((String)v);
 		if(v instanceof Object[])
-			request.setString(SU.scat(" ", (Object[])request.getValue()));
+			request.setString(SU.scats(" ", (Object[])request.getValue()));
 	}
 
 	protected Class getValueClass()

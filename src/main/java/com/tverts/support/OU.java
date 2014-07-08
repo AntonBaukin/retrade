@@ -395,7 +395,7 @@ public class OU
 
 		//?: {the target is not a requested class}
 		throw EX.state("Class assertion failed: there is no class in the list [",
-		  SU.scat(", ", (Object)checks), "] that is assignable from the class '",
+		  SU.scats(", ", (Object)checks), "] that is assignable from the class '",
 		  LU.cls(cls), "'!"
 		);
 	}

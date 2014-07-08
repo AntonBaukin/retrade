@@ -101,7 +101,7 @@ public abstract class ModelView
 		if((k == null) || r.contains(k) || !m.isActive())
 			return r;
 
-		return SU.scat(",", r, k);
+		return SU.scats(",", r, k);
 	}
 
 

@@ -130,7 +130,7 @@ public abstract class ModelViewBase extends ViewWithModes
 		for(ModelBean m : am) if(m.isActive())
 			ks.add(m.getModelKey());
 
-		return SU.scat(",", ks);
+		return SU.scats(",", ks);
 	}
 
 	@SuppressWarnings("unchecked")

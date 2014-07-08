@@ -154,7 +154,7 @@ public class GenesisService extends ServiceBase
 
 		//~: open log
 		LU.I(getLog(), logsig(), " starting genesis for Spheres [",
-		  SU.scat("; ", event.getSpheres()), "]");
+		  SU.scats("; ", event.getSpheres()), "]");
 	}
 
 	protected void   closeGenesis(GenesisEvent event, GenCtx ctx)

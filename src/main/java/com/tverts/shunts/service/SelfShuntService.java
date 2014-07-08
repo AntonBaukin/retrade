@@ -578,14 +578,14 @@ public class SelfShuntService extends ServiceBase
 		  getShuntsSet().enumShunts();
 
 		LU.I(getLog(), " following Self-Shunts found: [\n\n",
-		  SU.scat("\n", shunts), "\n\n]\n"
+		  SU.scats("\n", shunts), "\n\n]\n"
 		);
 	}
 
 	protected void   logGroupsExisting()
 	{
 		LU.I(getLog(), logsig(), " following Self-Shunt Groups found: [\n\n",
-		  SU.scat("\n", SelfShuntPoint.getInstance().collectShuntsGroups()),
+		  SU.scats("\n", SelfShuntPoint.getInstance().collectShuntsGroups()),
 		  "\n\n]\n"
 		);
 	}
