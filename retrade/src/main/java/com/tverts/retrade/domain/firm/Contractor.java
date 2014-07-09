@@ -9,10 +9,9 @@ import com.tverts.endure.person.FirmEntity;
 
 
 /**
- * Contractor of the domain is a legal entity
- * of some kind that has deals with the client
+ * Contractor of a Domain is a legal entity
+ * that has makes deals with the client
  * (firm) owning the domain.
- *
  *
  * @author anton.baukin@gmail.com
  */
@@ -54,6 +53,7 @@ public class Contractor extends Entity implements CatItem
 		this.name = name;
 	}
 
+	//TODO eliminate Contractor.nameProc
 	public String  getNameProc()
 	{
 		if(nameProc != null)

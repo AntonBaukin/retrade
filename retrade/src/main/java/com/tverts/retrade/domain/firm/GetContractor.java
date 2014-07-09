@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.firm;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-@Component("getContractor")
+@Component
 public class GetContractor extends GetObjectBase
 {
 	/* Get Contractor */
