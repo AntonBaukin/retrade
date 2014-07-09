@@ -1,9 +1,8 @@
-package com.tverts.endure.auth;
+package com.tverts.endure.person;
 
 /* Java */
 
 import java.net.URL;
-import java.util.ArrayList;
 
 /* com.tverts: spring */
 
@@ -12,21 +11,21 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: actions */
 
 import static com.tverts.actions.ActionsPoint.actionRun;
+import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
-import com.tverts.api.clients.Firm;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
-/* com.tverts: events */
-
-/* com.tverts: secure */
-
 /* com.tverts: api */
 
-/* com.tverts: endure (core + persons) */
+import com.tverts.api.clients.Firm;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.core.Domain;
 
 /* com.tverts: support */
 
@@ -45,12 +44,12 @@ public class GenTestFirms extends GenesisHiberPartBase
 {
 	/* Genesis Interface */
 
-	public void    generate(GenCtx ctx)
+	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
 		try
 		{
-			new ReadTestFirms(ctx).
+			createProcessor(ctx).
 			  process(getDataFile().toString());
 		}
 		catch(Throwable e)
@@ -64,7 +63,10 @@ public class GenTestFirms extends GenesisHiberPartBase
 		}
 	}
 
-	protected URL  getDataFile()
+
+	/* protected: generation */
+
+	protected URL        getDataFile()
 	{
 		return EX.assertn(
 		  getClass().getResource("GenTestFirms.xml"),
@@ -72,9 +74,38 @@ public class GenTestFirms extends GenesisHiberPartBase
 		);
 	}
 
-	protected void generate(GenCtx ctx, GenState s)
+	protected void       generate(GenCtx ctx, GenState s)
 	{
+		EX.asserts(s.firm.getCode());
 
+		//~: lookup the firm exists
+		FirmEntity fe = bean(GetFirm.class).
+		  getFirm(ctx.get(Domain.class), s.firm.getCode());
+
+		//?: {found it}
+		if(fe != null)
+			updateFirm(ctx, s, fe);
+		else
+			saveFirm(ctx, s);
+	}
+
+	protected void       updateFirm(GenCtx ctx, GenState s, FirmEntity fe)
+	{}
+
+	protected FirmEntity saveFirm(GenCtx ctx, GenState s)
+	{
+		FirmEntity fe = new FirmEntity();
+
+		//=: domain
+		fe.setDomain(ctx.get(Domain.class));
+
+		//=: firm ox-object
+		fe.setOx(s.firm);
+
+		//!: save action
+		actionRun(ActionType.SAVE, fe);
+
+		return fe;
 	}
 
 
@@ -87,6 +118,11 @@ public class GenTestFirms extends GenesisHiberPartBase
 
 
 	/* protected: XML Handler */
+
+	protected SaxProcessor<?> createProcessor(GenCtx ctx)
+	{
+		return new ReadTestFirms(ctx);
+	}
 
 	protected class ReadTestFirms extends SaxProcessor<GenState>
 	{
