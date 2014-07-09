@@ -16,7 +16,7 @@ import com.tverts.genesis.GenCtx;
 
 /* com.tverts: endure (persons) */
 
-import com.tverts.endure.person.Firm;
+import com.tverts.endure.person.FirmEntity;
 
 
 /**
@@ -138,7 +138,7 @@ public class ReadTestContractors extends DefaultHandler
 
 	protected void addContractorFirm(Contractor c)
 	{
-		Firm f = new Firm();
+		FirmEntity f = new FirmEntity();
 
 		//~: firm short name
 		f.setShortName(firmShort);

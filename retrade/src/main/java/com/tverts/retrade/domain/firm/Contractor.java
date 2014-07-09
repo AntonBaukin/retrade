@@ -5,7 +5,7 @@ package com.tverts.retrade.domain.firm;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.Entity;
 import com.tverts.endure.cats.CatItem;
-import com.tverts.endure.person.Firm;
+import com.tverts.endure.person.FirmEntity;
 
 
 /**
@@ -74,12 +74,12 @@ public class Contractor extends Entity implements CatItem
 		this.nameProc = nameProc;
 	}
 
-	public Firm    getFirm()
+	public FirmEntity getFirm()
 	{
 		return firm;
 	}
 
-	public void    setFirm(Firm firm)
+	public void    setFirm(FirmEntity firm)
 	{
 		this.firm = firm;
 	}
@@ -91,5 +91,5 @@ public class Contractor extends Entity implements CatItem
 	private String code;
 	private String name;
 	private String nameProc;
-	private Firm   firm;
+	private FirmEntity firm;
 }

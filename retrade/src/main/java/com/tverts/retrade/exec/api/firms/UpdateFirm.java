@@ -8,6 +8,7 @@ import com.tverts.actions.ActionsPoint;
 /* com.tverts: api execution */
 
 import com.tverts.api.core.Holder;
+import com.tverts.endure.person.FirmEntity;
 import com.tverts.exec.api.UpdateEntityBase;
 
 /* com.tverts: retrade domain (firms) */
@@ -47,7 +48,7 @@ public class UpdateFirm extends UpdateEntityBase
 
 		//?: {create new firm}
 		boolean saveFirm = (d.getFirm() == null);
-		if(saveFirm) d.setFirm(new com.tverts.endure.person.Firm());
+		if(saveFirm) d.setFirm(new FirmEntity());
 
 		//~: assign the contractor' firm
 		InsertFirm.assignFirm(d, s);

@@ -2,6 +2,7 @@ package com.tverts.retrade.exec.api.firms;
 
 /* com.tverts: hibery */
 
+import com.tverts.endure.person.FirmEntity;
 import com.tverts.hibery.qb.QueryBuilder;
 
 /* com.tverts: endure (core) */
@@ -58,7 +59,7 @@ public class DumpFirms extends EntitiesDumperBase
 
 	protected Class  getUnityClass()
 	{
-		return com.tverts.endure.person.Firm.class;
+		return FirmEntity.class;
 	}
 
 	protected Class  getEntityClass()

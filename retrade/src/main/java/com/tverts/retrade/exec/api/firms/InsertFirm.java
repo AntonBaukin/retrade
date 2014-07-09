@@ -12,6 +12,7 @@ import com.tverts.api.clients.Firm;
 /* com.tverts: api execution */
 
 import com.tverts.api.core.Holder;
+import com.tverts.endure.person.FirmEntity;
 import com.tverts.exec.api.InsertEntityBase;
 import com.tverts.retrade.exec.api.accounts.EnsureDefaults;
 
@@ -72,7 +73,7 @@ public class InsertFirm extends InsertEntityBase
 		d.setName(s.getName());
 
 		//~: create firm
-		d.setFirm(new com.tverts.endure.person.Firm());
+		d.setFirm(new FirmEntity());
 
 		//~: firm short name
 		d.getFirm().setShortName(s.getName());

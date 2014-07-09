@@ -16,7 +16,7 @@ import com.tverts.endure.core.ActUnity;
 import com.tverts.endure.aggr.ActAggrValue;
 import com.tverts.endure.aggr.calc.AggrCalcs;
 import com.tverts.endure.person.ActFirm;
-import com.tverts.endure.person.Firm;
+import com.tverts.endure.person.FirmEntity;
 
 /* com.tverts: hibery */
 
@@ -104,7 +104,7 @@ public class ActContractor extends ActionBuilderReTrade
 
 	protected void saveFirm(ActionBuildRec abr)
 	{
-		Firm firm = target(abr, Contractor.class).getFirm();
+		FirmEntity firm = target(abr, Contractor.class).getFirm();
 
 		//?: {the firm does not exist}
 		if(firm == null) return;

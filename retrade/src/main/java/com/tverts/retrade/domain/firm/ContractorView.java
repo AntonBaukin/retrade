@@ -17,7 +17,7 @@ import com.tverts.endure.aggr.AggrValue;
 
 import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.cats.CatItemView;
-import com.tverts.endure.person.Firm;
+import com.tverts.endure.person.FirmEntity;
 
 
 /**
@@ -87,8 +87,8 @@ public class ContractorView extends CatItemView
 
 	public ContractorView init(Object obj)
 	{
-		if(obj instanceof Firm)
-			return this.init((Firm) obj);
+		if(obj instanceof FirmEntity)
+			return this.init((FirmEntity) obj);
 
 		if(obj instanceof AggrValue)
 			return this.initAggrValue((AggrValue) obj);
@@ -111,7 +111,7 @@ public class ContractorView extends CatItemView
 		return this;
 	}
 
-	public ContractorView init(Firm f)
+	public ContractorView init(FirmEntity f)
 	{
 		//~: full name of the firm
 		this.fullName = f.getFullName();
