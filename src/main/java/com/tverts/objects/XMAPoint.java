@@ -208,6 +208,11 @@ public class XMAPoint
 		return readObject(new StreamSource(stream));
 	}
 
+	public static Object readObject(InputStream stream)
+	{
+		return readObject(new StreamSource(stream));
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T> T  readObject(boolean gzip, Class<T> cls, byte[] bytes)
 	{
@@ -233,6 +238,29 @@ public class XMAPoint
 		catch(Exception e)
 		{
 			throw EX.wrap(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T  cloneObject(T obj)
+	{
+		if(obj == null)
+			return null;
+
+		BytesStream s = new BytesStream();
+		s.setNotClose(true);
+
+		try
+		{
+			//~: write object
+			writeObject(obj, s);
+
+			//~: read it back
+			return (T) readObject(s.inputStream());
+		}
+		finally
+		{
+			s.closeAlways();
 		}
 	}
 

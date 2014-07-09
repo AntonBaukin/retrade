@@ -94,6 +94,23 @@ public abstract class OxEntity
 	}
 
 
+	/* Numeric Identity */
+
+	public void setPrimaryKey(Long pk)
+	{
+		super.setPrimaryKey(pk);
+
+		//?: {has object}
+		if((pk != null) && (oxBytes != null))
+		{
+			Object ox = oxBytes.getOx();
+
+			if(ox instanceof PkeyObject)
+				((PkeyObject)ox).setPkey(pk);
+		}
+	}
+
+
 	/* public: United Interface */
 
 	public void setUnity(Unity unity)

@@ -9,64 +9,16 @@
     extends = 'com.tverts.endure.core.Entity'>
 
 
-    <!-- Short Name -->
+    <!-- Domain reference -->
 
-    <property name = "shortName">
+    <many-to-one name = 'domain' foreign-key = 'fk_core_firm_domain'>
 
-      <column name = 'short_name' length = '512'>
-        <comment>Short variant of the Firm name</comment>
+      <column name = 'fk_domain' not-null = 'true'
+        index = 'ix_core_firm_domain'>
+
+        <comment>Domain where the Firm is registered</comment>
       </column>
-    </property>
-
-
-    <!-- Full Name -->
-
-    <property name = 'fullName'>
-
-      <column name = 'full_name' not-null = 'true' length = '2048'>
-        <comment>The Firm full name</comment>
-      </column>
-    </property>
-
-
-    <!-- Tax Number -->
-
-    <property name = 'taxNumber'>
-
-      <column name = 'tax_number' length = '32'>
-        <comment>The Firm tax number</comment>
-      </column>
-    </property>
-
-
-    <!-- Tax Code -->
-
-    <property name = 'taxCode'>
-
-      <column name = 'tax_code' length = '32'>
-        <comment>The Firm tax code</comment>
-      </column>
-    </property>
-
-
-    <!-- Address String -->
-
-    <property name = 'addressString'>
-
-      <column name = 'address_string' length = '1024'>
-        <comment>The Firm address printed in string</comment>
-      </column>
-    </property>
-
-
-    <!-- Pnones String -->
-
-    <property name = 'phonesString'>
-
-      <column name = 'phones_string' length = '1024'>
-        <comment>The Firm phones printed in string</comment>
-      </column>
-    </property>
+    </many-to-one>
 
   </union-subclass>
 </hibernate-mapping>

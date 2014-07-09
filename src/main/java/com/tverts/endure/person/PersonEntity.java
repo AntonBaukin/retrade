@@ -13,6 +13,7 @@ import com.tverts.endure.core.OxEntity;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -34,8 +35,9 @@ public class      PersonEntity
 		return p;
 	}
 
-	public void   setOx(Person ox)
+	public void   setOx(Object ox)
 	{
+		EX.assertx(ox instanceof Person);
 		super.setOx(ox);
 	}
 
@@ -48,7 +50,6 @@ public class      PersonEntity
 		  p.getEmail(), p.getPhoneMobile(), p.getPhoneWork()
 		);
 	}
-
 
 
 	/* Person Entity */

@@ -36,6 +36,15 @@ public abstract class UnitedBase
 		return pk;
 	}
 
+	public void  setPrimaryKey(Long pk)
+	{
+		super.setPrimaryKey(pk);
+
+		//?: {has unity}
+		if((getUnity() != null) && (pk != null))
+			getUnity().setPrimaryKey(pk);
+	}
+
 
 	/* United Interface */
 

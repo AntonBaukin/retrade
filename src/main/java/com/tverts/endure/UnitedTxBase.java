@@ -28,7 +28,8 @@ public abstract class UnitedTxBase
 	{
 		this.txn = (txn == null)?(0L):(txn);
 
-		if((getUnity() != null) && (txn != null) && !txn.equals(getUnity().getTxn()))
+		//?: {has unity}
+		if((getUnity() != null) && (txn != null))
 			getUnity().setTxn(txn);
 	}
 
@@ -39,24 +40,20 @@ public abstract class UnitedTxBase
 	{
 		super.setUnity(unity);
 
-		if((unity == null) || (this.getTxn() == null) && (unity.getTxn() == null))
+		//?: {has no unity}
+		if(unity == null)
 			return;
 
-		if((this.getTxn() == null) && (unity.getTxn() != null))
-		{
-			this.setTxn(unity.getTxn());
-			return;
-		}
+		//~: assign the transaction number
+		Long ux = unity.getTxn();
+		Long tx = this.getTxn();
 
-		if((this.getTxn() != null) && (unity.getTxn() == null))
-		{
-			unity.setTxn(this.getTxn());
-			return;
-		}
+		if((tx == null) && (ux != null))
+			this.txn = ux;
+		else if((tx != null) && (ux == null))
+			unity.setTxn(tx);
+		else if((ux != null) && (tx != null) && (ux > tx))
+			this.txn = ux;
 
-		if(unity.getTxn() > getTxn())
-			this.txn = unity.getTxn();
-		else
-			unity.setTxn(getTxn());
 	}
 }

@@ -1,8 +1,21 @@
 package com.tverts.endure.person;
 
-/* com.tverts: endure */
+/* com.tverts: api */
 
+import com.tverts.api.clients.Firm;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.OxSearch;
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.Entity;
+import com.tverts.endure.core.OxEntity;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -10,77 +23,48 @@ import com.tverts.endure.core.Entity;
  *
  * @author anton.baukin@gmail.com
  */
-public class FirmEntity extends Entity
+public class      FirmEntity
+       extends    OxEntity
+       implements DomainEntity, OxSearch
 {
-	/* public: bean interface */
+	/* Object Extraction */
 
-	public String  getShortName()
+	public Firm   getOx()
 	{
-		return shortName;
+		Firm f = (Firm) super.getOx();
+		if(f == null) setOx(f = new Firm());
+		return f;
 	}
 
-	public void    setShortName(String shortName)
+	public void   setOx(Object ox)
 	{
-		this.shortName = shortName;
+		EX.assertx(ox instanceof Firm);
+		super.setOx(ox);
 	}
 
-	public String  getFullName()
+	public String getOxSearch()
 	{
-		return fullName;
-	}
+		Firm f = getOx();
 
-	public void    setFullName(String fullName)
-	{
-		this.fullName = fullName;
-	}
-
-	public String  getTaxNumber()
-	{
-		return taxNumber;
-	}
-
-	public void    setTaxNumber(String taxNumber)
-	{
-		this.taxNumber = taxNumber;
-	}
-
-	public String  getTaxCode()
-	{
-		return taxCode;
-	}
-
-	public void    setTaxCode(String taxCode)
-	{
-		this.taxCode = taxCode;
-	}
-
-	public String  getAddressString()
-	{
-		return addressString;
-	}
-
-	public void    setAddressString(String addressString)
-	{
-		this.addressString = addressString;
-	}
-
-	public String  getPhonesString()
-	{
-		return phonesString;
-	}
-
-	public void    setPhonesString(String phonesString)
-	{
-		this.phonesString = phonesString;
+		return SU.catx(
+		  f.getCode(), f.getName(), f.getFullName(),
+		  f.getTaxCode(), f.getTaxNumber(),
+		  f.getAddressString(), f.getPhonesString()
+		);
 	}
 
 
-	/* private: persisted attributes */
+	/* Firm Entity */
 
-	private String shortName;
-	private String fullName;
-	private String taxNumber;
-	private String taxCode;
-	private String addressString;
-	private String phonesString;
+	public Domain getDomain()
+	{
+		return domain;
+	}
+
+	private Domain domain;
+
+	public void   setDomain(Domain domain)
+	{
+		this.domain = domain;
+	}
 }

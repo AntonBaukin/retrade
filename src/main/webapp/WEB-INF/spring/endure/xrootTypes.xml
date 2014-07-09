@@ -32,9 +32,15 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Record About a Human
+         · Record about a Human
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.person.PersonEntity   Core: Person;
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Record about a Firm
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.person.FirmEntity   Core: Firm;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
