@@ -1,6 +1,6 @@
 package com.tverts.endure.auth;
 
-/* standard Java classes */
+/* Java */
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import com.tverts.event.EventPoint;
 
 import com.tverts.secure.force.AskSecForceEvent;
 
-/* com.tverts: endure api */
+/* com.tverts: api */
 
 import com.tverts.api.clients.Person;
 
@@ -231,7 +231,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 	}
 
 
-	/* protected: xml handler states */
+	/* protected: XML Handler States */
 
 	protected static class Login
 	{
@@ -255,7 +255,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 	}
 
 
-	/* protected: xml handler */
+	/* protected: XML Handler */
 
 	protected class ReadTestUsers extends SaxProcessor<GenState>
 	{
@@ -329,7 +329,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 				requireFillClearTags(state().person, "last-name", "first-name");
 
 			//?: {<computer> | <person>}
-			if(level(1)) try
+			if(islevel(1)) try
 			{
 				generate(ctx, state());
 			}

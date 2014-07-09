@@ -641,7 +641,13 @@ public class SU
 		for(int i = 0;(i < s.length());i++)
 			s.setCharAt(i, Character.toLowerCase(s.charAt(i)));
 
-		return s.toString();
+		String x = s.toString();
+
+		//~: replace spaces
+		x = x.replaceAll("\\s+", " ");
+
+		//~: replace wrong symbols
+		return x.replaceAll("[^\\s\\w\\-\\+\\.а-я]", "");
 	}
 
 	/**

@@ -268,7 +268,7 @@ public abstract class SaxProcessor<State>
 		return stack().size() - 1;
 	}
 
-	protected final boolean         level(int level)
+	protected final boolean islevel(int level)
 	{
 		return (stack().size() - 1) == level;
 	}

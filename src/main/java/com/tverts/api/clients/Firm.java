@@ -12,7 +12,7 @@ import com.tverts.api.core.CatItem;
 
 
 /**
- * A Contractor is being a Firm.
+ * Organization, also named as Firm.
  */
 @XmlRootElement(name = "firm")
 @XmlType(name = "firm", propOrder = {

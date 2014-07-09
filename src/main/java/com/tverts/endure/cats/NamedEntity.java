@@ -7,7 +7,7 @@ package com.tverts.endure.cats;
  */
 public interface NamedEntity
 {
-	/* public: NamedEntity interface */
+	/* Named Entity */
 
 	public String getName();
 

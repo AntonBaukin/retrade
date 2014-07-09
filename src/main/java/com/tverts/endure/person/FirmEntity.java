@@ -7,10 +7,8 @@ import com.tverts.api.clients.Firm;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.OxSearch;
-import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
-import com.tverts.endure.core.Entity;
-import com.tverts.endure.core.OxEntity;
+import com.tverts.endure.core.OxCatEntity;
 
 /* com.tverts: support */
 
@@ -24,7 +22,7 @@ import com.tverts.support.SU;
  * @author anton.baukin@gmail.com
  */
 public class      FirmEntity
-       extends    OxEntity
+       extends    OxCatEntity
        implements DomainEntity, OxSearch
 {
 	/* Object Extraction */
@@ -51,20 +49,5 @@ public class      FirmEntity
 		  f.getTaxCode(), f.getTaxNumber(),
 		  f.getAddressString(), f.getPhonesString()
 		);
-	}
-
-
-	/* Firm Entity */
-
-	public Domain getDomain()
-	{
-		return domain;
-	}
-
-	private Domain domain;
-
-	public void   setDomain(Domain domain)
-	{
-		this.domain = domain;
 	}
 }

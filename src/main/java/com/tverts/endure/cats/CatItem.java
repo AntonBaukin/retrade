@@ -20,7 +20,7 @@ public interface CatItem
                  DomainEntity,
                  CodedEntity, NamedEntity
 {
-	/* public: CatItem interface */
+	/* Catalogue Item */
 
 	public void setDomain(Domain domain);
 }

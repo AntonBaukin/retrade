@@ -1,0 +1,47 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <union-subclass name = 'OxCatEntity' abstract = 'true'
+    extends = 'com.tverts.endure.core.Entity'>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_ox_cat_entity_domain_'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_ox_cat_entity_code_'>
+
+        <comment>Domain where the entity is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true' length = '255'
+        unique-key = 'ux_ox_cat_entity_code_'>
+
+        <comment>Unique (within the Domain) code of the entity</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'store_name' not-null = 'true' length = '512'>
+
+        <comment>The name of the entity</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>
