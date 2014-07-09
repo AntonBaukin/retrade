@@ -193,7 +193,7 @@ public class InvoiceViewExt extends InvoiceView
 		this.contractorName = c.getName();
 
 		if(c.getFirm() != null)
-			this.contractorFullName = c.getFirm().getFullName();
+			this.contractorFullName = c.getFirm().getOx().getFullName();
 
 		return this;
 	}

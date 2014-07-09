@@ -7,6 +7,7 @@ import java.util.List;
 
 /* SAX Parser */
 
+import com.tverts.api.clients.Firm;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -138,16 +139,20 @@ public class ReadTestContractors extends DefaultHandler
 
 	protected void addContractorFirm(Contractor c)
 	{
-		FirmEntity f = new FirmEntity();
+		FirmEntity fe = new FirmEntity();
+		Firm       f  = fe.getOx();
+
+		//~: firm code
+		f.setCode(c.getCode());
 
 		//~: firm short name
-		f.setShortName(firmShort);
+		f.setName(firmShort);
 
 		//~: firm full name
 		f.setFullName(firmName);
 
 		//!: assign it to the contractor
-		c.setFirm(f);
+		c.setFirm(fe);
 	}
 
 	protected void clearState()

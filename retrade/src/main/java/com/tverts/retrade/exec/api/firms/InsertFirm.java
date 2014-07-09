@@ -61,7 +61,6 @@ public class InsertFirm extends InsertEntityBase
 	}
 
 
-
 	/* insert support */
 
 	public static void assignFirm(Contractor d, Firm s)
@@ -75,23 +74,8 @@ public class InsertFirm extends InsertEntityBase
 		//~: create firm
 		d.setFirm(new FirmEntity());
 
-		//~: firm short name
-		d.getFirm().setShortName(s.getName());
-
-		//~: firm full name
-		d.getFirm().setFullName(s.getFullName());
-
-		//~: firm tax number
-		d.getFirm().setTaxNumber(s.getTaxNumber());
-
-		//~: firm tax code
-		d.getFirm().setTaxCode(s.getTaxCode());
-
-		//~: firm address string
-		d.getFirm().setAddressString(s.getAddressString());
-
-		//~: firm phones string
-		d.getFirm().setPhonesString(s.getPhonesString());
+		//~: assign the firm object
+		d.getFirm().setOx(s);
 	}
 
 	protected void     createFirmAccounts(Contractor c)

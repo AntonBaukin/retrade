@@ -316,7 +316,7 @@ public class EnsureDefaults
 		if(contractor == null)
 			w.setRemitteeName("Укажите название своей огранизации!");
 		else
-			w.setRemitteeName(contractor.getFirm().getFullName());
+			w.setRemitteeName(contractor.getFirm().getOx().getFullName());
 
 		return w;
 	}

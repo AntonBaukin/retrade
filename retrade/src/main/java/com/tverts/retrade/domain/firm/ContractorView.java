@@ -114,7 +114,7 @@ public class ContractorView extends CatItemView
 	public ContractorView init(FirmEntity f)
 	{
 		//~: full name of the firm
-		this.fullName = f.getFullName();
+		this.fullName = f.getOx().getFullName();
 
 		return this;
 	}
