@@ -347,6 +347,12 @@
           <option name="IGNORE_POINT_TO_ITSELF" value="false" />
           <option name="myAdditionalJavadocTags" value="" />
         </inspection_tool>
+        <inspection_tool class="JpaAttributeMemberSignatureInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+        <inspection_tool class="JpaAttributeTypeInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+        <inspection_tool class="LoggerInitializedWithForeignClass" enabled="false" level="WARNING" enabled_by_default="false">
+          <option name="loggerClassName" value="org.apache.log4j.Logger,org.slf4j.LoggerFactory,org.apache.commons.logging.LogFactory,java.util.logging.Logger" />
+          <option name="loggerFactoryMethodName" value="getLogger,getLogger,getLog,getLogger" />
+        </inspection_tool>
         <inspection_tool class="NullableProblems" enabled="true" level="WEAK WARNING" enabled_by_default="true">
           <option name="REPORT_NULLABLE_METHOD_OVERRIDES_NOTNULL" value="true" />
           <option name="REPORT_NOT_ANNOTATED_METHOD_OVERRIDES_NOTNULL" value="true" />
@@ -674,6 +680,13 @@
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Anton" />
+    <dictionary name="abaukin">
+      <words>
+        <w>logins</w>
+        <w>messager</w>
+        <w>servicer</w>
+      </words>
+    </dictionary>
     <dictionary name="anton">
       <words>
         <w>aggr</w>
@@ -710,13 +723,6 @@
         <w>webapp</w>
         <w>whitespaces</w>
         <w>zetobj</w>
-      </words>
-    </dictionary>
-    <dictionary name="abaukin">
-      <words>
-        <w>logins</w>
-        <w>messager</w>
-        <w>servicer</w>
       </words>
     </dictionary>
   </component>

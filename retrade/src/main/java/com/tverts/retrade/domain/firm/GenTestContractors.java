@@ -57,7 +57,7 @@ public class GenTestContractors extends GenesisHiberPartBase
 		{
 			createTestContractors(ctx);
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
 			throw new GenesisError(e, this, ctx);
 		}

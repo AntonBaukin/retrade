@@ -1,101 +1,85 @@
-<contractors>
+<firms>
+  <firm>
+    <code>Ф-00</code>
+    <name>НКО ФБК</name>
+    <full-name>Некоммерческая организация "Фонд борьбы с коррупцией"</full-name>
+  </firm>
 
-  <contractor code = "Ф-00" name="НКО ФБК">
-    <firm>
-      <name>Некоммерческая организация "Фонд борьбы с коррупцией"</name>
-      <short-name>НКО ФБК</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-01</code>
+    <name>ООО "Гамма"</name>
+    <full-name>Общество с ограниченной ответственностью "Гамма"</full-name>
+  </firm>
 
-  <contractor code = "Ф-01" name="ООО Гамма">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Гамма"</name>
-      <short-name>ООО "Гамма"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-02</code>
+    <name>Детский сад "Миляш"</name>
+    <full-name>Муниципальный детский сад общеразвивающего вида с.Кашкарово</full-name>
+  </firm>
 
-  <contractor code = "Ф-02" name="Детский сад Миляш">
-    <firm>
-      <name>Муниципальный детский сад общеразвивающего вида с.Кашкарово</name>
-      <short-name>Детский сад "Миляш"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-03</code>
+    <name>ООО "Юрта"</name>
+    <full-name>Общество с ограниченной ответственностью "Юрта"</full-name>
+  </firm>
 
-  <contractor code = "Ф-03" name="ООО Юрта">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Юрта"</name>
-      <short-name>ООО "Юрта"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-04</code>
+    <name>ООО "Байгаз"</name>
+    <full-name>Общество с ограниченной ответственностью "Байгаз"</full-name>
+  </firm>
 
-  <contractor code = "Ф-04" name="ООО Байгаз">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Байгаз"</name>
-      <short-name>ООО "Байгаз"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-05</code>
+    <name>ООО "ПКФ "Партнер"</name>
+    <full-name>Общество с ограниченной ответственностью "Производственно-коммерческая фирма "Партнер"</full-name>
+  </firm>
 
-  <contractor code = "Ф-05" name="ООО ПКФ Партнер">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Производственно-коммерческая фирма "Партнер"</name>
-      <short-name>ООО "ПКФ "Партнер"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-06</code>
+    <name>ООО "Оникс"</name>
+    <full-name>Общество с ограниченной ответственностью "Оникс"</full-name>
+  </firm>
 
-  <contractor code = "Ф-06" name="ООО Оникс">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Оникс"</name>
-      <short-name>ООО "Оникс"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-07</code>
+    <name>ООО "Рико"</name>
+    <full-name>Общество с ограниченной ответственностью "Рико"</full-name>
+  </firm>
 
-  <contractor code = "Ф-07" name="ООО Рико">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Рико"</name>
-      <short-name>ООО "Рико"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-08</code>
+    <name>ООО "Стрин"</name>
+    <full-name>Общество с ограниченной ответственностью "Стрин"</full-name>
+  </firm>
 
-  <contractor code = "Ф-08" name="ООО Стрин">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Стрин"</name>
-      <short-name>ООО "Стрин"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-09</code>
+    <name>ООО "Антей"</name>
+    <full-name>Общество с ограниченной ответственностью "Антей"</full-name>
+  </firm>
 
-  <contractor code = "Ф-09" name="ООО Антей">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Антей"</name>
-      <short-name>ООО "Антей"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-10</code>
+    <name>ООО "Горные вершины"</name>
+    <full-name>Общество с ограниченной ответственностью "Горные вершины"</full-name>
+  </firm>
 
-  <contractor code = "Ф-10" name="ООО Горные вершины">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Горные вершины"</name>
-      <short-name>ООО "Горные вершины"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-11</code>
+    <name>ООО "Ньюком"</name>
+    <full-name>Общество с ограниченной ответственностью "Ньюком"</full-name>
+  </firm>
 
-  <contractor code = "Ф-11" name="ООО Ньюком">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Ньюком"</name>
-      <short-name>ООО "Ньюком"</short-name>
-    </firm>
-  </contractor>
+  <firm>
+    <code>Ф-12</code>
+    <name>ПКФ "Премьера"</name>
+    <full-name>Закрытое акционерное общество Производственно-коммерческая фирма "Премьера"</full-name>
+  </firm>
 
-  <contractor code = "Ф-12" name="ПКФ Премьера">
-    <firm>
-      <name>Закрытое акционерное общество Производственно-коммерческая фирма "Премьера"</name>
-      <short-name>ПКФ "Премьера"</short-name>
-    </firm>
-  </contractor>
-
-  <contractor code = "Ф-13" name="ООО Евдокия">
-    <firm>
-      <name>Общество с ограниченной ответственностью "Евдокия"</name>
-      <short-name>ООО "Евдокия"</short-name>
-    </firm>
-  </contractor>
-
-</contractors>
+  <firm>
+    <code>Ф-13</code>
+    <name>ООО "Евдокия"</name>
+    <full-name>Общество с ограниченной ответственностью "Евдокия"</full-name>
+  </firm>
+</firms>
