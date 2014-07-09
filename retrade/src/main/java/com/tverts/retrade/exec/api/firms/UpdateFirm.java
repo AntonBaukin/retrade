@@ -17,7 +17,7 @@ import com.tverts.retrade.domain.firm.Contractor;
 
 /* com.tverts: retrade api */
 
-import com.tverts.api.retrade.firm.Firm;
+import com.tverts.api.clients.Firm;
 
 
 /**

@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 /* com.tverts: api */
 
 import com.tverts.api.core.XKeyPair;
-import com.tverts.api.retrade.firm.Firm;
+import com.tverts.api.clients.Firm;
 import com.tverts.api.retrade.goods.GoodSell;
 import com.tverts.api.retrade.goods.Store;
 

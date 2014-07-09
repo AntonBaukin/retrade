@@ -5,9 +5,9 @@ package com.tverts.retrade.exec.api.firms;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionsPoint;
 
-/* com.tverts: retrade api */
+/* com.tverts: api */
 
-import com.tverts.api.retrade.firm.Firm;
+import com.tverts.api.clients.Firm;
 
 /* com.tverts: api execution */
 

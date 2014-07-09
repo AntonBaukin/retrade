@@ -14,9 +14,9 @@ import com.tverts.endure.UnityTypes;
 import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.retrade.domain.firm.Contractors;
 
-/* com.tverts: retrade api */
+/* com.tverts: api */
 
-import com.tverts.api.retrade.firm.Firm;
+import com.tverts.api.clients.Firm;
 
 /* com.tverts: execution (api) */
 
