@@ -14,7 +14,7 @@ import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -25,7 +25,7 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class SQLTaskBase implements SQLTask
+public class SQLTaskBase implements SQLTask
 {
 	/* public: SQLTaskBase interface */
 
@@ -39,8 +39,7 @@ public abstract class SQLTaskBase implements SQLTask
 
 	public void       configure(Element node)
 	{
-		this.dialect = s2s(
-		  node.getAttributeValue("dialect"));
+		this.dialect = SU.s2s(node.getAttributeValue("dialect"));
 	}
 
 	public void       execute(Session session)

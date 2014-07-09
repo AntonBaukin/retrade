@@ -1,13 +1,23 @@
 package com.tverts.endure.core;
 
+/* com.tverts: api */
+
+import com.tverts.api.core.PkeyObject;
+
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.Ox;
+import com.tverts.endure.OxSearch;
+import com.tverts.endure.Unity;
 
-/* com.tverts: objects */
+/* com.tverts: hibery */
 
 import com.tverts.hibery.OxBytes;
-import com.tverts.hibery.OxBytesType;
+
+/* com.tverts: support */
+
+import com.tverts.support.CMP;
+import com.tverts.support.EX;
 
 
 /**
@@ -27,18 +37,55 @@ public abstract class OxEntity
 		return (oxBytes == null)?(null):(oxBytes.getOx());
 	}
 
+	private OxBytes oxBytes;
+
 	public void    setOx(Object ox)
 	{
 		if(oxBytes != null)
 			oxBytes.setOx(ox);
 		else if(ox != null)
-			oxBytes = new OxBytes(ox);
+		{
+			if(getUnity() != null)
+				oxBytes = getUnity().getOxBytes();
+
+			if(oxBytes == null)
+			{
+				oxBytes = new OxBytes(ox);
+
+				if(getUnity() != null)
+					getUnity().setOxBytes(oxBytes);
+			}
+		}
+
+		//!: self-update
+		this.updateOx();
 	}
 
 	public void    updateOx()
 	{
-		if(oxBytes != null)
-			oxBytes.updateOx();
+		//?: {has no bytes here}
+		if((oxBytes == null) && (getUnity() != null))
+			oxBytes = getUnity().getOxBytes();
+
+		//~: update ox-object
+		EX.assertn(oxBytes).updateOx();
+
+		//?: {object has primary key}
+		Object ox = oxBytes.getOx();
+		if(ox instanceof PkeyObject)
+		{
+			Long pk = this.getPrimaryKey();
+			Long xk = ((PkeyObject)ox).getPkey();
+
+			if(xk != null)
+				EX.assertx(CMP.eq(xk, pk));
+			else if(pk != null)
+				((PkeyObject)ox).setPkey(pk);
+		}
+
+		//?: {ox-search & unity assigned}
+		if((this instanceof OxSearch) && (getUnity() != null))
+			getUnity().setOxSearch(((OxSearch)this).getOxSearch());
 	}
 
 	public boolean isUpdatedOx()
@@ -47,22 +94,21 @@ public abstract class OxEntity
 	}
 
 
+	/* public: United Interface */
 
-	/* Entity Access */
-
-	/**
-	 * Property mapped to Hibernate with special
-	 * {@link OxBytesType} strategy class.
-	 */
-	public OxBytes  getOxBytes()
+	public void setUnity(Unity unity)
 	{
-		return oxBytes;
-	}
+		super.setUnity(unity);
 
-	private OxBytes oxBytes;
+		//~: assign ox-bytes
+		if((unity != null) && (oxBytes != null) && (unity.getOxBytes() != oxBytes))
+		{
+			EX.assertx(unity.getOxBytes() == null);
+			unity.setOxBytes(oxBytes);
+		}
 
-	public void     setOxBytes(OxBytes oxBytes)
-	{
-		this.oxBytes = oxBytes;
+		//?: {ox-search & unity assigned}
+		if((this instanceof OxSearch) && (unity != null))
+			unity.setOxSearch(((OxSearch)this).getOxSearch());
 	}
 }

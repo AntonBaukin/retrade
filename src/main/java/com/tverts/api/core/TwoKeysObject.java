@@ -11,16 +11,9 @@ package com.tverts.api.core;
  * external keys as more then one
  * integration database may exist.
  */
-public interface TwoKeysObject
+public interface TwoKeysObject extends PkeyObject
 {
-	/* public: TwoKeysObject interface */
-
-	/**
-	 * Primary key in ReTrade system.
-	 */
-	public Long   getPkey();
-
-	public void   setPkey(Long pkey);
+	/* Two Keys Object */
 
 	/**
 	 * Primary key in an external system.

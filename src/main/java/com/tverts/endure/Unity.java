@@ -1,5 +1,11 @@
 package com.tverts.endure;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.OxBytes;
+import com.tverts.hibery.OxBytesType;
+
+
 /**
  * Unified Mirror object.
  *
@@ -16,12 +22,14 @@ package com.tverts.endure;
  */
 public class Unity implements PrimaryIdentity, TxEntity
 {
-	/* public: PrimaryIdentity interface */
+	/* Primary Identity */
 
 	public Long       getPrimaryKey()
 	{
 		return primaryKey;
 	}
+
+	private Long primaryKey;
 
 	public void       setPrimaryKey(Long pk)
 	{
@@ -39,12 +47,14 @@ public class Unity implements PrimaryIdentity, TxEntity
 	}
 
 
-	/* public: Unity (bean) interface */
+	/* Unity Interface */
 
 	public UnityType  getUnityType()
 	{
 		return unityType;
 	}
+
+	private UnityType unityType;
 
 	public void       setUnityType(UnityType unityType)
 	{
@@ -54,8 +64,36 @@ public class Unity implements PrimaryIdentity, TxEntity
 		this.unityType = unityType;
 	}
 
+	public String     getOxSearch()
+	{
+		return oxSearch;
+	}
 
-	/* public: TxEntity interface */
+	private String oxSearch;
+
+	public void       setOxSearch(String oxSearch)
+	{
+		this.oxSearch = oxSearch;
+	}
+
+	/**
+	 * Property mapped to Hibernate with special
+	 * {@link OxBytesType} strategy class.
+	 */
+	public OxBytes    getOxBytes()
+	{
+		return oxBytes;
+	}
+
+	private OxBytes oxBytes;
+
+	public void       setOxBytes(OxBytes oxBytes)
+	{
+		this.oxBytes = oxBytes;
+	}
+
+
+	/* Tx-Entity Interface */
 
 	/**
 	 * Transaction number of unified mirror must
@@ -74,7 +112,7 @@ public class Unity implements PrimaryIdentity, TxEntity
 	}
 
 
-	/* public: Object interface */
+	/* Object Interface */
 
 	public boolean    equals(Object u)
 	{
@@ -108,10 +146,4 @@ public class Unity implements PrimaryIdentity, TxEntity
 
 		return String.format("Unity [%s] with %s", pk, ut);
 	}
-
-
-	/* private: persistent attributes */
-
-	private Long      primaryKey;
-	private UnityType unityType;
 }

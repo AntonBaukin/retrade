@@ -34,39 +34,21 @@ public class      PersonEntity
 		return p;
 	}
 
-	public void setOx(Person ox)
+	public void   setOx(Person ox)
 	{
 		super.setOx(ox);
-		this.oxSearch = null;
-	}
-
-	public void updateOx()
-	{
-		super.updateOx();
-		this.oxSearch = null;
 	}
 
 	public String getOxSearch()
 	{
-		if(oxSearch == null)
-		{
-			Person p = getOx();
+		Person p = getOx();
 
-			oxSearch = SU.catx(
-			  p.getLastName(), p.getFirstName(), p.getMiddleName(),
-			  p.getEmail(), p.getPhoneMobile(), p.getPhoneWork()
-			);
-		}
-
-		return oxSearch;
+		return SU.catx(
+		  p.getLastName(), p.getFirstName(), p.getMiddleName(),
+		  p.getEmail(), p.getPhoneMobile(), p.getPhoneWork()
+		);
 	}
 
-	private String oxSearch;
-
-	public void setOxSearch(String oxSearch)
-	{
-		this.oxSearch = oxSearch;
-	}
 
 
 	/* Person Entity */

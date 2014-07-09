@@ -11,7 +11,7 @@ public abstract class UnitedTxBase
        extends        UnitedBase
        implements     TxEntity
 {
-	/* public: TxEntity interface */
+	/* public: TxEntity Interface */
 
 	public Long getTxn()
 	{
@@ -33,7 +33,7 @@ public abstract class UnitedTxBase
 	}
 
 
-	/* public: United interface */
+	/* public: United Interface */
 
 	public void setUnity(Unity unity)
 	{

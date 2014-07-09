@@ -5,7 +5,7 @@
 
 <hibernate-mapping package = 'com.tverts.endure'>
 
-  <class name = 'Unity' table = 'core_unity' lazy = 'false'>
+  <class name = 'Unity' table = 'core_unity'>
 
     <!-- Primary Key -->
 
@@ -35,6 +35,29 @@
         <comment>The Type of Unity</comment>
       </column>
     </many-to-one>
+
+
+    <!-- Object Extraction Search -->
+
+    <property name = 'oxSearch' type = 'text' lazy = 'true'>
+      <column name = 'oxsearch'>
+        <comment>Object extraction search text</comment>
+      </column>
+    </property>
+
+
+    <!-- Object Extraction -->
+
+    <property name = 'oxBytes'>
+
+      <column name = 'oxbytes' sql-type = 'bytea'>
+        <comment>
+          Entity-related data object written to XML and enflated with Gun-ZIP
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.OxBytesType'/>
+    </property>
 
   </class>
 </hibernate-mapping>

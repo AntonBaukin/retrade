@@ -6,7 +6,7 @@
 <hibernate-mapping package = 'com.tverts.endure.person'>
 
   <union-subclass name = 'PersonEntity' table = 'core_person'
-    extends = 'com.tverts.endure.core.OxEntity'>
+    extends = 'com.tverts.endure.core.Entity'>
 
 
     <!-- Domain reference -->
@@ -19,15 +19,6 @@
         <comment>Domain where the Person is registered</comment>
       </column>
     </many-to-one>
-
-
-    <!-- Object Extraction Search -->
-
-    <property name = 'oxSearch' type = 'text' lazy = 'true'>
-      <column name = 'oxsearch'>
-        <comment>Object extraction search text</comment>
-      </column>
-    </property>
 
   </union-subclass>
 </hibernate-mapping>

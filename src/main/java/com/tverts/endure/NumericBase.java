@@ -1,6 +1,9 @@
 package com.tverts.endure;
 
+/* com.tverts: hibery */
+
 import com.tverts.hibery.HiberPoint;
+
 
 /**
  * Base class for some simple persistent objects.
@@ -9,7 +12,7 @@ import com.tverts.hibery.HiberPoint;
  */
 public abstract class NumericBase implements NumericIdentity
 {
-	/* public: NumericIdentity interface */
+	/* Numeric Identity */
 
 	public Long    getPrimaryKey()
 	{
@@ -22,7 +25,7 @@ public abstract class NumericBase implements NumericIdentity
 	}
 
 
-	/* public: Object interface */
+	/* Object Interface */
 
 	public boolean equals(Object o)
 	{

@@ -10,7 +10,7 @@ package com.tverts.endure;
  *
  * @author anton.baukin@gmail.com.
  */
-public interface OxSearch extends Ox
+public interface OxSearch
 {
 	/* Object Extraction */
 
