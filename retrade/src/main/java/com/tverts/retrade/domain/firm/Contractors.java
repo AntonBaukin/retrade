@@ -21,10 +21,10 @@ public class Contractors
 	/* unity types  */
 
 	public static final String TYPE_CONTRACTOR         =
-	  "ReTrade: Firms: Contractor";
+	  "ReTrade: Contractor";
 
 	public static final String TYPE_FIRM               =
-	  "ReTrade: Firms: Firm";
+	  "Core: Firm";
 
 	/**
 	 * Aggregation value of summary contractor debt.

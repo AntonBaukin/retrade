@@ -7,7 +7,6 @@ import java.util.List;
 
 /* SAX Parser */
 
-import com.tverts.api.clients.Firm;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -15,9 +14,18 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.tverts.genesis.GenCtx;
 
-/* com.tverts: endure (persons) */
+/* com.tverts: api */
 
+import com.tverts.api.clients.Firm;
+
+/* com.tverts: endure (core + persons) */
+
+import com.tverts.endure.core.Domain;
 import com.tverts.endure.person.FirmEntity;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -123,6 +131,9 @@ public class ReadTestContractors extends DefaultHandler
 	{
 		Contractor c = new Contractor();
 
+		//~: domain
+		c.setDomain(EX.assertn(genCtx.get(Domain.class)));
+
 		//~: contractor code
 		c.setCode(contrCode);
 
@@ -141,6 +152,9 @@ public class ReadTestContractors extends DefaultHandler
 	{
 		FirmEntity fe = new FirmEntity();
 		Firm       f  = fe.getOx();
+
+		//~: domain
+		fe.setDomain(c.getDomain());
 
 		//~: firm code
 		f.setCode(c.getCode());

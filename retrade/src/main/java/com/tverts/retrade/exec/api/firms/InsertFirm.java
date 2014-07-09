@@ -74,7 +74,10 @@ public class InsertFirm extends InsertEntityBase
 		//~: create firm
 		d.setFirm(new FirmEntity());
 
-		//~: assign the firm object
+		//=: firm domain
+		d.getFirm().setDomain(d.getDomain());
+
+		//=: firm object
 		d.getFirm().setOx(s);
 	}
 
