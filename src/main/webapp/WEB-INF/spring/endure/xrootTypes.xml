@@ -38,12 +38,6 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Record about a Firm
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.person.FirmEntity   Core: Firm;
-
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · External Computer System client registration
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         com.tverts.endure.auth.Computer   Core: Auth: Computer;
@@ -161,7 +155,7 @@
                     value = 'com.tverts.endure.person.FirmEntity'/>
 
           <property name  = 'typeName'
-                    value = 'ReTrade: Firms: Firm'/>
+                    value = 'Core: Firm'/>
 
           <property name  = 'title'
                     value = 'Organization'/>

@@ -3,6 +3,7 @@ package com.tverts.api.clients;
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
@@ -13,6 +14,7 @@ import com.tverts.api.core.CatItem;
 /**
  * A Contractor is being a Firm.
  */
+@XmlRootElement(name = "firm")
 @XmlType(name = "firm", propOrder = {
   "fullName", "taxNumber", "taxCode",
   "addressString", "phonesString"
@@ -38,6 +40,8 @@ public class Firm extends CatItem
 		return taxNumber;
 	}
 
+	private String taxNumber;
+
 	public void setTaxNumber(String taxNumber)
 	{
 		this.taxNumber = taxNumber;
@@ -48,6 +52,8 @@ public class Firm extends CatItem
 	{
 		return taxCode;
 	}
+
+	private String taxCode;
 
 	public void setTaxCode(String taxCode)
 	{
@@ -60,6 +66,8 @@ public class Firm extends CatItem
 		return addressString;
 	}
 
+	private String addressString;
+
 	public void setAddressString(String addressString)
 	{
 		this.addressString = addressString;
@@ -71,17 +79,10 @@ public class Firm extends CatItem
 		return phonesString;
 	}
 
+	private String phonesString;
+
 	public void setPhonesString(String phonesString)
 	{
 		this.phonesString = phonesString;
 	}
-
-
-	/* attributes */
-
-
-	private String taxNumber;
-	private String taxCode;
-	private String addressString;
-	private String phonesString;
 }
