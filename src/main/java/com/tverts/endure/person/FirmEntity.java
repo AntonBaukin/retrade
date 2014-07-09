@@ -10,7 +10,7 @@ import com.tverts.endure.core.Entity;
  *
  * @author anton.baukin@gmail.com
  */
-public class Firm extends Entity
+public class FirmEntity extends Entity
 {
 	/* public: bean interface */
 

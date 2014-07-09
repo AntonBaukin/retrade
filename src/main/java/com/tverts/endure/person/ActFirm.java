@@ -17,7 +17,7 @@ import com.tverts.system.tx.SetTxAction;
 
 
 /**
- * {@link Firm} processing actions builder.
+ * {@link FirmEntity} processing actions builder.
  *
  * @author anton.baukin@gmail.com
  */
@@ -54,7 +54,7 @@ public class ActFirm extends ActionBuilderXRoot
 	protected void saveFirm(ActionBuildRec abr)
 	{
 		//?: {target is not a Firm}
-		checkTargetClass(abr, Firm.class);
+		checkTargetClass(abr, FirmEntity.class);
 
 		//~: save the firm
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
@@ -68,7 +68,7 @@ public class ActFirm extends ActionBuilderXRoot
 	protected void updateFirm(ActionBuildRec abr)
 	{
 		//?: {target is not a Firm}
-		checkTargetClass(abr, Firm.class);
+		checkTargetClass(abr, FirmEntity.class);
 
 		//~: update the Txn
 		chain(abr).first(new SetTxAction(task(abr)));

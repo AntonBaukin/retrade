@@ -5,8 +5,8 @@
 
 <hibernate-mapping package = 'com.tverts.endure.person'>
 
-  <union-subclass name = 'Firm' extends = 'com.tverts.endure.core.Entity'
-    table = 'core_firm' lazy = 'false'>
+  <union-subclass name = 'FirmEntity' table = 'core_firm'
+    extends = 'com.tverts.endure.core.Entity'>
 
 
     <!-- Short Name -->

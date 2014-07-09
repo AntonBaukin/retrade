@@ -28,7 +28,7 @@
         class = 'com.tverts.actions.ActionBuilderTypeChecker'>
 
     <property name  = 'typeClass'
-              value = 'com.tverts.endure.person.Firm'/>
+              value = 'com.tverts.endure.person.FirmEntity'/>
 
     <property name = 'reference'>
       <bean class = 'com.tverts.endure.person.ActFirm'/>
