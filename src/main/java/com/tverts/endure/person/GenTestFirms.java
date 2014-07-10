@@ -108,6 +108,11 @@ public class GenTestFirms extends GenesisHiberPartBase
 		return fe;
 	}
 
+	protected void       genFirm(GenCtx ctx, FirmEntity fe)
+	{
+
+	}
+
 
 	/* protected: XML Handler State */
 

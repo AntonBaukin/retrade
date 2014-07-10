@@ -17,7 +17,7 @@ import com.tverts.api.core.CatItem;
 @XmlRootElement(name = "firm")
 @XmlType(name = "firm", propOrder = {
   "fullName", "taxNumber", "taxCode",
-  "addressString", "phonesString"
+  "phones", "registryAddress", "contactAddress"
 })
 public class Firm extends CatItem
 {
@@ -60,29 +60,46 @@ public class Firm extends CatItem
 		this.taxCode = taxCode;
 	}
 
-	@XmlElement(name = "address-string")
-	public String getAddressString()
+	@XmlElement(name = "phones")
+	public String getPhones()
 	{
-		return addressString;
+		return phones;
 	}
 
-	private String addressString;
+	private String phones;
 
-	public void setAddressString(String addressString)
+	public void setPhones(String phones)
 	{
-		this.addressString = addressString;
+		this.phones = phones;
 	}
 
-	@XmlElement(name = "phones-string")
-	public String getPhonesString()
+	@XmlElement(name = "registry-address")
+	public Address getRegistryAddress()
 	{
-		return phonesString;
+		return registryAddress;
 	}
 
-	private String phonesString;
+	private Address registryAddress;
 
-	public void setPhonesString(String phonesString)
+	public void setRegistryAddress(Address registryAddress)
 	{
-		this.phonesString = phonesString;
+		this.registryAddress = registryAddress;
+	}
+
+	/**
+	 * Contact address assigned when it
+	 * differs from the registration one.
+	 */
+	@XmlElement(name = "contact-address")
+	public Address getContactAddress()
+	{
+		return contactAddress;
+	}
+
+	private Address contactAddress;
+
+	public void setContactAddress(Address contactAddress)
+	{
+		this.contactAddress = contactAddress;
 	}
 }
