@@ -46,8 +46,9 @@ public class      FirmEntity
 
 		return SU.catx(
 		  f.getCode(), f.getName(), f.getFullName(),
-		  f.getTaxCode(), f.getTaxNumber(),
-		  f.getAddressString(), f.getPhonesString()
+		  f.getTaxCode(), f.getTaxNumber(), f.getPhones(),
+		  Addresses.a2s(f.getContactAddress()),
+		  Addresses.a2s(f.getRegistryAddress())
 		);
 	}
 }

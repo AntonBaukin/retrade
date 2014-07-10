@@ -16,6 +16,7 @@ import com.tverts.actions.ActionType;
 /* com.tverts: genesis */
 
 import com.tverts.genesis.GenCtx;
+import com.tverts.genesis.GenUtils;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
@@ -30,6 +31,7 @@ import com.tverts.endure.core.Domain;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
 import com.tverts.support.xml.SaxProcessor;
 
 
@@ -102,6 +104,9 @@ public class GenTestFirms extends GenesisHiberPartBase
 		//=: firm ox-object
 		fe.setOx(s.firm);
 
+		//~: assign the state
+		genFirm(ctx, fe);
+
 		//!: save action
 		actionRun(ActionType.SAVE, fe);
 
@@ -110,11 +115,35 @@ public class GenTestFirms extends GenesisHiberPartBase
 
 	protected void       genFirm(GenCtx ctx, FirmEntity fe)
 	{
+		Firm f = EX.assertn(fe.getOx());
 
+		//?: {has no tax number}
+		if(SU.sXe(f.getTaxNumber()))
+			f.setTaxNumber(GenUtils.number(ctx.gen(), 10));
+
+		//?: {has no tax code}
+		if(SU.sXe(f.getTaxCode()))
+			f.setTaxCode(GenUtils.number(ctx.gen(), 9));
+
+		//?: {has no phones}
+		if(SU.sXe(f.getPhones()))
+			f.setPhones(GenUtils.phones(ctx.gen(), "+7-4822-", 2, 6));
+
+		//?: {has no registry address}
+		if(f.getRegistryAddress() == null)
+			f.setRegistryAddress(Addresses.INSTANCE.
+				 selectRandomAddress(ctx.gen()));
+
+		//?: {has no contact address}
+		if(f.getContactAddress() == null)
+			//?: {really need it}
+			if(ctx.gen().nextInt(5) == 0)
+				f.setContactAddress(Addresses.INSTANCE.
+				 selectRandomAddress(ctx.gen()));
 	}
 
 
-	/* protected: XML Handler State */
+	/* protected: XML Processor State */
 
 	protected static class GenState
 	{
@@ -122,7 +151,7 @@ public class GenTestFirms extends GenesisHiberPartBase
 	}
 
 
-	/* protected: XML Handler */
+	/* protected: XML Processor */
 
 	protected SaxProcessor<?> createProcessor(GenCtx ctx)
 	{
@@ -158,7 +187,7 @@ public class GenTestFirms extends GenesisHiberPartBase
 
 		protected void close()
 		{
-			//?: {<computer> | <person>}
+			//?: {<firm>}
 			if(islevel(1)) try
 			{
 				EX.assertx(istag("firm"));
