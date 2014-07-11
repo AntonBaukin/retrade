@@ -185,6 +185,12 @@ tr.x-boundlist-item td
   padding: 0; background-image: none;
 }
 
+.retrade-buttons-sep-line-div
+{
+  height: 100%; text-align: center;
+  vertical-align: middle;
+}
+
 .retrade-buttons-sep-line
 {
   width: 4px; height: 100%;

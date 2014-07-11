@@ -54,7 +54,9 @@
 
     <!-- [topbar extention point] -->
 
-    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_left')}">
+    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_left')}"
+      boxClass = "retrade-buttons-sep-line-div">
+
       <f:facet name = "extjs-props">
         height: 22, width: 4,
         margin: extjsf.dpts(0, 8, 0, 8)
@@ -79,7 +81,9 @@
     </x:component>
 
 
-    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_right')}">
+    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_right')}"
+      boxClass = "retrade-buttons-sep-line-div">
+
       <f:facet name = "extjs-props">
         height: 22, width: 4,
         margin: extjsf.dpts(0, 4, 0, 8)
@@ -120,6 +124,21 @@
           style = "width: 90px; height: 35px;"></div>
 
       </x:html>
+
+
+      <!-- [main button] -->
+
+      <x:component coid = "${z:vid(localView, 'retrade-main-button')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', flex: 0,
+          width: 30, height: 30,
+          margin: extjsf.dpts(0, 0, 0, 4),
+          iconCls: 'retrade-main-man-icon',
+          componentCls: 'retrade-button-22pt'
+
+        </f:facet>
+      </x:component>
 
     </x:component>
 

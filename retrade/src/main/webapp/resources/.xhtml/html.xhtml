@@ -11,6 +11,9 @@
     <co:attribute name = 'coid' required = 'true'
        type = 'java.lang.String'/>
 
+    <co:attribute name = 'boxClass' default = ''
+       type = 'java.lang.String'/>
+
     <co:facet name = 'extjs-props'/>
 
   </co:interface>
@@ -21,7 +24,9 @@
       <co:renderFacet name = "extjs-props"/>
     </div>
 
-    <div id = "#{cc.clientId}-#{cc.attrs.coid}-html" class = "x-hide-display extjsf-html-content">
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-html"
+      class = "x-hide-display extjsf-html-content #{cc.attrs.boxClass}">
+
       <co:insertChildren/>
     </div>
 
