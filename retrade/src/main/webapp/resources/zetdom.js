@@ -1877,3 +1877,39 @@ ZeT.Layout.Proc.Node = ZeT.defineClass('ZeT.Layout.Proc.Node', {
 		);
 	}
 })
+
+
+// +----: ZeT.Layout.Proc.Append :-------------------------------+
+
+/**
+ * Appends the processed node to the 'parent'
+ * node defined in the options as a string ID,
+ * or as a DOM element.
+ *
+ * Note that the default parent is body!
+ */
+ZeT.Layout.Proc.Append = ZeT.defineClass('ZeT.Layout.Proc.Append', {
+
+	init: function(opts)
+	{
+		this.opts = opts || {};
+	},
+
+	proc: function(node)
+	{
+		if(!ZeTD.isxn(node) || ZeTD.isn(node.parentNode))
+			return node
+
+		var parent = opts.parent;
+
+		if(ZeT.isu(parent))
+			parent = document.body
+		else if(ZeT.iss(parent))
+			parent = ZeTD.n(parent)
+
+		if(ZeTD.isn(parent))
+			parent.appendChild(node)
+
+		return node
+	}
+})

@@ -437,12 +437,41 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	assert           : function(test /* messages */)
 	{
-		if(test) return test;
+		if(test) return test
 
 		var m = ZeTS.cati(1, arguments);
 		if(ZeTS.ises(m)) m = 'Assertion failed!';
 
-		throw m;
+		throw m
+	},
+
+	/**
+	 * Checks that given object is not
+	 * null, or undefined.
+	 */
+	assertn          : function(obj /* messages */)
+	{
+		if((obj !== null) && !ZeT.isu(obj))
+			return obj
+
+		var m = ZeTS.cati(1, arguments);
+		if(ZeTS.ises(m)) m = 'The object is undefined or null!';
+
+		throw m
+	},
+
+	/**
+	 * Tests the the given object is a not-empty array.
+	 */
+	asserta          : function(array /* messages */)
+	{
+		if(ZeT.isa(array) && array.length)
+			return array
+
+		var m = ZeTS.cati(1, arguments);
+		if(ZeTS.ises(m)) m = 'A non-empty array is required!';
+
+		throw m
 	},
 
 	/**

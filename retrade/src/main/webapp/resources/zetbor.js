@@ -12,75 +12,26 @@
 ZeT.Border = ZeT.define('ZeT.Border', {})
 
 
-// +----: ZeT.Border.Full :--------------------------------------+
+
+// +----: ZeT.Border.Base :--------------------------------------+
 
 /**
- * A ZeT.Layout.Proc processing class that creates a border
- * structure. It is also able to surround the node is being
- * processed into the border structure.
- *
- * The constructor options are:
- *
- *  · ???  (* see the tables)
- *
- *  the contents of the border layout cells. You may define
- *  a content in the constructor options and replace it
- *  in the processing one. The format of the content is
- *  described in 'ZeT.Layout.fill()' function.
- *
- * Note that it is not allowed to place SHARED node instances
- * in the constructor. Use plain HTML or templates instead!
- *
- * The templates must be referenced by direct instances!
- * (As content of the node may be plain text.)
- *
- * Wrapping table looks as follows:
- *
- *    +-----+---------------------------+-----+
- *    | ltc |           [upt]           | rtc |
- *    +-----+---------------------------+-----+
- *    | lvu |                           | rvu |
- *    +-----+                           +-----+
- *    ~ lvm ~            cnt            ~ rvm ~
- *    +-----+                           +-----+
- *    | lvd |                           | rvd |
- *    +-----+---------------------------+-----+
- *    | lbc |           [bot]           | rbc |
- *    +-----+---------------------------+-----+
- *
- *      upt +-----+-------~-------+-----+
- *     cell | ltr |      thh      | rtl |
- *          +-----+-------~-------+-----+
- *
- *      bot +-----+-------~-------+-----+
- *     cell | lbr |      bhh      | rbl |
- *          +-----+-------~-------+-----+
- *
- * where letters define the following:
- *  · L left, · R right, · T top, · B bottom,
- *  · H horizontal, · V vertical, · D down,
- *  · U up, · C corner, · M middle.
- *
- * The cells of layout structure (and the options) are:
- * 'ltc', 'upt', 'ltr', 'thh', 'rtl', 'rtc', 'lvu', 'rvu',
- * 'lvm', 'cnt', 'rvm', 'lvd', 'rvd', 'lbc', 'bot', 'lbr',
- * 'bhh', 'rbl', 'rbc'.
- *
- * The 'cnt' content is used only when the border creator is
- * not invoked to wrap the node processed by a pipe.
+ * Implementation base for border templates.
  */
-ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', {
+ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
 
 	init              : function(opts)
 	{
 		this.opts = opts || {};
 	},
 
-	KEYS              : [
-	 'ltc', 'upt', 'ltr', 'thh', 'rtl', 'rtc',  'lvu',
-	 'rvu', 'lvm', 'rvm', 'lvd', 'cnt', 'xcnt', 'rvd',
-	 'lbc', 'bot', 'lbr', 'bhh', 'rbl', 'rbc'
-	],
+	/**
+	 * Define the strings with the keys of
+	 * the template areas.
+	 */
+	KEYS              : [],
+
+	XYZ               : null,
 
 	proc              : function(node)
 	{
@@ -97,10 +48,12 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', {
 
 	_border_cells     : function()
 	{
-		var k, r = {};
+		ZeT.asserta(this.KEYS)
 
+		var k, r = {};
 		for(var j = 0;(j < this.KEYS.length);j++)
 			r[k = this.KEYS[j]] = this.opts[k];
+
 		return r;
 	},
 
@@ -116,7 +69,7 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', {
 
 	_template         : function()
 	{
-		return ZeT.Border.Full.xyz;
+		return ZeT.assertn(this.XYZ, 'ZeT.Border.Base.XYZ template is not defined!')
 	},
 
 	_replace_node     : function(border, node, struct)
@@ -129,76 +82,88 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', {
 	}
 })
 
-ZeT.Border.Full.xyz = ZeT.define('ZeT.Border.Full.xyz',
-new ZeT.Layout.Template({
-  trace : ZeT.Layout.Template.Ways.traceAtNodes
-},
 
-  "<table cellpadding='0' cellspacing='0' border='0'>"+
-  "<tbody>"+
-  "  <tr>"+
-  "    <td>@ltc<div/></td>"+
-  "    <td>@upt"+
-  "      <table cellpadding='0' cellspacing='0' border='0' style='width:100%;'>"+
-  "        <tr>"+
-  "          <td style='width:00.0001%;'>@ltr<div/></td>"+
-  "          <td style='width:99.9999%;'>@thh</td>"+
-  "          <td style='width:00.0001%;'>@rtl<div/></td>"+
-  "        </tr>"+
-  "      </table>"+
-  "    </td>"+
-  "    <td>@rtc<div/></td>"+
-  "  </tr>"+
-  "  <tr>"+
-  "    <td>@lvu<div/></td>"+
-  "    <td></td>"+
-  "    <td>@rvu<div/></td>"+
-  "  </tr>"+
-  "  <tr>"+
-  "    <td>@lvm</td>"+
 
-  //HINT: the inner table is needed to allow all possible styles
-  //      for the content. Placing the content not in a inner
-  //      table may break 'xcnt' negative margin!
-
-  "    <td><div>@xcnt<table cellpadding='0' cellspacing='0' border='0'>" +
-     "<tr><td>@cnt</td></tr></table></div>"+
-  "    <td>@rvm</td>"+
-  "  </tr>"+
-  "  <tr>"+
-  "    <td>@lvd<div/></td>"+
-  "    <td></td>"+
-  "    <td>@rvd<div/></td>"+
-  "  </tr>"+
-  "  <tr>"+
-  "    <td>@lbc<div/></td>"+
-  "    <td>@bot"+
-  "      <table cellpadding='0' cellspacing='0' border='0' style='width:100%;'>"+
-  "        <tr>"+
-  "          <td style='width:00.0001%;'>@lbr<div/></td>"+
-  "          <td style='width:99.9999%;'>@bhh</td>"+
-  "          <td style='width:00.0001%;'>@rbl<div/></td>"+
-  "        </tr>"+
-  "      </table>"+
-  "    </td>"+
-  "    <td>@rbc<div/></td>"+
-  "  </tr>"+
-  "</tbody>"+
-  "</table>"
-))
+// +----: ZeT.Border.Full :--------------------------------------+
 
 /**
- * The keys of all public cells of Full Border template.
+ * A ZeT.Layout.Proc processing class that creates a border
+ * structure. It is also able to surround the node is being
+ * processed into the border structure.
+ *
+ * The constructor options are:
+ *
+ *  · ???  (* see the table)
+ *
+ *  the contents of the border layout cells. You may define
+ *  a content in the constructor options and replace it
+ *  in the processing one. The format of the content is
+ *  described in 'ZeT.Layout.fill()' function.
+ *
+ * Note that it is not allowed to place SHARED node instances
+ * in the constructor. Use plain HTML or templates instead!
+ *
+ * The templates must be referenced by direct instances!
+ * (As content of the node may be plain text.)
+ *
+ * Wrapping table looks as follows:
+ *
+ *    +---------+---------~---------+---------+
+ *    |   ltc   |        thh        |   rtc   |
+ *    +-----+---+---------~---------+---+-----+
+ *    | lvu |ltx|                   |rtx| rvu |
+ *    +-----+---+                   +---+-----+
+ *    ~ lvm ~            cnt            ~ rvm ~
+ *    +-----+---+                   +---+-----+
+ *    | lvd |lbx|                   |rbx| rvd |
+ *    +-----+---+---------~---------+---+-----+
+ *    |   lbc   |        bhh        |   rbc   |
+ *    +---------+---------~---------+---------+
+ *
+ * The 'cnt' cell is wrapped with 'xcnt' that also span
+ * over 'ltx', 'lbx', 'rtx', 'rbx' cells. The latter
+ * are used to solve IE9 issues with column-span cells.
+ *
+ * The 'cnt' content is used only when the border creator
+ * is not invoked to wrap the node processed by a pipe.
  */
-ZeT.Border.Full.KEYS_ALL = ZeT.Border.Full.prototype.KEYS;
+ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 
-/**
- * The keys of all border cells of Full Border template.
- * (Collecting keys are removed.)
- */
-ZeT.Border.Full.KEYS_BRD = ZeTA.remove(
-  ZeTA.copy(ZeT.Border.Full.KEYS_ALL),
-  'upt', 'bot', 'cnt', 'xcnt');
+	KEYS : [
+	 'ltc', 'thh', 'rtc', 'lbc', 'bhh', 'rbc',
+	 'lvu', 'rvu', 'lvm', 'rvm', 'lvd', 'rvd',
+	 'ltx', 'rtx', 'lbx', 'rbx', 'cnt', 'xcnt'
+	],
+
+	XYZ  : ZeT.define('ZeT.Border.Full.XYZ', new ZeT.Layout.Template(
+	  { trace : ZeT.Layout.Template.Ways.traceAtNodes },
+
+	  "<table id = 'XYZ' cellpadding='0' cellspacing='0' border='0'>\n"+
+	  "<tr><td style='padding:0;'>\n"+
+	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0;'>\n"+
+	  "<tbody>\n"+
+	  "  <tr>\n"+
+	  "    <td colspan='2'>@ltc<div/></td><td>@thh<div/></td><td colspan='2'>@rtc<div/></td>\n"+
+	  "  </tr>\n"+
+	  "  <tr>\n"+
+	  "    <td>@lvu</td><td>@ltx</td><td></td><td>@rtx</td><td>@rvu</td>\n"+
+	  "  </tr>\n"+
+	  "  <tr>\n"+
+	  "    <td>@lvm</td>\n"+
+	  "    <td colspan='3'><div>@xcnt<table cellpadding='0' cellspacing='0' border='0'>\n"+
+	  "      <tr><td>@cnt</td></tr></table></div>\n"+
+	  "    <td>@rvm</td>\n"+
+	  "  </tr>\n"+
+	  "  <tr>\n"+
+	  "    <td>@lvd</td><td>@lbx</td><td></td><td>@rbx</td><td>@rvd</td>\n"+
+	  "  </tr>\n"+
+	  "  <tr>\n"+
+	  "    <td colspan='2'>@lbc<div/></td><td>@bhh<div/></td><td colspan='2'>@rbc<div/></td>\n"+
+	  "  </tr>\n"+
+	  "</tbody>\n"+
+	  "</table></td></tr></table>"
+	))
+})
 
 
 // +----: ZeT.Border.full() :------------------------------------+
@@ -214,7 +179,11 @@ ZeT.Border.Full.KEYS_BRD = ZeTA.remove(
  *
  * The income options are:
  *
- *  · keys    (ZeT.Border.Full.KEYS_ALL)
+ *  · border  ZeT.Border.Full
+ *
+ *  the border class (or it's definition key);
+ *
+ *  · keys    (ZeT.Border.Full.KEYS)
  *
  *  the keys of the cells to initialize. By default
  *  they are keys for all lower-level cells except
@@ -239,12 +208,17 @@ ZeT.Border.full = ZeT.define('ZeT.Border.full()', function(opts)
 	if((res == ZeT.Border) || (res == window)) res = {};
 	if(ZeTD.isxn(node)) res = {}; else node = null;
 
+	var bcls  = ZeT.Border.Full;
+	if(opts.border) bcls = opts.border;
+	if(ZeT.iss(bcls)) bcls = ZeT.assertn(ZeT.defined(bcls),
+	  'ZeT border class [', bcls , '] is not defined!')
+
 	var pat   = opts['pattern']; if(!ZeT.iss(pat)) pat = 'XYZ';
 	var fills = opts['fills']; if(!fills) fills = {};
 	var clss  = opts.classes; if(!ZeT.iss(clss)) clss = null;
 
 	var keys  = (opts = opts || {}).keys;
-	if(!ZeT.isa(keys)) keys = ZeT.Border.Full.KEYS_ALL;
+	if(!ZeT.isa(keys)) keys = ZeT.asserta(bcls.prototype.KEYS);
 
 	for(var i = 0;(i < keys.length);i++)
 	{
@@ -263,7 +237,8 @@ ZeT.Border.full = ZeT.define('ZeT.Border.full()', function(opts)
 	{
 		if(!res.cnt) res.cnt = {};
 		res.cnt.node = node;
-		return ZeT.Layout.proc(new ZeT.Border.Full(res))();
+
+		return ZeT.Layout.proc(new bcls(res))();
 	}
 
 	return res;

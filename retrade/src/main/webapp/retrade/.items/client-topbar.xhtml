@@ -126,19 +126,62 @@
       </x:html>
 
 
-      <!-- [main button] -->
+      <!-- [main (user) button -->
 
       <x:component coid = "${z:vid(localView, 'retrade-main-button')}">
         <f:facet name = "extjs-props">
 
-          xtype: 'button', flex: 0,
-          width: 30, height: 30,
+          xtype: 'button', flex: 0, width: 30, height: 30,
           margin: extjsf.dpts(0, 0, 0, 4),
+          cls: 'retrade-button-menu-no-arrow',
           iconCls: 'retrade-main-man-icon',
           componentCls: 'retrade-button-22pt'
 
         </f:facet>
+
+        <x:menu coid = "${z:vid(localView, 'retrade-main-button-menu')}">
+
+          <f:facet name = "extjs-props">
+
+            showSeparator: false, constrain: false,
+            layout: 'fit', shadow: false, border: false,
+            width:  extjsf.dpt(200), height: extjsf.dpt(100),
+            bodyCls: 'retrade-transparent-panel', bodyPadding: 0
+
+          </f:facet>
+
+          <x:component coid = "${z:vid(localView, 'xyz')}">
+
+            <f:facet name = "extjs-props">
+              indent: false,
+              html: 'Hello, guy!'
+            </f:facet>
+          </x:component>
+        </x:menu>
+
       </x:component>
+
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+  extjsf.bind("${z:vid(localView, 'retrade-main-button')}", '${rootView.extjsDomain}').on('added', function(btn)
+  {
+    var al = btn.menu.getAlignToXY;
+
+    btn.menu.getAlignToXY = function()
+    {
+      var xy = al.apply(this, arguments)
+      ZeT.log('x = ', xy[0], ', mw = ', btn.menu.getWidth())
+      xy[0] = btn.getX() + btn.getWidth() - btn.menu.getWidth()
+      return xy
+    }
+  })
+
+      //]]>
+      </script>
+
+      <!-- main (user) button] -->
 
     </x:component>
 

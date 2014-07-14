@@ -1,4 +1,4 @@
-﻿<?xml version = '1.0' encoding = 'UTF-8'?>
+﻿﻿<?xml version = '1.0' encoding = 'UTF-8'?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -22,51 +22,193 @@
 
 <body>
 
+
+<style type = "text/css">
+
+td.retrade-bolite-test-ltc div
+{
+  width: 40px; height: 20px;
+}
+
+td.retrade-bolite-test-ltc
+{
+  background: red;
+}
+
+td.retrade-bolite-test-thh
+{
+  background: magenta;
+}
+
+td.retrade-bolite-test-rtc div
+{
+  width: 40px; height: 20px;
+}
+
+td.retrade-bolite-test-rtc
+{
+  background: yellow;
+}
+
+td.retrade-bolite-test-lvu
+{
+  width: 20px; height: 10px;
+  background: pink;
+}
+
+td.retrade-bolite-test-lvm
+{
+  width: 20px;
+  background: blue;
+}
+
+td.retrade-bolite-test-rvm
+{
+  width: 20px;
+  background: brown;
+}
+
+td.retrade-bolite-test-rvu
+{
+  width: 20px; height: 10px;
+  background: lime;
+}
+
+td.retrade-bolite-test-lvd
+{
+  width: 20px; height: 10px;
+  background: olive;
+}
+
+td.retrade-bolite-test-rvd
+{
+  width: 20px; height: 10px;
+  background: gold;
+}
+
+td.retrade-bolite-test-lbc div
+{
+  width: 40px; height: 20px;
+}
+
+td.retrade-bolite-test-lbc
+{
+  background: #a9bdff;
+}
+
+td.retrade-bolite-test-bhh
+{
+  background: #ffaf72;
+}
+
+td.retrade-bolite-test-rbc div
+{
+  width: 40px; height: 20px;
+}
+
+td.retrade-bolite-test-rbc
+{
+  background: #3cffdc;
+}
+
+div.retrade-bolite-test-xcnt
+{
+  margin-top: -10px;
+  margin-bottom: -10px;
+}
+
+
+/* ======================= */
+
+
+</style>
+
+<table id = 'XYZ' cellpadding='0' cellspacing='0' border='0'>
+<tr><td style='padding:0;'>
+<table cellpadding='0' cellspacing='0' border='0' style='margin:0;'>
+<tbody>
+  <tr>
+    <td colspan='2'>@ltc<div/></td><td>@thh</td><td colspan='2'>@rtc<div/></td>
+  </tr>
+  <tr>
+    <td>@lvu</td><td>@ltx</td><td></td><td>@rtx</td><td>@rvu</td>
+  </tr>
+  <tr>
+    <td>@lvm</td>
+    <td colspan='3'><div>@xcnt<table cellpadding='0' cellspacing='0' border='0'>
+      <tr><td>@cnt</td></tr></table></div>
+    <td>@rvm</td>
+  </tr>
+  <tr>
+    <td>@lvd</td><td>@lbx</td><td></td><td>@rbx</td><td>@rvd</td>
+  </tr>
+  <tr>
+    <td colspan='2'>@lbc<div/></td><td>@bhh</td><td colspan='2'>@rbc<div/></td>
+  </tr>
+</tbody>
+</table></td></tr></table>
+
 <script type = "text/javascript">
 //<![CDATA[
 
+ZeT.Border.FullAlt = ZeT.defineClass('ZeT.Border.FullAlt', 'ZeT.Border.Base', {
+
+	KEYS : [
+	 'ltc', 'thh', 'rtc', 'lbc', 'bhh', 'rbc',
+	 'lvu', 'rvu', 'lvm', 'rvm', 'lvd', 'rvd',
+	 'ltx', 'rtx', 'lbx', 'rbx', 'cnt', 'xcnt'
+	],
+
+	XYZ  : ZeT.define('ZeT.Border.FullAlt.XYZ', new ZeT.Layout.Template(
+	  { trace : ZeT.Layout.Template.Ways.traceAtNodes }, ZeTD.n('XYZ')
+	))
+})
+
 //<: create manually
 
-var opts = ZeT.Border.full({classes: 'retrade-bo4Ssoftpale-XYZ'});
-ZeT.assert(opts)
+var opts = ZeT.Border.full({
+  border: 'ZeT.Border.FullAlt',
+  classes: 'retrade-bofull-pale-XYZ'
+});
 
-var node = ZeT.Layout.proc(new ZeT.Border.Full(opts))();
+var node = ZeT.Layout.proc(new ZeT.Border.FullAlt(opts))();
 ZeT.assert(ZeTD.isn(node))
 ZeT.assert(ZeT.struct(node))
 ZeT.assert(ZeTD.isn(ZeT.struct(node).content))
-ZeT.struct(node).content.innerHTML = 'the border test<br/> this is...';
+ZeT.struct(node).content.innerHTML = '<center>The border test this is...</center>';
+ZeTD.styles(ZeT.struct(node).content, { width: '400px', height: '50px' })
 
 document.body.appendChild(node)
 
 //>: create manually
 
-//<: create as pipe call
+//~: create as pipe call
 
-node = ZeT.Layout.procPipeCall(
+ZeT.Layout.procPipeCall(
 
- ZeT.Layout.Proc.Node,
- {html: '<span>This border is created by the pipe!</span>'},
+ ZeT.Layout.Proc.Node, {
+   html: '<div>This border is created by the pipe!</div>'
+ },
 
- ZeT.Layout.Fill,
- {styles: { color: 'white', fontWeight: 'bolder'}},
+ ZeT.Layout.Fill, {
+   styles: { color: 'white', fontWeight: 'bolder',
+   marginTop: '40px', marginBottom: '40px' }
+ },
 
- ZeT.Border.Full,
- ZeT.Border.full({classes: 'retrade-bo4Sbrickred-XYZ'})
+ ZeT.Border.Full, ZeT.Border.full({
+   classes: 'retrade-bofull-brick-XYZ'
+ }),
 
-);
-
-document.body.appendChild(node)
-
-
-//>: create as pipe call
-
+ ZeT.Layout.Fill, { styles: { marginTop: '50px' }},
+ ZeT.Layout.Proc.Append, {}
+)
 
 
 //]]>
 </script>
 
 
-
+<!--
 <style type="text/css">
 
 #test
@@ -83,71 +225,7 @@ document.body.appendChild(node)
 </style>
 
 <div id = "test"/>
-
-<!--
-
-<div style = "width: 16px; height: 16px; background: url(circle.svg) no-repeat; position: absolute; left: 300px; top: 300px;"></div>
-
 -->
-<!--<table id = "" border = "0" cellpadding = "0" cellspacing = "0">
-  <tbody>
-  <tr>
-    <td class = "test-ltc"><div/></td>
-    <td>
-      <table style = "width: 100%;" border = "0" cellpadding = "0" cellspacing = "0">
-        <tbody>
-        <tr>
-          <td class = "test-ltr" style = "width: 0.0001%;"><div/></td>
-          <td class = "test-thh" style = "width: 99.9999%;"></td>
-          <td class = "test-rtl" style = "width: 0.0001%;"><div/></td>
-        </tr>
-        </tbody>
-      </table>
-    </td>
-    <td class = "test-rtc"><div/></td>
-  </tr>
-  <tr>
-    <td class = "test-lvu"><div/></td>
-    <td></td>
-    <td class = "test-rvu"><div/></td>
-  </tr>
-  <tr>
-    <td class = "test-lvm"></td>
-    <td>
-      <div class = "test-xcnt">
-        <table border = "0" cellpadding = "0" cellspacing = "0">
-          <tbody>
-          <tr>
-            <td class = "test-cnt">the test</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </td>
-    <td class = "test-rvm"></td>
-  </tr>
-  <tr>
-    <td class = "test-lvd"><div/></td>
-    <td></td>
-    <td class = "test-rvd"><div/></td>
-  </tr>
-  <tr>
-    <td class = "test-lbc"><div/></td>
-    <td>
-      <table style = "width: 100%;" border = "0" cellpadding = "0" cellspacing = "0">
-        <tbody>
-        <tr>
-          <td class = "test-lbr" style = "width: 0.0001%;"><div/></td>
-          <td class = "test-bhh" style = "width: 99.9999%;"></td>
-          <td class = "test-rbl" style = "width: 0.0001%;"><div/></td>
-        </tr>
-        </tbody>
-      </table>
-    </td>
-    <td class = "test-rbc"><div/></td>
-  </tr>
-  </tbody>
-</table>-->
 
 </body>
 </html>
