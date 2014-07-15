@@ -111,11 +111,11 @@ ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
  *    +---------+---------~---------+---------+
  *    |   ltc   |        thh        |   rtc   |
  *    +-----+---+---------~---------+---+-----+
- *    | lvu |ltx|                   |rtx| rvu |
- *    +-----+---+                   +---+-----+
- *    ~ lvm ~            cnt            ~ rvm ~
- *    +-----+---+                   +---+-----+
- *    | lvd |lbx|                   |rbx| rvd |
+ *    | lvu |                           | rvu |
+ *    +-----+                           +-----+
+ *    ~ lvm ~         xcnt-[cnt]        ~ rvm ~
+ *    +-----+                           +-----+
+ *    | lvd |                           | rvd |
  *    +-----+---+---------~---------+---+-----+
  *    |   lbc   |        bhh        |   rbc   |
  *    +---------+---------~---------+---------+
@@ -130,9 +130,8 @@ ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
 ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 
 	KEYS : [
-	 'ltc', 'thh', 'rtc', 'lbc', 'bhh', 'rbc',
-	 'lvu', 'rvu', 'lvm', 'rvm', 'lvd', 'rvd',
-	 'ltx', 'rtx', 'lbx', 'rbx', 'cnt', 'xcnt'
+	 'ltc', 'thh', 'rtc', 'lbc', 'bhh', 'rbc', 'cnt',
+	 'lvu', 'rvu', 'lvm', 'rvm', 'lvd', 'rvd', 'xcnt'
 	],
 
 	XYZ  : ZeT.define('ZeT.Border.Full.XYZ', new ZeT.Layout.Template(
@@ -140,27 +139,25 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 
 	  "<table id = 'XYZ' cellpadding='0' cellspacing='0' border='0'>\n"+
 	  "<tr><td style='padding:0;'>\n"+
-	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0;'>\n"+
-	  "<tbody>\n"+
-	  "  <tr>\n"+
-	  "    <td colspan='2'>@ltc<div/></td><td>@thh<div/></td><td colspan='2'>@rtc<div/></td>\n"+
-	  "  </tr>\n"+
-	  "  <tr>\n"+
-	  "    <td>@lvu</td><td>@ltx</td><td></td><td>@rtx</td><td>@rvu</td>\n"+
-	  "  </tr>\n"+
-	  "  <tr>\n"+
-	  "    <td>@lvm</td>\n"+
-	  "    <td colspan='3'><div>@xcnt<table cellpadding='0' cellspacing='0' border='0'>\n"+
-	  "      <tr><td>@cnt</td></tr></table></div>\n"+
-	  "    <td>@rvm</td>\n"+
-	  "  </tr>\n"+
-	  "  <tr>\n"+
-	  "    <td>@lvd</td><td>@lbx</td><td></td><td>@rbx</td><td>@rvd</td>\n"+
-	  "  </tr>\n"+
-	  "  <tr>\n"+
-	  "    <td colspan='2'>@lbc<div/></td><td>@bhh<div/></td><td colspan='2'>@rbc<div/></td>\n"+
-	  "  </tr>\n"+
-	  "</tbody>\n"+
+	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
+	  "<tr><td>@ltc<div/></td><td style='width:100%'>@thh</td><td>@rtc<div/></td></tr>\n"+
+	  "</table></td></tr>\n"+
+	  "<tr><td style='padding:0;'>\n"+
+	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
+	  "<tr><td>@lvu<div/></td><td style='width:100%'></td><td>@rvu<div/></td></tr>\n"+
+	  "</table></td></tr>\n"+
+	  "<tr><td style='padding:0;'>\n"+
+	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
+	  "<tr><td>@lvm<div/></td><td><div>@xcnt<table cellpadding='0' cellspacing='0' " +
+	    "border='0'><tr><td>@cnt</td></tr></table></div><td>@rvm<div/></td></tr>\n"+
+	  "</table></td></tr>\n"+
+	  "<tr><td style='padding:0;'>\n"+
+	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
+	  "<tr><td>@lvd<div/></td><td style='width:100%'></td><td>@rvd<div/></td></tr>\n"+
+	  "</table></td></tr>\n"+
+	  "<tr><td style='padding:0;'>\n"+
+	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
+	  "<tr><td>@lbc<div/></td><td style='width:100%'>@bhh</td><td>@rbc<div/></td></tr>\n"+
 	  "</table></td></tr></table>"
 	))
 })

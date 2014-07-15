@@ -120,33 +120,34 @@ div.retrade-bolite-test-xcnt
 
 /* ======================= */
 
+  
+
 
 </style>
 
 <table id = 'XYZ' cellpadding='0' cellspacing='0' border='0'>
 <tr><td style='padding:0;'>
-<table cellpadding='0' cellspacing='0' border='0' style='margin:0;'>
-<tbody>
-  <tr>
-    <td colspan='2'>@ltc<div/></td><td>@thh</td><td colspan='2'>@rtc<div/></td>
-  </tr>
-  <tr>
-    <td>@lvu</td><td>@ltx</td><td></td><td>@rtx</td><td>@rvu</td>
-  </tr>
-  <tr>
-    <td>@lvm</td>
-    <td colspan='3'><div>@xcnt<table cellpadding='0' cellspacing='0' border='0'>
-      <tr><td>@cnt</td></tr></table></div>
-    <td>@rvm</td>
-  </tr>
-  <tr>
-    <td>@lvd</td><td>@lbx</td><td></td><td>@rbx</td><td>@rvd</td>
-  </tr>
-  <tr>
-    <td colspan='2'>@lbc<div/></td><td>@bhh</td><td colspan='2'>@rbc<div/></td>
-  </tr>
-</tbody>
+<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>
+<tr><td>@ltc<div/></td><td style='width:100%'>@thh</td><td>@rtc<div/></td></tr>
+</table></td></tr>
+<tr><td style='padding:0;'>
+<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>
+<tr><td>@lvu<div/></td><td style='width:100%'></td><td>@rvu<div/></td></tr>
+</table></td></tr>
+<tr><td style='padding:0;'>
+<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>
+<tr><td>@lvm<div/></td><td><div>@xcnt<table cellpadding='0' cellspacing='0' border='0'><tr><td>@cnt</td></tr></table></div><td>@rvm<div/></td></tr>
+</table></td></tr>
+<tr><td style='padding:0;'>
+<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>
+<tr><td>@lvd<div/></td><td style='width:100%'></td><td>@rvd<div/></td></tr>
+</table></td></tr>
+<tr><td style='padding:0;'>
+<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>
+<tr><td>@lbc<div/></td><td style='width:100%'>@bhh</td><td>@rbc<div/></td></tr>
 </table></td></tr></table>
+
+
 
 <script type = "text/javascript">
 //<![CDATA[
@@ -156,7 +157,7 @@ ZeT.Border.FullAlt = ZeT.defineClass('ZeT.Border.FullAlt', 'ZeT.Border.Base', {
 	KEYS : [
 	 'ltc', 'thh', 'rtc', 'lbc', 'bhh', 'rbc',
 	 'lvu', 'rvu', 'lvm', 'rvm', 'lvd', 'rvd',
-	 'ltx', 'rtx', 'lbx', 'rbx', 'cnt', 'xcnt'
+	 'cnt', 'xcnt'
 	],
 
 	XYZ  : ZeT.define('ZeT.Border.FullAlt.XYZ', new ZeT.Layout.Template(
@@ -180,6 +181,7 @@ ZeTD.styles(ZeT.struct(node).content, { width: '400px', height: '50px' })
 
 document.body.appendChild(node)
 
+
 //>: create manually
 
 //~: create as pipe call
@@ -191,12 +193,11 @@ ZeT.Layout.procPipeCall(
  },
 
  ZeT.Layout.Fill, {
-   styles: { color: 'white', fontWeight: 'bolder',
-   marginTop: '40px', marginBottom: '40px' }
+   styles: { color: 'black', fontWeight: 'bolder', margin: '40px 10px 40px 10px' }
  },
 
  ZeT.Border.Full, ZeT.Border.full({
-   classes: 'retrade-bofull-brick-XYZ'
+   classes: 'retrade-bo-user-menu-XYZ'
  }),
 
  ZeT.Layout.Fill, { styles: { marginTop: '50px' }},

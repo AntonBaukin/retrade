@@ -1900,7 +1900,7 @@ ZeT.Layout.Proc.Append = ZeT.defineClass('ZeT.Layout.Proc.Append', {
 		if(!ZeTD.isxn(node) || ZeTD.isn(node.parentNode))
 			return node
 
-		var parent = opts.parent;
+		var parent = this.opts.parent;
 
 		if(ZeT.isu(parent))
 			parent = document.body

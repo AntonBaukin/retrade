@@ -7,17 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="bakery-07 [beta]: created Main User button.">
-      <change type="DELETED" beforePath="I:\src\bakery\retrade\src\main\webapp\resources\.tests\border.svg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/ask-edit.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/ask-edit.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/borders.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/borders.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/client-topbar.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/client-topbar.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,15 +37,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="zetbor.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js">
+      <file leaf-file-name="borders.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.77922076" vertical-offset="1520" max-vertical-offset="3320">
-              <caret line="160" column="55" selection-start-line="160" selection-start-column="55" selection-end-line="160" selection-end-column="55" />
-              <folding>
-                <marker date="1405349988626" expanded="true" signature="3972:3982" placeholder="..." />
-                <marker date="1405349988626" expanded="true" signature="4050:4059" placeholder="..." />
-              </folding>
+            <state vertical-scroll-proportion="0.7716263" vertical-offset="2674" max-vertical-offset="4258">
+              <caret line="195" column="26" selection-start-line="195" selection-start-column="26" selection-end-line="195" selection-end-column="26" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -70,19 +61,19 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/cnt.svg" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/lvm.svg" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/rvm.svg" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java" />
-        <option value="$PROJECT_DIR$/images/borders/xyz.svg" />
         <option value="$PROJECT_DIR$/images/borders/bhh.svg" />
         <option value="$PROJECT_DIR$/images/borders/cnt.svg" />
         <option value="$PROJECT_DIR$/images/borders/lvm.svg" />
         <option value="$PROJECT_DIR$/images/borders/rvm.svg" />
         <option value="$PROJECT_DIR$/images/borders/thh.svg" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
+        <option value="$PROJECT_DIR$/images/borders/xyz.svg" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
+        <option value="X:/tomee/webapps/retrade/borders.html" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/borders.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
-        <option value="X:/tomee/webapps/retrade/borders.html" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js" />
       </list>
     </option>
   </component>
@@ -826,9 +817,6 @@
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
       <method />
     </configuration>
-    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
-      <method />
-    </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
       <module name="" />
       <option name="MAIN_CLASS_NAME" />
@@ -840,6 +828,9 @@
       <option name="VM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -975,12 +966,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="458" y="29" width="1104" height="1022" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32715377" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32715377" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32715377" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -998,10 +988,11 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3467433" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32715377" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1083,6 +1074,30 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2000" max-vertical-offset="2752">
+          <caret line="160" column="55" selection-start-line="160" selection-start-column="55" selection-end-line="160" selection-end-column="55" />
+          <folding>
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.35371178" vertical-offset="764" max-vertical-offset="14772">
@@ -1112,38 +1127,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49344978" vertical-offset="17436" max-vertical-offset="18788">
-          <caret line="1118" column="1" selection-start-line="1118" selection-start-column="1" selection-end-line="1118" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="19.37118" vertical-offset="12496" max-vertical-offset="15556">
-          <caret line="1890" column="22" selection-start-line="856" selection-start-column="0" selection-end-line="909" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/borders.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.91233766" vertical-offset="3038" max-vertical-offset="4232">
-          <caret line="225" column="2259" selection-start-line="225" selection-start-column="2248" selection-end-line="225" selection-end-column="2248" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3248731" vertical-offset="2976" max-vertical-offset="4255">
-          <caret line="198" column="37" selection-start-line="198" selection-start-column="13" selection-end-line="198" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.96103895" vertical-offset="0" max-vertical-offset="7896">
@@ -1152,22 +1135,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://X:/tomee/webapps/retrade/borders.html">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7292724" vertical-offset="1889" max-vertical-offset="4255">
-          <caret line="145" column="49" selection-start-line="145" selection-start-column="49" selection-end-line="145" selection-end-column="49" />
+        <state vertical-scroll-proportion="1.8165939" vertical-offset="13072" max-vertical-offset="15828">
+          <caret line="1902" column="24" selection-start-line="921" selection-start-column="24" selection-end-line="921" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48195577" vertical-offset="17474" max-vertical-offset="18731">
+          <caret line="1118" column="1" selection-start-line="1118" selection-start-column="1" selection-end-line="1118" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.77922076" vertical-offset="1520" max-vertical-offset="3320">
-          <caret line="160" column="55" selection-start-line="160" selection-start-column="55" selection-end-line="160" selection-end-column="55" />
+        <state vertical-scroll-proportion="0.40174672" vertical-offset="912" max-vertical-offset="3572">
+          <caret line="115" column="22" selection-start-line="80" selection-start-column="22" selection-end-line="80" selection-end-column="22" />
           <folding>
-            <marker date="1405349988626" expanded="true" signature="3972:3982" placeholder="..." />
-            <marker date="1405349988626" expanded="true" signature="4050:4059" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405434589293" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/borders.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6633444" vertical-offset="5161" max-vertical-offset="6679">
+          <caret line="360" column="2538" selection-start-line="360" selection-start-column="2538" selection-end-line="360" selection-end-column="2538" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7716263" vertical-offset="2674" max-vertical-offset="4258">
+          <caret line="195" column="26" selection-start-line="195" selection-start-column="26" selection-end-line="195" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
