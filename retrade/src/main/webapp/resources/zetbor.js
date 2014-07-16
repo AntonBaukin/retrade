@@ -130,35 +130,42 @@ ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
 ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 
 	KEYS : [
-	 'ltc', 'thh', 'rtc', 'lbc', 'bhh', 'rbc', 'cnt',
-	 'lvu', 'rvu', 'lvm', 'rvm', 'lvd', 'rvd', 'xcnt'
+	 'top', 'ltc', 'thx', 'thh', 'rtc',
+	 'lvu', 'cxx', 'cnt', 'rvu',
+	 'lvm', 'rvm', 'lvd', 'rvd',
+	 'bot', 'lbc', 'bhx', 'bhh', 'rbc'
 	],
 
 	XYZ  : ZeT.define('ZeT.Border.Full.XYZ', new ZeT.Layout.Template(
 	  { trace : ZeT.Layout.Template.Ways.traceAtNodes },
 
-	  "<table id = 'XYZ' cellpadding='0' cellspacing='0' border='0'>\n"+
-	  "<tr><td style='padding:0;'>\n"+
-	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
-	  "<tr><td>@ltc<div/></td><td style='width:100%'>@thh</td><td>@rtc<div/></td></tr>\n"+
-	  "</table></td></tr>\n"+
-	  "<tr><td style='padding:0;'>\n"+
-	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
-	  "<tr><td>@lvu<div/></td><td style='width:100%'></td><td>@rvu<div/></td></tr>\n"+
-	  "</table></td></tr>\n"+
-	  "<tr><td style='padding:0;'><div>@xcnt\n"+
-	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
-	  "<tr><td>@lvm<div/></td><td style='width:100%'><table cellpadding='0' cellspacing='0' " +
-	  "border='0'><tr><td>@cnt</td></tr></table><td>@rvm<div/></td></tr>\n"+
-	  "</table></div></td></tr>\n"+
-	  "<tr><td style='padding:0;'>\n"+
-	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
-	  "<tr><td>@lvd<div/></td><td style='width:100%'></td><td>@rvd<div/></td></tr>\n"+
-	  "</table></td></tr>\n"+
-	  "<tr><td style='padding:0;'>\n"+
-	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
-	  "<tr><td>@lbc<div/></td><td style='width:100%'>@bhh</td><td>@rbc<div/></td></tr>\n"+
-	  "</table></td></tr></table>"
+	  "<div><table cellpadding='0' cellspacing='0'\n"+
+	  "  border='0' style='width:100%; height:100%'>\n"+
+	  "<tr><td colspan='3'>@top<div>\n"+
+	  " <div>@ltc</div>\n"+
+	  " <div style='position:relative'>@thx<div style='width:100%'>@thh</div></div>\n"+
+	  " <div>@rtc</div>\n"+
+	  "</div></td></tr><td>\n"+
+	  " <table cellpadding='0' cellspacing='0' border='0' style='width:100%; height:100%'>\n"+
+	  "  <tr><td>@lvu<div/></td></tr>\n"+
+	  "  <tr><td style='height:100%;'>@lvm<div/></td></tr>\n"+
+	  "  <tr><td>@lvd<div/></td></tr>\n"+
+	  " </table>\n"+
+	  "</td><td style='width:100%'>@cxx\n"+
+	  " <table cellpadding='0' cellspacing='0' border='0' style='width:100%; height:100%'>\n"+
+	  "  <tr><td style='width:100%'>@cnt</td></tr>\n"+
+	  " </table>\n"+
+	  "</td><td>\n"+
+	  " <table cellpadding='0' cellspacing='0' border='0' style='width:100%; height:100%'>\n"+
+	  "  <tr><td>@rvu<div/></td></tr>\n"+
+	  "  <tr><td style='height:100%'>@rvm<div/></td></tr>\n"+
+	  "  <tr><td>@rvd<div/></td></tr>\n"+
+	  " </table>\n"+
+	  "</td><tr><td colspan='3'>@bot<div>\n"+
+	  " <div>@lbc</div>\n"+
+	  " <div style='position:relative'>@bhx<div style='width:100%'>@bhh</div></div>\n"+
+	  " <div>@rbc</div>\n"+
+	  "</div></td></tr></table></div>"
 	))
 })
 
