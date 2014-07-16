@@ -146,16 +146,22 @@
             showSeparator: false, constrain: false,
             layout: 'fit', shadow: false, border: false,
             width:  extjsf.dpt(200), height: extjsf.dpt(100),
-            bodyCls: 'retrade-transparent-panel', bodyPadding: 0
+            bodyPadding: 0 /*bodyCls: 'retrade-transparent-panel'*/
 
           </f:facet>
 
-          <x:component coid = "${z:vid(localView, 'xyz')}">
-
+          <x:component coid = "${z:vid(localView, 'user-menu-host')}">
             <f:facet name = "extjs-props">
-              indent: false,
-              html: 'Hello, guy!'
+              border: 0, bodyPadding: 0, margin: 0, indent: false,
+              bodyCls: 'retrade-back-panel', layout: 'fit'
             </f:facet>
+
+            <x:html coid = "${z:vid(localView, 'user-menu-html-host')}">
+
+              <div id = "${z:vid(localView, 'user-menu-html')}"
+                style = "width: 100%; height: 100%; background-color: red;"/>
+
+            </x:html>
           </x:component>
         </x:menu>
 
@@ -172,10 +178,32 @@
     btn.menu.getAlignToXY = function()
     {
       var xy = al.apply(this, arguments)
-      ZeT.log('x = ', xy[0], ', mw = ', btn.menu.getWidth())
       xy[0] = btn.getX() + btn.getWidth() - btn.menu.getWidth()
       return xy
     }
+  })
+
+  extjsf.bind("${z:vid(localView, 'user-menu-host')}", '${rootView.extjsDomain}').on('afterrender', function(xmenu)
+  {
+    if(xmenu.extjsfBind.retradeUserMenuWrapped) return
+    xmenu.extjsfBind.retradeUserMenuWrapped = true
+
+    var n = ZeTD.n("${z:vid(localView, 'user-menu-html')}");
+
+    //!: invoke the border processing pipe
+    ZeT.Layout.procPipeCall(
+      //~: take the menu content component
+      ZeT.Layout.Proc.Node, { node: n },
+
+      //~: wrap it with the border
+      ZeT.Border.Full, ZeT.Border.full({ classes: 'retrade-bo-user-menu-XYZ' }),
+
+      //~: set the width and height
+      ZeT.Layout.Fill, { styles: { width: '100%', height: '100%' }},
+
+      //~: replace the content wrapped
+      ZeT.Layout.Proc.Append, { parent: n.parentNode }
+    )
   })
 
       //]]>

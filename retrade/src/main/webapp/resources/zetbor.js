@@ -146,11 +146,11 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
 	  "<tr><td>@lvu<div/></td><td style='width:100%'></td><td>@rvu<div/></td></tr>\n"+
 	  "</table></td></tr>\n"+
-	  "<tr><td style='padding:0;'>\n"+
+	  "<tr><td style='padding:0;'><div>@xcnt\n"+
 	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
-	  "<tr><td>@lvm<div/></td><td><div>@xcnt<table cellpadding='0' cellspacing='0' " +
-	    "border='0'><tr><td>@cnt</td></tr></table></div><td>@rvm<div/></td></tr>\n"+
-	  "</table></td></tr>\n"+
+	  "<tr><td>@lvm<div/></td><td style='width:100%'><table cellpadding='0' cellspacing='0' " +
+	  "border='0'><tr><td>@cnt</td></tr></table><td>@rvm<div/></td></tr>\n"+
+	  "</table></div></td></tr>\n"+
 	  "<tr><td style='padding:0;'>\n"+
 	  "<table cellpadding='0' cellspacing='0' border='0' style='margin:0; width:100%;'>\n"+
 	  "<tr><td>@lvd<div/></td><td style='width:100%'></td><td>@rvd<div/></td></tr>\n"+

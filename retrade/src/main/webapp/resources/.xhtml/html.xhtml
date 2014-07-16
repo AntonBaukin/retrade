@@ -14,6 +14,9 @@
     <co:attribute name = 'boxClass' default = ''
        type = 'java.lang.String'/>
 
+    <co:attribute name = 'boxStyle' default = ''
+       type = 'java.lang.String'/>
+
     <co:facet name = 'extjs-props'/>
 
   </co:interface>
@@ -25,7 +28,8 @@
     </div>
 
     <div id = "#{cc.clientId}-#{cc.attrs.coid}-html"
-      class = "x-hide-display extjsf-html-content #{cc.attrs.boxClass}">
+      class = "x-hide-display extjsf-html-content #{cc.attrs.boxClass}"
+      style = "#{cc.attrs.boxStyle}">
 
       <co:insertChildren/>
     </div>

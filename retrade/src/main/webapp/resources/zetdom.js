@@ -1897,9 +1897,9 @@ ZeT.Layout.Proc.Append = ZeT.defineClass('ZeT.Layout.Proc.Append', {
 
 	proc: function(node)
 	{
-		if(!ZeTD.isxn(node) || ZeTD.isn(node.parentNode))
-			return node
+		if(!ZeTD.isxn(node)) return
 
+		//~: find the parent to insert
 		var parent = this.opts.parent;
 
 		if(ZeT.isu(parent))
@@ -1908,7 +1908,14 @@ ZeT.Layout.Proc.Append = ZeT.defineClass('ZeT.Layout.Proc.Append', {
 			parent = ZeTD.n(parent)
 
 		if(ZeTD.isn(parent))
+		{
+			//?: {node has parent} remove it
+			if(ZeTD.isn(node.parentNode))
+				node.parentNode.removeChild(node)
+
+			//!: append to the new parent
 			parent.appendChild(node)
+		}
 
 		return node
 	}
