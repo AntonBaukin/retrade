@@ -131,7 +131,7 @@
       <x:component coid = "${z:vid(localView, 'retrade-main-button')}">
         <f:facet name = "extjs-props">
 
-          xtype: 'button', flex: 0, width: 30, height: 30,
+          xtype: 'button', width: 30, height: 30,
           margin: extjsf.dpts(0, 0, 0, 4),
           cls: 'retrade-button-menu-no-arrow',
           iconCls: 'retrade-main-man-icon',
@@ -158,19 +158,46 @@
 
             <x:html coid = "${z:vid(localView, 'user-menu-html-host')}">
 
-              <div id = "${z:vid(localView, 'user-menu-html')}"
-                style = "width: 100%; height: 100%;"/>
+              <table id = "${z:vid(localView, 'user-menu-html')}"
+                cellpadding = "0" cellspacing = "0" border = "0"
+                style = "width:100%; height:100%">
 
+                <tr>
+                  <td style = "height:100%">
+                    <div/>
+                  </td>
+                </tr>
+                <tr>
+                  <td style = "height:38px; text-align:right; vertical-align:bottom"
+                    id = "${z:vid(localView, 'user-menu-logout-cell')}"/>
+                </tr>
+              </table>
             </x:html>
           </x:component>
         </x:menu>
-
       </x:component>
 
+
+      <!-- [logoff button] -->
+      <x:component coid = "${z:vid(localView, 'user-menu-logoff-button')}"
+        renderTo = "${z:vid(localView, 'user-menu-logout-cell')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button',width: 30, height: 30,
+          componentCls: 'retrade-button-22pt',
+          iconCls: 'retrade-main-logoff-icon'
+
+        </f:facet>
+      </x:component>
+
+      <!-- logoff server call -->
+      <x:action-call coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}"
+        action = "#{rootView.doLogoff}"/>
 
       <script type = "text/javascript">
       //<![CDATA[
 
+  //~: install special alignment for user main menu
   extjsf.bind("${z:vid(localView, 'retrade-main-button')}", '${rootView.extjsDomain}').on('added', function(btn)
   {
     var al = btn.menu.getAlignToXY;
@@ -183,6 +210,7 @@
     }
   })
 
+  //~: wrap user main menu with special border
   extjsf.bind("${z:vid(localView, 'user-menu-host')}", '${rootView.extjsDomain}').on('afterrender', function(xmenu)
   {
     if(xmenu.extjsfBind.retradeUserMenuWrapped) return
@@ -204,6 +232,47 @@
       //~: replace the content wrapped
       ZeT.Layout.Proc.Append, { parent: n.parentNode }
     )
+  })
+
+  //~: logout click
+  extjsf.bindHandler("${z:vid(localView, 'user-menu-logoff-button')}", '${rootView.extjsDomain}', function(btn, event)
+  {
+    //~: logout function
+    var f = function(x)
+    {
+      if(x != 'no') return; //<-- note the buttons swapped!
+
+      //!: do server-side logout
+      extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${rootView.extjsDomain}')({
+        success: ZeT.timeouted(500, function()
+        {
+          window.location.replace("${z:go('login/')}${z:jss(localView.domain.code)}")
+        })
+      })
+    }
+
+    var box = ReTrade.desktop.calcWindowBox({
+      'event': event, widthpt: 260, '+xpt': -160, '-y': 48
+    })
+
+    //~: display the confirm dialog
+    var win = Ext.Msg.show({
+
+      fn : f, modal: true, width: box.width,
+      buttons: Ext.MessageBox.YESNO, closable: false,
+      cls: 'retrade-message-box-ask-warning',
+      icon: 'retrade-message-box-ask-warning-icon',
+      iconWidth: 48 + extjsf.pt(6), iconHeight: 48,
+      buttonText: { yes: 'Нет', no: 'Да'}, //!: swap them
+
+      title: 'Выйти из системы?',
+
+      msg: 'После выхода из системы Вы будуте переадресованы ' +
+       'на страницу входа в систему для Вашей организации.'
+    })
+
+    win.setPosition([box.x, box.y])
+
   })
 
       //]]>
