@@ -24,6 +24,7 @@ import com.tverts.secure.SecPoint;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.core.Domain;
 
 /* com.tverts: support */
 
@@ -56,6 +57,11 @@ public abstract class ViewWithModes
 
 
 	/* public: security issues */
+
+	public Domain      getDomain()
+	{
+		return SecPoint.loadDomain();
+	}
 
 	public boolean     isSecure(String key)
 	{
