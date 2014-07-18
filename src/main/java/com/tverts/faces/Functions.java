@@ -47,6 +47,11 @@ public class Functions
 		return "<![CDATA[" + s.toString() + "]]>";
 	}
 
+	public static String escapeHTMLString(Object sobj)
+	{
+		return SU.escapeXML(sobj);
+	}
+
 
 	/* public: URLs creators */
 

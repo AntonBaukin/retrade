@@ -1,6 +1,6 @@
 package com.tverts.faces;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Arrays;
 
@@ -19,6 +19,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: secure */
 
+import com.tverts.endure.person.PersonEntity;
 import com.tverts.secure.SecPoint;
 
 /* com.tverts: endure (core) */
@@ -47,50 +48,68 @@ public abstract class ViewWithModes
 	public static final String VMODE_PARAM  = "mode";
 
 
-	/* public: ViewWithModes (id) interface */
+	/* View With Modes (ID) Interface */
 
-	public String      getId()
+	public String  getId()
 	{
 		return (this.id != null)?(this.id):
 		  (this.id = obtainViewId());
 	}
 
 
-	/* public: security issues */
+	/* Domain and Person */
 
-	public Domain      getDomain()
+	public Domain       getDomain()
 	{
 		return SecPoint.loadDomain();
 	}
 
-	public boolean     isSecure(String key)
+	public PersonEntity getPerson()
+	{
+		if(person != null) return person;
+
+		return person = EX.assertn(
+		  SecPoint.loadLogin().getPerson(),
+		  "Login [", SecPoint.login(), "] has Person undefined!"
+		);
+	}
+
+
+	/* Security Issues */
+
+	public boolean isSecure(String key)
 	{
 		return SecPoint.isSecure(key);
 	}
 
-	public boolean     isSecureEntity(NumericIdentity e, String key)
+	public boolean isSecureEntity(NumericIdentity e, String key)
 	{
 		return SecPoint.isSecure(e.getPrimaryKey(), key);
 	}
 
-	public boolean     isSecureEntityKey(Long pk, String key)
+	public boolean isSecureEntityKey(Long pk, String key)
 	{
 		return SecPoint.isSecure(pk, key);
 	}
 
-	public void        forceSecure(String key)
+	public boolean isSystemLogin()
+	{
+		return SecPoint.isSystemLogin();
+	}
+
+	public void    forceSecure(String key)
 	{
 		if(!SecPoint.isSecure(key))
 			throw EX.forbid();
 	}
 
-	public void        forceSecureEntity(NumericIdentity e, String key)
+	public void    forceSecureEntity(NumericIdentity e, String key)
 	{
 		if(!SecPoint.isSecure(e.getPrimaryKey(), key))
 			throw EX.forbid();
 	}
 
-	public void        forceSecureEntityKey(Long pk, String key)
+	public void    forceSecureEntityKey(Long pk, String key)
 	{
 		if(!SecPoint.isSecure(pk, key))
 			throw EX.forbid();
@@ -101,44 +120,44 @@ public abstract class ViewWithModes
 	 * All the keys are encoded into single string and
 	 * separated with ';' character.
 	 */
-	public boolean     isAnySecure(String keys)
+	public boolean isAnySecure(String keys)
 	{
 		return SecPoint.isAnySecure(Arrays.asList(s2a(keys, ';')));
 	}
 
-	public boolean     isAnySecureEntity(NumericIdentity e, String keys)
+	public boolean isAnySecureEntity(NumericIdentity e, String keys)
 	{
 		return SecPoint.isAnySecure(
 		  e.getPrimaryKey(), Arrays.asList(s2a(keys, ';')));
 	}
 
-	public boolean     isAllSecure(String keys)
+	public boolean isAllSecure(String keys)
 	{
 		return SecPoint.isAllSecure(Arrays.asList(s2a(keys, ';')));
 	}
 
-	public boolean     isAllSecureEntity(NumericIdentity e, String keys)
+	public boolean isAllSecureEntity(NumericIdentity e, String keys)
 	{
 		return SecPoint.isAllSecure(
 		  e.getPrimaryKey(), Arrays.asList(s2a(keys, ';')));
 	}
 
-	public void        forceAnySecure(String keys)
+	public void    forceAnySecure(String keys)
 	{
 		if(!isAnySecure(keys))
 			throw EX.forbid();
 	}
 
-	public void        forceAnySecureEntity(NumericIdentity e, String keys)
+	public void    forceAnySecureEntity(NumericIdentity e, String keys)
 	{
 		if(!isAnySecureEntity(e, keys))
 			throw EX.forbid();
 	}
 
 
-	/* public: ViewWithModes (view mode) interface */
+	/* View With Modes (View Mode) Interface */
 
-	public ViewMode    getViewMode()
+	public ViewMode getViewMode()
 	{
 		if(viewMode != null)
 			return viewMode;
@@ -149,7 +168,7 @@ public abstract class ViewWithModes
 		return viewMode;
 	}
 
-	public String      getViewModeStr()
+	public String   getViewModeStr()
 	{
 		return getViewMode().toString().toLowerCase();
 	}
@@ -158,7 +177,7 @@ public abstract class ViewWithModes
 	 * Detects what mode to use to send POST requests
 	 * from the current view mode.
 	 */
-	public ViewMode    getViewModePost()
+	public ViewMode getViewModePost()
 	{
 		switch(getViewMode())
 		{
@@ -168,12 +187,12 @@ public abstract class ViewWithModes
 		}
 	}
 
-	public String      getViewModePostStr()
+	public String   getViewModePostStr()
 	{
 		return getViewModePost().toString().toLowerCase();
 	}
 
-	public boolean     isViewModePage()
+	public boolean  isViewModePage()
 	{
 		return ViewMode.PAGE.equals(getViewMode());
 	}
@@ -186,18 +205,18 @@ public abstract class ViewWithModes
 	 * This method tells {@code true} only in regular page
 	 * mode, or in page post mode.
 	 */
-	public boolean     isViewModePageRendered()
+	public boolean  isViewModePageRendered()
 	{
 		return isViewModePage() ||
 		  isViewModePagePost() && !isFacesRenderPhase();
 	}
 
-	public boolean     isViewModePagePost()
+	public boolean  isViewModePagePost()
 	{
 		return ViewMode.PAGE_POST.equals(getViewMode());
 	}
 
-	public boolean     isViewModeBody()
+	public boolean  isViewModeBody()
 	{
 		return ViewMode.BODY.equals(getViewMode());
 	}
@@ -208,32 +227,32 @@ public abstract class ViewWithModes
 	 * modes. In body post mode it tell {@code false}
 	 * on the render phase.
 	 */
-	public boolean     isViewModeBodyRendered()
+	public boolean  isViewModeBodyRendered()
 	{
 		return isViewModeBody() ||
 		  isViewModeBodyPost() && !isFacesRenderPhase();
 	}
 
-	public boolean     isViewModeBodyPost()
+	public boolean  isViewModeBodyPost()
 	{
 		return ViewMode.BODY_POST.equals(getViewMode());
 	}
 
-	public boolean     isFacesRenderPhase()
+	public boolean  isFacesRenderPhase()
 	{
 		return PhaseId.RENDER_RESPONSE.equals(
 		  FacesContext.getCurrentInstance().getCurrentPhaseId());
 	}
 
 
-	/* public: ViewWithModes (parameter names) interface */
+	/* View With Modes (Parameter Names) Interface */
 
-	public String      getViewIdParam()
+	public String   getViewIdParam()
 	{
 		return VIEWID_PARAM;
 	}
 
-	public String      getViewModeParam()
+	public String   getViewModeParam()
 	{
 		return VMODE_PARAM;
 	}
@@ -279,6 +298,7 @@ public abstract class ViewWithModes
 
 	/* private: the view state */
 
-	private String   id;
-	private ViewMode viewMode;
+	private String       id;
+	private ViewMode     viewMode;
+	private PersonEntity person;
 }

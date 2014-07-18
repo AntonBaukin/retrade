@@ -38,6 +38,24 @@
   </function>
 
 
+  <!-- xss -->
+
+  <function>
+    <description>
+      Escapes XML/HTML strings.
+    </description>
+    <display-name>Escapes XML/HTML Strings</display-name>
+
+    <function-name>xss</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String escapeHTMLString(java.lang.Object)
+    </function-signature>
+  </function>
+
+
   <!--=================================================
     =  URLs                                           =
     =================================================-->
