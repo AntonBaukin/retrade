@@ -354,6 +354,51 @@ td.retrade-warning-table-buttons
   padding: 8pt 0 0 0;
 }
 
+/* user menu */
+
+div.retrade-user-menu-system-login
+{
+  font-family: 'Tahoma', sans-serif;
+  font-size: 14pt; letter-spacing: 2pt;
+  text-transform: uppercase; color: #df0000;
+  margin-top: 26px;
+}
+
+td.retrade-user-menu-display-name
+{
+  vertical-align: top;
+  text-align: left;
+  padding: 0 2pt 0 2pt;
+}
+
+td.retrade-user-menu-display-name > div
+{
+  font-family: 'Tahoma', sans-serif;
+  font-size: 12pt; letter-spacing: 0.5pt;
+}
+
+td.retrade-user-menu-domain-staff
+{
+  vertical-align: bottom;
+  text-align: left; width: auto;
+  padding: 0 0 2px 2pt;
+}
+
+td.retrade-user-menu-domain-staff > div
+{
+  font-family: 'Tahoma', sans-serif;
+  font-size: 8pt; letter-spacing: 0.5pt;
+  text-transform: uppercase; color: #df0000;
+  border: solid 1px #df0000; display: inline;
+  padding: 1pt 2pt 1pt 2pt;
+}
+
+td.retrade-user-menu-logoff
+{
+  height:30px; text-align: right;
+  vertical-align: bottom;
+}
+
 
 /* selection set & window  */
 

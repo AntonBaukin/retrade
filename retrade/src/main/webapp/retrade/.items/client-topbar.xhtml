@@ -162,13 +162,41 @@
                 cellpadding = "0" cellspacing = "0" border = "0"
                 style = "width:100%; height:100%">
 
+                <ui:fragment rendered = "#{localView.systemLogin}">
+                  <tr>
+                    <td style = "height:100%; text-align:center; vertical-align:middle">
+
+                      <div class = "retrade-user-menu-system-login"
+                        title = "Внимание! Вы вошли как Системный [System] пользователь и имеете неограниченные права в домене [${localView.domain.code}]!">
+                        Системный
+                      </div>
+
+                      <div class = "retrade-user-menu-system-domain">
+                        ${localView.domain.code}
+                      </div>
+                    </td>
+                  </tr>
+                </ui:fragment>
+
+                <ui:fragment rendered = "#{not localView.systemLogin}">
+                  <tr>
+                    <td colspan="#{(localView.domainStuff)?(2):(1)}"
+                      class = "retrade-user-menu-display-name">
+
+                      <div>${localView.userDisplayName}</div>
+                    </td>
+                  </tr>
+
+                </ui:fragment>
+
                 <tr>
-                  <td style = "height:100%">
-                    <div/>
-                  </td>
-                </tr>
-                <tr>
-                  <td style = "height:38px; text-align:right; vertical-align:bottom"
+                  <ui:fragment rendered = "#{not localView.systemLogin and localView.domainStuff}">
+                    <td class = "retrade-user-menu-domain-staff">
+                        <div>Сотрудник организации</div>
+                    </td>
+                  </ui:fragment>
+
+                  <td class = "retrade-user-menu-logoff"
                     id = "${z:vid(localView, 'user-menu-logout-cell')}"/>
                 </tr>
               </table>

@@ -13,6 +13,10 @@ import com.tverts.faces.ViewWithModes;
 
 import com.tverts.secure.SecPoint;
 
+/* com.tverts: retrade views */
+
+import com.tverts.retrade.web.views.FacesDesktopView;
+
 
 /**
  * JavaServer Faces view for index page of
@@ -21,9 +25,8 @@ import com.tverts.secure.SecPoint;
  * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
-public class FacesSystemDesktopView extends ViewWithModes
+public class FacesSystemDesktopView extends FacesDesktopView
 {
-
 	/* public: checks */
 
 	public String getCheckSystemDomain()
