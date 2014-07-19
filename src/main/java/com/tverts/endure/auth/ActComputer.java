@@ -1,6 +1,6 @@
 package com.tverts.endure.auth;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import com.tverts.endure.core.ActUnity;
 
 
 /**
- * Actions builder on a {@link Computer} entities.
+ * Actions builder on a {@link ComputerEntity} entities.
  *
  * @author anton.baukin@gmail.com
  */
@@ -58,7 +58,7 @@ public class ActComputer extends ActionBuilderXRoot
 	protected void saveComputer(ActionBuildRec abr)
 	{
 		//?: {target is not a Computer}
-		checkTargetClass(abr, Computer.class);
+		checkTargetClass(abr, ComputerEntity.class);
 
 		//~: save the store
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
@@ -73,7 +73,7 @@ public class ActComputer extends ActionBuilderXRoot
 	protected void updateComputer(ActionBuildRec abr)
 	{
 		//?: {target is not a Computer}
-		checkTargetClass(abr, Computer.class);
+		checkTargetClass(abr, ComputerEntity.class);
 
 		//~: add update action
 		chain(abr).first(new UpdateComputerAction(task(abr)));
@@ -87,7 +87,7 @@ public class ActComputer extends ActionBuilderXRoot
 	protected UnityType getUnityType()
 	{
 		return UnityTypes.unityType(
-		  Computer.class, Auth.TYPE_COMPUTER);
+		  ComputerEntity.class, Auth.TYPE_COMPUTER);
 	}
 
 
@@ -106,9 +106,9 @@ public class ActComputer extends ActionBuilderXRoot
 
 		/* public: Action interface */
 
-		public Computer getResult()
+		public ComputerEntity getResult()
 		{
-			return target(Computer.class);
+			return target(ComputerEntity.class);
 		}
 
 		protected void  execute()
@@ -124,7 +124,7 @@ public class ActComputer extends ActionBuilderXRoot
 		protected void updateLogins()
 		{
 			List<AuthLogin> logins = bean(GetAuthLogin.class).
-			  getLogins(target(Computer.class));
+			  getLogins(target(ComputerEntity.class));
 
 			for(AuthLogin login : logins)
 				//~: clear the name, then update it on save

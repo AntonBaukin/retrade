@@ -108,12 +108,12 @@ public class GenTestUsers extends GenesisHiberPartBase
 	protected boolean saveComputer(GenCtx ctx, GenState gs)
 	  throws GenesisError
 	{
-		Computer c = bean(GetAuthLogin.class).getComputer(
+		ComputerEntity ce = bean(GetAuthLogin.class).getComputer(
 		  ctx.get(Domain.class).getPrimaryKey(),
 		  gs.computer.getCode()
 		);
 
-		if(c != null)
+		if(ce != null)
 		{
 			LU.I(log(ctx), logsig(), " computer with code [",
 			  gs.computer.getCode(), "] already exists");
@@ -121,17 +121,19 @@ public class GenTestUsers extends GenesisHiberPartBase
 			return false;
 		}
 
-		gs.computerEntity = c = new Computer();
+		gs.computerEntity = ce = new ComputerEntity();
 
-		c.setDomain(ctx.get(Domain.class));
-		c.setCode(gs.computer.getCode());
-		c.setName(gs.computer.getName());
-		c.setComment(gs.computer.getComment());
+		//=: domain
+		ce.setDomain(ctx.get(Domain.class));
 
-		actionRun(ActionType.SAVE, c);
+		//=: computer instance
+		ce.setOx(gs.computer);
+
+		//!: save
+		actionRun(ActionType.SAVE, ce);
 
 		LU.I(log(ctx), logsig(), " created computer with code [",
-		  c.getCode(), "] with login [", gs.login.code, "]"
+		  ce.getCode(), "] with login [", gs.login.code, "]"
 		);
 
 		return true;
@@ -250,7 +252,7 @@ public class GenTestUsers extends GenesisHiberPartBase
 		public Person person;
 		public com.tverts.api.clients.Computer computer;
 		public PersonEntity personEntity;
-		public Computer computerEntity;
+		public ComputerEntity computerEntity;
 		public List<Secure> secures;
 	}
 

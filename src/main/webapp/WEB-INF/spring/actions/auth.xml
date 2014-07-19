@@ -12,7 +12,7 @@
         class = 'com.tverts.actions.ActionBuilderTypeChecker'>
 
     <property name  = 'typeClass'
-              value = 'com.tverts.endure.auth.Computer'/>
+              value = 'com.tverts.endure.auth.ComputerEntity'/>
 
     <property name = 'reference'>
       <bean class = 'com.tverts.endure.auth.ActComputer'/>

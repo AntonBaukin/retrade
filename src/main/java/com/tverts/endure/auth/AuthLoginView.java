@@ -1,6 +1,6 @@
 package com.tverts.endure.auth;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Date;
 
@@ -9,7 +9,6 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 
 /* com.tverts: api */
 
@@ -217,7 +216,7 @@ public class AuthLoginView extends CatItemView
 		return this;
 	}
 
-	public AuthLoginView init(Computer c)
+	public AuthLoginView init(ComputerEntity c)
 	{
 		return this;
 	}

@@ -1,6 +1,6 @@
 package com.tverts.endure.auth;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.List;
 
@@ -73,7 +73,7 @@ public class GetAuthLogin extends GetObjectBase
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<AuthLogin> getLogins(Computer computer)
+	public List<AuthLogin> getLogins(ComputerEntity computer)
 	{
 
 // from AuthLogin where (computer = :computer)
@@ -129,19 +129,15 @@ public class GetAuthLogin extends GetObjectBase
 
 	/* Get Authentication Related Entities */
 
-	public Computer getComputer(Long domain, String code)
+	public ComputerEntity getComputer(Long domain, String code)
 	{
 
-// from Computer where (domain.id = :domain) and (code = :code)
+// from ComputerEntity where (domain.id = :domain) and (code = :code)
 
-		return (Computer) Q(
+		final String Q =
+"  from ComputerEntity where (domain.id = :domain) and (code = :code)";
 
-"from Computer where (domain.id = :domain) and (code = :code)"
-
-		).
-		  setLong  ("domain", domain).
-		  setString("code",   code).
-		  uniqueResult();
+		return object(ComputerEntity.class, Q, "domain", domain, "code", code);
 	}
 
 	public PersonEntity getPersonByLogin(Long domain, String login)

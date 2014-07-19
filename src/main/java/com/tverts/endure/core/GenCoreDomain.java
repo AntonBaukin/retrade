@@ -27,11 +27,15 @@ import com.tverts.genesis.GenesisHiberPartBase;
 
 import com.tverts.objects.Param;
 
+/* com.tverts: api */
+
+import com.tverts.api.clients.Computer;
+
 /* com.tverts: endure (auth + persons) */
 
 import com.tverts.endure.auth.Auth;
 import com.tverts.endure.auth.AuthLogin;
-import com.tverts.endure.auth.Computer;
+import com.tverts.endure.auth.ComputerEntity;
 import com.tverts.endure.auth.GetAuthLogin;
 import com.tverts.endure.person.Persons;
 
@@ -202,7 +206,7 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		}
 
 		//~: create default computer
-		Computer c = createComputer(ctx);
+		ComputerEntity c = createComputer(ctx);
 
 		//?: {login exists}
 		if(sys != null)
@@ -226,31 +230,33 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		);
 	}
 
-	protected Computer  createComputer(GenCtx ctx)
+	protected ComputerEntity createComputer(GenCtx ctx)
 	{
-		Computer c = new Computer();
+		ComputerEntity ce = new ComputerEntity();
+		Computer       c  = ce.getOx();
 
-		//~: domain
-		c.setDomain(ctx.get(Domain.class));
+		//=: domain
+		ce.setDomain(ctx.get(Domain.class));
 
-		//~: code
+		//=: code
 		c.setCode(Auth.SYSTEM_USER);
 
-		//~: name
+		//=: name
 		c.setName("System User");
 
-		//~: comment
+		//=: comment
 		c.setComment("Computer user automatically created " +
-		  "for System login of each Domain.");
-
+			 "for System login of each Domain."
+		);
 
 		//!: do save
-		actionRun(ActionType.SAVE, c);
+		ce.updateOx();
+		actionRun(ActionType.SAVE, ce);
 
-		return c;
+		return ce;
 	}
 
-	protected AuthLogin createSystemLogin(GenCtx ctx, Computer c)
+	protected AuthLogin createSystemLogin(GenCtx ctx, ComputerEntity c)
 	{
 		AuthLogin sys = new AuthLogin();
 

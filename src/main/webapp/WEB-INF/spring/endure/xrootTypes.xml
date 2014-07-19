@@ -38,9 +38,9 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · External Computer System client registration
+         · External Computer System Client Registration
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        com.tverts.endure.auth.Computer   Core: Auth: Computer;
+        com.tverts.endure.auth.ComputerEntity   Core: Auth: Computer;
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·

@@ -1,6 +1,6 @@
 package com.tverts.endure.auth;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import com.tverts.endure.person.Persons;
 
 /**
  * System login account for a {@link PersonEntity},
- * or a {@link Computer} (external) system.
+ * or a {@link ComputerEntity} (external) system.
  *
  * Note that a person or a computer may have
  * more than one login (with different roles,
@@ -28,12 +28,14 @@ public class AuthLogin extends Entity implements CatItem
 {
 	/* public: UserLogin (bean) properties */
 
-	public Domain    getDomain()
+	public Domain getDomain()
 	{
 		return domain;
 	}
 
-	public void      setDomain(Domain domain)
+	private Domain domain;
+
+	public void setDomain(Domain domain)
 	{
 		this.domain = domain;
 	}
@@ -43,19 +45,23 @@ public class AuthLogin extends Entity implements CatItem
 		return person;
 	}
 
-	public void      setPerson(PersonEntity person)
+	private PersonEntity person;
+
+	public void setPerson(PersonEntity person)
 	{
 		if((this.computer != null) && (person != null))
 			throw new IllegalStateException();
 		this.person = person;
 	}
 
-	public Computer  getComputer()
+	public ComputerEntity getComputer()
 	{
 		return computer;
 	}
 
-	public void      setComputer(Computer computer)
+	private ComputerEntity computer;
+
+	public void setComputer(ComputerEntity computer)
 	{
 		if((computer != null) && (this.person != null))
 			throw new IllegalStateException();
@@ -67,17 +73,19 @@ public class AuthLogin extends Entity implements CatItem
 	 * When AuthLogin is being closed, the code
 	 * is concatenated with the close time.
 	 */
-	public String    getCode()
+	public String getCode()
 	{
 		return login;
 	}
 
-	public void      setCode(String login)
+	private String login;
+
+	public void setCode(String login)
 	{
 		this.login = login;
 	}
 
-	public String    getName()
+	public String getName()
 	{
 		if(name != null)
 			return name;
@@ -90,64 +98,58 @@ public class AuthLogin extends Entity implements CatItem
 		return null;
 	}
 
-	public void      setName(String name)
+	private String name;
+
+	public void setName(String name)
 	{
 		this.name = name;
 	}
 
-	public String    getPasshash()
+	public String getPasshash()
 	{
 		return passhash;
 	}
 
-	public void      setPasshash(String passhash)
+	private String passhash;
+
+	public void setPasshash(String passhash)
 	{
 		this.passhash = passhash;
 	}
 
-	public Date      getCreateTime()
+	public Date getCreateTime()
 	{
 		return createTime;
 	}
 
-	public void      setCreateTime(Date createTime)
+	private Date createTime;
+
+	public void setCreateTime(Date createTime)
 	{
 		this.createTime = createTime;
 	}
 
-	public Date      getCloseTime()
+	public Date getCloseTime()
 	{
 		return closeTime;
 	}
 
-	public void      setCloseTime(Date closeTime)
+	private Date closeTime;
+
+	public void setCloseTime(Date closeTime)
 	{
 		this.closeTime = closeTime;
 	}
 
-	public String    getDescr()
+	public String getDescr()
 	{
 		return descr;
 	}
 
-	public void      setDescr(String descr)
+	private String descr;
+
+	public void setDescr(String descr)
 	{
 		this.descr = descr;
 	}
-
-
-	/* persisted attributes */
-
-	private Domain       domain;
-	private PersonEntity person;
-	private Computer     computer;
-
-	private String   login;
-	private String   name;
-	private String   passhash;
-
-	private Date     createTime;
-	private Date     closeTime;
-
-	private String   descr;
 }

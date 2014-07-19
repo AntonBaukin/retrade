@@ -1,6 +1,6 @@
 package com.tverts.endure.auth;
 
-/* standard Java classes */
+/* Java */
 
 import java.security.MessageDigest;
 
@@ -41,7 +41,7 @@ public class Auth
 
 	/* display name helpers */
 
-	public static String name(Computer c)
+	public static String name(ComputerEntity c)
 	{
 		return cats(catif(c.getCode(),
 		  "[", c.getCode(), "], "), c.getName());
