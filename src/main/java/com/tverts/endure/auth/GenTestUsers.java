@@ -17,6 +17,8 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
+import com.tverts.endure.person.FirmEntity;
+import com.tverts.endure.person.GetFirm;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
@@ -31,6 +33,7 @@ import com.tverts.secure.force.AskSecForceEvent;
 
 /* com.tverts: api */
 
+import com.tverts.api.clients.Computer;
 import com.tverts.api.clients.Person;
 
 /* com.tverts: endure (core + persons) */
@@ -43,6 +46,7 @@ import com.tverts.endure.person.PersonEntity;
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
+import com.tverts.support.SU;
 import com.tverts.support.xml.SaxProcessor;
 
 
@@ -163,7 +167,12 @@ public class GenTestUsers extends GenesisHiberPartBase
 		//=: person data
 		pe.setOx(gs.person);
 
+		//?: {has firm code}
+		if(!SU.sXe(gs.person.getXFirmKey()))
+			assignFirm(pe);
+
 		//!: save the person
+		pe.updateOx();
 		actionRun(ActionType.SAVE, pe);
 
 		LU.I(log(ctx), logsig(), " created person ",
@@ -171,6 +180,22 @@ public class GenTestUsers extends GenesisHiberPartBase
 		);
 
 		return true;
+	}
+
+	protected void    assignFirm(PersonEntity pe)
+	{
+		FirmEntity fe = EX.assertn(bean(GetFirm.class).
+		  getFirm(pe.getDomain(), pe.getOx().getXFirmKey()),
+
+		  "Firm entity with code [", pe.getOx().getXFirmKey(),
+		  "] not found in Domain [", pe.getDomain().getPrimaryKey(), "]!"
+		);
+
+		//=: firm entity
+		pe.setFirm(fe);
+
+		//~: clear the firm x-key (it's code)
+		pe.getOx().setXFirmKey(null);
 	}
 
 	protected void    saveLogin(GenCtx ctx, GenState s)
@@ -248,12 +273,12 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 	protected static class GenState
 	{
-		public Login  login;
-		public Person person;
-		public com.tverts.api.clients.Computer computer;
-		public PersonEntity personEntity;
+		public Login          login;
+		public Person         person;
+		public Computer       computer;
+		public PersonEntity   personEntity;
 		public ComputerEntity computerEntity;
-		public List<Secure> secures;
+		public List<Secure>   secures;
 	}
 
 

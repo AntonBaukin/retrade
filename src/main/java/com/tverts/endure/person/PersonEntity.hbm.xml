@@ -9,7 +9,7 @@
     extends = 'com.tverts.endure.core.Entity'>
 
 
-    <!-- Domain reference -->
+    <!-- Domain -->
 
     <many-to-one name = 'domain' foreign-key = 'fk_core_person_domain'>
 
@@ -17,6 +17,17 @@
         index = 'ix_core_person_domain'>
 
         <comment>Domain where the Person is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Firm -->
+
+    <many-to-one name = 'firm' foreign-key = 'fk_core_person_firm'>
+
+      <column name = 'fk_firm' index = 'ix_core_person_firm'>
+
+        <comment>Firm the Person is assigned to (works there)</comment>
       </column>
     </many-to-one>
 

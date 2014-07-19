@@ -65,4 +65,21 @@ public class      PersonEntity
 	{
 		this.domain = domain;
 	}
+
+	public FirmEntity getFirm()
+	{
+		return firm;
+	}
+
+	private FirmEntity firm;
+
+	public void setFirm(FirmEntity firm)
+	{
+		this.firm = firm;
+
+		if(firm == null)
+			getOx().setFirmKey(null);
+		else
+			getOx().setFirmKey(EX.assertn(firm.getPrimaryKey()));
+	}
 }
