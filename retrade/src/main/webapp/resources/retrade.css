@@ -377,6 +377,18 @@ td.retrade-user-menu-display-name > div
   font-size: 12pt; letter-spacing: 0.5pt;
 }
 
+td.retrade-user-menu-firm-name
+{
+  vertical-align: top; height: 100%;
+  text-align: left;  padding: 4pt 2pt 0 2pt;
+}
+
+td.retrade-user-menu-firm-name > div
+{
+  font-family: 'Tahoma', sans-serif;
+  font-size: 10pt;
+}
+
 td.retrade-user-menu-domain-staff
 {
   vertical-align: bottom;

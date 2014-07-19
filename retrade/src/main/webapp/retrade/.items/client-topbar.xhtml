@@ -187,6 +187,14 @@
                     </td>
                   </tr>
 
+                  <ui:fragment rendered = "#{not localView.domainStuff}">
+                    <tr>
+                      <td class = "retrade-user-menu-firm-name">
+                        <div>${localView.userFirmName}</div>
+                      </td>
+                    </tr>
+                  </ui:fragment>
+
                 </ui:fragment>
 
                 <tr>

@@ -11,14 +11,20 @@ import com.tverts.faces.ViewWithModes;
 
 /* com.tverts: api */
 
+import com.tverts.api.clients.Firm;
 import com.tverts.api.clients.Person;
 
 /* com.tverts: secure */
 
 import com.tverts.secure.SecPoint;
 
+/* com.tverts: endure (person) */
+
+import com.tverts.endure.person.FirmEntity;
+
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.SU;
 
@@ -33,6 +39,11 @@ import com.tverts.support.SU;
 public class FacesDesktopView extends ViewWithModes
 {
 	/* View Support */
+
+	public boolean isDomainStuff()
+	{
+		return getPerson().getOx().getFirmKey() == null;
+	}
 
 	public String  getUserDisplayName()
 	{
@@ -61,10 +72,21 @@ public class FacesDesktopView extends ViewWithModes
 		return SecPoint.loadLogin().getCode();
 	}
 
-	public boolean isDomainStuff()
+	public String  getUserFirmName()
 	{
-		return (EX.assertn(getPerson().getOx()).getFirmKey() != null);
+		FirmEntity fe = getPerson().getFirm();
+		Firm       f  = (fe == null)?(null):(fe.getOx());
+
+		if(f == null) return null;
+
+		if(!SU.sXe(f.getName()))
+			return f.getName();
+		EX.assertx(CMP.eq(fe.getName(), f.getName()));
+
+		if(!SU.sXe(f.getFullName()))
+			return f.getFullName();
+
+		EX.assertx(CMP.eq(fe.getCode(), f.getCode()));
+		return EX.asserts(fe.getCode());
 	}
-
-
 }
