@@ -30,13 +30,25 @@ public interface Ox
 	/**
 	 * Invoke that method to indicate
 	 * that the Ox object was updated
-	 * without changing it's link.
+	 * without changing it's object link.
 	 *
 	 * When the object is updated, it is
 	 * later re-written to the database.
 	 *
 	 * Note that you must also invoke this
 	 * method for new objects.
+	 *
+	 * There is a simple rule for updating
+	 * entities: modify simple fields in the
+	 * ox-object, and they will be copied
+	 * into the database entity; update links
+	 * to the related entities in the entity,
+	 * and the primary keys would be copied
+	 * to the ox-object.
+	 *
+	 * Also noe that x-keys are never stored
+	 * in the system database, but in external
+	 * databases only!
 	 */
 	public void    updateOx();
 

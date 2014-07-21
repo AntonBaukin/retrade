@@ -16,12 +16,14 @@ public abstract class CatItemBase
        extends        NumericBase
        implements     CatItem, TxEntity
 {
-	/* public: CatItemBase (bean) interface */
+	/* Catalogue Item Base */
 
 	public Domain  getDomain()
 	{
 		return domain;
 	}
+
+	private Domain domain;
 
 	public void    setDomain(Domain domain)
 	{
@@ -33,6 +35,8 @@ public abstract class CatItemBase
 		return code;
 	}
 
+	private String code;
+
 	public void    setCode(String code)
 	{
 		this.code = code;
@@ -43,34 +47,25 @@ public abstract class CatItemBase
 		return name;
 	}
 
+	private String name;
+
 	public void    setName(String name)
 	{
 		this.name = name;
 	}
 
 
-	/* public: TxEntity interface */
+	/* Transactional Entity */
 
-	public Long getTxn()
+	public Long    getTxn()
 	{
 		return (txn == 0L)?(null):(txn);
 	}
 
 	private long txn;
 
-	public void setTxn(Long txn)
+	public void    setTxn(Long txn)
 	{
 		this.txn = (txn == null)?(0L):(txn);
 	}
-
-
-	/* domain reference */
-
-	private Domain domain;
-
-
-	/* catalogue attributes */
-
-	private String code;
-	private String name;
 }

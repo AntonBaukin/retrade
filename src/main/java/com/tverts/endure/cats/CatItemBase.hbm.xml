@@ -52,7 +52,7 @@
 
     <property name = 'name'>
 
-      <column name = 'cat_item_name' not-null = 'true' length = '1024'>
+      <column name = 'item_name' not-null = 'true' length = '1024'>
         <comment>The name of the Catalogue Item</comment>
       </column>
     </property>

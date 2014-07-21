@@ -37,7 +37,7 @@
 
     <property name = 'name'>
 
-      <column name = 'store_name' not-null = 'true' length = '512'>
+      <column name = 'item_name' not-null = 'true' length = '512'>
 
         <comment>The name of the entity</comment>
       </column>

@@ -1,0 +1,35 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.cats'>
+
+  <union-subclass name = 'OxCatItemBase' abstract = 'true'
+    extends = 'com.tverts.endure.cats.CatItemBase'>
+
+
+    <!-- Object Extraction Search -->
+
+    <property name = 'oxSearch' type = 'text' lazy = 'true'>
+      <column name = 'oxsearch'>
+        <comment>Object extraction search text</comment>
+      </column>
+    </property>
+
+
+    <!-- Object Extraction -->
+
+    <property name = 'oxBytes'>
+
+      <column name = 'oxbytes' sql-type = 'bytea'>
+        <comment>
+          Entity-related data object written to XML and enflated with Gun-ZIP
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.OxBytesType'/>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>
