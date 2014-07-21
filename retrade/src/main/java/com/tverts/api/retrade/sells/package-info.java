@@ -1,9 +1,9 @@
 
 @XmlSchema(
-  namespace = "urn:tverts.com:api:retrade:sells", xmlns = {
-    @XmlNs(prefix = "sells", namespaceURI = "urn:tverts.com:api:retrade:sells"),
-    @XmlNs(prefix = "xsi",   namespaceURI = "http://www.w3.org/2001/XMLSchema-instance"),
-    @XmlNs(prefix = "xs",    namespaceURI = "http://www.w3.org/2001/XMLSchema")
+  namespace = "urn:tverts.com:api:retrade", xmlns = {
+    @XmlNs(prefix = "rapi", namespaceURI = "urn:tverts.com:api:retrade"),
+    @XmlNs(prefix = "xsi",  namespaceURI = "http://www.w3.org/2001/XMLSchema-instance"),
+    @XmlNs(prefix = "xs",   namespaceURI = "http://www.w3.org/2001/XMLSchema")
   }
 )
 package com.tverts.api.retrade.sells;
