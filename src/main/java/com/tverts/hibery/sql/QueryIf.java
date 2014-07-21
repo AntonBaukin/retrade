@@ -1,6 +1,6 @@
 package com.tverts.hibery.sql;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +17,7 @@ import org.jdom2.Element;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -39,28 +39,16 @@ public class QueryIf extends SQLTaskBase
 		//~: select <if> elements
 		for(Element n : node.getChildren("if"))
 			readIf(n);
-
-		//~: select <query> elements
-		for(Element n : node.getChildren("query"))
-			readQuery(n);
 	}
-
-
-	/* protected: configuring */
 
 	protected void readIf(Element n)
 	{
 		int i = ifs.size();
 
-		ifs.add(s2s(n.getText()));
+		ifs.add(SU.s2s(n.getText()));
 
 		if("true".equals(n.getAttributeValue("empty")))
 			empties.add(i);
-	}
-
-	protected void readQuery(Element n)
-	{
-		queries.add(s2s(n.getText()));
 	}
 
 
@@ -88,21 +76,12 @@ public class QueryIf extends SQLTaskBase
 		return true;
 	}
 
-	protected void act(Session session)
-	{
-		for(String q : queries)
-			session.createSQLQuery(q).executeUpdate();
-	}
 
+	/* protected: task configuration */
 
-	/* private: conditions and queries */
-
-	private List<String> ifs     =
+	protected List<String> ifs =
 	  new ArrayList<String>(1);
 
-	private List<String> queries =
-	  new ArrayList<String>(1);
-
-	private Set<Integer> empties =
+	protected Set<Integer> empties =
 	  new HashSet<Integer>(1);
 }

@@ -19,7 +19,6 @@
     <query>
 
       create index ix_exec_request_flags on exec_request (
-
         is_executed, was_delivered, pk_exec_request
       )
 

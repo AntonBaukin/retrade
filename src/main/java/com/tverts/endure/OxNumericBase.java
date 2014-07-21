@@ -1,8 +1,7 @@
-package com.tverts.endure.cats;
+package com.tverts.endure;
 
 /* com.tverts: api */
 
-import com.tverts.api.core.CatItem;
 import com.tverts.api.core.PkeyObject;
 
 /* com.tverts: hibery */
@@ -10,39 +9,35 @@ import com.tverts.api.core.PkeyObject;
 import com.tverts.hibery.OxBytes;
 import com.tverts.hibery.OxBytesType;
 
-/* com.tverts: endure */
-
-import com.tverts.endure.Ox;
-import com.tverts.endure.OxSearch;
-
 /* com.tverts: support */
 
 import com.tverts.support.CMP;
 import com.tverts.support.EX;
-import com.tverts.support.SU;
 
 
 /**
- * Implementation base for catalogue items
- * having nested XML document.
+ * Plain object storing it's state
+ * as nested XML document.
+ *
+ * Has Ox-Search update support for child
+ * classes implementing the interface.
+ *
  *
  * @author anton.baukin@gmail.com.
  */
-public abstract class OxCatItemBase
-       extends        CatItemBase
-       implements     Ox, OxSearch
+public abstract class OxNumericBase
+       extends        NumericBase
+       implements     Ox
 {
 	/* Object Extraction */
 
-	public CatItem getOx()
+	public Object  getOx()
 	{
-		return (CatItem)((oxBytes == null)?(null):(oxBytes.getOx()));
+		return (oxBytes == null)?(null):(oxBytes.getOx());
 	}
 
 	public void    setOx(Object ox)
 	{
-		EX.assertx(ox instanceof CatItem);
-
 		if(oxBytes == null)
 			oxBytes = new OxBytes(ox);
 		else
@@ -70,15 +65,9 @@ public abstract class OxCatItemBase
 				((PkeyObject)ox).setPkey(pk);
 		}
 
-		//~: assign code+name from the ox-item
-		CatItem i; if((i = this.getOx()) != null)
-		{
-			setCode(i.getCode());
-			setName(i.getName());
-		}
-
 		//~: update the search text
-		this.oxSearch = null;
+		if(this instanceof OxSearch)
+			setOxSearch(null);
 	}
 
 	public boolean isUpdatedOx()
@@ -86,22 +75,9 @@ public abstract class OxCatItemBase
 		return (oxBytes != null) && oxBytes.isUpdatedOx();
 	}
 
-	public String  getOxSearch()
-	{
-		return (oxSearch != null)?(oxSearch):
-		  (oxSearch = createOxSearch());
-	}
-
-	private String oxSearch;
-
 	public void    setOxSearch(String oxSearch)
 	{
-		this.oxSearch = oxSearch;
-	}
-
-	public String  createOxSearch()
-	{
-		return SU.catx(getCode(), getName());
+		EX.assertx(oxSearch == null);
 	}
 
 	/**
