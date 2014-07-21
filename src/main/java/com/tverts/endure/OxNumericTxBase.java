@@ -10,7 +10,7 @@ public abstract class OxNumericTxBase
        extends        OxNumericBase
        implements     TxEntity
 {
-	/* public: TxEntity interface */
+	/* Transaction Number */
 
 	public Long getTxn()
 	{

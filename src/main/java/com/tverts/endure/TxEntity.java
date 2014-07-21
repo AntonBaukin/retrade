@@ -19,7 +19,7 @@ package com.tverts.endure;
  */
 public interface TxEntity
 {
-	/* public: TxEntity interface */
+	/* Transaction Number */
 
 	public Long getTxn();
 
