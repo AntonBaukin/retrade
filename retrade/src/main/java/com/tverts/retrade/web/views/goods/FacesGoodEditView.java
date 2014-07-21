@@ -27,7 +27,6 @@ import static com.tverts.servlet.RequestPoint.request;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
-import com.tverts.model.ModelData;
 import com.tverts.model.ModelRequest;
 import com.tverts.model.SimpleModelBean;
 
@@ -39,6 +38,10 @@ import com.tverts.actions.ActionType;
 /* com.tverts: secure */
 
 import com.tverts.secure.SecPoint;
+
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.Calc;
 
 /* com.tverts: endure (core + trees) */
 
@@ -154,20 +157,25 @@ public class FacesGoodEditView extends ModelView
 		//?: {has calculation updated}
 		if(getModel().isCalcUpdated())
 		{
-			GoodCalc c = bean(GetGoods.class).buildCalc(getCalcView());
+			GoodCalc gc = bean(GetGoods.class).buildCalc(getCalcView());
+			Calc      c = gc.getOx();
 
-			//~: open time (now)
-			c.setOpenTime(new java.util.Date());
+			//=: open time (now)
+			c.setTime(new java.util.Date());
 
-			//~: (this) good unit
-			c.setGoodUnit(gu);
+			//=: (this) good unit
+			gc.setGoodUnit(gu);
 
 			//!: save it
-			actionRun(ActionType.SAVE, c);
+			gc.updateOx();
+			actionRun(ActionType.SAVE, gc);
 		}
 		//~: update the comment
 		else if((getCalcView() != null) && (gu.getGoodCalc() != null))
-			gu.getGoodCalc().setRemarks(getCalcView().getRemarks());
+		{
+			gu.getGoodCalc().getOx().setRemarks(getCalcView().getRemarks());
+			gu.getGoodCalc().updateOx();
+		}
 
 		//?: {has selection set} add to it
 		if(getModel().isSelSetAble() && (getSelSet() != null))
@@ -741,7 +749,7 @@ public class FacesGoodEditView extends ModelView
 
 		//c: for all not closed calculations
 		for(GoodCalc gc : calcs) if(c.getCloseTime() != null)
-			if(gc.getSubCode().equals(c.getSubCode()))
+			if(gc.getOx().getSubCode().equals(c.getSubCode()))
 			{
 				if(gc.getPrimaryKey().equals(c.getObjectKey()))
 					continue;

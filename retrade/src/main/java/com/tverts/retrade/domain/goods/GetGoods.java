@@ -36,6 +36,10 @@ import com.tverts.secure.SecPoint;
 
 import com.tverts.model.DataSortModel;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.Calc;
+
 /* com.tverts: endure (core, aggregation, trees) */
 
 import com.tverts.endure.core.Domain;
@@ -1398,14 +1402,15 @@ from GoodPrice gp where
 
 	public GoodCalc        buildCalc(GoodCalcView v)
 	{
-		GoodCalc c = new GoodCalc();
+		GoodCalc gc = new GoodCalc();
+		Calc      c = gc.getOx();
 
 		//~: good unit
 		if(v.getGoodUnit() != null)
-			c.setGoodUnit(getGoodUnitStrict(v.getGoodUnit()));
+			gc.setGoodUnit(getGoodUnitStrict(v.getGoodUnit()));
 
 		//~: open time
-		c.setOpenTime(v.getOpenTime());
+		c.setTime(v.getOpenTime());
 
 		//~: semi-ready
 		c.setSemiReady(v.isSemiReady());
@@ -1423,7 +1428,7 @@ from GoodPrice gp where
 			c.setSubVolume(v.getSubVolume());
 
 			//~: super good
-			c.setSuperGood(getGoodUnit(v.getSuperGood()));
+			gc.setSuperGood(getGoodUnit(v.getSuperGood()));
 		}
 
 		//c: build the parts
@@ -1432,8 +1437,8 @@ from GoodPrice gp where
 			CalcPart x = new CalcPart();
 
 			//~: good calc
-			x.setGoodCalc(c);
-			c.getParts().add(x);
+			x.setGoodCalc(gc);
+			gc.getParts().add(x);
 
 			//~: good unit
 			x.setGoodUnit(getGoodUnitStrict(p.getGoodUnit()));
@@ -1445,7 +1450,10 @@ from GoodPrice gp where
 			x.setSemiReady(p.getSemiReady());
 		}
 
-		return c;
+		//!: update ox
+		gc.updateOx();
+
+		return gc;
 	}
 
 

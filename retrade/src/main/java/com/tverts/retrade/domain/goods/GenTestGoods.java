@@ -29,12 +29,14 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: genesis */
 
+
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
 /* com.tverts: api */
 
+import com.tverts.api.retrade.goods.Calc;
 import com.tverts.api.retrade.goods.Measure;
 
 /* com.tverts: endure (core + trees) */
@@ -453,27 +455,28 @@ public class GenTestGoods extends GenesisHiberPartBase
 	{
 		GoodUnit  gu = state.good.good;
 		GoodCalc  gc = gu.getGoodCalc();
+		Calc       c;
 		StateCalc sc = state.good.calc;
 
 		//?: {good already has a calculation} skip this
 		if(gc != null) return gc;
 
 		//~: create a new one
-		gc = new GoodCalc();
+		c = (gc = new GoodCalc()).getOx();
 
-		//~: calc good
+		//=: calc good
 		gc.setGoodUnit(gu);
 
-		//~: semi-ready
-		gc.setSemiReady(sc.semiReady);
+		//=: semi-ready
+		c.setSemiReady(sc.semiReady);
 
-		//~: open time
-		gc.setOpenTime(EX.assertn(ctx.get(Date.class)));
+		//=: open time
+		c.setTime(EX.assertn(ctx.get(Date.class)));
 
 		//?: {derived}
 		if(sc.derived)
 		{
-			//~: super-good
+			//=: super-good
 			gc.setSuperGood(EX.assertn(
 			  ((Map<String, GoodUnit>)ctx.get(CTX_GOODS_MAP)).get(sc.superGood),
 
@@ -482,12 +485,12 @@ public class GenTestGoods extends GenesisHiberPartBase
 			));
 
 			//~: sub-code
-			gc.setSubCode(sc.subCode);
+			c.setSubCode(sc.subCode);
 
 			//~: sub-volume
 			try
 			{
-				gc.setSubVolume(new BigDecimal(sc.subVolume).
+				c.setSubVolume(new BigDecimal(sc.subVolume).
 				  setScale(gc.getSuperGood().getMeasure().getOx().isFractional()?(3):(0)));
 			}
 			catch(Throwable e)
@@ -510,7 +513,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			gp.setGoodUnit(gc.getSuperGood());
 
 			//~: part volume
-			gp.setVolume(gc.getSubVolume());
+			gp.setVolume(c.getSubVolume());
 		}
 
 		//~: create the goods
@@ -565,6 +568,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		}
 
 		//!: save (add) the calculation
+		gc.updateOx();
 		actionRun(ActionType.SAVE, gc);
 
 		LU.I(log(ctx), logsig(), " created Good Calc [",

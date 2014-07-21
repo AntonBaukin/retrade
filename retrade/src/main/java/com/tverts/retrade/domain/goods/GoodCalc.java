@@ -1,16 +1,22 @@
 package com.tverts.retrade.domain.goods;
 
-/* standard Java classes */
+/* Java */
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.Calc;
+
 /* com.tverts: endure (core) */
 
-import com.tverts.endure.NumericBase;
-import com.tverts.endure.TxEntity;
+import com.tverts.endure.OxNumericTxBase;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -20,16 +26,56 @@ import com.tverts.endure.TxEntity;
  *
  * @author anton.baukin@gmail.com
  */
-public class      GoodCalc
-       extends    NumericBase
-       implements TxEntity
+public class GoodCalc extends OxNumericTxBase
 {
-	/* public: bean interface */
+	/* Object Extraction */
+
+	public Calc   getOx()
+	{
+		return (Calc) super.getOx();
+	}
+
+	public void   setOx(Object ox)
+	{
+		EX.assertx(ox instanceof Calc);
+		super.setOx(ox);
+	}
+
+	public void   updateOx()
+	{
+		super.updateOx();
+
+		Calc c; if((c = this.getOx()) != null)
+		{
+			//=: related good
+			c.setGood(goodUnit.getPrimaryKey());
+
+			//=: super good
+			if(superGood == null)
+				c.setSuperGood(null);
+			else
+				c.setSuperGood(superGood.getPrimaryKey());
+
+			//=: open time
+			openTime = c.getTime();
+
+			//=: close time
+			closeTime = c.getCloseTime();
+
+			//=: semi-ready
+			semiReady = c.isSemiReady();
+		}
+	}
+
+
+	/* Good Calculation */
 
 	public GoodUnit getGoodUnit()
 	{
 		return goodUnit;
 	}
+
+	private GoodUnit goodUnit;
 
 	public void setGoodUnit(GoodUnit goodUnit)
 	{
@@ -41,6 +87,8 @@ public class      GoodCalc
 		return openTime;
 	}
 
+	private Date openTime;
+
 	public void setOpenTime(Date openTime)
 	{
 		this.openTime = openTime;
@@ -50,6 +98,8 @@ public class      GoodCalc
 	{
 		return closeTime;
 	}
+
+	private Date closeTime;
 
 	public void setCloseTime(Date closeTime)
 	{
@@ -66,19 +116,23 @@ public class      GoodCalc
 		return semiReady;
 	}
 
+	private boolean semiReady;
+
 	public void setSemiReady(boolean semiReady)
 	{
 		this.semiReady = semiReady;
 	}
 
-	public String getRemarks()
+	public GoodUnit getSuperGood()
 	{
-		return remarks;
+		return superGood;
 	}
 
-	public void setRemarks(String remarks)
+	private GoodUnit superGood;
+
+	public void setSuperGood(GoodUnit superGood)
 	{
-		this.remarks = remarks;
+		this.superGood = superGood;
 	}
 
 	public List<CalcPart> getParts()
@@ -87,74 +141,10 @@ public class      GoodCalc
 		  (parts = new ArrayList<CalcPart>(1));
 	}
 
+	private List<CalcPart> parts;
+
 	public void setParts(List<CalcPart> parts)
 	{
 		this.parts = parts;
 	}
-
-	public GoodUnit getSuperGood()
-	{
-		return superGood;
-	}
-
-	public void setSuperGood(GoodUnit superGood)
-	{
-		this.superGood = superGood;
-	}
-
-	public String getSubCode()
-	{
-		return subCode;
-	}
-
-	public void setSubCode(String subCode)
-	{
-		this.subCode = subCode;
-	}
-
-	public BigDecimal getSubVolume()
-	{
-		return subVolume;
-	}
-
-	public void setSubVolume(BigDecimal v)
-	{
-		if((v != null) && (v.scale() != 8))
-			v = v.setScale(8);
-
-		this.subVolume = v;
-	}
-
-
-	/* public: TxEntity interface */
-
-	public Long getTxn()
-	{
-		return (txn == 0L)?(null):(txn);
-	}
-
-	private long txn;
-
-	/**
-	 * When updated, transaction number is also
-	 * copied to the unified mirror.
-	 */
-	public void setTxn(Long txn)
-	{
-		this.txn = (txn == null)?(0L):(txn);
-	}
-
-
-	/* calculation attributes and entities */
-
-	private GoodUnit       goodUnit;
-	private Date           openTime;
-	private Date           closeTime;
-	private boolean        semiReady;
-	private String         remarks;
-	private List<CalcPart> parts;
-
-	private GoodUnit       superGood;
-	private String         subCode;
-	private BigDecimal     subVolume;
 }

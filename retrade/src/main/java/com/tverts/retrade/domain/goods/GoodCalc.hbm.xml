@@ -5,26 +5,11 @@
 
 <hibernate-mapping package = 'com.tverts.retrade.domain.goods'>
 
-  <class name = 'GoodCalc' table = 'retrade_good_calc' lazy = 'true'>
-
-    <!-- Primary Key -->
-
-    <id name = 'primaryKey' column = 'pk_good_calc'/>
+  <union-subclass name = 'GoodCalc' table = 'retrade_good_calc'
+    extends = 'com.tverts.endure.OxNumericTxBase'>
 
 
-    <!-- Transaction Number -->
-
-    <property name = 'txn'>
-
-      <column name = 'txn' not-null = 'true'
-        index = 'ix_good_calc_txn'>
-
-        <comment>Transaction Number (txn)</comment>
-      </column>
-    </property>
-
-
-    <!-- Good Unit reference -->
+    <!-- Good Unit -->
 
     <many-to-one name = 'goodUnit' foreign-key = 'fk_good_calc_unit'>
 
@@ -36,7 +21,18 @@
     </many-to-one>
 
 
-    <!-- Open and Close timestamps -->
+    <!-- Super Good Unit -->
+
+    <many-to-one name = 'superGood' foreign-key = 'fk_good_calc_super'>
+
+      <column name = 'fk_super_good' index = 'ix_good_calc_super'>
+
+        <comment>The Good Unit originating this Good Calculation</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Open Timestamp -->
 
     <property name = 'openTime' type = 'timestamp'>
 
@@ -44,6 +40,9 @@
         <comment>The timestamp this Calculation was made effective</comment>
       </column>
     </property>
+
+
+    <!-- Close Timestamp -->
 
     <property name = 'closeTime' type = 'timestamp'>
 
@@ -57,8 +56,7 @@
       </column>
     </property>
 
-
-    <!-- Semi-Ready flag -->
+    <!-- Semi-Ready Flag -->
 
     <property name = 'semiReady'>
 
@@ -68,16 +66,6 @@
           the source for other products at the same time.
           Such a Goods have special meaning in the system.
         </comment>
-      </column>
-    </property>
-
-
-    <!-- Remarks -->
-
-    <property name = 'remarks' type = 'text'>
-
-      <column name = 'remarks'>
-        <comment>Comments on this Calculation</comment>
       </column>
     </property>
 
@@ -97,40 +85,7 @@
       <one-to-many class = 'CalcPart'/>
     </list>
 
-
-    <!-- Super Good Unit reference -->
-
-    <many-to-one name = 'superGood' foreign-key = 'fk_good_calc_super'>
-
-      <column name = 'fk_super_good' index = 'ix_good_calc_super'>
-
-        <comment>The Good Unit originating this Good Calculation</comment>
-      </column>
-    </many-to-one>
-
-
-    <!-- Sub-Code -->
-
-    <property name = 'subCode'>
-
-      <column name = 'sub_code' length = '128' index = 'ix_good_calc_super'>
-
-        <comment>Sub-code of the derived good</comment>
-      </column>
-    </property>
-
-
-    <!-- Sub-Volume -->
-
-    <property name = 'subVolume' type = 'big_decimal'>
-
-      <column name = 'sub_volume' precision = '18' scale = '8'>
-
-        <comment>The volume (amount) of the derived good</comment>
-      </column>
-    </property>
-
-  </class>
+  </union-subclass>
 </hibernate-mapping>
 
 <!--

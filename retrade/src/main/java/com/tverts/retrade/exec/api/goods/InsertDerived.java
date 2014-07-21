@@ -16,6 +16,7 @@ import com.tverts.actions.ActionsPoint;
 /* com.tverts: hibery */
 
 import com.tverts.api.core.Holder;
+import com.tverts.api.retrade.goods.Calc;
 import com.tverts.api.retrade.goods.Good;
 
 /* com.tverts: retrade domain (tree + goods) */
@@ -61,19 +62,20 @@ public class InsertDerived extends InsertGood
 
 		//<: create the derived calculation
 
-		GoodCalc c = new GoodCalc();
+		GoodCalc gc = new GoodCalc();
+		Calc      c = gc.getOx();
 
 		//~: good unit <-> calc
-		c.setGoodUnit(gu);
+		gc.setGoodUnit(gu);
 
 		//~: semi-ready
 		c.setSemiReady(dg.isSemiReady());
 
 		//~: open time: from the beginning
-		c.setOpenTime(new java.util.Date(0L));
+		c.setTime(new java.util.Date(0L));
 
 		//~: super good unit
-		c.setSuperGood(loadSuperGood(dg));
+		gc.setSuperGood(loadSuperGood(dg));
 
 		//~: sub-code
 		c.setSubCode(EX.assertn(SU.s2s(dg.getSubCode())));
@@ -86,11 +88,11 @@ public class InsertDerived extends InsertGood
 		CalcPart p = new CalcPart();
 
 		//~: part <-> calc
-		p.setGoodCalc(c);
-		c.getParts().add(p);
+		p.setGoodCalc(gc);
+		gc.getParts().add(p);
 
 		//~: part good (super good)
-		p.setGoodUnit(c.getSuperGood());
+		p.setGoodUnit(gc.getSuperGood());
 
 		//~: volume
 		p.setVolume(c.getSubVolume());
@@ -98,10 +100,11 @@ public class InsertDerived extends InsertGood
 		//>: create the derived calculation
 
 		//!: save it
-		ActionsPoint.actionRun(ActionType.SAVE, c);
+		gc.updateOx();
+		ActionsPoint.actionRun(ActionType.SAVE, gc);
 
 		//~: good unit <-> calc
-		gu.setGoodCalc(c);
+		gu.setGoodCalc(gc);
 
 		//~: add good to the goods tree
 		addToGoodsTree(gu);

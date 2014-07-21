@@ -194,14 +194,14 @@ public class GoodCalcView implements Serializable
 		this.openTime = c.getOpenTime();
 		this.closeTime = c.getCloseTime();
 		this.semiReady = c.isSemiReady();
-		this.remarks = c.getRemarks();
+		this.remarks = c.getOx().getRemarks();
 
 		//~: derived good
 		this.derived = (c.getSuperGood() != null);
 		if(this.derived)
 		{
-			this.subCode = c.getSubCode();
-			this.subVolume = c.getSubVolume();
+			this.subCode = c.getOx().getSubCode();
+			this.subVolume = c.getOx().getSubVolume();
 			this.initSuperGood(c.getSuperGood());
 		}
 

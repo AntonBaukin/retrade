@@ -44,9 +44,9 @@ public class DumpDerived extends EntitiesDumperBase
 
 		EX.assertn(u.getGoodCalc());
 		g.setSuperGood(u.getGoodCalc().getSuperGood().getPrimaryKey());
-		g.setSubCode(u.getGoodCalc().getSubCode());
-		g.setSubVolume(u.getGoodCalc().getSubVolume());
 		g.setSemiReady(u.getGoodCalc().isSemiReady());
+		g.setSubCode(u.getGoodCalc().getOx().getSubCode());
+		g.setSubVolume(u.getGoodCalc().getOx().getSubVolume());
 
 		return g;
 	}

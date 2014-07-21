@@ -48,9 +48,6 @@ public class DumpCalcs extends EntitiesDumperBase
 		//~: good
 		d.setGood(s.getGoodUnit().getPrimaryKey());
 
-		//~: report as fixed document
-		d.setFixed(true);
-
 		//c: for the parts
 		for(CalcPart p : s.getParts())
 		{
