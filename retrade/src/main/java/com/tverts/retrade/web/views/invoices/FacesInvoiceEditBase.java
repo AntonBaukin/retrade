@@ -392,7 +392,7 @@ public abstract class FacesInvoiceEditBase extends ModelView
 				g.setGoodVolume(new BigDecimal(vo));
 
 				//?: {volume must be integer}
-				if(!gu.getMeasure().isFractional())
+				if(!gu.getMeasure().getOx().isFractional())
 					g.setGoodVolume(g.getGoodVolume().setScale(0));
 			}
 			catch(Throwable e)

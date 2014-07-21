@@ -1,6 +1,6 @@
 package com.tverts.api.retrade.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 
@@ -22,14 +22,13 @@ import com.tverts.api.core.CatItem;
 })
 public class Measure extends CatItem
 {
-	public static final long serialVersionUID = 0L;
-
-
 	@XmlElement(name = "class-code")
 	public String getClassCode()
 	{
 		return classCode;
 	}
+
+	private String classCode;
 
 	public void setClassCode(String classCode)
 	{
@@ -42,26 +41,27 @@ public class Measure extends CatItem
 		return classUnit;
 	}
 
+	private BigDecimal classUnit;
+
 	public void setClassUnit(BigDecimal classUnit)
 	{
 		this.classUnit = classUnit;
 	}
 
+	/**
+	 * Tells that the volume measured by
+	 * this unit contains fractional part.
+	 */
 	@XmlElement(name = "fractional")
-	public Boolean isFractional()
+	public boolean isFractional()
 	{
-		return fractional?(Boolean.TRUE):(null);
+		return fractional;
 	}
 
-	public void setFractional(Boolean fractional)
+	private boolean fractional;
+
+	public void setFractional(boolean fractional)
 	{
-		this.fractional = Boolean.TRUE.equals(fractional);
+		this.fractional = fractional;
 	}
-
-
-	/* attributes */
-
-	private String     classCode;
-	private BigDecimal classUnit;
-	private boolean    fractional;
 }

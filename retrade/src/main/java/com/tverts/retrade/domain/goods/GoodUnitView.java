@@ -216,7 +216,7 @@ public class GoodUnitView implements Serializable
 
 		//~: is integer flag
 		this.integer = (gu.getMeasure() == null)?(false):
-		  (!gu.getMeasure().isFractional());
+		  (!gu.getMeasure().getOx().isFractional());
 
 		return this;
 	}

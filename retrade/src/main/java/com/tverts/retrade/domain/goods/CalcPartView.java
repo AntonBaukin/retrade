@@ -148,7 +148,7 @@ public class CalcPartView implements Serializable
 	public CalcPartView init(MeasureUnit mu)
 	{
 		this.measureName = mu.getCode();
-		setInteger(!mu.isFractional());
+		setInteger(!mu.getOx().isFractional());
 
 		return this;
 	}

@@ -23,16 +23,10 @@ public class DumpMeasures extends EntitiesDumperBase
 	protected Object createApiEntity(Object src)
 	{
 		MeasureUnit u = (MeasureUnit)src;
-		Measure     m = new Measure();
+		Measure     m = u.getOx();
 
-		m.setPkey(u.getPrimaryKey());
+		//~: tx-number
 		m.setTx(u.getTxn());
-		m.setCode(u.getCode());
-		m.setName(u.getName());
-
-		m.setClassCode(u.getClassCode());
-		m.setClassUnit(u.getClassUnit());
-		m.setFractional(u.isFractional());
 
 		return m;
 	}

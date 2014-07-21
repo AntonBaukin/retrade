@@ -44,23 +44,11 @@ public class UpdateMeasure extends UpdateEntityBase
 		MeasureUnit mu = (MeasureUnit) entity;
 		Measure     m  = (Measure) source;
 
-		//~: code
-		mu.setCode(m.getCode());
-
-		//~: name
-		mu.setName(m.getName());
-
-		//~: classification code
-		mu.setClassCode(m.getClassCode());
-
-		//~: unit volume
-		mu.setClassUnit(m.getClassUnit());
-
-		//~: is fractional
-		mu.setFractional(m.isFractional());
-
+		//=: ox-measure
+		mu.setOx(m);
 
 		//!: update action
+		mu.updateOx();
 		ActionsPoint.actionRun(ActionType.UPDATE, mu);
 	}
 }

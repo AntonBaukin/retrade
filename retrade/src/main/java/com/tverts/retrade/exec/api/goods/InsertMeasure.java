@@ -39,26 +39,14 @@ public class InsertMeasure extends InsertEntityBase
 		Measure     m  = (Measure) source;
 		MeasureUnit mu = new MeasureUnit();
 
-		//~: domain
+		//=: domain
 		mu.setDomain(domain());
 
-		//~: code
-		mu.setCode(m.getCode());
-
-		//~: name
-		mu.setName(m.getName());
-
-		//~: classification code
-		mu.setClassCode(m.getClassCode());
-
-		//~: unit by the classification
-		mu.setClassUnit(m.getClassUnit());
-
-		//~: fractional flag
-		mu.setFractional(Boolean.TRUE.equals(m.isFractional()));
-
+		//=: ox-measure
+		mu.setOx(m);
 
 		//!: do save
+		mu.updateOx();
 		ActionsPoint.actionRun(ActionType.SAVE, mu);
 
 		return mu.getPrimaryKey();

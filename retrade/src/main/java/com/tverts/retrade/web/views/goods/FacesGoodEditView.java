@@ -335,7 +335,7 @@ public class FacesGoodEditView extends ModelView
 				p.setVolume(new BigDecimal(vo));
 
 				//?: {volume must be integer}
-				if(!gu.getMeasure().isFractional())
+				if(!gu.getMeasure().getOx().isFractional())
 					p.setVolume(p.getVolume().setScale(0));
 			}
 			catch(Throwable e)
@@ -423,7 +423,7 @@ public class FacesGoodEditView extends ModelView
 			p.setVolume(c.getSubVolume());
 
 			//?: {volume must be integer}
-			if(!gu.getMeasure().isFractional())
+			if(!gu.getMeasure().getOx().isFractional())
 				p.setVolume(p.getVolume().setScale(0));
 		}
 		catch(Throwable e)

@@ -8,6 +8,10 @@ import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.Measure;
+
 /* com.tverts: endure (catalogues) */
 
 import com.tverts.endure.cats.CatItem;
@@ -63,10 +67,11 @@ public class MeasureUnitView extends CatItemView
 	public MeasureUnitView init(CatItem ci)
 	{
 		MeasureUnit mu = (MeasureUnit) ci;
+		Measure      m = mu.getOx();
 
-		classCode  = mu.getClassCode();
-		classUnit  = mu.getClassUnit();
-		fractional = mu.isFractional();
+		classCode  = m.getClassCode();
+		classUnit  = m.getClassUnit();
+		fractional = m.isFractional();
 
 		return (MeasureUnitView) super.init(ci);
 	}

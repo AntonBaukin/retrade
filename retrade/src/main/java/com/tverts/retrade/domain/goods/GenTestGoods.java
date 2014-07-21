@@ -33,6 +33,10 @@ import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.Measure;
+
 /* com.tverts: endure (core + trees) */
 
 import com.tverts.endure.core.Domain;
@@ -335,24 +339,27 @@ public class GenTestGoods extends GenesisHiberPartBase
 		//?: {has no that MeasureUnit} create it
 		if(mu == null)
 		{
-			mu = new MeasureUnit();
+			Measure m = (mu = new MeasureUnit()).getOx();
 
 			//~: measure unit' code & name
-			mu.setCode(muc);
+			m.setCode(muc);
 
 			if(sXe(mun)) throw EX.arg("Measure Unit [", muc, "] has no name defined!");
-			mu.setName(mun);
+			m.setName(mun);
 
 			//~: measure unit' class code & unit
-			mu.setClassCode(muC);
+			m.setClassCode(muC);
 			if(muU != null)
-				mu.setClassUnit(new BigDecimal(muU));
+				m.setClassUnit(new BigDecimal(muU));
 			else if(muC != null)
-				mu.setClassUnit(BigDecimal.ONE);
+				m.setClassUnit(BigDecimal.ONE);
 
 			//~: fractional
 			if("I".equals(muf))
-				mu.setFractional(false);
+				m.setFractional(false);
+
+			//!: update ox-measure
+			mu.updateOx();
 		}
 
 		//~: assign measure unit
@@ -481,7 +488,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			try
 			{
 				gc.setSubVolume(new BigDecimal(sc.subVolume).
-				  setScale(gc.getSuperGood().getMeasure().isFractional()?(3):(0)));
+				  setScale(gc.getSuperGood().getMeasure().getOx().isFractional()?(3):(0)));
 			}
 			catch(Throwable e)
 			{
@@ -542,7 +549,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			}
 
 			//?: {measure of referred good is integer}
-			if(!g.getMeasure().isFractional()) try
+			if(!g.getMeasure().getOx().isFractional()) try
 			{
 				gp.setVolume(gp.getVolume().setScale(0));
 			}

@@ -505,7 +505,7 @@ public class      GenSells
 	{
 		int v = volumeMin + ctx.gen().nextInt(volumeMax - volumeMin);
 
-		if(gs.getGoodUnit().getMeasure().isFractional())
+		if(gs.getGoodUnit().getMeasure().getOx().isFractional())
 			return new BigDecimal("" + v + '.' + ctx.gen().nextInt(1000)).setScale(3);
 		else
 			return BigDecimal.valueOf(v);

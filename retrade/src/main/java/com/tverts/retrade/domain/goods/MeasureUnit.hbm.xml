@@ -5,48 +5,7 @@
 
 <hibernate-mapping package = 'com.tverts.retrade.domain.goods'>
 
-  <union-subclass name = 'MeasureUnit' lazy = 'false'
-    extends = 'com.tverts.endure.cats.CatItemBase'
-    table   = 'retrade_measure_unit'>
+  <union-subclass name = 'MeasureUnit' table = 'retrade_measure_unit'
+    extends = 'com.tverts.endure.cats.OxCatItemBase'/>
 
-
-    <!-- Class Code -->
-
-    <property name = 'classCode'>
-
-      <column name = 'class_code' length = '255'>
-
-        <comment>Classification code of the measure unit</comment>
-      </column>
-    </property>
-
-
-    <!-- Class Unit -->
-
-    <property name = 'classUnit'>
-
-      <column name = 'class_unit' precision = '18' scale = '8'>
-
-        <comment>
-          Volume of one unit measured in the units
-          of the classification code
-        </comment>
-      </column>
-    </property>
-
-
-    <!-- Fractional flag -->
-
-    <property name = 'fractional'>
-
-      <column name = 'is_fractional' not-null = 'true'>
-
-        <comment>
-          Tells that the volume measured by this unit
-          may not contain fractional part
-        </comment>
-      </column>
-    </property>
-
-  </union-subclass>
 </hibernate-mapping>

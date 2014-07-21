@@ -1,12 +1,17 @@
 package com.tverts.retrade.domain.goods;
 
-/* standard Java classes */
+/* com.tverts: api */
 
-import java.math.BigDecimal;
+import com.tverts.api.retrade.goods.Measure;
 
-/* com.tverts: endure (core + catalogues) */
+/* com.tverts: endure (catalogues) */
 
-import com.tverts.endure.cats.CatItemBase;
+import com.tverts.endure.cats.OxCatItemBase;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -15,51 +20,35 @@ import com.tverts.endure.cats.CatItemBase;
  *
  * @author anton.baukin@gmail.com
  */
-public class MeasureUnit extends CatItemBase
+public class MeasureUnit extends OxCatItemBase
 {
-	/* public: MeasureUnit (bean) interface */
-
-	/**
-	 * Tells that the volume measured by this unit
-	 * contains fractional part.
-	 */
-	public boolean     isFractional()
+	public Measure getOx()
 	{
-		return fractional;
+		Measure m = (Measure) super.getOx();
+		if(m == null)
+		{
+			setOx(m = new Measure());
+
+			//!: fractional by the default
+			m.setFractional(true);
+		}
+
+		return m;
 	}
 
-	public void        setFractional(boolean fractional)
+	public void    setOx(Object ox)
 	{
-		this.fractional = fractional;
+		EX.assertx(ox instanceof Measure);
+		super.setOx(ox);
 	}
 
-	public String      getClassCode()
+	public String  createOxSearch()
 	{
-		return classCode;
+		Measure m = getOx();
+
+		return SU.catx(
+		  m.getCode(), m.getName(),
+		  m.getClassCode()
+		);
 	}
-
-	public void        setClassCode(String classCode)
-	{
-		this.classCode = classCode;
-	}
-
-	public BigDecimal  getClassUnit()
-	{
-		return classUnit;
-	}
-
-	public void        setClassUnit(BigDecimal cu)
-	{
-		if((cu != null) && (cu.scale() != 8))
-			cu = cu.setScale(8);
-
-		this.classUnit = cu;
-	}
-
-
-	/* persisted attributes */
-
-	private String     classCode;
-	private BigDecimal classUnit;
-	private boolean    fractional = true;
 }

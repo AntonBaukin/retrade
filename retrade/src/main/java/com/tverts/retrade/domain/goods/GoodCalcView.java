@@ -245,7 +245,7 @@ public class GoodCalcView implements Serializable
 			this.superGoodCode = sg.getCode();
 			this.superGoodName = sg.getName();
 			this.superGoodMeasure = sg.getMeasure().getCode();
-			this.superGoodInteger = !sg.getMeasure().isFractional();
+			this.superGoodInteger = !sg.getMeasure().getOx().isFractional();
 
 			if(this.subVolume != null)
 				this.subVolume = this.subVolume.setScale(

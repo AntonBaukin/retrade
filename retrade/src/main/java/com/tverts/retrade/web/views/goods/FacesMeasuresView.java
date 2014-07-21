@@ -26,6 +26,10 @@ import com.tverts.model.ModelBean;
 import static com.tverts.actions.ActionsPoint.actionRun;
 import com.tverts.actions.ActionType;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.Measure;
+
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
@@ -120,23 +124,27 @@ public class FacesMeasuresView extends ModelView
 			if(mu == null) throw EX.state();
 		}
 
+		Measure m = mu.getOx();
+
 		//~: code
-		mu.setCode(getMeasureView().getCode());
+		m.setCode(getMeasureView().getCode());
 
 		//~: name
-		mu.setName(getMeasureView().getName());
+		m.setName(getMeasureView().getName());
 
 		//~: class code
-		mu.setClassCode(getMeasureView().getClassCode());
+		m.setClassCode(getMeasureView().getClassCode());
 
 		//~: class unit
-		mu.setClassUnit(getMeasureView().getClassUnit());
-		if(mu.getClassUnit() == null)
-			mu.setClassUnit(new java.math.BigDecimal("1.00"));
+		m.setClassUnit(getMeasureView().getClassUnit());
+		if(m.getClassUnit() == null)
+			m.setClassUnit(new java.math.BigDecimal("1.00"));
 
 		//~: fractional flag
-		mu.setFractional(getMeasureView().isFractional());
+		m.setFractional(getMeasureView().isFractional());
 
+		//!: update the ox-measure
+		mu.updateOx();
 
 		//!: save | update it
 		if(getMeasureView().getObjectKey() == null)

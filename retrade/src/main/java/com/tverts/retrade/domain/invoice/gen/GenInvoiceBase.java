@@ -413,7 +413,7 @@ public abstract class GenInvoiceBase
 		int v = volumeMin +
 		  ctx.gen().nextInt(volumeMax - volumeMin);
 
-		if(good.getGoodUnit().getMeasure().isFractional())
+		if(good.getGoodUnit().getMeasure().getOx().isFractional())
 			return new BigDecimal("" + v + '.' + ctx.gen().nextInt(1000)).setScale(3);
 		return BigDecimal.valueOf(v);
 	}
