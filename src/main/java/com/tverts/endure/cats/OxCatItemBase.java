@@ -81,6 +81,11 @@ public abstract class OxCatItemBase
 		this.oxSearch = null;
 	}
 
+	public boolean isUpdatedOx()
+	{
+		return (oxBytes != null) && oxBytes.isUpdatedOx();
+	}
+
 	public String  getOxSearch()
 	{
 		return (oxSearch != null)?(oxSearch):

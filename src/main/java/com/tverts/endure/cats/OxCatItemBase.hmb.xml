@@ -20,7 +20,7 @@
 
     <!-- Object Extraction -->
 
-    <property name = 'oxBytes'>
+    <property name = 'oxBytes' lazy = 'true'>
 
       <column name = 'oxbytes' sql-type = 'bytea'>
         <comment>
