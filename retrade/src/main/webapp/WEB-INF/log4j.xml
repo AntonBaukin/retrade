@@ -98,6 +98,13 @@
     <appender-ref ref = 'hibernate'/>
   </logger>
 
+  <logger name = 'com.tverts.hibery.sql'
+    additivity = 'false'>
+
+    <level value = 'info'/>
+    <appender-ref ref = 'hibernate'/>
+  </logger>
+
   <logger name = 'com.mchange.v2.c3p0'
     additivity = 'false'>
 
