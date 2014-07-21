@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
@@ -17,6 +18,7 @@ import com.tverts.api.core.CatItem;
 /**
  * A unit of measure.
  */
+@XmlRootElement(name = "measure")
 @XmlType(name = "measure", propOrder = {
   "classCode", "classUnit", "fractional"
 })
