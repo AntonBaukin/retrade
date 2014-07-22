@@ -7,7 +7,6 @@ import com.tverts.api.clients.Firm;
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.OxSearch;
-import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.OxCatEntity;
 
 /* com.tverts: support */
@@ -23,7 +22,7 @@ import com.tverts.support.SU;
  */
 public class      FirmEntity
        extends    OxCatEntity
-       implements DomainEntity, OxSearch
+       implements OxSearch
 {
 	/* Object Extraction */
 

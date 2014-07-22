@@ -7,6 +7,7 @@ import com.tverts.api.core.CatItem;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -82,4 +83,11 @@ public abstract class OxCatEntity
 			this.name = i.getName();
 		}
 	}
+
+	public String  getOxSearch()
+	{
+		CatItem i = getOx();
+		return SU.catx(i.getCode(), i.getName());
+	}
+
 }

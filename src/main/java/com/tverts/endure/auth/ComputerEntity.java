@@ -26,7 +26,7 @@ import com.tverts.support.SU;
  */
 public class      ComputerEntity
        extends    OxCatEntity
-       implements DomainEntity, OxSearch
+       implements OxSearch
 {
 	/* Object Extraction */
 
