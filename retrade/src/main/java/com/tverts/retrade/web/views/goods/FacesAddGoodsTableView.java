@@ -1,6 +1,6 @@
 package com.tverts.retrade.web.views.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +38,10 @@ import com.tverts.actions.ActionType;
 
 import com.tverts.secure.SecPoint;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.Good;
+
 /* com.tverts: endure (core + trees) */
 
 import com.tverts.endure.tree.ActTreeFolder;
@@ -63,7 +67,6 @@ import com.tverts.retrade.domain.selset.SelSet;
 
 import com.tverts.support.EX;
 import com.tverts.support.SU;
-import static com.tverts.support.SU.s2s;
 
 
 /**
@@ -91,7 +94,7 @@ public class FacesAddGoodsTableView extends ModelView
 
 		for(int i = 0;;i++)
 		{
-			String code = s2s(request().getParameter("goodCode" + i));
+			String code = SU.s2s(request().getParameter("goodCode" + i));
 			if(code == null) break;
 
 			GoodUnitView g = new GoodUnitView();
@@ -101,11 +104,11 @@ public class FacesAddGoodsTableView extends ModelView
 			g.setGoodCode(code);
 
 			//~: name
-			g.setGoodName(s2s(request().getParameter("goodName" + i)));
+			g.setGoodName(SU.s2s(request().getParameter("goodName" + i)));
 			if(g.getGoodName() == null) throw EX.arg();
 
 			//~: measure code
-			g.setMeasureCode(s2s(request().getParameter("measureCode" + i)));
+			g.setMeasureCode(SU.s2s(request().getParameter("measureCode" + i)));
 			if(g.getMeasureCode() == null) throw EX.arg();
 		}
 
@@ -153,15 +156,16 @@ public class FacesAddGoodsTableView extends ModelView
 		for(GoodUnitView g : goods)
 		{
 			GoodUnit gu = new GoodUnit();
+			Good      x = gu.getOx();
 
-			//~: domain
+			//=: domain
 			gu.setDomain(loadModelDomain());
 
-			//~: good code
-			gu.setCode(g.getGoodCode());
+			//=: good code
+			x.setCode(g.getGoodCode());
 
-			//~: good name
-			gu.setName(g.getGoodName());
+			//=: good name
+			x.setName(g.getGoodName());
 
 			//~: measure unit
 			MeasureUnit mu = measures.get(g.getMeasureCode());
@@ -173,6 +177,7 @@ public class FacesAddGoodsTableView extends ModelView
 			gu.setMeasure(mu);
 
 			//!: save the good
+			gu.updateOx();
 			actionRun(ActionType.SAVE, gu);
 
 

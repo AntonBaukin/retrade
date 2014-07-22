@@ -1,23 +1,30 @@
 package com.tverts.retrade.domain.goods;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.Good;
+
 /* com.tverts: endure (core + catalogues) */
 
-import com.tverts.endure.cats.CatItem;
-import com.tverts.endure.core.Domain;
-import com.tverts.endure.core.Entity;
+import com.tverts.endure.OxSearch;
+import com.tverts.endure.core.OxCatEntity;
 
 /* com.tverts: retrade domain (prices) */
 
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.PriceList;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
- * Dictionary item that links a good name
- * with a measure unit {@link MeasureUnit}.
+ * Catalogue item that links a good name
+ * with a {@link MeasureUnit}.
  *
  * Good Unit is a good (type) itself.
- * It is not separated from the measure.
+ * It is not separated from it's measure.
  *
  * The price of the one unit of the good
  * is stored in {@link GoodPrice} entries
@@ -27,79 +34,62 @@ import com.tverts.retrade.domain.prices.PriceList;
  *
  * @author anton.baukin@gmail.com
  */
-public class GoodUnit extends Entity implements CatItem
+public class      GoodUnit
+       extends    OxCatEntity
+       implements OxSearch
 {
-	/* public: GoodUnit bean interface */
+	/* Object Extraction */
 
-	public Domain getDomain()
+	public Good getOx()
 	{
-		return domain;
+		Good g = (Good) super.getOx();
+		if(g == null) setOx(g = new Good());
+		return g;
 	}
 
-	public void   setDomain(Domain domain)
+	public void setOx(Object ox)
 	{
-		this.domain = domain;
+		EX.assertx(ox instanceof Good);
+		super.setOx(ox);
 	}
 
-	public String getCode()
+	public void updateOx()
 	{
-		return code;
+		super.updateOx();
+
+		Good g = getOx();
+
+		//=: measure
+		g.setMeasure((measure == null)?(null):(measure.getPrimaryKey()));
+
+		//:= calc
+		g.setCalc((calc == null)?(null):(calc.getPrimaryKey()));
 	}
 
-	public void   setCode(String code)
-	{
-		this.code = code;
-	}
+
+	/* Good Unit */
 
 	public MeasureUnit getMeasure()
 	{
 		return measure;
 	}
 
-	public void   setMeasure(MeasureUnit measure)
+	private MeasureUnit measure;
+
+	public void setMeasure(MeasureUnit measure)
 	{
 		this.measure = measure;
 	}
 
-	public String getName()
-	{
-		return name;
-	}
-
-	public void   setName(String name)
-	{
-		this.name = name;
-		this.nameLower = null;
-	}
-
-	public String getNameLower()
-	{
-		return (nameLower != null)?(nameLower):
-		  (name == null)?(null):(nameLower = name.toLowerCase());
-	}
-
-	public void   setNameLower(String nameLower)
-	{
-		this.nameLower = nameLower;
-	}
-
 	public GoodCalc getGoodCalc()
 	{
-		return goodCalc;
+		return calc;
 	}
+
+	private GoodCalc calc;
 
 	public void setGoodCalc(GoodCalc goodCalc)
 	{
-		this.goodCalc = goodCalc;
+		this.calc = goodCalc;
 	}
-
-
-	/* persisted attributes */
-
-	private Domain         domain;
-	private String         code;
-	private MeasureUnit    measure;
-	private String         name;
-	private String         nameLower;
-	private GoodCalc       goodCalc;
 }

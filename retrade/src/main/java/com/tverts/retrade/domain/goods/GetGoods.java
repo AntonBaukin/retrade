@@ -220,7 +220,7 @@ from GoodUnit gu where
 		qb.setLimit(limit);
 
 		//~: order by
-		qb.setClauseOrderBy("gu.nameLower");
+		qb.setClauseOrderBy("lower(gu.name)");
 
 		//~: domain restriction
 		qb.getClauseWhere().
@@ -1289,7 +1289,7 @@ from GoodPrice gp where
 		qb.setClauseSelect("gp, gu, mu, c");
 
 		//~: order by
-		qb.setClauseOrderBy("gu.nameLower");
+		qb.setClauseOrderBy("lower(gu.name)");
 
 		//~: the limits
 		qb.setFirstRow(0);
@@ -1503,7 +1503,7 @@ from GoodPrice gp where
 			if("goodCode".equals(p))
 				s.append("lower(gu.code)");
 			else if("goodName".equals(p))
-				s.append("gu.nameLower");
+				s.append("lower(gu.name)");
 			else
 				continue;
 
@@ -1511,7 +1511,7 @@ from GoodPrice gp where
 		}
 
 		if(s.length() == 0)
-			qb.setClauseOrderBy("gu.nameLower");
+			qb.setClauseOrderBy("lower(gu.name)");
 		else
 			qb.setClauseOrderBy(s.toString());
 	}
@@ -1522,12 +1522,9 @@ from GoodPrice gp where
 		{
 			w = "%" + w.toLowerCase() + "%";
 
-			WherePartLogic p = new WherePartLogic().setOp(WhereLogic.OR);
-
-			p.addPart("lower(gu.code) like :w").param("w", w);
-			p.addPart("gu.nameLower   like :w").param("w", w);
-
-			qb.getClauseWhere().addPart(p);
+			qb.getClauseWhere().
+			  addPart("gu.unity.oxSearch like :w").
+			  param("w", w);
 		}
 	}
 

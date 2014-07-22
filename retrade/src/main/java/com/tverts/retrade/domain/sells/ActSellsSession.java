@@ -286,7 +286,10 @@ public class ActSellsSession extends ActionBuilderReTrade
 		{
 			public int compare(GoodUnit a, GoodUnit b)
 			{
-				return a.getNameLower().compareTo(b.getNameLower());
+				EX.asserts(a.getName());
+				EX.asserts(b.getName());
+
+				return a.getName().compareToIgnoreCase(b.getName());
 			}
 		});
 

@@ -3,6 +3,7 @@ package com.tverts.api.retrade.goods;
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
@@ -12,18 +13,17 @@ import com.tverts.api.core.XKeyPair;
 
 
 /**
- * A good unit to sell. Each good unit is a good
- * coupled with the volume unit (mass, volume, etc.).
- * The price of the good means the price of that unit.
+ * A Good Unit. Each Good Unit is a good
+ * coupled with the volume unit (mass,
+ * volume, etc.). The price of the good
+ * means the price of that unit.
  */
+@XmlRootElement(name = "good")
 @XmlType(name = "good", propOrder = {
-  "measure", "XMeasure"
+  "measure", "XMeasure", "calc", "XCalc"
 })
 public class Good extends CatItem
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/**
 	 * The primary key of the Measure Unit.
 	 */
@@ -33,6 +33,8 @@ public class Good extends CatItem
 	{
 		return (measure == 0L)?(null):(measure);
 	}
+
+	private long measure;
 
 	public void setMeasure(Long measure)
 	{
@@ -45,14 +47,37 @@ public class Good extends CatItem
 		return xmeasure;
 	}
 
+	private String xmeasure;
+
 	public void setXMeasure(String xmeasure)
 	{
 		this.xmeasure = xmeasure;
 	}
 
+	@XKeyPair(type = Calc.class)
+	@XmlElement(name = "calc")
+	public Long getCalc()
+	{
+		return (calc == 0L)?(null):(calc);
+	}
 
-	/* attributes */
+	private long calc;
 
-	private long   measure;
-	private String xmeasure;
+	public void setCalc(Long calc)
+	{
+		this.calc = (calc == null)?(0L):(calc);
+	}
+
+	@XmlElement(name = "xcalc")
+	public String getXCalc()
+	{
+		return xcalc;
+	}
+
+	private String xcalc;
+
+	public void setXCalc(String XCalc)
+	{
+		this.xcalc = XCalc;
+	}
 }

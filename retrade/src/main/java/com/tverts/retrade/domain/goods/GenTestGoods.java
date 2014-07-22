@@ -29,7 +29,6 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: genesis */
 
-
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
@@ -37,6 +36,7 @@ import com.tverts.genesis.GenesisHiberPartBase;
 /* com.tverts: api */
 
 import com.tverts.api.retrade.goods.Calc;
+import com.tverts.api.retrade.goods.Good;
 import com.tverts.api.retrade.goods.Measure;
 
 /* com.tverts: endure (core + trees) */
@@ -327,12 +327,15 @@ public class GenTestGoods extends GenesisHiberPartBase
 		state.good.good = gu = new GoodUnit();
 		setPrimaryKey(session(), gu, true);
 
-		//~: domain & code
+		//=: domain
 		gu.setDomain(ctx.get(Domain.class));
-		gu.setCode(guc);
 
-		//~: good name
-		gu.setName(gun);
+		//=: good code
+		Good g = gu.getOx();
+		g.setCode(guc);
+
+		//=: good name
+		g.setName(gun);
 
 		//~: create measure unit
 		MeasureUnit mu = bean(GetGoods.class).
@@ -368,6 +371,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		gu.setMeasure(mu);
 
 		//!: do save this good unit
+		gu.updateOx();
 		actionRun(ActGoodUnit.SAVE, gu,
 		  ActGoodUnit.SAVE_MEASURE_UNIT, (mu.getPrimaryKey() == null)
 		);

@@ -12,6 +12,7 @@ import com.tverts.actions.ActionsPoint;
 /* com.tverts: api execution */
 
 import com.tverts.api.core.Holder;
+import com.tverts.api.support.EX;
 import com.tverts.exec.api.UpdateEntityBase;
 
 /* com.tverts: retrade domain (goods) */
@@ -50,18 +51,13 @@ public class UpdateGood extends UpdateEntityBase
 		GoodUnit gu = (GoodUnit) entity;
 		Good     g  = (Good) source;
 
-		//~: code
-		gu.setCode(g.getCode());
-
-		//~: name
-		gu.setName(g.getName());
+		//=: ox-good
+		gu.setOx(g);
 
 		//?: {no measure}
-		if(g.getMeasure() == null)
-			throw new IllegalArgumentException(String.format(
-			  "No Measure specified for Good [%d]!", gu.getPrimaryKey()
-			));
-
+		EX.assertn(g.getMeasure(),
+		  "No Measure specified for Good [", gu.getPrimaryKey(), "]!"
+		);
 
 		//~: measure
 		if(!gu.getMeasure().getPrimaryKey().equals(g.getMeasure()))
@@ -70,10 +66,9 @@ public class UpdateGood extends UpdateEntityBase
 			  getMeasureUnit(g.getMeasure());
 
 			//?: {Measure Unit not found}
-			if(mu == null) throw new IllegalArgumentException(String.format(
-			  "Measure with key [%d] set for Good [%d] doesn't exist!",
-			  g.getMeasure(), gu.getPrimaryKey()
-			));
+			EX.assertn(mu, "Measure with key [", g.getMeasure(),
+			  "] set for Good [", gu.getPrimaryKey(), "] doesn't exist!"
+			);
 
 			//sec: check the domain
 			checkDomain(mu);
@@ -82,6 +77,7 @@ public class UpdateGood extends UpdateEntityBase
 		}
 
 		//!: update action
+		gu.updateOx();
 		ActionsPoint.actionRun(ActionType.UPDATE, gu);
 	}
 }

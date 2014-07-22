@@ -42,6 +42,7 @@ import com.tverts.secure.SecPoint;
 /* com.tverts: api */
 
 import com.tverts.api.retrade.goods.Calc;
+import com.tverts.api.retrade.goods.Good;
 
 /* com.tverts: endure (core + trees) */
 
@@ -112,14 +113,14 @@ public class FacesGoodEditView extends ModelView
 		if(!formValid) return null;
 
 		GoodUnit gu;
-
+		Good     g;
 
 		//?: {create new good}
 		if(getGoodView().getObjectKey() == null)
 		{
-			gu = new GoodUnit();
+			g = (gu = new GoodUnit()).getOx();
 
-			//~: domain
+			//=: domain
 			gu.setDomain(loadModelDomain());
 		}
 		//!: load it
@@ -129,13 +130,14 @@ public class FacesGoodEditView extends ModelView
 			  getGoodUnitStrict(getGoodView().getObjectKey());
 
 			if(gu == null) throw EX.state();
+			g = gu.getOx();
 		}
 
-		//~: good code
-		gu.setCode(getGoodView().getGoodCode());
+		//=: good code
+		g.setCode(getGoodView().getGoodCode());
 
 		//~: good name
-		gu.setName(getGoodView().getGoodName());
+		g.setName(getGoodView().getGoodName());
 
 		//~: load measure unit
 		MeasureUnit mu = bean(GetGoods.class).
@@ -144,6 +146,9 @@ public class FacesGoodEditView extends ModelView
 
 		//~: assign it
 		gu.setMeasure(mu);
+
+		//~: update ox
+		gu.updateOx();
 
 		//!: save | update the good
 		if(getGoodView().getObjectKey() == null)

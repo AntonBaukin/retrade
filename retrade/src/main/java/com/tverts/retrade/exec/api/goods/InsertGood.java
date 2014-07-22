@@ -66,14 +66,11 @@ public class InsertGood extends InsertEntityBase
 	{
 		GoodUnit gu = new GoodUnit();
 
-		//~: domain
+		//=: domain
 		gu.setDomain(domain());
 
-		//~: code
-		gu.setCode(g.getCode());
-
-		//~: name
-		gu.setName(g.getName());
+		//=: ox-good
+		gu.setOx(g);
 
 		//~: measure unit
 		gu.setMeasure(loadMeasure(g));
