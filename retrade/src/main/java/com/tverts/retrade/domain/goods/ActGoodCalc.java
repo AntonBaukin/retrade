@@ -10,6 +10,7 @@ import java.util.Set;
 
 /* com.tverts: system (tx) */
 
+import com.tverts.api.retrade.goods.Calc;
 import com.tverts.hibery.HiberPoint;
 import com.tverts.system.tx.TxPoint;
 
@@ -104,71 +105,78 @@ public class ActGoodCalc extends ActionBuilderReTrade
 		protected void execute()
 		  throws Throwable
 		{
-			GoodCalc calc = getSaveTarget();
-			GoodUnit good = calc.getGoodUnit();
-			GoodCalc that = good.getGoodCalc();
+			GoodCalc gc = getSaveTarget();
+			Calc      c = gc.getOx();
+			GoodUnit gu = gc.getGoodUnit();
+			GoodCalc xc = gu.getGoodCalc();
 
 			//~: check there is a calculation cycle
-			checkCalculationsCycle(calc);
+			checkCalculationsCycle(gc);
 
 			//?: {has no open time} set it now
-			if(calc.getOpenTime() == null)
-				calc.setOpenTime(new java.util.Date());
+			if(c.getTime() == null)
+				c.setTime(new java.util.Date());
 
 			//~: assign primary keys for the parts
-			for(CalcPart p : calc.getParts())
+			for(CalcPart p : gc.getParts())
 				HiberPoint.setPrimaryKey(tx(), p,
-				  HiberPoint.isTestInstance(good));
+				  HiberPoint.isTestInstance(gu));
 
-			//?: {has no current calculation} set if current is not closed
-			if(good.getGoodCalc() == null)
+			//?: {has no current calculation}
+			if(xc == null)
 			{
-				if(calc.getCloseTime() == null)
-					that = calc;
+				if(c.getCloseTime() == null)
+					xc = gc; //<-- set if current is not closed
 			}
 			//~: process current calculation
 			else
 			{
 				//?: {calculation saved is before the current one}
-				if(calc.getOpenTime().before(good.getGoodCalc().getOpenTime()))
+				if(c.getTime().before(xc.getOpenTime()))
 				{
 					//!: calculation saved must be closed
-					EX.assertx( calc.getCloseTime() != null,
-					  "Good Unit [", calc.getGoodUnit().getPrimaryKey(),
-					  "] Calculation at [", DU.datetime2str(calc.getOpenTime()),
+					EX.assertx( c.getCloseTime() != null,
+					  "Good Unit [", gu.getPrimaryKey(),
+					  "] Calculation at [", DU.datetime2str(c.getTime()),
 					  "] is not the last Calculation, but is not closed!"
 					);
 				}
 				//~: close the current one
 				else
 				{
-					if(good.getGoodCalc().getCloseTime() == null)
+					if(xc.getCloseTime() == null)
 					{
 						//~: assign close time
-						good.getGoodCalc().setCloseTime(calc.getOpenTime());
+						xc.getOx().setCloseTime(c.getTime());
+
+						//!: update ox-calc
+						xc.updateOx();
 
 						//~: update the tx-number of the current-obsolete calculation
-						TxPoint.txn(tx(), good.getGoodCalc());
+						TxPoint.txn(tx(), xc);
 					}
 
 					//~: assign current calculation | unlink
-					if(calc.getCloseTime() == null)
-						that = calc;
+					if(c.getCloseTime() == null)
+						xc = gc;
 					else
-						that = null;
+						xc = null;
 				}
 			}
+
+			//!: update ox-calc
+			gc.updateOx();
 
 			//~: do save
 			super.execute();
 
 			//?: {current calculation changed} update the good
-			if(!CMP.eq(good.getGoodCalc(), that))
+			if(!CMP.eq(gu.getGoodCalc(), xc))
 			{
-				good.setGoodCalc(that);
+				gu.setGoodCalc(xc);
 
 				//~: update the tx-number of the good
-				TxPoint.txn(tx(), good);
+				TxPoint.txn(tx(), gu);
 			}
 		}
 	}
@@ -215,8 +223,7 @@ public class ActGoodCalc extends ActionBuilderReTrade
 		line.add(calc);
 
 		Set<GoodUnit>  goods = new LinkedHashSet<GoodUnit>(17);
-		goods.add(EX.assertn(
-		  calc.getGoodUnit(),
+		goods.add(EX.assertn( calc.getGoodUnit(),
 		  "Good Calculation must refer Good Unit"
 		));
 

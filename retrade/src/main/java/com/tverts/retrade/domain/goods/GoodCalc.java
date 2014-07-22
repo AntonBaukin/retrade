@@ -32,7 +32,9 @@ public class GoodCalc extends OxNumericTxBase
 
 	public Calc   getOx()
 	{
-		return (Calc) super.getOx();
+		Calc c = (Calc) super.getOx();
+		if(c == null) setOx(c = new Calc());
+		return c;
 	}
 
 	public void   setOx(Object ox)
@@ -48,13 +50,10 @@ public class GoodCalc extends OxNumericTxBase
 		Calc c; if((c = this.getOx()) != null)
 		{
 			//=: related good
-			c.setGood(goodUnit.getPrimaryKey());
+			c.setGood((goodUnit == null)?(null):goodUnit.getPrimaryKey());
 
 			//=: super good
-			if(superGood == null)
-				c.setSuperGood(null);
-			else
-				c.setSuperGood(superGood.getPrimaryKey());
+			c.setSuperGood((superGood == null)?(null):superGood.getPrimaryKey());
 
 			//=: open time
 			openTime = c.getTime();
@@ -138,7 +137,7 @@ public class GoodCalc extends OxNumericTxBase
 	public List<CalcPart> getParts()
 	{
 		return (parts != null)?(parts):
-		  (parts = new ArrayList<CalcPart>(1));
+		  (parts = new ArrayList<CalcPart>(4));
 	}
 
 	private List<CalcPart> parts;

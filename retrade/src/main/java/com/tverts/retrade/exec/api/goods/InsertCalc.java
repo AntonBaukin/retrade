@@ -90,8 +90,8 @@ public class InsertCalc extends InsertEntityBase
 		for(GoodCalc x : cs)
 			EX.assertx(!CMP.eq(c.getTime(), x.getOpenTime()));
 
-		//~: open time
-		gc.setOpenTime(c.getTime());
+		//!: assign calc ox
+		gc.setOx(c);
 
 		//~: find the calculation on the left
 		GoodCalc l = null;
@@ -112,10 +112,15 @@ public class InsertCalc extends InsertEntityBase
 			}
 
 		//?: {has calculation on the left} update it's close time
-		if(l != null)
-			if((l.getCloseTime() == null) || l.getCloseTime().after(c.getTime()))
+		if(l != null) if((l.getCloseTime() == null) || l.getCloseTime().after(c.getTime()))
 		{
-			l.setCloseTime(c.getTime());
+			//=: close time
+			l.getOx().setCloseTime(c.getTime());
+
+			//~: update ox
+			l.updateOx();
+
+			//~: update tx-numbers
 			TxPoint.txn(tx(), l);
 		}
 
@@ -141,30 +146,38 @@ public class InsertCalc extends InsertEntityBase
 
 			//~: set the good
 			p.setGoodUnit(gu2);
-			
+
 			//~: volume
 			EX.assertn(CMP.grZero(i.getVolume()));
 			p.setVolume(i.getVolume());
 		}
 
+		//HINT: calculation parts are not stored
+		//  in the Calculation XML document.
+
+		//~: clear the parts
+		c.setItems(null);
+
+		//?: {has right calc}
+		if(r != null) //<-- set right' open time as the close time
+			c.setCloseTime(EX.assertn(r.getOpenTime()));
+
 
 		//!: save the calculation
+		gc.updateOx();
 		ActionsPoint.actionRun(ActionType.SAVE, gc);
 
 
-		//?: {there is no right calculation} make new be the current
-		if(r == null)
+		//?: {there is no right calculation}
+		if(r == null) //<-- make new be the current
 		{
 			//~: assign current calculation
-			EX.assertx(gc.getCloseTime() == null);
+			EX.assertx(c.getCloseTime() == null);
 			gu.setGoodCalc(gc);
 
 			//~: update the transaction number
 			TxPoint.txn(tx(), gu);
 		}
-		//~: set right' open time as the close time
-		else
-			gc.setCloseTime(r.getOpenTime());
 
 		return gc.getPrimaryKey();
 	}

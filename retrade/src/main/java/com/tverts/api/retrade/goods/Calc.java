@@ -209,10 +209,11 @@ public class      Calc
 	@XmlElementWrapper(name = "parts")
 	public List<CalcItem> getItems()
 	{
-		return items;
+		return (items != null)?(items):
+		  (items = new ArrayList<CalcItem>(4));
 	}
 
-	private List<CalcItem> items = new ArrayList<CalcItem>(4);
+	private List<CalcItem> items;
 
 	public void setItems(List<CalcItem> items)
 	{
