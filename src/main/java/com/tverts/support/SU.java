@@ -29,7 +29,7 @@ import com.tverts.support.misc.CharArraySequence;
  */
 public class SU
 {
-	/* public: simplifications */
+	/* Simplifications */
 
 	/**
 	 * Breaks string into words. The words
@@ -253,7 +253,7 @@ public class SU
 	}
 
 
-	/* public: comparisons */
+	/* Comparisons */
 
 	/**
 	 * Returns {@code true} if the string is {@code null},
@@ -288,7 +288,7 @@ public class SU
 	}
 
 
-	/* public: escape routines */
+	/* Escape Routines */
 
 	/**
 	 * Escapes string to place into Java Script
@@ -455,7 +455,7 @@ public class SU
 	}
 
 
-	/* public: formatting routines */
+	/* Formatting Routines */
 
 	/**
 	 * Formats the currency value with fixed fraction part
@@ -507,8 +507,21 @@ public class SU
 		return sb.toString();
 	}
 
+	/**
+	 * Converts string to be a database sort value.
+	 * Removes all the symbols except alpha-numeric
+	 * and ';,.-'. Replaces all multiple blanks
+	 * with single space ' '.
+	 */
+	public static String sort(String s)
+	{
+		return sXe(s)?(null):s.toLowerCase().
+		  replaceAll("[^а-я\\w;,\\.\\-]", "").
+		  replaceAll("\\s+", " ");
+	}
 
-	/* public: buffering */
+
+	/* Buffering */
 
 	/**
 	 * Concatenates the objects previously converted
@@ -689,7 +702,7 @@ public class SU
 	}
 
 
-	/* public static: delayed string */
+	/* Delayed String */
 
 	public static class DelayedString
 	{
@@ -716,7 +729,7 @@ public class SU
 	}
 
 
-	/* hexadecimal strings */
+	/* Hexadecimal Strings */
 
 	public static String  i2h(int n)
 	{
@@ -887,7 +900,7 @@ public class SU
 	}
 
 
-	/* URL encoding */
+	/* URL Encoding */
 
 	public static String urle(String s)
 	{
@@ -918,7 +931,7 @@ public class SU
 	}
 
 
-	/* string to value translations */
+	/* String to Value Translations */
 
 	public static Object s2v(Class t, String s)
 	{
