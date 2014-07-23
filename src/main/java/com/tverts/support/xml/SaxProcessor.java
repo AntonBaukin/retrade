@@ -5,7 +5,9 @@ package com.tverts.support.xml;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.xml.parsers.SAXParserFactory;
@@ -190,9 +192,13 @@ public abstract class SaxProcessor<State>
 		return tags.keySet();
 	}
 
-	protected void        clearTags()
+	protected void        clearTags(Collection<String> names)
 	{
-		this.tags = null;
+		if(names == null)
+			this.tags = null;
+		else if(tags != null)
+			for(String n : names)
+				tags.remove(n);
 	}
 
 	protected void        requireTags(String... names)
@@ -203,7 +209,7 @@ public abstract class SaxProcessor<State>
 		);
 	}
 
-	protected void        fillWithTags(Object obj)
+	protected void        fillWithTags(Object obj, Collection<String> used)
 	{
 		EX.assertn(obj);
 
@@ -236,6 +242,10 @@ public abstract class SaxProcessor<State>
 				EX.assertn(value);
 
 				wm.invoke(obj, value);
+
+				//?: {collect used names}
+				if(used != null)
+					used.add(tag);
 			}
 		}
 		catch(Throwable e)
@@ -244,11 +254,17 @@ public abstract class SaxProcessor<State>
 		}
 	}
 
-	protected void        requireFillClearTags(Object obj, String... required)
+	protected void        requireFillClearTags(Object obj, boolean all, String... required)
 	{
+		//~: check the tags required
 		requireTags(required);
-		fillWithTags(obj);
-		clearTags();
+
+		//~: set the properties
+		Set<String> used = (all)?(null):(new HashSet<String>(required.length));
+		fillWithTags(obj, used);
+
+		//~: remove the tags used
+		clearTags(used);
 	}
 
 
@@ -263,27 +279,27 @@ public abstract class SaxProcessor<State>
 	/**
 	 * Level of the top event.
 	 */
-	protected final int             level()
+	protected final int        level()
 	{
 		return stack().size() - 1;
 	}
 
-	protected final boolean islevel(int level)
+	protected final boolean    islevel(int level)
 	{
 		return (stack().size() - 1) == level;
 	}
 
-	protected final boolean         istag(String... names)
+	protected final boolean    istag(String... names)
 	{
 		return stack().top().istag(names);
 	}
 
-	protected final boolean         istag(int level, String... names)
+	protected final boolean    istag(int level, String... names)
 	{
 		return stack().top().istag(level, names);
 	}
 
-	protected final String          attr(String qname)
+	protected final String     attr(String qname)
 	{
 		return stack().top().attr(qname);
 	}
@@ -293,17 +309,17 @@ public abstract class SaxProcessor<State>
 		return stack().top();
 	}
 
-	protected final State           state()
+	protected final State      state()
 	{
 		return stack().top().state();
 	}
 
-	protected final State           state(int i)
+	protected final State      state(int i)
 	{
 		return stack().get(i).state();
 	}
 
-	protected RuntimeException      wrong()
+	protected RuntimeException wrong()
 	{
 		return EX.state(
 		  "Unknown (wrong) tag at level [",

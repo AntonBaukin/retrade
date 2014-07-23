@@ -349,11 +349,11 @@ public class GenTestUsers extends GenesisHiberPartBase
 		{
 			//?: <computer>
 			if(istag(1, "computer"))
-				requireFillClearTags(state().computer, "code", "name");
+				requireFillClearTags(state().computer, true, "code", "name");
 
 			//?: <person>
 			else if(istag(1, "person"))
-				requireFillClearTags(state().person, "last-name", "first-name");
+				requireFillClearTags(state().person, true, "last-name", "first-name");
 
 			//?: {<computer> | <person>}
 			if(islevel(1)) try

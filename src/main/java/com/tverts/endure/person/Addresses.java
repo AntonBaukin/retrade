@@ -180,7 +180,7 @@ public class Addresses
 				EX.assertx(istag("address"));
 
 				//~: assign the tags
-				requireFillClearTags(state().address,
+				requireFillClearTags(state().address, true,
 				  "settlement", "street", "building");
 
 				//!: add to the list

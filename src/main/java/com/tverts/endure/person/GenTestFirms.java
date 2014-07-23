@@ -193,7 +193,7 @@ public class GenTestFirms extends GenesisHiberPartBase
 				EX.assertx(istag("firm"));
 
 				//~: assign the tags
-				requireFillClearTags(state().firm, "code", "name", "full-name");
+				requireFillClearTags(state().firm, true, "code", "name", "full-name");
 
 				//!: do generate
 				generate(ctx, state());
