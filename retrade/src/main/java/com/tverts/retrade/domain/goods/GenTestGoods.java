@@ -4,24 +4,17 @@ package com.tverts.retrade.domain.goods;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /* com.tverts: spring */
 
-import static com.tverts.actions.ActionsPoint.actionResult;
 import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: hibery */
 
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
-import static com.tverts.hibery.HiberPoint.unproxyDeeply;
 
 /* com.tverts: actions */
 
@@ -44,15 +37,8 @@ import com.tverts.api.retrade.goods.Measure;
 /* com.tverts: endure (core + trees) */
 
 import com.tverts.endure.core.Domain;
-import com.tverts.endure.tree.ActTreeFolder;
-import com.tverts.endure.tree.GetTree;
-import com.tverts.endure.tree.TreeFolder;
 
 /* com.tverts: retrade domain (prices) */
-
-import com.tverts.retrade.domain.prices.ActPriceList;
-import com.tverts.retrade.domain.prices.GoodPrice;
-import com.tverts.retrade.domain.prices.PriceList;
 
 /* com.tverts: support */
 
@@ -187,17 +173,16 @@ public class GenTestGoods extends GenesisHiberPartBase
 			return;
 		}
 
+		gu = new GoodUnit();
+
 		//=: domain
 		gu.setDomain(ctx.get(Domain.class));
 
 		//=: measure
 		setMeasure(ctx, gu, g);
 
-		//~: create good with ox
-		gu = new GoodUnit();
-		gu.setOx(g); //<-- ox-update is there
-
 		//!: save the good
+		gu.setOx(g); //<-- ox-update is there
 		actionRun(ActionType.SAVE, gu);
 
 		LU.I(log(ctx), logsig(), " created test Good Unit [",
@@ -240,14 +225,17 @@ public class GenTestGoods extends GenesisHiberPartBase
 		  EX.assertn(ctx.get((Object) MeasureUnit.class));
 
 		MeasureUnit mu = mum.get(EX.asserts(
-		 g.getXMeasure(), "Good Unit with code [", g.getCode(),
-		 "] has no <XMeasure> tag defined!"
+		  g.getXMeasure(), "Good Unit with code [", g.getCode(),
+		  "] has no <XMeasure> tag defined!"
 		));
 
 		//=: measure
 		gu.setMeasure(EX.assertn(mu, "Good Unit with code [", g.getCode(),
 		  "] refers unknown measure by code [", g.getXMeasure(), "]!"
 		));
+
+		//~: clear x-measure
+		g.setXMeasure(null);
 	}
 
 	protected void genDerived(GenCtx ctx, GoodUnit gu, Calc c)
@@ -277,6 +265,30 @@ public class GenTestGoods extends GenesisHiberPartBase
 		EX.assertx(c.getItems().isEmpty(), "Good with code [", gu.getCode(),
 		  "] Calculation has items, but it is derived!"
 		);
+
+		//~: create single calc part
+		CalcPart cp = new CalcPart();
+
+		//=: calc <-> part
+		gc.getParts().add(cp);
+		cp.setGoodCalc(gc);
+
+		//=: part good
+		cp.setGoodUnit(gc.getSuperGood());
+
+		//~: part volume
+		cp.setVolume(c.getSubVolume());
+
+		//!: assign ox-calc
+		gc.setOx(c);
+
+		//!: save the calc
+		actionRun(ActionType.SAVE, gc);
+
+		LU.I(log(ctx), logsig(), " created derived Good Calc [",
+		  gc.getPrimaryKey(), "] for test Good Unit [",
+		  gu.getPrimaryKey(), "], code [", gu.getCode(), "]"
+		);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -286,8 +298,8 @@ public class GenTestGoods extends GenesisHiberPartBase
 		  EX.assertn(ctx.get((Object) GoodUnit.class));
 
 		GoodUnit xu = gum.get(EX.asserts(
-		 c.getXSuperGood(), "Good Unit with code [", gc.getGoodUnit().getCode(),
-		 "] has derived Calculation with no <xsuper-good> tag defined!"
+		  c.getXSuperGood(), "Good Unit with code [", gc.getGoodUnit().getCode(),
+		  "] has derived Calculation with no <xsuper-good> tag defined!"
 		));
 
 		//=: super good
@@ -295,11 +307,86 @@ public class GenTestGoods extends GenesisHiberPartBase
 		  gc.getGoodUnit().getCode(), "] has derived Calculation that refers ",
 		  "unknown Good by code [", c.getXSuperGood(), "]!"
 		));
+
+		//~: clear super good
+		c.setXSuperGood(null);
 	}
 
 	protected void genCalculation(GenCtx ctx, GoodUnit gu, Calc c)
 	{
+		GoodCalc gc = new GoodCalc();
 
+		//=: destination good
+		gc.setGoodUnit(gu);
+
+		//=: open time
+		c.setTime(EX.assertn(ctx.get(Date.class)));
+
+		//?: {is false derived}
+		EX.assertx(c.getXSuperGood() == null);
+		EX.assertx(c.getSubCode()    == null);
+		EX.assertx(c.getSubVolume()  == null);
+
+		//?: {has no items}
+		EX.asserte(c.getItems(), "Good with code [", gu.getCode(),
+		  "] Calculation has no items, and it is not derived either!"
+		);
+
+		//c: for all parts
+		for(CalcItem ci : c.getItems())
+		{
+			CalcPart cp = new CalcPart();
+
+			//=: calc <-> part
+			gc.getParts().add(cp);
+			cp.setGoodCalc(gc);
+
+			//=: good unit
+			setPartGood(ctx, cp, ci);
+
+			//=: volume
+			cp.setVolume(EX.assertn(ci.getVolume()));
+			EX.assertx(ci.getVolume().scale() <= 8);
+
+			//?: {measure of referred good is integer}
+			if(!cp.getGoodUnit().getMeasure().getOx().isFractional())
+				EX.assertx(ci.getVolume().scale() == 0);
+		}
+
+		//~: clear the items in the ox
+		c.setItems(null);
+
+		//!: assign ox-calc
+		gc.setOx(c);
+
+		//!: save the calc
+		actionRun(ActionType.SAVE, gc);
+
+		LU.I(log(ctx), logsig(), " created Good Calc [",
+		  gc.getPrimaryKey(), "] for test Good Unit [",
+		  gu.getPrimaryKey(), "], code [", gu.getCode(),
+		  "] having ", gc.getParts().size(), " parts"
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void setPartGood(GenCtx ctx, CalcPart cp, CalcItem ci)
+	{
+		Map<String, GoodUnit> gum = (Map<String, GoodUnit>)
+		  EX.assertn(ctx.get((Object) GoodUnit.class));
+
+		GoodUnit xu = gum.get(EX.asserts(
+		  ci.getXGood(), "Good Unit with code [",
+		  cp.getGoodCalc().getGoodUnit().getCode(),
+		  "] has Calculation with no code attribute defined for <good> tag!"
+		));
+
+		//=: good
+		cp.setGoodUnit(EX.assertn(xu, "Good Unit with code [",
+		  cp.getGoodCalc().getGoodUnit().getCode(),
+		  "] has Calculation that refers unknown Good by code [",
+		  ci.getXGood(), "]!"
+		));
 	}
 
 
@@ -385,8 +472,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			//?: <good> <calc>
 			else if(istag(2, "calc"))
 				EX.assertn(state(1).calc).setSemiReady(
-				  "true".equals(EX.asserts(event().attr("semi-ready"))));
-
+				  "true".equals(event().attr("semi-ready")));
 		}
 
 		protected void close()
@@ -407,7 +493,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 			else if(istag(2, "calc"))
 			{
 				//~: fill the calculation
-				Calc c = EX.assertn(state().calc);
+				Calc c = EX.assertn(state(1).calc);
 				requireFillClearTags(c, false);
 			}
 

@@ -335,7 +335,7 @@
   <good>
     <code>812</code>
     <name>куриный бульон (основа)</name>
-    <measure code = "л" name = "литры" class-code = "112"/>
+    <XMeasure>л</XMeasure>
 
     <calc>
       <good code = "919" volume = "0.200"/>
@@ -351,7 +351,7 @@
     <XMeasure>кг</XMeasure>
 
     <calc>
-      <xsuper-good>807</xsuper-good>
+      <XSuperGood>807</XSuperGood>
       <sub-code>отв</sub-code>
       <sub-volume>1.0</sub-volume>
     </calc>
@@ -395,7 +395,7 @@
     <XMeasure>ст 0.5</XMeasure>
 
     <calc>
-      <xsuper-good>701</xsuper-good>
+      <XSuperGood>701</XSuperGood>
       <sub-code>0.5</sub-code>
       <sub-volume>0.5</sub-volume>
     </calc>
@@ -407,7 +407,7 @@
     <XMeasure>100мл</XMeasure>
 
     <calc>
-      <xsuper-good>701</xsuper-good>
+      <XSuperGood>701</XSuperGood>
       <sub-code>0.1 лёд</sub-code>
       <sub-volume>0.1</sub-volume>
     </calc>
