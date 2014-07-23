@@ -34,9 +34,7 @@ import com.tverts.api.support.TimestampAdapter;
   "subCode" , "subVolume", "amount",
   "remarks", "items"
 })
-public class      Calc
-       extends    JustTxObject
-       implements Timed
+public class Calc extends JustTxObject implements Timed
 {
 	/* Good Calculation */
 

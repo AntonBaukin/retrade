@@ -1,8 +1,7 @@
 package com.tverts.api.retrade.goods;
 
-/* standard Java classes */
+/* Java */
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /* Java API for XML Binding */
@@ -21,17 +20,16 @@ import com.tverts.api.core.XKeyPair;
 @XmlType(name = "calc-part", propOrder = {
   "good", "XGood", "measure", "XMeasure", "volume", "amount"
 })
-public class CalcItem implements Serializable
+public class CalcItem
 {
-	public static final long serialVersionUID = 0L;
-
-
 	@XKeyPair(type = Good.class)
 	@XmlElement(name = "good")
 	public Long getGood()
 	{
 		return (good == 0L)?(null):(good);
 	}
+
+	private long good;
 
 	public void setGood(Long good)
 	{
@@ -43,6 +41,8 @@ public class CalcItem implements Serializable
 	{
 		return xgood;
 	}
+
+	private String xgood;
 
 	public void setXGood(String xgood)
 	{
@@ -56,6 +56,8 @@ public class CalcItem implements Serializable
 		return (measure == 0L)?(null):(measure);
 	}
 
+	private long measure;
+
 	public void setMeasure(Long measure)
 	{
 		this.measure = (measure == null)?(0L):(measure);
@@ -66,6 +68,8 @@ public class CalcItem implements Serializable
 	{
 		return xmeasure;
 	}
+
+	private String xmeasure;
 
 	public void setXMeasure(String xmeasure)
 	{
@@ -78,6 +82,8 @@ public class CalcItem implements Serializable
 		return volume;
 	}
 
+	private BigDecimal volume;
+
 	public void setVolume(BigDecimal volume)
 	{
 		this.volume = volume;
@@ -89,18 +95,10 @@ public class CalcItem implements Serializable
 		return amount;
 	}
 
+	private BigDecimal amount;
+
 	public void setAmount(BigDecimal amount)
 	{
 		this.amount = amount;
 	}
-
-
-	/* attributes */
-
-	private long       good;
-	private String     xgood;
-	private long       measure;
-	private String     xmeasure;
-	private BigDecimal volume;
-	private BigDecimal amount;
 }

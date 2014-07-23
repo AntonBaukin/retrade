@@ -138,7 +138,7 @@ public class FacesMeasuresView extends ModelView
 		//~: class unit
 		m.setClassUnit(getMeasureView().getClassUnit());
 		if(m.getClassUnit() == null)
-			m.setClassUnit(new java.math.BigDecimal("1.00"));
+			m.setClassUnit(new java.math.BigDecimal("1.0"));
 
 		//~: fractional flag
 		m.setFractional(getMeasureView().isFractional());

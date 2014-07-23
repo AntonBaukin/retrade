@@ -3,6 +3,7 @@ package com.tverts.retrade.domain.goods;
 /* standard Java classes */
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -36,6 +37,7 @@ import com.tverts.genesis.GenesisHiberPartBase;
 /* com.tverts: api */
 
 import com.tverts.api.retrade.goods.Calc;
+import com.tverts.api.retrade.goods.CalcItem;
 import com.tverts.api.retrade.goods.Good;
 import com.tverts.api.retrade.goods.Measure;
 
@@ -56,15 +58,14 @@ import com.tverts.retrade.domain.prices.PriceList;
 
 import com.tverts.support.EX;
 import com.tverts.support.LU;
-import static com.tverts.support.SU.sXe;
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 import com.tverts.support.xml.SaxProcessor;
 
 
 /**
- * Generates the test {@link GoodUnit}s,
- * {@link MeasureUnit}s, and {@link PriceList}s
- * with {@link GoodPrice}s.
+ * Generates the test {@link MeasureUnit},
+ * and {@link GoodUnit}s by reading file
+ * 'GenTestGoods.xml'.
  *
  *
  * @author anton.baukin@gmail.com
@@ -73,151 +74,31 @@ public class GenTestGoods extends GenesisHiberPartBase
 {
 	/* public: Genesis interface */
 
-	public static final String CTX_GOODS_MAP =
-	  GenTestGoods.class.getName() + ": code -> good";
-
-	public void         generate(GenCtx ctx)
+	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		//~: create test PriceLists
-		//createTestPriceLists(ctx);
-
-		//~: good units map
-		ctx.set(CTX_GOODS_MAP, new HashMap<String, GoodUnit>(11));
-
-		//~: create test GoodUnits
-		try
-		{
-			createTestGoodUnits(ctx);
-		}
-		catch(Exception e)
-		{
-			throw new GenesisError(e, this, ctx);
-		}
-
-		Set<GoodUnit>  tgus = new LinkedHashSet<GoodUnit>(
-		  Arrays.asList(ctx.get(GoodUnit[].class)));
-
-		//~: load the test good units present
-		Set<GoodUnit>  rest = new LinkedHashSet<GoodUnit>(
-		  bean(GetGoods.class).getTestGoodUnits(ctx.get(Domain.class)));
-
-		//~: remove the good units generated (they are ready)
-		rest.removeAll(tgus);
-
-		//?: {the user-created goods are not present} quit...
-		if(rest.isEmpty()) return;
-
-		//~: ensure the rest...
-		for(GoodUnit gu : rest)
-			ensureTestGoodUnit(ctx, gu);
-
-		//~: assign the full list
-		tgus.addAll(rest);
-		setGoodUnits(ctx, tgus.toArray(new GoodUnit[tgus.size()]));
+		//~: read test data
+		readTestData(ctx);
 	}
 
 
-	/* protected: test instances generation & verification */
+	/* protected: generation */
 
-	protected void      setGoodUnits(GenCtx ctx, GoodUnit[] gus)
+	protected URL  getDataFile()
 	{
-		ctx.set(gus);
-	}
-
-	protected void      setPriceLists(GenCtx ctx, PriceList[] pls)
-	{
-		ctx.set(pls);
-	}
-
-	protected void      createTestPriceLists(GenCtx ctx)
-	{
-		PriceList[] pls = new PriceList[4];
-
-		//~: main
-		pls[0] = createTestPriceList(ctx, "ОСН", "Основной");
-
-		//~: 1-2-3
-		pls[1] = createTestPriceList(ctx, "ПРВ", "Первый");
-		pls[2] = createTestPriceList(ctx, "ВТО", "Второй");
-		pls[3] = createTestPriceList(ctx, "ТРЕ", "Третий");
-
-		setPriceLists(ctx, pls);
-	}
-
-	protected void      ensureTestPriceList(GenCtx ctx, PriceList pl)
-	{
-		//!: invoke ensure action
-		actionRun(ActPriceList.ENSURE, pl);
-
-		//~: log success
-		if(LU.isD(log(ctx))) LU.D(log(ctx), logsig(),
-		  " had ensured test PriceList with pk ", pl.getPrimaryKey());
-	}
-
-	/**
-	 * The 'x' array has this items:
-	 *
-	 *  0  code of price list to create;
-	 *  1  name of price list (when creating).
-	 */
-	protected PriceList createTestPriceList(GenCtx ctx, String... x)
-	{
-		String plc = x[0];
-		String pln = x[1];
-
-		PriceList pl = bean(GetGoods.class).
-		  getPriceList(ctx.get(Domain.class).getPrimaryKey(), plc);
-
-		//?: {this instance already exists} ensure it and quit
-		if(pl != null)
-		{
-			ensureTestPriceList(ctx, pl);
-
-			if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
-			  " found test PriceList ", plc,
-			  " with pk ", pl.getPrimaryKey());
-
-			return pl;
-		}
-
-		//~: create test instance
-		pl = new PriceList();
-		setPrimaryKey(session(), pl, true);
-
-		//~: domain & code
-		pl.setDomain(ctx.get(Domain.class));
-		pl.setCode(plc);
-
-		//~: name
-		pl.setName(pln);
-
-		//!: do save
-		actionRun(ActGoodUnit.SAVE, pl);
-
-		//~: log success
-		if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
-		  " had created test PriceList ", plc,
-		  " with pk ", pl.getPrimaryKey()
+		return EX.assertn(
+		  getClass().getResource("GenTestGoods.xml"),
+		  "No GenTestGoods.xml file found!"
 		);
-
-		return  pl;
 	}
 
-	protected void      createTestGoodUnits(GenCtx ctx)
-	  throws Exception
+	protected void readTestData(GenCtx ctx)
+	  throws GenesisError
 	{
-		Object url = getClass().getResource("GenTestGoods.xml");
-		if(url == null) throw new GenesisError(this, ctx,
-		  EX.state("No 'GenTestGoods.xml' file found!"));
-
-		//~: create the reader
-		ReadTestGoods reader = createTestGoodsReader(ctx);
-
-		//!: read the file
 		try
 		{
-			reader.process(url.toString());
+			createProcessor(ctx).
+			  process(getDataFile().toString());
 		}
 		catch(Throwable e)
 		{
@@ -228,461 +109,220 @@ public class GenTestGoods extends GenesisHiberPartBase
 			else
 				throw new GenesisError(e, this, ctx);
 		}
-
-		//~: assign the resulting goods
-		setGoodUnits(ctx, reader.getResult().toArray(
-		  new GoodUnit[reader.getResult().size()]
-		));
 	}
 
-	protected void      ensureTreeFolder(GenCtx ctx, GenState state)
+	protected void genMeasure(GenCtx ctx, Measure m)
 	{
-		StateFolder sf = state.folders.get(state.folders.size() - 1);
-		TreeFolder  tf = new TreeFolder();
-
-		//~: domain
-		tf.setDomain(bean(GetTree.class).getDomain(
-		  ctx.get(Domain.class).getPrimaryKey(), Goods.TYPE_GOODS_TREE
-		));
-
-		//~: code
-		tf.setCode(sf.code);
-
-		//~: name
-		tf.setName(sf.name);
-
-		//?: {parent folder}
-		if(state.folders.size() > 1)
-			tf.setParent(EX.assertn(state.folders.
-			  get(state.folders.size() - 2).folder));
-
-		//!: ensure it
-		sf.folder = actionResult(TreeFolder.class, actionRun(
-		  ActionType.ENSURE, tf,
-		  ActTreeFolder.PARAM_TYPE, Goods.TYPE_GOODS_FOLDER
-		));
-
-
-		if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
-		  " had ", (tf == sf.folder)?("created"):("found"),
-		  " test goods Tree Folder [", sf.folder.getPrimaryKey(),
-		  "] with code [", sf.folder.getCode(),
-		  "] named: ", sf.folder.getName()
-		);
-	}
-
-	@SuppressWarnings("unchecked")
-	protected void      ensureTestGoodUnit(GenCtx ctx, GoodUnit gu)
-	{
-		//!: invoke ensure action
-		actionRun(ActGoodUnit.ENSURE, gu);
-
-		//~: log success
-		if(LU.isD(log(ctx))) LU.D(log(ctx), logsig(),
-		   " had ensured test Good Unit [", gu.getPrimaryKey(), "]"
+		//~: load existing measure unit
+		MeasureUnit mu = bean(GetGoods.class).getMeasureUnit(
+		  ctx.get(Domain.class).getPrimaryKey(),
+		  EX.asserts(m.getCode())
 		);
 
-		//~: put in the context map
-		((Map<String, GoodUnit>) ctx.get(CTX_GOODS_MAP)).
-		  put(gu.getCode(), unproxyDeeply(session(), gu));
-	}
+		//HINT: we allow user-defined modifications for the measures.
 
-	@SuppressWarnings("unchecked")
-	protected GoodUnit  ensureTestGoodUnit(GenCtx ctx, GenState state)
-	{
-		String guc = state.good.goodCode;
-		String gun = state.good.goodName;
-		String muc = state.good.meunCode;
-		String mun = state.good.meunName;
-		String muC = state.good.meunClassCode;
-		String muU = state.good.meunClassUnit;
-		String muf = state.good.meunInt;
-		String prc = state.good.goodCost;
-
-		GoodUnit gu = state.good.good = bean(GetGoods.class).
-		  getGoodUnit(ctx.get(Domain.class).getPrimaryKey(), guc);
-
-		//?: {this instance already exists} ensure it and quit
-		if(gu != null)
+		//?: {had found it} do not update
+		if(mu != null)
 		{
-			ensureTestGoodUnit(ctx, gu);
-
-			if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
-			  " found test Good Unit [", gu.getPrimaryKey(),
-			  "] with code [", guc, "] named: ", gu.getName()
-			);
-
-			//?: {good has calculation} ensure it
-			if(state.good.calc != null)
-				ensureTestGoodCalc(ctx, state);
-
-			//~: add the good to the folder
-			if(!state.folders.isEmpty())
-				ensureGoodInFolder(ctx, state);
-
-			return gu;
+			//~: add to the measures map
+			addMeasure(ctx, mu);
+			return;
 		}
 
-		//~: create test instance
-		state.good.good = gu = new GoodUnit();
-		setPrimaryKey(session(), gu, true);
+		//?: {measure has class-code}
+		if(!SU.sXe(m.getClassCode()) && (m.getClassUnit() == null))
+			if(m.isFractional())
+				m.setClassUnit(BigDecimal.ZERO.setScale(1));
+			else
+				m.setClassUnit(BigDecimal.ZERO);
+
+		//~: create measure with ox
+		mu = new MeasureUnit();
+		mu.setOx(m); //<-- ox-update is there
+
+		//=: domain
+		mu.setDomain(ctx.get(Domain.class));
+
+		//!: save the measure
+		actionRun(ActionType.SAVE, mu);
+
+		LU.I(log(ctx), logsig(), " created test Measure Unit [",
+		  mu.getPrimaryKey(), "] with code: ", mu.getCode()
+		);
+
+		//~: add to the measures map
+		addMeasure(ctx, mu);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void addMeasure(GenCtx ctx, MeasureUnit mu)
+	{
+		Map<String, MeasureUnit> mum = (Map<String, MeasureUnit>)
+		  ctx.get((Object) MeasureUnit.class);
+
+		if(mum == null) ctx.set((Object) MeasureUnit.class,
+		  mum = new HashMap<String, MeasureUnit>(7)
+		);
+
+		EX.assertx( mum.put(mu.getCode(), mu) == null,
+		  "Measure Unit with code [", mu.getCode(), "] is generated twice!"
+		);
+	}
+
+	protected void genGood(GenCtx ctx, Good g, Calc c)
+	{
+		//~: load existing good unit
+		GoodUnit gu = bean(GetGoods.class).getGoodUnit(
+		  ctx.get(Domain.class).getPrimaryKey(),
+		  EX.asserts(g.getCode())
+		);
+
+		//HINT: we allow user-defined modifications for the goods.
+
+		//?: {had found it} do not update
+		if(gu != null)
+		{
+			//~: add to the goods map
+			addGood(ctx, gu);
+			return;
+		}
 
 		//=: domain
 		gu.setDomain(ctx.get(Domain.class));
 
-		//=: good code
-		Good g = gu.getOx();
-		g.setCode(guc);
+		//=: measure
+		setMeasure(ctx, gu, g);
 
-		//=: good name
-		g.setName(gun);
+		//~: create good with ox
+		gu = new GoodUnit();
+		gu.setOx(g); //<-- ox-update is there
 
-		//~: create measure unit
-		MeasureUnit mu = bean(GetGoods.class).
-		  getMeasureUnit(ctx.get(Domain.class).getPrimaryKey(), muc);
+		//!: save the good
+		actionRun(ActionType.SAVE, gu);
 
-		//?: {has no that MeasureUnit} create it
-		if(mu == null)
-		{
-			Measure m = (mu = new MeasureUnit()).getOx();
-
-			//~: measure unit' code & name
-			m.setCode(muc);
-
-			if(sXe(mun)) throw EX.arg("Measure Unit [", muc, "] has no name defined!");
-			m.setName(mun);
-
-			//~: measure unit' class code & unit
-			m.setClassCode(muC);
-			if(muU != null)
-				m.setClassUnit(new BigDecimal(muU));
-			else if(muC != null)
-				m.setClassUnit(BigDecimal.ONE);
-
-			//~: fractional
-			if("I".equals(muf))
-				m.setFractional(false);
-
-			//!: update ox-measure
-			mu.updateOx();
-		}
-
-		//~: assign measure unit
-		gu.setMeasure(mu);
-
-		//!: do save this good unit
-		gu.updateOx();
-		actionRun(ActGoodUnit.SAVE, gu,
-		  ActGoodUnit.SAVE_MEASURE_UNIT, (mu.getPrimaryKey() == null)
-		);
-
-		//~: generate & save the prices
-		//if(!sXe(prc))
-		//	genGoodUnitPrices(ctx, gu, new BigDecimal(prc));
-
-		//~: log success
 		LU.I(log(ctx), logsig(), " created test Good Unit [",
-		  gu.getPrimaryKey(), "] with code: ", guc
+		  gu.getPrimaryKey(), "] with code: ", gu.getCode()
 		);
 
-		//~: put in the context map
-		((Map<String, GoodUnit>) ctx.get(CTX_GOODS_MAP)).
-		  put(gu.getCode(), gu);
+		//~: add to the goods map
+		addGood(ctx, gu);
 
-		//?: {good has calculation} ensure it
-		if(state.good.calc != null)
-			ensureTestGoodCalc(ctx, state);
-
-		//~: add the good to the folder
-		if(!state.folders.isEmpty())
-			ensureGoodInFolder(ctx, state);
-
-		return gu;
-	}
-
-	protected void      genGoodUnitPrices(GenCtx ctx, GoodUnit gu, BigDecimal base)
-	{
-		PriceList[] pls = ctx.get(PriceList[].class);
-
-		for(int i = 0;(i < pls.length);i++)
-		{
-			GoodPrice gp = new GoodPrice();
-
-			//~: test primary key
-			setPrimaryKey(session(), gp, true);
-
-			//~: price list
-			gp.setPriceList(pls[i]);
-
-			//~: good unit
-			gp.setGoodUnit(gu);
-
-			//~: set base price for main entry
-			if(i == 0)
-				gp.setPrice(base);
+		//?: {good has calculation} generate it
+		if(c != null)
+			//?: {derived good}
+			if(c.getXSuperGood() != null)
+				genDerived(ctx, gu, c);
 			else
-				genGoodUnitPrice(ctx, gp, base);
+				genCalculation(ctx, gu, c);
 
-			//!: save the price
-			actionRun(ActionType.SAVE, gp);
-		}
+		return;
 	}
 
-	protected void      genGoodUnitPrice(GenCtx ctx, GoodPrice gp, BigDecimal base)
+	@SuppressWarnings("unchecked")
+	protected void addGood(GenCtx ctx, GoodUnit gu)
 	{
-		long cents = base.multiply(BigDecimal.valueOf(100L)).longValue();
-		long min   = cents * 75  / 100; if(min <= 0L)  min = 1L;
-		long max   = cents * 125 / 100; if(max <= min) max = min + 1L;
+		Map<String, GoodUnit> gum = (Map<String, GoodUnit>)
+		  ctx.get((Object) GoodUnit.class);
 
-		gp.setPrice(BigDecimal.valueOf(min + ctx.gen().nextInt((int)(max - min))).
-		  multiply(new BigDecimal("0.01"))
+		if(gum == null) ctx.set((Object) GoodUnit.class,
+		  gum = new HashMap<String, GoodUnit>(7)
 		);
-	}
 
-	protected void      ensureGoodInFolder(GenCtx ctx, GenState state)
-	{
-		GoodUnit   g = state.good.good;
-		TreeFolder f = EX.assertn(state.folders.
-		  get(state.folders.size() - 1).folder);
-
-		//!: add good to the folder on the top of the stack
-		actionRun(ActTreeFolder.ADD, f, ActTreeFolder.PARAM_ITEM, g);
-
-		if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
-		  "added good [", g.getCode(), "] into goods Folder [",
-		  f.getPrimaryKey(), "], code: [", f.getCode(), "]"
+		EX.assertx( gum.put(gu.getCode(), gu) == null,
+		  "Good Unit with code [", gu.getCode(), "] is generated twice!"
 		);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected GoodCalc  ensureTestGoodCalc(GenCtx ctx, GenState state)
+	protected void setMeasure(GenCtx ctx, GoodUnit gu, Good g)
 	{
-		GoodUnit  gu = state.good.good;
-		GoodCalc  gc = gu.getGoodCalc();
-		Calc       c;
-		StateCalc sc = state.good.calc;
+		Map<String, MeasureUnit> mum = (Map<String, MeasureUnit>)
+		  EX.assertn(ctx.get((Object) MeasureUnit.class));
 
-		//?: {good already has a calculation} skip this
-		if(gc != null) return gc;
+		MeasureUnit mu = mum.get(EX.asserts(
+		 g.getXMeasure(), "Good Unit with code [", g.getCode(),
+		 "] has no <XMeasure> tag defined!"
+		));
 
-		//~: create a new one
-		c = (gc = new GoodCalc()).getOx();
+		//=: measure
+		gu.setMeasure(EX.assertn(mu, "Good Unit with code [", g.getCode(),
+		  "] refers unknown measure by code [", g.getXMeasure(), "]!"
+		));
+	}
 
-		//=: calc good
+	protected void genDerived(GenCtx ctx, GoodUnit gu, Calc c)
+	{
+		GoodCalc gc = new GoodCalc();
+
+		//=: destination good
 		gc.setGoodUnit(gu);
 
-		//=: semi-ready
-		c.setSemiReady(sc.semiReady);
+		//=: search the super-good
+		setSuperGood(ctx, gc, c);
 
 		//=: open time
 		c.setTime(EX.assertn(ctx.get(Date.class)));
 
-		//?: {derived}
-		if(sc.derived)
-		{
-			//=: super-good
-			gc.setSuperGood(EX.assertn(
-			  ((Map<String, GoodUnit>)ctx.get(CTX_GOODS_MAP)).get(sc.superGood),
-
-			  "Derived Good Unit code [", gu.getCode(),
-			  "] refers super Good [", sc.superGood, "] not existing!"
-			));
-
-			//~: sub-code
-			c.setSubCode(sc.subCode);
-
-			//~: sub-volume
-			try
-			{
-				c.setSubVolume(new BigDecimal(sc.subVolume).
-				  setScale(gc.getSuperGood().getMeasure().getOx().isFractional()?(3):(0)));
-			}
-			catch(Throwable e)
-			{
-				throw EX.arg(e, "Derived Good Unit code [", gu.getCode(),
-				  "] has illegal sub-volume decimal [", sc.subVolume, "]!"
-				);
-			}
-
-			//~: add the part
-			EX.assertx(sc.parts.isEmpty());
-
-			CalcPart gp = new CalcPart();
-			gc.getParts().add(gp);
-
-			//~: part calc
-			gp.setGoodCalc(gc);
-
-			//~: part good
-			gp.setGoodUnit(gc.getSuperGood());
-
-			//~: part volume
-			gp.setVolume(c.getSubVolume());
-		}
-
-		//~: create the goods
-		if(!sc.derived) EX.asserte(sc.parts);
-		for(StatePart sp : sc.parts)
-		{
-			CalcPart gp = new CalcPart();
-			gc.getParts().add(gp);
-
-			//~: part calc
-			gp.setGoodCalc(gc);
-
-			//~: good unit
-			GoodUnit g = EX.assertn(
-			  ((Map<String, GoodUnit>)ctx.get(CTX_GOODS_MAP)).get(sp.goodCode),
-
-			  "Good Unit code [", gu.getCode(),
-			  "] Calculation' Part index [", sc.parts.indexOf(sp),
-			  "] refers by code [", sp.goodCode,
-			  "] Good Unit not existing!"
-			);
-
-			gp.setGoodUnit(g);
-
-			//~: volume
-			try
-			{
-				gp.setVolume(new BigDecimal(sp.volume).setScale(3));
-			}
-			catch(Throwable e)
-			{
-				throw EX.arg(e, "Good Unit code [", gu.getCode(),
-				  "] Calculation' Part index [", sc.parts.indexOf(sp),
-				  "] has illegal volume decimal [", sp.volume, "]!"
-				);
-			}
-
-			//?: {measure of referred good is integer}
-			if(!g.getMeasure().getOx().isFractional()) try
-			{
-				gp.setVolume(gp.getVolume().setScale(0));
-			}
-			catch(Throwable e)
-			{
-				throw EX.arg(e, "Good Unit code [", gu.getCode(),
-				  "] Calculation' Part index [", sc.parts.indexOf(sp),
-				  "] has volume decimal [", sp.volume,
-				  "], but the Good referred [", g.getPrimaryKey(),
-				  "] allows integer volumes only!"
-				);
-			}
-		}
-
-		//!: save (add) the calculation
-		gc.updateOx();
-		actionRun(ActionType.SAVE, gc);
-
-		LU.I(log(ctx), logsig(), " created Good Calc [",
-		  gc.getPrimaryKey(), "] for test Good Unit [",
-		  gu.getPrimaryKey(), ']'
+		//?: {has no sub-code}
+		EX.asserts(c.getSubCode(), "Good with code [", gu.getCode(),
+		  "] derived Calculation has no <sub-code> tag value!"
 		);
 
-		return gc;
+		//?: {has no sub-volume}
+		EX.assertn(c.getSubVolume(), "Good with code [", gu.getCode(),
+		  "] derived Calculation has no <sub-volume> tag value!"
+		);
+
+		//?: {has items}
+		EX.assertx(c.getItems().isEmpty(), "Good with code [", gu.getCode(),
+		  "] Calculation has items, but it is derived!"
+		);
 	}
 
-
-	/* protected: xml handler states */
-
-	protected static class GenState
+	@SuppressWarnings("unchecked")
+	protected void setSuperGood(GenCtx ctx, GoodCalc gc, Calc c)
 	{
-		/**
-		 * Currently processed good.
-		 */
-		public StateGood good;
+		Map<String, GoodUnit> gum = (Map<String, GoodUnit>)
+		  EX.assertn(ctx.get((Object) GoodUnit.class));
 
-		/**
-		 * The stack of folders.
-		 */
-		public List<StateFolder> folders =
-		  new ArrayList<StateFolder>(4);
+		GoodUnit xu = gum.get(EX.asserts(
+		 c.getXSuperGood(), "Good Unit with code [", gc.getGoodUnit().getCode(),
+		 "] has derived Calculation with no <xsuper-good> tag defined!"
+		));
+
+		//=: super good
+		gc.setSuperGood(EX.assertn(xu, "Good Unit with code [",
+		  gc.getGoodUnit().getCode(), "] has derived Calculation that refers ",
+		  "unknown Good by code [", c.getXSuperGood(), "]!"
+		));
 	}
 
-	protected static class StateFolder
+	protected void genCalculation(GenCtx ctx, GoodUnit gu, Calc c)
 	{
-		public String code;
-		public String name;
 
-		public TreeFolder folder;
-	}
-
-	protected static class StateGood
-	{
-		public String goodCode;
-		public String goodName;
-		public String goodCost;
-		public String meunCode;
-		public String meunInt;
-		public String meunName;
-		public String meunClassCode;
-		public String meunClassUnit;
-
-		public GoodUnit  good;
-		public StateCalc calc;
-	}
-
-	protected static class StateCalc
-	{
-		public boolean incalc;
-		public boolean semiReady;
-		public boolean derived;
-		public String  superGood;
-		public String  subCode;
-		public String  subVolume;
-
-		public List<StatePart> parts =
-		  new ArrayList<StatePart>(4);
-	}
-
-	protected static class StatePart
-	{
-		public String  goodCode;
-		public String  volume;
-		public boolean semiReady;
 	}
 
 
-	/* protected: xml handler */
+	/* protected: XML Processor */
 
-	protected ReadTestGoods createTestGoodsReader(GenCtx ctx)
+	protected SaxProcessor<? extends GenState> createProcessor(GenCtx ctx)
 	{
 		return new ReadTestGoods(ctx);
 	}
 
+	protected static class GenState
+	{
+		public Measure measure;
+		public Good    good;
+		public Calc    calc;
+	}
+
 	protected class ReadTestGoods extends SaxProcessor<GenState>
 	{
-		/* constructor */
-
 		public ReadTestGoods(GenCtx ctx)
 		{
 			this.ctx = ctx;
-		}
-
-/*
-
-	<folder code="" name=""> [recursive]
-
-		<good code="" [cost=""]>
-			<name/>
-			<measure code="" integer="" short-name="" name=""
-			  [class-code="" class-unit=""]/>
-
-			<derived good = "" semi-ready = ""
-			  sub-code = "" volume = ""/>
-
-			<calc>
-				<good code = "" volume = ""/>
-		</good>
-
-
-*/
-		/* public: ReadTestGoods interface */
-
-		public List<GoodUnit> getResult()
-		{
-			return result;
+			this.collectTags = true;
 		}
 
 
@@ -690,196 +330,102 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 		protected void createState()
 		{
-			if(level() == 1)
+			//?: <measure>
+			if(istag(1, "measure"))
+			{
 				event().state(new GenState());
-
-			if("folder".equals(event().tag()))
-			{
-				EX.assertx(
-				  state(1).good == null,
-				  "Test Goods has folder nested in good!"
-				);
-
-				StateFolder sf = new StateFolder();
-				state(1).folders.add(sf);
+				state().measure = new Measure();
 			}
 
-			if("good".equals(event().tag()))
+			//?: <good>
+			else if(istag(1, "good"))
 			{
-				StateGood sg = state(1).good;
-
-				if(sg != null)
-				{
-					EX.assertn(sg.calc);
-					EX.assertx(sg.calc.incalc);
-				}
-				else
-					state(1).good = new StateGood();
+				event().state(new GenState());
+				state().good = new Good();
 			}
+
+			//?: <good> <calc>
+			else if(istag(2, "calc"))
+			{
+				EX.assertn(state(1).good);
+				EX.assertx(state(1).calc == null);
+				state(1).calc = new Calc();
+			}
+
+			else if(islevel(1))
+				throw wrong();
 		}
 
 		protected void open()
 		{
-			//~: <folder>
-			if(event().istag("folder"))
+			//?: <good> <calc> <good/>
+			if(istag(3, "good"))
 			{
-				EX.asserte(state(1).folders);
+				Calc     c = EX.assertn(state(1).calc);
+				CalcItem i = new CalcItem();
 
-				StateFolder sf = state(1).folders.get(
-				  state(1).folders.size() - 1);
+				//~: related good code
+				i.setXGood(EX.asserts(event().attr("code")));
 
-				//~: folder code
-				sf.code = event().attr("code");
-				EX.assertx(!sXe(sf.code));
+				//~: good volume
+				i.setVolume(new BigDecimal(EX.asserts(event().attr("volume"))));
 
-				//~: folder name
-				sf.name = event().attr("name");
-				EX.assertx(!sXe(sf.name));
+				//?: {already has this good}
+				for(CalcItem x : c.getItems())
+					if(x.getXGood().equals(i.getXGood()))
+						throw EX.ass("Generated Good with code [", tag("code"),
+						  "] already has Calculation part for good with code [",
+						  i.getXGood(), "]!"
+						);
 
-				//!: ensure the folder
-				ensureTreeFolder(ctx, state(1));
+				//~: add the part
+				c.getItems().add(i);
 			}
 
-			//~: <good> | <good> <calc> <good>
-			if(event().istag("good"))
-			{
-				StateGood sg = EX.assertn(state(1).good);
+			//?: <good> <calc>
+			else if(istag(2, "calc"))
+				EX.assertn(state(1).calc).setSemiReady(
+				  "true".equals(EX.asserts(event().attr("semi-ready"))));
 
-				//?: {<good> <calc> <good>}
-				if(sg.calc != null)
-				{
-					EX.assertx(sg.calc.incalc);
-
-					StatePart p = new StatePart();
-					sg.calc.parts.add(p);
-
-					//~: good code
-					p.goodCode = event().attr("code");
-					EX.assertx(!sXe(p.goodCode));
-
-					//~: volume
-					p.volume = event().attr("volume");
-					EX.assertx(!sXe(p.volume));
-
-					//~: semi-ready
-					p.semiReady = "true".equals(event().attr("semi-ready"));
-				}
-				else
-				{
-					//~: good code
-					sg.goodCode = event().attr("code");
-					EX.assertx(!sXe(sg.goodCode));
-
-					//~: good cost
-					sg.goodCost = event().attr("cost");
-				}
-			}
-
-			//~: <good> <measure>
-			if(event().istag("measure"))
-			{
-				StateGood sg = EX.assertn(state(1).good);
-
-				sg.meunCode      = event().attr("code");
-				EX.assertx(!sXe(sg.meunCode));
-
-				sg.meunName      = event().attr("name");
-				sg.meunInt       = ("true".equals(event().attr("integer")))?("I"):("F");
-				sg.meunClassCode = event().attr("class-code");
-				sg.meunClassUnit = event().attr("class-unit");
-			}
-
-			//~: <good> <derived>
-			if(event().istag("derived"))
-			{
-				StateGood sg = EX.assertn(state(1).good);
-				EX.assertx(sg.calc == null);
-
-				sg.calc = new StateCalc();
-				sg.calc.incalc = false; //<-- no parts
-
-				//~: derived
-				sg.calc.derived = true;
-
-				//~: super-good
-				sg.calc.superGood = event().attr("good");
-				EX.assertx(!sXe(sg.calc.superGood));
-
-				//~: sub-code
-				sg.calc.subCode = event().attr("sub-code");
-				EX.assertx(!sXe(sg.calc.subCode));
-
-				//~: sub-volume
-				sg.calc.subVolume = event().attr("volume");
-				EX.assertx(!sXe(sg.calc.subVolume));
-
-				//~: calc semi-ready
-				sg.calc.semiReady = "true".equals(event().attr("semi-ready"));
-			}
-
-			//~: <good> <calc>
-			if(event().istag("calc"))
-			{
-				StateGood sg = EX.assertn(state(1).good);
-				EX.assertx(sg.calc == null);
-
-				sg.calc = new StateCalc();
-				sg.calc.incalc = true;
-
-				//~: calc semi-ready
-				sg.calc.semiReady = "true".equals(event().attr("semi-ready"));
-			}
 		}
 
 		protected void close()
 		{
-			//~: <good> </name>
-			if(event().istag("name") && (state(1).good != null))
+			//?: <measure>
+			if(istag(1, "measure"))
 			{
-				StateGood sg = state(1).good;
+				//~: fill the measure
+				EX.assertn(state().measure);
+				requireFillClearTags(state().measure, true, "code", "name");
 
-				//~: name
-				sg.goodName = s2s(event().text());
-				EX.assertn(sg.goodName);
+				//~: generate it
+				genMeasure(ctx, state().measure);
+				state().measure = null;
 			}
 
-			//~: <good> </calc>
-			if(event().istag("calc"))
+			//?: <good> <calc>
+			else if(istag(2, "calc"))
 			{
-				StateGood sg = EX.assertn(state(1).good);
-				EX.assertn(sg.calc).incalc = false;
+				//~: fill the calculation
+				Calc c = EX.assertn(state().calc);
+				requireFillClearTags(c, false);
 			}
 
-			//~: </good>
-			if(event().istag("good"))
+			//?: <good>
+			else if(istag(1, "good"))
 			{
-				StateGood sg = EX.assertn(state(1).good);
+				//~: fill the good
+				Good g = EX.assertn(state().good);
+				requireFillClearTags(g, true, "code", "name", "XMeasure");
 
-				//?: {not in the calc} create the good
-				if((sg.calc == null) || !sg.calc.incalc)
-				{
-					//!: ensure the good
-					result.add(ensureTestGoodUnit(ctx, state(1)));
-
-					//~: cleanup the good
-					state(1).good = null;
-				}
-			}
-
-			//~: </folder>
-			if(event().istag("folder"))
-			{
-				EX.assertx(!state(1).folders.isEmpty());
-
-				//~: pop the top folder
-				state(1).folders.remove(state(1).folders.size() - 1);
+				//!: generate the good
+				genGood(ctx, g, state().calc);
 			}
 		}
 
 
-		/* genesis context & result */
+		/* genesis context */
 
-		protected GenCtx        ctx;
-		private List<GoodUnit>  result = new ArrayList<GoodUnit>(32);
+		private GenCtx ctx;
 	}
 }
