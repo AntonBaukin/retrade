@@ -516,8 +516,8 @@ public class SU
 	public static String sort(String s)
 	{
 		return sXe(s)?(null):s.toLowerCase().
-		  replaceAll("[^а-я\\w;,\\.\\-]", "").
-		  replaceAll("\\s+", " ");
+		  replaceAll("\\s+", " ").
+		  replaceAll("[^а-я\\w;,\\.\\- ]", "");
 	}
 
 
