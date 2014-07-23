@@ -17,6 +17,7 @@ import com.tverts.retrade.domain.prices.PriceList;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -91,5 +92,27 @@ public class      GoodUnit
 	public void setGoodCalc(GoodCalc goodCalc)
 	{
 		this.calc = goodCalc;
+	}
+
+	public String getSortName()
+	{
+		return (sortName != null)?(sortName):
+		  (sortName = SU.sort(this.getName()));
+	}
+
+	private String sortName;
+
+	public void setSortName(String sortName)
+	{
+		this.sortName = sortName;
+	}
+
+	public void setName(String name)
+	{
+		//?: {has name already assigned}
+		if((getName() != null) && !getName().equals(name))
+			this.sortName = null;
+
+		super.setName(name);
 	}
 }

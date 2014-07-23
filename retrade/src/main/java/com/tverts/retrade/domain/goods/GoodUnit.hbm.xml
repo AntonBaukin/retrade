@@ -35,5 +35,20 @@
       </column>
     </many-to-one>
 
+
+    <!-- Sort Name -->
+
+    <property name = 'sortName'>
+
+      <column name = 'sort_name' not-null = 'true'
+        length = '512' index = 'ix_good_sort_name'>
+
+        <comment>
+          The name of the good in lower case
+          processed for sort operations.
+        </comment>
+      </column>
+    </property>
+
   </union-subclass>
 </hibernate-mapping>

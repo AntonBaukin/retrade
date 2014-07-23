@@ -220,7 +220,7 @@ from GoodUnit gu where
 		qb.setLimit(limit);
 
 		//~: order by
-		qb.setClauseOrderBy("lower(gu.name)");
+		qb.setClauseOrderBy("gu.sortName");
 
 		//~: domain restriction
 		qb.getClauseWhere().
@@ -1289,7 +1289,7 @@ from GoodPrice gp where
 		qb.setClauseSelect("gp, gu, mu, c");
 
 		//~: order by
-		qb.setClauseOrderBy("lower(gu.name)");
+		qb.setClauseOrderBy("gu.sortName");
 
 		//~: the limits
 		qb.setFirstRow(0);
@@ -1503,7 +1503,7 @@ from GoodPrice gp where
 			if("goodCode".equals(p))
 				s.append("lower(gu.code)");
 			else if("goodName".equals(p))
-				s.append("lower(gu.name)");
+				s.append("gu.sortName");
 			else
 				continue;
 
@@ -1511,7 +1511,7 @@ from GoodPrice gp where
 		}
 
 		if(s.length() == 0)
-			qb.setClauseOrderBy("lower(gu.name)");
+			qb.setClauseOrderBy("gu.sortName");
 		else
 			qb.setClauseOrderBy(s.toString());
 	}
