@@ -57,247 +57,247 @@
 
   <!-- Goods -->
 
-  <good>
+  <good cost = "45.50">
     <code>901</code>
     <name>яблоки (Молдова)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "64.20">
     <code>902</code>
     <name>яблоки (семеринка)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "58.30">
     <code>903</code>
     <name>яблоки (глостер, Польша)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "52">
     <code>904</code>
     <name>апельсины (Египет)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "48">
     <code>905</code>
     <name>апельсины (Морокко)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "145.30">
     <code>906</code>
     <name>виноград (кардинал)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "132.40">
     <code>907</code>
     <name>виноград (дамские пальчики)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "110.50">
     <code>908</code>
     <name>виноград (киш-миш зеленый)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "125.60">
     <code>909</code>
     <name>виноград (киш-миш черный)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "112.55">
     <code>910</code>
     <name>ананасы</name>
     <XMeasure>шт</XMeasure>
   </good>
 
-  <good>
+  <good cost = "85.65">
     <code>911</code>
     <name>киви</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "34.20">
     <code>912</code>
     <name>бананы</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "399.50">
     <code>913</code>
     <name>клубника</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "28.60">
     <code>914</code>
     <name>морковь</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "18.30">
     <code>915</code>
     <name>картофель</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "26.20">
     <code>916</code>
     <name>капуста</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "36.50">
     <code>917</code>
     <name>свекла</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "16.58">
     <code>918</code>
     <name>петрушка</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "16.58">
     <code>919</code>
     <name>укроп</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "12.45">
     <code>920</code>
     <name>лук зелёный</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "22.20">
     <code>921</code>
     <name>лук репчатый</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "26.58">
     <code>922</code>
     <name>чеснок</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "74.85">
     <code>923</code>
     <name>редис (красный)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "38.40">
     <code>924</code>
     <name>репа зеленая</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "89.90">
     <code>925</code>
     <name>перец (Краснодар)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "115.80">
     <code>926</code>
     <name>перец чили</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "135.90">
     <code>927</code>
     <name>перец красный</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "9.50">
     <code>928</code>
     <name>хлеб ржаной</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "24.60">
     <code>929</code>
     <name>батон нарезной</name>
     <XMeasure>шт</XMeasure>
   </good>
 
-  <good>
+  <good cost = "14.60">
     <code>930</code>
     <name>хлеб отрубной</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "16.84">
     <code>931</code>
     <name>хлеб бородинский</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "38.16">
     <code>932</code>
     <name>баранки</name>
     <XMeasure>уп</XMeasure>
   </good>
 
-  <good>
+  <good cost = "24.15">
     <code>933</code>
     <name>ватрушка с творогом</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "18.10">
     <code>934</code>
     <name>рогалик</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "23.10">
     <code>935</code>
     <name>круассан с шоколадом</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "26.80">
     <code>936</code>
     <name>круассан с повидлом</name>
     <XMeasure>100гр</XMeasure>
   </good>
 
-  <good>
+  <good cost = "457.50">
     <code>801</code>
     <name>говядина</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "368.75">
     <code>802</code>
-    <name>свинина</name>
+    <name>свинина (отбивная)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "135.95">
     <code>803</code>
     <name>курица (тушка)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "175.25">
     <code>804</code>
     <name>курица (филе)</name>
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "145.45">
     <code>805</code>
     <name>курица (ножки)</name>
     <XMeasure>кг</XMeasure>
@@ -309,7 +309,7 @@
     <XMeasure>кг</XMeasure>
   </good>
 
-  <good>
+  <good cost = "195.54">
     <code>807</code>
     <name>фарш мясной</name>
     <XMeasure>кг</XMeasure>
@@ -357,7 +357,7 @@
     </calc>
   </good>
 
-  <good>
+  <good cost = "28.80">
     <code>821</code>
     <name>суп с фрикадельками</name>
     <XMeasure>100мл</XMeasure>
@@ -370,7 +370,7 @@
     </calc>
   </good>
 
-  <good>
+  <good cost = "34.36">
     <code>822</code>
     <name>борщ</name>
     <XMeasure>100мл</XMeasure>
@@ -383,13 +383,13 @@
     </calc>
   </good>
 
-  <good>
+  <good cost = "55.00">
     <code>701</code>
     <name>кока-кола (розлив)</name>
     <XMeasure>л</XMeasure>
   </good>
 
-  <good>
+  <good cost = "45.00">
     <code>702</code>
     <name>кока-кола (0.5 стакан)</name>
     <XMeasure>ст 0.5</XMeasure>
@@ -401,15 +401,15 @@
     </calc>
   </good>
 
-  <good>
+  <good cost = "39.00">
     <code>703</code>
-    <name>кока-кола (100мл лёд)</name>
-    <XMeasure>100мл</XMeasure>
+    <name>кока-кола (0.33 лёд)</name>
+    <XMeasure>л</XMeasure>
 
     <calc>
       <XSuperGood>701</XSuperGood>
-      <sub-code>0.1 лёд</sub-code>
-      <sub-volume>0.1</sub-volume>
+      <sub-code>0.33 лёд</sub-code>
+      <sub-volume>0.33</sub-volume>
     </calc>
   </good>
 
