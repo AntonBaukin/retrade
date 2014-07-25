@@ -24,7 +24,7 @@ public @interface Prop
 {
 	/**
 	 * The name of the property. Defaults to
-	 * the property name (not thw parameter!).
+	 * the property name (not the parameter!).
 	 */
 	String  name() default "";
 
