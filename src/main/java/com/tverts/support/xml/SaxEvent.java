@@ -54,20 +54,9 @@ public class SaxEvent<State>
 			throw EX.state("XML event has no tag name!");
 	}
 
-	public boolean         istag(String... names)
+	public boolean         istag(String name)
 	{
-		String tag = this.tag();
-
-		for(String name : names)
-			if(name.equals(tag))
-				return true;
-
-		return false;
-	}
-
-	public boolean         istag(int level, String... names)
-	{
-		return (level == level()) && istag(names);
+		return this.tag().equals(name);
 	}
 
 	public String          uri()

@@ -289,14 +289,24 @@ public abstract class SaxProcessor<State>
 		return (stack().size() - 1) == level;
 	}
 
-	protected final boolean    istag(String... names)
+	protected final boolean    istag(String name)
 	{
-		return stack().top().istag(names);
+		return stack().top().istag(name);
 	}
 
+	/**
+	 * Checks the tags nesting started from the level given.
+	 */
 	protected final boolean    istag(int level, String... names)
 	{
-		return stack().top().istag(level, names);
+		if(level >= stack.size())
+			return false;
+
+		for(int i = 0;(i < names.length);i++)
+			if(!stack.get(level + i).istag(names[i]))
+				return false;
+
+		return true;
 	}
 
 	protected final String     attr(String qname)
