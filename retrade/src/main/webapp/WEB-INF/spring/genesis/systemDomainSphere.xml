@@ -20,7 +20,10 @@
     <constructor-arg>
 
       <bean class = 'com.tverts.retrade.domain.core.GenReTradeDomain'>
-        <property name = 'name' value = 'Domain'/>
+
+        <property name = 'name'   value = 'Domain'/>
+        <property name = 'system' value = 'true'/>
+
       </bean>
     </constructor-arg>
   </bean>

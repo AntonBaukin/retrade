@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.core;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +46,7 @@ import com.tverts.objects.ObjectParams;
  */
 public class GenReTradeDomain extends GenCoreDomain
 {
-	/* public: Genesis interface */
+	/* Genesis */
 
 	public void generate(GenCtx ctx)
 	  throws GenesisError
@@ -57,8 +57,12 @@ public class GenReTradeDomain extends GenCoreDomain
 		//~: ensure the properties
 		ensureProperties(ctx);
 
-		//~: ensure the goods tree
-		ensureGoodsTreeDomain(ctx);
+		//?: {not a system domain}
+		if(!system)
+		{
+			//~: ensure the goods tree
+			ensureGoodsTreeDomain(ctx);
+		}
 	}
 
 	public void parameters(List<ObjectParam> params)
@@ -73,12 +77,14 @@ public class GenReTradeDomain extends GenCoreDomain
 	}
 
 
-	/* public: GenReTradeDomain (bean) interface */
+	/* Generate ReTrade Domain */
 
 	public DomainProps getProps()
 	{
 		return props;
 	}
+
+	private DomainProps props = new DomainProps();
 
 	public void setProps(DomainProps props)
 	{
@@ -86,6 +92,17 @@ public class GenReTradeDomain extends GenCoreDomain
 		this.props = props;
 	}
 
+	public boolean isSystem()
+	{
+		return system;
+	}
+
+	private boolean system;
+
+	public void setSystem(boolean system)
+	{
+		this.system = system;
+	}
 
 	/* protected: the generation */
 
@@ -96,12 +113,12 @@ public class GenReTradeDomain extends GenCoreDomain
 		ObjectParams.extendProps(Arrays.asList(params));
 
 		//~: load and set the properties
-		GetProps      get    = bean(GetProps.class);
+		GetProps get = bean(GetProps.class);
 
 		for(ObjectParam param : params)
 		{
 			//~: get property extension as the source
-			Property p = (Property) param.extensions().get(Property.class);
+			Property p = (Property)param.extensions().get(Property.class);
 			if(p == null) continue;
 
 			//~: domain
@@ -125,14 +142,11 @@ public class GenReTradeDomain extends GenCoreDomain
 
 		//~: tree type
 		tree.setTreeType(UnityTypes.unityType(
-		  TreeDomain.class, Goods.TYPE_GOODS_TREE));
+			 TreeDomain.class, Goods.TYPE_GOODS_TREE
+		  )
+		);
 
 		//!: ensure
 		actionRun(ActionType.ENSURE, tree);
 	}
-
-
-	/* private: the properties */
-
-	private DomainProps props = new DomainProps();
 }

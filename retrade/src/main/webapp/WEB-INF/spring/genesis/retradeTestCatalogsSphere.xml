@@ -36,11 +36,20 @@
 
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Create test Goods Tree
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.goods.GenTestGoodsTree'>
+              <property name = 'name' value = 'Goods Tree'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Create test Contractors
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
             <bean class = 'com.tverts.retrade.domain.firm.GenTestContractors'>
               <property name = 'name' value = 'Contractors'/>
             </bean>
+
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Generate test Users

@@ -1,0 +1,121 @@
+<tree>
+
+  <folder code = "ФР" name = "Фрукты">
+
+    <folder code = "ФР-ЯБЛ" name = "Яблоки">
+
+      <good code = "901"/>
+      <good code = "902"/>
+      <good code = "903"/>
+
+    </folder>
+
+    <folder code = "ФР-АПЕ" name = "Апельсины">
+
+      <good code = "904"/>
+      <good code = "905"/>
+
+    </folder>
+
+    <folder code = "ФР-ВИН" name = "Виноград">
+
+      <good code = "906"/>
+      <good code = "907"/>
+      <good code = "908"/>
+      <good code = "909"/>
+
+    </folder>
+
+    <good code = "910"/>
+    <good code = "911"/>
+    <good code = "912"/>
+    <good code = "913"/>
+
+  </folder>
+
+  <folder code = "ОВ" name = "Овощи">
+
+    <good code = "914"/>
+    <good code = "915"/>
+    <good code = "916"/>
+    <good code = "917"/>
+
+    <folder code = "ОВ-ЗЕЛ" name = "Зелень">
+
+      <good code = "918"/>
+      <good code = "919"/>
+      <good code = "920"/>
+
+    </folder>
+
+    <good code = "921"/>
+    <good code = "922"/>
+    <good code = "923"/>
+    <good code = "924"/>
+
+    <folder code = "ОВ-ПЕР" name = "Перец">
+
+      <good code = "925"/>
+      <good code = "926"/>
+      <good code = "927"/>
+
+    </folder>
+  </folder>
+
+  <folder code = "ХБ" name = "Хлебобулочные изделия">
+
+    <folder code = "ХБ-ХЛЕ" name = "Хлеб">
+
+      <good code = "928"/>
+      <good code = "929"/>
+      <good code = "930"/>
+      <good code = "931"/>
+
+    </folder>
+
+    <folder code = "ХБ-ВЫП" name = "Выпечка">
+
+      <good code = "932"/>
+      <good code = "933"/>
+      <good code = "934"/>
+      <good code = "935"/>
+      <good code = "936"/>
+
+    </folder>
+  </folder>
+
+  <folder code = "МЯСО" name = "Мясные изделия">
+
+    <good code = "801"/>
+    <good code = "802"/>
+    <good code = "803"/>
+    <good code = "804"/>
+    <good code = "805"/>
+    <good code = "806"/>
+    <good code = "807"/>
+
+  </folder>
+
+  <folder code = "СУП-ОСН" name = "Суповые основы">
+
+    <good code = "811"/>
+    <good code = "812"/>
+    <good code = "813"/>
+
+  </folder>
+
+  <folder code = "СУПЫ" name = "Супы">
+
+    <good code = "821"/>
+    <good code = "822"/>
+
+  </folder>
+
+  <folder code = "НАП" name = "Напитки">
+
+    <good code = "701"/>
+    <good code = "702"/>
+    <good code = "703"/>
+
+  </folder>
+</tree>

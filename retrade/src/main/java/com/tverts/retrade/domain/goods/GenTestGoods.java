@@ -1,20 +1,18 @@
 package com.tverts.retrade.domain.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: hibery */
-
-import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 /* com.tverts: actions */
 
@@ -34,11 +32,9 @@ import com.tverts.api.retrade.goods.CalcItem;
 import com.tverts.api.retrade.goods.Good;
 import com.tverts.api.retrade.goods.Measure;
 
-/* com.tverts: endure (core + trees) */
+/* com.tverts: endure (core) */
 
 import com.tverts.endure.core.Domain;
-
-/* com.tverts: retrade domain (prices) */
 
 /* com.tverts: support */
 
@@ -65,6 +61,9 @@ public class GenTestGoods extends GenesisHiberPartBase
 	{
 		//~: read test data
 		readTestData(ctx);
+
+		//~: collect the goods
+		collectGoods(ctx);
 	}
 
 
@@ -95,6 +94,23 @@ public class GenTestGoods extends GenesisHiberPartBase
 			else
 				throw new GenesisError(e, this, ctx);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void collectGoods(GenCtx ctx)
+	{
+		//~: get the goods
+		Map<String, GoodUnit> gum = (Map<String, GoodUnit>)
+		  EX.assertn(ctx.get((Object) GoodUnit.class));
+
+		EX.assertx(0 != gum.size(), "Test Goods were not generated!");
+
+		//~: the code-sorted
+		Map<String, GoodUnit> gtr =
+		  new TreeMap<String, GoodUnit>(gum);
+
+		//!: save into the genesis context
+		ctx.set(GoodUnit[].class, gtr.values().toArray(new GoodUnit[gtr.size()]));
 	}
 
 	protected void genMeasure(GenCtx ctx, Measure m)
@@ -199,8 +215,6 @@ public class GenTestGoods extends GenesisHiberPartBase
 				genDerived(ctx, gu, c);
 			else
 				genCalculation(ctx, gu, c);
-
-		return;
 	}
 
 	@SuppressWarnings("unchecked")
