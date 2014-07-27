@@ -4,6 +4,10 @@ package com.tverts.retrade.domain.prices;
 
 import java.util.Set;
 
+/* tverts.com: api */
+
+import com.tverts.api.retrade.goods.PriceList;
+
 /* tverts.com: endure (core) */
 
 import com.tverts.endure.OxSearch;
@@ -19,23 +23,22 @@ import com.tverts.support.EX;
  *
  * @author anton.baukin@gmail.com
  */
-public class      PriceList
+public class      PriceListEntity
        extends    OxCatEntity
        implements OxSearch
 {
 	/* Object Extraction */
 
-	public com.tverts.api.retrade.goods.PriceList getOx()
+	public PriceList getOx()
 	{
-		com.tverts.api.retrade.goods.PriceList pl =
-		  (com.tverts.api.retrade.goods.PriceList) super.getOx();
-		if(pl == null) setOx(pl = new com.tverts.api.retrade.goods.PriceList());
+		PriceList pl = (PriceList) super.getOx();
+		if(pl == null) setOx(pl = new PriceList());
 		return pl;
 	}
 
 	public void setOx(Object ox)
 	{
-		EX.assertx(ox instanceof com.tverts.api.retrade.goods.PriceList);
+		EX.assertx(ox instanceof PriceList);
 		super.setOx(ox);
 	}
 

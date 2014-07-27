@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -47,21 +47,18 @@ import com.tverts.endure.tree.GetTree;
 import com.tverts.endure.tree.TreeCross;
 import com.tverts.endure.tree.TreeItem;
 
-/* com.tverts: retrade domain (trade stores) */
-
-import com.tverts.retrade.domain.store.TradeStoreModelBean;
-
-/* com.tverts: retrade domain (prices) */
+/* com.tverts: retrade domain (prices + stores) */
 
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.GoodPriceModelBean;
 import com.tverts.retrade.domain.prices.PriceChange;
 import com.tverts.retrade.domain.prices.PriceChangeEditModelBean;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
 import com.tverts.retrade.domain.prices.RepriceDoc;
 import com.tverts.retrade.domain.prices.RepriceDocModelBean;
 import com.tverts.retrade.domain.prices.RepriceDocsModelBean;
+import com.tverts.retrade.domain.store.TradeStoreModelBean;
 
 /* com.tverts: support */
 
@@ -655,13 +652,13 @@ from MeasureUnit mu where
 
 	/* Get Price Lists */
 
-	public PriceList       getPriceList(Long pk)
+	public PriceListEntity getPriceList(Long pk)
 	{
 		return (pk == null)?(null):
-		  (PriceList)session().get(PriceList.class, pk);
+		  (PriceListEntity)session().get(PriceListEntity.class, pk);
 	}
 
-	public PriceList       getPriceList(Long domain, String code)
+	public PriceListEntity getPriceList(Long domain, String code)
 	{
 		if(domain == null)
 			throw new IllegalArgumentException();
@@ -676,7 +673,7 @@ from MeasureUnit mu where
 
 */
 
-		return (PriceList) Q(
+		return (PriceListEntity) Q(
 
 "from PriceList pl where\n" +
 "  (pl.domain.id = :domain) and (pl.code = :code)"
@@ -688,20 +685,20 @@ from MeasureUnit mu where
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PriceList> getPriceLists(Long domain)
+	public List<PriceListEntity> getPriceLists(Long domain)
 	{
 		if(domain == null)
 			throw new IllegalArgumentException();
 
 /*
 
-from PriceList pl where (pl.domain.id = :domain)
+from PriceListEntity pl where (pl.domain.id = :domain)
 order by lower(pl.name)
 
 */
-		return (List<PriceList>) Q(
+		return (List<PriceListEntity>) Q(
 
-"from PriceList pl where (pl.domain.id = :domain)\n" +
+"from PriceListEntity pl where (pl.domain.id = :domain)\n" +
 "order by lower(pl.name)"
 
 		).
@@ -709,20 +706,20 @@ order by lower(pl.name)
 		  list();
 	}
 
-	public PriceList       getPriceListDefault(Long domain)
+	public PriceListEntity getPriceListDefault(Long domain)
 	{
 		if(domain == null)
 			throw new IllegalArgumentException();
 
 /*
 
-from PriceList pl where (pl.domain.id = :domain)
+from PriceListEntity pl where (pl.domain.id = :domain)
 order by lower(pl.name)
 
 */
-		return (PriceList) Q(
+		return (PriceListEntity) Q(
 
-"from PriceList pl where (pl.domain.id = :domain)\n" +
+"from PriceListEntity pl where (pl.domain.id = :domain)\n" +
 "order by lower(pl.name)"
 
 		).
@@ -830,7 +827,7 @@ order by gu.id
 	 */
 	@SuppressWarnings("unchecked")
 	public List            getPriceListPrices
-	  (PriceList priceList, Collection<String> goodCodes)
+	  (PriceListEntity priceList, Collection<String> goodCodes)
 	{
 		if(priceList == null)
 			throw new IllegalArgumentException();
@@ -881,7 +878,7 @@ order by gu.id
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<GoodPrice> getPriceListPrices(PriceList priceList)
+	public List<GoodPrice> getPriceListPrices(PriceListEntity priceList)
 	{
 		if(priceList == null)
 			throw new IllegalArgumentException();
@@ -909,7 +906,7 @@ order by gp.goodUnit.id
 		return (GoodPrice) session().get(GoodPrice.class, pk);
 	}
 
-	public GoodPrice       getGoodPrice(PriceList pl, GoodUnit gu)
+	public GoodPrice       getGoodPrice(PriceListEntity pl, GoodUnit gu)
 	{
 		EX.assertn(pl);
 		EX.assertn(gu);

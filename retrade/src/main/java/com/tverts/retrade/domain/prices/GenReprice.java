@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class      GenReprice
 			return;
 
 		//~: select random price list
-		PriceList[] pls = ctx.get(PriceList[].class);
+		PriceListEntity[] pls = ctx.get(PriceListEntity[].class);
 		rd.setPriceList(pls[ctx.gen().nextInt(pls.length)]);
 
 		//~: change reason

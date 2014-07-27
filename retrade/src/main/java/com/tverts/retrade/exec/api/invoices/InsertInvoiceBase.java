@@ -1,6 +1,6 @@
 package com.tverts.retrade.exec.api.invoices;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ import com.tverts.retrade.domain.invoice.InvoiceState;
 import com.tverts.retrade.domain.invoice.Invoices;
 import com.tverts.retrade.domain.invoice.SellGood;
 import com.tverts.retrade.domain.prices.GoodPrice;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.GetTradeStore;
 import com.tverts.retrade.domain.store.TradeStore;
 
@@ -347,7 +347,7 @@ public abstract class InsertInvoiceBase extends InsertEntityBase
 			return;
 
 		//~: load the price list
-		PriceList pl = loadPriceList(
+		PriceListEntity pl = loadPriceList(
 		  ixkey, gs.getXkey(), gs.getXList(), gs.getList());
 
 		//~: find the good price
@@ -429,7 +429,7 @@ public abstract class InsertInvoiceBase extends InsertEntityBase
 		return gu;
 	}
 
-	protected PriceList   loadPriceList
+	protected PriceListEntity loadPriceList
 	  (String ixkey, String gxkey, String pxkey, Long pk)
 	{
 		EX.assertn(pk, "Invoice to insert xkey [", ixkey,
@@ -437,7 +437,7 @@ public abstract class InsertInvoiceBase extends InsertEntityBase
 		);
 
 		//~: load the store
-		PriceList pl = bean(GetGoods.class).getPriceList(pk);
+		PriceListEntity pl = bean(GetGoods.class).getPriceList(pk);
 
 		EX.assertn(pl, "Invoice to insert xkey [", ixkey,
 		  "] refers Price List xkey [", gxkey, "] pkey [", pk,

@@ -1,10 +1,9 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +37,8 @@ import com.tverts.support.EX;
 
 
 /**
- * Actions builder for {@link PriceList} instances.
- * Save and ensure actions are supported.
+ * Actions builder for {@link PriceListEntity}
+ * instances. Save and ensure actions are supported.
  *
  * @author anton.baukin@gmail.com
  */
@@ -89,7 +88,7 @@ public class ActPriceList extends ActionBuilderReTrade
 	protected void savePriceList(ActionBuildRec abr)
 	{
 		//?: {target is not a PriceList}
-		checkTargetClass(abr, PriceList.class);
+		checkTargetClass(abr, PriceListEntity.class);
 
 		//~: save the price list
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
@@ -103,7 +102,7 @@ public class ActPriceList extends ActionBuilderReTrade
 	protected void updatePriceList(ActionBuildRec abr)
 	{
 		//?: {target is not a PriceList}
-		checkTargetClass(abr, PriceList.class);
+		checkTargetClass(abr, PriceListEntity.class);
 
 		//~: update the Txn
 		chain(abr).first(new SetTxAction(task(abr)));
@@ -117,7 +116,7 @@ public class ActPriceList extends ActionBuilderReTrade
 	protected void ensurePriceList(ActionBuildRec abr)
 	{
 		//?: {target is not a PriceList}
-		checkTargetClass(abr, PriceList.class);
+		checkTargetClass(abr, PriceListEntity.class);
 
 		complete(abr);
 	}
@@ -139,18 +138,18 @@ public class ActPriceList extends ActionBuilderReTrade
 		{
 			EX.assertn( gp.getPrice(),
 			  "Updating Good Price [", gp.getPrimaryKey(), "] of List [",
-			  target(abr, PriceList.class).getPrimaryKey(), "] has value undefined!"
+			  target(abr, PriceListEntity.class).getPrimaryKey(), "] has value undefined!"
 			);
 
 			EX.assertx( CMP.grZero(gp.getPrice()),
 			  "Updating Good Price [", gp.getPrimaryKey(), "] of List [",
-			  target(abr, PriceList.class).getPrimaryKey(), "] has illegal value!"
+			  target(abr, PriceListEntity.class).getPrimaryKey(), "] has illegal value!"
 			);
 		}
 
 		//~: load & map the existing prices
 		List<GoodPrice> existing = bean(GetGoods.class).
-		  getPriceListPrices(target(abr, PriceList.class));
+		  getPriceListPrices(target(abr, PriceListEntity.class));
 
 		Map<Long, GoodPrice> emap =
 		  new HashMap<Long, GoodPrice>(existing.size());
@@ -176,7 +175,7 @@ public class ActPriceList extends ActionBuilderReTrade
 			else
 			{
 				//~: price list
-				s.setPriceList(target(abr, PriceList.class));
+				s.setPriceList(target(abr, PriceListEntity.class));
 
 				//!: save the price
 				chain(abr).first(new SaveNumericIdentified(task(abr), s));

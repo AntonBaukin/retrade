@@ -5,11 +5,11 @@
 
 <hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
 
-  <union-subclass name = 'PriceList' table = 'retrade_price_list'
+  <union-subclass name = 'PriceListEntity' table = 'retrade_price_list'
     extends = 'com.tverts.endure.core.OxCatEntity'>
 
 
-    <!-- Price Items -->
+    <!-- Price Items [bi, slave] -->
 
     <set name = 'items' inverse = 'true' lazy = 'true'>
 

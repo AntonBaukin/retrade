@@ -40,11 +40,6 @@
         <bean class = 'com.tverts.endure.secure.SecureFmt'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Price List Formatter
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.retrade.domain.prices.PriceListFmt'/>
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Catalogue Items Formatter
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.endure.cats.CatItemFmt'/>

@@ -8,11 +8,12 @@ import com.tverts.actions.ActionsPoint;
 /* com.tverts: api execution */
 
 import com.tverts.api.core.Holder;
+import com.tverts.api.retrade.goods.PriceList;
 import com.tverts.exec.api.UpdateEntityBase;
 
 /* com.tverts: retrade domain (goods + prices) */
 
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 
 
 /**
@@ -33,16 +34,13 @@ public class UpdatePriceList extends UpdateEntityBase
 
 	protected Class     getUnityClass(Holder holder)
 	{
-		return PriceList.class;
+		return PriceListEntity.class;
 	}
 
 	protected void      update(Object entity, Object source)
 	{
-		com.tverts.api.retrade.goods.PriceList     s  =
-		  (com.tverts.api.retrade.goods.PriceList) source;
-
-		com.tverts.retrade.domain.prices.PriceList d =
-		  (com.tverts.retrade.domain.prices.PriceList) entity;
+		PriceList       s = (PriceList) source;
+		PriceListEntity d = (PriceListEntity) entity;
 
 		//~: code
 		d.setCode(s.getCode());

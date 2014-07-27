@@ -13,11 +13,13 @@ import com.tverts.actions.ActionsPoint;
 /* com.tverts: api execution */
 
 import com.tverts.api.core.Holder;
+import com.tverts.api.retrade.goods.PriceList;
 import com.tverts.exec.api.InsertEntityBase;
-
-/* com.tverts: retrade domain (goods + prices) */
-
 import com.tverts.exec.api.InsertHolder;
+
+/* com.tverts: retrade domain (prices) */
+
+import com.tverts.retrade.domain.prices.PriceListEntity;
 
 
 /**
@@ -38,11 +40,10 @@ public class InsertPriceList extends InsertEntityBase
 
 	protected Long    insert(InsertHolder h)
 	{
-		com.tverts.api.retrade.goods.PriceList     s  =
-		  (com.tverts.api.retrade.goods.PriceList) h.getHolder().getEntity();;
+		PriceList s  = (PriceList) h.getHolder().getEntity();;
 
-		com.tverts.retrade.domain.prices.PriceList d =
-		  new com.tverts.retrade.domain.prices.PriceList();
+		PriceListEntity d =
+		  new PriceListEntity();
 
 		//~: domain
 		d.setDomain(domain());

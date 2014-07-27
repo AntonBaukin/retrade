@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -97,8 +97,8 @@ public class RepriceDocView implements Serializable
 		if(obj instanceof RepriceDoc)
 			return this.init((RepriceDoc)obj);
 
-		if(obj instanceof PriceList)
-			return this.init((PriceList)obj);
+		if(obj instanceof PriceListEntity)
+			return this.init((PriceListEntity)obj);
 
 		return this;
 	}
@@ -120,7 +120,7 @@ public class RepriceDocView implements Serializable
 		return this;
 	}
 
-	public RepriceDocView init(PriceList pl)
+	public RepriceDocView init(PriceListEntity pl)
 	{
 		//~: price list name
 		priceList = Prices.getPriceListFullName(pl);

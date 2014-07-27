@@ -1,6 +1,6 @@
 package com.tverts.retrade.data.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,12 +25,9 @@ import com.tverts.model.ModelRequest;
 /* com.tverts: retrade domain (goods + prices) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
-import com.tverts.retrade.domain.goods.GoodUnitView;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.GoodPriceView;
-import com.tverts.retrade.domain.prices.PriceList;
-import com.tverts.retrade.domain.prices.PriceListView;
-import com.tverts.retrade.domain.prices.PriceListsModelBean;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PricesSearchModelBean;
 
 
@@ -72,16 +69,16 @@ public class PricesSearchModelData implements ModelData
 			return null;
 
 		//~: get all the price lists
-		List<PriceList> lists = bean(GetGoods.class).
+		List<PriceListEntity> lists = bean(GetGoods.class).
 		  getPriceLists(getModel().getDomain());
 
 		//~: init the views
-		List<GoodPriceView>          res   =
+		List<GoodPriceView>   res   =
 		  new ArrayList<GoodPriceView>(lists.size());
 		HashMap<Long, GoodPriceView> views =
 		  new HashMap<Long, GoodPriceView>(lists.size());
 
-		for(PriceList pl : lists)
+		for(PriceListEntity pl : lists)
 		{
 			GoodPriceView v = new GoodPriceView().init(pl);
 			res.add(v); views.put(pl.getPrimaryKey(), v);

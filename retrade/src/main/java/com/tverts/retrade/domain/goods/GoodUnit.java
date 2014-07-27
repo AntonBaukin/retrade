@@ -12,7 +12,7 @@ import com.tverts.endure.core.OxCatEntity;
 /* com.tverts: retrade domain (prices) */
 
 import com.tverts.retrade.domain.prices.GoodPrice;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 
 /* com.tverts: support */
 
@@ -29,7 +29,7 @@ import com.tverts.support.SU;
  *
  * The price of the one unit of the good
  * is stored in {@link GoodPrice} entries
- * related with the {@link PriceList}s
+ * related with the {@link PriceListEntity}s
  * of the Domain.
  *
  *

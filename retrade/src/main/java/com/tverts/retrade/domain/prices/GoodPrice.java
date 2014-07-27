@@ -15,7 +15,7 @@ import com.tverts.retrade.domain.goods.GoodUnit;
 
 
 /**
- * Element of {@link PriceList}. Defines the
+ * Element of {@link PriceListEntity}. Defines the
  * cost of the {@link GoodUnit} referred.
  *
  *
@@ -27,14 +27,14 @@ public class      GoodPrice
 {
 	/* Good Price */
 
-	public PriceList  getPriceList()
+	public PriceListEntity getPriceList()
 	{
 		return priceList;
 	}
 
-	private PriceList priceList;
+	private PriceListEntity priceList;
 
-	public void setPriceList(PriceList priceList)
+	public void setPriceList(PriceListEntity priceList)
 	{
 		this.priceList = priceList;
 	}

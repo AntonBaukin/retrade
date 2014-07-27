@@ -17,7 +17,7 @@ import com.tverts.actions.ActionsPoint;
 
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.prices.GoodPrice;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 
 /* com.tverts: retrade api */
 
@@ -53,7 +53,7 @@ public class InsertPrice extends InsertEntityBase
 		PriceItem i = (PriceItem) source;
 
 		//~: take the price list
-		PriceList l = EX.assertn( bean(GetGoods.class).getPriceList(
+		PriceListEntity l = EX.assertn( bean(GetGoods.class).getPriceList(
 		  EX.assertn(i.getList(), "Price Item x-key [", i.getXkey(),
 		    "] has no Price List primary key!")),
 

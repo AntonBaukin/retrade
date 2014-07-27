@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,12 +50,12 @@ public class      RepriceDoc
 		this.code = code;
 	}
 
-	public PriceList  getPriceList()
+	public PriceListEntity getPriceList()
 	{
 		return priceList;
 	}
 
-	public void       setPriceList(PriceList priceList)
+	public void       setPriceList(PriceListEntity priceList)
 	{
 		this.priceList = priceList;
 	}
@@ -111,9 +111,9 @@ public class      RepriceDoc
 
 	private Domain    domain;
 	private String    code;
-	private PriceList priceList;
 	private Date      changeTime;
 	private String    changeReason;
 
+	private PriceListEntity   priceList;
 	private List<PriceChange> changes;
 }

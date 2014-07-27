@@ -51,8 +51,8 @@ public class GoodPriceView extends GoodUnitView
 
 	public GoodPriceView init(Object obj)
 	{
-		if(obj instanceof PriceList)
-			this.init((PriceList) obj);
+		if(obj instanceof PriceListEntity)
+			this.init((PriceListEntity) obj);
 
 		return (GoodPriceView) super.init(obj);
 	}
@@ -63,7 +63,7 @@ public class GoodPriceView extends GoodUnitView
 		return (GoodPriceView) super.init(gp);
 	}
 
-	public GoodPriceView init(PriceList p)
+	public GoodPriceView init(PriceListEntity p)
 	{
 		this.priceList     = p.getPrimaryKey();
 		this.priceListCode = p.getCode();

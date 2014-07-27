@@ -25,9 +25,8 @@ import com.tverts.model.NumericModelBean;
 /* com.tverts: retrade domain (goods + prices) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
-import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.prices.GoodPrice;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
 
 
@@ -59,9 +58,9 @@ public class FacesPriceListView extends NumericModelView
 
 	/* public: FacesPriceListView (bean) interface */
 
-	public PriceList          getNumeric()
+	public PriceListEntity    getNumeric()
 	{
-		return (PriceList)super.getNumeric();
+		return (PriceListEntity)super.getNumeric();
 	}
 
 	public PriceListModelBean getModel()
@@ -86,7 +85,7 @@ public class FacesPriceListView extends NumericModelView
 	{
 		PriceListModelBean mb = new PriceListModelBean();
 
-		mb.setObjectClass(PriceList.class);
+		mb.setObjectClass(PriceListEntity.class);
 		mb.setDomain(getDomainKey());
 		return mb;
 	}

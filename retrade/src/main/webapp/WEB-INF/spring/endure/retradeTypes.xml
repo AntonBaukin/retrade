@@ -102,7 +102,7 @@
         <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
 
           <property name  = 'typeClass'
-                    value = 'com.tverts.retrade.domain.prices.PriceList'/>
+                    value = 'com.tverts.retrade.domain.prices.PriceListEntity'/>
 
           <property name  = 'typeName'
                     value = 'ReTrade: Prices: Price List'/>

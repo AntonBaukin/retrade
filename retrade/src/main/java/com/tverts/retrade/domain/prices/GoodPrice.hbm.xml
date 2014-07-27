@@ -24,7 +24,7 @@
     </property>
 
 
-    <!-- Price List -->
+    <!-- Price List [bi, master] -->
 
     <many-to-one name = 'priceList' foreign-key = 'fk_price_list'>
 

@@ -27,7 +27,7 @@ import com.tverts.support.SU;
 
 
 /**
- * Model bean to display {@link PriceList}.
+ * Model bean to display {@link PriceListEntity}.
  *
  * @author anton.baukin@gmail.com
  */
@@ -43,7 +43,7 @@ public class      PriceListModelBean
 	public PriceListModelBean()
 	{}
 
-	public PriceListModelBean(PriceList pl)
+	public PriceListModelBean(PriceListEntity pl)
 	{
 		this.setInstance(pl);
 	}
@@ -51,9 +51,9 @@ public class      PriceListModelBean
 
 	/* public: PriceListModelBean (read) interface */
 
-	public PriceList  priceList()
+	public PriceListEntity priceList()
 	{
-		return (PriceList)accessNumeric();
+		return (PriceListEntity)accessNumeric();
 	}
 
 	@XmlElement

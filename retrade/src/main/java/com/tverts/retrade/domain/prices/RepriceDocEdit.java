@@ -1,9 +1,8 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /* Java XML Binding */
@@ -68,7 +67,7 @@ public class RepriceDocEdit extends RepriceDocView
 		return (RepriceDocEdit)super.init(rd);
 	}
 
-	public RepriceDocEdit init(PriceList pl)
+	public RepriceDocEdit init(PriceListEntity pl)
 	{
 		//~: price list primary key
 		priceListKey = pl.getPrimaryKey();

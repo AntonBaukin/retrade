@@ -37,7 +37,7 @@ import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.prices.GoodPrice;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.sells.SellsData;
 import com.tverts.retrade.domain.store.GetTradeStore;
 
@@ -496,9 +496,9 @@ public class InvoiceEdit extends InvoiceViewExt
 		//?: {the price list was changed}
 		else if((plk == null) || !plk.equals(eg.getPriceList()))
 		{
-			GetGoods  gg = bean(GetGoods.class);
-			PriceList pl = EX.assertn(gg.getPriceList(eg.getPriceList()));
-			GoodPrice gp = EX.assertn(gg.getGoodPrice(pl, ig.getGoodUnit()));
+			GetGoods        gg = bean(GetGoods.class);
+			PriceListEntity pl = EX.assertn(gg.getPriceList(eg.getPriceList()));
+			GoodPrice       gp = EX.assertn(gg.getGoodPrice(pl, ig.getGoodUnit()));
 
 			//~: assign new good price
 			ig.setPrice(gp);

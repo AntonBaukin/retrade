@@ -1,6 +1,6 @@
 package com.tverts.retrade.web.views.reprices;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
 import com.tverts.retrade.domain.goods.MeasureUnit;
 import com.tverts.retrade.domain.prices.PriceChangeEdit;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.Prices;
 import com.tverts.retrade.domain.prices.RepriceDoc;
 import com.tverts.retrade.domain.prices.RepriceDocEdit;
@@ -147,7 +147,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 
 		//~: assign the price list
-		PriceList pl = bean(GetGoods.class).
+		PriceListEntity pl = bean(GetGoods.class).
 		  getPriceList(getModel().getRepriceDoc().getPriceListKey());
 		if(pl == null) throw EX.state();
 
@@ -177,9 +177,9 @@ public class FacesRepriceDocEdit extends ModelView
 		if(codeset.isEmpty()) throw EX.arg();
 
 		//~: get the target price list
-		GetGoods  gg = bean(GetGoods.class);
-		String    pp = SU.s2s(request().getParameter("priceList"));
-		PriceList pl;
+		GetGoods        gg = bean(GetGoods.class);
+		String          pp = SU.s2s(request().getParameter("priceList"));
+		PriceListEntity pl;
 
 		//?: {has no price list parameter} use current price list
 		if(pp == null)
@@ -279,12 +279,12 @@ public class FacesRepriceDocEdit extends ModelView
 
 	public Map<String, String> getPriceListsLabels()
 	{
-		Map<String, String> res = new LinkedHashMap<String, String>(11);
+		Map<String, String>   res = new LinkedHashMap<String, String>(11);
 
-		List<PriceList>     pls = bean(GetGoods.class).
+		List<PriceListEntity> pls = bean(GetGoods.class).
 		  getPriceLists(getModel().domain());
 
-		for(PriceList pl : pls) res.put(
+		for(PriceListEntity pl : pls) res.put(
 		  pl.getPrimaryKey().toString(),
 		  Prices.getPriceListFullName(pl)
 		);
@@ -357,7 +357,7 @@ public class FacesRepriceDocEdit extends ModelView
 			rde.setCode(Prices.createRepriceDocCode(loadDomain()));
 
 			//~: set initial price list
-			PriceList      pl  = bean(GetGoods.class).
+			PriceListEntity pl  = bean(GetGoods.class).
 			  getPriceListDefault(getDomainKey());
 
 			if(pl != null) rde.setPriceListKey(pl.getPrimaryKey());

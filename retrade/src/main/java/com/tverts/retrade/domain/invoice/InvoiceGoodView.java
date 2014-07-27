@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.MeasureUnit;
 import com.tverts.retrade.domain.prices.GoodPrice;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.StoreGood;
 
 /* com.tverts: support */
@@ -362,7 +362,7 @@ public class InvoiceGoodView implements Serializable
 		return this.init(p.getPriceList());
 	}
 
-	public InvoiceGoodView init(PriceList p)
+	public InvoiceGoodView init(PriceListEntity p)
 	{
 		this.priceList     = p.getPrimaryKey();
 		this.priceListCode = p.getCode();

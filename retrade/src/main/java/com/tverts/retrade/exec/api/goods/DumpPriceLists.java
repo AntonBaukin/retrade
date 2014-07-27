@@ -2,10 +2,12 @@ package com.tverts.retrade.exec.api.goods;
 
 /* com.tverts: execution (api) */
 
+import com.tverts.api.retrade.goods.PriceList;
 import com.tverts.exec.api.EntitiesDumperBase;
 
 /* com.tverts: retrade domain (prices) */
 
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.Prices;
 
 /* com.tverts: support */
@@ -14,7 +16,7 @@ import com.tverts.support.EX;
 
 
 /**
- * Dumps {@link com.tverts.retrade.domain.prices.PriceList}s
+ * Dumps {@link PriceListEntity}s
  * as {@link com.tverts.api.retrade.goods.PriceList}.
  *
  * @author anton.baukin@gmail.com
@@ -24,11 +26,10 @@ public class DumpPriceLists extends EntitiesDumperBase
 	@SuppressWarnings("unchecked")
 	protected Object createApiEntity(Object src)
 	{
-		com.tverts.retrade.domain.prices.PriceList s =
-		  (com.tverts.retrade.domain.prices.PriceList)src;
+		PriceListEntity s =
+		  (PriceListEntity)src;
 
-		com.tverts.api.retrade.goods.PriceList     d =
-		  new com.tverts.api.retrade.goods.PriceList();
+		PriceList       d = new PriceList();
 
 		//~: set catalogue item properties
 		d.setPkey(s.getPrimaryKey());
@@ -41,12 +42,12 @@ public class DumpPriceLists extends EntitiesDumperBase
 
 	protected Class  getUnityClass()
 	{
-		return com.tverts.retrade.domain.prices.PriceList.class;
+		return PriceListEntity.class;
 	}
 
 	protected Class  getEntityClass()
 	{
-		return com.tverts.api.retrade.goods.PriceList.class;
+		return PriceList.class;
 	}
 
 	public String    getUnityType()

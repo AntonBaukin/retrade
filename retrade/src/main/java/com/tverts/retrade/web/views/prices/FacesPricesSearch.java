@@ -2,9 +2,6 @@ package com.tverts.retrade.web.views.prices;
 
 /* Spring Framework */
 
-import com.tverts.model.ModelBeanBase;
-import com.tverts.retrade.domain.goods.GoodsModelBean;
-import com.tverts.retrade.domain.prices.PriceListModelBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +20,16 @@ import com.tverts.faces.ModelView;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
+import com.tverts.model.ModelBeanBase;
 import com.tverts.model.ModelRequest;
 
 /* com.tverts: retrade domain (goods + prices ) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.goods.GoodsModelBean;
 import com.tverts.retrade.domain.goods.GoodUnit;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
+import com.tverts.retrade.domain.prices.PriceListModelBean;
 import com.tverts.retrade.domain.prices.PricesSearchModelBean;
 
 /* com.tverts: support */
@@ -71,7 +71,7 @@ public class FacesPricesSearch extends ModelView
 		else
 		{
 			PriceListModelBean pm = new PriceListModelBean(
-			  (PriceList) bean(GetGoods.class).getPriceList(sm.getPriceList())
+			  (PriceListEntity) bean(GetGoods.class).getPriceList(sm.getPriceList())
 			);
 			mb = pm;
 
@@ -104,7 +104,7 @@ public class FacesPricesSearch extends ModelView
 		String priceList = SU.s2s(request().getParameter("priceList"));
 		if(priceList != null)
 		{
-			PriceList pl = EX.assertn(bean(GetGoods.class).
+			PriceListEntity pl = EX.assertn(bean(GetGoods.class).
 			  getPriceList(Long.parseLong(priceList)),
 			  "Price List [", priceList, "] not found!"
 			);

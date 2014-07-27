@@ -1,6 +1,6 @@
 package com.tverts.retrade.exec.api.invoices;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +44,7 @@ import com.tverts.retrade.domain.invoice.Invoice;
 import com.tverts.retrade.domain.invoice.InvoiceEdit;
 import com.tverts.retrade.domain.invoice.InvoiceGoodView;
 import com.tverts.retrade.domain.invoice.Invoices;
-import com.tverts.retrade.domain.prices.PriceList;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.GetTradeStore;
 import com.tverts.retrade.domain.store.TradeStore;
 
@@ -313,14 +313,14 @@ public abstract class UpdateInvoiceBase extends UpdateEntityBase
 		return gu;
 	}
 
-	protected PriceList   loadPriceList(Long ipk, Long pk)
+	protected PriceListEntity loadPriceList(Long ipk, Long pk)
 	{
 		EX.assertn(pk, "External Invoice [", ipk,
 		  "] has no Price List reference!"
 		);
 
 		//~: load the store
-		PriceList pl = bean(GetGoods.class).getPriceList(pk);
+		PriceListEntity pl = bean(GetGoods.class).getPriceList(pk);
 
 		EX.assertn(pl, "External Invoice [", ipk,
 		  "] refers Price List [", pk, "] that does not exist!"

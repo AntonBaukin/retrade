@@ -14,7 +14,7 @@ import com.tverts.endure.cats.CatItemView;
 
 
 /**
- * Extended read-only view on a {@link PriceList}
+ * Extended read-only view on a {@link PriceListEntity}
  * that supports {@link GoodPrice} values.
  *
  * @author anton.baukin@gmail.com

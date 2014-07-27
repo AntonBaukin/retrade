@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Date;
 
@@ -54,7 +54,7 @@ public class Prices
 	/* types of entities */
 
 	/**
-	 * Unity Type of {@link PriceList}.
+	 * Unity Type of {@link PriceListEntity}.
 	 */
 	public static final String TYPE_PRICE_LIST    =
 	  "ReTrade: Prices: Price List";
@@ -72,7 +72,7 @@ public class Prices
 
 	/* public static: price lists */
 
-	public static String getPriceListFullName(PriceList pl)
+	public static String getPriceListFullName(PriceListEntity pl)
 	{
 		if(pl == null) return null;
 		return String.format("№%s (%s)",
