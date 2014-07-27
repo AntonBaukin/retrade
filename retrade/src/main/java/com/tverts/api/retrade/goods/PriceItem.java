@@ -1,6 +1,6 @@
 package com.tverts.api.retrade.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 
@@ -15,16 +15,14 @@ import com.tverts.api.core.XKeyPair;
 
 
 /**
- * Position of a Good Unit sell price in a Price List.
+ * Position of a Good Unit
+ * sell price in a Price List.
  */
 @XmlType(name = "price-item", propOrder = {
   "list", "XList", "good", "XGood", "price"
 })
 public class PriceItem extends Good
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/**
 	 * The primary key of the price list that
 	 * is assigned when the good price is selected
@@ -37,6 +35,8 @@ public class PriceItem extends Good
 		return (list == 0L)?(null):(list);
 	}
 
+	private long list;
+
 	public void setList(Long list)
 	{
 		this.list = (list == null)?(0L):(list);
@@ -47,6 +47,8 @@ public class PriceItem extends Good
 	{
 		return xlist;
 	}
+
+	private String xlist;
 
 	public void setXList(String xlist)
 	{
@@ -60,6 +62,8 @@ public class PriceItem extends Good
 		return (good == 0L)?(null):(good);
 	}
 
+	private long good;
+
 	public void setGood(Long good)
 	{
 		this.good = (good == null)?(0L):(good);
@@ -70,6 +74,8 @@ public class PriceItem extends Good
 	{
 		return xgood;
 	}
+
+	private String xgood;
 
 	public void setXGood(String xgood)
 	{
@@ -85,17 +91,10 @@ public class PriceItem extends Good
 		return price;
 	}
 
+	private BigDecimal price;
+
 	public void setPrice(BigDecimal price)
 	{
 		this.price = price;
 	}
-
-
-	/* attributes */
-
-	private long       list;
-	private String     xlist;
-	private long       good;
-	private String     xgood;
-	private BigDecimal price;
 }

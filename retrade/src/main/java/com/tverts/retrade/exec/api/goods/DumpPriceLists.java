@@ -36,10 +36,6 @@ public class DumpPriceLists extends EntitiesDumperBase
 		d.setCode(s.getCode());
 		d.setName(s.getName());
 
-		//~: parent price list
-		if(s.getParent() != null)
-			d.setParent(s.getParent().getPrimaryKey());
-
 		return d;
 	}
 

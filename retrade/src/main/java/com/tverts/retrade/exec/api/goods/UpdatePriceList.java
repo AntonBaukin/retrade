@@ -1,9 +1,5 @@
 package com.tverts.retrade.exec.api.goods;
 
-/* com.tverts: spring */
-
-import static com.tverts.spring.SpringPoint.bean;
-
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionType;
@@ -16,12 +12,7 @@ import com.tverts.exec.api.UpdateEntityBase;
 
 /* com.tverts: retrade domain (goods + prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.prices.PriceList;
-
-/* com.tverts: support */
-
-import com.tverts.support.EX;
 
 
 /**
@@ -59,30 +50,8 @@ public class UpdatePriceList extends UpdateEntityBase
 		//~: name
 		d.setName(s.getName());
 
-		//~: parent price list
-		if(s.getParent() == null)
-			d.setParent(null);
-		else
-			d.setParent(loadParentList(s));
-
 
 		//!: do update price list
 		ActionsPoint.actionRun(ActionType.UPDATE, d);
-	}
-
-
-	/* protected: support */
-
-	protected PriceList loadParentList(com.tverts.api.retrade.goods.PriceList s)
-	{
-		PriceList pl = EX.assertn(bean(GetGoods.class).getPriceList(s.getParent()),
-		  "Parent Price List with p-key [", s.getParent(), "] and x-key [",
-		  s.getXParent(), "] of Price List x-key [", s.getXkey(), "] not found!"
-		);
-
-		//sec: check the domain
-		checkDomain(pl);
-
-		return pl;
 	}
 }

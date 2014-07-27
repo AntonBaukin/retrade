@@ -1,14 +1,20 @@
 package com.tverts.api.retrade.goods;
 
+/* Java */
+
+import java.util.ArrayList;
+import java.util.List;
+
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
 
 import com.tverts.api.core.CatItem;
-import com.tverts.api.core.XKeyPair;
 
 
 /**
@@ -17,43 +23,37 @@ import com.tverts.api.core.XKeyPair;
  * Each good of the list must have the key and
  * the price attributes set.
  */
-@XmlType(name = "price-list", propOrder = {
-  "parent", "XParent"
-})
+@XmlRootElement(name = "price-list")
+@XmlType(name = "price-list",
+  propOrder = { "comment", "items" }
+)
 public class PriceList extends CatItem
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/**
-	 * Parent Item of this Item: a Good, or a Folder.
-	 */
-	@XKeyPair(type = PriceList.class)
-	@XmlElement(name = "parent")
-	public Long getParent()
+	@XmlElement(name = "comment")
+	public String getComment()
 	{
-		return (parent == 0L)?(null):(parent);
+		return comment;
 	}
 
-	public void setParent(Long parent)
+	private String comment;
+
+	public void setComment(String comment)
 	{
-		this.parent = (parent == null)?(0L):(parent);
+		this.comment = comment;
 	}
 
-	@XmlElement(name = "xparent")
-	public String getXParent()
+	@XmlElement(name = "item")
+	@XmlElementWrapper(name = "items")
+	public List<PriceItem> getItems()
 	{
-		return xparent;
+		return (items != null)?(items):
+		  (items = new ArrayList<PriceItem>(16));
 	}
 
-	public void setXParent(String xparent)
+	private List<PriceItem> items;
+
+	public void setItems(List<PriceItem> items)
 	{
-		this.xparent = xparent;
+		this.items = items;
 	}
-
-
-	/* attributes */
-
-	private long   parent;
-	private String xparent;
 }
