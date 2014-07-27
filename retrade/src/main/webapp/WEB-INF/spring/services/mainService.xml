@@ -157,6 +157,16 @@
                       <entry key   = 'ReTrade Test Catalogs (Seed)'
                              value = '1'/>
 
+                      <entry key   = 'ReTrade Test Catalogs : Price Lists (CodesAndNames)'>
+                        <value>
+
+                          ПЛ-0; Основной;  ПЛ-1; Первый;
+                          ПЛ-2; Второй;    ПЛ-3; Третий;
+                          ПЛ-5; Четвёртый; ПЛ-5; Пятый;
+
+                        </value>
+                      </entry>
+
 
                       <!-- (Test Domain) Documents -->
 

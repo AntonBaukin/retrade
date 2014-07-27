@@ -52,6 +52,14 @@
 
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Create test Price Lists
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.prices.GenTestPrices'>
+              <property name = 'name' value = 'Price Lists'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Generate test Users
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
             <bean class = 'com.tverts.endure.auth.GenTestUsers'>

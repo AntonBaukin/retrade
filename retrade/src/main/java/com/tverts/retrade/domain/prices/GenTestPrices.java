@@ -13,7 +13,6 @@ import java.util.TreeMap;
 
 import static com.tverts.spring.SpringPoint.bean;
 
-
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionType;
@@ -24,6 +23,10 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
+
+/* com.tverts: objects */
+
+import com.tverts.objects.Param;
 
 /* com.tverts: api */
 
@@ -36,9 +39,12 @@ import com.tverts.api.retrade.goods.Measure;
 
 import com.tverts.endure.core.Domain;
 
-/* com.tverts: support */
+/* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GenTestGoods;
+
+/* com.tverts: support */
+
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
@@ -53,7 +59,7 @@ import com.tverts.support.xml.SaxProcessor;
  */
 public class GenTestPrices extends GenesisHiberPartBase
 {
-	/* public: Genesis interface */
+	/* Genesis */
 
 	public void generate(GenCtx ctx)
 	  throws GenesisError
@@ -64,13 +70,58 @@ public class GenTestPrices extends GenesisHiberPartBase
 		readTestPrices(ctx, costs);
 		EX.assertx(!costs.isEmpty(), "Test goods has no costs!");
 
+		//~: generate the lists
+		genPriceLists(ctx, costs);
+	}
 
+
+	/* Generate Prices */
+
+	@Param(required = true)
+	public String getCodesAndNames()
+	{
+		return codesAndNames;
+	}
+
+	private String codesAndNames;
+
+	public void setCodesAndNames(String cns)
+	{
+		this.codesAndNames = cns;
+	}
+
+	@Param
+	public int getMinListGoods()
+	{
+		return minListGoods;
+	}
+
+	private int minListGoods = 20;
+
+	public void setMinListGoods(int n)
+	{
+		EX.assertx((n > 0) & (n < 100));
+		this.minListGoods = n;
+	}
+
+	@Param
+	public int getMaxListGoods()
+	{
+		return maxListGoods;
+	}
+
+	private int maxListGoods = 50;
+
+	public void setMaxListGoods(int n)
+	{
+		EX.assertx((n > 0) & (n < 100));
+		this.maxListGoods = n;
 	}
 
 
 	/* protected: generation */
 
-	protected URL  getDataFile()
+	protected URL  getGoodsFile()
 	{
 		return EX.assertn(
 		  GenTestGoods.class.getResource("GenTestGoods.xml"),
@@ -87,7 +138,7 @@ public class GenTestPrices extends GenesisHiberPartBase
 			ReadTestGoods p = createProcessor(ctx);
 
 			//~: do process
-			p.process(getDataFile().toString());
+			p.process(getGoodsFile().toString());
 
 			//~: add the resulting costs
 			costs.putAll(p.getCosts());
@@ -103,6 +154,23 @@ public class GenTestPrices extends GenesisHiberPartBase
 		}
 	}
 
+	protected void genPriceLists(GenCtx ctx, Map<String, BigDecimal> costs)
+	  throws GenesisError
+	{
+		//~: decode the names
+		String[] pls = SU.s2a(getCodesAndNames());
+		EX.assertx(pls.length     >= 2);
+		EX.assertx(pls.length % 2 == 0);
+
+		//~: create main price list
+		genMainPriceList(ctx, pls[0], pls[1]);
+	}
+
+	protected void genMainPriceList(GenCtx ctx, String code, String name)
+	{
+
+	}
+
 
 	/* protected: XML Processor */
 
@@ -113,10 +181,10 @@ public class GenTestPrices extends GenesisHiberPartBase
 
 	protected static class GenState
 	{
-		public BigDecimal              cost;
+		public BigDecimal cost;
 	}
 
-	protected class ReadTestGoods extends SaxProcessor<GenState>
+	protected static class ReadTestGoods extends SaxProcessor<GenState>
 	{
 		public ReadTestGoods(GenCtx ctx)
 		{
@@ -149,7 +217,8 @@ public class GenTestPrices extends GenesisHiberPartBase
 				String cost = SU.s2s(event().attr("cost"));
 
 				if(cost != null)
-					event().state().cost = new BigDecimal(cost).setScale(2);
+					event().state().cost =
+					  new BigDecimal(cost).setScale(2);
 			}
 		}
 
@@ -167,10 +236,10 @@ public class GenTestPrices extends GenesisHiberPartBase
 		}
 
 
-		/* genesis context */
+		/* Genesis Context */
 
-		private GenCtx                  ctx;
-		private Map<String, BigDecimal> costs =
+		protected final GenCtx ctx;
+		protected Map<String, BigDecimal> costs =
 		  new HashMap<String, BigDecimal>(101);
 	}
 }
