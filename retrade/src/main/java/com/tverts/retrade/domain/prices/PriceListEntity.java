@@ -42,16 +42,6 @@ public class      PriceListEntity
 		super.setOx(ox);
 	}
 
-	public void setCode(String code)
-	{
-		super.setCode(code);
-	}
-
-	public void setName(String name)
-	{
-		super.setName(name);
-	}
-
 
 	/* Price List */
 

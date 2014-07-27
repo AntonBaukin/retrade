@@ -42,12 +42,8 @@ public class UpdatePriceList extends UpdateEntityBase
 		PriceList       s = (PriceList) source;
 		PriceListEntity d = (PriceListEntity) entity;
 
-		//~: code
-		d.setCode(s.getCode());
-
-		//~: name
-		d.setName(s.getName());
-
+		//~: update ox-entity
+		d.setOx(s);
 
 		//!: do update price list
 		ActionsPoint.actionRun(ActionType.UPDATE, d);

@@ -40,19 +40,14 @@ public class InsertPriceList extends InsertEntityBase
 
 	protected Long    insert(InsertHolder h)
 	{
-		PriceList s  = (PriceList) h.getHolder().getEntity();;
+		PriceList       s = (PriceList) h.getHolder().getEntity();;
+		PriceListEntity d = new PriceListEntity();
 
-		PriceListEntity d =
-		  new PriceListEntity();
-
-		//~: domain
+		//=: domain
 		d.setDomain(domain());
 
-		//~: code
-		d.setCode(s.getCode());
-
-		//~: name
-		d.setName(s.getName());
+		//=: ox-entity
+		d.setOx(s);
 
 		//!: do save price list
 		ActionsPoint.actionRun(ActionType.SAVE, d);

@@ -26,6 +26,10 @@ import com.tverts.model.ModelBean;
 import static com.tverts.actions.ActionsPoint.actionRun;
 import com.tverts.actions.ActionType;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.goods.PriceList;
+
 /* com.tverts: endure (catalogues) */
 
 import com.tverts.endure.cats.CatItemView;
@@ -96,37 +100,41 @@ public class FacesPriceListsView extends ModelView
 		formValid = !checkCodeExists(getPriceListView().getCode());
 		if(!formValid) return null;
 
-		PriceListEntity pl;
+		PriceListEntity pe;
+		PriceList       pl;
 
-		//?: {create new measure}
+		//?: {create new price list}
 		if(getPriceListView().getObjectKey() == null)
 		{
-			pl = new PriceListEntity();
+			pe = new PriceListEntity();
 
-			//~: domain
-			pl.setDomain(loadModelDomain());
+			//=: domain
+			pe.setDomain(loadModelDomain());
 		}
 		//!: load it
 		else
-		{
-			pl = bean(GetGoods.class).
-			  getPriceList(getPriceListView().getObjectKey());
+			pe = EX.assertn(bean(GetGoods.class).
+			  getPriceList(getPriceListView().getObjectKey()),
+			  "Price List [", getPriceListView().getObjectKey(), "] not found!"
+			);
 
-			if(pl == null) throw EX.state();
-		}
+		//~: ox-entity
+		pl = pe.getOx();
 
-		//~: code
+		//=: code
 		pl.setCode(getPriceListView().getCode());
 
-		//~: name
+		//=: name
 		pl.setName(getPriceListView().getName());
 
+		//!: update ox
+		pe.updateOx();
 
 		//!: save | update it
 		if(getPriceListView().getObjectKey() == null)
-			actionRun(ActionType.SAVE, pl);
+			actionRun(ActionType.SAVE, pe);
 		else
-			actionRun(ActionType.UPDATE, pl);
+			actionRun(ActionType.UPDATE, pe);
 
 		return null;
 	}
