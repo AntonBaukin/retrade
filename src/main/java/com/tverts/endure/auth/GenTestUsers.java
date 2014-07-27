@@ -297,21 +297,22 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		protected void createState()
 		{
-			//?: <person> | <computer>
-			if(istag(1, "person", "computer"))
+			//?: <person>
+			if(istag(1, "person"))
 			{
 				event().state(new GenState());
+				state().person = new com.tverts.api.clients.Person();
+			}
 
-				//?: <person>
-				if(istag("person"))
-					state().person = new com.tverts.api.clients.Person();
-				//?: <computer>
-				else if(istag("computer"))
-					state().computer = new com.tverts.api.clients.Computer();
+			//?: <computer>
+			else if(istag(1, "computer"))
+			{
+				event().state(new GenState());
+				state().computer = new com.tverts.api.clients.Computer();
 			}
 
 			//?: (<person> | <computer>) <login>
-			else if(istag(2, "login"))
+			else if(istag(1, "person", "login") || istag(1, "computer", "login"))
 				state(1).login = new Login();
 		}
 

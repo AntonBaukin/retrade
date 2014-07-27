@@ -299,7 +299,7 @@ public abstract class SaxProcessor<State>
 	 */
 	protected final boolean    istag(int level, String... names)
 	{
-		if(level >= stack.size())
+		if(level + names.length != stack.size())
 			return false;
 
 		for(int i = 0;(i < names.length);i++)
