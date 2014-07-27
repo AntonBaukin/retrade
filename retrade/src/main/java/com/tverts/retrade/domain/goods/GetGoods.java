@@ -10,7 +10,6 @@ import java.util.List;
 
 /* Spring Framework */
 
-import com.tverts.retrade.domain.prices.PriceListsTreeModelBean;
 import org.springframework.stereotype.Component;
 
 /* Hibernate Persistence Layer */
@@ -439,77 +438,6 @@ from GoodUnit gu where
 
 		//~: keywords search restrictions
 		gusSearch(qb, mb.getSearchGoods());
-
-		return ((Number) QB(qb).uniqueResult()).longValue();
-	}
-
-	/**
-	 * @see {@link #selectGoodPrices(PriceListModelBean)}.
-	 */
-	@SuppressWarnings("unchecked")
-	public List           selectGoodPrices(PriceListsTreeModelBean mb)
-	{
-		QueryBuilder qb = new QueryBuilder();
-
-		//~: from clause
-		qb.nameEntity("Price", GoodPrice.class);
-		qb.setClauseFrom("Price gp join gp.goodUnit gu");
-
-		//~: select clause
-		qb.setClauseSelect("gu, gp");
-
-		//~: order by
-		orderGoods(qb, mb);
-
-		//~: the selection limits
-		qb.setFirstRow(mb.getDataStart());
-		qb.setLimit(mb.getDataLimit());
-
-
-		//!: price list must be defined
-		EX.assertn(mb.getCurrentList());
-
-		//~: restrict the price list
-		qb.getClauseWhere().addPart(
-		  "gp.priceList.id = :list"
-		).
-		  param("list", mb.getCurrentList());
-
-		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
-
-		//~: restrict by the selection set
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
-
-		return QB(qb).list();
-	}
-
-	public long           countGoodPrices(PriceListsTreeModelBean mb)
-	{
-		QueryBuilder qb = new QueryBuilder();
-
-		//~: from clause
-		qb.nameEntity("Price", GoodPrice.class);
-		qb.setClauseFrom("Price gp join gp.goodUnit gu");
-
-		//~: select clause
-		qb.setClauseSelect("count(gp.id)");
-
-
-		//!: price list must be defined
-		EX.assertn(mb.getCurrentList());
-
-		//~: restrict the price list
-		qb.getClauseWhere().addPart(
-		  "gp.priceList.id = :list"
-		).
-		  param("list", mb.getCurrentList());
-
-		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
-
-		//~: restrict by the selection set
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
 
 		return ((Number) QB(qb).uniqueResult()).longValue();
 	}

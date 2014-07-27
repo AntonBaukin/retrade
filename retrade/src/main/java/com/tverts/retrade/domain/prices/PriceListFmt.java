@@ -17,17 +17,6 @@ public class PriceListFmt extends FmtBase
 	  new PriceListFmt();
 
 
-	/* public: PriceListFmt interface */
-
-	public String     parents(FmtCtx ctx)
-	{
-		StringBuilder s = new StringBuilder(32);
-
-		parents(ctx, s);
-		return s.toString();
-	}
-
-
 	/* protected: formatting */
 
 	protected boolean isKnown(Object obj)
@@ -47,27 +36,6 @@ public class PriceListFmt extends FmtBase
 		if(ctx.is(CODE))
 		s.append(" №").append(l.getCode());
 
-		//?: {longer} add the parents
-		if(ctx.is(LONGER) && (l.getParent() != null))
-		{
-			s.append(" [");
-			parents(ctx, s);
-			s.append(']');
-		}
-
 		return s.toString();
-	}
-
-	protected void    parents(FmtCtx ctx, StringBuilder s)
-	{
-		PriceList l = (PriceList) ctx.obj();
-		PriceList p = l.getParent();
-
-		while(p != null)
-		{
-			if(p != l.getParent()) s.append("/");
-			s.append(p.getName());
-			p = p.getParent();
-		}
 	}
 }

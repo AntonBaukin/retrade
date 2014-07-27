@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 
@@ -25,24 +25,28 @@ public class      GoodPrice
        extends    NumericBase
        implements TxEntity
 {
-	/* public: GoodPrice (bean) interface */
+	/* Good Price */
 
 	public PriceList  getPriceList()
 	{
 		return priceList;
 	}
 
-	public void       setPriceList(PriceList priceList)
+	private PriceList priceList;
+
+	public void setPriceList(PriceList priceList)
 	{
 		this.priceList = priceList;
 	}
 
-	public GoodUnit   getGoodUnit()
+	public GoodUnit getGoodUnit()
 	{
 		return goodUnit;
 	}
 
-	public void       setGoodUnit(GoodUnit goodUnit)
+	private GoodUnit goodUnit;
+
+	public void setGoodUnit(GoodUnit goodUnit)
 	{
 		this.goodUnit = goodUnit;
 	}
@@ -52,7 +56,9 @@ public class      GoodPrice
 		return price;
 	}
 
-	public void       setPrice(BigDecimal p)
+	private BigDecimal price;
+
+	public void setPrice(BigDecimal p)
 	{
 		if((p != null) && (p.scale() != 2))
 			p = p.setScale(2);
@@ -74,11 +80,4 @@ public class      GoodPrice
 	{
 		this.txn = (txn == null)?(0L):(txn);
 	}
-
-
-	/* persisted attributes */
-
-	private PriceList  priceList;
-	private GoodUnit   goodUnit;
-	private BigDecimal price;
 }

@@ -68,9 +68,6 @@ public class ActPriceList extends ActionBuilderReTrade
 	public static final String PRICES     =
 	  ActPriceList.class.getName() + ": prices";
 
-	public static final String NOCYDEPS   =
-	  ActPriceList.class.getName() + ": not check cyclic dependencies";
-
 
 	/* public: ActionBuilder interface */
 
@@ -94,10 +91,6 @@ public class ActPriceList extends ActionBuilderReTrade
 		//?: {target is not a PriceList}
 		checkTargetClass(abr, PriceList.class);
 
-		//~: check parent cycles
-		if(!flag(abr, NOCYDEPS))
-			checkParentCyces(abr);
-
 		//~: save the price list
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
@@ -111,10 +104,6 @@ public class ActPriceList extends ActionBuilderReTrade
 	{
 		//?: {target is not a PriceList}
 		checkTargetClass(abr, PriceList.class);
-
-		//~: check parent cycles
-		if(!flag(abr, NOCYDEPS))
-			checkParentCyces(abr);
 
 		//~: update the Txn
 		chain(abr).first(new SetTxAction(task(abr)));
@@ -194,21 +183,5 @@ public class ActPriceList extends ActionBuilderReTrade
 			}
 
 		//HINT: in this method the prices are not removed!
-	}
-
-	protected void checkParentCyces(ActionBuildRec abr)
-	{
-		PriceList     pl = target(abr, PriceList.class);
-		HashSet<Long> ks = new HashSet<Long>(7);
-
-		while(pl != null)
-		{
-			EX.assertx( !ks.contains(pl.getPrimaryKey()),
-			  "Price List p", target(abr, PriceList.class).getPrimaryKey(),
-			  "] has cyclic parents dependency: [", ks, "]!"
-			);
-
-			pl = pl.getParent();
-		}
 	}
 }

@@ -1,24 +1,16 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
 
 /* Java XML Binding */
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /* com.tverts: endure (catalogues) */
 
-import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.cats.CatItemView;
-
-/* com.tverts: support */
-
-import com.tverts.support.fmt.FmtCtx;
 
 
 /**
@@ -40,15 +32,11 @@ public class PriceListView extends CatItemView
 		return price;
 	}
 
-	public void       setPrice(BigDecimal price)
+	private BigDecimal price;
+
+	public void setPrice(BigDecimal price)
 	{
 		this.price = price;
-	}
-
-	@XmlElement
-	public String     getParents()
-	{
-		return parents;
 	}
 
 
@@ -68,22 +56,4 @@ public class PriceListView extends CatItemView
 		this.price = gp.getPrice();
 		return this;
 	}
-
-	public CatItemView   init(CatItem ci)
-	{
-		//?: {price list} format the name
-		if(ci instanceof PriceList)
-			this.parents = PriceListFmt.INSTANCE.parents(
-			  new FmtCtx().obj(ci).set(PriceListFmt.LONGER)
-			);
-
-		return super.init(ci);
-	}
-
-
-
-	/* private: view attributes */
-
-	private BigDecimal price;
-	private String     parents;
 }

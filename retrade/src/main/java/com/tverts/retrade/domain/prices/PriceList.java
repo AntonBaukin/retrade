@@ -1,10 +1,17 @@
 package com.tverts.retrade.domain.prices;
 
-/* tverts.com: endure (core + catalogues) */
+/* Java */
 
-import com.tverts.endure.cats.CatItem;
-import com.tverts.endure.core.Domain;
-import com.tverts.endure.core.Entity;
+import java.util.Set;
+
+/* tverts.com: endure (core) */
+
+import com.tverts.endure.OxSearch;
+import com.tverts.endure.core.OxCatEntity;
+
+/* tverts.com: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -12,55 +19,48 @@ import com.tverts.endure.core.Entity;
  *
  * @author anton.baukin@gmail.com
  */
-public class PriceList extends Entity implements CatItem
+public class      PriceList
+       extends    OxCatEntity
+       implements OxSearch
 {
-	/* public: PriceList (bean) interface */
+	/* Object Extraction */
 
-	public Domain    getDomain()
+	public com.tverts.api.retrade.goods.PriceList getOx()
 	{
-		return domain;
+		com.tverts.api.retrade.goods.PriceList pl =
+		  (com.tverts.api.retrade.goods.PriceList) super.getOx();
+		if(pl == null) setOx(pl = new com.tverts.api.retrade.goods.PriceList());
+		return pl;
 	}
 
-	public void      setDomain(Domain domain)
+	public void setOx(Object ox)
 	{
-		this.domain = domain;
+		EX.assertx(ox instanceof com.tverts.api.retrade.goods.PriceList);
+		super.setOx(ox);
 	}
 
-	public String    getCode()
+	public void setCode(String code)
 	{
-		return code;
+		super.setCode(code);
 	}
 
-	public void      setCode(String code)
+	public void setName(String name)
 	{
-		this.code = code;
-	}
-
-	public String    getName()
-	{
-		return name;
-	}
-
-	public void      setName(String name)
-	{
-		this.name = name;
-	}
-
-	public PriceList getParent()
-	{
-		return parent;
-	}
-
-	public void      setParent(PriceList parent)
-	{
-		this.parent = parent;
+		super.setName(name);
 	}
 
 
-	/* persisted attributes */
+	/* Price List */
 
-	private Domain    domain;
-	private String    code;
-	private String    name;
-	private PriceList parent;
+	public Set<GoodPrice> getItems()
+	{
+		return items;
+	}
+
+	private Set<GoodPrice> items;
+
+	public void setItems(Set<GoodPrice> items)
+	{
+		this.items = items;
+	}
 }

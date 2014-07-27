@@ -42,20 +42,6 @@
           </property>
         </bean>
 
-        <!-- updates price lists tree -->
-        <bean class = 'com.tverts.retrade.domain.prices.ActPriceListsTreeUpdate'/>
-
-        <!-- builder for Good Price -->
-        <bean class = 'com.tverts.actions.ActionBuilderTypeChecker'>
-
-          <property name  = 'typeClass'
-                    value = 'com.tverts.retrade.domain.prices.GoodPrice'/>
-
-          <property name = 'reference'>
-            <bean class = 'com.tverts.retrade.domain.prices.ActGoodPrice'/>
-          </property>
-        </bean>
-
       </list>
     </property>
   </bean>

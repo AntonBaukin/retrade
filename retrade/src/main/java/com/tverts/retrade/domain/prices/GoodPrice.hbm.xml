@@ -5,7 +5,7 @@
 
 <hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
 
-  <class name = 'GoodPrice' table = 'retrade_good_price' lazy = 'false'>
+  <class name = 'GoodPrice' table = 'retrade_good_price' lazy = 'true'>
 
     <!-- Primary Key -->
 
@@ -24,10 +24,9 @@
     </property>
 
 
-    <!-- Price List reference -->
+    <!-- Price List -->
 
-    <many-to-one name = "priceList" lazy = 'proxy'
-      foreign-key = 'fk_price_list'>
+    <many-to-one name = 'priceList' foreign-key = 'fk_price_list'>
 
       <column name = 'fk_price_list' not-null = 'true'
         unique-key = 'ux_good_price'>
@@ -39,11 +38,10 @@
 
     <!-- Good Unit reference -->
 
-    <many-to-one name = "goodUnit" lazy = 'proxy'
-      foreign-key = 'fk_good_unit'>
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_good_unit'>
 
       <column name = 'fk_good_unit' not-null = 'true'
-        unique-key = 'ux_good_price'>
+        unique-key = 'ux_good_price' index = 'ix_price_good'>
 
         <comment>The Good Unit the price is for</comment>
       </column>
@@ -52,7 +50,7 @@
 
     <!-- Price -->
 
-    <property name = 'price' type = 'big_decimal'>
+    <property name = 'price' type = 'big_decimal' lazy = 'false'>
 
       <column name = 'price' not-null = 'true'
         precision = '12' scale = '2'>
