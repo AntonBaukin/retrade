@@ -26,23 +26,13 @@
     +================================================-->
 
   <bean name  = 'retradePriceListBuilders'
-        class = 'com.tverts.actions.ActionBuildersList'>
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
 
-    <property name = 'references'>
-      <list>
+    <property name  = 'typeClass'
+              value = 'com.tverts.retrade.domain.prices.PriceListEntity'/>
 
-        <!-- builder for Price List -->
-        <bean class = 'com.tverts.actions.ActionBuilderTypeChecker'>
-
-          <property name  = 'typeClass'
-                    value = 'com.tverts.retrade.domain.prices.PriceListEntity'/>
-
-          <property name = 'reference'>
-            <bean class = 'com.tverts.retrade.domain.prices.ActPriceList'/>
-          </property>
-        </bean>
-
-      </list>
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.prices.ActPriceList'/>
     </property>
   </bean>
 

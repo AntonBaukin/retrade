@@ -4,7 +4,6 @@ package com.tverts.retrade.domain.prices;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /* com.tverts: spring */
@@ -60,9 +59,9 @@ public class ActPriceList extends ActionBuilderReTrade
 
 	/**
 	 * This parameter provides a collection of
-	 * {@link GoodPrice} instances for UPDATE
-	 * operation. These instances are merged
-	 * into the database.
+	 * {@link GoodPrice} instances for SAVE or
+	 * UPDATE operation. These instances are
+	 * merged into the database.
 	 */
 	public static final String PRICES     =
 	  ActPriceList.class.getName() + ": prices";
@@ -128,13 +127,13 @@ public class ActPriceList extends ActionBuilderReTrade
 	protected void mergePrices(ActionBuildRec abr)
 	{
 		//~: get the prices parameter
-		Collection<GoodPrice> source = (Collection<GoodPrice>)
+		Collection<GoodPrice> src = (Collection<GoodPrice>)
 		  param(abr, PRICES, Collection.class);
-		if((source == null) || source.isEmpty())
+		if((src == null) || src.isEmpty())
 			return;
 
 		//~: check the values
-		for(GoodPrice gp : source)
+		for(GoodPrice gp : src)
 		{
 			EX.assertn( gp.getPrice(),
 			  "Updating Good Price [", gp.getPrimaryKey(), "] of List [",
@@ -148,23 +147,23 @@ public class ActPriceList extends ActionBuilderReTrade
 		}
 
 		//~: load & map the existing prices
-		List<GoodPrice> existing = bean(GetGoods.class).
-		  getPriceListPrices(target(abr, PriceListEntity.class));
-
-		Map<Long, GoodPrice> emap =
-		  new HashMap<Long, GoodPrice>(existing.size());
-		for(GoodPrice gp : existing)
-			emap.put(gp.getGoodUnit().getPrimaryKey(), gp);
+		PriceListEntity pl  = target(abr, PriceListEntity.class);
+		GetGoods        get = bean(GetGoods.class);
+		Map<Long, Long> exs = new HashMap<Long, Long>(101);
+		get.getPriceListPrices(pl.getPrimaryKey(), exs);
 
 		//c: for all the source goods
-		for(GoodPrice s : source)
+		for(GoodPrice s : src)
 			//?: {update the exiting prices}
-			if(emap.containsKey(s.getGoodUnit().getPrimaryKey()))
+			if(exs.containsKey(s.getGoodUnit().getPrimaryKey()))
 			{
-				GoodPrice d = emap.get(s.getGoodUnit().getPrimaryKey());
+				GoodPrice d = EX.assertn(get.getGoodPrice(
+					 s.getGoodUnit().getPrimaryKey()
+				  )
+				);
 
 				//?: {the prices are equal} skip
-				if(d.getPrice().compareTo(s.getPrice()) == 0)
+				if(CMP.eq(d.getPrice(), s.getPrice()))
 					continue;
 
 				//!: update the price
@@ -174,7 +173,7 @@ public class ActPriceList extends ActionBuilderReTrade
 			//!: insert new prices
 			else
 			{
-				//~: price list
+				//=: price list
 				s.setPriceList(target(abr, PriceListEntity.class));
 
 				//!: save the price

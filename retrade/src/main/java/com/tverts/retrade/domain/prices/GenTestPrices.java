@@ -4,10 +4,12 @@ package com.tverts.retrade.domain.prices;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /* com.tverts: spring */
 
@@ -28,13 +30,6 @@ import com.tverts.genesis.GenesisHiberPartBase;
 
 import com.tverts.objects.Param;
 
-/* com.tverts: api */
-
-import com.tverts.api.retrade.goods.Calc;
-import com.tverts.api.retrade.goods.CalcItem;
-import com.tverts.api.retrade.goods.Good;
-import com.tverts.api.retrade.goods.Measure;
-
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.core.Domain;
@@ -42,9 +37,12 @@ import com.tverts.endure.core.Domain;
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GenTestGoods;
+import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.goods.GoodUnit;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
@@ -163,12 +161,100 @@ public class GenTestPrices extends GenesisHiberPartBase
 		EX.assertx(pls.length % 2 == 0);
 
 		//~: create main price list
-		genMainPriceList(ctx, pls[0], pls[1]);
+		genPriceList(ctx, pls[0], pls[1], costs);
+
+		//~: generate else lists
+		for(int i = 2;(i < pls.length);i+=2)
+		{
+			//~: select random goods
+			Map<String, BigDecimal> xcosts =
+			  new HashMap<String, BigDecimal>(costs);
+			selectPriceListItems(ctx, xcosts);
+
+			//~: generate the list
+			genPriceList(ctx, pls[i], pls[i+1], xcosts);
+		}
 	}
 
-	protected void genMainPriceList(GenCtx ctx, String code, String name)
+	@SuppressWarnings("unchecked")
+	protected void genPriceList
+	  (GenCtx ctx, String code, String name, Map<String, BigDecimal> costs)
 	{
+		Map<String, GoodUnit> gm = (Map<String, GoodUnit>)
+		  EX.assertn(ctx.get((Object) GoodUnit.class));
 
+		PriceListEntity       pl  = bean(GetGoods.class).getPriceList(
+		  ctx.get(Domain.class).getPrimaryKey(), EX.asserts(code)
+		);
+
+		//?: {has this list} skip the generation
+		if(pl != null) return;
+
+		//~: create the new price list
+		pl = new PriceListEntity();
+
+		//=: domain
+		pl.setDomain(ctx.get(Domain.class));
+
+		//=: code
+		pl.getOx().setCode(code);
+
+		//=: name
+		pl.getOx().setName(EX.asserts(name));
+
+		//~: create the items for all the goods
+		List<GoodPrice> gps = new ArrayList<GoodPrice>(costs.size());
+		for(String gcode : costs.keySet())
+		{
+			GoodUnit  gu = EX.assertn(gm.get(gcode),
+			  "Good Unit with code [", gcode, "] is not found!"
+			);
+
+			GoodPrice gp = new GoodPrice();
+			gps.add(gp);
+
+			//=: good unit
+			gp.setGoodUnit(gu);
+
+			//~: cost
+			BigDecimal c = EX.assertn(costs.get(gcode));
+			EX.assertx(CMP.grZero(c));
+			if(c.scale() != 2)
+				c = c.setScale(2);
+
+			//=: price (cost)
+			gp.setPrice(c);
+		}
+
+		//!: save the price list
+		pl.updateOx();
+		actionRun(ActionType.SAVE, pl);
+
+		//!: add the prices
+		actionRun(ActionType.UPDATE, pl, ActPriceList.PRICES, gps);
+
+		LU.I(log(ctx), logsig(), " created test Price List [",
+		  pl.getPrimaryKey(), "] with code [", pl.getCode(),
+		  "] having [", gps.size(), "] items"
+		);
+	}
+
+	protected void selectPriceListItems(GenCtx ctx, Map<String, BigDecimal> costs)
+	{
+		//~: goods number
+		int m = minListGoods;
+		int M = maxListGoods;
+		int s = costs.size();
+		EX.assertx((m > 0) & (m <= M) & (m <= 100));
+		s = (m + ctx.gen().nextInt(M - m + 1)) * s / 100;
+
+		//~: the goods list
+		List<String> goods = new ArrayList<String>(costs.keySet());
+		Collections.shuffle(goods, ctx.gen());
+		goods = goods.subList(0, s);
+
+		//!: retain the goods selected
+		costs.keySet().retainAll(new HashSet<String>(goods));
 	}
 
 

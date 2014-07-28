@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /* Spring Framework */
 
@@ -668,14 +669,14 @@ from MeasureUnit mu where
 
 /*
 
- from PriceList pl where
+ from PriceListEntity pl where
    (pl.domain.id = :domain) and (pl.code = :code)
 
 */
 
 		return (PriceListEntity) Q(
 
-"from PriceList pl where\n" +
+"from PriceListEntity pl where\n" +
 "  (pl.domain.id = :domain) and (pl.code = :code)"
 
 		).
@@ -899,6 +900,34 @@ order by gp.goodUnit.id
 		).
 		  setParameter("priceList", priceList).
 		  list();
+	}
+
+	/**
+	 * Retrieves all the prices of the list given and maps
+	 * them as Good Unit key to Good Price key.
+	 */
+	@SuppressWarnings("unchecked")
+	public void            getPriceListPrices(Long pl, Map<Long, Long> pm)
+	{
+		EX.assertn(pl);
+		EX.assertn(pm);
+
+/*
+
+ select gu.id, gp.id from
+   GoodPrice gp join gp.goodUnit gu
+ where (gp.priceList.id = :pl)
+
+ */
+		final String Q =
+
+"select gu.id, gp.id from\n" +
+"  GoodPrice gp join gp.goodUnit gu\n" +
+"where (gp.priceList.id = :pl)";
+
+		List rows = list(List.class, Q, "pl", pl);
+		for(Object[] x : (List<Object[]>)rows)
+			pm.put((Long)x[0], (Long)x[1]);
 	}
 
 	public GoodPrice       getGoodPrice(Long pk)
