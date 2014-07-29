@@ -74,7 +74,7 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-@Component("getGoods")
+@Component
 public class GetGoods extends GetObjectBase
 {
 	/* Get Good Units */

@@ -5,7 +5,7 @@
 
 
   <!--=================================================
-    =  Action Bulders for ReTrade Contractor          =
+    =  Action Bulders for Contractor                  =
     +================================================-->
 
   <bean name  = 'retradeContractorBuilders'
@@ -15,8 +15,16 @@
               value = 'com.tverts.retrade.domain.firm.Contractor'/>
 
     <property name = 'reference'>
-      <bean class = 'com.tverts.retrade.domain.firm.ActContractor'/>
+      <bean class = 'com.tverts.actions.ActionBuildersList'>
+        <property name = 'references'>
+          <list>
+
+            <bean class = 'com.tverts.retrade.domain.firm.ActContractor'/>
+            <bean class = 'com.tverts.retrade.domain.prices.ActFirmPrices'/>
+
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
-
 </beans>
