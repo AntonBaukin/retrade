@@ -56,12 +56,12 @@
     </property>
 
 
-
     <!-- Firm reference -->
 
     <many-to-one name = 'firm' foreign-key = 'fk_contractor_firm'>
 
-      <column name = 'fk_firm' index = 'ix_contractor_firm'>
+      <column name = 'fk_firm' unique-key = 'ux_contractor_firm'>
+
         <comment>The Firm of this Contractor</comment>
       </column>
     </many-to-one>

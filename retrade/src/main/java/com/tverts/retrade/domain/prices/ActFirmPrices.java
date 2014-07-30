@@ -183,7 +183,7 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			deletePrices();
 
 			//[2]: add the new links
-			deletePrices();
+			savePrices();
 
 			//[3]: reconsider prices
 			relinkPrices();

@@ -3,6 +3,10 @@ package com.tverts.retrade.domain.firm;
 /* Java */
 
 import java.net.URL;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /* com.tverts: spring */
 
@@ -58,6 +62,24 @@ public class GenTestContractors extends GenTestFirms
 		);
 	}
 
+	protected void       updateFirm(GenCtx ctx, GenState s, FirmEntity fe)
+	{
+		super.updateFirm(ctx, s, fe);
+
+		Contractor c = EX.assertn(
+		  bean(GetContractor.class).getContractor(fe),
+		  "Firm [", fe.getPrimaryKey(), "] code [",
+		  fe.getCode(), "] has no Contractor!"
+		);
+
+		//~: remember it
+		rememberContractor(ctx, c, true);
+
+		LU.I(log(ctx), logsig(), " found test Contractor [",
+		  c.getCode(), "], pkey [", c.getPrimaryKey(), "]"
+		);
+	}
+
 	protected FirmEntity saveFirm(GenCtx ctx, GenState s)
 	{
 		//~: save the firm
@@ -85,16 +107,49 @@ public class GenTestContractors extends GenTestFirms
 		//=: name
 		c.setName(fe.getName());
 
+		//=: firm
+		c.setFirm(fe);
+
+
 		//!: save it
 		actionRun(ActContractor.SAVE, c);
 
+
 		//~: log success
-		if(LU.isI(log(ctx))) LU.I(log(ctx), logsig(),
-		  " created test contractor [", c.getCode(),
-		  "], pkey [", c.getPrimaryKey(), "]"
+		LU.I(log(ctx), logsig(), " created test Contractor [",
+		  c.getCode(), "], pkey [", c.getPrimaryKey(), "]"
 		);
 
+		//~: remember it
+		rememberContractor(ctx, c, false);
+
 		return c;
+	}
+
+	public static final String CREATED_CONTRACTORS =
+	  GenTestContractors.class.getName() + ": just created contractors";
+
+	@SuppressWarnings("unchecked")
+	protected void       rememberContractor(GenCtx ctx, Contractor c, boolean existed)
+	{
+		//~: map by the code
+		Map<String, Contractor> cm = (Map<String, Contractor>)
+		  ctx.get((Object) Contractor.class);
+
+		if(cm == null) ctx.set( Contractor.class,
+		  cm = new LinkedHashMap<String, Contractor>(17));
+
+		EX.asserts(c.getCode());
+		Contractor x = cm.put(c.getCode(), c);
+		EX.assertx((x == null) || x.equals(c));
+
+		//?: {just saved}
+		if(!existed)
+		{
+			Set<Contractor> ex = (Set<Contractor>) ctx.get(CREATED_CONTRACTORS);
+			if(ex == null) ctx.set(CREATED_CONTRACTORS, ex = new HashSet<Contractor>(17));
+			ex.add(c);
+		}
 	}
 
 	protected void       createContractorAccounts(GenCtx ctx, Contractor c)

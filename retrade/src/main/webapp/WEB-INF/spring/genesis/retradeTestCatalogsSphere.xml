@@ -60,6 +60,14 @@
 
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Assign Price Lists to the Contractors
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.firm.GenTestFirmPrices'>
+              <property name = 'name' value = 'Firm Prices'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
              · Generate test Users
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
             <bean class = 'com.tverts.endure.auth.GenTestUsers'>

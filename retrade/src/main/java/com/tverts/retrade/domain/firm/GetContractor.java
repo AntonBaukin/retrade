@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 /* com.tverts: hibery */
 
-import com.tverts.hibery.GetObjectBase;
 import com.tverts.hibery.qb.QueryBuilder;
 import com.tverts.hibery.qb.WhereLogic;
 import com.tverts.hibery.qb.WherePartLogic;
@@ -23,13 +22,19 @@ import com.tverts.endure.core.Domain;
 
 import com.tverts.endure.aggr.AggrValue;
 
-/* com.tverts: retrade domain (invoice) */
+/* com.tverts: endure (persons) */
+
+import com.tverts.endure.person.FirmEntity;
+import com.tverts.endure.person.GetFirm;
+
+/* com.tverts: retrade domain (invoices) */
 
 import com.tverts.retrade.domain.invoice.InvoiceEditModelBean;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -38,46 +43,43 @@ import static com.tverts.support.SU.s2s;
  * @author anton.baukin@gmail.com
  */
 @Component
-public class GetContractor extends GetObjectBase
+public class GetContractor extends GetFirm
 {
 	/* Get Contractor */
 
 	public Contractor getContractor(Long pk)
 	{
-		return (pk == null)?(null):
-		  (Contractor)session().get(Contractor.class, pk);
+		return get(Contractor.class, pk);
 	}
 
 	public Contractor getContractor(Domain domain, String code)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
+		EX.assertn(domain);
+		EX.asserts(code);
 
-		if((code = s2s(code)) == null)
-			throw new IllegalArgumentException();
+// from Contractor c where (c.domain = :domain) and (c.code = :code)
 
-/*
+		final String Q =
+"  from Contractor c where (c.domain = :domain) and (c.code = :code)";
 
-from Contractor c where
-  (c.domain = :domain) and (c.code = :code)
+		return object(Contractor.class, Q, "domain", domain, "code", code);
+	}
 
-*/
+	public Contractor getContractor(FirmEntity fe)
+	{
+		EX.assertn(fe);
 
-		return (Contractor)Q(
+// from Contractor where (firm = :fe)
 
-		  "from Contractor c where\n" +
-		  "  (c.domain = :domain) and (c.code = :code)"
+		final String Q =
+"  from Contractor where (firm = :fe)";
 
-		).
-		  setParameter("domain", domain).
-		  setString("code", code).
-		  uniqueResult();
+		return object(Contractor.class, Q, "fe", fe);
 	}
 
 	public int        countTestContractors(Domain domain)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
+		EX.assertn(domain);
 
 /*
 
@@ -85,30 +87,28 @@ from Contractor c where
    (domain = :domain) and (id < 0)
 
 */
-		return ((Number)Q(
+		final String Q =
 
-		  "select count(id) from Contractor where\n" +
-		  "   (domain = :domain) and (id < 0)"
+"select count(id) from Contractor where\n" +
+"  (domain = :domain) and (id < 0)";
 
-		).
-		  setParameter("domain", domain).
-		  uniqueResult()).intValue();
+		return object(Number.class, Q, "domain", domain).intValue();
 	}
 
 	public Contractor getTestContractor(Domain domain, int skip)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
+		EX.assertn(domain);
 
 
 // from Contractor where (domain = :domain) and (id < 0)
 
-		return (Contractor)Q(
-		  "from Contractor where (domain = :domain) and (id < 0)"
-		).
+		final String Q =
+"  from Contractor where (domain = :domain) and (id < 0)";
+
+
+		return (Contractor) Q(Q).
 		  setParameter("domain", domain).
-		  setMaxResults(1).
-		  setFirstResult(skip).
+		  setMaxResults(1).setFirstResult(skip).
 		  uniqueResult();
 	}
 
@@ -205,11 +205,7 @@ from Contractor c where
 	{
 		QueryBuilder qb = new QueryBuilder();
 
-/*
-
-Contractor co left outer join co.firm fi, Debt debt
-
-*/
+// Contractor co left outer join co.firm fi, Debt debt
 
 		//~: from clause
 		qb.nameEntity("Contractor", Contractor.class);
@@ -217,7 +213,7 @@ Contractor co left outer join co.firm fi, Debt debt
 
 		qb.setClauseFrom(
 
-"Contractor co left outer join co.firm fi, Debt debt"
+"  Contractor co left outer join co.firm fi, Debt debt"
 
 		);
 
@@ -261,7 +257,7 @@ Contractor co left outer join co.firm fi, Debt debt
 
 	private void coWordsSearch(QueryBuilder qb, String[] words)
 	{
-		if(words != null) for(String w : words) if((w = s2s(w)) != null)
+		if(words != null) for(String w : words) if((w = SU.s2s(w)) != null)
 		{
 			w = "%" + w.toLowerCase() + "%";
 

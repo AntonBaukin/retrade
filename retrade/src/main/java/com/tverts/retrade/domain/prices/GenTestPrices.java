@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -161,7 +162,13 @@ public class GenTestPrices extends GenesisHiberPartBase
 		EX.assertx(pls.length % 2 == 0);
 
 		//~: create main price list
-		genPriceList(ctx, pls[0], pls[1], costs);
+		PriceListEntity pl = genPriceList(ctx, pls[0], pls[1], costs);
+		ctx.set(pl); //<-- remember it
+
+		//~: all the lists
+		Map<String, PriceListEntity> all =
+		  new LinkedHashMap<String, PriceListEntity>(pls.length / 2);
+		all.put(pl.getCode(), pl); //<-- include the main list also
 
 		//~: generate else lists
 		for(int i = 2;(i < pls.length);i+=2)
@@ -172,12 +179,18 @@ public class GenTestPrices extends GenesisHiberPartBase
 			selectPriceListItems(ctx, xcosts);
 
 			//~: generate the list
-			genPriceList(ctx, pls[i], pls[i+1], xcosts);
+			pl = genPriceList(ctx, pls[i], pls[i + 1], xcosts);
+			EX.assertx( all.put(pl.getCode(), pl) == null,
+			  "Price List code [", pl.getCode(), "] is generated twice!");
 		}
+
+		//~: remember the lists
+		ctx.set(PriceListEntity[].class,
+		  all.values().toArray(new PriceListEntity[all.size()]));
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void genPriceList
+	protected PriceListEntity genPriceList
 	  (GenCtx ctx, String code, String name, Map<String, BigDecimal> costs)
 	{
 		Map<String, GoodUnit> gm = (Map<String, GoodUnit>)
@@ -188,7 +201,7 @@ public class GenTestPrices extends GenesisHiberPartBase
 		);
 
 		//?: {has this list} skip the generation
-		if(pl != null) return;
+		if(pl != null) return pl;
 
 		//~: create the new price list
 		pl = new PriceListEntity();
@@ -237,6 +250,8 @@ public class GenTestPrices extends GenesisHiberPartBase
 		  pl.getPrimaryKey(), "] with code [", pl.getCode(),
 		  "] having [", gps.size(), "] items"
 		);
+
+		return pl;
 	}
 
 	protected void selectPriceListItems(GenCtx ctx, Map<String, BigDecimal> costs)

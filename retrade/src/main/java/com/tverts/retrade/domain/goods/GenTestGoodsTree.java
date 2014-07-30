@@ -4,8 +4,6 @@ package com.tverts.retrade.domain.goods;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,24 +21,18 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: genesis */
 
-import com.tverts.endure.tree.ActTreeFolder;
-import com.tverts.endure.tree.GetTree;
-import com.tverts.endure.tree.TreeDomain;
-import com.tverts.endure.tree.TreeFolder;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
-/* com.tverts: api */
-
-import com.tverts.api.retrade.goods.Calc;
-import com.tverts.api.retrade.goods.CalcItem;
-import com.tverts.api.retrade.goods.Good;
-import com.tverts.api.retrade.goods.Measure;
-
-/* com.tverts: endure (core) */
+/* com.tverts: endure (core + tree) */
 
 import com.tverts.endure.core.Domain;
+import com.tverts.endure.tree.ActTreeFolder;
+import com.tverts.endure.tree.GetTree;
+import com.tverts.endure.tree.TreeDomain;
+import com.tverts.endure.tree.TreeFolder;
+import com.tverts.endure.tree.TreeItem;
 
 /* com.tverts: support */
 
@@ -131,6 +123,7 @@ public class GenTestGoodsTree extends GenesisHiberPartBase
 		);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void addGood(GenCtx ctx, GenState s, String code)
 	{
 		//?: {previously added}
@@ -147,11 +140,26 @@ public class GenTestGoodsTree extends GenesisHiberPartBase
 		  "Good Unit with code [", code, "] was not generated!"
 		);
 
+		//?: {has good in the tree}
+		List<TreeItem> tis = bean(GetTree.class).getTreeItems(
+		  f.getDomain(), g.getPrimaryKey());
+
+		if(!tis.isEmpty())
+		{
+			List<String> codes = new ArrayList<String>(1);
+			for(TreeItem ti : tis) codes.add(ti.getFolder().getCode());
+
+			LU.I(log(ctx), logsig(), " found Good Unit [", g.getCode(),
+			  "] in the following goods Folders: [", SU.scats(", ", codes), "]"
+			);
+
+			return;
+		}
+
 		//!: add good to the folder on the top of the stack
 		actionRun(ActTreeFolder.ADD, f, ActTreeFolder.PARAM_ITEM, g);
 
-		LU.I(log(ctx), logsig(),
-		  "added Good Unit [", g.getCode(),
+		LU.I(log(ctx), logsig(), " added Good Unit [", g.getCode(),
 		  "] into goods Folder code: [", f.getCode(), "]"
 		);
 	}
