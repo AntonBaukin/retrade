@@ -3,6 +3,8 @@ package com.tverts.endure.person;
 /* Java */
 
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /* com.tverts: spring */
 
@@ -92,7 +94,9 @@ public class GenTestFirms extends GenesisHiberPartBase
 	}
 
 	protected void       updateFirm(GenCtx ctx, GenState s, FirmEntity fe)
-	{}
+	{
+		rememberFirm(ctx, fe);
+	}
 
 	protected FirmEntity saveFirm(GenCtx ctx, GenState s)
 	{
@@ -110,6 +114,7 @@ public class GenTestFirms extends GenesisHiberPartBase
 		//!: save action
 		actionRun(ActionType.SAVE, fe);
 
+		rememberFirm(ctx, fe);
 		return fe;
 	}
 
@@ -140,6 +145,20 @@ public class GenTestFirms extends GenesisHiberPartBase
 			if(ctx.gen().nextInt(5) == 0)
 				f.setContactAddress(Addresses.INSTANCE.
 				 selectRandomAddress(ctx.gen()));
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void       rememberFirm(GenCtx ctx, FirmEntity fe)
+	{
+		Map<String, FirmEntity> fem = (Map<String, FirmEntity>)
+		  ctx.get((Object)FirmEntity.class);
+
+		if(fem == null) ctx.set( FirmEntity.class,
+		  fem = new LinkedHashMap<String, FirmEntity>(17));
+
+		EX.asserts(fe.getCode());
+		FirmEntity fx = fem.put(fe.getCode(), fe);
+		EX.assertx((fx == null) || fx.equals(fe));
 	}
 
 
