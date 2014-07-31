@@ -176,28 +176,33 @@ public class ActFirmPrices extends ActionBuilderReTrade
 				y.setPriority(i);
 			}
 
-			//[0]: unlink the price joins
-			unlinkPrices();
-
-			//[1]: remove the obsolete links
+			//[0]: remove the obsolete associations
 			deletePrices();
 
-			//[2]: add the new links
+			//[1]: add the new links
 			savePrices();
 
-			//[3]: reconsider prices
+			//[2]: reconsider prices
 			relinkPrices();
 		}
-
-		protected void unlinkPrices()
-		{}
 
 		protected void deletePrices()
 		{
 			if(deleted.isEmpty()) return;
 
+			//!: flush the session
+			HiberPoint.flush(session());
+
+			//c: for each delete association
+			GetPrices get = bean(GetPrices.class);
 			for(FirmPrices fp : deleted)
+			{
+				//~: delete the cross items
+				get.deletePriceCrosses(fp);
+
+				//~: delete the association
 				session().delete(fp);
+			}
 
 			//!: flush the session
 			HiberPoint.flush(session());
@@ -224,7 +229,130 @@ public class ActFirmPrices extends ActionBuilderReTrade
 		}
 
 		protected void relinkPrices()
-		{}
+		{
+			//~: select current items [good, price, cross]
+			List<Object[]> c = bean(GetPrices.class).
+			  selectCurrentPrices(target(Contractor.class).getPrimaryKey());
+
+			//~: map them by the goods
+			Map<Long, Object[]> m = new HashMap<Long, Object[]>(c.size());
+			for(Object[] r : c) m.put((Long)r[0], r);
+
+			//~: select effective items
+			List<Object[]> e = bean(GetPrices.class).
+			  selectEffectivePrices(target(Contractor.class).getPrimaryKey());
+
+			//~: all effective goods
+			Set<Long> a = new HashSet<Long>(e.size());
+
+			//~: current price crosses to delete
+			Set<Long> d = new HashSet<Long>(17);
+
+			//~: crosses to add
+			Map<Long, Long> i = new HashMap<Long, Long>(17);
+
+			//c: scan for the changes
+			for(Object[] r : e)
+			{
+				//~: good & price
+				Long g = (Long)r[0], p = (Long)r[1];
+				a.add(g); //<-- this good has price
+
+				//~: current record for this good
+				Object[] x = m.get(g);
+
+				//?: {has the same price} skip
+				if((x != null) && p.equals(x[1]))
+					continue; //<-- x[1] is Good Price
+
+				//!: add new cross
+				i.put(g, p);
+
+				//?: {had price for this good}
+				if(x != null) //<-- x[2] is Price Cross
+					d.add((Long) x[2]);
+			}
+
+			//~: find obsolete crosses
+			{
+				Set<Long> xo = new HashSet<Long>(m.keySet());
+				xo.removeAll(a); //<-- remove goods with prices
+				for(Long g : xo) d.add((Long)(m.get(g)[2]));
+			}
+
+			//?: {has crosses to delete}
+			if(!d.isEmpty())
+			{
+				//~: for all the crosses
+				for(Long x : d)
+				{
+					PriceCross pc = (PriceCross) session().
+					  load(PriceCross.class, x);
+
+					//!: delete the cross
+					session().delete(pc);
+				}
+
+
+				//HINT: we flush here as price crosses have
+				// unique constraint (contractor; good)!
+
+				//!: flush the session
+				HiberPoint.flush(session());
+			}
+
+			//?: {has no crosses to insert}
+			if(i.isEmpty()) return;
+
+			//~: map the associated price lists
+			Map<Long, FirmPrices> p2fp =
+			  new HashMap<Long, FirmPrices>(prices.size());
+			for(FirmPrices fp : prices)
+				p2fp.put(fp.getPriceList().getPrimaryKey(), fp);
+
+			//~: insert them
+			for(Long g : i.keySet())
+			{
+				PriceCross pc = new PriceCross();
+
+				//~: load good price
+				GoodPrice gp = (GoodPrice) session().
+				  load(GoodPrice.class, i.get(g));
+				session().setReadOnly(gp, true);
+
+				//~: firm prices
+				FirmPrices fp = EX.assertn(
+				  p2fp.get(gp.getPriceList().getPrimaryKey()),
+
+				  "Price List [", gp.getPriceList(),
+				  "] is not associated with Contractor [",
+				  target(Contractor.class).getPrimaryKey(), "]!"
+				);
+
+				//=: firm price
+				pc.setFirmPrices(fp);
+
+				//=: contractor
+				pc.setContractor(target(Contractor.class));
+
+				//=: good price
+				pc.setGoodPrice(gp);
+
+				//=: good unit
+				pc.setGoodUnit(gp.getGoodUnit());
+
+				//=: primary key
+				HiberPoint.setPrimaryKey(session(), pc,
+				  HiberPoint.isTestInstance(pc.getGoodUnit())
+				);
+
+				//!: save the cross
+				session().save(pc);
+			}
+
+			//!: flush the session (to be sure)
+			HiberPoint.flush(session());
+		}
 
 
 		/* protected: task state */
