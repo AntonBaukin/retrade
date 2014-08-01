@@ -50,7 +50,7 @@ public abstract class SelfShuntBaseAnnotated
 
 	/* protected: shunt unit invocation */
 
-	protected void  initUnitReport(SelfShuntUnitReport report)
+	protected void   initUnitReport(SelfShuntUnitReport report)
 	{
 		super.initUnitReport(report);
 
