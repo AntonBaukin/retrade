@@ -217,9 +217,13 @@
 
 
                       <!-- ReTrade Domain Tests -->
+                      <value>retrade:goods</value>
+
+                      <!--
                       <value>retrade:invoices</value>
                       <value>retrade:payment</value>
                       <value>retrade:aggr</value>
+                      -->
 
                     </list>
                   </property>

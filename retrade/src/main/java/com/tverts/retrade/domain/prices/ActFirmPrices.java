@@ -165,6 +165,7 @@ public class ActFirmPrices extends ActionBuilderReTrade
 
 				//~: create new item for this index
 				added.add(y = new FirmPrices());
+				prices.add(y);
 
 				//=: contractor
 				y.setContractor(target(Contractor.class));
@@ -256,7 +257,10 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			{
 				//~: good & price
 				Long g = (Long)r[0], p = (Long)r[1];
-				a.add(g); //<-- this good has price
+				EX.assertx( a.add(g), //<-- this good has price
+				  "Good Unit [", g, "] price is selected twice for Contractor [",
+				  target(Contractor.class).getPrimaryKey(), "]!"
+				);
 
 				//~: current record for this good
 				Object[] x = m.get(g);

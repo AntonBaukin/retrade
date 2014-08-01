@@ -113,7 +113,20 @@ public class GetContractor extends GetFirm
 	}
 
 
-	/* Contractors selection */
+	/* Contractors Selection */
+
+	public List<Contractor> selectFirmContractors(Long domain)
+	{
+		EX.assertn(domain);
+
+// from Contractor where (domain.id = :domain) and (firm is not null)
+
+		final String Q =
+
+"  from Contractor where (domain.id = :domain) and (firm is not null)";
+
+		return list(Contractor.class, Q, "domain", domain);
+	}
 
 	public long             countContractors(InvoiceEditModelBean mb)
 	{
