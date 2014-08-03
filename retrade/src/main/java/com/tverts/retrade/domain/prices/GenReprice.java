@@ -30,10 +30,18 @@ import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
+/* com.tverts: objects */
+
+import com.tverts.objects.Param;
+
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.Domain;
+
+/* com.tverts: retrade api */
+
+import com.tverts.api.retrade.prices.PriceChanges;
 
 /* com.tverts: retrade domain (goods + invoices) */
 
@@ -59,30 +67,27 @@ public class      GenReprice
 {
 	/* public: Genesis interface */
 
-	public void      generate(GenCtx ctx)
+	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		RepriceDoc rd = new RepriceDoc();
+		RepriceDoc   rd = new RepriceDoc();
+		PriceChanges pc = rd.getOx();
 
-		//~: set test primary key
+		//=: set test primary key
 		setPrimaryKey(session(), rd, true);
 
-		//~: assign test domain
+		//=: domain
 		rd.setDomain(ctx.get(Domain.class));
 
-		//~: generate document code
+		//=: generate document code
 		rd.setCode(genRepriceDocCode(ctx));
-
-		//?: {a document with this code is already generated}
-		if(isRepriceDocExists(ctx, rd))
-			return;
 
 		//~: select random price list
 		PriceListEntity[] pls = ctx.get(PriceListEntity[].class);
 		rd.setPriceList(pls[ctx.gen().nextInt(pls.length)]);
 
 		//~: change reason
-		rd.setChangeReason(String.format(
+		pc.setRemarks(String.format(
 		  "Тестовая генерация, день %s.",
 		  DU.date2str(ctx.get(DaysGenDisp.DAY, Date.class))
 		));
@@ -91,6 +96,7 @@ public class      GenReprice
 		genPriceChanges(ctx, rd);
 
 		//~: save the document
+		rd.updateOx();
 		save(ctx, rd);
 
 		//!: fix the prices now
@@ -100,10 +106,13 @@ public class      GenReprice
 
 	/* public: bean interface */
 
+	@Param
 	public Integer getMinGoods()
 	{
 		return minGoods;
 	}
+
+	private Integer minGoods;
 
 	public void setMinGoods(Integer n)
 	{
@@ -111,10 +120,13 @@ public class      GenReprice
 		this.minGoods = n;
 	}
 
+	@Param
 	public Integer getMaxGoods()
 	{
 		return maxGoods;
 	}
+
+	private Integer maxGoods;
 
 	public void setMaxGoods(Integer n)
 	{
@@ -125,14 +137,14 @@ public class      GenReprice
 
 	/* public: DaysGenPart interface */
 
-	public boolean isDayClear(GenCtx ctx)
+	public boolean    isDayClear(GenCtx ctx)
 	{
 		return super.isGenDispDayClear(ctx,
 		  UnityTypes.unityType(RepriceDoc.class, Prices.TYPE_REPRICE_DOC)
 		);
 	}
 
-	public void    markDayGenerated(GenCtx ctx)
+	public void       markDayGenerated(GenCtx ctx)
 	{
 		super.markGenDispDay(ctx,
 		  UnityTypes.unityType(RepriceDoc.class, Prices.TYPE_REPRICE_DOC)
@@ -148,12 +160,6 @@ public class      GenReprice
 		  ctx.get(DaysGenDisp.DAY, Date.class),
 		  ctx.get(DaysGenDisp.DAYI, Integer.class)
 		);
-	}
-
-	protected boolean isRepriceDocExists(GenCtx ctx, RepriceDoc rd)
-	{
-		return bean(GetGoods.class).
-		  getRepriceDoc(rd.getDomain().getPrimaryKey(), rd.getCode()) != null;
 	}
 
 	protected void    save(GenCtx ctx, RepriceDoc rd)
@@ -228,10 +234,4 @@ public class      GenReprice
 		int     num = min + ctx.gen().nextInt(max - min + 1);
 		return goods.subList(0, num);
 	}
-
-
-	/* parameters of the generation */
-
-	private Integer minGoods;
-	private Integer maxGoods;
 }

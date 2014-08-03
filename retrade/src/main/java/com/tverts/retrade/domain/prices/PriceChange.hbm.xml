@@ -5,14 +5,14 @@
 
 <hibernate-mapping package = 'com.tverts.retrade.domain.prices'>
 
-  <class name = 'PriceChange' table = 'retrade_price_change' lazy = 'false'>
+  <class name = 'PriceChange' table = 'retrade_price_change'>
 
     <!-- Primary Key -->
 
     <id name = 'primaryKey' column = 'pk_price_change'/>
 
 
-    <!-- Price Change Document reference -->
+    <!-- Price Change Document [bi, master] -->
 
     <many-to-one name = 'repriceDoc' foreign-key = 'fk_price_change_doc'>
 
@@ -24,7 +24,7 @@
     </many-to-one>
 
 
-    <!-- Good Unit reference -->
+    <!-- Good Unit -->
 
     <many-to-one name = 'goodUnit' foreign-key = 'fk_price_change_good_price'>
 
@@ -46,26 +46,32 @@
     </property>
 
 
-    <!-- Price -->
+    <!-- Old Price -->
 
     <property name = 'priceOld' type = 'big_decimal'>
 
       <column name = 'price_old'
         precision = '12' scale = '2'>
 
-        <comment>The price was when changing it</comment>
+        <comment>
+          The price was when changing it. Undefined value
+          means the Good was not in the Price List before
+        </comment>
       </column>
     </property>
 
 
-    <!-- Price -->
+    <!-- New Price -->
 
     <property name = 'priceNew' type = 'big_decimal'>
 
-      <column name = 'price_new' not-null = 'true'
+      <column name = 'price_new'
         precision = '12' scale = '2'>
 
-        <comment>The price to assign (was assigned)</comment>
+        <comment>
+          The price to assign (was assigned). Undefined value
+          means the Good was removed from the Price List
+        </comment>
       </column>
     </property>
 

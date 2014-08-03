@@ -6,13 +6,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/* com.tverts: api */
+
+import com.tverts.api.retrade.prices.PriceChanges;
+
 /* com.tverts: endure (core) */
 
-import com.tverts.endure.NumericBase;
-import com.tverts.endure.PrimaryIdentity;
-import com.tverts.endure.TxEntity;
+import com.tverts.endure.cats.CodedEntity;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
+import com.tverts.endure.core.OxEntity;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -25,29 +32,61 @@ import com.tverts.endure.core.DomainEntity;
  * @author anton.baukin@gmail.com
  */
 public class      RepriceDoc
-       extends    NumericBase
-       implements PrimaryIdentity, DomainEntity, TxEntity
+       extends    OxEntity
+       implements DomainEntity, CodedEntity
 {
-	/* public: RepriceDoc (bean) interface */
+	/* Object Extraction */
 
-	public Domain     getDomain()
+	public PriceChanges getOx()
+	{
+		PriceChanges pc = (PriceChanges) super.getOx();
+		if(pc == null) setOx(pc = new PriceChanges());
+		return pc;
+	}
+
+	public void setOx(Object ox)
+	{
+		EX.assertx(ox instanceof PriceChanges);
+		super.setOx(ox);
+	}
+
+
+	/* Price Change Document */
+
+	public Domain getDomain()
 	{
 		return domain;
 	}
 
-	public void       setDomain(Domain domain)
+	private Domain domain;
+
+	public void setDomain(Domain domain)
 	{
 		this.domain = domain;
 	}
 
-	public String     getCode()
+	public String getCode()
 	{
 		return code;
 	}
 
-	public void       setCode(String code)
+	private String code;
+
+	public void setCode(String code)
 	{
 		this.code = code;
+	}
+
+	public Date getChangeTime()
+	{
+		return changeTime;
+	}
+
+	private Date changeTime;
+
+	public void setChangeTime(Date changeTime)
+	{
+		this.changeTime = changeTime;
 	}
 
 	public PriceListEntity getPriceList()
@@ -55,65 +94,23 @@ public class      RepriceDoc
 		return priceList;
 	}
 
-	public void       setPriceList(PriceListEntity priceList)
+	private PriceListEntity priceList;
+
+	public void setPriceList(PriceListEntity priceList)
 	{
 		this.priceList = priceList;
-	}
-
-	public Date       getChangeTime()
-	{
-		return changeTime;
-	}
-
-	public void       setChangeTime(Date changeTime)
-	{
-		this.changeTime = changeTime;
-	}
-
-	public String     getChangeReason()
-	{
-		return changeReason;
-	}
-
-	public void       setChangeReason(String changeReason)
-	{
-		this.changeReason = changeReason;
 	}
 
 	public List<PriceChange> getChanges()
 	{
 		return (changes != null)?(changes):
-		  (changes = new ArrayList<PriceChange>());
+		  (changes = new ArrayList<PriceChange>(32));
 	}
 
-	public void       setChanges(List<PriceChange> changes)
+	private List<PriceChange> changes;
+
+	public void setChanges(List<PriceChange> changes)
 	{
 		this.changes = changes;
 	}
-
-
-	/* public: TxEntity interface */
-
-	public Long getTxn()
-	{
-		return (txn == 0L)?(null):(txn);
-	}
-
-	private long txn;
-
-	public void setTxn(Long txn)
-	{
-		this.txn = (txn == null)?(0L):(txn);
-	}
-
-
-	/* persisted attributes */
-
-	private Domain    domain;
-	private String    code;
-	private Date      changeTime;
-	private String    changeReason;
-
-	private PriceListEntity   priceList;
-	private List<PriceChange> changes;
 }

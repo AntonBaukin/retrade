@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -29,14 +29,15 @@ import com.tverts.support.jaxb.DateTimeAdapter;
 
 
 /**
- * Stores read-only data on {@link PriceChange} object.
+ * Stores read-only data of a
+ * Price Change Document position.
  *
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "price-change")
 public class PriceChangeView implements Serializable
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140803L;
 
 
 	/* public: PriceChangeView (bean) interface */
@@ -44,23 +45,27 @@ public class PriceChangeView implements Serializable
 	/**
 	 * Stores the key of the {@link PriceChange} instance.
 	 */
-	public Long        getObjectKey()
+	public Long getObjectKey()
 	{
 		return objectKey;
 	}
 
-	public void        setObjectKey(Long objectKey)
+	private Long objectKey;
+
+	public void setObjectKey(Long objectKey)
 	{
 		this.objectKey = objectKey;
 	}
 
 	@XmlJavaTypeAdapter(DateTimeAdapter.class)
-	public Date        getChangeTime()
+	public Date getChangeTime()
 	{
 		return changeTime;
 	}
 
-	public void        setChangeTime(Date changeTime)
+	private Date changeTime;
+
+	public void setChangeTime(Date changeTime)
 	{
 		this.changeTime = changeTime;
 	}
@@ -70,81 +75,97 @@ public class PriceChangeView implements Serializable
 		return priceOld;
 	}
 
-	public void        setPriceOld(BigDecimal priceOld)
+	private BigDecimal priceOld;
+
+	public void setPriceOld(BigDecimal priceOld)
 	{
 		this.priceOld = priceOld;
 	}
 
-	public BigDecimal  getPriceCur()
+	public BigDecimal getPriceCur()
 	{
 		return priceCur;
 	}
 
-	public void        setPriceCur(BigDecimal p)
+	private BigDecimal priceCur;
+
+	public void setPriceCur(BigDecimal p)
 	{
 		if(p != null)
 			p = p.setScale(2);
 		this.priceCur = p;
 	}
 
-	public BigDecimal  getPriceNew()
+	public BigDecimal getPriceNew()
 	{
 		return priceNew;
 	}
 
-	public void        setPriceNew(BigDecimal p)
+	private BigDecimal priceNew;
+
+	public void setPriceNew(BigDecimal p)
 	{
 		if(p != null)
 			p = p.setScale(2);
 		this.priceNew = p;
 	}
 
-	public BigDecimal  getRestCost()
+	public BigDecimal getRestCost()
 	{
 		return restCost;
 	}
 
-	public void        setRestCost(BigDecimal restCost)
+	private BigDecimal restCost;
+
+	public void setRestCost(BigDecimal restCost)
 	{
 		this.restCost = restCost;
 	}
 
-	public Long        getGoodKey()
+	public Long getGoodKey()
 	{
 		return goodKey;
 	}
 
-	public void        setGoodKey(Long goodKey)
+	private Long goodKey;
+
+	public void setGoodKey(Long goodKey)
 	{
 		this.goodKey = goodKey;
 	}
 
-	public String      getGoodCode()
+	public String getGoodCode()
 	{
 		return goodCode;
 	}
 
-	public void        setGoodCode(String goodCode)
+	private String goodCode;
+
+	public void setGoodCode(String goodCode)
 	{
 		this.goodCode = goodCode;
 	}
 
-	public String      getGoodName()
+	public String getGoodName()
 	{
 		return goodName;
 	}
 
-	public void        setGoodName(String goodName)
+	private String goodName;
+
+	public void setGoodName(String goodName)
 	{
 		this.goodName = goodName;
 	}
 
-	public String      getMeasureName()
+	public String getMeasureName()
 	{
 		return measureName;
 	}
 
-	public void        setMeasureName(String measureName)
+	private String measureName;
+
+	public void setMeasureName(String measureName)
 	{
 		this.measureName = measureName;
 	}
@@ -241,18 +262,4 @@ public class PriceChangeView implements Serializable
 
 		return this;
 	}
-
-
-	/* private: properties of the view */
-
-	private Long       objectKey;
-	private Date       changeTime;
-	private BigDecimal priceCur;
-	private BigDecimal priceOld;
-	private BigDecimal priceNew;
-	private BigDecimal restCost;
-	private Long       goodKey;
-	private String     goodCode;
-	private String     goodName;
-	private String     measureName;
 }

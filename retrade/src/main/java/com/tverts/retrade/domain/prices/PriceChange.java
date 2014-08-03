@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,24 +21,28 @@ import com.tverts.retrade.domain.goods.GoodUnit;
  */
 public class PriceChange extends NumericBase
 {
-	/* public: PriceChange (bean) access */
+	/* Price Change Item */
 
-	public RepriceDoc  getRepriceDoc()
+	public RepriceDoc getRepriceDoc()
 	{
 		return repriceDoc;
 	}
 
-	public void        setRepriceDoc(RepriceDoc repriceDoc)
+	private RepriceDoc repriceDoc;
+
+	public void setRepriceDoc(RepriceDoc repriceDoc)
 	{
 		this.repriceDoc = repriceDoc;
 	}
 
-	public GoodUnit    getGoodUnit()
+	public GoodUnit getGoodUnit()
 	{
 		return goodUnit;
 	}
 
-	public void        setGoodUnit(GoodUnit goodUnit)
+	private GoodUnit goodUnit;
+
+	public void setGoodUnit(GoodUnit goodUnit)
 	{
 		this.goodUnit = goodUnit;
 	}
@@ -46,23 +50,30 @@ public class PriceChange extends NumericBase
 	/**
 	 * The change time is assigned only when the price
 	 * change actually affected the good price.
+	 *
+	 * It duplicates the value of the document to
+	 * allow to select the history of the goods prices!
 	 */
-	public Date        getChangeTime()
+	public Date getChangeTime()
 	{
 		return changeTime;
 	}
 
-	public void        setChangeTime(Date changeTime)
+	private Date changeTime;
+
+	public void setChangeTime(Date changeTime)
 	{
 		this.changeTime = changeTime;
 	}
 
-	public BigDecimal  getPriceOld()
+	public BigDecimal getPriceOld()
 	{
 		return priceOld;
 	}
 
-	public void        setPriceOld(BigDecimal p)
+	private BigDecimal priceOld;
+
+	public void setPriceOld(BigDecimal p)
 	{
 		if((p != null) && (p.scale() != 2))
 			p = p.setScale(2);
@@ -70,12 +81,14 @@ public class PriceChange extends NumericBase
 		this.priceOld = p;
 	}
 
-	public BigDecimal  getPriceNew()
+	public BigDecimal getPriceNew()
 	{
 		return priceNew;
 	}
 
-	public void        setPriceNew(BigDecimal p)
+	private BigDecimal priceNew;
+
+	public void setPriceNew(BigDecimal p)
 	{
 		if((p != null) && (p.scale() != 2))
 			p = p.setScale(2);
@@ -83,12 +96,14 @@ public class PriceChange extends NumericBase
 		this.priceNew = p;
 	}
 
-	public int         getDocIndex()
+	public int getDocIndex()
 	{
 		return docIndex;
 	}
 
-	public void        setDocIndex(int docIndex)
+	private int docIndex;
+
+	public void setDocIndex(int docIndex)
 	{
 		this.docIndex = docIndex;
 	}
@@ -114,14 +129,4 @@ public class PriceChange extends NumericBase
 		return (getGoodUnit() == null)?(0):
 		  (getGoodUnit().hashCode());
 	}
-
-
-	/* persisted attributes */
-
-	private RepriceDoc repriceDoc;
-	private GoodUnit   goodUnit;
-	private Date       changeTime;
-	private BigDecimal priceOld;
-	private BigDecimal priceNew;
-	private int        docIndex;
 }

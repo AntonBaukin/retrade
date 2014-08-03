@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +25,7 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: system transactions */
 
+import com.tverts.api.retrade.prices.PriceChanges;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: retrade domain (core) */
@@ -262,6 +263,7 @@ public class ActReprice extends ActionBuilderReTrade
 		  throws Throwable
 		{
 			RepriceDoc     rd = target(RepriceDoc.class);
+			PriceChanges   pc = rd.getOx();
 			RepriceDocEdit re = this.repriceEdit;
 
 			//~: code
@@ -273,10 +275,13 @@ public class ActReprice extends ActionBuilderReTrade
 			if(rd.getPriceList() == null) throw new IllegalArgumentException();
 
 			//~: change reason
-			rd.setChangeReason(re.getChangeReason());
+			pc.setRemarks(re.getChangeReason());
 
 			//~: assign the changes
 			assignChanges();
+
+			//~: update ox
+			rd.updateOx();
 		}
 
 		protected void    assignChanges()

@@ -10,6 +10,7 @@ import java.util.Date;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: support */
@@ -23,20 +24,23 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement
+@XmlRootElement(name = "reprice-document-view")
+@XmlType(name = "reprice-document-view")
 public class RepriceDocView implements Serializable
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140803L;
 
 
 	/* public: RepriceDocView (bean) interface */
 
-	public Long   getObjectKey()
+	public Long getObjectKey()
 	{
 		return objectKey;
 	}
 
-	public void   setObjectKey(Long objectKey)
+	private Long objectKey;
+
+	public void setObjectKey(Long objectKey)
 	{
 		this.objectKey = objectKey;
 	}
@@ -46,20 +50,36 @@ public class RepriceDocView implements Serializable
 		return code;
 	}
 
-	public void   setCode(String code)
+	private String code;
+
+	public void setCode(String code)
 	{
 		this.code = code;
 	}
 
 	@XmlJavaTypeAdapter(DateTimeAdapter.class)
-	public Date   getChangeTime()
+	public Date getChangeTime()
 	{
 		return changeTime;
 	}
 
-	public void   setChangeTime(Date changeTime)
+	private Date changeTime;
+
+	public void setChangeTime(Date changeTime)
 	{
 		this.changeTime = changeTime;
+	}
+
+	public Long getPriceListKey()
+	{
+		return priceListKey;
+	}
+
+	private Long priceListKey;
+
+	public void setPriceListKey(Long priceListKey)
+	{
+		this.priceListKey = priceListKey;
 	}
 
 	public String getPriceList()
@@ -67,7 +87,9 @@ public class RepriceDocView implements Serializable
 		return priceList;
 	}
 
-	public void   setPriceList(String priceList)
+	private String priceList;
+
+	public void setPriceList(String priceList)
 	{
 		this.priceList = priceList;
 	}
@@ -77,7 +99,9 @@ public class RepriceDocView implements Serializable
 		return changeReason;
 	}
 
-	public void   setChangeReason(String changeReason)
+	private String changeReason;
+
+	public void setChangeReason(String changeReason)
 	{
 		this.changeReason = changeReason;
 	}
@@ -115,25 +139,19 @@ public class RepriceDocView implements Serializable
 		changeTime = rd.getChangeTime();
 
 		//~: change reason
-		changeReason = rd.getChangeReason();
+		changeReason = rd.getOx().getRemarks();
 
 		return this;
 	}
 
 	public RepriceDocView init(PriceListEntity pl)
 	{
-		//~: price list name
+		//=: price list key
+		priceListKey = pl.getPrimaryKey();
+
+		//=: price list name
 		priceList = Prices.getPriceListFullName(pl);
 
 		return this;
 	}
-
-
-	/* private: price change document attributes */
-
-	private Long   objectKey;
-	private String code;
-	private Date   changeTime;
-	private String priceList;
-	private String changeReason;
 }

@@ -7,13 +7,16 @@ import java.util.List;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: retrade domain (goods + prices) */
+/* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
 
@@ -23,29 +26,24 @@ import com.tverts.retrade.domain.goods.GetGoods;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement
+@XmlRootElement(name = "reprice-document-edit")
+@XmlType(name = "reprice-document-edit")
 public class RepriceDocEdit extends RepriceDocView
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140803L;
 
 
 	/* public: RepriceDocEdit (bean) interface */
 
-	public Long getPriceListKey()
-	{
-		return priceListKey;
-	}
-
-	public void setPriceListKey(Long priceListKey)
-	{
-		this.priceListKey = priceListKey;
-	}
-
+	@XmlElement(name = "price-item")
+	@XmlElementWrapper(name = "price-items")
 	public List<PriceChangeEdit> getPriceChanges()
 	{
 		return (priceChanges != null)?(priceChanges):
 		  (priceChanges = new ArrayList<PriceChangeEdit>());
 	}
+
+	private List<PriceChangeEdit> priceChanges;
 
 	public void setPriceChanges(List<PriceChangeEdit> priceChanges)
 	{
@@ -66,18 +64,4 @@ public class RepriceDocEdit extends RepriceDocView
 
 		return (RepriceDocEdit)super.init(rd);
 	}
-
-	public RepriceDocEdit init(PriceListEntity pl)
-	{
-		//~: price list primary key
-		priceListKey = pl.getPrimaryKey();
-
-		return (RepriceDocEdit)super.init(pl);
-	}
-
-
-	/* private: price change document attributes */
-
-	private Long                   priceListKey;
-	private List<PriceChangeEdit>  priceChanges;
 }
