@@ -28,7 +28,7 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: api */
 
-import com.tverts.api.retrade.goods.PriceList;
+import com.tverts.api.retrade.prices.PriceList;
 
 /* com.tverts: endure (catalogues) */
 

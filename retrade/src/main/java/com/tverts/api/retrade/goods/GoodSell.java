@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.tverts.api.core.XKeyPair;
 import com.tverts.api.core.XKeysAlias;
+import com.tverts.api.retrade.prices.PriceItem;
 
 
 /**

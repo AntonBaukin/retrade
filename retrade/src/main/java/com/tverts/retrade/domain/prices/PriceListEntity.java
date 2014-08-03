@@ -6,7 +6,7 @@ import java.util.Set;
 
 /* tverts.com: api */
 
-import com.tverts.api.retrade.goods.PriceList;
+import com.tverts.api.retrade.prices.PriceList;
 
 /* tverts.com: endure (core) */
 

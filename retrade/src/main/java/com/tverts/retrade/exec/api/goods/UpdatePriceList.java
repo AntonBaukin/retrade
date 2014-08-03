@@ -5,10 +5,13 @@ package com.tverts.retrade.exec.api.goods;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionsPoint;
 
-/* com.tverts: api execution */
+/* com.tverts: retrade api */
 
 import com.tverts.api.core.Holder;
-import com.tverts.api.retrade.goods.PriceList;
+import com.tverts.api.retrade.prices.PriceList;
+
+/* com.tverts: api execution */
+
 import com.tverts.exec.api.UpdateEntityBase;
 
 /* com.tverts: retrade domain (goods + prices) */
@@ -28,7 +31,7 @@ public class UpdatePriceList extends UpdateEntityBase
 	protected boolean   isKnown(Holder holder)
 	{
 		return (holder.getEntity() instanceof
-		  com.tverts.api.retrade.goods.PriceList
+		  PriceList
 		);
 	}
 

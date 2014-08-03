@@ -10,7 +10,7 @@ import com.tverts.retrade.domain.prices.GoodPrice;
 
 /* com.tverts: retrade api */
 
-import com.tverts.api.retrade.goods.PriceItem;
+import com.tverts.api.retrade.prices.PriceItem;
 
 /* com.tverts: execution (api) */
 

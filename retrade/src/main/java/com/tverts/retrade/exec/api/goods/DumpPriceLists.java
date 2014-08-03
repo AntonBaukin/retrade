@@ -1,8 +1,11 @@
 package com.tverts.retrade.exec.api.goods;
 
+/* com.tverts: retrade api */
+
+import com.tverts.api.retrade.prices.PriceList;
+
 /* com.tverts: execution (api) */
 
-import com.tverts.api.retrade.goods.PriceList;
 import com.tverts.exec.api.EntitiesDumperBase;
 
 /* com.tverts: retrade domain (prices) */
@@ -17,7 +20,7 @@ import com.tverts.support.EX;
 
 /**
  * Dumps {@link PriceListEntity}s
- * as {@link com.tverts.api.retrade.goods.PriceList}.
+ * as {@link PriceList}.
  *
  * @author anton.baukin@gmail.com
  */

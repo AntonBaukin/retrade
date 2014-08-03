@@ -1,4 +1,4 @@
-package com.tverts.api.retrade.goods;
+package com.tverts.api.retrade.prices;
 
 /* Java */
 
@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 /* com.tverts: api */
 
 import com.tverts.api.core.XKeyPair;
+import com.tverts.api.retrade.goods.Good;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.tverts.api.retrade.goods;
+package com.tverts.api.retrade.prices;
 
 /* Java */
 

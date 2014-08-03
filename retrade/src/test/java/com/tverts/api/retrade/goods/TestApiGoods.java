@@ -11,6 +11,7 @@ import javax.xml.bind.Marshaller;
 
 import com.tverts.api.AuthClient;
 import com.tverts.api.Payload;
+import com.tverts.api.retrade.prices.PriceList;
 
 
 /**

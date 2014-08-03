@@ -10,10 +10,13 @@ import java.util.Map;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionsPoint;
 
-/* com.tverts: api execution */
+/* com.tverts: retrade api */
 
 import com.tverts.api.core.Holder;
-import com.tverts.api.retrade.goods.PriceList;
+import com.tverts.api.retrade.prices.PriceList;
+
+/* com.tverts: api execution */
+
 import com.tverts.exec.api.InsertEntityBase;
 import com.tverts.exec.api.InsertHolder;
 
@@ -34,7 +37,7 @@ public class InsertPriceList extends InsertEntityBase
 	protected boolean isKnown(Holder holder)
 	{
 		return (holder.getEntity() instanceof
-		  com.tverts.api.retrade.goods.PriceList
+		  PriceList
 		);
 	}
 
