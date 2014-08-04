@@ -43,6 +43,15 @@ public class SecSession implements Serializable
 	  "SecSession : Auth Login";
 
 	/**
+	 * Primary key with the Firm Entity
+	 * the user refers to. Note that only
+	 * external clients do have firms
+	 * defined, but not regular users.
+	 */
+	public static String ATTR_CLIENT_FIRM  =
+	  "SecSession : Client Firm";
+
+	/**
 	 * Attribute of (Long) key of the Domain
 	 * to log in. Without a domain login is impossible.
 	 */
@@ -101,6 +110,12 @@ public class SecSession implements Serializable
 
 		//~: login key
 		attr(ATTR_AUTH_LOGIN, a.getLogin().getPrimaryKey());
+
+		//?: {has client firm}
+		if(a.getLogin().getPerson() != null)
+			if(a.getLogin().getPerson().getFirm() != null)
+				attr(ATTR_CLIENT_FIRM,
+				  a.getLogin().getPerson().getFirm().getPrimaryKey());
 
 		//~: domain key
 		attr(ATTR_DOMAIN_PKEY, a.getLogin().getDomain().getPrimaryKey());

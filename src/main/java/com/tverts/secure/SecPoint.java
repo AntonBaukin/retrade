@@ -210,6 +210,35 @@ public final class SecPoint
 		return d;
 	}
 
+	public static Long        clientFirmKey()
+	{
+		//~ access session
+		SecSession s = INSTANCE.getSecSession();
+		if(s == null) return null;
+
+		//?: {this person has firm}
+		Long r = (Long) s.attr(SecSession.ATTR_CLIENT_FIRM);
+		if(r != null) return r;
+
+		//?: {searched the key}
+		if(Boolean.TRUE.equals(s.attr(ATTR_CLIENT_FIRM_SEARCHED)))
+			return null;
+
+		//~: do search
+		AuthLogin l = EX.assertn(loadLogin());
+		if((l.getPerson() != null) && (l.getPerson().getFirm() != null))
+			s.attr(SecSession.ATTR_CLIENT_FIRM,
+			  r = l.getPerson().getFirm().getPrimaryKey());
+
+		//~: mark as searched
+		s.attr(ATTR_CLIENT_FIRM_SEARCHED, true);
+
+		return r;
+	}
+
+	private static final String ATTR_CLIENT_FIRM_SEARCHED =
+	  SecSession.ATTR_CLIENT_FIRM + " [Searched]";
+
 
 	/* public: SecPoint (security checks) interface */
 

@@ -1,6 +1,6 @@
 package com.tverts.servlet.filters;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.RequestDispatcher;
 
@@ -21,7 +21,7 @@ import com.tverts.support.SU;
  */
 public abstract class GoFilterBase extends FilterBase
 {
-	/* protected: FilterBase interface */
+	/* Filter Base */
 
 	public void openFilter(FilterTask task)
 	{

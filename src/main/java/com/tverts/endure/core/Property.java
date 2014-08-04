@@ -8,6 +8,8 @@ import com.tverts.endure.NumericIdentity;
  * Represents persistent property assigned on the
  * system level, or within the domain.
  *
+ * TODO refactor properties to be also Login-related. Eliminate the area!
+ *
  *
  * @author anton.baukin@gmail.com
  */
