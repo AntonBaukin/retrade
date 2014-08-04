@@ -4,11 +4,12 @@ package com.tverts.retrade.web;
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: servlets */
+/* com.tverts: servlets + faces */
 
 import com.tverts.servlet.filters.GoFilterBase;
+import com.tverts.faces.Functions;
 
-/* com.tverts: endure (core) */
+/* com.tverts: endure (core + login) */
 
 import com.tverts.endure.core.GetProps;
 import com.tverts.endure.core.Property;
@@ -19,7 +20,8 @@ import com.tverts.secure.SecPoint;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -30,7 +32,41 @@ import static com.tverts.support.SU.s2s;
  */
 public class GoDomainIndexPage extends GoFilterBase
 {
-	/* protected: GoFilterBase interface */
+	/* Go Domain Index Page */
+
+	/**
+	 * This is the path the filter reacts
+	 * to be and index request.
+	 */
+	public String getIndexPage()
+	{
+		return indexPage;
+	}
+
+	private String indexPage = "/go/index";
+
+	public void setIndexPage(String p)
+	{
+		this.indexPage = EX.asserts(p);
+	}
+
+	/**
+	 * Index page of an external client.
+	 */
+	public String getClientPage()
+	{
+		return clientPage;
+	}
+
+	private String clientPage = "/go/index-client";
+
+	public void setClientPage(String p)
+	{
+		this.clientPage = EX.asserts(p);
+	}
+
+
+	/* protected: go-operation */
 
 	protected String getGoPage(String path)
 	{
@@ -38,30 +74,29 @@ public class GoDomainIndexPage extends GoFilterBase
 		if(!path.equals(getIndexPage()))
 			return null;
 
-		//~: lookup the index property
+		//?: {has request-specific property}
+		String p; if((p = lookupIndexPage(path)) != null)
+			return p;
+
+		//?: {redirect client}
+		if((p = redirectClient()) != null)
+			return p;
+
+		return null;
+	}
+
+	protected String lookupIndexPage(String path)
+	{
+		//~: domain-wide property
 		Property p = bean(GetProps.class).
 		  get(SecPoint.domain(), "Web", "IndexPage");
 
-		return (p == null)?(null):s2s(p.getValue());
+		return (p == null)?(null):SU.s2s(p.getValue());
 	}
 
-
-	/* public: GoIndexPage (bean) interface */
-
-	public String getIndexPage()
+	protected String redirectClient()
 	{
-		return indexPage;
+		//?: {this person has firm}
+		return (SecPoint.clientFirmKey() == null)?(null):(getClientPage());
 	}
-
-	public void   setIndexPage(String p)
-	{
-		if((p = s2s(p)) == null)
-			throw new IllegalArgumentException();
-		this.indexPage = p;
-	}
-
-
-	/* configuration */
-
-	private String indexPage = "/go/index";
 }

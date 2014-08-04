@@ -130,42 +130,8 @@
             </x:component>
           </x:menu>
         </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-logoff-sep')}">
-          <f:facet name = "extjs-props">
-            xtype: 'menuseparator'
-          </f:facet>
-        </x:component>
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-logoff')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Выйти', xtype: 'menuitem', hideOnClick: false,
-            icon: "${z:url('/resources/icons/logoff_16.png')}"
-          </f:facet>
-
-          <x:menu coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-menu')}">
-
-            <f:facet name = "extjs-props">
-              showSeparator: false
-            </f:facet>
-
-            <x:component coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm')}">
-
-              <f:facet name = "extjs-props">
-                text: 'Подтверждаю', xtype: 'menuitem',
-                cls: 'retrade-menuitem-noicon retrade-menuitem-centered'
-              </f:facet>
-            </x:component>
-          </x:menu>
-        </x:component>
       </x:menu>
     </x:component>
-
-    <!-- logoff server call -->
-    <x:action-call coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}"
-      action = "#{rootView.doLogoff}"/>
 
     <!-- retrade main menu] -->
 
@@ -284,8 +250,7 @@
 
       <f:facet name = "extjs-props">
 
-        xtype: 'button', flex: 0, text: 'Создать',
-        margin: extjsf.dpts(0, 6, 0, 0), height: 30,
+        xtype: 'button', flex: 0, text: 'Создать', height: 30,
         icon: "${z:url('/resources/icons/issue_plus_16.png')}",
         componentCls: 'retrade-button-22pt'
       </f:facet>
@@ -361,42 +326,86 @@
     <!-- create document menu] -->
 
 
-    <!-- [selection set button] -->
-    <ui:decorate template = "selset.xhtml">
-      <ui:param name = "localView" value = "#{localView}"/>
-    </ui:decorate>
+    <!-- [topbar extention point -->
 
-    <!-- [topbar extention point] -->
-
-    <x:component coid = "${z:vid(localView, 'main_topbar_ext')}">
+    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_left')}"
+      boxClass = "retrade-buttons-sep-line-div">
 
       <f:facet name = "extjs-props">
-
-        border: false, frame: false, flex: 0,
-        bodyCls: 'retrade-transparent-panel',
-        layout: {type: 'hbox', align: 'middle'},
-        margin: extjsf.dpts(0, 0, 0, 6)
-
+        height: 22, width: 4,
+        margin: extjsf.dpts(0, 8, 0, 8)
       </f:facet>
-    </x:component>
 
+      <div class = "retrade-buttons-sep-line"/>
+    </x:html>
+
+
+    <!-- [buttons linked directly] -->
     <ui:insert name = 'topbar-buttons'/>
 
 
-    <!-- [notifications area -->
-
-    <x:component coid = "${z:vid(localView, 'desktop-topbar-right-block')}">
-
+    <x:component coid = "${z:vid(localView, 'main_topbar_ext')}">
       <f:facet name = "extjs-props">
 
-        flex: 1, border: false, frame: false,
-        bodyCls: 'retrade-notifications-panel',
-        height: extjsf.dpt(20)
+        border: false, frame: false, flex: 1,
+        bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'}
 
       </f:facet>
     </x:component>
 
-    <!-- notifications area] -->
+
+    <x:html coid = "${z:vid(localView, '_main_topbar_ext_sep_right')}"
+      boxClass = "retrade-buttons-sep-line-div">
+
+      <f:facet name = "extjs-props">
+        height: 22, width: 4,
+        margin: extjsf.dpts(0, 4, 0, 8)
+      </f:facet>
+
+      <div class = "retrade-buttons-sep-line"/>
+    </x:html>
+
+    <!-- topbar extention point] -->
+
+
+    <!-- [right controls block -->
+
+    <x:component coid = "${z:vid(localView, 'desktop-topbar-right-block')}">
+      <f:facet name = "extjs-props">
+
+        border: false, frame: false,
+        bodyPadding: 0, margin: 0, height: 35,
+        bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'}
+
+      </f:facet>
+
+
+      <!-- [selection set button] -->
+      <ui:decorate template = "selset.xhtml">
+        <ui:param name = "localView" value = "#{localView}"/>
+      </ui:decorate>
+
+
+      <!-- [desktop clocks] -->
+      <x:html coid = "${z:vid(localView, 'desktop-topbar-clocks')}">
+        <f:facet name = "extjs-props">
+          bodyCls: 'retrade-transparent-panel',
+          margin: extjsf.dpts(0, 0, 0, 4)
+        </f:facet>
+
+        <div id = "${z:vid(rootView, 'desktop-clocks-area')}"
+          style = "width: 90px; height: 35px;"></div>
+      </x:html>
+
+
+      <!-- [user menu] -->
+      <ui:decorate template = "user-menu.xhtml">
+        <ui:param name = "localView" value = "#{localView}"/>
+      </ui:decorate>
+
+    </x:component>
   </x:component>
 
   <!-- application main topbar] -->
@@ -414,17 +423,17 @@
     ReTrade.desktop.controller('center').mainTopbarExt(
       "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
 
-    //~: logoff
-    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm')}",
-      '${rootView.extjsDomain}', function()
+    //~: setup the desktop clocks
+    Ext.onReady(function()
     {
-      extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${rootView.extjsDomain}')({
-        success: ZeT.timeout(500, function()
-        {
-          window.location.replace("${z:url('/go/index')}")
-        })
+      if(ReTrade.desktop.clocks) return;
+
+      ReTrade.desktop.clocks = new ReTrade.Clocks({ start: true,
+        parent: "${z:vid(rootView, 'desktop-clocks-area')}",
+        node: "${z:vid(rootView, 'desktop-clocks')}"
       })
     })
+
 
     //~: open contractors root panel
     extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-firms')}",
@@ -677,7 +686,6 @@
       })
     })
 
-
     //~: create buy invoice
     extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-buy')}",
       '${rootView.extjsDomain}', function()
@@ -865,6 +873,7 @@
     })
 
   </script>
+
   <!-- topbar scripts] -->
 
 </ui:component>
