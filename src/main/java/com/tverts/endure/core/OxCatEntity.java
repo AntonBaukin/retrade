@@ -89,5 +89,4 @@ public abstract class OxCatEntity
 		CatItem i = getOx();
 		return SU.catx(i.getCode(), i.getName());
 	}
-
 }

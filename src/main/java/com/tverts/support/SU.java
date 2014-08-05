@@ -660,7 +660,7 @@ public class SU
 		x = x.replaceAll("\\s+", " ");
 
 		//~: replace wrong symbols
-		return x.replaceAll("[^\\s\\w\\-\\+\\.а-я]", "");
+		return x.replaceAll("[^\\s\\w\\-\\+\\.абвгдеёжзийклмнопрстуфхцчшщъыьэюя]", "");
 	}
 
 	/**

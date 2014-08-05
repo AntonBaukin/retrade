@@ -84,7 +84,7 @@ public abstract class OxEntity
 		}
 
 		//?: {ox-search & unity assigned}
-		if((this instanceof OxSearch) && (getUnity() != null))
+		if((getUnity() != null) && (this instanceof OxSearch))
 			getUnity().setOxSearch(((OxSearch)this).getOxSearch());
 	}
 
@@ -115,17 +115,28 @@ public abstract class OxEntity
 
 	public void setUnity(Unity unity)
 	{
+		//?: {mirror is undefined}
+		EX.assertn(unity, "Unified mirror is required for Entity [",
+		  getPrimaryKey(), "]!");
+
+		//?: {mirror is the same}
+		if(getUnity() == unity) return;
+
+		//?: {mirror may not me altered}
+		EX.assertx( (getUnity() == null), "Unified mirror of Entity [",
+		  getPrimaryKey(), "] may not be altered!");
+
 		super.setUnity(unity);
 
 		//~: assign ox-bytes
-		if((unity != null) && (oxBytes != null) && (unity.getOxBytes() != oxBytes))
+		if((oxBytes != null) && (unity.getOxBytes() != oxBytes))
 		{
 			EX.assertx(unity.getOxBytes() == null);
 			unity.setOxBytes(oxBytes);
 		}
 
-		//?: {ox-search & unity assigned}
-		if((this instanceof OxSearch) && (unity != null))
+		//?: {ox-search is not assigned}
+		if((unity.getOxSearch() == null) && (this instanceof OxSearch))
 			unity.setOxSearch(((OxSearch)this).getOxSearch());
 	}
 }

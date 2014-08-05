@@ -54,6 +54,5 @@ public abstract class UnitedTxBase
 			unity.setTxn(tx);
 		else if((ux != null) && (tx != null) && (ux > tx))
 			this.txn = ux;
-
 	}
 }
