@@ -34,6 +34,12 @@ public abstract class OxEntity
 
 	public Object  getOx()
 	{
+		if(oxBytes != null)
+			return oxBytes.getOx();
+
+		if(getUnity() != null)
+			oxBytes = getUnity().getOxBytes();
+
 		return (oxBytes == null)?(null):(oxBytes.getOx());
 	}
 
