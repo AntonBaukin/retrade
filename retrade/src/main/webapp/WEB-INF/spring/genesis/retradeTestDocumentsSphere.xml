@@ -26,8 +26,8 @@
 
     <property name  = 'name'    value = 'Days'/>
 
-    <property name  = 'objMin'  value = '10'/>
-    <property name  = 'objMax'  value = '20'/>
+    <property name  = 'objMin'  value = '2'/>
+    <property name  = 'objMax'  value = '4'/>
     <property name  = 'dayTx'   value = 'true'/>
 
     <property name  = 'test'>
@@ -39,6 +39,7 @@
 
         <!-- Prices Change Documents -->
 
+        <!--
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
           <property name = 'weight' value = '8'/>
@@ -53,6 +54,7 @@
             </bean>
           </property>
         </bean>
+        -->
 
 
         <!-- Invoices Buy -->
@@ -86,7 +88,8 @@
         </bean>
 
 
-        <!-- Invoices Sell -->
+        <!--
+        &lt;!&ndash; Invoices Sell &ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -113,16 +116,16 @@
               <property name  = 'volumeMax'
                         value = '4'/>
 
-              <!-- percent of the godos sold via price lists -->
+              &lt;!&ndash; percent of the godos sold via price lists &ndash;&gt;
               <property name  = 'pricesPercent'
                         value = '75'/>
 
-              <!--
+              &lt;!&ndash;
                 Percent of the sell positions with products to calculate.
                 Invoices having such a positions are altered: their resulting
                 (store) goods differ from the goods in the list as products
                 are manufactured.
-              -->
+              &ndash;&gt;
               <property name  = 'calcedPercent'
                         value = '50'/>
             </bean>
@@ -130,7 +133,7 @@
         </bean>
 
 
-        <!-- Invoices Move -->
+        &lt;!&ndash; Invoices Move &ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -162,7 +165,7 @@
         </bean>
 
 
-        <!-- Produce Invoices (Manual and Auto Calculated)-->
+        &lt;!&ndash; Produce Invoices (Manual and Auto Calculated)&ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -189,7 +192,7 @@
               <property name  = 'volumeMax'
                         value = '25'/>
 
-              <!-- The percent of Invoices with auto-calculated production -->
+              &lt;!&ndash; The percent of Invoices with auto-calculated production &ndash;&gt;
               <property name  = 'autoPercent'
                         value = '75'/>
 
@@ -198,7 +201,7 @@
         </bean>
 
 
-        <!-- Volume Correction Invoices -->
+        &lt;!&ndash; Volume Correction Invoices &ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -230,7 +233,7 @@
         </bean>
 
 
-        <!-- Volume Check Documents -->
+        &lt;!&ndash; Volume Check Documents &ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -261,7 +264,7 @@
         </bean>
 
 
-        <!-- Sells Sessions -->
+        &lt;!&ndash; Sells Sessions &ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -314,6 +317,7 @@
             </bean>
           </property>
         </bean>
+        -->
 
       </array>
     </property>

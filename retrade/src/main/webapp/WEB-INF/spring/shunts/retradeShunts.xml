@@ -41,6 +41,7 @@
 
         <!-- retrade:invoices:type (move) -->
 
+        <!--
         <bean class = 'com.tverts.shunts.SelfShuntTarget'>
           <property name = 'target'>
             <bean class = 'com.tverts.retrade.domain.invoice.shunts.ShuntInvoicesType'>
@@ -54,10 +55,12 @@
             </bean>
           </property>
         </bean>
+        -->
 
 
         <!-- retrade:invoices:type (volume checks) -->
 
+        <!--
         <bean class = 'com.tverts.shunts.SelfShuntTarget'>
           <property name = 'target'>
             <bean class = 'com.tverts.retrade.domain.invoice.shunts.ShuntInvoicesType'>
@@ -71,6 +74,7 @@
             </bean>
           </property>
         </bean>
+        -->
 
 
         <!-- retrade:aggr:invoices -->

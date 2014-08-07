@@ -75,9 +75,9 @@ public class GenInvoiceBuy extends GenInvoiceBase
 		//~: select good price
 		GoodPrice gp = selectGoodPrice(ctx, good);
 
-		//~: {buy invoice} reduce the price to -50%
+		//~: {buy invoice} reduce the price to [-35%; -15%]
 		BigDecimal p = gp.getPrice().
-		  multiply(new BigDecimal("0.5")).
+		  multiply(new BigDecimal("0." + (65 + ctx.gen().nextInt(21)))).
 		  setScale(2, BigDecimal.ROUND_HALF_DOWN);
 
 		//~: assign cost

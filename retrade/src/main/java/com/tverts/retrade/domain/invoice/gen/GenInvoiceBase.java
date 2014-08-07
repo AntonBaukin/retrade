@@ -329,6 +329,7 @@ public abstract class GenInvoiceBase
 		if(ps == null)
 		{
 			List<GoodPrice> pl = bean(GetGoods.class).getGoodPrices(gu);
+			EX.asserte(pl, "Good Unit [", gu, "] has no prices!");
 			ps = pl.toArray(new GoodPrice[pl.size()]);
 			ctx.set(CTX_GOOD_PRICES_PREFIX + gu, ps);
 		}
@@ -340,21 +341,35 @@ public abstract class GenInvoiceBase
 	protected static final String CTX_GOODS_WITH_PRICES =
 	  GenInvoiceBase.class.getName() + ": goods with prices";
 
+	/**
+	 * Selects the Good Units having prices (in any
+	 * Price List), and are not purely produced goods
+	 * (not a semi-ready products).
+	 */
 	@SuppressWarnings("unchecked")
 	public static void      retainGoodsWithPrices
 	  (GenCtx ctx, Collection<GoodUnit> goods)
 	{
 		Set<Long> ids = (Set<Long>) ctx.get(CTX_GOODS_WITH_PRICES);
 
-		if(ids == null)
-			ctx.set(CTX_GOODS_WITH_PRICES,
-			  ids = new HashSet<Long>(bean(GetGoods.class).
-			    getGoodsWithPrices(ctx.get(Domain.class).getPrimaryKey())
+		if(ids == null) ctx.set(CTX_GOODS_WITH_PRICES, ids =
+			  new HashSet<Long>(bean(GetGoods.class).
+			   getGoodsWithPrices(ctx.get(Domain.class).getPrimaryKey())
 			));
 
 		for(Iterator<GoodUnit> i = goods.iterator();(i.hasNext());)
-				if(!ids.contains(i.next().getPrimaryKey()))
+		{
+			GoodUnit gu = i.next();
+
+			//?: {good has no price}
+			if(!ids.contains(gu.getPrimaryKey()))
+				i.remove();
+			//?: {good is a product}
+			else if(gu.getGoodCalc() != null)
+				//?: {and it is not semi-ready}
+				if(!gu.getGoodCalc().isSemiReady())
 					i.remove();
+		}
 	}
 
 

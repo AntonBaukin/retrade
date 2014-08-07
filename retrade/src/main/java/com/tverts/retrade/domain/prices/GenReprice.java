@@ -216,9 +216,14 @@ public class      GenReprice
 		List<GoodUnit> goods = new ArrayList<GoodUnit>(
 		  Arrays.asList(ctx.get(GoodUnit[].class)));
 
+		//?: {no goods}
+		EX.asserte(goods, "No Good Units were generated!");
+
 		//~: remove the goods without prices
 		GenInvoiceBase.retainGoodsWithPrices(ctx, goods);
-		EX.asserte(goods);
+
+		//?: {no goods having prices}
+		EX.asserte(goods, "No Good Units having prices were generated!");
 
 		//~: shuffle them
 		Collections.shuffle(goods, ctx.gen());

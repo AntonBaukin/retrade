@@ -126,8 +126,8 @@
                     <list>
                       <value>Core Test</value>
                       <value>ReTrade Test Catalogs</value>
-                  <!--<value>ReTrade Test Documents</value>-->
-                  <!--<value>ReTrade Test Invoices Fix</value>-->
+                      <value>ReTrade Test Documents</value>
+                      <value>ReTrade Test Invoices Fix</value>
                   <!--<value>ReTrade Test Payments</value>-->
                     </list>
                   </property>
@@ -218,13 +218,12 @@
 
                       <!-- ReTrade Domain Tests -->
                       <value>retrade:goods</value>
+                      <value>retrade:invoices</value>
+                      <value>retrade:aggr</value>
 
                       <!--
-                      <value>retrade:invoices</value>
                       <value>retrade:payment</value>
-                      <value>retrade:aggr</value>
                       -->
-
                     </list>
                   </property>
                 </bean>
