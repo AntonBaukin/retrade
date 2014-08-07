@@ -1144,6 +1144,41 @@ ZeT.init('init: retrade.data', function()
 		];
 	})
 
+	ZeT.defineDelay('retrade.columns.ClientGoodPriceView', function()
+	{
+		return [
+
+		 {
+		   text: "Код", dataIndex: 'goodCode', sortable: true,
+		   width: extjsf.ex(22), flex: 0
+		 },
+
+		 {
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
+		   width: extjsf.ex(22), flex: 2
+		 },
+
+		 {
+		   text: "Прайс лист", dataIndex: 'priceListCode', sortable: false,
+		   width: extjsf.ex(16), flex: 1, renderer: function(v, meta, rec)
+		   {
+				return v + ' ' + rec.get('priceListName');
+		   }
+		 },
+
+		 {
+		   text: 'Цена', dataIndex: 'price', sortable: false,
+		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   renderer: retrade.fcurrency
+		 },
+
+		 {
+		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
+		   width: extjsf.ex(12), flex: 0
+		 }
+		];
+	})
+
 	ZeT.defineDelay('retrade.columns.PriceListView', function()
 	{
 		return [

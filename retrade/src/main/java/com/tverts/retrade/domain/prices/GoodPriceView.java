@@ -1,10 +1,5 @@
 package com.tverts.retrade.domain.prices;
 
-/* Java XML Binding */
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GoodUnitView;
@@ -15,39 +10,63 @@ import com.tverts.retrade.domain.goods.GoodUnitView;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "good-price")
 public class GoodPriceView extends GoodUnitView
 {
 	public static final long serialVersionUID = 0L;
 
-	/* public: get-bean interface */
 
-	@XmlElement
+	/* Good Price View */
+
 	public Long getGoodPrice()
 	{
 		return goodPrice;
 	}
 
-	@XmlElement
+	private Long goodPrice;
+
+	public void setGoodPrice(Long goodPrice)
+	{
+		this.goodPrice = goodPrice;
+	}
+
 	public Long getPriceList()
 	{
 		return priceList;
 	}
 
-	@XmlElement
+	private Long priceList;
+
+	public void setPriceList(Long priceList)
+	{
+		this.priceList = priceList;
+	}
+
 	public String getPriceListCode()
 	{
 		return priceListCode;
 	}
 
-	@XmlElement
+	private String priceListCode;
+
+	public void setPriceListCode(String priceListCode)
+	{
+		this.priceListCode = priceListCode;
+	}
+
 	public String getPriceListName()
 	{
 		return priceListName;
 	}
 
+	private String priceListName;
 
-	/* public: initialization interface */
+	public void setPriceListName(String priceListName)
+	{
+		this.priceListName = priceListName;
+	}
+
+
+	/* Initialization */
 
 	public GoodPriceView init(Object obj)
 	{
@@ -71,12 +90,4 @@ public class GoodPriceView extends GoodUnitView
 
 		return this;
 	}
-
-
-	/* price list attributes */
-
-	private Long   goodPrice;
-	private Long   priceList;
-	private String priceListCode;
-	private String priceListName;
 }

@@ -67,7 +67,7 @@ public class GenTestContractors extends GenTestFirms
 		super.updateFirm(ctx, s, fe);
 
 		Contractor c = EX.assertn(
-		  bean(GetContractor.class).getContractor(fe),
+		  bean(GetContractor.class).getContractorFirm(fe.getPrimaryKey()),
 		  "Firm [", fe.getPrimaryKey(), "] code [",
 		  fe.getCode(), "] has no Contractor!"
 		);

@@ -1,9 +1,5 @@
 package com.tverts.retrade.domain.goods;
 
-/* Java XML Binding */
-
-import javax.xml.bind.annotation.XmlRootElement;
-
 /* com.tverts: models */
 
 import com.tverts.model.ModelData;
@@ -19,13 +15,12 @@ import com.tverts.retrade.data.goods.GoodsTreeModelData;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "model")
 public class GoodsTreeModelBean extends GoodsModelBean
 {
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: bean interface */
+	/* Goods Tree Model Bean */
 
 	/**
 	 * Currently selected Tree Folder.
@@ -34,6 +29,8 @@ public class GoodsTreeModelBean extends GoodsModelBean
 	{
 		return currentFolder;
 	}
+
+	private Long currentFolder;
 
 	public void setCurrentFolder(Long currentFolder)
 	{
@@ -44,6 +41,8 @@ public class GoodsTreeModelBean extends GoodsModelBean
 	{
 		return withSubFolders;
 	}
+
+	private boolean withSubFolders;
 
 	public void setWithSubFolders(boolean withSubFolders)
 	{
@@ -57,10 +56,4 @@ public class GoodsTreeModelBean extends GoodsModelBean
 	{
 		return new GoodsTreeModelData(this);
 	}
-
-
-	/* model attribute */
-
-	private Long    currentFolder;
-	private boolean withSubFolders;
 }

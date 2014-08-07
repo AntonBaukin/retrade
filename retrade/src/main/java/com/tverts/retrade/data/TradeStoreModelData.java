@@ -56,7 +56,7 @@ public class TradeStoreModelData implements ModelData
 	}
 
 	@XmlElement
-	public long                getGoodsNumber()
+	public int                 getGoodsNumber()
 	{
 		return bean(GetGoods.class).
 		  countGoodUnits(getModel());

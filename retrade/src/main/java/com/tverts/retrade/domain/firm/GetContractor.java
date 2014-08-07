@@ -65,16 +65,28 @@ public class GetContractor extends GetFirm
 		return object(Contractor.class, Q, "domain", domain, "code", code);
 	}
 
-	public Contractor getContractor(FirmEntity fe)
+	public Contractor getContractorFirm(long firmKey)
 	{
-		EX.assertn(fe);
+		EX.assertn(firmKey);
 
 // from Contractor where (firm = :fe)
 
 		final String Q =
 "  from Contractor where (firm = :fe)";
 
-		return object(Contractor.class, Q, "fe", fe);
+		return object(Contractor.class, Q, "fe", firmKey);
+	}
+
+	public Long       getContractorByFirmKey(long firmKey)
+	{
+		EX.assertn(firmKey);
+
+// select id from Contractor where (firm = :fe)
+
+		final String Q =
+"  select id from Contractor where (firm = :fe)";
+
+		return object(Long.class, Q, "fe", firmKey);
 	}
 
 	public int        countTestContractors(Domain domain)

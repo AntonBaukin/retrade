@@ -311,7 +311,7 @@ from GoodUnit gu where
 		return res;
 	}
 
-	public long           countGoodUnits(GoodsModelBean mb)
+	public int            countGoodUnits(GoodsModelBean mb)
 	{
 		return countGoodUnits(
 		  mb.domain(), mb.getSearchGoods(), mb.getSelSet());
@@ -368,7 +368,7 @@ from GoodUnit gu where
 		return QB(qb).list();
 	}
 
-	public long           countGoodUnits(TradeStoreModelBean  mb)
+	public int            countGoodUnits(TradeStoreModelBean  mb)
 	{
 		//HINT: we also do not restrict by the store
 		// as each store has all Good Units related.
@@ -1411,9 +1411,9 @@ from GoodPrice gp where
 	}
 
 
-	/* private: shortage routines */
+	/* protected: shortage routines */
 
-	private long countGoodUnits(Long domain, String[] search, String selset)
+	private int        countGoodUnits(Long domain, String[] search, String selset)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -1439,10 +1439,10 @@ from GoodPrice gp where
 		//~: selection set search
 		restrictGoodsBySelSet(qb, selset, true);
 
-		return ((Number) QB(qb).uniqueResult()).longValue();
+		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
 
-	private void orderGoods(QueryBuilder qb, DataSortModel sm)
+	protected void     orderGoods(QueryBuilder qb, DataSortModel sm)
 	{
 		StringBuilder s = new StringBuilder(16);
 
@@ -1470,19 +1470,31 @@ from GoodPrice gp where
 			qb.setClauseOrderBy(s.toString());
 	}
 
-	private void gusSearch(QueryBuilder qb, String[] words)
+	protected void     gusSearch(QueryBuilder qb, String[] words)
 	{
+		String[] gus = gusSearch();
+		EX.asserte(gus);
+
 		if(words != null) for(String w : words) if((w = s2s(w)) != null)
 		{
 			w = "%" + w.toLowerCase() + "%";
 
-			qb.getClauseWhere().
-			  addPart("gu.unity.oxSearch like :w").
-			  param("w", w);
+			//~: create OR
+			WherePartLogic p = new WherePartLogic().setOp(WhereLogic.OR);
+			qb.getClauseWhere().addPart(p);
+
+			//~: collect the restrictions
+			for(String x : gus)
+				p.addPart(x).param("w", w);
 		}
 	}
 
-	private void restrictDates(QueryBuilder qb, GoodPriceModelBean mb)
+	protected String[] gusSearch()
+	{
+		return new String[] { "gu.unity.oxSearch like :w" };
+	}
+
+	private void       restrictDates(QueryBuilder qb, GoodPriceModelBean mb)
 	{
 		if((mb.getMinDate() == null) && (mb.getMaxDate() == null))
 			return;
@@ -1507,7 +1519,7 @@ from GoodPrice gp where
 		  param("maxDate", lastTime(mb.getMaxDate()));
 	}
 
-	private void restrictDates(QueryBuilder qb, RepriceDocsModelBean mb)
+	private void       restrictDates(QueryBuilder qb, RepriceDocsModelBean mb)
 	{
 		if((mb.getMinDate() == null) && (mb.getMaxDate() == null))
 			return;
@@ -1532,13 +1544,24 @@ from GoodPrice gp where
 		  param("maxDate", lastTime(mb.getMaxDate()));
 	}
 
-	private void restrictGoodsBySelSet
+	protected void     restrictGoodsBySelSet
 	  (QueryBuilder qb, String selset, boolean folders)
 	{
+		//?: {has no selection set}
 		if(selset == null) return;
 
+		//~: create OR
 		WherePartLogic p = new WherePartLogic().setOp(WhereLogic.OR);
 		qb.getClauseWhere().addPart(p);
+
+		//~: restrict
+		restrictGoodsBySelSet(p, selset, folders);
+	}
+
+	protected void     restrictGoodsBySelSet
+	  (WherePartLogic p, String selset, boolean folders)
+	{
+
 
 /*
 

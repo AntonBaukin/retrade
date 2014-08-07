@@ -10,7 +10,12 @@ import org.springframework.stereotype.Component;
 
 /* com.tverts: hibery */
 
-import com.tverts.hibery.GetObjectBase;
+import com.tverts.hibery.qb.QueryBuilder;
+
+/* com.tverts: retrade domain (goods) */
+
+import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.goods.GoodsModelBean;
 
 /* com.tverts: support */
 
@@ -24,7 +29,7 @@ import com.tverts.support.EX;
  * @author anton.baukin@gmail.com.
  */
 @Component
-public class GetPrices extends GetObjectBase
+public class GetPrices extends GetGoods
 {
 	/* Firm Prices  */
 
@@ -37,6 +42,93 @@ public class GetPrices extends GetObjectBase
 "  from FirmPrices fp where (fp.contractor.id = :cid) order by fp.priority";
 
 		return list(FirmPrices.class, Q, "cid", contractor);
+	}
+
+	/**
+	 * Returns the number of Good Units available
+	 * for the given client contractor (firm).
+	 */
+	public int countContractorGoodUnits(GoodsModelBean mb, Long contractor)
+	{
+		EX.assertn(mb);
+		EX.assertn(contractor);
+
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("PriceCross", PriceCross.class);
+		qb.setClauseFrom(
+		  "PriceCross pc join pc.goodUnit gu " +
+		  "join pc.goodPrice gp join gp.priceList pl"
+		);
+
+		//~: select clause
+		qb.setClauseSelect("count(gu.id)");
+
+		//~: restrict contractor
+		qb.getClauseWhere().addPart(
+		  "pc.contractor.id = :c"
+		).
+		  param("c", contractor);
+
+		//~: keywords search restrictions
+		gusSearch(qb, mb.getSearchGoods());
+
+		//~: selection set search
+		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+
+		return ((Number) QB(qb).uniqueResult()).intValue();
+	}
+
+	/**
+	 * Returns the prices of the Good Units available
+	 * for the given client contractor (firm).
+	 *
+	 * Returns rows are:
+	 * [0] Good Unit;
+	 * [1] Good Price;
+	 * [2] Price List Key;
+	 * [3] Price List Code;
+	 * [4] Price List Name.
+	 */
+	public List selectContractorGoodUnits(GoodsModelBean mb, Long contractor)
+	{
+		EX.assertn(mb);
+		EX.assertn(contractor);
+
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("PriceCross", PriceCross.class);
+		qb.setClauseFrom(
+		  "PriceCross pc join pc.goodUnit gu " +
+		  "join pc.goodPrice gp join gp.priceList pl"
+		);
+
+		//~: select clause
+		qb.setClauseSelect("gu, gp, pl.id, pl.code, pl.name");
+
+		//~: order by
+		orderGoods(qb, mb);
+
+		//~: the selection limits
+		qb.setFirstRow(mb.getDataStart());
+		qb.setLimit(mb.getDataLimit());
+
+
+		//~: restrict contractor
+		qb.getClauseWhere().addPart(
+		  "pc.contractor.id = :c"
+		).
+		  param("c", contractor);
+
+		//~: keywords search restrictions
+		gusSearch(qb, mb.getSearchGoods());
+
+		//~: selection set search
+		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+
+		return QB(qb).list();
 	}
 
 
@@ -122,5 +214,16 @@ public class GetPrices extends GetObjectBase
 "from PriceCross pc where (pc.contractor.id = :c)";
 
 		return list(Object[].class, Q, "c", contractor);
+	}
+
+
+	/* protected: shortage routines */
+
+	protected String[] gusSearch()
+	{
+		return new String[] {
+		  "gu.unity.oxSearch like :w"
+		  //"pl.unity.oxSearch like :w"
+		};
 	}
 }

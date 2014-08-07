@@ -68,11 +68,13 @@ public class FacesGoodsView extends ModelView
 	{
 		GoodsModelBean mb = new GoodsModelBean();
 
+		//=: domain
 		mb.setDomain(getDomainKey());
+
 		return mb;
 	}
 
-	protected boolean        isRequestModelMatch(ModelBean model)
+	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof GoodsModelBean);
 	}

@@ -13,6 +13,9 @@ import java.util.TreeMap;
 
 import static com.tverts.spring.SpringPoint.bean;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: actions */
 
@@ -185,7 +188,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		if(gu != null)
 		{
 			//~: add to the goods map
-			addGood(ctx, gu);
+			addGood(ctx, HiberPoint.unproxy(gu));
 			return;
 		}
 

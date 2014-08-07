@@ -1,9 +1,5 @@
 package com.tverts.retrade.domain.goods;
 
-/* Java XML Binding */
-
-import javax.xml.bind.annotation.XmlRootElement;
-
 /* com.tverts: models */
 
 import com.tverts.model.DataSelectModelBean;
@@ -19,45 +15,42 @@ import com.tverts.retrade.data.goods.GoodsModelData;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "model")
 public class GoodsModelBean extends DataSelectModelBean
 {
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: GoodsModelBean (bean) interface */
+	/* Goods Model Bean */
 
 	public String[] getSearchGoods()
 	{
 		return searchGoods;
 	}
 
-	public void     setSearchGoods(String[] searchGoods)
+	private String[] searchGoods;
+
+	public void setSearchGoods(String[] searchGoods)
 	{
 		this.searchGoods = searchGoods;
 	}
 
-	public String   getSelSet()
+	public String getSelSet()
 	{
 		return selSet;
 	}
 
-	public void     setSelSet(String selSet)
+	private String selSet;
+
+	public void setSelSet(String selSet)
 	{
 		this.selSet = selSet;
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean Data Access */
 
 	public ModelData modelData()
 	{
 		return new GoodsModelData(this);
 	}
-
-
-	/* private: model attributes */
-
-	private String[] searchGoods;
-	private String   selSet;
 }

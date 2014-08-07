@@ -17,7 +17,6 @@ import com.tverts.api.clients.Person;
 /* com.tverts: secure */
 
 import com.tverts.secure.SecPoint;
-import com.tverts.secure.session.SecSession;
 
 /* com.tverts: endure (person) */
 
@@ -89,15 +88,5 @@ public class FacesDesktopView extends ViewWithModes
 
 		EX.assertx(CMP.eq(fe.getCode(), f.getCode()));
 		return EX.asserts(fe.getCode());
-	}
-
-
-	/* Security Issues */
-
-	public void    forceSecureClientOnly(boolean client)
-	{
-		//?: {client has no firm} forbid
-		if(client == (SecPoint.secSession().attr(SecSession.ATTR_CLIENT_FIRM) == null))
-			throw EX.forbid();
 	}
 }

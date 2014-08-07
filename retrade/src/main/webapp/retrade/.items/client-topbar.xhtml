@@ -140,24 +140,37 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-    //~: attach top bar panel to the desktop
-    ReTrade.desktop.controller('center').mainTopbar(
-      "${z:vid(localView, 'main_topbar')}", '${rootView.extjsDomain}')
+  //~: attach top bar panel to the desktop
+  ReTrade.desktop.controller('center').mainTopbar(
+    "${z:vid(localView, 'main_topbar')}", '${rootView.extjsDomain}')
 
-    //~: set the top bar extension point
-    ReTrade.desktop.controller('center').mainTopbarExt(
-      "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
+  //~: set the top bar extension point
+  ReTrade.desktop.controller('center').mainTopbarExt(
+    "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
 
-    //~: setup the desktop clocks
-    Ext.onReady(function()
-    {
-      if(ReTrade.desktop.clocks) return;
+  //~: setup the desktop clocks
+  Ext.onReady(function()
+  {
+    if(ReTrade.desktop.clocks) return;
 
-      ReTrade.desktop.clocks = new ReTrade.Clocks({ start: true,
-        parent: "${z:vid(rootView, 'desktop-clocks-area')}",
-        node: "${z:vid(rootView, 'desktop-clocks')}"
-      })
+    ReTrade.desktop.clocks = new ReTrade.Clocks({ start: true,
+      parent: "${z:vid(rootView, 'desktop-clocks-area')}",
+      node: "${z:vid(rootView, 'desktop-clocks')}"
     })
+  })
+
+
+  //~: open goods prices root panel
+  extjsf.bindHandler("${z:vid(localView, 'retrade-goods-prices')}",
+    '${rootView.extjsDomain}', function()
+  {
+    var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-prices:');
+
+    ReTrade.desktop.loadDesktopPanel(
+      "${z:url('/go/retrade/price-lists/goods-prices-client')}", {
+      'domain': domain
+    })
+  })
 
   //]]>
   </script>

@@ -181,7 +181,7 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 		));
 	}
 
-	@SelfShuntMethod(order = 2, critical = true)
+	//@SelfShuntMethod(order = 2, critical = true)
 	public void testToggleInvoicesStates()
 	{
 		//?: {is read-only} skip this test

@@ -10,7 +10,6 @@ import java.util.Collection;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /* tverts.com: aggregated values */
 
@@ -28,97 +27,116 @@ import com.tverts.retrade.domain.store.TradeStore;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "good-unit")
 public class GoodUnitView implements Serializable
 {
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: GoodUnitView (main properties) interface */
+	/* Good Unit View */
 
-	public Long       getObjectKey()
+	public Long getObjectKey()
 	{
 		return objectKey;
 	}
 
-	public void       setObjectKey(Long objectKey)
+	private Long objectKey;
+
+	public void setObjectKey(Long objectKey)
 	{
 		this.objectKey = objectKey;
 	}
 
-	public String     getGoodCode()
+	public String getGoodCode()
 	{
 		return goodCode;
 	}
 
-	public void       setGoodCode(String goodCode)
+	private String goodCode;
+
+	public void setGoodCode(String goodCode)
 	{
 		this.goodCode = goodCode;
 	}
 
-	public String     getGoodName()
+	public String getGoodName()
 	{
 		return goodName;
 	}
 
-	public void       setGoodName(String goodName)
+	private String goodName;
+
+	public void setGoodName(String goodName)
 	{
 		this.goodName = goodName;
 	}
 
-	public Long       getMeasureKey()
+	public Long getMeasureKey()
 	{
 		return measureKey;
 	}
 
-	public void       setMeasureKey(Long measureKey)
+	private Long measureKey;
+
+	public void setMeasureKey(Long measureKey)
 	{
 		this.measureKey = measureKey;
 	}
 
-	public String     getMeasureCode()
+	public String getMeasureCode()
 	{
 		return measureCode;
 	}
 
-	public void       setMeasureCode(String measureCode)
+	private String measureCode;
+
+	public void setMeasureCode(String measureCode)
 	{
 		this.measureCode = measureCode;
 	}
 
 	@XmlElement
-	public String     getMeasureName()
+	public String getMeasureName()
 	{
 		return measureName;
 	}
 
+	private String measureName;
+
 	@XmlElement
-	public Boolean    getSemiReady()
+	public Boolean getSemiReady()
 	{
 		return semiReady;
 	}
 
+	private Boolean semiReady;
+
 	@XmlElement
-	public boolean    isInteger()
+	public boolean isInteger()
 	{
 		return integer;
 	}
 
+	private boolean integer;
+
 	@XmlElement
-	public String     getStoreCode()
+	public String getStoreCode()
 	{
 		return storeCode;
 	}
 
+	private String storeCode;
 
-	/* public: GoodUnitView (aggregated values) interface */
+
+	/* Good Unit View Aggregated Values */
 
 	public BigDecimal getRestCost()
 	{
 		return restCost;
 	}
 
-	public void       setRestCost(BigDecimal restCost)
+	private BigDecimal restCost;
+
+	public void setRestCost(BigDecimal restCost)
 	{
 		this.restCost = restCost;
 	}
@@ -128,7 +146,9 @@ public class GoodUnitView implements Serializable
 		return price;
 	}
 
-	public void       setPrice(BigDecimal price)
+	private BigDecimal price;
+
+	public void setPrice(BigDecimal price)
 	{
 		this.price = price;
 	}
@@ -138,7 +158,9 @@ public class GoodUnitView implements Serializable
 		return volume;
 	}
 
-	public void       setVolume(BigDecimal volume)
+	private BigDecimal volume;
+
+	public void setVolume(BigDecimal volume)
 	{
 		this.volume = volume;
 	}
@@ -148,7 +170,9 @@ public class GoodUnitView implements Serializable
 		return cost;
 	}
 
-	public void       setCost(BigDecimal cost)
+	private BigDecimal cost;
+
+	public void setCost(BigDecimal cost)
 	{
 		if(cost != null)
 			cost = cost.setScale(2, BigDecimal.ROUND_HALF_EVEN);
@@ -156,7 +180,7 @@ public class GoodUnitView implements Serializable
 	}
 
 
-	/* public: initialization interface */
+	/* Initialization */
 
 	public GoodUnitView init(Object obj)
 	{
@@ -286,24 +310,4 @@ public class GoodUnitView implements Serializable
 			return ((GoodUnit)obj).getPrimaryKey();
 		return null;
 	}
-
-
-	/* private: properties of the good unit */
-
-	private Long    objectKey;
-	private String  goodCode;
-	private String  goodName;
-	private Long    measureKey;
-	private String  measureCode;
-	private String  measureName;
-	private Boolean semiReady;
-	private boolean integer;
-	private String  storeCode;
-
-	/* private: aggregated values */
-
-	private BigDecimal restCost;
-	private BigDecimal price;
-	private BigDecimal volume;
-	private BigDecimal cost;
 }

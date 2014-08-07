@@ -1,6 +1,6 @@
 package com.tverts.retrade.data.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,11 +32,10 @@ import com.tverts.retrade.domain.goods.GoodsModelBean;
  * Model data provider to display all
  * the Good Unit instances.
  *
- *
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
-@XmlType(propOrder = {"model", "goodsNumber", "goods"})
+@XmlType(propOrder = { "model", "goodsNumber", "goods" })
 public class GoodsModelData implements ModelData
 {
 	/* public: constructors */
@@ -50,7 +49,7 @@ public class GoodsModelData implements ModelData
 	}
 
 
-	/* public: GoodsModelData (bean) interface */
+	/* Goods Model Data */
 
 	@XmlElement
 	public GoodsModelBean getModel()
@@ -59,7 +58,7 @@ public class GoodsModelData implements ModelData
 	}
 
 	@XmlElement
-	public long getGoodsNumber()
+	public int getGoodsNumber()
 	{
 		return bean(GetGoods.class).countGoodUnits(getModel());
 	}
