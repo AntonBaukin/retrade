@@ -236,6 +236,12 @@ public final class SecPoint
 		return r;
 	}
 
+	public static Long        clientFirmKeyStrict()
+	{
+		return EX.assertn(clientFirmKey(), "Client with login[",
+		  login(), "] has no Contractor (Firm) assignment!");
+	}
+
 	private static final String ATTR_CLIENT_FIRM_SEARCHED =
 	  SecSession.ATTR_CLIENT_FIRM + " [Searched]";
 

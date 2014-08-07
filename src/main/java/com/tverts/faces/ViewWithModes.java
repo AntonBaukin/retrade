@@ -21,6 +21,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.endure.person.PersonEntity;
 import com.tverts.secure.SecPoint;
+import com.tverts.secure.session.SecSession;
 
 /* com.tverts: endure (core) */
 
@@ -151,6 +152,13 @@ public abstract class ViewWithModes
 	public void    forceAnySecureEntity(NumericIdentity e, String keys)
 	{
 		if(!isAnySecureEntity(e, keys))
+			throw EX.forbid();
+	}
+
+	public void    forceSecureClientOnly(boolean client)
+	{
+		//?: {client has no firm} forbid
+		if(client == (SecPoint.secSession().attr(SecSession.ATTR_CLIENT_FIRM) == null))
 			throw EX.forbid();
 	}
 
