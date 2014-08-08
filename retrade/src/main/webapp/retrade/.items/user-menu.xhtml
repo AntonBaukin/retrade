@@ -128,7 +128,7 @@
   })
 
   //~: wrap user main menu with special border
-  extjsf.bind("${z:vid(localView, 'user-menu-host')}", '${rootView.extjsDomain}').on('afterrender', function(xmenu)
+  extjsf.bind("${z:vid(localView, 'user-menu-host')}", '${rootView.extjsDomain}').on('render', function(xmenu)
   {
     if(xmenu.extjsfBind.retradeUserMenuWrapped) return
     xmenu.extjsfBind.retradeUserMenuWrapped = true

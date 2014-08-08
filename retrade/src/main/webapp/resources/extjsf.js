@@ -1239,10 +1239,11 @@ ZeT.init('extjsf: data models', function()
 
 extjsf.support = ZeT.singleInstance('extjsf.support', {
 
-	gridColumns            : function(grid)
+	gridColumns            : function(grid, visible)
 	{
 		if(grid.extjsfBind === true) grid = grid.component();
-		return grid.headerCt.getGridColumns();
+		return (visible)?(grid.headerCt.getVisibleGridColumns()):
+		  (grid.headerCt.getGridColumns());
 	},
 
 	columnIndexByDataIndex : function(grid, dataIndex)

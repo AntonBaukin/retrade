@@ -162,6 +162,83 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- goods table] -->
 
+
+    <!-- [good info window -->
+
+    <x:component coid = "${z:vid(v, 'goods-info-window')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'window', closeAction: 'hide', layout: 'fit',
+        resizable: false, header: false, draggable: false,
+        border: false, bodyCls: 'retrade-transparent-panel'
+
+      </f:facet>
+
+
+    </x:component>
+
+    <x:action-call coid = "${z:vid(v, 'goods-info-script')}"
+      action = "#{v.doViewGoodInfo}">
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '${v.modelKeys}'
+      </f:facet>
+    </x:action-call>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    on('cellclick', function(grid, td, cellIndex, record, tr, rowIndex, e)
+  {
+    //?: {this is action column}
+    var column = extjsf.support.gridColumns(grid, true)[cellIndex];
+    if('actioncolumn' === column.xtype) return
+
+    //~: calculate the box
+    var box = ReTrade.desktop.calcWindowBox({
+      event: e, widthpt: 260, heightpt: 180, '+xpt': -130, '-y': 90
+    })
+
+    //~: the info window
+    var wnd = extjsf.component("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}');
+
+    //~: request the info
+    extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}')({
+      params: { goodUnit: record.getId() }
+    })
+
+    //~: close listener
+    if(!wnd.extjsfBind.retradeWindowShow)
+      wnd.on('show', wnd.extjsfBind.retradeWindowShow = function()
+      {
+        ZeT.timeout(100, function()
+        {
+          //~: listen on body
+          var clo; Ext.getBody().on('click', clo = function(e)
+          {
+            //?: {is click in the window}
+            if(!wnd.getRegion().isOutOfBound(Ext.util.Point.fromEvent(e))) return
+
+            //!: destroy the listener
+            Ext.getBody().removeListener('click', clo)
+
+            wnd.close() //<-- hide the window
+          })
+        })
+      })
+
+    //~: show window in the box
+    ZeT.timeout(100, function()
+    {
+      wnd.show().setBox(box)
+    })
+  })
+    //]]>
+    </script>
+
+    <!-- good info window] -->
+
   </x:root-panel>
 
 </ui:define>
@@ -173,6 +250,23 @@ ${v.checkModelRequestedWithRedirect}
 
   <ui:define name = 'validation'>
     <validation success = "true"/>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+    <ui:fragment rendered = "#{not empty v.infoGood}">
+      <script>
+      //<![CDATA[
+
+(function()
+{
+  ZeT.log('loaded good #{v.infoGood.code}')
+
+})()
+
+      //]]>
+      </script>
+    </ui:fragment>
   </ui:define>
 </ui:decorate>
 </ui:component>

@@ -1152,7 +1152,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(22), flex: 0
+		   width: extjsf.ex(12), flex: 0
 		 },
 
 		 {
