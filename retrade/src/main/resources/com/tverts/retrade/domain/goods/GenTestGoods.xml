@@ -162,19 +162,19 @@
   <good cost = "16.58">
     <code>918</code>
     <name>петрушка</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "16.58">
     <code>919</code>
     <name>укроп</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "12.45">
     <code>920</code>
     <name>лук зелёный</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "22.20">
@@ -186,7 +186,7 @@
   <good cost = "26.58">
     <code>922</code>
     <name>чеснок</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "74.85">
@@ -222,7 +222,7 @@
   <good cost = "9.50">
     <code>928</code>
     <name>хлеб ржаной</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "24.60">
@@ -234,13 +234,13 @@
   <good cost = "14.60">
     <code>930</code>
     <name>хлеб отрубной</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "16.84">
     <code>931</code>
     <name>хлеб бородинский</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "38.16">
@@ -252,25 +252,25 @@
   <good cost = "24.15">
     <code>933</code>
     <name>ватрушка с творогом</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "18.10">
     <code>934</code>
     <name>рогалик</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "23.10">
     <code>935</code>
     <name>круассан с шоколадом</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "26.80">
     <code>936</code>
     <name>круассан с повидлом</name>
-    <XMeasure>100гр</XMeasure>
+    <XMeasure>100 гр</XMeasure>
   </good>
 
   <good cost = "457.50">
@@ -360,7 +360,7 @@
   <good cost = "28.80">
     <code>821</code>
     <name>суп с фрикадельками</name>
-    <XMeasure>100мл</XMeasure>
+    <XMeasure>100 мл</XMeasure>
 
     <calc>
       <good code = "811" volume = "0.020"/>
@@ -373,7 +373,7 @@
   <good cost = "34.36">
     <code>822</code>
     <name>борщ</name>
-    <XMeasure>100мл</XMeasure>
+    <XMeasure>100 мл</XMeasure>
 
     <calc>
       <good code = "813" volume = "0.010"/>

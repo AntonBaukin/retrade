@@ -1085,6 +1085,8 @@ ZeT.init('init: retrade.data', function()
 	Ext.define('retrade.model.GoodPriceView', {
 	  extend: 'Ext.data.Model',
 
+	  idProperty: 'objectKey',
+
 	  fields: [
 
 	    {name: 'objectKey',     type: 'string'},

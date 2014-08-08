@@ -225,6 +225,20 @@ div.retrade-menuitem-centered
 }
 
 
+/* large text grids */
+
+.retrade-grid-large table.x-grid-with-row-lines td.x-grid-td.x-grid-cell
+{
+  font-size: 13px; line-height: 18px;
+}
+
+.retrade-grid-large div.x-grid-cell-inner-action-col,
+.retrade-grid-large tr.x-grid-row-focused div.x-grid-cell-inner-action-col
+{
+  padding-top: 5px;
+}
+
+
 /* grids */
 
 img.x-action-col-icon.x-item-disabled

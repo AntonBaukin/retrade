@@ -229,10 +229,11 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			HiberPoint.flush(session());
 		}
 
+		@SuppressWarnings("unchecked")
 		protected void relinkPrices()
 		{
 			//~: select current items [good, price, cross]
-			List<Object[]> c = bean(GetPrices.class).
+			List<Object[]> c = (List<Object[]>) bean(GetPrices.class).
 			  selectCurrentPrices(target(Contractor.class).getPrimaryKey());
 
 			//~: map them by the goods
@@ -240,7 +241,7 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			for(Object[] r : c) m.put((Long)r[0], r);
 
 			//~: select effective items
-			List<Object[]> e = bean(GetPrices.class).
+			List<Object[]> e = (List<Object[]>) bean(GetPrices.class).
 			  selectEffectivePrices(target(Contractor.class).getPrimaryKey());
 
 			//~: all effective goods

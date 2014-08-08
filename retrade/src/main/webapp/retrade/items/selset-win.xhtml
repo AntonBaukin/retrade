@@ -163,8 +163,11 @@ ${v.checkModelRequestedWithRedirect}
       storeId = "${z:vid(v, 'selSetStore')}">
 
       <f:facet name = "grid-props">
+
         hidden: #{v.editMode}, pager: true, hideHeaders: true,
         columns: ZeT.defined('retrade.columns.SelSetView'),
+        cls: "#{(v.clientUser)?('retrade-grid-large'):('')}"
+
       </f:facet>
     </x:data-grid>
 

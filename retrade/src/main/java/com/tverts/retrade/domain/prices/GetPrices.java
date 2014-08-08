@@ -155,7 +155,7 @@ public class GetPrices extends GetGoods
 	 * [0] Good Unit primary key;
 	 * [1] Good Price primary key.
 	 */
-	public List<Object[]> selectEffectivePrices(Long contractor)
+	public List selectEffectivePrices(Long contractor)
 	{
 
 /*
@@ -198,7 +198,7 @@ public class GetPrices extends GetGoods
 	 * [1] Good Price primary key;
 	 * [2] Price Cross primary key.
 	 */
-	public List<Object[]> selectCurrentPrices(Long contractor)
+	public List selectCurrentPrices(Long contractor)
 	{
 
 /*

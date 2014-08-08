@@ -73,6 +73,7 @@ public class ShuntFirmPrices extends ShuntPlain
 	protected Map<Contractor, List<FirmPrices>> c2fps;
 
 	@SelfShuntMethod(order = 1, critical = true)
+	@SuppressWarnings("unchecked")
 	public void testFirmsPrices()
 	{
 		EX.assertx(!c2fps.isEmpty());
@@ -113,7 +114,7 @@ public class ShuntFirmPrices extends ShuntPlain
 			}
 
 			//~: collect the existing prices
-			List<Object[]> cps = bean(GetPrices.class).
+			List<Object[]> cps = (List<Object[]>) bean(GetPrices.class).
 			  selectCurrentPrices(c.getPrimaryKey());
 
 			//~: check one-by-one

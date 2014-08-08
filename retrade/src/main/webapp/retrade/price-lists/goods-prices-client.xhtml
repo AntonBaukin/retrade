@@ -151,9 +151,12 @@ ${v.checkModelRequestedWithRedirect}
       storeId = "${z:vid(v, 'goodUnits')}">
 
       <f:facet name = "grid-props">
+
         columns: ZeT.defined('retrade.columns.ClientGoodPriceView'),
         selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-        pager: true, sortableColumns: true, region: 'center'
+        pager: true, sortableColumns: true, region: 'center',
+        cls: 'retrade-grid-large'
+
       </f:facet>
     </x:data-grid>
 
