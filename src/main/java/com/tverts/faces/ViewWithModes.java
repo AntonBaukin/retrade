@@ -75,6 +75,11 @@ public abstract class ViewWithModes
 		);
 	}
 
+	public boolean      isClientUser()
+	{
+		return (SecPoint.secSession().attr(SecSession.ATTR_CLIENT_FIRM) != null);
+	}
+
 
 	/* Security Issues */
 
