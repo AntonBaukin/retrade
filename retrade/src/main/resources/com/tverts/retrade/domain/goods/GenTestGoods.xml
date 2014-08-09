@@ -322,13 +322,15 @@
     </calc>
   </good>
 
-  <good>
+  <good cost = "215.30">
     <code>811</code>
     <name>фрикадельки</name>
     <XMeasure>кг</XMeasure>
 
-    <calc>
-      <good code = "807" volume = "1.0"/>
+    <calc semi-ready = "true">
+      <XSuperGood>807</XSuperGood>
+      <sub-code>фр</sub-code>
+      <sub-volume>1.0</sub-volume>
     </calc>
   </good>
 
@@ -351,7 +353,7 @@
     <XMeasure>кг</XMeasure>
 
     <calc>
-      <XSuperGood>807</XSuperGood>
+      <XSuperGood>801</XSuperGood>
       <sub-code>отв</sub-code>
       <sub-volume>1.0</sub-volume>
     </calc>

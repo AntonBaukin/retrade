@@ -170,11 +170,102 @@ ${v.checkModelRequestedWithRedirect}
 
         xtype: 'window', closeAction: 'hide', layout: 'fit',
         resizable: false, header: false, draggable: false,
-        border: false, bodyCls: 'retrade-transparent-panel'
+        border: false, bodyCls: 'retrade-transparent-panel',
+        bodyPadding: extjsf.pt(2)
 
       </f:facet>
 
+      <x:html coid = "${z:vid(v, 'goods-info-html')}">
 
+        <table id = "${z:vid(v, 'goods-info')}"
+          cellpadding = "0" cellspacing = "0" border = "0"
+          class = "retrade-client-good-layout"
+          style="width: 100%; height: 100%;">
+
+          <tr><td style = "vertical-align: top;">
+          <table cellpadding = "0" cellspacing = "0" border = "0"
+                 class = "retrade-info-table retrade-client-good-main">
+            <tr>
+              <td class = "retrade-info-title retrade-client-good-info-code">
+                <div>Код товара</div>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-code">
+                <div/>
+              </td>
+
+              <td class = "retrade-client-good-info-code-price-sep" style = "width:100%; min-width: 7pt;"><div/></td>
+
+              <td class = "retrade-info-title retrade-client-good-info-price">
+                <div style="margin-left: 0;">Цена</div>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-price">
+                <div/>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-price-mucode">
+                <div style="margin-left: 2px;"/>
+              </td>
+            </tr>
+            <tr>
+              <td colspan = "6" class = "retrade-info-value retrade-client-good-info-name">
+                <div style = "margin-top: 2px;"/>
+              </td>
+            </tr>
+          </table>
+
+          <table cellpadding = "0" cellspacing = "0" border = "0"
+                 class = "retrade-info-table retrade-client-good-measure" style="margin-top: 2px;">
+            <tr>
+              <td class = "retrade-info-title retrade-client-good-info-measure">
+                <div>Ед. изм.</div>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-mucode">
+                <div style="margin-left: 2px;"/>
+              </td>
+              <td class = "retrade-info-value retrade-client-good-info-muname" style="width:100%;">
+                <div style="margin-left: 2px;"/>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+
+        <tr class = "retrade-client-good-loaded-layout"><td style="width: 100%; height: 100%; text-align: center; vertical-align: middle;">
+
+          <!-- is now loading message -->
+          <span class = "retrade-client-good-loading" style = "display: none; font-style: italic;">
+            Загрузка...
+          </span>
+
+          <!-- loadded content layout-->
+          <table cellpadding = "0" cellspacing = "0" border = "0"
+            class = "retrade-client-good-loaded-content" style = "display: none; width: 100%;">
+
+            <!-- row for a regular good -->
+            <tr class = "retrade-client-good-is-regular" style="display: none;">
+              <td class = "retrade-info-value-small-text" style="text-transform: uppercase; font-weight: bolder; padding-top: 8px;">
+               <div style="text-align: right;">Товар или сырьё</div>
+              </td>
+            </tr>
+
+            <!-- derived good -->
+            <tr class = "retrade-client-good-is-derived" style="display: none; width: 100%;">
+
+              <td class = "retrade-info-value-small-text retrade-client-good-is-derived-semi-ready" style="text-transform: uppercase; font-weight: bolder; padding-top: 8px;">
+               <div style="text-align: right;">Полуфабрикат</div>
+              </td>
+
+              <td style="width:100%;"><div/></td>
+
+              <td class = "retrade-info-value-small-text" style="text-transform: uppercase; font-weight: bolder; padding-top: 8px;">
+               <div style="text-align: right;">Производный продукт</div>
+              </td>
+            </tr>
+
+
+          </table>
+
+        </td></tr>
+        </table>
+      </x:html>
     </x:component>
 
     <x:action-call coid = "${z:vid(v, 'goods-info-script')}"
@@ -228,9 +319,44 @@ ${v.checkModelRequestedWithRedirect}
         })
       })
 
+    //~: init the fields
+    var init = function()
+    {
+      var n = Ext.get("${z:vid(v, 'goods-info')}");
+
+      //=: good code
+      n.down('td.retrade-info-value.retrade-client-good-info-code div').
+        update(record.get('goodCode'))
+
+      //=: good price
+      n.down('td.retrade-info-value.retrade-client-good-info-price div').
+        update(record.get('price'))
+
+      //=: measure unit code (at the price)
+      n.down('td.retrade-info-value.retrade-client-good-info-price-mucode div').
+        update(record.get('measureCode'))
+
+      //=: good name
+      n.down('td.retrade-info-value.retrade-client-good-info-name div').
+        update(record.get('goodName'))
+
+      //=: measure unit code
+      n.down('td.retrade-info-value.retrade-client-good-info-mucode div').
+        update(record.get('measureCode'))
+
+      //=: measure unit name
+      n.down('td.retrade-info-value.retrade-client-good-info-muname div').
+        update(record.get('measureName'))
+
+      //~: hide the content pane & show loading message
+      n.down('table.retrade-client-good-loaded-content').setDisplayed(false)
+      n.down('span.retrade-client-good-loading').setDisplayed(true)
+    }
+
     //~: show window in the box
     ZeT.timeout(100, function()
     {
+      init()
       wnd.show().setBox(box)
     })
   })
@@ -260,7 +386,35 @@ ${v.checkModelRequestedWithRedirect}
 
 (function()
 {
+  var wnd = extjsf.component("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}');
+  var inf = Ext.get("${z:vid(v, 'goods-info')}");
+  var ltd = inf.down('tr.retrade-client-good-loaded-layout td');
+  var cnt = ltd.down('table.retrade-client-good-loaded-content');
+
   ZeT.log('loaded good #{v.infoGood.code}')
+
+  //~: hide loading message & show the content pane
+  inf.down('span.retrade-client-good-loading').setDisplayed(false)
+  cnt.setDisplayed(true)
+
+  //?: {this is a regular good}
+  var irg = ('true' == '#{empty v.infoGood.goodCalc}');
+
+  //?: {this is a semi-ready product}
+  var isr = ('true' == '#{not empty v.infoGood.goodCalc and v.infoGood.goodCalc.semiReady}');
+
+  //?: {this is a derived good}
+  var idg = ('true' == '#{not empty v.infoGood.goodCalc.superGood}');
+
+  //~: hide-display the content areas
+  cnt.down('tr.retrade-client-good-is-regular').setDisplayed(irg)
+  cnt.down('tr.retrade-client-good-is-derived').setDisplayed(idg)
+  cnt.down('td.retrade-client-good-is-derived-semi-ready').setDisplayed(isr)
+
+
+  //~: accommodate the window height
+  var dy = ltd.getHeight() - cnt.getHeight();
+  if(dy > 4) wnd.setHeight(wnd.getHeight() - dy + 4)
 
 })()
 
