@@ -56,6 +56,25 @@
   </function>
 
 
+  <!-- trim -->
+
+  <function>
+    <description>
+      Trims object depending on it's type.
+      Always returns string.
+    </description>
+    <display-name>Trims object to string</display-name>
+
+    <function-name>trim</function-name>
+    <function-class>
+      com.tverts.faces.Functions
+    </function-class>
+    <function-signature>
+      java.lang.String trim(java.lang.Object)
+    </function-signature>
+  </function>
+
+
   <!--=================================================
     =  URLs                                           =
     =================================================-->

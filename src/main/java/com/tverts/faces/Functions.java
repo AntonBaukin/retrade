@@ -1,6 +1,6 @@
 package com.tverts.faces;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import com.tverts.faces.formatters.DecimalConverter;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.SU;
 
 
@@ -50,6 +51,17 @@ public class Functions
 	public static String escapeHTMLString(Object sobj)
 	{
 		return SU.escapeXML(sobj);
+	}
+
+	public static String trim(Object v)
+	{
+		if(v instanceof BigDecimal)
+			if(CMP.eqZero((BigDecimal)v))
+				v = BigDecimal.ZERO;
+			else
+				v = ((BigDecimal)v).stripTrailingZeros();
+
+		return (v == null)?(""):SU.sXs(SU.s2s(v.toString()));
 	}
 
 
