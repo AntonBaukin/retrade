@@ -70,6 +70,15 @@ public class FacesClientGoodsView extends FacesGoodsView
 
 	private GoodUnit infoGood;
 
+	public GoodUnit getInfoSuperGood()
+	{
+		return (infoSuperGood != null)?(infoSuperGood):(infoSuperGood =
+		  (getInfoGood() == null)?(null):(getInfoGood().getGoodCalc() == null)?(null):
+		    (getInfoGood().getGoodCalc().getSuperGood()));
+	}
+
+	private GoodUnit infoSuperGood;
+
 
 	/* protected: ModelView interface */
 

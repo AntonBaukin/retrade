@@ -492,7 +492,8 @@ td.retrade-info-title
 }
 
 td.retrade-info-title div, .retrade-info-title-label,
- div.retrade-info-div .retrade-info-title
+ div.retrade-info-div .retrade-info-title,
+ caption.retrade-info-title
 {
   white-space: nowrap; margin: 0 4pt 0 7pt;
   font-size: 11pt; font-weight: bolder;
@@ -506,9 +507,15 @@ label.retrade-info-title-label
 
 td.retrade-info-title:first-child div,
  .retrade-info-title-label:first-child,
- div.retrade-info-div:first-child .retrade-info-title
+ div.retrade-info-div:first-child .retrade-info-title,
+ caption.retrade-info-title
 {
   margin-left: 0;
+}
+
+caption.retrade-info-title
+{
+  text-align: left;
 }
 
 td.retrade-info-value div,
