@@ -14,7 +14,7 @@ package com.tverts.model;
  */
 public interface ModelData
 {
-	/* public: ModelData interface */
+	/* Model Data */
 
 	public ModelBean getModel();
 }
