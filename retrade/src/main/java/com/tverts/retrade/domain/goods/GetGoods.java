@@ -460,47 +460,14 @@ from GoodUnit gu where
 		qb.setLimit(mb.getDataLimit());
 
 
-		//~: domain
+		//~: restrict the domain
 		qb.getClauseWhere().addPart(
 		  "gu.domain.id = :domain"
 		).
 		  param("domain", mb.domain());
 
-
-		//?: {has current folder selected}
-		if(mb.getCurrentFolder() != null)
-		{
-			final String WOUT =
-
-"gu.id in (select ti.item.id from TreeItem ti where (ti.folder.id = :folder))";
-
-			final String WITH =
-
-"gu.id in (select c.item.item.id from TreeCross c where (c.folder.id = :folder))";
-
-			qb.nameEntity("TreeItem",  TreeItem.class);
-			qb.nameEntity("TreeCross", TreeCross.class);
-
-			//~: restrict by the folder
-			qb.getClauseWhere().addPart(
-			  mb.isWithSubFolders()?(WITH):(WOUT)
-			).
-			  param("folder", mb.getCurrentFolder());
-		}
-		//?: {without sub-folders on the root} show items not included in the tree
-		else if(!mb.isWithSubFolders())
-		{
-			qb.nameEntity("TreeItem",  TreeItem.class);
-
-			final String XOUT =
-
-"gu.id not in (select ti.item.id from TreeItem ti where (ti.folder.domain = :tree))";
-
-			qb.getClauseWhere().addPart(XOUT).
-			  param("tree", bean(GetTree.class).getDomain(
-			    mb.domain(), Goods.TYPE_GOODS_TREE
-			  ));
-		}
+		//~: restrict the tree folder
+		restrictTreeGoods(qb, mb);
 
 		//~: keywords search restrictions
 		gusSearch(qb, mb.getSearchGoods());
@@ -511,7 +478,7 @@ from GoodUnit gu where
 		return QB(qb).list();
 	}
 
-	public long           countGoodUnits(GoodsTreeModelBean mb)
+	public int            countGoodUnits(GoodsTreeModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -523,47 +490,14 @@ from GoodUnit gu where
 		qb.setClauseSelect("count(gu.id)");
 
 
-		//~: domain
+		//~: restrict the domain
 		qb.getClauseWhere().addPart(
 		  "gu.domain.id = :domain"
 		).
 		  param("domain", mb.domain());
 
-
-		//?: {has current folder selected}
-		if(mb.getCurrentFolder() != null)
-		{
-			final String WOUT =
-
-"gu.id in (select ti.item.id from TreeItem ti where (ti.folder.id = :folder))";
-
-			final String WITH =
-
-"gu.id in (select c.item.item.id from TreeCross c where (c.folder.id = :folder))";
-
-			qb.nameEntity("TreeItem",  TreeItem.class);
-			qb.nameEntity("TreeCross", TreeCross.class);
-
-			//~: restrict by the folder
-			qb.getClauseWhere().addPart(
-			  mb.isWithSubFolders()?(WITH):(WOUT)
-			).
-			  param("folder", mb.getCurrentFolder());
-		}
-		//?: {without sub-folders on the root} show items not included in the tree
-		else if(!mb.isWithSubFolders())
-		{
-			qb.nameEntity("TreeItem",  TreeItem.class);
-
-			final String XOUT =
-
-"gu.id not in (select ti.item.id from TreeItem ti where (ti.folder.domain = :tree))";
-
-			qb.getClauseWhere().addPart(XOUT).
-			  param("tree", bean(GetTree.class).getDomain(
-			    mb.domain(), Goods.TYPE_GOODS_TREE
-			  ));
-		}
+		//~: restrict the tree folder
+		restrictTreeGoods(qb, mb);
 
 		//~: keywords search restrictions
 		gusSearch(qb, mb.getSearchGoods());
@@ -571,7 +505,7 @@ from GoodUnit gu where
 		//~: selection set search
 		restrictGoodsBySelSet(qb, mb.getSelSet(), false);
 
-		return ((Number) QB(qb).uniqueResult()).longValue();
+		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
 
 
@@ -1542,6 +1476,44 @@ from GoodPrice gp where
 		).
 		  param("minDate", cleanTime(mb.getMinDate())).
 		  param("maxDate", lastTime(mb.getMaxDate()));
+	}
+
+	protected void     restrictTreeGoods(QueryBuilder qb, GoodsTreeModelBean mb)
+	{
+		//?: {has current folder selected}
+		if(mb.getCurrentFolder() != null)
+		{
+			final String WOUT =
+
+"gu.id in (select ti.item.id from TreeItem ti where (ti.folder.id = :folder))";
+
+			final String WITH =
+
+"gu.id in (select c.item.item.id from TreeCross c where (c.folder.id = :folder))";
+
+			qb.nameEntity("TreeItem",  TreeItem.class);
+			qb.nameEntity("TreeCross", TreeCross.class);
+
+			//~: restrict by the folder
+			qb.getClauseWhere().addPart(
+			  mb.isWithSubFolders()?(WITH):(WOUT)
+			).
+			  param("folder", mb.getCurrentFolder());
+		}
+		//?: {without sub-folders on the root} show items not included in the tree
+		else if(!mb.isWithSubFolders())
+		{
+			qb.nameEntity("TreeItem",  TreeItem.class);
+
+			final String XOUT =
+
+"gu.id not in (select ti.item.id from TreeItem ti where (ti.folder.domain = :tree))";
+
+			qb.getClauseWhere().addPart(XOUT).
+			  param("tree", bean(GetTree.class).getDomain(
+			    mb.domain(), Goods.TYPE_GOODS_TREE
+			  ));
+		}
 	}
 
 	protected void     restrictGoodsBySelSet

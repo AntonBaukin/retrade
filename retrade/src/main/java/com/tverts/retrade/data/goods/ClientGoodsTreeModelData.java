@@ -20,37 +20,37 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.secure.SecPoint;
 
-/* com.tverts: retrade domain (firms + goods + prices) */
+/* com.tverts: retrade domain (firms + goods + prices ) */
 
 import com.tverts.retrade.domain.firm.GetContractor;
+import com.tverts.retrade.domain.goods.GoodsTreeModelBean;
 import com.tverts.retrade.domain.goods.GoodUnitView;
-import com.tverts.retrade.domain.goods.GoodsModelBean;
 import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPriceView;
 
 
 /**
- * Goods with their prices specific for
- * the current requesting client firm.
+ * Model data provider to display the Goods Tree
+ * for the current requesting client firm.
  *
  * @author anton.baukin@gmail.com.
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = { "contractor", "goodsNumber", "goods" })
-public class ClientGoodsModelData extends GoodsModelData
+public class ClientGoodsTreeModelData extends GoodsTreeModelData
 {
 	/* public: constructors */
 
-	public ClientGoodsModelData()
+	public ClientGoodsTreeModelData()
 	{}
 
-	public ClientGoodsModelData(GoodsModelBean model)
+	public ClientGoodsTreeModelData(GoodsTreeModelBean model)
 	{
 		super(model);
 	}
 
 
-	/* Goods Model Data */
+	/* Goods Tree Model Data */
 
 	@XmlElement
 	public Long getContractor()
@@ -62,10 +62,10 @@ public class ClientGoodsModelData extends GoodsModelData
 	private Long contractor;
 
 	@XmlElement
-	public int getGoodsNumber()
+	public Integer getGoodsNumber()
 	{
-		return bean(GetPrices.class).
-		  countContractorGoodUnits(getModel(), getContractor());
+		return (!isGoodsRequest())?(null):
+		  bean(GetPrices.class).countContractorGoodUnits(getModel(), getContractor());
 	}
 
 	@XmlElement(name = "good-unit")

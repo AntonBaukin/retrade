@@ -1,0 +1,553 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesClientGoodsTreeView}"/>
+
+${rootView.forceSecureClientOnly(true)}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:root-panel coid = "${z:vid(v, 'settings_users_root')}">
+
+  <f:facet name = "extjs-props">
+    title: 'Общий каталог товаров',
+    layout: {type: 'vbox', align: 'stretch'}
+  </f:facet>
+
+
+  <!-- [tree toolbar -->
+
+  <f:facet name = "toolbar-props">
+
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-inline-panel',
+    bodyPadding: extjsf.pt(2)
+
+  </f:facet>
+
+  <f:facet name = "toolbar">
+
+    <!-- [expand the tree] -->
+
+    <x:component coid = "${z:vid(v, 'expand-tree')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Раскрыть',
+        tooltipType: 'title', tooltip: 'Раскрыть дерево, отобразив все каталоги'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [collapse the tree] -->
+
+    <x:component coid = "${z:vid(v, 'collapse-tree')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Свернуть', margin: extjsf.pts(0, 4, 0, 4),
+        tooltipType: 'title', tooltip: 'Свернуть все каталоги дерева, отобразив путь к выбранному'
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+  </f:facet>
+
+
+  <!-- tree toolbar] -->
+
+
+  <!-- [tree (flat) data -->
+
+  <x:data-store storeId = "${z:vid(v, 'goodsTreeData')}"
+    modelView = "${v}" modelRequest = "tree" pageSize = "0">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.CatItemTree', autoLoad: false
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.CatItemTree')
+    </f:facet>
+  </x:data-store>
+
+  <!-- tree (flat) data] -->
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: tree creation script
+  Ext.onReady(function()
+  {
+    //~: store with tree flat data
+    var store = extjsf.component("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
+
+    //~: create tree store
+    var tree  = Ext.create('Ext.data.TreeStore', { storeId: "${z:vid(v, 'goodsTreeStore')}" });
+
+    //~: delete store on domain delete
+    extjsf.onDomainDelete('${rootView.extjsDomain}', function()
+    {
+        Ext.data.StoreManager.unregister("${z:vid(v, 'goodsTreeStore')}")
+    })
+
+    function nodesSorter(l, r)
+    {
+      var lc = l.get('code').toLowerCase(); if(!lc) lc = '';
+      var rc = r.get('code').toLowerCase(); if(!rc) rc = '';
+
+      while(lc.length < rc.length) lc += ' ';
+      while(rc.length < lc.length) rc += ' ';
+
+      return lc.localeCompare(rc);
+    }
+
+
+    function doResizeColumn()
+    {
+      var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').getView();
+      var cols = tree.getGridColumns();
+
+      for(var icol = 0;(icol < cols.length);icol++)
+        if(cols[icol].xtype == 'treecolumn') break;
+      if(icol == cols.length) return;
+
+      cols[icol].setWidth(tree.getMaxContentWidth(cols[icol]) + 4)
+    }
+
+    var selNode;
+
+    function createNode(map, k, pn)
+    {
+      var m = map[k].m;
+      var n = pn.appendChild({ leaf: m.get('leaf') });
+
+      n.set('modelId', k)
+      n.set('selsetItemKey', k)
+      n.set('code', m.get('code'))
+      n.set('name', m.get('name'))
+
+      if(store.retradeLastSelection == m.get('code')) selNode = n;
+
+      n.on('expand', doResizeColumn)
+      n.on('collapse', doResizeColumn)
+
+      if(map[k].cs) Ext.Array.each(map[k].cs, function(c)
+      {
+         createNode(map, c, n)
+      })
+    }
+
+    function createRootNode(map)
+    {
+       var n = tree.setRootNode({ leaf: false, expanded: true });
+
+       n.set('modelId', '$')
+       n.set('selsetDisabled', true)
+       n.set('name', '[Корень каталога]')
+
+       if(map[''].cs) Ext.Array.each(map[''].cs, function(c)
+       {
+          createNode(map, c, n)
+       })
+
+       n.sort(nodesSorter, true)
+       n.on('expand', doResizeColumn)
+       n.on('collapse', doResizeColumn)
+    }
+
+    store.on('load', function(store, rows)
+    {
+       var map = {};
+
+       //~: map the rows
+       Ext.Array.each(rows, function(m)
+       {
+         var k = m.get('objectKey');
+         var p = m.get('parentKey'); if(!p) p = '';
+
+         if(!map[p]) map[p] = { k: p };
+         if(!map[p].cs) map[p].cs = [ k ]; else map[p].cs.push(k)
+         map[k] = ZeT.extend(map[k], { k: k, p: p, m: m });
+       })
+
+       //~: create root node
+       if(!map['']) map[''] = { k: '' }
+       createRootNode(map)
+
+       //~: restore previous selection
+       store.retradeLastSelection = null;
+       if(selNode)
+       {
+         extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+           getSelectionModel().select([selNode])
+
+         while(selNode.parentNode)
+         {
+           selNode.parentNode.expand()
+           selNode = selNode.parentNode
+         }
+       }
+
+       //~: resize tree column
+       doResizeColumn()
+    })
+
+
+    //!: load the store
+    store.load()
+  })
+
+
+  //~: expand the tree
+  extjsf.bindHandler("${z:vid(v, 'expand-tree')}", '${rootView.extjsDomain}', function()
+  {
+    extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').expandAll()
+  })
+
+  //~: expand the tree to the selection
+  extjsf.bindHandler("${z:vid(v, 'collapse-tree')}", '${rootView.extjsDomain}', function()
+  {
+    var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
+
+    tree.collapseAll(function()
+    {
+       if(sel) while(sel.parentNode)
+       {
+         sel.parentNode.expand()
+         sel = sel.parentNode;
+       }
+    })
+  })
+
+  //]]>
+  </script>
+
+
+  <!-- [tree with goods folders -->
+
+  <x:component coid = "${z:vid(v, 'tree')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'treepanel', store: "${z:vid(v, 'goodsTreeStore')}",
+      border: false, flex: 2,
+      rootVisible : true, animate: false,
+      enableColumnHide: false, sortableColumns: false,
+
+      columns: [
+
+        { xtype: 'treecolumn', width: 64, resizable: false },
+
+        { text: "Код", dataIndex: 'code', width: extjsf.ex(16) },
+
+        { text: "Наименование", dataIndex: 'name', flex: 1 }
+      ]
+
+    </f:facet>
+  </x:component>
+
+
+  <!-- tree with goods folders] -->
+
+
+  <x:component coid = "${z:vid(v, '_folder_goods_spliter')}">
+    <f:facet name = "extjs-props">
+      xtype: 'splitter', collapsible: true, collapseTarget: 'prev'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [grid with folder goods -->
+
+  <x:data-store storeId = "${z:vid(v, 'folderGoodsStore')}"
+    modelView = "${v}" modelRequest = "goods" pageSize = "10">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodPriceView',
+      autoLoad: false, remoteSort: true,
+      sorters: [{ property: 'goodName', direction: 'ASC' }]
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodUnitView')
+    </f:facet>
+  </x:data-store>
+
+  <x:component coid = "${z:vid(v, 'folder-goods-layout')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'panel', flex: 3, border: false, layout: 'fit',
+      bodyCls: 'retrade-back-panel', title: 'Выберете каталог в дереве'
+
+    </f:facet>
+
+
+    <!-- [goods table panel -->
+
+    <x:component coid = "${z:vid(v, 'folder-goods-panel')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', border: false, layout: 'fit', hidden: true,
+        bodyPadding: extjsf.pt(1), bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+
+
+      <!-- [goods panel toolbar -->
+
+      <x:toolbar coid = "${z:vid(v, 'folder-goods-toolbar')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', bodyPadding: extjsf.pt(2),
+          layout: { type: 'hbox', align: 'middle' },
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+
+        <x:component coid = "${z:vid(v, '_folder_goods_tb_fill_0')}">
+          <f:facet name = "extjs-props">
+            xtype: 'panel', flex: 1, frame: false, border: false,
+            bodyCls: 'retrade-toolbar-inline-panel'
+          </f:facet>
+        </x:component>
+
+
+        <!-- [with sub-folders checkbox] -->
+
+        <x:checkbox-field coid = "${z:vid(v, 'with-subfolders')}" value = "#{true}">
+          <f:facet name = "label-props">
+            labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 0),
+            html: "&lt;span title = 'Включить товары подкаталогов выбранного каталога'&gt;Подкаталоги&lt;/span&gt;"
+          </f:facet>
+        </x:checkbox-field>
+
+
+        <!-- [filter goods field -->
+
+        <x:text-field coid = "${z:vid(v, 'search-goods')}"
+          value = "#{v.model.searchGoods}">
+
+          <f:facet name = "extjs-props">
+            margin: extjsf.dpts(1, 0, 1, 4),
+            width:  extjsf.ex(24)
+          </f:facet>
+
+          <f:facet name = "label-props">
+            text: 'поиск', margin: extjsf.pts(1, 0, 1, 8)
+          </f:facet>
+        </x:text-field>
+
+
+         <!-- [restrict to selection set] -->
+
+         <x:component coid = "${z:vid(v, 'search-goods-selset')}">
+           <f:facet name = "extjs-props">
+
+             xtype: 'button', enableToggle: true,
+             width: 30, componentCls: 'retrade-icon-24',
+             margin: extjsf.dpts(1, 0, 1, 6),
+             iconCls: 'retrade-selset-button-icon',
+             tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+          </f:facet>
+        </x:component>
+
+
+        <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
+          action = "#{v.doSearchGoods}">
+
+          <f:facet name = "action-params">
+            '${v.modelParam}': '${v.modelKeys}'
+          </f:facet>
+        </x:action-call>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchGoods: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+    //~: selection set only toggled
+    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').value();
+        var params = { searchGoods: names };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
+        }})
+    })
+
+        //]]>
+        </script>
+
+        <!-- filter goods field] -->
+
+      </x:toolbar>
+
+      <!-- goods panel toolbar] -->
+
+
+      <!-- [goods table] -->
+
+      <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+        storeId = "${z:vid(v, 'folderGoodsStore')}">
+
+        <f:facet name = "grid-props">
+
+          cls: 'retrade-grid-large',
+          preventHeader: true, pager: true,
+          sortableColumns: true, border: false,
+          columns: ZeT.defined('retrade.columns.ClientGoodPriceView'),
+          selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+
+       </f:facet>
+      </x:data-grid>
+
+    </x:component>
+
+    <!-- goods table panel] -->
+
+  </x:component>
+
+  <x:action-call coid = "${z:vid(v, 'set-current-folder-script')}"
+    action = "#{v.doSetCurrentFolder}">
+
+    <f:facet name = "action-params">
+      '${v.modelParam}': '${v.modelKeys}'
+    </f:facet>
+  </x:action-call>
+
+  <!-- grid with folder goods] -->
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  Ext.onReady(function()
+  {
+    //~: connect tree (as grid) to selection set
+    ReTrade.selset.grid("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+  })
+
+
+  //~: display goods of current selection
+  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle = function(sel)
+  {
+    var fid  = sel.get('modelId');
+    var root = extjsf.component("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}');
+
+    if(fid == '$') root.setTitle('Товары всех каталогов')
+
+    if((fid != '$') && (fid.charAt(0) == '$'))
+      root.setTitle(ZeTS.cat(
+         'Сохраните каталог [', sel.get('code'), '] ',  sel.get('name'), '!'
+       ))
+
+    if(fid.charAt(0) != '$')
+      root.setTitle(ZeTS.cat(
+         'Товары каталога [', sel.get('code'), '] ',  sel.get('name')
+      ))
+  }
+
+  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeShowFolderGoods = function()
+  {
+    var sel  = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+      getSelectionModel().getSelection();
+
+    var subf = extjsf.component("${z:vid(v, 'with-subfolders')}", '${rootView.extjsDomain}');
+
+    //?: {the selection is empty} hide the panel
+    sel = sel.length && sel[0]; if(!sel)
+    {
+      extjsf.component("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').hide()
+      return;
+    }
+
+    var fid = sel.get('modelId');
+
+    //~: update the root title
+    extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle(sel)
+
+    //?: {it is a new folder}
+    if((fid != '$') && (fid.charAt(0) == '$'))
+    {
+      extjsf.component("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').hide()
+      return;
+    }
+
+    extjsf.component("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').show()
+
+    //!: run change action
+    extjsf.bindHandler("${z:vid(v, 'set-current-folder-script')}", '${rootView.extjsDomain}')({
+      params: { currentFolder: fid, withSubFolders: subf.getValue() }, success: function()
+      {
+        Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
+      }
+    })
+  }
+
+
+  //~: on tree selection change
+  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('selectionchange', function(tree, sel)
+  {
+    extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeShowFolderGoods()
+  })
+
+
+  //~: with sub-folders changed
+  extjsf.bind("${z:vid(v, 'with-subfolders')}", '${rootView.extjsDomain}').on('change', function()
+  {
+    extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeShowFolderGoods()
+  })
+
+  //]]>
+  </script>
+
+
+</x:root-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

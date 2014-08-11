@@ -16,6 +16,7 @@ import com.tverts.hibery.qb.QueryBuilder;
 
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
+import com.tverts.retrade.domain.goods.GoodsTreeModelBean;
 
 /* com.tverts: support */
 
@@ -48,7 +49,7 @@ public class GetPrices extends GetGoods
 	 * Returns the number of Good Units available
 	 * for the given client contractor (firm).
 	 */
-	public int countContractorGoodUnits(GoodsModelBean mb, Long contractor)
+	public int  countContractorGoodUnits(GoodsModelBean mb, Long contractor)
 	{
 		EX.assertn(mb);
 		EX.assertn(contractor);
@@ -121,6 +122,89 @@ public class GetPrices extends GetGoods
 		  "pc.contractor.id = :c"
 		).
 		  param("c", contractor);
+
+		//~: keywords search restrictions
+		gusSearch(qb, mb.getSearchGoods());
+
+		//~: selection set search
+		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+
+		return QB(qb).list();
+	}
+
+	public int  countContractorGoodUnits(GoodsTreeModelBean mb, Long contractor)
+	{
+		EX.assertn(mb);
+		EX.assertn(contractor);
+
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("PriceCross", PriceCross.class);
+		qb.setClauseFrom(
+		  "PriceCross pc join pc.goodUnit gu " +
+		  "join pc.goodPrice gp join gp.priceList pl"
+		);
+
+		//~: select clause
+		qb.setClauseSelect("count(gu.id)");
+
+
+		//~: restrict contractor
+		qb.getClauseWhere().addPart(
+		  "pc.contractor.id = :c"
+		).
+		  param("c", contractor);
+
+		//~: restrict the tree folder
+		restrictTreeGoods(qb, mb);
+
+		//~: keywords search restrictions
+		gusSearch(qb, mb.getSearchGoods());
+
+		//~: selection set search
+		restrictGoodsBySelSet(qb, mb.getSelSet(), false);
+
+		return ((Number) QB(qb).uniqueResult()).intValue();
+	}
+
+	/**
+	 * The result is the same as for the method:
+	 * {@link #selectContractorGoodUnits(GoodsModelBean, Long)}.
+	 */
+	public List selectContractorGoodUnits(GoodsTreeModelBean mb, Long contractor)
+	{
+		EX.assertn(mb);
+		EX.assertn(contractor);
+
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("PriceCross", PriceCross.class);
+		qb.setClauseFrom(
+		  "PriceCross pc join pc.goodUnit gu " +
+		  "join pc.goodPrice gp join gp.priceList pl"
+		);
+
+		//~: select clause
+		qb.setClauseSelect("gu, gp, pl.id, pl.code, pl.name");
+
+		//~: order by
+		orderGoods(qb, mb);
+
+		//~: the selection limits
+		qb.setFirstRow(mb.getDataStart());
+		qb.setLimit(mb.getDataLimit());
+
+
+		//~: restrict contractor
+		qb.getClauseWhere().addPart(
+		  "pc.contractor.id = :c"
+		).
+		  param("c", contractor);
+
+		//~: restrict the tree folder
+		restrictTreeGoods(qb, mb);
 
 		//~: keywords search restrictions
 		gusSearch(qb, mb.getSearchGoods());

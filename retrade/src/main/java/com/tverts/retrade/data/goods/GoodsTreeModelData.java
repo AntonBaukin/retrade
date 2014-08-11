@@ -1,6 +1,6 @@
 package com.tverts.retrade.data.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,11 +66,10 @@ public class GoodsTreeModelData implements ModelData
 	}
 
 	@XmlElement
-	public Long getGoodsNumber()
+	public Integer getGoodsNumber()
 	{
-		if(!ModelRequest.isKey("goods"))
-			return null;
-		return bean(GetGoods.class).countGoodUnits(getModel());
+		return (!isGoodsRequest())?(null):
+		  bean(GetGoods.class).countGoodUnits(getModel());
 	}
 
 	@XmlElement(name = "good-unit")
@@ -78,8 +77,7 @@ public class GoodsTreeModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<GoodUnitView> getGoods()
 	{
-		if(!ModelRequest.isKey("goods"))
-			return null;
+		if(!isGoodsRequest()) return null;
 
 		List sel = bean(GetGoods.class).
 		  selectGoodUnits(getModel());
@@ -96,8 +94,7 @@ public class GoodsTreeModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<TreeNodeView> getGoodsTree()
 	{
-		if(!ModelRequest.isKey("tree"))
-			return null;
+		if(!isTreeRequest()) return null;
 
 		List<TreeFolder>   fds = bean(GetTree.class).
 		  selectFolders(getModel().domain(), Goods.TYPE_GOODS_TREE);
@@ -109,6 +106,19 @@ public class GoodsTreeModelData implements ModelData
 			res.add(new TreeNodeView().init(f));
 
 		return res;
+	}
+
+
+	/* protected: data access support */
+
+	protected boolean isTreeRequest()
+	{
+		return ModelRequest.isKey("tree");
+	}
+
+	protected boolean isGoodsRequest()
+	{
+		return ModelRequest.isKey("goods");
 	}
 
 

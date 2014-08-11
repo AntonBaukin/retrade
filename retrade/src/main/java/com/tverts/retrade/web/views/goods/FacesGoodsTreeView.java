@@ -1,6 +1,6 @@
 package com.tverts.retrade.web.views.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -58,7 +58,7 @@ import static com.tverts.support.SU.s2s;
 @ManagedBean @RequestScoped
 public class FacesGoodsTreeView extends FacesGoodsView
 {
-	/* actions */
+	/* Actions */
 
 	public String doSetCurrentFolder()
 	{
@@ -185,7 +185,7 @@ public class FacesGoodsTreeView extends FacesGoodsView
 	}
 
 
-	/* public: view interface */
+	/* View */
 
 	public GoodsTreeModelBean getModel()
 	{
@@ -221,7 +221,9 @@ public class FacesGoodsTreeView extends FacesGoodsView
 	{
 		GoodsTreeModelBean mb = new GoodsTreeModelBean();
 
+		//=: domain
 		mb.setDomain(getDomainKey());
+
 		return mb;
 	}
 

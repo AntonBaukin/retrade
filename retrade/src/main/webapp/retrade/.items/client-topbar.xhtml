@@ -172,6 +172,19 @@
     })
   })
 
+
+  //~: open shared goods tree (for read-only)
+  extjsf.bindHandler("${z:vid(localView, 'retrade-goods-tree')}",
+    '${rootView.extjsDomain}', function()
+  {
+    var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-tree:');
+
+    ReTrade.desktop.loadDesktopPanel(
+      "${z:url('/go/retrade/goods/goods-tree-client')}", {
+      'domain': domain
+    })
+  })
+
   //]]>
   </script>
 
