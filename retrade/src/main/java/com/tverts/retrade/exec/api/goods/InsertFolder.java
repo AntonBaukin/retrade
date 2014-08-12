@@ -61,8 +61,8 @@ public class InsertFolder extends InsertEntityBase
 		TreeFolder f = new TreeFolder();
 
 		//~: goods tree domain
-		f.setDomain(EX.assertn(
-		  bean(GetTree.class).getDomain(domain().getPrimaryKey(), Goods.TYPE_GOODS_TREE),
+		f.setDomain(EX.assertn( bean(GetTree.class).
+		  getDomain(domain().getPrimaryKey(), Goods.TYPE_GOODS_TREE, null),
 		  "Domain [", domain().getPrimaryKey(), "] has no Goods Tree!"
 		));
 

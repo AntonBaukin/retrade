@@ -108,7 +108,7 @@ public class FacesGoodsTreeView extends FacesGoodsView
 
 		//~: get the goods Tree Domain
 		TreeDomain td = bean(GetTree.class).
-		  getDomain(getModel().domain(), Goods.TYPE_GOODS_TREE);
+		  getDomain(getModel().domain(), Goods.TYPE_GOODS_TREE, null);
 		if(td == null) throw EX.state();
 
 		//~: load all the folders in the current session

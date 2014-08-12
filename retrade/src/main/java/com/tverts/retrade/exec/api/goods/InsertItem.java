@@ -60,7 +60,7 @@ public class InsertItem extends InsertEntityBase
 
 		//~: load the goods tree domain
 		TreeDomain t = bean(GetTree.class).
-		  getDomain(domain().getPrimaryKey(), Goods.TYPE_GOODS_TREE);
+		  getDomain(domain().getPrimaryKey(), Goods.TYPE_GOODS_TREE, null);
 
 		//~: load the folder to insert
 		TreeFolder f = bean(GetTree.class).getFolder(EX.assertn(

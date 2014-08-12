@@ -104,6 +104,7 @@ public class GenReTradeDomain extends GenCoreDomain
 		this.system = system;
 	}
 
+
 	/* protected: the generation */
 
 	protected void ensureProperties(GenCtx ctx)
@@ -137,14 +138,13 @@ public class GenReTradeDomain extends GenCoreDomain
 		//~: ensure goods tree
 		TreeDomain tree = new TreeDomain();
 
-		//~: domain
+		//=: domain
 		tree.setDomain(ctx.get(Domain.class));
 
-		//~: tree type
+		//=: tree type
 		tree.setTreeType(UnityTypes.unityType(
-			 TreeDomain.class, Goods.TYPE_GOODS_TREE
-		  )
-		);
+		  TreeDomain.class, Goods.TYPE_GOODS_TREE
+		));
 
 		//!: ensure
 		actionRun(ActionType.ENSURE, tree);

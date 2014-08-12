@@ -95,7 +95,7 @@ public class GenTestGoodsTree extends GenesisHiberPartBase
 
 		//~: get the tree domain
 		if(s.domian == null) s.domian = EX.assertn(bean(GetTree.class).
-			 getDomain(ctx.get(Domain.class).getPrimaryKey(), Goods.TYPE_GOODS_TREE)
+			 getDomain(ctx.get(Domain.class).getPrimaryKey(), Goods.TYPE_GOODS_TREE, null)
 		);
 
 		//=: tree domain

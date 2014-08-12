@@ -142,7 +142,7 @@ public class InsertDerived extends InsertGood
 
 		//~: goods tree domain
 		TreeDomain     td = bean(GetTree.class).getDomain(
-		  gu.getDomain().getPrimaryKey(), Goods.TYPE_GOODS_TREE
+		  gu.getDomain().getPrimaryKey(), Goods.TYPE_GOODS_TREE, null
 		);
 
 		//~: the list of the items of the super good

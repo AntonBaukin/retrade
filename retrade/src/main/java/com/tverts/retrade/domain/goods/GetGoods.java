@@ -1511,7 +1511,7 @@ from GoodPrice gp where
 
 			qb.getClauseWhere().addPart(XOUT).
 			  param("tree", bean(GetTree.class).getDomain(
-			    mb.domain(), Goods.TYPE_GOODS_TREE
+			    mb.domain(), Goods.TYPE_GOODS_TREE, null
 			  ));
 		}
 	}

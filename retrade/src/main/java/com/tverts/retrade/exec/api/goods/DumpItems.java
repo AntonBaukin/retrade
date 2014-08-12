@@ -86,7 +86,7 @@ public class DumpItems extends EntitiesDumperBase
 	protected void    restrictDumpDomain(QueryBuilder qb, DumpEntities de)
 	{
 		TreeDomain domain = bean(GetTree.class).getDomain(
-		  tx().getDomain().getPrimaryKey(), Goods.TYPE_GOODS_TREE);
+		  tx().getDomain().getPrimaryKey(), Goods.TYPE_GOODS_TREE, null);
 
 		EX.assertn(domain, "Domain [", tx().getDomain().getPrimaryKey(),
 		  "] has no Goods Tree!"
