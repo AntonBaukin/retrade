@@ -192,3 +192,34 @@ Ext.define('Ext.ux.selection.No',
 	doMultiSelect     : function()
 	{}
 })
+
+
+/**
+ * Action column that activates it's first
+ * action when user clicks the cell, not the icon.
+ */
+Ext.define('Ext.ux.column.ActionCell',
+{
+	extend            : 'Ext.grid.column.Action',
+
+	processEvent      : function(type, view, cell, recordIndex, cellIndex, e, record, row)
+	{
+		//?: {clicked not in the cell}
+		if((type == 'click') && !e.getTarget().className ||
+		   !e.getTarget().className.match(this.actionIdRe)
+		  )
+		{
+			var target = Ext.get(e.getTarget()).down('.' + Ext.baseCSSPrefix + 'action-col-0', true);
+			if(target) e.target = target;
+		}
+
+		return this.callParent(arguments);
+	},
+
+	defaultRenderer   : function(v, meta)
+	{
+		var res = this.callParent(arguments);
+		meta.tdCls += ' retrade-action-cell';
+		return res;
+	}
+})

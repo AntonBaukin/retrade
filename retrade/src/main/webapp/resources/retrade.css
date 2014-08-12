@@ -227,7 +227,7 @@ div.retrade-menuitem-centered
 
 /* large text grids */
 
-.retrade-grid-large table.x-grid-with-row-lines td.x-grid-td.x-grid-cell
+.retrade-grid-large table.x-grid-table td.x-grid-td.x-grid-cell
 {
   font-size: 13px; line-height: 18px;
 }
@@ -259,6 +259,11 @@ td.x-grid-cell.x-grid-cell-selected
 .retrade-grid-not-mark-dirty td.x-grid-cell.x-grid-dirty-cell
 {
   background-image: none;
+}
+
+td.retrade-action-cell
+{
+  cursor: pointer;
 }
 
 

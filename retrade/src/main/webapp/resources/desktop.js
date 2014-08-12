@@ -1230,7 +1230,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 		bind.on('added', function()
 		{
-			this.headerCt.insert(0, acol = Ext.create('Ext.grid.column.Action', {
+			this.headerCt.insert(0, acol = Ext.create('Ext.ux.column.ActionCell', {
 			  width: 28, flex:0, align: 'center', autoShow: false,
 			  hidden: !self.active, hideable: false, draggable: false,
 			  renderer: function(v, md, rec)
