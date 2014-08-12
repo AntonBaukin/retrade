@@ -166,6 +166,8 @@ ${v.checkModelRequestedWithRedirect}
        n.sort(nodesSorter, true)
        n.on('expand', doResizeColumn)
        n.on('collapse', doResizeColumn)
+
+       return n
     }
 
     store.on('load', function(store, rows)
@@ -185,7 +187,7 @@ ${v.checkModelRequestedWithRedirect}
 
        //~: create root node
        if(!map['']) map[''] = { k: '' }
-       createRootNode(map)
+       var root = createRootNode(map)
 
        //~: restore previous selection
        store.retradeLastSelection = null;
@@ -203,6 +205,13 @@ ${v.checkModelRequestedWithRedirect}
 
        //~: resize tree column
        doResizeColumn()
+
+       //~: select the root
+       ZeT.timeout(250, function()
+       {
+         extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+           getSelectionModel().select(root)
+       })
     })
 
 
@@ -441,6 +450,12 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- goods table panel] -->
 
+    <!-- [good info window] -->
+    <ui:decorate template = ".good-info-body.xhtml">
+      <ui:param name = "v"      value = "#{v}"/>
+      <ui:param name = "gridId" value = "grid"/>
+    </ui:decorate>
+
   </x:component>
 
   <x:action-call coid = "${z:vid(v, 'set-current-folder-script')}"
@@ -548,6 +563,15 @@ ${v.checkModelRequestedWithRedirect}
 
   <ui:define name = 'validation'>
     <validation success = "true"/>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+    <!-- [good info window] -->
+    <ui:decorate template = ".good-info-post.xhtml">
+      <ui:param name = "v" value = "#{v}"/>
+    </ui:decorate>
+
   </ui:define>
 </ui:decorate>
 </ui:component>

@@ -919,6 +919,7 @@ td.retrade-good-info-value-derived,
   text-transform: uppercase;
 }
 
+
 /* [retrade/goods/good-calc-info] */
 
 td.retrade-info-value-derived-good-measure,
@@ -942,4 +943,121 @@ td.retrade-info-value-derived-good-super-name div
 td.retrade-info-table-derived-good-info-sep div
 {
   height: 2pt;
+}
+
+
+/* [retrade/goods/good-info-body] */
+
+table.retrade-client-good-layout
+{
+  width: 100%; height: 100%;
+}
+
+table.retrade-client-good-layout > tr:first-child > td
+{
+  vertical-align: top;
+}
+
+td.retrade-client-good-info-code-price-sep,
+  td.retrade-client-good-info-super-code-volume-sep
+{
+  width:100%; min-width: 7pt;
+}
+
+td.retrade-client-good-info-price div,
+  td.retrade-client-good-info-super-volume div
+{
+  margin-left: 0;
+}
+
+td.retrade-client-good-info-price-mucode div,
+  td.retrade-client-good-info-mucode div,
+  td.retrade-client-good-info-muname div,
+  td.retrade-client-good-info-super-volume-mucode div
+{
+  margin-left: 2px;
+}
+
+td.retrade-client-good-info-name div,
+  td.retrade-client-good-info-super-name div,
+  table.retrade-client-good-measure
+{
+  margin-top: 2px;
+}
+
+td.retrade-client-good-info-muname,
+  table.retrade-client-good-loaded-content,
+  div.retrade-client-good-product-table > table
+{
+  width:100%;
+}
+
+tr.retrade-client-good-loaded-layout > td
+{
+  vertical-align: top;
+}
+
+tr.retrade-client-good-loaded-layout.retrade-client-good-loaded-layout-loading > td
+{
+  vertical-align: middle;
+}
+
+tr.retrade-client-good-loaded-layout > td
+{
+  width: 100%; height: 100%; text-align: center;
+}
+
+span.retrade-client-good-loading
+{
+  display: none; font-style: italic;
+}
+
+tr.retrade-client-good-is-regular td,
+  td.retrade-client-good-is-derived-semi-ready,
+  tr.retrade-client-good-is-derived table:last-child td:last-child,
+  td.retrade-client-good-is-product-semi-ready,
+  table.retrade-client-good-product-bottom td:last-child
+{
+  text-transform: uppercase; font-weight: bolder; padding-top: 8px; cursor: default;
+}
+
+tr.retrade-client-good-is-regular td div,
+  tr.retrade-client-good-is-derived table:last-child td:last-child div
+{
+  text-align: right; cursor: default;
+}
+
+tr.retrade-client-good-is-derived > td > table
+{
+  width: 100%; margin-top: 2px;
+}
+
+div.retrade-client-good-product-top
+{
+  text-align: left; padding: 2px 0 2px 0;
+}
+
+div.retrade-client-good-product-table
+{
+  overflow: auto;
+}
+
+td.retrade-client-good-product-part-volume
+{
+  padding-top: 2px;
+}
+
+td.retrade-client-good-product-part-volume div,
+  td.retrade-client-good-is-product-semi-ready div,
+  table.retrade-client-good-product-bottom td:last-child div
+
+{
+  text-align: right;
+}
+
+td.retrade-client-good-product-part-mucode,
+  td.retrade-client-good-product-part-code,
+  td.retrade-client-good-product-part-name
+{
+  padding: 2px 0 0 2px;
 }
