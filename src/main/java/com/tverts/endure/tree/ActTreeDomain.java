@@ -1,6 +1,6 @@
 package com.tverts.endure.tree;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -228,7 +228,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 			TreeDomain td = (TreeDomain) ((Action) ctx).getTask().getTarget();
 
 			return (bean(GetTree.class).
-			  getDomain(td.getDomain().getPrimaryKey(), treeType) == null);
+			  getDomain(td.getDomain().getPrimaryKey(), treeType, null) == null);
 		}
 
 		protected final UnityType treeType;
@@ -552,7 +552,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 
 		/* public: action interface */
 
-		public Object getResult()
+		public Object  getResult()
 		{
 			return unity;
 		}
@@ -560,7 +560,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 
 		/* protected: ActionBase interface */
 
-		protected void   execute()
+		protected void execute()
 		  throws Throwable
 		{
 			TreeDomain domain = target(TreeDomain.class);
@@ -582,7 +582,6 @@ public class ActTreeDomain extends ActionBuilderXRoot
 				query.setLong("item", i.getPrimaryKey()).executeUpdate();
 
 				session().delete(i);
-
 			}
 
 			//~: flush the results

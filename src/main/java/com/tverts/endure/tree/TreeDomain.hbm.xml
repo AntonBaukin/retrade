@@ -5,11 +5,11 @@
 
 <hibernate-mapping package = 'com.tverts.endure.tree'>
 
-  <union-subclass name = 'TreeDomain' extends = 'com.tverts.endure.core.Entity'
-    table = 'tree_domain' lazy = 'true'>
+  <union-subclass name = 'TreeDomain' table = 'tree_domain'
+    extends = 'com.tverts.endure.core.Entity'>
 
 
-    <!-- Domain reference -->
+    <!-- Domain  -->
 
     <many-to-one name = 'domain' foreign-key = 'fk_tree_domain'>
 
@@ -21,7 +21,7 @@
     </many-to-one>
 
 
-    <!-- Tree Unity Type reference -->
+    <!-- Tree Unity Type -->
 
     <many-to-one name = 'treeType' foreign-key = 'fk_tree_type'>
 
@@ -29,6 +29,19 @@
         unique-key = 'ux_tree_domain'>
 
         <comment>Tree Unity Type (unique within Domain)</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Owner Unity -->
+
+    <many-to-one name = 'owner' lazy = 'proxy'
+      foreign-key = 'fk_tree_owner'>
+
+      <column name = 'fk_owner'
+        unique-key = 'ux_tree_domain'>
+
+        <comment>Optional entity this Tree Domain is attached to</comment>
       </column>
     </many-to-one>
 

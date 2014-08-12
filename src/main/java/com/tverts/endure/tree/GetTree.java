@@ -1,6 +1,6 @@
 package com.tverts.endure.tree;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.List;
 
@@ -33,26 +33,39 @@ public class GetTree extends GetObjectBase
 {
 	/* Get Tree Domains */
 
-	public TreeDomain getDomain(Long domain, UnityType type)
+	public TreeDomain getDomain(Long domain, UnityType type, Long owner)
 	{
+/*
 
-// from TreeDomain where (domain.id = :domain) and (treeType = :type)
+ from TreeDomain where (domain.id = :domain) and
+   (treeType = :type) and (domain.owner.id is null)
 
-		return (TreeDomain) Q(
+ from TreeDomain where (domain.id = :domain) and
+   (treeType = :type) and (domain.owner.id = :owner)
 
-"  from TreeDomain where (domain.id = :domain) and (treeType = :type)"
+ */
 
-		).
-		  setLong("domain",    domain).
-		  setParameter("type", type).
-		  uniqueResult();
+		final String N =
+
+"from TreeDomain where (domain.id = :domain) and\n" +
+"  (treeType = :type) and (domain.owner.id is null)";
+
+		if(owner == null)
+			return object(TreeDomain.class, N, "domain", domain, "type", type);
+
+
+		final String Y =
+
+"from TreeDomain where (domain.id = :domain) and\n" +
+"  (treeType = :type) and (domain.owner.id = :owner)";
+
+		return object(TreeDomain.class, Y,
+		  "domain", domain, "type", type, "owner", owner);
 	}
 
-	public TreeDomain getDomain(Long domain, String type)
+	public TreeDomain getDomain(Long domain, String type, Long owner)
 	{
-		return getDomain(domain,
-		  UnityTypes.unityType(TreeDomain.class, type)
-		);
+		return getDomain(domain, UnityTypes.unityType(TreeDomain.class, type), owner);
 	}
 
 
@@ -94,7 +107,7 @@ public class GetTree extends GetObjectBase
 	public List<TreeFolder> selectFolders(Long domain, String treeType)
 	{
 		//~: find domain
-		TreeDomain td = getDomain(domain, treeType);
+		TreeDomain td = getDomain(domain, treeType, null);
 		if(td == null) throw EX.state(
 		  "Domain [", domain, "] has no Tree Domain named [",
 		  treeType, "]!"

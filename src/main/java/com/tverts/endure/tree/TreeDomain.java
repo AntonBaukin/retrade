@@ -15,7 +15,8 @@ import com.tverts.endure.core.Entity;
  * cross-references.
  *
  * Trees are distinguished in the application
- * by their Domain-unique Unity Types.
+ * by their Domain-unique Unity Types and
+ * optional related Unity instance.
  *
  *
  * @author anton.baukin@gmail.com
@@ -24,12 +25,14 @@ public class      TreeDomain
        extends    Entity
        implements DomainEntity
 {
-	/* public: Tree (bean) interface */
+	/*  Tree Domain */
 
 	public Domain getDomain()
 	{
 		return domain;
 	}
+
+	private Domain domain;
 
 	public void setDomain(Domain domain)
 	{
@@ -41,6 +44,8 @@ public class      TreeDomain
 		return treeType;
 	}
 
+	private UnityType treeType;
+
 	public void setTreeType(UnityType type)
 	{
 		if((getUnity() != null) && (type != null))
@@ -49,10 +54,24 @@ public class      TreeDomain
 		this.treeType = type;
 	}
 
+	/**
+	 * Optional entity this Tree Domain is attached to.
+	 */
+	public Unity getOwner()
+	{
+		return owner;
+	}
 
-	/* public: UnitedBase interface */
+	private Unity owner;
 
-	@Override
+	public void setOwner(Unity owner)
+	{
+		this.owner = owner;
+	}
+
+
+	/* United Base */
+
 	public void setUnity(Unity unity)
 	{
 		super.setUnity(unity);
@@ -61,9 +80,4 @@ public class      TreeDomain
 			if(!unity.getUnityType().equals(treeType))
 				this.treeType = unity.getUnityType();
 	}
-
-	/* references */
-
-	private Domain    domain;
-	private UnityType treeType;
 }
