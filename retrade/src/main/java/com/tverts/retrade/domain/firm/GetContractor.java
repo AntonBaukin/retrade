@@ -77,6 +77,19 @@ public class GetContractor extends GetFirm
 		return object(Contractor.class, Q, "fe", firmKey);
 	}
 
+	public Contractor getContractorFirmStrict(FirmEntity fe)
+	{
+		Contractor c = getContractorFirm(fe.getPrimaryKey());
+
+		//?: {not found it} //<-- proxy usage care
+		if(c == null) throw EX.ass(
+		  "Firm [", fe.getPrimaryKey(), "] code [",
+		  fe.getCode(), "] has no Contractor!"
+		);
+
+		return c;
+	}
+
 	public Long       getContractorByFirmKey(long firmKey)
 	{
 		EX.assertn(firmKey);

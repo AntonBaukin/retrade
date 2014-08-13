@@ -14,7 +14,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: hibery */
 
-import static com.tverts.hibery.HiberPoint.setPrimaryKey;
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: actions */
 
@@ -66,11 +66,7 @@ public class GenTestContractors extends GenTestFirms
 	{
 		super.updateFirm(ctx, s, fe);
 
-		Contractor c = EX.assertn(
-		  bean(GetContractor.class).getContractorFirm(fe.getPrimaryKey()),
-		  "Firm [", fe.getPrimaryKey(), "] code [",
-		  fe.getCode(), "] has no Contractor!"
-		);
+		Contractor c = bean(GetContractor.class).getContractorFirmStrict(fe);
 
 		//~: remember it
 		rememberContractor(ctx, c, true);
@@ -202,7 +198,7 @@ public class GenTestContractors extends GenTestFirms
 		Account a = new Account();
 
 		//~: primary key
-		setPrimaryKey(session(), a, true);
+		HiberPoint.setPrimaryKey(session(), a, true);
 
 		//~: test domain
 		a.setDomain(ctx.get(Domain.class));
