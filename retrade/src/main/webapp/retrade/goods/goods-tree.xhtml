@@ -50,8 +50,9 @@ ${v.checkModelRequestedWithRedirect}
 
     <x:component coid = "${z:vid(v, 'collapse-tree')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Свернуть', margin: extjsf.pts(0, 4, 0, 4),
-        tooltipType: 'title', tooltip: 'Свернуть все каталоги дерева, отобразив путь к выбранному'
+        xtype: 'button', text: 'Свернуть',
+        margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
+        tooltip: 'Свернуть все каталоги дерева, отобразив путь к выбранному'
       </f:facet>
     </x:component>
 
@@ -64,11 +65,55 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
+    <!-- [cut node] -->
+
+    <x:component coid = "${z:vid(v, 'tree-cut')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Вырезать',
+        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+        tooltip: 'Вырезать каталог, чтобы вставить его в другой каталог дерева'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [cut node cancel] -->
+
+    <x:component coid = "${z:vid(v, 'tree-cut-cancel')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отм. выр.', hidden: true,
+        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+        tooltip: 'Отменить вырезание каталога'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [paste node as child] -->
+
+    <x:component coid = "${z:vid(v, 'tree-paste-child')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Вст. вниз', hidden: true,
+        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+        tooltip: 'Вставить вырезанный каталог как последний дочерний выделеного каталога'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [paste node as prev] -->
+
+    <x:component coid = "${z:vid(v, 'tree-paste-prev')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Вст. рядом', hidden: true,
+        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+        tooltip: 'Вставить вырезанный каталог на уровне выделеного каталога'
+      </f:facet>
+    </x:component>
+
+
     <!-- [add empty node] -->
 
     <x:component coid = "${z:vid(v, 'tree-add')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Добавить', margin: extjsf.pts(0, 4, 0, 4),
+        xtype: 'button', text: 'Добавить', margin: extjsf.pts(0, 4, 0, 0),
         tooltipType: 'title', tooltip: 'Добавить новый каталог как дочерний к выбранному'
       </f:facet>
     </x:component>
@@ -205,6 +250,8 @@ ${v.checkModelRequestedWithRedirect}
        n.sort(nodesSorter, true)
        n.on('expand', doResizeColumn)
        n.on('collapse', doResizeColumn)
+
+       return n;
     }
 
     store.on('load', function(store, rows)
@@ -224,7 +271,7 @@ ${v.checkModelRequestedWithRedirect}
 
        //~: create root node
        if(!map['']) map[''] = { k: '' }
-       createRootNode(map)
+       var root = createRootNode(map);
 
        //~: restore previous selection
        store.retradeLastSelection = null;
@@ -242,6 +289,13 @@ ${v.checkModelRequestedWithRedirect}
 
        //~: resize tree column
        doResizeColumn()
+
+       //~: select the root
+       ZeT.timeout(250, function()
+       {
+         extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+           getSelectionModel().select(root)
+       })
     })
 
 
@@ -365,6 +419,130 @@ ${v.checkModelRequestedWithRedirect}
 
   })
 
+  //~: tree cut show-hide
+  extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').retradeEnableCutPaste = function(x)
+  {
+    var BTNS = [
+      "${z:vid(v, 'tree-cut-cancel')}",
+      "${z:vid(v, 'tree-paste-child')}",
+      "${z:vid(v, 'tree-paste-prev')}"
+    ];
+
+    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}');
+
+    //~: hide cut button
+    ctl.component().setVisible(!x)
+
+    //show the related buttons
+    for(var i = 0;(i < BTNS.length);i++)
+      extjsf.component(BTNS[i], '${rootView.extjsDomain}').setVisible(x)
+  }
+
+  extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').retradeShowNode = function(node, v)
+  {
+    if(v) node.getOwnerTree().getView().removeRowCls(node, 'retrade-almost-opaque')
+    else  node.getOwnerTree().getView().addRowCls(node, 'retrade-almost-opaque')
+  }
+
+  //~: tree cut button
+  extjsf.bindHandler("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}', function()
+  {
+    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}');
+
+    //~: enable cut
+    ctl.retradeEnableCutPaste(true)
+
+    //?: {has a node cut} show it back
+    if(ctl.retradeNodeCut) ctl.retradeShowNode(ctl.retradeNodeCut, true)
+    ctl.retradeNodeCut = null;
+
+    //~: selected folder
+    var sel = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+      getSelectionModel().getSelection();
+    if(sel && (sel.length == 1)) sel = sel[0];
+
+    //?: {not a valid folder selected}
+    if(!sel || (sel.get('modelId') == '$'))
+    {
+      ctl.retradeEnableCutPaste(false)
+      return;
+    }
+
+    //~: hide current node
+    ctl.retradeShowNode(ctl.retradeNodeCut = sel, false)
+  })
+
+  //~: tree cut cancel button
+  extjsf.bindHandler("${z:vid(v, 'tree-cut-cancel')}", '${rootView.extjsDomain}', function()
+  {
+    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}');
+
+    //~: disable cut
+    ctl.retradeEnableCutPaste(false)
+
+    //?: {has a node cut} show it back
+    if(ctl.retradeNodeCut) ctl.retradeShowNode(ctl.retradeNodeCut, true)
+    ctl.retradeNodeCut = null;
+  })
+
+  //~: tree paste general function
+  extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').retradePasteNode = function(xyz)
+  {
+    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}');
+
+    //~: disable cut
+    ctl.retradeEnableCutPaste(false)
+
+    //?: {has no node cut} do nothing
+    var cut = ctl.retradeNodeCut; if(!cut) return
+    ctl.retradeNodeCut = null;
+
+    //~: show it back
+    ctl.retradeShowNode(cut, true)
+
+    //~: selected folder
+    var sel = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+      getSelectionModel().getSelection();
+    if(sel && (sel.length == 1)) sel = sel[0];
+
+    //?: {there is no current selection | selected the same node}
+    if(!sel || (sel == cut)) return
+
+    //?: {selected in the same sub-tree]
+    if(cut.contains(sel)) return
+
+    //?: {append as the child}
+    if(xyz == 'child')
+    {
+      sel.expand()
+      sel.appendChild(cut)
+    }
+
+    //?: {insert before}
+    else if(xyz == 'prev')
+    {
+      //?: {is a root node}
+      if(!sel.parentNode) return
+
+      sel.parentNode.expand()
+      sel.parentNode.insertBefore(cut, sel)
+    }
+  }
+
+  //~: tree paste down button
+  extjsf.bindHandler("${z:vid(v, 'tree-paste-child')}", '${rootView.extjsDomain}', function()
+  {
+    extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').
+      retradePasteNode('child')
+  })
+
+  //~: tree paste before button
+  extjsf.bindHandler("${z:vid(v, 'tree-paste-prev')}", '${rootView.extjsDomain}', function()
+  {
+    extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').
+      retradePasteNode('prev')
+  })
+
   //]]>
   </script>
 
@@ -375,7 +553,7 @@ ${v.checkModelRequestedWithRedirect}
     <f:facet name = "extjs-props">
 
       xtype: 'treepanel', store: "${z:vid(v, 'goodsTreeStore')}",
-      border: false, flex: 1,
+      border: false, flex: 2,
       rootVisible : true, animate: false,
       enableColumnHide: false, sortableColumns: false,
 
@@ -389,8 +567,6 @@ ${v.checkModelRequestedWithRedirect}
         {
            if(e.record.get('modelId') == '$') return false;
         }
-
-
       }}],
 
       columns: [
@@ -422,17 +598,15 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle(e.record)
   })
 
-
   //]]>
   </script>
-
 
   <!-- tree with goods folders] -->
 
 
   <x:component coid = "${z:vid(v, '_folder_goods_spliter')}">
     <f:facet name = "extjs-props">
-      xtype: 'splitter', collapsible: false
+      xtype: 'splitter', collapsible: true, collapseTarget: 'prev'
     </f:facet>
   </x:component>
 
@@ -440,7 +614,7 @@ ${v.checkModelRequestedWithRedirect}
   <!-- [grid with folder goods -->
 
   <x:data-store storeId = "${z:vid(v, 'folderGoodsStore')}"
-    modelView = "${v}" modelRequest = "goods" pageSize = "10">
+    modelView = "${v}" modelRequest = "goods" pageSize = "14">
 
     <f:facet name = "store-props">
       model: 'retrade.model.GoodUnitView',
@@ -456,8 +630,10 @@ ${v.checkModelRequestedWithRedirect}
   <x:component coid = "${z:vid(v, 'folder-goods-layout')}">
     <f:facet name = "extjs-props">
 
-      xtype: 'panel', flex: 1, border: false, layout: 'fit',
-      bodyCls: 'retrade-back-panel', title: 'Выберете каталог в дереве'
+      xtype: 'panel', flex: 3, border: false, layout: 'fit',
+      collapsible: true, collapseDirection: 'bottom',
+      bodyCls: 'retrade-back-panel',
+      title: 'Выберете каталог в дереве'
 
     </f:facet>
 
@@ -891,13 +1067,19 @@ ${v.checkModelRequestedWithRedirect}
     })
   }
 
-
   //~: on tree selection change
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('selectionchange', function(tree, sel)
   {
+    //~: show the goods
     extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeShowFolderGoods()
-  })
 
+    //~: current selection
+    sel = sel.length && sel[0];
+
+    //?: {no selection | root}
+    extjsf.component("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').
+      setDisabled(!sel || (sel.get('modelId') == '$'))
+  })
 
   //~: with sub-folders changed
   extjsf.bind("${z:vid(v, 'with-subfolders')}", '${rootView.extjsDomain}').on('change', function()

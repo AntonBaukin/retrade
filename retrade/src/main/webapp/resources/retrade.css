@@ -27,6 +27,14 @@
 }
 
 
+/* general */
+
+.retrade-almost-opaque
+{
+  opacity: 0.25;
+}
+
+
 /* panels */
 
 .retrade-toolbar-panel, .retrade-toolbar-inline-panel
