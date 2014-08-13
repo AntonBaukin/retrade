@@ -227,8 +227,9 @@ public class ActTreeDomain extends ActionBuilderXRoot
 		{
 			TreeDomain td = (TreeDomain) ((Action) ctx).getTask().getTarget();
 
-			return (bean(GetTree.class).
-			  getDomain(td.getDomain().getPrimaryKey(), treeType, null) == null);
+			return (bean(GetTree.class).getDomain(
+			  td.getDomain().getPrimaryKey(), treeType,
+			  (td.getOwner() == null)?(null):(td.getOwner().getPrimaryKey())) == null);
 		}
 
 		protected final UnityType treeType;

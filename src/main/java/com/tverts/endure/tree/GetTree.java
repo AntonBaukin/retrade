@@ -38,17 +38,17 @@ public class GetTree extends GetObjectBase
 /*
 
  from TreeDomain where (domain.id = :domain) and
-   (treeType = :type) and (domain.owner.id is null)
+   (treeType = :type) and (owner is null)
 
  from TreeDomain where (domain.id = :domain) and
-   (treeType = :type) and (domain.owner.id = :owner)
+   (treeType = :type) and (owner.id = :owner)
 
  */
 
 		final String N =
 
 "from TreeDomain where (domain.id = :domain) and\n" +
-"  (treeType = :type) and (domain.owner.id is null)";
+"  (treeType = :type) and (owner is null)";
 
 		if(owner == null)
 			return object(TreeDomain.class, N, "domain", domain, "type", type);
@@ -57,7 +57,7 @@ public class GetTree extends GetObjectBase
 		final String Y =
 
 "from TreeDomain where (domain.id = :domain) and\n" +
-"  (treeType = :type) and (domain.owner.id = :owner)";
+"  (treeType = :type) and (owner.id = :owner)";
 
 		return object(TreeDomain.class, Y,
 		  "domain", domain, "type", type, "owner", owner);
