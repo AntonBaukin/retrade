@@ -21,8 +21,8 @@ import com.tverts.model.ModelData;
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
-import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.GoodsTreeModelBean;
+import com.tverts.retrade.domain.goods.GoodUnit;
 
 /* com.tverts: retrade data (goods) */
 
@@ -82,19 +82,14 @@ public class FacesClientGoodsTreeView extends FacesGoodsTreeView
 
 	/* protected: ModelView interface */
 
-	protected GoodsTreeModelBean createModel()
-	{
-		ClientGoodsTreeModelBean mb = new ClientGoodsTreeModelBean();
-
-		//=: domain
-		mb.setDomain(getDomainKey());
-
-		return mb;
-	}
-
 	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof ClientGoodsTreeModelBean);
+	}
+
+	protected GoodsTreeModelBean createModelInstance()
+	{
+		return new ClientGoodsTreeModelBean();
 	}
 
 

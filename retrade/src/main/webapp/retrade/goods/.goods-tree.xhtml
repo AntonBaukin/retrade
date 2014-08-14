@@ -561,9 +561,10 @@
     <f:facet name = "extjs-props">
 
       xtype: 'treepanel', store: "${z:vid(v, 'goodsTreeStore')}",
-      border: false, flex: 2,
-      rootVisible : true, animate: false,
+      border: false, flex: 2, rootVisible : true, animate: false,
       enableColumnHide: false, sortableColumns: false,
+      selectModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+      #{largerGrids?("cls: 'retrade-grid-large',"):('')}
 
       <ui:fragment rendered = "#{canEditTree}">
 
@@ -595,9 +596,55 @@
     </f:facet>
   </x:component>
 
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: single click expand-collapse
+  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('add', function(tree)
+  {
+    var prevSelection, expandTime = 0;
+
+    //~: listen expand-collapse click
+    tree.getView().on('beforecellmousedown', function(tree2, td, ci, node, tr, ri, e)
+    {
+      //?: {is not a tree special column}
+      var cs = extjsf.support.gridColumns(tree, true);
+      if(cs[ci].xtype != 'treecolumn') return
+
+      //?: {is not expander icon}
+      if(node.isExpandable())
+        if(!Ext.get(e.getTarget()).hasCls('x-tree-expander'))
+        {
+          if(node.isExpanded()) node.collapse(); else node.expand()
+          expandTime = new Date().getTime();
+          prevSelection = tree.getSelectionModel().getLastSelected();
+        }
+    })
+
+    //~: listen selection change
+    tree.on('beforeselect', function(tree2, node)
+    {
+      var ts = new Date().getTime() - expandTime;
+
+      //?: {prevent selection}
+      if(ts >= 200) prevSelection = null; else
+      {
+        if(prevSelection)
+          tree.getSelectionModel().select(prevSelection, false, true)
+        return false
+      }
+    })
+  })
+
+  //]]>
+  </script>
+
   <ui:fragment rendered = "#{canEditTree}">
   <script type = "text/javascript">
   //<![CDATA[
+
+
+
 
   //~: after tree cell edited
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('edit', function(ed, e)
@@ -979,6 +1026,7 @@
 
         <f:facet name = "grid-props">
 
+          #{largerGrids?("cls: 'retrade-grid-large',"):('')}
           preventHeader: true, pager: true,
           sortableColumns: true, border: false,
           columns: ZeT.defined('#{goodsColumnModel}'),

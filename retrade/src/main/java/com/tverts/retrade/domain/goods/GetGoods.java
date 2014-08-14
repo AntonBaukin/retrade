@@ -1509,10 +1509,8 @@ from GoodPrice gp where
 
 "gu.id not in (select ti.item.id from TreeItem ti where (ti.folder.domain = :tree))";
 
-			qb.getClauseWhere().addPart(XOUT).
-			  param("tree", bean(GetTree.class).getDomain(
-			    mb.domain(), Goods.TYPE_GOODS_TREE, null
-			  ));
+			qb.getClauseWhere().addPart(XOUT).param("tree",
+			  bean(GetTree.class).getDomain(EX.assertn(mb.getTreeDomain())));
 		}
 	}
 

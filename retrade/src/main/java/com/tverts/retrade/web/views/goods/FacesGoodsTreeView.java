@@ -107,9 +107,8 @@ public class FacesGoodsTreeView extends FacesGoodsView
 		if(views.isEmpty()) return null;
 
 		//~: get the goods Tree Domain
-		TreeDomain td = bean(GetTree.class).
-		  getDomain(getModel().domain(), Goods.TYPE_GOODS_TREE, null);
-		if(td == null) throw EX.state();
+		TreeDomain td = EX.assertn(bean(GetTree.class).
+			 getDomain(getModel().getTreeDomain()));
 
 		//~: load all the folders in the current session
 		List<TreeFolder> folders =
@@ -219,10 +218,13 @@ public class FacesGoodsTreeView extends FacesGoodsView
 
 	protected GoodsTreeModelBean createModel()
 	{
-		GoodsTreeModelBean mb = new GoodsTreeModelBean();
+		GoodsTreeModelBean mb = createModelInstance();
 
 		//=: domain
 		mb.setDomain(getDomainKey());
+
+		//=: tree domain
+		mb.setTreeDomain(EX.assertn(provideTreeDomian()));
 
 		return mb;
 	}
@@ -230,5 +232,16 @@ public class FacesGoodsTreeView extends FacesGoodsView
 	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof GoodsTreeModelBean);
+	}
+
+	protected GoodsTreeModelBean createModelInstance()
+	{
+		return new GoodsTreeModelBean();
+	}
+
+	protected Long provideTreeDomian()
+	{
+		return bean(GetTree.class).getDomain(getDomainKey(),
+		  Goods.TYPE_GOODS_TREE, null).getPrimaryKey();
 	}
 }

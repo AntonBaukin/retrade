@@ -30,7 +30,6 @@ import com.tverts.endure.tree.TreeNodeView;
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
-import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.goods.GoodsTreeModelBean;
 import com.tverts.retrade.domain.goods.GoodUnitView;
 
@@ -96,8 +95,9 @@ public class GoodsTreeModelData implements ModelData
 	{
 		if(!isTreeRequest()) return null;
 
-		List<TreeFolder>   fds = bean(GetTree.class).
-		  selectFolders(getModel().domain(), Goods.TYPE_GOODS_TREE);
+		GetTree            get = bean(GetTree.class);
+		List<TreeFolder>   fds = get.selectFolders(
+		  get.getDomain(model.getTreeDomain()));
 
 		List<TreeNodeView> res =
 		  new ArrayList<TreeNodeView>(fds.size());

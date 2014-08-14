@@ -1071,12 +1071,20 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		var functs = this._listeners[ename] || [];
 		var target = this._component || this;
 
+		//HINT: we return the first defined result!
+
+		var result = undefined;
 		for(var i = 0, l = functs.length;(i < l);i++)
-			functs[i].apply(target, args)
+		{
+			var r = functs[i].apply(target, args);
+			if(!ZeT.isu(r) && ZeT.isu(result)) result = r;
+		}
 
 		//?: {before destroy} unbind
 		if(ename === 'beforedestroy')
 			this.on_destroy(args[0])
+
+		return result
 	},
 
 	_bind_on         : function(ename, res)

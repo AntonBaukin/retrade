@@ -23,6 +23,22 @@ public class GoodsTreeModelBean extends GoodsModelBean
 	/* Goods Tree Model Bean */
 
 	/**
+	 * Tree Domain this model is for.
+	 * Must be always defined!
+	 */
+	public Long getTreeDomain()
+	{
+		return treeDomain;
+	}
+
+	private Long treeDomain;
+
+	public void setTreeDomain(Long treeDomain)
+	{
+		this.treeDomain = treeDomain;
+	}
+
+	/**
 	 * Currently selected Tree Folder.
 	 */
 	public Long getCurrentFolder()
