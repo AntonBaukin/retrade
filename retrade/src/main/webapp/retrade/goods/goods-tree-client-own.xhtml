@@ -1,0 +1,60 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesClientOwnGoodsTreeView}"/>
+
+${rootView.forceSecureClientOnly(true)}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = ".goods-tree.xhtml">
+
+  <ui:param name = "v" value = "#{v}"/>
+
+  <ui:param name = "canEditTree" value = "#{true}"/>
+  <ui:param name = "canEditGoods" value = "#{false}"/>
+
+  <ui:param name = "panelTitle" value = "Каталог товаров нашей организации"/>
+  <ui:param name = "largerGrids" value = "#{true}"/>
+
+  <ui:param name = "goodsModel"
+    value = "retrade.model.GoodPriceView"/>
+
+  <ui:param name = "goodsColumnModel"
+    value = "retrade.columns.ClientGoodPriceView"/>
+
+  <ui:param name = "goodsColumnSelModel"
+    value = "extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})"/>
+
+
+  <ui:define name = "tree-ext">
+
+    <!-- [good info window] -->
+    <ui:decorate template = ".good-info-body.xhtml">
+      <ui:param name = "v"      value = "#{v}"/>
+      <ui:param name = "gridId" value = "grid"/>
+    </ui:decorate>
+
+  </ui:define>
+</ui:decorate>
+
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+    <!-- [good info window] -->
+    <ui:decorate template = ".good-info-post.xhtml">
+      <ui:param name = "v" value = "#{v}"/>
+    </ui:decorate>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

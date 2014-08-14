@@ -57,8 +57,12 @@ var extjsf = ZeT.define('extjsf',
 		if(!ZeT.iss(domain)) domain = '';
 
 		var domo = extjsf$domains[domain];
+		var bind = domo && domo[name];
+
 		//ZeT.log('?bind [', name, '] @ [', domain, ']: ', !!(domo && domo[name]))
-		return domo && domo[name];
+		if(!bind) ZeT.log('missing Bind: ', name)
+
+		return bind
 	},
 
 	unbind           : function(name, domain)

@@ -291,7 +291,6 @@
     store.load()
   })
 
-
   //~: expand the tree
   extjsf.bindHandler("${z:vid(v, 'expand-tree')}", '${rootView.extjsDomain}', function()
   {
@@ -572,7 +571,7 @@
         { ptype: 'treeviewdragdrop', containerScroll: true, appendOnly: true },
       ]},
 
-      plugins: [{ ptype: 'cellediting', listeners: {
+      plugins: [{ ptype: 'cellediting', pluginId: 'cellediting', listeners: {
 
         beforeedit: function(ed, e)
         {
@@ -602,14 +601,30 @@
   //~: single click expand-collapse
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('add', function(tree)
   {
-    var prevSelection, expandTime = 0;
+    var expandSelected, expandTime = 0;
 
     //~: listen expand-collapse click
     tree.getView().on('beforecellmousedown', function(tree2, td, ci, node, tr, ri, e)
     {
+      var sel = tree.getSelectionModel().getLastSelected();
+
       //?: {is not a tree special column}
       var cs = extjsf.support.gridColumns(tree, true);
-      if(cs[ci].xtype != 'treecolumn') return
+      if(cs[ci].xtype != 'treecolumn')
+      {
+        //?: {table cell second click to start editing}
+        if(('#{canEditTree}' == 'true') && (sel === node) && (node.get('modelId') != '$'))
+        {
+          var p = tree.getPlugin('cellediting');
+
+          ZeT.timeout(200, function()
+          {
+            p.startEditByPosition({ row: ri, column: ci })
+          })
+        }
+
+        return
+      }
 
       //?: {is not expander icon}
       if(node.isExpandable())
@@ -617,7 +632,7 @@
         {
           if(node.isExpanded()) node.collapse(); else node.expand()
           expandTime = new Date().getTime();
-          prevSelection = tree.getSelectionModel().getLastSelected();
+          expandSelected = tree.getSelectionModel().getLastSelected();
         }
     })
 
@@ -627,10 +642,10 @@
       var ts = new Date().getTime() - expandTime;
 
       //?: {prevent selection}
-      if(ts >= 200) prevSelection = null; else
+      if(ts < 200)
       {
-        if(prevSelection)
-          tree.getSelectionModel().select(prevSelection, false, true)
+        if(expandSelected)
+          tree.getSelectionModel().select(expandSelected, false, true)
         return false
       }
     })
@@ -642,9 +657,6 @@
   <ui:fragment rendered = "#{canEditTree}">
   <script type = "text/javascript">
   //<![CDATA[
-
-
-
 
   //~: after tree cell edited
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('edit', function(ed, e)
@@ -722,16 +734,15 @@
         </f:facet>
 
 
-        <ui:fragment rendered = "#{canEditGoods}">
+        <ui:fragment rendered = "#{canEditTree}">
 
         <!-- [add goods to selected node] -->
 
         <x:component coid = "${z:vid(v, 'tree-add-goods')}">
           <f:facet name = "extjs-props">
-            xtype: 'button', text: 'Добавить', hidden: true,
+            xtype: 'button', text: 'Добавить',
             margin: extjsf.pts(0, 4, 0, 0),
-            tooltipType: 'title', tooltip: 'Добавить товары текущей выборки в указанный каталог',
-            disabled: ${not rootView.isSecure('edit: goods')}
+            tooltipType: 'title', tooltip: 'Добавить товары текущей выборки в указанный каталог'
           </f:facet>
         </x:component>
 
@@ -742,11 +753,14 @@
           <f:facet name = "extjs-props">
             xtype: 'button', text: 'Поместить в',
             margin: extjsf.pts(0, 4, 0, 0),
-            tooltipType: 'title', tooltip: 'Переместить товары текущей выборки в указанный каталог',
-            disabled: ${not rootView.isSecure('edit: goods')}
+            tooltipType: 'title', tooltip: 'Переместить товары текущей выборки в указанный каталог'
           </f:facet>
         </x:component>
 
+        </ui:fragment>
+
+
+        <ui:fragment rendered = "#{canEditGoods}">
 
         <!-- [add-edit good -->
 

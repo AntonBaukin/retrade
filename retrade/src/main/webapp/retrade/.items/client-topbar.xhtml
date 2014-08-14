@@ -44,6 +44,20 @@
       <f:facet name = "extjs-props">
 
         xtype: 'button', flex: 0, text: 'Товары',
+        margin: extjsf.dpts(0, 6, 0, 0), height: 30,
+        iconCls: 'retrade-goods-icon',
+        componentCls: 'retrade-button-22pt'
+
+      </f:facet>
+    </x:component>
+
+
+    <!-- [goods tree own] -->
+
+    <x:component coid = "${z:vid(localView, 'retrade-goods-tree-own')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', flex: 0, text: 'Наши товары',
         margin: extjsf.dpts(0, 0, 0, 0), height: 30,
         iconCls: 'retrade-goods-icon',
         componentCls: 'retrade-button-22pt'
@@ -181,6 +195,19 @@
 
     ReTrade.desktop.loadDesktopPanel(
       "${z:url('/go/retrade/goods/goods-tree-client')}", {
+      'domain': domain
+    })
+  })
+
+
+  //~: open goods tree own (for editing)
+  extjsf.bindHandler("${z:vid(localView, 'retrade-goods-tree-own')}",
+    '${rootView.extjsDomain}', function()
+  {
+    var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-tree-own:');
+
+    ReTrade.desktop.loadDesktopPanel(
+      "${z:url('/go/retrade/goods/goods-tree-client-own')}", {
       'domain': domain
     })
   })

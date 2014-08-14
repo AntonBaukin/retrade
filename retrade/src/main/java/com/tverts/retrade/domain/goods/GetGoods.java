@@ -156,27 +156,25 @@ order by gu.id
 		  list();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<GoodUnit> getSelectedGoodUnits(Long domain, String selset)
 	{
 /*
 
  from GoodUnit gu where (gu.domain.id = :domain) and
    gu.id in (select si.object from SelItem si join si.selSet ss
-    where (ss.name = :set) and (ss.login.id = :login))
+     where (ss.name = :selset) and (ss.login.id = :login))
 
  */
-		return (List<GoodUnit>) Q(
+		final String Q =
 
 "from GoodUnit gu where (gu.domain.id = :domain) and\n" +
-" gu.id in (select si.object from SelItem si join si.selSet ss\n" +
-"   where (ss.name = :set) and (ss.login.id = :login))"
+"  gu.id in (select si.object from SelItem si join si.selSet ss\n" +
+"    where (ss.name = :selset) and (ss.login.id = :login))";
 
-		).
-		  setLong  ("domain", domain).
-		  setString("set",    selset).
-		  setLong  ("login",  SecPoint.login()).
-		  list();
+		return list(GoodUnit.class, Q,
+		  "domain", domain, "selset", selset,
+		  "login",  SecPoint.login()
+		);
 	}
 
 	@SuppressWarnings("unchecked")
