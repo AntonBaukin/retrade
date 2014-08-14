@@ -33,6 +33,11 @@ public class GetTree extends GetObjectBase
 {
 	/* Get Tree Domains */
 
+	public TreeDomain getDomain(Long pk)
+	{
+		return get(TreeDomain.class, pk);
+	}
+
 	public TreeDomain getDomain(Long domain, UnityType type, Long owner)
 	{
 /*
@@ -94,6 +99,8 @@ public class GetTree extends GetObjectBase
 	@SuppressWarnings("unchecked")
 	public List<TreeFolder> selectFolders(TreeDomain domain)
 	{
+		EX.assertn(domain);
+
 
 // from TreeFolder where (domain = :domain)
 
@@ -102,18 +109,6 @@ public class GetTree extends GetObjectBase
 		).
 		  setParameter("domain", domain).
 		  list();
-	}
-
-	public List<TreeFolder> selectFolders(Long domain, String treeType)
-	{
-		//~: find domain
-		TreeDomain td = getDomain(domain, treeType, null);
-		if(td == null) throw EX.state(
-		  "Domain [", domain, "] has no Tree Domain named [",
-		  treeType, "]!"
-		);
-
-		return selectFolders(td);
 	}
 
 
