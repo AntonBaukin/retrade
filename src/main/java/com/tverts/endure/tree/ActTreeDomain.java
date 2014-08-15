@@ -3,6 +3,7 @@ package com.tverts.endure.tree;
 /* Java */
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Random;
 
 /* Hibernate Persistence Layer */
 
+import com.tverts.endure.NumericIdentity;
 import org.hibernate.Query;
 
 /* com.tverts: hibery */
@@ -106,7 +108,9 @@ public class ActTreeDomain extends ActionBuilderXRoot
 	  ActTreeFolder.class.getName() + ": folders";
 
 	/**
-	 * {@link United} instance to process.
+	 * A single {@link United} instance to process,
+	 * or it's primary key, or the list of items
+	 * of the keys.
 	 */
 	public static final String PARAM_ITEM    =
 	  ActTreeFolder.class.getName() + ": item";
@@ -175,6 +179,7 @@ public class ActTreeDomain extends ActionBuilderXRoot
 		complete(abr);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void deleteItemFromAllFolders(ActionBuildRec abr)
 	{
 		//?: {target is not a Tree Domain}
@@ -184,10 +189,16 @@ public class ActTreeDomain extends ActionBuilderXRoot
 		if(param(abr, ActTreeFolder.PARAM_ITEM) == null)
 			throw EX.arg("No Unity Item parameter set!");
 
-		//~: remove the item
-		chain(abr).first(new DeleteItemFromAllFolders(task(abr),
-		  param(abr, PARAM_ITEM, United.class)
-		));
+		//~: items to remove
+		Object its = EX.assertn(param(abr, PARAM_ITEM),
+		  "Missing required parameter PARAM_ITEM!"
+		);
+
+		if(!(its instanceof Collection))
+			its = Collections.singleton(its);
+
+		//~: remove the items
+		chain(abr).first(new DeleteItemFromAllFolders(task(abr), (Collection)its));
 
 		complete(abr);
 	}
@@ -544,54 +555,61 @@ public class ActTreeDomain extends ActionBuilderXRoot
 	{
 		/* constructor */
 
-		public DeleteItemFromAllFolders(ActionTask task, United unity)
+		public DeleteItemFromAllFolders(ActionTask task, Collection items)
 		{
 			super(task);
-			this.unity = unity;
+			this.items = items;
 		}
 
 
 		/* public: action interface */
 
-		public Object  getResult()
+		public Object getResult()
 		{
-			return unity;
+			return target(TreeDomain.class);
 		}
 
 
 		/* protected: ActionBase interface */
 
+		@SuppressWarnings("unchecked")
 		protected void execute()
 		  throws Throwable
 		{
-			TreeDomain domain = target(TreeDomain.class);
-
-			//~: load tree items affected
-			List<TreeItem> items = bean(GetTree.class).
-			  getTreeItems(domain, unity.getPrimaryKey());
 
 // delete from TreeCross where (item.id = :item)
 
-			Query query = session().createQuery(
-"  delete from TreeCross where (item.id = :item)"
-			);
+			final String Q =
+"  delete from TreeCross where (item.id = :item)";
 
-			//~: delete them
-			for(TreeItem i : items)
+			TreeDomain domain = target(TreeDomain.class);
+			Query      query  = session().createQuery(Q);
+
+			for(Object pk : this.items)
 			{
-				//~: delete the crosses
-				query.setLong("item", i.getPrimaryKey()).executeUpdate();
+				if(pk instanceof NumericIdentity)
+					pk = ((NumericIdentity)pk).getPrimaryKey();
+				if(!(pk instanceof Long)) throw EX.arg();
 
-				session().delete(i);
+				//~: load tree items affected
+				List<TreeItem> items = bean(GetTree.class).
+				  getTreeItems(domain, (Long)pk);
+
+				//~: delete them
+				for(TreeItem i : items)
+				{
+					//~: delete the crosses
+					query.setLong("item", i.getPrimaryKey()).executeUpdate();
+
+					//~: delete the item itself
+					session().delete(i);
+				}
 			}
-
-			//~: flush the results
-			//flush(session());
 		}
 
 
 		/* the united instance to remove */
 
-		private United unity;
+		private Collection items;
 	}
 }
