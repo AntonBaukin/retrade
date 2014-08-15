@@ -167,18 +167,27 @@ public class FacesGoodsTreeView extends FacesGoodsView
 
 		boolean copy = "true".equals(request().getParameter("copyGoods"));
 
-		//c: process the goods
+		//c: add the goods
 		for(GoodUnit g : goods)
-		{
-			//?: {moving the goods} remove them
-			if(!copy) actionRun(
-			  ActTreeDomain.DELETE_ITEM, tf.getDomain(),
-			  ActTreeDomain.PARAM_ITEM, g
+			actionRun(ActTreeFolder.ADD, tf,
+			  ActTreeFolder.PARAM_ITEM,   g,
+			  ActTreeFolder.PARAM_SINGLE, !copy
 			);
 
-			//~: add the good
-			actionRun(ActTreeFolder.ADD, tf, ActTreeFolder.PARAM_ITEM, g);
-		}
+		return null;
+	}
+
+	public String doUnlinkSelectedGoods()
+	{
+//		//~: load current folder
+//		String     pk = s2s(request().getParameter("destinationFolder"));
+//		TreeFolder tf = (pk == null)?(null):loadFolder(Long.parseLong(pk));
+//		if(tf == null) throw EX.arg("No destination Tree Folder is given!");
+//
+//		//~: selection set
+//		String selset = s2s(request().getParameter("selset"));
+//		if(selset == null) selset = "";
+
 
 		return null;
 	}

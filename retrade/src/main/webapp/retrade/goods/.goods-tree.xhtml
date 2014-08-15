@@ -751,9 +751,20 @@
 
         <x:component coid = "${z:vid(v, 'tree-move-goods')}">
           <f:facet name = "extjs-props">
-            xtype: 'button', text: 'Поместить в',
+            xtype: 'button', text: 'Переместить',
             margin: extjsf.pts(0, 4, 0, 0),
             tooltipType: 'title', tooltip: 'Переместить товары текущей выборки в указанный каталог'
+          </f:facet>
+        </x:component>
+
+
+        <!-- [unlink goods from selected node] -->
+
+        <x:component coid = "${z:vid(v, 'tree-unlink-goods')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', text: 'Изъять',
+            margin: extjsf.pts(0, 4, 0, 0),
+            tooltipType: 'title', tooltip: 'Изъять товары текущей выборки из указанного каталога'
           </f:facet>
         </x:component>
 
@@ -1122,10 +1133,11 @@
     extjsf.component("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').show()
 
     //~: disable controls when root node selected
-    if('#{canEditGoods}' == 'true')
+    if('#{canEditTree}' == 'true')
     {
       extjsf.component("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
       extjsf.component("${z:vid(v, 'tree-move-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
+      extjsf.component("${z:vid(v, 'tree-unlink-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
       extjsf.component("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
       extjsf.component("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
     }
@@ -1171,6 +1183,14 @@
   <ui:fragment rendered = "#{canEditTree}">
 
   <x:action-call coid = "${z:vid(v, 'tree-move-goods-script')}"
+    action = "#{v.doMoveSelectedGoods}">
+
+    <f:facet name = "action-params">
+      '${v.modelParam}': '${v.modelKeys}'
+    </f:facet>
+  </x:action-call>
+
+  <x:action-call coid = "${z:vid(v, 'tree-unlink-goods-script')}"
     action = "#{v.doMoveSelectedGoods}">
 
     <f:facet name = "action-params">

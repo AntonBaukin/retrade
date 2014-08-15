@@ -32,8 +32,9 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [good info window] -->
     <ui:decorate template = ".good-info-body.xhtml">
-      <ui:param name = "v"      value = "#{v}"/>
+      <ui:param name = "v" value = "#{v}"/>
       <ui:param name = "gridId" value = "grid"/>
+      <ui:param name = "repeatedClick" value = "true"/>
     </ui:decorate>
 
   </ui:define>
