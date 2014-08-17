@@ -15,8 +15,10 @@
 </head>
 
 <body>
+
 <script type = "text/javascript">
 //<![CDATA[
+
 window.onload = function()
 {
   //<: search by id
@@ -32,7 +34,12 @@ window.onload = function()
 
   //>: search by id
 
+  //~: search by the class
+  var o = { class: 'span-in-c' }
+  ZeT.Layout.Treeters.findNodeByClass.proc(a, o)
+  ZeT.assert(o.result && (o.result.parentNode.id == 'c'))
 }
+
 //]]>
 </script>
 

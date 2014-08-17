@@ -287,22 +287,21 @@ td.retrade-action-cell
 
 /* events */
 
-table.retrade-desktop-event
+div.retrade-desktop-event
 {
   position: absolute; top: 0; right: 0;
-  cursor: default;
+  max-width: 200pt; cursor: default;
 }
 
 div.retrade-desktop-event-content
 {
-  max-width: 180pt;
   font-family: 'Tahoma', sans-serif;
   font-size: 10pt; font-style: normal;
 }
 
 div.retrade-desktop-event-content.retrade-desktop-event-error-content
 {
-  color: #fafafa; font-weight: bolder;
+  color: yellow; font-weight: bolder;
 }
 
 

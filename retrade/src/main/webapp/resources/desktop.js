@@ -73,7 +73,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 		  ZeT.Border.Full, ZeT.Border.full({ classes: xopts.borderClassNames }),
 
-		  ZeT.Layout.Fill, {
+		  ZeT.Layout.Proc.Wrap, { html: '<div/>',
 		    classes: xopts.eventFrameClassNames,
 		    styles: { display: 'none', zIndex: xopts.zIndex }
 		  }
@@ -130,7 +130,6 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		    'retrade-desktop-event-content',
 		    'retrade-desktop-event-error-content'
 		  ]
-
 		};
 
 		ZeT.extend(xopts, opts)

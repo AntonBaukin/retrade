@@ -1293,7 +1293,7 @@ ZeT.Layout.Template.Ways = ZeT.define('ZeT.Layout.Template.Ways', {
  *
  *  string or array of class names. (See ZeTD.classes().);
  *
- *  · attr, pattrs       (optional)
+ *  · attrs, pattrs       (optional)
  *
  *  object with attributes to set. (See ZeTD.attrs().);
  *
@@ -1582,7 +1582,7 @@ ZeT.Layout.Treeter = ZeT.defineClass('ZeT.Layout.Treeter', {
 			opts.treetlv = 1;
 			this._proc(node, opts)
 
-			opts.treetit--;
+			opts.treetit--
 		}
 
 		opts.treetlv = 1;
@@ -1646,16 +1646,16 @@ ZeT.Layout.Treeter = ZeT.defineClass('ZeT.Layout.Treeter', {
 			//!: go recursively (into elements)
 			if(ZeTD.isn(n))
 			{
-				opts.treetlv++;
+				opts.treetlv++
 				if(!this._proc(n, opts))
-					return false;
-				opts.treetlv--;
+					return false
+				opts.treetlv--
 			}
 
 			n = s;
 		}
 
-		return true;
+		return true
 	}
 })
 
@@ -1675,17 +1675,27 @@ ZeT.Layout.Treeters = ZeT.define('ZeT.Layout.Treeters', {
 	{
 		//?: {this node is not that having goal ID}
 		if(!ZeTD.isn(node) || !(node.id === opts.id))
-			return node; //<-- will left the node unchanged
+			return node //<-- will left the node unchanged
 
 		opts.result = node;
-		return true; //<-- will break
+		return false //<-- will break
+	}),
+
+	findNodeByClass   : new ZeT.Layout.Treeter(function(node, opts)
+	{
+		//?: {this node is not that having goal class}
+		if(!ZeTD.isn(node) || !ZeTD.hasclass(node, opts.class))
+			return node //<-- will left the node unchanged
+
+		opts.result = node;
+		return false //<-- will break
 	}),
 
 	cleanWs           : new ZeT.Layout.Treeter(function(node)
 	{
 		if((node.nodeType === 3) && ZeTS.ises(node.nodeValue))
-			return undefined; //<-- will remove this text node
-		return node; //<-- will left the node unchanged
+			return undefined //<-- will remove this text node
+		return node //<-- will left the node unchanged
 	})
 })
 
@@ -1800,7 +1810,7 @@ ZeT.Layout.procPipeCall = ZeT.define('ZeT.Layout.procPipeCall()', function()
  *  instance of ZeT.Layout.Template to create the node.
  *  May be also an ID in the global templates area;
  *
- *  · cloneOpts
+ *  · cloneOpts (optional)
  *
  *  options to give to the template clone operation;
  *
@@ -1834,15 +1844,12 @@ ZeT.Layout.Proc.Node = ZeT.defineClass('ZeT.Layout.Proc.Node', {
 	_create_node      : function()
 	{
 		if(this.opts.template)
-			return this._clone_template();
+			return this._clone_template()
 
 		if(ZeT.iss(this.opts.html))
-			return this._create_html();
+			return this._create_html()
 
-		if(ZeT.iss(this.opts.node))
-			return ZeTD.n(this.opts.node);
-
-		return this.opts.node;
+		return this._defined_node()
 	},
 
 	_wrap_nodes       : function(nodes)
@@ -1861,7 +1868,7 @@ ZeT.Layout.Proc.Node = ZeT.defineClass('ZeT.Layout.Proc.Node', {
 
 	_clone_template   : function()
 	{
-		var template = ZeT.Layout.template(this.template);
+		var template = ZeT.Layout.template(this.opts.template);
 		return template.cloneNode(this.opts['cloneOpts']);
 	},
 
@@ -1875,6 +1882,127 @@ ZeT.Layout.Proc.Node = ZeT.defineClass('ZeT.Layout.Proc.Node', {
 		return document.createElement(
 		  ZeT.iss(this.opts['tag'])?(this.opts['tag']):('div')
 		);
+	},
+
+	_defined_node     : function()
+	{
+		if(ZeT.iss(this.opts.node))
+			return ZeTD.n(this.opts.node)
+		return this.opts.node
+	}
+})
+
+
+// +----: ZeT.Layout.Proc.Wrap :---------------------------------+
+
+/**
+ * Extends ZeT.Layout.Proc.Node class.
+ *
+ * Wraps the node processed into the DOM created from
+ * HTML or from the template given. Allows to tell
+ * where within the DOM tree to append it.
+ *
+ * The options are:
+ *
+ *  · node        (forbidden)
+ *
+ *  ZeT.Layout.Proc.Node class allows to select existing
+ *  DOm node, but this class forbids this!
+ *
+ *  · insertWay   (optional, template-only)
+ *
+ *  in the case of template defines the way name to
+ *  append the precessed node into;
+ *
+ *  · insertClass (optional, excludes insertWay)
+ *
+ *  the CSS class name of the node in the created DOM
+ *  tree to insert the precessed node into;
+ *
+ *  · styles      (optional)
+ *
+ *  map-object with the style in format of style property
+ *  of DOM nodes. See ZeTD.style(). Applied to the root
+ *  wrapping node;
+ *
+ *  · classes     (optional)
+ *
+ *  string or array of class names. See ZeTD.classes().
+ *  Applied to the root wrapping node;
+ *
+ *  · attrs       (optional)
+ *
+ *  object with attributes to set. See ZeTD.attrs().
+ *  Applied to the root wrapping node.
+ */
+ZeT.Layout.Proc.Wrap = ZeT.defineClass('ZeT.Layout.Proc.Wrap', ZeT.Layout.Proc.Node, {
+
+	proc              : function(node)
+	{
+		//?: {wrapping not a DOM node}
+		if(!ZeTD.isxn(node))
+			throw 'Not a DOM node in the processing pipe!'
+
+		//~: create the wrapping DOM element
+		var wrap = this._wrap_nodes(this._create_node());
+		if(!ZeTD.isn(wrap)) throw 'ZeT.Layout.Proc.Wrap: ' +
+		   'could not create DOM node!'
+
+		//~: fill it
+		this._fill_wrap(wrap)
+
+		//~: wrap in it
+		return this._do_wrap(wrap, node)
+	},
+
+	_defined_node     : function()
+	{
+		if(this.opts.node)
+			throw 'ZeT.Layout.Proc.Wrap forbids node option!'
+		return null
+	},
+
+	_fill_wrap        : function(node)
+	{
+		if(this.opts.styles)
+			ZeTD.styles(node, this.opts.styles)
+
+		if(this.opts.classes)
+			ZeTD.classes(node, this.opts.classes)
+
+		if(this.opts.attrs)
+			ZeTD.attrs(node, this.opts.attrs)
+	},
+
+	_do_wrap          : function(wrap, node)
+	{
+		//~: append to the position
+		this._wrap_pos(wrap).appendChild(node)
+
+		return wrap
+	},
+
+	_wrap_pos         : function(wrap)
+	{
+		//?: {has class position}
+		if(!ZeTS.ises(this.opts.insertClass))
+		{
+			var opts = { class: this.opts.insertClass };
+			ZeT.Layout.Treeters.findNodeByClass.proc(wrap, opts)
+
+			return ZeT.assertn(opts.result, 'Not found any node of CSS class [',
+			  this.opts.insertClass, '] to wrap!')
+		}
+
+		//?: {has template way}
+		if(this.opts.template && this.opts.insertWay)
+		{
+			var template = ZeT.Layout.template(this.opts.template);
+			return ZeT.assertn(template.walk(this.opts.insertWay, wrap),
+			  'Can not walk the way [', this.opts.insertWay, ']!')
+		}
+
+		return wrap
 	}
 })
 
@@ -1897,7 +2025,8 @@ ZeT.Layout.Proc.Append = ZeT.defineClass('ZeT.Layout.Proc.Append', {
 
 	proc: function(node)
 	{
-		if(!ZeTD.isxn(node)) return
+		if(!ZeTD.isxn(node))
+			throw 'Not a DOM node in the processing pipe!'
 
 		//~: find the parent to insert
 		var parent = this.opts.parent;
