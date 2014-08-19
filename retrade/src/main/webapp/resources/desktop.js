@@ -44,7 +44,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		  defaultContentTag: 'div',
 		  defaultContentClass: 'retrade-desktop-event-content',
 		  borderClassNames: 'retrade-bofull-pale-XYZ',
-		  eventFrameClassNames: 'retrade-desktop-event',
+		  eventFrameClassNames: 'retrade-desktop-event retrade-border-free-size',
 		  'top%': 0.1,
 		  moveDuration: 2000,
 		  moveEasing: 'easeOut',

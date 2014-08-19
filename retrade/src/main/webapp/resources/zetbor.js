@@ -148,14 +148,15 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 
 		var TEMPLATE = ZeTD.IE &&
 
-		  "<table cellpadding='0' cellspacing='0' border='0'><tr><td colspan='3'>@top" +
-		  "<div><div>@ltc</div><div>@thx<div>@thh</div></div><div>@rtc</div></div></td>" +
-		  "</tr><tr><td>@lvu<div></div></td><td>@mup<div></div></td><td>@rvu<div></div>" +
-		  "</td></tr><tr><td>@lvm<div></div></td><td>@cxx<div><div><table cellpadding='0' " +
-		  "cellspacing='0' border='0'><tr><td>@cnt</td></tr></table></div></div></td><td>" +
-		  "@rvm<div></div></td></tr><tr><td>@lvd<div></div></td><td>@mbo<div></div></td>" +
-		  "<td>@rvd<div></div></td></tr><tr><td colspan='3'>@bot<div><div>@lbc</div><div>" +
-		  "@bhx<div>@bhh</div></div><div>@rbc</div></div></td></tr></table>";
+		  "<table cellpadding='0' cellspacing='0' border='0' style='width: 100%; " +
+		  "height:100%'><tr><td colspan='3'>@top<div><div>@ltc</div><div>@thx<div>@thh" +
+		  "</div></div><div>@rtc</div></div></td></tr><tr><td>@lvu<div></div></td><td>" +
+		  "@mup<div></div></td><td>@rvu<div></div></td></tr><tr><td>@lvm<div></div>" +
+		  "</td><td>@cxx<div><div><table cellpadding='0' cellspacing='0' border='0'>" +
+		  "<tr><td>@cnt</td></tr></table></div></div></td><td>@rvm<div></div></td>" +
+		  "</tr><tr><td>@lvd<div></div></td><td>@mbo<div></div></td><td>@rvd<div></div>" +
+		  "</td></tr><tr><td colspan='3'>@bot<div><div>@lbc</div><div>@bhx<div>@bhh</div>" +
+		  "</div><div>@rbc</div></div></td></tr></table>";
 
 		TEMPLATE = TEMPLATE ||
 
