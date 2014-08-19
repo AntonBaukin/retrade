@@ -113,7 +113,7 @@ ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
  *    +-----+---+---------~---------+---+-----+
  *    | lvu |                           | rvu |
  *    +-----+                           +-----+
- *    ~ lvm ~         xcnt-[cnt]        ~ rvm ~
+ *    ~ lvm ~          cxx-[cnt]        ~ rvm ~
  *    +-----+                           +-----+
  *    | lvd |                           | rvd |
  *    +-----+---+---------~---------+---+-----+
@@ -127,7 +127,7 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 
 	KEYS : (function(){
 
-		return [
+		if(ZeTD.IE) return [
 		 'top', 'ltc', 'thx', 'thh', 'rtc',
 		 'lvu', 'mup', 'rvu',
 		 'lvm', 'rvm', 'cxx', 'cnt',
@@ -135,11 +135,18 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 		 'bot', 'lbc', 'bhx', 'bhh', 'rbc'
 		]
 
+		return [
+		 'top', 'ltc', 'thx', 'thh', 'rtc',
+		 'lft', 'lvu', 'cyy', 'cnt', 'rvu',
+		 'rht', 'lvm', 'rvm', 'lvd', 'rvd',
+		 'bot', 'lbc', 'bhx', 'bhh', 'rbc'
+		]
+
 	}()),
 
 	XYZ  : (function(){
 
-		var TEMPLATE =
+		var TEMPLATE = ZeTD.IE &&
 
 		  "<table cellpadding='0' cellspacing='0' border='0'><tr><td colspan='3'>@top" +
 		  "<div><div>@ltc</div><div>@thx<div>@thh</div></div><div>@rtc</div></div></td>" +
@@ -150,11 +157,21 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 		  "<td>@rvd<div></div></td></tr><tr><td colspan='3'>@bot<div><div>@lbc</div><div>" +
 		  "@bhx<div>@bhh</div></div><div>@rbc</div></div></td></tr></table>";
 
+		TEMPLATE = TEMPLATE ||
+
+		  "<table cellpadding='0' cellspacing='0' border='0' style='width:100%; " +
+		  "height:100%'><tr><td colspan='3'>@top<div><div>@ltc</div><div>@thx<div>" +
+		  "@thh</div></div><div>@rtc</div></div></td></tr><td>@lft<table cellpadding='0' " +
+		  "cellspacing='0' border='0'><tr><td>@lvu<div/></td></tr><tr><td>@lvm<div/>" +
+		  "</td></tr><tr><td>@lvd<div/></td></tr></table></td><td>@cyy<table " +
+		  "cellpadding='0' cellspacing='0' border='0'><tr><td>@cnt</td></tr></table>" +
+		  "</td><td>@rht<table cellpadding='0' cellspacing='0' border='0'><tr><td>@rvu" +
+		  "<div/></td></tr><tr><td>@rvm<div/></td></tr><tr><td>@rvd<div/></td></tr>" +
+		  "</table></td><tr><td colspan='3'>@bot<div><div>@lbc</div><div>@bhx<div>@bhh" +
+		  "</div></div><div>@rbc</div></div></td></tr></table>";
 
 		return new ZeT.Layout.Template(
-		  { trace : ZeT.Layout.Template.Ways.traceAtNodes }, TEMPLATE
-		)
-
+		  { trace : ZeT.Layout.Template.Ways.traceAtNodes }, TEMPLATE)
 	}())
 });
 

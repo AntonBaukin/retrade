@@ -233,9 +233,22 @@ var ZeTD = ZeT.define('ZeTD',
 		}
 
 		return node;
-	}
-})
+	},
 
+
+// +----: Browsers Detection :---->
+
+	IE                : (function()
+	{
+		var DM = document.documentMode;
+
+		try{ document.documentMode = ''; } catch(e) {}
+		var res = typeof document.documentMode == 'number' || eval('/*@cc_on!@*/!1');
+		try{ document.documentMode = DM; } catch(e) {}
+
+		return !!res
+	}())
+})
 
 
 // +----: ZeT.Struct :-------------------------------------------+
