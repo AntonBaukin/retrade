@@ -143,7 +143,7 @@
       <f:facet name = "extjs-props">
         xtype: 'button', flex: 0, text: 'Справочники',
         margin: extjsf.dpts(0, 6, 0, 0), height: 30,
-        icon: "${z:url('/resources/icons/catalogues_16.png')}",
+        iconCls: 'retrade-catalogues-icon',
         componentCls: 'retrade-button-22pt'
       </f:facet>
 
@@ -169,7 +169,7 @@
           <f:facet name = "extjs-props">
 
             text: 'Каталог товаров', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/tree_expand_16.png')}",
+            iconCls: 'retrade-goods-tree-icon',
             disabled: ${not rootView.isSecure('view: goods')}
 
           </f:facet>
@@ -180,7 +180,7 @@
           <f:facet name = "extjs-props">
 
             text: 'Единицы измерения', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/measure_16.png')}",
+            iconCls: 'retrade-measure-icon',
             disabled: ${not rootView.isSecure('view: goods')}
 
            </f:facet>
@@ -191,7 +191,7 @@
           <f:facet name = "extjs-props">
 
             text: 'Склады', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/store_16.png')}",
+            iconCls: 'retrade-trade-store-icon',
             disabled: ${not rootView.isSecure('view: stores')}
 
            </f:facet>

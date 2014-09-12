@@ -259,11 +259,6 @@ div.retrade-menuitem-centered
 
 /* grids */
 
-img.x-tree-icon.x-tree-icon-parent
-{
-  cursor: pointer;
-}
-
 img.x-action-col-icon.x-item-disabled
 {
   cursor: default;
