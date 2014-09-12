@@ -188,14 +188,9 @@
 
     function doResizeColumn()
     {
-      var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').getView();
-      var cols = tree.getGridColumns();
-
-      for(var icol = 0;(icol < cols.length);icol++)
-        if(cols[icol].xtype == 'treecolumn') break;
-      if(icol == cols.length) return;
-
-      cols[icol].setWidth(tree.getMaxContentWidth(cols[icol]) + 4)
+      var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+      var col  = extjsf.support.columnByType(tree, 'treecolumn');
+      col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
     }
 
     var selNode;
@@ -507,8 +502,8 @@
     ctl.retradeShowNode(cut, true)
 
     //~: selected folder
-    var sel = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
-      getSelectionModel().getSelection();
+    var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var sel  = tree.getSelectionModel().getSelection();
     if(sel && (sel.length == 1)) sel = sel[0];
 
     //?: {there is no current selection | selected the same node}
@@ -533,6 +528,10 @@
       sel.parentNode.expand()
       sel.parentNode.insertBefore(cut, sel)
     }
+
+    //~: resize the column
+    var col  = extjsf.support.columnByType(tree, 'treecolumn');
+    col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
   }
 
   //~: tree paste down button

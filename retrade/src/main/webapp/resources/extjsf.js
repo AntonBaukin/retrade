@@ -1280,6 +1280,17 @@ extjsf.support = ZeT.singleInstance('extjsf.support', {
 		return undefined;
 	},
 
+	columnByType           : function(grid, xtype)
+	{
+		var columns = ZeT.isa(grid)?(grid):(this.gridColumns(grid));
+
+		for(var i = 0;(i < columns.length);i++)
+			if(columns[i].xtype === xtype)
+				return columns[i];
+
+		return undefined
+	},
+
 	refreshGridIndices     : function(grid)
 	{
 		if(ZeT.isa(grid))

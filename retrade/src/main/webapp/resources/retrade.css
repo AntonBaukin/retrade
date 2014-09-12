@@ -246,8 +246,23 @@ div.retrade-menuitem-centered
   padding-top: 5px;
 }
 
+.retrade-grid-large img.x-tree-elbow-img
+{
+  height: 26px;
+}
+
+.retrade-grid-large img.x-tree-icon.x-tree-icon-parent
+{
+  height: 24px; margin-top: -2px;
+}
+
 
 /* grids */
+
+img.x-tree-icon.x-tree-icon-parent
+{
+  cursor: pointer;
+}
 
 img.x-action-col-icon.x-item-disabled
 {
