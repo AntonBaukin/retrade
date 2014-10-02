@@ -48,6 +48,11 @@ public class FirmPrices extends NumericBase
 		this.contractor = contractor;
 	}
 
+	/**
+	 * The priority of the related Price Lists within the
+	 * lists assigned to the Contractor. The Good Unit price
+	 * is selected by the highest priority value.
+	 */
 	public int getPriority()
 	{
 		return priority;

@@ -1501,6 +1501,24 @@ ZeT.init('init: retrade.data', function()
 
 	})
 
+	Ext.define('retrade.model.FirmPricesView', {
+	  extend: 'Ext.data.Model',
+
+	  idProperty: 'objectKey',
+
+	  fields: [
+
+	    {name: 'objectKey',  type: 'string'},
+	    {name: 'code',       type: 'string'},
+	    {name: 'name',       type: 'string'},
+	    {name: 'fullName',   type: 'string'},
+
+	    {name: 'listsKeys',  type: 'string'},
+	    {name: 'listsCodes', type: 'string'},
+	    {name: 'listsNames', type: 'string'}
+	  ]
+	})
+
 	//>: contractors
 
 

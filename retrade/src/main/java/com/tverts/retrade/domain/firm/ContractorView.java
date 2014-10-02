@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.firm;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 
@@ -19,6 +19,10 @@ import com.tverts.endure.cats.CatItem;
 import com.tverts.endure.cats.CatItemView;
 import com.tverts.endure.person.FirmEntity;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
 
 /**
  * Stores properties of a {@link Contractor}
@@ -29,21 +33,22 @@ import com.tverts.endure.person.FirmEntity;
 @XmlRootElement(name = "contractor")
 public class ContractorView extends CatItemView
 {
-	public static final long serialVersionUID = 0L;
+	/* Contractor View Bean */
 
-
-	/* public: ContractorView (bean) interface */
-
-	public String     getFullName()
+	@XmlElement
+	public String getFullName()
 	{
 		return fullName;
 	}
 
-	public void       setFullName(String fullName)
+	private String fullName;
+
+	public void setFullName(String fullName)
 	{
 		this.fullName = fullName;
 	}
 
+	@XmlElement
 	public BigDecimal getIncome()
 	{
 		return (income != null)
@@ -51,12 +56,15 @@ public class ContractorView extends CatItemView
 		  :(new BigDecimal(0).setScale(2));
 	}
 
-	public void       setIncome(BigDecimal v)
+	private BigDecimal income;
+
+	public void setIncome(BigDecimal v)
 	{
 		if(v != null) v = v.setScale(5);
 		this.income = v;
 	}
 
+	@XmlElement
 	public BigDecimal getExpense()
 	{
 		return (expense != null)
@@ -64,7 +72,9 @@ public class ContractorView extends CatItemView
 		  :(new BigDecimal(0).setScale(2));
 	}
 
-	public void       setExpense(BigDecimal v)
+	private BigDecimal expense;
+
+	public void setExpense(BigDecimal v)
 	{
 		if(v != null) v = v.setScale(5);
 		this.expense = v;
@@ -83,7 +93,7 @@ public class ContractorView extends CatItemView
 	}
 
 
-	/* public: initialization interface */
+	/* Initialization */
 
 	public ContractorView init(Object obj)
 	{
@@ -108,6 +118,10 @@ public class ContractorView extends CatItemView
 
 	public ContractorView init(Contractor c)
 	{
+		//~: full name of the firm
+		if(SU.sXe(fullName) && c.getFirm() != null)
+			this.fullName = c.getFirm().getOx().getFullName();
+
 		return this;
 	}
 
@@ -135,14 +149,4 @@ public class ContractorView extends CatItemView
 
 		return this;
 	}
-
-
-	/* private: properties of the contractor */
-
-	private String fullName;
-
-	/* private: aggregated values */
-
-	private BigDecimal income;
-	private BigDecimal expense;
 }
