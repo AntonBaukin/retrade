@@ -2,12 +2,12 @@ package com.tverts.endure.cats;
 
 /* Java */
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -16,38 +16,44 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement
-public class CatItemView implements Serializable
+@XmlRootElement(name = "cat-item")
+public class CatItemView
 {
-	public static final long serialVersionUID = 0L;
+	/* Catalogue Item View Bean */
 
-
-	/* public: CatItemView (main properties) interface */
-
+	@XmlElement
 	public Long   getObjectKey()
 	{
 		return objectKey;
 	}
+
+	private Long objectKey;
 
 	public void   setObjectKey(Long objectKey)
 	{
 		this.objectKey = objectKey;
 	}
 
+	@XmlElement
 	public String getCode()
 	{
 		return code;
 	}
+
+	private String code;
 
 	public void   setCode(String code)
 	{
 		this.code = code;
 	}
 
+	@XmlElement
 	public String getName()
 	{
 		return name;
 	}
+
+	private String name;
 
 	public void   setName(String name)
 	{
@@ -55,7 +61,7 @@ public class CatItemView implements Serializable
 	}
 
 
-	/* public: initialization interface */
+	/* Initialization */
 
 	public CatItemView init(Object obj)
 	{
@@ -85,11 +91,4 @@ public class CatItemView implements Serializable
 
 		return this;
 	}
-
-
-	/* private: properties of the catalogue item */
-
-	private Long   objectKey;
-	private String code;
-	private String name;
 }
