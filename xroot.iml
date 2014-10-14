@@ -48,7 +48,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Java" jdkType="JavaSDK" />
     <orderEntry type="library" exported="" name="runtime-xroot" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="compile-xroot" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
