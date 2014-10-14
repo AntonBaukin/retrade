@@ -45,6 +45,6 @@ public class GenUtils
 		for(int i = 0;(i < ps.length);i++)
 			ps[i] = SU.cats(prefix, number(rnd, len));
 
-		return SU.scats("; ", ps);
+		return SU.scats("; ", (Object)ps);
 	}
 }

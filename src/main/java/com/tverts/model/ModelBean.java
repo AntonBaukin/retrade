@@ -1,6 +1,6 @@
 package com.tverts.model;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,9 +13,9 @@ import java.util.Date;
  * Implementation class may have {@link ModelBeanInfo}
  * annotation to affect the model internal container.
  *
- * Note that model bean has no reference to the model
- * as this may cause XML saving of the whole model when
- * saving just this bean.
+ * Note that model bean has no reference to the Model
+ * Data as this may cause XML saving of the whole model
+ * when saving just this bean.
  *
  *
  * @author anton.baukin@gmail.com
