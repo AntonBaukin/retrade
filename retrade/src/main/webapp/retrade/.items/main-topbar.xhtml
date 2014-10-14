@@ -198,11 +198,11 @@
         </x:component>
 
 
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-trade-price-lists')}">
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-price-lists')}">
           <f:facet name = "extjs-props">
 
             text: 'Прайс-листы', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/price_list_16.png')}",
+            iconCls: 'retrade-prices-icon',
             disabled: ${not rootView.isSecure('view: price-lists')}
 
            </f:facet>
@@ -216,6 +216,16 @@
             icon: "${z:url('/resources/icons/contractor_16.png')}",
             disabled: ${not rootView.isSecure('view: contractors')}
           </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-firms-price-lists')}">
+          <f:facet name = "extjs-props">
+
+            text: 'Прайс-листы контрагентов', xtype: 'menuitem',
+            iconCls: 'retrade-prices-icon'
+
+           </f:facet>
         </x:component>
 
 
@@ -550,7 +560,7 @@
     })
 
     //:~ open price lists tree root panel
-    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-trade-price-lists')}",
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-price-lists')}",
       '${rootView.extjsDomain}', function()
     {
       var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:price-lists-tree:');

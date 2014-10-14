@@ -107,11 +107,11 @@ public class FirmPricesView extends ContractorView
 		{
 			ks.append((ks.length() != 0)?(" "):(""));
 			ks.append(fp.getPriceList().getPrimaryKey());
-			
-			cs.append((cs.length() != 0)?(" "):(""));
+
+			cs.append((cs.length() != 0)?("\t"):(""));
 			cs.append(fp.getPriceList().getCode());
 
-			ns.append((ns.length() != 0)?(" "):(""));
+			ns.append((ns.length() != 0)?("\t"):(""));
 			ns.append(fp.getPriceList().getName());
 		}
 

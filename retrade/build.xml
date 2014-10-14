@@ -53,7 +53,7 @@
            destdir  = '${module-classes}'
            encoding = 'UTF-8'
            debug    = '${?debug}' includeAntRuntime = 'false'
-           source   = '1.6' target = '1.6'>
+           source   = '${javav}' target = '${javav}'>
 
       <classpath refid = 'module-classpath'/>
       <classpath refid = 'retrade-classpath'/>
@@ -92,7 +92,7 @@
            destdir  = '${module-test-classes}'
            encoding = 'UTF-8'
            debug    = 'true' includeAntRuntime = 'false'
-           source   = '1.6'  target = '1.6'>
+           source   = '${javav}'  target = '${javav}'>
 
       <classpath refid = 'module-tests-classpath'/>
       <classpath refid = 'retrade-tests-classpath'/>
