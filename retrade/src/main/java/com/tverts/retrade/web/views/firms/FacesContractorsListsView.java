@@ -21,6 +21,10 @@ import com.tverts.model.ModelBean;
 
 import com.tverts.retrade.domain.firm.ContractorsModelBean;
 
+/* com.tverts: retrade data (firms) */
+
+import com.tverts.retrade.data.firms.ContractorsListsModelData;
+
 /* com.tverts: support */
 
 import com.tverts.support.SU;
@@ -32,7 +36,7 @@ import com.tverts.support.SU;
  * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
-public class FacesContractorsView extends ModelView
+public class FacesContractorsListsView extends ModelView
 {
 	/* actions */
 
@@ -57,7 +61,12 @@ public class FacesContractorsView extends ModelView
 	{
 		ContractorsModelBean mb = new ContractorsModelBean();
 
+		//~: domain
 		mb.setDomain(getDomainKey());
+
+		//~: alter model data
+		mb.setDataClass(ContractorsListsModelData.class);
+
 		return mb;
 	}
 

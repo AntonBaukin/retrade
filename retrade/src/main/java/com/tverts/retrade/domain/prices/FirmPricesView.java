@@ -2,6 +2,7 @@ package com.tverts.retrade.domain.prices;
 
 /* Java */
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -11,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /* com.tverts: retrade domain (firms) */
 
+import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.retrade.domain.firm.ContractorView;
 
 /* com.tverts: support */
@@ -78,15 +80,12 @@ public class FirmPricesView extends ContractorView
 
 	/* Initialization */
 
-	public FirmPricesView init(Object obj)
+	public FirmPricesView init(Contractor c)
 	{
-		if(obj instanceof FirmPrices[])
-			return init((FirmPrices[]) obj);
-
-		return (FirmPricesView) super.init(obj);
+		return (FirmPricesView) super.init(c);
 	}
 
-	public FirmPricesView init(FirmPrices[] fps)
+	public FirmPricesView initPrices(List<FirmPrices> fps)
 	{
 		//~: map lists by the priority
 		Map<Integer, FirmPrices> fpm = new TreeMap<Integer, FirmPrices>();

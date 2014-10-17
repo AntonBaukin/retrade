@@ -188,7 +188,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		if(gu != null)
 		{
 			//~: add to the goods map
-			addGood(ctx, HiberPoint.unproxy(gu));
+			addGood(ctx, HiberPoint.unproxyDeeply(ctx.session(), gu));
 			return;
 		}
 

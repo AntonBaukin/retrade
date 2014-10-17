@@ -3,7 +3,9 @@ package com.tverts.retrade.data.firms;
 /* Java */
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /* Java XML Binding */
 
@@ -20,30 +22,31 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.model.ModelData;
 
-/* com.tverts: retrade domain (firms) */
+/* com.tverts: retrade domain (firms, prices) */
 
-import com.tverts.retrade.domain.firm.ContractorView;
+import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.retrade.domain.firm.ContractorsModelBean;
 import com.tverts.retrade.domain.firm.GetContractor;
+import com.tverts.retrade.domain.prices.FirmPrices;
+import com.tverts.retrade.domain.prices.FirmPricesView;
 
 
 /**
- * Model data provider for the table of all the
- * contractors of the domain.
- *
+ * Model data provider for the table of all the contractors
+ * of the domain with the associated Price Lists.
  *
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = {"model", "contractorsNumber", "contractors"})
-public class ContractorsModelData implements ModelData
+public class ContractorsListsModelData implements ModelData
 {
 	/* public: constructors */
 
-	public ContractorsModelData()
+	public ContractorsListsModelData()
 	{}
 
-	public ContractorsModelData(ContractorsModelBean model)
+	public ContractorsListsModelData(ContractorsModelBean model)
 	{
 		this.model = model;
 	}
@@ -60,22 +63,25 @@ public class ContractorsModelData implements ModelData
 	@XmlElement
 	public int getContractorsNumber()
 	{
-		return bean(GetContractor.class).countContractors(getModel());
+		return bean(GetContractor.class).countContractorsLists(getModel());
 	}
 
 	@XmlElement(name = "contractor")
 	@XmlElementWrapper(name = "contractors")
 	@SuppressWarnings("unchecked")
-	public List<ContractorView> getContractors()
+	public List<FirmPricesView> getContractors()
 	{
-		List                 sel = bean(GetContractor.class).
-		  selectContractors(getModel());
-		List<ContractorView> res = new ArrayList<ContractorView>(sel.size());
+		//~: load the contractors
+		Map<Contractor, List<FirmPrices>> prices =
+		  new LinkedHashMap<Contractor, List<FirmPrices>>(17);
+		bean(GetContractor.class).selectContractorsLists(getModel(), prices);
 
-		for(Object obj : sel)
-			res.add(new ContractorView().init(obj));
+		//~: proceed to the result
+		List res = new ArrayList(prices.size());
+		for(Contractor c : prices.keySet())
+			res.add(new FirmPricesView().init(c).initPrices(prices.get(c)));
 
-		return res;
+		return (List<FirmPricesView>) res;
 	}
 
 

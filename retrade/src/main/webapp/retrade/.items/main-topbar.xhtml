@@ -198,6 +198,16 @@
         </x:component>
 
 
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-firms')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Контрагенты', xtype: 'menuitem',
+            icon: "${z:url('/resources/icons/contractor_16.png')}",
+            disabled: ${not rootView.isSecure('view: contractors')}
+          </f:facet>
+        </x:component>
+
+
         <x:component coid = "${z:vid(localView, 'retrade-main-menu-price-lists')}">
           <f:facet name = "extjs-props">
 
@@ -206,16 +216,6 @@
             disabled: ${not rootView.isSecure('view: price-lists')}
 
            </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-firms')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Контрагенты', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/contractor_16.png')}",
-            disabled: ${not rootView.isSecure('view: contractors')}
-          </f:facet>
         </x:component>
 
 

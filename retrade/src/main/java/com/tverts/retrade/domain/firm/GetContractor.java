@@ -2,7 +2,11 @@ package com.tverts.retrade.domain.firm;
 
 /* Java */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /* Spring Framework */
 
@@ -13,6 +17,10 @@ import org.springframework.stereotype.Component;
 import com.tverts.hibery.qb.QueryBuilder;
 import com.tverts.hibery.qb.WhereLogic;
 import com.tverts.hibery.qb.WherePartLogic;
+
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
 
 /* com.tverts: endure (core) */
 
@@ -27,9 +35,10 @@ import com.tverts.endure.aggr.AggrValue;
 import com.tverts.endure.person.FirmEntity;
 import com.tverts.endure.person.GetFirm;
 
-/* com.tverts: retrade domain (invoices) */
+/* com.tverts: retrade domain (invoices, prices) */
 
 import com.tverts.retrade.domain.invoice.InvoiceEditModelBean;
+import com.tverts.retrade.domain.prices.FirmPrices;
 
 /* com.tverts: support */
 
@@ -172,7 +181,7 @@ public class GetContractor extends GetFirm
 		  param("domain", mb.domain());
 
 		//~: restrict by the search words
-		coWordsSearch(qb, mb.getContractorsWords());
+		restrictByNames(qb, mb.getContractorsWords());
 
 		return ((Number) QB(qb).uniqueResult()).longValue();
 	}
@@ -204,12 +213,12 @@ public class GetContractor extends GetFirm
 		  param("domain", mb.domain());
 
 		//~: restrict by the search words
-		coWordsSearch(qb, mb.getContractorsWords());
+		restrictByNames(qb, mb.getContractorsWords());
 
 		return (List<Contractor>) QB(qb).list();
 	}
 
-	public long             countContractors(ContractorsModelBean mb)
+	public int              countContractors(ContractorsModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -228,9 +237,12 @@ public class GetContractor extends GetFirm
 		  param("domain", mb.domain());
 
 		//~: restrict by the search words
-		coWordsSearch(qb, mb.getSearchNames());
+		restrictByNames(qb, mb.searchNames());
 
-		return ((Number) QB(qb).uniqueResult()).longValue();
+		//~: restrict by the selection sets
+		restrictsBySelSet(qb, mb.getSelSet());
+
+		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
 
 	/**
@@ -285,15 +297,100 @@ public class GetContractor extends GetFirm
 		  param("domain", mb.domain());
 
 		//~: restrict by the search words
-		coWordsSearch(qb, mb.getSearchNames());
+		restrictByNames(qb, mb.searchNames());
+
+		//~: restrict by the selection sets
+		restrictsBySelSet(qb, mb.getSelSet());
 
 		return QB(qb).list();
+	}
+
+	public int              countContractorsLists(ContractorsModelBean mb)
+	{
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("FirmPrices", FirmPrices.class);
+		qb.setClauseFrom("FirmPrices fp join fp.contractor co");
+
+		//~: select clause
+		qb.setClauseSelect("count(distinct co.id)");
+
+
+		//~: restrict the domain
+		qb.getClauseWhere().addPart(
+		  "co.domain.id = :domain"
+		).
+		  param("domain", mb.domain());
+
+		//~: restrict by the search words
+		restrictByNames(qb, mb.searchNames());
+
+		//~: restrict by the selection sets
+		restrictsBySelSetLists(qb, mb.getSelSet());
+
+		return ((Number) QB(qb).uniqueResult()).intValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	public void             selectContractorsLists
+	  (ContractorsModelBean mb, Map<Contractor, List<FirmPrices>> prices)
+	{
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("FirmPrices", FirmPrices.class);
+		qb.setClauseFrom("FirmPrices fp join fp.contractor co");
+
+		//~: select clause
+		qb.setClauseSelect("fp, co");
+
+		//~: order by
+		qb.setClauseOrderBy("co.nameProc");
+
+		//~: the limits
+		qb.setFirstRow(mb.getDataStart());
+		qb.setLimit(mb.getDataLimit());
+
+
+		//~: restrict the domain
+		qb.getClauseWhere().addPart(
+		  "co.domain.id = :domain"
+		).
+		  param("domain", mb.domain());
+
+		//~: restrict by the search words
+		restrictByNames(qb, mb.searchNames());
+
+		//~: restrict by the selection sets
+		restrictsBySelSetLists(qb, mb.getSelSet());
+
+		//~: select the items & map them
+		List<Object[]> rows = (List<Object[]>) QB(qb).list();
+		for(Object[] row : rows)
+		{
+			List<FirmPrices> fps = prices.get((Contractor) row[1]);
+			if(fps == null) prices.put((Contractor)row[1],
+			  fps = new ArrayList<FirmPrices>(4));
+			
+			fps.add((FirmPrices) row[0]);
+		}
+		
+		//~: sort the price list associations by the priority
+		for(List<FirmPrices> fps : prices.values())
+			Collections.sort(fps, new Comparator<FirmPrices>()
+			{
+				public int compare(FirmPrices l, FirmPrices r)
+				{
+					return Integer.compare(l.getPriority(), r.getPriority());
+				}
+			});
 	}
 
 
 	/* private: shortage routines */
 
-	private void coWordsSearch(QueryBuilder qb, String[] words)
+	private void           restrictByNames(QueryBuilder qb, String[] words)
 	{
 		if(words != null) for(String w : words) if((w = SU.s2s(w)) != null)
 		{
@@ -306,5 +403,58 @@ public class GetContractor extends GetFirm
 
 			qb.getClauseWhere().addPart(p);
 		}
+	}
+
+	private WherePartLogic restrictsBySelSet(QueryBuilder qb, String selset)
+	{
+		if(selset == null) return null;
+
+		//~: create OR
+		WherePartLogic p = new WherePartLogic().setOp(WhereLogic.OR);
+		qb.getClauseWhere().addPart(p);
+
+	/*
+
+ co.id in (select si.object from SelItem si join si.selSet ss
+   where (ss.name = :sset) and (ss.login.id = :login))
+
+	*/
+
+			//~: search contractors directly
+			p.addPart(
+
+"co.id in (select si.object from SelItem si join si.selSet ss\n" +
+"  where (ss.name = :sset) and (ss.login.id = :login))"
+
+			).
+			  param("sset",  selset).
+			  param("login", SecPoint.login());
+
+			return p;
+	}
+
+	private WherePartLogic restrictsBySelSetLists(QueryBuilder qb, String selset)
+	{
+		WherePartLogic p = restrictsBySelSet(qb, selset);
+		if(p == null) return null;
+
+	/*
+
+ fp.priceList.id in (select si.object from SelItem si join si.selSet ss
+   where (ss.name = :sset) and (ss.login.id = :login))
+
+	*/
+
+			//~: search by the associated price lists
+			p.addPart(
+
+"fp.priceList.id in (select si.object from SelItem si join si.selSet ss\n" +
+"  where (ss.name = :sset) and (ss.login.id = :login))"
+
+			).
+			  param("sset",  selset).
+			  param("login", SecPoint.login());
+
+		return p;
 	}
 }
