@@ -133,9 +133,18 @@
 
 
   <!--=================================================
-    = import:  shared build tasks                    =
+    = import:  shared build tasks                     =
     =================================================-->
 
   <import file = '../build/bldmd.xml'/>
+
+
+  <!--=================================================
+    = support tasks                                   =
+    =================================================-->
+
+  <target name = 'explode-on-mac'>
+    <exec executable = '${user.home}/bin/rsync-bakery'/>
+  </target>
 
 </project>

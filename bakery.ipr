@@ -7,7 +7,7 @@
     <buildFile url="file://$PROJECT_DIR$/retrade/build.xml" />
   </component>
   <component name="ArtifactManager">
-    <artifact type="exploded-war" name="ReTrade exploded">
+    <artifact type="exploded-war" name="ReTrade Exploded">
       <output-path>$PROJECT_DIR$/retrade/target/web</output-path>
       <root id="root">
         <element id="directory" name="WEB-INF">
@@ -23,13 +23,13 @@
         <element id="javaee-facet-resources" facet="xroot/web/Web" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="ReTrade@x">
+    <artifact type="exploded-war" name="ReTrade @ X">
       <output-path>x:/tomee/webapps/retrade</output-path>
       <root id="root">
-        <element id="artifact" artifact-name="ReTrade exploded" />
+        <element id="artifact" artifact-name="ReTrade Exploded" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="auth@x">
+    <artifact type="exploded-war" name="Auth @ X">
       <output-path>x:/tomee/webapps/auth</output-path>
       <root id="root">
         <element id="directory" name="WEB-INF">
@@ -40,13 +40,7 @@
         <element id="javaee-facet-resources" facet="auth/web/Web" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="ReTrade@Mac">
-      <output-path>$USER_HOME$/Omicron/tomee/webapps/retrade</output-path>
-      <root id="root">
-        <element id="artifact" artifact-name="ReTrade exploded" />
-      </root>
-    </artifact>
-    <artifact type="exploded-war" name="auth@Mac">
+    <artifact type="exploded-war" name="Auth @ Mac">
       <output-path>$USER_HOME$/Omicron/tomee/webapps/auth</output-path>
       <root id="root">
         <element id="directory" name="WEB-INF">
@@ -55,6 +49,18 @@
           </element>
         </element>
         <element id="javaee-facet-resources" facet="auth/web/Web" />
+      </root>
+    </artifact>
+    <artifact type="exploded-war" name="ReTrade @ Mac">
+      <output-path>$PROJECT_DIR$/retrade/target/web</output-path>
+      <properties id="ant-postprocessing">
+        <options enabled="true">
+          <file>file://$PROJECT_DIR$/retrade/build.xml</file>
+          <target>explode-on-mac</target>
+        </options>
+      </properties>
+      <root id="root">
+        <element id="artifact" artifact-name="ReTrade Exploded" />
       </root>
     </artifact>
   </component>
@@ -699,6 +705,13 @@
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Anton" />
+    <dictionary name="abaukin">
+      <words>
+        <w>logins</w>
+        <w>messager</w>
+        <w>servicer</w>
+      </words>
+    </dictionary>
     <dictionary name="anton">
       <words>
         <w>aggr</w>
@@ -737,13 +750,6 @@
         <w>zetobj</w>
       </words>
     </dictionary>
-    <dictionary name="abaukin">
-      <words>
-        <w>logins</w>
-        <w>messager</w>
-        <w>servicer</w>
-      </words>
-    </dictionary>
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -756,7 +762,7 @@
     <resource url="http://tverts.com/retrade/webapp/response" location="$PROJECT_DIR$/prime/src/main/webapp/resources/schemas/response.xsd" />
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="Java" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ResourceManagerContainer">

@@ -32,7 +32,7 @@ import com.tverts.retrade.domain.prices.FirmPricesView;
 
 
 /**
- * Model data provider for the table of all the contractors
+ * Model data provider for the table of all the Contractors
  * of the domain with the associated Price Lists.
  *
  * @author anton.baukin@gmail.com

@@ -559,14 +559,26 @@
       winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
-    //:~ open price lists tree root panel
+    //:~ open price lists root panel
     extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-price-lists')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:price-lists-tree:');
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:price-lists');
 
       ReTrade.desktop.loadDesktopPanel(
-        "${z:url('/go/retrade/price-lists/lists-tree')}", {
+        "${z:url('/go/retrade/price-lists/list')}", {
+        'domain': domain
+      })
+    })
+
+    //:~ open price lists associated price lists root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-firms-price-lists')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:firms-price-lists:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/firms/list-lists')}", {
         'domain': domain
       })
     })

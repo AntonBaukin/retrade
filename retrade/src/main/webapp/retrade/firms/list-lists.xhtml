@@ -1,0 +1,184 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesContractorsListsView}"/>
+
+${v.forceSecure('view: contractors')}
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+  <ui:define name = 'page_body'>
+
+  <x:root-panel coid = "${z:vid(v, 'firms_root')}" position = "#{rootView.extjsPosition}">
+
+    <f:facet name = "extjs-props">
+      title: 'Контрагенты'
+    </f:facet>
+
+
+    <!-- [toolbar -->
+
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-toolbar-inline-panel'
+    </f:facet>
+
+    <f:facet name = "toolbar">
+
+      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [filter firms field -->
+
+      <x:action-call coid = "${z:vid(v, 'search_firms_script')}"
+        action = "#{v.doSearchContractors}">
+
+        <f:facet name = "action-params">
+          '${v.modelParam}': '${v.modelKeys}'
+        </f:facet>
+      </x:action-call>
+
+      <x:text-field coid = "${z:vid(v, 'search_names')}"
+        value = "#{v.model.searchNames}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.dpts(1, 0, 1, 4),
+          width:  extjsf.ex(24)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Поиск'
+        </f:facet>
+      </x:text-field>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        extjsf.bindHandler("${z:vid(v, 'search_firms_script')}", '${rootView.extjsDomain}')({
+          params: {searchNames: sv}, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+      //]]>
+      </script>
+
+      <!-- filter firms field] -->
+
+    </f:facet>
+
+    <!-- toolbar] -->
+
+
+    <!-- [contractors table -->
+
+    <x:data-store storeId = "${z:vid(v, 'contractors')}"
+      modelView = "${v}" pageSize = "30">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.ContractorView'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.ContractorView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      storeId = "${z:vid(v, 'contractors')}">
+
+      <f:facet name = "grid-props">
+        columns: ZeT.defined('retrade.columns.ContractorView'),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+        pager: true, sortableColumns: false, region: 'center'
+      </f:facet>
+    </x:data-grid>
+
+    <script type = "text/javascript">
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    on('itemdblclick', function(comp, rec, node, row, event)
+  {
+    var domain  = 'wnd:' + "${z:vid(v, 'view_contractor')}:" + rec.getId();
+    var winmain = extjsf.bind('winmain', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      'event': event, widthpt: 480, heightpt: 360
+    })
+
+    if(winmain)
+    {
+      winmain.component().toFront()
+      winmain.component().setPagePosition(box.x, box.y)
+      winmain.component().expand()
+      return;
+    }
+
+    winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+      xtype: 'window', title: 'Загрузка...',
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', autoShow: true, collapsible: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/firms/info-main')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true,
+
+        params: {
+          '${v.viewModeParam}': 'body',
+          '${rootView.extjsDomainParam}': domain,
+          '${v.entityParam}': rec.getId()
+        }
+      }
+    })
+
+    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+  })
+
+    </script>
+
+    <!-- contractors table] -->
+
+  </x:root-panel>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "true"/>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>
