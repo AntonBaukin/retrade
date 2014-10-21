@@ -58,21 +58,32 @@ public abstract class ModelBeanBase implements ModelBean
 			while(cls != null)
 			{
 				//?: {has a constructor of that type}
-				if(cls.getConstructor(cls) != null)
-					return (ModelData) cls.getConstructor(cls).newInstance(this);
+				try
+				{
+					return (ModelData) dataClass.getConstructor(cls).newInstance(this);
+				}
+				catch(NoSuchMethodException e)
+				{} //<-- ignore this error
 
 				//~: lookup in the interfaces
-				for(Class ifs : cls.getInterfaces())
-					if(cls.getConstructor(ifs) != null)
-						return (ModelData) cls.getConstructor(ifs).newInstance(this);
+				for(Class ifs : cls.getInterfaces()) try
+				{
+					return (ModelData) dataClass.getConstructor(ifs).newInstance(this);
+				}
+				catch(NoSuchMethodException e)
+				{} //<-- ignore this error
 			}
 
 			//~: not found any specific constructor, invoke the default
-			if(cls.getConstructor() != null)
-				return (ModelData) cls.getConstructor().newInstance();
-
-			//!: unable to create an instance
-			throw EX.state("No constructor available!");
+			try
+			{
+				return (ModelData) dataClass.getConstructor().newInstance();
+			}
+			catch(NoSuchMethodException e)
+			{
+				//!: unable to create an instance
+				throw EX.state("No constructor available!");
+			}
 		}
 		catch(Exception e)
 		{
