@@ -20,7 +20,7 @@ ${v.checkModelRequestedWithRedirect}
   <x:root-panel coid = "${z:vid(v, 'firms_root')}" position = "#{rootView.extjsPosition}">
 
     <f:facet name = "extjs-props">
-      title: 'Контрагенты'
+      title: 'Прайс-листы контрагентов'
     </f:facet>
 
 
@@ -44,31 +44,47 @@ ${v.checkModelRequestedWithRedirect}
 
       <!-- [filter firms field -->
 
-      <x:action-call coid = "${z:vid(v, 'search_firms_script')}"
-        action = "#{v.doSearchContractors}">
+        <x:text-field coid = "${z:vid(v, 'search-firms')}"
+          value = "#{v.model.searchNames}">
 
-        <f:facet name = "action-params">
-          '${v.modelParam}': '${v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+          <f:facet name = "extjs-props">
+            margin: extjsf.dpts(1, 0, 1, 4),
+            width:  extjsf.ex(24)
+          </f:facet>
 
-      <x:text-field coid = "${z:vid(v, 'search_names')}"
-        value = "#{v.model.searchNames}">
+          <f:facet name = "label-props">
+            text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8)
+          </f:facet>
+        </x:text-field>
 
-        <f:facet name = "extjs-props">
-          margin: extjsf.dpts(1, 0, 1, 4),
-          width:  extjsf.ex(24)
-        </f:facet>
 
-        <f:facet name = "label-props">
-          text: 'Поиск'
-        </f:facet>
-      </x:text-field>
+         <!-- [restrict to selection set] -->
 
-      <script type = "text/javascript">
-      //<![CDATA[
+         <x:component coid = "${z:vid(v, 'search-firms-selset')}">
+           <f:facet name = "extjs-props">
 
-    extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').on('change', function(f)
+             xtype: 'button', enableToggle: true,
+             width: 30, componentCls: 'retrade-icon-24',
+             margin: extjsf.dpts(1, 0, 1, 6),
+             iconCls: 'retrade-selset-button-icon',
+             tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+          </f:facet>
+        </x:component>
+
+
+        <x:action-call coid = "${z:vid(v, 'search-firms-script')}"
+          action = "#{v.doSearchContractors}">
+
+          <f:facet name = "action-params">
+            '${v.modelParam}': '${v.modelKeys}'
+          </f:facet>
+        </x:action-call>
+
+        <script type = "text/javascript">
+        //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-firms')}", '${rootView.extjsDomain}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -78,8 +94,12 @@ ${v.checkModelRequestedWithRedirect}
         //?: {search string was changed} discard
         if(f.extjsfBind.searchValue != sv) return;
 
-        extjsf.bindHandler("${z:vid(v, 'search_firms_script')}", '${rootView.extjsDomain}')({
-          params: {searchNames: sv}, success : function() {
+        var params = { searchNames: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
         }})
       }
@@ -87,10 +107,25 @@ ${v.checkModelRequestedWithRedirect}
       setTimeout(fn, 1000)
     })
 
-      //]]>
-      </script>
+    //~: selection set only toggled
+    extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search-firms')}", '${rootView.extjsDomain}').value();
+        var params = { searchNames: names };
 
-      <!-- filter firms field] -->
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+             Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
+        }})
+    })
+
+        //]]>
+        </script>
+
+        <!-- filter firms field] -->
 
     </f:facet>
 
@@ -103,7 +138,7 @@ ${v.checkModelRequestedWithRedirect}
       modelView = "${v}" pageSize = "30">
 
       <f:facet name = "store-props">
-        model: 'retrade.model.ContractorView'
+        model: 'retrade.model.FirmPricesView'
       </f:facet>
 
       <f:facet name = "proxy-props">
@@ -115,55 +150,13 @@ ${v.checkModelRequestedWithRedirect}
       storeId = "${z:vid(v, 'contractors')}">
 
       <f:facet name = "grid-props">
-        columns: ZeT.defined('retrade.columns.ContractorView'),
+
+        pager: true, sortableColumns: false, region: 'center',
         selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-        pager: true, sortableColumns: false, region: 'center'
+        columns: ZeT.defined('retrade.columns.CatItemView')
+
       </f:facet>
     </x:data-grid>
-
-    <script type = "text/javascript">
-
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
-    on('itemdblclick', function(comp, rec, node, row, event)
-  {
-    var domain  = 'wnd:' + "${z:vid(v, 'view_contractor')}:" + rec.getId();
-    var winmain = extjsf.bind('winmain', domain);
-
-    var box     = ReTrade.desktop.calcWindowBox({
-      'event': event, widthpt: 480, heightpt: 360
-    })
-
-    if(winmain)
-    {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
-      return;
-    }
-
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-      xtype: 'window', title: 'Загрузка...',
-      x: box.x, y: box.y, width: box.width, height: box.height,
-      layout: 'fit', autoShow: true, collapsible: true,
-
-      loader: {
-        url: "${z:url('/go/retrade/firms/info-main')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true,
-
-        params: {
-          '${v.viewModeParam}': 'body',
-          '${rootView.extjsDomainParam}': domain,
-          '${v.entityParam}': rec.getId()
-        }
-      }
-    })
-
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
-  })
-
-    </script>
 
     <!-- contractors table] -->
 

@@ -42,7 +42,12 @@ public class FacesContractorsListsView extends ModelView
 
 	public String doSearchContractors()
 	{
+		//~: search names
 		getModel().setSearchNames(SU.s2s(request().getParameter("searchNames")));
+
+		//~: selection set
+		getModel().setSelSet(request().getParameter("selset"));
+
 		return null;
 	}
 

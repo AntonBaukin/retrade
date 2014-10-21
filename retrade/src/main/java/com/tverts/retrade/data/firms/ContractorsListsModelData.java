@@ -78,8 +78,8 @@ public class ContractorsListsModelData implements ModelData
 
 		//~: proceed to the result
 		List res = new ArrayList(prices.size());
-		for(Contractor c : prices.keySet())
-			res.add(new FirmPricesView().init(c).initPrices(prices.get(c)));
+		for(Object c : prices.keySet())
+			res.add(new FirmPricesView().initPrices(prices.get(c)).init(c));
 
 		return (List<FirmPricesView>) res;
 	}

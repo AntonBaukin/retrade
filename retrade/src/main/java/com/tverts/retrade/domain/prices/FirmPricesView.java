@@ -80,11 +80,6 @@ public class FirmPricesView extends ContractorView
 
 	/* Initialization */
 
-	public FirmPricesView init(Contractor c)
-	{
-		return (FirmPricesView) super.init(c);
-	}
-
 	public FirmPricesView initPrices(List<FirmPrices> fps)
 	{
 		//~: map lists by the priority
