@@ -1,18 +1,18 @@
 package com.tverts.support;
 
-/* standard Java classes */
+/* Java */
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
-
 import java.math.BigDecimal;
-
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -21,13 +21,15 @@ import java.util.LinkedList;
 
 import com.tverts.objects.ObjectAccess;
 import com.tverts.objects.ObjectAccessRef;
-import com.tverts.objects.RunnableWrapper;
-import com.tverts.objects.RunnableInterruptible;
 
 /* com.tverts: support */
 
 import com.tverts.support.streams.BigDecimalXMLEncoderPersistenceDelegate;
 import com.tverts.support.streams.BytesStream;
+import com.tverts.support.streams.InputDataStream;
+import com.tverts.support.streams.NotCloseInput;
+import com.tverts.support.streams.NotCloseOutput;
+import com.tverts.support.streams.OutputDataStream;
 
 
 /**
@@ -37,31 +39,6 @@ import com.tverts.support.streams.BytesStream;
  */
 public class OU
 {
-	/* Runnable Wrappers */
-
-	public static Runnable unwrap(Runnable task)
-	{
-		while(task instanceof RunnableWrapper)
-			task = ((RunnableWrapper)task).getWrappedTask();
-		return task;
-	}
-
-	public static RunnableInterruptible
-	                       interruptable(Runnable task)
-	{
-		while(task != null)
-		{
-			if(task instanceof RunnableInterruptible)
-				return (RunnableInterruptible)task;
-
-			task = !(task instanceof RunnableWrapper)?(null):
-			  ((RunnableWrapper)task).getWrappedTask();
-		}
-
-		return null;
-	}
-
-
 	/* Object Clones */
 
 	/**
@@ -83,7 +60,7 @@ public class OU
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 	}
 
@@ -94,49 +71,36 @@ public class OU
 	public static <O extends Serializable> O
 	                     cloneDeep(O obj)
 	{
-		Object res;
+		BytesStream bs = new BytesStream();
+		bs.setNotClose(true);
 
 		try
 		{
-			//write the object
-			java.io.ByteArrayOutputStream bos = new
-			  java.io.ByteArrayOutputStream(256);
-			java.io.ObjectOutputStream    oos = new
-			  java.io.ObjectOutputStream(bos);
+			//~: write the object
+			ObjectOutputStream os = new ObjectOutputStream(bs);
 
-			oos.writeObject(obj);
-			oos.close();
+			os.writeObject(obj);
+			os.close();
 
-			//read it back
-			java.io.ByteArrayInputStream  bis = new
-			  java.io.ByteArrayInputStream(bos.toByteArray());
-			java.io.ObjectInputStream     ois = new
-			  java.io.ObjectInputStream(bis);
-
-			res = ois.readObject();
-			ois.close();
+			//~: read it back
+			ObjectInputStream  is = new ObjectInputStream(bs.inputStream());
+			return (O) is.readObject();
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
-
-		return (O)res;
+		finally
+		{
+			bs.closeAlways();
+		}
 	}
 
 	public static <O> O  cloneStrict(O obj)
 	{
-		if(obj == null)
-			return null;
-
-		O res = cloneBest(obj);
-
-		if(res == null) throw EX.arg(
-		  "Don't know how to clone the class '",
-		  obj.getClass().getName(), "'!"
+		return (obj == null)?(null):EX.assertn(cloneBest(obj),
+		  "Don't know how to clone object of the class [", LU.cls(obj), "]!"
 		);
-
-		return res;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -267,85 +231,143 @@ public class OU
 
 	public static String  obj2xml(Object bean)
 	{
+		try(BytesStream bs = new BytesStream())
+		{
+			OU.obj2xml(bs, bean);
+
+			try
+			{
+				return new String(bs.bytes(), "UTF-8");
+			}
+			catch(Exception e)
+			{
+				throw EX.wrap(e);
+			}
+		}
+	}
+
+	/**
+	 * Writes the bean object to the stream.
+	 * The stream is not closed!
+	 */
+	public static void    obj2xml(OutputStream os, Object bean)
+	{
 		try
 		{
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			XMLEncoder            enc = new XMLEncoder(bos);
+			XMLEncoder enc = new XMLEncoder(new NotCloseOutput(os));
 
 			enc.setPersistenceDelegate(BigDecimal.class,
 			  BigDecimalXMLEncoderPersistenceDelegate.getInstance());
 
 			enc.writeObject(bean);
 			enc.close();
-
-			return new String(bos.toByteArray(), "UTF-8");
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
-			throw new RuntimeException(
-			  "Error occured while XML Encoding Java Bean of class " + LU.cls(bean), e);
+			throw EX.wrap(e, "Error occured while XML Encoding Java Bean of class [",
+			  LU.cls(bean), "]!");
 		}
+	}
+
+	public static void    obj2xml(DataOutput d, Object bean)
+	{
+		OU.obj2xml(new OutputDataStream(d), bean);
 	}
 
 	public static Object  xml2obj(String xml)
 	{
-		if(xml == null) return null;
-
 		try
 		{
-			ByteArrayInputStream bis = new ByteArrayInputStream(xml.getBytes("UTF-8"));
-			XMLDecoder           enc = new XMLDecoder(bis);
-			Object               res = enc.readObject();
+			return (xml == null)?(null):
+			  OU.xml2obj(new ByteArrayInputStream(xml.getBytes("UTF-8")));
+		}
+		catch(Exception e)
+		{
+			throw EX.wrap(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <O> O   xml2obj(String xml, Class<O> cls)
+	{
+		Object res = OU.xml2obj(xml);
+
+		if((res != null) && (cls != null) && !cls.isAssignableFrom(res.getClass()))
+			throw EX.state("Can't cast XML Decoded instance of class [",
+			  LU.cls(res), "] to the required class [", LU.cls(cls), "]!"
+			);
+
+		return (O)res;
+	}
+
+	/**
+	 * Reads a bean object from the stream.
+	 * The stream is not closed!
+	 */
+	public static Object  xml2obj(InputStream is)
+	{
+		try
+		{
+			XMLDecoder enc = new XMLDecoder(new NotCloseInput(is));
+			Object     res = enc.readObject();
 
 			enc.close();
 			return res;
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(
-			  "Error occured while Decoding Java Bean from XML!", e);
+			throw EX.wrap(e, "Error occured while Decoding Java Bean from XML!");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <O> O   xml2obj(String xml, Class<O> c1ass)
+	public static <O> O   xml2obj(InputStream is, Class<O> cls)
 	{
-		Object res = xml2obj(xml);
+		Object res = OU.xml2obj(is);
 
-		if((res != null) && (c1ass != null) && !c1ass.isAssignableFrom(res.getClass()))
-			throw EX.state("Can't cast XML Decoded instance of class '",
-			  LU.cls(res), "' to the ", "required class '", c1ass.getName(), "'!"
+		if((res != null) && (cls != null) && !cls.isAssignableFrom(res.getClass()))
+			throw EX.state("Can't cast XML Decoded instance of class [",
+			  LU.cls(res), "] to the required class [", LU.cls(cls), "]!"
 			);
 
 		return (O)res;
 	}
 
+	public static Object  xml2obj(DataInput d)
+	{
+		return OU.xml2obj(new InputDataStream(d));
+	}
+
+	public static <O> O   xml2obj(DataInput d, Class<O> cls)
+	{
+		return OU.xml2obj(new InputDataStream(d), cls);
+	}
+
 
 	/* Java Serialization */
 
-	public static byte[]  obj2bytes(Object  obj)
+	public static byte[]  obj2bytes(Object obj)
 	{
 		BytesStream bs = new BytesStream();
+		bs.setNotClose(true);
 
 		try
 		{
 			ObjectOutputStream os = new ObjectOutputStream(bs);
 
 			os.writeObject(obj);
-			os.flush();
-
-			byte[] res = bs.bytes();
 			os.close();
 
-			return res;
+			return bs.bytes();
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e, "Error occured while Java-serializing object of class [",
+			  LU.cls(obj), "]!");
 		}
 		finally
 		{
-			bs.close();
+			bs.closeAlways();
 		}
 	}
 
@@ -360,18 +382,18 @@ public class OU
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e, "Error occurred while reading Java-serialized object!");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <O> O   bytes2obj(byte[] bytes, Class<O> cls)
 	{
-		Object obj = bytes2obj(bytes);
+		Object obj = OU.bytes2obj(bytes);
 
-		if((obj != null) && !cls.isAssignableFrom(obj.getClass()))
+		if((obj != null) && (cls != null) && !cls.isAssignableFrom(obj.getClass()))
 			throw EX.state("Deserialized object of class [",
-			  cls.getName(), "], but expected [", obj.getClass().getName(), "]!"
+			  LU.cls(cls), "], but expected [", LU.cls(obj), "]!"
 			);
 
 		return (O) obj;

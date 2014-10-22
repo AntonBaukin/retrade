@@ -1,9 +1,16 @@
 package com.tverts.model;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring */
 
@@ -24,6 +31,10 @@ import com.tverts.endure.Unity;
 import com.tverts.endure.core.GetUnity;
 import com.tverts.endure.core.UnitedAccess;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * This model bean is focused on accessing
@@ -33,13 +44,11 @@ import com.tverts.endure.core.UnitedAccess;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "unity-model")
+@XmlRootElement(name = "model")
+@XmlType(name = "unity-model")
 public class UnityModelBean extends ModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: UnityModelBean interface */
+	/* Unity Model Bean */
 
 	@XmlElement(name = "objectKey")
 	public Long   getPrimaryKey()
@@ -52,29 +61,8 @@ public class UnityModelBean extends ModelBeanBase
 		this.primaryKey = primaryKey;
 	}
 
-	public void   setInstance(United instance)
-	{
-		if(instance == null)
-		{
-			setInstanceUndefined();
-			return;
-		}
 
-		if(instance.getPrimaryKey() == null)
-			throw new IllegalArgumentException();
-		setInstanceAccesses(instance);
-	}
-
-
-	/* public: ModelBean (data access) interface */
-
-	public ModelData modelData()
-	{
-		return null;
-	}
-
-
-	/* public: support interface */
+	/* Unity Model Bean (support) */
 
 	public Unity     loadUnity()
 	{
@@ -109,6 +97,19 @@ public class UnityModelBean extends ModelBeanBase
 		return result;
 	}
 
+	public void      setInstance(United instance)
+	{
+		if(instance == null)
+			setInstanceUndefined();
+		else
+		{
+			EX.assertn(instance.getPrimaryKey());
+			setInstanceAccesses(instance);
+		}
+	}
+
+	private transient ObjectAccess<United> unitedAccess;
+
 
 	/* protected: support interface */
 
@@ -137,7 +138,20 @@ public class UnityModelBean extends ModelBeanBase
 	private Long primaryKey;
 
 
-	/* private: cached instance access */
+	/* Serialization */
 
-	private ObjectAccess<United> unitedAccess;
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		o.writeLong(primaryKey);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		primaryKey  = i.readLong();
+	}
 }

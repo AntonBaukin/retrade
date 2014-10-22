@@ -1,29 +1,32 @@
 package com.tverts.model;
 
+/* Java */
+
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+/* com.tverts: support */
+
 import com.tverts.support.EX;
+import com.tverts.support.IO;
+
 
 /**
- * Implementation base for model beans. Note that
- * this class is also serializable what is not
- * required for model beans as XML mapping is
- * frequently adopted.
- *
+ * Implementation base for model beans.
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class ModelBeanBase implements ModelBean
+public abstract class ModelBeanBase
+       implements     ModelBean, Externalizable
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/* Model Bean (main) */
 
 	public String  getModelKey()
 	{
 		return modelKey;
 	}
-
-	private String modelKey;
 
 	public void    setModelKey(String key)
 	{
@@ -34,8 +37,6 @@ public abstract class ModelBeanBase implements ModelBean
 	{
 		return active;
 	}
-
-	private boolean active = true;
 
 	public void    setActive(boolean active)
 	{
@@ -94,12 +95,10 @@ public abstract class ModelBeanBase implements ModelBean
 
 	public Long      domain()
 	{
-		if(getDomain() == null) throw new IllegalStateException(
-		  "Domain primary key is not defined in the bean model " +
-		  getClass().getSimpleName() + "!"
+		return EX.assertn(getDomain(),
+		  "Domain primary key is not defined in the bean model of class [",
+		  getClass().getName(), "]!"
 		);
-
-		return getDomain();
 	}
 
 	public Long      getDomain()
@@ -107,21 +106,18 @@ public abstract class ModelBeanBase implements ModelBean
 		return domain;
 	}
 
-	private Long domain;
-
 	public void      setDomain(Long domain)
 	{
 		this.domain = domain;
 	}
 
-	public Class<? extends ModelData> getDataClass()
+	public Class<? extends ModelData>
+	                 getDataClass()
 	{
 		return dataClass;
 	}
 
-	private Class<? extends ModelData> dataClass;
-
-	public void setDataClass(Class<? extends ModelData> dataClass)
+	public void      setDataClass(Class<? extends ModelData> dataClass)
 	{
 		this.dataClass = dataClass;
 	}
@@ -143,11 +139,40 @@ public abstract class ModelBeanBase implements ModelBean
 		if((mb != null) && (beanClass != null) &&
 		   !beanClass.isAssignableFrom(mb.getClass())
 		  )
-			throw new IllegalStateException(String.format(
-			  "Model bean requested by the key '%s' is not a class checked [%s]!",
-			  key, beanClass.getName()
-			));
+			throw EX.state("Model bean requested by the key [", key,
+			  "] is not a class checked [", beanClass.getName(), "]!");
 
 		return (B)mb;
+	}
+
+
+	/* private: encapsulated data */
+
+	private String  modelKey;
+	private Long    domain;
+	private boolean active = true;
+	private Class<? extends ModelData>
+	                dataClass;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		IO.str(o, modelKey);
+		o.writeLong(domain);
+		o.writeBoolean(active);
+		IO.cls(o, dataClass);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		modelKey  = IO.str(i);
+		domain    = i.readLong();
+		active    = i.readBoolean();
+		dataClass = IO.cls(i);
 	}
 }

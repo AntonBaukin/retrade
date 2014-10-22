@@ -8,16 +8,16 @@ import java.io.ObjectOutput;
 
 
 /**
- * Extends {@link UnityModelBean} adding
+ * Extends {@link NumericModelBean} adding
  * Data display interfaces support.
  *
- * @author anton.baukin@gmail.com
+ * @author anton.baukin@gmail.com.
  */
-public abstract class UnitySelectModelBean
-       extends        UnityModelBean
+public abstract class NumericSelectModelBean
+       extends        NumericModelBean
        implements     DataSelectModel, DataSortModel, DataSearchModel
 {
-	/* Data Select Model */
+/* Data Select Model */
 
 	public Integer getDataStart()
 	{

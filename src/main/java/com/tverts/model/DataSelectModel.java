@@ -25,7 +25,7 @@ public interface DataSelectModel
 	public static final String START_PARAM  = "start";
 
 
-	/* public: DataSelectModel interface */
+	/* Data Select Model */
 
 	public Integer getDataStart();
 

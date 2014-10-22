@@ -12,7 +12,7 @@ import com.tverts.model.ModelBean;
  */
 public interface ReportModel extends ModelBean
 {
-	/* public: Report Model interface */
+	/* Report Model */
 
 	public String       getSecSession();
 

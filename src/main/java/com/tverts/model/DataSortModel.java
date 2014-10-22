@@ -8,7 +8,7 @@ package com.tverts.model;
  */
 public interface DataSortModel
 {
-	/* public: DataSortModel (bean) interface */
+	/* Data Sort Model (bean) */
 
 	public String[]  getSortProps();
 
@@ -19,7 +19,7 @@ public interface DataSortModel
 	public void      setSortDesc(boolean[] sd);
 
 
-	/* public: DataSortModel (support) interface */
+	/* Data Sort Model (support) */
 
 	public int       sortSize();
 

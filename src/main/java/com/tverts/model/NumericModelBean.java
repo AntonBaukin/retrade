@@ -1,13 +1,18 @@
 package com.tverts.model;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: hibery */
 
-import com.tverts.endure.core.NumericAccess;
-import com.tverts.hibery.system.HiberSystem;
+import com.tverts.hibery.HiberPoint;
 import com.tverts.hibery.system.SessionedAccess;
 
 /* com.tverts: objects */
@@ -18,10 +23,11 @@ import com.tverts.objects.ObjectAccess;
 
 import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.core.GetUnity;
+import com.tverts.endure.core.NumericAccess;
 
 /* com.tverts: support */
 
-import com.tverts.support.OU;
+import com.tverts.support.EX;
 
 
 /**
@@ -32,72 +38,61 @@ import com.tverts.support.OU;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class NumericModelBean
-       extends        ModelBeanBase
+public abstract class NumericModelBean extends ModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
+	/* Numeric Model Bean */
 
-
-	/* public: UnityModelBean interface */
-
-	public Long   getPrimaryKey()
+	public Long getPrimaryKey()
 	{
 		return primaryKey;
 	}
 
-	public void   setPrimaryKey(Long primaryKey)
+	public void setPrimaryKey(Long primaryKey)
 	{
 		this.primaryKey = primaryKey;
 	}
 
-	public Class  getObjectClass()
+	public Class<? extends NumericIdentity> getObjectClass()
 	{
 		return objectClass;
 	}
 
-	public void   setObjectClass(Class<? extends NumericIdentity> cls)
+	public void setObjectClass(Class<? extends NumericIdentity> cls)
 	{
 		this.objectClass = cls;
 	}
 
-	public void   setInstance(NumericIdentity instance)
+
+	/* Numeric Model Bean (support) */
+
+	public void            setInstance(NumericIdentity instance)
 	{
 		if(instance == null)
-		{
 			setInstanceUndefined();
-			return;
+		else
+		{
+			EX.assertn(instance.getPrimaryKey());
+			setInstanceAccessed(instance);
 		}
-
-		if(instance.getPrimaryKey() == null)
-			throw new IllegalArgumentException();
-		setInstanceAccessed(instance);
 	}
-
-
-	/* public: ModelBean (data access) interface */
-
-	public abstract ModelData modelData();
-
-
-	/* public: support interface */
 
 	@SuppressWarnings("unchecked")
-	public NumericIdentity    loadNumeric()
+	public NumericIdentity loadNumeric()
 	{
-		if(getObjectClass() == null)
-			throw new IllegalStateException();
+		if(getPrimaryKey() == null)
+			return null;
 
-		return (getPrimaryKey() == null)?(null):
-		  bean(GetUnity.class).getNumeric(
-		    getObjectClass(), getPrimaryKey());
+		EX.assertn(getObjectClass());
+		return bean(GetUnity.class).
+		  getNumeric(getObjectClass(), getPrimaryKey());
 	}
 
-	public NumericIdentity    accessNumeric()
+	public NumericIdentity accessNumeric()
 	{
 		NumericIdentity result = null;
 
 		if(numericAccess != null)
-			result = (NumericIdentity)numericAccess.accessObject();
+			result = (NumericIdentity) numericAccess.accessObject();
 
 		//?: {the instance is still in the cache}
 		if(result != null)
@@ -113,6 +108,8 @@ public abstract class NumericModelBean
 		return result;
 	}
 
+	private transient ObjectAccess numericAccess;
+
 
 	/* protected: support interface */
 
@@ -126,8 +123,7 @@ public abstract class NumericModelBean
 	@SuppressWarnings("unchecked")
 	protected void         setInstanceAccessed(NumericIdentity instance)
 	{
-		setObjectClass(HiberSystem.getInstance().
-		  findActualClass(instance));
+		setObjectClass(HiberPoint.type(instance));
 		setPrimaryKey(instance.getPrimaryKey());
 		numericAccess = createAccess(instance);
 	}
@@ -142,11 +138,28 @@ public abstract class NumericModelBean
 
 	/* private: the object's class and key */
 
-	private Class objectClass;
-	private Long  primaryKey;
+	private Long                             primaryKey;
+	private Class<? extends NumericIdentity> objectClass;
 
 
-	/* private: cached instance access */
+	/* Serialization */
 
-	private ObjectAccess numericAccess;
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		o.writeLong(primaryKey);
+		o.writeObject(objectClass);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		primaryKey  = i.readLong();
+		objectClass = (Class) i.readObject();
+	}
 }

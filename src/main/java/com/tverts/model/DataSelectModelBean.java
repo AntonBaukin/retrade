@@ -1,101 +1,152 @@
 package com.tverts.model;
 
-/* com.tverts: system */
+/* Java */
 
-import com.tverts.system.SystemConfig;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 
 /**
- * Contains data select model attributes.
+ * Model bean to select a range of
+ * the related data objects.
  *
  * @author anton.baukin@gmail.com
  */
 public abstract class DataSelectModelBean
        extends        ModelBeanBase
-       implements     DataSelectModel, DataSortModel
+       implements     DataSelectModel, DataSortModel, DataSearchModel
 {
-	public static final long serialVersionUID = 0L;
+	/* Data Select Model */
 
-
-	/* public: DataSelectModel interface */
-
-	public Integer   getDataStart()
+	public Integer getDataStart()
 	{
-		return (dataStart != null)?(dataStart):(0);
+		return dsd.getDataStart();
 	}
 
-	public void      setDataStart(Integer dataStart)
+	public void setDataStart(Integer dataStart)
 	{
-		this.dataStart = dataStart;
+		dsd.setDataStart(dataStart);
 	}
 
-	public Integer   getDataLimit()
+	public Integer getDataLimit()
 	{
-		return (dataLimit != null)?(dataLimit):
-		  SystemConfig.getInstance().getGridSize();
+		return dsd.getDataLimit();
 	}
 
-	public void      setDataLimit(Integer dataLimit)
+	public void setDataLimit(Integer dataLimit)
 	{
-		this.dataLimit = dataLimit;
+		dsd.setDataLimit(dataLimit);
 	}
 
 
-	/* public: DataSelectModel interface */
+	/* Data Sort Model */
 
-	public String[]  getSortProps()
+	public String[] getSortProps()
 	{
-		return sortDelegate.getSortProps();
+		return dsd.getSortProps();
 	}
 
-	public void      setSortProps(String[] sortProps)
+	public void setSortProps(String[] sortProps)
 	{
-		sortDelegate.setSortProps(sortProps);
-	}
-
-	public void      addSort(String prop, boolean desc)
-	{
-		sortDelegate.addSort(prop, desc);
-	}
-
-	public void      clearSort()
-	{
-		sortDelegate.clearSort();
+		dsd.setSortProps(sortProps);
 	}
 
 	public boolean[] getSortDesc()
 	{
-		return sortDelegate.getSortDesc();
+		return dsd.getSortDesc();
 	}
 
-	public int       sortSize()
+	public void setSortDesc(boolean[] sortDesc)
 	{
-		return sortDelegate.sortSize();
+		dsd.setSortDesc(sortDesc);
 	}
 
-	public void      setSortDesc(boolean[] sortDesc)
+	public int sortSize()
 	{
-		sortDelegate.setSortDesc(sortDesc);
+		return dsd.sortSize();
 	}
 
-	public String    getFirstSortProp()
+	public void clearSort()
+	{
+		dsd.clearSort();
+	}
+
+	public void addSort(String prop, boolean desc)
+	{
+		dsd.addSort(prop, desc);
+	}
+
+	public String getFirstSortProp()
 	{
 		String[] sp = getSortProps();
 		return ((sp == null) || (sp.length == 0))?(null):(sp[0]);
 	}
 
-	public String    getFirstSortDir()
+	public String getFirstSortDir()
 	{
 		boolean[] sd = getSortDesc();
 		return ((sd == null) || (sd.length == 0))?(null):sd[0]?("desc"):("asc");
 	}
 
 
-	/* private: attributes */
+	/* Data Search Model */
 
-	private Integer       dataStart;
-	private Integer       dataLimit;
+	public String getSearchNames()
+	{
+		return dsd.getSearchNames();
+	}
 
-	private DataSortModel sortDelegate =
-	  new DataSortDelegate();
+	public void setSearchNames(String searchNames)
+	{
+		dsd.setSearchNames(searchNames);
+	}
+
+	public String getSelSet()
+	{
+		return dsd.getSelSet();
+	}
+
+	public void setSelSet(String selSet)
+	{
+		dsd.setSelSet(selSet);
+	}
+
+	public boolean isWithSelSet()
+	{
+		return dsd.isWithSelSet();
+	}
+
+	public void setWithSelSet(boolean withSelSet)
+	{
+		dsd.setWithSelSet(withSelSet);
+	}
+
+	public String[] searchNames()
+	{
+		return dsd.searchNames();
+	}
+
+
+	/**
+	 * Data selection delegate.
+	 */
+	private DataSelectDelegate dsd = new DataSelectDelegate();
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		dsd.writeExternal(o);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		dsd.readExternal(i);
+	}
 }

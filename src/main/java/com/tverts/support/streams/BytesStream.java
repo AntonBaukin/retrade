@@ -347,7 +347,7 @@ public final class BytesStream extends OutputStream
 			return (got == 0)?(-1):(got);
 		}
 
-		public void   close()
+		public void    close()
 		  throws IOException
 		{
 			this.bufind = -1;

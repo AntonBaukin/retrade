@@ -1,7 +1,10 @@
 package com.tverts.shunts;
 
-/* standard Java classes */
+/* Java */
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +23,11 @@ import com.tverts.model.ModelBeanBase;
 
 import com.tverts.objects.ObjectParamView;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.IO;
+
 
 /**
  * Model bean to Self-Shunt Domain instance.
@@ -27,15 +35,12 @@ import com.tverts.objects.ObjectParamView;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(propOrder = {
+@XmlType(name = "self-shunt-groups-model", propOrder = {
   "domain", "updating", "logParam", "groups", "params"
 })
 public class SelfShuntGroupsModelBean extends ModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: SelfShuntGroupsModelBean (bean) interface */
+	/* Self Shunt Groups Model Bean */
 
 	@XmlElement
 	public Long getDomain()
@@ -76,8 +81,7 @@ public class SelfShuntGroupsModelBean extends ModelBeanBase
 
 	public void setGroups(Set<String> groups)
 	{
-		if(groups == null) throw new IllegalArgumentException();
-		this.groups = groups;
+		this.groups = EX.assertn(groups);
 	}
 
 	@XmlElement(name = "object-param")
@@ -89,15 +93,40 @@ public class SelfShuntGroupsModelBean extends ModelBeanBase
 
 	public void setParams(ObjectParamView[] params)
 	{
-		if(params == null) throw new IllegalArgumentException();
-		this.params = params;
+		this.params = EX.assertn(params);
 	}
 
 
-	/* state of the model */
+	/* private: encapsulated data */
 
 	private boolean           updating;
 	private String            logParam;
 	private Set<String>       groups = new HashSet<String>();
 	private ObjectParamView[] params = new ObjectParamView[0];
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		o.writeBoolean(updating);
+		IO.str(o, logParam);
+		o.writeObject(groups);
+		o.writeObject(params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		updating = i.readBoolean();
+		logParam = IO.str(i);
+		groups   = (Set) i.readObject();
+		params   = (ObjectParamView[]) i.readObject();
+	}
 }

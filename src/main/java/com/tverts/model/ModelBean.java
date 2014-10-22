@@ -3,15 +3,14 @@ package com.tverts.model;
 /* Java */
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
- * Each model element must implement this interface.
- * It must be a valid Java Bean object ready.
+ * Each UI model element implements this interface.
+ * It also may be a Java Bean object.
  *
  * Implementation class may have {@link ModelBeanInfo}
- * annotation to affect the model internal container.
+ * annotation to affect the models persistent container.
  *
  * Note that model bean has no reference to the Model
  * Data as this may cause XML saving of the whole model
@@ -22,12 +21,11 @@ import java.util.Date;
  */
 public interface ModelBean extends Serializable
 {
-	/* public: ModelBean (not Java Bean) interface */
+	/* Model Bean (primary) */
 
 	/**
-	 * The key of this model element within the container.
-	 * Assigned automatically by the model and may not
-	 * be changed outside.
+	 * The key of this model element unique within the container.
+	 * Assigned automatically by the model and may not altered.
 	 */
 	public String    getModelKey();
 
@@ -40,7 +38,7 @@ public interface ModelBean extends Serializable
 	public Long      getDomain();
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	/**
 	 * Returns the data access object derived from
