@@ -57,7 +57,7 @@ public class GetDomainViews extends GetDomain
 		qb.setLimit(mb.getDataLimit());
 
 		//~: keywords search restrictions
-		domainsSearch(qb, mb.getSearchNames());
+		domainsSearch(qb, mb.searchNames());
 
 		return QB(qb).list();
 	}
@@ -84,7 +84,7 @@ public class GetDomainViews extends GetDomain
 		qb.setClauseSelect("count(d)");
 
 		//~: keywords search restrictions
-		domainsSearch(qb, mb.getSearchNames());
+		domainsSearch(qb, mb.searchNames());
 
 		return ((Number)QB(qb).uniqueResult()).intValue();
 	}

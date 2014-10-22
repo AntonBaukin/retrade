@@ -17,10 +17,7 @@ import com.tverts.retrade.data.PriceChangeEditModelData;
  */
 public class PriceChangeEditModelBean extends ModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: PriceChangeEditModelBean (bean) interface */
+	/* Price Change Edit Model Bean */
 
 	public PriceChangeEdit getPriceChange()
 	{
@@ -53,7 +50,7 @@ public class PriceChangeEditModelBean extends ModelBeanBase
 	}
 
 
-	/* public: PriceChangeEditModelBean (support) interface */
+	/* Price Change Edit Model Bean (support) */
 
 	public RepriceDocEditModelBean getRepriceDocModel()
 	{

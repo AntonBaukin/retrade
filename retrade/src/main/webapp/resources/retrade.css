@@ -34,6 +34,12 @@
   opacity: 0.25;
 }
 
+span.retrade-inline-link
+{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 
 /* panels */
 

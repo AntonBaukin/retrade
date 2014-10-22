@@ -66,7 +66,7 @@ public class GetAuthLoginsViews extends GetAuthLogin
 			);
 
 		//~: restrict by the search words
-		loginsWordsSearch(qb, mb.getSearchNames());
+		loginsWordsSearch(qb, mb.searchNames());
 
 		//~: restrict to the selection set
 		restrictLoginsOfSelSet(qb, mb.getSelSet());
@@ -119,7 +119,7 @@ Login l left outer join l.person p
 			);
 
 		//~: restrict by the search words
-		loginsWordsSearch(qb, mb.getSearchNames());
+		loginsWordsSearch(qb, mb.searchNames());
 
 		//~: restrict to the selection set
 		restrictLoginsOfSelSet(qb, mb.getSelSet());

@@ -1,15 +1,20 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Date;
 
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: system */
 
+import com.tverts.model.DataSelectModelBean;
 import com.tverts.system.SystemConfig;
 
 /* com.tverts: models */
@@ -25,15 +30,14 @@ import com.tverts.retrade.data.RepriceDocsModelData;
 
 /**
  * Model bean for table with views on all
- * price change documents of the domain.
+ * price change documents of the Domain.
  *
  *
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-public class      RepriceDocsModelBean
-       extends    ModelBeanBase
-       implements DataSelectModel
+@XmlType(name = "price-change-documents-model")
+public class RepriceDocsModelBean extends DataSelectModelBean
 {
 	/* public: ModelBean (data access) interface */
 
@@ -43,35 +47,7 @@ public class      RepriceDocsModelBean
 	}
 
 
-	/* public: RepriceDocsModelBean (filters & limits) interface */
-
-	public Integer getDataStart()
-	{
-		if(dataStart != null)
-			return dataStart;
-
-		setDataStart(0);
-		return dataStart;
-	}
-
-	public void    setDataStart(Integer dataStart)
-	{
-		this.dataStart = dataStart;
-	}
-
-	public Integer getDataLimit()
-	{
-		if(dataLimit != null)
-			return dataLimit;
-
-		setDataLimit(SystemConfig.getInstance().getGridSize());
-		return dataLimit;
-	}
-
-	public void    setDataLimit(Integer dataLimit)
-	{
-		this.dataLimit = dataLimit;
-	}
+	/* Price Change Documents Model Bean */
 
 	public Date    getMinDate()
 	{
@@ -104,11 +80,32 @@ public class      RepriceDocsModelBean
 	}
 
 
-	/* private: data selection filters & limits */
+	/* private: encapsulated data */
 
-	private Integer   dataStart;
-	private Integer   dataLimit;
-	private Date      minDate;
-	private Date      maxDate;
-	private boolean   fixedOnly = true;
+	private Date    minDate;
+	private Date    maxDate;
+	private boolean fixedOnly = true;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		o.writeObject(minDate);
+		o.writeObject(maxDate);
+		o.writeBoolean(fixedOnly);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		minDate   = (Date) i.readObject();
+		maxDate   = (Date) i.readObject();
+		fixedOnly = i.readBoolean();
+	}
 }

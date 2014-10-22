@@ -65,7 +65,7 @@ public class GetSecureViews extends GetSecure
 
 
 		//~: restrict by the search words
-		rulesWordsSearch(qb, mb.getSearchNames());
+		rulesWordsSearch(qb, mb.searchNames());
 
 		//~: restrict to the selection set
 		restrictRulesBySelSet(qb, mb.getSelSet());
@@ -99,7 +99,7 @@ public class GetSecureViews extends GetSecure
 
 
 		//~: restrict by the search words
-		rulesWordsSearch(qb, mb.getSearchNames());
+		rulesWordsSearch(qb, mb.searchNames());
 
 		//~: restrict to the selection set
 		restrictRulesBySelSet(qb, mb.getSelSet());
@@ -148,7 +148,7 @@ public class GetSecureViews extends GetSecure
 
 
 		//~: restrict by the search words
-		ablesWordsSearch(qb, mb.getSearchNames());
+		ablesWordsSearch(qb, mb.searchNames());
 
 		//~: restrict to the selection set
 		restrictAblesBySelSet(qb, mb.getSelSet());
@@ -194,7 +194,7 @@ public class GetSecureViews extends GetSecure
 
 
 		//~: restrict by the search words
-		ablesWordsSearch(qb, mb.getSearchNames());
+		ablesWordsSearch(qb, mb.searchNames());
 
 		//~: restrict to the selection set
 		restrictAblesBySelSet(qb, mb.getSelSet());
@@ -239,7 +239,7 @@ public class GetSecureViews extends GetSecure
 		);
 
 		//~: restrict by the search words
-		setsWordsSearch(qb, mb.getSearchNames());
+		setsWordsSearch(qb, mb.searchNames());
 
 		//~: restrict to the selection set
 		restrictSetsBySelSet(qb, mb.getSelSet());
@@ -272,7 +272,7 @@ public class GetSecureViews extends GetSecure
 		);
 
 		//~: restrict by the search words
-		setsWordsSearch(qb, mb.getSearchNames());
+		setsWordsSearch(qb, mb.searchNames());
 
 		//~: restrict to the selection set
 		restrictSetsBySelSet(qb, mb.getSelSet());

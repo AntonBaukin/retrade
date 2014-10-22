@@ -25,39 +25,10 @@ public class SecRulesModelBean extends DataSelectModelBean
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: SecRulesModelBean (bean) interface */
-
-	public String[] getSearchNames()
-	{
-		return searchNames;
-	}
-
-	public void setSearchNames(String[] searchNames)
-	{
-		this.searchNames = searchNames;
-	}
-
-	public String getSelSet()
-	{
-		return selSet;
-	}
-
-	public void setSelSet(String selSet)
-	{
-		this.selSet = selSet;
-	}
-
-
 	/* public: ModelBean (data access) interface */
 
 	public ModelData modelData()
 	{
 		return new SecRulesModelData(this);
 	}
-
-
-	/* private: model attributes */
-
-	private String[] searchNames;
-	private String   selSet;
 }

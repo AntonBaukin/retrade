@@ -12,7 +12,7 @@ import com.tverts.system.SystemConfig;
 /* com.tverts: model */
 
 import com.tverts.model.DataSelectModel;
-import com.tverts.model.DataSortDelegate;
+import com.tverts.model.DataSelectDelegate;
 import com.tverts.model.DataSortModel;
 import com.tverts.model.ModelData;
 import com.tverts.model.NumericModelBean;
@@ -174,5 +174,5 @@ public class      PriceListModelBean
 	private String[]      searchGoods;
 
 	private DataSortModel sortDelegate =
-	  new DataSortDelegate();
+	  new DataSelectDelegate();
 }

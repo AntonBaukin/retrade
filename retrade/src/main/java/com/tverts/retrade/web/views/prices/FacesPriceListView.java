@@ -43,6 +43,7 @@ public class FacesPriceListView extends NumericModelView
 	public String doSearchGoods()
 	{
 		getModel().setSearchGoodsStr(request().getParameter("searchGoods"));
+
 		return null;
 	}
 
@@ -81,16 +82,20 @@ public class FacesPriceListView extends NumericModelView
 
 	/* protected: UnityModelView interface */
 
-	protected NumericModelBean createModelInstance(Long objectKey)
+	protected PriceListModelBean createModelInstance(Long objectKey)
 	{
 		PriceListModelBean mb = new PriceListModelBean();
 
-		mb.setObjectClass(PriceListEntity.class);
+		//~: domain
 		mb.setDomain(getDomainKey());
+
+		//~: entity key
+		mb.setObjectClass(PriceListEntity.class);
+
 		return mb;
 	}
 
-	protected boolean          isRequestModelMatch(ModelBean model)
+	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof PriceListModelBean);
 	}

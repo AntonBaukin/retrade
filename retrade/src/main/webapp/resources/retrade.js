@@ -1513,9 +1513,9 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'name',       type: 'string'},
 	    {name: 'fullName',   type: 'string'},
 
-	    {name: 'listsKeys',  type: 'string'},
-	    {name: 'listsCodes', type: 'string'},
-	    {name: 'listsNames', type: 'string'}
+	    {name: 'listsKeys',  type: 'string'}, //<-- separated by spaces
+	    {name: 'listsCodes', type: 'string'}, //<-- separated by tabs
+	    {name: 'listsNames', type: 'string'}  //<-- separated by tabs
 	  ]
 	})
 

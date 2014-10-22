@@ -55,17 +55,11 @@ public class FacesSystemLoginsView extends ModelView
 
 	public String doSearchLogins()
 	{
-		String[] sestr  = null;
-		String   seprm  = request().getParameter("searchLogins");
-		String   selset = request().getParameter("selset");
-
 		//~: search names
-		if(!SU.sXe(seprm))
-			sestr = SU.s2s(seprm).split("\\s+");
-		getModel().setSearchNames(sestr);
+		getModel().setSearchNames(SU.s2s(request().getParameter("selset")));
 
 		//~: selection set
-		getModel().setSelSet(selset);
+		getModel().setSelSet(request().getParameter("selset"));
 
 		return null;
 	}

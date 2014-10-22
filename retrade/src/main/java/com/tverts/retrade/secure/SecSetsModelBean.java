@@ -27,26 +27,6 @@ public class SecSetsModelBean extends DataSelectModelBean
 
 	/* public: SecRulesModelBean (bean) interface */
 
-	public String[] getSearchNames()
-	{
-		return searchNames;
-	}
-
-	public void setSearchNames(String[] searchNames)
-	{
-		this.searchNames = searchNames;
-	}
-
-	public String getSelSet()
-	{
-		return selSet;
-	}
-
-	public void setSelSet(String selSet)
-	{
-		this.selSet = selSet;
-	}
-
 	public String getAblesModel()
 	{
 		return ablesModel;
@@ -68,7 +48,5 @@ public class SecSetsModelBean extends DataSelectModelBean
 
 	/* private: view attributes */
 
-	private String[] searchNames;
-	private String   selSet;
 	private String   ablesModel;
 }

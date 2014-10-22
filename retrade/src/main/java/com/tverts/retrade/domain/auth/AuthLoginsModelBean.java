@@ -28,26 +28,6 @@ public class AuthLoginsModelBean extends DataSelectModelBean
 
 	/* public: AuthLoginsModelBean (bean) interface */
 
-	public String[] getSearchNames()
-	{
-		return searchNames;
-	}
-
-	public void setSearchNames(String[] searchNames)
-	{
-		this.searchNames = searchNames;
-	}
-
-	public String getSelSet()
-	{
-		return selSet;
-	}
-
-	public void setSelSet(String selSet)
-	{
-		this.selSet = selSet;
-	}
-
 	public boolean isPersonsOnly()
 	{
 		return personsOnly;
@@ -69,7 +49,5 @@ public class AuthLoginsModelBean extends DataSelectModelBean
 
 	/* private: model attributes */
 
-	private String[] searchNames;
-	private String   selSet;
 	private boolean  personsOnly;
 }

@@ -153,10 +153,94 @@ ${v.checkModelRequestedWithRedirect}
 
         pager: true, sortableColumns: false, region: 'center',
         selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-        columns: ZeT.defined('retrade.columns.CatItemView')
+        columns: (function()
+        {
+          var cols = ZeT.defined('retrade.columns.CatItemView')();
+          var clcf = "extjsf.bind('${z:vid(v, 'grid')}', '${rootView.extjsDomain}').priceListClick";
+
+          //~: add price lists display columns
+          cols.push({
+            text: "Прайс-листы", dataIndex: 'listsKeys',
+            sortable: false, flex: 1, renderer: function(v, meta, rec)
+            {
+              var keys  = v.split(' ');
+              var codes = rec.get('listsCodes').split('\t');
+              var names = rec.get('listsNames').split('\t');
+
+              ZeT.assert(keys.length == codes.length)
+              ZeT.assert(keys.length == names.length)
+
+              var text = '', hint = '';
+              for(var i = 0;(i &lt; keys.length);i++)
+              {
+                if(hint.length) hint += '; ';
+                if(text.length) text += '; ';
+
+                hint += ZeTS.cat(codes[i], ' ', names[i]);
+                text += ZeTS.cat("&lt;span class='retrade-inline-link' ",
+                  'onclick="', clcf, '(event, ', keys[i], ')"',
+                  '&gt;', names[i], "&lt;/span&gt;");
+              }
+
+              meta.tdAttr = 'title="' + Ext.String.htmlEncode(hint) + '"';
+              return text
+            }
+          })
+
+          return cols
+        })()
+
 
       </f:facet>
     </x:data-grid>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').priceListClick = function(event, plkey)
+  {
+    event = Ext.create('Ext.EventObjectImpl', ZeT.assertn(event || window.event));
+
+    var domain  = ZeTS.cat('wnd:', "${z:vid(v, 'price-list-window')}:", plkey);
+    var winmain = extjsf.bind('winmain', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      event: event, widthpt: 480, heightpt: 360, '+xpt': -240, '-ypt': -10
+    })
+
+    if(winmain)
+    {
+      winmain.component().toFront()
+      winmain.component().setPagePosition(box.x, box.y)
+      winmain.component().expand()
+      return;
+    }
+
+    var params = {
+      '${v.viewModeParam}': 'body',
+      '${rootView.extjsDomainParam}': domain,
+      '${v.entityParam}': plkey
+    };
+
+    winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+      xtype: 'window', title: 'Загрузка...', autoShow: true,
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', collapsible: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/price-lists/info')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true, params: params
+      }
+    })
+
+    //~: create the window
+    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+  }
+
+    //]]>
+    </script>
 
     <!-- contractors table] -->
 

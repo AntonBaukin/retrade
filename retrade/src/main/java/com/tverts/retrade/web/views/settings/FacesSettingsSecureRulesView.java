@@ -47,17 +47,11 @@ public class FacesSettingsSecureRulesView extends ModelView
 
 	public String doSearchRules()
 	{
-		String[] sestr  = null;
-		String   seprm  = request().getParameter("searchRules");
-		String   selset = request().getParameter("selset");
-
 		//~: search names
-		if(!SU.sXe(seprm))
-			sestr = SU.s2s(seprm).split("\\s+");
-		getModel().setSearchNames(sestr);
+		getModel().setSearchNames(SU.s2s(request().getParameter("searchRules")));
 
 		//~: selection set
-		getModel().setSelSet(selset);
+		getModel().setSelSet(request().getParameter("selset"));
 
 		return null;
 	}

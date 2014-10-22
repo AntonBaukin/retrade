@@ -39,13 +39,9 @@ public class FacesSystemDomainsView extends ModelView
 
 	public String doSearchDomains()
 	{
-		String[] sestr = null;
-		String   seprm = request().getParameter("searchDomains");
+		//~: set search names
+		getModel().setSearchNames(SU.s2s(request().getParameter("searchDomains")));
 
-		if(!SU.sXe(seprm))
-			sestr = SU.s2s(seprm).split("\\s+");
-
-		getModel().setSearchNames(sestr);
 		return null;
 	}
 

@@ -69,34 +69,22 @@ public class FacesSettingsSecSetsView extends ModelView
 
 	public String doSearchSets()
 	{
-		String[] sestr  = null;
-		String   seprm  = request().getParameter("searchSets");
-		String   selset = request().getParameter("selset");
-
 		//~: search names
-		if(!SU.sXe(seprm))
-			sestr = SU.s2s(seprm).split("\\s+");
-		getModel().setSearchNames(sestr);
+		getModel().setSearchNames(SU.s2s(request().getParameter("searchSets")));
 
 		//~: selection set
-		getModel().setSelSet(selset);
+		getModel().setSelSet(request().getParameter("selset"));
 
 		return null;
 	}
 
 	public String doSearchSetAbles()
 	{
-		String[] sestr  = null;
-		String   seprm  = request().getParameter("searchAbles");
-		String   selset = request().getParameter("selset");
-
 		//~: search names
-		if(!SU.sXe(seprm))
-			sestr = SU.s2s(seprm).split("\\s+");
-		getSetAblesModel().setSearchNames(sestr);
+		getSetAblesModel().setSearchNames(SU.s2s(request().getParameter("searchAbles")));
 
 		//~: selection set
-		getSetAblesModel().setSelSet(selset);
+		getSetAblesModel().setSelSet(request().getParameter("selset"));
 
 		return null;
 	}

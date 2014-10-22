@@ -47,26 +47,6 @@ public class SecAblesModelBean extends DataSelectModelBean
 		this.secSet = secSet;
 	}
 
-	public String[] getSearchNames()
-	{
-		return searchNames;
-	}
-
-	public void setSearchNames(String[] searchNames)
-	{
-		this.searchNames = searchNames;
-	}
-
-	public String getSelSet()
-	{
-		return selSet;
-	}
-
-	public void setSelSet(String selSet)
-	{
-		this.selSet = selSet;
-	}
-
 
 	/* public: ModelBean (data access) interface */
 
@@ -80,6 +60,4 @@ public class SecAblesModelBean extends DataSelectModelBean
 
 	private Long     authLogin;
 	private Long     secSet;
-	private String[] searchNames;
-	private String   selSet;
 }
