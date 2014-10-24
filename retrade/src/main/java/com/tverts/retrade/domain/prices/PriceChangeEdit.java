@@ -3,6 +3,7 @@ package com.tverts.retrade.domain.prices;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: retrade domain (goods) */
 
@@ -20,35 +21,40 @@ import com.tverts.support.CMP;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "price-change")
+@XmlType(name = "price-change-edit")
 public class PriceChangeEdit extends PriceChangeView
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140803L;
 
 
-	/* public: PriceChangeEdit (bean) interface */
+	/* Price Change Edit */
 
-	public Long    getPriceList()
+	public Long getPriceList()
 	{
 		return priceList;
 	}
 
-	public void    setPriceList(Long priceList)
+	private Long priceList;
+
+	public void setPriceList(Long priceList)
 	{
 		this.priceList = priceList;
 	}
 
-	public Long    getGoodUnitInit()
+	public Long getGoodUnitInit()
 	{
 		return goodUnitInit;
 	}
 
-	public void    setGoodUnitInit(Long goodUnitInit)
+	private Long goodUnitInit;
+
+	public void setGoodUnitInit(Long goodUnitInit)
 	{
 		this.goodUnitInit = goodUnitInit;
 	}
 
 
-	/* public: initialization interface */
+	/* Initialization */
 
 	public PriceChangeEdit init(Object obj)
 	{
@@ -64,7 +70,7 @@ public class PriceChangeEdit extends PriceChangeView
 	}
 
 
-	/* public: Object interface */
+	/* Object */
 
 	public boolean equals(Object o)
 	{
@@ -79,10 +85,4 @@ public class PriceChangeEdit extends PriceChangeView
 	{
 		return (getGoodCode() == null)?(0):(getGoodCode().hashCode());
 	}
-
-
-	/* private: properties of the view */
-
-	private Long priceList;
-	private Long goodUnitInit;
 }

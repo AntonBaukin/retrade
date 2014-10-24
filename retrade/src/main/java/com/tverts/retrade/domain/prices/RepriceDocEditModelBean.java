@@ -3,6 +3,7 @@ package com.tverts.retrade.domain.prices;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring */
 
@@ -10,8 +11,8 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: model */
 
-import com.tverts.model.ModelBeanBase;
 import com.tverts.model.ModelData;
+import com.tverts.model.ViewModelBeanBase;
 
 /* com.tverts: retrade endure (goods) */
 
@@ -27,22 +28,20 @@ import com.tverts.retrade.data.RepriceDocEditModelData;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement
-public class RepriceDocEditModelBean extends ModelBeanBase
+@XmlRootElement(name = "model")
+@XmlType(name = "price-change-document-edit")
+public class RepriceDocEditModelBean extends ViewModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
+	/* Price Change Document Edit Model */
 
-
-	/* public: RepriceDocEditModelBean (bean) interface */
-
-	public RepriceDocEdit getRepriceDoc()
+	public RepriceDocEdit getView()
 	{
-		return repriceDoc;
+		return (RepriceDocEdit) super.getView();
 	}
 
-	public void setRepriceDoc(RepriceDocEdit rde)
+	public Class viewClass()
 	{
-		this.repriceDoc = rde;
+		return RepriceDocEdit.class;
 	}
 
 
@@ -50,9 +49,9 @@ public class RepriceDocEditModelBean extends ModelBeanBase
 
 	public RepriceDoc repriceDoc()
 	{
-		return (getRepriceDoc() == null)?(null):
+		return (getView() == null)?(null):
 		  bean(GetGoods.class).getRepriceDoc(
-		    getRepriceDoc().getObjectKey());
+		    getView().getObjectKey());
 	}
 
 
@@ -62,9 +61,4 @@ public class RepriceDocEditModelBean extends ModelBeanBase
 	{
 		return new RepriceDocEditModelData(this);
 	}
-
-
-	/* private: the state of the model */
-
-	private RepriceDocEdit repriceDoc;
 }

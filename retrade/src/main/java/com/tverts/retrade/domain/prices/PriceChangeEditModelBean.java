@@ -1,5 +1,11 @@
 package com.tverts.retrade.domain.prices;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* com.tverts: model */
 
 import com.tverts.model.ModelBeanBase;
@@ -8,6 +14,10 @@ import com.tverts.model.ModelData;
 /* com.tverts: retrade model data */
 
 import com.tverts.retrade.data.PriceChangeEditModelData;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -24,27 +34,27 @@ public class PriceChangeEditModelBean extends ModelBeanBase
 		return priceChange;
 	}
 
-	public void            setPriceChange(PriceChangeEdit priceChange)
+	public void setPriceChange(PriceChangeEdit priceChange)
 	{
 		this.priceChange = priceChange;
 	}
 
-	public String          getRepriceDocModelKey()
+	public String getRepriceDocModelKey()
 	{
 		return repriceDocModelKey;
 	}
 
-	public void            setRepriceDocModelKey(String rdmKey)
+	public void setRepriceDocModelKey(String rdmKey)
 	{
 		this.repriceDocModelKey = rdmKey;
 	}
 
-	public String[]        getSearchGoods()
+	public String[] getSearchGoods()
 	{
 		return searchGoods;
 	}
 
-	public void            setSearchGoods(String[] searchGoods)
+	public void setSearchGoods(String[] searchGoods)
 	{
 		this.searchGoods = searchGoods;
 	}
@@ -59,21 +69,40 @@ public class PriceChangeEditModelBean extends ModelBeanBase
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
-	public ModelData       modelData()
+	public ModelData modelData()
 	{
 		return new PriceChangeEditModelData(this);
 	}
 
 
-	/* private: the edit instance */
+	/* private: encapsulated data */
 
 	private PriceChangeEdit priceChange;
 	private String          repriceDocModelKey;
-
-
-	/* private: edit form support */
-
 	private String[]        searchGoods;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.xml(o, priceChange);
+		IO.str(o, repriceDocModelKey);
+		o.writeObject(searchGoods);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		priceChange = IO.xml(i, PriceChangeEdit.class);
+		repriceDocModelKey = IO.str(i);
+		searchGoods = IO.obj(i, String[].class);
+	}
 }

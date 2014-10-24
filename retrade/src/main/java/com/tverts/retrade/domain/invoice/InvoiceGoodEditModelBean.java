@@ -1,5 +1,12 @@
 package com.tverts.retrade.domain.invoice;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serializable;
+
 /* com.tverts: objects */
 
 import com.tverts.objects.ObjectAccess;
@@ -10,7 +17,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: model */
 
-import com.tverts.model.ModelBeanBase;
+import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
 
 /* com.tverts: retrade domain (goods) */
@@ -24,6 +31,8 @@ import com.tverts.retrade.data.InvoiceGoodEditModelData;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
+import com.tverts.support.IO;
 import com.tverts.support.OU;
 
 
@@ -31,16 +40,10 @@ import com.tverts.support.OU;
  * Model bean for {@link InvoiceGoodView} is being edited
  * linked with parent model {@link InvoiceEditModelBean}.
  *
- * TODO support paged goods table when selecting good unit
- *
- *
  * @author anton.baukin@gmail.com
  */
-public class InvoiceGoodEditModelBean extends ModelBeanBase
+public class InvoiceGoodEditModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/* public: constructors */
 
 	public InvoiceGoodEditModelBean()
@@ -57,67 +60,55 @@ public class InvoiceGoodEditModelBean extends ModelBeanBase
 	}
 
 
-	/* public: InvoiceGoodEditModelBean (bean) interface */
+	/* Invoice Good Edit Model */
 
-	public String   getInvoiceModel()
+	public String getInvoiceModel()
 	{
 		return invoiceModel;
 	}
 
-	public void     setInvoiceModel(String invoiceModel)
+	public void setInvoiceModel(String invoiceModel)
 	{
 		this.invoiceModel = invoiceModel;
 	}
 
-	public Long     getGoodKey()
+	public Long getGoodKey()
 	{
 		return goodKey;
 	}
 
-	public void     setGoodKey(Long goodKey)
+	public void setGoodKey(Long goodKey)
 	{
 		this.goodKey = goodKey;
 	}
 
-	public Long     getTradeStore()
+	public Long getTradeStore()
 	{
 		return tradeStore;
 	}
 
-	public void     setTradeStore(Long tradeStore)
+	public void setTradeStore(Long tradeStore)
 	{
 		this.tradeStore = tradeStore;
 	}
 
-	public String[] getSearchGoods()
-	{
-		return searchGoods;
-	}
-
-	public void     setSearchGoods(String[] searchGoods)
-	{
-		this.searchGoods = searchGoods;
-	}
-
-	public boolean  isDirectPrice()
+	public boolean isDirectPrice()
 	{
 		return directPrice;
 	}
 
-	public void     setDirectPrice(boolean directPrice)
+	public void setDirectPrice(boolean directPrice)
 	{
 		this.directPrice = directPrice;
 	}
 
 
-	/* public: InvoiceGoodEditModelBean (support) interface */
+	/* Invoice Good Edit Model (support) */
 
 	public InvoiceEditModelBean invoiceModelBean()
 	{
-		InvoiceEditModelBean res = getInvoiceModelBean();
-		if(res == null) throw new IllegalStateException(
+		return EX.assertn(getInvoiceModelBean(),
 		  "No Invoice Edit model found when editing it's good!");
-		return res;
 	}
 
 	public InvoiceEditModelBean getInvoiceModelBean()
@@ -181,20 +172,45 @@ public class InvoiceGoodEditModelBean extends ModelBeanBase
 	}
 
 
-	/* private: the edit state */
+	/* private: encapsulated data */
 
 	private String   invoiceModel;
 	private Long     goodKey;
 	private Long     tradeStore;
 	private boolean  directPrice;
 
-
-	/* private: edit form support */
-
-	private String[] searchGoods;
-
-
-	/* private: caches */
-
 	private ObjectAccess<InvoiceGoodView> goodAccess;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.str(o, invoiceModel);
+		o.writeLong(goodKey);
+		o.writeLong(tradeStore);
+		o.writeBoolean(directPrice);
+
+		//?: {not a transient data access}
+		if(goodAccess instanceof Serializable)
+			IO.obj(o, goodAccess);
+		else
+			IO.obj(o, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		invoiceModel = IO.str(i);
+		goodKey = i.readLong();
+		tradeStore = i.readLong();
+		directPrice = i.readBoolean();
+		goodAccess = IO.obj(i, ObjectAccess.class);
+	}
 }

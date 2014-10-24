@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,6 +10,8 @@ import java.util.Collection;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* tverts.com: aggregated values */
 
@@ -27,6 +29,8 @@ import com.tverts.retrade.domain.store.TradeStore;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlRootElement(name = "good-unit")
+@XmlType(name = "good-unit-view")
 public class GoodUnitView implements Serializable
 {
 	public static final long serialVersionUID = 0L;

@@ -3,11 +3,12 @@ package com.tverts.retrade.domain.store;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: models */
 
-import com.tverts.model.ModelBeanBase;
 import com.tverts.model.ModelData;
+import com.tverts.model.ViewModelBeanBase;
 
 /* com.tverts: endure (catalogues) */
 
@@ -25,33 +26,26 @@ import com.tverts.retrade.data.StoresModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-public class StoresModelBean extends ModelBeanBase
+@XmlType(name = "trade-stores-model")
+public class StoresModelBean extends ViewModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* View */
 
 	public CatItemView getView()
 	{
-		return view;
+		return (CatItemView) super.getView();
 	}
 
-	public void setView(CatItemView view)
+	public Class viewClass()
 	{
-		this.view = view;
+		return CatItemView.class;
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
 		return new StoresModelData(this);
 	}
-
-
-	/* store view (fore edit) */
-
-	private CatItemView view;
 }

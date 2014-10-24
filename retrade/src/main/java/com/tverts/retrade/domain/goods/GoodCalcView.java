@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,6 +13,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: support */
@@ -26,17 +27,20 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "good-calc")
+@XmlType(name = "good-calc-view")
 public class GoodCalcView implements Serializable
 {
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: bean interface */
+	/* Calculation Properties */
 
 	public Long getObjectKey()
 	{
 		return objectKey;
 	}
+
+	private Long objectKey;
 
 	public void setObjectKey(Long objectKey)
 	{
@@ -47,6 +51,8 @@ public class GoodCalcView implements Serializable
 	{
 		return goodUnit;
 	}
+
+	private Long goodUnit;
 
 	public void setGoodUnit(Long goodUnit)
 	{
@@ -59,6 +65,8 @@ public class GoodCalcView implements Serializable
 		return openTime;
 	}
 
+	private Date openTime;
+
 	public void setOpenTime(Date openTime)
 	{
 		this.openTime = openTime;
@@ -70,6 +78,8 @@ public class GoodCalcView implements Serializable
 		return closeTime;
 	}
 
+	private Date closeTime;
+
 	public void setCloseTime(Date closeTime)
 	{
 		this.closeTime = closeTime;
@@ -79,6 +89,8 @@ public class GoodCalcView implements Serializable
 	{
 		return semiReady;
 	}
+
+	private boolean semiReady;
 
 	public void setSemiReady(boolean semiReady)
 	{
@@ -91,6 +103,8 @@ public class GoodCalcView implements Serializable
 		  (parts = new ArrayList<CalcPartView>(2));
 	}
 
+	private List<CalcPartView> parts;
+
 	public void setParts(List<CalcPartView> parts)
 	{
 		this.parts = parts;
@@ -102,15 +116,22 @@ public class GoodCalcView implements Serializable
 		return remarks;
 	}
 
+	private String remarks;
+
 	public void setRemarks(String remarks)
 	{
 		this.remarks = remarks;
 	}
 
+
+	/* Derived Good Properties */
+
 	public boolean isDerived()
 	{
 		return derived;
 	}
+
+	private boolean derived;
 
 	public void setDerived(boolean derived)
 	{
@@ -122,6 +143,8 @@ public class GoodCalcView implements Serializable
 		return superGood;
 	}
 
+	private Long superGood;
+
 	public void setSuperGood(Long superGood)
 	{
 		this.superGood = superGood;
@@ -131,6 +154,8 @@ public class GoodCalcView implements Serializable
 	{
 		return subCode;
 	}
+
+	private String subCode;
 
 	public void setSubCode(String subCode)
 	{
@@ -142,6 +167,8 @@ public class GoodCalcView implements Serializable
 		return subVolume;
 	}
 
+	private BigDecimal subVolume;
+
 	public void setSubVolume(BigDecimal subVolume)
 	{
 		this.subVolume = subVolume;
@@ -151,6 +178,8 @@ public class GoodCalcView implements Serializable
 	{
 		return superGoodCode;
 	}
+
+	private String superGoodCode;
 
 	public void setSuperGoodCode(String superGoodCode)
 	{
@@ -163,17 +192,23 @@ public class GoodCalcView implements Serializable
 		return superGoodName;
 	}
 
+	private String superGoodName;
+
 	@XmlElement
 	public String getSuperGoodMeasure()
 	{
 		return superGoodMeasure;
 	}
 
+	private String superGoodMeasure;
+
 	@XmlElement
 	public boolean isSuperGoodInteger()
 	{
 		return superGoodInteger;
 	}
+
+	private boolean superGoodInteger;
 
 
 	/* public: init interface */
@@ -255,28 +290,4 @@ public class GoodCalcView implements Serializable
 
 		return this;
 	}
-
-
-	/* calculation properties */
-
-	private Long    objectKey;
-	private Long    goodUnit;
-	private Date    openTime;
-	private Date    closeTime;
-	private boolean semiReady;
-	private String  remarks;
-
-	private List<CalcPartView> parts;
-
-
-	/* derived good properties */
-
-	private boolean    derived;
-	private Long       superGood;
-	private String     subCode;
-	private BigDecimal subVolume;
-	private String     superGoodCode;
-	private String     superGoodName;
-	private String     superGoodMeasure;
-	private boolean    superGoodInteger;
 }

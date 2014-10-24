@@ -16,18 +16,13 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-/* com.tverts: system */
-
-import com.tverts.system.SystemConfig;
-
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.UnityType;
 
 /* com.tverts: models */
 
-import com.tverts.model.DataSelectModel;
-import com.tverts.model.ModelBeanBase;
+import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
 
 /* com.tverts: retrade domain (invoices + sells) */
@@ -55,35 +50,9 @@ import com.tverts.support.jaxb.DateAdapter;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "docs-model")
-public class      DocsSearchModelBean
-       extends    ModelBeanBase
-       implements DataSelectModel
+public class DocsSearchModelBean extends DataSelectModelBean
 {
 	public static final long serialVersionUID = 0L;
-
-
-	/* public: DataSelectModel interface */
-
-	public Integer      getDataStart()
-	{
-		return (dataStart != null)?(dataStart):(0);
-	}
-
-	public void         setDataStart(Integer dataStart)
-	{
-		this.dataStart = dataStart;
-	}
-
-	public Integer      getDataLimit()
-	{
-		return (dataLimit != null)?(dataLimit):
-		  SystemConfig.getInstance().getGridSize();
-	}
-
-	public void         setDataLimit(Integer dataLimit)
-	{
-		this.dataLimit = dataLimit;
-	}
 
 
 	/* public: bean interface */
@@ -357,9 +326,6 @@ public class      DocsSearchModelBean
 
 
 	/* search attributes */
-
-	private Integer     dataStart;
-	private Integer     dataLimit;
 
 	private Date        minDate;
 	private Date        maxDate;

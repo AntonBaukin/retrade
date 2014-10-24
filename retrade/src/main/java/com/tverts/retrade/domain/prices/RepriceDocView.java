@@ -24,14 +24,14 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "reprice-document-view")
+@XmlRootElement(name = "reprice-document")
 @XmlType(name = "reprice-document-view")
 public class RepriceDocView implements Serializable
 {
 	public static final long serialVersionUID = 20140803L;
 
 
-	/* public: RepriceDocView (bean) interface */
+	/* Price Change Document View */
 
 	public Long getObjectKey()
 	{
@@ -107,7 +107,7 @@ public class RepriceDocView implements Serializable
 	}
 
 
-	/* public: initialization interface */
+	/* Initialization */
 
 	public RepriceDocView init(Object obj)
 	{

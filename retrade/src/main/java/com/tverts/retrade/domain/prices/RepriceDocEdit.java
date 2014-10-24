@@ -33,7 +33,7 @@ public class RepriceDocEdit extends RepriceDocView
 	public static final long serialVersionUID = 20140803L;
 
 
-	/* public: RepriceDocEdit (bean) interface */
+	/* Price Change Document Edit */
 
 	@XmlElement(name = "price-item")
 	@XmlElementWrapper(name = "price-items")
@@ -51,7 +51,7 @@ public class RepriceDocEdit extends RepriceDocView
 	}
 
 
-	/* public: initialization interface */
+	/* Initialization */
 
 	@SuppressWarnings("unchecked")
 	public RepriceDocEdit init(RepriceDoc rd)

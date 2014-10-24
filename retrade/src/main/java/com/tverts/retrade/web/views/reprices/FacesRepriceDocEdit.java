@@ -87,7 +87,7 @@ public class FacesRepriceDocEdit extends ModelView
 	{
 		//~: read the changes from the request
 		ArrayList<PriceChangeEdit> changes = new ArrayList<PriceChangeEdit>(4);
-		getModel().getRepriceDoc().setPriceChanges(changes);
+		getModel().getView().setPriceChanges(changes);
 
 		for(int i = 0;;i++)
 		{
@@ -133,14 +133,14 @@ public class FacesRepriceDocEdit extends ModelView
 		{
 			//~: load the document
 			rd = bean(GetGoods.class).
-			  getRepriceDoc(getModel().getRepriceDoc().getObjectKey());
+			  getRepriceDoc(getModel().getView().getObjectKey());
 
 			if(rd == null) throw EX.state();
 		}
 
 
 		//~: check code exists & assign it
-		String code = SU.s2s(getModel().getRepriceDoc().getCode());
+		String code = SU.s2s(getModel().getView().getCode());
 		if(code == null) throw EX.arg();
 		if(codeExists = checkCodeExists(code)) return null;
 		rd.setCode(code);
@@ -148,7 +148,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 		//~: assign the price list
 		PriceListEntity pl = bean(GetGoods.class).
-		  getPriceList(getModel().getRepriceDoc().getPriceListKey());
+		  getPriceList(getModel().getView().getPriceListKey());
 		if(pl == null) throw EX.state();
 
 		//sec: check the domain of price list
@@ -161,7 +161,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 		//!: run save | update action
 		actionRun(isCreate()?(ActionType.SAVE):(ActionType.UPDATE),
-		  rd, Prices.REPRICE_EDIT, getModel().getRepriceDoc()
+		  rd, Prices.REPRICE_EDIT, getModel().getView()
 		);
 
 		return null;
@@ -183,7 +183,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 		//?: {has no price list parameter} use current price list
 		if(pp == null)
-			pl = gg.getPriceList(getModel().getRepriceDoc().getPriceListKey());
+			pl = gg.getPriceList(getModel().getView().getPriceListKey());
 		//!: update current price list
 		else
 		{
@@ -193,7 +193,7 @@ public class FacesRepriceDocEdit extends ModelView
 			if(!getModel().domain().equals(pl.getDomain().getPrimaryKey()))
 				throw EX.forbid();
 
-			getModel().getRepriceDoc().setPriceListKey(pl.getPrimaryKey());
+			getModel().getView().setPriceListKey(pl.getPrimaryKey());
 		}
 
 
@@ -254,7 +254,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 	public boolean isCreate()
 	{
-		return (getModel().getRepriceDoc().getObjectKey() == null);
+		return (getModel().getView().getObjectKey() == null);
 	}
 
 	public boolean isFailed()
@@ -273,7 +273,7 @@ public class FacesRepriceDocEdit extends ModelView
 	{
 		return (isCreate())?("Создание документа изменения цен"):SU.cats(
 		  "Редактирование документа изм. цены [",
-		  getModel().getRepriceDoc().getCode(), "]"
+		  getModel().getView().getCode(), "]"
 		);
 	}
 
@@ -328,7 +328,7 @@ public class FacesRepriceDocEdit extends ModelView
 		RepriceDoc rd = bean(GetGoods.class).
 		  getRepriceDoc(getModel().domain(), code);
 
-		Long       pk = getModel().getRepriceDoc().getObjectKey();
+		Long       pk = getModel().getView().getObjectKey();
 
 		return (rd != null) && (
 		  (pk == null) || // <-- creating
@@ -351,7 +351,7 @@ public class FacesRepriceDocEdit extends ModelView
 		if("true".equals(request().getParameter("create")))
 		{
 			RepriceDocEdit rde = new RepriceDocEdit();
-			mb.setRepriceDoc(rde);
+			mb.setView(rde);
 
 			//~: generate code
 			rde.setCode(Prices.createRepriceDocCode(loadDomain()));
@@ -378,7 +378,7 @@ public class FacesRepriceDocEdit extends ModelView
 			throw EX.forbid();
 
 		//~: create the edit model
-		mb.setRepriceDoc((RepriceDocEdit) new RepriceDocEdit().
+		mb.setView((RepriceDocEdit) new RepriceDocEdit().
 		  init(Arrays.asList(rd, rd.getPriceList()))
 		);
 

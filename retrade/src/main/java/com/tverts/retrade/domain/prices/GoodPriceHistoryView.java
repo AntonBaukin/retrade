@@ -3,6 +3,7 @@ package com.tverts.retrade.domain.prices;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -11,35 +12,40 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "price-history")
+@XmlType(name = "price-history-view")
 public class GoodPriceHistoryView extends PriceChangeView
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140803L;
 
 
-	/* public: GoodPriceHistoryView (bean) interface */
+	/* Good Price History View */
 
-	public String      getRepriceKey()
+	public String getRepriceKey()
 	{
 		return repriceKey;
 	}
 
-	public void        setRepriceKey(String repriceKey)
+	private String repriceKey;
+
+	public void setRepriceKey(String repriceKey)
 	{
 		this.repriceKey = repriceKey;
 	}
 
-	public String      getRepriceName()
+	public String getRepriceName()
 	{
 		return repriceName;
 	}
 
-	public void        setRepriceName(String repriceName)
+	private String repriceName;
+
+	public void setRepriceName(String repriceName)
 	{
 		this.repriceName = repriceName;
 	}
 
 
-	/* public: initialization interface */
+	/* Initialization */
 
 	public GoodPriceHistoryView init(Object obj)
 	{
@@ -56,10 +62,4 @@ public class GoodPriceHistoryView extends PriceChangeView
 
 		return this;
 	}
-
-
-	/* private: properties of the view */
-
-	private String repriceKey;
-	private String repriceName;
 }

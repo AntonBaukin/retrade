@@ -3,11 +3,12 @@ package com.tverts.retrade.domain.goods;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: models */
 
 import com.tverts.model.ModelData;
-import com.tverts.model.ModelBeanBase;
+import com.tverts.model.ViewModelBeanBase;
 
 /* com.tverts: retrade data */
 
@@ -21,33 +22,26 @@ import com.tverts.retrade.data.goods.MeasureUnitModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-public class MeasureUnitModelBean extends ModelBeanBase
+@XmlType(name = "measure-unit")
+public class MeasureUnitModelBean extends ViewModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* View */
 
 	public MeasureUnitView getView()
 	{
-		return view;
+		return (MeasureUnitView) super.getView();
 	}
 
-	public void setView(MeasureUnitView view)
+	public Class viewClass()
 	{
-		this.view = view;
+		return MeasureUnitView.class;
 	}
 
 
-	/* public: ModelBean interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
 		return new MeasureUnitModelData(this);
 	}
-
-
-	/* measure unit view */
-
-	private MeasureUnitView view;
 }

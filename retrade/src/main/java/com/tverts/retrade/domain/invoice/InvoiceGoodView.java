@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.invoice;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,6 +10,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: retrade domain (goods + trade stores) */
@@ -34,17 +35,20 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "good")
+@XmlType(name = "invoice-good-view")
 public class InvoiceGoodView implements Serializable
 {
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: InvoiceGoodBean (bean) interface */
+	/* Invoice Good (bean) */
 
 	public Long getObjectKey()
 	{
 		return objectKey;
 	}
+
+	private Long objectKey;
 
 	public void setObjectKey(Long objectKey)
 	{
@@ -56,16 +60,19 @@ public class InvoiceGoodView implements Serializable
 		return index;
 	}
 
+	private int index;
+
 	public void setIndex(int index)
 	{
 		this.index = index;
 	}
 
-	@XmlElement
 	public Long getGoodUnit()
 	{
 		return goodUnit;
 	}
+
+	private Long goodUnit;
 
 	@XmlElement
 	public String getGoodCode()
@@ -73,11 +80,15 @@ public class InvoiceGoodView implements Serializable
 		return goodCode;
 	}
 
+	private String goodCode;
+
 	@XmlElement
 	public String getGoodName()
 	{
 		return goodName;
 	}
+
+	private String goodName;
 
 	@XmlElement
 	public String getVolumeUnitName()
@@ -85,16 +96,22 @@ public class InvoiceGoodView implements Serializable
 		return volumeUnitName;
 	}
 
+	private String volumeUnitName;
+
 	@XmlElement
 	public boolean isVolumeInteger()
 	{
 		return volumeInteger;
 	}
 
+	private boolean volumeInteger;
+
 	public BigDecimal getGoodVolume()
 	{
 		return goodVolume;
 	}
+
+	private BigDecimal goodVolume;
 
 	public void setGoodVolume(BigDecimal v)
 	{
@@ -110,6 +127,8 @@ public class InvoiceGoodView implements Serializable
 	{
 		return volumeCost;
 	}
+
+	private BigDecimal volumeCost;
 
 	public void setVolumeCost(BigDecimal v)
 	{
@@ -129,6 +148,8 @@ public class InvoiceGoodView implements Serializable
 		return goodVolumeDelta;
 	}
 
+	private BigDecimal goodVolumeDelta;
+
 	public void setGoodVolumeDelta(BigDecimal goodVolumeDelta)
 	{
 		this.goodVolumeDelta = goodVolumeDelta;
@@ -140,10 +161,14 @@ public class InvoiceGoodView implements Serializable
 		return goodPrice;
 	}
 
+	private Long goodPrice;
+
 	public Long getPriceList()
 	{
 		return priceList;
 	}
+
+	private Long priceList;
 
 	public void setPriceList(Long priceList)
 	{
@@ -156,16 +181,22 @@ public class InvoiceGoodView implements Serializable
 		return priceListCode;
 	}
 
+	private String priceListCode;
+
 	@XmlElement
 	public String getPriceListName()
 	{
 		return priceListName;
 	}
 
+	private String priceListName;
+
 	public Boolean getMoveOn()
 	{
 		return moveOn;
 	}
+
+	private Boolean moveOn;
 
 	public void setMoveOn(Boolean moveOn)
 	{
@@ -176,6 +207,8 @@ public class InvoiceGoodView implements Serializable
 	{
 		return needCalc;
 	}
+
+	private Boolean needCalc;
 
 	public void setNeedCalc(Boolean needCalc)
 	{
@@ -189,14 +222,18 @@ public class InvoiceGoodView implements Serializable
 		return calcDate;
 	}
 
+	private Date calcDate;
+
 	@XmlElement
 	public Boolean getGoodSemiReady()
 	{
 		return goodSemiReady;
 	}
 
+	private Boolean goodSemiReady;
 
-	/* public: initialization interface */
+
+	/* Initialization */
 
 	public InvoiceGoodView init(Invoice invoice, int index)
 	{
@@ -370,26 +407,4 @@ public class InvoiceGoodView implements Serializable
 
 		return this;
 	}
-
-
-	/* private:  good view parameters */
-
-	private Long       objectKey;
-	private int        index;
-	private Long       goodUnit;
-	private String     goodCode;
-	private String     goodName;
-	private String     volumeUnitName;
-	private boolean    volumeInteger;
-	private BigDecimal goodVolume;
-	private BigDecimal volumeCost;
-	private BigDecimal goodVolumeDelta;
-	private Long       goodPrice;
-	private Long       priceList;
-	private String     priceListCode;
-	private String     priceListName;
-	private Boolean    moveOn;
-	private Boolean    needCalc;
-	private Date       calcDate;
-	private Boolean    goodSemiReady;
 }

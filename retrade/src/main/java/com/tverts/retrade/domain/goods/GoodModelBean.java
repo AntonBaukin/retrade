@@ -1,12 +1,23 @@
 package com.tverts.retrade.domain.goods;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: models */
 
 import com.tverts.model.ModelBeanBase;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -15,12 +26,10 @@ import com.tverts.model.ModelBeanBase;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "good-model")
 public class GoodModelBean extends ModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* Good Model Bean */
 
 	public GoodUnitView getView()
 	{
@@ -93,7 +102,7 @@ public class GoodModelBean extends ModelBeanBase
 	}
 
 
-	/* the good view */
+	/* private: encapsulated data */
 
 	private GoodUnitView view;
 	private GoodCalcView calc;
@@ -102,4 +111,37 @@ public class GoodModelBean extends ModelBeanBase
 	private Long         goodsFolder;
 	private boolean      selSetAble;
 	private boolean      calcUpdated;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.obj(o, view);
+		IO.obj(o, calc);
+		IO.obj(o, historyCalc);
+		IO.obj(o, editCalc);
+
+		o.writeLong(goodsFolder);
+		o.writeBoolean(selSetAble);
+		o.writeBoolean(calcUpdated);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		view        = IO.obj(i, GoodUnitView.class);
+		calc        = IO.obj(i, GoodCalcView.class);
+		historyCalc = IO.obj(i, GoodCalcView.class);
+		editCalc    = IO.obj(i, GoodCalcView.class);
+
+		goodsFolder = i.readLong();
+		selSetAble  = i.readBoolean();
+		calcUpdated = i.readBoolean();
+	}
 }

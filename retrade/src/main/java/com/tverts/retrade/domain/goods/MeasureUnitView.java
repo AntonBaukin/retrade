@@ -1,12 +1,13 @@
 package com.tverts.retrade.domain.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
 
@@ -24,17 +25,20 @@ import com.tverts.endure.cats.CatItemView;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "measure-unit")
+@XmlType(name = "measure-unit-view")
 public class MeasureUnitView extends CatItemView
 {
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: bean interface */
+	/* Measure Unit View */
 
 	public String getClassCode()
 	{
 		return classCode;
 	}
+
+	private String classCode;
 
 	public void setClassCode(String classCode)
 	{
@@ -46,6 +50,8 @@ public class MeasureUnitView extends CatItemView
 		return classUnit;
 	}
 
+	private BigDecimal classUnit;
+
 	public void setClassUnit(BigDecimal classUnit)
 	{
 		this.classUnit = classUnit;
@@ -56,13 +62,15 @@ public class MeasureUnitView extends CatItemView
 		return fractional;
 	}
 
+	private boolean fractional = true;
+
 	public void setFractional(boolean fractional)
 	{
 		this.fractional = fractional;
 	}
 
 
-	/* public: init interface */
+	/* Initialization */
 
 	public MeasureUnitView init(CatItem ci)
 	{
@@ -75,11 +83,4 @@ public class MeasureUnitView extends CatItemView
 
 		return (MeasureUnitView) super.init(ci);
 	}
-
-
-	/* measure attributes */
-
-	private String     classCode;
-	private BigDecimal classUnit;
-	private boolean    fractional = true;
 }

@@ -57,7 +57,7 @@ public class RepriceDocEditModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<PriceChangeEdit> getChanges()
 	{
-		return getModel().getRepriceDoc().getPriceChanges();
+		return getModel().getView().getPriceChanges();
 	}
 
 

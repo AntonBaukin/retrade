@@ -103,7 +103,7 @@ public class FacesSystemCreateDomainView extends ModelView
 		params.put(getDomainNameParam(), getDomainName());
 
 		//~: is test flag
-		if(Boolean.TRUE.equals(getModel().isTestDomain()))
+		if(Boolean.TRUE.equals(getModel().getTestDomain()))
 			params.put(getTestDomainParam(), "true");
 
 		//~: create genesis event
@@ -191,7 +191,7 @@ public class FacesSystemCreateDomainView extends ModelView
 	public String[] getGenesisSpheres()
 	{
 		return getGenesisSpheres(
-		  Boolean.TRUE.equals(getModel().isTestDomain()));
+		  Boolean.TRUE.equals(getModel().getTestDomain()));
 	}
 
 	public String[] getGenesisSpheres(boolean test)
@@ -239,7 +239,7 @@ public class FacesSystemCreateDomainView extends ModelView
 
 	public String getWindowTitle()
 	{
-		if(Boolean.TRUE.equals(getModel().isTestDomain()))
+		if(Boolean.TRUE.equals(getModel().getTestDomain()))
 			return "Создание тестового домена";
 		return "Создание домена";
 	}

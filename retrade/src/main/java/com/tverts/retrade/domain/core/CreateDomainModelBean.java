@@ -1,5 +1,11 @@
 package com.tverts.retrade.domain.core;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
@@ -15,6 +21,11 @@ import com.tverts.model.ModelBeanBase;
 
 import com.tverts.objects.ObjectParamView;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.IO;
+
 
 /**
  * Model bean to create (generate) new Domain instance.
@@ -22,18 +33,15 @@ import com.tverts.objects.ObjectParamView;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(propOrder = {
+@XmlType(name = "create-domain", propOrder = {
   "testDomain", "logParam", "params"
 })
 public class CreateDomainModelBean extends ModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: CreateDomainModelBean (bean) interface */
+	/* Create Domain Model  */
 
 	@XmlElement(name = "test-domain")
-	public Boolean isTestDomain()
+	public Boolean getTestDomain()
 	{
 		return (testDomain)?(Boolean.TRUE):(null);
 	}
@@ -63,14 +71,36 @@ public class CreateDomainModelBean extends ModelBeanBase
 
 	public void setParams(ObjectParamView[] params)
 	{
-		if(params == null) throw new IllegalArgumentException();
-		this.params = params;
+		this.params = EX.assertn(params);
 	}
 
 
-	/* state of the model */
+	/* private: encapsulated data */
 
 	private boolean           testDomain;
 	private String            logParam;
 	private ObjectParamView[] params = new ObjectParamView[0];
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		o.writeBoolean(testDomain);
+		IO.str(o, logParam);
+		IO.obj(o, params);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		testDomain = i.readBoolean();
+		logParam   = IO.str(i);
+		params     = IO.obj(i, ObjectParamView[].class);
+	}
 }

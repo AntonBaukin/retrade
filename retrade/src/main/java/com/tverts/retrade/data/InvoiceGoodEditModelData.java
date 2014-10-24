@@ -43,6 +43,7 @@ import static com.tverts.support.SU.s2s;
 
 /**
  * COMMENT InvoiceGoodEditModelData
+ * TODO support paged goods table when selecting good unit
  *
  * @author anton.baukin@gmail.com
  */
@@ -81,7 +82,7 @@ public class InvoiceGoodEditModelData implements ModelData
 		if(domain == null) return null;
 
 		List<GoodUnit>     gus = bean(GetGoods.class).
-		  searchGoodUnits(domain, getModel().getSearchGoods(), 25);
+		  searchGoodUnits(domain, getModel().searchNames(), 25);
 
 		List<GoodUnitView> res =
 		  new ArrayList<GoodUnitView>(gus.size());

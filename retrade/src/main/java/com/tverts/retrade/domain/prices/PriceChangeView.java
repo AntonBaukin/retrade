@@ -11,6 +11,7 @@ import java.util.Date;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* tverts.com: aggregated values */
@@ -35,12 +36,13 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "price-change")
+@XmlType(name = "price-change-view")
 public class PriceChangeView implements Serializable
 {
 	public static final long serialVersionUID = 20140803L;
 
 
-	/* public: PriceChangeView (bean) interface */
+	/* Price Change View */
 
 	/**
 	 * Stores the key of the {@link PriceChange} instance.
@@ -171,7 +173,7 @@ public class PriceChangeView implements Serializable
 	}
 
 
-	/* public: initialization interface */
+	/* Initialization */
 
 	public PriceChangeView init(Object obj)
 	{
