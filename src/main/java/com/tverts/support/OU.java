@@ -5,8 +5,6 @@ package com.tverts.support;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,10 +24,8 @@ import com.tverts.objects.ObjectAccessRef;
 
 import com.tverts.support.streams.BigDecimalXMLEncoderPersistenceDelegate;
 import com.tverts.support.streams.BytesStream;
-import com.tverts.support.streams.InputDataStream;
 import com.tverts.support.streams.NotCloseInput;
 import com.tverts.support.streams.NotCloseOutput;
-import com.tverts.support.streams.OutputDataStream;
 
 
 /**
@@ -269,11 +265,6 @@ public class OU
 		}
 	}
 
-	public static void    obj2xml(DataOutput d, Object bean)
-	{
-		OU.obj2xml(new OutputDataStream(d), bean);
-	}
-
 	public static Object  xml2obj(String xml)
 	{
 		try
@@ -331,16 +322,6 @@ public class OU
 			);
 
 		return (O)res;
-	}
-
-	public static Object  xml2obj(DataInput d)
-	{
-		return OU.xml2obj(new InputDataStream(d));
-	}
-
-	public static <O> O   xml2obj(DataInput d, Class<O> cls)
-	{
-		return OU.xml2obj(new InputDataStream(d), cls);
 	}
 
 

@@ -1,13 +1,12 @@
 package com.tverts.objects;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 
 
 /**
  * Access object by direct reference given.
- *
  *
  * @author anton.baukin@gmail.com
  */

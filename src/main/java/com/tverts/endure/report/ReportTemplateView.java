@@ -2,8 +2,8 @@ package com.tverts.endure.report;
 
 /* Java XML Binding */
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: endure (catalogues) */
 
@@ -22,17 +22,20 @@ import com.tverts.data.DataSource;
  * @author anton.baukin@gmail.com.
  */
 @XmlRootElement(name = "report-template")
+@XmlType(name = "report-template-view")
 public class ReportTemplateView extends CatItemView
 {
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: did */
+	/* Report Template View */
 
 	public String getDid()
 	{
 		return did;
 	}
+
+	private String  did;
 
 	public void setDid(String did)
 	{
@@ -44,6 +47,8 @@ public class ReportTemplateView extends CatItemView
 		return system;
 	}
 
+	private boolean system;
+
 	public void setSystem(boolean system)
 	{
 		this.system = system;
@@ -53,6 +58,8 @@ public class ReportTemplateView extends CatItemView
 	{
 		return remarks;
 	}
+
+	private String  remarks;
 
 	public void setRemarks(String remarks)
 	{
@@ -64,6 +71,8 @@ public class ReportTemplateView extends CatItemView
 		return sourceName;
 	}
 
+	private String  sourceName;
+
 	public void setSourceName(String sourceName)
 	{
 		this.sourceName = sourceName;
@@ -73,6 +82,8 @@ public class ReportTemplateView extends CatItemView
 	{
 		return ready;
 	}
+
+	private boolean ready;
 
 	public void setReady(boolean ready)
 	{
@@ -84,13 +95,15 @@ public class ReportTemplateView extends CatItemView
 		return hasUI;
 	}
 
+	private boolean hasUI;
+
 	public void setHasUI(boolean hasUI)
 	{
 		this.hasUI = hasUI;
 	}
 
 
-	/* public: initialization */
+	/* Initialization */
 
 	public ReportTemplateView init(CatItem ci)
 	{
@@ -108,18 +121,8 @@ public class ReportTemplateView extends CatItemView
 		//~: data source
 		DataSource src = Datas.INSTANCE.getSource(this.did);
 		this.sourceName = (src == null)?(null):(src.getNameLo());
-		this.hasUI = (src == null)?(false):(src.getUiPath() != null);
+		this.hasUI = (src != null) && (src.getUiPath() != null);
 
 		return this;
 	}
-
-
-	/* view attributes */
-
-	private String  did;
-	private boolean system;
-	private String  remarks;
-	private String  sourceName;
-	private boolean ready;
-	private boolean hasUI;
 }

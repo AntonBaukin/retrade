@@ -1,34 +1,40 @@
 package com.tverts.model;
 
-/* standard Java classes */
+/* Java */
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /* Java XML Binding */
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.IO;
 
 
 /**
  * This model contains a map of properties.
  *
+ * Model Data is stored directly in the model
+ * as a property mapped by ModelData.class.
+ *
+ *
  * @author anton.baukin@gmail.com
  */
-@XmlType(name = "model")
+@XmlRootElement(name = "model")
+@XmlType(name = "simple-model")
 @SuppressWarnings("unchecked")
 public class SimpleModelBean extends ModelBeanBase
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* Simple Model */
 
 	public Map       getMap()
 	{
@@ -39,18 +45,16 @@ public class SimpleModelBean extends ModelBeanBase
 	{
 		if(map == null)
 			map = new HashMap<Serializable, Serializable>(5);
+
+		EX.assertx(map instanceof Serializable);
 		this.map = map;
 	}
 
-	@XmlTransient
-	public ModelData getData()
+	public <D extends ModelData & Serializable> SimpleModelBean setData(D data)
 	{
-		return data;
-	}
-
-	public void      setData(ModelData data)
-	{
-		this.data = data;
+		EX.assertx((data == null) || (data instanceof Serializable));
+		put(ModelData.class, data);
+		return this;
 	}
 
 
@@ -75,7 +79,10 @@ public class SimpleModelBean extends ModelBeanBase
 
 	public Object    put(Serializable key, Serializable val)
 	{
-		return getMap().put(key, val);
+		if(val == null)
+			return getMap().remove(key);
+		else
+			return getMap().put(key, val);
 	}
 
 
@@ -83,13 +90,28 @@ public class SimpleModelBean extends ModelBeanBase
 
 	public ModelData modelData()
 	{
-		return (data != null)?(data):
-		  get(ModelData.class, ModelData.class);
+		return get(ModelData.class, ModelData.class);
 	}
 
 
-	/* the map & data */
+	/* private: encapsulated data */
 
-	private Map       map;
-	private ModelData data;
+	private Map map;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		IO.obj(o, map);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		map = IO.obj(i, Map.class);
+	}
 }

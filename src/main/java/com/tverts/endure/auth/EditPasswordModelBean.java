@@ -16,13 +16,13 @@ import com.tverts.support.IO;
 
 
 /**
- * Model Bean of editing Login and Password.
+ * Model bean of editing Login and Password.
  *
  * @author anton.baukin@gmail.com
  */
 public class EditPasswordModelBean extends ModelBeanBase
 {
-	/* public: EditPasswordModelBean (bean) interface */
+	/* Edit Password Model */
 
 	public Long getAuthLogin()
 	{

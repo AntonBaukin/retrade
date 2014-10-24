@@ -35,7 +35,7 @@ import com.tverts.support.IO;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "self-shunt-groups-model", propOrder = {
+@XmlType(name = "self-shunt-groups", propOrder = {
   "domain", "updating", "logParam", "groups", "params"
 })
 public class SelfShuntGroupsModelBean extends ModelBeanBase
@@ -114,8 +114,8 @@ public class SelfShuntGroupsModelBean extends ModelBeanBase
 
 		o.writeBoolean(updating);
 		IO.str(o, logParam);
-		o.writeObject(groups);
-		o.writeObject(params);
+		IO.obj(o, groups);
+		IO.obj(o, params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -126,7 +126,7 @@ public class SelfShuntGroupsModelBean extends ModelBeanBase
 
 		updating = i.readBoolean();
 		logParam = IO.str(i);
-		groups   = (Set) i.readObject();
-		params   = (ObjectParamView[]) i.readObject();
+		groups   = IO.obj(i, Set.class);
+		params   = IO.obj(i, ObjectParamView[].class);
 	}
 }

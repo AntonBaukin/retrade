@@ -28,6 +28,7 @@ import com.tverts.endure.core.NumericAccess;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.IO;
 
 
 /**
@@ -150,7 +151,7 @@ public abstract class NumericModelBean extends ModelBeanBase
 		super.writeExternal(o);
 
 		o.writeLong(primaryKey);
-		o.writeObject(objectClass);
+		IO.cls(o, objectClass);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -160,6 +161,6 @@ public abstract class NumericModelBean extends ModelBeanBase
 		super.readExternal(i);
 
 		primaryKey  = i.readLong();
-		objectClass = (Class) i.readObject();
+		objectClass = IO.cls(i);
 	}
 }

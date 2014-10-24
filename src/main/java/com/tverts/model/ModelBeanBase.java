@@ -173,6 +173,8 @@ public abstract class ModelBeanBase
 		modelKey  = IO.str(i);
 		domain    = i.readLong();
 		active    = i.readBoolean();
+
 		dataClass = IO.cls(i);
+		EX.assertx((dataClass == null) || ModelData.class.isAssignableFrom(dataClass));
 	}
 }

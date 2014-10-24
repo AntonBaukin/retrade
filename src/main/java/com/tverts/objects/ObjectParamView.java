@@ -1,6 +1,6 @@
 package com.tverts.objects;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Serializable;
 
@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "object-param")
-@XmlType(propOrder = {
+@XmlType(name = "object-param", propOrder = {
   "name", "descr", "required", "readOnly", "value"
 })
 public class ObjectParamView implements Serializable
@@ -26,13 +26,15 @@ public class ObjectParamView implements Serializable
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: ObjectParamView (bean) interface */
+	/* Object Param View */
 
 	@XmlElement(required = true)
 	public String getName()
 	{
 		return name;
 	}
+
+	private String name;
 
 	public void setName(String name)
 	{
@@ -44,16 +46,20 @@ public class ObjectParamView implements Serializable
 		return descr;
 	}
 
+	private String descr;
+
 	public void setDescr(String descr)
 	{
 		this.descr = descr;
 	}
 
 	@XmlAttribute
-	public Boolean isRequired()
+	public Boolean getRequired()
 	{
 		return (required)?(Boolean.TRUE):(null);
 	}
+
+	private boolean required;
 
 	public void setRequired(Boolean required)
 	{
@@ -61,10 +67,12 @@ public class ObjectParamView implements Serializable
 	}
 
 	@XmlAttribute(name = "read-only")
-	public Boolean isReadOnly()
+	public Boolean getReadOnly()
 	{
 		return (readOnly)?(Boolean.TRUE):(null);
 	}
+
+	private boolean readOnly;
 
 	public void setReadOnly(boolean readOnly)
 	{
@@ -75,6 +83,8 @@ public class ObjectParamView implements Serializable
 	{
 		return value;
 	}
+
+	private String value;
 
 	public void setValue(String value)
 	{
@@ -101,13 +111,4 @@ public class ObjectParamView implements Serializable
 
 		return this;
 	}
-
-
-	/* parameter attributes */
-
-	private String  name;
-	private String  descr;
-	private boolean required;
-	private boolean readOnly;
-	private String  value;
 }

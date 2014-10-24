@@ -166,8 +166,8 @@ public class      DataSelectDelegate
 		o.writeInt(dataStart);
 		o.writeInt(dataLimit);
 
-		o.writeObject(sortProps);
-		o.writeObject(sortDesc);
+		IO.obj(o, sortProps);
+		IO.obj(o, sortDesc);
 
 		IO.str(o, searchNames);
 		IO.str(o, selSet);
@@ -180,8 +180,8 @@ public class      DataSelectDelegate
 		dataStart = i.readInt();
 		dataLimit = i.readInt();
 
-		sortProps = (String[])  i.readObject();
-		sortDesc  = (boolean[]) i.readObject();
+		sortProps = IO.obj(i, String[].class);
+		sortDesc  = IO.obj(i, boolean[].class);
 
 		searchNames = IO.str(i);
 		selSet      = IO.str(i);

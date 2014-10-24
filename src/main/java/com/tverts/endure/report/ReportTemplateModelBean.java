@@ -4,6 +4,8 @@ package com.tverts.endure.report;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring */
 
@@ -30,7 +33,7 @@ import com.tverts.servlet.Upload;
 
 /* com.tverts: models */
 
-import com.tverts.model.ModelBeanBase;
+import com.tverts.model.ViewModelBeanBase;
 
 /* com.tverts: objects */
 
@@ -49,24 +52,27 @@ import com.tverts.support.streams.BytesStream;
  * @author anton.baukin@gmail.com.
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "report-template")
 public class      ReportTemplateModelBean
-       extends    ModelBeanBase
+       extends    ViewModelBeanBase
        implements Upload, Download
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* View */
 
 	public ReportTemplateView getView()
 	{
-		return (view != null)?(view):(view = new ReportTemplateView());
+		if(super.getView() == null)
+			setView(new ReportTemplateView());
+		return (ReportTemplateView) super.getView();
 	}
 
-	public void setView(ReportTemplateView view)
+	public Class viewClass()
 	{
-		this.view = view;
+		return ReportTemplateView.class;
 	}
+
+
+	/* Report Template Model */
 
 	public String getDid()
 	{
@@ -122,9 +128,7 @@ public class      ReportTemplateModelBean
 		this.fileName = ctx.fileName();
 
 		//~: the streamed bytes
-		BytesStream stream = new BytesStream();
-
-		try
+		try(BytesStream stream = new BytesStream())
 		{
 			//~: gun-zip the template
 			GZIPOutputStream gzip = new GZIPOutputStream(stream);
@@ -135,10 +139,6 @@ public class      ReportTemplateModelBean
 
 			//~: the resulting bytes
 			this.template = stream.bytes();
-		}
-		finally
-		{
-			stream.close();
 		}
 	}
 
@@ -159,10 +159,10 @@ public class      ReportTemplateModelBean
 		byte[] data = this.template;
 
 		//?: {has no template bytes assigned} load
-		if((data == null) && (view.getObjectKey() != null))
+		if((data == null) && (getView().getObjectKey() != null))
 		{
 			ReportTemplate rt = bean(GetReports.class).
-			  getReportTemplate(view.getObjectKey());
+			  getReportTemplate(getView().getObjectKey());
 
 			data = EX.assertn(rt).getTemplate();
 		}
@@ -194,11 +194,35 @@ public class      ReportTemplateModelBean
 	}
 
 
-	/* the report template view  */
+	/* private: encapsulated data */
 
-	private ReportTemplateView view;
-	private String             did;
-	private String             dataSourceName;
-	private byte[]             template;
-	private String             fileName;
+	private String did;
+	private String dataSourceName;
+	private byte[] template;
+	private String fileName;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.str(o, did);
+		IO.str(o, dataSourceName);
+		IO.str(o, fileName);
+		IO.obj(o, template);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		did = IO.str(i);
+		dataSourceName = IO.str(i);
+		fileName = IO.str(i);
+		template = IO.obj(i, byte[].class);
+	}
 }

@@ -2,16 +2,21 @@ package com.tverts.support;
 
 /* Java */
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.OutputStream;
+import java.io.Serializable;
 
 /* com.tverts: support */
 
 import com.tverts.support.streams.ByteBuffers;
+import com.tverts.support.streams.InputDataStream;
+import com.tverts.support.streams.OutputDataStream;
 
 
 /**
@@ -21,7 +26,7 @@ import com.tverts.support.streams.ByteBuffers;
  */
 public class IO
 {
-	/* streaming */
+	/* Streaming */
 
 	public static int    pump(InputStream i, OutputStream o)
 	  throws IOException
@@ -46,7 +51,62 @@ public class IO
 	}
 
 
-	/* serialization support */
+	/* Serialization Support */
+
+	public static void   xml(DataOutput d, Object bean)
+	{
+		OU.obj2xml(new OutputDataStream(d), bean);
+	}
+
+	public static Object xml(DataInput d)
+	{
+		return OU.xml2obj(new InputDataStream(d));
+	}
+
+	public static <O> O  xml(DataInput d, Class<O> cls)
+	{
+		return OU.xml2obj(new InputDataStream(d), cls);
+	}
+
+	public static void   obj(ObjectOutput o, Object obj)
+	{
+		EX.assertx((obj == null) || (obj instanceof Serializable));
+
+		try
+		{
+			o.writeObject(obj);
+		}
+		catch(Exception e)
+		{
+			throw EX.wrap(e, "Error occurred while Java-serializing object of class [",
+			  LU.cls(obj), "]!");
+		}
+	}
+
+	public static Object obj(ObjectInput i)
+	{
+		try
+		{
+			return i.readObject();
+		}
+		catch(Exception e)
+		{
+			throw EX.wrap(e, "Error occurred reading Java-serialized object!");
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <O> O  obj(ObjectInput i, Class<O> cls)
+	{
+		Object res = IO.obj(i);
+
+		if((res != null) && (cls != null) && !cls.isAssignableFrom(res.getClass()))
+			throw EX.state("Can't cast Java-serialized instance of class [",
+			  LU.cls(res), "] to the required class [", LU.cls(cls), "]!"
+			);
+
+		return (O)res;
+	}
 
 	/**
 	 * Writes string as UTF-8 bytes array after the
@@ -116,7 +176,7 @@ public class IO
 	public static Class  cls(ObjectInput i)
 	  throws IOException, ClassNotFoundException
 	{
-		int l = i.readShort() & 0xFFFF;
+		int l = i.readUnsignedShort();
 		EX.assertx(l <= 0xFFFF);
 
 		//?: {undefined string}
