@@ -150,7 +150,7 @@ public abstract class NumericModelBean extends ModelBeanBase
 	{
 		super.writeExternal(o);
 
-		o.writeLong(primaryKey);
+		IO.longer(o, primaryKey);
 		IO.cls(o, objectClass);
 	}
 
@@ -160,7 +160,7 @@ public abstract class NumericModelBean extends ModelBeanBase
 	{
 		super.readExternal(i);
 
-		primaryKey  = i.readLong();
+		primaryKey  = IO.longer(i);
 		objectClass = IO.cls(i);
 	}
 }

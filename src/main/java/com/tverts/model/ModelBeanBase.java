@@ -161,7 +161,7 @@ public abstract class ModelBeanBase
 	  throws IOException
 	{
 		IO.str(o, modelKey);
-		o.writeLong(domain);
+		IO.longer(o, domain);
 		o.writeBoolean(active);
 		IO.cls(o, dataClass);
 	}
@@ -171,7 +171,7 @@ public abstract class ModelBeanBase
 	  throws IOException, ClassNotFoundException
 	{
 		modelKey  = IO.str(i);
-		domain    = i.readLong();
+		domain    = IO.longer(i);
 		active    = i.readBoolean();
 
 		dataClass = IO.cls(i);

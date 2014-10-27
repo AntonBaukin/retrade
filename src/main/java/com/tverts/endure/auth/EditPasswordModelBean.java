@@ -91,8 +91,8 @@ public class EditPasswordModelBean extends ModelBeanBase
 	{
 		super.writeExternal(o);
 
-		o.writeLong(authLogin);
-		o.writeLong(loginDomain);
+		IO.longer(o, authLogin);
+		IO.longer(o, loginDomain);
 		IO.str(o, loginCode);
 		IO.str(o, passhash);
 		o.writeBoolean(creating);
@@ -104,8 +104,8 @@ public class EditPasswordModelBean extends ModelBeanBase
 	{
 		super.readExternal(i);
 
-		authLogin   = i.readLong();
-		loginDomain = i.readLong();
+		authLogin   = IO.longer(i);
+		loginDomain = IO.longer(i);
 		loginCode   = IO.str(i);
 		passhash    = IO.str(i);
 		creating    = i.readBoolean();

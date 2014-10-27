@@ -163,8 +163,8 @@ public class      DataSelectDelegate
 	public void writeExternal(ObjectOutput o)
 	  throws IOException
 	{
-		o.writeInt(dataStart);
-		o.writeInt(dataLimit);
+		IO.inter(o, dataStart);
+		IO.inter(o, dataLimit);
 
 		IO.obj(o, sortProps);
 		IO.obj(o, sortDesc);
@@ -177,8 +177,8 @@ public class      DataSelectDelegate
 	public void readExternal(ObjectInput i)
 	  throws IOException, ClassNotFoundException
 	{
-		dataStart = i.readInt();
-		dataLimit = i.readInt();
+		dataStart = IO.inter(i);
+		dataLimit = IO.inter(i);
 
 		sortProps = IO.obj(i, String[].class);
 		sortDesc  = IO.obj(i, boolean[].class);

@@ -34,6 +34,7 @@ import com.tverts.endure.core.UnitedAccess;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.IO;
 
 
 /**
@@ -144,7 +145,7 @@ public class UnityModelBean extends ModelBeanBase
 	  throws IOException
 	{
 		super.writeExternal(o);
-		o.writeLong(primaryKey);
+		IO.longer(o, primaryKey);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -152,6 +153,6 @@ public class UnityModelBean extends ModelBeanBase
 	  throws IOException, ClassNotFoundException
 	{
 		super.readExternal(i);
-		primaryKey  = i.readLong();
+		primaryKey = IO.longer(i);
 	}
 }

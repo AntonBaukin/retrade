@@ -158,7 +158,7 @@ public class IO
 	 * FF-FF prefix.
 	 */
 	public static void   cls(ObjectOutput o, Class cls)
-	throws IOException
+	  throws IOException
 	{
 		if(cls == null)
 		{
@@ -192,5 +192,94 @@ public class IO
 
 		return Thread.currentThread().getContextClassLoader().
 		  loadClass(new String(buf, "UTF-8"));
+	}
+
+	protected static final byte FALSE = (byte) 1;
+	protected static final byte TRUE  = (byte) 2;
+	protected static final byte LONG  = (byte) 3;
+	protected static final byte INT   = (byte) 4;
+
+	public static void   longer(ObjectOutput o, Long n)
+	  throws IOException
+	{
+		//?: {undefined}
+		if(n == null)
+			o.writeByte(-LONG);
+		else
+		{
+			o.writeByte(LONG);
+			o.writeLong(n);
+		}
+	}
+
+	public static Long   longer(ObjectInput i)
+	  throws IOException
+	{
+		byte t = i.readByte();
+
+		//?: {undefined}
+		if(t == -LONG)
+			return null;
+		else
+		{
+			EX.assertx(t == LONG);
+			return i.readLong();
+		}
+	}
+
+	public static void   inter(ObjectOutput o, Integer n)
+	  throws IOException
+	{
+		//?: {undefined}
+		if(n == null)
+			o.writeByte(-INT);
+		else
+		{
+			o.writeByte(INT);
+			o.writeInt(n);
+		}
+	}
+
+	public static Integer inter(ObjectInput i)
+	  throws IOException
+	{
+		byte t = i.readByte();
+
+		//?: {undefined}
+		if(t == -INT)
+			return null;
+		else
+		{
+			EX.assertx(t == INT);
+			return i.readInt();
+		}
+	}
+
+	public static void   booler(ObjectOutput o, Boolean x)
+	  throws IOException
+	{
+		//?: {undefined}
+		if(x == null)
+			o.writeByte(-TRUE);
+		else
+			o.writeByte(x?(TRUE):(FALSE));
+	}
+
+	public static Boolean booler(ObjectInput i)
+	  throws IOException
+	{
+		byte t = i.readByte();
+
+		//?: {undefined}
+		if(t == -TRUE)
+			return null;
+		//?: {true}
+		else if(t == TRUE)
+			return true;
+		//?: {false}
+		else if(t == FALSE)
+			return false;
+		else
+			throw EX.state();
 	}
 }
