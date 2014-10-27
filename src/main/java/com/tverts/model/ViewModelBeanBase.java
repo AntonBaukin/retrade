@@ -45,7 +45,7 @@ public abstract class ViewModelBeanBase extends ModelBeanBase
 	{
 		super.writeExternal(o);
 
-		if(serializeXML())
+		if(serializeXML(o, null))
 			IO.xml(o, getView());
 		else
 			IO.obj(o, getView());
@@ -57,13 +57,13 @@ public abstract class ViewModelBeanBase extends ModelBeanBase
 	{
 		super.readExternal(i);
 
-		if(serializeXML())
+		if(serializeXML(null, i))
 			setView(IO.xml(i, viewClass()));
 		else
 			setView(IO.obj(i, viewClass()));
 	}
 
-	protected boolean serializeXML()
+	protected boolean serializeXML(ObjectOutput o, ObjectInput i)
 	{
 		return true;
 	}

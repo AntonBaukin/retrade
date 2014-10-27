@@ -17,7 +17,7 @@ public abstract class NumericSelectModelBean
        extends        NumericModelBean
        implements     DataSelectModel, DataSortModel, DataSearchModel
 {
-/* Data Select Model */
+	/* Data Select Model */
 
 	public Integer getDataStart()
 	{
@@ -119,7 +119,7 @@ public abstract class NumericSelectModelBean
 	/**
 	 * Data selection delegate.
 	 */
-	private DataSelectDelegate dsd = new DataSelectDelegate();
+	private final DataSelectDelegate dsd = new DataSelectDelegate();
 
 
 	/* Serialization */
