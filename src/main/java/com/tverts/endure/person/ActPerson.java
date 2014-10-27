@@ -146,7 +146,7 @@ public class ActPerson extends ActionBuilderXRoot
 		{
 			//~: update from the edit model
 			if(editModel != null)
-				editModel.copy(target(PersonEntity.class));
+				target(PersonEntity.class).setOx(editModel.getPerson());
 
 			//~: update the logins
 			updateLogins();

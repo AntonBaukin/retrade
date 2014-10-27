@@ -1,10 +1,17 @@
 package com.tverts.endure.person;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
 
@@ -16,7 +23,8 @@ import com.tverts.model.UnityModelBean;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.IO;
+import com.tverts.support.SU;
 
 
 /**
@@ -27,138 +35,63 @@ import static com.tverts.support.SU.s2s;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "person")
+@XmlRootElement(name = "model")
+@XmlType(name = "person-model")
 public class EditPersonModelBean extends UnityModelBean
 {
-	public static final long serialVersionUID = 0L;
+	/* Edit Person Model (bean) */
 
-
-	/* public: EditPersonModelBean (bean) interface */
-
-	public String getLastName()
+	public Person getPerson()
 	{
-		return lastName;
+		return (person != null)?(person):(person = new Person());
 	}
 
-	public void setLastName(String lastName)
+	public void setPerson(Person person)
 	{
-		this.lastName = lastName;
-	}
-
-	public String getFirstName()
-	{
-		return firstName;
-	}
-
-	public void setFirstName(String firstName)
-	{
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName()
-	{
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName)
-	{
-		this.middleName = middleName;
+		this.person = person;
 	}
 
 	@XmlElement(name = "genderMale")
 	public Boolean getMale()
 	{
-		return male;
+		return (getPerson().getGender() == null)?(null):(getPerson().getGender().equals('M'));
 	}
 
 	public void setMale(Boolean male)
 	{
-		this.male = male;
+		getPerson().setGender((male == null)?(null):Boolean.TRUE.equals(male)?('M'):('F'));
 	}
 
 	@XmlTransient
 	public String getMaleStr()
 	{
-		return (male == null)?(""):(male.toString());
+		return (getMale() == null)?(""):(getMale().toString());
 	}
 
 	public void setMaleStr(String male)
 	{
-		this.male = ((male = s2s(male)) == null)?(null):Boolean.valueOf(male);
+		setMale(((male = SU.s2s(male)) == null)?(null):Boolean.valueOf(male));
 	}
 
-	public String getEmail()
+
+	/* private: encapsulated data */
+
+	private Person person;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
 	{
-		return email;
+		super.writeExternal(o);
+		IO.xml(o, person);
 	}
 
-	public void setEmail(String email)
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
 	{
-		this.email = email;
+		super.readExternal(i);
+		person = IO.xml(i, Person.class);
 	}
-
-	public String getPhoneMob()
-	{
-		return phoneMob;
-	}
-
-	public void setPhoneMob(String phoneMob)
-	{
-		this.phoneMob = phoneMob;
-	}
-
-	public String getPhoneWork()
-	{
-		return phoneWork;
-	}
-
-	public void setPhoneWork(String phoneWork)
-	{
-		this.phoneWork = phoneWork;
-	}
-
-
-	/* public: initialization */
-
-	public EditPersonModelBean init(PersonEntity pe)
-	{
-		Person p = pe.getOx();
-
-		lastName = p.getLastName();
-		firstName = p.getFirstName();
-		middleName = p.getMiddleName();
-		male = (p.getGender() == null)?(null):(p.getGender().equals('M'));
-		email = p.getEmail();
-		phoneMob = p.getPhoneMobile();
-		phoneWork = p.getPhoneWork();
-
-		return this;
-	}
-
-	public EditPersonModelBean copy(PersonEntity pe)
-	{
-		Person p = pe.getOx();
-		pe.updateOx();
-
-		p.setLastName(lastName);
-		p.setFirstName(firstName);
-		p.setMiddleName(middleName);
-		p.setGender((male == null)?(null):Boolean.TRUE.equals(male)?('M'):('F'));
-		p.setEmail(email);
-		p.setPhoneMobile(phoneMob);
-		p.setPhoneWork(phoneWork);
-
-		return this;
-	}
-
-
-	/* edit state */
-
-	private String  lastName;
-	private String  firstName;
-	private String  middleName;
-	private Boolean male;
-	private String  email;
-	private String  phoneMob;
-	private String  phoneWork;
 }
