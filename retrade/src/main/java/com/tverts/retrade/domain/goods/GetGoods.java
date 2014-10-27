@@ -273,7 +273,7 @@ from GoodUnit gu where
 		  param("domain", mb.domain());
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
 		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
@@ -311,8 +311,7 @@ from GoodUnit gu where
 
 	public int            countGoodUnits(GoodsModelBean mb)
 	{
-		return countGoodUnits(
-		  mb.domain(), mb.getSearchGoods(), mb.getSelSet());
+		return countGoodUnits(mb.domain(), mb.searchNames(), mb.getSelSet());
 	}
 
 	/**
@@ -410,7 +409,7 @@ from GoodUnit gu where
 		  param("list", mb.getObjectKey());
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		return QB(qb).list();
 	}
@@ -433,7 +432,7 @@ from GoodUnit gu where
 		  param("list", mb.getObjectKey());
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		return ((Number) QB(qb).uniqueResult()).longValue();
 	}
@@ -468,7 +467,7 @@ from GoodUnit gu where
 		restrictTreeGoods(qb, mb);
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
 		restrictGoodsBySelSet(qb, mb.getSelSet(), false);
@@ -498,7 +497,7 @@ from GoodUnit gu where
 		restrictTreeGoods(qb, mb);
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
 		restrictGoodsBySelSet(qb, mb.getSelSet(), false);

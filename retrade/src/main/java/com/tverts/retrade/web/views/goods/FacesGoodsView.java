@@ -38,17 +38,11 @@ public class FacesGoodsView extends ModelView
 
 	public String doSearchGoods()
 	{
-		String[] sestr  = null;
-		String   seprm  = request().getParameter("searchGoods");
-		String   selset = request().getParameter("selset");
-
 		//~: search names
-		if(!SU.sXe(seprm))
-			sestr = SU.s2s(seprm).split("\\s+");
-		getModel().setSearchGoods(sestr);
+		getModel().setSearchNames(SU.s2s(request().getParameter("searchGoods")));
 
 		//~: selection set
-		getModel().setSelSet(selset);
+		getModel().setSelSet(request().getParameter("selset"));
 
 		return null;
 	}

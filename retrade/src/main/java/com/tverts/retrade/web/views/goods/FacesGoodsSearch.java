@@ -44,9 +44,7 @@ public class FacesGoodsSearch extends ModelView
 		mb.setDomain(getDomainKey());
 
 		//~: search words
-		String sgs = SU.urld(request().getParameter("searchGoods"));
-		if(!SU.sXe(sgs))
-			mb.setSearchGoods(SU.s2s(sgs).split("\\s+"));
+		mb.setSearchNames(SU.urld(request().getParameter("searchGoods")));
 
 		return mb;
 	}

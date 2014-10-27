@@ -17,37 +17,7 @@ import com.tverts.retrade.data.goods.GoodsModelData;
  */
 public class GoodsModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* Goods Model Bean */
-
-	public String[] getSearchGoods()
-	{
-		return searchGoods;
-	}
-
-	private String[] searchGoods;
-
-	public void setSearchGoods(String[] searchGoods)
-	{
-		this.searchGoods = searchGoods;
-	}
-
-	public String getSelSet()
-	{
-		return selSet;
-	}
-
-	private String selSet;
-
-	public void setSelSet(String selSet)
-	{
-		this.selSet = selSet;
-	}
-
-
-	/* Model Bean Data Access */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{

@@ -1,21 +1,13 @@
 package com.tverts.retrade.domain.sells;
 
-/* standard Java classes */
-
-import java.util.Date;
-
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-/* com.tverts: system */
-
-import com.tverts.system.SystemConfig;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: model */
 
-import com.tverts.model.DataSelectModel;
 import com.tverts.model.ModelData;
 import com.tverts.model.NumericModelBean;
 
@@ -29,12 +21,10 @@ import com.tverts.retrade.data.sells.SellReceiptModelData;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "sell-receipt")
+@XmlRootElement(name = "model")
+@XmlType(name = "sell-receipt")
 public class SellReceiptModelBean extends NumericModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/* public: constructors */
 
 	public SellReceiptModelBean()
@@ -46,7 +36,7 @@ public class SellReceiptModelBean extends NumericModelBean
 	}
 
 
-	/* public: read interface */
+	/* Sell Receipt Model Bean (read) */
 
 	public SellReceipt sellReceipt()
 	{
@@ -61,11 +51,10 @@ public class SellReceiptModelBean extends NumericModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData   modelData()
 	{
 		return new SellReceiptModelData(this);
 	}
-
 }

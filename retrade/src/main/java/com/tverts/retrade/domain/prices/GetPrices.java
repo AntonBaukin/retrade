@@ -73,7 +73,7 @@ public class GetPrices extends GetGoods
 		  param("c", contractor);
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
 		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
@@ -124,7 +124,7 @@ public class GetPrices extends GetGoods
 		  param("c", contractor);
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
 		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
@@ -160,7 +160,7 @@ public class GetPrices extends GetGoods
 		restrictTreeGoods(qb, mb);
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
 		restrictGoodsBySelSet(qb, mb.getSelSet(), false);
@@ -207,7 +207,7 @@ public class GetPrices extends GetGoods
 		restrictTreeGoods(qb, mb);
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
 		restrictGoodsBySelSet(qb, mb.getSelSet(), true);

@@ -29,6 +29,10 @@ import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
 
 /**
  * The read-only view of Price List.
@@ -42,7 +46,8 @@ public class FacesPriceListView extends NumericModelView
 
 	public String doSearchGoods()
 	{
-		getModel().setSearchGoodsStr(request().getParameter("searchGoods"));
+		//~: search names
+		getModel().setSearchNames(SU.s2s(request().getParameter("searchGoods")));
 
 		return null;
 	}

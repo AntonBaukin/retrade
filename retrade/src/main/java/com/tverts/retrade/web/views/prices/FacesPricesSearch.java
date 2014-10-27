@@ -61,22 +61,20 @@ public class FacesPricesSearch extends ModelView
 		//?: {price list is not provided} search plain goods
 		if(sm.getPriceList() == null)
 		{
-			GoodsModelBean gm = new GoodsModelBean();
-			mb = gm;
+			GoodsModelBean gm; mb = gm = new GoodsModelBean();
 
 			//~: search words
-			gm.setSearchGoods(sm.getSearchGoods());
+			gm.setSearchNames(sm.getSearchNames());
 		}
 		//~: search with prices
 		else
 		{
-			PriceListModelBean pm = new PriceListModelBean(
+			PriceListModelBean pm; mb = pm = new PriceListModelBean(
 			  (PriceListEntity) bean(GetGoods.class).getPriceList(sm.getPriceList())
 			);
-			mb = pm;
 
 			//~: search words
-			pm.setSearchGoods(sm.getSearchGoods());
+			pm.setSearchNames(sm.getSearchNames());
 		}
 
 		//~: domain
@@ -96,9 +94,7 @@ public class FacesPricesSearch extends ModelView
 		mb.setDomain(getDomainKey());
 
 		//~: search words
-		String searchGoods = SU.urld(request().getParameter("searchGoods"));
-		if(!SU.sXe(searchGoods))
-			mb.setSearchGoods(SU.s2s(searchGoods).split("\\s+"));
+		mb.setSearchNames(SU.urld(request().getParameter("searchGoods")));
 
 		//~: price list
 		String priceList = SU.s2s(request().getParameter("priceList"));

@@ -1,27 +1,30 @@
 package com.tverts.retrade.domain.prices;
 
-/* standard Java classes */
+/* Java */
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Date;
 
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-/* com.tverts: system */
-
-import com.tverts.system.SystemConfig;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: model */
 
-import com.tverts.model.DataSelectModel;
 import com.tverts.model.ModelData;
-import com.tverts.model.NumericModelBean;
+import com.tverts.model.NumericSelectModelBean;
 
 /* com.tverts: retrade (model data) */
 
 import com.tverts.retrade.data.GoodPriceModelData;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -33,14 +36,10 @@ import com.tverts.retrade.data.GoodPriceModelData;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "good-price")
-public class      GoodPriceModelBean
-       extends    NumericModelBean
-       implements DataSelectModel
+@XmlRootElement(name = "model")
+@XmlType(name = "good-price")
+public class GoodPriceModelBean extends NumericSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/* public: constructors */
 
 	public GoodPriceModelBean()
@@ -52,7 +51,7 @@ public class      GoodPriceModelBean
 	}
 
 
-	/* public: GoodPriceModelBean (read) interface */
+	/* Good Price Model Bean (read) */
 
 	public GoodPrice  goodPrice()
 	{
@@ -67,7 +66,7 @@ public class      GoodPriceModelBean
 	}
 
 
-	/* public: GoodPriceModelBean (bean) interface */
+	/* Good Price Model (bean) */
 
 	public Date getMinDate()
 	{
@@ -90,39 +89,7 @@ public class      GoodPriceModelBean
 	}
 
 
-	/* public: DataSelectModel interface */
-
-	public Integer    getDataStart()
-	{
-		if(dataStart != null)
-			return dataStart;
-
-		setDataStart(0);
-		return dataStart;
-	}
-
-	public void       setDataStart(Integer dataStart)
-	{
-		this.dataStart = dataStart;
-	}
-
-	public Integer    getDataLimit()
-	{
-		if(dataLimit != null)
-			return dataLimit;
-
-		setDataLimit(SystemConfig.getInstance().getGridSize());
-		return dataLimit;
-	}
-
-	public void       setDataLimit(Integer dataLimit)
-	{
-		this.dataLimit = dataLimit;
-	}
-
-
-
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData  modelData()
 	{
@@ -130,10 +97,29 @@ public class      GoodPriceModelBean
 	}
 
 
-	/* private: model attributes */
+	/* private: the object's class and key */
 
-	private Integer   dataStart;
-	private Integer   dataLimit;
-	private Date      minDate;
-	private Date      maxDate;
+	private Date minDate;
+	private Date maxDate;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.obj(o, minDate);
+		IO.obj(o, maxDate);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		minDate = IO.obj(i, Date.class);
+		maxDate = IO.obj(i, Date.class);
+	}
 }

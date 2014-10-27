@@ -4,10 +4,7 @@ package com.tverts.retrade.domain.prices;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-/* com.tverts: system */
-
-import com.tverts.system.SystemConfig;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: model */
 
@@ -21,15 +18,14 @@ import com.tverts.retrade.data.RepriceDocModelData;
 
 /**
  * Model bean for read-only view of
- * {@link RepriceDoc} document.
+ * a {@link RepriceDoc} document.
  *
  * @author anton.baukin@gmail.com
  */
+@XmlRootElement(name = "model")
+@XmlType(name = "price-change-document")
 public class RepriceDocModelBean extends NumericModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/* public: constructors */
 
 	public RepriceDocModelBean()
@@ -41,7 +37,7 @@ public class RepriceDocModelBean extends NumericModelBean
 	}
 
 
-	/* public: RepriceDocModelBean (read) interface */
+	/* Price Change Document Model Bean (read) */
 
 	public RepriceDoc repriceDoc()
 	{
@@ -56,7 +52,7 @@ public class RepriceDocModelBean extends NumericModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData  modelData()
 	{
