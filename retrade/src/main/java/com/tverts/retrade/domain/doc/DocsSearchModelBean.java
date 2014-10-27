@@ -1,7 +1,10 @@
 package com.tverts.retrade.domain.doc;
 
-/* standard Java classes */
+/* Java */
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -14,6 +17,7 @@ import java.util.Set;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: endure (core) */
@@ -34,10 +38,10 @@ import com.tverts.retrade.domain.sells.Sells;
 
 import com.tverts.retrade.data.other.DocumentsModelData;
 
-
 /* com.tverts: support */
 
 import com.tverts.support.DU;
+import com.tverts.support.IO;
 import com.tverts.support.SU;
 import com.tverts.support.jaxb.DateAdapter;
 
@@ -46,16 +50,13 @@ import com.tverts.support.jaxb.DateAdapter;
  * Parts of a model that selected the documents,
  * or document related instances.
  *
- *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "docs-model")
+@XmlRootElement(name = "model")
+@XmlType(name = "documents-search")
 public class DocsSearchModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* Documents Search Model */
 
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	public Date         getMinDate()
@@ -193,26 +194,6 @@ public class DocsSearchModelBean extends DataSelectModelBean
 		this.docOwnerType = docOwnerType;
 	}
 
-	public String       getSelSet()
-	{
-		return selSet;
-	}
-
-	public void         setSelSet(String selSet)
-	{
-		this.selSet = selSet;
-	}
-
-	public boolean      isWithSelSet()
-	{
-		return withSelSet;
-	}
-
-	public void         setWithSelSet(boolean withSelSet)
-	{
-		this.withSelSet = withSelSet;
-	}
-
 
 	/* public: data selection support */
 
@@ -317,7 +298,7 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData    modelData()
 	{
@@ -325,7 +306,7 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	}
 
 
-	/* search attributes */
+	/* private: encapsulated data */
 
 	private Date        minDate;
 	private Date        maxDate;
@@ -338,9 +319,50 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	private Class       docOwnerClass;
 	private String      docOwnerType;
 
-	private String      selSet;
-	private boolean     withSelSet;
-
 	private Map<String, String> docTypesLabels;
 	private int                 docTypesMax;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.obj(o, minDate);
+		IO.obj(o, maxDate);
+
+		IO.obj(o, docTypes);
+		o.writeBoolean(editState);
+		o.writeBoolean(fixedState);
+
+		IO.longer(o, docOwnerKey);
+		IO.cls(o, docOwnerClass);
+		IO.str(o, docOwnerType);
+
+		IO.obj(o, docTypesLabels);
+		o.writeInt(docTypesMax);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		minDate = IO.obj(i, Date.class);
+		maxDate = IO.obj(i, Date.class);
+
+		docTypes   = IO.obj(i, Set.class);
+		editState  = i.readBoolean();
+		fixedState = i.readBoolean();
+
+		docOwnerKey   = IO.longer(i);
+		docOwnerClass = IO.cls(i);
+		docOwnerType  = IO.str(i);
+
+		docTypesLabels = IO.obj(i, Map.class);
+		docTypesMax = i.readInt();
+	}
 }

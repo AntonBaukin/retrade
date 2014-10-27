@@ -17,10 +17,7 @@ import com.tverts.retrade.data.account.PayWayModelData;
  */
 public class PayWayModelBean extends UnityModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* info interface */
+	/* Pay Way Model */
 
 	public PayWay accessEntity()
 	{
@@ -28,7 +25,7 @@ public class PayWayModelBean extends UnityModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{

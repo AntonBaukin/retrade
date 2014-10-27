@@ -88,7 +88,7 @@ ${v.checkModelRequestedWithRedirect}
     </f:facet>
 
     <x:text-field coid = "${z:vid(v, 'lastName')}"
-      value = "#{v.model.lastName}">
+      value = "#{v.model.person.lastName}">
 
       <f:facet name = "label-props">
         text: 'Фамилия',
@@ -104,7 +104,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:text-field>
 
     <x:text-field coid = "${z:vid(v, 'firstName')}"
-      value = "#{v.model.firstName}">
+      value = "#{v.model.person.firstName}">
 
       <f:facet name = "label-props">
         text: 'Имя',
@@ -120,7 +120,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:text-field>
 
     <x:text-field coid = "${z:vid(v, 'middleName')}"
-      value = "#{v.model.middleName}">
+      value = "#{v.model.person.middleName}">
 
       <f:facet name = "label-props">
         text: 'Отчество',
@@ -210,7 +210,7 @@ ${v.checkModelRequestedWithRedirect}
     <!-- gender] -->
 
     <x:text-field coid = "${z:vid(v, 'email')}"
-      value = "#{v.model.email}">
+      value = "#{v.model.person.email}">
 
       <f:facet name = "label-props">
         text: 'e-mail',
@@ -226,7 +226,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:text-field>
 
     <x:text-field coid = "${z:vid(v, 'phoneMob')}"
-      value = "#{v.model.phoneMob}">
+      value = "#{v.model.person.phoneMobile}">
 
       <f:facet name = "label-props">
         text: 'Тел. моб.',
@@ -242,7 +242,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:text-field>
 
     <x:text-field coid = "${z:vid(v, 'phoneWork')}"
-      value = "#{v.model.phoneWork}">
+      value = "#{v.model.person.phoneWork}">
 
       <f:facet name = "label-props">
         text: 'Тел. раб.',
@@ -325,14 +325,14 @@ ${v.checkModelRequestedWithRedirect}
         //<![CDATA[
 
  extjsf.bind('winmain', '${rootView.extjsDomain}').personEdit = {
-   authLogin: '#{z:jss(v.model.primaryKey)}',
-   lastName: '#{z:jss(v.model.lastName)}',
-   firstName: '#{z:jss(v.model.firstName)}',
-   middleName: '#{z:jss(v.model.middleName)}',
+   authLogin: '#{z:jss(v.model.person.primaryKey)}',
+   lastName: '#{z:jss(v.model.person.lastName)}',
+   firstName: '#{z:jss(v.model.person.firstName)}',
+   middleName: '#{z:jss(v.model.person.middleName)}',
    genderMale: '#{v.model.male}',
-   email: '#{z:jss(v.model.email)}',
-   phoneMob: '#{z:jss(v.model.phoneMob)}',
-   phoneWork: '#{z:jss(v.model.phoneWork)}'
+   email: '#{z:jss(v.model.person.email)}',
+   phoneMob: '#{z:jss(v.model.person.phoneMobile)}',
+   phoneWork: '#{z:jss(v.model.person.phoneWork)}'
  };
 
         //]]>

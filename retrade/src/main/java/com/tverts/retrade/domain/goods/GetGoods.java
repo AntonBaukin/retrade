@@ -360,7 +360,7 @@ from GoodUnit gu where
 		// selector of the store implicitly defines it.
 
 		//~: keywords search restrictions
-		gusSearch(qb, mb.getSearchGoods());
+		gusSearch(qb, mb.searchNames());
 
 		return QB(qb).list();
 	}
@@ -370,7 +370,7 @@ from GoodUnit gu where
 		//HINT: we also do not restrict by the store
 		// as each store has all Good Units related.
 
-		return countGoodUnits(mb.domain(), mb.getSearchGoods(), null);
+		return countGoodUnits(mb.domain(), mb.searchNames(), null);
 	}
 
 	/**

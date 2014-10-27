@@ -1,14 +1,23 @@
 package com.tverts.retrade.domain.firm;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* com.tverts: models */
 
-import com.tverts.model.ModelData;
 import com.tverts.model.UnityModelBean;
 
 /* com.tverts: retrade domain (documents + invoices) */
 
 import com.tverts.retrade.domain.doc.DocsSearchModelBean;
 import com.tverts.retrade.domain.invoice.Invoices;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -18,9 +27,6 @@ import com.tverts.retrade.domain.invoice.Invoices;
  */
 public class ContractorModelBean extends UnityModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/* public: bean interface */
 
 	public DocsSearchModelBean getDocsSearch()
@@ -53,14 +59,6 @@ public class ContractorModelBean extends UnityModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
-
-	public ModelData  modelData()
-	{
-		return null;
-	}
-
-
 	/* public: support interface */
 
 	public Contractor accessEntity()
@@ -69,7 +67,24 @@ public class ContractorModelBean extends UnityModelBean
 	}
 
 
-	/* private: documents search model */
+	/* private: encapsulated data */
 
 	private DocsSearchModelBean docsSearch;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		IO.obj(o, docsSearch);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		docsSearch = IO.obj(i, DocsSearchModelBean.class);
+	}
 }

@@ -105,7 +105,7 @@ public class FacesSettingsEditPersonView extends ModelView
 
 		//?: {has person} init it
 		if(login.getPerson() != null)
-			mb.init(login.getPerson());
+			mb.setPerson(login.getPerson().getOx());
 
 		return mb;
 	}

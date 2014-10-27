@@ -40,13 +40,9 @@ public class FacesStoreView extends UnityModelView
 
 	public String doSearchGoods()
 	{
-		String[] sestr = null;
-		String   seprm = request().getParameter("searchGoods");
+		//~: search goods
+		getModel().setSearchNames(SU.s2s(request().getParameter("searchGoods")));
 
-		if(!SU.sXe(seprm))
-			sestr = SU.s2s(seprm).split("\\s+");
-
-		getModel().setSearchGoods(sestr);
 		return null;
 	}
 

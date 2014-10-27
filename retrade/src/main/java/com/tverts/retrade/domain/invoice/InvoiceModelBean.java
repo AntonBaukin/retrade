@@ -1,8 +1,15 @@
 package com.tverts.retrade.domain.invoice;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: model */
 
@@ -15,16 +22,14 @@ import com.tverts.retrade.data.InvoiceModelData;
 
 
 /**
- * COMMENT InvoiceModelBean
+ * Model of an Invoice.
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement
+@XmlRootElement(name = "model")
+@XmlType(name = "invoice-model")
 public class InvoiceModelBean extends UnityModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/* public: InvoiceModelBean (support) interface */
 
 	public Invoice   invoice()
@@ -35,12 +40,12 @@ public class InvoiceModelBean extends UnityModelBean
 
 	/* public: InvoiceModelBean (configuration) interface */
 
-	public boolean   isPositiveVolumeOnly()
+	public boolean isPositiveVolumeOnly()
 	{
 		return positiveVolumeOnly;
 	}
 
-	public void      setPositiveVolumeOnly(boolean positiveVolumeOnly)
+	public void setPositiveVolumeOnly(boolean positiveVolumeOnly)
 	{
 		this.positiveVolumeOnly = positiveVolumeOnly;
 	}
@@ -54,7 +59,24 @@ public class InvoiceModelBean extends UnityModelBean
 	}
 
 
-	/* private: model configuration */
+	/* private: encapsulated data */
 
 	private boolean positiveVolumeOnly;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		o.writeBoolean(positiveVolumeOnly);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		positiveVolumeOnly = i.readBoolean();
+	}
 }

@@ -1,5 +1,16 @@
 package com.tverts.retrade.domain.sells;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /* com.tverts: models */
 
 import com.tverts.model.ModelData;
@@ -13,6 +24,10 @@ import com.tverts.retrade.domain.doc.DocsSearchModelBean;
 
 import com.tverts.retrade.data.sells.SellsSessionModelData;
 
+/* com.tverts: support */
+
+import com.tverts.support.IO;
+
 
 /**
  * Model bean that provides the list of the {@link SellReceipt}s
@@ -20,12 +35,11 @@ import com.tverts.retrade.data.sells.SellsSessionModelData;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlRootElement(name = "model")
+@XmlType(name = "sells-session-model")
 public class SellsSessionModelBean extends UnitySelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* Sells Session Model (bean) */
 
 	public DocsSearchModelBean getDocsSearch()
 	{
@@ -56,7 +70,7 @@ public class SellsSessionModelBean extends UnitySelectModelBean
 	}
 
 
-	/* public: support interface */
+	/* Sells Session Model (read) */
 
 	public SellsSession accessEntity()
 	{
@@ -64,7 +78,7 @@ public class SellsSessionModelBean extends UnitySelectModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData    modelData()
 	{
@@ -72,8 +86,24 @@ public class SellsSessionModelBean extends UnitySelectModelBean
 	}
 
 
-	/* private: documents search model */
+	/* private: encapsulated data */
 
 	private DocsSearchModelBean docsSearch;
 
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		IO.obj(o, docsSearch);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		docsSearch = IO.obj(i, DocsSearchModelBean.class);
+	}
 }
