@@ -20,6 +20,10 @@ import com.tverts.model.ModelData;
 
 import com.tverts.retrade.data.prices.PricesSearchModelData;
 
+/* com.tverts: support */
+
+import com.tverts.support.IO;
+
 
 /**
  * Model bean to search for the Goods,
@@ -75,8 +79,8 @@ public class PricesSearchModelBean extends DataSelectModelBean
 	{
 		super.writeExternal(o);
 
-		o.writeLong(priceList);
-		o.writeLong(goodUnit);
+		IO.longer(o, priceList);
+		IO.longer(o, goodUnit);
 	}
 
 	public void readExternal(ObjectInput i)
@@ -84,7 +88,7 @@ public class PricesSearchModelBean extends DataSelectModelBean
 	{
 		super.readExternal(i);
 
-		priceList = i.readLong();
-		goodUnit  = i.readLong();
+		priceList = IO.longer(i);
+		goodUnit  = IO.longer(i);
 	}
 }

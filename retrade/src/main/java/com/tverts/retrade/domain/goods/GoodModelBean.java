@@ -125,7 +125,7 @@ public class GoodModelBean extends ModelBeanBase
 		IO.obj(o, historyCalc);
 		IO.obj(o, editCalc);
 
-		o.writeLong(goodsFolder);
+		IO.longer(o, goodsFolder);
 		o.writeBoolean(selSetAble);
 		o.writeBoolean(calcUpdated);
 	}
@@ -140,7 +140,7 @@ public class GoodModelBean extends ModelBeanBase
 		historyCalc = IO.obj(i, GoodCalcView.class);
 		editCalc    = IO.obj(i, GoodCalcView.class);
 
-		goodsFolder = i.readLong();
+		goodsFolder = IO.longer(i);
 		selSetAble  = i.readBoolean();
 		calcUpdated = i.readBoolean();
 	}

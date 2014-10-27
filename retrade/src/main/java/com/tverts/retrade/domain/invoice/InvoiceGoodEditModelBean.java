@@ -190,8 +190,8 @@ public class InvoiceGoodEditModelBean extends DataSelectModelBean
 		super.writeExternal(o);
 
 		IO.str(o, invoiceModel);
-		o.writeLong(goodKey);
-		o.writeLong(tradeStore);
+		IO.longer(o, goodKey);
+		IO.longer(o, tradeStore);
 		o.writeBoolean(directPrice);
 
 		//?: {not a transient data access}
@@ -208,9 +208,9 @@ public class InvoiceGoodEditModelBean extends DataSelectModelBean
 		super.readExternal(i);
 
 		invoiceModel = IO.str(i);
-		goodKey = i.readLong();
-		tradeStore = i.readLong();
-		directPrice = i.readBoolean();
-		goodAccess = IO.obj(i, ObjectAccess.class);
+		goodKey      = IO.longer(i);
+		tradeStore   = IO.longer(i);
+		directPrice  = i.readBoolean();
+		goodAccess   = IO.obj(i, ObjectAccess.class);
 	}
 }
