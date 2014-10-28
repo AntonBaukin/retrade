@@ -91,7 +91,6 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 		return (store == null)?(null):(store.toString());
 	}
 
-	@XmlTransient
 	public void setTradeStoreSource(String store)
 	{
 		getInvoice().setTradeStoreSource(
