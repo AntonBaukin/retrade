@@ -6,7 +6,7 @@
    · External storage for ox-search text column
    · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
   <task class   = 'com.tverts.hibery.sql.SQLTaskBase'
-        dialect = 'PostgreSQL9Dialect'>
+        dialect = 'PostgreSQLDialect'>
     <query>
 
       <!-- http://www.postgresql.org/docs/9.3/static/storage-toast.html -->
@@ -21,7 +21,7 @@
    · External storage for ox-object column
    · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
   <task class   = 'com.tverts.hibery.sql.SQLTaskBase'
-        dialect = 'PostgreSQL9Dialect'>
+        dialect = 'PostgreSQLDialect'>
     <query>
 
       alter table retrade_measure_unit alter column oxbytes set storage external

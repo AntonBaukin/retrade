@@ -10,6 +10,7 @@ import java.util.Map;
 
 /* Spring Framework */
 
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import org.springframework.stereotype.Component;
 
 /* com.tverts: hibery */
@@ -311,7 +312,7 @@ public class GetContractor extends GetFirm
 
 		//~: from clause
 		qb.nameEntity("FirmPrices", FirmPrices.class);
-		qb.setClauseFrom("FirmPrices fp join fp.contractor co");
+		qb.setClauseFrom("FirmPrices fp right outer join fp.contractor co");
 
 		//~: select clause
 		qb.setClauseSelect("count(distinct co.id)");
@@ -340,13 +341,17 @@ public class GetContractor extends GetFirm
 
 		//~: from clause
 		qb.nameEntity("FirmPrices", FirmPrices.class);
-		qb.setClauseFrom("FirmPrices fp join fp.contractor co");
+		qb.setClauseFrom("FirmPrices fp right outer join fp.contractor co");
 
 		//~: select clause
-		qb.setClauseSelect("fp, co");
+		qb.setClauseSelect("co, string_agg(cast(fp.id as string), ', ')");
+
+		//~: group by
+		qb.setClauseGroupBy("co.id");
 
 		//~: order by
 		qb.setClauseOrderBy("co.nameProc");
+
 
 		//~: the limits
 		qb.setFirstRow(mb.getDataStart());
@@ -369,11 +374,18 @@ public class GetContractor extends GetFirm
 		List<Object[]> rows = (List<Object[]>) QB(qb).list();
 		for(Object[] row : rows)
 		{
-			List<FirmPrices> fps = prices.get((Contractor) row[1]);
-			if(fps == null) prices.put((Contractor)row[1],
+			//~: the list of contractors with their price lists
+			List<FirmPrices> fps = prices.get((Contractor) row[0]);
+			if(fps == null) prices.put((Contractor)row[0],
 			  fps = new ArrayList<FirmPrices>(4));
-			
-			fps.add((FirmPrices) row[0]);
+
+			//~: decode the firm prices
+			String[] pls = SU.s2a((String)row[1], ',');
+			for(String pk : pls)
+				fps.add((FirmPrices) EX.assertn(
+				  session().get(FirmPrices.class, Long.parseLong(pk.trim())),
+				  "Firm Prices [", pk, "] is not found!")
+				);
 		}
 		
 		//~: sort the price list associations by the priority
@@ -440,17 +452,18 @@ public class GetContractor extends GetFirm
 
 	/*
 
- fp.priceList.id in (select si.object from SelItem si join si.selSet ss
-   where (ss.name = :sset) and (ss.login.id = :login))
+ co.id in (select fp2.contractor.id from FirmPrices fp2 where fp2.priceList.id in
+   (select si.object from SelItem si join si.selSet ss
+     where (ss.name = :sset) and (ss.login.id = :login)))
 
 	*/
 
 			//~: search by the associated price lists
 			p.addPart(
 
-"fp.priceList.id in (select si.object from SelItem si join si.selSet ss\n" +
-"  where (ss.name = :sset) and (ss.login.id = :login))"
-
+"co.id in (select fp2.contractor.id from FirmPrices fp2 where fp2.priceList.id in \n" +
+"  (select si.object from SelItem si join si.selSet ss\n" +
+"    where (ss.name = :sset) and (ss.login.id = :login)))"
 			).
 			  param("sset",  selset).
 			  param("login", SecPoint.login());
