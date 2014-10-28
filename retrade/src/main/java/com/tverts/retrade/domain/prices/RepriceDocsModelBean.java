@@ -12,20 +12,18 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-/* com.tverts: system */
-
-import com.tverts.model.DataSelectModelBean;
-import com.tverts.system.SystemConfig;
-
 /* com.tverts: models */
 
-import com.tverts.model.DataSelectModel;
-import com.tverts.model.ModelBeanBase;
+import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
 
 /* com.tverts: retrade (model data) */
 
 import com.tverts.retrade.data.RepriceDocsModelData;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -39,32 +37,24 @@ import com.tverts.retrade.data.RepriceDocsModelData;
 @XmlType(name = "price-change-documents-model")
 public class RepriceDocsModelBean extends DataSelectModelBean
 {
-	/* public: ModelBean (data access) interface */
+	/* Price Change Documents Model */
 
-	public ModelData modelData()
-	{
-		return new RepriceDocsModelData(this);
-	}
-
-
-	/* Price Change Documents Model Bean */
-
-	public Date    getMinDate()
+	public Date getMinDate()
 	{
 		return minDate;
 	}
 
-	public void    setMinDate(Date minDate)
+	public void setMinDate(Date minDate)
 	{
 		this.minDate = minDate;
 	}
 
-	public Date    getMaxDate()
+	public Date getMaxDate()
 	{
 		return maxDate;
 	}
 
-	public void    setMaxDate(Date maxDate)
+	public void setMaxDate(Date maxDate)
 	{
 		this.maxDate = maxDate;
 	}
@@ -74,9 +64,17 @@ public class RepriceDocsModelBean extends DataSelectModelBean
 		return fixedOnly;
 	}
 
-	public void    setFixedOnly(boolean fixedOnly)
+	public void setFixedOnly(boolean fixedOnly)
 	{
 		this.fixedOnly = fixedOnly;
+	}
+
+
+	/* Model Bean (data access) */
+
+	public ModelData modelData()
+	{
+		return new RepriceDocsModelData(this);
 	}
 
 
@@ -94,8 +92,8 @@ public class RepriceDocsModelBean extends DataSelectModelBean
 	{
 		super.writeExternal(o);
 
-		o.writeObject(minDate);
-		o.writeObject(maxDate);
+		IO.obj(o, minDate);
+		IO.obj(o, maxDate);
 		o.writeBoolean(fixedOnly);
 	}
 
@@ -104,8 +102,8 @@ public class RepriceDocsModelBean extends DataSelectModelBean
 	{
 		super.readExternal(i);
 
-		minDate   = (Date) i.readObject();
-		maxDate   = (Date) i.readObject();
+		minDate   = IO.obj(i, Date.class);
+		maxDate   = IO.obj(i, Date.class);
 		fixedOnly = i.readBoolean();
 	}
 }

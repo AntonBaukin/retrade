@@ -30,13 +30,13 @@ import com.tverts.secure.SecPoint;
 
 /* com.tverts: models */
 
+import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
 
 /* com.tverts: endure (reports) */
 
 import com.tverts.endure.report.GetReports;
 import com.tverts.endure.report.ReportRequest;
-import com.tverts.endure.report.ReportsSelectModelBean;
 
 /* com.tverts: support */
 
@@ -51,13 +51,10 @@ import com.tverts.support.EX;
 @XmlRootElement(name = "model")
 @XmlType(name = "report-requests-model")
 public class      ReportRequestsModelBean
-       extends    ReportsSelectModelBean
+       extends    DataSelectModelBean
        implements Download
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{

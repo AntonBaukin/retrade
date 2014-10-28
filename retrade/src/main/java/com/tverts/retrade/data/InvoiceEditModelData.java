@@ -1,6 +1,6 @@
 package com.tverts.retrade.data;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +45,10 @@ import com.tverts.retrade.domain.invoice.InvoiceEdit;
 import com.tverts.retrade.domain.invoice.InvoiceEditModelBean;
 import com.tverts.retrade.domain.invoice.InvoiceGoodView;
 import com.tverts.retrade.domain.invoice.InvoiceView;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -103,46 +107,54 @@ public class InvoiceEditModelData implements ModelData
 		UnityType   invType = bean(GetUnityType.class).
 		  getUnityType(invoice.getInvoiceType());
 		if(invType == null) throw new IllegalStateException();
+		
+		//~: selection numbers
+		int N = getModel().getInvocesNumber(), N2 = N/2;
+		EX.assertx(N2*2 == N);
 
 		//~: get the invoices on the date left order
 		List<Invoice> lfs;
 
-		if(getModel().isEditDateOrderByDate())
+		//?: {order by data}
+		if("date".equals(getModel().getFirstSortProp()))
 			lfs = bean(GetInvoice.class).findLeftInvoicesByDate(
 			  getModel().findDomain(), invType,
-			  invoice.getEditDate(), 20, exclude
+			  invoice.getEditDate(), N, exclude
 			);
+		//~: order by code
 		else
 			lfs = bean(GetInvoice.class).findLeftInvoices(
 			  getModel().findDomain(), getModel().findOrderType(),
-			  invoice.getEditDate(), 20, exclude
+			  invoice.getEditDate(), N, exclude
 			);
 
 		//~: get the invoices on the date right order
 		List<Invoice> rts;
 
-		if(getModel().isEditDateOrderByDate())
+		//?: {order by data}
+		if("date".equals(getModel().getFirstSortProp()))
 			rts = bean(GetInvoice.class).findRightInvoicesByDate(
 			  getModel().findDomain(), invType,
-			  invoice.getEditDate(), 20, exclude
+			  invoice.getEditDate(), N, exclude
 			);
+		//~: order by code
 		else
 			rts = bean(GetInvoice.class).findRightInvoices(
 			  getModel().findDomain(), getModel().findOrderType(),
-			  invoice.getEditDate(), 20, exclude
+			  invoice.getEditDate(), N, exclude
 			);
 
-		//~: balance the size to get total 20
-		int lsz = (lfs.size() > 10)?(10):(lfs.size());
-		int rsz = (rts.size() > 10)?(10):(rts.size());
+		//~: balance the size to get total N
+		int lsz = (lfs.size() > N2)?(N2):(lfs.size());
+		int rsz = (rts.size() > N2)?(N2):(rts.size());
 
-		if(lsz < 10) rsz += 10 - lsz;
-		if(rsz < 10) lsz += 10 - rsz;
+		if(lsz < N2) rsz += N2 - lsz;
+		if(rsz < N2) lsz += N2 - rsz;
 		if(lsz > lfs.size()) lsz = lfs.size();
 		if(rsz > rts.size()) rsz = rts.size();
 
 
-		List<InvoiceView> res = new ArrayList<InvoiceView>(20);
+		List<InvoiceView> res = new ArrayList<InvoiceView>(N);
 
 		//~: add left invoices (!: from the tail as in reverse order)
 		for(int i = lsz - 1;(i >= 0);i--)

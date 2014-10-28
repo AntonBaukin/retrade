@@ -10,6 +10,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: support */
@@ -18,134 +19,150 @@ import com.tverts.support.jaxb.DateTimeAdapter;
 
 
 /**
- * A read-only view on the {@link Invoice} instance.
+ * A read-only (Java Bean) view on
+ * an {@link Invoice} instance.
  *
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "invoice")
+@XmlType(name = "invoice-view")
 public class InvoiceView implements Serializable
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140806;
 
 
-	/* public: InvoiceView (bean) interface */
+	/* Invoice View (bean) */
 
-	public String      getObjectKey()
+	public String getObjectKey()
 	{
 		return (objectKey == null)?("null"):(objectKey);
 	}
+	
+	private String objectKey;
 
-	public void        setObjectKey(String objectKey)
+	public void setObjectKey(String objectKey)
 	{
 		this.objectKey =
-		  "null".equals(objectKey)?(null):(objectKey);
+		 "null".equals(objectKey)?(null):(objectKey);
 	}
 
-	public Long        objectKey()
-	{
-		return (objectKey == null)?(null):
-		  Long.parseLong(objectKey);
-	}
-
-	public Long        getDomain()
+	public Long getDomain()
 	{
 		return domain;
 	}
+	
+	private Long domain;
 
-	public void        setDomain(Long domain)
+	public void setDomain(Long domain)
 	{
 		this.domain = domain;
 	}
 
-	public Long        getInvoiceType()
+	public Long getInvoiceType()
 	{
 		return invoiceType;
 	}
 
-	public void        setInvoiceType(Long invoiceType)
+	private Long invoiceType;
+
+	public void setInvoiceType(Long invoiceType)
 	{
 		this.invoiceType = invoiceType;
 	}
 
-	public String      getInvoiceTypeName()
+	public String getInvoiceTypeName()
 	{
 		return invoiceTypeName;
 	}
 
-	public void        setInvoiceTypeName(String invoiceTypeName)
+	private String invoiceTypeName;
+
+	public void setInvoiceTypeName(String invoiceTypeName)
 	{
 		this.invoiceTypeName = invoiceTypeName;
 	}
 
-	public Character   getSubType()
+	public Character getSubType()
 	{
 		return subType;
 	}
 
-	public void        setSubType(Character subType)
+	private Character subType;
+
+	public void setSubType(Character subType)
 	{
 		this.subType = subType;
 	}
 
 	@XmlElement
-	public boolean     isAltered()
+	public boolean isAltered()
 	{
 		return (subType != null);
 	}
 
-	public String      getInvoiceStateName()
+	public String getInvoiceStateName()
 	{
 		return invoiceStateName;
 	}
 
-	public void        setInvoiceStateName(String invoiceStateName)
+	private String invoiceStateName;
+
+	public void setInvoiceStateName(String invoiceStateName)
 	{
 		this.invoiceStateName = invoiceStateName;
 	}
 
-	public String      getInvoiceCode()
+	public String getInvoiceCode()
 	{
 		return invoiceCode;
 	}
 
-	public void        setInvoiceCode(String invoiceCode)
+	private String invoiceCode;
+
+	public void setInvoiceCode(String invoiceCode)
 	{
 		this.invoiceCode = invoiceCode;
 	}
 
 	@XmlJavaTypeAdapter(DateTimeAdapter.class)
-	public Date        getInvoiceDate()
+	public Date getInvoiceDate()
 	{
 		return invoiceDate;
 	}
 
-	public void        setInvoiceDate(Date invoiceDate)
+	private Date invoiceDate;
+
+	public void setInvoiceDate(Date invoiceDate)
 	{
 		this.invoiceDate = invoiceDate;
 	}
 
-	public BigDecimal  getGoodsCost()
+	public BigDecimal getGoodsCost()
 	{
 		return goodsCost;
 	}
 
-	public void        setGoodsCost(BigDecimal goodsCost)
+	private BigDecimal goodsCost;
+
+	public void setGoodsCost(BigDecimal goodsCost)
 	{
 		this.goodsCost = goodsCost;
 	}
 
-	public int         getGoodsNumber()
+	public int getGoodsNumber()
 	{
 		return goodsNumber;
 	}
 
-	public void        setGoodsNumber(int goodsNumber)
+	private int goodsNumber;
+
+	public void setGoodsNumber(int goodsNumber)
 	{
 		this.goodsNumber = goodsNumber;
 	}
 
 
-	/* public: InvoiceView (support) interface */
+	/* Initialization */
 
 	public InvoiceView init(Object obj)
 	{
@@ -200,17 +217,11 @@ public class InvoiceView implements Serializable
 	}
 
 
-	/* private: the view state */
+	/* Invoice View (support) */
 
-	private String     objectKey;
-	private Long       domain;
-	private Long       invoiceType;
-	private Character  subType;
-	private String     invoiceTypeName;
-	private String     invoiceStateName;
-	private String     invoiceCode;
-	private Date       invoiceDate;
-	private BigDecimal goodsCost;
-	private int        goodsNumber;
-
+	public Long objectKey()
+	{
+		return (objectKey == null)?(null):
+		  Long.parseLong(objectKey);
+	}
 }

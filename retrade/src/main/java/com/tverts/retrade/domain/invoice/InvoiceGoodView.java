@@ -31,14 +31,13 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  * Refers {@link InvGood} or {@link StoreGood}
  * by the good index in the invoice.
  *
- *
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "good")
 @XmlType(name = "invoice-good-view")
 public class InvoiceGoodView implements Serializable
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140806;
 
 
 	/* Invoice Good (bean) */
@@ -55,7 +54,7 @@ public class InvoiceGoodView implements Serializable
 		this.objectKey = objectKey;
 	}
 
-	public int  getIndex()
+	public int getIndex()
 	{
 		return index;
 	}

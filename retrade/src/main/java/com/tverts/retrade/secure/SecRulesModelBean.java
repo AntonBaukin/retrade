@@ -24,10 +24,7 @@ import com.tverts.retrade.data.settings.SecRulesModelData;
 @XmlType(name = "secure-rules-model")
 public class SecRulesModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{

@@ -3,6 +3,8 @@ package com.tverts.retrade.web.views.datas;
 /* Java */
 
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.io.OutputStream;
 
 /* Java XML Binding */
@@ -12,15 +14,16 @@ import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: models */
 
+import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
-
-/* com.tverts: endure (reports) */
-
-import com.tverts.endure.report.ReportsSelectModelBean;
 
 /* com.tverts: objects */
 
 import com.tverts.objects.BinarySource;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -32,13 +35,10 @@ import com.tverts.objects.BinarySource;
 @XmlRootElement(name = "model")
 @XmlType(name = "datas-model")
 public class      DatasModelBean
-       extends    ReportsSelectModelBean
+       extends    DataSelectModelBean
        implements BinarySource
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: Data Sources Model Bean */
+	/* Data Sources Model */
 
 	public void setXMLData(byte[] data)
 	{
@@ -46,7 +46,7 @@ public class      DatasModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
@@ -61,6 +61,7 @@ public class      DatasModelBean
 	{
 		OutputStream o = biny.stream(Biny.DEFLATE);
 
+		//~: content type for XML data file
 		biny.set("Content-Type", "application/xml;charset=UTF-8");
 
 		if(data != null) try
@@ -75,7 +76,24 @@ public class      DatasModelBean
 	}
 
 
-	/* private: the xml document saved */
+	/* private: encapsulated data */
 
-	private byte[] data;
+	private byte[] data; //<-- the xml document saved
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		IO.obj(o, data);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		data = IO.obj(i, byte[].class);
+	}
 }

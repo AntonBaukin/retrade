@@ -1,12 +1,15 @@
 package com.tverts.retrade.domain.invoice;
 
-/* standard Java classes */
+/* Java */
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring */
@@ -31,6 +34,8 @@ import com.tverts.retrade.data.InvoiceEditModelData;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
+import com.tverts.support.IO;
 import com.tverts.support.SU;
 
 
@@ -43,59 +48,75 @@ import com.tverts.support.SU;
 @XmlType(name = "incoice-edit-model")
 public class InvoiceEditModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
+	/* Invoice Edit Model (bean) */
 
-
-	/* public: InvoiceEditModelBean (bean) interface */
-
-	public InvoiceEdit  getInvoice()
+	public InvoiceEdit getInvoice()
 	{
 		return invoice;
 	}
 
-	public void         setInvoice(InvoiceEdit invoice)
+	public void setInvoice(InvoiceEdit invoice)
 	{
 		this.invoice = invoice;
 	}
 
-	public Long         getLastPriceList()
+	public Long getLastPriceList()
 	{
 		return lastPriceList;
 	}
 
-	public void         setLastPriceList(Long lastPriceList)
+	public void setLastPriceList(Long lastPriceList)
 	{
 		this.lastPriceList = lastPriceList;
 	}
 
-	public String       getTradeStore()
+	@XmlTransient
+	public String getTradeStore()
 	{
 		Long store = getInvoice().getTradeStore();
 		return (store == null)?(null):(store.toString());
 	}
 
-	public void         setTradeStore(String store)
+	public void setTradeStore(String store)
 	{
 		getInvoice().setTradeStore(
 		  (store == null)?(null):(Long.parseLong(store))
 		);
 	}
 
-	public String       getTradeStoreSource()
+	@XmlTransient
+	public String getTradeStoreSource()
 	{
 		Long store = getInvoice().getTradeStoreSource();
 		return (store == null)?(null):(store.toString());
 	}
 
-	public void         setTradeStoreSource(String store)
+	@XmlTransient
+	public void setTradeStoreSource(String store)
 	{
 		getInvoice().setTradeStoreSource(
 		  (store == null)?(null):(Long.parseLong(store))
 		);
 	}
 
+	/**
+	 * Event number of the invoices to display
+	 * in the date-time edit table. Default is 20.
+	 */
+	public int getInvocesNumber()
+	{
+		return invocesNumber;
+	}
 
-	/* public: InvoiceEditModelBean (support) interface */
+	public void setInvocesNumber(int invocesNumber)
+	{
+		EX.assertx(invocesNumber > 0);
+		EX.assertx(invocesNumber % 2 == 0);
+		this.invocesNumber = invocesNumber;
+	}
+
+
+	/* Invoice Edit Model (support) */
 
 	public Domain       findDomain()
 	{
@@ -110,36 +131,23 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 
 	public UnityType    findOrderType()
 	{
+		if(getInvoice() == null)
+			return null;
+
 		if(getInvoice().getOrderType() != null)
 			return bean(GetUnityType.class).
 			  getUnityType(getInvoice().getOrderType());
 
-		Invoice invoice = (getInvoice() == null)?(null):
-		  bean(GetInvoice.class).getInvoice(getInvoice().objectKey());
+		Invoice invoice = bean(GetInvoice.class).
+		  getInvoice(getInvoice().objectKey());
 
 		return (invoice == null)?(null):(invoice.getOrderType());
 	}
 
 
-	/* public: InvoiceEditModelBean (configuration) interface */
+	/* Invoice Edit Model (contractors select) */
 
-	/**
-	 * TODO: remove isEditDateOrderByDate()
-	 */
-	public boolean      isEditDateOrderByDate()
-	{
-		return editDateOrderByDate;
-	}
-
-	public void         setEditDateOrderByDate(boolean v)
-	{
-		this.editDateOrderByDate = v;
-	}
-
-
-	/* public: InvoiceEditModelBean (contractors edit) interface */
-
-	public String[]     getContractorsWords()
+	public String[]     contractorsSearch()
 	{
 		return SU.s2a(getContractorsSearch());
 	}
@@ -155,7 +163,7 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData    modelData()
 	{
@@ -163,18 +171,35 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 	}
 
 
-	/* private: invoice edited */
+	/* private: encapsulated data */
 
 	private InvoiceEdit invoice;
 	private Long        lastPriceList;
-
-
-	/* private: configuration parameters */
-
-	private boolean     editDateOrderByDate;
-
-
-	/* private: contractors edit */
-
+	private int         invocesNumber = 20;
 	private String      contractorsSearch;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.xml(o, invoice);
+		IO.longer(o, lastPriceList);
+		o.writeInt(invocesNumber);
+		IO.str(o, contractorsSearch);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		invoice           = IO.xml(i, InvoiceEdit.class);
+		lastPriceList     = IO.longer(i);
+		invocesNumber     = i.readInt();
+		contractorsSearch = IO.str(i);
+	}
 }

@@ -1,5 +1,11 @@
 package com.tverts.retrade.domain.account;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,10 +31,7 @@ import com.tverts.retrade.data.account.PayWaysModelData;
 @XmlType(name = "payment-ways-model")
 public class PayWaysModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* Payment Ways Model */
 
 	public boolean isOwnOnly()
 	{
@@ -41,7 +44,7 @@ public class PayWaysModelBean extends DataSelectModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
@@ -49,7 +52,24 @@ public class PayWaysModelBean extends DataSelectModelBean
 	}
 
 
-	/* private: model attributes */
+	/* private: encapsulated data */
 
 	private boolean ownOnly;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		o.writeBoolean(ownOnly);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		ownOnly = i.readBoolean();
+	}
 }

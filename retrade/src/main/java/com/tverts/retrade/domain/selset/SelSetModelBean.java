@@ -1,5 +1,11 @@
 package com.tverts.retrade.domain.selset;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -9,6 +15,10 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -20,10 +30,7 @@ import com.tverts.model.ModelData;
 @XmlType(name = "selection-set-model")
 public class SelSetModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: SelSetModelBean (bean) interface */
+	/* Selection Set Model  */
 
 	public Long getLogin()
 	{
@@ -35,18 +42,8 @@ public class SelSetModelBean extends DataSelectModelBean
 		this.login = login;
 	}
 
-	public String getSelSet()
-	{
-		return selSet;
-	}
 
-	public void setSelSet(String selSet)
-	{
-		this.selSet = selSet;
-	}
-
-
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
@@ -54,8 +51,24 @@ public class SelSetModelBean extends DataSelectModelBean
 	}
 
 
-	/* selection set model */
+	/* private: encapsulated data */
 
-	private Long   login;
-	private String selSet;
+	private Long login;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		IO.longer(o, login);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		login = IO.longer(i);
+	}
 }

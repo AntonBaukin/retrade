@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: retrade domain (forms + stores) */
 
@@ -23,119 +24,142 @@ import com.tverts.retrade.domain.store.TradeStore;
  * @author anton.baukin@gmail.com.
  */
 @XmlRootElement(name = "invoice")
+@XmlType(name = "invoice-view-ext")
 public class InvoiceViewExt extends InvoiceView
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140806;
 
 
-	/* public: InvoiceEdit (bean) interface */
+	/* Invoice View Extended (bean) */
 
-	public Long     getTradeStore()
+	public Long getTradeStore()
 	{
 		return tradeStore;
 	}
 
-	public void     setTradeStore(Long tradeStore)
+	private Long tradeStore;
+
+	public void setTradeStore(Long tradeStore)
 	{
 		this.tradeStore = tradeStore;
 	}
 
-	public String   getStoreCode()
+	public String getStoreCode()
 	{
 		return storeCode;
 	}
 
-	public void     setStoreCode(String storeCode)
+	private String storeCode;
+
+	public void setStoreCode(String storeCode)
 	{
 		this.storeCode = storeCode;
 	}
 
-	public String   getStoreName()
+	public String getStoreName()
 	{
 		return storeName;
 	}
 
-	public void     setStoreName(String storeName)
+	private String storeName;
+
+	public void setStoreName(String storeName)
 	{
 		this.storeName = storeName;
 	}
 
-	public Long     getTradeStoreSource()
+	public Long getTradeStoreSource()
 	{
 		return tradeStoreSource;
 	}
 
-	public void     setTradeStoreSource(Long tradeStoreSource)
+	private Long tradeStoreSource;
+
+	public void setTradeStoreSource(Long tradeStoreSource)
 	{
 		this.tradeStoreSource = tradeStoreSource;
 	}
 
-	public String   getStoreSourceCode()
+	public String getStoreSourceCode()
 	{
 		return storeSourceCode;
 	}
 
-	public void     setStoreSourceCode(String storeSourceCode)
+	private String storeSourceCode;
+
+	public void setStoreSourceCode(String storeSourceCode)
 	{
 		this.storeSourceCode = storeSourceCode;
 	}
 
-	public String   getStoreSourceName()
+	public String getStoreSourceName()
 	{
 		return storeSourceName;
 	}
 
-	public void     setStoreSourceName(String storeSourceName)
+	private String storeSourceName;
+
+	public void setStoreSourceName(String storeSourceName)
 	{
 		this.storeSourceName = storeSourceName;
 	}
 
-	public Long     getContractor()
+	public Long getContractor()
 	{
 		return contractor;
 	}
 
-	public void     setContractor(Long contractor)
+	private Long contractor;
+
+	public void setContractor(Long contractor)
 	{
 		this.contractor = contractor;
 	}
 
-	public String   getContractorCode()
+	public String getContractorCode()
 	{
 		return contractorCode;
 	}
 
-	public void     setContractorCode(String contractorCode)
+	private String contractorCode;
+
+	public void setContractorCode(String contractorCode)
 	{
 		this.contractorCode = contractorCode;
 	}
 
-	public String   getContractorName()
+	public String getContractorName()
 	{
 		return contractorName;
 	}
 
-	public void     setContractorName(String contractorName)
+	private String contractorName;
+
+	public void setContractorName(String contractorName)
 	{
 		this.contractorName = contractorName;
 	}
 
-	public String   getContractorFullName()
+	public String getContractorFullName()
 	{
 		return contractorFullName;
 	}
 
-	public void     setContractorFullName(String contractorFullName)
+	private String contractorFullName;
+
+	public void setContractorFullName(String contractorFullName)
 	{
 		this.contractorFullName = contractorFullName;
 	}
 
-	public String   getRemarks()
+	public String getRemarks()
 	{
 		return remarks;
 	}
 
-	public void     setRemarks(String remarks)
+	private String remarks;
+
+	public void setRemarks(String remarks)
 	{
 		this.remarks = remarks;
 	}
@@ -145,16 +169,18 @@ public class InvoiceViewExt extends InvoiceView
 	public List<InvoiceGoodView> getGoods()
 	{
 		return (goods != null)?(goods):
-		  (goods = new ArrayList<InvoiceGoodView>(8));
+		 (goods = new ArrayList<InvoiceGoodView>(8));
 	}
 
-	public void     setGoods(List<InvoiceGoodView> goods)
+	private List<InvoiceGoodView> goods;
+
+	public void setGoods(List<InvoiceGoodView> goods)
 	{
 		this.goods = goods;
 	}
 
 
-	/* public: InvoiceEdit (support) interface */
+	/* Initialization */
 
 	public InvoiceViewExt init(Object obj)
 	{
@@ -215,24 +241,4 @@ public class InvoiceViewExt extends InvoiceView
 
 		return this;
 	}
-
-
-	/* private: invoice attributes */
-
-	private Long   tradeStore;
-	private String storeCode;
-	private String storeName;
-	private Long   tradeStoreSource;
-	private String storeSourceCode;
-	private String storeSourceName;
-	private Long   contractor;
-	private String contractorCode;
-	private String contractorName;
-	private String contractorFullName;
-	private String remarks;
-
-
-	/* private: the list of the goods */
-
-	private List<InvoiceGoodView> goods;
 }

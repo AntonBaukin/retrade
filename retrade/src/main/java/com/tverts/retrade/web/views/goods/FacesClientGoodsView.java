@@ -89,34 +89,19 @@ public class FacesClientGoodsView extends FacesGoodsView
 
 	protected GoodsModelBean createModel()
 	{
-		GoodsModelBean mb = new ClientGoodsModelBean();
+		GoodsModelBean mb = new GoodsModelBean();
 
 		//=: domain
 		mb.setDomain(getDomainKey());
+
+		//~: override the model data
+		mb.setDataClass(ClientGoodsModelData.class);
 
 		return mb;
 	}
 
 	protected boolean isRequestModelMatch(ModelBean model)
 	{
-		return (model instanceof ClientGoodsModelBean);
-	}
-
-
-	/* Model Bean */
-
-	@XmlRootElement(name = "model")
-	@XmlType(name = "client-goods-model")
-	public static class ClientGoodsModelBean extends GoodsModelBean
-	{
-		public static final long serialVersionUID = 0L;
-
-
-		/* Model Bean Data Access */
-
-		public ModelData modelData()
-		{
-			return new ClientGoodsModelData(this);
-		}
+		return (model instanceof GoodsModelBean);
 	}
 }

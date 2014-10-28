@@ -11,7 +11,9 @@ import java.util.List;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: spring */
@@ -50,17 +52,18 @@ import com.tverts.support.jaxb.DateTimeAdapter;
 
 
 /**
- * Edit version of {@link InvoiceView} data bean.
+ * Edit version of {@link InvoiceViewExt} data bean.
  *
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "invoice")
+@XmlType(name = "invoice-edit")
 public class InvoiceEdit extends InvoiceViewExt
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140806;
 
 
-	/* public: InvoiceEdit (bean) interface */
+	/* Invoice Edit (bean) */
 
 	/**
 	 * We see the invoice timestamp as the value
@@ -70,34 +73,35 @@ public class InvoiceEdit extends InvoiceViewExt
 	public Date getInvoiceDate()
 	{
 		return (getEditDate() != null)
-		  ?(getEditDate()):(super.getInvoiceDate());
+		 ?(getEditDate()):(super.getInvoiceDate());
 	}
 
+	@XmlElement
 	public Date getInvoiceDateOriginal()
 	{
 		return originalDate;
 	}
 
+	private Date originalDate;
 
 	public Long getOrderType()
 	{
 		return orderType;
 	}
 
+	private Long orderType;
+
 	public void setOrderType(Long orderType)
 	{
 		this.orderType = orderType;
-	}
-
-	public void setOrderType(UnityType ot)
-	{
-		this.orderType = (ot == null)?(null):(ot.getPrimaryKey());
 	}
 
 	public Long getOrderReference()
 	{
 		return orderReference;
 	}
+
+	private Long orderReference;
 
 	public void setOrderReference(Long orderReference)
 	{
@@ -108,8 +112,10 @@ public class InvoiceEdit extends InvoiceViewExt
 	public Date getEditDate()
 	{
 		return (editDate != null)?(editDate):
-		  (super.getInvoiceDate());
+		 (super.getInvoiceDate());
 	}
+
+	private Date editDate;
 
 	public void setEditDate(Date editDate)
 	{
@@ -117,7 +123,7 @@ public class InvoiceEdit extends InvoiceViewExt
 	}
 
 
-	/* public: InvoiceEdit (support) interface */
+	/* Initialization */
 
 	public InvoiceEdit init(Object obj)
 	{
@@ -131,10 +137,10 @@ public class InvoiceEdit extends InvoiceViewExt
 		//~: order type
 		if(getOrderType() != null)
 			i.setOrderType(bean(GetUnityType.class).
-			  getUnityType(getOrderType()));
+			 getUnityType(getOrderType()));
 
 		//~: edit & original date
-		this.editDate     = getInvoiceDate();
+		this.editDate = getInvoiceDate();
 		this.originalDate = new Date(this.editDate.getTime());
 
 		return this;
@@ -153,15 +159,20 @@ public class InvoiceEdit extends InvoiceViewExt
 		return this;
 	}
 
+	public InvoiceEdit setOrderType(UnityType ot)
+	{
+		setOrderType((ot == null)?(null):(ot.getPrimaryKey()));
+		return this;
+	}
 
-	/* public: InvoiceEdit (create) interface */
+
+	/* Invoice Edit (create) */
 
 	public Invoice createInvoice()
 	{
 		Invoice      i = new Invoice();
 		InvoiceState s = new InvoiceState();
 		InvoiceData  d = createData();
-
 
 		//?: {move invoice}
 		Long m = UnityTypes.unityType(Invoice.class,
@@ -252,7 +263,7 @@ public class InvoiceEdit extends InvoiceViewExt
 		InvoiceData d = i.getInvoiceData();
 
 		//~: get the keys of all the goods present
-		HashSet<Long>     k = new HashSet<Long>(11);
+		HashSet<Long> k = new HashSet<Long>(11);
 
 		for(InvoiceGoodView g : e.getGoods())
 			k.add(g.getObjectKey());
@@ -415,7 +426,6 @@ public class InvoiceEdit extends InvoiceViewExt
 
 		throw EX.state("Unsupported Invoice Type [",
 		  getInvoiceType(), "] Unity Name [", getInvoiceTypeName(), "]!");
-
 	}
 
 	protected boolean isThatType(String typeName)
@@ -510,17 +520,4 @@ public class InvoiceEdit extends InvoiceViewExt
 		//~: move-on flag
 		ig.setMoveOn(eg.getMoveOn());
 	}
-
-
-	/* private: invoice edit attributes */
-
-	private Date   editDate;
-	private Date   originalDate;
-	private Long   orderType;
-	private Long   orderReference;
-
-
-	/* private: the list of edited goods */
-
-	private List<InvoiceGoodView> goods;
 }

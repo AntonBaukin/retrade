@@ -181,7 +181,7 @@ public class GetContractor extends GetFirm
 		  param("domain", mb.domain());
 
 		//~: restrict by the search words
-		restrictByNames(qb, mb.getContractorsWords());
+		restrictByNames(qb, mb.contractorsSearch());
 
 		return ((Number) QB(qb).uniqueResult()).longValue();
 	}
@@ -213,7 +213,7 @@ public class GetContractor extends GetFirm
 		  param("domain", mb.domain());
 
 		//~: restrict by the search words
-		restrictByNames(qb, mb.getContractorsWords());
+		restrictByNames(qb, mb.contractorsSearch());
 
 		return (List<Contractor>) QB(qb).list();
 	}

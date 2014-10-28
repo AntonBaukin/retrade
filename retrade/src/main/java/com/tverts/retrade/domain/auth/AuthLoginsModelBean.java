@@ -1,5 +1,11 @@
 package com.tverts.retrade.domain.auth;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,10 +31,7 @@ import com.tverts.retrade.data.system.AuthLoginsModelData;
 @XmlType(name = "auth-logins-model")
 public class AuthLoginsModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: AuthLoginsModelBean (bean) interface */
+	/* Auth Logins Model (bean) */
 
 	public boolean isPersonsOnly()
 	{
@@ -49,7 +52,24 @@ public class AuthLoginsModelBean extends DataSelectModelBean
 	}
 
 
-	/* private: model attributes */
+	/* Model Bean (data access) */
 
-	private boolean  personsOnly;
+	private boolean personsOnly;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		o.writeBoolean(personsOnly);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		personsOnly = i.readBoolean();
+	}
 }

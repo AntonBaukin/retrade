@@ -7,41 +7,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/report/ReportsSelectModelBean.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/AccountsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/AccountsModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/data/models/AdaptedEntitiesSelected.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/data/models/AdaptedEntitiesSelected.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/AuthLoginsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/AuthLoginsModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/firm/ContractorsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/firm/ContractorsModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/CreateDomainModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/CreateDomainModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/DatasModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/DatasModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/doc/DocsSearchModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/doc/DocsSearchModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/DomainsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/DomainsModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/person/EditPersonModelBean.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/person/EditPersonModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsTreeView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsTreeView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GoodPriceModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GoodPriceModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodsModelBean.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/FacesDataSources.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/FacesDataSources.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/reports/FacesMyReports.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/reports/FacesMyReports.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/firm/GetContractor.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/firm/GetContractor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/report/GetReports.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/report/GetReports.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodsTreeModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodsTreeModelBean.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEdit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEdit.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEditModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEditModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodEditModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodEditModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/MeasureUnitModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/MeasureUnitModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/PayWayModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/PayWayModelBean.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/data/InvoiceEditModelData.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/data/InvoiceEditModelData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceViewExt.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceViewExt.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/PayWaysModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/PayWaysModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/payment/PaymentsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/payment/PaymentsModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChangeEditModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChangeEditModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceListModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceListModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PricesSearchModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PricesSearchModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/reports/ReportRequestsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/reports/ReportRequestsModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/report/ReportTemplateModelBean.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/report/ReportTemplateModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/report/ReportsSelectModelBean.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/report/ReportsSelectModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDocEditModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDocEditModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDocModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDocModelBean.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDocsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDocsModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecAblesModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecAblesModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecRulesModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecRulesModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecSetsModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecSetsModelBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/selset/SelSetModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/selset/SelSetModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/shunts/SelfShuntGroupsModelBean.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/shunts/SelfShuntGroupsModelBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/sells/SellReceiptModelBean.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/sells/SellReceiptModelBean.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/exec/datas/invoices/SelectInvoiceSubType.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/exec/datas/invoices/SelectInvoiceSubType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/qb/TuneQuery.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/qb/TuneQuery.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/list.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/my-reports.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/my-reports.xhtml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,12 +66,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="FacesGoodEditView.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java">
+      <file leaf-file-name="PaymentsModelBean.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/payment/PaymentsModelBean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.385103" vertical-offset="4495" max-vertical-offset="5425">
-              <caret line="773" column="6" selection-start-line="773" selection-start-column="6" selection-end-line="773" selection-end-column="6" />
-              <folding />
+            <state vertical-scroll-proportion="1.1584786" vertical-offset="1343" max-vertical-offset="2705">
+              <caret line="178" column="12" selection-start-line="178" selection-start-column="4" selection-end-line="178" selection-end-column="4" />
+              <folding>
+                <element signature="method#writeExternal#0;class#PaymentsModelBean#0" expanded="true" />
+                <element signature="e#3186#3216#0" expanded="true" />
+                <element signature="method#readExternal#0;class#PaymentsModelBean#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -87,23 +90,23 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodsTreeModelBean.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsTreeView.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/DomainsModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/AuthLoginsModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/payment/PaymentsModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEditModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PricesSearchModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodEditModelBean.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecAblesModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/AccountsModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecSetsModelBean.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/person/EditPersonModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/PayWayModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChangeEditModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GoodPriceModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/selset/SelSetModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/firm/ContractorsModelBean.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsView.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/AuthLoginsModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/AccountsModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDocsModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/DatasModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChangeEditModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecRulesModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/DomainsModelBean.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/qb/TuneQuery.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/exec/datas/invoices/SelectInvoiceSubType.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/data/models/AdaptedEntitiesSelected.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/CreateDomainModelBean.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/payment/PaymentsModelBean.java" />
       </list>
     </option>
   </component>
@@ -224,8 +227,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -308,6 +309,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -671,139 +674,143 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecAblesModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/DomainsModelBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20194384" vertical-offset="221" max-vertical-offset="1742">
+        <state vertical-scroll-proportion="0.44060475" vertical-offset="0" max-vertical-offset="1402">
           <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/AccountsModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/PayWaysModelBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3725702" vertical-offset="63" max-vertical-offset="1657">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.24082074" vertical-offset="304" max-vertical-offset="2014">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/secure/SecSetsModelBean.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/data/ReportFormat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3725702" vertical-offset="63" max-vertical-offset="1657">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="1759">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceViewAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18358532" vertical-offset="340" max-vertical-offset="2031">
-          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.2937365" vertical-offset="0" max-vertical-offset="1283">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/person/EditPersonModelBean.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/Adapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22343922" vertical-offset="459" max-vertical-offset="2171">
-          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.2937365" vertical-offset="0" max-vertical-offset="1266">
+          <caret line="16" column="45" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/PayWayModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsTreeView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35421166" vertical-offset="80" max-vertical-offset="1487">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+        <state vertical-scroll-proportion="-0.39596274" vertical-offset="255" max-vertical-offset="1783">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/UnityModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="833" max-vertical-offset="2664">
-          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.8447205" vertical-offset="119" max-vertical-offset="3891">
+          <caret line="39" column="56" selection-start-line="39" selection-start-column="3" selection-end-line="39" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/firm/ContractorModelBean.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/qb/TuneQuery.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="1848">
-          <caret line="27" column="46" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.5279503" vertical-offset="0" max-vertical-offset="1018">
+          <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/AccountModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/exec/datas/invoices/SelectInvoiceSubType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35421166" vertical-offset="80" max-vertical-offset="1487">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.16522679" vertical-offset="0" max-vertical-offset="1980">
+          <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/UnitySelectModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PricesSearchModelBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27929902" vertical-offset="0" max-vertical-offset="2239">
-          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.20194384" vertical-offset="408" max-vertical-offset="2065">
+          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/sells/SellsSessionModelBean.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/SimpleModelBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18619934" vertical-offset="493" max-vertical-offset="2137">
-          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/store/TradeStoreModelBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18181819" vertical-offset="259" max-vertical-offset="1678">
-          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/CreateDomainModelBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07447974" vertical-offset="527" max-vertical-offset="2171">
-          <caret line="35" column="36" selection-start-line="35" selection-start-column="36" selection-end-line="35" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChangeEditModelBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16757941" vertical-offset="425" max-vertical-offset="2222">
+        <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="2205">
           <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/EditPasswordModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodEditModelBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11171961" vertical-offset="272" max-vertical-offset="2018">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.9496167" vertical-offset="0" max-vertical-offset="3242">
+          <caret line="51" column="13" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodModelBean.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/reports/ReportRequestsModelBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5537459" vertical-offset="153" max-vertical-offset="1991">
-          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.9546436" vertical-offset="0" max-vertical-offset="2031">
+          <caret line="52" column="18" selection-start-line="52" selection-start-column="18" selection-end-line="52" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/data/models/AdaptedEntitiesSelected.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.385103" vertical-offset="4495" max-vertical-offset="5425">
-          <caret line="773" column="6" selection-start-line="773" selection-start-column="6" selection-end-line="773" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.9309967" vertical-offset="0" max-vertical-offset="3089">
+          <caret line="50" column="18" selection-start-line="50" selection-start-column="18" selection-end-line="50" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/doc/DocsSearchModelBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0427163" vertical-offset="0" max-vertical-offset="3956">
+          <caret line="56" column="13" selection-start-line="56" selection-start-column="13" selection-end-line="56" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelBeanBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7062635" vertical-offset="638" max-vertical-offset="2371">
+          <caret line="157" column="22" selection-start-line="76" selection-start-column="3" selection-end-line="76" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/payment/PaymentsModelBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.1584786" vertical-offset="1343" max-vertical-offset="2705">
+          <caret line="178" column="12" selection-start-line="178" selection-start-column="4" selection-end-line="178" selection-end-column="4" />
+          <folding>
+            <element signature="method#writeExternal#0;class#PaymentsModelBean#0" expanded="true" />
+            <element signature="e#3186#3216#0" expanded="true" />
+            <element signature="method#readExternal#0;class#PaymentsModelBean#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

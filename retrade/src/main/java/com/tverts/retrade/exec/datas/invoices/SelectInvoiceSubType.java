@@ -24,9 +24,12 @@ import com.tverts.support.SU;
  */
 public class SelectInvoiceSubType implements TuneQuery
 {
-	/* public: Tune Query*/
+	public static final long serialVersionUID = 20140806;
 
-	public void   tuneQuery(QueryBuilder qb)
+
+	/* Tune Query */
+
+	public void tuneQuery(QueryBuilder qb)
 	{
 		//~: get & check teh sub-types
 		String[] ts = SU.s2aws(subTypes);
@@ -47,7 +50,7 @@ public class SelectInvoiceSubType implements TuneQuery
 	}
 
 
-	/* public: bean interface */
+	/* Select Invoice Sub-Type (bean) */
 
 	/**
 	 * A space-separated characters with
@@ -58,13 +61,10 @@ public class SelectInvoiceSubType implements TuneQuery
 		return subTypes;
 	}
 
-	public void   setSubTypes(String subTypes)
+	private String subTypes;
+
+	public void setSubTypes(String subTypes)
 	{
 		this.subTypes = subTypes;
 	}
-
-
-	/* private: sub-types */
-
-	private String subTypes;
 }

@@ -24,10 +24,7 @@ import com.tverts.retrade.data.system.DomainsModelData;
 @XmlType(name = "domains-model")
 public class DomainsModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{

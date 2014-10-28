@@ -24,14 +24,13 @@ import com.tverts.retrade.data.firms.ContractorsModelData;
 @XmlType(name = "contractors-model")
 public class ContractorsModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
 		ModelData md = super.modelData();
+
+		//?: {data provider was not overwritten}
 		return (md != null)?(md):(new ContractorsModelData(this));
 	}
 }

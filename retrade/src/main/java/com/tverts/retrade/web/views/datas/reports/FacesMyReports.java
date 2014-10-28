@@ -17,6 +17,10 @@ import com.tverts.faces.ModelView;
 
 import com.tverts.model.ModelBean;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
 
 /**
  * Faces back bean for Report Requests table
@@ -31,7 +35,9 @@ public class FacesMyReports extends ModelView
 
 	public String doSearchReports()
 	{
-		getModel().setSearchWordsStr(param("searchWords"));
+		//~: search words
+		getModel().setSearchNames(SU.s2s(param("searchWords")));
+
 		return null;
 	}
 

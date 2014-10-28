@@ -5,11 +5,6 @@ package com.tverts.retrade.web.views.goods;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-/* Java XML Binding */
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 /* com.tverts: request */
 
 import com.tverts.servlet.RequestPoint;
@@ -21,7 +16,6 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
-import com.tverts.model.ModelData;
 
 /* com.tverts: retrade domain (goods) */
 
@@ -89,29 +83,16 @@ public class FacesClientGoodsTreeView extends FacesGoodsTreeView
 
 	protected boolean isRequestModelMatch(ModelBean model)
 	{
-		return (model instanceof ClientGoodsTreeModelBean);
+		return (model instanceof GoodsTreeModelBean);
 	}
 
 	protected GoodsTreeModelBean createModelInstance()
 	{
-		return new ClientGoodsTreeModelBean();
-	}
+		GoodsTreeModelBean mb = new GoodsTreeModelBean();
 
+		//~: override model data
+		mb.setDataClass(ClientGoodsTreeModelData.class);
 
-	/* Model Bean */
-
-	@XmlRootElement(name = "model")
-	@XmlType(name = "client-goods-tree-model")
-	public static class ClientGoodsTreeModelBean extends GoodsTreeModelBean
-	{
-		public static final long serialVersionUID = 0L;
-
-
-		/* Model Bean Data Access */
-
-		public ModelData modelData()
-		{
-			return new ClientGoodsTreeModelData(this);
-		}
+		return mb;
 	}
 }

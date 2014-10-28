@@ -1,5 +1,11 @@
 package com.tverts.retrade.secure;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,9 +16,13 @@ import javax.xml.bind.annotation.XmlType;
 import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
 
-/* com.tverts: retrade data */
+/* com.tverts: retrade (data) */
 
 import com.tverts.retrade.data.settings.SecAblesModelData;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -24,10 +34,7 @@ import com.tverts.retrade.data.settings.SecAblesModelData;
 @XmlType(name = "secure-ables-model")
 public class SecAblesModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: SecAblesModelBean (bean) interface */
+	/* Secure Ables Model  */
 
 	public Long getAuthLogin()
 	{
@@ -50,7 +57,7 @@ public class SecAblesModelBean extends DataSelectModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
@@ -58,8 +65,29 @@ public class SecAblesModelBean extends DataSelectModelBean
 	}
 
 
-	/* private: model attributes */
+	/* private: encapsulated data */
 
-	private Long     authLogin;
-	private Long     secSet;
+	private Long authLogin;
+	private Long secSet;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.longer(o, authLogin);
+		IO.longer(o, secSet);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		authLogin = IO.longer(i);
+		secSet    = IO.longer(i);
+	}
 }

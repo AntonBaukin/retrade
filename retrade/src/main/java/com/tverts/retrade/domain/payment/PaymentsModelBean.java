@@ -1,7 +1,10 @@
 package com.tverts.retrade.domain.payment;
 
-/* standard Java classes */
+/* Java */
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,6 +27,7 @@ import com.tverts.retrade.data.other.PaymentsModelData;
 /* com.tverts: support */
 
 import com.tverts.support.DU;
+import com.tverts.support.IO;
 import com.tverts.support.jaxb.DateAdapter;
 
 
@@ -36,10 +40,7 @@ import com.tverts.support.jaxb.DateAdapter;
 @XmlType(name = "payments-model")
 public class PaymentsModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* Payments Model */
 
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	public Date getMinDate()
@@ -126,7 +127,7 @@ public class PaymentsModelBean extends DataSelectModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
@@ -134,7 +135,7 @@ public class PaymentsModelBean extends DataSelectModelBean
 	}
 
 
-	/* private: model attributes */
+	/* private: encapsulated data */
 
 	private Date    minDate;
 	private Date    maxDate;
@@ -144,4 +145,36 @@ public class PaymentsModelBean extends DataSelectModelBean
 	private String  modelFlags;
 
 	private Map<String, String> projectionsLabels;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.obj(o, minDate);
+		IO.obj(o, maxDate);
+		IO.str(o, projection);
+		o.writeBoolean(withIncome);
+		o.writeBoolean(withExpense);
+		IO.str(o, modelFlags);
+		IO.obj(o, projectionsLabels);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		minDate           = IO.obj(i, Date.class);
+		maxDate           = IO.obj(i, Date.class);
+		projection        = IO.str(i);
+		withIncome        = i.readBoolean();
+		withExpense       = i.readBoolean();
+		modelFlags        = IO.str(i);
+		projectionsLabels = IO.obj(i, Map.class);
+	}
 }

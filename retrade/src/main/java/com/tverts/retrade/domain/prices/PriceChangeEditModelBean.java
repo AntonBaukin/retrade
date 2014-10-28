@@ -100,7 +100,7 @@ public class PriceChangeEditModelBean extends ModelBeanBase
 
 		IO.xml(o, priceChange);
 		IO.str(o, repriceDocModelKey);
-		o.writeObject(searchGoods);
+		IO.obj(o, searchGoods);
 	}
 
 	public void readExternal(ObjectInput i)

@@ -1,5 +1,11 @@
 package com.tverts.retrade.secure;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,9 +16,13 @@ import javax.xml.bind.annotation.XmlType;
 import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.ModelData;
 
-/* com.tverts: retrade data */
+/* com.tverts: retrade (data) */
 
 import com.tverts.retrade.data.settings.SecSetsModelData;
+
+/* com.tverts: support */
+
+import com.tverts.support.IO;
 
 
 /**
@@ -24,10 +34,7 @@ import com.tverts.retrade.data.settings.SecSetsModelData;
 @XmlType(name = "secure-sets-model")
 public class SecSetsModelBean extends DataSelectModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: SecRulesModelBean (bean) interface */
+	/* Secure Rules Model Bean (bean) */
 
 	public String getAblesModel()
 	{
@@ -48,7 +55,24 @@ public class SecSetsModelBean extends DataSelectModelBean
 	}
 
 
-	/* private: view attributes */
+	/* private: encapsulated data */
 
-	private String   ablesModel;
+	private String ablesModel;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+		IO.str(o, ablesModel);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+		ablesModel = IO.str(i);
+	}
 }

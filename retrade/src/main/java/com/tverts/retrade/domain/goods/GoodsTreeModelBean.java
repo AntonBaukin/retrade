@@ -1,5 +1,11 @@
 package com.tverts.retrade.domain.goods;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,6 +19,10 @@ import com.tverts.model.ModelData;
 
 import com.tverts.retrade.data.goods.GoodsTreeModelData;
 
+/* com.tverts: support */
+
+import com.tverts.support.IO;
+
 
 /**
  * Model bean for table with views on folders
@@ -24,10 +34,7 @@ import com.tverts.retrade.data.goods.GoodsTreeModelData;
 @XmlType(name = "goods-tree-model")
 public class GoodsTreeModelBean extends GoodsModelBean
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* Goods Tree Model Bean */
+	/* Goods Tree Model (bean) */
 
 	/**
 	 * Tree Domain this model is for.
@@ -37,8 +44,6 @@ public class GoodsTreeModelBean extends GoodsModelBean
 	{
 		return treeDomain;
 	}
-
-	private Long treeDomain;
 
 	public void setTreeDomain(Long treeDomain)
 	{
@@ -53,8 +58,6 @@ public class GoodsTreeModelBean extends GoodsModelBean
 		return currentFolder;
 	}
 
-	private Long currentFolder;
-
 	public void setCurrentFolder(Long currentFolder)
 	{
 		this.currentFolder = currentFolder;
@@ -65,18 +68,46 @@ public class GoodsTreeModelBean extends GoodsModelBean
 		return withSubFolders;
 	}
 
-	private boolean withSubFolders;
-
 	public void setWithSubFolders(boolean withSubFolders)
 	{
 		this.withSubFolders = withSubFolders;
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
 		return new GoodsTreeModelData(this);
+	}
+
+
+	/* private: encapsulated data */
+
+	private Long    treeDomain;
+	private Long    currentFolder;
+	private boolean withSubFolders;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.longer(o, treeDomain);
+		IO.longer(o, currentFolder);
+		o.writeBoolean(withSubFolders);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		treeDomain     = IO.longer(i);
+		currentFolder  = IO.longer(i);
+		withSubFolders = i.readBoolean();
 	}
 }

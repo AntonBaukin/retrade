@@ -157,7 +157,9 @@ public class FacesDataSources extends ModelView
 
 	public String doSearchTemplates()
 	{
-		getModel().setSearchWordsStr(param("searchWords"));
+		//~: search names
+		getModel().setSearchNames(SU.s2s(param("searchWords")));
+
 		return null;
 	}
 
