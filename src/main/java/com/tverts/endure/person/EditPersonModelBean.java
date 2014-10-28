@@ -36,7 +36,7 @@ import com.tverts.support.SU;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "person-model")
+@XmlType(name = "edit-person-model")
 public class EditPersonModelBean extends UnityModelBean
 {
 	/* Edit Person Model (bean) */

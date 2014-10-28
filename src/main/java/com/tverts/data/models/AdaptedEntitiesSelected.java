@@ -2,7 +2,9 @@ package com.tverts.data.models;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: hibery */
 
@@ -38,6 +40,8 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com.
  */
+@XmlRootElement(name = "model")
+@XmlType(name = "adapted-entities-selected-model")
 public class      AdaptedEntitiesSelected
        extends    DataSelectModelBean
        implements ReportModel

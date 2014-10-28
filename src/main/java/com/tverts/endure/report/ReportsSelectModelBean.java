@@ -1,9 +1,5 @@
 package com.tverts.endure.report;
 
-/* Java XML Binding */
-
-import javax.xml.bind.annotation.XmlType;
-
 /* com.tverts: models */
 
 import com.tverts.model.DataSelectModelBean;
@@ -19,7 +15,6 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com.
  */
-@XmlType
 public abstract class ReportsSelectModelBean
        extends        DataSelectModelBean
 {

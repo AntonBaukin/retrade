@@ -52,7 +52,7 @@ import com.tverts.support.streams.BytesStream;
  * @author anton.baukin@gmail.com.
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "report-template")
+@XmlType(name = "report-template-model")
 public class      ReportTemplateModelBean
        extends    ViewModelBeanBase
        implements Upload, Download

@@ -35,7 +35,7 @@ import com.tverts.support.IO;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "self-shunt-groups", propOrder = {
+@XmlType(name = "self-shunt-groups-model", propOrder = {
   "domain", "updating", "logParam", "groups", "params"
 })
 public class SelfShuntGroupsModelBean extends ModelBeanBase
