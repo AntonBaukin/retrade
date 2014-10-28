@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /* com.tverts: model */
 
 import com.tverts.model.ModelBeanBase;
@@ -25,6 +30,8 @@ import com.tverts.support.IO;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlRootElement(name = "model")
+@XmlType(name = "price-change-edit-model")
 public class PriceChangeEditModelBean extends ModelBeanBase
 {
 	/* Price Change Edit Model Bean */

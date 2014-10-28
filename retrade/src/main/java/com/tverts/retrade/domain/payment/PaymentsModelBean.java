@@ -9,6 +9,7 @@ import java.util.Map;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /* com.tverts: models */
@@ -32,6 +33,7 @@ import com.tverts.support.jaxb.DateAdapter;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "payments-model")
 public class PaymentsModelBean extends DataSelectModelBean
 {
 	public static final long serialVersionUID = 0L;

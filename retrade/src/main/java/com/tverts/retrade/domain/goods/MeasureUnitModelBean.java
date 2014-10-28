@@ -22,7 +22,7 @@ import com.tverts.retrade.data.goods.MeasureUnitModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "measure-unit")
+@XmlType(name = "measure-unit-model")
 public class MeasureUnitModelBean extends ViewModelBeanBase
 {
 	/* View */

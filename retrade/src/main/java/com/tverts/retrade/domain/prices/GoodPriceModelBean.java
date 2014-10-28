@@ -37,8 +37,8 @@ import com.tverts.support.IO;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "good-price")
-public class GoodPriceModelBean extends NumericSelectModelBean
+@XmlType(name = "good-price-model")
+public class  GoodPriceModelBean extends NumericSelectModelBean
 {
 	/* public: constructors */
 

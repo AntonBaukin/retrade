@@ -1,5 +1,10 @@
 package com.tverts.retrade.domain.account;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /* com.tverts: models */
 
 import com.tverts.model.ModelData;
@@ -15,6 +20,8 @@ import com.tverts.retrade.data.account.PayWayModelData;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlRootElement(name = "model")
+@XmlType(name = "payment-way-model")
 public class PayWayModelBean extends UnityModelBean
 {
 	/* Pay Way Model */

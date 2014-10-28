@@ -22,7 +22,7 @@ import com.tverts.retrade.data.sells.SellReceiptModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "sell-receipt")
+@XmlType(name = "sell-receipt-model")
 public class SellReceiptModelBean extends NumericModelBean
 {
 	/* public: constructors */

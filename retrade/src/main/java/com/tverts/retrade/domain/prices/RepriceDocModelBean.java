@@ -23,7 +23,7 @@ import com.tverts.retrade.data.RepriceDocModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "price-change-document")
+@XmlType(name = "price-change-document-model")
 public class RepriceDocModelBean extends NumericModelBean
 {
 	/* public: constructors */

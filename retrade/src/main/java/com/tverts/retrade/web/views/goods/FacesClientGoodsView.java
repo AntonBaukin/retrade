@@ -5,6 +5,11 @@ package com.tverts.retrade.web.views.goods;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /* com.tverts: request */
 
 import com.tverts.servlet.RequestPoint;
@@ -100,6 +105,8 @@ public class FacesClientGoodsView extends FacesGoodsView
 
 	/* Model Bean */
 
+	@XmlRootElement(name = "model")
+	@XmlType(name = "client-goods-model")
 	public static class ClientGoodsModelBean extends GoodsModelBean
 	{
 		public static final long serialVersionUID = 0L;

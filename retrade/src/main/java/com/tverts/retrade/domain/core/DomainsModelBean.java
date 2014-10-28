@@ -3,6 +3,7 @@ package com.tverts.retrade.domain.core;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: models */
 
@@ -20,6 +21,7 @@ import com.tverts.retrade.data.system.DomainsModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "domains-model")
 public class DomainsModelBean extends DataSelectModelBean
 {
 	public static final long serialVersionUID = 0L;

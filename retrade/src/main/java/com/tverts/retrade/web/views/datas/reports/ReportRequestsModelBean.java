@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring + transactions */
 
@@ -48,6 +49,7 @@ import com.tverts.support.EX;
  * @author anton.baukin@gmail.com.
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "report-requests-model")
 public class      ReportRequestsModelBean
        extends    ReportsSelectModelBean
        implements Download

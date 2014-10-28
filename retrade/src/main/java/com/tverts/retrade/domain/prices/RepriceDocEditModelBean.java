@@ -29,7 +29,7 @@ import com.tverts.retrade.data.RepriceDocEditModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "price-change-document-edit")
+@XmlType(name = "price-change-document-edit-model")
 public class RepriceDocEditModelBean extends ViewModelBeanBase
 {
 	/* Price Change Document Edit Model */

@@ -3,6 +3,7 @@ package com.tverts.retrade.secure;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: model */
 
@@ -20,6 +21,7 @@ import com.tverts.retrade.data.settings.SecAblesModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "secure-ables-model")
 public class SecAblesModelBean extends DataSelectModelBean
 {
 	public static final long serialVersionUID = 0L;

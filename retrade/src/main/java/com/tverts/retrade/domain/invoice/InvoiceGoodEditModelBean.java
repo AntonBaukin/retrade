@@ -7,6 +7,11 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /* com.tverts: objects */
 
 import com.tverts.objects.ObjectAccess;
@@ -42,6 +47,8 @@ import com.tverts.support.OU;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlRootElement(name = "model")
+@XmlType(name = "invoice-good-edit-model")
 public class InvoiceGoodEditModelBean extends DataSelectModelBean
 {
 	/* public: constructors */

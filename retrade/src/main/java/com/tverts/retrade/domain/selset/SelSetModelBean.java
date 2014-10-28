@@ -3,6 +3,7 @@ package com.tverts.retrade.domain.selset;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: model */
 
@@ -16,6 +17,7 @@ import com.tverts.model.ModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "selection-set-model")
 public class SelSetModelBean extends DataSelectModelBean
 {
 	public static final long serialVersionUID = 0L;

@@ -29,7 +29,7 @@ import com.tverts.support.SU;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "price-list")
+@XmlType(name = "price-list-model")
 public class PriceListModelBean extends NumericSelectModelBean
 {
 	/* public: constructors */

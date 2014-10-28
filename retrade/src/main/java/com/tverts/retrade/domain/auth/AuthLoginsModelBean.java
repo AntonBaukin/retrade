@@ -3,6 +3,7 @@ package com.tverts.retrade.domain.auth;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: models */
 
@@ -21,6 +22,7 @@ import com.tverts.retrade.data.system.AuthLoginsModelData;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "auth-logins-model")
 public class AuthLoginsModelBean extends DataSelectModelBean
 {
 	public static final long serialVersionUID = 0L;

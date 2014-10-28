@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring */
 
@@ -38,7 +39,8 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement
+@XmlRootElement(name = "model")
+@XmlType(name = "incoice-edit-model")
 public class InvoiceEditModelBean extends DataSelectModelBean
 {
 	public static final long serialVersionUID = 0L;

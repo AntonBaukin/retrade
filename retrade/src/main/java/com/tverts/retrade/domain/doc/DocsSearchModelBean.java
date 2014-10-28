@@ -53,7 +53,7 @@ import com.tverts.support.jaxb.DateAdapter;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "documents-search")
+@XmlType(name = "documents-search-model")
 public class DocsSearchModelBean extends DataSelectModelBean
 {
 	/* Documents Search Model */

@@ -33,7 +33,7 @@ import com.tverts.support.IO;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model")
-@XmlType(name = "create-domain", propOrder = {
+@XmlType(name = "create-domain-model", propOrder = {
   "testDomain", "logParam", "params"
 })
 public class CreateDomainModelBean extends ModelBeanBase

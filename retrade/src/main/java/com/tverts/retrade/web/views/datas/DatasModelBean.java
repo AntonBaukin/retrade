@@ -8,6 +8,7 @@ import java.io.OutputStream;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: models */
 
@@ -29,6 +30,7 @@ import com.tverts.objects.BinarySource;
  * @author anton.baukin@gmail.com.
  */
 @XmlRootElement(name = "model")
+@XmlType(name = "datas-model")
 public class      DatasModelBean
        extends    ReportsSelectModelBean
        implements BinarySource
