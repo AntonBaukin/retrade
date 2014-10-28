@@ -1,5 +1,10 @@
 package com.tverts.hibery.qb;
 
+/* Java */
+
+import java.io.Serializable;
+
+
 /**
  * A strategy of updating Query Builder
  * with adding restrictions and so.
@@ -11,9 +16,9 @@ package com.tverts.hibery.qb;
  *
  * @author anton.baukin@gmail.com.
  */
-public interface TuneQuery
+public interface TuneQuery extends Serializable
 {
-	/* public: Tune Query*/
+	/* Tune Query */
 
 	public void tuneQuery(QueryBuilder qb);
 }

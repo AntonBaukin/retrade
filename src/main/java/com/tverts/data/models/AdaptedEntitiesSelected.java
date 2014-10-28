@@ -1,5 +1,11 @@
 package com.tverts.data.models;
 
+/* Java */
+
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,7 +35,7 @@ import com.tverts.endure.UnityType;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.SU;
+import com.tverts.support.IO;
 
 
 /**
@@ -46,10 +52,7 @@ public class      AdaptedEntitiesSelected
        extends    DataSelectModelBean
        implements ReportModel
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* public: bean interface */
+	/* Adapted Entities Selected */
 
 	public String getDataSource()
 	{
@@ -79,16 +82,6 @@ public class      AdaptedEntitiesSelected
 	public void setFormat(ReportFormat format)
 	{
 		this.format = format;
-	}
-
-	public String getSelSet()
-	{
-		return selSet;
-	}
-
-	public void setSelSet(String selSet)
-	{
-		this.selSet = SU.sXs(SU.s2s(selSet));
 	}
 
 	@XmlTransient
@@ -155,7 +148,7 @@ public class      AdaptedEntitiesSelected
 	}
 
 
-	/* public: initialization */
+	/* Initialization */
 
 	public AdaptedEntitiesSelected init(String dataSource, DataCtx ctx, UnityType type)
 	{
@@ -178,7 +171,7 @@ public class      AdaptedEntitiesSelected
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
@@ -186,16 +179,50 @@ public class      AdaptedEntitiesSelected
 	}
 
 
-	/* private: the model state */
+	/* private: encapsulated data */
 
 	private String       dataSource;
 	private Long         template;
 	private ReportFormat format;
-	private String       selSet;
 	private String       secSession;
 	private Long         login;
 	private Long         unityType;
 	private Long         entity;
 	private Adapter      adapter;
 	private TuneQuery    query;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		super.writeExternal(o);
+
+		IO.str(o, dataSource);
+		IO.longer(o, template);
+		IO.obj(o, format);
+		IO.str(o, secSession);
+		IO.longer(o, login);
+		IO.longer(o, unityType);
+		IO.longer(o, entity);
+		IO.obj(o, adapter);
+		IO.obj(o, query);
+	}
+
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
+	{
+		super.readExternal(i);
+
+		dataSource = IO.str(i);
+		template   = IO.longer(i);
+		format     = IO.obj(i, ReportFormat.class);
+		secSession = IO.str(i);
+		login      = IO.longer(i);
+		unityType  = IO.longer(i);
+		entity     = IO.longer(i);
+		adapter    = IO.obj(i, Adapter.class);
+		query      = IO.obj(i, TuneQuery.class);
+	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 /* Spring Framework */
 
-import com.tverts.support.EX;
 import org.springframework.stereotype.Component;
 
 /* com.tverts: hibery */
@@ -16,8 +15,13 @@ import com.tverts.hibery.qb.QueryBuilder;
 import com.tverts.hibery.qb.WhereLogic;
 import com.tverts.hibery.qb.WherePartLogic;
 
+/* com.tverts: models */
+
+import com.tverts.model.DataSelectModelBean;
+
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -68,7 +72,7 @@ public class GetReports extends GetObjectBase
 		  list().isEmpty();
 	}
 
-	public int countTemplates(ReportsSelectModelBean mb)
+	public int countTemplates(DataSelectModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -87,13 +91,13 @@ public class GetReports extends GetObjectBase
 		  param("domain", mb.domain());
 
 		//~: filter by the words
-		restrictTemplates(qb, mb.getSearchWords());
+		restrictTemplates(qb, mb.searchNames());
 
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ReportTemplate> selectTemplates(ReportsSelectModelBean mb)
+	public List<ReportTemplate> selectTemplates(DataSelectModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -128,7 +132,7 @@ public class GetReports extends GetObjectBase
 		  param("domain", mb.domain());
 
 		//~: filter by the words
-		restrictTemplates(qb, mb.getSearchWords());
+		restrictTemplates(qb, mb.searchNames());
 
 		return (List<ReportTemplate>) QB(qb).list();
 	}
@@ -153,7 +157,7 @@ public class GetReports extends GetObjectBase
 		);
 	}
 
-	public int countRequests(ReportsSelectModelBean mb)
+	public int countRequests(DataSelectModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -172,7 +176,7 @@ public class GetReports extends GetObjectBase
 		  param("domain", mb.domain());
 
 		//~: filter templates by the words
-		restrictTemplates(qb, mb.getSearchWords());
+		restrictTemplates(qb, mb.searchNames());
 
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
@@ -183,7 +187,7 @@ public class GetReports extends GetObjectBase
 	 * [1] report template.
 	 */
 	@SuppressWarnings("unchecked")
-	public List selectRequests(ReportsSelectModelBean mb)
+	public List selectRequests(DataSelectModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -220,7 +224,7 @@ public class GetReports extends GetObjectBase
 		  param("domain", mb.domain());
 
 		//~: filter templates by the words
-		restrictTemplates(qb, mb.getSearchWords());
+		restrictTemplates(qb, mb.searchNames());
 
 		return QB(qb).list();
 	}
