@@ -6,7 +6,7 @@
    · Create index (ix_exec_request_flags)                      ·
    · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
   <task class   = 'com.tverts.hibery.sql.QueryIf'
-        dialect = 'PostgreSQL9Dialect'>
+        dialect = 'PostgreSQLDialect'>
 
     <if empty = 'true'>
 
