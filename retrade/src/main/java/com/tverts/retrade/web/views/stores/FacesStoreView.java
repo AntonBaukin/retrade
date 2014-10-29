@@ -43,6 +43,9 @@ public class FacesStoreView extends UnityModelView
 		//~: search goods
 		getModel().setSearchNames(SU.s2s(request().getParameter("searchGoods")));
 
+		//~: selection set
+		getModel().setSelSet(request().getParameter("selset"));
+
 		return null;
 	}
 
@@ -74,13 +77,10 @@ public class FacesStoreView extends UnityModelView
 
 	protected UnityModelBean createModelInstance()
 	{
-		TradeStoreModelBean mb = new TradeStoreModelBean();
-
-		mb.setDomain(getDomainKey());
-		return mb;
+		return new TradeStoreModelBean();
 	}
 
-	protected boolean        isRequestModelMatch(ModelBean model)
+	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof TradeStoreModelBean);
 	}

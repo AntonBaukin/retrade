@@ -152,7 +152,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "grid-props">
 
         pager: true, sortableColumns: false, region: 'center',
-        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
         columns: (function()
         {
           var cols = ZeT.defined('retrade.columns.CatItemView')();
@@ -239,6 +239,46 @@ ${v.checkModelRequestedWithRedirect}
     winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   }
 
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    on('itemdblclick', function(comp, rec, node, row, event)
+  {
+    var domain  = 'wnd:' + "${z:vid(v, 'view_prices_for_firm')}:" + rec.getId();
+    var winmain = extjsf.bind('winmain', domain);
+
+    var box     = ReTrade.desktop.calcWindowBox({
+      'event': event, widthpt: 480, heightpt: 360, '-ypt': -16, '+xpt': -240
+    })
+
+    if(winmain)
+    {
+      winmain.component().toFront()
+      winmain.component().setPagePosition(box.x, box.y)
+      winmain.component().expand()
+      return;
+    }
+
+    winmain = extjsf.defineBind('winmain', domain).extjsProps({
+
+      xtype: 'window', title: 'Загрузка...',
+      x: box.x, y: box.y, width: box.width, height: box.height,
+      layout: 'fit', autoShow: true, collapsible: true,
+
+      loader: {
+        url: "${z:url('/go/retrade/price-lists/goods-prices-firm')}",
+        ajaxOptions: {method: 'GET'},
+        autoLoad: true, scripts: true,
+
+        params: {
+          '${v.viewModeParam}': 'body',
+          '${rootView.extjsDomainParam}': domain,
+          '${v.entityParam}': rec.getId()
+        }
+      }
+    })
+
+    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+  })
+
     //]]>
     </script>
 
@@ -253,9 +293,7 @@ ${v.checkModelRequestedWithRedirect}
    xmlns:ui = 'http://java.sun.com/jsf/facelets'>
 
   <ui:define name = 'validation'>
-
     <validation success = "true"/>
-
   </ui:define>
 </ui:decorate>
 </ui:component>

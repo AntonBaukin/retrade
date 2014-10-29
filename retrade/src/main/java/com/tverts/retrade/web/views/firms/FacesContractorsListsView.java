@@ -75,7 +75,7 @@ public class FacesContractorsListsView extends ModelView
 		return mb;
 	}
 
-	protected boolean              isRequestModelMatch(ModelBean model)
+	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof ContractorsModelBean);
 	}

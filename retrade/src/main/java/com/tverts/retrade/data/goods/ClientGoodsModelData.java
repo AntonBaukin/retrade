@@ -31,7 +31,9 @@ import com.tverts.retrade.domain.prices.GoodPriceView;
 
 /**
  * Goods with their prices specific for
- * the current requesting client firm.
+ * the current requesting client firm, or
+ * for the Contractor specified in the model.
+ *
  *
  * @author anton.baukin@gmail.com.
  */
@@ -55,6 +57,10 @@ public class ClientGoodsModelData extends GoodsModelData
 	@XmlElement
 	public Long getContractor()
 	{
+		//?: {have contractor explicitly defined}
+		if(getModel().getContractor() != null)
+			return getModel().getContractor();
+
 		return (contractor != null)?(contractor):(contractor =
 		  bean(GetContractor.class).getContractorByFirmKey(SecPoint.clientFirmKeyStrict()));
 	}

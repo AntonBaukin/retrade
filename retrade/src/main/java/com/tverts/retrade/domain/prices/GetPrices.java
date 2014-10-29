@@ -11,6 +11,12 @@ import org.springframework.stereotype.Component;
 /* com.tverts: hibery */
 
 import com.tverts.hibery.qb.QueryBuilder;
+import com.tverts.hibery.qb.WhereLogic;
+import com.tverts.hibery.qb.WherePartLogic;
+
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
 
 /* com.tverts: retrade domain (goods) */
 
@@ -76,7 +82,7 @@ public class GetPrices extends GetGoods
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSetAlsoPriceLists(qb, mb.getSelSet(), true);
 
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
@@ -127,7 +133,7 @@ public class GetPrices extends GetGoods
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSetAlsoPriceLists(qb, mb.getSelSet(), true);
 
 		return QB(qb).list();
 	}
@@ -309,5 +315,36 @@ public class GetPrices extends GetGoods
 		  "gu.unity.oxSearch like :w"
 		  //"pl.unity.oxSearch like :w"
 		};
+	}
+
+	protected void     restrictGoodsBySelSetAlsoPriceLists
+	  (QueryBuilder qb, String selset, boolean folders)
+	{
+		//?: {has no selection set}
+		if(selset == null) return;
+
+		//~: create OR
+		WherePartLogic p = new WherePartLogic().setOp(WhereLogic.OR);
+		qb.getClauseWhere().addPart(p);
+
+		//~: restrict the goods
+		restrictGoodsBySelSet(p, selset, folders);
+
+/*
+
+ pl.id in (select si.object from SelItem si join si.selSet ss
+   where (ss.name = :sset) and (ss.login.id = :login))
+
+ */
+
+		//~: restrict the price lists
+		p.addPart(
+
+"pl.id in (select si.object from SelItem si join si.selSet ss\n" +
+"  where (ss.name = :sset) and (ss.login.id = :login))"
+
+		).
+		  param("sset",  selset).
+		  param("login", SecPoint.login());
 	}
 }

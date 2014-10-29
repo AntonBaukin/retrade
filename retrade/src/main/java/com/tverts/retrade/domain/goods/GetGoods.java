@@ -362,6 +362,9 @@ from GoodUnit gu where
 		//~: keywords search restrictions
 		gusSearch(qb, mb.searchNames());
 
+		//~: selection set search
+		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+
 		return QB(qb).list();
 	}
 
@@ -370,7 +373,7 @@ from GoodUnit gu where
 		//HINT: we also do not restrict by the store
 		// as each store has all Good Units related.
 
-		return countGoodUnits(mb.domain(), mb.searchNames(), null);
+		return countGoodUnits(mb.domain(), mb.searchNames(), mb.getSelSet());
 	}
 
 	/**
@@ -411,6 +414,9 @@ from GoodUnit gu where
 		//~: keywords search restrictions
 		gusSearch(qb, mb.searchNames());
 
+		//~: selection set search
+		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+
 		return QB(qb).list();
 	}
 
@@ -433,6 +439,9 @@ from GoodUnit gu where
 
 		//~: keywords search restrictions
 		gusSearch(qb, mb.searchNames());
+
+		//~: selection set search
+		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
 
 		return ((Number) QB(qb).uniqueResult()).longValue();
 	}

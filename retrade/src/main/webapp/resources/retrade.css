@@ -53,6 +53,11 @@ span.retrade-inline-link
   background-color: #f7faff;
 }
 
+.retrade-status-panel div.x-panel-body-default
+{
+  background-color: transparent;
+}
+
 .retrade-back-panel, .retrade-desktop-panel-center .retrade-desktop-panel-content
 {
   background-color: #e0e0e0;
