@@ -162,8 +162,12 @@ public abstract class ViewWithModes
 
 	public void    forceSecureClientOnly(boolean client)
 	{
+		//HINT:  -argument-  -client-  -own-user-
+		//         true        allow     forbid
+		//         false       forbid    allow
+
 		//?: {client has no firm} forbid
-		if(client == (SecPoint.secSession().attr(SecSession.ATTR_CLIENT_FIRM) == null))
+		if(client == (SecPoint.clientFirmKey() == null))
 			throw EX.forbid();
 	}
 
