@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "cat-item-view")
 public class CatItemView implements Serializable
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140806L;
 
 
 	/* Catalogue Item View Bean */

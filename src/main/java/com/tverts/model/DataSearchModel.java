@@ -14,9 +14,11 @@ public interface DataSearchModel
 	 * The search names as they are written
 	 * in the search field.
 	 */
-	public String  getSearchNames();
+	public String   getSearchNames();
 
-	public void    setSearchNames(String searchNames);
+	public void     setSearchNames(String searchNames);
+
+	public String[] searchNames();
 
 	/**
 	 * Gives the name of the selection set.
@@ -24,16 +26,16 @@ public interface DataSearchModel
 	 * value means the default set, in else:
 	 * the absence of this field.
 	 */
-	public String  getSelSet();
+	public String   getSelSet();
 
-	public void    setSelSet(String selSet);
+	public void     setSelSet(String selSet);
 
 	/**
 	 * Tells whether to use the selection set filtering.
 	 * If this field is used, undefined selection set
 	 * means the default one.
 	 */
-	public boolean isWithSelSet();
+	public boolean  isWithSelSet();
 
-	public void    setWithSelSet(boolean withSelSet);
+	public void     setWithSelSet(boolean withSelSet);
 }
