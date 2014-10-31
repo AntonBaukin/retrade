@@ -40,7 +40,6 @@ import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PriceListsModelBean;
 
-
 /* com.tverts: support */
 
 import com.tverts.support.EX;

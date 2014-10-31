@@ -17,34 +17,40 @@ import com.tverts.endure.person.FirmEntity;
  */
 public class Contractor extends Entity implements CatItem
 {
-	/* public: Contractor bean interface */
+	/* Contractor */
 
-	public Domain  getDomain()
+	public Domain getDomain()
 	{
 		return domain;
 	}
 
-	public void    setDomain(Domain domain)
+	private Domain domain;
+
+	public void setDomain(Domain domain)
 	{
 		this.domain = domain;
 	}
 
-	public String  getCode()
+	public String getCode()
 	{
 		return code;
 	}
 
-	public void    setCode(String code)
+	private String code;
+
+	public void setCode(String code)
 	{
 		this.code = code;
 	}
 
-	public String  getName()
+	public String getName()
 	{
 		return name;
 	}
 
-	public void    setName(String name)
+	private String name;
+
+	public void setName(String name)
 	{
 		//?: {the name is changing}
 		if((this.name != null) && !this.name.equals(name))
@@ -53,8 +59,7 @@ public class Contractor extends Entity implements CatItem
 		this.name = name;
 	}
 
-	//TODO eliminate Contractor.nameProc
-	public String  getNameProc()
+	public String getNameProc()
 	{
 		if(nameProc != null)
 			return nameProc;
@@ -69,7 +74,9 @@ public class Contractor extends Entity implements CatItem
 		return nameProc = s;
 	}
 
-	public void    setNameProc(String nameProc)
+	private String nameProc;
+
+	public void setNameProc(String nameProc)
 	{
 		this.nameProc = nameProc;
 	}
@@ -79,17 +86,10 @@ public class Contractor extends Entity implements CatItem
 		return firm;
 	}
 
-	public void    setFirm(FirmEntity firm)
+	private FirmEntity firm;
+
+	public void setFirm(FirmEntity firm)
 	{
 		this.firm = firm;
 	}
-
-
-	/* private: persisted attributes */
-
-	private Domain domain;
-	private String code;
-	private String name;
-	private String nameProc;
-	private FirmEntity firm;
 }

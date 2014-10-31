@@ -81,11 +81,8 @@ public class InvoiceGoodEditModelData implements ModelData
 		Domain domain = getModel().invoiceModelBean().findDomain();
 		if(domain == null) return null;
 
-		List<GoodUnit>     gus = bean(GetGoods.class).
-		  searchGoodUnits(domain, getModel().searchNames(), 25);
-
-		List<GoodUnitView> res =
-		  new ArrayList<GoodUnitView>(gus.size());
+		List<GoodUnit>     gus = bean(GetGoods.class).searchGoodUnits(getModel());
+		List<GoodUnitView> res = new ArrayList<GoodUnitView>(gus.size());
 
 		for(GoodUnit gu : gus)
 			res.add(new GoodUnitView().init(gu));

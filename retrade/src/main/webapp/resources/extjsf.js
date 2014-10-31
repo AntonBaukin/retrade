@@ -45,7 +45,7 @@ var extjsf = ZeT.define('extjsf',
 		if(!domo) extjsf$domains[domn] = domo = {};
 
 		domo[name] = bind;
-		//ZeT.log('+bind [', name, '] @ [', domn, ']')
+		//ZeT.log('!bind [', name, '] @ [', domn, ']')
 		return bind;
 	},
 
@@ -59,7 +59,7 @@ var extjsf = ZeT.define('extjsf',
 		var domo = extjsf$domains[domain];
 		var bind = domo && domo[name];
 
-		ZeT.log(((domo && domo[name])?('+'):('!')), 'bind [', name, '] @ [', domain, ']: ')
+		//ZeT.log(((domo && domo[name])?('+'):('-')), 'bind [', name, '] @ [', domain, ']: ')
 		if(!bind) ZeT.log('missing Bind: [', name, '] @ [', domain, ']')
 
 		return bind

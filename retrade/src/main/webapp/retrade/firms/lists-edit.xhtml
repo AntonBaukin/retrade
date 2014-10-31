@@ -1,0 +1,181 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesFirmsPricesEdit}"/>
+
+${v.checkModelRequestedWithRedirect}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle('Сопоставить прайс-листы отобранным контрагентам')
+
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: {type: 'vbox', align: 'stretch'}
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [cancel edit button] -->
+
+    <x:component coid = "${z:vid(v, 'cancel-edit')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-default-small-red',
+
+        handler : function()
+        {
+          extjsf.component('winmain', '${rootView.extjsDomain}').close()
+        }
+
+      </f:facet>
+    </x:component>
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button] -->
+
+    <x:component coid = "${z:vid(v, 'submit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Сохранить',
+        cls: 'ux-btn-default-small-green'
+      </f:facet>
+    </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+  
+  <!-- [upper content: firms and lists layout -->
+
+  <x:component coid = "${z:vid(v, '_firms-lists-layout')}">
+
+    <f:facet name = "extjs-props">
+      flex: 1, frame: false, border: false,
+      layout: {type: 'hbox', align: 'stretch'}
+    </f:facet>
+
+
+    <!-- [contractors -->
+
+    <x:component coid = "${z:vid(v, 'firms-content')}">
+      <f:facet name = "extjs-props">
+        title: 'Контрагенты', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-back-panel', layout: 'fit'
+      </f:facet>
+
+
+      <!-- [contractors table -->
+
+      <x:data-store storeId = "${z:vid(v, 'contractors')}"
+        modelView = "${v}" modelRequest = "contractors">
+
+        <f:facet name = "store-props">
+          model: 'retrade.model.ContractorView'
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          reader: ZeT.defined('retrade.readers.ContractorView')
+        </f:facet>
+      </x:data-store>
+
+      <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+        storeId = "${z:vid(v, 'contractors')}">
+
+        <f:facet name = "grid-props">
+
+          columns: ZeT.defined('retrade.columns.CatItemView'),
+          sortableColumns: false, region: 'center',
+          selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true })
+
+        </f:facet>
+      </x:data-grid>
+
+      <!-- contractors table] -->
+
+    </x:component>
+
+    <!-- contractors] -->
+
+
+    <x:component coid = "${z:vid(v, '_firms_lists_splitter')}">
+      <f:facet name = "extjs-props">
+        xtype: 'splitter', collapsible: false
+      </f:facet>
+    </x:component>
+
+
+    <!-- [price lists -->
+
+    <x:component coid = "${z:vid(v, 'lists-content')}">
+      <f:facet name = "extjs-props">
+        title: 'Прайс листы', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-back-panel', layout: 'fit'
+      </f:facet>
+    </x:component>
+
+    <!-- price lists] -->
+
+  </x:component>
+
+  <!-- upper content: firms and lists layout] -->
+
+
+  <x:component coid = "${z:vid(v, '_middle_splitter')}">
+    <f:facet name = "extjs-props">
+      xtype: 'splitter', collapsible: true, collapseTarget: 'prev'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [lower content: goods -->
+
+  <x:component coid = "${z:vid(v, 'goods-content')}">
+    <f:facet name = "extjs-props">
+      title: 'Цены товаров', flex: 2, frame: false, border: false,
+      bodyCls: 'retrade-back-panel', layout: 'fit'
+    </f:facet>
+  </x:component>
+
+  <!-- lower content: goods] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+    <validation success = "true"/>
+  </ui:define>
+</ui:decorate>
+</ui:component>

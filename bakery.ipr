@@ -339,6 +339,11 @@
           <option name="countGettersAndSetters" value="false" />
         </inspection_tool>
         <inspection_tool class="HibernateMappingDatasourceDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+        <inspection_tool class="IfCanBeSwitch" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+          <option name="minimumBranches" value="3" />
+          <option name="suggestIntSwitches" value="false" />
+          <option name="suggestEnumSwitches" value="false" />
+        </inspection_tool>
         <inspection_tool class="JSUnusedGlobalSymbols" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
         <inspection_tool class="JSUnusedLocalSymbols" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
         <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">

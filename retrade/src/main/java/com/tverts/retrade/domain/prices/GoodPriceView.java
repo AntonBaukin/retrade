@@ -1,5 +1,11 @@
 package com.tverts.retrade.domain.prices;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GoodUnitView;
@@ -10,9 +16,11 @@ import com.tverts.retrade.domain.goods.GoodUnitView;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlRootElement(name = "good-price")
+@XmlType(name = "good-price-view")
 public class GoodPriceView extends GoodUnitView
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140806L;
 
 
 	/* Good Price View */

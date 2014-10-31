@@ -33,7 +33,7 @@ import com.tverts.retrade.domain.store.TradeStore;
 @XmlType(name = "good-unit-view")
 public class GoodUnitView implements Serializable
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20140806L;
 
 
 	/* Good Unit View */

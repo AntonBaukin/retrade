@@ -34,7 +34,11 @@ import com.tverts.secure.SecPoint;
 
 /* com.tverts: models */
 
+import com.tverts.model.DataSearchModel;
+import com.tverts.model.DataSelectModel;
+import com.tverts.model.DataSelectModelBean;
 import com.tverts.model.DataSortModel;
+import com.tverts.model.ModelBeanBase;
 
 /* com.tverts: api */
 
@@ -202,7 +206,7 @@ from GoodUnit gu where
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<GoodUnit> searchGoodUnits(Domain domain, String[] words, int limit)
+	public List<GoodUnit> searchGoodUnits(DataSelectModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -212,7 +216,7 @@ from GoodUnit gu where
 		qb.setClauseFrom("GoodUnit gu");
 
 		//~: the selection limits
-		qb.setLimit(limit);
+		qb.setLimit(mb.getDataLimit());
 
 		//~: order by
 		qb.setClauseOrderBy("gu.sortName");
@@ -220,12 +224,20 @@ from GoodUnit gu where
 		//~: domain restriction
 		qb.getClauseWhere().
 		  addPart("gu.domain = :domain").
-		  param("domain", domain);
+		  param("domain", mb.domain());
 
 		//~: keywords search restrictions
-		gusSearch(qb, words);
+		gusSearch(qb, mb.searchNames());
+
+		//~: selection set search
+		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
 
 		return (List<GoodUnit>) QB(qb).list();
+	}
+
+	public int            countGoodUnits(DataSelectModelBean mb)
+	{
+		return doCountGoodUnits(mb);
 	}
 
 	/**
@@ -311,7 +323,7 @@ from GoodUnit gu where
 
 	public int            countGoodUnits(GoodsModelBean mb)
 	{
-		return countGoodUnits(mb.domain(), mb.searchNames(), mb.getSelSet());
+		return doCountGoodUnits(mb);
 	}
 
 	/**
@@ -373,7 +385,7 @@ from GoodUnit gu where
 		//HINT: we also do not restrict by the store
 		// as each store has all Good Units related.
 
-		return countGoodUnits(mb.domain(), mb.searchNames(), mb.getSelSet());
+		return doCountGoodUnits(mb);
 	}
 
 	/**
@@ -1353,7 +1365,8 @@ from GoodPrice gp where
 
 	/* protected: shortage routines */
 
-	private int        countGoodUnits(Long domain, String[] search, String selset)
+	private <T extends ModelBeanBase & DataSelectModel & DataSearchModel> int
+	                   doCountGoodUnits(T mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -1371,13 +1384,13 @@ from GoodPrice gp where
 		qb.getClauseWhere().addPart(
 		  "gu.domain.id = :domain"
 		).
-		  param("domain", domain);
+		  param("domain", mb.domain());
 
 		//~: keywords search restrictions
-		gusSearch(qb, search);
+		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, selset, true);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
 
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}

@@ -147,6 +147,17 @@ public class GetContractor extends GetFirm
 		  uniqueResult();
 	}
 
+	public Object[]   getContractorAndFirm(Long pk)
+	{
+
+// select c, f from Contractor c left outer join c.firm f where (c.id = :pk)
+
+		final String Q =
+"  select c, f from Contractor c left outer join c.firm f where (c.id = :pk)";
+
+		return object(Object[].class, Q, "pk", pk);
+	}
+
 
 	/* Contractors Selection */
 

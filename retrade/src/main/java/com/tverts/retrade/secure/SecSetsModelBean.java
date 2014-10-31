@@ -47,7 +47,7 @@ public class SecSetsModelBean extends DataSelectModelBean
 	}
 
 
-	/* public: ModelBean (data access) interface */
+	/* Model Bean (data access) */
 
 	public ModelData modelData()
 	{
