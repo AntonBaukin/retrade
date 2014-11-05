@@ -1,5 +1,11 @@
 package com.tverts.retrade.web.views.prices;
 
+/* Java */
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /* JavaServer Faces */
 
 import javax.faces.bean.ManagedBean;
@@ -7,6 +13,7 @@ import javax.faces.bean.RequestScoped;
 
 /* com.tverts: faces */
 
+import com.tverts.endure.core.GetUnity;
 import com.tverts.faces.ModelView;
 
 /* com.tverts: spring */
@@ -30,13 +37,10 @@ import com.tverts.actions.ActionType;
 
 import com.tverts.api.retrade.prices.PriceList;
 
-/* com.tverts: endure (catalogues) */
-
-import com.tverts.endure.cats.CatItemView;
-
-/* com.tverts: retrade domain (goods + prices) */
+/* com.tverts: retrade domain (firms + goods + prices) */
 
 import com.tverts.retrade.domain.firm.Contractor;
+import com.tverts.retrade.domain.firm.Contractors;
 import com.tverts.retrade.domain.firm.GetContractor;
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.prices.FirmsPricesEditModelBean;
@@ -68,6 +72,46 @@ public class FacesFirmsPricesEdit extends ModelView
 		//~: selection set
 		getModel().setSelSet(request().getParameter("selset"));
 
+		return null;
+	}
+
+	public String doRemoveContractors()
+	{
+		String[] ids = request().getParameterValues("contractors");
+
+		if(ids != null) for(String id : ids)
+			getModel().getContractors().remove(Long.parseLong(id));
+
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public String doAddContractors()
+	{
+		//~: find the contractors of the selection set
+		List<Long> ids = bean(GetUnity.class).selectIds(
+		  Contractor.class, Contractors.TYPE_CONTRACTOR,
+		  request().getParameter("selset")
+		);
+
+		//~: add the items
+		Set<Long> got = new HashSet<>(getModel().getContractors());
+		for(Long id : ids) if(!got.contains(id))
+		{
+			got.add(id);
+			getModel().getContractors().add(id);
+		}
+
+		return null;
+	}
+
+	public String doRemovePriceLists()
+	{
+		return null;
+	}
+
+	public String doAddPriceLists()
+	{
 		return null;
 	}
 

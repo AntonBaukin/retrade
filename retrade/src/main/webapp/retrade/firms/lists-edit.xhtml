@@ -52,11 +52,56 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
     </x:component>
 
+
+    <!-- [delete contractors button] -->
+
+    <x:component coid = "${z:vid(v, 'delete-firms')}">
+     <f:facet name = "extjs-props">
+       xtype:'button', text: 'Уд. контр.',
+       tooltipType: 'title', tooltip: 'Удалить из таблицы выбранные контрагенты',
+       margin: extjsf.pts(0, 0, 0, 8)
+     </f:facet>
+    </x:component>
+
+
+    <!-- [add contractors button] -->
+
+    <x:component coid = "${z:vid(v, 'add-firms')}">
+     <f:facet name = "extjs-props">
+       xtype:'button', text: 'Доб. контр.',
+       tooltipType: 'title', tooltip: 'Добавить контрагенты из текущей выборки',
+       margin: extjsf.pts(0, 0, 0, 4)
+     </f:facet>
+    </x:component>
+
+
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">
       <f:facet name = "extjs-props">
         xtype: 'panel', flex: 1, frame: false, border: false,
         bodyCls: 'retrade-toolbar-panel'
       </f:facet>
+    </x:component>
+
+
+    <!-- [add lists button]-->
+
+    <x:component coid = "${z:vid(v, 'add-lists')}">
+     <f:facet name = "extjs-props">
+       xtype:'button', text: 'Доб. прайс-листы',
+       tooltipType: 'title', tooltip: 'Добавить прайс-листы из текущей выборки',
+       margin: extjsf.pts(0, 4, 0, 0)
+     </f:facet>
+    </x:component>
+
+
+    <!-- [delete lists button] -->
+
+    <x:component coid = "${z:vid(v, 'delete-lists')}">
+     <f:facet name = "extjs-props">
+       xtype:'button', text: 'Уд. прайс-листы',
+       tooltipType: 'title', tooltip: 'Удалить из таблицы выбранные прайс-листы',
+       margin: extjsf.pts(0, 8, 0, 0)
+     </f:facet>
     </x:component>
 
 
@@ -106,12 +151,12 @@ ${v.checkModelRequestedWithRedirect}
         </f:facet>
       </x:data-store>
 
-      <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+      <x:data-grid coid = "${z:vid(v, 'cgrid')}"
         storeId = "${z:vid(v, 'contractors')}">
 
         <f:facet name = "grid-props">
 
-          columns: ZeT.defined('retrade.columns.CatItemView'),
+          columns: ZeT.defined('retrade.columns.ContractorView'),
           sortableColumns: false, region: 'center',
           selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true })
 
@@ -119,6 +164,59 @@ ${v.checkModelRequestedWithRedirect}
       </x:data-grid>
 
       <!-- contractors table] -->
+
+      <x:action-call coid = "${z:vid(v, 'delete-firms-script')}"
+        action = "#{v.doRemoveContractors}">
+
+        <f:facet name = "action-params">
+          '${v.modelParam}': '${v.modelKeys}'
+        </f:facet>
+      </x:action-call>
+
+      <x:action-call coid = "${z:vid(v, 'add-firms-script')}"
+        action = "#{v.doAddContractors}">
+
+        <f:facet name = "action-params">
+         '${v.modelParam}': '${v.modelKeys}'
+        </f:facet>
+      </x:action-call>
+
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+      //~: delete the selected contractors button
+      extjsf.bindHandler("${z:vid(v, 'delete-firms')}", '${rootView.extjsDomain}', function()
+      {
+        var g = extjsf.component("${z:vid(v, 'cgrid')}", '${rootView.extjsDomain}');
+
+        //~: selected contractors
+        var s = g.getSelectionModel().getSelection();
+        if(!s || !s.length) return
+
+        //~: project the ids
+        var ids = Ext.Array.map(s, function(i) { return i.getId() })
+
+        //~: remove the items on the server side
+        extjsf.bindHandler("${z:vid(v, 'delete-firms-script')}", '${rootView.extjsDomain}')({
+          params: { contractors: ids }})
+
+        //~: remove from the store
+        g.getStore().remove(s)
+      })
+
+      //~: delete the selected contractors button
+      extjsf.bindHandler("${z:vid(v, 'add-firms')}", '${rootView.extjsDomain}', function()
+      {
+        extjsf.bindHandler("${z:vid(v, 'add-firms-script')}", '${rootView.extjsDomain}')({
+          params: { selset: ReTrade.selset.selset }, success: function()
+        {
+          extjsf.component("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
+        }})
+      })
+
+      //]]>
+      </script>
 
     </x:component>
 
@@ -139,6 +237,24 @@ ${v.checkModelRequestedWithRedirect}
         title: 'Прайс листы', flex: 1, frame: false, border: false,
         bodyCls: 'retrade-back-panel', layout: 'fit'
       </f:facet>
+
+
+      <x:action-call coid = "${z:vid(v, 'remove-lists-script')}"
+        action = "#{v.doRemovePriceLists}">
+
+        <f:facet name = "action-params">
+          '${v.modelParam}': '${v.modelKeys}'
+        </f:facet>
+      </x:action-call>
+
+      <x:action-call coid = "${z:vid(v, 'add-lists-script')}"
+        action = "#{v.doAddPriceLists}">
+
+        <f:facet name = "action-params">
+         '${v.modelParam}': '${v.modelKeys}'
+        </f:facet>
+      </x:action-call>
+
     </x:component>
 
     <!-- price lists] -->

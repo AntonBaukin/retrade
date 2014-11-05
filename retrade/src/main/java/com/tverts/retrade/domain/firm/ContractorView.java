@@ -49,6 +49,19 @@ public class ContractorView extends CatItemView
 	}
 
 	@XmlElement
+	public String getNameProc()
+	{
+		return nameProc;
+	}
+
+	private String nameProc;
+
+	public void setNameProc(String nameProc)
+	{
+		this.nameProc = nameProc;
+	}
+
+	@XmlElement
 	public BigDecimal getIncome()
 	{
 		return (income != null)
@@ -121,6 +134,9 @@ public class ContractorView extends CatItemView
 		//~: full name of the firm
 		if(SU.sXe(fullName) && c.getFirm() != null)
 			this.fullName = c.getFirm().getOx().getFullName();
+
+		//~: processed name
+		this.nameProc = c.getNameProc();
 
 		return this;
 	}

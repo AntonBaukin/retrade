@@ -10,6 +10,8 @@ import java.util.List;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -39,6 +41,8 @@ public class FirmsPricesEditModelBean extends DataSelectModelBean
 {
 	/* Firms Prices Edit Model */
 
+	@XmlElement(name = "contractor")
+	@XmlElementWrapper(name = "contractors-edit")
 	public List<Long> getContractors()
 	{
 		return (contractors != null)?(contractors):
@@ -50,6 +54,8 @@ public class FirmsPricesEditModelBean extends DataSelectModelBean
 		this.contractors = contractors;
 	}
 
+	@XmlElement(name = "price-list")
+	@XmlElementWrapper(name = "price-lists-edit")
 	public List<Long> getPriceLists()
 	{
 		return (priceLists != null)?(priceLists):

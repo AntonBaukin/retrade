@@ -3,6 +3,8 @@ package com.tverts.retrade.data.prices;
 /* Java */
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /* Java XML Binding */
@@ -38,6 +40,7 @@ import com.tverts.retrade.domain.prices.GoodPriceView;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 
 
@@ -89,6 +92,15 @@ public class FirmsPricesEditModelData implements ModelData
 			  get.getContractorAndFirm(pk),
 			  "Contractor [", pk, "] is not found!"
 			)));
+
+		//~: sort by the processed name
+		Collections.sort(res, new Comparator<ContractorView>()
+		{
+			public int compare(ContractorView l, ContractorView r)
+			{
+				return CMP.cmpic(l.getNameProc(), r.getNameProc());
+			}
+		});
 
 		return res;
 	}

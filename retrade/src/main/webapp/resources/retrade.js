@@ -1470,6 +1470,27 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Наименование", dataIndex: 'name', sortable: false,
+		   width: extjsf.ex(48), flex: 1, renderer: function(v, meta, rec)
+		   {
+				meta.tdAttr = 'title="' + Ext.String.htmlEncode(rec.get('fullName')) + '"';
+
+				return v;
+		   }
+		 }
+		];
+	})
+
+	ZeT.defineDelay('retrade.columns.ContractorBalanceView', function()
+	{
+		return [
+
+		 {
+		   text: "Код", dataIndex: 'code', sortable: false,
+		   width: extjsf.ex(12), flex: 0
+		 },
+
+		 {
+		   text: "Наименование", dataIndex: 'name', sortable: false,
 		   width: extjsf.ex(48), flex: 1
 		 },
 
