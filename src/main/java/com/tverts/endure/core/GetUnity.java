@@ -6,6 +6,7 @@ import java.util.List;
 
 /* Spring Framework */
 
+import com.tverts.secure.SecPoint;
 import org.springframework.stereotype.Component;
 
 /* com.tverts: spring */
@@ -22,6 +23,7 @@ import com.tverts.hibery.qb.QueryBuilder;
 import com.tverts.endure.United;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
+import com.tverts.endure.UnityTypes;
 
 /* com.tverts: data */
 
@@ -192,9 +194,9 @@ select ut from Unity u join u.unityType ut
 		qb.getClauseWhere().addPart(
 
 "e.id in (select si.object from SelItem si join si.selSet ss\n" +
-"  where (ss.name = :set) and (ss.login.id = :login))"
+"  where (ss.name = :sset) and (ss.login.id = :login))"
 		).
-		  param("set",   SU.sXs(mb.getSelSet())).
+		  param("sset",  SU.sXs(mb.getSelSet())).
 		  param("login", EX.assertn(mb.getLogin()));
 
 		//~: model-provided restrictions
@@ -203,5 +205,79 @@ select ut from Unity u join u.unityType ut
 
 
 		return (List<United>) QB(qb).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> List<T> select(Class<T> typeClass, String typeName, String selset)
+	{
+		EX.assertn(typeClass);
+
+		//~: define the unity type
+		UnityType ut = (typeName == null)?(null):
+		  UnityTypes.unityType(typeClass, typeName);
+
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("Entity", typeClass);
+		qb.setClauseFrom("Entity e");
+
+		//~: select clause
+		qb.setClauseSelect("e");
+
+
+		//~: restrict unity type
+		if(ut != null) qb.getClauseWhere().addPart(
+		  "e.unity.unityType = :unityType"
+		).
+		  param("unityType", ut);
+
+		//~: restrict the selection set
+		qb.getClauseWhere().addPart(
+
+"e.id in (select si.object from SelItem si join si.selSet ss\n" +
+"  where (ss.name = :sset) and (ss.login.id = :login))"
+		).
+		  param("sset",  SU.sXs(selset)).
+		  param("login", SecPoint.login());
+
+		return (List<T>) QB(qb).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> selectIds(Class typeClass, String typeName, String selset)
+	{
+		EX.assertn(typeClass);
+
+		//~: define the unity type
+		UnityType ut = (typeName == null)?(null):
+		  UnityTypes.unityType(typeClass, typeName);
+
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("Entity", typeClass);
+		qb.setClauseFrom("Entity e");
+
+		//~: select clause
+		qb.setClauseSelect("e.id");
+
+
+		//~: restrict unity type
+		if(ut != null) qb.getClauseWhere().addPart(
+		  "e.unity.unityType = :unityType"
+		).
+		  param("unityType", ut);
+
+		//~: restrict the selection set
+		qb.getClauseWhere().addPart(
+
+"e.id in (select si.object from SelItem si join si.selSet ss\n" +
+"  where (ss.name = :sset) and (ss.login.id = :login))"
+		).
+		  param("sset",  SU.sXs(selset)).
+		  param("login", SecPoint.login());
+
+		return (List<Long>) QB(qb).list();
 	}
 }
