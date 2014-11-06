@@ -607,17 +607,13 @@ from MeasureUnit mu where
 
 	public PriceListEntity getPriceList(Long pk)
 	{
-		return (pk == null)?(null):
-		  (PriceListEntity)session().get(PriceListEntity.class, pk);
+		return get(PriceListEntity.class, pk);
 	}
 
 	public PriceListEntity getPriceList(Long domain, String code)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
-		if((code = s2s(code)) == null)
-			throw new IllegalArgumentException();
+		EX.assertn(domain);
+		EX.asserts(code);
 
 /*
 
@@ -625,16 +621,12 @@ from MeasureUnit mu where
    (pl.domain.id = :domain) and (pl.code = :code)
 
 */
-
-		return (PriceListEntity) Q(
+		final String Q =
 
 "from PriceListEntity pl where\n" +
-"  (pl.domain.id = :domain) and (pl.code = :code)"
+"  (pl.domain.id = :domain) and (pl.code = :code)";
 
-		).
-		  setLong  ("domain", domain).
-		  setString("code",   code).
-		  uniqueResult();
+		return object(PriceListEntity.class, Q, "domain", domain, "code", code);
 	}
 
 	@SuppressWarnings("unchecked")

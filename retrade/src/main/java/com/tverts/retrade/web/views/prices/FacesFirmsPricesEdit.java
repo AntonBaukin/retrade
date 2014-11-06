@@ -33,10 +33,6 @@ import com.tverts.model.ModelBean;
 import static com.tverts.actions.ActionsPoint.actionRun;
 import com.tverts.actions.ActionType;
 
-/* com.tverts: api */
-
-import com.tverts.api.retrade.prices.PriceList;
-
 /* com.tverts: retrade domain (firms + goods + prices) */
 
 import com.tverts.retrade.domain.firm.Contractor;
@@ -45,7 +41,7 @@ import com.tverts.retrade.domain.firm.GetContractor;
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.prices.FirmsPricesEditModelBean;
 import com.tverts.retrade.domain.prices.PriceListEntity;
-import com.tverts.retrade.domain.prices.PriceListsModelBean;
+import com.tverts.retrade.domain.prices.Prices;
 
 /* com.tverts: support */
 
@@ -75,7 +71,7 @@ public class FacesFirmsPricesEdit extends ModelView
 		return null;
 	}
 
-	public String doRemoveContractors()
+	public String doDeleteContractors()
 	{
 		String[] ids = request().getParameterValues("contractors");
 
@@ -105,12 +101,56 @@ public class FacesFirmsPricesEdit extends ModelView
 		return null;
 	}
 
-	public String doRemovePriceLists()
+	public String doAddPriceLists()
 	{
+		//~: find the contractors of the selection set
+		List<Long> ids = bean(GetUnity.class).selectIds(
+		  PriceListEntity.class, Prices.TYPE_PRICE_LIST,
+		  request().getParameter("selset")
+		);
+
+		//~: add the items
+		Set<Long> got = new HashSet<>(getModel().getPriceLists());
+		for(Long id : ids) if(!got.contains(id))
+		{
+			got.add(id);
+			getModel().getPriceLists().add(id);
+		}
+
 		return null;
 	}
 
-	public String doAddPriceLists()
+	public String doAssignPriceLists()
+	{
+		String[] ids = request().getParameterValues("priceLists");
+
+		//~: clear the lists
+		getModel().getPriceLists().clear();
+
+		//~: add the lists
+		GetGoods  get = bean(GetGoods.class);
+		Set<Long> got = new HashSet<>(7);
+		if(ids != null) for(String id : ids)
+		{
+			//~: parse the id
+			Long x = Long.parseLong(id);
+			if(got.contains(x)) continue;
+			got.add(x);
+
+			//~: load the list
+			PriceListEntity pl = EX.assertn(get.getPriceList(x));
+
+			//sec: same domain
+			EX.assertx(pl.getDomain().getPrimaryKey().equals(getModel().domain()));
+
+			//!: add to the lists
+			getModel().getPriceLists().add(pl.getPrimaryKey());
+		}
+
+		return null;
+	}
+
+	public String doCommitEdit()
 	{
 		return null;
 	}

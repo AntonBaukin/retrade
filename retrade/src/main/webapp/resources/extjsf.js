@@ -126,6 +126,20 @@ var extjsf = ZeT.define('extjsf',
 		return undefined;
 	},
 
+	asbind           : function(borc)
+	{
+		if(!borc) return borc
+
+		//?: {is a bind}
+		if(borc.isComponent && (borc.extjsfBind === true))
+			return borc
+
+		//?: {is a component}
+		if(borc.extjsfBind) return borc.extjsfBind
+
+		return undefined
+	},
+
 	/**
 	 * Arguments are the same as for defineBind().
 	 * Here the bind is not defined, but added as
@@ -353,7 +367,7 @@ var extjsf = ZeT.define('extjsf',
 	 */
 	ex               : function(v, vpx)
 	{
-		return this._css_sz(10, 'ex', v) + (ZeT.isn(vpx)?(vpx):(0));;
+		return this._css_sz(10, 'ex', v) + (ZeT.isn(vpx)?(vpx):(0));
 	},
 
 	dex              : function()
@@ -450,9 +464,7 @@ var extjsf = ZeT.define('extjsf',
 
 	_css_szs         : function(css_sz, args, ispx)
 	{
-		var s = new String(args.length * 8);
-
-		for(var i = 0;(i < args.length);i++)
+		var s = ''; for(var i = 0;(i < args.length);i++)
 		{
 			if(s.length) s += ' ';
 			s += css_sz(args[i]);
@@ -1294,59 +1306,68 @@ extjsf.support = ZeT.singleInstance('extjsf.support', {
 	refreshGridIndices     : function(grid)
 	{
 		if(ZeT.isa(grid))
-			return Ext.Array.each(grid, function(i) {i.index = null})
+			return Ext.Array.forEach(grid, function(i) {i.index = null})
 
 		var store = (grid.isStore === true)?(grid):(grid.getStore());
 		store.each(function(i) {i.index = null})
 		if(ZeT.isf(grid.getView)) grid.getView().refresh()
+	},
+
+	/**
+	 * Moves currently selected items of the grid up or
+	 * down with optional callback notifier. The delay
+	 * timeout is optional and 1000 ms by the default.
+	 *
+	 * Returns false when no updates took place.
+	 */
+	moveGridSelected       : function(up, grid, delay_fn, fn)
+	{
+		var b = extjsf.asbind(grid), g = extjsf.component(grid);
+
+		//~: selected items
+		var s = g.getSelectionModel().getSelection();
+		if(!s || !s.length) return false
+
+		//?: {can't move up}
+		if(up && (g.getStore().indexOf(s[0]) == 0))
+			return false
+
+		//?: {can't move down}
+		if(!up && (g.getStore().indexOf(s[s.length - 1]) + 1 == g.getStore().getCount()))
+			return false
+
+		//~: deselect
+		g.getSelectionModel().deselectAll()
+
+		//~: move the selected up-down
+		Ext.Array.forEach(s, function(x)
+		{
+			var i = g.getStore().indexOf(x);
+
+			if( up) ZeT.assert(i     > 0)
+			if(!up) ZeT.assert(i + 1 < g.getStore().getCount())
+
+			g.getStore().removeAt(i)
+			if( up) g.getStore().insert(i - 1, [x])
+			if(!up) g.getStore().insert(i + 1, [x])
+		})
+
+		//~: select items back
+		g.getSelectionModel().select(s)
+
+		//~: update delay
+		var dl = ZeT.isn(delay_fn)?(delay_fn):(1000);
+		    fn = ZeT.isf(delay_fn)?(delay_fn):ZeT.isf(fn)?(fn):(null);
+		if(!fn) return; //?: {has no callback}
+
+		//~: update on the server with the delay
+		if(!b.updating) b.updating = 1;
+		var ui = ++b.updating;
+
+		ZeT.timeout(dl, function()
+		{
+			//?: {has no more update requests}
+			if(ui === b.updating) fn(grid)
+		})
 	}
 })
-
-
-/*
-
-if(ZeT.isf(window.evalScript) && !window.evalScript.ZeT$Override) try
-{
-	var es = window.evalScript;
-
-	window.evalScript = function()
-	{
-		try
-		{
-			return es.apply(this, arguments)
-		}
-		catch(e)
-		{
-			ZeT.log.apply(ZeT, arguments)
-			throw e;
-		}
-	}
-
-	window.evalScript.ZeT$Override = true;
-}
-catch(e)
-{}
-
-if(ZeT.isf(window.eval) && !window.eval.ZeT$Override) try
-{
-	var es = window.eval;
-
-	window.eval = function()
-	{
-		try
-		{
-			return es.apply(this, arguments)
-		}
-		catch(e)
-		{
-			ZeT.log.apply(ZeT, arguments)
-			throw e;
-		}
-	}
-
-	window.eval.ZeT$Override = true;
-}
-catch(e)
-{}
-
-*/

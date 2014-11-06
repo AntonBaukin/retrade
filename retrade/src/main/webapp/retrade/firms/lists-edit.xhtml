@@ -83,6 +83,27 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
+    <!-- [move list up/down -->
+
+    <x:component coid = "${z:vid(v, 'lists-up')}">
+     <f:facet name = "extjs-props">
+       xtype:'button', iconCls: 'retrade-button-up',
+       tooltipType: 'title', tooltip: 'Переместить выбранные прайс-листы вверх',
+       margin: extjsf.pts(0, 2, 0, 0)
+     </f:facet>
+    </x:component>
+
+    <x:component coid = "${z:vid(v, 'lists-down')}">
+     <f:facet name = "extjs-props">
+       xtype:'button', iconCls: 'retrade-button-down',
+       tooltipType: 'title', tooltip: 'Переместить выбранные прайс-листы вниз',
+       margin: extjsf.pts(0, 8, 0, 0)
+     </f:facet>
+    </x:component>
+
+    <!-- move list up/down] -->
+
+
     <!-- [add lists button]-->
 
     <x:component coid = "${z:vid(v, 'add-lists')}">
@@ -164,9 +185,10 @@ ${v.checkModelRequestedWithRedirect}
       </x:data-grid>
 
       <!-- contractors table] -->
+      
 
       <x:action-call coid = "${z:vid(v, 'delete-firms-script')}"
-        action = "#{v.doRemoveContractors}">
+        action = "#{v.doDeleteContractors}">
 
         <f:facet name = "action-params">
           '${v.modelParam}': '${v.modelKeys}'
@@ -215,6 +237,17 @@ ${v.checkModelRequestedWithRedirect}
         }})
       })
 
+      //~: react on grid delete key
+      extjsf.bind("${z:vid(v, 'cgrid')}", '${rootView.extjsDomain}').on('added', function(grid)
+      {
+        grid.getView().on('itemkeydown', function(view, record, item, index, e)
+        {
+          //?: {delete | backspace}
+          if((e.getKey() == e.DELETE) || (e.getKey() == e.BACKSPACE))
+            extjsf.bindHandler("${z:vid(v, 'delete-firms')}", '${rootView.extjsDomain}')()
+        })
+      })
+
       //]]>
       </script>
 
@@ -239,8 +272,37 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
 
 
-      <x:action-call coid = "${z:vid(v, 'remove-lists-script')}"
-        action = "#{v.doRemovePriceLists}">
+      <!-- [price lists table -->
+
+      <x:data-store storeId = "${z:vid(v, 'priceLists')}"
+        modelView = "${v}" modelRequest = "price-lists">
+
+        <f:facet name = "store-props">
+          model: 'retrade.model.CatItemView'
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          reader: ZeT.defined('retrade.readers.PriceListView')
+        </f:facet>
+      </x:data-store>
+
+      <x:data-grid coid = "${z:vid(v, 'plgrid')}"
+        storeId = "${z:vid(v, 'priceLists')}">
+
+        <f:facet name = "grid-props">
+
+          columns: ZeT.defined('retrade.columns.CatItemView'),
+          sortableColumns: false, region: 'center',
+          selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true })
+
+        </f:facet>
+      </x:data-grid>
+
+      <!-- price lists table] -->
+
+
+      <x:action-call coid = "${z:vid(v, 'assign-lists-script')}"
+        action = "#{v.doAssignPriceLists}">
 
         <f:facet name = "action-params">
           '${v.modelParam}': '${v.modelKeys}'
@@ -254,6 +316,90 @@ ${v.checkModelRequestedWithRedirect}
          '${v.modelParam}': '${v.modelKeys}'
         </f:facet>
       </x:action-call>
+      
+      <script type = "text/javascript">
+      //<![CDATA[
+
+      //~: delete the selected price lists button
+      extjsf.bindHandler("${z:vid(v, 'delete-lists')}", '${rootView.extjsDomain}', function()
+      {
+        var g = extjsf.component("${z:vid(v, 'plgrid')}", '${rootView.extjsDomain}');
+
+        //~: selected price lists
+        var s = g.getSelectionModel().getSelection();
+        if(!s || !s.length) return
+
+        //~: remove from the store
+        g.getStore().remove(s)
+
+        //~: project the ids
+        var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
+
+        //~: assign the items on the server side
+        extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
+          params: { priceLists: ids }, success: function()
+          {
+
+          }})
+      })
+
+      //~: delete the selected price lists button
+      extjsf.bindHandler("${z:vid(v, 'add-lists')}", '${rootView.extjsDomain}', function()
+      {
+        extjsf.bindHandler("${z:vid(v, 'add-lists-script')}", '${rootView.extjsDomain}')({
+          params: { selset: ReTrade.selset.selset }, success: function()
+        {
+          extjsf.component("${z:vid(v, 'priceLists')}", '${rootView.extjsDomain}').reload()
+        }})
+      })
+
+      //~: move price-lists up
+      extjsf.bindHandler("${z:vid(v, 'lists-up')}", '${rootView.extjsDomain}', function()
+      {
+        extjsf.support.moveGridSelected(true,
+          extjsf.component("${z:vid(v, 'plgrid')}", '${rootView.extjsDomain}'),
+          function(g)
+        {
+          //~: collect all the ids
+          var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
+
+          //~: post to the server
+          extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
+            params: { priceLists: ids }, success : function() {
+          }})
+        })
+      })
+
+      //~: move price-lists down
+      extjsf.bindHandler("${z:vid(v, 'lists-down')}", '${rootView.extjsDomain}', function()
+      {
+        extjsf.support.moveGridSelected(false,
+          extjsf.component("${z:vid(v, 'plgrid')}", '${rootView.extjsDomain}'),
+          function(g)
+        {
+          //~: collect all the ids
+          var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
+
+          //~: post to the server
+          extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
+            params: { priceLists: ids }, success : function() {
+          }})
+        })
+      })
+
+      //~: react on grid delete key
+      extjsf.bind("${z:vid(v, 'plgrid')}", '${rootView.extjsDomain}').on('added', function(grid)
+      {
+        grid.getView().on('itemkeydown', function(view, record, item, index, e)
+        {
+          //?: {delete | backspace}
+          if((e.getKey() == e.DELETE) || (e.getKey() == e.BACKSPACE))
+            extjsf.bindHandler("${z:vid(v, 'delete-lists')}", '${rootView.extjsDomain}')()
+        })
+      })
+
+      //]]>
+      </script>
 
     </x:component>
 

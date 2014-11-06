@@ -115,7 +115,7 @@ public class FirmsPricesEditModelData implements ModelData
 		GetGoods          get = bean(GetGoods.class);
 		List<CatItemView> res = new ArrayList<>(getModel().getPriceLists().size());
 
-		for(Long pk : getModel().getContractors())
+		for(Long pk : getModel().getPriceLists())
 			res.add(new CatItemView().init(EX.assertn(
 			  get.getPriceList(pk),
 			  "Price List [", pk, "] is not found!"
