@@ -117,6 +117,20 @@ public class GenTestPrices extends GenesisHiberPartBase
 		this.maxListGoods = n;
 	}
 
+	@Param
+	public int getCostsDelta()
+	{
+		return costsDelta;
+	}
+
+	private int costsDelta = 20;
+
+	public void setCostsDelta(int n)
+	{
+		EX.assertx((n > 0) & (n < 100));
+		this.costsDelta = n;
+	}
+
 
 	/* protected: generation */
 
@@ -232,8 +246,11 @@ public class GenTestPrices extends GenesisHiberPartBase
 			//~: cost
 			BigDecimal c = EX.assertn(costs.get(gcode));
 			EX.assertx(CMP.grZero(c));
-			if(c.scale() != 2)
-				c = c.setScale(2);
+
+			//~: variate the cost value
+			int d = 100 - costsDelta + ctx.gen().nextInt(2*costsDelta + 1);
+			c = c.multiply(new BigDecimal(100 + costsDelta - ctx.gen().nextInt(2*costsDelta))).
+			  scaleByPowerOfTen(-2).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
 			//=: price (cost)
 			gp.setPrice(c);

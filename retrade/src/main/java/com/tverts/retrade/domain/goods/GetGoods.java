@@ -211,19 +211,22 @@ from GoodUnit gu where
 		QueryBuilder qb = new QueryBuilder();
 
 		//~: from clause
-		qb.setClauseSelect("gu");
 		qb.nameEntity("GoodUnit", GoodUnit.class);
 		qb.setClauseFrom("GoodUnit gu");
 
+		//~: select clause
+		qb.setClauseSelect("gu");
+
 		//~: the selection limits
+		qb.setFirstRow(mb.getDataStart());
 		qb.setLimit(mb.getDataLimit());
 
 		//~: order by
-		qb.setClauseOrderBy("gu.sortName");
+		orderGoods(qb, mb);
 
 		//~: domain restriction
 		qb.getClauseWhere().
-		  addPart("gu.domain = :domain").
+		  addPart("gu.domain.id = :domain").
 		  param("domain", mb.domain());
 
 		//~: keywords search restrictions
@@ -1547,12 +1550,16 @@ from GoodPrice gp where
 /*
 
  gu.id in (select si.object from SelItem si join si.selSet ss
-   where (ss.name = :set) and (ss.login.id = :login))
+   where (ss.name = :sset) and (ss.login.id = :login))
+   
+ gu.id in (select gpx.goodUnit.id from GoodPrice gpx where
+   gpx.priceList.id in (select si.object from SelItem si join si.selSet ss
+     where (ss.name = :sset) and (ss.login.id = :login)))
 
  gu.id in (select ti.item.id from TreeCross tc join tc.item ti
    where tc.folder.id in (select si.object from
      SelItem si join si.selSet ss where
-       (ss.name = :set) and (ss.login.id = :login)))
+       (ss.name = :sset) and (ss.login.id = :login)))
 
 */
 
@@ -1560,10 +1567,22 @@ from GoodPrice gp where
 		p.addPart(
 
 "gu.id in (select si.object from SelItem si join si.selSet ss\n" +
-"  where (ss.name = :set) and (ss.login.id = :login))"
+"  where (ss.name = :sset) and (ss.login.id = :login))"
 
 		).
-		  param("set", selset).
+		  param("sset", selset).
+		  param("login", SecPoint.login());
+
+
+		//~: search by the price list inclusion
+		p.addPart(
+
+"gu.id in (select gpx.goodUnit.id from GoodPrice gpx where\n" +
+"  gpx.priceList.id in (select si.object from SelItem si join si.selSet ss\n" +
+"    where (ss.name = :sset) and (ss.login.id = :login)))"
+
+		).
+		  param("sset", selset).
 		  param("login", SecPoint.login());
 
 
@@ -1573,10 +1592,10 @@ from GoodPrice gp where
 "gu.id in (select ti.item.id from TreeCross tc join tc.item ti\n" +
 "  where tc.folder.id in (select si.object from\n" +
 "    SelItem si join si.selSet ss where\n" +
-"      (ss.name = :set) and (ss.login.id = :login)))"
+"      (ss.name = :sset) and (ss.login.id = :login)))"
 
 		).
-		  param("set",   selset).
+		  param("sset",   selset).
 		  param("login", SecPoint.login());
 	}
 }

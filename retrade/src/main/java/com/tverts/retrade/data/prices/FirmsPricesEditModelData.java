@@ -54,7 +54,7 @@ import com.tverts.support.EX;
  */
 @XmlRootElement(name = "model-data")
 @XmlType(propOrder = {
-  "model", "contractors", "priceLists", "goods"
+  "model", "contractors", "priceLists", "goodsNumber", "goods"
 })
 public class FirmsPricesEditModelData implements ModelData
 {
@@ -124,8 +124,21 @@ public class FirmsPricesEditModelData implements ModelData
 		return res;
 	}
 
-	@XmlElement(name = "good")
-	@XmlElementWrapper(name = "goods")
+	@XmlElement
+	public Integer getGoodsNumber()
+	{
+		if(!ModelRequest.isKey("goods"))
+			return null;
+
+		//?: {has no price lists selected}
+		if(getModel().getPriceLists().isEmpty())
+			return null;
+
+		return bean(GetPrices.class).countGoodUnits(getModel());
+	}
+
+	@XmlElement(name = "good-unit")
+	@XmlElementWrapper(name = "good-units")
 	@SuppressWarnings("unchecked")
 	public List<GoodPriceView> getGoods()
 	{
@@ -148,7 +161,7 @@ public class FirmsPricesEditModelData implements ModelData
 			v.init(gu);
 
 			//~: find the price
-			for(int i = model.getPriceLists().size() - 1;(i >= 0);i++)
+			for(int i = model.getPriceLists().size() - 1;(i >= 0);i--)
 			{
 				GoodPrice gp = get.getGoodPrice(
 				  model.getPriceLists().get(i),

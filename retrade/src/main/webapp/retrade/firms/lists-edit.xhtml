@@ -57,7 +57,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <x:component coid = "${z:vid(v, 'delete-firms')}">
      <f:facet name = "extjs-props">
-       xtype:'button', text: 'Уд. контр.',
+       xtype:'button', text: 'Контр.', iconCls: 'retrade-button-del',
        tooltipType: 'title', tooltip: 'Удалить из таблицы выбранные контрагенты',
        margin: extjsf.pts(0, 0, 0, 8)
      </f:facet>
@@ -68,7 +68,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <x:component coid = "${z:vid(v, 'add-firms')}">
      <f:facet name = "extjs-props">
-       xtype:'button', text: 'Доб. контр.',
+       xtype:'button', text: 'Контр.', iconCls: 'retrade-button-add',
        tooltipType: 'title', tooltip: 'Добавить контрагенты из текущей выборки',
        margin: extjsf.pts(0, 0, 0, 4)
      </f:facet>
@@ -108,7 +108,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <x:component coid = "${z:vid(v, 'add-lists')}">
      <f:facet name = "extjs-props">
-       xtype:'button', text: 'Доб. прайс-листы',
+       xtype:'button', text: 'Прайс-листы', iconCls: 'retrade-button-add',
        tooltipType: 'title', tooltip: 'Добавить прайс-листы из текущей выборки',
        margin: extjsf.pts(0, 4, 0, 0)
      </f:facet>
@@ -119,7 +119,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <x:component coid = "${z:vid(v, 'delete-lists')}">
      <f:facet name = "extjs-props">
-       xtype:'button', text: 'Уд. прайс-листы',
+       xtype:'button', text: 'Прайс-листы', iconCls: 'retrade-button-del',
        tooltipType: 'title', tooltip: 'Удалить из таблицы выбранные прайс-листы',
        margin: extjsf.pts(0, 8, 0, 0)
      </f:facet>
@@ -424,6 +424,142 @@ ${v.checkModelRequestedWithRedirect}
       title: 'Цены товаров', flex: 2, frame: false, border: false,
       bodyCls: 'retrade-back-panel', layout: 'fit'
     </f:facet>
+
+
+    <!-- [goods table toolbar -->
+
+    <x:toolbar coid = "${z:vid(v, 'goods_toolbar')}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'panel', bodyPadding: extjsf.pt(2),
+        layout: {type: 'hbox', align: 'middle'},
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+
+      <x:component coid = "${z:vid(v, '_goods_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [filter goods field -->
+
+      <x:text-field coid = "${z:vid(v, 'search-goods')}"
+        value = "#{v.model.searchNames}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.dpts(1, 0, 1, 4),
+          width:  extjsf.ex(24)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8)
+        </f:facet>
+      </x:text-field>
+
+      <!-- [restrict to selection set] -->
+
+      <x:component coid = "${z:vid(v, 'search-goods-selset')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', enableToggle: true,
+          width: 30, componentCls: 'retrade-icon-24',
+          margin: extjsf.dpts(1, 0, 1, 6),
+          iconCls: 'retrade-selset-button-icon',
+          tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+        </f:facet>
+      </x:component>
+
+
+      <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
+        action = "#{v.doSearchGoods}">
+
+        <f:facet name = "action-params">
+          '${v.modelParam}': '${v.modelKeys}'
+        </f:facet>
+      </x:action-call>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchGoods: sv };
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+    //~: selection set only toggled
+    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    {
+        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').value();
+        var params = { searchGoods: names };
+
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').component();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+
+        }})
+    })
+
+      //]]>
+      </script>
+
+      <!-- filter goods field] -->
+
+    </x:toolbar>
+
+    <!-- goods table toolbar] -->
+
+
+    <!-- [goods table -->
+
+    <x:data-store storeId = "${z:vid(v, 'goods')}"
+      modelView = "${v}" pageSize = "15" modelRequest = "goods">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.GoodPriceView', remoteSort: true,
+        sorters: [{ property: 'goodName', direction: 'ASC' }]
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.GoodUnitView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'ggrid')}" selset = "true"
+      storeId = "${z:vid(v, 'goods')}">
+
+      <f:facet name = "grid-props">
+        pager: true, sortableColumns: true,
+        columns: ZeT.defined('retrade.columns.ClientGoodPriceView'),
+        selModel: extjsf.delayCreate('Ext.ux.selection.No')
+      </f:facet>
+    </x:data-grid>
+
+    <!-- goods table] -->
+
   </x:component>
 
   <!-- lower content: goods] -->
