@@ -92,7 +92,9 @@ public abstract class GetObjectBase
 	protected <O> O   load(Class<O> c1ass, Serializable key)
 	{
 		EX.assertn(key, "Loading [", c1ass.getName(), "] with undefined key!");
-		return (O)session().load(c1ass, key);
+		return (O) EX.assertn(session().load(c1ass, key),
+		  "Not found by the key [", key, "] entity of a class [", c1ass.getName(), "]!"
+		);
 	}
 
 	@SuppressWarnings("unchecked")

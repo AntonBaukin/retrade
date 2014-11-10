@@ -2,11 +2,11 @@ package com.tverts.endure.core;
 
 /* Java */
 
+import java.util.ArrayList;
 import java.util.List;
 
 /* Spring Framework */
 
-import com.tverts.secure.SecPoint;
 import org.springframework.stereotype.Component;
 
 /* com.tverts: spring */
@@ -24,6 +24,10 @@ import com.tverts.endure.United;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
+
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
 
 /* com.tverts: data */
 
@@ -279,5 +283,55 @@ select ut from Unity u join u.unityType ut
 		  param("login", SecPoint.login());
 
 		return (List<Long>) QB(qb).list();
+	}
+
+
+	/* Secured Operations */
+
+	/**
+	 * Loads the entities with the given Long (also, as a String)
+	 * primary key values checking that they are in the domain
+	 * specified. If the domain is undefined, domain of the
+	 * current user is selected as the default.
+	 *
+	 * Note that it is also checked that entities do exist.
+	 * The entities are selected in teh same order with
+	 * the duplicates allowed.
+	 */
+	public <O extends DomainEntity> List<O> selectAndCheckDomain
+	  (Class<O> typeClass, Long domain, Object[] ids)
+	{
+		EX.assertn(typeClass);
+
+		//?: {no domain}
+		if(domain == null)
+			domain = SecPoint.domain();
+
+		//?: {no keys provided}
+		if((ids == null) || (ids.length == 0))
+			return new ArrayList<>(0);
+
+		//c: load the objects
+		List<O> res = new ArrayList<>(ids.length);
+		for(Object id : ids)
+		{
+			if(id instanceof CharSequence)
+				id = Long.parseLong(id.toString());
+
+			if(!(id instanceof Long))
+				throw EX.arg("Primary key [", id, "] must be a Long integer!");
+
+			//~: load the entity
+			O o = load(typeClass, (Long)id);
+			res.add(o);
+
+			//sec: {has the same domain}
+			if(!domain.equals(o.getDomain().getPrimaryKey()))
+				throw EX.forbid("Accessing entity with key [", id, "] of a class [",
+				  typeClass, "] is being in else Domain [",
+				  o.getDomain().getPrimaryKey(), "]!");
+		}
+
+		return res;
 	}
 }
