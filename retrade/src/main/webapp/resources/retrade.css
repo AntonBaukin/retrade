@@ -171,6 +171,11 @@ label.retrade-form-label-cell, .retrade-form-label-cell label,
   width: 100%;
 }
 
+.retrade-width-25pc
+{
+  width: 100%;
+}
+
 table.retrade-align-right.x-field
 {
   margin-left: auto;

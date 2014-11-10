@@ -94,14 +94,11 @@ ${v.checkModelRequested}
 
     <!-- [code and name line -->
 
-    <x:component coid = "${z:vid(v, '_measure_form_layout')}">
+    <x:component coid = "${z:vid(v, '_code_name_line')}">
       <f:facet name = "extjs-props">
-
-        xtype: 'panel', border: false,
-        layout: { type: 'table', columns: 6 },
+        layout: { type: 'table', columns: 2 },
         bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(8, 0, 0, 0)
-
+        border: false, margin: extjsf.dpts(8, 0, 0, 0)
       </f:facet>
 
 
@@ -111,7 +108,9 @@ ${v.checkModelRequested}
          value = "#{v.measureView.code}">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(12), allowBlank: false, validator: function()
+          width: extjsf.ex(22), allowBlank: false,
+          cellCls: 'retrade-table-cell-100pc',
+          validator: function()
           {
             return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
           }
@@ -124,39 +123,73 @@ ${v.checkModelRequested}
       </x:text-field>
 
 
+      <x:component coid = "${z:vid(v, '_code_name_sep')}">
+        <f:facet name = "extjs-props">
+          bodyCls: 'retrade-transparent-panel',
+          height: extjsf.pt(4), border: false, colspan: 2
+        </f:facet>
+      </x:component>
+
+
       <!-- [measure name view] -->
 
       <x:text-field coid = "${z:vid(v, 'name')}"
          value = "#{v.measureView.name}">
 
         <f:facet name = "extjs-props">
-          allowBlank: false, colspan: 3,
+          allowBlank: false, width: '100%',
           cellCls: 'retrade-table-cell-100pc',
-          fieldCls: 'retrade-width-100pc', width: '100%'
+          fieldCls: 'x-form-field retrade-width-100pc'
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'имя', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(1, 4, 1, 4)
+          text: 'Имя', cellCls: 'retrade-form-label-cell',
+          margin: extjsf.dpts(1, 4, 1, 0)
         </f:facet>
       </x:text-field>
 
-
     <!-- code and name line] -->
 
-
-    <x:component coid = "${z:vid(v, '_measure_form_sep0')}">
-      <f:facet name = "extjs-props">
-
-        xtype: 'panel', border: false,
-        bodyCls: 'retrade-transparent-panel',
-        height: extjsf.pt(8), colspan: 6
-
-      </f:facet>
     </x:component>
 
 
-    <!-- [class code and unit with fractional flag -->
+    <!-- [is fractional checkbox -->
+
+    <x:component coid = "${z:vid(v, '_fractional_line')}">
+      <f:facet name = "extjs-props">
+
+        margin: extjsf.dpts(4, 0, 8, 0),
+        border: false, colspan: 2,
+        layout: { type: 'hbox', align: 'middle' },
+        cellCls: 'retrade-table-cell-100pc',
+        bodyCls: 'retrade-transparent-panel'
+
+      </f:facet>
+
+      <x:checkbox-field coid = "${z:vid(v, 'fractional')}"
+         value = "#{v.measureView.fractional}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.dpts(1, 4, 1, 0)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          html: "&lt;span title = 'Десятичное значение позволяет задавать объём товара с точностью до тысячных долей. (Изменение значения не затронет существующие объёмы товаров.)'&gt;десятичное&lt;/span&gt;"
+        </f:facet>
+      </x:checkbox-field>
+    </x:component>
+
+    <!-- is fractional checkbox] -->
+
+
+    <!-- [class code and unit -->
+
+    <x:component coid = "${z:vid(v, '_class_code_unit_line')}">
+      <f:facet name = "extjs-props">
+        layout: { type: 'table', columns: 4 },
+        bodyCls: 'retrade-transparent-panel',
+        border: false, margin: extjsf.dpts(8, 0, 0, 0)
+      </f:facet>
 
       <!-- [class code] -->
 
@@ -168,7 +201,7 @@ ${v.checkModelRequested}
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'океи', cellCls: 'retrade-form-label-cell',
+          text: 'Код океи', cellCls: 'retrade-form-label-cell',
           margin: extjsf.dpts(1, 4, 1, 0)
         </f:facet>
       </x:text-field>
@@ -195,36 +228,9 @@ ${v.checkModelRequested}
 
       </x:text-field>
 
-
-      <!-- [integer flag] -->
-
-      <x:checkbox-field coid = "${z:vid(v, 'fractional')}"
-         value = "#{v.measureView.fractional}">
-
-        <f:facet name = "extjs-props">
-          margin: extjsf.dpts(0, 4, 0, 4)
-        </f:facet>
-
-        <f:facet name = "label-props">
-          cellCls: 'retrade-table-cell-100pc',
-          html: "&lt;span title = 'Десятичное значение позволяет задавать объём товара с точностью до тысячных долей. (Изменение значения не затронет существующие объёмы товаров.)'&gt;десятичное&lt;/span&gt;"
-        </f:facet>
-      </x:checkbox-field>
-
-      <script type = "text/javascript">
-      //<![CDATA[
-
-      extjsf.bind("${z:vid(v, 'fractional')}", '${rootView.extjsDomain}').on('change', function(f, v)
-      {
-        extjsf.component("${z:vid(v, 'class-unit')}", '${rootView.extjsDomain}').setDisabled(!v)
-      })
-
-      //]]>
-      </script>
-
-    <!-- class code and unit with fractional flag] -->
-
     </x:component>
+
+    <!-- class code and unit] -->
 
 
     <!-- [special: submit action] -->
