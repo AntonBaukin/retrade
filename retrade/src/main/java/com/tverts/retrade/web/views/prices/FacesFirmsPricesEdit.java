@@ -13,7 +13,6 @@ import javax.faces.bean.RequestScoped;
 
 /* com.tverts: faces */
 
-import com.tverts.endure.core.GetUnity;
 import com.tverts.faces.ModelView;
 
 /* com.tverts: spring */
@@ -31,14 +30,17 @@ import com.tverts.model.ModelBean;
 /* com.tverts: actions */
 
 import static com.tverts.actions.ActionsPoint.actionRun;
-import com.tverts.actions.ActionType;
+
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.core.GetUnity;
 
 /* com.tverts: retrade domain (firms + goods + prices) */
 
 import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.retrade.domain.firm.Contractors;
 import com.tverts.retrade.domain.firm.GetContractor;
-import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.prices.ActFirmPrices;
 import com.tverts.retrade.domain.prices.FirmsPricesEditModelBean;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.Prices;
@@ -122,36 +124,28 @@ public class FacesFirmsPricesEdit extends ModelView
 
 	public String doAssignPriceLists()
 	{
-		String[] ids = request().getParameterValues("priceLists");
-
 		//~: clear the lists
 		getModel().getPriceLists().clear();
 
-		//~: add the lists
-		GetGoods  get = bean(GetGoods.class);
-		Set<Long> got = new HashSet<>(7);
-		if(ids != null) for(String id : ids)
-		{
-			//~: parse the id
-			Long x = Long.parseLong(id);
-			if(got.contains(x)) continue;
-			got.add(x);
-
-			//~: load the list
-			PriceListEntity pl = EX.assertn(get.getPriceList(x));
-
-			//sec: same domain
-			EX.assertx(pl.getDomain().getPrimaryKey().equals(getModel().domain()));
-
-			//!: add to the lists
+		//~: load the lists & add
+		List<PriceListEntity> pls = loadPriceLists();
+		for(PriceListEntity pl : pls)
 			getModel().getPriceLists().add(pl.getPrimaryKey());
-		}
 
 		return null;
 	}
 
 	public String doCommitEdit()
 	{
+		//~: load the price lists and the contractors
+		List<PriceListEntity> pls = loadPriceLists();
+		List<Contractor>      cos = loadContractors();
+
+		//~: invoke action for each contractor
+		EX.asserte(pls);
+		for(Contractor co : cos)
+			actionRun(ActFirmPrices.ASSIGN, co, ActFirmPrices.LISTS, pls);
+
 		return null;
 	}
 
@@ -195,5 +189,24 @@ public class FacesFirmsPricesEdit extends ModelView
 	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof FirmsPricesEditModelBean);
+	}
+
+
+	/* protected: action support */
+
+	protected List<PriceListEntity> loadPriceLists()
+	{
+		return bean(GetUnity.class).selectAndCheckDomain(
+		  PriceListEntity.class, getModel().domain(),
+		  request().getParameterValues("priceLists")
+		);
+	}
+
+	protected List<Contractor> loadContractors()
+	{
+		return bean(GetUnity.class).selectAndCheckDomain(
+		  Contractor.class, getModel().domain(),
+		  request().getParameterValues("contractors")
+		);
 	}
 }

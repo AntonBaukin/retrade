@@ -139,7 +139,11 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			for(int i = 0;(i < lists.size());i++)
 			{
 				PriceListEntity p = EX.assertn(lists.get(i));
+
+				//~: x - existing firm price at the current position
 				FirmPrices      x = (i < current.size())?(current.get(i)):(null);
+
+				//~: y - existing firm price
 				FirmPrices      y = p2fp.get(p.getPrimaryKey());
 
 				//?: {price list at this position is the same} reuse it
@@ -153,10 +157,6 @@ public class ActFirmPrices extends ActionBuilderReTrade
 				if(y != null)
 				{
 					prices.add(y);
-
-					//=: update the index
-					y.setPriority(i);
-
 					continue;
 				}
 
@@ -172,27 +172,27 @@ public class ActFirmPrices extends ActionBuilderReTrade
 
 				//=: price list
 				y.setPriceList(p);
-
-				//=: index
-				y.setPriority(i);
 			}
 
 			//[0]: remove the obsolete associations
+			deleted.addAll(current);   //<-- all existing
+			deleted.removeAll(prices); //<-- except the retained
 			deletePrices();
 
-			//[1]: add the new links
+			//[1]: assign the priorities of all the associations
+			for(int i = 0;(i < prices.size());i++)
+				prices.get(i).setPriority(i);
+
+			//[2]: add the new links
 			savePrices();
 
-			//[2]: reconsider prices
+			//[3]: reconsider prices
 			relinkPrices();
 		}
 
 		protected void deletePrices()
 		{
 			if(deleted.isEmpty()) return;
-
-			//!: flush the session
-			HiberPoint.flush(session());
 
 			//c: for each delete association
 			GetPrices get = bean(GetPrices.class);
@@ -212,6 +212,9 @@ public class ActFirmPrices extends ActionBuilderReTrade
 		protected void savePrices()
 		{
 			if(added.isEmpty()) return;
+
+			//!: flush the session (to update priorities)
+			HiberPoint.flush(session());
 
 			for(FirmPrices fp : added)
 			{

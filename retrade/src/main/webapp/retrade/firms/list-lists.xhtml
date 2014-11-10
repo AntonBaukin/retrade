@@ -327,6 +327,13 @@ ${v.checkModelRequestedWithRedirect}
       }
     })
 
+    //~: reload table on edit done
+    winmain.on('close', function()
+    {
+      if(!winmain.retradeEditDone) return;
+      extjsf.component("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
+    })
+
     winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 

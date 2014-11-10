@@ -126,7 +126,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
-    <!-- [submit button] -->
+    <!-- [submit button -->
 
     <x:component coid = "${z:vid(v, 'submit')}">
       <f:facet name = "extjs-props">
@@ -135,10 +135,49 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
     </x:component>
 
+    <x:action-call coid = "${z:vid(v, 'submit-script')}"
+      action = "#{v.doCommitEdit}">
+
+      <f:facet name = "action-params">
+       '${v.modelParam}': '${v.modelKeys}'
+      </f:facet>
+    </x:action-call>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    //~: submit the association
+    extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+    {
+      //~: collect the contractors
+      var cst = extjsf.component("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}');
+      var cs  = []; cst.each(function(i) { cs.push(i.getId()) })
+      if(!cs.length) return ReTrade.desktop.error('Добавьте хотя бы одного контрагента!')
+
+      //~: collect the price lists
+      var pst = extjsf.component("${z:vid(v, 'priceLists')}", '${rootView.extjsDomain}');
+      var ps  = []; pst.each(function(i) { ps.push(i.getId()) })
+      if(!ps.length) return ReTrade.desktop.error('Добавьте хотя бы один прайс-лист!')
+
+      //~: submit the form
+      extjsf.bindHandler("${z:vid(v, 'submit-script')}", '${rootView.extjsDomain}')({
+          params: { contractors: cs, priceLists: ps }, success: function()
+      {
+        extjsf.bind('winmain', '${rootView.extjsDomain}').retradeEditDone = true;
+        extjsf.component('winmain', '${rootView.extjsDomain}').close()
+      }})
+    })
+
+    //]]>
+    </script>
+
+    <!-- submit button] -->
+
   </f:facet>
 
   <!-- toolbar] -->
   
+
   <!-- [upper content: firms and lists layout -->
 
   <x:component coid = "${z:vid(v, '_firms-lists-layout')}">
@@ -339,7 +378,7 @@ ${v.checkModelRequestedWithRedirect}
         extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
           params: { priceLists: ids }, success: function()
           {
-
+            extjsf.component("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').reload()
           }})
       })
 
@@ -350,6 +389,7 @@ ${v.checkModelRequestedWithRedirect}
           params: { selset: ReTrade.selset.selset }, success: function()
         {
           extjsf.component("${z:vid(v, 'priceLists')}", '${rootView.extjsDomain}').reload()
+          extjsf.component("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').reload()
         }})
       })
 
@@ -365,7 +405,9 @@ ${v.checkModelRequestedWithRedirect}
 
           //~: post to the server
           extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
-            params: { priceLists: ids }, success : function() {
+            params: { priceLists: ids }, success : function()
+          {
+            extjsf.component("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').reload()
           }})
         })
       })
@@ -382,7 +424,9 @@ ${v.checkModelRequestedWithRedirect}
 
           //~: post to the server
           extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
-            params: { priceLists: ids }, success : function() {
+            params: { priceLists: ids }, success : function()
+          {
+            extjsf.component("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').reload()
           }})
         })
       })
@@ -500,8 +544,9 @@ ${v.checkModelRequestedWithRedirect}
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
-          params: params, success : function() {
-            Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").loadPage(1)
+          params: params, success : function()
+        {
+            extjsf.component("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').loadPage(1)
         }})
       }
 
@@ -518,8 +563,9 @@ ${v.checkModelRequestedWithRedirect}
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
-          params: params, success : function() {
-
+          params: params, success : function()
+        {
+          extjsf.component("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').loadPage(1)
         }})
     })
 
