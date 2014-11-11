@@ -20,7 +20,8 @@ import com.tverts.endure.core.IncValues;
 
 /* com.tverts: support */
 
-import static com.tverts.support.DU.date2str;
+import com.tverts.support.DU;
+import com.tverts.support.EX;
 
 
 /**
@@ -84,7 +85,7 @@ public class Prices
 
 	public static String createRepriceDocCode(Date day, int index)
 	{
-		return String.format("ИЦ-%s/%d", date2str(day), index);
+		return String.format("ИЦ-%s/%d", DU.date2str(day), index);
 	}
 
 	public static String createRepriceDocCode(Domain domain)
@@ -92,5 +93,10 @@ public class Prices
 		return String.format("ИЦ-%d", bean(IncValues.class).
 		  txIncValue(domain, UnityTypes.unityType(
 		    RepriceDoc.class, TYPE_REPRICE_DOC), "code", 1));
+	}
+
+	public static String createRepriceDocCode(PriceListEntity pl)
+	{
+		return String.format("ИЦ-ПЛ-%s", EX.asserts(pl.getCode()));
 	}
 }

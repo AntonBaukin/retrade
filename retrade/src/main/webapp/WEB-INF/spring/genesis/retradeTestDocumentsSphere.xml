@@ -57,7 +57,7 @@
         -->
 
 
-        <!-- Invoices Buy -->
+        <!--&lt;!&ndash; Invoices Buy &ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -85,7 +85,7 @@
                         value = '250'/>
             </bean>
           </property>
-        </bean>
+        </bean>-->
 
 
         <!--

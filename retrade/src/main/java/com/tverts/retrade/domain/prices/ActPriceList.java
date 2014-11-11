@@ -1,15 +1,5 @@
 package com.tverts.retrade.domain.prices;
 
-/* Java */
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-/* com.tverts: spring */
-
-import static com.tverts.spring.SpringPoint.bean;
-
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
@@ -24,15 +14,9 @@ import com.tverts.system.tx.SetTxAction;
 
 import com.tverts.endure.core.ActUnity;
 
-/* com.tverts: retrade domain (core + goods) */
+/* com.tverts: retrade domain (core) */
 
 import com.tverts.retrade.domain.ActionBuilderReTrade;
-import com.tverts.retrade.domain.goods.GetGoods;
-
-/* com.tverts: support */
-
-import com.tverts.support.CMP;
-import com.tverts.support.EX;
 
 
 /**
@@ -55,18 +39,6 @@ public class ActPriceList extends ActionBuilderReTrade
 	  ActionType.ENSURE;
 
 
-	/* parameters of the action task */
-
-	/**
-	 * This parameter provides a collection of
-	 * {@link GoodPrice} instances for SAVE or
-	 * UPDATE operation. These instances are
-	 * merged into the database.
-	 */
-	public static final String PRICES     =
-	  ActPriceList.class.getName() + ": prices";
-
-
 	/* public: ActionBuilder interface */
 
 	public void    buildAction(ActionBuildRec abr)
@@ -86,7 +58,7 @@ public class ActPriceList extends ActionBuilderReTrade
 
 	protected void savePriceList(ActionBuildRec abr)
 	{
-		//?: {target is not a PriceList}
+		//?: {target is not a Price List}
 		checkTargetClass(abr, PriceListEntity.class);
 
 		//~: save the price list
@@ -100,29 +72,24 @@ public class ActPriceList extends ActionBuilderReTrade
 
 	protected void updatePriceList(ActionBuildRec abr)
 	{
-		//?: {target is not a PriceList}
+		//?: {target is not a Price List}
 		checkTargetClass(abr, PriceListEntity.class);
 
 		//~: update the Txn
 		chain(abr).first(new SetTxAction(task(abr)));
-
-		//~: merge the prices
-		mergePrices(abr);
 
 		complete(abr);
 	}
 
 	protected void ensurePriceList(ActionBuildRec abr)
 	{
-		//?: {target is not a PriceList}
+		//?: {target is not a Price List}
 		checkTargetClass(abr, PriceListEntity.class);
 
 		complete(abr);
 	}
 
-
-	/* protected: support */
-
+	/*
 	@SuppressWarnings("unchecked")
 	protected void mergePrices(ActionBuildRec abr)
 	{
@@ -182,4 +149,5 @@ public class ActPriceList extends ActionBuilderReTrade
 
 		//HINT: in this method the prices are not removed!
 	}
+	*/
 }

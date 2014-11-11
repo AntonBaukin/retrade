@@ -41,7 +41,7 @@
     <property name = 'changeTime' type = 'timestamp'>
 
       <column name = 'change_time' index = 'ix_price_change_time'>
-        <comment>The price change actual time</comment>
+        <comment>The price change actual time (copy from the document)</comment>
       </column>
     </property>
 

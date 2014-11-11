@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -20,6 +21,10 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.actions.ActionType;
 import static com.tverts.actions.ActionsPoint.actionRun;
+
+/* com.tverts: hibery */
+
+import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 /* com.tverts: genesis */
 
@@ -44,6 +49,7 @@ import com.tverts.retrade.domain.goods.GoodUnit;
 /* com.tverts: support */
 
 import com.tverts.support.CMP;
+import com.tverts.support.DU;
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
@@ -54,6 +60,11 @@ import com.tverts.support.xml.SaxProcessor;
  * Generates Price Lists based on the test
  * goods file 'GenTestGoods.xml'.
  *
+ * If Price List already exists, nothing is done.
+ * The initial prices generation is made via Price
+ * Change Documents {@link RepriceDoc}.
+ *
+ *
  * @author anton.baukin@gmail.com.
  */
 public class GenTestPrices extends GenesisHiberPartBase
@@ -63,7 +74,7 @@ public class GenTestPrices extends GenesisHiberPartBase
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		Map<String, BigDecimal> costs = new HashMap<String, BigDecimal>(101);
+		Map<String, BigDecimal> costs = new HashMap<>(101);
 
 		//~: read prices
 		readTestPrices(ctx, costs);
@@ -172,24 +183,23 @@ public class GenTestPrices extends GenesisHiberPartBase
 	{
 		//~: decode the names
 		String[] pls = SU.s2a(getCodesAndNames());
-		EX.assertx(pls.length     >= 2);
-		EX.assertx(pls.length % 2 == 0);
+		EX.assertx(pls.length   >= 2);
+		EX.assertx(pls.length%2 == 0);
 
 		//~: create main price list
 		PriceListEntity pl = genPriceList(ctx, pls[0], pls[1], costs);
-		ctx.set(pl); //<-- remember it
+		ctx.set(pl); //<-- remember the main price list
 
 		//~: all the lists
 		Map<String, PriceListEntity> all =
-		  new LinkedHashMap<String, PriceListEntity>(pls.length / 2);
+		  new LinkedHashMap<>(pls.length / 2);
 		all.put(pl.getCode(), pl); //<-- include the main list also
 
 		//~: generate else lists
 		for(int i = 2;(i < pls.length);i+=2)
 		{
 			//~: select random goods
-			Map<String, BigDecimal> xcosts =
-			  new HashMap<String, BigDecimal>(costs);
+			Map<String, BigDecimal> xcosts = new HashMap<>(costs);
 			selectPriceListItems(ctx, xcosts);
 
 			//~: generate the list
@@ -203,14 +213,10 @@ public class GenTestPrices extends GenesisHiberPartBase
 		  all.values().toArray(new PriceListEntity[all.size()]));
 	}
 
-	@SuppressWarnings("unchecked")
 	protected PriceListEntity genPriceList
 	  (GenCtx ctx, String code, String name, Map<String, BigDecimal> costs)
 	{
-		Map<String, GoodUnit> gm = (Map<String, GoodUnit>)
-		  EX.assertn(ctx.get((Object) GoodUnit.class));
-
-		PriceListEntity       pl  = bean(GetGoods.class).getPriceList(
+		PriceListEntity pl = bean(GetGoods.class).getPriceList(
 		  ctx.get(Domain.class).getPrimaryKey(), EX.asserts(code)
 		);
 
@@ -229,46 +235,90 @@ public class GenTestPrices extends GenesisHiberPartBase
 		//=: name
 		pl.getOx().setName(EX.asserts(name));
 
+		//!: save the price list
+		pl.updateOx();
+		actionRun(ActionType.SAVE, pl);
+
+		//~: create the price change document
+		RepriceDoc rd = genRepriceDoc(ctx, pl, costs);
+
+		LU.I(log(ctx), logsig(), " created test Price List [",
+		  pl.getPrimaryKey(), "] with code [", pl.getCode(),
+		  "] having [", costs.size(), "] items; and Price Change Document [",
+		  rd.getPrimaryKey(), "] with code [", rd.getCode(), "]"
+		);
+
+		return pl;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected RepriceDoc genRepriceDoc
+	  (GenCtx ctx, PriceListEntity pl, Map<String, BigDecimal> costs)
+	{
+		Map<String, GoodUnit> gm = (Map<String, GoodUnit>)
+		  EX.assertn(ctx.get((Object) GoodUnit.class));
+
+		//~: create the empty document first
+		RepriceDoc rd = new RepriceDoc();
+		initRepriceDoc(ctx, pl, rd);
+
+		//!: save the document
+		actionRun(ActionType.SAVE, rd);
+
 		//~: create the items for all the goods
-		List<GoodPrice> gps = new ArrayList<GoodPrice>(costs.size());
+		rd.setChanges(new ArrayList<PriceChange>(costs.size()));
 		for(String gcode : costs.keySet())
 		{
 			GoodUnit  gu = EX.assertn(gm.get(gcode),
 			  "Good Unit with code [", gcode, "] is not found!"
 			);
 
-			GoodPrice gp = new GoodPrice();
-			gps.add(gp);
+			//~: price change
+			PriceChange pc = new PriceChange();
+			rd.getChanges().add(pc);
 
-			//=: good unit
-			gp.setGoodUnit(gu);
+			//=: price change document
+			pc.setRepriceDoc(rd);
+
+			//~: good unit
+			pc.setGoodUnit(gu);
 
 			//~: cost
 			BigDecimal c = EX.assertn(costs.get(gcode));
-			EX.assertx(CMP.grZero(c));
+			if(c.scale() < 2) c = c.setScale(2);
 
-			//~: variate the cost value
-			int d = 100 - costsDelta + ctx.gen().nextInt(2*costsDelta + 1);
-			c = c.multiply(new BigDecimal(100 + costsDelta - ctx.gen().nextInt(2*costsDelta))).
-			  scaleByPowerOfTen(-2).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			EX.assertx(CMP.grZero(c));
+			EX.assertx(c.scale() == 2, "Cost of good [", gcode,
+			  "] has more than two decimals after the point!");
 
 			//=: price (cost)
-			gp.setPrice(c);
+			pc.setPriceNew(c);
 		}
 
-		//!: save the price list
-		pl.updateOx();
-		actionRun(ActionType.SAVE, pl);
-
-		//!: add the prices
-		actionRun(ActionType.UPDATE, pl, ActPriceList.PRICES, gps);
-
-		LU.I(log(ctx), logsig(), " created test Price List [",
-		  pl.getPrimaryKey(), "] with code [", pl.getCode(),
-		  "] having [", gps.size(), "] items"
+		//!: fix the document prices
+		actionRun(Prices.ACT_FIX_PRICES, rd,
+		  Prices.CHANGE_TIME, ctx.get(Date.class)
 		);
 
-		return pl;
+		return rd;
+	}
+
+	protected void    initRepriceDoc(GenCtx ctx, PriceListEntity pl, RepriceDoc rd)
+	{
+		//=: set test primary key
+		setPrimaryKey(ctx.session(), rd, true);
+
+		//=: domain
+		rd.setDomain(ctx.get(Domain.class));
+
+		//=: generate document code
+		rd.setCode(Prices.createRepriceDocCode(pl));
+
+		//~: change reason
+		rd.getOx().setRemarks(SU.cats(
+		  "Первичная тестовая генерация цен для прайс-листа [",
+		  pl.getCode(), "] от ", DU.date2str(ctx.get(Date.class))
+		));
 	}
 
 	protected void selectPriceListItems(GenCtx ctx, Map<String, BigDecimal> costs)
@@ -281,12 +331,30 @@ public class GenTestPrices extends GenesisHiberPartBase
 		s = (m + ctx.gen().nextInt(M - m + 1)) * s / 100;
 
 		//~: the goods list
-		List<String> goods = new ArrayList<String>(costs.keySet());
+		List<String> goods = new ArrayList<>(costs.keySet());
 		Collections.shuffle(goods, ctx.gen());
 		goods = goods.subList(0, s);
 
 		//!: retain the goods selected
-		costs.keySet().retainAll(new HashSet<String>(goods));
+		costs.keySet().retainAll(new HashSet<>(goods));
+
+		//~: variate the costs values
+		for(Map.Entry<String, BigDecimal> e : costs.entrySet())
+		{
+			//~: cost
+			BigDecimal c = EX.assertn(e.getValue());
+			EX.assertx(CMP.grZero(c));
+
+			//~: variate the cost value
+			int d = 100 - costsDelta + ctx.gen().nextInt(2*costsDelta + 1);
+			c = c.multiply(new BigDecimal(d)).scaleByPowerOfTen(-2);
+
+			//?: {scale the cost to .XY}
+			if(c.scale() != 2)
+				c = c.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+
+			e.setValue(c);
+		}
 	}
 
 
@@ -356,8 +424,7 @@ public class GenTestPrices extends GenesisHiberPartBase
 
 		/* Genesis Context */
 
-		protected final GenCtx ctx;
-		protected Map<String, BigDecimal> costs =
-		  new HashMap<String, BigDecimal>(101);
+		protected final GenCtx            ctx;
+		protected Map<String, BigDecimal> costs = new HashMap<>(101);
 	}
 }

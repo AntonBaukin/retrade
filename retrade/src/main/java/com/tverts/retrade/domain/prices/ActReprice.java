@@ -56,6 +56,11 @@ public class ActReprice extends ActionBuilderReTrade
 	public static final ActionType SAVE             =
 	  ActionType.SAVE;
 
+	/**
+	 * Action to fix the prices of the document and to
+	 * update the Price List referred if there are no
+	 * Price Change Documents following.
+	 */
 	public static final ActionType ACT_FIX_PRICES   =
 	  new ActionType("fix", RepriceDoc.class);
 
@@ -65,6 +70,11 @@ public class ActReprice extends ActionBuilderReTrade
 
 	/* action builder parameters */
 
+	/**
+	 * Assign this parameter when fixing the document
+	 * within the Genesis process. For now it is not
+	 * possible to do this throw UI by the users.
+	 */
 	public static final String CHANGE_TIME          =
 	  ActReprice.class.getName() + ": change time";
 
@@ -112,11 +122,11 @@ public class ActReprice extends ActionBuilderReTrade
 		checkTargetClass(abr, RepriceDoc.class);
 
 		//?: {the document is already fixed}
-		if(target(abr, RepriceDoc.class).getChangeTime() != null)
-			throw EX.state("The price change document '",
-			  target(abr, RepriceDoc.class).getCode(),
-			  "' is already fixed!"
-			);
+		EX.assertx((target(abr, RepriceDoc.class).getChangeTime() == null),
+
+		  "Price Change Document [", target(abr, RepriceDoc.class).getPrimaryKey(),
+		  "] with code [", target(abr, RepriceDoc.class).getCode(), "] is already fixed!"
+		);
 
 		//~: fix the price change doc
 		chain(abr).first(new ActionFixPriceChanges(task(abr)).
@@ -178,7 +188,7 @@ public class ActReprice extends ActionBuilderReTrade
 			RepriceDoc  rd = target(RepriceDoc.class);
 
 			//~: set change time
-			if(rd.getChangeTime() != null) throw EX.state();
+			EX.assertx(rd.getChangeTime() == null);
 			rd.setChangeTime((changeTime != null)?(changeTime):(new Date()));
 
 			//~: affect the changes

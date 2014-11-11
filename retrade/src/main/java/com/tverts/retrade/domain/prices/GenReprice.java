@@ -39,10 +39,6 @@ import com.tverts.objects.Param;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.Domain;
 
-/* com.tverts: retrade api */
-
-import com.tverts.api.retrade.prices.PriceChanges;
-
 /* com.tverts: retrade domain (goods + invoices) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
@@ -70,41 +66,31 @@ public class      GenReprice
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		RepriceDoc   rd = new RepriceDoc();
-		PriceChanges pc = rd.getOx();
+		RepriceDoc rd = new RepriceDoc();
 
 		//=: set test primary key
-		setPrimaryKey(session(), rd, true);
+		setPrimaryKey(ctx.session(), rd, true);
 
 		//=: domain
 		rd.setDomain(ctx.get(Domain.class));
 
-		//=: generate document code
-		rd.setCode(genRepriceDocCode(ctx));
-
-		//~: select random price list
-		PriceListEntity[] pls = ctx.get(PriceListEntity[].class);
-		rd.setPriceList(pls[ctx.gen().nextInt(pls.length)]);
-
-		//~: change reason
-		pc.setRemarks(String.format(
-		  "Тестовая генерация, день %s.",
-		  DU.date2str(ctx.get(DaysGenDisp.DAY, Date.class))
-		));
+		//~: initialize the document
+		initRepriceDoc(ctx, rd);
 
 		//~: generate price changes
 		genPriceChanges(ctx, rd);
 
-		//~: save the document
-		rd.updateOx();
-		save(ctx, rd);
+		//!: save the document
+		actionRun(ActionType.SAVE, rd);
 
 		//!: fix the prices now
-		fixPrices(ctx, rd);
+		actionRun(Prices.ACT_FIX_PRICES, rd,
+		  Prices.CHANGE_TIME, ctx.get(DaysGenDisp.TIME, Date.class)
+		);
 	}
 
 
-	/* public: bean interface */
+	/* Generate Price Change Document */
 
 	@Param
 	public Integer getMinGoods()
@@ -134,6 +120,20 @@ public class      GenReprice
 		this.maxGoods = n;
 	}
 
+	@Param
+	public int getCostsDelta()
+	{
+		return costsDelta;
+	}
+
+	private int costsDelta = 10;
+
+	public void setCostsDelta(int n)
+	{
+		EX.assertx((n > 0) & (n < 100));
+		this.costsDelta = n;
+	}
+
 
 	/* public: DaysGenPart interface */
 
@@ -154,63 +154,64 @@ public class      GenReprice
 
 	/* protected: price changes generation */
 
-	protected String  genRepriceDocCode(GenCtx ctx)
+	protected void    initRepriceDoc(GenCtx ctx, RepriceDoc rd)
 	{
-		return Prices.createRepriceDocCode(
+		//=: generate document code
+		rd.setCode(Prices.createRepriceDocCode(
 		  ctx.get(DaysGenDisp.DAY, Date.class),
 		  ctx.get(DaysGenDisp.DAYI, Integer.class)
-		);
-	}
+		));
 
-	protected void    save(GenCtx ctx, RepriceDoc rd)
-	{
-		actionRun(ActionType.SAVE, rd);
-	}
+		//~: select random price list
+		PriceListEntity[] pls = ctx.get(PriceListEntity[].class);
+		rd.setPriceList(pls[ctx.gen().nextInt(pls.length)]);
 
-	protected void    fixPrices(GenCtx ctx, RepriceDoc rd)
-	{
-		actionRun(Prices.ACT_FIX_PRICES, rd,
-		  Prices.CHANGE_TIME, ctx.get(DaysGenDisp.TIME, Date.class)
-		);
+		//~: change reason
+		rd.getOx().setRemarks(String.format(
+		  "Тестовая генерация, день %s.",
+		  DU.date2str(ctx.get(DaysGenDisp.DAY, Date.class))
+		));
 	}
 
 	protected void    genPriceChanges(GenCtx ctx, RepriceDoc rd)
 	{
 		GetGoods get = bean(GetGoods.class);
-		int      ind = 0;
 
 		for(GoodUnit good : genSelectGoods(ctx))
 		{
 			GoodPrice gp = get.getGoodPrice(rd.getPriceList(), good);
 
-			//?: {good has no price in this price list} skip it
-			if(gp == null) continue;
+			//?: {good has no price in this price list}
+			EX.assertn(gp, "Good Unit [", good.getPrimaryKey(), "] with code [",
+			  good.getCode(), "] has no price in the Price List [",
+			  rd.getPriceList().getCode(), "]!"
+			);
 
+			//~: price change
 			PriceChange pc = new PriceChange();
-
-			//~: set test primary key
-			setPrimaryKey(session(), pc, true);
-
-			//~: price change document
-			pc.setRepriceDoc(rd);
 			rd.getChanges().add(pc);
 
-			//~: price list good
+			//=: price change document
+			pc.setRepriceDoc(rd);
+
+			//~: good unit
 			pc.setGoodUnit(good);
 
-			//~: index in the document
-			pc.setDocIndex(ind++);
+			//~: variate the cost value
+			int        d = 100 - costsDelta + ctx.gen().nextInt(2*costsDelta + 1);
+			BigDecimal c = gp.getPrice().multiply(new BigDecimal(d)).scaleByPowerOfTen(-2);
 
-			//~: delta price in -5+10%
-			BigDecimal d = BigDecimal.ONE.add(BigDecimal.
-			  valueOf(-5 + ctx.gen().nextInt(16)).movePointLeft(2));
+			//?: {scale the cost to .XY}
+			if(c.scale() != 2)
+				c = c.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
-			pc.setPriceNew(gp.getPrice().multiply(d).
-			  setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			//=: the new price
+			pc.setPriceNew(c);
 		}
 	}
 
-	protected List<GoodUnit> genSelectGoods(GenCtx ctx)
+	protected List<GoodUnit>
+	                  genSelectGoods(GenCtx ctx)
 	{
 		//~: take all the goods
 		List<GoodUnit> goods = new ArrayList<GoodUnit>(
