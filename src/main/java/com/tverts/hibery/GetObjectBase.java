@@ -107,10 +107,22 @@ public abstract class GetObjectBase
 	@SuppressWarnings("unchecked")
 	protected <T> T   object(Class<T> cls, String hql, Object... params)
 	{
-		Object res = Q(hql, params).uniqueResult();
-
 		EX.assertn(cls);
+
+		Object res = Q(hql, params).uniqueResult();
 		EX.assertx((res == null) || cls.isAssignableFrom(res.getClass()));
+
+		return (T) res;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T   first(Class<T> cls, String hql, Object... params)
+	{
+		EX.assertn(cls);
+
+		Object res = Q(hql, params).setMaxResults(1).uniqueResult();
+		EX.assertx((res == null) || cls.isAssignableFrom(res.getClass()));
+
 		return (T) res;
 	}
 

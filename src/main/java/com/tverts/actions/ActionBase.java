@@ -1,6 +1,6 @@
 package com.tverts.actions;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +19,12 @@ import com.tverts.support.logic.Predicate;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 
 
 /**
- * COMMENT ActionBase
+ * Implementation base for an execution layer Action.
  *
  * @author anton.baukin@gmail.com
  */
@@ -33,10 +34,7 @@ public abstract class ActionBase implements Action
 
 	public ActionBase(ActionTask task)
 	{
-		if(task == null)
-			throw new IllegalArgumentException();
-
-		this.task = task;
+		this.task = EX.assertn(task);
 	}
 
 
@@ -161,18 +159,12 @@ public abstract class ActionBase implements Action
 	protected void openValidate()
 	{
 		//?: {has no action task}
-		if(getTask() == null)
-			throw new IllegalStateException(String.format(
-			  "Open validation of %s: %s", logsig(),
-			  "action has the task action reference undefined!"
-		));
+		EX.assertn(getTask(), "Open validation of ", logsig(),
+		  ": action has the task object reference undefined!");
 
 		//?: {has no action context}
-		if(getContext() == null)
-			throw new IllegalStateException(String.format(
-			  "Open validation of %s: %s", logsig(),
-			  "action has no action context bound!"
-		));
+		EX.assertn(getContext(), "Open validation of ", logsig(),
+		  ": action has no action context bound!");
 	}
 
 	protected Map  createFeatures()
@@ -203,23 +195,17 @@ public abstract class ActionBase implements Action
 
 		//?: {has wrong target class}
 		if((tclass != null) && !tclass.isAssignableFrom(res.getClass()))
-			throw new IllegalStateException(String.format(
-			  "Action target [%s] can't be cast to class '%s'",
-			  LU.sig(res), tclass.getName()
-			));
+			throw EX.state("Action target [", LU.sig(res),
+			  "] can't be cast to class [", tclass.getName(), "]!");
 
 		return (O)getTask().getTarget();
 	}
 
 	protected Object  target()
 	{
-		Object target = getTask().getTarget();
-
-		if(target == null) throw new IllegalStateException(
+		return EX.assertn(getTask().getTarget(),
 		  "Action requires the target instance that is undefined!"
 		);
-
-		return target;
 	}
 
 	/**
@@ -235,11 +221,9 @@ public abstract class ActionBase implements Action
 		if(target instanceof DelayedInstance)
 			target = ((DelayedInstance)target).createInstance(this);
 
-		if(target == null) throw new IllegalStateException(
+		return EX.assertn(target,
 		  "Action requires the target instance that is undefined!"
 		);
-
-		return target;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -249,10 +233,8 @@ public abstract class ActionBase implements Action
 
 		//?: {has wrong target class}
 		if((tclass != null) && !tclass.isAssignableFrom(target.getClass()))
-			throw new IllegalStateException(String.format(
-			  "Action target [%s] can't be cast to class '%s'",
-			  LU.sig(target), tclass.getName()
-			));
+			throw EX.state("Action target [", LU.sig(target),
+			  "] can't be cast to class [", tclass.getName(), "]!");
 
 		return (O)target;
 	}
@@ -264,10 +246,8 @@ public abstract class ActionBase implements Action
 
 		//?: {has wrong target class}
 		if((tclass != null) && !tclass.isAssignableFrom(target.getClass()))
-			throw new IllegalStateException(String.format(
-			  "Action target [%s] can't be cast to class '%s'",
-			  LU.sig(target), tclass.getName()
-			));
+			throw EX.state("Action target [", LU.sig(target),
+			  "] can't be cast to class [", tclass.getName(), "]!");
 
 		return (O)target;
 	}
@@ -276,10 +256,8 @@ public abstract class ActionBase implements Action
 	{
 		Object target = target();
 
-		if(!(target instanceof NumericIdentity))
-			return false;
-
-		return isTestInstance((NumericIdentity)target);
+		return (target instanceof NumericIdentity) &&
+		  isTestInstance((NumericIdentity)target);
 	}
 
 	protected Object  param(Object name)
@@ -292,14 +270,11 @@ public abstract class ActionBase implements Action
 	{
 		Object res = getTask().getParams().get(name);
 
-		if((res != null) && (pclass != null) &&
-		   !pclass.isAssignableFrom(res.getClass())
-		  )
-			throw new IllegalStateException(String.format(
-			  "Action asked parameter '%s' as of a class '%s', but actual is '%s'!",
-			  (name == null)?("?undefined?"):(name.toString()),
-			  pclass.getName(), res.getClass().getName()
-			));
+		if((res != null) && (pclass != null) && !pclass.isAssignableFrom(res.getClass()))
+			throw EX.state("Action asked parameter '",
+			  (name == null)?("UNDEFINED"):(name), "' as of the class [",
+			  pclass.getName(), "], but actual is [", res.getClass().getName(), "]!"
+			);
 
 		return (T)res;
 	}

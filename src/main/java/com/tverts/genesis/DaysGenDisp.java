@@ -78,7 +78,8 @@ public class DaysGenDisp extends GenesisPartBase
 	public void generate(GenCtx ctx)
 	  throws GenesisError
 	{
-		EX.asserte(getEntries());
+		if((getEntries() == null) || (getEntries().length == 0))
+			return;
 
 		//~: the start day (inclusive)
 		Date curDay  = findFirstGenDate(ctx);

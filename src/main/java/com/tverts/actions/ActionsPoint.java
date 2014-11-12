@@ -34,13 +34,16 @@ public class ActionsPoint
 	{}
 
 
-	/* constants */
+	/* shared parameters of the actions */
 
 	public static final String SYNCH_AGGR =
 	  ActionsPoint.class.getName() + ": synchronous aggregation";
 
 	public static final String NO_FLUSH   =
 	  ActionsPoint.class.getName() + ": skip session flush";
+
+	public static final String UNITY_TYPE =
+	  ActionsPoint.class.getName() + ": unity type";
 
 
 	/* public: actions build system  */
