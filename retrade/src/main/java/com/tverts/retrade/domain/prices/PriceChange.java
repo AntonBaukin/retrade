@@ -47,6 +47,18 @@ public class PriceChange extends NumericBase
 		this.goodUnit = goodUnit;
 	}
 
+	public PriceListEntity getPriceList()
+	{
+		return priceList;
+	}
+
+	private PriceListEntity priceList;
+
+	public void setPriceList(PriceListEntity priceList)
+	{
+		this.priceList = priceList;
+	}
+
 	/**
 	 * The change time is assigned only when the price
 	 * change actually affected the good price.
@@ -66,6 +78,15 @@ public class PriceChange extends NumericBase
 		this.changeTime = changeTime;
 	}
 
+	/**
+	 * The price of the Good Unit at the moment of change.
+	 *
+	 * Note that when Price Change is inserted in the
+	 * middle of the history, the old price of the next
+	 * in time object is not updated! This allows to
+	 * recover why sell costs in the Invoices in that
+	 * period took their values.
+	 */
 	public BigDecimal getPriceOld()
 	{
 		return priceOld;

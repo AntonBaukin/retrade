@@ -964,6 +964,42 @@ from GoodPrice gp where
 		return (PriceChange) session().get(PriceChange.class, pk);
 	}
 
+	public PriceChange     getPriceChangeBefore(Long pl, Long gu, Date time)
+	{
+/*
+
+ from PriceChange pc where (pc.priceList.id = :pl) and
+   (pc.goodUnit.id = :gu) and (pc.changeTime < :time)
+ order by pc.changeTime desc
+
+*/
+		final String Q =
+
+"from PriceChange pc where (pc.priceList.id = :pl) and\n" +
+" (pc.goodUnit.id = :gu) and (pc.changeTime < :time)\n" +
+"order by pc.changeTime desc";
+
+		return first(PriceChange.class, Q, "pl", pl, "gu", gu, "time", time);
+	}
+
+	public PriceChange     getPriceChangeAfter(Long pl, Long gu, Date time)
+	{
+/*
+
+ from PriceChange pc where (pc.priceList.id = :pl) and
+   (pc.goodUnit.id = :gu) and (pc.changeTime > :time)
+ order by pc.changeTime asc
+
+*/
+		final String Q =
+
+"from PriceChange pc where (pc.priceList.id = :pl) and\n" +
+"  (pc.goodUnit.id = :gu) and (pc.changeTime > :time)\n" +
+"order by pc.changeTime asc";
+
+		return first(PriceChange.class, Q, "pl", pl, "gu", gu, "time", time);
+	}
+
 	/**
 	 * Returns array of {@link PriceChange} and
 	 * {@link RepriceDoc} instances.

@@ -5,6 +5,7 @@ package com.tverts.retrade.domain.prices;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /* com.tverts: spring */
 
@@ -22,24 +23,32 @@ import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionWithTxBase;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
+import com.tverts.actions.ActionsPoint;
 
 /* com.tverts: system transactions */
 
-import com.tverts.api.retrade.prices.PriceChanges;
 import com.tverts.system.tx.TxPoint;
 
-/* com.tverts: retrade domain (core) */
+/* com.tverts: endure (core) */
+
+import com.tverts.endure.UnityType;
+import com.tverts.endure.UnityTypes;
+import com.tverts.endure.core.ActUnity;
+
+/* com.tverts: retrade api (prices) */
+
+import com.tverts.api.retrade.prices.PriceChanges;
+
+/* com.tverts: retrade domain (core + goods) */
 
 import com.tverts.retrade.domain.ActionBuilderReTrade;
-
-/* com.tverts: retrade domain (goods) */
-
 import com.tverts.retrade.domain.goods.GetGoods;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
-import static com.tverts.support.SU.sXe;
+import com.tverts.support.SU;
 
 
 /**
@@ -60,6 +69,12 @@ public class ActReprice extends ActionBuilderReTrade
 	 * Action to fix the prices of the document and to
 	 * update the Price List referred if there are no
 	 * Price Change Documents following.
+	 *
+	 * Note that when {@link #CHANGE_TIME} parameter
+	 * is set, and it is in the past (there are future
+	 * changes), the implementation correctly takes
+	 * the previous price and does not update the
+	 * actual Price List good price!
 	 */
 	public static final ActionType ACT_FIX_PRICES   =
 	  new ActionType("fix", RepriceDoc.class);
@@ -71,6 +86,13 @@ public class ActReprice extends ActionBuilderReTrade
 	/* action builder parameters */
 
 	/**
+	 * Required parameter for the save action. Denotes
+	 * the Unity Type name of the Price Change Document.
+	 */
+	public static final String REPRICE_TYPE         =
+	  ActionsPoint.UNITY_TYPE;
+
+	/**
 	 * Assign this parameter when fixing the document
 	 * within the Genesis process. For now it is not
 	 * possible to do this throw UI by the users.
@@ -79,7 +101,7 @@ public class ActReprice extends ActionBuilderReTrade
 	  ActReprice.class.getName() + ": change time";
 
 	public static final String REPRICE_EDIT         =
-	  ActReprice.class.getName() + ": reprice doc edit";
+	  ActReprice.class.getName() + ": price change document edit";
 
 
 	/* public: ActionBuilder interface */
@@ -113,6 +135,10 @@ public class ActReprice extends ActionBuilderReTrade
 		//~: save the price change doc
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
+		//~: create the payment way unity (is executed first!)
+		xnest(abr, ActUnity.CREATE, target(abr),
+		  ActUnity.UNITY_TYPE, chooseRepriceType(abr));
+
 		complete(abr);
 	}
 
@@ -126,6 +152,13 @@ public class ActReprice extends ActionBuilderReTrade
 
 		  "Price Change Document [", target(abr, RepriceDoc.class).getPrimaryKey(),
 		  "] with code [", target(abr, RepriceDoc.class).getCode(), "] is already fixed!"
+		);
+
+		//?: {document has no changed}
+		EX.asserte(target(abr, RepriceDoc.class).getChanges(),
+
+		  "Price Change Document [", target(abr, RepriceDoc.class).getPrimaryKey(),
+		  "] with code [", target(abr, RepriceDoc.class).getCode(), "] has no changes!"
 		);
 
 		//~: fix the price change doc
@@ -149,10 +182,25 @@ public class ActReprice extends ActionBuilderReTrade
 	}
 
 
+	/* protected: helpers */
+
+	protected UnityType chooseRepriceType(ActionBuildRec abr)
+	{
+		RepriceDoc rd = target(abr, RepriceDoc.class);
+		String     tn = param(abr, REPRICE_TYPE, String.class);
+
+		if(tn != null) //?: {has type name defined}
+			return UnityTypes.unityType(RepriceDoc.class, tn);
+
+		throw EX.state("Can't figure out the Unity Type of Price Change Document [",
+		  rd.getPrimaryKey(), "] code [", rd.getCode(), "]!");
+	}
+
+
 	/* fix price action */
 
-	public static class ActionFixPriceChanges
-	       extends      ActionWithTxBase
+	protected static class ActionFixPriceChanges
+	          extends      ActionWithTxBase
 	{
 		/* public: constructor */
 
@@ -162,7 +210,7 @@ public class ActReprice extends ActionBuilderReTrade
 		}
 
 
-		/* public: ActionFixPriceChanges interface */
+		/* Action Fix Price Changes */
 
 		public ActionFixPriceChanges setChangeTime(Date ct)
 		{
@@ -184,55 +232,147 @@ public class ActReprice extends ActionBuilderReTrade
 		protected void    execute()
 		  throws Throwable
 		{
-			GetGoods    gg = bean(GetGoods.class);
-			RepriceDoc  rd = target(RepriceDoc.class);
+			GetGoods   gg = bean(GetGoods.class);
+			RepriceDoc rd = target(RepriceDoc.class);
 
 			//~: set change time
 			EX.assertx(rd.getChangeTime() == null);
 			rd.setChangeTime((changeTime != null)?(changeTime):(new Date()));
 
+			//?: {has no changes}
+			EX.asserte(rd.getChanges());
+
+			//~: processed goods
+			HashSet<Long> goods = new HashSet<>(rd.getChanges().size());
+
 			//~: affect the changes
+			int ichange = 0;
 			for(PriceChange pc : rd.getChanges())
 			{
-				if(pc.getPriceNew() == null)
-					throw EX.arg();
+				//?: {has no good unit}
+				EX.assertn(pc.getGoodUnit());
 
-				GoodPrice gp = gg.getGoodPrice(
-				  pc.getRepriceDoc().getPriceList(), pc.getGoodUnit());
+				//?: {already has this good}
+				EX.assertx(!goods.contains(pc.getGoodUnit().getPrimaryKey()),
 
-				//~: remember the current price (if exists)
-				pc.setPriceOld((gp == null)?(null):(gp.getPrice()));
+				  "Price Change for good [", pc.getGoodUnit().getPrimaryKey(),
+				  "] with code [", pc.getGoodUnit().getCode(), "] appears twice!"
+				);
 
-				//?: {has good price} assign the new price
+				goods.add(pc.getGoodUnit().getPrimaryKey());
+
+				//~: check the price
+				if(pc.getPriceNew() != null)
+				{
+					EX.assertx(CMP.grZero(pc.getPriceNew()));
+
+					//~: the scale is .XY
+					if(pc.getPriceNew().scale() < 2)
+						pc.setPriceNew(pc.getPriceNew().setScale(2));
+
+					EX.assertx(pc.getPriceNew().scale() == 2);
+				}
+
+				//=: primary key
+				if(pc.getPrimaryKey() == null)
+					setPrimaryKey(session(), pc, isTestInstance(rd));
+
+				//=: price change document
+				pc.setRepriceDoc(rd);
+
+				//=: price list copy
+				pc.setPriceList(rd.getPriceList());
+
+				//=: change time copy
+				pc.setChangeTime(rd.getChangeTime());
+
+				//=: change position
+				pc.setDocIndex(ichange++);
+
+				//~: find the next change
+				PriceChange nxt = gg.getPriceChangeAfter(
+				  pc.getPriceList().getPrimaryKey(),
+				  pc.getGoodUnit().getPrimaryKey(),
+				  pc.getChangeTime()
+				);
+
+				//HINT: we not update the old price of the
+				//  next entry to the new price of our entry
+				//  inserted in the middle!
+
+				//?: {found the next}
+				if(nxt != null)
+				{
+					//~: find previous change
+					PriceChange prv = gg.getPriceChangeBefore(
+					  pc.getPriceList().getPrimaryKey(),
+					  pc.getGoodUnit().getPrimaryKey(),
+					  pc.getChangeTime()
+					);
+
+					//?: {found it} assign the old price
+					if(prv != null)
+						pc.setPriceOld(prv.getPriceNew());
+
+					//HINT: we inserting the change in the middle and
+					// do not update the actual price of the list!
+
+					continue;
+				}
+
+				//~: load the actual good price
+				GoodPrice gp = gg.getGoodPrice(pc.getPriceList(), pc.getGoodUnit());
+
+				//~: take the price as the old
 				if(gp != null)
+					pc.setPriceOld(EX.assertn(gp.getPrice()));
+
+				//?: {new price is undefined, remove from the price list}
+				if(pc.getPriceNew() == null)
+				{
+					//HINT: we remove the good from the price list, but it is not
+					//  there now! This entry has no meaning
+
+					//?: {has no current price}
+					if(gp == null) continue;
+
+					//TODO implement Removing Good Price entities (eliminate all direct GoodPrice references)
+					throw EX.unop("Removing Good Price entity is not implemented!");
+
+					//continue;
+				}
+				//?: {has good price} just assign the new price
+				else if(gp != null)
+				{
+					//=: assign the new price
 					gp.setPrice(pc.getPriceNew());
-				//!: create new price entry
+
+					//=: update transaction number
+					TxPoint.txn(tx(), gp);
+				}
+				//~: create new price entry
 				else
 				{
 					gp = new GoodPrice();
 
-					//~: primary key
-					setPrimaryKey(session(), gp,
-					  isTestInstance(rd.getPriceList()));
+					//=: primary key
+					setPrimaryKey(session(), gp, isTestInstance(rd.getPriceList()));
 
-					//~: transaction number
+					//=: transaction number
 					TxPoint.txn(tx(), gp);
 
-					//~: price list
-					gp.setPriceList(rd.getPriceList());
+					//=: price list
+					gp.setPriceList(pc.getPriceList());
 
-					//~: good unit
+					//=: good unit
 					gp.setGoodUnit(pc.getGoodUnit());
 
-					//~: set the price
+					//=: set the price
 					gp.setPrice(pc.getPriceNew());
 
 					//!: save it
 					session().save(gp);
 				}
-
-				//~: the change time
-				pc.setChangeTime(rd.getChangeTime());
 			}
 		}
 
@@ -245,8 +385,8 @@ public class ActReprice extends ActionBuilderReTrade
 
 	/* update action */
 
-	public static class ActionUpdateRepriceDoc
-	       extends      ActionWithTxBase
+	protected static class ActionUpdateRepriceDoc
+	          extends      ActionWithTxBase
 	{
 		/* public: constructor */
 
@@ -303,17 +443,17 @@ public class ActReprice extends ActionBuilderReTrade
 
 			//~: build current changes map: good code -> change
 			HashMap<String, PriceChange> pcm =
-			  new HashMap<String, PriceChange>(rd.getChanges().size());
+			  new HashMap<>(rd.getChanges().size());
 
 			for(PriceChange pc : rd.getChanges())
 				pcm.put(pc.getGoodUnit().getCode(), pc);
 
 			//~: build result changes map: good code -> change edit
 			HashMap<String, PriceChangeEdit> cem =
-			  new HashMap<String, PriceChangeEdit>(re.getPriceChanges().size());
+			  new HashMap<>(re.getPriceChanges().size());
 
 			for(PriceChangeEdit pce : re.getPriceChanges())
-				if(sXe(pce.getGoodCode()))
+				if(SU.sXe(pce.getGoodCode()))
 					throw EX.state("Price Change good has no code!");
 				else
 					cem.put(pce.getGoodCode(), pce);
@@ -355,7 +495,7 @@ public class ActReprice extends ActionBuilderReTrade
 
 			//~: set indices of the changes according to the edit
 			ArrayList<PriceChange> changes =
-			  new ArrayList<PriceChange>(pcm.size());
+			  new ArrayList<>(pcm.size());
 
 			for(int i = 0;(i < re.getPriceChanges().size());i++)
 			{

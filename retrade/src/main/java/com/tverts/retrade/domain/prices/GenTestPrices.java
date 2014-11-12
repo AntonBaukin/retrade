@@ -20,7 +20,7 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionType;
-import static com.tverts.actions.ActionsPoint.actionRun;
+import com.tverts.actions.ActionsPoint;
 
 /* com.tverts: hibery */
 
@@ -237,7 +237,7 @@ public class GenTestPrices extends GenesisHiberPartBase
 
 		//!: save the price list
 		pl.updateOx();
-		actionRun(ActionType.SAVE, pl);
+		ActionsPoint.actionRun(ActionType.SAVE, pl);
 
 		//~: create the price change document
 		RepriceDoc rd = genRepriceDoc(ctx, pl, costs);
@@ -263,22 +263,21 @@ public class GenTestPrices extends GenesisHiberPartBase
 		initRepriceDoc(ctx, pl, rd);
 
 		//!: save the document
-		actionRun(ActionType.SAVE, rd);
+		ActionsPoint.actionRun(ActionType.SAVE, rd,
+		  ActionsPoint.UNITY_TYPE, Prices.TYPE_REPRICE_DOC
+		);
 
 		//~: create the items for all the goods
-		rd.setChanges(new ArrayList<PriceChange>(costs.size()));
+		rd.getChanges().clear();
 		for(String gcode : costs.keySet())
 		{
-			GoodUnit  gu = EX.assertn(gm.get(gcode),
+			GoodUnit gu = EX.assertn(gm.get(gcode),
 			  "Good Unit with code [", gcode, "] is not found!"
 			);
 
 			//~: price change
 			PriceChange pc = new PriceChange();
 			rd.getChanges().add(pc);
-
-			//=: price change document
-			pc.setRepriceDoc(rd);
 
 			//~: good unit
 			pc.setGoodUnit(gu);
@@ -296,20 +295,23 @@ public class GenTestPrices extends GenesisHiberPartBase
 		}
 
 		//!: fix the document prices
-		actionRun(Prices.ACT_FIX_PRICES, rd,
-		  Prices.CHANGE_TIME, ctx.get(Date.class)
+		ActionsPoint.actionRun(Prices.ACT_FIX_PRICES, rd,
+		  Prices.CHANGE_TIME, DU.merge(ctx.get(Date.class), new Date())
 		);
 
 		return rd;
 	}
 
-	protected void    initRepriceDoc(GenCtx ctx, PriceListEntity pl, RepriceDoc rd)
+	protected void initRepriceDoc(GenCtx ctx, PriceListEntity pl, RepriceDoc rd)
 	{
 		//=: set test primary key
 		setPrimaryKey(ctx.session(), rd, true);
 
 		//=: domain
 		rd.setDomain(ctx.get(Domain.class));
+
+		//=: price list
+		rd.setPriceList(pl);
 
 		//=: generate document code
 		rd.setCode(Prices.createRepriceDocCode(pl));

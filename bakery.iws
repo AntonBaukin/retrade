@@ -7,14 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActPriceList.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActPriceList.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenReprice.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenReprice.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionsPoint.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionsPoint.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/DaysGenDisp.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/DaysGenDisp.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenTestPrices.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenTestPrices.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/GetObjectBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/GetObjectBase.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChange.hbm.xml" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChange.hbm.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChange.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChange.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/Prices.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/Prices.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeTestDocumentsSphere.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeTestDocumentsSphere.xml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,43 +43,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GenTestPrices.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenTestPrices.java">
+      <file leaf-file-name="GenTestGoods.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/goods/GenTestGoods.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.92248064" vertical-offset="3859" max-vertical-offset="7921">
-              <caret line="262" column="29" selection-start-line="262" selection-start-column="29" selection-end-line="262" selection-end-column="29" />
-              <folding>
-                <element signature="method#generate#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="e#2015#2016#0" expanded="true" />
-                <element signature="e#2042#2043#0" expanded="true" />
-                <element signature="e#2120#2121#0" expanded="true" />
-                <element signature="e#2151#2152#0" expanded="true" />
-                <element signature="e#2193#2194#0" expanded="true" />
-                <element signature="e#2219#2220#0" expanded="true" />
-                <element signature="method#setMinListGoods#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="e#2397#2398#0" expanded="true" />
-                <element signature="e#2423#2424#0" expanded="true" />
-                <element signature="method#setMaxListGoods#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="e#2599#2600#0" expanded="true" />
-                <element signature="e#2623#2624#0" expanded="true" />
-                <element signature="method#setCostsDelta#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="method#getGoodsFile#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="method#readTestPrices#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="method#genPriceLists#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="method#genPriceList#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="e#5443#5473#0" expanded="true" />
-                <element signature="method#initRepriceDoc#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="method#selectPriceListItems#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="e#8254#8255#0" expanded="true" />
-                <element signature="e#8290#8291#0" expanded="true" />
-                <element signature="e#8468#8469#0" expanded="true" />
-                <element signature="e#8491#8492#0" expanded="true" />
-                <element signature="e#8566#8567#0" expanded="true" />
-                <element signature="e#8587#8588#0" expanded="true" />
-                <element signature="method#createState#0;class#ReadTestGoods#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="method#open#0;class#ReadTestGoods#0;class#GenTestPrices#0" expanded="true" />
-                <element signature="method#close#0;class#ReadTestGoods#0;class#GenTestPrices#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="-4.763158" vertical-offset="5831" max-vertical-offset="7752">
+              <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -91,23 +63,23 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-measures.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/create-edit-report-template.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/price-lists/edit.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/password.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/person.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/stores/edit.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/component.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-measure.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChange.hbm.xml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeTestDocumentsSphere.xml" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActPriceList.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/Prices.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenReprice.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/GetObjectBase.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChange.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChange.hbm.xml" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionBase.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionsPoint.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/Prices.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenTestPrices.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/DaysGenDisp.java" />
       </list>
     </option>
   </component>
@@ -116,7 +88,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="505" />
-    <option name="y" value="23" />
+    <option name="y" value="22" />
     <option name="width" value="1033" />
     <option name="height" value="993" />
   </component>
@@ -584,10 +556,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="505" y="23" width="1033" height="993" extended-state="0" />
+    <frame x="505" y="22" width="1033" height="993" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30312836" sideWeight="0.49950346" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30204964" sideWeight="0.49950346" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32254586" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -600,21 +572,21 @@
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32854405" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37040716" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24520686" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3214671" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24726911" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24722503" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38619202" sideWeight="0.7715988" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38511327" sideWeight="0.7715988" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24520686" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3214671" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -635,7 +607,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="bakery-10 [alpha]: completed draft of Good Unit info window for the client." />
     <MESSAGE value="bakery-10 [beta]: added Good info window to the Goods Tree of the clients." />
     <MESSAGE value="bakery-10 [beta]: featured Selection Set grid action to be cell-wide!" />
     <MESSAGE value="bakery-10 [beta]: implemented Cut-Paste buttons for Goods Tree editing." />
@@ -660,14 +631,15 @@
     <MESSAGE value="ui-57 [beta]: added Price List grid to the associations edit form." />
     <MESSAGE value="ui-57 [stable]: completed Price Lists associations editing for the Contractors." />
     <MESSAGE value="ui-59 [stable]: changed layout of Measure Unit edit form." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-59 [stable]: changed layout of Measure Unit edit form." />
+    <MESSAGE value="domain-42 [beta]: started refactoring of Price Lists generation to make initial prices to be assigned via Price Change Documents." />
+    <option name="LAST_COMMIT_MESSAGE" value="domain-42 [beta]: started refactoring of Price Lists generation to make initial prices to be assigned via Price Change Documents." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="140" />
+      <option name="time" value="150" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -696,170 +668,133 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActPriceList.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/tx/Tx.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.487041" vertical-offset="1649" max-vertical-offset="3340">
-          <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.6295896" vertical-offset="777" max-vertical-offset="2286">
+          <caret line="80" column="25" selection-start-line="80" selection-start-column="25" selection-end-line="80" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionsCollection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.661987" vertical-offset="782" max-vertical-offset="7607">
+          <caret line="191" column="6" selection-start-line="191" selection-start-column="6" selection-end-line="191" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/ActUnity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6425486" vertical-offset="2720" max-vertical-offset="4989">
+          <caret line="249" column="30" selection-start-line="195" selection-start-column="30" selection-end-line="195" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/OxEntity.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/ActUnityType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14686824" vertical-offset="544" max-vertical-offset="2218">
-          <caret line="48" column="3" selection-start-line="40" selection-start-column="3" selection-end-line="40" selection-end-column="3" />
-          <folding />
+        <state vertical-scroll-proportion="0.24406047" vertical-offset="114" max-vertical-offset="1623">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/PriceChanges.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionWithTxBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5561555" vertical-offset="403" max-vertical-offset="1963">
-          <caret line="60" column="3" selection-start-line="54" selection-start-column="3" selection-end-line="54" selection-end-column="3" />
-          <folding />
+        <state vertical-scroll-proportion="0.055075593" vertical-offset="170" max-vertical-offset="2048">
+          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/goods/Good.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/account/ActPayWay.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12850972" vertical-offset="289" max-vertical-offset="1895">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-          <folding />
+        <state vertical-scroll-proportion="0.66090715" vertical-offset="0" max-vertical-offset="2133">
+          <caret line="36" column="10" selection-start-line="36" selection-start-column="10" selection-end-line="36" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/PriceItem.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionsPoint.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="2099">
-          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChange.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22030237" vertical-offset="153" max-vertical-offset="2337">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/GenesisBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18358532" vertical-offset="1326" max-vertical-offset="2541">
-          <caret line="176" column="20" selection-start-line="88" selection-start-column="20" selection-end-line="88" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="3782">
-          <caret line="87" column="3" selection-start-line="87" selection-start-column="3" selection-end-line="87" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDoc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16522679" vertical-offset="578" max-vertical-offset="2286">
-          <caret line="47" column="3" selection-start-line="43" selection-start-column="3" selection-end-line="43" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.2386609" vertical-offset="493" max-vertical-offset="3119">
+          <caret line="45" column="49" selection-start-line="42" selection-start-column="49" selection-end-line="42" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/Prices.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8714903" vertical-offset="774" max-vertical-offset="2490">
-          <caret line="101" column="1" selection-start-line="93" selection-start-column="1" selection-end-line="93" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.51584506" vertical-offset="1220" max-vertical-offset="2098">
+          <caret line="99" column="34" selection-start-line="89" selection-start-column="34" selection-end-line="89" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenReprice.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDoc.hbm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6792657" vertical-offset="867" max-vertical-offset="3272">
-          <caret line="88" column="8" selection-start-line="86" selection-start-column="6" selection-end-line="88" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.5387324" vertical-offset="544" max-vertical-offset="1741">
+          <caret line="50" column="36" selection-start-line="50" selection-start-column="36" selection-end-line="50" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/GenesisHiberPartBase.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6241901" vertical-offset="918" max-vertical-offset="2762">
-          <caret line="94" column="3" selection-start-line="88" selection-start-column="3" selection-end-line="88" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.7183099" vertical-offset="1207" max-vertical-offset="4019">
+          <caret line="106" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/HiberPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16522679" vertical-offset="1666" max-vertical-offset="3085">
+          <caret line="242" column="25" selection-start-line="107" selection-start-column="25" selection-end-line="107" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/Genesis.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26241902" vertical-offset="352" max-vertical-offset="2048">
-          <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
+        <state vertical-scroll-proportion="14.172786" vertical-offset="3553" max-vertical-offset="7403">
+          <caret line="981" column="75" selection-start-line="253" selection-start-column="3" selection-end-line="324" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/GenesisSphere.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDoc.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22030237" vertical-offset="1683" max-vertical-offset="4054">
-          <caret line="257" column="31" selection-start-line="111" selection-start-column="31" selection-end-line="111" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.20194384" vertical-offset="1037" max-vertical-offset="2235">
+          <caret line="103" column="28" selection-start-line="72" selection-start-column="28" selection-end-line="72" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/GenTestReTradeDomain.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32484075" vertical-offset="1377" max-vertical-offset="2838">
-          <caret line="120" column="14" selection-start-line="93" selection-start-column="14" selection-end-line="93" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/GenCtx.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26241902" vertical-offset="1083" max-vertical-offset="2711">
-          <caret line="78" column="18" selection-start-line="78" selection-start-column="18" selection-end-line="78" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2958" max-vertical-offset="6332">
+          <caret line="249" column="0" selection-start-line="174" selection-start-column="0" selection-end-line="174" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenTestPrices.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.92248064" vertical-offset="3859" max-vertical-offset="7921">
-          <caret line="262" column="29" selection-start-line="262" selection-start-column="29" selection-end-line="262" selection-end-column="29" />
-          <folding>
-            <element signature="method#generate#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="e#2015#2016#0" expanded="true" />
-            <element signature="e#2042#2043#0" expanded="true" />
-            <element signature="e#2120#2121#0" expanded="true" />
-            <element signature="e#2151#2152#0" expanded="true" />
-            <element signature="e#2193#2194#0" expanded="true" />
-            <element signature="e#2219#2220#0" expanded="true" />
-            <element signature="method#setMinListGoods#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="e#2397#2398#0" expanded="true" />
-            <element signature="e#2423#2424#0" expanded="true" />
-            <element signature="method#setMaxListGoods#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="e#2599#2600#0" expanded="true" />
-            <element signature="e#2623#2624#0" expanded="true" />
-            <element signature="method#setCostsDelta#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="method#getGoodsFile#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="method#readTestPrices#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="method#genPriceLists#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="method#genPriceList#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="e#5443#5473#0" expanded="true" />
-            <element signature="method#initRepriceDoc#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="method#selectPriceListItems#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="e#8254#8255#0" expanded="true" />
-            <element signature="e#8290#8291#0" expanded="true" />
-            <element signature="e#8468#8469#0" expanded="true" />
-            <element signature="e#8491#8492#0" expanded="true" />
-            <element signature="e#8566#8567#0" expanded="true" />
-            <element signature="e#8587#8588#0" expanded="true" />
-            <element signature="method#createState#0;class#ReadTestGoods#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="method#open#0;class#ReadTestGoods#0;class#GenTestPrices#0" expanded="true" />
-            <element signature="method#close#0;class#ReadTestGoods#0;class#GenTestPrices#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.9560633" vertical-offset="2465" max-vertical-offset="4343">
+          <caret line="301" column="0" selection-start-line="177" selection-start-column="0" selection-end-line="177" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/DaysGenDisp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6792657" vertical-offset="1173" max-vertical-offset="4666">
+          <caret line="106" column="49" selection-start-line="106" selection-start-column="4" selection-end-line="106" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/goods/GenTestGoods.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.763158" vertical-offset="5831" max-vertical-offset="7752">
+          <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -97,6 +97,6 @@ public class Prices
 
 	public static String createRepriceDocCode(PriceListEntity pl)
 	{
-		return String.format("ИЦ-ПЛ-%s", EX.asserts(pl.getCode()));
+		return String.format("ИЦ.ИСХ-%s", EX.asserts(pl.getCode()));
 	}
 }

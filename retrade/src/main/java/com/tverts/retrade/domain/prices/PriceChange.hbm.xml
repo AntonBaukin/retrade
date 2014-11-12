@@ -26,7 +26,7 @@
 
     <!-- Good Unit -->
 
-    <many-to-one name = 'goodUnit' foreign-key = 'fk_price_change_good_price'>
+    <many-to-one name = 'goodUnit' foreign-key = 'fk_price_change_good'>
 
       <column name = 'fk_good_unit' not-null = 'true'
         unique-key = 'ux_price_change' index = 'ix_price_change_good'>
@@ -36,11 +36,25 @@
     </many-to-one>
 
 
+    <!-- Price List -->
+
+    <many-to-one name = 'priceList' foreign-key = 'fk_price_change_list'>
+
+      <column name = 'fk_price_list' not-null = 'true'
+        index = 'ix_price_change_good'>
+
+        <comment>The copy of the Price List from the document</comment>
+      </column>
+    </many-to-one>
+
+
     <!-- Change Time -->
 
     <property name = 'changeTime' type = 'timestamp'>
 
-      <column name = 'change_time' index = 'ix_price_change_time'>
+      <column name = 'change_time'
+        index = 'ix_price_change_time, ix_price_change_good'>
+
         <comment>The price change actual time (copy from the document)</comment>
       </column>
     </property>
