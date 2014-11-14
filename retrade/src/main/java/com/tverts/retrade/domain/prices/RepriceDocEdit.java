@@ -16,10 +16,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: retrade domain (goods) */
-
-import com.tverts.retrade.domain.goods.GetGoods;
-
 
 /**
  * Edit state of price change document.
@@ -56,7 +52,7 @@ public class RepriceDocEdit extends RepriceDocView
 	@SuppressWarnings("unchecked")
 	public RepriceDocEdit init(RepriceDoc rd)
 	{
-		List sel = bean(GetGoods.class).selectPriceChanges(rd);
+		List sel = bean(GetPrices.class).selectPriceChanges(rd);
 
 		//~: create price changes (edit)
 		for(Object obj : sel)

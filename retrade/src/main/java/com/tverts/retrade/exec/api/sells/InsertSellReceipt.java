@@ -26,6 +26,7 @@ import com.tverts.exec.api.InsertEntityBase;
 
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.sells.GetSells;
 import com.tverts.retrade.domain.sells.GoodSell;
@@ -232,8 +233,8 @@ public class InsertSellReceipt extends InsertEntityBase
 	    com.tverts.api.retrade.goods.GoodSell    sg
 	  )
 	{
-		GoodPrice gp = EX.assertn(
-		  bean(GetGoods.class).getGoodPrice(sg.getList(), sg.getGood()),
+		GoodPrice gp = EX.assertn(bean(GetPrices.class).
+		  getGoodPrice(sg.getList(), sg.getGood()),
 
 		  "Sell Receipt x-key [", s.getXkey(),
 		  "] good x-key [", sg.getXGood(),

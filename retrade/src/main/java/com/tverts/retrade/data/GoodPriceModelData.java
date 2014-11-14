@@ -20,9 +20,9 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.model.ModelData;
 
-/* com.tverts: retrade domain (goods + prices) */
+/* com.tverts: retrade domain (prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPriceHistoryView;
 import com.tverts.retrade.domain.prices.GoodPriceModelBean;
 
@@ -60,7 +60,7 @@ public class GoodPriceModelData implements ModelData
 	@XmlElement
 	public long getPricesNumber()
 	{
-		return bean(GetGoods.class).
+		return bean(GetPrices.class).
 		  countPriceHistory(getModel());
 	}
 
@@ -69,7 +69,7 @@ public class GoodPriceModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<GoodPriceHistoryView> getGoodPrices()
 	{
-		List sel = bean(GetGoods.class).
+		List sel = bean(GetPrices.class).
 		  selectPriceHistory(getModel());
 		List res = new ArrayList(sel.size());
 

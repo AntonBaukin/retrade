@@ -38,6 +38,7 @@ import com.tverts.endure.core.GetUnityType;
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.Goods;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.sells.SellsData;
@@ -263,14 +264,14 @@ public class InvoiceEdit extends InvoiceViewExt
 		InvoiceData d = i.getInvoiceData();
 
 		//~: get the keys of all the goods present
-		HashSet<Long> k = new HashSet<Long>(11);
+		HashSet<Long> k = new HashSet<>(11);
 
 		for(InvoiceGoodView g : e.getGoods())
 			k.add(g.getObjectKey());
 
 		//~: copy only the present goods
-		List<InvGood> l = new ArrayList<InvGood>(k.size());
-		List<InvGood> r = new ArrayList<InvGood>(k.size());
+		List<InvGood> l = new ArrayList<>(k.size());
+		List<InvGood> r = new ArrayList<>(k.size());
 
 		for(InvGood g : d.getGoods())
 			if(k.contains(g.getPrimaryKey()))
@@ -293,7 +294,7 @@ public class InvoiceEdit extends InvoiceViewExt
 		InvoiceData           d  = i.getInvoiceData();
 		List<InvGood>         ig = (List<InvGood>)d.getGoods();
 		List<InvoiceGoodView> eg = e.getGoods();
-		List<InvGood>         re = new ArrayList<InvGood>(eg.size());
+		List<InvGood>         re = new ArrayList<>(eg.size());
 
 		//c: for all the edit goods
 		for(int j = 0;(j < eg.size());j++)
@@ -506,7 +507,7 @@ public class InvoiceEdit extends InvoiceViewExt
 		//?: {the price list was changed}
 		else if((plk == null) || !plk.equals(eg.getPriceList()))
 		{
-			GetGoods        gg = bean(GetGoods.class);
+			GetPrices       gg = bean(GetPrices.class);
 			PriceListEntity pl = EX.assertn(gg.getPriceList(eg.getPriceList()));
 			GoodPrice       gp = EX.assertn(gg.getGoodPrice(pl, ig.getGoodUnit()));
 

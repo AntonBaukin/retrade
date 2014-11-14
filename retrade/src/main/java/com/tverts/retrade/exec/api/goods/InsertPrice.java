@@ -6,6 +6,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: system transactions */
 
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: actions */
@@ -53,7 +54,7 @@ public class InsertPrice extends InsertEntityBase
 		PriceItem i = (PriceItem) source;
 
 		//~: take the price list
-		PriceListEntity l = EX.assertn( bean(GetGoods.class).getPriceList(
+		PriceListEntity l = EX.assertn( bean(GetPrices.class).getPriceList(
 		  EX.assertn(i.getList(), "Price Item x-key [", i.getXkey(),
 		    "] has no Price List primary key!")),
 
@@ -82,7 +83,7 @@ public class InsertPrice extends InsertEntityBase
 		if(i.getPkey() != null)
 		{
 			//~: select good price
-			p = EX.assertn(bean(GetGoods.class).getGoodPrice(i.getPkey()),
+			p = EX.assertn(bean(GetPrices.class).getGoodPrice(i.getPkey()),
 			  "Good Price for Item with p-key [", i.getPkey(), "] not found!"
 			);
 
@@ -96,7 +97,7 @@ public class InsertPrice extends InsertEntityBase
 		}
 		//~: select by the good
 		else
-			p = bean(GetGoods.class).getGoodPrice(l.getPrimaryKey(), i.getGood());
+			p = bean(GetPrices.class).getGoodPrice(l.getPrimaryKey(), i.getGood());
 
 		//?: {good price not found} create it and save
 		if(p == null)

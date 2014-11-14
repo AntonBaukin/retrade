@@ -46,10 +46,10 @@ import com.tverts.objects.Param;
 
 import com.tverts.endure.core.Domain;
 
-/* com.tverts: retrade domain (goods + invoices + prices + stores) */
+/* com.tverts: retrade domain (goods + prices + stores) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.store.TradeStore;
 
@@ -524,9 +524,8 @@ public class      GenSells
 		  Arrays.asList(ctx.get(GoodUnit[].class))
 		);
 
-		Set<Long>      ids   = new HashSet<Long>(bean(GetGoods.class).
-		   getGoodsWithPrices(ctx.get(Domain.class).getPrimaryKey())
-		);
+		Set<Long>      ids   = new HashSet<Long>(bean(GetPrices.class).
+		   getGoodsWithPrices(ctx.get(Domain.class).getPrimaryKey()));
 
 		for(Iterator<GoodUnit> i = goods.iterator();(i.hasNext());)
 				if(!ids.contains(i.next().getPrimaryKey()))
@@ -566,7 +565,7 @@ public class      GenSells
 		//?: select the prices
 		if(ps == null)
 		{
-			List<GoodPrice> pl = bean(GetGoods.class).getGoodPrices(gu);
+			List<GoodPrice> pl = bean(GetPrices.class).getGoodPrices(gu);
 			ps = pl.toArray(new GoodPrice[pl.size()]);
 			ctx.set(CTX_GOOD_PRICES_PREFIX + gu, ps);
 		}

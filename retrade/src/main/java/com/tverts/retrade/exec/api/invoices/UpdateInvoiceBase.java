@@ -44,6 +44,7 @@ import com.tverts.retrade.domain.invoice.Invoice;
 import com.tverts.retrade.domain.invoice.InvoiceEdit;
 import com.tverts.retrade.domain.invoice.InvoiceGoodView;
 import com.tverts.retrade.domain.invoice.Invoices;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.GetTradeStore;
 import com.tverts.retrade.domain.store.TradeStore;
@@ -320,7 +321,7 @@ public abstract class UpdateInvoiceBase extends UpdateEntityBase
 		);
 
 		//~: load the store
-		PriceListEntity pl = bean(GetGoods.class).getPriceList(pk);
+		PriceListEntity pl = bean(GetPrices.class).getPriceList(pk);
 
 		EX.assertn(pl, "External Invoice [", ipk,
 		  "] refers Price List [", pk, "] that does not exist!"

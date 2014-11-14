@@ -22,8 +22,8 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: retrade domain (goods + prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnitView;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceChangeEditModelBean;
 
 
@@ -60,7 +60,7 @@ public class PriceChangeEditModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<GoodUnitView> getPrices()
 	{
-		List sel = bean(GetGoods.class).
+		List sel = bean(GetPrices.class).
 		  selectGoodPrices(getModel(), 25);
 
 		List res = new ArrayList(sel.size());

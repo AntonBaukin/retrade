@@ -20,11 +20,10 @@ import static com.tverts.servlet.RequestPoint.request;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
-import com.tverts.model.NumericModelBean;
 
-/* com.tverts: retrade domain (goods + prices) */
+/* com.tverts: retrade domain (prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
@@ -57,7 +56,7 @@ public class FacesPriceListView extends NumericModelView
 
 	public String gotoPricesHistory()
 	{
-		GetGoods  gg = bean(GetGoods.class);
+		GetPrices gg = bean(GetPrices.class);
 		GoodPrice gp = gg.getGoodPrice(getNumeric(),
 		  gg.getGoodUnit(obtainEntityKeyFromRequestStrict()));
 

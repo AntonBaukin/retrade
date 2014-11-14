@@ -34,9 +34,9 @@ import com.tverts.api.retrade.prices.PriceList;
 
 import com.tverts.endure.cats.CatItemView;
 
-/* com.tverts: retrade domain (goods + prices) */
+/* com.tverts: retrade domain (prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PriceListsModelBean;
 
@@ -59,8 +59,8 @@ public class FacesPriceListsView extends ModelView
 	public String gotoEditPriceList()
 	{
 		//~: load the measure unit
-		Long      pk = obtainEntityKeyFromRequestStrict();
-		PriceListEntity pl = bean(GetGoods.class).getPriceList(pk);
+		Long            pk = obtainEntityKeyFromRequestStrict();
+		PriceListEntity pl = bean(GetPrices.class).getPriceList(pk);
 		if(pl == null) throw EX.state(
 		  "Price List [", pk, "] is not found!");
 
@@ -112,7 +112,7 @@ public class FacesPriceListsView extends ModelView
 		}
 		//!: load it
 		else
-			pe = EX.assertn(bean(GetGoods.class).
+			pe = EX.assertn(bean(GetPrices.class).
 			  getPriceList(getPriceListView().getObjectKey()),
 			  "Price List [", getPriceListView().getObjectKey(), "] not found!"
 			);
@@ -193,7 +193,7 @@ public class FacesPriceListsView extends ModelView
 
 	protected boolean checkCodeExists(String code)
 	{
-		PriceListEntity pl = bean(GetGoods.class).
+		PriceListEntity pl = bean(GetPrices.class).
 		  getPriceList(getModel().domain(), code);
 
 		return codeExists = (pl != null) && (

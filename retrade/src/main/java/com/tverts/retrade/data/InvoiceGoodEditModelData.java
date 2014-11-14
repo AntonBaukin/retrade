@@ -33,6 +33,7 @@ import com.tverts.model.ModelData;
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.GoodUnitView;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceListView;
 import com.tverts.retrade.domain.invoice.InvoiceGoodEditModelBean;
 
@@ -82,7 +83,7 @@ public class InvoiceGoodEditModelData implements ModelData
 		if(domain == null) return null;
 
 		List<GoodUnit>     gus = bean(GetGoods.class).searchGoodUnits(getModel());
-		List<GoodUnitView> res = new ArrayList<GoodUnitView>(gus.size());
+		List<GoodUnitView> res = new ArrayList<>(gus.size());
 
 		for(GoodUnit gu : gus)
 			res.add(new GoodUnitView().init(gu));
@@ -98,7 +99,7 @@ public class InvoiceGoodEditModelData implements ModelData
 		String gup = s2s(request().getParameter("goodUnit"));
 		if(gup == null) return null;
 		
-		List   sel = bean(GetGoods.class).
+		List   sel = bean(GetPrices.class).
 		  getGoodPricesLists(Long.parseLong(gup));
 		List   res = new ArrayList(sel.size());
 

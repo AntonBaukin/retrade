@@ -175,7 +175,7 @@ public class      GenReprice
 
 	protected void    genPriceChanges(GenCtx ctx, RepriceDoc rd)
 	{
-		GetGoods get = bean(GetGoods.class);
+		GetPrices get = bean(GetPrices.class);
 
 		for(GoodUnit good : genSelectGoods(ctx))
 		{

@@ -20,9 +20,9 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.model.ModelData;
 
-/* com.tverts: retrade domain (goods + prices) */
+/* com.tverts: retrade domain (prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceListView;
 import com.tverts.retrade.domain.prices.PriceListsModelBean;
 
@@ -62,7 +62,7 @@ public class PriceListsModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<PriceListView> getPriceLists()
 	{
-		List sel = bean(GetGoods.class).
+		List sel = bean(GetPrices.class).
 		  getPriceLists(getModel().domain());
 		List res = new ArrayList(sel.size());
 

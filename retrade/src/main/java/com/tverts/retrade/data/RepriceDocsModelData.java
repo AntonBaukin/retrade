@@ -20,9 +20,9 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.model.ModelData;
 
-/* com.tverts: retrade domain (goods + prices) */
+/* com.tverts: retrade domain (prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.RepriceDocView;
 import com.tverts.retrade.domain.prices.RepriceDocsModelBean;
 
@@ -58,7 +58,7 @@ public class RepriceDocsModelData implements ModelData
 	@XmlElement
 	public long getRepricesNumber()
 	{
-		return bean(GetGoods.class).countReprices(getModel());
+		return bean(GetPrices.class).countReprices(getModel());
 	}
 
 	@XmlElement(name = "reprice-doc")
@@ -66,7 +66,7 @@ public class RepriceDocsModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<RepriceDocView> getReprices()
 	{
-		List sel = bean(GetGoods.class).
+		List sel = bean(GetPrices.class).
 		  selectReprices(getModel());
 		List res = new ArrayList(sel.size());
 

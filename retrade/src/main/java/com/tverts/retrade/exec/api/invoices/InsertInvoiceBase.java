@@ -44,6 +44,7 @@ import com.tverts.retrade.domain.invoice.InvoiceData;
 import com.tverts.retrade.domain.invoice.InvoiceState;
 import com.tverts.retrade.domain.invoice.Invoices;
 import com.tverts.retrade.domain.invoice.SellGood;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.GetTradeStore;
@@ -351,7 +352,7 @@ public abstract class InsertInvoiceBase extends InsertEntityBase
 		  ixkey, gs.getXkey(), gs.getXList(), gs.getList());
 
 		//~: find the good price
-		GoodPrice gp = bean(GetGoods.class).
+		GoodPrice gp = bean(GetPrices.class).
 		  getGoodPrice(pl, ig.getGoodUnit());
 
 		EX.assertn(gp, "Invoice to insert xkey [", ixkey,
@@ -437,7 +438,7 @@ public abstract class InsertInvoiceBase extends InsertEntityBase
 		);
 
 		//~: load the store
-		PriceListEntity pl = bean(GetGoods.class).getPriceList(pk);
+		PriceListEntity pl = bean(GetPrices.class).getPriceList(pk);
 
 		EX.assertn(pl, "Invoice to insert xkey [", ixkey,
 		  "] refers Price List xkey [", gxkey, "] pkey [", pk,

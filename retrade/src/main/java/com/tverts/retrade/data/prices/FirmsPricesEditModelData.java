@@ -31,7 +31,6 @@ import com.tverts.model.ModelRequest;
 
 import com.tverts.retrade.domain.firm.ContractorView;
 import com.tverts.retrade.domain.firm.GetContractor;
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.prices.FirmsPricesEditModelBean;
 import com.tverts.retrade.domain.prices.GetPrices;
@@ -112,7 +111,7 @@ public class FirmsPricesEditModelData implements ModelData
 		if(!ModelRequest.isKey("price-lists"))
 			return null;
 
-		GetGoods          get = bean(GetGoods.class);
+		GetPrices         get = bean(GetPrices.class);
 		List<CatItemView> res = new ArrayList<>(getModel().getPriceLists().size());
 
 		for(Long pk : getModel().getPriceLists())

@@ -22,13 +22,10 @@ import com.tverts.faces.NumericModelView;
 import com.tverts.model.ModelBean;
 import com.tverts.model.NumericModelBean;
 
-/* com.tverts: retrade (goods) */
+/* com.tverts: retrade (goods + prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
-
-/* com.tverts: retrade domain (prices) */
-
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.GoodPriceModelBean;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
@@ -96,7 +93,7 @@ public class FacesGoodPriceView extends NumericModelView
 		if(plmb == null) throw new IllegalStateException();
 
 		//~: load the good price
-		GetGoods  gg = bean(GetGoods.class);
+		GetPrices gg = bean(GetPrices.class);
 		GoodPrice gp = gg.getGoodPrice(
 		  plmb.priceList(), gg.getGoodUnit(objectKey));
 		if(gp == null) throw new IllegalStateException();

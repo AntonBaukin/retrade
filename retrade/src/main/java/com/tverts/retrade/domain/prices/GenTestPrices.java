@@ -43,7 +43,6 @@ import com.tverts.endure.core.Domain;
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GenTestGoods;
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 
 /* com.tverts: support */
@@ -216,7 +215,7 @@ public class GenTestPrices extends GenesisHiberPartBase
 	protected PriceListEntity genPriceList
 	  (GenCtx ctx, String code, String name, Map<String, BigDecimal> costs)
 	{
-		PriceListEntity pl = bean(GetGoods.class).getPriceList(
+		PriceListEntity pl = bean(GetPrices.class).getPriceList(
 		  ctx.get(Domain.class).getPrimaryKey(), EX.asserts(code)
 		);
 

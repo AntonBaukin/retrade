@@ -22,9 +22,9 @@ import static com.tverts.spring.SpringPoint.bean;
 import com.tverts.model.ModelData;
 import com.tverts.model.ModelRequest;
 
-/* com.tverts: retrade domain (goods + prices) */
+/* com.tverts: retrade domain (prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.GoodPriceView;
 import com.tverts.retrade.domain.prices.PriceListEntity;
@@ -69,14 +69,12 @@ public class PricesSearchModelData implements ModelData
 			return null;
 
 		//~: get all the price lists
-		List<PriceListEntity> lists = bean(GetGoods.class).
+		List<PriceListEntity> lists = bean(GetPrices.class).
 		  getPriceLists(getModel().getDomain());
 
 		//~: init the views
-		List<GoodPriceView>   res   =
-		  new ArrayList<GoodPriceView>(lists.size());
-		HashMap<Long, GoodPriceView> views =
-		  new HashMap<Long, GoodPriceView>(lists.size());
+		List<GoodPriceView>          res   = new ArrayList<>(lists.size());
+		HashMap<Long, GoodPriceView> views = new HashMap<>(lists.size());
 
 		for(PriceListEntity pl : lists)
 		{
@@ -92,7 +90,7 @@ public class PricesSearchModelData implements ModelData
 			return res;
 
 		//~: assign the prices
-		List<GoodPrice> prices = bean(GetGoods.class).
+		List<GoodPrice> prices = bean(GetPrices.class).
 		  getGoodPrices(model.getGoodUnit());
 
 		for(GoodPrice gp : prices)

@@ -28,6 +28,7 @@ import com.tverts.model.ModelRequest;
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
 import com.tverts.retrade.domain.goods.GoodUnit;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
 import com.tverts.retrade.domain.prices.PricesSearchModelBean;
@@ -70,8 +71,7 @@ public class FacesPricesSearch extends ModelView
 		else
 		{
 			PriceListModelBean pm; mb = pm = new PriceListModelBean(
-			  (PriceListEntity) bean(GetGoods.class).getPriceList(sm.getPriceList())
-			);
+			  bean(GetPrices.class).getPriceList(sm.getPriceList()));
 
 			//~: search words
 			pm.setSearchNames(sm.getSearchNames());
@@ -100,7 +100,7 @@ public class FacesPricesSearch extends ModelView
 		String priceList = SU.s2s(request().getParameter("priceList"));
 		if(priceList != null)
 		{
-			PriceListEntity pl = EX.assertn(bean(GetGoods.class).
+			PriceListEntity pl = EX.assertn(bean(GetPrices.class).
 			  getPriceList(Long.parseLong(priceList)),
 			  "Price List [", priceList, "] not found!"
 			);

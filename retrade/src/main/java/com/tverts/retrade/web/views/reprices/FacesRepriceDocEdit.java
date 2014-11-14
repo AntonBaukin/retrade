@@ -40,10 +40,10 @@ import com.tverts.model.ModelRequest;
 
 /* com.tverts: retrade domain (goods + prices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
 import com.tverts.retrade.domain.goods.MeasureUnit;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceChangeEdit;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.Prices;
@@ -132,7 +132,7 @@ public class FacesRepriceDocEdit extends ModelView
 		else
 		{
 			//~: load the document
-			rd = bean(GetGoods.class).
+			rd = bean(GetPrices.class).
 			  getRepriceDoc(getModel().getView().getObjectKey());
 
 			if(rd == null) throw EX.state();
@@ -147,7 +147,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 
 		//~: assign the price list
-		PriceListEntity pl = bean(GetGoods.class).
+		PriceListEntity pl = bean(GetPrices.class).
 		  getPriceList(getModel().getView().getPriceListKey());
 		if(pl == null) throw EX.state();
 
@@ -177,7 +177,7 @@ public class FacesRepriceDocEdit extends ModelView
 		if(codeset.isEmpty()) throw EX.arg();
 
 		//~: get the target price list
-		GetGoods        gg = bean(GetGoods.class);
+		GetPrices       gg = bean(GetPrices.class);
 		String          pp = SU.s2s(request().getParameter("priceList"));
 		PriceListEntity pl;
 
@@ -281,7 +281,7 @@ public class FacesRepriceDocEdit extends ModelView
 	{
 		Map<String, String>   res = new LinkedHashMap<String, String>(11);
 
-		List<PriceListEntity> pls = bean(GetGoods.class).
+		List<PriceListEntity> pls = bean(GetPrices.class).
 		  getPriceLists(getModel().domain());
 
 		for(PriceListEntity pl : pls) res.put(
@@ -323,7 +323,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 	protected boolean checkCodeExists(String code)
 	{
-		RepriceDoc rd = bean(GetGoods.class).
+		RepriceDoc rd = bean(GetPrices.class).
 		  getRepriceDoc(getModel().domain(), code);
 
 		Long       pk = getModel().getView().getObjectKey();
@@ -355,7 +355,7 @@ public class FacesRepriceDocEdit extends ModelView
 			rde.setCode(Prices.createRepriceDocCode(loadDomain()));
 
 			//~: set initial price list
-			PriceListEntity pl  = bean(GetGoods.class).
+			PriceListEntity pl  = bean(GetPrices.class).
 			  getPriceListDefault(getDomainKey());
 
 			if(pl != null) rde.setPriceListKey(pl.getPrimaryKey());
@@ -364,7 +364,7 @@ public class FacesRepriceDocEdit extends ModelView
 		}
 
 		//~: obtain price change document to edit
-		RepriceDoc rd = bean(GetGoods.class).
+		RepriceDoc rd = bean(GetPrices.class).
 		  getRepriceDoc(obtainEntityKeyFromRequestStrict());
 
 		//?: {not found it}

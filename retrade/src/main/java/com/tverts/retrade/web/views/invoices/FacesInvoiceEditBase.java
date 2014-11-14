@@ -52,9 +52,9 @@ import com.tverts.endure.core.GetUnityType;
 
 import com.tverts.retrade.domain.firm.GetContractor;
 import com.tverts.retrade.domain.firm.Contractors;
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.Goods;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.store.GetTradeStore;
 import com.tverts.retrade.domain.store.TradeStore;
@@ -338,7 +338,7 @@ public abstract class FacesInvoiceEditBase extends ModelView
 	                  readRequestedGoods(String prefix)
 	{
 		List<InvoiceGoodView> res = new ArrayList<InvoiceGoodView>(16);
-		GetGoods              get = bean(GetGoods.class);
+		GetPrices             get = bean(GetPrices.class);
 
 		//c: index the parameters
 		for(int i = 0;;i++)

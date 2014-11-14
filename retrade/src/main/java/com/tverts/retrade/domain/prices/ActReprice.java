@@ -232,7 +232,7 @@ public class ActReprice extends ActionBuilderReTrade
 		protected void    execute()
 		  throws Throwable
 		{
-			GetGoods   gg = bean(GetGoods.class);
+			GetPrices  gg = bean(GetPrices.class);
 			RepriceDoc rd = target(RepriceDoc.class);
 
 			//~: set change time
@@ -420,7 +420,7 @@ public class ActReprice extends ActionBuilderReTrade
 			rd.setCode(re.getCode());
 
 			//~: price list
-			rd.setPriceList(bean(GetGoods.class).
+			rd.setPriceList(bean(GetPrices.class).
 			  getPriceList(re.getPriceListKey()));
 			if(rd.getPriceList() == null) throw new IllegalArgumentException();
 

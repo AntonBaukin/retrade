@@ -12,14 +12,16 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: self shunts */
 
-import com.tverts.retrade.domain.firm.Contractor;
-import com.tverts.retrade.domain.firm.GetContractor;
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.shunts.SelfShuntDescr;
 import com.tverts.shunts.SelfShuntGroups;
 import com.tverts.shunts.SelfShuntMethod;
 import com.tverts.shunts.SelfShuntUnit;
 import com.tverts.shunts.ShuntPlain;
+
+/* com.tverts: retrade domain (firms) */
+
+import com.tverts.retrade.domain.firm.Contractor;
+import com.tverts.retrade.domain.firm.GetContractor;
 
 /* com.tverts: support */
 
@@ -79,7 +81,7 @@ public class ShuntFirmPrices extends ShuntPlain
 		EX.assertx(!c2fps.isEmpty());
 
 		//~: select all the price lists
-		priceLists = bean(GetGoods.class).getPriceLists(
+		priceLists = bean(GetPrices.class).getPriceLists(
 		  domain().getPrimaryKey());
 		EX.asserte(priceLists, "Domain has no test Price Lists generated!");
 
@@ -89,7 +91,7 @@ public class ShuntFirmPrices extends ShuntPlain
 		{
 			//~: select the prices
 			Map<Long, Long> g2p = new HashMap<Long, Long>(101);
-			bean(GetGoods.class).getPriceListPrices(pl.getPrimaryKey(), g2p);
+			bean(GetPrices.class).getPriceListPrices(pl.getPrimaryKey(), g2p);
 
 			EX.assertx(!g2p.isEmpty(), "Price List [",
 			  pl.getPrimaryKey(), "] has no good prices!");

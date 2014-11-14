@@ -55,8 +55,8 @@ import com.tverts.retrade.domain.invoice.Invoices;
 
 /* com.tverts: retrade domain (goods + prices + trade stores) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.store.TradeStore;
 
@@ -328,7 +328,7 @@ public abstract class GenInvoiceBase
 		//?: select the prices
 		if(ps == null)
 		{
-			List<GoodPrice> pl = bean(GetGoods.class).getGoodPrices(gu);
+			List<GoodPrice> pl = bean(GetPrices.class).getGoodPrices(gu);
 			EX.asserte(pl, "Good Unit [", gu, "] has no prices!");
 			ps = pl.toArray(new GoodPrice[pl.size()]);
 			ctx.set(CTX_GOOD_PRICES_PREFIX + gu, ps);
@@ -353,7 +353,7 @@ public abstract class GenInvoiceBase
 		Set<Long> ids = (Set<Long>) ctx.get(CTX_GOODS_WITH_PRICES);
 
 		if(ids == null) ctx.set(CTX_GOODS_WITH_PRICES, ids =
-			  new HashSet<Long>(bean(GetGoods.class).
+			  new HashSet<Long>(bean(GetPrices.class).
 			   getGoodsWithPrices(ctx.get(Domain.class).getPrimaryKey())
 			));
 

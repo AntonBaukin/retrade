@@ -14,10 +14,6 @@ import static com.tverts.spring.SpringPoint.bean;
 import com.tverts.model.ModelData;
 import com.tverts.model.ViewModelBeanBase;
 
-/* com.tverts: retrade endure (goods) */
-
-import com.tverts.retrade.domain.goods.GetGoods;
-
 /* com.tverts: retrade (model data) */
 
 import com.tverts.retrade.data.RepriceDocEditModelData;
@@ -50,7 +46,7 @@ public class RepriceDocEditModelBean extends ViewModelBeanBase
 	public RepriceDoc repriceDoc()
 	{
 		return (getView() == null)?(null):
-		  bean(GetGoods.class).getRepriceDoc(
+		  bean(GetPrices.class).getRepriceDoc(
 		    getView().getObjectKey());
 	}
 

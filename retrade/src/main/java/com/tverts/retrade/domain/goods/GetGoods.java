@@ -3,11 +3,8 @@ package com.tverts.retrade.domain.goods;
 /* Java */
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /* Spring Framework */
 
@@ -56,21 +53,15 @@ import com.tverts.endure.tree.TreeItem;
 
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.GoodPriceModelBean;
-import com.tverts.retrade.domain.prices.PriceChange;
-import com.tverts.retrade.domain.prices.PriceChangeEditModelBean;
-import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
-import com.tverts.retrade.domain.prices.RepriceDoc;
-import com.tverts.retrade.domain.prices.RepriceDocModelBean;
 import com.tverts.retrade.domain.prices.RepriceDocsModelBean;
 import com.tverts.retrade.domain.store.TradeStoreModelBean;
 
 /* com.tverts: support */
 
-import static com.tverts.support.DU.cleanTime;
-import static com.tverts.support.DU.lastTime;
+import com.tverts.support.DU;
 import com.tverts.support.EX;
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -100,11 +91,8 @@ public class GetGoods extends GetObjectBase
 
 	public GoodUnit       getGoodUnit(Long domain, String code)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
-		if((code = s2s(code)) == null)
-			throw new IllegalArgumentException();
+		EX.assertn(domain);
+		EX.asserts(code);
 
 // from GoodUnit gu where (gu.domain.id = :domain) and (gu.code = :code)
 
@@ -121,9 +109,7 @@ public class GetGoods extends GetObjectBase
 	@SuppressWarnings("unchecked")
 	public List<GoodUnit> getGoodUnits(Domain domain)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
+		EX.assertn(domain);
 
 // from GoodUnit gu where (gu.domain = :domain)
 
@@ -137,9 +123,7 @@ public class GetGoods extends GetObjectBase
 	@SuppressWarnings("unchecked")
 	public List<Long>     getGoodUnitsKeys(Domain domain)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
+		EX.assertn(domain);
 
 /*
 
@@ -184,9 +168,7 @@ order by gu.id
 	@SuppressWarnings("unchecked")
 	public List<GoodUnit> getTestGoodUnits(Domain domain)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
+		EX.assertn(domain);
 
 /*
 
@@ -565,11 +547,8 @@ from GoodUnit gu where
 
 	public MeasureUnit       getMeasureUnit(Long domain, String code)
 	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
-		if((code = s2s(code)) == null)
-			throw new IllegalArgumentException();
+		EX.assertn(domain);
+		EX.asserts(code);
 
 /*
 
@@ -603,660 +582,6 @@ from MeasureUnit mu where
 		).
 		  setLong("domain", domain).
 		  list();
-	}
-
-
-	/* Get Price Lists */
-
-	public PriceListEntity getPriceList(Long pk)
-	{
-		return get(PriceListEntity.class, pk);
-	}
-
-	public PriceListEntity getPriceList(Long domain, String code)
-	{
-		EX.assertn(domain);
-		EX.asserts(code);
-
-/*
-
- from PriceListEntity pl where
-   (pl.domain.id = :domain) and (pl.code = :code)
-
-*/
-		final String Q =
-
-"from PriceListEntity pl where\n" +
-"  (pl.domain.id = :domain) and (pl.code = :code)";
-
-		return object(PriceListEntity.class, Q, "domain", domain, "code", code);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<PriceListEntity> getPriceLists(Long domain)
-	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
-/*
-
-from PriceListEntity pl where (pl.domain.id = :domain)
-order by lower(pl.name)
-
-*/
-		return (List<PriceListEntity>) Q(
-
-"from PriceListEntity pl where (pl.domain.id = :domain)\n" +
-"order by lower(pl.name)"
-
-		).
-		  setLong("domain", domain).
-		  list();
-	}
-
-	public PriceListEntity getPriceListDefault(Long domain)
-	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
-/*
-
-from PriceListEntity pl where (pl.domain.id = :domain)
-order by lower(pl.name)
-
-*/
-		return (PriceListEntity) Q(
-
-"from PriceListEntity pl where (pl.domain.id = :domain)\n" +
-"order by lower(pl.name)"
-
-		).
-		  setMaxResults(1).
-		  setLong("domain", domain).
-		  uniqueResult();
-	}
-
-	public List<Long>      getGoodsWithPrices(Long domain)
-	{
-/*
-
- select distinct gu.id from
-   GoodPrice gp join gp.goodUnit gu
- where (gu.domain.id = :domain)
-
- */
-		return list(Long.class,
-
-"select distinct gu.id from\n" +
-"  GoodPrice gp join gp.goodUnit gu\n" +
-"where (gu.domain.id = :domain)",
-
-		  "domain", domain
-		);
-	}
-
-	public List<GoodPrice> getGoodPrices(Long goodUnit)
-	{
-		EX.assertn(goodUnit);
-
-// from GoodPrice where (goodUnit.id = :goodUnit)
-
-		return list(GoodPrice.class,
-
-"from GoodPrice where (goodUnit.id = :goodUnit)",
-
-		  "goodUnit", goodUnit
-		);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Object[]>  getGoodPricesLists(Long goodUnit)
-	{
-		EX.assertn(goodUnit);
-
-/*
-
-select gp, pl from GoodPrice gp join gp.priceList pl
-  where (gp.goodUnit.id = :goodUnit)
-order by lower(pl.name)
-
-*/
-		return (List<Object[]>) Q(
-
-"select gp, pl from GoodPrice gp join gp.priceList pl\n" +
-"  where gp.goodUnit.id = :goodUnit\n" +
-"order by lower(pl.name)"
-
-		).
-		  setLong("goodUnit", goodUnit).
-		  list();
-	}
-
-	/**
-	 * Returns list of arrays [3] where:
-	 *
-	 *  0  is the Good Unit primary key;
-	 *  1  is the good price (BigDecimal);
-	 *  2  Txn of the GoodPrice change.
-	 */
-	@SuppressWarnings("unchecked")
-	public List            getPriceListPrices(Long priceList)
-	{
-		if(priceList == null)
-			throw new IllegalArgumentException();
-/*
-
-select gu.id, gp.price, gp.txn from
-  GoodPrice gp join gp.goodUnit gu
-where (gp.priceList.id = :priceList)
-order by gu.id
-
-*/
-
-		return Q(
-
-"select gu.id, gp.price, gp.txn from\n" +
-"  GoodPrice gp join gp.goodUnit gu\n" +
-"where (gp.priceList.id = :priceList)\n" +
-"order by gu.id"
-
-		).
-		  setLong("priceList", priceList).
-		  list();
-	}
-
-	/**
-	 * Returns filtered by the Good Unit codes
-	 * list of arrays [3] where:
-	 *
-	 *  0  Good Unit;
-	 *  1  Measure Unit;
-	 *  2  good price (BigDecimal or null).
-	 */
-	@SuppressWarnings("unchecked")
-	public List            getPriceListPrices
-	  (PriceListEntity priceList, Collection<String> goodCodes)
-	{
-		if(priceList == null)
-			throw new IllegalArgumentException();
-/*
-
-
- select gu, mu, 1 from GoodUnit gu join gu.measure mu
-   where (gu.domain = :domain) and gu.code in (:goodCodes)
-
- select gu.id, gp.price from GoodPrice gp join gp.goodUnit gu
-   where (gp.priceList = :priceList) and gu.code in (:goodCodes)
-
-*/
-
-		//~: select goods
-		List<Object[]> gs = (List<Object[]>) Q(
-
-"select gu, mu, 1 from GoodUnit gu join gu.measure mu\n" +
-"  where (gu.domain = :domain) and gu.code in (:goodCodes)"
-
-		).
-		  setParameter("domain", priceList.getDomain()).
-		  setParameterList("goodCodes", goodCodes).
-		  list();
-
-
-		//~: select prices
-		List<Object[]> ps = (List<Object[]>) Q(
-
-"select gu.id, gp.price from GoodPrice gp join gp.goodUnit gu\n" +
-"  where (gp.priceList = :priceList) and gu.code in (:goodCodes)"
-
-		).
-		  setParameter    ("priceList", priceList).
-		  setParameterList("goodCodes", goodCodes).
-		  list();
-
-		//~: map the prices
-		HashMap<Long, BigDecimal> m =
-		  new HashMap<Long, BigDecimal>(gs.size());
-
-		for(Object[] o : ps)
-			m.put((Long)o[0], (BigDecimal)o[1]);
-		for(Object[] o : gs)
-			o[2] = m.get(((GoodUnit)o[0]).getPrimaryKey());
-
-		return gs;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<GoodPrice> getPriceListPrices(PriceListEntity priceList)
-	{
-		if(priceList == null)
-			throw new IllegalArgumentException();
-
-
-/*
-
-from GoodPrice gp where (gp.priceList = :priceList)
-order by gp.goodUnit.id
-
-*/
-
-		return Q(
-
-"from GoodPrice gp where (gp.priceList = :priceList)\n" +
-"order by gp.goodUnit.id"
-
-		).
-		  setParameter("priceList", priceList).
-		  list();
-	}
-
-	/**
-	 * Retrieves all the prices of the list given and maps
-	 * them as Good Unit key to Good Price key.
-	 */
-	@SuppressWarnings("unchecked")
-	public void            getPriceListPrices(Long pl, Map<Long, Long> pm)
-	{
-		EX.assertn(pl);
-		EX.assertn(pm);
-
-/*
-
- select gu.id, gp.id from
-   GoodPrice gp join gp.goodUnit gu
- where (gp.priceList.id = :pl)
-
- */
-		final String Q =
-
-"select gu.id, gp.id from\n" +
-"  GoodPrice gp join gp.goodUnit gu\n" +
-"where (gp.priceList.id = :pl)";
-
-		List rows = list(List.class, Q, "pl", pl);
-		for(Object[] x : (List<Object[]>)rows)
-			pm.put((Long)x[0], (Long)x[1]);
-	}
-
-	public GoodPrice       getGoodPrice(Long pk)
-	{
-		return (GoodPrice) session().get(GoodPrice.class, pk);
-	}
-
-	public GoodPrice       getGoodPrice(PriceListEntity pl, GoodUnit gu)
-	{
-		EX.assertn(pl);
-		EX.assertn(gu);
-
-/*
-
-from GoodPrice gp where
-  (gp.priceList = :pl) and (gp.goodUnit = :gu)
-
-*/
-		return object( GoodPrice.class,
-
-"from GoodPrice gp where\n" +
-"  (gp.priceList = :pl) and (gp.goodUnit = :gu)",
-
-		  "pl", pl,
-		  "gu", gu
-		);
-	}
-
-	public GoodPrice       getGoodPrice(Long pl, Long gu)
-	{
-		EX.assertn(pl);
-		EX.assertn(gu);
-
-/*
-
-from GoodPrice gp where
-  (gp.priceList.id = :pl) and (gp.goodUnit.id = :gu)
-
-*/
-		return object( GoodPrice.class,
-
-"from GoodPrice gp where\n" +
-"  (gp.priceList.id = :pl) and (gp.goodUnit.id = :gu)",
-
-		  "pl", pl,
-		  "gu", gu
-		);
-	}
-
-
-	/* Get Price Changes (prices history) */
-
-	public RepriceDoc      getRepriceDoc(Long pk)
-	{
-		return (pk == null)?(null):
-		  (RepriceDoc) session().get(RepriceDoc.class, pk);
-	}
-
-	public RepriceDoc      getRepriceDoc(Long domain, String code)
-	{
-		if(domain == null)
-			throw new IllegalArgumentException();
-
-		if((code = s2s(code)) == null)
-			throw new IllegalArgumentException();
-
-/*
-
- from RepriceDoc rd where
-   (rd.domain.id = :domain) and (rd.code = :code)
-
-*/
-
-		return (RepriceDoc) Q(
-
-"from RepriceDoc rd where\n" +
-"  (rd.domain.id = :domain) and (rd.code = :code)"
-
-		).
-		  setLong("domain", domain).
-		  setString("code",   code).
-		  uniqueResult();
-	}
-
-	public PriceChange     getPriceChange(Long pk)
-	{
-		return (PriceChange) session().get(PriceChange.class, pk);
-	}
-
-	public PriceChange     getPriceChangeBefore(Long pl, Long gu, Date time)
-	{
-/*
-
- from PriceChange pc where (pc.priceList.id = :pl) and
-   (pc.goodUnit.id = :gu) and (pc.changeTime < :time)
- order by pc.changeTime desc
-
-*/
-		final String Q =
-
-"from PriceChange pc where (pc.priceList.id = :pl) and\n" +
-" (pc.goodUnit.id = :gu) and (pc.changeTime < :time)\n" +
-"order by pc.changeTime desc";
-
-		return first(PriceChange.class, Q, "pl", pl, "gu", gu, "time", time);
-	}
-
-	public PriceChange     getPriceChangeAfter(Long pl, Long gu, Date time)
-	{
-/*
-
- from PriceChange pc where (pc.priceList.id = :pl) and
-   (pc.goodUnit.id = :gu) and (pc.changeTime > :time)
- order by pc.changeTime asc
-
-*/
-		final String Q =
-
-"from PriceChange pc where (pc.priceList.id = :pl) and\n" +
-"  (pc.goodUnit.id = :gu) and (pc.changeTime > :time)\n" +
-"order by pc.changeTime asc";
-
-		return first(PriceChange.class, Q, "pl", pl, "gu", gu, "time", time);
-	}
-
-	/**
-	 * Returns array of {@link PriceChange} and
-	 * {@link RepriceDoc} instances.
-	 */
-	public List            selectPriceHistory(GoodPriceModelBean mb)
-	{
-		QueryBuilder qb = new QueryBuilder();
-
-		//~: from clause
-		qb.setClauseFrom("PriceChange pc join pc.repriceDoc rd");
-		qb.nameEntity("PriceChange",  PriceChange.class);
-
-		//~: select clause
-		qb.setClauseSelect("pc, rd");
-
-		//~: order by
-		qb.setClauseOrderBy("pc.changeTime");
-
-		//~: the selection limits
-		qb.setFirstRow(mb.getDataStart());
-		qb.setLimit(mb.getDataLimit());
-
-
-		//~: good unit
-		qb.getClauseWhere().addPart(
-		  "pc.goodUnit = :good"
-		).
-		  param("good", mb.goodPrice().getGoodUnit());
-
-		//~: price list
-		qb.getClauseWhere().addPart(
-		  "rd.priceList = :plist"
-		).
-		  param("plist", mb.goodPrice().getPriceList());
-
-		//~: restrict by the dates
-		restrictDates(qb, mb);
-
-
-		return QB(qb).list();
-	}
-
-	public long            countPriceHistory(GoodPriceModelBean mb)
-	{
-		QueryBuilder qb = new QueryBuilder();
-
-		//~: from clause
-		qb.setClauseFrom("PriceChange pc join pc.repriceDoc rd");
-		qb.nameEntity("PriceChange",  PriceChange.class);
-
-		//~: select clause
-		qb.setClauseSelect("count(pc.id)");
-
-
-		//~: good unit
-		qb.getClauseWhere().addPart(
-		  "pc.goodUnit = :goodUnit"
-		).
-		  param("goodUnit", mb.goodPrice().getGoodUnit());
-
-		//~: price list
-		qb.getClauseWhere().addPart(
-		  "rd.priceList = :plist"
-		).
-		  param("plist", mb.goodPrice().getPriceList());
-
-		//~: restrict by the dates
-		restrictDates(qb, mb);
-
-
-		return ((Number) QB(qb).uniqueResult()).longValue();
-	}
-
-	public List            selectReprices(RepriceDocsModelBean mb)
-	{
-		QueryBuilder qb = new QueryBuilder();
-
-		//~: from clause
-		qb.setClauseFrom("RepriceDoc rd join rd.priceList pl");
-		qb.nameEntity("RepriceDoc",  RepriceDoc.class);
-
-		//~: select clause
-		qb.setClauseSelect("rd, pl");
-
-		//~: order by
-		if(mb.isFixedOnly())
-			qb.setClauseOrderBy("rd.changeTime");
-		else
-			qb.setClauseOrderBy("rd.code");
-
-		//~: the selection limits
-		qb.setFirstRow(mb.getDataStart());
-		qb.setLimit(mb.getDataLimit());
-
-
-		//~: domain
-		qb.getClauseWhere().addPart(
-		  "rd.domain.id = :domain"
-		).
-		  param("domain", mb.domain());
-
-		//~: not fixed only
-		if(!mb.isFixedOnly())
-			qb.getClauseWhere().addPart(
-			  "rd.changeTime is null");
-
-		//~: restrict by the dates
-		if(mb.isFixedOnly())
-			restrictDates(qb, mb);
-
-		return QB(qb).list();
-	}
-
-	public long            countReprices(RepriceDocsModelBean mb)
-	{
-		QueryBuilder qb = new QueryBuilder();
-
-		//~: from clause
-		qb.setClauseFrom("RepriceDoc rd join rd.priceList pl");
-		qb.nameEntity("RepriceDoc",  RepriceDoc.class);
-
-		//~: select clause
-		qb.setClauseSelect("count(rd.id)");
-
-
-		//~: domain
-		qb.getClauseWhere().addPart(
-		  "rd.domain.id = :domain"
-		).
-		  param("domain", mb.domain());
-
-		//~: not fixed only
-		if(!mb.isFixedOnly())
-			qb.getClauseWhere().addPart(
-			  "rd.changeTime is null");
-
-		//~: restrict by the dates
-		if(mb.isFixedOnly())
-			restrictDates(qb, mb);
-
-		return ((Number) QB(qb).uniqueResult()).longValue();
-	}
-
-	public List            selectPriceChanges(RepriceDocModelBean mb)
-	{
-		return selectPriceChanges(mb.repriceDoc());
-	}
-
-	/**
-	 * Returns array of {@link PriceChange}, {@link GoodUnit},
-	 * {@link GoodPrice} or null, and {@link MeasureUnit} instances.
-	 */
-	@SuppressWarnings("unchecked")
-	public List            selectPriceChanges(RepriceDoc rd)
-	{
-/*
-
- select pc, gu, 1, mu from
-   PriceChange pc join pc.goodUnit gu join gu.measure mu
- where (pc.repriceDoc = :rd)
- order by pc.docIndex
-
- select gu.id, gp from GoodPrice gp join gp.goodUnit gu where
-   (gp.priceList = :pl) and gu.id in (select pc.goodUnit.id from
-     PriceChange pc where (pc.repriceDoc = :rd))
-
- */
-		//~: select the entries of the price change document
-		List<Object[]> pcs = (List<Object[]>) Q(
-
-"select pc, gu, 1, mu from\n" +
-"  PriceChange pc join pc.goodUnit gu join gu.measure mu\n" +
-"where (pc.repriceDoc = :rd)\n" +
-"order by pc.docIndex"
-
-		).
-		  setParameter("rd", rd).
-		  list();
-
-
-		//~: select current prices of the entries goods
-		List<Object[]> gps = (List<Object[]>) Q(
-
-"select gu.id, gp from GoodPrice gp join gp.goodUnit gu where\n" +
-" (gp.priceList = :pl) and gu.id in (select pc.goodUnit.id from\n" +
-"   PriceChange pc where (pc.repriceDoc = :rd))"
-
-		).
-		  setParameter("pl", rd.getPriceList()).
-		  setParameter("rd", rd).
-		  list();
-
-
-		//~: map the prices
-		HashMap<Long, GoodPrice> m =
-		  new HashMap<Long, GoodPrice>(gps.size());
-
-		for(Object[] o : gps)
-			m.put((Long)o[0], (GoodPrice)o[1]);
-		for(Object[] o : pcs)
-			o[2] = m.get(((GoodUnit)o[1]).getPrimaryKey());
-
-		return pcs;
-	}
-
-	/**
-	 * Returns array of {@link GoodPrice}, {@link GoodUnit},
-	 * {@link MeasureUnit}}, and Rest Cost {@link AggrValue}
-	 * instances.
-	 */
-	public List            selectGoodPrices(PriceChangeEditModelBean mb, int limit)
-	{
-		QueryBuilder qb = new QueryBuilder();
-
-		//~: from clause
-		qb.setClauseFrom(
-		  "GoodPrice gp join gp.goodUnit gu join gu.measure mu, Cost c"
-		);
-
-		qb.nameEntity("GoodPrice", GoodPrice.class);
-		qb.nameEntity("Cost", AggrValue.class);
-
-		//~: select clause
-		qb.setClauseSelect("gp, gu, mu, c");
-
-		//~: order by
-		qb.setClauseOrderBy("gu.sortName");
-
-		//~: the limits
-		qb.setFirstRow(0);
-		qb.setLimit(limit);
-
-
-		//~: good >< cost  [1-to-1, strict]
-		qb.getClauseWhere().addPart(
-		  "c.owner.id = gu.id"
-		);
-
-		//~: cost aggr type
-		qb.getClauseWhere().addPart(
-		  "c.aggrType = :aggrType"
-		).
-		  param("aggrType", Goods.aggrTypeRestCost());
-
-		//~: price list
-		if(mb.getPriceChange().getPriceList() == null)
-			throw new IllegalStateException();
-
-		qb.getClauseWhere().addPart(
-		  "gp.priceList.id = :priceList"
-		).
-		  param("priceList", mb.getPriceChange().getPriceList());
-
-		//~: restrict good units by code | name
-		gusSearch(qb, mb.getSearchGoods());
-
-		return QB(qb).list();
 	}
 
 
@@ -1396,7 +721,7 @@ from GoodPrice gp where
 
 	/* protected: shortage routines */
 
-	private <T extends ModelBeanBase & DataSelectModel & DataSearchModel> int
+	protected <T extends ModelBeanBase & DataSelectModel & DataSearchModel> int
 	                   doCountGoodUnits(T mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
@@ -1459,7 +784,7 @@ from GoodPrice gp where
 		String[] gus = gusSearch();
 		EX.asserte(gus);
 
-		if(words != null) for(String w : words) if((w = s2s(w)) != null)
+		if(words != null) for(String w : words) if((w = SU.s2s(w)) != null)
 		{
 			w = "%" + w.toLowerCase() + "%";
 
@@ -1478,7 +803,7 @@ from GoodPrice gp where
 		return new String[] { "gu.unity.oxSearch like :w" };
 	}
 
-	private void       restrictDates(QueryBuilder qb, GoodPriceModelBean mb)
+	protected void     restrictDates(QueryBuilder qb, GoodPriceModelBean mb)
 	{
 		if((mb.getMinDate() == null) && (mb.getMaxDate() == null))
 			return;
@@ -1487,23 +812,23 @@ from GoodPrice gp where
 		if(mb.getMinDate() == null) qb.getClauseWhere().addPart(
 		  "pc.changeTime <= :maxDate"
 		).
-		  param("maxDate", lastTime(mb.getMaxDate()));
+		  param("maxDate", DU.lastTime(mb.getMaxDate()));
 
 		//~: >= min date
 		else if(mb.getMaxDate() == null) qb.getClauseWhere().addPart(
 		  "pc.changeTime >= :minDate"
 		).
-		  param("minDate", cleanTime(mb.getMinDate()));
+		  param("minDate", DU.cleanTime(mb.getMinDate()));
 
 		//~: between
 		else qb.getClauseWhere().addPart(
 		  "pc.changeTime between :minDate and :maxDate"
 		).
-		  param("minDate", cleanTime(mb.getMinDate())).
-		  param("maxDate", lastTime(mb.getMaxDate()));
+		  param("minDate", DU.cleanTime(mb.getMinDate())).
+		  param("maxDate", DU.lastTime(mb.getMaxDate()));
 	}
 
-	private void       restrictDates(QueryBuilder qb, RepriceDocsModelBean mb)
+	protected void     restrictDates(QueryBuilder qb, RepriceDocsModelBean mb)
 	{
 		if((mb.getMinDate() == null) && (mb.getMaxDate() == null))
 			return;
@@ -1512,20 +837,20 @@ from GoodPrice gp where
 		if(mb.getMinDate() == null) qb.getClauseWhere().addPart(
 		  "rd.changeTime <= :maxDate"
 		).
-		  param("maxDate", lastTime(mb.getMaxDate()));
+		  param("maxDate", DU.lastTime(mb.getMaxDate()));
 
 		//~: >= min date
 		else if(mb.getMaxDate() == null) qb.getClauseWhere().addPart(
 		  "rd.changeTime >= :minDate"
 		).
-		  param("minDate", cleanTime(mb.getMinDate()));
+		  param("minDate", DU.cleanTime(mb.getMinDate()));
 
 		//~: between
 		else qb.getClauseWhere().addPart(
 		  "rd.changeTime between :minDate and :maxDate"
 		).
-		  param("minDate", cleanTime(mb.getMinDate())).
-		  param("maxDate", lastTime(mb.getMaxDate()));
+		  param("minDate", DU.cleanTime(mb.getMinDate())).
+		  param("maxDate", DU.lastTime(mb.getMaxDate()));
 	}
 
 	protected void     restrictTreeGoods(QueryBuilder qb, GoodsTreeModelBean mb)
