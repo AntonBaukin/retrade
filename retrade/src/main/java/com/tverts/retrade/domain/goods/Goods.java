@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,7 +21,12 @@ import com.tverts.endure.core.IncValues;
 
 import com.tverts.endure.aggr.AggrValue;
 
-/* com.tverts: retrade domain (trade stores) */
+/* com.tverts: retrade api (goods + prices) */
+
+import com.tverts.api.retrade.goods.Good;
+import com.tverts.api.retrade.prices.PriceItem;
+
+/* com.tverts: retrade domain (stores) */
 
 import com.tverts.retrade.domain.store.TradeStore;
 
@@ -38,7 +43,18 @@ import com.tverts.support.SU;
  */
 public class Goods
 {
-	/* types of locks */
+	/* Types of Entities */
+
+	public static final String TYPE_GOOD_UNIT    =
+	  "ReTrade: Goods: Good Unit";
+
+	public static final String TYPE_GOODS_TREE   =
+	  "ReTrade: Goods: Tree";
+
+	public static final String TYPE_GOODS_FOLDER =
+	  "ReTrade: Goods: Tree Folder";
+
+	/* Types of Locks */
 
 	/**
 	 * @see {@link Domains#LOCK_XGOODS}
@@ -47,20 +63,7 @@ public class Goods
 	  Domains.LOCK_XGOODS;
 
 
-	/* types of entities */
-
-	public static final String TYPE_GOOD_UNIT    =
-	  "ReTrade: Goods: Good Unit";
-
-
-	public static final String TYPE_GOODS_TREE   =
-	  "ReTrade: Goods: Tree";
-
-	public static final String TYPE_GOODS_FOLDER =
-	  "ReTrade: Goods: Tree Folder";
-
-
-	/* types of aggregated values */
+	/* Types of Aggregated Values */
 
 	/**
 	 * Unity type of the Good Unit volume in a Trade Store.
@@ -86,24 +89,11 @@ public class Goods
 	  "Aggr Calc: Volume: Volume Check";
 
 
-	/* public static: support routines */
+	/* Support Routines */
 
 	public static String  getGoodUnitName(GoodUnit gu)
 	{
 		return (gu == null)?(null):(gu.getName());
-	}
-
-	public static boolean equals(GoodUnit a, GoodUnit b)
-	{
-		return (a == b) || ((a != null) && (b != null) &&
-		  (a.getPrimaryKey() != null) &&
-		  a.getPrimaryKey().equals(b.getPrimaryKey()));
-	}
-
-	public static boolean equals(GoodUnit a, Long b)
-	{
-		return (a != null) && (b != null) &&
-		  (a.getPrimaryKey() != null) && a.getPrimaryKey().equals(b);
 	}
 
 	public static String  getStoreFullName(TradeStore store)
@@ -123,8 +113,21 @@ public class Goods
 		return SU.lenum(6, code);
 	}
 
+	public static boolean equals(GoodUnit a, GoodUnit b)
+	{
+		return (a == b) || ((a != null) && (b != null) &&
+		  (a.getPrimaryKey() != null) &&
+		  a.getPrimaryKey().equals(b.getPrimaryKey()));
+	}
 
-	/* public static: unity types of aggregated values */
+	public static boolean equals(GoodUnit a, Long b)
+	{
+		return (a != null) && (b != null) &&
+		  (a.getPrimaryKey() != null) && a.getPrimaryKey().equals(b);
+	}
+
+
+	/* Unity Types of Aggregated Values */
 
 	public static UnityType aggrTypeRestCost()
 	{
@@ -139,7 +142,7 @@ public class Goods
 	}
 
 
-	/* public static: aggregated values routines */
+	/* Aggregated Values Routines */
 
 	public static BigDecimal aggrValueRestCost(AggrValue cost)
 	{
@@ -167,10 +170,40 @@ public class Goods
 	}
 
 
-	/* public static: special checks */
+	/* Special Checks */
 
 	public static boolean    canBuyGood(GoodUnit gu)
 	{
 		return (gu.getGoodCalc() == null) || gu.getGoodCalc().isSemiReady();
+	}
+
+
+	/* Initialization and Copying */
+
+	public static void init(GoodUnit gu, Good g)
+	{
+		//=: primary key
+		g.setPkey(gu.getPrimaryKey());
+
+		//=: code
+		g.setCode(gu.getCode());
+
+		//=: name
+		g.setName(gu.getName());
+
+		//=: tx-number
+		g.setTx(gu.getTxn());
+
+		//=: measure unit
+		if(gu.getMeasure() != null)
+			g.setMeasure(gu.getMeasure().getPrimaryKey());
+
+		//=: calculation
+		if(gu.getGoodCalc() != null)
+			g.setCalc(gu.getGoodCalc().getPrimaryKey());
+
+		//=: price item good
+		if(g instanceof PriceItem)
+			((PriceItem)g).setGood(gu.getPrimaryKey());
 	}
 }

@@ -50,6 +50,27 @@ public class      RepriceDoc
 		super.setOx(ox);
 	}
 
+	public void updateOx()
+	{
+		super.updateOx();
+
+		PriceChanges pc = this.getOx();
+
+		//=: tx-number
+		pc.setTx(getTxn());
+
+		//=: code
+		pc.setCode(getCode());
+
+		//=: document time
+		pc.setTime(getChangeTime());
+
+		//=: price list
+		pc.setList((priceList == null)?(null):(priceList.getPrimaryKey()));
+
+		//HINT: the changes are not updated here!
+	}
+
 
 	/* Price Change Document */
 

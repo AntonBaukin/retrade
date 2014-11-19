@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
 
+import com.tverts.api.core.XKeyPair;
 import com.tverts.api.retrade.document.Document;
 
 
@@ -22,11 +23,47 @@ import com.tverts.api.retrade.document.Document;
  * of goods in the Price List referred.
  */
 @XmlRootElement(name = "price-changes")
-@XmlType(name = "price-changes",
-  propOrder = { "oldPrices", "newPrices" }
-)
+@XmlType(name = "price-changes", propOrder = {
+  "list", "XList", "oldPrices", "newPrices"
+})
 public class PriceChanges extends Document
 {
+	/* Price Changes */
+
+	/**
+	 * The primary key of the price list that was
+	 * updated by the document. If this attribute
+	 * is undefined, the document marks the change
+	 * of the price lists association with the
+	 * contractors enumerated.
+	 */
+	@XKeyPair(type = PriceList.class)
+	@XmlElement(name = "price-list")
+	public Long getList()
+	{
+		return (list == 0L)?(null):(list);
+	}
+
+	private long list;
+
+	public void setList(Long list)
+	{
+		this.list = (list == null)?(0L):(list);
+	}
+
+	@XmlElement(name = "xprice-list")
+	public String getXList()
+	{
+		return xlist;
+	}
+
+	private String xlist;
+
+	public void setXList(String xlist)
+	{
+		this.xlist = xlist;
+	}
+
 	/**
 	 * Collection of prices of the goods
 	 * before the change is done. Only
@@ -34,7 +71,7 @@ public class PriceChanges extends Document
 	 *
 	 * Note that goods removed from the list
 	 * are marked with removed attribute and
-	 * are not in the list of the ew prices.
+	 * are not in the list of the new prices.
 	 */
 	@XmlElement(name = "price-item")
 	@XmlElementWrapper(name = "old-prices")

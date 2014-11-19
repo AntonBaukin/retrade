@@ -39,7 +39,6 @@
 
         <!-- Prices Change Documents -->
 
-        <!--
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
           <property name = 'weight' value = '8'/>
@@ -54,7 +53,6 @@
             </bean>
           </property>
         </bean>
-        -->
 
 
         <!--&lt;!&ndash; Invoices Buy &ndash;&gt;

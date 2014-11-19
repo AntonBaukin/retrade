@@ -19,7 +19,7 @@ import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 /* com.tverts: actions */
 
-import static com.tverts.actions.ActionsPoint.actionRun;
+import com.tverts.actions.ActionsPoint;
 import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
@@ -41,7 +41,6 @@ import com.tverts.endure.core.Domain;
 
 /* com.tverts: retrade domain (goods + invoices) */
 
-import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.invoice.gen.GenInvoiceBase;
 
@@ -81,10 +80,12 @@ public class      GenReprice
 		genPriceChanges(ctx, rd);
 
 		//!: save the document
-		actionRun(ActionType.SAVE, rd);
+		ActionsPoint.actionRun(ActionType.SAVE, rd,
+		  ActionsPoint.UNITY_TYPE, Prices.TYPE_REPRICE_DOC
+		);
 
 		//!: fix the prices now
-		actionRun(Prices.ACT_FIX_PRICES, rd,
+		ActionsPoint.actionRun(Prices.ACT_FIX_PRICES, rd,
 		  Prices.CHANGE_TIME, ctx.get(DaysGenDisp.TIME, Date.class)
 		);
 	}

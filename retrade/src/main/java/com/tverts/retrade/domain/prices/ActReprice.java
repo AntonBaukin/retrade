@@ -35,9 +35,11 @@ import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
 
-/* com.tverts: retrade api (prices) */
+/* com.tverts: retrade api (goods + prices) */
 
+import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.api.retrade.prices.PriceChanges;
+import com.tverts.api.retrade.prices.PriceItem;
 
 /* com.tverts: retrade domain (core + goods) */
 
@@ -373,6 +375,42 @@ public class ActReprice extends ActionBuilderReTrade
 					//!: save it
 					session().save(gp);
 				}
+			}
+
+			//~: update the changes document
+			rd.updateOx();
+
+			//~: fill the old prices
+			rd.getOx().getOldPrices().clear();
+			for(PriceChange pc : rd.getChanges())
+			{
+				PriceItem i = new PriceItem();
+				rd.getOx().getOldPrices().add(i);
+
+				//~: assign the good
+				Goods.init(pc.getGoodUnit(), i);
+
+				//=: old price
+				i.setPrice(pc.getPriceOld());
+
+				//?: {removed}
+				if(pc.getPriceNew() == null)
+					i.setRemoved(true);
+			}
+
+			//~: fill the new prices
+			rd.getOx().getNewPrices().clear();
+			for(PriceChange pc : rd.getChanges())
+				if(pc.getPriceNew() != null)
+			{
+				PriceItem i = new PriceItem();
+				rd.getOx().getNewPrices().add(i);
+
+				//~: assign the good
+				Goods.init(pc.getGoodUnit(), i);
+
+				//=: new price
+				i.setPrice(pc.getPriceNew());
 			}
 		}
 

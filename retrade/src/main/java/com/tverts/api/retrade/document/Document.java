@@ -7,7 +7,6 @@ import java.util.Date;
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -30,8 +29,8 @@ public abstract class Document
        extends        JustTxObject
        implements     CodedObject, RemovableObject, Timed
 {
-	@XmlAttribute(name = "removed")
-	public Boolean isRemoved()
+	@XmlAttribute
+	public Boolean getRemoved()
 	{
 		return removed?(Boolean.TRUE):(null);
 	}
@@ -43,7 +42,6 @@ public abstract class Document
 		this.removed = Boolean.TRUE.equals(removed);
 	}
 
-	@XmlElement(name = "code")
 	public String getCode()
 	{
 		return code;
@@ -56,7 +54,6 @@ public abstract class Document
 		this.code = code;
 	}
 
-	@XmlElement(name = "fixed")
 	public boolean isFixed()
 	{
 		return fixed;
@@ -74,7 +71,6 @@ public abstract class Document
 	 * In external systems defines the order
 	 * of the documents.
 	 */
-	@XmlElement(name = "time")
 	@XmlJavaTypeAdapter(TimestampAdapter.class)
 	public Date getTime()
 	{
@@ -88,7 +84,6 @@ public abstract class Document
 		this.time = time;
 	}
 
-	@XmlElement(name = "remarks")
 	public String getRemarks()
 	{
 		return remarks;
