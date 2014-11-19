@@ -3,7 +3,6 @@ package com.tverts.api.core;
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -18,7 +17,6 @@ public class      CatItem
        extends    JustTxObject
        implements CodedObject, RemovableObject
 {
-	@XmlElement(name = "code")
 	public String getCode()
 	{
 		return code;
@@ -31,7 +29,6 @@ public class      CatItem
 		this.code = code;
 	}
 
-	@XmlElement(name = "name")
 	public String getName()
 	{
 		return name;
@@ -44,8 +41,8 @@ public class      CatItem
 		this.name = name;
 	}
 
-	@XmlAttribute(name = "removed")
-	public Boolean isRemoved()
+	@XmlAttribute
+	public Boolean getRemoved()
 	{
 		return removed?(Boolean.TRUE):(null);
 	}

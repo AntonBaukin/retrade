@@ -10,7 +10,7 @@ public interface RemovableObject
 {
 	/* public: RemovableObject interface */
 
-	public Boolean isRemoved();
+	public Boolean getRemoved();
 
 	public void    setRemoved(Boolean removed);
 }
