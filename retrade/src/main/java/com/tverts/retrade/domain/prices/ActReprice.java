@@ -5,7 +5,7 @@ package com.tverts.retrade.domain.prices;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
 
 /* com.tverts: spring */
 
@@ -35,11 +35,9 @@ import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
 
-/* com.tverts: retrade api (goods + prices) */
+/* com.tverts: retrade api (prices) */
 
-import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.api.retrade.prices.PriceChanges;
-import com.tverts.api.retrade.prices.PriceItem;
 
 /* com.tverts: retrade domain (core + goods) */
 
@@ -241,8 +239,10 @@ public class ActReprice extends ActionBuilderReTrade
 			return this;
 		}
 
+		protected Date changeTime;
 
-		/* public: Action interface */
+
+		/* Action */
 
 		public RepriceDoc getResult()
 		{
@@ -250,23 +250,34 @@ public class ActReprice extends ActionBuilderReTrade
 		}
 
 
-		/* protected: ActionBase interface */
+		/* protected: Action Base */
 
-		protected void    execute()
+		protected void execute()
 		  throws Throwable
 		{
-			GetPrices  gg = bean(GetPrices.class);
 			RepriceDoc rd = target(RepriceDoc.class);
 
-			//~: set change time
+			//=: initialize the change time
 			EX.assertx(rd.getChangeTime() == null);
 			rd.setChangeTime((changeTime != null)?(changeTime):(new Date()));
 
-			//?: {has no changes}
-			EX.asserte(rd.getChanges());
+			//~: init the changes
+			initChanges();
 
-			//~: processed goods
-			HashSet<Long> goods = new HashSet<>(rd.getChanges().size());
+			//~: init the object-extraction
+			initOx();
+
+			//=: update transaction number
+			TxPoint.txn(tx(), rd);
+
+			//~: update the changes document
+			rd.updateOx();
+		}
+
+		protected void initChanges()
+		{
+			GetPrices  gg = bean(GetPrices.class);
+			RepriceDoc rd = target(RepriceDoc.class);
 
 			//~: affect the changes
 			int ichange = 0;
@@ -276,13 +287,14 @@ public class ActReprice extends ActionBuilderReTrade
 				EX.assertn(pc.getGoodUnit());
 
 				//?: {already has this good}
-				EX.assertx(!goods.contains(pc.getGoodUnit().getPrimaryKey()),
+				EX.assertx(!changes.containsKey(pc.getGoodUnit().getPrimaryKey()),
 
 				  "Price Change for good [", pc.getGoodUnit().getPrimaryKey(),
 				  "] with code [", pc.getGoodUnit().getCode(), "] appears twice!"
 				);
 
-				goods.add(pc.getGoodUnit().getPrimaryKey());
+				//~: remember this change
+				changes.put(pc.getGoodUnit().getPrimaryKey(), pc);
 
 				//~: check the price
 				if(pc.getPriceNew() != null)
@@ -306,7 +318,7 @@ public class ActReprice extends ActionBuilderReTrade
 				//=: price list copy
 				pc.setPriceList(rd.getPriceList());
 
-				//=: change time copy
+				//=: copy the change time
 				pc.setChangeTime(rd.getChangeTime());
 
 				//=: change position
@@ -321,7 +333,7 @@ public class ActReprice extends ActionBuilderReTrade
 
 				//HINT: we not update the old price of the
 				//  next entry to the new price of our entry
-				//  inserted in the middle!
+				//  is being inserted in the middle!
 
 				//?: {found the next}
 				if(nxt != null)
@@ -353,8 +365,11 @@ public class ActReprice extends ActionBuilderReTrade
 				//?: {new price is undefined, remove from the price list}
 				if(pc.getPriceNew() == null)
 				{
+					//~: mark this good as removed
+					removed.put(pc.getGoodUnit().getPrimaryKey(), gp);
+
 					//HINT: we remove the good from the price list, but it is not
-					//  there now! This entry has no meaning
+					//  there now! This entry has no meaning, but we allow it.
 
 					//?: {has no current price}
 					if(gp == null) continue;
@@ -367,6 +382,9 @@ public class ActReprice extends ActionBuilderReTrade
 				//?: {has good price} just assign the new price
 				else if(gp != null)
 				{
+					//=: remember as the updated
+					updated.put(pc.getGoodUnit().getPrimaryKey(), gp);
+
 					//=: assign the new price
 					gp.setPrice(pc.getPriceNew());
 
@@ -395,40 +413,51 @@ public class ActReprice extends ActionBuilderReTrade
 
 					//!: save it
 					session().save(gp);
+
+					//=: remember as the added
+					added.put(pc.getGoodUnit().getPrimaryKey(), gp);
 				}
 			}
+		}
 
-			//~: update the changes document
-			rd.updateOx();
+		protected void initOx()
+		{
+			RepriceDoc   rd = target(RepriceDoc.class);
+			PriceChanges ox = rd.getOx();
 
 			//~: fill the old prices
-			rd.getOx().getOldPrices().clear();
+			ox.getOldPrices().clear();
 			for(PriceChange pc : rd.getChanges())
 			{
-				PriceItem i = new PriceItem();
-				rd.getOx().getOldPrices().add(i);
+				com.tverts.api.retrade.prices.GoodPrice i =
+				  new com.tverts.api.retrade.prices.GoodPrice();
+				ox.getOldPrices().add(i);
 
-				//~: assign the good
-				Goods.init(pc.getGoodUnit(), i);
+				//=: good key
+				i.setGood(pc.getGoodUnit().getPrimaryKey());
 
 				//=: old price
 				i.setPrice(pc.getPriceOld());
 
 				//?: {removed}
-				if(pc.getPriceNew() == null)
+				if(removed.containsKey(pc.getGoodUnit().getPrimaryKey()))
+				{
+					EX.assertx(pc.getPriceNew() == null);
 					i.setRemoved(true);
+				}
 			}
 
 			//~: fill the new prices
-			rd.getOx().getNewPrices().clear();
+			ox.getNewPrices().clear();
 			for(PriceChange pc : rd.getChanges())
 				if(pc.getPriceNew() != null)
 			{
-				PriceItem i = new PriceItem();
-				rd.getOx().getNewPrices().add(i);
+				com.tverts.api.retrade.prices.GoodPrice i =
+				  new com.tverts.api.retrade.prices.GoodPrice();
+				ox.getNewPrices().add(i);
 
-				//~: assign the good
-				Goods.init(pc.getGoodUnit(), i);
+				//=: good key
+				i.setGood(pc.getGoodUnit().getPrimaryKey());
 
 				//=: new price
 				i.setPrice(pc.getPriceNew());
@@ -436,9 +465,20 @@ public class ActReprice extends ActionBuilderReTrade
 		}
 
 
-		/* protected: additional parameters */
+		/* protected: execution state */
 
-		protected Date changeTime;
+		//maps: good unit -> price change
+		protected Map<Long, PriceChange> changes = new HashMap<>();
+
+		//maps: good unit -> good price (out of the price list)
+		protected Map<Long, GoodPrice>   removed = new HashMap<>();
+
+		//maps: good unit -> good price
+		protected Map<Long, GoodPrice>   updated = new HashMap<>();
+
+		//maps: good unit -> good price
+		protected Map<Long, GoodPrice>   added   = new HashMap<>();
+
 	}
 
 

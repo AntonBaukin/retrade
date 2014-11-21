@@ -27,14 +27,14 @@ import com.tverts.api.retrade.prices.PriceItem;
 })
 public class GoodSell extends PriceItem
 {
-	public static final long serialVersionUID = 0L;
-
 	@XKeyPair(type = Store.class)
-	@XmlElement(name = "store")
+	@XmlElement
 	public Long getStore()
 	{
 		return (store == 0L)?(null):(store);
 	}
+
+	private long store;
 
 	public void setStore(Long store)
 	{
@@ -47,6 +47,8 @@ public class GoodSell extends PriceItem
 		return xstore;
 	}
 
+	private String xstore;
+
 	public void setXStore(String xstore)
 	{
 		this.xstore = xstore;
@@ -56,11 +58,13 @@ public class GoodSell extends PriceItem
 	 * The volume of the good measured in
 	 * it's (good's) units.
 	 */
-	@XmlElement(name = "volume")
+	@XmlElement
 	public BigDecimal getVolume()
 	{
 		return volume;
 	}
+
+	private BigDecimal volume;
 
 	public void setVolume(BigDecimal volume)
 	{
@@ -70,11 +74,13 @@ public class GoodSell extends PriceItem
 	/**
 	 * The cost of the whole volume sold.
 	 */
-	@XmlElement(name = "cost")
+	@XmlElement
 	public BigDecimal getCost()
 	{
 		return cost;
 	}
+
+	private BigDecimal cost;
 
 	public void setCost(BigDecimal cost)
 	{
@@ -92,19 +98,12 @@ public class GoodSell extends PriceItem
 		return payFlag;
 	}
 
+	private String payFlag;
+
 	public void setPayFlag(String f)
 	{
 		if((f != null) && !"C".equals(f) && !"B".equals(f))
 			throw new IllegalArgumentException();
 		this.payFlag = f;
 	}
-
-
-	/* attributes */
-
-	private long       store;
-	private String     xstore;
-	private BigDecimal volume;
-	private BigDecimal cost;
-	private String     payFlag;
 }

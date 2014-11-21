@@ -24,7 +24,6 @@ import com.tverts.endure.aggr.AggrValue;
 /* com.tverts: retrade api (goods + prices) */
 
 import com.tverts.api.retrade.goods.Good;
-import com.tverts.api.retrade.prices.PriceItem;
 
 /* com.tverts: retrade domain (stores) */
 
@@ -201,9 +200,5 @@ public class Goods
 		//=: calculation
 		if(gu.getGoodCalc() != null)
 			g.setCalc(gu.getGoodCalc().getPrimaryKey());
-
-		//=: price item good
-		if(g instanceof PriceItem)
-			((PriceItem)g).setGood(gu.getPrimaryKey());
 	}
 }

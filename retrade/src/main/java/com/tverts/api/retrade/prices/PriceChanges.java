@@ -34,7 +34,7 @@ public class PriceChanges extends Document
 	 * The primary key of the price list that was
 	 * updated by the document. If this attribute
 	 * is undefined, the document marks the change
-	 * of the price lists association with the
+	 * of the price lists associations with the
 	 * contractors enumerated.
 	 */
 	@XKeyPair(type = PriceList.class)
@@ -73,17 +73,17 @@ public class PriceChanges extends Document
 	 * are marked with removed attribute and
 	 * are not in the list of the new prices.
 	 */
-	@XmlElement(name = "price-item")
+	@XmlElement(name = "good-price")
 	@XmlElementWrapper(name = "old-prices")
-	public List<PriceItem> getOldPrices()
+	public List<GoodPrice> getOldPrices()
 	{
 		return (oldPrices != null)?(oldPrices):
-		  (oldPrices = new ArrayList<PriceItem>(32));
+		  (oldPrices = new ArrayList<>(32));
 	}
 
-	private List<PriceItem> oldPrices;
+	private List<GoodPrice> oldPrices;
 
-	public void setOldPrices(List<PriceItem> oldPrices)
+	public void setOldPrices(List<GoodPrice> oldPrices)
 	{
 		this.oldPrices = oldPrices;
 	}
@@ -92,17 +92,17 @@ public class PriceChanges extends Document
 	 * Collection of prices of the goods
 	 * after the change is done.
 	 */
-	@XmlElement(name = "price-item")
+	@XmlElement(name = "good-price")
 	@XmlElementWrapper(name = "new-prices")
-	public List<PriceItem> getNewPrices()
+	public List<GoodPrice> getNewPrices()
 	{
 		return (newPrices != null)?(newPrices):
-		  (newPrices = new ArrayList<PriceItem>(32));
+		  (newPrices = new ArrayList<>(32));
 	}
 
-	private List<PriceItem> newPrices;
+	private List<GoodPrice> newPrices;
 
-	public void setNewPrices(List<PriceItem> newPrices)
+	public void setNewPrices(List<GoodPrice> newPrices)
 	{
 		this.newPrices = newPrices;
 	}

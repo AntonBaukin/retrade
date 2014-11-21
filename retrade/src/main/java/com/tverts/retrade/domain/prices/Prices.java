@@ -32,13 +32,13 @@ import com.tverts.support.EX;
  */
 public class Prices
 {
-	/* action types */
+	/* Action Types */
 
 	public static final ActionType ACT_FIX_PRICES =
 	  ActReprice.ACT_FIX_PRICES;
 
 
-	/* action builder parameters */
+	/* Action Builder Parameters */
 
 	/**
 	 * Send this parameter when fixing price change document
@@ -52,7 +52,7 @@ public class Prices
 	  ActReprice.REPRICE_EDIT;
 
 
-	/* types of entities */
+	/* Unity Types of Entities */
 
 	/**
 	 * Unity Type of {@link PriceListEntity}.
@@ -71,7 +71,7 @@ public class Prices
 	  "ReTrade: Goods: Price Change Document";
 
 
-	/* public static: price lists */
+	/* Routines for Price Lists */
 
 	public static String getPriceListFullName(PriceListEntity pl)
 	{
@@ -81,7 +81,7 @@ public class Prices
 	}
 
 
-	/* public static: price change documents */
+	/* Routines for Price Change Documents */
 
 	public static String createRepriceDocCode(Date day, int index)
 	{
