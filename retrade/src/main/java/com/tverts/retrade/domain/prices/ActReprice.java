@@ -123,7 +123,7 @@ public class ActReprice extends ActionBuilderReTrade
 
 	/* protected: action methods */
 
-	protected void saveRepriceDoc(ActionBuildRec abr)
+	protected void saveRepriceDoc(final ActionBuildRec abr)
 	{
 		//?: {target is not a RepriceDoc}
 		checkTargetClass(abr, RepriceDoc.class);
@@ -135,7 +135,28 @@ public class ActReprice extends ActionBuilderReTrade
 			);
 
 		//~: save the price change doc
-		chain(abr).first(new SaveNumericIdentified(task(abr)));
+		chain(abr).first(new SaveNumericIdentified(task(abr)).
+		  setBeforeSave(new Runnable()
+		{
+			public void run()
+			{
+				RepriceDoc rd = target(abr, RepriceDoc.class);
+
+				//~: assign primary keys & this document to the changes
+				for(PriceChange pc : rd.getChanges())
+				{
+					//=: primary key
+					if(pc.getPrimaryKey() == null)
+						setPrimaryKey(session(abr), pc, isTestInstance(rd));
+
+					//=: price change document
+					pc.setRepriceDoc(rd);
+
+					//=: price list (from the document)
+					pc.setPriceList(EX.assertn(rd.getPriceList()));
+				}
+			}
+		}));
 
 		//~: create the payment way unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr),

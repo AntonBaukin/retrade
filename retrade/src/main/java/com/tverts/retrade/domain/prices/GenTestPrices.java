@@ -295,7 +295,8 @@ public class GenTestPrices extends GenesisHiberPartBase
 
 		//!: fix the document prices
 		ActionsPoint.actionRun(Prices.ACT_FIX_PRICES, rd,
-		  Prices.CHANGE_TIME, DU.merge(ctx.get(Date.class), new Date())
+		  //--> document time at 00:00
+		  Prices.CHANGE_TIME, DU.cleanTime(ctx.get(Date.class))
 		);
 
 		return rd;

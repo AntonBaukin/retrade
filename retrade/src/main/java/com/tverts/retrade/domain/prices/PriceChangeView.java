@@ -59,6 +59,21 @@ public class PriceChangeView implements Serializable
 		this.objectKey = objectKey;
 	}
 
+	/**
+	 * Index within the Price Change Document starting with 1.
+	 */
+	public int getDocumentIndex()
+	{
+		return documentIndex;
+	}
+
+	private int documentIndex;
+
+	public void setDocumentIndex(int documentIndex)
+	{
+		this.documentIndex = documentIndex;
+	}
+
 	@XmlJavaTypeAdapter(DateTimeAdapter.class)
 	public Date getChangeTime()
 	{
@@ -262,6 +277,12 @@ public class PriceChangeView implements Serializable
 	{
 		setRestCost(Goods.aggrValueRestCost(av));
 
+		return this;
+	}
+
+	public PriceChangeView init(int documentIndex)
+	{
+		this.documentIndex = documentIndex;
 		return this;
 	}
 }

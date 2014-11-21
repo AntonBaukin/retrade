@@ -66,8 +66,8 @@ public class RepriceDocModelData implements ModelData
 
 		List res = new ArrayList(sel.size());
 
-		for(Object obj : sel)
-			res.add(new PriceChangeView().init(obj));
+		int i = 0; for(Object obj : sel)
+			res.add(new PriceChangeView().init(obj).init(++i));
 		return res;
 	}
 

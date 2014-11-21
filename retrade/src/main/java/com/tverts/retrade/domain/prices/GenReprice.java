@@ -4,7 +4,6 @@ package com.tverts.retrade.domain.prices;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -40,9 +39,6 @@ import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.Domain;
 
 /* com.tverts: retrade domain (goods + invoices) */
-
-import com.tverts.retrade.domain.goods.GoodUnit;
-import com.tverts.retrade.domain.invoice.gen.GenInvoiceBase;
 
 /* com.tverts: support */
 
@@ -80,6 +76,7 @@ public class      GenReprice
 		genPriceChanges(ctx, rd);
 
 		//!: save the document
+		rd.updateOx();
 		ActionsPoint.actionRun(ActionType.SAVE, rd,
 		  ActionsPoint.UNITY_TYPE, Prices.TYPE_REPRICE_DOC
 		);
@@ -138,14 +135,14 @@ public class      GenReprice
 
 	/* public: DaysGenPart interface */
 
-	public boolean    isDayClear(GenCtx ctx)
+	public boolean isDayClear(GenCtx ctx)
 	{
 		return super.isGenDispDayClear(ctx,
 		  UnityTypes.unityType(RepriceDoc.class, Prices.TYPE_REPRICE_DOC)
 		);
 	}
 
-	public void       markDayGenerated(GenCtx ctx)
+	public void    markDayGenerated(GenCtx ctx)
 	{
 		super.markGenDispDay(ctx,
 		  UnityTypes.unityType(RepriceDoc.class, Prices.TYPE_REPRICE_DOC)
@@ -155,7 +152,7 @@ public class      GenReprice
 
 	/* protected: price changes generation */
 
-	protected void    initRepriceDoc(GenCtx ctx, RepriceDoc rd)
+	protected void initRepriceDoc(GenCtx ctx, RepriceDoc rd)
 	{
 		//=: generate document code
 		rd.setCode(Prices.createRepriceDocCode(
@@ -174,20 +171,13 @@ public class      GenReprice
 		));
 	}
 
-	protected void    genPriceChanges(GenCtx ctx, RepriceDoc rd)
+	protected void genPriceChanges(GenCtx ctx, RepriceDoc rd)
 	{
 		GetPrices get = bean(GetPrices.class);
 
-		for(GoodUnit good : genSelectGoods(ctx))
+		EX.assertx(rd.getChanges().isEmpty());
+		for(GoodPrice gp : genSelectGoods(ctx, rd))
 		{
-			GoodPrice gp = get.getGoodPrice(rd.getPriceList(), good);
-
-			//?: {good has no price in this price list}
-			EX.assertn(gp, "Good Unit [", good.getPrimaryKey(), "] with code [",
-			  good.getCode(), "] has no price in the Price List [",
-			  rd.getPriceList().getCode(), "]!"
-			);
-
 			//~: price change
 			PriceChange pc = new PriceChange();
 			rd.getChanges().add(pc);
@@ -195,8 +185,8 @@ public class      GenReprice
 			//=: price change document
 			pc.setRepriceDoc(rd);
 
-			//~: good unit
-			pc.setGoodUnit(good);
+			//=: good unit
+			pc.setGoodUnit(gp.getGoodUnit());
 
 			//~: variate the cost value
 			int        d = 100 - costsDelta + ctx.gen().nextInt(2*costsDelta + 1);
@@ -211,34 +201,52 @@ public class      GenReprice
 		}
 	}
 
-	protected List<GoodUnit>
-	                  genSelectGoods(GenCtx ctx)
+	protected List<GoodPrice> genSelectGoods(GenCtx ctx, RepriceDoc rd)
 	{
-		//~: take all the goods
-		List<GoodUnit> goods = new ArrayList<GoodUnit>(
-		  Arrays.asList(ctx.get(GoodUnit[].class)));
+		//HINT: main price list always contains the prices of all the
+		// goods to sell, and no good position may be removed or added!
 
-		//?: {no goods}
-		EX.asserte(goods, "No Good Units were generated!");
+		//~: the target price list
+		PriceListEntity pl = EX.assertn(rd.getPriceList());
 
-		//~: remove the goods without prices
-		GenInvoiceBase.retainGoodsWithPrices(ctx, goods);
+//		//~: the main price list
+//		PriceListEntity mn = EX.assertn(
+//		  ctx.get(PriceListEntity.class),
+//		  "No Main Price List is found (generated)!"
+//		);
+//
+//		//~: all the goods from the main price list
+//		List<GoodPrice> ps = bean(GetPrices.class).getPriceListPrices(mn);
+//		EX.asserte(ps, "Main Price List has no prices generated!");
 
-		//?: {no goods having prices}
-		EX.asserte(goods, "No Good Units having prices were generated!");
+		//TODO: implement add and remove operations of Price List price changes
+
+		List<GoodPrice> ps = bean(GetPrices.class).getPriceListPrices(pl);
 
 		//~: shuffle them
-		Collections.shuffle(goods, ctx.gen());
+		Collections.shuffle(ps, ctx.gen());
 
 		//~: generate the number of goods
 		Integer min = this.getMinGoods();
 		if(min == null) min = 1;
 		Integer max = this.getMaxGoods();
-		if(max == null) max = goods.size();
+		if(max == null) max = ps.size();
 		if(max < min) max = min;
-		if(max > goods.size()) max = goods.size();
+		if(max > ps.size()) max = ps.size();
 
-		int     num = min + ctx.gen().nextInt(max - min + 1);
-		return goods.subList(0, num);
+		//~: the sub-list of the prices
+		int num = min + ctx.gen().nextInt(max - min + 1);
+		ps = ps.subList(0, num);
+
+		//~: the result prices
+		List<GoodPrice> res = new ArrayList<>(ps.size());
+		for(GoodPrice gp : ps)
+		{
+			GoodPrice x; res.add(x = new GoodPrice());
+			x.setGoodUnit(gp.getGoodUnit());
+			x.setPrice(EX.assertn(gp.getPrice()));
+		}
+
+		return res;
 	}
 }

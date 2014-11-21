@@ -7,7 +7,7 @@ import javax.faces.bean.RequestScoped;
 
 /* com.tverts: faces */
 
-import com.tverts.faces.NumericModelView;
+import com.tverts.faces.UnityModelView;
 
 /* com.tverts: actions */
 
@@ -20,6 +20,7 @@ import com.tverts.model.NumericModelBean;
 
 /* com.tverts: retrade domain (prices) */
 
+import com.tverts.model.UnityModelBean;
 import com.tverts.retrade.domain.prices.Prices;
 import com.tverts.retrade.domain.prices.RepriceDoc;
 import com.tverts.retrade.domain.prices.RepriceDocModelBean;
@@ -35,7 +36,7 @@ import com.tverts.support.DU;
  * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
-public class FacesRepriceDocView extends NumericModelView
+public class FacesRepriceDocView extends UnityModelView
 {
 	/* public: actions */
 
@@ -51,11 +52,11 @@ public class FacesRepriceDocView extends NumericModelView
 	}
 
 
-	/* public: FacesRepriceDocView (bean) interface */
+	/* Faces Price Change Document */
 
-	public RepriceDoc          getNumeric()
+	public RepriceDoc          getEntity()
 	{
-		return (RepriceDoc)super.getNumeric();
+		return (RepriceDoc) super.getEntity();
 	}
 
 	public RepriceDocModelBean getModel()
@@ -71,45 +72,41 @@ public class FacesRepriceDocView extends NumericModelView
 		StringBuilder s = new StringBuilder(128);
 
 		s.append("Документ изм. цены №").
-		  append(getNumeric().getCode());
+		  append(getEntity().getCode());
 
-		if(getNumeric().getChangeTime() != null)
-			s.append(" от ").append(
-			  DU.datetime2str(getNumeric().getChangeTime()));
+		if(getEntity().getChangeTime() != null)
+			s.append(" от ").append(DU.datetime2str(
+			  getEntity().getChangeTime()));
 
 		return s.toString();
 	}
 
 	public boolean isDocumentFixed()
 	{
-		return (getNumeric().getChangeTime() != null);
+		return (getEntity().getChangeTime() != null);
 	}
 
 	public String  getChangeTime()
 	{
 		return DU.datetime2str(
-		  getNumeric().getChangeTime());
+		  getEntity().getChangeTime());
 	}
 
 	public String  getPriceList()
 	{
 		return Prices.getPriceListFullName(
-		  getNumeric().getPriceList());
+		  getEntity().getPriceList());
 	}
 
 
 	/* protected: UnityModelView interface */
 
-	protected NumericModelBean createModelInstance(Long objectKey)
+	protected UnityModelBean createModelInstance()
 	{
-		RepriceDocModelBean mb = new RepriceDocModelBean();
-
-		mb.setObjectClass(RepriceDoc.class);
-		mb.setDomain(getDomainKey());
-		return mb;
+		return new RepriceDocModelBean();
 	}
 
-	protected boolean          isRequestModelMatch(ModelBean model)
+	protected boolean isRequestModelMatch(ModelBean model)
 	{
 		return (model instanceof RepriceDocModelBean);
 	}

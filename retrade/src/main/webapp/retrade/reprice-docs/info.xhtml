@@ -129,7 +129,7 @@ ${v.checkEntityRequested}
           <div>Код</div>
         </td>
         <td class = "retrade-info-value retrade-info-value-reprice-code">
-          <div>#{v.numeric.code}</div>
+          <div>#{v.entity.code}</div>
         </td>
 
         <c:if test = "${v.documentFixed}">
@@ -161,7 +161,7 @@ ${v.checkEntityRequested}
           <div>Основание</div>
         </td>
         <td class = "retrade-info-value retrade-info-value-reprice-reason">
-          <div>#{v.numeric.changeReason}</div>
+          <div>#{v.entity.ox.remarks}</div>
         </td>
       </tr>
     </table>
@@ -176,7 +176,8 @@ ${v.checkEntityRequested}
     modelView = "${v}">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.GoodPriceHistory'
+      model: 'retrade.model.GoodPriceHistory',
+      sorters: [{ property: 'documentIndex', direction: 'ASC' }]
     </f:facet>
 
     <f:facet name = "proxy-props">
@@ -189,10 +190,9 @@ ${v.checkEntityRequested}
 
     <f:facet name = "grid-props">
 
-      region: 'center', margin: extjsf.pts(1, 0, 0, 0),
+      region: 'center', pager: false, sortableColumns: true,
       columns: ZeT.defined('retrade.columns.PriceChange'),
-      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-      pager: false, sortableColumns: false
+      selModel: extjsf.delayCreate('Ext.ux.selection.No')
 
     </f:facet>
   </x:data-grid>

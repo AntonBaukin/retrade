@@ -266,26 +266,14 @@ order by gu.id
 		return gs;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<GoodPrice> getPriceListPrices(PriceListEntity priceList)
+	public List<GoodPrice> getPriceListPrices(PriceListEntity pl)
 	{
-		EX.assertn(priceList);
+		EX.assertn(pl);
 
-/*
+		final String Q =
+"  from GoodPrice gp where (gp.priceList = :pl)";
 
-from GoodPrice gp where (gp.priceList = :priceList)
-order by gp.goodUnit.id
-
-*/
-
-		return Q(
-
-"from GoodPrice gp where (gp.priceList = :priceList)\n" +
-"order by gp.goodUnit.id"
-
-		).
-		  setParameter("priceList", priceList).
-		  list();
+		return list(GoodPrice.class, Q, "pl", pl);
 	}
 
 	/**
@@ -872,31 +860,27 @@ from GoodPrice gp where
      PriceChange pc where (pc.repriceDoc = :rd))
 
  */
-		//~: select the entries of the price change document
-		List<Object[]> pcs = (List<Object[]>) Q(
+		final String S =
 
 "select pc, gu, 1, mu from\n" +
 "  PriceChange pc join pc.goodUnit gu join gu.measure mu\n" +
 "where (pc.repriceDoc = :rd)\n" +
-"order by pc.docIndex"
-
-		).
-		  setParameter("rd", rd).
-		  list();
+"order by pc.docIndex";
 
 
-		//~: select current prices of the entries goods
-		List<Object[]> gps = (List<Object[]>) Q(
+		final String P =
 
 "select gu.id, gp from GoodPrice gp join gp.goodUnit gu where\n" +
 " (gp.priceList = :pl) and gu.id in (select pc.goodUnit.id from\n" +
-"   PriceChange pc where (pc.repriceDoc = :rd))"
+"   PriceChange pc where (pc.repriceDoc = :rd))";
 
-		).
-		  setParameter("pl", rd.getPriceList()).
-		  setParameter("rd", rd).
-		  list();
 
+		//~: select the entries of the price change document
+		List<Object[]> pcs = list(Object[].class, S, "rd", rd);
+
+		//~: select current prices of the entries goods
+		List<Object[]> gps = list(Object[].class, P,
+		  "pl", rd.getPriceList(), "rd", rd);
 
 		//~: map the prices
 		HashMap<Long, GoodPrice> m = new HashMap<>(gps.size());

@@ -148,6 +148,16 @@
                       <entry key   = 'Core Test : Domain (DomainName)'
                              value = 'Первичный тестовый домен'/>
 
+                      <!--
+
+                        Warning: do not update Days Back values when the
+                        database is already generated! The implementation
+                        of Genesis would fill the day gaps in the past
+                        causing the documents to appear in the past before
+                        the first day of the previous genesis.
+
+                      -->
+
                       <entry key   = 'Core Test : Domain (DaysBack)'
                              value = '15'/>
 

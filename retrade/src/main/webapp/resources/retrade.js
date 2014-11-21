@@ -1248,6 +1248,7 @@ ZeT.init('init: retrade.data', function()
 	  fields: [
 
 	    {name: 'objectKey',       type: 'string'},
+	    {name: 'documentIndex',   type: 'int'},
 	    {name: 'changeTime',      type: 'date', dateFormat: 'd.m.Y H:i'},
 	    {name: 'repriceKey',      type: 'string'},
 	    {name: 'repriceName',     type: 'string'},
@@ -1303,23 +1304,21 @@ ZeT.init('init: retrade.data', function()
 	{
 		return [
 
-		 { xtype: 'rownumberer', text: '№',
-		   width: extjsf.ex(5), resizable: false, hideable: false
+		 {
+		   text: '№', dataIndex: 'documentIndex',
+		   width: extjsf.ex(5), resizable: false, sortable: true,
+		   cls: 'x-row-numberer', innerCls: 'x-grid-cell-inner-row-numberer',
+		   tdCls: 'x-grid-cell-row-numberer x-grid-cell-special'
 		 },
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(16), flex: 0
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
 		   width: extjsf.ex(24), flex: 1
-		 },
-
-		 {
-		   text: "Ед. изм.", dataIndex: 'measureName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
 		 },
 
 		 {
@@ -1332,6 +1331,11 @@ ZeT.init('init: retrade.data', function()
 		   text: 'Цена после', dataIndex: 'priceNew', sortable: false,
 		   width: extjsf.ex(14), align: 'right', flex: 0,
 		   renderer: retrade.fcurrency
+		 },
+
+		 {
+		   text: "Ед. изм.", dataIndex: 'measureName', sortable: false,
+		   width: extjsf.ex(12), flex: 0
 		 }
 		];
 	})
