@@ -12,6 +12,7 @@ import com.tverts.endure.Unity;
 
 /* com.tverts: hibery */
 
+import com.tverts.hibery.HiberPoint;
 import com.tverts.hibery.OxBytes;
 
 /* com.tverts: support */
@@ -128,9 +129,13 @@ public abstract class OxEntity
 		//?: {mirror is the same}
 		if(getUnity() == unity) return;
 
-		//?: {mirror may not me altered}
-		EX.assertx( (getUnity() == null), "Unified mirror of Entity [",
-		  getPrimaryKey(), "] may not be altered!");
+		//HINT: mirror may not me altered, if it is not a hibernate proxy
+
+		//?: {mirror is defined}
+		if(getUnity() != null) EX.assertx( HiberPoint.isProxy(getUnity()) &&
+		  CMP.eq(getUnity().getPrimaryKey(), unity.getPrimaryKey()),
+		  "Unified mirror of Entity [", getPrimaryKey(), "] may not be altered!"
+		);
 
 		super.setUnity(unity);
 

@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.PersistenceContext;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.proxy.HibernateProxy;
 
 /* com.tverts: endure (core) */
 
@@ -35,7 +36,6 @@ import com.tverts.support.LU;
 /**
  * Singleton with static interface to access
  * system-wide primary database via Hibernate.
- *
  *
  * @author anton.baukin@gmail.com
  */
@@ -188,6 +188,11 @@ public class HiberPoint
 		return (E) HiberSystem.getInstance().unproxyDeeply(
 		  s.getSessionFactory(), e, null
 		);
+	}
+
+	public static boolean isProxy(Object e)
+	{
+		return (e instanceof HibernateProxy);
 	}
 
 
