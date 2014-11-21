@@ -234,7 +234,6 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'volumeInteger',   type: 'boolean'},
 	    {name: 'volumeCost',      type: 'string'},
 	    {name: 'unitCost',        type: 'string'},
-	    {name: 'goodPrice',       type: 'string'},
 	    {name: 'priceList',       type: 'string'},
 	    {name: 'priceListCode',   type: 'string'},
 	    {name: 'priceListName',   type: 'string'},

@@ -13,11 +13,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-/* com.tverts: retrade domain (goods + trade stores) */
+/* com.tverts: retrade domain (goods + prices + stores) */
 
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.MeasureUnit;
-import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.StoreGood;
 
@@ -153,14 +152,6 @@ public class InvoiceGoodView implements Serializable
 	{
 		this.goodVolumeDelta = goodVolumeDelta;
 	}
-
-	@XmlElement
-	public Long getGoodPrice()
-	{
-		return goodPrice;
-	}
-
-	private Long goodPrice;
 
 	public Long getPriceList()
 	{
@@ -339,9 +330,9 @@ public class InvoiceGoodView implements Serializable
 		//~: volume cost
 		setVolumeCost(g.getCost());
 
-		//?: {has good price reference}
-		if(g.getPrice() != null)
-			this.init(g.getPrice());
+		//?: {has price list reference}
+		if(g.getPriceList() != null)
+			this.init(g.getPriceList());
 
 		return this;
 	}
@@ -389,13 +380,6 @@ public class InvoiceGoodView implements Serializable
 		this.goodVolumeDelta = (!i)?(v):(v.setScale(0));
 
 		return this;
-	}
-
-	public InvoiceGoodView init(GoodPrice p)
-	{
-		this.goodPrice = p.getPrimaryKey();
-
-		return this.init(p.getPriceList());
 	}
 
 	public InvoiceGoodView init(PriceListEntity p)

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 /* com.tverts: retrade domain (goods + prices) */
 
 import com.tverts.retrade.domain.prices.GoodPrice;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 
 
 /**
@@ -18,7 +19,7 @@ public class      SellGood
        extends    InvGood
        implements NeedCalcGood
 {
-	/* public: bean interface */
+	/* Sell Invoice Good */
 
 	/**
 	 * The cost of the whole volume.
@@ -28,6 +29,8 @@ public class      SellGood
 		return cost;
 	}
 
+	private BigDecimal cost;
+
 	public void setCost(BigDecimal c)
 	{
 		if((c != null) && (c.scale() != 10))
@@ -36,14 +39,16 @@ public class      SellGood
 		this.cost = c;
 	}
 
-	public GoodPrice getPrice()
+	public PriceListEntity getPriceList()
 	{
-		return price;
+		return priceList;
 	}
 
-	public void setPrice(GoodPrice price)
+	private PriceListEntity priceList;
+
+	public void setPriceList(PriceListEntity priceList)
 	{
-		this.price = price;
+		this.priceList = priceList;
 	}
 
 	/**
@@ -55,6 +60,8 @@ public class      SellGood
 	{
 		return needCalc;
 	}
+
+	private Boolean needCalc;
 
 	public void setNeedCalc(Boolean nc)
 	{
@@ -73,11 +80,4 @@ public class      SellGood
 	{
 		super.setData(data);
 	}
-
-
-	/* persisted attributes */
-
-	private BigDecimal cost;
-	private GoodPrice  price;
-	private Boolean    needCalc;
 }

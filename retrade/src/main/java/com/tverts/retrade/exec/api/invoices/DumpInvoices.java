@@ -206,12 +206,9 @@ public class DumpInvoices extends EntitiesDumperBase
 		//~: good cost
 		gs.setCost(ig.getCost());
 
-		//~: good price
-		if(ig.getPrice() != null)
-			gs.setList(ig.getPrice().getPriceList().getPrimaryKey());
-
-		//HINT: we do not copy actual price as it
-		//  may be not the same as at the document time!
+		//~: good price list
+		if(ig.getPriceList() != null)
+			gs.setList(ig.getPriceList().getPrimaryKey());
 
 		return gs;
 	}

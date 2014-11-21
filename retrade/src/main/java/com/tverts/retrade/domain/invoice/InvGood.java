@@ -22,7 +22,7 @@ import com.tverts.retrade.domain.goods.GoodUnit;
  */
 public abstract class InvGood extends NumericBase
 {
-	/* public: bean interface */
+	/* Invoice Good */
 
 	/**
 	 * The volume of the Good Unit in the Invoice.
@@ -32,6 +32,8 @@ public abstract class InvGood extends NumericBase
 	{
 		return volume;
 	}
+
+	private BigDecimal volume;
 
 	public void setVolume(BigDecimal v)
 	{
@@ -46,6 +48,8 @@ public abstract class InvGood extends NumericBase
 		return goodUnit;
 	}
 
+	private GoodUnit goodUnit;
+
 	public void setGoodUnit(GoodUnit goodUnit)
 	{
 		this.goodUnit = goodUnit;
@@ -56,15 +60,10 @@ public abstract class InvGood extends NumericBase
 		return data;
 	}
 
+	private InvoiceData data;
+
 	public void setData(InvoiceData data)
 	{
 		this.data = data;
 	}
-
-
-	/* persisted attributes */
-
-	private BigDecimal  volume;
-	private GoodUnit    goodUnit;
-	private InvoiceData data;
 }

@@ -119,7 +119,7 @@ public class GenInvoiceSell extends GenInvoiceBase
 
 		//~: assign good price
 		if(1 + ctx.gen().nextInt(100) <= getPricesPercent())
-			((SellGood)good).setPrice(gp);
+			((SellGood)good).setPriceList(gp.getPriceList());
 	}
 
 	protected boolean     hasResGoods(GenCtx ctx, InvoiceData data)

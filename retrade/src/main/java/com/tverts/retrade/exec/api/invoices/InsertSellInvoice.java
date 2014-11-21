@@ -59,6 +59,6 @@ public class InsertSellInvoice extends InsertInvoiceBase
 		ig.setCost(copyGoodCost(bs.getXkey(), gs));
 
 		//~: assign the price list
-		assignGoodPrice(bs.getXkey(), ig, gs);
+		assignPriceList(bs.getXkey(), ig, gs);
 	}
 }

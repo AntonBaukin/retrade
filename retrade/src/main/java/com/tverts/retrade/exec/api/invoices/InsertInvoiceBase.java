@@ -45,7 +45,6 @@ import com.tverts.retrade.domain.invoice.InvoiceState;
 import com.tverts.retrade.domain.invoice.Invoices;
 import com.tverts.retrade.domain.invoice.SellGood;
 import com.tverts.retrade.domain.prices.GetPrices;
-import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.GetTradeStore;
 import com.tverts.retrade.domain.store.TradeStore;
@@ -275,8 +274,8 @@ public abstract class InsertInvoiceBase extends InsertEntityBase
 		//~: good cost
 		ig.setCost(copyGoodCost(bs.getXkey(), gs));
 
-		//~: good price
-		assignGoodPrice(bs.getXkey(), ig, gs);
+		//~: price list
+		assignPriceList(bs.getXkey(), ig, gs);
 	}
 
 	protected void        assignGoodVolume(String ixkey, InvGood ig, GoodSell gs)
@@ -341,28 +340,15 @@ public abstract class InsertInvoiceBase extends InsertEntityBase
 		return cost;
 	}
 
-	protected void        assignGoodPrice(String ixkey, SellGood ig, GoodSell gs)
+	protected void        assignPriceList(String ixkey, SellGood ig, GoodSell gs)
 	{
 		//?: {good is not sold by the price list}
 		if(gs.getList() == null)
 			return;
 
-		//~: load the price list
-		PriceListEntity pl = loadPriceList(
-		  ixkey, gs.getXkey(), gs.getXList(), gs.getList());
-
-		//~: find the good price
-		GoodPrice gp = bean(GetPrices.class).
-		  getGoodPrice(pl, ig.getGoodUnit());
-
-		EX.assertn(gp, "Invoice to insert xkey [", ixkey,
-		  "], Good xkey [", gs.getXkey(), "] refers Price List xkey [",
-		  gs.getXList(), "] pkey [", gs.getList(),
-		  "] that has no price entry for this good!"
-		);
-
-		//~: assign the price
-		ig.setPrice(gp);
+		//=: load the price list
+		ig.setPriceList(loadPriceList(
+		  ixkey, gs.getXkey(), gs.getXList(), gs.getList()));
 	}
 
 

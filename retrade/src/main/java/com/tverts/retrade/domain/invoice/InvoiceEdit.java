@@ -39,8 +39,6 @@ import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.prices.GetPrices;
-import com.tverts.retrade.domain.prices.GoodPrice;
-import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.sells.SellsData;
 import com.tverts.retrade.domain.store.GetTradeStore;
 
@@ -498,22 +496,14 @@ public class InvoiceEdit extends InvoiceViewExt
 		EX.assertx((eg.getVolumeCost() == null) || CMP.grZero(eg.getVolumeCost()));
 		ig.setCost(eg.getVolumeCost());
 
-		Long plk = (ig.getPrice() == null)?(null)
-		  :(ig.getPrice().getPriceList().getPrimaryKey());
-
 		//?: {got no price list}
 		if(eg.getPriceList() == null)
-			ig.setPrice(null);
-		//?: {the price list was changed}
-		else if((plk == null) || !plk.equals(eg.getPriceList()))
-		{
-			GetPrices       gg = bean(GetPrices.class);
-			PriceListEntity pl = EX.assertn(gg.getPriceList(eg.getPriceList()));
-			GoodPrice       gp = EX.assertn(gg.getGoodPrice(pl, ig.getGoodUnit()));
-
-			//~: assign new good price
-			ig.setPrice(gp);
-		}
+			ig.setPriceList(null);
+		//~: {the price is defined}
+		else if(!CMP.eq(ig.getPriceList(), eg.getPriceList()))
+			//=: sell good price list
+			ig.setPriceList(EX.assertn(bean(GetPrices.class).
+			  getPriceList(eg.getPriceList())));
 	}
 
 	protected void    assignGood(MoveGood ig, InvoiceGoodView eg)
