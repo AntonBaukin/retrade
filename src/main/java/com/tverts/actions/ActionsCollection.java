@@ -168,6 +168,12 @@ public class ActionsCollection
 			return this;
 		}
 
+		public SaveNumericIdentified setBeforeSave(Runnable task)
+		{
+			this.beforeSave = task;
+			return this;
+		}
+
 
 		/* protected: ActionBase interface */
 
@@ -198,6 +204,10 @@ public class ActionsCollection
 
 			//~: set the transaction number
 			TxPoint.txn(tx(), getSaveTarget());
+
+			//?: {has before save target}
+			if(beforeSave != null)
+				beforeSave.run();
 
 			//!: save
 			doSave();
@@ -288,10 +298,15 @@ public class ActionsCollection
 		protected NumericIdentity owner;
 
 
+		/* protected: before save callback */
+
+		protected Runnable beforeSave;
+
+
 		/* private: save parameters */
 
-		private boolean forceTest;
-		private Map     vals;
+		private boolean    forceTest;
+		private Map        vals;
 	}
 
 
