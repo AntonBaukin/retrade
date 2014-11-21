@@ -12,10 +12,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-/* com.tverts: spring */
-
-import static com.tverts.spring.SpringPoint.bean;
-
 /* com.tverts: models */
 
 import com.tverts.model.ModelData;
@@ -23,7 +19,6 @@ import com.tverts.model.ModelData;
 /* com.tverts: retrade domain (goods, sells) */
 
 import com.tverts.retrade.domain.goods.GoodUnitView;
-import com.tverts.retrade.domain.sells.GetSells;
 import com.tverts.retrade.domain.sells.GoodSell;
 import com.tverts.retrade.domain.sells.SellReceipt;
 import com.tverts.retrade.domain.sells.SellReceiptModelBean;
@@ -75,8 +70,8 @@ public class SellReceiptModelData implements ModelData
 			  initCost(gs.getCost())
 			);
 
-			if(gs.getGoodPrice() != null)
-				guv.init(gs.getGoodPrice());
+			if(gs.getPriceList() != null)
+				guv.init(gs.getPriceList());
 		}
 
 		return res;

@@ -25,7 +25,7 @@
     </many-to-one>
 
 
-    <!-- TradeStore reference -->
+    <!-- Trade Store -->
 
     <many-to-one name = 'store' foreign-key = 'fk_good_sell_store'>
 
@@ -37,7 +37,7 @@
     </many-to-one>
 
 
-    <!-- Good Unit reference -->
+    <!-- Good Unit -->
 
     <many-to-one name = 'goodUnit' foreign-key = 'fk_good_sell_unit'>
 
@@ -49,13 +49,13 @@
     </many-to-one>
 
 
-    <!-- Good Price reference -->
+    <!-- Price List -->
 
-    <many-to-one name = 'goodPrice' foreign-key = 'fk_good_sell_price'>
+    <many-to-one name = 'priceList' foreign-key = 'fk_good_sell_price_list'>
 
-      <column name = 'fk_good_price' index = 'ix_good_sell_price'>
+      <column name = 'fk_price_list' index = 'ix_good_sell_price_list'>
 
-        <comment>The Good Price (if was set by the Price List)</comment>
+        <comment>Defined if the sell was by a Price List</comment>
       </column>
     </many-to-one>
 

@@ -27,7 +27,7 @@ import com.tverts.exec.api.InsertEntityBase;
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.prices.GetPrices;
-import com.tverts.retrade.domain.prices.GoodPrice;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.sells.GetSells;
 import com.tverts.retrade.domain.sells.GoodSell;
 import com.tverts.retrade.domain.sells.SellPayOp;
@@ -115,7 +115,7 @@ public class InsertSellReceipt extends InsertEntityBase
 
 			//~: set the good price
 			if(sg.getList() != null)
-				dg.setGoodPrice(loadGoodPrice(s, sg));
+				dg.setPriceList(loadPriceList(s, sg));
 
 			//~: volume
 			EX.assertx(CMP.grZero(sg.getVolume()));
@@ -228,24 +228,23 @@ public class InsertSellReceipt extends InsertEntityBase
 		return ts;
 	}
 
-	protected GoodPrice loadGoodPrice(
+	protected PriceListEntity loadPriceList(
 	    com.tverts.api.retrade.sells.SellReceipt s,
 	    com.tverts.api.retrade.goods.GoodSell    sg
 	  )
 	{
-		GoodPrice gp = EX.assertn(bean(GetPrices.class).
-		  getGoodPrice(sg.getList(), sg.getGood()),
+		PriceListEntity pl = EX.assertn(
+		  bean(GetPrices.class).getPriceList(sg.getList()),
 
 		  "Sell Receipt x-key [", s.getXkey(),
 		  "] good x-key [", sg.getXGood(),
 		  "] refers unknown Price List x-key [", sg.getXList(),
-		  "] and p-key [", sg.getList(),
-		  "] or this Price List has no position for the Good!"
+		  "] and p-key [", sg.getList(), "]!"
 		);
 
 		//sec: check the domain
-		checkDomain(gp.getPriceList());
+		checkDomain(pl);
 
-		return gp;
+		return pl;
 	}
 }

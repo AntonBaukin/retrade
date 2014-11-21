@@ -68,8 +68,8 @@ public class DumpSellReceipts extends EntitiesDumperBase
 			x.setGood(g.getGoodUnit().getPrimaryKey());
 
 			//~: price list
-			if(g.getGoodPrice() != null)
-				x.setList(g.getGoodPrice().getPriceList().getPrimaryKey());
+			if(g.getPriceList() != null)
+				x.setList(g.getPriceList().getPrimaryKey());
 
 			//~: trade store
 			x.setStore(g.getStore().getPrimaryKey());

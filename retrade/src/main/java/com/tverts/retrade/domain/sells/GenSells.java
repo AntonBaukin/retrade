@@ -511,13 +511,10 @@ public class      GenSells
 			return BigDecimal.valueOf(v);
 	}
 
-	protected static final String CTX_GOODS_WITH_PRICES =
-	  GenSells.class.getName() + ": goods with prices";
-
 	protected GoodUnit[] selectGoods(GenCtx ctx)
 	{
-		GoodUnit[]     res   = (GoodUnit[]) ctx.get(CTX_GOODS_WITH_PRICES);
-		if(res != null) return res;
+		//HINT: we do not cache the prices as they may change
+		//  during the day-by-day generation!
 
 		//~: take all the goods
 		List<GoodUnit> goods = new ArrayList<GoodUnit>(
@@ -531,47 +528,52 @@ public class      GenSells
 				if(!ids.contains(i.next().getPrimaryKey()))
 					i.remove();
 
-		res = goods.toArray(new GoodUnit[goods.size()]);
-		ctx.set(CTX_GOODS_WITH_PRICES, res);
-
-		return res;
+		return goods.toArray(new GoodUnit[goods.size()]);
 	}
 
 	protected void       assignGoodSellCost(GenCtx ctx, GoodSell gs)
 	{
-		//?: {has no price} assign it
-		if(gs.getGoodPrice() == null)
-			gs.setGoodPrice(selectGoodSellPrice(ctx, gs));
+		GoodPrice gp;
 
-		EX.assertn( gs.getGoodPrice(),
-		  "Good Unit [", gs.getGoodUnit().getPrimaryKey(),
-		  "] has no a Good Price to assign!"
-		);
+		//?: {has no price list} assign it
+		if(gs.getPriceList() == null)
+		{
+			//~: select random price list
+			gp = selectGoodSellPrice(ctx, gs);
+
+			//=: assign it
+			if(gp != null)
+				gs.setPriceList(gp.getPriceList());
+			else
+				throw EX.ass("Good Unit [", gs.getGoodUnit().getPrimaryKey(),
+				  "] has no a Good Price to assign!");
+		}
+		//~: take the price from the selected list
+		else
+		{
+			gp = bean(GetPrices.class).getGoodPrice(
+			  gs.getPriceList().getPrimaryKey(),
+			  gs.getGoodUnit().getPrimaryKey()
+			);
+
+			if(gp == null)
+				throw EX.ass("Good Unit [", gs.getGoodUnit().getPrimaryKey(),
+				  "] has no a Good Price in the selected List [",
+				  gs.getPriceList().getPrimaryKey(), "]!");
+		}
 
 		//~: good cost (volume * price)
-		gs.setCost(gs.getVolume().multiply(
-		  gs.getGoodPrice().getPrice()).setScale(5)
-		);
+		gs.setCost(gs.getVolume().multiply(gp.getPrice()).setScale(5));
 	}
-
-	protected static final String CTX_GOOD_PRICES_PREFIX =
-	  GenSells.class.getName() + ": good prices: ";
 
 	protected GoodPrice  selectGoodSellPrice(GenCtx ctx, GoodSell gs)
 	{
-		Long        gu = gs.getGoodUnit().getPrimaryKey();
-		GoodPrice[] ps = (GoodPrice[]) ctx.get(CTX_GOOD_PRICES_PREFIX + gu);
+		//HINT: we do not cache the prices as they may change
+		//  during the day-by-day generation!
 
-		//?: select the prices
-		if(ps == null)
-		{
-			List<GoodPrice> pl = bean(GetPrices.class).getGoodPrices(gu);
-			ps = pl.toArray(new GoodPrice[pl.size()]);
-			ctx.set(CTX_GOOD_PRICES_PREFIX + gu, ps);
-		}
-
-		return (ps.length == 0)?(null):
-		  ps[ctx.gen().nextInt(ps.length)];
+		List<GoodPrice> gps = bean(GetPrices.class).
+		  getGoodPrices(gs.getGoodUnit().getPrimaryKey());
+		return gps.isEmpty()?(null):(gps.get(ctx.gen().nextInt(gps.size())));
 	}
 
 

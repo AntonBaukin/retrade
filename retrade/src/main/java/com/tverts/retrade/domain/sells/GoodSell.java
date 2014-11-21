@@ -10,8 +10,8 @@ import com.tverts.endure.NumericBase;
 
 /* com.tverts: retrade domain (goods + prices + stores) */
 
-import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.goods.GoodUnit;
+import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.TradeStore;
 
 /* com.tverts: support */
@@ -33,6 +33,8 @@ public class GoodSell extends NumericBase
 		return receipt;
 	}
 
+	private SellReceipt receipt;
+
 	public void setReceipt(SellReceipt receipt)
 	{
 		this.receipt = receipt;
@@ -42,6 +44,8 @@ public class GoodSell extends NumericBase
 	{
 		return store;
 	}
+
+	private TradeStore  store;
 
 	public void setStore(TradeStore store)
 	{
@@ -53,25 +57,31 @@ public class GoodSell extends NumericBase
 		return goodUnit;
 	}
 
+	private GoodUnit goodUnit;
+
 	public void setGoodUnit(GoodUnit goodUnit)
 	{
 		this.goodUnit = goodUnit;
 	}
 
-	public GoodPrice getGoodPrice()
+	public PriceListEntity getPriceList()
 	{
-		return goodPrice;
+		return priceList;
 	}
 
-	public void setGoodPrice(GoodPrice goodPrice)
+	private PriceListEntity priceList;
+
+	public void setPriceList(PriceListEntity priceList)
 	{
-		this.goodPrice = goodPrice;
+		this.priceList = priceList;
 	}
 
 	public BigDecimal getVolume()
 	{
 		return volume;
 	}
+
+	private BigDecimal volume;
 
 	public void setVolume(BigDecimal v)
 	{
@@ -85,6 +95,8 @@ public class GoodSell extends NumericBase
 	{
 		return cost;
 	}
+
+	private BigDecimal cost;
 
 	public void setCost(BigDecimal c)
 	{
@@ -104,20 +116,11 @@ public class GoodSell extends NumericBase
 		return payFlag;
 	}
 
+	private char payFlag = 'C';
+
 	public void setPayFlag(char f)
 	{
 		EX.assertx((f == 'C') || (f == 'B'));
 		this.payFlag = f;
 	}
-
-
-	/* persisted attributes & references */
-
-	private SellReceipt receipt;
-	private TradeStore  store;
-	private GoodUnit    goodUnit;
-	private GoodPrice   goodPrice;
-	private BigDecimal  volume;
-	private BigDecimal  cost;
-	private char        payFlag = 'C';
 }
