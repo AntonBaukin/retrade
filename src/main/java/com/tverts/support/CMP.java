@@ -5,6 +5,8 @@ package com.tverts.support;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.tverts.endure.NumericIdentity;
+
 
 /**
  * Various comparisons.
@@ -13,6 +15,39 @@ import java.util.Date;
  */
 public class CMP
 {
+	/* persistent objects */
+
+	/**
+	 * Compares that two entities has the same key, or
+	 * the same object, or both are undefined.
+	 *
+	 * Note that this implementation does not inspect
+	 * the classes of the entities, and keys of different
+	 * classes may be the same while the objects are not!
+	 */
+	public static boolean eq(NumericIdentity a, NumericIdentity b)
+	{
+		if(((a == null) & (b == null)) | (a == b))
+			return true;
+
+		if((a == null) | (b == null))
+			return false;
+
+		return CMP.eq(a.getPrimaryKey(), b.getPrimaryKey());
+	}
+
+	public static boolean eq(NumericIdentity a, Long b)
+	{
+		if((a == null) & (b == null))
+			return true;
+
+		if((a == null) | (b == null))
+			return false;
+
+		return CMP.eq(a.getPrimaryKey(), b);
+	}
+
+
 	/* decimal values */
 
 	public static boolean grZero(BigDecimal n)

@@ -6,7 +6,7 @@ import com.tverts.hibery.HiberPoint;
 
 
 /**
- * Base class for some simple persistent objects.
+ * Base class for simple persistent objects.
  *
  * @author anton.baukin@gmail.com
  */
@@ -14,12 +14,14 @@ public abstract class NumericBase implements NumericIdentity
 {
 	/* Numeric Identity */
 
-	public Long    getPrimaryKey()
+	public Long getPrimaryKey()
 	{
 		return primaryKey;
 	}
 
-	public void    setPrimaryKey(Long primaryKey)
+	private Long primaryKey;
+
+	public void setPrimaryKey(Long primaryKey)
 	{
 		this.primaryKey = primaryKey;
 	}
@@ -48,9 +50,4 @@ public abstract class NumericBase implements NumericIdentity
 		Long k0 = this.getPrimaryKey();
 		return (k0 == null)?(0):(k0.hashCode());
 	}
-
-
-	/* persisted attributes */
-
-	private Long primaryKey;
 }
