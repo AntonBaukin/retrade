@@ -20,7 +20,7 @@ public abstract class JustTxObject
 	 * The transaction number assigned
 	 * by the primary database.
 	 */
-	@XmlAttribute(name = "tx")
+	@XmlAttribute
 	public Long getTx()
 	{
 		return (tx == 0L)?(null):(tx);

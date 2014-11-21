@@ -8,7 +8,7 @@ package com.tverts.api.core;
  */
 public interface RemovableObject
 {
-	/* public: RemovableObject interface */
+	/* Removable Object */
 
 	public Boolean getRemoved();
 

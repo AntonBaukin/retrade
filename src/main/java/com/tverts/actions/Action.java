@@ -12,13 +12,11 @@ import com.tverts.support.logic.Predicate;
 /**
  * Action of the System Execution Layer.
  *
- * Actions are never invoked on their own. They
- * form a chain, and invocation is done in
- * the defined order.
+ * Actions are never invoked on their own. They form
+ * a chain, and invocation is done in the defined order.
  *
- * Actions are stateful. It is allowed to store
- * execution state between the phases in the
- * action instance.
+ * Actions are stateful. It is allowed to store execution
+ * state between the phases in the action instance.
  *
  * There are fours execution phases. Bind associates the
  * action with the execution context {@link ActionContext}.
@@ -31,7 +29,7 @@ import com.tverts.support.logic.Predicate;
  */
 public interface Action
 {
-	/* public: Action interface (execution phases) */
+	/* Action (execution phases) */
 
 	public void   bind(ActionContext context);
 
@@ -48,7 +46,7 @@ public interface Action
 	public void   close();
 
 
-	/* public: Action interface (the state access) */
+	/* Action (the state access) */
 
 	/**
 	 * The task that had caused this action.
