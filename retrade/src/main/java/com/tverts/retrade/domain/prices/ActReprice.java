@@ -5,7 +5,10 @@ package com.tverts.retrade.domain.prices;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /* com.tverts: spring */
 
@@ -13,8 +16,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: hibery */
 
-import static com.tverts.hibery.HiberPoint.isTestInstance;
-import static com.tverts.hibery.HiberPoint.setPrimaryKey;
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: actions */
 
@@ -39,10 +41,11 @@ import com.tverts.endure.core.ActUnity;
 
 import com.tverts.api.retrade.prices.PriceChanges;
 
-/* com.tverts: retrade domain (core + goods) */
+/* com.tverts: retrade domain (core + goods + firms) */
 
 import com.tverts.retrade.domain.ActionBuilderReTrade;
 import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.firm.Contractor;
 
 /* com.tverts: support */
 
@@ -145,7 +148,8 @@ public class ActReprice extends ActionBuilderReTrade
 				{
 					//=: primary key
 					if(pc.getPrimaryKey() == null)
-						setPrimaryKey(session(abr), pc, isTestInstance(rd));
+						HiberPoint.setPrimaryKey(session(abr), pc,
+						  HiberPoint.isTestInstance(rd));
 
 					//=: price change document
 					pc.setRepriceDoc(rd);
@@ -261,8 +265,9 @@ public class ActReprice extends ActionBuilderReTrade
 			EX.assertx(rd.getChangeTime() == null);
 			rd.setChangeTime((changeTime != null)?(changeTime):(new Date()));
 
-			//~: init the changes
-			initChanges();
+			//~: process the changes
+			get = bean(GetPrices.class);
+			processChanges();
 
 			//~: init the object-extraction
 			initOx();
@@ -272,11 +277,13 @@ public class ActReprice extends ActionBuilderReTrade
 
 			//~: update the changes document
 			rd.updateOx();
+
+			//~: relink the price crosses
+			relinkPriceCrosses();
 		}
 
-		protected void initChanges()
+		protected void processChanges()
 		{
-			GetPrices  gg = bean(GetPrices.class);
 			RepriceDoc rd = target(RepriceDoc.class);
 
 			//~: affect the changes
@@ -310,7 +317,8 @@ public class ActReprice extends ActionBuilderReTrade
 
 				//=: primary key
 				if(pc.getPrimaryKey() == null)
-					setPrimaryKey(session(), pc, isTestInstance(rd));
+					HiberPoint.setPrimaryKey(session(), pc,
+					  HiberPoint.isTestInstance(rd));
 
 				//=: price change document
 				pc.setRepriceDoc(rd);
@@ -325,7 +333,7 @@ public class ActReprice extends ActionBuilderReTrade
 				pc.setDocIndex(ichange++);
 
 				//~: find the next change
-				PriceChange nxt = gg.getPriceChangeAfter(
+				PriceChange nxt = get.getPriceChangeAfter(
 				  pc.getPriceList().getPrimaryKey(),
 				  pc.getGoodUnit().getPrimaryKey(),
 				  pc.getChangeTime()
@@ -339,7 +347,7 @@ public class ActReprice extends ActionBuilderReTrade
 				if(nxt != null)
 				{
 					//~: find previous change
-					PriceChange prv = gg.getPriceChangeBefore(
+					PriceChange prv = get.getPriceChangeBefore(
 					  pc.getPriceList().getPrimaryKey(),
 					  pc.getGoodUnit().getPrimaryKey(),
 					  pc.getChangeTime()
@@ -356,7 +364,7 @@ public class ActReprice extends ActionBuilderReTrade
 				}
 
 				//~: load the actual good price
-				GoodPrice gp = gg.getGoodPrice(pc.getPriceList(), pc.getGoodUnit());
+				GoodPrice gp = get.getGoodPrice(pc.getPriceList(), pc.getGoodUnit());
 
 				//~: take the price as the old
 				if(gp != null)
@@ -371,11 +379,9 @@ public class ActReprice extends ActionBuilderReTrade
 					//HINT: we remove the good from the price list, but it is not
 					//  there now! This entry has no meaning, but we allow it.
 
-					//?: {has no current price}
-					if(gp == null) continue;
-
-					//TODO implement Removing Good Price entities (eliminate all direct GoodPrice references)
-					throw EX.unop("Removing Good Price entity is not implemented!");
+					//?: {has current price} react on added entry
+					if(gp != null)
+						onAddPrice(gp);
 
 					//continue;
 				}
@@ -397,7 +403,8 @@ public class ActReprice extends ActionBuilderReTrade
 					gp = new GoodPrice();
 
 					//=: primary key
-					setPrimaryKey(session(), gp, isTestInstance(rd.getPriceList()));
+					HiberPoint.setPrimaryKey(session(), gp,
+					  HiberPoint.isTestInstance(rd.getPriceList()));
 
 					//=: transaction number
 					TxPoint.txn(tx(), gp);
@@ -416,6 +423,9 @@ public class ActReprice extends ActionBuilderReTrade
 
 					//=: remember as the added
 					added.put(pc.getGoodUnit().getPrimaryKey(), gp);
+
+					//~: react on added entry
+					onAddPrice(gp);
 				}
 			}
 		}
@@ -464,8 +474,71 @@ public class ActReprice extends ActionBuilderReTrade
 			}
 		}
 
+		/**
+		 * Note that no entity relates Good Price except
+		 * {@link PriceCross} that links Contractor with
+		 * the Price List entry as to it's effective price
+		 * within the associated Price Lists.
+		 */
+		protected void onRemovePrice(GoodPrice gp)
+		{
+			List<PriceCross> pcs = get.selectCrosses(gp);
+
+			//c: for each actual cross found
+			for(PriceCross pc : pcs)
+			{
+				//~: relink by this contractor
+				Set<Long> cs = relink.get(pc.getContractor());
+				if(cs == null) relink.put(pc.getContractor(),
+				  cs = new HashSet<Long>(5));
+				cs.add(gp.getGoodUnit().getPrimaryKey());
+
+				//!: remove the cross
+				session().delete(cs);
+			}
+		}
+
+		/**
+		 * When adding Good Price we must find out
+		 * whether it becomes a new effective price
+		 * for each Contractor having the affected
+		 * Price List associated.
+		 */
+		protected void onAddPrice(GoodPrice gp)
+		{
+			List<PriceCross> pcs = get.findObsoleteCrosses(
+			  gp.getPriceList(), gp.getGoodUnit());
+
+			//c: for each obsolete cross found
+			for(PriceCross pc : pcs)
+			{
+				//~: relink by this contractor
+				Set<Long> cs = relink.get(pc.getContractor());
+				if(cs == null) relink.put(pc.getContractor(),
+				  cs = new HashSet<Long>(5));
+				cs.add(gp.getGoodUnit().getPrimaryKey());
+
+				//!: remove the cross
+				session().delete(cs);
+			}
+		}
+
+		protected void relinkPriceCrosses()
+		{
+			if(relink.isEmpty()) return;
+
+			//HINT: here we flush the Good Price items to the database
+			//  to select them properly as Price Cross candidates.
+
+			HiberPoint.flush(session());
+
+			//TODO relink Price Crosses...
+		}
+
 
 		/* protected: execution state */
+
+		protected GetPrices get;
 
 		//maps: good unit -> price change
 		protected Map<Long, PriceChange> changes = new HashMap<>();
@@ -479,6 +552,8 @@ public class ActReprice extends ActionBuilderReTrade
 		//maps: good unit -> good price
 		protected Map<Long, GoodPrice>   added   = new HashMap<>();
 
+		//maps: contractor -> set of goods
+		protected Map<Contractor, Set<Long>> relink = new HashMap<>();
 	}
 
 
@@ -577,7 +652,8 @@ public class ActReprice extends ActionBuilderReTrade
 					pcm.put(gc, pc = new PriceChange());
 
 					//~: set primary key
-					setPrimaryKey(session(), pc, isTestInstance(rd));
+					HiberPoint.setPrimaryKey(session(), pc,
+					  HiberPoint.isTestInstance(rd));
 
 					//~: reprice doc
 					pc.setRepriceDoc(rd);

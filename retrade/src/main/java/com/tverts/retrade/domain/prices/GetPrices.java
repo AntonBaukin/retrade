@@ -27,7 +27,7 @@ import com.tverts.secure.SecPoint;
 
 import com.tverts.endure.aggr.AggrValue;
 
-/* com.tverts: retrade domain (goods) */
+/* com.tverts: retrade domain (goods + firms) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
@@ -35,6 +35,7 @@ import com.tverts.retrade.domain.goods.GoodsTreeModelBean;
 import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.MeasureUnit;
+import com.tverts.retrade.domain.firm.Contractor;
 
 /* com.tverts: support */
 
@@ -535,6 +536,11 @@ from GoodPrice gp where
 		return QB(qb).list();
 	}
 
+	public GoodPrice findEffectivePrice(Contractor co, GoodUnit gu)
+	{
+		return null;
+	}
+
 
 	/* Price Crosses  */
 
@@ -618,6 +624,38 @@ from GoodPrice gp where
 "from PriceCross pc where (pc.contractor.id = :c)";
 
 		return list(Object[].class, Q, "c", contractor);
+	}
+
+	public List<PriceCross> selectCrosses(GoodPrice gp)
+	{
+		final String Q =
+"from PriceCross where (goodPrice = :gp)";
+
+		return list(PriceCross.class, Q, "gp", gp);
+	}
+
+	/**
+	 * This query finds the Price Crosses of all the Contractors
+	 * having associated the given Price List that become ineffective
+	 * if a Good Price for the given Good Unit would be inserted
+	 * in that Price List with greater priority.
+	 */
+	public List<PriceCross> findObsoleteCrosses(PriceListEntity pl, GoodUnit gu)
+	{
+/*
+
+ select pc from PriceCross pc where (pc.goodPrice.goodUnit = :gu)
+   and pc.firmPrices.priority < (select fp.priority from FirmPrices fp
+     where (fp.priceList = :pl) and (fp.contractor.id = pc.contractor.id))
+
+ */
+		final String Q =
+
+"select pc from PriceCross pc where (pc.goodPrice.goodUnit = :gu)\n" +
+"  and pc.firmPrices.priority < (select fp.priority from FirmPrices fp\n" +
+"    where (fp.priceList = :pl) and (fp.contractor.id = pc.contractor.id))";
+
+		return list(PriceCross.class, Q, "pl", pl, "gu", gu);
 	}
 
 

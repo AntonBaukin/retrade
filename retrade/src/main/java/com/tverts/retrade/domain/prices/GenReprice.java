@@ -43,8 +43,10 @@ import com.tverts.endure.core.Domain;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.DU;
+import com.tverts.support.LU;
 
 
 /**
@@ -190,8 +192,22 @@ public class      GenReprice
 
 	protected void genPriceChanges(GenCtx ctx, RepriceDoc rd)
 	{
+		//~: select the changes
+		List<GoodPrice> changes = genSelectGoods(ctx, rd);
+		EX.asserte(changes);
 		EX.assertx(rd.getChanges().isEmpty());
-		for(GoodPrice gp : genSelectGoods(ctx, rd))
+
+		//~: target price list and the main
+		PriceListEntity pl = EX.assertn(rd.getPriceList());
+		PriceListEntity mn = EX.assertn(ctx.get(PriceListEntity.class));
+
+		LU.I(log(ctx), "Price Change Document [", rd.getCode(),
+		  "] for Price List [", pl.getCode(), "] contains the following [",
+		  changes.size(), "] changes:"
+		);
+
+		//c: for each change
+		for(GoodPrice gp : changes)
 		{
 			//~: price change
 			PriceChange pc = new PriceChange();
@@ -206,7 +222,6 @@ public class      GenReprice
 			//?: {the good is not removed}
 			if(gp.getPrice() != null)
 			{
-
 				//~: variate the cost value
 				int d = 100 - costsDelta + ctx.gen().nextInt(2*costsDelta + 1);
 				BigDecimal c = gp.getPrice().multiply(new BigDecimal(d)).scaleByPowerOfTen(-2);
@@ -215,9 +230,22 @@ public class      GenReprice
 				if(c.scale() != 2)
 					c = c.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
+				//?: {good is added (from the main list)}
+				if(!CMP.eq(pl, mn) && CMP.eq(pl, gp.getPriceList()))
+					LU.I(log(ctx), "--> added good [",
+					  gp.getGoodUnit().getCode(), "], price: ", c);
+				//~: the price was changed
+				else
+					LU.I(log(ctx), "--> re-price good [",
+					  gp.getGoodUnit().getCode(), "] from: [",
+					  gp.getPrice(), "] to: [", c, "]");
+
 				//=: the new price
 				pc.setPriceNew(c);
 			}
+			//~: the good was removed
+			else
+				LU.I(log(ctx), "--> removed good [", gp.getGoodUnit().getCode(), "]");
 		}
 	}
 
@@ -306,6 +334,7 @@ public class      GenReprice
 					GoodPrice x = new GoodPrice();
 
 					x.setGoodUnit(p.getGoodUnit());
+					x.setPriceList(p.getPriceList());
 					x.setPrice(null); //<-- mark to remove it
 
 					xr.add(x);
@@ -330,7 +359,8 @@ public class      GenReprice
 		{
 			GoodPrice x; res.add(x = new GoodPrice());
 			x.setGoodUnit(gp.getGoodUnit());
-			x.setPrice(gp.getPrice()); //<-- price is null when remove
+			x.setPriceList(gp.getPriceList());
+			x.setPrice(gp.getPrice()); //<-- price is null when removed
 		}
 
 		return res;
