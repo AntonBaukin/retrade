@@ -334,6 +334,7 @@
           <option name="m_ignoreIgnoreParameter" value="true" />
         </inspection_tool>
         <inspection_tool class="EmptySynchronizedStatement" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="EqualsWhichDoesntCheckParameterClass" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="ExceptionCaughtLocallyJS" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
         <inspection_tool class="FieldAccessedSynchronizedAndUnsynchronized" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="countGettersAndSetters" value="false" />
@@ -710,13 +711,6 @@
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Anton" />
-    <dictionary name="abaukin">
-      <words>
-        <w>logins</w>
-        <w>messager</w>
-        <w>servicer</w>
-      </words>
-    </dictionary>
     <dictionary name="anton">
       <words>
         <w>aggr</w>
@@ -753,6 +747,13 @@
         <w>webapp</w>
         <w>whitespaces</w>
         <w>zetobj</w>
+      </words>
+    </dictionary>
+    <dictionary name="abaukin">
+      <words>
+        <w>logins</w>
+        <w>messager</w>
+        <w>servicer</w>
       </words>
     </dictionary>
   </component>

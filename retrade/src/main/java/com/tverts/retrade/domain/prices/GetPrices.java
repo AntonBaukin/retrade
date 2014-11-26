@@ -27,7 +27,7 @@ import com.tverts.secure.SecPoint;
 
 import com.tverts.endure.aggr.AggrValue;
 
-/* com.tverts: retrade domain (goods + firms) */
+/* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
@@ -35,7 +35,6 @@ import com.tverts.retrade.domain.goods.GoodsTreeModelBean;
 import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.MeasureUnit;
-import com.tverts.retrade.domain.firm.Contractor;
 
 /* com.tverts: support */
 
@@ -536,25 +535,6 @@ from GoodPrice gp where
 		return QB(qb).list();
 	}
 
-	public GoodPrice findEffectivePrice(Contractor co, GoodUnit gu)
-	{
-		return null;
-	}
-
-
-	/* Price Crosses  */
-
-	public void deletePriceCrosses(FirmPrices fp)
-	{
-
-// delete from PriceCross where (firmPrices = :fp)
-
-		final String Q =
-"  delete from PriceCross where (firmPrices = :fp)";
-
-		Q(Q, "fp", fp).executeUpdate();
-	}
-
 	/**
 	 * Selects the effective prices of the Price Lists
 	 * associated with the contractor given according
@@ -597,6 +577,47 @@ from GoodPrice gp where
 " )";
 
 		return list(Object[].class, Q, "c", contractor);
+	}
+
+	/**
+	 * Finds the effective associated price for the
+	 * given Contractor and the good. Returns array of:
+	 *
+	 * [0] Good Price;
+	 * [1] Firm Prices.
+	 */
+	public Object[] findEffectivePrice(Long co, Long gu)
+	{
+/*
+
+ select gp, fp from FirmPrices fp, GoodPrice gp where
+   (fp.contractor.id = :co) and (gp.goodUnit.id = :gu)
+   and (fp.priceList.id = gp.priceList.id)
+ order by fp.priority desc
+
+ */
+		final String Q =
+
+"select gp, fp from FirmPrices fp, GoodPrice gp where\n" +
+"  (fp.contractor.id = :co) and (gp.goodUnit.id = :gu)\n" +
+"  and (fp.priceList.id = gp.priceList.id)\n" +
+"order by fp.priority desc";
+
+		return first(Object[].class, Q, "co", co, "gu", gu);
+	}
+
+
+	/* Price Crosses  */
+
+	public void deletePriceCrosses(FirmPrices fp)
+	{
+
+// delete from PriceCross where (firmPrices = :fp)
+
+		final String Q =
+"  delete from PriceCross where (firmPrices = :fp)";
+
+		Q(Q, "fp", fp).executeUpdate();
 	}
 
 	/**
