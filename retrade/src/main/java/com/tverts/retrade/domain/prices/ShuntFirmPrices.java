@@ -39,7 +39,7 @@ import com.tverts.support.SU;
  * @author anton.baukin@gmail.com.
  */
 @SelfShuntUnit
-@SelfShuntGroups({"retrade:goods", "retrade:goods:prices", "retrade:goods:prices:firms"})
+@SelfShuntGroups({"retrade:goods", "retrade:goods:prices", "retrade:firms:prices"})
 @SelfShuntDescr("Checks all the Contractors have proper prices of the Goods.")
 public class ShuntFirmPrices extends ShuntPlain
 {

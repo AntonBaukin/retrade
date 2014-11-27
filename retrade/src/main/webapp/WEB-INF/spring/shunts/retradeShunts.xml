@@ -13,8 +13,16 @@
     <property name = 'references'>
       <list>
 
+        <!-- retrade:goods:prices -->
 
-        <!-- retrade:goods:prices:firms -->
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.retrade.domain.prices.ShuntGoodPrices'/>
+          </property>
+        </bean>
+
+
+        <!-- retrade:firms:prices -->
 
         <bean class = 'com.tverts.shunts.SelfShuntTarget'>
           <property name = 'target'>

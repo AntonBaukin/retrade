@@ -300,7 +300,7 @@ public class      GenReprice
 
 			//~: the current prices of the list
 			List<GoodPrice> cr = bean(GetPrices.class).getPriceListPrices(pl);
-			Collections.shuffle(ps, ctx.gen()); //<-- shuffle them
+			Collections.shuffle(cr, ctx.gen()); //<-- shuffle them
 
 			//~: exclude them from add candidates
 			for(GoodPrice p : cr)

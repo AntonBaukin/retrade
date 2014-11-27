@@ -752,6 +752,22 @@ from GoodPrice gp where
 		return first(PriceChange.class, Q, "pl", pl, "gu", gu, "time", time);
 	}
 
+	public List<PriceChange> selectPriceHistory(Long priceList, Long goodUnit)
+	{
+/*
+
+ from PriceChange pc where (pc.priceList.id = :pl) and
+   (pc.goodUnit.id = :gu) order by pc.changeTime
+
+ */
+		final String Q =
+
+"from PriceChange pc where (pc.priceList.id = :pl) and\n" +
+"  (pc.goodUnit.id = :gu) order by pc.changeTime";
+
+		return list(PriceChange.class, Q, "pl", priceList, "gu", goodUnit);
+	}
+
 	/**
 	 * Returns array of {@link PriceChange} and
 	 * {@link RepriceDoc} instances.

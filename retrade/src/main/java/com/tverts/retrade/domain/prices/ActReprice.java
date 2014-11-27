@@ -511,6 +511,18 @@ public class ActReprice extends ActionBuilderReTrade
 				//!: remove the cross
 				session().delete(pc);
 			}
+
+			//!: remove it
+			doRemovePrice(gp);
+		}
+
+		protected void doRemovePrice(GoodPrice gp)
+		{
+			//~: remove from the session
+			session().delete(gp);
+
+			//~: flush to make following selections safe
+			HiberPoint.flush(session());
 		}
 
 		/**
@@ -536,6 +548,10 @@ public class ActReprice extends ActionBuilderReTrade
 				//!: remove the cross
 				session().delete(pc);
 			}
+
+			//?: {has obsoletes removed}
+			if(!pcs.isEmpty())
+				HiberPoint.flush(session());
 		}
 
 		protected void relinkPriceCrosses()
