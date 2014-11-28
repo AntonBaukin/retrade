@@ -1,9 +1,9 @@
 
 @XmlSchema(
   namespace = "urn:tverts.com:api", xmlns = {
-    @XmlNs(prefix = "xapi", namespaceURI = "urn:tverts.com:api"),
-    @XmlNs(prefix = "xsi",  namespaceURI = "http://www.w3.org/2001/XMLSchema-instance"),
-    @XmlNs(prefix = "xs",   namespaceURI = "http://www.w3.org/2001/XMLSchema")
+    @XmlNs(prefix = "ax",  namespaceURI = "urn:tverts.com:api"),
+    @XmlNs(prefix = "xsi", namespaceURI = "http://www.w3.org/2001/XMLSchema-instance"),
+    @XmlNs(prefix = "xs",  namespaceURI = "http://www.w3.org/2001/XMLSchema")
   }
 )
 package com.tverts.api;
