@@ -60,7 +60,6 @@ public class Firm extends CatItem
 		this.taxCode = taxCode;
 	}
 
-	@XmlElement(name = "phones")
 	public String getPhones()
 	{
 		return phones;
