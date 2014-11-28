@@ -4,8 +4,10 @@ package com.tverts.retrade.domain.prices;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,7 @@ import com.tverts.endure.core.ActUnity;
 
 /* com.tverts: retrade api (prices) */
 
+import com.tverts.api.retrade.prices.FirmGoodPrice;
 import com.tverts.api.retrade.prices.PriceChanges;
 
 /* com.tverts: retrade domain (core + goods + firms) */
@@ -51,6 +54,7 @@ import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.SU;
+import com.tverts.support.misc.Pair;
 
 
 /**
@@ -272,6 +276,9 @@ public class ActReprice extends ActionBuilderReTrade
 			//~: process them
 			processChanges();
 
+			//~: relink the price crosses
+			relinkPriceCrosses();
+
 			//~: init the object-extraction
 			initOx();
 
@@ -280,9 +287,6 @@ public class ActReprice extends ActionBuilderReTrade
 
 			//~: update the changes document
 			rd.updateOx();
-
-			//~: relink the price crosses
-			relinkPriceCrosses();
 		}
 
 		protected void initChanges()
@@ -487,6 +491,56 @@ public class ActReprice extends ActionBuilderReTrade
 				//=: new price
 				i.setPrice(pc.getPriceNew());
 			}
+
+			//~: set the changes for the contractors
+			if(relink.isEmpty()) return;
+			EX.assertx(relink.keySet().equals(newps.keySet()));
+			List<FirmGoodPrice> fps = new ArrayList<>(256);
+
+			for(Contractor co : relink.keySet())
+			{
+				Map<Long, Pair<BigDecimal, Long>> om = EX.assertn(relink.get(co));
+				Map<Long, Pair<BigDecimal, Long>> nm = EX.assertn(newps.get(co));
+
+				//~: collect all the goods
+				HashSet<Long> goods = new HashSet<>((om.size() + nm.size())/2);
+				goods.addAll(om.keySet()); goods.addAll(nm.keySet());
+
+				//c: for each good
+				for(Long gu : goods)
+				{
+					Pair<BigDecimal, Long> o = om.get(gu);
+					Pair<BigDecimal, Long> n = nm.get(gu);
+					FirmGoodPrice          p = new FirmGoodPrice();
+					fps.add(p);
+
+					//=: contractor
+					p.setContractor(co.getPrimaryKey());
+
+					//=: good unit
+					p.setGood(gu);
+
+					//?: {has previous price}
+					if(o != null)
+					{
+						p.setOldPrice(o.getKey());
+						p.setOldList(o.getValue());
+					}
+
+					//?: {has new price}
+					if(n != null)
+					{
+						p.setNewPrice(n.getKey());
+						p.setNewList(n.getValue());
+					}
+				}
+			}
+
+			//~: sort the firm prices
+			Collections.sort(fps);
+
+			//=: assign the list
+			ox.setFirmPrices(fps);
 		}
 
 		/**
@@ -497,32 +551,36 @@ public class ActReprice extends ActionBuilderReTrade
 		 */
 		protected void onRemovePrice(GoodPrice gp)
 		{
-			List<PriceCross> pcs = get.selectCrosses(gp);
+			//~: remove the price-crosses
+			doRemoveCrosses(get.selectCrosses(gp));
 
-			//c: for each actual cross found
-			for(PriceCross pc : pcs)
-			{
-				//~: relink by this contractor
-				Map<Long, BigDecimal> cs = relink.get(pc.getContractor());
-				if(cs == null) relink.put(pc.getContractor(),
-				  cs = new HashMap<Long, BigDecimal>(5));
-				cs.put(gp.getGoodUnit().getPrimaryKey(), gp.getPrice());
-
-				//!: remove the cross
-				session().delete(pc);
-			}
-
-			//!: remove it
-			doRemovePrice(gp);
-		}
-
-		protected void doRemovePrice(GoodPrice gp)
-		{
 			//~: remove from the session
 			session().delete(gp);
 
 			//~: flush to make following selections safe
 			HiberPoint.flush(session());
+		}
+
+		protected void doRemoveCrosses(List<PriceCross> pcs)
+		{
+			//c: for each obsolete cross found
+			for(PriceCross pc : pcs)
+			{
+				//~: relink by this contractor
+				Map<Long, Pair<BigDecimal, Long>> cs = relink.get(pc.getContractor());
+				if(cs == null) relink.put(pc.getContractor(), cs = new HashMap<>(5));
+				cs.put(pc.getGoodUnit().getPrimaryKey(), new Pair<BigDecimal, Long>(
+				  pc.getGoodPrice().getPrice(),
+				  pc.getGoodPrice().getPriceList().getPrimaryKey()
+				));
+
+				//!: remove the cross
+				session().delete(pc);
+			}
+
+			//?: {has obsoletes removed}
+			if(!pcs.isEmpty())
+				HiberPoint.flush(session());
 		}
 
 		/**
@@ -533,25 +591,10 @@ public class ActReprice extends ActionBuilderReTrade
 		 */
 		protected void onAddPrice(GoodPrice gp)
 		{
-			List<PriceCross> pcs = get.findObsoleteCrosses(
-			  gp.getPriceList(), gp.getGoodUnit());
-
-			//c: for each obsolete cross found
-			for(PriceCross pc : pcs)
-			{
-				//~: relink by this contractor
-				Map<Long, BigDecimal> cs = relink.get(pc.getContractor());
-				if(cs == null) relink.put(pc.getContractor(),
-				  cs = new HashMap<Long, BigDecimal>(5));
-				cs.put(gp.getGoodUnit().getPrimaryKey(), null);
-
-				//!: remove the cross
-				session().delete(pc);
-			}
-
-			//?: {has obsoletes removed}
-			if(!pcs.isEmpty())
-				HiberPoint.flush(session());
+			//~: remove obsolete price-crosses
+			doRemoveCrosses(get.findObsoleteCrosses(
+			  gp.getPriceList(), gp.getGoodUnit()
+			));
 		}
 
 		protected void relinkPriceCrosses()
@@ -568,8 +611,8 @@ public class ActReprice extends ActionBuilderReTrade
 			//c: for each contractor updated
 			for(Contractor co : relink.keySet())
 			{
-				Map<Long, BigDecimal> o = relink.get(co);
-				Map<Long, BigDecimal> n = new HashMap<>(o.size());
+				Map<Long, Pair<BigDecimal, Long>> o = relink.get(co);
+				Map<Long, Pair<BigDecimal, Long>> n = new HashMap<>(o.size());
 				newps.put(co, n);
 
 				//c: for each good processed
@@ -608,6 +651,12 @@ public class ActReprice extends ActionBuilderReTrade
 
 					//!: save it
 					session().save(pc);
+
+					//~: save the new price
+					n.put(gu, new Pair<BigDecimal, Long>(
+					  pc.getGoodPrice().getPrice(),
+					  pc.getGoodPrice().getPriceList().getPrimaryKey()
+					));
 				}
 			}
 		}
@@ -629,11 +678,13 @@ public class ActReprice extends ActionBuilderReTrade
 		//maps: good unit -> good price
 		protected Map<Long, GoodPrice>   added   = new HashMap<>();
 
-		//maps: contractor -> maps: (good -> old cost)
-		protected Map<Contractor, Map<Long, BigDecimal>> relink = new HashMap<>();
+		//maps: contractor -> maps: (good -> (old cost, price list))
+		protected Map<Contractor, Map<Long, Pair<BigDecimal, Long>>> relink =
+		  new HashMap<>();
 
-		//maps: contractor -> maps: (good -> new cost)
-		protected Map<Contractor, Map<Long, BigDecimal>> newps = new HashMap<>();
+		//maps: contractor -> maps: (good -> (new cost, price list))
+		protected Map<Contractor, Map<Long, Pair<BigDecimal, Long>>> newps =
+		  new HashMap<>();
 	}
 
 

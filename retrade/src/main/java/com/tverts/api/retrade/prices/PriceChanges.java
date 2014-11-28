@@ -24,7 +24,7 @@ import com.tverts.api.retrade.document.Document;
  */
 @XmlRootElement(name = "price-changes")
 @XmlType(name = "price-changes", propOrder = {
-  "list", "XList", "oldPrices", "newPrices"
+  "list", "XList", "oldPrices", "newPrices", "firmPrices"
 })
 public class PriceChanges extends Document
 {
@@ -105,5 +105,24 @@ public class PriceChanges extends Document
 	public void setNewPrices(List<GoodPrice> newPrices)
 	{
 		this.newPrices = newPrices;
+	}
+
+	/**
+	 * If defined, this sorted list tells the old and the new
+	 * updated prices associated with the Contractors affected
+	 * by this Price Change Document.
+	 */
+	@XmlElement(name = "price")
+	@XmlElementWrapper(name = "firm-good-price")
+	public List<FirmGoodPrice> getFirmPrices()
+	{
+		return firmPrices;
+	}
+
+	private List<FirmGoodPrice> firmPrices;
+
+	public void setFirmPrices(List<FirmGoodPrice> firmPrices)
+	{
+		this.firmPrices = firmPrices;
 	}
 }

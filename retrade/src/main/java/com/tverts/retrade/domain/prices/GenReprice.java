@@ -39,8 +39,6 @@ import com.tverts.objects.Param;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.Domain;
 
-/* com.tverts: retrade domain (goods + invoices) */
-
 /* com.tverts: support */
 
 import com.tverts.support.CMP;
