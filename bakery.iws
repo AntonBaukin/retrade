@@ -7,18 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/Contractor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/FirmGoodPrice.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/jaxb.index" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/package-info.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/Firm.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/Firm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenReprice.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenReprice.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/PriceChanges.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/PriceChanges.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade.jaxb" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade.jaxb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/package-info.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/package-info.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/goods/package-info.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/goods/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/package-info.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/sells/package-info.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/sells/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/package-info.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/auth/package-info.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/auth/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/package-info.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/core/package-info.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/core/package-info.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/system/package-info.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/system/package-info.java" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,11 +43,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ActReprice.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java">
+      <file leaf-file-name="package-info.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/package-info.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.285" vertical-offset="3134" max-vertical-offset="6516">
-              <caret line="542" column="0" selection-start-line="542" selection-start-column="0" selection-end-line="542" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+              <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -64,23 +63,23 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/sells/GenSells.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/exec/api/sells/DumpSellReceipts.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/services/mainService.xml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ShuntFirmPrices.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GetPrices.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/shunts/retradeShunts.xml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ShuntGoodPrices.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/GenReprice.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/FirmPrice.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade.jaxb" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/Firm.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/Contractor.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/package-info.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/jaxb.index" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/FirmGoodPrice.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/PriceChanges.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/package-info.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/auth/package-info.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/core/package-info.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/system/package-info.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/package-info.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/package-info.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/goods/package-info.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/sells/package-info.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/package-info.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/package-info.java" />
       </list>
     </option>
   </component>
@@ -959,7 +958,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-58 [alpha]: finally, started huge refactoring of UI Model Beans! Model Bean Base is now Externalizable." />
     <MESSAGE value="ui-58 [beta]: refactored all the direct subclasses of Model Bean Base. Introduced View Model Bean Base." />
     <MESSAGE value="ui-58 [beta]: refactored subclasses of Numeric Model Bean." />
     <MESSAGE value="ui-58 [beta]: replaced writeLong() and writeInt() for Long and Integer with IO operations." />
@@ -984,7 +982,8 @@
     <MESSAGE value="domain-43 [alpha]: generating Price Change Documents with Price List' positions add and remove requests issued." />
     <MESSAGE value="domain-43 [alpha]: fixing Price Crosses handling in ActReprice." />
     <MESSAGE value="domain-43 [stable]: action to fix Price Change Documents works good, what is shunted now. Going to save the changes of the prices of individual Contractors." />
-    <option name="LAST_COMMIT_MESSAGE" value="domain-43 [stable]: action to fix Price Change Documents works good, what is shunted now. Going to save the changes of the prices of individual Contractors." />
+    <MESSAGE value="domain-45 [beta]: refactored API Price Changes object to also store the previous prices for the affected Contracors. Still need to link them on the database level." />
+    <option name="LAST_COMMIT_MESSAGE" value="domain-45 [beta]: refactored API Price Changes object to also store the previous prices for the affected Contracors. Still need to link them on the database level." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1020,94 +1019,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/core/JustTxObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28248587" vertical-offset="5" max-vertical-offset="1344">
-          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/core/JustObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="1565">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDoc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19209039" vertical-offset="408" max-vertical-offset="2245">
-          <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/OxEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44858757" vertical-offset="385" max-vertical-offset="2007">
-          <caret line="46" column="12" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46779662" vertical-offset="2238" max-vertical-offset="3588">
-          <caret line="210" column="3" selection-start-line="156" selection-start-column="3" selection-end-line="156" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade.jaxb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.01920904" vertical-offset="0" max-vertical-offset="936">
-          <caret line="1" column="27" selection-start-line="1" selection-start-column="27" selection-end-line="1" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/GoodPrice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2881356" vertical-offset="459" max-vertical-offset="1990">
-          <caret line="48" column="31" selection-start-line="42" selection-start-column="3" selection-end-line="42" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/Firm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.96158195" vertical-offset="390" max-vertical-offset="2109">
-          <caret line="103" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/Contractor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49943504" vertical-offset="0" max-vertical-offset="1531">
-          <caret line="26" column="24" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/jaxb.index">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.01920904" vertical-offset="0" max-vertical-offset="885">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/PriceItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.019495413" vertical-offset="136" max-vertical-offset="1552">
@@ -1150,8 +1061,96 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.285" vertical-offset="3134" max-vertical-offset="6516">
-          <caret line="542" column="0" selection-start-line="542" selection-start-column="0" selection-end-line="542" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.28135592" vertical-offset="2981" max-vertical-offset="6801">
+          <caret line="467" column="31" selection-start-line="190" selection-start-column="26" selection-end-line="190" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/Firm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3830508" vertical-offset="17" max-vertical-offset="2109">
+          <caret line="103" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/auth/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/core/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/system/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.085" vertical-offset="0" max-vertical-offset="821">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/clients/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.056572378" vertical-offset="0" max-vertical-offset="822">
+          <caret line="2" column="27" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/goods/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/sells/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/prices/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667" vertical-offset="0" max-vertical-offset="821">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
           <folding />
         </state>
       </provider>
