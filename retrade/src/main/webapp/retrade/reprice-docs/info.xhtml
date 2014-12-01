@@ -24,6 +24,11 @@ ${v.checkEntityRequested}
 
   </script>
 
+  <f:facet name = "extjs-props">
+    layout: { type: 'hbox', align: 'stretch' },
+    bodyCls: 'retrade-back-panel',
+  </f:facet>
+
   <f:facet name = "toolbar-props">
     xtype: 'panel', bodyPadding: extjsf.pt(2),
     layout: {type: 'hbox', align: 'middle'},
@@ -52,17 +57,17 @@ ${v.checkEntityRequested}
     <!-- close window button] -->
 
 
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
+
+
     <!-- [price change document is not fixed -->
 
     <c:if test = "${not v.documentFixed}">
-
-      <x:component coid = "${z:vid(v, '_tb_fill_0')}">
-        <f:facet name = "extjs-props">
-          xtype: 'panel', flex: 1, frame: false, border: false,
-          bodyCls: 'retrade-toolbar-panel'
-        </f:facet>
-      </x:component>
-
 
       <!-- [fix price change document -->
 
@@ -106,19 +111,33 @@ ${v.checkEntityRequested}
 
     <!-- price change document is not fixed] -->
 
+    <x:component coid = "${z:vid(v, 'toggle-contractors')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Контрагенты', enableToggle: true,
+        hidden: #{not v.contractorsAffected}, tooltipType: 'title',
+        tooltip: 'Отобразить изменения цен для затронутых контрагентов'
+      </f:facet>
+    </x:component>
+
   </f:facet>
 
   <!-- toolbar] -->
 
 
+  <!-- [the changes content -->
+
+  <x:component coid = "${z:vid(v, 'reprice_changes_layout')}">
+    <f:facet name = "extjs-props">
+      border: false, layout: 'border', flex: 1,
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(1, 0, 0, 0)
+    </f:facet>
+
   <!-- [price change document info -->
 
   <x:html coid = "${z:vid(v, 'reprice_info')}">
     <f:facet name = "extjs-props">
-
-      xtype: 'panel', region: 'north',
-      frame: true, margin: extjsf.pts(1, 0, 0, 0)
-
+      xtype: 'panel', region: 'north', frame: true
     </f:facet>
 
     <table class = "retrade-info-table retrade-info-table-reprice-doc"
@@ -198,6 +217,67 @@ ${v.checkEntityRequested}
   </x:data-grid>
 
   <!-- price changes table] -->
+
+  </x:component>
+
+  <!-- the changes content] -->
+
+
+  <!-- [the contractors content -->
+
+  <x:component coid = "${z:vid(v, 'reprice_contractors_layout')}">
+    <f:facet name = "extjs-props">
+      hidden: true, border: false, layout: 'fit', flex: 1,
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(1, 0, 0, 0)
+    </f:facet>
+
+
+    <x:data-store storeId = "${z:vid(v, 'contractors')}"
+     modelView = "${v}" modelRequest = "contractors">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.ContractorView', autoLoad: false
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.ContractorView')
+      </f:facet>
+    </x:data-store>
+
+    <x:data-grid coid = "${z:vid(v, 'cgrid')}"
+     storeId = "${z:vid(v, 'contractors')}">
+
+      <f:facet name = "grid-props">
+        pager: false, sortableColumns: false,
+        columns: ZeT.defined('retrade.columns.ContractorView'),
+        selModel: extjsf.delayCreate('Ext.ux.selection.No')
+      </f:facet>
+    </x:data-grid>
+  </x:component>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'toggle-contractors')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+  {
+    extjsf.component("${z:vid(v, 'reprice_changes_layout')}", '${rootView.extjsDomain}').
+      setVisible(!btn.pressed)
+    extjsf.component("${z:vid(v, 'reprice_contractors_layout')}", '${rootView.extjsDomain}').
+      setVisible(btn.pressed)
+
+    //?: {load the contractors}
+    if(btn.pressed)
+    {
+      var s = extjsf.component("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}');
+      if(!s.getCount() && !s.isLoading()) s.load()
+    }
+  })
+
+  //]]>
+  </script>
+
+  <!-- the contractors content] -->
 
 </x:winmain>
 </ui:define>

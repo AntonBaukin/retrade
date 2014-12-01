@@ -16,7 +16,6 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
-import com.tverts.model.NumericModelBean;
 
 /* com.tverts: retrade domain (prices) */
 
@@ -96,6 +95,11 @@ public class FacesRepriceDocView extends UnityModelView
 	{
 		return Prices.getPriceListFullName(
 		  getEntity().getPriceList());
+	}
+
+	public boolean isContractorsAffected()
+	{
+		return !getEntity().getContractors().isEmpty();
 	}
 
 

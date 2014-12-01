@@ -1,5 +1,11 @@
 package com.tverts.retrade.domain.firm;
 
+/* Java */
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.UnityType;
@@ -8,6 +14,10 @@ import com.tverts.endure.UnityTypes;
 /* tverts.com: aggregated values */
 
 import com.tverts.endure.aggr.AggrValue;
+
+/* tverts.com: support */
+
+import com.tverts.support.SU;
 
 
 /**
@@ -55,5 +65,29 @@ public class Contractors
 	{
 		return UnityTypes.unityType(
 		  AggrValue.class, AGGRVAL_CONTRACTOR_DEBT);
+	}
+
+
+	/* support */
+
+	public static class CompareContractors
+	       implements   Comparator<Contractor>
+	{
+		public static final CompareContractors INSTANCE =
+		  new CompareContractors();
+
+
+		/* Comparator */
+
+		public int compare(Contractor l, Contractor r)
+		{
+			return SU.sXs(l.getNameProc()).
+			  compareTo(SU.sXs(r.getNameProc()));
+		}
+	}
+
+	public static void sort(List<Contractor> cs)
+	{
+		Collections.sort(cs, CompareContractors.INSTANCE);
 	}
 }

@@ -1,6 +1,6 @@
 package com.tverts.retrade.data;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +19,13 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: model */
 
 import com.tverts.model.ModelData;
+import com.tverts.model.ModelRequest;
 
-/* com.tverts: retrade domain (prices) */
+/* com.tverts: retrade domain (firms + prices) */
 
+import com.tverts.retrade.domain.firm.Contractor;
+import com.tverts.retrade.domain.firm.ContractorView;
+import com.tverts.retrade.domain.firm.Contractors;
 import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceChangeView;
 import com.tverts.retrade.domain.prices.RepriceDocModelBean;
@@ -33,8 +37,9 @@ import com.tverts.retrade.domain.prices.RepriceDocModelBean;
  *
  * @author anton.baukin@gmail.com
  */
-@XmlRootElement(name = "model-data")
-@XmlType(propOrder = {"model", "changes"})
+@XmlRootElement(name = "model-data") @XmlType(propOrder = {
+  "model", "changes", "contractors"
+})
 public class RepriceDocModelData implements ModelData
 {
 	/* public: constructors */
@@ -61,6 +66,9 @@ public class RepriceDocModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<PriceChangeView> getChanges()
 	{
+		if(!ModelRequest.isKey(null))
+			return null;
+
 		List sel = bean(GetPrices.class).
 		  selectPriceChanges(getModel());
 
@@ -69,6 +77,26 @@ public class RepriceDocModelData implements ModelData
 		int i = 0; for(Object obj : sel)
 			res.add(new PriceChangeView().init(obj).init(++i));
 		return res;
+	}
+
+	@XmlElement(name = "contractor")
+	@XmlElementWrapper(name = "contractors")
+	public List<ContractorView> getContractors()
+	{
+		if(!ModelRequest.isKey("contractors"))
+			return null;
+
+		List<Contractor>     cs = new ArrayList<>(model.repriceDoc().getContractors());
+		List<ContractorView> rs = new ArrayList<>(cs.size());
+
+		//~: sort by the name
+		Contractors.sort(cs);
+
+		//c: for each contractor
+		for(Contractor c : cs)
+			rs.add(new ContractorView().init((Object) c));
+
+		return rs;
 	}
 
 
