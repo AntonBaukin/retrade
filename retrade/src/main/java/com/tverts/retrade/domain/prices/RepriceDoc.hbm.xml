@@ -67,5 +67,29 @@
       <one-to-many class = 'com.tverts.retrade.domain.prices.PriceChange'/>
     </list>
 
+
+    <!-- Contractors Set -->
+
+    <set name = 'contractors' lazy = 'true'
+         table = 'retrade_reprice_doc_contractors'>
+
+      <key foreign-key = 'fk_retrade_reprice_doc_contractors_doc'>
+        <column name = 'fk_reprice_doc' not-null = 'true'>
+
+          <comment>Price Change Document affected the Contractor</comment>
+        </column>
+      </key>
+
+      <many-to-many class = 'com.tverts.retrade.domain.firm.Contractor'
+        foreign-key = 'fk_retrade_reprice_doc_contractor'>
+
+        <column name = 'fk_contractor' not-null = 'true'
+          index = 'ix_retrade_reprice_doc_contractor'>
+
+          <comment>Contractor affected by the Price Change Document</comment>
+        </column>
+      </many-to-many>
+    </set>
+
   </union-subclass>
 </hibernate-mapping>

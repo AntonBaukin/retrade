@@ -4,7 +4,9 @@ package com.tverts.retrade.domain.prices;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /* com.tverts: api */
 
@@ -19,6 +21,7 @@ import com.tverts.endure.core.OxEntity;
 
 /* com.tverts: support */
 
+import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.support.EX;
 
 
@@ -133,5 +136,18 @@ public class      RepriceDoc
 	public void setChanges(List<PriceChange> changes)
 	{
 		this.changes = changes;
+	}
+
+	public Set<Contractor> getContractors()
+	{
+		return (contractors != null)?(contractors):
+		  (contractors = new HashSet<>(13));
+	}
+
+	private Set<Contractor> contractors;
+
+	public void setContractors(Set<Contractor> contractors)
+	{
+		this.contractors = contractors;
 	}
 }

@@ -599,9 +599,14 @@ public class ActReprice extends ActionBuilderReTrade
 
 		protected void relinkPriceCrosses()
 		{
+			RepriceDoc rd = target(RepriceDoc.class);
+
+			//?: {has no contractors}
+			rd.getContractors().clear();
 			if(relink.isEmpty()) return;
 
-			RepriceDoc rd = target(RepriceDoc.class);
+			//~: link all the contractors affected
+			rd.getContractors().addAll(relink.keySet());
 
 			//HINT: here we flush the Good Price items to the database
 			//  to select them properly as Price Cross candidates.
