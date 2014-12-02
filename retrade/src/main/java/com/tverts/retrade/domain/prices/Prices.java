@@ -75,9 +75,8 @@ public class Prices
 
 	public static String getPriceListFullName(PriceListEntity pl)
 	{
-		if(pl == null) return null;
-		return String.format("№%s (%s)",
-		  pl.getCode(), pl.getName());
+		return (pl == null)?(null):
+		  String.format("%s; %s", pl.getCode(), pl.getName());
 	}
 
 

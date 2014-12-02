@@ -75,6 +75,11 @@ span.retrade-inline-link
   background-color: transparent;
 }
 
+.retrade-form-panel
+{
+  background-color: #ecf0ea;
+}
+
 .retrade-content-panel
 {
   background-color: #f1f1f1;
@@ -134,8 +139,7 @@ td.x-form-item-body.x-form-cb-wrap
 .retrade-form-label-cell
 {
   white-space: nowrap; letter-spacing: 0.1pt;
-  font-size: 11pt; font-weight: bolder;
-  cursor: default;
+  font-size: 10pt; cursor: default;
 }
 
 .retrade-form-light-label-cell
@@ -160,10 +164,9 @@ label.retrade-form-label-cell, .retrade-form-label-cell label,
 .retrade-form-fieldset-caption
 {
   font-family: 'Tahoma', sans-serif;
-  font-size: 11pt; font-weight: bolder;
+  font-size: 10pt; cursor: default;
   white-space: nowrap; overflow: hidden;
   background-color: transparent;
-  cursor: default;
 }
 
 .retrade-width-100pc
@@ -532,8 +535,8 @@ td.retrade-info-title div, .retrade-info-title-label,
  caption.retrade-info-title
 {
   white-space: nowrap; margin: 0 4pt 0 7pt;
-  font-size: 11pt; font-weight: bolder;
-  letter-spacing: 0.1pt; cursor: default;
+  font-size: 10pt; cursor: default;
+  letter-spacing: 0.1pt;
 }
 
 label.retrade-info-title-label
@@ -558,13 +561,13 @@ td.retrade-info-value div,
  .retrade-info-div .retrade-info-value
 {
   white-space: nowrap; padding: 1pt 2pt 1pt 2pt;
-  font-size: 11pt; background-color: #fafafa;
+  font-size: 10pt; background-color: #fafafa;
 }
 
 span.retrade-info-value
 {
   white-space: nowrap; padding: 1pt 2pt 1pt 2pt;
-  font-size: 11pt; background-color: #fafafa;
+  font-size: 10pt; background-color: #fafafa;
 }
 
 .retrade-info-div .retrade-info-value-message-hard

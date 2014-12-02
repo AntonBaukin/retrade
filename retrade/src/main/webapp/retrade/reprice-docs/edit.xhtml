@@ -123,97 +123,54 @@ ${v.checkModelRequestedWithRedirect}
 
     <f:facet name = "extjs-props">
 
-      region: 'north', frame: true,
-      margin: extjsf.pts(1, 0, 0, 0),
-      bodyPadding: extjsf.pts(2, 0, 2, 0),
-      layout: {type: 'table', columns: 1}
+      region: 'north', border: false,
+      bodyPadding: extjsf.pt(2),
+      bodyCls: 'retrade-form-panel',
+      layout: {type: 'table', columns: 4}
 
     </f:facet>
 
 
-    <!-- [first row: code + price list -->
+    <!-- [code field] -->
 
-    <x:component coid = "${z:vid(v, '_reprice_form_first')}">
-
-      <f:facet name = "extjs-props">
-
-        frame: false, border: false,
-        layout: {type: 'table', columns: 4},
-        bodyCls: 'retrade-content-panel'
-      </f:facet>
-
-
-      <!-- [reprice doc code field] -->
-
-      <x:text-field coid = "${z:vid(v, 'code')}"
-        value = "#{v.model.repriceDoc.code}">
-
-        <f:facet name = "extjs-props">
-          margin: extjsf.pts(0, 6, 0, 0), width: extjsf.ex(22),
-          allowBlank: false, validator: function()
-          {
-            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
-          }
-        </f:facet>
-
-        <f:facet name = "label-props">
-          text: 'Код', cls: 'retrade-info-title-label'
-        </f:facet>
-      </x:text-field>
-
-
-      <!-- [price lists drop list] -->
-
-      <x:drop-list coid = "${z:vid(v, 'price-list')}"
-         value  = "#{v.model.repriceDoc.priceListKey}"
-         labels = "#{v.priceListsLabels}">
-
-        <f:facet name = "drop-props">
-          width: '100%', componentLayout: 'ux.dropbox100p',
-          allowBlank: false
-        </f:facet>
-
-        <f:facet name = "label-props">
-          text: 'Прайс лист', cls: 'retrade-info-title-label'
-        </f:facet>
-      </x:drop-list>
-
-    </x:component>
-
-    <!-- first row: code + price list] -->
-
-
-    <!-- [second row: change reasons -->
-
-    <x:component coid = "${z:vid(v, '_reprice_form_second')}">
+    <x:text-field coid = "${z:vid(v, 'code')}"
+     value = "#{v.model.view.code}">
 
       <f:facet name = "extjs-props">
-
-        frame: false, border: false, colspan: 4,
-        layout: {type: 'table', columns: 2},
-        bodyCls: 'retrade-content-panel',
-        margin: extjsf.pts(4, 0, 0, 0)
+        margin: extjsf.pts(0, 6, 0, 0), width: extjsf.ex(22),
+        allowBlank: false, validator: function()
+        {
+          return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+        }
       </f:facet>
 
+      <f:facet name = "label-props">
+        text: 'Код', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:text-field>
 
-      <!-- [change reason field] -->
 
-      <x:text-field coid = "${z:vid(v, 'change-reason')}"
-        value = "#{v.model.repriceDoc.changeReason}">
+    <!-- [price lists drop list] -->
 
-        <f:facet name = "extjs-props">
-          width: '100%'
-        </f:facet>
+    <x:drop-list coid = "${z:vid(v, 'price-list')}"
+      value  = "#{v.model.view.priceListKey}"
+      labels = "#{v.priceListsLabels}">
 
-        <f:facet name = "label-props">
-          text: 'Основание', cls: 'retrade-info-title-label'
-        </f:facet>
-      </x:text-field>
+      <f:facet name = "drop-props">
+        width: '100%', componentLayout: 'ux.dropbox100p',
+        allowBlank: false
+      </f:facet>
 
-    </x:component>
+      <f:facet name = "label-props">
+        text: 'Прайс-лист', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:drop-list>
 
-    <!-- second row: change reasons] -->
 
+    <!-- [change reason hidden] -->
+
+    <x:hidden-field coid = "${z:vid(v, 'change-reason')}"
+      value = "#{v.model.view.changeReason}"/>
 
     <!-- [special: submit action] -->
 
