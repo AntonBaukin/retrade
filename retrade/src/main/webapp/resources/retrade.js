@@ -1112,7 +1112,6 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'objectKey',  type: 'string'},
 	    {name: 'code',       type: 'string'},
 	    {name: 'name',       type: 'string'},
-	    {name: 'parents',    type: 'string'},
 	    {name: 'price',      type: 'string'}
 
 	  ]
@@ -1202,31 +1201,6 @@ ZeT.init('init: retrade.data', function()
 		];
 	})
 
-	ZeT.defineDelay('retrade.columns.PriceListParentsView', function()
-	{
-		return [
-
-		 {
-		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12), flex: 0
-		 },
-
-		 {
-		   text: "Наименование", dataIndex: 'name', sortable: false,
-		   width: extjsf.ex(22), flex: 1
-		 },
-
-		 {
-		   text: "Папки", dataIndex: 'parents', sortable: false,
-		   width: extjsf.ex(22), flex: 1, renderer: function(v, meta)
-		   {
-				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"';
-				return v;
-		   }
-		 }
-		];
-	})
-
 	ZeT.define('retrade.readers.PriceListView', {
 
 	  type: 'xml', root: 'price-lists', record: 'price-list',
@@ -1246,17 +1220,23 @@ ZeT.init('init: retrade.data', function()
 
 	  fields: [
 
-	    {name: 'objectKey',       type: 'string'},
-	    {name: 'documentIndex',   type: 'int'},
-	    {name: 'changeTime',      type: 'date', dateFormat: 'd.m.Y H:i'},
-	    {name: 'repriceKey',      type: 'string'},
-	    {name: 'repriceName',     type: 'string'},
-	    {name: 'priceCur',        type: 'string'},
-	    {name: 'priceOld',        type: 'string'},
-	    {name: 'priceNew',        type: 'string'},
-	    {name: 'goodCode',        type: 'string'},
-	    {name: 'goodName',        type: 'string'},
-	    {name: 'measureName',     type: 'string'}
+	    {name: 'objectKey',        type: 'string'},
+	    {name: 'documentIndex',    type: 'int'},
+	    {name: 'changeTime',       type: 'date', dateFormat: 'd.m.Y H:i'},
+	    {name: 'repriceKey',       type: 'string'},
+	    {name: 'repriceName',      type: 'string'},
+	    {name: 'priceCur',         type: 'string'},
+	    {name: 'priceOld',         type: 'string'},
+	    {name: 'priceNew',         type: 'string'},
+	    {name: 'goodCode',         type: 'string'},
+	    {name: 'goodName',         type: 'string'},
+	    {name: 'measureName',      type: 'string'},
+	    {name: 'priceListOld',     type: 'string'},
+	    {name: 'priceListOldCode', type: 'string'},
+	    {name: 'priceListOldName', type: 'string'},
+	    {name: 'priceListNew',     type: 'string'},
+	    {name: 'priceListNewCode', type: 'string'},
+	    {name: 'priceListNewName', type: 'string'}
 	  ]
 	})
 
@@ -1318,6 +1298,64 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Наименование", dataIndex: 'goodName', sortable: true,
 		   width: extjsf.ex(24), flex: 1
+		 },
+
+		 {
+		   text: 'Цена до', dataIndex: 'priceOld', sortable: false,
+		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   renderer: retrade.fcurrency
+		 },
+
+		 {
+		   text: 'Цена после', dataIndex: 'priceNew', sortable: false,
+		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   renderer: retrade.fcurrency
+		 },
+
+		 {
+		   text: "Ед. изм.", dataIndex: 'measureName', sortable: false,
+		   width: extjsf.ex(12), flex: 0
+		 }
+		];
+	})
+
+
+	ZeT.defineDelay('retrade.columns.PriceChangeWithList', function()
+	{
+		return [
+
+		 {
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
+		   width: extjsf.ex(16), flex: 0
+		 },
+
+		 {
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
+		   width: extjsf.ex(24), flex: 2
+		 },
+
+		 {
+		   text: "Пр.-лист до", dataIndex: 'priceListOldName', sortable: false,
+		   width: extjsf.ex(14), flex: 1, renderer: function(v, meta, rec)
+		   {
+				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
+				  '№', rec.get('priceListOldCode'), '; ', v
+				)), '"' );
+
+				return v;
+		   }
+		 },
+
+		 {
+		   text: "Пр.-лист после", dataIndex: 'priceListNewName', sortable: false,
+		   width: extjsf.ex(14), flex: 1, renderer: function(v, meta, rec)
+		   {
+				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
+				  '№', rec.get('priceListNewCode'), '; ', v
+				)), '"' );
+
+				return v;
+		   }
 		 },
 
 		 {

@@ -16,10 +16,11 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
-
-/* com.tverts: retrade domain (prices) */
-
 import com.tverts.model.UnityModelBean;
+
+/* com.tverts: retrade domain (firms + prices) */
+
+import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.retrade.domain.prices.Prices;
 import com.tverts.retrade.domain.prices.RepriceDoc;
 import com.tverts.retrade.domain.prices.RepriceDocModelBean;
@@ -70,7 +71,7 @@ public class FacesRepriceDocView extends UnityModelView
 	{
 		StringBuilder s = new StringBuilder(128);
 
-		s.append("Документ изм. цены №").
+		s.append("Документ изм. цен №").
 		  append(getEntity().getCode());
 
 		if(getEntity().getChangeTime() != null)
@@ -87,19 +88,35 @@ public class FacesRepriceDocView extends UnityModelView
 
 	public String  getChangeTime()
 	{
-		return DU.datetime2str(
-		  getEntity().getChangeTime());
+		return (getEntity().getChangeTime() == null)?(null):
+		  DU.datetime2str(getEntity().getChangeTime());
 	}
 
 	public String  getPriceList()
 	{
-		return Prices.getPriceListFullName(
-		  getEntity().getPriceList());
+		return (getEntity().getPriceList() == null)?(null):
+		  Prices.getPriceListFullName(getEntity().getPriceList());
 	}
 
-	public boolean isContractorsAffected()
+	public boolean isHasChanges()
+	{
+		return !getEntity().getChanges().isEmpty();
+	}
+
+	public boolean isHasContractors()
 	{
 		return !getEntity().getContractors().isEmpty();
+	}
+
+	public boolean isOneContractor()
+	{
+		return (getEntity().getContractors().size() == 1);
+	}
+
+	public Contractor getFirstContractor()
+	{
+		return (getEntity().getContractors().size() != 1)?(null):
+		  getEntity().getContractors().iterator().next();
 	}
 
 

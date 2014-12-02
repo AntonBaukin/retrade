@@ -300,8 +300,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	expandSizeMin     : function(opts)
 	{
-		var s, x = {}, comp = extjsf.component(opts);
-		if(!comp) return;
+		var s, x = {}, comp = ZeT.assertn(extjsf.component(opts));
 
 		this._size_pt(opts)
 
@@ -325,18 +324,14 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	trySqueezeWnd     : function(opts)
 	{
-		var co = extjsf.component(opts); if(!co) return;
+		var co = ZeT.assertn(extjsf.component(opts));
 
-		var bw = document.body.offsetWidth;
-		var bh = document.body.offsetHeight;
+		var bw = document.body.offsetWidth  - 2;
+		var bh = document.body.offsetHeight - 2;
 
 		var ww = co.getBox();
-		var wx = ww.x + ww.width  - bw + 8;
-		var wy = ww.y + ww.height - bh + 8 ;
-
-		wx = ww.x - wx; wy = ww.y - wy;
-		if(wx < 0) wx = ww.x;
-		if(wy < 0) wy = ww.y;
+		var wx = (ww.x + ww.width  <= bw)?(ww.x):(bw - ww.width);
+		var wy = (ww.y + ww.height <= bh)?(ww.y):(bh - ww.height);
 
 		co.setPagePosition(wx, wy)
 		return this;

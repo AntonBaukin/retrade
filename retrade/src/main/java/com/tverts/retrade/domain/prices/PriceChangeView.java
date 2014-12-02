@@ -187,6 +187,78 @@ public class PriceChangeView implements Serializable
 		this.measureName = measureName;
 	}
 
+	public Long getPriceListOld()
+	{
+		return priceListOld;
+	}
+
+	private Long priceListOld;
+
+	public void setPriceListOld(Long priceListOld)
+	{
+		this.priceListOld = priceListOld;
+	}
+
+	public String getPriceListOldCode()
+	{
+		return priceListOldCode;
+	}
+
+	private String priceListOldCode;
+
+	public void setPriceListOldCode(String priceListOldCode)
+	{
+		this.priceListOldCode = priceListOldCode;
+	}
+
+	public String getPriceListOldName()
+	{
+		return priceListOldName;
+	}
+
+	private String priceListOldName;
+
+	public void setPriceListOldName(String priceListOldName)
+	{
+		this.priceListOldName = priceListOldName;
+	}
+
+	public Long getPriceListNew()
+	{
+		return priceListNew;
+	}
+
+	private Long priceListNew;
+
+	public void setPriceListNew(Long priceListNew)
+	{
+		this.priceListNew = priceListNew;
+	}
+
+	public String getPriceListNewCode()
+	{
+		return priceListNewCode;
+	}
+
+	private String priceListNewCode;
+
+	public void setPriceListNewCode(String priceListNewCode)
+	{
+		this.priceListNewCode = priceListNewCode;
+	}
+
+	public String getPriceListNewName()
+	{
+		return priceListNewName;
+	}
+
+	private String priceListNewName;
+
+	public void setPriceListNewName(String priceListNewName)
+	{
+		this.priceListNewName = priceListNewName;
+	}
+
 
 	/* Initialization */
 
@@ -283,6 +355,24 @@ public class PriceChangeView implements Serializable
 	public PriceChangeView init(int documentIndex)
 	{
 		this.documentIndex = documentIndex;
+		return this;
+	}
+
+	public PriceChangeView initListOld(PriceListEntity pl)
+	{
+		priceListOld     = pl.getPrimaryKey();
+		priceListOldCode = pl.getCode();
+		priceListOldName = pl.getName();
+
+		return this;
+	}
+
+	public PriceChangeView initListNew(PriceListEntity pl)
+	{
+		priceListNew     = pl.getPrimaryKey();
+		priceListNewCode = pl.getCode();
+		priceListNewName = pl.getName();
+
 		return this;
 	}
 }
