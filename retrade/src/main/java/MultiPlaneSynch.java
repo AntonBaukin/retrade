@@ -1,5 +1,8 @@
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
+
 
 /**
  * Demonstration all-in-single-file program
@@ -104,6 +107,24 @@ public class MultiPlaneSynch
 			synchronized(clients[id])
 			{
 				return new Client(clients[id]);
+			}
+		}
+
+		/**
+		 * Thread-safe operation to get a full copy
+		 * of the client data if it differs from
+		 * the data given.
+		 *
+		 * Returns the argument if it the same, else a copy.
+		 */
+		public Client copy(Client s)
+		{
+			synchronized(clients[s.id])
+			{
+				if(clients[s.id].equals(s))
+					return s;
+				else
+					return new Client(clients[s.id]);
 			}
 		}
 
@@ -581,7 +602,6 @@ public class MultiPlaneSynch
 			this.datas    = new Data[requests.length];
 			for(int i = 0;(i < requests.length);i++)
 				datas[i] = new Data(requests[i], i);
-
 		}
 
 
@@ -664,6 +684,168 @@ public class MultiPlaneSynch
 			this.request = request;
 			this.index = index;
 		}
+
+		/**
+		 * The client data before they were processed.
+		 */
+		public Client[] initial;
+
+		/**
+		 * The client data after they were processed.
+		 */
+		public Client[] results;
+	}
+
+
+	/* Master Thread */
+
+	static final class Master implements Runnable
+	{
+		/* public: constructor */
+
+		public Master(Queue queue)
+		{
+			this.queue = queue;
+		}
+
+
+		/* Task */
+
+		public void run()
+		{
+			//~: mark the start time
+			runtime = System.currentTimeMillis();
+
+			//c: while there is a task
+			Data data; while((data = queue.next()) != null)
+			{
+				execute(data);
+			}
+
+			//~: mark the finish time
+			runtime = System.currentTimeMillis() - runtime;
+		}
+
+		public long getRuntime()
+		{
+			return runtime;
+		}
+
+
+		/* private: execution */
+
+		private void    execute(Data data)
+		{
+			cache.clear();
+
+			//?: {the resulting data may be applied}
+			if(consistent(data, cache))
+			{
+				apply(data);
+				return;
+			}
+
+			//?: {buy}
+			if(data.request instanceof Buy)
+				buy((Buy) data.request);
+			//~: credit
+			else
+				credit((Credit) data.request);
+		}
+
+		private boolean consistent(Data data, Map<Integer, Client> cache)
+		{
+			if((data.initial == null) || (data.results == null))
+				return false;
+
+			for(Client o : data.initial)
+			{
+				//~: get the data copy
+				Client x = queue.database.copy(o);
+				cache.put(x.id, x);
+
+				//?: {current state differs}
+				if(x != o) return false;
+			}
+
+			return true;
+		}
+
+		private void    apply(Data data)
+		{
+			for(Client r : data.results)
+				queue.database.assign(r);
+		}
+
+		private Client  client(int id)
+		{
+			Client c = cache.get(id);
+			if(c == null) cache.put(id, c = queue.database.copy(id));
+			return c;
+		}
+
+		private void    buy(Buy r)
+		{
+			Client c = client(r.a);
+
+			//?: {has no enough money}
+			if(c.money < r.s)
+				return;
+
+			//~: take the money
+			c.money -= r.s;
+
+			//~: give
+			give(r.b, r.s);
+		}
+
+		private void    credit(Credit r)
+		{
+			Client c = client(r.a);
+
+			//?: {client has enough money}
+			if(c.money >= r.s)
+			{
+				//~: take the money
+				c.money -= r.s;
+
+				//~: give
+				give(r.b, r.s);
+
+				return;
+			}
+
+			//~: calculate the debt
+			int d = r.s - c.money;
+
+			//~: now has no money
+			int s = c.money;
+			c.money = 0;
+
+			//~: make the debt
+			debt(c.id, r.b, d);
+
+			//~: give the money
+			if(s != 0)
+				give(r.b, s);
+		}
+
+		private void    give(int client, int s)
+		{
+			Client c = client(client);
+		}
+
+		private void    debt(int client, int creditor, int d)
+		{
+			client(client).debts.add(creditor, d);
+		}
+
+
+		/* private: master state */
+
+		private final Queue           queue;
+		private long                  runtime;
+		private Map<Integer, Client>  cache = new HashMap<>(7);
 	}
 
 }
