@@ -14,13 +14,78 @@ import java.util.Random;
  */
 public class MultiPlaneSynch
 {
+	/* Global Parameter of the Tests */
 
-	/* program entry point */
+	/**
+	 * The number of working threads.
+	 * Value 1 means execution by the Master only.
+	 */
+	static final int  THREADS  = 1;
+
+	/**
+	 * The total number of test requests.
+	 */
+	static final int  REQUESTS = 100;
+
+	/**
+	 * The number of test clients.
+	 */
+	static final int  CLIENTS  = 3;
+
+	/**
+	 * The number of the generated requests executions.
+	 */
+	static final int  RUNS     = 1;
+
+	/**
+	 * Generator seed used to create test requests.
+	 */
+	static final Long SEED     = 1L; //<-- undefined means current time
+
+	/**
+	 * Range of initial money amounts of the clients.
+	 */
+	static final int[] INITIAL = new int[] { 100, 1000 };
+
+	/**
+	 * Range of buy request cost.
+	 */
+	static final int[] BUY     = new int[] {  20, 250 };
+
+	/**
+	 * Range of credit request cost.
+	 */
+	static final int[] CREDIT  = new int[] {  10, 200 };
+
+
+	/* Program Entry Point */
 
 	public static void main(String[] argv)
+	  throws InterruptedException
 	{
-		//~: warm-up virtual machine with self-tests
+		//~: test the parameters
+		assert THREADS  >= 1;
+		assert REQUESTS >= 1;
+		assert CLIENTS  >= 2;
+		assert RUNS     >= 1;
+
+		assert INITIAL[0] > 0 && INITIAL[0] <= INITIAL[1];
+		assert BUY[0]     > 0 && BUY[0]     <= BUY[1];
+		assert CREDIT[0]  > 0 && CREDIT[0]  <= CREDIT[1];
+
+		//~: warm-up with self-tests
 		testDebtsBuffer();
+
+		//~: generate test requests & clients
+		Request[] requests = generateRequests();
+		Database  database = generateDatabase();
+
+		System.out.printf("Master and [%d] Support threads, [%d] runs:\n",
+		  (THREADS - 1), RUNS);
+
+		//c: do test runs
+		for(int run = 1;(run <= RUNS);run++)
+			testRun(run, requests, new Database(database));
 	}
 
 
@@ -75,6 +140,42 @@ public class MultiPlaneSynch
 		}
 	}
 
+	static Request[] generateRequests()
+	{
+		Request[] res = new Request[REQUESTS];
+		Random    gen = (SEED != null)?(new Random(SEED)):(new Random());
+
+		for(int i = 0;(i < REQUESTS);i++)
+		{
+			int a = gen.nextInt(CLIENTS);
+			int b = a; while(b == a)
+				b = gen.nextInt(CLIENTS);
+
+			//?: {buy}
+			if(gen.nextBoolean())
+				res[i] = new Buy(a, b,
+				  BUY[0] + gen.nextInt(BUY[1] - BUY[0] + 1));
+			//~: credit
+			else
+				res[i] = new Credit(a, b,
+				  CREDIT[0] + gen.nextInt(CREDIT[1] - CREDIT[0] + 1));
+		}
+
+		return res;
+	}
+
+	static Database generateDatabase()
+	{
+		Database res = new Database(CLIENTS);
+		Random   gen = (SEED != null)?(new Random(SEED)):(new Random());
+
+		for(int id = 0;(id < CLIENTS);id++)
+			res.client(id).money = INITIAL[0] +
+			  gen.nextInt(INITIAL[1] - INITIAL[0] + 1);
+
+		return res;
+	}
+
 
 	/* Clients Database */
 
@@ -87,6 +188,14 @@ public class MultiPlaneSynch
 			this.clients = new Client[clients];
 			for(int id = 0;(id < clients);id++)
 				this.clients[id] = new Client(id);
+		}
+
+		public Database(Database s)
+		{
+			//~: copy the clients
+			this.clients = new Client[s.clients.length];
+			int i = 0; for(Client c : s.clients)
+				this.clients[i++] = new Client(c);
 		}
 
 
@@ -462,6 +571,23 @@ public class MultiPlaneSynch
 			Hash r = new Hash();
 			r.x = x; r.y = y;
 			return r;
+		}
+
+		public String  toString()
+		{
+			StringBuilder s = new StringBuilder(32);
+			String        a = Long.toString(x, 16);
+			String        b = Long.toString(y, 16);
+
+			for(int i = a.length();(i < 16);i++)
+				s.append('0');
+			s.append(a);
+
+			for(int i = b.length();(i < 16);i++)
+				s.append('0');
+			s.append(b);
+
+			return s.toString();
 		}
 
 
@@ -951,5 +1077,48 @@ public class MultiPlaneSynch
 		private final Map<Integer, Client> cache = new HashMap<>(7);
 
 		private List<Client> initial, results;
+	}
+
+	static void testRun(int run, Request[] requests, Database database)
+	  throws InterruptedException
+	{
+		//~: create the queue
+		Queue queue = new Queue(requests, database);
+
+		//~: create master task
+		Master master = new Master(queue);
+
+		//~: create support tasks
+		List<Support> supports = new ArrayList<>();
+		for(int i = 1;(i < THREADS);i++)
+			supports.add(new Support(queue));
+
+		//~: create master thread
+		Thread m = new Thread(master);
+		m.setName("Master");
+
+		//~: create support threads
+		Thread[] sp = new Thread[supports.size()];
+		for(int i = 0;(i < sp.length);i++)
+		{
+			sp[i] = new Thread();
+			sp[i].setName("Support-" + i);
+			sp[i].setDaemon(true);
+		}
+
+		//~: start support threads
+		for(Thread s : sp)
+			s.start();
+
+		//~: start master thread
+		m.start();
+
+		//~: wait the master
+		m.join();
+
+		//~: print the timing and the hash
+		System.out.printf("%-2d %-8d %s\n", run, master.getRuntime(),
+		  database.hash().toString()
+		);
 	}
 }
