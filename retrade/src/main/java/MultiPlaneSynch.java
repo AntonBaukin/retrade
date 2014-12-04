@@ -21,27 +21,27 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int  THREADS  = 1;
+	static final int  THREADS  = 2;
 
 	/**
 	 * The total number of test requests.
 	 */
-	static final int  REQUESTS = 10000000;
+	static final int  REQUESTS = 1000000;
 
 	/**
 	 * The number of test clients.
 	 */
-	static final int  CLIENTS  = 3;
+	static final int  CLIENTS  = 100;
 
 	/**
 	 * The number of the generated requests executions.
 	 */
-	static final int  RUNS     = 10;
+	static final int  RUNS     = 5;
 
 	/**
 	 * Generator seed used to create test requests.
 	 */
-	static final Long SEED     = 1L; //<-- undefined means current time
+	static Long       SEED     = 1L; //<-- undefined means current time
 
 	/**
 	 * Range of initial money amounts of the clients.
@@ -57,6 +57,13 @@ public class MultiPlaneSynch
 	 * Range of credit request cost.
 	 */
 	static final int[] CREDIT  = new int[] {  10, 200 };
+
+	/**
+	 * The number of queue positions ahead the Master
+	 * cursor to forward the execution. Depends on
+	 * the number of competing Support threads.
+	 */
+	static final int PRESEE    = (THREADS-1) * 2;
 
 
 	/* Program Entry Point */
@@ -74,6 +81,8 @@ public class MultiPlaneSynch
 		assert BUY[0]     > 0 && BUY[0]     <= BUY[1];
 		assert CREDIT[0]  > 0 && CREDIT[0]  <= CREDIT[1];
 
+		if(SEED == null) SEED = System.currentTimeMillis();
+
 		//~: warm-up with self-tests
 		testDebtsBuffer();
 
@@ -81,8 +90,9 @@ public class MultiPlaneSynch
 		Request[] requests = generateRequests();
 		Database  database = generateDatabase();
 
-		System.out.printf("Master and [%d] Support threads, [%d] runs:\n",
-		  (THREADS - 1), RUNS);
+		System.out.printf("[%d] Aux. threads; Requests [%d], Seed [%d]; [%d] runs:\n",
+		  (THREADS - 1), REQUESTS, SEED, RUNS
+		);
 
 		//c: do test runs
 		for(int run = 1;(run <= RUNS);run++)
@@ -180,6 +190,9 @@ public class MultiPlaneSynch
 
 	/* Clients Database */
 
+	/**
+	 * Global data.
+	 */
 	static final class Database
 	{
 		/* public: constructor */
@@ -270,6 +283,53 @@ public class MultiPlaneSynch
 		/* private: the clients */
 
 		private final Client[] clients;
+	}
+
+	/**
+	 * Image of the global Database
+	 * used and updated by the
+	 * Support working threads.
+	 */
+	static final class Snapshot
+	{
+		/* public: constructors */
+
+		public Snapshot(Database database)
+		{
+			this.database = database;
+			this.local    = new HashMap<>(17);
+		}
+
+		public Snapshot(Snapshot s)
+		{
+			this.database = s.database;
+			this.local    = new HashMap<>(s.local);
+		}
+
+		public final Database database;
+
+
+		/* Snapshot Data Access */
+
+		public Client client(int id)
+		{
+			//~: lookup in the local
+			Client res = local.get(id);
+			if(res != null) return res;
+
+			//~: take the global copy
+			res = database.copy(id);
+			local.put(id, res);
+
+			return res;
+		}
+
+		public void   assign(Client c)
+		{
+			local.put(c.id, c);
+		}
+
+		private Map<Integer, Client> local;
 	}
 
 
@@ -594,7 +654,7 @@ public class MultiPlaneSynch
 
 		/* Constants */
 
-		static final long S = System.currentTimeMillis();
+		static final long S = SEED;
 		static final long X = 0x87C37B91114253D5L;
 		static final long Y = 0x4CF5AD432745937FL;
 		static final long C = 0x5555555555555555L;
@@ -772,26 +832,46 @@ public class MultiPlaneSynch
 				if(cursor >= requests.length)
 					return null;
 
-				//HINT: cursor points to the next item the Master will take.
-
 				//?: {has data to return}
 				if((data != null) && (data.index >= cursor))
 					datas[data.index] = data;
 
-				//HINT: we take the item after the next item of
-				//  the Master thread as Master may now wait for
-				//  the next item -> i = cursor + 1
+				//HINT: cursor points to the next item Master will take.
+				// We take (cursor + 1) not to compete with Master.
+
+				//~: initial scan position
+				int x = cursor + 1;
+				if((data != null) && (data.index >= cursor))
+				{
+					x = data.index + 1;
+
+					//?: {overlap}
+					if((x >= cursor + PRESEE) || (x >= requests.length))
+						x = cursor + 1; //<-- the next after the master will take
+				}
 
 				//~: search for the next item to take
-				for(int i = cursor + 1;(i < requests.length) && (i != data.index);i++)
-					if(datas[i] != null)
+				Data d; int i; data = null;
+				for(i = x;(i < requests.length);i++)
+					if((d = datas[i]) != null)
 					{
-						data = datas[i];
+						data = d;
 						datas[i] = null; //<-- thread exclusively takes it
-						return data;
+						break;
 					}
 
-				return null; //<-- noting found, thread will exit
+				//?: {found nothing} the end, thread will exit
+				if(data == null) return null;
+
+				//~: look back for the closest snapshot
+				for(int j = i;(j >= cursor);j--)
+					if(((d = datas[j]) != null) && (d.snapshot != null))
+					{
+						data.snapshot = new Snapshot(d.snapshot);
+						break;
+					}
+
+				return data;
 			}
 		}
 
@@ -823,6 +903,13 @@ public class MultiPlaneSynch
 		 * The client data after they were processed.
 		 */
 		public List<Client> results;
+
+		/**
+		 * Snapshot of the database privately
+		 * used by the Support thread executing
+		 * the request associated with this Data.
+		 */
+		public Snapshot     snapshot;
 	}
 
 
@@ -980,6 +1067,11 @@ public class MultiPlaneSynch
 			return runtime;
 		}
 
+		public int  getHits()
+		{
+			return hits;
+		}
+
 
 		/* protected: requests execution */
 
@@ -996,7 +1088,10 @@ public class MultiPlaneSynch
 
 			//?: {the resulting data may be applied}
 			if(consistent(data, cache))
+			{
+				hits++;
 				apply(data.results);
+			}
 			//~: execute again
 			else
 			{
@@ -1004,6 +1099,18 @@ public class MultiPlaneSynch
 
 				//~: apply all the changes to the database
 				apply(cache.values());
+
+				//DEBUG: wait 1sec
+//				Object x = new Object();
+//				try
+//				{
+//					synchronized(x)
+//					{
+//						x.wait(10L);
+//					}
+//				}
+//				catch(InterruptedException e)
+//				{}
 			}
 		}
 
@@ -1038,6 +1145,11 @@ public class MultiPlaneSynch
 		 * Master work time is for whole Queue processing.
 		 */
 		private long runtime;
+
+		/**
+		 * The support pre-execution hits.
+		 */
+		private int  hits;
 
 		/**
 		 * Cache where clients are held during
@@ -1076,8 +1188,8 @@ public class MultiPlaneSynch
 			Client c = cache.get(id);
 			if(c != null) return c;
 
-			//~: load from the database
-			c = queue.database.copy(id);
+			//~: load from the database snapshot
+			c = snapshot.client(id);
 
 			//~: remember the initial version
 			initial.add(c);
@@ -1087,6 +1199,9 @@ public class MultiPlaneSynch
 			results.add(c);
 			cache.put(c.id, c);
 
+			//!: put it back to the snapshot
+			snapshot.assign(c);
+
 			return c;
 		}
 
@@ -1094,17 +1209,22 @@ public class MultiPlaneSynch
 		{
 			//~: clear the cache & results
 			cache.clear();
-			data.initial = data.results = null;
 
-			//~: execute
+			//~: create execution data
 			this.initial = new ArrayList<>(4);
 			this.results = new ArrayList<>(4);
+
+			//~: prepare snapshot
+			if(data.snapshot == null)
+				data.snapshot = new Snapshot(queue.database);
+			this.snapshot = data.snapshot;
+
+			//~: execute
 			super.execute(data);
 
 			//~: save data results
 			data.initial = this.initial;
 			data.results = this.results;
-			this.initial = this.results = null;
 		}
 
 
@@ -1115,6 +1235,8 @@ public class MultiPlaneSynch
 		 * a request processing.
 		 */
 		private final Map<Integer, Client> cache = new HashMap<>(7);
+
+		private Snapshot snapshot;
 
 		private List<Client> initial, results;
 	}
@@ -1141,7 +1263,7 @@ public class MultiPlaneSynch
 		Thread[] sp = new Thread[supports.size()];
 		for(int i = 0;(i < sp.length);i++)
 		{
-			sp[i] = new Thread();
+			sp[i] = new Thread(supports.get(i));
 			sp[i].setName("Support-" + i);
 			sp[i].setDaemon(true);
 		}
@@ -1157,7 +1279,9 @@ public class MultiPlaneSynch
 		m.join();
 
 		//~: print the timing and the hash
-		System.out.printf("%-2d %-8d %s\n", run, master.getRuntime(),
+		System.out.printf("%2d %5d %4.1f %s\n",
+		  run, master.getRuntime(),
+		  100.0 * master.getHits() / requests.length,
 		  database.hash().toString()
 		);
 	}
