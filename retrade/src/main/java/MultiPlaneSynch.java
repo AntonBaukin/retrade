@@ -22,49 +22,49 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int  THREADS  = 2;
+	static final int   THREADS  = 2;
 
 	/**
 	 * The total number of test requests.
 	 */
-	static final int  REQUESTS = 100;
+	static final int   REQUESTS = 100000;
 
 	/**
 	 * The number of test clients.
 	 */
-	static final int  CLIENTS  = 100;
+	static final int   CLIENTS  = 100;
 
 	/**
 	 * The number of the generated requests executions.
 	 */
-	static final int  RUNS     = 1;
+	static final int   RUNS     = 20;
 
 	/**
 	 * Generator seed used to create test requests.
 	 */
-	static Long       SEED     = 1L; //<-- undefined means current time
+	static Long        SEED     = 1L; //<-- undefined means current time
 
 	/**
 	 * Range of initial money amounts of the clients.
 	 */
-	static final int[] INITIAL = new int[] { 100, 1000 };
+	static final int[] INITIAL  = new int[] { 100, 1000 };
 
 	/**
 	 * Range of buy request cost.
 	 */
-	static final int[] BUY     = new int[] {  20, 250 };
+	static final int[] BUY      = new int[] {  20, 250 };
 
 	/**
 	 * Range of credit request cost.
 	 */
-	static final int[] CREDIT  = new int[] {  10, 200 };
+	static final int[] CREDIT   = new int[] {  10, 200 };
 
 	/**
 	 * The number of queue positions ahead the Master
 	 * cursor to forward the execution. Depends on
 	 * the number of competing Support threads.
 	 */
-	static final int PRESEE    = 0; //(THREADS-1) * 4;
+	static final int   PRESEE   = (THREADS-1) * 2;
 
 
 	/* Program Entry Point */
@@ -220,7 +220,7 @@ public class MultiPlaneSynch
 		/**
 		 * Thread-unsafe operation to directly access client.
 		 */
-		public Client client(int id)
+		public Client  client(int id)
 		{
 			return clients[id];
 		}
@@ -229,11 +229,13 @@ public class MultiPlaneSynch
 		 * Thread-safe operation to get a full copy
 		 * of the client data.
 		 */
-		public Client copy(int id)
+		public Client  copy(int id)
 		{
-			synchronized(clients[id])
+			Client x = clients[id];
+
+			synchronized(x)
 			{
-				return new Client(clients[id]);
+				return new Client(x);
 			}
 		}
 
@@ -244,14 +246,26 @@ public class MultiPlaneSynch
 		 *
 		 * Returns the argument if it the same, else a copy.
 		 */
-		public Client copy(Client s)
+		public Client  copy(Client s)
 		{
-			synchronized(clients[s.id])
+			Client x = clients[s.id];
+
+			synchronized(x)
 			{
-				if(clients[s.id].equals(s))
+				if(x.equals(s))
 					return s;
 				else
 					return new Client(clients[s.id]);
+			}
+		}
+
+		public boolean test(Client c)
+		{
+			Client x = clients[c.id];
+
+			synchronized(x)
+			{
+				return x.equals(c);
 			}
 		}
 
@@ -259,11 +273,13 @@ public class MultiPlaneSynch
 		 * Thread-safe operation to assign the global data
 		 * of the client. Only Master thread is allowed this!
 		 */
-		public void   assign(Client s)
+		public void    assign(Client s)
 		{
-			synchronized(clients[s.id])
+			Client x = clients[s.id];
+
+			synchronized(x)
 			{
-				clients[s.id].assign(s);
+				x.assign(s);
 			}
 		}
 
@@ -271,7 +287,7 @@ public class MultiPlaneSynch
 		 * Calculates the resulting hash of the database.
 		 * Needed to check the results.
 		 */
-		public Hash   hash()
+		public Hash    hash()
 		{
 			Hash hash = new Hash();
 
@@ -308,7 +324,7 @@ public class MultiPlaneSynch
 
 		/* Snapshot Data Access */
 
-		public Client client(int id)
+		public Client  client(int id)
 		{
 			//~: lookup in the local
 			Client res = local.get(id);
@@ -321,7 +337,18 @@ public class MultiPlaneSynch
 			return res;
 		}
 
-		public void   copy(Collection<Client> cs)
+		public boolean test(Client c)
+		{
+			//~: lookup in the local
+			Client res = local.get(c.id);
+			if(res != null)
+				return res.equals(c);
+
+			//~: test in the database
+			return database.test(c);
+		}
+
+		public void    copy(Collection<Client> cs)
 		{
 			for(Client c : cs)
 				local.put(c.id, new Client(c));
@@ -329,7 +356,6 @@ public class MultiPlaneSynch
 
 		private final Map<Integer, Client> local;
 	}
-
 
 
 	/* Client Data Item */
@@ -843,9 +869,6 @@ public class MultiPlaneSynch
 				//~: select section
 				synchronized(this)
 				{
-					//HINT: cursor points to the next item Master will take.
-					//  We take (cursor + 1) not to compete with Master.
-
 					if(cursor >= requests.length)
 						return null;
 
@@ -1160,16 +1183,16 @@ public class MultiPlaneSynch
 				apply(cache.values());
 
 				//DEBUG: wait 1sec
-				Object x = new Object();
-				try
-				{
-					synchronized(x)
-					{
-						x.wait(100L);
-					}
-				}
-				catch(InterruptedException e)
-				{}
+//				Object x = new Object();
+//				try
+//				{
+//					synchronized(x)
+//					{
+//						x.wait(100L);
+//					}
+//				}
+//				catch(InterruptedException e)
+//				{}
 			}
 		}
 
@@ -1279,19 +1302,19 @@ public class MultiPlaneSynch
 			//  not be used more and must be replaced.
 
 			//?: {repeated previous tasks}
-			//if(snapshot != null) if(snapshot.index <= data.index)
-			//	snapshot = null;
+			if(snapshot != null) if(snapshot.index <= data.index)
+				snapshot = null;
 
 			//?: {has no snapshot}
-			//if(snapshot == null)
+			if(snapshot == null)
 				snapshot = new Snapshot(queue.database);
 
 			//~: current index of the snapshot
 			snapshot.index = data.index;
 
 			//?: {previous work is still actual}
-			//if(consistent(data))
-			//	return;
+			if(consistent(data))
+				return;
 
 			//~: create execution data
 			this.initial = new ArrayList<>(4);
@@ -1320,7 +1343,7 @@ public class MultiPlaneSynch
 
 			for(Client o : data.initial)
 				//?: {not the same data}
-				if(!o.equals(snapshot.client(o.id)))
+				if(!snapshot.test(o))
 					return false;
 
 			return true;
@@ -1381,7 +1404,7 @@ public class MultiPlaneSynch
 		m.join();
 
 		//~: print the timing and the hash
-		System.out.printf("%2d %5d %4.1f %s\n",
+		System.out.printf("%2d %5d  %5.1f  %s\n",
 		  run, master.getRuntime(),
 		  100.0 * master.getHits() / requests.length,
 		  database.hash().toString()
