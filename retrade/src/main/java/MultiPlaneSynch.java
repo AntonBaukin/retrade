@@ -27,7 +27,7 @@ public class MultiPlaneSynch
 	/**
 	 * The total number of test requests.
 	 */
-	static final int  REQUESTS = 1000;
+	static final int  REQUESTS = 100;
 
 	/**
 	 * The number of test clients.
@@ -37,7 +37,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of the generated requests executions.
 	 */
-	static final int  RUNS     = 2;
+	static final int  RUNS     = 1;
 
 	/**
 	 * Generator seed used to create test requests.
@@ -64,7 +64,7 @@ public class MultiPlaneSynch
 	 * cursor to forward the execution. Depends on
 	 * the number of competing Support threads.
 	 */
-	static final int PRESEE    = (THREADS-1) * 2;
+	static final int PRESEE    = 0; //(THREADS-1) * 4;
 
 
 	/* Program Entry Point */
@@ -302,15 +302,6 @@ public class MultiPlaneSynch
 			this.local    = new HashMap<>(17);
 		}
 
-		public Snapshot(Snapshot s)
-		{
-			this.database = s.database;
-			this.local    = new HashMap<>(s.local);
-
-			for(Map.Entry<Integer, Client> e : local.entrySet())
-				e.setValue(new Client(e.getValue()));
-		}
-
 		public final Database database;
 		public int            index;
 
@@ -330,9 +321,10 @@ public class MultiPlaneSynch
 			return res;
 		}
 
-		public void   assign(Client c)
+		public void   copy(Collection<Client> cs)
 		{
-			local.put(c.id, c);
+			for(Client c : cs)
+				local.put(c.id, new Client(c));
 		}
 
 		private final Map<Integer, Client> local;
@@ -854,19 +846,19 @@ public class MultiPlaneSynch
 					//HINT: cursor points to the next item Master will take.
 					//  We take (cursor + 1) not to compete with Master.
 
-					if(cursor + 1 >= requests.length)
+					if(cursor >= requests.length)
 						return null;
 
 					//~: the next index to take
 					if(index <= cursor)
-						index = cursor + 1;
+						index = cursor;
 					else
 					{
 						index++;
 
 						//?: {overlap}
-						if((index > cursor + PRESEE) || (index >= requests.length))
-							index = cursor + 1;
+						if((index >= cursor + PRESEE) || (index >= requests.length))
+							index = cursor;
 					}
 
 					//~: will try this request
@@ -1016,7 +1008,7 @@ public class MultiPlaneSynch
 				credit((Credit) data.request);
 		}
 
-		protected void buy(Buy r)
+		private void buy(Buy r)
 		{
 			Client c = client(r.a);
 
@@ -1031,7 +1023,7 @@ public class MultiPlaneSynch
 			give(r.b, r.s);
 		}
 
-		protected void credit(Credit r)
+		private void credit(Credit r)
 		{
 			Client c = client(r.a);
 
@@ -1055,14 +1047,14 @@ public class MultiPlaneSynch
 			c.money = 0;
 
 			//~: make the debt
-			debt(c.id, r.b, d);
+			c.debts.add(r.b, d);
 
 			//~: give the money
 			if(s != 0)
 				give(r.b, s);
 		}
 
-		protected void give(int client, int s)
+		private void give(int client, int s)
 		{
 			Client c = client(client);
 
@@ -1099,11 +1091,6 @@ public class MultiPlaneSynch
 
 			//~: add the rest
 			c.money += s;
-		}
-
-		protected void debt(int client, int creditor, int d)
-		{
-			client(client).debts.add(creditor, d);
 		}
 	}
 
@@ -1162,11 +1149,8 @@ public class MultiPlaneSynch
 			cache.clear();
 
 			//?: {the resulting data may be applied}
-			if(consistent(data, cache))
-			{
-				hits++;
+			if(consistent(data))
 				apply(data.results);
-			}
 			//~: execute again
 			else
 			{
@@ -1181,7 +1165,7 @@ public class MultiPlaneSynch
 				{
 					synchronized(x)
 					{
-						x.wait(10L);
+						x.wait(100L);
 					}
 				}
 				catch(InterruptedException e)
@@ -1189,7 +1173,7 @@ public class MultiPlaneSynch
 			}
 		}
 
-		private boolean  consistent(Data data, Map<Integer, Client> cache)
+		private boolean  consistent(Data data)
 		{
 			if((data.initial == null) | (data.results == null))
 				return false;
@@ -1201,8 +1185,12 @@ public class MultiPlaneSynch
 				cache.put(x.id, x);
 
 				//?: {current state differs}
-				if(x != o) return false;
+				if(x != o)
+					return false;
 			}
+
+			//!: support work is not wasted
+			hits++;
 
 			return true;
 		}
@@ -1267,22 +1255,18 @@ public class MultiPlaneSynch
 			c = snapshot.client(id);
 
 			//~: remember the initial version
-			initial.add(c);
+			initial.add(new Client(c));
 
-			//~: make a local copy
-			c = new Client(c);
+			//~: add to the results & cache
 			results.add(c);
 			cache.put(c.id, c);
-
-			//!: put it back to the snapshot
-			snapshot.assign(c);
 
 			return c;
 		}
 
 		protected void   execute(Data data)
 		{
-			//~: clear the cache & results
+			//~: clear the cache
 			cache.clear();
 
 			//~: create execution data
@@ -1294,14 +1278,24 @@ public class MultiPlaneSynch
 			//  previous tasks, Snapshot from the future may
 			//  not be used more and must be replaced.
 
-
 			//?: {repeated previous tasks}
-			if((snapshot != null) && (snapshot.index <= data.index))
-				snapshot = null;
+			//if(snapshot != null) if(snapshot.index <= data.index)
+			//	snapshot = null;
 
 			//?: {has no snapshot}
-			if(snapshot == null)
+			//if(snapshot == null)
 				snapshot = new Snapshot(queue.database);
+
+			//~: current index of the snapshot
+			snapshot.index = data.index;
+
+			//?: {previous work is still actual}
+			//if(consistent(data))
+			//	return;
+
+			//~: create execution data
+			this.initial = new ArrayList<>(4);
+			this.results = new ArrayList<>(4);
 
 			//~: execute
 			super.execute(data);
@@ -1309,6 +1303,27 @@ public class MultiPlaneSynch
 			//~: save data results
 			data.initial = this.initial;
 			data.results = this.results;
+
+
+			//HINT: initial list always contains a copy,
+			//  but resulting list contains the same objects
+			//  as local snapshot. To make it thread-safe we
+			//  have to create additional copies.
+
+			snapshot.copy(this.results);
+		}
+
+		private boolean  consistent(Data data)
+		{
+			if((data.initial == null) | (data.results == null))
+				return false;
+
+			for(Client o : data.initial)
+				//?: {not the same data}
+				if(!o.equals(snapshot.client(o.id)))
+					return false;
+
+			return true;
 		}
 
 
