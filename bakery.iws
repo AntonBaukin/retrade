@@ -7,7 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
     </list>
     <ignored path="bakery.iws" />
@@ -37,35 +38,16 @@
       <file leaf-file-name="MultiPlaneSynch.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4808652" vertical-offset="9384" max-vertical-offset="10852">
-              <caret line="633" column="47" selection-start-line="633" selection-start-column="47" selection-end-line="633" selection-end-column="47" />
+            <state vertical-scroll-proportion="1.329451" vertical-offset="8194" max-vertical-offset="9577">
+              <caret line="954" column="0" selection-start-line="954" selection-start-column="0" selection-end-line="954" selection-end-column="0" />
               <folding>
-                <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Request#0;class#Request#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#851#852#0" expanded="true" />
-                <element signature="e#874#875#0" expanded="true" />
-                <element signature="e#1050#1051#0" expanded="true" />
-                <element signature="e#1073#1074#0" expanded="true" />
-                <element signature="method#Database#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#1450#1451#0" expanded="true" />
-                <element signature="e#1477#1478#0" expanded="true" />
-                <element signature="method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Client#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Client#1;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#assign#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#hash#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#rehash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#testDebtsBuffer#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#cmp#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Queue#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#run#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#apply#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -890,7 +872,6 @@
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32054177" sideWeight="0.49950346" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32167044" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30969268" sideWeight="0.31353134" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -912,6 +893,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24422443" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32167044" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32054177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -935,7 +917,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-58 [finished]: finally, processed all subclasses of Data Select Model Bean." />
     <MESSAGE value="ui-58 [stable]: tested UI for goods-related items." />
     <MESSAGE value="ui-57 [beta]: fixed error of the contractors associated price lists filtered by the selection set." />
     <MESSAGE value="ui-57 [beta]: displaying prices for the clicked contractor (as for the client firm users)." />
@@ -960,18 +941,11 @@
     <MESSAGE value="domain-45 [beta]: displaying the list of affected Contractors in Price Change Document info window." />
     <MESSAGE value="domain-45 [stable]: completed displaying the list of affected Contractors..." />
     <MESSAGE value="ui-60 [beta]: enhancing Price Change Document edit form..." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-60 [beta]: enhancing Price Change Document edit form..." />
+    <MESSAGE value="special-00 [beta]: implementing Multi-Plane Queue Execution concept sample." />
+    <option name="LAST_COMMIT_MESSAGE" value="special-00 [beta]: implementing Multi-Plane Queue Execution concept sample." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/lang/AssertionError.java</url>
-          <line>49</line>
-          <properties />
-          <option name="timeStamp" value="215" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -1107,49 +1081,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1343" max-vertical-offset="19572">
           <caret line="79" column="27" selection-start-line="79" selection-start-column="21" selection-end-line="79" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/lang/AssertionError.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="833" max-vertical-offset="3027">
-          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.01920904" vertical-offset="1700" max-vertical-offset="3367">
+          <caret line="113" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4808652" vertical-offset="9384" max-vertical-offset="10852">
-          <caret line="633" column="47" selection-start-line="633" selection-start-column="47" selection-end-line="633" selection-end-column="47" />
+        <state vertical-scroll-proportion="1.329451" vertical-offset="8194" max-vertical-offset="9577">
+          <caret line="954" column="0" selection-start-line="954" selection-start-column="0" selection-end-line="954" selection-end-column="0" />
           <folding>
-            <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Request#0;class#Request#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#851#852#0" expanded="true" />
-            <element signature="e#874#875#0" expanded="true" />
-            <element signature="e#1050#1051#0" expanded="true" />
-            <element signature="e#1073#1074#0" expanded="true" />
-            <element signature="method#Database#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#1450#1451#0" expanded="true" />
-            <element signature="e#1477#1478#0" expanded="true" />
-            <element signature="method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Client#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Client#1;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#assign#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#hash#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#rehash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#testDebtsBuffer#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#cmp#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Queue#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#run#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#apply#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
           </folding>
         </state>
       </provider>

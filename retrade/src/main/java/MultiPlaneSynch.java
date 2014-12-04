@@ -1,5 +1,7 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -688,63 +690,35 @@ public class MultiPlaneSynch
 		/**
 		 * The client data before they were processed.
 		 */
-		public Client[] initial;
+		public List<Client> initial;
 
 		/**
 		 * The client data after they were processed.
 		 */
-		public Client[] results;
+		public List<Client> results;
 	}
 
 
-	/* Master Thread */
+	/* Working Thread Base */
 
-	static final class Master implements Runnable
+	static abstract class Worker implements Runnable
 	{
 		/* public: constructor */
 
-		public Master(Queue queue)
+		protected final Queue queue;
+
+		protected Worker(Queue queue)
 		{
 			this.queue = queue;
 		}
 
 
-		/* Task */
+		/* protected: requests execution */
 
-		public void run()
+		protected abstract Client client(int id);
+
+		protected void execute(Data data)
 		{
-			//~: mark the start time
-			runtime = System.currentTimeMillis();
-
-			//c: while there is a task
-			Data data; while((data = queue.next()) != null)
-			{
-				execute(data);
-			}
-
-			//~: mark the finish time
-			runtime = System.currentTimeMillis() - runtime;
-		}
-
-		public long getRuntime()
-		{
-			return runtime;
-		}
-
-
-		/* private: execution */
-
-		private void    execute(Data data)
-		{
-			cache.clear();
-
-			//?: {the resulting data may be applied}
-			if(consistent(data, cache))
-			{
-				apply(data);
-				return;
-			}
-
 			//?: {buy}
 			if(data.request instanceof Buy)
 				buy((Buy) data.request);
@@ -753,38 +727,7 @@ public class MultiPlaneSynch
 				credit((Credit) data.request);
 		}
 
-		private boolean consistent(Data data, Map<Integer, Client> cache)
-		{
-			if((data.initial == null) || (data.results == null))
-				return false;
-
-			for(Client o : data.initial)
-			{
-				//~: get the data copy
-				Client x = queue.database.copy(o);
-				cache.put(x.id, x);
-
-				//?: {current state differs}
-				if(x != o) return false;
-			}
-
-			return true;
-		}
-
-		private void    apply(Data data)
-		{
-			for(Client r : data.results)
-				queue.database.assign(r);
-		}
-
-		private Client  client(int id)
-		{
-			Client c = cache.get(id);
-			if(c == null) cache.put(id, c = queue.database.copy(id));
-			return c;
-		}
-
-		private void    buy(Buy r)
+		protected void buy(Buy r)
 		{
 			Client c = client(r.a);
 
@@ -799,7 +742,7 @@ public class MultiPlaneSynch
 			give(r.b, r.s);
 		}
 
-		private void    credit(Credit r)
+		protected void credit(Credit r)
 		{
 			Client c = client(r.a);
 
@@ -830,22 +773,183 @@ public class MultiPlaneSynch
 				give(r.b, s);
 		}
 
-		private void    give(int client, int s)
+		protected void give(int client, int s)
 		{
 			Client c = client(client);
 		}
 
-		private void    debt(int client, int creditor, int d)
+		protected void debt(int client, int creditor, int d)
 		{
 			client(client).debts.add(creditor, d);
+		}
+	}
+
+
+	/* Master Thread */
+
+	static final class Master extends Worker
+	{
+		/* public: constructor */
+
+		public Master(Queue queue)
+		{
+			super(queue);
+		}
+
+
+		/* Task */
+
+		public void run()
+		{
+			//~: mark the start time
+			runtime = System.currentTimeMillis();
+
+			//c: while there is a task
+			Data data; while((data = queue.next()) != null)
+			{
+				execute(data);
+			}
+
+			//~: mark the finish time
+			runtime = System.currentTimeMillis() - runtime;
+		}
+
+		public long getRuntime()
+		{
+			return runtime;
+		}
+
+
+		/* protected: requests execution */
+
+		protected Client client(int id)
+		{
+			Client c = cache.get(id);
+			if(c == null) cache.put(id, c = queue.database.copy(id));
+			return c;
+		}
+
+		protected void   execute(Data data)
+		{
+			cache.clear();
+
+			//?: {the resulting data may be applied}
+			if(consistent(data, cache))
+				apply(data);
+			//~: execute again
+			else
+				super.execute(data);
+		}
+
+		private boolean  consistent(Data data, Map<Integer, Client> cache)
+		{
+			if((data.initial == null) | (data.results == null))
+				return false;
+
+			for(Client o : data.initial)
+			{
+				//~: get the data copy
+				Client x = queue.database.copy(o);
+				cache.put(x.id, x);
+
+				//?: {current state differs}
+				if(x != o) return false;
+			}
+
+			return true;
+		}
+
+		private void     apply(Data data)
+		{
+			for(Client r : data.results)
+				queue.database.assign(r);
 		}
 
 
 		/* private: master state */
 
-		private final Queue           queue;
-		private long                  runtime;
-		private Map<Integer, Client>  cache = new HashMap<>(7);
+		/**
+		 * Master work time is for whole Queue processing.
+		 */
+		private long runtime;
+
+		/**
+		 * Cache where clients are held during
+		 * a request processing.
+		 */
+		private final Map<Integer, Client> cache = new HashMap<>(7);
 	}
 
+
+	/* Support Thread */
+
+	static final class Support extends Worker
+	{
+		/* public: constructor */
+
+		public Support(Queue queue)
+		{
+			super(queue);
+		}
+
+
+		/* Task */
+
+		public void run()
+		{
+			//c: while there is a task
+			Data data = null; while((data = queue.next(data)) != null)
+			{
+				execute(data);
+			}
+		}
+
+		protected Client client(int id)
+		{
+			//?: {found it in the cache}
+			Client c = cache.get(id);
+			if(c != null) return c;
+
+			//~: load from the database
+			c = queue.database.copy(id);
+
+			//~: remember the initial version
+			initial.add(c);
+
+			//~: make a local copy
+			c = new Client(c);
+			results.add(c);
+			cache.put(c.id, c);
+
+			return c;
+		}
+
+		protected void   execute(Data data)
+		{
+			//~: clear the cache & results
+			cache.clear();
+			data.initial = data.results = null;
+
+			//~: execute
+			this.initial = new ArrayList<>(4);
+			this.results = new ArrayList<>(4);
+			super.execute(data);
+
+			//~: save data results
+			data.initial = this.initial;
+			data.results = this.results;
+			this.initial = this.results = null;
+		}
+
+
+		/* private: support thread state */
+
+		/**
+		 * Cache where clients are held during
+		 * a request processing.
+		 */
+		private final Map<Integer, Client> cache = new HashMap<>(7);
+
+		private List<Client> initial, results;
+	}
 }
