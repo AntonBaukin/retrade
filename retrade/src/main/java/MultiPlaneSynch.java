@@ -26,7 +26,7 @@ public class MultiPlaneSynch
 	/**
 	 * The total number of test requests.
 	 */
-	static final int  REQUESTS = 1000000;
+	static final int  REQUESTS = 1000;
 
 	/**
 	 * The number of test clients.
@@ -36,7 +36,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of the generated requests executions.
 	 */
-	static final int  RUNS     = 5;
+	static final int  RUNS     = 2;
 
 	/**
 	 * Generator seed used to create test requests.
@@ -300,12 +300,6 @@ public class MultiPlaneSynch
 			this.local    = new HashMap<>(17);
 		}
 
-		public Snapshot(Snapshot s)
-		{
-			this.database = s.database;
-			this.local    = new HashMap<>(s.local);
-		}
-
 		public final Database database;
 
 
@@ -329,7 +323,7 @@ public class MultiPlaneSynch
 			local.put(c.id, c);
 		}
 
-		private Map<Integer, Client> local;
+		private final Map<Integer, Client> local;
 	}
 
 
@@ -801,22 +795,21 @@ public class MultiPlaneSynch
 		 */
 		public Data next()
 		{
-			synchronized(this)
+			Data data; synchronized(this)
 			{
 				if(cursor >= requests.length)
 					return null;
 
-				Data data = datas[cursor];
+				data = datas[cursor];
 				datas[cursor] = null; //<-- clear the data
-
-				//?: {has no data}
-				if(data == null)
-					data = new Data(requests[cursor], cursor);
 
 				//!: advance
 				cursor++;
-				return data;
 			}
+
+			//~: enter the data
+			data.masterEnter();
+			return data;
 		}
 
 		private int cursor;
@@ -827,52 +820,61 @@ public class MultiPlaneSynch
 		 */
 		public Data next(Data data)
 		{
-			synchronized(this)
+			int index = -1;
+
+			//?: {has data to release}
+			if(data != null)
 			{
-				if(cursor >= requests.length)
-					return null;
+				index = data.index;
 
-				//?: {has data to return}
-				if((data != null) && (data.index >= cursor))
-					datas[data.index] = data;
+				//!: release the lock
+				data.supportLeave();
+				data = null;
+			}
 
-				//HINT: cursor points to the next item Master will take.
-				// We take (cursor + 1) not to compete with Master.
-
-				//~: initial scan position
-				int x = cursor + 1;
-				if((data != null) && (data.index >= cursor))
+			//c: queue competition cycle
+			while(true)
+			{
+				//~: select section
+				synchronized(this)
 				{
-					x = data.index + 1;
+					if(cursor >= requests.length)
+						return null;
 
-					//?: {overlap}
-					if((x >= cursor + PRESEE) || (x >= requests.length))
-						x = cursor + 1; //<-- the next after the master will take
+					//HINT: cursor points to the next item Master will take.
+					// We take (cursor + 1) not to compete with Master.
+
+					//~: the next index to take
+					if(index <= cursor)
+						index = cursor + 1;
+					else
+					{
+						index++;
+
+						//?: {overlap}
+						if((index > cursor + PRESEE) || (index >= requests.length))
+							index = cursor + 1;
+					}
+
+					//~: will try this request
+					data = datas[index];
 				}
 
-				//~: search for the next item to take
-				Data d; int i; data = null;
-				for(i = x;(i < requests.length);i++)
-					if((d = datas[i]) != null)
-					{
-						data = d;
-						datas[i] = null; //<-- thread exclusively takes it
-						break;
-					}
-
-				//?: {found nothing} the end, thread will exit
-				if(data == null) return null;
-
-				//~: look back for the closest snapshot
-				for(int j = i;(j >= cursor);j--)
-					if(((d = datas[j]) != null) && (d.snapshot != null))
-					{
-						data.snapshot = new Snapshot(d.snapshot);
-						break;
-					}
-
-				return data;
+				//?: {obtained the lock}
+				if(Boolean.TRUE.equals(data.trySupportEnter()))
+					break;
 			}
+
+			//~: snapshot section
+			synchronized(this)
+			{
+				//~: go back to steal a snapshot
+				for(int i = data.index;(i >= cursor);i--)
+					if((data.snapshot = datas[i].stealSnapshot()) != null)
+						break;
+			}
+
+			return data;
 		}
 
 		private final Data[] datas;
@@ -909,7 +911,121 @@ public class MultiPlaneSynch
 		 * used by the Support thread executing
 		 * the request associated with this Data.
 		 */
-		public Snapshot     snapshot;
+		public volatile Snapshot snapshot;
+
+
+		/* Synchronization */
+
+		/**
+		 * Master calls this method before entering
+		 * this request processing. If this request
+		 * is currently executed by a Support thread,
+		 * master waits till that processing is done.
+		 */
+		public void    masterEnter()
+		{
+			synchronized(this)
+			{
+				assert (lock <= 1);
+
+				//?: {lock is held}
+				if(lock == 1) try
+				{
+					lock = 2;
+					this.wait();
+				}
+				catch(InterruptedException e)
+				{
+					throw new RuntimeException(e);
+				}
+
+				//~: mark as entered
+				lock = 3;
+			}
+		}
+
+		/**
+		 * This call must be done by Support thread
+		 * to try to acquire the lock on this request.
+		 * This call is not blocking. Results are:
+		 *
+		 *   true   when lock is acquired by callee;
+		 *   false  when else Support thread possess;
+		 *   null   when Master had entered,
+		 *          or wants to enter this task.
+		 *
+		 * Warning: this call is not reenterable.
+		 */
+		public Boolean trySupportEnter()
+		{
+			synchronized(this)
+			{
+				if(lock == 0)
+				{
+					//HINT: after accessing the lock, Support thread
+					//  will see back to steal Snapshot. It's own
+					//  snapshot is not not needed and may be stolen
+					//  by else Support thread.
+					this.sharedSnapshot = this.snapshot;
+
+					lock = 1;
+					return true;
+				}
+
+				return (lock == 1)?(false):(null);
+			}
+		}
+
+		/**
+		 * This call is for a Support thread.
+		 * If this Data are not locked, removes
+		 * and returns the snapshot.
+		 */
+		public Snapshot stealSnapshot()
+		{
+			synchronized(this)
+			{
+				//?: {not locked}
+				if((lock == 0) && (snapshot != null))
+				{
+					this.sharedSnapshot = null;
+					return snapshot;
+				}
+
+				//~: access shared snapshot
+				Snapshot result = this.sharedSnapshot;
+				this.sharedSnapshot = null;
+				return result;
+			}
+		}
+
+		/**
+		 * Snapshot stealing optimisation.
+		 */
+		private Snapshot sharedSnapshot;
+
+		public void    supportLeave()
+		{
+			synchronized(this)
+			{
+				if(lock == 1)
+				{
+					lock = 0;
+					return;
+				}
+
+				if(lock == 2)
+					this.notify();
+			}
+		}
+
+		/**
+		 * 0 when unlocked;
+		 * 1 when locked by a Support thread;
+		 * 2 when master wants to enter;
+		 * 3 when entered by the Master.
+		 */
+		private int lock;
 	}
 
 
@@ -1101,16 +1217,16 @@ public class MultiPlaneSynch
 				apply(cache.values());
 
 				//DEBUG: wait 1sec
-//				Object x = new Object();
-//				try
-//				{
-//					synchronized(x)
-//					{
-//						x.wait(10L);
-//					}
-//				}
-//				catch(InterruptedException e)
-//				{}
+				Object x = new Object();
+				try
+				{
+					synchronized(x)
+					{
+						x.wait(10L);
+					}
+				}
+				catch(InterruptedException e)
+				{}
 			}
 		}
 
