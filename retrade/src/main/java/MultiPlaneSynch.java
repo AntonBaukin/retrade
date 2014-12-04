@@ -3,6 +3,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -90,6 +91,7 @@ public class MultiPlaneSynch
 		Request[] requests = generateRequests();
 		Database  database = generateDatabase();
 
+		Locale.setDefault(Locale.US);
 		System.out.printf("[%d] Aux. threads; Requests [%d], Seed [%d]; [%d] runs:\n",
 		  (THREADS - 1), REQUESTS, SEED, RUNS
 		);
@@ -300,7 +302,17 @@ public class MultiPlaneSynch
 			this.local    = new HashMap<>(17);
 		}
 
+		public Snapshot(Snapshot s)
+		{
+			this.database = s.database;
+			this.local    = new HashMap<>(s.local);
+
+			for(Map.Entry<Integer, Client> e : local.entrySet())
+				e.setValue(new Client(e.getValue()));
+		}
+
 		public final Database database;
+		public int            index;
 
 
 		/* Snapshot Data Access */
@@ -807,8 +819,9 @@ public class MultiPlaneSynch
 				cursor++;
 			}
 
-			//~: enter the data
+			//!: enter the data
 			data.masterEnter();
+
 			return data;
 		}
 
@@ -838,11 +851,11 @@ public class MultiPlaneSynch
 				//~: select section
 				synchronized(this)
 				{
-					if(cursor >= requests.length)
-						return null;
-
 					//HINT: cursor points to the next item Master will take.
-					// We take (cursor + 1) not to compete with Master.
+					//  We take (cursor + 1) not to compete with Master.
+
+					if(cursor + 1 >= requests.length)
+						return null;
 
 					//~: the next index to take
 					if(index <= cursor)
@@ -863,15 +876,6 @@ public class MultiPlaneSynch
 				//?: {obtained the lock}
 				if(Boolean.TRUE.equals(data.trySupportEnter()))
 					break;
-			}
-
-			//~: snapshot section
-			synchronized(this)
-			{
-				//~: go back to steal a snapshot
-				for(int i = data.index;(i >= cursor);i--)
-					if((data.snapshot = datas[i].stealSnapshot()) != null)
-						break;
 			}
 
 			return data;
@@ -906,13 +910,6 @@ public class MultiPlaneSynch
 		 */
 		public List<Client> results;
 
-		/**
-		 * Snapshot of the database privately
-		 * used by the Support thread executing
-		 * the request associated with this Data.
-		 */
-		public volatile Snapshot snapshot;
-
 
 		/* Synchronization */
 
@@ -926,8 +923,6 @@ public class MultiPlaneSynch
 		{
 			synchronized(this)
 			{
-				assert (lock <= 1);
-
 				//?: {lock is held}
 				if(lock == 1) try
 				{
@@ -953,8 +948,6 @@ public class MultiPlaneSynch
 		 *   false  when else Support thread possess;
 		 *   null   when Master had entered,
 		 *          or wants to enter this task.
-		 *
-		 * Warning: this call is not reenterable.
 		 */
 		public Boolean trySupportEnter()
 		{
@@ -962,12 +955,6 @@ public class MultiPlaneSynch
 			{
 				if(lock == 0)
 				{
-					//HINT: after accessing the lock, Support thread
-					//  will see back to steal Snapshot. It's own
-					//  snapshot is not not needed and may be stolen
-					//  by else Support thread.
-					this.sharedSnapshot = this.snapshot;
-
 					lock = 1;
 					return true;
 				}
@@ -975,34 +962,6 @@ public class MultiPlaneSynch
 				return (lock == 1)?(false):(null);
 			}
 		}
-
-		/**
-		 * This call is for a Support thread.
-		 * If this Data are not locked, removes
-		 * and returns the snapshot.
-		 */
-		public Snapshot stealSnapshot()
-		{
-			synchronized(this)
-			{
-				//?: {not locked}
-				if((lock == 0) && (snapshot != null))
-				{
-					this.sharedSnapshot = null;
-					return snapshot;
-				}
-
-				//~: access shared snapshot
-				Snapshot result = this.sharedSnapshot;
-				this.sharedSnapshot = null;
-				return result;
-			}
-		}
-
-		/**
-		 * Snapshot stealing optimisation.
-		 */
-		private Snapshot sharedSnapshot;
 
 		public void    supportLeave()
 		{
@@ -1330,10 +1289,19 @@ public class MultiPlaneSynch
 			this.initial = new ArrayList<>(4);
 			this.results = new ArrayList<>(4);
 
-			//~: prepare snapshot
-			if(data.snapshot == null)
-				data.snapshot = new Snapshot(queue.database);
-			this.snapshot = data.snapshot;
+
+			//HINT: when queue moves Support thread back to the
+			//  previous tasks, Snapshot from the future may
+			//  not be used more and must be replaced.
+
+
+			//?: {repeated previous tasks}
+			if((snapshot != null) && (snapshot.index <= data.index))
+				snapshot = null;
+
+			//?: {has no snapshot}
+			if(snapshot == null)
+				snapshot = new Snapshot(queue.database);
 
 			//~: execute
 			super.execute(data);
@@ -1352,9 +1320,12 @@ public class MultiPlaneSynch
 		 */
 		private final Map<Integer, Client> cache = new HashMap<>(7);
 
-		private Snapshot snapshot;
-
 		private List<Client> initial, results;
+
+		/**
+		 * Database snapshot used locally by this thread.
+		 */
+		private Snapshot snapshot;
 	}
 
 	static void testRun(int run, Request[] requests, Database database)
