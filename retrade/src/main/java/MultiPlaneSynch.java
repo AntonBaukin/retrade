@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class MultiPlaneSynch
 	/**
 	 * The total number of test requests.
 	 */
-	static final int  REQUESTS = 100;
+	static final int  REQUESTS = 10000000;
 
 	/**
 	 * The number of test clients.
@@ -35,7 +36,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of the generated requests executions.
 	 */
-	static final int  RUNS     = 1;
+	static final int  RUNS     = 10;
 
 	/**
 	 * Generator seed used to create test requests.
@@ -576,8 +577,8 @@ public class MultiPlaneSynch
 		public String  toString()
 		{
 			StringBuilder s = new StringBuilder(32);
-			String        a = Long.toString(x, 16);
-			String        b = Long.toString(y, 16);
+			String        a = Long.toHexString(x).toUpperCase();
+			String        b = Long.toHexString(y).toUpperCase();
 
 			for(int i = a.length();(i < 16);i++)
 				s.append('0');
@@ -902,6 +903,40 @@ public class MultiPlaneSynch
 		protected void give(int client, int s)
 		{
 			Client c = client(client);
+
+			//?: {client has no debts}
+			if((c.money != 0) || c.debts.isEmpty())
+			{
+				c.money += s;
+				return;
+			}
+
+			//~: return all the debts
+			while((s > 0) && !c.debts.isEmpty())
+			{
+				//~: target creditor
+				int b = c.debts.client();
+
+				//~: take the most
+				int d = c.debts.debt();
+				int x = Math.min(s, d);
+
+				//?: {whole debt}
+				if(x == d)
+					c.debts.pop();
+				//~: reduce the debt
+				else
+					c.debts.debt(d - x);
+
+				//~: subtract the amount
+				s -= x;
+
+				//~: give that amount
+				give(b, x);
+			}
+
+			//~: add the rest
+			c.money += s;
 		}
 
 		protected void debt(int client, int creditor, int d)
@@ -961,10 +996,15 @@ public class MultiPlaneSynch
 
 			//?: {the resulting data may be applied}
 			if(consistent(data, cache))
-				apply(data);
+				apply(data.results);
 			//~: execute again
 			else
+			{
 				super.execute(data);
+
+				//~: apply all the changes to the database
+				apply(cache.values());
+			}
 		}
 
 		private boolean  consistent(Data data, Map<Integer, Client> cache)
@@ -985,9 +1025,9 @@ public class MultiPlaneSynch
 			return true;
 		}
 
-		private void     apply(Data data)
+		private void     apply(Collection<Client> results)
 		{
-			for(Client r : data.results)
+			for(Client r : results)
 				queue.database.assign(r);
 		}
 

@@ -37,23 +37,21 @@
       <file leaf-file-name="MultiPlaneSynch.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="8.995008" vertical-offset="6647" max-vertical-offset="12705">
-              <caret line="1119" column="39" selection-start-line="1119" selection-start-column="39" selection-end-line="1119" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.67886853" vertical-offset="238" max-vertical-offset="12722">
+              <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
               <folding>
-                <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#generateRequests#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#generateDatabase#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Database#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Database#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#toString#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#execute#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#buy#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#credit#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#give#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#debt#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#run#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#apply#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -738,6 +736,26 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="false" name="MultiPlaneSynch" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MultiPlaneSynch" />
+      <option name="VM_PARAMETERS" value="-ea -Xms1024m -Xmx1512m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="retrade" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
     <configuration default="false" name="Omicron @ Home" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -766,30 +784,10 @@
       <ConfigurationWrapper RunnerId="Debug" />
       <method />
     </configuration>
-    <configuration default="false" name="MultiPlaneSynch" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="MultiPlaneSynch" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="retrade" />
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
     <list size="3">
-      <item index="0" class="java.lang.String" itemvalue="Remote.Omicron @ Home" />
-      <item index="1" class="java.lang.String" itemvalue="Remote.Omicron @ Mac" />
-      <item index="2" class="java.lang.String" itemvalue="Application.MultiPlaneSynch" />
+      <item index="0" class="java.lang.String" itemvalue="Application.MultiPlaneSynch" />
+      <item index="1" class="java.lang.String" itemvalue="Remote.Omicron @ Home" />
+      <item index="2" class="java.lang.String" itemvalue="Remote.Omicron @ Mac" />
     </list>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
@@ -880,7 +878,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32167044" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30969268" sideWeight="0.31353134" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3092551" sideWeight="0.31353134" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32969216" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -923,7 +921,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-57 [beta]: fixed error of the contractors associated price lists filtered by the selection set." />
     <MESSAGE value="ui-57 [beta]: displaying prices for the clicked contractor (as for the client firm users)." />
     <MESSAGE value="ui-57 [beta]: started Contractors Price Lists associations edit form..." />
     <MESSAGE value="ui-57 [beta]: added Price List grid to the associations edit form." />
@@ -948,14 +945,15 @@
     <MESSAGE value="ui-60 [beta]: enhancing Price Change Document edit form..." />
     <MESSAGE value="special-00 [beta]: implementing Multi-Plane Queue Execution concept sample." />
     <MESSAGE value="special-00 [beta]: implementing Master and Support working tasks." />
-    <option name="LAST_COMMIT_MESSAGE" value="special-00 [beta]: implementing Master and Support working tasks." />
+    <MESSAGE value="special-00 [beta]: implemented application, need to test it..." />
+    <option name="LAST_COMMIT_MESSAGE" value="special-00 [beta]: implemented application, need to test it..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="223" />
+      <option name="time" value="232" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -984,13 +982,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/data/RepriceDocModelData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8067797" vertical-offset="1581" max-vertical-offset="3367">
-          <caret line="141" column="18" selection-start-line="135" selection-start-column="18" selection-end-line="135" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/reprices/FacesRepriceDocView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1445" max-vertical-offset="2483">
@@ -1098,25 +1089,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/lang/Long.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28073394" vertical-offset="3213" max-vertical-offset="19993">
+          <caret line="270" column="25" selection-start-line="198" selection-start-column="25" selection-end-line="198" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="8.995008" vertical-offset="6647" max-vertical-offset="12705">
-          <caret line="1119" column="39" selection-start-line="1119" selection-start-column="39" selection-end-line="1119" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.67886853" vertical-offset="238" max-vertical-offset="12722">
+          <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
           <folding>
-            <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#generateRequests#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#generateDatabase#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Database#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Database#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#toString#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#execute#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#buy#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#credit#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#give#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#debt#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#run#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#apply#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
           </folding>
         </state>
       </provider>
