@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -26,6 +27,22 @@ public class MultiPlaneSynch
 	static final int   THREADS  = 2;
 
 	/**
+	 * The number of queue positions ahead the Master
+	 * cursor to forward the execution. Depends on
+	 * the number of competing working threads.
+	 */
+	static final int   PRESEE   = THREADS * 4;
+
+	/**
+	 * Delay (in milliseconds) introduced by
+	 * the database when accessing client data
+	 * for the first time.
+	 *
+	 * Zero value means no delay.
+	 */
+	static final int   DELAY    = 10;
+
+	/**
 	 * The total number of test requests.
 	 */
 	static final int   REQUESTS = 100000;
@@ -33,7 +50,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of test clients.
 	 */
-	static final int   CLIENTS  = 100;
+	static final int   CLIENTS  = 1000;
 
 	/**
 	 * The number of the generated requests executions.
@@ -60,19 +77,6 @@ public class MultiPlaneSynch
 	 */
 	static final int[] CREDIT   = new int[] {  10, 200 };
 
-	/**
-	 * The number of queue positions ahead the Master
-	 * cursor to forward the execution. Depends on
-	 * the number of competing working threads.
-	 */
-	static final int   PRESEE   = THREADS * 8;
-
-	/**
-	 * Orders Support threads to use local database
-	 * snapshots. Used when there are few clients.
-	 */
-	static final boolean SNAPSHOT = false;
-
 
 	/* Program Entry Point */
 
@@ -81,6 +85,8 @@ public class MultiPlaneSynch
 	{
 		//~: test the parameters
 		assert THREADS  >= 1;
+		assert PRESEE   >= 1;
+		assert DELAY    >= 0;
 		assert REQUESTS >= 1;
 		assert CLIENTS  >= 2;
 		assert RUNS     >= 1;
@@ -217,6 +223,7 @@ public class MultiPlaneSynch
 			this.clients = new Client[clients];
 			for(int id = 0;(id < clients);id++)
 				this.clients[id] = new Client(id);
+			this.delays = null;
 		}
 
 		public Database(Database s)
@@ -225,6 +232,12 @@ public class MultiPlaneSynch
 			this.clients = new Client[s.clients.length];
 			int i = 0; for(Client c : s.clients)
 				this.clients[i++] = Client.copy(c);
+
+			if(DELAY == 0) this.delays = null; else
+			{
+				this.delays = new int[clients.length];
+				Arrays.fill(this.delays, DELAY);
+			}
 		}
 
 
@@ -248,6 +261,7 @@ public class MultiPlaneSynch
 
 			synchronized(x)
 			{
+				if(DELAY != 0) delay(id);
 				return Client.copy(x);
 			}
 		}
@@ -265,6 +279,8 @@ public class MultiPlaneSynch
 
 			synchronized(x)
 			{
+				if(DELAY != 0) delay(s.id);
+
 				if(x.equals(s))
 					return s;
 				else
@@ -286,7 +302,6 @@ public class MultiPlaneSynch
 			}
 		}
 
-
 		/**
 		 * Calculates the resulting hash of the database.
 		 * Needed to check the results.
@@ -301,10 +316,30 @@ public class MultiPlaneSynch
 			return hash;
 		}
 
+		private void   delay(int id)
+		{
+			if(delays[id] == 0) return;
+
+			final Object w = new Object();
+			try
+			{
+				synchronized(w)
+				{
+					w.wait(delays[id]);
+					delays[id] = 0;
+				}
+			}
+			catch(InterruptedException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
 
 		/* private: the clients */
 
 		private final Client[] clients;
+		private final int[]    delays;
 	}
 
 
