@@ -6,7 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="special-00 [beta]:">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
     </list>
@@ -37,7 +37,7 @@
       <file leaf-file-name="MultiPlaneSynch.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.27027" vertical-offset="13175" max-vertical-offset="15011">
+            <state vertical-scroll-proportion="0.6756757" vertical-offset="0" max-vertical-offset="15283">
               <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
               <folding>
                 <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
@@ -45,12 +45,14 @@
                 <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#16353#16354#0" expanded="true" />
-                <element signature="e#16378#16379#0" expanded="true" />
+                <element signature="e#16348#16349#0" expanded="true" />
+                <element signature="e#16373#16374#0" expanded="true" />
                 <element signature="method#join#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#lock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#unlock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#execute#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#19987#19988#0" expanded="true" />
-                <element signature="e#20014#20015#0" expanded="true" />
+                <element signature="e#19982#19983#0" expanded="true" />
+                <element signature="e#20009#20010#0" expanded="true" />
                 <element signature="method#run#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#client#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#master#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
@@ -929,7 +931,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="domain-42 [stable]: extracted prices-related methods from Get Goods collection." />
     <MESSAGE value="domain-43 [alpha]: updating Price Changes API document during the fix action." />
     <MESSAGE value="domain-43 [alpha]: fixed some issues with Price Changes displaying in the UI. The documents are generated now. But adding and removing goods is still not implemented!" />
     <MESSAGE value="domain-43 [alpha]: refactored the API goods &amp; prices related objects." />
@@ -954,7 +955,8 @@
     <MESSAGE value="special-00 [beta]: turning off snapshot usage (as gives nothing)." />
     <MESSAGE value="special-00 [beta]: single Master works 35 ms with 4M Database access. Master+Support works 360ms with 40M Database access, where 33M is test(). Need to reduce the number of test()..." />
     <MESSAGE value="special-00 [beta]: now not repeating the execution of requests by the Support threads. Consistency check for them is now not needed. Eliminated Database.test() entry!" />
-    <option name="LAST_COMMIT_MESSAGE" value="special-00 [beta]: now not repeating the execution of requests by the Support threads. Consistency check for them is now not needed. Eliminated Database.test() entry!" />
+    <MESSAGE value="special-00 [beta]: eliminated Master as a dedicated thread. Now Master is a request-temporary role. (Snapshots are also removed, but may be returned.)" />
+    <option name="LAST_COMMIT_MESSAGE" value="special-00 [beta]: eliminated Master as a dedicated thread. Now Master is a request-temporary role. (Snapshots are also removed, but may be returned.)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1000,12 +1002,14 @@
             <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#16353#16354#0" expanded="true" />
-            <element signature="e#16378#16379#0" expanded="true" />
+            <element signature="e#16348#16349#0" expanded="true" />
+            <element signature="e#16373#16374#0" expanded="true" />
             <element signature="method#join#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#lock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#unlock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#execute#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#19987#19988#0" expanded="true" />
-            <element signature="e#20014#20015#0" expanded="true" />
+            <element signature="e#19982#19983#0" expanded="true" />
+            <element signature="e#20009#20010#0" expanded="true" />
             <element signature="method#run#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#client#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#master#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
@@ -1027,12 +1031,14 @@
             <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#16353#16354#0" expanded="true" />
-            <element signature="e#16378#16379#0" expanded="true" />
+            <element signature="e#16348#16349#0" expanded="true" />
+            <element signature="e#16373#16374#0" expanded="true" />
             <element signature="method#join#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#lock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#unlock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#execute#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#19987#19988#0" expanded="true" />
-            <element signature="e#20014#20015#0" expanded="true" />
+            <element signature="e#19982#19983#0" expanded="true" />
+            <element signature="e#20009#20010#0" expanded="true" />
             <element signature="method#run#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#client#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#master#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
@@ -1131,7 +1137,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.27027" vertical-offset="13175" max-vertical-offset="15011">
+        <state vertical-scroll-proportion="0.6756757" vertical-offset="0" max-vertical-offset="15283">
           <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
           <folding>
             <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
@@ -1139,12 +1145,14 @@
             <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#16353#16354#0" expanded="true" />
-            <element signature="e#16378#16379#0" expanded="true" />
+            <element signature="e#16348#16349#0" expanded="true" />
+            <element signature="e#16373#16374#0" expanded="true" />
             <element signature="method#join#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#lock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#unlock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#execute#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#19987#19988#0" expanded="true" />
-            <element signature="e#20014#20015#0" expanded="true" />
+            <element signature="e#19982#19983#0" expanded="true" />
+            <element signature="e#20009#20010#0" expanded="true" />
             <element signature="method#run#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#client#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#master#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />

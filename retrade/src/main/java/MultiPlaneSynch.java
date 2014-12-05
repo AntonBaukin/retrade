@@ -23,7 +23,7 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int   THREADS  = 1;
+	static final int   THREADS  = 2;
 
 	/**
 	 * The total number of test requests.
@@ -65,7 +65,7 @@ public class MultiPlaneSynch
 	 * cursor to forward the execution. Depends on
 	 * the number of competing Support threads.
 	 */
-	static final int   PRESEE   = 2;//(THREADS-1) * 2;
+	static final int   PRESEE   = 12;//(THREADS-1) * 2;
 
 	/**
 	 * Orders Support threads to use local database
@@ -99,8 +99,8 @@ public class MultiPlaneSynch
 		Database  database = generateDatabase();
 
 		Locale.setDefault(Locale.US);
-		System.out.printf("[%d] Aux. threads; Requests [%d], Seed [%d]; [%d] runs:\n",
-		  (THREADS - 1), REQUESTS, SEED, RUNS
+		System.out.printf("[%d] Workers; Requests [%d], Seed [%d]; [%d] runs:\n",
+		  THREADS, REQUESTS, SEED, RUNS
 		);
 
 		//c: do test runs
@@ -787,63 +787,62 @@ public class MultiPlaneSynch
 			{
 				index = data.index;
 
+				//?: {is currently Master}
+				if(data.master) synchronized(this)
+				{
+					assert (data.index == cursor);
+
+					datas[cursor] = null; //<-- free the memory
+					cursor++;             //<-- advance
+
+					//HINT: when Support threads reaches the limit, it waits
+					//  for the Master thread to complete the next task.
+
+					//!: notify the parked threads
+					this.notifyAll();
+				}
+
 				//!: release the lock
 				data.unlock();
 				data = null;
 			}
 
 			//c: queue competition cycle
-			while(true)
+			while(true) synchronized(this)
 			{
-				//~: select section
-				synchronized(this)
+				//?: {processed all the requests}
+				if(cursor >= requests.length)
+					return null;
+
+				//~: try to take current request (to be Master)
+				if((data = datas[cursor]).lock(true))
 				{
-					//?: {processed all the requests}
-					if(cursor >= requests.length)
-						return null;
+					data.master = true; //<-- process as Master
+					return data;
+				}
 
-					//~: try to take current request (to be Master)
-					if((data = datas[cursor]).lock(true))
-					{
-						data.master = true;   //<-- process as Master
-						datas[cursor] = null; //<-- free the memory
-						cursor++;             //<-- advance
+				//HINT: we take item after the current as we checked it
 
-						//HINT: when Support threads reaches the limit, it waits
-						//  for the Master thread to complete the next task.
+				//~: the next index to take
+				index = (index <= cursor)?(cursor + 1):(index + 1);
 
-						//!: notify the waiting threads
-						this.notifyAll();
+				//?: {the queue is almost done}
+				if(index >= requests.length)
+					return null;
 
-						return data;
-					}
-
-					//HINT: we take item after the current as we checked it
-
-					//~: the next index to take
-					index = (index <= cursor)?(cursor + 1):(index + 1);
-
-					//?: {the queue is almost done}
-					if(index >= requests.length)
-						return null;
-
-					//?: {too quick} park the thread
-					if(index > cursor + PRESEE) try
-					{
-						this.wait();
-						index = cursor;
-					}
-					catch(InterruptedException e)
-					{
-						throw new RuntimeException(e);
-					}
-
-					//~: will try this request
-					data = datas[index];
+				//?: {too quick} park the thread
+				if(index > cursor + PRESEE) try
+				{
+					this.wait();
+					continue; //!: compete again
+				}
+				catch(InterruptedException e)
+				{
+					throw new RuntimeException(e);
 				}
 
 				//?: {obtained lock as a Support thread}
-				if(data.lock(false))
+				if((data = datas[index]).lock(false))
 				{
 					//HINT: in this implementation we do not allow
 					//  a request to be pre-processed twice even
@@ -852,14 +851,12 @@ public class MultiPlaneSynch
 
 					//?: {data not processed} take it
 					if(data.results == null)
-						break;
+						return data;
 
 					//!: unlock & take the next
 					data.unlock();
 				}
 			}
-
-			return data;
 		}
 
 		/**
