@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -65,7 +66,7 @@ public class MultiPlaneSynch
 	 * cursor to forward the execution. Depends on
 	 * the number of competing Support threads.
 	 */
-	static final int   PRESEE   = 2;//(THREADS-1) * 2;
+	static final int   PRESEE   = 4;//(THREADS-1) * 2;
 
 	/**
 	 * Orders Support threads to use local database
@@ -111,7 +112,6 @@ public class MultiPlaneSynch
 
 		System.out.printf("Database.copy(id)     : %d\n", Database.COID.intValue());
 		System.out.printf("Database.copy(client) : %d\n", Database.COCL.intValue());
-		System.out.printf("Database.test()       : %d\n", Database.TEST.intValue());
 		System.out.printf("Database.assign()     : %d\n", Database.ASSI.intValue());
 	}
 
@@ -281,19 +281,6 @@ public class MultiPlaneSynch
 
 		static final AtomicInteger COCL = new AtomicInteger();
 
-		public boolean test(Client c)
-		{
-			TEST.incrementAndGet();
-			final Client x = clients[c.id];
-
-			synchronized(x)
-			{
-				return x.equals(c);
-			}
-		}
-
-		static final AtomicInteger TEST = new AtomicInteger();
-
 		/**
 		 * Thread-safe operation to assign the global data
 		 * of the client. Only Master thread is allowed this!
@@ -364,17 +351,6 @@ public class MultiPlaneSynch
 			local.put(id, res);
 
 			return res;
-		}
-
-		public boolean test(Client c)
-		{
-			//~: lookup in the local
-			Client res = local.get(c.id);
-			if(res != null)
-				return res.equals(c);
-
-			//~: test in the database
-			return database.test(c);
 		}
 
 		public void    copy(Collection<Client> cs)
@@ -861,6 +837,9 @@ public class MultiPlaneSynch
 		{
 			Data data; synchronized(this)
 			{
+				//!: wake parked Support threads
+				this.notifyAll();
+
 				if(cursor >= requests.length)
 					return null;
 
@@ -913,9 +892,19 @@ public class MultiPlaneSynch
 					{
 						index++;
 
-						//?: {overlap}
-						if((index >= cursor + PRESEE) || (index >= requests.length))
+						//HINT: when Support threads reaches the limit, it waits
+						//  for the Master thread to complete the next task.
+
+						//?: {overlap} park the thread
+						if((index >= cursor + PRESEE) || (index >= requests.length)) try
+						{
+							this.wait();
 							index = cursor;
+						}
+						catch(InterruptedException e)
+						{
+							throw new RuntimeException(e);
+						}
 					}
 
 					//~: will try this request
@@ -924,13 +913,51 @@ public class MultiPlaneSynch
 
 				//?: {obtained the lock}
 				if(Boolean.TRUE.equals(data.trySupportEnter()))
-					break;
+				{
+					//HINT: in this implementation we do not allow
+					//  a request to be pre-processed twice even
+					//  if currently it has errors - Master will
+					//  re-execute such a requests.
+
+					//?: {data not processed} take it
+					if(data.results == null)
+						break;
+
+					//!: unlock & take the next
+					data.supportLeave();
+				}
 			}
 
 			return data;
 		}
 
 		private final Data[] datas;
+
+
+		/* Queue Startup */
+
+		public void supportStarted()
+		{
+			startup.countDown();
+		}
+
+		/**
+		 * Invokes by Master to wait for the Support
+		 * threads (if any exist) to start.
+		 */
+		public void waitSupporters()
+		{
+			try
+			{
+				startup.await();
+			}
+			catch(InterruptedException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
+		private CountDownLatch startup = new CountDownLatch(THREADS-1);
 	}
 
 	/**
@@ -1168,6 +1195,9 @@ public class MultiPlaneSynch
 
 		public void run()
 		{
+			//~: wait for the support threads
+			queue.waitSupporters();
+
 			//~: mark the start time
 			runtime = System.currentTimeMillis();
 
@@ -1283,6 +1313,9 @@ public class MultiPlaneSynch
 
 		public void run()
 		{
+			//~: notify this thread is ready
+			queue.supportStarted();
+
 			//c: while there is a task
 			Data data = null; while((data = queue.next(data)) != null)
 			{
@@ -1340,10 +1373,6 @@ public class MultiPlaneSynch
 				snapshot.index = data.index;
 			}
 
-			//?: {previous work is still actual}
-			if(consistent(data))
-				return;
-
 			//~: create execution data
 			this.initial = new ArrayList<>(4);
 			this.results = new ArrayList<>(4);
@@ -1363,24 +1392,6 @@ public class MultiPlaneSynch
 
 			if(SNAPSHOT)
 				snapshot.copy(this.results);
-		}
-
-		private boolean  consistent(Data data)
-		{
-			if((data.initial == null) | (data.results == null))
-				return false;
-
-			for(Client o : data.initial)
-				//?: {not the same data}
-				if(SNAPSHOT)
-				{
-					if(!snapshot.test(o))
-						return false;
-				}
-				else if(!queue.database.test(o))
-					return false;
-
-			return true;
 		}
 
 
