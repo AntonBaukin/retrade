@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -24,7 +23,7 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int   THREADS  = 2;
+	static final int   THREADS  = 1;
 
 	/**
 	 * The total number of test requests.
@@ -66,7 +65,7 @@ public class MultiPlaneSynch
 	 * cursor to forward the execution. Depends on
 	 * the number of competing Support threads.
 	 */
-	static final int   PRESEE   = 4;//(THREADS-1) * 2;
+	static final int   PRESEE   = 2;//(THREADS-1) * 2;
 
 	/**
 	 * Orders Support threads to use local database
@@ -105,14 +104,14 @@ public class MultiPlaneSynch
 		);
 
 		//c: do test runs
-		long time = 0L;
-		for(int run = 1;(run <= RUNS);run++)
-			time += testRun(run, requests, new Database(database));
-		System.out.printf("Average run time: %.1f\n", (double)time / RUNS);
+		long[] times = new long[RUNS];
+		for(int run = 0;(run < RUNS);run++)
+			times[run] = testRun(run+1, requests, new Database(database));
 
-		System.out.printf("Database.copy(id)     : %d\n", Database.COID.intValue());
-		System.out.printf("Database.copy(client) : %d\n", Database.COCL.intValue());
-		System.out.printf("Database.assign()     : %d\n", Database.ASSI.intValue());
+		//~: average run time
+		int TX = (RUNS > 5)?(3):(0);
+		long time = 0L; for(int i = TX;(i < RUNS);i++) time += times[i];
+		System.out.printf("Average run time: %.1f\n", (double)time / (RUNS - TX));
 	}
 
 
@@ -245,8 +244,6 @@ public class MultiPlaneSynch
 		 */
 		public Client  copy(int id)
 		{
-			COID.incrementAndGet();
-
 			final Client x = clients[id];
 
 			synchronized(x)
@@ -254,8 +251,6 @@ public class MultiPlaneSynch
 				return Client.copy(x);
 			}
 		}
-
-		static final AtomicInteger COID = new AtomicInteger();
 
 		/**
 		 * Thread-safe operation to get a full copy
@@ -266,8 +261,6 @@ public class MultiPlaneSynch
 		 */
 		public Client  copy(Client s)
 		{
-			COCL.incrementAndGet();
-
 			final Client x = clients[s.id];
 
 			synchronized(x)
@@ -279,15 +272,12 @@ public class MultiPlaneSynch
 			}
 		}
 
-		static final AtomicInteger COCL = new AtomicInteger();
-
 		/**
 		 * Thread-safe operation to assign the global data
 		 * of the client. Only Master thread is allowed this!
 		 */
-		public void    assign(Client s)
+		public void      assign(Client s)
 		{
-			ASSI.incrementAndGet();
 			final Client x = clients[s.id];
 
 			synchronized(x)
@@ -295,8 +285,6 @@ public class MultiPlaneSynch
 				x.assign(s);
 			}
 		}
-
-		static final AtomicInteger ASSI = new AtomicInteger();
 
 
 		/**
@@ -317,49 +305,6 @@ public class MultiPlaneSynch
 		/* private: the clients */
 
 		private final Client[] clients;
-	}
-
-	/**
-	 * Image of the global Database
-	 * used and updated by the
-	 * Support working threads.
-	 */
-	static final class Snapshot
-	{
-		/* public: constructors */
-
-		public Snapshot(Database database)
-		{
-			this.database = database;
-			this.local    = new HashMap<>(17);
-		}
-
-		public final Database database;
-		public int            index;
-
-
-		/* Snapshot Data Access */
-
-		public Client  client(int id)
-		{
-			//~: lookup in the local
-			Client res = local.get(id);
-			if(res != null) return res;
-
-			//~: take the global copy
-			res = database.copy(id);
-			local.put(id, res);
-
-			return res;
-		}
-
-		public void    copy(Collection<Client> cs)
-		{
-			for(Client c : cs)
-				local.put(c.id, Client.copy(c));
-		}
-
-		private final Map<Integer, Client> local;
 	}
 
 
@@ -808,7 +753,10 @@ public class MultiPlaneSynch
 
 	/**
 	 * Queue with support for Master and Support
-	 * threads processing.
+	 * threads processing. In this implementation
+	 * Master and Support are temporary roles
+	 * assigned to a working thread that selects
+	 * the pending request.
 	 */
 	static final class Queue
 	{
@@ -830,38 +778,6 @@ public class MultiPlaneSynch
 
 		/* Queue Access */
 
-		/**
-		 * The next request for the master thread.
-		 */
-		public Data next()
-		{
-			Data data; synchronized(this)
-			{
-				//!: wake parked Support threads
-				this.notifyAll();
-
-				if(cursor >= requests.length)
-					return null;
-
-				data = datas[cursor];
-				datas[cursor] = null; //<-- clear the data
-
-				//!: advance
-				cursor++;
-			}
-
-			//!: enter the data
-			data.masterEnter();
-
-			return data;
-		}
-
-		private int cursor;
-
-		/**
-		 * Returns the next data object to process
-		 * for the asking Support thread.
-		 */
 		public Data next(Data data)
 		{
 			int index = -1;
@@ -872,7 +788,7 @@ public class MultiPlaneSynch
 				index = data.index;
 
 				//!: release the lock
-				data.supportLeave();
+				data.unlock();
 				data = null;
 			}
 
@@ -882,74 +798,96 @@ public class MultiPlaneSynch
 				//~: select section
 				synchronized(this)
 				{
+					//?: {processed all the requests}
 					if(cursor >= requests.length)
 						return null;
 
-					//~: the next index to take
-					if(index <= cursor)
-						index = cursor;
-					else
+					//~: try to take current request (to be Master)
+					if((data = datas[cursor]).lock(true))
 					{
-						index++;
+						data.master = true;   //<-- process as Master
+						datas[cursor] = null; //<-- free the memory
+						cursor++;             //<-- advance
 
 						//HINT: when Support threads reaches the limit, it waits
 						//  for the Master thread to complete the next task.
 
-						//?: {overlap} park the thread
-						if((index >= cursor + PRESEE) || (index >= requests.length)) try
-						{
-							this.wait();
-							index = cursor;
-						}
-						catch(InterruptedException e)
-						{
-							throw new RuntimeException(e);
-						}
+						//!: notify the waiting threads
+						this.notifyAll();
+
+						return data;
+					}
+
+					//HINT: we take item after the current as we checked it
+
+					//~: the next index to take
+					index = (index <= cursor)?(cursor + 1):(index + 1);
+
+					//?: {the queue is almost done}
+					if(index >= requests.length)
+						return null;
+
+					//?: {too quick} park the thread
+					if(index > cursor + PRESEE) try
+					{
+						this.wait();
+						index = cursor;
+					}
+					catch(InterruptedException e)
+					{
+						throw new RuntimeException(e);
 					}
 
 					//~: will try this request
 					data = datas[index];
 				}
 
-				//?: {obtained the lock}
-				if(Boolean.TRUE.equals(data.trySupportEnter()))
+				//?: {obtained lock as a Support thread}
+				if(data.lock(false))
 				{
 					//HINT: in this implementation we do not allow
 					//  a request to be pre-processed twice even
-					//  if currently it has errors - Master will
-					//  re-execute such a requests.
+					//  if currently it is not consistent - Master
+					//  will re-execute such a requests.
 
 					//?: {data not processed} take it
 					if(data.results == null)
 						break;
 
 					//!: unlock & take the next
-					data.supportLeave();
+					data.unlock();
 				}
 			}
 
 			return data;
 		}
 
+		/**
+		 * Request execution context.
+		 */
 		private final Data[] datas;
 
+		/**
+		 * Current request to process.
+		 */
+		private int          cursor;
 
-		/* Queue Startup */
 
-		public void supportStarted()
+		/* Queue Shutdown */
+
+		public void workerExit()
 		{
-			startup.countDown();
+			done.countDown();
 		}
 
 		/**
-		 * Invokes by Master to wait for the Support
-		 * threads (if any exist) to start.
+		 * Waits the queue to be fully processed.
 		 */
-		public void waitSupporters()
+		public void join()
 		{
 			try
 			{
-				startup.await();
+				done.await();
 			}
 			catch(InterruptedException e)
 			{
@@ -957,7 +895,8 @@ public class MultiPlaneSynch
 			}
 		}
 
-		private CountDownLatch startup = new CountDownLatch(THREADS-1);
+		private final CountDownLatch done =
+		  new CountDownLatch(THREADS);
 	}
 
 	/**
@@ -973,11 +912,19 @@ public class MultiPlaneSynch
 		public Data(Request request, int index)
 		{
 			this.request = request;
-			this.index = index;
+			this.index   = index;
 		}
 
 		/**
+		 * Assigned to true (only once) when working
+		 * thread access this request as a Master.
+		 */
+		public boolean      master;
+
+		/**
 		 * The client data before they were processed.
+		 * Assigned by a Support thread had pre-executed
+		 * this request.
 		 */
 		public List<Client> initial;
 
@@ -990,75 +937,43 @@ public class MultiPlaneSynch
 		/* Synchronization */
 
 		/**
-		 * Master calls this method before entering
-		 * this request processing. If this request
-		 * is currently executed by a Support thread,
-		 * master waits till that processing is done.
-		 */
-		public void    masterEnter()
-		{
-			synchronized(this)
-			{
-				//?: {lock is held}
-				if(lock == 1) try
-				{
-					lock = 2;
-					this.wait();
-				}
-				catch(InterruptedException e)
-				{
-					throw new RuntimeException(e);
-				}
-
-				//~: mark as entered
-				lock = 3;
-			}
-		}
-
-		/**
-		 * This call must be done by Support thread
-		 * to try to acquire the lock on this request.
-		 * This call is not blocking. Results are:
+		 * Working thread obtains exclusive lock on
+		 * the data as Master or as a Support thread.
 		 *
-		 *   true   when lock is acquired by callee;
-		 *   false  when else Support thread possess;
-		 *   null   when Master had entered,
-		 *          or wants to enter this task.
+		 * This call is never blocked: false is returned
+		 * when the data object is already locked.
+		 *
+		 * Note that Master locked is never removed.
 		 */
-		public Boolean trySupportEnter()
+		public boolean lock(boolean master)
 		{
 			synchronized(this)
 			{
+				//?: {not locked}
 				if(lock == 0)
 				{
-					lock = 1;
+					lock = (master)?(2):(1);
 					return true;
 				}
 
-				return (lock == 1)?(false):(null);
+				return false;
 			}
 		}
 
-		public void    supportLeave()
+		public void    unlock()
 		{
 			synchronized(this)
 			{
+				//?: {not a master lock}
 				if(lock == 1)
-				{
 					lock = 0;
-					return;
-				}
-
-				if(lock == 2)
-					this.notify();
 			}
 		}
 
 		/**
 		 * 0 when unlocked;
 		 * 1 when locked by a Support thread;
-		 * 2 when master wants to enter;
-		 * 3 when entered by the Master.
+		 * 2 when locked by a Master thread.
 		 */
 		private int lock;
 	}
@@ -1066,31 +981,28 @@ public class MultiPlaneSynch
 
 	/* Working Thread Base */
 
-	static abstract class Worker implements Runnable
+	/**
+	 * Implements the requests processing
+	 * without any synchronization issues.
+	 */
+	static abstract class Processing
 	{
-		/* public: constructor */
-
-		protected final Queue queue;
-
-		protected Worker(Queue queue)
-		{
-			this.queue = queue;
-		}
-
-
 		/* protected: requests execution */
 
 		protected abstract Client client(int id);
 
-		protected void execute(Data data)
+		protected final void      execute(Object request)
 		{
 			//?: {buy}
-			if(data.request instanceof Buy)
-				buy((Buy) data.request);
+			if(request instanceof Buy)
+				buy((Buy) request);
 			//~: credit
 			else
-				credit((Credit) data.request);
+				credit((Credit) request);
 		}
+
+
+		/* private: execution procedures */
 
 		private void buy(Buy r)
 		{
@@ -1181,42 +1093,36 @@ public class MultiPlaneSynch
 
 	/* Master Thread */
 
-	static final class Master extends Worker
+	static final class Worker extends Processing implements Runnable
 	{
 		/* public: constructor */
 
-		public Master(Queue queue)
+		public Worker(Queue queue)
 		{
-			super(queue);
+			this.queue = queue;
 		}
 
 
-		/* Task */
+		/* Worker */
 
 		public void run()
 		{
-			//~: wait for the support threads
-			queue.waitSupporters();
-
-			//~: mark the start time
-			runtime = System.currentTimeMillis();
-
-			//c: while there is a task
-			Data data; while((data = queue.next()) != null)
+			try
 			{
-				execute(data);
+				while((data = queue.next(data)) != null)
+					if(data.master)
+						master();
+					else
+						support();
+			}
+			finally
+			{
+				queue.workerExit();
 			}
 
-			//~: mark the finish time
-			runtime = System.currentTimeMillis() - runtime;
 		}
 
-		public long getRuntime()
-		{
-			return runtime;
-		}
-
-		public int  getHits()
+		public int getHits()
 		{
 			return hits;
 		}
@@ -1226,29 +1132,63 @@ public class MultiPlaneSynch
 
 		protected Client client(int id)
 		{
+			//?: {found it in the local cache}
 			Client c = cache.get(id);
-			if(c == null) cache.put(id, c = queue.database.copy(id));
+			if(c != null) return c;
+
+			//~: load from the database & cache it
+			c = queue.database.copy(id);
+			cache.put(c.id, c);
+
+			//?: {master} nothing else
+			if(data.master)
+				return c;
+
+			//~: remember the initial version
+			initial.add(Client.copy(c));
+
+			//~: add to the results
+			results.add(c);
+
 			return c;
 		}
 
-		protected void   execute(Data data)
+		private void     master()
 		{
 			cache.clear();
 
 			//?: {the resulting data may be applied}
-			if(consistent(data))
+			if(consistent())
 				apply(data.results);
 			//~: execute again
 			else
 			{
-				super.execute(data);
+				//~: execute the request
+				execute(data.request);
 
 				//~: apply all the changes to the database
 				apply(cache.values());
 			}
 		}
 
-		private boolean  consistent(Data data)
+		private void     support()
+		{
+			//~: clear the cache
+			cache.clear();
+
+			//~: allocate execution data
+			this.initial = new ArrayList<>(4);
+			this.results = new ArrayList<>(4);
+
+			//~: execute the request
+			execute(data.request);
+
+			//~: save data results
+			data.initial = this.initial;
+			data.results = this.results;
+		}
+
+		private boolean  consistent()
 		{
 			if((data.initial == null) | (data.results == null))
 				return false;
@@ -1277,125 +1217,20 @@ public class MultiPlaneSynch
 		}
 
 
-		/* private: master state */
+		/* private: worker state */
+
+		private final Queue queue;
 
 		/**
-		 * Master work time is for whole Queue processing.
+		 * Current execution context.
 		 */
-		private long runtime;
+		private Data        data;
 
 		/**
-		 * The support pre-execution hits.
+		 * When thread executes as a Master it
+		 * measures the consistency hits.
 		 */
-		private int  hits;
-
-		/**
-		 * Cache where clients are held during
-		 * a request processing.
-		 */
-		private final Map<Integer, Client> cache = new HashMap<>(7);
-	}
-
-
-	/* Support Thread */
-
-	static final class Support extends Worker
-	{
-		/* public: constructor */
-
-		public Support(Queue queue)
-		{
-			super(queue);
-		}
-
-
-		/* Task */
-
-		public void run()
-		{
-			//~: notify this thread is ready
-			queue.supportStarted();
-
-			//c: while there is a task
-			Data data = null; while((data = queue.next(data)) != null)
-			{
-				execute(data);
-			}
-		}
-
-		protected Client client(int id)
-		{
-			//?: {found it in the cache}
-			Client c = cache.get(id);
-			if(c != null) return c;
-
-			//~: load from the database snapshot
-			if(SNAPSHOT)
-				c = snapshot.client(id);
-			else
-				c = queue.database.copy(id);
-
-			//~: remember the initial version
-			initial.add(Client.copy(c));
-
-			//~: add to the results & cache
-			results.add(c);
-			cache.put(c.id, c);
-
-			return c;
-		}
-
-		protected void   execute(Data data)
-		{
-			//~: clear the cache
-			cache.clear();
-
-			//~: create execution data
-			this.initial = new ArrayList<>(4);
-			this.results = new ArrayList<>(4);
-
-
-			//HINT: when queue moves Support thread back to the
-			//  previous tasks, Snapshot from the future may
-			//  not be used more and must be replaced.
-
-			if(SNAPSHOT)
-			{
-				//?: {repeated previous tasks}
-				if(snapshot != null) if(snapshot.index <= data.index)
-					snapshot = null;
-
-				//?: {has no snapshot}
-				if(snapshot == null)
-					snapshot = new Snapshot(queue.database);
-
-				//~: current index of the snapshot
-				snapshot.index = data.index;
-			}
-
-			//~: create execution data
-			this.initial = new ArrayList<>(4);
-			this.results = new ArrayList<>(4);
-
-			//~: execute
-			super.execute(data);
-
-			//~: save data results
-			data.initial = this.initial;
-			data.results = this.results;
-
-
-			//HINT: initial list always contains a copy,
-			//  but resulting list contains the same objects
-			//  as local snapshot. To make it thread-safe we
-			//  have to create additional copies.
-
-			if(SNAPSHOT)
-				snapshot.copy(this.results);
-		}
-
-
-		/* private: support thread state */
+		private int         hits;
 
 		/**
 		 * Cache where clients are held during
@@ -1403,12 +1238,11 @@ public class MultiPlaneSynch
 		 */
 		private final Map<Integer, Client> cache = new HashMap<>(7);
 
+		/**
+		 * Initial and final processing states
+		 * used when working as a Support.
+		 */
 		private List<Client> initial, results;
-
-		/**
-		 * Database snapshot used locally by this thread.
-		 */
-		private Snapshot snapshot;
 	}
 
 	static long testRun(int run, Request[] requests, Database database)
@@ -1417,44 +1251,40 @@ public class MultiPlaneSynch
 		//~: create the queue
 		Queue queue = new Queue(requests, database);
 
-		//~: create master task
-		Master master = new Master(queue);
+		//~: create the workers
+		Worker[] workers = new Worker[THREADS];
+		Thread[] threads = new Thread[THREADS];
 
-		//~: create support tasks
-		List<Support> supports = new ArrayList<>();
-		for(int i = 1;(i < THREADS);i++)
-			supports.add(new Support(queue));
-
-		//~: create master thread
-		Thread m = new Thread(master);
-		m.setName("Master");
-
-		//~: create support threads
-		Thread[] sp = new Thread[supports.size()];
-		for(int i = 0;(i < sp.length);i++)
+		for(int i = 0;(i < THREADS);i++)
 		{
-			sp[i] = new Thread(supports.get(i));
-			sp[i].setName("Support-" + i);
-			sp[i].setDaemon(true);
+			workers[i] = new Worker(queue);
+			threads[i] = new Thread(workers[i]);
+			threads[i].setName("Worker-" + i);
 		}
 
-		//~: start support threads
-		for(Thread s : sp)
-			s.start();
+		//~: time start
+		long time = System.currentTimeMillis();
 
-		//~: start master thread
-		m.start();
+		//~: start the threads
+		for(Thread thread : threads)
+			thread.start();
 
-		//~: wait the master
-		m.join();
+		//~: wait the queue
+		queue.join();
+
+		//~: time stop
+		time = System.currentTimeMillis() - time;
+
+		//~: collect the hits
+		int hits = 0; for(Worker w : workers)
+			hits += w.getHits();
 
 		//~: print the timing and the hash
 		System.out.printf("%2d %5d  %5.1f  %s\n",
-		  run, master.getRuntime(),
-		  100.0 * master.getHits() / requests.length,
+		  run, time, (100.0 * hits / requests.length),
 		  database.hash().toString()
 		);
 
-		return master.getRuntime();
+		return time;
 	}
 }
