@@ -71,7 +71,7 @@ public class MultiPlaneSynch
 	 * Orders Support threads to use local database
 	 * snapshots. Used when there are few clients.
 	 */
-	static final boolean SNAPSHOT = true;
+	static final boolean SNAPSHOT = false;
 
 
 	/* Program Entry Point */
@@ -104,10 +104,15 @@ public class MultiPlaneSynch
 		);
 
 		//c: do test runs
+		long time = 0L;
 		for(int run = 1;(run <= RUNS);run++)
-			testRun(run, requests, new Database(database));
+			time += testRun(run, requests, new Database(database));
+		System.out.printf("Average run time: %.1f\n", (double)time / RUNS);
 
-		//System.out.printf("Client        : %d\n", Client.N.intValue());
+		System.out.printf("Database.copy(id)     : %d\n", Database.COID.intValue());
+		System.out.printf("Database.copy(client) : %d\n", Database.COCL.intValue());
+		System.out.printf("Database.test()       : %d\n", Database.TEST.intValue());
+		System.out.printf("Database.assign()     : %d\n", Database.ASSI.intValue());
 	}
 
 
@@ -240,6 +245,8 @@ public class MultiPlaneSynch
 		 */
 		public Client  copy(int id)
 		{
+			COID.incrementAndGet();
+
 			final Client x = clients[id];
 
 			synchronized(x)
@@ -247,6 +254,8 @@ public class MultiPlaneSynch
 				return Client.copy(x);
 			}
 		}
+
+		static final AtomicInteger COID = new AtomicInteger();
 
 		/**
 		 * Thread-safe operation to get a full copy
@@ -257,6 +266,8 @@ public class MultiPlaneSynch
 		 */
 		public Client  copy(Client s)
 		{
+			COCL.incrementAndGet();
+
 			final Client x = clients[s.id];
 
 			synchronized(x)
@@ -268,8 +279,11 @@ public class MultiPlaneSynch
 			}
 		}
 
+		static final AtomicInteger COCL = new AtomicInteger();
+
 		public boolean test(Client c)
 		{
+			TEST.incrementAndGet();
 			final Client x = clients[c.id];
 
 			synchronized(x)
@@ -278,12 +292,15 @@ public class MultiPlaneSynch
 			}
 		}
 
+		static final AtomicInteger TEST = new AtomicInteger();
+
 		/**
 		 * Thread-safe operation to assign the global data
 		 * of the client. Only Master thread is allowed this!
 		 */
 		public void    assign(Client s)
 		{
+			ASSI.incrementAndGet();
 			final Client x = clients[s.id];
 
 			synchronized(x)
@@ -291,6 +308,9 @@ public class MultiPlaneSynch
 				x.assign(s);
 			}
 		}
+
+		static final AtomicInteger ASSI = new AtomicInteger();
+
 
 		/**
 		 * Calculates the resulting hash of the database.
@@ -1380,7 +1400,7 @@ public class MultiPlaneSynch
 		private Snapshot snapshot;
 	}
 
-	static void testRun(int run, Request[] requests, Database database)
+	static long testRun(int run, Request[] requests, Database database)
 	  throws InterruptedException
 	{
 		//~: create the queue
@@ -1423,5 +1443,7 @@ public class MultiPlaneSynch
 		  100.0 * master.getHits() / requests.length,
 		  database.hash().toString()
 		);
+
+		return master.getRuntime();
 	}
 }
