@@ -25,7 +25,7 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int   THREADS  = 3;
+	static final int   THREADS  = 2;
 
 	/**
 	 * The number of queue positions ahead the Master
@@ -46,7 +46,7 @@ public class MultiPlaneSynch
 	/**
 	 * The total number of test requests.
 	 */
-	static final int   REQUESTS = 100000;
+	static final int   REQUESTS = 200000;
 
 	/**
 	 * The number of test clients.
@@ -872,7 +872,10 @@ public class MultiPlaneSynch
 
 				//?: {is currently Master} increment the cursor
 				if(data.master)
+				{
 					cursor++;
+					datas[cursor - 1] = null; //<-- free memory
+				}
 
 				//!: release the lock
 				data.unlock(); //<-- master lock is not removed ever
@@ -890,8 +893,12 @@ public class MultiPlaneSynch
 				if(x >= requests.length)
 					return null;
 
+				//?: {access collision}
+				if((data = datas[x]) == null)
+					continue;
+
 				//?: {locked it as a master}
-				if((data = datas[x]).lock(true))
+				if(data.lock(true))
 				{
 					data.master = true; //<-- process as Master
 					return data;
@@ -910,8 +917,12 @@ public class MultiPlaneSynch
 				if(index > x + PRESEE)
 					continue; //<-- compete again for the next request
 
+				//?: {access collision}
+				if((data = datas[index]) == null)
+					continue;
+
 				//?: {obtained lock as a Support thread}
-				if((data = datas[index]).lock(false))
+				if(data.lock(false))
 				{
 					//HINT: in this implementation we do not allow
 					//  a request to be pre-processed twice even
