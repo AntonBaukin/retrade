@@ -25,14 +25,14 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int   THREADS  = 2;
+	static final int   THREADS  = 3;
 
 	/**
 	 * The number of queue positions ahead the Master
 	 * cursor to forward the execution. Depends on
 	 * the number of competing working threads.
 	 */
-	static final int   PRESEE   = THREADS * 2;
+	static final int   PRESEE   = THREADS * 4;
 
 	/**
 	 * Delay (in milliseconds) introduced by
@@ -51,7 +51,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of test clients.
 	 */
-	static final int   CLIENTS  = 1000;
+	static final int   CLIENTS  = 100;
 
 	/**
 	 * The number of the generated requests executions.
@@ -153,7 +153,7 @@ public class MultiPlaneSynch
 	 * Client buys if currently possess all
 	 * the money needed for the deal.
 	 */
-	static final class Buy extends Request
+	private static final class Buy extends Request
 	{
 		public Buy(int a, int b, int s)
 		{
@@ -165,7 +165,7 @@ public class MultiPlaneSynch
 	 * Client buys anyway, and the money lack
 	 * is added to his debts list.
 	 */
-	static final class Credit extends Request
+	private static final class Credit extends Request
 	{
 		public Credit(int a, int b, int s)
 		{
@@ -203,8 +203,8 @@ public class MultiPlaneSynch
 		Random   gen = (SEED != null)?(new Random(SEED)):(new Random());
 
 		for(int id = 0;(id < CLIENTS);id++)
-			res.client(id).money = INITIAL[0] +
-			  gen.nextInt(INITIAL[1] - INITIAL[0] + 1);
+			res.client(id).money(INITIAL[0] +
+			  gen.nextInt(INITIAL[1] - INITIAL[0] + 1));
 
 		return res;
 	}
@@ -215,7 +215,7 @@ public class MultiPlaneSynch
 	/**
 	 * Global data.
 	 */
-	static final class Database
+	private static final class Database
 	{
 		/* public: constructor */
 
@@ -232,7 +232,7 @@ public class MultiPlaneSynch
 			//~: copy the clients
 			this.clients = new Client[s.clients.length];
 			int i = 0; for(Client c : s.clients)
-				this.clients[i++] = Client.copy(c);
+				this.clients[i++] = new Client(c);
 
 			if(DELAY == 0) this.delays = null; else
 			{
@@ -263,29 +263,22 @@ public class MultiPlaneSynch
 			synchronized(x)
 			{
 				if(DELAY != 0) delay(id);
-				return Client.copy(x);
+				return new Client(x);
 			}
 		}
 
 		/**
-		 * Thread-safe operation to get a full copy
-		 * of the client data if it differs from
-		 * the data given.
-		 *
-		 * Returns the argument if it the same, else a copy.
+		 * Thread-safe operation to test whether
+		 * global copy is the same as the given one.
 		 */
-		public Client  copy(Client s)
+		public boolean same(int id, Hash clientHash)
 		{
-			final Client x = clients[s.id];
+			final Client x = clients[id];
 
 			synchronized(x)
 			{
-				if(DELAY != 0) delay(s.id);
-
-				if(x.equals(s))
-					return s;
-				else
-					return Client.copy(clients[s.id]);
+				if(DELAY != 0) delay(id);
+				return x.equals(clientHash);
 			}
 		}
 
@@ -346,26 +339,17 @@ public class MultiPlaneSynch
 
 	/* Client Data Item */
 
-	static final class Client
+	private static final class Client
 	{
-		/* Client Data */
+		/* public: constructors */
 
 		public final int id;
-		public int       money;
-		public Debts     debts;
-
-
-		/* public: constructors */
 
 		public Client(int id)
 		{
 			this.id    = id;
 			this.debts = new Debts();
-		}
-
-		public static Client copy(Client s)
-		{
-			return new Client(s);
+			this.hash  = new Hash();
 		}
 
 		private Client(Client s)
@@ -373,6 +357,57 @@ public class MultiPlaneSynch
 			this.id    = s.id;
 			this.money = s.money;
 			this.debts = new Debts(s.debts);
+			this.hash  = new Hash(s.hash());
+		}
+
+
+		/* Money Operations */
+
+		public int  money()
+		{
+			return this.money;
+		}
+
+		public void money(int m)
+		{
+			this.money  = m;
+			this.updated = true;
+		}
+
+
+		/* Debts Operations */
+
+		public boolean debts()
+		{
+			return debts.isEmpty();
+		}
+
+		public int     creditor()
+		{
+			return debts.client();
+		}
+
+		public int     debt()
+		{
+			return debts.debt();
+		}
+
+		public void    debt(int d)
+		{
+			debts.debt(d);
+			this.updated = true;
+		}
+
+		public void    debt(int client, int debt)
+		{
+			debts.add(client, debt);
+			this.updated = true;
+		}
+
+		public void    payed()
+		{
+			debts.pop();
+			this.updated = true;
 		}
 
 
@@ -380,45 +415,78 @@ public class MultiPlaneSynch
 
 		public void    assign(Client s)
 		{
-			this.money = s.money;
-			this.debts = new Debts(s.debts);
+			this.money   = s.money;
+			this.debts   = new Debts(s.debts);
+			this.hash.assign(s.hash());
+			this.updated = false; //<-- s.hash() is makes it valid
 		}
 
 		/**
 		 * Compares the data of the same client clone.
 		 */
-		public boolean equals(Client s)
+		public boolean equals(Hash hash)
 		{
-			return (this.money == s.money) && this.debts.equals(s.debts);
+			return this.hash().equals(hash);
 		}
 
-		public void    hash(Hash hash)
+		public Hash    hash(Hash hash)
 		{
 			hash.update(id);
 			hash.update(money);
-			debts.rehash();
+			debts.hash(hash);
+
+			return hash;
 		}
+
+		/**
+		 * Returns the Hash of this Client
+		 * re-calculating if Client is updated.
+		 */
+		public Hash    hash()
+		{
+			if(!updated)
+				return this.hash;
+
+			this.hash.reset();
+			this.hash(this.hash);
+			updated = false;
+
+			return this.hash;
+		}
+
+
+		/* private: client data */
+
+		private int        money;
+
+		private Debts      debts;
+
+		private boolean    updated;
+
+		/**
+		 * The hash of the debts line;
+		 */
+		private final Hash hash;
 	}
 
 
 	/* Debts List */
 
-	static final class Debts
+	private static final class Debts
 	{
 		/* public: constructors */
 
 		public Debts()
-		{
-			this.hash = new Hash();
-		}
+		{}
 
 		public Debts(Debts d)
 		{
 			//?: {has no data}
 			if(d.line == null)
-				this.hash = new Hash();
+				return;
+
 			//?: {has no data rounded}
-			else if(d.e > d.b)
+			if(d.e > d.b)
 			{
 				e = d.e - d.b;
 				this.line = new int[e + 8];
@@ -432,10 +500,6 @@ public class MultiPlaneSynch
 				System.arraycopy(d.line, d.b, this.line, 0, d.line.length - d.b);
 				System.arraycopy(d.line, 0, this.line, d.line.length - d.b, d.e);
 			}
-
-			//~: clone the hash
-			d.rehash();
-			this.hash = d.hash.copy();
 		}
 
 
@@ -467,7 +531,6 @@ public class MultiPlaneSynch
 		 */
 		public void    debt(int d)
 		{
-			updated = updated || (line[b+1] != d);
 			line[b+1] = d;
 		}
 
@@ -476,8 +539,6 @@ public class MultiPlaneSynch
 		 */
 		public void    pop()
 		{
-			updated = true;
-
 			//HINT: e is always < line.length
 			if((b += 2) == line.length) b = 0;
 
@@ -495,7 +556,6 @@ public class MultiPlaneSynch
 		public void    add(int client, int debt)
 		{
 			int x = e + 2;
-			updated = true;
 
 			//HINT: e is always < line.length
 
@@ -551,22 +611,6 @@ public class MultiPlaneSynch
 			}
 		}
 
-		public void    rehash()
-		{
-			if(updated)
-			{
-				updated = false;
-				this.hash.reset();
-				hash(this.hash);
-			}
-		}
-
-		public boolean equals(Debts d)
-		{
-			this.rehash(); d.rehash();
-			return hash.equals(d.hash);
-		}
-
 
 		/* private: debts data */
 
@@ -574,21 +618,14 @@ public class MultiPlaneSynch
 		 * Line is a cyclic buffer where stored
 		 * pairs of (client, debt).
 		 */
-		private int[]   line;
+		private int[] line;
 
 		/**
 		 * Begin position in the buffer, and end position
 		 * following the last pair. Note that as the buffer
 		 * is cyclic, end may be before the head.
 		 */
-		private int     b, e;
-
-		private boolean updated;
-
-		/**
-		 * The hash of the debts line;
-		 */
-		private Hash    hash;
+		private int    b, e;
 	}
 
 
@@ -598,13 +635,18 @@ public class MultiPlaneSynch
 	 * Implementation based on 128-bit Murmur hash
 	 * function introduced by Austin Appleby.
 	 */
-	static final class Hash
+	private static final class Hash
 	{
 		/* Hash */
 
 		public Hash()
 		{
 			reset();
+		}
+
+		public Hash(Hash h)
+		{
+			assign(h);
 		}
 
 		public void    update(int v)
@@ -642,11 +684,10 @@ public class MultiPlaneSynch
 			return (x == h.x) & (y == h.y);
 		}
 
-		public Hash    copy()
+		public Hash    assign(Hash h)
 		{
-			Hash r = new Hash();
-			r.x = x; r.y = y;
-			return r;
+			this.x = h.x; this.y = h.y;
+			return this;
 		}
 
 		public String  toString()
@@ -759,7 +800,13 @@ public class MultiPlaneSynch
 						cmp(copy, ref.getFirst());
 					}
 
-					assert copy.equals(deb);
+					Hash a = new Hash();
+					copy.hash(a);
+
+					Hash b = new Hash();
+					deb.hash(b);
+
+					assert a.equals(b);
 				}
 
 				//?: {9 drain all}
@@ -794,7 +841,7 @@ public class MultiPlaneSynch
 	 * assigned to a working thread that selects
 	 * the pending request.
 	 */
-	static final class Queue
+	private static final class Queue
 	{
 		/* Queue Parameters */
 
@@ -829,7 +876,6 @@ public class MultiPlaneSynch
 
 				//!: release the lock
 				data.unlock(); //<-- master lock is not removed ever
-				data = null;
 			}
 
 			//c: queue competition cycle
@@ -863,9 +909,6 @@ public class MultiPlaneSynch
 				//?: {too quick} stay hot
 				if(index > x + PRESEE)
 					continue; //<-- compete again for the next request
-
-				//~: take fro pre-execute
-				data = datas[index];
 
 				//?: {obtained lock as a Support thread}
 				if((data = datas[index]).lock(false))
@@ -925,7 +968,7 @@ public class MultiPlaneSynch
 	/**
 	 * Processing data of one of the Support threads.
 	 */
-	static final class Data
+	private static final class Data
 	{
 		/* Processing Data */
 
@@ -942,14 +985,14 @@ public class MultiPlaneSynch
 		 * Assigned to true (only once) when working
 		 * thread access this request as a Master.
 		 */
-		public boolean      master;
+		public boolean master;
 
 		/**
-		 * The client data before they were processed.
+		 * The client data hash before they were processed.
 		 * Assigned by a Support thread had pre-executed
 		 * this request.
 		 */
-		public List<Client> initial;
+		public Map<Integer, Hash> initial;
 
 		/**
 		 * The client data after they were processed.
@@ -1021,11 +1064,11 @@ public class MultiPlaneSynch
 			Client c = client(r.a);
 
 			//?: {has no enough money}
-			if(c.money < r.s)
+			if(c.money() < r.s)
 				return;
 
 			//~: take the money
-			c.money -= r.s;
+			c.money(c.money() - r.s);
 
 			//~: give
 			give(r.b, r.s);
@@ -1036,10 +1079,10 @@ public class MultiPlaneSynch
 			Client c = client(r.a);
 
 			//?: {client has enough money}
-			if(c.money >= r.s)
+			if(c.money() >= r.s)
 			{
 				//~: take the money
-				c.money -= r.s;
+				c.money(c.money() - r.s);
 
 				//~: give
 				give(r.b, r.s);
@@ -1048,14 +1091,14 @@ public class MultiPlaneSynch
 			}
 
 			//~: calculate the debt
-			int d = r.s - c.money;
+			int d = r.s - c.money();
 
 			//~: now has no money
-			int s = c.money;
-			c.money = 0;
+			int s = c.money();
+			c.money(0);
 
 			//~: make the debt
-			c.debts.add(r.b, d);
+			c.debt(r.b, d);
 
 			//~: give the money
 			if(s != 0)
@@ -1067,45 +1110,45 @@ public class MultiPlaneSynch
 			Client c = client(client);
 
 			//?: {client has no debts}
-			if((c.money != 0) || c.debts.isEmpty())
+			if((c.money() != 0) || c.debts())
 			{
-				c.money += s;
+				c.money(c.money() + s);
 				return;
 			}
 
 			//~: return all the debts
-			while((s > 0) && !c.debts.isEmpty())
+			while((s > 0) && !c.debts())
 			{
 				//~: target creditor
-				int b = c.debts.client();
+				int b = c.creditor();
 
 				//~: take the most
-				int d = c.debts.debt();
+				int d = c.debt();
 				int x = Math.min(s, d);
 
 				//?: {whole debt}
 				if(x == d)
-					c.debts.pop();
+					c.payed();
 				//~: reduce the debt
 				else
-					c.debts.debt(d - x);
+					c.debt(d - x);
 
 				//~: subtract the amount
 				s -= x;
 
-				//~: give that amount
+				//recursive: give that amount
 				give(b, x);
 			}
 
 			//~: add the rest
-			c.money += s;
+			c.money(c.money() + s);
 		}
 	}
 
 
 	/* Master Thread */
 
-	static final class Worker extends Processing implements Runnable
+	private static final class Worker extends Processing implements Runnable
 	{
 		/* public: constructor */
 
@@ -1170,7 +1213,7 @@ public class MultiPlaneSynch
 				return c;
 
 			//~: remember the initial version
-			initial.add(Client.copy(c));
+			initial.put(c.id, new Hash(c.hash()));
 
 			//~: add to the results
 			results.add(c);
@@ -1202,7 +1245,7 @@ public class MultiPlaneSynch
 			cache.clear();
 
 			//~: allocate execution data
-			this.initial = new ArrayList<>(4);
+			this.initial = new HashMap<>(3);
 			this.results = new ArrayList<>(4);
 
 			//~: execute the request
@@ -1215,22 +1258,15 @@ public class MultiPlaneSynch
 
 		private boolean  consistent()
 		{
-			if((data.initial == null) | (data.results == null))
+			if(data.results == null)
 				return false;
 
-			for(Client o : data.initial)
-			{
-				//~: get the data copy
-				Client x = queue.database.copy(o);
-				cache.put(x.id, x);
-
-				//?: {current state differs}
-				if(x != o)
+			for(Map.Entry<Integer, Hash> e : data.initial.entrySet())
+				//?: {global copy differs}
+				if(!queue.database.same(e.getKey(), e.getValue()))
 					return false;
-			}
 
-			//!: support work is not wasted
-			hits++;
+			hits++; //<-- support work is not wasted
 
 			return true;
 		}
@@ -1270,7 +1306,8 @@ public class MultiPlaneSynch
 		 * Initial and final processing states
 		 * used when working as a Support.
 		 */
-		private List<Client> initial, results;
+		private Map<Integer, Hash> initial;
+		private List<Client>       results;
 	}
 
 	static long testRun(int run, Request[] requests, Database database)
