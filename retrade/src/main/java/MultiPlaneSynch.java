@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -31,7 +32,7 @@ public class MultiPlaneSynch
 	 * cursor to forward the execution. Depends on
 	 * the number of competing working threads.
 	 */
-	static final int   PRESEE   = THREADS * 4;
+	static final int   PRESEE   = THREADS * 2;
 
 	/**
 	 * Delay (in milliseconds) introduced by
@@ -40,7 +41,7 @@ public class MultiPlaneSynch
 	 *
 	 * Zero value means no delay.
 	 */
-	static final int   DELAY    = 10;
+	static final int   DELAY    = 0;
 
 	/**
 	 * The total number of test requests.
@@ -822,64 +823,52 @@ public class MultiPlaneSynch
 			{
 				index = data.index;
 
-				//?: {is currently Master}
-				if(data.master) synchronized(this)
-				{
-					assert (data.index == cursor);
-
-					datas[cursor] = null; //<-- free the memory
-					cursor++;             //<-- advance
-				}
+				//?: {is currently Master} increment the cursor
+				if(data.master)
+					cursor++;
 
 				//!: release the lock
-				data.unlock();
+				data.unlock(); //<-- master lock is not removed ever
 				data = null;
 			}
 
 			//c: queue competition cycle
 			while(true)
 			{
-				//~: try to be the master
-				synchronized(this)
-				{
-					//?: {processed all the requests}
-					if(cursor >= requests.length)
-						return null;
+				//HINT: this unsafe assignment is still valid
+				//  as we always lock Data via atomic CAS.
 
-					data = datas[cursor];
-				}
+				final int x = cursor;
+
+				//?: {processed all the requests}
+				if(x >= requests.length)
+					return null;
 
 				//?: {locked it as a master}
-				if(data.lock(true))
+				if((data = datas[x]).lock(true))
 				{
 					data.master = true; //<-- process as Master
 					return data;
 				}
 
-				synchronized(this)
-				{
-					//HINT: we take item after the current as we checked it
+				//HINT: we take item after the current as we checked it
 
-					//~: the next index to take
-					index = (index <= cursor)?(cursor + 1):(index + 1);
+				//~: the next index to take
+				index = (index <= x)?(x + 1):(index + 1);
 
-					//?: {the queue is almost done}
-					if(index >= requests.length)
-						continue; //<-- see to be Master
+				//?: {the queue is almost done}
+				if(index >= requests.length)
+					continue; //<-- see to be Master
 
-					//?: {too quick} stay hot
-					if(index > cursor + PRESEE)
-					{
-						index--;
-						continue; //<-- compete again for the same request
-					}
+				//?: {too quick} stay hot
+				if(index > x + PRESEE)
+					continue; //<-- compete again for the next request
 
-					//~: take fro pre-execute
-					data = datas[index];
-				}
+				//~: take fro pre-execute
+				data = datas[index];
 
 				//?: {obtained lock as a Support thread}
-				if(data.lock(false))
+				if((data = datas[index]).lock(false))
 				{
 					//HINT: in this implementation we do not allow
 					//  a request to be pre-processed twice even
@@ -904,7 +893,7 @@ public class MultiPlaneSynch
 		/**
 		 * Current request to process.
 		 */
-		private int          cursor;
+		private volatile int cursor;
 
 
 		/* Queue Shutdown */
@@ -978,30 +967,19 @@ public class MultiPlaneSynch
 		 * when the data object is already locked.
 		 *
 		 * Note that Master locked is never removed.
+		 * Implemented with atomic CAS.
 		 */
 		public boolean lock(boolean master)
 		{
-			synchronized(this)
-			{
-				//?: {not locked}
-				if(lock == 0)
-				{
-					lock = (master)?(2):(1);
-					return true;
-				}
-
-				return false;
-			}
+			return lock.compareAndSet(0, (master)?(2):(1));
 		}
 
 		public void    unlock()
 		{
-			synchronized(this)
-			{
-				//?: {not a master lock}
-				if(lock == 1)
-					lock = 0;
-			}
+			//HINT: we unlock only for Support thread lock
+			// (expected value is 1). Master lock stays forever.
+
+			lock.compareAndSet(1, 0);
 		}
 
 		/**
@@ -1009,7 +987,7 @@ public class MultiPlaneSynch
 		 * 1 when locked by a Support thread;
 		 * 2 when locked by a Master thread.
 		 */
-		private int lock;
+		private final AtomicInteger lock = new AtomicInteger();
 	}
 
 
