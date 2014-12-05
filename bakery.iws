@@ -37,78 +37,92 @@
       <file leaf-file-name="MultiPlaneSynch.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.10101" vertical-offset="6144" max-vertical-offset="8034">
-              <caret line="24" column="34" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
+            <state vertical-scroll-proportion="-12.918919" vertical-offset="9367" max-vertical-offset="24854">
+              <caret line="73" column="3" selection-start-line="73" selection-start-column="3" selection-end-line="73" selection-end-column="3" />
               <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="docComment;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#THREADS#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#REQUESTS#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#CLIENTS#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#RUNS#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#SEED#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#INITIAL#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#BUY#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#CREDIT#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#PRESEE#0;class#MultiPlaneSynch#0" expanded="false" />
                 <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#a#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#b#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#s#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;class#Buy#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="class#Buy#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;class#Credit#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="class#Credit#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#client#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
+                <element signature="method#Request#0;class#Request#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#3102#3103#0" expanded="true" />
+                <element signature="e#3125#3126#0" expanded="true" />
+                <element signature="e#3301#3302#0" expanded="true" />
+                <element signature="e#3324#3325#0" expanded="true" />
+                <element signature="method#generateRequests#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#generateDatabase#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#Database#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#Database#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#4744#4745#0" expanded="true" />
+                <element signature="e#4771#4772#0" expanded="true" />
                 <element signature="method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="docComment;method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
                 <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#test#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="docComment;method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
                 <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="docComment;method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="false" />
+                <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#Snapshot#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#client#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#test#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="class#Client#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#client#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#debt#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#debt#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="e#9081#9114#0" expanded="false" />
-                <element signature="docComment;field#line#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#b#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;class#Hash#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="class#Hash#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#next#1;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#initial#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#results#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#masterEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;method#trySupportEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#lock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="class#Worker#0;class#MultiPlaneSynch#0" expanded="false" />
+                <element signature="method#copy#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#Client#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#7296#7297#0" expanded="true" />
+                <element signature="e#7325#7326#0" expanded="true" />
+                <element signature="method#Client#1;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#assign#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#hash#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#7953#7954#0" expanded="true" />
+                <element signature="e#7984#7985#0" expanded="true" />
+                <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#8623#8624#0" expanded="true" />
+                <element signature="e#8658#8659#0" expanded="true" />
+                <element signature="e#8742#8743#0" expanded="true" />
+                <element signature="e#8765#8766#0" expanded="true" />
+                <element signature="e#8857#8858#0" expanded="true" />
+                <element signature="e#8882#8883#0" expanded="true" />
+                <element signature="method#debt#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#rehash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#equals#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#11386#11387#0" expanded="true" />
+                <element signature="e#11402#11403#0" expanded="true" />
+                <element signature="method#update#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#reset#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#11928#11929#0" expanded="true" />
+                <element signature="e#11967#11968#0" expanded="true" />
+                <element signature="method#copy#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#toString#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#testDebtsBuffer#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#cmp#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#Queue#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#next#1;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#masterEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#trySupportEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#supportLeave#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#18389#18390#0" expanded="true" />
+                <element signature="e#18416#18417#0" expanded="true" />
+                <element signature="method#execute#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#buy#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#credit#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#give#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#20113#20114#0" expanded="true" />
+                <element signature="e#20134#20135#0" expanded="true" />
+                <element signature="method#run#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#20471#20472#0" expanded="true" />
+                <element signature="e#20494#20495#0" expanded="true" />
+                <element signature="e#20523#20524#0" expanded="true" />
+                <element signature="e#20543#20544#0" expanded="true" />
+                <element signature="method#client#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="docComment;field#runtime#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#hits#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#cache#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
+                <element signature="method#apply#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="e#22009#22010#0" expanded="true" />
+                <element signature="e#22030#22031#0" expanded="true" />
+                <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#22573#22624#0" expanded="false" />
-                <element signature="e#23324#23368#0" expanded="false" />
                 <element signature="method#consistent#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="docComment;field#cache#0;class#Support#0;class#MultiPlaneSynch#0" expanded="false" />
-                <element signature="docComment;field#snapshot#0;class#Support#0;class#MultiPlaneSynch#0" expanded="false" />
                 <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
               </folding>
             </state>
@@ -150,7 +164,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="334" />
-    <option name="y" value="19" />
+    <option name="y" value="22" />
     <option name="width" value="1049" />
     <option name="height" value="993" />
   </component>
@@ -868,43 +882,43 @@
     <option name="ACTIVE_ACTIONS" value=",SHOW_PROPERTIES" />
   </component>
   <component name="SvnConfiguration" maxAnnotateRevisions="256" cleanupOnStartRun="true">
-    <configuration>d:\Anton\AppData\Roaming\Subversion</configuration>
+    <configuration>$USER_HOME$/.subversion</configuration>
     <supportedVersion>125</supportedVersion>
   </component>
   <component name="SvnFileUrlMappingImpl">
     <option name="myMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\auth" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\auth" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/auth" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/auth" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\retrade" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\retrade" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/retrade" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/retrade" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\xroot\src" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\xroot\src" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/xroot/src" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/xroot/src" />
         </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\auth" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\auth" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/auth" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/auth" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\xroot\src" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\xroot\src" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/xroot/src" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/xroot/src" />
         </SvnCopyRootSimple>
       </list>
     </option>
@@ -930,35 +944,35 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="334" y="19" width="1049" height="993" extended-state="0" />
-    <editor active="true" />
+    <frame x="334" y="22" width="1049" height="993" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32" sideWeight="0.49950346" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32038835" sideWeight="0.49950346" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3222857" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3214671" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3092551" sideWeight="0.31353134" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32969216" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32914287" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3257821" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32854405" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36921528" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925585" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3222857" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24566768" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3214671" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24528302" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38285714" sideWeight="0.7715988" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38187703" sideWeight="0.7715988" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24422443" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1044,78 +1058,185 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="6868">
+          <caret line="24" column="34" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Request#0;class#Request#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#3102#3103#0" expanded="true" />
+            <element signature="e#3125#3126#0" expanded="true" />
+            <element signature="e#3301#3302#0" expanded="true" />
+            <element signature="e#3324#3325#0" expanded="true" />
+            <element signature="method#generateRequests#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#generateDatabase#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Database#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Database#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#4744#4745#0" expanded="true" />
+            <element signature="e#4771#4772#0" expanded="true" />
+            <element signature="method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#test#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Snapshot#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#client#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#test#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#copy#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Client#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#7296#7297#0" expanded="true" />
+            <element signature="e#7325#7326#0" expanded="true" />
+            <element signature="method#Client#1;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#assign#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#hash#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#7953#7954#0" expanded="true" />
+            <element signature="e#7984#7985#0" expanded="true" />
+            <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#8623#8624#0" expanded="true" />
+            <element signature="e#8658#8659#0" expanded="true" />
+            <element signature="e#8742#8743#0" expanded="true" />
+            <element signature="e#8765#8766#0" expanded="true" />
+            <element signature="e#8857#8858#0" expanded="true" />
+            <element signature="e#8882#8883#0" expanded="true" />
+            <element signature="method#debt#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#rehash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#equals#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#11386#11387#0" expanded="true" />
+            <element signature="e#11402#11403#0" expanded="true" />
+            <element signature="method#update#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#reset#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#11928#11929#0" expanded="true" />
+            <element signature="e#11967#11968#0" expanded="true" />
+            <element signature="method#copy#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#toString#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#testDebtsBuffer#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#cmp#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Queue#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#next#1;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#masterEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#trySupportEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#supportLeave#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#18389#18390#0" expanded="true" />
+            <element signature="e#18416#18417#0" expanded="true" />
+            <element signature="method#execute#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#buy#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#credit#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#give#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#20113#20114#0" expanded="true" />
+            <element signature="e#20134#20135#0" expanded="true" />
+            <element signature="method#run#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#20471#20472#0" expanded="true" />
+            <element signature="e#20494#20495#0" expanded="true" />
+            <element signature="e#20523#20524#0" expanded="true" />
+            <element signature="e#20543#20544#0" expanded="true" />
+            <element signature="method#client#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#apply#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#22009#22010#0" expanded="true" />
+            <element signature="e#22030#22031#0" expanded="true" />
+            <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#consistent#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="8256" max-vertical-offset="10480">
           <caret line="1103" column="17" selection-start-line="1103" selection-start-column="7" selection-end-line="1103" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="docComment;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#THREADS#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#REQUESTS#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#CLIENTS#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#RUNS#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#SEED#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#INITIAL#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#BUY#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#CREDIT#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#PRESEE#0;class#MultiPlaneSynch#0" expanded="false" />
             <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#a#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#b#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#s#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Buy#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Buy#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Credit#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Credit#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#client#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
+            <element signature="method#Request#0;class#Request#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#3102#3103#0" expanded="true" />
+            <element signature="e#3125#3126#0" expanded="true" />
+            <element signature="e#3301#3302#0" expanded="true" />
+            <element signature="e#3324#3325#0" expanded="true" />
+            <element signature="method#generateRequests#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#generateDatabase#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Database#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Database#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#4744#4745#0" expanded="true" />
+            <element signature="e#4771#4772#0" expanded="true" />
             <element signature="method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
             <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#test#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
             <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="false" />
+            <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Snapshot#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#client#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#test#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="class#Client#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#client#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#debt#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#debt#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="e#9081#9114#0" expanded="false" />
-            <element signature="docComment;field#line#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#b#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Hash#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Hash#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#next#1;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#initial#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#results#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#masterEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#trySupportEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#lock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Worker#0;class#MultiPlaneSynch#0" expanded="false" />
+            <element signature="method#copy#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Client#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#7296#7297#0" expanded="true" />
+            <element signature="e#7325#7326#0" expanded="true" />
+            <element signature="method#Client#1;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#assign#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#hash#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#7953#7954#0" expanded="true" />
+            <element signature="e#7984#7985#0" expanded="true" />
+            <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#8623#8624#0" expanded="true" />
+            <element signature="e#8658#8659#0" expanded="true" />
+            <element signature="e#8742#8743#0" expanded="true" />
+            <element signature="e#8765#8766#0" expanded="true" />
+            <element signature="e#8857#8858#0" expanded="true" />
+            <element signature="e#8882#8883#0" expanded="true" />
+            <element signature="method#debt#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#rehash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#equals#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#11386#11387#0" expanded="true" />
+            <element signature="e#11402#11403#0" expanded="true" />
+            <element signature="method#update#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#reset#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#11928#11929#0" expanded="true" />
+            <element signature="e#11967#11968#0" expanded="true" />
+            <element signature="method#copy#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#toString#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#testDebtsBuffer#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#cmp#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Queue#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#next#1;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#masterEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#trySupportEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#supportLeave#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#18389#18390#0" expanded="true" />
+            <element signature="e#18416#18417#0" expanded="true" />
+            <element signature="method#execute#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#buy#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#credit#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#give#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#20113#20114#0" expanded="true" />
+            <element signature="e#20134#20135#0" expanded="true" />
+            <element signature="method#run#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#20471#20472#0" expanded="true" />
+            <element signature="e#20494#20495#0" expanded="true" />
+            <element signature="e#20523#20524#0" expanded="true" />
+            <element signature="e#20543#20544#0" expanded="true" />
+            <element signature="method#client#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;field#runtime#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#hits#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#cache#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
+            <element signature="method#apply#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#22009#22010#0" expanded="true" />
+            <element signature="e#22030#22031#0" expanded="true" />
+            <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#22573#22624#0" expanded="false" />
-            <element signature="e#23324#23368#0" expanded="false" />
             <element signature="method#consistent#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;field#cache#0;class#Support#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#snapshot#0;class#Support#0;class#MultiPlaneSynch#0" expanded="false" />
             <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
           </folding>
         </state>
@@ -1205,88 +1326,94 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/bin/java/jdk1.8/src.zip!/java/net/URLClassLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47495362" vertical-offset="4096" max-vertical-offset="7051">
-          <caret line="379" column="43" selection-start-line="272" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.10101" vertical-offset="6144" max-vertical-offset="8034">
-          <caret line="24" column="34" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
+        <state vertical-scroll-proportion="-12.918919" vertical-offset="9367" max-vertical-offset="24854">
+          <caret line="73" column="3" selection-start-line="73" selection-start-column="3" selection-end-line="73" selection-end-column="3" />
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="docComment;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#THREADS#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#REQUESTS#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#CLIENTS#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#RUNS#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#SEED#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#INITIAL#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#BUY#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#CREDIT#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#PRESEE#0;class#MultiPlaneSynch#0" expanded="false" />
             <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#a#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#b#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#s#0;class#Request#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Buy#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Buy#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Credit#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Credit#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#client#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
+            <element signature="method#Request#0;class#Request#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#3102#3103#0" expanded="true" />
+            <element signature="e#3125#3126#0" expanded="true" />
+            <element signature="e#3301#3302#0" expanded="true" />
+            <element signature="e#3324#3325#0" expanded="true" />
+            <element signature="method#generateRequests#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#generateDatabase#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Database#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Database#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#4744#4745#0" expanded="true" />
+            <element signature="e#4771#4772#0" expanded="true" />
             <element signature="method#copy#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
             <element signature="method#copy#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#test#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
             <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="false" />
+            <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Snapshot#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#client#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#test#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="class#Client#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#client#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#debt#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#debt#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="e#9081#9114#0" expanded="false" />
-            <element signature="docComment;field#line#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#b#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Hash#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Hash#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#next#1;class#Queue#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#initial#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#results#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#masterEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;method#trySupportEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#lock#0;class#Data#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="class#Worker#0;class#MultiPlaneSynch#0" expanded="false" />
+            <element signature="method#copy#0;class#Snapshot#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Client#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#7296#7297#0" expanded="true" />
+            <element signature="e#7325#7326#0" expanded="true" />
+            <element signature="method#Client#1;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#assign#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#equals#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#hash#0;class#Client#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#7953#7954#0" expanded="true" />
+            <element signature="e#7984#7985#0" expanded="true" />
+            <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#8623#8624#0" expanded="true" />
+            <element signature="e#8658#8659#0" expanded="true" />
+            <element signature="e#8742#8743#0" expanded="true" />
+            <element signature="e#8765#8766#0" expanded="true" />
+            <element signature="e#8857#8858#0" expanded="true" />
+            <element signature="e#8882#8883#0" expanded="true" />
+            <element signature="method#debt#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#hash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#rehash#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#equals#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#11386#11387#0" expanded="true" />
+            <element signature="e#11402#11403#0" expanded="true" />
+            <element signature="method#update#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#reset#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#11928#11929#0" expanded="true" />
+            <element signature="e#11967#11968#0" expanded="true" />
+            <element signature="method#copy#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#toString#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#testDebtsBuffer#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#cmp#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Queue#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#next#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#next#1;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#masterEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#trySupportEnter#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#supportLeave#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#18389#18390#0" expanded="true" />
+            <element signature="e#18416#18417#0" expanded="true" />
+            <element signature="method#execute#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#buy#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#credit#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#give#0;class#Worker#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#20113#20114#0" expanded="true" />
+            <element signature="e#20134#20135#0" expanded="true" />
+            <element signature="method#run#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#20471#20472#0" expanded="true" />
+            <element signature="e#20494#20495#0" expanded="true" />
+            <element signature="e#20523#20524#0" expanded="true" />
+            <element signature="e#20543#20544#0" expanded="true" />
+            <element signature="method#client#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;field#runtime#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#hits#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#cache#0;class#Master#0;class#MultiPlaneSynch#0" expanded="false" />
+            <element signature="method#apply#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="e#22009#22010#0" expanded="true" />
+            <element signature="e#22030#22031#0" expanded="true" />
+            <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#22573#22624#0" expanded="false" />
-            <element signature="e#23324#23368#0" expanded="false" />
             <element signature="method#consistent#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="docComment;field#cache#0;class#Support#0;class#MultiPlaneSynch#0" expanded="false" />
-            <element signature="docComment;field#snapshot#0;class#Support#0;class#MultiPlaneSynch#0" expanded="false" />
             <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
           </folding>
         </state>

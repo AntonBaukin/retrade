@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -37,7 +38,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of the generated requests executions.
 	 */
-	static final int   RUNS     = 20;
+	static final int   RUNS     = 10;
 
 	/**
 	 * Generator seed used to create test requests.
@@ -64,7 +65,13 @@ public class MultiPlaneSynch
 	 * cursor to forward the execution. Depends on
 	 * the number of competing Support threads.
 	 */
-	static final int   PRESEE   = (THREADS-1) * 2;
+	static final int   PRESEE   = 2;//(THREADS-1) * 2;
+
+	/**
+	 * Orders Support threads to use local database
+	 * snapshots. Used when there are few clients.
+	 */
+	static final boolean SNAPSHOT = true;
 
 
 	/* Program Entry Point */
@@ -99,6 +106,8 @@ public class MultiPlaneSynch
 		//c: do test runs
 		for(int run = 1;(run <= RUNS);run++)
 			testRun(run, requests, new Database(database));
+
+		//System.out.printf("Client        : %d\n", Client.N.intValue());
 	}
 
 
@@ -211,7 +220,7 @@ public class MultiPlaneSynch
 			//~: copy the clients
 			this.clients = new Client[s.clients.length];
 			int i = 0; for(Client c : s.clients)
-				this.clients[i++] = new Client(c);
+				this.clients[i++] = Client.copy(c);
 		}
 
 
@@ -231,11 +240,11 @@ public class MultiPlaneSynch
 		 */
 		public Client  copy(int id)
 		{
-			Client x = clients[id];
+			final Client x = clients[id];
 
 			synchronized(x)
 			{
-				return new Client(x);
+				return Client.copy(x);
 			}
 		}
 
@@ -248,20 +257,20 @@ public class MultiPlaneSynch
 		 */
 		public Client  copy(Client s)
 		{
-			Client x = clients[s.id];
+			final Client x = clients[s.id];
 
 			synchronized(x)
 			{
 				if(x.equals(s))
 					return s;
 				else
-					return new Client(clients[s.id]);
+					return Client.copy(clients[s.id]);
 			}
 		}
 
 		public boolean test(Client c)
 		{
-			Client x = clients[c.id];
+			final Client x = clients[c.id];
 
 			synchronized(x)
 			{
@@ -275,7 +284,7 @@ public class MultiPlaneSynch
 		 */
 		public void    assign(Client s)
 		{
-			Client x = clients[s.id];
+			final Client x = clients[s.id];
 
 			synchronized(x)
 			{
@@ -351,7 +360,7 @@ public class MultiPlaneSynch
 		public void    copy(Collection<Client> cs)
 		{
 			for(Client c : cs)
-				local.put(c.id, new Client(c));
+				local.put(c.id, Client.copy(c));
 		}
 
 		private final Map<Integer, Client> local;
@@ -377,7 +386,12 @@ public class MultiPlaneSynch
 			this.debts = new Debts();
 		}
 
-		public Client(Client s)
+		public static Client copy(Client s)
+		{
+			return new Client(s);
+		}
+
+		private Client(Client s)
 		{
 			this.id    = s.id;
 			this.money = s.money;
@@ -1181,18 +1195,6 @@ public class MultiPlaneSynch
 
 				//~: apply all the changes to the database
 				apply(cache.values());
-
-				//DEBUG: wait 1sec
-//				Object x = new Object();
-//				try
-//				{
-//					synchronized(x)
-//					{
-//						x.wait(100L);
-//					}
-//				}
-//				catch(InterruptedException e)
-//				{}
 			}
 		}
 
@@ -1275,10 +1277,13 @@ public class MultiPlaneSynch
 			if(c != null) return c;
 
 			//~: load from the database snapshot
-			c = snapshot.client(id);
+			if(SNAPSHOT)
+				c = snapshot.client(id);
+			else
+				c = queue.database.copy(id);
 
 			//~: remember the initial version
-			initial.add(new Client(c));
+			initial.add(Client.copy(c));
 
 			//~: add to the results & cache
 			results.add(c);
@@ -1301,16 +1306,19 @@ public class MultiPlaneSynch
 			//  previous tasks, Snapshot from the future may
 			//  not be used more and must be replaced.
 
-			//?: {repeated previous tasks}
-			if(snapshot != null) if(snapshot.index <= data.index)
-				snapshot = null;
+			if(SNAPSHOT)
+			{
+				//?: {repeated previous tasks}
+				if(snapshot != null) if(snapshot.index <= data.index)
+					snapshot = null;
 
-			//?: {has no snapshot}
-			if(snapshot == null)
-				snapshot = new Snapshot(queue.database);
+				//?: {has no snapshot}
+				if(snapshot == null)
+					snapshot = new Snapshot(queue.database);
 
-			//~: current index of the snapshot
-			snapshot.index = data.index;
+				//~: current index of the snapshot
+				snapshot.index = data.index;
+			}
 
 			//?: {previous work is still actual}
 			if(consistent(data))
@@ -1333,7 +1341,8 @@ public class MultiPlaneSynch
 			//  as local snapshot. To make it thread-safe we
 			//  have to create additional copies.
 
-			snapshot.copy(this.results);
+			if(SNAPSHOT)
+				snapshot.copy(this.results);
 		}
 
 		private boolean  consistent(Data data)
@@ -1343,7 +1352,12 @@ public class MultiPlaneSynch
 
 			for(Client o : data.initial)
 				//?: {not the same data}
-				if(!snapshot.test(o))
+				if(SNAPSHOT)
+				{
+					if(!snapshot.test(o))
+						return false;
+				}
+				else if(!queue.database.test(o))
 					return false;
 
 			return true;
