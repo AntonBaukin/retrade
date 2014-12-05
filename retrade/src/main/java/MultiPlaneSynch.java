@@ -63,9 +63,9 @@ public class MultiPlaneSynch
 	/**
 	 * The number of queue positions ahead the Master
 	 * cursor to forward the execution. Depends on
-	 * the number of competing Support threads.
+	 * the number of competing working threads.
 	 */
-	static final int   PRESEE   = 12;//(THREADS-1) * 2;
+	static final int   PRESEE   = THREADS * 8;
 
 	/**
 	 * Orders Support threads to use local database
@@ -794,12 +794,6 @@ public class MultiPlaneSynch
 
 					datas[cursor] = null; //<-- free the memory
 					cursor++;             //<-- advance
-
-					//HINT: when Support threads reaches the limit, it waits
-					//  for the Master thread to complete the next task.
-
-					//!: notify the parked threads
-					this.notifyAll();
 				}
 
 				//!: release the lock
@@ -808,41 +802,49 @@ public class MultiPlaneSynch
 			}
 
 			//c: queue competition cycle
-			while(true) synchronized(this)
+			while(true)
 			{
-				//?: {processed all the requests}
-				if(cursor >= requests.length)
-					return null;
+				//~: try to be the master
+				synchronized(this)
+				{
+					//?: {processed all the requests}
+					if(cursor >= requests.length)
+						return null;
 
-				//~: try to take current request (to be Master)
-				if((data = datas[cursor]).lock(true))
+					data = datas[cursor];
+				}
+
+				//?: {locked it as a master}
+				if(data.lock(true))
 				{
 					data.master = true; //<-- process as Master
 					return data;
 				}
 
-				//HINT: we take item after the current as we checked it
-
-				//~: the next index to take
-				index = (index <= cursor)?(cursor + 1):(index + 1);
-
-				//?: {the queue is almost done}
-				if(index >= requests.length)
-					return null;
-
-				//?: {too quick} park the thread
-				if(index > cursor + PRESEE) try
+				synchronized(this)
 				{
-					this.wait();
-					continue; //!: compete again
-				}
-				catch(InterruptedException e)
-				{
-					throw new RuntimeException(e);
+					//HINT: we take item after the current as we checked it
+
+					//~: the next index to take
+					index = (index <= cursor)?(cursor + 1):(index + 1);
+
+					//?: {the queue is almost done}
+					if(index >= requests.length)
+						continue; //<-- see to be Master
+
+					//?: {too quick} stay hot
+					if(index > cursor + PRESEE)
+					{
+						index--;
+						continue; //<-- compete again for the same request
+					}
+
+					//~: take fro pre-execute
+					data = datas[index];
 				}
 
 				//?: {obtained lock as a Support thread}
-				if((data = datas[index]).lock(false))
+				if(data.lock(false))
 				{
 					//HINT: in this implementation we do not allow
 					//  a request to be pre-processed twice even
@@ -1104,6 +1106,8 @@ public class MultiPlaneSynch
 
 		public void run()
 		{
+			started = System.currentTimeMillis();
+
 			try
 			{
 				while((data = queue.next(data)) != null)
@@ -1114,14 +1118,25 @@ public class MultiPlaneSynch
 			}
 			finally
 			{
+				finished = System.currentTimeMillis();
 				queue.workerExit();
 			}
 
 		}
 
-		public int getHits()
+		public int  getHits()
 		{
 			return hits;
+		}
+
+		public long getStarted()
+		{
+			return started;
+		}
+
+		public long getFinished()
+		{
+			return finished;
 		}
 
 
@@ -1229,6 +1244,9 @@ public class MultiPlaneSynch
 		 */
 		private int         hits;
 
+		private long        started;
+		private long        finished;
+
 		/**
 		 * Cache where clients are held during
 		 * a request processing.
@@ -1259,9 +1277,6 @@ public class MultiPlaneSynch
 			threads[i].setName("Worker-" + i);
 		}
 
-		//~: time start
-		long time = System.currentTimeMillis();
-
 		//~: start the threads
 		for(Thread thread : threads)
 			thread.start();
@@ -1269,8 +1284,16 @@ public class MultiPlaneSynch
 		//~: wait the queue
 		queue.join();
 
-		//~: time stop
-		time = System.currentTimeMillis() - time;
+		//~: timings
+		long started  = Long.MAX_VALUE; //<-- earliest start time
+		long finished = 0L;             //<-- latest finish time
+		for(Worker w : workers)
+		{
+			if(started > w.getStarted())
+				started = w.getStarted();
+			if(finished < w.getFinished())
+				finished = w.getFinished();
+		}
 
 		//~: collect the hits
 		int hits = 0; for(Worker w : workers)
@@ -1278,10 +1301,10 @@ public class MultiPlaneSynch
 
 		//~: print the timing and the hash
 		System.out.printf("%2d %5d  %5.1f  %s\n",
-		  run, time, (100.0 * hits / requests.length),
+		  run, (finished-started), (100.0 * hits / requests.length),
 		  database.hash().toString()
 		);
 
-		return time;
+		return (finished-started);
 	}
 }
