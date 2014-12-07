@@ -121,6 +121,12 @@ public class MultiPlaneSynch
 		for(int i = 0;(i < RUNS);i++)
 			time = Math.min(time, times[i]);
 		System.out.printf("Minimum run time: %d\n", time);
+
+		System.out.printf("Queue enter : %8d\n", Queue.QE.intValue());
+		System.out.printf("Queue miss  : %8d\n", Queue.QM.intValue());
+		System.out.printf("Queue wait  : %8d\n", Queue.QW.intValue());
+		System.out.printf("Client.hash : %8d\n", Client.H.intValue());
+		System.out.printf("Debts.hash  : %8d\n", Debts.H.intValue());
 	}
 
 
@@ -287,6 +293,7 @@ public class MultiPlaneSynch
 		/**
 		 * Thread-safe operation to assign the global data
 		 * of the client. Only Master thread is allowed this!
+		 * Note that the source object may not be used further.
 		 */
 		public void    assign(Client s)
 		{
@@ -418,9 +425,9 @@ public class MultiPlaneSynch
 		public void    assign(Client s)
 		{
 			this.money   = s.money;
-			this.debts   = new Debts(s.debts);
-			this.hash.assign(s.hash());
-			this.updated = false; //<-- s.hash() is makes it valid
+			this.debts   = s.debts;
+			this.hash    = s.hash;
+			this.updated = s.updated;
 		}
 
 		/**
@@ -452,23 +459,26 @@ public class MultiPlaneSynch
 			this.hash.reset();
 			this.hash(this.hash);
 			updated = false;
+			H.incrementAndGet();
 
 			return this.hash;
 		}
 
+		public static final AtomicInteger H = new AtomicInteger();
+
 
 		/* private: client data */
 
-		private int        money;
+		private int     money;
 
-		private Debts      debts;
+		private Debts   debts;
 
-		private boolean    updated;
+		private boolean updated;
 
 		/**
 		 * The hash of the debts line;
 		 */
-		private final Hash hash;
+		private Hash    hash;
 	}
 
 
@@ -484,7 +494,7 @@ public class MultiPlaneSynch
 		public Debts(Debts d)
 		{
 			//?: {has no data}
-			if(d.line == null)
+			if(d.e == d.line.length)
 				return;
 
 			//?: {has no data rounded}
@@ -509,7 +519,7 @@ public class MultiPlaneSynch
 
 		public boolean isEmpty()
 		{
-			return (this.line == null);
+			return (this.e == line.length);
 		}
 
 		/**
@@ -546,10 +556,7 @@ public class MultiPlaneSynch
 
 			//?: {has no items left}
 			if(b == e)
-			{
-				b = e = 0;
-				this.line = null;
-			}
+				e = line.length;
 		}
 
 		/**
@@ -557,25 +564,23 @@ public class MultiPlaneSynch
 		 */
 		public void    add(int client, int debt)
 		{
-			int x = e + 2;
-
-			//HINT: e is always < line.length
+			final int l = line.length;
 
 			//?: {has free space}
-			if(((e < b) & (x <= b)) || (line == null) || ((e > b) & (x <= line.length)))
+			int x = e + 2;
+			if(((e < b) & (x <= b)) || ((e > b) & (x <= l)) || (e == l))
 			{
-				if(line == null)
-					this.line = new int[8];
+				if(e == l) { b = e = 0; x = 2; }
 
 				line[e]   = client;
 				line[e+1] = debt;
-				e = (x == line.length)?(0):(x);
+				e = (x == l)?(0):(x);
 
 				return;
 			}
 
 			//~: allocate the new buffer
-			int[] temp = new int[line.length*2];
+			int[] temp = new int[l*2];
 
 			//~: {has no data rounded}
 			if(e > b)
@@ -583,7 +588,7 @@ public class MultiPlaneSynch
 			//~: copy the tail and the head
 			else
 			{
-				System.arraycopy(line, b, temp, 0, x = line.length - b);
+				System.arraycopy(line, b, temp, 0, x = l - b);
 				System.arraycopy(line, 0, temp, x, e);
 				x += e;
 			}
@@ -597,7 +602,8 @@ public class MultiPlaneSynch
 		public void    hash(Hash hash)
 		{
 			//?: {has no data}
-			if(line == null) return;
+			if(e == line.length) return;
+			H.getAndIncrement();
 
 			//~: {has no data rounded}
 			if(e > b)
@@ -613,6 +619,8 @@ public class MultiPlaneSynch
 			}
 		}
 
+		public static final AtomicInteger H = new AtomicInteger();
+
 
 		/* private: debts data */
 
@@ -620,14 +628,14 @@ public class MultiPlaneSynch
 		 * Line is a cyclic buffer where stored
 		 * pairs of (client, debt).
 		 */
-		private int[] line;
+		private int[]  line  = new int[8];
 
 		/**
 		 * Begin position in the buffer, and end position
 		 * following the last pair. Note that as the buffer
 		 * is cyclic, end may be before the head.
 		 */
-		private int    b, e;
+		private int     b, e = line.length;
 	}
 
 
@@ -863,6 +871,10 @@ public class MultiPlaneSynch
 
 		/* Queue Access */
 
+		public static final AtomicInteger QE = new AtomicInteger();
+		public static final AtomicInteger QM = new AtomicInteger();
+		public static final AtomicInteger QW = new AtomicInteger();
+
 		public Data next(Data data)
 		{
 			//?: {has data to release}
@@ -883,6 +895,8 @@ public class MultiPlaneSynch
 			//c: queue competition cycle
 			while(true)
 			{
+				QE.getAndIncrement();
+
 				//?: {Master role is ready}
 				if(master.compareAndSet(true, false))
 				{
@@ -913,6 +927,7 @@ public class MultiPlaneSynch
 				if(index > cursor + PRESEE)
 				{
 					prepos.compareAndSet(index + 1, index);
+					QW.getAndIncrement();
 					continue; //<-- compete again for the same request
 				}
 
@@ -922,7 +937,11 @@ public class MultiPlaneSynch
 
 				//?: {master is ahead of pre-execution}
 				if((data = datas[index]) == null)
+				{
+					QM.getAndIncrement();
 					continue;
+				}
+
 
 				//?: {obtained lock as a Support thread}
 				if(data.lock(false))
@@ -939,6 +958,8 @@ public class MultiPlaneSynch
 					//!: unlock & take the next
 					data.unlock();
 				}
+
+				QM.getAndIncrement();
 			}
 		}
 
@@ -1279,6 +1300,10 @@ public class MultiPlaneSynch
 			//~: save data results
 			data.initial = this.initial;
 			data.results = this.results;
+
+			//~: calculate hashes
+			for(Client c : results)
+				c.hash();
 		}
 
 		private boolean  consistent()
