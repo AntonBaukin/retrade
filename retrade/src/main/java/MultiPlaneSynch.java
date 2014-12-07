@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -115,10 +116,11 @@ public class MultiPlaneSynch
 		for(int run = 0;(run < RUNS);run++)
 			times[run] = testRun(run+1, requests, new Database(database));
 
-		//~: average run time
-		int TX = (RUNS > 5)?(3):(0);
-		long time = 0L; for(int i = TX;(i < RUNS);i++) time += times[i];
-		System.out.printf("Average run time: %.1f\n", (double)time / (RUNS - TX));
+		//~: minimum run time
+		long time = Long.MAX_VALUE;
+		for(int i = 0;(i < RUNS);i++)
+			time = Math.min(time, times[i]);
+		System.out.printf("Minimum run time: %d\n", time);
 	}
 
 
@@ -286,7 +288,7 @@ public class MultiPlaneSynch
 		 * Thread-safe operation to assign the global data
 		 * of the client. Only Master thread is allowed this!
 		 */
-		public void      assign(Client s)
+		public void    assign(Client s)
 		{
 			final Client x = clients[s.id];
 
@@ -863,18 +865,15 @@ public class MultiPlaneSynch
 
 		public Data next(Data data)
 		{
-			int index = -1;
-
 			//?: {has data to release}
 			if(data != null)
 			{
-				index = data.index;
-
 				//?: {is currently Master} increment the cursor
 				if(data.master)
 				{
+					datas[data.index] = null; //<-- free memory
 					cursor++;
-					datas[cursor - 1] = null; //<-- free memory
+					master.set(true);         //<-- unlock master
 				}
 
 				//!: release the lock
@@ -884,40 +883,44 @@ public class MultiPlaneSynch
 			//c: queue competition cycle
 			while(true)
 			{
-				//HINT: this unsafe assignment is still valid
-				//  as we always lock Data via atomic CAS.
-
-				final int x = cursor;
-
-				//?: {processed all the requests}
-				if(x >= requests.length)
-					return null;
-
-				//?: {access collision}
-				if((data = datas[x]) == null)
-					continue;
-
-				//?: {locked it as a master}
-				if(data.lock(true))
+				//?: {Master role is ready}
+				if(master.compareAndSet(true, false))
 				{
-					data.master = true; //<-- process as Master
-					return data;
+					//?: {processed all the requests}
+					if(cursor >= requests.length)
+					{
+						master.set(true);
+						return null;
+					}
+
+					//?: {locked it as Master}
+					if((data = datas[cursor]).lock(true))
+					{
+						data.master = true; //<-- process as Master
+						return data;
+					}
+
+					//HINT: we are here when else thread is preparing master request
+
+					//~: not successful, unlock Master role
+					master.set(true);
 				}
 
-				//HINT: we take item after the current as we checked it
+				//~: position to pre-execute
+				final int index = prepos.getAndIncrement();
 
-				//~: the next index to take
-				index = (index <= x)?(x + 1):(index + 1);
+				//?: {too quick} stay hot
+				if(index > cursor + PRESEE)
+				{
+					prepos.compareAndSet(index + 1, index);
+					continue; //<-- compete again for the same request
+				}
 
 				//?: {the queue is almost done}
 				if(index >= requests.length)
 					continue; //<-- see to be Master
 
-				//?: {too quick} stay hot
-				if(index > x + PRESEE)
-					continue; //<-- compete again for the next request
-
-				//?: {access collision}
+				//?: {master is ahead of pre-execution}
 				if((data = datas[index]) == null)
 					continue;
 
@@ -947,7 +950,18 @@ public class MultiPlaneSynch
 		/**
 		 * Current request to process.
 		 */
-		private volatile int cursor;
+		private volatile int        cursor;
+
+		/**
+		 * When true, indicates that Master thread completed
+		 * it's task, and any thread may compete to be Master.
+		 */
+		private final AtomicBoolean master = new AtomicBoolean(true);
+
+		/**
+		 * Current request to pre-execute.
+		 */
+		private final AtomicInteger prepos = new AtomicInteger();
 
 
 		/* Queue Shutdown */
@@ -1362,7 +1376,7 @@ public class MultiPlaneSynch
 
 		//~: print the timing and the hash
 		System.out.printf("%2d %5d  %5.1f  %s\n",
-		  run, (finished-started), (100.0 * hits / requests.length),
+		  run, (finished - started), (100.0*hits/requests.length),
 		  database.hash().toString()
 		);
 
