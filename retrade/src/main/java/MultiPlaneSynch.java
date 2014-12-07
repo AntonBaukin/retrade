@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -26,14 +26,15 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int   THREADS  = 2;
+	static final int   THREADS  = 1;
 
 	/**
-	 * The number of queue positions ahead the Master
-	 * cursor to forward the execution. Depends on
-	 * the number of competing working threads.
+	 * The number of times Support thread may go ahead
+	 * by one pre-execution block. Doesn't depend on the
+	 * number of Support threads, may be 0.
+	 *
 	 */
-	static final int   PRESEE   = THREADS * 4;
+	static final int   PRESEE   = 2;
 
 	/**
 	 * Delay (in milliseconds) introduced by
@@ -87,7 +88,6 @@ public class MultiPlaneSynch
 	{
 		//~: test the parameters
 		assert THREADS  >= 1;
-		assert PRESEE   >= 1;
 		assert DELAY    >= 0;
 		assert REQUESTS >= 1;
 		assert CLIENTS  >= 2;
@@ -107,8 +107,8 @@ public class MultiPlaneSynch
 		Database  database = generateDatabase();
 
 		Locale.setDefault(Locale.US);
-		System.out.printf("[%d] Workers; Requests [%d], Seed [%d]; [%d] runs:\n",
-		  THREADS, REQUESTS, SEED, RUNS
+		System.out.printf("[%d] Supporters; Requests [%d], Seed [%d]; [%d] runs:\n",
+		  THREADS-1, REQUESTS, SEED, RUNS
 		);
 
 		//c: do test runs
@@ -121,12 +121,6 @@ public class MultiPlaneSynch
 		for(int i = 0;(i < RUNS);i++)
 			time = Math.min(time, times[i]);
 		System.out.printf("Minimum run time: %d\n", time);
-
-		System.out.printf("Queue enter : %8d\n", Queue.QE.intValue());
-		System.out.printf("Queue miss  : %8d\n", Queue.QM.intValue());
-		System.out.printf("Queue wait  : %8d\n", Queue.QW.intValue());
-		System.out.printf("Client.hash : %8d\n", Client.H.intValue());
-		System.out.printf("Debts.hash  : %8d\n", Debts.H.intValue());
 	}
 
 
@@ -459,12 +453,9 @@ public class MultiPlaneSynch
 			this.hash.reset();
 			this.hash(this.hash);
 			updated = false;
-			H.incrementAndGet();
 
 			return this.hash;
 		}
-
-		public static final AtomicInteger H = new AtomicInteger();
 
 
 		/* private: client data */
@@ -603,7 +594,6 @@ public class MultiPlaneSynch
 		{
 			//?: {has no data}
 			if(e == line.length) return;
-			H.getAndIncrement();
 
 			//~: {has no data rounded}
 			if(e > b)
@@ -618,8 +608,6 @@ public class MultiPlaneSynch
 					hash.update(line[i]);
 			}
 		}
-
-		public static final AtomicInteger H = new AtomicInteger();
 
 
 		/* private: debts data */
@@ -871,95 +859,84 @@ public class MultiPlaneSynch
 
 		/* Queue Access */
 
-		public static final AtomicInteger QE = new AtomicInteger();
-		public static final AtomicInteger QM = new AtomicInteger();
-		public static final AtomicInteger QW = new AtomicInteger();
-
-		public Data next(Data data)
+		public Data master(Data data)
 		{
-			//?: {has data to release}
-			if(data != null)
-			{
-				//?: {is currently Master} increment the cursor
-				if(data.master)
-				{
-					datas[data.index] = null; //<-- free memory
-					cursor++;
-					master.set(true);         //<-- unlock master
-				}
+			//?: {execute previous request}
+			if(data != null) //<-- free memory to reduce GC pulsation
+				datas[data.index] = null;
 
-				//!: release the lock
-				data.unlock(); //<-- master lock is not removed ever
+			final int x = cursor;
+			if(x >= requests.length)
+			{
+				//~: release Support threads
+				CountDownLatch w; while((w = waits.poll()) != null)
+					w.countDown();
+
+				return null;
 			}
 
+			//~: advance the cursor
+			cursor++;
+
+			//~: move prepare position
+			prepos = x + THREADS;
+
+			//!: indicate the task is locked
+			datas[x].locked.set(true);
+
+			//~: release Support threads
+			CountDownLatch w; while((w = waits.poll()) != null)
+				w.countDown();
+
+			return datas[x];
+		}
+
+		public Data support(int offset)
+		{
 			//c: queue competition cycle
-			while(true)
+			Data data; while(true)
 			{
-				QE.getAndIncrement();
-
-				//?: {Master role is ready}
-				if(master.compareAndSet(true, false))
-				{
-					//?: {processed all the requests}
-					if(cursor >= requests.length)
-					{
-						master.set(true);
-						return null;
-					}
-
-					//?: {locked it as Master}
-					if((data = datas[cursor]).lock(true))
-					{
-						data.master = true; //<-- process as Master
-						return data;
-					}
-
-					//HINT: we are here when else thread is preparing master request
-
-					//~: not successful, unlock Master role
-					master.set(true);
-				}
-
-				//~: position to pre-execute
-				final int index = prepos.getAndIncrement();
-
-				//?: {too quick} stay hot
-				if(index > cursor + PRESEE)
-				{
-					prepos.compareAndSet(index + 1, index);
-					QW.getAndIncrement();
-					continue; //<-- compete again for the same request
-				}
+				//~: position to pre-execute (starts with 1)
+				final int index = prepos + offset;
 
 				//?: {the queue is almost done}
 				if(index >= requests.length)
-					continue; //<-- see to be Master
+					return null; //<-- thread exit
 
 				//?: {master is ahead of pre-execution}
 				if((data = datas[index]) == null)
+					continue;
+
+				//?: {obtained lock} pre-execute it
+				if(data.locked.compareAndSet(false, true))
+					return data;
+
+				//~: allow to go ahead once
+				if(offset < THREADS*PRESEE)
 				{
-					QM.getAndIncrement();
+					offset += THREADS;
 					continue;
 				}
 
 
-				//?: {obtained lock as a Support thread}
-				if(data.lock(false))
+				//HINT: we are in this position when index is the same
+				// as for previous execution. This is a rare case when
+				// there is no deviation in task executions. Note that
+				// when database delay is set, Master may be slowed,
+				// and Support threads have to wait it, as going too
+				// far causes wrong pre-execution results.
+
+
+				//?: {too quick} relax
+				CountDownLatch w; try
 				{
-					//HINT: in this implementation we do not allow
-					//  a request to be pre-processed twice even
-					//  if currently it is not consistent - Master
-					//  will re-execute such a requests.
-
-					//?: {data not processed} take it
-					if(data.results == null)
-						return data;
-
-					//!: unlock & take the next
-					data.unlock();
+					waits.add(w = new CountDownLatch(1));
+					w.await();
 				}
-
-				QM.getAndIncrement();
+				catch(InterruptedException e)
+				{
+					throw new RuntimeException(e);
+				}
 			}
 		}
 
@@ -971,45 +948,20 @@ public class MultiPlaneSynch
 		/**
 		 * Current request to process.
 		 */
-		private volatile int        cursor;
-
-		/**
-		 * When true, indicates that Master thread completed
-		 * it's task, and any thread may compete to be Master.
-		 */
-		private final AtomicBoolean master = new AtomicBoolean(true);
+		private volatile int cursor;
 
 		/**
 		 * Current request to pre-execute.
 		 */
-		private final AtomicInteger prepos = new AtomicInteger();
-
-
-		/* Queue Shutdown */
-
-		public void workerExit()
-		{
-			done.countDown();
-		}
+		private volatile int prepos;
 
 		/**
-		 * Waits the queue to be fully processed.
+		 * Queue for too hot Support threads to wait.
 		 */
-		public void join()
-		{
-			try
-			{
-				done.await();
-			}
-			catch(InterruptedException e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
-
-		private final CountDownLatch done =
-		  new CountDownLatch(THREADS);
+		private final ConcurrentLinkedQueue<CountDownLatch> waits =
+		  new ConcurrentLinkedQueue<>();
 	}
+
 
 	/**
 	 * Processing data of one of the Support threads.
@@ -1027,56 +979,28 @@ public class MultiPlaneSynch
 			this.index   = index;
 		}
 
-		/**
-		 * Assigned to true (only once) when working
-		 * thread access this request as a Master.
-		 */
-		public boolean master;
 
 		/**
 		 * The client data hash before they were processed.
 		 * Assigned by a Support thread had pre-executed
 		 * this request.
 		 */
-		public Map<Integer, Hash> initial;
+		public volatile Map<Integer, Hash> initial;
 
 		/**
 		 * The client data after they were processed.
 		 */
-		public List<Client> results;
-
-
-		/* Synchronization */
+		public volatile List<Client> results;
 
 		/**
-		 * Working thread obtains exclusive lock on
-		 * the data as Master or as a Support thread.
+		 * Lock for Support threads to exclusively
+		 * access request pre-execution.
 		 *
-		 * This call is never blocked: false is returned
-		 * when the data object is already locked.
-		 *
-		 * Note that Master locked is never removed.
-		 * Implemented with atomic CAS.
+		 * Note that as request is pre-executed only once,
+		 * lock is never removed. Master thread never asks
+		 * for lock and executes request directly.
 		 */
-		public boolean lock(boolean master)
-		{
-			return lock.compareAndSet(0, (master)?(2):(1));
-		}
-
-		public void    unlock()
-		{
-			//HINT: we unlock only for Support thread lock
-			// (expected value is 1). Master lock stays forever.
-
-			lock.compareAndSet(1, 0);
-		}
-
-		/**
-		 * 0 when unlocked;
-		 * 1 when locked by a Support thread;
-		 * 2 when locked by a Master thread.
-		 */
-		private final AtomicInteger lock = new AtomicInteger();
+		public final AtomicBoolean locked = new AtomicBoolean();
 	}
 
 
@@ -1192,13 +1116,13 @@ public class MultiPlaneSynch
 	}
 
 
-	/* Master Thread */
+	/* Master Thread Task */
 
-	private static final class Worker extends Processing implements Runnable
+	private static final class Master extends Processing implements Runnable
 	{
 		/* public: constructor */
 
-		public Worker(Queue queue)
+		public Master(Queue queue)
 		{
 			this.queue = queue;
 		}
@@ -1208,22 +1132,13 @@ public class MultiPlaneSynch
 
 		public void run()
 		{
-			started = System.currentTimeMillis();
+			runtime = System.currentTimeMillis();
 
-			try
-			{
-				while((data = queue.next(data)) != null)
-					if(data.master)
-						master();
-					else
-						support();
-			}
-			finally
-			{
-				finished = System.currentTimeMillis();
-				queue.workerExit();
-			}
+			//c: execute the requests of the queue
+			while((data = queue.master(data)) != null)
+				execute();
 
+			runtime = System.currentTimeMillis() - runtime;
 		}
 
 		public int  getHits()
@@ -1231,14 +1146,9 @@ public class MultiPlaneSynch
 			return hits;
 		}
 
-		public long getStarted()
+		public long getRuntime()
 		{
-			return started;
-		}
-
-		public long getFinished()
-		{
-			return finished;
+			return runtime;
 		}
 
 
@@ -1254,20 +1164,10 @@ public class MultiPlaneSynch
 			c = queue.database.copy(id);
 			cache.put(c.id, c);
 
-			//?: {master} nothing else
-			if(data.master)
-				return c;
-
-			//~: remember the initial version
-			initial.put(c.id, new Hash(c.hash()));
-
-			//~: add to the results
-			results.add(c);
-
 			return c;
 		}
 
-		private void     master()
+		private void     execute()
 		{
 			cache.clear();
 
@@ -1283,27 +1183,6 @@ public class MultiPlaneSynch
 				//~: apply all the changes to the database
 				apply(cache.values());
 			}
-		}
-
-		private void     support()
-		{
-			//~: clear the cache
-			cache.clear();
-
-			//~: allocate execution data
-			this.initial = new HashMap<>(3);
-			this.results = new ArrayList<>(4);
-
-			//~: execute the request
-			execute(data.request);
-
-			//~: save data results
-			data.initial = this.initial;
-			data.results = this.results;
-
-			//~: calculate hashes
-			for(Client c : results)
-				c.hash();
 		}
 
 		private boolean  consistent()
@@ -1343,8 +1222,89 @@ public class MultiPlaneSynch
 		 */
 		private int         hits;
 
-		private long        started;
-		private long        finished;
+		private long        runtime;
+
+		/**
+		 * Cache where clients are held during
+		 * a request processing.
+		 */
+		private final Map<Integer, Client> cache = new HashMap<>(7);
+	}
+
+
+	/* Support Thread Task */
+
+	private static final class Support extends Processing implements Runnable
+	{
+		/* public: constructor */
+
+		public Support(Queue queue, int id)
+		{
+			this.queue = queue;
+			this.id = id;
+		}
+
+		/* Worker */
+
+		public void run()
+		{
+			while((data = queue.support(id)) != null)
+				execute();
+		}
+
+
+		/* protected: requests execution */
+
+		protected Client client(int id)
+		{
+			//?: {found it in the local cache}
+			Client c = cache.get(id);
+			if(c != null) return c;
+
+			//~: load from the database & cache it
+			c = queue.database.copy(id);
+			cache.put(c.id, c);
+
+			//~: remember the initial version
+			initial.put(c.id, new Hash(c.hash()));
+
+			//~: add to the results
+			results.add(c);
+
+			return c;
+		}
+
+		private void     execute()
+		{
+			//~: clear the cache
+			cache.clear();
+
+			//~: allocate execution data
+			this.initial = new HashMap<>(3);
+			this.results = new ArrayList<>(4);
+
+			//~: execute the request
+			execute(data.request);
+
+			//~: calculate hashes
+			for(Client c : results)
+				c.hash();
+
+			//~: save data results
+			data.initial = this.initial;
+			data.results = this.results;
+		}
+
+
+		/* private: worker state */
+
+		private final Queue queue;
+		private final int   id;
+
+		/**
+		 * Current execution context.
+		 */
+		private Data        data;
 
 		/**
 		 * Cache where clients are held during
@@ -1364,47 +1324,40 @@ public class MultiPlaneSynch
 	  throws InterruptedException
 	{
 		//~: create the queue
-		Queue queue = new Queue(requests, database);
+		Queue    queue   = new Queue(requests, database);
 
-		//~: create the workers
-		Worker[] workers = new Worker[THREADS];
+		//~: create the master task
+		Master   master  = new Master(queue);
+
+		//~: create the working threads
 		Thread[] threads = new Thread[THREADS];
 
-		for(int i = 0;(i < THREADS);i++)
+		//~: master thread
+		threads[0] = new Thread(master);
+		threads[0].setName("Master");
+
+		//~: support threads
+		for(int i = 1;(i < THREADS);i++)
 		{
-			workers[i] = new Worker(queue);
-			threads[i] = new Thread(workers[i]);
-			threads[i].setName("Worker-" + i);
+			threads[i] = new Thread(new Support(queue, i-1));
+			threads[i].setName("Support-" + (i-1));
+			threads[i].setDaemon(true);
+			threads[i].start();
 		}
 
-		//~: start the threads
-		for(Thread thread : threads)
-			thread.start();
+		//!: start the master
+		threads[0].start();
 
-		//~: wait the queue
-		queue.join();
-
-		//~: timings
-		long started  = Long.MAX_VALUE; //<-- earliest start time
-		long finished = 0L;             //<-- latest finish time
-		for(Worker w : workers)
-		{
-			if(started > w.getStarted())
-				started = w.getStarted();
-			if(finished < w.getFinished())
-				finished = w.getFinished();
-		}
-
-		//~: collect the hits
-		int hits = 0; for(Worker w : workers)
-			hits += w.getHits();
+		//~: and wait it
+		threads[0].join();
 
 		//~: print the timing and the hash
 		System.out.printf("%2d %5d  %5.1f  %s\n",
-		  run, (finished - started), (100.0*hits/requests.length),
+		  run, master.getRuntime(),
+		  (100.0 * master.getHits() / requests.length),
 		  database.hash().toString()
 		);
 
-		return (finished-started);
+		return master.getRuntime();
 	}
 }
