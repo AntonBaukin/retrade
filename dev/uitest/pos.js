@@ -6,6 +6,31 @@
 
 var ZeT = window.ZeT = window.ZeT || {
 
+// +----: Object Routines: --------------------------------------+
+
+	keys             : function(o)
+	{
+		if((ZeT._Object_keys_ !== true) && (ZeT._Object_keys_ !== false))
+			ZeT._Object_keys_ = ZeT.isf(Object.keys)
+
+		if(ZeT._Object_keys_)
+			return Object.keys(o)
+
+		var q = ZeT._hasop_; if(!q)
+		{
+			q = ZeT.isf(o.hasOwnProperty) && o.hasOwnProperty
+			q = q || (ZeT.isf(Object.prototype.hasOwnProperty) &&
+			  Object.prototype.hasOwnProperty)
+			ZeT._hasop_ = q = q || function() { return true }
+		}
+
+		var r = []; for(var p in o) if(q.call(o, p))
+			r.push(p)
+
+		return r
+	},
+
+
 // +----: String Routines: --------------------------------------+
 
 	trim             : function(s)
@@ -162,20 +187,23 @@ var ZeT = window.ZeT = window.ZeT || {
 
 var POS = window.POS = window.POS || {
 
-	inspectData      : function()
+	readGoodsData    : function()
 	{
 		var D = ZeT.asserta(window.GOODS, 'Нет файла с данными товаров!')
 
 		//~: create the Tree
 		var T = POS.GoodsTree = { roots: [] }
 
-		//~: error codes
-		var E = [];
+		//~: visuals
+		var V = POS.GoodsVisuals = {}
 
-		//c: inspect all the items
+		//~: error codes
+		var E = []
+
+		//c: for each good item
 		for(var i = 0;(i < D.length);i++)
 		{
-			var d = D[i];
+			var d = D[i]
 
 			//?: {has no code}
 			if(ZeT.ises(d.code))
@@ -202,6 +230,14 @@ var POS = window.POS = window.POS || {
 				E[2] = 'есть несколько корневых элементов'
 			}
 
+			//?: code is reused
+			if(T[d.code])
+			{
+				ZeT.log('Позиция [', i + 1, '], код [', d.code, '], имя [',
+				  d.name, '] дублирует код [', d.code, ']')
+				E[3] = 'есть позиция дубликатом кода'
+			}
+
 			//~: map item by the code
 			T[d.code] = d
 
@@ -210,7 +246,7 @@ var POS = window.POS = window.POS || {
 			{
 				ZeT.log('Позиция без индекса [', i + 1, '], код [',
 				  d.code, '], имя [', d.name, ']')
-				E[3] = 'есть позиция без индкса порядка дочернего елемента'
+				E[4] = 'есть позиция без индкса порядка дочернего елемента'
 			}
 
 			//?: {has no folder-item flag}
@@ -218,7 +254,7 @@ var POS = window.POS = window.POS || {
 			{
 				ZeT.log('Позиция без folder [', i + 1, '], код [',
 				  d.code, '], имя [', d.name, ']')
-				E[4] = 'есть позиция без признака элемент-или-каталог'
+				E[5] = 'есть позиция без признака элемент-или-каталог'
 			}
 
 			//?: {is folder}
@@ -229,7 +265,7 @@ var POS = window.POS = window.POS || {
 				{
 					ZeT.log('Каталог имеет цену [', i + 1, '], код [',
 					  d.code, '], имя [', d.name, ']')
-					E[5] = 'есть каталог с указанной ценой'
+					E[6] = 'есть каталог с указанной ценой'
 				}
 
 				//?: {has measure}
@@ -237,7 +273,7 @@ var POS = window.POS = window.POS || {
 				{
 					ZeT.log('Каталог имеет ед. измерения [', i + 1, '], код [',
 					  d.code, '], имя [', d.name, ']')
-					E[6] = 'есть каталог с ед. измерения'
+					E[7] = 'есть каталог с ед. измерения'
 				}
 			}
 			//~: is item
@@ -248,7 +284,7 @@ var POS = window.POS = window.POS || {
 				{
 					ZeT.log('Товар не имеет цены [', i + 1, '], код [',
 					  d.code, '], имя [', d.name, ']')
-					E[7] = 'есть товар без цены'
+					E[8] = 'есть товар без цены'
 				}
 
 				//?: {has no measure}
@@ -256,17 +292,73 @@ var POS = window.POS = window.POS || {
 				{
 					ZeT.log('Товар без ед. измерения [', i + 1, '], код [',
 					  d.code, '], имя [', d.name, ']')
-					E[8] = 'есть товар без ед. измерения'
+					E[9] = 'есть товар без ед. измерения'
 				}
 			}
-			//{folder: true, name: "БЕГЕМОТ", code: "002462", index: 1, visual: "ffff80"},
-			//{folder: true, name: "АКЦИИ", code: "004205", parent: "002462", index: 5, visual: "ffff80"},
-			//{folder: false, name: "Нож столовый", code: "003539", parent: "003506", index: 3, visual: "bba4de", measure: "шт", price: 10000},
+
+			//?: {has visual}
+			if(!ZeT.ises(d.visual))
+				V[d.visual.toUpperCase()] = {}
 		}
 
 		//?: {has error}
 		var error = ZeT.join('; ', E)
-		if(error) throw ZeT.cat('При проверке данных найдены ошибки: ', error, '!');
-	}
+		if(error) throw ZeT.cat('При проверке данных найдены ошибки: ', error, '!')
 
+		//~: log visuals
+		ZeT.log('Goods visuals: ', ZeT.join(', ', ZeT.keys(V)))
+	},
+
+	buildGoodsTree   : function()
+	{
+		//~: goods data & tree
+		var D = ZeT.asserta(window.GOODS)
+		var T = ZeT.assertn(POS.GoodsTree)
+		var E = [] //<-- error codes
+
+		//c: for each good item having parent
+		for(var i = 0;(i < D.length);i++)
+		{
+			var d = D[i], p = T[d.parent]
+			if(ZeT.isu(p)) continue
+
+			//?: {parent not found}
+			if(!p)
+			{
+				ZeT.log('Позиция [', i + 1, '], код [', d.code, '], имя [',
+				  d.name, '] с ненайденным родителем [', d.parent, ']')
+				E[0] = 'есть позиция с ненайденным родителем'
+			}
+
+			//?: {parent is not a folder}
+			if(!p && !p.folder)
+			{
+				ZeT.log('Позиция [', i + 1, '], код [', d.code, '], имя [',
+				  d.name, '] имеет родителем товар [', d.parent, ']')
+				E[1] = 'есть позиция с родителем-товаром, а не папкой'
+			}
+
+			//~: refer as in the child
+			if(!p.children) p.children = []
+			p.children.push(d)
+		}
+
+		//?: {has error}
+		var error = ZeT.join('; ', E)
+		if(error) throw ZeT.cat('При проверке данных найдены ошибки: ', error, '!')
+
+		//~: items index compare
+		function cmp(l, r)
+		{
+			return (l.index < r.index)?(-1):(l.index == r.index)?(0):(+1)
+		}
+
+		//c: for each good item having children
+		for(var i = 0;(i < D.length);i++)
+			if(D[i].children)
+				D[i].children.sort(cmp)
+
+		//~: sort the roots
+		T.roots.sort(cmp)
+	}
 };

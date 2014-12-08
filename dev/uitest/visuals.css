@@ -1,0 +1,24 @@
+/* Restera™ POS Terminal Visual Styles */
+
+.pos-folders-line
+{
+  padding-left: 2px;
+}
+
+.pos-folders-line.even
+{
+  height: 50px;
+  background-color: #f1edce;
+}
+
+.pos-folders-line.odd
+{
+  height: 50px;
+}
+
+.pos-folders-item
+{
+  width: 82px; height: 46px;
+  margin: 2px 2px 0 2px;
+}
+

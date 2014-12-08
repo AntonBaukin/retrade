@@ -1,0 +1,79 @@
+/* Restera™ POS Terminal Styles */
+
+body
+{
+  cursor: default;
+  background-color: #f6f6f6;
+}
+
+#pos-main-area
+{
+  position: absolute;
+  top: 50%; left: 50%;
+  margin: -300px 0 0 -400px;
+  width: 800px; height: 600px;
+  border: 1px solid #e0df9b;
+  border-right: solid 2px #acab70;
+  border-bottom: solid 2px #acab70;
+
+  background: -moz-linear-gradient(-45deg, #fff9d8 0%, #e0df94 100%);
+  background: -webkit-linear-gradient(-45deg, #fff9d8 0%, #e0df94 100%);
+}
+
+#pos-main-area-folders
+{
+  position: absolute;
+  background: transparent;
+  border: dotted 2px white;
+  right: 5px; top: 5px;
+  width: 530px; height: 260px;
+}
+
+#pos-main-area-goods
+{
+  position: absolute;
+  background: transparent;
+  border: dotted 2px white;
+  right: 5px; bottom: 5px;
+  width: 530px; height: 320px;
+}
+
+#pos-main-area-list
+{
+  position: absolute;
+  background: transparent;
+  border: solid 2px white;
+  border-radius: 4px;
+  left: 5px; top: 40px;
+  width: 250px; height: 450px;
+}
+
+#pos-main-area-list > div
+{
+  position: absolute;
+  left: 5px; top: 5px;
+  right: 5px; bottom: 5px;
+  background-color: #dcdcdc;
+  opacity: 0.25;
+}
+
+#pos-main-area-folders > div
+{
+  position: absolute;
+  left: 5px; top: 5px;
+  right: 5px; bottom: 5px;
+}
+
+.pos-folders-line
+{
+  width: 100%; box-sizing: border-box;
+  text-wrap: none; overflow: hidden;
+}
+
+.pos-folders-item
+{
+  display: inline-block; box-sizing: border-box;
+  border: solid 2px #575757; border-radius: 4px;
+  font-family: "Tahoma", "Arial", sans-serif;
+  vertical-align: middle; text-align: center;
+}

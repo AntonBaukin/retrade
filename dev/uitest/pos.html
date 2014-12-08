@@ -4,6 +4,9 @@
     <meta charset = "UTF-8">
     <title>Тестовый терминал продаж</title>
 
+    <link rel = "stylesheet" href = "pos.css"/>
+    <link rel = "stylesheet" href = "visuals.css"/>
+
     <script charset = 'UTF-8' src = "jquery-2.1.1.min.js"></script>
     <script charset = 'UTF-8' src = "goods.js"></script>
     <script charset = 'UTF-8' src = "pos.js"></script>
@@ -12,7 +15,8 @@
 
       try
       {
-        POS.inspectData()
+        POS.readGoodsData()
+        POS.buildGoodsTree()
       }
       catch(e)
       {
@@ -24,6 +28,59 @@
 
   </head>
   <body>
+
+    <div id = "pos-main-area">
+
+      <div id = "pos-main-area-folders">
+        <div>
+          <div class = "pos-folders-line even"><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div></div>
+
+          <div class = "pos-folders-line odd"><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div></div>
+
+          <div class = "pos-folders-line even"><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div></div>
+
+          <div class = "pos-folders-line odd"><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div></div>
+
+          <div class = "pos-folders-line even"><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div><div
+            class = "pos-folders-item even"></div><div
+            class = "pos-folders-item odd"></div></div>
+
+
+        </div>
+      </div>
+
+      <div id = "pos-main-area-goods"><div></div></div>
+      <div id = "pos-main-area-list"><div></div></div>
+
+    </div>
 
 
   </body>
