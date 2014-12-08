@@ -6,8 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="special-00 [beta]: tuned Queue access for Support thread that does nothing.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java" />
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
     </list>
     <ignored path="bakery.iws" />
@@ -37,39 +36,10 @@
       <file leaf-file-name="MultiPlaneSynch.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5870647" vertical-offset="14946" max-vertical-offset="17314">
-              <caret line="1275" column="9" selection-start-line="1275" selection-start-column="9" selection-end-line="1275" selection-end-column="9" />
+            <state vertical-scroll-proportion="1.2968491" vertical-offset="10251" max-vertical-offset="12333">
+              <caret line="1317" column="3" selection-start-line="1317" selection-start-column="3" selection-end-line="1317" selection-end-column="3" />
               <folding>
-                <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#3335#3336#0" expanded="true" />
-                <element signature="e#3358#3359#0" expanded="true" />
-                <element signature="e#5293#5294#0" expanded="true" />
-                <element signature="e#5332#5333#0" expanded="true" />
-                <element signature="method#same#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#assign#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#delay#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#9362#9363#0" expanded="true" />
-                <element signature="e#9387#9388#0" expanded="true" />
-                <element signature="method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#12017#12018#0" expanded="true" />
-                <element signature="e#12056#12057#0" expanded="true" />
-                <element signature="method#assign#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#master#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#support#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#execute#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#buy#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="e#20689#20690#0" expanded="true" />
-                <element signature="e#20709#20710#0" expanded="true" />
-                <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#Support#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-                <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+                <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
                 <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
               </folding>
             </state>
@@ -86,10 +56,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/ActReprice.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDoc.hbm.xml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/firm/Contractors.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/price-lists/list.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/PriceChangeView.java" />
@@ -102,6 +68,10 @@
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/Prices.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/reprice-docs/edit.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/login.html" />
+        <option value="$PROJECT_DIR$/dev/uitest/data.js" />
+        <option value="$PROJECT_DIR$/dev/uitest/pos.js" />
+        <option value="$PROJECT_DIR$/dev/uitest/pos.html" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java" />
       </list>
     </option>
@@ -220,7 +190,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -252,26 +221,8 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="retrade" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
+              <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -296,8 +247,30 @@
               <option name="myItemId" value="webapp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -323,11 +296,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="retrade" />
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="reprice-docs" />
+              <option name="myItemId" value=".tests" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -615,6 +588,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -637,7 +611,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Omicron/tomee/webapps/retrade" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dev/uitest/pos.js" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="49" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="114" />
@@ -906,7 +880,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3257821" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32854405" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36921528" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3684739" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32892057" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035595" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -942,7 +916,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="domain-44 [beta]: replaced direst Good Price reference from the Sell Good with the Price List reference." />
     <MESSAGE value="domain-43 [alpha]: generating Price Change Documents with Price List' positions add and remove requests issued." />
     <MESSAGE value="domain-43 [alpha]: fixing Price Crosses handling in ActReprice." />
     <MESSAGE value="domain-43 [stable]: action to fix Price Change Documents works good, what is shunted now. Going to save the changes of the prices of individual Contractors." />
@@ -967,7 +940,8 @@
     <MESSAGE value="special-00 [beta]: finally, almost good implementation for two threads: 52ms Vs 32 for single." />
     <MESSAGE value="special-00 [stable]: win some time with proper pre-execution indexing and using Master role flag." />
     <MESSAGE value="special-00 [beta]: tuned Queue access for Support thread that does nothing." />
-    <option name="LAST_COMMIT_MESSAGE" value="special-00 [beta]: tuned Queue access for Support thread that does nothing." />
+    <MESSAGE value="special-00 [beta]: removed Database synchronized sections, but still got not that performance." />
+    <option name="LAST_COMMIT_MESSAGE" value="special-00 [beta]: removed Database synchronized sections, but still got not that performance." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1008,36 +982,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="10557">
           <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
           <folding>
-            <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#3335#3336#0" expanded="true" />
-            <element signature="e#3358#3359#0" expanded="true" />
-            <element signature="e#5293#5294#0" expanded="true" />
-            <element signature="e#5332#5333#0" expanded="true" />
-            <element signature="method#same#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#assign#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#delay#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#9362#9363#0" expanded="true" />
-            <element signature="e#9387#9388#0" expanded="true" />
-            <element signature="method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#12017#12018#0" expanded="true" />
-            <element signature="e#12056#12057#0" expanded="true" />
-            <element signature="method#assign#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#master#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#support#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#execute#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#buy#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#20689#20690#0" expanded="true" />
-            <element signature="e#20709#20710#0" expanded="true" />
-            <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Support#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
           </folding>
         </state>
@@ -1107,41 +1052,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6520">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3760186" vertical-offset="0" max-vertical-offset="4752">
+          <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="4.903118" vertical-offset="3502" max-vertical-offset="7341">
+          <caret line="465" column="3" selection-start-line="198" selection-start-column="3" selection-end-line="222" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/uitest/pos.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3638418" vertical-offset="1071" max-vertical-offset="4217">
+          <caret line="208" column="29" selection-start-line="134" selection-start-column="29" selection-end-line="134" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/uitest/goods.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="57903">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/uitest/pos.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20623916" vertical-offset="0" max-vertical-offset="1053">
+          <caret line="7" column="41" selection-start-line="7" selection-start-column="41" selection-end-line="7" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/MultiPlaneSynch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5870647" vertical-offset="14946" max-vertical-offset="17314">
-          <caret line="1275" column="9" selection-start-line="1275" selection-start-column="9" selection-end-line="1275" selection-end-column="9" />
+        <state vertical-scroll-proportion="1.2968491" vertical-offset="10251" max-vertical-offset="12333">
+          <caret line="1317" column="3" selection-start-line="1317" selection-start-column="3" selection-end-line="1317" selection-end-column="3" />
           <folding>
-            <element signature="method#main#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#3335#3336#0" expanded="true" />
-            <element signature="e#3358#3359#0" expanded="true" />
-            <element signature="e#5293#5294#0" expanded="true" />
-            <element signature="e#5332#5333#0" expanded="true" />
-            <element signature="method#same#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#assign#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#assign#1;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#hash#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#delay#0;class#Database#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Debts#1;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#9362#9363#0" expanded="true" />
-            <element signature="e#9387#9388#0" expanded="true" />
-            <element signature="method#pop#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#add#0;class#Debts#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#12017#12018#0" expanded="true" />
-            <element signature="e#12056#12057#0" expanded="true" />
-            <element signature="method#assign#0;class#Hash#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#master#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#support#0;class#Queue#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Data#0;class#Data#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#execute#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#buy#0;class#Processing#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="e#20689#20690#0" expanded="true" />
-            <element signature="e#20709#20710#0" expanded="true" />
-            <element signature="method#execute#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#consistent#0;class#Master#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#Support#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#run#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
-            <element signature="method#client#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
+            <element signature="method#execute#0;class#Support#0;class#MultiPlaneSynch#0" expanded="true" />
             <element signature="method#testRun#0;class#MultiPlaneSynch#0" expanded="true" />
           </folding>
         </state>
