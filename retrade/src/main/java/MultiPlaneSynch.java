@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -26,13 +24,12 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int   THREADS  = 1;
+	static final int   THREADS  = 2;
 
 	/**
 	 * The number of times Support thread may go ahead
 	 * by one pre-execution block. Doesn't depend on the
 	 * number of Support threads, may be 0.
-	 *
 	 */
 	static final int   PRESEE   = 2;
 
@@ -58,7 +55,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of the generated requests executions.
 	 */
-	static final int   RUNS     = 10;
+	static final int   RUNS     = 20;
 
 	/**
 	 * Generator seed used to create test requests.
@@ -861,82 +858,74 @@ public class MultiPlaneSynch
 
 		public Data master(Data data)
 		{
-			//?: {execute previous request}
-			if(data != null) //<-- free memory to reduce GC pulsation
-				datas[data.index] = null;
+			//?: {release previous request}
+			if(data != null)
+				datas[data.index] = null; //<-- reduce GC pulsation
 
-			final int x = cursor;
+			final int x = cursor[0];
 			if(x >= requests.length)
 			{
-				//~: release Support threads
-				CountDownLatch w; while((w = waits.poll()) != null)
-					w.countDown();
-
+				data.locked.set(2);
 				return null;
 			}
 
 			//~: advance the cursor
-			cursor++;
+			cursor[0]++;
+
+			//HINT: Support thread ID starts with 1. Having 1 Support
+			// next pre-execute position is +2 after this (x) request.
+			// +2 (not +1) is better as when Support will take it,
+			// Master will be about to take +1.
 
 			//~: move prepare position
-			prepos = x + THREADS;
+			cursor[1] = x + THREADS-1;
 
-			//!: indicate the task is locked
-			datas[x].locked.set(true);
-
-			//~: release Support threads
-			CountDownLatch w; while((w = waits.poll()) != null)
-				w.countDown();
+			//~: unlock waiting Support threads
+			if(data != null)
+				data.locked.lazySet(2);
 
 			return datas[x];
 		}
 
-		public Data support(int offset)
+		public Data support(final int id)
 		{
+			int offset = id;
+			int presee = 0;
+
 			//c: queue competition cycle
-			Data data; while(true)
+			while(true)
 			{
 				//~: position to pre-execute (starts with 1)
-				final int index = prepos + offset;
+				final int index = cursor[1] + offset + presee;
 
 				//?: {the queue is almost done}
 				if(index >= requests.length)
 					return null; //<-- thread exit
 
-				//?: {master is ahead of pre-execution}
-				if((data = datas[index]) == null)
+				//?: {master is ahead}
+				final Data data = datas[index];
+				if(data == null)
+				{
+					offset += THREADS-1;
 					continue;
+				}
 
-				//?: {obtained lock} pre-execute it
-				if(data.locked.compareAndSet(false, true))
+				//?: {this item is not locked} take it
+				if(data.locked.compareAndSet(0, 1))
 					return data;
 
-				//~: allow to go ahead once
-				if(offset < THREADS*PRESEE)
+				//?: {pre-see limit not gained}
+				if(presee++ <= PRESEE)
 				{
-					offset += THREADS;
+					offset += THREADS-1;
 					continue;
 				}
 
+				//~: spin on this item
+				while(data.locked.get() != 2);
 
-				//HINT: we are in this position when index is the same
-				// as for previous execution. This is a rare case when
-				// there is no deviation in task executions. Note that
-				// when database delay is set, Master may be slowed,
-				// and Support threads have to wait it, as going too
-				// far causes wrong pre-execution results.
+				//~: go ahead and wake up else supporters
 
-
-				//?: {too quick} relax
-				CountDownLatch w; try
-				{
-					waits.add(w = new CountDownLatch(1));
-					w.await();
-				}
-				catch(InterruptedException e)
-				{
-					throw new RuntimeException(e);
-				}
 			}
 		}
 
@@ -946,20 +935,14 @@ public class MultiPlaneSynch
 		private final Data[] datas;
 
 		/**
-		 * Current request to process.
+		 * Current request to process at [0] and
+		 * request to pre-execute [1].
+		 *
+		 * HINT: we use array instead of volatile
+		 * fields as extensive concurrent access
+		 * to them reduces the performance by 10%.
 		 */
-		private volatile int cursor;
-
-		/**
-		 * Current request to pre-execute.
-		 */
-		private volatile int prepos;
-
-		/**
-		 * Queue for too hot Support threads to wait.
-		 */
-		private final ConcurrentLinkedQueue<CountDownLatch> waits =
-		  new ConcurrentLinkedQueue<>();
+		private final int[] cursor = new int[2];
 	}
 
 
@@ -997,10 +980,16 @@ public class MultiPlaneSynch
 		 * access request pre-execution.
 		 *
 		 * Note that as request is pre-executed only once,
-		 * lock is never removed. Master thread never asks
-		 * for lock and executes request directly.
+		 * lock is never removed: it is also indicator not
+		 * to re-execute the same request twice.
+		 *
+		 * Master thread never asks for locks and
+		 * executes requests directly.
+		 *
+		 * Value meanings are: 0 - not locked, 1 - locked
+		 * by Support, 2 - Support wait release.
 		 */
-		public final AtomicBoolean locked = new AtomicBoolean();
+		public final AtomicInteger locked = new AtomicInteger();
 	}
 
 
@@ -1146,6 +1135,11 @@ public class MultiPlaneSynch
 			return hits;
 		}
 
+		public int  getMiss()
+		{
+			return miss;
+		}
+
 		public long getRuntime()
 		{
 			return runtime;
@@ -1187,13 +1181,17 @@ public class MultiPlaneSynch
 
 		private boolean  consistent()
 		{
-			if(data.results == null)
-				return false;
+			final List<Client> results = data.results;
+			if(results == null) return false;
 
-			for(Map.Entry<Integer, Hash> e : data.initial.entrySet())
+			final Map<Integer, Hash> initial = data.initial;
+			for(Map.Entry<Integer, Hash> e : initial.entrySet())
 				//?: {global copy differs}
 				if(!queue.database.same(e.getKey(), e.getValue()))
+				{
+					miss++;
 					return false;
+				}
 
 			hits++; //<-- support work is not wasted
 
@@ -1221,7 +1219,11 @@ public class MultiPlaneSynch
 		 * measures the consistency hits.
 		 */
 		private int         hits;
+		private int         miss;
 
+		/**
+		 * Queue execution time.
+		 */
 		private long        runtime;
 
 		/**
@@ -1240,8 +1242,10 @@ public class MultiPlaneSynch
 
 		public Support(Queue queue, int id)
 		{
+			assert (id >= 1);
+
 			this.queue = queue;
-			this.id = id;
+			this.id    = id;
 		}
 
 		/* Worker */
@@ -1299,6 +1303,10 @@ public class MultiPlaneSynch
 		/* private: worker state */
 
 		private final Queue queue;
+
+		/**
+		 * Support thread identifier. Starts from 1.
+		 */
 		private final int   id;
 
 		/**
@@ -1339,8 +1347,8 @@ public class MultiPlaneSynch
 		//~: support threads
 		for(int i = 1;(i < THREADS);i++)
 		{
-			threads[i] = new Thread(new Support(queue, i-1));
-			threads[i].setName("Support-" + (i-1));
+			threads[i] = new Thread(new Support(queue, i));
+			threads[i].setName("Support-" + i);
 			threads[i].setDaemon(true);
 			threads[i].start();
 		}
@@ -1351,10 +1359,14 @@ public class MultiPlaneSynch
 		//~: and wait it
 		threads[0].join();
 
+		if(run == 1)
+			System.out.println(" #  TIME   HITS  MISS               HASH               ");
+
 		//~: print the timing and the hash
-		System.out.printf("%2d %5d  %5.1f  %s\n",
+		System.out.printf("%2d %5d  %5.1f %5.1f  %s\n",
 		  run, master.getRuntime(),
 		  (100.0 * master.getHits() / requests.length),
+		  (100.0 * master.getMiss() / requests.length),
 		  database.hash().toString()
 		);
 
