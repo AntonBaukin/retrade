@@ -257,28 +257,24 @@ public class MultiPlaneSynch
 		 */
 		public Client  copy(int id)
 		{
-			final Client x = clients[id];
-
-			synchronized(x)
-			{
-				if(DELAY != 0) delay(id);
-				return new Client(x);
-			}
+			return new Client(clients[id]);
 		}
 
 		/**
 		 * Thread-safe operation to test whether
 		 * global copy is the same as the given one.
+		 * @see {@link Data#initial}
+		 *
+		 * Invoked by Master thread only.
 		 */
-		public boolean same(int id, Hash clientHash)
+		public boolean same(Object[] initial)
 		{
-			final Client x = clients[id];
+			for(int i = 0;(i < initial.length);i += 2)
+				//?: {Hash of the client given differs}
+				if(!clients[(Integer)initial[i]].equals((Hash) initial[i+1]))
+					return false;
 
-			synchronized(x)
-			{
-				if(DELAY != 0) delay(id);
-				return x.equals(clientHash);
-			}
+			return true;
 		}
 
 		/**
@@ -286,14 +282,16 @@ public class MultiPlaneSynch
 		 * of the client. Only Master thread is allowed this!
 		 * Note that the source object may not be used further.
 		 */
-		public void    assign(Client s)
+		public void    assign(Client[] cs)
 		{
-			final Client x = clients[s.id];
+			for(Client c : cs)
+				clients[c.id] = c;
+		}
 
-			synchronized(x)
-			{
-				x.assign(s);
-			}
+		public void    assign(Collection<Client> cs)
+		{
+			for(Client c : cs)
+				clients[c.id] = c;
 		}
 
 		/**
@@ -412,14 +410,6 @@ public class MultiPlaneSynch
 
 
 		/* Client Operations */
-
-		public void    assign(Client s)
-		{
-			this.money   = s.money;
-			this.debts   = s.debts;
-			this.hash    = s.hash;
-			this.updated = s.updated;
-		}
 
 		/**
 		 * Compares the data of the same client clone.
@@ -967,13 +957,16 @@ public class MultiPlaneSynch
 		 * The client data hash before they were processed.
 		 * Assigned by a Support thread had pre-executed
 		 * this request.
+		 *
+		 * Each [2i] position is Client ID;
+		 * [2i + 1] is Client Hash.
 		 */
-		public volatile Map<Integer, Hash> initial;
+		public volatile Object[] initial;
 
 		/**
 		 * The client data after they were processed.
 		 */
-		public volatile List<Client> results;
+		public volatile Client[] results;
 
 		/**
 		 * Lock for Support threads to exclusively
@@ -1167,41 +1160,32 @@ public class MultiPlaneSynch
 
 			//?: {the resulting data may be applied}
 			if(consistent())
-				apply(data.results);
+				queue.database.assign(data.results);
 			//~: execute again
 			else
 			{
 				//~: execute the request
 				execute(data.request);
 
-				//~: apply all the changes to the database
-				apply(cache.values());
+				//~: assign all the changes to the database
+				queue.database.assign(cache.values());
 			}
 		}
 
 		private boolean  consistent()
 		{
-			final List<Client> results = data.results;
-			if(results == null) return false;
+			if(data.results == null)
+				return false;
 
-			final Map<Integer, Hash> initial = data.initial;
-			for(Map.Entry<Integer, Hash> e : initial.entrySet())
-				//?: {global copy differs}
-				if(!queue.database.same(e.getKey(), e.getValue()))
-				{
-					miss++;
-					return false;
-				}
+			//?: {global copy differs}
+			if(!queue.database.same(data.initial))
+			{
+				miss++; //<-- support work is wasted
+				return false;
+			}
 
 			hits++; //<-- support work is not wasted
-
 			return true;
-		}
-
-		private void     apply(Collection<Client> results)
-		{
-			for(Client r : results)
-				queue.database.assign(r);
 		}
 
 
@@ -1270,7 +1254,8 @@ public class MultiPlaneSynch
 			cache.put(c.id, c);
 
 			//~: remember the initial version
-			initial.put(c.id, new Hash(c.hash()));
+			initial.add(c.id);
+			initial.add(new Hash(c.hash()));
 
 			//~: add to the results
 			results.add(c);
@@ -1284,8 +1269,8 @@ public class MultiPlaneSynch
 			cache.clear();
 
 			//~: allocate execution data
-			this.initial = new HashMap<>(3);
-			this.results = new ArrayList<>(4);
+			initial = new ArrayList<>(4);
+			results = new ArrayList<>(2);
 
 			//~: execute the request
 			execute(data.request);
@@ -1295,8 +1280,8 @@ public class MultiPlaneSynch
 				c.hash();
 
 			//~: save data results
-			data.initial = this.initial;
-			data.results = this.results;
+			data.initial = initial.toArray(new Object[initial.size()]);
+			data.results = results.toArray(new Client[results.size()]);
 		}
 
 
@@ -1324,8 +1309,8 @@ public class MultiPlaneSynch
 		 * Initial and final processing states
 		 * used when working as a Support.
 		 */
-		private Map<Integer, Hash> initial;
-		private List<Client>       results;
+		private List<Object> initial;
+		private List<Client> results;
 	}
 
 	static long testRun(int run, Request[] requests, Database database)
