@@ -88,6 +88,16 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
+// +----: Array Routines: ---------------------------------------+
+
+	each             : function(a, f)
+	{
+		if(a) for(var i = 0;(i < a.length);i++)
+			if(f(a[i], i) === false)
+				return a[i]
+		return undefined
+	},
+
 
 // +----: Test Functions: ---------------------------------------+
 
@@ -298,7 +308,12 @@ var POS = window.POS = window.POS || {
 
 			//?: {has visual}
 			if(!ZeT.ises(d.visual))
-				V[d.visual.toUpperCase()] = {}
+			{
+				//?: {color code}
+				if(d.visual.match(/[a-fA-F0-9]+/))
+					d.visual = d.visual.toUpperCase()
+				V[d.visual] = {}
+			}
 		}
 
 		//?: {has error}
@@ -359,6 +374,207 @@ var POS = window.POS = window.POS || {
 				D[i].children.sort(cmp)
 
 		//~: sort the roots
-		T.roots.sort(cmp)
+		ZeT.asserta(T.roots).sort(cmp)
+	},
+
+	/**
+	 * Repaints the goods folders with optional
+	 * selected folder specified (also, by it's
+	 * code in the data file).
+	 */
+	drawGoodsFolders : function(selected)
+	{
+		$('#pos-main-area-folders').empty()
+		POS._gs_folder_lines = []
+
+		var T = ZeT.assertn(POS.GoodsTree)
+		ZeT.asserta(T.roots)
+
+		if(selected || (T.roots.length == 1))
+			POS._gs_folder(selected || T.roots[0])
+		else
+			POS._gs_roots(T.roots)
+	},
+
+	_gs_roots        : function(fs)
+	{
+		POS._gs_folders_hide()
+		ZeT.each(fs, function(f){ POS._gs_fd_draw(f) })
+	},
+
+	_gs_folder       : function(f)
+	{
+		var T = ZeT.assertn(POS.GoodsTree)
+		if(ZeT.iss(f)) f = ZeT.assertn( T[f],
+		  'Folder [', f, '] is not found in the goods tree!')
+		ZeT.assert(f.folder)
+
+		//?: {has multiple roots} draw the root
+		var M = POS.GoodsRootFolder
+		if(M && (M.alwaysPresent || (T.roots.length > 1)))
+			POS._gs_fd_draw(M)
+
+		//~: collect the parent nodes
+		var ps = [], x = f; while(x.parent)
+		{
+			x = ZeT.assertn(T[x.parent])
+			ps.splice(0, 0, x)
+		}
+
+		//~: draw them
+		ZeT.each(ps, function(x){
+			x.tempClasses = 'path'
+			POS._gs_fd_draw(x)
+		})
+
+		//~: draw target folder
+		f.tempClasses = 'selected'
+		POS._gs_fd_draw(f)
+	},
+
+	_gs_folders_hide : function()
+	{
+		POS._gs_folder_xline = null
+		ZeT.each(POS._gs_folder_lines, function(line){ line.hide() })
+	},
+
+	/**
+	 * Draws the next goods folder item
+	 * placed in proper line position.
+	 */
+	_gs_fd_draw      : function(f)
+	{
+		//~: access current line
+		var line = POS._gs_folder_xline; if(!line) line =
+		  POS._gs_folder_xline = POS._gs_fd_line()
+
+		//~: add item to this line
+		var item = POS._gs_fd_line_item(line)
+
+		//?: {line has no more space} add a new line
+		if(!item) {
+			line = POS._gs_folder_xline = POS._gs_fd_line()
+			item = ZeT.assertn(POS._gs_fd_line_item(line))
+		}
+
+		//~: initialize the item
+		POS._gs_fd_item(item, f)
+	},
+
+	/**
+	 * Reuses or appends new goods folder line.
+	 */
+	_gs_fd_line      : function()
+	{
+		var line = null, L = POS._gs_folder_lines
+
+		//~: search for the first hidden line
+		ZeT.each(L, function(l) {
+			if(l.is(':hidden')) return line = l
+		})
+
+		//?: {found it} hide items
+		if(line)
+		{
+			line.data('i', 0)
+			line.find('.pos-folders-item').hide()
+			return line.show()
+		}
+
+		//~: create new line
+		line = $('#pos-goods-folder-line-template').
+		  clone().attr('id', null).
+		  addClass((L.length%2 == 0)?('even'):('odd'))
+
+		//~: the empty list of items
+		line.data('items', [])
+
+		//~: append it
+		$('#pos-main-area-folders').append(line)
+		L.push(line); return line
+	},
+
+	/**
+	 * Returns the next available goods folder
+	 * item within the line. Inserts new items
+	 * on the demand. If line has no more space,
+	 * returns null.
+	 */
+	_gs_fd_line_item : function(line)
+	{
+		//~: take existing item
+		var i = line.data('i'), a = line.data('items')
+		if(i < a.length) {
+			line.data('i', i+1)
+			return a[i].show()
+		}
+
+		//?: {has no more space}
+		var m = line.data('max')
+		if(m && i >= m) return null
+
+		//~: create new item & add it
+		var item = $('#pos-goods-folder-item-template').
+		  clone().attr('id', null).
+		  addClass((a.length%2 == 0)?('even'):('odd'))
+
+		//~: append to line
+		line.find('tr').first().append(item)
+
+		ZeT.log('line w = ', line.width(), '; item x = ', item.position().left)
+
+		//?: {line has no space}
+		if(line.width() < item.position().left + item.outerWidth())
+		{
+			line.data('max', a.length)
+			item.remove()
+			return null
+		}
+
+		//~: append to the items
+		a.push(item)
+
+		return item.css('visibility', '')
+	},
+
+	/**
+	 * Initializes goods folder item with
+	 * the given model element.
+	 */
+	_gs_fd_item      : function(item, f)
+	{
+		item.data('model', f)
+
+		//?: {has classes to remove}
+		if(item.data('classes-to-remove'))
+		{
+			item.removeClass(item.data('classes-to-remove'))
+			item.data('classes-to-remove', null)
+		}
+
+		//~: folder name in inner div
+		item.find('div').text(f.name)
+
+		//?: {folder has children}
+		item.toggleClass('parent', !!f.children)
+
+		//?: {has special class}
+		var c2r = ''
+		if(ZeT.iss(f.styleClasses))
+		{
+			c2r += f.styleClasses
+			item.addClass(f.styleClasses)
+		}
+
+		//?: {has temp class}
+		if(ZeT.iss(f.tempClasses))
+		{
+			c2r += ' ' + f.tempClasses
+			item.addClass(f.tempClasses)
+			f.tempClasses = null
+		}
+
+		if(!ZeT.ises(c2r))
+			item.data('classes-to-remove', c2r)
 	}
-};
+}

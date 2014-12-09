@@ -10,78 +10,74 @@
     <script charset = 'UTF-8' src = "jquery-2.1.1.min.js"></script>
     <script charset = 'UTF-8' src = "goods.js"></script>
     <script charset = 'UTF-8' src = "pos.js"></script>
+    <script charset = 'UTF-8' src = "config.js"></script>
 
     <script>
+    //<![CDATA[
 
-      try
-      {
-        POS.readGoodsData()
-        POS.buildGoodsTree()
-      }
-      catch(e)
-      {
-        e = ZeT.cat('Ошибка проверки данных: ', e)
-        ZeT.log(e); alert(e)
-      }
+$(document).ready(function()
+{
+  //~: read goods
+  try
+  {
+    POS.readGoodsData()
+    POS.buildGoodsTree()
+  }
+  catch(e)
+  {
+    e = ZeT.cat('Ошибка проверки данных о товарах: ', e)
+    ZeT.log(e); alert(e)
+  }
 
+  //~: draw goods folders
+  POS.drawGoodsFolders('003998')
+})
+
+    //]]>
     </script>
 
   </head>
   <body>
 
     <div id = "pos-main-area">
-
-      <div id = "pos-main-area-folders">
-        <div>
-          <div class = "pos-folders-line even"><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div></div>
-
-          <div class = "pos-folders-line odd"><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div></div>
-
-          <div class = "pos-folders-line even"><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div></div>
-
-          <div class = "pos-folders-line odd"><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div></div>
-
-          <div class = "pos-folders-line even"><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div><div
-            class = "pos-folders-item even"></div><div
-            class = "pos-folders-item odd"></div></div>
-
-
-        </div>
+      <div id = "pos-main-area-folders-ext">
+        <div id = "pos-main-area-folders"></div>
       </div>
 
-      <div id = "pos-main-area-goods"><div></div></div>
-      <div id = "pos-main-area-list"><div></div></div>
+      <div id = "pos-main-area-goods-ext">
+        <div id = "pos-main-area-goods"></div>
+      </div>
 
+      <div id = "pos-main-area-list-ext">
+        <div id = "pos-main-area-list"></div>
+      </div>
     </div>
 
+
+    <!-- templates -->
+    <div style = "display:none">
+
+      <!-- folder line template -->
+      <div id = "pos-goods-folder-line-template"
+        class = "pos-folders-line">
+        <table cellpadding = "0" cellspacing = "0">
+          <tbody><tr></tr></tbody>
+        </table>
+      </div>
+
+      <!-- folder item template -->
+      <table>
+        <tr>
+          <td id = "pos-goods-folder-item-template"
+            class = "pos-folders-item" style = "visibility:hidden">
+            <table cellpadding = "0" cellspacing = "0">
+              <tbody><tr><td><div></div></td></tr></tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+    </div>
 
   </body>
 </html>

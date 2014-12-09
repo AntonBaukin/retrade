@@ -2,23 +2,48 @@
 
 .pos-folders-line
 {
-  padding-left: 2px;
+  padding: 2px 0 0 2px;
+  height: 50px;
 }
 
 .pos-folders-line.even
 {
-  height: 50px;
   background-color: #f1edce;
-}
-
-.pos-folders-line.odd
-{
-  height: 50px;
 }
 
 .pos-folders-item
 {
-  width: 82px; height: 46px;
-  margin: 2px 2px 0 2px;
+  width: 82px; padding: 2px;
+  font-size: 14px;
+}
+
+.pos-folders-item > table > tbody > tr > td > div
+{
+  max-width: 74px; overflow: hidden;
+}
+
+td.pos-folders-item:hover > table
+{
+  background-color: #bfbfbf;
+}
+
+.pos-folders-item > table td
+{
+  padding: 2px;
+}
+
+td.pos-folders-item:hover > table td
+{
+  color: white;
+}
+
+.pos-folders-root
+{
+  cursor: pointer;
+}
+
+.pos-folders-path
+{
+
 }
 
