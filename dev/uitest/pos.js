@@ -150,7 +150,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	{
 		if(test) return test
 
-		var m = ZeT.cati(1, arguments);
+		var m = ZeT.cati(1, arguments)
 		if(ZeT.ises(m)) m = 'Assertion failed!'
 
 		throw m
@@ -179,8 +179,23 @@ var ZeT = window.ZeT = window.ZeT || {
 		if(ZeT.isa(array) && array.length)
 			return array
 
-		var m = ZeT.cati(1, arguments);
+		var m = ZeT.cati(1, arguments)
 		if(ZeT.ises(m)) m = 'A non-empty array is required!'
+
+		throw m
+	},
+
+	/**
+	 * Test that a string is given, and it is not
+	 * a whitespace-only string.
+	 */
+	asserts          : function(string /* messages */)
+	{
+		if(!ZeT.ises(string))
+			return string
+
+		var m = ZeT.cati(1, arguments)
+		if(ZeT.ises(m)) m = 'A not-whitespace-empty string is required!'
 
 		throw m
 	},
@@ -356,6 +371,13 @@ var POS = window.POS = window.POS || {
 			//~: refer as in the child
 			if(!p.children) p.children = []
 			p.children.push(d)
+
+			//?: {this is a folder}
+			if(d.folder)
+			{
+				if(!p.subfolders) p.subfolders = []
+				p.subfolders.push(d)
+			}
 		}
 
 		//?: {has error}
@@ -369,9 +391,13 @@ var POS = window.POS = window.POS || {
 		}
 
 		//c: for each good item having children
-		for(var i = 0;(i < D.length);i++)
+		for(i = 0;(i < D.length);i++)
+		{
 			if(D[i].children)
 				D[i].children.sort(cmp)
+			if(D[i].subfolders)
+				D[i].subfolders.sort(cmp)
+		}
 
 		//~: sort the roots
 		ZeT.asserta(T.roots).sort(cmp)
@@ -384,22 +410,18 @@ var POS = window.POS = window.POS || {
 	 */
 	drawGoodsFolders : function(selected)
 	{
-		$('#pos-main-area-folders').empty()
-		POS._gs_folder_lines = []
-
 		var T = ZeT.assertn(POS.GoodsTree)
 		ZeT.asserta(T.roots)
 
+		//~: hide the content
+		POS._gs_folders_hide()
+
+		//?: {display selected | single folder}
 		if(selected || (T.roots.length == 1))
 			POS._gs_folder(selected || T.roots[0])
+		//~: display root folders
 		else
-			POS._gs_roots(T.roots)
-	},
-
-	_gs_roots        : function(fs)
-	{
-		POS._gs_folders_hide()
-		ZeT.each(fs, function(f){ POS._gs_fd_draw(f) })
+			ZeT.each(T.roots, function(f){ POS._gs_fd_draw(f) })
 	},
 
 	_gs_folder       : function(f)
@@ -429,13 +451,25 @@ var POS = window.POS = window.POS || {
 
 		//~: draw target folder
 		f.tempClasses = 'selected'
-		POS._gs_fd_draw(f)
+
+		//?: {folder has sub-folders}
+		if(f.subfolders)
+		{
+			POS._gs_fd_draw(f)
+
+			//~: draw them
+			ZeT.each(f.subfolders, function(x){ POS._gs_fd_draw(x) })
+		}
+		//~: draw folder within the siblings
+		else
+			ZeT.each(ZeT.asserta(T[f.parent].subfolders),
+			  function(x){ POS._gs_fd_draw(x) })
 	},
 
 	_gs_folders_hide : function()
 	{
 		POS._gs_folder_xline = null
-		ZeT.each(POS._gs_folder_lines, function(line){ line.hide() })
+		$('#pos-main-area-folders div.pos-folders-line').hide()
 	},
 
 	/**
@@ -466,20 +500,20 @@ var POS = window.POS = window.POS || {
 	 */
 	_gs_fd_line      : function()
 	{
-		var line = null, L = POS._gs_folder_lines
-
 		//~: search for the first hidden line
-		ZeT.each(L, function(l) {
-			if(l.is(':hidden')) return line = l
-		})
+		var line = $('#pos-main-area-folders div.pos-folders-line:hidden')
 
 		//?: {found it} hide items
-		if(line)
+		if(line.length)
 		{
+			line = $(line[0])
 			line.data('i', 0)
 			line.find('.pos-folders-item').hide()
 			return line.show()
 		}
+
+		//~: all the lines
+		var L = $('#pos-main-area-folders div.pos-folders-line')
 
 		//~: create new line
 		line = $('#pos-goods-folder-line-template').
@@ -491,7 +525,7 @@ var POS = window.POS = window.POS || {
 
 		//~: append it
 		$('#pos-main-area-folders').append(line)
-		L.push(line); return line
+		return line
 	},
 
 	/**
@@ -532,6 +566,10 @@ var POS = window.POS = window.POS || {
 		//~: append to the items
 		a.push(item)
 
+		//~: on click
+		item.click(POS._gs_fd_click)
+
+
 		return item.css('visibility', '')
 	},
 
@@ -554,11 +592,10 @@ var POS = window.POS = window.POS || {
 		item.find('div').text(f.name)
 
 		//?: {folder has children}
-		item.toggleClass('parent', !!f.children)
+		item.toggleClass('subfolders', !!f.subfolders)
 
 		//?: {has special class}
-		var c2r = ''
-		if(ZeT.iss(f.styleClasses))
+		var c2r = ''; if(ZeT.iss(f.styleClasses))
 		{
 			c2r += f.styleClasses
 			item.addClass(f.styleClasses)
@@ -574,5 +611,19 @@ var POS = window.POS = window.POS || {
 
 		if(!ZeT.ises(c2r))
 			item.data('classes-to-remove', c2r)
+	},
+
+	_gs_fd_click     : function(e)
+	{
+		//~: access folder model
+		var m = $(e.delegateTarget).data('model')
+		if(!m) return
+
+		//?: {root folder}
+		if(POS.GoodsRootFolder == m)
+		   POS.drawGoodsFolders()
+		//~: draw regular folder
+		else
+			POS.drawGoodsFolders(ZeT.asserts(m.code))
 	}
 }

@@ -13,13 +13,14 @@
 
 .pos-folders-item
 {
-  width: 82px; padding: 2px;
-  font-size: 14px;
+  width: 82px; padding: 2px 1.9px;
+  font-size: 12px;
 }
 
 .pos-folders-item > table > tbody > tr > td > div
 {
-  max-width: 74px; overflow: hidden;
+  max-width: 74px; max-height: 36px;
+  overflow: hidden;
 }
 
 td.pos-folders-item:hover > table
@@ -35,11 +36,6 @@ td.pos-folders-item:hover > table
 td.pos-folders-item:hover > table td
 {
   color: white;
-}
-
-.pos-folders-root
-{
-  cursor: pointer;
 }
 
 .pos-folders-root table > tbody > tr > td

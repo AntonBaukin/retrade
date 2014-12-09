@@ -1,5 +1,7 @@
 /* Restera™ POS Terminal Styles */
 
+/* ================[ Layout ]================ */
+
 body
 {
   cursor: default;
@@ -64,6 +66,9 @@ body
   right: 5px; bottom: 5px;
 }
 
+
+/* ============[ Goods Folders ]============= */
+
 .pos-folders-line
 {
   width: 100%; overflow: hidden;
@@ -93,9 +98,28 @@ body
   font-family: "Tahoma", "Arial", sans-serif;
   vertical-align: middle; align-content: center;
   text-align: center;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
 }
 
-.pos-folders-item.parent
+.pos-folders-root > table > tbody > tr > td
 {
   cursor: pointer;
 }
+
+td.pos-folders-item.selected > table
+{
+  background-color: #bfbfbf;
+}
+
+td.pos-folders-item.selected > table td
+{
+  color: white;
+}
+
+
+
+/* ============[ Goods Selection]============ */
