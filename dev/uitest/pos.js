@@ -521,8 +521,6 @@ var POS = window.POS = window.POS || {
 		//~: append to line
 		line.find('tr').first().append(item)
 
-		ZeT.log('line w = ', line.width(), '; item x = ', item.position().left)
-
 		//?: {line has no space}
 		if(line.width() < item.position().left + item.outerWidth())
 		{
