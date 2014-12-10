@@ -41,7 +41,11 @@ $(document).ready(function()
 
     <div id = "pos-main-area">
       <div id = "pos-main-area-folders-ext">
-        <div id = "pos-main-area-folders"></div>
+        <div>
+          <table cellpadding = "0" cellspacing = "0">
+            <tbody id = "pos-main-area-folders"></tbody>
+          </table>
+        </div>
       </div>
 
       <div id = "pos-main-area-goods-ext">
@@ -58,6 +62,9 @@ $(document).ready(function()
     <div style = "display:none">
 
       <!-- folder line template -->
+      <table>
+        <tr id = "pos-goods-folder-line-template" class = "pos-folders-line"></tr>
+      </table>
       <div id = "pos-goods-folder-line-template"
         class = "pos-folders-line">
         <table cellpadding = "0" cellspacing = "0">

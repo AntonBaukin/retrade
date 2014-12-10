@@ -31,6 +31,14 @@ body
   width: 530px; height: 260px;
 }
 
+#pos-main-area-folders-ext > div
+{
+  position: absolute;
+  right: 5px; top: 5px;
+  width: 520px; height: 250px;
+  overflow: hidden;
+}
+
 #pos-main-area-goods-ext
 {
   position: absolute;
@@ -59,26 +67,8 @@ body
   opacity: 0.25;
 }
 
-#pos-main-area-folders
-{
-  position: absolute;
-  left: 5px; top: 5px;
-  right: 5px; bottom: 5px;
-}
-
 
 /* ============[ Goods Folders ]============= */
-
-.pos-folders-line
-{
-  width: 100%; overflow: hidden;
-  box-sizing: border-box;
-}
-
-.pos-folders-line > table
-{
-  height: 100%; margin: 0;
-}
 
 .pos-folders-item
 {
@@ -93,7 +83,7 @@ body
   border-radius: 4px;
 }
 
-.pos-folders-item > table > tbody > tr > td
+.pos-folders-item > table > tbody > tr > td > div
 {
   font-family: "Tahoma", "Arial", sans-serif;
   vertical-align: middle; align-content: center;
@@ -120,6 +110,15 @@ td.pos-folders-item.selected > table td
   color: white;
 }
 
+td.pos-folders-item-sep div
+{
+  min-width: 2px;
+}
+
+td.pos-folders-item-sep.sep-justify
+{
+  width: 1%;
+}
 
 
 /* ============[ Goods Selection]============ */

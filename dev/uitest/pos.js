@@ -469,7 +469,8 @@ var POS = window.POS = window.POS || {
 	_gs_folders_hide : function()
 	{
 		POS._gs_folder_xline = null
-		$('#pos-main-area-folders div.pos-folders-line').hide()
+		POS._gs_folder_line_max = null
+		$('#pos-main-area-folders .pos-folders-line').hide()
 	},
 
 	/**
@@ -501,7 +502,7 @@ var POS = window.POS = window.POS || {
 	_gs_fd_line      : function()
 	{
 		//~: search for the first hidden line
-		var line = $('#pos-main-area-folders div.pos-folders-line:hidden')
+		var line = $('#pos-main-area-folders .pos-folders-line:hidden')
 
 		//?: {found it} hide items
 		if(line.length)
@@ -509,18 +510,19 @@ var POS = window.POS = window.POS || {
 			line = $(line[0])
 			line.data('i', 0)
 			line.find('.pos-folders-item').hide()
+			line.find('.pos-folders-item-sep').hide().removeClass('sep-justify')
 			return line.show()
 		}
 
 		//~: all the lines
-		var L = $('#pos-main-area-folders div.pos-folders-line')
+		var L = $('#pos-main-area-folders .pos-folders-line')
 
 		//~: create new line
-		line = $('#pos-goods-folder-line-template').
-		  clone().attr('id', null).
+		line = $("<tr></tr>").addClass('pos-folders-line').
 		  addClass((L.length%2 == 0)?('even'):('odd'))
 
 		//~: the empty list of items
+		line.data('i', 0)
 		line.data('items', [])
 
 		//~: append it
@@ -538,37 +540,53 @@ var POS = window.POS = window.POS || {
 	{
 		//~: take existing item
 		var i = line.data('i'), a = line.data('items')
-		if(i < a.length) {
+		if(i < a.length)
+		{
 			line.data('i', i+1)
+			a[i].prev().show()
 			return a[i].show()
 		}
 
 		//?: {has no more space}
-		var m = line.data('max')
-		if(m && i >= m) return null
+		var m = POS._gs_folder_line_max
+		if(m && i >= m)
+		{
+			line.find('.pos-folders-item-sep').addClass('sep-justify')
+			return null
+		}
 
 		//~: create new item & add it
 		var item = $('#pos-goods-folder-item-template').
 		  clone().attr('id', null).
 		  addClass((a.length%2 == 0)?('even'):('odd'))
 
-		//~: append to line
-		line.find('tr').first().append(item)
+		//~: append point
+		line.append(item)
 
 		//?: {line has no space}
-		if(line.width() < item.position().left + item.outerWidth())
+		if(!POS._gs_folder_line_max)
 		{
-			line.data('max', a.length)
-			item.remove()
-			return null
+			var outer = $('#pos-main-area-folders-ext > div')
+			if(outer.width() < item.position().left + item.outerWidth())
+			{
+				POS._gs_folder_line_max = a.length
+				item.remove()
+				return null
+			}
 		}
+
+		//?: {not first item} add separator
+		if(i) item.before($('<td><div></div></td>').
+		  addClass('pos-folders-item-sep'))
+
+		//~: increment the position
+		line.data('i', i+1)
 
 		//~: append to the items
 		a.push(item)
 
 		//~: on click
 		item.click(POS._gs_fd_click)
-
 
 		return item.css('visibility', '')
 	},
