@@ -371,15 +371,17 @@ var POS = window.POS = window.POS || {
 				E[1] = 'есть позиция с родителем-товаром, а не папкой'
 			}
 
-			//~: refer as in the child
-			if(!p.children) p.children = []
-			p.children.push(d)
-
 			//?: {this is a folder}
 			if(d.folder)
 			{
 				if(!p.subfolders) p.subfolders = []
 				p.subfolders.push(d)
+			}
+			//~: this is a good
+			else
+			{
+				if(!p.goods) p.goods = []
+				p.goods.push(d)
 			}
 		}
 
@@ -396,10 +398,8 @@ var POS = window.POS = window.POS || {
 		//c: for each good item having children
 		for(i = 0;(i < D.length);i++)
 		{
-			if(D[i].children)
-				D[i].children.sort(cmp)
-			if(D[i].subfolders)
-				D[i].subfolders.sort(cmp)
+			D[i].goods && D[i].goods.sort(cmp)
+			D[i].subfolders && D[i].subfolders.sort(cmp)
 		}
 
 		//~: sort the roots
@@ -417,17 +417,40 @@ var POS = window.POS = window.POS || {
 		ZeT.asserta(T.roots)
 
 		//~: hide the content
-		POS._gs_fds_hide()
+		POS._gs_folder_xline = null
+		$('#pos-main-area-folders .pos-folders-line').hide()
 
 		//?: {display selected | single folder}
 		if(selected || (T.roots.length == 1))
-			POS._gs_folder(selected || T.roots[0])
+		{
+			selected = POS._gs_folder(selected || T.roots[0])
+
+			//~: resize the folders area
+			POS._gs_fds_resize()
+
+			//~: draw the goods
+			POS._gs_fd_gs_draw(selected)
+		}
 		//~: display root folders
 		else
+		{
 			ZeT.each(T.roots, function(f){ POS._gs_fd_draw(f) })
 
-		//~: resize the folders area
-		POS._gs_fds_resize()
+			//~: hide the goods
+			POS._gs_fd_gs_draw()
+		}
+	},
+
+	goodsScrollClick : function(e)
+	{
+		var n = $(e.delegateTarget)
+
+		//?: {up}
+		if(n.hasClass('up'))
+			POS._gs_scroll(-1)
+		//?: {down}
+		else if(n.hasClass('down'))
+			POS._gs_scroll(+1)
 	},
 
 
@@ -473,12 +496,8 @@ var POS = window.POS = window.POS || {
 		else
 			ZeT.each(ZeT.asserta(T[f.parent].subfolders),
 			  function(x){ POS._gs_fd_draw(x) })
-	},
 
-	_gs_fds_hide     : function()
-	{
-		POS._gs_folder_xline = null
-		$('#pos-main-area-folders .pos-folders-line').hide()
+		return f
 	},
 
 	_gs_fds_resize   : function()
@@ -494,9 +513,9 @@ var POS = window.POS = window.POS || {
 
 		//~: target areas
 		var F = $('#pos-main-area-folders-ext')
-		var f = $('#pos-main-area-folders-ext div')
+		var f = $('#pos-main-area-folders-ext > div')
 		var G = $('#pos-main-area-goods-ext')
-		var g = $('#pos-main-area-goods-ext div')
+		var g = $('#pos-main-area-goods-ext > div')
 
 		//~: resize delta
 		var d = f.innerHeight() - l.position().top - l.outerHeight()
@@ -533,24 +552,30 @@ var POS = window.POS = window.POS || {
 	 */
 	_gs_fd_line      : function()
 	{
+		return POS._gs_line_xyz('pos-main-area-folders',
+		  'pos-folders-line', 'pos-folders-item')
+	},
+
+	_gs_line_xyz     : function(area, lcls, icls)
+	{
 		//~: search for the first hidden line
-		var line = $('#pos-main-area-folders .pos-folders-line:hidden')
+		var line = $(ZeT.cat('#', area, ' .', lcls, ':hidden'))
 
 		//?: {found it} hide items
 		if(line.length)
 		{
 			line = $(line[0])
 			line.data('i', 0)
-			line.find('.pos-folders-item').hide()
-			line.find('.pos-folders-item-sep').hide().removeClass('sep-justify')
+			line.find(ZeT.cat('.', icls)).hide()
+			line.find(ZeT.cat('.', icls, '-sep')).hide().removeClass('sep-justify')
 			return line.show()
 		}
 
 		//~: all the lines
-		var L = $('#pos-main-area-folders .pos-folders-line')
+		var L = $(ZeT.cat('#', area, ' .', lcls))
 
 		//~: create new line
-		line = $("<tr></tr>").addClass('pos-folders-line').
+		line = $("<tr></tr>").addClass(lcls).
 		  addClass((L.length%2 == 0)?('even'):('odd'))
 
 		//~: the empty list of items
@@ -558,7 +583,7 @@ var POS = window.POS = window.POS || {
 		line.data('items', [])
 
 		//~: append it
-		$('#pos-main-area-folders').append(line)
+		$(ZeT.cat('#', area)).append(line)
 		return line
 	},
 
@@ -570,6 +595,14 @@ var POS = window.POS = window.POS || {
 	 */
 	_gs_fd_line_item : function(line)
 	{
+		return POS._gs_ln_item_xyz(line, '_gs_folder_line_max',
+		  'pos-folders-item', 'pos-goods-folder-item-template',
+		  'pos-main-area-folders-ext > div', POS._gs_fd_click
+		)
+	},
+
+	_gs_ln_item_xyz  : function(line, maxvar, icls, itmplt, areaext, clicker)
+	{
 		//~: take existing item
 		var i = line.data('i'), a = line.data('items')
 		if(i < a.length)
@@ -580,35 +613,33 @@ var POS = window.POS = window.POS || {
 		}
 
 		//?: {has no more space}
-		var m = POS._gs_folder_line_max
-		if(m && i >= m)
+		var m = POS[maxvar]; if(m && i >= m)
 		{
-			line.find('.pos-folders-item-sep').addClass('sep-justify')
+			line.find(ZeT.cat('.', icls, '-sep')).addClass('sep-justify')
 			return null
 		}
 
 		//~: create new item & add it
-		var item = $('#pos-goods-folder-item-template').
-		  clone().attr('id', null).
+		var item = $(ZeT.cat('#', itmplt)).clone().attr('id', null).
 		  addClass((a.length%2 == 0)?('even'):('odd'))
 
 		//~: append point
 		line.append(item)
 
 		//?: {line has no space}
-		if(!POS._gs_folder_line_max)
+		if(!m)
 		{
-			var outer = $('#pos-main-area-folders-ext > div')
+			var outer = $(ZeT.cat('#', areaext))
 			if(outer.width() < item.position().left + item.outerWidth())
 			{
 				item.remove()
-				POS._gs_folder_line_max = a.length
+				POS[maxvar] = a.length
 				return null
 			}
 		}
 
 		//?: {not first item} add separator
-		if(i) item.before($('<td><div></div></td>').addClass('pos-folders-item-sep'))
+		if(i) item.before($('<td><div></div></td>').addClass(ZeT.cat(icls, '-sep')))
 
 		//~: increment the position
 		line.data('i', i+1)
@@ -617,7 +648,7 @@ var POS = window.POS = window.POS || {
 		a.push(item)
 
 		//~: on click
-		item.click(POS._gs_fd_click)
+		item.click(clicker)
 
 		return item.css('visibility', '')
 	},
@@ -674,9 +705,124 @@ var POS = window.POS = window.POS || {
 		//~: draw regular folder
 		else
 			POS.drawGoodsFolders(ZeT.asserts(m.code))
-	}
+	},
 
 
 // +----: Goods Routines : --------------------------------------+
+
+	/**
+	 * Displays all goods of the given folder.
+	 */
+	_gs_fd_gs_draw   : function(f)
+	{
+		//~: hide current content
+		POS._gs_goods_xline = null
+		$('#pos-main-area-goods .pos-goods-line').hide()
+		$('.pos-goods-list-scroll').hide()
+
+		//?: {folder has goods} draw them
+		if(f && f.goods && f.goods.length)
+			ZeT.each(f.goods, POS._gs_gd_draw)
+
+		//~: invalidate scroll ability
+		POS._gs_check_scroll()
+	},
+
+	_gs_gd_draw      : function(g)
+	{
+		//~: access current line
+		var line = POS._gs_goods_xline; if(!line) line =
+		  POS._gs_goods_xline = POS._gs_gd_line()
+
+		//~: add item to this line
+		var item = POS._gs_gd_line_item(line)
+
+		//?: {line has no more space} add a new line
+		if(!item) {
+			line = POS._gs_goods_xline = POS._gs_gd_line()
+			item = ZeT.assertn(POS._gs_gd_line_item(line))
+		}
+
+		//~: initialize the item
+		POS._gs_gd_item(item, g)
+	},
+
+	_gs_gd_item      : function(item, g)
+	{
+		item.data('model', g)
+
+		//?: {has classes to remove}
+		if(item.data('classes-to-remove'))
+		{
+			item.removeClass(item.data('classes-to-remove'))
+			item.data('classes-to-remove', null)
+		}
+
+		//~: good name in inner div
+		item.find('div').text(g.name)
+	},
+
+	_gs_gd_line      : function()
+	{
+		return POS._gs_line_xyz('pos-main-area-goods',
+		  'pos-goods-line', 'pos-goods-item')
+	},
+
+	_gs_gd_line_item : function(line)
+	{
+		return POS._gs_ln_item_xyz(line, '_gs_goods_line_max',
+		  'pos-goods-item', 'pos-goods-item-template',
+		  'pos-main-area-goods-ext > div', POS._gs_gd_click
+		)
+	},
+
+	_gs_gd_click     : function(e)
+	{
+	},
+
+	/**
+	 * Checks whether goods display area has no enough
+	 * space for all the lines and displays scroll buttons.
+	 */
+	_gs_check_scroll : function()
+	{
+		//~: zero scroll
+		$('#pos-main-area-goods-ext > div').scrollTop(0)
+
+		//~: select the displayed lines -> the last line
+		var ls = $('#pos-main-area-goods .pos-goods-line:visible')
+		if(!ls || !ls.length) return
+		var l  = $(ls[ls.length - 1])
+
+		//~: goods content area
+		var g = $('#pos-main-area-goods-ext div')
+
+		//?: {has no enough space}
+		if(g.innerHeight() < l.position().top + l.outerHeight())
+		{
+			$('.pos-goods-list-scroll').show()
+			$('.pos-goods-list-scroll.up').removeClass('enabled')
+			$('.pos-goods-list-scroll.down').addClass('enabled')
+		}
+	},
+
+	_gs_scroll       : function(d)
+	{
+		//~: find goods line height
+		var h = $('#pos-main-area-goods .pos-goods-line:visible').outerHeight()
+		if(!ZeT.isn(h)) return
+
+		//~: desired scroll
+		var g = $('#pos-main-area-goods-ext > div')
+		var G = g.height()
+		var T = $('#pos-main-area-goods-ext > div > table').height()
+		var s = g.scrollTop() + d * h
+
+		d = (s <= 0)?(-1):(s + G >= T)?(+1):(0)
+		g.scrollTop((d == -1)?(0):(d == +1)?(T - G):(s))
+
+		$('.pos-goods-list-scroll.up'  ).toggleClass('enabled', d >= 0)
+		$('.pos-goods-list-scroll.down').toggleClass('enabled', d <= 0)
+	}
 
 }

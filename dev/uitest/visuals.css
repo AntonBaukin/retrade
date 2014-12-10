@@ -18,7 +18,7 @@
 .pos-folders-item > table > tbody > tr > td > div
 {
   max-width: 75px; max-height: 36px;
-  font-size: 12px; overflow: hidden;
+  font-size: 11px; overflow: hidden;
 }
 
 td.pos-folders-item-sep div
@@ -63,4 +63,45 @@ td.pos-folders-item:hover > table td
 {
   background: no-repeat url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMTYgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiM1NzU3NTciIGQ9Ik0xNS41LDIuNzZjMCwwLDAsOC40MywwLDExLjI0YzAsMC41NS0wLjk1LDEuNS0xLjUsMS41Yy0yLjgxLDAtMTEuMjQsMC0xMS4yNCwwYy0xLjA3LDAtMS4zOC0xLjg1LTAuNDEtMi4zDQoJQzQuNzQsMTIuMDksNy4wNCwxMi45LDEwLDEwYzMuMDMtMi45NywyLjM3LTUuNzUsMy4yLTcuNjVDMTMuNjMsMS4zNiwxNS41LDEuNjgsMTUuNSwyLjc2eiIvPg0KPHBhdGggZmlsbD0iIzU3NTc1NyIgZD0iTTQuMjQsMy43NkwzLjY1LDQuMzVDMy4yOSw0LjcxLDMuMjYsNS4zMSwzLjYsNS43TDksMTJsMi0yTDUuNywzLjgyQzUuMzIsMy4zOCw0LjY1LDMuMzUsNC4yNCwzLjc2eiIvPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=);
   background-size: 8px 8px; background-position: 68px 32px;
+}
+
+.pos-goods-line
+{
+  height: 50px;
+}
+
+.pos-goods-line.even
+{
+  background-color: #f1edce;
+}
+
+.pos-goods-item > table
+{
+  width: 83px; height: 46px;
+}
+
+.pos-goods-item > table > tbody > tr > td > div
+{
+  max-width: 75px; max-height: 36px;
+  font-size: 11px; overflow: hidden;
+}
+
+td.pos-goods-item-sep div
+{
+  min-width: 4.5px;
+}
+
+td.pos-goods-item:hover > table
+{
+  background-color: #bfbfbf;
+}
+
+.pos-goods-item > table td
+{
+  padding: 2px;
+}
+
+td.pos-goods-item:hover > table td
+{
+  color: white;
 }

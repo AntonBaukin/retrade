@@ -29,8 +29,11 @@ $(document).ready(function()
     ZeT.log(e); alert(e)
   }
 
+  //~: goods scroll click
+  $('.pos-goods-list-scroll').click(POS.goodsScrollClick)
+
   //~: draw goods folders
-  POS.drawGoodsFolders('003982')
+  POS.drawGoodsFolders('003994')
 })
 
     //]]>
@@ -59,6 +62,9 @@ $(document).ready(function()
       <div id = "pos-main-area-list-ext">
         <div id = "pos-main-area-list"></div>
       </div>
+
+      <div class = "pos-goods-list-scroll up"></div>
+      <div class = "pos-goods-list-scroll down"></div>
     </div>
 
 
@@ -85,7 +91,7 @@ $(document).ready(function()
 
         <!-- goods item template -->
         <tr>
-          <td id = "pos-goods-folder-item-template"
+          <td id = "pos-goods-item-template"
             class = "pos-goods-item" style = "visibility:hidden">
             <table cellpadding = "0" cellspacing = "0">
               <tbody><tr><td><div></div></td></tr></tbody>
