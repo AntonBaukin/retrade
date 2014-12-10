@@ -21,6 +21,11 @@
   font-size: 12px; overflow: hidden;
 }
 
+td.pos-folders-item-sep div
+{
+  min-width: 4.5px;
+}
+
 td.pos-folders-item:hover > table
 {
   background-color: #bfbfbf;

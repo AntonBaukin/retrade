@@ -49,7 +49,11 @@ $(document).ready(function()
       </div>
 
       <div id = "pos-main-area-goods-ext">
-        <div id = "pos-main-area-goods"></div>
+        <div>
+          <table cellpadding = "0" cellspacing = "0">
+            <tbody id = "pos-main-area-goods"></tbody>
+          </table>
+        </div>
       </div>
 
       <div id = "pos-main-area-list-ext">
@@ -60,20 +64,16 @@ $(document).ready(function()
 
     <!-- templates -->
     <div style = "display:none">
-
-      <!-- folder line template -->
       <table>
+
+        <!-- folder line template -->
         <tr id = "pos-goods-folder-line-template" class = "pos-folders-line"></tr>
-      </table>
-      <div id = "pos-goods-folder-line-template"
-        class = "pos-folders-line">
-        <table cellpadding = "0" cellspacing = "0">
-          <tbody><tr></tr></tbody>
-        </table>
-      </div>
 
-      <!-- folder item template -->
-      <table>
+        <!-- goods line template -->
+        <tr id = "pos-goods-line-template" class = "pos-goods-line"></tr>
+
+
+        <!-- folder item template -->
         <tr>
           <td id = "pos-goods-folder-item-template"
             class = "pos-folders-item" style = "visibility:hidden">
@@ -82,8 +82,18 @@ $(document).ready(function()
             </table>
           </td>
         </tr>
-      </table>
 
+        <!-- goods item template -->
+        <tr>
+          <td id = "pos-goods-folder-item-template"
+            class = "pos-goods-item" style = "visibility:hidden">
+            <table cellpadding = "0" cellspacing = "0">
+              <tbody><tr><td><div></div></td></tr></tbody>
+            </table>
+          </td>
+        </tr>
+
+      </table>
     </div>
 
   </body>

@@ -35,7 +35,7 @@ body
 {
   position: absolute;
   right: 5px; top: 5px;
-  width: 520px; height: 250px;
+  left: 5px; bottom: 5px;
   overflow: hidden;
 }
 
@@ -46,6 +46,14 @@ body
   border: dotted 2px white;
   right: 5px; bottom: 5px;
   width: 530px; height: 320px;
+}
+
+#pos-main-area-goods-ext > div
+{
+  position: absolute;
+  right: 5px; top: 5px;
+  left: 5px; bottom: 5px;
+  overflow: hidden;
 }
 
 #pos-main-area-list-ext
@@ -122,3 +130,53 @@ td.pos-folders-item-sep.sep-justify
 
 
 /* ============[ Goods Selection]============ */
+
+.pos-goods-item
+{
+  vertical-align: middle;
+}
+
+.pos-goods-item > table
+{
+  width: 100%; height: 100%;
+  box-sizing: border-box;
+  border: solid 2px #575757;
+  border-radius: 4px;
+}
+
+.pos-goods-item > table > tbody > tr > td > div
+{
+  font-family: "Tahoma", "Arial", sans-serif;
+  vertical-align: middle; align-content: center;
+  text-align: center;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.pos-goods-root > table > tbody > tr > td
+{
+  cursor: pointer;
+}
+
+td.pos-goods-item.selected > table
+{
+  background-color: #bfbfbf;
+}
+
+td.pos-goods-item.selected > table td
+{
+  color: white;
+}
+
+td.pos-goods-item-sep div
+{
+  min-width: 2px;
+}
+
+td.pos-goods-item-sep.sep-justify
+{
+  width: 1%;
+}

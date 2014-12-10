@@ -6,7 +6,7 @@
 
 var ZeT = window.ZeT = window.ZeT || {
 
-// +----: Object Routines: --------------------------------------+
+// +----: Object Routines : -------------------------------------+
 
 	keys             : function(o)
 	{
@@ -31,7 +31,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: String Routines: --------------------------------------+
+// +----: String Routines : -------------------------------------+
 
 	trim             : function(s)
 	{
@@ -88,7 +88,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Array Routines: ---------------------------------------+
+// +----: Array Routines : --------------------------------------+
 
 	each             : function(a, f)
 	{
@@ -99,7 +99,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Test Functions: ---------------------------------------+
+// +----: Test Functions : --------------------------------------+
 
 	iss              : function(s)
 	{
@@ -125,7 +125,8 @@ var ZeT = window.ZeT = window.ZeT || {
 		return (typeof o === 'undefined')
 	},
 
-	isa              : ('isArray' in Array)?(Array.isArray):function(a)
+	isa              : ('isArray' in Array)?(Array.isArray):
+	function(a)
 	{
 		return (Object.prototype.toString.call(a) === '[object Array]')
 	},
@@ -136,7 +137,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Assertion & Debug Routines: ---------------------------+
+// +----: Assertion & Debug Routines : --------------------------+
 
 	/**
 	 * First argument of assertion is an expression
@@ -211,6 +212,8 @@ var ZeT = window.ZeT = window.ZeT || {
 };
 
 var POS = window.POS = window.POS || {
+
+// +----: Public Routines : -------------------------------------+
 
 	readGoodsData    : function()
 	{
@@ -414,7 +417,7 @@ var POS = window.POS = window.POS || {
 		ZeT.asserta(T.roots)
 
 		//~: hide the content
-		POS._gs_folders_hide()
+		POS._gs_fds_hide()
 
 		//?: {display selected | single folder}
 		if(selected || (T.roots.length == 1))
@@ -422,7 +425,13 @@ var POS = window.POS = window.POS || {
 		//~: display root folders
 		else
 			ZeT.each(T.roots, function(f){ POS._gs_fd_draw(f) })
+
+		//~: resize the folders area
+		POS._gs_fds_resize()
 	},
+
+
+// +----: Goods Folders Routines : ------------------------------+
 
 	_gs_folder       : function(f)
 	{
@@ -466,11 +475,34 @@ var POS = window.POS = window.POS || {
 			  function(x){ POS._gs_fd_draw(x) })
 	},
 
-	_gs_folders_hide : function()
+	_gs_fds_hide     : function()
 	{
 		POS._gs_folder_xline = null
-		POS._gs_folder_line_max = null
 		$('#pos-main-area-folders .pos-folders-line').hide()
+	},
+
+	_gs_fds_resize   : function()
+	{
+		//~: find the last line displayed
+		var C  = POS.GoodsFolders; if(!C) return
+		var ls = $('#pos-main-area-folders .pos-folders-line:visible')
+		if(!ls || !ls.length) return
+
+		//~: choose the line
+		var l = $((ZeT.isn(C.maxLines) && (ls.length > C.maxLines))?
+		  (ls[C.maxLines]):(ls[ls.length - 1]))
+
+		//~: target areas
+		var F = $('#pos-main-area-folders-ext')
+		var f = $('#pos-main-area-folders-ext div')
+		var G = $('#pos-main-area-goods-ext')
+		var g = $('#pos-main-area-goods-ext div')
+
+		//~: resize delta
+		var d = f.innerHeight() - l.position().top - l.outerHeight()
+
+		F.innerHeight(F.innerHeight() - d)
+		G.innerHeight(G.innerHeight() + d)
 	},
 
 	/**
@@ -569,15 +601,14 @@ var POS = window.POS = window.POS || {
 			var outer = $('#pos-main-area-folders-ext > div')
 			if(outer.width() < item.position().left + item.outerWidth())
 			{
-				POS._gs_folder_line_max = a.length
 				item.remove()
+				POS._gs_folder_line_max = a.length
 				return null
 			}
 		}
 
 		//?: {not first item} add separator
-		if(i) item.before($('<td><div></div></td>').
-		  addClass('pos-folders-item-sep'))
+		if(i) item.before($('<td><div></div></td>').addClass('pos-folders-item-sep'))
 
 		//~: increment the position
 		line.data('i', i+1)
@@ -644,4 +675,8 @@ var POS = window.POS = window.POS || {
 		else
 			POS.drawGoodsFolders(ZeT.asserts(m.code))
 	}
+
+
+// +----: Goods Routines : --------------------------------------+
+
 }
