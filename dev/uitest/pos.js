@@ -422,23 +422,16 @@ var POS = window.POS = window.POS || {
 
 		//?: {display selected | single folder}
 		if(selected || (T.roots.length == 1))
-		{
 			selected = POS._gs_folder(selected || T.roots[0])
-
-			//~: resize the folders area
-			POS._gs_fds_resize()
-
-			//~: draw the goods
-			POS._gs_fd_gs_draw(selected)
-		}
 		//~: display root folders
 		else
-		{
 			ZeT.each(T.roots, function(f){ POS._gs_fd_draw(f) })
 
-			//~: hide the goods
-			POS._gs_fd_gs_draw()
-		}
+		//~: resize the folders area
+		POS._gs_fds_resize()
+
+		//~: draw the goods
+		POS._gs_fd_gs_draw(selected)
 	},
 
 	goodsScrollClick : function(e)
@@ -778,6 +771,9 @@ var POS = window.POS = window.POS || {
 
 	_gs_gd_click     : function(e)
 	{
+		//~: access good model
+		var m = $(e.delegateTarget).data('model')
+		if(m) POS._lst_gd_add(m)
 	},
 
 	/**
@@ -823,6 +819,90 @@ var POS = window.POS = window.POS || {
 
 		$('.pos-goods-list-scroll.up'  ).toggleClass('enabled', d >= 0)
 		$('.pos-goods-list-scroll.down').toggleClass('enabled', d <= 0)
-	}
+	},
 
+
+// +----: List Routines : ---------------------------------------+
+
+	_lst_gd_add      : function(m)
+	{
+		//?: {has no code}
+		if(ZeT.ises(m.code)) return
+
+		//~: data structures
+		if(!POS.List) POS.List = [], POS.ListMap = {}
+
+		//?: {already has this item}
+		var i = POS.ListMap[m.code]
+		var x = ZeT.isn(i)?(POS.List[i]):(null)
+
+		//?: {has it} increment
+		if(x) x.volume += 1; else
+		//~: has no -> add
+		{
+			x = { good: m, volume: 1, index: POS.List.length }
+			POS.ListMap[m.code] = x.index
+			POS.List.push(x)
+		}
+
+		//~: draw it
+		POS._lst_gd_draw(x)
+	},
+
+	_lst_gd_draw     : function(x)
+	{
+		//?: {has no node} create & append it
+		if(!x.node)
+		{
+			//~: clone the template
+			var n = x.node = $('#pos-list-item-template').
+			  clone().attr('id', null).hide()
+
+			//=: good name
+			n.find('.name').text(x.good.name)
+
+			//=: good cost
+			if(!x.good.price)
+				n.find('.cost span').hide()
+			else
+				n.find('.cost span').text(POS._lst_money(x.good.price))
+
+			//~: append the item
+			$('#pos-main-area-list').append(n)
+		}
+
+		//~: set the fields & show-hide
+		POS._lst_gd_set(x)
+		POS._lst_gd_vis(x)
+	},
+
+	_lst_gd_set      : function(x)
+	{
+		//=: update volume
+		x.node.find('.volume span').text(POS._lst_volume(x.volume))
+	},
+
+	_lst_gd_vis      : function(x)
+	{
+		//~: row class
+		x.node.removeClass('even odd')
+		if(x.index%2 == 0)
+			x.node.addClass('even')
+		else
+			x.node.addClass('odd')
+
+		x.node.show()
+	},
+
+	_lst_money       : function(v)
+	{
+		var f = '' + (Math.floor(v) % 100)
+		while(f.length < 2) f = '0' + f
+		return ZeT.cat(Math.floor(v) / 100, '.', f)
+	},
+
+	_lst_volume      : function(v)
+	{
+		return ('' + v).replace(',', '.')
+	}
 }

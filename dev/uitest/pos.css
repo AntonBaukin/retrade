@@ -66,13 +66,16 @@ body
   width: 250px; height: 450px;
 }
 
-#pos-main-area-list
+#pos-main-area-list-ext > div
 {
   position: absolute;
-  left: 5px; top: 5px;
-  right: 5px; bottom: 5px;
-  background-color: #dcdcdc;
-  opacity: 0.25;
+  left: 2px; top: 5px;
+  right: 2px; bottom: 5px;
+}
+
+#pos-main-area-list-ext > div > table
+{
+  width: 100%;
 }
 
 
@@ -197,4 +200,22 @@ td.pos-goods-item-sep div
 td.pos-goods-item-sep.sep-justify
 {
   width: 1%;
+}
+
+
+/* =============[ Sells List ]=============== */
+
+tr.pos-list-item > td > div
+{
+  text-align: center; white-space: nowrap; overflow: hidden;
+  font-family: "Tahoma", "Arial", sans-serif; cursor: default;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+tr.pos-list-item.even > td > div
+{
+  background-color: #f1edce;
 }

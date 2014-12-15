@@ -60,7 +60,11 @@ $(document).ready(function()
       </div>
 
       <div id = "pos-main-area-list-ext">
-        <div id = "pos-main-area-list"></div>
+        <div>
+          <table cellpadding = "0" cellspacing = "0">
+            <tbody id = "pos-main-area-list"></tbody>
+          </table>
+        </div>
       </div>
 
       <div class = "pos-goods-list-scroll up"></div>
@@ -77,7 +81,6 @@ $(document).ready(function()
 
         <!-- goods line template -->
         <tr id = "pos-goods-line-template" class = "pos-goods-line"></tr>
-
 
         <!-- folder item template -->
         <tr>
@@ -96,6 +99,22 @@ $(document).ready(function()
             <table cellpadding = "0" cellspacing = "0">
               <tbody><tr><td><div></div></td></tr></tbody>
             </table>
+          </td>
+        </tr>
+
+        <!-- check list item template -->
+        <tr id = "pos-list-item-template" class = "pos-list-item">
+          <td>
+            <div>
+              <div class = "item">
+                <span class = "name">Наименование товара</span>
+              </div>
+              <div class = "status"><span class =
+                "cost"><span></span></span><span class =
+                "volume"><span></span></span><span class =
+                "total"><span></span></span>
+              </div>
+            </div>
           </td>
         </tr>
 
