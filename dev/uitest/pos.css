@@ -207,7 +207,7 @@ td.pos-goods-item-sep.sep-justify
 
 tr.pos-list-item div.name, .pos-list-item table.status td
 {
-  white-space: nowrap; overflow: hidden;
+  white-space: nowrap; overflow: hidden; text-align: center;
   font-family: "Tahoma", "Arial", sans-serif; cursor: default;
 
   -webkit-user-select: none;
@@ -218,4 +218,19 @@ tr.pos-list-item div.name, .pos-list-item table.status td
 tr.pos-list-item.even
 {
   background-color: #f1edce;
+}
+
+tr.pos-list-item table.status
+{
+  width: 100%;
+}
+
+tr.pos-list-item table.status td.cost
+{
+  width: 50%; text-align: right;
+}
+
+tr.pos-list-item table.status td.total
+{
+  width: 50%; text-align: left;
 }

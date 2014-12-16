@@ -862,10 +862,10 @@ var POS = window.POS = window.POS || {
 			n.find('.name').text(x.good.name)
 
 			//=: good cost
-			if(!x.good.price)
-				n.find('.cost div').hide()
-			else
+			if(x.good.price)
 				n.find('.cost div').text(POS._lst_money(x.good.price))
+			else
+				n.find('.cost div, .c2v div, .v2t div, .total div').hide()
 
 			//~: append the item
 			$('#pos-main-area-list').append(n)
@@ -880,6 +880,11 @@ var POS = window.POS = window.POS || {
 	{
 		//=: update volume
 		x.node.find('.volume div').text(POS._lst_volume(x.volume))
+
+		//=: update total
+		if(x.good.price)
+			x.node.find('.total div').text(
+			  POS._lst_money(x.volume * x.good.price))
 	},
 
 	_lst_gd_vis      : function(x)
