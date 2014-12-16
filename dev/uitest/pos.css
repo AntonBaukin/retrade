@@ -205,9 +205,9 @@ td.pos-goods-item-sep.sep-justify
 
 /* =============[ Sells List ]=============== */
 
-tr.pos-list-item > td > div
+tr.pos-list-item div.name, .pos-list-item table.status td
 {
-  text-align: center; white-space: nowrap; overflow: hidden;
+  white-space: nowrap; overflow: hidden;
   font-family: "Tahoma", "Arial", sans-serif; cursor: default;
 
   -webkit-user-select: none;
@@ -215,7 +215,7 @@ tr.pos-list-item > td > div
   user-select: none;
 }
 
-tr.pos-list-item.even > td > div
+tr.pos-list-item.even
 {
   background-color: #f1edce;
 }
