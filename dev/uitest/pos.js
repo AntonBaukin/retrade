@@ -927,9 +927,8 @@ var POS = window.POS = window.POS || {
 		//~: access list model
 		var n = $(e.delegateTarget)
 		var m = n.data('model'); if(!m) return
-		var o = n.offset(); POS._num_show('LM',
-		  o.left + n.outerWidth()  + 8,
-		  o.top  + n.outerHeight() / 2)
+		var o = n.offset(); POS._num_show(m, 'LM',
+		  o.left + n.outerWidth()  + 8, o.top  + n.outerHeight() / 2)
 	},
 
 
@@ -938,7 +937,6 @@ var POS = window.POS = window.POS || {
 	_num_init        : function()
 	{
 		var area = $('#pos-goods-numpad')
-		var self = this
 		area.find('td').each(function()
 		{
 			var n = $(this)
@@ -946,11 +944,12 @@ var POS = window.POS = window.POS || {
 			if(ZeT.ises(x)) return
 
 			if(x.match(/\d/))
-				n.data('value', parseInt(x))
+				n.data('digit', parseInt(x))
 			else
 				n.data('key', x)
 
 			n.addClass('numpad-' + x)
+			n.click(POS._num_click)
 		})
 
 		area.click(function(e)
@@ -964,13 +963,13 @@ var POS = window.POS = window.POS || {
 
 			var t = area.data('show-at')
 			if(t && (new Date().getTime() > t + 100))
-				area.fadeOut()
+				POS._num_assign(false)
 		})
 	},
 
-	_num_show        : function(by, x, y)
+	_num_show        : function(m, by, x, y)
 	{
-		//~: target position
+		//~: target area
 		var n = $('#pos-goods-numpad'); n.show()
 		var w = n.outerWidth(), h = n.outerHeight()
 
@@ -989,5 +988,74 @@ var POS = window.POS = window.POS || {
 
 		//~: remember the time
 		n.data('show-at', new Date().getTime())
+
+		//=: current model
+		n.data('current', m)
+
+		//~: current volume to reset
+		m._volume = m.volume
+	},
+
+	_num_click       : function(e)
+	{
+		//~: access current list model
+		var n = $(e.delegateTarget)
+		var m = $('#pos-goods-numpad').data('current'); if(!m) return
+
+		//~: get the button type
+		var x = n.data('key') || n.data('digit')
+		if(ZeT.isu(x)) return
+
+		//~: the volume as a string
+		var v = (m.volume)?('' + m.volume):('0')
+
+		ZeT.log('v = ', v)
+
+		//?: {is digit}
+		if(ZeT.isn(x))
+		{
+			//?: {the first click} overwrite
+			if(m._volume == m.volume)
+				v = '' + x
+			else
+				v += x //<-- append
+		}
+		//?: {commit}
+		else if(x == 'e')
+			return POS._num_assign(true)
+		//?: {back}
+		else if(x == 'x')
+		{
+			v = v.substring(0, v.length - 1)
+			if(!v.length) v = '' + m._volume
+		}
+
+		//~: back to integer & draw
+		m.volume = parseInt(v)
+		POS._lst_gd_set(m)
+	},
+
+	_num_assign      : function(commit)
+	{
+		//~: target area & model
+		var n = $('#pos-goods-numpad')
+		var m = n.data('current')
+
+		//?: {has no volume} reset
+		if(!m.volume) commit = false
+
+		//?: {do reset}
+		if(m && !commit) if(!ZeT.isu(m._volume))
+		{
+			m.volume = m._volume //<-- initial volume
+			POS._lst_gd_set(m) //<-- draw it back
+		}
+
+		//~: cleanup model
+		n.data('current', null)
+		m._volume = undefined
+
+		//~: hide the numpad
+		n.fadeOut()
 	}
 }
