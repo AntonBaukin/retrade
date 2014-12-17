@@ -32,6 +32,9 @@ $(document).ready(function()
   //~: goods scroll click
   $('.pos-goods-list-scroll').click(POS.goodsScrollClick)
 
+  //~: goods inteface
+  POS.goodsUInit()
+
   //~: draw goods folders
   POS.drawGoodsFolders('003994')
 })
@@ -69,6 +72,15 @@ $(document).ready(function()
 
       <div class = "pos-goods-list-scroll up"></div>
       <div class = "pos-goods-list-scroll down"></div>
+    </div>
+
+    <div id = "pos-goods-numpad" class = "pos-numpad" style = "display:none">
+      <table cellpadding = "0" cellspacing = "0">
+        <tr><td><div>1</div></td><td><div>2</div></td><td><div>3</div></td></tr>
+        <tr><td><div>4</div></td><td><div>5</div></td><td><div>6</div></td></tr>
+        <tr><td><div>7</div></td><td><div>8</div></td><td><div>9</div></td></tr>
+        <tr><td><div>x</div></td><td><div>0</div></td><td><div>e</div></td></tr>
+      </table>
     </div>
 
 

@@ -123,6 +123,12 @@ td.pos-goods-item:hover > table td
   font-family: "Lucida Console", monospace;
 }
 
+tr.pos-list-item table.status td.cost,
+  tr.pos-list-item table.status td.total
+{
+  width: 100px;
+}
+
 .pos-list-item .status .volume
 {
   font-size: 14px; color: maroon;

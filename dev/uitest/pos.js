@@ -446,6 +446,11 @@ var POS = window.POS = window.POS || {
 			POS._gs_scroll(+1)
 	},
 
+	goodsUInit      : function()
+	{
+		POS._num_init()
+	},
+
 
 // +----: Goods Folders Routines : ------------------------------+
 
@@ -867,6 +872,12 @@ var POS = window.POS = window.POS || {
 			else
 				n.find('.cost div, .c2v div, .v2t div, .total div').hide()
 
+			//~: assign the model
+			n.data('model', x)
+
+			//~: click listener
+			n.click(POS._lst_click)
+
 			//~: append the item
 			$('#pos-main-area-list').append(n)
 		}
@@ -909,5 +920,74 @@ var POS = window.POS = window.POS || {
 	_lst_volume      : function(v)
 	{
 		return ('' + v).replace(',', '.')
+	},
+
+	_lst_click       : function(e)
+	{
+		//~: access list model
+		var n = $(e.delegateTarget)
+		var m = n.data('model'); if(!m) return
+		var o = n.offset(); POS._num_show('LM',
+		  o.left + n.outerWidth()  + 8,
+		  o.top  + n.outerHeight() / 2)
+	},
+
+
+// +----: List Numpad : -----------------------------------------+
+
+	_num_init        : function()
+	{
+		var area = $('#pos-goods-numpad')
+		var self = this
+		area.find('td').each(function()
+		{
+			var n = $(this)
+			var x = n.find('div').text()
+			if(ZeT.ises(x)) return
+
+			if(x.match(/\d/))
+				n.data('value', parseInt(x))
+			else
+				n.data('key', x)
+
+			n.addClass('numpad-' + x)
+		})
+
+		area.click(function(e)
+		{
+			e.stopPropagation()
+		})
+
+		$('html').click(function(e)
+		{
+			e.stopPropagation()
+
+			var t = area.data('show-at')
+			if(t && (new Date().getTime() > t + 100))
+				area.fadeOut()
+		})
+	},
+
+	_num_show        : function(by, x, y)
+	{
+		//~: target position
+		var n = $('#pos-goods-numpad'); n.show()
+		var w = n.outerWidth(), h = n.outerHeight()
+
+		if(by[1] == 'M') y -= h/2
+
+		//~: main area
+		var a = $('#pos-main-area')
+		var o = a.offset(), H = a.outerHeight()
+
+		//~: y-restriction
+		if(y + h > o.top + H) y = o.top + H - h
+		if(y < o.top) y = o.top
+
+		//~: assign the position
+		n.offset({left: x, top:y})
+
+		//~: remember the time
+		n.data('show-at', new Date().getTime())
 	}
 }
