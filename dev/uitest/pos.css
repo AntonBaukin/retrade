@@ -62,8 +62,8 @@ body
   background: transparent;
   border: solid 2px white;
   border-radius: 4px;
-  left: 5px; top: 40px;
-  width: 250px; height: 450px;
+  left: 5px; top: 60px;
+  width: 250px; height: 430px;
 }
 
 #pos-main-area-list-ext > div:first-child
@@ -274,7 +274,7 @@ tr.pos-list-item div.name, .pos-list-item table.status td
   user-select: none;
 }
 
-tr.pos-list-item.even
+tr.pos-list-item.odd
 {
   background-color: #f1edce;
 }
@@ -294,24 +294,36 @@ tr.pos-list-item table.status td.total
   width: 50%; text-align: left;
 }
 
-#pos-main-area-list-ext div.controls
+#pos-main-area-list-ext table.controls
 {
-  position: absolute; cursor: default;
-  left: 5px; right: 5px;
-  bottom: 5px; height: 28px;
+  position: absolute; cursor: default; display: none;
+  left: 5px; bottom: 5px; right: 5px;
 }
 
-#pos-main-area-list-ext div.controls > div
+#pos-main-area-list-ext table.controls td
 {
-  display: inline-block;
-  width: 36px; height: 24px;
-  margin-right: 6px;
-  border: solid 2px #919056;
-  border-radius: 4px;
-  cursor: pointer;
+  overflow: hidden; padding-right: 10px;
 }
 
-#pos-main-area-list-ext div.controls > div:last-child
+#pos-main-area-list-ext table.controls td:last-child
 {
-  margin-right: 0;
+  padding-right: 0;
+}
+
+#pos-main-area-list-ext table.controls td div
+{
+  width: 36px; height: 24px; cursor: pointer;
+  border: solid 2px #919056; border-radius: 4px;
+  font-family: "Tahoma", "Arial", sans-serif;
+  color: #85844f;
+
+  text-align: center; font-size: 17px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+#pos-main-area-list-ext table.controls td.current div
+{
+  color: white; background-color: #b4b36b;
 }

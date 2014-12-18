@@ -1,5 +1,7 @@
 /* Restera™ POS Terminal Configuration */
 
+POS.GoodsListSize = 2
+
 POS.GoodsRootFolder =
 {
 	name: 'МЕНЮ', alwaysPresent: false,

@@ -209,7 +209,8 @@ var ZeT = window.ZeT = window.ZeT || {
 		var msg = String.prototype.concat.apply('', arguments);
 		if(!ZeT.ises(msg)) console.log(msg)
 	}
-};
+}
+
 
 var POS = window.POS = window.POS || {
 
@@ -448,7 +449,16 @@ var POS = window.POS = window.POS || {
 
 	goodsUInit      : function()
 	{
+		//~: initialize the numpad
 		POS._num_init()
+
+		//~: goods paging
+		if(!ZeT.isn(POS.GoodsListSize))
+			POS.GoodsListSize = 10
+		ZeT.assert(POS.GoodsListSize >= 1)
+
+		//~: click on page number
+		$('#pos-main-area-list-ext .controls div').click(POS._lst_page_click)
 	},
 
 
@@ -869,17 +879,6 @@ var POS = window.POS = window.POS || {
 		POS._lst_reindex(x.index)
 	},
 
-	_lst_reindex     : function(from)
-	{
-		//~: check the left indices
-		for(var j = 0;(j < from);j++)
-			ZeT.assert(POS.List[j].index === j)
-
-		//~: update the right indices
-		for(j = from;(j < POS.List.length);j++)
-			POS.List[j].index = j
-	},
-
 	_lst_gd_draw     : function(x)
 	{
 		//?: {has no node} create & append it
@@ -911,6 +910,9 @@ var POS = window.POS = window.POS || {
 		//~: set the fields & show-hide
 		POS._lst_gd_set(x)
 		POS._lst_gd_vis(x)
+
+		//~: show in the page
+		POS._lst_pageof(x.index)
 	},
 
 	_lst_gd_set      : function(x)
@@ -955,6 +957,74 @@ var POS = window.POS = window.POS || {
 		var m = n.data('model'); if(!m) return
 		var o = n.offset(); POS._num_show(m, 'LM',
 		  o.left + n.outerWidth()  + 8, o.top  + n.outerHeight() / 2)
+	},
+
+	_lst_reindex     : function(from)
+	{
+		//~: check the left indices
+		for(var j = 0;(j < from);j++)
+			ZeT.assert(POS.List[j].index === j)
+
+		//~: update the right indices
+		for(j = from;(j < POS.List.length);j++)
+			POS.List[j].index = j
+
+		//~: update the pages
+		POS._lst_pageof((from == POS.List.length)?(from - 1):(from))
+	},
+
+	/**
+	 * Displays goods in the page of item
+	 * with the index given.
+	 */
+	_lst_pageof      : function(i)
+	{
+		//~: the page to show
+		var N = POS.GoodsListSize; ZeT.assert(N >= 1)
+		ZeT.assert(i >= 0 && i < POS.List.length)
+		var p = Math.floor(i / N)
+		var m = Math.floor((POS.List.length - 1)/ N)
+
+		//?: {has no pages}
+		if((p == 0) && (m == 0))
+		{
+			//~: show all the items
+			$('#pos-main-area-list .pos-list-item').show()
+
+			//~: hide the controls
+			return $('#pos-main-area-list-ext .controls').hide()
+		}
+
+		//?: {has a few pages}
+		if(m <= 5) $('#pos-main-area-list-ext .controls div').each(function(j)
+		{
+			$(this).toggle(j <= m).text('' + (j + 1)).data('page', j)
+			$(this).parent().toggleClass('current', (p == j))
+		})
+
+		//~: hide items not in the range of the page
+		$('#pos-main-area-list .pos-list-item:visible').each(function()
+		{
+			var x = ZeT.assertn($(this).data('model'))
+			$(this).toggle((x.index >= p*N) && (x.index < (p+1)*N))
+		})
+
+		//~: show items of the page
+		for(var j = p*N;(j < (p+1)*N) && (j < POS.List.length);j++)
+			POS.List[j].node.show()
+
+		//~: show the controls
+		$('#pos-main-area-list-ext .controls').show()
+	},
+
+	_lst_page_click  : function(e)
+	{
+		var n = $(e.delegateTarget)
+		var p = n.data('page')
+
+		//?: {has page} show it
+		if(ZeT.isn(p))
+			POS._lst_pageof(p * POS.GoodsListSize)
 	},
 
 
@@ -1034,8 +1104,6 @@ var POS = window.POS = window.POS || {
 
 		//~: the volume as a string
 		var v = (m.volume)?('' + m.volume):('0')
-
-		ZeT.log('v = ', v)
 
 		//?: {is digit}
 		if(ZeT.isn(x))
