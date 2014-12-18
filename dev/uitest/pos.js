@@ -985,6 +985,8 @@ var POS = window.POS = window.POS || {
 		var p = Math.floor(i / N)
 		var m = Math.floor((POS.List.length - 1)/ N)
 
+		ZeT.log('max = ', m, ' cur = ', p)
+
 		//?: {has no pages}
 		if((p == 0) && (m == 0))
 		{
@@ -996,11 +998,30 @@ var POS = window.POS = window.POS || {
 		}
 
 		//?: {has a few pages}
-		if(m <= 5) $('#pos-main-area-list-ext .controls div').each(function(j)
+		if(m < 5) $('#pos-main-area-list-ext .control div').each(function(j)
 		{
 			$(this).toggle(j <= m).text('' + (j + 1)).data('page', j)
 			$(this).parent().toggleClass('current', (p == j))
 		})
+		//~: {has 6 or more pages}
+		else
+		{
+			//~: center item
+			var a2e; if(p <= 2)
+				a2e = [0, 1, 2, 3, m]
+			else if(p+1 >= m)
+				a2e = [0, m-3, m-2, m-1, m]
+			else
+				a2e = [0, p-1, p, p+1, m]
+
+			//~: assign the nodes
+			ZeT.log(a2e)
+			$('#pos-main-area-list-ext .control div').each(function(j)
+			{
+				$(this).show().text('' + (a2e[j]+1)).data('page', a2e[j])
+				$(this).parent().toggleClass('current', (p == a2e[j]))
+			})
+		}
 
 		//~: hide items not in the range of the page
 		$('#pos-main-area-list .pos-list-item:visible').each(function()
