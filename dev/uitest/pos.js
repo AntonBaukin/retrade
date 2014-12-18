@@ -854,6 +854,32 @@ var POS = window.POS = window.POS || {
 		POS._lst_gd_draw(x)
 	},
 
+	_lst_gd_del      : function(x)
+	{
+		//~: un-map the item
+		POS.ListMap[x.code] = undefined
+
+		//~: remove from the list
+		ZeT.assert(POS.List.splice(x.index, 1)[0] === x)
+
+		//~: remove the node
+		x.node.remove()
+
+		//~: reindex the list
+		POS._lst_reindex(x.index)
+	},
+
+	_lst_reindex     : function(from)
+	{
+		//~: check the left indices
+		for(var j = 0;(j < from);j++)
+			ZeT.assert(POS.List[j].index === j)
+
+		//~: update the right indices
+		for(j = from;(j < POS.List.length);j++)
+			POS.List[j].index = j
+	},
+
 	_lst_gd_draw     : function(x)
 	{
 		//?: {has no node} create & append it
@@ -1039,16 +1065,16 @@ var POS = window.POS = window.POS || {
 	{
 		//~: target area & model
 		var n = $('#pos-goods-numpad')
-		var m = n.data('current')
+		var m = n.data('current'); if(!m) return
 
-		//?: {has no volume} reset
-		if(!m.volume) commit = false
-
+		//?: {commit with no volume} delete
+		if(commit && !m.volume)
+			POS._lst_gd_del(m)
 		//?: {do reset}
-		if(m && !commit) if(!ZeT.isu(m._volume))
+		else if(!commit && !ZeT.isu(m._volume))
 		{
 			m.volume = m._volume //<-- initial volume
-			POS._lst_gd_set(m) //<-- draw it back
+			POS._lst_gd_set(m)   //<-- draw it back
 		}
 
 		//~: cleanup model

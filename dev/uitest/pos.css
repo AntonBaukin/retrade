@@ -66,14 +66,14 @@ body
   width: 250px; height: 450px;
 }
 
-#pos-main-area-list-ext > div
+#pos-main-area-list-ext > div:first-child
 {
   position: absolute;
   left: 2px; top: 5px;
   right: 2px; bottom: 5px;
 }
 
-#pos-main-area-list-ext > div > table
+#pos-main-area-list-ext > div:first-child > table
 {
   width: 100%;
 }
@@ -292,4 +292,26 @@ tr.pos-list-item table.status td.cost
 tr.pos-list-item table.status td.total
 {
   width: 50%; text-align: left;
+}
+
+#pos-main-area-list-ext div.controls
+{
+  position: absolute; cursor: default;
+  left: 5px; right: 5px;
+  bottom: 5px; height: 28px;
+}
+
+#pos-main-area-list-ext div.controls > div
+{
+  display: inline-block;
+  width: 36px; height: 24px;
+  margin-right: 6px;
+  border: solid 2px #919056;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#pos-main-area-list-ext div.controls > div:last-child
+{
+  margin-right: 0;
 }
