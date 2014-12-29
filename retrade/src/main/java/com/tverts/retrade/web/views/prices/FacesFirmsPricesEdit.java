@@ -2,6 +2,8 @@ package com.tverts.retrade.web.views.prices;
 
 /* Java */
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,11 +31,16 @@ import com.tverts.model.ModelBean;
 
 /* com.tverts: actions */
 
-import static com.tverts.actions.ActionsPoint.actionRun;
+import com.tverts.actions.ActionsPoint;
+import com.tverts.actions.ActionType;
 
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.core.GetUnity;
+
+/* com.tverts: retrade api */
+
+import com.tverts.api.retrade.prices.FirmGoodPrice;
 
 /* com.tverts: retrade domain (firms + goods + prices) */
 
@@ -42,6 +49,7 @@ import com.tverts.retrade.domain.firm.Contractors;
 import com.tverts.retrade.domain.firm.GetContractor;
 import com.tverts.retrade.domain.prices.ActFirmPrices;
 import com.tverts.retrade.domain.prices.FirmsPricesEditModelBean;
+import com.tverts.retrade.domain.prices.RepriceDoc;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.prices.Prices;
 
@@ -141,10 +149,39 @@ public class FacesFirmsPricesEdit extends ModelView
 		List<PriceListEntity> pls = loadPriceLists();
 		List<Contractor>      cos = loadContractors();
 
+		//~: list with the changes for the contractors
+		List<FirmGoodPrice>   fps = new ArrayList<>();
+
 		//~: invoke action for each contractor
-		EX.asserte(pls);
-		for(Contractor co : cos)
-			actionRun(ActFirmPrices.ASSIGN, co, ActFirmPrices.LISTS, pls);
+		EX.asserte(pls); for(Contractor co : cos)
+			ActionsPoint.actionRun(ActFirmPrices.ASSIGN, co,
+			  ActFirmPrices.LISTS, pls, ActFirmPrices.FIRM_CHANGES, fps);
+
+		//?: {has no changes} do not create the document
+		if(fps.isEmpty()) return null;
+
+		RepriceDoc rd  = new RepriceDoc();
+
+		//=: domain
+		rd.setDomain(getDomain());
+
+		//=: code
+		rd.setCode(Prices.createRepriceDocFirmsCode(rd.getDomain()));
+
+		//=: change time (now)
+		rd.setChangeTime(new Date());
+
+		//=: affected contractors
+		rd.setContractors(new HashSet<>(cos));
+
+		//=: ox -> firm prices
+		rd.getOx().setFirmPrices(fps);
+
+		//!: save the document
+		rd.updateOx();
+		ActionsPoint.actionRun(ActionType.SAVE, rd,
+		  ActionsPoint.UNITY_TYPE, Prices.TYPE_FIRM_REPRICE
+		);
 
 		return null;
 	}

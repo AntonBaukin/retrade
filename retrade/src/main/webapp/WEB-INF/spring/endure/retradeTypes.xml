@@ -352,7 +352,25 @@
 
           <property name  = 'titleLo'
                     value = 'Изменение цен'/>
+        </bean>
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type for Firm Price Change Document                 ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.retrade.domain.prices.RepriceDoc'/>
+
+          <property name  = 'typeName'
+                    value = 'ReTrade: Goods: Firm Price Change Document'/>
+
+          <property name  = 'title'
+                    value = 'Firm prices change'/>
+
+          <property name  = 'titleLo'
+                    value = 'Изменение цен контрагента'/>
         </bean>
 
 

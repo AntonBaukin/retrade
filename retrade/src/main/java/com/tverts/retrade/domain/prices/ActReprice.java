@@ -132,6 +132,16 @@ public class ActReprice extends ActionBuilderReTrade
 		//?: {target is not a RepriceDoc}
 		checkTargetClass(abr, RepriceDoc.class);
 
+		//~: choose the document type
+		UnityType type = chooseRepriceType(abr);
+
+		//?: {this is the firms changes}
+		if(Prices.TYPE_FIRM_REPRICE.equals(type.getTypeName()))
+		{
+			saveFirmsRepriceDoc(abr);
+			return;
+		}
+
 		//?: {has reprice edit instance} add update
 		if(param(abr, REPRICE_EDIT) != null)
 			nest(abr, UPDATE, target(abr),
@@ -163,11 +173,37 @@ public class ActReprice extends ActionBuilderReTrade
 			}
 		}));
 
-		//~: create the payment way unity (is executed first!)
-		xnest(abr, ActUnity.CREATE, target(abr),
-		  ActUnity.UNITY_TYPE, chooseRepriceType(abr));
+		//~: create the document unity (is executed first!)
+		xnest(abr, ActUnity.CREATE, target(abr), ActUnity.UNITY_TYPE, type);
 
 		complete(abr);
+	}
+
+	protected void saveFirmsRepriceDoc(final ActionBuildRec abr)
+	{
+		RepriceDoc rd = target(abr, RepriceDoc.class);
+
+		//?: {has no price list}
+		EX.assertx(rd.getPriceList() == null);
+
+		//?: {has no changes}
+		EX.assertx(rd.getChanges().isEmpty());
+
+		//?: {has time assigned}
+		EX.assertn(rd.getChangeTime());
+
+		//?: {has contractors}
+		EX.asserte(rd.getContractors());
+
+		//?: {has ox-changes}
+		EX.asserte(rd.getOx().getFirmPrices());
+
+		//~: save the document
+		chain(abr).first(new SaveNumericIdentified(task(abr)));
+
+		//~: create the document unity (is executed first!)
+		xnest(abr, ActUnity.CREATE, target(abr),
+		  ActUnity.UNITY_TYPE, chooseRepriceType(abr));
 	}
 
 	protected void fixRepriceDoc(ActionBuildRec abr)

@@ -71,6 +71,9 @@ public class      RepriceDoc
 		//=: price list
 		pc.setList((priceList == null)?(null):(priceList.getPrimaryKey()));
 
+		//=: fixed flag
+		pc.setFixed(getChangeTime() != null);
+
 		//HINT: the changes are not updated here!
 	}
 

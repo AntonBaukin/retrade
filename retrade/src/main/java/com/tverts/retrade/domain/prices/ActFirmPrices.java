@@ -24,6 +24,10 @@ import com.tverts.actions.ActionType;
 
 import com.tverts.hibery.HiberPoint;
 
+/* com.tverts: retrade api */
+
+import com.tverts.api.retrade.prices.FirmGoodPrice;
+
 /* com.tverts: retrade domain (core + firms) */
 
 import com.tverts.retrade.domain.ActionBuilderReTrade;
@@ -56,8 +60,16 @@ public class ActFirmPrices extends ActionBuilderReTrade
 	 * of {@link PriceListEntity} references
 	 * to assign to the Contractor target.
 	 */
-	public static final String LISTS      =
+	public static final String LISTS        =
 	  ActFirmPrices.class.getName() + ": price-lists";
+
+
+	/**
+	 * Collection of {@link FirmGoodPrice} objects where
+	 * to add changes related to the target contractor.
+	 */
+	public static final String FIRM_CHANGES =
+	  ActFirmPrices.class.getName() + ": firm-good-prices";
 
 
 	/* public: ActionBuilder interface */
@@ -84,7 +96,9 @@ public class ActFirmPrices extends ActionBuilderReTrade
 
 		//~: save the price list
 		chain(abr).first(new AssignPriceLists(
-		  task(abr), (List<PriceListEntity>)lists));
+		   task(abr), (List<PriceListEntity>)lists,
+		  (List<FirmGoodPrice>)param(abr, FIRM_CHANGES, List.class)
+		));
 
 		complete(abr);
 	}
@@ -93,10 +107,13 @@ public class ActFirmPrices extends ActionBuilderReTrade
 	{
 		/* public: constructor */
 
-		public AssignPriceLists(ActionTask task, List<PriceListEntity> lists)
+		public AssignPriceLists(ActionTask task,
+		  List<PriceListEntity> lists, List<FirmGoodPrice> changes)
 		{
 			super(task);
-			this.lists = EX.assertn(lists);
+
+			this.lists   = EX.assertn(lists);
+			this.changes = changes;
 		}
 
 		/* public: Action interface */
@@ -109,6 +126,7 @@ public class ActFirmPrices extends ActionBuilderReTrade
 
 		/* protected: ActionBase interface */
 
+		@SuppressWarnings("unchecked")
 		protected void execute()
 		  throws Throwable
 		{
@@ -116,8 +134,12 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			current = bean(GetPrices.class).
 			  loadPrices(target(Contractor.class).getPrimaryKey());
 
+			//~: select current items [good, price, cross]
+			crosses = (List<Object[]>) bean(GetPrices.class).
+			  selectCurrentPrices(target(Contractor.class).getPrimaryKey());
+
 			//~: map existing by the price lists
-			Map<Long, FirmPrices> p2fp = new HashMap<Long, FirmPrices>(current.size());
+			Map<Long, FirmPrices> p2fp = new HashMap<>(current.size());
 			for(FirmPrices fp : current)
 				EX.assertx(p2fp.put(fp.getPriceList().getPrimaryKey(), fp) == null);
 
@@ -125,17 +147,15 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			//  else Price List. Priority may be updated.
 
 			//~: the resulting list
-			prices = new ArrayList<FirmPrices>(lists.size());
+			prices = new ArrayList<>(lists.size());
 
 			//~: deleted items
-			deleted = new HashSet<FirmPrices>(7);
+			deleted = new HashSet<>(7);
 
 			//~: added items
-			added = new HashSet<FirmPrices>(7);
+			added = new HashSet<>(7);
 
 			//c: process the new lists
-			Map<Integer, FirmPrices> imap =
-			  new HashMap<Integer, FirmPrices>(lists.size());
 			for(int i = 0;(i < lists.size());i++)
 			{
 				PriceListEntity p = EX.assertn(lists.get(i));
@@ -174,6 +194,9 @@ public class ActFirmPrices extends ActionBuilderReTrade
 				y.setPriceList(p);
 			}
 
+			//~: cache of price crosses
+			this.cache = new HashMap<>(deleted.size());
+
 			//[0]: remove the obsolete associations
 			deleted.addAll(current);   //<-- all existing
 			deleted.removeAll(prices); //<-- except the retained
@@ -199,7 +222,7 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			for(FirmPrices fp : deleted)
 			{
 				//~: delete the cross items
-				get.deletePriceCrosses(fp);
+				get.deletePriceCrosses(fp, this.cache);
 
 				//~: delete the association
 				session().delete(fp);
@@ -235,26 +258,22 @@ public class ActFirmPrices extends ActionBuilderReTrade
 		@SuppressWarnings("unchecked")
 		protected void relinkPrices()
 		{
-			//~: select current items [good, price, cross]
-			List<Object[]> c = (List<Object[]>) bean(GetPrices.class).
-			  selectCurrentPrices(target(Contractor.class).getPrimaryKey());
-
-			//~: map them by the goods
-			Map<Long, Object[]> m = new HashMap<Long, Object[]>(c.size());
-			for(Object[] r : c) m.put((Long)r[0], r);
+			//~: map previous crosses by the goods [good, price, cross]
+			Map<Long, Object[]> m = new HashMap<>(this.crosses.size());
+			for(Object[] r : this.crosses) m.put((Long)r[0], r);
 
 			//~: select effective items
 			List<Object[]> e = (List<Object[]>) bean(GetPrices.class).
 			  selectEffectivePrices(target(Contractor.class).getPrimaryKey());
 
 			//~: all effective goods
-			Set<Long> a = new HashSet<Long>(e.size());
+			Set<Long> a = new HashSet<>(e.size());
 
 			//~: current price crosses to delete
-			Set<Long> d = new HashSet<Long>(17);
+			Set<Long> d = new HashSet<>(17);
 
 			//~: crosses to add
-			Map<Long, Long> i = new HashMap<Long, Long>(17);
+			Map<Long, Long> i = new HashMap<>(17);
 
 			//c: scan for the changes
 			for(Object[] r : e)
@@ -283,19 +302,41 @@ public class ActFirmPrices extends ActionBuilderReTrade
 
 			//~: find obsolete crosses
 			{
-				Set<Long> xo = new HashSet<Long>(m.keySet());
+				Set<Long> xo = new HashSet<>(m.keySet());
 				xo.removeAll(a); //<-- remove goods with prices
 				for(Long g : xo) d.add((Long)(m.get(g)[2]));
 			}
 
 			//?: {has crosses to delete}
+			Map<Long, FirmGoodPrice> fgpm = new HashMap<>();
 			if(!d.isEmpty())
 			{
 				//~: for all the crosses
 				for(Long x : d)
 				{
-					PriceCross pc = (PriceCross) session().
+					//~: take the cross from the items
+					PriceCross pc = cache.get(x);
+					if(pc == null) pc = (PriceCross) session().
 					  load(PriceCross.class, x);
+
+					//?: {has changes to save}
+					if(changes != null)
+					{
+						FirmGoodPrice fgp; changes.add(fgp = new FirmGoodPrice());
+						fgpm.put(pc.getGoodUnit().getPrimaryKey(), fgp);
+
+						//=: contractor
+						fgp.setContractor(target(Contractor.class).getPrimaryKey());
+
+						//=: good
+						fgp.setGood(pc.getGoodUnit().getPrimaryKey());
+
+						//=: old price list
+						fgp.setOldList(pc.getGoodPrice().getPriceList().getPrimaryKey());
+
+						//~: old price
+						fgp.setOldPrice(pc.getGoodPrice().getPrice());
+					}
 
 					//!: delete the cross
 					session().delete(pc);
@@ -313,8 +354,7 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			if(i.isEmpty()) return;
 
 			//~: map the associated price lists
-			Map<Long, FirmPrices> p2fp =
-			  new HashMap<Long, FirmPrices>(prices.size());
+			Map<Long, FirmPrices> p2fp = new HashMap<>(prices.size());
 			for(FirmPrices fp : prices)
 				p2fp.put(fp.getPriceList().getPrimaryKey(), fp);
 
@@ -356,6 +396,30 @@ public class ActFirmPrices extends ActionBuilderReTrade
 
 				//!: save the cross
 				session().save(pc);
+
+				//?: {has changes to save}
+				if(changes != null)
+				{
+					//~: lookup from delete entry
+					FirmGoodPrice fgp = fgpm.get(pc.getGoodUnit().getPrimaryKey());
+					if(fgp == null) //<-- ?: {not found it}
+					{
+						changes.add(fgp = new FirmGoodPrice());
+						fgpm.put(pc.getGoodUnit().getPrimaryKey(), fgp);
+
+						//=: contractor
+						fgp.setContractor(target(Contractor.class).getPrimaryKey());
+
+						//=: good
+						fgp.setGood(pc.getGoodUnit().getPrimaryKey());
+					}
+
+					//=: new price list
+					fgp.setNewList(pc.getGoodPrice().getPriceList().getPrimaryKey());
+
+					//~: new price
+					fgp.setNewPrice(pc.getGoodPrice().getPrice());
+				}
 			}
 
 			//!: flush the session (to be sure)
@@ -363,12 +427,19 @@ public class ActFirmPrices extends ActionBuilderReTrade
 		}
 
 
-		/* protected: task state */
+		/* protected: task parameters */
 
 		protected final List<PriceListEntity> lists;
-		protected List<FirmPrices>            prices;
-		protected List<FirmPrices>            current;
-		protected Set<FirmPrices>             deleted;
-		protected Set<FirmPrices>             added;
+		protected final List<FirmGoodPrice>   changes;
+
+
+		/* protected: task state */
+
+		protected List<FirmPrices>      prices;
+		protected List<FirmPrices>      current;
+		protected List<Object[]>        crosses;
+		protected Set<FirmPrices>       deleted;
+		protected Set<FirmPrices>       added;
+		protected Map<Long, PriceCross> cache;
 	}
 }

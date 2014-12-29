@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 /* com.tverts: hibery */
 
+import com.tverts.hibery.HiberPoint;
 import com.tverts.hibery.qb.QueryBuilder;
 import com.tverts.hibery.qb.WhereLogic;
 import com.tverts.hibery.qb.WherePartLogic;
@@ -609,15 +610,27 @@ from GoodPrice gp where
 
 	/* Price Crosses  */
 
-	public void deletePriceCrosses(FirmPrices fp)
+	public void deletePriceCrosses(FirmPrices fp, Map<Long, PriceCross> cache)
 	{
 
-// delete from PriceCross where (firmPrices = :fp)
+// from PriceCross where (firmPrices = :fp)
 
 		final String Q =
-"  delete from PriceCross where (firmPrices = :fp)";
+"  from PriceCross where (firmPrices = :fp)";
 
-		Q(Q, "fp", fp).executeUpdate();
+		//~: select the items
+		List<PriceCross> sel = list(PriceCross.class, Q, "fp", fp);
+
+		//~: map them and remove
+		for(PriceCross pc : sel)
+		{
+			//~: un-proxy & cache
+			pc = HiberPoint.unproxy(pc);
+			cache.put(pc.getPrimaryKey(), pc);
+
+			//!: remove the item
+			session().delete(pc);
+		}
 	}
 
 	/**

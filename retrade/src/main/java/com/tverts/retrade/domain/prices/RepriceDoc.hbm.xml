@@ -48,8 +48,7 @@
     <many-to-one name = 'priceList'
       foreign-key = 'fk_reprice_doc_price_list'>
 
-      <column name = 'fk_price_list' not-null = 'true'
-        index = 'ix_reprice_doc_price_list'>
+      <column name = 'fk_price_list' index = 'ix_reprice_doc_price_list'>
 
         <comment>The Price List which positions are modified</comment>
       </column>

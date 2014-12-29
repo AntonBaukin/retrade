@@ -57,7 +57,7 @@ public class Prices
 	/**
 	 * Unity Type of {@link PriceListEntity}.
 	 */
-	public static final String TYPE_PRICE_LIST    =
+	public static final String TYPE_PRICE_LIST   =
 	  "ReTrade: Prices: Price List";
 
 
@@ -67,8 +67,15 @@ public class Prices
 	 * it does not implement United, but is primary generated
 	 * to support it if needed.
 	 */
-	public static final String TYPE_REPRICE_DOC   =
+	public static final String TYPE_REPRICE_DOC  =
 	  "ReTrade: Goods: Price Change Document";
+
+	/**
+	 * Price Change Document with changes for the
+	 * contractors having Lists association changed.
+	 */
+	public static final String TYPE_FIRM_REPRICE =
+	  "ReTrade: Goods: Firm Price Change Document";
 
 
 	/* Routines for Price Lists */
@@ -97,5 +104,12 @@ public class Prices
 	public static String createRepriceDocCode(PriceListEntity pl)
 	{
 		return String.format("ИЦ.ИСХ-%s", EX.asserts(pl.getCode()));
+	}
+
+	public static String createRepriceDocFirmsCode(Domain domain)
+	{
+		return String.format("ИЦ.КОН-%d", bean(IncValues.class).
+		  txIncValue(domain, UnityTypes.unityType(
+		    RepriceDoc.class, TYPE_FIRM_REPRICE), "code", 1));
 	}
 }
