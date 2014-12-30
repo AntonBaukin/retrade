@@ -62,7 +62,7 @@ ${v.checkEntityRequested}
     <x:component coid = "${z:vid(v, 'toggle-contractors')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Контрагенты',
-        hidden: #{not v.hasContractors and not v.oneContractor},
+        hidden: #{not v.hasChanges or not v.hasContractors or v.oneContractor},
         enableToggle: true, tooltipType: 'title',
         margin: extjsf.pts(0, 0, 0, 6),
         tooltip: 'Отобразить изменения цен для затронутых контрагентов'
@@ -401,7 +401,7 @@ ${v.checkEntityRequested}
 
         <tr>
           <td class = "retrade-info-title retrade-info-title-reprice-contractor-code">
-            <div>Код к-та</div>
+            <div>Код контрагента</div>
           </td>
           <td class = "retrade-info-value retrade-info-value-reprice-contractor-code">
             <div>#{v.firstContractor.code}</div>

@@ -561,13 +561,13 @@ td.retrade-info-value div,
  .retrade-info-div .retrade-info-value
 {
   white-space: nowrap; padding: 1pt 2pt 1pt 2pt;
-  font-size: 10pt; background-color: #fafafa;
+  font-size: 10pt; background-color: #fffbf7;
 }
 
 span.retrade-info-value
 {
   white-space: nowrap; padding: 1pt 2pt 1pt 2pt;
-  font-size: 10pt; background-color: #fafafa;
+  font-size: 10pt; background-color: #fffbf7;
 }
 
 .retrade-info-div .retrade-info-value-message-hard

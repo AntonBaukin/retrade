@@ -859,7 +859,7 @@ from GoodPrice gp where
 		QueryBuilder qb = new QueryBuilder();
 
 		//~: from clause
-		qb.setClauseFrom("RepriceDoc rd join rd.priceList pl");
+		qb.setClauseFrom("RepriceDoc rd left outer join rd.priceList pl");
 		qb.nameEntity("RepriceDoc",  RepriceDoc.class);
 
 		//~: select clause
@@ -899,7 +899,7 @@ from GoodPrice gp where
 		QueryBuilder qb = new QueryBuilder();
 
 		//~: from clause
-		qb.setClauseFrom("RepriceDoc rd join rd.priceList pl");
+		qb.setClauseFrom("RepriceDoc rd left outer join rd.priceList pl");
 		qb.nameEntity("RepriceDoc",  RepriceDoc.class);
 
 		//~: select clause

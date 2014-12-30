@@ -204,6 +204,8 @@ public class ActReprice extends ActionBuilderReTrade
 		//~: create the document unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr),
 		  ActUnity.UNITY_TYPE, chooseRepriceType(abr));
+
+		complete(abr);
 	}
 
 	protected void fixRepriceDoc(ActionBuildRec abr)

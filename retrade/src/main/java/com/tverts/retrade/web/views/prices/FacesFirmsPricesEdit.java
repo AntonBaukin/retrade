@@ -153,9 +153,16 @@ public class FacesFirmsPricesEdit extends ModelView
 		List<FirmGoodPrice>   fps = new ArrayList<>();
 
 		//~: invoke action for each contractor
-		EX.asserte(pls); for(Contractor co : cos)
-			ActionsPoint.actionRun(ActFirmPrices.ASSIGN, co,
-			  ActFirmPrices.LISTS, pls, ActFirmPrices.FIRM_CHANGES, fps);
+		EX.asserte(pls); for(Contractor co : cos) try
+	{
+		ActionsPoint.actionRun(ActFirmPrices.ASSIGN, co,
+		  ActFirmPrices.LISTS, pls, ActFirmPrices.FIRM_CHANGES, fps
+		);
+	}
+	catch(Throwable e)
+	{
+		throw EX.wrap(e);
+	}
 
 		//?: {has no changes} do not create the document
 		if(fps.isEmpty()) return null;

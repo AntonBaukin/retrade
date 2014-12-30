@@ -134,7 +134,7 @@ public class ActFirmPrices extends ActionBuilderReTrade
 			current = bean(GetPrices.class).
 			  loadPrices(target(Contractor.class).getPrimaryKey());
 
-			//~: select current items [good, price, cross]
+			//~: select current items ids: [good, price, cross]
 			crosses = (List<Object[]>) bean(GetPrices.class).
 			  selectCurrentPrices(target(Contractor.class).getPrimaryKey());
 
