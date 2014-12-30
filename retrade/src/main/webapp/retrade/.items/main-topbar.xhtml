@@ -28,8 +28,8 @@
 
         xtype: 'button', flex: 0, text: 'РеТрейд',
         margin: extjsf.dpts(0, 6, 0, 0), height: 30,
-        icon: "${z:url('/resources/icons/retrade_16.png')}",
-        componentCls: 'retrade-button-22pt'
+        componentCls: 'retrade-button-22pt',
+        iconCls: 'retrade-main-icon'
 
       </f:facet>
 
@@ -42,11 +42,9 @@
         <x:component coid = "${z:vid(localView, 'retrade-main-menu-docs')}">
 
           <f:facet name = "extjs-props">
-
             text: 'Основные документы', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/document_16.png')}",
-            disabled: ${not rootView.isSecure('view: documents')}
-
+            disabled: ${not rootView.isSecure('view: documents')},
+            iconCls: 'retrade-document-icon'
           </f:facet>
         </x:component>
 
@@ -55,8 +53,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Документы изменения цен', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/price_delta_16.png')}",
-            disabled: ${not rootView.isSecure('view: price change documents')}
+            disabled: ${not rootView.isSecure('view: price change documents')},
+            iconCls: 'retrade-price-delta-icon'
           </f:facet>
         </x:component>
 
@@ -106,8 +104,8 @@
 
               <f:facet name = "extjs-props">
                 text: 'Пользователи', xtype: 'menuitem',
-                icon: "${z:url('/resources/icons/user_16.png')}",
-                disabled: ${not rootView.isSecure('secure: view: auth logins')}
+                disabled: ${not rootView.isSecure('secure: view: auth logins')},
+                iconCls: 'retrade-user-icon'
               </f:facet>
             </x:component>
 
@@ -202,8 +200,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Контрагенты', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/contractor_16.png')}",
-            disabled: ${not rootView.isSecure('view: contractors')}
+            disabled: ${not rootView.isSecure('view: contractors')},
+            iconCls: 'retrade-contractor-icon'
           </f:facet>
         </x:component>
 
