@@ -1,9 +1,11 @@
 /*===============================================================+
  |                                                               |
- |   Clocks Script for ReTrade                                   |
+ |   Clocks Styles for ReTrade                                   |
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
+
+/* Clocks Styles */
 
 .retrade-clocks-frame,
  .retrade-clocks-dots, .retrade-clocks-glass,
@@ -168,4 +170,37 @@
 
 .retrade-clocks-HHM9 { 
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDQ4Ljg5IDE2MCA2Mi4yMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDQ4Ljg5IDE2MCA2Mi4yMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8ZyBpZD0iRGlnaXRzX0Zyb250Ij4NCgk8cGF0aCBpZD0iX3gzMF8wOjBYXzFfIiBmaWxsPSIjMDEwMTAxIiBkPSJNMTUzLjc3Nyw1NS4xMTFsLTcuMzA0LDcuNzMzaC0xMy43NjRsLTcuMzA0LTcuNzMzSDE1My43NzcgTTE1My43NzcsMTA2LjY2N2gtMjguMzcyDQoJCWw3LjMwNC03LjY2aDEzLjc2NEwxNTMuNzc3LDEwNi42NjcgTTEyNCw3Ni41NDNWNTYuNTg0bDcuMzA0LDcuNjZ2MTAuMzg1bC00LjU2NCw0Ljg2MUwxMjQsNzYuNTQzIE0xNTUuMTExLDg1LjIzNXYxOS45NTkNCgkJbC03LjMwNC03LjY2Vjg3LjE0OWw0LjU2NC00Ljc4OEwxNTUuMTExLDg1LjIzNSBNMTQ3LjgwNyw3NC42MjhWNjQuMjQ0bDcuMzA0LTcuNjZ2MTkuOTU5bC0yLjczOSwyLjk0NkwxNDcuODA3LDc0LjYyOA0KCQkgTTE0Ny4zODYsNzcuMDU5bDMuNjUyLDMuODNsLTMuNjUyLDMuODNoLTE1LjU5MWwtMy42NTItMy44M2wzLjY1Mi0zLjgzSDE0Ny4zODYiLz4NCjwvZz4NCjwvc3ZnPg0K); 
+}
+
+
+/* Events Numbers Styles */
+
+table.retrade-eventsnum-area
+{
+  height: 100%; width: 100%;
+}
+
+td.retrade-eventsnum-number
+{
+  width: 100%;
+}
+
+table.retrade-eventsnum-area td > div
+{
+  height: 100%; width: 100%;
+}
+
+td.retrade-eventsnum-left div
+{
+  background-color: green;
+}
+
+td.retrade-eventsnum-number div
+{
+  background-color: red;
+}
+
+td.retrade-eventsnum-right div
+{
+  background-color: blue;
 }

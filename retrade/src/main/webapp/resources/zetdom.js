@@ -1195,6 +1195,39 @@ ZeT.extendClass('ZeT.Layout.Template', {
 
 	/**
 	 * This method takes all the ways of the template
+	 * and invokes the method given on each of the nodes.
+	 *
+	 * The argument lists are as follows:
+	 *
+	 *  · node, callback;
+	 *  · callback
+	 *
+	 * Node may be defined by it's ID. If node is not
+	 * given, the template's one is taken.
+	 *
+	 * Callback function takes the following arguments:
+	 *   (node by the way, way key).
+	 *
+	 * When callback returns false, iteration breaks.
+	 */
+	walkEach        : function()
+	{
+		var self = this
+		var n = arguments[0], f = arguments[1]
+
+		if(ZeT.iss(n)) n = ZeT.assertn(ZeTD.n(n))
+		if(!ZeTD.isxn(n)) { n = this.node(); f = arguments[0] }
+		ZeT.assert(ZeT.isf(f))
+
+		this._walk_all(function(key)
+		{
+			var x = self.walk(key, n)
+			if(x) return f(x, key)
+		})
+	},
+
+	/**
+	 * This method takes all the ways of the template
 	 * and invokes fill operation on each of the node
 	 * by the way. The argument lists are as follows:
 	 *
@@ -1245,11 +1278,13 @@ ZeT.extendClass('ZeT.Layout.Template', {
 		return res;
 	},
 
-	_walk_all     : function(cb)
+	_walk_all     : function(f)
 	{
 		var key, keys = ZeT.keys(this.ways());
 		for(var i = 0;(i < keys.length);i++)
-			if(ZeT.iss(key = keys[i])) cb(key)
+			if(ZeT.iss(key = keys[i]))
+				if(f(key) === false)
+					break
 	}
 })
 

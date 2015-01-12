@@ -439,8 +439,8 @@ var ZeT = window.ZeT = window.ZeT || {
 	{
 		if(test) return test
 
-		var m = ZeTS.cati(1, arguments);
-		if(ZeTS.ises(m)) m = 'Assertion failed!';
+		var m = ZeTS.cati(1, arguments)
+		if(ZeTS.ises(m)) m = 'Assertion failed!'
 
 		throw m
 	},
@@ -454,8 +454,8 @@ var ZeT = window.ZeT = window.ZeT || {
 		if((obj !== null) && !ZeT.isu(obj))
 			return obj
 
-		var m = ZeTS.cati(1, arguments);
-		if(ZeTS.ises(m)) m = 'The object is undefined or null!';
+		var m = ZeTS.cati(1, arguments)
+		if(ZeTS.ises(m)) m = 'The object is undefined or null!'
 
 		throw m
 	},
@@ -468,8 +468,23 @@ var ZeT = window.ZeT = window.ZeT || {
 		if(ZeT.isa(array) && array.length)
 			return array
 
-		var m = ZeTS.cati(1, arguments);
-		if(ZeTS.ises(m)) m = 'A non-empty array is required!';
+		var m = ZeTS.cati(1, arguments)
+		if(ZeTS.ises(m)) m = 'A non-empty array is required!'
+
+		throw m
+	},
+
+	/**
+	 * Tests that the first argument is a string
+	 * that is not whitespace-empty. Returns it.
+	 */
+	asserts          : function(str /* messages */)
+	{
+		if(!ZeTS.ises(str))
+			return str
+
+		var m = ZeTS.cati(1, arguments)
+		if(ZeTS.ises(m)) m = 'A not whitespace-empty string is required!'
 
 		throw m
 	},
@@ -477,7 +492,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	/**
 	 * Evaluates the script given in the function body.
 	 */
-	xeval            : function (script)
+	xeval            : function(script)
 	{
 		if(ZeTS.ises(script)) return;
 		eval('((function(){'.concat(script, '})())'))
@@ -658,6 +673,8 @@ var ZeT$Impl = ZeT.define('ZeT$Impl', {
 				ZeT$Impl.Class.extend(Class, props[i])
 
 			Class.prototype.constructor = Class;
+			Class.prototype.static = {};
+
 			return Class;
 		}
 

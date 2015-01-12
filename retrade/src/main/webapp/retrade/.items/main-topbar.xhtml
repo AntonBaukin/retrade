@@ -63,8 +63,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Платёжные документы', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/payment_16.png')}",
-            disabled: ${not rootView.isSecure('view: payments')}
+            disabled: ${not rootView.isSecure('view: payments')},
+            iconCls: 'retrade-payment-icon'
           </f:facet>
         </x:component>
 
@@ -91,7 +91,7 @@
 
           <f:facet name = "extjs-props">
             text: 'Настройки', xtype: 'menuitem', hideOnClick: false,
-            icon: "${z:url('/resources/icons/retrade_system_16.png')}"
+            iconCls: 'retrade-settings-icon'
           </f:facet>
 
           <x:menu coid = "${z:vid(localView, 'retrade-main-menu-settings-menu')}">

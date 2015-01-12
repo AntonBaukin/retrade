@@ -1515,36 +1515,58 @@ ReTrade.selset = ZeT.defineInstance('ReTrade.selset', ReTrade.SelSet);
 ReTrade.desktop.readyPoint('ReTrade.selset')
 
 
-// +----: ReTrade Clocks :---------------------------------------+
+// +----: ReTrade Visual :---------------------------------------+
 
-ReTrade.Clocks = ZeT.defineClass('ReTrade.Clocks', {
+ReTrade.Visual = ZeT.defineClass('ReTrade.Visual', {
 
-	init  : function(opts)
+	_init_struct      : function(opts)
 	{
-		this.opts = opts || {};
+		opts = this.opts = this.opts || opts || {}
 
 		//~: create node by the template
-		var t = this._tx();
-		var n = t.cloneNode();
+		var t = this._tx()
+		var n = t.cloneNode()
 
 		//?: {has id}
 		if(this.opts.node)
-		{
-			ZeT.assert(!ZeTS.ises(opts.node))
-			n.id = opts.node;
-		}
+			n.id = ZeT.asserts(opts.node)
 
 		//~: create the structure
-		this.struct = new ZeT.Struct(n);
+		this.struct = new ZeT.Struct(n)
 
 		//?: {has parent}
 		var p = this.opts.parent;
-		if(ZeT.iss(p)) p = ZeTD.n(p);
+		if(ZeT.iss(p)) p = ZeTD.n(p)
 		if(this.opts.parent)
 		{
 			ZeT.assert(ZeTD.isn(p))
 			p.appendChild(n)
 		}
+	},
+
+	/**
+	 * Creates template by this._ts template string.
+	 */
+	_tx               : function()
+	{
+		if(this.static.template)
+			return this.static.template
+
+		return this.static.template = new ZeT.Layout.Template(
+		  {trace : ZeT.Layout.Template.Ways.traceAtNodes},
+		  ZeT.asserts(this._ts, 'Visual template string is required!'))
+	}
+})
+
+
+// +----: ReTrade Clocks :---------------------------------------+
+
+ReTrade.Clocks = ZeT.defineClass('ReTrade.Clocks', ReTrade.Visual, {
+
+	init  : function(opts)
+	{
+		//~: create the structure
+		this._init_struct(opts)
 
 		//?: {do start on create}
 		if(this.opts.start)
@@ -1642,23 +1664,67 @@ ReTrade.Clocks = ZeT.defineClass('ReTrade.Clocks', {
 		ZeTD.styles(n, {display: ((this._ss++ % 2) == 0)?('none'):('')})
 	},
 
-	_tx   : function()
-	{
-		if(this._template)
-			return this._template
+	_ts   : ""+
+		"<div>"+
+		"  <div class = 'retrade-clocks-frame'></div>"+
+		"  <div>@XH</div><div>@HX</div>"+
+		"  <div class = 'retrade-clocks-dots'>@dots</div>"+
+		"  <div>@XM</div><div>@MX</div>"+
+		"  <div class = 'retrade-clocks-glass'></div>"+
+		"</div>"
+})
 
-		return this._template = new ZeT.Layout.Template(
-		  {trace : ZeT.Layout.Template.Ways.traceAtNodes},
-		  this._ts
-		);
+
+// +----: ReTrade Events Number :--------------------------------+
+
+ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
+
+	LH2W    : 5/35, //<-- left border aspect ratio
+	RH2W    : 5/35, //<-- right border aspect ratio
+
+	init    : function(opts)
+	{
+		//~: create the structure
+		this._init_struct(opts)
+
+		if(!ZeT.isn(this.opts.lh2w))
+			this.opts.lh2w = this.LH2W
+		if(!ZeT.isn(this.opts.rh2w))
+			this.opts.rh2w = this.RH2W
+
+		//~: do layout
+		this.layout()
 	},
 
-	_ts   : ""+
-		"<div>\n"+
-		"  <div class = 'retrade-clocks-frame'></div>\n"+
-		"  <div>@XH</div><div>@HX</div>\n"+
-		"  <div class = 'retrade-clocks-dots'>@dots</div>\n"+
-		"  <div>@XM</div><div>@MX</div>\n"+
-		"  <div class = 'retrade-clocks-glass'></div>\n"+
-		"</div>"
+	layout : function()
+	{
+		var t = this._tx()
+		var n = this.struct.node()
+		var p = t.walk('N', n).parentNode.parentNode
+		var h = p.offsetHeight; if(!h) return
+
+		ZeTD.styles(t.walk('L', n), { width: '' + (h * this.opts.lh2w) + 'px'})
+		ZeTD.styles(t.walk('R', n), { width: '' + (h * this.opts.rh2w) + 'px'})
+
+		t.walkEach(this.struct.node(), function(div)
+		{
+		  ZeTD.styles(div, { height: '' + h + 'px'})
+		})
+	},
+
+	_ts    : ""+
+		"<table cellpadding='0' cellspacing='0' border='0'"+
+		" class = 'retrade-eventsnum-area'>"+
+		"  <tr>"+
+		"    <td class = 'retrade-eventsnum-left'>"+
+		"      <div>@LB</div><div>@L</div><div>@LA</div>"+
+		"    </td>"+
+		"    <td class='retrade-eventsnum-number'>"+
+		"      <div>@NB</div><div>@N</div><div>@NA</div>"+
+		"    </td>"+
+		"    <td class='retrade-eventsnum-right'>"+
+		"      <div>@RB</div><div>@R</div><div>@RA</div>"+
+		"    </td>"+
+		"  </tr>"+
+		"</table>"
 })

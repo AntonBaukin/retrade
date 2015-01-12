@@ -21,11 +21,23 @@
 
   <style type = "text/css">
 
-#clocks-a
+#place-a
 {
   position: absolute; left: 50%; top: 50%;
-  margin-left: -1.8in; margin-top: -0.7in;
+  margin-left: -2.9in; margin-top: -0.7in;
+  width: 5.8in; height: 1.4in;
+}
+
+#clocks-area-a
+{
+  position: absolute;
   width: 3.6in; height: 1.4in;
+}
+
+#num-area-a
+{
+  position: absolute; right: 0;
+  width: 2.15in; height: 1.4in;
 }
 
 #clocks-b
@@ -41,17 +53,40 @@
 </head>
 <body>
 
+<div id = "place-a">
+  <div id = "clocks-area-a"></div>
+  <div id = "num-area-a">
+
+
+  </div>
+</div>
 
 <script type = "text/javascript">
 //<![CDATA[
 
-new ReTrade.Clocks({ parent: document.body, node: 'clocks-a', start: true, test: true })
+new ReTrade.Clocks({ parent: 'clocks-area-a', node: 'clocks-a', start: true, test: true })
+new ReTrade.EventsNumber({ parent: 'num-area-a', node: 'num-a' })
 
 new ReTrade.Clocks({ parent: document.body, node: 'clocks-b', start: true })
 
 
 //]]>
 </script>
+
+<!--<table cellpadding='0' cellspacing='0' border='0'
+ class = 'retrade-eventsnum-area'>
+  <tr>
+    <td class = 'retrade-eventsnum-left'>
+      <div>@LB</div><div>@L</div><div>@LA</div>
+    </td>
+    <td class='retrade-eventsnum-number'>
+      <div>@NB</div><div>@N</div><div>@NA</div>
+    </td>
+    <td class='retrade-eventsnum-right'>
+      <div>@RB</div><div>@R</div><div>@RA</div>
+    </td>
+  </tr>
+</table>-->
 
 </body>
 </html>
