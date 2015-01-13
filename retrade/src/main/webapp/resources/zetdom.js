@@ -21,10 +21,15 @@ var ZeTD = ZeT.define('ZeTD',
 
 	/**
 	 * Checks the object given is a tag node.
+	 * Optional tag name must be lower-case.
 	 */
-	isn              : function(node)
+	isn              : function(node, tag)
 	{
-		return !!(node && node.nodeType === 1);
+		if(!node || (node.nodeType !== 1))
+			return false
+
+		return (!tag)?(true):ZeT.iss(node.tagName) &&
+		  (node.tagName.toLowerCase() === tag)
 	},
 
 	/**
@@ -233,6 +238,13 @@ var ZeTD = ZeT.define('ZeTD',
 		}
 
 		return node;
+	},
+
+	uptag             : function(node, tag)
+	{
+		while(node) if(ZeTD.isn(node, tag)) return node
+			else node = ZeTD.isn(node.parentNode)?(node.parentNode):(null)
+		return undefined
 	},
 
 

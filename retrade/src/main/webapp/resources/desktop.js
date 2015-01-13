@@ -1575,11 +1575,11 @@ ReTrade.Clocks = ZeT.defineClass('ReTrade.Clocks', ReTrade.Visual, {
 
 	start : function()
 	{
-		if(this._timef) return this;
-		this._ss = 0;
-		this._timef = ZeT.fbind(this._time, this);
+		if(this._timef) return this
+		this._ss    = 0
+		this._timef = ZeT.fbind(this._time, this)
 		this._timei = setInterval(this._timef, 1000)
-		return this;
+		return this
 	},
 
 	stop  : function()
@@ -1700,16 +1700,32 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 	{
 		var t = this._tx()
 		var n = this.struct.node()
-		var p = t.walk('N', n).parentNode.parentNode
+		var p = ZeTD.uptag(t.walk('L', n), 'table')
 		var h = p.offsetHeight; if(!h) return
 
-		ZeTD.styles(t.walk('L', n), { width: '' + (h * this.opts.lh2w) + 'px'})
-		ZeTD.styles(t.walk('R', n), { width: '' + (h * this.opts.rh2w) + 'px'})
+		ZeTD.styles(t.walk('L', n), { width: '' + Math.floor(h * this.opts.lh2w) + 'px' })
+		ZeTD.styles(t.walk('R', n), { width: '' + Math.floor(h * this.opts.rh2w) + 'px' })
 
-		t.walkEach(this.struct.node(), function(div)
+		t.walkEach(this.struct.node(), function(div, way)
 		{
-		  ZeTD.styles(div, { height: '' + h + 'px'})
+			if(way != 'N') ZeTD.styles(div, { height: '' + h + 'px' }); else
+			{
+				var x = ZeTD.uptag(div, 'table')
+				ZeTD.styles(x, { top: '-' + h + 'px', height: '' + h + 'px' })
+				ZeTD.styles(x.parentNode, { height: '' + h + 'px' })
+			}
+
+			if(way == 'NA') ZeTD.styles(div, { top: '-' + 2*h + 'px' })
 		})
+
+		return this
+	},
+
+	set    : function(html)
+	{
+		var n = this._tx().walk('N', this.struct.node())
+		ZeTD.update(n, html)
+		return this
 	},
 
 	_ts    : ""+
@@ -1717,13 +1733,15 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 		" class = 'retrade-eventsnum-area'>"+
 		"  <tr>"+
 		"    <td class = 'retrade-eventsnum-left'>"+
-		"      <div>@LB</div><div>@L</div><div>@LA</div>"+
+		"      <div>@L</div>"+
 		"    </td>"+
-		"    <td class='retrade-eventsnum-number'>"+
-		"      <div>@NB</div><div>@N</div><div>@NA</div>"+
+		"    <td class='retrade-eventsnum-center'>"+
+		"      <div><div>@NB</div><table cellpadding='0' cellspacing='0' border='0'>" +
+		         "<tr><td class='retrade-eventsnum-number'>@N"+
+		         "</tr></td></table><div>@NA</div></div>"+
 		"    </td>"+
 		"    <td class='retrade-eventsnum-right'>"+
-		"      <div>@RB</div><div>@R</div><div>@RA</div>"+
+		"      <div>@R</div>"+
 		"    </td>"+
 		"  </tr>"+
 		"</table>"
