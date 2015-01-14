@@ -660,7 +660,19 @@ public class SU
 		x = x.replaceAll("\\s+", " ");
 
 		//~: replace wrong symbols
-		return x.replaceAll("[^\\s\\w\\-\\+\\.абвгдеёжзийклмнопрстуфхцчшщъыьэюя]", "");
+		x = x.replaceAll("[^\f \\w\\-\\+\\.абвгдеёжзийклмнопрстуфхцчшщъыьэюя]", "");
+
+		//~: replace empty separators
+		x = x.replaceAll("\f+", "\f");
+
+		if("\f".equals(x)) x = "";
+		return x.isEmpty()?(null):(x);
+	}
+
+	public static String        oxtext(String text)
+	{
+		return catx((Object)sXs(text).
+		  split("[^\\w\\-\\+\\.абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"));
 	}
 
 	/**
