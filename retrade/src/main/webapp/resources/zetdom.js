@@ -175,7 +175,8 @@ var ZeTD = ZeT.define('ZeTD',
 	 */
 	classes           : function(node, classes)
 	{
-		if(!ZeTD.isn(node))   return node;
+		if(ZeT.iss(node)) node = ZeTD.n(node)
+		if(!ZeTD.isn(node)) return node
 
 		if(ZeT.iss(classes))  classes = [classes];
 		if(!ZeT.isa(classes)) return node;

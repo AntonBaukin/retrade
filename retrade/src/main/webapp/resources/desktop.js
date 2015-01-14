@@ -1721,11 +1721,19 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 		return this
 	},
 
-	set    : function(html)
+	set    : function(v)
 	{
 		var n = this._tx().walk('N', this.struct.node())
-		ZeTD.update(n, html)
+
+		if(ZeT.isn(v)) v = '' + v
+		ZeTD.update(n, v)
+
 		return this
+	},
+
+	width  : function()
+	{
+		return this.struct.node().offsetWidth
 	},
 
 	_ts    : ""+

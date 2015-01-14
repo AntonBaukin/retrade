@@ -40,18 +40,35 @@
   width: 215px; height: 140px;
 }
 
-#clocks-b
+#place-b
 {
   position: absolute; left: 50%; top: 20%;
-  margin-left: -45px;
+  margin-left: -71px;
+  width: 142px; height: 35px;
+}
+
+#clocks-area-b
+{
+  position: absolute;
   width: 90px; height: 35px;
 }
 
-#num-area-a td.retrade-eventsnum-number
+#num-area-b
+{
+  position: absolute; right: 0;
+  width: 51px; height: 35px;
+}
+
+#num-area-a td.retrade-eventsnum-number, #num-area-b td.retrade-eventsnum-number
 {
   text-align: center; vertical-align: middle;
   font-family: 'Tahoma', 'Arial', sans-serif;
   font-size: 100px; color: black;
+}
+
+#num-area-b td.retrade-eventsnum-number
+{
+  font-size: 25px;
 }
 
   </style>
@@ -64,14 +81,32 @@
   <div id = "num-area-a" class="retrade-eventsnum-gray"></div>
 </div>
 
+<div id = "place-b">
+  <div id = "clocks-area-b"></div>
+  <div id = "num-area-b" class="retrade-eventsnum-gray"></div>
+</div>
+
 <script type = "text/javascript">
 //<![CDATA[
 
 new ReTrade.Clocks({ parent: 'clocks-area-a', node: 'clocks-a', start: true, test: true })
-new ReTrade.EventsNumber({ parent: 'num-area-a', node: 'num-a' }).set('28')
+new ReTrade.EventsNumber({ parent: 'num-area-a', node: 'num-a' }).set(28)
 
-new ReTrade.Clocks({ parent: document.body, node: 'clocks-b', start: true })
+new ReTrade.Clocks({ parent: 'clocks-area-b', node: 'clocks-b', start: true })
+new ReTrade.EventsNumber({ parent: 'num-area-b', node: 'num-b' }).set(28)
 
+function change()
+{
+  var C = [ 'green', 'orange', 'red', 'gray' ]
+  var x = change.time || 0
+  if(x >= C.length) x = 0
+  change.time = x + 1
+
+  ZeTD.classes('num-area-a', 'retrade-eventsnum-' + C[x])
+  ZeTD.classes('num-area-b', 'retrade-eventsnum-' + C[x])
+}
+
+setInterval(change, 2000)
 
 //]]>
 </script>
