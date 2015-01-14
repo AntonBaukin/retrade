@@ -324,8 +324,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Документ изменения цен', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/price_delta_16.png')}",
-            disabled: ${not rootView.isSecure('create: price change document')}
+            disabled: ${not rootView.isSecure('create: price change document')},
+            iconCls: 'retrade-price-delta-icon'
           </f:facet>
         </x:component>
       </x:menu>
@@ -403,8 +403,20 @@
           margin: extjsf.dpts(0, 0, 0, 4)
         </f:facet>
 
-        <div id = "${z:vid(rootView, 'desktop-clocks-area')}"
-          style = "width: 90px; height: 35px;"></div>
+        <table cellspacing = "0" cellpadding = "0" border = "0">
+          <tr>
+            <td>
+              <div id = "${z:vid(rootView, 'desktop-clocks-area')}"
+                style = "width: 90px; height: 35px;"></div>
+            </td>
+
+            <td>
+              <div id = "${z:vid(rootView, 'desktop-eventsnum-area')}"
+                class = "retrade-desktop-eventsnum-area"
+                style = "min-width: 51px; height: 35px;"></div>
+            </td>
+          </tr>
+        </table>
       </x:html>
 
 
@@ -432,14 +444,40 @@
       "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
 
     //~: setup the desktop clocks
-    Ext.onReady(function()
+    extjsf.bind("${z:vid(localView, 'desktop-topbar-clocks')}").on('afterrender', function()
     {
-      if(ReTrade.desktop.clocks) return;
+      if(!ReTrade.desktop.clocks)
+        ReTrade.desktop.clocks = new ReTrade.Clocks({ start: true,
+          parent: "${z:vid(rootView, 'desktop-clocks-area')}",
+          node: "${z:vid(rootView, 'desktop-clocks')}"
+        })
 
-      ReTrade.desktop.clocks = new ReTrade.Clocks({ start: true,
-        parent: "${z:vid(rootView, 'desktop-clocks-area')}",
-        node: "${z:vid(rootView, 'desktop-clocks')}"
-      })
+      if(!ReTrade.desktop.eventsnum)
+      {
+        ReTrade.desktop.eventsnum = new ReTrade.EventsNumber({
+          parent: "${z:vid(rootView, 'desktop-eventsnum-area')}",
+          node: "${z:vid(rootView, 'desktop-eventsnum')}",
+          colors: { default: 'retrade-eventsnum-gray',
+            red: 'retrade-eventsnum-red', green: 'retrade-eventsnum-green',
+            gray: 'retrade-eventsnum-gray', orange: 'retrade-eventsnum-orange'
+          }
+        })
+
+        ReTrade.desktop.eventsnum.onresize(function(that, v)
+        {
+          extjsf.component("${z:vid(localView, 'main_topbar')}").doLayout()
+        })
+
+      setInterval(function()
+      {
+        var C = ['gray', 'green', 'orange', 'red']
+
+        var x = ReTrade.desktop.eventsnum.xxx || 0
+        ReTrade.desktop.eventsnum.xxx = x + 1
+        ReTrade.desktop.eventsnum.set(x*100, C[Math.floor(x/10)%C.length])
+
+      }, 500)
+      }
     })
 
 

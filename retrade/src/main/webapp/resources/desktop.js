@@ -1679,10 +1679,10 @@ ReTrade.Clocks = ZeT.defineClass('ReTrade.Clocks', ReTrade.Visual, {
 
 ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 
-	LH2W    : 5/35, //<-- left border aspect ratio
-	RH2W    : 5/35, //<-- right border aspect ratio
+	LH2W     : 5/35, //<-- left border aspect ratio
+	RH2W     : 5/35, //<-- right border aspect ratio
 
-	init    : function(opts)
+	init     : function(opts)
 	{
 		//~: create the structure
 		this._init_struct(opts)
@@ -1693,15 +1693,19 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 			this.opts.rh2w = this.RH2W
 
 		//~: do layout
-		this.layout()
+		if(!this.layout())
+			return ZeT.log('Events Number layout is nor ready now!')
+
+		//~: set the default color
+		this.color()
 	},
 
-	layout : function()
+	layout   : function()
 	{
 		var t = this._tx()
 		var n = this.struct.node()
 		var p = ZeTD.uptag(t.walk('L', n), 'table')
-		var h = p.offsetHeight; if(!h) return
+		var h = p.offsetHeight; if(!h) return false
 
 		ZeTD.styles(t.walk('L', n), { width: '' + Math.floor(h * this.opts.lh2w) + 'px' })
 		ZeTD.styles(t.walk('R', n), { width: '' + Math.floor(h * this.opts.rh2w) + 'px' })
@@ -1721,22 +1725,61 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 		return this
 	},
 
-	set    : function(v)
+	set      : function(v, c)
 	{
 		var n = this._tx().walk('N', this.struct.node())
 
 		if(ZeT.isn(v)) v = '' + v
-		ZeTD.update(n, v)
+		ZeTD.update(n, this.value = v)
+
+		if(!ZeT.isu(c))
+			this.color(c)
+
+		//?: {has resize callback}
+		if(ZeT.isf(this._onresize))
+		{
+			//?: {is size changed}
+			var w; if((w = this.width()) !== this._width)
+			{
+				this._width = w
+				this._onresize.call(this, this, w)
+			}
+		}
 
 		return this
 	},
 
-	width  : function()
+	color    : function(c)
+	{
+		if(ZeTS.ises(c)) c = 'default'
+
+		if(this._current_color)
+		{
+			ZeTD.classes(this.struct.node(), '-' + this._current_color)
+			this._current_color = null
+		}
+
+		if(!ZeT.i$x(this.opts, 'colors', c))
+		{
+			this._current_color = this.opts.colors[c]
+			ZeTD.classes(this.struct.node(), '+' + this._current_color)
+		}
+
+		return this
+	},
+
+	onresize : function(callback)
+	{
+		this._onresize = callback
+		return this
+	},
+
+	width    : function()
 	{
 		return this.struct.node().offsetWidth
 	},
 
-	_ts    : ""+
+	_ts      : ""+
 		"<table cellpadding='0' cellspacing='0' border='0'"+
 		" class = 'retrade-eventsnum-area'>"+
 		"  <tr>"+

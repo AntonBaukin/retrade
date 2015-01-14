@@ -8,13 +8,11 @@
 <%@page import = 'com.tverts.retrade.domain.sells.Sells'%>
 <%@page import = 'com.tverts.servlet.RequestPoint'%>
 <%@page import = 'static com.tverts.spring.SpringPoint.bean'%>
-<%@page import = 'static com.tverts.support.SU.s2s'%>
-
+<%@page import = 'com.tverts.support.EX'%>
 
 <%
 
-String param  = s2s(request.getParameter(ModelView.ENTITY_PARAM));
-if(param == null) throw new IllegalArgumentException(
+String param = EX.asserts(request.getParameter(ModelView.ENTITY_PARAM),
   "No document parameter is defined!");
 
 Unity  object = bean(GetUnity.class).getUnity(Long.parseLong(param));
@@ -45,7 +43,7 @@ if(Invoices.isMoveInvoice(object))
 if(Sells.isSellsInvoice(object))
   redirp = "/go/retrade/sells/invoice-info";
 
-  //?: {it is a sells session}
+//?: {it is a sells session}
 if(Sells.isSellsSession(object))
   redirp = "/go/retrade/sells/session-info";
 

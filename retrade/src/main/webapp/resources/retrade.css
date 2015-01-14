@@ -331,6 +331,18 @@ div.retrade-desktop-event-content
 div.retrade-desktop-event-content.retrade-desktop-event-error-content
 {}
 
+.retrade-desktop-eventsnum-area td.retrade-eventsnum-number
+{
+  text-align: center; vertical-align: middle;
+  font-family: 'Tahoma', 'Arial', sans-serif;
+  font-size: 25px; color: black;
+}
+
+div.retrade-desktop-eventsnum-area
+{
+  margin-left: 2px;
+}
+
 
 /* table layouts */
 
