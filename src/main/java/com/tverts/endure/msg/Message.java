@@ -14,6 +14,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 /* com.tverts: api */
 
 import com.tverts.api.support.CharAdapter;
+
+/* com.tverts: support */
+
 import com.tverts.support.EX;
 
 
@@ -25,7 +28,7 @@ import com.tverts.support.EX;
  */
 @XmlRootElement(name = "message")
 @XmlType(name = "message", propOrder = {
-  "login", "adapter", "title", "data"
+  "login", "color", "title", "adapter", "data"
 })
 public class Message
 {
@@ -46,16 +49,16 @@ public class Message
 
 	@XmlAttribute
 	@XmlJavaTypeAdapter(CharAdapter.class)
-	public char getColor()
+	public Character getColor()
 	{
 		return color;
 	}
 
-	private char color = 'N';
+	private Character color = 'N';
 
-	public void setColor(char c)
+	public void setColor(Character c)
 	{
-		this.color = c;
+		this.color = EX.assertn(c);
 	}
 
 	public String getAdapter()

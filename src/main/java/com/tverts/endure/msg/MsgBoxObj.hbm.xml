@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.msg'>
+
+  <class name = 'MsgBoxObj' table = 'message_box' lazy = 'false'>
+
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_entity'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_message_box_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Auth Login -->
+
+    <many-to-one name = 'login' foreign-key = 'fk_message_box_login'>
+
+      <column name = 'fk_login' not-null = 'true'
+        index = 'ix_message_box_login'>
+
+        <comment>The user this Message Box is attached to</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Object Extraction -->
+
+    <property name = 'oxBytes' lazy = 'false'>
+
+      <column name = 'oxbytes' sql-type = 'bytea' not-null = 'true'>
+        <comment>
+          Entity-related data object written to XML and enflated with Gun-ZIP
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.OxBytesType'/>
+    </property>
+
+  </class>
+</hibernate-mapping>

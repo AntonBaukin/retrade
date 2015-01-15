@@ -1,5 +1,9 @@
 package com.tverts.endure.auth;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
@@ -8,12 +12,17 @@ import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionWithTxBase;
 
-/* com.tverts: endure (core + persons) */
+/* com.tverts: transactions */
+
+import com.tverts.system.tx.TxPoint;
+
+/* com.tverts: endure (core, messages, persons) */
 
 import com.tverts.endure.ActionBuilderXRoot;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
+import com.tverts.endure.msg.MsgBoxObj;
 import com.tverts.endure.person.ActPerson;
 import com.tverts.endure.person.PersonEntity;
 
@@ -96,7 +105,7 @@ public class ActLogin extends ActionBuilderXRoot
 
 	/* protected: action methods */
 
-	protected void saveLogin(ActionBuildRec abr)
+	protected void saveLogin(final ActionBuildRec abr)
 	{
 		//?: {target is not a login}
 		checkTargetClass(abr, AuthLogin.class);
@@ -110,7 +119,14 @@ public class ActLogin extends ActionBuilderXRoot
 		reactCreated(abr);
 
 		//~: save the login
-		chain(abr).first(new SaveNumericIdentified(task(abr)));
+		chain(abr).first(new SaveNumericIdentified(task(abr)).
+		   setAfterSave(new Runnable()
+		{
+			public void run()
+			{
+				saveLoginRelated(abr);
+			}
+		}));
 
 		//~: set login unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr),
@@ -174,7 +190,7 @@ public class ActLogin extends ActionBuilderXRoot
 
 			//2: update the person
 			xnest(abr, ActPerson.UPDATE, p,
-			 PARAM_PERSON, param(abr, PARAM_PERSON)
+			  PARAM_PERSON, param(abr, PARAM_PERSON)
 			);
 
 			//1: assign the person
@@ -194,6 +210,34 @@ public class ActLogin extends ActionBuilderXRoot
 	{
 		return UnityTypes.unityType(
 		  AuthLogin.class, Auth.TYPE_LOGIN);
+	}
+
+	protected void      saveLoginRelated(ActionBuildRec abr)
+	{
+		//~: save the message box
+		saveMessageBox(abr);
+	}
+
+	protected void      saveMessageBox(ActionBuildRec abr)
+	{
+		AuthLogin l  = target(abr, AuthLogin.class);
+		MsgBoxObj mb = new MsgBoxObj();
+
+		//=: primary key
+		HiberPoint.setPrimaryKey(session(abr), mb, HiberPoint.isTestInstance(l));
+
+		//=: login
+		mb.setLogin(l);
+
+		//~: tx-number
+		TxPoint.txn(mb);
+
+		//~: update ox
+		mb.getOx(); //<-- side-effect
+		mb.updateOx();
+
+		//!: save
+		session(abr).save(mb);
 	}
 
 

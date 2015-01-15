@@ -174,6 +174,12 @@ public class ActionsCollection
 			return this;
 		}
 
+		public SaveNumericIdentified setAfterSave(Runnable afterSave)
+		{
+			this.afterSave = afterSave;
+			return this;
+		}
+
 
 		/* protected: ActionBase interface */
 
@@ -214,6 +220,10 @@ public class ActionsCollection
 
 			//~: set the values in the context
 			setVals();
+
+			//?: {has after save target}
+			if(afterSave != null)
+				afterSave.run();
 		}
 
 		public Object     getResult()
@@ -298,9 +308,10 @@ public class ActionsCollection
 		protected NumericIdentity owner;
 
 
-		/* protected: before save callback */
+		/* protected: save callbacks */
 
 		protected Runnable beforeSave;
+		protected Runnable afterSave;
 
 
 		/* private: save parameters */
