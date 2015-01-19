@@ -1,9 +1,5 @@
 package com.tverts.endure.auth;
 
-/* com.tverts: hibery */
-
-import com.tverts.hibery.HiberPoint;
-
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
@@ -11,10 +7,6 @@ import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionWithTxBase;
-
-/* com.tverts: transactions */
-
-import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: endure (core, messages, persons) */
 
@@ -118,15 +110,11 @@ public class ActLogin extends ActionBuilderXRoot
 		//~: send created event
 		reactCreated(abr);
 
+		//~: save the message box
+		saveMessageBox(abr);
+
 		//~: save the login
-		chain(abr).first(new SaveNumericIdentified(task(abr)).
-		   setAfterSave(new Runnable()
-		{
-			public void run()
-			{
-				saveLoginRelated(abr);
-			}
-		}));
+		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
 		//~: set login unity (is executed first!)
 		xnest(abr, ActUnity.CREATE, target(abr),
@@ -212,32 +200,16 @@ public class ActLogin extends ActionBuilderXRoot
 		  AuthLogin.class, Auth.TYPE_LOGIN);
 	}
 
-	protected void      saveLoginRelated(ActionBuildRec abr)
-	{
-		//~: save the message box
-		saveMessageBox(abr);
-	}
-
 	protected void      saveMessageBox(ActionBuildRec abr)
 	{
 		AuthLogin l  = target(abr, AuthLogin.class);
 		MsgBoxObj mb = new MsgBoxObj();
 
-		//=: primary key
-		HiberPoint.setPrimaryKey(session(abr), mb, HiberPoint.isTestInstance(l));
-
 		//=: login
 		mb.setLogin(l);
 
-		//~: tx-number
-		TxPoint.txn(mb);
-
-		//~: update ox
-		mb.getOx(); //<-- side-effect
-		mb.updateOx();
-
-		//!: save
-		session(abr).save(mb);
+		//!: nest save action
+		xnest(abr, ActionType.SAVE, mb);
 	}
 
 

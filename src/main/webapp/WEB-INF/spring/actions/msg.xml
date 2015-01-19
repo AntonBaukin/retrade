@@ -1,0 +1,22 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for Messaging                   =
+    +================================================-->
+
+  <bean name  = 'msgBoxBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.msg.MsgBoxObj'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.msg.ActMsgBox'/>
+    </property>
+  </bean>
+
+</beans>

@@ -46,6 +46,13 @@
 
 
   <!--=================================================
+    =  Action Bulders for Messaging                   =
+    +================================================-->
+
+  <import resource = 'msg.xml'/>
+
+
+  <!--=================================================
     =  Action Bulders for Trees                       =
     +================================================-->
 
@@ -105,6 +112,10 @@
 
         <ref bean = 'corePersonBuilders'/>
         <ref bean = 'coreFirmBuilders'/>
+
+
+        <!-- Messaging -->
+        <ref bean = 'msgBoxBuilders'/>
 
 
         <!-- Trees -->
