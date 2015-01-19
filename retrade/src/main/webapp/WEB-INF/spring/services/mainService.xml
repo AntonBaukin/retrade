@@ -148,6 +148,35 @@
                       <entry key   = 'Core Test : Domain (DomainName)'
                              value = 'Первичный тестовый домен'/>
 
+
+                      <!--
+                       The list of messages types related to the Domain
+                       System user is subscribed to.
+                      -->
+
+                      <entry key   = 'Core Test : Domain (SystemMessages)'>
+                        <value>
+
+                          invoice: buy: create;
+                          invoice: sell: create;
+                          invoice: sells: create;
+                          invoice: move: create;
+                          invoice: buy: fix;
+                          invoice: sell: fix;
+                          invoice: sells: fix;
+                          invoice: move: fix;
+                          invoice: buy: edit;
+                          invoice: sell: edit;
+                          invoice: sells: edit;
+                          invoice: move: edit;
+                          invoice: buy: updated;
+                          invoice: sell: updated;
+                          invoice: sells: updated;
+                          invoice: move: updated;
+
+                        </value>
+                      </entry>
+
                       <!--
 
                         Warning: do not update Days Back values when the
