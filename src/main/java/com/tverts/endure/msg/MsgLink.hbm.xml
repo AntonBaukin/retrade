@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.msg'>
+
+  <class name = 'MsgLink' table = 'message_link' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_message_link'/>
+
+
+    <!-- Source Unity -->
+
+    <many-to-one name = 'source' foreign-key = 'fk_message_link_source'>
+
+      <column name = 'fk_source' not-null = 'true'
+        unique-key = 'ux_message_link'>
+
+        <comment>
+          The source of the messages, only one triple of
+          (source, type, box) is allowed
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Link Type -->
+
+    <property name = 'type'>
+
+      <column name = 'link_type' not-null = 'true'
+        unique-key = 'ux_message_link'>
+
+        <comment>The type of Link</comment>
+      </column>
+    </property>
+
+
+    <!-- Message Box -->
+
+    <many-to-one name = 'msgBox' foreign-key = 'fk_message_link_box'>
+
+      <column name = 'fk_box' not-null = 'true'
+        unique-key = 'ux_message_link' index = 'ix_message_link_box'>
+
+        <comment>The Message Box linked to the source</comment>
+      </column>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>
