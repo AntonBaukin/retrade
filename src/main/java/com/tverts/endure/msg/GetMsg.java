@@ -123,25 +123,54 @@ public class GetMsg extends GetObjectBase
 			//!: save it
 			session().save(m);
 
-
-			//<: update the message box
-
-			MsgBox mox = m.getMsgBox().getOx();
-
-			//~: ++ total count
-			mox.setTotal(mox.getTotal() + 1);
-
-			//?: {green}  ++ green count
-			if(m.getColor() == 'G')
-				mox.setGreen(mox.getGreen() + 1);
-			//?: {red}    ++ green count
-			else if(m.getColor() == 'R')
-				mox.setRed(mox.getRed() + 1);
-			//?: {orange} ++ orange count
-			else if(m.getColor() == 'O')
-				mox.setOrange(mox.getOrange() + 1);
-
-			//>: update the message box
+			//~: update the message box
+			update(m.getMsgBox(), msg);
 		}
+	}
+
+	public void       send(MsgBoxObj box, Message msg)
+	{
+		MsgObj m = new MsgObj();
+
+		//=: primary key
+		HiberPoint.setPrimaryKey(session(), m,
+		  HiberPoint.isTestInstance(box)
+		);
+
+		//=: ox-object
+		m.setOx(msg);
+
+		//=: active
+		m.setActive(m.getPrimaryKey());
+
+		//=: message box
+		m.setMsgBox(box);
+
+		//!: save it
+		session().save(m);
+
+		//~: update the message box
+		update(box, msg);
+	}
+
+	private void      update(MsgBoxObj mb, Message m)
+	{
+		MsgBox mox = mb.getOx();
+
+		//~: ++ total count
+		mox.setTotal(mox.getTotal() + 1);
+
+		//?: {green}  ++ green count
+		if(m.getColor() == 'G')
+			mox.setGreen(mox.getGreen() + 1);
+			//?: {red}    ++ green count
+		else if(m.getColor() == 'R')
+			mox.setRed(mox.getRed() + 1);
+			//?: {orange} ++ orange count
+		else if(m.getColor() == 'O')
+			mox.setOrange(mox.getOrange() + 1);
+
+		//!: update ox
+		mb.updateOx();
 	}
 }

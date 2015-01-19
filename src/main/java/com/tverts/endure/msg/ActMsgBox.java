@@ -75,7 +75,7 @@ public class ActMsgBox extends ActionBuilderXRoot
 
 	/* protected: action methods */
 
-	protected void   saveMsgBox(ActionBuildRec abr)
+	protected void   saveMsgBox(final ActionBuildRec abr)
 	{
 		//?: {target is not a Message Box}
 		checkTargetClass(abr, MsgBoxObj.class);
@@ -89,9 +89,15 @@ public class ActMsgBox extends ActionBuilderXRoot
 		mb.updateOx();
 
 		//~: save the box
-		chain(abr).first(new SaveNumericIdentified(task(abr)).
-			 setOwner(mb.getLogin())
-		);
+		chain(abr).first(new SaveNumericIdentified(task(abr)).setOwner(mb.getLogin()).
+		setAfterSave(new Runnable()
+		{
+			public void run()
+			{
+				greetUser(abr);
+			}
+		}
+		));
 
 		complete(abr);
 	}
@@ -136,6 +142,15 @@ public class ActMsgBox extends ActionBuilderXRoot
 		return EX.asserts(param(abr, TYPE, String.class),
 		  "Message link type name is not specified!"
 		);
+	}
+
+	protected void   greetUser(ActionBuildRec abr)
+	{
+		Message msg = new Message();
+		msg.setTitle("Добро пожаловать в систему РеТрейд!");
+
+		//~: sent that message
+		Messages.send(target(abr, MsgBoxObj.class), msg);
 	}
 
 
