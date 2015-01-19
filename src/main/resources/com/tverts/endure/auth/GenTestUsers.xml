@@ -23,6 +23,9 @@
     <secure force = 'domain: forbid edit: sell invoices'/>
     <secure force = 'domain: forbid edit: fixed move invoices'/>
     <secure force = 'domain: fix: buy invoices'/>
+
+    <messages type = 'invoice: buy: create'/>
+    <messages type = 'invoice: sell: create'/>
   </person>
 
 

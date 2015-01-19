@@ -17,6 +17,7 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
+import com.tverts.endure.msg.Messages;
 import com.tverts.endure.person.FirmEntity;
 import com.tverts.endure.person.GetFirm;
 import com.tverts.genesis.GenCtx;
@@ -241,6 +242,9 @@ public class GenTestUsers extends GenesisHiberPartBase
 
 		//~: create secure instances
 		secure(ctx, s, l);
+
+		//~: create message links
+		messages(ctx, s, l);
 	}
 
 	protected void    secure(GenCtx ctx, GenState s, AuthLogin l)
@@ -250,11 +254,22 @@ public class GenTestUsers extends GenesisHiberPartBase
 		if(s.secures == null) return;
 
 		//c: create ask force event
-		for(Secure se : s.secures)
+		for(String force : s.secures)
 			EventPoint.react( //<-- !: send it
-			  new AskSecForceEvent(l).
-			  setForce(se.force)
+			  new AskSecForceEvent(l).setForce(force)
 			);
+	}
+
+	protected void    messages(GenCtx ctx, GenState s, AuthLogin l)
+	  throws GenesisError
+	{
+		//?: {there is no messages linked}
+		if(s.messages == null) return;
+
+		//c: create message links
+		for(String type : s.messages)
+			Messages.link(Messages.box(l.getPrimaryKey()),
+			  ctx.get(Domain.class).getPrimaryKey(), type);
 	}
 
 
@@ -266,11 +281,6 @@ public class GenTestUsers extends GenesisHiberPartBase
 		public String password;
 	}
 
-	protected static class Secure
-	{
-		public String force;
-	}
-
 	protected static class GenState
 	{
 		public Login          login;
@@ -278,7 +288,8 @@ public class GenTestUsers extends GenesisHiberPartBase
 		public Computer       computer;
 		public PersonEntity   personEntity;
 		public ComputerEntity computerEntity;
-		public List<Secure>   secures;
+		public List<String>   secures;
+		public List<String>   messages;
 	}
 
 
@@ -336,13 +347,25 @@ public class GenTestUsers extends GenesisHiberPartBase
 				  "] has <secure force = '?'> undefined!"
 				);
 
-				//~: create secure entry
-				Secure e = new Secure();
-				e.force = force;
-
+				//~: add secure force entry
 				if(state(1).secures == null)
-					state(1).secures = new ArrayList<Secure>(4);
-				state(1).secures.add(e);
+					state(1).secures = new ArrayList<>(4);
+				state(1).secures.add(force);
+			}
+
+			//~: (<computer> | <person>) <messages>
+			else if(istag(2, "messages"))
+			{
+				//~: message link type
+				String type = EX.asserts(attr("type"),
+				  "Gen Test Users, login [", state(1).login.code,
+				  "] has <messages type = '?'> undefined!"
+				);
+
+				//~: add message type
+				if(state(1).messages == null)
+					state(1).messages = new ArrayList<>(4);
+				state(1).messages.add(type);
 			}
 		}
 

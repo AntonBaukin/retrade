@@ -19,6 +19,8 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
+import com.tverts.endure.msg.Messages;
+import com.tverts.endure.msg.MsgBoxObj;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
@@ -41,6 +43,7 @@ import com.tverts.endure.person.Persons;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
 
@@ -67,10 +70,11 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		return domainCode;
 	}
 
+	private String domainCode;
+
 	public void      setDomainCode(String v)
 	{
-		if(SU.sXe(v)) throw new IllegalArgumentException();
-		this.domainCode = SU.s2s(v);
+		this.domainCode = EX.asserts(v);
 	}
 
 	@Param(required = true)
@@ -79,22 +83,11 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		return domainName;
 	}
 
+	private String domainName;
+
 	public void      setDomainName(String v)
 	{
-		if(SU.sXe(v)) throw new IllegalArgumentException();
-		this.domainName = SU.s2s(v);
-	}
-
-	@Param(required = true)
-	public String    getSystemPassword()
-	{
-		return systemPassword;
-	}
-
-	public void      setSystemPassword(String v)
-	{
-		if(SU.sXe(v)) throw new IllegalArgumentException();
-		this.systemPassword = SU.s2s(v);
+		this.domainName = EX.asserts(v);
 	}
 
 	@Param(required = true)
@@ -103,11 +96,39 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		return testDomain;
 	}
 
+	private boolean testDomain;
+
 	public void      setTestDomain(boolean testDomain)
 	{
 		this.testDomain = testDomain;
 	}
 
+	@Param(required = true)
+	public String    getSystemPassword()
+	{
+		return systemPassword;
+	}
+
+	private String systemPassword = "password";
+
+	public void      setSystemPassword(String v)
+	{
+		this.systemPassword = EX.asserts(v);
+	}
+
+	@Param(descr = "Types of the messages links for the Domain source " +
+	  "separated by semi-colons")
+	public String getSystemMessages()
+	{
+		return systemMessages;
+	}
+
+	private String systemMessages;
+
+	public void setSystemMessages(String systemMessages)
+	{
+		this.systemMessages = systemMessages;
+	}
 
 	/* public: Genesis interface */
 
@@ -272,9 +293,11 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		//~: computer
 		sys.setComputer(c);
 
-
 		//!: do save
 		actionRun(ActionType.SAVE, sys);
+
+		//~: subscribe to the domain messages
+		loginMessages(sys);
 
 		return sys;
 	}
@@ -282,8 +305,7 @@ public class GenCoreDomain extends GenesisHiberPartBase
 	protected void      setPassword(GenCtx ctx, AuthLogin sys)
 	{
 		//?: {has no password configured}
-		if(SU.sXe(getSystemPassword()))
-			throw new IllegalStateException();
+		EX.asserts(getSystemPassword());
 
 		//~: access SHA-1 digest
 		MessageDigest d = ctx.get(MessageDigest.class);
@@ -295,19 +317,26 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			throw EX.wrap(e);
 		}
 
 		//~: encode & set
-		sys.setPasshash(
-		  Auth.passwordHash(d, getSystemPassword()));
+		sys.setPasshash(Auth.passwordHash(d, getSystemPassword()));
 	}
 
+	protected void      loginMessages(AuthLogin sys)
+	{
+		if(SU.sXe(getSystemMessages())) return;
 
-	/* private: generation parameters */
+		//~: separate by ';'
+		String[] types = SU.s2a(getSystemMessages());
+		EX.asserte(types);
 
-	private String  domainCode;
-	private String  domainName;
-	private String  systemPassword = "password";
-	private boolean testDomain;
+		//~: take the messages bos for the system user
+		MsgBoxObj mb = Messages.box(sys.getPrimaryKey());
+
+		//~: create the links
+		for(String type : types)
+			Messages.link(mb, sys.getDomain().getPrimaryKey(), type);
+	}
 }

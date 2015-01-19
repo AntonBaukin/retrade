@@ -7,7 +7,6 @@ import com.tverts.endure.OxSearch;
 
 /* com.tverts: support */
 
-import com.tverts.support.CMP;
 import com.tverts.support.EX;
 
 
@@ -44,13 +43,6 @@ public class MsgObj extends OxNumericBase implements OxSearch
 
 		//=: ox-search key words
 		this.oxSearch = MsgAdapters.oxSearch(m);
-
-		//~: login primary key
-		if(msgBox != null)
-			if(m.getLogin() == null)
-				m.setLogin(msgBox.getLogin().getPrimaryKey());
-			else
-				EX.assertx(CMP.eq(msgBox.getLogin(), m.getLogin()));
 	}
 
 

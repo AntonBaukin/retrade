@@ -2,6 +2,7 @@ package com.tverts.endure.msg;
 
 /* Java */
 
+import java.util.Date;
 import java.util.Map;
 
 /* Java API for XML Binding */
@@ -18,6 +19,7 @@ import com.tverts.api.support.CharAdapter;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.jaxb.DateTimeAdapter;
 
 
 /**
@@ -28,23 +30,24 @@ import com.tverts.support.EX;
  */
 @XmlRootElement(name = "message")
 @XmlType(name = "message", propOrder = {
-  "login", "color", "title", "adapter", "data"
+  "time", "color", "title", "adapter", "data"
 })
 public class Message
 {
 	/* Message */
 
 	@XmlAttribute
-	public Long getLogin()
+	@XmlJavaTypeAdapter(DateTimeAdapter.class)
+	public Date getTime()
 	{
-		return login;
+		return time;
 	}
 
-	private Long login;
+	private Date time;
 
-	public void setLogin(Long login)
+	public void setTime(Date time)
 	{
-		this.login = login;
+		this.time = time;
 	}
 
 	@XmlAttribute
