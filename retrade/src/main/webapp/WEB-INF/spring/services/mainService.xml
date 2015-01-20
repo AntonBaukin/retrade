@@ -157,6 +157,8 @@
                       <entry key   = 'Core Test : Domain (SystemMessages)'>
                         <value>
 
+                          auth: login: create;
+
                           invoice: buy: create;
                           invoice: sell: create;
                           invoice: sells: create;
