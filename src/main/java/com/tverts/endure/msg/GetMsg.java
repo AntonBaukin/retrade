@@ -62,13 +62,13 @@ public class GetMsg extends GetObjectBase
 	{
 /*
 
- select distinct b.id from MsgLink l join m.msgBox m
+ select distinct mb.id from MsgLink l join l.msgBox mb
    where (l.source.id = :source) and l.type in (:types)
 
  */
 		final String Q =
 
-"select distinct b.id from MsgLink l join m.msgBox m\n" +
+"select distinct mb.id from MsgLink l join l.msgBox mb\n" +
 "  where (l.source.id = :source) and l.type in (:types)";
 
 		return list(Long.class, Q, "source", source, "types", types);
@@ -172,5 +172,27 @@ public class GetMsg extends GetObjectBase
 
 		//!: update ox
 		mb.updateOx();
+	}
+
+	/**
+	 * Removes all the messages in the box.
+	 */
+	public GetMsg     clear(MsgBoxObj mb)
+	{
+		final String Q = "delete from MsgObj where (msgBox = :mb)";
+
+		Q(Q, "mb", mb).executeUpdate();
+		return this;
+	}
+
+	/**
+	 * Removes all the links from the sources to this box.
+	 */
+	public GetMsg     unlink(MsgBoxObj mb)
+	{
+		final String Q = "delete from MsgLink where (msgBox = :mb)";
+
+		Q(Q, "mb", mb).executeUpdate();
+		return this;
 	}
 }

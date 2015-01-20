@@ -27,6 +27,8 @@ public class Persons
 
 	public static String name(PersonEntity pe)
 	{
+		if(pe == null) return null;
+
 		Person p = pe.getOx();
 
 		return cat(null, " ", p.getLastName(),

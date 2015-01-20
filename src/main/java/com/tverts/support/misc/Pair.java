@@ -10,7 +10,7 @@ import java.util.Map.Entry;
  *
  * @author anton.baukin@gmail.com
  */
-public final class Pair<K, V> implements Entry<K, V>
+public class Pair<K, V> implements Entry<K, V>
 {
 	/* public: constructors */
 
@@ -26,23 +26,27 @@ public final class Pair<K, V> implements Entry<K, V>
 
 	/* public: Entry interface */
 
-	public K getKey()
+	public final K getKey()
 	{
 		return k;
 	}
 
-	public K setKey(K k)
+	private K k;
+
+	public final K setKey(K k)
 	{
 		K r = this.k; this.k = k;
 		return r;
 	}
 
-	public V getValue()
+	public final V getValue()
 	{
 		return v;
 	}
 
-	public V setValue(V v)
+	private V v;
+
+	public final V setValue(V v)
 	{
 		V r = this.v; this.v = v;
 		return r;
@@ -72,10 +76,4 @@ public final class Pair<K, V> implements Entry<K, V>
 		return 31*((k != null)?(k.hashCode()):0) +
 		  ((v != null)?(v.hashCode()):0);
 	}
-
-
-	/* private: keys */
-
-	private K k;
-	private V v;
 }

@@ -15,6 +15,7 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: secure */
 
+import com.tverts.endure.core.DomainEntity;
 import com.tverts.secure.SecPoint;
 
 /* com.tverts: support */
@@ -70,19 +71,25 @@ public class Messages
 	/* Send Simplifications */
 
 	/**
-	 * Sends Domain message for the Domain of the current user.
+	 * Sends Domain message for the domain specified.
 	 */
-	public static void      domain(Message msg, String... types)
+	public static void domain(Long domain, Message msg, String... types)
+	{
+		if(domain == null)
+			domain = SecPoint.domain();
+
+		send(domain, msg, types);
+	}
+
+	/**
+	 * Sends Domain message for the domain of the current user.
+	 */
+	public static void domain(Message msg, String... types)
 	{
 		send(SecPoint.domain(), msg, types);
 	}
 
-	public static void      user(Message msg)
-	{
-		send(box(SecPoint.login()), msg);
-	}
-
-	public static void      umsg(char color, Object... txt)
+	public static void msg(Long domain, char color, String type, Object... txt)
 	{
 		Message msg = new Message();
 
@@ -93,26 +100,119 @@ public class Messages
 		//=: color
 		msg.setColor(color);
 
-		user(msg);
+		domain(domain, msg, type);
 	}
 
-	public static void      utext(Object... txt)
+	public static void msg(String type, Object... txt)
 	{
-		umsg('N', txt);
+		msg(null, 'N', type, txt);
 	}
 
-	public static void      ugreen(Object... txt)
+	public static void green(String type, Object... txt)
 	{
-		umsg('G', txt);
+		msg(null, 'G', type, txt);
 	}
 
-	public static void      uorange(Object... txt)
+	public static void orange(String type, Object... txt)
 	{
-		umsg('O', txt);
+		msg(null, 'O', type, txt);
 	}
 
-	public static void      ured(Object... txt)
+	public static void red(String type, Object... txt)
 	{
-		umsg('R', txt);
+		msg(null, 'R', type, txt);
+	}
+
+	public static void msg(DomainEntity de, String type, Object... txt)
+	{
+		msg(de.getDomain().getPrimaryKey(), 'N', type, txt);
+	}
+
+	public static void green(DomainEntity de, String type, Object... txt)
+	{
+		msg(de.getDomain().getPrimaryKey(), 'G', type, txt);
+	}
+
+	public static void orange(DomainEntity de, String type, Object... txt)
+	{
+		msg(de.getDomain().getPrimaryKey(), 'O', type, txt);
+	}
+
+	public static void red(DomainEntity de, String type, Object... txt)
+	{
+		msg(de.getDomain().getPrimaryKey(), 'R', type, txt);
+	}
+
+	/**
+	 * Sends the message to the given user.
+	 */
+	public static void user(Long login, Message msg)
+	{
+		if(login == null)
+			login = SecPoint.login();
+
+		send(box(login), msg);
+	}
+
+	/**
+	 * Sends the message to the current user.
+	 */
+	public static void user(Message msg)
+	{
+		send(null, msg);
+	}
+
+	public static void umsg(Long login, char color, Object... txt)
+	{
+		Message msg = new Message();
+
+		//=: message title
+		msg.setTitle(SU.s2s(SU.cat(txt)));
+		EX.assertn(msg.getTitle());
+
+		//=: color
+		msg.setColor(color);
+
+		user(login, msg);
+	}
+
+	public static void utext(Object... txt)
+	{
+		umsg(null, 'N', txt);
+	}
+
+	public static void ugreen(Object... txt)
+	{
+		umsg(null, 'G', txt);
+	}
+
+	public static void uorange(Object... txt)
+	{
+		umsg(null, 'O', txt);
+	}
+
+	public static void ured(Object... txt)
+	{
+		umsg(null, 'R', txt);
+	}
+
+	public static void utext(Long login, Object... txt)
+	{
+		umsg(login, 'N', txt);
+	}
+
+	public static void ugreen(Long login, Object... txt)
+	{
+		umsg(login, 'G', txt);
+	}
+
+	public static void uorange(Long login, Object... txt)
+	{
+		umsg(login, 'O', txt);
+	}
+
+	public static void ured(Long login, Object... txt)
+	{
+		umsg(login, 'R', txt);
 	}
 }

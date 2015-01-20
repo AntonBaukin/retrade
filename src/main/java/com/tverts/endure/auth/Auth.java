@@ -20,7 +20,7 @@ import static com.tverts.support.SU.sXe;
  */
 public class Auth
 {
-	/* types of the authentication entities */
+	/* Types of the Authentication Entities */
 
 	public static final String TYPE_COMPUTER =
 	  "Core: Auth: Computer";
@@ -29,7 +29,7 @@ public class Auth
 	  "Core: Auth: Login";
 
 
-	/* system codes */
+	/* System Codes */
 
 	/**
 	 * Defines code of {@link AuthLogin} that
@@ -39,7 +39,12 @@ public class Auth
 	public static final String SYSTEM_USER = "System";
 
 
-	/* display name helpers */
+	/* Messages Types */
+
+	public static final String MSG_LOGIN_CREATE = "auth: login: create";
+
+
+	/* Display Name Helpers */
 
 	public static String name(ComputerEntity c)
 	{
@@ -48,7 +53,7 @@ public class Auth
 	}
 
 
-	/* login helpers */
+	/* Login Helpers */
 
 	public static String passwordHash(MessageDigest d, String p)
 	{

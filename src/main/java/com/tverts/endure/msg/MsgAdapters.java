@@ -31,6 +31,9 @@ public class MsgAdapters
 	public static final MsgAdapters INSTANCE =
 	  new MsgAdapters();
 
+	private MsgAdapters()
+	{}
+
 
 	/* Adapters Access */
 

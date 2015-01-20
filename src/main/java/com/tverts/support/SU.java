@@ -259,7 +259,7 @@ public class SU
 	 * Returns {@code true} if the string is {@code null},
 	 * empty, or contains only whitespaces.
 	 */
-	public static boolean sXe(String s)
+	public static boolean  sXe(String s)
 	{
 		return (s == null) || (s.length() == 0) ||
 		  (s.trim().length() == 0);
@@ -268,7 +268,7 @@ public class SU
 	/**
 	 * Compares the characters with ending position exclusive.
 	 */
-	public static boolean eq(CharSequence x, CharSequence y, int b, int e)
+	public static boolean  eq(CharSequence x, CharSequence y, int b, int e)
 	{
 		if((x == null) && (y == null)) return true;
 		if((x == null) || (y == null)) return false;
@@ -647,23 +647,20 @@ public class SU
 	 */
 	public static String        catx(Object... objs)
 	{
-		StringBuilder s = scat(null, "\f", objs);
-		int l = s.length(); if(l == 0) return null;
-
-		//~: turn to lower-case
-		for(int i = 0;(i < s.length());i++)
-			s.setCharAt(i, Character.toLowerCase(s.charAt(i)));
-
-		String x = s.toString();
+		String x = scats("\f", objs);
+		if(x.isEmpty()) return null;
 
 		//~: replace spaces
-		x = x.replaceAll("\\s+", " ");
+		x = x.replaceAll("\\s+", "\f");
 
 		//~: replace wrong symbols
-		x = x.replaceAll("[^\f \\w\\-\\+\\.абвгдеёжзийклмнопрстуфхцчшщъыьэюя]", "");
+		x = x.replaceAll("[^\f\\w\\-\\\\/\\.абвгдеёжзийклмнопрстуфхцчшщъыьэюя]", "");
+
+		//~: replace short words
+		x = x.replaceAll("(^|\f)[^\f]{1,2}(\f|$)", "\f");
 
 		//~: replace empty separators
-		x = x.replaceAll("\f+", "\f");
+		x = x.trim().replaceAll("\f+", "\f");
 
 		if("\f".equals(x)) x = "";
 		return x.isEmpty()?(null):(x);
@@ -671,8 +668,8 @@ public class SU
 
 	public static String        oxtext(String text)
 	{
-		return catx((Object)sXs(text).
-		  split("[^\\w\\-\\+\\.абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"));
+		return catx((Object)sXs(text).toLowerCase().
+		  split("[^\\w\\-\\\\/\\.абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"));
 	}
 
 	/**

@@ -1,5 +1,9 @@
 package com.tverts.endure.auth;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionBuildRec;
@@ -14,6 +18,8 @@ import com.tverts.endure.ActionBuilderXRoot;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
+import com.tverts.endure.msg.GetMsg;
+import com.tverts.endure.msg.Messages;
 import com.tverts.endure.msg.MsgBoxObj;
 import com.tverts.endure.person.ActPerson;
 import com.tverts.endure.person.PersonEntity;
@@ -246,6 +252,11 @@ public class ActLogin extends ActionBuilderXRoot
 			  "%s (closed at %s)", login.getCode(),
 			  DU.datetime2str(login.getCloseTime())
 			));
+
+			//~: remove the message box
+			MsgBoxObj mb = Messages.box(login.getPrimaryKey());
+			bean(GetMsg.class).clear(mb).unlink(mb);
+			session().delete(mb);
 		}
 	}
 

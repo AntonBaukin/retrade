@@ -7,7 +7,7 @@ package com.tverts.event;
  */
 public interface Reactor
 {
-	/* public: Reactor interface */
+	/* Reactor */
 
 	public void react(Event event);
 }

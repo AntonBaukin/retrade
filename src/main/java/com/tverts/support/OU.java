@@ -413,4 +413,11 @@ public class OU
 		return (a == b) || !((a == null) || (b == null)) &&
 		  a.getClass().getName().equals(b.getClass().getName());
 	}
+
+	@SuppressWarnings("unchecked")
+	public static boolean isa(Object obj, Class cls)
+	{
+		return (obj != null) && (cls != null) &&
+		  cls.isAssignableFrom(obj.getClass());
+	}
 }
