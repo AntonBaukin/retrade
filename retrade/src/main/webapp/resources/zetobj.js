@@ -1,167 +1,167 @@
 /*===============================================================+
  |                                                     zetobj    |
- |   Zero ZeT  Java Script Library                               |
+ |   0-ZeT JavaScript Library for Browsers                       |
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
 
+// +----: ZeT: --------------------------------------------------+
+
 var ZeT = window.ZeT = window.ZeT || {
 
-// +----: Global Definitions: -----------------------------------+
+// +----: Global Definitions: ----------------------------------->
 
 	define           : function(name, object)
 	{
-		if(!ZeT.iss(name) || !name.length)
-			throw 'ZeT difinitions are for string names only!';
-
-		var o;
+		ZeT.asserts(name, 'ZeT difinitions are for string names only!')
 
 		if(!window.ZeT$Global)
-			window.ZeT$Global = {};
+			window.ZeT$Global = {}
 
-		if(o = window.ZeT$Global[name])
-			return o;
+		var o; if(o = window.ZeT$Global[name])
+			return o
 
-		window.ZeT$Global[name] = object;
-		return object;
+		window.ZeT$Global[name] = object
+		return object
 	},
 
 	defined          : function(name)
 	{
-		var g = window.ZeT$Global;
-		return g && g[name];
+		ZeT.asserts(name, 'ZeT difinitions are for string names only!')
+		return window.ZeT$Global && window.ZeT$Global[name]
 	},
 
-	init             : function(name, func)
+	init             : function(name, init)
 	{
-		if(!ZeT.iss(name) || !name.length)
-			throw 'ZeT initialization are for string names only!';
-
-		if(!ZeT.isf(func))
-			throw 'function required for ZeT initialization!';
+		ZeT.asserts(name, 'ZeT initializations are for string names only!')
+		ZeT.assert(ZeT.isf(init), 'Function is required for ZeT initialization!')
 
 		if(!window.ZeT$Init)
-			window.ZeT$Init = {};
+			window.ZeT$Init = {}
 
-		if(window.ZeT$Init[name] === true)
-			return this;
+		if(!ZeT.isu(window.ZeT$Init[name]))
+			return this window.ZeT$Init[name]
 
-		window.ZeT$Init[name] = true;
-		func()
-		return this;
+		//!: invoke the initializer
+		window.ZeT$Init[name] = func() || true
+
+		return window.ZeT$Init[name]
 	},
 
 	delayed          : function(obj)
 	{
 		if(ZeT.isf(obj) && (obj.ZeT$delay === true))
-			obj = obj();
-		return obj;
+			obj = obj()
+
+		return obj
 	},
 
 	delayedProp      : function(obj, prop)
 	{
-		if(!obj) return obj;
+		if(!obj) return obj
 
+		//?: {process the whole object}
 		if(!prop)
 		{
 			for(var p in obj) if(p)
 				this.delayedProp(obj, p)
-			return;
+			return obj
 		}
 
-		var val = obj[prop];
-
+		//~: process the given property
+		var val = obj[prop]
 		if(ZeT.isf(val) && (val.ZeT$delay === true))
-			obj[prop] = val();
-		return this;
+			obj[prop] = val()
+
+		return obj
 	},
 
 	isDelayed        : function(obj_or_val, prop)
 	{
-		if(prop) obj_or_val = obj_or_val && obj_or_val[prop];
-		if(!obj_or_val) return false;
-		return (obj_or_val.ZeT$delay === true);
+		//?: {property is specified}
+		if(prop && obj_or_val)
+			obj_or_val = obj_or_val[prop]
+
+		return !!obj_or_val && (obj_or_val.ZeT$delay === true)
 	},
 
-	delay            : function(func)
+	delay            : function(f)
 	{
-		if(!ZeT.isf(func))
-			throw 'Zet.delay can not delay not a function!';
-
-		func.ZeT$delay = true;
-		return func;
+		ZeT.assert(ZeT.isf(f), 'Zet.delay() may not delay not a function!')
+		f.ZeT$delay = true
+		return f
 	},
 
 	defineDelay      : function(name, func)
 	{
-		return this.define(name, this.delay(func));
+		return this.define(name, this.delay(func))
 	},
 
 
-// +----: Object Programming: -----------------------------------+
+// +----: Object Programming: ----------------------------------->
 
 	extend           : function(obj, ext)
 	{
-		if(!obj) obj = {};
-		if(ext) for(var p in ext)
-			obj[p] = ext[p];
-		return obj;
+		if(!obj) obj = {}
+		if(!ext) return obj
+
+		//~: copy all the keys existing
+		var keys = ZeT.keys(ext)
+		for(var i = 0;(i < keys.length);i++)
+			obj[keys[i]] = ext[keys[i]]
+
+		return obj
 	},
 
 	/**
-	 * Prototype JS: Class.create().
-	 */
-	createClass      : function()
-	{
-		return ZeT$Impl.Class.create.
-		  apply(ZeT$Impl.Class, arguments);
-	},
-
-	/**
-	 * First argument if the definition name.
-	 * The class is not created again if it is
-	 * already defined.
+	 * ZeT.define() class by the name.
 	 *
-	 * Analogue in Prototype JS: Class.create().
+	 * Second and third arguments are
+	 * passed to ZeT.createClass().
+	 *
+	 * Second argument may be a Class
+	 * instance (or plain function), or
+	 * a string name of else definition.
 	 */
 	defineClass      : function()
 	{
-		var name  = arguments[0];
-		if(!ZeT.iss(name))
-			throw 'ZeT difinitions are for string names only!';
+		var name  = ZeT.asserts(arguments[0],
+		  'ZeT difinitions are for string names only!')
 
-		var c1ass = ZeT.defined(name);
-		if(c1ass) return c1ass;
+		var cls = ZeT.defined(name)
+		if(cls) return cls
 
-		var parcl = arguments[1];
-		if(ZeT.iss(parcl)) parcl = ZeT.defined(parcl);
-		var args  = ZeT$Impl.update_args([parcl], arguments, 2);
+		//~: parent class is a definition
+		cls = arguments[1]
+		if(ZeT.iss(cls)) cls = ZeT.assertn(ZeT.defined(cls),
+		  'Parent class definition name [', cls, '] is not found!')
 
-		return ZeT.define(name, ZeT.createClass.apply(ZeT, args));
+		//~: create a class
+		return ZeT.define(name, ZeT.Class.call(ZeT.Class, cls, arguments[2]))
 	},
 
 	/**
 	 * Creates instance of the defined class given.
 	 *
-	 * 0   definition key name or class object;
+	 * 0   definition key name or Class object;
 	 * 1.. passed to class constructor.
 	 */
 	createInstance   : function()
 	{
-		var c1ass = arguments[0];
+		var cls = arguments[0]
 
-		if(ZeT.iss(c1ass)) c1ass = ZeT.defined(c1ass);
-		if(!ZeT.isf(c1ass)) throw 'Can not create instance of not a Class';
+		//~: access class definition
+		if(ZeT.iss(cls)) cls = ZeT.defined(cls)
+		ZeT.assert(ZeT.isf(cls) && (cls.ZeT$Class === true),
+		 'Can not create instance of not a Class!')
 
-		var args = ZeT$Impl.update_args([], arguments, 1);
-		var res  = ZeT.extend({}, c1ass.prototype);
-		c1ass.prototype.constructor.apply(res, args)
-
-		return res;
+		//~: remove 0-argument (definition name)
+		var args = ZeT.a(arguments); args.splice(0, 1)
+		return cls.create.apply(cls, args)
 	},
 
 	/**
-	 * Creates named instance of the class defined.
+	 * ZeT.define() instance of the class given.
 	 * If instance with this name exists, returns it instead.
 	 *
 	 * 0   string (unique) key name of instance;
@@ -169,26 +169,26 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	defineInstance   : function()
 	{
-		var name  = arguments[0];
-		if(!ZeT.iss(name))
-			throw 'ZeT difinitions are for string names only!';
+		//~: lookup it is already defined
+		var res = ZeT.defined(arguments[0])
+		if(res) return res
 
-		var res   = ZeT.defined(name);
-		if(res) return res;
+		//~: remove 0-argument (definition name)
+		var args = ZeT.a(arguments); args.splice(0, 1)
+		res = ZeT.createInstance.apply(this, args)
 
-		var args = ZeT$Impl.update_args([], arguments, 1);
-		res = ZeT.createInstance.apply(this, args);
-
-		return ZeT.define(name, res);
+		//~: define it
+		return ZeT.define(arguments[0], res)
 	},
 
 	/**
-	 * Defines instance of temporary class.
+	 * Defines instance of a temporary (anonymous) class.
 	 *
 	 * 0   string (unique) key name of instance;
 	 *
-	 * 1   [optional] definition key name or class object
-	 *     for parent class of the temporary one;
+	 * 1   [optional] definition key name, or Class,
+	 *     or plain function to be the parent class
+	 *     of the temporary one;
 	 *
 	 * 2   the body of the class;
 	 *
@@ -197,39 +197,29 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	singleInstance   : function()
 	{
-		var name  = arguments[0];
-		if(!ZeT.iss(name))
-			throw 'ZeT difinitions are for string names only!';
+		//~: lookup it is already defined
+		var res = ZeT.defined(arguments[0])
+		if(res) return res
 
-		var res   = ZeT.defined(name);
-		if(res) return res;
-
-		var pcls  = arguments[1];
-		if(ZeT.iss(pcls))
+		//~: access the parent class defined
+		var pcls = arguments[1]; if(ZeT.iss(pcls))
 		{
-			pcls = ZeT.defined(pcls);
-			if(!ZeT.isf(pcls)) throw 'Can not create instance of not a Class';
+			pcls = ZeT.defined(pcls); ZeT.assert(ZeT.isf(pcls),
+			  'Can not create instance of not a Class or function!')
 		}
 
 		//~: arguments of class create invocation
-		var cargs = ZeT.isf(pcls)?([pcls, arguments[2]]):([arguments[1]]);
+		var cargs = ZeT.isf(pcls)?([pcls, arguments[2]]):([arguments[1]])
 
-		//~: create the class
-		var c1ass = ZeT.createClass.apply(ZeT, cargs);
+		//~: create the anonymous class
+		var cls = ZeT.Class.apply(ZeT.Class, cargs)
 
-		//~: create an instance
-		var args = ZeT$Impl.update_args([c1ass], arguments, ZeT.isf(pcls)?(3):(2));
-		return ZeT.define(name, ZeT.createInstance.apply(ZeT, args));
-	},
+		//~: copy constructor arguments
+		var args = [cls], i = ZeT.isf(pcls)?(3):(2)
+		for(;(i < arguments.length);i++) args.push(arguments[i])
 
-	/**
-	 * Prototype JS: Class.addMethods().
-	 */
-	extendClass      : function(c1ass, methods)
-	{
-		if(ZeT.iss(c1ass)) c1ass = ZeT.defined(c1ass);
-		return ZeT$Impl.Class.extend.
-		  call(ZeT$Impl.Class, c1ass, methods);
+		//~: create and define the instance
+		return ZeT.define(arguments[0], ZeT.createInstance.apply(ZeT, args))
 	},
 
 
@@ -634,177 +624,307 @@ var ZeT = window.ZeT = window.ZeT || {
 }
 
 
-var ZeT$Impl = ZeT.define('ZeT$Impl', {
+// +----: ZeT.Class: --------------------------------------------+
 
-	/**
-	 * Prototype JS library: object Class.
-	 */
-	Class             : (function()
+/**
+ * Creates Class instance. The arguments are:
+ *
+ * 0  [optional] parent Class instance;
+ * 1  [optional] body object with the Class methods.
+ *
+ * The parent Class may be of ZeT implementation: each such
+ * instance is marked with (Class.ZeT$Class = true).
+ *
+ * It is allowed the parent Class to be a general Function.
+ * As for ZeT Class inheritance, Function.prototype will be
+ * the parent [[Prototype]] of Class.prototype. To call Function
+ * (as a constructor) from Class initialization method (see
+ * Class.initializer() method), use the same $superApply() or
+ * $superCall() runtime-added methods.
+ *
+ * The body object may contain not only the methods, but properties
+ * of other types: they are 'static' members of the prototype of
+ * the instances created.
+ *
+ * The returned Class instance is a Function having the following
+ * instance methods:
+ *
+ * · create(...) : new instance of Class
+ *
+ *   creates an instance of the Class. Takes any number of arguments
+ *   that are passed as-is to the initialization method.
+ *
+ * · extend({body} | [{body}]) : this Class
+ *
+ *   adds the methods (and the properties) of the body (or array of
+ *   bodies) given to the prototype of the Class. Note that the methods
+ *   (as references) are copied wrapped, and adding methods (or fields)
+ *   to the body object after extending has no effect.
+ *
+ * · addMethod(name, f) : this Class
+ *
+ *   adds the method given to the prototype of Class. Note that the
+ *   function given is wrapped to provide $-objects at the call time.
+ *
+ * · initializer([names]) : this Class
+ *
+ *   give an array of names (or single name) with the body' initialization
+ *   method. Default names are: 'initialize', 'init', and 'constructor'.
+ *   Only the first method found in the instance is called.
+ *
+ *   Note that constructor() is always defined when plain Function was
+ *   inherited Hence, 'constructor' must be the last in the list, or you
+ *   have to implement constructor() as the initializing method.
+ *
+ * The instances created as a Class has the following properties and methods:
+ *
+ * · $class  it's Class instance.
+ *
+ * · $plain  equals to a plain Function when it is the root of hierarchy;
+ *
+ * · $callSuper(), $applySuper()
+ *
+ *   these functions are available only within a method call.
+ *   They invoke the method with the same name defined in the
+ *   ancestor classes hierarchy.
+ *
+ * · $callContext
+ *
+ *   as $callSuper(), available only within a method call.
+ *   It contains the following properties:
+ *
+ *   · name:  the name of the method (currently invoked);
+ *
+ *   · wrapped:  the original method added to Class (and wrapped);
+ *
+ *   · method: method is being invoked (i.e., the wrapper);
+ *
+ *   · callSuper, applySuper:  functions that are assigned
+ *     as $- to object when invoking a method;
+ *
+ *   · superFallback: function to invoke within $call-,
+ *     $applySuper() when super method was not found.
+ *
+ *    Note that $callContext object is shared between the calls
+ *    of the body method wrapped! (Each function in the method
+ *    hierarchy still has it's own instance.)
+ */
+ZeT.Class = ZeT.Class || function()
+{
+	//~: initialization methods lookup array
+	var inits = ['initialize', 'init', 'constructor'];
+
+	//!: the Class instance to return
+	function Class()
 	{
-		function Subclass() {}
-
-		function create()
+		//c: process the initialize names list
+		for(var i = 0;(i < inits.length);i++)
 		{
-			var parent = null, props = ZeT.a(arguments);
+			var m = this[inits[i]]
+			if(!ZeT.isf(m)) continue
 
-			if(ZeT.isf(props[0]))
-				parent = props.shift();
+			//?: {this is a root Function constructor} skip it for now
+			if(Class.$plain && (m === Class.$plain.prototype.constructor))
+				continue
 
-			function Class()
-			{
-				if(ZeT.isf(this.init))
-					this.init.apply(this, arguments)
-			}
+			//?: {this is Object constructor}
+			if(m === Object.prototype.constructor) continue
 
-			Class.superclass = parent;
-			Class.subclasses = [];
+			//~: install fallback for plain Function root
+			if(Class.$plain && m.$callContext)
+				m.$callContext.superFallback = Class.$plain
 
-			if(parent)
-			{
-				Subclass.prototype = parent.prototype;
-				Class.prototype    = new Subclass();
-
-				if(!parent.subclasses)
-					parent.subclasses = [];
-				parent.subclasses.push(Class)
-			}
-
-			for(var i = 0, length = props.length;(i < length);i++)
-				ZeT$Impl.Class.extend(Class, props[i])
-
-			Class.prototype.constructor = Class;
-			Class.prototype.static = {};
-
-			return Class;
+			//!: call the initializer
+			return m.apply(this, arguments)
 		}
 
-		//HINT: this flag indicates that 'toString' method
-		// is not listed in the properties (keys) list
-		var IS_DONTENUM_BUGGY = (function()
+		//HINT: we found no initialization method in the body...
+
+		//?: {has hierarchy root Function} invoke it as a fallback
+		if(Class.$plain)
+			Class.$plain.apply(this, arguments)
+	}
+
+	//:: Class.$super
+	Class.$super = ZeT.isf(arguments[0])?(arguments[0]):(null)
+
+	//:: Class.$plain
+	if(Class.$super) Class.$plain = (Class.$super.ZeT$Class === true)?
+	  (Class.$super.$plain):(Class.$super)
+
+	//?: {has parent class} use it as a prototype
+	if(!Class.$super) Class.prototype = {}; else (function()
+	{
+		function U() {}
+		U.prototype = Class.$super.prototype
+		Class.prototype = new U()
+	})()
+
+	//:: Class.create()
+	Class.create = function()
+	{
+		var args = arguments
+
+		function C()
 		{
-			for(var p in { toString: 1 })
+			Class.apply(this, args)
+		}
+
+		C.prototype = Class.prototype
+		return new C()
+	}
+
+	function createCallContext(name, f)
+	{
+		return { name: name, wrapped : f,
+
+			assign  : function(that)
 			{
-				if(p === 'toString') return false;
+				//:: this.$callContext
+				that.$callContext = this
+
+				//:: this.$callSuper
+				that.$callSuper  = this.callSuper
+
+				//:: this.$applySuper
+				that.$applySuper = this.applySuper
+			},
+
+			revoke  : function(that)
+			{
+				delete that.$callContext
+				delete that.$callSuper
+				delete that.$applySuper
+			}
+		}
+	}
+
+	//:: Class.addMethod()
+	Class.addMethod = function(name, f)
+	{
+		//~: find super method and invalidate it's cache marker
+		var sx, sm = Class.$super && Class.$super.prototype[name]
+		if(ZeT.isf(sm)) sm.$cacheMarker = sx = {}
+			else sm = undefined
+
+		function accessSuper(that)
+		{
+			//?: {has super method & the marker is actual}
+			if(sm && (sm.$cacheMarker === sx))
+				return sm
+
+			//~: find it
+			sm = Class.$super && Class.$super.prototype[name]
+			if(ZeT.isf(sm)) sx = sm.$cacheMarker; else
+			{
+				sm = undefined
+
+				//?: {has fallback call provided}
+				var fb = that.$callContext.superFallback
+				if(fb) return fb
+
+				throw new Error('$super method (' + name + ') not found!')
 			}
 
-			return true;
+			return sm
+		}
+
+		//~: invalidate cache marker of existing method
+		(function()
+		{
+			var m = Class.prototype[name]
+			if(ZeT.isf(m)) m.$cacheMarker = {}
 		})()
 
-		function extend(c1ass, source)
+		//~: wrap the method
+		function Method()
 		{
-			//HINT: this appeals to the outer Class
-			var parent = c1ass.superclass && c1ass.superclass.prototype;
-			var props  = ZeT.keys(source);
+			var x = this.$callContext
+			var a = !x || (x.method !== Method)
 
-			if(IS_DONTENUM_BUGGY)
+			try
 			{
-				//HINT: this checks whether the method is overwritten.
-				//  If so, manually adds the method name to the keys.
-				if(source.toString != Object.prototype.toString)
-					props.push("toString");
+				//?: {not the same method is invoked}
+				if(a) Method.$callContext.assign(this)
 
-				if(source.valueOf != Object.prototype.valueOf)
-					props.push("valueOf");
+				return f.apply(this, arguments)
 			}
-
-			for(var i = 0, length = props.length;(i < length);i++)
+			finally
 			{
-				var p = props[i], v = source[p];
-
-				if(!parent || !ZeT.isf(v))
+				if(a) try
 				{
-					c1ass.prototype[p] = v;
-					continue;
+					this.$callContext.revoke(this)
 				}
-
-				var a = ZeT$Impl.argument_names(v);
-
-				if(a[0] === '$super')
+				finally
 				{
-					var method = v;
-
-					//?: {parent has no such a method}
-					if(!ZeT.isf(parent[p]))
-						throw 'Can not extend class with $super argument as ' +
-						  'the parent class does not define method [' + p + ']';
-
-					v = ZeT.fwrap((function(m)
-					{
-						return function()
-						{
-							return parent[m].apply(this, arguments);
-						}
-
-					})(p), method);
-
-					v.valueOf  = ZeT.fbind(method.valueOf,  method);
-					v.toString = ZeT.fbind(method.toString, method);
+					if(x) x.assign(this)
 				}
-
-				c1ass.prototype[p] = v;
 			}
-
-			return c1ass;
 		}
 
-		return {
-			create  : create,
-			extend  : extend
-		};
-	})(),
+		//~: assign wrapper to the prototype
+		Class.prototype[name] = Method
 
-	is_node_list_func : function()
-	{
-		var isnlf = ZeT$Impl._is_node_list_func_;
+		//:: Class.[Method].$callContext
+		Method.$callContext = createCallContext(name, f)
+		Method.$callContext.method = Method
 
-		if(ZeT.isb(isnlf))     return isnlf;
-		if(ZeT.isu(document))  return null;
+		//:: Class.[Method].$callSuper
+		Method.$callContext.callSuper = function()
+		{
+			return accessSuper(this).apply(this, arguments)
+		}
 
-		ZeT$Impl._is_node_list_func_ = isnlf =
-		  (typeof document.getElementsByTagName('body') === 'function');
+		//:: Class.[Method].$applySuper
+		Method.$callContext.applySuper = function(args)
+		{
+			return accessSuper(this).apply(this, args)
+		}
 
-		return isnlf;
-	},
-
-	/**
-	 * Prototype JS library:
-	 *   Function.argumentNames().
-	 */
-	argument_names    : function(f)
-	{
-		var names = f.toString().
-		  match(/^[\s\(]*function[^(]*\(([^)]*)\)/)[1].
-		  replace(/\/\/.*?[\r\n]|\/\*(?:.|[\r\n])*?\*\//g, '').
-		  replace(/\s+/g, '').split(',');
-
-		return ((names.length == 1) && !names[0])?([]):(names);
-	},
-
-	update_args       : function(array, args, start)
-	{
-		var length = array.length;
-
-		if(!start) start = 0;
-		for(var i = 0, l = args.length - start;(i < l);i++)
-			array[length + i] = args[start + i];
-		return array;
-	},
-
-	merge_args        : function(array, args)
-	{
-		array = Array.prototype.slice.call(array, 0);
-		return ZeT$Impl.update_args(array, args);
-	},
-
-	selects_funcs     : function(args)
-	{
-		var res = [];
-
-		for(var i = 0;(i < args.length);i++)
-			if(ZeT.isf(args[i])) res.push(args[i])
-		return res;
+		return Class
 	}
-})
+
+	//:: Class.extend()
+	Class.extend = function(body)
+	{
+		if(!body) return Class
+		if(!ZeT.isa(body)) body = [body]
+
+		for(var j = 0;(j < body.length);j++)
+		{
+			var b = body[j], k, v, ks = ZeT.keys(b), p = Class.prototype
+			for(var i = 0;(i < ks.length);i++)
+			{
+				k = ks[i]; v = b[k]
+				if(!ZeT.isf(v)) p[k] = v; else
+					Class.addMethod(k, v)
+			}
+		}
+
+		return Class
+	}
+
+	//~: extend with the body given
+	Class.extend((Class.$super)?(arguments[1]):(arguments[0]))
+
+
+	//:: Class.initializer()
+	Class.initializer = function(a)
+	{
+		if(a && !ZeT.isa(a)) a = [a]
+		if(ZeT.isa(a) && a.length)
+			inits = a
+		return Class
+	}
+
+	//:: this.$class
+	Class.prototype.$class = Class
+
+	//~: mark as a Class instance
+	Class.ZeT$Class = true
+
+	return Class
+}
 
 
 var ZeTS = ZeT.define('ZeTS',

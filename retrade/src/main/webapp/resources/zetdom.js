@@ -249,6 +249,71 @@ var ZeTD = ZeT.define('ZeTD',
 	},
 
 
+// +----: Events Functions :---->
+
+	/**
+	 * Registers DOM node event listener based on
+	 * existing jQuery or ExtJS libraries. Returns
+	 * the listener wrapper function actually used.
+	 *
+	 * The callback function invoked with 'this'
+	 * always equals to the node argument, and
+	 * event instance containing the attributes:
+	 *
+	 *  · 'target' node;
+	 *  · page 'x' and 'y';
+	 *  · 'key' character code;
+	 *  · 'isControl', 'isShift', 'isMeta' flags.
+	 */
+	on                : function(node, event, f)
+	{
+		ZeT.asserts(event)
+		ZeT.assert(ZeT.isf(f))
+
+		if(ZeT.iss(node)) node = ZeTD.n(node)
+		ZeT.assert(ZeTD.isn(node))
+
+		//?: {no UI library}
+		ZeT.assert(jQuery || Ext)
+
+		//?: {jQuery}
+		var r; if(jQuery) jQuery(node).on(event, r = function(e)
+		{
+			f.call(node, {
+
+				target: e.target,
+				x: e.pageX, y: e.pageY,
+				key: e.charCode, isControl: e.ctrlKey,
+				isShift: e.shiftKey, isMeta: e.metaKey,
+
+				stop: function()
+				{
+					e.stopPropagation()
+					e.preventDefault()
+				}
+			})
+		})
+		//~: {ExtJS}
+		else Ext.on(event, r = function(e)
+		{
+			f.call(node, {
+
+				target: e.getTarget(),
+				x: e.getX(), y: e.getY(),
+				key: e.getCharCode(), isControl: e.ctrlKey,
+				isShift: e.shiftKey, isMeta: e.metaKey,
+
+				stop: function()
+				{
+					e.stopEvent()
+				}
+			})
+		})
+
+		return r
+	},
+
+
 // +----: Browsers Detection :---->
 
 	IE                : (function()

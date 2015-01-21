@@ -1797,3 +1797,16 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 		"  </tr>"+
 		"</table>"
 })
+
+
+// +----: ReTrade Events Menu :----------------------------------+
+
+ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
+
+	init     : function(opts)
+	{
+		//~: create the structure
+		this._init_struct(opts)
+	}
+
+})
