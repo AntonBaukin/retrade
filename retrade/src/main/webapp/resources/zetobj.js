@@ -198,7 +198,7 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 		a = ZeT.a(a)
 
 		//?: {has range} make a copy
-		if(!ZeT.isu(begin))
+		if(ZeT.isu(begin)) b = ZeT.a(b); else
 			b = ZeTA.copy(b, begin, end)
 
 		//~: push all the items
@@ -270,7 +270,7 @@ var ZeT = window.ZeT = window.ZeT || {
 			return window.ZeT$Init[name]
 
 		//!: invoke the initializer
-		window.ZeT$Init[name] = func() || true
+		window.ZeT$Init[name] = init() || true
 
 		return window.ZeT$Init[name]
 	},
@@ -444,6 +444,26 @@ var ZeT = window.ZeT = window.ZeT || {
 		//~: create and define the instance
 		var obj = ZeT.createInstance.apply(ZeT, args)
 		return ZeT.define(arguments[0], obj)
+	},
+
+	/**
+	 * Extends the class (also, by it's definition name)
+	 * with the body-methods given.
+	 */
+	extendClass      : function(cls, ext)
+	{
+		//~: access defined class
+		if(ZeT.iss(cls)) cls = ZeT.defined(cls)
+		ZeT.assert(cls.ZeT$Class === true, 'A Class is required to be extended!')
+
+		//c: extend for each key
+		ZeT.assertn(ext, 'Class extention is not given!')
+		ZeT.each(ZeT.keys(ext), function(key)
+		{
+			if(ZeT.iss(key)) cls.addMethod(key, ext[key])
+		})
+
+		return cls
 	},
 
 

@@ -19,13 +19,18 @@
 
   <title><ui:insert name = 'page_title'/></title>
 
-
-  <!-- Ext JS 4 Framework, Copyright © 2011 Sencha.com (All Rights Reserved) -->
-
   <c:if test = '${systemConfig.debug}'>
 
     <script type = 'text/javascript' charset = 'UTF-8'
       src = "${z:url('/extjs/ext-all-dev.js')}"></script>
+
+    <!--
+    <script type = 'text/javascript' charset = 'UTF-8'
+      src = "${z:url('/resources/jquery.js')}"></script>
+
+    <script type = 'text/javascript' charset = 'UTF-8'
+      src = "${z:url('/resources/jquery-ui.js')}"></script>
+    -->
 
     <link type = 'text/css' rel = 'stylesheet'
       href = "${z:url('/extjs/resources/ext-theme-gray/ext-theme-gray-all-debug.css ')}"/>
@@ -36,6 +41,12 @@
 
     <script type = 'text/javascript' charset = 'UTF-8'
       src = "${z:url('/extjs/ext-all.js')}"></script>
+
+    <script type = 'text/javascript' charset = 'UTF-8'
+      src = "${z:url('/resources/jquery.min.js')}"></script>
+
+    <script type = 'text/javascript' charset = 'UTF-8'
+      src = "${z:url('/resources/jquery-ui.min.js')}"></script>
 
     <link type = 'text/css' rel = 'stylesheet'
       href = "${z:url('/extjs/resources/ext-theme-gray/ext-theme-gray-all.css ')}"/>

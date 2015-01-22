@@ -1549,10 +1549,10 @@ ReTrade.Visual = ZeT.defineClass('ReTrade.Visual', {
 	 */
 	_tx               : function()
 	{
-		if(this.static.template)
-			return this.static.template
+		if(this.$class.template)
+			return this.$class.template
 
-		return this.static.template = new ZeT.Layout.Template(
+		return this.$class.template = new ZeT.Layout.Template(
 		  {trace : ZeT.Layout.Template.Ways.traceAtNodes},
 		  ZeT.asserts(this._ts, 'Visual template string is required!'))
 	}
