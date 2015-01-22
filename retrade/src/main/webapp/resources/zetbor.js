@@ -240,7 +240,7 @@ ZeT.Border.full = ZeT.define('ZeT.Border.full()', function(opts)
 		var c  = fills['classes'];
 		if(!c && clss) c = clss.replace(pat, k);
 
-		c = ZeTA.merge(e.classes, c);
+		c = ZeTA.merge(ZeTA.copy(e.classes), c);
 		if(c.length) e.classes = c;
 	}
 

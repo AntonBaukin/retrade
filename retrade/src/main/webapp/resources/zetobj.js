@@ -5,7 +5,234 @@
  +===============================================================*/
 
 
-// +----: ZeT: --------------------------------------------------+
+// +----: ZeT Strings : -----------------------------------------+
+
+var ZeTS = window.ZeTS = window.ZeTS ||
+{
+	/**
+	 * Returns false for string objects that are not
+	 * whitespace-trimmed empty.
+	 */
+	ises             : function(s)
+	{
+		return !ZeT.iss(s) || (s.length == 0) || !/\S/.test(s)
+	},
+
+	/**
+	 * Checks the value, or a property value is a string.
+	 * If the final property is not accessible, false
+	 * value is returned.
+	 *
+	 * Empty strings return false value! (Whitespaces are
+	 * not trimmed before the check.)
+	 */
+	i$s              : function(/* object, properties list */)
+	{
+		var o = arguments[0]
+
+		if(arguments.length == 1)
+			return ZeT.iss(o) && !!o.length
+
+		var a = ZeT.a(arguments); a.shift()
+
+		while(a.length)
+		{
+			o = o[a.shift()] //<-- access the next property
+			if(ZeT.i$x(o)) return false
+		}
+
+		return ZeT.iss(o) && !!o.length
+	},
+
+	trim             : function(s)
+	{
+		return !(s && s.length)?(''):(s.replace(/^\s+|\s+$/g, ''))
+	},
+
+	first            : function(s)
+	{
+		return s.length && s.charAt(0)
+	},
+
+	replace          : function(s, a, b)
+	{
+		return s.split(a).join(b)
+	},
+
+	cat              : function( /* various objects */)
+	{
+		for(var i = 0;(i < arguments.length);i++)
+			if(ZeT.isu(arguments[i]) || (arguments[i] === null))
+				arguments[i] = ''
+
+		return String.prototype.concat.apply('', arguments)
+	},
+
+	cati             : function(index, objs)
+	{
+		if(!objs || !ZeT.isi(objs.length)) return ''
+
+		for(var i = 0;(i < objs.length);i++)
+			if((i < index) || ZeT.isu(objs[i]) || (objs[i] === null))
+				objs[i] = ''
+
+		return String.prototype.concat.apply('', objs)
+	},
+
+	catif            : function(x /*, various objects */)
+	{
+		if(!x || ZeT.iss(x) && !x.length) return ''
+		arguments[0] = ''
+
+		for(var i = 1;(i < arguments.length);i++)
+			if(ZeT.isu(arguments[i]) || (arguments[i] === null))
+				arguments[i] = ''
+
+		return String.prototype.concat.apply('', arguments)
+	}
+}
+
+/**
+ * For some browsers that do not have String.endsWith()...
+ */
+if(!String.prototype.endsWith)
+  String.prototype.endsWith = function(s)
+{
+	if(!s || !s.length) return false
+
+	var i = this.lastIndexOf(s)
+	return (i == this.length - s.length)
+}
+
+
+// +----: ZeT Arrays : ------------------------------------------+
+
+var ZeTA = window.ZeTA = window.ZeTA || {
+
+	/**
+	 * Creates a copy of array-like object given.
+	 * Optional [begin; end) range allows to copy
+	 * a part of the array. Negative values of
+	 * the range boundaries are not allowed.
+	 */
+	copy             : function(a, begin, end)
+	{
+		//?: {has no range}
+		if(ZeT.isu(begin))
+			return ZeT.isa(a)?(a.slice()):ZeT.a(a)
+
+		//~: [begin; end)
+		ZeT.assert(ZeT.isn(begin))
+		ZeT.assert(begin >= 0)
+		if(ZeT.isu(end) || (end > a.length)) end = a.length
+		ZeT.assert(ZeT.isn(end))
+		ZeT.assert(begin <= end)
+
+		//?: has more than 50% items to copy
+		if((end - begin)*2 >= a.length)
+			return (ZeT.isa(a)?(a):ZeT.a(a)).slice(begin, end)
+
+		//~: manual copy
+		var r = new Array(end - begin)
+		for(var i = begin, j = 0;(i < end);i++, j++) r[j] = a[i]
+
+		return r
+	},
+
+	/**
+	 * Has two forms of invocation:
+	 *
+	 * 0    target array;
+	 * 1..  items or arrays to remove.
+	 *
+	 * this target array;
+	 * 0..  items or arrays to remove.
+	 *
+	 * Removes the items from the target array.
+	 * If item is itself an array, recursively
+	 * invokes this function.
+	 *
+	 * Returns the target array.
+	 */
+	remove           : function()
+	{
+		var i, j
+
+		//?: {second form}
+		if(ZeT.isa(this))
+		{
+			for(i = 0;(i < arguments.length);i++)
+				if(ZeT.isa(arguments[i]))
+					ZeTA.remove.apply(this, arguments[i])
+				else if((j = this.indexOf(arguments[i])) != -1)
+					this.splice(j, 1)
+
+			return this
+		}
+		//~: first form
+		else
+		{
+			for(i = 1;(i < arguments.length);i++)
+				if(ZeT.isa(arguments[i]))
+					ZeTA.remove.apply(arguments[0], arguments[i])
+				else if((j = arguments[0].indexOf(arguments[i])) != -1)
+					arguments[0].splice(j, 1)
+
+			return arguments[0]
+		}
+	},
+
+	/**
+	 * Takes two array-like objects and optional
+	 * [begin, end) range from the second one.
+	 *
+	 * If the first (target) object is an array,
+	 * modifies it adding the items from the
+	 * second object in the range given.
+	 *
+	 * If the target object is not an array,
+	 * makes it's array-copy, returns it.
+	 */
+	merge            : function(a, b, begin, end)
+	{
+		a = ZeT.a(a)
+
+		//?: {has range} make a copy
+		if(!ZeT.isu(begin))
+			b = ZeTA.copy(b, begin, end)
+
+		//~: push all the items
+		Array.prototype.push.apply(a, b)
+		return a
+	},
+
+	/**
+	 * Checks that two objects are array-like and
+	 * have the same length and the items each
+	 * strictly (===) equals.
+	 */
+	equals           : function(a, b)
+	{
+		if(!a || !b) return (a == null) && (a == b)
+		if(a === b)  return true
+
+		if(!ZeT.isi(a.length) || !ZeT.isi(b.length))
+			return false
+
+		if(a.length != b.length) return false
+		for(var l = a.length, i = 0;(i < l);i++)
+			if(a[i] !== b[i])
+				return false
+		return true
+	}
+}
+
+//!: require browsers to support Array.indexOf()!
+if(!Array.prototype.indexOf)
+	throw new Error('Your browser has no Array.indexOf()!')
+
+
+// +----: ZeT Library : -----------------------------------------+
 
 var ZeT = window.ZeT = window.ZeT || {
 
@@ -40,7 +267,7 @@ var ZeT = window.ZeT = window.ZeT || {
 			window.ZeT$Init = {}
 
 		if(!ZeT.isu(window.ZeT$Init[name]))
-			return this window.ZeT$Init[name]
+			return window.ZeT$Init[name]
 
 		//!: invoke the initializer
 		window.ZeT$Init[name] = func() || true
@@ -60,18 +287,17 @@ var ZeT = window.ZeT = window.ZeT || {
 	{
 		if(!obj) return obj
 
-		//?: {process the whole object}
-		if(!prop)
+		//?: {process the given property}
+		var val; if(prop)
 		{
-			for(var p in obj) if(p)
-				this.delayedProp(obj, p)
-			return obj
+			val = obj[prop]
+			if(ZeT.isf(val) && (val.ZeT$delay === true))
+				obj[prop] = val()
 		}
-
-		//~: process the given property
-		var val = obj[prop]
-		if(ZeT.isf(val) && (val.ZeT$delay === true))
-			obj[prop] = val()
+		//~: process the whole object
+		else for(var p in obj)
+			if(p && ZeT.isf(val = obj[p]) && (val.ZeT$delay === true))
+				obj[prop] = val()
 
 		return obj
 	},
@@ -125,10 +351,8 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	defineClass      : function()
 	{
-		var name  = ZeT.asserts(arguments[0],
-		  'ZeT difinitions are for string names only!')
-
-		var cls = ZeT.defined(name)
+		//~: access the class already defined
+		var cls = ZeT.defined(arguments[0])
 		if(cls) return cls
 
 		//~: parent class is a definition
@@ -137,7 +361,8 @@ var ZeT = window.ZeT = window.ZeT || {
 		  'Parent class definition name [', cls, '] is not found!')
 
 		//~: create a class
-		return ZeT.define(name, ZeT.Class.call(ZeT.Class, cls, arguments[2]))
+		return ZeT.define(arguments[0],
+		  ZeT.Class.call(ZeT.Class, cls, arguments[2]))
 	},
 
 	/**
@@ -148,15 +373,14 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	createInstance   : function()
 	{
-		var cls = arguments[0]
-
 		//~: access class definition
+		var cls = arguments[0]
 		if(ZeT.iss(cls)) cls = ZeT.defined(cls)
 		ZeT.assert(ZeT.isf(cls) && (cls.ZeT$Class === true),
 		 'Can not create instance of not a Class!')
 
 		//~: remove 0-argument (definition name)
-		var args = ZeT.a(arguments); args.splice(0, 1)
+		var args = ZeTA.copy(arguments, 1)
 		return cls.create.apply(cls, args)
 	},
 
@@ -174,7 +398,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		if(res) return res
 
 		//~: remove 0-argument (definition name)
-		var args = ZeT.a(arguments); args.splice(0, 1)
+		var args = ZeTA.copy(arguments, 1)
 		res = ZeT.createInstance.apply(this, args)
 
 		//~: define it
@@ -215,61 +439,59 @@ var ZeT = window.ZeT = window.ZeT || {
 		var cls = ZeT.Class.apply(ZeT.Class, cargs)
 
 		//~: copy constructor arguments
-		var args = [cls], i = ZeT.isf(pcls)?(3):(2)
-		for(;(i < arguments.length);i++) args.push(arguments[i])
+		var args = ZeTA.merge([cls], arguments, ZeT.isf(pcls)?(3):(2))
 
 		//~: create and define the instance
-		return ZeT.define(arguments[0], ZeT.createInstance.apply(ZeT, args))
+		var obj = ZeT.createInstance.apply(ZeT, args)
+		return ZeT.define(arguments[0], obj)
 	},
 
 
-// +----: Function Tricks: --------------------------------------+
+// +----: Function Helpers: ------------------------------------->
 
 	/**
-	 * Prototype JS: Function.bind().
-	 */
-	fbind            : function(f, context)
-	{
-		if((arguments.length < 3) && ZeT.isu(arguments[1]))
-			return f;
-
-		var args = Array.prototype.slice.call(arguments, 2);
-		var func = function()
-		{
-			var a = ZeT$Impl.merge_args(args, arguments);
-			return f.apply(context, a);
-		}
-
-		func.ZeT$fbind = true;
-		return func;
-	},
-
-	fbinda           : function(f, context, args)
-	{
-		return function()
-		{
-			return f.apply(context, ZeT.a(args));
-		}
-	},
-
-	/**
-	 * Prototype JS: Function.wrap().
+	 * Returns a function having 'this' assigned to 'that'
+	 * argument and the following arguments passed as
+	 * the first arguments of each call.
 	 *
-	 * Here 'f' argument is the function being wrapped.
-	 * When the resulting function is called, 'wrapper'
-	 * function is invoked with the first argument is
-	 * the original 'f' function. (It may be called in
-	 * the wrapper implementation to achieve wrapping.)
+	 * 0   [required] a function;
+	 * 1   [required] 'this' context tu use;
+	 * 2.. [optional] first and the following arguments.
 	 */
-	fwrap            : function(f, wrapper)
+	fbind            : function(f, that)
 	{
+		//?: {has function and the context}
+		ZeT.assert(ZeT.isf(f))
+		ZeT.assertn(that)
+
+		//~: copy the arguments
+		var args = ZeTA.copy(arguments, 2)
+
 		return function()
 		{
-			var a = ZeT$Impl.update_args([ZeT.fbind(f, this)], arguments);
-			return wrapper.apply(this, a);
+			var a = ZeTA.merge(ZeTA.copy(args), arguments)
+			return f.apply(that, a)
 		}
 	},
 
+	/**
+	 * Works as ZeT.fbind(), but takes additional
+	 * arguments as a copy of array-like object given.
+	 */
+	fbinda           : function(f, that, args)
+	{
+		//?: {has function and the context}
+		ZeT.assert(ZeT.isf(f))
+		ZeT.assertn(that)
+
+		//~: copy the arguments
+		args = ZeTA.copy(args)
+
+		return function()
+		{
+			return f.apply(that, args)
+		}
+	},
 
 	/**
 	 * Creates a function that sequentially calls the
@@ -283,138 +505,170 @@ var ZeT = window.ZeT = window.ZeT || {
 	 * to come as the first argument only, but is not
 	 * split into the arguments, wrap it in array.
 	 *
+	 * Warning: if intermediate result is undefined
+	 * or null, the pipe processing is stopped!
+	 *
 	 * The result of the last call is returned as is.
 	 */
 	pipe             : function(/* functions */)
 	{
-		var fn = ZeT$Impl.selects_funcs(arguments);
+		var fn = []; ZeT.each(arguments, function()
+		{
+			ZeT.assert(ZeT.isf(this)); fn.push(this)
+		})
 
-		if(!fn.length) throw 'ZeT.pipe: ' +
-		  'pipe functions are not defined';
-
-		if(fn.length == 1) return fn[0];
+		//?: {has just one item in the pipe}
+		ZeT.assert(fn.length, 'ZeT.pipe() functions are not defined!')
+		if(fn.length == 1) return fn[0]
 
 		return function()
 		{
-			var r = ZeT.a(arguments);
+			var r = arguments //<-- intermediate result
 
 			for(var i = 0;(i < fn.length);i++)
 			{
-				if(!ZeT.isa(r)) r = [r];
-				r = fn[i].apply(this, r);
-				if(ZeT.i$x(r)) return r;
+				//?: {previous results are not an array}
+				if(!ZeT.isa(r)) r = [r] //<-- wrap for apply
+
+				//~: invoke the i-th function of the pipe
+				r = fn[i].apply(this, r)
+
+				//?: {has no result}
+				if(ZeT.isu(r) || (r === null))
+					return r
 			}
-			return r;
+
+			return r
 		}
 	},
 
 	/**
-	 * Shorthand for setTimeout() function that
-	 * takes the function given and optionally binds
-	 * it with the context and the arguments array given.
+	 * Shorthand for setTimeout() function that takes
+	 * the function given and optionally binds it with
+	 * this-context and the arguments array given.
+	 *
+	 * Returns the argument function, or the bound one.
 	 */
-	timeout          : function(tm, fn, self, args)
+	timeout          : function(tm, f, that, args)
 	{
-		if(!ZeT.isn(tm) || (tm < 0))
-			throw 'ZeT.timeout([tm]): illegal timeout!';
-		if(!ZeT.isf(fn))
-			throw 'ZeT.timeout([fn]): not a function!';
+		ZeT.assert(ZeT.isn(tm) && (tm >= 0), 'ZeT.timeout(): illegal timeout!')
+		ZeT.assert(ZeT.isf(f), 'ZeT.timeout(): not a function!')
 
-		if(self) fn = ZeT.fbinda(fn, self, args);
-		setTimeout(fn, tm)
-		return this;
+		//?: {do bind}
+		if(that) f = ZeT.fbinda(f, that, args)
+
+		setTimeout(f, tm)
+		return f
 	},
 
+	/**
+	 * Returns function that on-call activates timeout
+	 * for the function given as the first argument.
+	 * Arguments are the same as in ZeT.timeout().
+	 */
 	timeouted        : function()
 	{
-		var args = arguments;
+		var args = arguments
+
 		return function()
 		{
-			ZeT.timeout.apply(ZeT, args)
+			return ZeT.timeout.apply(ZeT, args)
 		}
 	},
 
 
-// +----: Test Functions: ---------------------------------------+
+// +----: Test Functions: --------------------------------------->
 
 	iss              : function(s)
 	{
-		return (typeof s === 'string');
+		return (typeof s === 'string')
 	},
 
 	isf              : function(f)
 	{
-		if(ZeT$Impl.is_node_list_func())
-			return (Object.prototype.toString.call(f) === '[object Function]');
-
-		return (typeof f === 'function');
+		return (typeof f === 'function')
 	},
 
 	isb              : function(b)
 	{
-		return (typeof b === 'boolean');
+		return (typeof b === 'boolean')
 	},
 
 	isu              : function(o)
 	{
-		return (typeof o === 'undefined');
+		return (typeof o === 'undefined')
 	},
 
-	isa              : ('isArray' in Array)?
-	  (Array.isArray):function(a)
+	isa              : ('isArray' in Array)?(Array.isArray):function(a)
 	{
-		return (Object.prototype.toString.call(a) === '[object Array]');
+		return (Object.prototype.toString.call(a) === '[object Array]')
 	},
 
 	isn              : function(n)
 	{
-		return Object.prototype.toString.call(n) == '[object Number]';
+		return (n === +n)
 	},
 
 	isi              : function(i)
 	{
-		return (i === +i) && (i === (i|0));
+		return (i === +i) && (i === (i|0))
 	},
 
 
-// +----: Helper Functions: -------------------------------------+
+// +----: Helper Functions: ------------------------------------->
 
+	/**
+	 * Takes any array-like object and returns true array.
+	 * If source object is an array, return it.
+	 *
+	 * Array-like objects do have integer length property
+	 * and values by the integer keys [0; length).
+	 *
+	 * If object given is not an array, wraps it to array.
+	 * Undefined or null value produces empty array.
+	 *
+	 * If source object has toArray() method, that method
+	 * is invoked with this-context is the object.
+	 */
 	a                : function(a)
 	{
-		if(ZeT.isu(a) || (a === null))
-			return [];
-
-		if(ZeT.isa(a)) return a;
-		if(ZeT.iss(a)) return [a];
+		if(ZeT.isa(a)) return a
+		if(ZeT.isu(a) || (a === null)) return []
+		if(ZeT.iss(a)) return [a]
 
 		if(ZeT.isf(a.toArray))
-			return a.toArray();
+		{
+			a = a.toArray()
+			ZeT.assert(ZeT.isa(a), 'ZeT.a(): .toArray() returned not an array!')
+			return a
+		}
 
-		if(ZeT.isu(a.length))
-			return [a];
+		//~: manually copy the items
+		var l = a.length; if(!ZeT.isi(l)) return [a]
+		var r = new Array(l)
+		for(var i = 0;(i < l);i++) r[i] = a[i]
 
-		var l = a.length || 0, r = new Array(l);
-		for(var i = 0;(i < l);i++)
-			r[i] = a[i];
-		return r;
+		return r
 	},
 
 	keys             : function(o)
 	{
 		if(ZeT.isf(Object.keys))
-			return Object.keys(o);
+			return Object.keys(o)
 
+		//~: find proper property checker
 		var q, r = [];
+		if(ZeT.isf(o.hasOwnProperty)) q = o.hasOwnProperty
+		else if(ZeT.isf(Object.prototype.hasOwnProperty))
+			q = Object.prototype.hasOwnProperty
+		else
+			q = function(){ return true; }
 
-		q = ZeT.isf(o.hasOwnProperty) && o.hasOwnProperty;
-		q = q || (ZeT.isf(Object.prototype.hasOwnProperty) &&
-		   Object.prototype.hasOwnProperty);
-		q = q || function() {return true;};
-
+		//c: for each object key
 		for(var p in o) if(q.call(o, p))
-			r.push(p);
+			r.push(p)
 
-		return r;
+		return r
 	},
 
 	/**
@@ -432,7 +686,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cati(1, arguments)
 		if(ZeTS.ises(m)) m = 'Assertion failed!'
 
-		throw m
+		throw new Error(m)
 	},
 
 	/**
@@ -447,11 +701,12 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cati(1, arguments)
 		if(ZeTS.ises(m)) m = 'The object is undefined or null!'
 
-		throw m
+		throw new Error(m)
 	},
 
 	/**
-	 * Tests the the given object is a not-empty array.
+	 * Tests the the given object is a not-empty array
+	 * and returns it back.
 	 */
 	asserta          : function(array /* messages */)
 	{
@@ -461,7 +716,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cati(1, arguments)
 		if(ZeTS.ises(m)) m = 'A non-empty array is required!'
 
-		throw m
+		throw new Error(m)
 	},
 
 	/**
@@ -476,7 +731,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cati(1, arguments)
 		if(ZeTS.ises(m)) m = 'A not whitespace-empty string is required!'
 
-		throw m
+		throw new Error(m)
 	},
 
 	/**
@@ -484,8 +739,31 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	xeval            : function(script)
 	{
-		if(ZeTS.ises(script)) return;
+		if(ZeTS.ises(script)) return
 		eval('((function(){'.concat(script, '})())'))
+	},
+
+	/**
+	 * Takes array-like object and invokes the
+	 * function given on each item. Function
+	 * receives arguments: [0] is the item,
+	 * [1] is the item index.
+	 *
+	 * This-context of the function call
+	 * is also the item iterated.
+	 *
+	 * If call on some item returns false, iteration
+	 * is breaked and that stop-index is returned.
+	 */
+	each             : function(a, f)
+	{
+		ZeT.assert(a && ZeT.isn(a.length))
+		ZeT.assert(ZeT.isf(f))
+
+		for(var i = 0;(i < a.length);i++)
+			if(f.call(a[i], a[i], i) === false)
+				return i
+		return undefined
 	},
 
 
@@ -493,8 +771,8 @@ var ZeT = window.ZeT = window.ZeT || {
 
 	log              : function (/* strings */)
 	{
-		var msg = String.prototype.concat.apply('', arguments);
-		if(ZeTS.ises(msg)) return;
+		var msg = String.prototype.concat.apply('', arguments)
+		if(ZeTS.ises(msg)) return
 
 		if(ZeT.i$f(console, 'log'))
 			console.log(msg)
@@ -511,21 +789,21 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	i$x               : function(/* object, properties list */)
 	{
-		var o = arguments[0];
-		var r = ZeT.isu(o) || (o === null);
+		var o = arguments[0]
+		var r = ZeT.isu(o) || (o === null)
 
 		//?: {not need to check further}
-		if(r || (arguments.length == 1)) return !!r;
+		if(r || (arguments.length == 1)) return !!r
 
 		var a = ZeT.a(arguments); a.shift()
 
 		while(a.length)
 		{
-			o = o[a.shift()]; //<-- access the next property
-			if(ZeT.isu(o) || (o === null)) return true;
+			o = o[a.shift()] //<-- access the next property
+			if(ZeT.isu(o) || (o === null)) return true
 		}
 
-		return false;
+		return false
 	},
 
 	/**
@@ -534,22 +812,22 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	i$xtrue           : function(/* object, properties list */)
 	{
-		var o = arguments[0];
-		var u = ZeT.i$x(o);
+		var o = arguments[0]
+		var u = ZeT.i$x(o)
 
 		//?: {not need to check further}
 		if(u || (arguments.length == 1))
-			return u || !(o === false);
+			return u || !(o === false)
 
 		var a = ZeT.a(arguments); a.shift()
 
 		while(a.length)
 		{
-			o = o[a.shift()]; //<-- access the next property
-			if(ZeT.i$x(o)) return true;
+			o = o[a.shift()] //<-- access the next property
+			if(ZeT.i$x(o)) return true
 		}
 
-		return (o !== false);
+		return (o !== false)
 	},
 
 	/**
@@ -558,22 +836,22 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	i$xfalse          : function(/* object, properties list */)
 	{
-		var o = arguments[0];
-		var u = ZeT.i$x(o);
+		var o = arguments[0]
+		var u = ZeT.i$x(o)
 
 		//?: {not need to check further}
 		if(u || (arguments.length == 1))
-			return u || !(o === true);
+			return u || !(o === true)
 
 		var a = ZeT.a(arguments); a.shift()
 
 		while(a.length)
 		{
-			o = o[a.shift()]; //<-- access the next property
-			if(ZeT.i$x(o)) return true;
+			o = o[a.shift()] //<-- access the next property
+			if(ZeT.i$x(o)) return true
 		}
 
-		return (o !== true);
+		return (o !== true)
 	},
 
 	/**
@@ -583,20 +861,20 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	i$f               : function(/* object, properties list */)
 	{
-		var o = arguments[0];
+		var o = arguments[0]
 
 		if(arguments.length == 1)
-			return ZeT.isf(o);
+			return ZeT.isf(o)
 
 		var a = ZeT.a(arguments); a.shift()
 
 		while(a.length)
 		{
-			o = o[a.shift()]; //<-- access the next property
-			if(ZeT.i$x(o)) return false;
+			o = o[a.shift()] //<-- access the next property
+			if(ZeT.i$x(o)) return false
 		}
 
-		return ZeT.isf(o);
+		return ZeT.isf(o)
 	},
 
 	/**
@@ -606,20 +884,20 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	i$a               : function(/* object, properties list */)
 	{
-		var o = arguments[0];
+		var o = arguments[0]
 
 		if(arguments.length == 1)
-			return ZeT.isa(o);
+			return ZeT.isa(o)
 
 		var a = ZeT.a(arguments); a.shift()
 
 		while(a.length)
 		{
-			o = o[a.shift()]; //<-- access the next property
-			if(ZeT.i$x(o)) return false;
+			o = o[a.shift()] //<-- access the next property
+			if(ZeT.i$x(o)) return false
 		}
 
-		return ZeT.isa(o);
+		return ZeT.isa(o)
 	}
 }
 
@@ -712,7 +990,7 @@ var ZeT = window.ZeT = window.ZeT || {
 ZeT.Class = ZeT.Class || function()
 {
 	//~: initialization methods lookup array
-	var inits = ['initialize', 'init', 'constructor'];
+	var inits = ['initialize', 'init', 'constructor']
 
 	//!: the Class instance to return
 	function Class()
@@ -839,24 +1117,30 @@ ZeT.Class = ZeT.Class || function()
 		//~: wrap the method
 		function Method()
 		{
-			var x = this.$callContext
-			var a = !x || (x.method !== Method)
+			//HINT: when method is invoked recursively,
+			//  it has the same call context
+
+			var x = this.$callContext //<-- current call context
+			var a = !x || (x.method !== Method) //?: is it changed
 
 			try
 			{
-				//?: {not the same method is invoked}
+				//?: {new call context must be assigned}
 				if(a) Method.$callContext.assign(this)
 
+				//!: invoke the function is being wrapped
 				return f.apply(this, arguments)
 			}
 			finally
 			{
+				//?: {has new call context assigned}
 				if(a) try
 				{
 					this.$callContext.revoke(this)
 				}
 				finally
 				{
+					//?: {has external context} return to it
 					if(x) x.assign(this)
 				}
 			}
@@ -907,7 +1191,6 @@ ZeT.Class = ZeT.Class || function()
 	//~: extend with the body given
 	Class.extend((Class.$super)?(arguments[1]):(arguments[0]))
 
-
 	//:: Class.initializer()
 	Class.initializer = function(a)
 	{
@@ -927,169 +1210,28 @@ ZeT.Class = ZeT.Class || function()
 }
 
 
-var ZeTS = ZeT.define('ZeTS',
-{
-	/**
-	 * Returns false for string objects that are not
-	 * whitespace-trimmed empty.
-	 */
-	ises             : function(s)
-	{
-		return !ZeT.iss(s) || (s.length == 0) || !/\S/.test(s);
-	},
-
-	/**
-	 * Checks the value, or a property value is a string.
-	 * If the final property is not accessible, false
-	 * value is returned.
-	 *
-	 * Empty strings return false value! (Whitespaces are
-	 * not trimmed before the check.)
-	 */
-	i$s              : function(/* object, properties list */)
-	{
-		var o = arguments[0];
-
-		if(arguments.length == 1)
-			return ZeT.iss(o) && !!o.length;
-
-		var a = ZeT.a(arguments); a.shift()
-
-		while(a.length)
-		{
-			o = o[a.shift()]; //<-- access the next property
-			if(ZeT.i$x(o)) return false;
-		}
-
-		return ZeT.iss(o) && !!o.length;
-	},
-
-	trim             : function(s)
-	{
-		return !(s && s.length)?(''):
-		  s.replace(/^\s+|\s+$/g, '');
-	},
-
-	first            : function(s)
-	{
-		return s.length && s.charAt(0);
-	},
-
-	replace          : function(s, a, b)
-	{
-		return s.split(a).join(b);
-	},
-
-	cat              : function( /* various objects */)
-	{
-		for(var i = 0;(i < arguments.length);i++)
-			if(ZeT.isu(arguments[i])) arguments[i] = '';
-
-		return String.prototype.concat.apply('', arguments);
-	},
-
-	cati             : function(index, objs)
-	{
-		if(!objs || !ZeT.isn(objs.length)) return '';
-
-		for(var i = 0;(i < objs.length);i++)
-			if((i < index) || ZeT.isu(objs[i])) objs[i] = '';
-
-		return String.prototype.concat.apply('', objs);
-	},
-
-	catif            : function(x /*, various objects */)
-	{
-		if(!x || ZeT.iss(x) && !x.length) return '';
-		arguments[0] = '';
-
-		for(var i = 1;(i < arguments.length);i++)
-			if(ZeT.isu(arguments[i])) arguments[i] = '';
-
-		return String.prototype.concat.apply('', arguments);
-	}
-})
-
-/**
- * For some browsers that do not have
- * String.endsWith()...
- */
-if(!ZeT.isf(String.prototype.endsWith))
-  String.prototype.endsWith = function(s)
-{
-	if(!s || !s.length) return false;
-
-	var i = this.lastIndexOf(s);
-	return (i == this.length - s.length);
-}
-
-
-var ZeTA = ZeT.define('ZeTA',
-{
-	copy             : function(a)
-	{
-		return ZeT.isa(a)?(a.slice()):ZeT.a(a);
-	},
-
-	remove           : function()
-	{
-		var a, s, o, j;
-
-		if(ZeT.isa(this)) {a = this; s = 0;}
-		else {a = arguments[0]; s = 1;}
-
-		for(var i = s;(i < arguments.length);i++)
-			if(ZeT.isa(o = arguments[i]))
-				ZeTA.remove.apply(a, o)
-			else if((j = a.indexOf(o)) != -1)
-				a.splice(j, 1)
-
-		return a;
-	},
-
-	merge            : function(a, b)
-	{
-		var r = ZeTA.copy(a); b = ZeT.a(b);
-
-		for(var i = 0;(i < b.length);i++)
-			r.push(b[i])
-		return r;
-	}
-})
-
-/**
- * For some browsers that do not have
- * Array.indexOf()...
- */
-if(!ZeT.isf(Array.prototype.indexOf))
-  Array.prototype.indexOf = function(o)
-{
-	for(var l = this.length, i = 0;(l);i++, l--)
-		if(this[i] == 0) return i;
-	return -1;
-}
-
+// +----: ZeT XML : ---------------------------------------------+
 
 var ZeTX = ZeT.define('ZeT XML Support',
 {
 	nodes            : function(xml, name)
 	{
-		if(!xml) return xml;
-		if(!ZeT.isf(xml.getElementsByTagName)) return undefined;
-		return xml.getElementsByTagName(name) || [];
+		if(!xml) return xml
+		if(!ZeT.isf(xml.getElementsByTagName)) return undefined
+		return xml.getElementsByTagName(name) || []
 	},
 
 	node             : function(xml, name)
 	{
-		if(!xml) return xml;
-		var res = ZeTX.nodes(xml, name);
-		return (res && res.length)?(res[0]):(null);
+		if(!xml) return xml
+		var res = ZeTX.nodes(xml, name)
+		return (res && res.length)?(res[0]):(null)
 	},
 
 	attr             : function(node, attr)
 	{
 		return node && ZeT.isf(node.getAttribute) &&
-		  node.getAttribute(attr);
+		  node.getAttribute(attr)
 	},
 
 	/**
@@ -1098,27 +1240,27 @@ var ZeTX = ZeT.define('ZeT XML Support',
 	 */
 	text             : function(node)
 	{
-		if(!node) return node;
+		if(!node) return node
 
 		//?: {text || cdata}
 		if((node.nodeType === 3) || (node.nodeType === 4))
-			return node.nodeValue;
+			return node.nodeValue
 
-		var val, res = [];
+		var val, res = []
 
-		if(node.nodeType !== 1) return undefined;
-		node = node.firstChild;
+		if(node.nodeType !== 1) return undefined
+		node = node.firstChild
 
 		while(node)
 		{
 			//?: {text || cdata}
 			if((node.nodeType === 3) || (node.nodeType === 4))
-				val = node.nodeValue;
+				val = node.nodeValue
 			if(ZeT.iss(val)) res.push(val)
 
-			node = node.nextSibling;
+			node = node.nextSibling
 		}
 
-		return String.prototype.concat.apply('', res);
+		return String.prototype.concat.apply('', res)
 	}
 })
