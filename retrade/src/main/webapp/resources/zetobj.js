@@ -287,17 +287,19 @@ var ZeT = window.ZeT = window.ZeT || {
 	{
 		if(!obj) return obj
 
-		//?: {process the given property}
-		var val; if(prop)
+		//?: {process the whole object}
+		if(ZeT.isu(prop) || (prop === null))
 		{
-			val = obj[prop]
+			for(var p in obj)
+				this.delayedProp(obj, ZeT.assertn(p))
+		}
+		//~: or just the property given
+		else
+		{
+			var val = obj[prop]
 			if(ZeT.isf(val) && (val.ZeT$delay === true))
 				obj[prop] = val()
 		}
-		//~: process the whole object
-		else for(var p in obj)
-			if(p && ZeT.isf(val = obj[p]) && (val.ZeT$delay === true))
-				obj[prop] = val()
 
 		return obj
 	},
@@ -947,6 +949,11 @@ var ZeT = window.ZeT = window.ZeT || {
  * The returned Class instance is a Function having the following
  * instance methods:
  *
+ * · static : empty Object
+ *
+ *   use this object to store data shared for every instance
+ *   of this Class.
+ *
  * · create(...) : new instance of Class
  *
  *   creates an instance of the Class. Takes any number of arguments
@@ -1042,6 +1049,9 @@ ZeT.Class = ZeT.Class || function()
 		if(Class.$plain)
 			Class.$plain.apply(this, arguments)
 	}
+
+	//:: Class.static
+	Class.static = {}
 
 	//:: Class.$super
 	Class.$super = ZeT.isf(arguments[0])?(arguments[0]):(null)

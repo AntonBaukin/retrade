@@ -1519,17 +1519,21 @@ ReTrade.desktop.readyPoint('ReTrade.selset')
 
 ReTrade.Visual = ZeT.defineClass('ReTrade.Visual', {
 
-	_init_struct      : function(opts)
+	init              : function(opts)
 	{
-		opts = this.opts = this.opts || opts || {}
+		this.opts = this.opts || opts || {}
+		this._init_struct()
+	},
 
+	_init_struct      : function()
+	{
 		//~: create node by the template
 		var t = this._tx()
 		var n = t.cloneNode()
 
 		//?: {has id}
 		if(this.opts.node)
-			n.id = ZeT.asserts(opts.node)
+			n.id = ZeT.asserts(this.opts.node)
 
 		//~: create the structure
 		this.struct = new ZeT.Struct(n)
@@ -1549,10 +1553,10 @@ ReTrade.Visual = ZeT.defineClass('ReTrade.Visual', {
 	 */
 	_tx               : function()
 	{
-		if(this.$class.template)
-			return this.$class.template
+		if(this.$class.static.template)
+			return this.$class.static.template
 
-		return this.$class.template = new ZeT.Layout.Template(
+		return this.$class.static.template = new ZeT.Layout.Template(
 		  {trace : ZeT.Layout.Template.Ways.traceAtNodes},
 		  ZeT.asserts(this._ts, 'Visual template string is required!'))
 	}
@@ -1565,8 +1569,7 @@ ReTrade.Clocks = ZeT.defineClass('ReTrade.Clocks', ReTrade.Visual, {
 
 	init  : function(opts)
 	{
-		//~: create the structure
-		this._init_struct(opts)
+		this.$callSuper(opts)
 
 		//?: {do start on create}
 		if(this.opts.start)
@@ -1684,9 +1687,9 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 
 	init     : function(opts)
 	{
-		//~: create the structure
-		this._init_struct(opts)
+		this.$callSuper(opts)
 
+		//~: assign aspect ratios
 		if(!ZeT.isn(this.opts.lh2w))
 			this.opts.lh2w = this.LH2W
 		if(!ZeT.isn(this.opts.rh2w))
