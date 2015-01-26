@@ -23,40 +23,15 @@
         <element id="javaee-facet-resources" facet="xroot/web/Web" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="ReTrade @ X">
-      <output-path>x:/tomee/webapps/retrade</output-path>
-      <root id="root">
-        <element id="artifact" artifact-name="ReTrade Exploded" />
-      </root>
-    </artifact>
-    <artifact type="exploded-war" name="Auth @ X">
-      <output-path>x:/tomee/webapps/auth</output-path>
-      <root id="root">
-        <element id="directory" name="WEB-INF">
-          <element id="directory" name="classes">
-            <element id="module-output" name="auth" />
-          </element>
-        </element>
-        <element id="javaee-facet-resources" facet="auth/web/Web" />
-      </root>
-    </artifact>
-    <artifact type="exploded-war" name="Auth @ Mac">
-      <output-path>$USER_HOME$/Omicron/tomee/webapps/auth</output-path>
-      <root id="root">
-        <element id="directory" name="WEB-INF">
-          <element id="directory" name="classes">
-            <element id="module-output" name="auth" />
-          </element>
-        </element>
-        <element id="javaee-facet-resources" facet="auth/web/Web" />
-      </root>
-    </artifact>
-    <artifact type="exploded-war" name="ReTrade @ Mac">
+    <artifact type="exploded-war" name="ReTrade RSync @64.2">
       <output-path>$PROJECT_DIR$/retrade/target/web</output-path>
       <properties id="ant-postprocessing">
         <options enabled="true">
           <file>file://$PROJECT_DIR$/retrade/build.xml</file>
-          <target>explode-on-mac</target>
+          <target>explode-rsync</target>
+          <build-properties>
+            <build-property name="server" value="192.168.2.14" />
+          </build-properties>
         </options>
       </properties>
       <root id="root">

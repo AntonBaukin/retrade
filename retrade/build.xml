@@ -143,8 +143,24 @@
     = support tasks                                   =
     =================================================-->
 
-  <target name = 'explode-on-mac'>
-    <exec executable = '${user.home}/bin/rsync-bakery'/>
+  <target name = 'explode-rsync'>
+
+    <exec executable = 'sshpass'>
+
+      <arg value = '-p'/>
+      <arg value = 'sqr4eq22!'/>
+
+      <arg value = 'rsync'/>
+      <arg value = '-rtz'/>
+      <arg value = '--chown=omicron:www'/>
+      <arg value = '--chmod=g=rwx'/>
+
+      <arg value = '-e'/>
+      <arg value = 'ssh'/>
+      <arg value = '${basedir}/target/web/'/>
+      <arg value = 'omicron@${server}:/home/tomee/webapps/retrade/'/>
+
+    </exec>
   </target>
 
 </project>
