@@ -90,10 +90,10 @@
 //<![CDATA[
 
 new ReTrade.Clocks({ parent: 'clocks-area-a', node: 'clocks-a', start: true, test: true })
-new ReTrade.EventsNumber({ parent: 'num-area-a', node: 'num-a' }).set(28)
+var X = new ReTrade.EventsNumber({ parent: 'num-area-a', node: 'num-a' }).set(28)
 
 new ReTrade.Clocks({ parent: 'clocks-area-b', node: 'clocks-b', start: true })
-new ReTrade.EventsNumber({ parent: 'num-area-b', node: 'num-b' }).set(28)
+var Y = new ReTrade.EventsNumber({ parent: 'num-area-b', node: 'num-b' }).set(28)
 
 function change()
 {
@@ -101,6 +101,9 @@ function change()
   var x = change.time || 0
   if(x >= C.length) x = 0
   change.time = x + 1
+
+  var t = new Date().getTime() * 27644437 % 10000
+  X.set(t); Y.set(t)
 
   ZeTD.classes('num-area-a', 'retrade-eventsnum-' + C[x])
   ZeTD.classes('num-area-b', 'retrade-eventsnum-' + C[x])
