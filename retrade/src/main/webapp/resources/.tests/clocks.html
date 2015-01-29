@@ -102,7 +102,7 @@ function change()
   if(x >= C.length) x = 0
   change.time = x + 1
 
-  var t = new Date().getTime() * 27644437 % 10000
+  var t = new Date().getTime() * 27644437 % 1000
   X.set(t); Y.set(t)
 
   ZeTD.classes('num-area-a', 'retrade-eventsnum-' + C[x])
