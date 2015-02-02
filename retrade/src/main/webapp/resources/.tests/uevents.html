@@ -78,6 +78,47 @@
   margin: 16px 6px 8px 8px;
 }
 
+.retrade-eventsnum-menu-item.N .retrade-eventsnum-menu-data,
+ td.retrade-eventsnum-control-gray > div > div,
+ .retrade-eventsnum-menu-item-controls > div.N,
+ .retrade-eventsnum-numbers td.N div
+{
+  background: #d0d6e0;
+  background: -moz-linear-gradient(-45deg, #eaf4ff 0%, #d0d6e0 60%, #edf1f7 100%);
+  background: -webkit-linear-gradient(-45deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);
+  background: linear-gradient(135deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);
+}
+
+.retrade-eventsnum-menu-item.G .retrade-eventsnum-menu-data,
+  .retrade-eventsnum-menu-item-controls > div.G,
+  .retrade-eventsnum-numbers td.G div
+{
+  background: #ffdcd3;
+  background: -moz-linear-gradient(-45deg, #e2e8a7 0%, #83ce79 60%, #aedd9b 100%);
+  background: -webkit-linear-gradient(-45deg, #e2e8a7 0%, #83ce79 60%, #aedd9b 100%);
+  background: linear-gradient(135deg, #e2e8a7 0%,#83ce79 60%,#aedd9b 100%);
+}
+
+.retrade-eventsnum-menu-item.O .retrade-eventsnum-menu-data,
+ .retrade-eventsnum-menu-item-controls > div.O,
+ .retrade-eventsnum-numbers td.O div
+{
+  background: #ffd42b;
+  background: -moz-linear-gradient(-45deg, #fff9e2 0%, #ffd42b 60%, #fff6ce 100%);
+  background: -webkit-linear-gradient(-45deg, #fff9e2 0%,#ffd42b 60%,#fff6ce 100%);
+  background: linear-gradient(135deg, #fff9e2 0%,#ffd42b 60%,#fff6ce 100%);
+}
+
+.retrade-eventsnum-menu-item.R .retrade-eventsnum-menu-data,
+ .retrade-eventsnum-menu-item-controls > div.R,
+ .retrade-eventsnum-numbers td.R div
+{
+  background: #ffdcd3;
+  background: -moz-linear-gradient(-45deg, #ffdcd3 0%, #ffb9b5 60%, #efd6c9 100%);
+  background: -webkit-linear-gradient(-45deg, #ffdcd3 0%,#ffb9b5 60%,#efd6c9 100%);
+  background: linear-gradient(135deg, #ffdcd3 0%,#ffb9b5 60%,#efd6c9 100%);
+}
+
 .retrade-eventsnum-menu-item
 {
   cursor: default;
@@ -120,9 +161,6 @@
 .retrade-eventsnum-menu-item.G .retrade-eventsnum-menu-data
 {
   border-color: #617c65; background: #83ce79;
-  background: -moz-linear-gradient(-45deg, #e2e8a7 0%, #83ce79 60%, #aedd9b 100%);
-  background: -webkit-linear-gradient(-45deg, #e2e8a7 0%, #83ce79 60%, #aedd9b 100%);
-  background: linear-gradient(135deg, #e2e8a7 0%,#83ce79 60%,#aedd9b 100%);
 }
 
 .retrade-eventsnum-menu-item.G .retrade-eventsnum-menu-data > span:first-child
@@ -132,10 +170,7 @@
 
 .retrade-eventsnum-menu-item.R .retrade-eventsnum-menu-data
 {
-  border-color: #94837f; background: #ffdcd3;
-  background: -moz-linear-gradient(-45deg, #ffdcd3 0%, #ffb9b5 60%, #efd6c9 100%);
-  background: -webkit-linear-gradient(-45deg, #ffdcd3 0%,#ffb9b5 60%,#efd6c9 100%);
-  background: linear-gradient(135deg, #ffdcd3 0%,#ffb9b5 60%,#efd6c9 100%);
+  border-color: #94837f;
 }
 
 .retrade-eventsnum-menu-item.R .retrade-eventsnum-menu-data > span:first-child
@@ -145,10 +180,7 @@
 
 .retrade-eventsnum-menu-item.N .retrade-eventsnum-menu-data
 {
-  border-color: #7c838f; background: #d0d6e0;
-  background: -moz-linear-gradient(-45deg, #eaf4ff 0%, #d0d6e0 60%, #edf1f7 100%);
-  background: -webkit-linear-gradient(-45deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);
-  background: linear-gradient(135deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);
+  border-color: #7c838f;
 }
 
 .retrade-eventsnum-menu-item.N .retrade-eventsnum-menu-data > span:first-child
@@ -158,10 +190,7 @@
 
 .retrade-eventsnum-menu-item.O .retrade-eventsnum-menu-data
 {
-  border-color: #8e7816; background: #ffd42b;
-  background: -moz-linear-gradient(-45deg, #fff9e2 0%, #ffd42b 60%, #fff6ce 100%);
-  background: -webkit-linear-gradient(-45deg, #fff9e2 0%,#ffd42b 60%,#fff6ce 100%);
-  background: linear-gradient(135deg, #fff9e2 0%,#ffd42b 60%,#fff6ce 100%);
+  border-color: #8e7816;
 }
 
 .retrade-eventsnum-menu-item.O .retrade-eventsnum-menu-data > span:first-child
@@ -204,27 +233,18 @@
   height: 12px; background-size: 14px 12px;
 }
 
-.retrade-eventsnum-controls > table
+.retrade-eventsnum-controls
 {
-  width: 100%;
+  padding: 6px 0;
 }
 
-.retrade-eventsnum-controls td
+.retrade-eventsnum-controls > div
 {
-  vertical-align: top; padding: 6px 0;
+  border: 2px solid #68696B; border-radius: 4px;
+  position: relative; cursor: pointer;
 }
 
-.retrade-eventsnum-controls td > div
-{
-  border: 2px solid #68696B; border-radius: 4px; cursor: pointer;
-}
-
-td.retrade-eventsnum-control-left
-{
-  width: 36px;
-}
-
-.retrade-eventsnum-control-left > div
+.retrade-eventsnum-controls > div.left
 {
   width: 36px; height: 22px;
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMjU2cHgiIGhlaWdodD0iMjU2cHgiIHZpZXdCb3g9IjAgMCAyNTYgMjU2IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNTYgMjU2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwb2x5Z29uIHBvaW50cz0iMjIzLjU2LDExMy4zOTQgOTguODk4LDExMy4zOTQgMTUyLjE0Myw2MC4xNSAxMjMuODU3LDMxLjg2NSAyNC4xNTYsMTMxLjU2NyAxMjMuODU3LDIzMS4yNyAxNTIuMTQzLDIwMi45ODQgDQoJOTguODk4LDE0OS43NDEgMjIzLjU2LDE0OS43NDEgIiBzdHlsZT0iZmlsbDojNjg2OTZCOyIvPg0KPC9zdmc+DQo=);
@@ -232,29 +252,75 @@ td.retrade-eventsnum-control-left
   background-color: #FEFEFE; background-repeat: no-repeat;
 }
 
-.retrade-eventsnum-control-left > div:hover
+.retrade-eventsnum-controls > div.left:hover
 {
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMjU2cHgiIGhlaWdodD0iMjU2cHgiIHZpZXdCb3g9IjAgMCAyNTYgMjU2IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNTYgMjU2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwb2x5Z29uIHBvaW50cz0iMjIzLjU2LDExMy4zOTQgOTguODk4LDExMy4zOTQgMTUyLjE0Myw2MC4xNSAxMjMuODU3LDMxLjg2NSAyNC4xNTYsMTMxLjU2NyAxMjMuODU3LDIzMS4yNyAxNTIuMTQzLDIwMi45ODQgDQoJOTguODk4LDE0OS43NDEgMjIzLjU2LDE0OS43NDEgIiBzdHlsZT0iZmlsbDojRkVGRUZFOyIvPg0KPC9zdmc+DQo=);
   background-color: #68696B;
 }
 
-td.retrade-eventsnum-control-right
+.retrade-eventsnum-controls > div.right
 {
-  width: 44px;
-}
-
-.retrade-eventsnum-control-right > div
-{
+  position: absolute; top: 22px; right: 10px;
   width: 36px; height: 22px;
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMjU2cHgiIGhlaWdodD0iMjU2cHgiIHZpZXdCb3g9IjAgMCAyNTYgMjU2IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNTYgMjU2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwb2x5Z29uIHBvaW50cz0iMjIzLjU2LDExMy4zOTQgOTguODk4LDExMy4zOTQgMTUyLjE0Myw2MC4xNSAxMjMuODU3LDMxLjg2NSAyNC4xNTYsMTMxLjU2NyAxMjMuODU3LDIzMS4yNyAxNTIuMTQzLDIwMi45ODQgDQoJOTguODk4LDE0OS43NDEgMjIzLjU2LDE0OS43NDEgIiBzdHlsZT0iZmlsbDojNjg2OTZCOyIgdHJhbnNmb3JtPSJyb3RhdGUoMTgwLCAxMjgsIDEyOCkiLz4NCjwvc3ZnPg0K);
   background-size: 16px 16px; background-position: 10px 3px;
   background-color: #FEFEFE; background-repeat: no-repeat;
 }
 
-.retrade-eventsnum-control-right > div:hover
+.retrade-eventsnum-controls > div.right:hover
 {
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMjU2cHgiIGhlaWdodD0iMjU2cHgiIHZpZXdCb3g9IjAgMCAyNTYgMjU2IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNTYgMjU2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwb2x5Z29uIHBvaW50cz0iMjIzLjU2LDExMy4zOTQgOTguODk4LDExMy4zOTQgMTUyLjE0Myw2MC4xNSAxMjMuODU3LDMxLjg2NSAyNC4xNTYsMTMxLjU2NyAxMjMuODU3LDIzMS4yNyAxNTIuMTQzLDIwMi45ODQgDQoJOTguODk4LDE0OS43NDEgMjIzLjU2LDE0OS43NDEgIiBzdHlsZT0iZmlsbDojRkVGRUZFOyIgdHJhbnNmb3JtPSJyb3RhdGUoMTgwLCAxMjgsIDEyOCkiLz4NCjwvc3ZnPg0K);
   background-color: #68696B;
+}
+
+.retrade-eventsnum-controls > div.center
+{
+  position: absolute; top: 26px;
+  height: 20px; left: 58px; right: 60px;
+  border: none; border-radius: 0;
+}
+
+.retrade-eventsnum-numbers
+{
+  width: 100%; overflow: hidden;
+}
+
+.retrade-eventsnum-numbers div
+{
+  margin: 0 2px; min-width: 2ex; height: 18px;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 14px; text-align: center;
+  border: 1px solid; border-radius: 3px;
+}
+
+.retrade-eventsnum-numbers td.N > div
+{
+  border-color: #7c838f;
+}
+
+.retrade-eventsnum-numbers td.G > div
+{
+  border-color: #617c65;
+}
+
+.retrade-eventsnum-numbers td.O > div
+{
+  border-color: #8e7816;
+}
+
+.retrade-eventsnum-numbers td.R > div
+{
+  border-color: #94837f;
+}
+
+.retrade-eventsnum-numbers td:first-child div
+{
+  margin-left: 0;
+}
+
+.retrade-eventsnum-numbers td:last-child div
+{
+  margin-right: 0;
 }
 
 td.retrade-eventsnum-control-gray
@@ -271,9 +337,6 @@ td.retrade-eventsnum-control-gray > div > div
 {
   width: 16px; height: 16px; border-radius: 3px;
   position: relative; top: 3px; left: 3px;
-  background: -moz-linear-gradient(-45deg, #eaf4ff 0%, #d0d6e0 60%, #edf1f7 100%);
-  background: -webkit-linear-gradient(-45deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);
-  background: linear-gradient(135deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);
 }
 
 td.retrade-eventsnum-control-gray:hover > div
@@ -289,10 +352,11 @@ td.retrade-eventsnum-control-delete
 .retrade-eventsnum-controls td.retrade-eventsnum-control-delete > div,
   .retrade-eventsnum-controls td.retrade-eventsnum-control-gray > div
 {
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
-.retrade-eventsnum-control-delete > div
+.retrade-eventsnum-control-delete > div,
+  .retrade-eventsnum-menu-item-controls > div.delete
 {
   width: 22px; height: 22px;
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDY1Ljc2NSA4My4yMDIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY1Ljc2NSA4My4yMDI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiM2ODY5NkIiIGQ9Ik02MC4wOTMsOS43OTdINDguOTg0VjIuNTc4QzQ4Ljk4NCwxLjEyNSw0Ny44MTIsMCw0Ni4zNTksMGMtMC4xNDEsMC0wLjIzNSwwLjA0Ny0wLjI4MSwwLjA5NA0KCQlDNDYuMDMxLDAuMDQ3LDQ1LjkzNywwLDQ1Ljg5LDBIMTkuNzgxaC0wLjE4N2gtMC4xODhjLTEuNDUzLDAtMi41NzgsMS4xMjUtMi41NzgsMi41Nzh2Ny4yMTlINS42NzJDMi40ODQsOS43OTcsMCwxMi4yODEsMCwxNS40NjkNCgkJdjQuMTI1djUuMTU2aDQuOTIydjUyLjgyN2MwLDMuMTg4LDIuNDM3LDUuNjI1LDUuNjI1LDUuNjI1aDQ0LjY3MWMzLjE4OCwwLDUuNjcyLTIuNDM3LDUuNjcyLTUuNjI1VjI0Ljc1aDQuODc1di01LjE1NnYtNC4xMjUNCgkJQzY1Ljc2NSwxMi4yODEsNjMuMjgsOS43OTcsNjAuMDkzLDkuNzk3eiBNMjEuOTg0LDUuMTU2aDIxLjc5N3Y0LjY0MUgyMS45ODRWNS4xNTZ6IE01NS42ODcsNzcuNTc3DQoJCWMwLDAuMzI5LTAuMTQxLDAuNDY5LTAuNDY5LDAuNDY5SDEwLjU0N2MtMC4zMjgsMC0wLjQ2OS0wLjE0LTAuNDY5LTAuNDY5VjI0Ljc1aDQ1LjYwOVY3Ny41Nzd6IE02MC41NjIsMTkuNTk0SDUuMjAzdi00LjEyNQ0KCQljMC0wLjMyOCwwLjE0MS0wLjUxNiwwLjQ2OS0wLjUxNmg1NC40MjFjMC4zMjgsMCwwLjQ2OSwwLjE4OCwwLjQ2OSwwLjUxNlYxOS41OTR6Ii8+DQoJPHJlY3QgZmlsbD0iIzY4Njk2QiIgeD0iNDIuMzI4IiB5PSIzMC43OTciIHdpZHRoPSI1LjIwMyIgaGVpZ2h0PSI0Mi42NTUiLz4NCgk8cmVjdCBmaWxsPSIjNjg2OTZCIiB4PSIzMC4zMjgiIHk9IjMwLjc5NyIgd2lkdGg9IjUuMjAzIiBoZWlnaHQ9IjQyLjY1NSIvPg0KCTxyZWN0IGZpbGw9IiM2ODY5NkIiIHg9IjE4LjMyOCIgeT0iMzAuNzk3IiB3aWR0aD0iNS4yMDMiIGhlaWdodD0iNDIuNjU1Ii8+DQo8L2c+Cjwvc3ZnPg0K);
@@ -300,16 +364,59 @@ td.retrade-eventsnum-control-delete
   background-color: #FEFEFE; background-repeat: no-repeat;
 }
 
-.retrade-eventsnum-control-delete > div:hover
+.retrade-eventsnum-control-delete > div:hover,
+  .retrade-eventsnum-menu-item-controls > div.delete:hover
 {
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDY1Ljc2NSA4My4yMDIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY1Ljc2NSA4My4yMDI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiNGRUZFRkUiIGQ9Ik02MC4wOTMsOS43OTdINDguOTg0VjIuNTc4QzQ4Ljk4NCwxLjEyNSw0Ny44MTIsMCw0Ni4zNTksMGMtMC4xNDEsMC0wLjIzNSwwLjA0Ny0wLjI4MSwwLjA5NA0KCQlDNDYuMDMxLDAuMDQ3LDQ1LjkzNywwLDQ1Ljg5LDBIMTkuNzgxaC0wLjE4N2gtMC4xODhjLTEuNDUzLDAtMi41NzgsMS4xMjUtMi41NzgsMi41Nzh2Ny4yMTlINS42NzJDMi40ODQsOS43OTcsMCwxMi4yODEsMCwxNS40NjkNCgkJdjQuMTI1djUuMTU2aDQuOTIydjUyLjgyN2MwLDMuMTg4LDIuNDM3LDUuNjI1LDUuNjI1LDUuNjI1aDQ0LjY3MWMzLjE4OCwwLDUuNjcyLTIuNDM3LDUuNjcyLTUuNjI1VjI0Ljc1aDQuODc1di01LjE1NnYtNC4xMjUNCgkJQzY1Ljc2NSwxMi4yODEsNjMuMjgsOS43OTcsNjAuMDkzLDkuNzk3eiBNMjEuOTg0LDUuMTU2aDIxLjc5N3Y0LjY0MUgyMS45ODRWNS4xNTZ6IE01NS42ODcsNzcuNTc3DQoJCWMwLDAuMzI5LTAuMTQxLDAuNDY5LTAuNDY5LDAuNDY5SDEwLjU0N2MtMC4zMjgsMC0wLjQ2OS0wLjE0LTAuNDY5LTAuNDY5VjI0Ljc1aDQ1LjYwOVY3Ny41Nzd6IE02MC41NjIsMTkuNTk0SDUuMjAzdi00LjEyNQ0KCQljMC0wLjMyOCwwLjE0MS0wLjUxNiwwLjQ2OS0wLjUxNmg1NC40MjFjMC4zMjgsMCwwLjQ2OSwwLjE4OCwwLjQ2OSwwLjUxNlYxOS41OTR6Ii8+DQoJPHJlY3QgZmlsbD0iI0ZFRkVGRSIgeD0iNDIuMzI4IiB5PSIzMC43OTciIHdpZHRoPSI1LjIwMyIgaGVpZ2h0PSI0Mi42NTUiLz4NCgk8cmVjdCBmaWxsPSIjRkVGRUZFIiB4PSIzMC4zMjgiIHk9IjMwLjc5NyIgd2lkdGg9IjUuMjAzIiBoZWlnaHQ9IjQyLjY1NSIvPg0KCTxyZWN0IGZpbGw9IiNGRUZFRkUiIHg9IjE4LjMyOCIgeT0iMzAuNzk3IiB3aWR0aD0iNS4yMDMiIGhlaWdodD0iNDIuNjU1Ii8+DQo8L2c+Cjwvc3ZnPg0K);
   background-color: #68696B;
 }
 
+.retrade-eventsnum-menu-item-controls
+{
+  position: absolute; right: 14px; top: 57px;
+  width: 172px; height: 28px; z-index: 10;
+  border: 1px dashed white;
+  background-color: rgba(255, 255, 255, 0.6);
+}
 
+.retrade-eventsnum-menu-item-controls > div
+{
+  position: relative; width: 19px; height: 19px;
+  border: 2px solid white; border-radius: 8px;
+  cursor: pointer;
+}
 
+.retrade-eventsnum-menu-item-controls > div.N
+{
+  left: 4px; top: 3px;
+}
 
-  </style>
+.retrade-eventsnum-menu-item-controls > div.G
+{
+  left: 44px; top: -20px;
+}
+
+.retrade-eventsnum-menu-item-controls > div.O
+{
+  left: 74px; top: -43px;
+}
+
+.retrade-eventsnum-menu-item-controls > div.R
+{
+  left: 104px; top: -66px;
+}
+
+.retrade-eventsnum-menu-item-controls > div.delete
+{
+  left: 144px; top: -91px; width: 22px; height: 22px; border-color: #68696B;
+}
+
+.retrade-eventsnum-menu-item-controls > div.delete:hover
+{
+  border-color: white;
+}
+
+</style>
 
 </head>
 <body>
@@ -326,21 +433,36 @@ td.retrade-eventsnum-control-delete
   <div class = "retrade-eventsnum-menu-corner-rb"></div>
   <div class = "retrade-eventsnum-menu-corner-bh"></div>
 
+  <div class = "retrade-eventsnum-menu-item-controls" >
+    <div class = "N" title = "Отметить сообщение как неактивное"></div>
+    <div class = "G" title = "Отметить сообщение как успех"></div>
+    <div class = "O" title = "Отметить сообщение как требующее внимания"></div>
+    <div class = "R" title = "Отметить сообщение как срочное"></div>
+    <div class = "delete" title = "Отметить сообщение как успех"></div>
+  </div>
+
   <table id = "menu" cellpadding="0" cellspacing="0" border="0" class="retrade-eventsnum-menu">
     <tbody>
       <tr>
         <td>
           <div class="retrade-eventsnum-controls">
-            <table cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td class = "retrade-eventsnum-control-left"><div></div></td>
-                <td></td>
-                <td class = "retrade-eventsnum-control-gray"><div><div></div></div></td>
-                <td class = "retrade-eventsnum-control-delete"><div></div></td>
-                <td></td>
-                <td class = "retrade-eventsnum-control-right"><div></div></td>
-              </tr>
-            </table>
+            <div class = "left" title = "Следующие сообщения"></div>
+            <div class = "right" title = "Предыдущие сообщения"></div>
+            <div class = "center">
+              <table class = "retrade-eventsnum-numbers"
+                cellspacing = "0" cellpadding = "0" border = "0"><tr>
+                <td class = "N"><div>105</div></td>
+                <td class = "G"><div>4</div></td>
+                <td class = "O"><div>15</div></td>
+                <td class = "R"><div>9</div></td>
+              </tr></table>
+            </div>
+
+<!--
+            <div class = "retrade-eventsnum-control-gray" title = "Отметить все отображаемые собщения как неактивные"><div></div></div>
+            <div class = "retrade-eventsnum-control-delete" title = "Удалить все отображаемые собщения">
+-->
+
           </div>
         </td>
       </tr>

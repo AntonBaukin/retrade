@@ -37,15 +37,22 @@
       <file leaf-file-name="uevents.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.08963093" vertical-offset="4675" max-vertical-offset="7131">
-              <caret line="278" column="45" selection-start-line="278" selection-start-column="45" selection-end-line="278" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.4385321" vertical-offset="6187" max-vertical-offset="9572">
+              <caret line="378" column="43" selection-start-line="378" selection-start-column="43" selection-end-line="378" selection-end-column="43" />
               <folding>
-                <element signature="e#13949#14740#2" expanded="true" />
-                <element signature="e#14931#15722#2" expanded="true" />
-                <element signature="e#15901#16736#2" expanded="true" />
-                <element signature="e#16928#17763#2" expanded="true" />
-                <element signature="e#18564#20335#2" expanded="true" />
-                <element signature="e#20527#22298#2" expanded="true" />
+                <element signature="e#5186#7521#1" expanded="true" />
+                <element signature="e#7698#9677#1" expanded="true" />
+                <element signature="e#9854#11449#1" expanded="true" />
+                <element signature="e#11627#13234#1" expanded="true" />
+                <element signature="e#13426#14201#1" expanded="true" />
+                <element signature="e#14518#15309#2" expanded="true" />
+                <element signature="e#15501#16292#2" expanded="true" />
+                <element signature="e#16463#17298#2" expanded="true" />
+                <element signature="e#17491#18326#2" expanded="true" />
+                <element signature="e#19935#21706#2" expanded="true" />
+                <element signature="e#21958#23729#2" expanded="true" />
+                <element signature="e#27507#27684#0" expanded="true" />
+                <element signature="e#27745#27971#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -483,10 +490,9 @@
     <frame x="480" y="31" width="1038" height="965" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32258064" sideWeight="0.49950346" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3214683" sideWeight="0.49950346" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035595" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035595" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -509,6 +515,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24397591" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035595" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
@@ -655,7 +662,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.77616924" vertical-offset="697" max-vertical-offset="2445">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -663,7 +669,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.64638156" vertical-offset="2208" max-vertical-offset="3396">
           <caret line="153" column="41" selection-start-line="153" selection-start-column="27" selection-end-line="153" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -693,7 +698,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19495413" vertical-offset="884" max-vertical-offset="2844">
           <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -709,7 +713,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38990825" vertical-offset="0" max-vertical-offset="2980">
           <caret line="41" column="42" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -717,21 +720,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8836158" vertical-offset="2176" max-vertical-offset="6444">
           <caret line="174" column="0" selection-start-line="174" selection-start-column="0" selection-end-line="174" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08963093" vertical-offset="4675" max-vertical-offset="7131">
-          <caret line="278" column="45" selection-start-line="278" selection-start-column="45" selection-end-line="278" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.4385321" vertical-offset="6187" max-vertical-offset="9572">
+          <caret line="378" column="43" selection-start-line="378" selection-start-column="43" selection-end-line="378" selection-end-column="43" />
           <folding>
-            <element signature="e#13949#14740#2" expanded="true" />
-            <element signature="e#14931#15722#2" expanded="true" />
-            <element signature="e#15901#16736#2" expanded="true" />
-            <element signature="e#16928#17763#2" expanded="true" />
-            <element signature="e#18564#20335#2" expanded="true" />
-            <element signature="e#20527#22298#2" expanded="true" />
+            <element signature="e#5186#7521#1" expanded="true" />
+            <element signature="e#7698#9677#1" expanded="true" />
+            <element signature="e#9854#11449#1" expanded="true" />
+            <element signature="e#11627#13234#1" expanded="true" />
+            <element signature="e#13426#14201#1" expanded="true" />
+            <element signature="e#14518#15309#2" expanded="true" />
+            <element signature="e#15501#16292#2" expanded="true" />
+            <element signature="e#16463#17298#2" expanded="true" />
+            <element signature="e#17491#18326#2" expanded="true" />
+            <element signature="e#19935#21706#2" expanded="true" />
+            <element signature="e#21958#23729#2" expanded="true" />
+            <element signature="e#27507#27684#0" expanded="true" />
+            <element signature="e#27745#27971#0" expanded="true" />
           </folding>
         </state>
       </provider>
