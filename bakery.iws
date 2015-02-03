@@ -6,7 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-61 [alpha]: introduced layout for events menu controls.">
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-61 [alpha]: final layout for the events menu, going to the scripts...">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
     </list>
@@ -37,22 +37,17 @@
       <file leaf-file-name="uevents.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4385321" vertical-offset="6187" max-vertical-offset="9572">
-              <caret line="378" column="43" selection-start-line="378" selection-start-column="43" selection-end-line="378" selection-end-column="43" />
+            <state vertical-scroll-proportion="1.1491228" vertical-offset="8083" max-vertical-offset="9529">
+              <caret line="514" column="16" selection-start-line="514" selection-start-column="16" selection-end-line="514" selection-end-column="16" />
               <folding>
-                <element signature="e#5186#7521#1" expanded="true" />
-                <element signature="e#7698#9677#1" expanded="true" />
-                <element signature="e#9854#11449#1" expanded="true" />
-                <element signature="e#11627#13234#1" expanded="true" />
-                <element signature="e#13426#14201#1" expanded="true" />
-                <element signature="e#14518#15309#2" expanded="true" />
-                <element signature="e#15501#16292#2" expanded="true" />
-                <element signature="e#16463#17298#2" expanded="true" />
-                <element signature="e#17491#18326#2" expanded="true" />
-                <element signature="e#19935#21706#2" expanded="true" />
-                <element signature="e#21958#23729#2" expanded="true" />
-                <element signature="e#27507#27684#0" expanded="true" />
-                <element signature="e#27745#27971#0" expanded="true" />
+                <element signature="e#5162#6777#1" expanded="true" />
+                <element signature="e#6954#8601#1" expanded="true" />
+                <element signature="e#8778#10281#1" expanded="true" />
+                <element signature="e#10459#11966#1" expanded="true" />
+                <element signature="e#12158#12861#1" expanded="true" />
+                <element signature="e#13224#14015#2" expanded="true" />
+                <element signature="e#15169#16004#2" expanded="true" />
+                <element signature="e#18446#20217#2" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -540,7 +535,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="special-00 [beta]: single Master works 35 ms with 4M Database access. Master+Support works 360ms with 40M Database access, where 33M is test(). Need to reduce the number of test()..." />
     <MESSAGE value="special-00 [beta]: now not repeating the execution of requests by the Support threads. Consistency check for them is now not needed. Eliminated Database.test() entry!" />
     <MESSAGE value="special-00 [beta]: eliminated Master as a dedicated thread. Now Master is a request-temporary role. (Snapshots are also removed, but may be returned.)" />
     <MESSAGE value="special-00 [beta]: fixed that version. Now timing are 1: 35mc, 2: 65ms, 3: 100ms. Need to tune something in the queue synchronization..." />
@@ -565,7 +559,8 @@
     <MESSAGE value="ui-62 [beta]: fixed errors related to ZeT library update, but ReTrade UI with ExtJS has wrong layouts! Fixing is urgent..." />
     <MESSAGE value="ui-62 [stable]: done updating 0-Zet Objects library, Document and Borders library is left unchanged for now... Included jQuery into the main page along-side with ExtJs." />
     <MESSAGE value="system-11 [stable]: permanently moved to new deploy method using RSync and Omicron VM with twi network adapters: bridged and host-only." />
-    <option name="LAST_COMMIT_MESSAGE" value="system-11 [stable]: permanently moved to new deploy method using RSync and Omicron VM with twi network adapters: bridged and host-only." />
+    <MESSAGE value="ui-61 [alpha]: going on with the events item controls..." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [alpha]: going on with the events item controls..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -609,13 +604,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/resources/com/tverts/endure/auth/GenTestUsers.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2105">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/index-client.xhtml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.116972476" vertical-offset="0" max-vertical-offset="1569">
@@ -679,13 +667,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/user-menu.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49476135" vertical-offset="2074" max-vertical-offset="4157">
-          <caret line="147" column="5" selection-start-line="137" selection-start-column="4" selection-end-line="147" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28730512" vertical-offset="4315" max-vertical-offset="5777">
@@ -723,24 +704,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3596882" vertical-offset="0" max-vertical-offset="19802">
+          <caret line="19" column="18" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/user-menu.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.7310827" vertical-offset="0" max-vertical-offset="3375">
+          <caret line="147" column="5" selection-start-line="128" selection-start-column="4" selection-end-line="138" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4385321" vertical-offset="6187" max-vertical-offset="9572">
-          <caret line="378" column="43" selection-start-line="378" selection-start-column="43" selection-end-line="378" selection-end-column="43" />
+        <state vertical-scroll-proportion="1.1491228" vertical-offset="8083" max-vertical-offset="9529">
+          <caret line="514" column="16" selection-start-line="514" selection-start-column="16" selection-end-line="514" selection-end-column="16" />
           <folding>
-            <element signature="e#5186#7521#1" expanded="true" />
-            <element signature="e#7698#9677#1" expanded="true" />
-            <element signature="e#9854#11449#1" expanded="true" />
-            <element signature="e#11627#13234#1" expanded="true" />
-            <element signature="e#13426#14201#1" expanded="true" />
-            <element signature="e#14518#15309#2" expanded="true" />
-            <element signature="e#15501#16292#2" expanded="true" />
-            <element signature="e#16463#17298#2" expanded="true" />
-            <element signature="e#17491#18326#2" expanded="true" />
-            <element signature="e#19935#21706#2" expanded="true" />
-            <element signature="e#21958#23729#2" expanded="true" />
-            <element signature="e#27507#27684#0" expanded="true" />
-            <element signature="e#27745#27971#0" expanded="true" />
+            <element signature="e#5162#6777#1" expanded="true" />
+            <element signature="e#6954#8601#1" expanded="true" />
+            <element signature="e#8778#10281#1" expanded="true" />
+            <element signature="e#10459#11966#1" expanded="true" />
+            <element signature="e#12158#12861#1" expanded="true" />
+            <element signature="e#13224#14015#2" expanded="true" />
+            <element signature="e#15169#16004#2" expanded="true" />
+            <element signature="e#18446#20217#2" expanded="true" />
           </folding>
         </state>
       </provider>
