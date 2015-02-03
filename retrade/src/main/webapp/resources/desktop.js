@@ -1806,10 +1806,78 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 
 ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
-	init     : function(opts)
+	init            : function(opts)
 	{
-		//~: create the structure
-		this._init_struct(opts)
-	}
+		this.$callSuper(opts)
+	},
 
+	set             : function(model)
+	{
+		model = model || {}
+
+		//~: update the numbers from the model
+		this._numbers(model.numbers || {})
+
+		//~: fill with the items
+		this._items(model)
+	},
+
+	COLORS          : ['N', 'G', 'O', 'R'],
+
+	_numbers        : function(numbers)
+	{
+		var n = this.struct.node()
+		var t = this._tx()
+
+		ZeT.each(this.COLORS, function(c)
+		{
+			ZeTD.update(t.walk('F'+c, n), numbers[c])
+		})
+	},
+
+	_items          : function(model)
+	{
+
+	},
+
+	_ts             : ""+
+		"<div>"+
+		"  <div class='retrade-eventsnum-menu-corner-rt'></div>"+
+		"  <div class='retrade-eventsnum-menu-corner-lt'></div>"+
+		"  <div class='retrade-eventsnum-menu-corner-lb'></div>"+
+		"  <div class='retrade-eventsnum-menu-corner-rb'></div>"+
+		"  <div class='retrade-eventsnum-menu-corner-bh'></div>"+
+		"  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>@IC"+
+		"    <div class='N' title='Отметить сообщение как неактивное'>@IN</div>"+
+		"    <div class='G' title='Отметить сообщение как успех'>@IG</div>"+
+		"    <div class='O' title='Отметить сообщение как важное'>@IO</div>"+
+		"    <div class='R' title='Отметить сообщение как срочное'>@IR</div>"+
+		"    <div class='delete' title='Отметить сообщение как успех'>@ID</div>"+
+		"  </div>"+
+		"  <table cellpadding='0' cellspacing='0' border='0' class='retrade-eventsnum-menu'>"+
+		"    <tbody><!--@EV-->"+
+		"      <tr>"+
+		"        <td>"+
+		"          <div class='retrade-eventsnum-controls unselectable-text'>"+
+		"            <div class='left' title='Следующие сообщения'>@LT</div>"+
+		"            <div class='right' title='Предыдущие сообщения'>@RT</div>"+
+		"            <div class='numbers'>"+
+		"              <table cellspacing='0' cellpadding='0' border='0'><tr>"+
+		"                <td class='N selected'><div title='Отображать все сообщения'>@FN</div></td>"+
+		"                <td class='G'><div title='Отображать отмеченные сообщения'>@FG</div></td>"+
+		"                <td class='O'><div title='Отображать важные и срочные сообщения'>@FO</div></td>"+
+		"                <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>"+
+		"              </tr></table>"+
+		"            </div>"+
+		"            <div class='allitems unselectable-text' style='display:none'>@AL"+
+		"              <div class='descr'>Для всей<br/>страницы</div>"+
+		"              <div class='gray' title='Отметить все собщения на странице как неактивные'>@AN</div>"+
+		"              <div class='delete' title='Удалить все собщения на странице'>@AD</div>"+
+		"            </div>"+
+		"          </div>"+
+		"        </td>"+
+		"      </tr>"+
+		"    </tbody>"+
+		"  </table>"+
+		"</div>"
 })

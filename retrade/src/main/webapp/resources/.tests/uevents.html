@@ -66,10 +66,9 @@
   position: absolute; top: 55px;
 }
 
-#menu
+.retrade-eventsnum-menu
 {
   width: 280px; max-height: 536px;
-  border: 0px dashed #a9a9a9;
   margin: 16px 6px 8px 8px;
 }
 
@@ -443,48 +442,53 @@
   <div id = "num-area" class="retrade-eventsnum-gray unselectable-text"></div>
 </div>
 
+<!--
 <div id='menu-area' style='display:none'>
   <div class='retrade-eventsnum-menu-corner-rt'></div>
   <div class='retrade-eventsnum-menu-corner-lt'></div>
   <div class='retrade-eventsnum-menu-corner-lb'></div>
   <div class='retrade-eventsnum-menu-corner-rb'></div>
   <div class='retrade-eventsnum-menu-corner-bh'></div>
-  <div class='retrade-eventsnum-menu-item-controls'>
-    <div class='N' title='Отметить сообщение как неактивное'></div>
-    <div class='G' title='Отметить сообщение как успех'></div>
-    <div class='O' title='Отметить сообщение как важное'></div>
-    <div class='R' title='Отметить сообщение как срочное'></div>
-    <div class='delete' title='Отметить сообщение как успех'></div>
+  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>
+    <div class='N' title='Отметить сообщение как неактивное'>@IN</div>
+    <div class='G' title='Отметить сообщение как успех'>@IG</div>
+    <div class='O' title='Отметить сообщение как важное'>@IO</div>
+    <div class='R' title='Отметить сообщение как срочное'>@IR</div>
+    <div class='delete' title='Отметить сообщение как успех'>@ID</div>
   </div>
-
   <table id='menu' cellpadding='0' cellspacing='0' border='0' class='retrade-eventsnum-menu'>
     <tbody>
       <tr>
         <td>
           <div class='retrade-eventsnum-controls unselectable-text'>
-            <div class='left' title='Следующие сообщения'></div>
-            <div class='right' title='Предыдущие сообщения'></div>
+            <div class='left' title='Следующие сообщения'>@LT</div>
+            <div class='right' title='Предыдущие сообщения'>@RT</div>
             <div class='numbers'>
               <table cellspacing='0' cellpadding='0' border='0'><tr>
-                <td class='N selected'><div title='Отображать все сообщения'>105</div></td>
-                <td class='G'><div title='Отображать отмеченные сообщения'>4</div></td>
-                <td class='O'><div title='Отображать важные и срочные сообщения'>15</div></td>
-                <td class='R'><div title='Отображать срочные сообщения'>9</div></td>
+                <td class='N selected'><div title='Отображать все сообщения'>@FN</div></td>
+                <td class='G'><div title='Отображать отмеченные сообщения'>@FG</div></td>
+                <td class='O'><div title='Отображать важные и срочные сообщения'>@FO</div></td>
+                <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>
               </tr></table>
             </div>
             <div class='allitems unselectable-text' style='display:none'>
               <div class='descr'>Для всей<br/>страницы</div>
-              <div class='gray' title='Отметить все собщения на странице как неактивные'></div>
-              <div class='delete' title='Удалить все собщения на странице'></div>
+              <div class='gray' title='Отметить все собщения на странице как неактивные'>@AN</div>
+              <div class='delete' title='Удалить все собщения на странице'>@AD</div>
             </div>
           </div>
         </td>
       </tr>
+    </tbody>
+  </table>
+</div>
+-->
 
-      <tr class='retrade-eventsnum-menu-item O unselectable-text'>
-        <td>
-          <div class='retrade-eventsnum-menu-data-ext'>
-          <div class='retrade-eventsnum-menu-data'>
+<!--
+<tr class='retrade-eventsnum-menu-item O unselectable-text'>
+  <td>
+    <div class='retrade-eventsnum-menu-data-ext'>
+      <div class='retrade-eventsnum-menu-data'>
                 <span>
                   <span>вчера</span>
                   <span>12:30</span>
@@ -492,13 +496,11 @@
                 <span>
                   Накладная №10/670 успешно проведена!
                 </span>
-          </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+      </div>
+    </div>
+  </td>
+</tr>
+-->
 
 <script type = "text/javascript">
 //<![CDATA[
@@ -511,6 +513,8 @@ var en = new ReTrade.EventsNumber({ parent: 'num-area', node: 'num',
  }
 })
 
+var em = new ReTrade.EventsMenu({ node: 'menu-area', parent: document.body })
+ZeT.log('Ways: ', ZeT.keys(em._tx().ways()))
 
 function change()
 {
@@ -537,7 +541,14 @@ $('#num-area').click(function()
     })
 })
 
+$('#menu-area').hide()
 $('#num-area').click()
+
+em.set({
+
+ numbers: { N: 101, G: 6, O: 0, R: 2}
+
+})
 
 //]]>
 </script>

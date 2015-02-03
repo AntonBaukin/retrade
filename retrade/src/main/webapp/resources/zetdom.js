@@ -102,8 +102,8 @@ var ZeTD = ZeT.define('ZeTD',
 
 	update           : function(/* node, items */)
 	{
-		var node = ZeTD.isn(this)?(this):(arguments[0]);
-		if(!ZeTD.isn(node)) return node;
+		var node = ZeTD.isn(this)?(this):(arguments[0])
+		if(!ZeTD.isn(node)) return node
 
 		//~: remove existing child nodes
 		while(node.hasChildNodes())
@@ -112,21 +112,21 @@ var ZeTD = ZeT.define('ZeTD',
 		//~: append the new ones
 		for(var i = (node == this)?(0):(1);(i < arguments.length);i++)
 		{
-			var x, a = arguments[i];
+			var x, a = arguments[i]
 
-			if(ZeT.iss(a))
-				x = ZeTD.html(a);
+			if(ZeT.isn(a)) a = '' + a
+			if(ZeT.iss(a)) x = ZeTD.html(a)
 			else if(ZeTD.isxn(a))
 			{
 				if(a.parentNode) a.parentNode.removeChild(a)
-				x = [a];
+				x = [a]
 			}
 
 			if(x) for(var j = 0;(j < x.length);j++)
 				node.appendChild(x[j])
 		}
 
-		return node;
+		return node
 	},
 
 	/**
@@ -1312,22 +1312,23 @@ ZeT.Layout.Template.Ways = ZeT.define('ZeT.Layout.Template.Ways', {
 
 	/**
 	 * This Ways handler inspects all text nodes
-	 * whether they do start with '@'.
+	 * and comments whether they do start with '@'.
 	 *
 	 * Note that this handler immediately removes
-	 * the nodes selected!
+	 * the text nodes selected, but lefts the comments.
 	 */
 	traceAtNodes  : function(node)
 	{
-		if(node.nodeType != 3) return undefined;
-
-		var key = node.nodeValue;
-		if(!/^\s*@/.test(key)) return;
+		//~: access the key text
+		var key; if(node.nodeType == 3) key = node.nodeValue
+		else if(node.nodeType == 8) key = node.data
+		if(!ZeT.iss(key)) return
+		if(!/^\s*@/.test(key)) return
 
 		return {
 		  key: ZeTS.trim(key).substring(1),
 		  node: node.parentNode,
-		  removeNode: true
+		  removeNode: (node.nodeType == 3)
 		}
 	}
 })
