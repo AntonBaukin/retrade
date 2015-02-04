@@ -89,12 +89,37 @@ var ZeTD = ZeT.define('ZeTD',
 		return opts.result;
 	},
 
+	/**
+	 * Returns the first child element node.
+	 */
 	first            : function(node)
 	{
-		if(!ZeTD.isn(node)) return null;
+		if(!ZeTD.isn(node)) return null
 		for(var n = node.firstChild;(n);n = n.nextSibling)
-			if(ZeTD.isn(n)) return n;
-		return null;
+			if(ZeTD.isn(n)) return n
+		return null
+	},
+
+	/**
+	 * Searches for the first descendant element
+	 * having the tag name given. Note that the
+	 * tag argument must be lower-cased.
+	 */
+	downtag          : function(node, tag)
+	{
+		if(!node || (node.nodeType !== 1))     return null
+		if(node.tagName.toLowerCase() === tag) return node
+
+		for(var n = node.firstChild;(n);n = n.nextSibling)
+			if(node = ZeTD.downtag(n, tag)) return node
+		return null
+	},
+
+	uptag             : function(node, tag)
+	{
+		while(node) if(ZeTD.isn(node, tag)) return node
+			else node = ZeTD.isn(node.parentNode)?(node.parentNode):(null)
+		return undefined
 	},
 
 
@@ -221,31 +246,47 @@ var ZeTD = ZeT.define('ZeTD',
 	},
 
 	/**
-	 * Write attributes to the node.
-	 * The values must be strings.
+	 * Writes attributes to the node given.
+	 * The values must be strings or numbers;
+	 * null or undefined to remove it.
 	 */
 	attrs             : function(node, attrs)
 	{
-		if(!ZeTD.isn(node)) return node;
-		if(ZeT.isu(attrs))  return node;
+		ZeT.assert(ZeTD.isn(node))
+		if(!attrs) return node
 
-		var names = ZeT.keys(attrs);
+		var k, v, names = ZeT.keys(attrs)
 		for(var i = 0;(i < names.length);i++)
 		{
-			var k = names[i]; if(!ZeT.iss(k)) continue;
-			var v = attrs[k]; if(!ZeT.iss(v)) continue;
+			if(!ZeT.iss(k = names[i])) continue
 
-			node.setAttribute(k, v)
+			//?: {remove attribute}
+			if(ZeT.i$x(v = attrs[k])) node.removeAttribute(k); else
+			{
+				if(ZeT.isn(v)) v = '' + v
+				ZeT.assert(ZeT.iss(v), 'DOM Node attribute [', k,
+				  '] is not a string, but: [', v, ']')
+
+				node.setAttribute(k, v)
+			}
 		}
 
-		return node;
+		return node
 	},
 
-	uptag             : function(node, tag)
+	attr              : function(node, name, value)
 	{
-		while(node) if(ZeTD.isn(node, tag)) return node
-			else node = ZeTD.isn(node.parentNode)?(node.parentNode):(null)
-		return undefined
+		ZeT.assert(ZeTD.isn(node))
+		ZeT.asserts(name)
+
+		if(ZeT.i$x(value)) node.removeAttribute(name); else
+		{
+			if(ZeT.isn(value)) value = '' + value
+			ZeT.assert(ZeT.iss(value), 'DOM Node attribute [', name,
+			  '] is not a string, but: [', value, ']')
+
+			node.setAttribute(name, value)
+		}
 	},
 
 
@@ -543,7 +584,12 @@ ZeT.Layout.TemplateGlobal = 'ZeT_Layout_Template_GlobalArea';
  *  · clean   (true)
  *
  *  tells to remove from the template node tree all text
- *  nodes with whitespace-empty string values.
+ *  nodes with whitespace-empty string values;
+ *
+ *  · downtag (optional)
+ *
+ *   lower-cased name of the descending tag of the template
+ *   to return on the template node.
  *
  *
  * The following callbacks may be provided as options.
@@ -577,13 +623,14 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 
 	init             : function(opts, html)
 	{
-		if(!opts) throw 'ZeT.Layout.Template: no opts!';
-		this.opts = opts;
-		if(ZeT.iss(this.opts.id)) this.id = this.opts.id;
+		//~: assign the template options & the id
+		this.opts = ZeT.assertn(opts, 'ZeT.Layout.Template: no options!')
+		if(ZeT.iss(this.opts.id)) this.id = this.opts.id
 
-		if(!ZeT.iss(html) && !ZeTD.isxn(html))
-			throw 'ZeT.Layout.Template: has no HTML or DOM node!';
-		this.html = html;
+		//?: {has no content}
+		ZeT.assert(ZeT.iss(html) || ZeTD.isxn(html),
+		  'ZeT.Layout.Template: has no HTML or DOM node!')
+		this.html = html
 
 		this._init_area()
 	},
@@ -595,107 +642,113 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 	node             : function()
 	{
 		this._check_area()
-		return this._get_node();
+		return this._get_node()
+	},
+
+	xnode            : function()
+	{
+		var node = this.node()
+
+		if(ZeT.iss(this.opts.downtag))
+			return ZeT.assertn(ZeTD.downtag(node, this.opts.downtag))
+
+		return node
 	},
 
 	_init_area       : function()
 	{
-		var area = this.opts['area'];
+		var area = this.opts['area']
 
 		if(!area && (this.opts['global'] === true))
-			area = ZeT.Layout.TemplateGlobal;
+			area = ZeT.Layout.TemplateGlobal
 
-		if(ZeT.i$x(area)) area = this._create_area();
+		if(ZeT.i$x(area)) area = this._create_area()
 
 		//?: {the area is string id} init it later
-		if(ZeT.iss(area))
-		{
-			this._area_id = area;
-			this._area_gl = true;
-		}
+		if(ZeT.iss(area)) { this._area_id = area; this._area_gl = true } else
 		//?: {the area is defined, but not a node}
-		else if(!ZeTD.isn(area)) throw 'ZeT.Layout.Template: ' +
-		  'area option is set, but is not a string or DOM node!';
+		ZeT.assert(ZeTD.isn(area), 'ZeT.Layout.Template: ',
+		  'area option is set, but is not a string or DOM node!')
 
 		if(ZeTD.isn(area))
 		{
-			this._area_gl = ZeTD.isgn(area);
-			if(!ZeTS.ises(area.id)) this._area_id = area.id;
+			this._area_gl = ZeTD.isgn(area)
+			if(!ZeTS.ises(area.id)) this._area_id = area.id
 		}
 
 		//?: {is global node having DOM id} place the area
 		if(this._area_gl && !ZeTS.ises(this._area_id))
 			if(!(area = this._find_gl_area(this._area_id)))
 			{
-				if(!ZeTD.isn(area)) area = this._create_area();
+				if(!ZeTD.isn(area)) area = this._create_area()
 				this._place_gl_area(area)
 			}
 
-		if(!ZeTD.isn(area)) throw 'ZeT.Layout.Template: ' +
-		  'could not create templates area node!';
+		ZeT.assert(ZeTD.isn(area), 'ZeT.Layout.Template: ',
+		  'could not create templates area node!')
 
 		this._bind_template(area)
 	},
 
 	_get_area        : function()
 	{
-		var area = this._area; if(area) return area;
+		var area = this._area; if(area) return area
 
 		if(this._area_id && this._area_gl)
-			return this._find_gl_area(this._area_id, true);
-		return (this._area = this._create_area());
+			return this._find_gl_area(this._area_id, true)
+		return (this._area = this._create_area())
 	},
 
 	_create_area     : function()
 	{
-		var area = document.createElement('div');
-		if(this._area_id) area.id = this._area_id;
-		area.style.display = 'none';
-		return area;
+		var area = document.createElement('div')
+		if(this._area_id) area.id = this._area_id
+		ZeTD.styles(area, { display: 'none'})
+		return area
 	},
 
 	_find_gl_area    : function(area_id, error)
 	{
-		var area  = ZeTD.n(area_id); //<-- find it in the global DOM
-		if(area) return area;
+		var area  = ZeTD.n(area_id) //<-- find it in the global DOM
+		if(area) return area
 
-		var areas = document['ZeT_Layout_TemplateAreas'];
+		var areas = document['ZeT_Layout_TemplateAreas']
 		if(areas && !areas.length)
 		{
 			delete document['ZeT_Layout_TemplateAreas']
-			areas = null;
+			areas = null
 		}
 
 		if(areas) for(var i = 0;(i < areas.length);i++)
-			if(areas[i].id === area_id) return areas[i];
+			if(areas[i].id === area_id) return areas[i]
 
-		if(error) throw 'ZeT.Layout.Template: global templates ' +
-		  'area [' + area_id + '] was not bound properly!';
-		return null;
+		ZeT.assert(!error, 'ZeT.Layout.Template: global templates ',
+		  'area [', area_id, '] was not bound properly!')
+		return null
 	},
 
 	_place_gl_area   : function(area)
 	{
 		if(!document.body) //<-- not available yet, delay
 		{
-			var areas = document['ZeT_Layout_TemplateAreas'];
+			var areas = document['ZeT_Layout_TemplateAreas']
 
-			if(!areas) document['ZeT_Layout_TemplateAreas'] = areas = [];
-			for(var i = 0;(i < areas.length);i++) //<-- exists?
-				if(area.id === areas[i].id) {area = null; break;}
+			if(!areas) document['ZeT_Layout_TemplateAreas'] = areas = []
+			for(var i = 0;(i < areas.length);i++) //<-- ?: {exists}
+				if(area.id === areas[i].id) { area = null; break }
 			if(area) areas.push(area)
 
-			return this._area_ck = true; //<-- do check area later
+			return this._area_ck = true //<-- do check area later
 		}
 
-		var ref = ZeTD.first(document.body);
-		var ctn = function() {return document.createTextNode('\n\n');}
-		var bdy = document.body;
+		var ref = ZeTD.first(document.body)
+		var ctn = function() { return document.createTextNode('\n\n') }
+		var bdy = document.body
 
 		if(ref)
 		{
 			bdy.insertBefore(ctn(), ref) //<-- support for saved documents
-			bdy.insertBefore(area, ref)
+			bdy.insertBefore(area,  ref)
 			bdy.insertBefore(ctn(), ref)
 		}
 		else
@@ -705,7 +758,7 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 			bdy.appendChild(ctn())
 		}
 
-		return false;
+		return false
 	},
 
 	/**
@@ -717,90 +770,88 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 	_check_area      : function()
 	{
 		if(!this._area_ck || !this._area_gl || !this._area_id)
-		{this._area_ck = false; return;}
+		{ this._area_ck = false; return }
 
-		var area = this._find_gl_area(this._area_id, true);
+		var area = this._find_gl_area(this._area_id, true)
 
 		//?: {the area is already a global node}
-		if(ZeTD.isgn(area)) {this._area_ck = false; return;}
-		this._area_ck = this._place_gl_area(area);
-		if(this._area_ck) return; //<-- will check again
+		if(ZeTD.isgn(area)) { this._area_ck = false; return }
+		this._area_ck = this._place_gl_area(area)
+		if(this._area_ck) return //<-- will check again
 
 		//~: remove document registration of the area
-		var areas = document['ZeT_Layout_TemplateAreas'];
-		if(!areas) return;
+		var areas = document['ZeT_Layout_TemplateAreas']
+		if(!areas) return
 
-		var areai = areas.indexOf(area);
+		var areai = areas.indexOf(area)
 		if(areai != -1) areas.splice(areai, 1)
-		if(!areas.length) delete document['ZeT_Layout_TemplateAreas'];
+		if(!areas.length) delete document['ZeT_Layout_TemplateAreas']
 	},
 
 	_get_node        : function()
 	{
-		if(this._node) return this._node;
+		if(this._node) return this._node
 
-		this._node = this._insert_node();
+		this._node = this._insert_node()
 		this._notify_inserted()
-		return this._node;
+		return this._node
 	},
 
 	_insert_node     : function()
 	{
-		var node, area = this._get_area();
+		var node, area = this._get_area()
 
 		//?: {has global area} support the saved pages (reuse node)
 		if(this._area_gl && this.id && (node = ZeTD.n(this.id)))
 			node = this._prep_node(node)
 		else
 		{
-			node = this._create_node();
+			node = this._create_node()
 			this._place_node(area, node)
 		}
 
 		this._unbind_template(area)
-		return node;
+		return node
 	},
 
 	_create_node     : function()
 	{
-		var node = this.html;
+		var node = this.html; if(ZeT.iss(this.html))
+			node = this._create_str_node()
 
-		if(ZeT.iss(this.html))
-			node = this._create_str_node();
+		ZeT.assert(ZeTD.isn(node), 'ZeT.Layout.Template: ',
+		  'the template instantiated is not a DOM node!')
 
-		if(!ZeTD.isn(node)) throw 'ZeT.Layout.Template: ' +
-		  'the template instantiated is not a DOM node!';
-
-		return this._prep_node(node);
+		return this._prep_node(node)
 	},
 
 	_create_str_node : function()
 	{
-		var node = document.createElement('div');
+		var node = document.createElement('div')
 
 		ZeTD.update(node, this.html)
-		node['ZeT_Layout_Template'] = {rootless: true};
+		node['ZeT_Layout_Template'] = { rootless: true }
 
-		return node;
+		return node
 	},
 
 	_prep_node       : function(node)
 	{
-		var x = node['ZeT_Layout_Template']; if(!x) x = {};
+		var x = node['ZeT_Layout_Template']; if(!x) x = {}
 
 		if(ZeT.i$xtrue(this.opts, 'clean'))
 			ZeT.Layout.Treeters.cleanWs.proc(node)
 
 		if(x.rootless && ZeTD.isoc(node))
 		{	//<-- string (html) has one child
-			node = node.firstChild; //!: not remove it:
-			x.rootless = false;     // saved pages support
+			node = node.firstChild //!: not remove it:
+			x.rootless = false     // saved pages support
 		}
 
-		if(this.id) node.id = this.id;
-		x.template = this; node['ZeT_Layout_Template'] = x;
+		if(this.id) node.id = this.id
+		x.template = this; node['ZeT_Layout_Template'] = x
 
-		return node;
+		return node
 	},
 
 	_place_node      : function(area, node)
@@ -813,20 +864,20 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 
 	_bind_template   : function(area)
 	{
-		var l = area['ZeT_Layout_Templates'];
-		if(!l) area['ZeT_Layout_Templates'] = l = [];
+		var l = area['ZeT_Layout_Templates']
+		if(!l) area['ZeT_Layout_Templates'] = l = []
 		l.push(this)
 	},
 
 	_unbind_template : function(area)
 	{
-		var l = area['ZeT_Layout_Templates']; if(!l) return;
+		var l = area['ZeT_Layout_Templates']; if(!l) return
 
 		for(var i = 0;(i < l.length);i++) if(l[i] == this)
 		{
 			l.splice(i, 1)
-			if(!l.length) delete area['ZeT_Layout_Templates'];
-			return;
+			if(!l.length) delete area['ZeT_Layout_Templates']
+			return
 		}
 	},
 
@@ -881,58 +932,56 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 ZeT.Layout.template = ZeT.define('ZeT.Layout.template()',
   function(id, opts)
 {
-	if(id && id['ZeT_Layout_Template']) return id;
+	if(id && id['ZeT_Layout_Template']) return id
+	ZeT.asserts(id, 'ZeT.Layout.template(): ',
+	  'template ID must be a valid Node ID string!')
 
-	if(!ZeT.iss(id)) throw 'ZeT.Layout.template(): ' +
-	  'template ID must be a valid Node ID string!';
-
-	var area = opts && opts['area'];
-
-	if(ZeT.isu(area)) area = ZeT.Layout.TemplateGlobal;
+	var area = opts && opts['area']
+	if(ZeT.isu(area)) area = ZeT.Layout.TemplateGlobal
 
 	//?: {the area is given by it's global id}
 	if(ZeT.iss(area))
 	{
-		var n = ZeTD.n(id); //<-- search the template globally first
-		var x = n && n['ZeT_Layout_Template'];
-		if(x && x.template) return x.template;
+		var n = ZeTD.n(id) //<-- search the template globally first
+		var x = n && n['ZeT_Layout_Template']
+		if(x && x.template) return x.template
 
 		//!: the template is not placed in the global area yet
 		var a = ZeTD.n(area), as = !a &&
-		  document['ZeT_Layout_TemplateAreas'];
+		  document['ZeT_Layout_TemplateAreas']
 
 		//?: {not found it} search in the delayed
 		if(as) for(var i = 0;(i < as.length);i++)
-			if(area === as[i].id) {a = as[i]; break;}
+			if(area === as[i].id) { a = as[i]; break }
 
 		if(a) area = a;
 	}
 
 	//?: {area node is not defined}
-	if(!ZeTD.isn(area)) throw 'ZeT.Layout.template(): ' +
-	  'templates Area DOM node is not defined and found!';
+	ZeT.assert(ZeTD.isn(area), 'ZeT.Layout.template(): ',
+	  'templates Area DOM node is not defined and found!')
 
 	var ti = new ZeT.Layout.Treeter(function(node, opts)
 	{
-		if(node.id == id) {opts.result = node; return false;}
-		if(opts.treetlv >= 1) return ZeT.Layout.Treeter_SKIP;
-		return node;
-	});
+		if(node.id == id) { opts.result = node; return false }
+		if(opts.treetlv >= 1) return ZeT.Layout.Treeter_SKIP
+		return node
+	})
 
 	//!: search for the template directly in area node
-	var sr = {}; ti.proc(area, sr); if(sr.result) return sr.result;
+	var sr = {}; ti.proc(area, sr); if(sr.result) return sr.result
 
 	//~: search in the area's registry array
-	var ra = area['ZeT_Layout_Templates'];
+	var ra = area['ZeT_Layout_Templates']
 	if(ra) for(var j = 0;(j < ra.length);j++)
 		if(ra[j] && (ra[j].id === id))
-			return ra[j];
+			return ra[j]
 
-	if(ZeT.i$xtrue(opts, 'assert')) throw 'ZeT.Layout.template(): ' +
-	  'template id [' + id + '] was not found in area: ' +
-	  (area.id?(area.id):(area)) + '!';
+	ZeT.assert(!ZeT.i$xtrue(opts, 'assert'), 'ZeT.Layout.template(): ',
+	  'template id [', id, '] was not found in area: [',
+	  (area.id?(area.id):(area)), ']!')
 
-	return undefined;
+	return undefined
 })
 
 
@@ -947,10 +996,6 @@ ZeT.Layout.template = ZeT.define('ZeT.Layout.template()',
  *   · id            (optional)
  *
  *   the ID of the copied DOM node;
- *
- *   · depth         (1024)
- *
- *   the depth of clone operation;
  *
  *   · root          ('div')
  *
@@ -979,68 +1024,76 @@ ZeT.extendClass('ZeT.Layout.Template', {
 
 	cloneNode        : function(opts)
 	{
-		opts = opts || {};
+		opts = opts || {}
 
-		var node = this.node();
-		if(!node) throw 'ZeT.Layout.Template: no DOM ' +
-		  'node is found for template clone operation!';
+		var node = ZeT.assertn(this.node(), 'ZeT.Layout.Template: ',
+		  'no DOM node is found for template clone operation!')
 
-		var copy = node.cloneNode(opts['depth'] || 1024);
-		return this._clone_node(copy, opts, node);
+		var copy = node.cloneNode(true)
+
+		//?: {has down-tag}
+		if(ZeT.iss(this.opts.downtag))
+		{
+			copy = ZeT.assertn(ZeTD.downtag(copy, this.opts.downtag))
+			copy.parentNode.removeChild(copy)
+		}
+
+		return this._clone_node(copy, opts, node)
 	},
 
 	_clone_node      : function(node, opts, source)
 	{
-		var x = source['ZeT_Layout_Template'];
+		var x = source['ZeT_Layout_Template']
 
 		if(x.rootless && (opts.root === false))
-			return ZeT.a(node.childNodes);
+			return ZeT.a(node.childNodes)
 
 		if(x.rootless)
 		{
-			var rtag = ZeT.iss(opts.root)?(opts.root):('div');
-			var root = document.createElement(rtag);
+			var rtag = ZeT.iss(opts.root)?(opts.root):('div')
+			var root = document.createElement(rtag)
 			ZeTD.update.apply(root, ZeT.a(node.childNodes))
-			node = root;
+			node = root
 		}
 
-		if(ZeT.iss(opts.id)) node.id = opts.id;
-		else node.id = ''; //<-- clear the template'
+		//~: assign or remove the id
+		ZeTD.attr(node, 'id', ZeT.iss(opts.id)?(opts.id):(null))
 
 		if(node['ZeT_Layout_Template'])
-			node['ZeT_Layout_Template'] = undefined;
+			node['ZeT_Layout_Template'] = undefined
 
-		return this._on_clone_done(node, opts, source);
+		return this._on_clone_done(node, opts, source)
 	},
 
 	_on_clone_done   : function(node, opts, source)
 	{
-		node = this._on_clone_done_t(node, opts, source);
-		node = this._on_clone_done_s(node, opts, source);
-		return this._on_clone_done_o(node, opts, source);
+		node = this._on_clone_done_t(node, opts, source)
+		node = this._on_clone_done_s(node, opts, source)
+		return this._on_clone_done_o(node, opts, source)
 	},
 
 	_on_clone_done_t : function(node, opts, source)
 	{
 		var r; if(ZeT.i$f(this.opts, 'cloneDone'))
-			r = this.opts['cloneDone'](node, opts, this);
-		return ZeTD.isxn(r)?(r):(node);
+			r = this.opts['cloneDone'](node, opts, this)
+		return ZeTD.isxn(r)?(r):(node)
 	},
 
 	_on_clone_done_s : function(node, opts, source)
 	{
-		var struct  = ZeT.struct(source); if(!struct) return node;
-		var r, func = struct.func('cloneDone');
+		var struct  = ZeT.struct(source)
+		if(!struct) return node
+		var r, func = struct.func('cloneDone')
 
-		if(ZeT.isf(func)) r = func(node, opts, this);
-		return ZeTD.isxn(r)?(r):(node);
+		if(ZeT.isf(func)) r = func(node, opts, this)
+		return ZeTD.isxn(r)?(r):(node)
 	},
 
 	_on_clone_done_o : function(node, opts, source)
 	{
 		var r; if(ZeT.i$f(opts, 'cloneDone'))
-			r = opts['cloneDone'](node, opts, this);
-		return ZeTD.isxn(r)?(r):(node);
+			r = opts['cloneDone'](node, opts, this)
+		return ZeTD.isxn(r)?(r):(node)
 	}
 })
 
@@ -1081,7 +1134,7 @@ ZeT.extendClass('ZeT.Layout.Template', {
 	trace            : function(node)
 	{
 		if(!ZeTD.isxn(node)) return undefined;
-		var xnode = node, stack = [], root  = this.node();
+		var xnode = node, stack = [], root  = this.xnode();
 
 		//go up to the root
 		while(xnode)
@@ -1158,7 +1211,7 @@ ZeT.extendClass('ZeT.Layout.Template', {
 			return r.removeNode?(undefined):(node);
 		});
 
-		iter.proc(this.node())
+		iter.proc(this.xnode())
 
 		//~: trace the nodes collected
 		for(var i = 0;(i < found.length);i++)

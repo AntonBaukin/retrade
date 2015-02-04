@@ -68,8 +68,7 @@
 
 .retrade-eventsnum-menu
 {
-  width: 280px; max-height: 536px;
-  margin: 16px 6px 8px 8px;
+  width: 280px; margin: 16px 6px 8px 8px;
 }
 
 .retrade-eventsnum-menu-item.N .retrade-eventsnum-menu-data,
@@ -87,7 +86,7 @@
   .retrade-eventsnum-menu-item-controls > div.G,
   .retrade-eventsnum-controls > div.numbers td.G div
 {
-  background: #ffdcd3;
+  background: #aedd9b;
   background: -moz-linear-gradient(-45deg, #e2e8a7 0%, #83ce79 60%, #aedd9b 100%);
   background: -webkit-linear-gradient(-45deg, #e2e8a7 0%, #83ce79 60%, #aedd9b 100%);
   background: linear-gradient(135deg, #e2e8a7 0%,#83ce79 60%,#aedd9b 100%);
@@ -113,9 +112,9 @@
   background: linear-gradient(135deg, #ffdcd3 0%,#ffb9b5 60%,#efd6c9 100%);
 }
 
-.retrade-eventsnum-menu-item
+.retrade-eventsnum-menu-item td
 {
-  cursor: default;
+  cursor: default; padding-top: 6px;
 }
 
 .retrade-eventsnum-menu-item .retrade-eventsnum-menu-data
@@ -123,7 +122,7 @@
   border: 2px solid black;
   border-radius: 2px; max-height: 50px;
   font-family: 'Tahoma', sans-serif;
-  line-height: 14px; font-size: 14px;
+  line-height: 13px; font-size: 13px;
   padding: 2px; overflow: hidden;
   position: relative; left: -4px; top: -4px;
 }
@@ -149,12 +148,12 @@
   background-color: black; color: whitesmoke;
   border-bottom-right-radius: 4px;
   position: relative; top: -2px; left: -2px;
-  padding: 1px 1px; font-size: 12px;
+  padding: 1px 1px; font-size: 11px;
 }
 
 .retrade-eventsnum-menu-item.G .retrade-eventsnum-menu-data
 {
-  border-color: #617c65; background: #83ce79;
+  border-color: #617c65;
 }
 
 .retrade-eventsnum-menu-item.G .retrade-eventsnum-menu-data > span:first-child
@@ -229,7 +228,7 @@
 
 .retrade-eventsnum-controls
 {
-  padding: 6px 0;
+  padding: 6px 0 2px 0;
 }
 
 .retrade-eventsnum-controls > div.left, .retrade-eventsnum-controls > div.right
@@ -432,6 +431,14 @@
   top: 0; right: 0;
 }
 
+.retrade-eventsnum-controls div, .retrade-eventsnum-menu div, .retrade-eventsnum-menu-data
+{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 </style>
 
 </head>
@@ -460,7 +467,7 @@
     <tbody>
       <tr>
         <td>
-          <div class='retrade-eventsnum-controls unselectable-text'>
+          <div class='retrade-eventsnum-controls'>
             <div class='left' title='Следующие сообщения'>@LT</div>
             <div class='right' title='Предыдущие сообщения'>@RT</div>
             <div class='numbers'>
@@ -471,7 +478,7 @@
                 <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>
               </tr></table>
             </div>
-            <div class='allitems unselectable-text' style='display:none'>
+            <div class='allitems' style='display:none'>
               <div class='descr'>Для всей<br/>страницы</div>
               <div class='gray' title='Отметить все собщения на странице как неактивные'>@AN</div>
               <div class='delete' title='Удалить все собщения на странице'>@AD</div>
@@ -484,23 +491,13 @@
 </div>
 -->
 
-<!--
-<tr class='retrade-eventsnum-menu-item O unselectable-text'>
-  <td>
-    <div class='retrade-eventsnum-menu-data-ext'>
-      <div class='retrade-eventsnum-menu-data'>
-                <span>
-                  <span>вчера</span>
-                  <span>12:30</span>
-                </span>
-                <span>
-                  Накладная №10/670 успешно проведена!
-                </span>
-      </div>
-    </div>
-  </td>
-</tr>
--->
+<!--<table><tr class='retrade-eventsnum-menu-item'>
+  <td><div class='retrade-eventsnum-menu-data-ext'>
+    <div class='retrade-eventsnum-menu-data'>
+      <span><span>@T</span><span>@D</span></span>
+      <span>@M</span></div>
+</div></td></tr></table>-->
+
 
 <script type = "text/javascript">
 //<![CDATA[
@@ -513,8 +510,10 @@ var en = new ReTrade.EventsNumber({ parent: 'num-area', node: 'num',
  }
 })
 
-var em = new ReTrade.EventsMenu({ node: 'menu-area', parent: document.body })
-ZeT.log('Ways: ', ZeT.keys(em._tx().ways()))
+var em = new ReTrade.EventsMenu({
+  node: 'menu-area', parent: document.body,
+  length: 7
+})
 
 function change()
 {
@@ -544,9 +543,15 @@ $('#num-area').click(function()
 $('#menu-area').hide()
 $('#num-area').click()
 
-em.set({
+em.set({ numbers: { N: 7, G: 3, O: 1, R: 1}, length: 7,
 
- numbers: { N: 101, G: 6, O: 0, R: 2}
+ '0': { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.' },
+ '1': { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
+ '2': { id: 95, time: '11:20', date: 'сегодня 04 Фев', color: 'G', text: 'Накладная перемещения №100/ПЕ успешно проведена!' },
+ '3': { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система успешно запущена!' },
+ '4': { id: 87, time: '22:13', date: 'вчера 03 Фев', color: 'R', text: 'Производится остановка системы!' },
+ '5': { id: 81, time: '10:15', date: 'вчера 03 Фев', color: 'G', text: 'Добавлен пользователь [ivanov] Иванов Иван Иванович.' },
+ '6': { id: 71, time: '12:34', date: '02 Фев', color: 'G', text: 'Добавлен пользователь [navalniy] Навальный Алексей Александрович.' }
 
 })
 

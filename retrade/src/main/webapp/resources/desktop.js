@@ -1809,35 +1809,101 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 	init            : function(opts)
 	{
 		this.$callSuper(opts)
+
+		//~: add the items
+		this._add_items()
 	},
 
 	set             : function(model)
 	{
-		model = model || {}
+		this.model = model || {}
 
 		//~: update the numbers from the model
-		this._numbers(model.numbers || {})
+		this._numbers()
 
 		//~: fill with the items
-		this._items(model)
+		this._set_items()
 	},
 
 	COLORS          : ['N', 'G', 'O', 'R'],
 
-	_numbers        : function(numbers)
+	_numbers        : function()
 	{
 		var n = this.struct.node()
 		var t = this._tx()
 
+		var numbers = this.model.numbers || {}
 		ZeT.each(this.COLORS, function(c)
 		{
 			ZeTD.update(t.walk('F'+c, n), numbers[c])
 		})
 	},
 
-	_items          : function(model)
+	_set_items      : function()
 	{
+		var m = this.model, im = m.imap = {}
 
+		//~: check & map the items of the model
+		if(ZeT.isi(m.length)) for(var i = 0;(i < m.length);i++)
+		{
+			var x = ZeT.assertn(m[''+i])
+			ZeT.assertn(x.id)   //<-- {id}
+			ZeT.asserts(x.time) //<-- {time}
+			ZeT.asserts(x.date) //<-- {date}
+			ZeT.asserts(x.text) //<-- {text}
+
+			if(ZeT.isu(x.color)) x.color = 'N'
+			ZeT.assert(this.COLORS.indexOf(x.color) >= 0)
+
+			//~: map (id - > index)
+			im[x.id] = i
+		}
+
+		//?: {has the first there} take it
+		var e, b = im[this.firstid]
+		if(!ZeT.isi(b)) b = 0
+
+		//~: the end border
+		if(!m[''+b]) { this.firstid = null; e = 0 } else
+		{
+			e = b + this.opts.length
+			ZeT.assert(ZeT.isi(m.length) && (m.length > 0))
+			if(e > m.length) e = m.length
+		}
+
+		//~: set the items in the range
+		for(i = b;(i < e);i++)
+			this._set_item(i-b)
+
+		//~: show-hide items
+		for(i = 0;(i < this.items.length);i++)
+			$(this.items[i].node).toggle(b + i < e)
+	},
+
+	_set_item       : function(i)
+	{
+		var m = ZeT.assertn(this.model[''+i])
+		var x = ZeT.assertn(this.items[i])
+		var t = this._ti()
+
+		//~: remember the model id
+		x.modelid = m.id
+
+		//=: time, date, text
+		ZeTD.update(t.walk('T', x.node), m.time)
+		ZeTD.update(t.walk('D', x.node), m.date)
+		ZeTD.update(t.walk('M', x.node), m.text)
+
+		//~: remove all the color classes
+		var rm; if(!(rm = this.$class.static._colors_rm))
+		{
+			rm = this.$class.static._colors_rm = []
+			ZeT.each(this.COLORS, function(c) { rm.push('-'+c) })
+		}
+		ZeTD.classes(x.node, rm)
+
+		//~: set item color as the class
+		ZeTD.classes(x.node, '+'+m.color)
 	},
 
 	_ts             : ""+
@@ -1858,7 +1924,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"    <tbody><!--@EV-->"+
 		"      <tr>"+
 		"        <td>"+
-		"          <div class='retrade-eventsnum-controls unselectable-text'>"+
+		"          <div class='retrade-eventsnum-controls'>"+
 		"            <div class='left' title='Следующие сообщения'>@LT</div>"+
 		"            <div class='right' title='Предыдущие сообщения'>@RT</div>"+
 		"            <div class='numbers'>"+
@@ -1869,7 +1935,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"                <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>"+
 		"              </tr></table>"+
 		"            </div>"+
-		"            <div class='allitems unselectable-text' style='display:none'>@AL"+
+		"            <div class='allitems' style='display:none'>@AL"+
 		"              <div class='descr'>Для всей<br/>страницы</div>"+
 		"              <div class='gray' title='Отметить все собщения на странице как неактивные'>@AN</div>"+
 		"              <div class='delete' title='Удалить все собщения на странице'>@AD</div>"+
@@ -1879,5 +1945,56 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"      </tr>"+
 		"    </tbody>"+
 		"  </table>"+
-		"</div>"
+		"</div>",
+
+	_add_items      : function()
+	{
+		var t = this._ti()
+		var r = ZeT.assertn(this._tx().walk('EV', this.struct.node()))
+
+		//?: {has no items length}
+		ZeT.assert(ZeT.isn(this.opts.length) && (this.opts.length > 0),
+		  'Events Menu has no length option!')
+
+		//~: create the items
+		this.items = []
+		for(var i = 0;(i < this.opts.length);i++)
+		{
+			var n = t.cloneNode()
+
+			//~: hide & attach, listen click
+			$(n).hide().data({ EventsMenu: this, index: i }).
+			  click(this._item_click)
+
+			//~: add to the table
+			r.appendChild(n)
+			this.items.push({ node: n, index: i })
+		}
+	},
+
+	_item_click     : function(e)
+	{
+		var n = $(this), self = n.data('EventsMenu')
+		if(!self) return; else e.stopPropagation()
+		var i = self.items[ZeT.assertn(n.data('index'))]
+
+		ZeT.log('Clicked: ', i.index)
+	},
+
+	_ti             : function()
+	{
+		if(this.$class.static.itemplate)
+			return this.$class.static.itemplate
+
+		return this.$class.static.itemplate = new ZeT.Layout.Template(
+		  {trace : ZeT.Layout.Template.Ways.traceAtNodes, downtag: 'tr'}, this._tis)
+	},
+
+	_tis            : ""+
+		"<table><tr class='retrade-eventsnum-menu-item'>\n"+
+		"  <td><div class='retrade-eventsnum-menu-data-ext'>\n"+
+		"    <div class='retrade-eventsnum-menu-data'>\n"+
+		"      <span><span>@T</span><span>@D</span></span>\n"+
+		"      <span>@M</span></div>\n"+
+		"</div></td></tr></table>"
 })
