@@ -305,6 +305,55 @@ var ZeTD = ZeT.define('ZeTD',
 })
 
 
+// +----: ZeTD + jQuery :----------------------------------------+
+
+if(jQuery) ZeT.extend(ZeTD,
+{
+
+// +----: Dimensions :---->
+
+	/**
+	 * Checks the given argument is in the node range.
+	 * The argument may be one of:
+	 *
+	 * · x, y
+	 *   two arguments, direct numbers;
+	 *
+	 * · event object
+	 *   then it's (pageX, pageY) is taken;
+	 *
+	 * · {x, y} or {top, left}
+	 *   object having this fields.
+	 */
+	inx               : function(node /*, argument */)
+	{
+		if(!node) return undefined; else node = $(node)
+
+		//~: find the node dimensions
+		var xy = node.offset()
+		xy.x0 = xy.left; xy.y0 = xy.top
+		ZeT.assert(ZeT.isn(xy.x0) && ZeT.isn(xy.y0))
+
+		xy.x1 = xy.x0 + node.outerWidth()
+		xy.y1 = xy.y0 + node.outerHeight()
+		ZeT.assert(ZeT.isn(xy.x1) && ZeT.isn(xy.y1))
+
+		//~: find the target point
+		var p = arguments[1]; xy.x = p; xy.y = arguments[2]
+		if(!ZeT.isn(p) && p) if(ZeT.isn(xy.x = p.pageX)) xy.y = p.pageY
+		else if(ZeT.isn(xy.x = p.x)) xy.y = p.y
+		else if(ZeT.isn(xy.x = p.left)) xy.y = p.top
+
+		ZeT.assert(ZeT.isn(xy.x) && ZeT.isn(xy.y),
+		  'No coordinate point is given!')
+
+		//~: check the boundaries
+		return (xy.x >= xy.x0) && (xy.x <= xy.x1) &&
+		  (xy.y >= xy.y0) && (xy.y <= xy.y1)
+	}
+})
+
+
 // +----: ZeT.Struct :-------------------------------------------+
 
 /**

@@ -119,8 +119,8 @@
 
 .retrade-eventsnum-menu-item .retrade-eventsnum-menu-data
 {
-  border: 2px solid black;
-  border-radius: 2px; max-height: 50px;
+  border: 0 solid black; border-radius: 2px;
+  max-height: 53px; min-height: 28px;
   font-family: 'Tahoma', sans-serif;
   line-height: 13px; font-size: 13px;
   padding: 2px; overflow: hidden;
@@ -133,12 +133,14 @@
   border-radius: 3px; margin: 4px 0 0 4px;
 }
 
-.retrade-eventsnum-menu-item:hover .retrade-eventsnum-menu-data
+.retrade-eventsnum-menu-item:hover .retrade-eventsnum-menu-data,
+  .retrade-eventsnum-menu-item.clicked .retrade-eventsnum-menu-data
 {
   left: 0; top: 0;
 }
 
-.retrade-eventsnum-menu-item:hover .retrade-eventsnum-menu-data-ext
+.retrade-eventsnum-menu-item:hover .retrade-eventsnum-menu-data-ext,
+  .retrade-eventsnum-menu-item.clicked .retrade-eventsnum-menu-data-ext
 {
   background-color: transparent;
 }
@@ -149,6 +151,21 @@
   border-bottom-right-radius: 4px;
   position: relative; top: -2px; left: -2px;
   padding: 1px 1px; font-size: 11px;
+}
+
+.retrade-eventsnum-menu-item .retrade-eventsnum-menu-data > span:last-child
+{
+  position: relative; top: -1px;
+}
+
+.retrade-eventsnum-menu-item .retrade-eventsnum-menu-data > span:first-child span:first-child
+{
+  padding-right: 4px;
+}
+
+.retrade-eventsnum-menu-item .retrade-eventsnum-menu-data > span:first-child span:last-child
+{
+  padding-right: 2px;
 }
 
 .retrade-eventsnum-menu-item.G .retrade-eventsnum-menu-data
@@ -345,7 +362,7 @@
 
 .retrade-eventsnum-menu-item-controls
 {
-  position: absolute; right: 14px; top: 57px;
+  position: absolute; right: 7px; top: 57px;
   width: 172px; height: 28px; z-index: 10;
   border: 1px dashed white;
   background-color: rgba(255, 255, 255, 0.6);
@@ -354,11 +371,15 @@
 .retrade-eventsnum-menu-item-controls > div
 {
   position: relative; width: 19px; height: 19px;
-  border: 2px solid white; border-radius: 8px;
-  cursor: pointer;
+  border: 2px solid #7c838f; border-radius: 8px;
 }
 
-.retrade-eventsnum-menu-item-controls > div:hover
+.retrade-eventsnum-menu-item-controls > div.enabled
+{
+  cursor: pointer; border-color: white;
+}
+
+.retrade-eventsnum-menu-item-controls > div.enabled:hover
 {
   border-color: #7c838f;
 }
@@ -457,11 +478,11 @@
   <div class='retrade-eventsnum-menu-corner-rb'></div>
   <div class='retrade-eventsnum-menu-corner-bh'></div>
   <div class='retrade-eventsnum-menu-item-controls' style='display:none'>
-    <div class='N' title='Отметить сообщение как неактивное'>@IN</div>
-    <div class='G' title='Отметить сообщение как успех'>@IG</div>
-    <div class='O' title='Отметить сообщение как важное'>@IO</div>
-    <div class='R' title='Отметить сообщение как срочное'>@IR</div>
-    <div class='delete' title='Отметить сообщение как успех'>@ID</div>
+    <div class='N enabled' title='Отметить сообщение как неактивное'>@IN</div>
+    <div class='G enabled' title='Отметить сообщение как успех'>@IG</div>
+    <div class='O enabled' title='Отметить сообщение как важное'>@IO</div>
+    <div class='R enabled' title='Отметить сообщение как срочное'>@IR</div>
+    <div class='delete enabled' title='Отметить сообщение как успех'>@ID</div>
   </div>
   <table id='menu' cellpadding='0' cellspacing='0' border='0' class='retrade-eventsnum-menu'>
     <tbody>
@@ -470,10 +491,10 @@
           <div class='retrade-eventsnum-controls'>
             <div class='left' title='Следующие сообщения'>@LT</div>
             <div class='right' title='Предыдущие сообщения'>@RT</div>
-            <div class='numbers'>
+            <div class='numbers'>@NU
               <table cellspacing='0' cellpadding='0' border='0'><tr>
                 <td class='N selected'><div title='Отображать все сообщения'>@FN</div></td>
-                <td class='G'><div title='Отображать отмеченные сообщения'>@FG</div></td>
+                <td class='G'><div title='Отображать сообщения об успехе'>@FG</div></td>
                 <td class='O'><div title='Отображать важные и срочные сообщения'>@FO</div></td>
                 <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>
               </tr></table>
@@ -493,7 +514,7 @@
 
 <!--<table><tr class='retrade-eventsnum-menu-item'>
   <td><div class='retrade-eventsnum-menu-data-ext'>
-    <div class='retrade-eventsnum-menu-data'>
+    <div class='retrade-eventsnum-menu-data'>@I
       <span><span>@T</span><span>@D</span></span>
       <span>@M</span></div>
 </div></td></tr></table>-->
@@ -528,31 +549,69 @@ function change()
 
 setInterval(change, 2000)
 
-$('#num-area').click(function()
+$('#num-area').click(function(e)
 {
   var n = $(this), m = $('#menu-area')
   if(m.is(':visible'))
     m.hide()
   else
+  {
+    em.reset()
+
     m.show().offset({
       top: n.offset().top + n.outerHeight() + 10,
       left: n.offset().left + n.outerWidth() - m.outerWidth()
     })
+  }
+
+  e.stopPropagation()
 })
 
 $('#menu-area').hide()
 $('#num-area').click()
 
-em.set({ numbers: { N: 7, G: 3, O: 1, R: 1}, length: 7,
+$(document).click(function(e)
+{
+  var m = $('#menu-area')
 
- '0': { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.' },
- '1': { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
- '2': { id: 95, time: '11:20', date: 'сегодня 04 Фев', color: 'G', text: 'Накладная перемещения №100/ПЕ успешно проведена!' },
- '3': { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система успешно запущена!' },
- '4': { id: 87, time: '22:13', date: 'вчера 03 Фев', color: 'R', text: 'Производится остановка системы!' },
- '5': { id: 81, time: '10:15', date: 'вчера 03 Фев', color: 'G', text: 'Добавлен пользователь [ivanov] Иванов Иван Иванович.' },
- '6': { id: 71, time: '12:34', date: '02 Фев', color: 'G', text: 'Добавлен пользователь [navalniy] Навальный Алексей Александрович.' }
+  //?: {got out of the menu}
+  if(m.is(':visible') && !ZeTD.inx(m, e))
+    m.hide()
+})
 
+em.set({ numbers: { N: 7, G: 3, O: 1, R: 1}, length: 7, items: [
+
+ { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.' },
+ { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
+ { id: 95, time: '11:20', date: 'сегодня 04 Фев', color: 'G', text: 'Накладная перемещения №100/ПЕ успешно проведена!' },
+ { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система запущена!' },
+ { id: 87, time: '22:13', date: 'вчера 03 Фев', color: 'R', text: 'Производится остановка системы!' },
+ { id: 81, time: '10:15', date: 'вчера 03 Фев', color: 'G', text: 'Добавлен пользователь [ivanov] Иванов Иван Иванович.' },
+ { id: 71, time: '12:34', date: '02 Фев', color: 'G', text: 'Добавлен пользователь [navalniy] Навальный Алексей Александрович. Голосуем за Навального! Кому он не нравится: спи, красавица! Крепким вечным сном...' }
+
+]})
+
+em.react(function(e)
+{
+  if(e.type == 'item-delete')
+  {
+    ZeT.log('Delete item: ', e.item.id)
+  }
+
+  if(e.type == 'page-delete')
+  {
+    ZeT.log('Delete page, items: ', ZeT.collect(e.that.page(), 'id'))
+  }
+
+  if(e.type == 'item-color')
+  {
+    ZeT.log('Color item: ', e.item.id, ' as ', e.color)
+  }
+
+  if(e.type == 'page-color')
+  {
+    ZeT.log('Color page as ', e.color)
+  }
 })
 
 //]]>

@@ -1812,6 +1812,16 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 		//~: add the items
 		this._add_items()
+
+		//~: init item controls
+		this._ictl_init()
+	},
+
+	react           : function(reactor)
+	{
+		ZeT.assert(ZeT.isf(reactor))
+		this.reactor = reactor
+		return this
 	},
 
 	set             : function(model)
@@ -1823,6 +1833,25 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 		//~: fill with the items
 		this._set_items()
+	},
+
+	reset           : function()
+	{
+		this._item_reset()
+	},
+
+	/**
+	 * Returns array with the displayed model items.
+	 */
+	page            : function()
+	{
+		var res = []
+
+		for(i = 0;(i < this.items.length);i++)
+			if(!this.items[i].model) return res
+			else res.push(this.items[i].model)
+
+		return res
 	},
 
 	COLORS          : ['N', 'G', 'O', 'R'],
@@ -1841,12 +1870,15 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 	_set_items      : function()
 	{
-		var m = this.model, im = m.imap = {}
+		var m = this.model; m.ids = {}
+
+		if(ZeT.isu(m.items)) m.items = []
+		ZeT.assert(ZeT.isa(m.items))
 
 		//~: check & map the items of the model
-		if(ZeT.isi(m.length)) for(var i = 0;(i < m.length);i++)
+		for(var i = 0;(i < m.items.length);i++)
 		{
-			var x = ZeT.assertn(m[''+i])
+			var x = ZeT.assertn(m.items[i])
 			ZeT.assertn(x.id)   //<-- {id}
 			ZeT.asserts(x.time) //<-- {time}
 			ZeT.asserts(x.date) //<-- {date}
@@ -1855,20 +1887,19 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 			if(ZeT.isu(x.color)) x.color = 'N'
 			ZeT.assert(this.COLORS.indexOf(x.color) >= 0)
 
-			//~: map (id - > index)
-			im[x.id] = i
+			//~: map (id - > item)
+			m.ids[x.id] = x
 		}
 
 		//?: {has the first there} take it
-		var e, b = im[this.firstid]
-		if(!ZeT.isi(b)) b = 0
+		var e, b = m.items.indexOf(m.ids[this.firstid])
+		if(b < 0) b = 0
 
 		//~: the end border
-		if(!m[''+b]) { this.firstid = null; e = 0 } else
+		if(!m.items[b]) { this.firstid = null; e = 0 } else
 		{
 			e = b + this.opts.length
-			ZeT.assert(ZeT.isi(m.length) && (m.length > 0))
-			if(e > m.length) e = m.length
+			if(e > m.items.length) e = m.items.length
 		}
 
 		//~: set the items in the range
@@ -1877,17 +1908,21 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 		//~: show-hide items
 		for(i = 0;(i < this.items.length);i++)
-			$(this.items[i].node).toggle(b + i < e)
+			if(b + i < e) $(this.items[i].node).show(); else
+			{
+				$(this.items[i].node).hide()
+				delete this.items[i].model
+			}
 	},
 
 	_set_item       : function(i)
 	{
-		var m = ZeT.assertn(this.model[''+i])
+		var m = ZeT.assertn(this.model.items[i])
 		var x = ZeT.assertn(this.items[i])
 		var t = this._ti()
 
-		//~: remember the model id
-		x.modelid = m.id
+		//~: assign the model
+		x.model = m
 
 		//=: time, date, text
 		ZeTD.update(t.walk('T', x.node), m.time)
@@ -1900,10 +1935,20 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 			rm = this.$class.static._colors_rm = []
 			ZeT.each(this.COLORS, function(c) { rm.push('-'+c) })
 		}
-		ZeTD.classes(x.node, rm)
 
 		//~: set item color as the class
+		ZeTD.classes(x.node, rm)
 		ZeTD.classes(x.node, '+'+m.color)
+	},
+
+	_react          : function(type, event)
+	{
+		ZeT.asserts(type); ZeT.assertn(event)
+		event.type = type
+		event.that = this
+
+		if(ZeT.isf(this.reactor))
+			this.reactor(event)
 	},
 
 	_ts             : ""+
@@ -1914,11 +1959,11 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"  <div class='retrade-eventsnum-menu-corner-rb'></div>"+
 		"  <div class='retrade-eventsnum-menu-corner-bh'></div>"+
 		"  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>@IC"+
-		"    <div class='N' title='Отметить сообщение как неактивное'>@IN</div>"+
-		"    <div class='G' title='Отметить сообщение как успех'>@IG</div>"+
-		"    <div class='O' title='Отметить сообщение как важное'>@IO</div>"+
-		"    <div class='R' title='Отметить сообщение как срочное'>@IR</div>"+
-		"    <div class='delete' title='Отметить сообщение как успех'>@ID</div>"+
+		"    <div class='N enabled' title='Отметить сообщение как неактивное'>@IN</div>"+
+		"    <div class='G enabled' title='Отметить сообщение как успех'>@IG</div>"+
+		"    <div class='O enabled' title='Отметить сообщение как важное'>@IO</div>"+
+		"    <div class='R enabled' title='Отметить сообщение как срочное'>@IR</div>"+
+		"    <div class='delete enabled' title='Отметить сообщение как успех'>@ID</div>"+
 		"  </div>"+
 		"  <table cellpadding='0' cellspacing='0' border='0' class='retrade-eventsnum-menu'>"+
 		"    <tbody><!--@EV-->"+
@@ -1927,10 +1972,10 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"          <div class='retrade-eventsnum-controls'>"+
 		"            <div class='left' title='Следующие сообщения'>@LT</div>"+
 		"            <div class='right' title='Предыдущие сообщения'>@RT</div>"+
-		"            <div class='numbers'>"+
+		"            <div class='numbers'>@NU"+
 		"              <table cellspacing='0' cellpadding='0' border='0'><tr>"+
 		"                <td class='N selected'><div title='Отображать все сообщения'>@FN</div></td>"+
-		"                <td class='G'><div title='Отображать отмеченные сообщения'>@FG</div></td>"+
+		"                <td class='G'><div title='Отображать сообщения об успехе'>@FG</div></td>"+
 		"                <td class='O'><div title='Отображать важные и срочные сообщения'>@FO</div></td>"+
 		"                <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>"+
 		"              </tr></table>"+
@@ -1978,7 +2023,93 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		if(!self) return; else e.stopPropagation()
 		var i = self.items[ZeT.assertn(n.data('index'))]
 
-		ZeT.log('Clicked: ', i.index)
+		//~: reset the current item
+		var x = self.clicked
+		self._item_reset()
+
+		//?: {this is the same item}
+		if(x === i) { self.clicked = null; return }
+
+		//~: on item
+		ZeTD.classes((self.clicked = i).node, '+clicked')
+		self._item_ctl(i, true)
+	},
+
+	_item_reset     : function()
+	{
+		if(this.clicked)
+		{
+			this._item_ctl(this.clicked, false)
+			ZeTD.classes(this.clicked.node, '-clicked')
+			this.clicked = null
+		}
+	},
+
+	_item_ctl       : function(i, ison)
+	{
+		var n = $(this._ti().walk('I', i.node))
+		var c = $(this._tx().walk('IC', this.struct.node()))
+
+		//~: hide-show numbers, show-hide mass-controls
+		$(this._tx().walk('NU', this.struct.node())).toggle(!ison)
+		$(this._tx().walk('AL', this.struct.node())).toggle(ison)
+
+		c.toggle(ison); if(!ison) return
+
+		//~: set proper position
+		c.offset({ left: c.offset().left,
+		  top: n.offset().top + (n.outerHeight() - c.outerHeight())/2
+		})
+
+		//~: set all enabled by default
+		c.children().addClass('enabled')
+
+		//~: disable the one of the color
+		c.children('.'+ i.model.color).removeClass('enabled')
+	},
+
+	_ictl_init      : function()
+	{
+		var t = this._tx(), self = this
+
+		$(t.walk('IN', this.struct.node())).
+		  click(ZeT.fbind(this._ictl_click, this, 'N'))
+
+		$(t.walk('IG', this.struct.node())).
+		  click(ZeT.fbind(this._ictl_click, this, 'G'))
+
+		$(t.walk('IO', this.struct.node())).
+		  click(ZeT.fbind(this._ictl_click, this, 'O'))
+
+		$(t.walk('IR', this.struct.node())).
+		  click(ZeT.fbind(this._ictl_click, this, 'R'))
+
+		$(t.walk('ID', this.struct.node())).
+		  click(ZeT.fbind(this._ictl_click, this, 'delete'))
+
+		$(t.walk('AN', this.struct.node())).click(function()
+		{
+			self._react('page-color', { color: 'N' })
+		})
+
+		$(t.walk('AD', this.struct.node())).click(function()
+		{
+			self._react('page-delete', {})
+		})
+	},
+
+	_ictl_click     : function(ctl)
+	{
+		//?: {has no item selected}
+		if(!this.clicked) return
+
+		//?: {delete}
+		if(ctl == 'delete')
+			this._react('item-delete', { item: this.clicked.model })
+		//?: {control is a color}
+		else if(this.COLORS.indexOf(ctl) >= 0)
+			if(this.clicked.model.color != ctl)
+				this._react('item-color', { item: this.clicked.model, color: ctl })
 	},
 
 	_ti             : function()
@@ -1991,10 +2122,10 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 	},
 
 	_tis            : ""+
-		"<table><tr class='retrade-eventsnum-menu-item'>\n"+
-		"  <td><div class='retrade-eventsnum-menu-data-ext'>\n"+
-		"    <div class='retrade-eventsnum-menu-data'>\n"+
-		"      <span><span>@T</span><span>@D</span></span>\n"+
-		"      <span>@M</span></div>\n"+
+		"<table><tr class='retrade-eventsnum-menu-item'>"+
+		"  <td><div class='retrade-eventsnum-menu-data-ext'>"+
+		"    <div class='retrade-eventsnum-menu-data'>@I"+
+		"      <span><span>@T</span><span>@D</span></span>"+
+		"      <span>@M</span></div>"+
 		"</div></td></tr></table>"
 })

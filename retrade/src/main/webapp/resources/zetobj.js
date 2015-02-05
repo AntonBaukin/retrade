@@ -788,6 +788,21 @@ var ZeT = window.ZeT = window.ZeT || {
 		return undefined
 	},
 
+	collect          : function(a, f)
+	{
+		//?: {collect a property}
+		var p; if(ZeT.iss(p = f)) f = function(x) { return x[p] }
+		ZeT.assert(ZeT.isf(f))
+
+		var r = []; ZeT.each(a, function(x, i)
+		{
+			x = f.call(x, x, i)
+			if(!ZeT.isu(x)) r.push(x)
+		})
+
+		return r
+	},
+
 
 // +----: Debug Logging: ----------------------------------------+
 
