@@ -1959,6 +1959,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"  <div class='retrade-eventsnum-menu-corner-rb'></div>"+
 		"  <div class='retrade-eventsnum-menu-corner-bh'></div>"+
 		"  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>@IC"+
+		"    <div class='script enabled' title='Выполнить действие для сообщения'>@IA</div>"+
 		"    <div class='N enabled' title='Отметить сообщение как неактивное'>@IN</div>"+
 		"    <div class='G enabled' title='Отметить сообщение как успех'>@IG</div>"+
 		"    <div class='O enabled' title='Отметить сообщение как важное'>@IO</div>"+
@@ -2056,21 +2057,25 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 		c.toggle(ison); if(!ison) return
 
-		//~: set proper position
-		c.offset({ left: c.offset().left,
-		  top: n.offset().top + (n.outerHeight() - c.outerHeight())/2
-		})
+		//~: set proper y-position
+		c.offset({top: n.offset().top + (n.outerHeight() - c.outerHeight())/2})
 
 		//~: set all enabled by default
 		c.children().addClass('enabled')
 
 		//~: disable the one of the color
 		c.children('.'+ i.model.color).removeClass('enabled')
+
+		//~: scripted class
+		ZeTD.classes(c[0], (ZeTS.ises(i.model.script)?('-'):('+')) + 'scripted')
 	},
 
 	_ictl_init      : function()
 	{
 		var t = this._tx(), self = this
+
+		$(t.walk('IA', this.struct.node())).
+		  click(ZeT.fbind(this._ictl_click, this, 'action'))
 
 		$(t.walk('IN', this.struct.node())).
 		  click(ZeT.fbind(this._ictl_click, this, 'N'))
@@ -2106,6 +2111,9 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		//?: {delete}
 		if(ctl == 'delete')
 			this._react('item-delete', { item: this.clicked.model })
+		//?: {action}
+		else if(ctl == 'action')
+			this._react('item-action', { item: this.clicked.model })
 		//?: {control is a color}
 		else if(this.COLORS.indexOf(ctl) >= 0)
 			if(this.clicked.model.color != ctl)

@@ -363,14 +363,20 @@
 .retrade-eventsnum-menu-item-controls
 {
   position: absolute; right: 7px; top: 57px;
-  width: 172px; height: 28px; z-index: 10;
+  width: 167px; height: 28px; z-index: 10;
   border: 1px dashed white;
   background-color: rgba(255, 255, 255, 0.6);
 }
 
+.retrade-eventsnum-menu-item-controls.scripted
+{
+  width: 214px;
+}
+
 .retrade-eventsnum-menu-item-controls > div
 {
-  position: relative; width: 19px; height: 19px;
+  position: absolute; top: 2.5px;
+  width: 19px; height: 19px;
   border: 2px solid #7c838f; border-radius: 8px;
 }
 
@@ -384,29 +390,48 @@
   border-color: #7c838f;
 }
 
+.retrade-eventsnum-menu-item-controls > div.script
+{
+  display: none; left: 4px; top: 1px; width: 22px; height: 22px;
+}
+
+.retrade-eventsnum-menu-item-controls.scripted > div.script
+{
+  display: block; border-color: #7c838f;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9Imljb24iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTAyNHB4IiBoZWlnaHQ9IjEwMjRweCIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAyNCAxMDI0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiM3QzgzOEYiIGlkPSJzZXR0aW5nc18xXyIgZD0iTTkyNy4yMjksNDQ2Ljc1OWwtODguNzU5LTE0LjgwN2MtNi40NTEtMjYuMzc0LTE1Ljg1Ny01MS41ODUtMjguMTA3LTc1LjA5OWw1Ni44MjEtNzAuNDUyDQoJYzEyLjA4NS0xNC44ODksMTEuNTM2LTM2LjMxMi0xLjIwNS01MC42ODJsLTM1LjMwMS0zOS43M2MtMTIuNzk2LTE0LjM1NS0zNC4wMTUtMTcuMzkxLTUwLjIwMi03LjE2NWwtNzUuOTA2LDQ3LjcxNg0KCWMtMzMuMzg2LTIzLjMyNi03MS4yMDQtNDAuNTUxLTExMi01MC41NDZsLTE0Ljg1LTg5LjIzNUM1NzQuNjA0LDc3Ljg2NCw1NTguMjUzLDY0LDUzOS4wNTksNjRoLTUzLjE5OA0KCWMtMTkuMTU1LDAtMzUuNTYxLDEzLjg2NC0zOC42MDksMzIuNzU5bC0xNC45Myw4OS4yNjNjLTMzLjcyOSw4LjI1OC02NS4zNTMsMjEuNTg4LTk0LjIxMywzOS4xNDRsLTcyLjE4OC01MS41MTgNCgljLTE1LjU1OC0xMS4xMTUtMzYuOTI3LTkuMzc3LTUwLjUwNCw0LjE3MWwtMzcuNTgzLDM3LjYxYy0xMy41NDgsMTMuNTc3LTE1LjI4NiwzNC45NDYtNC4xNDIsNTAuNTA0bDUxLjYzOCw3Mi4zMjYNCgljLTE3LjM5MSwyOC42NDItMzAuNTg0LDYwLjA4Ni0zOC44NDEsOTMuNTE0bC04OS43NDMsMTQuOTg2Yy0xOC44NjYsMy4xMTYtMzIuNzU3LDE5LjQ2OS0zMi43NTcsMzguNjYzdjUzLjE1Ng0KCWMwLDE5LjE5NCwxMy44OTEsMzUuNTQ3LDMyLjc1NywzOC42NjNsODkuNzQzLDE0Ljk4NmM2Ljc4MSwyNy41MDcsMTYuNjI1LDUzLjc4NCwyOS43MDksNzguMTQ3bC01Ni41NjIsNzAuMDU0DQoJYy0xMi4wNDQsMTQuODc1LTExLjUzOCwzNi4zMTIsMS4yMDMsNTAuNjY5bDM1LjI3NCwzOS43M2MxMi43OTcsMTQuMzgyLDM0LjAyOCwxNy4zNjMsNTAuMjE2LDcuMTYzbDc3LTQ4LjM3DQoJYzMyLjU4MSwyMi4yODUsNjkuNDQsMzguNjY0LDEwOC45OTMsNDguMzdsMTQuOTMsODkuMjVDNDUwLjMsOTQ2LjEzNyw0NjYuNzA2LDk2MCw0ODUuODYxLDk2MGg1My4xOTgNCgljMTkuMTk0LDAsMzUuNTQ1LTEzLjg2MywzOC42NjEtMzIuNzU5bDE0Ljg3NS04OS4yNWMzMy4zMDgtOC4xNDcsNjQuNTMxLTIxLjI0NSw5My4xMzQtMzguNWw3NS4xOTYsNTMuNzA1DQoJYzE1LjUzMSwxMS4xNTYsMzYuOTE1LDkuNDA2LDUwLjQ3OC00LjE4NWwzNy41OTctMzcuNTk3YzEzLjUzMy0xMy41MzYsMTUuMzY2LTM0Ljg5Myw0LjEyNy01MC40NzhsLTUzLjUzNi03NS4wNTkNCgljMTcuNDQyLTI4LjczOCwzMC43MDQtNjAuMjM4LDM4LjkwOS05My44MTZsODguNzU4LTE0LjgyMWMxOC45MjEtMy4xMTYsMzIuNzU2LTE5LjQ2OSwzMi43NTYtMzguNjYzdi01My4xNTYNCglDOTU5Ljk4Nyw0NjYuMjI4LDk0Ni4xNTIsNDQ5Ljg3NSw5MjcuMjI5LDQ0Ni43NTl6IE01MTMuNDA5LDY4MGMtOTIuNzY0LDAtMTY4LTc1LjI1LTE2OC0xNjhjMC05Mi43NjQsNzUuMjM2LTE2OCwxNjgtMTY4DQoJYzkyLjc0OCwwLDE2Ny45OTgsNzUuMjM2LDE2Ny45OTgsMTY4QzY4MS40MDcsNjA0Ljc1LDYwNi4xNTcsNjgwLDUxMy40MDksNjgweiIvPg0KPC9zdmc+DQo=);
+  background-size: 16px 16px; background-position: 3px 3px;
+  background-color: #FEFEFE; background-repeat: no-repeat;
+}
+
+.retrade-eventsnum-menu-item-controls > div.script:hover
+{
+  border-color: #CE1806;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9Imljb24iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTAyNHB4IiBoZWlnaHQ9IjEwMjRweCIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAyNCAxMDI0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNDRTE4MDYiIGlkPSJzZXR0aW5nc18xXyIgZD0iTTkyNy4yMjksNDQ2Ljc1OWwtODguNzU5LTE0LjgwN2MtNi40NTEtMjYuMzc0LTE1Ljg1Ny01MS41ODUtMjguMTA3LTc1LjA5OWw1Ni44MjEtNzAuNDUyDQoJYzEyLjA4NS0xNC44ODksMTEuNTM2LTM2LjMxMi0xLjIwNS01MC42ODJsLTM1LjMwMS0zOS43M2MtMTIuNzk2LTE0LjM1NS0zNC4wMTUtMTcuMzkxLTUwLjIwMi03LjE2NWwtNzUuOTA2LDQ3LjcxNg0KCWMtMzMuMzg2LTIzLjMyNi03MS4yMDQtNDAuNTUxLTExMi01MC41NDZsLTE0Ljg1LTg5LjIzNUM1NzQuNjA0LDc3Ljg2NCw1NTguMjUzLDY0LDUzOS4wNTksNjRoLTUzLjE5OA0KCWMtMTkuMTU1LDAtMzUuNTYxLDEzLjg2NC0zOC42MDksMzIuNzU5bC0xNC45Myw4OS4yNjNjLTMzLjcyOSw4LjI1OC02NS4zNTMsMjEuNTg4LTk0LjIxMywzOS4xNDRsLTcyLjE4OC01MS41MTgNCgljLTE1LjU1OC0xMS4xMTUtMzYuOTI3LTkuMzc3LTUwLjUwNCw0LjE3MWwtMzcuNTgzLDM3LjYxYy0xMy41NDgsMTMuNTc3LTE1LjI4NiwzNC45NDYtNC4xNDIsNTAuNTA0bDUxLjYzOCw3Mi4zMjYNCgljLTE3LjM5MSwyOC42NDItMzAuNTg0LDYwLjA4Ni0zOC44NDEsOTMuNTE0bC04OS43NDMsMTQuOTg2Yy0xOC44NjYsMy4xMTYtMzIuNzU3LDE5LjQ2OS0zMi43NTcsMzguNjYzdjUzLjE1Ng0KCWMwLDE5LjE5NCwxMy44OTEsMzUuNTQ3LDMyLjc1NywzOC42NjNsODkuNzQzLDE0Ljk4NmM2Ljc4MSwyNy41MDcsMTYuNjI1LDUzLjc4NCwyOS43MDksNzguMTQ3bC01Ni41NjIsNzAuMDU0DQoJYy0xMi4wNDQsMTQuODc1LTExLjUzOCwzNi4zMTIsMS4yMDMsNTAuNjY5bDM1LjI3NCwzOS43M2MxMi43OTcsMTQuMzgyLDM0LjAyOCwxNy4zNjMsNTAuMjE2LDcuMTYzbDc3LTQ4LjM3DQoJYzMyLjU4MSwyMi4yODUsNjkuNDQsMzguNjY0LDEwOC45OTMsNDguMzdsMTQuOTMsODkuMjVDNDUwLjMsOTQ2LjEzNyw0NjYuNzA2LDk2MCw0ODUuODYxLDk2MGg1My4xOTgNCgljMTkuMTk0LDAsMzUuNTQ1LTEzLjg2MywzOC42NjEtMzIuNzU5bDE0Ljg3NS04OS4yNWMzMy4zMDgtOC4xNDcsNjQuNTMxLTIxLjI0NSw5My4xMzQtMzguNWw3NS4xOTYsNTMuNzA1DQoJYzE1LjUzMSwxMS4xNTYsMzYuOTE1LDkuNDA2LDUwLjQ3OC00LjE4NWwzNy41OTctMzcuNTk3YzEzLjUzMy0xMy41MzYsMTUuMzY2LTM0Ljg5Myw0LjEyNy01MC40NzhsLTUzLjUzNi03NS4wNTkNCgljMTcuNDQyLTI4LjczOCwzMC43MDQtNjAuMjM4LDM4LjkwOS05My44MTZsODguNzU4LTE0LjgyMWMxOC45MjEtMy4xMTYsMzIuNzU2LTE5LjQ2OSwzMi43NTYtMzguNjYzdi01My4xNTYNCglDOTU5Ljk4Nyw0NjYuMjI4LDk0Ni4xNTIsNDQ5Ljg3NSw5MjcuMjI5LDQ0Ni43NTl6IE01MTMuNDA5LDY4MGMtOTIuNzY0LDAtMTY4LTc1LjI1LTE2OC0xNjhjMC05Mi43NjQsNzUuMjM2LTE2OCwxNjgtMTY4DQoJYzkyLjc0OCwwLDE2Ny45OTgsNzUuMjM2LDE2Ny45OTgsMTY4QzY4MS40MDcsNjA0Ljc1LDYwNi4xNTcsNjgwLDUxMy40MDksNjgweiIvPg0KPC9zdmc+DQo=);
+}
+
 .retrade-eventsnum-menu-item-controls > div.N
 {
-  left: 4px; top: 3px;
+  right: 140px;
 }
 
 .retrade-eventsnum-menu-item-controls > div.G
 {
-  left: 44px; top: -20px;
+  right: 110px;
 }
 
 .retrade-eventsnum-menu-item-controls > div.O
 {
-  left: 74px; top: -43px;
+  right: 80px;
 }
 
 .retrade-eventsnum-menu-item-controls > div.R
 {
-  left: 104px; top: -66px;
+  right: 50px;
 }
 
 .retrade-eventsnum-menu-item-controls > div.delete
 {
-  left: 144px; top: -91px; width: 22px; height: 22px; border-color: #7c838f;
+  right: 4px; top: 1px; width: 22px; height: 22px; border-color: #7c838f;
 }
 
 .retrade-eventsnum-menu-item-controls > div.delete:hover
@@ -478,6 +503,7 @@
   <div class='retrade-eventsnum-menu-corner-rb'></div>
   <div class='retrade-eventsnum-menu-corner-bh'></div>
   <div class='retrade-eventsnum-menu-item-controls' style='display:none'>
+    <div class='script enabled' title='Выполнить действие для сообщения'>@IA</div>
     <div class='N enabled' title='Отметить сообщение как неактивное'>@IN</div>
     <div class='G enabled' title='Отметить сообщение как успех'>@IG</div>
     <div class='O enabled' title='Отметить сообщение как важное'>@IO</div>
@@ -581,10 +607,10 @@ $(document).click(function(e)
 
 em.set({ numbers: { N: 7, G: 3, O: 1, R: 1}, length: 7, items: [
 
- { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.' },
+ { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.', script: "ZeT.log('script run 1+1 = ', 1+1)"},
  { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
  { id: 95, time: '11:20', date: 'сегодня 04 Фев', color: 'G', text: 'Накладная перемещения №100/ПЕ успешно проведена!' },
- { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система запущена!' },
+ { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система запущена!', script: "ZeT.log('script run 2+4 = ', 2+4)" },
  { id: 87, time: '22:13', date: 'вчера 03 Фев', color: 'R', text: 'Производится остановка системы!' },
  { id: 81, time: '10:15', date: 'вчера 03 Фев', color: 'G', text: 'Добавлен пользователь [ivanov] Иванов Иван Иванович.' },
  { id: 71, time: '12:34', date: '02 Фев', color: 'G', text: 'Добавлен пользователь [navalniy] Навальный Алексей Александрович. Голосуем за Навального! Кому он не нравится: спи, красавица! Крепким вечным сном...' }
@@ -593,6 +619,13 @@ em.set({ numbers: { N: 7, G: 3, O: 1, R: 1}, length: 7, items: [
 
 em.react(function(e)
 {
+  if(e.type == 'item-action')
+  {
+    ZeT.log('Item action: ', e.item.id, ' --> ')
+    if(!ZeTS.ises(e.item.script))
+      ZeT.xeval(e.item.script)
+  }
+
   if(e.type == 'item-delete')
   {
     ZeT.log('Delete item: ', e.item.id)
