@@ -1861,11 +1861,27 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 	{
 		var res = []
 
-		for(i = 0;(i < this.items.length);i++)
+		for(var i = 0;(i < this.items.length);i++)
 			if(!this.items[i].model) return res
 			else res.push(this.items[i].model)
 
 		return res
+	},
+
+	first           : function()
+	{
+		for(var i = 0;(i < this.items.length);i++)
+			if(this.items[i].model)
+				return this.items[i].model
+		return undefined
+	},
+
+	last            : function()
+	{
+		for(var i = this.items.length - 1;(i >= 0);i--)
+			if(this.items[i].model)
+				return this.items[i].model
+		return undefined
 	},
 
 	COLORS          : ['N', 'G', 'O', 'R'],
@@ -1927,6 +1943,10 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 				$(this.items[i].node).hide()
 				delete this.items[i].model
 			}
+
+		//?: {has item clicked}
+		if(this.clicked)
+			this._item_ctl(this.clicked, true)
 	},
 
 	_set_item       : function(i)
@@ -1969,9 +1989,33 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 		//~: disable previous-next buttons
 		ZeTD.classes(this._tx().walk('LT', this.struct.node()),
-		  ZeT.i$xfalse(this, 'model', 'newer')?('+disabled'):('-disabled'))
+		  (this._newer())?('-disabled'):('+disabled'))
 		ZeTD.classes(this._tx().walk('RT', this.struct.node()),
-		  ZeT.i$xfalse(this, 'model', 'older')?('+disabled'):('-disabled'))
+		  (this._older())?('-disabled'):('+disabled'))
+	},
+
+	_newer          : function()
+	{
+		if(!this.model) return undefined
+		if(!ZeT.i$x(this.model.newer)) return true
+
+		var f = this.first(); if(!f) return undefined
+		var i = this.model.items.indexOf(f)
+
+		ZeT.assert(i >= 0)
+		return (i != 0)
+	},
+
+	_older          : function()
+	{
+		if(!this.model) return undefined
+		if(!ZeT.i$x(this.model.older)) return true
+
+		var f = this.last(); if(!f) return undefined
+		var i = this.model.items.indexOf(f)
+
+		ZeT.assert(i >= 0)
+		return (i < this.model.items.length - 1)
 	},
 
 	_react          : function(type, event)
@@ -2061,10 +2105,10 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 	_page_click     : function(next)
 	{
-		if(!next && !ZeT.i$xfalse(this, 'model', 'newer'))
+		if(!next && this._newer())
 			this._react('page', { newer: true })
 
-		if(next && !ZeT.i$xfalse(this, 'model', 'older'))
+		if(next  && this._older())
 			this._react('page', { older: true })
 	},
 
@@ -2152,7 +2196,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 	},
 
 	_ts             : ""+
-		"<div>"+
+		"<div class='retrade-eventsnum-menu-area'>"+
 		"  <div class='retrade-eventsnum-menu-corner-rt'></div>"+
 		"  <div class='retrade-eventsnum-menu-corner-lt'></div>"+
 		"  <div class='retrade-eventsnum-menu-corner-lb'></div>"+
@@ -2200,4 +2244,139 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"      <span><span>@T</span><span>@D</span></span>"+
 		"      <span>@M</span></div>"+
 		"</div></td></tr></table>"
+})
+
+
+// +----: ReTrade Events Control :-------------------------------+
+
+ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
+{
+	init            : function(opts)
+	{
+		ZeT.assertn(this.opts = opts)
+		ZeT.assertn(this.opts.number, 'No options for Events Clocks!')
+		ZeT.assertn(this.opts.menu, 'No options for Events Menu!')
+
+		//~: create the number
+		this.number = new ReTrade.EventsNumber(this.opts.number)
+
+		//~: create the menu
+		this.menu = new ReTrade.EventsMenu(this.opts.menu)
+
+		//~: init the controls
+		this._init_ctl()
+
+		//~: set the interval timer
+
+	},
+
+	toggle          : function(show)
+	{
+		this._menu_toggle(show)
+		return this
+	},
+
+	set             : function(model)
+	{
+		this.menu.set(model)
+		return this
+	},
+
+	_init_ctl       : function()
+	{
+		//~: on document click
+		$(document).click(ZeT.fbind(this._doc_click, this))
+
+		//~: on number area click
+		$(this.number.struct.node()).
+		  click(ZeT.fbind(this._num_click, this))
+
+		//~: react on menu events
+		this.menu.react(ZeT.fbind(this._react, this))
+	},
+
+	_num_click      : function(e)
+	{
+		this._menu_toggle(!$(this.menu.struct.node()).is(':visible'))
+		e.stopPropagation()
+	},
+
+	_menu_toggle    : function(show)
+	{
+		var m = $(this.menu.struct.node())
+
+		if(!show) m.hide(); else
+		{
+			this.menu.reset()
+
+			var n = $(this.number.struct.node())
+			m.show().offset({
+			  top : n.offset().top + n.outerHeight() + 10,
+			  left: n.offset().left + n.outerWidth() - m.outerWidth()
+			})
+		}
+	},
+
+	_doc_click      : function(e)
+	{
+		var m = $(this.menu.struct.node())
+
+		//?: {got out of the menu}
+		if(m.is(':visible') && !ZeTD.inx(m, e))
+			m.hide()
+	},
+
+	_interval       : function()
+	{
+
+	},
+
+	_react          : function(e)
+	{
+		if(e.type == 'item-action')
+		{
+			ZeT.log('Item action: ', e.item.id, ' --> ')
+			if(!ZeTS.ises(e.item.script))
+				ZeT.xeval(e.item.script)
+		}
+
+		if(e.type == 'item-delete')
+		{
+			ZeT.log('Delete item: ', e.item.id)
+		}
+
+		if(e.type == 'page-delete')
+		{
+			ZeT.log('Delete page, items: ', ZeT.collect(e.that.page(), 'id'))
+		}
+
+		if(e.type == 'item-color')
+		{
+			ZeT.log('Color item: ', e.item.id, ' as ', e.color)
+
+			e.item.color = e.color
+			e.that.update()
+		}
+
+		if(e.type == 'page-color')
+		{
+			ZeT.log('Color page as ', e.color)
+
+			ZeT.each(e.that.page(), function(i){ i.color = e.color })
+			e.that.update()
+		}
+
+		if(e.type == 'filter')
+		{
+			ZeT.log('Filter by ', e.color)
+
+			e.that.model.filter = e.color
+			e.that.update()
+		}
+
+		if(e.type == 'page')
+		{
+			ZeT.log('Shift page to: ', (e.newer)?('newer'):(e.older)?('older'):('?'))
+		}
+	}
 })

@@ -8,9 +8,9 @@
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,12 +39,14 @@
       <file leaf-file-name="desktop.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7234042" vertical-offset="9095" max-vertical-offset="11712">
-              <caret line="1965" column="75" selection-start-line="1965" selection-start-column="75" selection-end-line="1965" selection-end-column="75" />
+            <state vertical-scroll-proportion="0.7463175" vertical-offset="10781" max-vertical-offset="13089">
+              <caret line="2251" column="21" selection-start-line="2251" selection-start-column="8" selection-end-line="2251" selection-end-column="21" />
               <folding>
-                <element signature="e#41546#41743#0" expanded="true" />
-                <marker date="1423215587000" expanded="true" signature="49577:49589" placeholder="..." />
-                <marker date="1423215587000" expanded="true" signature="51062:51074" placeholder="..." />
+                <element signature="e#44467#45056#0" expanded="true" />
+                <element signature="e#47590#47733#0" expanded="true" />
+                <element signature="e#54359#55223#0" expanded="true" />
+                <marker date="1423225922000" expanded="true" signature="50451:50463" placeholder="..." />
+                <marker date="1423225922000" expanded="true" signature="51936:51948" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -69,13 +71,13 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/client-topbar.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.view-modes/page.xhtml" />
         <option value="$PROJECT_DIR$/retrade/build.xml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/clocks.html" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
       </list>
     </option>
@@ -485,6 +487,7 @@
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3192436" sideWeight="0.49950346" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035595" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035595" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -507,7 +510,6 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24397591" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035595" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
@@ -532,7 +534,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="special-00 [stable]: win some time with proper pre-execution indexing and using Master role flag." />
     <MESSAGE value="special-00 [beta]: tuned Queue access for Support thread that does nothing." />
     <MESSAGE value="special-00 [beta]: removed Database synchronized sections, but still got not that performance." />
     <MESSAGE value="special-00 [beta]: moved implementation to a new place." />
@@ -557,7 +558,8 @@
     <MESSAGE value="ui-61 [alpha]: building Events Menu items from the model." />
     <MESSAGE value="ui-61 [alpha]: bound Events Menu items control and the reactions." />
     <MESSAGE value="ui-61 [alpha]: added support for scripted items in Events Menu." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [alpha]: added support for scripted items in Events Menu." />
+    <MESSAGE value="ui-61 [alpha]: added previous-next reactions. Going to EventsControl component..." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [alpha]: added previous-next reactions. Going to EventsControl component..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -629,14 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28730512" vertical-offset="4315" max-vertical-offset="5777">
-          <caret line="269" column="29" selection-start-line="268" selection-start-column="2" selection-end-line="269" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/clocks.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19495413" vertical-offset="884" max-vertical-offset="2844">
@@ -696,14 +690,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3596882" vertical-offset="6341" max-vertical-offset="10214">
-          <caret line="850" column="3" selection-start-line="392" selection-start-column="3" selection-end-line="392" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.10244989" vertical-offset="2370" max-vertical-offset="19819">
@@ -712,22 +698,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4080" max-vertical-offset="9925">
+          <caret line="528" column="18" selection-start-line="240" selection-start-column="5" selection-end-line="240" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.85523385" vertical-offset="11557" max-vertical-offset="13206">
+          <caret line="725" column="1" selection-start-line="725" selection-start-column="1" selection-end-line="725" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8509895" vertical-offset="10149" max-vertical-offset="11943">
-          <caret line="669" column="19" selection-start-line="640" selection-start-column="19" selection-end-line="640" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.4691502" vertical-offset="2079" max-vertical-offset="3596">
+          <caret line="146" column="13" selection-start-line="146" selection-start-column="13" selection-end-line="146" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7234042" vertical-offset="9095" max-vertical-offset="11712">
-          <caret line="1965" column="75" selection-start-line="1965" selection-start-column="75" selection-end-line="1965" selection-end-column="75" />
+        <state vertical-scroll-proportion="0.7463175" vertical-offset="10781" max-vertical-offset="13089">
+          <caret line="2251" column="21" selection-start-line="2251" selection-start-column="8" selection-end-line="2251" selection-end-column="21" />
           <folding>
-            <element signature="e#41546#41743#0" expanded="true" />
-            <marker date="1423215587000" expanded="true" signature="49577:49589" placeholder="..." />
-            <marker date="1423215587000" expanded="true" signature="51062:51074" placeholder="..." />
+            <element signature="e#44467#45056#0" expanded="true" />
+            <element signature="e#47590#47733#0" expanded="true" />
+            <element signature="e#54359#55223#0" expanded="true" />
+            <marker date="1423225922000" expanded="true" signature="50451:50463" placeholder="..." />
+            <marker date="1423225922000" expanded="true" signature="51936:51948" placeholder="..." />
           </folding>
         </state>
       </provider>
