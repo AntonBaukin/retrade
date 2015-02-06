@@ -1813,6 +1813,9 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		//~: add the items
 		this._add_items()
 
+		//~: init filter controls
+		this._fctl_init()
+
 		//~: init item controls
 		this._ictl_init()
 	},
@@ -1826,13 +1829,24 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 	set             : function(model)
 	{
-		this.model = model || {}
+		this.model = ZeT.assertn(model)
+		return this.update()
+	},
+
+	update          : function()
+	{
+		ZeT.assertn(this.model)
 
 		//~: update the numbers from the model
 		this._numbers()
 
 		//~: fill with the items
 		this._set_items()
+
+		//~: set the filter
+		this._set_filter()
+
+		return this
 	},
 
 	reset           : function()
@@ -1941,6 +1955,25 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		ZeTD.classes(x.node, '+'+m.color)
 	},
 
+	_set_filter     : function()
+	{
+		if(!this.model.filter) this.model.filter = 'N'
+		ZeT.assert(this.COLORS.indexOf(this.model.filter) >= 0)
+
+		//~: select the filtering node
+		var self = this; ZeT.each(this.COLORS, function(c)
+		{
+			ZeTD.classes(self._tx().walk('F'+c, self.struct.node()).parentNode,
+			  (c == self.model.filter)?('+selected'):('-selected'))
+		})
+
+		//~: disable previous-next buttons
+		ZeTD.classes(this._tx().walk('LT', this.struct.node()),
+		  ZeT.i$xfalse(this, 'model', 'newer')?('+disabled'):('-disabled'))
+		ZeTD.classes(this._tx().walk('RT', this.struct.node()),
+		  ZeT.i$xfalse(this, 'model', 'older')?('+disabled'):('-disabled'))
+	},
+
 	_react          : function(type, event)
 	{
 		ZeT.asserts(type); ZeT.assertn(event)
@@ -1950,48 +1983,6 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		if(ZeT.isf(this.reactor))
 			this.reactor(event)
 	},
-
-	_ts             : ""+
-		"<div>"+
-		"  <div class='retrade-eventsnum-menu-corner-rt'></div>"+
-		"  <div class='retrade-eventsnum-menu-corner-lt'></div>"+
-		"  <div class='retrade-eventsnum-menu-corner-lb'></div>"+
-		"  <div class='retrade-eventsnum-menu-corner-rb'></div>"+
-		"  <div class='retrade-eventsnum-menu-corner-bh'></div>"+
-		"  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>@IC"+
-		"    <div class='script enabled' title='Выполнить действие для сообщения'>@IA</div>"+
-		"    <div class='N enabled' title='Отметить сообщение как неактивное'>@IN</div>"+
-		"    <div class='G enabled' title='Отметить сообщение как успех'>@IG</div>"+
-		"    <div class='O enabled' title='Отметить сообщение как важное'>@IO</div>"+
-		"    <div class='R enabled' title='Отметить сообщение как срочное'>@IR</div>"+
-		"    <div class='delete enabled' title='Отметить сообщение как успех'>@ID</div>"+
-		"  </div>"+
-		"  <table cellpadding='0' cellspacing='0' border='0' class='retrade-eventsnum-menu'>"+
-		"    <tbody><!--@EV-->"+
-		"      <tr>"+
-		"        <td>"+
-		"          <div class='retrade-eventsnum-controls'>"+
-		"            <div class='left' title='Следующие сообщения'>@LT</div>"+
-		"            <div class='right' title='Предыдущие сообщения'>@RT</div>"+
-		"            <div class='numbers'>@NU"+
-		"              <table cellspacing='0' cellpadding='0' border='0'><tr>"+
-		"                <td class='N selected'><div title='Отображать все сообщения'>@FN</div></td>"+
-		"                <td class='G'><div title='Отображать сообщения об успехе'>@FG</div></td>"+
-		"                <td class='O'><div title='Отображать важные и срочные сообщения'>@FO</div></td>"+
-		"                <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>"+
-		"              </tr></table>"+
-		"            </div>"+
-		"            <div class='allitems' style='display:none'>@AL"+
-		"              <div class='descr'>Для всей<br/>страницы</div>"+
-		"              <div class='gray' title='Отметить все собщения на странице как неактивные'>@AN</div>"+
-		"              <div class='delete' title='Удалить все собщения на странице'>@AD</div>"+
-		"            </div>"+
-		"          </div>"+
-		"        </td>"+
-		"      </tr>"+
-		"    </tbody>"+
-		"  </table>"+
-		"</div>",
 
 	_add_items      : function()
 	{
@@ -2044,6 +2035,37 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 			ZeTD.classes(this.clicked.node, '-clicked')
 			this.clicked = null
 		}
+	},
+
+	_fctl_init      : function()
+	{
+		//~: assign filter listeners
+		var self = this; ZeT.each(this.COLORS, function(c)
+		{
+			$(self._tx().walk('F'+c, self.struct.node())).
+			  click(ZeT.fbind(self._fctl_click, self, c))
+		})
+
+		//~: assign prev and next page listeners
+		$(this._tx().walk('LT', this.struct.node())).
+		  click(ZeT.fbind(this._page_click, this, false))
+		$(this._tx().walk('RT', this.struct.node())).
+		  click(ZeT.fbind(this._page_click, this, true))
+	},
+
+	_fctl_click     : function(color)
+	{
+		if(this.model && (this.model.filter != color))
+			this._react('filter', { 'color': color })
+	},
+
+	_page_click     : function(next)
+	{
+		if(!next && !ZeT.i$xfalse(this, 'model', 'newer'))
+			this._react('page', { newer: true })
+
+		if(next && !ZeT.i$xfalse(this, 'model', 'older'))
+			this._react('page', { older: true })
 	},
 
 	_item_ctl       : function(i, ison)
@@ -2128,6 +2150,48 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		return this.$class.static.itemplate = new ZeT.Layout.Template(
 		  {trace : ZeT.Layout.Template.Ways.traceAtNodes, downtag: 'tr'}, this._tis)
 	},
+
+	_ts             : ""+
+		"<div>"+
+		"  <div class='retrade-eventsnum-menu-corner-rt'></div>"+
+		"  <div class='retrade-eventsnum-menu-corner-lt'></div>"+
+		"  <div class='retrade-eventsnum-menu-corner-lb'></div>"+
+		"  <div class='retrade-eventsnum-menu-corner-rb'></div>"+
+		"  <div class='retrade-eventsnum-menu-corner-bh'></div>"+
+		"  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>@IC"+
+		"    <div class='script enabled' title='Выполнить действие для сообщения'>@IA</div>"+
+		"    <div class='N enabled' title='Отметить сообщение как неактивное'>@IN</div>"+
+		"    <div class='G enabled' title='Отметить сообщение как успех'>@IG</div>"+
+		"    <div class='O enabled' title='Отметить сообщение как важное'>@IO</div>"+
+		"    <div class='R enabled' title='Отметить сообщение как срочное'>@IR</div>"+
+		"    <div class='delete enabled' title='Отметить сообщение как успех'>@ID</div>"+
+		"  </div>"+
+		"  <table cellpadding='0' cellspacing='0' border='0' class='retrade-eventsnum-menu'>"+
+		"    <tbody><!--@EV-->"+
+		"      <tr>"+
+		"        <td>"+
+		"          <div class='retrade-eventsnum-controls'>"+
+		"            <div class='left' title='Следующие сообщения'>@LT</div>"+
+		"            <div class='right' title='Предыдущие сообщения'>@RT</div>"+
+		"            <div class='numbers'>@NU"+
+		"              <table cellspacing='0' cellpadding='0' border='0'><tr>"+
+		"                <td class='N selected'><div title='Отображать все сообщения'>@FN</div></td>"+
+		"                <td class='G'><div title='Отображать сообщения об успехе'>@FG</div></td>"+
+		"                <td class='O'><div title='Отображать важные и срочные сообщения'>@FO</div></td>"+
+		"                <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>"+
+		"              </tr></table>"+
+		"            </div>"+
+		"            <div class='allitems' style='display:none'>@AL"+
+		"              <div class='descr'>Для всей<br/>страницы</div>"+
+		"              <div class='gray' title='Отметить все собщения на странице как неактивные'>@AN</div>"+
+		"              <div class='delete' title='Удалить все собщения на странице'>@AD</div>"+
+		"            </div>"+
+		"          </div>"+
+		"        </td>"+
+		"      </tr>"+
+		"    </tbody>"+
+		"  </table>"+
+		"</div>",
 
 	_tis            : ""+
 		"<table><tr class='retrade-eventsnum-menu-item'>"+

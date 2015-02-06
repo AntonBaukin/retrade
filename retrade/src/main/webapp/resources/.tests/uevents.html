@@ -254,7 +254,8 @@
   position: relative; cursor: pointer;
 }
 
-.retrade-eventsnum-controls > div.left
+.retrade-eventsnum-controls > div.left,
+  .retrade-eventsnum-controls > div.left.disabled:hover
 {
   width: 36px; height: 22px;
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMjU2cHgiIGhlaWdodD0iMjU2cHgiIHZpZXdCb3g9IjAgMCAyNTYgMjU2IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNTYgMjU2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwb2x5Z29uIHBvaW50cz0iMjIzLjU2LDExMy4zOTQgOTguODk4LDExMy4zOTQgMTUyLjE0Myw2MC4xNSAxMjMuODU3LDMxLjg2NSAyNC4xNTYsMTMxLjU2NyAxMjMuODU3LDIzMS4yNyAxNTIuMTQzLDIwMi45ODQgDQoJOTguODk4LDE0OS43NDEgMjIzLjU2LDE0OS43NDEgIiBzdHlsZT0iZmlsbDojN0M4MzhGOyIvPg0KPC9zdmc+DQo=);
@@ -268,13 +269,22 @@
   background-color: #7c838f;
 }
 
-.retrade-eventsnum-controls > div.right
+.retrade-eventsnum-controls > div.right,
+  .retrade-eventsnum-controls > div.right.disabled:hover
 {
   position: absolute; top: 22px; right: 10px;
   width: 36px; height: 22px;
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMjU2cHgiIGhlaWdodD0iMjU2cHgiIHZpZXdCb3g9IjAgMCAyNTYgMjU2IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNTYgMjU2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwb2x5Z29uIHBvaW50cz0iMjIzLjU2LDExMy4zOTQgOTguODk4LDExMy4zOTQgMTUyLjE0Myw2MC4xNSAxMjMuODU3LDMxLjg2NSAyNC4xNTYsMTMxLjU2NyAxMjMuODU3LDIzMS4yNyAxNTIuMTQzLDIwMi45ODQgDQoJOTguODk4LDE0OS43NDEgMjIzLjU2LDE0OS43NDEgIiBzdHlsZT0iZmlsbDojN0M4MzhGOyIgdHJhbnNmb3JtPSJyb3RhdGUoMTgwLCAxMjgsIDEyOCkiLz4NCjwvc3ZnPg0K);
   background-size: 16px 16px; background-position: 10px 3px;
   background-color: #FEFEFE; background-repeat: no-repeat;
+}
+
+.retrade-eventsnum-controls > div.left.disabled,
+  .retrade-eventsnum-controls > div.left.disabled:hover,
+  .retrade-eventsnum-controls > div.right.disabled,
+  .retrade-eventsnum-controls > div.right.disabled:hover
+{
+  cursor: default; background-color: #9ea7b7; opacity: 0.25;
 }
 
 .retrade-eventsnum-controls > div.right:hover
@@ -605,7 +615,7 @@ $(document).click(function(e)
     m.hide()
 })
 
-em.set({ numbers: { N: 7, G: 3, O: 1, R: 1}, length: 7, items: [
+em.set({ numbers: { N: 7, G: 3, O: 1, R: 1}, length: 7, newer: false, older: true, items: [
 
  { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.', script: "ZeT.log('script run 1+1 = ', 1+1)"},
  { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
@@ -639,11 +649,30 @@ em.react(function(e)
   if(e.type == 'item-color')
   {
     ZeT.log('Color item: ', e.item.id, ' as ', e.color)
+
+    e.item.color = e.color
+    e.that.update()
   }
 
   if(e.type == 'page-color')
   {
     ZeT.log('Color page as ', e.color)
+
+    ZeT.each(e.that.page(), function(i){ i.color = e.color })
+    e.that.update()
+  }
+
+  if(e.type == 'filter')
+  {
+    ZeT.log('Filter by ', e.color)
+
+    e.that.model.filter = e.color
+    e.that.update()
+  }
+
+  if(e.type == 'page')
+  {
+    ZeT.log('Shift page to: ', (e.newer)?('newer'):(e.older)?('older'):('?'))
   }
 })
 

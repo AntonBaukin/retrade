@@ -203,11 +203,11 @@ var ZeTD = ZeT.define('ZeTD',
 		if(ZeT.iss(node)) node = ZeTD.n(node)
 		if(!ZeTD.isn(node)) return node
 
-		if(ZeT.iss(classes))  classes = [classes];
-		if(!ZeT.isa(classes)) return node;
+		if(ZeT.iss(classes))  classes = [classes]
+		if(!ZeT.isa(classes)) return node
 
-		var c, n = [], m = [], p = [];
-		var x = node.className || '';
+		var c, n = [], m = [], p = []
+		var x = ZeTD.attr(node, 'class') || ''
 
 		//~: separate the class names
 		for(var i = 0;(i < classes.length);i++)
@@ -215,24 +215,30 @@ var ZeTD = ZeT.define('ZeTD',
 				m.push(c.substring(1))
 			else if(ZeTS.first(c) == '+')
 				p.push(c.substring(1))
-			else n.push(c)
+			else if(!ZeTS.ises(c))
+				n.push(c)
 
-		if(n.length) x = n.join(' ');
+		if(n.length) x = n.join(' ')
 
 		//~: do remove
-		var r = x.split(/\s+/);
+		var r = x.split(/\s+/)
 		for(i = 0;(i < m.length);i++)
 		{
-			var k = r.indexOf(m[i]);
-			if(k != -1) r[k] = '';
+			var k = r.indexOf(m[i])
+			if(k != -1) r[k] = ''
+		}
+		for(i = 0;(i < p.length);i++)
+		{
+			var k = r.indexOf(p[i])
+			if(k != -1) r[k] = ''
 		}
 
 		//~: do add
-		x = r.join(' ');
-		if(p.length) x = x.concat((x.length?(' '):('')) + p.join(' '));
+		x = r.join(' ')
+		if(p.length) x = x.concat((x.length?(' '):('')) + p.join(' '))
 
-		node.className = x;
-		return node;
+			ZeTD.attr(node, 'class', ZeTS.ises(x)?(null):(x))
+		return node
 	},
 
 	hasclass          : function(node, c1ass)
@@ -279,7 +285,11 @@ var ZeTD = ZeT.define('ZeTD',
 		ZeT.assert(ZeTD.isn(node))
 		ZeT.asserts(name)
 
-		if(ZeT.i$x(value)) node.removeAttribute(name); else
+		if(ZeT.isu(value))
+			return node.getAttribute(name)
+		else if(value === null)
+			node.removeAttribute(name)
+		else
 		{
 			if(ZeT.isn(value)) value = '' + value
 			ZeT.assert(ZeT.iss(value), 'DOM Node attribute [', name,
@@ -287,6 +297,8 @@ var ZeTD = ZeT.define('ZeTD',
 
 			node.setAttribute(name, value)
 		}
+
+		return node
 	},
 
 
