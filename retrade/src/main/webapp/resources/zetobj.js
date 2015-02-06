@@ -693,6 +693,22 @@ var ZeT = window.ZeT = window.ZeT || {
 		return r
 	},
 
+	get              : function(/* object, properties list */)
+	{
+		var o = arguments[0]
+
+		for(var i = 1;(i < arguments.length);i++)
+		{
+			var k = ZeT.assertn(arguments[i],
+			  'ZeT.get() key at [', i, '] is undefined!')
+
+			if(ZeT.isu(o = o[k]) || (o === null))
+				return undefined
+		}
+
+		return o
+	},
+
 	/**
 	 * First argument of assertion is an expression
 	 * evaluated as extended if-check. The following

@@ -319,7 +319,7 @@ var ZeTD = ZeT.define('ZeTD',
 
 // +----: ZeTD + jQuery :----------------------------------------+
 
-if(jQuery) ZeT.extend(ZeTD,
+if(window.jQuery) ZeT.extend(ZeTD,
 {
 
 // +----: Dimensions :---->

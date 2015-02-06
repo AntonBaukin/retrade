@@ -1754,7 +1754,7 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 
 	color    : function(c)
 	{
-		if(ZeTS.ises(c)) c = 'default'
+		if(ZeTS.ises(c)) c = this.opts.defcolor
 
 		if(this._current_color)
 		{
@@ -1762,10 +1762,10 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 			this._current_color = null
 		}
 
-		if(!ZeT.i$x(this.opts, 'colors', c))
+		if(!ZeTS.ises(c))
 		{
-			this._current_color = this.opts.colors[c]
-			ZeTD.classes(this.struct.node(), '+' + this._current_color)
+			this._current_color = c
+			ZeTD.classes(this.struct.node(), ['+retrade-eventsnum', '+' + c])
 		}
 
 		return this
@@ -2267,7 +2267,9 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 		this._init_ctl()
 
 		//~: set the interval timer
-
+		this.interval = { i: 0 }
+		this._interval() //<-- also, invoke it now
+		setInterval(ZeT.fbind(this._interval, this), 1000)
 	},
 
 	toggle          : function(show)
@@ -2328,55 +2330,100 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 	_interval       : function()
 	{
+		//?: {even tick} shift the number (each 2 secs)
+		if(this.interval.i%2 == 0)
+			this._shift_number()
 
+		this.interval.i++
+	},
+
+	_shift_number   : function()
+	{
+		var c = this.interval.color
+		if(!c) c = this.number.opts.defcolor
+		if(!c) c = this.menu.COLORS[0]
+
+		var i = this.menu.COLORS.indexOf(c)
+		ZeT.assert(i >= 0)
+
+		var x; for(var j = 1;!x && (j < this.menu.COLORS.length);j++)
+		{
+			if(++i >= this.menu.COLORS.length) i = 0
+			var n = ZeT.get(this.menu, 'model', 'numbers', this.menu.COLORS[i])
+
+			if(ZeT.isi(n) && (n > 0))
+				x = { color: this.menu.COLORS[i], number: n }
+		}
+
+		if(!x) this.number.color(c); else
+		{
+			this.number.set(x.number, x.color)
+			this.interval.color = x.color
+		}
 	},
 
 	_react          : function(e)
 	{
 		if(e.type == 'item-action')
-		{
-			ZeT.log('Item action: ', e.item.id, ' --> ')
-			if(!ZeTS.ises(e.item.script))
-				ZeT.xeval(e.item.script)
-		}
+			this._do_action(e)
+		else if(e.type == 'item-delete')
+			this._do_item_delete(e)
+		else if(e.type == 'page-delete')
+			this._do_page_delete(e)
+		else if(e.type == 'item-color')
+			this._do_item_color(e)
+		else if(e.type == 'page-color')
+			this._do_page_color(e)
+		else if(e.type == 'filter')
+			this._do_filter(e)
+		else if(e.type == 'page')
+			this._do_page(e)
+	},
 
-		if(e.type == 'item-delete')
-		{
-			ZeT.log('Delete item: ', e.item.id)
-		}
+	_do_action      : function(e)
+	{
+		ZeT.log('Item action: ', e.item.id, ' --> ')
 
-		if(e.type == 'page-delete')
-		{
-			ZeT.log('Delete page, items: ', ZeT.collect(e.that.page(), 'id'))
-		}
+		if(!ZeTS.ises(e.item.script))
+			ZeT.xeval(e.item.script)
+	},
 
-		if(e.type == 'item-color')
-		{
-			ZeT.log('Color item: ', e.item.id, ' as ', e.color)
+	_do_item_delete : function(e)
+	{
+		ZeT.log('Delete item: ', e.item.id)
+	},
 
-			e.item.color = e.color
-			e.that.update()
-		}
+	_do_page_delete : function(e)
+	{
+		ZeT.log('Delete page, items: ', ZeT.collect(e.that.page(), 'id'))
+	},
 
-		if(e.type == 'page-color')
-		{
-			ZeT.log('Color page as ', e.color)
+	_do_item_color  : function(e)
+	{
+		ZeT.log('Color item: ', e.item.id, ' as ', e.color)
 
-			ZeT.each(e.that.page(), function(i){ i.color = e.color })
-			e.that.update()
-		}
+		e.item.color = e.color
+		e.that.update()
+	},
 
-		if(e.type == 'filter')
-		{
-			ZeT.log('Filter by ', e.color)
+	_do_page_color  : function(e)
+	{
+		ZeT.log('Color page as ', e.color)
 
-			e.that.model.filter = e.color
-			e.that.update()
-		}
+		ZeT.each(e.that.page(), function(i){ i.color = e.color })
+		e.that.update()
+	},
 
-		if(e.type == 'page')
-		{
-			ZeT.log('Shift page to: ', (e.newer)?('newer'):(e.older)?('older'):('?'))
-		}
+	_do_filter      : function(e)
+	{
+		ZeT.log('Filter by ', e.color)
+
+		e.that.model.filter = e.color
+		e.that.update()
+	},
+
+	_do_page        : function(e)
+	{
+		ZeT.log('Shift page to: ', (e.newer)?('newer'):(e.older)?('older'):('?'))
 	}
 })

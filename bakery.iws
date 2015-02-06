@@ -9,8 +9,11 @@
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/clocks.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/clocks.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,14 +42,11 @@
       <file leaf-file-name="desktop.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7463175" vertical-offset="10781" max-vertical-offset="13089">
-              <caret line="2251" column="21" selection-start-line="2251" selection-start-column="8" selection-end-line="2251" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.91816694" vertical-offset="11016" max-vertical-offset="12766">
+              <caret line="2352" column="0" selection-start-line="2352" selection-start-column="0" selection-end-line="2352" selection-end-column="0" />
               <folding>
-                <element signature="e#44467#45056#0" expanded="true" />
-                <element signature="e#47590#47733#0" expanded="true" />
-                <element signature="e#54359#55223#0" expanded="true" />
-                <marker date="1423225922000" expanded="true" signature="50451:50463" placeholder="..." />
-                <marker date="1423225922000" expanded="true" signature="51936:51948" placeholder="..." />
+                <marker date="1423230142000" expanded="true" signature="50429:50441" placeholder="..." />
+                <marker date="1423230142000" expanded="true" signature="51914:51926" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -71,12 +71,12 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/client-topbar.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.view-modes/page.xhtml" />
         <option value="$PROJECT_DIR$/retrade/build.xml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/clocks.html" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/clocks.html" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
       </list>
@@ -534,7 +534,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="special-00 [beta]: tuned Queue access for Support thread that does nothing." />
     <MESSAGE value="special-00 [beta]: removed Database synchronized sections, but still got not that performance." />
     <MESSAGE value="special-00 [beta]: moved implementation to a new place." />
     <MESSAGE value="domain-46 [alpha]: just implemented saving Price Change Documents of the dedicated type for Firms associated Price Lists change." />
@@ -559,7 +558,8 @@
     <MESSAGE value="ui-61 [alpha]: bound Events Menu items control and the reactions." />
     <MESSAGE value="ui-61 [alpha]: added support for scripted items in Events Menu." />
     <MESSAGE value="ui-61 [alpha]: added previous-next reactions. Going to EventsControl component..." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [alpha]: added previous-next reactions. Going to EventsControl component..." />
+    <MESSAGE value="ui-61 [alpha]: introduced Events Control component, going to data proxying..." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [alpha]: introduced Events Control component, going to data proxying..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -631,13 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/clocks.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19495413" vertical-offset="884" max-vertical-offset="2844">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/borders.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.30289534" vertical-offset="5916" max-vertical-offset="12016">
@@ -692,46 +685,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.10244989" vertical-offset="2370" max-vertical-offset="19819">
-          <caret line="232" column="9" selection-start-line="134" selection-start-column="9" selection-end-line="134" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4080" max-vertical-offset="9925">
-          <caret line="528" column="18" selection-start-line="240" selection-start-column="5" selection-end-line="240" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.34075725" vertical-offset="17646" max-vertical-offset="18833">
+          <caret line="2226" column="10" selection-start-line="1056" selection-start-column="2" selection-end-line="1056" selection-end-column="2" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.85523385" vertical-offset="11557" max-vertical-offset="13206">
-          <caret line="725" column="1" selection-start-line="725" selection-start-column="1" selection-end-line="725" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.20824054" vertical-offset="4641" max-vertical-offset="13206">
+          <caret line="284" column="24" selection-start-line="284" selection-start-column="24" selection-end-line="284" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/clocks.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.58830273" vertical-offset="1374" max-vertical-offset="2861">
+          <caret line="111" column="8" selection-start-line="111" selection-start-column="8" selection-end-line="111" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.6469933" vertical-offset="6851" max-vertical-offset="10197">
+          <caret line="698" column="0" selection-start-line="316" selection-start-column="0" selection-end-line="316" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4691502" vertical-offset="2079" max-vertical-offset="3596">
-          <caret line="146" column="13" selection-start-line="146" selection-start-column="13" selection-end-line="146" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.35622817" vertical-offset="2125" max-vertical-offset="3647">
+          <caret line="143" column="28" selection-start-line="143" selection-start-column="28" selection-end-line="143" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7463175" vertical-offset="10781" max-vertical-offset="13089">
-          <caret line="2251" column="21" selection-start-line="2251" selection-start-column="8" selection-end-line="2251" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.91816694" vertical-offset="11016" max-vertical-offset="12766">
+          <caret line="2352" column="0" selection-start-line="2352" selection-start-column="0" selection-end-line="2352" selection-end-column="0" />
           <folding>
-            <element signature="e#44467#45056#0" expanded="true" />
-            <element signature="e#47590#47733#0" expanded="true" />
-            <element signature="e#54359#55223#0" expanded="true" />
-            <marker date="1423225922000" expanded="true" signature="50451:50463" placeholder="..." />
-            <marker date="1423225922000" expanded="true" signature="51936:51948" placeholder="..." />
+            <marker date="1423230142000" expanded="true" signature="50429:50441" placeholder="..." />
+            <marker date="1423230142000" expanded="true" signature="51914:51926" placeholder="..." />
           </folding>
         </state>
       </provider>

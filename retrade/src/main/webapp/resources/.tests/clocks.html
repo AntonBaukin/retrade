@@ -97,7 +97,7 @@ var Y = new ReTrade.EventsNumber({ parent: 'num-area-b', node: 'num-b' }).set(28
 
 function change()
 {
-  var C = [ 'green', 'orange', 'red', 'gray' ]
+  var C = [ 'G', 'O', 'R', 'N' ]
   var x = change.time || 0
   if(x >= C.length) x = 0
   change.time = x + 1
@@ -105,10 +105,11 @@ function change()
   var t = new Date().getTime() * 27644437 % 1000
   X.set(t); Y.set(t)
 
-  ZeTD.classes('num-area-a', 'retrade-eventsnum-' + C[x])
-  ZeTD.classes('num-area-b', 'retrade-eventsnum-' + C[x])
+  ZeTD.classes('num-area-a', ['retrade-eventsnum', C[x]])
+  ZeTD.classes('num-area-b', ['retrade-eventsnum', C[x]])
 }
 
+change()
 setInterval(change, 2000)
 
 //]]>
