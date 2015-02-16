@@ -23,7 +23,7 @@
         <element id="javaee-facet-resources" facet="xroot/web/Web" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="ReTrade RSync @64.2">
+    <artifact type="exploded-war" name="ReTrade RSync @64.14">
       <output-path>$PROJECT_DIR$/retrade/target/web</output-path>
       <properties id="ant-postprocessing">
         <options enabled="true">
@@ -689,6 +689,13 @@
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Anton" />
+    <dictionary name="abaukin">
+      <words>
+        <w>logins</w>
+        <w>messager</w>
+        <w>servicer</w>
+      </words>
+    </dictionary>
     <dictionary name="anton">
       <words>
         <w>aggr</w>
@@ -725,13 +732,6 @@
         <w>webapp</w>
         <w>whitespaces</w>
         <w>zetobj</w>
-      </words>
-    </dictionary>
-    <dictionary name="abaukin">
-      <words>
-        <w>logins</w>
-        <w>messager</w>
-        <w>servicer</w>
       </words>
     </dictionary>
   </component>
