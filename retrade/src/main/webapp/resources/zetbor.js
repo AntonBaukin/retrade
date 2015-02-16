@@ -177,7 +177,7 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 });
 
 
-// +----: ZeT.Border.full() :------------------------------------+
+// +----: ZeT.Border.create() :----------------------------------+
 
 /**
  * Builds border options to create complex border with
@@ -190,11 +190,11 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
  *
  * The income options are:
  *
- *  · border  ZeT.Border.Full
+ *  · border  (required, ZeT.Border.Base subclass)
  *
- *  the border class (or it's definition key);
+ *  the border class or it's definition key;
  *
- *  · keys    (ZeT.Border.Full.KEYS)
+ *  · keys    (Border-Class.KEYS)
  *
  *  the keys of the cells to initialize. By default
  *  they are keys for all lower-level cells except
@@ -213,44 +213,70 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
  *
  *  map-object with fill parameters of each cell.
  */
-ZeT.Border.full = ZeT.define('ZeT.Border.full()', function(opts)
+ZeT.Border.create = ZeT.define('ZeT.Border.create()', function(opts)
 {
-	var res   = this, node = this;
-	if((res == ZeT.Border) || (res == window)) res = {};
-	if(ZeTD.isxn(node)) res = {}; else node = null;
+	//~: this, node, result
+	var res = this, node = this
+	if((res == ZeT.Border) || (res == window)) res = {}
+	if(ZeTD.isxn(node)) res = {}; else node = null
 
-	var bcls  = ZeT.Border.Full;
-	if(opts.border) bcls = opts.border;
-	if(ZeT.iss(bcls)) bcls = ZeT.assertn(ZeT.defined(bcls),
-	  'ZeT border class [', bcls , '] is not defined!')
+	//~: get the border class
+	var bcls = (opts = opts || {}).border
+	if(ZeT.iss(bcls)) bcls = ZeT.defined(bcls)
+	ZeT.assertn(bcls, 'ZeT Border class [', opts.border, '] option is not set!')
+	ZeT.assert(bcls.ZeT$Class === true, 'ZeT Border class [',
+	  opts.border, '] is not a ZeT-class!')
 
-	var pat   = opts['pattern']; if(!ZeT.iss(pat)) pat = 'XYZ';
-	var fills = opts['fills']; if(!fills) fills = {};
-	var clss  = opts.classes; if(!ZeT.iss(clss)) clss = null;
+	//~: pattern, fills, classes, keys
+	var pat   = ZeT.asserts(opts['pattern'] || 'XYZ')
+	var fills = opts['fills'] || {}
+	var clss  = (!opts.classes)?(null):ZeT.asserts(opts.classes)
+	var keys  = ZeT.asserta((opts.keys)?(opts.keys):(bcls.prototype.KEYS))
 
-	var keys  = (opts = opts || {}).keys;
-	if(!ZeT.isa(keys)) keys = ZeT.asserta(bcls.prototype.KEYS);
-
-	for(var i = 0;(i < keys.length);i++)
+	//c: process each pattern key
+	ZeT.each(keys, function(k)
 	{
-		var k  = keys[i], e = res[k] || {};
-		var f  = fills[k] || {};
-		res[k] = ZeT.extend(e, f);
+		var e  = res[k] || {}
+		var f  = fills[k] || {}
+		res[k] = ZeT.extend(e, f)
 
-		var c  = fills['classes'];
-		if(!c && clss) c = clss.replace(pat, k);
+		var c  = fills['classes']
+		if(!c && clss) c = clss.replace(pat, k)
 
-		c = ZeTA.merge(ZeTA.copy(e.classes), c);
-		if(c.length) e.classes = c;
-	}
+		c = ZeTA.merge(ZeTA.copy(e.classes), c)
+		if(c.length) e.classes = c
+	})
 
+	//?: {processing piped node} wrap it with the border
 	if(node)
 	{
-		if(!res.cnt) res.cnt = {};
-		res.cnt.node = node;
+		if(!res.cnt) res.cnt = {}
+		res.cnt.node = node
 
-		return ZeT.Layout.proc(new bcls(res))();
+		return ZeT.Layout.proc(new bcls(res))()
 	}
 
-	return res;
+	return res
+})
+
+
+// +----: ZeT.Border.full() :------------------------------------+
+
+/**
+ * Creates border options with ZeT.Border.Full class.
+ *
+ * If a string is given instead of options map-object,
+ * takes it as classes option.
+ */
+ZeT.Border.full = ZeT.define('ZeT.Border.full()', function(opts)
+{
+	opts = opts || {}
+
+	//?: {just classes option}
+	if(ZeT.iss(opts)) opts = { classes: opts }
+
+	//=: border class
+	opts.border = ZeT.Border.Full
+
+	return ZeT.Border.create.call(this, opts)
 })

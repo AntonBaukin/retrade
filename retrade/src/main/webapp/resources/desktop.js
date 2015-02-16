@@ -1582,6 +1582,7 @@ ReTrade.Clocks = ZeT.defineClass('ReTrade.Clocks', ReTrade.Visual, {
 		this._ss    = 0
 		this._timef = ZeT.fbind(this._time, this)
 		this._timei = setInterval(this._timef, 1000)
+		this._time() //<-- set the clocks now
 		return this
 	},
 
@@ -2267,9 +2268,7 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 		this._init_ctl()
 
 		//~: set the interval timer
-		this.interval = { i: 0 }
-		this._interval() //<-- also, invoke it now
-		setInterval(ZeT.fbind(this._interval, this), 1000)
+		setInterval(ZeT.fbind(this._interval, this), this.opts.interval || 2000)
 	},
 
 	toggle          : function(show)
@@ -2281,6 +2280,8 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 	set             : function(model)
 	{
 		this.menu.set(model)
+		this._interval()
+
 		return this
 	},
 
@@ -2330,6 +2331,8 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 	_interval       : function()
 	{
+		if(!this.interval) this.interval = { i: 0 }
+
 		//?: {even tick} shift the number (each 2 secs)
 		if(this.interval.i%2 == 0)
 			this._shift_number()

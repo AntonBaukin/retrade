@@ -25,307 +25,94 @@
 
 <style type = "text/css">
 
-
-/* ==> first row */
-
-td.retrade-bofull-test-top,
-td.retrade-bofull-test-top div
+#full-pale
 {
-  height: 8px;
+  border: 1px dashed rgba(255, 45, 0, 0.1); position: absolute;
+  max-width: 170px; left: 250px; top: 10px;
 }
 
-div.retrade-bofull-test-ltc
+#test
 {
-  width: 16px;
-  background: red;
+  border: 1px dashed rgba(0, 255, 45, 0.1); position: absolute;
+  width: 170px; height: 100px; left: 10px; top: 10px;
 }
 
-div.retrade-bofull-test-thx
+#test > div:first-child
 {
-  position: relative;
-  top: -8px; padding: 0 16px 0 16px;
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+  padding: 0 3px 3px 0;
 }
 
-div.retrade-bofull-test-thh
+#test > div:last-child
 {
-  background: green;
+  position: absolute; left: 3px; right: 0; top: 3px; bottom: 0;
+  border-radius: 4px; z-index: -1;
+  background: rgba(124, 131, 143, 0.75);
 }
 
-div.retrade-bofull-test-rtc
+#test > div > table
 {
-  position: relative;
-  left: 100%; top: -16px;
-  margin-left: -16px; width: 16px;
-  background: pink;
+  width: 100%; height: 100%; border-radius: 3px;
+  background: #ffd42b;
+  background: -moz-linear-gradient(-45deg, #fff9e2 0%, #ffd42b 60%, #fff6ce 100%);
+  background: -webkit-linear-gradient(-45deg, #fff9e2 0%,#ffd42b 60%,#fff6ce 100%);
+  background: linear-gradient(135deg, #fff9e2 0%,#ffd42b 60%,#fff6ce 100%);
 }
 
-
-/* ==> second row */
-
-td.retrade-bofull-test-lvu,
-td.retrade-bofull-test-lvu div
+#test > div > table > tbody > tr > td
 {
-  width: 8px; height: 6px;
+  vertical-align: middle;
+  align-content: center;
+  text-align: center;
 }
-
-td.retrade-bofull-test-lvu
-{
-  background: cyan;
-}
-
-td.retrade-bofull-test-rvu,
-td.retrade-bofull-test-rvu div
-{
-  width: 12px; height: 6px;
-}
-
-td.retrade-bofull-test-rvu
-{
-  background: gold;
-}
-
-td.retrade-bofull-test-mup,
-td.retrade-bofull-test-mup div
-{
-  width: auto; height: 6px;
-}
-
-
-/* ==> the middle */
-
-td.retrade-bofull-test-lvm,
-td.retrade-bofull-test-lvm div
-{
-  width: 8px;
-}
-
-td.retrade-bofull-test-lvm
-{
-  background: violet;
-}
-
-td.retrade-bofull-test-rvm,
-td.retrade-bofull-test-rvm div
-{
-  width: 12px;
-}
-
-td.retrade-bofull-test-rvm
-{
-  background: cadetblue;
-}
-
-td.retrade-bofull-test-cxx > table
-{
-  width: 100%; height: 100%;
-  margin: -6px 0 -8px 0;
-  background: mediumslateblue;
-}
-
-td.retrade-bofull-test-cnt
-{
-  width: 100%; height: 100%;
-}
-
-
-/* ==> fourth row */
-
-td.retrade-bofull-test-lvd,
-td.retrade-bofull-test-lvd div
-{
-  width: 8px; height: 8px;
-}
-
-td.retrade-bofull-test-lvd
-{
-  background: brown;
-}
-
-td.retrade-bofull-test-rvd,
-td.retrade-bofull-test-rvd div
-{
-  width: 12px; height: 8px;
-}
-
-td.retrade-bofull-test-rvd
-{
-  background: orange;
-}
-
-td.retrade-bofull-test-mbo,
-td.retrade-bofull-test-mbo div
-{
-  width: auto; height: 8px;
-}
-
-
-/* ==> fifth row */
-
-td.retrade-bofull-test-bot,
-td.retrade-bofull-test-bot div
-{
-  height: 12px;
-}
-
-div.retrade-bofull-test-lbc
-{
-  width: 16px;
-  background: aquamarine;
-}
-
-div.retrade-bofull-test-bhx
-{
-  position: relative;
-  top: -12px; padding: 0 16px 0 16px;
-}
-
-div.retrade-bofull-test-bhh
-{
-  width: 100%;
-  background: mediumpurple;
-}
-
-div.retrade-bofull-test-rbc
-{
-  position: relative;
-  left: 100%; top: -24px;
-  margin-left: -16px; width: 16px;
-  background: peru;
-}
-
-
-/* ======================= */
-
 
 
 </style>
 
-<table id = 'XYZ' cellpadding='0' cellspacing='0' border='0' style='width:100%; height:100%'>
-  <tr>
-    <td colspan='3'>@top
-      <div>
-        <div>@ltc</div>
-        <div>@thx<div>@thh</div></div><div>@rtc</div>
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td>@lvu<div></div></td>
-    <td>@mup<div></div></td>
-    <td>@rvu<div></div></td>
-  </tr>
-  <tr>
-    <td>@lvm<div></div></td>
-    <td>@cxx<div><div>
-      <table cellpadding='0' cellspacing='0' border='0'>
-        <tr><td>@cnt</td></tr>
-      </table></div></div>
-    </td>
-    <td>@rvm<div></div></td>
-  </tr>
-  <tr>
-    <td>@lvd<div></div></td>
-    <td>@mbo<div></div></td>
-    <td>@rvd<div></div></td>
-  </tr>
-  <tr>
-    <td colspan='3'>@bot
-      <div>
-        <div>@lbc</div>
-        <div>@bhx<div>@bhh</div></div><div>@rbc</div>
-      </div>
-    </td>
-  </tr>
-</table>
 
-<div id = 'sta' style = "border: 1px solid red; padding: 10px; width: 170px; height: 200px;"/>
+<div id = "test">
+  <div><table border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr><td>
 
-<div id = 'abs' style = "border: 1px solid paleturquoise; position: absolute; max-width: 170px; left: 250; top: 150;"/>
+    Just take this text and do what you want...
+
+
+  </td></tr></tbody></table></div><div></div>
+</div>
+
+
+<div id = 'full-pale'></div>
 
 <script type = "text/javascript">
 //<![CDATA[
 
-ZeT.Border.FullAlt = ZeT.defineClass('ZeT.Border.FullAlt', 'ZeT.Border.Base', {
 
-	KEYS : [
-	 'top', 'ltc', 'thx', 'thh', 'rtc',
-	 'lvu', 'mup', 'rvu',
-	 'lvm', 'rvm', 'cxx', 'cnt',
-	 'lvd', 'mbo', 'rvd',
-	 'bot', 'lbc', 'bhx', 'bhh', 'rbc'
-	],
-
-	XYZ  : ZeT.define('ZeT.Border.FullAlt.XYZ', new ZeT.Layout.Template(
-	  { trace : ZeT.Layout.Template.Ways.traceAtNodes }, ZeTD.n('XYZ')
-	))
-})
-
-//<: create manually
-
-var opts = ZeT.Border.full({
-  border: 'ZeT.Border.FullAlt',
-  classes: 'retrade-bo-user-menu-XYZ'
-});
-
-var node = ZeT.Layout.proc(new ZeT.Border.FullAlt(opts))();
-ZeT.assert(ZeTD.isn(node))
-ZeT.assert(ZeT.struct(node))
-ZeT.assert(ZeTD.isn(ZeT.struct(node).content))
-ZeT.struct(node).content.innerHTML = 'The border test this is...';
-ZeTD.styles(ZeT.struct(node).content, { textAlign: 'center' })
-ZeTD.styles(node, { width: '400px', height: '150px' })
-
-document.body.appendChild(node)
-
-
-//>: create manually
-
-//~: create as pipe call
-
+//~: border full
 ZeT.Layout.procPipeCall(
 
+ //[0]: create node by the markup
  ZeT.Layout.Proc.Node, {
-   html: '<div>This border is created by the pipe!</div>'
+   html: "<div>This complex border is created by the pipe!<br/>It takes the needed height...<br/>But I still don't like it's complexity!</div>"
  },
 
+ //~: fill it
  ZeT.Layout.Fill, {
-   styles: { color: 'black' }
+   styles: { color: '#FF2D00' }
  },
 
- ZeT.Border.FullAlt, ZeT.Border.full({
-   border: ZeT.Border.FullAlt,
-   classes: 'retrade-bofull-pale-XYZ'
- }),
+ ZeT.Border.Full, ZeT.Border.full('retrade-bofull-pale-XYZ'),
 
  ZeT.Layout.Fill, {
    styles: { width: '100%', height: '100%' }
  },
 
- ZeT.Layout.Proc.Append, { parent: 'abs' }
+ ZeT.Layout.Proc.Append, { parent: 'full-pale' }
 )
 
 
 //]]>
 </script>
 
-<!--
-<style type="text/css">
-
-#test
-{
-  position: absolute;
-  left: 200px; top: 150px;
-  width: 20px; height: 400px;
-  border: solid 1px #a9a9a9;
-
-  background: url(border.svg) no-repeat;
-  background-size: 100% 100%;
-}
-
-</style>
-
-<div id = "test"/>
--->
 
 </body>
 </html>
