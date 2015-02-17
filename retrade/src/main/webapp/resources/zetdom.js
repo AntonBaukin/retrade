@@ -301,6 +301,13 @@ var ZeTD = ZeT.define('ZeTD',
 		return node
 	},
 
+	escape            : function(text)
+	{
+		return document.createElement('div').
+		  appendChild(document.createTextNode(text)).
+		  parentNode.innerHTML
+	},
+
 
 // +----: Browsers Detection :---->
 

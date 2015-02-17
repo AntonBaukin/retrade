@@ -342,6 +342,74 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 	/**
+	 * Allows to clone deeply object with prototype support.
+	 * It directly copies fields of this types: numbers, booleans,
+	 * functions, not a plain objects. Arrays are copied deeply.
+	 */
+	deepClone        : function(obj)
+	{
+		//?: {undefined, null, false, zero}
+		if(!obj) return obj
+
+		//?: {is string} copy it
+		if(ZeT.iss(obj)) return '' + obj
+
+		//?: {is an array}
+		var i, res; if(ZeT.isa(obj))
+		{
+			res = new Array(obj.length)
+			for(i = 0;(i < obj.length);i++)
+				res[i] = ZeT.deepClone(obj[i])
+			return res
+		}
+
+		//?: {not a plain object}
+		if(typeof obj != 'object') return obj; else
+
+		//~: create instance with same prototype
+		(function()
+		{
+			function U() {}
+			U.prototype = obj.prototype
+			res = new U()
+		})()
+
+		//~: extend
+		var keys = ZeT.keys(obj)
+		for(i = 0;(i < keys.length);i++)
+			res[keys[i]] = ZeT.deepClone(obj[keys[i]])
+
+		return res
+	},
+
+	/**
+	 * Takes object and copies all the fields from the source
+	 * when the same fields are undefined (note that nulls are
+	 * not undefined). If field is a plain object, extends
+	 * it deeply. Note that arrays are not merged.
+	 * A deep clone of a field value is assigned.
+	 */
+	deepExtend       : function(obj, src)
+	{
+		if(!src) return obj
+		if(!obj) obj = {}
+
+		//?: {not an object}
+		ZeT.assert(typeof obj == 'object', 'ZeT.deepExtend(): not an object! ', obj)
+
+		var k, keys = ZeT.keys(src)
+		for(var i = 0;(i < keys.length);i++)
+			//?: {field is undefined}
+			if(ZeT.isu(obj[k = keys[i]]))
+				obj[k] = ZeT.deepClone(src[k])
+			//?: {extend nested object}
+			else if(typeof obj[k] == 'object')
+				ZeT.deepExtend(obj[k], src[k])
+
+		return obj
+	},
+
+	/**
 	 * ZeT.define() class by the name.
 	 *
 	 * Second and third arguments are

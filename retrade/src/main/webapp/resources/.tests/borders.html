@@ -4,6 +4,12 @@
   <meta charset = 'UTF-8'/>
 
   <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../jquery.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../jquery-ui.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
      src = "../zetobj.js"></script>
 
   <script type = 'text/javascript' charset = 'UTF-8'
@@ -11,6 +17,13 @@
 
   <script type = 'text/javascript' charset = 'UTF-8'
      src = "../zetbor.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../desktop.js"></script>
+
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../retrade.css"/>
 
   <link type = 'text/css' rel = 'stylesheet'
      href = "borders.css"/>
@@ -34,15 +47,10 @@
 .retrade-boshadow-user-menu-area
 {
   border: 1px dashed rgba(0, 255, 45, 0.1); position: absolute;
-  width: 170px; height: 100px; left: 300px; top: 250px;
+  min-width: 170px; left: 300px; top: 250px;
 }
 
 </style>
-
-<!--
-<div>@area<div>@main<table border='0' cellpadding='0' cellspacing='0'><tbody><tr>
-<td>@content</td></tr></tbody></table></div><div>@ext</div><div>@shadow</div></div>
--->
 
 
 <div id = 'full-pale'></div>
@@ -84,6 +92,19 @@ ZeT.Layout.procPipeCall(
 
  ZeT.Layout.Proc.Append, { parent: document.body }
 )
+
+$('.retrade-boshadow-user-menu-area').click(function()
+{
+  var COLORS = [ 'N', 'R', 'G', 'O' ]
+  var color  = COLORS[new Date().getTime() % COLORS.length]
+
+  var opts   = { color: color,
+    text: 'This is a simple message text appearing on the right border of the document...'
+  }
+
+  new ReTrade.Message(opts).trigger()
+
+})
 
 //]]>
 </script>

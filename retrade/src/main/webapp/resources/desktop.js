@@ -5,10 +5,14 @@
  +===============================================================*/
 
 
+// +----: Global Configurations :--------------------------------+
+
+jQuery.fx.interval = 41.6
+
+
 // +----: ReTrade Namespace :------------------------------------+
 
 var ReTrade = ZeT.define('ReTrade', {})
-
 
 
 // +----: Desktop :----------------------------------------------+
@@ -972,6 +976,209 @@ ZeT.defineClass('ReTrade.DesktopCollapsing', {
 // +----: Desktop Instance :-------------------------------------+
 
 ReTrade.desktop = ZeT.defineInstance('ReTrade.desktop', ReTrade.Desktop);
+
+
+// +----: Message :----------------------------------------------+
+
+ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
+
+	DEFAULTS          : {
+
+		defaultContentTag    : 'div',
+		defaultContentClass  : 'retrade-desktop-event-content',
+
+		eventFrameClassNames : [
+
+			'retrade-desktop-event',
+			'retrade-border-free-size'
+		],
+
+		borderImplClass      : ZeT.Border.Shadow,
+
+		borderClassNames     : {
+
+			N: 'retrade-boshadow-N-XYZ',
+			R: 'retrade-boshadow-R-XYZ',
+			G: 'retrade-boshadow-G-XYZ',
+			O: 'retrade-boshadow-O-XYZ'
+		},
+
+		animation            : {
+			'top%': 25, moveDuration: 2000, eventVisibleTime: 8000,
+			fadeDuration: 2000
+		},
+
+		autoRemove           : true,
+		removeOnSecondClick  : true
+	},
+
+	init              : function(opts)
+	{
+		//~: deeply extend with the defaults clone
+		this.opts = ZeT.deepExtend(opts, this.DEFAULTS)
+	},
+
+	trigger           : function()
+	{
+		ZeT.log('Node: ', this.node())
+
+		//?: {node is not placed in the DOM yet}
+		if(!ZeTD.isgn(this.node()))
+			((this.opts.parent)?ZeTD.n(this.opts.parent):(document.body)).
+			  appendChild(this.node())
+
+		//~: animate the message
+		this._animate()
+
+		return this
+	},
+
+	node              : function()
+	{
+		//?: {has the node created}
+		if(this._node) return this._node
+
+		//?: {has node provided}
+		if(ZeTD.isn(this.opts.node))
+			return this._node = this.opts.node
+		else
+		{
+			//~: create the node
+			this._node = document.createElement(
+			  ZeT.asserts(this.opts.defaultContentTag))
+
+			//?: {has message text}
+			if(!ZeTS.ises(this.opts.text))
+				this._node.innerHTML = ZeTD.escape(this.opts.text)
+			//?: {has html markup}
+			else if(!ZeTS.ises(this.opts.html))
+				this._node.innerHTML = this.opts.html
+		}
+
+		//~: wrap the node
+		this._node = this._wrap(this._node)
+
+		//~: listen the click
+		$(this._node).click(ZeT.fbind(this._click, this))
+
+		return this._node
+	},
+
+	_click            : function(e)
+	{
+		//?: {animation callback}
+		if(ZeT.isf(this._ani_click))
+			this._ani_click(e)
+	},
+
+	_animate          : function()
+	{
+		ZeT.assertn(this.opts.animation)
+
+		//~: animate up-down movement
+		this._ani_up_down()
+	},
+
+	_wrap             : function(node)
+	{
+		var self = this
+		ZeT.assert(ZeTD.isn(node))
+
+		//~: create the border pipe
+		return ZeT.Layout.procPipeCall(
+
+			//~: take the argument node
+			ZeT.Layout.Proc.Node, { node: node },
+
+			//~: wrap it with the border
+			ZeT.assertn(self.opts.borderImplClass),
+			self._border_opts(),
+
+			//~: wrap with the frame
+			ZeT.Layout.Proc.Wrap, { html: '<div/>',
+			  classes : self.opts.eventFrameClassNames,
+			  styles  : { display: 'none', zIndex: self._zindex() }
+			}
+		)
+	},
+
+	_border_opts      : function()
+	{
+		//~: access border color
+		var c = ZeT.asserts(this.opts.color || 'N')
+		c = ZeT.asserts(this.opts.borderClassNames[c],
+		  'No border class template is found for the color [', c, ']!')
+
+		//~: border class
+		var bcls = ZeT.assertn(this.opts.borderImplClass)
+
+		return ZeT.Border.create({ classes: c, border: bcls })
+	},
+
+	_zindex           : function()
+	{
+		if(!ZeT.isi(this.opts.zindex))
+			this.opts.zindex = 99999
+		return this.opts.zindex--
+	},
+
+	_ani_up_down      : function()
+	{
+		var self = this, n = $(this.node())
+
+		//~: place at the upper position
+		n.offset({top: -9999}).show() //<-- show to have the borders
+
+		//~: not set it to touch the frame
+		n.offset({top: -n.outerHeight()})
+
+		//~: move-to top position
+		var moveto; if(!ZeT.isu(this.opts.top))
+			moveto = this.opts.top
+		else
+		{
+			var H = $(document).innerHeight()
+			ZeT.isn(this.opts.animation['top%'])
+			ZeT.assert(H > 0)
+
+			moveto = Math.ceil(H * this.opts.animation['top%'] / 100)
+		}
+
+		ZeT.assert(ZeT.isi(moveto))
+		var d; ZeT.assert(ZeT.isi(d = this.opts.animation.moveDuration))
+
+		//~: click handler
+		var clicked = 0
+		this._ani_click = function()
+		{
+			clicked++
+		}
+
+		//~: animate it's move down
+		n.animate({ top: moveto }, d, function()
+		{
+			//?: {not clicked & auto-hide}
+			if(!clicked && self.opts.autoRemove)
+				self._ani_fade()
+		})
+	},
+
+	_ani_fade         : function()
+	{
+		var self = this
+		ZeT.assert(ZeT.isi(this.opts.animation.fadeDuration))
+
+		$(this.node()).fadeOut({
+		  duration: this.opts.animation.fadeDuration,
+		  always: ZeT.fbind(self._ani_hide, self)
+		})
+	},
+
+	_ani_hide         : function()
+	{
+		$(this.node()).remove()
+	}
+})
 
 
 // +----: SelSet :-----------------------------------------------+

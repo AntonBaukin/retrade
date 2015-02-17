@@ -317,8 +317,8 @@ td.retrade-action-cell
 
 div.retrade-desktop-event
 {
-  position: absolute; top: 0; right: 0;
-  max-width: 200pt; cursor: default;
+  position: absolute; right: 10px; cursor: default;
+  min-width: 150pt; max-width: 200pt;
 }
 
 div.retrade-desktop-event-content
