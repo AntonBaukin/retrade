@@ -1257,31 +1257,32 @@ ZeT.extendClass('ZeT.Layout.Template', {
 	traceTree        : function(handler)
 	{
 		if(!ZeT.isf(handler)) throw 'ZeT.Layout.Template: ' +
-		  'traceTree() handler is not a function!';
+		  'traceTree() handler is not a function!'
 
 		//~: collect the nodes
-		var self = this, found = [], result = {};
+		var self = this, found = [], result = {}
 		var iter = new ZeT.Layout.Treeter(function(node)
 		{
-			var r = handler(node, self);
-			if(ZeT.iss(r)) r = {key: r};
-			if(!r || ZeTS.ises(r.key)) return node;
+			var r = handler(node, self)
+			if(ZeT.iss(r)) r = { key: r }
+			if(!r || ZeTS.ises(r.key)) return node
 
-			if(!ZeTD.isxn(r.node)) r.node = node;
+			if(!ZeTD.isxn(r.node)) r.node = node
 			found.push(r)
-			return r.removeNode?(undefined):(node);
-		});
+
+			return r.removeNode?(undefined):(node)
+		})
 
 		iter.proc(this.xnode())
 
 		//~: trace the nodes collected
 		for(var i = 0;(i < found.length);i++)
 		{
-			var w = self.trace(found[i].node);
-			if(w.length) result[found[i].key] = w;
+			var w = self.trace(found[i].node)
+			if(ZeT.isa(w)) result[found[i].key] = w
 		}
 
-		return result;
+		return result
 	},
 
 	/**
@@ -1407,7 +1408,7 @@ ZeT.extendClass('ZeT.Layout.Template', {
 
 	_walk_all     : function(f)
 	{
-		var key, keys = ZeT.keys(this.ways());
+		var key, keys = ZeT.keys(this.ways())
 		for(var i = 0;(i < keys.length);i++)
 			if(ZeT.iss(key = keys[i]))
 				if(f(key) === false)
@@ -1442,7 +1443,7 @@ ZeT.Layout.Template.Ways = ZeT.define('ZeT.Layout.Template.Ways', {
 		return {
 		  key: ZeTS.trim(key).substring(1),
 		  node: node.parentNode,
-		  removeNode: (node.nodeType == 3)
+		  removeNode: (node.nodeType == 3) //<-- stay the comment
 		}
 	}
 })

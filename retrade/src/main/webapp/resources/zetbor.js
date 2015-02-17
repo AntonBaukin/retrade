@@ -22,7 +22,10 @@ ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
 
 	init              : function(opts)
 	{
-		this.opts = opts || {};
+		this.opts = opts || {}
+
+		ZeT.assert(ZeT.isa(this.KEYS) && this.KEYS.length)
+		ZeT.asserts(this.CONTENT)
 	},
 
 	/**
@@ -31,40 +34,42 @@ ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
 	 */
 	KEYS              : [],
 
+	CONTENT           : null,
+
 	XYZ               : null,
 
 	proc              : function(node)
 	{
-		var tmplt  = this._template();
-		var cells  = this._border_cells();
-		var rnode  = tmplt.cloneNode(this.opts['cloneOpts']);
+		var tmplt  = this._template()
+		var cells  = this._border_cells()
+		var rnode  = tmplt.cloneNode(this.opts['cloneOpts'])
 		var ways   = tmplt.fillWays(rnode, cells)
 		var struct = this._init_struct(rnode, ways, cells)
 
 		if(ZeTD.isxn(node))
 			this._replace_node(rnode, node, struct)
-		return rnode;
+
+		return rnode
 	},
 
 	_border_cells     : function()
 	{
-		ZeT.asserta(this.KEYS)
+		var k, r = {}
 
-		var k, r = {};
 		for(var j = 0;(j < this.KEYS.length);j++)
-			r[k = this.KEYS[j]] = this.opts[k];
+			r[k = this.KEYS[j]] = this.opts[k]
 
-		return r;
+		return r
 	},
 
 	_init_struct      : function(node, ways /*, cells*/)
 	{
-		var struct = new ZeT.Struct(node);
+		var struct = new ZeT.Struct(node)
 
 		struct.template(this._template())
-		struct.content = ways['cnt'];
+		struct.content = ways[this.CONTENT]
 
-		return struct;
+		return struct
 	},
 
 	_template         : function()
@@ -125,7 +130,7 @@ ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
  */
 ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 
-	KEYS : (function(){
+	KEYS    : (function(){
 
 		if(ZeTD.IE) return [
 		 'top', 'ltc', 'thx', 'thh', 'rtc',
@@ -144,7 +149,9 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 
 	}()),
 
-	XYZ  : (function(){
+	CONTENT : 'cnt',
+
+	XYZ     : (function(){
 
 		var TEMPLATE = ZeTD.IE &&
 
@@ -175,6 +182,26 @@ ZeT.Border.Full = ZeT.defineClass('ZeT.Border.Full', 'ZeT.Border.Base', {
 		  { trace : ZeT.Layout.Template.Ways.traceAtNodes }, TEMPLATE)
 	}())
 });
+
+
+// +----: ZeT.Border.Shadow :------------------------------------+
+
+/**
+ * Simple border class with the shadow layer.
+ */
+ZeT.Border.Shadow = ZeT.defineClass('ZeT.Border.Shadow', 'ZeT.Border.Base', {
+
+	KEYS    : [ 'area', 'main', 'ext', 'shadow', 'content' ],
+
+	CONTENT : 'content',
+
+	XYZ     : new ZeT.Layout.Template({ trace : ZeT.Layout.Template.Ways.traceAtNodes },
+
+	  "<div>@area<div>@main<table border='0' cellpadding='0' cellspacing='0'><tbody><tr>"+
+	  "<td>@content</td></tr></tbody></table></div><div>@ext</div><div>@shadow</div></div>"
+	)
+});
+
 
 
 // +----: ZeT.Border.create() :----------------------------------+
@@ -228,10 +255,11 @@ ZeT.Border.create = ZeT.define('ZeT.Border.create()', function(opts)
 	  opts.border, '] is not a ZeT-class!')
 
 	//~: pattern, fills, classes, keys
-	var pat   = ZeT.asserts(opts['pattern'] || 'XYZ')
-	var fills = opts['fills'] || {}
+	var pat   = ZeT.asserts(opts.pattern || 'XYZ')
+	var fills = opts.fills || {}
 	var clss  = (!opts.classes)?(null):ZeT.asserts(opts.classes)
 	var keys  = ZeT.asserta((opts.keys)?(opts.keys):(bcls.prototype.KEYS))
+	var cnt   = ZeT.asserts(opts.content || bcls.prototype.CONTENT)
 
 	//c: process each pattern key
 	ZeT.each(keys, function(k)
@@ -250,8 +278,8 @@ ZeT.Border.create = ZeT.define('ZeT.Border.create()', function(opts)
 	//?: {processing piped node} wrap it with the border
 	if(node)
 	{
-		if(!res.cnt) res.cnt = {}
-		res.cnt.node = node
+		if(!res[cnt]) res[cnt] = {}
+		res[cnt].node = node
 
 		return ZeT.Layout.proc(new bcls(res))()
 	}
@@ -277,6 +305,25 @@ ZeT.Border.full = ZeT.define('ZeT.Border.full()', function(opts)
 
 	//=: border class
 	opts.border = ZeT.Border.Full
+
+	return ZeT.Border.create.call(this, opts)
+})
+
+
+// +----: ZeT.Border.shadow() :----------------------------------+
+
+/**
+ * Creates border options with ZeT.Border.Shadow class.
+ */
+ZeT.Border.shadow = ZeT.define('ZeT.Border.shadow()', function(opts)
+{
+	opts = opts || {}
+
+	//?: {just classes option}
+	if(ZeT.iss(opts)) opts = { classes: opts }
+
+	//=: border class
+	opts.border = ZeT.Border.Shadow
 
 	return ZeT.Border.create.call(this, opts)
 })
