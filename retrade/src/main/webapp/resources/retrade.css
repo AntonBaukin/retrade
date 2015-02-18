@@ -321,12 +321,6 @@ div.retrade-desktop-event
   min-width: 175pt; max-width: 200pt;
 }
 
-div.retrade-desktop-event-content
-{
-  font-family: 'Tahoma', sans-serif;
-  font-size: 10pt; font-style: normal;
-}
-
 div.retrade-desktop-event .retrade-boshadow-N-main,
   div.retrade-desktop-event .retrade-boshadow-R-main,
   div.retrade-desktop-event .retrade-boshadow-G-main,
@@ -340,6 +334,8 @@ div.retrade-desktop-event .retrade-boshadow-N-content,
   div.retrade-desktop-event .retrade-boshadow-G-content,
   div.retrade-desktop-event .retrade-boshadow-O-content
 {
+  font-family: 'Tahoma', sans-serif;
+  font-size: 10pt; font-style: normal;
   padding: 2pt 4pt;
 }
 
@@ -433,6 +429,17 @@ td.retrade-warning-table-buttons
 
 /* user menu */
 
+.x-panel-body.retrade-user-menu-frame > div,
+.x-panel-body.retrade-user-menu-frame > div > div
+{
+  overflow: visible;
+}
+
+.retrade-user-menu-frame .retrade-boshadow-user-menu-main
+{
+  width: 100%; height: 100%;
+}
+
 div.retrade-user-menu-system-login
 {
   font-family: 'Tahoma', sans-serif;
@@ -484,8 +491,8 @@ td.retrade-user-menu-domain-staff > div
 
 td.retrade-user-menu-logoff
 {
-  height:30px; text-align: right;
-  vertical-align: bottom;
+  height: 34px; padding-right: 4px;
+  text-align: right; vertical-align: top;
 }
 
 

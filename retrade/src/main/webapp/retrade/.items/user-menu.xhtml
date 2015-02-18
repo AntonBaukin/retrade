@@ -26,8 +26,9 @@
 
             showSeparator: false, constrain: false,
             layout: 'fit', shadow: false, border: false,
-            width:  extjsf.dpt(200), height: extjsf.dpt(100),
-            bodyPadding: 0, bodyCls: 'retrade-transparent-panel'
+            width: extjsf.dpt(200), height: extjsf.dpt(100),
+            bodyCls: 'retrade-transparent-panel retrade-user-menu-frame',
+            bodyPadding: '20 0 0 0'
 
           </f:facet>
 
@@ -141,7 +142,7 @@
       ZeT.Layout.Proc.Node, { node: n },
 
       //~: wrap it with the border
-      ZeT.Border.Full, ZeT.Border.full({ classes: 'retrade-bo-user-menu-XYZ' }),
+      ZeT.Border.Shadow, ZeT.Border.shadow('retrade-boshadow-user-menu-XYZ'),
 
       //~: replace the content wrapped
       ZeT.Layout.Proc.Append, { parent: n.parentNode }

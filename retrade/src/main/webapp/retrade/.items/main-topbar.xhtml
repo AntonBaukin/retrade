@@ -446,12 +446,12 @@
     //~: setup the desktop clocks
     extjsf.bind("${z:vid(localView, 'desktop-topbar-clocks')}").on('afterrender', function()
     {
-      if(!ReTrade.desktop.clocks)
-        ReTrade.desktop.clocks = new ReTrade.Clocks({ start: true,
-          parent: "${z:vid(rootView, 'desktop-clocks-area')}",
-          node: "${z:vid(rootView, 'desktop-clocks')}"
-        })
+      if(!ReTrade.desktop.clocks) ReTrade.desktop.clocks = new ReTrade.Clocks({
+        start: true, node: "${z:vid(rootView, 'desktop-clocks')}",
+        parent: "${z:vid(rootView, 'desktop-clocks-area')}"
+      })
 
+      /*
       if(!ReTrade.desktop.eventsnum)
       {
         ReTrade.desktop.eventsnum = new ReTrade.EventsNumber({
@@ -478,6 +478,7 @@
 
       }, 500)
       }
+      */
     })
 
 
