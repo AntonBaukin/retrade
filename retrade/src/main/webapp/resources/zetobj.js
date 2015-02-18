@@ -364,7 +364,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		}
 
 		//?: {not a plain object}
-		if(typeof obj != 'object') return obj; else
+		if(!ZeT.iso(obj)) return obj; else
 
 		//~: create instance with same prototype
 		(function()
@@ -395,7 +395,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		if(!obj) obj = {}
 
 		//?: {not an object}
-		ZeT.assert(typeof obj == 'object', 'ZeT.deepExtend(): not an object! ', obj)
+		ZeT.assert(ZeT.iso(obj), 'ZeT.deepExtend(): not an object! ', obj)
 
 		var k, keys = ZeT.keys(src)
 		for(var i = 0;(i < keys.length);i++)
@@ -403,7 +403,7 @@ var ZeT = window.ZeT = window.ZeT || {
 			if(ZeT.isu(obj[k = keys[i]]))
 				obj[k] = ZeT.deepClone(src[k])
 			//?: {extend nested object}
-			else if(typeof obj[k] == 'object')
+			else if(ZeT.iso(obj[k]))
 				ZeT.deepExtend(obj[k], src[k])
 
 		return obj
@@ -677,6 +677,11 @@ var ZeT = window.ZeT = window.ZeT || {
 	isf              : function(f)
 	{
 		return (typeof f === 'function')
+	},
+
+	iso              : function(o)
+	{
+		return (typeof o === 'object')
 	},
 
 	isb              : function(b)

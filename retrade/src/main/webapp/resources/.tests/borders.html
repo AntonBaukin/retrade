@@ -93,17 +93,27 @@ ZeT.Layout.procPipeCall(
  ZeT.Layout.Proc.Append, { parent: document.body }
 )
 
+$('#full-pale').click(function()
+{
+  var COLORS = [ 'N', 'G', 'O' ]
+  var color  = COLORS[Math.floor(Math.random() * COLORS.length)]
+
+  if(Math.random() < 0.5)
+    ReTrade.desktop.event({ color: color }, 'A simple message ', ' it is!')
+  else
+    ReTrade.desktop.error('This error is ', 'just for a test...')
+})
+
 $('.retrade-boshadow-user-menu-area').click(function()
 {
   var COLORS = [ 'N', 'R', 'G', 'O' ]
-  var color  = COLORS[new Date().getTime() % COLORS.length]
+  var color  = COLORS[Math.floor(Math.random() * COLORS.length)]
 
   var opts   = { color: color,
     text: 'This is a simple message text appearing on the right border of the document...'
   }
 
   new ReTrade.Message(opts).trigger()
-
 })
 
 //]]>

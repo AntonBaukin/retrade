@@ -318,7 +318,7 @@ td.retrade-action-cell
 div.retrade-desktop-event
 {
   position: absolute; right: 10px; cursor: default;
-  min-width: 150pt; max-width: 200pt;
+  min-width: 175pt; max-width: 200pt;
 }
 
 div.retrade-desktop-event-content
@@ -327,8 +327,21 @@ div.retrade-desktop-event-content
   font-size: 10pt; font-style: normal;
 }
 
-div.retrade-desktop-event-content.retrade-desktop-event-error-content
-{}
+div.retrade-desktop-event .retrade-boshadow-N-main,
+  div.retrade-desktop-event .retrade-boshadow-R-main,
+  div.retrade-desktop-event .retrade-boshadow-G-main,
+  div.retrade-desktop-event .retrade-boshadow-O-main
+{
+  left: auto;
+}
+
+div.retrade-desktop-event .retrade-boshadow-N-content,
+  div.retrade-desktop-event .retrade-boshadow-R-content,
+  div.retrade-desktop-event .retrade-boshadow-G-content,
+  div.retrade-desktop-event .retrade-boshadow-O-content
+{
+  padding: 2pt 4pt;
+}
 
 .retrade-desktop-eventsnum-area td.retrade-eventsnum-number
 {

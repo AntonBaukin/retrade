@@ -34,110 +34,44 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	},
 
 	/**
-	 * Displays notification box with the given DOM
-	 * node (or message string).
+	 * The first (optional) or the last argument
+	 * may be plain object with the event options.
+	 *
+	 * Else arguments are concatenated in the message
+	 * as it is for ZeTS.cat().
+	 *
+	 * Returns instance of ReTrade.Message, or undefined.
 	 */
-	event             : function(node, opts)
+	event             : function()
 	{
-		var e = this._event; if(!e) this._event = e = {
-		  zindex: 99999
-		}
+		//~: build the options
+		var opts = ReTrade.Message.prototype.
+		  options.call(this, ZeT.a(arguments))
 
-		var xopts = {
-		  zIndex: e.zindex--,
-		  defaultContentTag: 'div',
-		  defaultContentClass: 'retrade-desktop-event-content',
-		  borderClassNames: 'retrade-bofull-pale-XYZ',
-		  eventFrameClassNames: 'retrade-desktop-event retrade-border-free-size',
-		  'top%': 0.1,
-		  moveDuration: 2000,
-		  moveEasing: 'easeOut',
-		  eventVisibleTime: 10000,
-		  autoRemove: true,
-		  clickHandler: null, // function(Ext.Element, Ext.fx.Anim): true to call default
-		  skipDefaultClick: false
-		}
+		//?: {has no options}
+		if(ZeT.isu(opts)) return undefined
 
-		ZeT.extend(xopts, opts)
+		//~: the color
+		opts.color = opts.color || 'N'
 
-		if(ZeT.iss(node))
-		{
-			var n = document.createElement(xopts.defaultContentTag);
-			n.innerHTML = Ext.String.htmlEncode(node);
-			ZeTD.classes(n, xopts.defaultContentClass)
-			node = n;
-		}
-
-		if(!ZeTD.isn(node)) throw 'ReTrade.Desktop.event() got not a DOM node!';
-
-		//~: pipe the node: wrap into border
-		node = Ext.get(ZeT.Layout.procPipeCall(
-
-		  ZeT.Layout.Proc.Node, { node: node },
-
-		  ZeT.Border.Full, ZeT.Border.full({ classes: xopts.borderClassNames }),
-
-		  ZeT.Layout.Proc.Wrap, { html: '<div/>',
-		    classes: xopts.eventFrameClassNames,
-		    styles: { display: 'none', zIndex: xopts.zIndex }
-		  }
-		));
-
-		//~: append the node and show it
-		Ext.getBody().appendChild(node)
-		node.setStyle({top: -9999}).show()
-
-		var moveto = !ZeT.isu(xopts.top)?(xopts.top):
-		  Math.ceil(Ext.getBody().getHeight() * xopts['top%']);
-
-		var anim = new Ext.fx.Anim({
-		  target: new Ext.fx.target.Element(node),
-		  duration: xopts.moveDuration, easing: xopts.moveEasing,
-		  from: { top: -node.getHeight() }, to: { top: moveto },
-		  callback: ZeT.timeout(xopts.eventVisibleTime, function()
-		  {
-		    if(node.retradeEventClicked) return;
-		    if(xopts.autoRemove) node.fadeOut({ duration: 2000, remove: true })
-		  })
-		})
-
-		node.on('click', function()
-		{
-			var x = true;
-
-			if(ZeT.isf(xopts.clickHandler))
-				x = xopts.clickHandler(node, anim)
-
-			if((x === true) && !xopts.skipDefaultClick)
-				if(node.retradeEventClicked) new Ext.fx.Anim({
-				  target: new Ext.fx.target.Element(node),
-				  duration: 1000, easing: xopts.moveEasing,
-				  to: { opacity: 0, top: node.getTop() + 100 },
-				  callback: function(){ node.remove() }})
-				else
-				{
-					anim.end()
-					node.retradeEventClicked = true;
-				}
-		})
-
-		return { element: node, animation: anim };
+		//!: create and run the message
+		return new ReTrade.Message(opts).trigger()
 	},
 
-	error             : function(node, opts)
+	error             : function()
 	{
-		var xopts = {
+		//~: build the options
+		var opts = ReTrade.Message.prototype.
+		  options.call(this, ZeT.a(arguments))
 
-		  borderClassNames: 'retrade-bofull-brick-XYZ',
+		//?: {has no options}
+		if(ZeT.isu(opts)) return undefined
 
-		  defaultContentClass: [
-		    'retrade-desktop-event-content',
-		    'retrade-desktop-event-error-content'
-		  ]
-		};
+		//~: the color
+		opts.color = opts.color || 'R'
 
-		ZeT.extend(xopts, opts)
-		return this.event(node, xopts);
+		//!: create and run the message
+		return new ReTrade.Message(opts).trigger()
 	},
 
 	/**
@@ -1004,8 +938,9 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 		},
 
 		animation            : {
-			'top%': 25, moveDuration: 2000, eventVisibleTime: 8000,
-			fadeDuration: 2000
+			'top%': 15, moveDuration: 2000, moveVisibleTime: 6000,
+			moveEasing: 'easeOutQuad', fadeDuration: 500,
+			slideOffDuration: 500, slideOffMove: 100
 		},
 
 		autoRemove           : true,
@@ -1018,10 +953,41 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 		this.opts = ZeT.deepExtend(opts, this.DEFAULTS)
 	},
 
+	/**
+	 * Scans for the options in the arguments array.
+	 * Sets to null all the positions in the arguments
+	 * array that are taken.
+	 *
+	 * Single argument is not treated as an option.
+	 */
+	options           : function(args)
+	{
+		ZeT.asserta(args)
+		if(args.length == 0) return undefined
+
+		//~: find the options
+		var opts; if(args.length > 1)
+			if(ZeT.iso(args[0]))
+			{
+				opts = args[0]
+				args[0] = null
+			}
+			else if(ZeT.iso(args[args.length - 1]))
+			{
+				opts = args[args.length - 1]
+				args[args.length - 1] = null
+			}
+
+		//~: build the text
+		opts = opts || {}
+		if(!opts.text && !opts.html && !opts.node)
+			opts.text = ZeTS.cat.apply(ZeTS, args)
+
+		return opts
+	},
+
 	trigger           : function()
 	{
-		ZeT.log('Node: ', this.node())
-
 		//?: {node is not placed in the DOM yet}
 		if(!ZeTD.isgn(this.node()))
 			((this.opts.parent)?ZeTD.n(this.opts.parent):(document.body)).
@@ -1144,38 +1110,73 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 			moveto = Math.ceil(H * this.opts.animation['top%'] / 100)
 		}
 
-		ZeT.assert(ZeT.isi(moveto))
-		var d; ZeT.assert(ZeT.isi(d = this.opts.animation.moveDuration))
-
 		//~: click handler
 		var clicked = 0
 		this._ani_click = function()
 		{
 			clicked++
+
+			//?: {first click} stop
+			if(clicked == 1)
+				n.stop() //<-- stop moving down
+
+			//?: {second click}
+			if((clicked == 2) && self.opts.removeOnSecondClick)
+				self._ani_fade(true)
 		}
 
+		ZeT.assert(ZeT.isi(this.opts.animation.moveVisibleTime))
+		ZeT.assert(ZeT.isi(this.opts.animation.moveDuration))
+		ZeT.asserts(this.opts.animation.moveEasing)
+		ZeT.assert(ZeT.isi(moveto))
+
 		//~: animate it's move down
-		n.animate({ top: moveto }, d, function()
-		{
-			//?: {not clicked & auto-hide}
-			if(!clicked && self.opts.autoRemove)
-				self._ani_fade()
+		n.animate({ top: moveto }, {
+
+		  duration: this.opts.animation.moveDuration,
+		  easing: this.opts.animation.moveEasing,
+		  always: function()
+		  {
+				//?: {not clicked & auto-hide}
+				if(!clicked && self.opts.autoRemove)
+					ZeT.timeout(self.opts.animation.moveVisibleTime, function()
+					{
+						if(!clicked) self._ani_fade()
+					})
+		  }
 		})
 	},
 
-	_ani_fade         : function()
+	_ani_fade         : function(slider)
 	{
-		var self = this
-		ZeT.assert(ZeT.isi(this.opts.animation.fadeDuration))
+		var self = this, n = $(this.node())
 
-		$(this.node()).fadeOut({
-		  duration: this.opts.animation.fadeDuration,
-		  always: ZeT.fbind(self._ani_hide, self)
-		})
+		if(slider)
+		{
+			ZeT.assert(ZeT.isi(this.opts.animation.slideOffDuration))
+
+			var p = { top: '+=' + this.opts.animation.slideOffMove, opacity: 0 }
+
+			var o = { always: ZeT.fbind(self._ani_hide, self),
+			  duration: this.opts.animation.slideOffDuration
+			}
+
+			n.animate(p, o)
+		}
+		else
+		{
+			ZeT.assert(ZeT.isi(this.opts.animation.fadeDuration))
+
+			n.fadeOut({
+			  duration: this.opts.animation.fadeDuration,
+			  always: ZeT.fbind(self._ani_hide, self)
+			})
+		}
 	},
 
 	_ani_hide         : function()
 	{
+		delete self._ani_click
 		$(this.node()).remove()
 	}
 })
