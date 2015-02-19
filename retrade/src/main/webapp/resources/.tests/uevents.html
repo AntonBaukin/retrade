@@ -16,10 +16,10 @@
      src = "../zetdom.js"></script>
 
   <script type = 'text/javascript' charset = 'UTF-8'
-     src = "../desktop.js"></script>
+     src = "../zetbor.js"></script>
 
   <script type = 'text/javascript' charset = 'UTF-8'
-     src = "../zetbor.js"></script>
+     src = "../desktop.js"></script>
 
 
   <link type = 'text/css' rel = 'stylesheet'
@@ -135,8 +135,15 @@ var ctl = new ReTrade.EventsControl({
 
   menu: {
     node: 'menu-area', parent: document.body, length: 5
-  }
+  },
 
+  proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', {
+
+    request         : function(task, query)
+    {
+      ZeT.log('Do ', task, ': ', query)
+    }
+  })
 })
 
 ctl.toggle(true).set({
@@ -156,7 +163,7 @@ ctl.toggle(true).set({
  { id: 67, time: '12:07', date: '02 Фев', color: 'O', text: 'Пользователь [System] удалил накладную закупки №93/ЗК.' },
 
  { id: 65, time: '10:57', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №90/ПЕ.' },
- { id: 60, time: '10:50', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №87/ПЕ.' },
+ { id: 60, time: '10:50', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №87/ПЕ.' }
 ]})
 
 //]]>

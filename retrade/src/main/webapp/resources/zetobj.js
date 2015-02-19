@@ -59,7 +59,7 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 		return s.split(a).join(b)
 	},
 
-	cat              : function( /* various objects */)
+	cat              : function(/* various objects */)
 	{
 		for(var i = 0;(i < arguments.length);i++)
 			if(ZeT.isu(arguments[i]) || (arguments[i] === null))
@@ -514,6 +514,30 @@ var ZeT = window.ZeT = window.ZeT || {
 		//~: create and define the instance
 		var obj = ZeT.createInstance.apply(ZeT, args)
 		return ZeT.define(arguments[0], obj)
+	},
+
+	/**
+	 * Creates anonymous sub-class of the class given by it's
+	 * Class instance or the definition name, extends it with
+	 * the body methods given and passes the optional arguments
+	 * to the instance constructor.
+	 */
+	hiddenInstance   : function(pcls, body /* , constructor args */)
+	{
+		//?: {parent class is a definition name}
+		if(ZeT.iss(pcls)) pcls = ZeT.assertn(ZeT.defined(pcls),
+		  'No definition is bound by the name [', pcls, ']!')
+		ZeT.assert(ZeT.isf(pcls), 'Can not create instance of not a Class or function!')
+		ZeT.assert(ZeT.iso(body), 'Anonymous class body is not an object!')
+
+		//~: create the anonymous class
+		var cls  = ZeT.Class.call(ZeT.Class, pcls, body)
+
+		//~: copy constructor arguments
+		var args = ZeTA.merge([cls], arguments, 2)
+
+		//~: create the instance
+		return ZeT.createInstance.apply(ZeT, args)
 	},
 
 	/**

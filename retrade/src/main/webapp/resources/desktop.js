@@ -2109,7 +2109,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 	_set_items      : function()
 	{
-		var m = this.model; m.ids = {}
+		var m = this.model, ids = {}
 
 		if(ZeT.isu(m.items)) m.items = []
 		ZeT.assert(ZeT.isa(m.items))
@@ -2127,23 +2127,24 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 			ZeT.assert(this.COLORS.indexOf(x.color) >= 0)
 
 			//~: map (id - > item)
-			m.ids[x.id] = x
+			ids[x.id] = x
 		}
 
 		//?: {has the first there} take it
-		var e, b = m.items.indexOf(m.ids[this.firstid])
+		var e, b = m.items.indexOf(ids[this.firstid])
 		if(b < 0) b = 0
 
 		//~: the end border
 		if(!m.items[b]) { this.firstid = null; e = 0 } else
 		{
+			this.firstid = ZeT.assertn(m.items[b].id)
 			e = b + this.opts.length
 			if(e > m.items.length) e = m.items.length
 		}
 
 		//~: set the items in the range
 		for(i = b;(i < e);i++)
-			this._set_item(i-b)
+			this._set_item(i-b, m.items[i])
 
 		//~: show-hide items
 		for(i = 0;(i < this.items.length);i++)
@@ -2155,17 +2156,22 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 		//?: {has item clicked}
 		if(this.clicked)
-			this._item_ctl(this.clicked, true)
+			if(this.clicked.model)
+				this._item_ctl(this.clicked, true)
+			else
+			{
+				this._item_ctl(this.clicked, false)
+				delete this.clicked
+			}
 	},
 
-	_set_item       : function(i)
+	_set_item       : function(i, m)
 	{
-		var m = ZeT.assertn(this.model.items[i])
 		var x = ZeT.assertn(this.items[i])
 		var t = this._ti()
 
 		//~: assign the model
-		x.model = m
+		x.model = ZeT.assertn(m)
 
 		//=: time, date, text
 		ZeTD.update(t.walk('T', x.node), m.time)
@@ -2243,7 +2249,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		var r = ZeT.assertn(this._tx().walk('EV', this.struct.node()))
 
 		//?: {has no items length}
-		ZeT.assert(ZeT.isn(this.opts.length) && (this.opts.length > 0),
+		ZeT.assert(ZeT.isi(this.opts.length) && (this.opts.length > 0),
 		  'Events Menu has no length option!')
 
 		//~: create the items
@@ -2378,10 +2384,11 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		})
 	},
 
-	_ictl_click     : function(ctl)
+	_ictl_click     : function(ctl, e)
 	{
 		//?: {has no item selected}
 		if(!this.clicked) return
+		e.stopPropagation()
 
 		//?: {delete}
 		if(ctl == 'delete')
@@ -2487,8 +2494,14 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 	set             : function(model)
 	{
+		//~: update the model
 		this.menu.set(model)
 		this._interval()
+
+		//~: update the first item in the proxy
+		if(this.opts.proxy) this.opts.proxy.
+		  pageSize(this.menu.opts.length).
+		  first(this.menu.firstid)
 
 		return this
 	},
@@ -2601,28 +2614,100 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 	_do_item_delete : function(e)
 	{
-		ZeT.log('Delete item: ', e.item.id)
+		ZeT.assert(e.that == this.menu)
+		ZeT.assertn(this.menu.model)
+		var its = ZeT.assertn(this.menu.model.items)
+
+		//~: search for the item to delete
+		var i = its.indexOf(e.item)
+		ZeT.assert(i >= 0)
+
+		//~: the first item
+		var f = this.menu.first()
+
+		//!: remove that item
+		its.splice(i, 1)
+
+		//?: {the item removed was the first one}
+		if(f === e.item)
+			//?: {has more items}
+			if(i < its.length)
+				this.menu.firstid = ZeT.assertn(its[i].id)
+			//~: take the previous page
+			else if(its.length)
+			{
+				ZeT.assert(ZeT.isi(this.menu.opts.length))
+				i = its.length - this.menu.opts.length
+				this.menu.firstid = ZeT.assertn(its[(i >= 0)?(i):(0)].id)
+			}
+
+		//!: update the menu
+		this.menu.update()
+
+		//~: update the data proxy
+		if(this.opts.proxy) this.opts.proxy.
+		  first(this.menu.firstid).
+		  remove([e.item])
 	},
 
 	_do_page_delete : function(e)
 	{
-		ZeT.log('Delete page, items: ', ZeT.collect(e.that.page(), 'id'))
+		ZeT.assert(e.that == this.menu)
+		ZeT.assertn(this.menu.model)
+		var its  = ZeT.assertn(this.menu.model.items)
+		var page = ZeT.asserta(e.that.page())
+
+		//~: remove the slice of items
+		var i = its.indexOf(page[0])
+		ZeT.assert(i >= 0)
+		for(var j = 0;(j < page.length);j++)
+			ZeT.assert(its[i + j] === page[j])
+		its.splice(i, page.length)
+
+		//~: take the next or previous page
+		if(its.length && (i + 1 >= its.length))
+		{
+			ZeT.assert(ZeT.isi(this.menu.opts.length))
+			i = its.length - this.menu.opts.length
+			this.menu.firstid = ZeT.assertn(its[(i >= 0)?(i):(0)].id)
+		}
+
+		//!: update the menu
+		this.menu.update()
+
+		//~: update the data proxy
+		if(this.opts.proxy) this.opts.proxy.
+		  first(this.menu.firstid).
+		  remove(page)
 	},
 
 	_do_item_color  : function(e)
 	{
-		ZeT.log('Color item: ', e.item.id, ' as ', e.color)
+		ZeT.assert(e.that == this.menu)
+		ZeT.assertn(this.menu.model)
 
+		//~: update the color in the model item
 		e.item.color = e.color
-		e.that.update()
+		this.menu.update()
+
+		//~: update the data proxy
+		if(this.opts.proxy)
+			this.opts.proxy.color([e.item])
 	},
 
 	_do_page_color  : function(e)
 	{
-		ZeT.log('Color page as ', e.color)
+		ZeT.assert(e.that == this.menu)
+		ZeT.assertn(this.menu.model)
 
-		ZeT.each(e.that.page(), function(i){ i.color = e.color })
-		e.that.update()
+		//~: update the color in the model items of the page
+		var page = this.menu.page()
+		ZeT.each(page, function(i){ i.color = e.color })
+		this.menu.update()
+
+		//~: update the data proxy
+		if(this.opts.proxy)
+			this.opts.proxy.color(page)
 	},
 
 	_do_filter      : function(e)
@@ -2635,6 +2720,109 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 	_do_page        : function(e)
 	{
-		ZeT.log('Shift page to: ', (e.newer)?('newer'):(e.older)?('older'):('?'))
+		ZeT.assert(e.newer ^ e.older)
+
+		//~: access the page of the menu
+		ZeT.assert(e.that == this.menu)
+		ZeT.assertn(this.menu.model)
+		var its  = ZeT.assertn(this.menu.model.items)
+		var page = ZeT.asserta(e.that.page())
+
+		//~: current position & page size
+		var i    = its.indexOf(page[0])
+		ZeT.assert(i >= 0)
+		var P    = this.menu.opts.length
+		ZeT.assert(ZeT.isi(P) && (P > 0))
+		var f    = false //<-- fetch data
+
+		//?: {move left}
+		if(e.newer)
+		{
+			i -= P; if(i < P) f = 'newer'
+			this.menu.firstid = ZeT.assertn(its[(i >= 0)?(i):(0)].id)
+		}
+
+		//?: {move right}
+		if(e.older)
+		{
+			i += P; if(i + 2*P > its.length) f = 'older'
+
+			if(i < its.length)
+				this.menu.firstid = ZeT.assertn(its[i].id)
+		}
+
+		//~: update the menu
+		this.menu.update()
+
+		if(this.opts.proxy)
+		{
+			//~: update the first position in the proxy
+			this.opts.proxy.first(this.menu.firstid)
+
+			//?: {fetch new data}
+			if(f) this.opts.proxy.fetch(f)
+		}
 	}
+})
+
+
+// +----: ReTrade Events Data Proxy :----------------------------+
+
+ZeT.defineClass('ReTrade.EventsDataProxy',
+{
+	pageSize        : function(ps)
+	{
+		ZeT.assert(ZeT.isi(ps))
+		ZeT.assert(ps > 0)
+		this._page = ps
+		return this
+	},
+
+	first           : function(id)
+	{
+		this._first = id
+		ZeT.log('first: ', id)
+		return this
+	},
+
+	remove          : function(items)
+	{
+		ZeT.asserta(items)
+
+		//~: build the query parameters
+		var query = ZeT.collect(items, 'id')
+		query = ZeTS.cat('>', this._first, '; ', query.join(' '))
+
+		//~: issue the request
+		this.request('delete', query)
+	},
+
+	color           : function(items)
+	{
+		ZeT.asserta(items)
+
+		//~: build the query parameters
+		var query = []; ZeT.each(items, function(i)
+		{
+			query.push(ZeT.assertn(i.id))
+			query.push(ZeT.asserts(i.color))
+		})
+
+		//~: issue the request
+		this.request('color', query.join(' '))
+	},
+
+	fetch           : function(dir)
+	{
+		ZeT.assert((dir === 'older') || (dir === 'newer'))
+
+		//~: build the query parameters
+		var query = ZeTS.cat('>', this._first, '; ', dir)
+
+		//~: issue the request
+		this.request('fetch', query)
+	},
+
+	request         : function(task, query)
+	{}
 })
