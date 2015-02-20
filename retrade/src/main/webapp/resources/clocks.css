@@ -337,7 +337,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 
 .retrade-eventsnum-menu-area
 {
-  position: absolute;
+  position: absolute; display: none;
 }
 
 .retrade-eventsnum-menu

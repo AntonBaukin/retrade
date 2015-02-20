@@ -1747,7 +1747,7 @@ ReTrade.Visual = ZeT.defineClass('ReTrade.Visual', {
 		this.struct = new ZeT.Struct(n)
 
 		//?: {has parent}
-		var p = this.opts.parent;
+		var p = this.opts.parent
 		if(ZeT.iss(p)) p = ZeTD.n(p)
 		if(this.opts.parent)
 		{
@@ -2039,7 +2039,12 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 	set             : function(model)
 	{
 		this.model = ZeT.assertn(model)
-		return this.update()
+
+		model.updated = false
+		this.update()
+		model.updated = true
+
+		return this
 	},
 
 	update          : function()
@@ -2129,6 +2134,10 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 			//~: map (id - > item)
 			ids[x.id] = x
 		}
+
+		//?: {has first item provided}
+		if(m.firstid && !m.updated)
+			this.firstid = m.firstid
 
 		//?: {has the first there} take it
 		var e, b = m.items.indexOf(ids[this.firstid])
@@ -2494,6 +2503,9 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 	set             : function(model)
 	{
+		ZeT.assertn(model)
+		ZeT.assert(ZeT.isi(model.txn), 'Model transaction number is not defined!')
+
 		//~: update the model
 		this.menu.set(model)
 		this._interval()
@@ -2502,6 +2514,39 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 		if(this.opts.proxy) this.opts.proxy.
 		  pageSize(this.menu.opts.length).
 		  first(this.menu.firstid)
+
+		return this
+	},
+
+	/**
+	 * Updates not all the model, but just the numbers section.
+	 * If transaction number changes, may execute request to
+	 * the data proxy.
+	 */
+	numbers         : function(model)
+	{
+		ZeT.assertn(model)
+		ZeT.assertn(this.menu.model)
+
+		//?: {has tx-number not changed}
+		ZeT.assert(ZeT.isi(model.txn), 'Model transaction number is not defined!')
+		if(this.menu.model.txn === model.txn)
+			return this
+
+		//=: tx-number
+		this.menu.model.txn = model.txn
+
+		//=: numbers
+		this.menu.model.numbers = ZeT.assertn(model.numbers)
+
+		//~: update the menu
+		this.menu.update()
+
+		//?: {has page not full}
+		ZeT.assert(ZeT.isi(this.menu.opts.length))
+		if(this.opts.proxy)
+			if(this.menu.page().length != this.menu.opts.length)
+				this.opts.proxy.fetch('older')
 
 		return this
 	},
@@ -2535,7 +2580,7 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 			var n = $(this.number.struct.node())
 			m.show().offset({
-			  top : n.offset().top + n.outerHeight() + 10,
+			  top : n.offset().top + n.outerHeight() + 2,
 			  left: n.offset().left + n.outerWidth() - m.outerWidth()
 			})
 		}
@@ -2712,10 +2757,16 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 	_do_filter      : function(e)
 	{
-		ZeT.log('Filter by ', e.color)
+		ZeT.assert(e.that == this.menu)
+		ZeT.assertn(this.menu.model)
 
-		e.that.model.filter = e.color
+		//~: display filter color in the model
+		this.menu.model.filter = e.color
 		e.that.update()
+
+		//~: update the data proxy
+		if(this.opts.proxy)
+			this.opts.proxy.filter(e.color)
 	},
 
 	_do_page        : function(e)
@@ -2781,7 +2832,6 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 	first           : function(id)
 	{
 		this._first = id
-		ZeT.log('first: ', id)
 		return this
 	},
 
@@ -2821,6 +2871,23 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 
 		//~: issue the request
 		this.request('fetch', query)
+	},
+
+	filter          : function(color)
+	{
+		ZeT.assert(['R','G','O','N'].indexOf(color) >= 0)
+
+		//~: build the query parameters
+		var query = ZeTS.cat('>', this._first, '; ', color)
+
+		//~: issue the request
+		this.request('filter', query)
+	},
+
+	numbers         : function()
+	{
+		//~: issue the request
+		this.request('numbers')
 	},
 
 	request         : function(task, query)

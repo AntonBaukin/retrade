@@ -348,7 +348,23 @@ div.retrade-desktop-event .retrade-boshadow-N-content,
 
 div.retrade-desktop-eventsnum-area
 {
-  margin-left: 2px;
+  min-width: 40px; height: 35px;
+  margin-left: 2px; cursor: pointer;
+}
+
+div.retrade-desktop-clocks-area
+{
+  width: 90px; height: 35px;
+}
+
+.retrade-eventsnum-menu-area
+{
+  z-index: 100;
+}
+
+.retrade-eventsnum-menu-area div
+{
+  box-sizing: content-box;
 }
 
 

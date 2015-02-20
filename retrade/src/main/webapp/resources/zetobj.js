@@ -921,11 +921,13 @@ var ZeT = window.ZeT = window.ZeT || {
 
 	log              : function (/* strings */)
 	{
-		var msg = String.prototype.concat.apply('', arguments)
-		if(ZeTS.ises(msg)) return
+		var msg = ZeTS.cat.apply(ZeTS, arguments)
+		if(ZeTS.ises(msg)) return this
 
-		if(ZeT.i$f(console, 'log'))
-			console.log(msg)
+		if(!ZeT._console) ZeT._console = console && ZeT.isf(console.log)
+		if( ZeT._console) console.log(msg)
+
+		return this
 	},
 
 
