@@ -9,7 +9,6 @@ import com.tverts.support.EX;
  * Provides configuration information global
  * to all the layers of the application.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public class SystemConfig
@@ -28,7 +27,7 @@ public class SystemConfig
 	{}
 
 
-	/* public: SystemConfig (bean) interface */
+	/* System Configuration */
 
 	/**
 	 * Tells that the application runs in development
@@ -43,19 +42,19 @@ public class SystemConfig
 
 	private boolean debug;
 
-	public void    setDebug(boolean debug)
+	public void setDebug(boolean debug)
 	{
 		this.debug = debug;
 	}
 
-	public int     getDumpLimit()
+	public int getDumpLimit()
 	{
 		return (dumpLimit == 0)?(512):(dumpLimit);
 	}
 
 	private int dumpLimit;
 
-	public void    setDumpLimit(int dumpLimit)
+	public void setDumpLimit(int dumpLimit)
 	{
 		EX.assertx(dumpLimit >= 0);
 		this.dumpLimit = dumpLimit;
@@ -64,14 +63,14 @@ public class SystemConfig
 	/**
 	 * Default grid size.
 	 */
-	public int     getGridSize()
+	public int getGridSize()
 	{
 		return (gridSize != 0)?(gridSize):(25);
 	}
 
 	private int gridSize;
 
-	public void    setGridSize(int gridSize)
+	public void setGridSize(int gridSize)
 	{
 		EX.assertx(gridSize >= 1);
 		this.gridSize = gridSize;
@@ -81,16 +80,40 @@ public class SystemConfig
 	 * Defines the default length of Login Sessions
 	 * in minutes. Default is 120 (2 hours).
 	 */
-	public int     getSessionTime()
+	public int getSessionTime()
 	{
 		return (sessionTime == 0)?(120):(sessionTime);
 	}
 
 	private int sessionTime;
 
-	public void    setSessionTime(int st)
+	public void setSessionTime(int st)
 	{
 		EX.assertx(st >= 0);
 		this.sessionTime = st;
+	}
+
+	public int getUserEventsPage()
+	{
+		return (userEventsPage == 0)?(5):(userEventsPage);
+	}
+
+	private int userEventsPage;
+
+	public void setUserEventsPage(int userEventsPage)
+	{
+		this.userEventsPage = userEventsPage;
+	}
+
+	public int getUserEventsFetch()
+	{
+		return (userEventsFetch == 0)?(20):(userEventsFetch);
+	}
+
+	private int userEventsFetch;
+
+	public void setUserEventsFetch(int userEventsFetch)
+	{
+		this.userEventsFetch = userEventsFetch;
 	}
 }

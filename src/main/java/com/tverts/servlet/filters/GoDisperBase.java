@@ -48,6 +48,9 @@ public class GoDisperBase implements GoDisper
 			if(d == null)
 				return false;
 
+			//~: set cache options
+			cacheControl(task);
+
 			//!: forward
 			d.forward(task.getRequest(), task.getResponse());
 		}
@@ -90,6 +93,15 @@ public class GoDisperBase implements GoDisper
 		//~: check the file exists
 		File   file = new File(path);
 		return file.exists() && file.isFile();
+	}
+
+	protected void    cacheControl(FilterTask task)
+	{
+		if(!task.getResponse().containsHeader("Cache-Control"))
+		{
+			task.getResponse().addHeader("Cache-Control", "no-cache, max-age=0");
+			task.getResponse().addHeader("Expires", "0");
+		}
 	}
 
 

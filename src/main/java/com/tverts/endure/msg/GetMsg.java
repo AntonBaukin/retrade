@@ -163,10 +163,10 @@ public class GetMsg extends GetObjectBase
 		//?: {green}  ++ green count
 		if(m.getColor() == 'G')
 			mox.setGreen(mox.getGreen() + 1);
-			//?: {red}    ++ green count
+		//?: {red}    ++ green count
 		else if(m.getColor() == 'R')
 			mox.setRed(mox.getRed() + 1);
-			//?: {orange} ++ orange count
+		//?: {orange} ++ orange count
 		else if(m.getColor() == 'O')
 			mox.setOrange(mox.getOrange() + 1);
 
@@ -195,4 +195,9 @@ public class GetMsg extends GetObjectBase
 		Q(Q, "mb", mb).executeUpdate();
 		return this;
 	}
+
+
+	/* Messages Fetch */
+
+
 }
