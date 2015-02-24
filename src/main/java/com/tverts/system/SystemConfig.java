@@ -20,7 +20,7 @@ public class SystemConfig
 		return INSTANCE;
 	}
 
-	private static final SystemConfig INSTANCE =
+	public static final SystemConfig INSTANCE =
 	  new SystemConfig();
 
 	protected SystemConfig()
@@ -93,6 +93,10 @@ public class SystemConfig
 		this.sessionTime = st;
 	}
 
+	/**
+	 * The page size of the UI Events messages list.
+	 * Defaults to the 5 items.
+	 */
 	public int getUserEventsPage()
 	{
 		return (userEventsPage == 0)?(5):(userEventsPage);
@@ -105,9 +109,13 @@ public class SystemConfig
 		this.userEventsPage = userEventsPage;
 	}
 
+	/**
+	 * The number of UI Events messages to select by the right
+	 * and the left sides of the current page. Defaults to 2 pages.
+	 */
 	public int getUserEventsFetch()
 	{
-		return (userEventsFetch == 0)?(20):(userEventsFetch);
+		return (userEventsFetch != 0)?(userEventsFetch):(2*getUserEventsPage());
 	}
 
 	private int userEventsFetch;

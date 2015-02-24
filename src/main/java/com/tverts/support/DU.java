@@ -337,7 +337,7 @@ public class DU
 
 		int dd = Integer.parseInt(s.substring(0,      d0));
 		int mm = Integer.parseInt(s.substring(d0 + 1, d1));
-		int yy = Integer.parseInt(s.substring(d1 + 1    ));
+		int yy = Integer.parseInt(s.substring(d1 + 1, d1 + 5));
 
 		cl.set(Calendar.DAY_OF_MONTH, dd);
 		cl.set(Calendar.MONTH,        mm - 1);
@@ -419,6 +419,29 @@ public class DU
 		lennum(cl.get(Calendar.YEAR), 4, sb);
 	}
 
+	/**
+	 * Takes days delta from now to that arguments and writes
+	 * prefix string taken from {@link #DAYSDIFF_RU}.
+	 *
+	 * After the prefix writes the date abbr without the the year.
+	 */
+	public static void   namedDateDiffStrRu
+	  (Date then, StringBuilder sb, Date now, Calendar cl)
+	{
+		int d = diffDays(now, then, cl);
+		cl.setTime(then);
+
+		//?: {has the prefix}
+		if(d < DAYSDIFF_RU.length)
+			sb.append(DAYSDIFF_RU[d]).append(' ');
+
+		//~: day
+		lennum(cl.get(Calendar.DAY_OF_MONTH), 2, sb);
+
+		//~: month abbreviation
+		sb.append(' ').append(MONTHS_ABBR_RU[cl.get(Calendar.MONTH)]);
+	}
+
 	private static final String[] MONTHS_RU   =
 	{
 	  "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля",
@@ -435,5 +458,10 @@ public class DU
 	{
 	  "", "Воскресенье", "Понедельник", "Вторник",
 	  "Среда", "Четверг", "Пятница", "Суббота",
+	};
+
+	private static final String[] DAYSDIFF_RU =
+	{
+	  "сегодня", "вчера", "позавч."
 	};
 }

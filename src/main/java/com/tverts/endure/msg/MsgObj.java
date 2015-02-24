@@ -34,12 +34,14 @@ public class MsgObj extends OxNumericBase implements OxSearch
 
 	public void    updateOx()
 	{
-		super.updateOx();
-
 		Message m = this.getOx();
 
+		//=: message time
+		if(m.getTime() == null)
+			m.setTime(new java.util.Date()); //<-- back update
+
 		//=: message color
-		this.color    = m.getColor();
+		this.color = m.getColor();
 
 		//?: {green}
 		if(color == 'G')
@@ -59,9 +61,14 @@ public class MsgObj extends OxNumericBase implements OxSearch
 			this.orangeRed = this.red = EX.assertn(getPrimaryKey());
 			this.green = null;
 		}
+		else if(color != 'N')
+			throw EX.state("Wrong message color: [", color, "]!");
 
 		//=: ox-search key words
 		this.oxSearch = MsgAdapters.oxSearch(m);
+
+		//~: as the last operation...
+		super.updateOx();
 	}
 
 

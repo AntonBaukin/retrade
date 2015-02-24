@@ -78,4 +78,15 @@ public class MsgAdapters
 		//?: {message has no title}
 		return SU.sXe(msg.getTitle())?(null):SU.oxtext(msg.getTitle());
 	}
+
+	public static String msgScript(Message msg)
+	{
+		Object a = adapter(msg);
+
+		//?: {adapter supports scripts generation}
+		if(a instanceof MsgScript)
+			return ((MsgScript)a).makeScript(msg);
+
+		return "";
+	}
 }

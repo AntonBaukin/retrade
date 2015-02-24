@@ -2,7 +2,9 @@ package com.tverts.endure.msg;
 
 /* Java */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /* Spring Framework */
@@ -13,6 +15,14 @@ import org.springframework.stereotype.Component;
 
 import com.tverts.hibery.GetObjectBase;
 import com.tverts.hibery.HiberPoint;
+
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
+
+/* com.tverts: system */
+
+import com.tverts.system.SystemConfig;
 
 /* com.tverts: support */
 
@@ -193,5 +203,148 @@ public class GetMsg extends GetObjectBase
 
 	/* Messages Fetch */
 
+	/**
+	 * Returns Message Box object of the current user.
+	 */
+	public MsgBoxObj   msgBox()
+	{
+		return EX.assertn( findMsgBox(SecPoint.login()),
+		  "Login [", SecPoint.login(), "] has no Message Box!"
+		);
+	}
 
+	/**
+	 * This complex function finds the messages of the Message Box
+	 * given by the primary key and places them in the resulting list.
+	 *
+	 * Filtering color must be one of the following:
+	 *  N  for all the messages;
+	 *  R  for red messages only;
+	 *  G  for green messages only;
+	 *  O  for red and orange messages.
+	 *
+	 * If 'id' argument is defined, the list found is centered by it:
+	 * the center page starts with this id. Also left and right 2-pages.
+	 *
+	 * Array 'no' of [2] items has the primary keys of the closest
+	 * newer-item, and the older-item out of the range given.
+	 * If an item are undefined, no such an item does exist.
+	 *
+	 * The size of the page is defined by {@link SystemConfig#getUserEventsPage()}
+	 * system parameter. Parameter {@link SystemConfig#getUserEventsFetch()}
+	 * defines the number of messages to fetch.
+	 *
+	 * The order of the items returned is always from the newest to the oldest.
+	 */
+	@SuppressWarnings("unchecked")
+	public void         loadMsgs(Long mb, List<MsgObj> res, Long[] no, Long id, char color)
+	{
+/*
+
+ from MsgObj where (msgBox.id = :mb) and (IX <= :id) order by IX desc
+ from MsgObj where (msgBox.id = :mb) and (IX  > :id) order by IX asc
+ from MsgObj where (msgBox.id = :mb) order by IX desc
+
+ */
+
+		//~: find the filtering field
+		final String IX = EX.assertn(
+		  (color == 'N')?("id"):(color == 'R')?("red"):
+		  (color == 'G')?("green"):(color == 'O')?("orangeRed"):(null)
+		);
+
+		//~: number of older items
+		final int ON = SystemConfig.INSTANCE.getUserEventsFetch();
+		EX.assertx(ON > 0);
+
+		//~: number of newer items
+		final int NN = ON + SystemConfig.INSTANCE.getUserEventsPage();
+		EX.assertx((NN > 0) & (NN > ON));
+
+		//?: {select the initial range only}
+		if(id == null)
+		{
+			final String Q =
+
+"from MsgObj where (msgBox.id = :mb) order by IX desc".
+			replaceAll("IX", IX);
+
+			//~: select the items
+			List<MsgObj> newer = (List<MsgObj>) Q(Q, "mb", mb).
+			  setMaxResults(NN+1).list();
+
+			//?: {got the required number}
+			if(newer.size() == NN+1)
+			{
+				no[1] = newer.get(NN).getPrimaryKey();
+				newer.remove(NN);
+			}
+
+			//~: take that items and return them
+			res.addAll(newer);
+			return;
+		}
+
+		//<: select the newer items
+
+		//~: query to select newer items
+		final String NQ =
+
+"from MsgObj where (msgBox.id = :mb) and (IX  > :id) order by IX asc".
+		  replaceAll("IX", IX);
+
+		//~: select the items
+		List<MsgObj> newer = (List<MsgObj>) Q(NQ, "mb", mb, "id", id).
+		  setMaxResults(NN + 1).list();
+
+		//?: {got the required number}
+		if(newer.size() == NN+1)
+		{
+			no[1] = newer.get(NN).getPrimaryKey();
+			newer.remove(NN);
+		}
+
+		//!: reverse the items as they my be index-descending
+		Collections.reverse(newer);
+		res.addAll(newer);
+
+		//>: select the newer items
+
+
+		//<: select the older items
+
+		//~: query to select older items
+		final String OQ =
+"from MsgObj where (msgBox.id = :mb) and (IX <= :id) order by IX desc".
+		  replaceAll("IX", IX);
+
+		//~: select the items
+		List<MsgObj> older = (List<MsgObj>) Q(OQ, "mb", mb, "id", id).
+		  setMaxResults(ON + 1).list();
+
+		//?: {got the required number}
+		if(older.size() == ON+1)
+		{
+			no[0] = older.get(ON).getPrimaryKey();
+			older.remove(ON);
+		}
+
+		res.addAll(older);
+
+		//>: select the older items
+	}
+
+	public List<MsgObj> loadMsgs(Long mb, Long[] no, Long id, char color)
+	{
+		List<MsgObj> res = new ArrayList<>(
+		  SystemConfig.getInstance().getUserEventsPage() +
+		  2 * SystemConfig.getInstance().getUserEventsFetch()
+		);
+
+		if(no == null) no = new Long[2];
+		EX.assertx(no.length == 2);
+
+		loadMsgs(mb, res, no, id, color);
+		return res;
+	}
 }
