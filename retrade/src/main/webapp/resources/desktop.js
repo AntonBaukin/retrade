@@ -2839,12 +2839,10 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 	{
 		ZeT.asserta(items)
 
-		//~: build the query parameters
-		var query = ZeT.collect(items, 'id')
-		query = ZeTS.cat('>', this._first, '; ', query.join(' '))
-
 		//~: issue the request
-		this.request('delete', query)
+		this.request('delete', this._query(
+		  ZeT.collect(items, 'id').join(' ')
+		))
 	},
 
 	color           : function(items)
@@ -2866,11 +2864,8 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 	{
 		ZeT.assert((dir === 'older') || (dir === 'newer'))
 
-		//~: build the query parameters
-		var query = ZeTS.cat('>', this._first, '; ', dir)
-
 		//~: issue the request
-		this.request('fetch', query)
+		this.request('fetch', this._query(dir))
 	},
 
 	filter          : function(color)
@@ -2878,11 +2873,8 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 		ZeT.assert(['R','G','O','N'].indexOf(color) >= 0)
 		this._color = color
 
-		//~: build the query parameters
-		var query = ZeTS.cat('>', this._first, '; ', color)
-
 		//~: issue the request
-		this.request('filter', query)
+		this.request('filter', this._query())
 	},
 
 	numbers         : function()

@@ -214,7 +214,7 @@ ${v.checkModelRequested}
 
         <f:facet name = "extjs-props">
           width: extjsf.ex(12), maskRe: retrade.rdecimal,
-          validator: ZeT.fbind(retrade.vdecimal, null, { blank: false }),
+          validator: ZeT.fbind(retrade.vdecimal, retrade, { blank: false }),
           disabled: ('false' == "#{v.measureView.fractional}")
         </f:facet>
 
