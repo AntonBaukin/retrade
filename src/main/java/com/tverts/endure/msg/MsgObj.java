@@ -41,6 +41,25 @@ public class MsgObj extends OxNumericBase implements OxSearch
 		//=: message color
 		this.color    = m.getColor();
 
+		//?: {green}
+		if(color == 'G')
+		{
+			this.green = EX.assertn(getPrimaryKey());
+			this.orangeRed = this.red = null;
+		}
+		//?: {orange}
+		else if(color == 'O')
+		{
+			this.orangeRed = EX.assertn(getPrimaryKey());
+			this.green = this.red = null;
+		}
+		//?: {red}
+		else if(color == 'R')
+		{
+			this.orangeRed = this.red = EX.assertn(getPrimaryKey());
+			this.green = null;
+		}
+
 		//=: ox-search key words
 		this.oxSearch = MsgAdapters.oxSearch(m);
 	}
@@ -58,18 +77,6 @@ public class MsgObj extends OxNumericBase implements OxSearch
 	public void setMsgBox(MsgBoxObj msgBox)
 	{
 		this.msgBox = msgBox;
-	}
-
-	public Long getActive()
-	{
-		return active;
-	}
-
-	private Long active;
-
-	public void setActive(Long active)
-	{
-		this.active = active;
 	}
 
 	public char getColor()
@@ -94,5 +101,54 @@ public class MsgObj extends OxNumericBase implements OxSearch
 	public void setOxSearch(String oxSearch)
 	{
 		this.oxSearch = oxSearch;
+	}
+
+
+	/* Special Indices */
+
+	/**
+	 * Assigned to the primary key when the message is green.
+	 */
+	public Long getGreen()
+	{
+		return green;
+	}
+
+	private Long green;
+
+	public void setGreen(Long green)
+	{
+		this.green = green;
+	}
+
+	/**
+	 * Assigned to the primary key when
+	 * the message is orange or red.
+	 */
+	public Long getOrangeRed()
+	{
+		return orangeRed;
+	}
+
+	private Long orangeRed;
+
+	public void setOrangeRed(Long orangeRed)
+	{
+		this.orangeRed = orangeRed;
+	}
+
+	/**
+	 * Assigned to the primary key when the message is red.
+	 */
+	public Long getRed()
+	{
+		return red;
+	}
+
+	private Long red;
+
+	public void setRed(Long red)
+	{
+		this.red = red;
 	}
 }

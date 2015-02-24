@@ -93,6 +93,11 @@ public class GetMsg extends GetObjectBase
 		{
 			m = new MsgObj();
 
+			//=: primary key
+			HiberPoint.setPrimaryKey(session(), m,
+			  HiberPoint.isTestPrimaryKey(mb)
+			);
+
 			if(x != null)
 			{
 				//=: color
@@ -108,14 +113,6 @@ public class GetMsg extends GetObjectBase
 			else
 				//=: ox-object
 				(x = m).setOx(msg);
-
-			//=: primary key
-			HiberPoint.setPrimaryKey(session(), m,
-			  HiberPoint.isTestPrimaryKey(mb)
-			);
-
-			//=: active
-			m.setActive(m.getPrimaryKey());
 
 			//=: message box
 			m.setMsgBox(get(MsgBoxObj.class, mb));
@@ -139,9 +136,6 @@ public class GetMsg extends GetObjectBase
 
 		//=: ox-object
 		m.setOx(msg);
-
-		//=: active
-		m.setActive(m.getPrimaryKey());
 
 		//=: message box
 		m.setMsgBox(box);
