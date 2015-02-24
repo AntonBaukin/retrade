@@ -6,11 +6,13 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.hbm.xml" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.hbm.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java" />
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-61 [beta]:">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,14 +38,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GetMsg.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java">
+      <file leaf-file-name="main-topbar.xhtml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0798045" vertical-offset="833" max-vertical-offset="2909">
-              <caret line="120" column="54" selection-start-line="120" selection-start-column="27" selection-end-line="120" selection-end-column="27" />
-              <folding>
-                <element signature="method#send#1;class#GetMsg#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="-2.6309524" vertical-offset="8347" max-vertical-offset="9938">
+              <caret line="400" column="8" selection-start-line="400" selection-start-column="8" selection-end-line="400" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -58,7 +58,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.view-modes/page.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html" />
@@ -66,15 +65,16 @@
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperBase.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.hbm.xml" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
       </list>
     </option>
   </component>
@@ -196,7 +196,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -268,9 +267,66 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".items" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -331,11 +387,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items" />
       <recent name="$PROJECT_DIR$/retrade/src/main/webapp/resources" />
       <recent name="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests" />
       <recent name="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/actions" />
       <recent name="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg" />
-      <recent name="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/firm" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests" />
@@ -607,7 +663,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="domain-47 [beta]: removed Unity Link. Introduced Message Link." />
     <MESSAGE value="domain-47 [beta]: introduced Action Builder for Message Box." />
     <MESSAGE value="domain-47 [beta]: creating Message Links for the test users." />
     <MESSAGE value="domain-47 [beta]: some simple messaging support..." />
@@ -632,7 +687,8 @@
     <MESSAGE value="ui-62 [stable]: implemented ReTrade user menu and the events with the new Shadow Border." />
     <MESSAGE value="ui-61 [alpha]: introduced Events menu Data Proxy, going to JSP server-side..." />
     <MESSAGE value="ui-61 [beta]: integrated Events components into real ReTrade user interface. Only JSON data generation is left..." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [beta]: integrated Events components into real ReTrade user interface. Only JSON data generation is left..." />
+    <MESSAGE value="domain-47 [stable]: replaced is-active index field of Message Object with red, orange-red, green indices." />
+    <option name="LAST_COMMIT_MESSAGE" value="domain-47 [stable]: replaced is-active index field of Message Object with red, orange-red, green indices." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -668,20 +724,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoPageFilterBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7004454" vertical-offset="884" max-vertical-offset="2700">
-          <caret line="113" column="24" selection-start-line="89" selection-start-column="24" selection-end-line="89" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.64365256" vertical-offset="0" max-vertical-offset="1476">
-          <caret line="34" column="18" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperCached.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.32182628" vertical-offset="0" max-vertical-offset="2139">
@@ -718,41 +760,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15144767" vertical-offset="5627" max-vertical-offset="14039">
-          <caret line="339" column="36" selection-start-line="339" selection-start-column="36" selection-end-line="339" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.058486238" vertical-offset="6851" max-vertical-offset="10664">
-          <caret line="406" column="10" selection-start-line="406" selection-start-column="10" selection-end-line="406" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37861916" vertical-offset="12580" max-vertical-offset="15110">
-          <caret line="2573" column="66" selection-start-line="760" selection-start-column="4" selection-end-line="760" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.7293987" vertical-offset="9877" max-vertical-offset="20397">
           <caret line="384" column="66" selection-start-line="384" selection-start-column="25" selection-end-line="384" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8055879" vertical-offset="2198" max-vertical-offset="3732">
-          <caret line="172" column="56" selection-start-line="170" selection-start-column="7" selection-end-line="170" selection-end-column="7" />
           <folding />
         </state>
       </provider>
@@ -791,11 +802,60 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0798045" vertical-offset="833" max-vertical-offset="2909">
-          <caret line="120" column="54" selection-start-line="120" selection-start-column="27" selection-end-line="120" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.3975501" vertical-offset="833" max-vertical-offset="3193">
+          <caret line="102" column="43" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.1514658" vertical-offset="11941" max-vertical-offset="13806">
+          <caret line="744" column="18" selection-start-line="744" selection-start-column="18" selection-end-line="744" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.84855235" vertical-offset="14113" max-vertical-offset="15790">
+          <caret line="2901" column="6" selection-start-line="875" selection-start-column="6" selection-end-line="875" selection-end-column="6" />
           <folding>
-            <element signature="method#send#1;class#GetMsg#0" expanded="true" />
+            <marker date="1424766010000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1424766010000" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/selset.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.061926607" vertical-offset="14" max-vertical-offset="1416">
+          <caret line="4" column="43" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42956927" vertical-offset="2436" max-vertical-offset="3817">
+          <caret line="167" column="5" selection-start-line="165" selection-start-column="5" selection-end-line="165" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37041286" vertical-offset="663" max-vertical-offset="2504">
+          <caret line="58" column="6" selection-start-line="58" selection-start-column="6" selection-end-line="58" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6309524" vertical-offset="8347" max-vertical-offset="9938">
+          <caret line="400" column="8" selection-start-line="400" selection-start-column="8" selection-end-line="400" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>

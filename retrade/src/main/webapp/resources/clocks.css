@@ -738,8 +738,11 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 {
   font-family: 'Tahoma', sans-serif;
   font-size: 9px; text-transform: uppercase;
-  line-height: 10px; margin-top: 3px;
+  line-height: 10px; margin-top: 2px;
   text-align: center; cursor: default;
+  margin-left: 38px; margin-right: 38px;
+  background-color: #F0F0F0;
+  padding: 1px 0; border: 1px dashed white;
 }
 
 .retrade-eventsnum-controls > div.allitems > div.gray,

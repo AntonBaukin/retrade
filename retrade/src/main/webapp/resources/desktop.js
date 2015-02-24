@@ -2876,6 +2876,7 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 	filter          : function(color)
 	{
 		ZeT.assert(['R','G','O','N'].indexOf(color) >= 0)
+		this._color = color
 
 		//~: build the query parameters
 		var query = ZeTS.cat('>', this._first, '; ', color)
@@ -2891,5 +2892,13 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 	},
 
 	request         : function(task, query)
-	{}
+	{},
+
+	_query          : function(str)
+	{
+		var f = ZeT.assertn(this._first)
+		var c = ZeT.asserts(this._color || 'N')
+
+		return ZeTS.cat('>', f, ' ', c, '; ', str)
+	}
 })
