@@ -30,7 +30,8 @@
           <file>file://$PROJECT_DIR$/retrade/build.xml</file>
           <target>explode-rsync</target>
           <build-properties>
-            <build-property name="server" value="192.168.2.14" />
+            <build-property name="server" value="192.168.0.34" />
+            <build-property name="password" value="sqr4eq22!" />
           </build-properties>
         </options>
       </properties>
@@ -415,9 +416,6 @@
   </component>
   <component name="IvyProjectSettings">
     <dependencies />
-  </component>
-  <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$/../projects/misc.js/linenum.js" libraries="{Node Modules}" />
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="-Xlint:unchecked" />

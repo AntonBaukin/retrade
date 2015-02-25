@@ -143,12 +143,35 @@
     = support tasks                                   =
     =================================================-->
 
-  <target name = 'explode-rsync'>
+  <condition property = '?Windows'>
+    <os family = 'windows'/>
+  </condition>
+
+
+  <target name    = 'explode-rsync'
+          depends = 'explode-rsync-general, explode-rsync-win'/>
+
+
+  <target name    = 'explode-rsync-win' if = '?Windows'>
+
+    <exec executable = 'cmd'>
+
+      <arg value = '/c'/>
+      <arg value = 'start /WAIT explode-rsync.bat'/>
+
+      <arg value = '${password}'/>
+      <arg value = '${server}'/>
+
+    </exec>
+  </target>
+
+
+  <target name    = 'explode-rsync-general' unless = '?Windows'>
 
     <exec executable = 'sshpass'>
 
       <arg value = '-p'/>
-      <arg value = 'sqr4eq22!'/>
+      <arg value = '${password}'/>
 
       <arg value = 'rsync'/>
       <arg value = '-rtz'/>
@@ -156,8 +179,8 @@
       <arg value = '--chmod=g=rwx'/>
 
       <arg value = '-e'/>
-      <arg value = 'ssh'/>
-      <arg value = '${basedir}/target/web/'/>
+      <arg value = 'ssh -oStrictHostKeyChecking=no'/>
+      <arg value = 'target/web/'/>
       <arg value = 'omicron@${server}:/home/tomee/webapps/retrade/'/>
 
     </exec>

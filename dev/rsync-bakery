@@ -1,2 +1,0 @@
-#!/bin/bash
-sshpass -p "sqr4eq22!" rsync -rtz "--chown=omicron:www" "--chmod=g=rwx" $@ -e ssh ~/Sources/bakery/retrade/target/web/ omicron@192.168.2.129:/home/omicron/shared/tomee/webapps/retrade/
