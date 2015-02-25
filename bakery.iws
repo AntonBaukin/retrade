@@ -7,16 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgScript.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/DU.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/DU.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Messages.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Msg.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/ActLogin.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/ActLogin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/ActMsgBox.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/ActMsgBox.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/GenTestUsers.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/GenTestUsers.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgAdapters.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgAdapters.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Message.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Message.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/OnAuthLoginCreated.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/OnAuthLoginCreated.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-measure.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-measure.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,14 +43,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DU.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/DU.java">
+      <file leaf-file-name="MsgObj.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6368078" vertical-offset="2635" max-vertical-offset="3657">
-              <caret line="464" column="33" selection-start-line="464" selection-start-column="33" selection-end-line="464" selection-end-column="33" />
-              <folding>
-                <element signature="method#namedDateDiffStrRu#0;class#DU#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.47068405" vertical-offset="0" max-vertical-offset="2042">
+              <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -64,23 +63,23 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.hbm.xml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgBox.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Messages.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgScript.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgAdapters.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-measure.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/DU.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Messages.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Message.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/GenTestUsers.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/ActLogin.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/ActMsgBox.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/OnAuthLoginCreated.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Msg.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java" />
       </list>
     </option>
   </component>
@@ -651,7 +650,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="domain-47 [beta]: creating Message Links for the test users." />
     <MESSAGE value="domain-47 [beta]: some simple messaging support..." />
     <MESSAGE value="domain-47 [beta]: introduced domain Events Dispatcher. Reacting on Auth Login created. Domain messages are not saved now..." />
     <MESSAGE value="ui-62 [alpha]: started rewriting of 0-ZeT library based on Node.js 0-ZeT classes and a new 'Good' style." />
@@ -676,18 +674,11 @@
     <MESSAGE value="ui-61 [beta]: integrated Events components into real ReTrade user interface. Only JSON data generation is left..." />
     <MESSAGE value="domain-47 [stable]: replaced is-active index field of Message Object with red, orange-red, green indices." />
     <MESSAGE value="ui-61 [beta]: extracted UI events into own XHTML file." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [beta]: extracted UI events into own XHTML file." />
+    <MESSAGE value="ui-61 [beta]: implemented basic request to load UI Messages. Still need other requests to uievents.jsp..." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [beta]: implemented basic request to load UI Messages. Still need other requests to uievents.jsp..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java</url>
-          <line>70</line>
-          <properties />
-          <option name="timeStamp" value="293" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -720,78 +711,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgScript.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1325167" vertical-offset="0" max-vertical-offset="1102">
-          <caret line="7" column="26" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11358575" vertical-offset="2363" max-vertical-offset="8633">
-          <caret line="300" column="3" selection-start-line="145" selection-start-column="3" selection-end-line="145" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/Functions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.94654787" vertical-offset="1207" max-vertical-offset="2428">
-          <caret line="121" column="17" selection-start-line="70" selection-start-column="3" selection-end-line="83" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgAdapters.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1969">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35349718" vertical-offset="1275" max-vertical-offset="1974">
-          <caret line="99" column="21" selection-start-line="86" selection-start-column="16" selection-end-line="86" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5464098" vertical-offset="2663" max-vertical-offset="3529">
-          <caret line="177" column="7" selection-start-line="175" selection-start-column="7" selection-end-line="175" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-measure.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2572759" vertical-offset="3451" max-vertical-offset="5755">
-          <caret line="216" column="56" selection-start-line="216" selection-start-column="56" selection-end-line="216" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5144766" vertical-offset="1612" max-vertical-offset="3074">
-          <caret line="342" column="46" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="886" max-vertical-offset="2527">
-          <caret line="70" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/EX.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="1141" max-vertical-offset="2510">
@@ -812,15 +731,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="2.9675677" vertical-offset="1039" max-vertical-offset="3224">
           <caret line="214" column="14" selection-start-line="158" selection-start-column="1" selection-end-line="158" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21441442" vertical-offset="544" max-vertical-offset="1745">
-          <caret line="39" column="29" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -828,7 +738,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5260586" vertical-offset="306" max-vertical-offset="1379">
           <caret line="50" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -850,11 +759,89 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/DU.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6368078" vertical-offset="2635" max-vertical-offset="3657">
-          <caret line="464" column="33" selection-start-line="464" selection-start-column="33" selection-end-line="464" selection-end-column="33" />
-          <folding>
-            <element signature="method#namedDateDiffStrRu#0;class#DU#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.9844098" vertical-offset="1989" max-vertical-offset="3941">
+          <caret line="455" column="84" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/events/xrootDisp.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3596882" vertical-offset="0" max-vertical-offset="1289">
+          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33296213" vertical-offset="41" max-vertical-offset="2581">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.027868852" vertical-offset="2210" max-vertical-offset="2939">
+          <caret line="303" column="21" selection-start-line="131" selection-start-column="4" selection-end-line="131" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/GenTestUsers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.027868852" vertical-offset="289" max-vertical-offset="3211">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/ActLogin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3327869" vertical-offset="154" max-vertical-offset="4418">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/ActMsgBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6815145" vertical-offset="1122" max-vertical-offset="2853">
+          <caret line="166" column="72" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/OnAuthLoginCreated.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.78013027" vertical-offset="201" max-vertical-offset="1379">
+          <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Msg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60912055" vertical-offset="1360" max-vertical-offset="3232">
+          <caret line="151" column="30" selection-start-line="102" selection-start-column="6" selection-end-line="102" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24610245" vertical-offset="204" max-vertical-offset="3907">
+          <caret line="25" column="64" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.47068405" vertical-offset="0" max-vertical-offset="2042">
+          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
