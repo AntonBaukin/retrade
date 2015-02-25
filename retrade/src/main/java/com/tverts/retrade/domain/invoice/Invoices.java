@@ -174,26 +174,21 @@ public class Invoices
 
 	/* Messages Types */
 
-	public static final String MSG_CREATE_BUY   = "invoice: buy: create";
-	public static final String MSG_CREATE_SELL  = "invoice: sell: create";
-	public static final String MSG_CREATE_SELLS = "invoice: sells: create";
-	public static final String MSG_CREATE_MOVE  = "invoice: move: create";
+	public static final String MSG_CREATE_BUY  = "invoice: buy: create";
+	public static final String MSG_CREATE_SELL = "invoice: sell: create";
+	public static final String MSG_CREATE_MOVE = "invoice: move: create";
 
-	public static final String MSG_FIX_BUY      = "invoice: buy: fix";
-	public static final String MSG_FIX_SELL     = "invoice: sell: fix";
-	public static final String MSG_FIX_SELLS    = "invoice: sells: fix";
-	public static final String MSG_FIX_MOVE     = "invoice: move: fix";
+	public static final String MSG_FIX_BUY     = "invoice: buy: fix";
+	public static final String MSG_FIX_SELL    = "invoice: sell: fix";
+	public static final String MSG_FIX_MOVE    = "invoice: move: fix";
 
-	public static final String MSG_EDIT_BUY     = "invoice: buy: edit";
-	public static final String MSG_EDIT_SELL    = "invoice: sell: edit";
-	public static final String MSG_EDIT_SELLS   = "invoice: sells: edit";
-	public static final String MSG_EDIT_MOVE    = "invoice: move: edit";
+	public static final String MSG_EDIT_BUY    = "invoice: buy: edit";
+	public static final String MSG_EDIT_SELL   = "invoice: sell: edit";
+	public static final String MSG_EDIT_MOVE   = "invoice: move: edit";
 
-	public static final String MSG_UPD_BUY      = "invoice: buy: updated";
-	public static final String MSG_UPD_SELL     = "invoice: sell: updated";
-	public static final String MSG_UPD_SELLS    = "invoice: sells: updated";
-	public static final String MSG_UPD_MOVE     = "invoice: move: updated";
-
+	public static final String MSG_UPD_BUY     = "invoice: buy: updated";
+	public static final String MSG_UPD_SELL    = "invoice: sell: updated";
+	public static final String MSG_UPD_MOVE    = "invoice: move: updated";
 
 
 	/* action builder parameters */

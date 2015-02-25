@@ -24,7 +24,7 @@ import com.tverts.retrade.domain.invoice.Invoices;
  */
 public class Sells
 {
-	/* unity types */
+	/* Unity Types */
 
 	/**
 	 * Unity Type name for {@link PayDesk} entities.
@@ -58,7 +58,15 @@ public class Sells
 	  "ReTrade: Sells: Payment";
 
 
-	/* public: sells types access */
+	/* Messages Types */
+
+	public static final String MSG_CREATE_SELLS = "invoice: sells: create";
+	public static final String MSG_FIX_SELLS    = "invoice: sells: fix";
+	public static final String MSG_EDIT_SELLS   = "invoice: sells: edit";
+	public static final String MSG_UPD_SELLS    = "invoice: sells: updated";
+
+
+	/* Sells Types Access */
 
 	public static UnityType typeSellsSession()
 	{
@@ -93,7 +101,7 @@ public class Sells
 	}
 
 
-	/* public: calculations support */
+	/* Calculations Support */
 
 	public static BigDecimal calcReceiptsIncome(SellsSession s)
 	{
