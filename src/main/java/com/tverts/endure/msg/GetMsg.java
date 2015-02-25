@@ -104,9 +104,7 @@ public class GetMsg extends GetObjectBase
 			m = new MsgObj();
 
 			//=: primary key
-			HiberPoint.setPrimaryKey(session(), m,
-			  HiberPoint.isTestPrimaryKey(mb)
-			);
+			HiberPoint.setPrimaryKey(session(), m);
 
 			if(x != null)
 			{
@@ -140,9 +138,7 @@ public class GetMsg extends GetObjectBase
 		MsgObj m = new MsgObj();
 
 		//=: primary key
-		HiberPoint.setPrimaryKey(session(), m,
-		  HiberPoint.isTestInstance(box)
-		);
+		HiberPoint.setPrimaryKey(session(), m);
 
 		//=: ox-object
 		m.setOx(msg);
@@ -208,8 +204,13 @@ public class GetMsg extends GetObjectBase
 	 */
 	public MsgBoxObj   msgBox()
 	{
-		return EX.assertn( findMsgBox(SecPoint.login()),
-		  "Login [", SecPoint.login(), "] has no Message Box!"
+		return this.msgBox(SecPoint.login());
+	}
+
+	public MsgBoxObj   msgBox(Long login)
+	{
+		return EX.assertn( this.findMsgBox(login),
+		  "Auth Login [", login, "] has no Message Box created!"
 		);
 	}
 

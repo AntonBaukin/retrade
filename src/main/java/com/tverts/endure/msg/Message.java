@@ -18,7 +18,6 @@ import com.tverts.api.support.CharAdapter;
 
 /* com.tverts: support */
 
-import com.tverts.support.EX;
 import com.tverts.support.jaxb.DateTimeAdapter;
 
 
@@ -57,11 +56,11 @@ public class Message
 		return color;
 	}
 
-	private Character color = 'N';
+	private Character color;
 
 	public void setColor(Character c)
 	{
-		this.color = EX.assertn(c);
+		this.color = c;
 	}
 
 	public String getAdapter()

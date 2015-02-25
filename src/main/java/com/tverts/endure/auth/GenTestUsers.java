@@ -17,9 +17,6 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
-import com.tverts.endure.msg.Messages;
-import com.tverts.endure.person.FirmEntity;
-import com.tverts.endure.person.GetFirm;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
@@ -37,9 +34,13 @@ import com.tverts.secure.force.AskSecForceEvent;
 import com.tverts.api.clients.Computer;
 import com.tverts.api.clients.Person;
 
-/* com.tverts: endure (core + persons) */
+/* com.tverts: endure (core, messages, persons) */
 
 import com.tverts.endure.core.Domain;
+import com.tverts.endure.msg.GetMsg;
+import com.tverts.endure.msg.Msg;
+import com.tverts.endure.person.FirmEntity;
+import com.tverts.endure.person.GetFirm;
 import com.tverts.endure.person.Persons;
 import com.tverts.endure.person.PersonEntity;
 
@@ -266,10 +267,13 @@ public class GenTestUsers extends GenesisHiberPartBase
 		//?: {there is no messages linked}
 		if(s.messages == null) return;
 
+		GetMsg get = bean(GetMsg.class);
+
 		//c: create message links
 		for(String type : s.messages)
-			Messages.link(Messages.box(l.getPrimaryKey()),
-			  ctx.get(Domain.class).getPrimaryKey(), type);
+			Msg.link(get.msgBox(l.getPrimaryKey()),
+			  ctx.get(Domain.class).getPrimaryKey(), type
+			);
 	}
 
 

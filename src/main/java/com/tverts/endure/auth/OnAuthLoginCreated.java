@@ -8,7 +8,7 @@ import com.tverts.event.Reactor;
 
 /* com.tverts: endure (messages, persons) */
 
-import com.tverts.endure.msg.Messages;
+import com.tverts.endure.msg.Msg;
 import com.tverts.endure.person.Persons;
 
 /* com.tverts: support */
@@ -38,9 +38,9 @@ public class OnAuthLoginCreated implements Reactor
 			return;
 
 		//!: notify system user
-		Messages.orange(login, Auth.MSG_LOGIN_CREATE,
+		Msg.create().orange().types(Auth.MSG_LOGIN_CREATE).domain(login).title(
 		  "Добавлен пользователь [", login.getCode(), "]",
 		  SU.catif(login.getPerson(), ": ", Persons.name(login.getPerson()))
-		);
+		).send();
 	}
 }

@@ -146,11 +146,8 @@ public class ActMsgBox extends ActionBuilderXRoot
 
 	protected void   greetUser(ActionBuildRec abr)
 	{
-		Message msg = new Message();
-		msg.setTitle("Добро пожаловать в систему РеТрейд!");
-
-		//~: sent that message
-		Messages.send(target(abr, MsgBoxObj.class), msg);
+		Msg.create().green().box(target(abr, MsgBoxObj.class)).
+		  title("Добро пожаловать в систему РеТрейд!").send();
 	}
 
 

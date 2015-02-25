@@ -13,6 +13,10 @@ import com.tverts.support.EX;
 /**
  * User message object stored in the database.
  *
+ * Note that primary keys are used for select ordering,
+ * and messages of test domains may not have negative keys!
+ *
+ *
  * @author anton.baukin@gmail.com.
  */
 public class MsgObj extends OxNumericBase implements OxSearch

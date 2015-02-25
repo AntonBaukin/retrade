@@ -19,7 +19,6 @@ import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.ActUnity;
 import com.tverts.endure.msg.GetMsg;
-import com.tverts.endure.msg.Messages;
 import com.tverts.endure.msg.MsgBoxObj;
 import com.tverts.endure.person.ActPerson;
 import com.tverts.endure.person.PersonEntity;
@@ -254,8 +253,10 @@ public class ActLogin extends ActionBuilderXRoot
 			));
 
 			//~: remove the message box
-			MsgBoxObj mb = Messages.box(login.getPrimaryKey());
-			bean(GetMsg.class).clear(mb).unlink(mb);
+			GetMsg    get = bean(GetMsg.class);
+			MsgBoxObj mb  = get.msgBox(login.getPrimaryKey());
+
+			get.clear(mb).unlink(mb);
 			session().delete(mb);
 		}
 	}

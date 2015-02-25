@@ -19,8 +19,6 @@ import com.tverts.actions.ActionType;
 
 /* com.tverts: genesis */
 
-import com.tverts.endure.msg.Messages;
-import com.tverts.endure.msg.MsgBoxObj;
 import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
@@ -33,12 +31,15 @@ import com.tverts.objects.Param;
 
 import com.tverts.api.clients.Computer;
 
-/* com.tverts: endure (auth + persons) */
+/* com.tverts: endure (auth, messages, persons) */
 
 import com.tverts.endure.auth.Auth;
 import com.tverts.endure.auth.AuthLogin;
 import com.tverts.endure.auth.ComputerEntity;
 import com.tverts.endure.auth.GetAuthLogin;
+import com.tverts.endure.msg.GetMsg;
+import com.tverts.endure.msg.Msg;
+import com.tverts.endure.msg.MsgBoxObj;
 import com.tverts.endure.person.Persons;
 
 /* com.tverts: support */
@@ -333,10 +334,10 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		EX.asserte(types);
 
 		//~: take the messages bos for the system user
-		MsgBoxObj mb = Messages.box(sys.getPrimaryKey());
+		MsgBoxObj mb = bean(GetMsg.class).msgBox(sys.getPrimaryKey());
 
 		//~: create the links
 		for(String type : types)
-			Messages.link(mb, sys.getDomain().getPrimaryKey(), type);
+			Msg.link(mb, sys, type);
 	}
 }
