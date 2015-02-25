@@ -85,6 +85,13 @@ public class Msg
 		return this;
 	}
 
+	public Msg time(java.util.Date time)
+	{
+		//=: message time
+		msg.setTime(EX.assertn(time));
+		return this;
+	}
+
 	public Msg color(char c)
 	{
 		//=: message color

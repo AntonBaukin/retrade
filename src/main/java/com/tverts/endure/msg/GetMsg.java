@@ -112,10 +112,10 @@ public class GetMsg extends GetObjectBase
 				m.setColor(x.getColor());
 
 				//=: ox-bytes
-				m.setOxBytes(m.getOxBytes());
+				m.setOxBytes(x.getOxBytes());
 
 				//=: ox-search
-				m.setOxSearch(m.getOxSearch());
+				m.setOxSearch(x.getOxSearch());
 			}
 			//~: create the first message
 			else
