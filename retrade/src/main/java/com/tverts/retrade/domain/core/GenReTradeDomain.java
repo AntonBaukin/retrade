@@ -37,6 +37,11 @@ import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.objects.ObjectParam;
 import com.tverts.objects.ObjectParams;
 
+/* com.tverts: support */
+
+import com.tverts.support.IO;
+import com.tverts.support.SU;
+
 
 /**
  * Extends Domain Genesis with ReTrade
@@ -104,6 +109,12 @@ public class GenReTradeDomain extends GenCoreDomain
 		this.system = system;
 	}
 
+	public String getSystemMessages()
+	{
+		String res = super.getSystemMessages();
+		return !SU.sXe(res)?(res):
+		  IO.readText(getClass().getResource("SystemMessages.txt"));
+	}
 
 	/* protected: the generation */
 

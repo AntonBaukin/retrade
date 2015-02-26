@@ -185,6 +185,9 @@ if(task == null || "fetch".equals(task) || "delete".equals(task) || "filter".equ
   //?: {apply filter}
   else if("filter".equals(task))
   {
+    //?: {neutral} select the newest message
+    if(color == 'N') id = null;
+
     //~: select the messages around
     msgs = get.loadMsgs(mbobj.getPrimaryKey(), noids, id, 0, color);
 
