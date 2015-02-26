@@ -2528,25 +2528,27 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 		ZeT.assertn(model)
 		ZeT.assertn(this.menu.model)
 
-		//?: {has tx-number not changed}
-		ZeT.assert(ZeT.isi(model.txn), 'Model transaction number is not defined!')
-		if(this.menu.model.txn === model.txn)
-			return this
-
-		//=: tx-number
-		this.menu.model.txn = model.txn
-
 		//=: numbers
 		this.menu.model.numbers = ZeT.assertn(model.numbers)
+
+		//?: {has tx-number}
+		var istxn; if(!ZeT.isu(model.txn))
+		{
+			ZeT.assert(ZeT.isi(model.txn))
+
+			//=: tx-number
+			istxn = (this.menu.model.txn != model.txn)
+			this.menu.model.txn = model.txn
+		}
 
 		//~: update the menu
 		this.menu.update()
 
-		//?: {has page not full}
+		//?: {has tx-number changed & page not full}
 		ZeT.assert(ZeT.isi(this.menu.opts.length))
-		if(this.opts.proxy)
+		if(istxn && this.opts.proxy)
 			if(this.menu.page().length != this.menu.opts.length)
-				this.opts.proxy.fetch('older')
+				this.opts.proxy.fetch('older') //<-- always older is needed
 
 		return this
 	},
@@ -2888,7 +2890,7 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 
 	_query          : function(str)
 	{
-		var f = ZeT.assertn(this._first)
+		var f = this._first || '?'
 		var c = ZeT.asserts(this._color || 'N')
 
 		return ZeTS.cat('>', f, ' ', c, '; ', str)

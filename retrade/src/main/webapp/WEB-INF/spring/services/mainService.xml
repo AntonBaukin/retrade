@@ -62,7 +62,7 @@
 
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Generates Test Import Domain (after System Domain)
+             · Generates Main Test Domain (after System Domain)
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
             <bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>
 
@@ -70,52 +70,6 @@
 
               <!-- domain code to test -->
               <property name = 'testDomain' value = 'System'/>
-
-              <!-- the event to send -->
-              <property name = 'event'>
-                <bean class = 'com.tverts.genesis.GenesisEvent'>
-
-                  <!-- Genesis Spheres -->
-                  <property name = 'spheres'>
-                    <list>
-                      <value>Ordinary Domain</value>
-                    </list>
-                  </property>
-
-                  <!-- parameters -->
-                  <property name = 'params'>
-                    <map>
-
-                      <!-- (Test Domain) Core Sphere -->
-
-                      <entry key   = 'Ordinary Domain (Seed)'
-                             value = '1'/>
-
-                      <entry key   = 'Ordinary Domain : Domain (DomainCode)'
-                             value = 'Import'/>
-
-                      <entry key   = 'Ordinary Domain : Domain (DomainName)'
-                             value = 'Тестовый домен импорта'/>
-
-                      <entry key   = 'Ordinary Domain : Domain (TestDomain)'
-                             value = 'true'/>
-
-                    </map>
-                  </property>
-                </bean>
-              </property>
-            </bean>
-
-
-            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Generates Main Test Domain (after Import Domain)
-             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.genesis.RunEventOnGenesisDone'>
-
-              <property name = 'service'    value = 'Genesis Service'/>
-
-              <!-- domain code to test -->
-              <property name = 'testDomain' value = 'Import'/>
 
               <!-- the event to send -->
               <property name = 'event'>
