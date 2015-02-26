@@ -12,6 +12,7 @@ import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 
 /* com.tverts: endure (core + aggregation + persons) */
 
+import com.tverts.api.support.EX;
 import com.tverts.endure.core.ActUnity;
 import com.tverts.endure.aggr.ActAggrValue;
 import com.tverts.endure.aggr.calc.AggrCalcs;
@@ -104,10 +105,10 @@ public class ActContractor extends ActionBuilderReTrade
 
 	protected void saveFirm(ActionBuildRec abr)
 	{
-		FirmEntity firm = target(abr, Contractor.class).getFirm();
-
-		//?: {the firm does not exist}
-		if(firm == null) return;
+		FirmEntity firm = EX.assertn(
+		  target(abr, Contractor.class).getFirm(),
+		  "Contractor Firm is undefined!"
+		);
 
 		//?: {it is a test contractor} create test key
 		if(firm.getPrimaryKey() == null)
