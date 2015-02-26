@@ -1,6 +1,6 @@
 package com.tverts.endure.core;
 
-/* standard Java classes */
+/* Java */
 
 import java.security.MessageDigest;
 
@@ -327,10 +327,11 @@ public class GenCoreDomain extends GenesisHiberPartBase
 
 	protected void      loginMessages(AuthLogin sys)
 	{
-		if(SU.sXe(getSystemMessages())) return;
+		String sm = getSystemMessages();
+		if(SU.sXe(sm)) return;
 
 		//~: separate by ';'
-		String[] types = SU.s2a(getSystemMessages());
+		String[] types = SU.s2a(sm);
 		EX.asserte(types);
 
 		//~: take the messages bos for the system user

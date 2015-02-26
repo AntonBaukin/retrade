@@ -11,10 +11,12 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URL;
 
 /* com.tverts: support */
 
 import com.tverts.support.streams.ByteBuffers;
+import com.tverts.support.streams.BytesStream;
 import com.tverts.support.streams.InputDataStream;
 import com.tverts.support.streams.OutputDataStream;
 
@@ -48,6 +50,31 @@ public class IO
 		}
 
 		return res;
+	}
+
+	public static byte[] readBytes(URL url)
+	  throws IOException
+	{
+		if(url == null) return null;
+
+		try(InputStream is = url.openStream(); BytesStream bs = new BytesStream())
+		{
+			bs.write(is);
+			return bs.bytes();
+		}
+	}
+
+	public static String readText(URL url)
+	{
+		try
+		{
+			byte[] bs = readBytes(url);
+			return (bs == null)?(null):(new String(bs, "UTF-8"));
+		}
+		catch(Exception e)
+		{
+			throw EX.wrap(e);
+		}
 	}
 
 
