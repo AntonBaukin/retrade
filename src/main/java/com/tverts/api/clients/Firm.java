@@ -16,8 +16,9 @@ import com.tverts.api.core.CatItem;
  */
 @XmlRootElement(name = "firm")
 @XmlType(name = "firm", propOrder = {
-  "fullName", "taxNumber", "taxCode",
-  "phones", "registryAddress", "contactAddress"
+  "fullName", "taxNumber", "taxCode", "formCode",
+  "type", "email", "phones", "persons", "agreement",
+  "registryAddress", "contactAddress", "officeAddress"
 })
 public class Firm extends CatItem
 {
@@ -60,6 +61,47 @@ public class Firm extends CatItem
 		this.taxCode = taxCode;
 	}
 
+	@XmlElement(name = "form-code")
+	public String getFormCode()
+	{
+		return formCode;
+	}
+
+	private String formCode;
+
+	public void setFormCode(String formCode)
+	{
+		this.formCode = formCode;
+	}
+
+	/**
+	 * Organizational type (locale and language dependent).
+	 */
+	public String getType()
+	{
+		return type;
+	}
+
+	private String type;
+
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+
+	@XmlElement(name = "email")
+	public String getEmail()
+	{
+		return email;
+	}
+
+	private String email;
+
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
 	public String getPhones()
 	{
 		return phones;
@@ -72,6 +114,39 @@ public class Firm extends CatItem
 		this.phones = phones;
 	}
 
+	/**
+	 * Text enumerating the contact persons as free text.
+	 */
+	public String getPersons()
+	{
+		return persons;
+	}
+
+	private String persons;
+
+	public void setPersons(String persons)
+	{
+		this.persons = persons;
+	}
+
+	/**
+	 * Information about the agreements with this firm.
+	 */
+	public String getAgreement()
+	{
+		return agreement;
+	}
+
+	private String agreement;
+
+	public void setAgreement(String agreement)
+	{
+		this.agreement = agreement;
+	}
+
+	/**
+	 * Registration address of this firm.
+	 */
 	@XmlElement(name = "registry-address")
 	public Address getRegistryAddress()
 	{
@@ -86,7 +161,7 @@ public class Firm extends CatItem
 	}
 
 	/**
-	 * Contact address assigned when it
+	 * Contact (postal) address assigned when it
 	 * differs from the registration one.
 	 */
 	@XmlElement(name = "contact-address")
@@ -100,5 +175,22 @@ public class Firm extends CatItem
 	public void setContactAddress(Address contactAddress)
 	{
 		this.contactAddress = contactAddress;
+	}
+
+	/**
+	 * Main office address assigned when it
+	 * differs from the registration one.
+	 */
+	@XmlElement(name = "office-address")
+	public Address getOfficeAddress()
+	{
+		return officeAddress;
+	}
+
+	private Address officeAddress;
+
+	public void setOfficeAddress(Address officeAddress)
+	{
+		this.officeAddress = officeAddress;
 	}
 }
