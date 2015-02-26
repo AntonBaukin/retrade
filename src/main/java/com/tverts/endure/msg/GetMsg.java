@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /* Spring Framework */
 
@@ -23,6 +25,7 @@ import com.tverts.secure.SecPoint;
 /* com.tverts: system */
 
 import com.tverts.system.SystemConfig;
+import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: support */
 
@@ -202,12 +205,12 @@ public class GetMsg extends GetObjectBase
 	/**
 	 * Returns Message Box object of the current user.
 	 */
-	public MsgBoxObj   msgBox()
+	public MsgBoxObj    msgBox()
 	{
 		return this.msgBox(SecPoint.login());
 	}
 
-	public MsgBoxObj   msgBox(Long login)
+	public MsgBoxObj    msgBox(Long login)
 	{
 		return EX.assertn( this.findMsgBox(login),
 		  "Auth Login [", login, "] has no Message Box created!"
@@ -227,6 +230,10 @@ public class GetMsg extends GetObjectBase
 	 * If 'id' argument is defined, the list found is centered by it:
 	 * the center page starts with this id. Also left and right 2-pages.
 	 *
+	 * If 'pages' argument is not-zero, it's absolute value is added
+	 * to the number of regular range pages in the older (positive)
+	 * or newer (negative) sides of the range.
+	 *
 	 * Array 'no' of [2] items has the primary keys of the closest
 	 * newer-item, and the older-item out of the range given.
 	 * If an item are undefined, no such an item does exist.
@@ -238,13 +245,14 @@ public class GetMsg extends GetObjectBase
 	 * The order of the items returned is always from the newest to the oldest.
 	 */
 	@SuppressWarnings("unchecked")
-	public void         loadMsgs(Long mb, List<MsgObj> res, Long[] no, Long id, char color)
+	public void         loadMsgs
+	  (Long mb, List<MsgObj> res, Long[] no, Long id, int pages, char color)
 	{
 /*
 
  from MsgObj where (msgBox.id = :mb) and (IX <= :id) order by IX desc
  from MsgObj where (msgBox.id = :mb) and (IX  > :id) order by IX asc
- from MsgObj where (msgBox.id = :mb) order by IX desc
+ from MsgObj where (msgBox.id = :mb) and (IX is not null) order by IX desc
 
  */
 
@@ -255,19 +263,22 @@ public class GetMsg extends GetObjectBase
 		);
 
 		//~: number of older items
-		final int ON = SystemConfig.INSTANCE.getUserEventsFetch();
+		final int ON = SystemConfig.INSTANCE.getUserEventsFetch() +
+		  ((pages > 0)?(SystemConfig.INSTANCE.getUserEventsPage() * pages):(0));
 		EX.assertx(ON > 0);
 
 		//~: number of newer items
-		final int NN = ON + SystemConfig.INSTANCE.getUserEventsPage();
-		EX.assertx((NN > 0) & (NN > ON));
+		final int NN = SystemConfig.INSTANCE.getUserEventsFetch() +
+		  SystemConfig.INSTANCE.getUserEventsPage() -
+		  ((pages < 0)?(SystemConfig.INSTANCE.getUserEventsPage() * pages):(0));
+		EX.assertx(NN > 0);
 
 		//?: {select the initial range only}
 		if(id == null)
 		{
 			final String Q =
 
-"from MsgObj where (msgBox.id = :mb) order by IX desc".
+"from MsgObj where (msgBox.id = :mb) and (IX is not null) order by IX desc".
 			replaceAll("IX", IX);
 
 			//~: select the items
@@ -301,7 +312,7 @@ public class GetMsg extends GetObjectBase
 		//?: {got the required number}
 		if(newer.size() == NN+1)
 		{
-			no[1] = newer.get(NN).getPrimaryKey();
+			no[0] = newer.get(NN).getPrimaryKey();
 			newer.remove(NN);
 		}
 
@@ -326,7 +337,7 @@ public class GetMsg extends GetObjectBase
 		//?: {got the required number}
 		if(older.size() == ON+1)
 		{
-			no[0] = older.get(ON).getPrimaryKey();
+			no[1] = older.get(ON).getPrimaryKey();
 			older.remove(ON);
 		}
 
@@ -335,7 +346,7 @@ public class GetMsg extends GetObjectBase
 		//>: select the older items
 	}
 
-	public List<MsgObj> loadMsgs(Long mb, Long[] no, Long id, char color)
+	public List<MsgObj> loadMsgs(Long mb, Long[] no, Long id, int pages, char color)
 	{
 		List<MsgObj> res = new ArrayList<>(
 		  SystemConfig.getInstance().getUserEventsPage() +
@@ -345,7 +356,119 @@ public class GetMsg extends GetObjectBase
 		if(no == null) no = new Long[2];
 		EX.assertx(no.length == 2);
 
-		loadMsgs(mb, res, no, id, color);
+		loadMsgs(mb, res, no, id, pages, color);
 		return res;
+	}
+
+	public void         setColors(MsgBoxObj mbo, Map<Long, Character> colors)
+	{
+		MsgBox  mb = mbo.getOx();
+		boolean up = false;
+
+		//c: each message & color
+		for(Long id : colors.keySet())
+		{
+			//~: color
+			char c = colors.get(id);
+			EX.assertx(c == 'N' | c == 'G' | c == 'R' | c == 'O');
+
+			//~: load the message
+			MsgObj mo = (MsgObj) session().get(MsgObj.class, id);
+			if(mo == null) continue;
+
+			//sec: {not the same box}
+			if(!mo.getMsgBox().equals(mbo))
+				throw EX.forbid("Message object [", id, "] is not yours!");
+
+			//?: {already has this color}
+			if(mo.getColor() == c) continue;
+			up = true; //<-- updated
+
+			//~: remove-add color from the numbers
+			num(mb, mo.getColor(), -1);
+			num(mb, c, +1);
+
+			//~: assign the new color
+			mo.getOx().setColor(c);
+			mo.updateOx(); //<-- update the object!
+		}
+
+		//?: {updated}
+		if(up)
+		{
+			//~: set new tx-number
+			TxPoint.txn(mbo);
+
+			//~: update object
+			mbo.updateOx();
+
+			//!: flush the session
+			HiberPoint.flush(session());
+		}
+	}
+
+	public void         remove(MsgBoxObj mbo, Set<Long> ids)
+	{
+		MsgBox  mb = mbo.getOx();
+		boolean up = false;
+
+		//c: each message
+		for(Long id : ids)
+		{
+			//~: load the message
+			MsgObj mo = (MsgObj) session().get(MsgObj.class, id);
+			if(mo == null) continue;
+
+			//sec: {not the same box}
+			if(!mo.getMsgBox().equals(mbo))
+				throw EX.forbid("Message object [", id, "] is not yours!");
+
+			//~: remove color from the numbers
+			num(mb, mo.getColor(), -1);
+
+			//~: remove from the totals
+			EX.assertx(mb.getTotal() >  0);
+			mb.setTotal(mb.getTotal() - 1);
+			EX.assertx(mb.getTotal() >= 0);
+
+			//~: delete it
+			up = true; //<-- updated
+			session().delete(mo);
+		}
+
+		//?: {updated}
+		if(up)
+		{
+			//~: set new tx-number
+			TxPoint.txn(mbo);
+
+			//~: update object
+			mbo.updateOx();
+
+			//!: flush the session
+			HiberPoint.flush(session());
+		}
+	}
+
+	private static void num(MsgBox mb, char x, int d)
+	{
+		if(x == 'G')
+		{
+			EX.assertx(mb.getGreen() >= 0);
+			mb.setGreen(mb.getGreen() + d);
+			EX.assertx(mb.getGreen() >= 0);
+		}
+		else if(x == 'O')
+		{
+			EX.assertx(mb.getOrange() >= 0);
+			mb.setOrange(mb.getOrange() + d);
+			EX.assertx(mb.getOrange() >= 0);
+		}
+		else if(x == 'R')
+		{
+			EX.assertx(mb.getRed() >= 0);
+			mb.setRed(mb.getRed() + d);
+			EX.assertx(mb.getRed() >= 0);
+		}
 	}
 }

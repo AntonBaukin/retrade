@@ -47,8 +47,11 @@ public class MsgObj extends OxNumericBase implements OxSearch
 		//=: message color
 		this.color = m.getColor();
 
+		//?: {neutral}
+		if(color == 'N')
+			this.green = this.orangeRed = this.red = null;
 		//?: {green}
-		if(color == 'G')
+		else if(color == 'G')
 		{
 			this.green = EX.assertn(getPrimaryKey());
 			this.orangeRed = this.red = null;
@@ -65,7 +68,7 @@ public class MsgObj extends OxNumericBase implements OxSearch
 			this.orangeRed = this.red = EX.assertn(getPrimaryKey());
 			this.green = null;
 		}
-		else if(color != 'N')
+		else
 			throw EX.state("Wrong message color: [", color, "]!");
 
 		//=: ox-search key words
