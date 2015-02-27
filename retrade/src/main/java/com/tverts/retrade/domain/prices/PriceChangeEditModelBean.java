@@ -18,7 +18,7 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: retrade model data */
 
-import com.tverts.retrade.data.PriceChangeEditModelData;
+import com.tverts.retrade.web.data.PriceChangeEditModelData;
 
 /* com.tverts: support */
 

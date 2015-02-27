@@ -12,7 +12,7 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.system.DomainsModelData;
+import com.tverts.retrade.web.data.system.DomainsModelData;
 
 
 /**

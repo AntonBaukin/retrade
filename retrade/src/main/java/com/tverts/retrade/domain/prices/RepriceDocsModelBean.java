@@ -19,7 +19,7 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.RepriceDocsModelData;
+import com.tverts.retrade.web.data.RepriceDocsModelData;
 
 /* com.tverts: support */
 

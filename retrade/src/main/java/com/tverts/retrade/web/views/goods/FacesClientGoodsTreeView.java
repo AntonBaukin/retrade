@@ -25,7 +25,7 @@ import com.tverts.retrade.domain.goods.GoodUnit;
 
 /* com.tverts: retrade data (goods) */
 
-import com.tverts.retrade.data.goods.ClientGoodsTreeModelData;
+import com.tverts.retrade.web.data.goods.ClientGoodsTreeModelData;
 
 /* com.tverts: support */
 

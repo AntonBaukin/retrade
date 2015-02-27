@@ -18,7 +18,7 @@ import com.tverts.model.UnityModelBean;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.InvoiceModelData;
+import com.tverts.retrade.web.data.InvoiceModelData;
 
 
 /**

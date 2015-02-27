@@ -8,19 +8,14 @@ import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: model */
 
-import com.tverts.model.DataSelectModel;
-import com.tverts.model.DataSelectDelegate;
-import com.tverts.model.DataSortModel;
 import com.tverts.model.ModelData;
 import com.tverts.model.NumericSelectModelBean;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.prices.PriceListModelData;
+import com.tverts.retrade.web.data.prices.PriceListModelData;
 
 /* com.tverts: support */
-
-import com.tverts.support.SU;
 
 
 /**

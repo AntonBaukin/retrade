@@ -18,7 +18,7 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: retrade (data) */
 
-import com.tverts.retrade.data.settings.SecAblesModelData;
+import com.tverts.retrade.web.data.settings.SecAblesModelData;
 
 /* com.tverts: support */
 

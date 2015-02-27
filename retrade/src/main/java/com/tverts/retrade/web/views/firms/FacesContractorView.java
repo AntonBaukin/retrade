@@ -22,7 +22,6 @@ import com.tverts.faces.UnityModelView;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
-import com.tverts.model.ModelData;
 import com.tverts.model.ModelRequest;
 import com.tverts.model.SimpleModelBean;
 import com.tverts.model.UnityModelBean;
@@ -41,7 +40,7 @@ import com.tverts.retrade.domain.firm.ContractorModelBean;
 
 /* com.tverts: retrade data */
 
-import com.tverts.retrade.data.other.AggrVolumeData;
+import com.tverts.retrade.web.data.other.AggrVolumeData;
 
 /* com.tverts: support */
 

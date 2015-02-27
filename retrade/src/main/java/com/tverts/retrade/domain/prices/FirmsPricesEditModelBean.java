@@ -22,7 +22,7 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: retrade (data) */
 
-import com.tverts.retrade.data.prices.FirmsPricesEditModelData;
+import com.tverts.retrade.web.data.prices.FirmsPricesEditModelData;
 
 /* com.tverts: support */
 

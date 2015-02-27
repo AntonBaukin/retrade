@@ -13,7 +13,7 @@ import com.tverts.model.NumericModelBean;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.sells.SellReceiptModelData;
+import com.tverts.retrade.web.data.sells.SellReceiptModelData;
 
 
 /**

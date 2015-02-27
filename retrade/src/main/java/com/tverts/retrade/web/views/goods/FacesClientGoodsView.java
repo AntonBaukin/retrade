@@ -31,7 +31,7 @@ import com.tverts.retrade.domain.firm.Contractor;
 
 /* com.tverts: retrade data (goods) */
 
-import com.tverts.retrade.data.goods.ClientGoodsModelData;
+import com.tverts.retrade.web.data.goods.ClientGoodsModelData;
 
 /* com.tverts: support */
 

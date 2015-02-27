@@ -13,7 +13,7 @@ import com.tverts.model.UnitySelectModelBean;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.TradeStoreModelData;
+import com.tverts.retrade.web.data.TradeStoreModelData;
 
 
 /**

@@ -36,7 +36,7 @@ import com.tverts.retrade.domain.sells.Sells;
 
 /* com.tverts: retrade models data */
 
-import com.tverts.retrade.data.other.DocumentsModelData;
+import com.tverts.retrade.web.data.other.DocumentsModelData;
 
 /* com.tverts: support */
 

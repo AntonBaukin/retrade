@@ -23,7 +23,7 @@ import com.tverts.retrade.domain.firm.ContractorsModelBean;
 
 /* com.tverts: retrade data (firms) */
 
-import com.tverts.retrade.data.firms.ContractorsListsModelData;
+import com.tverts.retrade.web.data.firms.ContractorsListsModelData;
 
 /* com.tverts: support */
 

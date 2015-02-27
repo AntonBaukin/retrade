@@ -16,7 +16,7 @@ import com.tverts.endure.cats.CatItemView;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.prices.PriceListsModelData;
+import com.tverts.retrade.web.data.prices.PriceListsModelData;
 
 
 /**

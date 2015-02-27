@@ -17,7 +17,7 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.goods.GoodsTreeModelData;
+import com.tverts.retrade.web.data.goods.GoodsTreeModelData;
 
 /* com.tverts: support */
 

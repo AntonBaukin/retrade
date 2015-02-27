@@ -30,7 +30,7 @@ import com.tverts.endure.core.GetUnityType;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.InvoiceEditModelData;
+import com.tverts.retrade.web.data.InvoiceEditModelData;
 
 /* com.tverts: support */
 

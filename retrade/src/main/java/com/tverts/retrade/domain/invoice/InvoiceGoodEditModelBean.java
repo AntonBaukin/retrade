@@ -32,7 +32,7 @@ import com.tverts.retrade.domain.goods.GoodUnit;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.InvoiceGoodEditModelData;
+import com.tverts.retrade.web.data.InvoiceGoodEditModelData;
 
 /* com.tverts: support */
 

@@ -12,7 +12,7 @@ import com.tverts.model.UnityModelBean;
 
 /* com.tverts: retrade models data */
 
-import com.tverts.retrade.data.account.PayWayModelData;
+import com.tverts.retrade.web.data.account.PayWayModelData;
 
 
 /**

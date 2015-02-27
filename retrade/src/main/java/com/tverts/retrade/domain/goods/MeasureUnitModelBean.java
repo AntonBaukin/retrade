@@ -12,7 +12,7 @@ import com.tverts.model.ViewModelBeanBase;
 
 /* com.tverts: retrade data */
 
-import com.tverts.retrade.data.goods.MeasureUnitModelData;
+import com.tverts.retrade.web.data.goods.MeasureUnitModelData;
 
 
 /**

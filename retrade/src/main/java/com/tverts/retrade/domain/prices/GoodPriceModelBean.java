@@ -20,7 +20,7 @@ import com.tverts.model.NumericSelectModelBean;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.GoodPriceModelData;
+import com.tverts.retrade.web.data.GoodPriceModelData;
 
 /* com.tverts: support */
 

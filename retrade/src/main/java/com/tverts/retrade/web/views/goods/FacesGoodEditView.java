@@ -71,8 +71,8 @@ import com.tverts.retrade.domain.selset.SelSet;
 
 /* com.tverts: retrade domain (data) */
 
-import com.tverts.retrade.data.goods.GoodCalcModelData;
-import com.tverts.retrade.data.goods.GoodCalcsModelData;
+import com.tverts.retrade.web.data.goods.GoodCalcModelData;
+import com.tverts.retrade.web.data.goods.GoodCalcsModelData;
 
 /* com.tverts: support */
 

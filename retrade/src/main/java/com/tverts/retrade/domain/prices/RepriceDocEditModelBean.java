@@ -16,7 +16,7 @@ import com.tverts.model.ViewModelBeanBase;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.RepriceDocEditModelData;
+import com.tverts.retrade.web.data.RepriceDocEditModelData;
 
 
 /**

@@ -22,7 +22,7 @@ import com.tverts.retrade.domain.doc.DocsSearchModelBean;
 
 /* com.tverts: retrade data */
 
-import com.tverts.retrade.data.sells.SellsSessionModelData;
+import com.tverts.retrade.web.data.sells.SellsSessionModelData;
 
 /* com.tverts: support */
 

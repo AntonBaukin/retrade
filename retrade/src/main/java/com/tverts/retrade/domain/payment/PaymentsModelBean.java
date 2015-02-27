@@ -22,7 +22,7 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: retrade (model data) */
 
-import com.tverts.retrade.data.other.PaymentsModelData;
+import com.tverts.retrade.web.data.other.PaymentsModelData;
 
 /* com.tverts: support */
 
