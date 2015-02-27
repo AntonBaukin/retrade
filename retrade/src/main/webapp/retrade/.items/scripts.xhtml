@@ -1,0 +1,101 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:f = 'http://java.sun.com/jsf/core'>
+
+<script type = "text/javascript">
+//<![CDATA[
+
+function retrade_open_window(opts)
+{
+  ZeT.assertn(opts)
+
+  //?: {has domain key}
+  if(opts.domainKey)
+  {
+    ZeT.asserts(opts.domainKey)
+    ZeT.assert(ZeT.isu(opts.domain))
+
+    opts.domain = 'desktop-window:' + opts.domainKey
+
+    if(!ZeT.isu(opts.record)) //?: {has record key}
+      opts.domain += ':record:' + opts.record
+  }
+
+  //?: {has no domain provided} make the default
+  if(!opts.domain)
+  {
+    opts.domain = 'desktop-window:auto-domain:'
+
+    if(!ZeT.isu(opts.record)) //?: {has record key}
+      opts.domain += ':record:' + opts.record + ':'
+
+    opts.domain = extjsf.tempDomain(opts.domain)
+  }
+
+  ZeT.asserts(opts.domain, 'No ExtJSF window domain string is provided!')
+
+  //~: lookup the window bind
+  var winmain = extjsf.bind('winmain', opts.domain)
+
+  //?: {has no box provided}
+  if(!opts.box) opts.box = { widthpt: 480, heightpt: 360 }
+  ZeT.assert(ZeT.iso(opts.box))
+
+  //~: calculate the box
+  var box = ReTrade.desktop.calcWindowBox(opts.box)
+
+  if(winmain) //?: {has this window} show it
+  {
+    winmain.component().toFront()
+    winmain.component().setPagePosition(box.x, box.y)
+    winmain.component().expand()
+    return
+  }
+
+  //~: load url
+  ZeT.asserts(opts.url, 'No window load URL is provided!')
+  if(opts.url.indexOf('/go/retrade') == -1)
+  {
+    if(ZeTS.startsWith(opts.url, '/'))
+      opts.url = ZeT.asserts(opts.url.substring(1))
+    opts.url = "${z:url('/go/retrade/XYZ')}".replace('XYZ', opts.url)
+  }
+
+  //~: window layout
+  if(!opts.layout) opts.layout = 'fit'
+  ZeT.asserts(opts.layout)
+
+  //~: parameters
+  if(!opts.params) opts.params = {}
+  ZeT.assert(ZeT.iso(opts.params))
+
+  //~: domain parameter
+  opts.params['${rootView.extjsDomainParam}'] = opts.domain
+
+  //~: view mode parameter (default is body)
+  if(!opts.params['${rootView.viewModeParam}'])
+    opts.params['${rootView.viewModeParam}'] = 'body'
+
+  //~: record parameter
+  if(opts.record) opts.params['${rootView.entityParam}'] = '' + opts.record
+
+  //~: create the window bind
+  winmain = extjsf.defineBind('winmain', opts.domain).extjsProps({
+
+    xtype: 'window', title: 'Загрузка...',
+    x: box.x, y: box.y, width: box.width, height: box.height,
+    layout: opts.layout, autoShow: !opts.hidden,
+    collapsible: opts.collapsible,
+
+    loader: { url: opts.url, autoLoad: true, scripts: true,
+      ajaxOptions: { method: 'GET' }, params: opts.params
+    }
+  })
+
+  //~: create the ExtJS Window component & return the bind
+  winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+  return winmain
+}
+
+//]]>
+</script>
+</ui:component>

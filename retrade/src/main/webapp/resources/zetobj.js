@@ -54,6 +54,20 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 		return s.length && s.charAt(0)
 	},
 
+	startsWith       : function(s, x)
+	{
+		ZeT.assert(ZeT.iss(s) && ZeT.iss(x))
+		return (s.indexOf(x) == 0)
+	},
+
+	endsWith         : function(s, x)
+	{
+		ZeT.assert(ZeT.iss(s) && ZeT.iss(x))
+		var i = s.lastIndexOf(x)
+		return (i >= 0) && (i + x.length == s.length)
+
+	},
+
 	replace          : function(s, a, b)
 	{
 		return s.split(a).join(b)
