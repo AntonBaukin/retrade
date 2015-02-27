@@ -1,0 +1,236 @@
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesFirmViewEdit}"/>
+${v.forceSecure()}
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.bind('winmain', '${rootView.extjsDomain}').
+      component().setTitle('${z:jss(v.winmainTitle)}')
+
+  //]]>
+  </script>
+
+  <f:facet name = "extjs-props">
+    layout: 'fit', bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [close window button] -->
+
+    <x:component coid = "${z:vid(v, 'close-window')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-default-small-red',
+
+        handler : function()
+        {
+          extjsf.bind('winmain', '${rootView.extjsDomain}').
+            component().close()
+        }
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button] -->
+
+    <x:component coid = "${z:vid(v, 'submit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Сохранить',
+        cls: 'ux-btn-default-small-green'
+      </f:facet>
+    </x:component>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <!-- [firm edit form -->
+
+  <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'edit-form')}">
+
+    <f:facet name = "extjs-props">
+      border: false, bodyPadding: extjsf.pt(2),
+      bodyCls: 'retrade-content-panel',
+      layout: {type: 'vbox', align: 'stretch'}
+    </f:facet>
+
+
+    <!-- [code and name line -->
+
+    <x:component coid = "${z:vid(v, '_code_name')}">
+
+      <f:facet name = "extjs-props">
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.pts(4, 0, 0, 0),
+        border: false, bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+
+
+      <!-- [code field -->
+
+      <x:text-field coid = "${z:vid(v, 'code')}"
+        value = "#{v.firm.code}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(0, 4, 0, 0), flex: 1,
+          allowBlank: false, validator: function()
+          {
+            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+          }
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Код', cls: 'retrade-info-title-label'
+        </f:facet>
+      </x:text-field>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+//~: validate on code change
+extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)
+{
+  var fb = f.extjsfBind;
+  fb.retradeCodeCheck = v; fb.validityStatus = true;
+
+  if(ZeTS.trim(v) != v)
+    fb.validityStatus = 'Код не может начинаться или оканчиваться пробелами!';
+  if(f.validate() !== true) return;
+
+  ZeT.timeout(1000, function()
+  {
+    if(fb.retradeCodeCheck != v) return;
+
+    extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+      params: { code : fb.retradeCodeCheck }, failure: function()
+      {
+        fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
+        if(ZeTS.ises(fb.validityStatus)) fb.validityStatus = true;
+        f.validate()
+      }})
+  })
+})
+      //]]>
+      </script>
+
+      <!-- code field] -->
+
+
+      <!-- [name field] -->
+      <x:text-field coid = "${z:vid(v, 'name')}"
+        value = "#{v.firm.name}">
+
+        <f:facet name = "extjs-props">
+          flex: 4, allowBlank: false
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Имя', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:text-field>
+
+    </x:component>
+
+    <!-- code and name line] -->
+
+
+    <!-- [full name field] -->
+    <x:text-field coid = "${z:vid(v, 'full-name')}"
+      value = "#{v.firm.name}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'textarea', height: extjsf.pt(40)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Полное наименование организации',
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(4, 0, 1, 0)
+      </f:facet>
+    </x:text-field>
+
+
+
+
+
+  </x:form-panel>
+
+  <!-- [action to check code exists] -->
+  <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
+    action = "#{v.doCheckCodeExists}">
+
+    <f:facet name = "action-params">
+      '${v.modelParam}': '${v.modelKeys}'
+    </f:facet>
+  </x:action-call>
+
+  <!-- firm edit form] -->
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+
+<ui:decorate template = '/resources/.view-modes/body_post.xhtml'
+   xmlns    = 'http://tverts.com/retrade/webapp/response'
+   xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+
+  <ui:define name = 'validation'>
+
+    <validation success = "#{v.valid}">
+
+      <ui:fragment rendered = "#{v.codeExists}">
+        <field target = "${z:vid(v, 'code')}">
+          <error>Указанный код уже используется в другом контрагенте!</error>
+        </field>
+      </ui:fragment>
+    </validation>
+  </ui:define>
+
+  <ui:define name = 'scripts'>
+
+    <ui:fragment rendered = "#{not empty v.errorEvent}">
+      <script>
+      //<![CDATA[
+
+ ReTrade.desktop.error("#{z:jss(v.errorEvent)}")
+
+      //]]>
+      </script>
+    </ui:fragment>
+
+  </ui:define>
+</ui:decorate>
+</ui:component>

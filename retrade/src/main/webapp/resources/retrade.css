@@ -363,7 +363,7 @@ div.retrade-desktop-clocks-area
 
 .retrade-eventsnum-menu-area
 {
-  z-index: 100;
+  z-index: 20000;
 }
 
 .retrade-eventsnum-menu-area div

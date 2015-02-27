@@ -6,10 +6,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/* com.tverts: endure (core) */
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
+/* com.tverts: endure (core, persons) */
 
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
+import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.IncValues;
+import com.tverts.endure.person.FirmEntity;
 
 /* tverts.com: aggregated values */
 
@@ -28,7 +35,7 @@ import com.tverts.support.SU;
  */
 public class Contractors
 {
-	/* unity types  */
+	/* Unity Types  */
 
 	public static final String TYPE_CONTRACTOR         =
 	  "ReTrade: Contractor";
@@ -49,7 +56,7 @@ public class Contractors
 	  "ReTrade: Aggr Value: Contractor Debt";
 
 
-	/* contractors routines */
+	/* Contractors Routines */
 
 	public static String getContractorName(Contractor c)
 	{
@@ -58,8 +65,26 @@ public class Contractors
 		);
 	}
 
+	public static String createContractorCode(Domain d)
+	{
+		return SU.cats("КО-", bean(IncValues.class).
+		  txIncValue(d, contractorType(), "code", 1));
+	}
 
-	/* public static: unity types related */
+
+	/* Unity Types Related */
+
+	public static UnityType contractorType()
+	{
+		return UnityTypes.unityType(
+		  Contractor.class, TYPE_CONTRACTOR);
+	}
+
+	public static UnityType firmType()
+	{
+		return UnityTypes.unityType(
+		  FirmEntity.class, TYPE_FIRM);
+	}
 
 	public static UnityType aggrTypeContractorDebt()
 	{
@@ -68,7 +93,7 @@ public class Contractors
 	}
 
 
-	/* support */
+	/* Support */
 
 	public static class CompareContractors
 	       implements   Comparator<Contractor>

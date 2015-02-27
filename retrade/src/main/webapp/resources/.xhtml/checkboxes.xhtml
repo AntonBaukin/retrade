@@ -31,6 +31,9 @@
     <co:attribute name = 'allowNone' default = 'true'
        type = 'java.lang.Boolean'/>
 
+    <co:attribute name = 'onlyOne' default = 'false'
+       type = 'java.lang.Boolean'/>
+
     <co:facet name = 'check-props'/>
 
   </co:interface>
@@ -57,7 +60,8 @@
 
   (function()
   {
-    var none = #{cc.attrs.allowNone};
+    var none = ("#{cc.attrs.allowNone}" == 'true')
+    var one  = ("#{cc.attrs.onlyOne}" == 'true')
 
     //HINT: this bind is shared between all the checkboxes!
 
@@ -68,73 +72,85 @@
       extjsPropsNode()
 
     //~: append change listener
-    bind.on('change', function(f)
+    bind.on('change', function(cb)
     {
-      var n = Ext.getDom(bind.nodeId());
-      var v = (n.value.length)?(n.value.split(',')):[];
-      var i = v.indexOf(f.inputValue);
+      var n = Ext.getDom(bind.nodeId())
+      var v = (n.value.length)?(n.value.split(',')):[]
+      var i = v.indexOf(cb.inputValue)
       if(i != -1) v.splice(i, 1)
 
-      if(f.getValue()) v.push(f.inputValue)
-      n.value = v.join(',');
+      if(cb.getValue()) v.push(cb.inputValue)
+      n.value = v.join(',')
 
+      //?: {has no value}
       if(!none && (n.value == '')) {
-        n.value = f.inputValue;
-        f.setValue(true)
+        n.value = cb.inputValue
+        cb.setRawValue(true)
+      }
+
+      //?: {one & checkbox checked}
+      if(one && cb.getValue())
+      {
+        n.value = cb.inputValue
+        ZeT.each(bind.checkboxes, function(x)
+        {
+          if(x != cb) x.setRawValue(false)
+        })
       }
     })
 
     //~: set special create component listener
-    bind.checkboxes = [];
+    bind.checkboxes = []
     bind.on_create = function(cb)
     {
       for(var i = 0;(i < bind.checkboxes.length);i++)
-        if(bind.checkboxes[i].inputValue == cb.inputValue) return;
+        if(bind.checkboxes[i].inputValue == cb.inputValue) return
       bind.checkboxes.push(cb)
     }
 
     //~: checkBoxes()
     bind.checkBoxes = function(v)
     {
-      var i, x = {};
-      var a = bind.checkboxes;
+      var i, x = {}
+      var a = bind.checkboxes
 
       if(v === 'all') for(i = 0;(i < a.length);i++)
-        x[a[i].inputValue] = true;
+        x[a[i].inputValue] = true
 
       if(ZeT.isa(v)) for(i = 0;(i < v.length);i++)
-        if(ZeT.iss(v[i])) x[v[i]] = true;
+        if(ZeT.iss(v[i])) x[v[i]] = true
 
-      var got = false;
+      var got = false
       for(i = 0;(i < a.length);i++)
         if(x[a[i].inputValue]) { got = true; break; }
 
-      if(!got && !none) throw 'Can not uncheck all ExtJSF checkboxes, ' +
-        'it is forbidden for bind #{cc.attrs.coid}!';
+      ZeT.assert( !got && !none,
+        'Can not uncheck all ExtJSF checkboxes, ',
+        'it is forbidden for bind #{cc.attrs.coid}!')
 
-      var xv, xvs = [];
+      var xv, xvs = []
       for(i = 0;(i < a.length);i++)
         if(!x[xv = a[i].inputValue]) a[i].setValue(false)
         else { a[i].setValue(true); xvs.push(xv); }
 
-      Ext.getDom(bind.nodeId()).value = xvs.join(',');
+      Ext.getDom(bind.nodeId()).value = xvs.join(',')
     }
 
     //~: decode the items (codes) checked
-    var items = Ext.getDom('#{cc.clientId}-#{cc.attrs.coid}').value.split(',');
-    var itmap = {};
+    var items = Ext.getDom('#{cc.clientId}-#{cc.attrs.coid}').value.split(',')
+    var itmap = {}
 
     for(var i = 0;(i < items.length);i++)
-      itmap[items[i]] = true;
+      itmap[items[i]] = true
 
     //~: evaluate label mapping      !: it is array
-    var labls = Ext.getDom(bind.nodeId() + '-labels').innerHTML;
-    labls = eval('('.concat(labls, ')'));
+    var labls = Ext.getDom(bind.nodeId() + '-labels').innerHTML
+    labls = eval('('.concat(labls, ')'))
 
     //~: create the items for all the labels
     for(i = 0;(i + 1< labls.length);i += 2)
     {
-      var p = ZeT.extend({}, bind.extjsProps());
+      var p = ZeT.extend({}, bind.extjsProps())
 
       ZeT.extend(p, {
         inputValue: labls[i], boxLabel: labls[i + 1],
