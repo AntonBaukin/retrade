@@ -42,11 +42,17 @@ import static com.tverts.support.SU.s2a;
  */
 public abstract class ViewWithModes
 {
-	/* constants */
+	/* Constants */
 
 	public static final String VIEWID_PARAM = "view";
 
 	public static final String VMODE_PARAM  = "mode";
+
+	/**
+	 * Parameter used to refer database entities
+	 * by their primary key.
+	 */
+	public static final String ENTITY_PARAM = "entity";
 
 
 	/* View With Modes (ID) Interface */
@@ -272,6 +278,11 @@ public abstract class ViewWithModes
 	public String   getViewModeParam()
 	{
 		return VMODE_PARAM;
+	}
+
+	public String   getEntityParam()
+	{
+		return ENTITY_PARAM;
 	}
 
 

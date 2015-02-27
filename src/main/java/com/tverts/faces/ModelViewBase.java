@@ -44,7 +44,7 @@ import com.tverts.support.SU;
  */
 public abstract class ModelViewBase extends ViewWithModes
 {
-	/* constants */
+	/* Constants */
 
 	/**
 	 * HTTP request parameter with the model key.
@@ -58,12 +58,6 @@ public abstract class ModelViewBase extends ViewWithModes
 	public static final String MODEL_PROVIDER   = "model-provider";
 
 	public static final String MODEL_REQ_PARAM  = "model-request";
-
-	/**
-	 * Parameter used to refer database entities
-	 * by their primary key.
-	 */
-	public static final String ENTITY_PARAM     = "entity";
 
 
 	/* public: ModelView (access model) interface */
@@ -169,11 +163,6 @@ public abstract class ModelViewBase extends ViewWithModes
 	public String getModelRequestParam()
 	{
 		return MODEL_REQ_PARAM;
-	}
-
-	public String getEntityParam()
-	{
-		return ENTITY_PARAM;
 	}
 
 
