@@ -4,6 +4,7 @@ package com.tverts.api.clients;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -146,5 +147,15 @@ public class Address
 	public void setRemarks(String remarks)
 	{
 		this.remarks = remarks;
+	}
+
+
+	/* Support Interface */
+
+	@XmlTransient
+	public boolean isEmpty()
+	{
+		return (postalIndex == null) && (settlement == null) && (street == null) &&
+		  (building == null) && (phones == null) && (remarks == null);
 	}
 }

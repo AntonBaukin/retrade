@@ -25,7 +25,7 @@ import com.tverts.support.EX;
  */
 public abstract class UnityModelView extends ModelView
 {
-	/* public: FacesInvoicePreView (bean) interface */
+	/* Unity Model View */
 
 	public UnityModelBean getModel()
 	{
@@ -40,9 +40,7 @@ public abstract class UnityModelView extends ModelView
 
 	public String         getCheckEntityRequested()
 	{
-		if(getEntity() == null) throw EX.state(
-		  "The entity referred by model does not exist!");
-
+		EX.assertn(getEntity(), "The entity referred by model does not exist!");
 		return "";
 	}
 
@@ -54,7 +52,7 @@ public abstract class UnityModelView extends ModelView
 		return SecPoint.isSecure(getModel().getPrimaryKey(), key);
 	}
 
-	public void    forceSecureModelEntity(String key)
+	public void forceSecureModelEntity(String key)
 	{
 		if(!SecPoint.isSecure(getModel().getPrimaryKey(), key))
 			throw EX.forbid();
@@ -67,21 +65,31 @@ public abstract class UnityModelView extends ModelView
 
 	protected UnityModelBean createModel()
 	{
+		//~: create the model instance
 		UnityModelBean model = createModelInstance();
-		Long           key   = obtainEntityKeyFromRequest();
 
-		if(key == null) throw EX.state(
-		  "Can't obtain primary key of entity to ",
-		  "preview from the HTTP request!");
-
-		//~: primary key
-		model.setPrimaryKey(key);
-
-		//~: domain
+		//=: domain
 		if(model.getDomain() == null)
 			model.setDomain(getDomainKey());
 
+		//~: access the entity key
+		Long key = obtainEntityKeyFromRequest();
+
+		//?: {has the key}
+		if(key != null)
+			model.setPrimaryKey(key);
+		else
+			fallbackModelKey(model);
+
 		return model;
+	}
+
+	protected void fallbackModelKey(UnityModelBean model)
+	{
+		throw EX.state(
+		  "Can't obtain primary key of entity to ",
+		  "preview from the HTTP request!"
+		);
 	}
 
 
