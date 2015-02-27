@@ -173,8 +173,11 @@ public class GetMsg extends GetObjectBase
 		else if(m.getColor() == 'O')
 			mox.setOrange(mox.getOrange() + 1);
 
-		//!: update ox
+		//~: update ox
 		mb.updateOx();
+
+		//~: set new tx-number
+		TxPoint.txn(mb);
 	}
 
 	/**
