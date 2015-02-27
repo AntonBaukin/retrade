@@ -178,13 +178,13 @@ var ZeTD = ZeT.define('ZeTD',
 	 */
 	styles           : function(node, styles)
 	{
-		if(!ZeTD.isn(node) || !styles) return node;
+		if(!ZeTD.isn(node) || !styles) return node
 
-		var keys = ZeT.keys(styles);
+		var keys = ZeT.keys(styles)
 		for(var i = 0;(i < keys.length);i++)
-			node.style[keys[i]] = styles[keys[i]];
+			node.style[keys[i]] = styles[keys[i]]
 
-		return node;
+		return node
 	},
 
 	/**

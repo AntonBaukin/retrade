@@ -221,13 +221,7 @@
 
 table.retrade-eventsnum-area
 {
-  height: 100%; width: 100%;
-}
-
-table.retrade-eventsnum-area td > div, td.retrade-eventsnum-center,
-  td.retrade-eventsnum-center > div > table
-{
-  width: 100%;
+  height: 100%;
 }
 
 td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > table,

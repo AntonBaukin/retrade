@@ -58,7 +58,6 @@
       function doRequest(task, query)
       {
         var p = {}; if(task) p.task = task; if(query) p.query = query
-        ZeT.log('UI Events: ', query)
         jQuery.get("${z:url('/go/uievents')}", p)
       }
 

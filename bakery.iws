@@ -7,18 +7,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/core" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/core/SystemMessages.txt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/retrade/src/main/java/org/apache/jsp/uievents_jsp.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/retrade/src/main/java/org/apache" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/retrade/src/main/java/org/apache/jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/retrade/src/main/java/org" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/GenReTradeDomain.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/GenReTradeDomain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/IO.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/IO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/services/mainService.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/services/mainService.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,12 +40,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="uievents.jsp" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp">
+      <file leaf-file-name="desktop.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6197917" vertical-offset="2618" max-vertical-offset="4605">
-              <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.36038962" vertical-offset="9791" max-vertical-offset="14930">
+              <caret line="2001" column="6" selection-start-line="2001" selection-start-column="6" selection-end-line="2001" selection-end-column="6" />
+              <folding>
+                <element signature="e#40190#40387#0" expanded="true" />
+                <marker date="1425023566000" expanded="true" signature="55095:55107" placeholder="..." />
+                <marker date="1425023566000" expanded="true" signature="56580:56592" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -64,23 +64,23 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/OnAuthLoginCreated.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/events/retradeDisp.xml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeTestDocumentsSphere.xml" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/Msg.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/OnInvoiceCreated.java" />
         <option value="$PROJECT_DIR$/retrade/build.xml" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/Invoices.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/MsgObj.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/org/apache/jsp/uievents_jsp.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/core/SystemMessages.txt" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/services/mainService.xml" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/IO.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/GenReTradeDomain.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
       </list>
     </option>
   </component>
@@ -779,7 +779,7 @@
     <frame x="459" y="37" width="1038" height="965" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3147942" sideWeight="0.49896908" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31368187" sideWeight="0.49896908" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3192436" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -829,7 +829,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-62 [beta]: done with zetobj.js and the tests." />
     <MESSAGE value="ui-62 [beta]: fixed errors related to ZeT library update, but ReTrade UI with ExtJS has wrong layouts! Fixing is urgent..." />
     <MESSAGE value="ui-62 [stable]: done updating 0-Zet Objects library, Document and Borders library is left unchanged for now... Included jQuery into the main page along-side with ExtJs." />
     <MESSAGE value="system-11 [stable]: permanently moved to new deploy method using RSync and Omicron VM with twi network adapters: bridged and host-only." />
@@ -854,7 +853,8 @@
     <MESSAGE value="domain-47 [stable]: refactored Messages routines: made this class (renamed to Msg) to be Message builder with methods chaining." />
     <MESSAGE value="domain-47 [stable]: saving messages about Invoices creation." />
     <MESSAGE value="ui-61 [stable]: implemented uievents.jsp, full navigation support. Actions would be involved in the following job." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [stable]: implemented uievents.jsp, full navigation support. Actions would be involved in the following job." />
+    <MESSAGE value="domain-47 [stable]: linking System users with the messaging sources by the types listed in SystemMessages.txt resource file (instead of mainService.xml)." />
+    <option name="LAST_COMMIT_MESSAGE" value="domain-47 [stable]: linking System users with the messaging sources by the types listed in SystemMessages.txt resource file (instead of mainService.xml)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -928,70 +928,10 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1325167" vertical-offset="3723" max-vertical-offset="8208">
-          <caret line="587" column="31" selection-start-line="226" selection-start-column="31" selection-end-line="226" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/util/TreeSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24610245" vertical-offset="1343" max-vertical-offset="8378">
-          <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/util/NavigableSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47327393" vertical-offset="1020" max-vertical-offset="6304">
-          <caret line="85" column="44" selection-start-line="85" selection-start-column="44" selection-end-line="85" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/util/SortedSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.363029" vertical-offset="3043" max-vertical-offset="5233">
-          <caret line="107" column="17" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4097788" vertical-offset="2249" max-vertical-offset="3817">
-          <caret line="155" column="79" selection-start-line="153" selection-start-column="79" selection-end-line="153" selection-end-column="79" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2650334" vertical-offset="13141" max-vertical-offset="15076">
-          <caret line="2760" column="3" selection-start-line="787" selection-start-column="3" selection-end-line="787" selection-end-column="3" />
-          <folding>
-            <marker date="1424938122000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1424938122000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.64365256" vertical-offset="3213" max-vertical-offset="4961">
-          <caret line="456" column="30" selection-start-line="223" selection-start-column="30" selection-end-line="223" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/services/MainService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2598">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1023,7 +963,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34075725" vertical-offset="0" max-vertical-offset="1187">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1031,7 +970,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.056792874" vertical-offset="306" max-vertical-offset="3788">
           <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1039,7 +977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="580" max-vertical-offset="2799">
           <caret line="71" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1047,13 +984,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42882884" vertical-offset="1156" max-vertical-offset="2102">
           <caret line="115" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37639198" vertical-offset="1668" max-vertical-offset="3788">
+        <state vertical-scroll-proportion="0.32182628" vertical-offset="1717" max-vertical-offset="3227">
           <caret line="177" column="43" selection-start-line="118" selection-start-column="43" selection-end-line="118" selection-end-column="43" />
           <folding />
         </state>
@@ -1061,9 +997,69 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6197917" vertical-offset="2618" max-vertical-offset="4605">
-          <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.50523865" vertical-offset="2014" max-vertical-offset="5143">
+          <caret line="144" column="42" selection-start-line="144" selection-start-column="23" selection-end-line="144" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.9877505" vertical-offset="1377" max-vertical-offset="19020">
+          <caret line="186" column="6" selection-start-line="95" selection-start-column="3" selection-end-line="100" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/msg/GetMsg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.0445435" vertical-offset="1139" max-vertical-offset="3567">
+          <caret line="175" column="9" selection-start-line="95" selection-start-column="3" selection-end-line="136" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3322034" vertical-offset="484" max-vertical-offset="2086">
+          <caret line="47" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uevents.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.9774697" vertical-offset="578" max-vertical-offset="3535">
+          <caret line="171" column="60" selection-start-line="169" selection-start-column="3" selection-end-line="169" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44155845" vertical-offset="3570" max-vertical-offset="13706">
+          <caret line="226" column="0" selection-start-line="226" selection-start-column="0" selection-end-line="226" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46915585" vertical-offset="5746" max-vertical-offset="20183">
+          <caret line="355" column="18" selection-start-line="355" selection-start-column="18" selection-end-line="355" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36038962" vertical-offset="9791" max-vertical-offset="14930">
+          <caret line="2001" column="6" selection-start-line="2001" selection-start-column="6" selection-end-line="2001" selection-end-column="6" />
+          <folding>
+            <element signature="e#40190#40387#0" expanded="true" />
+            <marker date="1425023566000" expanded="true" signature="55095:55107" placeholder="..." />
+            <marker date="1425023566000" expanded="true" signature="56580:56592" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>

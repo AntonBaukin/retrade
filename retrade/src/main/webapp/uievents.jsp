@@ -107,7 +107,6 @@ static Long   closest(Set<Long> ids, Long id, List<MsgObj> msgs)
   return r;
 }
 
-
 static String item(StringBuilder sb, Calendar cl, Date now, MsgObj msg)
 {
   Message m = msg.getOx();
@@ -145,11 +144,26 @@ static String item(StringBuilder sb, Calendar cl, Date now, MsgObj msg)
 
   return sb.toString();
 }
-
 %>
 
 <%
-//?: {default | fetch | delete}
+//?: {numbers}
+if("numbers".equals(task)) {
+%>
+
+ReTrade.desktop.uievents.numbers({
+  txn: <%= mbobj.getTxn()%>,
+  numbers: { <%= numbers(mbox) %> }
+})
+
+<%
+  return;
+} //<-- numbers
+%>
+
+
+<%
+//?: {default | fetch | delete | filter}
 if(task == null || "fetch".equals(task) || "delete".equals(task) || "filter".equals(task)) {
 
   //?: {no task is given} provide the default data
@@ -212,6 +226,7 @@ ReTrade.desktop.uievents.set({ txn: <%= mbobj.getTxn()%>,
   return;
 } //<-- default data | fetch | delete | filter
 %>
+
 
 <%
 //?: {color}

@@ -1939,11 +1939,10 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 
 	set      : function(v, c)
 	{
-		var n = this._tx().walk('N', this.struct.node())
+		//~: set the value
+		this._val(v)
 
-		if(ZeT.isn(v)) v = '' + v
-		ZeTD.update(n, this.value = v)
-
+		//?: {has color provided}
 		if(!ZeT.isu(c))
 			this.color(c)
 
@@ -1989,6 +1988,18 @@ ReTrade.EventsNumber = ZeT.defineClass('ReTrade.EventsNumber', ReTrade.Visual, {
 	width    : function()
 	{
 		return this.struct.node().offsetWidth
+	},
+
+	_val     : function(v)
+	{
+		var n = this._tx().walk('N', this.struct.node())
+
+		if(ZeT.isn(v)) v = '' + v
+		ZeTD.update(n, this.value = v)
+
+		//?: {allow shrink}
+		if(this.opts.notshrink === false) return
+		ZeTD.styles(n, { minWidth: '' + n.offsetWidth + 'px' })
 	},
 
 	_ts      : ""+
@@ -2492,7 +2503,7 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 		this._init_ctl()
 
 		//~: set the interval timer
-		setInterval(ZeT.fbind(this._interval, this), this.opts.interval || 2000)
+		setInterval(ZeT.fbind(this._interval, this), this.opts.interval || 1000)
 	},
 
 	toggle          : function(show)
@@ -2605,7 +2616,14 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 		if(this.interval.i%2 == 0)
 			this._shift_number()
 
-		this.interval.i++
+		this.interval.i++ //<-- before the pause
+
+		//~: refresh numbers pause (30 intervals)
+		var rp = (this.opts.pause || 30)
+		ZeT.assert(ZeT.isi(rp) && (rp > 0))
+		if(this.interval.i%rp == 0)
+			if(this.opts.proxy)
+				this.opts.proxy.numbers()
 	},
 
 	_shift_number   : function()
