@@ -17,8 +17,8 @@ ${v.forceSecure()}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle('${z:jss(v.winmainTitle)}')
+    extjsf.component('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(v.winmainTitle)}')
 
   //]]>
   </script>
@@ -38,17 +38,30 @@ ${v.forceSecure()}
 
   <f:facet name = "toolbar">
 
-    <!-- [close window button] -->
-
-    <x:component coid = "${z:vid(v, 'close-window')}">
+    <!-- [cancel edit button] -->
+    <x:component coid = "${z:vid(v, 'cancel-edit')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Отмена',
         cls: 'ux-btn-default-small-red',
-
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
-            component().close()
+          //?: {creating} close
+          if("#{v.create}" == 'true')
+            extjsf.component('winmain', '${rootView.extjsDomain}').close()
+          else
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+              retradeToggleReadWrite(true)
+        }
+      </f:facet>
+    </x:component>
+
+    <!-- [close window button] -->
+    <x:component coid = "${z:vid(v, 'close')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+        handler : function()
+        {
+          extjsf.component('winmain', '${rootView.extjsDomain}').close()
         }
       </f:facet>
     </x:component>
@@ -63,11 +76,19 @@ ${v.forceSecure()}
 
 
     <!-- [submit button] -->
-
     <x:component coid = "${z:vid(v, 'submit')}">
       <f:facet name = "extjs-props">
         xtype:'button', text: 'Сохранить',
         cls: 'ux-btn-default-small-green'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [do-edit] -->
+    <x:component coid = "${z:vid(v, 'do-edit')}">
+      <f:facet name = "extjs-props">
+        xtype:'button', text: 'Редактировать',
+        disabled: ${not v.isSecureModelEntity('edit')}
       </f:facet>
     </x:component>
 
@@ -104,6 +125,7 @@ ${v.forceSecure()}
         value = "#{v.firm.code}">
 
         <f:facet name = "extjs-props">
+          extjsfReadWrite: true,
           margin: extjsf.pts(0, 4, 0, 0), flex: 1,
           allowBlank: false, validator: function()
           {
@@ -153,7 +175,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
         value = "#{v.firm.name}">
 
         <f:facet name = "extjs-props">
-          flex: 4, allowBlank: false
+          flex: 4, allowBlank: false, extjsfReadWrite: true
         </f:facet>
 
         <f:facet name = "label-props">
@@ -169,10 +191,10 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
 
     <!-- [full name field] -->
     <x:text-field coid = "${z:vid(v, 'full-name')}"
-      value = "#{v.firm.name}">
+      value = "#{v.firm.fullName}">
 
       <f:facet name = "extjs-props">
-        xtype: 'textarea', rows: 3
+        xtype: 'textarea', rows: 3, extjsfReadWrite: true
       </f:facet>
 
       <f:facet name = "label-props">
@@ -206,7 +228,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
         allowNone = "false" onlyOne = "true">
 
         <f:facet name = "check-props">
-          cls: 'retrade-checkboxes-line'
+          cls: 'retrade-checkboxes-line', extjsfReadWrite: true
         </f:facet>
       </x:checkboxes>
     </x:component>
@@ -232,16 +254,61 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
   <script type = "text/javascript">
   //<![CDATA[
 
+  //~: toggle read-write
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+    retradeToggleReadWrite = function(isread)
+  {
+    //~: toggle the form fields
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+      toggleReadWrite(isread)
+
+    //~: toggle cancel-edit
+    extjsf.bind("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}').visible(!isread)
+
+    //~: toggle close
+    extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}').visible(isread)
+
+    //~: toggle submit
+    extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
+
+    //~: toggle do-edit
+    extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}').visible(isread)
+
+    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').component()
+    if(isread) winmain.setTitle('${z:jss(v.winmainTitle)}')
+    else       winmain.setTitle('${z:jss(v.winmainTitleEdit)}')
+  }
+
+
+  //~: default read-only for existing
+  Ext.onReady(function()
+  {
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+      retradeToggleReadWrite("#{v.create}" == 'false')
+  })
+
+
+  //~: do-edit button
+  extjsf.bindHandler("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}', function()
+  {
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+      retradeToggleReadWrite(false)
+  })
 
 
   //~: submit form with command button
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}',
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
-      bindSubmitForm({'${v.viewModeParam}':'${v.viewModePostStr}',
-      command: 'submit', success: function()
-      {
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  {
+    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}')
+    winmain.retradeEditSuccess = false
 
-      }}))
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').submitForm({
+      '${v.viewModeParam}':'${v.viewModePostStr}', command: 'submit', success: function()
+    {
+      winmain.retradeEditSuccess = true
+      extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
+    }})
+  })
 
   //]]>
   </script>

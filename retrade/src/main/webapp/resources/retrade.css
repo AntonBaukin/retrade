@@ -201,6 +201,16 @@ tr.x-boundlist-item td
   font-size: 12px; padding: 1pt;
 }
 
+.x-form-readonly input, .x-form-readonly textarea
+{
+  opacity: 0.8;
+}
+
+.x-form-readonly .x-form-cb-label
+{
+  cursor: default;
+}
+
 
 /* buttons */
 

@@ -565,6 +565,20 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return this;
 	},
 
+	visible          : function(v)
+	{
+		var c = this.component()
+		var p = this._extjs_props
+
+		if(ZeT.isu(v) || (v === null))
+			return (!c || !ZeT.isf(c.isVisible))?(undefined):(c.isVisible())
+
+		if(!c) p.hidden = !v; else
+			if(ZeT.isf(c.setVisible)) c.setVisible(!!v)
+
+		return this
+	},
+
 	renderTo         : function(node_or_id)
 	{
 		if(ZeT.iss(node_or_id))
@@ -659,7 +673,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return ZeT.iss(html) || ZeT.isDelayed(html);
 	},
 
-	goFormAction    : function(nodeid, action)
+	goFormAction     : function(nodeid, action)
 	{
 		if(ZeTS.ises(nodeid)) nodeid = this.nodeId();
 		if(ZeTS.ises(nodeid)) return this;
@@ -689,6 +703,28 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 		node.set({'action': prefix + 'go/' + action})
 		return this;
+	},
+
+	toggleReadWrite  : function(isread)
+	{
+		//~: access the form
+		var form = ZeT.assert(this.component() &&
+		  this.component().getForm && this.component().getForm(),
+		  'This component is not an Ext Form!'
+		)
+
+		//c: for each the field of the form
+		var collect = []; form.getFields().each(function(f)
+		{
+			if(f.extjsfReadWrite === true)
+				if(ZeT.isf(f.setReadOnly))
+				{
+					f.setReadOnly(isread)
+					collect.push(f)
+				}
+		})
+
+		return collect
 	},
 
 	_children        : function(chs)
@@ -799,7 +835,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	 *
 	 * Validation fails when callback returns false.
 	 */
-	validator    : function(v)
+	validator        : function(v)
 	{
 		this._validator = undefined;
 		if(ZeT.isf(v)) this._validator = v;

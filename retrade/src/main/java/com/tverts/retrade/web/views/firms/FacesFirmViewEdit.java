@@ -111,12 +111,17 @@ public class FacesFirmViewEdit extends UnityModelView
 		getEntity().getFirm().updateOx();
 
 		//?: {editing} update
-		if(isEdit())
+		if(!isCreate())
 			actionRun(ActionType.UPDATE, getEntity());
 		else
+		{
+			//=: firm domain
+			getEntity().getFirm().setDomain(getEntity().getDomain());
+
 			actionRun(ActionType.SAVE, getEntity(),
 			  ActContractor.SAVE_FIRM, true
 			);
+		}
 
 		return null;
 	}
@@ -131,15 +136,37 @@ public class FacesFirmViewEdit extends UnityModelView
 
 	public Contractor getEntity()
 	{
-		return (Contractor) super.getEntity();
+		if(entity != null)
+			return entity;
+
+		if(!isCreate())
+			return entity = (Contractor) super.getEntity();
+
+		entity = new Contractor();
+
+		//=: domain
+		entity.setDomain(loadDomain());
+
+		return entity;
 	}
+
+	private Contractor entity;
 
 	public Firm       getFirm()
 	{
-		return (firm != null)?(firm):(firm = EX.assertn(getEntity().getFirm(),
+		if(firm != null) return firm;
+
+		//?: {existing firm}
+		if(!isCreate()) return firm = EX.assertn(getEntity().getFirm(),
 		  "Contractor [", getEntity().getPrimaryKey(), "], code [",
 		  getEntity().getCode(), "] has no Firm assigned!"
-		).getOx());
+		).getOx();
+
+		//?: {has it no when creating}
+		if(getEntity().getFirm() == null)
+			getEntity().setFirm(new FirmEntity());
+
+		return firm = getEntity().getFirm().getOx();
 	}
 
 	private Firm firm;
@@ -147,14 +174,15 @@ public class FacesFirmViewEdit extends UnityModelView
 
 	/* public: view [edit] interface */
 
-	public boolean isEdit()
+	public boolean isCreate()
 	{
-		return (getModel().getPrimaryKey() != null);
+		return (getModel().getPrimaryKey() == null);
 	}
 
 	public String getWinmainTitleEdit()
 	{
-		return "Добавление контрагента";
+		return (isCreate())?("Добавление контрагента"):
+		  SU.cats("Редактирование контрагента №", getEntity().getCode());
 	}
 
 	public boolean isValid()
@@ -189,7 +217,7 @@ public class FacesFirmViewEdit extends UnityModelView
 
 	public String getWinmainTitle()
 	{
-		return isEdit()?(getWinmainTitleEdit()):(getWinmainTitleInfo());
+		return isCreate()?(getWinmainTitleEdit()):(getWinmainTitleInfo());
 	}
 
 	public String getWinmainTitleInfo()
@@ -202,7 +230,7 @@ public class FacesFirmViewEdit extends UnityModelView
 
 	public void forceSecure()
 	{
-		if(isEdit())
+		if(isCreate())
 			forceSecure("create-contractor-firm");
 		else
 			forceSecureModelEntity("view");
@@ -261,7 +289,7 @@ public class FacesFirmViewEdit extends UnityModelView
 	protected void fallbackModelKey(UnityModelBean model)
 	{
 		//~: create contractor instance
-		Contractor c = new Contractor();
+		Contractor c = entity =  new Contractor();
 
 		//=: domain
 		c.setDomain(loadDomain());
@@ -270,7 +298,7 @@ public class FacesFirmViewEdit extends UnityModelView
 		c.setFirm(new FirmEntity());
 
 		//=: firm code
-		c.getFirm().getOx().setCode(
+		(firm = c.getFirm().getOx()).setCode(
 		  Contractors.createContractorCode(c.getDomain())
 		);
 	}

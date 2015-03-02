@@ -91,6 +91,10 @@ function retrade_open_window(opts)
     }
   })
 
+  //?: {has on-close}
+  if(ZeT.isf(opts.onclose))
+    winmain.on('beforedestroy', ZeT.fbind(opts.onclose, winmain))
+
   //~: create the ExtJS Window component & return the bind
   winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   return winmain

@@ -34,6 +34,14 @@ ${v.checkModelRequestedWithRedirect}
 
     <f:facet name = "toolbar">
 
+      <!-- [add contractor+firm] -->
+      <x:component coid = "${z:vid(v, 'add-firm')}">
+        <f:facet name = "extjs-props">
+          xtype:'button', text: 'Добавить юр. лицо'
+        </f:facet>
+      </x:component>
+
+
       <x:component coid = "${z:vid(v, '_tb_fill_0')}">
         <f:facet name = "extjs-props">
           xtype: 'panel', flex: 1, frame: false, border: false,
@@ -159,6 +167,24 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
+
+  //~: create contractor view on click
+  extjsf.bindHandler("${z:vid(v, 'add-firm')}", '${rootView.extjsDomain}', function(btn, e)
+  {
+    retrade_open_window({ url: '/firms/info-edit',
+
+      domainKey: "${z:vid(v, 'add_contractor_firm')}",
+      box: { event: e, widthpt: 480, heightpt: 360}, collapsible: true,
+
+      onclose: function()
+      {
+        if(this.retradeEditSuccess)
+          extjsf.component("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
+      }
+    })
+  })
+
+  //~: open contractor view on click
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
     on('itemdblclick', function(comp, rec, node, row, e)
   {
@@ -166,8 +192,13 @@ ${v.checkModelRequestedWithRedirect}
 
       domainKey: "${z:vid(v, 'view_contractor')}",
       box: { event: e, widthpt: 480, heightpt: 360},
-      record: rec.getId(), collapsible: true
+      record: rec.getId(), collapsible: true,
 
+      onclose: function()
+      {
+        if(this.retradeEditSuccess)
+          extjsf.component("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
+      }
     })
   })
 
