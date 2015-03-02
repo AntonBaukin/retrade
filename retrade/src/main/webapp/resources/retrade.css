@@ -168,6 +168,19 @@ label.retrade-form-label-cell, .retrade-form-label-cell label,
   background-color: transparent;
 }
 
+.retrade-checkboxes-line label.x-form-cb-label
+{
+  position:relative; top: 2px;
+  margin-top: 0; margin-right: 6px;
+  font-size: 10pt; font-weight: normal;
+  letter-spacing: 0.08pt;
+}
+
+.retrade-checkboxes-line:last-child label.x-form-cb-label
+{
+  margin-right: 0;
+}
+
 .retrade-width-100pc
 {
   width: 100%;

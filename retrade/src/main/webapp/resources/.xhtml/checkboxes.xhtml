@@ -71,7 +71,7 @@
       extjsProps({extjsfRawItem: true}).
       extjsPropsNode()
 
-    //~: append change listener
+    //~: on check value change
     bind.on('change', function(cb)
     {
       var n = Ext.getDom(bind.nodeId())
@@ -85,7 +85,7 @@
       //?: {has no value}
       if(!none && (n.value == '')) {
         n.value = cb.inputValue
-        cb.setRawValue(true)
+        cb.setValue(true)
       }
 
       //?: {one & checkbox checked}
@@ -94,14 +94,13 @@
         n.value = cb.inputValue
         ZeT.each(bind.checkboxes, function(x)
         {
-          if(x != cb) x.setRawValue(false)
+          if(x != cb) x.setValue(false)
         })
       }
     })
 
     //~: set special create component listener
-    bind.checkboxes = []
-    bind.on_create = function(cb)
+    bind.checkboxes = []; bind.on_create = function(cb)
     {
       for(var i = 0;(i < bind.checkboxes.length);i++)
         if(bind.checkboxes[i].inputValue == cb.inputValue) return

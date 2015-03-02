@@ -24,6 +24,11 @@ import static com.tverts.servlet.RequestPoint.request;
 
 import com.tverts.faces.UnityModelView;
 
+/* com.tverts: actions */
+
+import com.tverts.actions.ActionType;
+import static com.tverts.actions.ActionsPoint.actionRun;
+
 /* com.tverts: models */
 
 import com.tverts.model.ModelBean;
@@ -39,6 +44,7 @@ import com.tverts.api.clients.Firm;
 
 /* com.tverts: retrade domain (firms) */
 
+import com.tverts.retrade.domain.firm.ActContractor;
 import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.retrade.domain.firm.Contractors;
 import com.tverts.retrade.domain.firm.ContractorModelBean;
@@ -63,12 +69,55 @@ public class FacesFirmViewEdit extends UnityModelView
 {
 	/* Actions */
 
-	public String  doCheckCodeExists()
+	public String doCheckCodeExists()
 	{
 		String code = SU.s2s(request().getParameter("code"));
 
 		//~: check the code exists
 		codeExists = (code == null) || !checkCodeExists(code);
+		return null;
+	}
+
+	public String doSubmitEdit()
+	{
+		//sec: is allowed to edit
+		forceSecureModelEntity("edit");
+
+		//?: {code exists}
+		EX.asserts(getFirm().getCode());
+		if(codeExists = !checkCodeExists(getFirm().getCode()))
+			return null;
+
+		//=: firm code
+		getEntity().setCode(getFirm().getCode());
+
+		//=: firm name
+		EX.asserts(getFirm().getName());
+		getEntity().setName(getFirm().getName());
+
+		//?: {firm full name is set}
+		EX.asserts(getFirm().getFullName());
+
+		//?: {has proper types}
+		EX.assertn(firmType);
+		EX.assertx(firmType.size() == 1);
+		String type = firmType.iterator().next();
+		EX.assertx(getFirmTypeLabels().containsKey(type));
+
+		//=: firm type
+		getFirm().setType(type);
+
+		//~: update firm ox-object
+		getEntity().getFirm().updateOx();
+
+		//?: {editing} update
+		if(isEdit())
+			actionRun(ActionType.UPDATE, getEntity());
+		else
+			actionRun(ActionType.SAVE, getEntity(),
+			  ActContractor.SAVE_FIRM, true
+			);
+
 		return null;
 	}
 
@@ -100,7 +149,7 @@ public class FacesFirmViewEdit extends UnityModelView
 
 	public boolean isEdit()
 	{
-		return (getModel().getPrimaryKey() == null);
+		return (getModel().getPrimaryKey() != null);
 	}
 
 	public String getWinmainTitleEdit()
@@ -167,11 +216,9 @@ public class FacesFirmViewEdit extends UnityModelView
 		Map<String, String> m = firmTypeLabels =
 		  new LinkedHashMap<String, String>(5);
 
-		m.put("ООО", "ООО");
-		m.put("ИП",  "ИП");
-		m.put("ЗАО", "ЗАО");
-		m.put("ОАО", "ОАО");
-		m.put("Гос", "Гос");
+		m.put("ОРГ", "Организация");
+		m.put("ИП",  "Инд. Предприниматель");
+		m.put("ГОС", "Гос. Учреждение");
 
 		return firmTypeLabels;
 	}
@@ -185,7 +232,7 @@ public class FacesFirmViewEdit extends UnityModelView
 
 		firmType = new HashSet<String>(1);
 		if(getFirm().getType() == null)
-			getFirm().setType("ООО");
+			getFirm().setType("ОРГ");
 
 		firmType = new HashSet<String>(1);
 		firmType.add(getFirm().getType());
@@ -194,6 +241,11 @@ public class FacesFirmViewEdit extends UnityModelView
 	}
 
 	private Set<String> firmType;
+
+	public void setFirmType(Set<String> firmType)
+	{
+		this.firmType = firmType;
+	}
 
 
 	/* protected: ModelView interface */

@@ -172,7 +172,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
       value = "#{v.firm.name}">
 
       <f:facet name = "extjs-props">
-        xtype: 'textarea', height: extjsf.pt(40)
+        xtype: 'textarea', rows: 3
       </f:facet>
 
       <f:facet name = "label-props">
@@ -183,8 +183,40 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
     </x:text-field>
 
 
+    <!-- [organization type layout -->
+
+    <x:component coid = "${z:vid(v, '_org_type_label')}">
+      <f:facet name = "extjs-props">
+        xtype: 'label', text: 'Тип юридического лица',
+        cls: 'retrade-info-title-label',
+        style: { cursor: 'default' },
+        margin: extjsf.pts(4, 0, 1, 0)
+      </f:facet>
+    </x:component>
+
+    <x:component coid = "${z:vid(v, '_org_type_boxes')}">
+
+      <f:facet name = "extjs-props">
+        layout: {type: 'hbox', align: 'middle'},
+        border: false, bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+
+      <x:checkboxes coid = "${z:vid(v, 'org-type')}"
+        value = "#{v.firmType}" labels = "#{v.firmTypeLabels}"
+        allowNone = "false" onlyOne = "true">
+
+        <f:facet name = "check-props">
+          cls: 'retrade-checkboxes-line'
+        </f:facet>
+      </x:checkboxes>
+    </x:component>
+
+    <!-- organization type layout] -->
 
 
+    <!-- [submit action] -->
+    <h:commandButton id = "submit" value = "submit" style = "display:none;"
+      action = "#{v.doSubmitEdit}"/>
 
   </x:form-panel>
 
@@ -196,6 +228,23 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
       '${v.modelParam}': '${v.modelKeys}'
     </f:facet>
   </x:action-call>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+
+
+  //~: submit form with command button
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}',
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+      bindSubmitForm({'${v.viewModeParam}':'${v.viewModePostStr}',
+      command: 'submit', success: function()
+      {
+
+      }}))
+
+  //]]>
+  </script>
 
   <!-- firm edit form] -->
 
@@ -213,7 +262,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
 
       <ui:fragment rendered = "#{v.codeExists}">
         <field target = "${z:vid(v, 'code')}">
-          <error>Указанный код уже используется в другом контрагенте!</error>
+          <error>Данный код уже используется в другой организации!</error>
         </field>
       </ui:fragment>
     </validation>
