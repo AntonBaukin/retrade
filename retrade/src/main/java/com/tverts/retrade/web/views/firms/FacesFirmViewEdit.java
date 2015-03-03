@@ -40,6 +40,7 @@ import com.tverts.endure.person.FirmEntity;
 
 /* com.tverts: retrade api */
 
+import com.tverts.api.clients.Address;
 import com.tverts.api.clients.Firm;
 
 /* com.tverts: retrade domain (firms) */
@@ -106,6 +107,18 @@ public class FacesFirmViewEdit extends UnityModelView
 
 		//=: firm type
 		getFirm().setType(type);
+
+		//?: {has empty registry address}
+		if(getRegistryAddress().isEmpty())
+			getFirm().setRegistryAddress(null);
+
+		//?: {has empty contact address}
+		if(getContactAddress().isEmpty())
+			getFirm().setContactAddress(null);
+
+		//?: {has empty office address}
+		if(getOfficeAddress().isEmpty())
+			getFirm().setOfficeAddress(null);
 
 		//~: update firm ox-object
 		getEntity().getFirm().updateOx();
@@ -211,6 +224,45 @@ public class FacesFirmViewEdit extends UnityModelView
 
 		return (c == null) || c.equals(getEntity());
 	}
+
+	public Address getRegistryAddress()
+	{
+		if(registryAddress == null)
+			registryAddress = getFirm().getRegistryAddress();
+
+		if(registryAddress == null)
+			getFirm().setRegistryAddress(registryAddress = new Address());
+
+		return registryAddress;
+	}
+
+	private Address registryAddress;
+
+	public Address getContactAddress()
+	{
+		if(contactAddress == null)
+			contactAddress = getFirm().getContactAddress();
+
+		if(contactAddress == null)
+			getFirm().setContactAddress(contactAddress = new Address());
+
+		return contactAddress;
+	}
+
+	private Address contactAddress;
+
+	public Address getOfficeAddress()
+	{
+		if(officeAddress == null)
+			officeAddress = getFirm().getOfficeAddress();
+
+		if(officeAddress == null)
+			getFirm().setOfficeAddress(officeAddress = new Address());
+
+		return officeAddress;
+	}
+
+	private Address officeAddress;
 
 
 	/* public: view [info] interface */

@@ -1,0 +1,216 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<x:component coid = "${z:vid(localView, '_address_layout')}_${name}"
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+  <f:facet name = "extjs-props">
+    border: false, bodyCls: 'retrade-content-panel',
+    layout: {type: 'vbox', align: 'stretch'}
+  </f:facet>
+
+
+  <!-- [index, country, province -->
+
+  <x:component coid = "${z:vid(localView, '_address_index_country_region')}_${name}">
+
+    <f:facet name = "extjs-props">
+      border: false, layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-transparent-panel',
+    </f:facet>
+
+    <!-- [postal index] -->
+    <x:text-field coid = "${z:vid(localView, 'address-index')}-${name}"
+      value = "#{address.postalIndex}">
+
+      <f:facet name = "extjs-props">
+        width: extjsf.ex(16), cls: 'retrade-large-field',
+        fieldStyle: { textAlign: 'center' },
+        maskRe: retrade.rdecimal,
+        extjsfReadWrite: true
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Индекс', width: extjsf.ex(7),
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+    <!-- [country] -->
+    <x:text-field coid = "${z:vid(localView, 'address-country')}-${name}"
+      value = "#{address.country}">
+
+      <f:facet name = "extjs-props">
+        width: extjsf.ex(16), extjsfReadWrite: true
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Страна', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
+      </f:facet>
+    </x:text-field>
+
+    <!-- [province] -->
+    <x:text-field coid = "${z:vid(localView, 'address-province')}-${name}"
+      value = "#{address.province}">
+
+      <f:facet name = "extjs-props">
+        flex: 1, extjsfReadWrite: true
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Область', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
+      </f:facet>
+    </x:text-field>
+  </x:component>
+
+  <!-- index, country, province] -->
+
+
+  <!-- [city, district -->
+
+  <x:component coid = "${z:vid(localView, '_address_city_district')}_${name}">
+
+    <f:facet name = "extjs-props">
+      border: false, layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(4, 0, 0, 0)
+    </f:facet>
+
+    <!-- [city] -->
+    <x:text-field coid = "${z:vid(localView, 'address-city')}-${name}"
+      value = "#{address.settlement}">
+
+      <f:facet name = "extjs-props">
+        extjsfReadWrite: true, width: extjsf.ex(35)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Город', width: extjsf.ex(7),
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [district] -->
+    <x:text-field coid = "${z:vid(localView, 'address-district')}-${name}"
+      value = "#{address.district}">
+
+      <f:facet name = "extjs-props">
+        flex: 1, extjsfReadWrite: true
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Район', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
+      </f:facet>
+    </x:text-field>
+  </x:component>
+
+  <!-- city, district] -->
+
+
+  <!-- [street, building, office -->
+
+  <x:component coid = "${z:vid(localView, '_address_street_building_office')}_${name}">
+
+    <f:facet name = "extjs-props">
+      border: false, layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(4, 0, 0, 0)
+    </f:facet>
+
+    <!-- [street] -->
+    <x:text-field coid = "${z:vid(localView, 'address-street')}-${name}"
+      value = "#{address.street}">
+
+      <f:facet name = "extjs-props">
+        extjsfReadWrite: true, width: extjsf.ex(35)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Улица', width: extjsf.ex(7),
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [building] -->
+    <x:text-field coid = "${z:vid(localView, 'address-building')}-${name}"
+      value = "#{address.building}">
+
+      <f:facet name = "extjs-props">
+        extjsfReadWrite: true, width: extjsf.ex(12)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Здание', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
+      </f:facet>
+    </x:text-field>
+
+    <!-- [office] -->
+    <x:text-field coid = "${z:vid(localView, 'address-office')}-${name}"
+      value = "#{address.office}">
+
+      <f:facet name = "extjs-props">
+        extjsfReadWrite: true, width: extjsf.ex(12)
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Офис', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
+      </f:facet>
+    </x:text-field>
+  </x:component>
+
+  <!-- street, building, office] -->
+
+
+  <!-- [phones, remarks -->
+  <x:component coid = "${z:vid(localView, '_address_phones')}_${name}">
+
+    <f:facet name = "extjs-props">
+      border: false, layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(4, 0, 0, 0)
+    </f:facet>
+
+    <!-- [phones] -->
+    <x:text-field coid = "${z:vid(localView, 'address-phones')}-${name}"
+      value = "#{address.phones}">
+
+      <f:facet name = "extjs-props">
+        extjsfReadWrite: true, flex: 1
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Тел.', width: extjsf.ex(7),
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+    <!-- [remarks] -->
+    <x:text-field coid = "${z:vid(localView, 'address-remarks')}-${name}"
+      value = "#{address.phones}">
+
+      <f:facet name = "extjs-props">
+        extjsfReadWrite: true, flex: 2
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Заметки',
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
+      </f:facet>
+    </x:text-field>
+  </x:component>
+
+  <!-- phones, remarks] -->
+</x:component>
