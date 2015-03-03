@@ -130,6 +130,10 @@ public class GenTestFirms extends GenesisHiberPartBase
 		if(SU.sXe(f.getTaxCode()))
 			f.setTaxCode(GenUtils.number(ctx.gen(), 9));
 
+		//?: {has no registry code}
+		if(SU.sXe(f.getRegCode()))
+			f.setTaxCode(GenUtils.number(ctx.gen(), 13));
+
 		//?: {has no phones}
 		if(SU.sXe(f.getPhones()))
 			f.setPhones(GenUtils.phones(ctx.gen(), "+7-4822-", 2, 6));

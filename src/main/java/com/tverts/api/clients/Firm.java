@@ -16,8 +16,8 @@ import com.tverts.api.core.CatItem;
  */
 @XmlRootElement(name = "firm")
 @XmlType(name = "firm", propOrder = {
-  "fullName", "taxNumber", "taxCode", "formCode",
-  "type", "email", "phones", "persons", "agreement",
+  "fullName", "taxNumber", "taxCode", "regCode", "formCode",
+  "type", "email", "phones", "persons", "agreement", "remarks",
   "registryAddress", "contactAddress", "officeAddress"
 })
 public class Firm extends CatItem
@@ -59,6 +59,19 @@ public class Firm extends CatItem
 	public void setTaxCode(String taxCode)
 	{
 		this.taxCode = taxCode;
+	}
+
+	@XmlElement(name = "reg-code")
+	public String getRegCode()
+	{
+		return regCode;
+	}
+
+	private String regCode;
+
+	public void setRegCode(String regCode)
+	{
+		this.regCode = regCode;
 	}
 
 	@XmlElement(name = "form-code")
@@ -142,6 +155,18 @@ public class Firm extends CatItem
 	public void setAgreement(String agreement)
 	{
 		this.agreement = agreement;
+	}
+
+	public String getRemarks()
+	{
+		return remarks;
+	}
+
+	private String remarks;
+
+	public void setRemarks(String remarks)
+	{
+		this.remarks = remarks;
 	}
 
 	/**
