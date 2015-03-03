@@ -484,9 +484,9 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 	init             : function()
 	{
-		this._listeners   = {};
-		this._items       = [];
-		this._extjs_props = {};
+		this._listeners   = {}
+		this._items       = []
+		this._extjs_props = {}
 	},
 
 	component        : function(component)
@@ -725,6 +725,27 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		})
 
 		return collect
+	},
+
+	toggleBlock      : function(block)
+	{
+		ZeT.asserts(block)
+
+		//~: access the component' children
+		var c = this.component()
+		if(c) c.items.each(function(c)
+		{
+			if(!ZeT.iss(c.extjsfBlock)) return
+			c.setVisible(c.extjsfBlock == block)
+		})
+
+		//?: {has no component yet}
+		if(!c) ZeT.each(this._items, function(i)
+		{
+			ZeT.assert(i.extjsfBind === true)
+			if(!ZeT.iss(i._extjs_props.extjsfBlock)) return
+			i._extjs_props.hidden = (i._extjs_props.extjsfBlock != block)
+		})
 	},
 
 	_children        : function(chs)

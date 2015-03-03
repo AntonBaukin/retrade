@@ -211,6 +211,12 @@ tr.x-boundlist-item td
   cursor: default;
 }
 
+.retrade-large-field input.x-form-field.x-form-text
+{
+  font-size: 12pt; letter-spacing: 1pt;
+  height: 22px; line-height: 22px;
+}
+
 
 /* buttons */
 
