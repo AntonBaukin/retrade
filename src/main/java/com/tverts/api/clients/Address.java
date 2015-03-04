@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "address", propOrder = {
   "country", "postalIndex", "province", "district",
   "settlement", "street", "building", "office",
-  "phones", "remarks"
+  "phones", "email", "remarks"
 })
 public class Address
 {
@@ -136,6 +136,19 @@ public class Address
 		this.phones = phones;
 	}
 
+	@XmlElement(name = "email")
+	public String getEmail()
+	{
+		return email;
+	}
+
+	private String email;
+
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
 	@XmlElement(name = "remarks")
 	public String getRemarks()
 	{
@@ -155,7 +168,8 @@ public class Address
 	@XmlTransient
 	public boolean isEmpty()
 	{
-		return (postalIndex == null) && (settlement == null) && (street == null) &&
-		  (building == null) && (phones == null) && (remarks == null);
+		return (postalIndex == null) && (settlement == null) &&
+		  (street == null) && (building == null) &&
+		  (phones == null) && (email == null) && (remarks == null);
 	}
 }
