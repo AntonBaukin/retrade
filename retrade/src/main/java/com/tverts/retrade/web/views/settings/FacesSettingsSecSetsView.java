@@ -464,8 +464,8 @@ public class FacesSettingsSecSetsView extends ModelView
 			return this.secAblesModel;
 
 		//~: load the model from the store
-		SecAblesModelBean samb = (SecAblesModelBean) modelPoint().
-		  readBean(getModel().getAblesModel());
+		SecAblesModelBean samb = (SecAblesModelBean) modelsStore().
+		  read(getModel().getAblesModel());
 
 		//?: {lost it} create the new one
 		if(samb == null)
@@ -532,7 +532,7 @@ public class FacesSettingsSecSetsView extends ModelView
 			samb.setModelKey(mb.getModelKey());
 
 		//!: save this model bean
-		modelPoint().addBean(samb);
+		modelsStore().add(samb);
 
 		return samb;
 	}
