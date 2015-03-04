@@ -5,6 +5,7 @@
       <antReference name="Apache Ant, Ivy" />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/retrade/build.xml" />
+    <buildFile url="file://$PROJECT_DIR$/auth/build.xml" />
   </component>
   <component name="ArtifactManager">
     <artifact type="exploded-war" name="ReTrade Exploded">
@@ -37,6 +38,27 @@
       </properties>
       <root id="root">
         <element id="artifact" artifact-name="ReTrade Exploded" />
+      </root>
+    </artifact>
+    <artifact type="exploded-war" name="Auth RSync @64.14">
+      <output-path>$PROJECT_DIR$/auth/target/web</output-path>
+      <properties id="ant-postprocessing">
+        <options enabled="true">
+          <file>file://$PROJECT_DIR$/auth/build.xml</file>
+          <target>explode-rsync</target>
+          <build-properties>
+            <build-property name="server" value="192.168.64.14" />
+            <build-property name="password" value="sqr4eq22!" />
+          </build-properties>
+        </options>
+      </properties>
+      <root id="root">
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="auth" />
+          </element>
+        </element>
+        <element id="javaee-facet-resources" facet="auth/web/Web" />
       </root>
     </artifact>
   </component>
