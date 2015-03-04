@@ -22,7 +22,7 @@ import static com.tverts.spring.SpringPoint.beanOrNull;
 
 import com.tverts.model.DataSelectModel;
 import com.tverts.model.DataSortModel;
-import com.tverts.model.ModelAccessPoint;
+import com.tverts.model.ModelsAccessPoint;
 import com.tverts.model.ModelBean;
 import com.tverts.model.ModelProvider;
 import com.tverts.model.ModelRequest;
@@ -94,7 +94,7 @@ public class ModelServlet extends GenericServlet
 			param = SU.s2s(req.getParameter(ModelView.MODEL_PARAM));
 
 			if(param != null)
-				model = ModelAccessPoint.model().readBean(param);
+				model = ModelsAccessPoint.modelsStore().read(param);
 		}
 
 		//~: apply the data selection limits

@@ -36,7 +36,7 @@ import com.tverts.servlet.Upload.UploadCtx;
 
 /* com.tverts: model */
 
-import com.tverts.model.ModelAccessPoint;
+import com.tverts.model.ModelsAccessPoint;
 
 /* com.tverts: support */
 
@@ -91,7 +91,7 @@ public class UploadServlet extends GenericServlet
 		{
 			//~: access the model  <-- this is secure access
 			upload = EX.assertn(
-			  ModelAccessPoint.model().readBean(param),
+			  ModelsAccessPoint.modelsStore().read(param),
 			  "Model Bean [", param, "] is not found!"
 			);
 

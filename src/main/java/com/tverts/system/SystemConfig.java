@@ -13,7 +13,7 @@ import com.tverts.support.EX;
  */
 public class SystemConfig
 {
-	/* SystemConfig Singleton */
+	/* System Configuration Singleton */
 
 	public static SystemConfig getInstance()
 	{
@@ -27,7 +27,7 @@ public class SystemConfig
 	{}
 
 
-	/* System Configuration */
+	/* General Configuration */
 
 	/**
 	 * Tells that the application runs in development
@@ -47,35 +47,6 @@ public class SystemConfig
 		this.debug = debug;
 	}
 
-	public int getDumpLimit()
-	{
-		return (dumpLimit == 0)?(512):(dumpLimit);
-	}
-
-	private int dumpLimit;
-
-	public void setDumpLimit(int dumpLimit)
-	{
-		EX.assertx(dumpLimit >= 0);
-		this.dumpLimit = dumpLimit;
-	}
-
-	/**
-	 * Default grid size.
-	 */
-	public int getGridSize()
-	{
-		return (gridSize != 0)?(gridSize):(25);
-	}
-
-	private int gridSize;
-
-	public void setGridSize(int gridSize)
-	{
-		EX.assertx(gridSize >= 1);
-		this.gridSize = gridSize;
-	}
-
 	/**
 	 * Defines the default length of Login Sessions
 	 * in minutes. Default is 120 (2 hours).
@@ -91,6 +62,38 @@ public class SystemConfig
 	{
 		EX.assertx(st >= 0);
 		this.sessionTime = st;
+	}
+
+
+	/* Data Fetch Sizes  */
+
+	public int getDumpLimit()
+	{
+		return (dumpLimit == 0)?(512):(dumpLimit);
+	}
+
+	private int dumpLimit;
+
+	public void setDumpLimit(int dumpLimit)
+	{
+		EX.assertx(dumpLimit >= 0);
+		this.dumpLimit = dumpLimit;
+	}
+
+	/**
+	 * Default UI grid size.
+	 */
+	public int getGridSize()
+	{
+		return (gridSize != 0)?(gridSize):(25);
+	}
+
+	private int gridSize;
+
+	public void setGridSize(int gridSize)
+	{
+		EX.assertx(gridSize >= 1);
+		this.gridSize = gridSize;
 	}
 
 	/**

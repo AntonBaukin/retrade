@@ -7,22 +7,17 @@
 
 
   <!--=================================================
-    =  Model (Point) Prototype                        =
+    =  Models Store Service                            =
     =================================================-->
 
-  <bean name  = 'modelPointPrototype' scope = 'prototype'
-        class = 'com.tverts.model.DelegatingModelPoint'>
+  <bean name  = 'modelsStoreService' factory-method = 'getInstance'
+        class = 'com.tverts.model.store.ModelsStoreService'>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Model Store (Prototype)                                   ·
+     · Model Keys Generator
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name = 'modelStore'>
-      <bean class = 'com.tverts.model.store.SimpleModelStore'>
-
-        <property name = 'keysGen'>
-          <bean class = 'com.tverts.model.keys.ModelKeysGenHiber'/>
-        </property>
-      </bean>
+    <property name = 'keysGen'>
+       <bean class = 'com.tverts.model.keys.ModelKeysGenHiber'/>
     </property>
   </bean>
 
@@ -32,19 +27,12 @@
     =================================================-->
 
   <bean name  = 'modelAccessPoint' factory-method = 'getInstance'
-        class = 'com.tverts.model.ModelAccessPoint'>
+        class = 'com.tverts.model.ModelsAccessPoint'>
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Model Access Strategy                                     ·
+     · Model Access Strategy = Models Store Service
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name  = 'modelAccess'>
-      <bean class = 'com.tverts.model.ModelAccessMemory'>
-
-        <property name  = 'modelBean'>
-          <idref bean = 'modelPointPrototype'/>
-        </property>
-      </bean>
-    </property>
+    <property name  = 'modelAccess' ref = 'modelsStoreService'/>
   </bean>
 
 </beans>

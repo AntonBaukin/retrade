@@ -48,6 +48,12 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'reportsService'/>
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Models Store Service
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'modelsStoreService'/>
+
       </list>
     </property>
   </bean>

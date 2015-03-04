@@ -33,7 +33,7 @@ import com.tverts.objects.BinarySource.Biny;
 
 /* com.tverts: model */
 
-import com.tverts.model.ModelAccessPoint;
+import com.tverts.model.ModelsAccessPoint;
 
 /* com.tverts: support */
 
@@ -90,7 +90,7 @@ public class DownloadServlet extends GenericServlet
 		{
 			//~: access the model  <-- this is secure access
 			provider = EX.assertn(
-			  ModelAccessPoint.model().readBean(param),
+			  ModelsAccessPoint.modelsStore().read(param),
 			  "Model Bean [", param, "] is not found!"
 			);
 

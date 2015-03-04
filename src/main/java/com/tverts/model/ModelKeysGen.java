@@ -1,18 +1,13 @@
 package com.tverts.model;
 
-/* standard Java classes */
-
-import java.io.Serializable;
-
-
 /**
- * Strategy generating keys for model beans.
+ * Strategy generating keys for Model Beans.
  *
  * @author anton.baukin@gmail.com
  */
-public interface ModelKeysGen extends Serializable
+public interface ModelKeysGen
 {
-	/* public: ModelKeysGen interface */
+	/* Model Keys Generator */
 
 	public String genModelKey(ModelBean bean);
 }

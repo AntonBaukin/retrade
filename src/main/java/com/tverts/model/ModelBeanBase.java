@@ -2,7 +2,6 @@ package com.tverts.model;
 
 /* Java */
 
-import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -18,27 +17,26 @@ import com.tverts.support.IO;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class ModelBeanBase
-       implements     ModelBean, Externalizable
+public abstract class ModelBeanBase implements ModelBean
 {
 	/* Model Bean (main) */
 
-	public String  getModelKey()
+	public String    getModelKey()
 	{
 		return modelKey;
 	}
 
-	public void    setModelKey(String key)
+	public void      setModelKey(String key)
 	{
 		this.modelKey = key;
 	}
 
-	public boolean isActive()
+	public boolean   isActive()
 	{
 		return active;
 	}
 
-	public void    setActive(boolean active)
+	public void      setActive(boolean active)
 	{
 		this.active = active;
 	}
@@ -93,6 +91,11 @@ public abstract class ModelBeanBase
 		}
 	}
 
+	public ModelInfo modelInfo()
+	{
+		return null;
+	}
+
 	public Long      domain()
 	{
 		return EX.assertn(getDomain(),
@@ -127,7 +130,7 @@ public abstract class ModelBeanBase
 
 	protected ModelBean readModelBean(String key)
 	{
-		return ModelAccessPoint.model().readBean(key);
+		return ModelsAccessPoint.modelsStore().read(key);
 	}
 
 	@SuppressWarnings("unchecked")

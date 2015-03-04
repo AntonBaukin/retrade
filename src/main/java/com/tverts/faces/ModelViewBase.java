@@ -18,9 +18,9 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: model */
 
-import com.tverts.model.ModelAccessPoint;
 import com.tverts.model.ModelBean;
-import com.tverts.model.ModelPoint;
+import com.tverts.model.ModelsAccessPoint;
+import com.tverts.model.ModelsStore;
 
 /* com.tverts: endure (core) */
 
@@ -175,7 +175,7 @@ public abstract class ModelViewBase extends ViewWithModes
 
 		for(String key : keys) if((key = SU.s2s(key)) != null)
 		{
-			ModelBean mb = modelPoint().readBean(key);
+			ModelBean mb = modelsStore().read(key);
 			if(mb != null) res.add(mb);
 		}
 
@@ -212,9 +212,9 @@ public abstract class ModelViewBase extends ViewWithModes
 		);
 	}
 
-	protected ModelPoint  modelPoint()
+	protected ModelsStore modelsStore()
 	{
-		return ModelAccessPoint.model();
+		return ModelsAccessPoint.modelsStore();
 	}
 
 

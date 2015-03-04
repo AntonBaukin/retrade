@@ -1,25 +1,16 @@
 package com.tverts.model;
 
-/* Java */
-
-import java.io.Serializable;
-
-
 /**
  * Each UI model element implements this interface.
- * It also may be a Java Bean object.
  *
- * Implementation class may have {@link ModelBeanInfo}
- * annotation to affect the models persistent container.
- *
- * Note that model bean has no reference to the Model
- * Data as this may cause XML saving of the whole model
- * when saving just this bean.
+ * Implementation class may provide {@link ModelInfo}
+ * instance to affect the models persistent container
+ * and the in-memory cache.
  *
  *
  * @author anton.baukin@gmail.com
  */
-public interface ModelBean extends Serializable
+public interface ModelBean extends java.io.Externalizable
 {
 	/* Model Bean (primary) */
 
@@ -31,6 +22,10 @@ public interface ModelBean extends Serializable
 
 	public void      setModelKey(String key);
 
+	/**
+	 * Inactive models are removed from
+	 * the database and the memory cache.
+	 */
 	public boolean   isActive();
 
 	public void      setActive(boolean active);
@@ -44,6 +39,10 @@ public interface ModelBean extends Serializable
 	 * Returns the data access object derived from
 	 * this model bean. Undefined result means that
 	 * this model has no data model related.
+	 *
+	 * Data objects must not be stored in the model.
 	 */
 	public ModelData modelData();
+
+	public ModelInfo modelInfo();
 }

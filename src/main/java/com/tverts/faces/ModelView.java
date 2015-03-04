@@ -63,7 +63,7 @@ public abstract class ModelView
 
 		//?: {had created it} save into the point
 		if(model != null)
-			modelPoint().addBean(model);
+			modelsStore().add(model);
 
 		//?: {the model is not defined}
 		return EX.assertn(model, "User data Model bean instance can't be created ",

@@ -197,31 +197,6 @@ public class OU
 		return set.toArray(new Class[set.size()]);
 	}
 
-	public static String  getSimpleNameLowerFirst(Class c1ass)
-	{
-		String        cn = c1ass.getSimpleName();
-		StringBuilder sb = new StringBuilder(cn.length() + 1);
-		boolean       lo = false;
-
-		//~: append simple name
-		sb.append(cn);
-
-		//~: search for lower case characters
-		for(int i = 0;(i < sb.length());i++)
-		{
-			char c = sb.charAt(i);
-
-			//?: {not an uppercase}
-			if(lo = (Character.toUpperCase(c) != c))
-				break;
-		}
-
-		//?: {has lowercase characters} turn the first
-		if(lo) sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-
-		return sb.toString();
-	}
-
 
 	/* Java Bean XML Serialization */
 

@@ -1,68 +1,64 @@
 package com.tverts.model.store;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.HashMap;
 import java.util.Map;
 
-/* com.tverts: model */
+/* com.tverts: support */
 
-import com.tverts.model.ModelBean;
+import com.tverts.support.EX;
 
 
 /**
  * WARNING! This implementation is for development only!
  * It does not remove the outdated model entries.
  *
- *
  * @author anton.baukin@gmail.com
  */
-public class SimpleModelStore extends ModelStoreBase
+public class SimpleModelStore extends ModelsStoreBase
 {
-	public static final long serialVersionUID = 0L;
+	/* protected: entries access */
 
+	protected ModelEntry find(String key)
+	{
+		ModelEntry e; synchronized(entries)
+		{
+			e = entries.get(key);
+		}
 
-	/* public: ModelStore (not Java Bean) interface */
+		//?: {found it not}
+		if(e == null)
+			return (delegate == null)?(null):(delegate.find(key));
+		else
+			return (delegate == null)?(e):(delegate.found(e));
+	}
 
-	public ModelBean         removeBean(String key)
+	protected void       remove(ModelEntry e)
 	{
 		synchronized(entries)
 		{
-			ModelBeanEntry e = entries.remove(key);
-			return (e == null)?(null):(e.getModelBean());
+			entries.remove(e.key);
 		}
+
+		if(delegate != null)
+			delegate.remove(e);
 	}
 
-	/* protected: ModelStoreBase interface */
-
-	protected ModelBeanEntry findEntry(String key)
+	protected void       save(ModelEntry e)
 	{
-		synchronized(entries)
-		{
-			return entries.get(key);
-		}
-	}
+		EX.asserts(e.key);
+		EX.assertn(e.bean);
 
-	protected ModelBeanEntry saveEntry(ModelBean bean)
-	{
-		ModelBeanEntry e;
+		if(delegate != null)
+			e = delegate.save(e);
 
 		synchronized(entries)
 		{
-			//~: get the entry
-			e = entries.get(bean.getModelKey());
-
-			//?: {not found it} add new one
-			if(e == null)
-				entries.put(bean.getModelKey(), e = new ModelBeanEntry(bean));
+			entries.put(e.key, e);
 		}
-
-		return e;
 	}
 
-
-	/* private: the entries map */
-
-	private Map<String, ModelBeanEntry> entries =
-	  new HashMap<String, ModelBeanEntry>(7);
+	private Map<String, ModelEntry> entries =
+	  new HashMap<String, ModelEntry>(17);
 }

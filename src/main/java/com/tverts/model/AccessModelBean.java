@@ -42,7 +42,7 @@ public class      AccessModelBean<M extends ModelBean>
 	public M accessObject()
 	{
 		ModelBean m = (key == null)?(null):
-		  ModelAccessPoint.model().readBean(key);
+		  ModelsAccessPoint.modelsStore().read(key);
 
 		if((m != null) && (cls != null) && !cls.isAssignableFrom(m.getClass()))
 			throw new IllegalStateException(String.format(

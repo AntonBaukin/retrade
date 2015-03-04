@@ -1,6 +1,6 @@
 package com.tverts.model.keys;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.UUID;
 
@@ -13,18 +13,14 @@ import com.tverts.model.ModelBean;
  * Model keys generator creating random keys
  * with standard UUIDs generator.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public class ModelKeysGenUUID extends ModelKeysGenBase
 {
-	public static final long serialVersionUID = 0L;
+	/* protected: Model Keys Generator Base */
 
-
-	/* protected: ModelKeysGenBase interface */
-
-	protected String generateSerialKey(ModelBean bean)
+	protected String nextModelKey(ModelBean bean)
 	{
-		return UUID.randomUUID().toString();
+		return UUID.randomUUID().toString().toUpperCase();
 	}
 }
