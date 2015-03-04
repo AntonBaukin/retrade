@@ -62,4 +62,52 @@
       file = 'auth.ivy'/>
   </target>
 
+
+  <!--=================================================
+    = support tasks                                   =
+    =================================================-->
+
+  <condition property = '?Windows'>
+    <os family = 'windows'/>
+  </condition>
+
+
+  <target name    = 'explode-rsync'
+          depends = 'explode-rsync-general, explode-rsync-win'/>
+
+
+  <target name    = 'explode-rsync-win' if = '?Windows'>
+
+    <exec executable = 'cmd'>
+
+      <arg value = '/c'/>
+      <arg value = 'start /WAIT explode-rsync.bat'/>
+
+      <arg value = '${password}'/>
+      <arg value = '${server}'/>
+
+    </exec>
+  </target>
+
+
+  <target name    = 'explode-rsync-general' unless = '?Windows'>
+
+    <exec executable = 'sshpass'>
+
+      <arg value = '-p'/>
+      <arg value = '${password}'/>
+
+      <arg value = 'rsync'/>
+      <arg value = '-rtz'/>
+      <arg value = '--chown=omicron:www'/>
+      <arg value = '--chmod=g=rwx'/>
+
+      <arg value = '-e'/>
+      <arg value = 'ssh -oStrictHostKeyChecking=no'/>
+      <arg value = 'target/web/'/>
+      <arg value = 'omicron@${server}:/home/tomee/webapps/auth/'/>
+
+    </exec>
+  </target>
+
 </project>

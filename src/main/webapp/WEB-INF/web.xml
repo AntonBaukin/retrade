@@ -42,7 +42,7 @@
 
     <param-name>retrade.auth.datasource</param-name>
     <param-value>
-      openejb:/Resource/ReTradeDatabaseDirect
+      openejb:/Resource/ReTradeDatabase
     </param-value>
   </context-param>
 
