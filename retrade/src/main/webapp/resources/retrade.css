@@ -632,6 +632,12 @@ td.retrade-info-title:first-child div,
   margin-left: 0;
 }
 
+.retrade-info-title-label-bigger
+{
+  white-space: nowrap; letter-spacing: 0.2pt;
+  font-size: 12pt; cursor: default;
+}
+
 caption.retrade-info-title
 {
   text-align: left;

@@ -419,7 +419,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
       value = "#{v.firm.persons}">
 
       <f:facet name = "extjs-props">
-        xtype: 'textarea', rows: 5,
+        xtype: 'textarea', flex: 1,
         extjsfReadWrite: true,
         extjsfBlock: 'contacts'
       </f:facet>
@@ -438,7 +438,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
       value = "#{v.firm.remarks}">
 
       <f:facet name = "extjs-props">
-        xtype: 'textarea', flex: 1,
+        xtype: 'textarea', flex: 3,
         extjsfReadWrite: true,
         extjsfBlock: 'contacts'
       </f:facet>
@@ -457,7 +457,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
     <x:component coid = "${z:vid(v, '_registry_address_label')}">
       <f:facet name = "extjs-props">
         xtype: 'label', text: 'Адрес юридического лица',
-        cls: 'retrade-info-title-label',
+        cls: 'retrade-info-title-label-bigger',
         style: { cursor: 'default' },
         margin: extjsf.pts(0, 0, 2, 0),
         extjsfBlock: 'addresses'
@@ -494,7 +494,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
     <x:component coid = "${z:vid(v, '_contact_address_label')}">
       <f:facet name = "extjs-props">
         xtype: 'label', text: 'Контактный адрес',
-        cls: 'retrade-info-title-label',
+        cls: 'retrade-info-title-label-bigger',
         style: { cursor: 'default' },
         margin: extjsf.pts(0, 0, 2, 0),
         extjsfBlock: 'addresses'
@@ -531,7 +531,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
     <x:component coid = "${z:vid(v, '_office_address_label')}">
       <f:facet name = "extjs-props">
         xtype: 'label', text: 'Адрес офиса',
-        cls: 'retrade-info-title-label',
+        cls: 'retrade-info-title-label-bigger',
         style: { cursor: 'default' },
         margin: extjsf.pts(0, 0, 2, 0),
         extjsfBlock: 'addresses'
