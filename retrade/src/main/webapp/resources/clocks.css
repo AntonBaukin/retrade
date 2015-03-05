@@ -11,7 +11,7 @@
   .retrade-boshadow-G-main, .retrade-boshadow-O-main,
   .retrade-boshadow-user-menu-main
 {
-  position: absolute; display: table;
+  position: absolute; display: table; z-index: 2;
   left: 0; right: 0; top: 0; bottom: 0; padding: 0 3px 3px 0;
 }
 

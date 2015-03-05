@@ -27,12 +27,19 @@
       <co:renderFacet name = "extjs-props"/>
     </div>
 
-    <div id = "#{cc.clientId}-#{cc.attrs.coid}-html"
+    <table id = "#{cc.clientId}-#{cc.attrs.coid}-html"
       class = "x-hide-display extjsf-html-content #{cc.attrs.boxClass}"
+      cellpadding = "0" cellspacing = "0" border = "0"
       style = "#{cc.attrs.boxStyle}">
 
-      <co:insertChildren/>
-    </div>
+      <tbody>
+        <tr>
+          <td>
+            <co:insertChildren/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <script type = "text/javascript">
 

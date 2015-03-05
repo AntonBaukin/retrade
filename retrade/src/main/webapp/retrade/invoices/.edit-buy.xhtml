@@ -484,6 +484,8 @@ ${v.forceSecureEdit()}
         if(ZeT.iss(v)) v = 'Цена всего объёма: ' + v;
       }
 
+      ZeT.log('Good Unit [', m.get('goodCode'), ']: ', m.get('goodUnit'))
+
       if(!ZeT.iss(v) && ZeTS.ises(m.get('goodUnit')))
         v = 'из списка не выбран существующий товар!';
 

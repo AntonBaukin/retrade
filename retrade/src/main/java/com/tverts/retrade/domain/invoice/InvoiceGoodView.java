@@ -65,6 +65,7 @@ public class InvoiceGoodView implements Serializable
 		this.index = index;
 	}
 
+	@XmlElement
 	public Long getGoodUnit()
 	{
 		return goodUnit;

@@ -24,21 +24,22 @@
   <x:component coid = "${z:vid(v, '_layout_content')}">
     <f:facet name = "extjs-props">
       xtype: 'panel', region: 'center',
-      frame: false, border: false,
-      bodyCls: 'retrade-content-panel',
-      layout: 'ux.html-center'
+      layout: 'fit', frame: false, border: false,
+      bodyCls: 'retrade-content-panel'
     </f:facet>
 
-    <x:html coid = "${z:vid(v, '_edit_warning')}">
+    <x:html coid = "${z:vid(v, '_edit_warning')}"
+      boxClass = "retrade-warning-table-invoice-ask-edit">
+
       <f:facet name = "extjs-props">
         xtype: 'panel', frame: false, border: false,
         bodyCls: 'retrade-content-panel',
         bodyStyle: {border: 'none'}
       </f:facet>
 
-      <table id = "${z:vid(v, 'edit_warning')}"
+      <table id = "${z:vid(v, 'edit-warning')}"
         cellpadding = "0" cellspacing = "0" border = "0"
-        class = "retrade-warning-table-content retrade-warning-table-content-invoice-ask-edit">
+        class = "retrade-warning-table-content">
 
         <tr>
           <td class = "retrade-warning-table-icon">
@@ -103,16 +104,14 @@
 
    Ext.onReady(ZeT.Layout.procPipe(
 
-      ZeT.Layout.Proc.Node, {
-        node: "${z:vid(v, 'edit_warning')}"
-      },
+     //~: take warning node
+     ZeT.Layout.Proc.Node, { node: "${z:vid(v, 'edit-warning')}" },
 
-      ZeT.Border.Full, ZeT.Border.full({classes: 'retrade-bofull-pale-XYZ'}),
+     //~: wrap it with the shadow border
+     ZeT.Border.Shadow, ZeT.Border.shadow('retrade-boshadow-N-XYZ'),
 
-      ZeT.Layout.Fill, {
-        classes: ['retrade-warning-table', 'retrade-warning-table-invoice-ask-edit'],
-        attrs: { align: 'center' }
-     }
+     //~: additionally wrap
+     ZeT.Layout.Proc.Wrap, { classes: 'retrade-warning-table' }
    ))
 
   </script>

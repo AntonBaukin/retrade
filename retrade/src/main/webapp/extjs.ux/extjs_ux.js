@@ -5,46 +5,6 @@
  +===============================================================*/
 
 
-Ext.define('Ext.ux.layout.HTMLCenter',
-{
-	extend            : 'Ext.layout.container.Container',
-	alias             : 'layout.ux.html-center',
-
-	calculate         : function(ctx)
-	{
-		//~: get the component to center
-		var items = this.getVisibleItems();
-		if(!items || (items.length != 1)) return;
-		var item  = items[0];
-		var ibox  = item.getSize(true);
-		if(!ibox.width || !ibox.height) return;
-
-		//~: find the outer DOM node (to center in)
-		var xbox, x = this.getTarget().dom;
-
-		while(!xbox && x)
-		{
-			var w = x.offsetWidth, h = x.offsetHeight;
-			if(!w || !h) continue;
-
-			if((w > ibox.width) && (h > ibox.height))
-			{ xbox = { width: w, height: h }; break; }
-
-			x = x.parentNode;
-		}
-
-		if(!xbox) return;
-
-		//~: center the item
-		var ix = 0, iy = 0;
-		if(ibox.width  < xbox.width ) ix = (xbox.width  - ibox.width ) / 2;
-		if(ibox.height < xbox.height) iy = (xbox.height - ibox.height) / 2;
-
-		item.setPosition(ix, iy)
-	}
-})
-
-
 Ext.define('Ext.ux.layout.component.field.ComboBox100p',
 {
 	extend            : 'Ext.layout.component.field.ComboBox',

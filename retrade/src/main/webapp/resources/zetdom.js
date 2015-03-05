@@ -2091,7 +2091,7 @@ ZeT.Layout.Proc.Node = ZeT.defineClass('ZeT.Layout.Proc.Node', {
  *  · node        (forbidden)
  *
  *  ZeT.Layout.Proc.Node class allows to select existing
- *  DOm node, but this class forbids this!
+ *  DOM node, but this class forbids this!
  *
  *  · insertWay   (optional, template-only)
  *
@@ -2127,10 +2127,12 @@ ZeT.Layout.Proc.Wrap = ZeT.defineClass('ZeT.Layout.Proc.Wrap', ZeT.Layout.Proc.N
 		if(!ZeTD.isxn(node))
 			throw 'Not a DOM node in the processing pipe!'
 
-		//~: create the wrapping DOM element
-		var wrap = this._wrap_nodes(this._create_node());
-		if(!ZeTD.isn(wrap)) throw 'ZeT.Layout.Proc.Wrap: ' +
-		   'could not create DOM node!'
+		//~: create the wrapping element
+		var wrap = this._create_root()
+
+		//~: replace it in the parent node
+		if(node.parentNode)
+			node.parentNode.replaceChild(wrap, node)
 
 		//~: fill it
 		this._fill_wrap(wrap)
@@ -2162,7 +2164,6 @@ ZeT.Layout.Proc.Wrap = ZeT.defineClass('ZeT.Layout.Proc.Wrap', ZeT.Layout.Proc.N
 	{
 		//~: append to the position
 		this._wrap_pos(wrap).appendChild(node)
-
 		return wrap
 	},
 
@@ -2171,7 +2172,7 @@ ZeT.Layout.Proc.Wrap = ZeT.defineClass('ZeT.Layout.Proc.Wrap', ZeT.Layout.Proc.N
 		//?: {has class position}
 		if(!ZeTS.ises(this.opts.insertClass))
 		{
-			var opts = { class: this.opts.insertClass };
+			var opts = { class: this.opts.insertClass }
 			ZeT.Layout.Treeters.findNodeByClass.proc(wrap, opts)
 
 			return ZeT.assertn(opts.result, 'Not found any node of CSS class [',
@@ -2181,7 +2182,7 @@ ZeT.Layout.Proc.Wrap = ZeT.defineClass('ZeT.Layout.Proc.Wrap', ZeT.Layout.Proc.N
 		//?: {has template way}
 		if(this.opts.template && this.opts.insertWay)
 		{
-			var template = ZeT.Layout.template(this.opts.template);
+			var template = ZeT.Layout.template(this.opts.template)
 			return ZeT.assertn(template.walk(this.opts.insertWay, wrap),
 			  'Can not walk the way [', this.opts.insertWay, ']!')
 		}
