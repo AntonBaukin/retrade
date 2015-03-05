@@ -13,6 +13,9 @@
   <bean name  = 'modelsStoreService' factory-method = 'getInstance'
         class = 'com.tverts.model.store.ModelsStoreService'>
 
+    <property name = 'UID' value = 'Models Store'/>
+
+
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · Model Keys Generator
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->

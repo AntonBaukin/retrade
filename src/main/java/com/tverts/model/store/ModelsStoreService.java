@@ -129,21 +129,22 @@ public class      ModelsStoreService
 
 	protected ModelEntry delegateSave(ModelEntry e)
 	{
-		return e;
-	}
+		//~: mark as not new
+		EX.assertx(e.isnew);
+		e.isnew = false;
 
-	protected ModelEntry delegateCreate(ModelEntry e)
-	{
 		//sec: assign domain
+		EX.assertx(e.domain == null);
 		e.domain = SecPoint.domain();
 
 		//sec: assign login
+		EX.assertx(e.login == null);
 		e.login = SecPoint.login();
 
 		return e;
 	}
 
-	protected Delegate createDelegate()
+	protected Delegate   createDelegate()
 	{
 		return new Delegate()
 		{
@@ -157,7 +158,7 @@ public class      ModelsStoreService
 				return delegateFound(e);
 			}
 
-			public void remove(ModelEntry e)
+			public void       remove(ModelEntry e)
 			{
 				delegateRemove(e);
 			}
@@ -165,11 +166,6 @@ public class      ModelsStoreService
 			public ModelEntry save(ModelEntry e)
 			{
 				return delegateSave(e);
-			}
-
-			public ModelEntry create(ModelEntry e)
-			{
-				return delegateCreate(e);
 			}
 		};
 	}

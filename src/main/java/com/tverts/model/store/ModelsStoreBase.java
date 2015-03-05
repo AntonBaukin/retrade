@@ -127,8 +127,6 @@ public abstract class ModelsStoreBase implements ModelsStore
 		public void       remove(ModelEntry e);
 
 		public ModelEntry save(ModelEntry e);
-
-		public ModelEntry create(ModelEntry e);
 	}
 
 

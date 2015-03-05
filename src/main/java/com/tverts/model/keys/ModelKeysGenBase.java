@@ -35,7 +35,7 @@ public abstract class ModelKeysGenBase
 
 	protected String          catModelKey(String p, String k)
 	{
-		return SU.cats(p, "-", "k");
+		return SU.cats(p, "-", k);
 	}
 
 	protected String          selectKeyPrefix(ModelBean bean)
