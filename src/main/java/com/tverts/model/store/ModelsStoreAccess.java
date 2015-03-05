@@ -1,4 +1,9 @@
-package com.tverts.model;
+package com.tverts.model.store;
+
+/* com.tverts: models */
+
+import com.tverts.model.ModelsStore;
+
 
 /**
  * Incapsulates strategy of accessing {@link ModelsStore}

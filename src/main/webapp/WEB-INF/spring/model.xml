@@ -20,7 +20,7 @@
      · Model Keys Generator
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'keysGen'>
-       <bean class = 'com.tverts.model.keys.ModelKeysGenHiber'/>
+       <bean class = 'com.tverts.model.store.ModelKeysGenHiber'/>
     </property>
   </bean>
 

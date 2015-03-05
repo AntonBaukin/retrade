@@ -1,5 +1,9 @@
 package com.tverts.model;
 
+/* com.tverts: models store */
+
+import com.tverts.model.store.ModelsStoreAccess;
+
 /* com.tverts: support */
 
 import com.tverts.support.EX;
