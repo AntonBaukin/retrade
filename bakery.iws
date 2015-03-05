@@ -7,16 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenBase.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenHiber.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenUUID.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelKeysGen.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGen.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsStoreAccess.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreAccess.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenBase.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenHiber.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenHiber.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenUUID.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenUUID.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsAccessPoint.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsAccessPoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/model.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/model.xml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -878,7 +873,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-62 [beta]: introduced ReTrade.Message class with the basic move-animation." />
     <MESSAGE value="ui-62 [beta]: Retrade.Desktop.event() and error() with ReTrade.Message. Tuned styles." />
     <MESSAGE value="ui-62 [stable]: implemented ReTrade user menu and the events with the new Shadow Border." />
     <MESSAGE value="ui-61 [alpha]: introduced Events menu Data Proxy, going to JSP server-side..." />
@@ -903,7 +897,8 @@
     <MESSAGE value="ui-65 [stable]: fixed minor issues with Ask-Edit form and with Invoice goods editing." />
     <MESSAGE value="system-12 [beta]: fixed Model keys generation issues." />
     <MESSAGE value="system-12 [beta]: moved all Models Store related classes into models.store package." />
-    <option name="LAST_COMMIT_MESSAGE" value="system-12 [beta]: moved all Models Store related classes into models.store package." />
+    <MESSAGE value="system-12 [beta]: removed models.keys package." />
+    <option name="LAST_COMMIT_MESSAGE" value="system-12 [beta]: removed models.keys package." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
