@@ -6,9 +6,14 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-65 [stable]: fixed minor issues with Ask-Edit form and with Invoice goods editing.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreBase.java" />
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelKeysGen.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGen.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsStoreAccess.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreAccess.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenBase.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenHiber.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenHiber.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/keys/ModelKeysGenUUID.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenUUID.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsAccessPoint.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsAccessPoint.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/model.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/model.xml" />
@@ -37,11 +42,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="InvoiceGoodView.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodView.java">
+      <file leaf-file-name="ModelsStoreService.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.532258" vertical-offset="581" max-vertical-offset="3731">
-              <caret line="319" column="14" selection-start-line="319" selection-start-column="0" selection-end-line="319" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2120">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -57,9 +62,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/ModelView.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/UploadServlet.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/ModelServlet.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/settings/FacesSettingsSecSetsView.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/ModelViewBase.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/model.xml" />
@@ -74,6 +76,9 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/.edit-buy.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodView.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsAccessPoint.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGen.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreAccess.java" />
       </list>
     </option>
   </component>
@@ -242,7 +247,7 @@
     </ignored-problems>
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
+    <navigator currentView="PackagesPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -550,28 +555,6 @@
               <option name="myItemId" value="bakery" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="xroot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.tverts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="keys" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -857,7 +840,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32480535" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32854405" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2951807" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2951807" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32831326" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32035595" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -895,8 +878,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-61 [alpha]: fixed person.xhtml editing." />
-    <MESSAGE value="ui-62 [beta]: new border layout is ready, going to implement it in ReTrade..." />
     <MESSAGE value="ui-62 [beta]: introduced ReTrade.Message class with the basic move-animation." />
     <MESSAGE value="ui-62 [beta]: Retrade.Desktop.event() and error() with ReTrade.Message. Tuned styles." />
     <MESSAGE value="ui-62 [stable]: implemented ReTrade user menu and the events with the new Shadow Border." />
@@ -920,14 +901,16 @@
     <MESSAGE value="system-11 [stable]: applied RSync explode for Auth module. Using the same Data Source for Auth as for ReTrade." />
     <MESSAGE value="system-12 [alpha]: refactored Models Store. Introduced Models Store Service. Going to caching and persistence..." />
     <MESSAGE value="ui-65 [stable]: fixed minor issues with Ask-Edit form and with Invoice goods editing." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-65 [stable]: fixed minor issues with Ask-Edit form and with Invoice goods editing." />
+    <MESSAGE value="system-12 [beta]: fixed Model keys generation issues." />
+    <MESSAGE value="system-12 [beta]: moved all Models Store related classes into models.store package." />
+    <option name="LAST_COMMIT_MESSAGE" value="system-12 [beta]: moved all Models Store related classes into models.store package." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java</url>
-          <line>63</line>
+          <line>61</line>
           <properties />
           <option name="timeStamp" value="320" />
         </line-breakpoint>
@@ -1051,70 +1034,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5168" max-vertical-offset="14940">
-          <caret line="929" column="11" selection-start-line="304" selection-start-column="11" selection-end-line="304" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32182628" vertical-offset="2771" max-vertical-offset="4111">
-          <caret line="318" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/extjs.ux/extjs_ux.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1325167" vertical-offset="0" max-vertical-offset="2292">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24610245" vertical-offset="0" max-vertical-offset="13988">
-          <caret line="13" column="48" selection-start-line="13" selection-start-column="48" selection-end-line="13" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/extjs/resources/ext-theme-gray/ext-theme-gray-all-debug.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.028475711" vertical-offset="68374" max-vertical-offset="332573">
-          <caret line="4023" column="1" selection-start-line="4023" selection-start-column="1" selection-end-line="4023" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/html.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14554794" vertical-offset="425" max-vertical-offset="1536">
-          <caret line="30" column="49" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30289534" vertical-offset="17952" max-vertical-offset="19870">
-          <caret line="2165" column="19" selection-start-line="1072" selection-start-column="19" selection-end-line="1072" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.3663697" vertical-offset="14314" max-vertical-offset="21400">
-          <caret line="717" column="21" selection-start-line="717" selection-start-column="21" selection-end-line="717" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/ask-edit.xhtml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.72289157" vertical-offset="1297" max-vertical-offset="2621">
@@ -1184,8 +1103,72 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.532258" vertical-offset="581" max-vertical-offset="3731">
-          <caret line="319" column="14" selection-start-line="319" selection-start-column="0" selection-end-line="319" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.3423729" vertical-offset="581" max-vertical-offset="3996">
+          <caret line="61" column="75" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsStore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15144767" vertical-offset="0" max-vertical-offset="1408">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16451614" vertical-offset="0" max-vertical-offset="892">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="629">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenHiber.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelKeysGenUUID.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="994">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/ModelsAccessPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3564516" vertical-offset="0" max-vertical-offset="1334">
+          <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreAccess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13709678" vertical-offset="0" max-vertical-offset="926">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1564">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
