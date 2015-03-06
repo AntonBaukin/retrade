@@ -40,7 +40,7 @@ public abstract class ModelsStoreBase implements ModelsStore
 
 		//?: {found it not} create & save
 		if(e == null)
-			doSave(doInit(bean));
+			doSave(doCreate(bean));
 		//~: assign bean
 		else
 		{
@@ -77,14 +77,25 @@ public abstract class ModelsStoreBase implements ModelsStore
 
 	protected ModelEntry          doFind(String key)
 	{
-		ModelEntry e = this.find(key);
+		ModelEntry e = find(key);
 
 		//?: {found it not} see in the delegate
 		if(e == null)
-			e = (delegate == null)?(null):(delegate.find(key));
+		{
+			if(delegate == null)
+				return null;
 
-		//?: {alas, found it not}
-		if(e == null) return null;
+			//~: create empty entry with the key
+			e = newEntry();
+			e.key = key;
+
+			//~: try to find
+			delegate.find(e);
+
+			//?: {found it not}
+			if(e.bean == null)
+				return null;
+		}
 
 		//~: update the access time
 		e.accessTime = System.currentTimeMillis();
@@ -92,7 +103,10 @@ public abstract class ModelsStoreBase implements ModelsStore
 		//~: increment the counter
 		e.accessInc.incrementAndGet();
 
-		return (delegate == null)?(e):(delegate.found(e));
+		if(delegate != null)
+			delegate.found(e);
+
+		return e;
 	}
 
 	protected abstract void       save(ModelEntry e);
@@ -110,9 +124,14 @@ public abstract class ModelsStoreBase implements ModelsStore
 			delegate.save(e);
 	}
 
-	protected ModelEntry          doInit(ModelBean mb)
+	protected ModelEntry          newEntry()
 	{
-		ModelEntry e = doCreate(mb);
+		return new ModelEntry();
+	}
+
+	protected ModelEntry          doCreate(ModelBean mb)
+	{
+		ModelEntry e = newEntry();
 
 		//=: model bean
 		if(e.bean == null)
@@ -125,12 +144,10 @@ public abstract class ModelsStoreBase implements ModelsStore
 		if(e.accessTime == 0L)
 			e.accessTime = System.currentTimeMillis();
 
-		return e;
-	}
+		if(delegate != null)
+			delegate.create(e);
 
-	protected ModelEntry          doCreate(ModelBean mb)
-	{
-		return (delegate != null)?(delegate.create(mb)):(new ModelEntry());
+		return e;
 	}
 
 	protected abstract void       remove(ModelEntry e);

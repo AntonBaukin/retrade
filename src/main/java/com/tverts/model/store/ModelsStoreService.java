@@ -42,7 +42,7 @@ public class      ModelsStoreService
 
 	protected ModelsStoreService()
 	{
-		modelsStore = new SimpleModelStore();
+		modelsStore = new LinkedCacheModelsStore(1000);
 		modelsStore.setDelegate(createDelegate());
 	}
 
@@ -104,12 +104,10 @@ public class      ModelsStoreService
 
 	/* protected: Delegate */
 
-	protected ModelEntry delegateFind(String key)
-	{
-		return null;
-	}
+	protected void     delegateFind(ModelEntry e)
+	{}
 
-	protected ModelEntry delegateFound(ModelEntry e)
+	protected void     delegateFound(ModelEntry e)
 	{
 		//?: {has no login saved}
 		EX.assertn(e.login, "Model Bean [", e.key, "] has no login assigned!");
@@ -117,14 +115,12 @@ public class      ModelsStoreService
 		//sec: {does this user own the model}
 		if(!e.login.equals(SecPoint.login()))
 			throw EX.forbid("You do not own the Model Bean [", e.key, "]!");
-
-		return e;
 	}
 
-	protected void       delegateRemove(ModelEntry e)
+	protected void     delegateRemove(ModelEntry e)
 	{}
 
-	protected void       delegateSave(ModelEntry e)
+	protected void     delegateSave(ModelEntry e)
 	{
 		//sec: this domain
 		EX.assertx(CMP.eq(e.domain, SecPoint.domain()));
@@ -133,46 +129,42 @@ public class      ModelsStoreService
 		EX.assertx(CMP.eq(e.login, SecPoint.login()));
 	}
 
-	protected ModelEntry delegateCreate(ModelBean mb)
+	protected void     delegateCreate(ModelEntry e)
 	{
-		ModelEntry e = new ModelEntry();
-
 		//sec: assign domain
 		e.domain = SecPoint.domain();
 
 		//sec: assign login
 		e.login = SecPoint.login();
-
-		return e;
 	}
 
-	protected Delegate   createDelegate()
+	protected Delegate createDelegate()
 	{
 		return new Delegate()
 		{
-			public ModelEntry find(String key)
+			public void find(ModelEntry e)
 			{
-				return delegateFind(key);
+				delegateFind(e);
 			}
 
-			public ModelEntry found(ModelEntry e)
+			public void found(ModelEntry e)
 			{
-				return delegateFound(e);
+				delegateFound(e);
 			}
 
-			public void       remove(ModelEntry e)
+			public void remove(ModelEntry e)
 			{
 				delegateRemove(e);
 			}
 
-			public void       save(ModelEntry e)
+			public void save(ModelEntry e)
 			{
 				delegateSave(e);
 			}
 
-			public ModelEntry create(ModelBean mb)
+			public void create(ModelEntry e)
 			{
-				return delegateCreate(mb);
+				delegateCreate(e);
 			}
 		};
 	}

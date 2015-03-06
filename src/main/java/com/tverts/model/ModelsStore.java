@@ -55,15 +55,15 @@ public interface ModelsStore
 	{
 		/* Models Store Delegate */
 
-		public ModelEntry find(String key);
+		public void find(ModelEntry e);
 
-		public ModelEntry found(ModelEntry e);
+		public void found(ModelEntry e);
 
-		public void       remove(ModelEntry e);
+		public void remove(ModelEntry e);
 
-		public void       save(ModelEntry e);
+		public void save(ModelEntry e);
 
-		public ModelEntry create(ModelBean mb);
+		public void create(ModelEntry e);
 	}
 
 
