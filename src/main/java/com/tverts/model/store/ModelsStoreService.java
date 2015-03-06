@@ -2,7 +2,7 @@ package com.tverts.model.store;
 
 /* com.tverts: system (services) */
 
-import com.tverts.model.store.ModelsStoreBase.Delegate;
+import com.tverts.support.CMP;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
@@ -10,11 +10,10 @@ import com.tverts.system.services.ServiceBase;
 
 import com.tverts.secure.SecPoint;
 
-/* com.tverts: models, model stores */
+/* com.tverts: models */
 
 import com.tverts.model.ModelBean;
 import com.tverts.model.ModelsStore;
-import com.tverts.model.store.ModelsStoreBase.ModelEntry;
 
 /* com.tverts: support */
 
@@ -125,18 +124,23 @@ public class      ModelsStoreService
 	protected void       delegateRemove(ModelEntry e)
 	{}
 
-	protected ModelEntry delegateSave(ModelEntry e)
+	protected void       delegateSave(ModelEntry e)
 	{
-		//~: mark as not new
-		EX.assertx(e.isnew);
-		e.isnew = false;
+		//sec: this domain
+		EX.assertx(CMP.eq(e.domain, SecPoint.domain()));
+
+		//sec: this login
+		EX.assertx(CMP.eq(e.login, SecPoint.login()));
+	}
+
+	protected ModelEntry delegateCreate(ModelBean mb)
+	{
+		ModelEntry e = new ModelEntry();
 
 		//sec: assign domain
-		EX.assertx(e.domain == null);
 		e.domain = SecPoint.domain();
 
 		//sec: assign login
-		EX.assertx(e.login == null);
 		e.login = SecPoint.login();
 
 		return e;
@@ -161,9 +165,14 @@ public class      ModelsStoreService
 				delegateRemove(e);
 			}
 
-			public ModelEntry save(ModelEntry e)
+			public void       save(ModelEntry e)
 			{
-				return delegateSave(e);
+				delegateSave(e);
+			}
+
+			public ModelEntry create(ModelBean mb)
+			{
+				return delegateCreate(mb);
 			}
 		};
 	}

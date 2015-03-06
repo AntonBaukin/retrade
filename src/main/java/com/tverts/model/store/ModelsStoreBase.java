@@ -1,12 +1,5 @@
 package com.tverts.model.store;
 
-/* Java */
-
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
@@ -15,8 +8,6 @@ import com.tverts.model.ModelsStore;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.IO;
-import com.tverts.support.LU;
 
 
 /**
@@ -44,23 +35,17 @@ public abstract class ModelsStoreBase implements ModelsStore
 		EX.assertn(bean);
 
 		//~: search the entry first
-		ModelEntry e = find(EX.asserts(bean.getModelKey()));
+		ModelEntry e = doFind(EX.asserts(bean.getModelKey()));
 		ModelBean  m = null;
 
 		//?: {found it not} create & save
 		if(e == null)
-			save(create(bean));
-		//~: just update
+			doSave(doInit(bean));
+		//~: assign bean
 		else
 		{
 			//~: assign bean
 			m = e.bean; e.bean = bean;
-
-			//~: update the access time
-			e.accessTime = System.currentTimeMillis();
-
-			//~: not a new
-			e.isnew = false;
 		}
 
 		return m;
@@ -68,11 +53,11 @@ public abstract class ModelsStoreBase implements ModelsStore
 
 	public ModelBean remove(String key)
 	{
-		ModelEntry e = find(EX.asserts(key));
+		ModelEntry e = doFind(EX.asserts(key));
 		if(e == null) return null;
 
 		//~: remove the entry
-		remove(e);
+		doRemove(e);
 
 		//~: return the bean
 		return EX.assertn(e.bean, "Model Store entry [", key, "] has no bean!");
@@ -80,13 +65,9 @@ public abstract class ModelsStoreBase implements ModelsStore
 
 	public ModelBean read(String key)
 	{
-		ModelEntry e = find(EX.asserts(key));
-		if(e == null) return null;
-
-		//~: update the access time
-		e.accessTime = System.currentTimeMillis();
-
-		return EX.assertn(e.bean, "Model Store entry [", key, "] has no bean!");
+		ModelEntry e = doFind(EX.asserts(key));
+		return (e == null)?(null):
+		  EX.assertn(e.bean, "Model Store entry [", key, "] has no bean!");
 	}
 
 
@@ -94,150 +75,73 @@ public abstract class ModelsStoreBase implements ModelsStore
 
 	protected abstract ModelEntry find(String key);
 
-	protected abstract void       remove(ModelEntry e);
+	protected ModelEntry          doFind(String key)
+	{
+		ModelEntry e = this.find(key);
+
+		//?: {found it not} see in the delegate
+		if(e == null)
+			e = (delegate == null)?(null):(delegate.find(key));
+
+		//?: {alas, found it not}
+		if(e == null) return null;
+
+		//~: update the access time
+		e.accessTime = System.currentTimeMillis();
+
+		//~: increment the counter
+		e.accessInc.incrementAndGet();
+
+		return (delegate == null)?(e):(delegate.found(e));
+	}
 
 	protected abstract void       save(ModelEntry e);
 
-	protected ModelEntry          create(ModelBean mb)
+	protected void                doSave(ModelEntry e)
 	{
-		ModelEntry e = new ModelEntry();
+		EX.asserts(e.key);
+		EX.assertn(e.bean);
 
-		e.bean       = EX.assertn(mb);
-		e.key        = EX.asserts(mb.getModelKey());
-		e.accessTime = System.currentTimeMillis();
-		e.isnew      = true;
+		//~: save locally
+		save(e);
+
+		//~: save in the delegate
+		if(delegate != null)
+			delegate.save(e);
+	}
+
+	protected ModelEntry          doInit(ModelBean mb)
+	{
+		ModelEntry e = doCreate(mb);
+
+		//=: model bean
+		if(e.bean == null)
+			e.bean = EX.assertn(mb);
+
+		//=: model key
+		e.key = EX.asserts(e.bean.getModelKey());
+
+		//=: access time
+		if(e.accessTime == 0L)
+			e.accessTime = System.currentTimeMillis();
 
 		return e;
 	}
 
-
-	/* Delegate */
-
-	/**
-	 * Interface to additionally wrap the own strategies.
-	 */
-	public static interface Delegate
+	protected ModelEntry          doCreate(ModelBean mb)
 	{
-		/* Models Store Delegate */
-
-		public ModelEntry find(String key);
-
-		public ModelEntry found(ModelEntry e);
-
-		public void       remove(ModelEntry e);
-
-		public ModelEntry save(ModelEntry e);
+		return (delegate != null)?(delegate.create(mb)):(new ModelEntry());
 	}
 
+	protected abstract void       remove(ModelEntry e);
 
-	/* Model Entry */
-
-	public static class ModelEntry implements Externalizable
+	protected void                doRemove(ModelEntry e)
 	{
-		/**
-		 * The key of the model bean.
-		 * Always assigned to the key of the bean.
-		 */
-		public String    key;
+		//~: remove from the delegate
+		if(delegate != null)
+			delegate.remove(e);
 
-		/**
-		 * The Model Bean instance.
-		 */
-		public ModelBean bean;
-
-		/**
-		 * Domain key of the user owning the bean.
-		 */
-		public Long      domain;
-
-		/**
-		 * Primary key of the user owning the bean.
-		 */
-		public Long      login;
-
-		/**
-		 * The last access time.
-		 */
-		public long      accessTime;
-
-		/**
-		 * Transient instance marking just-created entry instance.
-		 */
-		public boolean   isnew;
-
-
-		/* Object */
-
-		public int     hashCode()
-		{
-			return key.hashCode();
-		}
-
-		public boolean equals(Object o)
-		{
-			return (this == o) || (o instanceof ModelEntry) &&
-			  ((ModelEntry)o).key.equals(this.key);
-		}
-
-
-		/* Serialization */
-
-		public void    writeExternal(ObjectOutput o)
-		  throws IOException
-		{
-			//?: {the key not differs}
-			EX.assertx(key.equals(bean.getModelKey()));
-
-			//>: model key
-			IO.str(o, key);
-
-			//>: domain
-			IO.longer(o, domain);
-
-			//>: login
-			IO.longer(o, login);
-
-			//>: access time
-			o.writeLong(accessTime);
-
-			//>: model bean class
-			IO.cls(o, bean.getClass());
-
-			//>: model bean
-			bean.writeExternal(o);
-		}
-
-		@SuppressWarnings("unchecked")
-		public void    readExternal(ObjectInput i)
-		  throws IOException, ClassNotFoundException
-		{
-			//<: model key
-			key = IO.str(i);
-
-			//<: domain
-			domain = IO.longer(i);
-
-			//<: login
-			login = IO.longer(i);
-
-			//<: access time
-			accessTime = i.readLong();
-
-			//<: model bean class
-			Class cls = EX.assertn(IO.cls(i));
-			EX.assertx(ModelBean.class.isAssignableFrom(cls));
-
-			//<: model bean
-			try
-			{
-				this.bean = (ModelBean) cls.newInstance();
-				this.bean.readExternal(i);
-			}
-			catch(Throwable e)
-			{
-				throw EX.wrap(e, "Error occurred while reading Model Bean instance ",
-				  "of class [", LU.cls(cls), "]!");
-			}
-		}
+		//~: remove locally
+		remove(e);
 	}
 }
