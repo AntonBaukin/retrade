@@ -75,7 +75,7 @@ public interface ModelsStore
 		 * The key of the model bean.
 		 * Always assigned, never updated.
 		 */
-		public String    key;
+		public String key;
 
 		/**
 		 * The Model Bean instance.
@@ -87,19 +87,19 @@ public interface ModelsStore
 		 * Domain key of the user owning the bean.
 		 * Always assigned, never updated.
 		 */
-		public Long      domain;
+		public Long domain;
 
 		/**
 		 * Primary key of the user owning the bean.
 		 * Always assigned, never updated.
 		 */
-		public Long      login;
+		public Long login;
 
 		/**
 		 * The last access time.
 		 * Updated on each model read.
 		 */
-		public volatile long       accessTime;
+		public volatile long accessTime;
 
 		/**
 		 * On create is zero, incremented
@@ -107,6 +107,12 @@ public interface ModelsStore
 		 */
 		public final AtomicInteger accessInc =
 		  new AtomicInteger();
+
+		/**
+		 * This flag is set when the entry was
+		 * previously loaded from the store.
+		 */
+		public boolean loaded;
 
 
 		/* Object */

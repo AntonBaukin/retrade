@@ -4,6 +4,7 @@ package com.tverts.model.store;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,17 +47,65 @@ public class      LinkedCacheModelsStore
 
 	public void copyPruned(Map<ModelEntry, Integer> items)
 	{
-
+		synchronized(this)
+		{
+			for(LinkedEntry e : pruned)
+				items.put(e, e.accessInc.intValue());
+		}
 	}
 
 	public void copyAll(Map<ModelEntry, Integer> items)
 	{
-
+		synchronized(this)
+		{
+			for(LinkedEntry e : entries.values())
+				items.put(e, e.accessInc.intValue());
+		}
 	}
 
 	public void commitSaved(Map<ModelEntry, Integer> items, boolean remove)
 	{
+		synchronized(this)
+		{
+			Iterator<Map.Entry<ModelEntry, Integer>> i = items.entrySet().iterator();
+			while(i.hasNext())
+			{
+				Map.Entry<ModelEntry, Integer> p = i.next();
 
+				//~: find the entry
+				LinkedEntry e = entries.get(p.getKey().key);
+
+				//?: {found it not} remove from the items
+				if(e == null)
+				{
+					i.remove();
+					continue;
+				}
+
+				//?: {has not the same counter}
+				if(!e.accessInc.compareAndSet(p.getValue(), p.getValue()))
+				{
+					p.setValue(e.accessInc.get());
+					continue;
+				}
+
+				i.remove(); //<-- tell the item was saved actual
+
+				//~: remove from the pruned always
+				if(pruned.remove(e))
+				{
+					entries.remove(e.key);
+					continue; //<-- need not to unlink
+				}
+
+				//?: {do remove from the entries}
+				if(remove)
+				{
+					entries.remove(e.key);
+					unlink(e);
+				}
+			}
+		}
 	}
 
 
@@ -71,17 +120,10 @@ public class      LinkedCacheModelsStore
 			if(e == null) return null;
 
 			//?: {this entry was pruned}
-			if(pruned.contains(e))
-			{
-				//~: make it effective back
-				pruned.remove(e);
-
-				//~: place as the head
-				placeAsHead(e);
-			}
-			//~: just move to be head
+			if(pruned.remove(e))
+				placeAsHead(e); //<-- place as the head
 			else
-				moveToHead(e);
+				moveToHead(e);  //<-- just move to be head
 
 			return e;
 		}
@@ -95,12 +137,9 @@ public class      LinkedCacheModelsStore
 			LinkedEntry e = entries.remove(x.key);
 			EX.assertn(e);
 
-			//?: {this entry was pruned}
-			if(pruned.contains(e))
-				pruned.remove(e);
-			//~: remove from the list
-			else
-				unlink(e);
+			//?: {this entry was not pruned}
+			if(!pruned.remove(e))
+				unlink(e); //<-- remove from the list
 		}
 	}
 
@@ -174,8 +213,8 @@ public class      LinkedCacheModelsStore
 		}
 		else
 		{
+			EX.assertx(head.prev == null);
 			e.next = head;
-			EX.assertx(e.prev == null);
 			head.prev = e;
 			head = e;
 		}

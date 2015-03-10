@@ -2,7 +2,6 @@ package com.tverts.model.store;
 
 /* com.tverts: system (services) */
 
-import com.tverts.support.CMP;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 
@@ -17,6 +16,7 @@ import com.tverts.model.ModelsStore;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 
 
@@ -89,7 +89,8 @@ public class      ModelsStoreService
 
 	public void setModelsStore(ModelsStoreBase modelsStore)
 	{
-		this.modelsStore = modelsStore;
+		this.modelsStore = EX.assertn(modelsStore);
+		modelsStore.setDelegate(createDelegate());
 	}
 
 	private ModelsStoreBase modelsStore;
@@ -138,9 +139,12 @@ public class      ModelsStoreService
 		e.login = SecPoint.login();
 	}
 
+	protected void     delegateOverflow(int size)
+	{}
+
 	protected Delegate createDelegate()
 	{
-		return new Delegate()
+		return new CachingModelsStore.CachingDelegate()
 		{
 			public void find(ModelEntry e)
 			{
@@ -165,6 +169,11 @@ public class      ModelsStoreService
 			public void create(ModelEntry e)
 			{
 				delegateCreate(e);
+			}
+
+			public void overflow(int size)
+			{
+				delegateOverflow(size);
 			}
 		};
 	}

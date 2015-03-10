@@ -22,6 +22,15 @@
     <property name = 'keysGen'>
        <bean class = 'com.tverts.model.store.ModelKeysGenHiber'/>
     </property>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · LRU Caching Models Store
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'modelsStore'>
+       <bean class = 'com.tverts.model.store.LinkedCacheModelsStore'>
+         <constructor-arg><value> 4 </value></constructor-arg>
+       </bean>
+    </property>
   </bean>
 
 
