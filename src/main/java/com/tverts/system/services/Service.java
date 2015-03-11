@@ -18,7 +18,7 @@ package com.tverts.system.services;
  */
 public interface Service
 {
-	/* public: Service interface */
+	/* Service */
 
 	/**
 	 * Returns application-unique name code

@@ -23,6 +23,7 @@
        <bean class = 'com.tverts.model.store.ModelKeysGenHiber'/>
     </property>
 
+
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
      · LRU Caching Models Store
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
@@ -30,6 +31,14 @@
        <bean class = 'com.tverts.model.store.LinkedCacheModelsStore'>
          <constructor-arg><value> 4 </value></constructor-arg>
        </bean>
+    </property>
+
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Models Backend
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'backend'>
+       <bean class = 'com.tverts.model.store.ModelsMemoryBackend'/>
     </property>
   </bean>
 

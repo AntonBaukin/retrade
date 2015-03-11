@@ -36,6 +36,10 @@ public interface ModelsStore
 	 */
 	public ModelBean add(ModelBean bean);
 
+	/**
+	 * Removes the bean from the Store caches
+	 * and from the persistent backend.
+	 */
 	public ModelBean remove(String key);
 
 	/**

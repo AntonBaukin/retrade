@@ -95,6 +95,8 @@ public abstract class ModelsStoreBase implements ModelsStore
 			//?: {found it not}
 			if(e.bean == null)
 				return null;
+			else
+				doFound(e);
 		}
 
 		//~: update the access time
@@ -107,6 +109,11 @@ public abstract class ModelsStoreBase implements ModelsStore
 			delegate.found(e);
 
 		return e;
+	}
+
+	protected void                doFound(ModelEntry e)
+	{
+		save(e);
 	}
 
 	protected abstract void       save(ModelEntry e);

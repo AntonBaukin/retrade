@@ -24,11 +24,11 @@ import com.tverts.support.SU;
 public abstract class ServiceBase
        implements     Service, ServiceReference
 {
-	/* public: Service interface */
+	/* Service */
 
 	public String   uid()
 	{
-		return EX.asserts(this.UID, "Service UID was not assigned!");
+		return EX.asserts(this.uid, "Service uid was not assigned!");
 	}
 
 	public String[] depends()
@@ -38,11 +38,11 @@ public abstract class ServiceBase
 
 	public void     init(Servicer servicer)
 	{
-		this.servicer = servicer;
+		this.servicer = EX.assertn(servicer);
 	}
 
 
-	/* public: ServiceReference interface */
+	/* Service Reference */
 
 	public List<Service> dereferObjects()
 	{
@@ -50,16 +50,18 @@ public abstract class ServiceBase
 	}
 
 
-	/* public: ServiceBase (bean) interface */
+	/* Service Base (bean) */
 
-	public String getUID()
+	public String  getUID()
 	{
-		return UID;
+		return uid;
 	}
 
-	public void   setUID(String UID)
+	private String uid;
+
+	public void    setUID(String UID)
 	{
-		this.UID = SU.s2s(UID);
+		this.uid = SU.s2s(UID);
 	}
 
 
@@ -67,10 +69,12 @@ public abstract class ServiceBase
 
 	protected Servicer servicer()
 	{
-		return EX.assertn(this.servicer, "Service [", UID,
+		return EX.assertn(this.servicer, "Service [", uid,
 		  "] was not initialized by the Service System!"
 		);
 	}
+
+	private Servicer servicer;
 
 	protected void     send(Event event)
 	{
@@ -130,6 +134,12 @@ public abstract class ServiceBase
 		return this.uid().equals(event.getService());
 	}
 
+	protected void     delay(DelayedEvent e, long ms)
+	{
+		EX.assertx(ms >= 0L);
+		e.setEventTime(System.currentTimeMillis() + ms);
+	}
+
 
 	/* protected: logging */
 
@@ -153,10 +163,4 @@ public abstract class ServiceBase
 		return logsig = uid().toLowerCase().contains("service")?(uid())
 		  :String.format("Service '%s'", uid());
 	}
-
-
-	/* service state */
-
-	private String   UID;
-	private Servicer servicer;
 }

@@ -150,7 +150,8 @@ public class      LinkedCacheModelsStore
 
 		int s, p = 0; synchronized(this)
 		{
-			entries.put(e.key, (LinkedEntry)e);
+			//?: {it is not in the cache now}
+			EX.assertx(entries.put(e.key, (LinkedEntry)e) == null);
 
 			//~: place it as a head
 			placeAsHead((LinkedEntry)e);

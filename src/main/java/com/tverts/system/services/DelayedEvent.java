@@ -9,7 +9,7 @@ package com.tverts.system.services;
  */
 public interface DelayedEvent extends Event
 {
-	/* public: DelayedEvent interface */
+	/* Delayed Event */
 
 	/**
 	 * Returns Java-time to execute the event.

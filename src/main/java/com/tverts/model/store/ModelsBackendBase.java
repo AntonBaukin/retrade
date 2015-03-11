@@ -5,6 +5,8 @@ package com.tverts.model.store;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /* com.tverts: models */
 
@@ -23,6 +25,7 @@ import com.tverts.support.streams.BytesStream;
  * @author anton.baukin@gmail.com.
  */
 public abstract class ModelsBackendBase
+       implements     ModelsBackend
 {
 	/* Models Backend Base */
 
@@ -30,7 +33,8 @@ public abstract class ModelsBackendBase
 	{
 		BytesStream bs = new BytesStream(); try
 		{
-			ObjectOutputStream o = new ObjectOutputStream(bs);
+			ObjectOutputStream o =
+			  new ObjectOutputStream(new GZIPOutputStream(bs));
 
 			//>: bean class
 			IO.cls(o, mb.getClass());
@@ -59,7 +63,7 @@ public abstract class ModelsBackendBase
 		try
 		{
 			ObjectInputStream i = new ObjectInputStream(
-			  new ByteArrayInputStream(bytes));
+			  new GZIPInputStream(new ByteArrayInputStream(bytes)));
 
 			//>: bean class name
 			Class c = IO.cls(i);
