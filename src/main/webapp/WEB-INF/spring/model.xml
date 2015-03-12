@@ -35,10 +35,10 @@
 
 
     <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Models Backend
+     · Models Backend for Hibernate
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'backend'>
-       <bean class = 'com.tverts.model.store.ModelsMemoryBackend'/>
+       <bean class = 'com.tverts.model.store.HiberModelsStore'/>
     </property>
   </bean>
 

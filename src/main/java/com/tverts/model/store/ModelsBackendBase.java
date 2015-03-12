@@ -29,7 +29,7 @@ public abstract class ModelsBackendBase
 {
 	/* Models Backend Base */
 
-	protected byte[]    bytes(ModelBean mb)
+	protected byte[]    store(ModelBean mb)
 	{
 		BytesStream bs = new BytesStream(); try
 		{
@@ -58,7 +58,7 @@ public abstract class ModelsBackendBase
 		}
 	}
 
-	protected ModelBean bean(byte[] bytes)
+	protected ModelBean restore(byte[] bytes)
 	{
 		try
 		{

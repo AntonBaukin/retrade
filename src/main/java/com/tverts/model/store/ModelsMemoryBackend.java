@@ -26,14 +26,14 @@ public class ModelsMemoryBackend extends ModelsBackendBase
 		{
 			e.domain = s.domain;
 			e.login  = s.login;
-			e.bean   = bean(s.bytes);
+			e.bean   = restore(s.bytes);
 		}
 	}
 
 	public void store(Collection<ModelEntry> es)
 	{
 		for(ModelEntry e : es)
-			store.put(e.key, new Save(e, bytes(e.bean)));
+			store.put(e.key, new Save(e, store(e.bean)));
 	}
 
 	public void remove(ModelEntry e)

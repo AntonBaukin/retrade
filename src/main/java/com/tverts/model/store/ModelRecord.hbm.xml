@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.model.store'>
+
+  <class name = 'ModelRecord' table = 'model_record'>
+
+    <!-- Primary Key -->
+
+    <id name = 'key' column = 'pk_bean_key'/>
+
+
+    <!-- Access Time -->
+
+    <property name = 'accessTime' type = 'timestamp'>
+
+      <column name = 'access_type' not-null = 'true'
+        index = 'ix_model_record_time'>
+
+        <comment>
+          Copy of the Domain primary key of the owning user login
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Domain -->
+
+    <property name = 'domain'>
+
+      <column name = 'domain' not-null = 'true'>
+        <comment>
+          Copy of the Domain primary key of the owning user login
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Login -->
+
+    <property name = 'login'>
+
+      <column name = 'login' not-null = 'true'>
+        <comment>
+          Copy of the owning user Authentication Login
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Model Bean -->
+
+    <property name = 'bean' lazy = 'true'>
+      <column name = 'bean_bytes' not-null = 'true'>
+        <comment>
+          Gun-ZIPed bytes of the externalized Model Bean
+        </comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
