@@ -1,16 +1,25 @@
 package com.tverts.secure.session;
 
-/* standard Java classes */
+/* Java */
 
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /* com.tverts: endure (authentication) */
 
 import com.tverts.endure.auth.AuthLogin;
 import com.tverts.endure.auth.AuthSession;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.IO;
+import com.tverts.support.SU;
 
 
 /**
@@ -19,12 +28,9 @@ import com.tverts.endure.auth.AuthSession;
  *
  * @author anton.baukin@gmail.com
  */
-public class SecSession implements Serializable
+public class SecSession implements Externalizable
 {
-	public static final long serialVersionUID = 0L;
-
-
-	/* attributes names */
+	/* Attributes Names */
 
 	/**
 	 * Attribute of (String) primary key of the
@@ -32,7 +38,7 @@ public class SecSession implements Serializable
 	 * secured access session.
 	 */
 	public static String ATTR_AUTH_SESSION =
-	  "SecSession : Auth Session";
+	  "SecSession: Auth Session";
 
 	/**
 	 * Attribute of (Long) primary key of the
@@ -40,7 +46,7 @@ public class SecSession implements Serializable
 	 * secured access session.
 	 */
 	public static String ATTR_AUTH_LOGIN   =
-	  "SecSession : Auth Login";
+	  "SecSession: Auth Login";
 
 	/**
 	 * Primary key with the Firm Entity
@@ -49,33 +55,27 @@ public class SecSession implements Serializable
 	 * defined, but not regular users.
 	 */
 	public static String ATTR_CLIENT_FIRM  =
-	  "SecSession : Client Firm";
+	  "SecSession: Client Firm";
 
 	/**
 	 * Attribute of (Long) key of the Domain
 	 * to log in. Without a domain login is impossible.
 	 */
 	public static String ATTR_DOMAIN_PKEY  =
-	  "SecSession : Domain key";
-
-	/**
-	 * Java time (Long) this session was created.
-	 */
-	public static String ATTR_CREATE_TIME  =
-	  "SecSession : create time";
+	  "SecSession: Domain key";
 
 	/**
 	 * Java time (Long) this session will expire,
 	 * if won't be touched.
 	 */
 	public static String ATTR_EXPIRE_TIME  =
-	  "SecSession : expire time";
+	  "SecSession: expire time";
 
 	/**
 	 * Java time (Long) this session was touched.
 	 */
 	public static String ATTR_TOUCH_TIME   =
-	  "SecSession : touch time";
+	  "SecSession: touch time";
 
 	/**
 	 * Optional parameter (Long) to Expire Strategy
@@ -83,99 +83,106 @@ public class SecSession implements Serializable
 	 * in milliseconds.
 	 */
 	public static String ATTR_LIFE_TIME    =
-	  "SecSession : life time";
+	  "SecSession: life time";
 
 	/**
 	 * Tells that the session is manually closed.
 	 */
 	public static String ATTR_CLOSED       =
-	  "SecSession : closed";
+	  "SecSession: closed";
 
 
 	/* public: constructor */
 
-	@SuppressWarnings("unchecked")
 	public SecSession()
 	{
-		this.attrs = Collections.synchronizedMap(new HashMap());
+		this.attrs = new ConcurrentHashMap<String, String>(7);
 	}
 
 	/**
-	 * TODO create SecSession from AuthSession with expire checks
+	 * Creates Secure Session from the database record
+	 * provided without expiration strategy check.
+	 *
+	 * This constructor is used for background processes,
+	 * and secure expiration may cause a deny of service
+	 * for delayed events and requests.
 	 */
 	public SecSession(AuthSession a)
 	{
+		this();
+
 		//~: auth session key
 		attr(ATTR_AUTH_SESSION, a.getSessionId());
 
 		//~: login key
-		attr(ATTR_AUTH_LOGIN, a.getLogin().getPrimaryKey());
+		attr(ATTR_AUTH_LOGIN, a.getLogin().getPrimaryKey().toString());
 
 		//?: {has client firm}
 		if(a.getLogin().getPerson() != null)
 			if(a.getLogin().getPerson().getFirm() != null)
 				attr(ATTR_CLIENT_FIRM,
-				  a.getLogin().getPerson().getFirm().getPrimaryKey());
+				  a.getLogin().getPerson().getFirm().getPrimaryKey().toString());
 
 		//~: domain key
-		attr(ATTR_DOMAIN_PKEY, a.getLogin().getDomain().getPrimaryKey());
-
-		//~: create time
-		attr(ATTR_CREATE_TIME, a.getCreateTime());
+		attr(ATTR_DOMAIN_PKEY, a.getLogin().getDomain().getPrimaryKey().toString());
 
 		//~: touch time
-		attr(ATTR_TOUCH_TIME, a.getAccessTime());
+		attr(ATTR_TOUCH_TIME, Long.toString(a.getAccessTime().getTime()));
 	}
 
 
-	/* public: Expire Strategy (attributes) interface */
+	/* Sec Session Attributes*/
+
+	public String attr(String  key)
+	{
+		return (attrs == null)?(null):(attrs.get(key));
+	}
+
+	public String attr(String  key, String  val)
+	{
+		EX.asserts(key);
+		return attrs.put(key, val);
+	}
+
+	protected final Map<String, String> attrs;
+
+
+	/* Serialization */
+
+	public void writeExternal(ObjectOutput o)
+	  throws IOException
+	{
+		//~: copy the attributes in a flat list
+		ArrayList<String> kvs = new ArrayList<String>(2*attrs.size());
+		for(String k : attrs.keySet())
+		{
+			String v = SU.s2s(attrs.get(k));
+			if(v == null) continue;
+			kvs.add(k); kvs.add(v);
+		}
+
+		//>: the number of records
+		o.writeInt(kvs.size());
+
+		//>: write all the lines
+		for(String s : kvs)
+			IO.str(o, s);
+	}
 
 	@SuppressWarnings("unchecked")
-	public Serializable   attr(Serializable key)
+	public void readExternal(ObjectInput i)
+	  throws IOException, ClassNotFoundException
 	{
-		return (Serializable)((attrs == null)?(null):(attrs.get(key)));
+		//<: the number of records
+		int s = i.readInt();
+		EX.assertx(s%2 == 0);
+
+		//~: add them to the map
+		for(int j = 0;(j < s);j += 2)
+		{
+			String k = EX.asserts(IO.str(i));
+			String v = IO.str(i);
+			attrs.put(k, v);
+		}
 	}
-
-	@SuppressWarnings("unchecked")
-	public Serializable   attr(Serializable key, Serializable val)
-	{
-		if(attrs == null)
-			attrs = new HashMap(7);
-		return (Serializable) attrs.put(key, val);
-	}
-
-	/**
-	 * Returns copy of the keys of the session.
-	 */
-	@SuppressWarnings("unchecked")
-	public Serializable[] attrs()
-	{
-		return (Serializable[]) attrs.keySet().
-		  toArray(new Serializable[attrs.size()]);
-	}
-
-
-	/* public: Expire Strategy (strategies) interface */
-
-	public ExpireStrategy getExpireStrategy()
-	{
-		return expireStrategy;
-	}
-
-	public SecSession     setExpireStrategy(ExpireStrategy s)
-	{
-		this.expireStrategy = s;
-		return this;
-	}
-
-
-	/* authentication attributes */
-
-	@SuppressWarnings("unchecked")
-	private Map            attrs;
-
-
-	/* authentication strategies */
-
-	private ExpireStrategy expireStrategy;
 }

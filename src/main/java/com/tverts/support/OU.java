@@ -5,6 +5,7 @@ package com.tverts.support;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
+import java.io.Externalizable;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,6 +15,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /* com.tverts: objects */
 
@@ -327,6 +330,35 @@ public class OU
 		}
 	}
 
+	public static byte[]  eobj2bytes(boolean cls, boolean gzip, Externalizable obj)
+	{
+		EX.assertn(obj);
+
+		BytesStream bs = new BytesStream();
+		bs.setNotClose(true);
+
+		try
+		{
+			ObjectOutputStream os = new ObjectOutputStream(
+			  (gzip)?(new GZIPOutputStream(bs)):(bs));
+
+			if(cls) IO.cls(os, obj.getClass());
+			obj.writeExternal(os);
+			os.close();
+
+			return bs.bytes();
+		}
+		catch(Exception e)
+		{
+			throw EX.wrap(e, "Error occured while externalizing object of class [",
+			  LU.cls(obj), "]!");
+		}
+		finally
+		{
+			bs.closeAlways();
+		}
+	}
+
 	public static Object  bytes2obj(byte[] bytes)
 	{
 		try
@@ -353,6 +385,67 @@ public class OU
 			);
 
 		return (O) obj;
+	}
+
+	public static <O> O   bytes2eobj(Class<O> cls, boolean gzip, byte[] bytes)
+	{
+		try
+		{
+			//~: create input stream
+			InputStream xs = new ByteArrayInputStream(bytes);
+			if(gzip) xs = new GZIPInputStream(xs);
+
+			//~: create object stream
+			ObjectInputStream is = new ObjectInputStream(xs);
+
+			//~: create new instance
+			O o = cls.newInstance();
+			if(!(o instanceof Externalizable)) throw EX.state();
+
+			//~: read the data
+			((Externalizable)o).readExternal(is);
+
+			return o;
+		}
+		catch(Exception e)
+		{
+			throw EX.wrap(e, "Error occurred while reading ",
+			  "externalized object of class [", LU.cls(cls), "]!");
+		}
+	}
+
+	/**
+	 * Reads externalized object with class writing option set.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <O> O   bytes2eobj(boolean gzip, byte[] bytes)
+	{
+		try
+		{
+			//~: create input stream
+			InputStream xs = new ByteArrayInputStream(bytes);
+			if(gzip) xs = new GZIPInputStream(xs);
+
+			//~: create object stream
+			ObjectInputStream is = new ObjectInputStream(xs);
+
+			//~: read the class
+			Class cls = IO.cls(is);
+			EX.assertx(Externalizable.class.isAssignableFrom(cls));
+
+			//~: create new instance
+			O o = (O) cls.newInstance();
+
+			//~: read the data
+			((Externalizable)o).readExternal(is);
+
+			return o;
+		}
+		catch(Exception e)
+		{
+			throw EX.wrap(e, "Error occurred while reading ",
+			  "externalized object (with class write option set)!");
+		}
 	}
 
 

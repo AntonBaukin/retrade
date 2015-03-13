@@ -85,41 +85,36 @@ public final class SecPoint
 
 	public static Long        domain()
 	{
-		Long domain = (Long) secSession().
-		  attr(SecSession.ATTR_DOMAIN_PKEY);
-
-		if(domain == null) throw EX.state(
-		  "Secure Session for Auth [",
-		  secSession().attr(SecSession.ATTR_AUTH_SESSION),
-		  "] has no Domain key!"
+		String d = secSession().attr(SecSession.ATTR_DOMAIN_PKEY);
+		if(d == null) throw EX.state(
+		  "Secure Session has no Domain key for Auth: [",
+		  secSession().attr(SecSession.ATTR_AUTH_SESSION), "]"
 		);
 
-		return domain;
+		return Long.parseLong(d);
 	}
 
 	public static Long        login()
 	{
-		Long login = (Long) secSession().
-		  attr(SecSession.ATTR_AUTH_LOGIN);
-
-		if(login == null) throw EX.state(
-		  "Secure Session for Auth [",
-		  secSession().attr(SecSession.ATTR_AUTH_SESSION),
-		  "] has no Login key!"
+		String l = secSession().attr(SecSession.ATTR_AUTH_LOGIN);
+		if(l == null) throw EX.state(
+		  "Secure Session has no Login key for Auth: [",
+		  secSession().attr(SecSession.ATTR_AUTH_SESSION), "]"
 		);
 
-		return login;
+		return Long.parseLong(l);
 	}
 
 	public static Long        loginOrNull()
 	{
-		return (Long) secSession().attr(SecSession.ATTR_AUTH_LOGIN);
+		String l = secSession().attr(SecSession.ATTR_AUTH_LOGIN);
+		return (l == null)?(null):Long.parseLong(l);
 	}
 
 	public static void        closeSecSession()
 	{
 		//~: set the closed attribute
-		secSession().attr(SecSession.ATTR_CLOSED, true);
+		secSession().attr(SecSession.ATTR_CLOSED, "true");
 
 		//~: execute Auth Login close action
 		AuthSession session = bean(GetAuthLogin.class).
@@ -217,23 +212,23 @@ public final class SecPoint
 		if(s == null) return null;
 
 		//?: {this person has firm}
-		Long r = (Long) s.attr(SecSession.ATTR_CLIENT_FIRM);
-		if(r != null) return r;
+		String r = s.attr(SecSession.ATTR_CLIENT_FIRM);
+		if(r != null) return Long.parseLong(r);
 
 		//?: {searched the key}
-		if(Boolean.TRUE.equals(s.attr(ATTR_CLIENT_FIRM_SEARCHED)))
+		if("true".equals(s.attr(ATTR_CLIENT_FIRM_SEARCHED)))
 			return null;
 
 		//~: do search
 		AuthLogin l = EX.assertn(loadLogin());
 		if((l.getPerson() != null) && (l.getPerson().getFirm() != null))
 			s.attr(SecSession.ATTR_CLIENT_FIRM,
-			  r = l.getPerson().getFirm().getPrimaryKey());
+			  r = l.getPerson().getFirm().getPrimaryKey().toString());
 
 		//~: mark as searched
-		s.attr(ATTR_CLIENT_FIRM_SEARCHED, true);
+		s.attr(ATTR_CLIENT_FIRM_SEARCHED, "true");
 
-		return r;
+		return (r == null)?(null):(Long.parseLong(r));
 	}
 
 	public static Long        clientFirmKeyStrict()

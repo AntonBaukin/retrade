@@ -1,14 +1,12 @@
 package com.tverts.secure.session;
 
-import java.io.Serializable;
-
 /**
- * Defines session expire strategy.
+ * Defines Secure Session expire
+ * strategy being a Java Bean.
  *
  * @author anton.baukin@gmail.com
  */
 public interface ExpireStrategy
-       extends   Serializable
 {
 	/* public: ExpireStrategy interface */
 

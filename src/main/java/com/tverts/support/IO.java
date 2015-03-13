@@ -226,7 +226,7 @@ public class IO
 	protected static final byte LONG  = (byte) 3;
 	protected static final byte INT   = (byte) 4;
 
-	public static void   longer(ObjectOutput o, Long n)
+	public static void    longer(ObjectOutput o, Long n)
 	  throws IOException
 	{
 		//?: {undefined}
@@ -239,7 +239,7 @@ public class IO
 		}
 	}
 
-	public static Long   longer(ObjectInput i)
+	public static Long    longer(ObjectInput i)
 	  throws IOException
 	{
 		byte t = i.readByte();
@@ -254,7 +254,7 @@ public class IO
 		}
 	}
 
-	public static void   inter(ObjectOutput o, Integer n)
+	public static void    inter(ObjectOutput o, Integer n)
 	  throws IOException
 	{
 		//?: {undefined}
@@ -282,7 +282,7 @@ public class IO
 		}
 	}
 
-	public static void   booler(ObjectOutput o, Boolean x)
+	public static void    booler(ObjectOutput o, Boolean x)
 	  throws IOException
 	{
 		//?: {undefined}

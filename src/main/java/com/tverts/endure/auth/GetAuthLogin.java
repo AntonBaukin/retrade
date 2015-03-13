@@ -222,7 +222,7 @@ select p from AuthLogin al join al.person p where
 		secs.attr(SecSession.ATTR_AUTH_SESSION, id);
 
 		//~: login key
-		secs.attr(SecSession.ATTR_AUTH_LOGIN, lo);
+		secs.attr(SecSession.ATTR_AUTH_LOGIN, lo.toString());
 
 		//>: once-activate web-session bind
 
@@ -247,7 +247,7 @@ select p from AuthLogin al join al.person p where
 		);
 
 		//~: set domain
-		secs.attr(SecSession.ATTR_DOMAIN_PKEY, EX.assertn(d));
+		secs.attr(SecSession.ATTR_DOMAIN_PKEY, EX.assertn(d).toString());
 
 		//>: find the domain key
 

@@ -7,6 +7,8 @@ import javax.servlet.http.Cookie;
 /* com.tverts: (spring + tx) */
 
 import static com.tverts.spring.SpringPoint.bean;
+
+import com.tverts.support.OU;
 import com.tverts.system.tx.TxBean;
 
 /* com.tverts: servlet (filters) */
@@ -111,8 +113,8 @@ public class LoginFilter extends FilterBase
 		}
 
 		//?: {this is a localhost request} allow it
-		if(REQ.isLocalhost(task.getRequest()))
-			return;
+		//if(REQ.isLocalhost(task.getRequest()))
+		//	return;
 
 		//!: redirect to login
 		redirectLogin(task);
@@ -204,27 +206,18 @@ public class LoginFilter extends FilterBase
 		if(task.getRequest().getSession(false) == null)
 			return null;
 
-		return (SecSession) task.getRequest().
-		  getSession().getAttribute(SecSession.class.getName());
-
-		//~: lookup the secured session
-		//byte[]     data = (byte[]) task.getRequest().
-		//  getSession().getAttribute(SecSession.class.getName());
-
-		//~: restore the object from the session
-		//return (data == null)?(null):
-		//  OU.bytes2obj(data, SecSession.class);
+		String k = SecSession.class.getName();
+		Object b = task.getRequest().getSession().getAttribute(k);
+		return !(b instanceof byte[])?(null):
+		  OU.bytes2eobj(SecSession.class, true, (byte[])b);
 	}
 
 	protected void       save(FilterTask task, SecSession secs)
 	{
-		//task.getRequest().getSession().setAttribute(
-		//  SecSession.class.getName(), OU.obj2bytes(secs)
-		//);
+		String k = SecSession.class.getName();
+		byte[] b = OU.eobj2bytes(false, true, secs);
 
-		task.getRequest().getSession().setAttribute(
-		  SecSession.class.getName(), secs
-		);
+		task.getRequest().getSession().setAttribute(k, b);
 	}
 
 	/**
@@ -240,15 +233,15 @@ public class LoginFilter extends FilterBase
 		SecPoint.getInstance().setSecSession(secs);
 
 		//?: is manually closed
-		if(Boolean.TRUE.equals(secs.attr(SecSession.ATTR_CLOSED)))
+		if("true".equals(secs.attr(SecSession.ATTR_CLOSED)))
 			return true;
 
 		//?: {has no session | expired}
-		if(secs.getExpireStrategy().isExpired(secs))
+		if(getExpireStrategy().isExpired(secs))
 			return true;
 
 		//!: touch the session
-		secs.getExpireStrategy().touch(secs);
+		getExpireStrategy().touch(secs);
 
 		return false;
 	}
@@ -294,13 +287,12 @@ public class LoginFilter extends FilterBase
 		if(ses[0] == null)
 			return null;
 
-		//~: set expire strategy + touch
-		ses[0].setExpireStrategy(getExpireStrategy());
-		ses[0].getExpireStrategy().touch(ses[0]);
+		//~: touch with the expire strategy
+		getExpireStrategy().touch(ses[0]);
 
 		//~: set domain cookie
-		Long domain = (Long) EX.assertn(ses[0].attr(SecSession.ATTR_DOMAIN_PKEY));
-		setDomainCookie(task, domain);
+		String domain = EX.asserts(ses[0].attr(SecSession.ATTR_DOMAIN_PKEY));
+		setDomainCookie(task, Long.parseLong(domain));
 
 		return ses[0];
 	}
@@ -332,8 +324,12 @@ public class LoginFilter extends FilterBase
 
 		//~: the domain code
 		String     dcode = null;
-		Long       dkey  = (secs == null)?(null):
-		  (Long) secs.attr(SecSession.ATTR_DOMAIN_PKEY);
+		Long       dkey  = null;
+		if(secs != null)
+		{
+			String k = secs.attr(SecSession.ATTR_DOMAIN_PKEY);
+			if(k != null) dkey = Long.parseLong(k);
+		}
 
 		//?: {request has login domain path}
 		StringBuilder s = new StringBuilder(

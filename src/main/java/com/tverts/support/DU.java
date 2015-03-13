@@ -307,6 +307,17 @@ public class DU
 		return sb.toString();
 	}
 
+	public static String timestamp2str(Date ts)
+	{
+		Calendar cl = Calendar.getInstance();
+		cl.setTime(ts);
+
+		StringBuilder s = new StringBuilder(24);
+		timestamp2str(s, cl);
+
+		return s.toString();
+	}
+
 	public static void   timestamp2str(StringBuilder sb, Calendar cl)
 	{
 		//~: date
