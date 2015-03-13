@@ -41,6 +41,9 @@ public abstract class ServiceBase
 		this.servicer = EX.assertn(servicer);
 	}
 
+	public void     destroy()
+	{}
+
 
 	/* Service Reference */
 
@@ -153,14 +156,14 @@ public abstract class ServiceBase
 		return ServicesPoint.LOG_SERVICE_MAIN;
 	}
 
-	private volatile String logsig;
-
 	protected String logsig()
 	{
 		if(logsig != null)
 			return logsig;
 
-		return logsig = uid().toLowerCase().contains("service")?(uid())
-		  :String.format("Service '%s'", uid());
+		return logsig = uid().toLowerCase().contains("service")?(uid()):
+		  String.format("Service [%s]", uid());
 	}
+
+	private volatile String logsig;
 }

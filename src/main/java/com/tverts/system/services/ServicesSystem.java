@@ -1,6 +1,6 @@
 package com.tverts.system.services;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,11 +39,10 @@ public class ServicesSystem implements Servicer
 	{
 		LU.I(getLog(), "starting System Z-Services...");
 
-		try
+		lock().writeLock().lock(); try
 		{
-			lock().writeLock().lock();
-
 			//0: build the services map
+			EX.assertx(this.services == null);
 			this.services = buildServicesMap();
 
 			//?: {there is no Main Service registered}
@@ -76,6 +75,40 @@ public class ServicesSystem implements Servicer
 	}
 
 	/**
+	 * Destroys the services previously started
+	 * in the order reverse to the initialization.
+	 */
+	public void destroy()
+	{
+		LU.I(getLog(), "destroying System Z-Services...");
+
+		lock().writeLock().lock(); try
+		{
+			//?: {are services started}
+			EX.assertn(this.services);
+			EX.assertn(this.ordered);
+
+			String[] sids = this.ordered;
+			this.ordered = null;
+
+			//2: init the services
+
+			for(int i = sids.length - 1;(i >= 0);i--)
+			{
+				LU.I(getLog(), "  destroying service: ", sids[i]);
+				this.services.get(sids[i]).destroy();
+			}
+
+			LU.I(getLog(), "all Z-Services destroyed!");
+
+		}
+		finally
+		{
+			lock().writeLock().unlock();
+		}
+	}
+
+	/**
 	 * Services the event. May be invoked directly by
 	 * the client components, but intended for system
 	 * usages. Service messages (events) executor
@@ -88,11 +121,8 @@ public class ServicesSystem implements Servicer
 	{
 		EX.assertn(event);
 
-		try
+		lock().readLock().lock(); try
 		{
-			lock().readLock().lock();
-
-
 			//?: {broadcast the event}
 			if(SU.sXe(event.getService()))
 				broadcast(event);
@@ -126,9 +156,8 @@ public class ServicesSystem implements Servicer
 
 	public Service  service(String suid)
 	{
-		try
+		lock().readLock().lock(); try
 		{
-			lock().readLock().lock();
 			return getServicesMap().get(suid);
 		}
 		finally
@@ -155,9 +184,8 @@ public class ServicesSystem implements Servicer
 
 	public String[] services()
 	{
-		try
+		lock().readLock().lock(); try
 		{
-			lock().readLock().lock();
 			return this.ordered;
 		}
 		finally

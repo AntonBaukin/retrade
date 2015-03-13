@@ -18,7 +18,7 @@ import com.tverts.system.tx.TxBean;
 public class   InitServicesListener
        extends ServletContextListenerBase
 {
-	/* protected: ServletContextListenerBase interface */
+	/* Servlet Context Listener Base */
 
 	protected void init()
 	{
@@ -28,6 +28,18 @@ public class   InitServicesListener
 			{
 				//!: init the services system
 				ServicesPoint.system().init();
+			}
+		});
+	}
+
+	protected void destroy()
+	{
+		bean(TxBean.class).execute(new Runnable()
+		{
+			public void run()
+			{
+				//!: destroy the services system
+				ServicesPoint.system().destroy();
 			}
 		});
 	}

@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /* com.tverts: system (services) */
 
+import com.tverts.support.LU;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 import com.tverts.system.services.events.SystemReady;
@@ -90,7 +91,7 @@ public class      ModelsStoreService
 
 	/* Service */
 
-	public void        service(Event event)
+	public void service(Event event)
 	{
 		//?: {startup}
 		if(event instanceof SystemReady)
@@ -98,6 +99,13 @@ public class      ModelsStoreService
 		//?: {own event}
 		else if((event instanceof ModelsStoreEvent) && mine(event))
 			doExecute((ModelsStoreEvent) event);
+	}
+
+	public void destroy()
+	{
+		//~: save all the entities
+		if(!saveShutdown())
+			saveShutdown(); //<-- try second time
 	}
 
 
@@ -276,6 +284,9 @@ public class      ModelsStoreService
 
 		//~: collect all the items of the store
 		((CachingModelsStore) modelsStore).copyAll(items);
+
+		LU.I(getLog(), logsig(), ": there are [", items.size(),
+		  "] model beans to synchronize");
 
 		//?: {nothing to save}
 		if(items.isEmpty())

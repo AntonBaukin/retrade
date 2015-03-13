@@ -35,5 +35,7 @@ public interface Service
 
 	public void     init(Servicer servicer);
 
+	public void     destroy();
+
 	public void     service(Event event);
 }

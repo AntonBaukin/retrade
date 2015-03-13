@@ -93,6 +93,9 @@ public class      MainService
 		LU.W(getLog(), "system is going to shutdown...");
 	}
 
+	public void     destroy()
+	{}
+
 
 	/* public: ServiceReference interface */
 
