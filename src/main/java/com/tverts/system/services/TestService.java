@@ -109,8 +109,7 @@ public class TestService extends ServiceBase
 	protected void serviceOther(Event event)
 	{
 		LU.I(getLog(), "Test Service ", uid(),
-		  " got unknown message of type: ", type(event)
-		);
+		  " got unknown message of type: ", LU.cls(event));
 	}
 
 	protected void sendNextMsg()
@@ -146,14 +145,6 @@ public class TestService extends ServiceBase
 		));
 
 		servicer().send(e);
-	}
-
-
-	/* protected: logging */
-
-	protected String getLog()
-	{
-		return ServicesPoint.LOG_SERVICE_MAIN;
 	}
 
 

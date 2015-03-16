@@ -33,9 +33,9 @@ import com.tverts.support.SU;
 public class      PlainEventsListenerBean
        implements EventsListenerBean
 {
-	/* public: EventsListenerBean interface */
+	/* Events Listener Bean */
 
-	public void takeEventMessage(final Message msg)
+	public void     takeEventMessage(final Message msg)
 	{
 		try
 		{
@@ -43,7 +43,7 @@ public class      PlainEventsListenerBean
 			final Event event = extractEvent(msg);
 
 			//~: execute it
-			bean(TxBean.class).execute(new Runnable()
+			if(event != null) bean(TxBean.class).execute(new Runnable()
 			{
 				public void run()
 				{
@@ -75,7 +75,7 @@ public class      PlainEventsListenerBean
 	protected Event extractEvent(Message msg)
 	  throws Exception
 	{
-		return JMSProtocol.getInstance().event(msg);
+		return JMSProtocol.INSTANCE.event(msg);
 	}
 
 	protected void  process(Event event)
@@ -109,21 +109,22 @@ public class      PlainEventsListenerBean
 	}
 
 
-
 	/* protected: logging */
 
 	protected String getLog()
 	{
-		return ServicesPoint.LOG_SERVICE_MAIN;
+		return (log != null)?(log):
+		  (log = LU.LB(ServicesPoint.LOG_SERVICE_MAIN, getClass()));
 	}
+
+	private String log;
 
 	protected String logMessage(Message msg)
 	{
 		try
 		{
-			return SU.cats(
-			  "JMS message for service [", JMSProtocol.getInstance().readService(msg),
-			  "] with event type [", JMSProtocol.getInstance().readEventType(msg), "]"
+			return SU.cats( "JMS message for Service [",
+			  JMSProtocol.INSTANCE.readService(msg), "]"
 			);
 		}
 		catch(Throwable e)

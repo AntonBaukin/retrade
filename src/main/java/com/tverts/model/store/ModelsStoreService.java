@@ -7,9 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/* com.tverts: system (spring) */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: system (services) */
 
-import com.tverts.support.LU;
 import com.tverts.system.services.Event;
 import com.tverts.system.services.ServiceBase;
 import com.tverts.system.services.events.SystemReady;
@@ -27,6 +30,7 @@ import com.tverts.model.ModelsStore;
 
 import com.tverts.support.CMP;
 import com.tverts.support.EX;
+import com.tverts.support.LU;
 
 
 /**
@@ -135,16 +139,17 @@ public class      ModelsStoreService
 	protected ModelsBackend backend;
 
 	/**
-	 * Persistent store interval in seconds.
-	 * Defaults to 1 minute.
+	 * Persistent store cleanup timeout
+	 * of old-stored records in minutes.
+	 * Defaults to 4 hours.
 	 */
-	public void setSweepInterval(int sweepInterval)
+	public void setSweepTimeout(int sweepTimeout)
 	{
-		EX.assertx(sweepInterval > 0);
-		this.sweepInterval = sweepInterval;
+		EX.assertx(sweepTimeout > 0);
+		this.sweepTimeout = sweepTimeout;
 	}
 
-	protected int sweepInterval = 60;
+	protected int sweepTimeout = 10;
 
 	/**
 	 * Delay to start synchronization of
@@ -169,8 +174,24 @@ public class      ModelsStoreService
 		//~: order to sweep
 		e.setSweep(true);
 
-		//~: delay
-		delay(e, 1000L * sweepInterval);
+		//~: delay [1; 11) seconds
+		delay(e, 1000L + System.currentTimeMillis() % 10000L);
+
+		//~: sent to self
+		self(e);
+
+		LU.I(getLog(), logsig(), ": system is ready, planning periodical sweep task");
+	}
+
+	protected void    sweepDelay()
+	{
+		ModelsStoreEvent e = new ModelsStoreEvent();
+
+		//~: order to sweep
+		e.setSweep(true);
+
+		//~: delay (in minutes ÷ 10)
+		delay(e, 1000L * 60 / 10 * sweepTimeout);
 
 		//~: sent to self
 		self(e);
@@ -236,7 +257,20 @@ public class      ModelsStoreService
 	}
 
 	protected void    doSweep()
-	{}
+	{
+		try
+		{
+			LU.I(getLog(), logsig(), ": executing sweep of UI models persisted");
+
+			//~: do database sweep
+			bean(GetModelRecord.class).sweep(1000L * 60 * sweepTimeout);
+		}
+		finally
+		{
+			//~: plan the next sweep
+			sweepDelay();
+		}
+	}
 
 	/**
 	 * Saves the pruned instances to the backend

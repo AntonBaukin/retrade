@@ -76,8 +76,11 @@ public class   SeShReportLogger
 
 	/* protected: logger */
 
-	protected String  getLog()
+	protected String getLog()
 	{
-		return LU.getLogBased(SelfShuntPoint.LOG_SHARED, this);
+		return (log != null)?(log):
+		  (log = LU.LB(SelfShuntPoint.LOG_SHARED, this.getClass()));
 	}
+
+	private String log;
 }

@@ -13,6 +13,7 @@ import com.tverts.system.services.Event;
 
 /* com.tverts: support */
 
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -32,7 +33,7 @@ public class JMSProtocol
 		return INSTANCE;
 	}
 
-	private static final JMSProtocol INSTANCE =
+	public static final JMSProtocol INSTANCE =
 	  new JMSProtocol();
 
 	protected JMSProtocol()
@@ -42,16 +43,30 @@ public class JMSProtocol
 	/* protocol constants */
 
 	public static final String SERVICE   =
-	  "com_tverts_zservices_serviceUID";
+	  "com_tverts_zservices_ServiceUID";
 
 	public static final String BROADCAST =
-	  "com_tverts_zservices_isBroadcast";
+	  "com_tverts_zservices_IsBroadcast";
 
-	public static final String EVENTYPE  =
-	  "com_tverts_zservices_eventType";
-
+	/**
+	 * Active MQ property for a delayed event.
+	 */
 	public static final String EXECTIME  =
-	  "com_tverts_zservices_executionTime";
+	  "AMQ_SCHEDULED_DELAY";
+
+
+	/**
+	 * When application server starts, it saves the timestamp
+	 * and assigns it to each event sent. When it executes
+	 * a request it allows only the request with the same
+	 * marker. This technique rejects the delayed events
+	 * sent from the previous runs.
+	 */
+	public static final String MARKER    =
+	  "com_tverts_zservices_Marker";
+
+	public static final long   MARKER_TS =
+	  System.currentTimeMillis();
 
 
 	/* public: protocol implementation */
@@ -67,25 +82,17 @@ public class JMSProtocol
 		else
 			msg.setStringProperty(SERVICE, event.getService());
 
-		//~: event type
-		if(event.getEventType() == null)
-			msg.setStringProperty(EVENTYPE, event.getClass().getName());
-		else
-			msg.setStringProperty(EVENTYPE, event.getEventType().getName());
+		//~: service marker
+		msg.setLongProperty(MARKER, MARKER_TS);
 
 		//~: execution time
 		if(event instanceof DelayedEvent)
 		{
-			long et = ((DelayedEvent)event).getEventTime();
+			long et = ((DelayedEvent) event).getEventTime();
 			long td = et - System.currentTimeMillis();
 
 			if(td > 0L)
-			{
-				msg.setLongProperty(EXECTIME, et);
-
-				//~: ActiveMQ support
 				msg.setLongProperty("AMQ_SCHEDULED_DELAY", td);
-			}
 		}
 
 		return msg;
@@ -97,12 +104,19 @@ public class JMSProtocol
 		final String ERR = "Unknown Z-Service Event encapsulation format!";
 
 		if(!(msg instanceof ObjectMessage))
-			throw new IllegalStateException(ERR);
+			throw EX.state(ERR);
 
-		Object res = ((ObjectMessage)msg).getObject();
+		//?: {has no marker | marker differs}
+		if(!msg.propertyExists(MARKER) || (msg.getLongProperty(MARKER) != MARKER_TS))
+			return null;
 
+		//~: take the object
+		Object res = ((ObjectMessage) msg).getObject();
+
+		//?: {is not an event}
 		if(!(res instanceof Event))
-			throw new IllegalStateException(ERR);
+			throw EX.state(ERR);
+
 		return (Event)res;
 	}
 
@@ -110,11 +124,5 @@ public class JMSProtocol
 	  throws Exception
 	{
 		return msg.getStringProperty(SERVICE);
-	}
-
-	public String  readEventType(Message msg)
-	  throws Exception
-	{
-		return msg.getStringProperty(EVENTYPE);
 	}
 }

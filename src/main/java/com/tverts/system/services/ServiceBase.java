@@ -13,6 +13,7 @@ import com.tverts.system.services.events.ServiceEventBase;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
 import com.tverts.support.SU;
 
 
@@ -121,12 +122,6 @@ public abstract class ServiceBase
 		send(event);
 	}
 
-	protected Class    type(Event event)
-	{
-		return (event.getEventType() != null)
-		  ?(event.getEventType()):(event.getClass());
-	}
-
 	protected boolean  broadcasted(Event event)
 	{
 		return SU.sXe(event.getService());
@@ -148,8 +143,11 @@ public abstract class ServiceBase
 
 	protected String getLog()
 	{
-		return ServicesPoint.LOG_SERVICE_MAIN;
+		return (log != null)?(log):
+		  (log = LU.LB(ServicesPoint.LOG_SERVICE_MAIN, getClass()));
 	}
+
+	private String log;
 
 	protected String getServicesLog()
 	{

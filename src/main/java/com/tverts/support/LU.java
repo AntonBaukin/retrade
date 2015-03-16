@@ -2,12 +2,11 @@ package com.tverts.support;
 
 /* com.tverts: hibery */
 
-import com.tverts.endure.NumericIdentity;
 import com.tverts.hibery.system.HiberSystem;
 
 /* com.tverts: endure core */
 
-import com.tverts.endure.PrimaryIdentity;
+import com.tverts.endure.NumericIdentity;
 
 /* com.tverts: support (logging) */
 
@@ -232,7 +231,7 @@ public class LU
 
 	/* logging issues */
 
-	public static String getLogBased(String base, Class cls)
+	public static String LB(String base, Class cls)
 	{
 		StringBuilder s = new StringBuilder(64);
 
@@ -251,23 +250,18 @@ public class LU
 		return s.toString();
 	}
 
-	public static String getLogBased(String base, Object obj)
-	{
-		return getLogBased(base, obj.getClass());
-	}
-
-	public static String getLogBased(Class base, Class cls)
+	public static String LB(Class base, Class cls)
 	{
 		String s = base.getName();
 		int    i = s.lastIndexOf('.');
 		s = (i != -1)?(s.substring(0, i)):(null);
 
-		return getLogBased(s, cls);
+		return LB(s, cls);
 	}
 
 	public static String getLogBased(Class base, Object obj)
 	{
-		return getLogBased(base, obj.getClass());
+		return LB(base, obj.getClass());
 	}
 
 	public static String td(long initial)

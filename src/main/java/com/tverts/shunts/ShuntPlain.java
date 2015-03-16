@@ -95,6 +95,8 @@ public abstract class ShuntPlain
 		return domain;
 	}
 
+	private Domain domain;
+
 	public ShuntPlain      setDomain(Domain domain)
 	{
 		this.domain = domain;
@@ -129,13 +131,11 @@ public abstract class ShuntPlain
 
 	/* protected: logging */
 
-	protected String  getLog()
+	protected String getLog()
 	{
-		return LU.getLogBased(SelfShuntPoint.LOG_SHARED, this);
+		return (log != null)?(log):
+		  (log = LU.LB(SelfShuntPoint.LOG_SHARED, this.getClass()));
 	}
 
-
-	/* private: additional parameters */
-
-	private Domain domain;
+	private String log;
 }

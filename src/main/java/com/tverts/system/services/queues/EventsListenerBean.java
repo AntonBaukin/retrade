@@ -24,7 +24,7 @@ public interface EventsListenerBean
 	  "servicesBusListener";
 
 
-	/* public: EventsListenerBean interface */
+	/* Events Listener Bean */
 
 	public void takeEventMessage(Message msg);
 }

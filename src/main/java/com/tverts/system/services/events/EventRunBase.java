@@ -82,12 +82,6 @@ public abstract class EventRunBase
 		send(event);
 	}
 
-	protected Class    type(Event event)
-	{
-		return (event.getEventType() != null)
-		  ?(event.getEventType()):(event.getClass());
-	}
-
 	protected boolean  broadcasted(Event event)
 	{
 		return SU.sXe(event.getService());

@@ -13,7 +13,7 @@ import com.tverts.system.services.Event;
  */
 public interface ServiceEvent extends Event
 {
-	/* public: ServiceEvent interface */
+	/* Service Event */
 
 	public String getSourceService();
 }

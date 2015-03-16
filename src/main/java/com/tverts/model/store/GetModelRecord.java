@@ -130,6 +130,19 @@ public class GetModelRecord extends GetObjectBase
 	}
 
 	/**
+	 * Removes the records older than
+	 * the timeout value given.
+	 */
+	public void   sweep(long timeout)
+	{
+		final String Q =
+"delete from ModelRecord where (accessTime < :at)";
+
+		Q(Q, "at", new Date(System.currentTimeMillis() - timeout)).
+		  executeUpdate();
+	}
+
+	/**
 	 * Converts key of format 'SimpleClassName-HEX'
 	 * to regular Long value.
 	 */
@@ -139,6 +152,5 @@ public class GetModelRecord extends GetObjectBase
 		EX.assertx((i > 0) & (i < key.length()));
 
 		return Long.parseLong(key.substring(i+1), 16);
-
 	}
 }

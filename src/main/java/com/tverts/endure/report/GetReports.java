@@ -2,6 +2,7 @@ package com.tverts.endure.report;
 
 /* Java */
 
+import java.util.Date;
 import java.util.List;
 
 /* Spring Framework */
@@ -227,6 +228,27 @@ public class GetReports extends GetObjectBase
 		restrictTemplates(qb, mb.searchNames());
 
 		return QB(qb).list();
+	}
+
+
+	/* Utilities */
+
+	public int cleanup(long timeout)
+	{
+		final String Q =
+"delete from ReportRequest where (loadTime < :time)";
+
+		return Q(Q, "time", new Date(System.currentTimeMillis() - timeout)).
+		  executeUpdate();
+	}
+
+	public int erase(long timeout)
+	{
+		final String Q =
+"delete from ReportRequest where (time < :time)";
+
+		return Q(Q, "time", new Date(System.currentTimeMillis() - timeout)).
+		  executeUpdate();
 	}
 
 

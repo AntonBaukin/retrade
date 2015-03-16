@@ -2,7 +2,6 @@ package com.tverts.data;
 
 /* Java */
 
-import java.util.Date;
 import java.util.List;
 
 /* com.tverts: spring */
@@ -69,13 +68,13 @@ public class ReportsService extends ServiceBase
 	{}
 
 
-	/* constants */
+	/* Constants */
 
 	public static final String SERVICE_UID =
 	  "Reports Service";
 
 
-	/* public: Reports Service (main) */
+	/* Reports Service (main) */
 
 	/**
 	 * Executed in own transaction: saves the
@@ -162,26 +161,54 @@ public class ReportsService extends ServiceBase
 
 	public void      service(Event event)
 	{
+		//?: {make report}
+		if(event instanceof MakeReportEvent)
+			doMakeReport((MakeReportEvent) event);
+		//?: {clear reports}
+		else if(event instanceof ReportsServiceEvent)
+			doInternal((ReportsServiceEvent) event);
 		//?: {system is ready}
-		if(event instanceof SystemReady)
-		{
+		else if(event instanceof SystemReady)
 			onSystemReady();
-			return;
-		}
+	}
 
-		//?: {clear reports event}
-		if(event instanceof ReportsCleanEvent)
-		{
-			serviceClean((ReportsCleanEvent)event);
-			return;
-		}
 
-		if(!(event instanceof MakeReportEvent))
-			return;
+	/* Reports Service (config) */
 
+	/**
+	 * The timeout in minutes to remove ready and
+	 * downloaded by the user report requests.
+	 * Defaults to 5 minutes.
+	 */
+	public void      setCleanupTimeout(int t)
+	{
+		EX.assertx(t > 0);
+		this.cleanupTimeout = t;
+	}
+
+	private int cleanupTimeout = 5;
+
+	/**
+	 * The timeout in hours to remove any report
+	 * request regardless it is ready or loaded.
+	 * Defaults to 48 hours.
+	 */
+	public void      setEraseTimeout(int t)
+	{
+		EX.assertx(t > 0);
+		this.eraseTimeout = t;
+	}
+
+	private int eraseTimeout = 48;
+
+
+	/* protected: execution */
+
+	protected void   doMakeReport(MakeReportEvent event)
+	{
 		//~: load the request
 		ReportRequest r = bean(GetReports.class).
-		  getReportRequest(((MakeReportEvent)event).getReportRequest());
+		  getReportRequest(event.getReportRequest());
 
 		//?: {that request does not exist now}
 		if(r == null) return;
@@ -278,39 +305,62 @@ public class ReportsService extends ServiceBase
 		TxPoint.txn(r);
 	}
 
-
-	/* public: Reports Service (config) */
-
-	public int       getCleanupTimeout()
+	protected void   onSystemReady()
 	{
-		return cleanupTimeout;
+		LU.I(getLog(), logsig(),
+		  ": system is ready, planning periodical clean & erase tasks");
+
+		ReportsServiceEvent e = new ReportsServiceEvent();
+
+		//~: request startup
+		e.setStartup(true);
+
+		//~: delay [1; 5) seconds
+		delay(e, 1000L + System.currentTimeMillis() % 4000L);
+
+		//~: sent to self
+		self(e);
 	}
 
-	/**
-	 * The timeout in minutes to remove ready and
-	 * downloaded by the user report requests.
-	 * Defaults to 15 minutes.
-	 */
-	public void      setCleanupTimeout(int t)
+	protected void   doStartup()
 	{
-		EX.assertx(t >= 0);
-		this.cleanupTimeout = t;
+		LU.I(getLog(), logsig(), ": executing stratup tasks");
+
+		//~: plan cleanup, delay [1; 5) seconds
+		ReportsServiceEvent e = new ReportsServiceEvent();
+		delay(e, 1000L + System.currentTimeMillis() % 4000L);
+		self(e); //<-- send to itself
+
+		//~: plan erase, delay [5, 50) seconds
+		delay(e, 5000L + System.currentTimeMillis() % 5000L);
+		e.setErase(true);
+		self(e); //<-- send to itself
+
+		//~: plan the reports making
+		planReportsMaking();
 	}
 
-	public int       getEraseTimeout()
+	protected void   doInternal(ReportsServiceEvent e)
 	{
-		return eraseTimeout;
-	}
+		//?: {startup}
+		if(e.isStartup())
+		{
+			doStartup();
+			return;
+		}
 
-	/**
-	 * The timeout in hours to remove any report
-	 * request regardless it is ready or loaded.
-	 * Defaults to 48 hours.
-	 */
-	public void      setEraseTimeout(int t)
-	{
-		EX.assertx(t >= 0);
-		this.eraseTimeout = t;
+		//?: {erase event}
+		if(e.isErase())
+			erase();
+		//~: do cleanup
+		else
+			cleanup();
+
+		//~: plan the next event (÷ 5)
+		delay(e, 1000L * 60 / 5 * (e.isErase()?(60 * eraseTimeout):(cleanupTimeout)));
+
+		//!: send to itself
+		self(e);
 	}
 
 
@@ -329,6 +379,17 @@ public class ReportsService extends ServiceBase
 
 		//~: send the event to this service
 		self(new MakeReportEvent(r.getPrimaryKey()));
+	}
+
+	protected void   planReportsMaking()
+	{
+		//~: select the reports
+		List<Long> reports = bean(GetReports.class).
+		  selectReportsToMake();
+
+		//c: send event for each of them
+		for(Long id : reports)
+			self(new MakeReportEvent(id));
 	}
 
 	protected byte[] makeReport(byte[] template, BytesStream xml, ReportFormat fmt)
@@ -367,105 +428,15 @@ public class ReportsService extends ServiceBase
 		}
 	}
 
-	protected void   serviceClean(ReportsCleanEvent e)
-	{
-		//?: {erase event}
-		if(e.isErase())
-			erase();
-		//~: do cleanup
-		else
-			cleanup();
-
-		//~: plan the next event
-		e.setEventTime( System.currentTimeMillis() + 1000L * 60 *
-		  (e.isErase()?(60 * eraseTimeout):(cleanupTimeout))
-		);
-
-		self(e);
-	}
-
 	protected void   cleanup()
 	{
-
-// delete from ReportRequest where (loadTime < :time)
-
-
-		long tm = System.currentTimeMillis() -
-		  1000L * 60 * cleanupTimeout; //<-- in minutes
-
-		//~: execute the update query
-		int n = TxPoint.txSession().createQuery(
-
-"  delete from ReportRequest where (loadTime < :time)"
-
-		).
-		  setTimestamp("time", new Date(tm)).
-		  executeUpdate();
-
-		LU.I(getLog(), "cleaned up loadaed reports, removed [", n, "]");
+		int n = bean(GetReports.class).cleanup(1000L * 60 * cleanupTimeout);
+		LU.I(getLog(), logsig(), ": cleaned up loadaed reports, removed [", n, "] records");
 	}
 
 	protected void   erase()
 	{
-		EX.assertx(eraseTimeout > 0);
-
-// delete from ReportRequest where (time <= :time)
-
-		long tm = System.currentTimeMillis() -
-		  1000L * 60 * 60 * eraseTimeout; //<-- in hours
-
-		//~: execute the update query
-		int n = TxPoint.txSession().createQuery(
-
-"  delete from ReportRequest where (time <= :time)"
-
-		).
-		  setTimestamp("time", new Date(tm)).
-		  executeUpdate();
-
-		LU.I(getLog(), "erased obsolete reports, removed [", n, "]");
+		int n = bean(GetReports.class).erase(1000L * 60 * 60 * eraseTimeout);
+		LU.I(getLog(), logsig(), ": erased obsolete reports, removed [", n, "] records");
 	}
-
-	protected void   onSystemReady()
-	{
-		//~: cleanup obsolete reports
-		cleanupObsolete();
-
-		//~: plan the reports making
-		planReportsMaking();
-	}
-
-	protected void   cleanupObsolete()
-	{
-		//~: erase the reports
-		ReportsCleanEvent e = new ReportsCleanEvent();
-		e.setErase(true);
-		serviceClean(e);
-
-		//~: cleanup the reports
-		e.setErase(false);
-		serviceClean(e);
-	}
-
-	protected void   planReportsMaking()
-	{
-		//~: select the reports
-		List<Long> reports = bean(GetReports.class).
-		  selectReportsToMake();
-
-		//c: send event for each of them
-		for(Long id : reports)
-			self(new MakeReportEvent(id));
-	}
-
-	protected String getLog()
-	{
-		return "com.tverts.system.services." + getClass().getSimpleName();
-	}
-
-
-	/* private: service parameters */
-
-	private int cleanupTimeout = 15; //<-- 15 minutes
-	private int eraseTimeout   = 48; //<-- 48 hours
 }

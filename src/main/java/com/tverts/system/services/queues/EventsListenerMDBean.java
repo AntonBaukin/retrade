@@ -54,12 +54,10 @@ public class EventsListenerMDBean implements MessageListener
 
 			try
 			{
-				String  et = msg.getStringProperty(JMSProtocol.EVENTYPE);
 				String  id = msg.getStringProperty(JMSProtocol.SERVICE);
 				boolean bc = msg.getBooleanProperty(JMSProtocol.BROADCAST);
 
-				LU.W(ServicesPoint.LOG_SERVICE_BOOT,
-				  "message of type [", SU.sXe(et)?("UNKNOWN"):(et), "] ",
+				LU.W(ServicesPoint.LOG_SERVICE_BOOT, "message ",
 				  (bc)?("broadcasted"):SU.cat("sent to [", id, "]"),
 				  " was rolled back as the system is not ready yet!"
 				);

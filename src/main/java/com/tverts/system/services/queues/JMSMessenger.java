@@ -162,9 +162,7 @@ public class JMSMessenger implements ServiceMessenger
 	  throws Throwable
 	{
 		//~: create the message by the protocol
-		Message         m = JMSProtocol.getInstance().
-		  message(session, event);
-
+		Message         m = JMSProtocol.INSTANCE.message(session, event);
 		MessageProducer p = session.createProducer(locateQueue());
 		Throwable       x = null;
 

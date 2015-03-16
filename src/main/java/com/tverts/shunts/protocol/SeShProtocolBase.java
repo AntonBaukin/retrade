@@ -213,8 +213,11 @@ public abstract class SeShProtocolBase
 
 	protected String getLog()
 	{
-		return LU.getLogBased(SelfShuntPoint.LOG_SYSTEM, this);
+		return (log != null)?(log):
+		  (log = LU.LB(SelfShuntPoint.LOG_SYSTEM, this.getClass()));
 	}
+
+	private String log;
 
 	protected String logsig()
 	{

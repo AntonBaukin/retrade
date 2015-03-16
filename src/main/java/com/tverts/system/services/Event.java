@@ -16,22 +16,11 @@ package com.tverts.system.services;
  */
 public interface Event extends java.io.Serializable
 {
-	/* public: Event interface */
+	/* Event */
 
 	/**
 	 * Returns the Service UID this event is for.
 	 * Broadcast events has this field undefined.
 	 */
 	public String getService();
-
-	/**
-	 * Event instance may be a container (wrapper)
-	 * to some other event. The class of the event
-	 * instance may differ from what the event means.
-	 * Set the event type (class) when this is true.
-	 *
-	 * If event type is not defined, the class of
-	 * the event instance is the type.
-	 */
-	public Class  getEventType();
 }

@@ -131,10 +131,8 @@ public class ServicesSystem implements Servicer
 				Service service = getServicesMap().
 				  get(event.getService());
 
-				if(service == null)
-					LU.E(getLog(), eventTypeLog(event),
-					  " refers unknown service [",
-					  event.getService(), "]!");
+				if(service == null) LU.E(getLog(), " event ", LU.cls(event),
+				  " refers unknown Service [", event.getService(), "]!");
 
 				//~: invoke the service
 				if(service != null)
@@ -251,7 +249,7 @@ public class ServicesSystem implements Servicer
 	protected void logError(String suid, Throwable e, Event event)
 	{
 		LU.E(getLog(), e, " error in service '", suid,
-		  "' while processing ", eventTypeLog(event), '!');
+		  "' while processing event ", LU.cls(event), '!');
 	}
 
 
@@ -385,15 +383,6 @@ public class ServicesSystem implements Servicer
 	protected final ReadWriteLock  lock()
 	{
 		return lock;
-	}
-
-	protected String               eventTypeLog(Event event)
-	{
-		return (event == null)?("event UNDEFINED"):
-		  (event.getEventType() == null)
-		    ?String.format("event class %s", event.getClass().getName())
-		    :String.format("event class %s type %s",
-		      event.getClass().getName(), event.getEventType().getName());
 	}
 
 

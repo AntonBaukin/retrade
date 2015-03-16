@@ -12,32 +12,20 @@ import com.tverts.system.services.Event;
  */
 public abstract class EventBase implements Event
 {
-	public static final long serialVersionUID = 20140806L;
+	public static final long serialVersionUID = 20150316L;
 
 
 	/* Event */
 
-	public String  getService()
+	public String getService()
 	{
 		return service;
 	}
 
 	private String service;
 
-	public void    setService(String serviceUID)
+	public void setService(String serviceUID)
 	{
 		this.service = serviceUID;
-	}
-
-	public Class   getEventType()
-	{
-		return eventType;
-	}
-
-	private Class  eventType;
-
-	public void    setEventType(Class eventType)
-	{
-		this.eventType = eventType;
 	}
 }
