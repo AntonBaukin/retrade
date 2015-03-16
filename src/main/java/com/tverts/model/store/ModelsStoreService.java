@@ -149,7 +149,7 @@ public class      ModelsStoreService
 		this.sweepTimeout = sweepTimeout;
 	}
 
-	protected int sweepTimeout = 10;
+	protected int sweepTimeout = 240;
 
 	/**
 	 * Delay to start synchronization of
