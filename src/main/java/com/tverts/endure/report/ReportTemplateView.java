@@ -25,7 +25,7 @@ import com.tverts.data.DataSource;
 @XmlType(name = "report-template-view")
 public class ReportTemplateView extends CatItemView
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20150317L;
 
 
 	/* Report Template View */
@@ -52,18 +52,6 @@ public class ReportTemplateView extends CatItemView
 	public void setSystem(boolean system)
 	{
 		this.system = system;
-	}
-
-	public String getRemarks()
-	{
-		return remarks;
-	}
-
-	private String  remarks;
-
-	public void setRemarks(String remarks)
-	{
-		this.remarks = remarks;
 	}
 
 	public String getSourceName()
@@ -113,10 +101,9 @@ public class ReportTemplateView extends CatItemView
 
 	public ReportTemplateView init(ReportTemplate rt)
 	{
-		this.did = rt.getDid();
+		this.did    = rt.getDid();
 		this.system = rt.isSystem();
-		this.remarks = rt.getRemarks();
-		this.ready = rt.isReady();
+		this.ready  = rt.isReady();
 
 		//~: data source
 		DataSource src = Datas.INSTANCE.getSource(this.did);

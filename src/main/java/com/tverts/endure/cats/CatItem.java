@@ -12,12 +12,10 @@ import com.tverts.endure.core.DomainEntity;
  * catalogue items that have name and code
  * unique within the domain.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public interface CatItem
-        extends  NumericIdentity,
-                 DomainEntity,
+       extends   NumericIdentity, DomainEntity,
                  CodedEntity, NamedEntity
 {
 	/* Catalogue Item */

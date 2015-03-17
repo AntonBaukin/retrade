@@ -12,6 +12,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.tverts.endure.Remarkable;
+
 
 /**
  * A read-only view on the catalogue item instance.
@@ -27,14 +29,14 @@ public class CatItemView implements Serializable
 
 	/* Catalogue Item View Bean */
 
-	public Long   getObjectKey()
+	public Long getObjectKey()
 	{
 		return objectKey;
 	}
 
 	private Long objectKey;
 
-	public void   setObjectKey(Long objectKey)
+	public void setObjectKey(Long objectKey)
 	{
 		this.objectKey = objectKey;
 	}
@@ -46,7 +48,7 @@ public class CatItemView implements Serializable
 
 	private String code;
 
-	public void   setCode(String code)
+	public void setCode(String code)
 	{
 		this.code = code;
 	}
@@ -58,9 +60,21 @@ public class CatItemView implements Serializable
 
 	private String name;
 
-	public void   setName(String name)
+	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	public String getRemarks()
+	{
+		return remarks;
+	}
+
+	private String remarks;
+
+	public void setRemarks(String remarks)
+	{
+		this.remarks = remarks;
 	}
 
 
@@ -75,6 +89,11 @@ public class CatItemView implements Serializable
 			for(Object sub : (Collection)obj)
 				this.init(sub);
 
+		//?: {has remarks}
+		if(obj instanceof Remarkable)
+			this.remarks = ((Remarkable)obj).getRemarks();
+
+		//?: {catalogue item}
 		if(obj instanceof CatItem)
 			return init((CatItem)obj);
 
@@ -91,6 +110,10 @@ public class CatItemView implements Serializable
 
 		//~: name
 		this.name = ci.getName();
+
+		//?: {has remarks}
+		if(ci instanceof Remarkable)
+			this.remarks = ((Remarkable)ci).getRemarks();
 
 		return this;
 	}

@@ -29,7 +29,7 @@
      · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
     <property name = 'modelsStore'>
        <bean class = 'com.tverts.model.store.LinkedCacheModelsStore'>
-         <constructor-arg><value> 4 </value></constructor-arg>
+         <constructor-arg><value> 512 </value></constructor-arg>
        </bean>
     </property>
 

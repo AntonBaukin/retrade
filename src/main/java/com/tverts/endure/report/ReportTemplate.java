@@ -1,7 +1,8 @@
 package com.tverts.endure.report;
 
-/* com.tverts: endure (core + catalogues) */
+/* com.tverts: endure (core, catalogues) */
 
+import com.tverts.endure.Remarkable;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.Entity;
 import com.tverts.endure.cats.CatItem;
@@ -13,14 +14,18 @@ import com.tverts.endure.cats.CatItem;
  *
  * @author anton.baukin@gmail.com.
  */
-public class ReportTemplate extends Entity implements CatItem
+public class      ReportTemplate
+       extends    Entity
+       implements CatItem, Remarkable
 {
 	public Domain getDomain()
 	{
 		return domain;
 	}
 
-	public void   setDomain(Domain domain)
+	private Domain domain;
+
+	public void setDomain(Domain domain)
 	{
 		this.domain = domain;
 	}
@@ -30,7 +35,9 @@ public class ReportTemplate extends Entity implements CatItem
 		return code;
 	}
 
-	public void   setCode(String code)
+	private String code;
+
+	public void setCode(String code)
 	{
 		this.code = code;
 	}
@@ -40,7 +47,9 @@ public class ReportTemplate extends Entity implements CatItem
 		return name;
 	}
 
-	public void   setName(String name)
+	private String name;
+
+	public void setName(String name)
 	{
 		this.name = name;
 	}
@@ -49,6 +58,8 @@ public class ReportTemplate extends Entity implements CatItem
 	{
 		return system;
 	}
+
+	private boolean system;
 
 	public void setSystem(boolean system)
 	{
@@ -63,7 +74,9 @@ public class ReportTemplate extends Entity implements CatItem
 		return did;
 	}
 
-	public void   setDid(String dataSource)
+	private String did;
+
+	public void setDid(String dataSource)
 	{
 		this.did = dataSource;
 	}
@@ -72,6 +85,8 @@ public class ReportTemplate extends Entity implements CatItem
 	{
 		return remarks;
 	}
+
+	private String remarks;
 
 	public void setRemarks(String remarks)
 	{
@@ -83,6 +98,8 @@ public class ReportTemplate extends Entity implements CatItem
 		return ready;
 	}
 
+	private boolean ready;
+
 	public void setReady(boolean ready)
 	{
 		this.ready = ready;
@@ -93,21 +110,11 @@ public class ReportTemplate extends Entity implements CatItem
 		return template;
 	}
 
-	public void   setTemplate(byte[] template)
+	private byte[] template;
+
+	public void setTemplate(byte[] template)
 	{
 		this.template = template;
 		this.ready = (template != null);
 	}
-
-
-	/* persisted attributes */
-
-	private Domain  domain;
-	private String  code;
-	private String  name;
-	private boolean system;
-	private String  remarks;
-	private String  did;
-	private boolean ready;
-	private byte[]  template;
 }
