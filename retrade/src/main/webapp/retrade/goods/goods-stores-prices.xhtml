@@ -92,51 +92,30 @@
 
   <script type = "text/javascript">
 
-  Ext.onReady(function()
-  {
-    function load(url, bind, domain, next)
-    {
-      extjsf.defineBind('onload', domain, function(root)
-      {
-        bind.component().add(root.component())
-        if(next) next()
-      })
-
-      Ext.create('Ext.ComponentLoader', {
-        target: bind.component(), 'url': url,
-        ajaxOptions: {method: 'GET'}, autoLoad: true, scripts: true, params: {
-          '${rootView.viewModeParam}': '${rootView.viewModeStr}',
-          '${rootView.extjsDomainParam}': domain
-        }
-      })
-    }
-
-    var prev = null;
-
-    //~: load goods
-    if("${rootView.isSecure('view: goods')}" == 'true')
-      prev =  ZeT.fbind(load, this, "${z:url('/go/retrade/goods/list')}",
-        extjsf.bind("${z:vid(rootView, 'goods-content')}", '${rootView.extjsDomain}'),
-        extjsf.tempDomain('desktop-content:retrade-goods-stores-prices:goods:'), prev
-      );
-
-    //~: load stores
-    if("${rootView.isSecure('view: stores')}" == 'true')
-      prev = ZeT.fbind(load, this, "${z:url('/go/retrade/stores/list')}",
-        extjsf.bind("${z:vid(rootView, 'stores-content')}", '${rootView.extjsDomain}'),
-        extjsf.tempDomain('desktop-content:retrade-goods-stores-prices:stores:'), prev
-      );
+  //~: load the content areas
+  Ext.onReady(retrade_chain_loader(
 
     //~: load price lists
-    if("${rootView.isSecure('view: price-lists')}" == 'true')
-      prev = ZeT.fbind(load, this, "${z:url('/go/retrade/price-lists/list')}",
-        extjsf.bind("${z:vid(rootView, 'prices-content')}", '${rootView.extjsDomain}'),
-        extjsf.tempDomain('desktop-content:retrade-goods-stores-prices:prices:'), prev
-      );
+    {
+      url: '/price-lists/list', active: "${rootView.isSecure('view: price-lists')}",
+      tempDomain: 'desktop-content:stores-stores-prices:prices:',
+      bind: extjsf.bind("${z:vid(rootView, 'prices-content')}", '${rootView.extjsDomain}')
+    },
 
-    //~: invoke the loads chain
-    if(prev) prev()
-  })
+    //~: load stores
+    {
+      url: '/stores/list', active: "${rootView.isSecure('view: stores')}",
+      tempDomain: 'desktop-content:stores-stores-prices:stores:',
+      bind: extjsf.bind("${z:vid(rootView, 'stores-content')}", '${rootView.extjsDomain}')
+    },
+
+    //~: load goods (the first)
+    {
+      url: '/goods/list', active: "${rootView.isSecure('view: goods')}",
+      tempDomain: 'desktop-content:goods-stores-prices:goods:',
+      bind: extjsf.bind("${z:vid(rootView, 'goods-content')}", '${rootView.extjsDomain}')
+    }
+  ))
 
   </script>
 

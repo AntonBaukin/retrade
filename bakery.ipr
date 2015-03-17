@@ -31,8 +31,8 @@
           <file>file://$PROJECT_DIR$/retrade/build.xml</file>
           <target>explode-rsync</target>
           <build-properties>
-            <build-property name="server" value="192.168.2.13" />
-            <build-property name="password" value="Roq7poN" />
+            <build-property name="server" value="192.168.64.14" />
+            <build-property name="password" value="sqr4eq22!" />
           </build-properties>
         </options>
       </properties>
@@ -709,13 +709,6 @@
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Anton" />
-    <dictionary name="abaukin">
-      <words>
-        <w>logins</w>
-        <w>messager</w>
-        <w>servicer</w>
-      </words>
-    </dictionary>
     <dictionary name="anton">
       <words>
         <w>aggr</w>
@@ -752,6 +745,13 @@
         <w>webapp</w>
         <w>whitespaces</w>
         <w>zetobj</w>
+      </words>
+    </dictionary>
+    <dictionary name="abaukin">
+      <words>
+        <w>logins</w>
+        <w>messager</w>
+        <w>servicer</w>
       </words>
     </dictionary>
   </component>

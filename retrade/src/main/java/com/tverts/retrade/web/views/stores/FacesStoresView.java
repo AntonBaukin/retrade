@@ -114,11 +114,14 @@ public class FacesStoresView extends ModelView
 			if(ts == null) throw EX.state();
 		}
 
-		//~: code
+		//=: code
 		ts.setCode(getStoreView().getCode());
 
-		//~: name
+		//=: name
 		ts.setName(getStoreView().getName());
+
+		//=: remarks
+		ts.setRemarks(getStoreView().getRemarks());
 
 
 		//!: save | update it

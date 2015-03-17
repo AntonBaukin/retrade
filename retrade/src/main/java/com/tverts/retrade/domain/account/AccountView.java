@@ -29,15 +29,17 @@ import com.tverts.retrade.domain.firm.Contractor;
 @XmlRootElement(name = "account-view")
 public class AccountView extends CatItemView
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20150317L;
 
 
-	/* public: bean interface */
+	/* Account View */
 
 	public Long getContractorKey()
 	{
 		return contractorKey;
 	}
+
+	private Long contractorKey;
 
 	public void setContractorKey(Long contractorKey)
 	{
@@ -49,6 +51,8 @@ public class AccountView extends CatItemView
 		return contractorCode;
 	}
 
+	private String contractorCode;
+
 	public void setContractorCode(String contractorCode)
 	{
 		this.contractorCode = contractorCode;
@@ -59,25 +63,19 @@ public class AccountView extends CatItemView
 		return contractorName;
 	}
 
+	private String contractorName;
+
 	public void setContractorName(String contractorName)
 	{
 		this.contractorName = contractorName;
-	}
-
-	public String getRemarks()
-	{
-		return remarks;
-	}
-
-	public void setRemarks(String remarks)
-	{
-		this.remarks = remarks;
 	}
 
 	public BigDecimal getIncome()
 	{
 		return income;
 	}
+
+	private BigDecimal income;
 
 	public void setIncome(BigDecimal v)
 	{
@@ -89,6 +87,8 @@ public class AccountView extends CatItemView
 	{
 		return expense;
 	}
+
+	private BigDecimal expense;
 
 	public void setExpense(BigDecimal v)
 	{
@@ -114,18 +114,12 @@ public class AccountView extends CatItemView
 	public AccountView init(Object obj)
 	{
 		if(obj instanceof Account)
-			return this.init((Account)obj);
+			this.init((Account)obj);
 
 		if(obj instanceof Contractor)
-			return this.init((Contractor)obj);
+			this.init((Contractor)obj);
 
 		return (AccountView) super.init(obj);
-	}
-
-	public AccountView init(Account a)
-	{
-		this.remarks = a.getRemarks();
-		return (AccountView) init((CatItem) a);
 	}
 
 	public AccountView init(Contractor c)
@@ -148,14 +142,4 @@ public class AccountView extends CatItemView
 		setExpense(v);
 		return this;
 	}
-
-
-	/* account attributes */
-
-	private Long       contractorKey;
-	private String     contractorCode;
-	private String     contractorName;
-	private String     remarks;
-	private BigDecimal income;
-	private BigDecimal expense;
 }

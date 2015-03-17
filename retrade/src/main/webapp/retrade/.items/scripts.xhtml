@@ -4,6 +4,21 @@
 <script type = "text/javascript">
 //<![CDATA[
 
+function retrade_go_url(url)
+{
+  ZeT.asserts(url, 'No load URL is provided!')
+
+  //?: {create relative go-address}
+  if(url.indexOf('/go/retrade') == -1)
+  {
+    if(ZeTS.startsWith(url, '/'))
+      url = ZeT.asserts(url.substring(1))
+    url = "${z:url('/go/retrade/XYZ')}".replace('XYZ', url)
+  }
+
+  return url
+}
+
 function retrade_open_window(opts)
 {
   ZeT.assertn(opts)
@@ -52,13 +67,7 @@ function retrade_open_window(opts)
   }
 
   //~: load url
-  ZeT.asserts(opts.url, 'No window load URL is provided!')
-  if(opts.url.indexOf('/go/retrade') == -1)
-  {
-    if(ZeTS.startsWith(opts.url, '/'))
-      opts.url = ZeT.asserts(opts.url.substring(1))
-    opts.url = "${z:url('/go/retrade/XYZ')}".replace('XYZ', opts.url)
-  }
+  opts.url = retrade_go_url(opts.url)
 
   //~: window layout
   if(!opts.layout) opts.layout = 'fit'
@@ -98,6 +107,90 @@ function retrade_open_window(opts)
   //~: create the ExtJS Window component & return the bind
   winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   return winmain
+}
+
+/**
+ * Returns function that sequentially loads a content
+ * into the components denoted by the options list.
+ */
+function retrade_chain_loader(/* [callback], options for each area */)
+{
+  function load(next)
+  {
+    var url = this.url, bind = this.bind,
+      domain = this.domain, viewMode = this.viewMode
+
+    extjsf.defineBind('onload', domain, function(root)
+    {
+      bind.component().add(root.component())
+      if(ZeT.isf(next)) next()
+    })
+
+    Ext.create('Ext.ComponentLoader', {
+      target: bind.component(), url: url,
+      ajaxOptions: {method: 'GET'}, autoLoad: true,
+      scripts: true, params: {
+        '${rootView.viewModeParam}': viewMode,
+        '${rootView.extjsDomainParam}': domain
+    }})
+  }
+
+  var prev = null
+
+  //?: {has callback}
+  if(ZeT.isf(arguments[0]))
+    prev = arguments[0] //<-- will be the last
+
+  //~: build the loads chain
+  ZeT.each(arguments, function(opts)
+  {
+    if(!ZeT.iso(opts)) return
+
+    //?: {not an active item}
+    if(opts.active === false || opts.active === 'false') return
+
+    //~: process the load url
+    opts.url = retrade_go_url(opts.url)
+
+    //?: {has no bind}
+    ZeT.assert(opts.bind && opts.bind.extjsfBind === true)
+
+    //~: select the content domain
+    if(opts.domain) ZeT.asserts(opts.domain); else if(opts.tempDomain)
+    {
+      ZeT.asserts(opts.tempDomain)
+      opts.domain = extjsf.tempDomain(opts.tempDomain)
+    }
+
+    //?: {has no domain}
+    ZeT.asserts(opts.domain)
+
+    //~: view mode
+    if(!opts.viewMode) opts.viewMode = 'body'
+
+    //~: add to the loading chain
+    prev = ZeT.fbind(load, opts, prev)
+  })
+
+  //~: invoke the loads chain
+  return function()
+  {
+    if(prev) prev()
+  }
+}
+
+function retrade_chain_on_load(domain, rootBind)
+{
+  ZeT.asserts(domain)
+
+  var onload = extjsf.bind('onload', domain)
+  if(!onload) return
+
+  if(ZeT.iss(rootBind))
+    rootBind = extjsf.bind(rootBind, domain)
+  ZeT.assert(rootBind && rootBind.extjsfBind === true)
+
+  onload(rootBind)
 }
 
 //]]>

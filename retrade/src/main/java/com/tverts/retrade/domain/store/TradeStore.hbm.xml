@@ -9,7 +9,7 @@
     table = 'retrade_trade_store' lazy = 'false'>
 
 
-    <!-- Domain reference -->
+    <!-- Domain -->
 
     <many-to-one name = 'domain' foreign-key = 'fk_trade_store_domain'>
 
@@ -40,6 +40,16 @@
       <column name = 'store_name' not-null = 'true' length = '512'>
 
         <comment>The name of the Trade store</comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'remarks'>
+        <comment>Remarks on the Trade Store</comment>
       </column>
     </property>
 

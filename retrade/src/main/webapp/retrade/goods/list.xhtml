@@ -318,9 +318,7 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: invoke on-load callback of the loader
-  if(ZeT.isf(extjsf.bind('onload', '${rootView.extjsDomain}')))
-    extjsf.bind('onload', '${rootView.extjsDomain}')(
-      extjsf.bind("${z:vid(v, 'goods_root_panel')}", '${rootView.extjsDomain}'))
+  retrade_chain_on_load('${rootView.extjsDomain}', "${z:vid(v, 'goods_root_panel')}")
 
   //~: edit good unit
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
