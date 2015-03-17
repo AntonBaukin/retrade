@@ -516,38 +516,19 @@
     extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-trade-stores')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain  = extjsf.tempDomain('wnd:retrade-main-menu:stores');
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-        xtype: 'window', title: 'Загрузка...',
-        x: (Ext.getBody().getWidth() - extjsf.pt(360)) / 2,
-        width: extjsf.pt(360), height: extjsf.pt(240),
-        layout: 'fit', autoShow: true, collapsible: true,
-
-        loader: {
-          url: "${z:url('/go/retrade/stores/list-win')}",
-          ajaxOptions: {method: 'GET'},
-          autoLoad: true, scripts: true,
-
-          params: {
-            '${localView.viewModeParam}': 'body',
-            '${rootView.extjsDomainParam}': domain
-          }
-        }
+      retrade_open_window({ url: '/stores/list-win',
+        tempDomain: 'retrade-main-menu:stores', collapsible: true,
+        box: {widthpt: 360, heightpt: 240}, collapsible: true
       })
-
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
-    //:~ open price lists root panel
+    //:~ open price lists in window
     extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-price-lists')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:price-lists');
-
-      ReTrade.desktop.loadDesktopPanel(
-        "${z:url('/go/retrade/price-lists/list')}", {
-        'domain': domain
+      retrade_open_window({ url: '/price-lists/list-win',
+        tempDomain: 'retrade-main-menu:price-lists', collapsible: true,
+        box: {widthpt: 360, heightpt: 240}, collapsible: true
       })
     })
 

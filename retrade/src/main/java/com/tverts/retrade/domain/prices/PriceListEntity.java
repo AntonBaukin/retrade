@@ -11,6 +11,7 @@ import com.tverts.api.retrade.prices.PriceList;
 /* tverts.com: endure (core) */
 
 import com.tverts.endure.OxSearch;
+import com.tverts.endure.Remarkable;
 import com.tverts.endure.core.OxCatEntity;
 
 /* tverts.com: support */
@@ -25,7 +26,7 @@ import com.tverts.support.EX;
  */
 public class      PriceListEntity
        extends    OxCatEntity
-       implements OxSearch
+       implements OxSearch, Remarkable
 {
 	/* Object Extraction */
 
@@ -44,6 +45,16 @@ public class      PriceListEntity
 
 
 	/* Price List */
+
+	public String getRemarks()
+	{
+		return getOx().getComment();
+	}
+
+	public void setRemarks(String remarks)
+	{
+		getOx().setComment(remarks);
+	}
 
 	public Set<GoodPrice> getItems()
 	{

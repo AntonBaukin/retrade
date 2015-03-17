@@ -94,56 +94,71 @@ ${v.checkModelRequested}
 
     <!-- [code and name line -->
 
-    <x:component coid = "${z:vid(v, '_price-list_form_layout')}">
+    <x:component coid = "${z:vid(v, '_code_name')}">
       <f:facet name = "extjs-props">
 
         xtype: 'panel', border: false,
-        layout: { type: 'table', columns: 6 },
+        layout: { type: 'hbox', align: 'middle' },
         bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(8, 0, 0, 0)
+        margin: extjsf.dpts(6, 0, 0, 0)
 
       </f:facet>
 
 
-      <!-- [price-list code view] -->
+      <!-- [code] -->
 
       <x:text-field coid = "${z:vid(v, 'code')}"
          value = "#{v.priceListView.code}">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(12), allowBlank: false, validator: function()
+          flex: 1, allowBlank: false, validator: function()
           {
             return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
           }
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Код', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(1, 4, 1, 0)
+          text: 'Код', cls: 'retrade-info-title-label',
+          margin: extjsf.dpts(0, 4, 0, 0)
         </f:facet>
       </x:text-field>
 
 
-      <!-- [price-list name view] -->
+      <!-- [name] -->
 
       <x:text-field coid = "${z:vid(v, 'name')}"
          value = "#{v.priceListView.name}">
 
         <f:facet name = "extjs-props">
-          allowBlank: false, colspan: 3,
-          cellCls: 'retrade-table-cell-100pc',
-          fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+          allowBlank: false, flex: 3
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'имя', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(1, 4, 1, 4)
+          text: 'Имя', cls: 'retrade-info-title-label',
+          margin: extjsf.dpts(0, 4, 0, 6)
         </f:facet>
       </x:text-field>
 
     </x:component>
 
     <!-- code and name line] -->
+
+
+    <!-- [remarks] -->
+    <x:text-field coid = "${z:vid(v, 'remarks')}"
+      value = "#{v.priceListView.remarks}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'textarea', flex: 1
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Примечания',
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(3, 0, 1, 0)
+      </f:facet>
+    </x:text-field>
+
 
     <!-- [special: submit action] -->
 

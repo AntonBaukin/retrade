@@ -38,11 +38,13 @@ function retrade_open_window(opts)
   //?: {has no domain provided} make the default
   if(!opts.domain)
   {
-    opts.domain = 'desktop-window:auto-domain:'
+    if(!opts.tempDomain) opts.domain = 'desktop-window:auto-domain:'
+      else opts.domain = 'desktop-window:' + opts.tempDomain
 
     if(!ZeT.isu(opts.record)) //?: {has record key}
       opts.domain += ':record:' + opts.record + ':'
 
+    if(!opts.domain.endsWith(':')) opts.domain += ':'
     opts.domain = extjsf.tempDomain(opts.domain)
   }
 

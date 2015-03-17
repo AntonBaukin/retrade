@@ -200,40 +200,44 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	calcWindowBox     : function(opts)
 	{
-		var r = {x: 0, y: 0, width: extjsf.pt(480), height: extjsf.pt(360)}
+		var r = { width: extjsf.pt(480), height: extjsf.pt(360) }
 
+		//~: width & height
 		this._size_pt(opts)
-		if(opts.width)  r.width  = opts.width;
-		if(opts.height) r.height = opts.height;
+		if(opts.width)  r.width  = opts.width
+		if(opts.height) r.height = opts.height
+		ZeT.assert(ZeT.isn(r.width))
+		ZeT.assert(ZeT.isn(r.height))
 
-		//~: x
-		if(!ZeT.isu(opts.x)) r.x = opts.x;
-		else if(opts.event) r.x = opts.event.getX();
+		//~: x-position
+		if(!ZeT.isu(opts.x)) r.x = opts.x
+		else if(opts.event) r.x = opts.event.getX()
+		else r.x = (Ext.getBody().getWidth() - r.width)/2
 
-		var x = r.x, max = document.body.offsetWidth;
+		//~: x-offset
+		var x = r.x, max = Ext.getBody().getWidth()
+		if(opts['+x']) x += opts['+x']
+		else if(opts['+xpt']) x += extjsf.pt(opts['+xpt'])
+		if(x + r.width > max) x = max - r.width
+		if(x >= 0) r.x = x
 
-		if(opts['+x']) x += opts['+x'];
-		else if(opts['+xpt']) x += extjsf.pt(opts['+xpt']);
-		if(x + r.width > max) x = max - r.width;
-		if(x >= 0) r.x = x;
+		//~: y-position
+		if(!ZeT.isu(opts.y)) r.y = opts.y
+		else if(opts.event) r.y = opts.event.getY()
+		else r.y = (Ext.getBody().getHeight() - r.height)/2
 
+		//~: y-offset
+		var y = r.y, may = Ext.getBody().getHeight()
+		if(opts['-y']) y -= opts['-y']
+		else if(opts['-ypt']) y -= extjsf.pt(opts['-ypt'])
+		if(opts['-height']) y -= opts.height
 
-		//~: y
-		if(!ZeT.isu(opts.y)) r.y = opts.y;
-		else if(opts.event) r.y = opts.event.getY();
+		if(y < 0) y = 0
+		if(y + r.height > may) y = may - r.height
+		if(y < 0) y = 0
+		r.y = y
 
-		var y = r.y, may = document.body.offsetHeight;
-
-		if(opts['-y']) y -= opts['-y'];
-		else if(opts['-ypt']) y -= extjsf.pt(opts['-ypt']);
-		if(opts['-height']) y -= opts.height;
-
-		if(y < 0) y = 0;
-		if(y + r.height > may) y = may - r.height;
-		if(y < 0) y = 0;
-		r.y = y;
-
-		return r;
+		return r
 	},
 
 	expandSizeMin     : function(opts)
@@ -358,14 +362,14 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	{
 		if(opts.widthpt)
 		{
-			opts.width = extjsf.pt(opts.widthpt);
-			delete opts.widthpt;
+			opts.width = extjsf.pt(opts.widthpt)
+			delete opts.widthpt
 		}
 
 		if(opts.heightpt)
 		{
-			opts.height = extjsf.pt(opts.heightpt);
-			delete opts.heightpt;
+			opts.height = extjsf.pt(opts.heightpt)
+			delete opts.heightpt
 		}
 	},
 
