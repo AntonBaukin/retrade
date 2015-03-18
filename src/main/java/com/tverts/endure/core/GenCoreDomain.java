@@ -266,10 +266,9 @@ public class GenCoreDomain extends GenesisHiberPartBase
 		//=: name
 		c.setName("System User");
 
-		//=: comment
-		c.setComment("Computer user automatically created " +
-			 "for System login of each Domain."
-		);
+		//=: remarks
+		c.setRemarks("Computer user automatically created " +
+		  "for System login of each Domain.");
 
 		//!: do save
 		ce.updateOx();

@@ -15,22 +15,7 @@ import com.tverts.api.core.CatItem;
  * Data about a Computer
  * registered in the system.
  */
+@XmlType(name = "computer")
 @XmlRootElement(name = "computer")
-@XmlType(name = "computer",
-  propOrder = { "comment" }
-)
 public class Computer extends CatItem
-{
-	@XmlElement(name = "comment")
-	public String getComment()
-	{
-		return comment;
-	}
-
-	private String comment;
-
-	public void setComment(String comment)
-	{
-		this.comment = comment;
-	}
-}
+{}

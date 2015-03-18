@@ -48,7 +48,7 @@ public class      ComputerEntity
 		Computer c = getOx();
 
 		return SU.catx(
-		  c.getCode(), c.getName(), c.getComment()
+		  c.getCode(), c.getName(), c.getRemarks()
 		);
 	}
 }

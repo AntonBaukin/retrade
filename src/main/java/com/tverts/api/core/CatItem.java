@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlType;
  * Catalogue item. May be used directly,
  * but in the most cases is a parent class.
  */
-@XmlType(name = "catalogue-item",
-  propOrder = { "removed", "code", "name" }
-)
+@XmlType(name = "catalogue-item", propOrder = {
+  "removed", "code", "name", "remarks"
+})
 public class      CatItem
        extends    JustTxObject
        implements CodedObject, RemovableObject
@@ -52,5 +52,17 @@ public class      CatItem
 	public void setRemoved(Boolean removed)
 	{
 		this.removed = Boolean.TRUE.equals(removed);
+	}
+
+	public String getRemarks()
+	{
+		return remarks;
+	}
+
+	private String remarks;
+
+	public void setRemarks(String remarks)
+	{
+		this.remarks = remarks;
 	}
 }
