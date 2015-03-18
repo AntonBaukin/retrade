@@ -36,6 +36,8 @@ public class GoodModelBean extends ModelBeanBase
 		return view;
 	}
 
+	private GoodUnitView view;
+
 	public void setView(GoodUnitView view)
 	{
 		this.view = view;
@@ -45,6 +47,8 @@ public class GoodModelBean extends ModelBeanBase
 	{
 		return calc;
 	}
+
+	private GoodCalcView calc;
 
 	public void setCalc(GoodCalcView calc)
 	{
@@ -56,6 +60,8 @@ public class GoodModelBean extends ModelBeanBase
 		return historyCalc;
 	}
 
+	private GoodCalcView historyCalc;
+
 	public void setHistoryCalc(GoodCalcView historyCalc)
 	{
 		this.historyCalc = historyCalc;
@@ -65,6 +71,8 @@ public class GoodModelBean extends ModelBeanBase
 	{
 		return editCalc;
 	}
+
+	private GoodCalcView editCalc;
 
 	public void setEditCalc(GoodCalcView editCalc)
 	{
@@ -76,6 +84,8 @@ public class GoodModelBean extends ModelBeanBase
 		return goodsFolder;
 	}
 
+	private Long goodsFolder;
+
 	public void setGoodsFolder(Long goodsFolder)
 	{
 		this.goodsFolder = goodsFolder;
@@ -85,6 +95,8 @@ public class GoodModelBean extends ModelBeanBase
 	{
 		return selSetAble;
 	}
+
+	private boolean selSetAble;
 
 	public void setSelSetAble(boolean selSetAble)
 	{
@@ -96,21 +108,24 @@ public class GoodModelBean extends ModelBeanBase
 		return calcUpdated;
 	}
 
+	private boolean calcUpdated;
+
 	public void setCalcUpdated(boolean calcUpdated)
 	{
 		this.calcUpdated = calcUpdated;
 	}
 
+	public boolean isEditMode()
+	{
+		return editMode;
+	}
 
-	/* private: encapsulated data */
+	private boolean editMode;
 
-	private GoodUnitView view;
-	private GoodCalcView calc;
-	private GoodCalcView historyCalc;
-	private GoodCalcView editCalc;
-	private Long         goodsFolder;
-	private boolean      selSetAble;
-	private boolean      calcUpdated;
+	public void setEditMode(boolean editMode)
+	{
+		this.editMode = editMode;
+	}
 
 
 	/* Serialization */
@@ -128,6 +143,7 @@ public class GoodModelBean extends ModelBeanBase
 		IO.longer(o, goodsFolder);
 		o.writeBoolean(selSetAble);
 		o.writeBoolean(calcUpdated);
+		o.writeBoolean(editMode);
 	}
 
 	public void readExternal(ObjectInput i)
@@ -143,5 +159,6 @@ public class GoodModelBean extends ModelBeanBase
 		goodsFolder = IO.longer(i);
 		selSetAble  = i.readBoolean();
 		calcUpdated = i.readBoolean();
+		editMode    = i.readBoolean();
 	}
 }

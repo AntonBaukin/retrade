@@ -690,6 +690,7 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'measureKey',   type: 'string'},
 	    {name: 'measureCode',  type: 'string'},
 	    {name: 'measureName',  type: 'string'},
+	    {name: 'goodGroup',    type: 'string'},
 	    {name: 'restCost',     type: 'string'},
 	    {name: 'price',        type: 'string'},
 	    {name: 'volume',       type: 'string'},
@@ -707,12 +708,16 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(22), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   width: extjsf.ex(22), flex: 1
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 1
+		 },
+
+		 {
+		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
+		   width: extjsf.ex(16)
 		 },
 
 		 {
@@ -728,17 +733,16 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
-		   width: extjsf.ex(20), flex: 1
+		   text: "Наименование", dataIndex: 'goodName', sortable: false, flex: 1
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -753,8 +757,12 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   width: extjsf.ex(20), flex: 1
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 1
+		 },
+
+		 {
+		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
+		   width: extjsf.ex(16)
 		 },
 
 		 {

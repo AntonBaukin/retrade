@@ -80,7 +80,7 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}');
-    winmain.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked !== false);
+    winmain.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked === true)
 
     //~: reload table on create-edit
     winmain.on('close', function()

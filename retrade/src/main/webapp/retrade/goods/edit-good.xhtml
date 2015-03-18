@@ -42,31 +42,44 @@ ${v.checkModelRequestedWithRedirect}
 
   <f:facet name = "toolbar">
 
-   <!-- [close window button] -->
-
-   <x:component coid = "${z:vid(v, 'close-window')}">
+    <!-- [cancel edit button] -->
+    <x:component coid = "${z:vid(v, 'cancel-edit')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Отмена',
         cls: 'ux-btn-default-small-red',
-
+        hidden: ('true' != "#{v.model.editMode}"),
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
-            component().close()
+          extjsf.component('winmain', '${rootView.extjsDomain}').close()
         }
       </f:facet>
-   </x:component>
+    </x:component>
+
+
+    <!-- [close window button] -->
+    <x:component coid = "${z:vid(v, 'close')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Закрыть',
+        hidden: ('false' != "#{v.model.editMode}"),
+        handler : function()
+        {
+          extjsf.component('winmain', '${rootView.extjsDomain}').close()
+        }
+      </f:facet>
+    </x:component>
 
 
    <!-- [goto calculation button] -->
 
    <x:component coid = "${z:vid(v, 'goto-calc')}">
     <f:facet name = "extjs-props">
-                                 /*  edit: goods; edit: goods calcs */
-      disabled: #{not v.isAllSecure('edit: goods')},
-      xtype:'button', text: 'Производство',
-      margin: extjsf.dpts(0, 4, 0, 4),
+
+      disabled: #{not v.isSecure('edit: goods')},
+      xtype: 'button', text: 'Производство',
+      hidden: ('true' != "#{v.model.editMode or not empty v.model.calc}"),
+      margin: extjsf.pts(0, 4, 0, 4),
       tooltipType: 'title', tooltip: 'Перейти к формуле (рецепту) производства продукта или полуфабриката'
+
     </f:facet>
    </x:component>
 
@@ -88,15 +101,24 @@ ${v.checkModelRequestedWithRedirect}
 
 
    <!-- [submit button] -->
-
    <x:component coid = "${z:vid(v, 'submit')}">
     <f:facet name = "extjs-props">
       disabled: #{not v.isSecure('edit: goods')},
+      hidden: ('true' != "#{v.model.editMode}"),
       xtype:'button', text: 'Сохранить',
       cls: 'ux-btn-default-small-green'
     </f:facet>
    </x:component>
 
+
+   <!-- [do-edit] -->
+   <x:component coid = "${z:vid(v, 'do-edit')}">
+     <f:facet name = "extjs-props">
+       xtype:'button', text: 'Редактировать',
+       hidden: ('false' != "#{v.model.editMode}"),
+       disabled: ${not v.isSecure('edit: goods')}
+     </f:facet>
+   </x:component>
   </f:facet>
 
   <!-- toolbar] -->
@@ -180,136 +202,128 @@ ${v.checkModelRequestedWithRedirect}
   <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'good-form')}">
 
     <f:facet name = "extjs-props">
-
-      region: 'center', border: false,
-      bodyPadding: extjsf.pt(4),
-      bodyCls: 'retrade-content-panel',
-      layout: { type: 'vbox', align: 'stretch' }
-
+      border: false, bodyPadding: extjsf.pt(4),
+      layout: { type: 'vbox', align: 'stretch' },
+      bodyCls: 'retrade-content-panel'
     </f:facet>
 
 
-    <!-- [code and name line -->
+    <!-- [code and measure unit -->
 
-    <x:component coid = "${z:vid(v, '_good_form_layout')}">
+    <x:component coid = "${z:vid(v, '_code_measure')}">
       <f:facet name = "extjs-props">
-
-        xtype: 'panel', border: false,
-        layout: { type: 'table', columns: 4 },
-        bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(8, 0, 4, 0)
-
+        bodyCls: 'retrade-transparent-panel', border: false,
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.pts(6, 0, 0, 0)
       </f:facet>
 
 
-      <!-- [good code view] -->
-
+      <!-- [code] -->
       <x:text-field coid = "${z:vid(v, 'code')}"
-         value = "#{v.goodCode}">
+        value = "#{v.goodView.goodCode}">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(12),
-          disabled: #{not v.isAllSecure('edit: goods; edit: goods codes')},
-          allowBlank: false, validator: function()
+          extjsfReadWrite: true, allowBlank: false,
+          flex: 1, validator: function()
           {
-            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+          return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
           }
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Код', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(0, 4, 0, 0)
+          text: 'Код', cls: 'retrade-info-title-label',
+          width: extjsf.ex(7), margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
       </x:text-field>
 
-
-      <!-- [measure unit code] -->
-
+      <!-- [measure unit] -->
       <x:drop-list coid = "${z:vid(v, 'measure')}"
         labels = "#{v.measuresLabels}"
         value  = "#{v.goodView.measureKey}">
 
         <f:facet name = "drop-props">
-          disabled: #{not v.isSecure('edit: goods')},
-          width: extjsf.ex(12), matchFieldWidth: false,
-          cellCls: 'retrade-table-cell-100pc', allowBlank: false
+          extjsfReadWrite: true, allowBlank: false,
+          matchFieldWidth: true, flex: 2, editable: false
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'ед. изм.',
-          cellCls: 'retrade-form-label-cell',
-          margin: extjsf.pts(0, 4, 0, 4)
+          text: 'ед. изм.', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6)
         </f:facet>
       </x:drop-list>
+    </x:component>
 
-      <!-- measure unit code] -->
-
-
-      <x:component coid = "${z:vid(v, '_good_form_sep0')}">
-        <f:facet name = "extjs-props">
-          xtype: 'panel', border: false,
-          bodyCls: 'retrade-transparent-panel',
-          height: extjsf.pt(8), colspan: 4
-        </f:facet>
-      </x:component>
+    <!-- code and measure unit] -->
 
 
-      <!-- [good name view] -->
+    <!-- [name] -->
+    <x:component coid = "${z:vid(v, '_name')}">
+      <f:facet name = "extjs-props">
+        bodyCls: 'retrade-transparent-panel', border: false,
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.pts(6, 0, 0, 0)
+      </f:facet>
 
       <x:text-field coid = "${z:vid(v, 'name')}"
          value = "#{v.goodView.goodName}">
 
         <f:facet name = "extjs-props">
-          disabled: #{not v.isSecure('edit: goods')},
-          allowBlank: false, colspan: 3,
-          cellCls: 'retrade-table-cell-100pc',
-          fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+          extjsfReadWrite: true, allowBlank: false, flex: 1
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Имя', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(0, 4, 0, 0)
+          text: 'Имя', cls: 'retrade-info-title-label',
+          width: extjsf.ex(7), margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
       </x:text-field>
+    </x:component>
 
 
-      <x:component coid = "${z:vid(v, '_good_form_sep1')}">
-        <f:facet name = "extjs-props">
-          xtype: 'panel', border: false,
-          bodyCls: 'retrade-transparent-panel',
-          colspan: 4, height: extjsf.pt(#{(empty v.goodView.objectKey)?(6):(16)})
+    <!-- [group] -->
+    <x:component coid = "${z:vid(v, '_group')}">
+      <f:facet name = "extjs-props">
+        bodyCls: 'retrade-transparent-panel', border: false,
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.pts(6, 0, 6, 0)
+      </f:facet>
+
+      <x:drop-list coid = "${z:vid(v, 'group')}"
+        labels = "#{v.groupsLabels}"
+        value = "#{v.goodView.goodGroup}">
+
+        <f:facet name = "drop-props">
+          extjsfReadWrite: true, flex: 1, matchFieldWidth: true
         </f:facet>
-      </x:component>
+
+        <f:facet name = "label-props">
+          text: 'Группа', cls: 'retrade-info-title-label',
+          width: extjsf.ex(7), margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:drop-list>
+    </x:component>
 
 
-      <!-- [add to selection set -->
+    <!-- [add to selection set] -->
+    <x:component coid = "${z:vid(v, '_add_to_selset')}">
+      <f:facet name = "extjs-props">
+        bodyCls: 'retrade-transparent-panel', border: false,
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.pts(0, 0, 6, 0)
+      </f:facet>
 
       <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}" value = "">
 
         <f:facet name = "extjs-props">
-          hidden: 'false' == "#{v.model.selSetAble}",
+          hidden: ('false' == "#{v.model.selSetAble}"),
           checked: !!extjsf.bind('winmain', '${rootView.extjsDomain}').retradeAddSelSetChecked,
           cls: 'retrade-align-right', fieldStyle: { marginRight: '4pt' }
         </f:facet>
 
         <f:facet name = "label-props">
-          hidden: 'false' == "#{v.model.selSetAble}",
-          cellCls: 'retrade-table-cell-100pc', colspan: 3,
+          hidden: ('false' == "#{v.model.selSetAble}"),
           html: "&lt;span title = 'Добавить созданный товар в текущую выборку?'&gt;добавить в выборку&lt;/span&gt;"
         </f:facet>
       </x:checkbox-field>
-
-      <!-- add to selection set] -->
-
-      <x:component coid = "${z:vid(v, '_good_form_sep2')}">
-        <f:facet name = "extjs-props">
-          xtype: 'panel', border: false,
-          bodyCls: 'retrade-transparent-panel',
-          colspan: 4, height: extjsf.pt(12),
-          hidden: 'false' == "#{empty v.goodView.objectKey}"
-        </f:facet>
-      </x:component>
-
     </x:component>
 
 
@@ -336,6 +350,52 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
   //<![CDATA[
+
+  //~: toggle read-write
+  extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
+    retradeToggleReadWrite = function(isread)
+  {
+    //~: toggle the form fields
+    extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
+      toggleReadWrite(isread)
+
+    //~: toggle cancel-edit
+    extjsf.bind("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}').visible(!isread)
+
+    //~: toggle close
+    extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}').visible(isread)
+
+    //~: toggle submit
+    extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
+
+    //~: toggle do-edit
+    extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}').visible(isread)
+
+    //~: show go-to-calc
+    if(!isread) extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}').visible(true)
+
+    //~: window title
+    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').component()
+    if(isread) winmain.setTitle('${z:jss(v.infoWindowTitle)}')
+    else winmain.setTitle('${z:jss(v.editWindowTitle)}')
+  }
+
+
+  //~: default read-only for existing
+  Ext.onReady(function()
+  {
+    extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
+      retradeToggleReadWrite("#{empty v.goodView.objectKey}" != 'true')
+  })
+
+
+  //~: do-edit button
+  extjsf.bindHandler("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}', function()
+  {
+    extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
+      retradeToggleReadWrite(false)
+  })
+
 
   //~: adjust window size
   extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').on('boxready', function()
@@ -376,7 +436,6 @@ ${v.checkModelRequestedWithRedirect}
      })
   })
 
-
   //~: submit the form
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
@@ -400,7 +459,7 @@ ${v.checkModelRequestedWithRedirect}
         winmain.retradeEditDone = true;
         winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible());
 
-        extjsf.bindHandler("${z:vid(v, 'close-window')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
       }
     })
   })
@@ -429,7 +488,7 @@ ${v.checkModelRequestedWithRedirect}
          if(e.getKey() == e.ENTER)
            extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')()
          else if(e.getKey() == e.ESC)
-           extjsf.bindHandler("${z:vid(v, 'close-window')}", '${rootView.extjsDomain}')()
+           extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
        })
     })
 

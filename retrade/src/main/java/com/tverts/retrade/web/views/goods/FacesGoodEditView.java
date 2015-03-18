@@ -1,6 +1,6 @@
 package com.tverts.retrade.web.views.goods;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
@@ -103,6 +103,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String doCommitEdit()
 	{
+		forceSecure("edit: goods");
+
 		if(SU.sXe(getGoodView().getGoodCode()))
 			throw EX.arg("Good Unit code must be defined!");
 		if(SU.sXe(getGoodView().getGoodName()))
@@ -262,6 +264,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String doRemarkCalc()
 	{
+		forceSecure("edit: goods");
+
 		getCalcView().setRemarks(SU.s2s(
 		  request().getParameter("remarks")));
 
@@ -291,6 +295,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String doSubmitCalc()
 	{
+		forceSecure("edit: goods");
+
 		GoodCalcView c = EX.assertn(getModel().getEditCalc(),
 		  "Good Calculation is not edited!"
 		);
@@ -390,6 +396,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String doSubmitDerived()
 	{
+		forceSecure("edit: goods");
+
 		GoodCalcView c = EX.assertn(getModel().getEditCalc(),
 		  "Good Calculation is not edited!"
 		);
@@ -502,26 +510,31 @@ public class FacesGoodEditView extends ModelView
 
 	/* public: edit interface */
 
-	private String errorEvent;
+	public String getEditWindowTitle()
+	{
+		if(getGoodView().getObjectKey() == null)
+			return "Создание товара";
+
+		return SU.cats("Ред. товара [",
+		  getGoodView().getGoodCode(), "] ",
+		  getGoodView().getGoodName()
+		);
+	}
+
+	public String getInfoWindowTitle()
+	{
+		return SU.cats("Товар [",
+		  getGoodView().getGoodCode(), "] ",
+		  getGoodView().getGoodName()
+		);
+	}
 
 	public String getErrorEvent()
 	{
 		return errorEvent;
 	}
 
-	public String getEditWindowTitle()
-	{
-		if(getGoodView().getObjectKey() == null)
-			return "Создание товара";
-
-		return SU.cats(
-		  "Товар №",
-		  getGoodView().getGoodCode(), "; ",
-		  getGoodView().getGoodName()
-		);
-	}
-
-	private boolean formValid = true;
+	private String errorEvent;
 
 	public boolean isFormValid()
 	{
@@ -529,29 +542,33 @@ public class FacesGoodEditView extends ModelView
 		  "true".equals(request().getParameter("immediate")));
 	}
 
-	private boolean codeExists;
+	private boolean formValid = true;
 
 	public boolean isCodeExists()
 	{
 		return codeExists;
 	}
 
-	private boolean subCodeExists;
+	private boolean codeExists;
 
 	public boolean isSubCodeExists()
 	{
 		return subCodeExists;
 	}
 
-	private String sameSubCode;
+	private boolean subCodeExists;
 
 	public String getSameSubCode()
 	{
 		return sameSubCode;
 	}
 
+	private String sameSubCode;
+
 	public Map<Long, String> getMeasuresLabels()
 	{
+		if(measuresLabels != null) return measuresLabels;
+
 		List<MeasureUnit> mus = bean(GetGoods.class).
 		  getMeasureUnits(getModel().domain());
 
@@ -561,8 +578,25 @@ public class FacesGoodEditView extends ModelView
 		for(MeasureUnit mu : mus)
 			res.put(mu.getPrimaryKey(), mu.getCode());
 
-		return res;
+		return measuresLabels = res;
 	}
+
+	private Map<Long, String> measuresLabels;
+
+	public Map<String, String> getGroupsLabels()
+	{
+		if(groupsLabels != null) return groupsLabels;
+
+		List<String> gs = bean(GetGoods.class).
+		  getGoodGroups(getModel().domain());
+
+		Map<String, String> r = new LinkedHashMap<String, String>(gs.size());
+		for(String g : gs) r.put(g, g);
+
+		return groupsLabels = r;
+	}
+
+	private Map<String, String> groupsLabels;
 
 	public String getSelSet()
 	{
@@ -574,24 +608,6 @@ public class FacesGoodEditView extends ModelView
 	public void setSelSet(String selSet)
 	{
 		this.selSet = selSet;
-	}
-
-	public String getGoodCode()
-	{
-		return getGoodView().getGoodCode();
-	}
-
-	public void setGoodCode(String code)
-	{
-		if(isSecure("edit: goods codes"))
-		{
-			getGoodView().setGoodCode(code);
-			return;
-		}
-
-		//sec: check the code is changed
-		if(!getGoodView().getGoodCode().equals(code))
-			throw EX.forbid();
 	}
 
 	private Long goodAddedKey;
@@ -810,6 +826,9 @@ public class FacesGoodEditView extends ModelView
 		mb.getView().setGoodCode(
 		  Goods.genNextGoodCode(loadDomain())
 		);
+
+		//=: is editing mode
+		mb.setEditMode(true);
 
 		//~: enable the selection set
 		mb.setSelSetAble(!"true".equals(request().getParameter("disableSelSet")));

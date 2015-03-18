@@ -99,8 +99,7 @@ ${v.checkModelRequested}
       action = "#{v.gotoWhere('calc-edit')}">
 
       <f:facet name = "extjs-props">
-                                   /*  edit: goods; edit: goods calcs */
-        disabled: #{not v.isAllSecure('edit: goods')},
+        disabled: #{not v.isSecure('edit: goods')},
         text: 'Изменить', margin: extjsf.dpts(0, 0, 0, 4),
         tooltipType: 'title', tooltip: 'Изменить (или создать новую) формулу на основе данной'
       </f:facet>

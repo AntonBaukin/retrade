@@ -180,8 +180,6 @@ ${v.checkModelRequestedWithRedirect}
 
       columns: (function()
       {
-        var nocode = ('false' == "#{v.isSecure('edit: goods codes')}");
-
         function onSpecialKey(f, e)
         {
           var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
@@ -229,7 +227,7 @@ ${v.checkModelRequestedWithRedirect}
         }
 
 
-        var codeEditor = nocode?(null): Ext.create('Ext.form.field.Text', {
+        var codeEditor = Ext.create('Ext.form.field.Text', {
           listeners: { specialkey : onSpecialKey }
         });
 
@@ -251,9 +249,6 @@ ${v.checkModelRequestedWithRedirect}
             }
           }
         });
-
-
-        if('false' == "#{v.isSecure('edit: goods codes')}") codeEditor = undefined;
 
         return [
 

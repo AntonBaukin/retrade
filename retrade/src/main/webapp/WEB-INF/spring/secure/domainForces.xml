@@ -85,29 +85,6 @@
           </property>
         </bean>
 
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Edit Goods Codes
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
-
-          <property name  = 'UID'
-                    value = 'domain: edit: goods codes'/>
-
-          <property name  = 'secKey'
-                    value = 'edit: goods codes'/>
-
-
-          <property name  = 'title'
-                    value = 'Редактирование кодов товаров'/>
-
-          <property name  = 'descr'>
-            <value>
-              Позволяет изменять код товара
-              при его создании и редактировании.
-            </value>
-          </property>
-        </bean>
-
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · View Stores

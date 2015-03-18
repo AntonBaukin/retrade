@@ -3,6 +3,8 @@ package com.tverts.retrade.domain.goods;
 /* Java */
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -511,6 +513,34 @@ from GoodUnit gu where
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
 
+	public List<String>   getGoodGroups(Long domain)
+	{
+/*
+
+ select distinct gu.group from GoodUnit gu where
+   (gu.domain.id = :domain) and (gu.group is not null)
+
+ */
+		final String Q =
+
+"select distinct gu.group from GoodUnit gu where\n" +
+"  (gu.domain.id = :domain) and (gu.group is not null)";
+
+		//~: select it
+		List<String> res = list(String.class, Q, "domain", domain);
+
+		//~: order
+		Collections.sort(res, new Comparator<String>()
+		{
+			public int compare(String l, String r)
+			{
+				return l.compareToIgnoreCase(r);
+			}
+		});
+
+		return res;
+	}
+
 
 	/* Get Aggregated Values */
 
@@ -767,6 +797,8 @@ from MeasureUnit mu where
 				s.append("lower(gu.code)");
 			else if("goodName".equals(p))
 				s.append("gu.sortName");
+			else if("goodGroup".equals(p))
+				s.append("lower(gu.group), gu.sortName");
 			else
 				continue;
 

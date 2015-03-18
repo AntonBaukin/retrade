@@ -33,7 +33,7 @@ import com.tverts.retrade.domain.store.TradeStore;
 @XmlType(name = "good-unit-view")
 public class GoodUnitView implements Serializable
 {
-	public static final long serialVersionUID = 20140806L;
+	public static final long serialVersionUID = 20150318L;
 
 
 	/* Good Unit View */
@@ -96,6 +96,18 @@ public class GoodUnitView implements Serializable
 	public void setMeasureCode(String measureCode)
 	{
 		this.measureCode = measureCode;
+	}
+
+	public String getGoodGroup()
+	{
+		return goodGroup;
+	}
+
+	private String goodGroup;
+
+	public void setGoodGroup(String goodGroup)
+	{
+		this.goodGroup = goodGroup;
 	}
 
 	@XmlElement
@@ -237,6 +249,9 @@ public class GoodUnitView implements Serializable
 		//~: measure unit name
 		this.measureName = (gu.getMeasure() == null)?(null):
 		  (gu.getMeasure().getName());
+
+		//~: good group
+		this.goodGroup = gu.getGroup();
 
 		//~: semi-ready flag
 		if(gu.getGoodCalc() != null)
