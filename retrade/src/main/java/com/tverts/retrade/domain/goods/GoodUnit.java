@@ -41,30 +41,39 @@ public class      GoodUnit
 {
 	/* Object Extraction */
 
-	public Good getOx()
+	public Good   getOx()
 	{
 		Good g = (Good) super.getOx();
 		if(g == null) setOx(g = new Good());
 		return g;
 	}
 
-	public void setOx(Object ox)
+	public void   setOx(Object ox)
 	{
 		EX.assertx(ox instanceof Good);
 		super.setOx(ox);
 	}
 
-	public void updateOx()
+	public void   updateOx()
 	{
 		super.updateOx();
 
 		Good g = getOx();
+
+		//=: group
+		this.group = g.getGroup();
 
 		//=: measure
 		g.setMeasure((measure == null)?(null):(measure.getPrimaryKey()));
 
 		//:= calc
 		g.setCalc((calc == null)?(null):(calc.getPrimaryKey()));
+	}
+
+	public String getOxSearch()
+	{
+		Good g = getOx();
+		return SU.catx(g.getCode(), group, g.getName());
 	}
 
 
@@ -114,5 +123,17 @@ public class      GoodUnit
 			this.sortName = null;
 
 		super.setName(name);
+	}
+
+	public String getGroup()
+	{
+		return group;
+	}
+
+	private String group;
+
+	public void setGroup(String group)
+	{
+		this.group = group;
 	}
 }

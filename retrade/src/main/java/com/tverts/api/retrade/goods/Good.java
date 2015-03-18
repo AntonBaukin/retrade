@@ -20,7 +20,7 @@ import com.tverts.api.core.XKeyPair;
  */
 @XmlRootElement(name = "good")
 @XmlType(name = "good", propOrder = {
-  "measure", "XMeasure", "calc", "XCalc"
+  "measure", "XMeasure", "calc", "XCalc", "group"
 })
 public class Good extends CatItem
 {
@@ -28,7 +28,6 @@ public class Good extends CatItem
 	 * The primary key of the Measure Unit.
 	 */
 	@XKeyPair(type = Measure.class)
-	@XmlElement(name = "measure")
 	public Long getMeasure()
 	{
 		return (measure == 0L)?(null):(measure);
@@ -55,7 +54,6 @@ public class Good extends CatItem
 	}
 
 	@XKeyPair(type = Calc.class)
-	@XmlElement(name = "calc")
 	public Long getCalc()
 	{
 		return (calc == 0L)?(null):(calc);
@@ -79,5 +77,17 @@ public class Good extends CatItem
 	public void setXCalc(String XCalc)
 	{
 		this.xcalc = XCalc;
+	}
+
+	public String getGroup()
+	{
+		return group;
+	}
+
+	private String group;
+
+	public void setGroup(String group)
+	{
+		this.group = group;
 	}
 }

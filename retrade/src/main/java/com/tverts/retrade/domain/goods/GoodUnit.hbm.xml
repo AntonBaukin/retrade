@@ -50,5 +50,17 @@
       </column>
     </property>
 
+
+    <!-- Good Group -->
+
+    <property name = 'group'>
+       <column name = 'good_group' length = '64'>
+        <comment>
+          The name of the Good Unit group,
+          used also for pricing
+        </comment>
+      </column>
+    </property>
+
   </union-subclass>
 </hibernate-mapping>

@@ -30,13 +30,7 @@ public class DumpGoods extends EntitiesDumperBase
 		GoodUnit u = (GoodUnit)src;
 		Good     g = new Good();
 
-		g.setPkey(u.getPrimaryKey());
-		g.setTx(u.getTxn());
-		g.setCode(u.getCode());
-		g.setName(u.getName());
-
-		g.setMeasure(u.getMeasure().getPrimaryKey());
-
+		Goods.init(u, g);
 		return g;
 	}
 

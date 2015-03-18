@@ -190,6 +190,9 @@ public class Goods
 		//=: name
 		g.setName(gu.getName());
 
+		//=: group
+		g.setGroup(gu.getGroup());
+
 		//=: tx-number
 		g.setTx(gu.getTxn());
 
