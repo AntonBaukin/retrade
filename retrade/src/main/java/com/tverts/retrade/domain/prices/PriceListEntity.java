@@ -48,12 +48,12 @@ public class      PriceListEntity
 
 	public String getRemarks()
 	{
-		return getOx().getComment();
+		return getOx().getRemarks();
 	}
 
 	public void setRemarks(String remarks)
 	{
-		getOx().setComment(remarks);
+		getOx().setRemarks(remarks);
 	}
 
 	public Set<GoodPrice> getItems()

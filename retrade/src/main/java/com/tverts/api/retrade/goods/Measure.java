@@ -54,7 +54,6 @@ public class Measure extends CatItem
 	 * Tells that the volume measured by
 	 * this unit contains fractional part.
 	 */
-	@XmlElement(name = "fractional")
 	public boolean isFractional()
 	{
 		return fractional;

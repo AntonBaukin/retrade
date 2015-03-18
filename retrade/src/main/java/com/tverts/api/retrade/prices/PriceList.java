@@ -24,24 +24,9 @@ import com.tverts.api.core.CatItem;
  * the price attributes set.
  */
 @XmlRootElement(name = "price-list")
-@XmlType(name = "price-list",
-  propOrder = { "comment", "items" }
-)
+@XmlType(name = "price-list", propOrder = { "items" })
 public class PriceList extends CatItem
 {
-	@XmlElement(name = "comment")
-	public String getComment()
-	{
-		return comment;
-	}
-
-	private String comment;
-
-	public void setComment(String comment)
-	{
-		this.comment = comment;
-	}
-
 	@XmlElement(name = "item")
 	@XmlElementWrapper(name = "items")
 	public List<PriceItem> getItems()

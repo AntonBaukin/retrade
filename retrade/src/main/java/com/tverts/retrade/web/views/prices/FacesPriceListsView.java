@@ -127,7 +127,7 @@ public class FacesPriceListsView extends ModelView
 		pl.setName(getPriceListView().getName());
 
 		//=: remarks
-		pl.setComment(getPriceListView().getRemarks());
+		pl.setRemarks(getPriceListView().getRemarks());
 
 		//!: update ox
 		pe.updateOx();

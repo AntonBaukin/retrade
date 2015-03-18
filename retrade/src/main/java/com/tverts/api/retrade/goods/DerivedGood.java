@@ -24,13 +24,13 @@ import com.tverts.api.core.XKeysAlias;
 })
 public class DerivedGood extends Good
 {
-	public static final long serialVersionUID = 0L;
-
 	@XmlElement(name = "super-good")
 	public Long getSuperGood()
 	{
 		return (superGood == 0L)?(null):(superGood);
 	}
+
+	private long superGood;
 
 	public void setSuperGood(Long superGood)
 	{
@@ -43,6 +43,8 @@ public class DerivedGood extends Good
 		return subCode;
 	}
 
+	private String subCode;
+
 	public void setSubCode(String subCode)
 	{
 		this.subCode = subCode;
@@ -54,26 +56,23 @@ public class DerivedGood extends Good
 		return subVolume;
 	}
 
+	private BigDecimal subVolume;
+
 	public void setSubVolume(BigDecimal subVolume)
 	{
 		this.subVolume = subVolume;
 	}
 
+	@XmlElement(name = "semi-ready")
 	public boolean isSemiReady()
 	{
 		return semiReady;
 	}
 
+	private boolean semiReady;
+
 	public void setSemiReady(boolean semiReady)
 	{
 		this.semiReady = semiReady;
 	}
-
-
-	/* attributes */
-
-	private long       superGood;
-	private String     subCode;
-	private BigDecimal subVolume;
-	private boolean    semiReady;
 }

@@ -29,29 +29,40 @@ import com.tverts.api.core.XKeyPair;
 })
 public class TreeItem extends CatItem
 {
-	public static final long serialVersionUID = 0L;
-
-
-	@XmlElement(name = "good")
 	public Long getGood()
 	{
 		return (good == 0L)?(null):(good);
 	}
+
+	private long good;
 
 	public void setGood(Long good)
 	{
 		this.good = (good == null)?(0L):(good);
 	}
 
+	public Boolean isFolder()
+	{
+		return folder?(Boolean.TRUE):(null);
+	}
+
+	private boolean folder;
+
+	public void setFolder(Boolean folder)
+	{
+		this.folder = Boolean.TRUE.equals(folder);
+	}
+
 	/**
 	 * Parent Item of this Item: a Good, or a Folder.
 	 */
 	@XKeyPair(type = TreeItem.class)
-	@XmlElement(name = "parent")
 	public Long getParent()
 	{
 		return (parent == 0L)?(null):(parent);
 	}
+
+	private long parent;
 
 	public void setParent(Long parent)
 	{
@@ -64,27 +75,10 @@ public class TreeItem extends CatItem
 		return xparent;
 	}
 
+	private String xparent;
+
 	public void setXParent(String xparent)
 	{
 		this.xparent = xparent;
 	}
-
-	@XmlAttribute(name = "folder")
-	public Boolean isFolder()
-	{
-		return folder?(Boolean.TRUE):(null);
-	}
-
-	public void setFolder(Boolean folder)
-	{
-		this.folder = Boolean.TRUE.equals(folder);
-	}
-
-
-	/* attributes */
-
-	private long    good;
-	private long    parent;
-	private String  xparent;
-	private boolean folder;
 }
