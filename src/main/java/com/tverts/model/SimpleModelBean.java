@@ -12,6 +12,7 @@ import java.util.Map;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: support */
@@ -36,12 +37,15 @@ public class SimpleModelBean extends ModelBeanBase
 {
 	/* Simple Model */
 
-	public Map       getMap()
+	@XmlTransient
+	public Map  getMap()
 	{
 		return (map != null)?(map):(map = new HashMap(3));
 	}
 
-	public void      setMap(Map map)
+	private Map map;
+
+	public void setMap(Map map)
 	{
 		if(map == null)
 			map = new HashMap<Serializable, Serializable>(5);
@@ -50,9 +54,8 @@ public class SimpleModelBean extends ModelBeanBase
 		this.map = map;
 	}
 
-	public <D extends ModelData & Serializable> SimpleModelBean setData(D data)
+	public SimpleModelBean setData(SimpleModelData data)
 	{
-		EX.assertx((data == null) || (data instanceof Serializable));
 		put(ModelData.class, data);
 		return this;
 	}
@@ -60,12 +63,12 @@ public class SimpleModelBean extends ModelBeanBase
 
 	/* public: support interface */
 
-	public Object    get(Serializable key)
+	public Object get(Serializable key)
 	{
 		return getMap().get(key);
 	}
 
-	public <T> T     get(Serializable key, Class<T> cls)
+	public <T> T  get(Serializable key, Class<T> cls)
 	{
 		Object res = getMap().get(key);
 
@@ -77,26 +80,23 @@ public class SimpleModelBean extends ModelBeanBase
 		return (T) res;
 	}
 
-	public Object    put(Serializable key, Serializable val)
+	public SimpleModelBean put(Serializable key, Serializable val)
 	{
 		if(val == null)
-			return getMap().remove(key);
+			getMap().remove(key);
 		else
-			return getMap().put(key, val);
+			getMap().put(key, val);
+
+		return this;
 	}
 
 
 	/* public: ModelBean (data access) interface */
 
-	public ModelData modelData()
+	public SimpleModelData modelData()
 	{
-		return get(ModelData.class, ModelData.class);
+		return get(ModelData.class, SimpleModelData.class);
 	}
-
-
-	/* private: encapsulated data */
-
-	private Map map;
 
 
 	/* Serialization */
@@ -113,5 +113,10 @@ public class SimpleModelBean extends ModelBeanBase
 	{
 		super.readExternal(i);
 		map = IO.obj(i, Map.class);
+
+		//~: assign itself to the data
+		SimpleModelData md = modelData();
+		if(md != null)
+			md.setModel(this);
 	}
 }

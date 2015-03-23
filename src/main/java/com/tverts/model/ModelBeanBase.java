@@ -6,6 +6,12 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+/* Java XML Binding */
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 /* com.tverts: support */
 
 import com.tverts.support.EX;
@@ -17,26 +23,33 @@ import com.tverts.support.IO;
  *
  * @author anton.baukin@gmail.com
  */
+@XmlType(propOrder = {"modelKey", "domain"})
 public abstract class ModelBeanBase implements ModelBean
 {
 	/* Model Bean (main) */
 
-	public String    getModelKey()
+	@XmlElement(name = "model-key")
+	public String  getModelKey()
 	{
 		return modelKey;
 	}
 
-	public void      setModelKey(String key)
+	private String modelKey;
+
+	public void    setModelKey(String key)
 	{
 		this.modelKey = key;
 	}
 
-	public boolean   isActive()
+	@XmlTransient
+	public boolean isActive()
 	{
 		return active;
 	}
 
-	public void      setActive(boolean active)
+	private boolean active = true;
+
+	public void    setActive(boolean active)
 	{
 		this.active = active;
 	}
@@ -109,18 +122,22 @@ public abstract class ModelBeanBase implements ModelBean
 		return domain;
 	}
 
+	private Long domain;
+
 	public void      setDomain(Long domain)
 	{
 		this.domain = domain;
 	}
 
-	public Class<? extends ModelData>
-	                 getDataClass()
+	@XmlTransient
+	public Class<? extends ModelData> getDataClass()
 	{
 		return dataClass;
 	}
 
-	public void      setDataClass(Class<? extends ModelData> dataClass)
+	private Class<? extends ModelData> dataClass;
+
+	public void setDataClass(Class<? extends ModelData> dataClass)
 	{
 		this.dataClass = dataClass;
 	}
@@ -134,8 +151,7 @@ public abstract class ModelBeanBase implements ModelBean
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <B extends ModelBean> B
-	                    readModelBean(String key, Class<B> beanClass)
+	protected <B extends ModelBean> B readModelBean(String key, Class<B> beanClass)
 	{
 		ModelBean mb = readModelBean(key);
 
@@ -147,15 +163,6 @@ public abstract class ModelBeanBase implements ModelBean
 
 		return (B)mb;
 	}
-
-
-	/* private: encapsulated data */
-
-	private String  modelKey;
-	private Long    domain;
-	private boolean active = true;
-	private Class<? extends ModelData>
-	                dataClass;
 
 
 	/* Serialization */
