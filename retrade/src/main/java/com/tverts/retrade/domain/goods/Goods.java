@@ -109,7 +109,7 @@ public class Goods
 		  GoodUnit.class, TYPE_GOOD_UNIT), "code", 1
 		);
 
-		return SU.lenum(6, code);
+		return SU.lenum(4, code);
 	}
 
 	public static boolean equals(GoodUnit a, GoodUnit b)

@@ -7,15 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/Goods.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/Goods.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-calc-edit.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-calc-edit.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-calc-info.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-calc-info.xhtml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,11 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="winmain.xhtml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winmain.xhtml">
+      <file leaf-file-name="Goods.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/Goods.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.312187" vertical-offset="748" max-vertical-offset="2809">
-              <caret line="55" column="31" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.4624" vertical-offset="1496" max-vertical-offset="2988">
+              <caret line="111" column="23" selection-start-line="111" selection-start-column="22" selection-end-line="111" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -61,7 +55,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$USER_HOME$/Dropbox/Images/TiTConf/titconf.html" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/SimpleModelData.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/GoodCalcsModelData.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/GoodCalcModelData.java" />
@@ -76,8 +69,9 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-calc-edit.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/Goods.java" />
       </list>
     </option>
   </component>
@@ -766,7 +760,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-63 [beta]: tested simple variant of Contractor-Firm edit form. Going to edit view..." />
     <MESSAGE value="ui-63 [beta]: implemented read-only firm preview. Firm creation is also ready. Left to add all the fields..." />
     <MESSAGE value="ui-63 [beta]: completed Firm edit form blocks: main and contacts. Addresses are left..." />
     <MESSAGE value="ui-63 [stable]: implemented address block in Firm edit form. Still need to layput the fields better..." />
@@ -791,7 +784,8 @@
     <MESSAGE value="domain-48 [stable]: introduced Good Unit group attribute." />
     <MESSAGE value="ui-67 [stable]: refactored Good Unit form to be in view or edit mode with same read-edit fields. Supported the good groups selecting. Still need to refactor Calculation form..." />
     <MESSAGE value="ui-67 [stable]: refactored Simple Model Beans. Made the goods view-edit form to use stores for the drop-down lists. (That eliminates expensive good groups and measures selecting for the default view mode.)" />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-67 [stable]: refactored Simple Model Beans. Made the goods view-edit form to use stores for the drop-down lists. (That eliminates expensive good groups and measures selecting for the default view mode.)" />
+    <MESSAGE value="ui-67 [stable]: tuned derived goods calculation edit form." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-67 [stable]: tuned derived goods calculation edit form." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -914,14 +908,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.76837415" vertical-offset="10751" max-vertical-offset="21298">
-          <caret line="673" column="18" selection-start-line="673" selection-start-column="18" selection-end-line="673" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-calc-info.xhtml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13853317" vertical-offset="0" max-vertical-offset="6843">
@@ -950,14 +936,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18378378" vertical-offset="1207" max-vertical-offset="3717">
           <caret line="107" column="3" selection-start-line="77" selection-start-column="3" selection-end-line="77" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7004454" vertical-offset="3638" max-vertical-offset="5709">
-          <caret line="822" column="37" selection-start-line="251" selection-start-column="37" selection-end-line="251" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -1031,14 +1009,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09747706" vertical-offset="986" max-vertical-offset="4629">
-          <caret line="63" column="81" selection-start-line="58" selection-start-column="6" selection-end-line="63" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.083606556" vertical-offset="6103" max-vertical-offset="7393">
@@ -1051,6 +1021,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.312187" vertical-offset="748" max-vertical-offset="2809">
           <caret line="55" column="31" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.70951587" vertical-offset="612" max-vertical-offset="4577">
+          <caret line="61" column="43" selection-start-line="61" selection-start-column="43" selection-end-line="61" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="16.0752" vertical-offset="3876" max-vertical-offset="5385">
+          <caret line="819" column="21" selection-start-line="216" selection-start-column="3" selection-end-line="265" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/Goods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4624" vertical-offset="1496" max-vertical-offset="2988">
+          <caret line="111" column="23" selection-start-line="111" selection-start-column="22" selection-end-line="111" selection-end-column="23" />
           <folding />
         </state>
       </provider>

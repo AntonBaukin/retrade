@@ -53,11 +53,11 @@ ${v.checkModelRequestedWithRedirect}
 
     var winmain; winmain = retrade_open_window({ url: '/goods/edit-good',
       box: { event: e, widthpt: 280, heightpt: 240, '+xpt': 30, '-ypt': 10 },
-      domainKey: dk, record: record.getId(), params: ps, collapsible: true,
+      domainKey: dk, params: ps, collapsible: true,
+      record: record && record.getId(),
 
       onclose: function()
       {
-        ZeT.log('retradeEditDone = ', winmain.retradeEditDone)
         if(!winmain.retradeEditDone) return
         btn.retradeAddSelSetChecked = winmain.retradeAddSelSetChecked;
         Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
@@ -95,7 +95,7 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}', function(btn, e)
   {
-    retrade_open_window({ url: '/goods/create-goods',
+    var winmain; winmain = retrade_open_window({ url: '/goods/create-goods',
       tempDomain: 'add-goods-table', collapsible: true,
       box: { event: e, widthpt: 380, heightpt: 220, '+xpt': 30, '-ypt': 10 },
 
