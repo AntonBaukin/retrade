@@ -2988,16 +2988,18 @@ var retrade = ZeT.define('retrade',
 		return true;
 	},
 
-	vvolume          : function(o, v)
+	vvolume          : function(o, v, l)
 	{
-		if(!ZeT.iss(v)) { v = o; o = null; }
-		v = retrade._vdecimal(v); o = o || {};
+		if(!ZeT.iso(o)) { l = v; v = o; o = null }
+		v = retrade._vdecimal(v); o = o || {}
+		if(ZeT.isu(l)) l = 3
+		ZeT.assert(ZeT.isi(l) && l > 0)
 
-		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!';
-		if(!v) return 'Требуется десятичное значение объёма!';
-		if(!v.match(/^\d+(\.\d{1,3})?$/))
-			return 'Объём задаётся до тысячных долей!';
-		return true;
+		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
+		if(!v) return 'Требуется десятичное значение объёма!'
+		if(!v.match(new RegExp("^\\d+(\\.\\d{1," + l + "})?$")))
+			return 'Объём задаётся с точностью до ' + l +'-ого дробного знака!'
+		return true
 	},
 
 	vivolume         : function(o, v)

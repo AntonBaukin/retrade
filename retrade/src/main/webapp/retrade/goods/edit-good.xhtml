@@ -47,7 +47,6 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Отмена',
         cls: 'ux-btn-default-small-red',
-        hidden: ('true' != "#{v.model.editMode}"),
         handler : function()
         {
           extjsf.component('winmain', '${rootView.extjsDomain}').close()
@@ -60,7 +59,6 @@ ${v.checkModelRequestedWithRedirect}
     <x:component coid = "${z:vid(v, 'close')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть',
-        hidden: ('false' != "#{v.model.editMode}"),
         handler : function()
         {
           extjsf.component('winmain', '${rootView.extjsDomain}').close()
@@ -74,7 +72,6 @@ ${v.checkModelRequestedWithRedirect}
    <x:component coid = "${z:vid(v, 'goto-calc')}">
     <f:facet name = "extjs-props">
 
-      disabled: #{not v.isSecure('edit: goods')},
       xtype: 'button', text: 'Производство',
       hidden: ('true' != "#{v.model.editMode or not empty v.model.calc}"),
       margin: extjsf.pts(0, 4, 0, 4),
@@ -103,8 +100,6 @@ ${v.checkModelRequestedWithRedirect}
    <!-- [submit button] -->
    <x:component coid = "${z:vid(v, 'submit')}">
     <f:facet name = "extjs-props">
-      disabled: #{not v.isSecure('edit: goods')},
-      hidden: ('true' != "#{v.model.editMode}"),
       xtype:'button', text: 'Сохранить',
       cls: 'ux-btn-default-small-green'
     </f:facet>
@@ -115,7 +110,6 @@ ${v.checkModelRequestedWithRedirect}
    <x:component coid = "${z:vid(v, 'do-edit')}">
      <f:facet name = "extjs-props">
        xtype:'button', text: 'Редактировать',
-       hidden: ('false' != "#{v.model.editMode}"),
        disabled: ${not v.isSecure('edit: goods')}
      </f:facet>
    </x:component>
@@ -366,8 +360,10 @@ ${v.checkModelRequestedWithRedirect}
 
 
     <!-- [selection set] -->
-
     <x:hidden-field coid = "${z:vid(v, 'selset')}" value = "#{v.selSet}"/>
+
+    <!-- [read-edit mode]-->
+    <x:hidden-field coid = "${z:vid(v, 'edit')}" value = "#{v.model.editMode}"/>
 
 
     <!-- [special: submit action] -->
@@ -429,6 +425,9 @@ ${v.checkModelRequestedWithRedirect}
 
     //~: load groups
     if(!isread) extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').load()
+
+    //~: edit mode field
+    extjsf.bind("${z:vid(v, 'edit')}", '${rootView.extjsDomain}').value(!isread)
   }
 
 
@@ -436,7 +435,7 @@ ${v.checkModelRequestedWithRedirect}
   Ext.onReady(function()
   {
     extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
-      retradeToggleReadWrite("#{empty v.goodView.objectKey}" != 'true')
+      retradeToggleReadWrite("#{v.model.editMode}" == 'false')
   })
 
 
@@ -507,8 +506,8 @@ ${v.checkModelRequestedWithRedirect}
       command: "${z:vid(v, 'submit-action')}", success: function()
       {
         var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}');
-        winmain.retradeEditDone = true;
-        winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible());
+        winmain.retradeEditDone = true
+        winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
 
         extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
       }

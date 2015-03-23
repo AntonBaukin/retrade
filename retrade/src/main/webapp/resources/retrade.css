@@ -650,16 +650,13 @@ caption.retrade-info-title
 }
 
 td.retrade-info-value div,
- .retrade-info-div .retrade-info-value
+ .retrade-info-div .retrade-info-value,
+ span.retrade-info-value
 {
-  white-space: nowrap; padding: 1pt 2pt 1pt 2pt;
-  font-size: 10pt; background-color: #fffbf7;
-}
-
-span.retrade-info-value
-{
-  white-space: nowrap; padding: 1pt 2pt 1pt 2pt;
-  font-size: 10pt; background-color: #fffbf7;
+  padding: 1pt 2pt 1pt 2pt;
+  font-size: 10pt; white-space: nowrap;
+  background-color: rgba(198, 219, 233, 0.5);
+  border-radius: 2px;
 }
 
 .retrade-info-div .retrade-info-value-message-hard
@@ -674,9 +671,7 @@ div.retrade-info-div
 
 td.retrade-info-value-small-text div
 {
-  font-family: 'Tahoma', sans-serif; font-size: 9pt;
-  white-space: nowrap; overflow: hidden;
-  background-color: transparent;
+  font-size: 9pt; white-space: nowrap; overflow: hidden;
 }
 
 hr.retrade-info-hr
@@ -1077,7 +1072,6 @@ td.retrade-info-value-derived-good-measure div
 {
   background-color: transparent;
   font-weight: bolder;
-  margin-left: 4pt;
 }
 
 td.retrade-info-value-derived-good-super-name div

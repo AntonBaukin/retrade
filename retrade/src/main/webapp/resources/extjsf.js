@@ -1108,12 +1108,12 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		if(this.component())
 		{
 			this.component().removeListener(ename, func)
-			this.component().on(ename, func);
+			this.component().on(ename, func)
 		}
 		else
 		{
-			var list = this._listeners[ename];
-			if(!list) this._listeners[ename] = list = [];
+			var list = this._listeners[ename]
+			if(!list) this._listeners[ename] = list = []
 
 			if(list.indexOf(func) == -1)
 				list.push(func)
@@ -1253,12 +1253,8 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 		extjsf.deleteDomain(this._domain)
 		extjsf.defineBind('winmain', this._domain, winmain)
 
-		//~: clear the window
-		winmain.clearComponent()
-
-		//~: rebind domain deleter
-		if(winmain._retrade_domain_deleter)
-			winmain.on('beforedestroy', winmain._retrade_domain_deleter)
+		//~: clear the component
+		this._clear(winmain)
 
 		//~: set temporary title
 		winmain.component().setTitle('Выполняется запрос...')
@@ -1276,6 +1272,16 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 		  ajaxOptions: { method: mth, timeout: 30 * 60 * 1000 }, //<-- 30 min
 		  params: prms, autoLoad: true, scripts: true
 		})
+	},
+
+	_clear           : function(winmain)
+	{
+		//~: clear the window
+		winmain.clearComponent({notListeners: true})
+
+		//~: rebind domain deleter
+		//if(winmain._domain_deleter)
+		//	winmain.on('beforedestroy', winmain._domain_deleter)
 	},
 
 	_form_params     : function(form, prms, button)

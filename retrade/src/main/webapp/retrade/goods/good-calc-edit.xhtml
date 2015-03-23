@@ -61,6 +61,7 @@ ${v.checkModelRequested}
     <x:component coid = "${z:vid(v, 'delete-part')}">
       <f:facet name = "extjs-props">
         xtype:'button', text: 'Удалить',
+        hidden: #{v.model.editCalc.derived},
         margin: extjsf.dpts(0, 4, 0, 4),
         tooltipType: 'title', tooltip: 'Удалить из формулы выделенную составляющую'
       </f:facet>
@@ -80,7 +81,9 @@ ${v.checkModelRequested}
     <x:component coid = "${z:vid(v, 'add-part')}">
       <f:facet name = "extjs-props">
         xtype:'button', text: 'Добавить',
-        margin: extjsf.dpts(0, 4, 0, 4)
+        hidden: #{v.model.editCalc.derived},
+        margin: extjsf.dpts(0, 4, 0, 4),
+        tooltipType: 'title', tooltip: 'Добавить в формулу новую составляющую'
       </f:facet>
     </x:component>
 
@@ -111,7 +114,7 @@ ${v.checkModelRequested}
 
   <f:facet name = "status-props">
     xtype: 'panel', bodyPadding: extjsf.pt(2),
-    layout: {type: 'hbox', align: 'stretch'},
+    layout: {type: 'hbox', align: 'middle'},
     bodyCls: 'retrade-status-panel'
   </f:facet>
 
@@ -124,9 +127,7 @@ ${v.checkModelRequested}
       value = "#{v.model.editCalc.derived}">
 
       <f:facet name = "label-props">
-
-        cls: 'retrade-form-label-cell',
-        margin: extjsf.dpts(0, 4, 0, 0), labelAlign: 'left',
+        labelAlign: 'left', cls: 'retrade-info-title-label', margin: extjsf.dpts(0, 4, 0, 0),
         html: "&lt;span title = 'Установите, если производство данного товара основано только на одном другом товаре'&gt;производный&lt;/span&gt;"
       </f:facet>
     </x:checkbox-field>
@@ -146,9 +147,7 @@ ${v.checkModelRequested}
       value = "#{v.model.editCalc.semiReady}">
 
       <f:facet name = "label-props">
-
-        cls: 'retrade-form-label-cell',
-        margin: extjsf.dpts(0, 0, 0, 4),
+        cls: 'retrade-info-title-label', margin: extjsf.dpts(0, 0, 0, 4),
         html: "&lt;span title = 'Установите, если продукт есть полуфабрикат. Полуфабрикаты доступны для закупок'&gt;полуфабрикат&lt;/span&gt;"
       </f:facet>
     </x:checkbox-field>
@@ -230,7 +229,7 @@ ${v.checkModelRequested}
     {
       var v = m.get('volume');
       return (m.get('integer') === true)?
-        (retrade.vivolume(v)):(retrade.vvolume(v));
+        (retrade.vivolume(v)):(retrade.vvolume(v, 5));
     }
 
     var valid = true, recs = [];
@@ -350,11 +349,11 @@ ${v.checkModelRequested}
 
     function validateVolume(v)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-      var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record;
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+      var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record
 
       return (m.get('integer') === true)?
-        (retrade.vivolume(v)):(retrade.vvolume(v));
+        (retrade.vivolume(v)):(retrade.vvolume(v, 5))
     }
 
     function onSpecialKey(f, e)
@@ -577,6 +576,7 @@ ${v.checkModelRequested}
 
         <f:facet name = "extjs-props">
           width: extjsf.ex(16), flex: 1,
+          fieldStyle: {textAlign: 'right'},
           allowBlank: false, validator: function(v)
           {
             if(extjsf.bind("${z:vid(v, 'super-good-measure')}", '${rootView.extjsDomain}').retradeGoodInteger == 'true')
@@ -747,17 +747,24 @@ ${v.checkModelRequested}
   //~: toggle derived flag
   extjsf.bind("${z:vid(v, 'derived')}", '${rootView.extjsDomain}').on('change', function(cb, checked)
   {
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-    var f = extjsf.component("${z:vid(v, 'derived-form')}", '${rootView.extjsDomain}');
+    //~: toggle grid
+    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').visible(!checked)
 
-    g.setVisible(!checked)
-    f.setVisible(checked)
+    //~: toggle add-remove buttons
+    extjsf.bind("${z:vid(v, 'delete-part')}", '${rootView.extjsDomain}').visible(!checked)
+    extjsf.bind("${z:vid(v, 'add-part')}", '${rootView.extjsDomain}').visible(!checked)
+
+    //~: toggle derived form
+    extjsf.bind("${z:vid(v, 'derived-form')}", '${rootView.extjsDomain}').visible(checked)
   })
 
   //~: sub-volume changed
-  extjsf.bind("${z:vid(v, 'sub-volume')}", '${rootView.extjsDomain}').on('change', function(f, v)
+  extjsf.bind("${z:vid(v, 'sub-volume')}", '${rootView.extjsDomain}').on('change', function(f, v, old)
   {
-    extjsf.bind("${z:vid(v, 'sub-code')}", '${rootView.extjsDomain}').value(v)
+    var sc = extjsf.bind("${z:vid(v, 'sub-code')}", '${rootView.extjsDomain}')
+
+    //?: {has sub-code equals to the volume}
+    if((sc.value() == old) || (parseFloat(sc.value()) == parseFloat(old))) sc.value(v)
   })
 
   //~: adjust window size

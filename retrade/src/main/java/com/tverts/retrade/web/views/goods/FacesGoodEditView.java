@@ -394,6 +394,9 @@ public class FacesGoodEditView extends ModelView
 		//~: mark the calc as updated
 		getModel().setCalcUpdated(true);
 
+		//~: only edit mode from now
+		getModel().setEditMode(true);
+
 		return null;
 	}
 
@@ -468,6 +471,9 @@ public class FacesGoodEditView extends ModelView
 
 		//~: mark the calc as updated
 		getModel().setCalcUpdated(true);
+
+		//~: only edit mode from now
+		getModel().setEditMode(true);
 
 		return null;
 	}
@@ -814,7 +820,7 @@ public class FacesGoodEditView extends ModelView
 		  Goods.genNextGoodCode(loadDomain())
 		);
 
-		//=: is editing mode
+		//=: is editing mode for create
 		mb.setEditMode(true);
 
 		//~: enable the selection set

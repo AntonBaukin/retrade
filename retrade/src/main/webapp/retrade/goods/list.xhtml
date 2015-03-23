@@ -42,57 +42,29 @@ ${v.checkModelRequestedWithRedirect}
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow = function(sel, event)
+  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow = function(record, e)
   {
-    var domain  = 'wnd:' + "${z:vid(v, 'add-good')}:" + ((sel)?(sel.getId()):('create'));
-    var winmain = extjsf.bind('winmain', domain);
+    var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}')
 
-    var box     = ReTrade.desktop.calcWindowBox({
-      event: event, widthpt: 280, heightpt: 240, '+xpt': 30, '-ypt': 10
-    })
+    var dk  = "${z:vid(v, 'add-good')}:"
+    if(record) dk = dk.replace('add-', 'create-')
 
-    if(winmain)
-    {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
-      return;
-    }
+    var ps = {}; if(!record) ps.create = true
 
-    var params = {
-      '${v.viewModeParam}': 'body',
-      '${rootView.extjsDomainParam}': domain
-    };
+    var winmain; winmain = retrade_open_window({ url: '/goods/edit-good',
+      box: { event: e, widthpt: 280, heightpt: 240, '+xpt': 30, '-ypt': 10 },
+      domainKey: dk, record: record.getId(), params: ps, collapsible: true,
 
-    if(sel) params['${v.entityParam}'] = sel.getId(); else params.create = true;
-
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-      xtype: 'window', title: 'Загрузка...', autoShow: true,
-      x: box.x, y: box.y, width: box.width, height: box.height,
-      layout: 'fit', collapsible: true,
-
-      loader: {
-        url: "${z:url('/go/retrade/goods/edit-good')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true, params: params
+      onclose: function()
+      {
+        ZeT.log('retradeEditDone = ', winmain.retradeEditDone)
+        if(!winmain.retradeEditDone) return
+        btn.retradeAddSelSetChecked = winmain.retradeAddSelSetChecked;
+        Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
       }
     })
 
-    var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}');
     winmain.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked === true)
-
-    //~: reload table on create-edit
-    winmain.on('close', function()
-    {
-      if(!winmain.retradeEditDone) return;
-
-      btn.retradeAddSelSetChecked = winmain.retradeAddSelSetChecked;
-      Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
-    })
-
-    //~: create the window
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   }
 
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function(btn, event)
@@ -121,50 +93,18 @@ ${v.checkModelRequestedWithRedirect}
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}', function(btn, e)
   {
-    var domain  = 'wnd:' + "${z:vid(v, 'add-goods-table')}";
-    var winmain = extjsf.bind('winmain', domain);
+    retrade_open_window({ url: '/goods/create-goods',
+      tempDomain: 'add-goods-table', collapsible: true,
+      box: { event: e, widthpt: 380, heightpt: 220, '+xpt': 30, '-ypt': 10 },
 
-    var box     = ReTrade.desktop.calcWindowBox({
-      event: event, widthpt: 380, heightpt: 220, '+xpt': 30, '-ypt': 10
-    })
-
-    if(winmain)
-    {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
-      return;
-    }
-
-    var params = {
-      '${v.viewModeParam}': 'body',
-      '${rootView.extjsDomainParam}': domain
-    };
-
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-      xtype: 'window', title: 'Загрузка...', autoShow: true,
-      x: box.x, y: box.y, width: box.width, height: box.height,
-
-      loader: {
-        url: "${z:url('/go/retrade/goods/create-goods')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true, params: params
+      onclose: function()
+      {
+        if(!winmain.retradeEditDone) return
+        Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
       }
     })
-
-    //~: reload table on create-edit
-    winmain.on('close', function()
-    {
-      if(!winmain.retradeEditDone) return;
-
-      Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
-    })
-
-    //~: create the window
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
       //]]>
