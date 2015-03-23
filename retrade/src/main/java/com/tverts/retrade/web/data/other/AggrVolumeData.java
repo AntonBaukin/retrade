@@ -1,8 +1,7 @@
 package com.tverts.retrade.web.data.other;
 
-/* standard Java classes */
+/* Java */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +14,8 @@ import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: model */
 
-import com.tverts.model.ModelBean;
-import com.tverts.model.ModelData;
+import com.tverts.model.SimpleModelBean;
+import com.tverts.model.SimpleModelData;
 
 /* com.tverts: endure (aggregation) */
 
@@ -31,8 +30,8 @@ import com.tverts.endure.aggr.volume.DatePeriodVolumeCalcItem;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
-@XmlType(propOrder = {"size", "items"})
-public class AggrVolumeData implements ModelData, Serializable
+@XmlType(propOrder = {"model", "size", "items"})
+public class AggrVolumeData implements SimpleModelData
 {
 	public static final long serialVersionUID = 0L;
 
@@ -42,7 +41,7 @@ public class AggrVolumeData implements ModelData, Serializable
 	public AggrVolumeData()
 	{}
 
-	public AggrVolumeData(ModelBean model, List<DatePeriodVolumeCalcItem> items)
+	public AggrVolumeData(SimpleModelBean model, List<DatePeriodVolumeCalcItem> items)
 	{
 		this.model = model;
 		this.items = items;
@@ -51,9 +50,14 @@ public class AggrVolumeData implements ModelData, Serializable
 
 	/* public: bean interface */
 
-	public ModelBean getModel()
+	public SimpleModelBean getModel()
 	{
 		return model;
+	}
+
+	public void setModel(SimpleModelBean model)
+	{
+		this.model = model;
 	}
 
 	@XmlElement(name = "size")
@@ -71,12 +75,13 @@ public class AggrVolumeData implements ModelData, Serializable
 
 		for(DatePeriodVolumeCalcItem i : items)
 			res.add(new AggrVolumeView().init(i));
+
 		return res;
 	}
 
 
 	/* private: items */
 
-	private ModelBean                      model;
+	private SimpleModelBean                model;
 	private List<DatePeriodVolumeCalcItem> items;
 }

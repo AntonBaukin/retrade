@@ -3,9 +3,7 @@ package com.tverts.retrade.web.views.goods;
 /* Java */
 
 import java.math.BigDecimal;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /* Spring Framework */
 
@@ -73,6 +71,8 @@ import com.tverts.retrade.domain.selset.SelSet;
 
 import com.tverts.retrade.web.data.goods.GoodCalcModelData;
 import com.tverts.retrade.web.data.goods.GoodCalcsModelData;
+import com.tverts.retrade.web.data.goods.GoodGroupsModelData;
+import com.tverts.retrade.web.data.goods.MeasureUnitsModelData;
 
 /* com.tverts: support */
 
@@ -140,6 +140,9 @@ public class FacesGoodEditView extends ModelView
 
 		//~: good name
 		g.setName(getGoodView().getGoodName());
+
+		//~: good group
+		g.setGroup(SU.s2s(getGoodView().getGoodGroup()));
 
 		//~: load measure unit
 		MeasureUnit mu = bean(GetGoods.class).
@@ -565,39 +568,6 @@ public class FacesGoodEditView extends ModelView
 
 	private String sameSubCode;
 
-	public Map<Long, String> getMeasuresLabels()
-	{
-		if(measuresLabels != null) return measuresLabels;
-
-		List<MeasureUnit> mus = bean(GetGoods.class).
-		  getMeasureUnits(getModel().domain());
-
-		Map<Long, String> res =
-		  new LinkedHashMap<Long, String>(mus.size());
-
-		for(MeasureUnit mu : mus)
-			res.put(mu.getPrimaryKey(), mu.getCode());
-
-		return measuresLabels = res;
-	}
-
-	private Map<Long, String> measuresLabels;
-
-	public Map<String, String> getGroupsLabels()
-	{
-		if(groupsLabels != null) return groupsLabels;
-
-		List<String> gs = bean(GetGoods.class).
-		  getGoodGroups(getModel().domain());
-
-		Map<String, String> r = new LinkedHashMap<String, String>(gs.size());
-		for(String g : gs) r.put(g, g);
-
-		return groupsLabels = r;
-	}
-
-	private Map<String, String> groupsLabels;
-
 	public String getSelSet()
 	{
 		return selSet;
@@ -673,6 +643,23 @@ public class FacesGoodEditView extends ModelView
 		//~: good unit
 		mb.put(GoodUnit.class, getGoodView().getObjectKey());
 
+		//?: {measure units}
+		if(ModelRequest.isKey("measures"))
+		{
+			//~: create model data
+			mb.setData(new MeasureUnitsModelData(mb));
+
+			return mb;
+		}
+
+		//?: {goods groups}
+		if(ModelRequest.isKey("groups"))
+		{
+			//~: create model data
+			mb.setData(new GoodGroupsModelData(mb));
+
+			return mb;
+		}
 
 		//?: {good calculations list}
 		if(ModelRequest.isKey("calcs"))

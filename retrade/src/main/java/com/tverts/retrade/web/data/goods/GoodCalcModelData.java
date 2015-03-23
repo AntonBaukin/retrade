@@ -1,8 +1,7 @@
 package com.tverts.retrade.web.data.goods;
 
-/* standard Java classes */
+/* Java */
 
-import java.io.Serializable;
 import java.util.List;
 
 /* Java XML Binding */
@@ -18,8 +17,8 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: model */
 
-import com.tverts.model.ModelData;
 import com.tverts.model.SimpleModelBean;
+import com.tverts.model.SimpleModelData;
 
 /* com.tverts: retrade domain (goods) */
 
@@ -35,16 +34,16 @@ import com.tverts.support.EX;
 
 
 /**
- * Provides list of the
+ * Provides list of the calculation parts
+ * of the good denoted.
  *
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
-@XmlType(propOrder = {"calcParts"})
-public class      GoodCalcModelData
-       implements Serializable, ModelData
+@XmlType(propOrder = {"model", "calcParts"})
+public class GoodCalcModelData implements SimpleModelData
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20150323L;
 
 
 	/* public: constructors */
@@ -63,6 +62,11 @@ public class      GoodCalcModelData
 	public SimpleModelBean getModel()
 	{
 		return model;
+	}
+
+	public void setModel(SimpleModelBean model)
+	{
+		this.model = model;
 	}
 
 	@XmlElement(name = "calc-part")
@@ -105,5 +109,5 @@ public class      GoodCalcModelData
 
 	/* private: model */
 
-	private SimpleModelBean model;
+	private transient SimpleModelBean model;
 }

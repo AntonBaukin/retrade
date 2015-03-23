@@ -1048,6 +1048,14 @@ ZeT.init('init: retrade.data', function()
 	  ]
 	})
 
+
+	ZeT.define('retrade.readers.CatItemView', {
+
+	  type: 'xml', root: 'cat-items', record: 'cat-item',
+	  totalProperty: 'itemsNumber'
+
+	})
+
 	ZeT.defineDelay('retrade.columns.CatItemView', function()
 	{
 		return [

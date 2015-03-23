@@ -1,8 +1,7 @@
 package com.tverts.retrade.web.data.goods;
 
-/* standard Java classes */
+/* Java */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,8 +20,8 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: model */
 
-import com.tverts.model.ModelData;
 import com.tverts.model.SimpleModelBean;
+import com.tverts.model.SimpleModelData;
 
 /* com.tverts: retrade domain (goods) */
 
@@ -43,11 +42,10 @@ import com.tverts.support.EX;
  * @author anton.baukin@gmail.com
  */
 @XmlRootElement(name = "model-data")
-@XmlType(propOrder = {"goodCalcs"})
-public class      GoodCalcsModelData
-       implements Serializable, ModelData
+@XmlType(propOrder = {"model", "goodCalcs"})
+public class GoodCalcsModelData implements SimpleModelData
 {
-	public static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 20150323L;
 
 
 	/* public: constructors */
@@ -66,6 +64,11 @@ public class      GoodCalcsModelData
 	public SimpleModelBean getModel()
 	{
 		return model;
+	}
+
+	public void setModel(SimpleModelBean model)
+	{
+		this.model = model;
 	}
 
 	@XmlElement(name = "good-calc")
@@ -94,5 +97,5 @@ public class      GoodCalcsModelData
 
 	/* private: model */
 
-	private SimpleModelBean model;
+	private transient SimpleModelBean model;
 }

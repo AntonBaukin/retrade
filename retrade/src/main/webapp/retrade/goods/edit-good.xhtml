@@ -226,7 +226,7 @@ ${v.checkModelRequestedWithRedirect}
           extjsfReadWrite: true, allowBlank: false,
           flex: 1, validator: function()
           {
-          return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
           }
         </f:facet>
 
@@ -236,14 +236,31 @@ ${v.checkModelRequestedWithRedirect}
         </f:facet>
       </x:text-field>
 
-      <!-- [measure unit] -->
+
+      <!-- [measure unit -->
+
+      <x:data-store storeId = "${z:vid(v, 'measures')}"
+        modelProvider = "facesGoodEditView" modelRequest  = "measures"
+        modelKey = "#{v.modelKeys}">
+
+        <f:facet name = "store-props">
+          model: 'retrade.model.MeasureUnitView',
+          autoLoad: ('true' == "#{v.model.editMode}")
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          reader: ZeT.defined('retrade.readers.MeasureUnitView')
+        </f:facet>
+      </x:data-store>
+
       <x:drop-list coid = "${z:vid(v, 'measure')}"
-        labels = "#{v.measuresLabels}"
+        storeId = "${z:vid(v, 'measures')}"
         value  = "#{v.goodView.measureKey}">
 
         <f:facet name = "drop-props">
           extjsfReadWrite: true, allowBlank: false,
-          matchFieldWidth: true, flex: 2, editable: false
+          editable: false, matchFieldWidth: true, flex: 2,
+          valueField: 'objectKey', displayField: 'code'
         </f:facet>
 
         <f:facet name = "label-props">
@@ -252,6 +269,8 @@ ${v.checkModelRequestedWithRedirect}
         </f:facet>
       </x:drop-list>
     </x:component>
+
+    <!-- measure unit] -->
 
     <!-- code and measure unit] -->
 
@@ -279,7 +298,22 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
-    <!-- [group] -->
+    <!-- [group -->
+
+    <x:data-store storeId = "${z:vid(v, 'groups')}"
+        modelProvider = "facesGoodEditView" modelRequest  = "groups"
+        modelKey = "#{v.modelKeys}">
+
+        <f:facet name = "store-props">
+          model: 'retrade.model.CatItemView',
+          autoLoad: ('true' == "#{v.model.editMode}")
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          reader: ZeT.defined('retrade.readers.CatItemView')
+        </f:facet>
+      </x:data-store>
+
     <x:component coid = "${z:vid(v, '_group')}">
       <f:facet name = "extjs-props">
         bodyCls: 'retrade-transparent-panel', border: false,
@@ -288,11 +322,13 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
 
       <x:drop-list coid = "${z:vid(v, 'group')}"
-        labels = "#{v.groupsLabels}"
+        storeId = "${z:vid(v, 'groups')}"
         value = "#{v.goodView.goodGroup}">
 
         <f:facet name = "drop-props">
-          extjsfReadWrite: true, flex: 1, matchFieldWidth: true
+          extjsfReadWrite: true, flex: 1,
+          matchFieldWidth: true, autoSelect: false,
+          valueField: 'code', displayField: 'code'
         </f:facet>
 
         <f:facet name = "label-props">
@@ -301,6 +337,8 @@ ${v.checkModelRequestedWithRedirect}
         </f:facet>
       </x:drop-list>
     </x:component>
+
+    <!-- group] -->
 
 
     <!-- [add to selection set] -->
@@ -378,6 +416,19 @@ ${v.checkModelRequestedWithRedirect}
     var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').component()
     if(isread) winmain.setTitle('${z:jss(v.infoWindowTitle)}')
     else winmain.setTitle('${z:jss(v.editWindowTitle)}')
+
+    //~: load measures | set the text value
+    var measures = extjsf.component("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
+    var measure = extjsf.bind("${z:vid(v, 'measure')}", '${rootView.extjsDomain}')
+
+    if(isread) measure.value("#{z:jss(v.goodView.measureCode)}")
+    else measures.load({callback: function()
+    {
+      measure.value("#{v.goodView.measureKey}")
+    }})
+
+    //~: load groups
+    if(!isread) extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').load()
   }
 
 
