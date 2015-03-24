@@ -65,6 +65,7 @@ import com.tverts.retrade.domain.selset.SelSet;
 
 /* com.tverts: retrade data (goods) */
 
+import com.tverts.retrade.web.data.goods.GoodGroupsModelData;
 import com.tverts.retrade.web.data.goods.MeasureUnitsModelData;
 
 /* com.tverts: support */
@@ -110,6 +111,9 @@ public class FacesAddGoodsTableView extends ModelView
 			//~: name
 			g.setGoodName(SU.s2s(request().getParameter("goodName" + i)));
 			if(g.getGoodName() == null) throw EX.arg();
+
+			//~: group
+			g.setGoodGroup(SU.s2s(request().getParameter("goodGroup" + i)));
 
 			//~: measure code
 			g.setMeasureCode(SU.s2s(request().getParameter("measureCode" + i)));
@@ -170,6 +174,9 @@ public class FacesAddGoodsTableView extends ModelView
 
 			//=: good name
 			x.setName(g.getGoodName());
+
+			//=: good group
+			x.setGroup(g.getGoodGroup());
 
 			//~: measure unit
 			MeasureUnit mu = measures.get(g.getMeasureCode());
@@ -258,6 +265,15 @@ public class FacesAddGoodsTableView extends ModelView
 		{
 			//~: create model data
 			mb.setDataClass(MeasureUnitsModelData.class);
+
+			return mb;
+		}
+
+		//?: {good groups}
+		if(ModelRequest.isKey("groups"))
+		{
+			//~: create model data
+			mb.setDataClass(GoodGroupsModelData.class);
 
 			return mb;
 		}

@@ -295,18 +295,18 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [group -->
 
     <x:data-store storeId = "${z:vid(v, 'groups')}"
-        modelProvider = "facesGoodEditView" modelRequest  = "groups"
-        modelKey = "#{v.modelKeys}">
+      modelProvider = "facesGoodEditView" modelRequest  = "groups"
+      modelKey = "#{v.modelKeys}">
 
-        <f:facet name = "store-props">
-          model: 'retrade.model.CatItemView',
-          autoLoad: ('true' == "#{v.model.editMode}")
-        </f:facet>
+      <f:facet name = "store-props">
+        model: 'retrade.model.CatItemView',
+        autoLoad: ('true' == "#{v.model.editMode}")
+      </f:facet>
 
-        <f:facet name = "proxy-props">
-          reader: ZeT.defined('retrade.readers.CatItemView')
-        </f:facet>
-      </x:data-store>
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.CatItemView')
+      </f:facet>
+    </x:data-store>
 
     <x:component coid = "${z:vid(v, '_group')}">
       <f:facet name = "extjs-props">

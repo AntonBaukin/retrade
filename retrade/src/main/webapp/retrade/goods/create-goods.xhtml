@@ -125,7 +125,8 @@ ${v.checkModelRequestedWithRedirect}
 
   <!-- [store processing scripts -->
 
-  <x:data-store storeId = "${z:vid(v, 'store')}" pageSize = "0">
+  <!-- [resulting goods store] -->
+  <x:data-store storeId = "${z:vid(v, 'store')}">
 
     <f:facet name = "store-props">
       model: 'retrade.model.GoodUnitView', autoLoad: false, data: []
@@ -136,17 +137,42 @@ ${v.checkModelRequestedWithRedirect}
     </f:facet>
   </x:data-store>
 
-  <x:data-store storeId = "${z:vid(v, 'measures')}" pageSize = "0"
-    modelProvider = "facesAddGoodsTableView" modelKey = "#{v.modelKeys}">
+
+  <!-- [measure units store] -->
+  <x:data-store storeId = "${z:vid(v, 'measures')}"
+    modelRequest  = "measures" modelKey = "#{v.modelKeys}"
+    modelProvider = "facesAddGoodsTableView">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.MeasureUnitView', autoLoad: false
+      model: 'retrade.model.MeasureUnitView', autoLoad: true
     </f:facet>
 
     <f:facet name = "proxy-props">
       reader: ZeT.defined('retrade.readers.MeasureUnitView')
     </f:facet>
   </x:data-store>
+
+
+  <!-- [good groups store] -->
+  <x:data-store storeId = "${z:vid(v, 'groups')}"
+    modelRequest  = "groups" modelKey = "#{v.modelKeys}"
+    modelProvider = "facesAddGoodsTableView">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.CatItemView', autoLoad: true,
+      remoteSort: false, sorters: [{ property: 'code' }],
+
+      beforeLoad: function(store)
+      {
+        if(store.getCount()) return false
+      }
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.CatItemView')
+    </f:facet>
+  </x:data-store>
+
 
   <x:data-grid coid = "${z:vid(v, 'grid')}"
     storeId = "${z:vid(v, 'store')}">
@@ -162,8 +188,24 @@ ${v.checkModelRequestedWithRedirect}
         ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
         listeners : { beforeedit : function(ed, event)
         {
-           var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-           if(g.retradeDisabledEditing) return false; else g.retradeEditEvent = event;
+           var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+           if(g.retradeDisabledEditing) return false; else g.retradeEditEvent = event
+        },
+
+        edit: function(ed, event)
+        {
+          var s = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+          var g = ZeTS.trim(event.record.get('goodGroup'))
+          if(ZeTS.ises(g)) return
+
+          var f = false; s.each(function(r)
+          {
+            if(r.get('code') == g) { f = true; return false }
+          })
+
+          if(!f) s.add(Ext.create('retrade.model.CatItemView', {
+            objectKey: g, code: g
+          }))
         }}
       }],
 
@@ -182,10 +224,10 @@ ${v.checkModelRequestedWithRedirect}
       {
         function onSpecialKey(f, e)
         {
-          var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-          var x = g.retradeEditEvent;
-          var p = g.component().getPlugin('cellediting');
-          var c;
+          var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+          var x = g.retradeEditEvent
+          var p = g.component().getPlugin('cellediting')
+          var c
 
           function commitEdit()
           {
@@ -248,15 +290,32 @@ ${v.checkModelRequestedWithRedirect}
                })
             }
           }
-        });
+        })
+
+        var groupEditor = Ext.create('Ext.form.field.ComboBox', {
+          store: "${z:vid(v, 'groups')}",
+          valueField: 'code', displayField: 'code',
+          listeners: { specialkey : onSpecialKey,
+
+            added: function(combo)
+            {
+               combo.getPicker().on('highlightitem', function(view, node)
+               {
+                  combo.retradeHighlightedItem = combo.getPicker().getNodes().indexOf(node);
+               })
+            }
+          }
+        })
 
         return [
 
           { xtype: 'rownumberer', text: '№', width: extjsf.ex(4), resizable: false },
 
-          { text: 'Код', dataIndex: 'goodCode', width: extjsf.ex(16), editor: codeEditor },
+          { text: 'Код', dataIndex: 'goodCode', width: extjsf.ex(8), editor: codeEditor },
 
-          { text: 'Наименование', dataIndex: 'goodName', width: extjsf.ex(22), flex: 1, editor: nameEditor },
+          { text: 'Наименование', dataIndex: 'goodName', flex: 2, editor: nameEditor },
+
+          { text: 'Группа', dataIndex: 'goodGroup', flex: 1, editor: groupEditor },
 
           { text: 'Ед. изм.', dataIndex: 'measureCode', width: extjsf.ex(16), editor: measureEditor }
         ];
@@ -369,11 +428,12 @@ ${v.checkModelRequestedWithRedirect}
 
     for(var i = 0;(i < store.count());i++)
     {
-       var m = store.getAt(i);
+       var m = store.getAt(i)
 
-       params['goodCode'+i] = m.get('goodCode');
-       params['goodName'+i] = m.get('goodName');
-       params['measureCode'+i] = m.get('measureCode');
+       params['goodCode'+i] = m.get('goodCode')
+       params['goodName'+i] = m.get('goodName')
+       params['goodGroup'+i] = m.get('goodGroup')
+       params['measureCode'+i] = m.get('measureCode')
     }
 
     //?: has selection set
