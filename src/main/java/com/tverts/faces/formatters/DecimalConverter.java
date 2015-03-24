@@ -35,12 +35,9 @@ public class   DecimalConverter
 		//~: strip trailing zeros
 		if(CMP.eqZero(d))
 			d = BigDecimal.ZERO;
-		else
-			d = d.stripTrailingZeros();
 
-		//?: {has no '.00'} add them
-		if(d.scale() < 2)
-			d = d.setScale(2);
+		if(d.scale() < 0)
+			d = d.setScale(0);
 
 		return d.toString();
 	}
@@ -57,9 +54,9 @@ public class   DecimalConverter
 		//~: strip trailing zeros
 		d = d.stripTrailingZeros();
 
-		//?: {has no '.00'} add them
-		if(d.scale() < 2)
-			d = d.setScale(2);
+		//?: {has no '.0'} add them
+		if(d.scale() < 1)
+			d = d.setScale(1);
 
 		request.setValue(d);
 	}

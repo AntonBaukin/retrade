@@ -80,6 +80,11 @@ public class SimpleModelBean extends ModelBeanBase
 		return (T) res;
 	}
 
+	public <T> T  getx(Class<T> cls)
+	{
+		return get(cls, cls);
+	}
+
 	public SimpleModelBean put(Serializable key, Serializable val)
 	{
 		if(val == null)
@@ -95,7 +100,16 @@ public class SimpleModelBean extends ModelBeanBase
 
 	public SimpleModelData modelData()
 	{
-		return get(ModelData.class, SimpleModelData.class);
+		SimpleModelData md = get(ModelData.class, SimpleModelData.class);
+
+		if(md != null) return md; else
+		{
+			md = (SimpleModelData) super.modelData();
+			if(md != null)
+				setData(md);
+		}
+
+		return md;
 	}
 
 
