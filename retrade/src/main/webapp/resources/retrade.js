@@ -2952,12 +2952,22 @@ var retrade = ZeT.define('retrade',
 
 	vdecimal         : function(o, v)
 	{
-		if(!ZeT.iss(v)) { v = o; o = null; }
-		v = retrade._vdecimal(v); o = o || {};
+		if(!ZeT.iss(v)) { v = o; o = null }
+		v = retrade._vdecimal(v); o = o || {}
 
-		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!';
-		if(!v) return 'Требуется положительное десятичное значение!';
-		return true;
+		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
+		if(!v) return 'Требуется положительное десятичное значение!'
+		return true
+	},
+
+	vinteger         : function(o, v)
+	{
+		if(!ZeT.iss(v)) { v = o; o = null }
+		v = retrade._vinteger(v); o = o || {}
+
+		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
+		if(!v) return 'Требуется положительное целочисленное значение!'
+		return true
 	},
 
 	vcurrency        : function(o, v)

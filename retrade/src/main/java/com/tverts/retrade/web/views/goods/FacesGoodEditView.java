@@ -653,7 +653,7 @@ public class FacesGoodEditView extends ModelView
 		if(ModelRequest.isKey("measures"))
 		{
 			//~: create model data
-			mb.setData(new MeasureUnitsModelData(mb));
+			mb.setDataClass(MeasureUnitsModelData.class);
 
 			return mb;
 		}
@@ -662,7 +662,7 @@ public class FacesGoodEditView extends ModelView
 		if(ModelRequest.isKey("groups"))
 		{
 			//~: create model data
-			mb.setData(new GoodGroupsModelData(mb));
+			mb.setDataClass(GoodGroupsModelData.class);
 
 			return mb;
 		}
@@ -675,7 +675,7 @@ public class FacesGoodEditView extends ModelView
 			);
 
 			//~: create model data
-			mb.setData(new GoodCalcsModelData(mb));
+			mb.setDataClass(GoodCalcsModelData.class);
 
 			return mb;
 		}
@@ -691,7 +691,7 @@ public class FacesGoodEditView extends ModelView
 			mb.put(GoodCalcView.class, getCalcView());
 
 			//~: create model data
-			mb.setData(new GoodCalcModelData(mb));
+			mb.setDataClass(GoodCalcModelData.class);
 
 			return mb;
 		}
@@ -705,7 +705,7 @@ public class FacesGoodEditView extends ModelView
 			mb.put(GoodCalcView.class, getModel().getEditCalc());
 
 			//~: create model data
-			mb.setData(new GoodCalcModelData(mb));
+			mb.setDataClass(GoodCalcModelData.class);
 
 			return mb;
 		}

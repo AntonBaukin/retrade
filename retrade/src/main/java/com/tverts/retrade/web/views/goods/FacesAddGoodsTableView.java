@@ -27,6 +27,7 @@ import static com.tverts.spring.SpringPoint.bean;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
+import com.tverts.model.ModelRequest;
 import com.tverts.model.SimpleModelBean;
 
 /* com.tverts: actions */
@@ -55,13 +56,16 @@ import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.GoodUnitView;
 import com.tverts.retrade.domain.goods.MeasureUnit;
-import com.tverts.retrade.domain.goods.MeasureUnitModelBean;
 
 /* com.tverts: retrade domain (selection sets) */
 
 import com.tverts.retrade.domain.selset.ActSelSet;
 import com.tverts.retrade.domain.selset.GetSelSet;
 import com.tverts.retrade.domain.selset.SelSet;
+
+/* com.tverts: retrade data (goods) */
+
+import com.tverts.retrade.web.data.goods.MeasureUnitsModelData;
 
 /* com.tverts: support */
 
@@ -244,12 +248,21 @@ public class FacesAddGoodsTableView extends ModelView
 
 	public ModelBean provideModel()
 	{
-		MeasureUnitModelBean mb = new MeasureUnitModelBean();
+		SimpleModelBean mb = new SimpleModelBean();
 
 		//~: domain
-		mb.setDomain(getModel().domain());
+		mb.setDomain(getModel().getDomain());
 
-		return mb;
+		//?: {measure units}
+		if(ModelRequest.isKey("measures"))
+		{
+			//~: create model data
+			mb.setDataClass(MeasureUnitsModelData.class);
+
+			return mb;
+		}
+
+		throw EX.state();
 	}
 
 

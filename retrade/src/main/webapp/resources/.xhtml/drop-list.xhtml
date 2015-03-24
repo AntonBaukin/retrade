@@ -73,7 +73,19 @@
 
     //?: {external store is provided}
     if("#{cc.attrs.storeId}".length)
+    {
       bind.extjsProps({store: "#{cc.attrs.storeId}"})
+
+      //~: refresh source on repeated expand
+      var expandTime; if(!bind.extjsPropsRaw().notRefreshOnExpand)
+        bind.on('expand', function()
+      {
+        var ts = new Date().getTime()
+        if(expandTime && (ts - expandTime < 2000))
+          bind.component().getStore().reload()
+        expandTime = ts
+      })
+    }
     //~: evaluate label mapping      !: it is array
     else {
 

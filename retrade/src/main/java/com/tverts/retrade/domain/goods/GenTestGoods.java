@@ -137,9 +137,9 @@ public class GenTestGoods extends GenesisHiberPartBase
 		//?: {measure has class-code}
 		if(!SU.sXe(m.getClassCode()) && (m.getClassUnit() == null))
 			if(m.isFractional())
-				m.setClassUnit(BigDecimal.ZERO.setScale(1));
+				m.setClassUnit(BigDecimal.ONE.setScale(1));
 			else
-				m.setClassUnit(BigDecimal.ZERO);
+				m.setClassUnit(BigDecimal.ONE);
 
 		//~: create measure with ox
 		mu = new MeasureUnit();

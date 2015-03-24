@@ -84,93 +84,119 @@ ${v.checkModelRequested}
   <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'measure-form')}">
 
     <f:facet name = "extjs-props">
-
       border: false, bodyPadding: extjsf.pt(4),
       bodyCls: 'retrade-content-panel',
       layout: { type: 'vbox', align: 'stretch' }
-
     </f:facet>
+
+
+    <x:component coid = "${z:vid(v, '_form_fill_0')}">
+     <f:facet name = "extjs-props">
+       xtype: 'panel', flex: 1, border: false,
+       bodyCls: 'retrade-transparent-panel'
+     </f:facet>
+   </x:component>
 
 
     <!-- [code and name line -->
 
     <x:component coid = "${z:vid(v, '_code_name_line')}">
+
       <f:facet name = "extjs-props">
-        layout: { type: 'table', columns: 2 },
-        bodyCls: 'retrade-transparent-panel',
-        border: false, margin: extjsf.dpts(8, 0, 0, 0)
+        border: false, bodyCls: 'retrade-transparent-panel',
+        layout: { type: 'hbox', align: 'middle' }
       </f:facet>
 
 
-      <!-- [measure code view] -->
+      <!-- [measure code] -->
 
       <x:text-field coid = "${z:vid(v, 'code')}"
          value = "#{v.measureView.code}">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(22), allowBlank: false,
-          cellCls: 'retrade-table-cell-100pc',
-          validator: function()
+          allowBlank: false, width: extjsf.ex(16), validator: function()
           {
             return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
           }
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Код', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(1, 4, 1, 0)
+          text: 'Код', cls: 'retrade-info-title-label',
+          margin: extjsf.dpts(0, 4, 0, 0), width: extjsf.ex(5)
         </f:facet>
       </x:text-field>
 
 
-      <x:component coid = "${z:vid(v, '_code_name_sep')}">
-        <f:facet name = "extjs-props">
-          bodyCls: 'retrade-transparent-panel',
-          height: extjsf.pt(4), border: false, colspan: 2
-        </f:facet>
-      </x:component>
-
-
-      <!-- [measure name view] -->
+      <!-- [measure name] -->
 
       <x:text-field coid = "${z:vid(v, 'name')}"
          value = "#{v.measureView.name}">
 
         <f:facet name = "extjs-props">
-          allowBlank: false, width: '100%',
-          cellCls: 'retrade-table-cell-100pc',
-          fieldCls: 'x-form-field retrade-width-100pc'
+          flex: 1, allowBlank: false
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Имя', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(1, 4, 1, 0)
+          text: 'имя', cls: 'retrade-info-title-label',
+          margin: extjsf.dpts(0, 4, 0, 6)
         </f:facet>
       </x:text-field>
+    </x:component>
 
     <!-- code and name line] -->
 
-    </x:component>
 
+    <!-- [class code and unit -->
 
-    <!-- [is fractional checkbox -->
-
-    <x:component coid = "${z:vid(v, '_fractional_line')}">
+    <x:component coid = "${z:vid(v, '_class_code_unit_line')}">
       <f:facet name = "extjs-props">
-
-        margin: extjsf.dpts(4, 0, 8, 0),
-        border: false, colspan: 2,
         layout: { type: 'hbox', align: 'middle' },
-        cellCls: 'retrade-table-cell-100pc',
-        bodyCls: 'retrade-transparent-panel'
-
+        bodyCls: 'retrade-transparent-panel',
+        border: false, margin: extjsf.dpts(8, 0, 0, 0)
       </f:facet>
 
+
+      <!-- [class code] -->
+      <x:text-field coid = "${z:vid(v, 'class-code')}"
+         value = "#{v.measureView.classCode}">
+
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(16)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'ОКЕИ', cls: 'retrade-info-title-label',
+          margin: extjsf.dpts(0, 4, 0, 0), width: extjsf.ex(5)
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [class unit] -->
+      <x:text-field coid = "${z:vid(v, 'class-unit')}"
+         value = "#{v.measureView.classUnit}">
+
+        <f:facet name = "extjs-props">
+          allowBlank: false, width: extjsf.ex(12),
+          maskRe: retrade.#{(v.measureView.fractional)?('rdecimal'):('rinteger')},
+          validator: ZeT.fbind(retrade.#{(v.measureView.fractional)?('vvolume'):('vivolume')}, retrade, { blank: false })
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'коэфф.', cls: 'retrade-info-title-label',
+          margin: extjsf.dpts(0, 4, 0, 6)
+        </f:facet>
+
+        <f:converter for = "valueInput"
+          converterId = "com.tverts:fmt:decimal"/>
+      </x:text-field>
+
+
+      <!-- [is fractional checkbox] -->
       <x:checkbox-field coid = "${z:vid(v, 'fractional')}"
          value = "#{v.measureView.fractional}">
 
         <f:facet name = "extjs-props">
-          margin: extjsf.dpts(1, 4, 1, 0)
+          margin: extjsf.dpts(0, 4, 0, 6)
         </f:facet>
 
         <f:facet name = "label-props">
@@ -179,58 +205,15 @@ ${v.checkModelRequested}
       </x:checkbox-field>
     </x:component>
 
-    <!-- is fractional checkbox] -->
-
-
-    <!-- [class code and unit -->
-
-    <x:component coid = "${z:vid(v, '_class_code_unit_line')}">
-      <f:facet name = "extjs-props">
-        layout: { type: 'table', columns: 4 },
-        bodyCls: 'retrade-transparent-panel',
-        border: false, margin: extjsf.dpts(8, 0, 0, 0)
-      </f:facet>
-
-      <!-- [class code] -->
-
-      <x:text-field coid = "${z:vid(v, 'class-code')}"
-         value = "#{v.measureView.classCode}">
-
-        <f:facet name = "extjs-props">
-          width: extjsf.ex(12)
-        </f:facet>
-
-        <f:facet name = "label-props">
-          text: 'Код океи', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(1, 4, 1, 0)
-        </f:facet>
-      </x:text-field>
-
-
-      <!-- [class unit] -->
-
-      <x:text-field coid = "${z:vid(v, 'class-unit')}"
-         value = "#{v.measureView.classUnit}">
-
-        <f:facet name = "extjs-props">
-          width: extjsf.ex(12), maskRe: retrade.rdecimal,
-          validator: ZeT.fbind(retrade.vdecimal, retrade, { blank: false }),
-          disabled: ('false' == "#{v.measureView.fractional}")
-        </f:facet>
-
-        <f:facet name = "label-props">
-          text: 'коэфф.', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(1, 4, 1, 4)
-        </f:facet>
-
-        <f:converter for = "valueInput"
-          converterId = "com.tverts:fmt:decimal"/>
-
-      </x:text-field>
-
-    </x:component>
-
     <!-- class code and unit] -->
+
+
+    <x:component coid = "${z:vid(v, '_form_fill_1')}">
+     <f:facet name = "extjs-props">
+       xtype: 'panel', flex: 1, border: false,
+       bodyCls: 'retrade-transparent-panel'
+     </f:facet>
+    </x:component>
 
 
     <!-- [special: submit action] -->
@@ -291,6 +274,31 @@ ${v.checkModelRequested}
         extjsf.bindHandler("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')()
       }
     })
+  })
+
+
+  //~: toggle fractional checkbox
+  extjsf.bind("${z:vid(v, 'fractional')}", '${rootView.extjsDomain}').on('change', function(cb, v)
+  {
+    var cu = extjsf.component("${z:vid(v, 'class-unit')}", '${rootView.extjsDomain}')
+
+    //?: {is fractional}
+    if(v)
+    {
+      cu.validator = ZeT.fbind(retrade.vvolume, retrade, { blank: false })
+      cu.maskRe = retrade.rdecimal
+    }
+    //~: is integer
+    else
+    {
+      cu.validator = ZeT.fbind(retrade.vivolume, retrade, { blank: false })
+      cu.maskRe = retrade.rinteger
+
+      var n = parseFloat(cu.getValue())
+      if(ZeT.isn(n)) cu.setValue('' + Math.floor(n)); else cu.setValue('1')
+    }
+
+    cu.validate()
   })
 
   //]]>

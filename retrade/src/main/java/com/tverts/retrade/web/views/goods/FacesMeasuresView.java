@@ -2,6 +2,8 @@ package com.tverts.retrade.web.views.goods;
 
 /* JavaServer Faces */
 
+import java.math.BigDecimal;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -20,6 +22,7 @@ import static com.tverts.servlet.RequestPoint.request;
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
+import com.tverts.model.SimpleModelBean;
 
 /* com.tverts: actions */
 
@@ -34,11 +37,15 @@ import com.tverts.api.retrade.goods.Measure;
 
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.MeasureUnit;
-import com.tverts.retrade.domain.goods.MeasureUnitModelBean;
 import com.tverts.retrade.domain.goods.MeasureUnitView;
+
+/* com.tverts: retrade data (goods) */
+
+import com.tverts.retrade.web.data.goods.MeasureUnitsModelData;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.SU;
 
@@ -66,7 +73,9 @@ public class FacesMeasuresView extends ModelView
 			throw EX.forbid("Measure Unit of else Domain!");
 
 		//~: create and init the view
-		getModel().setView(new MeasureUnitView().init(mu));
+		getModel().put(MeasureUnitView.class,
+		  new MeasureUnitView().init(mu)
+		);
 
 		return "edit";
 	}
@@ -74,18 +83,19 @@ public class FacesMeasuresView extends ModelView
 	public String gotoCreateMeasureUnit()
 	{
 		//~: create empty view
-		getModel().setView(new MeasureUnitView());
+		getModel().put(MeasureUnitView.class, new MeasureUnitView());
 
 		//~: default class unit
-		getModel().getView().setClassUnit(
-		  new java.math.BigDecimal("1.00"));
+		getMeasureView().setClassUnit(
+		  new java.math.BigDecimal("1.00")
+		);
 
 		return "create";
 	}
 
 	public String gotoCancelEdit()
 	{
-		getModel().setView(null);
+		getModel().put(MeasureUnitView.class, null);
 		return "cancel";
 	}
 
@@ -99,11 +109,6 @@ public class FacesMeasuresView extends ModelView
 		//~: check the code exists
 		formValid = !checkCodeExists(getMeasureView().getCode());
 		if(!formValid) return null;
-
-		//?: {is not fractional} set default class unit
-		if(!getMeasureView().isFractional())
-			getMeasureView().setClassUnit(
-			  java.math.BigDecimal.ONE.setScale(2));
 
 		MeasureUnit mu;
 
@@ -135,13 +140,23 @@ public class FacesMeasuresView extends ModelView
 		//~: class code
 		m.setClassCode(getMeasureView().getClassCode());
 
-		//~: class unit
-		m.setClassUnit(getMeasureView().getClassUnit());
-		if(m.getClassUnit() == null)
-			m.setClassUnit(new java.math.BigDecimal("1.0"));
-
 		//~: fractional flag
 		m.setFractional(getMeasureView().isFractional());
+
+		//~: class unit
+		m.setClassUnit(getMeasureView().getClassUnit());
+		if(m.getClassUnit() == null) if(m.isFractional())
+			m.setClassUnit(BigDecimal.ONE.setScale(1));
+		else
+			m.setClassUnit(BigDecimal.ONE.setScale(0));
+		EX.assertx(CMP.grZero(m.getClassUnit()));
+
+		//?: {is integer} set zero scale
+		if(!m.isFractional())
+			m.setClassUnit(m.getClassUnit().setScale(0));
+		else if(m.getClassUnit().scale() <= 0)
+			m.setClassUnit(m.getClassUnit().setScale(1));
+
 
 		//!: update the ox-measure
 		mu.updateOx();
@@ -167,16 +182,17 @@ public class FacesMeasuresView extends ModelView
 
 	/* public: view interface */
 
-	public MeasureUnitModelBean getModel()
+	public SimpleModelBean getModel()
 	{
-		return (MeasureUnitModelBean) super.getModel();
+		return (SimpleModelBean) super.getModel();
 	}
 
 	public MeasureUnitView getMeasureView()
 	{
-		if(getModel().getView() == null)
-			throw EX.state("Edit view of Measure Unit not present!");
-		return getModel().getView();
+		return EX.assertn(
+		  getModel().getx(MeasureUnitView.class),
+		  "Edit view of Measure Unit not present!"
+		);
 	}
 
 	public String getEditWindowTitle()
@@ -222,16 +238,25 @@ public class FacesMeasuresView extends ModelView
 
 	/* protected: ModelView interface */
 
-	protected MeasureUnitModelBean createModel()
+	protected SimpleModelBean createModel()
 	{
-		MeasureUnitModelBean mb = new MeasureUnitModelBean();
+		SimpleModelBean mb = new SimpleModelBean();
 
+		//~: domain
 		mb.setDomain(getDomainKey());
+
+		//~: marker
+		mb.put(MeasureUnit.class, true);
+
+		//~: data with the measures list
+		mb.setDataClass(MeasureUnitsModelData.class);
+
 		return mb;
 	}
 
 	protected boolean isRequestModelMatch(ModelBean model)
 	{
-		return (model instanceof MeasureUnitModelBean);
+		return (model instanceof SimpleModelBean) &&
+		  Boolean.TRUE.equals(((SimpleModelBean)model).get(MeasureUnit.class));
 	}
 }
