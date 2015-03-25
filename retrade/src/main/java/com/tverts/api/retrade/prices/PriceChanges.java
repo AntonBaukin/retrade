@@ -2,8 +2,10 @@ package com.tverts.api.retrade.prices;
 
 /* Java */
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /* Java API for XML Binding */
 
@@ -24,7 +26,8 @@ import com.tverts.api.retrade.document.Document;
  */
 @XmlRootElement(name = "price-changes")
 @XmlType(name = "price-changes", propOrder = {
-  "list", "XList", "oldPrices", "newPrices", "firmPrices"
+  "list", "XList", "oldPrices", "newPrices",
+  "firmPrices", "groupChanges"
 })
 public class PriceChanges extends Document
 {
@@ -124,5 +127,22 @@ public class PriceChanges extends Document
 	public void setFirmPrices(List<FirmGoodPrice> firmPrices)
 	{
 		this.firmPrices = firmPrices;
+	}
+
+	/**
+	 * Values of price change percents
+	 * by the Good Groups.
+	 */
+	@XmlElement(name = "group-changes")
+	public Map<String, BigDecimal> getGroupChanges()
+	{
+		return groupChanges;
+	}
+
+	private Map<String, BigDecimal> groupChanges;
+
+	public void setGroupChanges(Map<String, BigDecimal> groupChanges)
+	{
+		this.groupChanges = groupChanges;
 	}
 }

@@ -119,19 +119,34 @@ public class      GenReprice
 		this.maxGoods = n;
 	}
 
-	@Param(descr = "Integer (0; 100) of the good price delta " +
-	  "related to the main price list")
-	public int getCostsDelta()
+	@Param(descr = "Integer of the good price delta minimum percent " +
+	  "(may be negative, not zero)")
+	public int getCostsDeltaMin()
 	{
-		return costsDelta;
+		return costsDeltaMin;
 	}
 
-	private int costsDelta = 10;
+	private int costsDeltaMin = -5;
 
-	public void setCostsDelta(int n)
+	public void setCostsDeltaMin(int n)
 	{
-		EX.assertx((n > 0) & (n < 100));
-		this.costsDelta = n;
+		EX.assertx(n != 0);
+		this.costsDeltaMin = n;
+	}
+
+	@Param(descr = "Integer of the good price delta maximum percent " +
+	  "(must be positive, not zero)")
+	public int getCostsDeltaMax()
+	{
+		return costsDeltaMax;
+	}
+
+	private int costsDeltaMax = 25;
+
+	public void setCostsDeltaMax(int n)
+	{
+		EX.assertx(n > 0);
+		this.costsDeltaMax = n;
 	}
 
 	@Param(descr = "Integer [0; 100] of the persent of the goods not in " +
@@ -217,33 +232,53 @@ public class      GenReprice
 			//=: good unit
 			pc.setGoodUnit(gp.getGoodUnit());
 
-			//?: {the good is not removed}
-			if(gp.getPrice() != null)
+			//?: {the good is removed}
+			if(gp.getPrice() == null)
 			{
-				//~: variate the cost value
-				int d = 100 - costsDelta + ctx.gen().nextInt(2*costsDelta + 1);
-				BigDecimal c = gp.getPrice().multiply(new BigDecimal(d)).scaleByPowerOfTen(-2);
-
-				//?: {scale the cost to .XY}
-				if(c.scale() != 2)
-					c = c.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-
-				//?: {good is added (from the main list)}
-				if(!CMP.eq(pl, mn) && CMP.eq(pl, gp.getPriceList()))
-					LU.I(log(ctx), "--> added good [",
-					  gp.getGoodUnit().getCode(), "], price: ", c);
-				//~: the price was changed
-				else
-					LU.I(log(ctx), "--> re-price good [",
-					  gp.getGoodUnit().getCode(), "] from: [",
-					  gp.getPrice(), "] to: [", c, "]");
-
-				//=: the new price
-				pc.setPriceNew(c);
-			}
-			//~: the good was removed
-			else
 				LU.I(log(ctx), "--> removed good [", gp.getGoodUnit().getCode(), "]");
+				continue;
+			}
+
+			BigDecimal c; //<-- good new cost
+
+			//?: {good has group}
+			String g; if((g = pc.getGoodUnit().getGroup()) != null)
+			{
+				if(rd.getOx().getGroupChanges() == null)
+					rd.getOx().setGroupChanges(new HashMap<String, BigDecimal>(11));
+
+				BigDecimal p; if((p = rd.getOx().getGroupChanges().get(g)) == null)
+				{
+					p = genChangePercent(ctx);
+					rd.getOx().getGroupChanges().put(g, p);
+					LU.I(log(ctx), "--> good group [", g, "] = ", p, "%");
+				}
+
+				c = new BigDecimal(100).add(p);
+			}
+			//~: variate directly
+			else
+				c = new BigDecimal(100).add(genChangePercent(ctx));
+
+			//~: multiply the final cost
+			c = gp.getPrice().multiply(c).scaleByPowerOfTen(-2);
+
+			//?: {scale the cost to .XY}
+			if(c.scale() != 2)
+				c = c.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+
+			//?: {good is added (from the main list)}
+			if(!CMP.eq(pl, mn) && CMP.eq(pl, gp.getPriceList()))
+				LU.I(log(ctx), "--> added good [",
+				  gp.getGoodUnit().getCode(), "], price: ", c);
+				//~: the price was changed
+			else
+				LU.I(log(ctx), "--> re-price good [",
+				  gp.getGoodUnit().getCode(), "] from: [",
+				  gp.getPrice(), "] to: [", c, "]");
+
+			//=: the new price
+			pc.setPriceNew(c);
 		}
 	}
 
@@ -362,5 +397,15 @@ public class      GenReprice
 		}
 
 		return res;
+	}
+
+	protected BigDecimal      genChangePercent(GenCtx ctx)
+	{
+		EX.assertx(costsDeltaMin < costsDeltaMax);
+
+		int d = 0; while(d == 0)
+			d = costsDeltaMin + ctx.gen().nextInt(costsDeltaMax - costsDeltaMin + 1);
+
+		return new BigDecimal(d);
 	}
 }
