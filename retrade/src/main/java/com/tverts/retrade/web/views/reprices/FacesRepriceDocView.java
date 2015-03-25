@@ -1,5 +1,10 @@
 package com.tverts.retrade.web.views.reprices;
 
+/* Java */
+
+import java.math.BigDecimal;
+import java.util.Map;
+
 /* JavaServer Faces */
 
 import javax.faces.bean.ManagedBean;
@@ -28,6 +33,7 @@ import com.tverts.retrade.domain.prices.RepriceDocModelBean;
 /* com.tverts: support */
 
 import com.tverts.support.DU;
+import com.tverts.support.SU;
 
 
 /**
@@ -117,6 +123,26 @@ public class FacesRepriceDocView extends UnityModelView
 	{
 		return (getEntity().getContractors().size() != 1)?(null):
 		  getEntity().getContractors().iterator().next();
+	}
+
+	public boolean isHasGroups()
+	{
+		return (getEntity().getOx().getGroupChanges() != null);
+	}
+
+	public String getGroupsData()
+	{
+		Map<String, BigDecimal> gs = getEntity().getOx().getGroupChanges();
+		StringBuilder            s = new StringBuilder(128);
+
+		if(gs != null) for(String g : gs.keySet())
+		{
+			if(s.length() != 0) s.append(", ");
+			s.append("{key: '").append(SU.jss(g)).
+			  append("', value: ").append(gs.get(g)).append('}');
+		}
+
+		return s.toString();
 	}
 
 

@@ -12,7 +12,22 @@ ZeT.init('init: retrade.data', function()
 	//~: make animation slower
 	Ext.fx.Manager.interval = 40; //<- 25 fps
 
-	//<: form validation response model
+
+	//~: key-value model
+	Ext.define('retrade.model.KeyValue', {
+	  extend: 'Ext.data.Model',
+
+	  idProperty: 'key',
+
+	  fields: [
+
+	    {name: 'key',   type: 'string'},
+	    {name: 'value', type: 'string'}
+	  ]
+	})
+
+
+	//~: form validation response model
 
 	Ext.define('retrade.model.FormValidation', {
 	  extend: 'Ext.data.Model',
@@ -22,12 +37,9 @@ ZeT.init('init: retrade.data', function()
 	  fields: [
 
 	    {name: 'target', type: 'string', mapping: '@target'},
-	    {name: 'error', type: 'string'}
-
+	    {name: 'error',  type: 'string'}
 	  ]
 	})
-
-	//>: form validation response model
 
 
 	//<: retrade documents view model, columns and reader
@@ -129,13 +141,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Код накладной', dataIndex: 'invoiceCode', sortable: false,
-		   width: extjsf.ex(18), flex: 0
+		   width: extjsf.ex(18)
 		 },
 
 		 {
 		   text: "Дата и время", dataIndex: 'invoiceDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
@@ -168,12 +180,12 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'invoiceDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Состояние", dataIndex: 'invoiceStateName', sortable: false,
-		   width: extjsf.ex(18), flex: 0
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -190,13 +202,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Код накладной', dataIndex: 'invoiceCode', sortable: false,
-		   width: extjsf.ex(18), flex: 0
+		   width: extjsf.ex(18)
 		 },
 
 		 {
 		   text: "Дата и время", dataIndex: 'invoiceDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
@@ -255,7 +267,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -265,17 +277,17 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
 		   text: "Цена", dataIndex: 'volumeCost', sortable: false,
-		   width: extjsf.ex(16), align: 'right', flex: 0,
+		   width: extjsf.ex(16), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -292,7 +304,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -302,23 +314,23 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
 		   text: "Цена всего", dataIndex: 'volumeCost', sortable: false,
-		   width: extjsf.ex(16), align: 'right', flex: 0,
+		   width: extjsf.ex(16), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: "Цена 1ед", dataIndex: 'unitCost', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -335,7 +347,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -345,12 +357,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -367,7 +379,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Цена", dataIndex: 'volumeCost', sortable: false,
-		   width: extjsf.ex(16), align: 'right', flex: 0,
+		   width: extjsf.ex(16), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -406,7 +418,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -416,12 +428,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -439,19 +451,19 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Цена всего", dataIndex: 'volumeCost', sortable: false,
-		   width: extjsf.ex(16), align: 'right', flex: 0,
+		   width: extjsf.ex(16), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: "Цена 1ед", dataIndex: 'unitCost', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: "А/п", dataIndex: 'needCalc', sortable: false,
-		   width: extjsf.ex(8), flex: 0, renderer: needCalcRenderer
+		   width: extjsf.ex(8),  renderer: needCalcRenderer
 		 }
 		];
 	})
@@ -467,7 +479,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -477,12 +489,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -498,7 +510,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -508,17 +520,17 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Тип", dataIndex: 'goodSemiReady', sortable: false,
-		   width: extjsf.ex(6), flex: 0, renderer: calcSemiReadyRenderer
+		   width: extjsf.ex(6),  renderer: calcSemiReadyRenderer
 		 },
 
 		 {
 		   text: "Объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -534,7 +546,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -544,12 +556,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -560,7 +572,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -570,22 +582,22 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Ост. объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
 		   text: "Коррекция", dataIndex: 'goodVolumeDelta', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Статус", dataIndex: 'goodVolumeDelta', sortable: false,
-		   width: extjsf.ex(14), flex: 0, renderer : function(v)
+		   width: extjsf.ex(14),  renderer : function(v)
 		   {
 		     if(ZeTS.ises(v)) return '';
 		     var n = parseFloat(v);
@@ -601,7 +613,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -611,12 +623,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Отс. объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -632,7 +644,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -642,23 +654,23 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Тип", dataIndex: 'goodSemiReady', sortable: false,
-		   width: extjsf.ex(6), flex: 0, renderer: calcSemiReadyRenderer
+		   width: extjsf.ex(6),  renderer: calcSemiReadyRenderer
 		 },
 
 		 {
 		   text: "Формула от", dataIndex: 'calcDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'volumeUnitName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 
 		];
@@ -722,7 +734,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -753,7 +765,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -767,17 +779,17 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Объём', dataIndex: 'volume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
 		   text: 'Себест.', dataIndex: 'restCost', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -789,7 +801,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -799,12 +811,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Объём', dataIndex: 'volume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -815,7 +827,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -825,12 +837,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
 		   text: 'Цена', dataIndex: 'price', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -870,18 +882,18 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Открыта", dataIndex: 'openTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Закрыта", dataIndex: 'closeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Тип товара", dataIndex: 'semiReady', sortable: false,
-		   width: extjsf.ex(18), flex: 0, renderer: function(v)
+		   width: extjsf.ex(18),  renderer: function(v)
 		   {
 				return v?('Полуфабрикат'):('Продукт/ингредиент');
 		   }
@@ -945,7 +957,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -955,22 +967,22 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Объём", dataIndex: 'volume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'measureName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
 		   text: "Тип", dataIndex: 'goodSemiReady', sortable: false,
-		   width: extjsf.ex(6), flex: 0, renderer: calcSemiReadyRenderer
+		   width: extjsf.ex(6),  renderer: calcSemiReadyRenderer
 		 },
 
 		 {
 		   text: "Прод.", dataIndex: 'semiReady', sortable: false,
-		   width: extjsf.ex(8), flex: 0, renderer: needCalcRenderer
+		   width: extjsf.ex(8),  renderer: needCalcRenderer
 		 }
 		];
 	})
@@ -1007,7 +1019,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -1017,7 +1029,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "ОКЕИ", dataIndex: 'classCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 
 		];
@@ -1062,7 +1074,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -1139,7 +1151,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(22), flex: 0
+		   width: extjsf.ex(22)
 		 },
 
 		 {
@@ -1149,13 +1161,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Цена', dataIndex: 'price', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -1166,7 +1178,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -1184,13 +1196,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Цена', dataIndex: 'price', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -1201,7 +1213,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -1211,7 +1223,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Цена', dataIndex: 'price', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -1246,6 +1258,7 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'priceNew',         type: 'string'},
 	    {name: 'goodCode',         type: 'string'},
 	    {name: 'goodName',         type: 'string'},
+	    {name: 'goodGroup',        type: 'string'},
 	    {name: 'measureName',      type: 'string'},
 	    {name: 'priceListOld',     type: 'string'},
 	    {name: 'priceListOldCode', type: 'string'},
@@ -1264,7 +1277,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'changeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
@@ -1274,13 +1287,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Цена до', dataIndex: 'priceOld', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Цена после', dataIndex: 'priceNew', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -1308,29 +1321,40 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   width: extjsf.ex(24), flex: 1
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 2
+		 },
+
+		 {
+		   text: "Группа", dataIndex: 'goodGroup', sortable: true, flex: 1
+		 },
+
+		 {
+		   text: 'Изм. %', dataIndex: 'priceNew', sortable: false,
+		   width: extjsf.ex(10), align: 'right', renderer: function(v, meta, rec)
+		   {
+				return retrade.fpercent(v, rec.get('priceOld'))
+		   }
 		 },
 
 		 {
 		   text: 'Цена до', dataIndex: 'priceOld', sortable: false,
-		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   width: extjsf.ex(14), align: 'right',
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Цена после', dataIndex: 'priceNew', sortable: false,
-		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   width: extjsf.ex(14), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: "Ед. изм.", dataIndex: 'measureName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -1342,20 +1366,19 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   width: extjsf.ex(24), flex: 2
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 2
 		 },
 
 		 {
-		   text: "Пр.-лист до", dataIndex: 'priceListOldName', sortable: false,
-		   width: extjsf.ex(14), flex: 1, renderer: function(v, meta, rec)
+		   text: "Пр.-лист до", dataIndex: 'priceListOldName',
+		   sortable: false, flex: 1, renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
-				  '№', rec.get('priceListOldCode'), '; ', v
+				  '[', rec.get('priceListOldCode'), '] ', v
 				)), '"' );
 
 				return v;
@@ -1367,7 +1390,7 @@ ZeT.init('init: retrade.data', function()
 		   width: extjsf.ex(14), flex: 1, renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
-				  '№', rec.get('priceListNewCode'), '; ', v
+				  '[', rec.get('priceListNewCode'), '] ', v
 				)), '"' );
 
 				return v;
@@ -1375,20 +1398,28 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
+		   text: 'Изм. %', dataIndex: 'priceNew', sortable: false,
+		   width: extjsf.ex(10), align: 'right', renderer: function(v, meta, rec)
+		   {
+				return retrade.fpercent(v, rec.get('priceOld'))
+		   }
+		 },
+
+		 {
 		   text: 'Цена до', dataIndex: 'priceOld', sortable: false,
-		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right',
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Цена после', dataIndex: 'priceNew', sortable: false,
-		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right',
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: "Ед. изм.", dataIndex: 'measureName', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 }
 		];
 	})
@@ -1407,7 +1438,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -1417,18 +1448,18 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Ед. изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(8), flex: 0
+		   width: extjsf.ex(8)
 		 },
 
 		 {
 		   text: 'Себест.', dataIndex: 'restCost', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Цена', dataIndex: 'price', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -1465,17 +1496,17 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'changeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Код документа", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(20), flex: 0
+		   width: extjsf.ex(20)
 		 },
 
 		 {
 		   text: "Прайс лист", dataIndex: 'priceList', sortable: false,
-		   width: extjsf.ex(26), flex: 0
+		   width: extjsf.ex(26)
 		 },
 
 		 {
@@ -1522,7 +1553,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -1543,7 +1574,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -1553,19 +1584,19 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Продажа', dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   width: extjsf.ex(14), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Закупка', dataIndex: 'expense', sortable: false,
-		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   width: extjsf.ex(14), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Сальдо', dataIndex: 'balance', sortable: false,
-		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   width: extjsf.ex(14), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 
@@ -1633,12 +1664,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Логин", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(22), flex: 0
+		   width: extjsf.ex(22)
 		 },
 
 		 {
 		   text: "Тип", dataIndex: 'typeNameLo', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -1649,13 +1680,13 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Открыт", dataIndex: 'createTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Блокирован", dataIndex: 'closeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 }
 		];
 	})
@@ -1666,7 +1697,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Логин", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(22), flex: 0
+		   width: extjsf.ex(22)
 		 },
 
 		 {
@@ -1677,13 +1708,13 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Открыт", dataIndex: 'createTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Блокирован", dataIndex: 'closeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 }
 		];
 	})
@@ -1796,7 +1827,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Назначено", dataIndex: 'ableTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 }
 		];
 	})
@@ -1839,7 +1870,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Создано", dataIndex: 'createTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 }
 		];
 	})
@@ -1992,18 +2023,18 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код чека", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(22), flex: 0
+		   width: extjsf.ex(22)
 		 },
 
 		 {
 		   text: "Дата и время", dataIndex: 'time', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Опл.", dataIndex: 'payFlag', sortable: false,
-		   width: extjsf.ex(8), flex: 0, renderer: function(v)
+		   width: extjsf.ex(8),  renderer: function(v)
 		   {
 				var c = v && (v.indexOf('C') != -1);
 				var b = v && (v.indexOf('B') != -1);
@@ -2017,7 +2048,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Сумма", dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(14), align: 'right', flex: 0,
+		   width: extjsf.ex(14), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -2068,7 +2099,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -2078,22 +2109,22 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Склад", dataIndex: 'storeCode', sortable: false,
-		   width: extjsf.ex(14), flex: 0
+		   width: extjsf.ex(14)
 		 },
 
 		 {
 		   text: 'Объём', dataIndex: 'volume', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0
+		   width: extjsf.ex(12), align: 'right'
 		 },
 
 		 {
 		   text: "Изм.", dataIndex: 'measureCode', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
 		   text: "Цена", dataIndex: 'cost', sortable: false,
-		   width: extjsf.ex(12), align: 'right', flex: 0,
+		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -2135,7 +2166,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -2155,19 +2186,19 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Приход', dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Расход', dataIndex: 'expense', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Баланс', dataIndex: 'balance', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 
@@ -2180,7 +2211,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -2190,19 +2221,19 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Приход', dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Расход', dataIndex: 'expense', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Баланс', dataIndex: 'balance', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 
@@ -2253,7 +2284,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Тип", dataIndex: 'typeFlag', sortable: false,
-		   width: extjsf.ex(16), flex: 0, renderer: function(v)
+		   width: extjsf.ex(16),  renderer: function(v)
 		   {
 				if(v == 'I') return 'Только приход';
 				if(v == 'E') return 'Только расход';
@@ -2265,30 +2296,30 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Открыт", dataIndex: 'openTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: "Закрыт", dataIndex: 'closeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
 		   text: 'Приход', dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Расход', dataIndex: 'expense', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Баланс', dataIndex: 'balance', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 
@@ -2320,7 +2351,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Тип", dataIndex: 'typeFlag', sortable: false,
-		   width: extjsf.ex(16), flex: 0, hidden: true, renderer: function(v)
+		   width: extjsf.ex(16),  hidden: true, renderer: function(v)
 		   {
 				if(v == 'I') return 'Только приход';
 				if(v == 'E') return 'Только расход';
@@ -2332,30 +2363,30 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Открыт", dataIndex: 'openTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), hidden: true, flex: 0
+		   width: extjsf.ex(16), hidden: true
 		 },
 
 		 {
 		   text: "Закрыт", dataIndex: 'closeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), hidden: true, flex: 0
+		   width: extjsf.ex(16), hidden: true
 		 },
 
 		 {
 		   text: 'Приход', dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Расход', dataIndex: 'expense', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Баланс', dataIndex: 'balance', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 
@@ -2487,7 +2518,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'time', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
@@ -2497,7 +2528,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Уч. счёт", dataIndex: 'selfAccountCode', sortable: false,
-		   width: extjsf.ex(18), flex: 0, renderer: function(v, meta, rec)
+		   width: extjsf.ex(18),  renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
 				  '№', v, ', ', rec.get('selfAccountName')
@@ -2509,7 +2540,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Пл. счёт", dataIndex: 'selfWayName', sortable: false,
-		   width: extjsf.ex(18), flex: 0, hidden: true, renderer: function(v, meta)
+		   width: extjsf.ex(18),  hidden: true, renderer: function(v, meta)
 		   {
 				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"';
 				return v;
@@ -2524,18 +2555,18 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата ордера", dataIndex: 'orderTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y'),
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
 		   text: 'Приход', dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Расход', dataIndex: 'expense', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -2558,7 +2589,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'time', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
@@ -2568,7 +2599,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Уч. счёт", dataIndex: 'selfAccountCode', sortable: false,
-		   width: extjsf.ex(18), flex: 0, renderer: function(v, meta, rec)
+		   width: extjsf.ex(18),  renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
 				  '№', v, ', ', rec.get('selfAccountName')
@@ -2580,7 +2611,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Пл. счёт", dataIndex: 'selfWayName', sortable: false,
-		   width: extjsf.ex(18), flex: 0, hidden: true, renderer: function(v, meta)
+		   width: extjsf.ex(18),  hidden: true, renderer: function(v, meta)
 		   {
 				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"';
 				return v;
@@ -2589,13 +2620,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Ордер", dataIndex: 'orderCode', sortable: false,
-		   width: extjsf.ex(18), flex: 0
+		   width: extjsf.ex(18)
 		 },
 
 		 {
 		   text: "Дата ордера", dataIndex: 'orderTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y'),
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -2612,13 +2643,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Приход', dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Расход', dataIndex: 'expense', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -2640,7 +2671,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'time', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16), flex: 0
+		   width: extjsf.ex(16)
 		 },
 
 		 {
@@ -2650,7 +2681,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Уч. счёт", dataIndex: 'selfAccountCode', sortable: false,
-		   width: extjsf.ex(18), flex: 0, renderer: function(v, meta, rec)
+		   width: extjsf.ex(18),  renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
 				  '№', v, ', ', rec.get('selfAccountName')
@@ -2662,7 +2693,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Пл. счёт", dataIndex: 'selfWayName', sortable: false,
-		   width: extjsf.ex(18), flex: 0, hidden: true, renderer: function(v, meta)
+		   width: extjsf.ex(18),  hidden: true, renderer: function(v, meta)
 		   {
 				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"';
 				return v;
@@ -2671,13 +2702,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Ордер", dataIndex: 'orderCode', sortable: false,
-		   width: extjsf.ex(18), flex: 0
+		   width: extjsf.ex(18)
 		 },
 
 		 {
 		   text: "Дата ордера", dataIndex: 'orderTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y'),
-		   width: extjsf.ex(12), flex: 0
+		   width: extjsf.ex(12)
 		 },
 
 		 {
@@ -2722,13 +2753,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Приход', dataIndex: 'income', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Расход', dataIndex: 'expense', sortable: false,
-		   width: extjsf.ex(18), align: 'right', flex: 0,
+		   width: extjsf.ex(18), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -2766,7 +2797,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Тип", dataIndex: 'system', sortable: false,
-		   width: extjsf.ex(5), flex: 0, renderer: function(v, meta)
+		   width: extjsf.ex(5),  renderer: function(v, meta)
 		   {
 				var s = !!v; var p = true;
 
@@ -2918,7 +2949,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Формат', dataIndex: 'format', sortable: false,
-		   width: extjsf.ex(8), flex: 0, renderer: function(v)
+		   width: extjsf.ex(8),  renderer: function(v)
 		   {
 				switch(v) {
 					case 'XLS'   : return 'Excel';
@@ -3073,6 +3104,30 @@ var retrade = ZeT.define('retrade',
 		return v.concat((v.length && p.length && v != '-')?(x):(''), p, s);
 	},
 
+	fpercent         : function(a, b)
+	{
+		if(ZeT.iss(a))
+		{
+			if(ZeTS.ises(a)) return ''
+			a = parseFloat(a)
+		}
+
+		if(ZeT.iss(b))
+		{
+			if(ZeTS.ises(b)) return ''
+			b = parseFloat(b)
+		}
+
+		if(!ZeT.isn(a) || !ZeT.isn(b))  return ''
+
+		var p = Math.round(10000.0 * (a - b) / b)
+		if(!ZeT.isn(p)) return ''
+
+		var d = '' + p % 100;
+		if(d.length == 1) d = '0' + d
+
+		return '' + Math.floor(p * 0.01) + '.' + d
+	},
 
 	/**
 	 * Iterates over the DOM tree performing currency formatting on

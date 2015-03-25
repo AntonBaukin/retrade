@@ -175,6 +175,18 @@ public class PriceChangeView implements Serializable
 		this.goodName = goodName;
 	}
 
+	public String getGoodGroup()
+	{
+		return goodGroup;
+	}
+
+	private String goodGroup;
+
+	public void setGoodGroup(String goodGroup)
+	{
+		this.goodGroup = goodGroup;
+	}
+
 	public String getMeasureName()
 	{
 		return measureName;
@@ -324,6 +336,9 @@ public class PriceChangeView implements Serializable
 
 		//~: good name
 		goodName = gu.getName();
+
+		//~: good group
+		goodGroup = gu.getGroup();
 
 		return this;
 	}

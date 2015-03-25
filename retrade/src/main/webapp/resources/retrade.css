@@ -845,6 +845,12 @@ table.retrade-info-table.retrade-info-table-reprice-doc
   width: 0.01%;
 }
 
+table.retrade-info-table.retrade-info-table-reprice-doc td,
+  table.retrade-info-table.retrade-info-table-reprice-price-list td
+{
+  padding-bottom: 2px;
+}
+
 td.retrade-info-value.retrade-info-value-reprice-reason div
 {
   font-size: 11px; white-space: normal;
