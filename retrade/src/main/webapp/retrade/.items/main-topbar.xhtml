@@ -832,27 +832,10 @@
     extjsf.bindHandler("${z:vid(localView, 'retrade-create-reprice-doc')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:reprice-doc:');
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-        xtype: 'window', title: 'Загрузка...',
-        x: extjsf.pt(105), width: extjsf.pt(520), height: extjsf.pt(360),
-        layout: 'fit', autoShow: true, collapsible: true,
-
-        loader: {
-          url: "${z:url('/go/retrade/reprice-docs/edit')}",
-          ajaxOptions: { method: 'GET' },
-          autoLoad: true, scripts: true,
-
-          params: {
-            '${localView.viewModeParam}': 'body',
-            '${rootView.extjsDomainParam}': domain,
-            create: true
-          }
-        }
+      retrade_open_window({ url: '/reprice-docs/edit',
+        tempDomain: 'retrade-create-doc:price-change', collapsible: true,
+        box: {widthpt: 580, heightpt: 360}, params: {create: true}
       })
-
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
   </script>

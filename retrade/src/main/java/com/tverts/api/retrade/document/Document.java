@@ -89,7 +89,7 @@ public abstract class Document
 		return remarks;
 	}
 
-	private String  remarks;
+	private String remarks;
 
 	public void setRemarks(String remarks)
 	{

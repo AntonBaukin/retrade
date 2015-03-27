@@ -741,9 +741,7 @@ public class ActReprice extends ActionBuilderReTrade
 		public ActionUpdateRepriceDoc(ActionTask task, RepriceDocEdit re)
 		{
 			super(task);
-
-			if(re == null) throw new IllegalArgumentException();
-			this.repriceEdit = re;
+			this.repriceEdit = EX.assertn(re);
 		}
 
 
@@ -769,11 +767,11 @@ public class ActReprice extends ActionBuilderReTrade
 
 			//~: price list
 			rd.setPriceList(bean(GetPrices.class).
-			  getPriceList(re.getPriceListKey()));
-			if(rd.getPriceList() == null) throw new IllegalArgumentException();
+			  getPriceList(EX.assertn(re.getPriceListKey())));
+			EX.assertn(rd.getPriceList());
 
 			//~: change reason
-			pc.setRemarks(re.getChangeReason());
+			pc.setRemarks(SU.s2s(re.getChangeReason()));
 
 			//~: assign the changes
 			assignChanges();
@@ -849,8 +847,7 @@ public class ActReprice extends ActionBuilderReTrade
 			for(int i = 0;(i < re.getPriceChanges().size());i++)
 			{
 				String      gc = re.getPriceChanges().get(i).getGoodCode();
-				PriceChange pc = pcm.get(gc);
-				if(pc == null) throw EX.state();
+				PriceChange pc = EX.assertn(pcm.get(gc));
 
 				changes.add(pc);
 				pc.setDocIndex(i);

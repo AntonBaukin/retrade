@@ -23,11 +23,18 @@ ${v.checkModelRequestedWithRedirect}
 
   </script>
 
+
+  <f:facet name = "extjs-props">
+    layout: {type: 'vbox', align: 'stretch'},
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
   <f:facet name = "toolbar-props">
     xtype: 'panel', bodyPadding: extjsf.pt(2),
     layout: {type: 'hbox', align: 'middle'},
     bodyCls: 'retrade-toolbar-panel'
   </f:facet>
+
 
   <!-- [toolbar -->
 
@@ -70,14 +77,28 @@ ${v.checkModelRequestedWithRedirect}
 
 
     <!-- [delete goods button] -->
-
     <x:component coid = "${z:vid(v, 'delete-goods')}">
       <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Удалить', margin: extjsf.pts(0, 0, 0, 8),
+        tooltipType: 'title', tooltip: 'Удалить из документа выделенные товары'
+      </f:facet>
+    </x:component>
 
-        xtype: 'button', text: 'Удалить',
-        tooltipType: 'title', tooltip: 'Удалить из документа выделенные товары',
-        margin: extjsf.pts(0, 0, 0, 4)
 
+    <!-- [add good button] -->
+    <x:component coid = "${z:vid(v, 'add-good')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Добавить', margin: extjsf.pts(0, 0, 0, 4),
+        tooltipType: 'title', tooltip: 'Добавьте товар, для которого требуется изменить цену'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [toggle comment] -->
+    <x:component coid = "${z:vid(v, 'toggle-comment')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Комментарий',
+        enableToggle: true, margin: extjsf.pts(0, 0, 0, 8)
       </f:facet>
     </x:component>
 
@@ -86,19 +107,6 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "extjs-props">
         xtype: 'panel', flex: 1, frame: false, border: false,
         bodyCls: 'retrade-toolbar-panel'
-      </f:facet>
-    </x:component>
-
-
-    <!-- [add good button] -->
-
-    <x:component coid = "${z:vid(v, 'add-good')}">
-      <f:facet name = "extjs-props">
-
-        xtype: 'button', text: 'Добавить',
-        margin: extjsf.pts(0, 4, 0, 0),
-        tooltipType: 'title', tooltip: 'Добавьте товар, для которого требуется изменить цену'
-
       </f:facet>
     </x:component>
 
@@ -122,12 +130,9 @@ ${v.checkModelRequestedWithRedirect}
   <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'form')}">
 
     <f:facet name = "extjs-props">
-
-      region: 'north', border: false,
-      bodyPadding: extjsf.pt(2),
-      bodyCls: 'retrade-form-panel',
-      layout: {type: 'table', columns: 4}
-
+      border: false, bodyPadding: extjsf.pt(2),
+      layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-form-panel'
     </f:facet>
 
 
@@ -137,15 +142,15 @@ ${v.checkModelRequestedWithRedirect}
      value = "#{v.model.view.code}">
 
       <f:facet name = "extjs-props">
-        margin: extjsf.pts(0, 6, 0, 0), width: extjsf.ex(22),
-        allowBlank: false, validator: function()
+        width: extjsf.ex(16), allowBlank: false, validator: function()
         {
           return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
         }
       </f:facet>
 
       <f:facet name = "label-props">
-        text: 'Код', cls: 'retrade-info-title-label'
+        text: 'Код', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 0)
       </f:facet>
     </x:text-field>
 
@@ -157,12 +162,12 @@ ${v.checkModelRequestedWithRedirect}
       labels = "#{v.priceListsLabels}">
 
       <f:facet name = "drop-props">
-        width: '100%', componentLayout: 'ux.dropbox100p',
-        allowBlank: false
+        width: extjsf.ex(36)
       </f:facet>
 
       <f:facet name = "label-props">
-        text: 'Прайс-лист', cls: 'retrade-info-title-label'
+        text: 'Прайс-лист', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
       </f:facet>
     </x:drop-list>
 
@@ -181,6 +186,16 @@ ${v.checkModelRequestedWithRedirect}
 
 
   <!-- price change document edit form] -->
+
+
+  <!-- [document comment] -->
+  <x:text-field coid = "${z:vid(v, 'comment')}"
+   value = "#{v.model.view.changeReason}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'textarea', flex: 1, hidden: true
+    </f:facet>
+  </x:text-field>
 
 
   <!-- [price changes table -->
@@ -211,15 +226,15 @@ ${v.checkModelRequestedWithRedirect}
     </f:facet>
   </x:data-store>
 
-
   <x:data-grid coid = "${z:vid(v, 'grid')}"
     storeId = "${z:vid(v, 'store')}">
 
     <f:facet name = "grid-props">
 
-      region: 'center', border: false, margin: extjsf.pts(1, 0, 0, 0),
+      margin: extjsf.pts(1, 0, 0, 0),
+      flex: 1, border: false, pager: false,
       cls: 'retrade-grid-not-mark-dirty',
-      pager: false, sortableColumns: false, enableColumnHide: false,
+      sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
 
       plugins: [{
@@ -342,9 +357,35 @@ ${v.checkModelRequestedWithRedirect}
 
 
         var priceEditor = Ext.create('Ext.form.field.Text', {
-          maskRe: retrade.rdecimal, validator: retrade.vcurrency,
+          maskRe: retrade.rdecimal, validator: retrade.vcurrency, listeners: {
+            specialkey : onSpecialKey, change: function()
+            {
+              var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+              var e = g.retradeEditEvent; if(!e) return
+              e.record.set('fixPrice', true)
+            }
+        }})
+
+        var fixEditor = Ext.create('Ext.form.field.Checkbox', {
           listeners: { specialkey : onSpecialKey }
         });
+
+        function fixRenderer(v, meta)
+        {
+          var t; if(v)
+          {
+             v = 'да'
+             t = 'Цена фиксирована: при автоматическом пересчете она не будет изменена'
+          }
+          else
+          {
+             v = 'нет'
+             t = 'При автоматическом пересчете цена будет изменена'
+          }
+
+          meta.tdAttr = 'title="' + Ext.String.htmlEncode(t) + '"';
+          return v
+        }
 
         return [
 
@@ -355,29 +396,37 @@ ${v.checkModelRequestedWithRedirect}
 
           {
              text: "Код товара", dataIndex: 'goodCode', sortable: false,
-             width: extjsf.ex(16), flex: 0, editor: codeEditor, retradeHasEditor: true
+             width: extjsf.ex(12), editor: codeEditor, retradeHasEditor: true
           },
 
           {
-            text: "Наименование", dataIndex: 'goodName', sortable: false,
-            width: extjsf.ex(24), flex: 1
+            text: "Наименование", dataIndex: 'goodName', flex: 2
           },
 
           {
-            text: "Ед. изм.", dataIndex: 'measureName', sortable: false,
-            width: extjsf.ex(12), flex: 0
+            text: "Группа", dataIndex: 'goodGroup', flex: 1
           },
 
           {
-            text: 'Цена сейчас', dataIndex: 'priceCur', sortable: false,
-            width: extjsf.ex(12), align: 'right', flex: 0,
-            renderer: retrade.fcurrency
+            text: "Ед. изм.", dataIndex: 'measureName',
+            width: extjsf.ex(12), align: 'right'
           },
 
           {
-            text: 'Цена после', dataIndex: 'priceNew', sortable: false,
-            width: extjsf.ex(12), align: 'right', flex: 0,
-            renderer: retrade.fcurrency, editor: priceEditor, retradeHasEditor: true
+            text: 'Цена сейчас', dataIndex: 'priceCur',
+            width: extjsf.ex(12), align: 'right', renderer: retrade.fcurrency
+          },
+
+          {
+            text: 'Цена после', dataIndex: 'priceNew',
+            width: extjsf.ex(12), align: 'right', renderer: retrade.fcurrency,
+            editor: priceEditor, retradeHasEditor: true
+          },
+
+          {
+            text: 'Фикс.', dataIndex: 'fixPrice', width: extjsf.ex(6),
+            align: 'center', editor: fixEditor, retradeHasEditor: true,
+            renderer : fixRenderer
           }
         ]
       })()
@@ -435,16 +484,16 @@ ${v.checkModelRequestedWithRedirect}
     function(goodCodes, priceList)
   {
      extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}')({
-          params: { goodCode : goodCodes, priceList: priceList }
+       params: { goodCode : goodCodes, priceList: priceList }
      })
   }
 
   //~: update goods info
   extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').retradeUpdateGoodsInfo = function(info)
   {
-    var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-    var e = g.retradeEditEvent;
-    var s = g.component().getStore();
+    var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var e = g.retradeEditEvent
+    var s = g.component().getStore()
 
     if(e && (e.field == 'goodCode'))
       g.component().getPlugin('cellediting').completeEdit()
@@ -452,11 +501,12 @@ ${v.checkModelRequestedWithRedirect}
     for(var i = 0;(i < s.count());i++)
     {
        var m = s.getAt(i);
-       var x = info[m.get('goodCode')]; if(!x) continue;
+       var x = info[m.get('goodCode')]; if(!x) continue
 
-       m.set('goodName', x[0]);
-       m.set('measureName', x[1]);
-       m.set('priceCur', x[2]);
+       m.set('goodName', x[0])
+       m.set('goodGroup', x[1])
+       m.set('measureName', x[2])
+       m.set('priceCur', x[3])
     }
   }
 
@@ -496,6 +546,12 @@ ${v.checkModelRequestedWithRedirect}
     ZeT.timeout(200, function() { p.startEdit(row, col) })
   })
 
+  //~: toggle the comment
+  extjsf.bind("${z:vid(v, 'toggle-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+  {
+    extjsf.component("${z:vid(v, 'comment')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
+    extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
+  })
 
   //~: add good when the table is empty
   extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').on('load', function(store)
@@ -588,7 +644,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <ui:fragment rendered = "#{v.codeExists}">
         <field target = "${z:vid(v, 'code')}">
-          <error>Указанный код уже используется в другом Документе Изменения Цен!</error>
+          <error>Указанный код уже используется в другом документе изменения цен!</error>
         </field>
       </ui:fragment>
 

@@ -232,6 +232,9 @@ public class FacesRepriceDocEdit extends ModelView
 			//~: good name
 			s.append("'").append(SU.jss(g.getName())).append("', ");
 
+			//~: good group
+			s.append("'").append(SU.jss(g.getGroup())).append("', ");
+
 			//~: measure code
 			s.append("'").append(SU.jss(m.getCode())).append("', ");
 
