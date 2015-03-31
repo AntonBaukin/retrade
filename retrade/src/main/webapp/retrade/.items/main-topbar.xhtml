@@ -69,20 +69,11 @@
         </x:component>
 
 
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-datas')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Данные и отчёты', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/datas_16.png')}"
-          </f:facet>
-        </x:component>
-
-
         <x:component coid = "${z:vid(localView, 'retrade-main-menu-my-reports')}">
 
           <f:facet name = "extjs-props">
             text: 'Мои отчёты', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/my_reports_16.png')}"
+            iconCls: 'retrade-reports-icon'
           </f:facet>
         </x:component>
 
@@ -100,6 +91,15 @@
               showSeparator: false
             </f:facet>
 
+
+            <x:component coid = "${z:vid(localView, 'retrade-main-menu-datas')}">
+
+              <f:facet name = "extjs-props">
+                text: 'Данные и отчёты', xtype: 'menuitem',
+                iconCls: 'retrade-reports-icon'
+              </f:facet>
+            </x:component>
+
             <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings-users')}">
 
               <f:facet name = "extjs-props">
@@ -113,8 +113,8 @@
 
               <f:facet name = "extjs-props">
                 text: 'Правила доступа', xtype: 'menuitem',
-                icon: "${z:url('/resources/icons/secure_rule_16.png')}",
-                disabled: ${not rootView.isSecure('secure: view: rules')}
+                disabled: ${not rootView.isSecure('secure: view: rules')},
+                iconCls: 'retrade-secrule-icon'
               </f:facet>
             </x:component>
 
@@ -122,8 +122,8 @@
 
               <f:facet name = "extjs-props">
                 text: 'Множества правил ', xtype: 'menuitem',
-                icon: "${z:url('/resources/icons/secure_set_16.png')}",
-                disabled: ${not rootView.isSecure('secure: view: sets')}
+                disabled: ${not rootView.isSecure('secure: view: sets')},
+                iconCls: 'retrade-secset-icon'
               </f:facet>
             </x:component>
           </x:menu>
@@ -231,8 +231,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Учётные счета', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/coins_sigma_16.png')}",
-            disabled: ${not rootView.isSecure('view: accounts')}
+            disabled: ${not rootView.isSecure('view: accounts')},
+            iconCls: 'retrade-accounts-sum-icon'
           </f:facet>
         </x:component>
 
@@ -241,8 +241,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Платёжные счета', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/coins_dot_16.png')}",
-            disabled: ${not rootView.isSecure('view: accounts')}
+            disabled: ${not rootView.isSecure('view: accounts')},
+            iconCls: 'retrade-accounts-pay-icon'
           </f:facet>
         </x:component>
 

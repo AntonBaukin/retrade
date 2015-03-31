@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Store" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 160 160" enable-background="new 0 0 160 160" xml:space="preserve">
-<path fill="none" stroke="#4D4E4E" stroke-width="15" stroke-miterlimit="10" d="M118.409,152.634H41.591
-	c-0.931,0-1.739-0.66-1.949-1.592L25,85.902l-12.97-8.877c-1.05-0.719-1.197-2.244-0.305-3.16l61.478-58.494
-	c3.835-3.649,9.76-3.649,13.595,0l61.478,58.494c0.892,0.916,0.745,2.442-0.305,3.16L135,85.902l-14.642,65.141
-	C120.149,151.974,119.341,152.634,118.409,152.634z"/>
-<rect x="65" y="85" fill="none" stroke="#4D4E4E" stroke-width="10" stroke-miterlimit="10" width="30" height="65"/>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Store" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
+<rect x="2.5" y="3" fill="#FFFFFF" width="11" height="12"/>
+<path fill="none" stroke="#5C5E5F" stroke-width="3" stroke-miterlimit="10" d="M1.5,5.25c0-1.93,2.91-3.5,6.5-3.5
+	c3.59,0,6.5,1.57,6.5,3.5"/>
+<polyline fill="none" stroke="#5C5E5F" stroke-width="1.5" stroke-miterlimit="10" points="13.75,5.25 13.75,15.25 2.25,15.25 
+	2.25,5.25 "/>
+<rect x="5.5" y="8.5" fill="none" stroke="#5C5E5F" stroke-miterlimit="10" width="5" height="7"/>
 </svg>

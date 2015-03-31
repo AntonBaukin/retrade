@@ -1,31 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Catalogues" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 160 160" enable-background="new 0 0 160 160" xml:space="preserve">
-<g>
-	<rect x="50" y="70" fill="#5B5C5C" width="10" height="30"/>
-	<rect x="100" y="70" fill="#5B5C5C" width="10" height="30"/>
-	<rect x="60" y="80" fill="#5B5C5C" width="40" height="10"/>
-	<rect x="50" y="50" fill="#5B5C5C" width="60" height="10"/>
-	<rect x="50" y="110" fill="#5B5C5C" width="60" height="10"/>
-</g>
-<path fill="#5B5C5C" d="M13.748,10c-1.919,0-3.346,1.772-2.93,3.645C13.523,25.827,22,65.196,22,80s-8.477,54.173-11.181,66.355
-	c-0.416,1.873,1.011,3.645,2.93,3.645H80h66.247c1.92,0,3.347-1.774,2.929-3.648C146.462,134.195,137.979,94.984,138,80
-	c0.021-14.581,8.493-54.144,11.188-66.359c0.413-1.872-1.014-3.641-2.931-3.641H80H13.748z M138.711,136.9
-	c0.577,1.401-0.551,2.903-2.057,2.744C125.792,138.502,91.555,135,80,135c-11.553,0-45.785,3.501-56.651,4.644
-	c-1.507,0.159-2.635-1.345-2.056-2.746C25.72,126.179,40,90.771,40,80c0-10.771-14.28-46.179-18.707-56.898
-	c-0.579-1.401,0.549-2.905,2.056-2.746C34.215,21.499,68.447,25,80,25c11.555,0,45.792-3.502,56.654-4.644
-	c1.507-0.158,2.634,1.344,2.057,2.744C134.288,33.833,120,69.332,120,80S134.288,126.167,138.711,136.9z"/>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Catalogues"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
+	 viewBox="0 0 16 16" xml:space="preserve">
+<rect x="1" y="1" fill="#FFFFFF" width="14" height="14"/>
+<path fill="none" stroke="#5C5E5F" stroke-width="2" stroke-miterlimit="10" d="M15,15H1c0,0,0-9,0-12c0-1.1,0.9-2,2-2h10
+	c1.1,0,2,0.9,2,2V15z"/>
+<rect x="5" y="7" fill="#5B5C5C" width="1" height="3"/>
+<rect x="10" y="7" fill="#5B5C5C" width="1" height="3"/>
+<rect x="6" y="8" fill="#5B5C5C" width="4" height="1"/>
+<rect x="5" y="4" fill="#5B5C5C" width="6" height="1"/>
+<rect x="5" y="12" fill="#5B5C5C" width="6" height="1"/>
+<rect x="11" y="4" fill="#5B5C5C" width="2" height="2"/>
+<rect x="3" y="11" fill="#5B5C5C" width="2" height="2"/>
 </svg>

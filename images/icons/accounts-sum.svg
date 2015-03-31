@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
+	 viewBox="0 0 16 16" xml:space="preserve">
+<g>
+	<g>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="6.5" y1="8.5" x2="15.5" y2="8.5">
+			<stop  offset="0" style="stop-color:#FFFFFF"/>
+			<stop  offset="0.2453" style="stop-color:#FBFBFB"/>
+			<stop  offset="0.4994" style="stop-color:#EEEEEE"/>
+			<stop  offset="0.7566" style="stop-color:#DADADA"/>
+			<stop  offset="1" style="stop-color:#BFBFBF"/>
+		</linearGradient>
+		<path fill="url(#SVGID_1_)" d="M15.5,13.5c0,0.55-0.45,1-1,1h-7c-0.55,0-1-0.45-1-1v-10c0-0.55,0.45-1,1-1h7c0.55,0,1,0.45,1,1
+			V13.5z"/>
+		<path fill="none" stroke="#5B5C5C" stroke-miterlimit="10" d="M15.5,13.5c0,0.55-0.45,1-1,1h-7c-0.55,0-1-0.45-1-1v-10
+			c0-0.55,0.45-1,1-1h7c0.55,0,1,0.45,1,1V13.5z"/>
+	</g>
+	<rect x="7" y="5" fill="#5B5C5C" width="8" height="1"/>
+	<rect x="7" y="8" fill="#5B5C5C" width="8" height="1"/>
+	<rect x="7" y="11" fill="#5B5C5C" width="8" height="1"/>
+	<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="7" y1="8.5" x2="15" y2="8.5">
+		<stop  offset="0" style="stop-color:#CCCCCC;stop-opacity:0.1"/>
+		<stop  offset="0.114" style="stop-color:#CFCFCF;stop-opacity:0.328"/>
+		<stop  offset="0.1826" style="stop-color:#D7D7D7;stop-opacity:0.4652"/>
+		<stop  offset="0.2391" style="stop-color:#E5E5E5;stop-opacity:0.5782"/>
+		<stop  offset="0.2888" style="stop-color:#F9F9F9;stop-opacity:0.6776"/>
+		<stop  offset="0.3" style="stop-color:#FFFFFF;stop-opacity:0.7"/>
+		<stop  offset="0.4693" style="stop-color:#E4E4E4;stop-opacity:0.5548"/>
+		<stop  offset="0.6497" style="stop-color:#D0D0D0;stop-opacity:0.4002"/>
+		<stop  offset="0.828" style="stop-color:#C3C3C3;stop-opacity:0.2475"/>
+		<stop  offset="1" style="stop-color:#BFBFBF;stop-opacity:0.1"/>
+	</linearGradient>
+	<rect x="7" y="3" fill="url(#SVGID_2_)" width="8" height="11"/>
+</g>
+<g>
+	<g>
+		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="3.5" y1="12.5" x2="10.5" y2="12.5">
+			<stop  offset="0" style="stop-color:#FFFFFF"/>
+			<stop  offset="0.2453" style="stop-color:#FBFBFB"/>
+			<stop  offset="0.4994" style="stop-color:#EEEEEE"/>
+			<stop  offset="0.7566" style="stop-color:#DADADA"/>
+			<stop  offset="1" style="stop-color:#BFBFBF"/>
+		</linearGradient>
+		<path fill="url(#SVGID_3_)" d="M10.5,14.5c0,0.55-0.45,1-1,1h-5c-0.55,0-1-0.45-1-1v-4c0-0.55,0.45-1,1-1h5c0.55,0,1,0.45,1,1
+			V14.5z"/>
+		<path fill="none" stroke="#5B5C5C" stroke-miterlimit="10" d="M10.5,14.5c0,0.55-0.45,1-1,1h-5c-0.55,0-1-0.45-1-1v-4
+			c0-0.55,0.45-1,1-1h5c0.55,0,1,0.45,1,1V14.5z"/>
+	</g>
+	<rect x="4" y="12" fill="#5B5C5C" width="6" height="1"/>
+	<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="4" y1="12.5" x2="10" y2="12.5">
+		<stop  offset="0" style="stop-color:#CCCCCC;stop-opacity:0.1"/>
+		<stop  offset="0.114" style="stop-color:#CFCFCF;stop-opacity:0.328"/>
+		<stop  offset="0.1826" style="stop-color:#D7D7D7;stop-opacity:0.4652"/>
+		<stop  offset="0.2391" style="stop-color:#E5E5E5;stop-opacity:0.5782"/>
+		<stop  offset="0.2888" style="stop-color:#F9F9F9;stop-opacity:0.6776"/>
+		<stop  offset="0.3" style="stop-color:#FFFFFF;stop-opacity:0.7"/>
+		<stop  offset="0.4693" style="stop-color:#E4E4E4;stop-opacity:0.5548"/>
+		<stop  offset="0.6497" style="stop-color:#D0D0D0;stop-opacity:0.4002"/>
+		<stop  offset="0.828" style="stop-color:#C3C3C3;stop-opacity:0.2475"/>
+		<stop  offset="1" style="stop-color:#BFBFBF;stop-opacity:0.1"/>
+	</linearGradient>
+	<rect x="4" y="10" fill="url(#SVGID_4_)" width="6" height="5"/>
+</g>
+<g>
+	<path fill="#CE1906" d="M6.44,2.2H6.15C6.1,1.62,5.9,1.18,5.56,0.89C5.22,0.6,4.74,0.45,4.11,0.45H1.83l2.9,3.2v0.18L1.62,6.83
+		h3.56c0.37,0,0.62-0.07,0.75-0.21c0.13-0.14,0.21-0.42,0.24-0.83h0.29V8H0V7.66l3.66-3.53l-3.5-3.86V0h6.28V2.2z"/>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>

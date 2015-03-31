@@ -94,15 +94,6 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
-    <!-- [toggle comment] -->
-    <x:component coid = "${z:vid(v, 'toggle-comment')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Комментарий',
-        enableToggle: true, margin: extjsf.pts(0, 0, 0, 8)
-      </f:facet>
-    </x:component>
-
-
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">
       <f:facet name = "extjs-props">
         xtype: 'panel', flex: 1, frame: false, border: false,
@@ -111,8 +102,17 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
-    <!-- [submit button] -->
 
+    <!-- [toggle comment] -->
+    <x:component coid = "${z:vid(v, 'toggle-comment')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Комментарий',
+        enableToggle: true, margin: extjsf.pts(0, 8, 0, 0)
+      </f:facet>
+    </x:component>
+
+
+    <!-- [submit button] -->
     <x:component coid = "${z:vid(v, 'submit')}">
       <f:facet name = "extjs-props">
         xtype:'button', text: 'Сохранить',
@@ -523,7 +523,20 @@ ${v.checkModelRequestedWithRedirect}
       retradeRequestGoodsInfo(codes, priceList)
   })
 
-  //~: add good
+  //~: remove selected goods
+  extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}', function()
+  {
+    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+
+    //~: remove the selected items
+    s.remove(g.getSelectionModel().getSelection())
+
+    //~: assign new row numbers
+    extjsf.support.refreshGridIndices(g)
+  })
+
+  //~: add good line
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function()
   {
     var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}');

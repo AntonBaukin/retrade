@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 160 160" enable-background="new 0 0 160 160" xml:space="preserve">
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
+	 viewBox="0.5 16.5 16 16" xml:space="preserve">
 <g id="Goods_Train">
-	<circle fill="none" stroke="#5C5E5F" stroke-width="14" stroke-miterlimit="10" cx="45" cy="125" r="15"/>
-	<circle fill="none" stroke="#5C5E5F" stroke-width="14" stroke-miterlimit="10" cx="85" cy="125" r="15"/>
-	<path fill="none" stroke="#5C5E5F" stroke-width="18" stroke-miterlimit="10" d="M110,60v35c0,2.761-2.361,5-5.274,5h-77.3
-		c-2.281,0-4.303-1.39-5.012-3.444L10.262,61.37c-0.309-0.895-0.345-1.855-0.104-2.768l3.907-14.814
-		C14.651,41.561,16.761,40,19.181,40H95"/>
-	<path fill="none" stroke="#5C5E5F" stroke-width="14" stroke-miterlimit="10" d="M105.372,59.983L94.283,45.568
-		c-2.45-3.185-2.157-7.693,0.684-10.535l13.22-13.22c1.179-1.179,2.697-1.96,4.342-2.234l22.674-3.779
-		c2.947-0.491,5.922,0.701,7.715,3.091l7.085,9.446c2.727,3.636,1.881,8.81-1.862,11.388l-31.89,21.969
-		C112.747,64.108,107.966,63.356,105.372,59.983z"/>
+	<circle fill="#FFFFFF" stroke="#5C5E5F" stroke-width="1.25" stroke-miterlimit="10" cx="4.92" cy="29" r="1.5"/>
+	<circle fill="#FFFFFF" stroke="#5C5E5F" stroke-width="1.25" stroke-miterlimit="10" cx="8.92" cy="29" r="1.5"/>
+	<path fill="#FFFFFF" stroke="#5C5E5F" stroke-width="1.5" stroke-miterlimit="10" d="M11.42,22.5V26c0,0.28-0.24,0.5-0.53,0.5H3.16
+		c-0.23,0-0.43-0.14-0.5-0.34l-1.21-3.52c-0.03-0.09-0.03-0.19-0.01-0.28l0.39-1.48c0.06-0.22,0.27-0.38,0.51-0.38h7.58"/>
+	<path fill="#FFFFFF" stroke="#5C5E5F" stroke-width="1.25" stroke-miterlimit="10" d="M10.96,22.5l-1.11-1.44
+		C9.6,20.74,9.63,20.29,9.92,20l1.32-1.32c0.12-0.12,0.27-0.2,0.43-0.22l2.27-0.38c0.29-0.05,0.59,0.07,0.77,0.31l0.71,0.95
+		c0.27,0.36,0.19,0.88-0.19,1.14l-3.19,2.2C11.7,22.91,11.22,22.84,10.96,22.5z"/>
 </g>
 </svg>

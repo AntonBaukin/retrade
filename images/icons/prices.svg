@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 160 160" enable-background="new 0 0 160 160" xml:space="preserve">
-<g id="Prices">
-	<path fill="none" stroke="#5C5E5E" stroke-width="20" stroke-miterlimit="10" d="M124,150H36c-8.837,0-16-7.163-16-16V26
-		c0-8.837,7.163-16,16-16h77.373c4.243,0,8.313,1.686,11.314,4.686l10.627,10.627c3.001,3.001,4.686,7.07,4.686,11.314V134
-		C140,142.837,132.837,150,124,150z"/>
-	<rect x="50" y="30" fill="#5C5E5F" width="20" height="100"/>
-	<path fill="none" stroke="#5C5E5F" stroke-width="10" stroke-miterlimit="10" d="M85,85H60V35h25c5.523,0,10,4.477,10,10v30
-		C95,80.523,90.523,85,85,85z"/>
-	<rect x="40" y="80" fill="#5C5E5F" width="10" height="10"/>
-	<rect x="40" y="100" fill="#5C5E5F" width="60" height="10"/>
-	<path fill="#5C5E5F" d="M103,75h-9V45h9c3.314,0,6,2.066,6,4.615v20.769C109,72.934,106.314,75,103,75z"/>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
+	 viewBox="0 0 16 16" xml:space="preserve">
+<g id="Prices_6_">
+	<path fill="#FFFFFF" d="M12.4,15H3.6C2.72,15,2,14.28,2,13.4V2.6C2,1.72,2.72,1,3.6,1h7.74c0.42,0,0.83,0.17,1.13,0.47l1.06,1.06
+		C13.83,2.83,14,3.24,14,3.66v9.74C14,14.28,13.28,15,12.4,15z"/>
+</g>
+<g id="Prices_5_">
+	<path fill="none" stroke="#5C5E5F" stroke-width="2" stroke-miterlimit="10" d="M12.4,15H3.6C2.72,15,2,14.28,2,13.4V2.6
+		C2,1.72,2.72,1,3.6,1h7.74c0.42,0,0.83,0.17,1.13,0.47l1.06,1.06C13.83,2.83,14,3.24,14,3.66v9.74C14,14.28,13.28,15,12.4,15z"/>
+</g>
+<g>
+	<rect x="5" y="3" fill="#5C5E5F" width="2" height="10"/>
+	<path fill="#5C5E5F" d="M9,9H5.5V3H9c0.96,0,1.75,0.67,1.75,1.5v3C10.75,8.33,9.96,9,9,9z M6.5,8h2C8.78,8,9,7.78,9,7.5v-3
+		C9,4.22,8.78,4,8.5,4h-2V8z"/>
+	<rect x="4" y="8" fill="#5C5E5F" width="1" height="1"/>
+	<rect x="4" y="10" fill="#5C5E5F" width="6" height="1"/>
 </g>
 </svg>

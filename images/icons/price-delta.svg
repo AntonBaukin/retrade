@@ -3,21 +3,13 @@
 <svg version="1.1" baseProfile="basic" id="Layer_3"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
 	 viewBox="0 0 16 16" xml:space="preserve">
-<g id="Prices">
-	<path fill="none" stroke="#5C5E5F" stroke-width="2" stroke-miterlimit="10" d="M8,15H3.6C2.72,15,2,14.28,2,13.4V2.6
-		C2,1.72,2.72,1,3.6,1h7.74c0.42,0,0.83,0.17,1.13,0.47l1.06,1.06C13.83,2.83,14,3.24,14,3.66V9"/>
+<g id="Prices_3_">
+	<path fill="#FFFFFF" d="M12.4,15H3.6C2.72,15,2,14.28,2,13.4V2.6C2,1.72,2.72,1,3.6,1h7.74c0.42,0,0.83,0.17,1.13,0.47l1.06,1.06
+		C13.83,2.83,14,3.24,14,3.66v9.74C14,14.28,13.28,15,12.4,15z"/>
 </g>
-<path fill="none" stroke="#CE1806" stroke-miterlimit="10" d="M14.5,15.5h-5c0,0,0.99-4.5,2.5-4.5S14.5,15.5,14.5,15.5z"/>
-<path fill="#5C5E5F" d="M15,11.5C14.98,12.69,13,9,13,9h2C15,9,15.01,11.08,15,11.5z"/>
-<path fill="#5C5E5F" d="M8.25,14C8.12,14,8,14,8,14v2C8,16,8.88,14,8.25,14z"/>
-<g>
+<g id="Prices_2_">
+	<path fill="none" stroke="#5C5E5F" stroke-width="2" stroke-miterlimit="10" d="M12.4,15H3.6C2.72,15,2,14.28,2,13.4V2.6
+		C2,1.72,2.72,1,3.6,1h7.74c0.42,0,0.83,0.17,1.13,0.47l1.06,1.06C13.83,2.83,14,3.24,14,3.66v9.74C14,14.28,13.28,15,12.4,15z"/>
 </g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
+<path fill="#CE1806" d="M12,11.58H4l4-7.2L12,11.58z M5.43,10.74h4.29L7.57,6.89L5.43,10.74z"/>
 </svg>

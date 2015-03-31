@@ -1371,7 +1371,7 @@ extjsf.support = ZeT.singleInstance('extjsf.support', {
 		if(ZeT.isa(grid))
 			return Ext.Array.forEach(grid, function(i) {i.index = null})
 
-		var store = (grid.isStore === true)?(grid):(grid.getStore());
+		var store = (grid.isStore === true)?(grid):(grid.getStore())
 		store.each(function(i) {i.index = null})
 		if(ZeT.isf(grid.getView)) grid.getView().refresh()
 	},
