@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 160 160" enable-background="new 0 0 160 160" xml:space="preserve">
-<g id="Filter">
-	<path fill="none" stroke="#5C5D5D" stroke-width="20" stroke-miterlimit="10" d="M148.981,21.019l-48.395,48.395
-		c-0.375,0.375-0.586,0.884-0.586,1.414v68.343c0,0.53-0.211,1.039-0.586,1.414l-8.828,8.828c-0.375,0.375-0.884,0.586-1.414,0.586
-		H81.07c-0.669,0-1.293-0.334-1.664-0.891l-19.07-28.606c-0.219-0.329-0.336-0.715-0.336-1.109V70.828
-		c0-0.53-0.211-1.039-0.586-1.414L10.933,20.933c-0.566-0.566-0.74-1.414-0.443-2.157l3.007-7.518
-		C13.801,10.498,14.536,10,15.354,10h128.41c0.758,0,1.45,0.428,1.789,1.106l3.803,7.605
-		C149.74,19.481,149.589,20.411,148.981,21.019z"/>
-</g>
+	 width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="8.0005" y1="15" x2="8.0005" y2="1.0005">
+	<stop  offset="0" style="stop-color:#FFFFFF"/>
+	<stop  offset="0.5938" style="stop-color:#FCFCFC"/>
+	<stop  offset="0.9505" style="stop-color:#F4F4F4"/>
+	<stop  offset="1" style="stop-color:#F2F2F2"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" stroke="#5C5D5D" stroke-width="1.75" stroke-miterlimit="10" d="M14.902,2.102l-4.84,4.839
+	c-0.037,0.037-0.059,0.088-0.059,0.142v6.834c0,0.054-0.021,0.104-0.059,0.142l-0.883,0.883C9.025,14.979,8.975,15,8.921,15h-0.81
+	c-0.067,0-0.13-0.033-0.167-0.09l-1.907-2.859c-0.021-0.033-0.033-0.072-0.033-0.111V7.083c0-0.054-0.021-0.104-0.059-0.142
+	L1.098,2.093C1.041,2.037,1.024,1.952,1.053,1.877l0.301-0.751C1.384,1.05,1.458,1,1.54,1h12.841c0.075,0,0.145,0.043,0.178,0.11
+	l0.381,0.761C14.979,1.948,14.963,2.041,14.902,2.102z"/>
 </svg>

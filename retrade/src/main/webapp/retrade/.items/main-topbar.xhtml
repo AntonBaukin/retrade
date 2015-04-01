@@ -259,8 +259,7 @@
       <f:facet name = "extjs-props">
 
         xtype: 'button', flex: 0, text: 'Создать', height: 30,
-        icon: "${z:url('/resources/icons/issue_plus_16.png')}",
-        componentCls: 'retrade-button-22pt'
+        componentCls: 'retrade-button-22pt', iconCls: 'retrade-issue-plus-icon'
       </f:facet>
 
       <x:menu coid = "${z:vid(localView, 'retrade-create-doc-menu')}">
@@ -273,8 +272,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Накладную закупки', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/listpad_plus_16.png')}",
-            disabled: ${not rootView.isSecure('create: invoice: buy')}
+            disabled: ${not rootView.isSecure('create: invoice: buy')},
+            iconCls: 'retrade-listpad-plus-icon'
           </f:facet>
         </x:component>
 
@@ -282,8 +281,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Накладную продажи', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/listpad_minus_16.png')}",
-            disabled: ${not rootView.isSecure('create: invoice: sell')}
+            disabled: ${not rootView.isSecure('create: invoice: sell')},
+            iconCls: 'retrade-listpad-minus-icon'
           </f:facet>
         </x:component>
 
@@ -291,8 +290,8 @@
 
           <f:facet name = "extjs-props">
             text: 'Накладную перемещения', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/listpad_arrow_out_16.png')}",
-            disabled: ${not rootView.isSecure('create: invoice: move')}
+            disabled: ${not rootView.isSecure('create: invoice: move')},
+            iconCls: 'retrade-listpad-arrow-icon'
           </f:facet>
         </x:component>
 
@@ -300,7 +299,7 @@
 
           <f:facet name = "extjs-props">
             text: 'Накладную авто-производства', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/produce_16.png')}"
+            iconCls: 'retrade-listpad-bottle-red-icon'
           </f:facet>
         </x:component>
 
@@ -308,7 +307,7 @@
 
           <f:facet name = "extjs-props">
             text: 'Накладную производства', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/produce_16.png')}"
+            iconCls: 'retrade-listpad-bottle-blue-icon'
           </f:facet>
         </x:component>
 
@@ -316,7 +315,7 @@
 
           <f:facet name = "extjs-props">
             text: 'Накладную корректировки', xtype: 'menuitem',
-            icon: "${z:url('/resources/icons/correction_16.png')}"
+            iconCls: 'retrade-listpad-delta-icon'
           </f:facet>
         </x:component>
 

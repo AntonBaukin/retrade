@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
+	 viewBox="0 0 16 16" xml:space="preserve">
+<polygon fill="#FFFFFF" points="12,8 12,16 2,16 2,3 14,3 14,8 "/>
+<path fill="#5C5E5F" d="M3.6,14C3.28,14,3,13.6,3,13.14V3.86C3,3.4,3.28,3,3.6,3h8.8C12.68,3,13,3.35,13,3.86V7h2V3.86
+	C15,2.28,13.83,1,12.4,1H3.6C2.17,1,1,2.28,1,3.86v9.29C1,14.72,2.17,16,3.6,16H6v-2H3.6z"/>
+<g>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="8.8696" y1="10.6309" x2="14.1301" y2="15.8913">
+		<stop  offset="0" style="stop-color:#FA988C"/>
+		<stop  offset="0.0413" style="stop-color:#F59184"/>
+		<stop  offset="0.3645" style="stop-color:#D35B4E"/>
+		<stop  offset="0.6435" style="stop-color:#BB3526"/>
+		<stop  offset="0.8645" style="stop-color:#AC1D0E"/>
+		<stop  offset="1" style="stop-color:#A61405"/>
+	</linearGradient>
+	<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="8.6191" y1="10.3809" x2="14.3796" y2="16.1413">
+		<stop  offset="0" style="stop-color:#FFFFFF"/>
+		<stop  offset="0.0861" style="stop-color:#FCF7F6"/>
+		<stop  offset="0.2267" style="stop-color:#F3E0DE"/>
+		<stop  offset="0.4043" style="stop-color:#E5BAB6"/>
+		<stop  offset="0.6119" style="stop-color:#D1867F"/>
+		<stop  offset="0.8419" style="stop-color:#B94539"/>
+		<stop  offset="1" style="stop-color:#A61405"/>
+	</linearGradient>
+	<polygon fill="url(#SVGID_1_)" stroke="url(#SVGID_2_)" stroke-width="0.5" stroke-miterlimit="10" points="12,8.5 11,8.5 
+		11,10.73 8,13.73 8,15.02 15,15.02 15,13.73 12,10.73 	"/>
+	<polyline fill="none" stroke="#5C5E5F" stroke-miterlimit="10" points="14.5,8.5 12.5,8.5 12.5,10.5 15.5,13.5 15.5,15.5 7.5,15.5 
+		7.5,13.5 10.5,10.5 10.5,8.5 8.5,8.5 	"/>
+</g>
+<path fill="#FFFFFF" stroke="#5C5E5F" stroke-width="1.5" stroke-miterlimit="10" d="M11.5,5L9.75,6h-3.5L4.5,5c0,0,0-0.75,0-1
+	c0-0.55,2.14-3,2.62-3h1.75c0.48,0,2.62,2.45,2.62,3C11.5,4.25,11.5,5,11.5,5z"/>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
