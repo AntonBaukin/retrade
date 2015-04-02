@@ -85,6 +85,7 @@ ${v.checkModelRequestedWithRedirect}
         </x:date-field>
 
         <script type = "text/javascript">
+        //<![CDATA[
 
   extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${rootView.extjsDomain}').success(function()
   {
@@ -118,6 +119,7 @@ ${v.checkModelRequestedWithRedirect}
       headerCt.getGridColumns()[0].setVisible(value)
   })
 
+        //]]>
         </script>
 
       </x:form-panel>
@@ -155,6 +157,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:data-grid>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
     on('itemdblclick', function(comp, record, node, row, e)
@@ -166,6 +169,7 @@ ${v.checkModelRequestedWithRedirect}
     })
   })
 
+    //]]>
     </script>
 
     <!-- price change documents table] -->

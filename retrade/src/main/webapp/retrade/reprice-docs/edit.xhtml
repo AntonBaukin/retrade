@@ -137,7 +137,6 @@ ${v.checkModelRequestedWithRedirect}
 
 
     <!-- [code field] -->
-
     <x:text-field coid = "${z:vid(v, 'code')}"
      value = "#{v.model.view.code}">
 
@@ -156,13 +155,12 @@ ${v.checkModelRequestedWithRedirect}
 
 
     <!-- [price lists drop list] -->
-
     <x:drop-list coid = "${z:vid(v, 'price-list')}"
       value  = "#{v.model.view.priceListKey}"
       labels = "#{v.priceListsLabels}">
 
       <f:facet name = "drop-props">
-        width: extjsf.ex(36)
+        flex: 1
       </f:facet>
 
       <f:facet name = "label-props">
@@ -172,13 +170,42 @@ ${v.checkModelRequestedWithRedirect}
     </x:drop-list>
 
 
-    <!-- [change reason hidden] -->
+    <!-- [good groups drop list -->
 
+    <x:data-store storeId = "${z:vid(v, 'groups')}" modelView = "${v}">
+      <f:facet name = "store-props">
+        model: 'retrade.model.KeyValue', sorters: [{ property: 'key' }],
+        data: []
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        noproxy: true
+      </f:facet>
+    </x:data-store>
+
+    <x:drop-list coid = "${z:vid(v, 'group')}"
+      storeId = "${z:vid(v, 'groups')}" value = "">
+
+      <f:facet name = "drop-props">
+        flex: 1, matchFieldWidth: true, queryMode: 'local',
+        notRefreshOnExpand: true, forceSelection: true,
+        valueField: 'key', displayField: 'key'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Группа', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
+      </f:facet>
+    </x:drop-list>
+
+    <!-- good groups drop list] -->
+
+
+    <!-- [change reason hidden] -->
     <x:hidden-field coid = "${z:vid(v, 'change-reason')}"
       value = "#{v.model.view.changeReason}"/>
 
     <!-- [special: submit action] -->
-
     <h:commandButton id = "${z:vid(v, 'submit-action')}" value = "submit" style = "display: none;"
       action = "#{v.doSubmitReprice}"/>
 
@@ -204,7 +231,8 @@ ${v.checkModelRequestedWithRedirect}
     modelView = "${v}" pageSize = "0">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.GoodPriceHistory'
+      model: 'retrade.model.GoodPriceHistory',
+      sorters: [{ property: 'index' }]
     </f:facet>
 
     <f:facet name = "proxy-props">
@@ -390,21 +418,23 @@ ${v.checkModelRequestedWithRedirect}
         return [
 
           {
-            xtype: 'rownumberer', text: '№',
-            width: extjsf.ex(4), resizable: false, hideable: false
+            text: '№', dataIndex: 'index', width: extjsf.ex(5),
+            resizable: false, sortable: true,
+            cls: 'x-row-numberer', innerCls: 'x-grid-cell-inner-row-numberer',
+            tdCls: 'x-grid-cell-row-numberer x-grid-cell-special'
           },
 
           {
-             text: "Код товара", dataIndex: 'goodCode', sortable: false,
+             text: "Код товара", dataIndex: 'goodCode', sortable: true,
              width: extjsf.ex(12), editor: codeEditor, retradeHasEditor: true
           },
 
           {
-            text: "Наименование", dataIndex: 'goodName', flex: 2
+            text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 2
           },
 
           {
-            text: "Группа", dataIndex: 'goodGroup', flex: 1
+            text: "Группа", dataIndex: 'goodGroup', sortable: true, flex: 1
           },
 
           {
@@ -508,7 +538,92 @@ ${v.checkModelRequestedWithRedirect}
        m.set('measureName', x[2])
        m.set('priceCur', x[3])
     }
+
+    //~: update the groups store
+    extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore()
   }
+
+  //~: on goods store change (update the row indices)
+  Ext.onReady(function()
+  {
+    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+
+    function reindex()
+    {
+      var i = 0; s.each(function(m)
+      {
+        i++; if(m.get('index') != i)
+         m.set('index', i)
+      })
+    }
+
+    s.on({ load: reindex, add: reindex, remove: reindex })
+  })
+
+  //~: updates good groups store based on the goods
+  extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore = function()
+  {
+    var g = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+
+    //c: for each item in the goods grid
+    var x = {}; extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}').each(function(m)
+    {
+      var y; if(!ZeTS.ises(y = m.get('goodGroup'))) x[y] = true
+    })
+
+    //?: {has no data} clear the store
+    var ks = ZeT.keys(x); if(!ks.length) { g.removeAll(); return }
+
+    //~: add empty option
+    x['ø'] = true; if(ks.indexOf('ø') == -1) ks.push('ø')
+
+    //c: for each group found
+    ZeT.each(ks, function(k) { if(!g.getById(k)) g.add({ key: k }) })
+
+    //~: remove the items not used
+    var d = []; g.each(function(m) { if(!x[m.getId()]) d.push(m) })
+    g.remove(d)
+  }
+
+  //~: groups data changed
+  extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').on('datachanged', function(gs)
+  {
+    var g = extjsf.bind("${z:vid(v, 'group')}", '${rootView.extjsDomain}')
+    if(!g) return //<-- when fired on the window close
+
+    //?: {has no data}
+    if(!gs.getCount()) g.value(''); else
+      if(ZeTS.ises(g.value())) g.value('ø')
+  })
+
+  //~: store filter changed (cleared)
+  extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').on('filterchange', function(s)
+  {
+    var gs = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+    var  g = extjsf.bind("${z:vid(v, 'group')}", '${rootView.extjsDomain}')
+    if(!gs || !g) return //<-- when fired on the window close
+
+    ZeT.timeout(250, function()
+    {
+      //?: {has no filters}
+      if(!s.filters || !s.filters.getCount())
+        if(!gs.getCount()) g.value(''); else g.value('ø')
+    })
+  })
+
+  //~: group value changed (apply group filter)
+  extjsf.bind("${z:vid(v, 'group')}", '${rootView.extjsDomain}').on('change', function(g, v)
+  {
+    //~: remove current filter
+    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    s.clearFilter()
+
+    //?: {has no value}
+    if(ZeTS.ises(v) || (v == 'ø')) return
+
+    //~: apply filter by the group
+    s.filter({ property: 'goodGroup', value: v })
+  })
 
   //~: price list changed
   extjsf.bind("${z:vid(v, 'price-list')}", '${rootView.extjsDomain}').on('change', function(cb, priceList)
@@ -534,24 +649,29 @@ ${v.checkModelRequestedWithRedirect}
 
     //~: assign new row numbers
     extjsf.support.refreshGridIndices(g)
+
+    //~: update the groups store
+    extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore()
   })
 
   //~: add good line
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function()
   {
-    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-    var p = g.getPlugin('cellediting');
+    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var p = g.getPlugin('cellediting')
     var m = Ext.create('retrade.model.GoodPriceHistory', {
       objectKey: '$' + (new Date().getTime())
-    });
+    })
 
-    //~: fund insert position
-    var i;
+    //~: clear filter
+    s.clearFilter()
 
+    //~: find insert position
+    var i; ZeT.each(g.getSelectionModel().getSelection(), function(x, j) { i = j })
 
     //~: add | insert the model
-    if(ZeT.isu(i)) s.add(m); else s.insert(i, m)
+    if(ZeT.isu(i)) s.add(m); else s.insert(i+1, m)
     var row = s.indexOf(m);
     var col = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
 
@@ -576,8 +696,8 @@ ${v.checkModelRequestedWithRedirect}
   //~: commit the form
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
-    var form  = extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}');
-    var store = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
+    var form  = extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}')
+    var store = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
 
 
     //~: validate the form
@@ -586,24 +706,26 @@ ${v.checkModelRequestedWithRedirect}
     //~: validate the records
     function validate()
     {
-      var codes = {};
+      //!: remove filter
+      store.clearFilter()
 
+      //?: {has nothing}
       if(store.count() == 0)
-        return 'В документе нет записей об изменениях цен товаров!';
+        return 'В документе нет записей об изменениях цен товаров!'
 
-      for(var i = 0;(i < store.count());i++)
+      var codes = {}; for(var i = 0;(i < store.count());i++)
       {
-        var m = store.getAt(i);
+        var m = store.getAt(i)
 
         if(ZeTS.ises(m.get('goodCode')))
-          return ZeTS.cat('Код в строке [', i + 1, '] пуст!');
+          return ZeTS.cat('Код в строке [', m.get('index'), '] пуст!')
 
         if(ZeTS.ises(m.get('priceNew')))
-          return ZeTS.cat('Новая цена в строке [', i + 1, '] пуста!');
+          return ZeTS.cat('Новая цена в строке [', m.get('index'), '] пуста!')
 
         if(codes[m.get('goodCode')])
-          return ZeTS.cat('Коды в строках [', codes[m.get('goodCode')], '] и [', i + 1, '] совпадают!');
-        codes[m.get('goodCode')] = i + 1;
+          return ZeTS.cat('Коды в строках [', codes[m.get('goodCode')], '] и [', m.get('index'), '] совпадают!')
+        codes[m.get('goodCode')] = m.get('index')
       }
 
       return null;

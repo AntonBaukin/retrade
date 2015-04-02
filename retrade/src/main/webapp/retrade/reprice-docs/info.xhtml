@@ -87,10 +87,40 @@ ${v.checkEntityRequested}
 
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">
       <f:facet name = "extjs-props">
-        xtype: 'panel', flex: 1, frame: false, border: false,
+        xtype: 'panel', flex: 3, frame: false, border: false,
         bodyCls: 'retrade-toolbar-panel'
       </f:facet>
     </x:component>
+
+
+    <!-- [good groups drop list -->
+
+    <x:data-store storeId = "${z:vid(v, 'filterGroups')}" modelView = "${v}">
+      <f:facet name = "store-props">
+        model: 'retrade.model.KeyValue', sorters: [{ property: 'key' }], data: []
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        noproxy: true
+      </f:facet>
+    </x:data-store>
+
+    <x:drop-list coid = "${z:vid(v, 'filter-group')}"
+      storeId = "${z:vid(v, 'filterGroups')}" value = "">
+
+      <f:facet name = "drop-props">
+        flex: 2, matchFieldWidth: true, queryMode: 'local',
+        notRefreshOnExpand: true, forceSelection: true,
+        valueField: 'key', displayField: 'key'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Группа', cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 6)
+      </f:facet>
+    </x:drop-list>
+
+    <!-- good groups drop list] -->
 
 
     <!-- [price change document is not fixed -->
@@ -102,7 +132,7 @@ ${v.checkEntityRequested}
         action = "#{v.doFixReprice}">
 
         <f:facet name = "extjs-props">
-          margin: extjsf.pts(0, 4, 0, 0), text: 'Провести'
+          margin: extjsf.pts(0, 4, 0, 8), text: 'Провести'
         </f:facet>
 
         <f:facet name = "action-params">
@@ -234,9 +264,12 @@ ${v.checkEntityRequested}
 
     <x:data-store storeId = "${z:vid(v, 'changeGroups')}" modelView = "${v}">
       <f:facet name = "store-props">
-        model: 'retrade.model.KeyValue', noproxy: true,
-        sorters: [{ property: 'key' }],
+        model: 'retrade.model.KeyValue', sorters: [{ property: 'key' }],
         data: [#{v.groupsData}]
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        noproxy: true
       </f:facet>
     </x:data-store>
 
@@ -309,16 +342,20 @@ ${v.checkEntityRequested}
   //~: toggle contractors list mode
   extjsf.bind("${z:vid(v, 'toggle-contractors')}", '${rootView.extjsDomain}').on('toggle', function(btn)
   {
-    extjsf.component("${z:vid(v, 'reprice_changes_layout')}", '${rootView.extjsDomain}').
-      setVisible(!btn.pressed)
+    extjsf.bind("${z:vid(v, 'reprice_changes_layout')}", '${rootView.extjsDomain}').
+      visible(!btn.pressed)
 
-    extjsf.component("${z:vid(v, 'reprice_contractors_layout')}", '${rootView.extjsDomain}').
-      setVisible(btn.pressed && ("#{v.oneContractor}" == 'false'))
+    extjsf.bind("${z:vid(v, 'reprice_contractors_layout')}", '${rootView.extjsDomain}').
+      visible(btn.pressed && ("#{v.oneContractor}" == 'false'))
 
-    extjsf.component("${z:vid(v, 'reprice_contractor_changes_layout')}", '${rootView.extjsDomain}').
-      setVisible(btn.pressed && ("#{v.oneContractor}" == 'true'))
+    extjsf.bind("${z:vid(v, 'reprice_contractor_changes_layout')}", '${rootView.extjsDomain}').
+      visible(btn.pressed && ("#{v.oneContractor}" == 'true'))
 
     extjsf.component("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').hide()
+
+    var gpre = extjsf.component("${z:vid(v, 'toggle-groups')}", '${rootView.extjsDomain}').pressed
+    extjsf.bind("${z:vid(v, 'filter-group')}", '${rootView.extjsDomain}').visible(!gpre && !btn.pressed)
+    extjsf.bind("${z:vid(v, 'filter-group-label')}", '${rootView.extjsDomain}').visible(!gpre && !btn.pressed)
 
     if("#{v.hasGroups}" == 'true')
       extjsf.component("${z:vid(v, 'toggle-groups')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
@@ -354,8 +391,10 @@ ${v.checkEntityRequested}
   //~: toggle change groups
   extjsf.bind("${z:vid(v, 'toggle-groups')}", '${rootView.extjsDomain}').on('toggle', function(btn)
   {
-    extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
-    extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
+    extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').visible(btn.pressed)
+    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').visible(!btn.pressed)
+    extjsf.bind("${z:vid(v, 'filter-group')}", '${rootView.extjsDomain}').visible(!btn.pressed)
+    extjsf.bind("${z:vid(v, 'filter-group-label')}", '${rootView.extjsDomain}').visible(!btn.pressed)
   })
 
   //~: click on the contractor in the table
@@ -388,6 +427,41 @@ ${v.checkEntityRequested}
 
     //~: make the window smaller
     extjsf.component('winmain', '${rootView.extjsDomain}').autoResizedContractorChanges(false)
+  })
+
+  //~: build filter groups on changes load
+  extjsf.bind("${z:vid(v, 'priceChanges')}", '${rootView.extjsDomain}').on('load', function(pcs)
+  {
+    //~: select all the groups
+    var fgs = extjsf.component("${z:vid(v, 'filterGroups')}", '${rootView.extjsDomain}')
+    var grs = {}; pcs.each(function(m)
+    {
+      var g = m.get('goodGroup'); if(!ZeTS.ises(g)) grs[g] = true
+    })
+
+    //?: {has nothing}
+    grs = ZeT.keys(grs); if(!grs.length) return
+    grs.push('ø') //<-- select all key
+
+    //~: add each key
+    ZeT.each(grs, function(g) { fgs.add({ key: g }) })
+
+    //~: select the default (all)
+    extjsf.bind("${z:vid(v, 'filter-group')}", '${rootView.extjsDomain}').value('ø')
+  })
+
+  //~: filter group value changed (apply grid filter)
+  extjsf.bind("${z:vid(v, 'filter-group')}", '${rootView.extjsDomain}').on('change', function(g, v)
+  {
+    //~: remove current filter
+    var s = extjsf.component("${z:vid(v, 'priceChanges')}", '${rootView.extjsDomain}')
+    s.clearFilter()
+
+    //?: {has no value}
+    if(ZeTS.ises(v) || (v == 'ø')) return
+
+    //~: apply filter by the group
+    s.filter({ property: 'goodGroup', value: v })
   })
 
   //~: temporary resize the window

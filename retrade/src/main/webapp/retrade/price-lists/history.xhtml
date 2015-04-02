@@ -131,7 +131,7 @@ ${v.checkEntityRequested}
            cellpadding = "0" cellspacing = "0" border = "0">
       <tr>
         <td class = "retrade-info-title retrade-info-title-price-history-good-code">
-          <div>Товар код</div>
+          <div>Код</div>
         </td>
         <td class = "retrade-info-value retrade-info-value-price-history-good-code">
           <div>#{v.good.code}</div>
@@ -149,7 +149,7 @@ ${v.checkEntityRequested}
 
       <tr>
         <td class = "retrade-info-title retrade-info-title-price-history-good-name">
-          <div>наименование</div>
+          <div>Имя</div>
         </td>
         <td colspan = "4">
 
@@ -182,16 +182,32 @@ ${v.checkEntityRequested}
     </f:facet>
   </x:data-store>
 
-  <x:data-grid coid = "${z:vid(v, 'history_data')}"
+  <x:data-grid coid = "${z:vid(v, 'history-grid')}"
     storeId = "${z:vid(v, 'historyData')}">
 
     <f:facet name = "grid-props">
-      region: 'center', title: 'История цен',
-      margin: extjsf.pts(2, 1, 1, 1),
+      region: 'center', margin: extjsf.pts(2, 0, 0, 0),
       columns: ZeT.defined('retrade.columns.GoodPriceHistory'),
       pager: true, sortableColumns: false
     </f:facet>
   </x:data-grid>
+
+
+  <script type = "text/javascript">
+    //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'history-grid')}", '${rootView.extjsDomain}').
+    on('itemdblclick', function(comp, record, node, row, e)
+  {
+    retrade_open_window({ url: '/reprice-docs/info',
+      box: { event: e, widthpt: 620, heightpt: 360 },
+      domainKey: "${z:vid(v, 'view_reprice_doc')}",
+      collapsible: true, record: record.get('repriceKey')
+    })
+  })
+
+    //]]>
+    </script>
 
   <!-- history data grid] -->
 

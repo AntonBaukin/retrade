@@ -906,7 +906,8 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	each             : function(a, f)
 	{
-		ZeT.assert(a && ZeT.isn(a.length))
+		if(!a) return undefined
+		ZeT.assert(ZeT.isi(a.length))
 		ZeT.assert(ZeT.isf(f))
 
 		for(var i = 0;(i < a.length);i++)

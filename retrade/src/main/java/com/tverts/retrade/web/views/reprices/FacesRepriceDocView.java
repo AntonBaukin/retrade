@@ -139,7 +139,7 @@ public class FacesRepriceDocView extends UnityModelView
 		{
 			if(s.length() != 0) s.append(", ");
 			s.append("{key: '").append(SU.jss(g)).
-			  append("', value: ").append(gs.get(g)).append('}');
+			  append("', value: '").append(gs.get(g)).append("'}");
 		}
 
 		return s.toString();

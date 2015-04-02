@@ -60,90 +60,95 @@
     if(pgsize > 0) store.extjsProps({pageSize: pgsize})
 
     //~: configure the proxy
-    var proxy = new extjsf.Bind();
+    var proxy = new extjsf.Bind()
     proxy.nodeId('#{cc.clientId}-#{cc.attrs.storeId}-proxy')
 
     proxy.extjsProps({type: 'ajax', url: "${z:url('/model')}"})
     proxy.extjsPropsNode()
 
-    //~: define model parameter or model provider
-    var props = proxy.extjsPropsRaw();
-    if(!props.extraParams) props.extraParams = {};
-    else if(ZeT.isf(props.extraParams)) (function()
+    var props = proxy.extjsPropsRaw()
+    if(props.noproxy)
+      store.extjsProps({proxy: {type: 'memory', reader: 'json'}})
+    else
     {
-      var p = {};
-      props.extraParams.call(p, store, proxy)
-      props.extraParams = p;
-    })()
+      //~: define model parameter or model provider
+      if(!props.extraParams) props.extraParams = {};
+      else if(ZeT.isf(props.extraParams)) (function ()
+      {
+        var p = {};
+        props.extraParams.call(p, store, proxy)
+        props.extraParams = p;
+      })()
 
-    //~: link the parameters to the store
-    store.proxyParams = props.extraParams;
+      //~: link the parameters to the store
+      store.proxyParams = props.extraParams;
 
-    //?: has model requested
-    if('true' == "#{not empty cc.attrs.modelRequest}")
-      props.extraParams['model-request'] = '#{cc.attrs.modelRequest}';
+      //?: has model requested
+      if('true' == "#{not empty cc.attrs.modelRequest}")
+        props.extraParams['model-request'] = '#{cc.attrs.modelRequest}';
 
-    //?: {has no direct model}
-    if(!props.extraParams['model'])
-      //?: {has direct model key}
-      if('true' == "#{not empty cc.attrs.modelKey}")
-        props.extraParams['model'] = '#{cc.attrs.modelKey}';
-      //?: {has model view}
-      else if('true' == "#{not empty cc.attrs.modelView}")
-        props.extraParams['model'] = '#{cc.attrs.modelView.modelKey}';
+      //?: {has no direct model}
+      if(!props.extraParams['model'])
+        //?: {has direct model key}
+        if('true' == "#{not empty cc.attrs.modelKey}")
+          props.extraParams['model'] = '#{cc.attrs.modelKey}';
+        //?: {has model view}
+        else if('true' == "#{not empty cc.attrs.modelView}")
+          props.extraParams['model'] = '#{cc.attrs.modelView.modelKey}';
 
-    //?: {has no direct model provider}
-    if(!props.extraParams['model-provider'])
-      if('true' == "#{not empty cc.attrs.modelProvider}")
-        props.extraParams['model-provider'] = '#{cc.attrs.modelProvider}';
+      //?: {has no direct model provider}
+      if(!props.extraParams['model-provider'])
+        if('true' == "#{not empty cc.attrs.modelProvider}")
+          props.extraParams['model-provider'] = '#{cc.attrs.modelProvider}';
 
+      //!: add proxy to the store
+      store.extjsProps({proxy: props})
 
-    //~: add proxy to the store
-    if(!props.noproxy) store.extjsProps({proxy: props})
+      //~: on before store load
+      store.on('beforeload', function(st)
+      {
+        var sortparams = {};
+
+        //?: {has sort applied}
+        if(st.sorters) for(var i = 0;(i < st.sorters.getCount());i++)
+        {
+          var so = st.sorters.getAt(i);
+          if(ZeTS.ises(so.property)) { sortparams = {}; break; }
+
+          sortparams['sortProperty' + i] = so.property;
+          if('DESC' == so.direction) sortparams['sortDesc' + i] = true;
+        }
+
+        //~: process sort parameters of proxy
+        var params = st.getProxy().extraParams;
+
+        for(i = 0;(params['sortProperty' + i]);i++)
+        {
+          delete params['sortProperty' + i]
+          delete params['sortDesc' + i]
+        }
+
+        ZeT.extend(params, sortparams)
+      })
+    }
 
     //~: delete store on domain delete
     extjsf.onDomainDelete('${rootView.extjsDomain}', function()
     {
-        Ext.data.StoreManager.unregister('#{cc.attrs.storeId}')
-    })
-
-    //~: on before store load
-    if(!props.noproxy) store.on('beforeload', function(st)
-    {
-      var sortparams = {};
-
-      //?: {has sort applied}
-      if(st.sorters) for(var i = 0;(i < st.sorters.getCount());i++)
-      {
-         var so = st.sorters.getAt(i);
-         if(ZeTS.ises(so.property)) { sortparams = {}; break; }
-
-         sortparams['sortProperty' + i] = so.property;
-         if('DESC' == so.direction) sortparams['sortDesc' + i] = true;
-      }
-
-      //~: process sort parameters of proxy
-      var params = st.getProxy().extraParams;
-
-      for(i = 0;(params['sortProperty' + i]);i++)
-      {
-        delete params['sortProperty' + i]
-        delete params['sortDesc' + i]
-      }
-
-      ZeT.extend(params, sortparams)
+      Ext.data.StoreManager.unregister('#{cc.attrs.storeId}')
     })
   })()
 
   Ext.onReady(function()
   {
-    var store = extjsf.bind('#{cc.attrs.storeId}', '${rootView.extjsDomain}');
+    var store = extjsf.bind('#{cc.attrs.storeId}', '${rootView.extjsDomain}')
 
     //!: create store component
     store.component(Ext.create('Ext.data.Store', store.extjsProps()))
 
-    var offset = parseInt("#{cc.attrs.dataStart}");
-    var pgsize = parseInt("#{cc.attrs.pageSize}");
+    var offset = parseInt("#{cc.attrs.dataStart}")
+    var pgsize = parseInt("#{cc.attrs.pageSize}")
+
     if((offset > 0) && (pgsize > 0))
       store.component().loadPage(1 + Math.floor(offset/pgsize))
   })
