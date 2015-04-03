@@ -2,18 +2,17 @@
 <%@page import = "com.tverts.system.SystemConfig"%>
 <%@page import = "com.tverts.support.SU"%>
 
-<?xml version = '1.0' encoding = 'UTF-8'?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+${"<!DOCTYPE html>"}
 <html>
-<head>
-  <meta http-equiv = 'Content-Type'   content = 'text/html;charset=UTF-8'/>
-  <meta http-equiv = 'Cache-Control'  content = 'no-cache'/>
-  <meta http-equiv = 'Pragma'         content = 'no-cache'/>
+<head lang = 'ru'>
+  <meta charset    = 'UTF-8'/>
+  <meta http-equiv = 'Content-Type'     content = 'text/html;charset=UTF-8'/>
+  <meta http-equiv = 'X-UA-Compatible'  content = 'IE=edge'/>
+  <meta name       = 'viewport'         content = 'width=device-width, initial-scale=1, maximum-scale=8, user-scalable=yes'/>
+  <meta http-equiv = 'Cache-Control'    content = 'no-cache'/>
+  <meta http-equiv = 'Pragma'           content = 'no-cache'/>
 
-  <title>ТТС РеТрейд™ : Вход в систему</title>
+  <title>ТТС РеТрейд™ :: Вход в систему</title>
 
 <% if(SystemConfig.getInstance().isDebug()) { %>
 

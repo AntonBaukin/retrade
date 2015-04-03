@@ -1,19 +1,19 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-
+<!DOCTYPE html>
 <ui:component rendered = '#{rootView.viewModePageRendered}'
-  xmlns:ui = 'http://java.sun.com/jsf/facelets'>
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:h  = 'http://java.sun.com/jsf/html'
+  xmlns:z  = 'uri:tverts.com'>
 
-<html xmlns    = 'http://www.w3.org/1999/xhtml'
-      xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
-      xmlns:f  = 'http://java.sun.com/jsf/core'
-      xmlns:ui = 'http://java.sun.com/jsf/facelets'
-      xmlns:h  = 'http://java.sun.com/jsf/html'
-      xmlns:z  = 'uri:tverts.com'>
-
+<html lang = 'ru'>
 <h:head>
-  <meta http-equiv = 'Content-Type'   content = 'text/html;charset=UTF-8'/>
-  <meta http-equiv = 'Cache-Control'  content = 'no-cache'/>
-  <meta http-equiv = 'Pragma'         content = 'no-cache'/>
+  <meta charset    = 'UTF-8'/>
+  <meta http-equiv = 'Content-Type'     content = 'text/html;charset=UTF-8'/>
+  <meta http-equiv = 'X-UA-Compatible'  content = 'IE=edge'/>
+  <meta name       = 'viewport'         content = 'width=device-width, initial-scale=1, maximum-scale=8, user-scalable=yes'/>
+  <meta http-equiv = 'Cache-Control'    content = 'no-cache'/>
+  <meta http-equiv = 'Pragma'           content = 'no-cache'/>
 
   <link rel = 'icon' type = 'image/icon' href = "${z:url('/resources/favicon.ico')}"/>
 
@@ -22,7 +22,7 @@
   <c:if test = '${systemConfig.debug}'>
 
     <script type = 'text/javascript' charset = 'UTF-8'
-      src = "${z:url('/extjs/ext-all-dev.js')}"></script>
+      src = "${z:url('/extjs/ext-all-debug.js')}"></script>
 
     <script type = 'text/javascript' charset = 'UTF-8'
       src = "${z:url('/resources/jquery.js')}"></script>
@@ -31,7 +31,7 @@
       src = "${z:url('/resources/jquery-ui.js')}"></script>
 
     <link type = 'text/css' rel = 'stylesheet'
-      href = "${z:url('/extjs/resources/ext-theme-gray/ext-theme-gray-all-debug.css ')}"/>
+      href = "${z:url('/extjs/ext-theme-crisp-touch-all-debug.css')}"/>
 
   </c:if>
 
@@ -47,12 +47,13 @@
       src = "${z:url('/resources/jquery-ui.min.js')}"></script>
 
     <link type = 'text/css' rel = 'stylesheet'
-      href = "${z:url('/extjs/resources/ext-theme-gray/ext-theme-gray-all.css ')}"/>
+      href = "${z:url('/extjs/ext-theme-crisp-touch-all.css')}"/>
 
   </c:if>
 
+
   <script type = 'text/javascript' charset = 'UTF-8'
-    src = "${z:url('/extjs/locale/ext-lang-ru.js')}"></script>
+    src = "${z:url('/extjs/ext-locale-ru.js')}"></script>
 
 
   <!-- Ext User Extentions -->
