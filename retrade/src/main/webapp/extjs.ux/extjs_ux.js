@@ -5,22 +5,6 @@
  +===============================================================*/
 
 
-Ext.define('Ext.ux.layout.component.field.ComboBox100p',
-{
-	extend            : 'Ext.layout.component.field.ComboBox',
-	alias             : 'layout.ux.dropbox100p',
-	type              : 'combobox',
-
-	beginLayoutFixed  : function(ownerContext, width, suffix)
-	{
-		this.callParent(arguments)
-
-		//~: set width 100%
-		ownerContext.target.triggerWrap.setStyle({width: '100%'})
-	}
-})
-
-
 Ext.define('Ext.ux.picker.Time',
 {
 	extend            : 'Ext.picker.Time',

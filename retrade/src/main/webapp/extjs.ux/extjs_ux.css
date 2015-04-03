@@ -157,14 +157,14 @@ a.x-btn-icon.x-btn-over
 
 .x-nlg .ux-btn-default-small-red .x-btn-default-small-mc
 {
-  background-image: url('resources/themes/images/red/btn/btn-default-small-bg.gif');
+  background-image: url(data:image/gif;base64,R0lGODlhDwAwA7MAAAAAAP////wAAPoAAPgAAPYAAPQAAPIAAPAAAP///wAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAkALAAAAAAPADADAAS2UMhJq704j827/+BGjGRpnuhYrGzrvnAsG3Rt30eu73zv54igcEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvter/gsHhMLpvP6LR6zW673/C4fE6v2+/4vH7P7/v/gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZrREAOw==);
   background-color: #f80000;
 }
 
 .x-nlg .ux-btn-default-small-red
 {
   background-repeat: repeat-x;
-  background-image: url('resources/themes/images/red/btn/btn-default-small-bg.gif')
+  background-image: url(data:image/gif;base64,R0lGODlhDwAwA7MAAAAAAP////wAAPoAAPgAAPYAAPQAAPIAAPAAAP///wAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAkALAAAAAAPADADAAS2UMhJq704j827/+BGjGRpnuhYrGzrvnAsG3Rt30eu73zv54igcEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvter/gsHhMLpvP6LR6zW673/C4fE6v2+/4vH7P7/v/gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZrREAOw==)
 }
 
 .x-nbr .ux-btn-default-small-red .x-btn-default-small-tl,
@@ -177,14 +177,14 @@ a.x-btn-icon.x-btn-over
 .x-nbr .ux-btn-default-small-red .x-btn-default-small-mr
 {
   zoom: 1;
-  background-image: url('resources/themes/images/red/btn/btn-default-small-corners.gif')
+  background-image: url(data:image/gif;base64,R0lGODlhAwASALMAAAAAAP////4AAPwAAO4AAOwAAOIAAOAAANoAANgAANYAAMAAAL4AALoAAP///wAAACH5BAEAAA4ALAAAAAADABIAAAQesElBhyU4yxYQQ4bAWF8gHAjJYEhSdCuxFAqyIEEEADs=)
 }
 
 .x-nbr .ux-btn-default-small-red .x-btn-default-small-ml,
 .x-nbr .ux-btn-default-small-red .x-btn-default-small-mr
 {
   zoom: 1;
-  background-image: url('resources/themes/images/red/btn/btn-default-small-sides.gif');
+  background-image: url(data:image/gif;base64,R0lGODlhBgAwA7MAAAAAAP////wAAPoAAPgAAPYAAPQAAPIAAPAAALoAAP///wAAAAAAAAAAAAAAAAAAACH5BAEAAAoALAAAAAAGADADAAT/MIkpkqSW1jT6sN6XECRhlWZSrIXFtiprGbRhHfhx5xbiI71f0DcEJn5GZHF5FDaJz6RTGWVSr9MsFLvVSrvgr9jqJYfN46qam2aj3+ty/Dxvy911OH5/79P5f352gYSDhnqCiIWKh3mOgI2QjJOPiZWLl5GWkpmUnJ+boZigo6Kapainqp6mrKmuq52ypLG0sLezrbmvu7W6tr24wMO/xbzEx8a+yczLzsLK0M3Sz8HWyNXY1NvX0d3T39ne2uHc5Ofj6eDo6+ri7fDv8ubu9PH28+X67Pn8+P/76gW8N7CfQH8FASJceLAhQYYPHRqMSHGiRYUSMVbUeDGhR4gdB0FyHPkxUQQAOw==);
   background-position: 0 0
 }
 
@@ -242,14 +242,14 @@ a.x-btn-icon.x-btn-over
 
 .x-nlg .ux-btn-default-small-green .x-btn-default-small-mc
 {
-  background-image: url('resources/themes/images/green/btn/btn-default-small-bg.gif');
+  background-image: url(data:image/gif;base64,R0lGODlhDwAwA7MAAAAAAP///wD8AAD6AAD4AAD2AAD0AADyAADwAP///wAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAkALAAAAAAPADADAAS2UMhJq704j827/+BGjGRpnuhYrGzrvnAsG3Rt30eu73zv54igcEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvter/gsHhMLpvP6LR6zW673/C4fE6v2+/4vH7P7/v/gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZrREAOw==);
   background-color: #00f800;
 }
 
 .x-nlg .ux-btn-default-small-green
 {
   background-repeat: repeat-x;
-  background-image: url('resources/themes/images/green/btn/btn-default-small-bg.gif')
+  background-image: url(data:image/gif;base64,R0lGODlhDwAwA7MAAAAAAP///wD8AAD6AAD4AAD2AAD0AADyAADwAP///wAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAkALAAAAAAPADADAAS2UMhJq704j827/+BGjGRpnuhYrGzrvnAsG3Rt30eu73zv54igcEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvter/gsHhMLpvP6LR6zW673/C4fE6v2+/4vH7P7/v/gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZrREAOw==)
 }
 
 .x-nbr .ux-btn-default-small-green .x-btn-default-small-tl,
@@ -262,13 +262,13 @@ a.x-btn-icon.x-btn-over
 .x-nbr .ux-btn-default-small-green .x-btn-default-small-mr
 {
   zoom: 1;
-  background-image: url('resources/themes/images/green/btn/btn-default-small-corners.gif')
+  background-image: url(data:image/gif;base64,R0lGODlhAwASALMAAAAAAP///wD+AAD8AADuAADsAADiAADgAADaAADYAADWAADAAAC+AAC6AP///wAAACH5BAEAAA4ALAAAAAADABIAAAQesElBhyU4yxYQQ4bAWF8gHAjJYEhSdCuxFAqyIEEEADs=)
 }
 
 .x-nbr .ux-btn-default-small-green .x-btn-default-small-ml,
 .x-nbr .ux-btn-default-small-green .x-btn-default-small-mr
 {
   zoom: 1;
-  background-image: url('resources/themes/images/green/btn/btn-default-small-sides.gif');
+  background-image: url(data:image/gif;base64,R0lGODlhBgAwA7MAAAAAAP///wD8AAD6AAD4AAD2AAD0AADyAADwAAC6AP///wAAAAAAAAAAAAAAAAAAACH5BAEAAAoALAAAAAAGADADAAT/MIkpkqSW1jT6sN6XECRhlWZSrIXFtiprGbRhHfhx5xbiI71f0DcEJn5GZHF5FDaJz6RTGWVSr9MsFLvVSrvgr9jqJYfN46qam2aj3+ty/Dxvy911OH5/79P5f352gYSDhnqCiIWKh3mOgI2QjJOPiZWLl5GWkpmUnJ+boZigo6Kapainqp6mrKmuq52ypLG0sLezrbmvu7W6tr24wMO/xbzEx8a+yczLzsLK0M3Sz8HWyNXY1NvX0d3T39ne2uHc5Ofj6eDo6+ri7fDv8ubu9PH28+X67Pn8+P/76gW8N7CfQH8FASJceLAhQYYPHRqMSHGiRYUSMVbUeDGhR4gdB0FyHPkxUQQAOw==);
   background-position: 0 0
 }
