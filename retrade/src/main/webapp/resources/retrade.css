@@ -223,16 +223,16 @@ tr.x-boundlist-item td
 }
 
 
-/* buttons */
+/* Buttons */
+
+.retrade-button-22pt .x-btn-inner-default-small
+{
+  letter-spacing: 0.2pt;
+}
 
 .retrade-button-22pt span.x-btn-icon-el
 {
-  margin: 4.5px 2px 0 3px;
-}
-
-.retrade-button-22pt span.x-btn-inner
-{
-  margin-left: 2pt;
+  background-position: center center;
 }
 
 .retrade-icon-24 .x-btn-icon-el

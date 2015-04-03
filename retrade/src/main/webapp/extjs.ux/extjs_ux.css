@@ -5,6 +5,44 @@
  +===============================================================*/
 
 
+/* ExtJS General Styles: Crisp Touch Theme */
+
+
+/* buttons, menu buttons */
+
+.x-btn-default-small
+{
+  border: 1px solid white; border-radius: 4px;
+}
+
+.x-btn-default-small, .x-btn-over.x-btn-default-small
+{
+  background: -webkit-linear-gradient(left, #eeeeee 0%,#c4c4c4 100%);
+  background: linear-gradient(to right, #eeeeee 0%,#c4c4c4 100%);
+}
+
+.x-btn-inner-default-small
+{
+  font-family: Tahoma,sans-serif; color: black;
+}
+
+.x-btn-menu-active.x-btn-default-small .x-btn-inner-default-small,
+ .x-btn-pressed.x-btn-default-small .x-btn-inner-default-small
+{
+  color: white;
+}
+
+
+/* menu items */
+
+.x-menu-item-icon-default
+{
+  background-position: left center;
+}
+
+
+/* ======================== Refactor: ExtJS 4 ======================== */
+
 /* ExtJS General Styles */
 
 .x-form-cb-wrap input, .x-form-cb-wrap label

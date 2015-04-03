@@ -487,6 +487,9 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		this._listeners   = {}
 		this._items       = []
 		this._extjs_props = {}
+
+		//WARNING: this prevents recursion in Ext.clone()!
+		this.constructor  = null
 	},
 
 	component        : function(component)
