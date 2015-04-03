@@ -240,9 +240,9 @@ tr.x-boundlist-item td
   width: 24px;
 }
 
-.retrade-button-menu-no-arrow span.x-btn-arrow
+.retrade-button-menu-no-arrow .x-btn-wrap-default-small.x-btn-arrow-right::after
 {
-  padding: 0; background-image: none;
+  padding: 0; background: none;
 }
 
 .retrade-buttons-sep-line-div
@@ -484,8 +484,13 @@ td.retrade-warning-table-buttons
 
 /* user menu */
 
-.x-panel-body.retrade-user-menu-frame > div,
-.x-panel-body.retrade-user-menu-frame > div > div
+.retrade-user-menu-frame
+{
+  border: none;
+}
+
+.retrade-user-menu-frame > div > div,
+  .retrade-user-menu-frame > div > div > div
 {
   overflow: visible;
 }

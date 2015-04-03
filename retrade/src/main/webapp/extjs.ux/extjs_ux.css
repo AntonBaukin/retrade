@@ -13,6 +13,7 @@
 .x-btn-default-small
 {
   border: 1px solid white; border-radius: 4px;
+  padding: 2px 0px;
 }
 
 .x-btn-default-small, .x-btn-over.x-btn-default-small
@@ -23,7 +24,7 @@
 
 .x-btn-inner-default-small
 {
-  font-family: Tahoma,sans-serif; color: black;
+  font-family: Tahoma,sans-serif; color: black; padding: 0;
 }
 
 .x-btn-menu-active.x-btn-default-small .x-btn-inner-default-small,
