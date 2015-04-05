@@ -100,16 +100,18 @@
         renderTo = "${z:vid(localView, 'user-menu-logout-cell')}">
         <f:facet name = "extjs-props">
 
-          xtype: 'button',width: 30, height: 30,
+          xtype: 'ux.button-detached', width: 30, height: 30,
           componentCls: 'retrade-button-22pt',
           iconCls: 'retrade-main-logoff-icon'
 
         </f:facet>
       </x:component>
 
-      <!-- logoff server call -->
+
+      <!-- [logoff server call] -->
       <x:action-call coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}"
         action = "#{rootView.doLogoff}"/>
+
 
       <script type = "text/javascript">
       //<![CDATA[

@@ -56,6 +56,24 @@ Ext.define('Ext.ux.picker.Time',
 
 
 /**
+ * This special class is for buttons with render-to in menus.
+ * In ExtJS 5.1 mouse pressing on them hides the menu before
+ * the click event occurs.
+ */
+Ext.define('Ext.ux.button.Detached',
+{
+	extend            : 'Ext.button.Button',
+	alias             : 'widget.ux.button-detached',
+
+	onMouseDown       : function(e)
+	{
+		e.stopEvent()
+		return this.callParent(arguments)
+	}
+})
+
+
+/**
  * Check Box having three states (in the toggle order):
  *   null-checked, unchecked, and checked.
  */

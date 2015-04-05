@@ -253,11 +253,9 @@ tr.x-boundlist-item td
 
 .retrade-buttons-sep-line
 {
-  width: 4px; height: 100%;
-  background-color: #f3f3f3;
-  border: 1px solid #ececec;
-  border-right-color: #bfbfbf;
-  border-bottom-color: #bfbfbf;
+  width: 3px; height: 100%; display: table;
+  background-color: #f3f3f3; border: 1px solid #ececec;
+  border-right-color: #bfbfbf;  border-bottom-color: #bfbfbf;
 }
 
 

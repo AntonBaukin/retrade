@@ -174,12 +174,12 @@
       <arg value = '${password}'/>
 
       <arg value = 'rsync'/>
-      <arg value = '-rtz'/>
-      <arg value = '--chown=omicron:www'/>
-      <arg value = '--chmod=g=rwx'/>
-
       <arg value = '-e'/>
       <arg value = 'ssh -oStrictHostKeyChecking=no'/>
+
+      <arg value = '-rtz'/>
+      <arg value = '--chmod=u=rwxs,g=rxs'/>
+
       <arg value = 'target/web/'/>
       <arg value = 'omicron@${server}:/home/tomee/webapps/retrade/'/>
 
