@@ -4,6 +4,17 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
+/**
+ * ExtJS FIX: Component.setHtml()
+ */
+Ext.Component.override({
+
+	setHtml           : function()
+	{
+		this.update.apply(this, arguments)
+	}
+})
+
 
 Ext.define('Ext.ux.picker.Time',
 {

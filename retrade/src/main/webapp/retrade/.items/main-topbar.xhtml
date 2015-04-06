@@ -29,7 +29,8 @@
         xtype: 'button', flex: 0, text: 'РеТрейд',
         margin: extjsf.dpts(0, 6, 0, 0), height: 30,
         componentCls: 'retrade-button-22pt',
-        iconCls: 'retrade-main-icon'
+        iconCls: 'retrade-main-icon',
+        arrowVisible: false
 
       </f:facet>
 
@@ -142,7 +143,8 @@
         xtype: 'button', flex: 0, text: 'Справочники',
         margin: extjsf.dpts(0, 6, 0, 0), height: 30,
         iconCls: 'retrade-catalogues-icon',
-        componentCls: 'retrade-button-22pt'
+        componentCls: 'retrade-button-22pt',
+        arrowVisible: false
       </f:facet>
 
       <x:menu coid = "${z:vid(localView, 'retrade-catalogues-menu')}">
@@ -257,9 +259,10 @@
     <x:component coid = "${z:vid(localView, 'retrade-create-doc-menu-button')}">
 
       <f:facet name = "extjs-props">
-
-        xtype: 'button', flex: 0, text: 'Создать', height: 30,
-        componentCls: 'retrade-button-22pt', iconCls: 'retrade-issue-plus-icon'
+        xtype: 'button', flex: 0, height: 30,
+        text: 'Создать', componentCls: 'retrade-button-22pt',
+        iconCls: 'retrade-issue-plus-icon',
+        arrowVisible: false
       </f:facet>
 
       <x:menu coid = "${z:vid(localView, 'retrade-create-doc-menu')}">

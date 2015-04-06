@@ -107,7 +107,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.DocumentView', {
 
-	  type: 'xml', root: 'documents', record: 'document',
+	  type: 'xml', rootProperty: 'documents', record: 'document',
 	  totalProperty: 'documentsNumber'
 
 	})
@@ -220,7 +220,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.DateCloseInvoices', {
 
-	  type: 'xml', root: 'date-close-invoices', record: 'invoice'
+	  type: 'xml', rootProperty: 'date-close-invoices', record: 'invoice'
 
 	})
 
@@ -677,11 +677,11 @@ ZeT.init('init: retrade.data', function()
 	})
 
 	ZeT.define('retrade.readers.InvoiceGood', {
-	  type: 'xml', root: 'goods', record: 'good'
+	  type: 'xml', rootProperty: 'goods', record: 'good'
 	})
 
 	ZeT.define('retrade.readers.InvoiceResGood', {
-	  type: 'xml', root: 'results', record: 'good'
+	  type: 'xml', rootProperty: 'results', record: 'good'
 	})
 
 	//<: invoice good model, columns and reader
@@ -850,7 +850,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.GoodUnitView', {
 
-	  type: 'xml', root: 'good-units', record: 'good-unit',
+	  type: 'xml', rootProperty: 'good-units', record: 'good-unit',
 	  totalProperty: 'goodsNumber'
 
 	})
@@ -902,7 +902,7 @@ ZeT.init('init: retrade.data', function()
 	})
 
 	ZeT.define('retrade.readers.GoodCalcView', {
-	  type: 'xml', root: 'good-calcs', record: 'good-calc'
+	  type: 'xml', rootProperty: 'good-calcs', record: 'good-calc'
 	})
 
 	//>: good calc view
@@ -988,7 +988,7 @@ ZeT.init('init: retrade.data', function()
 	})
 
 	ZeT.define('retrade.readers.GoodCalcPartView', {
-	  type: 'xml', root: 'calc-parts', record: 'calc-part'
+	  type: 'xml', rootProperty: 'calc-parts', record: 'calc-part'
 	})
 
 	//>: good calc part view
@@ -1037,7 +1037,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.MeasureUnitView', {
 
-	  type: 'xml', root: 'measure-units', record: 'measure-unit'
+	  type: 'xml', rootProperty: 'measure-units', record: 'measure-unit'
 
 	})
 
@@ -1063,7 +1063,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.CatItemView', {
 
-	  type: 'xml', root: 'cat-items', record: 'cat-item',
+	  type: 'xml', rootProperty: 'cat-items', record: 'cat-item',
 	  totalProperty: 'itemsNumber'
 
 	})
@@ -1090,7 +1090,7 @@ ZeT.init('init: retrade.data', function()
 	//~: domains
 	ZeT.define('retrade.readers.DomainView', {
 
-	  type: 'xml', root: 'domains', record: 'domain',
+	  type: 'xml', rootProperty: 'domains', record: 'domain',
 	  totalProperty: 'domainsNumber'
 
 	})
@@ -1099,7 +1099,7 @@ ZeT.init('init: retrade.data', function()
 	//~: trade stores
 	ZeT.define('retrade.readers.TradeStoreView', {
 
-	  type: 'xml', root: 'stores', record: 'store',
+	  type: 'xml', rootProperty: 'stores', record: 'store',
 	  totalProperty: 'goodsNumber'
 
 	})
@@ -1231,7 +1231,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.PriceListView', {
 
-	  type: 'xml', root: 'price-lists', record: 'price-list',
+	  type: 'xml', rootProperty: 'price-lists', record: 'price-list',
 	  totalProperty: 'goodsNumber'
 
 	})
@@ -1302,7 +1302,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.GoodPriceHistory', {
 
-	  type: 'xml', root: 'prices-history', record: 'price-history',
+	  type: 'xml', rootProperty: 'prices-history', record: 'price-history',
 	  totalProperty: 'pricesNumber'
 
 	})
@@ -1427,7 +1427,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.PriceChange', {
 
-	  type: 'xml', root: 'price-changes', record: 'price-change'
+	  type: 'xml', rootProperty: 'price-changes', record: 'price-change'
 
 	})
 
@@ -1467,7 +1467,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.GoodPrice', {
 
-	  type: 'xml', root: 'good-prices', record: 'good-price',
+	  type: 'xml', rootProperty: 'good-prices', record: 'good-price',
 	  totalProperty: 'pricesNumber'
 
 	})
@@ -1519,7 +1519,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.RepriceDoc', {
 
-	  type: 'xml', root: 'reprice-docs', record: 'reprice-doc',
+	  type: 'xml', rootProperty: 'reprice-docs', record: 'reprice-doc',
 	  totalProperty: 'repricesNumber'
 
 	})
@@ -1605,7 +1605,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.ContractorView', {
 
-	  type: 'xml', root: 'contractors', record: 'contractor',
+	  type: 'xml', rootProperty: 'contractors', record: 'contractor',
 	  totalProperty: 'contractorsNumber'
 
 	})
@@ -1721,7 +1721,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.AuthLoginView', {
 
-	  type: 'xml', root: 'logins', record: 'login',
+	  type: 'xml', rootProperty: 'logins', record: 'login',
 	  totalProperty: 'loginsNumber'
 
 	})
@@ -1748,7 +1748,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.SelSetView', {
 
-	  type: 'xml', root: 'selset', record: 'item',
+	  type: 'xml', rootProperty: 'selset', record: 'item',
 	  totalProperty: 'selSetSize'
 
 	})
@@ -1784,7 +1784,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.SecRuleView', {
 
-	  type: 'xml', root: 'sec-rules', record: 'rule',
+	  type: 'xml', rootProperty: 'sec-rules', record: 'rule',
 	  totalProperty: 'secRulesNumber'
 
 	})
@@ -1834,7 +1834,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.SecAbleView', {
 
-	  type: 'xml', root: 'sec-ables', record: 'able',
+	  type: 'xml', rootProperty: 'sec-ables', record: 'able',
 	  totalProperty: 'secAblesNumber'
 
 	})
@@ -1877,7 +1877,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.SecSetView', {
 
-	  type: 'xml', root: 'sec-sets', record: 'set',
+	  type: 'xml', rootProperty: 'sec-sets', record: 'set',
 	  totalProperty: 'secSetsNumber'
 
 	})
@@ -1905,7 +1905,7 @@ ZeT.init('init: retrade.data', function()
 	})
 
 	ZeT.define('retrade.readers.CatItemTree', {
-	  type: 'xml', root: 'tree', record: 'node'
+	  type: 'xml', rootProperty: 'tree', record: 'node'
 	})
 
 	//>: catalogue items as tree
@@ -1930,7 +1930,7 @@ ZeT.init('init: retrade.data', function()
 	})
 
 	ZeT.define('retrade.readers.AggrVolumeView', {
-	  type: 'xml', root: 'aggr-volumes', record: 'aggr-volume',
+	  type: 'xml', rootProperty: 'aggr-volumes', record: 'aggr-volume',
 	  totalProperty: 'size'
 	})
 
@@ -2056,7 +2056,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.SellReceiptView', {
 
-	  type: 'xml', root: 'receipts', record: 'receipt',
+	  type: 'xml', rootProperty: 'receipts', record: 'receipt',
 	  totalProperty: 'receiptsNumber'
 
 	})
@@ -2132,7 +2132,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.GoodSellView', {
 
-	  type: 'xml', root: 'good-sells', record: 'good-sell'
+	  type: 'xml', rootProperty: 'good-sells', record: 'good-sell'
 	})
 
 	//>: sells sessions & receipts
@@ -2242,7 +2242,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.AccountView', {
 
-	  type: 'xml', root: 'accounts', record: 'account',
+	  type: 'xml', rootProperty: 'accounts', record: 'account',
 	  totalProperty: 'accountsNumber'
 
 	})
@@ -2394,7 +2394,7 @@ ZeT.init('init: retrade.data', function()
 	})
 
 	ZeT.define('retrade.readers.PayWayView', {
-	  type: 'xml', root: 'pay-ways', record: 'pay-way',
+	  type: 'xml', rootProperty: 'pay-ways', record: 'pay-way',
 	  totalProperty: 'payWaysNumber'
 	})
 
@@ -2498,7 +2498,7 @@ ZeT.init('init: retrade.data', function()
 	})
 
 	ZeT.define('retrade.readers.PaymentView', {
-	  type: 'xml', root: 'payments', record: 'payment',
+	  type: 'xml', rootProperty: 'payments', record: 'payment',
 	  totalProperty: 'paymentsNumber'
 	})
 
@@ -2826,12 +2826,12 @@ ZeT.init('init: retrade.data', function()
 	})
 
 	ZeT.define('retrade.readers.DataSourceView', {
-	  type: 'xml', root: 'data-sources', record: 'data-source'
+	  type: 'xml', rootProperty: 'data-sources', record: 'data-source'
 	})
 
 	//~: data sources: invoice: Adapted Entities Selected
 	ZeT.define('retrade.readers.AdaptedEntitiesSelected', {
-	  type: 'xml', root: 'entities', record: 'entity',
+	  type: 'xml', rootProperty: 'entities', record: 'entity',
 	  totalProperty: 'count'
 	})
 
@@ -2897,7 +2897,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.ReportTemplateView', {
 
-	  type: 'xml', root: 'report-templates', record: 'report-template',
+	  type: 'xml', rootProperty: 'report-templates', record: 'report-template',
 	  totalProperty: 'templatesNumber'
 
 	})
@@ -2964,7 +2964,7 @@ ZeT.init('init: retrade.data', function()
 
 	ZeT.define('retrade.readers.ReportRequestView', {
 
-	  type: 'xml', root: 'report-requests', record: 'report-request',
+	  type: 'xml', rootProperty: 'report-requests', record: 'report-request',
 	  totalProperty: 'requestsNumber'
 
 	})

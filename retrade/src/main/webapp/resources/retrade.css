@@ -558,9 +558,7 @@ td.retrade-user-menu-logoff
 
 .retrade-selset-menu-button span.x-btn-icon-el
 {
-  padding-left: 0; display: block;
-  margin-left: -3px; margin-right: 0;
-  left: 50%; width: 6px;
+  position: relative; left: 5px; width: 6px;
 }
 
 .retrade-selset-window.x-window-default,
