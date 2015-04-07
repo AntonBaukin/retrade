@@ -1,7 +1,6 @@
 package com.tverts.support.misc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 /**
@@ -26,7 +26,7 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int   THREADS  = 2;
+	static final int   THREADS  = 1;
 
 	/**
 	 * The number of times Support thread may go ahead
@@ -34,15 +34,6 @@ public class MultiPlaneSynch
 	 * number of Support threads, may be 0.
 	 */
 	static final int   PRESEE   = 2;
-
-	/**
-	 * Delay (in milliseconds) introduced by
-	 * the database when accessing client data
-	 * for the first time.
-	 *
-	 * Zero value means no delay.
-	 */
-	static final int   DELAY    = 0;
 
 	/**
 	 * The total number of test requests.
@@ -87,7 +78,6 @@ public class MultiPlaneSynch
 	{
 		//~: test the parameters
 		assert THREADS  >= 1;
-		assert DELAY    >= 0;
 		assert REQUESTS >= 1;
 		assert CLIENTS  >= 2;
 		assert RUNS     >= 1;
@@ -113,7 +103,7 @@ public class MultiPlaneSynch
 		//c: do test runs
 		long[] times = new long[RUNS];
 		for(int run = 0;(run < RUNS);run++)
-			times[run] = testRun(run+1, requests, new Database(database));
+			times[run] = testRun(run, requests, new Database(database));
 
 		//~: minimum run time
 		long time = Long.MAX_VALUE;
@@ -225,7 +215,6 @@ public class MultiPlaneSynch
 			this.clients = new Client[clients];
 			for(int id = 0;(id < clients);id++)
 				this.clients[id] = new Client(id);
-			this.delays = null;
 		}
 
 		public Database(Database s)
@@ -234,19 +223,13 @@ public class MultiPlaneSynch
 			this.clients = new Client[s.clients.length];
 			int i = 0; for(Client c : s.clients)
 				this.clients[i++] = new Client(c);
-
-			if(DELAY == 0) this.delays = null; else
-			{
-				this.delays = new int[clients.length];
-				Arrays.fill(this.delays, DELAY);
-			}
 		}
 
 
 		/* Database Access */
 
 		/**
-		 * Thread-unsafe operation to directly access client.
+		 * Directly access to the client.
 		 */
 		public Client  client(int id)
 		{
@@ -254,8 +237,7 @@ public class MultiPlaneSynch
 		}
 
 		/**
-		 * Thread-safe operation to get a full copy
-		 * of the client data.
+		 * A full copy of the requested client data.
 		 */
 		public Client  copy(int id)
 		{
@@ -263,11 +245,11 @@ public class MultiPlaneSynch
 		}
 
 		/**
-		 * Thread-safe operation to test whether
-		 * global copy is the same as the given one.
-		 * @see {@link Data#initial}
+		 * Tests whether global Client data is the same
+		 * as the given ones. Event items is a client ids.
+		 * Odd items is the copy of the same client data.
 		 *
-		 * Invoked by Master thread only.
+		 * @see {@link Data#initial}
 		 */
 		public boolean same(Object[] initial)
 		{
@@ -280,8 +262,8 @@ public class MultiPlaneSynch
 		}
 
 		/**
-		 * Thread-safe operation to assign the global data
-		 * of the client. Only Master thread is allowed this!
+		 * Assigns the global data of the clients.
+		 * Only Master thread is allowed this request!
 		 * Note that the source object may not be used further.
 		 */
 		public void    assign(Client[] cs)
@@ -310,30 +292,10 @@ public class MultiPlaneSynch
 			return hash;
 		}
 
-		private void   delay(int id)
-		{
-			if(delays[id] == 0) return;
-
-			final Object w = new Object();
-			try
-			{
-				synchronized(w)
-				{
-					w.wait(delays[id]);
-					delays[id] = 0;
-				}
-			}
-			catch(InterruptedException e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
-
 
 		/* private: the clients */
 
 		private final Client[] clients;
-		private final int[]    delays;
 	}
 
 
@@ -343,9 +305,7 @@ public class MultiPlaneSynch
 	{
 		/* public: constructors */
 
-		public final int id;
-
-		public Client(int id)
+		public  Client(int id)
 		{
 			this.id    = id;
 			this.debts = new Debts();
@@ -359,6 +319,8 @@ public class MultiPlaneSynch
 			this.debts = new Debts(s.debts);
 			this.hash  = new Hash(s.hash());
 		}
+
+		public final int id;
 
 
 		/* Money Operations */
@@ -612,14 +574,14 @@ public class MultiPlaneSynch
 		 * following the last pair. Note that as the buffer
 		 * is cyclic, end may be before the head.
 		 */
-		private int     b, e = line.length;
+		private int    b, e = line.length;
 	}
 
 
-	/* Murmur Hash 3 */
+	/* Hash Function */
 
 	/**
-	 * Implementation based on 128-bit Murmur hash
+	 * Implementation based on 128-bit Murmur hash 3
 	 * function introduced by Austin Appleby.
 	 */
 	private static final class Hash
@@ -706,285 +668,6 @@ public class MultiPlaneSynch
 		/* private: hash state */
 
 		private long x, y;
-	}
-
-
-	/* self-tests: debts and hashes */
-
-	private static void testDebtsBuffer()
-	{
-		final int    CYCLES = 128; //<-- the number of test cycles
-		final int    STEPS  = 512; //<-- the number of probes per cycle
-		final Random GEN    = new Random(1L);
-
-		for(int cycle = 0;(cycle < CYCLES);cycle++)
-		{
-			Debts             deb = new Debts();
-			LinkedList<int[]> ref = new LinkedList<>();
-
-			for(int step = 0;(step < STEPS);step++)
-			{
-				int w = GEN.nextInt(10);
-
-				//?: {0..2 add some items}
-				if(w <= 2)
-				{
-					int N = GEN.nextInt(100);
-
-					for(int n = 0;(n < N);n++)
-					{
-						int[] x = new int[] {GEN.nextInt(100), GEN.nextInt(1000)};
-						ref.add(x);
-						deb.add(x[0], x[1]);
-						cmp(deb, ref.getFirst());
-					}
-				}
-
-				//?: {3..5 pop some items}
-				if(w > 2 && w <= 5)
-				{
-					int N = GEN.nextInt(100);
-
-					for(int n = 0;(n < N);n++)
-					{
-						if(ref.isEmpty() || deb.isEmpty())
-						{
-							assert ref.isEmpty() && deb.isEmpty();
-							break;
-						}
-
-						int[] x = ref.removeFirst();
-						cmp(deb, x);
-						deb.pop();
-					}
-
-					if(ref.isEmpty() || deb.isEmpty())
-						assert ref.isEmpty() && deb.isEmpty();
-				}
-
-				//?: {6..7 clone debts}
-				if(w > 5 && w <= 7)
-				{
-					Debts clone = new Debts(deb);
-
-					for(int[] x : ref)
-					{
-						cmp(clone, x);
-						clone.pop();
-					}
-
-					assert clone.isEmpty();
-				}
-
-				//?: {7..8 copy and compare}
-				if(w > 7 && w <= 8)
-				{
-					Debts copy = new Debts();
-
-					for(int[] x : ref)
-					{
-						copy.add(x[0], x[1]);
-						cmp(copy, ref.getFirst());
-					}
-
-					Hash a = new Hash();
-					copy.hash(a);
-
-					Hash b = new Hash();
-					deb.hash(b);
-
-					assert a.equals(b);
-				}
-
-				//?: {9 drain all}
-				if(w == 9)
-				{
-					for(int[] x : ref)
-					{
-						cmp(deb, x);
-						deb.pop();
-					}
-
-					assert deb.isEmpty();
-					ref.clear();
-				}
-			}
-		}
-	}
-
-	private static void cmp(Debts deb, int[] x)
-	{
-		assert !deb.isEmpty();
-		assert (deb.client() == x[0]) & (deb.debt() == x[1]);
-	}
-
-
-	/* Execution Queue */
-
-	/**
-	 * Queue with support for Master and Support
-	 * threads processing. In this implementation
-	 * Master and Support are temporary roles
-	 * assigned to a working thread that selects
-	 * the pending request.
-	 */
-	private static final class Queue
-	{
-		/* Queue Parameters */
-
-		public final Request[] requests;
-		public final Database  database;
-
-		public Queue(Request[] requests, Database database)
-		{
-			this.requests = requests;
-			this.database = database;
-
-			this.datas    = new Data[requests.length];
-			for(int i = 0;(i < requests.length);i++)
-				datas[i] = new Data(requests[i], i);
-		}
-
-
-		/* Queue Access */
-
-		public Data master(Data data)
-		{
-			//?: {release previous request}
-			if(data != null)
-				datas[data.index] = null; //<-- reduce GC pulsation
-
-			final int x = cursor[0];
-			if(x >= requests.length)
-			{
-				data.locked.set(2);
-				return null;
-			}
-
-			//~: advance the cursor
-			cursor[0]++;
-
-			//HINT: Support thread ID starts with 1. Having 1 Support
-			// next pre-execute position is +2 after this (x) request.
-			// +2 (not +1) is better as when Support will take it,
-			// Master will be about to take +1.
-
-			//~: move prepare position
-			cursor[1] = x + THREADS-1;
-
-			//~: unlock waiting Support threads
-			if(data != null)
-				data.locked.lazySet(2);
-
-			return datas[x];
-		}
-
-		public Data support(final int id)
-		{
-			int offset = id;
-			int presee = 0;
-
-			//c: queue competition cycle
-			while(true)
-			{
-				//~: position to pre-execute (starts with 1)
-				final int index = cursor[1] + offset + presee;
-
-				//?: {the queue is almost done}
-				if(index >= requests.length)
-					return null; //<-- thread exit
-
-				//?: {master is ahead}
-				final Data data = datas[index];
-				if(data == null)
-				{
-					offset += THREADS-1;
-					continue;
-				}
-
-				//?: {this item is not locked} take it
-				if(data.locked.compareAndSet(0, 1))
-					return data;
-
-				//?: {pre-see limit not gained}
-				if(presee++ <= PRESEE)
-				{
-					offset += THREADS-1;
-					continue;
-				}
-
-				//~: spin on this item
-				while(data.locked.get() != 2);
-
-				//~: go ahead and wake up else supporters
-
-			}
-		}
-
-		/**
-		 * Request execution context.
-		 */
-		private final Data[] datas;
-
-		/**
-		 * Current request to process at [0] and
-		 * request to pre-execute [1].
-		 *
-		 * HINT: we use array instead of volatile
-		 * fields as extensive concurrent access
-		 * to them reduces the performance by 10%.
-		 */
-		private final int[] cursor = new int[2];
-	}
-
-
-	/**
-	 * Processing data of one of the Support threads.
-	 */
-	private static final class Data
-	{
-		/* Processing Data */
-
-		public final Request request;
-		public final int     index;
-
-		public Data(Request request, int index)
-		{
-			this.request = request;
-			this.index   = index;
-		}
-
-
-		/**
-		 * The client data hash before they were processed.
-		 * Assigned by a Support thread had pre-executed
-		 * this request.
-		 *
-		 * Each [2i] position is Client ID;
-		 * [2i + 1] is Client Hash.
-		 */
-		public volatile Object[] initial;
-
-		/**
-		 * The client data after they were processed.
-		 */
-		public volatile Client[] results;
-
-		/**
-		 * Lock for Support threads to exclusively
-		 * access request pre-execution.
-		 *
-		 * Note that as request is pre-executed only once,
-		 * lock is never removed: it is also indicator not
-		 * to re-execute the same request twice.
-		 *
-		 * Master thread never asks for locks and
-		 * executes requests directly.
-		 *
-		 * Value meanings are: 0 - not locked, 1 - locked
-		 * by Support, 2 - Support wait release.
-		 */
-		public final AtomicInteger locked = new AtomicInteger();
 	}
 
 
@@ -1100,159 +783,301 @@ public class MultiPlaneSynch
 	}
 
 
-	/* Master Thread Task */
+	/* Execution Statistics */
 
-	private static final class Master extends Processing implements Runnable
+	static class Stat
+	{
+		/**
+		 * When thread executes as a Master it
+		 * measures the consistency hits.
+		 */
+		public int hits;
+		public int miss;
+
+		/**
+		 * Queue execution time (milliseconds).
+		 */
+		public final AtomicLong runtime =
+		  new AtomicLong();
+	}
+
+
+	/* Processing Data */
+
+	/**
+	 * Processing data is a wrapper of a Request.
+	 * It stores the synchronization lock and
+	 * the execution results.
+	 */
+	static class Data
+	{
+		/* Processing Data */
+
+		public final Request request;
+		public final int     index;
+
+		public Data(Request request, int index)
+		{
+			this.request = request;
+			this.index   = index;
+		}
+
+
+		/* Lock */
+
+		/**
+		 * Lock to exclusively access the request.
+		 * The states are: 0 - not locked, 1 - locked
+		 * by Support, 2 - locked by Master.
+		 *
+		 * Note that Master lock is never removed!
+		 */
+		public final AtomicInteger locked = new AtomicInteger();
+
+
+		/* Execution Data */
+
+		/**
+		 * The client data hash before they were processed.
+		 * Assigned by a Support thread had pre-executed
+		 * this request.
+		 *
+		 * Each [2i] position is Client ID; [2i + 1] is Client Hash.
+		 * @see {@link Database#same(Object[])}
+		 */
+		public Object[] initial;
+
+		/**
+		 * The client data after they were processed.
+		 */
+		public Client[] results;
+	}
+
+
+	/* Local Context of a Processing Thread */
+
+	/**
+	 * Processing data context provides shared objects
+	 * access for a Worker. Each worker has it's own
+	 * copy of a Context.
+	 */
+	static class Context
+	{
+		/**
+		 * Shared (global) database.
+		 */
+		public final Database database;
+
+		/**
+		 * Requests data of the queue. Private
+		 * copy, but all the Data are shared.
+		 */
+		public final Data[]   datas;
+
+		/**
+		 * Shared Master cursor position. Array is always [1].
+		 * Note that cursor is not atomic as only single read
+		 * and write operations are used. Data locks are enough
+		 * to select the Master role only once at a time.
+		 */
+		public final int[]    cursor;
+
+		public final Stat     stat;
+
+
+		/* public: constructors */
+
+		/**
+		 * Creates original processing context.
+		 */
+		public Context(Database database, Request[] requests)
+		{
+			this.database = database;
+
+			this.datas = new Data[requests.length];
+			for(int i = 0;(i < requests.length);i++)
+				this.datas[i] = new Data(requests[i], i);
+
+			this.cursor   = new int[1];
+			this.stat     = new Stat();
+		}
+
+		/**
+		 * Creates copy of the original context.
+		 * Shares the data by the links.
+		 */
+		public Context(Context shared)
+		{
+			this.database = shared.database;
+
+			this.datas = new Data[shared.datas.length];
+			System.arraycopy(shared.datas, 0, datas, 0, datas.length);
+
+			this.cursor   = shared.cursor;
+			this.stat     = shared.stat;
+		}
+	}
+
+
+	/* Worker */
+
+	/**
+	 * Working thread task selects the next request from the queue
+	 * and executes it in one of the roles: as a Queue Master, or
+	 * as a Support. Master role means that the request selected
+	 * is the earliest request not executed yet.
+	 */
+	static final class Worker extends Processing implements Runnable
 	{
 		/* public: constructor */
 
-		public Master(Queue queue)
+		public Worker(Context ctx)
 		{
-			this.queue = queue;
+			this.ctx = ctx;
 		}
 
 
-		/* Worker */
+		/* Runnable */
 
 		public void run()
 		{
-			runtime = System.currentTimeMillis();
+			long runtime = System.currentTimeMillis();
 
 			//c: execute the requests of the queue
-			while((data = queue.master(data)) != null)
+			while((data = select()) != null)
 				execute();
 
-			runtime = System.currentTimeMillis() - runtime;
-		}
-
-		public int  getHits()
-		{
-			return hits;
-		}
-
-		public int  getMiss()
-		{
-			return miss;
-		}
-
-		public long getRuntime()
-		{
-			return runtime;
+			ctx.stat.runtime.compareAndSet(0L,
+			  System.currentTimeMillis() - runtime);
 		}
 
 
-		/* protected: requests execution */
+		/* private: execution */
 
 		protected Client client(int id)
+		{
+			return (master)?(clientMaster(id)):(clientSupport(id));
+		}
+
+		/**
+		 * Selects next request for execution.
+		 * Returns null when the queue is done.
+		 */
+		private Data     select()
+		{
+			while(true)
+			{
+				//HINT: only Master increments cursor!
+				final int i = ctx.cursor[0];
+
+				//?: {the queue is done}
+				if(i >= ctx.datas.length)
+					return null;
+
+				//?: {locked this data as a Master}
+				Data d = ctx.datas[i];
+				if(d.locked.compareAndSet(0, 2))
+					{ master = true; return d; }
+
+				//~: do pre-see cycle as a support
+				for(int p = 1;(p != PRESEE);p++)
+				{
+					//?: {the queue is almost done}
+					if(i + p >= ctx.datas.length)
+						return null;
+
+					//?: {locked this data as a Support}
+					d = ctx.datas[i + p];
+					if(d.locked.compareAndSet(0, 1))
+						{ master = false; return d; }
+				}
+
+				//!: pre-see had failed, try again
+				continue;
+			}
+		}
+
+		private void     execute()
+		{
+			//?: {works as a master}
+			if(master)
+				executeMaster();
+			//~: works as a support
+			else
+				executeSupport();
+
+			//~: clear the cache
+			cache.clear();
+		}
+
+
+		/* Master Behaviour */
+
+		private Client   clientMaster(int id)
 		{
 			//?: {found it in the local cache}
 			Client c = cache.get(id);
 			if(c != null) return c;
 
 			//~: load from the database & cache it
-			c = queue.database.copy(id);
+			c = ctx.database.copy(id);
 			cache.put(c.id, c);
 
 			return c;
 		}
 
-		private void     execute()
+		private void     executeMaster()
 		{
-			cache.clear();
-
 			//?: {the resulting data may be applied}
 			if(consistent())
-				queue.database.assign(data.results);
-			//~: execute again
+				ctx.database.assign(data.results);
+				//~: execute again
 			else
 			{
 				//~: execute the request
 				execute(data.request);
 
 				//~: assign all the changes to the database
-				queue.database.assign(cache.values());
+				ctx.database.assign(cache.values());
 			}
+
+			//!: increment the cursor
+			ctx.cursor[0]++;
 		}
 
+		/**
+		 * A pre-executed request is consistent when
+		 * the hashes of all the clients involved in
+		 * the processing are the same now as they
+		 * were during the pre-execution.
+		 */
 		private boolean  consistent()
 		{
 			if(data.results == null)
 				return false;
 
 			//?: {global copy differs}
-			if(!queue.database.same(data.initial))
+			if(!ctx.database.same(data.initial))
 			{
-				miss++; //<-- support work is wasted
+				ctx.stat.miss++; //<-- support work is wasted
 				return false;
 			}
 
-			hits++; //<-- support work is not wasted
+			ctx.stat.hits++; //<-- support work is applied
 			return true;
 		}
 
 
-		/* private: worker state */
+		/* Support Behaviour */
 
-		private final Queue queue;
-
-		/**
-		 * Current execution context.
-		 */
-		private Data        data;
-
-		/**
-		 * When thread executes as a Master it
-		 * measures the consistency hits.
-		 */
-		private int         hits;
-		private int         miss;
-
-		/**
-		 * Queue execution time.
-		 */
-		private long        runtime;
-
-		/**
-		 * Cache where clients are held during
-		 * a request processing.
-		 */
-		private final Map<Integer, Client> cache = new HashMap<>(7);
-	}
-
-
-	/* Support Thread Task */
-
-	private static final class Support extends Processing implements Runnable
-	{
-		/* public: constructor */
-
-		public Support(Queue queue, int id)
-		{
-			assert (id >= 1);
-
-			this.queue = queue;
-			this.id    = id;
-		}
-
-		/* Worker */
-
-		public void run()
-		{
-			while((data = queue.support(id)) != null)
-				execute();
-		}
-
-
-		/* protected: requests execution */
-
-		protected Client client(int id)
+		private Client   clientSupport(int id)
 		{
 			//?: {found it in the local cache}
 			Client c = cache.get(id);
 			if(c != null) return c;
 
 			//~: load from the database & cache it
-			c = queue.database.copy(id);
+			c = ctx.database.copy(id);
 			cache.put(c.id, c);
 
 			//~: remember the initial version
@@ -1265,11 +1090,8 @@ public class MultiPlaneSynch
 			return c;
 		}
 
-		private void     execute()
+		private void     executeSupport()
 		{
-			//~: clear the cache
-			cache.clear();
-
 			//~: allocate execution data
 			initial = new ArrayList<>(4);
 			results = new ArrayList<>(2);
@@ -1277,86 +1099,189 @@ public class MultiPlaneSynch
 			//~: execute the request
 			execute(data.request);
 
-			//~: calculate hashes
+			//~: calculate hashes of the clients involved
 			for(Client c : results)
 				c.hash();
 
 			//~: save data results
 			data.initial = initial.toArray(new Object[initial.size()]);
 			data.results = results.toArray(new Client[results.size()]);
+			initial = null; results = null;
+
+			//!: remove support (pre-execute lock)
+			assert data.locked.compareAndSet(1, 0);
 		}
 
 
-		/* private: worker state */
-
-		private final Queue queue;
+		/* private: general worker state */
 
 		/**
-		 * Support thread identifier. Starts from 1.
+		 * Execution context of this worker.
 		 */
-		private final int   id;
+		private final Context ctx;
 
 		/**
-		 * Current execution context.
+		 * This flag is set when Worker currently in Master role.
+		 * In this case the Context cursor equals to the Data index.
 		 */
-		private Data        data;
+		private boolean master;
 
 		/**
-		 * Cache where clients are held during
-		 * a request processing.
+		 * Currently executed request.
 		 */
-		private final Map<Integer, Client> cache = new HashMap<>(7);
+		private Data data;
 
 		/**
-		 * Initial and final processing states
-		 * used when working as a Support.
+		 * Cache where clients are held during a request processing.
 		 */
-		private List<Object> initial;
-		private List<Client> results;
+		private final HashMap<Integer, Client> cache = new HashMap<>(7);
+
+
+		/* private: support worker state */
+
+		private ArrayList<Object> initial;
+		private ArrayList<Client> results;
 	}
 
 	static long testRun(int run, Request[] requests, Database database)
 	  throws InterruptedException
 	{
-		//~: create the queue
-		Queue    queue   = new Queue(requests, database);
-
-		//~: create the master task
-		Master   master  = new Master(queue);
-
 		//~: create the working threads
-		Thread[] threads = new Thread[THREADS];
-
-		//~: master thread
-		threads[0] = new Thread(master);
-		threads[0].setName("Master");
-
-		//~: support threads
-		for(int i = 1;(i < THREADS);i++)
+		Thread[] ths = new Thread[THREADS];
+		Context  ctx = null;
+		for(int i = 0;(i < ths.length);i++)
 		{
-			threads[i] = new Thread(new Support(queue, i));
-			threads[i].setName("Support-" + i);
-			threads[i].setDaemon(true);
-			threads[i].start();
+			ctx = (ctx == null)?(new Context(database, requests)):(new Context(ctx));
+			ths[i] = new Thread(new Worker(ctx));
+			ths[i].setName("Support-" + i);
+			ths[i].start();
 		}
 
-		//!: start the master
-		threads[0].start();
+		//~: join them all
+		for(Thread th : ths)
+			th.join();
 
-		//~: and wait it
-		threads[0].join();
-
-		if(run == 1)
-			System.out.println(" #  TIME   HITS  MISS               HASH               ");
+		if(run == 0) System.out.println(
+		  " #  TIME   HITS  MISS               HASH               ");
 
 		//~: print the timing and the hash
 		System.out.printf("%2d %5d  %5.1f %5.1f  %s\n",
-		  run, master.getRuntime(),
-		  (100.0 * master.getHits() / requests.length),
-		  (100.0 * master.getMiss() / requests.length),
+		  run+1, ctx.stat.runtime.longValue(),
+		  (100.0 * ctx.stat.hits / requests.length),
+		  (100.0 * ctx.stat.miss / requests.length),
 		  database.hash().toString()
 		);
 
-		return master.getRuntime();
+		return ctx.stat.runtime.longValue();
+	}
+
+
+	/* self-tests: debts and hashes */
+
+	private static void testDebtsBuffer()
+	{
+		final int    CYCLES = 128; //<-- the number of test cycles
+		final int    STEPS  = 512; //<-- the number of probes per cycle
+		final Random GEN    = new Random(1L);
+
+		for(int cycle = 0;(cycle < CYCLES);cycle++)
+		{
+			Debts             deb = new Debts();
+			LinkedList<int[]> ref = new LinkedList<>();
+
+			for(int step = 0;(step < STEPS);step++)
+			{
+				int w = GEN.nextInt(10);
+
+				//?: {0..2 add some items}
+				if(w <= 2)
+				{
+					int N = GEN.nextInt(100);
+
+					for(int n = 0;(n < N);n++)
+					{
+						int[] x = new int[] {GEN.nextInt(100), GEN.nextInt(1000)};
+						ref.add(x);
+						deb.add(x[0], x[1]);
+						cmp(deb, ref.getFirst());
+					}
+				}
+
+				//?: {3..5 pop some items}
+				if(w > 2 && w <= 5)
+				{
+					int N = GEN.nextInt(100);
+
+					for(int n = 0;(n < N);n++)
+					{
+						if(ref.isEmpty() || deb.isEmpty())
+						{
+							assert ref.isEmpty() && deb.isEmpty();
+							break;
+						}
+
+						int[] x = ref.removeFirst();
+						cmp(deb, x);
+						deb.pop();
+					}
+
+					if(ref.isEmpty() || deb.isEmpty())
+						assert ref.isEmpty() && deb.isEmpty();
+				}
+
+				//?: {6..7 clone debts}
+				if(w > 5 && w <= 7)
+				{
+					Debts clone = new Debts(deb);
+
+					for(int[] x : ref)
+					{
+						cmp(clone, x);
+						clone.pop();
+					}
+
+					assert clone.isEmpty();
+				}
+
+				//?: {7..8 copy and compare}
+				if(w > 7 && w <= 8)
+				{
+					Debts copy = new Debts();
+
+					for(int[] x : ref)
+					{
+						copy.add(x[0], x[1]);
+						cmp(copy, ref.getFirst());
+					}
+
+					Hash a = new Hash();
+					copy.hash(a);
+
+					Hash b = new Hash();
+					deb.hash(b);
+
+					assert a.equals(b);
+				}
+
+				//?: {9 drain all}
+				if(w == 9)
+				{
+					for(int[] x : ref)
+					{
+						cmp(deb, x);
+						deb.pop();
+					}
+
+					assert deb.isEmpty();
+					ref.clear();
+				}
+			}
+		}
+	}
+
+	private static void cmp(Debts deb, int[] x)
+	{
+		assert !deb.isEmpty();
+		assert (deb.client() == x[0]) & (deb.debt() == x[1]);
 	}
 }
