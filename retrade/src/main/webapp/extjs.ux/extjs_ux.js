@@ -4,6 +4,12 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
+
+/**
+ * Make window shadow to be on all the sides.
+ */
+Ext.window.Window.override({ shadow: 'frame' })
+
 /**
  * ExtJS FIX: Component.setHtml()
  */

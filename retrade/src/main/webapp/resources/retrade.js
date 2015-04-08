@@ -1019,7 +1019,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12)
+		   width: extjsf.ex(14)
 		 },
 
 		 {

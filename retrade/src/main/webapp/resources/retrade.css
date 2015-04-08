@@ -118,11 +118,6 @@ span.retrade-currency-sep
 
 /* form fields */
 
-input.x-form-field.x-form-checkbox.x-form-cb
-{
-  margin: 0; vertical-align: middle;
-}
-
 textarea.x-form-textarea
 {
   font-family: 'Tahoma', 'Arial', 'Verdana', sans-serif;
@@ -622,7 +617,7 @@ td.retrade-info-title div, .retrade-info-title-label,
  caption.retrade-info-title
 {
   white-space: nowrap; margin: 0 4pt 0 7pt;
-  font-size: 10pt; cursor: default;
+  font-size: 12pt; cursor: default;
   letter-spacing: 0.1pt;
 }
 

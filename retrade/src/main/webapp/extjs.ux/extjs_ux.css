@@ -8,7 +8,7 @@
 /* ExtJS General Styles: Crisp Touch Theme */
 
 
-/* buttons, menu buttons */
+/* Buttons, Menu Buttons */
 
 .x-btn-default-small
 {
@@ -39,11 +39,19 @@
 }
 
 
-/* menu items */
+/* Menu Items */
 
 .x-menu-item-icon-default
 {
   background-position: left center;
+}
+
+
+/* Windows */
+
+.x-window-header-default-top
+{
+  padding: 5px;
 }
 
 

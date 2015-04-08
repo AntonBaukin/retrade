@@ -201,7 +201,7 @@ public class FacesMeasuresView extends ModelView
 			return "Создание единицы измерения";
 
 		return SU.cats(
-		  "Единица измерения [",
+		  "Ед. изм. [",
 		  getMeasureView().getCode(), "] ",
 		  getMeasureView().getName()
 		);
