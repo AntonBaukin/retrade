@@ -26,14 +26,13 @@ public class MultiPlaneSynch
 	 * The number of working threads.
 	 * Value 1 means execution by the Master only.
 	 */
-	static final int   THREADS  = 1;
+	static final int   THREADS  = 2;
 
 	/**
 	 * The number of times Support thread may go ahead
-	 * by one pre-execution block. Doesn't depend on the
-	 * number of Support threads, may be 0.
+	 * by one pre-execution block.
 	 */
-	static final int   PRESEE   = 2;
+	static final int   PRESEE   = THREADS + 1;
 
 	/**
 	 * The total number of test requests.
@@ -95,20 +94,38 @@ public class MultiPlaneSynch
 		Request[] requests = generateRequests();
 		Database  database = generateDatabase();
 
+		//c: do test runs
+		Stat[] stats = new Stat[RUNS];
+		for(int run = 0;(run < RUNS);run++)
+			stats[run] = testRun(run, requests, new Database(database));
+
+		printStats(stats);
+	}
+
+	static void printStats(Stat[] stats)
+	{
 		Locale.setDefault(Locale.US);
-		System.out.printf("[%d] Supporters; Requests [%d], Seed [%d]; [%d] runs:\n",
-		  THREADS-1, REQUESTS, SEED, RUNS
+		System.out.printf("[%d] Workers; Requests [%d], Seed [%d]; [%d] runs:\n",
+		  THREADS, REQUESTS, SEED, RUNS
 		);
 
-		//c: do test runs
-		long[] times = new long[RUNS];
-		for(int run = 0;(run < RUNS);run++)
-			times[run] = testRun(run, requests, new Database(database));
+		System.out.println(" #  TIME   HITS  MISS               HASH               ");
+
+		//~: print the timing and the hash
+		for(int i = 0;(i < stats.length);i++)
+			System.out.printf("%2d %5d  %5.1f %5.1f  %s\n",
+			  i+1, stats[i].runtime.longValue(),
+			  (100.0 * stats[i].hits / stats[i].size),
+			  (100.0 * stats[i].miss / stats[i].size),
+			  stats[i].databaseHash
+		);
 
 		//~: minimum run time
-		long time = Long.MAX_VALUE;
-		for(int i = 0;(i < RUNS);i++)
-			time = Math.min(time, times[i]);
+		int min = 0; long time = Long.MAX_VALUE;
+		for(int i = 0;(i < stats.length);i++)
+			if(stats[i].runtime.get() < time)
+				{ min = i; time = stats[i].runtime.get(); }
+
 		System.out.printf("Minimum run time: %d\n", time);
 	}
 
@@ -787,6 +804,8 @@ public class MultiPlaneSynch
 
 	static class Stat
 	{
+		public int size;
+
 		/**
 		 * When thread executes as a Master it
 		 * measures the consistency hits.
@@ -799,6 +818,8 @@ public class MultiPlaneSynch
 		 */
 		public final AtomicLong runtime =
 		  new AtomicLong();
+
+		public String databaseHash;
 	}
 
 
@@ -826,11 +847,15 @@ public class MultiPlaneSynch
 		/* Lock */
 
 		/**
-		 * Lock to exclusively access the request.
-		 * The states are: 0 - not locked, 1 - locked
-		 * by Support, 2 - locked by Master.
+		 * Lock to exclusively access the data.
 		 *
-		 * Note that Master lock is never removed!
+		 *  0 - not locked, not pre-executed;
+		 *  1 - not locked, is  pre-executed;
+		 *  2 - locked by Master;
+		 *  3 - locked by Support.
+		 *
+		 * Master lock [2] is terminal state.
+		 * Support lock [3] is unlocked to [1].
 		 */
 		public final AtomicInteger locked = new AtomicInteger();
 
@@ -866,13 +891,13 @@ public class MultiPlaneSynch
 		/**
 		 * Shared (global) database.
 		 */
-		public final Database database;
+		public final Database      database;
 
 		/**
 		 * Requests data of the queue. Private
 		 * copy, but all the Data are shared.
 		 */
-		public final Data[]   datas;
+		public final Data[]        datas;
 
 		/**
 		 * Shared Master cursor position. Array is always [1].
@@ -880,9 +905,15 @@ public class MultiPlaneSynch
 		 * and write operations are used. Data locks are enough
 		 * to select the Master role only once at a time.
 		 */
-		public final int[]    cursor;
+		public final int[]         cursor;
 
-		public final Stat     stat;
+		/**
+		 * Execution offset from the cursor.
+		 * Cleared to 0 each time it gains {@link #PRESEE}.
+		 */
+		public final AtomicInteger presee;
+
+		public final Stat          stat;
 
 
 		/* public: constructors */
@@ -899,6 +930,7 @@ public class MultiPlaneSynch
 				this.datas[i] = new Data(requests[i], i);
 
 			this.cursor   = new int[1];
+			this.presee   = new AtomicInteger();
 			this.stat     = new Stat();
 		}
 
@@ -914,6 +946,7 @@ public class MultiPlaneSynch
 			System.arraycopy(shared.datas, 0, datas, 0, datas.length);
 
 			this.cursor   = shared.cursor;
+			this.presee   = shared.presee;
 			this.stat     = shared.stat;
 		}
 	}
@@ -931,8 +964,11 @@ public class MultiPlaneSynch
 	{
 		/* public: constructor */
 
-		public Worker(Context ctx)
+		public final int id;
+
+		public Worker(int id, Context ctx)
 		{
+			this.id  = id;
 			this.ctx = ctx;
 		}
 
@@ -969,31 +1005,41 @@ public class MultiPlaneSynch
 			{
 				//HINT: only Master increments cursor!
 				final int i = ctx.cursor[0];
+				final int o = ctx.presee.getAndIncrement();
 
 				//?: {the queue is done}
 				if(i >= ctx.datas.length)
 					return null;
 
-				//?: {locked this data as a Master}
-				Data d = ctx.datas[i];
-				if(d.locked.compareAndSet(0, 2))
-					{ master = true; return d; }
-
-				//~: do pre-see cycle as a support
-				for(int p = 1;(p != PRESEE);p++)
+				//?: {offset is zero} try the Master role
+				if(o == 0)
 				{
-					//?: {the queue is almost done}
-					if(i + p >= ctx.datas.length)
-						return null;
-
-					//?: {locked this data as a Support}
-					d = ctx.datas[i + p];
-					if(d.locked.compareAndSet(0, 1))
-						{ master = false; return d; }
+					//?: {locked this data as a Master}
+					Data d = ctx.datas[i];
+					if(d.locked.compareAndSet(1, 2) || d.locked.compareAndSet(0, 2))
+						{ master = true; return d; }
 				}
 
+				//?: {gained pre-see limit} cycle again
+				if(o > PRESEE)
+				{
+					ctx.presee.set(0);
+					continue;
+				}
+
+				//?: {the queue is almost done}
+				if(i + o >= ctx.datas.length)
+				{
+					ctx.presee.set(0);
+					continue;
+				}
+
+				//?: {locked this data as a Support}
+				Data d = ctx.datas[i + o];
+				if(d.locked.compareAndSet(0, 3))
+					{ master = false; return d; }
+
 				//!: pre-see had failed, try again
-				continue;
 			}
 		}
 
@@ -1015,6 +1061,9 @@ public class MultiPlaneSynch
 
 		private Client   clientMaster(int id)
 		{
+			if(THREADS == 1)
+				return ctx.database.client(id);
+
 			//?: {found it in the local cache}
 			Client c = cache.get(id);
 			if(c != null) return c;
@@ -1043,6 +1092,9 @@ public class MultiPlaneSynch
 
 			//!: increment the cursor
 			ctx.cursor[0]++;
+
+			//~: clear pre-see counter
+			ctx.presee.set(0);
 		}
 
 		/**
@@ -1109,7 +1161,7 @@ public class MultiPlaneSynch
 			initial = null; results = null;
 
 			//!: remove support (pre-execute lock)
-			assert data.locked.compareAndSet(1, 0);
+			assert data.locked.compareAndSet(3, 1);
 		}
 
 
@@ -1143,16 +1195,20 @@ public class MultiPlaneSynch
 		private ArrayList<Client> results;
 	}
 
-	static long testRun(int run, Request[] requests, Database database)
+	static Stat testRun(int run, Request[] requests, Database database)
 	  throws InterruptedException
 	{
+		//~: create the contexts
+		Context[] cxs = new Context[THREADS];
+		cxs[0] = new Context(database, requests);
+		for(int i = 1;(i < cxs.length);i++)
+			cxs[i] = new Context(cxs[0]);
+
 		//~: create the working threads
-		Thread[] ths = new Thread[THREADS];
-		Context  ctx = null;
+		Thread[] ths = new Thread[cxs.length];
 		for(int i = 0;(i < ths.length);i++)
 		{
-			ctx = (ctx == null)?(new Context(database, requests)):(new Context(ctx));
-			ths[i] = new Thread(new Worker(ctx));
+			ths[i] = new Thread(new Worker(i, cxs[i]));
 			ths[i].setName("Support-" + i);
 			ths[i].start();
 		}
@@ -1161,18 +1217,17 @@ public class MultiPlaneSynch
 		for(Thread th : ths)
 			th.join();
 
-		if(run == 0) System.out.println(
-		  " #  TIME   HITS  MISS               HASH               ");
+		//~: test all is executed
+		for(Data d : cxs[0].datas)
+			assert d.locked.get() == 2;
 
-		//~: print the timing and the hash
-		System.out.printf("%2d %5d  %5.1f %5.1f  %s\n",
-		  run+1, ctx.stat.runtime.longValue(),
-		  (100.0 * ctx.stat.hits / requests.length),
-		  (100.0 * ctx.stat.miss / requests.length),
-		  database.hash().toString()
-		);
+		//~: save requests number
+		cxs[0].stat.size = cxs[0].datas.length;
 
-		return ctx.stat.runtime.longValue();
+		//~: save database hash
+		cxs[0].stat.databaseHash = cxs[0].database.hash().toString();
+
+		return cxs[0].stat;
 	}
 
 
