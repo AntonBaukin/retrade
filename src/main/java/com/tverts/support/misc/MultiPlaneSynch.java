@@ -24,15 +24,14 @@ public class MultiPlaneSynch
 
 	/**
 	 * The number of working threads.
-	 * Value 1 means execution by the Master only.
 	 */
 	static final int   THREADS  = 2;
 
 	/**
-	 * The number of times Support thread may go ahead
-	 * by one pre-execution block.
+	 * The number of request to pre-execute by a Worker thread.
+	 * (Does not depend on the number of threads.)
 	 */
-	static final int   PRESEE   = THREADS + 1;
+	static final int   PRESEE   = 2;
 
 	/**
 	 * The total number of test requests.
@@ -47,7 +46,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of the generated requests executions.
 	 */
-	static final int   RUNS     = 20;
+	static final int   RUNS     = 10;
 
 	/**
 	 * Generator seed used to create test requests.
@@ -77,6 +76,7 @@ public class MultiPlaneSynch
 	{
 		//~: test the parameters
 		assert THREADS  >= 1;
+		assert PRESEE   >= 1;
 		assert REQUESTS >= 1;
 		assert CLIENTS  >= 2;
 		assert RUNS     >= 1;
@@ -827,8 +827,7 @@ public class MultiPlaneSynch
 
 	/**
 	 * Processing data is a wrapper of a Request.
-	 * It stores the synchronization lock and
-	 * the execution results.
+	 * It also stores the pre-execution results.
 	 */
 	static class Data
 	{
@@ -844,30 +843,10 @@ public class MultiPlaneSynch
 		}
 
 
-		/* Lock */
+		/* Pre-Execution Data */
 
 		/**
-		 * Lock to exclusively access the data.
-		 *
-		 *  0 - not locked, not pre-executed;
-		 *  1 - not locked, is  pre-executed;
-		 *  2 - locked by Master;
-		 *  3 - locked by Support.
-		 *
-		 * Master lock [2] is terminal state.
-		 * Support lock [3] is unlocked to [1].
-		 */
-		public final AtomicInteger locked = new AtomicInteger();
-
-
-		/* Execution Data */
-
-		/**
-		 * The client data hash before they were processed.
-		 * Assigned by a Support thread had pre-executed
-		 * this request.
-		 *
-		 * Each [2i] position is Client ID; [2i + 1] is Client Hash.
+		 * Each [2i] position is Client ID; [2i+1] is Client Hash.
 		 * @see {@link Database#same(Object[])}
 		 */
 		public Object[] initial;
@@ -891,29 +870,23 @@ public class MultiPlaneSynch
 		/**
 		 * Shared (global) database.
 		 */
-		public final Database      database;
+		public final Database database;
 
 		/**
 		 * Requests data of the queue. Private
 		 * copy, but all the Data are shared.
 		 */
-		public final Data[]        datas;
+		public final Data[]   datas;
 
 		/**
-		 * Shared Master cursor position. Array is always [1].
-		 * Note that cursor is not atomic as only single read
-		 * and write operations are used. Data locks are enough
-		 * to select the Master role only once at a time.
+		 * Shared Master cursor position as Array of [1].
+		 * Note that the cursor is not atomic. Workers
+		 * read it's value, but only ont with Master role
+		 * is allowed to increment it.
 		 */
-		public final int[]         cursor;
+		public final int[]    cursor;
 
-		/**
-		 * Execution offset from the cursor.
-		 * Cleared to 0 each time it gains {@link #PRESEE}.
-		 */
-		public final AtomicInteger presee;
-
-		public final Stat          stat;
+		public final Stat     stat;
 
 
 		/* public: constructors */
@@ -925,12 +898,11 @@ public class MultiPlaneSynch
 		{
 			this.database = database;
 
-			this.datas = new Data[requests.length];
+			this.datas    = new Data[requests.length];
 			for(int i = 0;(i < requests.length);i++)
 				this.datas[i] = new Data(requests[i], i);
 
 			this.cursor   = new int[1];
-			this.presee   = new AtomicInteger();
 			this.stat     = new Stat();
 		}
 
@@ -941,12 +913,8 @@ public class MultiPlaneSynch
 		public Context(Context shared)
 		{
 			this.database = shared.database;
-
-			this.datas = new Data[shared.datas.length];
-			System.arraycopy(shared.datas, 0, datas, 0, datas.length);
-
+			this.datas    = shared.datas;
 			this.cursor   = shared.cursor;
-			this.presee   = shared.presee;
 			this.stat     = shared.stat;
 		}
 	}
@@ -964,11 +932,19 @@ public class MultiPlaneSynch
 	{
 		/* public: constructor */
 
+		/**
+		 * Worker id is offset of
+		 */
 		public final int id;
+
+		/**
+		 * Execution context of this worker.
+		 */
+		public final Context ctx;
 
 		public Worker(int id, Context ctx)
 		{
-			this.id  = id;
+			this.cursor = this.id = id;
 			this.ctx = ctx;
 		}
 
@@ -981,7 +957,10 @@ public class MultiPlaneSynch
 
 			//c: execute the requests of the queue
 			while((data = select()) != null)
-				execute();
+				if(master)
+					execute();
+				else
+					prexecute();
 
 			ctx.stat.runtime.compareAndSet(0L,
 			  System.currentTimeMillis() - runtime);
@@ -996,68 +975,76 @@ public class MultiPlaneSynch
 		}
 
 		/**
+		 * Currently executed request.
+		 */
+		private Data data;
+
+		/**
+		 * Local copy of the cursor. @see {@link #select()}.
+		 * It is the smallest not yet Master-committed
+		 * request from the Workers' sequence.
+		 * The initial value of the cursor is Worker id.
+		 */
+		private int cursor;
+
+		/**
+		 * Pre-execution cursor offset index.
+		 * Values are 1..{@link #PRESEE}.
+		 */
+		private int presee;
+
+		/**
 		 * Selects next request for execution.
 		 * Returns null when the queue is done.
+		 *
+		 * Each Worker has it's own sequence of the
+		 * requests to process. It has indices of:
+		 * [i * THREADS + id] that never intersect.
+		 * That's why Worker do not need to lock a
+		 * request Data.
 		 */
 		private Data     select()
 		{
-			while(true)
+			//HINT: only Master increments shared cursor!
+			final int c = ctx.cursor[0];
+
+			//?: {the queue is done}
+			if(c >= ctx.datas.length)
+				return null;
+
+			//?: {possess global position} execute as master
+			if(c == this.cursor)
 			{
-				//HINT: only Master increments cursor!
-				final int i = ctx.cursor[0];
-				final int o = ctx.presee.getAndIncrement();
+				//~: shift own cursor to the next master target
+				this.cursor += THREADS;
 
-				//?: {the queue is done}
-				if(i >= ctx.datas.length)
-					return null;
-
-				//?: {offset is zero} try the Master role
-				if(o == 0)
-				{
-					//?: {locked this data as a Master}
-					Data d = ctx.datas[i];
-					if(d.locked.compareAndSet(1, 2) || d.locked.compareAndSet(0, 2))
-						{ master = true; return d; }
-				}
-
-				//?: {gained pre-see limit} cycle again
-				if(o > PRESEE)
-				{
-					ctx.presee.set(0);
-					continue;
-				}
-
-				//?: {the queue is almost done}
-				if(i + o >= ctx.datas.length)
-				{
-					ctx.presee.set(0);
-					continue;
-				}
-
-				//?: {locked this data as a Support}
-				Data d = ctx.datas[i + o];
-				if(d.locked.compareAndSet(0, 3))
-					{ master = false; return d; }
-
-				//!: pre-see had failed, try again
+				master = true;
+				return ctx.datas[c];
 			}
-		}
 
-		private void     execute()
-		{
-			//?: {works as a master}
-			if(master)
-				executeMaster();
-			//~: works as a support
-			else
-				executeSupport();
+			//?: {had gained pre-execute limit} go back
+			if(++presee > PRESEE)
+				presee = 1;
 
-			//~: clear the cache
-			cache.clear();
+			//~: pre-execute position within the own sequence
+			int p = this.cursor + THREADS*presee;
+
+			//?: {almost done with the queue}
+			if(p >= ctx.datas.length)
+				p = 0; //<-- take the future master record
+
+			master = false;
+			return ctx.datas[p];
 		}
 
 
 		/* Master Behaviour */
+
+		/**
+		 * This flag is set when Worker currently in Master role.
+		 * In this case the Context cursor equals to the Data index.
+		 */
+		private boolean master;
 
 		private Client   clientMaster(int id)
 		{
@@ -1075,7 +1062,7 @@ public class MultiPlaneSynch
 			return c;
 		}
 
-		private void     executeMaster()
+		private void     execute()
 		{
 			//?: {the resulting data may be applied}
 			if(consistent())
@@ -1088,13 +1075,12 @@ public class MultiPlaneSynch
 
 				//~: assign all the changes to the database
 				ctx.database.assign(cache.values());
+
+				cache.clear();
 			}
 
 			//!: increment the cursor
 			ctx.cursor[0]++;
-
-			//~: clear pre-see counter
-			ctx.presee.set(0);
 		}
 
 		/**
@@ -1122,6 +1108,14 @@ public class MultiPlaneSynch
 
 		/* Support Behaviour */
 
+		private ArrayList<Object> initial;
+		private ArrayList<Client> results;
+
+		/**
+		 * Cache where clients are held during a request processing.
+		 */
+		private final HashMap<Integer, Client> cache = new HashMap<>(7);
+
 		private Client   clientSupport(int id)
 		{
 			//?: {found it in the local cache}
@@ -1142,7 +1136,7 @@ public class MultiPlaneSynch
 			return c;
 		}
 
-		private void     executeSupport()
+		private void     prexecute()
 		{
 			//~: allocate execution data
 			initial = new ArrayList<>(4);
@@ -1158,41 +1152,10 @@ public class MultiPlaneSynch
 			//~: save data results
 			data.initial = initial.toArray(new Object[initial.size()]);
 			data.results = results.toArray(new Client[results.size()]);
+
 			initial = null; results = null;
-
-			//!: remove support (pre-execute lock)
-			assert data.locked.compareAndSet(3, 1);
+			cache.clear();
 		}
-
-
-		/* private: general worker state */
-
-		/**
-		 * Execution context of this worker.
-		 */
-		private final Context ctx;
-
-		/**
-		 * This flag is set when Worker currently in Master role.
-		 * In this case the Context cursor equals to the Data index.
-		 */
-		private boolean master;
-
-		/**
-		 * Currently executed request.
-		 */
-		private Data data;
-
-		/**
-		 * Cache where clients are held during a request processing.
-		 */
-		private final HashMap<Integer, Client> cache = new HashMap<>(7);
-
-
-		/* private: support worker state */
-
-		private ArrayList<Object> initial;
-		private ArrayList<Client> results;
 	}
 
 	static Stat testRun(int run, Request[] requests, Database database)
@@ -1216,10 +1179,6 @@ public class MultiPlaneSynch
 		//~: join them all
 		for(Thread th : ths)
 			th.join();
-
-		//~: test all is executed
-		for(Data d : cxs[0].datas)
-			assert d.locked.get() == 2;
 
 		//~: save requests number
 		cxs[0].stat.size = cxs[0].datas.length;
