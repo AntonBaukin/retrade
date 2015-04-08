@@ -1,14 +1,9 @@
 package com.tverts.support.misc;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -25,13 +20,7 @@ public class MultiPlaneSynch
 	/**
 	 * The number of working threads.
 	 */
-	static final int   THREADS  = 2;
-
-	/**
-	 * The number of request to pre-execute by a Worker thread.
-	 * (Does not depend on the number of threads.)
-	 */
-	static final int   PRESEE   = 2;
+	static final int   THREADS  = 1;
 
 	/**
 	 * The total number of test requests.
@@ -76,7 +65,6 @@ public class MultiPlaneSynch
 	{
 		//~: test the parameters
 		assert THREADS  >= 1;
-		assert PRESEE   >= 1;
 		assert REQUESTS >= 1;
 		assert CLIENTS  >= 2;
 		assert RUNS     >= 1;
@@ -283,16 +271,10 @@ public class MultiPlaneSynch
 		 * Only Master thread is allowed this request!
 		 * Note that the source object may not be used further.
 		 */
-		public void    assign(Client[] cs)
+		public void    assign(Client[] cs, int len)
 		{
-			for(Client c : cs)
-				clients[c.id] = c;
-		}
-
-		public void    assign(Collection<Client> cs)
-		{
-			for(Client c : cs)
-				clients[c.id] = c;
+			for(int i = 0;(i < len);i++)
+				clients[cs[i].id] = cs[i];
 		}
 
 		/**
@@ -331,10 +313,11 @@ public class MultiPlaneSynch
 
 		private Client(Client s)
 		{
-			this.id    = s.id;
-			this.money = s.money;
-			this.debts = new Debts(s.debts);
-			this.hash  = new Hash(s.hash());
+			this.id      = s.id;
+			this.money   = s.money;
+			this.debts   = new Debts(s.debts);
+			this.hash    = new Hash();
+			this.updated = true;
 		}
 
 		public final int id;
@@ -884,7 +867,7 @@ public class MultiPlaneSynch
 		 * read it's value, but only ont with Master role
 		 * is allowed to increment it.
 		 */
-		public final int[]    cursor;
+		public final Cursor   cursor;
 
 		public final Stat     stat;
 
@@ -902,7 +885,7 @@ public class MultiPlaneSynch
 			for(int i = 0;(i < requests.length);i++)
 				this.datas[i] = new Data(requests[i], i);
 
-			this.cursor   = new int[1];
+			this.cursor   = new Cursor();
 			this.stat     = new Stat();
 		}
 
@@ -916,6 +899,11 @@ public class MultiPlaneSynch
 			this.datas    = shared.datas;
 			this.cursor   = shared.cursor;
 			this.stat     = shared.stat;
+		}
+
+		public static class Cursor
+		{
+			public int value;
 		}
 	}
 
@@ -989,7 +977,6 @@ public class MultiPlaneSynch
 
 		/**
 		 * Pre-execution cursor offset index.
-		 * Values are 1..{@link #PRESEE}.
 		 */
 		private int presee;
 
@@ -1006,25 +993,21 @@ public class MultiPlaneSynch
 		private Data     select()
 		{
 			//HINT: only Master increments shared cursor!
-			final int c = ctx.cursor[0];
+			final int c = ctx.cursor.value;
 
 			//?: {the queue is done}
 			if(c >= ctx.datas.length)
 				return null;
 
 			//?: {possess global position} execute as master
-			if(c == this.cursor)
+			if(c == cursor)
 			{
-				//~: shift own cursor to the next master target
-				this.cursor += THREADS;
+				cursor += THREADS; //<-- shift own cursor to the next master target
+				presee  = 0;       //<-- clear pre-execute cursor
 
 				master = true;
 				return ctx.datas[c];
 			}
-
-			//?: {had gained pre-execute limit} go back
-			if(++presee > PRESEE)
-				presee = 1;
 
 			//~: pre-execute position within the own sequence
 			int p = this.cursor + THREADS*presee;
@@ -1048,16 +1031,13 @@ public class MultiPlaneSynch
 
 		private Client   clientMaster(int id)
 		{
-			if(THREADS == 1)
-				return ctx.database.client(id);
-
 			//?: {found it in the local cache}
 			Client c = cache.get(id);
 			if(c != null) return c;
 
 			//~: load from the database & cache it
-			c = ctx.database.copy(id);
-			cache.put(c.id, c);
+			c = ctx.database.client(id);
+			cache.put(c);
 
 			return c;
 		}
@@ -1066,7 +1046,7 @@ public class MultiPlaneSynch
 		{
 			//?: {the resulting data may be applied}
 			if(consistent())
-				ctx.database.assign(data.results);
+				ctx.database.assign(data.results, data.results.length);
 				//~: execute again
 			else
 			{
@@ -1074,13 +1054,13 @@ public class MultiPlaneSynch
 				execute(data.request);
 
 				//~: assign all the changes to the database
-				ctx.database.assign(cache.values());
+				cache.assign(ctx.database);
 
 				cache.clear();
 			}
 
 			//!: increment the cursor
-			ctx.cursor[0]++;
+			ctx.cursor.value++;
 		}
 
 		/**
@@ -1114,7 +1094,7 @@ public class MultiPlaneSynch
 		/**
 		 * Cache where clients are held during a request processing.
 		 */
-		private final HashMap<Integer, Client> cache = new HashMap<>(7);
+		private final Cache cache = new Cache();
 
 		private Client   clientSupport(int id)
 		{
@@ -1124,7 +1104,7 @@ public class MultiPlaneSynch
 
 			//~: load from the database & cache it
 			c = ctx.database.copy(id);
-			cache.put(c.id, c);
+			cache.put(c);
 
 			//~: remember the initial version
 			initial.add(c.id);
@@ -1144,10 +1124,6 @@ public class MultiPlaneSynch
 
 			//~: execute the request
 			execute(data.request);
-
-			//~: calculate hashes of the clients involved
-			for(Client c : results)
-				c.hash();
 
 			//~: save data results
 			data.initial = initial.toArray(new Object[initial.size()]);
@@ -1187,6 +1163,52 @@ public class MultiPlaneSynch
 		cxs[0].stat.databaseHash = cxs[0].database.hash().toString();
 
 		return cxs[0].stat;
+	}
+
+
+	/* Clients Cache */
+
+	static class Cache
+	{
+		public Client get(int id)
+		{
+			for(int i = 0;(i < len);i++)
+				if(ids[i] == id)
+					return cls[i];
+			return null;
+		}
+
+		public void   put(Client c)
+		{
+			if(len == ids.length)
+			{
+				int[]    a = new int[len + 2];
+				System.arraycopy(ids, 0, a, 0, len);
+				ids = a;
+
+				Client[] b = new Client[len + 2];
+				System.arraycopy(cls, 0, b, 0, len);
+				cls = b;
+			}
+
+			ids[len] = c.id;
+			cls[len] = c;
+			len++;
+		}
+
+		public void clear()
+		{
+			len = 0;
+		}
+
+		public void assign(Database db)
+		{
+			db.assign(cls, len);
+		}
+
+		private int[]    ids = new int[4];
+		private Client[] cls = new Client[4];
+		private int      len;
 	}
 
 
