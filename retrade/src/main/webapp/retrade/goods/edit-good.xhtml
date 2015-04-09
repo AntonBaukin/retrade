@@ -238,8 +238,8 @@ ${v.checkModelRequestedWithRedirect}
         modelKey = "#{v.modelKeys}">
 
         <f:facet name = "store-props">
-          model: 'retrade.model.MeasureUnitView',
-          autoLoad: ('true' == "#{v.model.editMode}")
+          model: 'retrade.model.MeasureUnitView', data: [],
+          autoLoad: ('true' == "#{v.model.editMode}"),
         </f:facet>
 
         <f:facet name = "proxy-props">

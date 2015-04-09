@@ -278,30 +278,6 @@ div.retrade-menuitem-centered
 }
 
 
-/* large text grids */
-
-.retrade-grid-large table.x-grid-table td.x-grid-td.x-grid-cell
-{
-  font-size: 13px; line-height: 18px;
-}
-
-.retrade-grid-large div.x-grid-cell-inner-action-col,
-.retrade-grid-large tr.x-grid-row-focused div.x-grid-cell-inner-action-col
-{
-  padding-top: 5px;
-}
-
-.retrade-grid-large img.x-tree-elbow-img
-{
-  height: 26px;
-}
-
-.retrade-grid-large img.x-tree-icon.x-tree-icon-parent
-{
-  height: 24px; margin-top: -2px;
-}
-
-
 /* grids */
 
 img.x-action-col-icon.x-item-disabled

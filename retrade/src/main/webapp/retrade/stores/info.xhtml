@@ -71,7 +71,8 @@ ${v.checkEntityRequested}
           </f:facet>
 
           <f:facet name = "label-props">
-            text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8)
+            text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8),
+            cls: 'retrade-info-title-label'
           </f:facet>
         </x:text-field>
 
@@ -82,7 +83,7 @@ ${v.checkEntityRequested}
            <f:facet name = "extjs-props">
 
              xtype: 'button', enableToggle: true,
-             width: 30, componentCls: 'retrade-icon-24',
+             width: 32, componentCls: 'retrade-icon-24',
              margin: extjsf.dpts(1, 0, 1, 6),
              iconCls: 'retrade-selset-button-icon',
              tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
@@ -153,7 +154,7 @@ ${v.checkEntityRequested}
   <!-- [goods table -->
 
   <x:data-store storeId = "${z:vid(v, 'storeGoods')}"
-    modelView = "${v}" pageSize = "15">
+    modelView = "${v}" pageSize = "10">
 
     <f:facet name = "store-props">
       model: 'retrade.model.GoodUnitView', remoteSort: true,
@@ -169,10 +170,10 @@ ${v.checkEntityRequested}
     storeId = "${z:vid(v, 'storeGoods')}">
 
     <f:facet name = "grid-props">
-      region: 'center',
+      region: 'center', pager: true, sortableColumns: true,
       columns: ZeT.defined('retrade.columns.GoodUnitStoreView'),
       selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-      pager: true, sortableColumns: true
+      cls: 'ux-grid-smaller'
     </f:facet>
   </x:data-grid>
 

@@ -215,7 +215,7 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [goods table -->
 
     <x:data-store storeId = "${z:vid(v, 'goodUnits')}"
-      modelView = "${v}" pageSize = "20">
+      modelView = "${v}" pageSize = "10">
 
       <f:facet name = "store-props">
         model: 'retrade.model.GoodUnitView', remoteSort: true,
@@ -233,7 +233,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "grid-props">
         columns: ZeT.defined('retrade.columns.GoodUnitView'),
         selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-        pager: true, sortableColumns: true
+        pager: true, sortableColumns: true, cls: 'ux-grid-smaller'
       </f:facet>
     </x:data-grid>
 

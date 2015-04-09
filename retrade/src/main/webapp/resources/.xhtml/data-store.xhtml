@@ -113,10 +113,10 @@
         if(st.sorters) for(var i = 0;(i < st.sorters.getCount());i++)
         {
           var so = st.sorters.getAt(i);
-          if(ZeTS.ises(so.property)) { sortparams = {}; break; }
+          if(ZeTS.ises(so._property)) { sortparams = {}; break; }
 
-          sortparams['sortProperty' + i] = so.property;
-          if('DESC' == so.direction) sortparams['sortDesc' + i] = true;
+          sortparams['sortProperty' + i] = so._property;
+          if('DESC' == so._direction) sortparams['sortDesc' + i] = true;
         }
 
         //~: process sort parameters of proxy

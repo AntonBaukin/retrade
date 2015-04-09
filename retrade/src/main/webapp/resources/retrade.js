@@ -810,6 +810,11 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
+		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
+		   width: extjsf.ex(16)
+		 },
+
+		 {
 		   text: 'Объём', dataIndex: 'volume', sortable: false,
 		   width: extjsf.ex(12), align: 'right'
 		 },
