@@ -2,9 +2,8 @@ package com.tverts.support.misc;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -20,12 +19,19 @@ public class MultiPlaneSynch
 	/**
 	 * The number of working threads.
 	 */
-	static final int   THREADS  = 1;
+	static final int   THREADS  = 2;
+
+	/**
+	 * This constant tells the Support threads
+	 * the distance from the Master cursor to
+	 * take the next pre-execution task.
+	 */
+	static final int   AHEAD    = 6;
 
 	/**
 	 * The total number of test requests.
 	 */
-	static final int   REQUESTS = 200000;
+	static final int   REQUESTS = 1000000;
 
 	/**
 	 * The number of test clients.
@@ -65,6 +71,7 @@ public class MultiPlaneSynch
 	{
 		//~: test the parameters
 		assert THREADS  >= 1;
+		assert AHEAD    >= 1;
 		assert REQUESTS >= 1;
 		assert CLIENTS  >= 2;
 		assert RUNS     >= 1;
@@ -92,27 +99,28 @@ public class MultiPlaneSynch
 
 	static void printStats(Stat[] stats)
 	{
-		Locale.setDefault(Locale.US);
-		System.out.printf("[%d] Workers; Requests [%d], Seed [%d]; [%d] runs:\n",
-		  THREADS, REQUESTS, SEED, RUNS
+		java.util.Locale.setDefault(java.util.Locale.US);
+		System.out.printf("[%d] Supporters; Requests [%d], Seed [%d]; [%d] runs:\n",
+		  THREADS-1, REQUESTS, SEED, RUNS
 		);
 
-		System.out.println(" #  TIME   HITS  MISS               HASH               ");
+		System.out.println(" #  TIME   HITS  MISS  ERRS             HASH               ");
 
 		//~: print the timing and the hash
 		for(int i = 0;(i < stats.length);i++)
-			System.out.printf("%2d %5d  %5.1f %5.1f  %s\n",
-			  i+1, stats[i].runtime.longValue(),
-			  (100.0 * stats[i].hits / stats[i].size),
-			  (100.0 * stats[i].miss / stats[i].size),
+			System.out.printf("%2d %5d  %5.1f %5.1f %5d %s\n",
+			  i+1, stats[i].runtime,
+			  (100.0 * stats[i].hits / REQUESTS),
+			  (100.0 * stats[i].miss / REQUESTS),
+			  stats[i].errs.get(),
 			  stats[i].databaseHash
 		);
 
 		//~: minimum run time
 		int min = 0; long time = Long.MAX_VALUE;
 		for(int i = 0;(i < stats.length);i++)
-			if(stats[i].runtime.get() < time)
-				{ min = i; time = stats[i].runtime.get(); }
+			if(stats[i].runtime < time)
+				{ min = i; time = stats[i].runtime; }
 
 		System.out.printf("Minimum run time: %d\n", time);
 	}
@@ -258,6 +266,8 @@ public class MultiPlaneSynch
 		 */
 		public boolean same(Object[] initial)
 		{
+			if(initial == null) return false;
+
 			for(int i = 0;(i < initial.length);i += 2)
 				//?: {Hash of the client given differs}
 				if(!clients[(Integer)initial[i]].equals((Hash) initial[i+1]))
@@ -787,20 +797,24 @@ public class MultiPlaneSynch
 
 	static class Stat
 	{
-		public int size;
-
 		/**
 		 * When thread executes as a Master it
 		 * measures the consistency hits.
 		 */
-		public int hits;
-		public int miss;
+		public int    hits;
+		public int    miss;
+
+		/**
+		 * The number of pre-executed requests
+		 * denied due to some error.
+		 */
+		public final AtomicInteger errs =
+		  new AtomicInteger();
 
 		/**
 		 * Queue execution time (milliseconds).
 		 */
-		public final AtomicLong runtime =
-		  new AtomicLong();
+		public long   runtime;
 
 		public String databaseHash;
 	}
@@ -908,158 +922,65 @@ public class MultiPlaneSynch
 	}
 
 
-	/* Worker */
+	/* Master Worker */
 
 	/**
-	 * Working thread task selects the next request from the queue
-	 * and executes it in one of the roles: as a Queue Master, or
-	 * as a Support. Master role means that the request selected
-	 * is the earliest request not executed yet.
+	 * Master working task executes the requests as a plain
+	 * single-threaded application would be. It takes no locks
+	 * and waits nothing. It advances the queue global cursor.
 	 */
-	static final class Worker extends Processing implements Runnable
+	static final class Master extends Processing implements Runnable
 	{
 		/* public: constructor */
-
-		/**
-		 * Worker id is offset of
-		 */
-		public final int id;
 
 		/**
 		 * Execution context of this worker.
 		 */
 		public final Context ctx;
 
-		public Worker(int id, Context ctx)
+		public Master(Context ctx)
 		{
-			this.cursor = this.id = id;
 			this.ctx = ctx;
 		}
 
 
 		/* Runnable */
 
-		public void run()
+		public void      run()
 		{
-			long runtime = System.currentTimeMillis();
+			ctx.stat.runtime = System.currentTimeMillis();
 
 			//c: execute the requests of the queue
-			while((data = select()) != null)
-				if(master)
-					execute();
-				else
-					prexecute();
+			for(Data data : ctx.datas)
+				execute(data);
 
-			ctx.stat.runtime.compareAndSet(0L,
-			  System.currentTimeMillis() - runtime);
+			ctx.stat.runtime = System.currentTimeMillis() - ctx.stat.runtime;
+		}
+
+
+		/* protected: Processing */
+
+		/**
+		 * Takes directly global Client object.
+		 */
+		protected Client client(int id)
+		{
+			return ctx.database.client(id);
 		}
 
 
 		/* private: execution */
 
-		protected Client client(int id)
-		{
-			return (master)?(clientMaster(id)):(clientSupport(id));
-		}
-
-		/**
-		 * Currently executed request.
-		 */
-		private Data data;
-
-		/**
-		 * Local copy of the cursor. @see {@link #select()}.
-		 * It is the smallest not yet Master-committed
-		 * request from the Workers' sequence.
-		 * The initial value of the cursor is Worker id.
-		 */
-		private int cursor;
-
-		/**
-		 * Pre-execution cursor offset index.
-		 */
-		private int presee;
-
-		/**
-		 * Selects next request for execution.
-		 * Returns null when the queue is done.
-		 *
-		 * Each Worker has it's own sequence of the
-		 * requests to process. It has indices of:
-		 * [i * THREADS + id] that never intersect.
-		 * That's why Worker do not need to lock a
-		 * request Data.
-		 */
-		private Data     select()
-		{
-			//HINT: only Master increments shared cursor!
-			final int c = ctx.cursor.value;
-
-			//?: {the queue is done}
-			if(c >= ctx.datas.length)
-				return null;
-
-			//?: {possess global position} execute as master
-			if(c == cursor)
-			{
-				cursor += THREADS; //<-- shift own cursor to the next master target
-				presee  = 0;       //<-- clear pre-execute cursor
-
-				master = true;
-				return ctx.datas[c];
-			}
-
-			//~: pre-execute position within the own sequence
-			int p = this.cursor + THREADS*presee;
-
-			//?: {almost done with the queue}
-			if(p >= ctx.datas.length)
-				p = 0; //<-- take the future master record
-
-			master = false;
-			return ctx.datas[p];
-		}
-
-
-		/* Master Behaviour */
-
-		/**
-		 * This flag is set when Worker currently in Master role.
-		 * In this case the Context cursor equals to the Data index.
-		 */
-		private boolean master;
-
-		private Client   clientMaster(int id)
-		{
-			//?: {found it in the local cache}
-			Client c = cache.get(id);
-			if(c != null) return c;
-
-			//~: load from the database & cache it
-			c = ctx.database.client(id);
-			cache.put(c);
-
-			return c;
-		}
-
-		private void     execute()
+		private void     execute(Data data)
 		{
 			//?: {the resulting data may be applied}
-			if(consistent())
+			if(consistent(data))
 				ctx.database.assign(data.results, data.results.length);
-				//~: execute again
+			//~: execute the request
 			else
-			{
-				//~: execute the request
 				execute(data.request);
 
-				//~: assign all the changes to the database
-				cache.assign(ctx.database);
-
-				cache.clear();
-			}
-
-			//!: increment the cursor
+			//!: increment the global cursor
 			ctx.cursor.value++;
 		}
 
@@ -1069,7 +990,7 @@ public class MultiPlaneSynch
 		 * the processing are the same now as they
 		 * were during the pre-execution.
 		 */
-		private boolean  consistent()
+		private boolean  consistent(Data data)
 		{
 			if(data.results == null)
 				return false;
@@ -1084,19 +1005,51 @@ public class MultiPlaneSynch
 			ctx.stat.hits++; //<-- support work is applied
 			return true;
 		}
+	}
 
 
-		/* Support Behaviour */
+	/* Support Worker */
 
-		private ArrayList<Object> initial;
-		private ArrayList<Client> results;
+	/**
+	 * Support worker goes ahead of the Master and pre-executes
+	 * the requests working with Client copies. Each Support
+	 * threads has own private sub-sequence of the requests
+	 * based oin it's id number.
+	 */
+	static final class Support extends Processing implements Runnable
+	{
+		/* public: constructor */
 
 		/**
-		 * Cache where clients are held during a request processing.
+		 * Worker id starting with 0.
 		 */
-		private final Cache cache = new Cache();
+		public final int id;
 
-		private Client   clientSupport(int id)
+		/**
+		 * Execution context of this worker.
+		 */
+		public final Context ctx;
+
+		public Support(int id, Context ctx)
+		{
+			this.id  = id;
+			this.ctx = ctx;
+		}
+
+
+		/* Runnable */
+
+		public void      run()
+		{
+			//c: execute the requests of the queue
+			Data data; while((data = select()) != null)
+				prexecute(data);
+		}
+
+
+		/* protected: Processing */
+
+		protected Client client(int id)
 		{
 			//?: {found it in the local cache}
 			Client c = cache.get(id);
@@ -1116,53 +1069,118 @@ public class MultiPlaneSynch
 			return c;
 		}
 
-		private void     prexecute()
+
+		/* private: pre-execution */
+
+		/**
+		 * Local copy of the cursor. @see {@link #select()}.
+		 * It is the smallest not yet Master-committed request
+		 * from the Workers' sequence.
+		 */
+		private int cursor;
+
+		/**
+		 * Pre-execution cursor offset index.
+		 */
+		private int presee;
+
+		/**
+		 * The list of (Client ID, Client Hash) pairs for original
+		 * versions of Clients before any updates take place.
+		 * @see {@link Database#same(Object[])}.
+		 */
+		private final ArrayList<Object> initial =
+		  new ArrayList<>(4);
+
+		/**
+		 * Pre-execution resulting Client data.
+		 */
+		private final ArrayList<Client> results =
+		  new ArrayList<>(2);
+
+		/**
+		 * Cache where clients are held during a request processing.
+		 */
+		private final Cache cache = new Cache();
+
+		/**
+		 * Selects next request for execution.
+		 * Returns null when the queue is done.
+		 *
+		 * Each Worker has it's own sequence of the
+		 * requests to process. It has indices of:
+		 * [i * THREADS + id] that never intersect.
+		 * That's why Worker do not need to lock a
+		 * request Data.
+		 */
+		private Data     select()
 		{
-			//~: allocate execution data
-			initial = new ArrayList<>(4);
-			results = new ArrayList<>(2);
+			final int c = ctx.cursor.value;
 
-			//~: execute the request
-			execute(data.request);
+			//?: {master is still before}
+			if(c < cursor)
+				cursor += THREADS - 1; //HINT: 0-thread is Master
+			//~: go ahead
+			else
+			{
+				cursor = c + AHEAD;
 
-			//~: save data results
-			data.initial = initial.toArray(new Object[initial.size()]);
-			data.results = results.toArray(new Client[results.size()]);
+				//?: {not in own sub-sequence} shift right
+				if((c + AHEAD) % (THREADS - 1) != id)
+					cursor += THREADS - 1 - (c + AHEAD)%(THREADS - 1);
+			}
 
-			initial = null; results = null;
-			cache.clear();
+			//?: {the queue is not done yet}
+			return (cursor < ctx.datas.length)?(ctx.datas[cursor]):(null);
+		}
+
+		private void     prexecute(Data data)
+		{
+			try
+			{
+				//~: execute the request
+				execute(data.request);
+
+				//~: save data results
+				data.initial = initial.toArray(new Object[initial.size()]);
+				data.results = results.toArray(new Client[results.size()]);
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				ctx.stat.errs.incrementAndGet();
+			}
+
+			initial.clear(); results.clear(); cache.clear();
 		}
 	}
 
 	static Stat testRun(int run, Request[] requests, Database database)
 	  throws InterruptedException
 	{
-		//~: create the contexts
-		Context[] cxs = new Context[THREADS];
-		cxs[0] = new Context(database, requests);
-		for(int i = 1;(i < cxs.length);i++)
-			cxs[i] = new Context(cxs[0]);
+		//~: create Master task & thread
+		Master master = new Master(new Context(database, requests));
+		Thread thread = new Thread(master);
+		thread.setName("Master");
 
-		//~: create the working threads
-		Thread[] ths = new Thread[cxs.length];
-		for(int i = 0;(i < ths.length);i++)
+		//~: create Support threads
+		Thread[] ths = new Thread[THREADS - 1];
+		for(int id = 0;(id < ths.length);id++)
 		{
-			ths[i] = new Thread(new Worker(i, cxs[i]));
-			ths[i].setName("Support-" + i);
-			ths[i].start();
+			ths[id] = new Thread(new Support(id, new Context(master.ctx)));
+			ths[id].setName("Support-" + id);
 		}
 
-		//~: join them all
-		for(Thread th : ths)
-			th.join();
+		//~: start them
+		thread.start();
+		for(Thread t : ths)
+			t.start();
 
-		//~: save requests number
-		cxs[0].stat.size = cxs[0].datas.length;
+		//~: wait for the Master
+		thread.join();
 
 		//~: save database hash
-		cxs[0].stat.databaseHash = cxs[0].database.hash().toString();
-
-		return cxs[0].stat;
+		master.ctx.stat.databaseHash = master.ctx.database.hash().toString();
+		return master.ctx.stat;
 	}
 
 
