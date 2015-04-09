@@ -132,7 +132,8 @@ ${v.checkModelRequestedWithRedirect}
           </f:facet>
 
           <f:facet name = "label-props">
-            text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8)
+            text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8),
+            cls: 'retrade-info-title-label'
           </f:facet>
         </x:text-field>
 
@@ -143,7 +144,7 @@ ${v.checkModelRequestedWithRedirect}
            <f:facet name = "extjs-props">
 
              xtype: 'button', enableToggle: true,
-             width: 30, componentCls: 'retrade-icon-24',
+             width: 32, componentCls: 'retrade-icon-24',
              margin: extjsf.dpts(1, 0, 1, 6),
              iconCls: 'retrade-selset-button-icon',
              tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'

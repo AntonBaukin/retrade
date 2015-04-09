@@ -720,7 +720,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12)
+		   width: extjsf.ex(9)
 		 },
 
 		 {
@@ -745,7 +745,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: false,
-		   width: extjsf.ex(12)
+		   width: extjsf.ex(9)
 		 },
 
 		 {
@@ -765,7 +765,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12)
+		   width: extjsf.ex(9)
 		 },
 
 		 {
@@ -801,7 +801,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12)
+		   width: extjsf.ex(9)
 		 },
 
 		 {
@@ -827,7 +827,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12)
+		   width: extjsf.ex(9)
 		 },
 
 		 {
@@ -1074,7 +1074,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(12)
+		   width: extjsf.ex(14)
 		 },
 
 		 {
