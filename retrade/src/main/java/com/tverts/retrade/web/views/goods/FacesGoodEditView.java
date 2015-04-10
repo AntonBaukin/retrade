@@ -606,9 +606,9 @@ public class FacesGoodEditView extends ModelView
 		  DU.datetime2str(getCalcView().getOpenTime());
 
 		return SU.cats(
-		  SU.catif(!hc, "Текущая формула"),
-		  SU.catif(hc, "Формула (от ", dt, ")"), " товара №",
-		  getGoodView().getGoodCode(), "; ",
+		  SU.catif(!hc, "Формула "),
+		  SU.catif(hc, "Формула (от ", dt, ")"), " товара [",
+		  getGoodView().getGoodCode(), "] ",
 		  getGoodView().getGoodName()
 		);
 	}
@@ -619,8 +619,8 @@ public class FacesGoodEditView extends ModelView
 			return "Формула создаваемого товара";
 
 		return SU.cats(
-		  "Ред. формулы товара №",
-		  getGoodView().getGoodCode(), "; ",
+		  "Ред. ф-лы товара [",
+		  getGoodView().getGoodCode(), "] ",
 		  getGoodView().getGoodName()
 		);
 	}
@@ -630,8 +630,8 @@ public class FacesGoodEditView extends ModelView
 		EX.assertn(getGoodView().getObjectKey());
 
 		return SU.cats(
-		  "История формул товара №",
-		  getGoodView().getGoodCode(), "; ",
+		  "История формул товара [",
+		  getGoodView().getGoodCode(), "] ",
 		  getGoodView().getGoodName()
 		);
 	}

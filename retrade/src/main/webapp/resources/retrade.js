@@ -898,9 +898,9 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Тип товара", dataIndex: 'semiReady', sortable: false,
-		   width: extjsf.ex(18),  renderer: function(v)
+		   width: extjsf.ex(20),  renderer: function(v)
 		   {
-				return v?('Полуфабрикат'):('Продукт/ингредиент');
+				return v?('Полуфабрикат'):('Продукт-ингредиент');
 		   }
 		 }
 		];
@@ -961,18 +961,17 @@ ZeT.init('init: retrade.data', function()
 		return [
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12)
+		   text: "Код тов.", dataIndex: 'goodCode', sortable: true,
+		   width: extjsf.ex(9)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   width: extjsf.ex(22), flex: 1
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 1
 		 },
 
 		 {
 		   text: "Объём", dataIndex: 'volume', sortable: false,
-		   width: extjsf.ex(12), align: 'right'
+		   width: extjsf.ex(10), align: 'right'
 		 },
 
 		 {
@@ -982,12 +981,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Тип", dataIndex: 'goodSemiReady', sortable: false,
-		   width: extjsf.ex(6),  renderer: calcSemiReadyRenderer
+		   width: extjsf.ex(6), align: 'center', renderer: calcSemiReadyRenderer
 		 },
 
 		 {
 		   text: "Прод.", dataIndex: 'semiReady', sortable: false,
-		   width: extjsf.ex(8),  renderer: needCalcRenderer
+		   width: extjsf.ex(8), align: 'center', renderer: needCalcRenderer
 		 }
 		];
 	})

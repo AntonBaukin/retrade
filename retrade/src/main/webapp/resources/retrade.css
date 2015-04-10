@@ -626,7 +626,7 @@ td.retrade-info-value div,
  span.retrade-info-value
 {
   padding: 1pt 2pt 1pt 2pt;
-  font-size: 10pt; white-space: nowrap;
+  font-size: 12pt; white-space: nowrap;
   background-color: rgba(198, 219, 233, 0.5);
   border-radius: 2px;
 }
@@ -643,7 +643,7 @@ div.retrade-info-div
 
 td.retrade-info-value-small-text div
 {
-  font-size: 9pt; white-space: nowrap; overflow: hidden;
+  font-size: 10pt; white-space: nowrap; overflow: hidden;
 }
 
 hr.retrade-info-hr
@@ -1034,7 +1034,6 @@ td.retrade-good-info-value-derived,
   td.retrade-good-info-value-type
 {
   font-weight: bolder;
-  text-transform: uppercase;
 }
 
 

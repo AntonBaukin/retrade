@@ -141,7 +141,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <tr>
           <td class = "retrade-info-value-small-text retrade-good-info-value-derived">
-            <div>производный</div>
+            <div>ПРОИЗВОДНЫЙ</div>
           </td>
         </tr>
       </table>
@@ -170,15 +170,15 @@ ${v.checkModelRequestedWithRedirect}
           <td class = "retrade-info-value-small-text retrade-good-info-value-type">
             <div>
               <ui:fragment rendered = "#{v.material}">
-                сырьё/товар
+                СЫРЬЁ или ТОВАР
               </ui:fragment>
 
               <ui:fragment rendered = "#{not v.material and not v.semiReady}">
-                продукт/ингредиент
+                ПРОДУКТ или ИНГРИДИЕНТ
               </ui:fragment>
 
               <ui:fragment rendered = "#{not v.material and v.semiReady}">
-                полуфабрикат
+                ПОЛУФАБРИКАТ
               </ui:fragment>
             </div>
           </td>
@@ -218,7 +218,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "extjs-props">
           extjsfReadWrite: true, allowBlank: false,
-          flex: 1, validator: function()
+          flex: 2, validator: function()
           {
             return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
           }
@@ -253,7 +253,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "drop-props">
           extjsfReadWrite: true, allowBlank: false,
-          editable: false, matchFieldWidth: true, flex: 2,
+          editable: false, matchFieldWidth: true, flex: 3,
           valueField: 'objectKey', displayField: 'code'
         </f:facet>
 
@@ -450,15 +450,20 @@ ${v.checkModelRequestedWithRedirect}
   //~: adjust window size
   extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').on('boxready', function()
   {
-     var win = extjsf.component('winmain', '${rootView.extjsDomain}');
-     var wht = win.body.getHeight();
-     var frm = extjsf.component("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}');
-     var fht = frm.getBox().height;
+     var win = extjsf.component('winmain', '${rootView.extjsDomain}')
 
-     win.setSize(
-       extjsf.pt(280),
-       win.setHeight(win.getHeight() - (wht - fht))
-     )
+     if(!ReTrade.desktop.prevsizeComp(win))
+     {
+       var wht = win.body.getHeight()
+       var frm = extjsf.component("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}')
+       var fht = frm.getBox().height
+
+       //~: set proper height
+       win.setHeight(win.setHeight(win.getHeight() - (wht - fht)))
+     }
+
+     //~: remember the size
+     ReTrade.desktop.prevsizeComp({component: win, save: true})
   })
 
   //~: validate on code change

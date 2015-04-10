@@ -72,6 +72,16 @@
 
 /* Grids */
 
+.x-column-header-inner
+{
+  padding: 7px 5px;
+}
+
+.x-grid-cell-inner
+{
+  padding: 8px 5px 7px;
+}
+
 .x-tbar-page-number input
 {
   text-align: center;

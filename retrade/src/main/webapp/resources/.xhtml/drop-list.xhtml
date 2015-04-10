@@ -112,17 +112,16 @@
       bind.on('collapse', function()
       { bind.collapseTime = new Date().getTime(); })
 
-      label.on('afterrender', function(l) { l.getEl().addListener('click', function() {
-        if(bind.component().isDisabled()) return;
-        var ct = bind.collapseTime; ct = new Date().getTime() - ((!ct)?(0):(ct));
+      label.on('afterrender', function(l) { l.getEl().addListener('click', function()
+      {
+        var drop = bind.component()
+        if(drop.isDisabled() || drop.readOnly) return
+        var ct = bind.collapseTime; ct = new Date().getTime() - ((!ct)?(0):(ct))
         if(ct > 500) bind.component().expand()
       })})
 
-      var lstyle = bind.extjsPropsRaw()['style'] || {};
-      if(!lstyle.whiteSpace) lstyle.whiteSpace = 'nowrap';
-
       label.extjsPropsNode().extjsProps({
-        xtype: 'label', forId: "#{cc.attrs.coid}", style: lstyle
+        xtype: 'label', forId: "#{cc.attrs.coid}"
       })
     }
 

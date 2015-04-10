@@ -38,15 +38,15 @@
   (function()
   {
     //~: create delegate
-    var delegate = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}');
+    var delegate = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}')
     delegate.goFormAction('#{cc.clientId}-#{cc.attrs.coid}')
 
      //~: submit handler
     delegate.handler = function(opts)
     {
-      var params = delegate.evalPropsNode("#{cc.clientId}-#{cc.attrs.coid}-params");
-      var method = params.method; if(ZeT.iss(method)) delete params.method;
-      if(ZeT.iss(opts && opts.method)) method = opts.method;
+      var params = delegate.evalPropsNode("#{cc.clientId}-#{cc.attrs.coid}-params")
+      var method = params.method; if(ZeT.iss(method)) delete params.method
+      if(ZeT.iss(opts && opts.method)) method = opts.method
 
       new extjsf.WinmainLoader('${rootView.extjsDomain}').
         form('#{cc.clientId}-#{cc.attrs.coid}').button(true).
@@ -58,7 +58,7 @@
     }
 
     //~: attach to the target button
-    var button = extjsf.bind('#{cc.attrs.button}', '${rootView.extjsDomain}');
+    var button = extjsf.bind('#{cc.attrs.button}', '${rootView.extjsDomain}')
     if(button) button.extjsProps({handler: delegate.handler})
     if(button && button.component()) button.component().setHandler(delegate.handler)
 

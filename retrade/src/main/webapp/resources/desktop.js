@@ -198,6 +198,21 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		return this;
 	},
 
+	applyWindowBox    : function(opts)
+	{
+		var win = ZeT.assertn(extjsf.component(opts))
+		var xy  = win.getXY()
+
+		if(!opts.width)      opts.width  = win.getWidth()
+		if(!opts.height)     opts.height = win.getHeight()
+		if(!ZeT.isn(opts.x)) opts.x      = xy[0]
+		if(!ZeT.isn(opts.y)) opts.y      = xy[1]
+
+		var box = this.calcWindowBox(opts)
+
+		win.setPosition(box.x, box.y).setSize(box.width, box.height)
+	},
+
 	calcWindowBox     : function(opts)
 	{
 		var r = { width: extjsf.pt(480), height: extjsf.pt(360) }
@@ -242,7 +257,8 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	expandSizeMin     : function(opts)
 	{
-		var s, x = {}, comp = ZeT.assertn(extjsf.component(opts));
+		var s, x = {}, comp = ZeT.assertn(
+		  extjsf.component.apply(this, opts))
 
 		this._size_pt(opts)
 
@@ -279,22 +295,38 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		return this;
 	},
 
+	/**
+	 * The arguments are the same as for extjsf.component().
+	 * On the first call, remembers the size of the component.
+	 * On the following call once returns the size to the original.
+	 * Returns true when the component was re-sized.
+	 *
+	 * Set 'save' option true to always remember present position
+	 * instead of the resizing back.
+	 */
 	prevsizeComp      : function(opts)
 	{
-		var s, x = {}, comp = extjsf.component(opts);
-		if(!comp || !comp.retradePrevSize) return;
+		var s, x = {}, comp = extjsf.component.apply(this, arguments)
+		if(!comp || !comp.extjsfBind) return undefined
+		if(comp === opts) opts = {}
 
-		comp.retradePrevSize.component = comp;
-		this.resizeComp(comp.retradePrevSize)
-		delete comp.retradePrevSize;
+		if((opts.save === true) || !comp.extjsfBind.prevSize)
+		{
+			comp.extjsfBind.prevSize = comp.getSize()
+			return false
+		}
 
-		return this;
+		comp.extjsfBind.prevSize.component = comp
+		this.resizeComp(comp.extjsfBind.prevSize)
+		delete comp.extjsfBind.prevSize
+
+		return true
 	},
 
 	resizeComp        : function(opts)
 	{
-		var comp = extjsf.component(opts);
-		if(!comp) return;
+		var comp = extjsf.component(opts)
+		if(!comp) return
 
 		this._size_pt(opts)
 
@@ -305,7 +337,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		else if(opts.height)
 			comp.setHeight(opts.height)
 
-		return this;
+		return this
 	},
 
 	/**

@@ -88,7 +88,7 @@ var extjsf = ZeT.define('extjsf',
 	 * bind name, and optional arg[1] defines
 	 * the domain. (Defaults to ''.)
 	 *
-	 * Second variant , arg[0] is a bind.
+	 * Second variant, arg[0] is a bind.
 	 *
 	 * Third variant, arg[0] is an options
 	 * object with 'name' and optional 'domain',
@@ -99,31 +99,31 @@ var extjsf = ZeT.define('extjsf',
 	 */
 	component        : function()
 	{
-		var bind, arg = arguments[0];
-		if(!arg) return undefined;
+		var bind, arg = arguments[0]
+		if(!arg) return undefined
 
-		if(arg.isComponent) return arg;
+		if(arg.isComponent) return arg
 		if(arg.component && arg.component.isComponent)
-			return arg.component;
+			return arg.component
 
 		if(ZeT.iss(arg))
 		{
-			bind = extjsf.bind(arg, arguments[1]);
-			return bind && bind.component();
+			bind = extjsf.bind(arg, arguments[1])
+			return bind && bind.component()
 		}
 
-		if(arg.extjsfBind) return arg.component();
+		if(arg.extjsfBind) return arg.component()
 
 		if(ZeT.iss(arg.name))
 		{
-			bind = extjsf.bind(arg.name, arg.domain);
-			return bind && bind.component();
+			bind = extjsf.bind(arg.name, arg.domain)
+			return bind && bind.component()
 		}
 
 		if(arg.bind && arg.bind.extjsfBind)
-			return arg.bind.component();
+			return arg.bind.component()
 
-		return undefined;
+		return undefined
 	},
 
 	asbind           : function(borc)
