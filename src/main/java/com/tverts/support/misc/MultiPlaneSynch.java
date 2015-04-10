@@ -26,7 +26,7 @@ public class MultiPlaneSynch
 	 * the distance from the Master cursor to
 	 * take the next pre-execution task.
 	 */
-	static final int   AHEAD    = 6;
+	static final int   AHEAD    = 10;
 
 	/**
 	 * The total number of test requests.
@@ -310,7 +310,7 @@ public class MultiPlaneSynch
 
 	/* Client Data Item */
 
-	private static final class Client
+	static final class Client
 	{
 		/* public: constructors */
 
@@ -940,7 +940,8 @@ public class MultiPlaneSynch
 
 		public Master(Context ctx)
 		{
-			this.ctx = ctx;
+			this.ctx      = ctx;
+			this.snapshot = new Snapshot(ctx.database);
 		}
 
 
@@ -961,12 +962,16 @@ public class MultiPlaneSynch
 		/* protected: Processing */
 
 		/**
-		 * Takes directly global Client object.
+		 * Takes global Client object
+		 * directly into the snapshot.
 		 */
 		protected Client client(int id)
 		{
-			return ctx.database.client(id);
+			Client c = snapshot.lookup(id);
+			return (c != null)?(c):(snapshot.client(id));
 		}
+
+		private final Snapshot snapshot;
 
 
 		/* private: execution */
@@ -975,10 +980,18 @@ public class MultiPlaneSynch
 		{
 			//?: {the resulting data may be applied}
 			if(consistent(data))
+			{
 				ctx.database.assign(data.results, data.results.length);
+				data.results = null;
+			}
 			//~: execute the request
 			else
+			{
 				execute(data.request);
+
+				//~: commit the results
+				snapshot.commit();
+			}
 
 			//!: increment the global cursor
 			ctx.cursor.value++;
@@ -1032,8 +1045,9 @@ public class MultiPlaneSynch
 
 		public Support(int id, Context ctx)
 		{
-			this.id  = id;
-			this.ctx = ctx;
+			this.id       = id;
+			this.ctx      = ctx;
+			this.snapshot = new Snapshot(ctx.database);
 		}
 
 
@@ -1051,22 +1065,8 @@ public class MultiPlaneSynch
 
 		protected Client client(int id)
 		{
-			//?: {found it in the local cache}
-			Client c = cache.get(id);
-			if(c != null) return c;
-
-			//~: load from the database & cache it
-			c = ctx.database.copy(id);
-			cache.put(c);
-
-			//~: remember the initial version
-			initial.add(c.id);
-			initial.add(new Hash(c.hash()));
-
-			//~: add to the results
-			results.add(c);
-
-			return c;
+			Client c = snapshot.lookup(id);
+			return (c != null)?(c):(snapshot.copy(id));
 		}
 
 
@@ -1086,22 +1086,16 @@ public class MultiPlaneSynch
 
 		/**
 		 * The list of (Client ID, Client Hash) pairs for original
-		 * versions of Clients before any updates take place.
+		 * versions of Clients before any updates took place.
 		 * @see {@link Database#same(Object[])}.
 		 */
 		private final ArrayList<Object> initial =
 		  new ArrayList<>(4);
 
 		/**
-		 * Pre-execution resulting Client data.
-		 */
-		private final ArrayList<Client> results =
-		  new ArrayList<>(2);
-
-		/**
 		 * Cache where clients are held during a request processing.
 		 */
-		private final Cache cache = new Cache();
+		private final Snapshot snapshot;
 
 		/**
 		 * Selects next request for execution.
@@ -1141,16 +1135,14 @@ public class MultiPlaneSynch
 				//~: execute the request
 				execute(data.request);
 
-				//~: save data results
-				data.initial = initial.toArray(new Object[initial.size()]);
-				data.results = results.toArray(new Client[results.size()]);
+				//~: commit the results
+				snapshot.commit(data);
 			}
 			catch(ArrayIndexOutOfBoundsException e)
 			{
 				ctx.stat.errs.incrementAndGet();
+				snapshot.rollback();
 			}
-
-			initial.clear(); results.clear(); cache.clear();
 		}
 	}
 
@@ -1184,49 +1176,120 @@ public class MultiPlaneSynch
 	}
 
 
-	/* Clients Cache */
+	/* Database Snapshot */
 
-	static class Cache
+	static final class Snapshot
 	{
-		public Client get(int id)
+		public final Database db;
+
+		public Snapshot(Database db)
+		{
+			this.db = db;
+		}
+
+
+		/* Database Snapshot */
+
+		public Client lookup(int id)
 		{
 			for(int i = 0;(i < len);i++)
-				if(ids[i] == id)
+				if(cls[i].id == id)
 					return cls[i];
 			return null;
 		}
 
-		public void   put(Client c)
+		public Client client(int id)
 		{
-			if(len == ids.length)
-			{
-				int[]    a = new int[len + 2];
-				System.arraycopy(ids, 0, a, 0, len);
-				ids = a;
+			//~: copy from the database
+			Client c = db.client(id);
 
-				Client[] b = new Client[len + 2];
-				System.arraycopy(cls, 0, b, 0, len);
-				cls = b;
+			//?: {cache is full}
+			if(len == cls.length)
+			{
+				Client[] xcls = new Client[len + 8];
+				System.arraycopy(cls, 0, xcls, 0, len);
+				cls = xcls;
 			}
 
-			ids[len] = c.id;
-			cls[len] = c;
-			len++;
+			//~: put to the cache
+			cls[len++] = c;
+			return c;
 		}
 
-		public void clear()
+		public Client copy(int id)
 		{
+			//~: copy from the database
+			Client c = db.copy(id);
+
+			//?: {cache is full}
+			if(len == cls.length)
+			{
+				Client[] xcls = new Client[len + 8];
+				System.arraycopy(cls, 0, xcls, 0, len);
+				cls = xcls;
+
+				Hash[] xini = new Hash[len + 8];
+				System.arraycopy(ini, 0, xini, 0, len);
+				ini = xini;
+			}
+
+			//~: put to the cache with the hash
+			ini[len]   = c.hash();
+			cls[len++] = c;
+
+			return c;
+		}
+
+		public void   commit()
+		{
+			//~: assign the clients to the database
+			db.assign(cls, len);
+
+			//~: clear the cache
 			len = 0;
 		}
 
-		public void assign(Database db)
+		public void   commit(Data data)
 		{
-			db.assign(cls, len);
+			final Client[] results = new Client[len];
+			final Object[] initial = new Object[len * 2];
+
+			//~: copy the clients
+			System.arraycopy(cls, 0, results, 0, len);
+
+			//~: copy the hashes
+			for(int i = 0;(i < len);i++)
+			{
+				initial[2*i    ] = cls[i].id;
+				initial[2*i + 1] = ini[i];
+			}
+
+			//~: save to the data
+			data.initial = initial;
+			data.results = results;
+
+			//~: clear the cache
+			len = 0;
 		}
 
-		private int[]    ids = new int[4];
-		private Client[] cls = new Client[4];
+		public void   rollback()
+		{
+			//~: clear the cache
+			len = 0;
+		}
+
+
+		/* private: clients cache */
+
 		private int      len;
+		private Client[] cls = new Client[16];
+
+		/**
+		 * The list of (Client ID, Client Hash) pairs for original
+		 * versions of Clients before any updates took place.
+		 * @see {@link Database#same(Object[])}.
+		 */
+		private Hash[]   ini = new Hash[16];
 	}
 
 
