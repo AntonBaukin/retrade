@@ -329,10 +329,10 @@ ${v.checkModelRequested}
   //~: columns editors
   extjsf.bind("${z:vid(v, 'calcParts')}", '${rootView.extjsDomain}').retradeCreateColumns = function()
   {
-    var cols = ZeT.defined('retrade.columns.GoodCalcPartView')();
-    var colCode = cols[0];
-    var colVol  = cols[2];
-    var colType = cols[5];
+    var cols = ZeT.defined('retrade.columns.GoodCalcPartView')()
+    var colCode = cols[0]
+    var colVol  = cols[2]
+    var colType = cols[5]
 
     function selectPartGood(sel)
     {
@@ -403,7 +403,9 @@ ${v.checkModelRequested}
     }
 
     //~: good column editor with drop-list of goods lookup
-    colCode.retradeHasEditor = true;
+    colCode.retradeHasEditor = true
+    colCode.width = extjsf.ex(13)
+
     colCode.editor = Ext.create('Ext.form.field.ComboBox', {
       store: "${z:vid(v, 'goodsStore')}",
       valueField: 'goodCode', displayField: 'goodCode',
@@ -439,8 +441,7 @@ ${v.checkModelRequested}
 
         select: function(f, sel)
         {
-          if(sel.length == 1) sel = sel[0]; else sel = null;
-          if(!sel || ZeTS.ises(sel.get('goodCode'))) return;
+          if(!sel || ZeTS.ises(sel.get('goodCode'))) return
           selectPartGood(sel)
         }
       }
@@ -485,7 +486,7 @@ ${v.checkModelRequested}
     <f:facet name = "grid-props">
 
       hidden: #{v.model.editCalc.derived},
-      cls: 'retrade-grid-not-mark-dirty',
+      cls: 'retrade-grid-not-mark-dirty ux-grid-smaller',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'SINGLE', allowDeselect: true }),
       columns: extjsf.bind("${z:vid(v, 'calcParts')}", '${rootView.extjsDomain}').retradeCreateColumns(),
@@ -563,7 +564,7 @@ ${v.checkModelRequested}
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Суб-код', cls: 'retrade-form-label-cell',
+          text: 'Суб-код', cls: 'retrade-info-title-label',
           margin: extjsf.dpts(0, 4, 0, 0)
         </f:facet>
       </x:text-field>
@@ -575,8 +576,7 @@ ${v.checkModelRequested}
          value = "#{v.model.editCalc.subVolume}">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(16), flex: 1,
-          fieldStyle: {textAlign: 'right'},
+          fieldStyle: {textAlign: 'right'}, flex: 1,
           allowBlank: false, validator: function(v)
           {
             if(extjsf.bind("${z:vid(v, 'super-good-measure')}", '${rootView.extjsDomain}').retradeGoodInteger == 'true')
@@ -586,7 +586,7 @@ ${v.checkModelRequested}
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'объём', cls: 'retrade-form-label-cell',
+          text: 'объём', cls: 'retrade-info-title-label',
           margin: extjsf.dpts(0, 4, 0, 6)
         </f:facet>
       </x:text-field>
@@ -631,8 +631,8 @@ ${v.checkModelRequested}
         <f:facet name = "drop-props">
 
           valueField: 'goodCode', displayField: 'goodCode',
-          queryCaching: false, queryParam: 'searchGoods', minChars: 1,
-          width: extjsf.ex(14), allowBlank: false,
+          queryCaching: false, queryParam: 'searchGoods',
+          minChars: 1, flex: 1, allowBlank: false,
           matchFieldWidth: false, listConfig: {
             minWidth: extjsf.pt(180), maxWidth: extjsf.pt(220)
           },
@@ -650,7 +650,6 @@ ${v.checkModelRequested}
 
             select: function(f, sel)
             {
-              if(sel.length == 1) sel = sel[0]; else sel = null;
               if(!sel || ZeTS.ises(sel.get('goodCode'))) return;
 
               extjsf.bind("${z:vid(v, 'super-good-name')}", '${rootView.extjsDomain}').
@@ -668,7 +667,7 @@ ${v.checkModelRequested}
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Товар', cls: 'retrade-form-label-cell',
+          text: 'Товар', cls: 'retrade-info-title-label',
           margin: extjsf.dpts(0, 4, 0, 0)
         </f:facet>
       </x:drop-list>
@@ -694,7 +693,7 @@ ${v.checkModelRequested}
          value = "#{v.model.editCalc.superGoodName}" readOnly = "true">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(24), flex: 1, readOnly: true,
+          width: extjsf.ex(24), flex: 2, readOnly: true,
           margin: extjsf.dpts(0, 0, 0, 4)
         </f:facet>
       </x:text-field>
@@ -706,11 +705,11 @@ ${v.checkModelRequested}
          value = "#{v.model.editCalc.superGoodMeasure}" readOnly = "true">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(8)
+          flex: 1
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'изм.', cls: 'retrade-form-label-cell',
+          text: 'изм.', cls: 'retrade-info-title-label',
           margin: extjsf.dpts(0, 4, 0, 6)
         </f:facet>
       </x:text-field>
@@ -770,8 +769,8 @@ ${v.checkModelRequested}
   //~: adjust window size
   extjsf.bind("${z:vid(v, '_main_layout')}", '${rootView.extjsDomain}').on('boxready', function()
   {
-     extjsf.component('winmain', '${rootView.extjsDomain}').
-       setSize(extjsf.pt(360), extjsf.pt(200))
+     ReTrade.desktop.applyWindowBox({ name: 'winmain', domain: '${rootView.extjsDomain}',
+       widthpt: 540, heightpt: 280 })
   })
 
   //~: adjust super-good label width
