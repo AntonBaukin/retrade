@@ -203,9 +203,13 @@ ${v.checkModelRequestedWithRedirect}
             if(r.get('code') == g) { f = true; return false }
           })
 
-          if(!f) s.add(Ext.create('retrade.model.CatItemView', {
-            objectKey: g, code: g
-          }))
+          if(f) return
+
+          var local = s.extjsfBind.locallyAdded
+          if(!local) s.extjsfBind.locallyAdded = local = []
+          if(local.indexOf(g) == -1) local.push(g)
+
+          s.add(Ext.create('retrade.model.CatItemView', { code: g }))
         }}
       }],
 
@@ -312,6 +316,14 @@ ${v.checkModelRequestedWithRedirect}
                {
                   combo.retradeHighlightedItem = combo.getPicker().getNodes().indexOf(node);
                })
+            },
+
+            expand: function(combo)
+            {
+              var ts = new Date().getTime()
+              if(ts - expandTime &lt; 2000)
+                combo.getStore().reload()
+              expandTime = ts
             }
           }
         })
@@ -353,6 +365,19 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
+
+  //~: add locally added good groups on store reload
+  extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').on('load', function(store)
+  {
+    var local = store.extjsfBind.locallyAdded
+    if(local) ZeT.each(local, function(g)
+    {
+      store.add(Ext.create('retrade.model.CatItemView', { code: g }))
+    })
+  })
+
+
+  //~: insert a new empty record
   extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').retradeInsertRow = function(code)
   {
     var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
