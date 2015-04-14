@@ -289,7 +289,8 @@
   //~: expand the tree
   extjsf.bindHandler("${z:vid(v, 'expand-tree')}", '${rootView.extjsDomain}', function()
   {
-    extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').expandAll()
+    var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+    tree.getRootNode().expandChildren(true)
   })
 
   //~: expand the tree to the selection
@@ -562,7 +563,7 @@
       border: false, flex: 2, rootVisible : true, animate: false,
       enableColumnHide: false, sortableColumns: false,
       selectModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-      #{largerGrids?("cls: 'retrade-grid-large',"):('')}
+      cls: 'retrade-grid-not-mark-dirty',
 
       <ui:fragment rendered = "#{canEditTree}">
 
@@ -608,7 +609,7 @@
       var sel = tree.getSelectionModel().getLastSelected();
 
       //?: {is not a tree special column}
-      var cs = extjsf.support.gridColumns(tree, true);
+      var cs = extjsf.support.gridColumns(tree, false)
       if(cs[ci].xtype != 'treecolumn')
       {
         //?: {table cell second click to start editing}
@@ -1049,13 +1050,10 @@
         storeId = "${z:vid(v, 'folderGoodsStore')}">
 
         <f:facet name = "grid-props">
-
-          #{largerGrids?("cls: 'retrade-grid-large',"):('')}
           preventHeader: true, pager: true,
           sortableColumns: true, border: false,
           columns: ZeT.defined('#{goodsColumnModel}'),
           selModel: #{goodsColumnSelModel}
-
        </f:facet>
       </x:data-grid>
 
@@ -1082,7 +1080,6 @@
     //~: connect tree (as grid) to selection set
     ReTrade.selset.grid("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
   })
-
 
   //~: display goods of current selection
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle = function(sel)
