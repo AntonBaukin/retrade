@@ -1281,23 +1281,22 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'changeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
-		   text: "Документ", dataIndex: 'repriceName', sortable: false,
-		   width: extjsf.ex(36), flex: 1
+		   text: "Документ", dataIndex: 'repriceName', sortable: false, flex: 1
 		 },
 
 		 {
 		   text: 'Цена до', dataIndex: 'priceOld', sortable: false,
-		   width: extjsf.ex(12), align: 'right', 
+		   width: extjsf.ex(12), align: 'right',
 		   renderer: retrade.fcurrency
 		 },
 
 		 {
 		   text: 'Цена после', dataIndex: 'priceNew', sortable: false,
-		   width: extjsf.ex(12), align: 'right', 
+		   width: extjsf.ex(12), align: 'right',
 		   renderer: retrade.fcurrency
 		 }
 		];

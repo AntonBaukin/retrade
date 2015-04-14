@@ -268,6 +268,7 @@ ${v.checkModelRequestedWithRedirect}
           }
         }
 
+        var expandTime = new Date().getTime()
 
         var codeEditor = Ext.create('Ext.form.field.Text', {
           listeners: { specialkey : onSpecialKey }
@@ -288,6 +289,14 @@ ${v.checkModelRequestedWithRedirect}
                {
                   combo.retradeHighlightedItem = combo.getPicker().getNodes().indexOf(node);
                })
+            },
+
+            expand: function(combo)
+            {
+              var ts = new Date().getTime()
+              if(ts - expandTime &lt; 2000)
+                combo.getStore().reload()
+              expandTime = ts
             }
           }
         })

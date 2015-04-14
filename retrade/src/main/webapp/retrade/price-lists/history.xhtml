@@ -35,22 +35,18 @@ ${v.checkEntityRequested}
 
   <f:facet name = "toolbar">
 
-
-    <!-- [back to price list button -->
-
-    <x:winaction-button coid = "${z:vid(v, 'back')}"
-      action = "#{v.gotoPriceList}">
-
+    <!-- [close window button] -->
+    <x:component coid = "${z:vid(v, 'close_window')}">
       <f:facet name = "extjs-props">
-        text: 'Назад'
-      </f:facet>
+        xtype: 'button', text: 'Закрыть',
 
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
+        handler : function()
+        {
+          extjsf.bind('winmain', '${rootView.extjsDomain}').
+            component().close()
+        }
       </f:facet>
-    </x:winaction-button>
-
-    <!-- back to price list button] -->
+    </x:component>
 
 
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">
@@ -64,27 +60,25 @@ ${v.checkEntityRequested}
     <!-- [filter dates form -->
 
     <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'filter-form-dates')}">
-
       <f:facet name = "extjs-props">
-
-        frame: false, border: false,
-        margin: extjsf.dpts(1, 0, 1, 12),
-        bodyCls: 'retrade-toolbar-panel',
-        layout: {type: 'table', columns: 4}
+        border: false, bodyCls: 'retrade-transparent-panel',
+        layout: {type: 'hbox', align: 'middle'}
       </f:facet>
 
-      <x:date-field coid = "${z:vid(v, 'min_date')}" value = "#{v.model.minDate}">
+      <x:date-field coid = "${z:vid(v, 'min_date')}"
+        value = "#{v.model.minDate}">
 
         <f:facet name = "label-props">
-          text: 'Дата с', cellCls: 'retrade-form-light-label-cell',
+          text: 'Дата с', cls: 'retrade-info-title-label',
           margin: extjsf.dpts(0, 4, 0, 0)
         </f:facet>
       </x:date-field>
 
-      <x:date-field coid = "${z:vid(v, 'max_date')}" value = "#{v.model.maxDate}">
+      <x:date-field coid = "${z:vid(v, 'max_date')}"
+        value = "#{v.model.maxDate}">
 
         <f:facet name = "label-props">
-          text: 'по', cellCls: 'retrade-form-light-label-cell',
+          text: 'по', cls: 'retrade-info-title-label',
           margin: extjsf.dpts(0, 4, 0, 6)
         </f:facet>
       </x:date-field>
@@ -121,10 +115,11 @@ ${v.checkEntityRequested}
 
   <x:html coid = "${z:vid(v, 'history_info')}">
     <f:facet name = "extjs-props">
-
       xtype: 'panel', region: 'north',
-      frame: true, margin: extjsf.pts(1, 1, 0, 1)
-
+      frame: true, border: false,
+      bodyPadding: extjsf.pts(3, 2, 3, 2),
+      margin: extjsf.pts(1, 1, 1, 1),
+      bodyCls: 'retrade-text-panel'
     </f:facet>
 
     <table class = "retrade-info-table retrade-info-table-price-history-good"
@@ -186,9 +181,8 @@ ${v.checkEntityRequested}
     storeId = "${z:vid(v, 'historyData')}">
 
     <f:facet name = "grid-props">
-      region: 'center', margin: extjsf.pts(2, 0, 0, 0),
-      columns: ZeT.defined('retrade.columns.GoodPriceHistory'),
-      pager: true, sortableColumns: false
+      region: 'center', pager: true, sortableColumns: false,
+      columns: ZeT.defined('retrade.columns.GoodPriceHistory')
     </f:facet>
   </x:data-grid>
 
@@ -200,7 +194,7 @@ ${v.checkEntityRequested}
     on('itemdblclick', function(comp, record, node, row, e)
   {
     retrade_open_window({ url: '/reprice-docs/info',
-      box: { event: e, widthpt: 620, heightpt: 360 },
+      box: { event: e, widthpt: 680, heightpt: 360, '+xpt': -240, '-height': true },
       domainKey: "${z:vid(v, 'view_reprice_doc')}",
       collapsible: true, record: record.get('repriceKey')
     })

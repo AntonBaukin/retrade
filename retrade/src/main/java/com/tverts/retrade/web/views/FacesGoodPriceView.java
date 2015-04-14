@@ -9,10 +9,6 @@ import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-/* com.tverts: spring */
-
-import static com.tverts.spring.SpringPoint.bean;
-
 /* com.tverts: faces */
 
 import com.tverts.faces.NumericModelView;
@@ -25,10 +21,8 @@ import com.tverts.model.NumericModelBean;
 /* com.tverts: retrade (goods + prices) */
 
 import com.tverts.retrade.domain.goods.GoodUnit;
-import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.GoodPriceModelBean;
-import com.tverts.retrade.domain.prices.PriceListModelBean;
 
 
 /**
@@ -39,15 +33,6 @@ import com.tverts.retrade.domain.prices.PriceListModelBean;
 @ManagedBean @RequestScoped
 public class FacesGoodPriceView extends NumericModelView
 {
-	/* public: actions */
-
-	public String gotoPriceList()
-	{
-		getModel().setActive(false);
-		return "price-list";
-	}
-
-
 	/* public: bean read interface */
 
 	public GoodPrice          getNumeric()
@@ -70,7 +55,8 @@ public class FacesGoodPriceView extends NumericModelView
 
 	public String  getWinmainTitleHistory()
 	{
-		return String.format("История цен товара п/л №%s (%s)",
+		return String.format("История цен товара [%s] в п-л [%s] %s",
+		  getGood().getCode(),
 		  getNumeric().getPriceList().getCode(),
 		  getNumeric().getPriceList().getName()
 		);
@@ -87,24 +73,13 @@ public class FacesGoodPriceView extends NumericModelView
 
 	protected NumericModelBean createModelInstance(Long objectKey)
 	{
-		//~: get the price list model
-		PriceListModelBean plmb =
-		  findRequestedModel(PriceListModelBean.class);
-		if(plmb == null) throw new IllegalStateException();
-
-		//~: load the good price
-		GetPrices gg = bean(GetPrices.class);
-		GoodPrice gp = gg.getGoodPrice(
-		  plmb.priceList(), gg.getGoodUnit(objectKey));
-		if(gp == null) throw new IllegalStateException();
-
 		//~: create the model bean
-		GoodPriceModelBean mb = new GoodPriceModelBean(gp);
+		GoodPriceModelBean mb = new GoodPriceModelBean();
 
-		//~: the domain
-		mb.setDomain(getDomainKey());
+		//=: entity class
+		mb.setObjectClass(GoodPrice.class);
 
-		//~: max search date (present time)
+		//=: max search date (present time)
 		mb.setMaxDate(new Date());
 
 		return mb;

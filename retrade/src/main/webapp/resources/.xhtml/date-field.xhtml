@@ -44,9 +44,12 @@
   (function()
   {
     var field = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}');
-
     field.nodeId("#{cc.clientId}-#{cc.attrs.coid}")
-    field.extjsProps({labelSeparator: '', size: 12, width: extjsf.dex(14)})
+
+    field.extjsProps({labelSeparator: '', width: extjsf.dex(15),
+      maxLength: 10, enforceMaxLength: true
+    })
+
     field.extjsPropsNode().extjsProps({
       xtype   : 'datefield',
       inputId : "#{cc.attrs.coid}",

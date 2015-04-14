@@ -286,30 +286,6 @@
   </navigation-rule>
 
 
-  <!-- [retrade/price-lists/info] -->
-
-  <navigation-rule>
-    <from-view-id>/retrade/price-lists/info.xhtml</from-view-id>
-
-    <navigation-case>
-      <from-outcome>prices-history</from-outcome>
-      <to-view-id>/retrade/price-lists/history.xhtml</to-view-id>
-    </navigation-case>
-  </navigation-rule>
-
-
-  <!-- [retrade/price-lists/history] -->
-
-  <navigation-rule>
-    <from-view-id>/retrade/price-lists/history.xhtml</from-view-id>
-
-    <navigation-case>
-      <from-outcome>price-list</from-outcome>
-      <to-view-id>/retrade/price-lists/info.xhtml</to-view-id>
-    </navigation-case>
-  </navigation-rule>
-
-
   <!-- [retrade/reprice-docs/info] -->
 
   <navigation-rule>

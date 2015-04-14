@@ -44,9 +44,12 @@
   (function()
   {
     var field = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}');
-
     field.nodeId("#{cc.clientId}-#{cc.attrs.coid}")
-    field.extjsProps({labelSeparator: '', size: 7, width: extjsf.dex(9)})
+
+    field.extjsProps({labelSeparator: '', width: extjsf.dex(9),
+      maxLength: 7, enforceMaxLength: true
+    })
+
     field.extjsProps({listConfig: { xtype: 'ux.timepicker' }})
     field.extjsPropsNode().extjsProps({
       xtype   : 'timefield',

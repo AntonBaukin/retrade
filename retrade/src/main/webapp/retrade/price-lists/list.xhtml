@@ -48,38 +48,13 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
 
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
-    on('itemdblclick', function(view, rec)
+    on('itemdblclick', function(grid, rec, node, row, e)
   {
-    var domain  = 'wnd:' + "${z:vid(v, 'view_price_list')}:" + rec.getId();
-    var winmain = extjsf.bind('winmain', domain);
-
-    if(winmain)
-    {
-      winmain.component().show()
-      return;
-    }
-
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-      xtype: 'window', title: 'Загрузка...',
-      x: extjsf.pt(250), width: extjsf.pt(480),
-      y: extjsf.pt(100), height: extjsf.pt(335),
-      layout: 'fit', autoShow: true, collapsible: true,
-
-      loader: {
-        url: "${z:url('/go/retrade/price-lists/info')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true,
-
-        params: {
-          '${v.viewModeParam}': 'body',
-          '${rootView.extjsDomainParam}': domain,
-          '${v.entityParam}': rec.getId()
-        }
-      }
+    retrade_open_window({ url: '/price-lists/info',
+      domainKey: "${z:vid(v, 'view_price_list')}",
+      box: { event: e, widthpt: 520, heightpt: 390, '-height': true},
+      record: rec.getId(), collapsible: true
     })
-
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
     </script>

@@ -34,8 +34,7 @@ ${v.checkEntityRequested}
 
   <f:facet name = "toolbar">
 
-    <!-- [close window button -->
-
+    <!-- [close window button] -->
     <x:component coid = "${z:vid(v, 'close_window')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть',
@@ -49,44 +48,15 @@ ${v.checkEntityRequested}
       </f:facet>
     </x:component>
 
-    <!-- close window button] -->
-
 
     <!-- [prices history button -->
 
-    <x:winaction-delegate coid = "${z:vid(v, 'prices_history_script')}"
-      action = "#{v.gotoPricesHistory}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
-      </f:facet>
-    </x:winaction-delegate>
-
     <x:component coid = "${z:vid(v, 'prices_history')}">
-
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'История цен', margin: extjsf.dpts(0, 0, 0, 6),
         tooltipType: 'title', tooltip: 'Просмотреть историю цен товара выделенной строки'
       </f:facet>
     </x:component>
-
-     <script type = "text/javascript">
-      //<![CDATA[
-
-  //~: submit form before going to date form
-  extjsf.bindHandler("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}', function()
-  {
-    var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-    var sel  = grid.component().getSelectionModel().getSelection();
-    if(!sel || sel.length != 1) return;
-
-    extjsf.bindHandler("${z:vid(v, 'prices_history_script')}", '${rootView.extjsDomain}')({
-      params: {'${v.entityParam}': sel[0].getId()}, method: 'GET'
-    })
-  })
-
-      //]]>
-      </script>
 
     <!-- prices history button] -->
 
@@ -98,7 +68,6 @@ ${v.checkEntityRequested}
       </f:facet>
     </x:component>
 
-    <!-- [filter goods field -->
 
     <!-- [filter goods field -->
 
@@ -106,12 +75,13 @@ ${v.checkEntityRequested}
           value = "#{v.model.searchNames}">
 
           <f:facet name = "extjs-props">
-            margin: extjsf.dpts(1, 0, 1, 4),
+            margin: extjsf.dpts(0, 0, 0, 4),
             width:  extjsf.ex(24)
           </f:facet>
 
           <f:facet name = "label-props">
-            text: 'Поиск', margin: extjsf.pts(1, 0, 1, 8)
+            text: 'Поиск', margin: extjsf.pts(0, 0, 0, 8),
+            cls: 'retrade-info-title-label'
           </f:facet>
         </x:text-field>
 
@@ -122,7 +92,7 @@ ${v.checkEntityRequested}
            <f:facet name = "extjs-props">
 
              xtype: 'button', enableToggle: true,
-             width: 30, componentCls: 'retrade-icon-24',
+             width: 32, componentCls: 'retrade-icon-24',
              margin: extjsf.dpts(1, 0, 1, 6),
              iconCls: 'retrade-selset-button-icon',
              tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
@@ -183,8 +153,6 @@ ${v.checkEntityRequested}
         //]]>
         </script>
 
-        <!-- filter goods field] -->
-
     <!-- filter goods field] -->
 
   </f:facet>
@@ -195,10 +163,10 @@ ${v.checkEntityRequested}
   <!-- [goods table -->
 
   <x:data-store storeId = "${z:vid(v, 'listGoods')}"
-    modelView = "${v}" pageSize = "15">
+    modelView = "${v}" pageSize = "10">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.GoodUnitView', remoteSort: true,
+      model: 'retrade.model.GoodPriceView', remoteSort: true,
       sorters: [{ property: 'goodName', direction: 'ASC' }]
     </f:facet>
 
@@ -214,11 +182,47 @@ ${v.checkEntityRequested}
       region: 'center',
       columns: ZeT.defined('retrade.columns.GoodUnitPriceView'),
       selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-      pager: true, sortableColumns: true
+      pager: true, sortableColumns: true, cls: 'ux-grid-smaller'
     </f:facet>
   </x:data-grid>
 
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: open window with prices history
+  extjsf.bind("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}').openPricesHistory = function(rec, e)
+  {
+    retrade_open_window({ url: '/price-lists/history',
+      domainKey: "${z:vid(v, 'good_price_history')}",
+      box: { event: e, widthpt: 480, heightpt: 360, '+xpt': -180 },
+      record: rec.get('goodPrice'), collapsible: true
+    })
+  }
+
+  //~: prices history click
+  extjsf.bindHandler("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}', function(btn, e)
+  {
+    var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var sel  = grid.component().getSelectionModel().getSelection()
+    if(!sel || sel.length != 1) return
+
+    extjsf.bind("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}').
+      openPricesHistory(sel[0], e)
+  })
+
+  //~: prices history on grid click
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    on('itemdblclick', function(grid, rec, node, row, e)
+  {
+    extjsf.bind("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}').
+      openPricesHistory(rec, e)
+  })
+
+  //]]>
+  </script>
+
   <!-- goods table] -->
+
 
 </x:winmain>
 </ui:define>

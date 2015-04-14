@@ -38,31 +38,19 @@ import com.tverts.support.IO;
  */
 @XmlRootElement(name = "model")
 @XmlType(name = "good-price-model")
-public class  GoodPriceModelBean extends NumericSelectModelBean
+public class GoodPriceModelBean extends NumericSelectModelBean
 {
-	/* public: constructors */
-
-	public GoodPriceModelBean()
-	{}
-
-	public GoodPriceModelBean(GoodPrice gp)
-	{
-		this.setInstance(gp);
-	}
-
-
 	/* Good Price Model Bean (read) */
 
-	public GoodPrice  goodPrice()
+	public GoodPrice goodPrice()
 	{
 		return (GoodPrice)accessNumeric();
 	}
 
 	@XmlElement
-	public Long       getObjectKey()
+	public Long getObjectKey()
 	{
-		return (goodPrice() == null)?(null):
-		  (goodPrice().getPrimaryKey());
+		return getPrimaryKey();
 	}
 
 
@@ -73,6 +61,8 @@ public class  GoodPriceModelBean extends NumericSelectModelBean
 		return minDate;
 	}
 
+	private Date minDate;
+
 	public void setMinDate(Date minDate)
 	{
 		this.minDate = minDate;
@@ -82,6 +72,8 @@ public class  GoodPriceModelBean extends NumericSelectModelBean
 	{
 		return maxDate;
 	}
+
+	private Date maxDate;
 
 	public void setMaxDate(Date maxDate)
 	{
@@ -95,12 +87,6 @@ public class  GoodPriceModelBean extends NumericSelectModelBean
 	{
 		return new GoodPriceModelData(this);
 	}
-
-
-	/* private: the object's class and key */
-
-	private Date minDate;
-	private Date maxDate;
 
 
 	/* Serialization */

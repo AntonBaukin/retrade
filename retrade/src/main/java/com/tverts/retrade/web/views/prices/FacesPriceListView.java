@@ -54,15 +54,6 @@ public class FacesPriceListView extends NumericModelView
 		return null;
 	}
 
-	public String gotoPricesHistory()
-	{
-		GetPrices gg = bean(GetPrices.class);
-		GoodPrice gp = gg.getGoodPrice(getNumeric(),
-		  gg.getGoodUnit(obtainEntityKeyFromRequestStrict()));
-
-		return (gp == null)?(null):("prices-history");
-	}
-
 
 	/* public: FacesPriceListView (bean) interface */
 
@@ -81,7 +72,7 @@ public class FacesPriceListView extends NumericModelView
 
 	public String  getWinmainTitleInfo()
 	{
-		return String.format("Прайс лист №%s (%s)",
+		return String.format("Прайс лист [%s] %s",
 		  getNumeric().getCode(), getNumeric().getName()
 		);
 	}
