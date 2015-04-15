@@ -154,9 +154,8 @@ public class AuthServlet extends GenericServlet
 			protocol.invoke();
 
 			//~: set prevent caching headers
-			res.setHeader("Cache-Control",
-			  "no-store, no-cache, must-revalidate, max-age=0");
-			res.setHeader("Pragma", "no-cache");
+			res.setHeader("Cache-Control", "no-cache, max-age=0");
+			res.setHeader("Expires", "0");
 
 			//?: {has protocol error}
 			if(protocol.getError() != null)
