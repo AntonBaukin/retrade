@@ -649,6 +649,7 @@ public class SU
 	{
 		String x = scats("\f", objs);
 		if(x.isEmpty()) return null;
+		x = x.toLowerCase();
 
 		//~: replace spaces
 		x = x.replaceAll("\\s+", "\f");
