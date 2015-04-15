@@ -722,7 +722,7 @@ ${v.forceSecureEdit()}
     <f:facet name = "grid-props">
 
       title: "#{(not v.invoice.altered)?('Перемещаемые товары'):(v.correction)?('Заносимые товары'):('Производимые товары')}",
-      flex: 1, cls: 'retrade-grid-not-mark-dirty',
+      flex: 1, cls: 'ux-grid-not-mark-dirty',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
       columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns(),
@@ -777,7 +777,7 @@ ${v.forceSecureEdit()}
 
       hidden: #{not v.twoTables},
       title: "#{(v.freeProduce)?('Сырьё'):('Списываемые товары')}",
-      flex: 1, cls: 'retrade-grid-not-mark-dirty',
+      flex: 1, cls: 'ux-grid-not-mark-dirty',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
       columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns(),

@@ -771,7 +771,7 @@ ${v.forceSecureEdit()}
 
       title: 'Покупаемые товары', region: 'center',
       margin: extjsf.pts(2, 1, 1, 1),
-      cls: 'retrade-grid-not-mark-dirty',
+      cls: 'ux-grid-not-mark-dirty',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
       columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns(),

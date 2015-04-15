@@ -181,7 +181,7 @@ ${v.checkModelRequestedWithRedirect}
 
       pager: false, border: false, sortableColumns: false,
       enableColumnHide: false, enableColumnMove: false,
-      cls: 'retrade-grid-not-mark-dirty ux-grid-smaller',
+      cls: 'ux-grid-not-mark-dirty ux-grid-smaller',
       selModel: extjsf.delayCreate('Ext.selection.CellModel', {}),
 
       plugins: [{
@@ -195,8 +195,13 @@ ${v.checkModelRequestedWithRedirect}
         edit: function(ed, event)
         {
           var s = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+          var z = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
           var g = ZeTS.trim(event.record.get('goodGroup'))
+
+          z.extjsfBind.lastMeasureSelected = event.record.get('measureCode')
+
           if(ZeTS.ises(g)) return
+          z.extjsfBind.lastGroupSelected = g
 
           var f = false; s.each(function(r)
           {
@@ -380,12 +385,18 @@ ${v.checkModelRequestedWithRedirect}
   //~: insert a new empty record
   extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').retradeInsertRow = function(code)
   {
-    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-    var p = g.getPlugin('cellediting');
+    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var p = g.getPlugin('cellediting')
     var m = Ext.create('retrade.model.GoodUnitView', {
       objectKey: code, goodCode: code
-    });
+    })
+
+    if(!ZeTS.ises(s.extjsfBind.lastGroupSelected))
+      m.set('goodGroup', s.extjsfBind.lastGroupSelected)
+
+    if(!ZeTS.ises(s.extjsfBind.lastMeasureSelected))
+      m.set('measureCode', s.extjsfBind.lastMeasureSelected)
 
     s.add(m)
     p.completeEdit()

@@ -295,11 +295,6 @@ td.x-grid-cell.x-grid-cell-selected
   background-color: #e8e1d6;
 }
 
-.retrade-grid-not-mark-dirty td.x-grid-cell.x-grid-dirty-cell
-{
-  background-image: none;
-}
-
 td.retrade-action-cell
 {
   cursor: pointer;

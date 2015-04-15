@@ -486,7 +486,7 @@ ${v.checkModelRequested}
     <f:facet name = "grid-props">
 
       hidden: #{v.model.editCalc.derived},
-      cls: 'retrade-grid-not-mark-dirty ux-grid-smaller',
+      cls: 'ux-grid-not-mark-dirty ux-grid-smaller',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'SINGLE', allowDeselect: true }),
       columns: extjsf.bind("${z:vid(v, 'calcParts')}", '${rootView.extjsDomain}').retradeCreateColumns(),

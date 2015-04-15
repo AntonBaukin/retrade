@@ -197,15 +197,16 @@
 
     function createNode(map, k, pn)
     {
-      var m = map[k].m;
-      var n = pn.appendChild({ leaf: m.get('leaf') });
+      var m = map[k].m
+      var n = pn.appendChild({})
 
       n.set('modelId', k)
       n.set('selsetItemKey', k)
       n.set('code', m.get('code'))
       n.set('name', m.get('name'))
+      n.set('leaf', !ZeT.isa(map[k].cs) || !map[k].cs.length)
 
-      if(store.retradeLastSelection == m.get('code')) selNode = n;
+      if(store.retradeLastSelection == m.get('code')) selNode = n
 
       n.on('move', onNodeMoved)
       n.on('expand', doResizeColumn)
@@ -346,9 +347,12 @@
 
     store.add(m)
 
-    var n = sel.insertChild(0, { leaf: false });
-    n.set('modelId', m.getId())
-    n.set('code', ''); n.set('name', '')
+    var n = sel.insertChild(0, {
+      modelId: m.getId(), leaf: true, code: '', name: ''
+    })
+
+    sel.expand()
+    tree.getSelectionModel().select(n)
   })
 
   //~: commit the tree
@@ -560,10 +564,10 @@
     <f:facet name = "extjs-props">
 
       xtype: 'treepanel', store: "${z:vid(v, 'goodsTreeStore')}",
-      border: false, flex: 2, rootVisible : true, animate: false,
+      border: false, flex: 1, rootVisible : true, animate: false,
       enableColumnHide: false, sortableColumns: false,
       selectModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-      cls: 'retrade-grid-not-mark-dirty',
+      cls: 'ux-grid-not-mark-dirty ux-tree-folders-only',
 
       <ui:fragment rendered = "#{canEditTree}">
 
@@ -689,7 +693,7 @@
   <!-- [grid with folder goods -->
 
   <x:data-store storeId = "${z:vid(v, 'folderGoodsStore')}"
-    modelView = "${v}" modelRequest = "goods" pageSize = "14">
+    modelView = "${v}" modelRequest = "goods" pageSize = "10">
 
     <f:facet name = "store-props">
       model: '#{goodsModel}',
@@ -703,13 +707,27 @@
   </x:data-store>
 
   <x:component coid = "${z:vid(v, 'folder-goods-layout')}">
+
     <f:facet name = "extjs-props">
 
-      xtype: 'panel', flex: 3, border: false, layout: 'fit',
+      <ui:fragment rendered = "#{canEditTree}">
+      collapseFirst: false,  tools: [{
+        type: 'search', tooltipType: 'title', tooltip: 'Отобразить инструменты поиска',
+        handler: function()
+        {
+          var bs = extjsf.component("${z:vid(v, 'goods-edit-buttons')}", '${rootView.extjsDomain}')
+          var fi = extjsf.component("${z:vid(v, 'goods-filter')}", '${rootView.extjsDomain}')
+
+          bs.setVisible(!bs.isVisible())
+          fi.setVisible(!fi.isVisible())
+        }
+      }],
+      </ui:fragment>
+
+      xtype: 'panel', flex: 1, border: false, layout: 'fit',
       collapsible: true, collapseDirection: 'bottom',
       bodyCls: 'retrade-back-panel',
       title: 'Выберете каталог в дереве'
-
     </f:facet>
 
 
@@ -736,38 +754,42 @@
 
         <ui:fragment rendered = "#{canEditTree}">
 
-        <!-- [add goods to selected node] -->
-
-        <x:component coid = "${z:vid(v, 'tree-add-goods')}">
+        <x:component coid = "${z:vid(v, 'goods-edit-buttons')}">
           <f:facet name = "extjs-props">
-            xtype: 'button', text: 'Добавить',
-            margin: extjsf.pts(0, 4, 0, 0),
-            tooltipType: 'title', tooltip: 'Добавить товары текущей выборки в указанный каталог'
+            xtype: 'panel', bodyCls: 'retrade-transparent-panel',
+            border: false, layout: {type: 'hbox', align: 'middle'}
           </f:facet>
+
+          <!-- [add goods to selected node] -->
+          <x:component coid = "${z:vid(v, 'tree-add-goods')}">
+            <f:facet name = "extjs-props">
+              xtype: 'button', text: 'Добавить',
+              margin: extjsf.pts(0, 4, 0, 0),
+              tooltipType: 'title', tooltip: 'Добавить товары текущей выборки в указанный каталог'
+            </f:facet>
+          </x:component>
+
+
+          <!-- [move goods to selected node] -->
+          <x:component coid = "${z:vid(v, 'tree-move-goods')}">
+            <f:facet name = "extjs-props">
+              xtype: 'button', text: 'Переместить',
+              margin: extjsf.pts(0, 4, 0, 0),
+              tooltipType: 'title', tooltip: 'Переместить товары текущей выборки в указанный каталог'
+            </f:facet>
+          </x:component>
+
+
+          <!-- [unlink goods from selected node] -->
+          <x:component coid = "${z:vid(v, 'tree-unlink-goods')}">
+            <f:facet name = "extjs-props">
+              xtype: 'button', text: 'Изъять',
+              margin: extjsf.pts(0, 4, 0, 0),
+              tooltipType: 'title', tooltip: 'Изъять товары текущей выборки из указанного каталога'
+            </f:facet>
+          </x:component>
+
         </x:component>
-
-
-        <!-- [move goods to selected node] -->
-
-        <x:component coid = "${z:vid(v, 'tree-move-goods')}">
-          <f:facet name = "extjs-props">
-            xtype: 'button', text: 'Переместить',
-            margin: extjsf.pts(0, 4, 0, 0),
-            tooltipType: 'title', tooltip: 'Переместить товары текущей выборки в указанный каталог'
-          </f:facet>
-        </x:component>
-
-
-        <!-- [unlink goods from selected node] -->
-
-        <x:component coid = "${z:vid(v, 'tree-unlink-goods')}">
-          <f:facet name = "extjs-props">
-            xtype: 'button', text: 'Изъять',
-            margin: extjsf.pts(0, 4, 0, 0),
-            tooltipType: 'title', tooltip: 'Изъять товары текущей выборки из указанного каталога'
-          </f:facet>
-        </x:component>
-
         </ui:fragment>
 
 
@@ -786,67 +808,33 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow = function(sel, event)
+  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow = function(record, e)
   {
-    var domain  = 'wnd:' + "${z:vid(v, 'add-good')}:" + ((sel)?(sel.getId()):('create'));
-    var winmain = extjsf.bind('winmain', domain);
+    var dk  = "${z:vid(v, 'add-good')}:"
+    if(record) dk = dk.replace('add-', 'create-')
 
-    var box     = ReTrade.desktop.calcWindowBox({
-      event: event, widthpt: 280, heightpt: 140, '+xpt': 30, '-ypt': 10
-    })
-
-    if(winmain)
-    {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
-      return;
-    }
-
-    var params = {
-      '${v.viewModeParam}': 'body',
-      '${rootView.extjsDomainParam}': domain,
-      disableSelSet: true
-    };
-
-    //~: has selection set enabled
-    if(sel) params['${v.entityParam}'] = sel.getId(); else params.create = true;
+    var ps = { disableSelSet: true }
+    if(!record) ps.create = true
 
     //~: add the folder selected
     var fld  = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
-      getSelectionModel().getSelection();
-    if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId');
+      getSelectionModel().getSelection()
+    if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
     if(fld && fld.length && (fld.charAt(0) != '$'))
-      params.goodsFolder = fld;
+      ps.goodsFolder = fld
 
-    //~: create the window bind
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
+    //~: open the window
+    var winmain; winmain = retrade_open_window({ url: '/goods/edit-good',
+      box: { event: e, widthpt: 320, heightpt: 240, '+xpt': 30, '-ypt': 10 },
+      domainKey: dk, params: ps, collapsible: true,
+      record: record && record.getId(),
 
-      xtype: 'window', title: 'Загрузка...', autoShow: true,
-      x: box.x, y: box.y, width: box.width, height: box.height,
-      layout: 'fit', collapsible: true,
-
-      loader: {
-        url: "${z:url('/go/retrade/goods/edit-good')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true, params: params
+      onclose: function()
+      {
+        if(!winmain.retradeEditDone) return
+        Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
       }
     })
-
-    var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}');
-    winmain.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked !== false);
-
-    //~: reload table on create-edit
-    winmain.on('close', function()
-    {
-      if(!winmain.retradeEditDone) return;
-
-      btn.retradeAddSelSetChecked = winmain.retradeAddSelSetChecked;
-      Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
-    })
-
-    //~: create & show the window component
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   }
 
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function(btn, event)
@@ -875,58 +863,29 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}', function(btn, e)
   {
-    var domain  = 'wnd:' + "${z:vid(v, 'add-goods-table')}";
-    var winmain = extjsf.bind('winmain', domain);
-
-    var box     = ReTrade.desktop.calcWindowBox({
-      event: event, widthpt: 380, heightpt: 220, '+xpt': 30, '-ypt': 10
-    })
-
-    if(winmain)
-    {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
-      return;
-    }
-
-    var params = {
-      '${v.viewModeParam}': 'body',
-      '${rootView.extjsDomainParam}': domain,
-      disableSelSet: true
-    };
+    var dk  = "${z:vid(v, 'add-goods-table')}:"
+    var ps  = { disableSelSet: true }
 
     //~: add the folder selected
     var fld  = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
-      getSelectionModel().getSelection();
-    if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId');
+      getSelectionModel().getSelection()
+    if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
     if(fld && fld.length && (fld.charAt(0) != '$'))
-      params.goodsFolder = fld;
+      ps.goodsFolder = fld
 
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
+    //~: open the window
+    var winmain; winmain = retrade_open_window({ url: '/goods/create-goods',
+      tempDomain: 'add-goods-table', collapsible: true, params: ps,
+      box: { event: e, widthpt: 480, heightpt: 240, '+xpt': -100, '-height': true },
 
-      xtype: 'window', title: 'Загрузка...', autoShow: true,
-      x: box.x, y: box.y, width: box.width, height: box.height,
-
-      loader: {
-        url: "${z:url('/go/retrade/goods/create-goods')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true, params: params
+      onclose: function()
+      {
+        if(!winmain.retradeEditDone) return
+        Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
       }
     })
-
-    //~: reload table on create-edit
-    winmain.on('close', function()
-    {
-      if(!winmain.retradeEditDone) return;
-
-      Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
-    })
-
-    //~: create the window
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
       //]]>
@@ -936,22 +895,29 @@
 
       </ui:fragment>
 
-        <x:component coid = "${z:vid(v, '_folder_goods_tb_fill_0')}">
-          <f:facet name = "extjs-props">
-            xtype: 'panel', flex: 1, frame: false, border: false,
-            bodyCls: 'retrade-toolbar-inline-panel'
-          </f:facet>
-        </x:component>
+      <x:component coid = "${z:vid(v, '_folder_goods_tb_fill_0')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', flex: 1, frame: false, border: false,
+          bodyCls: 'retrade-toolbar-inline-panel'
+        </f:facet>
+      </x:component>
 
 
-        <!-- [with sub-folders checkbox] -->
+      <!-- [with sub-folders checkbox] -->
+      <x:checkbox-field coid = "${z:vid(v, 'with-subfolders')}" value = "#{true}">
+        <f:facet name = "label-props">
+          labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 0), cls: 'retrade-info-title-label',
+          html: "&lt;span title = 'Включить товары подкаталогов выбранного каталога'&gt;Подкаталоги&lt;/span&gt;"
+        </f:facet>
+      </x:checkbox-field>
 
-        <x:checkbox-field coid = "${z:vid(v, 'with-subfolders')}" value = "#{true}">
-          <f:facet name = "label-props">
-            labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 0),
-            html: "&lt;span title = 'Включить товары подкаталогов выбранного каталога'&gt;Подкаталоги&lt;/span&gt;"
-          </f:facet>
-        </x:checkbox-field>
+
+      <x:component coid = "${z:vid(v, 'goods-filter')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', bodyCls: 'retrade-transparent-panel',
+          border: false, layout: {type: 'hbox', align: 'middle'},
+          hidden: #{canEditTree}
+        </f:facet>
 
 
         <!-- [filter goods field -->
@@ -960,12 +926,13 @@
           value = "#{v.model.searchNames}">
 
           <f:facet name = "extjs-props">
-            margin: extjsf.dpts(1, 0, 1, 4),
+            margin: extjsf.dpts(0, 0, 0, 4),
             width:  extjsf.ex(24)
           </f:facet>
 
           <f:facet name = "label-props">
-            text: 'поиск', margin: extjsf.pts(1, 0, 1, 8)
+            text: 'поиск', margin: extjsf.pts(0, 0, 0, 8),
+            cls: 'retrade-info-title-label'
           </f:facet>
         </x:text-field>
 
@@ -976,8 +943,8 @@
            <f:facet name = "extjs-props">
 
              xtype: 'button', enableToggle: true,
-             width: 30, componentCls: 'retrade-icon-24',
-             margin: extjsf.dpts(1, 0, 1, 6),
+             width: 32, componentCls: 'retrade-icon-24',
+             margin: extjsf.dpts(0, 0, 0, 6),
              iconCls: 'retrade-selset-button-icon',
              tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
 
@@ -1039,6 +1006,7 @@
 
         <!-- filter goods field] -->
 
+      </x:component>
       </x:toolbar>
 
       <!-- goods panel toolbar] -->
@@ -1053,7 +1021,8 @@
           preventHeader: true, pager: true,
           sortableColumns: true, border: false,
           columns: ZeT.defined('#{goodsColumnModel}'),
-          selModel: #{goodsColumnSelModel}
+          selModel: #{goodsColumnSelModel},
+          cls: 'ux-grid-smaller'
        </f:facet>
       </x:data-grid>
 
