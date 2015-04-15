@@ -57,6 +57,10 @@ public class LoginFilter extends FilterBase
 		//!: clear the session (just for safe)
 		SecPoint.getInstance().setSecSession(null);
 
+		//~: disable caching
+		task.getResponse().addHeader("Cache-Control", "no-cache, max-age=0");
+		task.getResponse().addHeader("Expires", "0");
+
 		//?: {user has session}
 		if(task.getRequest().getSession(false) != null)
 			//?: {session had not expired} proceed the request
