@@ -4,7 +4,7 @@
  =  Apache Tomcat Server Web Aplication Context    =
  +================================================-->
 
-<Context>
+<Context sessionCookiePathUsesTrailingSlash = 'false'>
 
   <Loader className = 'org.apache.tomee.catalina.ProvisioningWebappLoader'
     loaderClass = 'org.springframework.instrument.classloading.tomcat.TomeeInstrumentableClassLoader'
