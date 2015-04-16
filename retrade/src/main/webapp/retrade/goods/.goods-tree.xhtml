@@ -157,7 +157,10 @@
     var store = extjsf.component("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
 
     //~: create tree store
-    var tree  = Ext.create('Ext.data.TreeStore', { storeId: "${z:vid(v, 'goodsTreeStore')}" });
+    var tree  = Ext.create('Ext.data.TreeStore', {
+      storeId: "${z:vid(v, 'goodsTreeStore')}",
+      data: [], proxy: {type: 'memory'}
+    })
 
     //~: delete store on domain delete
     extjsf.onDomainDelete('${rootView.extjsDomain}', function()

@@ -6,6 +6,11 @@
 
 
 /**
+ * Default timeout to 30 minutes.
+ */
+Ext.Ajax.setTimeout(1000 * 60 * 30)
+
+/**
  * Make window shadow to be on all the sides.
  */
 Ext.window.Window.override({ shadow: 'frame' })
