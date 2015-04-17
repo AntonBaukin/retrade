@@ -719,7 +719,7 @@ var ZeT = window.ZeT = window.ZeT || {
 
 	iso              : function(o)
 	{
-		return (typeof o === 'object')
+		return (o !== null) && (typeof o === 'object')
 	},
 
 	isb              : function(b)
@@ -934,15 +934,50 @@ var ZeT = window.ZeT = window.ZeT || {
 
 // +----: Debug Logging: ----------------------------------------+
 
-	log              : function (/* strings */)
+	log              : function (/* objects */)
 	{
-		var msg = ZeTS.cat.apply(ZeTS, arguments)
-		if(ZeTS.ises(msg)) return this
+		var j = 0, a = ZeT.a(arguments)
+		function pack(i)
+		{
+			if(j + 1 >= i) return i
 
-		if(!ZeT._console) ZeT._console = console && ZeT.isf(console.log)
-		if( ZeT._console) console.log(msg)
+			for(var x = '', k = j;(k < i);k++)
+				if(!ZeT.isu(a[k]) && (a[k] !== null))
+					x += a[k]
 
+			a[j] = x; a.splice(j + 1, i - j - 1)
+			return j
+		}
+
+		for(var i = 0;(i < a.length);i++)
+			if(ZeT.isxlog(a[i]))
+			{
+				i = pack(i)
+				j = i + 1
+			}
+
+		pack(a.length)
+
+		var empty = true;
+		for(j = 0;(j < a.length);j++)
+			if(ZeT.iso(a[j]) || !ZeTS.ises(a[j]))
+				{ empty = false; break }
+
+		if(!empty) console.log.apply(console, a)
 		return this
+	},
+
+	isxlog           : function(o)
+	{
+		if(!o) return false
+
+		//?: {is plain object}
+		if(typeof o === 'object') return true
+
+		//?: {is an element}
+		if(o.nodeType === 1) return true
+
+		return false
 	},
 
 

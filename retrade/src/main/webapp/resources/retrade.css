@@ -7,21 +7,20 @@
 
 /* html items */
 
+html, body
+{
+  overflow: hidden;
+}
+
 *:focus /* prevent field focus highlights */
 {
   outline: 0;
-}
-
-::-ms-clear, ::-ms-reveal /* remove IE field actions */
-{
-  display: none;
 }
 
 .unselectable-text
 {
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -40,7 +39,7 @@ span.retrade-inline-link
 }
 
 
-/* panels */
+/* Panels */
 
 .retrade-toolbar-panel, .retrade-toolbar-inline-panel
 {
@@ -57,21 +56,9 @@ span.retrade-inline-link
   background-color: transparent;
 }
 
-.retrade-back-panel, .retrade-desktop-panel-center .retrade-desktop-panel-content
+.retrade-back-panel
 {
   background-color: #e0e0e0;
-}
-
-.retrade-desktop-panel-left, .retrade-desktop-panel-right,
-  .retrade-desktop-panel-left .retrade-desktop-panel-content,
-  .retrade-desktop-panel-right .retrade-desktop-panel-content
-{
-  background-color: #f2f5f6;
-}
-
-.retrade-desktop-panel-topbar
-{
-  background-color: transparent;
 }
 
 .retrade-form-panel
@@ -105,6 +92,26 @@ span.retrade-inline-link
 table.extjsf-html-content > tbody > tr > td
 {
   vertical-align: middle; align-content: center;
+}
+
+
+/* Desktop Panels */
+
+.retrade-desktop-panel-center .retrade-desktop-panel-content
+{
+  background-color: #e0e0e0;
+}
+
+.retrade-desktop-panel-left, .retrade-desktop-panel-right,
+  .retrade-desktop-panel-left .retrade-desktop-panel-content,
+  .retrade-desktop-panel-right .retrade-desktop-panel-content
+{
+  background-color: #f2f5f6;
+}
+
+.retrade-desktop-panel-topbar
+{
+  background-color: transparent;
 }
 
 
