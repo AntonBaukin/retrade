@@ -252,13 +252,13 @@ public abstract class SeShWebClientBase
 		return String.format(
 		  "http://localhost%s%s/%s",
 
-		  //port
+		  //-> port
 		  ("80".equals(port))?(""):(":" + port),
 
-		  //context path
+		  //-> context path
 		  RequestPoint.context().getContextPath(),
 
-		  //path to the shunt servlet
+		  //-> path to the shunt servlet
 		  servlet
 		);
 	}

@@ -1,5 +1,10 @@
 package com.tverts.shunts.protocol;
 
+/* com.tverts: support */
+
+import com.tverts.support.SU;
+
+
 /**
  * An exception that had occurred while running
  * the shunt protocol.
@@ -18,9 +23,9 @@ public class   SeShProtocolError
 	public SeShProtocolError()
 	{}
 
-	public SeShProtocolError(String message)
+	public SeShProtocolError(String... message)
 	{
-		super(message);
+		super(SU.cats(message));
 	}
 
 	public SeShProtocolError(Throwable cause)
@@ -28,8 +33,8 @@ public class   SeShProtocolError
 		super(cause);
 	}
 
-	public SeShProtocolError(String message, Throwable cause)
+	public SeShProtocolError(Throwable cause, Object... message)
 	{
-		super(message, cause);
+		super(SU.sYs(SU.cats(message)), cause);
 	}
 }

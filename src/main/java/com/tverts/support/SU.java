@@ -153,6 +153,11 @@ public class SU
 		return (s != null)?(s):("");
 	}
 
+	public static String   sYs(String s)
+	{
+		return (s == null)?(null):sXe(s)?(null):(s);
+	}
+
 	@SuppressWarnings("unchecked")
 	public static int      sXl(Object... objs)
 	{

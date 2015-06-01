@@ -1,32 +1,19 @@
 package com.tverts.shunts.protocol;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-/* Servlet api */
+/* Servlet */
 
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static javax.servlet.http.HttpServletResponse.SC_SERVICE_UNAVAILABLE;
-
-/* Apache HTTP Component (client) */
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpMessage;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-
-import static org.apache.http.params.CoreConnectionPNames.*;
-import static org.apache.http.params.CoreProtocolPNames.*;
 
 /* com.tverts: shunts protocol */
 
@@ -39,6 +26,11 @@ import com.tverts.shunts.protocol.SeShProtocolBase.SeShSystemFailure;
 import com.tverts.support.streams.Base64Decoder;
 import com.tverts.support.streams.Base64Encoder;
 
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+import com.tverts.support.streams.BytesStream;
+
 
 /**
  * Implements HTTP conversation with this server.
@@ -48,7 +40,6 @@ import com.tverts.support.streams.Base64Encoder;
  * Apache HTTP Commons component library.
  * It supports the conversation using cookies.
  *
- * TODO eliminate Apache HTTP from Self-Shunts!
  *
  * @author anton.baukin@gmail.com
  */
@@ -60,31 +51,39 @@ public class   SeShWebClientCommons
 	protected SeShResponse  sendRequest(String port, SeShRequest request)
 	  throws SeShProtocolError, InterruptedException
 	{
-		if(port    == null) throw new IllegalArgumentException();
-		if(request == null) throw new IllegalArgumentException();
+		EX.assertn(port);
+		EX.assertn(request);
 
 		//0: set request URL
-		String   url  = createURL(port);
-		if(url == null) throw new IllegalStateException();
+		String url = EX.asserts(createURL(port));
 
-		//1: create POST request
-		HttpPost req = new HttpPost(url);
-		setRequestHeaders(req);
-
-		try
+		//1: create the connection
+		HttpURLConnection connection; try
 		{
-			req.setEntity(createRequestBody(request));
+			//~: open the connection
+			connection = (HttpURLConnection) (new URL(url).openConnection());
+
+			//~: set the headers
+			setRequestHeaders(connection);
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
-			throw new SeShProtocolError(
-			  "Error occured during teh encoding Self Shunt Request " +
-			  "into the body of the POST HTTP request!", e);
+			throw new SeShProtocolError(e, "Error occured during creation of ",
+			  "HTTP connection to the local Self-Shunt servlet!");
 		}
 
-		//2: send the HTTP request
-		HttpResponse res;
+		//2: encode the request
+		byte[] payload; try
+		{
+			payload = createRequestBody(request);
+		}
+		catch(Throwable e)
+		{
+			throw new SeShProtocolError(e, "Error occured during ",
+			  "the writing and encoding of Self-Shunt Request!");
+		}
 
+		//3: send the request
 		try
 		{
 			res = getClient().execute(req);
@@ -133,39 +132,62 @@ public class   SeShWebClientCommons
 
 	/* protected: request and response processing */
 
-	protected HttpEntity    createRequestBody(SeShRequest request)
+	protected void          setRequestHeaders(HttpURLConnection c)
 	  throws Exception
 	{
-		//create encoding streams
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(512);
-		ObjectOutputStream    oos = new ObjectOutputStream(
-		  new Base64Encoder(bos, 4));
+		c.setRequestMethod("POST");
+		c.setDoOutput(true);
+		c.setUseCaches(false);
 
-		//!: write the object
-		oos.writeObject(request);
-		oos.close();
+		//~: connection timeout
+		if(getConnTimeout() > 0)
+			c.setConnectTimeout((int) getConnTimeout());
 
-		//~: create the entity
-		ByteArrayEntity       res =
-		  new ByteArrayEntity(bos.toByteArray());
+		//~: socket timeout
+		if(getSoTimeout() > 0)
+			c.setReadTimeout((int) getSoTimeout());
 
-		res.setContentType("application/octet-stream");
-		return res;
-	}
-
-	protected void          setRequestHeaders(HttpMessage msg)
-	{
 		//Content-Type
-		msg.addHeader(
-		  "Content-Type",
-		  "application/octet-stream"
-		);
+		c.setRequestProperty("Content-Type", "application/octet-stream");
 
 		//Content-Transfer-Encoding
-		msg.addHeader(
-		  "Content-Transfer-Encoding",
-		  "base64"
-		);
+		c.setRequestProperty("Content-Transfer-Encoding", "base64");
+	}
+
+	protected byte[]        createRequestBody(SeShRequest request)
+	  throws Exception
+	{
+		//~: create encoding streams
+		BytesStream        bos = new BytesStream().setNotCloseNext(true);
+		ObjectOutputStream oos = new ObjectOutputStream(new Base64Encoder(bos));
+
+		//!: write the object
+		try
+		{
+			oos.writeObject(request);
+			oos.close();
+
+			return bos.bytes();
+		}
+		finally
+		{
+			bos.closeAlways();
+		}
+	}
+
+	protected void          sendRequestPayload(HttpURLConnection c, byte[] p)
+	  throws Exception
+	{
+		//~: Content-Length
+		c.setRequestProperty("Content-Length", Integer.toString(p.length));
+
+		//~: write the request body
+		try(OutputStream o = c.getOutputStream())
+		{
+			o.write(p);
+			o.flush();
+			o.close();
+		}
 	}
 
 	protected SeShResponse  readResponse(HttpResponse res)
