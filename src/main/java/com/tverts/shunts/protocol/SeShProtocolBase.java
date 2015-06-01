@@ -43,7 +43,15 @@ public abstract class SeShProtocolBase
 	 */
 	public static class SeShConnectionFailed
 	       extends      SeShProtocolError
-	{}
+	{
+		public SeShConnectionFailed()
+		{}
+
+		public SeShConnectionFailed(Throwable cause)
+		{
+			super(cause);
+		}
+	}
 
 
 	/**
@@ -53,16 +61,14 @@ public abstract class SeShProtocolBase
 	public static class SeShServletFailure
 	       extends      SeShProtocolError
 	{
-		/* public: constructors */
-
-		public SeShServletFailure(String message)
+		public SeShServletFailure(Object... msg)
 		{
-			super(message);
+			super(msg);
 		}
 
-		public SeShServletFailure(String message, Throwable cause)
+		public SeShServletFailure(Throwable cause, Object... msg)
 		{
-			super(message, cause);
+			super(cause, msg);
 		}
 	}
 
@@ -205,7 +211,7 @@ public abstract class SeShProtocolBase
 	protected List<SelfShuntUnitReport>
 	                          createUnitReports()
 	{
-		return new ArrayList<SelfShuntUnitReport>(8);
+		return new ArrayList<>(8);
 	}
 
 

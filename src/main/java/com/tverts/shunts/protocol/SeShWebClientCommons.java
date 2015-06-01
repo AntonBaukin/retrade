@@ -2,7 +2,6 @@ package com.tverts.shunts.protocol;
 
 /* Java */
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,14 +20,13 @@ import com.tverts.shunts.protocol.SeShProtocolBase.SeShConnectionFailed;
 import com.tverts.shunts.protocol.SeShProtocolBase.SeShServletFailure;
 import com.tverts.shunts.protocol.SeShProtocolBase.SeShSystemFailure;
 
-/* com.tverts: support streams */
-
-import com.tverts.support.streams.Base64Decoder;
-import com.tverts.support.streams.Base64Encoder;
-
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
+import com.tverts.support.SU;
+import com.tverts.support.streams.Base64Decoder;
+import com.tverts.support.streams.Base64Encoder;
 import com.tverts.support.streams.BytesStream;
 
 
@@ -57,22 +55,7 @@ public class   SeShWebClientCommons
 		//0: set request URL
 		String url = EX.asserts(createURL(port));
 
-		//1: create the connection
-		HttpURLConnection connection; try
-		{
-			//~: open the connection
-			connection = (HttpURLConnection) (new URL(url).openConnection());
-
-			//~: set the headers
-			setRequestHeaders(connection);
-		}
-		catch(Throwable e)
-		{
-			throw new SeShProtocolError(e, "Error occured during creation of ",
-			  "HTTP connection to the local Self-Shunt servlet!");
-		}
-
-		//2: encode the request
+		//1: encode the request
 		byte[] payload; try
 		{
 			payload = createRequestBody(request);
@@ -83,50 +66,91 @@ public class   SeShWebClientCommons
 			  "the writing and encoding of Self-Shunt Request!");
 		}
 
-		//3: send the request
+		//2: create the connection
+		HttpURLConnection connection = null;
+		InputStream       input      = null;
 		try
 		{
-			res = getClient().execute(req);
+			try
+			{
+				//~: open the connection
+				connection = (HttpURLConnection)(new URL(url).openConnection());
+
+				//~: set the headers
+				setRequestHeaders(connection);
+			}
+			catch(Throwable e)
+			{
+				throw new SeShProtocolError(e, "Error occured during creation of ",
+				  "HTTP connection to the local Self-Shunt servlet!");
+			}
+
+			//3: send the request
+			try
+			{
+				sendRequestPayload(connection, payload);
+			}
+			catch(java.net.ConnectException e)
+			{
+				throw new SeShConnectionFailed(e);
+			}
+			catch(Throwable e)
+			{
+				throw new SeShServletFailure(e, "Error occured during ",
+				  "executing the Self-Shunt Request!");
+			}
+
+			if(breaked) throw new InterruptedException();
+
+			//4: handle the response status
+			try
+			{
+				input = handleResponseStatus(connection);
+			}
+			catch(Throwable e)
+			{
+				throw new SeShServletFailure(e, "Error occured during ",
+				  "receiving the Self-Shunt Response!");
+			}
+
+			//5: decode shunt response
+			SeShResponse result; try
+			{
+				result = readResponse(connection, input);
+			}
+			catch(SeShProtocolError e)
+			{
+				throw e;
+			}
+			catch(Exception e)
+			{
+				throw new SeShProtocolError(e, "Error occured during reading ",
+				  "the Self Shunt Response instance from the HTTP stream!");
+			}
+
+			//5: {the response contains system error} throw it
+			if(result.getSystemError() != null)
+				throw new SeShSystemFailure(result);
+
+			return result;
 		}
-		catch(java.net.ConnectException e)
+		finally
 		{
-			throw new SeShConnectionFailed();
+			try
+			{
+				if(input != null) try
+				{
+					input.close();
+				}
+				catch(Throwable e)
+				{}
+			}
+			finally
+			{
+				if(connection != null)
+					connection.disconnect();
+			}
 		}
-		catch(Exception e)
-		{
-			throw new SeShServletFailure(String.format(
-			  "Error occured when send POST HTTP request to the" +
-			  "server by the URL: '%s'!", url), e);
-		}
-
-		if(breaked) throw new InterruptedException();
-
-		//3: handle the response status
-		handleResponseStatus(res);
-
-		SeShResponse result;
-
-		//4: decode shunt response
-		try
-		{
-			result = readResponse(res);
-		}
-		catch(SeShProtocolError e)
-		{
-			throw e;
-		}
-		catch(Exception e)
-		{
-			throw new SeShProtocolError(
-			  "Error occured during the reading Self Shunt " +
-			  "Response instance from the HTTP stream!", e);
-		}
-
-		//5: {the response contains system error} throw it
-		if(result.getSystemError() != null)
-			throw new SeShSystemFailure(result);
-
-		return result;
 	}
 
 
@@ -190,204 +214,130 @@ public class   SeShWebClientCommons
 		}
 	}
 
-	protected SeShResponse  readResponse(HttpResponse res)
+	protected InputStream   handleResponseStatus(HttpURLConnection c)
+	  throws Exception
+	{
+		//~: get the response stream
+		InputStream input = c.getInputStream();
+
+		//?: {got good status}
+		if(c.getResponseCode() == SC_OK)
+			return input;
+
+		//?: {service is temporary unavailable}
+		if(c.getResponseCode() == SC_SERVICE_UNAVAILABLE)
+			throw new SeShConnectionFailed();
+
+		//!: raise servlet failure
+		throw new SeShServletFailure(
+		  "Self Shunt response has bad HTTP status code: [",
+		  c.getResponseCode(), "], status text: \n",
+		  c.getResponseMessage());
+	}
+
+	protected SeShResponse  readResponse(HttpURLConnection c, InputStream s)
 	  throws Exception
 	{
 		//~: check Content-Type header
-		checkResponseContentType(res);
+		checkResponseContentType(c);
 
 		//~: check Content-Transfer-Encoding header
-		checkResponseEncoding(res);
+		checkResponseEncoding(c);
 
-		//~: open the content stream
-		InputStream       ins = openContentStream(res);
-		ObjectInputStream ois;
-		Exception         err = null;
-		Object            obj = null;
-
-		//~read the response object
-		try
+		//~: read the response object
+		Object o; try
 		{
-			ois = new ObjectInputStream(ins);
-			obj = ois.readObject();
-			ins = ois; //<-- prepare for close
+			//~: open the content stream
+			s = openContentStream(c, s);
+
+			//~: and read the object
+			o = new ObjectInputStream(s).readObject();
 		}
 		catch(Exception e)
 		{
-			err = e;
+			throw new SeShServletFailure(e,
+			  "Error occured while reading SeShResponse from the stream!");
 		}
-		finally
-		{
-			try
-			{
-				ins.close();
-			}
-			catch(Exception e)
-			{
-				if(err == null) err = e;
-			}
-		}
-
-		//?: {has stream error}
-		if(err != null) throw new SeShServletFailure(
-		  "Error occured while reading SeShResponse from the stream!", err);
 
 		//?: {the result object is undefined}
-		if(obj == null) throw new SeShServletFailure(
-		  "SeShResponse is not defined!");
+		if(o == null)
+			throw new SeShServletFailure("SeShResponse is not defined!");
 
 		//?: {wrong object type}
-		if(!(obj instanceof SeShResponse)) throw new SeShServletFailure(
-		  "Self Shunt HTTP response instance has wrong Java class type!");
+		if(!(o instanceof SeShResponse)) throw new SeShServletFailure(
+		  "Self Shunt HTTP response instance has wrong Java class type: ",
+		  LU.cls(o), "]!");
 
-		return (SeShResponse)obj;
+		return (SeShResponse)o;
 	}
 
-	protected InputStream   openContentStream(HttpResponse res)
+	protected InputStream   openContentStream(HttpURLConnection c, InputStream s)
 	  throws Exception
 	{
-		InputStream ins;
+		String enc = getTransferEncoding(c);
 
-		//~: open the response' entity' content
-		try
-		{
-			ins = res.getEntity().getContent();
-			if(ins == null) throw new NullPointerException();
-		}
-		catch(Exception e)
-		{
-			throw new SeShServletFailure(
-			  "Can't read the content data from the HTTP response!", e);
-		}
+		//?: {has Base64 transfer encoding}
+		if("base64".equals(enc))
+			return new Base64Decoder(s);
 
-		//?: {has Base64 transfer encoding} wrap with the decoder
-		if("base64".equals(getTransferEncoding(res)))
-			ins = new Base64Decoder(ins);
-
-		return ins;
+		return s;
 	}
 
-	protected void          checkResponseContentType(HttpResponse res)
+	protected void          checkResponseContentType(HttpURLConnection c)
 	  throws Exception
 	{
-		String ct = getContentType(res);
+		String ct = getContentType(c);
 
 		//?: {content type is not defined}
 		if(ct == null) throw new SeShServletFailure(
 		  "Self Shunt HTTP response has no Content-Type provided!");
 
 		//?: {wrong content type}
-		if(!"application/octet-stream".equals(ct)) throw new SeShServletFailure(
-		  "Self Shunt HTTP response has the Content-Type with " +
-		  "not supported value!");
+		if(!"application/octet-stream".equals(ct))
+			throw new SeShServletFailure("Self Shunt HTTP response has not ",
+			  "supported  Content-Type: [", ct, "]!");
 	}
 
 	/**
 	 * Finds the 'Content-Type' from the request given.
 	 * The result is turned to lower case.
 	 */
-	protected String        getContentType(HttpMessage msg)
+	protected String        getContentType(HttpURLConnection c)
 	{
-		Header hdr = msg.getFirstHeader(
-		  "Content-Type");
-		if(hdr == null) return null;
+		String ct = SU.s2s(c.getHeaderField("Content-Type"));
 
-		String val = hdr.getValue();
-		if(val != null) val = val.toLowerCase();
+		if(ct != null)
+		{
+			int i = ct.indexOf(';');
+			if(i != -1) ct = SU.s2s(ct.substring(0, i));
+		}
 
-		int    ich = (val == null)?(-1):(val.indexOf(';'));
-		return (ich != -1)?(val.substring(0, ich)):(val);
+		return (ct == null)?(null):(ct.toLowerCase());
 	}
 
-	protected void          checkResponseEncoding(HttpResponse res)
+	protected void          checkResponseEncoding(HttpURLConnection c)
 	  throws Exception
 	{
-		String te = getTransferEncoding(res);
+		String te = getTransferEncoding(c);
 
 		//?: {has Base64 encoding}
 		if("base64".equals(te))
 			return;
 
 		//?: {has unknown transfer encoding}
-		if(te != null) throw new SeShServletFailure(String.format(
-		  "Self Shunt HTTP response has the Content-Transfer-Encoding " +
-		  "header with unsupported value: '%s'", te));
+		if(te != null) throw new SeShServletFailure(
+		  "Self Shunt HTTP response has the Content-Transfer-Encoding ",
+		  "header with unsupported value: [", te, "]!");
 	}
 
 	/**
 	 * Finds the 'Content-Transfer-Encoding'
-	 * from the request given.
-	 *
-	 * The result is turned to lower case.
+	 * from the request given. The result is
+	 * turned to lower case.
 	 */
-	protected String        getTransferEncoding(HttpMessage msg)
+	protected String        getTransferEncoding(HttpURLConnection c)
 	{
-		Header hdr = msg.getFirstHeader(
-		  "Content-Transfer-Encoding");
-		if(hdr == null) return null;
-
-		String val = hdr.getValue();
-		return (val == null)?(null):(val.toLowerCase());
+		String enc = SU.s2s(c.getHeaderField("Content-Transfer-Encoding"));
+		return (enc == null)?(null):(enc.toLowerCase());
 	}
-
-	protected void          handleResponseStatus(HttpResponse res)
-	  throws SeShProtocolError
-	{
-		//?: {got good status}
-		if(res.getStatusLine().getStatusCode() == SC_OK)
-			return;
-
-		//?: {service is temporary unavailable}
-		if(res.getStatusLine().getStatusCode() == SC_SERVICE_UNAVAILABLE)
-			throw new SeShConnectionFailed();
-
-		//!: raise servlet failure
-		throw new SeShServletFailure(String.format(
-		  "Self Shunt response has bad HTTP status code %d, status text: \n%s",
-
-		  res.getStatusLine().getStatusCode(),
-		  res.getStatusLine().getReasonPhrase()));
-	}
-
-
-	/* protected: HttpClient creation */
-
-	protected HttpClient    getClient()
-	{
-		return (client != null)?(client)
-		  :(client = createClient());
-	}
-
-	protected HttpClient    createClient()
-	{
-		return new DefaultHttpClient(buildClientParams());
-	}
-
-	protected HttpParams    buildClientParams()
-	{
-		HttpParams p = new BasicHttpParams();
-
-		//headers encoding
-		p.setParameter(
-		  HTTP_ELEMENT_CHARSET,       "UTF-8");
-
-		//content encoding
-		p.setParameter(
-		  HTTP_CONTENT_CHARSET,       "UTF-8");
-
-		//TCP SO_TIMEOUT
-		p.setIntParameter(
-		  SO_TIMEOUT,                 getSoTimeout());
-
-		//connection timeout
-		p.setIntParameter(
-		  CONNECTION_TIMEOUT,         getConnTimeout());
-
-		return p;
-	}
-
-
-	/* private: HTTP client */
-
-	private HttpClient client;
 }

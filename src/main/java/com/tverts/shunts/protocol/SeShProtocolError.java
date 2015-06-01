@@ -23,7 +23,7 @@ public class   SeShProtocolError
 	public SeShProtocolError()
 	{}
 
-	public SeShProtocolError(String... message)
+	public SeShProtocolError(Object... message)
 	{
 		super(SU.cats(message));
 	}
