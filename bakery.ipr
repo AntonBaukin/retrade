@@ -439,6 +439,9 @@
   <component name="IvyProjectSettings">
     <dependencies />
   </component>
+  <component name="JavaScriptLibraryMappings">
+    <file url="PROJECT" libraries="{Node.js}" />
+  </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="-Xlint:unchecked" />
     <option name="MAXIMUM_HEAP_SIZE" value="192" />
@@ -709,6 +712,13 @@
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Anton" />
+    <dictionary name="abaukin">
+      <words>
+        <w>logins</w>
+        <w>messager</w>
+        <w>servicer</w>
+      </words>
+    </dictionary>
     <dictionary name="anton">
       <words>
         <w>aggr</w>
@@ -745,13 +755,6 @@
         <w>webapp</w>
         <w>whitespaces</w>
         <w>zetobj</w>
-      </words>
-    </dictionary>
-    <dictionary name="abaukin">
-      <words>
-        <w>logins</w>
-        <w>messager</w>
-        <w>servicer</w>
       </words>
     </dictionary>
   </component>
