@@ -174,8 +174,8 @@ public class   SeShWebClientCommons
 		//Content-Type
 		c.setRequestProperty("Content-Type", "application/octet-stream");
 
-		//Content-Transfer-Encoding
-		c.setRequestProperty("Content-Transfer-Encoding", "base64");
+		//Content-Encoding
+		c.setRequestProperty("Content-Encoding", "base64");
 	}
 
 	protected byte[]        createRequestBody(SeShRequest request)
@@ -241,7 +241,7 @@ public class   SeShWebClientCommons
 		//~: check Content-Type header
 		checkResponseContentType(c);
 
-		//~: check Content-Transfer-Encoding header
+		//~: check Content-Encoding header
 		checkResponseEncoding(c);
 
 		//~: read the response object
@@ -326,18 +326,18 @@ public class   SeShWebClientCommons
 
 		//?: {has unknown transfer encoding}
 		if(te != null) throw new SeShServletFailure(
-		  "Self Shunt HTTP response has the Content-Transfer-Encoding ",
+		  "Self Shunt HTTP response has the Content-Encoding ",
 		  "header with unsupported value: [", te, "]!");
 	}
 
 	/**
-	 * Finds the 'Content-Transfer-Encoding'
+	 * Finds the 'Content-Encoding'
 	 * from the request given. The result is
 	 * turned to lower case.
 	 */
 	protected String        getTransferEncoding(HttpURLConnection c)
 	{
-		String enc = SU.s2s(c.getHeaderField("Content-Transfer-Encoding"));
+		String enc = SU.s2s(c.getHeaderField("Content-Encoding"));
 		return (enc == null)?(null):(enc.toLowerCase());
 	}
 }

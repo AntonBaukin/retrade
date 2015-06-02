@@ -1,6 +1,6 @@
 package com.tverts.shunts.protocol;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -21,8 +21,9 @@ import com.tverts.shunts.service.SelfShuntService;
 
 /* tverts.com: support (utils, streams) */
 
-import static com.tverts.support.SU.s2s;
-
+import com.tverts.support.EX;
+import com.tverts.support.LU;
+import com.tverts.support.SU;
 import com.tverts.support.streams.Base64Decoder;
 import com.tverts.support.streams.Base64Encoder;
 
@@ -88,10 +89,7 @@ public class   SelfShuntFilter
 
 	public void setService(SelfShuntService service)
 	{
-		if(service == null)
-			throw new IllegalArgumentException();
-
-		this.service = service;
+		this.service = EX.assertn(service);
 	}
 
 	/**
@@ -116,8 +114,7 @@ public class   SelfShuntFilter
 
 	public void   setShuntServlet(String shuntServlet)
 	{
-		if((shuntServlet = s2s(shuntServlet)) == null)
-			throw new IllegalArgumentException();
+		EX.asserts(shuntServlet);
 
 		if(!shuntServlet.startsWith("/"))
 			shuntServlet = "/" + shuntServlet;
@@ -209,20 +206,20 @@ public class   SelfShuntFilter
 	 */
 	protected String  getContentType(FilterTask task)
 	{
-		String res = s2s(task.getRequest().getContentType());
+		String res = SU.s2s(task.getRequest().getContentType());
 		return (res == null)?(null):(res.toLowerCase());
 	}
 
 	/**
-	 * Finds the 'Content-Transfer-Encoding'
+	 * Finds the 'Content-Encoding'
 	 * from the request given.
 	 *
 	 * The result is turned to lower case.
 	 */
 	protected String  getTransferEncoding(FilterTask task)
 	{
-		String res = s2s(task.getRequest().getHeader(
-		  "Content-Transfer-Encoding"));
+		String res = SU.s2s(task.getRequest().
+		  getHeader("Content-Encoding"));
 		return (res == null)?(null):(res.toLowerCase());
 	}
 
@@ -236,42 +233,28 @@ public class   SelfShuntFilter
 	protected SeShRequest readRequest(FilterTask task)
 	  throws Exception
 	{
-		String            ten = getTransferEncoding(task);
-
 		//?: {unsupported transfer encoding}
+		String ten = getTransferEncoding(task);
 		if((ten != null) && !ten.equals("base64"))
-			throw new IllegalArgumentException(String.format(
-			  "Self Shunt Servlet got the request with " +
-			  "Content-Transfer-Encoding header having " +
-			  "unsupported value: '%s'", ten));
-
-		InputStream       ins = task.getRequest().getInputStream();
+			throw EX.arg("Self Shunt Servlet got the request with Content-",
+			  "Transfer-Encoding header having unsupported value: [", ten, "]!");
 
 		//?: {has BASE64 encoding} unwrap it
+		InputStream ins = task.getRequest().getInputStream();
 		if(ten != null)
 			ins = new Base64Decoder(ins);
 
-		ObjectInputStream ois = new ObjectInputStream(ins);
-		Object            res;
-
 		//!: read the object
-		try
+		Object res;
+		try(ObjectInputStream ois = new ObjectInputStream(ins))
 		{
 			res = ois.readObject();
-		}
-		finally
-		{
-			ois.close();
 		}
 
 		//?: {the object is not of a request class}
 		if(!(res instanceof SeShRequest))
-			throw new IllegalStateException(String.format(
-			  "Self Shunt Servlet got the request object of the class '%s' " +
-			  "that is not a Self Shunt Request class",
-
-			  (res == null)?("null"):(res.getClass().getName())
-			));
+			throw EX.state("Self Shunt Servlet got the request object of the class [",
+			  LU.cls(res), "] that is not a Self Shunt Request class!");
 
 		return (SeShRequest)res;
 	}
@@ -282,7 +265,7 @@ public class   SelfShuntFilter
 	 * that is set when the request came with this
 	 * transfer encoding header.
 	 */
-	protected void        writeResponse(FilterTask task,SeShResponse response)
+	protected void        writeResponse(FilterTask task, SeShResponse response)
 	  throws Exception
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
@@ -313,8 +296,8 @@ public class   SelfShuntFilter
 
 		//?: {has BASE64 encoding in the request}
 		if("base64".equals(getTransferEncoding(task)))
-			task.getResponse().addHeader(
-			  "Content-Transfer-Encoding", "base64");
+			task.getResponse().setHeader(
+			  "Content-Encoding", "base64");
 	}
 
 
