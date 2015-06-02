@@ -1,8 +1,9 @@
 package com.tverts.support.logs;
 
-/* Apache Log4J library */
+/* Logging for Java */
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 
 /**
  * Loggers holder for Log4J loggers.
@@ -16,6 +17,6 @@ public class   LoggersHolderLog4j
 
 	protected Object obtainLogger(String dest)
 	{
-		return Logger.getLogger(dest);
+		return LogManager.getLogger(dest);
 	}
 }

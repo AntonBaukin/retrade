@@ -1,13 +1,13 @@
 package com.tverts.support.logs;
 
-/* standard Java classes */
+/* Java */
 
 import java.sql.SQLException;
 
-/* Apache Log4J library */
+/* Logging for Java */
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.Level;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * Logging strategy that invokes Log4J loggers.
@@ -70,7 +70,7 @@ public class   LogStrategyLog4J
 	{
 		protected boolean isLevel(Logger logger)
 		{
-			return logger.isEnabledFor(Level.WARN);
+			return logger.isWarnEnabled();
 		}
 
 		protected void    logMsg(Logger logger, CharSequence m)
