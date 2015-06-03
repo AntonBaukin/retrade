@@ -33,27 +33,6 @@
 
   <!-- Spring Context and Request Listeners -->
 
-  <context-param>
-    <description>
-      Location of Log4J config for Spring Log4J
-      initialization listener.
-    </description>
-
-    <param-name>log4jConfigLocation</param-name>
-    <param-value>/WEB-INF/log4j2.xml</param-value>
-  </context-param>
-  
-  <listener>
-    <description>
-      Spring Log4J configuration setup.
-    </description>
-
-    <display-name>Spring Log4J Configurator</display-name>
-    <listener-class>
-      org.springframework.web.util.Log4jConfigListener
-    </listener-class>
-   </listener>
-
   <listener>
     <description>
       Spring framework startup initialization.
