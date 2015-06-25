@@ -2491,10 +2491,10 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"            <div class='right' title='Предыдущие сообщения'>@RT</div>"+
 		"            <div class='numbers'>@NU"+
 		"              <table cellspacing='0' cellpadding='0' border='0'><tr>"+
-		"                <td class='N selected'><div title='Отображать все сообщения'>@FN</div></td>"+
-		"                <td class='G'><div title='Отображать сообщения об успехе'>@FG</div></td>"+
-		"                <td class='O'><div title='Отображать важные и срочные сообщения'>@FO</div></td>"+
-		"                <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>"+
+		"                <td class='N selected'><div title='Отображать все сообщения'><div>@FN</div></div></td>"+
+		"                <td class='G'><div title='Отображать сообщения об успехе'><div>@FG</div></div></td>"+
+		"                <td class='O'><div title='Отображать важные и срочные сообщения'><div>@FO</div></div></td>"+
+		"                <td class='R'><div title='Отображать срочные сообщения'><div>@FR</div></div></td>"+
 		"              </tr></table>"+
 		"            </div>"+
 		"            <div class='allitems' style='display:none'>@AL"+

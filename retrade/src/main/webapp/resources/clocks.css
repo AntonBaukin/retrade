@@ -342,7 +342,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 .retrade-eventsnum-menu-item.N .retrade-eventsnum-menu-data,
   .retrade-eventsnum-controls > div.allitems > div.gray,
   .retrade-eventsnum-menu-item-controls > div.N,
-  .retrade-eventsnum-controls > div.numbers td.N div,
+  .retrade-eventsnum-controls > div.numbers td.N > div,
   .retrade-boshadow-user-menu-main > table,
   .retrade-boshadow-N-main > table
 {
@@ -354,7 +354,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 
 .retrade-eventsnum-menu-item.G .retrade-eventsnum-menu-data,
   .retrade-eventsnum-menu-item-controls > div.G,
-  .retrade-eventsnum-controls > div.numbers td.G div,
+  .retrade-eventsnum-controls > div.numbers td.G > div,
   .retrade-boshadow-G-main > table
 {
   background: #aedd9b;
@@ -365,7 +365,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 
 .retrade-eventsnum-menu-item.O .retrade-eventsnum-menu-data,
   .retrade-eventsnum-menu-item-controls > div.O,
-  .retrade-eventsnum-controls > div.numbers td.O div,
+  .retrade-eventsnum-controls > div.numbers td.O > div,
   .retrade-boshadow-O-main > table
 {
   background: #ffd42b;
@@ -376,7 +376,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 
 .retrade-eventsnum-menu-item.R .retrade-eventsnum-menu-data,
   .retrade-eventsnum-menu-item-controls > div.R,
-  .retrade-eventsnum-controls > div.numbers td.R div,
+  .retrade-eventsnum-controls > div.numbers td.R > div,
   .retrade-boshadow-R-main > table
 {
   background: #ffdcd3;
@@ -580,10 +580,15 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 .retrade-eventsnum-controls > div.numbers td > div
 {
   margin: 0 2px; min-width: 2ex; height: 18px;
-  font-family: 'Tahoma', sans-serif;
-  font-size: 14px; text-align: center;
   border: 1px solid; border-radius: 3px;
   cursor: pointer;
+}
+
+.retrade-eventsnum-controls > div.numbers td > div > div
+{
+  position: relative; top: -1.4px;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 13px; text-align: center;
 }
 
 .retrade-eventsnum-controls > div.numbers td.selected > div
