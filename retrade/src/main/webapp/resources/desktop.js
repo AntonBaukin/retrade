@@ -2254,8 +2254,8 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		//~: select the filtering node
 		var self = this; ZeT.each(this.COLORS, function(c)
 		{
-			ZeTD.classes(self._tx().walk('F'+c, self.struct.node()).parentNode,
-			  (c == self.model.filter)?('+selected'):('-selected'))
+			var p = self._tx().walk('F'+c, self.struct.node()).parentNode.parentNode
+			ZeTD.classes(p, (c == self.model.filter)?('+selected'):('-selected'))
 		})
 
 		//~: disable previous-next buttons
