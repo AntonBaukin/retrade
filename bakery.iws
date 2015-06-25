@@ -7,10 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/desktop.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/desktop.xhtml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -22,7 +21,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CommittedChangesCache">
-    <option name="initialCount" value="64" />
+    <option name="initialCount" value="128" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -36,12 +35,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="clocks.css" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+      <file leaf-file-name="desktop.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7319749" vertical-offset="9563" max-vertical-offset="13813">
-              <caret line="590" column="15" selection-start-line="590" selection-start-column="15" selection-end-line="590" selection-end-column="15" />
-              <folding />
+            <state vertical-scroll-proportion="0.8704" vertical-offset="5287" max-vertical-offset="17183">
+              <caret line="797" column="27" selection-start-line="797" selection-start-column="27" selection-end-line="797" selection-end-column="27" />
+              <folding>
+                <element signature="e#10181#10228#0" expanded="true" />
+                <element signature="e#10278#10491#0" expanded="true" />
+                <element signature="e#10838#10908#0" expanded="true" />
+                <element signature="e#11015#11156#0" expanded="true" />
+                <element signature="e#11283#11432#0" expanded="true" />
+                <element signature="e#11582#11727#0" expanded="true" />
+                <element signature="e#15691#16732#0" expanded="true" />
+                <element signature="e#16775#17555#0" expanded="true" />
+                <element signature="e#19187#19213#0" expanded="true" />
+                <element signature="e#19256#19337#0" expanded="true" />
+                <element signature="e#19383#19740#0" expanded="true" />
+                <element signature="e#19787#20231#0" expanded="true" />
+                <element signature="e#20270#20362#0" expanded="true" />
+                <element signature="e#20408#20525#0" expanded="true" />
+                <element signature="e#20571#20640#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -56,7 +71,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/shunts/protocol/SeShProtocolError.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/shunts/protocol/SeShProtocolBase.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/shunts/protocol/SeShWebClientCommons.java" />
@@ -71,8 +85,9 @@
         <option value="$PROJECT_DIR$/build/setup.ivy" />
         <option value="$PROJECT_DIR$/build/share.ivy" />
         <option value="$PROJECT_DIR$/../../Downloads/video.html" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/desktop.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
       </list>
     </option>
   </component>
@@ -725,6 +740,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31024095" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2941767" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3192436" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24397591" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24899599" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -740,7 +756,6 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3192436" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -761,8 +776,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-69 [beta]: fixed error related to ExtJS Component loading (ExtJS error)." />
-    <MESSAGE value="special-00 [beta]: replaced Queue with local contexts. Master and Support threads are replaced with universal Worker thread." />
     <MESSAGE value="special-00 [beta]: epic fail! Applied direct client access (without a copy) for single thread, and had gained 7 ms execution (from 32!) Have 2 threads 64 ms now... This means that all the time is copying..." />
     <MESSAGE value="special-00 [beta]: Client copy operation for single thread replaced with direct Client access, Time now is 7 ms..." />
     <MESSAGE value="special-00 [beta]: eliminated Data locks as each Worker now works with own sub-sequence of the requests." />
@@ -786,7 +799,9 @@
     <MESSAGE value="system-15 [stable]: Self-Shunts works with plain HTTP client." />
     <MESSAGE value="system-17 [alpha]: started moving to Log4j Second..." />
     <MESSAGE value="system-17 [stable]: moved to Log4j 2 library, alsoe with own JSON layout." />
-    <option name="LAST_COMMIT_MESSAGE" value="system-17 [stable]: moved to Log4j 2 library, alsoe with own JSON layout." />
+    <MESSAGE value="ui-61 [stable]: fixed events numbers font+box sizing." />
+    <MESSAGE value="ui-61 [stable]: fixed events numbers selection switching." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-61 [stable]: fixed events numbers selection switching." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -909,34 +924,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/LU.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3720">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/logs/LoggersHolderLog4j.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.053375196" vertical-offset="0" max-vertical-offset="977">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../embeddy/boot/meta/log4j2-file.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1351">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="43" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/logs/LogStrategyLog4J.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1997">
-          <caret line="0" column="31" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5300668" vertical-offset="221" max-vertical-offset="7103">
@@ -970,6 +957,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5111359" vertical-offset="3162" max-vertical-offset="4757">
           <caret line="213" column="63" selection-start-line="213" selection-start-column="13" selection-end-line="213" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -977,6 +965,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -984,6 +973,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.37861916" vertical-offset="4318" max-vertical-offset="6440">
           <caret line="274" column="25" selection-start-line="274" selection-start-column="18" selection-end-line="274" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -991,6 +981,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7416481" vertical-offset="167" max-vertical-offset="1748">
           <caret line="49" column="40" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1002,22 +993,83 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6256" vertical-offset="11832" max-vertical-offset="14871">
-          <caret line="2496" column="6" selection-start-line="719" selection-start-column="6" selection-end-line="719" selection-end-column="6" />
-          <folding>
-            <marker date="1435225540000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1435225540000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
+        <state vertical-scroll-proportion="0.52004457" vertical-offset="9563" max-vertical-offset="14073">
+          <caret line="590" column="15" selection-start-line="590" selection-start-column="15" selection-end-line="590" selection-end-column="15" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7319749" vertical-offset="9563" max-vertical-offset="13813">
-          <caret line="590" column="15" selection-start-line="590" selection-start-column="15" selection-end-line="590" selection-end-column="15" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="7174" max-vertical-offset="9969">
+          <caret line="422" column="12" selection-start-line="422" selection-start-column="12" selection-end-line="422" selection-end-column="12" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.view-modes/page.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.65384614" vertical-offset="1343" max-vertical-offset="2629">
+          <caret line="101" column="23" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/index.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11623932" vertical-offset="0" max-vertical-offset="1248">
+          <caret line="4" column="47" selection-start-line="4" selection-start-column="47" selection-end-line="4" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32182628" vertical-offset="1581" max-vertical-offset="20941">
+          <caret line="110" column="29" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/desktop.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3077" max-vertical-offset="5247">
+          <caret line="181" column="25" selection-start-line="181" selection-start-column="25" selection-end-line="181" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/root-panel.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.54587156" vertical-offset="561" max-vertical-offset="2997">
+          <caret line="61" column="24" selection-start-line="61" selection-start-column="24" selection-end-line="61" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8704" vertical-offset="5287" max-vertical-offset="17183">
+          <caret line="797" column="27" selection-start-line="797" selection-start-column="27" selection-end-line="797" selection-end-column="27" />
+          <folding>
+            <element signature="e#10181#10228#0" expanded="true" />
+            <element signature="e#10278#10491#0" expanded="true" />
+            <element signature="e#10838#10908#0" expanded="true" />
+            <element signature="e#11015#11156#0" expanded="true" />
+            <element signature="e#11283#11432#0" expanded="true" />
+            <element signature="e#11582#11727#0" expanded="true" />
+            <element signature="e#15691#16732#0" expanded="true" />
+            <element signature="e#16775#17555#0" expanded="true" />
+            <element signature="e#19187#19213#0" expanded="true" />
+            <element signature="e#19256#19337#0" expanded="true" />
+            <element signature="e#19383#19740#0" expanded="true" />
+            <element signature="e#19787#20231#0" expanded="true" />
+            <element signature="e#20270#20362#0" expanded="true" />
+            <element signature="e#20408#20525#0" expanded="true" />
+            <element signature="e#20571#20640#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

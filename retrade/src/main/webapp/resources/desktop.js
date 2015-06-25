@@ -80,10 +80,10 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	 */
 	controller        : function(panel)
 	{
-		if(ZeT.iss(panel)) panel = this.panels[panel];
+		if(ZeT.iss(panel)) panel = this.panels[panel]
 		if(!panel || (panel.extjsfBind !== true))
-			throw 'Not a panel argument!';
-		return panel.desktopPanelController;
+			throw 'Not a panel argument!'
+		return panel.desktopPanelController
 	},
 
 	/**
@@ -92,41 +92,40 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	 */
 	rootController    : function(position, controller)
 	{
-		var rc = this._root_controllers;
+		var rc = this._root_controllers
 
-		if(ZeTS.ises(position)) throw 'Not a position!';
-		if(!rc) this._root_controllers = rc = {};
+		if(ZeTS.ises(position)) throw 'Not a position!'
+		if(!rc) this._root_controllers = rc = {}
 
-		if(ZeT.isu(controller)) return rc[position];
-		if(controller === null) delete rc[position];
-		else
+		if(ZeT.isu(controller)) return rc[position]
+		if(controller === null) delete rc[position]; else
 		{
-			if(rc[position] && (rc[position] !== controller))
-				throw 'Can not replace root controller in position [' +
-				  position + '] as there is other instance registered!';
+			ZeT.assert(!rc[position] || (rc[position] === controller),
+			  'Can not replace root controller in position [',
+			  position, '] as there is other instance registered!')
 
-			rc[position] = controller;
+			rc[position] = controller
 		}
 
-		return this;
+		return this
 	},
 
 	rootPanel         : function(bind, domain)
 	{
-		if(!bind) return this._root_panel;
+		if(!bind) return this._root_panel
 		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain);
-		this._root_panel = bind;
-		return this;
+			bind = extjsf.bind(bind, domain)
+		this._root_panel = bind
+		return this
 	},
 
 	bindPanel         : function(pos, bind, domain)
 	{
 		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain);
+			bind = extjsf.bind(bind, domain)
 
 		//~: register the bind of the panel
-		this.panels[pos] = bind;
+		this.panels[pos] = bind
 
 		//~: assign the panel controller
 		this._bind_control(bind)
@@ -180,8 +179,8 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	swapPanels        : function(one, two)
 	{
-		var cone = this.rootController(one);
-		var ctwo = this.rootController(two);
+		var cone = this.rootController(one)
+		var ctwo = this.rootController(two)
 
 		//~: temporarily remove the contents of the panels
 		if(cone) cone.remove(false)
@@ -195,7 +194,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		if(cone) cone.insert()
 		if(ctwo) ctwo.insert()
 
-		return this;
+		return this
 	},
 
 	applyWindowBox    : function(opts)
@@ -410,11 +409,13 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		this.collapsing.onPanelAdded(pos, panel)
 	},
 
-	_bind_control     : function(panel, pos)
+	_bind_control     : function(panelBind, pos)
 	{
-		if(!panel.desktopPanelController)
-			panel.desktopPanelController = ZeT.createInstance(
-			  'ReTrade.PanelController', {position: pos});
+		if(panelBind.desktopPanelController) return
+
+		panelBind.desktopPanelController = ZeT.createInstance(
+		  'ReTrade.PanelController', { position: pos })
+		panelBind.desktopPanelController.rootBind(panelBind)
 	}
 })
 
@@ -429,7 +430,13 @@ ZeT.defineClass('ReTrade.PanelController', {
 
 	init              : function(opts)
 	{
-		this.opts = opts || {};
+		this.opts = opts || {}
+	},
+
+	rootBind          : function(panelBind)
+	{
+		if(!panel) return this._root_bind
+		this._root_bind = panelBind
 	},
 
 	/**
@@ -437,11 +444,11 @@ ZeT.defineClass('ReTrade.PanelController', {
 	 */
 	mainTopbar        : function(bind, domain)
 	{
-		if(!bind) return this._main_topbar;
+		if(!bind) return this._main_topbar
 		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain);
-		this._main_topbar = bind;
-		return this;
+			bind = extjsf.bind(bind, domain)
+		this._main_topbar = bind
+		return this
 	},
 
 	/**
@@ -450,11 +457,11 @@ ZeT.defineClass('ReTrade.PanelController', {
 	 */
 	mainTopbarExt     : function(bind, domain)
 	{
-		if(!bind) return this._main_topbar_ext;
+		if(!bind) return this._main_topbar_ext
 		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain);
-		this._main_topbar_ext = bind;
-		return this;
+			bind = extjsf.bind(bind, domain)
+		this._main_topbar_ext = bind
+		return this
 	},
 
 	/**
@@ -463,18 +470,18 @@ ZeT.defineClass('ReTrade.PanelController', {
 	 */
 	contentPanel      : function(bind, domain)
 	{
-		if(!bind) return this._content_panel;
+		if(!bind) return this._content_panel
 		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain);
-		this._content_panel = bind;
-		return this;
+			bind = extjsf.bind(bind, domain)
+		this._content_panel = bind
+		return this
 	},
 
 	position          : function(pos)
 	{
-		if(!ZeT.iss(pos)) return this.opts.position;
-		this.opts.position = pos;
-		return this;
+		if(!ZeT.iss(pos)) return this.opts.position
+		this.opts.position = pos
+		return this
 	}
 })
 
@@ -490,89 +497,78 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 	init              : function(opts)
 	{
-		if(!opts) throw 'No options!'; this.opts = opts;
+		this.opts = ZeT.assertn(opts)
 
-		//?: domain
+		//~: domain
 		this.domain()
 
-		//?: desktop
+		//~: desktop
 		this.desktop()
 
-		//?: the root-panel bind
+		//~: the root-panel bind
 		this.bind()
 
-		//?: the position
+		//~: the position
 		this.position()
 
-		opts.bind.rootPanelController = this;
+		opts.bind.rootPanelController = this
 		opts.bind.on('beforedestroy', ZeT.fbind(this._on_destroy, this))
 	},
 
 	domain            : function()
 	{
-		if(!ZeT.iss(this.opts.domain)) throw 'No Domain name specified!';
-		return this.opts.domain;
+		return ZeT.asserts(this.opts.domain, 'No Domain name specified!')
 	},
 
 	desktop           : function()
 	{
-		if(!this.opts.desktop) throw 'No Desktop instance!';
-		return this.opts.desktop;
+		return ZeT.assertn(this.opts.desktop, 'No Desktop instance!')
 	},
 
 	panelController   : function()
 	{
-		var res = this.desktop().controller(this.opts.position);
-
-		if(!res) throw 'No Desktop panel controller at the position [' +
-		  this.opts.position + ']!';
-		return res;
+		return ZeT.assertn(this.desktop().controller(this.opts.position),
+		  'No Desktop panel controller at the position [', this.opts.position, ']!')
 	},
 
 	bind              : function()
 	{
-		if(!this.opts.bind) throw 'No root-panel Bind instance!';
-		return this.opts.bind;
+		return ZeT.assertn(this.opts.bind, 'No root-panel Bind instance!')
 	},
 
 	position          : function(pos)
 	{
 		if(ZeTS.ises(pos))
-		{
 			//?: {the position key is undefined}
-			if(ZeTS.ises(this.opts.position))
-				throw 'No Desktop position key!';
-
-			return this.opts.position;
-		}
+			return ZeT.asserts(this.opts.position, 'No Desktop position key!')
 
 		//~: there is no panel controller at that position
-		if(!this.desktop().controller(pos))
-			throw 'No Desktop panel controller at the position [' + pos + ']!';
+		ZeT.assertn(this.desktop().controller(pos),
+		  'No Desktop panel controller at the position [', pos, ']!')
 
-		this.opts.position = pos;
-		return this;
+		this.opts.position = pos
+		return this
 	},
 
 	topbarItems       : function(items)
 	{
-		if(!items) return this._topbar_items;
-		this._topbar_items = items;
-		return this;
+		if(!items) return this._topbar_items
+		this._topbar_items = items
+		return this
 	},
 
 	toolbar           : function(bind)
 	{
-		if(!bind) return this._toolbar;
-		this._toolbar = bind;
-		return this;
+		if(!bind) return this._toolbar
+		this._toolbar = bind
+		return this
 	},
 
 	statusbar         : function(bind)
 	{
-		if(!bind) return this._statusbar;
-		this._statusbar = bind;
-		return this;
+		if(!bind) return this._statusbar
+		this._statusbar = bind
+		return this
 	},
 
 	destroy           : function()
@@ -583,7 +579,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		if(this.opts['domainOwner'])
 			extjsf.deleteDomain(this.domain())
 
-		return this;
+		return this
 	},
 
 	/**
@@ -629,12 +625,12 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 	_set_tools        : function()
 	{
-		if(this.opts['notools'] === true) return;
-		if(this._tools_are_set) return;
-		this._tools_are_set = true;
+		if(this.opts['notools'] === true) return
+		if(this._tools_are_set) return
+		this._tools_are_set = true
 
-		var tools = this.bind().extjsPropsRaw().tools;
-		if(!ZeT.isa(tools)) tools = [];
+		var tools = this.bind().extjsPropsRaw().tools
+		if(!ZeT.isa(tools)) tools = []
 
 		//~: add the tools of the panel
 		this._add_tools(tools)
@@ -651,7 +647,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 	_add_move_tools   : function(tools)
 	{
-		if(this.opts['nomove'] === true) return;
+		if(this.opts['nomove'] === true) return
 
 		//~: add <<
 		tools.push({ xtype: 'tool', type: 'left',
@@ -661,7 +657,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 		var m = extjsf.pts(0, 0, 0, 2)
 		if(this.bind().extjsPropsRaw()['closable'])
-			m = extjsf.pts(0, 8, 0, 2);
+			m = extjsf.pts(0, 8, 0, 2)
 
 		//~: add >>
 		tools.push({ xtype: 'tool', type: 'right',
@@ -671,8 +667,8 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 	_insert_content   : function()
 	{
-		var cnt = this.panelController().contentPanel();
-		if(!cnt || !cnt.component()) return; //<-- no content panel
+		var cnt = this.panelController().contentPanel()
+		if(!cnt || !cnt.component()) return //<-- no content panel
 
 		//?: the bind component is not created yet
 		if(!this.bind().component())
@@ -695,20 +691,20 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		//~: add the removed content nodes
 		var nodes = this._removed_content_nodes; if(ZeT.isa(nodes))
 		{
-			var body = cnt.component().getEl().down('.retrade-desktop-panel-content');
-			if(!body) throw 'No desktop panel content element found!';
+			var body = cnt.component().getEl().down('.retrade-desktop-panel-content')
+			if(!body) throw 'No desktop panel content element found!'
 
 			for(var i = 0;(i < nodes.length);i++)
 				body.dom.appendChild(nodes[i])
 
-			delete this._removed_content_nodes; //<-- to not add them further
+			delete this._removed_content_nodes //<-- to not add them further
 		}
 	},
 
 	_remove_content   : function(destroy)
 	{
-		var cnt = this.panelController().contentPanel();
-		if(!cnt || !cnt.component()) return; //<-- no content panel
+		var cnt = this.panelController().contentPanel()
+		if(!cnt || !cnt.component()) return //<-- no content panel
 
 		//HINT: the component is automatically removed on destroy event
 		if(!this._on_destruction)
@@ -717,28 +713,28 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		if(destroy) this.bind().component(null) //<-- remove reference
 
 		//~: remove plain DOM nodes left in the content panel
-		var body = cnt.component().getEl().down('.retrade-desktop-panel-content');
-		if(!body) throw 'No desktop panel content element found!';
+		var body = cnt.component().getEl().down('.retrade-desktop-panel-content')
+		if(!body) throw 'No desktop panel content element found!'
 
 		//~: collect all the child nodes
-		var node = body.dom.firstChild, nodes = [];
+		var node = body.dom.firstChild, nodes = []
 		while(node)
 		{
 			nodes.push(node)
-			var next = node.nextSibling;
+			var next = node.nextSibling
 			body.dom.removeChild(node)
-			node = next;
+			node = next
 		}
 
-		if(!destroy) this._removed_content_nodes = nodes;
+		if(!destroy) this._removed_content_nodes = nodes
 	},
 
 	_insert_topbar    : function()
 	{
-		var ext  = this.panelController().mainTopbarExt();
-		if(!ext || !ext.component()) return; //<-- no top bar to insert
+		var ext  = this.panelController().mainTopbarExt()
+		if(!ext || !ext.component()) return //<-- no top bar to insert
 
-		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return;
+		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return
 
 		for(var i = 0;(i < tbis.length);i++)
 		{
@@ -746,16 +742,16 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 			if(!tbis[i].component()) tbis[i].component(
 			   Ext.ComponentManager.create(tbis[i].extjsProps()))
 
-			ext.component().add(tbis[i].component());
+			ext.component().add(tbis[i].component())
 		}
 	},
 
 	_remove_topbar    : function(destroy)
 	{
-		var ext  = this.panelController().mainTopbarExt();
-		if(!ext || !ext.component()) return; //<-- no top bar to insert
+		var ext  = this.panelController().mainTopbarExt()
+		if(!ext || !ext.component()) return //<-- no top bar to insert
 
-		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return;
+		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return
 
 		for(var i = 0;(i < tbis.length);i++)
 		{
@@ -766,29 +762,29 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 	_move_left        : function()
 	{
-		var prv, cur = this.position();
+		var prv, cur = this.position()
 
-		if(cur === 'left')   prv = 'right';
-		if(cur === 'center') prv = 'left';
-		if(cur === 'right')  prv = 'center';
+		if(cur === 'left')   prv = 'right'
+		if(cur === 'center') prv = 'left'
+		if(cur === 'right')  prv = 'center'
 
 		this.desktop().swapPanels(prv, cur)
 	},
 
 	_move_right       : function()
 	{
-		var nxt, cur = this.position();
+		var nxt, cur = this.position()
 
-		if(cur === 'left')   nxt = 'center';
-		if(cur === 'center') nxt = 'right';
-		if(cur === 'right')  nxt = 'left';
+		if(cur === 'left')   nxt = 'center'
+		if(cur === 'center') nxt = 'right'
+		if(cur === 'right')  nxt = 'left'
 
 		this.desktop().swapPanels(cur, nxt)
 	},
 
 	_on_destroy       : function()
 	{
-		this._on_destruction = true;
+		this._on_destruction = true
 		this.destroy()
 	}
 })
