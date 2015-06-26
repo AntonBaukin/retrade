@@ -75,6 +75,18 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	},
 
 	/**
+	 * Activates the desktop after installing
+	 * it's panels. Invoked on Ext-Ready.
+	 */
+	activate          : function()
+	{
+		var sf = this, ps = ZeT.keys(this.panels)
+		ZeT.each(ps, function(k) {
+			sf.controller(k).triggerVoid()
+		})
+	},
+
+	/**
 	 * Returns the controller of the panel defined
 	 * by it's bind or the position.
 	 */
@@ -83,7 +95,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		if(ZeT.iss(panel)) panel = this.panels[panel]
 		if(!panel || (panel.extjsfBind !== true))
 			throw 'Not a panel argument!'
-		return panel.desktopPanelController
+		return ZeT.assertn(panel.desktopPanelController)
 	},
 
 	/**
@@ -128,7 +140,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		this.panels[pos] = bind
 
 		//~: assign the panel controller
-		this._bind_control(bind)
+		this._bind_control(bind, pos)
 
 		//~: hook the component creation
 		bind.on('added', ZeT.fbind(this._on_panel_added, this, pos))
@@ -433,6 +445,13 @@ ZeT.defineClass('ReTrade.PanelController', {
 		this.opts = opts || {}
 	},
 
+	position          : function(pos)
+	{
+		if(!ZeT.iss(pos)) return this.opts.position
+		this.opts.position = pos
+		return this
+	},
+
 	rootBind          : function(panelBind)
 	{
 		if(!panel) return this._root_bind
@@ -477,11 +496,72 @@ ZeT.defineClass('ReTrade.PanelController', {
 		return this
 	},
 
-	position          : function(pos)
+	/**
+	 * If set, void panel is displayed
+	 * when else panels have no content.
+	 */
+	voidPanel         : function(bind, domain)
 	{
-		if(!ZeT.iss(pos)) return this.opts.position
-		this.opts.position = pos
+		if(!bind) return this._void_panel
+		if(!bind.extjsfBind)
+			bind = extjsf.bind(bind, domain)
+		this._void_panel = bind
 		return this
+	},
+
+	/**
+	 * Tells whether to show void panel: else panels
+	 * are empty and void panel is assigned.
+	 */
+	isVoid            : function()
+	{
+		if(!this._void_panel)
+			return undefined
+
+		if(!this._void_panel.component())
+			return undefined
+
+		if(this._main_topbar)
+		{
+			var c = this._main_topbar.component()
+			if(c && c.items.getCount()) return false
+		}
+
+		if(this._main_topbar_ext)
+		{
+			c = this._main_topbar_ext.component()
+			if(c && c.items.getCount()) return false
+		}
+
+		if(this._content_panel)
+		{
+			c = this._content_panel.component()
+			if(c && c.items.getCount()) return false
+		}
+
+		return true
+	},
+
+	/**
+	 * Checks whether the panel is void and
+	 * hides all content except the void panel.
+	 */
+	triggerVoid       : function()
+	{
+		//?: {has no void panel}
+		var vo = this.isVoid()
+		if(ZeT.isu(vo)) return
+
+		this._void_panel.visible(vo)
+		ZeT.each(this._all_panes(), function(p) {
+			p && p.visible(!vo)
+		})
+	},
+
+	_all_panes        : function()
+	{
+		return [ this._main_topbar,
+		  this._main_topbar_ext, this._content_panel ]
 	}
 })
 
@@ -599,6 +679,9 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 		//~: insert the main content
 		this._insert_content()
+
+		this.desktop().controller(
+		  this.position(), this).triggerVoid()
 	},
 
 	remove            : function(destroy)
@@ -611,6 +694,9 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 		//~: clear registration of this controller
 		this._unregister()
+
+		this.desktop().controller(
+		  this.position(), this).triggerVoid()
 	},
 
 	_register         : function()

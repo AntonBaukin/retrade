@@ -30,8 +30,8 @@
   <x:component coid = "${z:vid(desktopView, 'desktop_left')}">
 
     <f:facet name = "extjs-props">
-      xtype: 'panel', flex: 1,
-      frame: false, border: false, layout: 'border',
+      xtype: 'panel', flex: 1, frame: false, border: false,
+      layout: { type: 'vbox', align: 'stretch' },
       animCollapse: false, collapseDirection: 'left',
       hideCollapseTool: false, titleCollapse: false,
       bodyCls: 'retrade-desktop-panel retrade-desktop-panel-left'
@@ -66,14 +66,30 @@
 
     <!-- left topbar] -->
 
+    <!-- [left void panel] -->
+    <x:component coid = "${z:vid(desktopView, 'left_void')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, hidden: true,
+        frame: false, border: false, layout: 'fit',
+        bodyCls: 'retrade-desktop-panel-void'
+      </f:facet>
+    </x:component>
+
+
+    <script type = "text/javascript">
+
+      ReTrade.desktop.controller('left').voidPanel("${z:vid(desktopView, 'left_void')}", '${rootView.extjsDomain}')
+
+    </script>
+
 
     <!-- [left content -->
 
     <x:component coid = "${z:vid(desktopView, 'left_panel')}">
 
       <f:facet name = "extjs-props">
-        xtype: 'panel', region: 'center',
-        frame: false, border: false, layout: 'fit',
+        xtype: 'panel', flex: 1, frame: false,
+        border: false, layout: 'fit',
         bodyCls: 'retrade-desktop-panel-content'
       </f:facet>
 
@@ -114,7 +130,7 @@
   <x:component coid = "${z:vid(desktopView, 'desktop_center')}">
 
     <f:facet name = "extjs-props">
-      xtype: 'panel', minWidth: 640, width: 1024,
+      xtype: 'panel', minWidth: 768, flex: 2,
       frame: false, border: false, layout: 'border',
       bodyCls: 'retrade-desktop-panel retrade-desktop-panel-center'
     </f:facet>
@@ -136,7 +152,7 @@
     <x:component coid = "${z:vid(desktopView, 'root_panel')}">
 
       <f:facet name = "extjs-props">
-        xtype: 'panel', region: 'center', flex: 1,
+        xtype: 'panel', region: 'center',
         frame: false, border: false, layout: 'fit',
         bodyCls: 'retrade-desktop-panel-content'
       </f:facet>
@@ -170,8 +186,8 @@
   <x:component coid = "${z:vid(desktopView, 'desktop_right')}">
 
     <f:facet name = "extjs-props">
-      xtype: 'panel', flex: 1,
-      frame: false, border: false, layout: 'border',
+      xtype: 'panel', flex: 1, frame: false, border: false,
+      layout: { type: 'vbox', align: 'stretch' },
       animCollapse: false, collapseDirection: 'right',
       hideCollapseTool: true, titleCollapse: true,
       bodyCls: 'retrade-desktop-panel retrade-desktop-panel-right'
@@ -207,13 +223,29 @@
     <!-- right topbar] -->
 
 
+    <!-- [right void panel] -->
+    <x:component coid = "${z:vid(desktopView, 'right_void')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, hidden: true,
+        frame: false, border: false, layout: 'fit',
+        bodyCls: 'retrade-desktop-panel-void'
+      </f:facet>
+    </x:component>
+
+    <script type = "text/javascript">
+
+      ReTrade.desktop.controller('right').voidPanel("${z:vid(desktopView, 'right_void')}", '${rootView.extjsDomain}')
+
+    </script>
+
+
     <!-- [right content -->
 
     <x:component coid = "${z:vid(desktopView, 'right_panel')}">
 
       <f:facet name = "extjs-props">
-        xtype: 'panel', region: 'center',
-        frame: false, border: false, layout: 'fit',
+        xtype: 'panel', flex: 1, frame: false,
+        border: false, layout: 'fit',
         bodyCls: 'retrade-desktop-panel-content'
       </f:facet>
 
@@ -250,6 +282,9 @@
   //~: collapse the left-right panels if screen is too small
   Ext.onReady(function()
   {
+    //~: activate the desktop
+    ReTrade.desktop.activate()
+
     ZeT.log('Window width: ', $(window).innerWidth())
 
     var inw = Ext.get(document.body).getWidth() / extjsf.inch(1);
