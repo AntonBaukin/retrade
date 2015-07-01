@@ -133,7 +133,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	bindPanel         : function(pos, bind, domain)
 	{
-		if(!bind.extjsfBind)
+		if(ZeT.iss(bind))
 			bind = extjsf.bind(bind, domain)
 
 		//~: register the bind of the panel
@@ -418,7 +418,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	_on_panel_added   : function(pos, panel)
 	{
-		this.collapsing.onPanelAdded(pos, panel)
+		this.collapsing.onPanelAdded(panel, pos)
 	},
 
 	_bind_control     : function(panelBind, pos)
@@ -454,8 +454,9 @@ ZeT.defineClass('ReTrade.PanelController', {
 
 	rootBind          : function(panelBind)
 	{
-		if(!panel) return this._root_bind
+		if(!panelBind) return this._root_bind
 		this._root_bind = panelBind
+		return this
 	},
 
 	/**
@@ -885,142 +886,83 @@ ZeT.defineClass('ReTrade.DesktopCollapsing', {
 
 	init              : function(opts)
 	{
-		this._structs = {};
+		this._structs = {}
 	},
 
 	desktop           : function(desktop)
 	{
-		if(!desktop) return this.desktop;
-		this.desktop = desktop;
-		return this;
+		if(!desktop) return this.desktop
+		this.desktop = desktop
+		return this
 	},
 
-	onPanelAdded      : function(pos, panel)
+	onPanelAdded      : function(panel, pos)
 	{
-		var self = this;
+		var self = this, bind = extjsf.asbind(panel)
+		ZeT.assertn(bind, 'Desktop panel has no ExtJSF Bind!')
+		bind.desktopCollapsing = { position: pos }
 
 		panel.on({
-			beforecollapse : ZeT.fbind(self._before_collapse, self, pos),
-			collapse       : ZeT.fbind(self._after_collapse, self, pos),
-			beforeexpand   : ZeT.fbind(self._before_expand, self, pos),
-			expand         : ZeT.fbind(self._after_expand, self, pos),
-			afterlayout    : ZeT.fbind(self._after_layout, self, pos)
+			beforecollapse : ZeT.fbind(self._before_collapse, self, bind),
+			collapse       : ZeT.fbind(self._after_collapse, self, bind),
+			beforeexpand   : ZeT.fbind(self._before_expand, self, bind),
+			expand         : ZeT.fbind(self._after_expand, self, bind),
+			afterlayout    : ZeT.fbind(self._after_layout, self, bind)
 		})
 	},
 
-	_changed          : function(pos, before)
+	_collapsed_click  : function(panel)
 	{
-		if(pos == 'center') return;
+		panel.component().expand()
+	},
 
-		var center = this.desktop.panels.center;
-		if(center) center = center.component();
-		if(!center) return;
+	_before_collapse  : function(panel)
+	{
+		var w = panel.component().getWidth()
+		var W = panel.component().ownerCt.getWidth()
 
-		var panel  = this.desktop.panels[pos];
-		if(panel) panel = panel.component();
-		if(!panel) return;
+		//~: original width is relative
+		panel.desktopCollapsing.originalWidth = (w / W)
+		panel.desktopCollapsing.setOriginalWidth = true
+	},
 
-		if(before)
+	_after_collapse   : function(panel)
+	{
+		//?: {has no bound click handler}
+		if(!panel.desktopCollapsing.click)
+			panel.desktopCollapsing.click =
+			  ZeT.fbind(this._collapsed_click, this, panel)
+
+		ZeT.timeout(500, function()
 		{
-			var colnum = this._cnt_collapsed();
-			center.flex = (colnum === 0)?(0):(1);
-		}
-
-		if(!before && (this._get(pos).collapsed === false))
-			this._get(pos).setOriginalWidth = true;
-	},
-
-	_get              : function(pos)
-	{
-		var res = this._structs[pos];
-		if(!res) this._structs[pos] = res = {};
-		return res;
-	},
-
-	_before_collapse  : function(pos, panel)
-	{
-		this._get(pos).collapsed = true;
-		this._get(pos).originalWidth = panel.getWidth();
-		this._changed(pos, true)
-	},
-
-	_after_collapse   : function(pos, panel)
-	{
-		this._changed(pos, false)
-		this._update_collapsed(pos, panel)
-	},
-
-	_before_expand    : function(pos, panel)
-	{
-		this._get(pos).collapsed = false;
-		this._revert_collapsed(pos, panel)
-		this._changed(pos, true)
-	},
-
-	_after_expand     : function(pos, panel)
-	{
-		this._changed(pos, false)
-	},
-
-	_after_layout     : function(pos, panel)
-	{
-		if(this._get(pos).setOriginalWidth === true)
-		{
-			this._get(pos).setOriginalWidth = false;
-			panel.setWidth(this._get(pos).originalWidth)
-		}
-	},
-
-	_update_collapsed : function(pos, panel)
-	{
-		if(pos == 'center') return;
-
-		var el = panel.getEl(); if(!el) return;
-		var uc = this._get(pos)._update_collapsed = {};
-		uc.styles = {};
-
-		el.select('div').each(function(div)
-		{
-			var id = div.getAttribute('id'); if(!id) return;
-			uc.styles[id] = {cursor: div.getStyle('cursor')};
-			div.setStyle({cursor: 'pointer'})
+			panel.component().getEl().removeListener(
+			  'click', panel.desktopCollapsing.click)
+			panel.component().getEl().on(
+			  'click', panel.desktopCollapsing.click)
 		})
+	},
 
-		uc.onclick = function()
+	_before_expand    : function(panel)
+	{
+		if(panel.desktopCollapsing.click)
+			panel.component().getEl().removeListener(
+			  'click', panel.desktopCollapsing.click)
+	},
+
+	_after_expand     : function(panel)
+	{},
+
+	_after_layout     : function(panel)
+	{
+		if(panel.desktopCollapsing.setOriginalWidth)
 		{
-			panel.expand()
+			var W = panel.component().ownerCt.getWidth()
+			var w = Math.round(W * panel.desktopCollapsing.originalWidth)
+
+			//!: prevents infinite recursion
+			panel.desktopCollapsing.setOriginalWidth = false
+			panel.component().setWidth(w)
 		}
-
-		el.addListener('click', uc.onclick)
-	},
-
-	_revert_collapsed : function(pos, panel)
-	{
-		if(pos == 'center') return;
-
-		var el = panel.getEl(); if(!el) return;
-		var uc = this._get(pos)._update_collapsed;
-		if(!uc) return; delete this._get(pos)._update_collapsed;
-
-		el.select('div').each(function(div)
-		{
-			var id = div.getAttribute('id'); if(!id) return;
-			var st = uc.styles[id]; if(!st) return;
-
-			div.setStyle(st)
-		})
-
-		el.removeListener('click', uc.onclick)
-	},
-
-	_cnt_collapsed    : function()
-	{
-		var res = 0, strs = this._structs;
-		var kys = ZeT.keys(strs);
-
-		for(var i = 0;(i < kys.length);i++)
-			if(strs[kys[i]].collapsed === true) res++;
-		return res;
 	}
 })
 

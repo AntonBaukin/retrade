@@ -949,6 +949,12 @@ var ZeT = window.ZeT = window.ZeT || {
 			return j
 		}
 
+		function ise(x)
+		{
+			return ZeT.isu(x) || (x == null) ||
+			  (ZeT.iss(x) && ZeTS.ises(x))
+		}
+
 		for(var i = 0;(i < a.length);i++)
 			if(ZeT.isxlog(a[i]))
 			{
@@ -958,10 +964,9 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		pack(a.length)
 
-		var empty = true;
+		var empty = true
 		for(j = 0;(j < a.length);j++)
-			if(ZeT.iso(a[j]) || !ZeTS.ises(a[j]))
-				{ empty = false; break }
+			if(!ise(a[j])) { empty = false; break }
 
 		if(!empty) console.log.apply(console, a)
 		return this

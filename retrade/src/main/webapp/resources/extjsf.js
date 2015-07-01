@@ -130,12 +130,13 @@ var extjsf = ZeT.define('extjsf',
 	{
 		if(!borc) return borc
 
-		//?: {is a bind}
-		if(borc.isComponent && (borc.extjsfBind === true))
-			return borc
-
 		//?: {is a component}
-		if(borc.extjsfBind) return borc.extjsfBind
+		if(borc.isComponent && borc.extjsfBind)
+			borc = borc.extjsfBind
+
+		//?: {is a bind}
+		if(borc.extjsfBind === true)
+			return borc
 
 		return undefined
 	},
