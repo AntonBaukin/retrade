@@ -224,14 +224,19 @@ var extjsf = ZeT.define('extjsf',
 
 	tempDomain       : function(prefix)
 	{
-		if(!ZeT.iss(prefix)) prefix = '';
-		prefix = 'tmp:' + prefix;
+		if(!ZeT.iss(prefix)) prefix = ''
+		prefix = 'tmp:' + prefix
 
 		if(!this._temp_domain_id)
-			this._temp_domain_id = 0;
-		prefix += this._temp_domain_id;
-		this._temp_domain_id++;
-		return prefix;
+			this._temp_domain_id = 0
+		prefix += this._temp_domain_id
+		this._temp_domain_id++
+		return prefix
+	},
+
+	globalDomain     : function(suffix)
+	{
+		return ZeTS.ises(suffix)?('Global'):('Global:' + suffix)
 	},
 
 	genViewId        : function()

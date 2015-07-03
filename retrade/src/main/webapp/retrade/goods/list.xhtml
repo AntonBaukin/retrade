@@ -46,8 +46,8 @@ ${v.checkModelRequestedWithRedirect}
   {
     var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}')
 
-    var dk  = "${z:vid(v, 'add-good')}:"
-    if(record) dk = dk.replace('add-', 'create-')
+    var dk  = extjsf.globalDomain('view-edit-good')
+    if(!record) dk = "${z:vid(v, 'create-good')}:"
 
     var ps = {}; if(!record) ps.create = true
 
@@ -243,6 +243,7 @@ ${v.checkModelRequestedWithRedirect}
 
 
   <script type = "text/javascript">
+  //<![CDATA[
 
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').display_good = function(sel)
   {}
@@ -269,6 +270,7 @@ ${v.checkModelRequestedWithRedirect}
       retradeOpenGoodWindow(rec, event)
   })
 
+  //]]>
   </script>
 
 </ui:define>
