@@ -1,6 +1,6 @@
 package com.tverts.faces;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +38,6 @@ import com.tverts.support.SU;
  * An implementation base for JavaServer Faces views
  * supporting Models. This intermediate bean does
  * not require to possess own model.
- *
  *
  * @author anton.baukin@gmail.com
  */

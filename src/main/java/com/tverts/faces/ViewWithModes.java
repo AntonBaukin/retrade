@@ -31,6 +31,8 @@ import com.tverts.endure.core.Domain;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.SU;
+
 import static com.tverts.support.SU.s2s;
 import static com.tverts.support.SU.s2a;
 
@@ -283,6 +285,14 @@ public abstract class ViewWithModes
 	public String   getEntityParam()
 	{
 		return ENTITY_PARAM;
+	}
+
+
+	/* Simplifications */
+
+	public String   formatTitle(String what, String code, Object... title)
+	{
+		return SU.formatTitle(what, code, title);
 	}
 
 
