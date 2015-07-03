@@ -528,7 +528,7 @@ public class SU
 	public static String formatTitle(String what, String code, Object... title)
 	{
 		CharSequence t = SU.cat(title);
-		return SU.cats(what, " :: ", code, SU.catif(t, " :: ", t));
+		return SU.cats(what, " ⸰ ", code, SU.catif(t, " ⸰ ", t));
 	}
 
 
