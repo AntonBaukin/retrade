@@ -200,9 +200,8 @@ public class FacesMeasuresView extends ModelView
 		if(getMeasureView().getObjectKey() == null)
 			return "Создание единицы измерения";
 
-		return SU.cats(
-		  "Ед. изм. [",
-		  getMeasureView().getCode(), "] ",
+		return formatTitle("Ед. изм.",
+		  getMeasureView().getCode(),
 		  getMeasureView().getName()
 		);
 	}

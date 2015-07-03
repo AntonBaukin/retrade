@@ -45,7 +45,6 @@ import com.tverts.retrade.web.data.other.AggrVolumeData;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.SU;
 
 
 /**
@@ -86,25 +85,20 @@ public class FacesContractorView extends UnityModelView
 
 	public String getWinmainTitleInfo()
 	{
-		return SU.cats(
-		  "Контрагент №", getEntity().getCode(),
-		  ", ", getEntity().getName()
-		);
+		return formatTitle("Контрагент",
+		  getEntity().getCode(), getEntity().getName());
 	}
 
 	public String getWinmainTitleInvoices()
 	{
-		return SU.cats(
-		  "Накладные контрагента №", getEntity().getCode(),
-		  ", ", getEntity().getName()
-		);
+		return formatTitle("Накладные к-та",
+		  getEntity().getCode(), getEntity().getName());
 	}
 
 	public String getContractorType()
 	{
 		if(getEntity().getFirm() != null)
 			return "Организация";
-
 		return null;
 	}
 

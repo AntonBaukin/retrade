@@ -170,9 +170,8 @@ public class FacesPriceListsView extends ModelView
 		if(getPriceListView().getObjectKey() == null)
 			return "Создание Прайс-листа";
 
-		return SU.cats(
-		  "Прайс-лист [",
-		  getPriceListView().getCode(), "] ",
+		return formatTitle("Прайс-лист",
+		  getPriceListView().getCode(),
 		  getPriceListView().getName()
 		);
 	}

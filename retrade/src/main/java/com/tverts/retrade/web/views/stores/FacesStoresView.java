@@ -162,9 +162,8 @@ public class FacesStoresView extends ModelView
 		if(getStoreView().getObjectKey() == null)
 			return "Создание Склада";
 
-		return SU.cats(
-		  "Склад [",
-		  getStoreView().getCode(), "] ",
+		return formatTitle("Склад",
+		  getStoreView().getCode(),
 		  getStoreView().getName()
 		);
 	}

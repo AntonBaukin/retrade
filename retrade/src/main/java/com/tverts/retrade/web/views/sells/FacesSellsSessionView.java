@@ -25,7 +25,6 @@ import com.tverts.retrade.domain.sells.SellsSessionModelBean;
 
 import com.tverts.support.DU;
 import com.tverts.support.EX;
-import com.tverts.support.SU;
 
 
 /**
@@ -75,10 +74,9 @@ public class FacesSellsSessionView extends UnityModelView
 
 	public String  getWinmainTitleInfo()
 	{
-		return SU.cats(
+		return formatTitle(
 		  getEntity().getUnity().getUnityType().getTitleLo(),
-		  " №", getEntity().getCode(),
-		  " от ", DU.datetime2str(getEntity().getTime())
+		  getEntity().getCode(), DU.datetime2str(getEntity().getTime())
 		);
 	}
 

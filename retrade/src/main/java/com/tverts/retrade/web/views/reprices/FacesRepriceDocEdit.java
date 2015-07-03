@@ -274,10 +274,8 @@ public class FacesRepriceDocEdit extends ModelView
 
 	public String getWinmainTitle()
 	{
-		return (isCreate())?("Создание документа изменения цен"):SU.cats(
-		  "Редактирование документа изм. цены [",
-		  getModel().getView().getCode(), "]"
-		);
+		return (isCreate())?("Создание документа изменения цен"):
+		  formatTitle("Ред. док-та изм. цены", getModel().getView().getCode());
 	}
 
 	public Map<String, String> getPriceListsLabels()

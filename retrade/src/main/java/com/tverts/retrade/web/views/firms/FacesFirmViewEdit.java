@@ -195,7 +195,7 @@ public class FacesFirmViewEdit extends UnityModelView
 	public String getWinmainTitleEdit()
 	{
 		return (isCreate())?("Добавление контрагента"):
-		  SU.cats("Редактирование контрагента №", getEntity().getCode());
+		  formatTitle("Редактирование контрагента", getEntity().getCode());
 	}
 
 	public boolean isValid()
@@ -274,10 +274,8 @@ public class FacesFirmViewEdit extends UnityModelView
 
 	public String getWinmainTitleInfo()
 	{
-		return SU.cats(
-		  "Контрагент №", getEntity().getCode(),
-		  ", ", getEntity().getName()
-		);
+		return formatTitle("Контрагент",
+		  getEntity().getCode(), getEntity().getName());
 	}
 
 	public void forceSecure()
@@ -294,7 +292,7 @@ public class FacesFirmViewEdit extends UnityModelView
 			return firmTypeLabels;
 
 		Map<String, String> m = firmTypeLabels =
-		  new LinkedHashMap<String, String>(5);
+		  new LinkedHashMap<>(5);
 
 		m.put("ОРГ", "Организация");
 		m.put("ИП",  "Инд. Предприниматель");

@@ -47,10 +47,10 @@ public class FacesSellsInvoiceView extends FacesInvoiceViewBase
 
 	public String       getWinmainTitleInfo()
 	{
-		return SU.cats(
+		return formatTitle(
 		  getEntity().getInvoiceType().getTitleLo(),
-		  " сессии №", getSellsSession().getCode(),
-		  " от ", DU.datetime2str(getEntity().getInvoiceDate())
+		  SU.cats(" сессия №", getSellsSession().getCode()),
+		  DU.datetime2str(getEntity().getInvoiceDate())
 		);
 	}
 

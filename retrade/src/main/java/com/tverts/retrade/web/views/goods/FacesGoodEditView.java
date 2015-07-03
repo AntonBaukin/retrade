@@ -524,18 +524,16 @@ public class FacesGoodEditView extends ModelView
 		if(getGoodView().getObjectKey() == null)
 			return "Создание товара";
 
-		return SU.cats("Ред. товара [",
-		  getGoodView().getGoodCode(), "] ",
-		  getGoodView().getGoodName()
-		);
+		return formatTitle("Ред. товара",
+		  getGoodView().getGoodCode(),
+		  getGoodView().getGoodName());
 	}
 
 	public String getInfoWindowTitle()
 	{
-		return SU.cats("Товар [",
-		  getGoodView().getGoodCode(), "] ",
-		  getGoodView().getGoodName()
-		);
+		return formatTitle("Товар",
+		  getGoodView().getGoodCode(),
+		  getGoodView().getGoodName());
 	}
 
 	public String getErrorEvent()
@@ -605,11 +603,9 @@ public class FacesGoodEditView extends ModelView
 		String  dt = (getCalcView() == null)?(""):
 		  DU.datetime2str(getCalcView().getOpenTime());
 
-		return SU.cats(
-		  SU.catif(!hc, "Формула "),
-		  SU.catif(hc, "Формула (от ", dt, ")"), " товара [",
-		  getGoodView().getGoodCode(), "] ",
-		  getGoodView().getGoodName()
+		return formatTitle(
+		  SU.cats((!hc)?("Формула"):SU.cats("Формула от ", dt), " товара"),
+		  getGoodView().getGoodCode(), getGoodView().getGoodName()
 		);
 	}
 
@@ -618,9 +614,8 @@ public class FacesGoodEditView extends ModelView
 		if(getGoodView().getObjectKey() == null)
 			return "Формула создаваемого товара";
 
-		return SU.cats(
-		  "Ред. ф-лы товара [",
-		  getGoodView().getGoodCode(), "] ",
+		return formatTitle("Ред. ф-лы товара",
+		  getGoodView().getGoodCode(),
 		  getGoodView().getGoodName()
 		);
 	}
@@ -629,10 +624,8 @@ public class FacesGoodEditView extends ModelView
 	{
 		EX.assertn(getGoodView().getObjectKey());
 
-		return SU.cats(
-		  "История формул товара [",
-		  getGoodView().getGoodCode(), "] ",
-		  getGoodView().getGoodName()
+		return formatTitle("История формул товара",
+		  getGoodView().getGoodCode(), getGoodView().getGoodName()
 		);
 	}
 

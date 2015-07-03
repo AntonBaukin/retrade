@@ -165,10 +165,7 @@ public class FacesReportTemplateEdit extends ModelView
 	{
 		if(isCreate())
 			return "Создание шаблона отчёта";
-
-		return SU.cats(
-		  "Ред. шаблона отчёта: ", getView().getCode()
-		);
+		return SU.formatTitle("Ред. шаблона отчёта: ", getView().getCode());
 	}
 
 	public String getDid()

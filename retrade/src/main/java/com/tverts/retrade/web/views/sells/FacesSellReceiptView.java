@@ -78,10 +78,10 @@ public class FacesSellReceiptView extends NumericModelView
 
 	public String       getWinmainTitleInfo()
 	{
-		return SU.cats(
-		  "Чек №", getSellReceipt().getCode(),
-		  " кассы №", getSellsSession().getSellsDesk().getCode(),
-		  " от ", DU.datetime2str(getSellReceipt().getTime())
+		return formatTitle(
+		  SU.cats("Чек №", getSellReceipt().getCode()),
+		  SU.cats("касса ", getSellsSession().getSellsDesk().getCode()),
+		  DU.datetime2str(getSellReceipt().getTime())
 		);
 	}
 

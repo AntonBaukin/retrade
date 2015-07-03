@@ -36,7 +36,6 @@ import com.tverts.retrade.web.data.goods.ClientGoodsModelData;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
-import com.tverts.support.SU;
 
 
 /**
@@ -95,7 +94,7 @@ public class FacesClientGoodsView extends FacesGoodsView
 		Contractor c = bean(GetContractor.class).
 		  getContractor(EX.assertn(getModel().getContractor()));
 
-		return SU.cats("Цены товаров для к-та :: ", c.getName());
+		return formatTitle("Цены товаров для к-та", c.getName());
 	}
 
 
