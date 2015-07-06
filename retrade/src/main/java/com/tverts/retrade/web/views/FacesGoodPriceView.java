@@ -55,11 +55,12 @@ public class FacesGoodPriceView extends NumericModelView
 
 	public String  getWinmainTitleHistory()
 	{
-		return String.format("История цен товара [%s] в п-л [%s] %s",
-		  getGood().getCode(),
-		  getNumeric().getPriceList().getCode(),
-		  getNumeric().getPriceList().getName()
-		);
+		return formatTitles(
+		  formatTitle("История цен товара", getGood().getCode()),
+		  formatTitle("Прайс-лист",
+		    getNumeric().getPriceList().getCode(),
+		    getNumeric().getPriceList().getName()
+		));
 	}
 
 	public String  getGoodPrice()

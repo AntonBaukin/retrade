@@ -51,9 +51,10 @@ ${v.checkEntityRequested}
 
     <!-- [prices history button -->
 
-    <x:component coid = "${z:vid(v, 'prices_history')}">
+    <x:component coid = "${z:vid(v, 'prices-history')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'История цен', margin: extjsf.dpts(0, 0, 0, 6),
+        xtype: 'button', text: 'История цен',
+        disabled: true, margin: extjsf.dpts(0, 0, 0, 6),
         tooltipType: 'title', tooltip: 'Просмотреть историю цен товара выделенной строки'
       </f:facet>
     </x:component>
@@ -189,8 +190,22 @@ ${v.checkEntityRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
+  //~: enable-disable history button
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('added', function(g)
+  {
+    var b = extjsf.component("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}')
+
+    function x()
+    {
+      b.setDisabled(g.getSelection().length == 0)
+    }
+
+    g.on('selectionchange', x)
+    g.getStore().on('load', x)
+  })
+
   //~: open window with prices history
-  extjsf.bind("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}').openPricesHistory = function(rec, e)
+  extjsf.bind("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}').openPricesHistory = function(rec, e)
   {
     retrade_open_window({ url: '/price-lists/history',
       domainKey: "${z:vid(v, 'good_price_history')}",
@@ -200,13 +215,13 @@ ${v.checkEntityRequested}
   }
 
   //~: prices history click
-  extjsf.bindHandler("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}', function(btn, e)
+  extjsf.bindHandler("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}', function(btn, e)
   {
     var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     var sel  = grid.component().getSelectionModel().getSelection()
     if(!sel || sel.length != 1) return
 
-    extjsf.bind("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}').
       openPricesHistory(sel[0], e)
   })
 
@@ -214,7 +229,7 @@ ${v.checkEntityRequested}
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
     on('itemdblclick', function(grid, rec, node, row, e)
   {
-    extjsf.bind("${z:vid(v, 'prices_history')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}').
       openPricesHistory(rec, e)
   })
 

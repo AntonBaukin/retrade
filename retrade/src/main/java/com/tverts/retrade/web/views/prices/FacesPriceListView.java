@@ -72,7 +72,7 @@ public class FacesPriceListView extends NumericModelView
 
 	public String  getWinmainTitleInfo()
 	{
-		return String.format("Прайс лист [%s] %s",
+		return formatTitle("Прайс-лист",
 		  getNumeric().getCode(), getNumeric().getName()
 		);
 	}

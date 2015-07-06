@@ -389,14 +389,13 @@
     //~: activate the desktop
     ReTrade.desktop.activate()
 
-    ZeT.log('Window width: ', $(window).innerWidth())
-
     var inw = Ext.get(document.body).getWidth() / extjsf.inch(1);
     if($(window).innerWidth() < 1216) {
       ReTrade.desktop.panels.left.component().collapse()
       ReTrade.desktop.panels.right.component().collapse()
     }
 
+    //!: notify that initial desktop layout is gained
     ReTrade.desktop.readyPoint('ReTrade.desktop.initial-size', true)
   })
 

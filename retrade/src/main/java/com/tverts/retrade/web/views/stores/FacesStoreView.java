@@ -67,7 +67,7 @@ public class FacesStoreView extends UnityModelView
 
 	public String  getWinmainTitleInfo()
 	{
-		return String.format("Товары склада [%s] %s",
+		return formatTitle("Товары склада",
 		  getEntity().getCode(), getEntity().getName()
 		);
 	}

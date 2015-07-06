@@ -51,7 +51,6 @@ function retrade_open_window(opts)
   ZeT.asserts(opts.domain, 'No ExtJSF window domain string is provided!')
 
   //~: lookup the window bind
-  ZeT.log('Bind winmain in domain ', opts.domain)
   var winmain = extjsf.bind('winmain', opts.domain)
 
   //?: {has no box provided}
