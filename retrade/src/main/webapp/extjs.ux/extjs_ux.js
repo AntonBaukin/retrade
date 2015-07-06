@@ -23,9 +23,38 @@ Ext.Component.override({
 	setHtml           : function()
 	{
 		this.update.apply(this, arguments)
+	},
+
+	fireEventArgs     : function()
+	{
+		try
+		{
+			return this.callParent(arguments)
+		}
+		catch(e)
+		{
+			extjsf.catchError(e, this, ZeT.a(arguments))
+		}
 	}
 })
 
+Ext.mixin.Observable.override(
+{
+	fireEventArgs     : function()
+	{
+		try
+		{
+			return this.callParent(arguments)
+		}
+		catch(e)
+		{
+			extjsf.catchError(e, this, ZeT.a(arguments))
+		}
+	}
+})
+
+
+// +----: Time Picker :------------------------------------------+
 
 Ext.define('Ext.ux.picker.Time',
 {
@@ -77,6 +106,8 @@ Ext.define('Ext.ux.picker.Time',
 })
 
 
+// +----: Detached Button :--------------------------------------+
+
 /**
  * This special class is for buttons with render-to in menus.
  * In ExtJS 5.1 mouse pressing on them hides the menu before
@@ -94,6 +125,8 @@ Ext.define('Ext.ux.button.Detached',
 	}
 })
 
+
+// +----: Tri-State Checkbox :-----------------------------------+
 
 /**
  * Check Box having three states (in the toggle order):
@@ -166,6 +199,8 @@ Ext.define('Ext.ux.form.TriCheckbox',
 })
 
 
+// +----: Disabled Selection Model :-----------------------------+
+
 Ext.define('Ext.ux.selection.No',
 {
 	extend            : 'Ext.selection.RowModel',
@@ -177,6 +212,8 @@ Ext.define('Ext.ux.selection.No',
 	{}
 })
 
+
+// +----: Grid Row Action Cell :---------------------------------+
 
 /**
  * Action column that activates it's first

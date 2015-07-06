@@ -292,6 +292,10 @@ var extjsf = ZeT.define('extjsf',
 		});
 	},
 
+	catchError       : function(e, that, args)
+	{
+		ZeT.log('Caught unhandled exception: ', e, that, args)
+	},
 
 	//=     Ajax Processing      =//
 
