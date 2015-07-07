@@ -166,23 +166,6 @@ span.retrade-currency-sep
 
 /* form fields */
 
-textarea.x-form-textarea
-{
-  font-family: 'Tahoma', 'Arial', 'Verdana', sans-serif;
-  font-size: 12px;
-}
-
-td.x-form-item-body.x-form-cb-wrap
-{
-  vertical-align: middle;
-}
-
-.x-form-type-checkbox.x-item-disabled input,
-  .x-form-type-checkbox.x-item-disabled label
-{
-  cursor: default;
-}
-
 .retrade-form-label-cell
 {
   white-space: nowrap; letter-spacing: 0.1pt;
@@ -635,7 +618,7 @@ td.retrade-info-title div, .retrade-info-title-label,
  div.retrade-info-div .retrade-info-title,
  caption.retrade-info-title
 {
-  white-space: nowrap; margin: 1pt 4pt 0 7pt;
+  white-space: nowrap; margin: 0 4pt 0 7pt;
   font-size: 12pt; cursor: default;
   letter-spacing: 0.1pt;
 }
@@ -668,10 +651,11 @@ td.retrade-info-value div,
  .retrade-info-div .retrade-info-value,
  span.retrade-info-value
 {
-  padding: 2pt 2pt 1pt 2pt;
   font-size: 12pt; white-space: nowrap;
-  background-color: rgba(198, 219, 233, 0.5);
-  border-radius: 2px;
+  line-height: 16px; padding: 2pt 1pt 0 2pt;
+  background-color: #EEF6FB; border-radius: 4px;
+  border-bottom: 2px solid rgba(146, 191, 221, 0.5);
+  border-right: 1px solid rgba(146, 191, 221, 0.5);
 }
 
 .retrade-info-div .retrade-info-value-message-hard
@@ -858,22 +842,6 @@ table.retrade-info-table-price-history-good-price td.retrade-info-title:first-ch
 
 
 /* info panel [retrade/reprice-docs/info] */
-
-table.retrade-info-table.retrade-info-table-reprice-doc
-{
-  width: 0.01%;
-}
-
-table.retrade-info-table.retrade-info-table-reprice-doc td,
-  table.retrade-info-table.retrade-info-table-reprice-price-list td
-{
-  padding-bottom: 2px;
-}
-
-td.retrade-info-value.retrade-info-value-reprice-reason div
-{
-  font-size: 11px; white-space: normal;
-}
 
 
 /* info panel [retrade/reprice-docs/edit-change] */
@@ -1094,8 +1062,8 @@ td.retrade-info-value-derived-good-measure,
 
 td.retrade-info-value-derived-good-measure div
 {
+  font-weight: bolder; border: none;
   background-color: transparent;
-  font-weight: bolder;
 }
 
 td.retrade-info-value-derived-good-super-name div

@@ -241,7 +241,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		else r.x = (Ext.getBody().getWidth() - r.width)/2
 
 		//~: x-offset
-		var x = r.x, max = Ext.getBody().getWidth()
+		var x = r.x, max = Ext.getBody().getWidth() - 8
 		if(opts['+x']) x += opts['+x']
 		else if(opts['+xpt']) x += extjsf.pt(opts['+xpt'])
 		if(x + r.width > max) x = max - r.width
@@ -253,7 +253,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		else r.y = (Ext.getBody().getHeight() - r.height)/2
 
 		//~: y-offset
-		var y = r.y, may = Ext.getBody().getHeight()
+		var y = r.y, may = Ext.getBody().getHeight() - 8
 		if(opts['-y']) y -= opts['-y']
 		else if(opts['-ypt']) y -= extjsf.pt(opts['-ypt'])
 		if(opts['-height']) y -= opts.height

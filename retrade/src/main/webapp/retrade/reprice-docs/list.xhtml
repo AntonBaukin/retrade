@@ -28,7 +28,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <f:facet name = "toolbar-props">
       xtype: 'panel', bodyPadding: extjsf.pt(2),
-      layout: {type: 'hbox', align: 'middle'},
+      layout: { type: 'hbox', align: 'middle' },
       bodyCls: 'retrade-toolbar-inline-panel'
     </f:facet>
 
@@ -47,10 +47,9 @@ ${v.checkModelRequestedWithRedirect}
       <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'filter-form-dates')}">
 
         <f:facet name = "extjs-props">
-
           frame: false, border: false,
-          bodyCls: 'retrade-toolbar-panel',
-          layout: {type: 'table', columns: 6}
+          bodyCls: 'retrade-transparent-panel',
+          layout: { type: 'hbox', align: 'middle' }
         </f:facet>
 
 
@@ -60,8 +59,8 @@ ${v.checkModelRequestedWithRedirect}
 
           <f:facet name = "label-props">
             text: 'Проведённые', labelAlign: 'left',
-            cellCls: 'retrade-form-light-label-cell',
-            margin: extjsf.dpts(0, 4, 0, 0)
+            margin: extjsf.dpts(0, 4, 0, 0),
+            cls: 'retrade-info-title-label'
           </f:facet>
         </x:checkbox-field>
 
@@ -71,16 +70,16 @@ ${v.checkModelRequestedWithRedirect}
         <x:date-field coid = "${z:vid(v, 'min_date')}" value = "#{v.model.minDate}">
 
           <f:facet name = "label-props">
-            text: 'от', cellCls: 'retrade-form-light-label-cell',
-            margin: extjsf.dpts(1, 4, 1, 6)
+            text: 'от', cls: 'retrade-info-title-label',
+            margin: extjsf.dpts(0, 4, 0, 6)
           </f:facet>
         </x:date-field>
 
         <x:date-field coid = "${z:vid(v, 'max_date')}" value = "#{v.model.maxDate}">
 
           <f:facet name = "label-props">
-            text: 'до', cellCls: 'retrade-form-light-label-cell',
-            margin: extjsf.dpts(1, 4, 1, 6)
+            text: 'до', cls: 'retrade-info-title-label',
+            margin: extjsf.dpts(0, 4, 0, 6)
           </f:facet>
         </x:date-field>
 
@@ -134,7 +133,7 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [price change documents table -->
 
     <x:data-store storeId = "${z:vid(v, 'repriceDocs')}"
-      modelView = "${v}" pageSize = "32">
+      modelView = "${v}" pageSize = "20">
 
       <f:facet name = "store-props">
         model: 'retrade.model.RepriceDoc'
@@ -149,10 +148,9 @@ ${v.checkModelRequestedWithRedirect}
       storeId = "${z:vid(v, 'repriceDocs')}">
 
       <f:facet name = "grid-props">
-        region: 'center',
+        region: 'center', pager: true, sortableColumns: false,
         columns: ZeT.defined('retrade.columns.RepriceDoc'),
-        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-        pager: true, sortableColumns: false
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
       </f:facet>
     </x:data-grid>
 
@@ -163,7 +161,7 @@ ${v.checkModelRequestedWithRedirect}
     on('itemdblclick', function(comp, record, node, row, e)
   {
     retrade_open_window({ url: '/reprice-docs/info',
-      box: { event: e, widthpt: 620, heightpt: 360 },
+      box: { event: e, widthpt: 720, heightpt: 420 },
       domainKey: "${z:vid(v, 'view_reprice_doc')}",
       collapsible: true, record: record.getId()
     })

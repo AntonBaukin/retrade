@@ -769,12 +769,12 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 1
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 3
 		 },
 
 		 {
 		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(16), flex: 1
 		 },
 
 		 {
@@ -790,7 +790,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: 'Себест.', dataIndex: 'restCost', sortable: false,
 		   width: extjsf.ex(12), align: 'right', 
-		   renderer: retrade.fcurrency
+		   renderer: ZeT.fbindu(retrade.fcurrency, 1, { round: 2 })
 		 }
 		];
 	})
@@ -1316,8 +1316,8 @@ ZeT.init('init: retrade.data', function()
 		return [
 
 		 {
-		   text: '№', dataIndex: 'documentIndex',
-		   width: extjsf.ex(5), resizable: false, sortable: true,
+		   text: '№', dataIndex: 'documentIndex', align: 'right',
+		   width: extjsf.ex(6), resizable: false, sortable: true,
 		   cls: 'x-row-numberer', innerCls: 'x-grid-cell-inner-row-numberer',
 		   tdCls: 'x-grid-cell-row-numberer x-grid-cell-special'
 		 },
@@ -1328,16 +1328,19 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 2
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
+		   flex: 2, tdCls: 'ux-grid-column-smaller'
 		 },
 
 		 {
-		   text: "Группа", dataIndex: 'goodGroup', sortable: true, flex: 1
+		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
+		   flex: 1, tdCls: 'ux-grid-column-smaller'
 		 },
 
 		 {
 		   text: 'Изм. %', dataIndex: 'priceNew', sortable: false,
-		   width: extjsf.ex(10), align: 'right', renderer: function(v, meta, rec)
+		   width: extjsf.ex(8), tdCls: 'ux-grid-column-smaller',
+		   align: 'right', renderer: function(v, meta, rec)
 		   {
 				return retrade.fpercent(v, rec.get('priceOld'))
 		   }
@@ -1373,15 +1376,18 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 2
+		   text: "Наименование", dataIndex: 'goodName',
+			 sortable: true, flex: 1, tdCls: 'ux-grid-column-smaller'
 		 },
 
 		 {
 		   text: "Пр.-лист до", dataIndex: 'priceListOldName',
-		   sortable: false, flex: 1, renderer: function(v, meta, rec)
+		   sortable: true, width: extjsf.ex(16),
+		   tdCls: 'ux-grid-column-smaller',
+		   renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
-				  '[', rec.get('priceListOldCode'), '] ', v
+				  rec.get('priceListOldCode'), ' ● ', v
 				)), '"' );
 
 				return v;
@@ -1389,11 +1395,13 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
-		   text: "Пр.-лист после", dataIndex: 'priceListNewName', sortable: false,
-		   width: extjsf.ex(14), flex: 1, renderer: function(v, meta, rec)
+		   text: "Пр.-лист после", dataIndex: 'priceListNewName',
+		   sortable: true, width: extjsf.ex(16),
+		   tdCls: 'ux-grid-column-smaller',
+		   renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
-				  '[', rec.get('priceListNewCode'), '] ', v
+				  rec.get('priceListNewCode'), ' ● ', v
 				)), '"' );
 
 				return v;
@@ -1499,7 +1507,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'changeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -1514,7 +1522,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Основание изменения", dataIndex: 'changeReason', sortable: false,
-		   width: extjsf.ex(36), flex: 1
+		   width: extjsf.ex(36), flex: 1, tdCls: 'ux-grid-column-smaller',
+		   renderer: function(v, meta)
+		   {
+				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
+				return v
+		   }
 		 }
 		];
 	})
@@ -2018,7 +2031,6 @@ ZeT.init('init: retrade.data', function()
 	ZeT.defineDelay('retrade.columns.SellReceiptView', function()
 	{
 		return [
-
 		 {
 		   xtype: 'rownumberer', text: '№', dataIndex: 'index',
 		   width: extjsf.ex(5), resizable: false, hideable: false
@@ -3077,34 +3089,44 @@ var retrade = ZeT.define('retrade',
 
 	fcurrency        : function(v, o)
 	{
-		if(ZeT.isu(v) || (v === null)) return v;
-		if(!ZeT.iss(v)) v = '' + v;
+		if(ZeT.isu(v) || (v === null)) return v
+		if(!ZeT.iss(v)) v = '' + v
+		if(ZeTS.ises(v)) return v
 
-		var d = v.lastIndexOf(',');
-		if(d != -1) v[d] = '.';
+		if(ZeT.isi(o.round))
+		{
+			o.point_align_val = o.round
+			v = parseFloat(v)
 
-		var s = '';
-		d = v.lastIndexOf('.');
+			var d = Math.pow(10, o.round)
+			v = Math.round(v * d) / d
+			v = '' + v
+		}
+
+		var d = v.lastIndexOf(',')
+		if(d != -1) v[d] = '.'
+
+		var s = ''; d = v.lastIndexOf('.')
 
 		if(o && ZeT.isn(o.point_align_val))
 		{
-			var l = (d != -1)?(v.length - d - 1):(0);
+			var l = (d != -1)?(v.length - d - 1):(0)
 			while(l < o.point_align_val) { if(l == 0) v += '.'; v += '0'; l++; }
 		}
 
-		if(d != -1) s = v.substring(d);
-		if(d != -1) v = v.substring(0, d);
+		if(d != -1) s = v.substring(d)
+		if(d != -1) v = v.substring(0, d)
 
 		var p = '', x = (o && ZeT.iss(o.sep))?(o.sep):
-		  "<span class = 'retrade-currency-sep'></span>";
+		  "<span class = 'retrade-currency-sep'></span>"
 
 		while(v.length > 2)
 		{
-			p = v.substring(v.length - 3).concat((p.length?(x):('')), p);
-			v = v.substring(0, v.length - 3);
+			p = v.substring(v.length - 3).concat((p.length?(x):('')), p)
+			v = v.substring(0, v.length - 3)
 		}
 
-		return v.concat((v.length && p.length && v != '-')?(x):(''), p, s);
+		return v.concat((v.length && p.length && v != '-')?(x):(''), p, s)
 	},
 
 	fpercent         : function(a, b)
@@ -3123,13 +3145,14 @@ var retrade = ZeT.define('retrade',
 
 		if(!ZeT.isn(a) || !ZeT.isn(b))  return ''
 
-		var p = Math.round(10000.0 * (a - b) / b)
+		var s = (a < b)?('-'):('')
+		var p = Math.round(10000.0 * Math.abs(a - b) / b)
 		if(!ZeT.isn(p)) return ''
 
-		var d = '' + p % 100;
+		var d = '' + (p % 100)
 		if(d.length == 1) d = '0' + d
 
-		return '' + Math.floor(p * 0.01) + '.' + d
+		return s + Math.floor(p * 0.01) + '.' + d
 	},
 
 	/**

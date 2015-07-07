@@ -622,6 +622,44 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 	/**
+	 * Universal variant of ZeT.fbind().
+	 * Second argument may be this context.
+	 * Else arguments are index (0-based)
+	 * followed by the value.
+	 */
+	fbindu           : function(f /*, [this], (i, arg)* */)
+	{
+		//?: {has function and the context}
+		ZeT.assert(ZeT.isf(f))
+
+		var that = arguments[1], iarg = []
+
+		//?: {with this-context}
+		var i = 1; if(!ZeT.isi(that)) i = 2; else
+		that = undefined
+
+		//~: copy following arguments
+		while(i < arguments.length)
+		{
+			ZeT.assert(ZeT.isi(arguments[i]))
+			ZeT.assert(arguments[i] >= 0)
+			iarg.push(arguments[i])
+			ZeT.assert(i + 1 < arguments.length)
+			iarg.push(arguments[i+1])
+			i += 2
+		}
+
+		return function()
+		{
+			var a = ZeT.a(arguments)
+			for(i = 0;(i < iarg.length);i += 2)
+				a.splice(iarg[i], 0, iarg[i+1])
+
+			return f.apply(ZeT.isu(that)?(this):(that), a)
+		}
+	},
+
+	/**
 	 * Creates a function that sequentially calls the
 	 * functions given as the arguments.
 	 *

@@ -75,16 +75,9 @@ public class FacesRepriceDocView extends UnityModelView
 
 	public String  getWinmainTitleInfo()
 	{
-		StringBuilder s = new StringBuilder(128);
-
-		s.append("Документ изм. цен №").
-		  append(getEntity().getCode());
-
-		if(getEntity().getChangeTime() != null)
-			s.append(" от ").append(DU.datetime2str(
-			  getEntity().getChangeTime()));
-
-		return s.toString();
+		return formatTitle("Документ изм. цен",
+		  getEntity().getCode(), DU.datetime2str(getEntity().getChangeTime())
+		);
 	}
 
 	public boolean isDocumentFixed()
