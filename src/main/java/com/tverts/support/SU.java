@@ -264,10 +264,15 @@ public class SU
 	 * Returns {@code true} if the string is {@code null},
 	 * empty, or contains only whitespaces.
 	 */
-	public static boolean  sXe(String s)
+	public static boolean  sXe(CharSequence s)
 	{
-		return (s == null) || (s.length() == 0) ||
-		  (s.trim().length() == 0);
+		int l; if((s == null) || ((l = s.length()) == 0))
+			return true;
+
+		for(int i = 0;(i < l);i++)
+			if(!Character.isWhitespace(s.charAt(i)))
+				return false;
+		return true;
 	}
 
 	/**
@@ -528,7 +533,7 @@ public class SU
 	public static String formatTitle(String what, String code, Object... title)
 	{
 		CharSequence t = SU.cat(title);
-		return SU.cats(what, " ⸰ ", code, SU.catif(t, " ⸰ ", t));
+		return SU.cats(what, " ● ", code, SU.catif(t, " ● ", t));
 	}
 
 
@@ -600,7 +605,7 @@ public class SU
 	{
 		if(test == null) return "";
 
-		if((test instanceof String) && sXe((String) test))
+		if((test instanceof CharSequence) && sXe((CharSequence) test))
 			return "";
 
 		if((test instanceof Boolean) && Boolean.FALSE.equals(test))

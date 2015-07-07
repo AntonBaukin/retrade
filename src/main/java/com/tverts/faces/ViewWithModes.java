@@ -295,6 +295,11 @@ public abstract class ViewWithModes
 		return SU.formatTitle(what, code, title);
 	}
 
+	public String   formatTitles(CharSequence... titles)
+	{
+		return SU.cat(null, " ⸬ ", titles).toString();
+	}
+
 
 	/* protected: view support interface */
 
