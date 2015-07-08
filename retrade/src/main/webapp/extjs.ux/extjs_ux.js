@@ -53,6 +53,20 @@ Ext.mixin.Observable.override(
 	}
 })
 
+Ext.form.field.ComboBox.override(
+{
+	/**
+	 * ComboBox default list options.
+	 */
+	defaultListConfig : {
+
+		loadingHeight  : 64,
+		minWidth       : 64,
+		maxHeight      : 342,
+		shadow         : 'sides'
+	}
+})
+
 
 // +----: Time Picker :------------------------------------------+
 

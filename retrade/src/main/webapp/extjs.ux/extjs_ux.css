@@ -95,6 +95,50 @@ td.x-form-item-body.x-form-cb-wrap
   cursor: default;
 }
 
+.x-form-readonly input, .x-form-readonly textarea
+{
+  opacity: 0.8;
+}
+
+
+/* Drop Down List */
+
+.x-list-plain table.x-grid-table
+{
+  border-spacing: 0;
+}
+
+.x-boundlist-item:nth-child(even)
+{
+  background-color: rgba(193, 221, 241, 0.15);
+}
+
+.x-boundlist-item.x-boundlist-item-over:nth-child(even),
+  .x-boundlist-item.x-boundlist-item-selected.x-boundlist-item-over:nth-child(even)
+{
+  background-color: #D6E8F6;
+}
+
+.x-boundlist-item.x-boundlist-item-selected:nth-child(even)
+{
+  background-color: #C1DDF1;
+}
+
+li.x-boundlist-item
+{
+  font-size: 16px; line-height: 32px;
+}
+
+tr.x-boundlist-item td
+{
+  font-size: 16px; padding: 0 2pt; line-height: 34px;
+}
+
+tr.x-boundlist-item td:first-child
+{
+  padding-right: 6pt;
+}
+
 
 /* Grids */
 
