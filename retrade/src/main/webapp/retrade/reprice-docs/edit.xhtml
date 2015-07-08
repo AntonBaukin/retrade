@@ -106,8 +106,9 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [toggle comment] -->
     <x:component coid = "${z:vid(v, 'toggle-comment')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Комментарий',
-        enableToggle: true, margin: extjsf.pts(0, 8, 0, 0)
+        xtype: 'button', text: 'Основание',
+        enableToggle: true, margin: extjsf.pts(0, 8, 0, 0),
+        tooltipType: 'title', tooltip: 'Основание для изменения цен товаров'
       </f:facet>
     </x:component>
 
@@ -374,11 +375,11 @@ ${v.checkModelRequestedWithRedirect}
 
             select: function(f, sel)
             {
-              if(sel.length == 1) sel = sel[0]; else sel = null;
-              if(!sel || ZeTS.ises(sel.get('goodCode'))) return;
+              if(ZeT.isa(sel)) sel = sel[0]
+              if(!sel || ZeTS.ises(sel.get('goodCode'))) return
 
               extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').
-                 retradeRequestGoodsInfo(sel.get('goodCode'))
+                retradeRequestGoodsInfo(sel.get('goodCode'))
             }
           }
         });
@@ -419,22 +420,24 @@ ${v.checkModelRequestedWithRedirect}
 
           {
             text: '№', dataIndex: 'index', width: extjsf.ex(5),
-            resizable: false, sortable: true,
+            resizable: false, sortable: true, align: 'right',
             cls: 'x-row-numberer', innerCls: 'x-grid-cell-inner-row-numberer',
             tdCls: 'x-grid-cell-row-numberer x-grid-cell-special'
           },
 
           {
              text: "Код товара", dataIndex: 'goodCode', sortable: true,
-             width: extjsf.ex(12), editor: codeEditor, retradeHasEditor: true
+             width: extjsf.ex(14), editor: codeEditor, retradeHasEditor: true
           },
 
           {
-            text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 2
+            text: "Наименование", dataIndex: 'goodName', flex: 2,
+            sortable: true, tdCls: 'ux-grid-column-smaller'
           },
 
           {
-            text: "Группа", dataIndex: 'goodGroup', sortable: true, flex: 1
+            text: "Группа", dataIndex: 'goodGroup', flex: 1,
+            sortable: true, tdCls: 'ux-grid-column-smaller'
           },
 
           {
@@ -513,6 +516,8 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').retradeRequestGoodsInfo =
     function(goodCodes, priceList)
   {
+     ZeT.log('Requesting info: ', goodCodes, ' in list: ', priceList)
+
      extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}')({
        params: { goodCode : goodCodes, priceList: priceList }
      })

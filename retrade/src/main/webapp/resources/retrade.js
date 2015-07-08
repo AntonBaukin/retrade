@@ -3093,9 +3093,12 @@ var retrade = ZeT.define('retrade',
 		if(!ZeT.iss(v)) v = '' + v
 		if(ZeTS.ises(v)) return v
 
+		o = o || {}
+		if(!ZeT.isi(o.point)) o.point = 2
+
 		if(ZeT.isi(o.round))
 		{
-			o.point_align_val = o.round
+			o.point = o.round
 			v = parseFloat(v)
 
 			var d = Math.pow(10, o.round)
@@ -3105,13 +3108,13 @@ var retrade = ZeT.define('retrade',
 
 		var d = v.lastIndexOf(',')
 		if(d != -1) v[d] = '.'
-
 		var s = ''; d = v.lastIndexOf('.')
 
-		if(o && ZeT.isn(o.point_align_val))
+		if(ZeT.isi(o.point))
 		{
 			var l = (d != -1)?(v.length - d - 1):(0)
-			while(l < o.point_align_val) { if(l == 0) v += '.'; v += '0'; l++; }
+			while(l < o.point) { if(l == 0) v += '.'; v += '0'; l++; }
+			d = v.lastIndexOf('.')
 		}
 
 		if(d != -1) s = v.substring(d)
@@ -3180,7 +3183,7 @@ var retrade = ZeT.define('retrade',
 
 		if(opts['point_align'] === true)
 		{
-			if(!opts.point_align_val) opts.point_align_val = 0;
+			if(!opts.point) opts.point = 0;
 
 			var s = ZeTS.trim(node.innerHTML);
 			var d = s.lastIndexOf(',');
@@ -3189,7 +3192,7 @@ var retrade = ZeT.define('retrade',
 			if((d = s.lastIndexOf('.')) != -1)
 			{
 				var l = s.length - d - 1;
-				if(l > opts.point_align_val) opts.point_align_val = l;
+				if(l > opts.point) opts.point = l;
 			}
 
 			ZeT.log('l = ', l)

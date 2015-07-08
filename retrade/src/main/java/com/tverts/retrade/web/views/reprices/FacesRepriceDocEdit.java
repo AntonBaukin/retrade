@@ -26,7 +26,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: actions */
 
-import static com.tverts.actions.ActionsPoint.actionRun;
+import com.tverts.actions.ActionsPoint;
 import com.tverts.actions.ActionType;
 
 /* com.tverts: faces */
@@ -160,8 +160,9 @@ public class FacesRepriceDocEdit extends ModelView
 
 
 		//!: run save | update action
-		actionRun(isCreate()?(ActionType.SAVE):(ActionType.UPDATE),
-		  rd, Prices.REPRICE_EDIT, getModel().getView()
+		ActionsPoint.actionRun(isCreate()?(ActionType.SAVE):(ActionType.UPDATE),
+		  rd, Prices.REPRICE_EDIT, getModel().getView(),
+		  ActionsPoint.UNITY_TYPE, Prices.TYPE_REPRICE_DOC
 		);
 
 		return null;
@@ -171,7 +172,7 @@ public class FacesRepriceDocEdit extends ModelView
 	public String doUpdateGoodsInfo()
 	{
 		//~: read the codes from the request
-		HashSet<String> codeset = new HashSet<String>(11);
+		HashSet<String> codeset = new HashSet<>(11);
 		String[]        codeprm = request().getParameterValues("goodCode");
 		if(codeprm != null) codeset.addAll(Arrays.asList(codeprm));
 		if(codeset.isEmpty()) throw EX.arg();
@@ -198,7 +199,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 
 		//~: read the good units of interest
-		List<String> codes = new ArrayList<String>(codeset);
+		List<String> codes = new ArrayList<>(codeset);
 		HashMap      info  = new HashMap(codes.size());
 
 		for(int i = 0;(i < codes.size());)
