@@ -102,12 +102,23 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
+    <!-- [toggle good groups button] -->
+    <x:component coid = "${z:vid(v, 'toggle-groups')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Ценовые группы',
+        margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+        tooltip: 'Отобразить проценты изменения цен по группам товаров',
+        toggleGroup: "${z:vid(v, 'toggle-group')}"
+      </f:facet>
+    </x:component>
+
 
     <!-- [toggle comment] -->
     <x:component coid = "${z:vid(v, 'toggle-comment')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Основание',
         enableToggle: true, margin: extjsf.pts(0, 8, 0, 0),
+        toggleGroup: "${z:vid(v, 'toggle-group')}",
         tooltipType: 'title', tooltip: 'Основание для изменения цен товаров'
       </f:facet>
     </x:component>
@@ -184,6 +195,32 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
     </x:data-store>
 
+    <x:data-store storeId = "${z:vid(v, 'groups-filtered')}"
+      modelView = "${v}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.KeyValue', filters: [
+          function(m) { return m.get('key') != 'ø' }
+        ]
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        noproxy: true
+      </f:facet>
+    </x:data-store>
+
+    <script type = "text/javascript">
+    //<![CDATA[
+
+    retrade_replicate_store(
+      "${z:vid(v, 'groups')}",
+      "${z:vid(v, 'groups-filtered')}",
+      '${rootView.extjsDomain}'
+    )
+
+    //]]>
+    </script>
+
     <x:drop-list coid = "${z:vid(v, 'group')}"
       storeId = "${z:vid(v, 'groups')}" value = "">
 
@@ -200,6 +237,18 @@ ${v.checkModelRequestedWithRedirect}
     </x:drop-list>
 
     <!-- good groups drop list] -->
+
+
+    <!-- [group percent edit] -->
+    <x:checkbox-field coid = "${z:vid(v, 'group-percent')}"
+      value = "#{v.phonyBoolTrue}">
+
+      <f:facet name = "label-props">
+        margin: extjsf.dpts(0, 4, 0, 6), cls: 'retrade-info-title-label', labelAlign: 'left',
+        html: "&lt;span title = 'Применять автоматический пересчёт цен для нефиксированных" +
+          " позиций'&gt;Изм. %&lt;/span&gt;"
+      </f:facet>
+    </x:checkbox-field>
 
 
     <!-- [change reason hidden] -->
@@ -221,13 +270,64 @@ ${v.checkModelRequestedWithRedirect}
    value = "#{v.model.view.changeReason}">
 
     <f:facet name = "extjs-props">
-      xtype: 'textarea', flex: 1, hidden: true
+      xtype: 'textarea', flex: 1, hidden: true, margin: 0
     </f:facet>
   </x:text-field>
 
+  <!-- [good groups table -->
 
-  <!-- [price changes table -->
+  <x:component coid = "${z:vid(v, 'groups-grid-layout')}">
+    <f:facet name = "extjs-props">
+      hidden: true, flex: 1, border: false,
+      layout: { type: 'vbox', align: 'middle' },
+      bodyCls: 'retrade-transparent-panel'
+    </f:facet>
 
+    <x:component coid = "${z:vid(v, '_groups_fill_up')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
+
+    <x:data-grid coid = "${z:vid(v, 'groups-grid')}"
+      storeId = "${z:vid(v, 'groups-filtered')}">
+
+      <f:facet name = "grid-props">
+        title: 'Проценты изменения цен по группам товаров',
+        selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+        cls: 'ux-grid-not-mark-dirty',
+        width: extjsf.ex(48), columns: [
+        { text: "Группа", dataIndex: 'key', flex: 1 },
+        { text: "Изм. %", dataIndex: 'value', width: extjsf.ex(12), align: 'right' }
+        ]
+      </f:facet>
+    </x:data-grid>
+
+    <x:html coid = "${z:vid(v, 'groups-grid')}">
+      <f:facet name = "extjs-props">
+
+      </f:facet>
+
+      <div class = "retrade-form-inline-comment retrade-reprice-doc-edit-good-groups-comment">
+        Примечание: данная таблица заполняется автоматически при редактировании
+        колонки процента изменения цены товара при включённой опции «Изм. %».
+      </div>
+    </x:html>
+
+
+    <x:component coid = "${z:vid(v, '_groups_fill_down')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
+  </x:component>
+
+  <!-- good groups table] -->
+
+
+  <!-- [price changes store] -->
   <x:data-store storeId = "${z:vid(v, 'store')}"
     modelView = "${v}" pageSize = "0">
 
@@ -242,6 +342,7 @@ ${v.checkModelRequestedWithRedirect}
   </x:data-store>
 
 
+  <!-- [goods store] -->
   <x:data-store storeId = "${z:vid(v, 'goodsStore')}"
     modelProvider = "facesRepriceDocEdit" modelRequest  = "goods"
     modelKey = "#{v.modelKeys}" pageSize = "10">
@@ -255,15 +356,16 @@ ${v.checkModelRequestedWithRedirect}
     </f:facet>
   </x:data-store>
 
+
+  <!-- [price changes table -->
+
   <x:data-grid coid = "${z:vid(v, 'grid')}"
     storeId = "${z:vid(v, 'store')}">
 
     <f:facet name = "grid-props">
 
-      margin: extjsf.pts(1, 0, 0, 0),
-      flex: 1, border: false, pager: false,
-      cls: 'ux-grid-not-mark-dirty',
-      sortableColumns: false, enableColumnHide: false,
+      margin: extjsf.pts(1, 0, 0, 0), cls: 'ux-grid-not-mark-dirty',
+      flex: 1, border: false, pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
 
       plugins: [{
@@ -274,8 +376,55 @@ ${v.checkModelRequestedWithRedirect}
         {
            var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
            if(g.retradeDisabledEditing) return false; else g.retradeEditEvent = event;
-        }
+        },
 
+        edit : function(ed, e)
+        {
+          if(e.field == 'priceNew')
+          {
+            e.record.set('fixPrice', true)
+          }
+
+          if(e.field == 'deltaPercent')
+          {
+              var v; if(ZeTS.ises(v = e.value)) return
+              if(!ZeT.isn(v = parseFloat(v))) return
+              v += 100.0; if(v &lt;= 0) return
+
+              var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+              var e = g.retradeEditEvent; if(!e) return
+
+              var p = e.record.get('priceCur')
+              if(ZeTS.ises(p)) return
+              if(!ZeT.isn(p = parseFloat(p))) return
+              p = p * v * 0.01
+
+              e.record.set('priceNew', retrade.round2str(2, p))
+              e.record.set('fixPrice', false)
+
+              //~: recalculate prices for all esle goods of the same group
+              if(extjsf.bind("${z:vid(v, 'group-percent')}", '${rootView.extjsDomain}').value())
+              {
+                g.component().getStore().each(function(m)
+                {
+                  if((m === e.record) || m.get('fixPrice')) return
+                  if(m.get('goodGroup') !== e.record.get('goodGroup')) return
+
+                  p = m.get('priceCur')
+                  if(ZeTS.ises(p)) return
+                  if(!ZeT.isn(p = parseFloat(p))) return
+
+                  p = p * v * 0.01
+                  m.set('priceNew', retrade.round2str(2, p))
+                })
+
+                //~: update the percent of the group
+                var gr = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').
+                  getById(e.record.get('goodGroup'))
+                if(gr) gr.set('value', e.value)
+              }
+          }
+        }
       }}],
 
       listeners: {
@@ -382,18 +531,16 @@ ${v.checkModelRequestedWithRedirect}
                 retradeRequestGoodsInfo(sel.get('goodCode'))
             }
           }
-        });
+        })
 
+        var deltaEditor = Ext.create('Ext.form.field.Text', {
+          maskRe: retrade.rpercent, listeners: { specialkey : onSpecialKey }
+        })
 
         var priceEditor = Ext.create('Ext.form.field.Text', {
-          maskRe: retrade.rdecimal, validator: retrade.vcurrency, listeners: {
-            specialkey : onSpecialKey, change: function()
-            {
-              var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
-              var e = g.retradeEditEvent; if(!e) return
-              e.record.set('fixPrice', true)
-            }
-        }})
+          maskRe: retrade.rdecimal, validator: retrade.vcurrency,
+          listeners: { specialkey : onSpecialKey }
+        })
 
         var fixEditor = Ext.create('Ext.form.field.Checkbox', {
           listeners: { specialkey : onSpecialKey }
@@ -431,18 +578,27 @@ ${v.checkModelRequestedWithRedirect}
           },
 
           {
-            text: "Наименование", dataIndex: 'goodName', flex: 2,
+            text: "Наименование", dataIndex: 'goodName', flex: 3,
             sortable: true, tdCls: 'ux-grid-column-smaller'
           },
 
           {
-            text: "Группа", dataIndex: 'goodGroup', flex: 1,
+            text: "Группа", dataIndex: 'goodGroup', flex: 2,
             sortable: true, tdCls: 'ux-grid-column-smaller'
           },
 
           {
             text: "Ед. изм.", dataIndex: 'measureName',
             width: extjsf.ex(12), align: 'right'
+          },
+
+          {
+            text: 'Изм. %', dataIndex: 'deltaPercent', sortable: false,
+            width: extjsf.ex(8), align: 'right', editor: deltaEditor,
+            renderer: function(v, meta, rec)
+            {
+              return retrade.fpercent(rec.get('priceNew'), rec.get('priceCur'))
+            }
           },
 
           {
@@ -516,8 +672,6 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').retradeRequestGoodsInfo =
     function(goodCodes, priceList)
   {
-     ZeT.log('Requesting info: ', goodCodes, ' in list: ', priceList)
-
      extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}')({
        params: { goodCode : goodCodes, priceList: priceList }
      })
@@ -527,6 +681,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').retradeUpdateGoodsInfo = function(info)
   {
     var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var u = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
     var e = g.retradeEditEvent
     var s = g.component().getStore()
 
@@ -542,6 +697,16 @@ ${v.checkModelRequestedWithRedirect}
        m.set('goodGroup', x[1])
        m.set('measureName', x[2])
        m.set('priceCur', x[3])
+
+       //~: update the good price
+       if(!m.get('fixPrice') && !ZeTS.ises(m.get('goodGroup')) && !ZeTS.ises(m.get('priceCur')))
+       {
+         var p = u.getById(m.get('goodGroup'))
+         var x = parseFloat(m.get('priceCur'))
+
+         if(p && ZeT.isn(p = parseFloat(p)) && ZeT.isn(x))
+           m.set('priceNew', retrade.round2str(2, (p + 100.0) * x * 0.01))
+       }
     }
 
     //~: update the groups store
@@ -684,18 +849,31 @@ ${v.checkModelRequestedWithRedirect}
     ZeT.timeout(200, function() { p.startEdit(row, col) })
   })
 
-  //~: toggle the comment
-  extjsf.bind("${z:vid(v, 'toggle-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+  //~: toggle group
+  Ext.onReady(ZeT.timeouted(250, function()
   {
-    extjsf.component("${z:vid(v, 'comment')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
-    extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
-  })
+    //~: toggle the comment
+    extjsf.bind("${z:vid(v, 'toggle-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+    {
+      extjsf.component("${z:vid(v, 'comment')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
+      extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
+    })
+
+    //~: toggle the groups
+    extjsf.bind("${z:vid(v, 'toggle-groups')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+    {
+      extjsf.component("${z:vid(v, 'groups-grid-layout')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
+      extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
+    })
+  }))
 
   //~: add good when the table is empty
   extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').on('load', function(store)
   {
     if(store.count() == 0)
       extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}')()
+    else
+      extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore()
   })
 
   //~: commit the form
@@ -752,6 +930,10 @@ ${v.checkModelRequestedWithRedirect}
        params['goodCode'+i] = m.get('goodCode');
        params['priceNew'+i] = m.get('priceNew');
     }
+
+    //~: copy change reason
+    extjsf.bind("${z:vid(v, 'change-reason')}", '${rootView.extjsDomain}').value(
+      extjsf.bind("${z:vid(v, 'comment')}", '${rootView.extjsDomain}').value())
 
     //!: submit the form
     form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',

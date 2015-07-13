@@ -195,6 +195,45 @@ function retrade_chain_on_load(domain, rootBind)
   onload(rootBind)
 }
 
+function retrade_replicate_store(master, slave, domain)
+{
+  if(ZeT.iss(master))
+    master = extjsf.bind(master, domain)
+  master = extjsf.asbind(master)
+  ZeT.assert(master)
+
+  if(ZeT.iss(slave))
+    slave = extjsf.bind(slave, domain)
+  slave = extjsf.asbind(slave)
+  ZeT.assert(slave)
+
+  function synch_data()
+  {
+    var rs = []; master.component().each(
+      function(m){ rs.push(m.copy()) })
+
+    slave.component().removeAll()
+    slave.component().add(rs)
+  }
+
+  if(master.component() && slave.component() && master.component().isLoaded())
+    synch_data()
+
+  //~: record inserted-removed
+  master.on('datachanged', synch_data)
+
+  //~: record changed
+  master.on('update', function(s, m, op, fs)
+  {
+    ZeT.assertn(m.getId())
+    var x = ZeT.assertn(slave.component().getById(m.getId()),
+      'Record ID [', m.getId(), '] is not found in the slave Store!')
+
+    //~: assign the updated fields
+    ZeT.each(fs, function(f){ x.set(f, m.get(f)) })
+  })
+}
+
 //]]>
 </script>
 </ui:component>

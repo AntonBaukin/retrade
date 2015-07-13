@@ -2994,7 +2994,7 @@ var retrade = ZeT.define('retrade',
 
 	rdecimal         : /[\d\.]/,
 
-	rinteger         : /[\d]/,
+	rinteger         : /[\d\.-]/,
 
 	vdecimal         : function(o, v)
 	{
@@ -3084,6 +3084,21 @@ var retrade = ZeT.define('retrade',
 		return v.match(/^\d+$/)?(v):(null);
 	},
 
+	//=    Forms Calculations    =//
+
+	round2str        : function(n, v)
+	{
+		if(!ZeT.isn(v)) return v
+		ZeT.assert(ZeT.isi(n) && (n > 0))
+
+		v = '' + Math.round(v * Math.pow(10.0, n))
+
+		while(v.length < n) v = '0' + v
+		if(v.length == n) return '0.' + v
+
+		return v.substring(0, v.length - n) + '.' +
+		  v.substring(v.length - n)
+	},
 
 	//=       Formatters         =//
 

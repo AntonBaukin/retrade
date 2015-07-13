@@ -81,12 +81,16 @@ span.retrade-inline-link
   background-color: transparent;
 }
 
-.retrade-toolbar-inline-comment
+.retrade-form-inline-comment, .retrade-toolbar-inline-comment
 {
   font-family: 'Tahoma', sans-serif;
-  font-size: 9pt; font-style: italic;
+  font-size: 9pt; line-height: 11pt;
+  font-style: italic; cursor: default;
+}
+
+.retrade-toolbar-inline-comment
+{
   white-space: nowrap; overflow: hidden;
-  cursor: default;
 }
 
 table.extjsf-html-content > tbody > tr > td
@@ -831,7 +835,12 @@ table.retrade-info-table-price-history-good-price td.retrade-info-title:first-ch
 }
 
 
-/* info panel [retrade/reprice-docs/info] */
+/* info panel [retrade/reprice-docs/edit] */
+
+.retrade-reprice-doc-edit-good-groups-comment
+{
+  margin-top: 4pt; width: 52ex; text-align: justify;
+}
 
 
 /* info panel [retrade/reprice-docs/edit-change] */

@@ -770,8 +770,8 @@ public class ActReprice extends ActionBuilderReTrade
 			  getPriceList(EX.assertn(re.getPriceListKey())));
 			EX.assertn(rd.getPriceList());
 
-			//~: change reason
-			pc.setRemarks(SU.s2s(re.getChangeReason()));
+			//~: remarks (change reason)
+			rd.getOx().setRemarks(re.getChangeReason());
 
 			//~: assign the changes
 			assignChanges();
@@ -827,34 +827,32 @@ public class ActReprice extends ActionBuilderReTrade
 					HiberPoint.setPrimaryKey(session(), pc,
 					  HiberPoint.isTestInstance(rd));
 
-					//~: reprice doc
+					//=: reprice doc
 					pc.setRepriceDoc(rd);
 
-					//~: good unit
-					pc.setGoodUnit(gg.getGoodUnit(dk, gc));
-					if(pc.getGoodUnit() == null)
-						throw EX.state("Good Unit code [", gc, "] not found!");
+					//=: good unit
+					pc.setGoodUnit(EX.assertn(gg.getGoodUnit(dk, gc),
+					  "Good Unit code [", gc, "] not found!"
+					));
 				}
 
-				//~: new price
+				//=: new price
 				pc.setPriceNew(pe.getPriceNew());
+
+				//=: price list
+				pc.setPriceList(rd.getPriceList());
 			}
 
 			//~: set indices of the changes according to the edit
-			ArrayList<PriceChange> changes =
-			  new ArrayList<>(pcm.size());
-
+			rd.getChanges().clear();
 			for(int i = 0;(i < re.getPriceChanges().size());i++)
 			{
 				String      gc = re.getPriceChanges().get(i).getGoodCode();
 				PriceChange pc = EX.assertn(pcm.get(gc));
 
-				changes.add(pc);
+				rd.getChanges().add(pc);
 				pc.setDocIndex(i);
 			}
-
-			//!: assign the results
-			rd.setChanges(changes);
 		}
 
 

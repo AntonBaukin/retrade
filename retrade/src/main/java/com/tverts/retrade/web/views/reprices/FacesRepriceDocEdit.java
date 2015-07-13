@@ -13,6 +13,7 @@ import java.util.Map;
 
 /* Spring Framework */
 
+import com.tverts.support.CMP;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -100,14 +101,14 @@ public class FacesRepriceDocEdit extends ModelView
 			//~: good code
 			pce.setGoodCode(code);
 
-			//~: new price
-			pce.setPriceNew(
-			  new BigDecimal(SU.s2s(request().getParameter("priceNew" + i))).setScale(2)
-			);
+			//~: price string
+			pce.setPriceNew(new BigDecimal(
+			  EX.asserts(request().getParameter("priceNew" + i))
+			));
 
 			//?: {wrong price value}
-			if(BigDecimal.ZERO.compareTo(pce.getPriceNew()) >= 0)
-				throw EX.state();
+			EX.assertx(pce.getPriceNew().scale() < 3);
+			EX.assertx(CMP.grZero(pce.getPriceNew()));
 		}
 
 		//~: check for duplicated codes
@@ -118,38 +119,29 @@ public class FacesRepriceDocEdit extends ModelView
 			else
 				codes.add(pce.getGoodCode());
 
-
 		//~: load | create the price change document
-		RepriceDoc rd;
-
-		if(isCreate())
+		RepriceDoc rd; if(isCreate())
 		{
 			rd = new RepriceDoc();
 
 			//~: domain
 			rd.setDomain(loadModelDomain());
 		}
+		//~: load the document
 		else
-		{
-			//~: load the document
-			rd = bean(GetPrices.class).
-			  getRepriceDoc(getModel().getView().getObjectKey());
-
-			if(rd == null) throw EX.state();
-		}
-
+			rd = EX.assertn(bean(GetPrices.class).
+			  getRepriceDoc(getModel().getView().getObjectKey()
+			));
 
 		//~: check code exists & assign it
-		String code = SU.s2s(getModel().getView().getCode());
-		if(code == null) throw EX.arg();
+		String code = EX.asserts(getModel().getView().getCode());
 		if(codeExists = checkCodeExists(code)) return null;
 		rd.setCode(code);
 
-
 		//~: assign the price list
-		PriceListEntity pl = bean(GetPrices.class).
-		  getPriceList(getModel().getView().getPriceListKey());
-		if(pl == null) throw EX.state();
+		PriceListEntity pl = EX.assertn(bean(GetPrices.class).
+		  getPriceList(getModel().getView().getPriceListKey()
+		));
 
 		//sec: check the domain of price list
 		if(!getModel().domain().equals(pl.getDomain().getPrimaryKey()))
@@ -160,7 +152,8 @@ public class FacesRepriceDocEdit extends ModelView
 
 
 		//!: run save | update action
-		ActionsPoint.actionRun(isCreate()?(ActionType.SAVE):(ActionType.UPDATE),
+		ActionsPoint.actionRun(
+		  isCreate()?(ActionType.SAVE):(ActionType.UPDATE),
 		  rd, Prices.REPRICE_EDIT, getModel().getView(),
 		  ActionsPoint.UNITY_TYPE, Prices.TYPE_REPRICE_DOC
 		);
@@ -276,7 +269,7 @@ public class FacesRepriceDocEdit extends ModelView
 	public String getWinmainTitle()
 	{
 		return (isCreate())?("Создание документа изменения цен"):
-		  formatTitle("Ред. док-та изм. цены", getModel().getView().getCode());
+		  formatTitle("Ред. документа изменения цен", getModel().getView().getCode());
 	}
 
 	public Map<String, String> getPriceListsLabels()

@@ -79,7 +79,7 @@ ${v.checkEntityRequested}
     </x:component>
 
 
-    <!-- [toggle contractors list button] -->
+    <!-- [toggle good groups button] -->
     <x:component coid = "${z:vid(v, 'toggle-groups')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Ценовые группы', hidden: #{not v.hasGroups},
@@ -177,7 +177,7 @@ ${v.checkEntityRequested}
 
           'method'           : 'GET',
           '${v.modelParam}'  : '${v.modelKey}',
-          '${v.entityParam}' : '${v.model.objectKey}'
+          '${v.entityParam}' : '${v.model.primaryKey}'
         </f:facet>
       </x:winaction-button>
     </c:if>
