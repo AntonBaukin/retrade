@@ -301,6 +301,25 @@ public abstract class ViewWithModes
 	}
 
 
+	/* Phony Fields */
+
+	public boolean isPhonyBoolTrue()
+	{
+		return true;
+	}
+
+	public void    setPhonyBoolTrue(boolean phonyBoolTrue)
+	{}
+
+	public boolean isPhonyBoolFalse()
+	{
+		return false;
+	}
+
+	public void    setPhonyBoolFalse(boolean phonyBoolFalse)
+	{}
+
+
 	/* protected: view support interface */
 
 	protected String   obtainRequestedViewId()

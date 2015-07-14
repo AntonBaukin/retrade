@@ -536,6 +536,31 @@ public class SU
 		return SU.cats(what, " ● ", code, SU.catif(t, " ● ", t));
 	}
 
+	public static String jsonMap(Map<?,?> m)
+	{
+		StringBuilder s = new StringBuilder(128);
+		s.append('{');
+
+		if(m != null) for(Map.Entry<?,?> e : m.entrySet())
+		{
+			if(e.getKey() == null) continue;
+			String k = e.getKey().toString();
+			if(SU.sXe(k)) continue;
+
+			if(s.length() != 1) s.append(", ");
+			s.append('"').append(SU.jss(k)).append("\": ");
+
+			String v = (e.getValue() == null)?(null):(e.getValue().toString());
+			if(v == null)
+				s.append("null");
+			else
+				s.append('"').append(SU.jss(v)).append('"');
+		}
+
+		s.append('}');
+		return s.toString();
+	}
+
 
 	/* Buffering */
 
