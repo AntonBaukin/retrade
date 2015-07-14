@@ -1270,6 +1270,7 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'priceListNew',     type: 'string'},
 	    {name: 'priceListNewCode', type: 'string'},
 	    {name: 'priceListNewName', type: 'string'},
+	    {name: 'deleteGood',       type: 'boolean'},
 	    {name: 'fixPrice',         type: 'boolean'}
 	  ]
 	})
@@ -1355,8 +1356,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Цена после', dataIndex: 'priceNew', sortable: false,
-		   width: extjsf.ex(14), align: 'right', 
-		   renderer: retrade.fcurrency
+		   width: extjsf.ex(14), align: 'right', renderer: function(v, meta)
+		   {
+				meta.tdCls = ''
+				if(!ZeTS.ises(v)) return retrade.fcurrency(v)
+				meta.tdCls = 'retrade-reprice-doc-edit-good-removed-new-price-cell'
+				return 'Удалён'
+		   }
 		 },
 
 		 {
@@ -1425,8 +1431,13 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: 'Цена после', dataIndex: 'priceNew', sortable: false,
-		   width: extjsf.ex(12), align: 'right',
-		   renderer: retrade.fcurrency
+		   width: extjsf.ex(12), align: 'right', renderer: function(v, meta)
+		   {
+				meta.tdCls = ''
+				if(!ZeTS.ises(v)) return retrade.fcurrency(v)
+				meta.tdCls = 'retrade-reprice-doc-edit-good-removed-new-price-cell'
+				return 'Удалён'
+		   }
 		 },
 
 		 {

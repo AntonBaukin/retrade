@@ -385,7 +385,7 @@ ${v.checkModelRequestedWithRedirect}
             e.record.set('fixPrice', true)
           }
 
-          if(e.field == 'fixPrice') (function(e)
+          if((e.field == 'fixPrice') || (e.field == 'deleteGood') ) (function(e)
           {
             if(e.value) return
             if(ZeTS.ises(e.record.get('priceCur'))) return
@@ -553,6 +553,10 @@ ${v.checkModelRequestedWithRedirect}
           }
         })
 
+        var delEditor = Ext.create('Ext.form.field.Checkbox', {
+          listeners: { specialkey : onSpecialKey }
+        })
+
         var deltaEditor = Ext.create('Ext.form.field.Text', {
           maskRe: retrade.rpercent, listeners: { specialkey : onSpecialKey }
         })
@@ -564,7 +568,25 @@ ${v.checkModelRequestedWithRedirect}
 
         var fixEditor = Ext.create('Ext.form.field.Checkbox', {
           listeners: { specialkey : onSpecialKey }
-        });
+        })
+
+        function removedRenderer(v, meta)
+        {
+          var t; if(v)
+          {
+             v = 'да'
+             t = 'Товар будет удалён из выбранного прайс-листа'
+          }
+          else
+          {
+             v = 'нет'
+             t = 'Товар будет добавлен в выбранный прайс-лист, или его цена будет изменена'
+          }
+
+          meta.tdAttr = 'title="' + Ext.String.htmlEncode(t) + '"'
+          meta.tdCls  = (v == 'нет')?(''):('retrade-reprice-doc-edit-good-removed-check-cell')
+          return v
+        }
 
         function fixRenderer(v, meta)
         {
@@ -579,8 +601,15 @@ ${v.checkModelRequestedWithRedirect}
              t = 'При автоматическом пересчете цена будет изменена'
           }
 
-          meta.tdAttr = 'title="' + Ext.String.htmlEncode(t) + '"';
+          meta.tdAttr = 'title="' + Ext.String.htmlEncode(t) + '"'
           return v
+        }
+
+        function curPriceRenderer(v, meta)
+        {
+          var removed = meta.record.get('deleteGood')
+          meta.tdCls  = (!removed)?(''):('retrade-reprice-doc-edit-good-removed-new-price-cell')
+          return (!removed)?(v):('Удалён')
         }
 
         return [
@@ -608,6 +637,12 @@ ${v.checkModelRequestedWithRedirect}
           },
 
           {
+            text: 'Удал.', dataIndex: 'deleteGood', width: extjsf.ex(6),
+            align: 'center', editor: fixEditor, retradeHasEditor: true,
+            renderer : removedRenderer
+          },
+
+          {
             text: "Ед. изм.", dataIndex: 'measureName',
             width: extjsf.ex(12), align: 'right'
           },
@@ -615,8 +650,9 @@ ${v.checkModelRequestedWithRedirect}
           {
             text: 'Изм. %', dataIndex: 'deltaPercent', sortable: false,
             width: extjsf.ex(8), align: 'right', editor: deltaEditor,
-            renderer: function(v, meta, rec)
+            retradeHasEditor: true, renderer: function(v, meta, rec)
             {
+              if(rec.get('deleteGood')) return ''
               return retrade.fpercent(rec.get('priceNew'), rec.get('priceCur'))
             }
           },
@@ -629,7 +665,7 @@ ${v.checkModelRequestedWithRedirect}
           {
             text: 'Цена после', dataIndex: 'priceNew',
             width: extjsf.ex(12), align: 'right', renderer: retrade.fcurrency,
-            editor: priceEditor, retradeHasEditor: true
+            editor: priceEditor, retradeHasEditor: true, renderer: curPriceRenderer
           },
 
           {
@@ -928,7 +964,7 @@ ${v.checkModelRequestedWithRedirect}
         if(ZeTS.ises(m.get('goodCode')))
           return ZeTS.cat('Код в строке [', m.get('index'), '] пуст!')
 
-        if(ZeTS.ises(m.get('priceNew')))
+        if(!m.get('deleteGood') && ZeTS.ises(m.get('priceNew')))
           return ZeTS.cat('Новая цена в строке [', m.get('index'), '] пуста!')
 
         if(codes[m.get('goodCode')])
@@ -950,9 +986,10 @@ ${v.checkModelRequestedWithRedirect}
     for(var i = 0;(i < s.count());i++)
     {
        m = s.getAt(i)
-       params['goodCode'+i] = m.get('goodCode')
-       params['priceNew'+i] = m.get('priceNew')
-       params['fixPrice'+i] = m.get('fixPrice')
+       params['goodCode'+i]   = m.get('goodCode')
+       params['deleteGood'+i] = m.get('deleteGood')
+       params['priceNew'+i]   = m.get('priceNew')
+       params['fixPrice'+i]   = m.get('fixPrice')
     }
 
     //~: put good groups

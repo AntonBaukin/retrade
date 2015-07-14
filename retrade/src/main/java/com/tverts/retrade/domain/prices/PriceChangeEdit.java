@@ -2,6 +2,7 @@ package com.tverts.retrade.domain.prices;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -63,6 +64,12 @@ public class PriceChangeEdit extends PriceChangeView
 	public void setFixPrice(boolean fixPrice)
 	{
 		this.fixPrice = fixPrice;
+	}
+
+	@XmlElement
+	public boolean isDeleteGood()
+	{
+		return (getPriceNew() == null);
 	}
 
 

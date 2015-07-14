@@ -102,19 +102,25 @@ public class FacesRepriceDocEdit extends ModelView
 			//=: good code
 			pce.setGoodCode(code);
 
-			//=: price string
-			pce.setPriceNew(new BigDecimal(
-			  EX.asserts(request().getParameter("priceNew" + i))
-			));
+			//?: {good is not removed}
+			if("true".equals(request().getParameter("deleteGood" + i)))
+				pce.setPriceNew(null);
+			else
+			{
+				//=: price string
+				pce.setPriceNew(new BigDecimal(
+				  EX.asserts(request().getParameter("priceNew" + i))
+				));
 
-			//?: {wrong price value}
-			EX.assertx(pce.getPriceNew().scale() < 3);
-			EX.assertx(CMP.grZero(pce.getPriceNew()));
+				//?: {wrong price value}
+				EX.assertx(pce.getPriceNew().scale() < 3);
+				EX.assertx(CMP.grZero(pce.getPriceNew()));
 
-			//=: is-fixed flag
-			pce.setFixPrice("true".equals(
-			  request().getParameter("fixPrice" + i)
-			));
+				//=: is-fixed flag
+				pce.setFixPrice("true".equals(
+				  request().getParameter("fixPrice" + i)
+				));
+			}
 		}
 
 		//~: check for duplicated codes
@@ -316,7 +322,8 @@ public class FacesRepriceDocEdit extends ModelView
 
 	public String getInitialGroups()
 	{
-		return SU.jsonMap(getModel().repriceDoc().getOx().getGroupChanges());
+		RepriceDoc rd = getModel().repriceDoc();
+		return SU.jsonMap((rd == null)?(null):(rd.getOx().getGroupChanges()));
 	}
 
 
