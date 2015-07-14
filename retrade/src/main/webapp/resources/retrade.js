@@ -1269,7 +1269,8 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'priceListOldName', type: 'string'},
 	    {name: 'priceListNew',     type: 'string'},
 	    {name: 'priceListNewCode', type: 'string'},
-	    {name: 'priceListNewName', type: 'string'}
+	    {name: 'priceListNewName', type: 'string'},
+	    {name: 'fixPrice',         type: 'boolean'}
 	  ]
 	})
 

@@ -29,7 +29,7 @@ import com.tverts.api.retrade.goods.Good;
  */
 @XmlRootElement(name = "good-price")
 @XmlType(name = "good-price", propOrder = {
-  "removed", "good", "XGood", "price"
+  "removed", "good", "XGood", "price", "fixPrice"
 })
 public class GoodPrice extends JustTxObject implements RemovableObject
 {
@@ -87,5 +87,21 @@ public class GoodPrice extends JustTxObject implements RemovableObject
 	public void setPrice(BigDecimal price)
 	{
 		this.price = price;
+	}
+
+	/**
+	 * Assigned temporary during the edit process.
+	 */
+	@XmlElement(name = "fix-price")
+	public Boolean isFixPrice()
+	{
+		return (fixPrice)?(true):(null);
+	}
+
+	private boolean fixPrice;
+
+	public void setFixPrice(Boolean fixPrice)
+	{
+		this.fixPrice = Boolean.TRUE.equals(fixPrice);
 	}
 }

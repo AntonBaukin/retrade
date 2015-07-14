@@ -90,6 +90,7 @@ public class FacesRepriceDocEdit extends ModelView
 		ArrayList<PriceChangeEdit> changes = new ArrayList<PriceChangeEdit>(4);
 		getModel().getView().setPriceChanges(changes);
 
+		//~: read the change positions
 		for(int i = 0;;i++)
 		{
 			String code = SU.s2s(request().getParameter("goodCode" + i));
@@ -98,10 +99,10 @@ public class FacesRepriceDocEdit extends ModelView
 			PriceChangeEdit pce = new PriceChangeEdit();
 			changes.add(pce);
 
-			//~: good code
+			//=: good code
 			pce.setGoodCode(code);
 
-			//~: price string
+			//=: price string
 			pce.setPriceNew(new BigDecimal(
 			  EX.asserts(request().getParameter("priceNew" + i))
 			));
@@ -109,6 +110,11 @@ public class FacesRepriceDocEdit extends ModelView
 			//?: {wrong price value}
 			EX.assertx(pce.getPriceNew().scale() < 3);
 			EX.assertx(CMP.grZero(pce.getPriceNew()));
+
+			//=: is-fixed flag
+			pce.setFixPrice("true".equals(
+			  request().getParameter("fixPrice" + i)
+			));
 		}
 
 		//~: check for duplicated codes
@@ -149,6 +155,20 @@ public class FacesRepriceDocEdit extends ModelView
 
 		//~: assign the price list
 		rd.setPriceList(pl);
+
+		//~: read the group changes
+		rd.getOx().setGroupChanges(new HashMap<String, BigDecimal>());
+		for(int i = 0;;i++)
+		{
+			String gr = SU.s2s(request().getParameter("groupName" + i));
+			if(gr == null) break;
+
+			String ch = SU.s2s(request().getParameter("groupChange" + i));
+			if(ch == null) continue;
+
+			rd.getOx().getGroupChanges().put(gr,
+			  new BigDecimal(ch).setScale(2, BigDecimal.ROUND_HALF_EVEN));
+		}
 
 
 		//!: run save | update action
@@ -292,6 +312,11 @@ public class FacesRepriceDocEdit extends ModelView
 	public String getUpdateGoodsInfo()
 	{
 		return updateGoodsInfo;
+	}
+
+	public String getInitialGroups()
+	{
+		return SU.jsonMap(getModel().repriceDoc().getOx().getGroupChanges());
 	}
 
 

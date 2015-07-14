@@ -24,7 +24,7 @@ import com.tverts.support.CMP;
 @XmlType(name = "price-change-edit")
 public class PriceChangeEdit extends PriceChangeView
 {
-	public static final long serialVersionUID = 20140803L;
+	public static final long serialVersionUID = 20150614L;
 
 
 	/* Price Change Edit */
@@ -51,6 +51,18 @@ public class PriceChangeEdit extends PriceChangeView
 	public void setGoodUnitInit(Long goodUnitInit)
 	{
 		this.goodUnitInit = goodUnitInit;
+	}
+
+	public boolean isFixPrice()
+	{
+		return fixPrice;
+	}
+
+	private boolean fixPrice;
+
+	public void setFixPrice(boolean fixPrice)
+	{
+		this.fixPrice = fixPrice;
 	}
 
 

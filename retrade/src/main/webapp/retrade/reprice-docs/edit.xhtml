@@ -385,25 +385,44 @@ ${v.checkModelRequestedWithRedirect}
             e.record.set('fixPrice', true)
           }
 
-          if(e.field == 'deltaPercent')
+          if(e.field == 'fixPrice') (function(e)
+          {
+            if(e.value) return
+            if(ZeTS.ises(e.record.get('priceCur'))) return
+            var x = parseFloat(e.record.get('priceCur'))
+            if(!ZeT.isn(x)) return
+
+            var u = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+            var g = e.record.get('goodGroup')
+            if(ZeTS.ises(g)) return
+            g = u.getById(e.record.get('goodGroup'))
+            var p = g.get('value')
+            if(ZeTS.ises(p)) return
+            if(!ZeT.isn(p = parseFloat(p))) return
+
+            e.record.set('deltaPercent', g.get('value'))
+            e.record.set('priceNew', retrade.round2str(2, (p + 100.0) * x * 0.01))
+          })(e)
+
+          if(e.field == 'deltaPercent') (function(e)
           {
               var v; if(ZeTS.ises(v = e.value)) return
               if(!ZeT.isn(v = parseFloat(v))) return
+              v = parseFloat(e.value = retrade.round2str(2, v))
+              ZeT.assert(ZeT.isn(v))
               v += 100.0; if(v &lt;= 0) return
 
               var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
               var e = g.retradeEditEvent; if(!e) return
 
               var p = e.record.get('priceCur')
-              if(ZeTS.ises(p)) return
-              if(!ZeT.isn(p = parseFloat(p))) return
-              p = p * v * 0.01
-
-              e.record.set('priceNew', retrade.round2str(2, p))
-              e.record.set('fixPrice', false)
+              if(!ZeTS.ises(p) &amp;&amp; ZeT.isn(p = parseFloat(p)))
+                e.record.set('priceNew', retrade.round2str(2, p * v * 0.01))
 
               //~: recalculate prices for all esle goods of the same group
-              if(extjsf.bind("${z:vid(v, 'group-percent')}", '${rootView.extjsDomain}').value())
+              if(!e.record.get('fixPrice') &amp;&amp;
+                 extjsf.bind("${z:vid(v, 'group-percent')}", '${rootView.extjsDomain}').value()
+                )
               {
                 g.component().getStore().each(function(m)
                 {
@@ -416,6 +435,7 @@ ${v.checkModelRequestedWithRedirect}
 
                   p = p * v * 0.01
                   m.set('priceNew', retrade.round2str(2, p))
+                  m.set('deltaPercent', e.value)
                 })
 
                 //~: update the percent of the group
@@ -423,7 +443,7 @@ ${v.checkModelRequestedWithRedirect}
                   getById(e.record.get('goodGroup'))
                 if(gr) gr.set('value', e.value)
               }
-          }
+          })(e)
         }
       }}],
 
@@ -704,6 +724,7 @@ ${v.checkModelRequestedWithRedirect}
          var p = u.getById(m.get('goodGroup'))
          var x = parseFloat(m.get('priceCur'))
 
+         p = p && p.get('value')
          if(p && ZeT.isn(p = parseFloat(p)) && ZeT.isn(x))
            m.set('priceNew', retrade.round2str(2, (p + 100.0) * x * 0.01))
        }
@@ -730,10 +751,14 @@ ${v.checkModelRequestedWithRedirect}
     s.on({ load: reindex, add: reindex, remove: reindex })
   })
 
+  //~: initial groups
+  extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').INITIAL_GROUPS = #{v.initialGroups}
+
   //~: updates good groups store based on the goods
   extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore = function()
   {
     var g = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+    var I = extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').INITIAL_GROUPS
 
     //c: for each item in the goods grid
     var x = {}; extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}').each(function(m)
@@ -748,7 +773,7 @@ ${v.checkModelRequestedWithRedirect}
     x['ø'] = true; if(ks.indexOf('ø') == -1) ks.push('ø')
 
     //c: for each group found
-    ZeT.each(ks, function(k) { if(!g.getById(k)) g.add({ key: k }) })
+    ZeT.each(ks, function(k) { if(!g.getById(k)) g.add({ key: k, value: I[k] }) })
 
     //~: remove the items not used
     var d = []; g.each(function(m) { if(!x[m.getId()]) d.push(m) })
@@ -879,26 +904,26 @@ ${v.checkModelRequestedWithRedirect}
   //~: commit the form
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
-    var form  = extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}')
-    var store = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
-
+    var f = extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}')
+    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var g = extjsf.component("${z:vid(v, 'groups-filtered')}", '${rootView.extjsDomain}')
 
     //~: validate the form
-    if(!form.component().isValid()) return;
+    if(!f.component().isValid()) return
 
     //~: validate the records
     function validate()
     {
       //!: remove filter
-      store.clearFilter()
+      s.clearFilter()
 
       //?: {has nothing}
-      if(store.count() == 0)
+      if(s.count() == 0)
         return 'В документе нет записей об изменениях цен товаров!'
 
-      var codes = {}; for(var i = 0;(i < store.count());i++)
+      var codes = {}; for(var i = 0;(i < s.count());i++)
       {
-        var m = store.getAt(i)
+        var m = s.getAt(i)
 
         if(ZeTS.ises(m.get('goodCode')))
           return ZeTS.cat('Код в строке [', m.get('index'), '] пуст!')
@@ -911,24 +936,31 @@ ${v.checkModelRequestedWithRedirect}
         codes[m.get('goodCode')] = m.get('index')
       }
 
-      return null;
+      return null
     }
 
     var v; if(v = validate())
     {
       ReTrade.desktop.error(v)
-      return;
+      return
     }
 
-    //~: put data into parameters
-    var params = {};
-
-    for(var i = 0;(i < store.count());i++)
+    //~: put price changes
+    var m, params = {}
+    for(var i = 0;(i < s.count());i++)
     {
-       var m = store.getAt(i);
+       m = s.getAt(i)
+       params['goodCode'+i] = m.get('goodCode')
+       params['priceNew'+i] = m.get('priceNew')
+       params['fixPrice'+i] = m.get('fixPrice')
+    }
 
-       params['goodCode'+i] = m.get('goodCode');
-       params['priceNew'+i] = m.get('priceNew');
+    //~: put good groups
+    for(i = 0;(i < g.count());i++)
+    {
+       m = g.getAt(i)
+       params['groupName'+i]   = m.get('key')
+       params['groupChange'+i] = m.get('value')
     }
 
     //~: copy change reason
@@ -936,7 +968,7 @@ ${v.checkModelRequestedWithRedirect}
       extjsf.bind("${z:vid(v, 'comment')}", '${rootView.extjsDomain}').value())
 
     //!: submit the form
-    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
+    f.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
       command: "${z:vid(v, 'submit-action')}", params: params, success: function()
       {
         extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()

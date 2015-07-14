@@ -853,6 +853,28 @@ public class ActReprice extends ActionBuilderReTrade
 				rd.getChanges().add(pc);
 				pc.setDocIndex(i);
 			}
+
+			//~: assign ox-changes
+			rd.getOx().getNewPrices().clear();
+			for(PriceChange pc : rd.getChanges())
+			{
+				PriceChangeEdit pe = EX.assertn(
+				  cem.get(pc.getGoodUnit().getCode())
+				);
+
+				com.tverts.api.retrade.prices.GoodPrice gp =
+				  new com.tverts.api.retrade.prices.GoodPrice();
+				rd.getOx().getNewPrices().add(gp);
+
+				//=: good key
+				gp.setGood(pc.getGoodUnit().getPrimaryKey());
+
+				//=: new price
+				gp.setPrice(pc.getPriceNew());
+
+				//=: fixed flag
+				gp.setFixPrice(pe.isFixPrice());
+			}
 		}
 
 
