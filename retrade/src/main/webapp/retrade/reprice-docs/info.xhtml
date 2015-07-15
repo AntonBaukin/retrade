@@ -67,6 +67,17 @@ ${v.checkEntityRequested}
     </x:component>
 
 
+    <!-- [toggle good groups button] -->
+    <x:component coid = "${z:vid(v, 'toggle-groups')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Ценовые группы', hidden: #{not v.hasGroups},
+        margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
+        tooltip: 'Отобразить проценты изменения цен по группам товаров',
+        toggleGroup: "${z:vid(v, 'toggle-group')}"
+      </f:facet>
+    </x:component>
+
+
     <!-- [toggle contractors list button] -->
     <x:component coid = "${z:vid(v, 'toggle-contractors')}">
       <f:facet name = "extjs-props">
@@ -74,17 +85,6 @@ ${v.checkEntityRequested}
         hidden: #{not v.hasChanges or not v.hasContractors or v.oneContractor},
         margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
         tooltip: 'Отобразить изменения цен для затронутых контрагентов',
-        toggleGroup: "${z:vid(v, 'toggle-group')}"
-      </f:facet>
-    </x:component>
-
-
-    <!-- [toggle good groups button] -->
-    <x:component coid = "${z:vid(v, 'toggle-groups')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Ценовые группы', hidden: #{not v.hasGroups},
-        margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
-        tooltip: 'Отобразить проценты изменения цен по группам товаров',
         toggleGroup: "${z:vid(v, 'toggle-group')}"
       </f:facet>
     </x:component>
@@ -317,8 +317,12 @@ ${v.checkEntityRequested}
           title: 'Проценты изменения цен по группам товаров',
           selModel: extjsf.delayCreate('Ext.ux.selection.No'),
           width: extjsf.ex(48), columns: [
+
             { text: "Группа", dataIndex: 'key', flex: 1 },
-            { text: "Изм. %", dataIndex: 'value', width: extjsf.ex(12), align: 'right' }
+
+            { text: "Изм. %", dataIndex: 'value', width: extjsf.ex(12),
+              align: 'right', renderer: ZeT.fbindu(retrade.round2str, 0, 2)
+            }
           ]
         </f:facet>
       </x:data-grid>

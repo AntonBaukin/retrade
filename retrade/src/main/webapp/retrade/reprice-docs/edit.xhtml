@@ -94,6 +94,20 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
+    <!-- [add goods from the selection set -->
+
+    <x:component coid = "${z:vid(v, 'add-goods-selset')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Добавить', margin: extjsf.dpts(0, 0, 0, 4),
+        componentCls: 'retrade-icon-24-inline', iconCls: 'retrade-selset-button-icon',
+        tooltipType: 'title', tooltip: 'Добавить товары из текущей выборки товаров, ' +
+          'групп товаров, прайс-листов и документов, содержащих товары'
+      </f:facet>
+    </x:component>
+
+    <!-- add goods from the selection set] -->
+
+
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">
       <f:facet name = "extjs-props">
         xtype: 'panel', flex: 1, frame: false, border: false,
@@ -623,7 +637,7 @@ ${v.checkModelRequestedWithRedirect}
 
           {
              text: "Код товара", dataIndex: 'goodCode', sortable: true,
-             width: extjsf.ex(14), editor: codeEditor, retradeHasEditor: true
+             width: extjsf.ex(12), editor: codeEditor, retradeHasEditor: true
           },
 
           {

@@ -255,9 +255,15 @@ table.retrade-align-right.x-field
   background-position: center center;
 }
 
-.retrade-icon-24 .x-btn-icon-el
+.retrade-icon-24 .x-btn-icon-el,
+  .retrade-icon-24-inline .x-btn-icon-el
 {
   width: 24px;
+}
+
+.retrade-icon-24-inline .x-btn-text.x-btn-icon-left > .x-btn-icon-el-default-small
+{
+  top: 1px; position: relative; margin: 0 2px;
 }
 
 .retrade-button-menu-no-arrow .x-btn-wrap-default-small.x-btn-arrow-right::after

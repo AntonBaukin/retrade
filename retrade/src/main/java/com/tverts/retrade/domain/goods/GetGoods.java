@@ -3,9 +3,11 @@ package com.tverts.retrade.domain.goods;
 /* Java */
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /* Spring Framework */
@@ -217,7 +219,7 @@ from GoodUnit gu where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "all");
 
 		return (List<GoodUnit>) QB(qb).list();
 	}
@@ -275,7 +277,7 @@ from GoodUnit gu where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "all");
 
 		//~: select the values
 		List<Object[]> res = (List<Object[]>) QB(qb).list();
@@ -362,7 +364,7 @@ from GoodUnit gu where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "all");
 
 		return QB(qb).list();
 	}
@@ -414,7 +416,7 @@ from GoodUnit gu where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "all");
 
 		return QB(qb).list();
 	}
@@ -440,7 +442,7 @@ from GoodUnit gu where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "all");
 
 		return ((Number) QB(qb).uniqueResult()).longValue();
 	}
@@ -478,7 +480,7 @@ from GoodUnit gu where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), false);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "goods", "folders");
 
 		return QB(qb).list();
 	}
@@ -508,7 +510,7 @@ from GoodUnit gu where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), false);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "goods", "folders");
 
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
@@ -749,6 +751,88 @@ from MeasureUnit mu where
 	}
 
 
+	/* Goods Selections */
+
+	/**
+	 * Assuming the GoodUnit has alias 'gu', builds the list
+	 * of restrictions adding them to AND or OR composite.
+	 * Selection set must be defined (the default is "").
+	 * What-list enumerates what restrictions to add:
+	 *
+	 * · all       all the options below;
+	 * · goods     direct goods;
+	 * · folders   goods from the tree folders (deeply);
+	 * · prices    goods from the price lists;
+	 * · buys      buy invoices;
+	 * · sells     sell and sells invoices;
+	 * · moves     move invoices;
+	 * · reprices  price change documents.
+	 */
+	public void restrictGoodsBySelSet(WherePartLogic p, String selset, String... what)
+	{
+		HashSet<String> w = new HashSet<>(Arrays.asList(what));
+		if(w.contains("all")) w.addAll(Arrays.asList(SU.s2aws(
+		  "goods folders prices buys sells moves reprices"
+		)));
+
+/* --> goods
+
+ gu.id in (select si.object from SelItem si join si.selSet ss
+   where (ss.name = :sset) and (ss.login.id = :login))
+
+ */
+
+		if(w.contains("goods")) p.addPart(
+
+"gu.id in (select si.object from SelItem si join si.selSet ss\n" +
+"  where (ss.name = :sset) and (ss.login.id = :login))"
+
+		).
+		  param("sset", selset).
+		  param("login", SecPoint.login());
+
+
+/* --> folders
+
+ gu.id in (select ti.item.id from TreeCross tc join tc.item ti
+   where tc.folder.id in (select si.object from
+     SelItem si join si.selSet ss where
+       (ss.name = :sset) and (ss.login.id = :login)))
+
+ */
+
+		if(w.contains("folders")) p.addPart(
+
+"gu.id in (select ti.item.id from TreeCross tc join tc.item ti\n" +
+"  where tc.folder.id in (select si.object from\n" +
+"    SelItem si join si.selSet ss where\n" +
+"      (ss.name = :sset) and (ss.login.id = :login)))"
+
+		).
+		  param("sset",  selset).
+		  param("login", SecPoint.login());
+
+
+/* --> prices
+
+ gu.id in (select gpx.goodUnit.id from GoodPrice gpx where
+   gpx.priceList.id in (select si.object from SelItem si join si.selSet ss
+     where (ss.name = :sset) and (ss.login.id = :login)))
+
+ */
+
+		if(w.contains("prices")) p.addPart(
+
+"gu.id in (select gpx.goodUnit.id from GoodPrice gpx where\n" +
+"  gpx.priceList.id in (select si.object from SelItem si join si.selSet ss\n" +
+"    where (ss.name = :sset) and (ss.login.id = :login)))"
+
+		).
+		  param("sset", selset).
+		  param("login", SecPoint.login());
+	}
+
+
 	/* protected: shortage routines */
 
 	protected <T extends ModelBeanBase & DataSelectModel & DataSearchModel> int
@@ -776,7 +860,7 @@ from MeasureUnit mu where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "all");
 
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
@@ -922,7 +1006,7 @@ from MeasureUnit mu where
 	}
 
 	protected void     restrictGoodsBySelSet
-	  (QueryBuilder qb, String selset, boolean folders)
+	  (QueryBuilder qb, String selset, String... what)
 	{
 		//?: {has no selection set}
 		if(selset == null) return;
@@ -932,63 +1016,6 @@ from MeasureUnit mu where
 		qb.getClauseWhere().addPart(p);
 
 		//~: restrict
-		restrictGoodsBySelSet(p, selset, folders);
-	}
-
-	protected void     restrictGoodsBySelSet
-	  (WherePartLogic p, String selset, boolean folders)
-	{
-
-
-/*
-
- gu.id in (select si.object from SelItem si join si.selSet ss
-   where (ss.name = :sset) and (ss.login.id = :login))
-   
- gu.id in (select gpx.goodUnit.id from GoodPrice gpx where
-   gpx.priceList.id in (select si.object from SelItem si join si.selSet ss
-     where (ss.name = :sset) and (ss.login.id = :login)))
-
- gu.id in (select ti.item.id from TreeCross tc join tc.item ti
-   where tc.folder.id in (select si.object from
-     SelItem si join si.selSet ss where
-       (ss.name = :sset) and (ss.login.id = :login)))
-
-*/
-
-		//~: search goods directly
-		p.addPart(
-
-"gu.id in (select si.object from SelItem si join si.selSet ss\n" +
-"  where (ss.name = :sset) and (ss.login.id = :login))"
-
-		).
-		  param("sset", selset).
-		  param("login", SecPoint.login());
-
-
-		//~: search by the price list inclusion
-		p.addPart(
-
-"gu.id in (select gpx.goodUnit.id from GoodPrice gpx where\n" +
-"  gpx.priceList.id in (select si.object from SelItem si join si.selSet ss\n" +
-"    where (ss.name = :sset) and (ss.login.id = :login)))"
-
-		).
-		  param("sset", selset).
-		  param("login", SecPoint.login());
-
-
-		//~: search goods in folders
-		if(folders) p.addPart(
-
-"gu.id in (select ti.item.id from TreeCross tc join tc.item ti\n" +
-"  where tc.folder.id in (select si.object from\n" +
-"    SelItem si join si.selSet ss where\n" +
-"      (ss.name = :sset) and (ss.login.id = :login)))"
-
-		).
-		  param("sset",   selset).
-		  param("login", SecPoint.login());
+		restrictGoodsBySelSet(p, selset, what);
 	}
 }

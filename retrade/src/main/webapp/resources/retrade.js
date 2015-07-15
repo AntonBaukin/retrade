@@ -3100,6 +3100,14 @@ var retrade = ZeT.define('retrade',
 
 	round2str        : function(n, v)
 	{
+		if(ZeT.iss(v))
+		{
+			if(ZeTS.ises(v)) return v
+			var x = parseFloat(v)
+			if(!ZeT.isn(x)) return v
+			v = x
+		}
+
 		if(!ZeT.isn(v)) return v
 		ZeT.assert(ZeT.isi(n) && (n > 0))
 

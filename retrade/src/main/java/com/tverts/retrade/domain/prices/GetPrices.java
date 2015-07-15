@@ -484,7 +484,7 @@ from GoodPrice gp where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), false);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "goods", "folders");
 
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
@@ -531,7 +531,7 @@ from GoodPrice gp where
 		gusSearch(qb, mb.searchNames());
 
 		//~: selection set search
-		restrictGoodsBySelSet(qb, mb.getSelSet(), true);
+		restrictGoodsBySelSet(qb, mb.getSelSet(), "all");
 
 		return QB(qb).list();
 	}
@@ -1056,7 +1056,9 @@ from GoodPrice gp where
 		qb.getClauseWhere().addPart(p);
 
 		//~: restrict the goods
-		restrictGoodsBySelSet(p, selset, folders);
+		restrictGoodsBySelSet(p, selset, "goods", "prices",
+		  (folders)?("folders"):("")
+		);
 
 /*
 
