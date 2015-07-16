@@ -20,6 +20,11 @@
         <bean class = 'com.tverts.retrade.domain.invoice.InvoiceFmt'/>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Price Change Document Formatter
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.domain.prices.RepriceDocFmt'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Payment Ways Formatter
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.retrade.domain.account.PayWayFmt'/>

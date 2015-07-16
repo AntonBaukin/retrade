@@ -1,4 +1,4 @@
-package com.tverts.retrade.domain.invoice;
+package com.tverts.retrade.domain.prices;
 
 /* Java */
 
@@ -15,24 +15,24 @@ import com.tverts.support.fmt.FmtCtx;
 
 
 /**
- * Formatter of Invoices.
+ * Formatter for Price Change Documents.
  *
- * @author anton.baukin@gmail.com
+ * @author anton.baukin@gmail.com.
  */
-public class InvoiceFmt extends DocFmtBase
+public class RepriceDocFmt extends DocFmtBase
 {
 	protected boolean   isKnown(Object obj)
 	{
-		return (obj instanceof Invoice);
+		return (obj instanceof RepriceDoc);
 	}
 
 	protected UnityType getDocType(FmtCtx ctx)
 	{
-		return Invoices.getInvoiceEffectiveType((Invoice) ctx.obj());
+		return ((RepriceDoc) ctx.obj()).getUnity().getUnityType();
 	}
 
 	protected Date      getTime(FmtCtx ctx)
 	{
-		return ((Invoice) ctx.obj()).getInvoiceDate();
+		return ((RepriceDoc) ctx.obj()).getChangeTime();
 	}
 }

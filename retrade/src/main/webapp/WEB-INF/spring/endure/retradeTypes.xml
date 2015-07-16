@@ -228,10 +228,10 @@
                     value = 'ReTrade: Invoice: Sell Altered'/>
 
           <property name  = 'title'
-                    value = 'Sell Invoice auto-pr.'/>
+                    value = 'Sell Invoice auto-production'/>
 
           <property name  = 'titleLo'
-                    value = 'Накладная продажи авто-пр.'/>
+                    value = 'Накладная продажи авто-производство'/>
 
         </bean>
 
@@ -308,10 +308,10 @@
                     value = 'ReTrade: Invoice: Volume Correction'/>
 
           <property name  = 'title'
-                    value = 'Correction Invoice'/>
+                    value = 'Volume Correction Invoice'/>
 
           <property name  = 'titleLo'
-                    value = 'Накладная корректировки'/>
+                    value = 'Накладная корректировки остатков'/>
 
         </bean>
 
@@ -348,10 +348,10 @@
                     value = 'ReTrade: Goods: Price Change Document'/>
 
           <property name  = 'title'
-                    value = 'Prices change'/>
+                    value = 'Prices Change Document'/>
 
           <property name  = 'titleLo'
-                    value = 'Изменение цен'/>
+                    value = 'Документ изменения цен'/>
         </bean>
 
 
@@ -367,10 +367,10 @@
                     value = 'ReTrade: Goods: Firm Price Change Document'/>
 
           <property name  = 'title'
-                    value = 'Firm prices change'/>
+                    value = 'Firm Prices Change'/>
 
           <property name  = 'titleLo'
-                    value = 'Изменение цен контрагента'/>
+                    value = 'Документ изменения цен контрагента'/>
         </bean>
 
 

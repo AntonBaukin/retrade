@@ -1627,7 +1627,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		var self = this;
 
 		//~: window size
-		if(!self._win_wh) self._win_wh = [extjsf.pt(400), extjsf.pt(250)];
+		if(!self._win_wh) self._win_wh = [extjsf.pt(420), extjsf.pt(330)]
 
 		var params = {
 			mode: 'body', domain: self.domain(),
@@ -1640,7 +1640,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			xtype: 'window', title: 'Загрузка выборки...',
 			width: self._win_wh[0], height: self._win_wh[1],
 			layout: 'fit', collapsible: false, autoShow: true,
-			cls: 'retrade-selset-window', style: { opacity: 0.95 },
+			cls: 'retrade-selset-window', style: { opacity: 0.9 },
 
 			loader: {
 				url: self.url('winmain'), ajaxOptions: {method: 'GET'},

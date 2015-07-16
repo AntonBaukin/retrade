@@ -78,7 +78,8 @@ public class SelItemView implements Serializable
 
 		if(this.name == null)
 			this.name = FmtPoint.format(obj,
-			  FmtPoint.LONG, FmtPoint.TYPE);
+			  FmtPoint.LONG, FmtPoint.TYPE, FmtPoint.DISPLAY
+			);
 
 		return this;
 	}

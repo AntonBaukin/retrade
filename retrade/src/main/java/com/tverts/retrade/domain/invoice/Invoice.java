@@ -1,15 +1,16 @@
 package com.tverts.retrade.domain.invoice;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Date;
 
-/* com.tverts: endure */
+/* com.tverts: endure (core, catalogues, ordering) */
 
 import com.tverts.endure.EntityState;
 import com.tverts.endure.StatefulEntity;
 import com.tverts.endure.Unity;
 import com.tverts.endure.UnityType;
+import com.tverts.endure.cats.CodedEntity;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.Entity;
@@ -34,7 +35,8 @@ import com.tverts.endure.order.OrderIndex;
  */
 public class      Invoice
        extends    Entity
-       implements OrderIndex, DomainEntity, StatefulEntity
+       implements OrderIndex, DomainEntity,
+                  StatefulEntity, CodedEntity
 {
 	/* public: StatefulEntity interface */
 
