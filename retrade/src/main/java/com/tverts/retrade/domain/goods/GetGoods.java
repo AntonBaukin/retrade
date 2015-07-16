@@ -53,8 +53,11 @@ import com.tverts.endure.tree.GetTree;
 import com.tverts.endure.tree.TreeCross;
 import com.tverts.endure.tree.TreeItem;
 
-/* com.tverts: retrade domain (prices + stores) */
+/* com.tverts: retrade domain (invoices, prices, stores) */
 
+import com.tverts.retrade.domain.invoice.BuyGood;
+import com.tverts.retrade.domain.invoice.MoveGood;
+import com.tverts.retrade.domain.invoice.SellGood;
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.GoodPriceModelBean;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
@@ -825,6 +828,67 @@ from MeasureUnit mu where
 
 "gu.id in (select gpx.goodUnit.id from GoodPrice gpx where\n" +
 "  gpx.priceList.id in (select si.object from SelItem si join si.selSet ss\n" +
+"    where (ss.name = :sset) and (ss.login.id = :login)))"
+
+		).
+		  param("sset", selset).
+		  param("login", SecPoint.login());
+
+
+/* --> buy, sell, move invoices
+
+ gu.id in (select ig.goodUnit.id from InvGood ig join ig.data d
+   where d.invoice.id in (select si.object from SelItem si join si.selSet ss
+     where (ss.name = :sset) and (ss.login.id = :login)))
+
+ */
+
+		final String IG =
+
+"gu.id in (select ig.goodUnit.id from InvGood ig join ig.data d" +
+"  where d.invoice.id in (select si.object from SelItem si join si.selSet ss" +
+"    where (ss.name = :sset) and (ss.login.id = :login)))";
+
+
+// --> buy invoices
+
+		if(w.contains("buys")) p.addPart(
+		  IG.replace("InvGood", BuyGood.class.getName())
+		).
+		  param("sset", selset).
+		  param("login", SecPoint.login());
+
+
+// --> sell, sells invoices
+
+		if(w.contains("sells")) p.addPart(
+		  IG.replace("InvGood", SellGood.class.getName())
+		).
+		  param("sset", selset).
+		  param("login", SecPoint.login());
+
+
+// --> move invoices
+
+		if(w.contains("move")) p.addPart(
+		  IG.replace("InvGood", MoveGood.class.getName())
+		).
+		  param("sset", selset).
+		  param("login", SecPoint.login());
+
+
+/* --> price change documents
+
+ gu.id in (select pc.goodUnit.id from PriceChange pc where
+   pc.repriceDoc.id in (select si.object from SelItem si join si.selSet ss
+     where (ss.name = :sset) and (ss.login.id = :login)))
+
+ */
+
+		if(w.contains("reprices")) p.addPart(
+
+"gu.id in (select pc.goodUnit.id from PriceChange pc where" +
+"  pc.repriceDoc.id in (select si.object from SelItem si join si.selSet ss" +
 "    where (ss.name = :sset) and (ss.login.id = :login)))"
 
 		).
