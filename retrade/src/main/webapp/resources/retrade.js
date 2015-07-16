@@ -1330,8 +1330,7 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   flex: 2, tdCls: 'ux-grid-column-smaller'
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 2
 		 },
 
 		 {

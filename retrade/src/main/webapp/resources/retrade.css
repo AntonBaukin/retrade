@@ -266,6 +266,11 @@ table.retrade-align-right.x-field
   top: 1px; position: relative; margin: 0 2px;
 }
 
+.retrade-icon-24-inline .x-btn-icon .x-btn-inner-default-small
+{
+  padding-left: 2px;
+}
+
 .retrade-button-menu-no-arrow .x-btn-wrap-default-small.x-btn-arrow-right::after
 {
   padding: 0; background: none;
@@ -647,8 +652,8 @@ caption.retrade-info-title
   text-align: left;
 }
 
-td.retrade-info-value div,
- .retrade-info-div .retrade-info-value,
+td.retrade-info-value > div,
+ .retrade-info-div > .retrade-info-value,
  span.retrade-info-value
 {
   font-size: 12pt; white-space: nowrap;
@@ -656,6 +661,15 @@ td.retrade-info-value div,
   background-color: #EEF6FB; border-radius: 4px;
   border-bottom: 2px solid rgba(146, 191, 221, 0.5);
   border-right: 1px solid rgba(146, 191, 221, 0.5);
+}
+
+td.retrade-info-value.retrade-info-red > div,
+ .retrade-info-div.retrade-info-red > .retrade-info-value,
+ span.retrade-info-value.retrade-info-red
+{
+  background-color: #FCE9E9;
+  border-bottom: 2px solid rgba(182, 27, 9, 0.5);
+  border-right: 1px solid rgba(182, 27, 9, 0.5);
 }
 
 .retrade-info-div .retrade-info-value-message-hard
@@ -818,11 +832,6 @@ table.retrade-info-table.retrade-info-table-good-edit-price-list caption
 .retrade-info-good-price-history table.extjsf-html-content
 {
   width: 100%;
-}
-
-td.retrade-info-title.retrade-info-title-price-history-good-price div
-{
-  color: red;
 }
 
 .retrade-info-good-price-history table.retrade-info-table

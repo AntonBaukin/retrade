@@ -267,6 +267,82 @@ order by gu.id
 		return gs;
 	}
 
+	/**
+	 * Works as {@link #getPriceListPrices(PriceListEntity, Collection)},
+	 * but goods are filtered by the selection set that must be defined.
+	 */
+	@SuppressWarnings("unchecked")
+	public List            getPriceListPrices
+	  (PriceListEntity priceList, String selset)
+	{
+		EX.assertn(priceList);
+		EX.asserts(selset);
+
+		//<: first, select the goods
+
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("GoodUnit", GoodUnit.class);
+		qb.setClauseFrom("GoodUnit gu join gu.measure mu");
+
+		//~: select clause
+		qb.setClauseSelect("gu, mu, 1");
+
+		//~: restrict domain of current user
+		qb.getClauseWhere().addPart(
+		  "gu.domain.id = :d"
+		).
+		  param("d", SecPoint.domain());
+
+		//~: restrict by the selection set
+		restrictGoodsBySelSet(qb, selset, "all");
+
+		//!: take the goods
+		List<Object[]> gs = (List<Object[]>) QB(qb).list();
+
+		//>: first, select the goods
+
+
+		//<: second, select their prices
+
+		qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("GoodPrice", GoodPrice.class);
+		qb.setClauseFrom("GoodPrice gp join gp.goodUnit gu");
+
+		//~: select clause
+		qb.setClauseSelect("gu.id, gp.price");
+
+		//~: restrict the price list
+		qb.getClauseWhere().addPart(
+		  "gp.priceList = :pl"
+		).
+		  param("pl", priceList);
+
+		//~: restrict by the selection set
+		restrictGoodsBySelSet(qb, selset, "all");
+
+		List<Object[]> ps = (List<Object[]>) QB(qb).list();
+
+		//>: second, select their prices
+
+
+		//<: and map them
+
+		HashMap<Long, BigDecimal> m = new HashMap<>(gs.size());
+
+		for(Object[] o : ps)
+			m.put((Long)o[0], (BigDecimal)o[1]);
+		for(Object[] o : gs)
+			o[2] = m.get(((GoodUnit)o[0]).getPrimaryKey());
+
+		//>: and map them
+
+		return gs;
+	}
+
 	public List<GoodPrice> getPriceListPrices(PriceListEntity pl)
 	{
 		EX.assertn(pl);

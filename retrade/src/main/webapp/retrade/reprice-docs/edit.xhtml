@@ -105,6 +105,14 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
     </x:component>
 
+    <x:action-call coid = "${z:vid(v, 'add-goods-selset-script')}"
+     action = "#{v.doAddSelSetGoods}">
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '${v.modelKeys}'
+      </f:facet>
+    </x:action-call>
+
     <!-- add goods from the selection set] -->
 
 
@@ -379,7 +387,7 @@ ${v.checkModelRequestedWithRedirect}
     <f:facet name = "grid-props">
 
       margin: extjsf.pts(1, 0, 0, 0), cls: 'ux-grid-not-mark-dirty',
-      flex: 1, border: false, pager: false, sortableColumns: false, enableColumnHide: false,
+      flex: 1, border: false, pager: false, sortableColumns: true, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
 
       plugins: [{
@@ -784,6 +792,60 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore()
   }
 
+  //~: append goods info
+  extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').retradeAppendGoodsInfo = function(info)
+  {
+    var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var u = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+    var s = g.component().getStore()
+
+    //~: delete current empty record (if any)
+    ;(function() {
+       var e = g.retradeEditEvent, m = e && e.record
+       if(!e || !m) return
+       g.component().getPlugin('cellediting').completeEdit()
+       if(ZeTS.ises(m.get('code'))) s.remove(m)
+     })()
+
+    //~: map existing items
+    var ex = {}; s.each(function(m) { ex[m.get('goodCode')] = m })
+
+    //~: for each good in the info
+    ZeT.each(ZeT.keys(info), function(code)
+    {
+      //?: {already got it}
+      if(ex[code]) return
+
+      var x = ZeT.assertn(info[code])
+      var m = Ext.create('retrade.model.GoodPriceHistory', {
+        objectKey: '$' + (new Date().getTime()) + '$' + code
+      })
+
+      m.set('goodCode', code)
+      m.set('goodName', x[0])
+      m.set('goodGroup', x[1])
+      m.set('measureName', x[2])
+      m.set('priceCur', x[3])
+
+      //~: update the good price
+      if(!ZeTS.ises(m.get('goodGroup')) && !ZeTS.ises(m.get('priceCur')))
+      {
+        var p = u.getById(m.get('goodGroup'))
+        var x = parseFloat(m.get('priceCur'))
+
+        p = p && p.get('value')
+        if(p && ZeT.isn(p = parseFloat(p)) && ZeT.isn(x))
+          m.set('priceNew', retrade.round2str(2, (p + 100.0) * x * 0.01))
+      }
+
+      //!: add to the store
+      ex[code] = m; s.add(m)
+    })
+
+    //~: update the groups store
+    extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore()
+  }
+
   //~: on goods store change (update the row indices)
   Ext.onReady(function()
   {
@@ -924,6 +986,15 @@ ${v.checkModelRequestedWithRedirect}
     ZeT.timeout(200, function() { p.startEdit(row, col) })
   })
 
+  //~: insert goods from the selection set
+  extjsf.bindHandler("${z:vid(v, 'add-goods-selset')}", '${rootView.extjsDomain}', function()
+  {
+    extjsf.bindHandler("${z:vid(v, 'add-goods-selset-script')}", '${rootView.extjsDomain}')({
+      params: { selset: ReTrade.selset.selset,
+        priceList: extjsf.bind("${z:vid(v, 'price-list')}", '${rootView.extjsDomain}').value()
+    }})
+  })
+
   //~: toggle group
   Ext.onReady(ZeT.timeouted(250, function()
   {
@@ -951,7 +1022,7 @@ ${v.checkModelRequestedWithRedirect}
       extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore()
   })
 
-  //~: commit the form
+  //~: submit the form
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
     var f = extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}')
@@ -1065,6 +1136,17 @@ ${v.checkModelRequestedWithRedirect}
 
  extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').
    retradeUpdateGoodsInfo( #{v.updateGoodsInfo} )
+
+   //]]>
+   </script>
+   </ui:fragment>
+
+   <ui:fragment rendered = "#{not empty v.appendGoodsInfo}">
+   <script>
+   //<![CDATA[
+
+ extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').
+   retradeAppendGoodsInfo( #{v.appendGoodsInfo} )
 
    //]]>
    </script>
