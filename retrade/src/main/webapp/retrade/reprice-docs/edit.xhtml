@@ -318,11 +318,65 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "grid-props">
         title: 'Проценты изменения цен по группам товаров',
         selModel: extjsf.delayCreate('Ext.ux.selection.No'),
-        cls: 'ux-grid-not-mark-dirty',
-        width: extjsf.ex(48), columns: [
-        { text: "Группа", dataIndex: 'key', flex: 1 },
-        { text: "Изм. %", dataIndex: 'value', width: extjsf.ex(12), align: 'right' }
-        ]
+        cls: 'ux-grid-not-mark-dirty', width: extjsf.ex(48),
+
+        plugins: [{ ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
+          listeners : {
+
+          beforeedit : function(ed, event)
+          {
+            var g = extjsf.bind("${z:vid(v, 'groups-grid')}", '${rootView.extjsDomain}')
+            if(g.retradeDisabledEditing) return false; else g.retradeEditEvent = event
+          },
+
+          edit : function(ed, e)
+          {
+            if(e.field != 'value') return
+            if(ZeTS.ises(e.value)) return
+            var p = parseFloat(e.value)
+            if(!ZeT.isn(p)) return
+
+            //~: round-up the percent change
+            e.value = p = retrade.round2str(2, p)
+            e.record.set('value', p)
+
+            p = 100.0 + parseFloat(p); if(p &lt;= 0.0) return
+
+            var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+            g.component().getStore().each(function(m)
+            {
+              if(m.get('fixPrice')) return
+              if(m.get('goodGroup') !== e.record.get('key')) return
+              m.set('deltaPercent', e.value)
+
+              var v = m.get('priceCur')
+              if(ZeTS.ises(v)) return
+              if(!ZeT.isn(v = parseFloat(v))) return
+              v = v * p * 0.01
+              m.set('priceNew', retrade.round2str(2, v))
+             })
+          }
+        }}],
+
+        columns: (function()
+        {
+          var deltaEditor = Ext.create('Ext.form.field.Text', {
+            maskRe: retrade.rpercent, validator: retrade.vpercentdelta
+          })
+
+          return [
+
+            {
+              text: "Группа", dataIndex: 'key', flex: 1
+            },
+
+            {
+              text: "Изм. %", dataIndex: 'value',
+              width: extjsf.ex(12), align: 'right',
+              retradeHasEditor: true, editor: deltaEditor
+            }
+          ]
+        })()
       </f:facet>
     </x:data-grid>
 
@@ -450,6 +504,7 @@ ${v.checkModelRequestedWithRedirect}
                 {
                   if((m === e.record) || m.get('fixPrice')) return
                   if(m.get('goodGroup') !== e.record.get('goodGroup')) return
+                  m.set('deltaPercent', e.value)
 
                   p = m.get('priceCur')
                   if(ZeTS.ises(p)) return
@@ -457,7 +512,6 @@ ${v.checkModelRequestedWithRedirect}
 
                   p = p * v * 0.01
                   m.set('priceNew', retrade.round2str(2, p))
-                  m.set('deltaPercent', e.value)
                 })
 
                 //~: update the percent of the group
@@ -795,6 +849,9 @@ ${v.checkModelRequestedWithRedirect}
   //~: append goods info
   extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').retradeAppendGoodsInfo = function(info)
   {
+    //?: {has nothing}
+    var keys = ZeT.keys(info); if(!keys.length) return
+
     var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     var u = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
     var s = g.component().getStore()
@@ -811,7 +868,7 @@ ${v.checkModelRequestedWithRedirect}
     var ex = {}; s.each(function(m) { ex[m.get('goodCode')] = m })
 
     //~: for each good in the info
-    ZeT.each(ZeT.keys(info), function(code)
+    ZeT.each(keys, function(code)
     {
       //?: {already got it}
       if(ex[code]) return

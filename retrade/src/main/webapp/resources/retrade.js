@@ -3005,7 +3005,9 @@ var retrade = ZeT.define('retrade',
 
 	rdecimal         : /[\d\.]/,
 
-	rinteger         : /[\d\.-]/,
+	rinteger         : /[\d]/,
+
+	rpercent         : /[\d\.-]/,
 
 	vdecimal         : function(o, v)
 	{
@@ -3079,20 +3081,43 @@ var retrade = ZeT.define('retrade',
 		return true;
 	},
 
+	vpercentdelta    : function(o, v)
+	{
+		if(!ZeT.iss(v)) { v = o; o = null }
+		v = retrade._vndecimal(v); o = o || {}
+
+		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
+		if(!v) return 'Требуется десятичное значение!'
+
+		var n = parseFloat(v)
+		if(n <= -100.0) return 'Отрицательное значение процента не может ' +
+		  'быть меньше или равно -100.0!'
+
+		return true
+	},
+
 	_vdecimal        : function(v)
 	{
-		if(ZeT.iss(v)) v = v.replace(' ', '');
+		if(ZeT.iss(v)) v = v.replace(' ', '')
 
-		if(ZeTS.ises(v)) return undefined;
-		return v.match(/^\d+(\.\d+)?$/)?(v):(null);
+		if(ZeTS.ises(v)) return undefined
+		return v.match(/^\d+(\.\d+)?$/)?(v):(null)
+	},
+
+	_vndecimal        : function(v)
+	{
+		if(ZeT.iss(v)) v = v.replace(' ', '')
+
+		if(ZeTS.ises(v)) return undefined
+		return v.match(/^-?\d+(\.\d+)?$/)?(v):(null)
 	},
 
 	_vinteger        : function(v)
 	{
-		if(ZeT.iss(v)) v = v.replace(' ', '');
+		if(ZeT.iss(v)) v = v.replace(' ', '')
 
-		if(ZeTS.ises(v)) return undefined;
-		return v.match(/^\d+$/)?(v):(null);
+		if(ZeTS.ises(v)) return undefined
+		return v.match(/^\d+$/)?(v):(null)
 	},
 
 	//=    Forms Calculations    =//
