@@ -661,7 +661,7 @@ ${v.checkModelRequestedWithRedirect}
 
           meta.tdAttr = 'title="' + Ext.String.htmlEncode(t) + '"'
           meta.tdCls  = (v == 'нет')?(''):('retrade-reprice-doc-edit-good-removed-check-cell')
-          return v
+          return '&lt;span&gt;' + v + '&lt;/span&gt;'
         }
 
         function fixRenderer(v, meta)
@@ -713,7 +713,7 @@ ${v.checkModelRequestedWithRedirect}
           },
 
           {
-            text: 'Удал.', dataIndex: 'deleteGood', width: extjsf.ex(6),
+            text: 'Удал.', dataIndex: 'deleteGood', width: extjsf.ex(7),
             align: 'center', editor: fixEditor, retradeHasEditor: true,
             renderer : removedRenderer
           },

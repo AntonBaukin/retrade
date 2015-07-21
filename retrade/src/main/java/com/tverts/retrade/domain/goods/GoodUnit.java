@@ -56,8 +56,6 @@ public class      GoodUnit
 
 	public void   updateOx()
 	{
-		super.updateOx();
-
 		Good g = getOx();
 
 		//=: group
@@ -68,6 +66,8 @@ public class      GoodUnit
 
 		//:= calc
 		g.setCalc((calc == null)?(null):(calc.getPrimaryKey()));
+
+		super.updateOx();
 	}
 
 	public String getOxSearch()

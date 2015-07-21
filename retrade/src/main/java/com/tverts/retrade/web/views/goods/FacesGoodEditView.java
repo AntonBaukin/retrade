@@ -636,11 +636,8 @@ public class FacesGoodEditView extends ModelView
 	{
 		SimpleModelBean mb = new SimpleModelBean();
 
-		//~: domain
-		mb.setDomain(getModel().getDomain());
-
-		//~: good unit
-		mb.put(GoodUnit.class, getGoodView().getObjectKey());
+		//=: domain
+		mb.setDomain(getDomainKey());
 
 		//?: {measure units}
 		if(ModelRequest.isKey("measures"))
@@ -659,6 +656,9 @@ public class FacesGoodEditView extends ModelView
 
 			return mb;
 		}
+
+		//=: good unit
+		mb.put(GoodUnit.class, getGoodView().getObjectKey());
 
 		//?: {good calculations list}
 		if(ModelRequest.isKey("calcs"))

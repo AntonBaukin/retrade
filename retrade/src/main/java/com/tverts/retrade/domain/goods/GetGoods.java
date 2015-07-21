@@ -151,6 +151,9 @@ order by gu.id
 		  list();
 	}
 
+	/**
+	 * Returns the Good Unit entities directly selected.
+	 */
 	public List<GoodUnit> getSelectedGoodUnits(Long domain, String selset)
 	{
 /*
@@ -170,6 +173,30 @@ order by gu.id
 		  "domain", domain, "selset", selset,
 		  "login",  SecPoint.login()
 		);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> getSelectedGoodsKeys(String selset)
+	{
+		QueryBuilder qb = new QueryBuilder();
+
+		//~: from clause
+		qb.nameEntity("GoodUnit", GoodUnit.class);
+		qb.setClauseFrom("GoodUnit gu");
+
+		//~: select clause
+		qb.setClauseSelect("gu.id");
+
+
+		//sec: domain restriction
+		qb.getClauseWhere().
+		  addPart("gu.domain.id = :domain").
+		  param("domain", SecPoint.domain());
+
+		//!: restrict by the selection set
+		restrictGoodsBySelSet(qb, selset, "all");
+
+		return (List<Long>) QB(qb).list();
 	}
 
 	@SuppressWarnings("unchecked")

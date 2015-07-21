@@ -859,11 +859,11 @@ table.retrade-info-table-price-history-good-price td.retrade-info-title:first-ch
   margin-top: 4pt; width: 52ex; text-align: justify;
 }
 
-.retrade-reprice-doc-edit-good-removed-check-cell
+.retrade-reprice-doc-edit-good-removed-check-cell span
 {
-  background-color: #F00;
-  color: #FFF; font-weight: bolder;
-  border: none; border-radius: 4px;
+  padding: 3px; background-color: #F00; color: #FFF;
+  border-radius: 4px; font-weight: bolder;
+  -moz-osx-font-smoothing: auto;
 }
 
 .retrade-reprice-doc-edit-good-removed-new-price-cell
