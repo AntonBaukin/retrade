@@ -66,10 +66,6 @@ public class Unity implements PrimaryIdentity, TxEntity
 
 	public String     getOxSearch()
 	{
-		if((primaryKey != null) && primaryKey.equals(-1014L))
-		{
-			int a  = 0;
-		}
 		return oxSearch;
 	}
 
@@ -77,10 +73,6 @@ public class Unity implements PrimaryIdentity, TxEntity
 
 	public void       setOxSearch(String oxSearch)
 	{
-		if((primaryKey != null) && primaryKey.equals(-1014L))
-		{
-			int a  = 0;
-		}
 		this.oxSearch = oxSearch;
 	}
 

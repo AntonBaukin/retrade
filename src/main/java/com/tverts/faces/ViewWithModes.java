@@ -319,6 +319,14 @@ public abstract class ViewWithModes
 	public void    setPhonyBoolFalse(boolean phonyBoolFalse)
 	{}
 
+	public String  getPhonyString()
+	{
+		return "";
+	}
+
+	public void    setPhonyString(String s)
+	{}
+
 
 	/* protected: view support interface */
 
