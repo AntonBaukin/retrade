@@ -12,23 +12,31 @@ public interface FmtUni
 	/**
 	 * Tells to include object type name.
 	 */
-	public static final Object TYPE   =
+	public static final Object TYPE    =
 	  new Object();
 
 	/**
 	 * Tells to include object code.
 	 */
-	public static final Object CODE   =
+	public static final Object CODE    =
 	  new Object();
 
 	/**
 	 * Allows formatting only by the exact
 	 * object type comparing, no abstractions.
 	 */
-	public static final Object EXACT  =
+	public static final Object EXACT   =
 	  new Object();
 
-	public static final Object LONGER =
+	public static final Object LONGER  =
+	  new Object();
+
+	/**
+	 * Tells that formatting is for the display,
+	 * not possible printing or copy-paste.
+	 * If set, some funny symbols may be used.
+	 */
+	public static final Object DISPLAY =
 	  new Object();
 
 	/**
