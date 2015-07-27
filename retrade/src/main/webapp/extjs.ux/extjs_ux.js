@@ -67,6 +67,11 @@ Ext.form.field.ComboBox.override(
 	}
 })
 
+Ext.resizer.Splitter.override(
+{
+	collapseOnDblClick : false
+})
+
 
 // +----: Time Picker :------------------------------------------+
 

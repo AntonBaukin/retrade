@@ -1038,8 +1038,7 @@
           preventHeader: true, pager: true,
           sortableColumns: true, border: false,
           columns: ZeT.defined('#{goodsColumnModel}'),
-          selModel: #{goodsColumnSelModel},
-          cls: 'ux-grid-smaller'
+          selModel: #{goodsColumnSelModel}
        </f:facet>
       </x:data-grid>
 
@@ -1177,7 +1176,6 @@
     p.expand()
 
     var s = extjsf.component("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
-    ZeT.log('load page 15')
     s.setPageSize(15); s.loadPage(1)
   })
 
@@ -1189,7 +1187,6 @@
     p.query('tool[type="restore"]')[0].hide()
 
     var s = extjsf.component("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
-    ZeT.log('load page 5')
     s.setPageSize(5); s.loadPage(1)
   })
 

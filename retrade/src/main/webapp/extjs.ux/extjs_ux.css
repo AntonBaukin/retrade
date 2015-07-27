@@ -226,6 +226,41 @@ tr.x-boundlist-item td:first-child
 }
 
 
+/* Splitters */
+
+.x-splitter-horizontal
+{
+  background: linear-gradient(to bottom, rgba(203, 225, 246, 0.15) 0%, rgba(203, 225, 246, 0.45) 100%);
+}
+
+.x-splitter-horizontal.x-splitter-active
+{
+  background: linear-gradient(to bottom, rgba(246, 211, 203, 0.5) 0%, rgba(246, 211, 203, 0.95) 100%);
+}
+
+.x-layout-split-top, .x-layout-split-bottom
+{
+  opacity: 1; height: 5px; background: white;
+  border: 2px solid #B0CDE3; border-radius: 2px;
+}
+
+.x-splitter-vertical
+{
+  background: linear-gradient(to right, rgba(203, 225, 246, 0.15) 0%, rgba(203, 225, 246, 0.45) 100%);
+}
+
+.x-splitter-vertical.x-splitter-active
+{
+  background: linear-gradient(to right, rgba(246, 211, 203, 0.5) 0%, rgba(246, 211, 203, 0.95) 100%);
+}
+
+.x-layout-split-left, .x-layout-split-right
+{
+  opacity: 1; width: 5px; background: white;
+  border: 2px solid #B0CDE3; border-radius: 2px;
+}
+
+
 /* Green Button */
 
 .ux-btn-green.x-btn-default-small
