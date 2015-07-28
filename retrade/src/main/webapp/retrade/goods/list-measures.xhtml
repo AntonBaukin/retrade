@@ -20,10 +20,14 @@ ${v.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
       component().setTitle('Единицы измерения')
 
+    ReTrade.desktop.prevsizeComp('winmain', '${rootView.extjsDomain}')
+
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">

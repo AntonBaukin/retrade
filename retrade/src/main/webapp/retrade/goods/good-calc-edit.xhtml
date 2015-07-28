@@ -20,10 +20,16 @@ ${v.checkModelRequested}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
       component().setTitle("#{z:jss(v.calcEditWindowTitle)}")
 
+    ReTrade.desktop.prevsizeComp({ marker: 'calc-edit',
+      name: 'winmain', domain: '${rootView.extjsDomain}'
+    })
+
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">
@@ -766,22 +772,21 @@ ${v.checkModelRequested}
     if((sc.value() == old) || (parseFloat(sc.value()) == parseFloat(old))) sc.value(v)
   })
 
-  //~: adjust window size
-  extjsf.bind("${z:vid(v, '_main_layout')}", '${rootView.extjsDomain}').on('boxready', function()
+  //~: additional layout and the sizing
+  Ext.onReady(ZeT.timeouted(150, function()
   {
-     ReTrade.desktop.applyWindowBox({ name: 'winmain', domain: '${rootView.extjsDomain}',
-       widthpt: 540, heightpt: 280 })
-  })
+    //~: adjust super-good label width
+    var l0 = extjsf.component("${z:vid(v, 'sub-code-label')}", '${rootView.extjsDomain}');
+    var l1 = extjsf.component("${z:vid(v, 'super-good-label')}", '${rootView.extjsDomain}');
+    var w  = Math.max(l0.getWidth(), l1.getWidth());
+    l0.setWidth(w); l1.setWidth(w)
 
-  //~: adjust super-good label width
-  extjsf.bind("${z:vid(v, 'derived-form')}", '${rootView.extjsDomain}').on('boxready', function()
-  {
-     var l0 = extjsf.component("${z:vid(v, 'sub-code-label')}", '${rootView.extjsDomain}');
-     var l1 = extjsf.component("${z:vid(v, 'super-good-label')}", '${rootView.extjsDomain}');
-     var w  = Math.max(l0.getWidth(), l1.getWidth());
-
-     l0.setWidth(w); l1.setWidth(w)
-  })
+    //~: adjust window size
+    ReTrade.desktop.applyWindowBox({
+      name: 'winmain', domain: '${rootView.extjsDomain}',
+      widthpt: 540, heightpt: 280, prevsize: 'calc-edit'
+    })
+  }))
 
   //]]>
   </script>

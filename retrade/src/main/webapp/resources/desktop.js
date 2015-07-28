@@ -221,6 +221,9 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 		var box = this.calcWindowBox(opts)
 
+		if(opts.prevsize) //?: {remember current size}
+			this.prevsizeComp({component: win, save: opts.prevsize})
+
 		win.setPosition(box.x, box.y).setSize(box.width, box.height)
 	},
 
@@ -313,7 +316,12 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	 * Returns true when the component was re-sized.
 	 *
 	 * Set 'save' option true to always remember present position
-	 * instead of the resizing back.
+	 * instead of the resizing back. If it's value is a string, it
+	 * is used as a marker within the stack of previous sizes.
+	 *
+	 * Option 'marker' allows to pop the items from the sizes
+	 * stack till the item having it (is also removed). If
+	 * marker is undefined, the first item is always selected.
 	 */
 	prevsizeComp      : function(opts)
 	{
@@ -321,17 +329,92 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		if(!comp || !comp.extjsfBind) return undefined
 		if(comp === opts) opts = {}
 
-		if((opts.save === true) || !comp.extjsfBind.prevSize)
+		//?: {restoring current size}
+		if(!opts.save && comp.extjsfBind.prevSize)
 		{
-			comp.extjsfBind.prevSize = comp.getSize()
-			return false
+			var stack = comp.extjsfBind.prevSize
+			ZeT.assert(ZeT.isa(stack) && stack.length)
+
+			//~: find the position to take
+			var i = 0; if(!ZeTS.ises(opts.marker))
+				for(var j = stack.length - 1;(j >= 0);j--)
+					if(stack[j].marker === opts.marker)
+						{ i = j; break; }
+
+			//~: restore the size
+			var box = stack[i]
+			box.component = comp
+			this.resizeComp(box)
+
+			//?: {has nothing left}
+			if(i == 0) delete comp.extjsfBind.prevSize; else
+				stack.splice(i, stack.length - i)
+			return true
 		}
 
-		comp.extjsfBind.prevSize.component = comp
-		this.resizeComp(comp.extjsfBind.prevSize)
-		delete comp.extjsfBind.prevSize
+		//?: {has no stack | clear it}
+		if(!(stack = comp.extjsfBind.prevSize) || !ZeTS.ises(opts.marker))
+			comp.extjsfBind.prevSize = stack = []
 
-		return true
+		//~: remember the size
+		var box = comp.getSize()
+		stack.push(box)
+
+		//?: {has marker}
+		if(!ZeTS.ises(opts.marker))
+			box.marker = opts.marker
+
+		return false
+	},
+
+	resizeToHeight    : function(win, opts, target)
+	{
+		ZeT.assertn(opts)
+
+		if(ZeT.iss(win))
+			win = extjsf.component(win, opts.domain)
+		ZeT.assert(win && (win.isComponent === true))
+
+		if(ZeT.iss(target))
+			target = extjsf.component(win, opts.domain)
+		if(!ZeT.isa(target))
+			target = [target]
+
+		//?: {the height was adjusted}
+		if(!opts.force && this.prevsizeComp(win)) return
+
+		//~: calculate the bounds
+		var y, Y, H = win.body.getHeight()
+		ZeT.each(target, function(t)
+		{
+			if(ZeT.iss(t))
+				t = extjsf.component(t, opts.domain)
+			ZeT.assert(t && (t.isComponent === true))
+
+			var b = t.getBox()
+			if(ZeT.isu(y) || (b.y < y)) y = b.y
+			if(ZeT.isu(Y) || (b.bottom > Y)) Y = b.bottom
+		})
+
+		var dH = opts['+h']; if(!ZeT.isn(dH)) dH = 0
+		if(ZeT.isn(opts['+hpt'])) dH += extjsf.pt(opts['+hpt'])
+
+//		ZeT.log('H = ', H, ', Y - y = ', Y - y,
+//		  ', (H - (Y - y + dH)) = ', (H - (Y - y + dH)),
+//		  '; win.setHeight(win.getHeight() - ',
+//		  (H - (Y - y + dH)), ') = win.setHeight(',
+//		   win.getHeight() - (H - (Y - y + dH)), ')'
+//		)
+
+		//?: {have no components}
+		if(ZeT.isu(y) | ZeT.isu(Y)) return
+		ZeT.assert(y <= Y)
+
+		//~: remember the size
+		this.prevsizeComp({component: win, save: opts.prevsize || true})
+
+		//~: set proper height
+		win.setHeight(win.getHeight() - (H - (Y - y + dH)))
 	},
 
 	resizeComp        : function(opts)

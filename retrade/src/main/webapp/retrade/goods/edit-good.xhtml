@@ -20,15 +20,18 @@ ${v.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
       component().setTitle("#{z:jss(v.editWindowTitle)}")
 
+    ReTrade.desktop.prevsizeComp('winmain', '${rootView.extjsDomain}')
+
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">
-    layout: {type: 'vbox', align: 'stretch'},
-    bodyCls: 'retrade-back-panel'
+    layout: 'fit', bodyCls: 'retrade-back-panel'
   </f:facet>
 
   <f:facet name = "toolbar-props">
@@ -448,23 +451,14 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: adjust window size
-  extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').on('boxready', function()
+  Ext.onReady(ZeT.timeouted(150, function()
   {
-     var win = extjsf.component('winmain', '${rootView.extjsDomain}')
+    ReTrade.desktop.resizeToHeight('winmain',
+      { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true },
+      [ "${z:vid(v, '_add_to_selset')}", "${z:vid(v, '_group')}", "${z:vid(v, '_code_measure')}" ]
+    )
+  }))
 
-     if(!ReTrade.desktop.prevsizeComp(win))
-     {
-       var wht = win.body.getHeight()
-       var frm = extjsf.component("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}')
-       var fht = frm.getBox().height
-
-       //~: set proper height
-       win.setHeight(win.setHeight(win.getHeight() - (wht - fht)))
-     }
-
-     //~: remember the size
-     ReTrade.desktop.prevsizeComp({component: win, save: true})
-  })
 
   //~: validate on code change
   extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)

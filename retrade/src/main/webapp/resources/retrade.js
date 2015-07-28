@@ -880,25 +880,25 @@ ZeT.init('init: retrade.data', function()
 	  ]
 	})
 
-	ZeT.defineDelay('retrade.columns.GoodCalcView', function()
+	ZeT.defineDelay('retrade.columns.GoodCalcHistoryView', function()
 	{
 		return [
 
 		 {
 		   text: "Открыта", dataIndex: 'openTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
 		   text: "Закрыта", dataIndex: 'closeTime', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
 		   text: "Тип товара", dataIndex: 'semiReady', sortable: false,
-		   width: extjsf.ex(20),  renderer: function(v)
+		   flex: 1,  renderer: function(v)
 		   {
 				return v?('Полуфабрикат'):('Продукт-ингредиент');
 		   }

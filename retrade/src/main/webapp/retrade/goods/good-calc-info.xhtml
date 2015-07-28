@@ -20,10 +20,16 @@ ${v.checkModelRequested}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
       component().setTitle("#{z:jss(v.calcWindowTitle)}")
 
+    ReTrade.desktop.prevsizeComp({ marker: 'calc-info',
+      name: 'winmain', domain: '${rootView.extjsDomain}'
+    })
+
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">
@@ -329,11 +335,13 @@ ${v.checkModelRequested}
   //<![CDATA[
 
   //~: adjust window size
-  extjsf.bind("${z:vid(v, 'main-layout')}", '${rootView.extjsDomain}').on('boxready', function()
+  Ext.onReady(ZeT.timeouted(150, function()
   {
-    ReTrade.desktop.applyWindowBox({ name: 'winmain', domain: '${rootView.extjsDomain}',
-      widthpt: 540, heightpt: 280 })
-  })
+    ReTrade.desktop.applyWindowBox({
+      name: 'winmain', domain: '${rootView.extjsDomain}',
+      widthpt: 540, heightpt: 280, prevsize: 'calc-info'
+    })
+  }))
 
   //~: toggle edit comment
   extjsf.bind("${z:vid(v, 'edit-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)

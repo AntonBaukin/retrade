@@ -91,11 +91,11 @@ ${v.checkModelRequested}
 
 
     <x:component coid = "${z:vid(v, '_form_fill_0')}">
-     <f:facet name = "extjs-props">
-       xtype: 'panel', flex: 1, border: false,
-       bodyCls: 'retrade-transparent-panel'
-     </f:facet>
-   </x:component>
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
 
 
     <!-- [code and name line -->
@@ -300,6 +300,16 @@ ${v.checkModelRequested}
 
     cu.validate()
   })
+
+
+  //~: adjust window size
+  Ext.onReady(ZeT.timeouted(150, function()
+  {
+    ReTrade.desktop.resizeToHeight('winmain',
+      { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true },
+      [ "${z:vid(v, '_code_name_line')}", "${z:vid(v, '_class_code_unit_line')}" ]
+    )
+  }))
 
   //]]>
   </script>
