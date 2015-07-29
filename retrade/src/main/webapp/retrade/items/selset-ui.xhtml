@@ -256,11 +256,11 @@
     var btn   = extjsf.bind("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}');
     var menu  = extjsf.bind("${z:vid(v, 'retrade-selset-menu-button')}", '${rootView.extjsDomain}');
 
-    if(!place.component())
+    if(!place.co())
       place.addItem(menu).addItem(btn)
     else {
-      place.component().add(menu.extjsProps())
-      place.component().add(btn.extjsProps())
+      place.co().add(menu.extjsProps())
+      place.co().add(btn.extjsProps())
     }
 
     //!: synchronize on the desktop
@@ -286,8 +286,8 @@
      var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
      if(!edit || !grid) throw 'Selection Set window has no content!'
 
-     grid.component().hide()
-     edit.component().show()
+     grid.co().hide()
+     edit.co().show()
   })
 
   //~: add selection
@@ -350,7 +350,7 @@ ReTrade.selset.items([#{v.selSetItems}])
       //<![CDATA[
 
 if(ReTrade.selset.winmain())
-  ReTrade.selset.winmain().component().setTitle('${z:jss(v.windowTitle)}')
+  ReTrade.selset.winmain().co().setTitle('${z:jss(v.windowTitle)}')
 
 ReTrade.selset.buildMenu(#{v.selSetMenuModel})
 

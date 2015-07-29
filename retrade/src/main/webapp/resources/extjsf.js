@@ -109,19 +109,19 @@ var extjsf = ZeT.define('extjsf',
 		if(ZeT.iss(arg))
 		{
 			bind = extjsf.bind(arg, arguments[1])
-			return bind && bind.component()
+			return bind && bind.co()
 		}
 
-		if(arg.extjsfBind) return arg.component()
+		if(arg.extjsfBind) return arg.co()
 
 		if(ZeT.iss(arg.name))
 		{
 			bind = extjsf.bind(arg.name, arg.domain)
-			return bind && bind.component()
+			return bind && bind.co()
 		}
 
 		if(arg.bind && arg.bind.extjsfBind)
-			return arg.bind.component()
+			return arg.bind.co()
 
 		return undefined
 	},
@@ -250,7 +250,7 @@ var extjsf = ZeT.define('extjsf',
 	bindHandler      : function(name, domain, handler)
 	{
 		var bind = this.bind(name, domain);
-		var comp = bind && bind.component();
+		var comp = bind && bind.co();
 
 		if(bind && ZeT.isf(handler))
 		{
@@ -502,7 +502,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		this.constructor  = null
 	},
 
-	component        : function(component)
+	co               : function(component)
 	{
 		if(ZeT.isu(component)) return this._component;
 		this._component = component;
@@ -566,7 +566,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 	value            : function(v)
 	{
-		var c = this.component();
+		var c = this.co();
 		var p = this._extjs_props;
 
 		if(ZeT.isu(v) || (v === null))
@@ -580,7 +580,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 	visible          : function(v)
 	{
-		var c = this.component()
+		var c = this.co()
 		var p = this._extjs_props
 
 		if(ZeT.isu(v) || (v === null))
@@ -611,7 +611,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 	clearComponent   : function(opts)
 	{
-		var c = this.component(); if(!c) return this;
+		var c = this.co(); if(!c) return this;
 
 		//~: remove the children
 		c.removeAll()
@@ -721,8 +721,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	toggleReadWrite  : function(isread)
 	{
 		//~: access the form
-		var form = ZeT.assert(this.component() &&
-		  this.component().getForm && this.component().getForm(),
+		var form = ZeT.assert(this.co() &&
+		  this.co().getForm && this.co().getForm(),
 		  'This component is not an Ext Form!'
 		)
 
@@ -745,7 +745,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		ZeT.asserts(block)
 
 		//~: access the component' children
-		var c = this.component()
+		var c = this.co()
 		if(c) c.items.each(function(c)
 		{
 			if(!ZeT.iss(c.extjsfBlock)) return
@@ -775,9 +775,9 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 				continue;
 			}
 
-			if(ZeT.isf(chs[i].component) && chs[i].component())
+			if(ZeT.isf(chs[i].co) && chs[i].co())
 			{
-				res.push(chs[i].component())
+				res.push(chs[i].co())
 				continue;
 			}
 
@@ -836,7 +836,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 		//?: {is menu bound}
 		if(this.menu && this.menu.extjsfBind)
-			res.menu = this.menu.component();
+			res.menu = this.menu.co();
 
 		//?: {is data store bound}
 		if(this.store) if(!this.store.createStore)
@@ -882,8 +882,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		opts = opts || {};
 
 		var jsf_form = this.nodeId() && Ext.get(this.nodeId());
-		var ext_form = this.component() &&
-		  this.component().getForm && this.component().getForm();
+		var ext_form = this.co() &&
+		  this.co().getForm && this.co().getForm();
 		if(!ext_form) throw 'Can not issue form submit as no form is found!';
 
 		//~: {validate the form}
@@ -991,7 +991,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 				if(!cmp)
 				{
 					var bind = extjsf.bind(ers[i].target, this.domain);
-					if(bind) cmp = bind.component();
+					if(bind) cmp = bind.co();
 				}
 
 				if(cmp && cmp.isFormField)
@@ -1118,10 +1118,10 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		ZeT.assert(ZeT.iss(ename))
 		ZeT.assert(ZeT.isf(func))
 
-		if(this.component())
+		if(this.co())
 		{
-			this.component().removeListener(ename, func)
-			this.component().on(ename, func)
+			this.co().removeListener(ename, func)
+			this.co().on(ename, func)
 		}
 		else
 		{
@@ -1270,7 +1270,7 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 		this._clear(winmain)
 
 		//~: set temporary title
-		winmain.component().setTitle('Выполняется запрос...')
+		winmain.co().setTitle('Выполняется запрос...')
 
 		var adr = this._url;
 		var mth = ZeT.iss(this._method)?(this._method):
@@ -1281,7 +1281,7 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 
 		//!: reload content
 		Ext.create('Ext.ComponentLoader', {
-		  target: winmain.component(), url: adr,
+		  target: winmain.co(), url: adr,
 		  ajaxOptions: { method: mth, timeout: 30 * 60 * 1000 }, //<-- 30 min
 		  params: prms, autoLoad: true, scripts: true
 		})
@@ -1341,7 +1341,7 @@ extjsf.support = ZeT.singleInstance('extjsf.support', {
 
 	gridColumns            : function(grid, visible)
 	{
-		if(grid.extjsfBind === true) grid = grid.component();
+		if(grid.extjsfBind === true) grid = grid.co();
 		return (visible)?(grid.headerCt.getVisibleGridColumns()):
 		  (grid.headerCt.getGridColumns());
 	},

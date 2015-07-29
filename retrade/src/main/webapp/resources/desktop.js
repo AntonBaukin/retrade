@@ -152,7 +152,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		if(!pos) pos = 'center';
 
 		var panel  = this.controller(pos).contentPanel();
-		panel = panel && panel.component();
+		panel = panel && panel.co();
 		if(!panel) throw 'Can not load root panel without the component!'
 		panel.removeAll(true) //<-- clean the component
 
@@ -602,24 +602,24 @@ ZeT.defineClass('ReTrade.PanelController', {
 		if(!this._void_panel)
 			return undefined
 
-		if(!this._void_panel.component())
+		if(!this._void_panel.co())
 			return undefined
 
 		if(this._main_topbar)
 		{
-			var c = this._main_topbar.component()
+			var c = this._main_topbar.co()
 			if(c && c.items.getCount()) return false
 		}
 
 		if(this._main_topbar_ext)
 		{
-			c = this._main_topbar_ext.component()
+			c = this._main_topbar_ext.co()
 			if(c && c.items.getCount()) return false
 		}
 
 		if(this._content_panel)
 		{
-			c = this._content_panel.component()
+			c = this._content_panel.co()
 			if(c && c.items.getCount()) return false
 		}
 
@@ -838,30 +838,30 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 	_insert_content   : function()
 	{
 		var cnt = this.panelController().contentPanel()
-		if(!cnt || !cnt.component()) return //<-- no content panel
+		if(!cnt || !cnt.co()) return //<-- no content panel
 
 		//?: the bind component is not created yet
-		if(!this.bind().component())
+		if(!this.bind().co())
 		{
 			//~: create the root panel component
-			this.bind().component(Ext.ComponentManager.create(
+			this.bind().co(Ext.ComponentManager.create(
 			  this.bind().extjsProps()))
 
 			//?: {has toolbar} dock it
-			if(this.toolbar()) this.bind().component().
+			if(this.toolbar()) this.bind().co().
 			  addDocked(this.toolbar().extjsProps())
 			//?: {has status bar} dock it
-			if(this.statusbar()) this.bind().component().
+			if(this.statusbar()) this.bind().co().
 			  addDocked(this.statusbar().extjsProps())
 		}
 
 		//~: add the component
-		cnt.component().add(this.bind().component())
+		cnt.co().add(this.bind().co())
 
 		//~: add the removed content nodes
 		var nodes = this._removed_content_nodes; if(ZeT.isa(nodes))
 		{
-			var body = cnt.component().getEl().down('.retrade-desktop-panel-content')
+			var body = cnt.co().getEl().down('.retrade-desktop-panel-content')
 			if(!body) throw 'No desktop panel content element found!'
 
 			for(var i = 0;(i < nodes.length);i++)
@@ -874,16 +874,16 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 	_remove_content   : function(destroy)
 	{
 		var cnt = this.panelController().contentPanel()
-		if(!cnt || !cnt.component()) return //<-- no content panel
+		if(!cnt || !cnt.co()) return //<-- no content panel
 
 		//HINT: the component is automatically removed on destroy event
 		if(!this._on_destruction)
-			cnt.component().remove(this.bind().component(), destroy)
+			cnt.co().remove(this.bind().co(), destroy)
 
-		if(destroy) this.bind().component(null) //<-- remove reference
+		if(destroy) this.bind().co(null) //<-- remove reference
 
 		//~: remove plain DOM nodes left in the content panel
-		var body = cnt.component().getEl().down('.retrade-desktop-panel-content')
+		var body = cnt.co().getEl().down('.retrade-desktop-panel-content')
 		if(!body) throw 'No desktop panel content element found!'
 
 		//~: collect all the child nodes
@@ -902,31 +902,31 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 	_insert_topbar    : function()
 	{
 		var ext  = this.panelController().mainTopbarExt()
-		if(!ext || !ext.component()) return //<-- no top bar to insert
+		if(!ext || !ext.co()) return //<-- no top bar to insert
 
 		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return
 
 		for(var i = 0;(i < tbis.length);i++)
 		{
 			//?: {the bind has no component already created} create it now
-			if(!tbis[i].component()) tbis[i].component(
+			if(!tbis[i].co()) tbis[i].co(
 			   Ext.ComponentManager.create(tbis[i].extjsProps()))
 
-			ext.component().add(tbis[i].component())
+			ext.co().add(tbis[i].co())
 		}
 	},
 
 	_remove_topbar    : function(destroy)
 	{
 		var ext  = this.panelController().mainTopbarExt()
-		if(!ext || !ext.component()) return //<-- no top bar to insert
+		if(!ext || !ext.co()) return //<-- no top bar to insert
 
 		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return
 
 		for(var i = 0;(i < tbis.length);i++)
 		{
-			ext.component().remove(tbis[i].component(), destroy)
-			if(destroy) tbis[i].component(null) //<-- remove reference
+			ext.co().remove(tbis[i].co(), destroy)
+			if(destroy) tbis[i].co(null) //<-- remove reference
 		}
 	},
 
@@ -996,13 +996,13 @@ ZeT.defineClass('ReTrade.DesktopCollapsing', {
 
 	_collapsed_click  : function(panel)
 	{
-		panel.component().expand()
+		panel.co().expand()
 	},
 
 	_before_collapse  : function(panel)
 	{
-		var w = panel.component().getWidth()
-		var W = panel.component().ownerCt.getWidth()
+		var w = panel.co().getWidth()
+		var W = panel.co().ownerCt.getWidth()
 
 		//~: original width is relative
 		panel.desktopCollapsing.originalWidth = (w / W)
@@ -1018,9 +1018,9 @@ ZeT.defineClass('ReTrade.DesktopCollapsing', {
 
 		ZeT.timeout(500, function()
 		{
-			panel.component().getEl().removeListener(
+			panel.co().getEl().removeListener(
 			  'click', panel.desktopCollapsing.click)
-			panel.component().getEl().on(
+			panel.co().getEl().on(
 			  'click', panel.desktopCollapsing.click)
 		})
 	},
@@ -1028,7 +1028,7 @@ ZeT.defineClass('ReTrade.DesktopCollapsing', {
 	_before_expand    : function(panel)
 	{
 		if(panel.desktopCollapsing.click)
-			panel.component().getEl().removeListener(
+			panel.co().getEl().removeListener(
 			  'click', panel.desktopCollapsing.click)
 	},
 
@@ -1039,12 +1039,12 @@ ZeT.defineClass('ReTrade.DesktopCollapsing', {
 	{
 		if(panel.desktopCollapsing.setOriginalWidth)
 		{
-			var W = panel.component().ownerCt.getWidth()
+			var W = panel.co().ownerCt.getWidth()
 			var w = Math.round(W * panel.desktopCollapsing.originalWidth)
 
 			//!: prevents infinite recursion
 			panel.desktopCollapsing.setOriginalWidth = false
-			panel.component().setWidth(w)
+			panel.co().setWidth(w)
 		}
 	}
 })
@@ -1400,14 +1400,14 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	 */
 	loadPlace         : function(url)
 	{
-		if(!this.place() || !this.place().component())
+		if(!this.place() || !this.place().co())
 			throw 'SelSet place is not specified or not built yet!'
 
 		var self = this;
 
 		Ext.create('Ext.ComponentLoader', {
 
-		  'url': url, target: this.place().component(),
+		  'url': url, target: this.place().co(),
 		  autoLoad: true, scripts: true,
 		  ajaxOptions: { method: 'GET' }, params: {
 		    mode: 'body', view: self.view(),
@@ -1422,7 +1422,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			bind = extjsf.bind(bind, this.domain());
 
 		if(!bind || !bind.extjsfBind)
-			return this._toggle_btn && this._toggle_btn.component();
+			return this._toggle_btn && this._toggle_btn.co();
 
 		this._toggle_btn = bind;
 		return this;
@@ -1434,7 +1434,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			bind = extjsf.bind(bind, this.domain());
 
 		if(!bind || !bind.extjsfBind)
-			return this._main_menu && this._main_menu.component();
+			return this._main_menu && this._main_menu.co();
 
 		this._main_menu = bind;
 		return this;
@@ -1466,14 +1466,14 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 				item.on('click', ZeT.fbind(this._menu_item_click, this, i))
 
 				//~: create item component
-				item.component(Ext.create('Ext.menu.CheckItem', item.extjsProps()))
+				item.co(Ext.create('Ext.menu.CheckItem', item.extjsProps()))
 
 				//~: add it to the menu
-				this.menu().add(item.component())
+				this.menu().add(item.co())
 			}
 
 			//~: selection set name (or title for default set)
-			item.component().setText(model[i].title || model[i].name)
+			item.co().setText(model[i].title || model[i].name)
 
 			//~: current status
 			if(model[i].current)
@@ -1482,15 +1482,15 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 				this.selset = model[i].name;
 			}
 
-			item.component().setChecked(model[i].current, true)
+			item.co().setChecked(model[i].current, true)
 		}
 
 		//~: show-hide items
 		for(i = 0;(i < items.length);i++)
 			if(i < model.length)
-				items[i].component().show()
+				items[i].co().show()
 			else
-				items[i].component().hide()
+				items[i].co().hide()
 
 		return this;
 	},
@@ -1596,7 +1596,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			if(!ison) acol.hide(); else
 			{
 				acol.show()
-				bind.component().getView().refresh()
+				bind.co().getView().refresh()
 			}
 		})
 
@@ -1640,7 +1640,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	{
 		var self    = this;
 		var winmain = this.winmain();
-		var window  = winmain && winmain.component(); if(!window) return;
+		var window  = winmain && winmain.co(); if(!window) return;
 
 		//~: clear the window
 		winmain.clearComponent({notListeners: true})
@@ -1674,16 +1674,16 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		  ZeT.assert(this._create_wnd(opts));
 
 		//!: load selection set window in the same (root) domain
-		if(winmain.component())
-			return winmain.component().toFront()
+		if(winmain.co())
+			return winmain.co().toFront()
 
 		//~: create window & load the content
-		winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+		winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
 
 		//~: set the window position
 		if(this._win_has_no_xy)
 		{
-			winmain.component().alignTo(document.body, 'r-r')
+			winmain.co().alignTo(document.body, 'r-r')
 			this._win_has_no_xy = false;
 			this._win_on_right  = true;
 		}
@@ -1695,8 +1695,8 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		var winmain = this._winmain;
 		delete this._winmain
 
-		if(winmain.component())
-			winmain.component().close()
+		if(winmain.co())
+			winmain.co().close()
 
 		if(this._on_resize_)
 		{
@@ -1811,12 +1811,12 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 		if(index == this._current_menu_item)
 		{
-			this._menu_items[index].component().setChecked(true, true)
+			this._menu_items[index].co().setChecked(true, true)
 			return;
 		}
 
-		this._menu_items[this._current_menu_item].component().setChecked(false, true)
-		this._menu_items[index].component().setChecked(true, true)
+		this._menu_items[this._current_menu_item].co().setChecked(false, true)
+		this._menu_items[index].co().setChecked(true, true)
 		this._current_menu_item = index;
 		this.selset = this._menu_model[index].name;
 
@@ -1850,7 +1850,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 	_on_resize        : function()
 	{
-		var win = this._winmain && this._winmain.component();
+		var win = this._winmain && this._winmain.co();
 		if(!win) return
 
 		//?: {window pinned to the right}

@@ -106,7 +106,7 @@ ${v.checkModelRequestedWithRedirect}
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchNames: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${rootView.extjsDomain}')({
@@ -124,7 +124,7 @@ ${v.checkModelRequestedWithRedirect}
         var names  = extjsf.bind("${z:vid(v, 'search-firms')}", '${rootView.extjsDomain}').value();
         var params = { searchNames: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${rootView.extjsDomain}')({
@@ -222,9 +222,9 @@ ${v.checkModelRequestedWithRedirect}
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -248,7 +248,7 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     //~: create the window
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   }
 
 
@@ -265,9 +265,9 @@ ${v.checkModelRequestedWithRedirect}
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -290,7 +290,7 @@ ${v.checkModelRequestedWithRedirect}
       }
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.compon.co(ate('Ext.window.Window', winmain.extjsProps()))
   })
 
 
@@ -334,7 +334,7 @@ ${v.checkModelRequestedWithRedirect}
       extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
     //]]>

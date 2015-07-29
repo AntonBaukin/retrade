@@ -44,7 +44,7 @@
   {
     var domain  = '${rootView.extjsDomain}';
     var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain);
-    if(!winmain || !winmain.component())
+    if(!winmain || !winmain.co())
       throw 'No window [#{cc.attrs.winmainName}] found in the domain ' +
         '[${rootView.extjsDomain}]!'
 
@@ -147,7 +147,7 @@
   {
     var domain  = '${rootView.extjsDomain}';
     var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain);
-    if(!winmain || !winmain.component()) return;
+    if(!winmain || !winmain.co()) return;
 
     var panel   = extjsf.bind("#{cc.attrs.coid}", domain);
     var toolbar = extjsf.bind('#{cc.attrs.coid}-toolbar', domain);
@@ -155,14 +155,14 @@
 
     //?: {toolbar has items} add it to the window
     if(toolbar.hasItems() || toolbar.hasHTML())
-      winmain.component().addDocked(toolbar.extjsProps())
+      winmain.co().addDocked(toolbar.extjsProps())
 
     //?: {status bar has items} add it to the window
     if(status.hasItems() || status.hasHTML())
-      winmain.component().addDocked(status.extjsProps())
+      winmain.co().addDocked(status.extjsProps())
 
     //!: add the panel to the window
-    winmain.component().add(panel.extjsProps())
+    winmain.co().add(panel.extjsProps())
 
   })()
 

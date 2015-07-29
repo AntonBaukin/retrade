@@ -19,7 +19,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle("Свойства персоны '${v.authLogin.code}'")
+      co().setTitle("Свойства персоны '${v.authLogin.code}'")
 
   </script>
 
@@ -45,7 +45,7 @@ ${v.checkModelRequestedWithRedirect}
           var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}');
 
           winmain.personEdit = { cancelled: true };
-          winmain.component().close()
+          winmain.co().close()
         }
 
       </f:facet>
@@ -279,9 +279,9 @@ ${v.checkModelRequestedWithRedirect}
   //~: adjust window height
   extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}').on('afterrender', function()
   {
-     var win = extjsf.bind('winmain', '${rootView.extjsDomain}').component();
+     var win = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
      var wht = win.body.getHeight();
-     var frm = extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}').component();
+     var frm = extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}').co();
      var fht = frm.getBox().height;
 
      win.setHeight(win.getHeight() - (wht - fht))

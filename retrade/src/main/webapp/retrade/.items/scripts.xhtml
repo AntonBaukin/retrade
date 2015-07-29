@@ -62,9 +62,9 @@ function retrade_open_window(opts)
 
   if(winmain) //?: {has this window} show it
   {
-    winmain.component().toFront()
-    winmain.component().setPagePosition(box.x, box.y)
-    winmain.component().expand()
+    winmain.co().toFront()
+    winmain.co().setPagePosition(box.x, box.y)
+    winmain.co().expand()
     return
   }
 
@@ -107,7 +107,7 @@ function retrade_open_window(opts)
     winmain.on('beforedestroy', ZeT.fbind(opts.onclose, winmain))
 
   //~: create the ExtJS Window component & return the bind
-  winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+  winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   return winmain
 }
 
@@ -124,12 +124,12 @@ function retrade_chain_loader(/* [callback], options for each area */)
 
     extjsf.defineBind('onload', domain, function(root)
     {
-      bind.component().add(root.component())
+      bind.co().add(root.co())
       if(ZeT.isf(next)) next()
     })
 
     Ext.create('Ext.ComponentLoader', {
-      target: bind.component(), url: url,
+      target: bind.co(), url: url,
       ajaxOptions: {method: 'GET'}, autoLoad: true,
       scripts: true, params: {
         '${rootView.viewModeParam}': viewMode,
@@ -209,14 +209,14 @@ function retrade_replicate_store(master, slave, domain)
 
   function synch_data()
   {
-    var rs = []; master.component().each(
+    var rs = []; master.co().each(
       function(m){ rs.push(m.copy()) })
 
-    slave.component().removeAll()
-    slave.component().add(rs)
+    slave.co().removeAll()
+    slave.co().add(rs)
   }
 
-  if(master.component() && slave.component() && master.component().isLoaded())
+  if(master.co() && slave.co() && master.co().isLoaded())
     synch_data()
 
   //~: record inserted-removed
@@ -226,7 +226,7 @@ function retrade_replicate_store(master, slave, domain)
   master.on('update', function(s, m, op, fs)
   {
     ZeT.assertn(m.getId())
-    var x = ZeT.assertn(slave.component().getById(m.getId()),
+    var x = ZeT.assertn(slave.co().getById(m.getId()),
       'Record ID [', m.getId(), '] is not found in the slave Store!')
 
     //~: assign the updated fields

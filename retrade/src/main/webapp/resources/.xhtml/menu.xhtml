@@ -37,7 +37,7 @@
   Ext.onReady(function()
   {
     extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
-      component(Ext.create('Ext.menu.Menu',
+      co(Ext.create('Ext.menu.Menu',
         extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').extjsProps()))
   })
 

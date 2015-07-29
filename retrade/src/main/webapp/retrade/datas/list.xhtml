@@ -324,9 +324,9 @@ ${v.checkModelRequestedWithRedirect}
 
     var winmain = extjsf.bind('winmain', domain); if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -359,7 +359,7 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     //~: create the window
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   }
 
   //~: report template create
@@ -526,9 +526,9 @@ ${v.checkModelRequestedWithRedirect}
 
       if(winmain)
       {
-        winmain.component().toFront()
-        winmain.component().setPagePosition(box.x, box.y)
-        winmain.component().expand()
+        winmain.co().toFront()
+        winmain.co().setPagePosition(box.x, box.y)
+        winmain.co().expand()
         return;
       }
 
@@ -557,7 +557,7 @@ ${v.checkModelRequestedWithRedirect}
         }
       })
 
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
 
     })()
 

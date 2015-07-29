@@ -19,7 +19,7 @@
     <script type = "text/javascript">
 
       extjsf.bind('winmain', '${rootView.extjsDomain}').
-        component().setTitle('${z:jss(e.winmainTitleEditFirm)}')
+        co().setTitle('${z:jss(e.winmainTitleEditFirm)}')
 
     </script>
 
@@ -131,7 +131,7 @@
         contractor : ZeT.delay(function()
         {
           var sel = extjsf.bind("${z:vid(e, 'grid')}", '${rootView.extjsDomain}').
-            component().getSelectionModel().getSelection();
+            co().getSelectionModel().getSelection();
 
           return (sel.length == 1)?(sel[0].getId()):('');
         })
@@ -185,7 +185,7 @@
   //~: enable submit button on first selection
   extjsf.bind("${z:vid(e, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function()
   {
-    extjsf.bind("${z:vid(e, 'submit')}", '${rootView.extjsDomain}').component().enable()
+    extjsf.bind("${z:vid(e, 'submit')}", '${rootView.extjsDomain}').co().enable()
   })
 
     </script>

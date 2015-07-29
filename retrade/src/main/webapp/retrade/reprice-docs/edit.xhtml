@@ -19,7 +19,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle('${z:jss(v.winmainTitle)}')
+      co().setTitle('${z:jss(v.winmainTitle)}')
 
   </script>
 
@@ -343,7 +343,7 @@ ${v.checkModelRequestedWithRedirect}
             p = 100.0 + parseFloat(p); if(p &lt;= 0.0) return
 
             var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
-            g.component().getStore().each(function(m)
+            g.co().getStore().each(function(m)
             {
               if(m.get('fixPrice')) return
               if(m.get('goodGroup') !== e.record.get('key')) return
@@ -500,7 +500,7 @@ ${v.checkModelRequestedWithRedirect}
                  extjsf.bind("${z:vid(v, 'group-percent')}", '${rootView.extjsDomain}').value()
                 )
               {
-                g.component().getStore().each(function(m)
+                g.co().getStore().each(function(m)
                 {
                   if((m === e.record) || m.get('fixPrice')) return
                   if(m.get('goodGroup') !== e.record.get('goodGroup')) return
@@ -547,7 +547,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
           var x = g.retradeEditEvent;
-          var p = g.component().getPlugin('cellediting');
+          var p = g.co().getPlugin('cellediting');
           var c;
 
           function commitEdit()
@@ -815,10 +815,10 @@ ${v.checkModelRequestedWithRedirect}
     var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     var u = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
     var e = g.retradeEditEvent
-    var s = g.component().getStore()
+    var s = g.co().getStore()
 
     if(e && (e.field == 'goodCode'))
-      g.component().getPlugin('cellediting').completeEdit()
+      g.co().getPlugin('cellediting').completeEdit()
 
     for(var i = 0;(i < s.count());i++)
     {
@@ -854,13 +854,13 @@ ${v.checkModelRequestedWithRedirect}
 
     var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     var u = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
-    var s = g.component().getStore()
+    var s = g.co().getStore()
 
     //~: delete current empty record (if any)
     ;(function() {
        var e = g.retradeEditEvent, m = e && e.record
        if(!e || !m) return
-       g.component().getPlugin('cellediting').completeEdit()
+       g.co().getPlugin('cellediting').completeEdit()
        if(ZeTS.ises(m.get('code'))) s.remove(m)
      })()
 
@@ -1087,7 +1087,7 @@ ${v.checkModelRequestedWithRedirect}
     var g = extjsf.co("${z:vid(v, 'groups-filtered')}", '${rootView.extjsDomain}')
 
     //~: validate the form
-    if(!f.component().isValid()) return
+    if(!f.co().isValid()) return
 
     //~: validate the records
     function validate()

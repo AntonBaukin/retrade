@@ -103,7 +103,7 @@ ${v.checkModelRequestedWithRedirect}
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchNames: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${rootView.extjsDomain}')({
@@ -121,7 +121,7 @@ ${v.checkModelRequestedWithRedirect}
         var names  = extjsf.bind("${z:vid(v, 'search-firms')}", '${rootView.extjsDomain}').value();
         var params = { searchNames: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${rootView.extjsDomain}')({

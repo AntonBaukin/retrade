@@ -59,9 +59,9 @@
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -93,7 +93,7 @@
 
       //~: clear current selection
       var gr = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-      gr.component().getSelectionModel().deselectAll()
+      gr.co().getSelectionModel().deselectAll()
 
       //~: create model instance
       var m = Ext.create('retrade.model.AuthLoginView', {
@@ -107,7 +107,7 @@
       extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').toggle(false)
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
     //]]>
@@ -181,7 +181,7 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchLogins: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${rootView.extjsDomain}')({
@@ -196,7 +196,7 @@
         var names  = extjsf.bind("${z:vid(v, 'search_logins')}", '${rootView.extjsDomain}').value();
         var params = { searchLogins: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${rootView.extjsDomain}')({
@@ -329,9 +329,9 @@
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -376,10 +376,10 @@
       }
 
       //~: refresh the table
-      gr.component().getStore().reload()
+      gr.co().getStore().reload()
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
       //]]>
@@ -425,9 +425,9 @@
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -465,10 +465,10 @@
       }
 
       //~: refresh the table
-      gr.component().getStore().reload()
+      gr.co().getStore().reload()
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
       //]]>
@@ -503,9 +503,9 @@
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -528,7 +528,7 @@
       }
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
       //]]>
@@ -649,10 +649,10 @@
   //~: user info selection display
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').showUserInfo = function(m)
   {
-    var pn = extjsf.bind("${z:vid(v, 'user_data')}", '${rootView.extjsDomain}').component();
-    var tb = extjsf.bind("${z:vid(v, 'user-data-toolbar')}", '${rootView.extjsDomain}').component();
-    var ud = extjsf.bind("${z:vid(v, 'user-data-info')}", '${rootView.extjsDomain}').component();
-    var uc = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').component();
+    var pn = extjsf.bind("${z:vid(v, 'user_data')}", '${rootView.extjsDomain}').co();
+    var tb = extjsf.bind("${z:vid(v, 'user-data-toolbar')}", '${rootView.extjsDomain}').co();
+    var ud = extjsf.bind("${z:vid(v, 'user-data-info')}", '${rootView.extjsDomain}').co();
+    var uc = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').co();
 
     //~: toggle off comment button
     extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').toggle(false, true)
@@ -706,8 +706,8 @@
   extjsf.bind("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
   {
      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-     var ct = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').component();
-     var ce = extjsf.bind("${z:vid(v, 'user-data-comment-edit')}", '${rootView.extjsDomain}').component();
+     var ct = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').co();
+     var ce = extjsf.bind("${z:vid(v, 'user-data-comment-edit')}", '${rootView.extjsDomain}').co();
      var m  = gr.retradeLoginModel; if(!m) return;
 
      //?: {go to edit mode}

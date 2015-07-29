@@ -20,7 +20,7 @@
   <script type = "text/javascript">
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle('${z:jss(v.windowTitle)}')
+      co().setTitle('${z:jss(v.windowTitle)}')
 
   </script>
 
@@ -43,7 +43,7 @@
 
         handler : function()
         {
-          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').component();
+          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
           cmp.findParentByType('panel').remove(cmp, true)
         }
 
@@ -196,8 +196,8 @@
            hideLabel: true, cellCls: 'retrade-self-shunt-groups-checkbox-box-cell'
          });
 
-         form.component().add(field)
-         form.component().add(label)
+         form.co().add(field)
+         form.co().add(label)
      })
   })
 

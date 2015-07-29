@@ -23,7 +23,7 @@ ${v.checkModelRequestedWithRedirect}
     //<![CDATA[
 
       extjsf.bind('winmain-selset', '${rootView.extjsDomain}').
-        component().setTitle('${z:jss(v.windowTitle)}')
+        co().setTitle('${z:jss(v.windowTitle)}')
 
     //]]>
     </script>
@@ -131,8 +131,8 @@ ${v.checkModelRequestedWithRedirect}
        var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
        var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
 
-       edit.component().hide()
-       grid.component().show()
+       edit.co().hide()
+       grid.co().show()
     })
 
     extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-submit')}", '${rootView.extjsDomain}', function()
@@ -145,8 +145,8 @@ ${v.checkModelRequestedWithRedirect}
        form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
          success: function()
          {
-           edit.component().hide()
-           grid.component().show()
+           edit.co().hide()
+           grid.co().show()
          }
        })
     })
@@ -258,7 +258,7 @@ ReTrade.selset.items([#{v.selSetItems}])
       //<![CDATA[
 
 extjsf.bind('winmain-selset', '${rootView.extjsDomain}').
-  component().setTitle('${z:jss(v.windowTitle)}')
+  co().setTitle('${z:jss(v.windowTitle)}')
 
 ReTrade.selset.buildMenu(#{v.selSetMenuModel})
 

@@ -48,7 +48,7 @@
 
     function dodestroy()
     {
-      var comp = bind.component();
+      var comp = bind.co();
 
       if(comp) try
       {
@@ -61,7 +61,7 @@
     }
 
     //~: create the component
-    bind.component(Ext.ComponentManager.create(bind.extjsProps()))
+    bind.co(Ext.ComponentManager.create(bind.extjsProps()))
 
     //~: bind destroy listener
     extjsf.bind('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}').

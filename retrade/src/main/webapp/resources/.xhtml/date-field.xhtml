@@ -74,9 +74,9 @@
       field.on('collapse', function() { field.collapseTime = new Date().getTime(); })
 
       label.on('afterrender', function(l) { l.getEl().addListener('click', function() {
-        if(field.component().isDisabled()) return;
+        if(field.co().isDisabled()) return;
         var ct = field.collapseTime; ct = new Date().getTime() - ((!ct)?(0):(ct));
-        if(ct > 500) field.component().expand()
+        if(ct > 500) field.co().expand()
       })})
 
       label.extjsPropsNode().extjsProps({

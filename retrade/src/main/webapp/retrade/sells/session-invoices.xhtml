@@ -20,7 +20,7 @@ ${i.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle('${z:jss(i.winmainTitleInvoices)}')
+      co().setTitle('${z:jss(i.winmainTitleInvoices)}')
 
   </script>
 
@@ -122,9 +122,9 @@ ${i.checkModelRequestedWithRedirect}
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -147,7 +147,7 @@ ${i.checkModelRequestedWithRedirect}
       }
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
     </script>

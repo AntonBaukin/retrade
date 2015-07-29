@@ -20,7 +20,7 @@
   <script type = "text/javascript">
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle('${z:jss(v.windowTitle)}')
+      co().setTitle('${z:jss(v.windowTitle)}')
 
   </script>
 
@@ -43,7 +43,7 @@
 
         handler : function()
         {
-          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').component();
+          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
           cmp.findParentByType('panel').remove(cmp, true)
         }
 
@@ -173,13 +173,13 @@
     if(ZeTS.ises(d.value()))
     {
         v = false;
-        d.component().markInvalid('Задайте код домена!')
+        d.co().markInvalid('Задайте код домена!')
     }
 
     if(ZeTS.ises(n.value()))
     {
         v = false;
-        n.component().markInvalid('Задайте имя домена!')
+        n.co().markInvalid('Задайте имя домена!')
     }
 
     return v;
@@ -236,8 +236,8 @@
            value: param.value
          });
 
-         form.component().add(label)
-         form.component().add(field)
+         form.co().add(label)
+         form.co().add(field)
      })
   })
 

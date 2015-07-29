@@ -19,7 +19,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle("#{z:jss(v.winmainTitle)}")
+      co().setTitle("#{z:jss(v.winmainTitle)}")
 
   </script>
 
@@ -48,7 +48,7 @@ ${v.checkModelRequestedWithRedirect}
         handler : function()
         {
           extjsf.bind('winmain', '${rootView.extjsDomain}').
-            component().close()
+            co().close()
         }
       </f:facet>
    </x:component>
@@ -358,7 +358,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: adjust window height
   extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').on('afterrender', function()
   {
-     var win = extjsf.bind('winmain', '${rootView.extjsDomain}').component();
+     var win = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
      var wht = win.body.getHeight();
      var frm = extjsf.co("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}');
      var fht = frm.getBox().height;
@@ -395,7 +395,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
     var form = extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}');
-    if(!form.component().isValid()) return;
+    if(!form.co().isValid()) return;
 
     //!: submit the form
     form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',

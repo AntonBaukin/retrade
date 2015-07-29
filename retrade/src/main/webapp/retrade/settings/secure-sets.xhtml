@@ -268,7 +268,7 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchSets: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-sets-script')}", '${rootView.extjsDomain}')({
@@ -283,7 +283,7 @@
         var names  = extjsf.bind("${z:vid(v, 'search-sets')}", '${rootView.extjsDomain}').value();
         var params = { searchLogins: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-sets-script')}", '${rootView.extjsDomain}')({
@@ -511,7 +511,7 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchAbles: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-set-ables-script')}", '${rootView.extjsDomain}')({
@@ -526,7 +526,7 @@
         var names  = extjsf.bind("${z:vid(v, 'search-set-ables')}", '${rootView.extjsDomain}').value();
         var params = { searchAbles: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-set-ables-script')}", '${rootView.extjsDomain}')({

@@ -70,7 +70,7 @@
     })
 
     extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
-      component(Ext.create('Ext.form.Panel', form.extjsProps()))
+      co(Ext.create('Ext.form.Panel', form.extjsProps()))
   })
 
   extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}', '#{cc.attrs.coid}')

@@ -43,7 +43,7 @@
   {
     extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
       extjsPropsNode().
-      component(Ext.create('Ext.container.Viewport',
+      co(Ext.create('Ext.container.Viewport',
         extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').extjsProps()))
   })
 

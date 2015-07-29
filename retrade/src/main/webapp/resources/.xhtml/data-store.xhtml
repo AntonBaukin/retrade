@@ -144,13 +144,13 @@
     var store = extjsf.bind('#{cc.attrs.storeId}', '${rootView.extjsDomain}')
 
     //!: create store component
-    store.component(Ext.create('Ext.data.Store', store.extjsProps()))
+    store.co(Ext.create('Ext.data.Store', store.extjsProps()))
 
     var offset = parseInt("#{cc.attrs.dataStart}")
     var pgsize = parseInt("#{cc.attrs.pageSize}")
 
     if((offset > 0) && (pgsize > 0))
-      store.component().loadPage(1 + Math.floor(offset/pgsize))
+      store.co().loadPage(1 + Math.floor(offset/pgsize))
   })
 
     //]]>

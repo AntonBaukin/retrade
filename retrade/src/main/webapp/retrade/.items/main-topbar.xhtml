@@ -591,9 +591,9 @@
 
       var winmain = extjsf.bind('winmain', domain); if(winmain)
       {
-        winmain.component().toFront()
-        winmain.component().setPagePosition(box.x, box.y)
-        winmain.component().expand()
+        winmain.co().toFront()
+        winmain.co().setPagePosition(box.x, box.y)
+        winmain.co().expand()
         return;
       }
 
@@ -615,7 +615,7 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //:~ open settings - users
@@ -677,7 +677,7 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create sell invoice
@@ -703,7 +703,7 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create move invoice
@@ -729,7 +729,7 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create auto produce invoice
@@ -756,7 +756,7 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create free produce invoice
@@ -783,7 +783,7 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create correction invoice
@@ -810,7 +810,7 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create price change document

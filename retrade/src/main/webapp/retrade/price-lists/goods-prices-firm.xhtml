@@ -23,7 +23,7 @@ ${v.checkModelRequestedWithRedirect}
     //<![CDATA[
 
       extjsf.bind('winmain', '${rootView.extjsDomain}').
-        component().setTitle("${z:jss(v.winmainTitle)}")
+        co().setTitle("${z:jss(v.winmainTitle)}")
 
     //]]>
     </script>
@@ -52,7 +52,7 @@ ${v.checkModelRequestedWithRedirect}
           handler : function()
           {
             extjsf.bind('winmain', '${rootView.extjsDomain}').
-              component().close()
+              co().close()
           }
 
         </f:facet>
@@ -120,7 +120,7 @@ ${v.checkModelRequestedWithRedirect}
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchGoods: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
@@ -138,7 +138,7 @@ ${v.checkModelRequestedWithRedirect}
         var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').value();
         var params = { searchGoods: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({

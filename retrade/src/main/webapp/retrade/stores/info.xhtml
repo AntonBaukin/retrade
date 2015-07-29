@@ -20,7 +20,7 @@ ${v.checkEntityRequested}
   <script type = "text/javascript">
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle('${z:jss(v.winmainTitleInfo)}')
+      co().setTitle('${z:jss(v.winmainTitleInfo)}')
 
   </script>
 
@@ -43,7 +43,7 @@ ${v.checkEntityRequested}
         handler : function()
         {
           extjsf.bind('winmain', '${rootView.extjsDomain}').
-            component().close()
+            co().close()
         }
 
       </f:facet>
@@ -114,7 +114,7 @@ ${v.checkEntityRequested}
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchGoods: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
@@ -132,7 +132,7 @@ ${v.checkEntityRequested}
         var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').value();
         var params = { searchGoods: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({

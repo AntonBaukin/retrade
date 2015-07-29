@@ -91,7 +91,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}').on('toggle', function()
   {
     var form = extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${rootView.extjsDomain}');
-    form.component().setVisible(this['pressed'])
+    form.co().setVisible(this['pressed'])
   })
 
   extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${rootView.extjsDomain}').success(function()
@@ -111,9 +111,9 @@ ${v.checkModelRequestedWithRedirect}
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -136,7 +136,7 @@ ${v.checkModelRequestedWithRedirect}
       }
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
     //]]>

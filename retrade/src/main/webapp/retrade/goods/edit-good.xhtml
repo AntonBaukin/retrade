@@ -23,7 +23,7 @@ ${v.checkModelRequestedWithRedirect}
   //<![CDATA[
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle("#{z:jss(v.editWindowTitle)}")
+      co().setTitle("#{z:jss(v.editWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp('winmain', '${rootView.extjsDomain}')
 
@@ -412,7 +412,7 @@ ${v.checkModelRequestedWithRedirect}
     if(!isread) extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}').visible(true)
 
     //~: window title
-    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').component()
+    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').co()
     if(isread) winmain.setTitle('${z:jss(v.infoWindowTitle)}')
     else winmain.setTitle('${z:jss(v.editWindowTitle)}')
 
@@ -489,7 +489,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
     var form = extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}');
-    if(!form.component().isValid()) return;
+    if(!form.co().isValid()) return;
 
 
     //?: {has selection set checked}

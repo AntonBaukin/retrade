@@ -82,7 +82,7 @@
       {
         var ts = new Date().getTime()
         if(expandTime && (ts - expandTime < 2000))
-          bind.component().getStore().reload()
+          bind.co().getStore().reload()
         expandTime = ts
       })
     }
@@ -114,10 +114,10 @@
 
       label.on('afterrender', function(l) { l.getEl().addListener('click', function()
       {
-        var drop = bind.component()
+        var drop = bind.co()
         if(drop.isDisabled() || drop.readOnly) return
         var ct = bind.collapseTime; ct = new Date().getTime() - ((!ct)?(0):(ct))
-        if(ct > 500) bind.component().expand()
+        if(ct > 500) bind.co().expand()
       })})
 
       label.extjsPropsNode().extjsProps({

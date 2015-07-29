@@ -98,7 +98,7 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchRules: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-rules-script')}", '${rootView.extjsDomain}')({
@@ -113,7 +113,7 @@
         var names  = extjsf.bind("${z:vid(v, 'search-rules')}", '${rootView.extjsDomain}').value();
         var params = { searchLogins: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search-rules-script')}", '${rootView.extjsDomain}')({

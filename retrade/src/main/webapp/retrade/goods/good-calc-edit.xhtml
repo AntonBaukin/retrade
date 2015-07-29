@@ -23,7 +23,7 @@ ${v.checkModelRequested}
   //<![CDATA[
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle("#{z:jss(v.calcEditWindowTitle)}")
+      co().setTitle("#{z:jss(v.calcEditWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-edit',
       name: 'winmain', domain: '${rootView.extjsDomain}'
@@ -211,7 +211,7 @@ ${v.checkModelRequested}
     {
       //?: {the form is not valid}
       var f = extjsf.bind("${z:vid(v, 'derived-form')}", '${rootView.extjsDomain}');
-      if(!f.component().isValid()) return;
+      if(!f.co().isValid()) return;
 
       //~: calculation semi-ready
       var ps = {};
@@ -366,7 +366,7 @@ ${v.checkModelRequested}
     {
       var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
       var x = g.retradeEditEvent;
-      var p = g.component().getPlugin('cellediting');
+      var p = g.co().getPlugin('cellediting');
       var c;
 
       function commitEdit()

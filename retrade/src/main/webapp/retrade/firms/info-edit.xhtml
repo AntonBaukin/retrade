@@ -584,7 +584,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
     ZeT.each(BUTTONS, function(b)
     {
       var btn = extjsf.bind(b, '${rootView.extjsDomain}')
-      if(btn.component()) btn.component().toggle(btn.extjsPropsRaw().extjsfBlock == block)
+      if(btn.co()) btn.co().toggle(btn.extjsPropsRaw().extjsfBlock == block)
       else btn.extjsPropsRaw().pressed = (btn.extjsPropsRaw().extjsfBlock == block)
     })
 
@@ -614,7 +614,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
     extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}').visible(isread)
 
     //~: window title
-    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').component()
+    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').co()
     if(isread) winmain.setTitle('${z:jss(v.winmainTitle)}')
     else winmain.setTitle('${z:jss(v.winmainTitleEdit)}')
   }

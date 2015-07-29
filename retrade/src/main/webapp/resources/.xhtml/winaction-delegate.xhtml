@@ -60,7 +60,7 @@
     //~: attach to the target button
     var button = extjsf.bind('#{cc.attrs.button}', '${rootView.extjsDomain}')
     if(button) button.extjsProps({handler: delegate.handler})
-    if(button && button.component()) button.component().setHandler(delegate.handler)
+    if(button && button.co()) button.co().setHandler(delegate.handler)
 
   })()
 

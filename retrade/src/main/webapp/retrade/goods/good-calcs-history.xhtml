@@ -23,7 +23,7 @@ ${v.checkModelRequested}
   //<![CDATA[
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle("#{z:jss(v.calcsHistoryWindowTitle)}")
+      co().setTitle("#{z:jss(v.calcsHistoryWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-history',
       name: 'winmain', domain: '${rootView.extjsDomain}'

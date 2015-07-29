@@ -74,7 +74,7 @@
 
       label.on('afterrender', function(l) { l.getEl().addListener('click', function() {
         var ct = field.collapseTime; ct = new Date().getTime() - ((!ct)?(0):(ct));
-        if(ct > 500) field.component().expand()
+        if(ct > 500) field.co().expand()
       })})
 
       var lstyle = field.extjsPropsRaw()['style'] || {};

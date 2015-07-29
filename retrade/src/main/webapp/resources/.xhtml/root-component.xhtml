@@ -131,16 +131,16 @@
     var status  = extjsf.bind('#{cc.attrs.coid}-status', domain);
 
     //?: {was not added to the parent} just create the component now
-    if(!(parent && !render)) comp.component(
+    if(!(parent && !render)) comp.co(
       Ext.ComponentManager.create(comp.extjsProps()))
 
     //?: {toolbar has items} add it to the component
     if(toolbar.hasItems() || toolbar.hasHTML())
-      comp.component().addDocked(toolbar.extjsProps())
+      comp.co().addDocked(toolbar.extjsProps())
 
     //?: {status bar has items} add it to the component
     if(status.hasItems() || status.hasHTML())
-      comp.component().addDocked(status.extjsProps())
+      comp.co().addDocked(status.extjsProps())
 
     if(('#{cc.attrs.domainOwner}' === 'true') && domain.length)
     {

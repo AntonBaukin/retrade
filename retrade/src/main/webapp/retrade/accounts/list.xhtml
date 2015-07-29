@@ -127,7 +127,7 @@ ${v.checkModelRequestedWithRedirect}
 
         var params = { searchNames: sv };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').component();
+        var selchk = extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
         extjsf.bindHandler("${z:vid(v, 'search_accounts_script')}", '${rootView.extjsDomain}')({
@@ -188,9 +188,9 @@ ${v.checkModelRequestedWithRedirect}
 
     if(winmain)
     {
-      winmain.component().toFront()
-      winmain.component().setPagePosition(box.x, box.y)
-      winmain.component().expand()
+      winmain.co().toFront()
+      winmain.co().setPagePosition(box.x, box.y)
+      winmain.co().expand()
       return;
     }
 
@@ -213,7 +213,7 @@ ${v.checkModelRequestedWithRedirect}
       }
     })
 
-    winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
     </script>

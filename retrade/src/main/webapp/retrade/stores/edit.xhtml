@@ -22,7 +22,7 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
 
     extjsf.bind('winmain', '${rootView.extjsDomain}').
-      component().setTitle("#{z:jss(v.editWindowTitle)}")
+      co().setTitle("#{z:jss(v.editWindowTitle)}")
 
   </script>
 
@@ -210,7 +210,7 @@ ${v.checkModelRequested}
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
     var form = extjsf.bind("${z:vid(v, 'store-form')}", '${rootView.extjsDomain}');
-    if(!form.component().isValid()) return;
+    if(!form.co().isValid()) return;
 
     form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
       command: "${z:vid(v, 'submit-action')}", success: function()

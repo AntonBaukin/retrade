@@ -104,12 +104,12 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
       content.clearComponent()
-      content.component().add(winmain.component())
+      content.co().add(winmain.co())
     }
 
     extjsf.bindHandler("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}', function()
@@ -145,7 +145,7 @@
     {
       //~: get the selected row
       var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-      var sel  = grid.component().getSelectionModel().getSelection();
+      var sel  = grid.co().getSelectionModel().getSelection();
       if(!sel || sel.length != 1) return;
       sel = sel[0].getId();
 
@@ -168,12 +168,12 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
+      winmain.compon.co(ate('Ext.panel.Panel', winmain.extjsProps()))
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
       content.clearComponent()
-      content.component().add(winmain.component())
+      content.co().add(winmain.co())
     })
 
       //]]>
@@ -199,7 +199,7 @@
     {
       //~: get the selected row
       var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-      var sel  = grid.component().getSelectionModel().getSelection();
+      var sel  = grid.co().getSelectionModel().getSelection();
       if(!sel || sel.length != 1) return;
       sel = sel[0].getId();
 
@@ -222,12 +222,12 @@
         }
       })
 
-      winmain.component(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
       content.clearComponent()
-      content.component().add(winmain.component())
+      content.co().add(winmain.co())
     })
 
       //]]>

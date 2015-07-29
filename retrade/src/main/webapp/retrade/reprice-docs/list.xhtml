@@ -103,8 +103,8 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bind("${z:vid(v, 'fixed_only')}", '${rootView.extjsDomain}').on('change', function(f, value)
   {
-    var min_date = extjsf.bind("${z:vid(v, 'min_date')}", '${rootView.extjsDomain}').component();
-    var max_date = extjsf.bind("${z:vid(v, 'max_date')}", '${rootView.extjsDomain}').component();
+    var min_date = extjsf.bind("${z:vid(v, 'min_date')}", '${rootView.extjsDomain}').co();
+    var max_date = extjsf.bind("${z:vid(v, 'max_date')}", '${rootView.extjsDomain}').co();
 
     min_date.setDisabled(!value)
     max_date.setDisabled(!value)
@@ -114,7 +114,7 @@ ${v.checkModelRequestedWithRedirect}
       submitForm({'${v.viewModeParam}': '${v.viewModePostStr}'})
 
     //~: show/hide timestamp column
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').component().
+    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').co().
       headerCt.getGridColumns()[0].setVisible(value)
   })
 
