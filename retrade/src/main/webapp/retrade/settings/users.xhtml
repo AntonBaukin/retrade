@@ -104,7 +104,7 @@
       gr.showUserInfo(m)
 
       //~: update the comment
-      extjsf.component("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').toggle(false)
+      extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').toggle(false)
     })
 
     winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))
@@ -637,8 +637,8 @@
     extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').showUserInfo(m)
 
     //~: disable login-password edit and view rules (enabled in set-current-callback)
-    extjsf.component("${z:vid(v, 'update-user-password')}", '${rootView.extjsDomain}').setDisabled(true)
-    extjsf.component("${z:vid(v, 'person-secure-ables')}", '${rootView.extjsDomain}').setDisabled(true)
+    extjsf.co("${z:vid(v, 'update-user-password')}", '${rootView.extjsDomain}').setDisabled(true)
+    extjsf.co("${z:vid(v, 'person-secure-ables')}", '${rootView.extjsDomain}').setDisabled(true)
 
     //~: update the current login selection
     extjsf.bindHandler("${z:vid(v, 'change-current-login-script')}", '${rootView.extjsDomain}')({
@@ -655,13 +655,13 @@
     var uc = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').component();
 
     //~: toggle off comment button
-    extjsf.component("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').toggle(false, true)
+    extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').toggle(false, true)
 
     //~: show comment text block
-    extjsf.component("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').show()
 
     //~: hide comment edit field
-    extjsf.component("${z:vid(v, 'user-data-comment-edit')}", '${rootView.extjsDomain}').hide()
+    extjsf.co("${z:vid(v, 'user-data-comment-edit')}", '${rootView.extjsDomain}').hide()
 
     //~: remember the model
     extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').retradeLoginModel = m;
@@ -769,10 +769,10 @@
   var pass  = ('true' == "#{v.secureChangeCurrentPassword}");
   var ables = ('true' == "#{v.secureViewCurrentAbles}");
 
-  extjsf.component("${z:vid(v, 'update-user-password')}", '${rootView.extjsDomain}').
+  extjsf.co("${z:vid(v, 'update-user-password')}", '${rootView.extjsDomain}').
     setDisabled(!login && !pass)
 
-  extjsf.component("${z:vid(v, 'person-secure-ables')}", '${rootView.extjsDomain}').
+  extjsf.co("${z:vid(v, 'person-secure-ables')}", '${rootView.extjsDomain}').
     setDisabled(!ables)
 
 })()

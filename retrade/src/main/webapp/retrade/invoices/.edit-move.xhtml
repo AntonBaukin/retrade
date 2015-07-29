@@ -403,8 +403,8 @@ ${v.forceSecureEdit()}
 
     //<: validate the goods
 
-    var s = extjsf.component("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}');
-    var t = extjsf.component("${z:vid(v, 'takenGoods')}", '${rootView.extjsDomain}');
+    var s = extjsf.co("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}');
+    var t = extjsf.co("${z:vid(v, 'takenGoods')}", '${rootView.extjsDomain}');
 
     function validateVolume(m)
     {
@@ -505,7 +505,7 @@ ${v.forceSecureEdit()}
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function()
   {
     extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeAddGood(
-      extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+      extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     )
   })
 
@@ -513,7 +513,7 @@ ${v.forceSecureEdit()}
   extjsf.bindHandler("${z:vid(v, 'add-good-taken')}", '${rootView.extjsDomain}', function()
   {
     extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeAddGood(
-      extjsf.component("${z:vid(v, 'taken')}", '${rootView.extjsDomain}')
+      extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}')
     )
   })
 
@@ -535,7 +535,7 @@ ${v.forceSecureEdit()}
       store.remove(taken)
       extjsf.support.refreshGridIndices(store)
       extjsf.support.refreshGridIndices(taken)
-      extjsf.component("${z:vid(v, 'takenGoods')}", '${rootView.extjsDomain}').add(taken)
+      extjsf.co("${z:vid(v, 'takenGoods')}", '${rootView.extjsDomain}').add(taken)
     }
   })
 
@@ -558,7 +558,7 @@ ${v.forceSecureEdit()}
   extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}', function()
   {
     extjsf.bind("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}').retradeDeleteGoods(
-      extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+      extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     )
   })
 
@@ -566,7 +566,7 @@ ${v.forceSecureEdit()}
   extjsf.bindHandler("${z:vid(v, 'delete-goods-taken')}", '${rootView.extjsDomain}', function()
   {
     extjsf.bind("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}').retradeDeleteGoods(
-      extjsf.component("${z:vid(v, 'taken')}", '${rootView.extjsDomain}')
+      extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}')
     )
   })
 
@@ -748,9 +748,9 @@ ${v.forceSecureEdit()}
             extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}')()
 
           if(e.getKey() == e.ENTER)
-            extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+            extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
               getPlugin('cellediting').startEditByPosition({ row: rowIdx,
-                column: extjsf.support.columnByDataIndex(extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}'), 'goodCode')})
+                column: extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}'), 'goodCode')})
         }
       }
 
@@ -803,9 +803,9 @@ ${v.forceSecureEdit()}
             extjsf.bindHandler("${z:vid(v, 'delete-goods-taken')}", '${rootView.extjsDomain}')()
 
           if(e.getKey() == e.ENTER)
-            extjsf.component("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').
+            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').
               getPlugin('cellediting').startEditByPosition({ row: rowIdx,
-                column: extjsf.support.columnByDataIndex(extjsf.component("${z:vid(v, 'taken')}", '${rootView.extjsDomain}'), 'goodCode')})
+                column: extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}'), 'goodCode')})
         }
       }
 

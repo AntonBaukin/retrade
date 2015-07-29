@@ -19,7 +19,7 @@ ${v.forceSecureEdit()}
 
   (function()
   {
-    var winmain = extjsf.component('winmain', '${rootView.extjsDomain}');
+    var winmain = extjsf.co('winmain', '${rootView.extjsDomain}');
     winmain.setTitle('${z:jss(v.winmainTitleEdit)}')
 
     winmain.setBox(ReTrade.desktop.calcWindowBox({
@@ -499,7 +499,7 @@ ${v.forceSecureEdit()}
 
     //<: validate the goods
 
-    var s = extjsf.component("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}');
+    var s = extjsf.co("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}');
 
     function validateVolume(m)
     {
@@ -573,7 +573,7 @@ ${v.forceSecureEdit()}
   //~: insert new record in the table
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function()
   {
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
     var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
 
     var i, x = g.getSelectionModel().getSelection();
@@ -610,7 +610,7 @@ ${v.forceSecureEdit()}
   //~: delete selected records from the table
   extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}', function()
   {
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
     var s = g.getSelectionModel().getSelection(); if(!s.length) return;
 
     var x, m = 0; for(var i = 0;(i < s.length);i++)
@@ -640,7 +640,7 @@ ${v.forceSecureEdit()}
   //~: altered checkbox clicked
   extjsf.bind("${z:vid(v, 'altered')}", '${rootView.extjsDomain}').on('change', function(cb, checked)
   {
-    var col = extjsf.support.columnByDataIndex(extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}'), 'needCalc');
+    var col = extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}'), 'needCalc');
     ZeT.assert(col).setVisible(checked)
   })
 
@@ -720,7 +720,7 @@ ${v.forceSecureEdit()}
     }
 
     //~: recalculate summary
-    var s = 0.0; extjsf.component("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').each(function(i)
+    var s = 0.0; extjsf.co("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').each(function(i)
     {
       var x = parseFloat(i.get('volumeCost'));
       if(!isNaN(x)) s += x;
@@ -733,7 +733,7 @@ ${v.forceSecureEdit()}
     retrade.TreetFCurrency.proc(n)
 
     //~: realign
-    extjsf.component("${z:vid(v, 'invoice-summ-val-html')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'invoice-summ-val-html')}", '${rootView.extjsDomain}').
       ownerCt.doLayout()
   }
 
@@ -987,7 +987,7 @@ ${v.forceSecureEdit()}
             extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}')()
 
           if(e.getKey() == e.ENTER)
-            extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+            extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
               getPlugin('cellediting').startEditByPosition({ row: rowIdx, column: 1})
         }
       }

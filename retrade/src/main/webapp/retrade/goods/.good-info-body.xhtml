@@ -212,7 +212,7 @@
     })
 
     //~: the info window
-    var wnd = extjsf.component("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}');
+    var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}');
 
     //~: request the info
     extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}')({
@@ -296,7 +296,7 @@
    */
   extjsf.bind("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}').retardeInitInfoGood = function(x)
   {
-    var wnd = extjsf.component("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}');
+    var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}');
     var inf = Ext.get("${z:vid(v, 'goods-info')}");
     var ltr = inf.down('tr.retrade-client-good-loaded-layout');
     var ltd = ltr.down('td');

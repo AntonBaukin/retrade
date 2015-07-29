@@ -89,7 +89,7 @@
   extjsf.bind("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}').
     onDocTypeItemClick = function(item, event)
   {
-    var menu = extjsf.component("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}');
+    var menu = extjsf.co("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}');
     var subs = menu.query('menucheckitem');
 
     if(event.ctrlKey) Ext.Array.each(subs, function(i)
@@ -171,7 +171,7 @@
 
           listeners: { change: function(f, val)
           {
-            var other = extjsf.component("${z:vid(localView, 'filter-form-doc-states-edit')}", '${rootView.extjsDomain}');
+            var other = extjsf.co("${z:vid(localView, 'filter-form-doc-states-edit')}", '${rootView.extjsDomain}');
             if(!val) if(!other.getValue()) other.setValue(true)
           }}
 
@@ -192,7 +192,7 @@
 
           listeners: { change: function(f, val)
           {
-            var other = extjsf.component("${z:vid(localView, 'filter-form-doc-states-fixed')}", '${rootView.extjsDomain}');
+            var other = extjsf.co("${z:vid(localView, 'filter-form-doc-states-fixed')}", '${rootView.extjsDomain}');
             if(!val) if(!other.getValue()) other.setValue(true)
           }}
 
@@ -268,7 +268,7 @@
       {
         //~: document types encoded
         var doctstr = extjsf.bind("${z:vid(localView, 'filter-form-doc-types-str')}", '${rootView.extjsDomain}');
-        var docmenu = extjsf.component("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}');
+        var docmenu = extjsf.co("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}');
         var docsubs = docmenu.query('menucheckitem');
         var docsels = [];
 
@@ -284,7 +284,7 @@
         doctstr.value(docsels.join(','))
 
         //~: selection set
-        var cselset = extjsf.component("${z:vid(localView, 'with-selset-check')}", '${rootView.extjsDomain}');
+        var cselset = extjsf.co("${z:vid(localView, 'with-selset-check')}", '${rootView.extjsDomain}');
         var wselset = extjsf.bind("${z:vid(localView, 'with-selset-with')}", '${rootView.extjsDomain}');
         var nselset = extjsf.bind("${z:vid(localView, 'with-selset-name')}", '${rootView.extjsDomain}');
 

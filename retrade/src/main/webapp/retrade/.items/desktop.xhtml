@@ -113,7 +113,7 @@
     {
       panel.getEl().on('click', function()
       {
-        extjsf.component("${z:vid(desktopView, 'desktop_left')}", '${rootView.extjsDomain}').collapse()
+        extjsf.co("${z:vid(desktopView, 'desktop_left')}", '${rootView.extjsDomain}').collapse()
       })
     })
 
@@ -121,7 +121,7 @@
     extjsf.bind("${z:vid(desktopView, 'left_void')}", '${rootView.extjsDomain}').
       on('resize', function(p, w, h)
     {
-      var v = extjsf.component("${z:vid(desktopView, 'left_void_1')}", '${rootView.extjsDomain}')
+      var v = extjsf.co("${z:vid(desktopView, 'left_void_1')}", '${rootView.extjsDomain}')
       var H = p.getViewRegion(); H = Math.round((H.bottom - H.top) / 3)
       var s = v.getSize()
 
@@ -321,7 +321,7 @@
     {
       panel.getEl().on('click', function()
       {
-        extjsf.component("${z:vid(desktopView, 'desktop_right')}", '${rootView.extjsDomain}').collapse()
+        extjsf.co("${z:vid(desktopView, 'desktop_right')}", '${rootView.extjsDomain}').collapse()
       })
     })
 
@@ -329,7 +329,7 @@
     extjsf.bind("${z:vid(desktopView, 'right_void')}", '${rootView.extjsDomain}').
       on('resize', function(p, w, h)
     {
-      var v = extjsf.component("${z:vid(desktopView, 'right_void_1')}", '${rootView.extjsDomain}')
+      var v = extjsf.co("${z:vid(desktopView, 'right_void_1')}", '${rootView.extjsDomain}')
       var H = p.getViewRegion(); H = Math.round((H.bottom - H.top) / 3)
       var s = v.getSize()
 

@@ -366,7 +366,7 @@ ${v.checkEntityRequested}
 
     Ext.Array.each(IDS, function(id)
     {
-      extjsf.component("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${rootView.extjsDomain}').hide()
+      extjsf.co("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${rootView.extjsDomain}').hide()
     })
   }                               
                                                    
@@ -375,8 +375,8 @@ ${v.checkEntityRequested}
   {
      extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays()
 
-     extjsf.component("${z:vid(v, 'grid-debts-montly')}", '${rootView.extjsDomain}').show()
-     extjsf.component("${z:vid(v, 'debtsMontly')}", '${rootView.extjsDomain}').load()
+     extjsf.co("${z:vid(v, 'grid-debts-montly')}", '${rootView.extjsDomain}').show()
+     extjsf.co("${z:vid(v, 'debtsMontly')}", '${rootView.extjsDomain}').load()
   })
 
   //~: chart by months
@@ -384,8 +384,8 @@ ${v.checkEntityRequested}
   {
      extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays()
 
-     extjsf.component("${z:vid(v, 'chart-debts-montly')}", '${rootView.extjsDomain}').show()
-     extjsf.component("${z:vid(v, 'debtsMontly')}", '${rootView.extjsDomain}').load()
+     extjsf.co("${z:vid(v, 'chart-debts-montly')}", '${rootView.extjsDomain}').show()
+     extjsf.co("${z:vid(v, 'debtsMontly')}", '${rootView.extjsDomain}').load()
   })
 
   //~: table by weeks
@@ -393,8 +393,8 @@ ${v.checkEntityRequested}
   {
      extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays()
 
-     extjsf.component("${z:vid(v, 'grid-debts-weekly')}", '${rootView.extjsDomain}').show()
-     extjsf.component("${z:vid(v, 'debtsWeekly')}", '${rootView.extjsDomain}').load()
+     extjsf.co("${z:vid(v, 'grid-debts-weekly')}", '${rootView.extjsDomain}').show()
+     extjsf.co("${z:vid(v, 'debtsWeekly')}", '${rootView.extjsDomain}').load()
   })
 
   //~: chart by weeks
@@ -402,8 +402,8 @@ ${v.checkEntityRequested}
   {
      extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${rootView.extjsDomain}').hideAllDisplays()
 
-     extjsf.component("${z:vid(v, 'chart-debts-weekly')}", '${rootView.extjsDomain}').show()
-     extjsf.component("${z:vid(v, 'debtsWeekly')}", '${rootView.extjsDomain}').load()
+     extjsf.co("${z:vid(v, 'chart-debts-weekly')}", '${rootView.extjsDomain}').show()
+     extjsf.co("${z:vid(v, 'debtsWeekly')}", '${rootView.extjsDomain}').load()
   })
 
   //]]>

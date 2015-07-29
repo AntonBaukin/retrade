@@ -20,7 +20,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.component('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${rootView.extjsDomain}').
       setTitle('${z:jss(winmainTitle)}')
 
   </script>
@@ -49,7 +49,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.component('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
       </f:facet>
     </x:component>
@@ -130,7 +130,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
     //~: current selection
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else
     {
@@ -145,7 +145,7 @@ ${v.checkModelRequestedWithRedirect}
    extjsf.xbindHandler("${z:vid(v, 'submit-script')}", '${rootView.extjsDomain}')({
      params: { selectedInvoice : s.getId() }, success: function()
      {
-       extjsf.component('winmain', '${rootView.extjsDomain}').close()
+       extjsf.co('winmain', '${rootView.extjsDomain}').close()
      }})
 
   })

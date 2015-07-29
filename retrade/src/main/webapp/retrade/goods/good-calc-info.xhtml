@@ -346,8 +346,8 @@ ${v.checkModelRequested}
   //~: toggle edit comment
   extjsf.bind("${z:vid(v, 'edit-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
   {
-    var ml = extjsf.component("${z:vid(v, 'main-layout')}", '${rootView.extjsDomain}');
-    var co = extjsf.component("${z:vid(v, 'calc-comment')}", '${rootView.extjsDomain}');
+    var ml = extjsf.co("${z:vid(v, 'main-layout')}", '${rootView.extjsDomain}');
+    var co = extjsf.co("${z:vid(v, 'calc-comment')}", '${rootView.extjsDomain}');
 
     ml.setVisible(!btn.pressed)
     co.setVisible(btn.pressed)

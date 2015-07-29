@@ -202,8 +202,8 @@ ${v.checkModelRequestedWithRedirect}
         extjsf.bindHandler("${z:vid(v, 'assign-group-script')}", '${rootView.extjsDomain}')({
           params: { goodsGroup: group, selset: ReTrade.selset.selset }, success : function() {
 
-            extjsf.component("${z:vid(v, 'toggle-assign-group')}", '${rootView.extjsDomain}').setPressed(false)
-            extjsf.component("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}').reload()
+            extjsf.co("${z:vid(v, 'toggle-assign-group')}", '${rootView.extjsDomain}').setPressed(false)
+            extjsf.co("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}').reload()
         }})
       })
       //]]>

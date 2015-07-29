@@ -211,7 +211,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	applyWindowBox    : function(opts)
 	{
-		var win = ZeT.assertn(extjsf.component(opts))
+		var win = ZeT.assertn(extjsf.co(opts))
 		var xy  = win.getXY()
 
 		if(!opts.width)      opts.width  = win.getWidth()
@@ -272,7 +272,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	expandSizeMin     : function(opts)
 	{
 		var s, x = {}, comp = ZeT.assertn(
-		  extjsf.component.apply(this, opts))
+		  extjsf.co.apply(this, opts))
 
 		this._size_pt(opts)
 
@@ -296,7 +296,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	trySqueezeWnd     : function(opts)
 	{
-		var co = ZeT.assertn(extjsf.component(opts));
+		var co = ZeT.assertn(extjsf.co(opts));
 
 		var bw = document.body.offsetWidth  - 2;
 		var bh = document.body.offsetHeight - 2;
@@ -310,7 +310,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	},
 
 	/**
-	 * The arguments are the same as for extjsf.component().
+	 * The arguments are the same as for extjsf.co().
 	 * On the first call, remembers the size of the component.
 	 * On the following call once returns the size to the original.
 	 * Returns true when the component was re-sized.
@@ -325,7 +325,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	 */
 	prevsizeComp      : function(opts)
 	{
-		var s, x = {}, comp = extjsf.component.apply(this, arguments)
+		var s, x = {}, comp = extjsf.co.apply(this, arguments)
 		if(!comp || !comp.extjsfBind) return undefined
 		if(comp === opts) opts = {}
 
@@ -372,11 +372,11 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		ZeT.assertn(opts)
 
 		if(ZeT.iss(win))
-			win = extjsf.component(win, opts.domain)
+			win = extjsf.co(win, opts.domain)
 		ZeT.assert(win && (win.isComponent === true))
 
 		if(ZeT.iss(target))
-			target = extjsf.component(win, opts.domain)
+			target = extjsf.co(win, opts.domain)
 		if(!ZeT.isa(target))
 			target = [target]
 
@@ -388,7 +388,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		ZeT.each(target, function(t)
 		{
 			if(ZeT.iss(t))
-				t = extjsf.component(t, opts.domain)
+				t = extjsf.co(t, opts.domain)
 			ZeT.assert(t && (t.isComponent === true))
 
 			var b = t.getBox()
@@ -419,7 +419,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	resizeComp        : function(opts)
 	{
-		var comp = extjsf.component(opts)
+		var comp = extjsf.co(opts)
 		if(!comp) return
 
 		this._size_pt(opts)

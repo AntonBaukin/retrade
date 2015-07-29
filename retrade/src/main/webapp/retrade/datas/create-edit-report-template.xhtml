@@ -360,7 +360,7 @@ ${v.checkModelRequestedWithRedirect}
   {
      var win = extjsf.bind('winmain', '${rootView.extjsDomain}').component();
      var wht = win.body.getHeight();
-     var frm = extjsf.component("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}');
+     var frm = extjsf.co("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}');
      var fht = frm.getBox().height;
 
      win.setHeight(win.getHeight() - (wht - fht))
@@ -429,7 +429,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: template file upload
   extjsf.bind("${z:vid(v, 'file-upload')}", '${rootView.extjsDomain}').on('change', function(f, v)
   {
-    var form = extjsf.component("${z:vid(v, 'file-upload-form')}", '${rootView.extjsDomain}');
+    var form = extjsf.co("${z:vid(v, 'file-upload-form')}", '${rootView.extjsDomain}');
 
     //!: submit the form to the model
     form.submit({ url: "#{z:url('/upload')}?model=#{v.modelKey}",

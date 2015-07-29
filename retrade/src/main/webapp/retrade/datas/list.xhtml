@@ -296,7 +296,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bindHandler("${z:vid(v, 'invoke-data-source')}", '${rootView.extjsDomain}', function()
   {
     //~: current selection
-    var g = extjsf.component("${z:vid(v, 'data-sources')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'data-sources')}", '${rootView.extjsDomain}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s) return ReTrade.desktop.error("Выберете источник данных!");
@@ -311,7 +311,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'create-template')}", '${rootView.extjsDomain}').createOrEditReportTemplate = function(box, template)
   {
     //~: current data source selection
-    var g = extjsf.component("${z:vid(v, 'data-sources')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'data-sources')}", '${rootView.extjsDomain}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s && ZeT.isu(template))
@@ -390,7 +390,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bindHandler("${z:vid(v, 'delete-template')}", '${rootView.extjsDomain}', function(btn, event)
   {
     //~: current selection
-    var g = extjsf.component("${z:vid(v, 'report-templates')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'report-templates')}", '${rootView.extjsDomain}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s) return ReTrade.desktop.error("Выберете шаблон отчёта!");
@@ -435,7 +435,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'create-report')}", '${rootView.extjsDomain}').createReportRequest = function(format)
   {
     //~: current selection
-    var g = extjsf.component("${z:vid(v, 'report-templates')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'report-templates')}", '${rootView.extjsDomain}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s) return ReTrade.desktop.error("Выберете шаблон отчёта!");
@@ -515,9 +515,9 @@ ${v.checkModelRequestedWithRedirect}
    {
       var domain = extjsf.tempDomain('wnd:invoke-data-source:#{v.dataSource}:');
       var xy; if("#{v.dataOnly}" == 'true')
-        xy = extjsf.component("${z:vid(v, 'invoke-data-source')}", '${rootView.extjsDomain}').getXY();
+        xy = extjsf.co("${z:vid(v, 'invoke-data-source')}", '${rootView.extjsDomain}').getXY();
       else
-        xy = extjsf.component("${z:vid(v, 'create-report')}", '${rootView.extjsDomain}').getXY();
+        xy = extjsf.co("${z:vid(v, 'create-report')}", '${rootView.extjsDomain}').getXY();
 
       var box     = ReTrade.desktop.calcWindowBox({
         x: xy[0], y: xy[1], '+xpt': 36, '-ypt': -20,

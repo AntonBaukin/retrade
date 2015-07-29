@@ -22,7 +22,7 @@ ${v.forceSecureModelEntity('view')}
 
   (function()
   {
-    var winmain = extjsf.component('winmain', '${rootView.extjsDomain}');
+    var winmain = extjsf.co('winmain', '${rootView.extjsDomain}');
     winmain.setTitle('${z:jss(v.winmainTitleInfo)}')
 
     winmain.setBox(ReTrade.desktop.calcWindowBox({
@@ -363,10 +363,10 @@ ${v.forceSecureModelEntity('view')}
 
   extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle = function(btn, pressed)
   {
-    var g = extjsf.component("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}');
-    var r = extjsf.component("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}');
-    var s = extjsf.component("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}');
-    var f = extjsf.component("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}');
+    var r = extjsf.co("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}');
+    var s = extjsf.co("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}');
+    var f = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}');
 
     //?: display invoice goods
     if(!pressed)

@@ -112,29 +112,29 @@
     extjsf.bind("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}').on('change', function(f)
     {
       var s = ZeTS.trim(f.getValue());
-      var m = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+      var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
       if(!m || !m.length) m = null; else m = m[0];
 
       var D = ("${v.isSecure('secure: operate: sets')}" == "false");
 
-      extjsf.component("${z:vid(v, 'secure-set-edit-name')}", '${rootView.extjsDomain}').
+      extjsf.co("${z:vid(v, 'secure-set-edit-name')}", '${rootView.extjsDomain}').
         setDisabled(D || !s.length || !m)
 
-      extjsf.component("${z:vid(v, 'add-secure-set')}", '${rootView.extjsDomain}').
+      extjsf.co("${z:vid(v, 'add-secure-set')}", '${rootView.extjsDomain}').
         setDisabled(D || !s.length)
     })
 
     //~: add secure set handler
     extjsf.bindHandler("${z:vid(v, 'add-secure-set')}", '${rootView.extjsDomain}', function()
     {
-       var field = extjsf.component("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
+       var field = extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
        var name  = ZeTS.trim(field.getValue());
        if(!name.length) return;
 
        extjsf.bindHandler("${z:vid(v, 'add-secure-set-script')}", '${rootView.extjsDomain}')({
           params: { setName: name }, success : function() {
 
-            extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+            extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
               getSelectionModel().deselectAll()
 
             field.setValue('')
@@ -145,7 +145,7 @@
     //~: delete secure set handler
     extjsf.bindHandler("${z:vid(v, 'delete-secure-set')}", '${rootView.extjsDomain}', function(btn)
     {
-       var m = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+       var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
        if(!m || !m.length) return; else m = m[0];
 
        var f = function(x)
@@ -155,7 +155,7 @@
          extjsf.bindHandler("${z:vid(v, 'delete-secure-set-script')}", '${rootView.extjsDomain}')({
           params: { secSet: m.getId() }, success : function() {
 
-            extjsf.component("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}').setValue('')
+            extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}').setValue('')
             Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
          }})
        }
@@ -184,10 +184,10 @@
     //~: change secure set name button
     extjsf.bindHandler("${z:vid(v, 'secure-set-edit-name')}", '${rootView.extjsDomain}', function()
     {
-       var field = extjsf.component("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
+       var field = extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
        var name  = ZeTS.trim(field.getValue());
 
-       var m = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+       var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
        if(!m || !m.length) m = null; else m = m[0];
 
        if(!name.length || !m) return;
@@ -690,7 +690,7 @@
 
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function(grid, selected)
   {
-    var namef = extjsf.component("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
+    var namef = extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
     var model = selected.length && selected[0];
 
     //~: update the field name
@@ -698,7 +698,7 @@
 
     //~: enable the delete button
     var D = ("${v.isSecure('secure: operate: sets')}" == "false");
-    extjsf.component("${z:vid(v, 'delete-secure-set')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'delete-secure-set')}", '${rootView.extjsDomain}').
       setDisabled(D || !model)
 
     //~: secure set comment
@@ -715,21 +715,21 @@
     }
 
     //~: update panel title
-    var pn = extjsf.component("${z:vid(v, 'secure-set-rules')}", '${rootView.extjsDomain}');
+    var pn = extjsf.co("${z:vid(v, 'secure-set-rules')}", '${rootView.extjsDomain}');
     if(!model) pn.setTitle('Выберете множество правил');
     else       pn.setTitle("Правила множества '" + model.get('name') + '\'');
 
     //~: show-hide toolbar
-    extjsf.component("${z:vid(v, 'secure-set-toolbar')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'secure-set-toolbar')}", '${rootView.extjsDomain}').
       setVisible(!!model)
 
     //~: toggle off comment button
-    extjsf.component("${z:vid(v, 'secure-set-edit-comment')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'secure-set-edit-comment')}", '${rootView.extjsDomain}').
       toggle(false, true)
 
 
     //~: rules of current set
-    var rules = extjsf.component("${z:vid(v, 'rules-grid')}", '${rootView.extjsDomain}');
+    var rules = extjsf.co("${z:vid(v, 'rules-grid')}", '${rootView.extjsDomain}');
     rules.setVisible(!!model); if(!model) return;
 
     //~: change current secure set
@@ -744,9 +744,9 @@
   //~: toggle edit comment
   extjsf.bind("${z:vid(v, 'secure-set-edit-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
   {
-     var ct = extjsf.component("${z:vid(v, 'secure-set-comment')}", '${rootView.extjsDomain}');
-     var ce = extjsf.component("${z:vid(v, 'secure-set-comment-edit')}", '${rootView.extjsDomain}');
-     var m  = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var ct = extjsf.co("${z:vid(v, 'secure-set-comment')}", '${rootView.extjsDomain}');
+     var ce = extjsf.co("${z:vid(v, 'secure-set-comment-edit')}", '${rootView.extjsDomain}');
+     var m  = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
      //?: {go to edit mode}
@@ -781,7 +781,7 @@
   //~: add rules to secure set
   extjsf.bindHandler("${z:vid(v, 'secure-set-add-ables-rules')}", '${rootView.extjsDomain}', function()
   {
-     var m = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
      extjsf.bindHandler("${z:vid(v, 'add-rules-script')}", '${rootView.extjsDomain}')({
@@ -797,14 +797,14 @@
   {
     var D = ("${v.isSecure('secure: operate: sets')}" == "false");
 
-    extjsf.component("${z:vid(v, 'secure-set-delete-ables-rules')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'secure-set-delete-ables-rules')}", '${rootView.extjsDomain}').
       setDisabled(D || !selected.length)
   })
 
   //~: delete rules from secure set
   extjsf.bindHandler("${z:vid(v, 'secure-set-delete-ables-rules')}", '${rootView.extjsDomain}', function()
   {
-     var m = extjsf.component("${z:vid(v, 'rules-grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'rules-grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
 
      if(!m || !m.length) return; else m = ZeT.a(m);
      for(var i = 0;(i < m.length);i++) m[i] = m[i].getId();
@@ -820,7 +820,7 @@
   //~: grant secure set to the users of current selection set
   extjsf.bindHandler("${z:vid(v, 'secure-set-grant-to-selected-users')}", '${rootView.extjsDomain}', function()
   {
-     var m = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
      extjsf.bindHandler("${z:vid(v, 'secure-set-grant-to-selected-users-script')}", '${rootView.extjsDomain}')({
@@ -837,7 +837,7 @@
   //~: synchronize secure set with the able users of current selection set
   extjsf.bindHandler("${z:vid(v, 'secure-set-synch-with-selected-users')}", '${rootView.extjsDomain}', function()
   {
-     var m = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
      extjsf.bindHandler("${z:vid(v, 'secure-set-synch-with-selected-users-script')}", '${rootView.extjsDomain}')({
@@ -855,7 +855,7 @@
   //~: delete secure set from users of current selection set
   extjsf.bindHandler("${z:vid(v, 'secure-set-delete-from-selected-users')}", '${rootView.extjsDomain}', function()
   {
-     var m = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
      extjsf.bindHandler("${z:vid(v, 'secure-set-delete-from-selected-users-script')}", '${rootView.extjsDomain}')({

@@ -67,7 +67,7 @@ ${v.checkModelRequestedWithRedirect}
 
       handler : function()
       {
-        extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+        extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
           getPlugin('cellediting').completeEdit()
 
         extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${rootView.extjsDomain}')()
@@ -194,8 +194,8 @@ ${v.checkModelRequestedWithRedirect}
 
         edit: function(ed, event)
         {
-          var s = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
-          var z = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+          var s = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+          var z = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
           var g = ZeTS.trim(event.record.get('goodGroup'))
 
           z.extjsfBind.lastMeasureSelected = event.record.get('measureCode')
@@ -385,8 +385,8 @@ ${v.checkModelRequestedWithRedirect}
   //~: insert a new empty record
   extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').retradeInsertRow = function(code)
   {
-    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     var p = g.getPlugin('cellediting')
     var m = Ext.create('retrade.model.GoodUnitView', {
       objectKey: code, goodCode: code
@@ -414,7 +414,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: delete selected row
   extjsf.bindHandler("${z:vid(v, 'delete-row')}", '${rootView.extjsDomain}', function()
   {
-     var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+     var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
 
      //~: commit current edit
      g.getPlugin('cellediting').completeEdit()
@@ -434,7 +434,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: commit the records
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
-    var store = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
 
     //~: validate the records
     function validate()
@@ -482,7 +482,7 @@ ${v.checkModelRequestedWithRedirect}
     }
 
     //?: has selection set
-    if(extjsf.component("${z:vid(v, 'selset')}", '${rootView.extjsDomain}').getValue())
+    if(extjsf.co("${z:vid(v, 'selset')}", '${rootView.extjsDomain}').getValue())
       params.selset = ReTrade.selset.selset;
 
 

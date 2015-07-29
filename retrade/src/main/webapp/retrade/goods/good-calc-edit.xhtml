@@ -229,7 +229,7 @@ ${v.checkModelRequested}
     }
 
 
-    var s = extjsf.component("${z:vid(v, 'calcParts')}", '${rootView.extjsDomain}');
+    var s = extjsf.co("${z:vid(v, 'calcParts')}", '${rootView.extjsDomain}');
 
     function validateVolume(m)
     {
@@ -299,7 +299,7 @@ ${v.checkModelRequested}
   //~: insert new record in the table
   extjsf.bindHandler("${z:vid(v, 'add-part')}", '${rootView.extjsDomain}', function()
   {
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
     var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
 
     var i, x = g.getSelectionModel().getSelection();
@@ -319,7 +319,7 @@ ${v.checkModelRequested}
   //~: delete selected records from the table
   extjsf.bindHandler("${z:vid(v, 'delete-part')}", '${rootView.extjsDomain}', function()
   {
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
     var s = g.getSelectionModel().getSelection(); if(!s.length) return;
 
     var x, m = 0; for(var i = 0;(i < s.length);i++)
@@ -667,7 +667,7 @@ ${v.checkModelRequested}
               extjsf.bind("${z:vid(v, 'super-good-measure')}", '${rootView.extjsDomain}').
                 retradeGoodInteger = '' + sel.get('integer');
 
-              extjsf.component("${z:vid(v, 'sub-volume')}", '${rootView.extjsDomain}').validate()
+              extjsf.co("${z:vid(v, 'sub-volume')}", '${rootView.extjsDomain}').validate()
             }
           }
         </f:facet>
@@ -776,8 +776,8 @@ ${v.checkModelRequested}
   Ext.onReady(ZeT.timeouted(150, function()
   {
     //~: adjust super-good label width
-    var l0 = extjsf.component("${z:vid(v, 'sub-code-label')}", '${rootView.extjsDomain}');
-    var l1 = extjsf.component("${z:vid(v, 'super-good-label')}", '${rootView.extjsDomain}');
+    var l0 = extjsf.co("${z:vid(v, 'sub-code-label')}", '${rootView.extjsDomain}');
+    var l1 = extjsf.co("${z:vid(v, 'super-good-label')}", '${rootView.extjsDomain}');
     var w  = Math.max(l0.getWidth(), l1.getWidth());
     l0.setWidth(w); l1.setWidth(w)
 

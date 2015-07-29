@@ -52,7 +52,7 @@ ${v.checkModelRequestedWithRedirect}
         cls: 'ux-btn-red',
         handler : function()
         {
-          extjsf.component('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
       </f:facet>
     </x:component>
@@ -64,7 +64,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'button', text: 'Закрыть',
         handler : function()
         {
-          extjsf.component('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
       </f:facet>
     </x:component>
@@ -417,7 +417,7 @@ ${v.checkModelRequestedWithRedirect}
     else winmain.setTitle('${z:jss(v.editWindowTitle)}')
 
     //~: load measures | set the text value
-    var measures = extjsf.component("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
+    var measures = extjsf.co("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
     var measure = extjsf.bind("${z:vid(v, 'measure')}", '${rootView.extjsDomain}')
 
     if(isread) measure.value("#{z:jss(v.goodView.measureCode)}")
@@ -427,7 +427,7 @@ ${v.checkModelRequestedWithRedirect}
     }})
 
     //~: load groups
-    if(!isread) extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').load()
+    if(!isread) extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').load()
 
     //~: edit mode field
     extjsf.bind("${z:vid(v, 'edit')}", '${rootView.extjsDomain}').value(!isread)
@@ -493,8 +493,8 @@ ${v.checkModelRequestedWithRedirect}
 
 
     //?: {has selection set checked}
-    var addss = extjsf.component("${z:vid(v, 'add-to-selset')}", '${rootView.extjsDomain}');
-    var ssnam = extjsf.component("${z:vid(v, 'selset')}", '${rootView.extjsDomain}');
+    var addss = extjsf.co("${z:vid(v, 'add-to-selset')}", '${rootView.extjsDomain}');
+    var ssnam = extjsf.co("${z:vid(v, 'selset')}", '${rootView.extjsDomain}');
 
     if(addss.getValue() && addss.isVisible())
       ssnam.setValue(ReTrade.selset.selset)

@@ -49,7 +49,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.component('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
 
       </f:facet>
@@ -468,7 +468,7 @@ ${v.checkModelRequestedWithRedirect}
             var x = parseFloat(e.record.get('priceCur'))
             if(!ZeT.isn(x)) return
 
-            var u = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+            var u = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
             var g = e.record.get('goodGroup')
             if(ZeTS.ises(g)) return
             g = u.getById(e.record.get('goodGroup'))
@@ -515,7 +515,7 @@ ${v.checkModelRequestedWithRedirect}
                 })
 
                 //~: update the percent of the group
-                var gr = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').
+                var gr = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').
                   getById(e.record.get('goodGroup'))
                 if(gr) gr.set('value', e.value)
               }
@@ -532,7 +532,7 @@ ${v.checkModelRequestedWithRedirect}
 
           if(e.getKey() == e.ENTER)
           {
-            var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+            var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
             var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
             var s = g.getSelectionModel().getSelection();
             if(s) if(s.length) s = s[0]; else s = null;
@@ -813,7 +813,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}').retradeUpdateGoodsInfo = function(info)
   {
     var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
-    var u = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+    var u = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
     var e = g.retradeEditEvent
     var s = g.component().getStore()
 
@@ -853,7 +853,7 @@ ${v.checkModelRequestedWithRedirect}
     var keys = ZeT.keys(info); if(!keys.length) return
 
     var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
-    var u = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+    var u = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
     var s = g.component().getStore()
 
     //~: delete current empty record (if any)
@@ -906,7 +906,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: on goods store change (update the row indices)
   Ext.onReady(function()
   {
-    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
 
     function reindex()
     {
@@ -926,11 +926,11 @@ ${v.checkModelRequestedWithRedirect}
   //~: updates good groups store based on the goods
   extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').retradeUpdateStore = function()
   {
-    var g = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+    var g = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
     var I = extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').INITIAL_GROUPS
 
     //c: for each item in the goods grid
-    var x = {}; extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}').each(function(m)
+    var x = {}; extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}').each(function(m)
     {
       var y; if(!ZeTS.ises(y = m.get('goodGroup'))) x[y] = true
     })
@@ -963,7 +963,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: store filter changed (cleared)
   extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').on('filterchange', function(s)
   {
-    var gs = extjsf.component("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+    var gs = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
     var  g = extjsf.bind("${z:vid(v, 'group')}", '${rootView.extjsDomain}')
     if(!gs || !g) return //<-- when fired on the window close
 
@@ -979,7 +979,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'group')}", '${rootView.extjsDomain}').on('change', function(g, v)
   {
     //~: remove current filter
-    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
     s.clearFilter()
 
     //?: {has no value}
@@ -992,7 +992,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: price list changed
   extjsf.bind("${z:vid(v, 'price-list')}", '${rootView.extjsDomain}').on('change', function(cb, priceList)
   {
-    var store = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
     var codes = [];
 
     for(var i = 0;(i < store.count());i++)
@@ -1005,8 +1005,8 @@ ${v.checkModelRequestedWithRedirect}
   //~: remove selected goods
   extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}', function()
   {
-    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
 
     //~: remove the selected items
     s.remove(g.getSelectionModel().getSelection())
@@ -1021,8 +1021,8 @@ ${v.checkModelRequestedWithRedirect}
   //~: add good line
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function()
   {
-    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
-    var g = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     var p = g.getPlugin('cellediting')
     var m = Ext.create('retrade.model.GoodPriceHistory', {
       objectKey: '$' + (new Date().getTime())
@@ -1058,15 +1058,15 @@ ${v.checkModelRequestedWithRedirect}
     //~: toggle the comment
     extjsf.bind("${z:vid(v, 'toggle-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
     {
-      extjsf.component("${z:vid(v, 'comment')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
-      extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
+      extjsf.co("${z:vid(v, 'comment')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
+      extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
     })
 
     //~: toggle the groups
     extjsf.bind("${z:vid(v, 'toggle-groups')}", '${rootView.extjsDomain}').on('toggle', function(btn)
     {
-      extjsf.component("${z:vid(v, 'groups-grid-layout')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
-      extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
+      extjsf.co("${z:vid(v, 'groups-grid-layout')}", '${rootView.extjsDomain}').setVisible(btn.pressed)
+      extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').setVisible(!btn.pressed)
     })
   }))
 
@@ -1083,8 +1083,8 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
   {
     var f = extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}')
-    var s = extjsf.component("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
-    var g = extjsf.component("${z:vid(v, 'groups-filtered')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+    var g = extjsf.co("${z:vid(v, 'groups-filtered')}", '${rootView.extjsDomain}')
 
     //~: validate the form
     if(!f.component().isValid()) return

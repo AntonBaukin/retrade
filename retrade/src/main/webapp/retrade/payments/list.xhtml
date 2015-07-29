@@ -125,7 +125,7 @@ ${v.checkModelRequestedWithRedirect}
 
     //<: replace grid columns
 
-    var grid = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var grid = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
     var cols = extjsf.support.gridColumns(grid);
     var news = ZeT.defined('retrade.columns.PaymentView' + ZeTS.first('#{e.key}').toUpperCase() + '#{e.key}'.substring(1))();
 
@@ -194,7 +194,7 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bind("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}').on('change', function(x)
   {
-    var y = extjsf.component("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}');
+    var y = extjsf.co("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}');
     if(y.retradeSetValue) return;
 
     x.retradeSetValue = true;
@@ -206,7 +206,7 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bind("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}').on('change', function(y)
   {
-    var x = extjsf.component("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}');
+    var x = extjsf.co("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}');
     if(x.retradeSetValue) return;
 
     y.retradeSetValue = true;
@@ -285,7 +285,7 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').on('toggle', function(b, v)
   {
-    extjsf.component("${z:vid(v, 'search-by-selset-with')}", '${rootView.extjsDomain}').setValue(v)
+    extjsf.co("${z:vid(v, 'search-by-selset-with')}", '${rootView.extjsDomain}').setValue(v)
     extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
   })
         //]]>
@@ -300,16 +300,16 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm = function()
   {
-    var grid = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var grid = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
     var cols = extjsf.support.gridColumns(grid);
 
     //?: display income column
     var i = extjsf.support.columnIndexByDataIndex(grid, 'income');
-    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.component("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}').getValue())
+    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.co("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}').getValue())
 
     //?: display expense column
     i = extjsf.support.columnIndexByDataIndex(grid, 'expense');
-    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.component("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}').getValue())
+    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.co("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}').getValue())
 
 
     //~: with the selection set button checked

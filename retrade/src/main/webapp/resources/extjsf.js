@@ -97,7 +97,7 @@ var extjsf = ZeT.define('extjsf',
 	 * Last, arg[0] may be a Component instance,
 	 * or has 'component' field.
 	 */
-	component        : function()
+	co               : function()
 	{
 		var bind, arg = arguments[0]
 		if(!arg) return undefined
@@ -316,7 +316,7 @@ var extjsf = ZeT.define('extjsf',
 		if(fds) for(var i = 0;(i < fds.length);i++)
 		{
 			var target = ZeTX.attr(fds[i], 'target');
-			var field  = extjsf.component(target, domain);
+			var field  = extjsf.co(target, domain);
 
 			if(field && field.isFormField)
 			{
@@ -1398,7 +1398,7 @@ extjsf.support = ZeT.singleInstance('extjsf.support', {
 	 */
 	moveGridSelected       : function(up, grid, delay_fn, fn)
 	{
-		var b = extjsf.asbind(grid), g = extjsf.component(grid);
+		var b = extjsf.asbind(grid), g = extjsf.co(grid);
 
 		//~: selected items
 		var s = g.getSelectionModel().getSelection();

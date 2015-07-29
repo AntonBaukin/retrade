@@ -154,7 +154,7 @@
   Ext.onReady(function()
   {
     //~: store with tree flat data
-    var store = extjsf.component("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
 
     //~: create tree store
     var tree  = Ext.create('Ext.data.TreeStore', {
@@ -186,12 +186,12 @@
 
       m.set('parentKey', np.get('modelId'))
       np.sort(nodesSorter, true)
-      extjsf.component("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(false)
+      extjsf.co("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(false)
     }
 
     function doResizeColumn()
     {
-      var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+      var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
       var col  = extjsf.support.columnByType(tree, 'treecolumn');
       col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
     }
@@ -264,7 +264,7 @@
        store.retradeLastSelection = null;
        if(selNode)
        {
-         extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+         extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
            getSelectionModel().select([selNode])
 
          while(selNode.parentNode)
@@ -280,7 +280,7 @@
        //~: select the root
        ZeT.timeout(250, function()
        {
-         extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+         extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
            getSelectionModel().select(root)
        })
     })
@@ -293,14 +293,14 @@
   //~: expand the tree
   extjsf.bindHandler("${z:vid(v, 'expand-tree')}", '${rootView.extjsDomain}', function()
   {
-    var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
     tree.getRootNode().expandChildren(true)
   })
 
   //~: expand the tree to the selection
   extjsf.bindHandler("${z:vid(v, 'collapse-tree')}", '${rootView.extjsDomain}', function()
   {
-    var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
     var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
 
     tree.collapseAll(function()
@@ -336,8 +336,8 @@
   //~: add to the tree
   extjsf.bindHandler("${z:vid(v, 'tree-add')}", '${rootView.extjsDomain}', function()
   {
-    var store = extjsf.component("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
-    var tree  = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
+    var tree  = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
 
     var sel   = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
     if(!sel) sel = tree.getRootNode();
@@ -362,7 +362,7 @@
   extjsf.bindHandler("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}', function()
   {
     //~: store with tree flat data
-    var store   = extjsf.component("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
+    var store   = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
 
     //~: collect modifications
     var records = store.getModifiedRecords(); if(!records.length) return;
@@ -411,10 +411,10 @@
     }
 
     //~: disable the commit button
-    extjsf.component("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(true)
+    extjsf.co("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(true)
 
     //~: current selection
-    var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').getView();
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').getView();
     var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
 
     //!: send to the server
@@ -444,7 +444,7 @@
 
     //show the related buttons
     for(var i = 0;(i < BTNS.length);i++)
-      extjsf.component(BTNS[i], '${rootView.extjsDomain}').setVisible(x)
+      extjsf.co(BTNS[i], '${rootView.extjsDomain}').setVisible(x)
   }
 
   extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').retradeShowNode = function(node, v)
@@ -466,7 +466,7 @@
     ctl.retradeNodeCut = null;
 
     //~: selected folder
-    var sel = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+    var sel = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
       getSelectionModel().getSelection();
     if(sel && (sel.length == 1)) sel = sel[0];
 
@@ -510,7 +510,7 @@
     ctl.retradeShowNode(cut, true)
 
     //~: selected folder
-    var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
     var sel  = tree.getSelectionModel().getSelection();
     if(sel && (sel.length == 1)) sel = sel[0];
 
@@ -668,14 +668,14 @@
   //~: after tree cell edited
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('edit', function(ed, e)
   {
-    var store = extjsf.component("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
     var m = store.getById(e.record.get('modelId')); if(!m) return;
     var v = ZeTS.trim(e.value);
 
     if(m.get(e.field) == v) return;
 
     m.set(e.field, v)
-    extjsf.component("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(false)
+    extjsf.co("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(false)
     extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle(e.record)
   })
 
@@ -722,8 +722,8 @@
         type: 'search', tooltipType: 'title', tooltip: 'Отобразить инструменты поиска',
         handler: function()
         {
-          var bs = extjsf.component("${z:vid(v, 'goods-edit-buttons')}", '${rootView.extjsDomain}')
-          var fi = extjsf.component("${z:vid(v, 'goods-filter')}", '${rootView.extjsDomain}')
+          var bs = extjsf.co("${z:vid(v, 'goods-edit-buttons')}", '${rootView.extjsDomain}')
+          var fi = extjsf.co("${z:vid(v, 'goods-filter')}", '${rootView.extjsDomain}')
 
           bs.setVisible(!bs.isVisible())
           fi.setVisible(!fi.isVisible())
@@ -734,7 +734,7 @@
         type: 'maximize', tooltipType: 'title', tooltip: 'Свернуть дерево товаров',
         handler: function()
         {
-          extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').collapse()
+          extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').collapse()
         }
       },
 
@@ -742,7 +742,7 @@
         type: 'restore', tooltipType: 'title', tooltip: 'Развернуть дерево товаров',
         hidden: true, handler: function()
         {
-          extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').expand()
+          extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').expand()
         }
       }]
     </f:facet>
@@ -834,7 +834,7 @@
     if(!record) ps.create = true
 
     //~: add the folder selected
-    var fld  = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+    var fld  = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
       getSelectionModel().getSelection()
     if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
     if(fld && fld.length && (fld.charAt(0) != '$'))
@@ -886,7 +886,7 @@
     var ps  = { disableSelSet: true }
 
     //~: add the folder selected
-    var fld  = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+    var fld  = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
       getSelectionModel().getSelection()
     if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
     if(fld && fld.length && (fld.charAt(0) != '$'))
@@ -1070,7 +1070,7 @@
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle = function(sel)
   {
     var fid  = sel.get('modelId');
-    var root = extjsf.component("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}');
+    var root = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}');
 
     if(fid == '$') root.setTitle('Товары всех каталогов')
 
@@ -1087,15 +1087,15 @@
 
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeShowFolderGoods = function()
   {
-    var sel  = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+    var sel  = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
       getSelectionModel().getSelection();
 
-    var subf = extjsf.component("${z:vid(v, 'with-subfolders')}", '${rootView.extjsDomain}');
+    var subf = extjsf.co("${z:vid(v, 'with-subfolders')}", '${rootView.extjsDomain}');
 
     //?: {the selection is empty} hide the panel
     sel = sel.length && sel[0]; if(!sel)
     {
-      extjsf.component("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').hide()
+      extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').hide()
       return;
     }
 
@@ -1107,20 +1107,20 @@
     //?: {it is a new folder}
     if((fid != '$') && (fid.charAt(0) == '$'))
     {
-      extjsf.component("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').hide()
+      extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').hide()
       return;
     }
 
-    extjsf.component("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').show()
 
     //~: disable controls when root node selected
     if('#{canEditTree}' == 'true')
     {
-      extjsf.component("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
-      extjsf.component("${z:vid(v, 'tree-move-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
-      extjsf.component("${z:vid(v, 'tree-unlink-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
-      extjsf.component("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
-      extjsf.component("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'tree-move-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'tree-unlink-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
     }
 
 
@@ -1146,7 +1146,7 @@
       sel = sel.length && sel[0];
 
       //?: {no selection | root}
-      extjsf.component("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').
+      extjsf.co("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').
         setDisabled(!sel || (sel.get('modelId') == '$'))
     }
   })
@@ -1160,9 +1160,9 @@
   //~: collapse goods
   extjsf.bind("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}').on('collapse', function()
   {
-    extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').expand()
+    extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').expand()
 
-    var p = extjsf.component("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
+    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
     p.query('tool[type="maximize"]')[0].show()
     p.query('tool[type="restore"]')[0].hide()
   })
@@ -1170,23 +1170,23 @@
   //~: maximize goods == collapse tree
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('collapse', function()
   {
-    var p = extjsf.component("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
+    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
     p.query('tool[type="maximize"]')[0].hide()
     p.query('tool[type="restore"]')[0].show()
     p.expand()
 
-    var s = extjsf.component("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
     s.setPageSize(15); s.loadPage(1)
   })
 
   //~: restore goods == expand tree
   extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('expand', function()
   {
-    var p = extjsf.component("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
+    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
     p.query('tool[type="maximize"]')[0].show()
     p.query('tool[type="restore"]')[0].hide()
 
-    var s = extjsf.component("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
     s.setPageSize(5); s.loadPage(1)
   })
 
@@ -1220,7 +1220,7 @@
   extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}').retradeMoveSelectedGoods = function(copy)
   {
     //~: current selection
-    var tree = extjsf.component("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
     var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
 
     //?: {not existing folder selected}

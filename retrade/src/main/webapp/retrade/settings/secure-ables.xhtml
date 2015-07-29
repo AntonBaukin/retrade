@@ -48,7 +48,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.component('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
       </f:facet>
     </x:component>
@@ -355,7 +355,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: revoke the ables selected in the grid
   extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-from-table')}", '${rootView.extjsDomain}', function()
   {
-    var m = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+    var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
 
     if(!m || !m.length) return; else m = ZeT.a(m);
     for(var i = 0;(i < m.length);i++) m[i] = m[i].getId();

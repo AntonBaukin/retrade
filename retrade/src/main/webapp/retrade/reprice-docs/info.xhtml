@@ -20,7 +20,7 @@ ${v.checkEntityRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.component('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${rootView.extjsDomain}').
       setTitle('${z:jss(v.winmainTitleInfo)}')
 
   //]]>
@@ -427,19 +427,19 @@ ${v.checkEntityRequested}
       extjsf.bind("${z:vid(v, 'reprice-contractor-changes-layout')}", '${rootView.extjsDomain}').
         visible(btn.pressed && ("#{v.oneContractor}" == 'true'))
 
-      extjsf.component("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').hide()
+      extjsf.co("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').hide()
 
       //?: {load the contractors}
       if(btn.pressed && ("#{v.oneContractor}" == 'false'))
       {
-        var s = extjsf.component("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}');
+        var s = extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}');
         if(!s.getCount() && !s.isLoading()) s.load()
       }
 
       //?: {load the changes for single contractor}
       if(btn.pressed && ("#{v.oneContractor}" == 'true'))
       {
-        var s  = extjsf.component("${z:vid(v, 'contractorChanges')}", '${rootView.extjsDomain}');
+        var s  = extjsf.co("${z:vid(v, 'contractorChanges')}", '${rootView.extjsDomain}');
         var pk = "#{v.firstContractor.primaryKey}";
 
         if(!s.getCount() && !s.isLoading())
@@ -468,9 +468,9 @@ ${v.checkEntityRequested}
   //~: click on the contractor in the table
   extjsf.bind("${z:vid(v, 'cgrid')}", '${rootView.extjsDomain}').on('itemclick', function(cgrid, rec)
   {
-    extjsf.component("${z:vid(v, 'reprice-contractors-layout')}", '${rootView.extjsDomain}').hide()
-    extjsf.component("${z:vid(v, 'reprice-contractor-changes-layout')}", '${rootView.extjsDomain}').show()
-    extjsf.component("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'reprice-contractors-layout')}", '${rootView.extjsDomain}').hide()
+    extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').show()
 
     //~: assign the info
     var n = Ext.get("${z:vid(v, 'contractor-info')}");
@@ -478,7 +478,7 @@ ${v.checkEntityRequested}
     n.down('.retrade-info-value.retrade-info-value-reprice-contractor-name div').update(rec.get('name'))
 
     //~: load the changes data
-    var s = extjsf.component("${z:vid(v, 'contractorChanges')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'contractorChanges')}", '${rootView.extjsDomain}')
     s.getProxy().setExtraParam('contractor', rec.getId())
     s.load()
   })
@@ -486,16 +486,16 @@ ${v.checkEntityRequested}
   //~: click to go back to the contractors list
   extjsf.bindHandler("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}', function()
   {
-    extjsf.component("${z:vid(v, 'reprice-contractor-changes-layout')}", '${rootView.extjsDomain}').hide()
-    extjsf.component("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').hide()
-    extjsf.component("${z:vid(v, 'reprice-contractors-layout')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${rootView.extjsDomain}').hide()
+    extjsf.co("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').hide()
+    extjsf.co("${z:vid(v, 'reprice-contractors-layout')}", '${rootView.extjsDomain}').show()
   })
 
   //~: build filter groups on changes load
   extjsf.bind("${z:vid(v, 'priceChanges')}", '${rootView.extjsDomain}').on('load', function(pcs)
   {
     //~: select all the groups
-    var fgs = extjsf.component("${z:vid(v, 'filterGroups')}", '${rootView.extjsDomain}')
+    var fgs = extjsf.co("${z:vid(v, 'filterGroups')}", '${rootView.extjsDomain}')
     var grs = {}; pcs.each(function(m)
     {
       var g = m.get('goodGroup'); if(!ZeTS.ises(g)) grs[g] = true
@@ -516,7 +516,7 @@ ${v.checkEntityRequested}
   extjsf.bind("${z:vid(v, 'filter-group')}", '${rootView.extjsDomain}').on('change', function(g, v)
   {
     //~: remove current filter
-    var s = extjsf.component("${z:vid(v, 'priceChanges')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'priceChanges')}", '${rootView.extjsDomain}')
     s.clearFilter()
 
     //?: {has no value}

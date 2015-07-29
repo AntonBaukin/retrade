@@ -178,8 +178,8 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bindHandler("${z:vid(v, 'gender_male')}", '${rootView.extjsDomain}', function(f, v)
   {
-    var other  = extjsf.component("${z:vid(v, 'gender_female')}", '${rootView.extjsDomain}');
-    var ismale = extjsf.component("${z:vid(v, 'ismale')}", '${rootView.extjsDomain}');
+    var other  = extjsf.co("${z:vid(v, 'gender_female')}", '${rootView.extjsDomain}');
+    var ismale = extjsf.co("${z:vid(v, 'ismale')}", '${rootView.extjsDomain}');
 
     if(v)
     {
@@ -192,8 +192,8 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bindHandler("${z:vid(v, 'gender_female')}", '${rootView.extjsDomain}', function(f, v)
   {
-    var other  = extjsf.component("${z:vid(v, 'gender_male')}", '${rootView.extjsDomain}');
-    var ismale = extjsf.component("${z:vid(v, 'ismale')}", '${rootView.extjsDomain}');
+    var other  = extjsf.co("${z:vid(v, 'gender_male')}", '${rootView.extjsDomain}');
+    var ismale = extjsf.co("${z:vid(v, 'ismale')}", '${rootView.extjsDomain}');
 
     if(v)
     {
@@ -271,7 +271,7 @@ ${v.checkModelRequestedWithRedirect}
      extjsf.bind("${z:vid(v, 'form')}", '${rootView.extjsDomain}').submitForm({
        command: 'submit_action', success: function()
        {
-         extjsf.component('winmain', '${rootView.extjsDomain}').close()
+         extjsf.co('winmain', '${rootView.extjsDomain}').close()
        }
      })
   })

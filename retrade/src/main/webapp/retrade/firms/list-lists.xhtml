@@ -303,7 +303,7 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     //~: selected contractors
-    var s = extjsf.component("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    var s = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
       getSelectionModel().getSelection();
     s = Ext.Array.map(s || [], function(i) { return i.getId() })
 
@@ -331,7 +331,7 @@ ${v.checkModelRequestedWithRedirect}
     winmain.on('close', function()
     {
       if(!winmain.retradeEditDone) return;
-      extjsf.component("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
+      extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
     })
 
     winmain.component(Ext.create('Ext.window.Window', winmain.extjsProps()))

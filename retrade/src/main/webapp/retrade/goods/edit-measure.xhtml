@@ -280,7 +280,7 @@ ${v.checkModelRequested}
   //~: toggle fractional checkbox
   extjsf.bind("${z:vid(v, 'fractional')}", '${rootView.extjsDomain}').on('change', function(cb, v)
   {
-    var cu = extjsf.component("${z:vid(v, 'class-unit')}", '${rootView.extjsDomain}')
+    var cu = extjsf.co("${z:vid(v, 'class-unit')}", '${rootView.extjsDomain}')
 
     //?: {is fractional}
     if(v)

@@ -88,7 +88,7 @@
 
  extjsf.bind("${z:vid(v, 'retrade-selset-menu-button')}", '${rootView.extjsDomain}').on('added', function(b1)
   {
-    var b0 = extjsf.component("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}');
+    var b0 = extjsf.co("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}');
     var al = b1.menu.getAlignToXY;
 
     b1.menu.getAlignToXY = function()
