@@ -28,7 +28,7 @@ ${v.forceSecure()}
   </f:facet>
 
   <f:facet name = "toolbar-props">
-    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    xtype: 'panel', bodyPadding: extjsf.pts(1, 2, 1, 2),
     layout: {type: 'hbox', align: 'middle'},
     bodyCls: 'retrade-toolbar-panel'
   </f:facet>
@@ -42,8 +42,7 @@ ${v.forceSecure()}
     <x:component coid = "${z:vid(v, 'cancel-edit')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Отмена',
-        cls: 'ux-btn-red',
-        handler : function()
+        cls: 'ux-btn-red', handler : function()
         {
           extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
@@ -53,8 +52,7 @@ ${v.forceSecure()}
     <!-- [close window button] -->
     <x:component coid = "${z:vid(v, 'close')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Закрыть',
-        handler : function()
+        xtype: 'button', text: 'Закрыть', handler : function()
         {
           extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
@@ -62,58 +60,62 @@ ${v.forceSecure()}
     </x:component>
 
 
-    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+    <!-- [toolbar buttons line -->
+
+    <x:component coid = "${z:vid(v, '_tb_buttons-line')}">
       <f:facet name = "extjs-props">
-        xtype: 'panel', flex: 1, border: false,
-        bodyCls: 'retrade-toolbar-inline-panel'
+        xtype: 'panel', border: false,
+        margin: extjsf.pts(0, 4, 0, 4),
+        bodyPadding: extjsf.pts(2, 4, 2, 4),
+        cls: 'retrade-toolbar-colour-line-one'
       </f:facet>
-    </x:component>
 
-
-    <!-- [show main content] -->
-    <x:component coid = "${z:vid(v, 'show-main')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Основные',
-        margin: extjsf.pts(0, 4, 0, 0),
-        enableToggle: true, extjsfBlock: 'main',
-        handler : function()
-        {
-          extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+      <!-- [show main content] -->
+      <x:component coid = "${z:vid(v, 'show-main')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Основные',
+          margin: extjsf.pts(0, 4, 0, 0),
+          enableToggle: true, extjsfBlock: 'main',
+          handler : function()
+          {
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
             retradeShowBlock('main')
-        }
-      </f:facet>
-    </x:component>
+          }
+        </f:facet>
+      </x:component>
 
-    <!-- [show contacts] -->
-    <x:component coid = "${z:vid(v, 'show-contacts')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Контакты',
-        margin: extjsf.pts(0, 4, 0, 0),
-        enableToggle: true, extjsfBlock: 'contacts',
-        handler : function()
-        {
-          extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+      <!-- [show contacts] -->
+      <x:component coid = "${z:vid(v, 'show-contacts')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Контакты',
+          margin: extjsf.pts(0, 4, 0, 0),
+          enableToggle: true, extjsfBlock: 'contacts',
+          handler : function()
+          {
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
             retradeShowBlock('contacts')
-        }
-      </f:facet>
-    </x:component>
+          }
+        </f:facet>
+      </x:component>
 
-    <!-- [show addresses] -->
-    <x:component coid = "${z:vid(v, 'show-addresses')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Адреса',
-        margin: extjsf.pts(0, 4, 0, 0),
-        enableToggle: true, extjsfBlock: 'addresses',
-        handler : function()
-        {
-          extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+      <!-- [show addresses] -->
+      <x:component coid = "${z:vid(v, 'show-addresses')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Адреса',
+          margin: extjsf.pts(0, 0, 0, 0),
+          enableToggle: true, extjsfBlock: 'addresses',
+          handler : function()
+          {
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
             retradeShowBlock('addresses')
-        }
-      </f:facet>
+          }
+        </f:facet>
+      </x:component>
     </x:component>
 
+    <!-- toolbar buttons line] -->
 
-    <x:component coid = "${z:vid(v, '_tb_fill_1')}">
+    <x:component coid = "${z:vid(v, '_tb_fill')}">
       <f:facet name = "extjs-props">
         xtype: 'panel', flex: 1, border: false,
         bodyCls: 'retrade-toolbar-inline-panel'
@@ -124,8 +126,7 @@ ${v.forceSecure()}
     <!-- [submit button] -->
     <x:component coid = "${z:vid(v, 'submit')}">
       <f:facet name = "extjs-props">
-        xtype:'button', text: 'Сохранить',
-        cls: 'ux-btn-green'
+        xtype:'button', text: 'Сохранить', cls: 'ux-btn-green'
       </f:facet>
     </x:component>
 
@@ -241,7 +242,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
       value = "#{v.firm.fullName}">
 
       <f:facet name = "extjs-props">
-        xtype: 'textarea', rows: 3,
+        xtype: 'textarea', flex: 1,
         allowBlank: false, extjsfReadWrite: true,
         extjsfBlock: 'main'
       </f:facet>
@@ -279,7 +280,12 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
         allowNone = "false" onlyOne = "true">
 
         <f:facet name = "check-props">
-          cls: 'retrade-checkboxes-line', extjsfReadWrite: true
+          extjsfReadWrite: true
+        </f:facet>
+
+        <f:facet name = "label-props">
+          cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 6, 0, 4)
         </f:facet>
       </x:checkboxes>
     </x:component>
@@ -302,7 +308,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
         value = "#{v.firm.taxNumber}">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(22), cls: 'retrade-large-field',
+          width: extjsf.ex(18), cls: 'retrade-large-field',
           fieldStyle: { textAlign: 'center' },
           maskRe: retrade.rdecimal,
           extjsfReadWrite: true
@@ -320,7 +326,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
         value = "#{v.firm.taxCode}">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(18), cls: 'retrade-large-field',
+          width: extjsf.ex(16), cls: 'retrade-large-field',
           fieldStyle: { textAlign: 'center' },
           maskRe: retrade.rdecimal,
           extjsfReadWrite: true
@@ -338,7 +344,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
         value = "#{v.firm.regCode}">
 
         <f:facet name = "extjs-props">
-          width: extjsf.ex(28), cls: 'retrade-large-field',
+          width: extjsf.ex(20), cls: 'retrade-large-field',
           fieldStyle: { textAlign: 'center' },
           maskRe: retrade.rdecimal,
           extjsfReadWrite: true
@@ -360,7 +366,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
       value = "#{v.firm.agreement}">
 
       <f:facet name = "extjs-props">
-        xtype: 'textarea', flex: 1,
+        xtype: 'textarea', flex: 4,
         extjsfReadWrite: true, extjsfBlock: 'main'
       </f:facet>
 

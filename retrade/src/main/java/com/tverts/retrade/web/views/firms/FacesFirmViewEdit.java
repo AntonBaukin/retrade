@@ -294,9 +294,9 @@ public class FacesFirmViewEdit extends UnityModelView
 		Map<String, String> m = firmTypeLabels =
 		  new LinkedHashMap<>(5);
 
-		m.put("ОРГ", "Организация");
-		m.put("ИП",  "Инд. Предприниматель");
-		m.put("ГОС", "Гос. Учреждение");
+		m.put("ОРГ", "организация");
+		m.put("ИП",  "ИП");
+		m.put("ГОС", "гос. учреждение");
 
 		return firmTypeLabels;
 	}
