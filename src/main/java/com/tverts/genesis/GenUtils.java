@@ -37,7 +37,7 @@ public class GenUtils
 	 */
 	public static String phones(Random rnd, String prefix, int max, int len)
 	{
-		EX.asserts(prefix);
+		EX.assertn(SU.s2s(prefix));
 		EX.assertx(max > 0);
 		EX.assertx(len > 0);
 
