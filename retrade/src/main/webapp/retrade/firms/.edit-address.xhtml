@@ -11,13 +11,12 @@
   </f:facet>
 
 
-  <!-- [index, country, province -->
+  <!-- [index, country -->
 
   <x:component coid = "${z:vid(localView, '_address_index_country_region')}_${name}">
-
     <f:facet name = "extjs-props">
       border: false, layout: {type: 'hbox', align: 'middle'},
-      bodyCls: 'retrade-transparent-panel',
+      bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
     <!-- [postal index] -->
@@ -25,18 +24,54 @@
       value = "#{address.postalIndex}">
 
       <f:facet name = "extjs-props">
-        width: extjsf.ex(16), cls: 'retrade-large-field',
+        width: extjsf.ex(12), cls: 'retrade-large-field',
         fieldStyle: { textAlign: 'center' },
         maskRe: retrade.rdecimal,
         extjsfReadWrite: true
       </f:facet>
 
       <f:facet name = "label-props">
-        text: 'Индекс', width: extjsf.ex(8),
+        text: 'Индекс', width: extjsf.ex(9),
         cls: 'retrade-info-title-label',
         margin: extjsf.pts(0, 4, 0, 0)
       </f:facet>
     </x:text-field>
+
+
+    <x:component coid = "${z:vid(localView, '_address_index_country_region_fill')}_${name}">
+      <f:facet name = "extjs-props">
+        border: false, flex: 1, bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [country] -->
+    <x:text-field coid = "${z:vid(localView, 'address-country')}-${name}"
+      value = "#{address.country}">
+
+      <f:facet name = "extjs-props">
+        extjsfReadWrite: true
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Страна', cls: 'retrade-info-title-label',
+        width: extjsf.ex(7), margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+  </x:component>
+
+  <!-- index, country] -->
+
+
+  <!-- [province, district -->
+
+  <x:component coid = "${z:vid(localView, '_address_province_district')}_${name}">
+    <f:facet name = "extjs-props">
+      border: false, layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(4, 0, 0, 0)
+    </f:facet>
+
 
     <!-- [province] -->
     <x:text-field coid = "${z:vid(localView, 'address-province')}-${name}"
@@ -48,50 +83,7 @@
 
       <f:facet name = "label-props">
         text: 'Область', cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 6)
-      </f:facet>
-    </x:text-field>
-
-    <!-- [country] -->
-    <x:text-field coid = "${z:vid(localView, 'address-country')}-${name}"
-      value = "#{address.country}">
-
-      <f:facet name = "extjs-props">
-        width: extjsf.ex(14), extjsfReadWrite: true
-      </f:facet>
-
-      <f:facet name = "label-props">
-        text: 'Страна', cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 6)
-      </f:facet>
-    </x:text-field>
-  </x:component>
-
-  <!-- index, country, province] -->
-
-
-  <!-- [city, district -->
-
-  <x:component coid = "${z:vid(localView, '_address_city_district')}_${name}">
-
-    <f:facet name = "extjs-props">
-      border: false, layout: {type: 'hbox', align: 'middle'},
-      bodyCls: 'retrade-transparent-panel',
-      margin: extjsf.pts(4, 0, 0, 0)
-    </f:facet>
-
-    <!-- [city] -->
-    <x:text-field coid = "${z:vid(localView, 'address-city')}-${name}"
-      value = "#{address.settlement}">
-
-      <f:facet name = "extjs-props">
-        extjsfReadWrite: true, flex: 1
-      </f:facet>
-
-      <f:facet name = "label-props">
-        text: 'Город', width: extjsf.ex(8),
-        cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 0)
+        width: extjsf.ex(9), margin: extjsf.pts(0, 4, 0, 0)
       </f:facet>
     </x:text-field>
 
@@ -106,23 +98,94 @@
 
       <f:facet name = "label-props">
         text: 'Район', cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 6)
+        width: extjsf.ex(7), margin: extjsf.pts(0, 4, 0, 6)
       </f:facet>
     </x:text-field>
   </x:component>
 
-  <!-- city, district] -->
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${rootView.extjsDomain}').
+    on('resize', function(district, width)
+  {
+    var country = extjsf.co("${z:vid(localView, 'address-country')}-${name}", '${rootView.extjsDomain}')
+    country && country.setWidth(width)
+
+    var building = extjsf.co("${z:vid(localView, 'address-building-layout')}-${name}", '${rootView.extjsDomain}')
+    building && building.setWidth(width)
+
+    var office = extjsf.co("${z:vid(localView, 'address-office-layout')}-${name}", '${rootView.extjsDomain}')
+    office && office.setWidth(width)
+  })
+
+  //]]>
+  </script>
+
+  <!-- province, district] -->
 
 
-  <!-- [street, building, office -->
+  <!-- [city, building -->
 
-  <x:component coid = "${z:vid(localView, '_address_street_building_office')}_${name}">
-
+  <x:component coid = "${z:vid(localView, '_address_city_building')}_${name}">
     <f:facet name = "extjs-props">
       border: false, layout: {type: 'hbox', align: 'middle'},
       bodyCls: 'retrade-transparent-panel',
       margin: extjsf.pts(4, 0, 0, 0)
     </f:facet>
+
+
+    <!-- [city] -->
+    <x:text-field coid = "${z:vid(localView, 'address-city')}-${name}"
+      value = "#{address.settlement}">
+
+      <f:facet name = "extjs-props">
+        extjsfReadWrite: true, flex: 1
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Город', width: extjsf.ex(9),
+        cls: 'retrade-info-title-label',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [building] -->
+    <x:component coid = "${z:vid(localView, 'address-building-layout')}-${name}">
+      <f:facet name = "extjs-props">
+        border: false, layout: {type: 'hbox', align: 'middle'},
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+
+      <x:text-field coid = "${z:vid(localView, 'address-building')}-${name}"
+        value = "#{address.building}">
+
+        <f:facet name = "extjs-props">
+          extjsfReadWrite: true, flex: 1
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Здание', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6), width: extjsf.ex(7)
+        </f:facet>
+      </x:text-field>
+    </x:component>
+  </x:component>
+
+  <!-- city, building] -->
+
+
+  <!-- [street, office -->
+
+  <x:component coid = "${z:vid(localView, '_address_street_office')}_${name}">
+    <f:facet name = "extjs-props">
+      border: false, layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(4, 0, 0, 0)
+    </f:facet>
+
 
     <!-- [street] -->
     <x:text-field coid = "${z:vid(localView, 'address-street')}-${name}"
@@ -133,48 +196,39 @@
       </f:facet>
 
       <f:facet name = "label-props">
-        text: 'Улица', width: extjsf.ex(8),
-        cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 0)
+        text: 'Улица', cls: 'retrade-info-title-label',
+        width: extjsf.ex(9), margin: extjsf.pts(0, 4, 0, 0)
       </f:facet>
     </x:text-field>
 
-
-    <!-- [building] -->
-    <x:text-field coid = "${z:vid(localView, 'address-building')}-${name}"
-      value = "#{address.building}">
-
-      <f:facet name = "extjs-props">
-        extjsfReadWrite: true, width: extjsf.ex(12)
-      </f:facet>
-
-      <f:facet name = "label-props">
-        text: 'Здание', cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 6)
-      </f:facet>
-    </x:text-field>
 
     <!-- [office] -->
-    <x:text-field coid = "${z:vid(localView, 'address-office')}-${name}"
-      value = "#{address.office}">
-
+    <x:component coid = "${z:vid(localView, 'address-office-layout')}-${name}">
       <f:facet name = "extjs-props">
-        extjsfReadWrite: true, width: extjsf.ex(12)
+        border: false, layout: {type: 'hbox', align: 'middle'},
+        bodyCls: 'retrade-transparent-panel'
       </f:facet>
 
-      <f:facet name = "label-props">
-        text: 'Офис', cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 6)
-      </f:facet>
-    </x:text-field>
+      <x:text-field coid = "${z:vid(localView, 'address-office')}-${name}"
+        value = "#{address.office}">
+
+        <f:facet name = "extjs-props">
+          extjsfReadWrite: true, flex: 1
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Офис', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6), width: extjsf.ex(7)
+        </f:facet>
+      </x:text-field>
+    </x:component>
   </x:component>
 
-  <!-- street, building, office] -->
+  <!-- street, office] -->
 
 
-  <!-- [phones, email -->
+  <!-- [phones -->
   <x:component coid = "${z:vid(localView, '_address_phones')}_${name}">
-
     <f:facet name = "extjs-props">
       border: false, layout: {type: 'hbox', align: 'middle'},
       bodyCls: 'retrade-transparent-panel',
@@ -190,11 +244,24 @@
       </f:facet>
 
       <f:facet name = "label-props">
-        text: 'Тел.', width: extjsf.ex(8),
+        text: 'Тел.', width: extjsf.ex(9),
         cls: 'retrade-info-title-label',
         margin: extjsf.pts(0, 4, 0, 0)
       </f:facet>
     </x:text-field>
+  </x:component>
+
+  <!-- phones] -->
+
+
+  <!-- [email -->
+
+  <x:component coid = "${z:vid(localView, '_address_email')}_${name}">
+    <f:facet name = "extjs-props">
+      border: false, layout: {type: 'hbox', align: 'middle'},
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.pts(4, 0, 0, 0)
+    </f:facet>
 
     <!-- [email] -->
     <x:text-field coid = "${z:vid(localView, 'address-email')}-${name}"
@@ -205,19 +272,18 @@
       </f:facet>
 
       <f:facet name = "label-props">
-        text: 'Эл. почта',
+        text: 'Эл. почта', width: extjsf.ex(9),
         cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 6)
+        margin: extjsf.pts(0, 4, 0, 0)
       </f:facet>
     </x:text-field>
   </x:component>
 
-  <!-- phones, remarks] -->
+  <!-- email] -->
 
 
   <!-- [remarks] -->
   <x:component coid = "${z:vid(localView, '_address_remarks')}_${name}">
-
     <f:facet name = "extjs-props">
       border: false, layout: {type: 'hbox', align: 'top'},
       bodyCls: 'retrade-transparent-panel',
@@ -228,12 +294,12 @@
       value = "#{address.remarks}">
 
       <f:facet name = "extjs-props">
-        xtype: 'textarea', rows: 3, flex: 1,
-        extjsfReadWrite: true
+        xtype: 'textarea', height: extjsf.ex(10),
+        extjsfReadWrite: true, flex: 1
       </f:facet>
 
       <f:facet name = "label-props">
-        text: 'Заметки', width: extjsf.ex(8),
+        text: 'Заметки', width: extjsf.ex(9),
         cls: 'retrade-info-title-label',
         margin: extjsf.pts(0, 4, 0, 0)
       </f:facet>

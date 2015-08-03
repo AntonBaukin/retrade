@@ -175,6 +175,16 @@ div.x-panel.retrade-toolbar-colour-line-one > div.x-panel-body
   background-size: 75% auto;
 }
 
+.x-panel.retrade-inline-block-caption > div.x-panel-header.x-panel-header-default-horizontal
+{
+  background: linear-gradient(to bottom, rgba(251, 251, 251, 0.70) 0%, rgba(220, 227, 242, 0.85) 100%);
+}
+
+.x-panel.retrade-inline-block-caption .x-panel-header-default .x-tool-img
+{
+  background-color: transparent;
+}
+
 
 /* formats */
 

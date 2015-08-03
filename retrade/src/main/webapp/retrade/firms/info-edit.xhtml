@@ -406,7 +406,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
       value = "#{v.firm.phones}">
 
       <f:facet name = "extjs-props">
-        xtype: 'textarea', rows: 3,
+        xtype: 'textarea', flex: 1,
         extjsfReadWrite: true,
         extjsfBlock: 'contacts'
       </f:facet>
@@ -458,107 +458,70 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
     </x:text-field>
 
 
-    <!-- [registry address -->
-
-    <x:component coid = "${z:vid(v, '_registry_address_label')}">
+    <x:component coid = "${z:vid(v, '_address_layout')}">
       <f:facet name = "extjs-props">
-        xtype: 'label', text: 'Адрес юридического лица',
-        cls: 'retrade-info-title-label-bigger',
-        style: { cursor: 'default' },
-        margin: extjsf.pts(0, 0, 2, 0),
-        extjsfBlock: 'addresses'
-      </f:facet>
-    </x:component>
-
-    <x:component coid = "${z:vid(v, '_registry_address')}">
-      <f:facet name = "extjs-props">
-        layout: 'fit', border: false,
+        layout: 'accordion', border: false,
         bodyCls: 'retrade-transparent-panel',
         extjsfBlock: 'addresses'
       </f:facet>
 
-      <ui:decorate template = ".edit-address.xhtml">
-        <ui:param name = "localView" value = "#{v}"/>
-        <ui:param name = "name" value = "registry"/>
-        <ui:param name = "address" value = "#{v.registryAddress}"/>
-      </ui:decorate>
+
+      <!-- [registry address] -->
+
+      <x:component coid = "${z:vid(v, '_registry_address')}">
+        <f:facet name = "extjs-props">
+          title: 'Адрес юридического лица',
+          layout: 'fit', border: false,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel',
+          bodyPadding: extjsf.pts(8, 0, 4, 0)
+        </f:facet>
+
+        <ui:decorate template = ".edit-address.xhtml">
+          <ui:param name = "localView" value = "#{v}"/>
+          <ui:param name = "name" value = "registry"/>
+          <ui:param name = "address" value = "#{v.registryAddress}"/>
+        </ui:decorate>
+      </x:component>
+
+
+      <!-- [contact address] -->
+
+      <x:component coid = "${z:vid(v, '_contact_address')}">
+        <f:facet name = "extjs-props">
+          title: 'Контактный адрес',
+          layout: 'fit', border: false,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel',
+          bodyPadding: extjsf.pts(8, 0, 4, 0)
+        </f:facet>
+
+        <ui:decorate template = ".edit-address.xhtml">
+          <ui:param name = "localView" value = "#{v}"/>
+          <ui:param name = "name" value = "contact"/>
+          <ui:param name = "address" value = "#{v.contactAddress}"/>
+        </ui:decorate>
+      </x:component>
+
+
+      <!-- [office address] -->
+
+      <x:component coid = "${z:vid(v, '_office_address')}">
+        <f:facet name = "extjs-props">
+          title: 'Адрес офиса',
+          layout: 'fit', border: false,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel',
+          bodyPadding: extjsf.pts(8, 0, 4, 0)
+        </f:facet>
+
+        <ui:decorate template = ".edit-address.xhtml">
+          <ui:param name = "localView" value = "#{v}"/>
+          <ui:param name = "name" value = "office"/>
+          <ui:param name = "address" value = "#{v.officeAddress}"/>
+        </ui:decorate>
+      </x:component>
     </x:component>
-
-    <x:component coid = "${z:vid(v, '_address_fill_0')}">
-      <f:facet name = "extjs-props">
-        border: false, flex: 1,
-        bodyCls: 'retrade-transparent-panel',
-        extjsfBlock: 'addresses'
-      </f:facet>
-    </x:component>
-
-    <!-- registry address] -->
-
-
-    <!-- [contact address -->
-
-    <x:component coid = "${z:vid(v, '_contact_address_label')}">
-      <f:facet name = "extjs-props">
-        xtype: 'label', text: 'Контактный адрес',
-        cls: 'retrade-info-title-label-bigger',
-        style: { cursor: 'default' },
-        margin: extjsf.pts(0, 0, 2, 0),
-        extjsfBlock: 'addresses'
-      </f:facet>
-    </x:component>
-
-    <x:component coid = "${z:vid(v, '_contact_address')}">
-      <f:facet name = "extjs-props">
-        layout: 'fit', border: false,
-        bodyCls: 'retrade-transparent-panel',
-        extjsfBlock: 'addresses'
-      </f:facet>
-
-      <ui:decorate template = ".edit-address.xhtml">
-        <ui:param name = "localView" value = "#{v}"/>
-        <ui:param name = "name" value = "contact"/>
-        <ui:param name = "address" value = "#{v.contactAddress}"/>
-      </ui:decorate>
-    </x:component>
-
-    <x:component coid = "${z:vid(v, '_address_fill_1')}">
-      <f:facet name = "extjs-props">
-        border: false, flex: 1,
-        bodyCls: 'retrade-transparent-panel',
-        extjsfBlock: 'addresses'
-      </f:facet>
-    </x:component>
-
-    <!-- contact address] -->
-
-
-    <!-- [office address -->
-
-    <x:component coid = "${z:vid(v, '_office_address_label')}">
-      <f:facet name = "extjs-props">
-        xtype: 'label', text: 'Адрес офиса',
-        cls: 'retrade-info-title-label-bigger',
-        style: { cursor: 'default' },
-        margin: extjsf.pts(0, 0, 2, 0),
-        extjsfBlock: 'addresses'
-      </f:facet>
-    </x:component>
-
-    <x:component coid = "${z:vid(v, '_office_address')}">
-      <f:facet name = "extjs-props">
-        layout: 'fit', border: false,
-        bodyCls: 'retrade-transparent-panel',
-        extjsfBlock: 'addresses'
-      </f:facet>
-
-      <ui:decorate template = ".edit-address.xhtml">
-        <ui:param name = "localView" value = "#{v}"/>
-        <ui:param name = "name" value = "office"/>
-        <ui:param name = "address" value = "#{v.officeAddress}"/>
-      </ui:decorate>
-    </x:component>
-
-    <!-- contact address] -->
 
 
     <!-- [submit action] -->
