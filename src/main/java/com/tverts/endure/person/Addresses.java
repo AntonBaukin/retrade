@@ -118,7 +118,22 @@ public class Addresses
 
 		//?: {has no phones}
 		if(SU.sXe(a.getPhones()))
-			a.setPhones(GenUtils.phones(gen, "+7-920-", 3, 7));
+			a.setPhones(GenUtils.phones(gen, "+7 (920) ", 3, 7));
+
+		//~: process district from the settlement
+		if(a.getDistrict() == null)
+		{
+			int i; if((i = a.getSettlement().indexOf('(')) != -1)
+			{
+				String s = EX.assertn(SU.s2s(a.getSettlement().substring(0, i)));
+				String d = EX.assertn(SU.s2s(a.getSettlement().substring(i + 1)));
+				if(d.endsWith(")"))
+					d = EX.assertn(SU.s2s(d.substring(0, d.length() - 1)));
+
+				a.setSettlement(s);
+				a.setDistrict(d);
+			}
+		}
 	}
 
 
