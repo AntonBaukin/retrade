@@ -103,6 +103,47 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 				arguments[i] = ''
 
 		return String.prototype.concat.apply('', arguments)
+	},
+
+	catsep           : function(sep /*, various objects */)
+	{
+		//~: invoked with this == separator
+		var b = 1; if(ZeT.iss(this))
+		{
+			b = 0; sep = this
+		}
+
+		ZeT.assert(!ZeTS.ises(sep), 'Separator may not be an ws-empty string!')
+
+		var s = ''; for(var i = b;(i < arguments.length);i++)
+		{
+			var x = arguments[i]
+
+			if(ZeT.isu(x) || (x === null))
+				continue
+
+			//?: {is an array}
+			if(ZeT.isa(x))
+				x = ZeTS.catsep.apply(sep, x)
+			//?: {has toString()}
+			else if(ZeT.isf(x.toString))
+				x = x.toString()
+			else
+				x = '' + x
+
+			if(!ZeT.iss(x))
+				continue
+			x = ZeTS.trim(x)
+
+			if(ZeTS.ises(x))
+				continue
+
+			if(s.length)
+				s += sep
+			s += x
+		}
+
+		return s
 	}
 }
 

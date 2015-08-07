@@ -286,7 +286,7 @@ table.retrade-align-right.x-field
 
 .retrade-button-menu-no-arrow .x-btn-wrap-default-small.x-btn-arrow-right::after
 {
-  padding: 0; background: none;
+  display: none;
 }
 
 .retrade-buttons-sep-line-div

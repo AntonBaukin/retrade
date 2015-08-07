@@ -38,11 +38,146 @@
     </x:text-field>
 
 
-    <x:component coid = "${z:vid(localView, '_address_index_country_region_fill')}_${name}">
+    <!-- [address display -->
+
+    <x:component coid = "${z:vid(localView, '_address_display_layout')}_${name}">
       <f:facet name = "extjs-props">
-        border: false, flex: 1, bodyCls: 'retrade-transparent-panel'
+        border: false, flex: 1,
+        bodyCls: 'retrade-transparent-panel',
+        margin: extjsf.pts(0, 4, 0, 4),
+        layout: { type: 'hbox', align: 'middle' }
       </f:facet>
+
+      <x:component coid = "${z:vid(localView, 'address-display-button')}-${name}">
+        <f:facet name = "extjs-props">
+          xtype:'button', text: 'Просмотр',
+          cls: 'retrade-button-menu-no-arrow', menuAlign: 't-b',
+          tooltipType: 'title', tooltip: 'Отобразить адрес в текстовой строке'
+        </f:facet>
+
+        <x:menu coid = "${z:vid(localView, 'address-display-menu')}-${name}">
+          <f:facet name = "extjs-props">
+            showSeparator: false, border: true,
+            layout: { type: 'vbox', align: 'stretch'},
+            width: extjsf.ex(48), height: extjsf.pt(100),
+            bodyCls: 'retrade-content-panel', bodyPadding: extjsf.pt(2)
+          </f:facet>
+
+
+          <!-- [address display text] -->
+          <x:text-field coid = "${z:vid(localView, 'address-display-text')}-${name}"
+            value = "#{localView.phonyString}">
+
+            <f:facet name = "extjs-props">
+              xtype: 'textarea', readOnly: true, flex: 1
+            </f:facet>
+          </x:text-field>
+
+
+          <!-- [address display commands -->
+
+          <x:component coid = "${z:vid(localView, '_address_display_commands')}_${name}">
+            <f:facet name = "extjs-props">
+              border: false, margin: extjsf.pts(6, 0, 0, 0),
+              layout: { type: 'hbox', align: 'middle' },
+              bodyCls: 'retrade-transparent-panel'
+            </f:facet>
+
+
+            <!-- [clear button] -->
+            <x:component coid = "${z:vid(localView, 'address-display-button-clear')}-${name}">
+              <f:facet name = "extjs-props">
+                xtype: 'button', text: 'Очистить', cls: 'ux-btn-red',
+                extjsfReadWrite: true, tooltipType: 'title',
+                tooltip: 'Очистить все поля для ввода адреса'
+              </f:facet>
+            </x:component>
+
+
+            <x:component coid = "${z:vid(localView, '_address_display_commands_fill')}_${name}">
+              <f:facet name = "extjs-props">
+                flex: 1, border: false, bodyCls: 'retrade-transparent-panel'
+              </f:facet>
+            </x:component>
+
+
+            <!-- [copy to clipboard button] -->
+            <x:component coid = "${z:vid(localView, 'address-display-button-copy')}-${name}">
+              <f:facet name = "extjs-props">
+                xtype:'button', text: 'Выделить', tooltipType: 'title',
+                tooltip: 'Выделить строку адреса в поле. Нажмите Ctrl-C для копирования в буфер обмена'
+              </f:facet>
+            </x:component>
+          </x:component>
+
+          <script type = "text/javascript">
+          //<![CDATA[
+
+  //~: update address text field before menu show
+  extjsf.bind("${z:vid(localView, 'address-display-menu')}-${name}", '${rootView.extjsDomain}').
+    on('beforeshow', function(menu)
+    {
+      var i = extjsf.bind("${z:vid(localView, 'address-index')}-${name}", '${rootView.extjsDomain}').value()
+      var x = extjsf.bind("${z:vid(localView, 'address-country')}-${name}", '${rootView.extjsDomain}').value()
+      var p = extjsf.bind("${z:vid(localView, 'address-province')}-${name}", '${rootView.extjsDomain}').value()
+      var d = extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${rootView.extjsDomain}').value()
+      var c = extjsf.bind("${z:vid(localView, 'address-city')}-${name}", '${rootView.extjsDomain}').value()
+      var s = extjsf.bind("${z:vid(localView, 'address-street')}-${name}", '${rootView.extjsDomain}').value()
+      var b = extjsf.bind("${z:vid(localView, 'address-building')}-${name}", '${rootView.extjsDomain}').value()
+      var o = extjsf.bind("${z:vid(localView, 'address-office')}-${name}", '${rootView.extjsDomain}').value()
+
+      if(!ZeTS.ises(b) &&  b.match(/^\d+$/))
+        b = 'д. ' + b
+
+      if(!ZeTS.ises(o) &&  b.match(/^\d+$/))
+        o = 'офис ' + o
+
+      var a = ZeTS.catsep(', ', i, x, p, d, c, s, b, o)
+      if(ZeTS.ises(a)) return false
+
+      var f = extjsf.co("${z:vid(localView, 'address-display-text')}-${name}", '${rootView.extjsDomain}')
+      f.setValue(a); f.selectText(0, 0)
+    })
+
+
+   //~: clear all the fields
+   extjsf.bindHandler("${z:vid(localView, 'address-display-button-clear')}-${name}", '${rootView.extjsDomain}', function()
+   {
+     extjsf.bind("${z:vid(localView, 'address-index')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-country')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-province')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-city')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-street')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-building')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-office')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-phones')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-email')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-remarks')}-${name}", '${rootView.extjsDomain}').value('')
+
+     extjsf.bind("${z:vid(localView, 'address-display-text')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.co("${z:vid(localView, 'address-display-button')}-${name}", '${rootView.extjsDomain}').hideMenu()
+   })
+
+
+   //~: select the displayed address
+   extjsf.bindHandler("${z:vid(localView, 'address-display-button-copy')}-${name}", '${rootView.extjsDomain}', function()
+   {
+     var f = extjsf.co("${z:vid(localView, 'address-display-text')}-${name}", '${rootView.extjsDomain}')
+     if(ZeTS.ises(f.getValue())) return
+     f.focus(true, 0)
+   })
+
+          //]]>
+          </script>
+
+          <!-- address display commands] -->
+
+        </x:menu>
+      </x:component>
     </x:component>
+
+    <!-- address display] -->
 
 
     <!-- [country] -->

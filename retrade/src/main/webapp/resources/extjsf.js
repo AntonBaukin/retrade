@@ -720,21 +720,20 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 	toggleReadWrite  : function(isread)
 	{
-		//~: access the form
-		var form = ZeT.assert(this.co() &&
-		  this.co().getForm && this.co().getForm(),
-		  'This component is not an Ext Form!'
-		)
-
-		//c: for each the field of the form
-		var collect = []; form.getFields().each(function(f)
+		ZeT.assertn(this.co())
+		var collect = []; ZeT.each(this.co().query(), function(f)
 		{
-			if(f.extjsfReadWrite === true)
-				if(ZeT.isf(f.setReadOnly))
-				{
-					f.setReadOnly(isread)
-					collect.push(f)
-				}
+			if(f.extjsfReadWrite !== true) return
+
+			//?: {read-write}
+			if(ZeT.isf(f.setReadOnly))
+				f.setReadOnly(isread)
+			else if(ZeT.isf(f.setDisabled))
+				f.setDisabled(isread)
+			else
+				return
+
+			collect.push(f)
 		})
 
 		return collect
