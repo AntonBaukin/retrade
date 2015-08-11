@@ -10,7 +10,16 @@
     <co:attribute name = 'coid' required = 'true'
        type = 'java.lang.String'/>
 
+    <!-- DOM node id to render the component to -->
     <co:attribute name = 'renderTo' default = ''
+       type = 'java.lang.String'/>
+
+    <!--
+         Defines ExtJSF bind id to nest the component
+         as a child. Note that that the component must
+         not actually render (or display) it's children.
+    -->
+    <co:attribute name = 'renderParent' default = ''
        type = 'java.lang.String'/>
 
     <co:facet name = 'extjs-props'/>
@@ -41,33 +50,25 @@
     <co:insertChildren/>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
   if('#{cc.attrs.renderTo}'.length) Ext.onReady(function()
   {
-    var bind = extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}');
-
-    function dodestroy()
-    {
-      var comp = bind.co();
-
-      if(comp) try
-      {
-          comp.destroy()
-      }
-      finally
-      {
-          bind._component = undefined;
-      }
-    }
+    var bind = extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}')
 
     //~: create the component
     bind.co(Ext.ComponentManager.create(bind.extjsProps()))
 
-    //~: bind destroy listener
-    extjsf.bind('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}').
-      on('beforedestroy', dodestroy)
+    //?: {has component render parent}
+    if('#{cc.attrs.renderParent}'.length)
+      bind.renderParent('#{cc.attrs.renderParent}')
+    //~: connect destroy listener
+    else
+      extjsf.bind('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}').
+        on('beforedestroy', bind.boundDestroy())
   })
 
+    //]]>
     </script>
 
   </co:implementation>

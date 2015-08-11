@@ -1182,19 +1182,19 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(12)
+		   width: extjsf.ex(9)
 		 },
 
 		 {
 		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   width: extjsf.ex(22), flex: 2
+		   flex: 3, tdCls: 'ux-grid-column-smaller'
 		 },
 
 		 {
 		   text: "Прайс лист", dataIndex: 'priceListCode', sortable: false,
-		   width: extjsf.ex(16), flex: 1, renderer: function(v, meta, rec)
+		   flex: 2, tdCls: 'ux-grid-column-smaller', renderer: function(v, meta, rec)
 		   {
-				return v + ' ' + rec.get('priceListName');
+				return v + '; ' + rec.get('priceListName');
 		   }
 		 },
 

@@ -143,42 +143,29 @@
     })
 
     //~: delete secure set handler
-    extjsf.bindHandler("${z:vid(v, 'delete-secure-set')}", '${rootView.extjsDomain}', function(btn)
+    extjsf.bindHandler("${z:vid(v, 'delete-secure-set')}", '${rootView.extjsDomain}', function(btn, e)
     {
-       var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
-       if(!m || !m.length) return; else m = m[0];
+      var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection()
+      if(!m || !m.length) return; else m = m[0]
 
-       var f = function(x)
-       {
-         if(x != 'no') return; //<-- note the buttons swapped!
-
-         extjsf.bindHandler("${z:vid(v, 'delete-secure-set-script')}", '${rootView.extjsDomain}')({
-          params: { secSet: m.getId() }, success : function() {
-
-            extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}').setValue('')
-            Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
-         }})
-       }
-
-       var win = Ext.Msg.show({
-
-         fn : f, modal: false, width: extjsf.ex(64),
-         buttons: Ext.MessageBox.YESNO, closable: false,
-         cls: 'retrade-message-box-ask-warning',
-         icon: 'retrade-message-box-ask-warning-icon',
-         iconWidth: 48 + extjsf.pt(6), iconHeight: 48,
-         buttonText: { yes: 'Нет', no: 'Да'}, //!: swap them
-
-         title: 'Удалить множество правил доступа?',
-
-         msg: "Вы решили удалить множество правил доступа '" + m.get('name') +
+      retrade_yes_no_ask_warning({
+        modal: false,
+        event: e, widthpt: 280, '+xpt': 25, '-ypt': -10,
+        title: 'Удалить множество правил доступа?',
+        message: "Вы решили удалить множество правил доступа '" + m.get('name') +
           "'? Все назначения в рамках данного множества не будут отозваны, " +
-          "а будут переведены во множество по умолчанию (с устранением дубликатов)."
-       })
+          "а будут переведены во множество по умолчанию (с устранением дубликатов).",
 
-       var xy = btn.getPosition();
-       xy[0] -= (extjsf.ex(64) - btn.getWidth()) / 2; xy[1] += extjsf.pt(24);
-       win.setPosition(xy)
+        yes : function()
+        {
+          //~: invoke the action
+          extjsf.bindHandler("${z:vid(v, 'delete-secure-set-script')}", '${rootView.extjsDomain}')({
+          params: { secSet: m.getId() }, success : function() {
+              extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}').setValue('')
+              Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
+          }})
+        }
+      })
     })
 
     //~: change secure set name button

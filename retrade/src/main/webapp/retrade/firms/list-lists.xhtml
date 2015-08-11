@@ -211,86 +211,25 @@ ${v.checkModelRequestedWithRedirect}
   //~: react on click in the price lists column underlined items
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').priceListClick = function(event, plkey)
   {
-    event = Ext.create('Ext.EventObjectImpl', ZeT.assertn(event || window.event));
+    event = Ext.create('Ext.EventObjectImpl', ZeT.assertn(event || window.event))
 
-    var domain  = ZeTS.cat('wnd:', "${z:vid(v, 'price-list-window')}:", plkey);
-    var winmain = extjsf.bind('winmain', domain);
-
-    var box     = ReTrade.desktop.calcWindowBox({
-      event: event, widthpt: 480, heightpt: 360, '+xpt': -240, '-ypt': -10
+    retrade_open_window({ url: '/price-lists/info',
+      domainKey: extjsf.globalDomain('view-price-list'),
+      box: { event: event, widthpt: 520, heightpt: 390, '+xpt': -240, '-ypt': -10},
+      record: plkey, collapsible: true
     })
-
-    if(winmain)
-    {
-      winmain.co().toFront()
-      winmain.co().setPagePosition(box.x, box.y)
-      winmain.co().expand()
-      return;
-    }
-
-    var params = {
-      '${v.viewModeParam}': 'body',
-      '${rootView.extjsDomainParam}': domain,
-      '${v.entityParam}': plkey
-    };
-
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-      xtype: 'window', title: 'Загрузка...', autoShow: true,
-      x: box.x, y: box.y, width: box.width, height: box.height,
-      layout: 'fit', collapsible: true,
-
-      loader: {
-        url: "${z:url('/go/retrade/price-lists/info')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true, params: params
-      }
-    })
-
-    //~: create the window
-    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   }
 
 
   //~: show prices of the clicked contractor
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
-    on('itemdblclick', function(comp, rec, node, row, event)
+    on('itemdblclick', function(comp, rec, node, row, e)
   {
-    var domain  = 'wnd:' + "${z:vid(v, 'view_prices_for_firm')}:" + rec.getId();
-    var winmain = extjsf.bind('winmain', domain);
-
-    var box     = ReTrade.desktop.calcWindowBox({
-      'event': event, widthpt: 480, heightpt: 360, '-ypt': -16, '+xpt': -240
+    retrade_open_window({ url: '/price-lists/goods-prices-firm',
+      domainKey: "${z:vid(v, 'view-price-list-for-firm')}",
+      box: { event: e, widthpt: 520, heightpt: 390, '-ypt': -16, '+xpt': -240},
+      record: rec.getId(), collapsible: true
     })
-
-    if(winmain)
-    {
-      winmain.co().toFront()
-      winmain.co().setPagePosition(box.x, box.y)
-      winmain.co().expand()
-      return;
-    }
-
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-      xtype: 'window', title: 'Загрузка...',
-      x: box.x, y: box.y, width: box.width, height: box.height,
-      layout: 'fit', autoShow: true, collapsible: true,
-
-      loader: {
-        url: "${z:url('/go/retrade/price-lists/goods-prices-firm')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true,
-
-        params: {
-          '${v.viewModeParam}': 'body',
-          '${rootView.extjsDomainParam}': domain,
-          '${v.entityParam}': rec.getId()
-        }
-      }
-    })
-
-    winmain.compon.co(ate('Ext.window.Window', winmain.extjsProps()))
   })
 
 

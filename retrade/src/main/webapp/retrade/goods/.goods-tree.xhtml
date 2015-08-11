@@ -8,7 +8,7 @@
 
 <ui:define name = 'page_body'>
 
-<x:root-panel coid = "${z:vid(v, 'goods_tree_panel')}">
+<x:root-panel coid = "${z:vid(v, 'goods-tree-panel')}">
 
   <f:facet name = "extjs-props">
     title: '#{z:jss(panelTitle)}',
@@ -1177,6 +1177,8 @@
 
     var s = extjsf.co("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
     s.setPageSize(15); s.loadPage(1)
+
+    extjsf.co("${z:vid(v, 'goods-tree-panel-toolbar')}", '${rootView.extjsDomain}').hide()
   })
 
   //~: restore goods == expand tree
@@ -1188,6 +1190,8 @@
 
     var s = extjsf.co("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
     s.setPageSize(5); s.loadPage(1)
+
+    extjsf.co("${z:vid(v, 'goods-tree-panel-toolbar')}", '${rootView.extjsDomain}').show()
   })
 
   //]]>

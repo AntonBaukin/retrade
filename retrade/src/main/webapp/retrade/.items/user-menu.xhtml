@@ -97,7 +97,9 @@
 
       <!-- [logoff button] -->
       <x:component coid = "${z:vid(localView, 'user-menu-logoff-button')}"
+        renderParent = "${z:vid(localView, 'retrade-main-button-menu')}"
         renderTo = "${z:vid(localView, 'user-menu-logout-cell')}">
+
         <f:facet name = "extjs-props">
 
           xtype: 'ux.button-detached', width: 30, height: 30,
@@ -151,44 +153,26 @@
   })
 
   //~: logout click
-  extjsf.bindHandler("${z:vid(localView, 'user-menu-logoff-button')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(localView, 'user-menu-logoff-button')}", '${rootView.extjsDomain}', function(btn, e)
   {
-    //~: logout function
-    var f = function(x)
-    {
-      if(x != 'no') return; //<-- note the buttons swapped!
+    retrade_yes_no_ask_warning({
 
-      //!: do server-side logout
-      extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${rootView.extjsDomain}')({
-        success: ZeT.timeouted(250, function()
-        {
-          window.location.replace("${z:go('login/')}${z:jss(localView.domain.code)}")
-        })
-      })
-    }
-
-    var box = ReTrade.desktop.calcWindowBox({
-      'event': event, widthpt: 260, '+xpt': -220, '-y': 48
-    })
-
-    //~: display the confirm dialog
-    var win = Ext.Msg.show({
-
-      fn : f, modal: true, width: box.width,
-      buttons: Ext.MessageBox.YESNO, closable: false,
-      cls: 'retrade-message-box-ask-warning',
-      icon: 'retrade-message-box-ask-warning-icon',
-      iconWidth: 48 + extjsf.pt(6), iconHeight: 48,
-      buttonText: { yes: 'Нет', no: 'Да'}, //!: swap them
-
+      event: e, widthpt: 260, '+xpt': -220, '-y': 48,
       title: 'Выйти из системы?',
+      message: 'После выхода из системы Вы будуте переадресованы ' +
+       'на страницу входа в систему для Вашей организации.',
 
-      msg: 'После выхода из системы Вы будуте переадресованы ' +
-       'на страницу входа в систему для Вашей организации.'
+      yes : function()
+      {
+        //!: do server-side logout
+        extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${rootView.extjsDomain}')({
+          success: ZeT.timeouted(250, function()
+          {
+            window.location.replace("${z:go('login/')}${z:jss(localView.domain.code)}")
+          })
+        })
+      }
     })
-
-    win.setPosition([box.x, box.y])
-
   })
       //]]>
       </script>

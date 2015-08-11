@@ -46,17 +46,19 @@ ${v.checkModelRequestedWithRedirect}
     </x:data-grid>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
     on('itemdblclick', function(grid, rec, node, row, e)
   {
     retrade_open_window({ url: '/price-lists/info',
-      domainKey: "${z:vid(v, 'view_price_list')}",
+      domainKey: extjsf.globalDomain('view-price-list'),
       box: { event: e, widthpt: 520, heightpt: 390, '-height': true},
       record: rec.getId(), collapsible: true
     })
   })
 
+    //]]>
     </script>
 
     <!-- price lists table] -->

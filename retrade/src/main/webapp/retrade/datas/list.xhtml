@@ -387,7 +387,7 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: delete template
-  extjsf.bindHandler("${z:vid(v, 'delete-template')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'delete-template')}", '${rootView.extjsDomain}', function(btn, e)
   {
     //~: current selection
     var g = extjsf.co("${z:vid(v, 'report-templates')}", '${rootView.extjsDomain}');
@@ -395,40 +395,24 @@ ${v.checkModelRequestedWithRedirect}
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s) return ReTrade.desktop.error("Выберете шаблон отчёта!");
 
-    var box = ReTrade.desktop.calcWindowBox({
-      'event': event, widthpt: 280, '+xpt': 25, '-ypt': -10
-    })
-
-    var f = function(x)
-    {
-      if(x != 'no') return; //<-- note the buttons swapped!
-
-      //~: invoke the action
-      extjsf.xbindHandler("${z:vid(v, 'delete-template-script')}", '${rootView.extjsDomain}')({
-        params: { reportTemplate : s.getId() }, success: function()
-        {
-          Ext.data.StoreManager.lookup("${z:vid(v, 'reportTemplates')}").reload()
-        }})
-    }
-
-    //~: display the confirm dialog
-    var win = Ext.Msg.show({
-
-      fn : f, modal: false, width: box.width,
-      buttons: Ext.MessageBox.YESNO, closable: false,
-      cls: 'retrade-message-box-ask-warning',
-      icon: 'retrade-message-box-ask-warning-icon',
-      iconWidth: 48 + extjsf.pt(6), iconHeight: 48,
-      buttonText: { yes: 'Нет', no: 'Да'}, //!: swap them
-
+    retrade_yes_no_ask_warning({
+      modal: false,
+      event: e, widthpt: 280, '+xpt': 25, '-ypt': -10,
       title: 'Удалить выбранный шаблон отчётов?',
-
-      msg: ZeTS.cat("Вы решили удалить шаблон отчётов '", s.get('name'),
+      message: ZeTS.cat("Вы решили удалить шаблон отчётов '", s.get('name'),
         "'? Операция возможна только если ни у одного пользователя нет ",
-        "запросов на создание отчётов по данному шаблону.")
-    })
+        "запросов на создание отчётов по данному шаблону."),
 
-    win.setPosition([box.x, box.y])
+      yes : function()
+      {
+        //~: invoke the action
+        extjsf.xbindHandler("${z:vid(v, 'delete-template-script')}", '${rootView.extjsDomain}')({
+          params: { reportTemplate : s.getId() }, success: function()
+          {
+            Ext.data.StoreManager.lookup("${z:vid(v, 'reportTemplates')}").reload()
+          }})
+      }
+    })
   })
 
   //~: create report function

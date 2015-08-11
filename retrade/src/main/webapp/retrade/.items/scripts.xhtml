@@ -234,6 +234,114 @@ function retrade_replicate_store(master, slave, domain)
   })
 }
 
+/**
+ * Creates modal yes-no dialog and invokes
+ * the functor given with true as 'yes',
+ * or false as 'no'.
+ *
+ * The options are:
+ *
+ * · all options of Desktop.calcWindowBox();
+ *
+ * · cls → the main CSS class;
+ *
+ * · icon → CSS class of the icon;
+ *
+ * · iconWidth, iconHeight → icon sizes;
+ *
+ * · title [required] → window title;
+ *
+ * · message [required] → the message.
+ *
+ * · modal [true] → is modal dialog;
+ *
+ * · fn → may be used instead of the
+ *    second argument.
+ *
+ * · yes, no → functions invoked when
+ *    the second argument is undefined,
+ *    and 'fn' option is not set.
+ */
+function retrade_yes_no(opts, f)
+{
+  ZeT.assertn(opts)
+
+  var p = {
+    buttons: Ext.MessageBox.YESNO, closable: false,
+    buttonText: { yes: 'Нет', no: 'Да'} //!: swap them
+  }
+
+  //~: calculate the box
+  var box = ReTrade.desktop.calcWindowBox.call(ReTrade.desktop, opts)
+  p.width = box.width //<-- height is auto
+  ZeT.assert(ZeT.isn(p.width) && (p.width > 0))
+  ZeT.assert(ZeT.isn(box.x) && ZeT.isn(box.y))
+
+  //=: css
+  if(!ZeTS.ises(opts.css))
+    p.css = opts.css
+
+  //=: icon
+  if(!ZeTS.ises(opts.icon))
+    p.icon = opts.icon
+
+  //=: icon width
+  if(ZeT.isn(opts.iconWidth))
+    p.iconWidth = opts.iconWidth
+
+  //=: icon height
+  if(ZeT.isn(opts.iconHeight))
+    p.iconHeight = opts.iconHeight
+
+  //=: title
+  ZeT.assert(!ZeTS.ises(opts.title))
+  p.title = opts.title
+
+  //=: message
+  ZeT.assert(!ZeTS.ises(opts.message))
+  p.msg = opts.message
+
+  //=: modal
+  p.modal = ZeT.i$xtrue(opts.modal)
+
+  //~: user callback
+  if(!f) f = opts.fn
+  if(!f) f = function(yes)
+  {
+    if(yes && ZeT.isf(opts.yes))
+      return opts.yes.call(this)
+
+    if(!yes && ZeT.isf(opts.no))
+      return opts.no.call(this)
+  }
+
+  //~: lower callback
+  ZeT.assert(ZeT.isf(f))
+  p.fn = function(x)
+  {
+    //!: as buttons are swapped, 'no' is yes (true)
+    return f.call(this, (x === 'no'))
+  }
+
+  //!: create the dialog
+  var win = Ext.Msg.show(p)
+
+  //~: place it
+  win.setPosition([box.x, box.y])
+  return win
+}
+
+function retrade_yes_no_ask_warning(opts)
+{
+  ZeT.extend(ZeT.assertn(opts), {
+    cls: 'retrade-message-box-ask-warning',
+    icon: 'retrade-message-box-ask-warning-icon',
+    iconWidth: 48 + extjsf.pt(6), iconHeight: 48
+  })
+
+  return retrade_yes_no.apply(this, arguments)
+}
+
 //]]>
 </script>
 </ui:component>

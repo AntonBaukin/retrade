@@ -27,37 +27,37 @@ var extjsf = ZeT.define('extjsf',
 	 */
 	defineBind       : function()
 	{
-		var name = arguments[0];
+		var name = arguments[0]
 		if(!ZeT.iss(name)) throw 'Can not define ' +
-		  'component binds by not a string name!';
+		  'component binds by not a string name!'
 
-		var domn = arguments[1];
-		if(!ZeT.iss(domn)) domn = '';
+		var domn = arguments[1]
+		if(!ZeT.iss(domn)) domn = ''
 
-		var bind = arguments[2] || arguments[1];
+		var bind = arguments[2] || arguments[1]
 		if(!bind || ZeT.iss(bind))
-			bind = new extjsf.Bind();
+			bind = new extjsf.Bind()
 
-		bind.domain   = domn;
-		bind.bindName = name;
+		bind.domain   = domn
+		bind.bindName = name
 
-		var domo = extjsf$domains[domn];
-		if(!domo) extjsf$domains[domn] = domo = {};
+		var domo = extjsf$domains[domn]
+		if(!domo) extjsf$domains[domn] = domo = {}
 
-		domo[name] = bind;
+		domo[name] = bind
 		//ZeT.log('!bind [', name, '] @ [', domn, ']')
-		return bind;
+		return bind
 	},
 
 	bind             : function(name, domain)
 	{
-		if(!ZeT.iss(name)) throw 'Can not define ' +
-		  'component binds by not a string name!';
+		ZeT.asserts(name, 'Can not define ',
+		  'component binds by not a string name!')
 
-		if(!ZeT.iss(domain)) domain = '';
+		if(!ZeT.iss(domain)) domain = ''
 
-		var domo = extjsf$domains[domain];
-		var bind = domo && domo[name];
+		var domo = extjsf$domains[domain]
+		var bind = domo && domo[name]
 
 		//ZeT.log(((domo && domo[name])?('+'):('-')), 'bind [', name, '] @ [', domain, ']: ')
 		//if(!bind) ZeT.log('missing Bind: [', name, '] @ [', domain, ']')
@@ -126,9 +126,18 @@ var extjsf = ZeT.define('extjsf',
 		return undefined
 	},
 
+	isbind           : function(bind)
+	{
+		return !!bind && (bind.extjsfBind === true)
+	},
+
 	asbind           : function(borc)
 	{
-		if(!borc) return borc
+		if(!borc) return undefined
+
+		//?: {is a string}
+		if(ZeT.iss(borc))
+			return extjsf.bind.apply(extjsf, arguments)
 
 		//?: {is a component}
 		if(borc.isComponent && borc.extjsfBind)
@@ -596,17 +605,98 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	{
 		if(ZeT.iss(node_or_id))
 		{
-			this._render_to = ZeTS.trim(node_or_id);
-			return this;
+			this._render_to = ZeTS.trim(node_or_id)
+			return this
 		}
 
 		if(Ext.isElement(node_or_id))
 		{
-			this._render_to = node_or_id;
-			return this;
+			this._render_to = node_or_id
+			return this
 		}
 
-		return this;
+		return this
+	},
+
+	/**
+	 * For the given parent bind id, bind,
+	 * or component updates the component of
+	 * this bind (or will update) to behave
+	 * as it is nested in that parent, but
+	 * rendered somewhere else.
+	 *
+	 * Note that this also binds the destroy.
+	 * This function may be invoked only once!
+	 */
+	renderParent     : function(parent)
+	{
+		//?: {is not rendered to}
+		if(ZeTS.ises(this._render_to))
+			return this
+
+		//~: access the parent bind
+		var p = this._render_parent
+		if(parent) p = extjsf.asbind(parent, this.domain)
+		ZeT.assert(extjsf.isbind(p), 'Not a render parent Bind: ',
+		  parent || this._render_parent)
+
+		//?: {invoked more than once}
+		if(this._rendered_parent)
+			ZeT.assert(p === this._render_parent)
+		this._render_parent = p
+		this._rendered_parent = true
+
+		//?: {destroy is not connected yet}
+		if(!this._render_parent_destroy)
+		{
+			this._render_parent_destroy = true
+			p.on('beforedestroy', this.boundDestroy())
+		}
+
+		//?: {has no own component yet}
+		if(!this.co()) //<-- invoked later
+			return this
+
+		//?: {has no parent component yet}
+		if(!p.co())    //<-- invoked later
+		{
+			var self = this; p.on('added', function()
+			{
+				self.renderParent()
+			})
+
+			return this
+		}
+
+		delete this._render_parent
+		this._render_parent(p.co())
+		return this
+	},
+
+	_render_parent   : function(p)
+	{
+		var co = this.co()
+
+		//--> up()
+		//  used when component is rendered in menu,
+		//  or client event will close the menu before
+		//  clicking the component!
+		var up = co.up
+		co.up = function(selector)
+		{
+			//~: invoke original up()
+			var r = up.apply(co, arguments)
+			if(r) return r
+
+			//?: {is that component}
+			if(p === selector)
+				return p
+			else if(ZeT.iss(selector) && p.is(selector))
+				return p
+
+			//~: invoke the render-parent
+			return p.up.apply(p, arguments)
+		}
 	},
 
 	clearComponent   : function(opts)
@@ -647,6 +737,22 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 			props = '('.concat(props, ')');
 
 		return eval(props);
+	},
+
+	boundDestroy     : function()
+	{
+		var self = this
+		return function()
+		{
+			var co; if(co = self.co()) try
+			{
+				co.destroy()
+			}
+			finally
+			{
+				delete self._component
+			}
+		}
 	},
 
 
@@ -1134,8 +1240,12 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 	on_create        : function(component)
 	{
-		this._component = component;
-		component.extjsfBind = this;
+		this._component = component
+		component.extjsfBind = this
+
+		//?: {has render parent}
+		if(this._render_parent)
+			this.renderParent()
 	},
 
 	on_destroy       : function(component)
