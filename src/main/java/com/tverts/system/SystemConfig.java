@@ -85,7 +85,7 @@ public class SystemConfig
 	 */
 	public int getGridSize()
 	{
-		return (gridSize != 0)?(gridSize):(25);
+		return (gridSize != 0)?(gridSize):(20);
 	}
 
 	private int gridSize;
