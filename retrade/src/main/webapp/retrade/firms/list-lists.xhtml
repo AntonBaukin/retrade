@@ -234,46 +234,24 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: contractor associated price list edit form
-  extjsf.bindHandler("${z:vid(v, 'associate-lists')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'associate-lists')}", '${rootView.extjsDomain}', function(btn, e)
   {
-    var domain  = extjsf.tempDomain('wnd:associate-firms-price-lists:');
-    var box     = ReTrade.desktop.calcWindowBox({
-      'event': event, widthpt: 560, heightpt: 540, '-ypt': -10, '+xpt': -20
-    })
-
     //~: selected contractors
     var s = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
-      getSelectionModel().getSelection();
+      getSelectionModel().getSelection()
     s = Ext.Array.map(s || [], function(i) { return i.getId() })
 
-    //~: create the window
-    var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+    retrade_open_window({ url: '/firms/lists-edit',
+      domainKey: "${z:vid(v, 'associate-firms-price-lists')}",
+      box: { event: e, widthpt: 560, heightpt: 560, '-ypt': -10, '+xpt': -20},
+      collapsible: true, params:  { contractors: s.join(',') },
 
-      xtype: 'window', title: 'Загрузка...',
-      x: box.x, y: box.y, width: box.width, height: box.height,
-      layout: 'fit', autoShow: true, collapsible: true,
-
-      loader: {
-        url: "${z:url('/go/retrade/firms/lists-edit')}",
-        ajaxOptions: {method: 'GET'},
-        autoLoad: true, scripts: true,
-
-        params: {
-          '${v.viewModeParam}': 'body',
-          '${rootView.extjsDomainParam}': domain,
-          contractors: s.join(',')
-        }
+      onclose: function()
+      {
+        if(this.retradeEditDone)
+          extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
       }
     })
-
-    //~: reload table on edit done
-    winmain.on('close', function()
-    {
-      if(!winmain.retradeEditDone) return;
-      extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
-    })
-
-    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
   })
 
     //]]>

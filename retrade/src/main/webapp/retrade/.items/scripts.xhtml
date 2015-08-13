@@ -4,6 +4,15 @@
 <script type = "text/javascript">
 //<![CDATA[
 
+function retrade_default(p)
+{
+  if(p == 'button-square-width')
+    return 30
+
+  if(p == 'button-square-height')
+    return 30
+}
+
 function retrade_go_url(url)
 {
   ZeT.asserts(url, 'No load URL is provided!')

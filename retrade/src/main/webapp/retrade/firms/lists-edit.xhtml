@@ -17,14 +17,17 @@ ${v.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle('Сопоставить прайс-листы отобранным контрагентам')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('Сопоставить прайс-листы отобранным контрагентам')
 
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">
-    layout: {type: 'vbox', align: 'stretch'}
+    layout: {type: 'vbox', align: 'stretch'},
+    bodyCls: 'retrade-back-panel'
   </f:facet>
 
   <f:facet name = "toolbar-props">
@@ -38,7 +41,6 @@ ${v.checkModelRequestedWithRedirect}
   <f:facet name = "toolbar">
 
     <!-- [cancel edit button] -->
-
     <x:component coid = "${z:vid(v, 'cancel-edit')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Отмена',
@@ -48,30 +50,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
-
       </f:facet>
-    </x:component>
-
-
-    <!-- [delete contractors button] -->
-
-    <x:component coid = "${z:vid(v, 'delete-firms')}">
-     <f:facet name = "extjs-props">
-       xtype:'button', text: 'Контр.', iconCls: 'retrade-button-del',
-       tooltipType: 'title', tooltip: 'Удалить из таблицы выбранные контрагенты',
-       margin: extjsf.pts(0, 0, 0, 8)
-     </f:facet>
-    </x:component>
-
-
-    <!-- [add contractors button] -->
-
-    <x:component coid = "${z:vid(v, 'add-firms')}">
-     <f:facet name = "extjs-props">
-       xtype:'button', text: 'Контр.', iconCls: 'retrade-button-add',
-       tooltipType: 'title', tooltip: 'Добавить контрагенты из текущей выборки',
-       margin: extjsf.pts(0, 0, 0, 4)
-     </f:facet>
     </x:component>
 
 
@@ -83,54 +62,11 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
-    <!-- [move list up/down -->
-
-    <x:component coid = "${z:vid(v, 'lists-up')}">
-     <f:facet name = "extjs-props">
-       xtype:'button', iconCls: 'retrade-button-up',
-       tooltipType: 'title', tooltip: 'Переместить выбранные прайс-листы вверх',
-       margin: extjsf.pts(0, 2, 0, 0)
-     </f:facet>
-    </x:component>
-
-    <x:component coid = "${z:vid(v, 'lists-down')}">
-     <f:facet name = "extjs-props">
-       xtype:'button', iconCls: 'retrade-button-down',
-       tooltipType: 'title', tooltip: 'Переместить выбранные прайс-листы вниз',
-       margin: extjsf.pts(0, 8, 0, 0)
-     </f:facet>
-    </x:component>
-
-    <!-- move list up/down] -->
-
-
-    <!-- [add lists button]-->
-
-    <x:component coid = "${z:vid(v, 'add-lists')}">
-     <f:facet name = "extjs-props">
-       xtype:'button', text: 'Прайс-листы', iconCls: 'retrade-button-add',
-       tooltipType: 'title', tooltip: 'Добавить прайс-листы из текущей выборки',
-       margin: extjsf.pts(0, 4, 0, 0)
-     </f:facet>
-    </x:component>
-
-
-    <!-- [delete lists button] -->
-
-    <x:component coid = "${z:vid(v, 'delete-lists')}">
-     <f:facet name = "extjs-props">
-       xtype:'button', text: 'Прайс-листы', iconCls: 'retrade-button-del',
-       tooltipType: 'title', tooltip: 'Удалить из таблицы выбранные прайс-листы',
-       margin: extjsf.pts(0, 8, 0, 0)
-     </f:facet>
-    </x:component>
-
-
     <!-- [submit button -->
 
     <x:component coid = "${z:vid(v, 'submit')}">
       <f:facet name = "extjs-props">
-        xtype:'button', text: 'Сохранить',
+        xtype: 'button', text: 'Сохранить',
         cls: 'ux-btn-green'
       </f:facet>
     </x:component>
@@ -180,21 +116,77 @@ ${v.checkModelRequestedWithRedirect}
 
   <!-- [upper content: firms and lists layout -->
 
-  <x:component coid = "${z:vid(v, '_firms-lists-layout')}">
+  <x:component coid = "${z:vid(v, '_firms_lists_layout')}">
 
     <f:facet name = "extjs-props">
-      flex: 1, frame: false, border: false,
+      flex: 2, border: false,
+      bodyCls: 'retrade-transparent-panel',
       layout: {type: 'hbox', align: 'stretch'}
     </f:facet>
 
 
     <!-- [contractors -->
 
-    <x:component coid = "${z:vid(v, 'firms-content')}">
+    <x:component coid = "${z:vid(v, '_firms_content')}">
       <f:facet name = "extjs-props">
-        title: 'Контрагенты', flex: 1, frame: false, border: false,
-        bodyCls: 'retrade-back-panel', layout: 'fit'
+        flex: 1, border: false, layout: 'fit',
+        margin: extjsf.pts(0, 1, 0, 0),
+        bodyCls: 'retrade-back-panel'
       </f:facet>
+
+
+      <!-- [contractors toolbar -->
+
+      <x:toolbar coid = "${z:vid(v, 'firms_content_toolbar')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel',
+          bodyPadding: extjsf.pts(2, 2, 2, 0),
+          layout: {type: 'hbox', align: 'middle'},
+          bodyCls: 'retrade-toolbar-title-panel'
+        </f:facet>
+
+
+        <!-- [header-like title] -->
+        <x:component coid = "${z:vid(v, 'firms_toolbar_title')}">
+          <f:facet name = "extjs-props">
+            xtype: 'title', text: 'Контрагенты',
+            cls: 'retrade-toolbar-inline-title'
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(v, '_firms_toolbar_fill')}">
+          <f:facet name = "extjs-props">
+            xtype: 'panel', flex: 1, frame: false, border: false,
+            bodyCls: 'retrade-toolbar-panel'
+          </f:facet>
+        </x:component>
+
+
+        <!-- [delete contractors button] -->
+        <x:component coid = "${z:vid(v, 'delete-firms')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', iconCls: 'retrade-button-del',
+            tooltipType: 'title', tooltip: 'Удалить из таблицы выбранные контрагенты',
+            width: retrade_default('button-square-width'),
+            height: retrade_default('button-square-height')
+          </f:facet>
+        </x:component>
+
+
+        <!-- [add contractors button] -->
+        <x:component coid = "${z:vid(v, 'add-firms')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', iconCls: 'retrade-button-add',
+            tooltipType: 'title', tooltip: 'Добавить контрагенты из текущей выборки',
+            width: retrade_default('button-square-width'),
+            height: retrade_default('button-square-height'),
+            margin: extjsf.pts(0, 0, 0, 8)
+          </f:facet>
+        </x:component>
+      </x:toolbar>
+
+      <!-- contractors toolbar] -->
 
 
       <!-- [contractors table -->
@@ -217,7 +209,7 @@ ${v.checkModelRequestedWithRedirect}
         <f:facet name = "grid-props">
 
           columns: ZeT.defined('retrade.columns.ContractorView'),
-          sortableColumns: false, region: 'center',
+          hideHeaders: true, border: false, sortableColumns: false, region: 'center',
           selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true })
 
         </f:facet>
@@ -295,20 +287,90 @@ ${v.checkModelRequestedWithRedirect}
     <!-- contractors] -->
 
 
-    <x:component coid = "${z:vid(v, '_firms_lists_splitter')}">
-      <f:facet name = "extjs-props">
-        xtype: 'splitter', collapsible: false
-      </f:facet>
-    </x:component>
-
-
     <!-- [price lists -->
 
-    <x:component coid = "${z:vid(v, 'lists-content')}">
+    <x:component coid = "${z:vid(v, '_lists_content')}">
       <f:facet name = "extjs-props">
-        title: 'Прайс листы', flex: 1, frame: false, border: false,
-        bodyCls: 'retrade-back-panel', layout: 'fit'
+        flex: 1, border: false, layout: 'fit',
+        margin: extjsf.pts(0, 0, 0, 1),
+        bodyCls: 'retrade-back-panel'
       </f:facet>
+
+
+      <!-- [price lists toolbar -->
+
+      <x:toolbar coid = "${z:vid(v, 'lists_content_toolbar')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel',
+          bodyPadding: extjsf.pts(2, 2, 2, 0),
+          layout: {type: 'hbox', align: 'middle'},
+          bodyCls: 'retrade-toolbar-title-panel'
+        </f:facet>
+
+
+        <!-- [header-like title] -->
+        <x:component coid = "${z:vid(v, 'lists_toolbar_title')}">
+          <f:facet name = "extjs-props">
+            xtype: 'title', text: 'Прайс листы',
+            cls: 'retrade-toolbar-inline-title'
+          </f:facet>
+        </x:component>
+
+
+        <x:component coid = "${z:vid(v, '_lists_toolbar_fill')}">
+          <f:facet name = "extjs-props">
+            xtype: 'panel', flex: 1, frame: false, border: false,
+            bodyCls: 'retrade-toolbar-panel'
+          </f:facet>
+        </x:component>
+
+        <!-- [delete lists button] -->
+        <x:component coid = "${z:vid(v, 'delete-lists')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', iconCls: 'retrade-button-del',
+            tooltipType: 'title', tooltip: 'Удалить из таблицы выбранные прайс-листы',
+            width: retrade_default('button-square-width'),
+            height: retrade_default('button-square-height')
+          </f:facet>
+        </x:component>
+
+        <!-- [move list up] -->
+        <x:component coid = "${z:vid(v, 'lists-up')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', iconCls: 'retrade-button-up',
+            tooltipType: 'title', tooltip: 'Переместить выбранные прайс-листы вверх',
+            width: retrade_default('button-square-width'),
+            height: retrade_default('button-square-height'),
+            margin: extjsf.pts(0, 0, 0, 8)
+          </f:facet>
+        </x:component>
+
+
+        <!-- [move list down] -->
+        <x:component coid = "${z:vid(v, 'lists-down')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', iconCls: 'retrade-button-down',
+            tooltipType: 'title', tooltip: 'Переместить выбранные прайс-листы вниз',
+            width: retrade_default('button-square-width'),
+            height: retrade_default('button-square-height'),
+            margin: extjsf.pts(0, 0, 0, 8)
+          </f:facet>
+        </x:component>
+
+
+        <!-- [add lists button]-->
+        <x:component coid = "${z:vid(v, 'add-lists')}">
+          <f:facet name = "extjs-props">
+            xtype: 'button', iconCls: 'retrade-button-add',
+            tooltipType: 'title', tooltip: 'Добавить прайс-листы из текущей выборки',
+            width: retrade_default('button-square-width'),
+            height: retrade_default('button-square-height'),
+            margin: extjsf.pts(0, 0, 0, 8)
+          </f:facet>
+        </x:component>
+      </x:toolbar>
+
+      <!-- price lists toolbar] -->
 
 
       <!-- [price lists table -->
@@ -331,7 +393,7 @@ ${v.checkModelRequestedWithRedirect}
         <f:facet name = "grid-props">
 
           columns: ZeT.defined('retrade.columns.CatItemView'),
-          sortableColumns: false, region: 'center',
+          sortableColumns: false, border: false, region: 'center', hideHeaders: true,
           selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true })
 
         </f:facet>
@@ -454,31 +516,35 @@ ${v.checkModelRequestedWithRedirect}
   <!-- upper content: firms and lists layout] -->
 
 
-  <x:component coid = "${z:vid(v, '_middle_splitter')}">
-    <f:facet name = "extjs-props">
-      xtype: 'splitter', collapsible: true, collapseTarget: 'prev'
-    </f:facet>
-  </x:component>
-
-
   <!-- [lower content: goods -->
 
   <x:component coid = "${z:vid(v, 'goods-content')}">
     <f:facet name = "extjs-props">
-      title: 'Цены товаров', flex: 2, frame: false, border: false,
-      bodyCls: 'retrade-back-panel', layout: 'fit'
+      layout: 'fit', flex: 5, frame: false, border: false,
+      bodyCls: 'retrade-transparent-panel',
+      margin: extjsf.dpts(2, 0, 0, 0)
     </f:facet>
 
 
     <!-- [goods table toolbar -->
 
     <x:toolbar coid = "${z:vid(v, 'goods_toolbar')}">
-
       <f:facet name = "extjs-props">
-        xtype: 'panel', bodyPadding: extjsf.pt(2),
+        xtype: 'panel',
+        bodyPadding: extjsf.pts(2, 2, 2, 0),
         layout: {type: 'hbox', align: 'middle'},
-        bodyCls: 'retrade-toolbar-inline-panel'
+        bodyCls: 'retrade-toolbar-title-panel'
       </f:facet>
+
+
+      <!-- [header-like title] -->
+      <x:component coid = "${z:vid(v, 'goods_toolbar_title')}">
+        <f:facet name = "extjs-props">
+          xtype: 'title', text: 'Цены товаров',
+          cls: 'retrade-toolbar-inline-title'
+        </f:facet>
+      </x:component>
+
 
       <x:component coid = "${z:vid(v, '_goods_tb_fill_0')}">
         <f:facet name = "extjs-props">
@@ -582,7 +648,7 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [goods table -->
 
     <x:data-store storeId = "${z:vid(v, 'goods')}"
-      modelView = "${v}" pageSize = "15" modelRequest = "goods">
+      modelView = "${v}" pageSize = "10" modelRequest = "goods">
 
       <f:facet name = "store-props">
         model: 'retrade.model.GoodPriceView', remoteSort: true,

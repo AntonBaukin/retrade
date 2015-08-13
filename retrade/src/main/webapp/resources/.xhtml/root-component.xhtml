@@ -47,18 +47,19 @@
       extjsProps({border: false, frame: false, layout: 'fit'}).
       extjsPropsNode()
 
-    var parent = extjsf.bind('#{cc.parent.attrs.coid}', domain);
-    var render = !!bind.extjsPropsRaw()['renderTo'];
+    var parent = !!'#{cc.parent.attrs.coid}'.length &&
+      extjsf.bind('#{cc.parent.attrs.coid}', domain)
+    var render = !!bind.extjsPropsRaw()['renderTo']
 
     if(parent && !render) parent.addItem(bind)
 
     //~: create the toolbar
-    var toolbar = extjsf.defineBind('#{cc.attrs.coid}-toolbar', domain);
+    var toolbar = extjsf.defineBind('#{cc.attrs.coid}-toolbar', domain)
     toolbar.nodeId("#{cc.clientId}-#{cc.attrs.coid}-toolbar")
     toolbar.extjsProps({xtype: 'toolbar', dock: 'top'}).extjsPropsNode()
 
     //~: create the status bar
-    var status = extjsf.defineBind('#{cc.attrs.coid}-status', domain);
+    var status = extjsf.defineBind('#{cc.attrs.coid}-status', domain)
     status.nodeId("#{cc.clientId}-#{cc.attrs.coid}-status")
     status.extjsProps({xtype: 'statusbar', dock: 'bottom'}).extjsPropsNode()
 
@@ -124,7 +125,8 @@
   Ext.onReady(function()
   {
     var domain  = '${rootView.extjsDomain}';
-    var parent  = extjsf.bind('#{cc.parent.attrs.coid}', domain);
+    var parent  = !!'#{cc.parent.attrs.coid}'.length &&
+      extjsf.bind('#{cc.parent.attrs.coid}', domain);
     var comp    = extjsf.bind("#{cc.attrs.coid}", domain);
     var render  = !!comp.extjsPropsRaw()['renderTo'];
     var toolbar = extjsf.bind('#{cc.attrs.coid}-toolbar', domain);

@@ -98,14 +98,14 @@
     //~: load price lists
     {
       url: '/price-lists/list', active: "${rootView.isSecure('view: price-lists')}",
-      tempDomain: 'desktop-content:stores-stores-prices:prices:',
+      tempDomain: 'desktop-content:goods-stores-prices:prices:',
       bind: extjsf.bind("${z:vid(rootView, 'prices-content')}", '${rootView.extjsDomain}')
     },
 
     //~: load stores
     {
       url: '/stores/list', active: "${rootView.isSecure('view: stores')}",
-      tempDomain: 'desktop-content:stores-stores-prices:stores:',
+      tempDomain: 'desktop-content:goods-stores-prices:stores:',
       bind: extjsf.bind("${z:vid(rootView, 'stores-content')}", '${rootView.extjsDomain}')
     },
 

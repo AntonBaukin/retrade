@@ -12,11 +12,12 @@
       <x:component coid = "${z:vid(localView, 'retrade-main-button')}">
         <f:facet name = "extjs-props">
 
-          xtype: 'button', width: 30, height: 30,
-          margin: extjsf.dpts(0, 0, 0, 4),
+          xtype: 'button', margin: extjsf.dpts(0, 0, 0, 4),
           cls: 'retrade-button-menu-no-arrow',
           iconCls: 'retrade-main-man-icon',
-          componentCls: 'retrade-button-22pt'
+          componentCls: 'retrade-button-22pt',
+          width: retrade_default('button-square-width'),
+          height: retrade_default('button-square-height')
 
         </f:facet>
 

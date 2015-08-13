@@ -16,6 +16,29 @@ Ext.Ajax.setTimeout(1000 * 60 * 30)
 Ext.window.Window.override({ shadow: 'frame' })
 
 /**
+ * Override scripts execution function
+ * to catch up scripts having errors.
+ */
+
+window._exec_script = window._exec_script || window.execScript || window.eval
+window.execScript   = function()
+{
+	try
+	{
+		window._exec_script.apply(this, arguments)
+	}
+	catch(e)
+	{
+		if(extjsf)
+			extjsf.catchError(e, this, ZeT.a(arguments))
+		else if(console & typeof console.log === 'function')
+			console.log('Unhandled script evaluation: ', e, this, arguments)
+
+		throw e
+	}
+}
+
+/**
  * ExtJS FIX: Component.setHtml()
  */
 Ext.Component.override({

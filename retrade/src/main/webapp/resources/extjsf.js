@@ -29,7 +29,7 @@ var extjsf = ZeT.define('extjsf',
 	{
 		var name = arguments[0]
 		if(!ZeT.iss(name)) throw 'Can not define ' +
-		  'component binds by not a string name!'
+		  'component bind by not a string name!'
 
 		var domn = arguments[1]
 		if(!ZeT.iss(domn)) domn = ''

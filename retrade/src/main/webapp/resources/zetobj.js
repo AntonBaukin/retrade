@@ -95,10 +95,24 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 
 	catif            : function(x /*, various objects */)
 	{
-		if(!x || ZeT.iss(x) && !x.length) return ''
-		arguments[0] = ''
+		if(!ZeT.isa(x)) x = [x]
+		for(var y, i = 0;(i < x.length);i++)
+			if(!(y = x[i]) || ZeT.iss(y) && !y.length) return ''
 
-		for(var i = 1;(i < arguments.length);i++)
+		arguments[0] = ''
+		for(i = 1;(i < arguments.length);i++)
+			if(ZeT.isu(arguments[i]) || (arguments[i] === null))
+				arguments[i] = ''
+
+		return String.prototype.concat.apply('', arguments)
+	},
+
+	catifall         : function(/*, various objects */)
+	{
+		for(var y, i = 0;(i < arguments.length);i++)
+			if(!(y = arguments[i]) || ZeT.iss(y) && !y.length) return ''
+
+		for(i = 0;(i < arguments.length);i++)
 			if(ZeT.isu(arguments[i]) || (arguments[i] === null))
 				arguments[i] = ''
 

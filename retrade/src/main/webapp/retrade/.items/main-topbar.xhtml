@@ -64,7 +64,7 @@
 
           <f:facet name = "extjs-props">
             text: 'Платёжные документы', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('view: payments')},
+            disabled: true || ${not rootView.isSecure('view: payments')},
             iconCls: 'retrade-payment-icon'
           </f:facet>
         </x:component>
@@ -233,7 +233,7 @@
 
           <f:facet name = "extjs-props">
             text: 'Учётные счета', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('view: accounts')},
+            disabled: true || ${not rootView.isSecure('view: accounts')},
             iconCls: 'retrade-accounts-sum-icon'
           </f:facet>
         </x:component>
@@ -243,7 +243,7 @@
 
           <f:facet name = "extjs-props">
             text: 'Платёжные счета', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('view: accounts')},
+            disabled: true || ${not rootView.isSecure('view: accounts')},
             iconCls: 'retrade-accounts-pay-icon'
           </f:facet>
         </x:component>
