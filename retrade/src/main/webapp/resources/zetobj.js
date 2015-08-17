@@ -1027,9 +1027,30 @@ var ZeT = window.ZeT = window.ZeT || {
 
 // +----: Debug Logging: ----------------------------------------+
 
+	/**
+	 * Logs the values provided and returns the value:
+	 *
+	 * · if there are no arguments, all are undefined,
+	 *   or ws-empty strings, returns undefined;
+	 *
+	 * · the last argument being not a string;
+	 *
+	 * · the last not empty string.
+	 */
 	log              : function (/* objects */)
 	{
 		var j = 0, a = ZeT.a(arguments)
+
+		//~: result --> last not a string
+		var r; for(var i = a.length - 1;(i >= 0);i--)
+			if(!ZeT.i$x(a[i]) && !ZeT.iss(a[i]))
+				{ r = a[i]; break }
+
+		//~: result --> last not a ws-empty string
+		if(!r) for(i = a.length - 1;(i >= 0);i--)
+			if(!ZeTS.ises(a[i]))
+				{ r = a[i]; break }
+
 		function pack(i)
 		{
 			if(j + 1 >= i) return i
@@ -1048,7 +1069,7 @@ var ZeT = window.ZeT = window.ZeT || {
 			  (ZeT.iss(x) && ZeTS.ises(x))
 		}
 
-		for(var i = 0;(i < a.length);i++)
+		for(i = 0;(i < a.length);i++)
 			if(ZeT.isxlog(a[i]))
 			{
 				i = pack(i)
@@ -1062,7 +1083,7 @@ var ZeT = window.ZeT = window.ZeT || {
 			if(!ise(a[j])) { empty = false; break }
 
 		if(!empty) console.log.apply(console, a)
-		return this
+		return r
 	},
 
 	isxlog           : function(o)

@@ -357,7 +357,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 			comp.extjsfBind.prevSize = stack = []
 
 		//~: remember the size
-		var box = comp.getSize()
+		box = comp.getSize()
 		stack.push(box)
 
 		//?: {has marker}
@@ -407,7 +407,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 //		)
 
 		//?: {have no components}
-		if(ZeT.isu(y) | ZeT.isu(Y)) return
+		if(ZeT.isu(y) || ZeT.isu(Y)) return
 		ZeT.assert(y <= Y)
 
 		//~: remember the size
@@ -1342,9 +1342,9 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	domain            : function(domain)
 	{
 		if(!ZeT.iss(domain))
-			return this._domain;
-		this._domain = domain;
-		return this;
+			return this._domain
+		this._domain = domain
+		return this
 	},
 
 	/**
@@ -1353,17 +1353,17 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	view              : function(view)
 	{
 		if(ZeTS.ises(view))
-			return this._view;
-		this._view = view;
-		return this;
+			return this._view
+		this._view = view
+		return this
 	},
 
 	model             : function(model)
 	{
 		if(ZeTS.ises(model))
-			return this._model;
-		this._model = model;
-		return this;
+			return this._model
+		this._model = model
+		return this
 	},
 
 	/**
@@ -1372,9 +1372,9 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	storeId           : function(storeId)
 	{
 		if(ZeTS.ises(storeId))
-			return this._storeId;
-		this._storeId = storeId;
-		return this;
+			return this._storeId
+		this._storeId = storeId
+		return this
 	},
 
 	reloadStore       : function()
@@ -1390,9 +1390,9 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	place             : function(bind)
 	{
 		if(!bind || !bind.extjsfBind)
-			return this._place;
-		this._place = bind;
-		return this;
+			return this._place
+		this._place = bind
+		return this
 	},
 
 	/**
@@ -1403,8 +1403,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		if(!this.place() || !this.place().co())
 			throw 'SelSet place is not specified or not built yet!'
 
-		var self = this;
-
+		var self = this
 		Ext.create('Ext.ComponentLoader', {
 
 		  'url': url, target: this.place().co(),
@@ -1419,47 +1418,47 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	toggleButton      : function(bind)
 	{
 		if(ZeT.iss(bind))
-			bind = extjsf.bind(bind, this.domain());
+			bind = extjsf.bind(bind, this.domain())
 
 		if(!bind || !bind.extjsfBind)
-			return this._toggle_btn && this._toggle_btn.co();
+			return this._toggle_btn && this._toggle_btn.co()
 
-		this._toggle_btn = bind;
-		return this;
+		this._toggle_btn = bind
+		return this
 	},
 
 	menu              : function(bind)
 	{
 		if(ZeT.iss(bind))
-			bind = extjsf.bind(bind, this.domain());
+			bind = extjsf.bind(bind, this.domain())
 
 		if(!bind || !bind.extjsfBind)
-			return this._main_menu && this._main_menu.co();
+			return this._main_menu && this._main_menu.co()
 
-		this._main_menu = bind;
-		return this;
+		this._main_menu = bind
+		return this
 	},
 
 	buildMenu         : function(model)
 	{
 		if(!this.menu()) throw 'Selection Set UI menu is not defined!'
 
-		var item, items = this._menu_items;
+		var item, items = this._menu_items
 
-		if(!items) this._menu_items = items = [];
-		this._menu_model = model;
+		if(!items) this._menu_items = items = []
+		this._menu_model = model
 
 		//~: add or rename menu items
-		this._current_menu_item = 0;
+		this._current_menu_item = 0
 		for(var i = 0;(i < model.length);i++)
 		{
 			//?: {has menu item for this index}
 			if(i < items.length)
-				item = items[i];
+				item = items[i]
 			else
 			{
-				var vid  = this.view() + '_selset_menu_item' + i;
-				item = extjsf.defineBind(vid, this.domain());
+				var vid  = this.view() + '_selset_menu_item' + i
+				item = extjsf.defineBind(vid, this.domain())
 				items.push(item)
 
 				//~: bind click listener
@@ -1478,8 +1477,8 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			//~: current status
 			if(model[i].current)
 			{
-				this._current_menu_item = i;
-				this.selset = model[i].name;
+				this._current_menu_item = i
+				this.selset = model[i].name
 			}
 
 			item.co().setChecked(model[i].current, true)
@@ -1492,36 +1491,36 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			else
 				items[i].co().hide()
 
-		return this;
+		return this
 	},
 
 	url               : function(what, url)
 	{
-		if(ZeTS.ises(what)) return undefined;
-		if(!this._urls) this._urls = {};
+		if(ZeTS.ises(what)) return undefined
+		if(!this._urls) this._urls = {}
 
 		if(!ZeTS.ises(url))
 		{
-			this._urls[what] = url;
-			return this;
+			this._urls[what] = url
+			return this
 		}
 
-		url = this._urls[what];
+		url = this._urls[what]
 		if(ZeTS.ises(url))
 			throw 'No [' + what + '] URL is defined for Selection Set!'
-		return url;
+		return url
 	},
 
 	toggle            : function(opts)
 	{
-		if(!opts) opts = {};
+		if(!opts) opts = {}
 
-		var act = opts.active;
-		var btn = this.toggleButton();
+		var act = opts.active
+		var btn = this.toggleButton()
 
 		if(ZeT.isu(act) && btn)
-			act = btn.pressed;
-		this.active = act;
+			act = btn.pressed
+		this.active = act
 
 		if(btn && (btn.pressed != act))
 			btn.toggle(act, true)
@@ -1530,7 +1529,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		else    this._close_wnd(opts)
 
 		this._onoff()
-		return this;
+		return this
 	},
 
 	/**
@@ -1539,25 +1538,25 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	 */
 	onoff            : function(f, remove)
 	{
-		if(!ZeT.isf(f)) return undefined;
-		if(!this._ons) this._ons = [];
+		if(!ZeT.isf(f)) return undefined
+		if(!this._ons) this._ons = []
 
 		ZeTA.remove(this._ons, f)
 		if(remove !== true)
 			this._ons.push(f)
-		return this;
+		return this
 	},
 
 	adder             : function(f)
 	{
-		if(ZeT.isf(f)) this._adder = f;
-		return this;
+		if(ZeT.isf(f)) this._adder = f
+		return this
 	},
 
 	changer           : function(f)
 	{
-		if(ZeT.isf(f)) this._changer = f;
-		return this;
+		if(ZeT.isf(f)) this._changer = f
+		return this
 	},
 
 	/**
@@ -1569,19 +1568,21 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	{
 		if(ZeT.iss(bind) && ZeT.iss(domain))
 			bind = extjsf.bind(bind, domain)
-		if(!bind || !bind.extjsfBind) return;
+		if(!bind || !bind.extjsfBind) return
 
-		var self = this, acol, onoff;
+		var self = this, acol, onoff
 
 		bind.on('added', function()
 		{
 			this.headerCt.insert(0, acol = Ext.create('Ext.ux.column.ActionCell', {
 			  width: 28, flex:0, align: 'center', autoShow: false,
 			  hidden: !self.active, hideable: false, draggable: false,
+
 			  renderer: function(v, md, rec)
 			  {
 			     self._sel_col_rnd(this, rec)
 			  },
+
 			  resizable: false, menuDisabled: true, items: [{
 			    iconCls: 'retrade-selcol-add',
 			    handler: ZeT.fbind(self._add_object, self)
@@ -1591,7 +1592,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 		this.onoff(onoff = function(ison)
 		{
-			bind.selSetActive = ison;
+			bind.selSetActive = ison
 
 			if(!ison) acol.hide(); else
 			{
@@ -1609,38 +1610,39 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	items             : function(items, op)
 	{
 		if(!ZeT.isa(items))
-			return this._items;
+			return this._items
 
 		if(ZeT.isu(op))
 		{
-			this._items = {};
-			op = true;
+			this._items = {}
+			op = true
 		}
 
-		if(!this._items) this._items = {};
+		if(!this._items) this._items = {}
 
 		for(var i = 0;(i < items.length);i++)
-			if(op) this._items[items[i]] = true;
-			else delete this._items[items[i]];
+			if(op) this._items[items[i]] = true
+			else delete this._items[items[i]]
 
 		this._onoff()
-		return this;
+		return this
 	},
 
 	winmain           : function()
 	{
 		//?: {has no bind attached}
 		if(!this._winmain)
-			this._winmain = extjsf.bind('winmain-selset', this.domain());
+			this._winmain = extjsf.bind('winmain-selset', this.domain())
 
-		return this._winmain;
+		return this._winmain
 	},
 
 	reload            : function(opts)
 	{
-		var self    = this;
-		var winmain = this.winmain();
-		var window  = winmain && winmain.co(); if(!window) return;
+		var self    = this
+		var winmain = this.winmain()
+		var window  = winmain && winmain.co();
+		if(!window) return
 
 		//~: clear the window
 		winmain.clearComponent({notListeners: true})
@@ -1648,7 +1650,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		var params = {
 		  mode: 'body', domain: self.domain(),
 		  view: self.view(), model: self.model()
-		};
+		}
 
 		//!: reload content
 		Ext.create('Ext.ComponentLoader', {
@@ -1660,8 +1662,8 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 	_add_object       : function()
 	{
-		var m  = arguments[5];
-		var id = m.get('selsetItemKey') || m.getId();
+		var m  = arguments[5]
+		var id = m.get('selsetItemKey') || m.getId()
 
 		if(!m.get('selsetDisabled'))
 			this._adder(id, (this._items && (this._items[id] === true)))
@@ -1669,9 +1671,9 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 	_open_wnd         : function(opts)
 	{
-		var winmain = this.winmain();
+		var winmain = this.winmain()
 		if(!winmain) this._winmain = winmain =
-		  ZeT.assert(this._create_wnd(opts));
+		  ZeT.assert(this._create_wnd(opts))
 
 		//!: load selection set window in the same (root) domain
 		if(winmain.co())
@@ -1680,19 +1682,73 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		//~: create window & load the content
 		winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
 
-		//~: set the window position
-		if(this._win_has_no_xy)
+		//~: assign the position
+		this._pos_wnd(winmain)
+	},
+
+	_pos_wnd          : function(win, p)
+	{
+		if(extjsf.isbind(win)) win = win.co()
+
+		//?: {has the position saved}
+		if(!this._winpos) this._winpos = {}
+		var xy; if(ZeT.isa(xy = this._winpos.xy))
 		{
-			winmain.co().alignTo(document.body, 'r-r')
-			this._win_has_no_xy = false;
-			this._win_on_right  = true;
+			var W = document.body.offsetWidth
+			var H = document.body.offsetHeight
+
+			//?: {position is out of frame}
+			if((xy[0] + 10 > W) || (xy[1] + 10 > H))
+				delete this._winpos.xy
+			else
+			{
+				//HINT: we also update the defined position
+				//  to meet the partial alignment.
+
+				if(ZeT.isf(win && win.setXY))
+				{
+					this._align_to(xy, win.getWidth(), win.getHeight())
+					win.setXY(this._align_to(xy))
+				}
+
+				if(ZeT.iso(p))
+				{
+					this._align_to(xy, p.width, p.height)
+					p.x = xy[0]; p.y = xy[1]
+				}
+			}
+		}
+
+		//?: {has no direct position}
+		if(!ZeT.isa(this._winpos.xy))
+		{
+			//?: {has no alignment}
+			var a = this._align_to(); if(ZeT.isu(a))
+			{
+				this._winpos.align = 'rc'
+				a = this._align_to()
+			}
+
+			//~: do align the window
+			if(a && ZeT.isf(win && win.alignTo))
+				win.alignTo(document.body, a)
+			if(a && ZeT.iso(p))
+				p.defaultAlign = a
+		}
+
+		if(ZeT.iso(p))
+		{
+			if(!ZeT.isa(this._winpos.wh))
+				this._winpos.wh = [ extjsf.pt(430), extjsf.pt(330) ]
+			p.width  = this._winpos.wh[0]
+			p.height = this._winpos.wh[1]
 		}
 	},
 
 	_close_wnd        : function(opts)
 	{
-		if(!this._winmain) return;
-		var winmain = this._winmain;
+		if(!this._winmain) return
+		var winmain = this._winmain
 		delete this._winmain
 
 		if(winmain.co())
@@ -1705,79 +1761,141 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		}
 	},
 
+	/**
+	 * Checks current alignment and returns one
+	 * of the values, if available: 'bl-bl',
+	 * 'br-br', 'b-b', 'l-l', 'r-r', 'c-c'.
+	 *
+	 * If current alignment is not one of those,
+	 * returns undefined, and may also update
+	 * the given point-array for partial values
+	 * of the present alignment.
+	 */
+	_align_to         : function(xy, w, h)
+	{
+		var a = this._winpos.align
+		if(!ZeT.iss(a)) return undefined
+		ZeT.assert((a.length == 2) && (a != '00'))
+
+		switch(a) //?: {any of complete alignments}
+		{
+			case 'lb': return 'bl-bl'
+			case 'rb': return 'br-br'
+			case 'cb': return 'b-b'
+			case 'lc': return 'l-l'
+			case 'rc': return 'r-r'
+			case 'cc': return 'c-c'
+		}
+
+		//?: {has no coordinates to update}
+		if(!ZeT.isa(xy)) return undefined
+
+		//~: proceed with the partial alignment
+		var ax = a.charAt(0), ay = a.charAt(1)
+
+		//?: {left}
+		if(ax == 'l') xy[0] = 0
+
+		var W = document.body.offsetWidth
+		var H = document.body.offsetHeight
+
+		//?: {right}
+		if((ax == 'r') && ZeT.isn(w))
+			xy[0] = W - w
+
+		//?: {x-center}
+		if((ax == 'c') && ZeT.isn(w))
+			xy[0] = Math.floor(0.5*(W - w))
+
+		//?: {bottom}
+		if((ay == 'b') && ZeT.isn(h))
+			xy[1] = document.body.offsetHeight - h
+
+		//?: {y-center}
+		if((ay == 'c') && ZeT.isn(h))
+			xy[1] = Math.floor(0.5*(H - h))
+	},
+
+	_on_wnd_move      : function(win, x, y)
+	{
+		var ax = '0', ay = '0', a = this._winpos.align
+
+		delete this._winpos.align
+		delete this._winpos.xy
+
+		var W = document.body.offsetWidth
+		var w = win.getWidth()
+		var H = document.body.offsetHeight
+		var h = win.getHeight()
+		var D = extjsf.inch(0.5) //<-- touch tolerance
+
+		//?: {touch left}
+		if(x <= D)
+			{ ax = 'l'; x = 0 }
+		//?: {touch right}
+		else if(Math.abs(W - x - w) <= D)
+			{ ax = 'r'; x = W - w }
+		//?: {touch x-center}
+		else if(Math.abs((W - w)* 0.5 - x) <= D)
+			{ ax = 'c'; x = Math.floor((W - w)* 0.5) }
+
+		//HINT: we do not align to the top as there are the controls!
+
+		//?: {touch bottom}
+		if(Math.abs(H - y - h) <= D)
+			{ ay = 'b'; y = H - h }
+		//?: {touch y-center}
+		else if(Math.abs((H - h)* 0.5 - y) <= D)
+			{ ay = 'c'; y = Math.floor((H - h)* 0.5) }
+
+		//?: {has some alignment}
+		if((a = ax + ay) != '00')
+		{
+			this._winpos.align = a
+
+			//?: {has fully defined}
+			a = this._align_to()
+			if(a) return win.alignTo(document.body, a)
+		}
+		//~: save the position
+		else this._winpos.xy = [x, y]
+
+		//!: assign the position
+		win.setXY([x, y])
+	},
+
 	_create_wnd       : function(opts)
 	{
-		var self = this;
-
-		//~: window size
-		if(!self._win_wh) self._win_wh = [extjsf.pt(420), extjsf.pt(330)]
-
-		var params = {
+		var self = this, params = {
 			mode: 'body', domain: self.domain(),
 			view: self.view(), model: self.model()
-		};
+		}
 
 		if(opts && opts.params) ZeT.extend(params, opts.params)
 
-		var props = {
-			xtype: 'window', title: 'Загрузка выборки...',
-			width: self._win_wh[0], height: self._win_wh[1],
+		var props = { xtype: 'window', title: 'Загрузка выборки...',
 			layout: 'fit', collapsible: false, autoShow: true,
 			cls: 'retrade-selset-window', style: { opacity: 0.9 },
 
-			loader: {
-				url: self.url('winmain'), ajaxOptions: {method: 'GET'},
-				autoLoad: true, scripts: true, params: params
-			}
-		};
-
-		//?: {has position}
-		if(!self._win_xy) self._win_has_no_xy = true;
-		else
-		{
-			props.x = self._win_xy[0];
-			props.y = self._win_xy[1];
-
-			//?: {position is out of frame}
-			if((props.x + 10 > document.body.offsetWidth) ||
-			   (props.y + 10 > document.body.offsetHeight))
-			{
-				delete props.x;
-				delete props.y
-				delete self._win_xy
-				self._win_has_no_xy = true;
+			loader: { autoLoad: true, scripts: true, params: params,
+				url: self.url('winmain'), ajaxOptions: { method: 'GET' }
 			}
 		}
 
+		//~: assign the position
+		this._pos_wnd(null, props)
+
 		//~: define the window bind
-		var winmain = extjsf.defineBind('winmain-selset', self.domain()).extjsProps(props)
+		var winmain = extjsf.defineBind('winmain-selset', self.domain())
+		winmain.extjsProps(props)
 
 		//~: window moved
-		winmain.on('move', function(win, x0, y1)
-		{
-			if(self._win_has_no_xy) return;
-			self._win_on_right = false;
-
-			//~: stick to the left
-			var dd = extjsf.inch(0.5);
-			var x1 = (x0 <= dd)?(0):(x0);
-
-			//~: stick to the right
-			if(Math.abs(document.body.offsetWidth - x1 - win.getWidth()) <= dd)
-			{
-				x1 = document.body.offsetWidth - win.getWidth();
-				self._win_on_right = true;
-			}
-
-			if(x1 != x0) win.setX(x1)
-			self._win_xy = [x1, y1];
-		})
+		winmain.on('move', ZeT.fbind(this._on_wnd_move, this))
 
 		//~: window resize
 		winmain.on('resize', function(win, w, h)
 		{
-			if(self._win_has_no_xy) return;
-			self._win_wh = [w, h];
+			self._winpos.wh = [w, h]
 		})
 
 		//~: close window listener
@@ -1788,17 +1906,17 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 		if(!this._on_resize_)
 		{
-			this._on_resize_ = ZeT.fbind(this._on_resize, this);
+			this._on_resize_ = ZeT.fbind(this._on_resize, this)
 			Ext.get(window).addListener('resize', this._on_resize_)
 		}
 
-		return winmain;
+		return winmain
 	},
 
 	_onoff            : function(ison)
 	{
-		if(!this._ons) return;
-		if(ZeT.isu(ison)) ison = this.active;
+		if(!this._ons) return
+		if(ZeT.isu(ison)) ison = this.active
 
 		for(var i = 0;(i < this._ons.length);i++)
 			this._ons[i].call(window, ison)
@@ -1806,21 +1924,21 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 	_menu_item_click  : function(index)
 	{
-		if(!this._menu_model || !this._menu_items) return;
-		if(index >= this._menu_model.length) return;
+		if(!this._menu_model || !this._menu_items) return
+		if(index >= this._menu_model.length) return
 
 		if(index == this._current_menu_item)
 		{
 			this._menu_items[index].co().setChecked(true, true)
-			return;
+			return
 		}
 
 		this._menu_items[this._current_menu_item].co().setChecked(false, true)
 		this._menu_items[index].co().setChecked(true, true)
-		this._current_menu_item = index;
-		this.selset = this._menu_model[index].name;
+		this._current_menu_item = index
+		this.selset = this._menu_model[index].name
 
-		var self = this;
+		var self = this
 		this._changer(this._menu_model[index].name, function()
 		{
 			Ext.data.StoreManager.lookup(self.storeId()).load()
@@ -1830,39 +1948,42 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 	_sel_col_rnd      : function(col, rec)
 	{
-		var id = rec.get('selsetItemKey') || rec.getId();
-		id = id && parseInt(id);
+		var id = rec.get('selsetItemKey') || rec.getId()
+		id = id && parseInt(id)
 
 		if(!id || rec.get('selsetDisabled'))
 		{
-			col.items[0].disabled = true;
-			col.items[0].iconCls = 'retrade-selcol-none';
+			col.items[0].disabled = true
+			col.items[0].iconCls = 'retrade-selcol-none'
 
-			return;
+			return
 		}
 
-		var on = this._items && (this._items[id] === true);
-		if(on) col.items[0].iconCls = 'retrade-selcol-checked';
-		else   col.items[0].iconCls = 'retrade-selcol-add';
+		var on = this._items && (this._items[id] === true)
+		if(on) col.items[0].iconCls = 'retrade-selcol-checked'
+		else   col.items[0].iconCls = 'retrade-selcol-add'
 
-		col.items[0].disabled = false;
+		col.items[0].disabled = false
 	},
 
 	_on_resize        : function()
 	{
-		var win = this._winmain && this._winmain.co();
-		if(!win) return
+		var win; if(win = (this._winmain && this._winmain.co()))
+		{
+			var xy = win.getXY()
+			var a  = this._align_to(xy,
+			  win.getWidth(), win.getHeight())
 
-		//?: {window pinned to the right}
-		if(this._win_on_right)
-			win.setX(document.body.offsetWidth - win.getWidth())
+			if(a) win.alignTo(document.body, a)
+			else  win.setXY(xy)
+		}
 	}
 })
 
 
 // +----: SelSet Instance :--------------------------------------+
 
-ReTrade.selset = ZeT.defineInstance('ReTrade.selset', ReTrade.SelSet);
+ReTrade.selset = ZeT.defineInstance('ReTrade.selset', ReTrade.SelSet)
 ReTrade.desktop.readyPoint('ReTrade.selset')
 
 
