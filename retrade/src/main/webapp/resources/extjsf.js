@@ -102,8 +102,8 @@ var extjsf = ZeT.define('extjsf',
 		var bind, arg = arguments[0]
 		if(!arg) return undefined
 
-		if(arg.isComponent) return arg
-		if(arg.component && arg.component.isComponent)
+		if(arg.isComponent === true) return arg
+		if(arg.component && arg.component.isComponent === true)
 			return arg.component
 
 		if(ZeT.iss(arg))

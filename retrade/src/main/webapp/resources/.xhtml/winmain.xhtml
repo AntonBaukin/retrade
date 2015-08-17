@@ -39,14 +39,14 @@
     </div>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
   (function()
   {
-    var domain  = '${rootView.extjsDomain}';
-    var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain);
-    if(!winmain || !winmain.co())
-      throw 'No window [#{cc.attrs.winmainName}] found in the domain ' +
-        '[${rootView.extjsDomain}]!'
+    var domain  = '${rootView.extjsDomain}'
+    var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain)
+    ZeT.assertn(winmain && winmain.co(), 'No window [#{cc.attrs.winmainName}] ',
+      ' was found in the domain [${rootView.extjsDomain}]!')
 
     //~: add domain destructor (on the window close)
     if('#{cc.attrs.domainOwner}' == 'true')
@@ -75,7 +75,11 @@
 
     })
 
+    //~: user-defined properties
     panel.extjsPropsNode()
+
+    //~: install positioning strategy
+    new ReTrade.WinAlign({ window: '#{cc.attrs.winmainName}', domain: domain })
 
     //~: create the toolbar
     var toolbar = extjsf.defineBind('#{cc.attrs.coid}-toolbar', domain);
@@ -89,6 +93,7 @@
     status.extjsProps({xtype: 'statusbar', dock: 'bottom'}).extjsPropsNode()
   })()
 
+    //]]>
     </script>
 
 

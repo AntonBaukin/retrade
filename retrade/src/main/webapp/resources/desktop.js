@@ -1325,8 +1325,348 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 })
 
 
-// +----: SelSet :-----------------------------------------------+
+// +----: Win Align :--------------------------------------------+
 
+/**
+ * Controller for floating components (windows)
+ * that detects the movement and the browser resize
+ * to allow the component to sticky-touch the document.
+ *
+ * The target window may be specified in one of the
+ * following variants:
+ *
+ * · window Bind name, domain string;
+ * · Bind instance;
+ * · Ext component;
+ * · factory function.
+ *
+ * The latter variant allows to pass a function to
+ * return a Bind, or a Component. When it returns
+ * a defined result, it is never invoked again.
+ */
+ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
+
+	/**
+	 * The initial (default) alignment may be provided
+	 * via 'align' option.
+	 */
+	init              : function(opts)
+	{
+		ZeT.assertn(this.opts = opts)
+		var window = opts.window
+
+		//?: {window by the domain}
+		if(ZeT.iss(window))
+		{
+			ZeT.assert(ZeT.iss(opts.domain))
+			window = extjsf.bind(window, opts.domain)
+			ZeT.assert(extjsf.isbind(window))
+		}
+
+		//?: {is a bind}
+		if(extjsf.isbind(this._window = window))
+			this._listen()
+		else
+		{
+			ZeT.assertn(window)
+
+			//~: must be a floating component
+			if(window.isComponent === true)
+			{
+				ZeT.assertn(window.zIndexManager)
+				this._listen()
+			}
+			//~: or a factory
+			else
+				ZeT.assert(ZeT.isf(window))
+		}
+	},
+
+	win               : function(required /* = true */)
+	{
+		//?: {already destroyed}
+		if(!this._window) if(required === false)
+			return undefined
+		else
+			throw new Error('Window is not provided!')
+
+		var win; if(extjsf.isbind(this._window))
+			win = this._window.co()
+		else if(this._window.isComponent === true)
+			win = this._window
+		else
+		{
+			ZeT.assert(ZeT.isf(this._window))
+
+			//?: {built a result}
+			if(win = this._window())
+			{
+				if(extjsf.isbind(win))
+					win = (this._window = win).co()
+				else
+				{
+					ZeT.assert(win.isComponent === true)
+					ZeT.assertn(win.zIndexManager)
+					this._window = win
+				}
+
+				//!: listen now
+				this._listen()
+			}
+		}
+
+		if(!win && !(required === false))
+			throw new Error('Window is not provided!')
+
+		return (win)?(win):(undefined)
+	},
+
+	bind              : function()
+	{
+		if(extjsf.isbind(this._window))
+			return this._window
+
+		var w = this.win(false), b = w && w.extjsfBind
+		return (b && b.extjsfBind === true)?(b):(undefined)
+	},
+
+	/**
+	 * Optional parameters arguments allows to assign
+	 * the alignment-positioning parameters to options
+	 * required to build an Ext Window.
+	 */
+	pos               : function(p)
+	{
+		var win = this.win(false)
+
+		//?: {has the position saved}
+		var xy; if(ZeT.isa(xy = this._xy))
+		{
+			var W = document.body.offsetWidth
+			var H = document.body.offsetHeight
+
+			//?: {position is out of frame}
+			if((xy[0] + 10 > W) || (xy[1] + 10 > H))
+				delete this._xy
+			else
+			{
+				//HINT: we also update the defined position
+				//  to meet the partial alignment.
+
+				if(ZeT.isf(win && win.setXY))
+				{
+					this._align_to(xy, win.getWidth(), win.getHeight())
+					win.setXY(this._align_to(xy))
+				}
+
+				if(ZeT.iso(p))
+				{
+					this._align_to(xy, p.width, p.height)
+					p.x = xy[0]; p.y = xy[1]
+				}
+			}
+		}
+
+		//?: {has no direct position}
+		if(!ZeT.isa(this._xy))
+		{
+			//?: {has no alignment}
+			var a = this._align_to(); if(ZeT.isu(a))
+			{
+				this._align = this.opts.align || 'cc'
+				a = this._align_to()
+			}
+
+			//~: do align the window
+			if(a && ZeT.isf(win && win.alignTo))
+				win.alignTo(document.body, a)
+			if(a && ZeT.iso(p))
+				p.defaultAlign = a
+		}
+
+		if(ZeT.iso(p))
+		{
+			if(!ZeT.isa(this._wh))
+				this._wh = [ extjsf.pt(430), extjsf.pt(330) ]
+
+			if(!ZeT.isn(p.width))
+				p.width  = this._wh[0]
+			if(!ZeT.isn(p.height))
+				p.height = this._wh[1]
+		}
+	},
+
+	_listen           : function()
+	{
+		var F = 'retradeDesktopWinAlignListening'
+		if(this[F] || (this.bind() && this.bind()[F])) return
+		this[F] = true; if(this.bind()) this.bind()[F] = true
+
+		//~: target window move
+		this._on('move', ZeT.fbind(this._on_wnd_move, this))
+
+		//~: target window resize
+		this._on('resize', ZeT.fbind(this._on_wnd_resize, this))
+
+		//~: browser window resize
+		if(!this._on_resize_)
+		{
+			this._on_resize_ = ZeT.fbind(this._on_resize, this)
+			Ext.get(window).addListener('resize', this._on_resize_)
+		}
+
+		//~: target window destroy
+		this._on('beforedestroy', ZeT.fbind(this._destroy, this))
+	},
+
+	_destroy          : function()
+	{
+		if(ZeT.isf(this._on_resize_))
+		{
+			Ext.get(window).removeListener('resize', this._on_resize_)
+			delete this._on_resize_
+		}
+
+		delete this._window
+	},
+
+	_on               : function()
+	{
+		ZeT.assertn(this._window)
+		if(extjsf.isbind(this._window))
+			this._window.on.apply(this._window, arguments)
+		else
+		{
+			var win = ZeT.assertn(this.win())
+			win.on.apply(win, arguments)
+		}
+	},
+
+	/**
+	 * Checks current alignment and returns one
+	 * of the values, if available: 'bl-bl',
+	 * 'br-br', 'b-b', 'l-l', 'r-r', 'c-c'.
+	 *
+	 * If current alignment is not one of those,
+	 * returns undefined, and may also update
+	 * the given point-array for partial values
+	 * of the present alignment.
+	 */
+	_align_to         : function(xy, w, h)
+	{
+		var a = this._align
+		if(!ZeT.iss(a)) return undefined
+		ZeT.assert((a.length == 2) && (a != '00'))
+
+		switch(a) //?: {any of complete alignments}
+		{
+			case 'lb': return 'bl-bl'
+			case 'rb': return 'br-br'
+			case 'cb': return 'b-b'
+			case 'lc': return 'l-l'
+			case 'rc': return 'r-r'
+			case 'cc': return 'c-c'
+		}
+
+		//?: {has no coordinates to update}
+		if(!ZeT.isa(xy)) return undefined
+
+		//~: proceed with the partial alignment
+		var ax = a.charAt(0), ay = a.charAt(1)
+
+		//?: {left}
+		if(ax == 'l') xy[0] = 0
+
+		var W = document.body.offsetWidth
+		var H = document.body.offsetHeight
+
+		//?: {right}
+		if((ax == 'r') && ZeT.isn(w))
+			xy[0] = W - w
+
+		//?: {x-center}
+		if((ax == 'c') && ZeT.isn(w))
+			xy[0] = Math.floor(0.5*(W - w))
+
+		//?: {bottom}
+		if((ay == 'b') && ZeT.isn(h))
+			xy[1] = document.body.offsetHeight - h
+
+		//?: {y-center}
+		if((ay == 'c') && ZeT.isn(h))
+			xy[1] = Math.floor(0.5*(H - h))
+	},
+
+	_on_wnd_move      : function(win, x, y)
+	{
+		delete this._align
+		delete this._xy
+
+		var W = document.body.offsetWidth
+		var w = win.getWidth()
+		var H = document.body.offsetHeight
+		var h = win.getHeight()
+		var D = extjsf.inch(0.75) //<-- touch tolerance
+		var a, ax = '0', ay = '0'
+
+		//?: {touch left}
+		if(x <= D)
+			{ ax = 'l'; x = 0 }
+		//?: {touch right}
+		else if(Math.abs(W - x - w) <= D)
+			{ ax = 'r'; x = W - w }
+		//?: {touch x-center}
+		else if(Math.abs((W - w)* 0.5 - x) <= D)
+			{ ax = 'c'; x = Math.floor((W - w)* 0.5) }
+
+		//HINT: we do not align to the top as there are the controls!
+
+		//?: {touch bottom}
+		if(Math.abs(H - y - h) <= D)
+			{ ay = 'b'; y = H - h }
+		//?: {touch y-center}
+		else if(Math.abs((H - h)* 0.5 - y) <= D)
+			{ ay = 'c'; y = Math.floor((H - h)* 0.5) }
+
+		//?: {has some alignment}
+		if((a = ax + ay) != '00')
+		{
+			this._align = a
+
+			//?: {has fully defined}
+			a = this._align_to()
+			if(a) return win.alignTo(document.body, a)
+		}
+		//~: save the position
+		else this._xy = [x, y]
+
+		//!: assign the position
+		win.setXY([x, y])
+	},
+
+	_on_wnd_resize    : function(win, w, h)
+	{
+		var xy = win.getXY()
+		this._wh = [w, h]
+		this._on_wnd_move(win, xy[0], xy[1])
+	},
+
+	_on_resize        : function()
+	{
+		var win; if(win = this.win())
+		{
+			var xy = win.getXY()
+			var a  = this._align_to(xy,
+			  win.getWidth(), win.getHeight())
+
+			if(a) win.alignTo(document.body, a)
+			else  win.setXY(xy)
+		}
+	}
+})
+
+
+// +----: SelSet :-----------------------------------------------+
 
 /**
  * Selection Set implementation class.
@@ -1669,201 +2009,6 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			this._adder(id, (this._items && (this._items[id] === true)))
 	},
 
-	_open_wnd         : function(opts)
-	{
-		var winmain = this.winmain()
-		if(!winmain) this._winmain = winmain =
-		  ZeT.assert(this._create_wnd(opts))
-
-		//!: load selection set window in the same (root) domain
-		if(winmain.co())
-			return winmain.co().toFront()
-
-		//~: create window & load the content
-		winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
-
-		//~: assign the position
-		this._pos_wnd(winmain)
-	},
-
-	_pos_wnd          : function(win, p)
-	{
-		if(extjsf.isbind(win)) win = win.co()
-
-		//?: {has the position saved}
-		if(!this._winpos) this._winpos = {}
-		var xy; if(ZeT.isa(xy = this._winpos.xy))
-		{
-			var W = document.body.offsetWidth
-			var H = document.body.offsetHeight
-
-			//?: {position is out of frame}
-			if((xy[0] + 10 > W) || (xy[1] + 10 > H))
-				delete this._winpos.xy
-			else
-			{
-				//HINT: we also update the defined position
-				//  to meet the partial alignment.
-
-				if(ZeT.isf(win && win.setXY))
-				{
-					this._align_to(xy, win.getWidth(), win.getHeight())
-					win.setXY(this._align_to(xy))
-				}
-
-				if(ZeT.iso(p))
-				{
-					this._align_to(xy, p.width, p.height)
-					p.x = xy[0]; p.y = xy[1]
-				}
-			}
-		}
-
-		//?: {has no direct position}
-		if(!ZeT.isa(this._winpos.xy))
-		{
-			//?: {has no alignment}
-			var a = this._align_to(); if(ZeT.isu(a))
-			{
-				this._winpos.align = 'rc'
-				a = this._align_to()
-			}
-
-			//~: do align the window
-			if(a && ZeT.isf(win && win.alignTo))
-				win.alignTo(document.body, a)
-			if(a && ZeT.iso(p))
-				p.defaultAlign = a
-		}
-
-		if(ZeT.iso(p))
-		{
-			if(!ZeT.isa(this._winpos.wh))
-				this._winpos.wh = [ extjsf.pt(430), extjsf.pt(330) ]
-			p.width  = this._winpos.wh[0]
-			p.height = this._winpos.wh[1]
-		}
-	},
-
-	_close_wnd        : function(opts)
-	{
-		if(!this._winmain) return
-		var winmain = this._winmain
-		delete this._winmain
-
-		if(winmain.co())
-			winmain.co().close()
-
-		if(this._on_resize_)
-		{
-			Ext.get(window).removeListener('resize', this._on_resize_)
-			delete this._on_resize_
-		}
-	},
-
-	/**
-	 * Checks current alignment and returns one
-	 * of the values, if available: 'bl-bl',
-	 * 'br-br', 'b-b', 'l-l', 'r-r', 'c-c'.
-	 *
-	 * If current alignment is not one of those,
-	 * returns undefined, and may also update
-	 * the given point-array for partial values
-	 * of the present alignment.
-	 */
-	_align_to         : function(xy, w, h)
-	{
-		var a = this._winpos.align
-		if(!ZeT.iss(a)) return undefined
-		ZeT.assert((a.length == 2) && (a != '00'))
-
-		switch(a) //?: {any of complete alignments}
-		{
-			case 'lb': return 'bl-bl'
-			case 'rb': return 'br-br'
-			case 'cb': return 'b-b'
-			case 'lc': return 'l-l'
-			case 'rc': return 'r-r'
-			case 'cc': return 'c-c'
-		}
-
-		//?: {has no coordinates to update}
-		if(!ZeT.isa(xy)) return undefined
-
-		//~: proceed with the partial alignment
-		var ax = a.charAt(0), ay = a.charAt(1)
-
-		//?: {left}
-		if(ax == 'l') xy[0] = 0
-
-		var W = document.body.offsetWidth
-		var H = document.body.offsetHeight
-
-		//?: {right}
-		if((ax == 'r') && ZeT.isn(w))
-			xy[0] = W - w
-
-		//?: {x-center}
-		if((ax == 'c') && ZeT.isn(w))
-			xy[0] = Math.floor(0.5*(W - w))
-
-		//?: {bottom}
-		if((ay == 'b') && ZeT.isn(h))
-			xy[1] = document.body.offsetHeight - h
-
-		//?: {y-center}
-		if((ay == 'c') && ZeT.isn(h))
-			xy[1] = Math.floor(0.5*(H - h))
-	},
-
-	_on_wnd_move      : function(win, x, y)
-	{
-		var ax = '0', ay = '0', a = this._winpos.align
-
-		delete this._winpos.align
-		delete this._winpos.xy
-
-		var W = document.body.offsetWidth
-		var w = win.getWidth()
-		var H = document.body.offsetHeight
-		var h = win.getHeight()
-		var D = extjsf.inch(0.5) //<-- touch tolerance
-
-		//?: {touch left}
-		if(x <= D)
-			{ ax = 'l'; x = 0 }
-		//?: {touch right}
-		else if(Math.abs(W - x - w) <= D)
-			{ ax = 'r'; x = W - w }
-		//?: {touch x-center}
-		else if(Math.abs((W - w)* 0.5 - x) <= D)
-			{ ax = 'c'; x = Math.floor((W - w)* 0.5) }
-
-		//HINT: we do not align to the top as there are the controls!
-
-		//?: {touch bottom}
-		if(Math.abs(H - y - h) <= D)
-			{ ay = 'b'; y = H - h }
-		//?: {touch y-center}
-		else if(Math.abs((H - h)* 0.5 - y) <= D)
-			{ ay = 'c'; y = Math.floor((H - h)* 0.5) }
-
-		//?: {has some alignment}
-		if((a = ax + ay) != '00')
-		{
-			this._winpos.align = a
-
-			//?: {has fully defined}
-			a = this._align_to()
-			if(a) return win.alignTo(document.body, a)
-		}
-		//~: save the position
-		else this._winpos.xy = [x, y]
-
-		//!: assign the position
-		win.setXY([x, y])
-	},
-
 	_create_wnd       : function(opts)
 	{
 		var self = this, params = {
@@ -1882,20 +2027,18 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			}
 		}
 
-		//~: assign the position
-		this._pos_wnd(null, props)
+		//~: assign previous position and size
+		if(!this._align_wnd) this._align_wnd =
+		  new ReTrade.WinAlign({ align: 'rc', window: function() {}})
+		this._align_wnd.pos(props)
 
 		//~: define the window bind
 		var winmain = extjsf.defineBind('winmain-selset', self.domain())
 		winmain.extjsProps(props)
 
-		//~: window moved
-		winmain.on('move', ZeT.fbind(this._on_wnd_move, this))
-
-		//~: window resize
-		winmain.on('resize', function(win, w, h)
-		{
-			self._winpos.wh = [w, h]
+		//~: create positioning strategy
+		this._align_wnd = new ReTrade.WinAlign({
+		  window: winmain, align: 'rc'
 		})
 
 		//~: close window listener
@@ -1904,13 +2047,34 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			self.toggle({ active: false, windowClosing: true })
 		})
 
-		if(!this._on_resize_)
-		{
-			this._on_resize_ = ZeT.fbind(this._on_resize, this)
-			Ext.get(window).addListener('resize', this._on_resize_)
-		}
-
 		return winmain
+	},
+
+	_open_wnd         : function(opts)
+	{
+		var winmain = this.winmain()
+		if(!winmain) this._winmain = winmain =
+		  ZeT.assert(this._create_wnd(opts))
+
+		//!: load selection set window in the same (root) domain
+		if(winmain.co())
+			return winmain.co().toFront()
+
+		//~: create window & load the content
+		winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+
+		//~: assign the position
+		this._align_wnd.pos()
+	},
+
+	_close_wnd        : function(opts)
+	{
+		if(!this._winmain) return
+		var winmain = this._winmain
+		delete this._winmain
+
+		if(winmain.co())
+			winmain.co().close()
 	},
 
 	_onoff            : function(ison)
@@ -1964,19 +2128,6 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		else   col.items[0].iconCls = 'retrade-selcol-add'
 
 		col.items[0].disabled = false
-	},
-
-	_on_resize        : function()
-	{
-		var win; if(win = (this._winmain && this._winmain.co()))
-		{
-			var xy = win.getXY()
-			var a  = this._align_to(xy,
-			  win.getWidth(), win.getHeight())
-
-			if(a) win.alignTo(document.body, a)
-			else  win.setXY(xy)
-		}
 	}
 })
 
