@@ -83,7 +83,9 @@ ${v.checkEntityRequested}
            <f:facet name = "extjs-props">
 
              xtype: 'button', enableToggle: true,
-             width: 32, componentCls: 'retrade-icon-24',
+             width: retrade_default('button-selset-width'),
+             height: retrade_default('button-selset-height'),
+             componentCls: 'retrade-icon-24',
              margin: extjsf.dpts(1, 0, 1, 6),
              iconCls: 'retrade-selset-button-icon',
              tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'

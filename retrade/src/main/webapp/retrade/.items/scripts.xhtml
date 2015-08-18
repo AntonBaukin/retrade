@@ -6,11 +6,13 @@
 
 function retrade_default(p)
 {
-  if(p == 'button-square-width')
-    return 30
-
-  if(p == 'button-square-height')
-    return 30
+  switch(p)
+  {
+    case 'button-square-width'    : return 30
+    case 'button-square-height'   : return 30
+    case 'button-selset-height'   : return 30
+    case 'button-selset-width'    : return 34
+  }
 }
 
 function retrade_go_url(url)

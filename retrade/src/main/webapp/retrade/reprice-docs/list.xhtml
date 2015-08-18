@@ -69,6 +69,10 @@ ${v.checkModelRequestedWithRedirect}
 
         <x:date-field coid = "${z:vid(v, 'min_date')}" value = "#{v.model.minDate}">
 
+          <f:facet name = "extjs-props">
+            width: extjsf.ex(15)
+          </f:facet>
+
           <f:facet name = "label-props">
             text: 'от', cls: 'retrade-info-title-label',
             margin: extjsf.dpts(0, 4, 0, 6)
@@ -76,6 +80,10 @@ ${v.checkModelRequestedWithRedirect}
         </x:date-field>
 
         <x:date-field coid = "${z:vid(v, 'max_date')}" value = "#{v.model.maxDate}">
+
+          <f:facet name = "extjs-props">
+            width: extjsf.ex(15)
+          </f:facet>
 
           <f:facet name = "label-props">
             text: 'до', cls: 'retrade-info-title-label',
