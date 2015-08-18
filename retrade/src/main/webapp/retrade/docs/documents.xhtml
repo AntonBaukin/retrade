@@ -19,7 +19,8 @@ ${v.checkModelRequestedWithRedirect}
 
   <!-- [content: documents -->
 
-  <x:root-panel coid = "${z:vid(v, 'documents_root')}" position = "#{rootView.extjsPosition}">
+  <x:root-panel coid = "${z:vid(v, 'documents-root')}"
+    position = "#{rootView.extjsPosition}">
 
     <f:facet name = "extjs-props">
       title: 'Документы'
@@ -34,8 +35,9 @@ ${v.checkModelRequestedWithRedirect}
       <x:component coid = "${z:vid(v, 'show-docs-filter')}">
         <f:facet name = "extjs-props">
 
-          xtype: 'button', flex: 0, text: 'Фильтр', enableToggle: true,
-          margin: extjsf.dpts(0, 2, 0, 0), height: 30,
+          xtype: 'button', text: 'Фильтр',
+          enableToggle: true, height: 30,
+          margin: extjsf.dpts(0, 2, 0, 0),
           iconCls: 'retrade-document-filter-icon',
           componentCls: 'retrade-button-22pt'
 
@@ -49,19 +51,29 @@ ${v.checkModelRequestedWithRedirect}
     <!-- topbar buttons] -->
 
 
-    <!-- [documents filter form] -->
+    <!-- [documents filter form -->
 
-    <ui:decorate template = "../.items/docs-filter.xhtml">
+    <f:facet name = "toolbar-props">
+      xtype: 'panel', bodyPadding: extjsf.pt(2), hidden: true,
+      layout: 'fit', bodyCls: 'retrade-toolbar-panel'
+    </f:facet>
 
-      <ui:param name = "localView" value = "${v}"/>
-      <ui:param name = "filterModel" value = "${v.model}"/>
-    </ui:decorate>
+    <f:facet name = "toolbar">
+      <ui:decorate template = "../.items/docs-filter.xhtml">
+
+        <ui:param name = "localView" value = "${v}"/>
+        <ui:param name = "filterModel" value = "${v.model}"/>
+        <ui:param name = "defaultShown" value = "true"/>
+      </ui:decorate>
+    </f:facet>
+
+    <!-- documents filter form] -->
 
 
     <!-- [documents table -->
 
     <x:data-store storeId = "${z:vid(v, 'documentsViews')}"
-      modelView = "${v}" pageSize = "30">
+      modelView = "${v}" pageSize = "20">
 
       <f:facet name = "store-props">
         model: 'retrade.model.DocumentView'
@@ -88,10 +100,10 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}').on('toggle', function()
+  //~: toggle filter toolbar visibility
+  extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}').on('toggle', function(btn)
   {
-    var form = extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${rootView.extjsDomain}');
-    form.co().setVisible(this['pressed'])
+    extjsf.bind("${z:vid(v, 'documents-root-toolbar')}", '${rootView.extjsDomain}').visible(btn.pressed)
   })
 
   extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${rootView.extjsDomain}').success(function()

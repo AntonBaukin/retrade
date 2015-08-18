@@ -56,7 +56,8 @@
     //~: create the toolbar
     var toolbar = extjsf.defineBind('#{cc.attrs.coid}-toolbar', domain)
     toolbar.nodeId("#{cc.clientId}-#{cc.attrs.coid}-toolbar")
-    toolbar.extjsProps({xtype: 'toolbar', dock: 'top'}).extjsPropsNode()
+    toolbar.extjsProps({ xtype: 'toolbar', dock: 'top', border: false })
+    toolbar.extjsPropsNode()
 
     //~: create the status bar
     var status = extjsf.defineBind('#{cc.attrs.coid}-status', domain)

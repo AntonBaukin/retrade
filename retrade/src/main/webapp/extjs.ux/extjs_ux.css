@@ -100,6 +100,11 @@ td.x-form-item-body.x-form-cb-wrap
   opacity: 0.8;
 }
 
+.x-field-date input.x-form-text-default
+{
+  padding: 4px 0 3px 6px;
+}
+
 
 /* Drop Down List */
 

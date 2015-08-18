@@ -32,7 +32,7 @@ ${v.checkEntityRequested}
   </f:facet>
 
   <f:facet name = "toolbar-props">
-    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    xtype: 'panel', bodyPadding: extjsf.pts(0, 2, 0, 2),
     layout: {type: 'hbox', align: 'middle'},
     bodyCls: 'retrade-toolbar-panel'
   </f:facet>
@@ -56,37 +56,50 @@ ${v.checkEntityRequested}
     </x:component>
 
 
-    <!-- [toggle change reason button] -->
-    <x:component coid = "${z:vid(v, 'toggle-reason')}">
+    <x:component coid = "${z:vid(v, '_toggle_group')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Основание',
-        margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
-        tooltip: 'Отобразить комментарий к данному документу',
-        toggleGroup: "${z:vid(v, 'toggle-group')}"
+        xtype: 'panel', border: false,
+        margin: extjsf.pts(1, 4, 1, 4),
+        bodyPadding: extjsf.pts(2, 4, 2, 4),
+        layout: { type: 'hbox', align: 'middle' },
+        cls: 'retrade-toolbar-colour-line-' +
+          "#{(v.hasGroups or (v.hasChanges and v.hasContractors and not v.oneContractor))?('one'):('none')}"
       </f:facet>
-    </x:component>
 
 
-    <!-- [toggle good groups button] -->
-    <x:component coid = "${z:vid(v, 'toggle-groups')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Ценовые группы', hidden: #{not v.hasGroups},
-        margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
-        tooltip: 'Отобразить проценты изменения цен по группам товаров',
-        toggleGroup: "${z:vid(v, 'toggle-group')}"
-      </f:facet>
-    </x:component>
+      <!-- [toggle change reason button] -->
+      <x:component coid = "${z:vid(v, 'toggle-reason')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Основание',
+          margin: extjsf.pts(0, 0, 0, 0), tooltipType: 'title',
+          tooltip: 'Отобразить комментарий к данному документу',
+          toggleGroup: "${z:vid(v, 'toggle-group')}"
+        </f:facet>
+      </x:component>
 
 
-    <!-- [toggle contractors list button] -->
-    <x:component coid = "${z:vid(v, 'toggle-contractors')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Контрагенты',
-        hidden: #{not v.hasChanges or not v.hasContractors or v.oneContractor},
-        margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
-        tooltip: 'Отобразить изменения цен для затронутых контрагентов',
-        toggleGroup: "${z:vid(v, 'toggle-group')}"
-      </f:facet>
+      <!-- [toggle good groups button] -->
+      <x:component coid = "${z:vid(v, 'toggle-groups')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Ценовые группы', hidden: #{not v.hasGroups},
+          margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
+          tooltip: 'Отобразить проценты изменения цен по группам товаров',
+          toggleGroup: "${z:vid(v, 'toggle-group')}"
+        </f:facet>
+      </x:component>
+
+
+      <!-- [toggle contractors list button] -->
+      <x:component coid = "${z:vid(v, 'toggle-contractors')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Контрагенты',
+          hidden: #{not v.hasChanges or not v.hasContractors or v.oneContractor},
+          margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
+          tooltip: 'Отобразить изменения цен для затронутых контрагентов',
+          toggleGroup: "${z:vid(v, 'toggle-group')}"
+        </f:facet>
+      </x:component>
+
     </x:component>
 
 
@@ -94,8 +107,7 @@ ${v.checkEntityRequested}
     <x:component coid = "${z:vid(v, 'back-to-contractors')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Назад', hidden: true,
-        margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
-        tooltip: 'Вернуться к списку затронутых контрагентов'
+        tooltipType: 'title', tooltip: 'Вернуться к списку затронутых контрагентов'
       </f:facet>
     </x:component>
 

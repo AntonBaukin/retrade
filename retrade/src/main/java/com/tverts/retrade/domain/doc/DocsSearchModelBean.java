@@ -16,7 +16,9 @@ import java.util.Set;
 
 /* Java XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -41,6 +43,7 @@ import com.tverts.retrade.web.data.other.DocumentsModelData;
 /* com.tverts: support */
 
 import com.tverts.support.DU;
+import com.tverts.support.EX;
 import com.tverts.support.IO;
 import com.tverts.support.SU;
 import com.tverts.support.jaxb.DateAdapter;
@@ -59,12 +62,14 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	/* Documents Search Model */
 
 	@XmlJavaTypeAdapter(DateAdapter.class)
-	public Date         getMinDate()
+	public Date getMinDate()
 	{
 		return minDate;
 	}
 
-	public void         setMinDate(Date minDate)
+	private Date minDate;
+
+	public void setMinDate(Date minDate)
 	{
 		if(minDate != null)
 			minDate = DU.cleanTime(minDate);
@@ -72,19 +77,22 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	}
 
 	@XmlJavaTypeAdapter(DateAdapter.class)
-	public Date         getMaxDate()
+	public Date getMaxDate()
 	{
 		return maxDate;
 	}
 
-	public void         setMaxDate(Date maxDate)
+	private Date maxDate;
+
+	public void setMaxDate(Date maxDate)
 	{
 		if(maxDate != null)
 			maxDate = DU.lastTime(maxDate);
 		this.maxDate = maxDate;
 	}
 
-	public Set<String>  getDocTypes()
+	@XmlTransient
+	public Set<String> getDocTypes()
 	{
 		if(docTypes != null)
 			return docTypes;
@@ -95,24 +103,27 @@ public class DocsSearchModelBean extends DataSelectModelBean
 		return docTypes;
 	}
 
-	public void         setDocTypes(Set<String> docTypes)
+	private Set<String> docTypes;
+
+	public void setDocTypes(Set<String> docTypes)
 	{
 		this.docTypes = docTypes;
 	}
 
-	public String       getDocTypesStr()
+	@XmlElement(name = "doc-types")
+	public String getDocTypesStr()
 	{
 		return SU.cat(null, ",", getDocTypes()).toString();
 	}
 
-	public void         setDocTypesStr(String s)
+	public void setDocTypesStr(String s)
 	{
 		getDocTypes().clear();
 		getDocTypes().addAll(Arrays.asList(SU.s2a(s, ',')));
 	}
 
-	public Map<String, String>
-	                    getDocTypesLabels()
+	@XmlTransient
+	public Map<String, String> getDocTypesLabels()
 	{
 		if(docTypesLabels != null)
 			return docTypesLabels;
@@ -130,66 +141,98 @@ public class DocsSearchModelBean extends DataSelectModelBean
 		r.put("vc",  "Инвентаризация остатков");
 		r.put("sps", "Сессии POS-продаж");
 
-		docTypesMax = r.size();
 		return docTypesLabels = r;
 	}
 
-	public void         setDocTypesLabels(Map<String, String> dtls)
+	private Map<String, String> docTypesLabels;
+
+	public int getDocTypesMax()
 	{
-		this.docTypesLabels = dtls;
+		return getDocTypesLabels().size();
 	}
 
-	public int          getDocTypesMax()
+	public Set<String> getDocStates()
 	{
-		return docTypesMax;
+		if(docStates != null)
+			return docStates;
+
+		Set<String> s = new HashSet<>(2);
+
+		s.add("fixed");
+		s.add("edited");
+
+		return docStates = s;
 	}
 
-	public boolean      isEditState()
+	private Set<String> docStates;
+
+	public void setDocStates(Set<String> docStates)
 	{
-		return editState;
+		EX.asserte(docStates);
+		this.docStates = docStates;
 	}
 
-	public void         setEditState(boolean editState)
+	@XmlTransient
+	public Map<String, String> getDocStatesLabels()
 	{
-		this.editState = editState;
+		if(docStatesLabels != null)
+			return docStatesLabels;
+
+		Map<String, String> m = new LinkedHashMap<>(2);
+
+		m.put("fixed",  "проведён");
+		m.put("edited", "редактируется");
+
+		return docStatesLabels = m;
 	}
 
-	public boolean      isFixedState()
+	private Map<String, String> docStatesLabels;
+
+	public boolean isEditState()
 	{
-		return fixedState;
+		return getDocStates().contains("edited");
 	}
 
-	public void         setFixedState(boolean fixedState)
+	public boolean isFixedState()
 	{
-		this.fixedState = fixedState;
+		return getDocStates().contains("fixed");
 	}
 
-	public Long         getDocOwnerKey()
+	@XmlElement(name = "owner-document")
+	public Long getDocOwnerKey()
 	{
 		return docOwnerKey;
 	}
 
-	public void         setDocOwnerKey(Long docOwnerKey)
+	private Long docOwnerKey;
+
+	public void setDocOwnerKey(Long docOwnerKey)
 	{
 		this.docOwnerKey = docOwnerKey;
 	}
 
-	public Class        getDocOwnerClass()
+	@XmlElement(name = "document-owner-class")
+	public Class getDocOwnerClass()
 	{
 		return docOwnerClass;
 	}
 
-	public void         setDocOwnerClass(Class docOwnerClass)
+	private Class docOwnerClass;
+
+	public void setDocOwnerClass(Class docOwnerClass)
 	{
 		this.docOwnerClass = docOwnerClass;
 	}
 
-	public String       getDocOwnerType()
+	@XmlElement(name = "document-owner-type")
+	public String getDocOwnerType()
 	{
 		return docOwnerType;
 	}
 
-	public void         setDocOwnerType(String docOwnerType)
+	private String docOwnerType;
+
+	public void setDocOwnerType(String docOwnerType)
 	{
 		this.docOwnerType = docOwnerType;
 	}
@@ -198,10 +241,10 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	/* public: data selection support */
 
 	/**
-	 * Null result means not to restrict the selection
-	 * by the types at all.
+	 * Null result means not to restrict
+	 * the selection by the types at all.
 	 */
-	public Long[]       selectDocTypes()
+	public Long[] selectDocTypes()
 	{
 		if(getDocTypes().size() == getDocTypesMax())
 			return null;
@@ -216,7 +259,7 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	}
 
 	public Map<String, UnityType>
-	                    mapDocTypes(Collection<String> keys)
+	              mapDocTypes(Collection<String> keys)
 	{
 		String                 key;
 		Map<String, UnityType> res =
@@ -259,7 +302,7 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	 * Null result means not to restrict the selection
 	 * by the states at all.
 	 */
-	public Long[]       selectDocStates()
+	public Long[] selectDocStates()
 	{
 		if(isEditState() == isFixedState())
 			return null;
@@ -270,7 +313,7 @@ public class DocsSearchModelBean extends DataSelectModelBean
 			return new Long[]{ Invoices.typeInvoiceStateFixed().getPrimaryKey() };
 	}
 
-	public void         retainDocTypes(UnityType... types)
+	public void   retainDocTypes(UnityType... types)
 	{
 		//~: map all the types existing
 		Map<String, UnityType> map = mapDocTypes(getDocTypes());
@@ -284,7 +327,7 @@ public class DocsSearchModelBean extends DataSelectModelBean
 		getDocTypesLabels().keySet().retainAll(map.keySet());
 	}
 
-	public void         offDocTypes(UnityType... types)
+	public void   offDocTypes(UnityType... types)
 	{
 		//~: map all the types existing
 		Map<String, UnityType> map = mapDocTypes(getDocTypes());
@@ -300,27 +343,10 @@ public class DocsSearchModelBean extends DataSelectModelBean
 
 	/* Model Bean (data access) */
 
-	public ModelData    modelData()
+	public ModelData modelData()
 	{
 		return new DocumentsModelData(this);
 	}
-
-
-	/* private: encapsulated data */
-
-	private Date        minDate;
-	private Date        maxDate;
-
-	private Set<String> docTypes;
-	private boolean     editState  = true;
-	private boolean     fixedState = true;
-
-	private Long        docOwnerKey;
-	private Class       docOwnerClass;
-	private String      docOwnerType;
-
-	private Map<String, String> docTypesLabels;
-	private int                 docTypesMax;
 
 
 	/* Serialization */
@@ -334,15 +360,11 @@ public class DocsSearchModelBean extends DataSelectModelBean
 		IO.obj(o, maxDate);
 
 		IO.obj(o, docTypes);
-		o.writeBoolean(editState);
-		o.writeBoolean(fixedState);
+		IO.obj(o, docStates);
 
 		IO.longer(o, docOwnerKey);
 		IO.cls(o, docOwnerClass);
 		IO.str(o, docOwnerType);
-
-		IO.obj(o, docTypesLabels);
-		o.writeInt(docTypesMax);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -351,18 +373,14 @@ public class DocsSearchModelBean extends DataSelectModelBean
 	{
 		super.readExternal(i);
 
-		minDate = IO.obj(i, Date.class);
-		maxDate = IO.obj(i, Date.class);
+		minDate       = IO.obj(i, Date.class);
+		maxDate       = IO.obj(i, Date.class);
 
-		docTypes   = IO.obj(i, Set.class);
-		editState  = i.readBoolean();
-		fixedState = i.readBoolean();
+		docTypes      = IO.obj(i, Set.class);
+		docStates     = IO.obj(i, Set.class);
 
 		docOwnerKey   = IO.longer(i);
 		docOwnerClass = IO.cls(i);
 		docOwnerType  = IO.str(i);
-
-		docTypesLabels = IO.obj(i, Map.class);
-		docTypesMax = i.readInt();
 	}
 }

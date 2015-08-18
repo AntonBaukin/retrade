@@ -171,6 +171,8 @@
         inputValue: labls[i], checked: !!itmap[labls[i]]
       })
 
+      delete cb.value //<-- must have it not!
+
       //~: properties of the label
       var lb = ZeT.extend({}, label.extjsProps())
       ZeT.extend(lb, { forId: "#{cc.attrs.coid}-" + i, text: labls[i + 1] })

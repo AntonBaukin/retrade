@@ -13,10 +13,10 @@
   <x:form-panel modelView = "${localView}" coid = "${z:vid(localView, 'docs_filter_form')}">
 
     <f:facet name = "extjs-props">
-
-      region: 'north', frame: true, border: false,
-      collapsible: false, hidden: ${not defaultShown},
-      preventHeader: true, margin: extjsf.dpts(2, 1, 2, 1),
+      region: 'north', border: false,
+      hidden: ${not defaultShown},
+      bodyPadding: 0, margin: 0,
+      bodyCls: 'retrade-transparent-panel',
       layout: {type: 'hbox', align: 'middle'}
     </f:facet>
 
@@ -27,44 +27,41 @@
       rendered = "#{not datesHidden}">
 
       <f:facet name = "extjs-props">
-
         xtype: 'panel', frame: false, border: false,
         bodyCls: 'retrade-transparent-panel',
         margin: extjsf.dpts(0, 12, 0, 0),
         layout: {type: 'hbox', align: 'middle'}
       </f:facet>
 
-      <x:component coid = "${z:vid(localView, '_filter_form_dates1')}">
+
+      <!-- [min date] -->
+      <x:date-field coid = "${z:vid(localView, 'min_date')}"
+        value = "#{filterModel.minDate}">
 
         <f:facet name = "extjs-props">
-
-          xtype: 'panel', frame: false, border: false,
-          bodyCls: 'retrade-transparent-panel',
-          bodyPadding: extjsf.dpts(2, 0, 0, 2),
-          layout: {type: 'table', columns: 2}
+          width: extjsf.ex(15)
         </f:facet>
 
-        <x:date-field coid = "${z:vid(localView, 'min_date')}" value = "#{filterModel.minDate}">
-          <f:facet name = "extjs-props">
-            margin: extjsf.dpts(0, 0, 0, 4)
-          </f:facet>
+        <f:facet name = "label-props">
+          text: 'От', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:date-field>
 
-          <f:facet name = "label-props">
-            text: 'от', cellCls: 'retrade-form-label-cell'
-          </f:facet>
-        </x:date-field>
 
-        <x:date-field coid = "${z:vid(localView, 'max_date')}" value = "#{filterModel.maxDate}">
-          <f:facet name = "extjs-props">
-            margin: extjsf.dpts(2, 0, 0, 4)
-          </f:facet>
+      <!-- [max date] -->
+      <x:date-field coid = "${z:vid(localView, 'max_date')}"
+        value = "#{filterModel.maxDate}">
 
-          <f:facet name = "label-props">
-            text: 'до', cellCls: 'retrade-form-label-cell retrade-main-docs-filter-date_max-cell'
-          </f:facet>
-        </x:date-field>
+        <f:facet name = "extjs-props">
+          width: extjsf.ex(15)
+        </f:facet>
 
-      </x:component>
+        <f:facet name = "label-props">
+          text: 'до', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6)
+        </f:facet>
+      </x:date-field>
     </x:component>
 
     <!-- filter dates] -->
@@ -76,10 +73,10 @@
 
       <f:facet name = "extjs-props">
 
-        xtype: 'button', text: 'Тип документа', height: 30,
-        tooltipType: 'title', tooltip: 'Выберете типы отображаемых документов',
+        xtype: 'button', text: 'Тип документа', height: 30, arrowVisible: false,
         iconCls: 'retrade-document-icon', componentCls: 'retrade-button-22pt',
-        margin: extjsf.dpts(0, 12, 0, 0)
+        margin: extjsf.dpts(0, 12, 0, 0), tooltipType: 'title',
+        tooltip: 'Выберете типы отображаемых документов'
 
       </f:facet>
 
@@ -144,66 +141,29 @@
     <!-- filter doc types] -->
 
 
-    <!-- [filter doc states -->
-
+    <!-- [filter doc states] -->
     <x:component coid = "${z:vid(localView, '_filter_form_doc_states')}"
       rendered = "#{not statesHidden}">
 
       <f:facet name = "extjs-props">
-
-        xtype: 'panel', frame: false, border: false,
-        bodyCls: 'retrade-content-panel', align: 'stretch',
-        layout: {type: 'table', columns: 2},
+        layout: {type: 'hbox', align: 'middle'},
+        border: false, bodyCls: 'retrade-transparent-panel',
         margin: extjsf.dpts(0, 12, 0, 0)
-
       </f:facet>
 
-      <x:checkbox-field coid = "${z:vid(localView, 'filter-form-doc-states-fixed')}"
-        value = "#{filterModel.fixedState}">
+      <x:checkboxes coid = "${z:vid(localView, 'filter-form-doc-states')}"
+        value = "#{filterModel.docStates}" labels = "#{filterModel.docStatesLabels}"
+        allowNone = "false">
 
         <f:facet name = "label-props">
-
-          cellCls: 'retrade-form-label-cell', margin: extjsf.dpts(0, 0, 0, 4),
-          html: "&lt;span title = 'Отображать проведённые документы'&gt;проведён&lt;/span&gt;"
+          cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 6, 0, 4)
         </f:facet>
-
-        <f:facet name = "extjs-props">
-
-          listeners: { change: function(f, val)
-          {
-            var other = extjsf.co("${z:vid(localView, 'filter-form-doc-states-edit')}", '${rootView.extjsDomain}');
-            if(!val) if(!other.getValue()) other.setValue(true)
-          }}
-
-        </f:facet>
-      </x:checkbox-field>
-
-      <x:checkbox-field coid = "${z:vid(localView, 'filter-form-doc-states-edit')}"
-        value = "#{filterModel.editState}">
-
-        <f:facet name = "label-props">
-
-          cellCls: 'retrade-form-label-cell', margin: extjsf.dpts(0, 0, 0, 4),
-          html: "&lt;span title = 'Отображать редактируемые документы'&gt;редакт-ся&lt;/span&gt;"
-
-        </f:facet>
-
-        <f:facet name = "extjs-props">
-
-          listeners: { change: function(f, val)
-          {
-            var other = extjsf.co("${z:vid(localView, 'filter-form-doc-states-fixed')}", '${rootView.extjsDomain}');
-            if(!val) if(!other.getValue()) other.setValue(true)
-          }}
-
-        </f:facet>
-      </x:checkbox-field>
+      </x:checkboxes>
     </x:component>
 
-    <!-- filter doc states] -->
 
-
-    <x:component coid = "${z:vid(localView, '_filter_form_doc_types_fill_right')}">
+    <x:component coid = "${z:vid(localView, '_filter_form_doc_types_fill')}">
       <f:facet name = "extjs-props">
         xtype: 'panel', frame: false, border: false,
         width: extjsf.dpt(8), flex: 3,
@@ -253,8 +213,8 @@
     <x:component coid = "${z:vid(localView, 'docs-filter-refresh')}">
       <f:facet name = "extjs-props">
 
-        xtype: 'button', text : 'Применить',
-        height: 30, iconCls: 'x-tbar-loading',
+        xtype: 'button', text : 'Применить', height: 30,
+        iconCls: 'x-tbar-loading retrade-icon-smaller',
         componentCls: 'retrade-button-22pt',
         margin: extjsf.dpts(0, 0, 0, 6)
 

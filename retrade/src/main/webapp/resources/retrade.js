@@ -73,8 +73,14 @@ ZeT.init('init: retrade.data', function()
 		return [
 
 		 {
+		   text: "Дата и время", dataIndex: 'docDate', sortable: false,
+		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
+		   width: extjsf.ex(18), flex: 1
+		 },
+
+		 {
 		   text: "Код документа", dataIndex: 'docCode', sortable: false,
-		   width: extjsf.ex(22), renderer: function(v, meta)
+		   width: extjsf.ex(22), flex: 1, renderer: function(v, meta)
 		   {
 				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"';
 				return v;
@@ -82,24 +88,26 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
-		   text: "Дата и время", dataIndex: 'docDate', sortable: false,
-		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
-		 },
-
-		 {
 		   text: "Тип документа", dataIndex: 'docTypeLo', sortable: false,
-		   width: extjsf.ex(28)
+		   width: extjsf.ex(28), flex: 1
 		 },
 
 		 {
 		   text: "Состояние", dataIndex: 'docStateLo', sortable: false,
-		   width: extjsf.ex(18)
+		   width: extjsf.ex(20), flex: 1, renderer: function(v, meta)
+		   {
+				if(v == 'Проведена')
+					meta.tdCls = 'retrade-grid-doc-state-fixed'
+				if(v == 'Редактируется')
+					meta.tdCls = 'retrade-grid-doc-state-edited'
+
+				return ZeTS.cat('<span>', v, '</span>')
+		   }
 		 },
 
 		 {
 		   text: "Сумма", dataIndex: 'docCost', sortable: false,
-		   width: extjsf.ex(16), align: 'right',
+		   width: extjsf.ex(16), flex: 1, align: 'right',
 		   renderer: retrade.fcurrency
 		 }
 		];
