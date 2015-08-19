@@ -61,7 +61,7 @@ public class Contractors
 	public static String getContractorName(Contractor c)
 	{
 		return (c == null)?(null):String.format(
-		  "№%s, %s", c.getCode(), c.getName()
+		  "№%s; %s", c.getCode(), c.getName()
 		);
 	}
 

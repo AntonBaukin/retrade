@@ -650,9 +650,15 @@ td.retrade-user-menu-logoff
 
 table.retrade-info-table
 {
-  width: 100%; border: none;
+  width: 0.01%; border: none;
   border-spacing: 0;
   border-collapse: collapse;
+  margin-top: 2pt;
+}
+
+table.retrade-info-table:first-child
+{
+  margin-top: 0;
 }
 
 table.retrade-info-table.retrade-info-table-short
@@ -795,17 +801,6 @@ hr.retrade-info-hr
 
 /* info panel [retrade/invoices/info-*] */
 
-table.retrade-invoice-info-table-contractor,
-  table.retrade-invoice-info-table-store
-{
-  margin-top: 2pt; width: 100%;
-}
-
-table.retrade-invoice-info-table-sells-session
-{
-  margin-top: 2pt; width: 0.01%;
-}
-
 div.retrade-info-value-invoice-state,
   td.retrade-info-value-invoice-state div,
   td.retrade-info-value-invoice-altered div
@@ -819,13 +814,6 @@ div.retrade-info-value-invoice-state,
 td.retrade-info-value-invoice-altered
 {
   padding-left: 6pt;
-}
-
-table.retrade-info-table-invoice-code,
-  table.retrade-invoice-info-table-summ,
-  table.retrade-invoice-info-table-state
-{
-  width: 0.01%;
 }
 
 td.retrade-info-value-invoice-move-store,
@@ -907,7 +895,7 @@ table.retrade-info-table.retrade-info-table-good-edit-price-list caption
 
 table.retrade-info-table-price-history-good-price
 {
-  position: absolute; top: 3pt; right: 2pt;
+  position: absolute; top: 3pt; right: 2pt; margin-top: 0;
 }
 
 table.retrade-info-table-price-history-good-price td.retrade-info-title:first-child div

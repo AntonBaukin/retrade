@@ -98,7 +98,7 @@ public class Goods
 	public static String  getStoreFullName(TradeStore store)
 	{
 		if(store == null) return null;
-		return String.format("№%s, %s",
+		return String.format("№%s; %s",
 		  store.getCode(), store.getName());
 	}
 

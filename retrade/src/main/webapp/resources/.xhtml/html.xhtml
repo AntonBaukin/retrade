@@ -46,10 +46,8 @@
 
   extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
     nodeId("#{cc.clientId}-#{cc.attrs.coid}").
-    extjsProps({xtype: 'component'}).
-    extjsPropsNode().extjsProps({
-      html: undefined, contentEl: "#{cc.clientId}-#{cc.attrs.coid}-html"
-    })
+    extjsProps({xtype: 'component', margin: 0}).extjsPropsNode().
+    extjsProps({html: undefined, contentEl: "#{cc.clientId}-#{cc.attrs.coid}-html"})
 
   extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}', '#{cc.attrs.coid}')
 

@@ -90,7 +90,8 @@
     //~: create the status bar
     var status = extjsf.defineBind('#{cc.attrs.coid}-status', domain);
     status.nodeId("#{cc.clientId}-#{cc.attrs.coid}-status")
-    status.extjsProps({xtype: 'statusbar', dock: 'bottom'}).extjsPropsNode()
+    status.extjsProps({xtype: 'statusbar', dock: 'bottom', border: false})
+    status.extjsPropsNode()
   })()
 
     //]]>
