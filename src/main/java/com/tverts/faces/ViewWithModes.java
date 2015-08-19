@@ -297,7 +297,7 @@ public abstract class ViewWithModes
 
 	public String   formatTitles(CharSequence... titles)
 	{
-		return SU.cat(null, " ⸬ ", titles).toString();
+		return SU.cat(null, " :: ", titles).toString();
 	}
 
 

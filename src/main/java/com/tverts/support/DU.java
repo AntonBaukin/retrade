@@ -191,6 +191,8 @@ public class DU
 
 	public static String date2str(Date d)
 	{
+		if(d == null) return null;
+
 		StringBuilder sb = new StringBuilder(10);
 		Calendar      cl = Calendar.getInstance();
 		cl.setTime(d);

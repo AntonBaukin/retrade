@@ -58,7 +58,7 @@ public abstract class DocFmtBase extends FmtBase
 			return "";
 
 		if(ctx.is(DISPLAY))
-			return SU.cats(" ⸬ ", ((CodedEntity)i).getCode());
+			return SU.cats(" :: ", ((CodedEntity)i).getCode());
 
 		return SU.cats(" №", ((CodedEntity)i).getCode());
 	}
@@ -71,7 +71,7 @@ public abstract class DocFmtBase extends FmtBase
 	protected String             formatTime(FmtCtx ctx, Date d)
 	{
 		if(ctx.is(DISPLAY))
-			return SU.cats(" ⸬ ", DU.datetime2str(d));
+			return SU.cats(" :: ", DU.datetime2str(d));
 
 		return SU.cats(" от ", DU.datetime2str(d));
 	}

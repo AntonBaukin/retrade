@@ -2,6 +2,7 @@ package com.tverts.support;
 
 /* Java */
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.EOFException;
@@ -12,13 +13,13 @@ import java.io.ObjectOutput;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /* com.tverts: support */
 
 import com.tverts.support.streams.ByteBuffers;
 import com.tverts.support.streams.BytesStream;
-import com.tverts.support.streams.InputDataStream;
-import com.tverts.support.streams.OutputDataStream;
 
 
 /**
@@ -80,19 +81,65 @@ public class IO
 
 	/* Serialization Support */
 
+	/**
+	 * Maximum size of the compressed XML text (200 MBytes).
+	 */
+	public static final long MAX_XML_BYTES = 200 * 1024 * 1024;
+
 	public static void   xml(DataOutput d, Object bean)
 	{
-		OU.obj2xml(new OutputDataStream(d), bean);
+		try(BytesStream bs = new BytesStream())
+		{
+			//!: compress the document
+			GZIPOutputStream gz = new GZIPOutputStream(bs);
+			OU.obj2xml(gz, bean);
+
+			//~: close the compression
+			bs.setNotCloseNext(true);
+			gz.close();
+
+			//?: {too big}
+			EX.assertx(bs.length() <= MAX_XML_BYTES,
+			  "Object as XML Document is too big!");
+
+			//~: write the bytes
+			d.writeLong(bs.length());
+			d.write(bs.bytes());
+		}
+		catch(IOException e)
+		{
+			throw EX.wrap(e);
+		}
 	}
 
 	public static Object xml(DataInput d)
 	{
-		return OU.xml2obj(new InputDataStream(d));
+		return IO.xml(d, null);
 	}
 
 	public static <O> O  xml(DataInput d, Class<O> cls)
 	{
-		return OU.xml2obj(new InputDataStream(d), cls);
+		try
+		{
+			//~: bytes number
+			long s = d.readLong();
+			EX.assertx((s > 0) & (s <= MAX_XML_BYTES));
+
+			//~: read that bytes
+			byte[] b = new byte[(int) s];
+			d.readFully(b);
+
+			//~: read the object
+			try(GZIPInputStream gz =
+			  new GZIPInputStream(new ByteArrayInputStream(b)))
+			{
+				return OU.xml2obj(gz, cls);
+			}
+		}
+		catch(IOException e)
+		{
+			throw EX.wrap(e);
+		}
 	}
 
 	public static void   obj(ObjectOutput o, Object obj)
