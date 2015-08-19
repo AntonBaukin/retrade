@@ -165,10 +165,10 @@ public class InvoiceViewExt extends InvoiceView
 	}
 
 	@XmlElement(name = "good")
-	@XmlElementWrapper(name = "goods")
+	@XmlElementWrapper(name = "invoice-goods")
 	public List<InvoiceGoodView> getGoods()
 	{
-		return (goods != null)?(goods):
+		return (omitGoods)?(null):(goods != null)?(goods):
 		 (goods = new ArrayList<InvoiceGoodView>(8));
 	}
 
@@ -177,6 +177,13 @@ public class InvoiceViewExt extends InvoiceView
 	public void setGoods(List<InvoiceGoodView> goods)
 	{
 		this.goods = goods;
+	}
+
+	private boolean omitGoods;
+
+	public void setOmitGoods(boolean omitGoods)
+	{
+		this.omitGoods = omitGoods;
 	}
 
 

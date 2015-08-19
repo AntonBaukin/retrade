@@ -47,15 +47,9 @@ public class   FacesInvoiceEditDate
 
 	public String  getWinmainTitleEditDate()
 	{
-		StringBuilder sb = new StringBuilder(92);
-
-		sb.append("Ред. даты накладной");
-
-		if(getInvoice().getInvoiceCode() != null)
-			sb.append(" №").append(
-			  getInvoice().getInvoiceCode());
-
-		return sb.toString();
+		return formatTitle("Ред. даты накладной",
+		  getInvoice().getInvoiceCode()
+		);
 	}
 
 	public Date    getInvoiceDatePart()

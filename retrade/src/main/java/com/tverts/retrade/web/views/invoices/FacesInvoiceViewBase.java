@@ -120,10 +120,8 @@ public abstract class FacesInvoiceViewBase
 
 	public String  getWinmainTitleInfo()
 	{
-		return String.format("%s №%s от %s",
-		  getEntity().getInvoiceType().getTitleLo(),
-		  getEntity().getCode(),
-		  DU.date2str(getEntity().getInvoiceDate())
+		return formatTitle( getEntity().getInvoiceType().getTitleLo(),
+		  getEntity().getCode(), DU.datetime2str(getEntity().getInvoiceDate())
 		);
 	}
 

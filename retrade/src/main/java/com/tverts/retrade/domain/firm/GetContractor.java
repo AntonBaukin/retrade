@@ -10,7 +10,6 @@ import java.util.Map;
 
 /* Spring Framework */
 
-import com.tverts.retrade.domain.prices.PriceListEntity;
 import org.springframework.stereotype.Component;
 
 /* com.tverts: hibery */
@@ -174,7 +173,7 @@ public class GetContractor extends GetFirm
 		return list(Contractor.class, Q, "domain", domain);
 	}
 
-	public long             countContractors(InvoiceEditModelBean mb)
+	public int countContractors(InvoiceEditModelBean mb)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
@@ -195,7 +194,10 @@ public class GetContractor extends GetFirm
 		//~: restrict by the search words
 		restrictByNames(qb, mb.contractorsSearch());
 
-		return ((Number) QB(qb).uniqueResult()).longValue();
+		//~: restrict by the selection set
+		restrictsBySelSet(qb, mb.getContractorsSelSet());
+
+		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -226,6 +228,9 @@ public class GetContractor extends GetFirm
 
 		//~: restrict by the search words
 		restrictByNames(qb, mb.contractorsSearch());
+
+		//~: restrict by the selection set
+		restrictsBySelSet(qb, mb.getContractorsSelSet());
 
 		return (List<Contractor>) QB(qb).list();
 	}
@@ -443,17 +448,17 @@ public class GetContractor extends GetFirm
 
 	*/
 
-			//~: search contractors directly
-			p.addPart(
+		//~: search contractors directly
+		p.addPart(
 
 "co.id in (select si.object from SelItem si join si.selSet ss\n" +
 "  where (ss.name = :sset) and (ss.login.id = :login))"
 
-			).
-			  param("sset",  selset).
-			  param("login", SecPoint.login());
+		).
+		  param("sset",  selset).
+		  param("login", SecPoint.login());
 
-			return p;
+		return p;
 	}
 
 	private WherePartLogic restrictsBySelSetLists(QueryBuilder qb, String selset)

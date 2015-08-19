@@ -78,10 +78,15 @@ public class InvoiceEdit extends InvoiceViewExt
 	@XmlElement
 	public Date getInvoiceDateOriginal()
 	{
-		return originalDate;
+		return invoiceDateOriginal;
 	}
 
-	private Date originalDate;
+	private Date invoiceDateOriginal;
+
+	public void setInvoiceDateOriginal(Date invoiceDateOriginal)
+	{
+		this.invoiceDateOriginal = invoiceDateOriginal;
+	}
 
 	public Long getOrderType()
 	{
@@ -140,7 +145,7 @@ public class InvoiceEdit extends InvoiceViewExt
 
 		//~: edit & original date
 		this.editDate = getInvoiceDate();
-		this.originalDate = new Date(this.editDate.getTime());
+		this.invoiceDateOriginal = new Date(this.editDate.getTime());
 
 		return this;
 	}

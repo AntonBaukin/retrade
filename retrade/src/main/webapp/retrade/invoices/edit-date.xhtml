@@ -15,11 +15,23 @@
 <x:winmain coid = "${z:vid(e, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle('${z:jss(e.winmainTitleEditDate)}')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(e.winmainTitleEditDate)}')
 
+  //]]>
   </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pts(1, 3, 3, 1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
 
   <f:facet name = "toolbar-props">
     xtype: 'panel', bodyPadding: extjsf.pt(2),
@@ -64,26 +76,42 @@
 
   </f:facet>
 
+  <!-- toolbar] -->
+
 
   <!-- [invoice date edit form -->
 
   <x:form-panel modelView = "${e}" coid = "${z:vid(e, 'invoice-date-form')}">
 
     <f:facet name = "extjs-props">
-
-      region: 'north', frame: true,
-      margin: extjsf.pts(1, 1, 0, 1),
-      bodyPadding: extjsf.pts(2, 0, 2, 0),
+      frame: false, border:false, bodyPadding: extjsf.pt(2),
+      bodyCls: 'retrade-toolbar-title-panel',
       layout: {type: 'hbox', align: 'middle'}
-
     </f:facet>
+
+
+    <!-- [header-like title] -->
+    <x:component coid = "${z:vid(e, 'firms_toolbar_title')}">
+      <f:facet name = "extjs-props">
+        xtype: 'title', text: 'Порядок накладных',
+        cls: 'retrade-toolbar-inline-title'
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(e, '_invoice_date_form_fill')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, frame: false, border: false,
+        bodyCls: 'retrade-toolbar-panel'
+      </f:facet>
+    </x:component>
 
 
     <!-- [invoice date field -->
 
     <x:date-field coid = "${z:vid(e, 'date')}" value = "#{e.invoiceDatePart}">
+
       <f:facet name = "extjs-props">
-        margin: extjsf.dpts(0, 2, 0, 2),
 
         listeners : { change: { delay: 1000, fn: function() {
           extjsf.bindHandler("${z:vid(e, 'date')}", '${rootView.extjsDomain}')()
@@ -101,8 +129,8 @@
     <!-- [invoice time field -->
 
     <x:time-field coid = "${z:vid(e, 'time')}" value = "#{e.invoiceTimePart}">
+
       <f:facet name = "extjs-props">
-        margin: extjsf.dpts(0, 2, 0, 2),
 
         listeners : { change: { delay: 1000, fn: function() {
           extjsf.bindHandler("${z:vid(e, 'date')}", '${rootView.extjsDomain}')()
@@ -179,9 +207,7 @@
 
     <f:facet name = "grid-props">
 
-      title: 'Порядок накладных', region: 'center',
-      margin: extjsf.pts(1, 1, 1, 1),
-      sortableColumns: false, enableColumnHide: false,
+      flex: 1, sortableColumns: false, enableColumnHide: false,
       columns: ZeT.defined("retrade.columns.Invoice#{(e.moveInvoice)?('Move'):('')}View")
 
     </f:facet>
@@ -191,10 +217,10 @@
 
   (function()
   {
-    var s = extjsf.bind("${z:vid(e, 'dateCloseInvoices')}", '${rootView.extjsDomain}');
-    var g = extjsf.bind("${z:vid(e, 'date_close_invoices')}", '${rootView.extjsDomain}');
-    var m = Ext.create('Ext.selection.RowModel');
-    var x = '#{e.invoice.objectKey}';
+    var s = extjsf.bind("${z:vid(e, 'dateCloseInvoices')}", '${rootView.extjsDomain}')
+    var g = extjsf.bind("${z:vid(e, 'date_close_invoices')}", '${rootView.extjsDomain}')
+    var m = Ext.create('Ext.selection.RowModel')
+    var x = '#{e.invoice.objectKey}'
 
     //~: set the selection model to the grid
     g.extjsProps({selModel: m})
@@ -202,17 +228,20 @@
     //~: disable selection of else rows
     m.on('beforeselect', function(that, record)
     {
-      if(record.getId() == x) return true;
-      if(m.retradeSelected) m.select([m.retradeSelected])
-      return false;
+      if(record.getId() == x) return true
+
+      var xx; if(xx = s.co().getById(x))
+      {
+        m.select([xx])
+        return false
+      }
     })
 
     //~: select the row of the invoice edited
-    s.on('load', function(store)
+    s.on('load', function()
     {
-      if(!m.retradeSelected)
-        m.retradeSelected = store.getById(x);
-      if(m.retradeSelected) m.select([m.retradeSelected])
+      var xx; if(xx = s.co().getById(x))
+        m.select([xx])
     })
   })()
 

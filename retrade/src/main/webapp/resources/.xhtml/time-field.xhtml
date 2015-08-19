@@ -46,8 +46,8 @@
     var field = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}');
     field.nodeId("#{cc.clientId}-#{cc.attrs.coid}")
 
-    field.extjsProps({labelSeparator: '', width: extjsf.dex(9),
-      maxLength: 7, enforceMaxLength: true
+    field.extjsProps({labelSeparator: '', width: extjsf.ex(10),
+      maxLength: 7, enforceMaxLength: true, cls: 'x-field-time'
     })
 
     field.extjsProps({listConfig: { xtype: 'ux.timepicker' }})
@@ -61,16 +61,15 @@
     var label = new extjsf.Bind();
     label.nodeId("#{cc.clientId}-#{cc.attrs.coid}-label")
 
-    if(!label.isPropsNode())
-      label = null;
-    else
+    if(!label.isPropsNode()) label = null; else
     {
       extjsf.defineBind('#{cc.attrs.coid}-label', '${rootView.extjsDomain}', label)
       field.extjsProps({hideLabel: true})
 
       //~: label click expand-collapse support
-      field.on('collapse', function()
-      { field.collapseTime = new Date().getTime(); })
+      field.on('collapse', function() {
+        field.collapseTime = new Date().getTime()
+      })
 
       label.on('afterrender', function(l) { l.getEl().addListener('click', function() {
         var ct = field.collapseTime; ct = new Date().getTime() - ((!ct)?(0):(ct));

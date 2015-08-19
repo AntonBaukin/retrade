@@ -207,19 +207,10 @@ public abstract class FacesInvoiceEditBase extends ModelView
 
 	public String      getWinmainTitleEdit()
 	{
-		StringBuilder sb = new StringBuilder(128);
-
-		sb.append("Редактирование накладной");
-
-		if(getInvoice().getInvoiceCode() != null)
-			sb.append(" №").append(
-			  getInvoice().getInvoiceCode());
-
-		if(getInvoice().getInvoiceDate() != null)
-			sb.append(" от ").append(
-			  DU.date2str(getInvoice().getInvoiceDate()));
-
-		return sb.toString();
+		return formatTitle("Ред. накладной",
+		  getInvoice().getInvoiceCode(),
+		  DU.datetime2str(getInvoice().getInvoiceDate())
+		);
 	}
 
 	public String      getContractorName()

@@ -17,11 +17,20 @@
   <x:winmain coid = "${z:vid(e, 'root_panel')}">
 
     <script type = "text/javascript">
+    //<![CDATA[
 
-      extjsf.bind('winmain', '${rootView.extjsDomain}').
-        co().setTitle('${z:jss(e.winmainTitleEditFirm)}')
+      extjsf.co('winmain', '${rootView.extjsDomain}').
+        setTitle('${z:jss(e.winmainTitleEditFirm)}')
 
+    //]]>
     </script>
+
+
+    <f:facet name = "extjs-props">
+      layout: { type: 'vbox', align: 'stretch' },
+      bodyPadding: extjsf.pts(1, 3, 3, 1),
+      bodyCls: 'retrade-back-panel'
+    </f:facet>
 
 
     <!-- [toolbar -->
@@ -35,13 +44,12 @@
     <f:facet name = "toolbar">
 
     <!-- [cancel edit button] -->
-
     <x:winaction-button coid = "${z:vid(e, 'cancel-edit')}"
       action = "#{e.gotoCancelEdit}">
 
       <f:facet name = "extjs-props">
-        cls: 'ux-btn-red',
-        text: 'Отмена'
+        cls: 'ux-btn-red', text: 'Отмена',
+        margin: extjsf.dpts(0, 0, 0, 0)
       </f:facet>
 
       <f:facet name = "action-params">
@@ -50,69 +58,101 @@
     </x:winaction-button>
 
 
+      <!-- [filter firms field -->
+
+      <x:text-field coid = "${z:vid(e, 'search-firms')}"
+        value = "#{e.model.contractorsSearch}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.dpts(0, 0, 0, 4),
+          width:  extjsf.ex(24)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Поиск', cls: 'retrade-info-title-label'
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [restrict to selection set] -->
+      <x:component coid = "${z:vid(e, 'search-firms-selset')}">
+        <f:facet name = "extjs-props">
+
+          xtype: 'button', enableToggle: true,
+          width: retrade_default('button-selset-width'),
+          height: retrade_default('button-selset-height'),
+          componentCls: 'retrade-icon-24',
+          margin: extjsf.dpts(1, 0, 1, 6),
+          iconCls: 'retrade-selset-button-icon',
+          tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
+
+        </f:facet>
+      </x:component>
+
+
+      <x:action-call coid = "${z:vid(e, 'search-firms-script')}"
+        action = "#{e.doSearchFirms}">
+
+        <f:facet name = "action-params">
+          '${e.modelParam}': '${e.modelKeys}'
+        </f:facet>
+      </x:action-call>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+    extjsf.bind("${z:vid(e, 'search-firms')}", '${rootView.extjsDomain}').on('change', function(f)
+    {
+      var sv = ZeTS.trim(f.getValue());
+      if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
+
+      var fn = function()
+      {
+        //?: {search string was changed} discard
+        if(f.extjsfBind.searchValue != sv) return;
+
+        var params = { searchFirms: sv };
+        var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(e, 'search-firms-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+
+            extjsf.co("${z:vid(e, 'contractors')}", '${rootView.extjsDomain}').loadPage(1)
+        }})
+      }
+
+      setTimeout(fn, 1000)
+    })
+
+    //~: selection set only toggled
+    extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    {
+        var names  = extjsf.bind("${z:vid(e, 'search-firms')}", '${rootView.extjsDomain}').value();
+        var params = { searchFirms: names };
+
+        var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
+        if(selchk.pressed) params.selset = ReTrade.selset.selset;
+
+        extjsf.bindHandler("${z:vid(e, 'search-firms-script')}", '${rootView.extjsDomain}')({
+          params: params, success : function() {
+
+            extjsf.co("${z:vid(e, 'contractors')}", '${rootView.extjsDomain}').loadPage(1)
+        }})
+    })
+
+      //]]>
+      </script>
+
+      <!-- filter goods field] -->
+
+
     <x:component coid = "${z:vid(e, '_tb_fill_0')}">
       <f:facet name = "extjs-props">
         xtype: 'panel', flex: 1, frame: false, border: false,
         bodyCls: 'retrade-toolbar-panel'
       </f:facet>
     </x:component>
-
-
-    <!-- [search form -->
-
-    <x:form-panel modelView = "${e}" coid = "${z:vid(e, 'search-contractors')}">
-
-      <f:facet name = "extjs-props">
-
-        frame: false, border: false,
-        margin: extjsf.dpts(1, 6, 1, 12),
-        bodyCls: 'retrade-toolbar-panel',
-        layout: {type: 'table', columns: 2}
-      </f:facet>
-
-      <x:text-field coid = "${z:vid(e, 'search-words')}"
-        value = "#{e.model.contractorsSearch}">
-
-        <f:facet name = "extjs-props">
-
-          listeners : { change: { delay: 1000, fn: function() {
-            extjsf.bindHandler("${z:vid(e, 'search-words')}", '${rootView.extjsDomain}')()
-          }}}
-
-        </f:facet>
-
-        <f:facet name = "label-props">
-          text: 'Поиск', cellCls: 'retrade-form-light-label-cell',
-          margin: extjsf.dpts(0, 2, 0, 0)
-        </f:facet>
-      </x:text-field>
-
-
-      <script type = "text/javascript">
-
-  //~: update the contractors table on successful search
-  extjsf.bind("${z:vid(e, 'search-contractors')}", '${rootView.extjsDomain}').success(function()
-  {
-    Ext.data.StoreManager.lookup("${z:vid(e, 'contractors')}").loadPage(1)
-  })
-
-  //~: search by the words handler
-  extjsf.bindHandler("${z:vid(e, 'search-words')}", '${rootView.extjsDomain}', function()
-  {
-    var field = extjsf.bind("${z:vid(e, 'search-words')}", '${rootView.extjsDomain}');
-    if(field.oldWordsValue == field.value()) return;
-    field.oldWordsValue = field.value();
-
-    //~: submit the form
-    extjsf.bind("${z:vid(e, 'search-contractors')}", '${rootView.extjsDomain}').
-      submitForm({'${e.viewModeParam}': '${e.viewModePostStr}'})
-  })
-
-      </script>
-
-    </x:form-panel>
-
-    <!-- search form] -->
 
 
     <!-- [submit button -->
@@ -130,10 +170,10 @@
 
         contractor : ZeT.delay(function()
         {
-          var sel = extjsf.bind("${z:vid(e, 'grid')}", '${rootView.extjsDomain}').
-            co().getSelectionModel().getSelection();
+          var sel = extjsf.co("${z:vid(e, 'grid')}", '${rootView.extjsDomain}').
+            getSelectionModel().getSelection()
 
-          return (sel.length == 1)?(sel[0].getId()):('');
+          return (sel.length == 1)?(sel[0].getId()):('')
         })
 
       </f:facet>
@@ -149,7 +189,7 @@
     <!-- [contractors table -->
 
     <x:data-store storeId = "${z:vid(e, 'contractors')}"
-      modelRequest = "edit-contractor" pageSize = "15">
+      modelRequest = "edit-contractor" pageSize = "10">
 
       <f:facet name = "store-props">
         model: 'retrade.model.CatItemView'
@@ -163,14 +203,13 @@
       </f:facet>
     </x:data-store>
 
-    <x:data-grid coid = "${z:vid(e, 'grid')}"
+    <x:data-grid coid = "${z:vid(e, 'grid')}" selset = "true"
       storeId = "${z:vid(e, 'contractors')}">
 
       <f:facet name = "grid-props">
-        region: 'center',
+        flex: 1, pager: true, sortableColumns: false,
         columns: ZeT.defined('retrade.columns.CatItemView'),
-        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-        pager: true, sortableColumns: false
+        selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
       </f:facet>
     </x:data-grid>
 
@@ -202,7 +241,7 @@
 
   <ui:define name = 'validation'>
 
-    <validation success = "true" target = "${z:vid(e, 'search-contractors')}"/>
+    <validation success = "true"/>
 
   </ui:define>
 </ui:decorate>

@@ -39,9 +39,9 @@
     var grid  = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}');
     grid.nodeId("#{cc.clientId}-#{cc.attrs.coid}")
 
-    grid.extjsPropsNode().extjsProps({
-      xtype: 'grid', store: "#{cc.attrs.storeId}"
-    })
+    grid.extjsProps({ margin: 0 })
+    grid.extjsPropsNode()
+    grid.extjsProps({ xtype: 'grid', store: "#{cc.attrs.storeId}" })
 
     //~: view configuration
     var view = grid.extjsPropsRaw().viewConfig;

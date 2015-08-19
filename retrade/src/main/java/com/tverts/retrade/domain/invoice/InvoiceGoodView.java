@@ -65,7 +65,6 @@ public class InvoiceGoodView implements Serializable
 		this.index = index;
 	}
 
-	@XmlElement
 	public Long getGoodUnit()
 	{
 		return goodUnit;
@@ -73,7 +72,11 @@ public class InvoiceGoodView implements Serializable
 
 	private Long goodUnit;
 
-	@XmlElement
+	public void setGoodUnit(Long goodUnit)
+	{
+		this.goodUnit = goodUnit;
+	}
+
 	public String getGoodCode()
 	{
 		return goodCode;
@@ -81,7 +84,11 @@ public class InvoiceGoodView implements Serializable
 
 	private String goodCode;
 
-	@XmlElement
+	public void setGoodCode(String goodCode)
+	{
+		this.goodCode = goodCode;
+	}
+
 	public String getGoodName()
 	{
 		return goodName;
@@ -89,7 +96,11 @@ public class InvoiceGoodView implements Serializable
 
 	private String goodName;
 
-	@XmlElement
+	public void setGoodName(String goodName)
+	{
+		this.goodName = goodName;
+	}
+
 	public String getVolumeUnitName()
 	{
 		return volumeUnitName;
@@ -97,13 +108,22 @@ public class InvoiceGoodView implements Serializable
 
 	private String volumeUnitName;
 
-	@XmlElement
+	public void setVolumeUnitName(String volumeUnitName)
+	{
+		this.volumeUnitName = volumeUnitName;
+	}
+
 	public boolean isVolumeInteger()
 	{
 		return volumeInteger;
 	}
 
 	private boolean volumeInteger;
+
+	public void setVolumeInteger(boolean volumeInteger)
+	{
+		this.volumeInteger = volumeInteger;
+	}
 
 	public BigDecimal getGoodVolume()
 	{
@@ -166,7 +186,6 @@ public class InvoiceGoodView implements Serializable
 		this.priceList = priceList;
 	}
 
-	@XmlElement
 	public String getPriceListCode()
 	{
 		return priceListCode;
@@ -174,13 +193,22 @@ public class InvoiceGoodView implements Serializable
 
 	private String priceListCode;
 
-	@XmlElement
+	public void setPriceListCode(String priceListCode)
+	{
+		this.priceListCode = priceListCode;
+	}
+
 	public String getPriceListName()
 	{
 		return priceListName;
 	}
 
 	private String priceListName;
+
+	public void setPriceListName(String priceListName)
+	{
+		this.priceListName = priceListName;
+	}
 
 	public Boolean getMoveOn()
 	{
@@ -206,7 +234,6 @@ public class InvoiceGoodView implements Serializable
 		this.needCalc = needCalc;
 	}
 
-	@XmlElement
 	@XmlJavaTypeAdapter(DateTimeAdapter.class)
 	public Date getCalcDate()
 	{
@@ -215,6 +242,11 @@ public class InvoiceGoodView implements Serializable
 
 	private Date calcDate;
 
+	public void setCalcDate(Date calcDate)
+	{
+		this.calcDate = calcDate;
+	}
+
 	@XmlElement
 	public Boolean getGoodSemiReady()
 	{
@@ -222,6 +254,11 @@ public class InvoiceGoodView implements Serializable
 	}
 
 	private Boolean goodSemiReady;
+
+	public void setGoodSemiReady(Boolean goodSemiReady)
+	{
+		this.goodSemiReady = goodSemiReady;
+	}
 
 
 	/* Initialization */

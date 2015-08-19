@@ -77,9 +77,8 @@ public class FacesInvoiceAskEdit extends ModelViewBase
 	{
 		Invoice i = getViewInvoice();
 
-		return String.format(
-		  "Редактировать накладную №%s от %s?",
-		  i.getCode(), DU.date2str(i.getInvoiceDate())
+		return formatTitle("Редактировать накладную?",
+		  i.getCode(), DU.datetime2str(i.getInvoiceDate())
 		);
 	}
 }

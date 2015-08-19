@@ -155,7 +155,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'invoiceDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -170,7 +170,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Сумма", dataIndex: 'goodsCost', sortable: false,
-		   width: extjsf.ex(12), align: 'right',
+		   width: extjsf.ex(14), align: 'right',
 		  renderer: retrade.fcurrency
 		 }
 		];
@@ -188,7 +188,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'invoiceDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -216,7 +216,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'invoiceDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -2062,7 +2062,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'time', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -2551,7 +2551,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'time', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -2622,7 +2622,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'time', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -2704,7 +2704,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'time', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {
@@ -2962,7 +2962,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: 'Дата и время', dataIndex: 'time', sortable: true,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {

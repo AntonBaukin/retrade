@@ -36,12 +36,12 @@ public class   FacesInvoiceEditFirm
 {
 	/* actions */
 
-	public String  gotoCancelEdit()
+	public String gotoCancelEdit()
 	{
 		return "done-edit-" + getGotoCode();
 	}
 
-	public String  doEditContractor()
+	public String doEditContractor()
 	{
 		//~: load the contractor
 		String     p = SU.s2s(request().getParameter("contractor"));
@@ -59,19 +59,26 @@ public class   FacesInvoiceEditFirm
 		return "done-edit-" + getGotoCode();
 	}
 
+	public String doSearchFirms()
+	{
+		//~: search names
+		getModel().setContractorsSearch(
+		  SU.s2s(request().getParameter("searchFirms"))
+		);
+
+		//~: selection set
+		getModel().setContractorsSelSet(
+		  request().getParameter("selset"));
+
+		return null;
+	}
+
 
 	/* public: invoice [edit contractor] interface */
 
-	public String  getWinmainTitleEditFirm()
+	public String getWinmainTitleEditFirm()
 	{
-		StringBuilder sb = new StringBuilder(92);
-
-		sb.append("Ред. контрагента накладной");
-
-		if(getInvoice().getInvoiceCode() != null)
-			sb.append(" №").append(
-			  getInvoice().getInvoiceCode());
-
-		return sb.toString();
+		return formatTitle("Выбор контрагента накладной",
+		  getInvoice().getInvoiceCode());
 	}
 }

@@ -55,6 +55,8 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 		return invoice;
 	}
 
+	private InvoiceEdit invoice;
+
 	public void setInvoice(InvoiceEdit invoice)
 	{
 		this.invoice = invoice;
@@ -64,6 +66,8 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 	{
 		return lastPriceList;
 	}
+
+	private Long lastPriceList;
 
 	public void setLastPriceList(Long lastPriceList)
 	{
@@ -99,13 +103,15 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 	}
 
 	/**
-	 * Event number of the invoices to display
-	 * in the date-time edit table. Default is 20.
+	 * Even number of the invoices to display
+	 * in the date-time edit table. Default is 10.
 	 */
 	public int getInvocesNumber()
 	{
 		return invocesNumber;
 	}
+
+	private int invocesNumber = 10;
 
 	public void setInvocesNumber(int invocesNumber)
 	{
@@ -117,7 +123,7 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 
 	/* Invoice Edit Model (support) */
 
-	public Domain       findDomain()
+	public Domain    findDomain()
 	{
 		if(getDomain() != null)
 			return bean(GetDomain.class).getDomain(domain());
@@ -128,7 +134,7 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 		return (invoice == null)?(null):(invoice.getDomain());
 	}
 
-	public UnityType    findOrderType()
+	public UnityType findOrderType()
 	{
 		if(getInvoice() == null)
 			return null;
@@ -146,36 +152,42 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 
 	/* Invoice Edit Model (contractors select) */
 
-	public String[]     contractorsSearch()
+	public String[] contractorsSearch()
 	{
 		return SU.s2a(getContractorsSearch());
 	}
 
-	public String       getContractorsSearch()
+	public String getContractorsSearch()
 	{
 		return contractorsSearch;
 	}
 
-	public void         setContractorsSearch(String contractorsSearch)
+	private String contractorsSearch;
+
+	public void setContractorsSearch(String contractorsSearch)
 	{
 		this.contractorsSearch = contractorsSearch;
+	}
+
+	public String getContractorsSelSet()
+	{
+		return contractorsSelSet;
+	}
+
+	private String contractorsSelSet;
+
+	public void setContractorsSelSet(String contractorsSelSet)
+	{
+		this.contractorsSelSet = contractorsSelSet;
 	}
 
 
 	/* Model Bean (data access) */
 
-	public ModelData    modelData()
+	public ModelData modelData()
 	{
 		return new InvoiceEditModelData(this);
 	}
-
-
-	/* private: encapsulated data */
-
-	private InvoiceEdit invoice;
-	private Long        lastPriceList;
-	private int         invocesNumber = 20;
-	private String      contractorsSearch;
 
 
 	/* Serialization */
@@ -189,6 +201,7 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 		IO.longer(o, lastPriceList);
 		o.writeInt(invocesNumber);
 		IO.str(o, contractorsSearch);
+		IO.str(o, contractorsSelSet);
 	}
 
 	public void readExternal(ObjectInput i)
@@ -200,5 +213,6 @@ public class InvoiceEditModelBean extends DataSelectModelBean
 		lastPriceList     = IO.longer(i);
 		invocesNumber     = i.readInt();
 		contractorsSearch = IO.str(i);
+		contractorsSelSet = IO.str(i);
 	}
 }

@@ -64,10 +64,9 @@
       })
     })
 
-
-    form.extjsPropsNode().extjsProps({
-       xtype: 'form', id : "#{cc.attrs.coid}"
-    })
+    form.extjsPropsNode({ margin: 0, border: false })
+    form.extjsPropsNode()
+    form.extjsProps({ xtype: 'form', id : "#{cc.attrs.coid}" })
 
     extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
       co(Ext.create('Ext.form.Panel', form.extjsProps()))

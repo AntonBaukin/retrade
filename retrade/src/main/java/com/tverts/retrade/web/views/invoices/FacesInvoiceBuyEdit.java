@@ -12,8 +12,7 @@ import javax.faces.bean.RequestScoped;
  * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
-public class FacesInvoiceBuyEdit
-       extends FacesInvoiceEditBase
+public class FacesInvoiceBuyEdit extends FacesInvoiceEditBase
 {
 	/* protected: actions support */
 

@@ -49,6 +49,7 @@ import com.tverts.retrade.domain.invoice.InvoiceView;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.OU;
 
 
 /**
@@ -77,10 +78,22 @@ public class InvoiceEditModelData implements ModelData
 
 	/* public: InvoiceEditModelData (bean) interface */
 
+	/**
+	 * Creates model clone and strips
+	 * the goods from the invoice.
+	 */
 	@XmlElement
-	public InvoiceEditModelBean  getModel()
+	public InvoiceEditModelBean getModel()
 	{
-		return model;
+		try
+		{
+			model.getInvoice().setOmitGoods(true);
+			return OU.cloneDeep(model);
+		}
+		finally
+		{
+			model.getInvoice().setOmitGoods(false);
+		}
 	}
 
 	@XmlElement(name = "good")
@@ -89,7 +102,7 @@ public class InvoiceEditModelData implements ModelData
 	{
 		if(!ModelRequest.isKey(null))
 			return new ArrayList<InvoiceGoodView>(0);
-		return getModel().getInvoice().getGoods();
+		return model.getInvoice().getGoods();
 	}
 
 	@XmlElement(name = "invoice")
@@ -99,7 +112,7 @@ public class InvoiceEditModelData implements ModelData
 		if(!ModelRequest.isKey("edit-date"))
 			return null;
 
-		InvoiceEdit invoice = getModel().getInvoice();
+		InvoiceEdit invoice = model.getInvoice();
 		Set<Long>   exclude = null;
 		if(invoice.objectKey() != null)
 			exclude = Collections.singleton(invoice.objectKey());
@@ -109,22 +122,22 @@ public class InvoiceEditModelData implements ModelData
 		if(invType == null) throw new IllegalStateException();
 		
 		//~: selection numbers
-		int N = getModel().getInvocesNumber(), N2 = N/2;
+		int N = model.getInvocesNumber(), N2 = N/2;
 		EX.assertx(N2*2 == N);
 
 		//~: get the invoices on the date left order
 		List<Invoice> lfs;
 
 		//?: {order by data}
-		if("date".equals(getModel().getFirstSortProp()))
+		if("date".equals(model.getFirstSortProp()))
 			lfs = bean(GetInvoice.class).findLeftInvoicesByDate(
-			  getModel().findDomain(), invType,
+			  model.findDomain(), invType,
 			  invoice.getEditDate(), N, exclude
 			);
 		//~: order by code
 		else
 			lfs = bean(GetInvoice.class).findLeftInvoices(
-			  getModel().findDomain(), getModel().findOrderType(),
+			  model.findDomain(), model.findOrderType(),
 			  invoice.getEditDate(), N, exclude
 			);
 
@@ -132,15 +145,15 @@ public class InvoiceEditModelData implements ModelData
 		List<Invoice> rts;
 
 		//?: {order by data}
-		if("date".equals(getModel().getFirstSortProp()))
+		if("date".equals(model.getFirstSortProp()))
 			rts = bean(GetInvoice.class).findRightInvoicesByDate(
-			  getModel().findDomain(), invType,
+			  model.findDomain(), invType,
 			  invoice.getEditDate(), N, exclude
 			);
 		//~: order by code
 		else
 			rts = bean(GetInvoice.class).findRightInvoices(
-			  getModel().findDomain(), getModel().findOrderType(),
+			  model.findDomain(), model.findOrderType(),
 			  invoice.getEditDate(), N, exclude
 			);
 
@@ -171,13 +184,13 @@ public class InvoiceEditModelData implements ModelData
 	}
 
 	@XmlElement(name = "contractorsNumber")
-	public Long getContractorsNumber()
+	public Integer getContractorsNumber()
 	{
 		if(!ModelRequest.isKey("edit-contractor"))
 			return null;
 
 		return bean(GetContractor.class).
-		  countContractors(getModel());
+		  countContractors(model);
 	}
 
 	@XmlElement(name = "contractor")
@@ -188,7 +201,7 @@ public class InvoiceEditModelData implements ModelData
 			return null;
 
 		List<Contractor>  cos = bean(GetContractor.class).
-		  selectContractors(getModel());
+		  selectContractors(model);
 		List<CatItemView> res = new ArrayList<CatItemView>(cos.size());
 
 		for(Contractor co : cos)

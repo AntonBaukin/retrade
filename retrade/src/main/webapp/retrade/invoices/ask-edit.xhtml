@@ -15,10 +15,12 @@
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle('${z:jss(v.winmainTitleAskEdit)}')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(v.winmainTitleAskEdit)}')
 
+  //]]>
   </script>
 
   <x:component coid = "${z:vid(v, '_layout_content')}">
@@ -64,8 +66,8 @@
 
     <f:facet name = "extjs-props">
 
-      border: false, frame: false,
-      height: extjsf.pt(22), width: extjsf.pt(200),
+      border: false, frame: false, width: extjsf.pt(200),
+      height: retrade_default('button-height') + extjsf.pt(8),
       bodyCls: 'retrade-transparent-panel',
       layout: {type: 'table', columns: 2}
     </f:facet>
@@ -75,9 +77,8 @@
       action = "#{v.gotoCancelEdit}">
 
       <f:facet name = "extjs-props">
-        cls: 'ux-btn-red',
-        margin: extjsf.pts(0, 26, 0, 0),
-        text: 'Отмена', height: extjsf.pt(18)
+        cls: 'ux-btn-red', margin: extjsf.pts(0, 26, 6, 0),
+        text: 'Отмена', height: retrade_default('button-height')
       </f:facet>
 
       <f:facet name = "action-params">
@@ -89,8 +90,9 @@
       action = "#{v.doEditInvoice}">
 
       <f:facet name = "extjs-props">
-        cls: 'ux-btn-green',
-        text: 'Продолжить', height: extjsf.pt(18)
+        cls: 'ux-btn-green', text: 'Продолжить',
+        height: retrade_default('button-height'),
+        margin: extjsf.pts(0, 0, 6, 0)
       </f:facet>
 
       <f:facet name = "action-params">

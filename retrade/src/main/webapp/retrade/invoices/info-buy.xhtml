@@ -21,8 +21,8 @@ ${v.forceSecureModelEntity('view')}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle('${z:jss(v.winmainTitleInfo)}')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(v.winmainTitleInfo)}')
 
   //]]>
   </script>
@@ -31,7 +31,7 @@ ${v.forceSecureModelEntity('view')}
   <f:facet name = "extjs-props">
     layout: { type: 'vbox', align: 'stretch' },
     bodyPadding: extjsf.pts(1, 3, 3, 1),
-    bodyCls: 'retrade-back-panel',
+    bodyCls: 'retrade-back-panel'
   </f:facet>
 
 
@@ -223,11 +223,11 @@ ${v.forceSecureModelEntity('view')}
           <div>#{v.entity.code}</div>
         </td>
 
-        <td class = "retrade-info-title retrade-info-title-invoice-contractor">
-          <div>Контрагент</div>
+        <td class = "retrade-info-title retrade-info-title-invoice-store">
+          <div>Склад</div>
         </td>
-        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-contractor">
-          <div>#{v.contractorName}</div>
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-store">
+          <div>#{v.invoiceStore}</div>
         </td>
       </tr>
     </table>
@@ -243,11 +243,11 @@ ${v.forceSecureModelEntity('view')}
           <div>#{v.invoiceDateTime}</div>
         </td>
 
-        <td class = "retrade-info-title retrade-info-title-invoice-store">
-          <div>Склад</div>
+        <td class = "retrade-info-title retrade-info-title-invoice-contractor">
+          <div>Контрагент</div>
         </td>
-        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-store">
-          <div>#{v.invoiceStore}</div>
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-contractor">
+          <div>#{v.contractorName}</div>
         </td>
       </tr>
     </table>
