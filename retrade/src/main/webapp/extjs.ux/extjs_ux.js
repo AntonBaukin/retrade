@@ -96,7 +96,39 @@ Ext.resizer.Splitter.override(
 })
 
 
-// +----: Time Picker :------------------------------------------+
+// +----: Time Field + Picker :----------------------------------+
+
+Ext.define('Ext.ux.form.field.Time',
+{
+	extend            : 'Ext.form.field.Time',
+	alias             : 'widget.ux.timefield',
+
+	initComponent     : function()
+	{
+		this.callParent(arguments)
+
+		ZeT.log('Picker: ', this.getPicker())
+
+		//~: create store using the picker
+		this.store = this.getPicker().
+		  createStore(this.format, this.increment)
+
+		//~: create picker again
+		delete this.picker
+		this.getPicker()
+	},
+
+	createPicker      : function()
+	{
+		if(!this.listConfig)
+			this.listConfig = {}
+		if(!this.listConfig.xtype)
+			this.listConfig.xtype = 'ux.timepicker'
+
+		return this.callParent(arguments)
+	}
+})
+
 
 Ext.define('Ext.ux.picker.Time',
 {
@@ -105,45 +137,51 @@ Ext.define('Ext.ux.picker.Time',
 
 	createStore       : function()
 	{
-		var me = this,
-		    utilDate = Ext.Date,
-		    times = [],
-		    min = me.absMin,
-		    max = me.absMax,
-			 time = (!me.pickerField)?(null):(me.pickerField.getValue());
+		ZeT.log('createStore()')
+
+		var me   = this, times = []
+		var DU   = Ext.Date
+		var ID   = this.prototype.initDate
+		var min  = DU.clearTime(new Date(ID[0], ID[1], ID[2]))
+		var max  = DU.add(min, 'mi', (24 * 60) - 1)
+		var time = (!me.pickerField)?(null):(me.pickerField.getValue())
 
 		function fmt(t)
 		{
-			return utilDate.dateFormat(t, me.format);
+			return DU.dateFormat(t, me.format)
 		}
 
 		function add(t)
 		{
-			times.push({date: t, disp: fmt(t)});
+			times.push({date: t, disp: fmt(t)})
 		}
 
 		while(min <= max)
 		{
-			var skip = false;
+			var skip = false
 
 			//?: {has present time value to insert}
 			if(time)
 			{
-				skip = (fmt(time) == fmt(min));
+				skip = (fmt(time) == fmt(min))
 
 				//?: {add this time}
 				if(skip || (min > time))
 				{
 					add(time)
-					time = null;
+					time = null
 				}
 			}
 
 			if(!skip) add(min)
-			min = utilDate.add(min, 'mi', me.increment);
+			min = DU.add(min, 'mi', me.increment)
 		}
 
-		return new Ext.data.Store({fields: ['disp', 'date'], data: times});
+		ZeT.log('Times : ', times)
+
+		return new Ext.data.Store({ data: times,
+		  model: Ext.picker.Time.prototype.modelType
+		})
 	}
 })
 

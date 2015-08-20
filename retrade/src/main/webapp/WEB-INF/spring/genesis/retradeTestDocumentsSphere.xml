@@ -129,9 +129,10 @@
             </bean>
           </property>
         </bean>
+        -->
 
 
-        &lt;!&ndash; Invoices Move &ndash;&gt;
+        <!-- Invoices Move -->
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -162,7 +163,7 @@
           </property>
         </bean>
 
-
+        <!--
         &lt;!&ndash; Produce Invoices (Manual and Auto Calculated)&ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>

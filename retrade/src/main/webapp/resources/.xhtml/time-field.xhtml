@@ -50,9 +50,8 @@
       maxLength: 7, enforceMaxLength: true, cls: 'x-field-time'
     })
 
-    field.extjsProps({listConfig: { xtype: 'ux.timepicker' }})
     field.extjsPropsNode().extjsProps({
-      xtype   : 'timefield',
+      xtype   : 'ux.timefield',
       inputId : "#{cc.attrs.coid}",
       name    : "#{cc.clientId}-#{cc.attrs.coid}",
       format  : 'H:i', submitFormat: 'H:i'
