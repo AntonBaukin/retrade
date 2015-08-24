@@ -30,7 +30,7 @@ ${v.forceSecureModelEntity('view')}
 
   <f:facet name = "extjs-props">
     layout: { type: 'vbox', align: 'stretch' },
-    bodyPadding: extjsf.pts(1, 3, 3, 1),
+    bodyPadding: extjsf.pt(1),
     bodyCls: 'retrade-back-panel'
   </f:facet>
 
@@ -207,7 +207,8 @@ ${v.forceSecureModelEntity('view')}
 
   <x:html coid = "${z:vid(v, 'invoice_info')}">
     <f:facet name = "extjs-props">
-      xtype: 'panel', frame: true, border: false,
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(1, 1, 2, 1),
       bodyPadding: extjsf.pts(3, 2, 3, 2),
       bodyCls: 'retrade-text-panel retrade-info-invoice-buy'
     </f:facet>
@@ -270,8 +271,7 @@ ${v.forceSecureModelEntity('view')}
     storeId = "${z:vid(v, 'invoiceGoods')}">
 
     <f:facet name = "grid-props">
-      title: 'Товары накладной', flex: 1,
-      margin: extjsf.pts(2, 0, 0, 0), sortableColumns: false,
+      title: 'Товары накладной', flex: 1, sortableColumns: false,
       columns: ZeT.defined('retrade.columns.InvoiceGood')
     </f:facet>
   </x:data-grid>

@@ -107,15 +107,13 @@ Ext.define('Ext.ux.form.field.Time',
 	{
 		this.callParent(arguments)
 
-		ZeT.log('Picker: ', this.getPicker())
-
 		//~: create store using the picker
-		this.store = this.getPicker().
+		var store = this.getPicker().
 		  createStore(this.format, this.increment)
 
-		//~: create picker again
-		delete this.picker
-		this.getPicker()
+		this.bindStore(store, true, true)
+		this.getPicker().setSelection(
+		  this.findRecordByValue(this.getValue()))
 	},
 
 	createPicker      : function()
@@ -126,6 +124,45 @@ Ext.define('Ext.ux.form.field.Time',
 			this.listConfig.xtype = 'ux.timepicker'
 
 		return this.callParent(arguments)
+	},
+
+	isEqual           : function(v1, v2)
+	{
+		v1 = Ext.Array.from(v1)
+		v2 = Ext.Array.from(v2)
+
+		if(v1.length != v2.length)
+			return false
+
+		var FMT = this.getPicker().format
+		function tstr(t)
+		{
+			if(t instanceof Date)
+				t = Ext.Date.dateFormat(t, FMT)
+
+			ZeT.asserts(t)
+			return t
+		}
+
+		for(var i = 0;(i < v1.length); i++)
+			if(tstr(v2[i]) != tstr(v1[i]))
+				return false
+
+		return true
+	},
+
+	findRecordByValue : function(v)
+	{
+		if(v instanceof Date)
+			v = Ext.Date.dateFormat(v, this.getPicker().format)
+		ZeT.asserts(v)
+
+		var m = null; this.store.each(function(x)
+		{
+			if(x.get('disp') == v) { m = x; return false }
+		})
+
+		return m
 	}
 })
 
@@ -137,11 +174,10 @@ Ext.define('Ext.ux.picker.Time',
 
 	createStore       : function()
 	{
-		ZeT.log('createStore()')
-
 		var me   = this, times = []
 		var DU   = Ext.Date
-		var ID   = this.prototype.initDate
+		var TP   = Ext.picker.Time.prototype
+		var ID   = TP.initDate
 		var min  = DU.clearTime(new Date(ID[0], ID[1], ID[2]))
 		var max  = DU.add(min, 'mi', (24 * 60) - 1)
 		var time = (!me.pickerField)?(null):(me.pickerField.getValue())
@@ -177,11 +213,7 @@ Ext.define('Ext.ux.picker.Time',
 			min = DU.add(min, 'mi', me.increment)
 		}
 
-		ZeT.log('Times : ', times)
-
-		return new Ext.data.Store({ data: times,
-		  model: Ext.picker.Time.prototype.modelType
-		})
+		return new Ext.data.Store({ data: times, model: TP.modelType })
 	}
 })
 
