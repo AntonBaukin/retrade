@@ -491,7 +491,11 @@ public class InvoiceEdit extends InvoiceViewExt
 	protected void    assignGood(BuyGood ig, InvoiceGoodView eg)
 	{
 		//~: volume cost
-		EX.assertx((eg.getVolumeCost() == null) || CMP.grZero(eg.getVolumeCost()));
+		EX.assertx(
+		  (eg.getVolumeCost() == null) ||
+		  CMP.greZero(eg.getVolumeCost())
+		);
+
 		ig.setCost(eg.getVolumeCost());
 	}
 

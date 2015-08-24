@@ -534,6 +534,10 @@ ${v.forceSecureEdit()}
     g.getStore().remove(s)
     extjsf.support.refreshGridIndices(g)
     if(!ZeT.i$x(m)) g.getSelectionModel().select(m)
+
+    //~: calculate the summary
+    extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').
+      retradeCalcSumm()
   })
 
   //~: callback on volume, cost, and unit cost changed
@@ -547,7 +551,8 @@ ${v.forceSecureEdit()}
       parseFloat(v) * parseFloat(m.get('unitCost'))
     ))
 
-    if(e.field == 'goodVolume') m.set('goodVolume', f2s(3, v))
+    if(e.field == 'goodVolume') m.set('goodVolume',
+      f2s(m.get('volumeInteger')?(0):(3), v))
 
     //?: {volume cost changed}
     if(e.field == 'volumeCost') m.set('unitCost', f2s(2,
@@ -559,6 +564,18 @@ ${v.forceSecureEdit()}
       parseFloat(v) * parseFloat(m.get('goodVolume'))
     ))
 
+    //~: calculate the summary
+    extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').
+      retradeCalcSumm()
+
+    //~: realign
+    extjsf.co("${z:vid(v, 'invoice-summ-val-html')}", '${rootView.extjsDomain}').
+      ownerCt.doLayout()
+  }
+
+  //~: columns editors
+  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCalcSumm = function()
+  {
     //~: recalculate summary
     var s = 0.0; extjsf.co("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').each(function(i)
     {
@@ -568,34 +585,40 @@ ${v.forceSecureEdit()}
 
     //~: update the status
     var n = ZeTD.n("${z:vid(v, 'invoice-summ-val')}");
-    ZeTD.update(n, f2s(2, s))
+    ZeTD.update(n, retrade.round2str(2, s))
     ZeTD.classes(n, '+retrade-format-to-currency')
     retrade.TreetFCurrency.proc(n)
-
-    //~: realign
-    extjsf.co("${z:vid(v, 'invoice-summ-val-html')}", '${rootView.extjsDomain}').
-      ownerCt.doLayout()
   }
 
   //~: columns editors
   extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns = function()
   {
-    var cols = ZeT.defined('retrade.columns.InvoiceGoodEdited')();
-    var colCode = cols[1];
-    var colVol  = cols[3];
-    var volCost = cols[5];
-    var unitCost = cols[6];
+    var cols = ZeT.defined('retrade.columns.InvoiceGoodEdited')()
+    var colCode = cols[1]
+    var colVol  = cols[3]
+    var volCost = cols[5]
+    var unitCost = cols[6]
 
     function selectGood(sel)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-      var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record;
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+      var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record
 
       m.set('goodUnit', sel.get('objectKey'))
       m.set('goodCode', sel.get('goodCode'))
       m.set('goodName', sel.get('goodName'))
       m.set('volumeUnitName', sel.get('measureCode'))
       m.set('volumeInteger', sel.get('integer'))
+      m.set('goodVolume', '')
+      m.set('volumeCost', '')
+      m.set('unitCost', '')
+    }
+
+    function renderVolume(v, meta)
+    {
+      if(meta.record.get('volumeInteger'))
+        return retrade.round2str(0, parseFloat(v))
+      return v
     }
 
     function validateVolume(v)
@@ -682,16 +705,16 @@ ${v.forceSecureEdit()}
         beforequery: function(plan)
         {
           if(ZeTS.ises(plan.query))
-            plan.query = plan.combo.getValue();
+            plan.query = plan.combo.getValue()
 
-          if(!ZeTS.ises(plan.query))
-            plan.query = encodeURIComponent(plan.query);
+          if(ZeTS.ises(plan.query)) plan.query = ''; else
+            plan.query = encodeURIComponent(plan.query)
         },
 
         select: function(f, sel)
         {
-          if(sel.length == 1) sel = sel[0]; else sel = null;
-          if(!sel || ZeTS.ises(sel.get('goodCode'))) return;
+          if(ZeT.isa(sel)) if(sel.length == 1) sel = sel[0]; else sel = null
+          if(!sel || ZeTS.ises(sel.get('goodCode'))) return
           selectGood(sel)
         }
       }
@@ -702,7 +725,7 @@ ${v.forceSecureEdit()}
     colVol.retradeHasEditor = true;
     colVol.editor = Ext.create('Ext.form.field.Text', {
       maskRe: retrade.rdecimal, validator : validateVolume,
-      listeners: { specialkey : onSpecialKey }
+      renderer: renderVolume, listeners: { specialkey : onSpecialKey }
     });
 
     //~: volume cost column editor

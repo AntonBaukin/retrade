@@ -3139,11 +3139,18 @@ var retrade = ZeT.define('retrade',
 			v = x
 		}
 
-		if(!ZeT.isn(v)) return v
+		if(!ZeT.isn(v)) return undefined
 		ZeT.assert(ZeT.isi(n) && (n > 0))
 
-		v = '' + Math.round(v * Math.pow(10.0, n))
+		//?: {is integer}
+		if(n == 0)
+		{
+			ZeT.assert(v == Math.floor(v),
+			  'round2str(0, v) got v not n integer!')
+			return '' + Math.floor(v)
+		}
 
+		v = '' + Math.round(v * Math.pow(10.0, n))
 		while(v.length < n) v = '0' + v
 		if(v.length == n) return '0.' + v
 
