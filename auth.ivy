@@ -65,16 +65,16 @@
     <dependency
       org  = 'com.sun.xml.bind'
       name = 'jaxb-impl'
-      rev  = '2.2.7'
+      rev  = '2.2.11'
       conf = 'sources; compile -> master'/>
 
 
-    <!-- JUnit 4.11 [manually provided] -->
+    <!-- JUnit 4.1x [manually provided] -->
 
     <dependency
       org  = 'junit'
       name = 'junit'
-      rev  = '4.11'
+      rev  = '4.12'
       conf = 'sources; compile -> compile, master'/>
 
   </dependencies>
