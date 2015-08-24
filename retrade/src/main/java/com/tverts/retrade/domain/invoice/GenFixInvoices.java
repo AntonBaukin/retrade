@@ -49,8 +49,7 @@ import com.tverts.support.LU;
  *
  * @author anton.baukin@gmail.com
  */
-public class   GenFixBuySellInvoices
-       extends GenesisHiberPartBase
+public class GenFixInvoices extends GenesisHiberPartBase
 {
 	/* public: GenToggleBuySellInvoicesStates (bean) interface */
 
@@ -64,6 +63,8 @@ public class   GenFixBuySellInvoices
 	{
 		return percent;
 	}
+
+	private double  percent = 50.0;
 
 	public void setPercent(double percent)
 	{
@@ -81,9 +82,50 @@ public class   GenFixBuySellInvoices
 		return maximum;
 	}
 
+	private Integer maximum;
+
 	public void setMaximum(Integer maximum)
 	{
 		this.maximum = maximum;
+	}
+
+	@Param
+	public boolean isBuy()
+	{
+		return buy;
+	}
+
+	private boolean buy = true;
+
+	public void setBuy(boolean buy)
+	{
+		this.buy = buy;
+	}
+
+	@Param
+	public boolean isSell()
+	{
+		return sell;
+	}
+
+	private boolean sell = true;
+
+	public void setSell(boolean sell)
+	{
+		this.sell = sell;
+	}
+
+	@Param
+	public boolean isMove()
+	{
+		return move;
+	}
+
+	private boolean move;
+
+	public void setMove(boolean move)
+	{
+		this.move = move;
 	}
 
 
@@ -163,10 +205,18 @@ public class   GenFixBuySellInvoices
 
 	protected List<UnityType>  getInvoicesTypes(GenCtx ctx)
 	{
-		return Arrays.asList(
-		  Invoices.typeInvoiceBuy(),
-		  Invoices.typeInvoiceSell()
-		);
+		List<UnityType> r = new ArrayList<>(3);
+
+		if(isBuy())
+			r.add(Invoices.typeInvoiceBuy());
+
+		if(isSell())
+			r.add(Invoices.typeInvoiceSell());
+
+		if(isMove())
+			r.add(Invoices.typeInvoiceMove());
+
+		return r;
 	}
 
 	protected String           nameInvoicesTypes(GenCtx ctx)
@@ -289,10 +339,4 @@ public class   GenFixBuySellInvoices
 
 		return res;
 	}
-
-
-	/* parameters */
-
-	private double  percent = 50.0;
-	private Integer maximum;
 }

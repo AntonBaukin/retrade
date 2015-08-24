@@ -41,7 +41,7 @@ import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 
 /* com.tverts: retrade domain (invoices) */
 
-import com.tverts.retrade.domain.invoice.GenFixBuySellInvoices;
+import com.tverts.retrade.domain.invoice.GenFixInvoices;
 import com.tverts.retrade.domain.invoice.Invoice;
 import com.tverts.retrade.domain.invoice.InvoiceEdit;
 import com.tverts.retrade.domain.invoice.Invoices;
@@ -192,7 +192,7 @@ public class ShuntInvoicesBuySell extends ShuntPlain
 		}
 
 		//?: {GenFixBuySellInvoices took place}
-		if(ctx().getGenCtx().containsKey(GenFixBuySellInvoices.class))
+		if(ctx().getGenCtx().containsKey(GenFixInvoices.class))
 		{
 			LU.I(getLog(), "GenFixBuySellInvoices took place in this run," +
 			  " toggling skipped for now...");

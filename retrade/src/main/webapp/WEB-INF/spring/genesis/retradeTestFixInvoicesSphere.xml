@@ -20,10 +20,14 @@
           <list>
 
             <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-             · Fixes some of Buy-Sell Invoices (in their order)
+             · Fixes some of Buy-Sell-Move Invoices (in their order)
              · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-            <bean class = 'com.tverts.retrade.domain.invoice.GenFixBuySellInvoices'/>
+            <bean class = 'com.tverts.retrade.domain.invoice.GenFixInvoices'>
 
+              <property name = 'buy'  value = 'true'/>
+              <property name = 'sell' value = 'true'/>
+              <property name = 'move' value = 'true'/>
+            </bean>
           </list>
         </property>
       </bean>

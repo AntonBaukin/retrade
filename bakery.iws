@@ -10,12 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-80 [beta]: fixed look of Buy Invoices edit window and the related dialogs, Need to fix time field!">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/.edit-buy.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/.edit-buy.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auth/auth.ivy" afterPath="$PROJECT_DIR$/auth/auth.ivy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/shunts/ShuntInvoicesBuySell.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/shunts/ShuntInvoicesBuySell.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/extjs.ux/extjs_ux.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/extjs.ux/extjs_ux.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/info-buy.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/info-buy.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeTestFixInvoicesSphere.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeTestFixInvoicesSphere.xml" />
+      <change type="MOVED" beforePath="D:\Anton\Sources\bakery\retrade\src\main\java\com\tverts\retrade\domain\invoice\GenFixBuySellInvoices.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/GenFixInvoices.java" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,20 +40,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="extjs_ux.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/extjs.ux/extjs_ux.js">
+      <file leaf-file-name="GenFixInvoices.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/GenFixInvoices.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1043478" vertical-offset="1445" max-vertical-offset="4783">
-              <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+            <state vertical-scroll-proportion="-1.5802469" vertical-offset="1712" max-vertical-offset="3015">
+              <caret line="51" column="13" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
               <folding>
-                <element signature="e#1991#2254#0" expanded="true" />
-                <element signature="e#2290#2450#0" expanded="true" />
-                <element signature="e#2492#2855#0" expanded="true" />
-                <element signature="e#2650#2747#0" expanded="true" />
-                <element signature="e#3037#3092#0" expanded="true" />
-                <element signature="e#3268#4068#0" expanded="true" />
-                <element signature="e#3576#3619#0" expanded="true" />
-                <element signature="e#3641#3685#0" expanded="true" />
+                <element signature="method#getInvoicesTypes#0;class#GenFixInvoices#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -70,9 +62,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEditModelBean.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceEditFirm.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/firm/GetContractor.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/InvoiceEditModelData.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/edit-contractor.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceEditDate.java" />
@@ -87,6 +76,9 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/info-buy.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/.edit-buy.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/extjs.ux/extjs_ux.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/GenFixBuySellInvoices.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/GenFixInvoices.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeTestFixInvoicesSphere.xml" />
       </list>
     </option>
   </component>
@@ -438,43 +430,43 @@
     <option name="ACTIVE_ACTIONS" value=",SHOW_PROPERTIES" />
   </component>
   <component name="SvnConfiguration" maxAnnotateRevisions="256" cleanupOnStartRun="true">
-    <configuration>C:\Users\Anton\AppData\Roaming\Subversion</configuration>
+    <configuration>d:\Anton\AppData\Roaming\Subversion</configuration>
     <supportedVersion>125</supportedVersion>
   </component>
   <component name="SvnFileUrlMappingImpl">
     <option name="myMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="I:\src\bakery" />
-          <option name="myCopyRoot" value="I:\src\bakery" />
+          <option name="myVcsRoot" value="D:\Anton\Sources\bakery" />
+          <option name="myCopyRoot" value="D:\Anton\Sources\bakery" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="I:\src\bakery\auth" />
-          <option name="myCopyRoot" value="I:\src\bakery\auth" />
+          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\auth" />
+          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\auth" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="I:\src\bakery\retrade" />
-          <option name="myCopyRoot" value="I:\src\bakery\retrade" />
+          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\retrade" />
+          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\retrade" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="I:\src\bakery\xroot\src" />
-          <option name="myCopyRoot" value="I:\src\bakery\xroot\src" />
+          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\xroot\src" />
+          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\xroot\src" />
         </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="I:\src\bakery" />
-          <option name="myCopyRoot" value="I:\src\bakery" />
+          <option name="myVcsRoot" value="D:\Anton\Sources\bakery" />
+          <option name="myCopyRoot" value="D:\Anton\Sources\bakery" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="I:\src\bakery\auth" />
-          <option name="myCopyRoot" value="I:\src\bakery\auth" />
+          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\auth" />
+          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\auth" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="I:\src\bakery\xroot\src" />
-          <option name="myCopyRoot" value="I:\src\bakery\xroot\src" />
+          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\xroot\src" />
+          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\xroot\src" />
         </SvnCopyRootSimple>
       </list>
     </option>
@@ -503,13 +495,14 @@
     <frame x="377" y="24" width="1158" height="965" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33023256" sideWeight="0.5582329" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3293979" sideWeight="0.5582329" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31627908" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38134593" sideWeight="0.4211009" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32931727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32480535" sideWeight="0.61445785" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32480535" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32854405" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -525,7 +518,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32931727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24297188" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -553,7 +545,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-73 [beta]: done editing price change good groups. Going to fix the associated Contractors changes missing when editing a Price List..." />
     <MESSAGE value="ui-73 [beta]: added ability to remove goods from the Price Lists. Associated contractors are affected correctly." />
     <MESSAGE value="ui-73 [beta]: going filter Goods Units related to a many variants of the selected objects..." />
     <MESSAGE value="ui-73 [beta]: implemented complex search of Good Units by the selected entities." />
@@ -578,7 +569,8 @@
     <MESSAGE value="ui-79 [stable]: unified size of selection set buttons." />
     <MESSAGE value="ui-80 [beta]: fixed look of Buy  Invoices info window. Going to the edit..." />
     <MESSAGE value="ui-80 [beta]: fixed look of Buy Invoices edit window and the related dialogs, Need to fix time field!" />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-80 [beta]: fixed look of Buy Invoices edit window and the related dialogs, Need to fix time field!" />
+    <MESSAGE value="ui-80 [alpha]: creating Ext-UX Time field..." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-80 [alpha]: creating Ext-UX Time field..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -701,6 +693,14 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/extjs.ux/extjs_ux.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1712" max-vertical-offset="3376">
+          <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/build/share.ivy">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8137369" vertical-offset="3061" max-vertical-offset="6971">
@@ -721,7 +721,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.68917346" vertical-offset="768" max-vertical-offset="2171">
           <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -737,7 +736,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13429257" vertical-offset="0" max-vertical-offset="978">
           <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -745,7 +743,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.352518" vertical-offset="3066" max-vertical-offset="5314">
           <caret line="210" column="37" selection-start-line="210" selection-start-column="6" selection-end-line="210" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -753,10 +750,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.50669914" vertical-offset="2832" max-vertical-offset="8725">
           <caret line="203" column="31" selection-start-line="203" selection-start-column="0" selection-end-line="203" selection-end-column="0" />
-          <folding>
-            <marker date="1440400803973" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1440400803973" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -780,23 +773,39 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7290168" vertical-offset="512" max-vertical-offset="2290">
           <caret line="72" column="86" selection-start-line="70" selection-start-column="86" selection-end-line="70" selection-end-column="86" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/extjs.ux/extjs_ux.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1043478" vertical-offset="1445" max-vertical-offset="4783">
-          <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.60520095" vertical-offset="1216" max-vertical-offset="4190">
+          <caret line="196" column="82" selection-start-line="108" selection-start-column="25" selection-end-line="108" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/services/mainService.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.8156028" vertical-offset="1536" max-vertical-offset="4094">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeTestFixInvoicesSphere.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4539007" vertical-offset="0" max-vertical-offset="1406">
+          <caret line="24" column="71" selection-start-line="24" selection-start-column="71" selection-end-line="24" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/GenFixInvoices.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.5802469" vertical-offset="1712" max-vertical-offset="3015">
+          <caret line="51" column="13" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
           <folding>
-            <element signature="e#1991#2254#0" expanded="true" />
-            <element signature="e#2290#2450#0" expanded="true" />
-            <element signature="e#2492#2855#0" expanded="true" />
-            <element signature="e#2650#2747#0" expanded="true" />
-            <element signature="e#3037#3092#0" expanded="true" />
-            <element signature="e#3268#4068#0" expanded="true" />
-            <element signature="e#3576#3619#0" expanded="true" />
-            <element signature="e#3641#3685#0" expanded="true" />
+            <element signature="method#getInvoicesTypes#0;class#GenFixInvoices#0" expanded="true" />
           </folding>
         </state>
       </provider>
