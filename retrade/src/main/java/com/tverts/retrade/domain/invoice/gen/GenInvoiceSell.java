@@ -18,6 +18,10 @@ import com.tverts.genesis.GenCtx;
 
 import com.tverts.objects.Param;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
 /* com.tverts: retrade domain (goods + prices) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
@@ -119,7 +123,8 @@ public class GenInvoiceSell extends GenInvoiceBase
 
 		//~: assign good price
 		if(1 + ctx.gen().nextInt(100) <= getPricesPercent())
-			((SellGood)good).setPriceList(gp.getPriceList());
+			((SellGood)good).setPriceList(
+			  HiberPoint.reload(gp.getPriceList()));
 	}
 
 	protected boolean     hasResGoods(GenCtx ctx, InvoiceData data)

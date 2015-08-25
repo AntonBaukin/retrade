@@ -17,19 +17,18 @@ ${v.forceSecureEdit()}
   <script type = "text/javascript">
   //<![CDATA[
 
-  (function()
-  {
-    var winmain = extjsf.co('winmain', '${rootView.extjsDomain}');
-    winmain.setTitle('${z:jss(v.winmainTitleEdit)}')
-
-    winmain.setBox(ReTrade.desktop.calcWindowBox({
-      x: winmain.getX(), y: winmain.getY(),
-      height: winmain.getHeight(), widthpt: 560
-    }))
-  })()
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(v.winmainTitleEdit)}')
 
   //]]>
   </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pt(1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
 
 
   <!-- [toolbar -->
@@ -44,7 +43,6 @@ ${v.forceSecureEdit()}
 
 
   <!-- [cancel edit button] -->
-
   <x:winaction-button coid = "${z:vid(v, 'cancel-edit')}"
      action = "#{v.gotoCancelEditInvoice}">
 
@@ -60,13 +58,23 @@ ${v.forceSecureEdit()}
 
 
   <!-- [delete goods button] -->
-
   <x:component coid = "${z:vid(v, 'delete-goods')}">
 
     <f:facet name = "extjs-props">
       xtype: 'button', text: 'Удалить',
-      margin: extjsf.pts(0, 0, 0, 4),
+      margin: extjsf.pts(0, 0, 0, 8),
       tooltipType: 'title', tooltip: 'Удалить выделенные товары'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [add good button] -->
+  <x:component coid = "${z:vid(v, 'add-good')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Добавить',
+      margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
+      tooltip: 'Добавить товар после выбранной строки (либо в конец списка)'
     </f:facet>
   </x:component>
 
@@ -79,14 +87,21 @@ ${v.forceSecureEdit()}
   </x:component>
 
 
-  <!-- [add good button] -->
-
-  <x:component coid = "${z:vid(v, 'add-good')}">
-
+  <!-- [select contractor] -->
+  <x:component coid = "${z:vid(v, 'edit-contractor')}">
     <f:facet name = "extjs-props">
-      xtype: 'button', text: 'Добавить',
-      margin: extjsf.pts(0, 4, 0, 0),
-      tooltipType: 'title', tooltip: 'Добавить товар после выбранной строки (либо в конец списка)'
+      xtype: 'button', text: 'Выбрать к-та',
+      margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
+      tooltip: 'Выбрать контрагента для этой накладной'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [edit date] -->
+  <x:component coid = "${z:vid(v, 'edit-date')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Изменить дату',
+      margin: extjsf.pts(0, 8, 0, 0)
     </f:facet>
   </x:component>
 
@@ -133,7 +148,7 @@ ${v.forceSecureEdit()}
 
     <f:facet name = "label-props">
       labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 0),
-      cls: 'retrade-form-label-cell retrade-form-label-big',
+      cls: 'retrade-info-title-label retrade-form-label-upper',
       html: "&lt;span title = 'Производить товары-продукты (по умолчанию: не полуфабрикаты) по формулам (рецептам)'&gt;автопроизводство&lt;/span&gt;"
     </f:facet>
   </x:checkbox-field>
@@ -161,7 +176,7 @@ ${v.forceSecureEdit()}
         <td class = "retrade-info-title retrade-info-title-invoice-summ">
           <div>Сумма</div>
         </td>
-        <td class = "retrade-info-value retrade-info-value-invoice-summ">
+        <td class = "retrade-info-value retrade-info-red retrade-info-value-invoice-summ">
           <div id = "${z:vid(v, 'invoice-summ-val')}" class = "retrade-format-to-currency">
             #{(empty v.invoiceSumm)?('0.00'):(v.invoiceSumm)}
           </div>
@@ -190,24 +205,21 @@ ${v.forceSecureEdit()}
 <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'invoice-form')}">
 
   <f:facet name = "extjs-props">
-
-    region: 'north', frame: true,
-    margin: extjsf.pts(1, 1, 0, 1),
-    bodyPadding: extjsf.pts(2, 0, 2, 0),
-    layout: {type: 'table', columns: 1}
-
+    border: false, bodyPadding: extjsf.pt(2),
+    margin: extjsf.pts(1, 1, 2, 1),
+    bodyCls: 'retrade-text-panel',
+    layout: { type: 'vbox', align: 'stretch' }
   </f:facet>
 
-  <!-- [first row: code + date -->
+
+  <!-- [first row: code + store -->
 
   <x:component coid = "${z:vid(v, '_invoice_form_first')}">
 
     <f:facet name = "extjs-props">
-
-      frame: false, border: false, width: '100%',
-      layout: {type: 'table', columns: 4},
-      bodyCls: 'retrade-content-panel'
-
+      frame: false, border: false,
+      layout: { type: 'hbox', align: 'middle' },
+      bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
 
@@ -217,7 +229,7 @@ ${v.forceSecureEdit()}
       value = "#{v.model.invoice.invoiceCode}">
 
       <f:facet name = "extjs-props">
-        margin: extjsf.pts(0, 4, 0, 0), width: extjsf.ex(22),
+        width: extjsf.ex(22), fieldStyle : { textAlign: 'center' },
         allowBlank: false, validator: function()
         {
           return extjsf.bind("${z:vid(v, 'invoice-code')}", '${rootView.extjsDomain}').validityStatus || true;
@@ -262,117 +274,56 @@ ${v.forceSecureEdit()}
     <!-- invoice code field] -->
 
 
-    <!-- [invoice date preview -->
-
-    <x:html coid = "${z:vid(v, '_invoice_date_html')}">
-      <f:facet name = "extjs-props">
-        xtype: 'panel', frame: false, border: false,
-        bodyCls: 'retrade-content-panel'
-      </f:facet>
-
-      <div class = "retrade-info-div retrade-info-div-invoice">
-        <span class = "retrade-info-title retrade-info-title-invoice-date">Дата</span><span
-          class = "retrade-info-value retrade-info-value-invoice-date">#{v.invoiceDate}</span>
-      </div>
-    </x:html>
-
-    <x:component coid = "${z:vid(v, 'edit-date')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Изменить',
-        margin: extjsf.pts(0, 0, 0, 2)
-      </f:facet>
-    </x:component>
-
-    <!-- invoice date preview] -->
-
-  </x:component>
-
-  <!-- first row: code + date] -->
-
-
-  <!-- [second row: contractor -->
-
-  <x:component coid = "${z:vid(v, '_invoice_form_second')}">
-
-    <f:facet name = "extjs-props">
-
-      frame: false, border: false, width: '100%',
-      layout: {type: 'table', columns: 2},
-      margin: extjsf.pts(2, 0, 0, 0),
-      bodyCls: 'retrade-content-panel'
-
-    </f:facet>
-
-
-    <!-- [invoice contractor preview -->
-
-    <x:html coid = "${z:vid(v, '_invoice_contractor_html')}">
-      <f:facet name = "extjs-props">
-        xtype: 'panel', frame: false, border: false,
-        bodyCls: 'retrade-content-panel'
-      </f:facet>
-
-      <div class = "retrade-info-div retrade-info-div-invoice">
-        <span class = "retrade-info-title retrade-info-title-invoice-contractor">Контрагент</span><span
-          id = "${z:vid(v, 'invoice-contractor-name')}"
-          class = "retrade-info-value retrade-info-value-invoice-contractor">#{v.contractorName}<span
-            class = "retrade-info-value-message-hard retrade-info-value-invoice-contractor-message"
-              style = "display: #{(empty v.contractorName)?('inherit'):('none')};">Выберете контрагента</span></span>
-      </div>
-    </x:html>
-
-    <x:component coid = "${z:vid(v, 'edit-contractor')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Выбрать',
-        margin: extjsf.pts(0, 0, 0, 2)
-      </f:facet>
-    </x:component>
-
-    <!-- invoice contractor preview] -->
-
-  </x:component>
-
-  <!-- second row: contractor] -->
-
-
-  <!-- [third row: store -->
-
-  <x:component coid = "${z:vid(v, '_invoice_form_third')}">
-
-    <f:facet name = "extjs-props">
-
-      frame: false, border: false, width: '100%',
-      layout: {type: 'table', columns: 2},
-      margin: extjsf.pts(4, 0, 0, 0),
-      bodyCls: 'retrade-content-panel'
-
-    </f:facet>
-
-
-    <!-- [store drop-list -->
-
+    <!-- [store drop-list] -->
     <x:drop-list coid = "${z:vid(v, 'trade-store')}"
       value = "#{v.model.tradeStore}" labels = "#{v.tradeStoresLabels}">
 
       <f:facet name = "drop-props">
-        width: extjsf.pt(192)
+        width: extjsf.ex(32)
       </f:facet>
 
       <f:facet name = "label-props">
         text: 'Склад', cls: 'retrade-info-title-label'
       </f:facet>
     </x:drop-list>
-
-    <!-- store drop-list] -->
-
   </x:component>
 
-  <!-- third row: store] -->
+  <!-- first row: code + store] -->
 
 
-  <!-- [altered invoice hidden field]-->
-  <x:hidden-field coid = "${z:vid(v, 'altered-field')}"
-    value = "#{v.altered}"/>
+  <!-- [second row: date + contractor -->
+
+  <x:html coid = "${z:vid(v, '_invoice_date_contractor_html')}">
+    <f:facet name = "extjs-props">
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(4, 0, 2, 0),
+      bodyCls: 'retrade-transparent-panel retrade-edit-invoice-buy'
+    </f:facet>
+
+    <table class = "retrade-info-table retrade-info-table-invoice-first"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-invoice-date">
+          <div>Дата</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-date">
+          <div>#{v.invoiceDate}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-invoice-contractor">
+          <div>Контрагент</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-contractor">
+          <div id = "${z:vid(v, 'invoice-contractor-name')}">#{v.contractorName}<span
+            class = "retrade-info-value-message-hard retrade-info-value-invoice-contractor-message"
+              style = "display: #{(empty v.contractorName)?('inherit'):('none')};">Выберете контрагента</span></div>
+        </td>
+      </tr>
+    </table>
+  </x:html>
+
+  <!-- second row: date + contractor] -->
 
 
   <!-- [special: submit actions] -->
@@ -950,9 +901,8 @@ ${v.forceSecureEdit()}
 
     <f:facet name = "grid-props">
 
-      title: 'Продаваемые товары', region: 'center',
-      margin: extjsf.pts(2, 1, 1, 1),
-      cls: 'ux-grid-not-mark-dirty',
+      title: 'Продаваемые товары', flex: 1,
+      margin: extjsf.pts(2, 1, 1, 1), cls: 'ux-grid-not-mark-dirty',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
       columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns(),

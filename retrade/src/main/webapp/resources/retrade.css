@@ -248,12 +248,6 @@ label.retrade-form-label-cell, .retrade-form-label-cell label,
   cursor: pointer;
 }
 
-.retrade-form-label-big
-{
-  text-transform: uppercase;
-  font-size: 9pt; letter-spacing: 0.4pt;
-}
-
 .retrade-form-fieldset-caption
 {
   font-family: 'Tahoma', sans-serif;
@@ -705,6 +699,12 @@ td.retrade-info-title:first-child div,
  caption.retrade-info-title
 {
   margin-left: 0;
+}
+
+.retrade-info-title-label.retrade-form-label-upper
+{
+  text-transform: uppercase;
+  font-size: 9pt; letter-spacing: 0.4pt;
 }
 
 .retrade-info-title-label-bigger

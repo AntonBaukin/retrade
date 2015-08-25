@@ -361,7 +361,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Наименование", dataIndex: 'goodName', sortable: false,
-		   width: extjsf.ex(20), flex: 2
+		   flex: 3, tdCls: 'ux-grid-column-smaller'
 		 },
 
 		 {
@@ -376,13 +376,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Прайс-лист", dataIndex: 'priceListName', sortable: false,
-		   width: extjsf.ex(14), flex: 1, renderer: function(v, meta, rec)
+		   flex: 2, renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
-				  '№', rec.get('priceListCode'), '; ', v
-				)), '"' );
+				  rec.get('priceListCode'), '; ', v )), '"' )
 
-				return v;
+				return v
 		   }
 		 },
 

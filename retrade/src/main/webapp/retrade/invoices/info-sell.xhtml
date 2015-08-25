@@ -19,19 +19,30 @@ ${v.forceSecureModelEntity('view')}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-  (function()
-  {
-    var winmain = extjsf.co('winmain', '${rootView.extjsDomain}');
-    winmain.setTitle('${z:jss(v.winmainTitleInfo)}')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(v.winmainTitleInfo)}')
 
-    winmain.setBox(ReTrade.desktop.calcWindowBox({
-      x: winmain.getX(), y: winmain.getY(),
-      height: winmain.getHeight(), widthpt: 560
+    //~: adjust window size
+    Ext.onReady(ZeT.timeouted(150, function()
+    {
+      //~: set window width
+      ReTrade.desktop.applyWindowBox({
+        name: 'winmain', domain: '${rootView.extjsDomain}',
+        widthpt: 620, prevsize: ''
+      })
     }))
-  })()
 
+  //]]>
   </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pt(1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
 
 
   <!-- [invoice toolbar -->
@@ -49,19 +60,15 @@ ${v.forceSecureModelEntity('view')}
     <x:component coid = "${z:vid(v, 'close_window')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть',
-
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
-            co().close()
+          extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
-
       </f:facet>
     </x:component>
 
 
     <!-- [toggle resulting goods table with sources filtered] -->
-
     <x:component coid = "${z:vid(v, 'toggle-sources')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Списаны',
@@ -73,7 +80,6 @@ ${v.forceSecureModelEntity('view')}
 
 
     <!-- [toggle resulting goods table with formulas filtered] -->
-
     <x:component coid = "${z:vid(v, 'toggle-formulas')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Формулы',
@@ -99,12 +105,10 @@ ${v.forceSecureModelEntity('view')}
         action = "#{v.doFixInvoice}">
 
         <f:facet name = "extjs-props">
-          margin: extjsf.pts(0, 4, 0, 0),
-          text: 'Провести'
+          text: 'Провести', margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
 
         <f:facet name = "action-params">
-
           '${v.modelParam}'  : '${v.modelKey}'
         </f:facet>
       </x:winaction-button>
@@ -117,7 +121,6 @@ ${v.forceSecureModelEntity('view')}
         </f:facet>
 
         <f:facet name = "action-params">
-
           '${v.modelParam}'  : '${v.modelKey}',
           '${v.entityParam}' : '${v.entity.primaryKey}'
         </f:facet>
@@ -213,7 +216,7 @@ ${v.forceSecureModelEntity('view')}
           <td class = "retrade-info-title retrade-info-title-invoice-summ">
             <div>Сумма</div>
           </td>
-          <td class = "retrade-info-value retrade-info-value-invoice-summ">
+          <td class = "retrade-info-value retrade-info-red retrade-info-value-invoice-summ">
             <div id = "${z:vid(v, 'invoice-summ-val')}" class = "retrade-format-to-currency">
               #{v.invoiceSumm}
             </div>
@@ -241,13 +244,13 @@ ${v.forceSecureModelEntity('view')}
 
   <x:html coid = "${z:vid(v, 'invoice_info')}">
     <f:facet name = "extjs-props">
-
-      xtype: 'panel', frame: true, region: 'north',
-      margin: extjsf.pts(1, 1, 0, 1)
-
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(1, 1, 2, 1),
+      bodyPadding: extjsf.pts(3, 2, 3, 2),
+      bodyCls: 'retrade-text-panel retrade-info-invoice-buy'
     </f:facet>
 
-    <table class = "retrade-info-table retrade-info-table-invoice-code"
+    <table class = "retrade-info-table retrade-info-table-invoice-first"
       cellpadding = "0" cellspacing = "0" border = "0">
 
       <tr>
@@ -258,33 +261,6 @@ ${v.forceSecureModelEntity('view')}
           <div>#{v.entity.code}</div>
         </td>
 
-        <td class = "retrade-info-title retrade-info-title-invoice-date">
-          <div>Дата</div>
-        </td>
-        <td class = "retrade-info-value retrade-info-value-invoice-date">
-          <div>#{v.invoiceDateTime}</div>
-        </td>
-      </tr>
-    </table>
-
-
-    <table class = "retrade-info-table retrade-invoice-info-table-contractor"
-      cellpadding = "0" cellspacing = "0" border = "0">
-
-      <tr>
-        <td class = "retrade-info-title retrade-info-title-invoice-contractor">
-          <div>Контрагент</div>
-        </td>
-        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-contractor">
-          <div>#{v.contractorName}</div>
-        </td>
-      </tr>
-    </table>
-
-
-    <table class = "retrade-info-table retrade-invoice-info-table-store"
-           cellpadding = "0" cellspacing = "0" border = "0">
-      <tr>
         <td class = "retrade-info-title retrade-info-title-invoice-store">
           <div>Склад</div>
         </td>
@@ -294,6 +270,25 @@ ${v.forceSecureModelEntity('view')}
       </tr>
     </table>
 
+    <table class = "retrade-info-table retrade-invoice-info-table-second"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr>
+        <td class = "retrade-info-title retrade-info-title-invoice-date">
+          <div>Дата</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-date">
+          <div>#{v.invoiceDateTime}</div>
+        </td>
+
+        <td class = "retrade-info-title retrade-info-title-invoice-contractor">
+          <div>Контрагент</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-contractor">
+          <div>#{v.contractorName}</div>
+        </td>
+      </tr>
+    </table>
   </x:html>
 
   <!-- invoice fields view] -->
@@ -302,9 +297,9 @@ ${v.forceSecureModelEntity('view')}
   <x:component coid = "${z:vid(v, '_invoice_goods')}">
 
     <f:facet name = "extjs-props">
-      xtype: 'panel', region: 'center', border: false,
-      bodyCls: 'retrade-transparent-panel', layout: 'fit',
-      margin: extjsf.pts(2, 1, 1, 1)
+      xtype: 'panel', flex: 1,
+      border: false, layout: 'fit',
+      bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
 
