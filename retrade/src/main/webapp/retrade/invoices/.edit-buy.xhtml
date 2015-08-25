@@ -43,7 +43,6 @@ ${v.forceSecureEdit()}
 
 
   <!-- [cancel edit button] -->
-
   <x:winaction-button coid = "${z:vid(v, 'cancel-edit')}"
      action = "#{v.gotoCancelEditInvoice}">
 
@@ -59,7 +58,6 @@ ${v.forceSecureEdit()}
 
 
   <!-- [delete goods button] -->
-
   <x:component coid = "${z:vid(v, 'delete-goods')}">
 
     <f:facet name = "extjs-props">
@@ -89,21 +87,21 @@ ${v.forceSecureEdit()}
   </x:component>
 
 
-  <!-- [edit date] -->
-  <x:component coid = "${z:vid(v, 'edit-date')}">
-    <f:facet name = "extjs-props">
-      xtype: 'button', text: 'Изменить дату',
-      margin: extjsf.pts(0, 4, 0, 0)
-    </f:facet>
-  </x:component>
-
-
   <!-- [select contractor] -->
   <x:component coid = "${z:vid(v, 'edit-contractor')}">
     <f:facet name = "extjs-props">
       xtype: 'button', text: 'Выбрать к-та',
-      margin: extjsf.pts(0, 8, 0, 0), tooltipType: 'title',
+      margin: extjsf.pts(0, 4, 0, 0), tooltipType: 'title',
       tooltip: 'Выбрать контрагента для этой накладной'
+    </f:facet>
+  </x:component>
+
+
+  <!-- [edit date] -->
+  <x:component coid = "${z:vid(v, 'edit-date')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Изменить дату',
+      margin: extjsf.pts(0, 8, 0, 0)
     </f:facet>
   </x:component>
 
@@ -193,12 +191,12 @@ ${v.forceSecureEdit()}
 <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'invoice-form')}">
 
   <f:facet name = "extjs-props">
-    border: false,
-    bodyPadding: extjsf.pt(2),
+    border: false, bodyPadding: extjsf.pt(2),
     margin: extjsf.pts(1, 1, 2, 1),
     bodyCls: 'retrade-text-panel',
     layout: { type: 'vbox', align: 'stretch' }
   </f:facet>
+
 
   <!-- [first row: code + store -->
 
@@ -283,11 +281,10 @@ ${v.forceSecureEdit()}
 
   <x:html coid = "${z:vid(v, '_invoice_date_contractor_html')}">
     <f:facet name = "extjs-props">
-      xtype: 'panel', frame: false, border: false,
+      xtype: 'panel', border: false,
       margin: extjsf.pts(4, 0, 2, 0),
       bodyCls: 'retrade-transparent-panel retrade-edit-invoice-buy'
     </f:facet>
-
 
     <table class = "retrade-info-table retrade-info-table-invoice-first"
       cellpadding = "0" cellspacing = "0" border = "0">
@@ -573,7 +570,7 @@ ${v.forceSecureEdit()}
       ownerCt.doLayout()
   }
 
-  //~: columns editors
+  //~: calculate summary cost
   extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCalcSumm = function()
   {
     //~: recalculate summary
@@ -708,7 +705,11 @@ ${v.forceSecureEdit()}
             plan.query = plan.combo.getValue()
 
           if(ZeTS.ises(plan.query)) plan.query = ''; else
+          {
+            if(plan.query.match(/.\d$/))
+              plan.query = plan.query.substring(0, plan.query.length - 1)
             plan.query = encodeURIComponent(plan.query)
+          }
         },
 
         select: function(f, sel)
@@ -722,10 +723,11 @@ ${v.forceSecureEdit()}
 
 
     //~: volume column editor
-    colVol.retradeHasEditor = true;
+    colVol.retradeHasEditor = true
+    colVol.renderer = renderVolume
     colVol.editor = Ext.create('Ext.form.field.Text', {
       maskRe: retrade.rdecimal, validator : validateVolume,
-      renderer: renderVolume, listeners: { specialkey : onSpecialKey }
+      listeners: { specialkey : onSpecialKey }
     });
 
     //~: volume cost column editor

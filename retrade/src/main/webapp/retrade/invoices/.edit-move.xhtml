@@ -17,11 +17,18 @@ ${v.forceSecureEdit()}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle('${z:jss(v.winmainTitleEdit)}')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(v.winmainTitleEdit)}')
 
   //]]>
   </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pt(1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
 
 
   <!-- [toolbar -->
@@ -36,7 +43,6 @@ ${v.forceSecureEdit()}
 
 
   <!-- [cancel edit button] -->
-
   <x:winaction-button coid = "${z:vid(v, 'cancel-edit')}"
      action = "#{v.gotoCancelEditInvoice}">
 
@@ -52,19 +58,17 @@ ${v.forceSecureEdit()}
 
 
   <!-- [delete goods button] -->
-
   <x:component coid = "${z:vid(v, 'delete-goods')}">
 
     <f:facet name = "extjs-props">
       xtype: 'button', text: "Удалить#{v.correction?(' зан.'):('')}",
-      margin: extjsf.pts(0, 0, 0, 4),
+      margin: extjsf.pts(0, 0, 0, 8),
       tooltipType: 'title', tooltip: "Удалить выделенные#{v.correction?(' заносимые'):('')} товары"
     </f:facet>
   </x:component>
 
 
   <!-- [delete taken goods button] -->
-
   <x:component coid = "${z:vid(v, 'delete-goods-taken')}">
 
     <f:facet name = "extjs-props">
@@ -72,6 +76,29 @@ ${v.forceSecureEdit()}
       xtype: 'button', text: "Удалить #{v.correction?('спи.'):('сырьё')}",
       margin: extjsf.pts(0, 0, 0, 4),
       tooltipType: 'title', tooltip: "Удалить выделенные#{v.correction?(' списываемые'):('')} товары#{v.freeProduce?('-сырьё'):('')}"
+    </f:facet>
+  </x:component>
+
+
+  <!-- [add taken good button] -->
+  <x:component coid = "${z:vid(v, 'add-good-taken')}">
+
+    <f:facet name = "extjs-props">
+      hidden: #{not v.twoTables},
+      xtype: 'button', text: "Добавить #{v.correction?('спи.'):('сырьё')}",
+      margin: extjsf.pts(0, 0, 0, 4),
+      tooltipType: 'title', tooltip: "Добавить товар#{v.freeProduce?('-сырьё'):('')} после выбранной строки (либо в конец) списка#{v.correction?(' списываемых товаров'):('')}"
+    </f:facet>
+  </x:component>
+
+
+  <!-- [add good button] -->
+  <x:component coid = "${z:vid(v, 'add-good')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: "Добавить#{v.correction?(' зан.'):('')}",
+      margin: extjsf.pts(0, 0, 0, 4),
+      tooltipType: 'title', tooltip: "Добавить товар после выбранной строки (либо в конец) списка#{v.correction?(' заносимых товаров'):('')}"
     </f:facet>
   </x:component>
 
@@ -84,27 +111,11 @@ ${v.forceSecureEdit()}
   </x:component>
 
 
-  <!-- [add taken good button] -->
-
-  <x:component coid = "${z:vid(v, 'add-good-taken')}">
-
+  <!-- [edit date] -->
+  <x:component coid = "${z:vid(v, 'edit-date')}">
     <f:facet name = "extjs-props">
-      hidden: #{not v.twoTables},
-      xtype: 'button', text: "Добавить #{v.correction?('спи.'):('сырьё')}",
-      margin: extjsf.pts(0, 4, 0, 0),
-      tooltipType: 'title', tooltip: "Добавить товар#{v.freeProduce?('-сырьё'):('')} после выбранной строки (либо в конец) списка#{v.correction?(' списываемых товаров'):('')}"
-    </f:facet>
-  </x:component>
-
-
-  <!-- [add good button] -->
-
-  <x:component coid = "${z:vid(v, 'add-good')}">
-
-    <f:facet name = "extjs-props">
-      xtype: 'button', text: "Добавить#{v.correction?(' зан.'):('')}",
-      margin: extjsf.pts(0, 4, 0, 0),
-      tooltipType: 'title', tooltip: "Добавить товар после выбранной строки (либо в конец) списка#{v.correction?(' заносимых товаров'):('')}"
+      xtype: 'button', text: 'Изменить дату',
+      margin: extjsf.pts(0, 8, 0, 0)
     </f:facet>
   </x:component>
 
@@ -138,24 +149,21 @@ ${v.forceSecureEdit()}
 <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'invoice-form')}">
 
   <f:facet name = "extjs-props">
-
-    region: 'north', frame: true,
-    margin: extjsf.pts(1, 1, 0, 1),
-    bodyPadding: extjsf.pts(2, 0, 2, 0),
-    layout: {type: 'table', columns: 1}
-
+    border: false, bodyPadding: extjsf.pt(2),
+    margin: extjsf.pts(1, 1, 2, 1),
+    bodyCls: 'retrade-text-panel',
+    layout: { type: 'vbox', align: 'stretch' }
   </f:facet>
+
 
   <!-- [first row: code + date -->
 
   <x:component coid = "${z:vid(v, '_invoice_form_first')}">
 
     <f:facet name = "extjs-props">
-
-      frame: false, border: false, width: '100%',
-      layout: {type: 'table', columns: 4},
-      bodyCls: 'retrade-content-panel'
-
+      frame: false, border: false,
+      layout: { type: 'hbox', align: 'middle' },
+      bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
 
@@ -165,7 +173,7 @@ ${v.forceSecureEdit()}
       value = "#{v.model.invoice.invoiceCode}">
 
       <f:facet name = "extjs-props">
-        margin: extjsf.pts(0, 4, 0, 0), width: extjsf.ex(22),
+        width: extjsf.ex(22), fieldStyle : { textAlign: 'center' },
         allowBlank: false, validator: function()
         {
           return extjsf.bind("${z:vid(v, 'invoice-code')}", '${rootView.extjsDomain}').validityStatus || true;
@@ -214,22 +222,24 @@ ${v.forceSecureEdit()}
 
     <x:html coid = "${z:vid(v, '_invoice_date_html')}">
       <f:facet name = "extjs-props">
-        xtype: 'panel', frame: false, border: false,
-        bodyCls: 'retrade-content-panel'
+        xtype: 'panel', border: false,
+        margin: extjsf.pts(0, 0, 0, 4),
+        bodyCls: 'retrade-transparent-panel retrade-edit-invoice-move'
       </f:facet>
 
-      <div class = "retrade-info-div retrade-info-div-invoice">
-        <span class = "retrade-info-title retrade-info-title-invoice-date">Дата</span><span
-          class = "retrade-info-value retrade-info-value-invoice-date">#{v.invoiceDate}</span>
-      </div>
+      <table class = "retrade-info-table retrade-info-table-invoice-first"
+        cellpadding = "0" cellspacing = "0" border = "0">
+
+        <tr>
+          <td class = "retrade-info-title retrade-info-title-invoice-date">
+            <div>Дата</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-invoice-date">
+            <div>#{v.invoiceDate}</div>
+          </td>
+        </tr>
+      </table>
     </x:html>
-
-    <x:component coid = "${z:vid(v, 'edit-date')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Изменить',
-        margin: extjsf.pts(0, 0, 0, 2)
-      </f:facet>
-    </x:component>
 
     <!-- invoice date preview] -->
 
@@ -238,27 +248,24 @@ ${v.forceSecureEdit()}
   <!-- first row: code + date] -->
 
 
-  <!-- [second + third row: source + destination store -->
+  <!-- [second row: source + destination store -->
 
-  <x:component coid = "${z:vid(v, '_invoice_form_second_third')}">
-
+  <x:component coid = "${z:vid(v, '_invoice_form_second')}">
     <f:facet name = "extjs-props">
-
-      frame: false, border: false,
-      margin: extjsf.pts(6, 0, 0, 0),
-      layout: {type: 'table', columns: 2},
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(4, 0, 2, 0),
+      layout: { type: 'hbox', align: 'middle' },
       bodyCls: 'retrade-transparent-panel'
-
     </f:facet>
 
 
+    <!-- [source store] -->
     <ui:fragment rendered = "#{not v.invoice.altered}">
-
     <x:drop-list coid = "${z:vid(v, 'trade-store-source')}"
       value = "#{v.model.tradeStoreSource}" labels = "#{v.tradeStoresLabels}">
 
       <f:facet name = "drop-props">
-        width: extjsf.ex(48), validator: function()
+        width: extjsf.ex(32), validator: function()
         {
           if("#{v.invoice.altered}" == 'true') return true;
           var x = extjsf.bind("${z:vid(v, 'trade-store-source')}", '${rootView.extjsDomain}').value();
@@ -271,21 +278,21 @@ ${v.forceSecureEdit()}
         text: 'Со склада', cls: 'retrade-info-title-label'
       </f:facet>
     </x:drop-list>
-
-    <x:component coid = "${z:vid(v, '_invoice_form_second_third_sep')}">
-      <f:facet name = "extjs-props">
-        xtype: 'panel', colspan: 2, frame: false, border: false,
-        bodyCls: 'retrade-transparent-panel', height: extjsf.pt(4)
-      </f:facet>
-    </x:component>
     </ui:fragment>
 
 
+    <!-- [destination store] -->
     <x:drop-list coid = "${z:vid(v, 'trade-store')}"
       value = "#{v.model.tradeStore}" labels = "#{v.tradeStoresLabels}">
 
       <f:facet name = "drop-props">
-        width: extjsf.ex(48, -20)
+        width: extjsf.ex(32), validator: function()
+        {
+          if("#{v.invoice.altered}" == 'true') return true;
+          var x = extjsf.bind("${z:vid(v, 'trade-store-source')}", '${rootView.extjsDomain}').value();
+          var y = extjsf.bind("${z:vid(v, 'trade-store')}", '${rootView.extjsDomain}').value();
+          return (x != y) || 'Склады списания и назначения совпадают!';
+        }
       </f:facet>
 
       <f:facet name = "label-props">
@@ -296,7 +303,7 @@ ${v.forceSecureEdit()}
 
   </x:component>
 
-  <!-- second + third row: source + destination store] -->
+  <!-- second row: source + destination store] -->
 
 
   <!-- [special: submit actions] -->
@@ -570,11 +577,10 @@ ${v.forceSecureEdit()}
     )
   })
 
-
   //~: columns editors
   extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns = function()
   {
-    var cols = ZeT.defined('retrade.columns.InvoiceMoveGoodEdited')();
+    var cols = ZeT.defined('retrade.columns.InvoiceMoveGoodEdited')()
     var colCode = cols[1];
     var colVol  = cols[3];
 
@@ -588,6 +594,15 @@ ${v.forceSecureEdit()}
       m.set('goodName', sel.get('goodName'))
       m.set('volumeUnitName', sel.get('measureCode'))
       m.set('volumeInteger', sel.get('integer'))
+      m.set('goodVolume', '')
+    }
+
+    function renderVolume(v, meta)
+    {
+      ZeT.log('Volume of ', meta.record.get('goodCode'), ' = ', v)
+      return retrade.round2str(
+        meta.record.get('volumeInteger')?(0):(3),
+        parseFloat(v))
     }
 
     function validateVolume(v)
@@ -646,7 +661,7 @@ ${v.forceSecureEdit()}
     }
 
     //~: good column editor with drop-list of goods lookup
-    colCode.retradeHasEditor = true;
+    colCode.retradeHasEditor = true
     colCode.editor = Ext.create('Ext.form.field.ComboBox', {
       store: "${z:vid(v, 'goodsStore')}",
       valueField: 'goodCode', displayField: 'goodCode',
@@ -676,29 +691,33 @@ ${v.forceSecureEdit()}
           if(ZeTS.ises(plan.query))
             plan.query = plan.combo.getValue();
 
-          if(!ZeTS.ises(plan.query))
-            plan.query = encodeURIComponent(plan.query);
+          if(ZeTS.ises(plan.query)) plan.query = ''; else
+          {
+            if(plan.query.match(/.\d$/))
+              plan.query = plan.query.substring(0, plan.query.length - 1)
+            plan.query = encodeURIComponent(plan.query)
+          }
         },
 
         select: function(f, sel)
         {
-          if(sel.length == 1) sel = sel[0]; else sel = null;
-          if(!sel || ZeTS.ises(sel.get('goodCode'))) return;
+          if(ZeT.isa(sel)) if(sel.length == 1) sel = sel[0]; else sel = null
+          if(!sel || ZeTS.ises(sel.get('goodCode'))) return
           selectGood(sel)
         }
       }
-    });
+    })
 
 
     //~: volume column editor
-    colVol.retradeHasEditor = true;
+    colVol.retradeHasEditor = true
+    colVol.renderer = renderVolume
     colVol.editor = Ext.create('Ext.form.field.Text', {
       maskRe: retrade.rdecimal, validator : validateVolume,
       listeners: { specialkey : onSpecialKey }
-    });
+    })
 
-
-    return cols;
+    return cols
   }
 
   //]]>
@@ -710,10 +729,9 @@ ${v.forceSecureEdit()}
   <x:component coid = "${z:vid(v, '_invoice_goods')}">
 
     <f:facet name = "extjs-props">
-      xtype: 'panel', region: 'center', border: false,
+      xtype: 'panel', flex: 1, border: false,
       bodyCls: 'retrade-transparent-panel',
-      layout: {type: 'vbox', align: 'stretch'},
-      margin: extjsf.pts(2, 1, 1, 1)
+      layout: {type: 'vbox', align: 'stretch'}
     </f:facet>
 
   <x:data-grid coid = "${z:vid(v, 'grid')}"

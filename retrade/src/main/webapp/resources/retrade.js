@@ -3140,7 +3140,7 @@ var retrade = ZeT.define('retrade',
 		}
 
 		if(!ZeT.isn(v)) return undefined
-		ZeT.assert(ZeT.isi(n) && (n > 0))
+		ZeT.assert(ZeT.isi(n) && (n >= 0))
 
 		//?: {is integer}
 		if(n == 0)

@@ -780,8 +780,9 @@ hr.retrade-info-hr
 
 .x-grid-cell.retrade-grid-doc-state-edited span
 {
-  color: green; border: 1px dotted green;
-  border-radius: 4px; padding: 1px;
+  background-color: green; color: white;
+  border-radius: 4px; padding: 3px 2px 2px 2px;
+  -moz-osx-font-smoothing: auto;
 }
 
 
@@ -814,29 +815,6 @@ div.retrade-info-value-invoice-state,
 td.retrade-info-value-invoice-altered
 {
   padding-left: 6pt;
-}
-
-td.retrade-info-value-invoice-move-store,
-  td.retrade-info-value-invoice-move-source
-{
-  width: 100%;
-}
-
-td.retrade-info-value-invoice-move-store div,
-  td.retrade-info-value-invoice-move-source div
-{
-  font-family: 'Tahoma', sans-serif; font-size: 9pt;
-  margin-bottom: 1.5pt; white-space: nowrap; overflow: hidden;
-  background-color: transparent;
-}
-
-
-/* info panel [retrade/invoices/edit-buy-sell] */
-
-
-.retrade-info-div-invoice .retrade-info-value-invoice-contractor
-{
-  font-size: 10pt;
 }
 
 

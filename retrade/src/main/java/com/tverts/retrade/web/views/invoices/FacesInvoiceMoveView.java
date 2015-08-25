@@ -46,13 +46,9 @@ public class   FacesInvoiceMoveView
 
 	public String  getWinmainTitleInfo()
 	{
-		String title = !getEntity().getInvoiceData().isAltered()
-		  ?(getEntity().getInvoiceType().getTitleLo())
-		  :(Invoices.getInvoiceAlteredType(getEntity()).getTitleLo());
-
-		return String.format("%s №%s от %s",
-		  title, getEntity().getCode(),
-		  DU.date2str(getEntity().getInvoiceDate())
+		return formatTitle(
+		  Invoices.getInvoiceEffectiveType(getEntity()).getTitleLo(),
+		  getEntity().getCode(), DU.date2str(getEntity().getInvoiceDate())
 		);
 	}
 

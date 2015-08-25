@@ -19,11 +19,20 @@ ${v.forceSecureModelEntity('view')}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle('${z:jss(v.winmainTitleInfo)}')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(v.winmainTitleInfo)}')
 
+  //]]>
   </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pt(1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
 
 
   <!-- [invoice toolbar -->
@@ -41,19 +50,16 @@ ${v.forceSecureModelEntity('view')}
     <x:component coid = "${z:vid(v, 'close_window')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть',
-
         handler : function()
         {
           extjsf.bind('winmain', '${rootView.extjsDomain}').
             co().close()
         }
-
       </f:facet>
     </x:component>
 
 
     <!-- [toggle resulting goods table with sources filtered] -->
-
     <x:component coid = "${z:vid(v, 'toggle-sources')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Сырьё',
@@ -65,7 +71,6 @@ ${v.forceSecureModelEntity('view')}
 
 
     <!-- [toggle resulting goods table with formulas filtered] -->
-
     <x:component coid = "${z:vid(v, 'toggle-formulas')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Формулы',
@@ -96,7 +101,6 @@ ${v.forceSecureModelEntity('view')}
         </f:facet>
 
         <f:facet name = "action-params">
-
           '${v.modelParam}'  : '${v.modelKey}'
         </f:facet>
       </x:winaction-button>
@@ -110,7 +114,6 @@ ${v.forceSecureModelEntity('view')}
         </f:facet>
 
         <f:facet name = "action-params">
-
           '${v.modelParam}'  : '${v.modelKey}',
           '${v.entityParam}' : '${v.entity.primaryKey}'
         </f:facet>
@@ -134,7 +137,6 @@ ${v.forceSecureModelEntity('view')}
         </f:facet>
 
         <f:facet name = "action-params">
-
           '${v.modelParam}'  : '${v.modelKey}'
         </f:facet>
       </x:winaction-button>
@@ -158,8 +160,7 @@ ${v.forceSecureModelEntity('view')}
 
   <f:facet name = "status">
 
-    <!-- [invoice state -->
-
+    <!-- [invoice state] -->
     <x:html coid = "${z:vid(v, 'invoice_status')}">
       <f:facet name = "extjs-props">
         frame: false, border: false
@@ -169,20 +170,19 @@ ${v.forceSecureModelEntity('view')}
         #{v.invoiceStateName}
       </div>
     </x:html>
-
-    <!-- invoice state] -->
   </f:facet>
 
   <!-- invoice status bar] -->
 
 
+  <!-- [invoice fields view -->
 
   <x:html coid = "${z:vid(v, 'invoice_info')}">
     <f:facet name = "extjs-props">
-
-      xtype: 'panel', region: 'north',
-      frame: true, margin: extjsf.pts(1, 1, 0, 1)
-
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(1, 1, 2, 1),
+      bodyPadding: extjsf.pts(3, 2, 3, 2),
+      bodyCls: 'retrade-text-panel retrade-info-invoice-buy'
     </f:facet>
 
     <table class = "retrade-info-table retrade-info-table-invoice-code"
@@ -196,12 +196,23 @@ ${v.forceSecureModelEntity('view')}
           <div>#{v.entity.code}</div>
         </td>
 
-        <td class = "retrade-info-title retrade-info-title-invoice-date">
-          <div>Дата</div>
-        </td>
-        <td class = "retrade-info-value retrade-info-value-invoice-date">
-          <div>#{v.invoiceDateTime}</div>
-        </td>
+        <ui:fragment rendered = "#{v.invoiceAltered}">
+          <td class = "retrade-info-title retrade-info-title-invoice-date">
+            <div>Дата</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-invoice-date">
+            <div>#{v.invoiceDateTime}</div>
+          </td>
+        </ui:fragment>
+
+        <ui:fragment rendered = "#{not v.invoiceAltered}">
+          <td class = "retrade-info-title retrade-info-title-invoice-move-store">
+            <div>На склад</div>
+          </td>
+          <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-move-store">
+            <div>#{v.invoiceStore}</div>
+          </td>
+        </ui:fragment>
       </tr>
     </table>
 
@@ -210,20 +221,18 @@ ${v.forceSecureModelEntity('view')}
       cellpadding = "0" cellspacing = "0" border = "0">
 
       <tr>
+        <td class = "retrade-info-title retrade-info-title-invoice-date">
+          <div>Дата</div>
+        </td>
+        <td class = "retrade-info-value retrade-info-value-invoice-date">
+          <div>#{v.invoiceDateTime}</div>
+        </td>
+
         <td class = "retrade-info-title retrade-info-title-invoice-move-source">
           <div>Со склада</div>
         </td>
-        <td class = "retrade-info-value retrade-info-value-invoice-move-source">
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-move-source">
           <div>#{v.invoiceSource}</div>
-        </td>
-      </tr>
-
-      <tr>
-        <td class = "retrade-info-title retrade-info-title-invoice-move-store">
-          <div>На склад</div>
-        </td>
-        <td class = "retrade-info-value retrade-info-value-invoice-move-store">
-          <div>#{v.invoiceStore}</div>
         </td>
       </tr>
     </table>
@@ -237,7 +246,7 @@ ${v.forceSecureModelEntity('view')}
         <td class = "retrade-info-title retrade-info-title-invoice-move-store">
           <div>Склад</div>
         </td>
-        <td class = "retrade-info-value retrade-info-value-invoice-move-store">
+        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-move-store">
           <div>#{v.invoiceStore}</div>
         </td>
       </tr>
@@ -245,15 +254,7 @@ ${v.forceSecureModelEntity('view')}
     </ui:fragment>
   </x:html>
 
-
-  <x:component coid = "${z:vid(v, '_invoice_goods')}">
-
-    <f:facet name = "extjs-props">
-      xtype: 'panel', region: 'center', border: false,
-      bodyCls: 'retrade-transparent-panel',
-      layout: {type: 'vbox', align: 'stretch'},
-      margin: extjsf.pts(2, 1, 1, 1)
-    </f:facet>
+  <!-- invoice fields view] -->
 
 
   <!-- [invoice goods table -->
@@ -315,7 +316,6 @@ ${v.forceSecureModelEntity('view')}
     </f:facet>
   </x:data-grid>
 
-  </x:component>
 
   <script type = "text/javascript">
   //<![CDATA[
@@ -385,7 +385,6 @@ ${v.forceSecureModelEntity('view')}
   </script>
 
   <!-- resulting goods table] -->
-
 
 </x:winmain>
 </ui:define>
