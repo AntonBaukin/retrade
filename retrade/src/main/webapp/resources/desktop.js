@@ -1505,8 +1505,11 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		//~: target window move
 		this._on('move', ZeT.fbind(this._on_wnd_move, this))
 
+		//HINT: for now, we turn this move, or window
+		// with size changed by program will jump.
+
 		//~: target window resize
-		this._on('resize', ZeT.fbind(this._on_wnd_resize, this))
+		//this._on('resize', ZeT.fbind(this._on_wnd_resize, this))
 
 		//~: browser window resize
 		if(!this._on_resize_)

@@ -163,8 +163,7 @@
           </property>
         </bean>
 
-        <!--
-        &lt;!&ndash; Produce Invoices (Manual and Auto Calculated)&ndash;&gt;
+        <!-- Produce Invoices (Manual and Auto Calculated)-->
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>
 
@@ -191,7 +190,7 @@
               <property name  = 'volumeMax'
                         value = '25'/>
 
-              &lt;!&ndash; The percent of Invoices with auto-calculated production &ndash;&gt;
+              <!-- The percent of Invoices with auto-calculated production -->
               <property name  = 'autoPercent'
                         value = '75'/>
 
@@ -199,7 +198,7 @@
           </property>
         </bean>
 
-
+        <!--
         &lt;!&ndash; Volume Correction Invoices &ndash;&gt;
 
         <bean class = 'com.tverts.genesis.DaysGenDisp$Entry'>

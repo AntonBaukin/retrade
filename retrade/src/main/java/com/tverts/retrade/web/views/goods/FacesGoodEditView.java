@@ -76,6 +76,7 @@ import com.tverts.retrade.web.data.goods.MeasureUnitsModelData;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.DU;
 import com.tverts.support.EX;
 import com.tverts.support.OU;
@@ -784,12 +785,25 @@ public class FacesGoodEditView extends ModelView
 		//?: {NOT creating} almost done here
 		if(!"true".equals(request().getParameter("create")))
 		{
-			//~: load the good unit
-			GoodUnit gu = bean(GetGoods.class).
-			  getGoodUnit(obtainEntityKeyFromRequestStrict());
+			//~: key of good | calc
+			Long     pk = obtainEntityKeyFromRequestStrict();
+			GoodUnit gu;         //<-- target good unit
+			GoodCalc hc  = null; //<-- history calculation
 
-			//?: {not found}
-			if(gu == null) throw EX.arg("Good Unit specified is not found!");
+			//?: {opening calculation}
+			if("true".equals(request().getParameter("goodCalc")))
+			{
+				hc = EX.assertn(bean(GetGoods.class).getGoodCalc(pk),
+				  "Good Unit Calculation [", pk, "] is not found!");
+
+				//~: good of that calculation
+				gu = hc.getGoodUnit();
+			}
+			//~: load the good unit
+			else
+				gu = EX.assertn(bean(GetGoods.class).getGoodUnit(pk),
+				  "Good Unit [", pk, "] is not found!"
+				);
 
 			//sec: check good of the same domain
 			if(!gu.getDomain().getPrimaryKey().equals(mb.domain()))
@@ -804,6 +818,11 @@ public class FacesGoodEditView extends ModelView
 				  init(gu.getGoodCalc()).
 				  initParts(gu.getGoodCalc())
 				);
+
+			//?: create calc history view
+			if((hc != null) && !CMP.eq(hc, gu.getGoodCalc()))
+				getModel().setHistoryCalc(new GoodCalcView().
+				  init(hc).initParts(hc));
 
 			return mb;
 		}

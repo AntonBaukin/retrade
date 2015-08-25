@@ -75,12 +75,12 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Дата и время", dataIndex: 'docDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(18), flex: 1
+		   width: extjsf.ex(18), flex: 2
 		 },
 
 		 {
 		   text: "Код документа", dataIndex: 'docCode', sortable: false,
-		   width: extjsf.ex(22), flex: 1, renderer: function(v, meta)
+		   width: extjsf.ex(22), flex: 2, renderer: function(v, meta)
 		   {
 				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"';
 				return v;
@@ -89,12 +89,12 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Тип документа", dataIndex: 'docTypeLo', sortable: false,
-		   width: extjsf.ex(28), flex: 1
+		   width: extjsf.ex(28), flex: 3
 		 },
 
 		 {
 		   text: "Состояние", dataIndex: 'docStateLo', sortable: false,
-		   width: extjsf.ex(20), flex: 1, renderer: function(v, meta)
+		   width: extjsf.ex(20), flex: 2, renderer: function(v, meta)
 		   {
 				if(v == 'Проведена')
 					meta.tdCls = 'retrade-grid-doc-state-fixed'
@@ -107,7 +107,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Сумма", dataIndex: 'docCost', sortable: false,
-		   width: extjsf.ex(16), flex: 1, align: 'right',
+		   width: extjsf.ex(16), flex: 2, align: 'right',
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -260,6 +260,7 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'moveOn',          type: 'string'},
 	    {name: 'needCalc',        type: 'string'},
 	    {name: 'calcDate',        type: 'date', dateFormat: 'd.m.Y H:i'},
+	    {name: 'calcKey',         type: 'string'},
 	    {name: 'goodSemiReady',   type: 'string'}
 	  ]
 	})
@@ -668,7 +669,7 @@ ZeT.init('init: retrade.data', function()
 		 {
 		   text: "Формула от", dataIndex: 'calcDate', sortable: false,
 		   renderer: Ext.util.Format.dateRenderer('d.m.Y H:i'),
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(18)
 		 },
 
 		 {

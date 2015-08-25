@@ -8,7 +8,7 @@
 <c:set var = "v" scope = "request" value = "${facesGoodEditView}"/>
 
 ${rootView.forceSecure('view: goods')}
-${v.checkModelRequested}
+${v.checkModelRequestedWithRedirect}
 
 <ui:decorate template = '/resources/.view-modes/body.xhtml'
    xmlns    = 'http://www.w3.org/1999/xhtml'
@@ -22,8 +22,8 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle("#{z:jss(v.calcWindowTitle)}")
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle("#{z:jss(v.calcWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-info',
       name: 'winmain', domain: '${rootView.extjsDomain}'
@@ -237,8 +237,8 @@ ${v.checkModelRequested}
       hidden: #{not v.calcView.derived},
       xtype: 'panel', border: false,
       bodyPadding: extjsf.pt(2),
-      bodyCls: 'retrade-content-panel',
-      layout: {type: 'vbox', align: 'stretch'}
+      bodyCls: 'retrade-text-panel',
+      layout: {type: 'vbox', align: 'center'}
 
     </f:facet>
 

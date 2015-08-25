@@ -68,13 +68,24 @@ ${v.forceSecureEdit()}
   </x:component>
 
 
+  <!-- [add good button] -->
+  <x:component coid = "${z:vid(v, 'add-good')}">
+
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: "Добавить#{v.correction?(' зан.'):('')}",
+      margin: extjsf.pts(0, 0, 0, 4),
+      tooltipType: 'title', tooltip: "Добавить товар после выбранной строки (либо в конец) списка#{v.correction?(' заносимых товаров'):('')}"
+    </f:facet>
+  </x:component>
+
+
   <!-- [delete taken goods button] -->
   <x:component coid = "${z:vid(v, 'delete-goods-taken')}">
 
     <f:facet name = "extjs-props">
       hidden: #{not v.twoTables},
       xtype: 'button', text: "Удалить #{v.correction?('спи.'):('сырьё')}",
-      margin: extjsf.pts(0, 0, 0, 4),
+      margin: extjsf.pts(0, 0, 0, 8),
       tooltipType: 'title', tooltip: "Удалить выделенные#{v.correction?(' списываемые'):('')} товары#{v.freeProduce?('-сырьё'):('')}"
     </f:facet>
   </x:component>
@@ -88,17 +99,6 @@ ${v.forceSecureEdit()}
       xtype: 'button', text: "Добавить #{v.correction?('спи.'):('сырьё')}",
       margin: extjsf.pts(0, 0, 0, 4),
       tooltipType: 'title', tooltip: "Добавить товар#{v.freeProduce?('-сырьё'):('')} после выбранной строки (либо в конец) списка#{v.correction?(' списываемых товаров'):('')}"
-    </f:facet>
-  </x:component>
-
-
-  <!-- [add good button] -->
-  <x:component coid = "${z:vid(v, 'add-good')}">
-
-    <f:facet name = "extjs-props">
-      xtype: 'button', text: "Добавить#{v.correction?(' зан.'):('')}",
-      margin: extjsf.pts(0, 0, 0, 4),
-      tooltipType: 'title', tooltip: "Добавить товар после выбранной строки (либо в конец) списка#{v.correction?(' заносимых товаров'):('')}"
     </f:facet>
   </x:component>
 
@@ -152,7 +152,8 @@ ${v.forceSecureEdit()}
     border: false, bodyPadding: extjsf.pt(2),
     margin: extjsf.pts(1, 1, 2, 1),
     bodyCls: 'retrade-text-panel',
-    layout: { type: 'vbox', align: 'stretch' }
+    layout: { type: "#{v.invoice.altered?('hbox'):('vbox')}",
+      align: "#{v.invoice.altered?('middle'):('stretch')}" }
   </f:facet>
 
 
@@ -253,16 +254,16 @@ ${v.forceSecureEdit()}
   <x:component coid = "${z:vid(v, '_invoice_form_second')}">
     <f:facet name = "extjs-props">
       xtype: 'panel', border: false,
-      margin: extjsf.pts(4, 0, 2, 0),
+      margin: extjsf.pts(#{v.invoice.altered?('0, 0, 2, 4'):('4, 0, 2, 0')}),
       layout: { type: 'hbox', align: 'middle' },
       bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
 
     <!-- [source store] -->
-    <ui:fragment rendered = "#{not v.invoice.altered}">
     <x:drop-list coid = "${z:vid(v, 'trade-store-source')}"
-      value = "#{v.model.tradeStoreSource}" labels = "#{v.tradeStoresLabels}">
+      value = "#{v.model.tradeStoreSource}" labels = "#{v.tradeStoresLabels}"
+      rendered = "#{not v.invoice.altered}">
 
       <f:facet name = "drop-props">
         width: extjsf.ex(32), validator: function()
@@ -278,7 +279,6 @@ ${v.forceSecureEdit()}
         text: 'Со склада', cls: 'retrade-info-title-label'
       </f:facet>
     </x:drop-list>
-    </ui:fragment>
 
 
     <!-- [destination store] -->
@@ -599,7 +599,6 @@ ${v.forceSecureEdit()}
 
     function renderVolume(v, meta)
     {
-      ZeT.log('Volume of ', meta.record.get('goodCode'), ' = ', v)
       return retrade.round2str(
         meta.record.get('volumeInteger')?(0):(3),
         parseFloat(v))

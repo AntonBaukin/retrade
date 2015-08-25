@@ -453,10 +453,17 @@ ${v.checkModelRequestedWithRedirect}
   //~: adjust window size
   Ext.onReady(ZeT.timeouted(150, function()
   {
+    //~: adjust window height
     ReTrade.desktop.resizeToHeight('winmain',
       { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true },
       [ "${z:vid(v, '_add_to_selset')}", "${z:vid(v, '_group')}", "${z:vid(v, '_code_measure')}" ]
     )
+
+    //~: set window width
+    ReTrade.desktop.applyWindowBox({
+      name: 'winmain', domain: '${rootView.extjsDomain}',
+      widthpt: 320, prevsize: ''
+    })
   }))
 
 

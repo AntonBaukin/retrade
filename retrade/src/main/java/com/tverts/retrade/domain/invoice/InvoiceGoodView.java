@@ -247,6 +247,18 @@ public class InvoiceGoodView implements Serializable
 		this.calcDate = calcDate;
 	}
 
+	public Long getCalcKey()
+	{
+		return calcKey;
+	}
+
+	private Long calcKey;
+
+	public void setCalcKey(Long calcKey)
+	{
+		this.calcKey = calcKey;
+	}
+
 	@XmlElement
 	public Boolean getGoodSemiReady()
 	{
@@ -389,6 +401,7 @@ public class InvoiceGoodView implements Serializable
 		if(g.getGoodCalc() != null)
 		{
 			this.calcDate = g.getGoodCalc().getOpenTime();
+			this.calcKey = g.getGoodCalc().getPrimaryKey();
 			this.goodSemiReady = g.getGoodCalc().isSemiReady();
 		}
 
