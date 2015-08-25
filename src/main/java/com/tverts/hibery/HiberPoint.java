@@ -177,6 +177,19 @@ public class HiberPoint
 	}
 
 	@SuppressWarnings("unchecked")
+	public static <E extends NumericIdentity> E
+	                      reload(E e)
+	{
+		if(e == null) return null;
+
+		Class type = HiberPoint.type(e);
+		Long  pkey = e.getPrimaryKey();
+		if(pkey == null) return e;
+
+		return (E) getInstance().getSession().load(type, pkey);
+	}
+
+	@SuppressWarnings("unchecked")
 	public static <E> E   unproxy(E e)
 	{
 		return (E) HiberSystem.getInstance().unproxy(e);
