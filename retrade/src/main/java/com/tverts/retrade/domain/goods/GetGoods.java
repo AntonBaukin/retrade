@@ -268,6 +268,20 @@ from GoodUnit gu where
 	@SuppressWarnings("unchecked")
 	public List           selectGoodUnits(GoodsModelBean mb)
 	{
+		if(!mb.isAggrValues()) //?: {select in a plain}
+		{
+			List res = this.searchGoodUnits(mb);
+
+			for(int i = 0;(i < res.size());i++)
+			{
+				Object[] r = new Object[3];
+				r[0] =  res.get(i);
+				res.set(i, r);
+			}
+
+			return res;
+		}
+
 		QueryBuilder qb = new QueryBuilder();
 
 		//~: from clause

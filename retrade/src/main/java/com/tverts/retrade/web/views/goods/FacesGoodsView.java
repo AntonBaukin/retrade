@@ -100,6 +100,9 @@ public class FacesGoodsView extends ModelView
 		//=: domain
 		mb.setDomain(getDomainKey());
 
+		//=: select aggregated values
+		mb.setAggrValues(true);
+
 		return mb;
 	}
 

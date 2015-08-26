@@ -239,74 +239,34 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		ZeT.assert(ZeT.isn(r.height))
 
 		//~: x-position
+		var maxy = Ext.getBody().getViewSize()
 		if(!ZeT.isu(opts.x)) r.x = opts.x
 		else if(opts.event) r.x = opts.event.getX()
-		else r.x = (Ext.getBody().getWidth() - r.width)/2
+		else r.x = (maxy.width - r.width)/2
 
 		//~: x-offset
-		var x = r.x, max = Ext.getBody().getWidth() - 8
-		if(opts['+x']) x += opts['+x']
+		var x = r.x; if(opts['+x']) x += opts['+x']
 		else if(opts['+xpt']) x += extjsf.pt(opts['+xpt'])
-		if(x + r.width > max) x = max - r.width
+		if(x + r.width > maxy.width) x = maxy.width - r.width
 		if(x >= 0) r.x = x
 
 		//~: y-position
 		if(!ZeT.isu(opts.y)) r.y = opts.y
 		else if(opts.event) r.y = opts.event.getY()
-		else r.y = (Ext.getBody().getHeight() - r.height)/2
+		else r.y = (maxy.height - r.height)/2
 
 		//~: y-offset
-		var y = r.y, may = Ext.getBody().getHeight() - 8
-		if(opts['-y']) y -= opts['-y']
+		var y = r.y; if(opts['-y']) y -= opts['-y']
 		else if(opts['-ypt']) y -= extjsf.pt(opts['-ypt'])
 		if(opts['-height']) y -= opts.height
 
 		if(y < 0) y = 0
-		if(y + r.height > may) y = may - r.height
+		if(y + r.height > maxy.height)
+			y = maxy.height - r.height
 		if(y < 0) y = 0
 		r.y = y
 
 		return r
-	},
-
-	expandSizeMin     : function(opts)
-	{
-		var s, x = {}, comp = ZeT.assertn(
-		  extjsf.co.apply(this, opts))
-
-		this._size_pt(opts)
-
-		if(opts.width && opts.height)
-			s = comp.getSize();
-		else if(opts.width)
-			s = { width: comp.getWidth() }
-		else if(opts.height)
-			s = { height: comp.getHeight() }
-
-		comp.retradePrevSize = s;
-
-		if(opts.width && (opts.width <= s.width))
-			delete opts.width;
-
-		if(opts.height && (opts.height <= s.height))
-			delete opts.height;
-
-		return this.resizeComp(opts);
-	},
-
-	trySqueezeWnd     : function(opts)
-	{
-		var co = ZeT.assertn(extjsf.co(opts));
-
-		var bw = document.body.offsetWidth  - 2;
-		var bh = document.body.offsetHeight - 2;
-
-		var ww = co.getBox();
-		var wx = (ww.x + ww.width  <= bw)?(ww.x):(bw - ww.width);
-		var wy = (ww.y + ww.height <= bh)?(ww.y):(bh - ww.height);
-
-		co.setPagePosition(wx, wy)
-		return this;
 	},
 
 	/**
@@ -1442,11 +1402,11 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		//?: {has the position saved}
 		var xy; if(ZeT.isa(xy = this._xy))
 		{
-			var W = document.body.offsetWidth
-			var H = document.body.offsetHeight
+			var B = Ext.getBody().getViewSize()
+			var W = B.width, H = B.height
 
 			//?: {position is out of frame}
-			if((xy[0] + 10 > W) || (xy[1] + 10 > H))
+			if((xy[0] > W) || (xy[1] > H))
 				delete this._xy
 			else
 			{
@@ -1505,11 +1465,8 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		//~: target window move
 		this._on('move', ZeT.fbind(this._on_wnd_move, this))
 
-		//HINT: for now, we turn this move, or window
-		// with size changed by program will jump.
-
 		//~: target window resize
-		//this._on('resize', ZeT.fbind(this._on_wnd_resize, this))
+		this._on('resize', ZeT.fbind(this._on_wnd_resize, this))
 
 		//~: browser window resize
 		if(!this._on_resize_)
@@ -1580,8 +1537,8 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		//?: {left}
 		if(ax == 'l') xy[0] = 0
 
-		var W = document.body.offsetWidth
-		var H = document.body.offsetHeight
+		var B = Ext.getBody().getViewSize()
+		var W = B.width, H = B.height
 
 		//?: {right}
 		if((ax == 'r') && ZeT.isn(w))
@@ -1605,11 +1562,11 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		delete this._align
 		delete this._xy
 
-		var W = document.body.offsetWidth
+		var B = Ext.getBody().getViewSize()
+		var W = B.width, H = B.height
 		var w = win.getWidth()
-		var H = document.body.offsetHeight
 		var h = win.getHeight()
-		var D = extjsf.inch(0.75) //<-- touch tolerance
+		var D = extjsf.inch(0.5) //<-- sticky tolerance
 		var a, ax = '0', ay = '0'
 
 		//?: {touch left}

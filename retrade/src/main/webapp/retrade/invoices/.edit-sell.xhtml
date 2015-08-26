@@ -20,6 +20,16 @@ ${v.forceSecureEdit()}
     extjsf.co('winmain', '${rootView.extjsDomain}').
       setTitle('${z:jss(v.winmainTitleEdit)}')
 
+    //~: adjust window size
+    if("#{v.altered}" == 'true') Ext.onReady(ZeT.timeouted(150, function()
+    {
+      //~: set window width for columns
+      ReTrade.desktop.applyWindowBox({
+        name: 'winmain', domain: '${rootView.extjsDomain}',
+        widthpt: 680, prevsize: 'edit-sell'
+      })
+    }))
+
   //]]>
   </script>
 
@@ -326,6 +336,10 @@ ${v.forceSecureEdit()}
   <!-- second row: date + contractor] -->
 
 
+  <!-- [altered invoice hidden field]-->
+  <x:hidden-field coid = "${z:vid(v, 'altered-field')}"
+    value = "#{v.altered}"/>
+
   <!-- [special: submit actions] -->
   <h:commandButton id = "submit" value = "submit" style = "display: none;"
     action = "#{v.doSubmitEditInvoice}"/>
@@ -573,6 +587,9 @@ ${v.forceSecureEdit()}
     g.getStore().remove(s)
     extjsf.support.refreshGridIndices(g)
     if(!ZeT.i$x(m)) g.getSelectionModel().select(m)
+
+    //~: calculate the summary
+    extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCalcSumm()
   })
 
   //~: name the empty select option for the price lists
@@ -591,29 +608,31 @@ ${v.forceSecureEdit()}
   //~: altered checkbox clicked
   extjsf.bind("${z:vid(v, 'altered')}", '${rootView.extjsDomain}').on('change', function(cb, checked)
   {
-    var col = extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}'), 'needCalc');
-    ZeT.assert(col).setVisible(checked)
+    var col = extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}'), 'needCalc')
+    ZeT.assertn(col).setVisible(checked)
+
+    if(checked) //~: set window width for more columns
+      ReTrade.desktop.applyWindowBox({
+        name: 'winmain', domain: '${rootView.extjsDomain}',
+        widthpt: 680, prevsize: 'edit-sell'
+      })
   })
 
   //~: callback on volume, cost, and unit cost changed
   extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeColumnEdited = function(ed, e)
   {
     var m = e.record, v = e.value, ov = e.originalValue;
-    if(ZeT.iss(v))  v  = ZeTS.trim(v);
-    if(ZeT.iss(ov)) ov = ZeTS.trim(ov);
+    if(ZeT.iss(v))  v  = ZeTS.trim(v)
+    if(ZeT.iss(ov)) ov = ZeTS.trim(ov)
 
-    function f2s(l, n)
-    {
-      if(isNaN(n)) return '';
-      return '' + n.toFixed(l);
-    }
+    var f2s = retrade.round2str
 
     //?: {volume changed}
-    if(e.field == 'goodVolume') m.set('volumeCost', f2s(5,
+    if(e.field == 'goodVolume') m.set('volumeCost', f2s(2,
       parseFloat(v) * parseFloat(m.get('unitCost'))
     ))
 
-    var clearList = false;
+    var clearList = false
 
     //?: {volume cost changed}
     if((e.field == 'volumeCost') && (v != ov))
@@ -622,13 +641,13 @@ ${v.forceSecureEdit()}
         parseFloat(v) / parseFloat(m.get('goodVolume'))
       ))
 
-      clearList = true;
+      clearList = true
     }
 
     //?: {unit cost changed}
     if((e.field == 'unitCost') && (v != ov))
     {
-      m.set('volumeCost', f2s(5,
+      m.set('volumeCost', f2s(2,
         parseFloat(v) * parseFloat(m.get('goodVolume'))
       ))
 
@@ -638,24 +657,24 @@ ${v.forceSecureEdit()}
     //?: {price list was changed}
     var changePrice = false;
     if((e.field == 'priceListName') && (v != ov))
-      changePrice = true;
+      changePrice = true
 
     //?: {good changed}
     if((e.field == 'goodCode') && (v != ov))
-      changePrice = !ZeTS.ises(m.get('priceList'));
+      changePrice = !ZeTS.ises(m.get('priceList'))
 
     //?: {price need to be changed}
     if(changePrice)
     {
-      var p = parseFloat(m.get('unitPrice'));
+      var p = parseFloat(m.get('unitPrice'))
 
-      if(!isNaN(p)) {
+      if(ZeT.isn(p)) {
 
         //~: set the unit price from the price list
         m.set('unitCost', f2s(2, p))
 
         //~: update the volume cost
-        m.set('volumeCost', f2s(5,
+        m.set('volumeCost', f2s(2,
           parseFloat(p) * parseFloat(m.get('goodVolume'))
         ))
       }
@@ -663,23 +682,30 @@ ${v.forceSecureEdit()}
 
     //?: {manual edit of price} clear the list
     if(clearList) {
-      m.set('goodPrice', undefined)
-      m.set('priceList', undefined)
-      m.set('priceListCode', undefined)
-      m.set('priceListName', undefined)
-      m.set('unitPrice', undefined)
+      m.set('goodPrice', '')
+      m.set('priceList', '')
+      m.set('priceListCode', '')
+      m.set('priceListName', '')
+      m.set('unitCost', '')
     }
 
+    //~: calculate the summary
+    extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCalcSumm()
+  }
+
+  //~: calculate summary cost
+  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCalcSumm = function()
+  {
     //~: recalculate summary
     var s = 0.0; extjsf.co("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').each(function(i)
     {
-      var x = parseFloat(i.get('volumeCost'));
-      if(!isNaN(x)) s += x;
+      var x = parseFloat(i.get('volumeCost'))
+      if(ZeT.isn(x)) s += x
     })
 
     //~: update the status
     var n = ZeTD.n("${z:vid(v, 'invoice-summ-val')}");
-    ZeTD.update(n, f2s(5, s))
+    ZeTD.update(n, retrade.round2str(2, s))
     ZeTD.classes(n, '+retrade-format-to-currency')
     retrade.TreetFCurrency.proc(n)
 
@@ -691,13 +717,13 @@ ${v.forceSecureEdit()}
   //~: columns editors
   extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns = function()
   {
-    var cols = ZeT.defined('retrade.columns.InvoiceSellGoodEdited')();
-    var colCode = cols[1];
-    var colVol  = cols[3];
-    var colList = cols[5];
-    var volCost = cols[6];
-    var unitCost = cols[7];
-    var needCalc = cols[8];
+    var cols = ZeT.defined('retrade.columns.InvoiceSellGoodEdited')()
+    var colCode = cols[1]
+    var colVol  = cols[3]
+    var colList = cols[5]
+    var volCost = cols[6]
+    var unitCost = cols[7]
+    var needCalc = cols[8]
 
     function selectGood(sel)
     {
@@ -709,8 +735,10 @@ ${v.forceSecureEdit()}
       m.set('goodName', sel.get('goodName'))
       m.set('volumeUnitName', sel.get('measureCode'))
       m.set('volumeInteger', sel.get('integer'))
-      m.set('unitPrice', sel.get('price'))
+      m.set('unitCost', sel.get('price'))
       m.set('goodPrice', sel.get('goodPrice'))
+      m.set('goodVolume', '')
+      m.set('volumeCost', '')
     }
 
     function selectPriceList(sel)
@@ -725,6 +753,13 @@ ${v.forceSecureEdit()}
       m.set('unitPrice', sel.get('price'))
 
       g.retradeLastPriceList = sel;
+    }
+
+    function renderVolume(v, meta)
+    {
+      if(meta.record.get('volumeInteger'))
+        return retrade.round2str(0, parseFloat(v))
+      return v
     }
 
     function validateVolume(v)
@@ -811,27 +846,32 @@ ${v.forceSecureEdit()}
         beforequery: function(plan)
         {
           if(ZeTS.ises(plan.query))
-            plan.query = plan.combo.getValue();
+            plan.query = plan.combo.getValue()
 
-          if(!ZeTS.ises(plan.query))
-            plan.query = encodeURIComponent(plan.query);
+          if(ZeTS.ises(plan.query)) plan.query = ''; else
+          {
+            if(plan.query.match(/.\d$/))
+              plan.query = plan.query.substring(0, plan.query.length - 1)
+            plan.query = encodeURIComponent(plan.query)
+          }
         },
 
         select: function(f, sel)
         {
-          if(sel.length == 1) sel = sel[0]; else sel = null;
-          if(!sel || ZeTS.ises(sel.get('goodCode'))) return;
+          if(ZeT.isa(sel)) if(sel.length == 1) sel = sel[0]; else sel = null
+          if(!sel || ZeTS.ises(sel.get('goodCode'))) return
           selectGood(sel)
         }
       }
     });
 
     //~: volume column editor
-    colVol.retradeHasEditor = true;
+    colVol.retradeHasEditor = true
+    colVol.renderer = renderVolume
     colVol.editor = Ext.create('Ext.form.field.Text', {
       maskRe: retrade.rdecimal, validator : validateVolume,
       listeners: { specialkey : onSpecialKey }
-    });
+    })
 
     //~: price list drop-list
     colList.retradeHasEditor = true;
@@ -860,7 +900,7 @@ ${v.forceSecureEdit()}
 
         select: function(f, sel)
         {
-          if(sel.length == 1) sel = sel[0]; else sel = null;
+          if(ZeT.isa(sel)) if(sel.length == 1) sel = sel[0]; else sel = null
           selectPriceList(sel)
         }
       }
@@ -901,8 +941,7 @@ ${v.forceSecureEdit()}
 
     <f:facet name = "grid-props">
 
-      title: 'Продаваемые товары', flex: 1,
-      margin: extjsf.pts(2, 1, 1, 1), cls: 'ux-grid-not-mark-dirty',
+      title: 'Продаваемые товары', flex: 1, cls: 'ux-grid-not-mark-dirty',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
       columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns(),
@@ -913,15 +952,17 @@ ${v.forceSecureEdit()}
           edit: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeColumnEdited,
           beforeedit : function(ed, event)
           {
-             var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+             var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
              if(g.retradeDisabledEditing) return false; else {
-                g.retradeEditEvent = event;
+                g.retradeEditEvent = event
 
-                extjsf.bind("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}').
-                  proxyParams.priceList = event.record.get('priceList');
+                //~: remember price list of the record (for the code drop list)
+                extjsf.co("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}').
+                  getProxy().setExtraParam('priceList', event.record.get('priceList'))
 
-                extjsf.bind("${z:vid(v, 'goodPrices')}", '${rootView.extjsDomain}').
-                  proxyParams.goodUnit = event.record.get('goodUnit');
+                //~: remember good unit of the record (for the price list drop list)
+                extjsf.co("${z:vid(v, 'goodPrices')}", '${rootView.extjsDomain}').
+                  getProxy().setExtraParam('goodUnit', event.record.get('goodUnit'))
              }
           }}
       }],

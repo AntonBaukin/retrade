@@ -45,9 +45,26 @@ public class GoodsModelBean extends DataSelectModelBean
 		return contractor;
 	}
 
+	private Long contractor;
+
 	public void setContractor(Long contractor)
 	{
 		this.contractor = contractor;
+	}
+
+	/**
+	 * Tells to select the aggregated values from the database.
+	 */
+	public boolean isAggrValues()
+	{
+		return aggrValues;
+	}
+
+	private boolean aggrValues;
+
+	public void setAggrValues(boolean aggrValues)
+	{
+		this.aggrValues = aggrValues;
 	}
 
 
@@ -60,24 +77,23 @@ public class GoodsModelBean extends DataSelectModelBean
 	}
 
 
-	/* private: encapsulated data */
-
-	private Long contractor;
-
-
 	/* Serialization */
 
 	public void writeExternal(ObjectOutput o)
 	  throws IOException
 	{
 		super.writeExternal(o);
+
 		IO.longer(o, contractor);
+		o.writeBoolean(aggrValues);
 	}
 
 	public void readExternal(ObjectInput i)
 	  throws IOException, ClassNotFoundException
 	{
 		super.readExternal(i);
+
 		contractor = IO.longer(i);
+		aggrValues = i.readBoolean();
 	}
 }

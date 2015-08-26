@@ -376,7 +376,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Прайс-лист", dataIndex: 'priceListName', sortable: false,
-		   flex: 2, renderer: function(v, meta, rec)
+		   flex: 2, tdCls: 'ux-grid-column-smaller', renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
 				  rec.get('priceListCode'), '; ', v )), '"' )
@@ -387,7 +387,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Цена", dataIndex: 'volumeCost', sortable: false,
-		   width: extjsf.ex(16), align: 'right', 
+		   width: extjsf.ex(14), align: 'right',
 		   renderer: retrade.fcurrency
 		 }
 		];
@@ -431,7 +431,11 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Наименование", dataIndex: 'goodName', sortable: false,
-		   width: extjsf.ex(20), flex: 2
+		   flex: 3, tdCls: 'ux-grid-column-smaller', renderer: function(v, meta)
+		   {
+				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(v), '"' )
+				return v
+		   }
 		 },
 
 		 {
@@ -446,7 +450,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "Прайс-лист", dataIndex: 'priceListName', sortable: false,
-		   width: extjsf.ex(14), flex: 1, renderer: function(v, meta, rec)
+		   flex: 3, tdCls: 'ux-grid-column-smaller', renderer: function(v, meta, rec)
 		   {
 				var t; if(!ZeTS.ises(rec.get('priceList')))
 					t = ZeTS.cat('Прайс-лист №', rec.get('priceListCode'), ': ', v);
@@ -471,7 +475,7 @@ ZeT.init('init: retrade.data', function()
 
 		 {
 		   text: "А/п", dataIndex: 'needCalc', sortable: false,
-		   width: extjsf.ex(8),  renderer: needCalcRenderer
+		   width: extjsf.ex(6), align: 'center', renderer: needCalcRenderer
 		 }
 		];
 	})
