@@ -19,11 +19,20 @@ ${v.forceSecureModelEntity('view')}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle('${z:jss(v.winmainTitleInfo)}')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('${z:jss(v.winmainTitleInfo)}')
 
+  //]]>
   </script>
+
+
+  <f:facet name = "extjs-props">
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyPadding: extjsf.pt(1),
+    bodyCls: 'retrade-back-panel'
+  </f:facet>
 
 
   <!-- [invoice toolbar -->
@@ -40,14 +49,10 @@ ${v.forceSecureModelEntity('view')}
 
     <x:component coid = "${z:vid(v, 'close_window')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Закрыть',
-
-        handler : function()
+        xtype: 'button', text: 'Закрыть', handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
-            co().close()
+          extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
-
       </f:facet>
     </x:component>
 
@@ -58,6 +63,27 @@ ${v.forceSecureModelEntity('view')}
         bodyCls: 'retrade-toolbar-panel'
       </f:facet>
     </x:component>
+
+
+    <!-- [invoice edited -->
+
+    <c:if test = "${v.invoiceEdited}">
+
+      <x:winaction-button coid = "${z:vid(v, 'fix_invoice')}"
+        action = "#{v.doFixInvoice}">
+
+        <f:facet name = "extjs-props">
+          margin: extjsf.pts(0, 0, 0, 0), text: 'Провести',
+          disabled: #{not v.isSecureModelEntity('document: fix')}
+        </f:facet>
+
+        <f:facet name = "action-params">
+          '${v.modelParam}'  : '${v.modelKey}'
+        </f:facet>
+      </x:winaction-button>
+    </c:if>
+
+    <!-- invoice edited] -->
 
   </f:facet>
 
@@ -96,10 +122,10 @@ ${v.forceSecureModelEntity('view')}
 
   <x:html coid = "${z:vid(v, 'invoice_info')}">
     <f:facet name = "extjs-props">
-
-      xtype: 'panel', frame: true, region: 'north',
-      margin: extjsf.pts(1, 1, 0, 1)
-
+      xtype: 'panel', border: false,
+      margin: extjsf.pts(1, 1, 2, 1),
+      bodyPadding: extjsf.pts(3, 2, 3, 2),
+      bodyCls: 'retrade-text-panel retrade-info-invoice-volume-check'
     </f:facet>
 
     <table class = "retrade-info-table retrade-info-table-invoice-code"
@@ -119,12 +145,7 @@ ${v.forceSecureModelEntity('view')}
         <td class = "retrade-info-value retrade-info-value-invoice-date">
           <div>#{v.invoiceDateTime}</div>
         </td>
-      </tr>
-    </table>
 
-    <table class = "retrade-info-table retrade-invoice-info-table-store"
-           cellpadding = "0" cellspacing = "0" border = "0">
-      <tr>
         <td class = "retrade-info-title retrade-info-title-invoice-store">
           <div>Склад</div>
         </td>
@@ -133,7 +154,6 @@ ${v.forceSecureModelEntity('view')}
         </td>
       </tr>
     </table>
-
   </x:html>
 
   <!-- invoice fields view] -->
@@ -141,7 +161,8 @@ ${v.forceSecureModelEntity('view')}
 
   <x:data-store storeId = "${z:vid(v, 'invoiceGoods')}" modelView = "${v}">
     <f:facet name = "store-props">
-      model: 'retrade.model.InvoiceGood'
+      model: 'retrade.model.InvoiceGood',
+      sorters: [{ property: 'goodName', direction: 'ASC' }],
     </f:facet>
 
     <f:facet name = "proxy-props">
@@ -153,8 +174,7 @@ ${v.forceSecureModelEntity('view')}
     storeId = "${z:vid(v, 'invoiceGoods')}">
 
     <f:facet name = "grid-props">
-      region: 'center', title: 'Остатки товаров',
-      margin: extjsf.pts(2, 1, 1, 1), sortableColumns: false,
+      title: 'Остатки товаров', flex: 1, sortableColumns: true,
       columns: ZeT.defined("#{v.invoiceEdited?('retrade.columns.VolumeCheckEdit'):('retrade.columns.VolumeCheckFixed')}")
     </f:facet>
   </x:data-grid>

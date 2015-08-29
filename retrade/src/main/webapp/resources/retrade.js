@@ -583,17 +583,21 @@ ZeT.init('init: retrade.data', function()
 		return [
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
-		   width: extjsf.ex(20), flex: 1
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 1
 		 },
 
 		 {
 		   text: "Ост. объём", dataIndex: 'goodVolume', sortable: false,
+		   width: extjsf.ex(12), align: 'right'
+		 },
+
+		 {
+		   text: "Коррекция", dataIndex: 'goodVolumeDelta', sortable: false,
 		   width: extjsf.ex(12), align: 'right'
 		 },
 
@@ -603,17 +607,31 @@ ZeT.init('init: retrade.data', function()
 		 },
 
 		 {
-		   text: "Коррекция", dataIndex: 'goodVolumeDelta', sortable: false,
-		   width: extjsf.ex(12), align: 'right'
-		 },
-
-		 {
 		   text: "Статус", dataIndex: 'goodVolumeDelta', sortable: false,
-		   width: extjsf.ex(14),  renderer : function(v)
+		   width: extjsf.ex(14), align: 'center', renderer : function(v, meta)
 		   {
-		     if(ZeTS.ises(v)) return '';
-		     var n = parseFloat(v);
-		     return (n == 0)?('совпал'):(n < 0)?('недостаток'):('избыток');
+				if(ZeTS.ises(v)) return ''
+				var n = parseFloat(v)
+				if(!ZeT.isn(n)) return v
+
+				var t; if(n == 0)
+				{
+					v = 'совпал'
+					t = 'В момент проверки объём товара на складе совпал с расчётным'
+				}
+				else if(n < 0)
+				{
+					v = 'недостаток'
+					t = 'В момент проверки объём товара на складе был меньше расчитанного системой'
+				}
+				else
+				{
+					v = 'избыток'
+					t = 'В момент проверки объём товара на складе был меньше расчитанного системой'
+				}
+
+				meta.tdAttr = 'title="' + Ext.String.htmlEncode(t) + '"'
+				return v
 		   }
 		 }
 		];
@@ -624,18 +642,17 @@ ZeT.init('init: retrade.data', function()
 		return [
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
-		   width: extjsf.ex(20), flex: 1
+		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 1
 		 },
 
 		 {
-		   text: "Отс. объём", dataIndex: 'goodVolume', sortable: false,
-		   width: extjsf.ex(12), align: 'right'
+		   text: "Ост. объём", dataIndex: 'goodVolume', sortable: false,
+		   width: extjsf.ex(13), align: 'right'
 		 },
 
 		 {

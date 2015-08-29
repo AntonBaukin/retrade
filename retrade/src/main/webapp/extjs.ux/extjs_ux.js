@@ -13,7 +13,23 @@ Ext.Ajax.setTimeout(1000 * 60 * 30)
 /**
  * Make window shadow to be on all the sides.
  */
-Ext.window.Window.override({ shadow: 'frame' })
+Ext.window.Window.override(
+{
+
+	shadow            : 'frame',
+
+	privates          :
+	{
+		/**
+		 * In present implementation we don't align
+		 * floating windows to any scroll!
+		 */
+		onAlignToScroll: function ()
+		{
+			this.clearAlignEl()
+		}
+	}
+})
 
 /**
  * Override scripts execution function

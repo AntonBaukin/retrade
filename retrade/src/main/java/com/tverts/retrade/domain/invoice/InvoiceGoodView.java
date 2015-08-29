@@ -4,7 +4,7 @@ package com.tverts.retrade.domain.invoice;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.math.RoundingMode;import java.util.Date;
 
 /* Java XML Binding */
 
@@ -428,7 +428,8 @@ public class InvoiceGoodView implements Serializable
 		if(g.getVolumeNegative() != null)
 			v = v.subtract(g.getVolumeNegative());
 
-		this.goodVolumeDelta = (!i)?(v):(v.setScale(0));
+		this.goodVolumeDelta = (i)?(v.setScale(0)):
+		  (v.setScale(3, RoundingMode.HALF_EVEN));
 
 		return this;
 	}

@@ -50,9 +50,9 @@
         <ref bean = 'ordinaryDomainSphere'/>
         <ref bean = 'retradeTestCatalogsSphere'/>
         <ref bean = 'retradeTestDocumentsSphere'/>
-        <ref bean = 'retradeTestInvoicesFixSphere'/>
 
         <!--
+        <ref bean = 'retradeTestInvoicesFixSphere'/>
         <ref bean = 'retradeTestPaymentsSphere'/>
         -->
 
