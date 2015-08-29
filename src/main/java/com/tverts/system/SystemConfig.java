@@ -102,7 +102,7 @@ public class SystemConfig
 	 */
 	public int getUserEventsPage()
 	{
-		return (userEventsPage == 0)?(5):(userEventsPage);
+		return (userEventsPage == 0)?(10):(userEventsPage);
 	}
 
 	private int userEventsPage;
