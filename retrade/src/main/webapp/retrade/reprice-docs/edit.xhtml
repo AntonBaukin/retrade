@@ -99,8 +99,6 @@ ${v.checkModelRequestedWithRedirect}
     <x:component coid = "${z:vid(v, 'add-goods-selset')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Добавить', margin: extjsf.dpts(0, 0, 0, 4),
-        width: retrade_default('button-selset-width'),
-        height: retrade_default('button-selset-height'),
         componentCls: 'retrade-icon-24-inline', iconCls: 'retrade-selset-button-icon',
         tooltipType: 'title', tooltip: 'Добавить товары из текущей выборки товаров, ' +
           'групп товаров, прайс-листов и документов, содержащих товары'
@@ -737,7 +735,7 @@ ${v.checkModelRequestedWithRedirect}
 
           {
             text: 'Цена сейчас', dataIndex: 'priceCur',
-            width: extjsf.ex(12), align: 'right', renderer: retrade.fcurrency
+            width: extjsf.ex(12.5), align: 'right', renderer: retrade.fcurrency
           },
 
           {

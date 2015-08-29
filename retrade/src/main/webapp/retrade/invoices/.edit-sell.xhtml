@@ -409,7 +409,11 @@ ${v.forceSecureEdit()}
     modelProvider = "facesPricesSearch" modelRequest = "prices">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.GoodPriceView', autoLoad: false
+      model: 'retrade.model.GoodPriceView',
+      autoLoad: false, filters: [ function(m)
+      {
+        return !ZeTS.ises(m.get('price'))
+      }]
     </f:facet>
 
     <f:facet name = "proxy-props">
@@ -651,11 +655,11 @@ ${v.forceSecureEdit()}
         parseFloat(v) * parseFloat(m.get('goodVolume'))
       ))
 
-      clearList = true;
+      clearList = true
     }
 
     //?: {price list was changed}
-    var changePrice = false;
+    var changePrice = false
     if((e.field == 'priceListName') && (v != ov))
       changePrice = true
 
@@ -686,7 +690,6 @@ ${v.forceSecureEdit()}
       m.set('priceList', '')
       m.set('priceListCode', '')
       m.set('priceListName', '')
-      m.set('unitCost', '')
     }
 
     //~: calculate the summary
@@ -743,16 +746,27 @@ ${v.forceSecureEdit()}
 
     function selectPriceList(sel)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-      var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record;
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+      var m = ZeT.assertn(g.retradeEditEvent, 'There is no grid edit event!').record
 
+      g.retradeLastPriceList = sel
       m.set('goodPrice', sel.get('goodPrice'))
       m.set('priceList', sel.get('priceList'))
       m.set('priceListCode', sel.get('priceListCode'))
       m.set('priceListName', sel.get('priceListName'))
-      m.set('unitPrice', sel.get('price'))
 
-      g.retradeLastPriceList = sel;
+      if(!ZeTS.ises(sel.get('price')))
+      {
+        m.set('unitCost', sel.get('price'))
+
+        if(!ZeTS.ises(m.get('goodVolume')))
+          m.set('volumeCost', retrade.round2str(2,
+            parseFloat(m.get('unitCost')) * parseFloat(m.get('goodVolume'))
+          ))
+
+        //~: calculate the summary
+        extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCalcSumm()
+      }
     }
 
     function renderVolume(v, meta)
@@ -860,7 +874,7 @@ ${v.forceSecureEdit()}
         {
           if(ZeT.isa(sel)) if(sel.length == 1) sel = sel[0]; else sel = null
           if(!sel || ZeTS.ises(sel.get('goodCode'))) return
-          selectGood(sel)
+          if(sel) selectGood(sel)
         }
       }
     });
@@ -901,7 +915,7 @@ ${v.forceSecureEdit()}
         select: function(f, sel)
         {
           if(ZeT.isa(sel)) if(sel.length == 1) sel = sel[0]; else sel = null
-          selectPriceList(sel)
+          if(sel) selectPriceList(sel)
         }
       }
     });
