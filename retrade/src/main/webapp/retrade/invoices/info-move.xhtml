@@ -269,7 +269,7 @@ ${v.forceSecureModelEntity('view')}
 
     <f:facet name = "grid-props">
       flex: 1, title: "#{(not v.invoiceAltered)?('Перемещённые товары'):(v.correction)?('Занесённые товары'):('Произведённые товары')}",
-      sortableColumns: false, columns: ZeT.defined("retrade.columns.InvoiceMove#{(v.invoiceAltered)?('Alt'):('')}Good")
+      sortableColumns: true, columns: ZeT.defined("retrade.columns.InvoiceMove#{(v.invoiceAltered)?('Alt'):('')}Good")
     </f:facet>
   </x:data-grid>
 
@@ -303,7 +303,7 @@ ${v.forceSecureModelEntity('view')}
 
     <f:facet name = "grid-props">
       title: 'Списанные товары',
-      flex: 1, hidden: #{not v.twoTables}, sortableColumns: false,
+      flex: 1, hidden: #{not v.twoTables}, sortableColumns: true,
       columns: ZeT.defined("#{v.correction?('retrade.columns.InvoiceMoveAltGood'):('retrade.columns.InvoiceResGood')}")
     </f:facet>
   </x:data-grid>

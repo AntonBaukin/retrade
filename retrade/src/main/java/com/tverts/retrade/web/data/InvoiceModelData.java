@@ -84,8 +84,18 @@ public class InvoiceModelData implements ModelData
 		if(!d.isAltered()) return null;
 		List        r = new ArrayList<InvoiceGoodView>(d.getResGoods().size());
 
+		int i = 0, j = 0;
 		for(InvGood g : d.getResGoods())
-			r.add(new InvoiceGoodView().init(g));
+		{
+			InvoiceGoodView x = new InvoiceGoodView().init(g);
+
+			if(x.getCalcKey() != null)
+				x.init(++i - 1);
+			else
+				x.init(++j - 1);
+
+			r.add(x);
+		}
 
 		return (List<InvoiceGoodView>)r;
 	}

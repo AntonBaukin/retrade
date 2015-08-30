@@ -59,8 +59,7 @@ ${v.forceSecureModelEntity('view')}
 
     <x:component coid = "${z:vid(v, 'close_window')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Закрыть',
-        handler : function()
+        xtype: 'button', text: 'Закрыть', handler : function()
         {
           extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
@@ -68,24 +67,106 @@ ${v.forceSecureModelEntity('view')}
     </x:component>
 
 
-    <!-- [toggle resulting goods table with sources filtered] -->
-    <x:component coid = "${z:vid(v, 'toggle-sources')}">
+    <!-- [sources + formulas -->
+    <x:component coid = "${z:vid(v, '_tb_buttons_line')}"
+      rendered = '#{v.invoiceAltered}'>
+
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Списаны',
+        xtype: 'panel', border: false,
         margin: extjsf.pts(0, 4, 0, 4),
-        enableToggle: true, hidden: #{not v.invoiceAltered},
-        tooltipType: 'title', tooltip: 'Отобразить товары фактически списанные со склада'
+        bodyPadding: extjsf.pts(2, 4, 2, 4),
+        cls: 'retrade-toolbar-colour-line-one'
       </f:facet>
-    </x:component>
 
 
-    <!-- [toggle resulting goods table with formulas filtered] -->
-    <x:component coid = "${z:vid(v, 'toggle-formulas')}">
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Формулы',
-        enableToggle: true, hidden: #{not v.invoiceAltered},
-        tooltipType: 'title', tooltip: 'Отобразить промежуточные товары, использованные при производстве по формулам (рецептам), но не списанные со склада'
-      </f:facet>
+      <!-- [toggle resulting goods table with sources filtered] -->
+      <x:component coid = "${z:vid(v, 'toggle-sources')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Списаны',
+          margin: extjsf.pts(0, 4, 0, 0),
+          enableToggle: true, tooltipType: 'title',
+          tooltip: 'Отобразить товары фактически списанные со склада'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [toggle resulting goods table with formulas filtered] -->
+      <x:component coid = "${z:vid(v, 'toggle-formulas')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Формулы',
+          enableToggle: true, tooltipType: 'title',
+          tooltip: 'Отобразить промежуточные товары, использованные ' +
+            'при производстве по формулам (рецептам), но не списанные со склада'
+        </f:facet>
+      </x:component>
+
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}').retradeResultsToggle = function(btn, pressed)
+  {
+    var g = extjsf.co("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}');
+    var r = extjsf.co("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}');
+    var s = extjsf.co("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}');
+    var f = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}');
+
+    //?: display invoice goods
+    if(!pressed)
+    {
+      r.hide(); g.show()
+    }
+    //~: display results table with sources or formulas filtered
+    else
+    {
+      g.hide(); r.show()
+
+      //?: {sources pressed}
+      if(btn == s)
+      {
+        f.toggle(false, true)
+        extjsf.support.columnByDataIndex(r, 'calcDate').hide()
+        r.setTitle('Товары, фактически списанные со склада')
+
+        r.getStore().clearFilter(true)
+        extjsf.support.refreshGridIndices(r)
+        r.getStore().addFilter(function(m)
+        {
+          return !m.get('calcDate');
+        })
+      }
+
+      //?: {formulas pressed}
+      if(btn == f)
+      {
+        s.toggle(false, true)
+        extjsf.support.columnByDataIndex(r, 'calcDate').show()
+        r.setTitle('Промежуточные товары, возникшие при производстве')
+
+        r.getStore().clearFilter(true)
+        extjsf.support.refreshGridIndices(r)
+        r.getStore().addFilter(function(m)
+        {
+          return !!m.get('calcDate');
+        })
+      }
+
+      //?: {not loaded yet} do load
+      if(!r.getStore().getCount()) r.getStore().load({callback: function()
+      {
+        extjsf.support.refreshGridIndices(r)
+      }})
+    }
+  }
+
+  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}').
+    on('toggle', extjsf.bind("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}').retradeResultsToggle)
+
+  extjsf.bind("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}').
+    on('toggle', extjsf.bind("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}').retradeResultsToggle)
+
+      //]]>
+      </script>
     </x:component>
 
 
@@ -184,7 +265,7 @@ ${v.forceSecureModelEntity('view')}
 
           <ui:fragment rendered = "#{v.invoiceAltered}">
             <td class = "retrade-info-value-invoice-altered">
-              <div>[Автопроизводство]</div>
+              <div>Автопроизводство</div>
             </td>
           </ui:fragment>
         </tr>
@@ -319,7 +400,7 @@ ${v.forceSecureModelEntity('view')}
     storeId = "${z:vid(v, 'invoiceGoods')}">
 
     <f:facet name = "grid-props">
-      title: 'Товары накладной', sortableColumns: false,
+      title: 'Товары накладной', sortableColumns: true,
       columns: ZeT.defined('retrade.columns.InvoiceSellGood')
     </f:facet>
   </x:data-grid>
@@ -345,7 +426,7 @@ ${v.forceSecureModelEntity('view')}
     storeId = "${z:vid(v, 'resultGoods')}">
 
     <f:facet name = "grid-props">
-      hidden: true, sortableColumns: false,
+      hidden: true, sortableColumns: true,
       title: 'Товары, списанные со склада',
       columns: ZeT.defined('retrade.columns.InvoiceResGood')
     </f:facet>
@@ -356,72 +437,25 @@ ${v.forceSecureModelEntity('view')}
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle = function(btn, pressed)
+  //~: click the resulting good
+  extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').
+    on('itemdblclick', function(comp, rec, node, row, e)
   {
-    var g = extjsf.co("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}');
-    var r = extjsf.co("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}');
-    var s = extjsf.co("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}');
-    var f = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}');
-
-    //?: display invoice goods
-    if(!pressed)
-    {
-      r.hide(); g.show()
-    }
-    //~: display results table with sources or formulas filtered
-    else
-    {
-      g.hide(); r.show()
-
-      //?: {sources pressed}
-      if(btn == s)
-      {
-        f.toggle(false, true)
-        extjsf.support.columnByDataIndex(r, 'calcDate').hide()
-        r.setTitle('Товары, фактически списанные со склада')
-
-        r.getStore().clearFilter(true)
-        extjsf.support.refreshGridIndices(r)
-        r.getStore().addFilter(function(m)
-        {
-          return !m.get('calcDate');
-        })
-      }
-
-      //?: {formulas pressed}
-      if(btn == f)
-      {
-        s.toggle(false, true)
-        extjsf.support.columnByDataIndex(r, 'calcDate').show()
-        r.setTitle('Промежуточные товары, возникшие при производстве')
-
-        r.getStore().clearFilter(true)
-        extjsf.support.refreshGridIndices(r)
-        r.getStore().addFilter(function(m)
-        {
-          return !!m.get('calcDate');
-        })
-      }
-
-      //?: {not loaded yet} do load
-      if(!r.getStore().getCount()) r.getStore().load({callback: function()
-      {
-        extjsf.support.refreshGridIndices(r)
-      }})
-    }
-  }
-
-  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}').
-    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle)
-
-  extjsf.bind("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}').
-    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle)
+    //?: {displaying the formulas} open it
+    var tf = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}')
+    if(!ZeTS.ises(rec.get('calcKey')) && tf.pressed)
+      retrade_open_window({ url: '/goods/good-calc-info',
+        box: { event: e, widthpt: 540, heightpt: 280, '+xpt': 30, '-ypt': 50 },
+        domainKey: "${z:vid(v, 'view_good_calc')}",
+        params: { goodCalc: true }, collapsible: true,
+        record: rec.get('calcKey')
+      })
+  })
 
   //]]>
   </script>
 
   <!-- resulting goods table] -->
-
 
 </x:winmain>
 </ui:define>

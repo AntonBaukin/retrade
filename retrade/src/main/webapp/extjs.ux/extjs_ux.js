@@ -28,6 +28,12 @@ Ext.window.Window.override(
 		{
 			this.clearAlignEl()
 		}
+	},
+
+	onEsc             : function()
+	{
+		if(ZeT.isf(this['onEscAlt']))
+			return this['onEscAlt'].apply(this, arguments)
 	}
 })
 
@@ -47,7 +53,7 @@ window.execScript   = function()
 	{
 		if(extjsf)
 			extjsf.catchError(e, this, ZeT.a(arguments))
-		else if(console & typeof console.log === 'function')
+		else if(console && typeof console.log === 'function')
 			console.log('Unhandled script evaluation: ', e, this, arguments)
 
 		throw e

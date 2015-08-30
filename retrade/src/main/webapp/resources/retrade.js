@@ -279,18 +279,15 @@ ZeT.init('retrade.globals', function()
 	{
 		return [
 
-		 {
-		   xtype: 'rownumberer', text: '№',
-		   width: extjsf.ex(5), resizable: false, hideable: false
-		 },
+		 ZeT.defined('retrade.column.InvoiceGoodNumber'),
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
 		   width: extjsf.ex(20), flex: 1
 		 },
 
@@ -359,18 +356,15 @@ ZeT.init('retrade.globals', function()
 	{
 		return [
 
-		 {
-		   xtype: 'rownumberer', text: '№',
-		   width: extjsf.ex(5), resizable: false, hideable: false
-		 },
+		 ZeT.defined('retrade.column.InvoiceGoodNumber'),
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
 		   flex: 3, tdCls: 'ux-grid-column-smaller'
 		 },
 
@@ -494,18 +488,15 @@ ZeT.init('retrade.globals', function()
 	{
 		return [
 
-		 {
-		   xtype: 'rownumberer', text: '№',
-		   width: extjsf.ex(5), resizable: false, hideable: false
-		 },
+		 ZeT.defined('retrade.column.InvoiceGoodNumber'),
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
 		   width: extjsf.ex(20), flex: 1
 		 },
 
@@ -542,7 +533,7 @@ ZeT.init('retrade.globals', function()
 
 		 {
 		   text: "Тип", dataIndex: 'goodSemiReady', sortable: false,
-		   width: extjsf.ex(6),  renderer: calcSemiReadyRenderer
+		   width: extjsf.ex(6), align: 'center', renderer: calcSemiReadyRenderer
 		 },
 
 		 {
@@ -680,24 +671,21 @@ ZeT.init('retrade.globals', function()
 	{
 		return [
 
-		 {
-		   xtype: 'rownumberer', text: '№',
-		   width: extjsf.ex(5), resizable: false, hideable: false
-		 },
+		 ZeT.defined('retrade.column.InvoiceGoodNumber'),
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
 		   width: extjsf.ex(20), flex: 2
 		 },
 
 		 {
 		   text: "Тип", dataIndex: 'goodSemiReady', sortable: false,
-		   width: extjsf.ex(6),  renderer: calcSemiReadyRenderer
+		   width: extjsf.ex(6), align: 'center', renderer: calcSemiReadyRenderer
 		 },
 
 		 {
