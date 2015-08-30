@@ -321,10 +321,23 @@ var ZeT = window.ZeT = window.ZeT || {
 		return object
 	},
 
-	defined          : function(name)
+	/**
+	 * Returns the object defined. If object is given,
+	 * creates deep clone of the instance and extends
+	 * it deeply with the properties of that object.
+	 */
+	defined          : function(name /*, obj*/)
 	{
 		ZeT.asserts(name, 'ZeT difinitions are for string names only!')
-		return window.ZeT$Global && window.ZeT$Global[name]
+		var obj = window.ZeT$Global && window.ZeT$Global[name]
+
+		if(ZeT.iso(obj) && ZeT.iso(arguments[1]))
+		{
+			obj = ZeT.deepClone(obj)
+			obj = ZeT.deepExtend(obj, arguments[1])
+		}
+
+		return ZeT.delayedProp(obj)
 	},
 
 	init             : function(name, init)
@@ -348,10 +361,13 @@ var ZeT = window.ZeT = window.ZeT || {
 	{
 		if(ZeT.isf(obj) && (obj.ZeT$delay === true))
 			obj = obj()
-
 		return obj
 	},
 
+	/**
+	 * If property is defined, resolves that delayed
+	 * property. If not, deeply resolves the object.
+	 */
 	delayedProp      : function(obj, prop)
 	{
 		if(!obj) return obj

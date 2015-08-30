@@ -421,7 +421,7 @@ public class InvoiceGoodView implements Serializable
 
 	public InvoiceGoodView init(StoreGood g)
 	{
-		boolean    i = !g.getGoodUnit().getMeasure().getOx().isFractional();
+		boolean i = !g.getGoodUnit().getMeasure().getOx().isFractional();
 
 		BigDecimal v = g.getVolumePositive();
 		if(v == null) v = BigDecimal.ZERO;

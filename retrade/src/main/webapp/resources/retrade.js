@@ -4,7 +4,7 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
-ZeT.init('init: retrade.data', function()
+ZeT.init('retrade.globals', function()
 {
 	Ext.require('Ext.util.Format')
 	Ext.syncRequire('Ext.data.Model')
@@ -28,7 +28,6 @@ ZeT.init('init: retrade.data', function()
 
 
 	//~: form validation response model
-
 	Ext.define('retrade.model.FormValidation', {
 	  extend: 'Ext.data.Model',
 
@@ -39,6 +38,16 @@ ZeT.init('init: retrade.data', function()
 	    {name: 'target', type: 'string', mapping: '@target'},
 	    {name: 'error',  type: 'string'}
 	  ]
+	})
+
+
+	//~: invoice good index
+	ZeT.define('retrade.column.InvoiceGoodNumber',
+	{
+		text: '№', dataIndex: 'index', sortable: true, align: 'right',
+		width: extjsf.dex(5), resizable: false, hideable: false,
+		tdCls: 'x-grid-cell-row-numberer x-grid-cell-special',
+		cls: 'x-row-numberer', innerCls: 'x-grid-cell-inner-row-numberer'
 	})
 
 
@@ -245,6 +254,7 @@ ZeT.init('init: retrade.data', function()
 	  fields: [
 
 	    {name: 'objectKey',       type: 'string'},
+	    {name: 'index',           type: 'int'},
 	    {name: 'goodUnit',        type: 'string'},
 	    {name: 'goodCode',        type: 'string'},
 	    {name: 'goodName',        type: 'string'},
@@ -582,6 +592,8 @@ ZeT.init('init: retrade.data', function()
 	{
 		return [
 
+		 ZeT.defined('retrade.column.InvoiceGoodNumber'),
+
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(12)
@@ -640,6 +652,8 @@ ZeT.init('init: retrade.data', function()
 	ZeT.defineDelay('retrade.columns.VolumeCheckEdit', function()
 	{
 		return [
+
+		 ZeT.defined('retrade.column.InvoiceGoodNumber'),
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
