@@ -516,18 +516,15 @@ ZeT.init('retrade.globals', function()
 	{
 		return [
 
-		 {
-		   xtype: 'rownumberer', text: '№',
-		   width: extjsf.ex(5), resizable: false, hideable: false
-		 },
+		 ZeT.defined('retrade.column.InvoiceGoodNumber'),
 
 		 {
-		   text: "Код товара", dataIndex: 'goodCode', sortable: false,
+		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
 		   width: extjsf.ex(12)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: false,
+		   text: "Наименование", dataIndex: 'goodName', sortable: true,
 		   width: extjsf.ex(20), flex: 1
 		 },
 

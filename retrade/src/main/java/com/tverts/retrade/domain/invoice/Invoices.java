@@ -577,10 +577,15 @@ public class Invoices
 	{
 		if(Invoices.typeInvoiceSell().equals(ut))
 			return "sell";
+
 		if(Invoices.typeInvoiceMove().equals(ut))
 			return "move";
+
 		if(Invoices.typeInvoiceBuy().equals(ut))
 			return "buy";
+
+		if(Invoices.typeVolumeCheck().equals(ut))
+			return "volume-check";
 
 		throw EX.state("Invoice Go-To Type is not known!");
 	}

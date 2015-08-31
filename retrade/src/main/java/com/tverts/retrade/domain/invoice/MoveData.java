@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.invoice;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +26,18 @@ import com.tverts.retrade.domain.store.TradeStore;
  *  P  free-produce prototype;
  *  C  (volume) correction.
  *
- *
  * @author anton.baukin@gmail.com
  */
 public class MoveData extends InvoiceData
 {
-	/* public: MoveData (bean) interface */
+	/* public: Move Data (bean) */
 
 	public TradeStore getSourceStore()
 	{
 		return sourceStore;
 	}
+
+	private TradeStore sourceStore;
 
 	public void setSourceStore(TradeStore sourceStore)
 	{
@@ -46,17 +47,13 @@ public class MoveData extends InvoiceData
 	public List<MoveGood> getGoods()
 	{
 		return (goods != null)?(goods):
-		  (goods = new ArrayList<MoveGood>(0));
+		  (goods = new ArrayList<MoveGood>(4));
 	}
+
+	private List<MoveGood> goods;
 
 	public void setGoods(List<MoveGood> goods)
 	{
 		this.goods = goods;
 	}
-
-
-	/* source trade store reference & move invoice goods */
-
-	private TradeStore     sourceStore;
-	private List<MoveGood> goods;
 }

@@ -1,6 +1,6 @@
 package com.tverts.retrade.web.views.invoices;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,8 +40,7 @@ import com.tverts.support.SU;
  * @author anton.baukin@gmail.com
  */
 @ManagedBean @RequestScoped
-public class   FacesInvoiceMoveEdit
-       extends FacesInvoiceEditBase
+public class FacesInvoiceMoveEdit extends FacesInvoiceEditBase
 {
 	/* public: [edit] interface */
 

@@ -63,6 +63,23 @@
   </navigation-rule>
 
 
+  <!-- [retrade/invoices/info-volume-check] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/info-volume-check.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit-fixed</from-outcome>
+      <to-view-id>/retrade/invoices/ask-edit.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/invoices/edit-volume-check.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
   <!-- [retrade/invoices/ask-edit] -->
 
   <navigation-rule>
@@ -84,6 +101,11 @@
     </navigation-case>
 
     <navigation-case>
+      <from-outcome>edit-volume-check</from-outcome>
+      <to-view-id>/retrade/invoices/edit-volume-check.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
       <from-outcome>cancel-edit-buy</from-outcome>
       <to-view-id>/retrade/invoices/info-buy.xhtml</to-view-id>
     </navigation-case>
@@ -96,6 +118,11 @@
     <navigation-case>
       <from-outcome>cancel-edit-move</from-outcome>
       <to-view-id>/retrade/invoices/info-move.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>cancel-edit-volume-check</from-outcome>
+      <to-view-id>/retrade/invoices/info-volume-check.xhtml</to-view-id>
     </navigation-case>
   </navigation-rule>
 
@@ -176,6 +203,28 @@
   </navigation-rule>
 
 
+  <!-- [retrade/invoices/edit-volume-check] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/invoices/edit-volume-check.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>cancel-edit</from-outcome>
+      <to-view-id>/retrade/invoices/info-volume-check.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit</from-outcome>
+      <to-view-id>/retrade/invoices/info-volume-check.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>edit-date</from-outcome>
+      <to-view-id>/retrade/invoices/edit-date.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
   <!-- [retrade/invoices/edit-date] -->
 
   <navigation-rule>
@@ -194,6 +243,11 @@
     <navigation-case>
       <from-outcome>done-edit-move</from-outcome>
       <to-view-id>/retrade/invoices/edit-move.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-volume-check</from-outcome>
+      <to-view-id>/retrade/invoices/edit-volume-check.xhtml</to-view-id>
     </navigation-case>
 
     <navigation-case>

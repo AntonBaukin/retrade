@@ -73,7 +73,7 @@ ${v.forceSecureModelEntity('view')}
         action = "#{v.doFixInvoice}">
 
         <f:facet name = "extjs-props">
-          margin: extjsf.pts(0, 0, 0, 0), text: 'Провести',
+          margin: extjsf.pts(0, 4, 0, 0), text: 'Провести',
           disabled: #{not v.isSecureModelEntity('document: fix')}
         </f:facet>
 
@@ -81,9 +81,46 @@ ${v.forceSecureModelEntity('view')}
           '${v.modelParam}'  : '${v.modelKey}'
         </f:facet>
       </x:winaction-button>
+
+      <x:winaction-button coid = "${z:vid(v, 'edit_invoice')}"
+        action = "#{v.gotoEditInvoice}">
+
+        <f:facet name = "extjs-props">
+          text: 'Редактировать',
+          disabled: #{not v.isSecureModelEntity('edit')}
+        </f:facet>
+
+        <f:facet name = "action-params">
+          '${v.modelParam}'  : '${v.modelKey}',
+          '${v.entityParam}' : '${v.entity.primaryKey}'
+        </f:facet>
+      </x:winaction-button>
+
     </c:if>
 
     <!-- invoice edited] -->
+
+
+    <!-- [invoice fixed -->
+
+    <c:if test = "${v.invoiceFixed}">
+
+      <x:winaction-button coid = "${z:vid(v, 'edit_fixed_invoice')}"
+        action = "#{v.gotoEditFixedInvoice}">
+
+        <f:facet name = "extjs-props">
+          text: 'Редактировать',
+          disabled: #{not v.isSecureModelEntity('edit')}
+        </f:facet>
+
+        <f:facet name = "action-params">
+          '${v.modelParam}'  : '${v.modelKey}'
+        </f:facet>
+      </x:winaction-button>
+
+    </c:if>
+
+    <!-- invoice fixed] -->
 
   </f:facet>
 

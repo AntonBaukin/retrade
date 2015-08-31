@@ -428,6 +428,10 @@ public class InvoiceEdit extends InvoiceViewExt
 		if(isThatType(Invoices.TYPE_INVOICE_BUY))
 			return new BuyData();
 
+		//?: {volume check invoice}
+		if(isThatType(Invoices.TYPE_VOLUME_CHECK))
+			return new VolData();
+
 		throw EX.state("Unsupported Invoice Type [",
 		  getInvoiceType(), "] Unity Name [", getInvoiceTypeName(), "]!");
 	}
@@ -450,6 +454,9 @@ public class InvoiceEdit extends InvoiceViewExt
 
 		if(d instanceof MoveData)
 			return new MoveGood();
+
+		if(d instanceof VolData)
+			return new VolGood();
 
 		throw EX.state("Unknown Invoice Data class: ", d.getClass(), '!');
 	}

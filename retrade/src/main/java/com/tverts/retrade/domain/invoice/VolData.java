@@ -1,6 +1,6 @@
 package com.tverts.retrade.domain.invoice;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,21 +14,18 @@ import java.util.List;
  */
 public class VolData extends InvoiceData
 {
-	/* public: bean interface */
+	/* public: Volume Data (bean) */
 
 	public List<VolGood> getGoods()
 	{
 		return (goods != null)?(goods):
-		  (goods = new ArrayList<VolGood>(0));
+		  (goods = new ArrayList<VolGood>(4));
 	}
+
+	private List<VolGood> goods;
 
 	public void setGoods(List<VolGood> goods)
 	{
 		this.goods = goods;
 	}
-
-
-	/* volume invoice goods */
-
-	private List<VolGood> goods;
 }
