@@ -11,21 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/.edit-volume-check.xhtml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceVolumeCheckEdit.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesVolumeCheckEdit.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/edit-volume-check.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceMoveEdit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceMoveEdit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEdit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEdit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/Invoices.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/Invoices.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/MoveData.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/MoveData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/VolData.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/VolData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/VolGood.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/VolGood.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/faces-nav.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/faces-nav.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/info-volume-check.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/info-volume-check.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -54,7 +40,7 @@
       <file leaf-file-name="InvoiceEdit.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEdit.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.2023026" vertical-offset="3043" max-vertical-offset="4671">
+            <state vertical-scroll-proportion="0.8667763" vertical-offset="1785" max-vertical-offset="4671">
               <caret line="263" column="29" selection-start-line="263" selection-start-column="29" selection-end-line="263" selection-end-column="29" />
               <folding>
                 <element signature="method#insertNewGoods#0;class#InvoiceEdit#0" expanded="true" />
@@ -102,8 +88,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="386" />
-    <option name="y" value="23" />
+    <option name="x" value="444" />
+    <option name="y" value="25" />
     <option name="width" value="1130" />
     <option name="height" value="965" />
   </component>
@@ -958,7 +944,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="386" y="23" width="1130" height="965" extended-state="0" />
+    <frame x="444" y="25" width="1130" height="965" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32258064" sideWeight="0.5582329" order="1" side_tool="false" content_ui="tabs" />
@@ -1011,7 +997,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-73 [stable]: directly editing price groups change percents in edit-create form of Price Change Documents. Now moving on with the UI, Ext 5.1.1!" />
     <MESSAGE value="ui-74 [stable]: added toolbar-form to assign price groups to the goods of the current selection set." />
     <MESSAGE value="ui-73 [stable]: (forgotten formatter base class)" />
     <MESSAGE value="ui-75 [stable]: added maximize-restore tool for goods tree-grid page." />
@@ -1036,7 +1021,8 @@
     <MESSAGE value="ui-82 [stable]: completed Sell Invoice edit form." />
     <MESSAGE value="ui-83 [beta]: started Volume Check Document info and edit windows..." />
     <MESSAGE value="ui-83 [beta]: final version of Volume Check Document info window." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-83 [beta]: final version of Volume Check Document info window." />
+    <MESSAGE value="ui-83 [beta]: implemented Volume Check Document edit form." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-83 [beta]: implemented Volume Check Document edit form." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1300,7 +1286,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceEdit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.2023026" vertical-offset="3043" max-vertical-offset="4671">
+        <state vertical-scroll-proportion="0.8667763" vertical-offset="1785" max-vertical-offset="4671">
           <caret line="263" column="29" selection-start-line="263" selection-start-column="29" selection-end-line="263" selection-end-column="29" />
           <folding>
             <element signature="method#insertNewGoods#0;class#InvoiceEdit#0" expanded="true" />
