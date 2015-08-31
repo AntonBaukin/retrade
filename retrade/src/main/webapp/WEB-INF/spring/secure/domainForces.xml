@@ -309,6 +309,32 @@
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Create (Invoice) Volume Check
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.secure.force.DomainKeyForce'>
+
+          <property name  = 'UID'
+                    value = 'domain: create: volume check'/>
+
+          <property name  = 'secKey'
+                    value = 'create: volume check'/>
+
+
+          <property name  = 'title'
+                    value = 'Создание инвентаризации остатков'/>
+
+          <property name  = 'descr'>
+            <value>
+              Отвечает за возможность отобразить форму создания
+              документа инвентаризации остатков, но не определяет, на каком
+              складе доступна инвентаризация, каких групп товаров, а также
+              доступно ли будет редактирование документа и его проведение.
+            </value>
+          </property>
+        </bean>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Create Price Change Document
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.secure.force.DomainKeyForce'>

@@ -1,6 +1,6 @@
 package com.tverts.retrade.web.views.invoices;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 
@@ -28,7 +28,6 @@ import com.tverts.model.ModelBean;
 /* com.tverts: endure */
 
 import com.tverts.endure.UnityType;
-import com.tverts.endure.UnityTypes;
 import static com.tverts.endure.ActionBuilderXRoot.SYNCH_AGGR;
 
 /* com.tverts: retrade (trade stores + invoices) */
@@ -39,6 +38,9 @@ import com.tverts.retrade.domain.invoice.Invoice;
 import com.tverts.retrade.domain.invoice.InvoiceEdit;
 import com.tverts.retrade.domain.invoice.InvoiceEditModelBean;
 import com.tverts.retrade.domain.invoice.Invoices;
+
+/* com.tverts: support */
+
 import com.tverts.support.SU;
 
 
@@ -111,10 +113,8 @@ public class   FacesInvoiceMoveCreate
 
 		m.setInvoice(e);
 
-		//~: order type
-		e.setOrderType(UnityTypes.unityType(
-		  Invoice.class, Invoices.OTYPE_INV_BUYSELL
-		));
+		//~: order type (main)
+		e.setOrderType(Invoices.typeInvoiceBuySellOrder());
 
 		//~: domain
 		m.setDomain(getDomainKey());

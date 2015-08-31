@@ -264,6 +264,11 @@
       <from-outcome>done-edit-move-create</from-outcome>
       <to-view-id>/retrade/invoices/create-move.xhtml</to-view-id>
     </navigation-case>
+
+    <navigation-case>
+      <from-outcome>done-edit-volume-check-create</from-outcome>
+      <to-view-id>/retrade/invoices/create-volume-check.xhtml</to-view-id>
+    </navigation-case>
   </navigation-rule>
 
 

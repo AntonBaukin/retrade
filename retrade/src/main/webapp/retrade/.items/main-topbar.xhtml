@@ -306,6 +306,13 @@
           </f:facet>
         </x:component>
 
+        <x:component coid = "${z:vid(localView, 'retrade-create-doc-volume-check')}">
+          <f:facet name = "extjs-props">
+            text: 'Инвентаризацию остатков', xtype: 'menuitem',
+            iconCls: 'retrade-listpad-exclaim'
+          </f:facet>
+        </x:component>
+
         <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-free-produce')}">
 
           <f:facet name = "extjs-props">
@@ -757,6 +764,16 @@
       })
 
       winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //~: create volume check
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-volume-check')}",
+      '${rootView.extjsDomain}', function()
+    {
+      retrade_open_window({ url: '/invoices/create-volume-check',
+        tempDomain: 'retrade-create-doc:price-change', collapsible: true,
+        box: {widthpt: 580, heightpt: 420}
+      })
     })
 
     //~: create free produce invoice
