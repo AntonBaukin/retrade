@@ -300,7 +300,7 @@ ${v.forceSecureEdit()}
         <td class = "retrade-info-title retrade-info-title-invoice-contractor">
           <div>Контрагент</div>
         </td>
-        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-contractor">
+        <td class = "retrade-info-value retrade-info-value-invoice-contractor #{(empty v.contractorName)?('retrade-info-red'):('retrade-info-value-small-text')}">
           <div id = "${z:vid(v, 'invoice-contractor-name')}">#{v.contractorName}<span
             class = "retrade-info-value-message-hard retrade-info-value-invoice-contractor-message"
               style = "display: #{(empty v.contractorName)?('inherit'):('none')};">Выберете контрагента</span></div>

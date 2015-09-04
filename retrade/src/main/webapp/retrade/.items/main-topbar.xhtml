@@ -306,18 +306,18 @@
           </f:facet>
         </x:component>
 
-        <x:component coid = "${z:vid(localView, 'retrade-create-doc-volume-check')}">
-          <f:facet name = "extjs-props">
-            text: 'Инвентаризацию остатков', xtype: 'menuitem',
-            iconCls: 'retrade-listpad-exclaim'
-          </f:facet>
-        </x:component>
-
         <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-free-produce')}">
 
           <f:facet name = "extjs-props">
             text: 'Накладную производства', xtype: 'menuitem',
             iconCls: 'retrade-listpad-bottle-blue-icon'
+          </f:facet>
+        </x:component>
+
+        <x:component coid = "${z:vid(localView, 'retrade-create-doc-volume-check')}">
+          <f:facet name = "extjs-props">
+            text: 'Инвентаризацию остатков', xtype: 'menuitem',
+            iconCls: 'retrade-listpad-exclaim'
           </f:facet>
         </x:component>
 
@@ -665,105 +665,50 @@
     extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-buy')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-buy:');
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-        xtype: 'window', title: 'Загрузка...',
-        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
-        layout: 'fit', autoShow: true, collapsible: true,
-
-        loader: {
-          url: "${z:url('/go/retrade/invoices/create-buy')}",
-          ajaxOptions: {method: 'GET'},
-          autoLoad: true, scripts: true,
-
-          params: {
-            '${localView.viewModeParam}': 'body',
-            '${rootView.extjsDomainParam}': domain
-          }
-        }
+      retrade_open_window({ url: '/invoices/create-buy',
+        tempDomain: 'retrade-create-doc:invoice-buy', collapsible: true,
+        box: {widthpt: 600, heightpt: 440}
       })
-
-      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create sell invoice
     extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-sell')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-sell:');
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-        xtype: 'window', title: 'Загрузка...',
-        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
-        layout: 'fit', autoShow: true, collapsible: true,
-
-        loader: {
-          url: "${z:url('/go/retrade/invoices/create-sell')}",
-          ajaxOptions: {method: 'GET'},
-          autoLoad: true, scripts: true,
-
-          params: {
-            '${localView.viewModeParam}': 'body',
-            '${rootView.extjsDomainParam}': domain
-          }
-        }
+      retrade_open_window({ url: '/invoices/create-sell',
+        tempDomain: 'retrade-create-doc:invoice-sell', collapsible: true,
+        box: {widthpt: 680, heightpt: 440}
       })
-
-      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create move invoice
     extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-move')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-move:');
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-        xtype: 'window', title: 'Загрузка...',
-        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
-        layout: 'fit', autoShow: true, collapsible: true,
-
-        loader: {
-          url: "${z:url('/go/retrade/invoices/create-move')}",
-          ajaxOptions: {method: 'GET'},
-          autoLoad: true, scripts: true,
-
-          params: {
-            '${localView.viewModeParam}': 'body',
-            '${rootView.extjsDomainParam}': domain
-          }
-        }
+      retrade_open_window({ url: '/invoices/create-move',
+        tempDomain: 'retrade-create-doc:invoice-move', collapsible: true,
+        box: {widthpt: 540, heightpt: 440}
       })
-
-      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create auto produce invoice
     extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-auto-produce')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-move:');
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-        xtype: 'window', title: 'Загрузка...',
-        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
-        layout: 'fit', autoShow: true, collapsible: true,
-
-        loader: {
-          url: "${z:url('/go/retrade/invoices/create-move')}",
-          ajaxOptions: {method: 'GET'},
-          autoLoad: true, scripts: true,
-
-          params: {
-            '${localView.viewModeParam}': 'body',
-            '${rootView.extjsDomainParam}': domain,
-            'invoice-type': 'auto'
-          }
-        }
+      retrade_open_window({ url: '/invoices/create-move',
+        tempDomain: 'retrade-create-doc:invoice-move-auto', collapsible: true,
+        box: {widthpt: 540, heightpt: 440}, params: { 'invoice-type': 'auto' }
       })
+    })
 
-      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    //~: create free produce invoice
+    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-free-produce')}",
+      '${rootView.extjsDomain}', function()
+    {
+      retrade_open_window({ url: '/invoices/create-move',
+        tempDomain: 'retrade-create-doc:invoice-move-free', collapsible: true,
+        box: {widthpt: 540, heightpt: 440}, params: { 'invoice-type': 'free' }
+      })
     })
 
     //~: create volume check
@@ -776,58 +721,14 @@
       })
     })
 
-    //~: create free produce invoice
-    extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-free-produce')}",
-      '${rootView.extjsDomain}', function()
-    {
-      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-move:');
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-        xtype: 'window', title: 'Загрузка...',
-        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
-        layout: 'fit', autoShow: true, collapsible: true,
-
-        loader: {
-          url: "${z:url('/go/retrade/invoices/create-move')}",
-          ajaxOptions: {method: 'GET'},
-          autoLoad: true, scripts: true,
-
-          params: {
-            '${localView.viewModeParam}': 'body',
-            '${rootView.extjsDomainParam}': domain,
-            'invoice-type': 'free'
-          }
-        }
-      })
-
-      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
-    })
-
     //~: create correction invoice
     extjsf.bindHandler("${z:vid(localView, 'retrade-create-doc-invoice-correction')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain  = extjsf.tempDomain('wnd:retrade-create-doc:invoice-move:');
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
-
-        xtype: 'window', title: 'Загрузка...',
-        x: extjsf.pt(250), width: extjsf.pt(480), height: extjsf.pt(360),
-        layout: 'fit', autoShow: true, collapsible: true,
-
-        loader: {
-          url: "${z:url('/go/retrade/invoices/create-move')}",
-          ajaxOptions: {method: 'GET'},
-          autoLoad: true, scripts: true,
-
-          params: {
-            '${localView.viewModeParam}': 'body',
-            '${rootView.extjsDomainParam}': domain,
-            'invoice-type': 'correct'
-          }
-        }
+      retrade_open_window({ url: '/invoices/create-move',
+        tempDomain: 'retrade-create-doc:invoice-move-correct', collapsible: true,
+        box: {widthpt: 540, heightpt: 440}, params: { 'invoice-type': 'correct' }
       })
-
-      winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
     })
 
     //~: create price change document

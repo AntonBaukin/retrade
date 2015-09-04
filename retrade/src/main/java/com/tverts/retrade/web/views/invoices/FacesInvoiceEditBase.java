@@ -435,6 +435,11 @@ public abstract class FacesInvoiceEditBase extends ModelView
 
 				//~: set the price list
 				g.setPriceList(gp.getPriceList().getPrimaryKey());
+				g.setPriceListCode(gp.getPriceList().getCode());
+				g.setPriceListName(gp.getPriceList().getName());
+
+				//~: good price key
+				g.setGoodPrice(gp.getPrimaryKey());
 			}
 
 			//~: need calc flag

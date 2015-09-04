@@ -267,6 +267,7 @@ ZeT.init('retrade.globals', function()
 	    {name: 'priceList',       type: 'string'},
 	    {name: 'priceListCode',   type: 'string'},
 	    {name: 'priceListName',   type: 'string'},
+	    {name: 'goodPrice',       type: 'string'},
 	    {name: 'moveOn',          type: 'string'},
 	    {name: 'needCalc',        type: 'string'},
 	    {name: 'calcDate',        type: 'date', dateFormat: 'd.m.Y H:i'},
@@ -839,7 +840,7 @@ ZeT.init('retrade.globals', function()
 
 		 {
 		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
-		   width: extjsf.ex(16)
+		   width: extjsf.ex(16), tdCls: 'ux-grid-column-smaller'
 		 },
 
 		 {

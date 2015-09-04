@@ -324,7 +324,7 @@ ${v.forceSecureEdit()}
         <td class = "retrade-info-title retrade-info-title-invoice-contractor">
           <div>Контрагент</div>
         </td>
-        <td class = "retrade-info-value retrade-info-value-small-text retrade-info-value-invoice-contractor">
+        <td class = "retrade-info-value retrade-info-value-invoice-contractor #{(empty v.contractorName)?('retrade-info-red'):('retrade-info-value-small-text')}">
           <div id = "${z:vid(v, 'invoice-contractor-name')}">#{v.contractorName}<span
             class = "retrade-info-value-message-hard retrade-info-value-invoice-contractor-message"
               style = "display: #{(empty v.contractorName)?('inherit'):('none')};">Выберете контрагента</span></div>
@@ -525,12 +525,12 @@ ${v.forceSecureEdit()}
 
     for(var i = 0;(i < recs.length);i++)
     {
-      params['goodCode'+i] = recs[i].get('goodCode');
-      params['goodUnit'+i] = recs[i].get('goodUnit');
-      params['goodVolume'+i] = recs[i].get('goodVolume');
-      params['volumeCost'+i] = recs[i].get('volumeCost');
-      params['goodPrice'+i] = recs[i].get('goodPrice');
-      params['needCalc'+i] = recs[i].get('needCalc');
+      params['goodCode'+i] = recs[i].get('goodCode')
+      params['goodUnit'+i] = recs[i].get('goodUnit')
+      params['goodVolume'+i] = recs[i].get('goodVolume')
+      params['volumeCost'+i] = recs[i].get('volumeCost')
+      params['goodPrice'+i] = recs[i].get('goodPrice')
+      params['needCalc'+i] = recs[i].get('needCalc')
     }
 
     //~: assign altered field (needs calculation)

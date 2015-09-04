@@ -5,6 +5,10 @@ package com.tverts.retrade.web.views.invoices;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: actions */
 
 import com.tverts.actions.ActionsPoint;
@@ -17,12 +21,14 @@ import com.tverts.endure.UnityType;
 
 import com.tverts.model.ModelBean;
 
-/* com.tverts: retrade (invoices) */
+/* com.tverts: retrade (invoices + stores) */
 
 import com.tverts.retrade.domain.invoice.Invoice;
 import com.tverts.retrade.domain.invoice.InvoiceEdit;
 import com.tverts.retrade.domain.invoice.InvoiceEditModelBean;
 import com.tverts.retrade.domain.invoice.Invoices;
+import com.tverts.retrade.domain.store.GetTradeStore;
+import com.tverts.retrade.domain.store.TradeStore;
 
 
 /**
@@ -38,6 +44,9 @@ public class   FacesVolumeCheckCreate
 
 	public String    doSubmitEditInvoice()
 	{
+		//~: assign the goods from the request
+		if(!assignRequestedGoods()) return null;
+
 		//~: create new invoice
 		Invoice invoice = getModel().
 		  getInvoice().createInvoice();
@@ -91,7 +100,6 @@ public class   FacesVolumeCheckCreate
 		m.setDomain(getDomainKey());
 		e.setDomain(getDomainKey());
 
-
 		//~: invoice type
 		e.setInvoiceType(getInvoiceType().getPrimaryKey());
 		e.setInvoiceTypeName(getInvoiceType().getTitleLo());
@@ -106,6 +114,13 @@ public class   FacesVolumeCheckCreate
 		//~: code (new, incremented)
 		e.setInvoiceCode(Invoices.
 		  createInvoiceCode(getDomain(), getInvoiceType()));
+
+		//~: trade (destination) store (default)
+		TradeStore store = bean(GetTradeStore.class).
+		  getStoreByOffset(getDomainKey(), 0);
+
+		if(store != null)
+			e.setTradeStore(store.getPrimaryKey());
 
 		return m;
 	}

@@ -428,6 +428,27 @@ from GoodPrice gp where
 		);
 	}
 
+	public Long            getGoodPriceKey(Long pl, Long gu)
+	{
+		EX.assertn(pl);
+		EX.assertn(gu);
+
+/*
+
+select gp.id from GoodPrice gp where
+  (gp.priceList.id = :pl) and (gp.goodUnit.id = :gu)
+
+*/
+		return object( Long.class,
+
+"select gp.id from GoodPrice gp where\n" +
+"  (gp.priceList.id = :pl) and (gp.goodUnit.id = :gu)",
+
+		  "pl", pl,
+		  "gu", gu
+		);
+	}
+
 
 	/* Firm Prices  */
 

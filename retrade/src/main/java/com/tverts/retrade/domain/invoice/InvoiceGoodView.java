@@ -4,7 +4,7 @@ package com.tverts.retrade.domain.invoice;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;import java.util.Date;
+import java.util.Date;
 
 /* Java XML Binding */
 
@@ -13,10 +13,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: retrade domain (goods + prices + stores) */
 
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.MeasureUnit;
+import com.tverts.retrade.domain.prices.GetPrices;
 import com.tverts.retrade.domain.prices.PriceListEntity;
 import com.tverts.retrade.domain.store.StoreGood;
 
@@ -210,6 +215,18 @@ public class InvoiceGoodView implements Serializable
 		this.priceListName = priceListName;
 	}
 
+	public Long getGoodPrice()
+	{
+		return goodPrice;
+	}
+
+	private Long goodPrice;
+
+	public void setGoodPrice(Long goodPrice)
+	{
+		this.goodPrice = goodPrice;
+	}
+
 	public Boolean getMoveOn()
 	{
 		return moveOn;
@@ -382,7 +399,14 @@ public class InvoiceGoodView implements Serializable
 
 		//?: {has price list reference}
 		if(g.getPriceList() != null)
+		{
 			this.init(g.getPriceList());
+
+			this.goodPrice =  bean(GetPrices.class).getGoodPriceKey(
+			  g.getPriceList().getPrimaryKey(),
+			  g.getGoodUnit().getPrimaryKey()
+			);
+		}
 
 		return this;
 	}
@@ -429,7 +453,7 @@ public class InvoiceGoodView implements Serializable
 			v = v.subtract(g.getVolumeNegative());
 
 		this.goodVolumeDelta = (i)?(v.setScale(0)):
-		  (v.setScale(3, RoundingMode.HALF_EVEN));
+		  (v.setScale(3, BigDecimal.ROUND_HALF_EVEN));
 
 		return this;
 	}
