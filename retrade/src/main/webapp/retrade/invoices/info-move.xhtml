@@ -268,8 +268,9 @@ ${v.forceSecureModelEntity('view')}
     storeId = "${z:vid(v, 'invoiceGoods')}">
 
     <f:facet name = "grid-props">
-      flex: 1, title: "#{(not v.invoiceAltered)?('Перемещённые товары'):(v.correction)?('Занесённые товары'):('Произведённые товары')}",
-      sortableColumns: true, columns: ZeT.defined("retrade.columns.InvoiceMove#{(v.invoiceAltered)?('Alt'):('')}Good")
+      flex: 1, collapsible: #{v.twoTables}, sortableColumns: true,
+      title: "#{(not v.invoiceAltered)?('Перемещённые товары'):(v.correction)?('Занесённые товары'):('Произведённые товары')}",
+      columns: ZeT.defined("retrade.columns.InvoiceMove#{(v.invoiceAltered)?('Alt'):('')}Good")
     </f:facet>
   </x:data-grid>
 
@@ -278,7 +279,7 @@ ${v.forceSecureModelEntity('view')}
 
   <x:component coid = "${z:vid(v, '_invoice_goods_splitter')}">
     <f:facet name = "extjs-props">
-      xtype: 'splitter', collapsible: true,
+      xtype: 'splitter', collapsible: false,
       hidden: #{not v.twoTables}
     </f:facet>
   </x:component>
@@ -302,8 +303,8 @@ ${v.forceSecureModelEntity('view')}
     storeId = "${z:vid(v, 'resultGoods')}">
 
     <f:facet name = "grid-props">
-      title: 'Списанные товары',
-      flex: 1, hidden: #{not v.twoTables}, sortableColumns: true,
+      title: 'Списанные товары', collapsible: true, flex: 1,
+      hidden: #{not v.twoTables}, sortableColumns: true, collapseDirection: 'bottom',
       columns: ZeT.defined("#{v.correction?('retrade.columns.InvoiceMoveAltGood'):('retrade.columns.InvoiceResGood')}")
     </f:facet>
   </x:data-grid>
@@ -388,6 +389,17 @@ ${v.forceSecureModelEntity('view')}
 
   extjsf.bind("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}').
     on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle)
+
+  //~: collapse-expand two grids
+  extjsf.bind("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}').on('collapse', function()
+  {
+    extjsf.co("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').expand()
+  })
+
+  extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').on('collapse', function()
+  {
+    extjsf.co("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}').expand()
+  })
 
   //]]>
   </script>

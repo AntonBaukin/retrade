@@ -114,7 +114,20 @@ Ext.form.field.ComboBox.override(
 
 Ext.resizer.Splitter.override(
 {
-	collapseOnDblClick : false
+	/**
+	 * We don't need this not to confuse a user.
+	 */
+	collapseOnDblClick : false,
+
+	setDisabled        : function(disabled)
+	{
+		if(this.tracker) if(disabled)
+			this.tracker.disable()
+		else
+			this.tracker.enable()
+
+		return this.callParent(arguments);
+	}
 })
 
 

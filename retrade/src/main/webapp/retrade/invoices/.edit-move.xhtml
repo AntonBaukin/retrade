@@ -637,14 +637,12 @@ ${v.forceSecureEdit()}
 
   <!-- [main grid (produced goods) -->
 
-  <x:component coid = "${z:vid(v, '_invoice_goods')}">
-
+  <x:component coid = "${z:vid(v, 'main-goods-layout')}">
     <f:facet name = "extjs-props">
-      xtype: 'panel', flex: 1, border: false,
-      bodyCls: 'retrade-transparent-panel',
-      layout: {type: 'vbox', align: 'stretch'}
+      xtype: 'panel', border: false, flex: 1,
+      layout: {type: 'vbox', align: 'stretch'},
+      bodyCls: 'retrade-transparent-panel'
     </f:facet>
-
 
     <!-- [main grid title -->
 
@@ -703,8 +701,9 @@ ${v.forceSecureEdit()}
         <f:facet name = "extjs-props">
           xtype: 'tool', type: 'up', margin: extjsf.pts(0, 0, 0, 4), callback: function()
           {
+            extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${rootView.extjsDomain}').callback()
+            extjsf.co("${z:vid(v, 'main-goods-layout')}", '${rootView.extjsDomain}').flex = 0
             extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').hide()
-            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').show()
 
             extjsf.co("${z:vid(v, 'grid-tool-collapse')}", '${rootView.extjsDomain}').hide()
             extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${rootView.extjsDomain}').show()
@@ -721,7 +720,9 @@ ${v.forceSecureEdit()}
         <f:facet name = "extjs-props">
           xtype: 'tool', type: 'down', hidden: true, margin: extjsf.pts(0, 0, 0, 4), callback: function()
           {
+            extjsf.co("${z:vid(v, 'main-goods-layout')}", '${rootView.extjsDomain}').flex = 1
             extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').show()
+            extjsf.co("${z:vid(v, 'root_panel')}", '${rootView.extjsDomain}').updateLayout()
 
             extjsf.co("${z:vid(v, 'grid-tool-collapse')}", '${rootView.extjsDomain}').show()
             extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${rootView.extjsDomain}').hide()
@@ -772,6 +773,7 @@ ${v.forceSecureEdit()}
 
     </f:facet>
   </x:data-grid>
+  </x:component>
 
   <!-- main grid (produced goods)] -->
 
@@ -790,7 +792,7 @@ ${v.forceSecureEdit()}
 
   <x:component coid = "${z:vid(v, 'taken-goods-layout')}">
     <f:facet name = "extjs-props">
-      hidden: #{not v.twoTables}, flex: 1,
+      hidden: #{not v.twoTables}, border: false, flex: 1,
       xtype: 'panel', layout: {type: 'vbox', align: 'stretch'},
       bodyCls: 'retrade-transparent-panel'
     </f:facet>
@@ -851,10 +853,10 @@ ${v.forceSecureEdit()}
         <f:facet name = "extjs-props">
           xtype: 'tool', type: 'down', margin: extjsf.pts(0, 0, 0, 4), callback: function()
           {
-            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').hide()
-            extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').show()
-
+            extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${rootView.extjsDomain}').callback()
             extjsf.co("${z:vid(v, 'taken-goods-layout')}", '${rootView.extjsDomain}').flex = 0
+            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').hide()
+
             extjsf.co("${z:vid(v, 'taken-tool-collapse')}", '${rootView.extjsDomain}').hide()
             extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${rootView.extjsDomain}').show()
             extjsf.co("${z:vid(v, 'main-splitter')}", '${rootView.extjsDomain}').setDisabled(true)
@@ -868,9 +870,10 @@ ${v.forceSecureEdit()}
         <f:facet name = "extjs-props">
           xtype: 'tool', type: 'up', hidden: true, margin: extjsf.pts(0, 0, 0, 4), callback: function()
           {
-            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').show()
-
             extjsf.co("${z:vid(v, 'taken-goods-layout')}", '${rootView.extjsDomain}').flex = 1
+            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').show()
+            extjsf.co("${z:vid(v, 'root_panel')}", '${rootView.extjsDomain}').updateLayout()
+
             extjsf.co("${z:vid(v, 'taken-tool-collapse')}", '${rootView.extjsDomain}').show()
             extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${rootView.extjsDomain}').hide()
             extjsf.co("${z:vid(v, 'main-splitter')}", '${rootView.extjsDomain}').setDisabled(false)
@@ -924,8 +927,6 @@ ${v.forceSecureEdit()}
   </x:component>
 
   <!-- taken goods grid] -->
-
-  </x:component>
 
   <!-- edit grids] -->
 
