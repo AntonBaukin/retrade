@@ -18,7 +18,7 @@ import com.tverts.exec.ExecPoint;
 
 /* com.tverts: objects */
 
-import com.tverts.objects.XMAPoint;
+import com.tverts.objects.XPoint;
 
 /* com.tverts: support */
 
@@ -77,7 +77,7 @@ public class Datas
 	 *
 	 * Else, invokes the execution layer. If it returns
 	 * null result, as the final attempt, tries to convert
-	 * the data object directly using {@link XMAPoint}.
+	 * the data object directly using {@link XPoint}.
 	 *
 	 * Interesting moment: this function works recursively
 	 * in the case the execution layer had returned
@@ -131,7 +131,7 @@ public class Datas
 				IO.pump(i, o);
 			//~: write the object mapped to XML
 			else
-				XMAPoint.writeObject(data, o);
+				XPoint.xml().write(data, o);
 
 			//~: close the deflation stream
 			o.close(); //<-- but not the bytes stream
@@ -189,7 +189,7 @@ public class Datas
 			return bytes(xdata);
 
 		//~: write the object mapped to XML
-		return XMAPoint.writeObject(false, data);
+		return XPoint.xml().write(false, data);
 	}
 
 	public static byte[]      bytes(ReportModel model)

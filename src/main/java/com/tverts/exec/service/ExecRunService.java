@@ -31,7 +31,7 @@ import com.tverts.endure.auth.ExecRequest;
 
 /* com.tverts: support */
 
-import com.tverts.objects.XMAPoint;
+import com.tverts.objects.XPoint;
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 
@@ -233,7 +233,7 @@ public class ExecRunService extends ServiceBase
 		//~: get the request object from XML
 		try
 		{
-			object = XMAPoint.readObject(false, Object.class, request.getRequest());
+			object = XPoint.xml().read(false, Object.class, request.getRequest());
 		}
 		catch(Throwable e)
 		{
@@ -250,7 +250,7 @@ public class ExecRunService extends ServiceBase
 		//?: {has response object} try write it
 		if(object != null) try
 		{
-			request.setResponse(XMAPoint.writeObject(false, object));
+			request.setResponse(XPoint.xml().write(false, object));
 		}
 		catch(Throwable e)
 		{
@@ -313,7 +313,7 @@ public class ExecRunService extends ServiceBase
 		//~: write result as XML bean
 		try
 		{
-			rbytes = XMAPoint.writeObject(false, result);
+			rbytes = XPoint.xml().write(false, result);
 		}
 		catch(Throwable e)
 		{

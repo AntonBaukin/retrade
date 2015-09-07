@@ -6,7 +6,7 @@ import com.tverts.endure.Ox;
 
 /* com.tverts: objects */
 
-import com.tverts.objects.XMAPoint;
+import com.tverts.objects.XPoint;
 
 /* com.tverts: support */
 
@@ -204,12 +204,12 @@ public class OxBytes implements Ox
 	protected byte[] encode(Object ox)
 	{
 		EX.assertn(ox);
-		return XMAPoint.writeObject(true, ox);
+		return XPoint.xml().write(true, ox);
 	}
 
 	protected Object decode(byte[] bytes)
 	{
 		EX.assertn(bytes);
-		return XMAPoint.readObject(true, Object.class, bytes);
+		return XPoint.xml().read(true, Object.class, bytes);
 	}
 }

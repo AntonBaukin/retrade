@@ -11,16 +11,39 @@
     =================================================-->
 
   <bean name  = 'objectXMLNappingPoint' factory-method = 'getInstance'
-        class = 'com.tverts.objects.XMAPoint'>
+        class = 'com.tverts.objects.XPoint'>
 
-    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-     · Castor OXM Marshaller                                     ·
-     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-    <property name  = 'marshaller'>
-      <bean class = 'org.springframework.oxm.jaxb.Jaxb2Marshaller'>
 
-        <property name = 'classesToBeBound'
+    <!-- XML -->
+    <property name  = 'streamerXML'>
+      <bean class = 'com.tverts.objects.XStreamer'>
+
+        <constructor-arg
           value = '#{jaxbConfigurationClasspathScanner.classesArray}'/>
+
+        <property name = 'writeProps'>
+          <value>
+            jaxb.formatted.output, true
+          </value>
+        </property>
+      </bean>
+    </property>
+
+
+    <!-- JSON -->
+    <property name  = 'streamerJSON'>
+      <bean class = 'com.tverts.objects.XStreamer'>
+
+        <constructor-arg
+          value = '#{jaxbConfigurationClasspathScanner.classesArray}'/>
+
+        <property name = 'writeProps'>
+          <value>
+            jaxb.formatted.output,          true,
+            eclipselink.media-type,         application/json,
+            eclipselink.json.include-root,  false
+          </value>
+        </property>
       </bean>
     </property>
   </bean>

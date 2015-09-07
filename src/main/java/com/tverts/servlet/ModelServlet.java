@@ -33,7 +33,7 @@ import com.tverts.faces.ModelView;
 
 /* com.tverts: objects */
 
-import com.tverts.objects.XMAPoint;
+import com.tverts.objects.XPoint;
 
 /* com.tverts: support */
 
@@ -166,7 +166,7 @@ public class ModelServlet extends GenericServlet
 
 			//~: model -> XML
 			bytes.setNotCloseNext(true);
-			XMAPoint.writeObject(data, stream);
+			XPoint.xml().write(data, stream);
 
 			//~: response content type
 			res.setContentType("application/xml;charset=UTF-8");
