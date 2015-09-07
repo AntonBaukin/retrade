@@ -2,7 +2,7 @@ package com.tverts.retrade.exec.api.firms;
 
 /* com.tverts: objects */
 
-import com.tverts.objects.XMAPoint;
+import com.tverts.objects.XPoint;
 
 /* com.tverts: hibery */
 
@@ -43,8 +43,9 @@ public class DumpFirms extends EntitiesDumperBase
 	protected Object createApiEntity(Object src)
 	{
 		Contractor s = (Contractor)src;
-		Firm       d = XMAPoint.cloneObject(
-		  EX.assertn(s.getFirm()).getOx());
+		Firm       d = XPoint.xml().clone(
+		  EX.assertn(s.getFirm()).getOx()
+		);
 
 		d.setPkey(s.getPrimaryKey());
 		d.setTx(s.getTxn());
