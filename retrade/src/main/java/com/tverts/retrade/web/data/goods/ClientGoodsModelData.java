@@ -8,9 +8,7 @@ import java.util.List;
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring */
 
@@ -38,7 +36,6 @@ import com.tverts.retrade.domain.prices.GoodPriceView;
  * @author anton.baukin@gmail.com.
  */
 @XmlRootElement(name = "model-data")
-@XmlType(propOrder = { "contractor", "goodsNumber", "goods" })
 public class ClientGoodsModelData extends GoodsModelData
 {
 	/* public: constructors */
@@ -67,15 +64,12 @@ public class ClientGoodsModelData extends GoodsModelData
 
 	private Long contractor;
 
-	@XmlElement
 	public int getGoodsNumber()
 	{
 		return bean(GetPrices.class).
 		  countContractorGoodUnits(getModel(), getContractor());
 	}
 
-	@XmlElement(name = "good-unit")
-	@XmlElementWrapper(name = "good-units")
 	@SuppressWarnings("unchecked")
 	public List<GoodUnitView> getGoods()
 	{

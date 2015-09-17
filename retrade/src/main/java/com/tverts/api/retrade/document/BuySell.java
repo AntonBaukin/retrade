@@ -1,6 +1,6 @@
 package com.tverts.api.retrade.document;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,6 @@ import com.tverts.api.retrade.goods.Store;
 })
 public abstract class BuySell extends Document
 {
-	public static final long serialVersionUID = 0L;
-
-
 	/**
 	 * The store of the buy-sell operation.
 	 * For sell operation defines the store
@@ -45,6 +42,8 @@ public abstract class BuySell extends Document
 		return (store == 0L)?(null):(store);
 	}
 
+	private long store;
+
 	public void setStore(Long store)
 	{
 		this.store = (store == null)?(0L):(store);
@@ -55,6 +54,8 @@ public abstract class BuySell extends Document
 	{
 		return xstore;
 	}
+
+	private String xstore;
 
 	public void setXStore(String xstore)
 	{
@@ -68,6 +69,8 @@ public abstract class BuySell extends Document
 		return contractor;
 	}
 
+	private Long contractor;
+
 	public void setContractor(Long contractor)
 	{
 		this.contractor = contractor;
@@ -78,6 +81,8 @@ public abstract class BuySell extends Document
 	{
 		return xcontractor;
 	}
+
+	private String xcontractor;
 
 	public void setXContractor(String xcontractor)
 	{
@@ -91,19 +96,11 @@ public abstract class BuySell extends Document
 		return goods;
 	}
 
+	private List<GoodSell> goods =
+	  new ArrayList<GoodSell>(8);
+
 	public void setGoods(List<GoodSell> goods)
 	{
 		this.goods = goods;
 	}
-
-
-	/* the goods of the invoice & the store & the contractor */
-
-	private long           store;
-	private String         xstore;
-	private Long           contractor;
-	private String         xcontractor;
-
-	private List<GoodSell> goods =
-	  new ArrayList<GoodSell>(0);
 }
