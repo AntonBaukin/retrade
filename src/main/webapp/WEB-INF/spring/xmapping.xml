@@ -39,9 +39,10 @@
 
         <property name = 'writeProps'>
           <value>
-            jaxb.formatted.output,          true,
-            eclipselink.media-type,         application/json,
-            eclipselink.json.include-root,  false
+            jaxb.formatted.output,                  true,
+            eclipselink.media-type,                 application/json,
+            eclipselink.json.include-root,          false,
+            eclipselink.json.wrapper-as-array-name, true
           </value>
         </property>
       </bean>

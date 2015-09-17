@@ -57,7 +57,8 @@ public class XStreamer
 		}
 		finally
 		{
-			System.setProperty(FP, fp);
+			if(fp != null)
+				System.setProperty(FP, fp);
 		}
 	}
 
@@ -95,7 +96,7 @@ public class XStreamer
 			//~: create the marshaller
 			Marshaller m = this.ctx.createMarshaller();
 			for(Map.Entry<String, String> e : writeProps.entrySet())
-				m.setProperty(e.getKey(), e.getValue());
+				m.setProperty(e.getKey(), propertyValue(e.getValue()));
 
 			//!: do write
 			m.marshal(object, result);
@@ -223,7 +224,7 @@ public class XStreamer
 			//~: create the un-marshaller
 			Unmarshaller u = this.ctx.createUnmarshaller();
 			for(Map.Entry<String, String> e : readProps.entrySet())
-				u.setProperty(e.getKey(), e.getValue());
+				u.setProperty(e.getKey(), propertyValue(e.getValue()));
 
 			//!: do read
 			Object res; if(Object.class.equals(cls))
@@ -304,5 +305,15 @@ public class XStreamer
 		{
 			s.closeAlways();
 		}
+	}
+
+	protected Object propertyValue(String v)
+	{
+		if("true".equals(v))
+			return Boolean.TRUE;
+		else if("false".equals(v))
+			return Boolean.FALSE;
+
+		return v;
 	}
 }

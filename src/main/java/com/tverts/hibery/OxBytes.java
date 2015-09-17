@@ -193,7 +193,6 @@ public class OxBytes implements Ox
 
 		/**
 		 * The bytes of encoded updated object.
-		 *
 		 */
 		public byte[] updated;
 	}
