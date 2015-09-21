@@ -60,6 +60,7 @@
   <import resource = 'spring/executors.xml'/>
   <import resource = 'spring/datas.xml'/>
   <import resource = 'spring/formatters.xml'/>
+  <import resource = 'spring/jsx.xml'/>
   <import resource = 'spring/genesis.xml'/>
   <import resource = 'spring/shunts.xml'/>
 
