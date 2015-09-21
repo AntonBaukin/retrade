@@ -10,17 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Buy.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Buy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/BuySell.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/BuySell.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/ClientGoodsModelData.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/ClientGoodsModelData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/ClientGoodsTreeModelData.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/ClientGoodsTreeModelData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Move.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Move.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytes.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Sell.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Sell.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/XStreamer.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/XStreamer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFile.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/jsx.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/jsx.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/applicationContext.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/applicationContext.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/applicationContext.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/applicationContext.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/xmapping.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/xmapping.xml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -46,13 +44,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="OxBytes.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytes.java">
+      <file leaf-file-name="JsX.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.38952535" vertical-offset="2142" max-vertical-offset="2753">
-              <caret line="195" column="19" selection-start-line="195" selection-start-column="9" selection-end-line="195" selection-end-column="9" />
+            <state vertical-scroll-proportion="1.3355155" vertical-offset="1309" max-vertical-offset="2719">
+              <caret line="131" column="26" selection-start-line="131" selection-start-column="1" selection-end-line="131" selection-end-column="1" />
               <folding>
-                <element signature="method#encode#0;class#OxBytes#0" expanded="true" />
+                <element signature="method#setRoots#0;class#JsX#0" expanded="true" />
+                <element signature="method#find#0;class#JsX#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -68,23 +67,23 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/genesis/retradeGenesis.xml" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/XMAPoint.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/XPoint.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/data/Datas.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/exec/service/ExecRunService.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/ModelServlet.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/exec/api/firms/DumpFirms.java" />
-        <option value="$PROJECT_DIR$/build/share.ivy" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/ClientGoodsModelData.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/ClientGoodsTreeModelData.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/BuySell.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Move.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Sell.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Buy.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/XStreamer.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/xmapping.xml" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytes.java" />
+        <option value="$PROJECT_DIR$/../projects/burger/model.json" />
+        <option value="$PROJECT_DIR$/../projects/burger/model.css" />
+        <option value="$PROJECT_DIR$/../projects/burger/fonts.css" />
+        <option value="$PROJECT_DIR$/../projects/burger/model.js" />
+        <option value="$PROJECT_DIR$/../projects/burger/main.js" />
+        <option value="$PROJECT_DIR$/../projects/burger/main.html" />
+        <option value="$PROJECT_DIR$/../projects/burger/main.css" />
+        <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/applicationContext.xml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/applicationContext.xml" />
+        <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/jsx.xml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/jsx.xml" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFile.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
       </list>
     </option>
   </component>
@@ -96,7 +95,7 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="361" />
+    <option name="x" value="400" />
     <option name="y" value="26" />
     <option name="width" value="1130" />
     <option name="height" value="965" />
@@ -112,150 +111,18 @@
             <id>AOP</id>
           </State>
           <State>
-            <id>Abstraction issues</id>
-          </State>
-          <State>
-            <id>Ant inspections</id>
-          </State>
-          <State>
-            <id>Assignment issues</id>
-          </State>
-          <State>
-            <id>Assignment issuesGroovy</id>
-          </State>
-          <State>
-            <id>CDI(Contexts and Dependency Injection) issues</id>
-          </State>
-          <State>
-            <id>Class structure</id>
-          </State>
-          <State>
-            <id>Code maturity issues</id>
-          </State>
-          <State>
-            <id>Code style issues</id>
-          </State>
-          <State>
-            <id>Code style issuesJavaScript</id>
-          </State>
-          <State>
-            <id>Control flow issues</id>
-          </State>
-          <State>
-            <id>Data flow issues</id>
-          </State>
-          <State>
             <id>Encapsulation issues</id>
           </State>
           <State>
-            <id>Error handling</id>
-          </State>
-          <State>
-            <id>GeneralJavaScript</id>
-          </State>
-          <State>
-            <id>Groovy</id>
-          </State>
-          <State>
-            <id>HTML</id>
-          </State>
-          <State>
-            <id>Inheritance issues</id>
-          </State>
-          <State>
-            <id>Internationalization issues</id>
-          </State>
-          <State>
-            <id>J2ME issues</id>
-          </State>
-          <State>
-            <id>JPA issues</id>
-          </State>
-          <State>
-            <id>JUnit issues</id>
-          </State>
-          <State>
-            <id>Java EE issues</id>
-          </State>
-          <State>
-            <id>Java language level migration aids</id>
-          </State>
-          <State>
-            <id>JavaScript</id>
-          </State>
-          <State>
-            <id>Logging issues</id>
-          </State>
-          <State>
-            <id>Memory issues</id>
-          </State>
-          <State>
-            <id>Method metrics</id>
-          </State>
-          <State>
-            <id>Naming ConventionsGroovy</id>
-          </State>
-          <State>
-            <id>Naming conventions</id>
-          </State>
-          <State>
-            <id>Numeric issues</id>
-          </State>
-          <State>
-            <id>OtherGroovy</id>
-          </State>
-          <State>
-            <id>Performance issues</id>
-          </State>
-          <State>
-            <id>Portability issues</id>
-          </State>
-          <State>
-            <id>Potentially confusing code constructsGroovy</id>
-          </State>
-          <State>
-            <id>Potentially confusing code constructsJavaScript</id>
-          </State>
-          <State>
-            <id>Probable bugs</id>
-          </State>
-          <State>
-            <id>Probable bugsGroovy</id>
-          </State>
-          <State>
-            <id>Probable bugsJavaScript</id>
-          </State>
-          <State>
-            <id>SQL</id>
-          </State>
-          <State>
-            <id>Serialization issues</id>
-          </State>
-          <State>
-            <id>Spelling</id>
+            <id>Spring MVCSpring Model</id>
           </State>
           <State>
             <id>Spring Model</id>
           </State>
-          <State>
-            <id>Threading issues</id>
-          </State>
-          <State>
-            <id>Threading issuesGroovy</id>
-          </State>
-          <State>
-            <id>Verbose or redundant code constructs</id>
-          </State>
-          <State>
-            <id>Visibility issues</id>
-          </State>
-          <State>
-            <id>XML</id>
-          </State>
         </expanded-state>
         <selected-state>
           <State>
-            <id>SpellCheckingInspection</id>
+            <id>SpringInjectionValueStyleInspection</id>
           </State>
         </selected-state>
       </profile-state>
@@ -292,6 +159,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -299,100 +168,6 @@
               <option name="myItemId" value="bakery" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="compile-xroot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="compile-xroot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.persistence.moxy-2.6.0.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="compile-xroot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.persistence.moxy-2.6.0.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="persistence" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jaxb" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="compile-xroot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.persistence.moxy-2.6.0.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="persistence" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jaxb" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -462,14 +237,12 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="objects" />
+              <option name="myItemId" value="jsx" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -492,7 +265,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/build/share.ivy" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../projects/burger/main.html" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="52" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="66" />
@@ -529,11 +302,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring" />
       <recent name="D:\Anton\Sources\bakery\retrade\src\main\webapp\retrade\invoices" />
       <recent name="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices" />
       <recent name="$PROJECT_DIR$/retrade/src/main/webapp/resources" />
       <recent name="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/events" />
-      <recent name="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests" />
@@ -714,7 +487,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="361" y="26" width="1130" height="965" extended-state="0" />
+    <frame x="400" y="26" width="1130" height="965" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3192436" sideWeight="0.5582329" order="1" side_tool="false" content_ui="tabs" />
@@ -722,7 +495,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3147942" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38134593" sideWeight="0.4211009" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38042268" sideWeight="0.4211009" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32480535" sideWeight="0.61445785" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32480535" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -767,7 +540,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-75 [stable]: validated Store and Price List edit forms." />
     <MESSAGE value="ui-76 [beta]: replaced extjsf.component() with extjsf.co(). Going to Bind..." />
     <MESSAGE value="ui-76 [stable]: replaced ExtJSF Bind.component() with Bind.co()." />
     <MESSAGE value="ui-77 [beta]: refactoring Contractor info-edit window... Implemented dedicated labels for &lt;x:checkboxes&gt;." />
@@ -792,7 +564,8 @@
     <MESSAGE value="ui-83 [stable]: fixed collapsing of two-table Move invoices info-edit windows." />
     <MESSAGE value="ui-84 [stable]: fixed creation forms for the Invoices." />
     <MESSAGE value="system-18 [alpha]: moving JAXB implementation to JSON format support." />
-    <option name="LAST_COMMIT_MESSAGE" value="system-18 [alpha]: moving JAXB implementation to JSON format support." />
+    <MESSAGE value="system-18 [stable]: now using Eclipse MOXY as JAXB provider. Added JSON support for it." />
+    <option name="LAST_COMMIT_MESSAGE" value="system-18 [stable]: now using Eclipse MOXY as JAXB provider. Added JSON support for it." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -915,140 +688,141 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/ClientGoodsModelData.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/applicationContext.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63978493" vertical-offset="595" max-vertical-offset="1646">
-          <caret line="66" column="12" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.82711864" vertical-offset="237" max-vertical-offset="1905">
+          <caret line="57" column="2" selection-start-line="57" selection-start-column="2" selection-end-line="57" selection-end-column="2" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/data/goods/ClientGoodsTreeModelData.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/applicationContext.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.15144767" vertical-offset="323" max-vertical-offset="2190">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.5706215" vertical-offset="549" max-vertical-offset="1990">
+          <caret line="62" column="39" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/org.eclipse.persistence.core-2.6.0.jar!/org/eclipse/persistence/exceptions/JAXBException.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/model.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33211008" vertical-offset="2573" max-vertical-offset="12054">
-          <caret line="232" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.24610245" vertical-offset="0" max-vertical-offset="1867">
+          <caret line="13" column="60" selection-start-line="12" selection-start-column="2" selection-end-line="13" selection-end-column="60" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/org.eclipse.persistence.moxy-2.6.0.jar!/org/eclipse/persistence/jaxb/compiler/AnnotationsProcessor.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/spring/SpringPoint.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.86238533" vertical-offset="5803" max-vertical-offset="20452">
-          <caret line="949" column="89" selection-start-line="369" selection-start-column="17" selection-end-line="369" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1888">
+          <caret line="27" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/BuySell.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/SU.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3118279" vertical-offset="919" max-vertical-offset="1816">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.23050848" vertical-offset="561" max-vertical-offset="8484">
+          <caret line="64" column="3" selection-start-line="45" selection-start-column="3" selection-end-line="45" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Move.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/jsx.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0609319" vertical-offset="0" max-vertical-offset="1136">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.20824054" vertical-offset="0" max-vertical-offset="1153">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Sell.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/GoDomainIndexPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0609319" vertical-offset="0" max-vertical-offset="745">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1990">
+          <caret line="0" column="26" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/document/Buy.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/jsx.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3655914" vertical-offset="0" max-vertical-offset="745">
-          <caret line="12" column="88" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.25315005" vertical-offset="0" max-vertical-offset="1145">
+          <caret line="13" column="8" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/Invoice.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/io/File.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7616488" vertical-offset="969" max-vertical-offset="2921">
-          <caret line="118" column="15" selection-start-line="82" selection-start-column="15" selection-end-line="82" selection-end-column="15" />
+        <state vertical-scroll-proportion="0.096045196" vertical-offset="12903" max-vertical-offset="30380">
+          <caret line="965" column="16" selection-start-line="764" selection-start-column="16" selection-end-line="764" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceData.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/streams/BytesStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3655914" vertical-offset="969" max-vertical-offset="1867">
-          <caret line="96" column="36" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.018930959" vertical-offset="476" max-vertical-offset="3788">
+          <caret line="29" column="30" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvGood.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/util/concurrent/atomic/AtomicReference.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03046595" vertical-offset="357" max-vertical-offset="1357">
-          <caret line="22" column="22" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.5868597" vertical-offset="629" max-vertical-offset="4128">
+          <caret line="75" column="11" selection-start-line="68" selection-start-column="11" selection-end-line="68" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/prices/RepriceDoc.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/lang/ref/Reference.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1827957" vertical-offset="612" max-vertical-offset="2088">
-          <caret line="42" column="22" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="4145">
+          <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/XStreamer.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/lang/ref/PhantomReference.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1881721" vertical-offset="1054" max-vertical-offset="2683">
-          <caret line="101" column="0" selection-start-line="67" selection-start-column="3" selection-end-line="73" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.5898305" vertical-offset="362" max-vertical-offset="2211">
+          <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/org.eclipse.persistence.core-2.6.0.jar!/org/eclipse/persistence/internal/oxm/JsonTypeConfiguration.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/lang/ref/SoftReference.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5186441" vertical-offset="0" max-vertical-offset="2415">
-          <caret line="27" column="13" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.77616924" vertical-offset="374" max-vertical-offset="2700">
+          <caret line="63" column="13" selection-start-line="63" selection-start-column="13" selection-end-line="63" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/xmapping.xml">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09465479" vertical-offset="646" max-vertical-offset="2190">
-          <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2037">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/org.eclipse.persistence.moxy-2.6.0.jar!/org/eclipse/persistence/jaxb/JAXBContextProperties.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8/Contents/Home/src.zip!/java/lang/ClassLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.1834862" vertical-offset="2635" max-vertical-offset="6291">
-          <caret line="225" column="99" selection-start-line="225" selection-start-column="61" selection-end-line="225" selection-end-column="99" />
+        <state vertical-scroll-proportion="0.454343" vertical-offset="13821" max-vertical-offset="25276">
+          <caret line="1130" column="28" selection-start-line="837" selection-start-column="28" selection-end-line="837" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytes.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.38952535" vertical-offset="2142" max-vertical-offset="2753">
-          <caret line="195" column="19" selection-start-line="195" selection-start-column="9" selection-end-line="195" selection-end-column="9" />
+        <state vertical-scroll-proportion="1.3355155" vertical-offset="1309" max-vertical-offset="2719">
+          <caret line="131" column="26" selection-start-line="131" selection-start-column="1" selection-end-line="131" selection-end-column="1" />
           <folding>
-            <element signature="method#encode#0;class#OxBytes#0" expanded="true" />
+            <element signature="method#setRoots#0;class#JsX#0" expanded="true" />
+            <element signature="method#find#0;class#JsX#0" expanded="true" />
           </folding>
         </state>
       </provider>
