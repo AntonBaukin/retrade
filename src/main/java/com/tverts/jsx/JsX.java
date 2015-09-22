@@ -1,12 +1,5 @@
 package com.tverts.jsx;
 
-/* Java */
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /* com.tverts: support */
 
 import com.tverts.support.EX;
@@ -38,7 +31,7 @@ public class JsX
 
 	/* Java Bean (configuration) */
 
-	protected String[] roots;
+	protected JsFiles files;
 
 	/**
 	 * Configures the root packages (directories)
@@ -46,7 +39,7 @@ public class JsX
 	 * the application Class Loader.
 	 *
 	 * The names may be presented in Java package
-	 * dot-separator notation, or with Unix '/'.
+	 * dot-separator notation, or with URI's '/'.
 	 */
 	public void setRoots(String roots)
 	{
@@ -68,59 +61,13 @@ public class JsX
 		}
 
 		LU.I(getLog(), "Using the wollowing roots: ", rs);
-		this.roots = rs;
+		this.files = new JsFiles(rs);
 	}
 
 
 	/* Scripts Execution */
 
-	/**
-	 * Searches for the script file having the name
-	 * given related to some of the roots. All the
-	 * roots are scanned to exclude duplicates.
-	 *
-	 * As the root name, the file path may contain
-	 * dots as a package names separator.
-	 */
-	public JsFile find(String path)
-	{
-		EX.asserts(path);
 
-		if(path.indexOf('/') == -1)
-			path = path.replace('.', '/');
-		if(!path.startsWith("/"))
-			path = "/" + path;
-
-		//!: use global class loader to search for
-		ClassLoader cl = Thread.currentThread().
-		  getContextClassLoader();
-
-		List<URL> us = new ArrayList<>(1);
-		for(String r : this.roots) try
-		{
-			us.addAll(Collections.list(
-			  cl.getResources(r + path)));
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e, "Can't access resource [", r + path, "]!");
-		}
-
-		if(us.isEmpty())
-			return null;
-
-		EX.assertx(us.size() == 1, "More than one script resource was found ",
-		  "for path [", path, "]: ", us);
-
-		try
-		{
-			return new JsFile(us.get(0).toURI());
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e);
-		}
-	}
 
 
 	/* protected: support */
