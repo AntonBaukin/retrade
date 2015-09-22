@@ -223,7 +223,7 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.7" />
+    <bytecodeTargetLevel target="1.8" />
   </component>
   <component name="Cvs2Configuration">
     <option name="PRUNE_EMPTY_DIRECTORIES" value="true" />
@@ -768,7 +768,7 @@
     <resource url="http://tverts.com/retrade/webapp/response" location="$PROJECT_DIR$/prime/src/main/webapp/resources/schemas/response.xsd" />
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="Java" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="Java" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ResourceManagerContainer">
@@ -928,8 +928,6 @@
       <JAVADOC />
       <SOURCES>
         <root url="file://$PROJECT_DIR$/build/dev-auth/srcX" />
-        <root url="jar://$USER_HOME$/.ideaLibSources/openejb-core-4.6.0-sources.jar!/" />
-        <root url="jar://$USER_HOME$/.ideaLibSources/tomee-catalina-1.6.0-sources.jar!/" />
       </SOURCES>
       <jarDirectory url="file://$PROJECT_DIR$/build/dev-auth/lib1" recursive="false" />
       <jarDirectory url="file://$PROJECT_DIR$/build/dev-auth/srcX" recursive="false" type="SOURCES" />
