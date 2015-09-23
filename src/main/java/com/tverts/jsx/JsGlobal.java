@@ -29,7 +29,7 @@ public class JsGlobal
 	 * URI's '/' separators. If the file name
 	 * doesn't contain '.', '.js' suffix is added.
 	 */
-	public Object require(String path)
+	public Object include(String path)
 	{
 		return null;
 	}

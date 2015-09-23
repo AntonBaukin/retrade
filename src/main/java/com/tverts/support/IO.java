@@ -13,6 +13,11 @@ import java.io.ObjectOutput;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -355,5 +360,98 @@ public class IO
 			return false;
 		else
 			throw EX.state();
+	}
+
+
+	/* Closing Strategy */
+
+	public static class Closer
+	       implements   AutoCloseable, Consumer<AutoCloseable>
+	{
+		public Closer()
+		{
+			this.targets = null;
+		}
+
+		public Closer(AutoCloseable... targets)
+		{
+			this.targets = Arrays.asList(targets);
+		}
+
+		public Closer(Collection<AutoCloseable> targets)
+		{
+			this.targets = targets;
+		}
+
+
+		/* Consumer */
+
+		public void accept(AutoCloseable cl)
+		{
+			if(cl != null) try
+			{
+				cl.close();
+			}
+			catch(Throwable e)
+			{
+				synchronized(errors)
+				{
+					errors.put(cl, e);
+				}
+			}
+		}
+
+		protected final Map<AutoCloseable, Throwable> errors =
+		  new LinkedHashMap<>(1);
+
+
+		/* Closeable */
+
+		public void close()
+		{
+			if(targets != null)
+				for(AutoCloseable x : targets)
+					accept(x);
+
+			this.raiseFirst();
+		}
+
+		protected final Collection<AutoCloseable> targets;
+
+
+		/* Closer */
+
+		public boolean isErrors()
+		{
+			synchronized(errors)
+			{
+				return !errors.isEmpty();
+			}
+		}
+
+		public Map<AutoCloseable, Throwable>
+		               errors()
+		{
+			synchronized(errors)
+			{
+				return new LinkedHashMap<>(errors);
+			}
+		}
+
+		public void    raiseFirst()
+		{
+			synchronized(errors)
+			{
+				if(errors.isEmpty())
+					return;
+
+				//~: take the first error
+				Map.Entry<AutoCloseable, Throwable> e =
+				  errors.entrySet().iterator().next();
+
+				//~: throw it wrapped
+				throw EX.wrap(e.getValue(), "Error while closing ", e.getKey());
+			}
+		}
 	}
 }

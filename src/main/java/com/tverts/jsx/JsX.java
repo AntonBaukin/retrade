@@ -1,5 +1,9 @@
 package com.tverts.jsx;
 
+/* Java Scripting */
+
+import javax.script.ScriptEngineManager;
+
 /* com.tverts: support */
 
 import com.tverts.support.EX;
@@ -26,7 +30,10 @@ public class JsX
 	  new JsX();
 
 	protected JsX()
-	{}
+	{
+		this.engineManager = new ScriptEngineManager();
+		this.engines = new JsEngines();
+	}
 
 
 	/* Java Bean (configuration) */
@@ -67,7 +74,22 @@ public class JsX
 
 	/* Scripts Execution */
 
+	/**
+	 * Executes script by it's path related to
+	 * one of the roots configured.
+	 */
+	public void execute(String path, JsCtx ctx)
+	{
+		//~: search for the scripting file
+		JsFile file = files.cached(path);
 
+		//?: {found it not}
+		EX.assertn(file, "No script script file is found by the path [", path, "]!");
+	}
+
+	protected final ScriptEngineManager engineManager;
+
+	protected final JsEngines engines;
 
 
 	/* protected: support */
