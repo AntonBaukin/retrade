@@ -1,8 +1,10 @@
 package com.tverts.api.retrade.goods;
 
-/* Java API for XML Binding */
+/* Java */
 
 import java.math.BigDecimal;
+
+/* Java for XML */
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -107,7 +109,7 @@ public class TestApiGoods
 		g.setCode(x(String.class, i++, x));
 		g.setName(x(String.class, i++, x));
 
-		g.setMeasure(x(Long.class, i++, x));
+		g.setMeasure(x(Long.class, i/*++*/, x));
 		//g.setPrice(x(BigDecimal.class, i/*++*/, x));
 
 		return g;
