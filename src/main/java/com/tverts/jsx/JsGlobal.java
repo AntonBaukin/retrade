@@ -1,5 +1,10 @@
 package com.tverts.jsx;
 
+/* Java */
+
+import java.util.Map;
+
+
 /**
  * This Java object is available for all
  * JavaScripts by the name 'JsX'.
@@ -13,15 +18,12 @@ public class JsGlobal
 	 */
 	public static final String NAME = "JsX";
 
-	public JsGlobal(JsEngine engine, JsCtx context)
+	public JsGlobal(JsEngine engine)
 	{
 		this.engine  = engine;
-		this.context = context;
 	}
 
 	protected final JsEngine engine;
-
-	protected final JsCtx    context;
 
 
 	/* Scripting Interface */
@@ -32,8 +34,17 @@ public class JsGlobal
 	 * URI's '/' separators. If the file name
 	 * doesn't contain '.', '.js' suffix is added.
 	 */
-	public Object include(String path)
+	public Object include(String script)
 	{
-		return null;
+		return engine.nest(script, null);
+	}
+
+	/**
+	 * The same as {@link #include(String)}, but allows
+	 * to temporary set the variables while executing.
+	 */
+	public Object invoke(String script, Map<String, Object> vars)
+	{
+		return engine.nest(script, vars);
 	}
 }

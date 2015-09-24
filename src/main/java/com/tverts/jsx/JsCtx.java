@@ -26,6 +26,7 @@ import com.tverts.support.streams.BytesStream;
 import com.tverts.support.streams.EmptyReader;
 import com.tverts.support.streams.NullWriter;
 
+
 /**
  * Parameters and the results of
  * Script Execution.
@@ -231,7 +232,7 @@ public class JsCtx implements AutoCloseable
 
 		//=: JsX variable
 		ctx.setAttribute(JsGlobal.NAME,
-		  new JsGlobal(jse, this), ScriptContext.ENGINE_SCOPE);
+		  new JsGlobal(jse), ScriptContext.ENGINE_SCOPE);
 
 		return ctx;
 	}

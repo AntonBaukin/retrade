@@ -87,6 +87,12 @@ public class JsEngine
 		}
 	}
 
+	public Object        nest(String script, Map<String, Object> vars)
+	{
+		return null;
+	}
+
+
 	/* protected: scripts execution */
 
 	protected void       compile(JsFile file)
