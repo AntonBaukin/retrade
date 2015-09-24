@@ -13,19 +13,22 @@ public class JsGlobal
 	 */
 	public static final String NAME = "JsX";
 
-	public JsGlobal(JsEngine engine)
+	public JsGlobal(JsEngine engine, JsCtx context)
 	{
-		this.engine = engine;
+		this.engine  = engine;
+		this.context = context;
 	}
 
 	protected final JsEngine engine;
+
+	protected final JsCtx    context;
 
 
 	/* Scripting Interface */
 
 	/**
 	 * The meaning of this method is the same
-	 * as of Node.js analogue. Here the path uses
+	 * as of Node.js require. Here the path uses
 	 * URI's '/' separators. If the file name
 	 * doesn't contain '.', '.js' suffix is added.
 	 */

@@ -15,7 +15,6 @@ import java.util.Map;
 
 /* Java Scripting */
 
-import javax.script.Bindings;
 import javax.script.ScriptContext;
 
 /* com.tverts: support */
@@ -65,45 +64,10 @@ public class JsCtx implements AutoCloseable
 		Perks ps = new Perks(perks);
 
 		if(ps.when(VOID))
-		{
-			this.output = new PrintWriter(new NullWriter());
-			this.error  = new PrintWriter(new NullWriter());
-		}
+			initVoidStreams();
 		else try
 		{
-			//?: {has no error stream}
-			if(ps.when(XERR))
-				this.error = new PrintWriter(new NullWriter());
-			//~: create the default error
-			else
-			{
-				this.errorBytes = new BytesStream();
-				this.error = new PrintWriter(
-				  new OutputStreamWriter(this.errorBytes, "UTF-8"));
-			}
-
-			//~: bytes -> input reader
-			ps.find(byte[].class, bs -> this.input =
-			  new InputStreamReader(new ByteArrayInputStream(bs), "UTF-8")
-			);
-
-			//~: input stream -> input reader
-			ps.find(InputStream.class, is -> this.input =
-			  new InputStreamReader(is, "UTF-8")
-			);
-
-			//~: reader -> input reader
-			ps.find(Reader.class, r -> this.input = r);
-
-			//~: output stream -> output writer
-			ps.find(OutputStream.class, os -> this.output =
-			  new PrintWriter(new OutputStreamWriter(os, "UTF-8"))
-			);
-
-			//~: writer -> output writer
-			ps.find(Writer.class, w -> this.output =
-			  (w instanceof PrintWriter)?((PrintWriter) w):(new PrintWriter(w, true))
-			);
+			initStreams(ps);
 		}
 		catch(Throwable e)
 		{
@@ -117,9 +81,7 @@ public class JsCtx implements AutoCloseable
 		//?: {create default bytes output}
 		if(this.output == null) try
 		{
-			this.outputBytes = new BytesStream();
-			this.output = new PrintWriter(new OutputStreamWriter(
-			  this.outputBytes, "UTF-8"));
+			initDefaultOutput();
 		}
 		catch(Throwable e)
 		{
@@ -129,14 +91,15 @@ public class JsCtx implements AutoCloseable
 		//?: {create default bytes error stream}
 		if(this.error == null) try
 		{
-			this.errorBytes = new BytesStream();
-			this.error = new PrintWriter(new OutputStreamWriter(
-			  this.errorBytes, "UTF-8"));
+			initDefaultError();
 		}
 		catch(Throwable e)
 		{
 			throw EX.wrap(e);
 		}
+
+		//~: initialize the variables
+		initVars(ps);
 
 		return this;
 	}
@@ -248,6 +211,7 @@ public class JsCtx implements AutoCloseable
 
 	/* Scripts Execution */
 
+	@SuppressWarnings("unchecked")
 	public ScriptContext create(JsEngine jse)
 	{
 		ScriptContext ctx = jse.createContext();
@@ -261,6 +225,88 @@ public class JsCtx implements AutoCloseable
 		//=: error writer
 		ctx.setErrorWriter(this.error);
 
+		//~: set the variables
+		for(Map.Entry<String, Object> e : this.vars.entrySet())
+			ctx.setAttribute(e.getKey(), e.getValue(), ScriptContext.ENGINE_SCOPE);
+
+		//=: JsX variable
+		ctx.setAttribute(JsGlobal.NAME,
+		  new JsGlobal(jse, this), ScriptContext.ENGINE_SCOPE);
+
 		return ctx;
+	}
+
+
+	/* protected: initialization */
+
+	protected void initVoidStreams()
+	{
+		this.output = new PrintWriter(new NullWriter());
+		this.error  = new PrintWriter(new NullWriter());
+	}
+
+	protected void initStreams(Perks ps)
+	  throws Throwable
+	{
+		//?: {has no error stream}
+		if(ps.when(XERR))
+			this.error = new PrintWriter(new NullWriter());
+			//~: create the default error
+		else
+		{
+			this.errorBytes = new BytesStream();
+			this.error = new PrintWriter(
+			  new OutputStreamWriter(this.errorBytes, "UTF-8"));
+		}
+
+		//~: bytes -> input reader
+		ps.find(byte[].class, bs -> this.input =
+			 new InputStreamReader(new ByteArrayInputStream(bs), "UTF-8")
+		);
+
+		//~: input stream -> input reader
+		ps.find(InputStream.class, is -> this.input =
+			 new InputStreamReader(is, "UTF-8")
+		);
+
+		//~: reader -> input reader
+		ps.find(Reader.class, r -> this.input = r);
+
+		//~: output stream -> output writer
+		ps.find(OutputStream.class, os -> this.output =
+			 new PrintWriter(new OutputStreamWriter(os, "UTF-8"))
+		);
+
+		//~: writer -> output writer
+		ps.find(Writer.class, w -> this.output =
+			 (w instanceof PrintWriter)?((PrintWriter) w):(new PrintWriter(w, true))
+		);
+	}
+
+	protected void initDefaultOutput()
+	  throws Throwable
+	{
+		this.outputBytes = new BytesStream();
+		this.output = new PrintWriter(new OutputStreamWriter(
+		  this.outputBytes, "UTF-8"));
+	}
+
+	protected void initDefaultError()
+	  throws Throwable
+	{
+		this.errorBytes = new BytesStream();
+		this.error = new PrintWriter(new OutputStreamWriter(
+		  this.errorBytes, "UTF-8"));
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void initVars(Perks ps)
+	{
+		Map<?,?> vars = ps.find(Map.class);
+
+		if(vars != null)
+			for(Map.Entry<?,?> e : vars.entrySet())
+				if(e.getKey() instanceof String)
+					this.vars.put((String) e.getKey(), e.getValue());
 	}
 }

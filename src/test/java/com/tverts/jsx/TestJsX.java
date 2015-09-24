@@ -1,5 +1,15 @@
 package com.tverts.jsx;
 
+/* Java */
+
+import java.io.StringWriter;
+
+/* com.tverts: support */
+
+import com.tverts.support.CMP;
+import com.tverts.support.EX;
+
+
 /**
  * Tests {@link JsX} implementation.
  *
@@ -16,6 +26,10 @@ public class TestJsX
 	@org.junit.Test
 	public void testHelloWorld()
 	{
+		StringWriter s = new StringWriter();
+		final String T = "Hello, World!\n";
 
+		JsX.eval("HelloWorld", s);
+		EX.assertx(CMP.eq(T, s.toString()));
 	}
 }

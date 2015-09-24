@@ -31,8 +31,28 @@ public class JsX
 
 	protected JsX()
 	{
-		this.engineManager = new ScriptEngineManager();
-		this.engines = new JsEngines();
+		this.files   = new JsFiles(new String[]{
+		  this.getClass().getPackage().getName()
+		});
+
+		this.engines = new JsEngines(this.files);
+	}
+
+
+	/* Static Interface */
+
+	public static Object eval(String script, Object... perks)
+	{
+		try(JsCtx ctx = new JsCtx().init(perks))
+		{
+			JsX.INSTANCE.execute(script, ctx);
+			return ctx.result;
+		}
+	}
+
+	public static void   eval(String script, JsCtx ctx)
+	{
+		JsX.INSTANCE.execute(script, ctx);
 	}
 
 
@@ -59,16 +79,18 @@ public class JsX
 
 			if(r.indexOf('/') == -1)
 				r = r.replace('.', '/');
-			if(!r.startsWith("/"))
-				r = "/" + r;
+			if(r.startsWith("/"))
+				r = r.substring(1);
 			while(r.endsWith("/"))
 				r = r.substring(0, r.length() - 1);
 
 			rs[i] = EX.asserts(r);
 		}
 
-		LU.I(getLog(), "Using the wollowing roots: ", rs);
-		this.files = new JsFiles(rs);
+		LU.I(LU.cls(this), "Using the wollowing roots: ", rs);
+
+		this.files   = new JsFiles(rs);
+		this.engines = new JsEngines(this.files);
 	}
 
 
@@ -80,22 +102,28 @@ public class JsX
 	 */
 	public void execute(String path, JsCtx ctx)
 	{
+		EX.assertn(ctx);
+
 		//~: search for the scripting file
 		JsFile file = files.cached(path);
 
 		//?: {found it not}
 		EX.assertn(file, "No script script file is found by the path [", path, "]!");
+
+		//~: allocate the engine
+		JsEngine engine = this.engines.take(file);
+
+		//~: execute the script
+		try
+		{
+			engine.execute(ctx);
+		}
+		finally
+		{
+			//!: free the engine
+			this.engines.free(engine);
+		}
 	}
 
-	protected final ScriptEngineManager engineManager;
-
-	protected final JsEngines engines;
-
-
-	/* protected: support */
-
-	protected String getLog()
-	{
-		return this.getClass().getName();
-	}
+	protected JsEngines engines;
 }

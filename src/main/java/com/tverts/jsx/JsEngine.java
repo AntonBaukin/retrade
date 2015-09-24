@@ -43,35 +43,33 @@ public class JsEngine
 		}
 
 		//~: compile the initial script
-		this.files = files;
 		this.file = file;
+		this.files = files;
 		this.compile(file);
 	}
+
+	/**
+	 * The root script file to execute.
+	 */
+	public final JsFile file;
 
 
 	/* Engine */
 
 	public ScriptContext createContext()
 	{
-		Bindings b = engine.createBindings();
-
-		//=: JsX
-		b.put(JsGlobal.NAME, new JsGlobal(this));
-
-		ScriptContext ctx = new SimpleScriptContext();
-
-		//~: global bindings
-		ctx.setBindings(engine.getBindings(ScriptContext.GLOBAL_SCOPE),
-		  ScriptContext.GLOBAL_SCOPE);
+		Bindings      b = engine.createBindings();
+		ScriptContext c = new SimpleScriptContext();
 
 		//~: temporary bindings for the engine
-		ctx.setBindings(b, ScriptContext.ENGINE_SCOPE);
+		c.setBindings(b, ScriptContext.ENGINE_SCOPE);
 
-		return ctx;
+		return c;
 	}
 
 	/**
-	 * Executes the compiled script by the context given.
+	 * Executes the compiled root script by the context given.
+	 * Note that the context is not closed within this operation!
 	 */
 	public void          execute(JsCtx ctx)
 	{
@@ -120,8 +118,9 @@ public class JsEngine
 	 */
 	protected final JsFiles files;
 
-	protected final JsFile file;
-
+	/**
+	 * The root script file with all the included ones.
+	 */
 	protected final Map<JsFile, CompiledScript> scripts =
 	  new HashMap<>();
 }

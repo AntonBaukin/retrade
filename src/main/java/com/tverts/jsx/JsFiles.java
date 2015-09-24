@@ -46,11 +46,9 @@ public class JsFiles
 
 		//?: {found not}
 		if(cache.file == null)
-			//?: {searched a second before}
-			if(cache.created + 1000 < System.currentTimeMillis())
-				cache = this.files.computeIfAbsent(
-				  path, p -> new Cache(find(p))
-				);
+			//?: {searched 4-seconds before}
+			if(cache.created + 4000 < System.currentTimeMillis())
+				this.files.put(path, cache = new Cache(find(path)));
 
 		return cache.file;
 	}
