@@ -27,7 +27,7 @@ public class TestJsX
 	public void testHelloWorld()
 	{
 		StringWriter s = new StringWriter();
-		final String T = "Hello, World!\n";
+		final String T = String.format("%s%n", "Hello, World!");
 
 		JsX.invoke("HelloWorld", "helloWorld", s);
 		EX.assertx(CMP.eq(T, s.toString()));

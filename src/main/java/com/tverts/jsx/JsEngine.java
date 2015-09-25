@@ -43,8 +43,9 @@ public class JsEngine
 			throw EX.wrap(e, "Error creating Nashorn engine instance!");
 		}
 
-		this.file   = EX.assertn(file);
-		this.files  = EX.assertn(files);
+		this.file    = EX.assertn(file);
+		this.files   = EX.assertn(files);
+		this.streams = new JsStreams().wrappers();
 
 		//~: execute the root script
 		this.prepare();
@@ -66,7 +67,7 @@ public class JsEngine
 	 *
 	 * Note that the context is not closed here!
 	 */
-	public Object        invoke(String function, JsCtx ctx, Object... args)
+	public Object invoke(String function, JsCtx ctx, Object... args)
 	{
 		EX.assertn(ctx);
 		EX.asserts(function);
@@ -79,6 +80,11 @@ public class JsEngine
 		//~: scope for the root script
 		this.stack = new Nested(this.file);
 		this.stack.current = sc.getBindings(ScriptContext.ENGINE_SCOPE);
+
+		//~: wrap the context streams
+		ctx.assign(sc);
+		this.streams.wrap(ctx.getStreams());
+		this.streams.assign(sc);
 
 		//~: invoke the script's function
 		try
@@ -93,7 +99,14 @@ public class JsEngine
 		}
 		finally
 		{
-			this.cleanup(false);
+			try
+			{
+				this.streams.flush();
+			}
+			finally
+			{
+				this.cleanup(false);
+			}
 		}
 	}
 
@@ -108,7 +121,7 @@ public class JsEngine
 	 * it's present state. Optional variables may be given to
 	 * provide them to the script.
 	 */
-	public Object        nest(String script, Map<String, Object> vars)
+	public Object nest(String script, Map<String, Object> vars)
 	{
 		return null;
 	}
@@ -159,7 +172,7 @@ public class JsEngine
 		compile(this.file);
 
 		//~: execute it in void context
-		try(JsCtx ctx = new JsCtx().init(JsCtx.VOID))
+		try(JsCtx ctx = new JsCtx().init(this.streams))
 		{
 			//~: create the initial scope
 			ScriptContext sc = new SimpleScriptContext();
@@ -169,7 +182,7 @@ public class JsEngine
 			sc.setBindings(this.globalScope, ScriptContext.ENGINE_SCOPE);
 			prepareGlobalScope();
 
-			//~: assign the void streams
+			//~: assign the wrapping streams
 			ctx.assign(sc);
 
 			//~: evaluate the script
@@ -232,6 +245,9 @@ public class JsEngine
 
 		//~: invocation stack
 		this.stack = null;
+
+		//~: close the wrapped streams
+		this.streams.close();
 	}
 
 	/**
@@ -245,14 +261,13 @@ public class JsEngine
 	protected final JsFiles files;
 
 	/**
+	 * Collection of wrapping streams.
+	 */
+	protected final JsStreams streams;
+
+	/**
 	 * The root script file with all the included ones.
 	 */
 	protected final Map<JsFile, CompiledScript> scripts =
 	  new HashMap<>();
-
-
-	/* Supporting Streams */
-
-	protected static class WriteWrapper
-	{}
 }

@@ -27,8 +27,8 @@ import com.tverts.objects.ObjectAccessRef;
 
 import com.tverts.support.streams.BigDecimalXMLEncoderPersistenceDelegate;
 import com.tverts.support.streams.BytesStream;
-import com.tverts.support.streams.NotCloseInput;
-import com.tverts.support.streams.NotCloseOutput;
+import com.tverts.support.streams.Streams.NotCloseInput;
+import com.tverts.support.streams.Streams.NotCloseOutput;
 
 
 /**

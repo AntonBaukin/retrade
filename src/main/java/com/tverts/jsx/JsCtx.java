@@ -2,12 +2,8 @@ package com.tverts.jsx;
 
 /* Java */
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
@@ -19,12 +15,7 @@ import javax.script.ScriptContext;
 
 /* com.tverts: support */
 
-import com.tverts.support.EX;
-import com.tverts.support.IO;
 import com.tverts.support.Perks;
-import com.tverts.support.streams.BytesStream;
-import com.tverts.support.streams.EmptyReader;
-import com.tverts.support.streams.NullWriter;
 
 
 /**
@@ -56,7 +47,7 @@ public class JsCtx implements AutoCloseable
 	 * The perks supported are: VOID; XERR;
 	 * byte[], or Input Stream, or Reader
 	 * as the input; Output Stream, or
-	 * Writer as the output.
+	 * Writer as the output; JsStreams.
 	 *
 	 * The encoding supposed is UTF-8.
 	 */
@@ -64,40 +55,8 @@ public class JsCtx implements AutoCloseable
 	{
 		Perks ps = new Perks(perks);
 
-		if(ps.when(VOID))
-			initVoidStreams();
-		else try
-		{
-			initStreams(ps);
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e);
-		}
-
-		//?: {create default empty input}
-		if(this.input == null)
-			this.input = new EmptyReader();
-
-		//?: {create default bytes output}
-		if(this.output == null) try
-		{
-			initDefaultOutput();
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e);
-		}
-
-		//?: {create default bytes error stream}
-		if(this.error == null) try
-		{
-			initDefaultError();
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e);
-		}
+		//~: initialize the streams
+		initStreams(ps);
 
 		//~: initialize the variables
 		initVars(ps);
@@ -118,64 +77,15 @@ public class JsCtx implements AutoCloseable
 	  new HashMap<>(3);
 
 
-	/* Streams */
+	/* Streams & Closeable */
 
-	public JsCtx setInput(Reader input)
+	public JsStreams getStreams()
 	{
-		this.input = (input != null)?(input):(new EmptyReader());
-		return this;
+		return (streams != null)?(streams):
+		  (streams = new JsStreams());
 	}
 
-	protected Reader input;
-
-	public JsCtx setOutput(PrintWriter output)
-	{
-		this.output = (output != null)?(output):
-		  new PrintWriter(new NullWriter());
-
-		if(outputBytes != null)
-			outputBytes.closeAlways();
-		outputBytes = null;
-
-		return this;
-	}
-
-	protected PrintWriter output;
-
-	public JsCtx setError(PrintWriter error)
-	{
-		this.error = (error != null)?(error):
-		  new PrintWriter(new NullWriter());
-
-		if(errorBytes != null)
-			errorBytes.closeAlways();
-		errorBytes = null;
-
-		return this;
-	}
-
-	protected PrintWriter error;
-
-	/**
-	 * Returns Bytes Stream created by the default
-	 * initialization procedure. Undefined when
-	 * user installs own stream.
-	 *
-	 * The text is encoded in UTF-8.
-	 */
-	public BytesStream getOutputBytes()
-	{
-		return outputBytes;
-	}
-
-	protected BytesStream outputBytes;
-
-	public BytesStream getErrorBytes()
-	{
-		return errorBytes;
-	}
-
-	protected BytesStream errorBytes;
+	protected JsStreams streams;
 
 
 	/* Closeable */
@@ -186,21 +96,14 @@ public class JsCtx implements AutoCloseable
 	 */
 	public void close()
 	{
-		new IO.Closer(input, output, error,
-		  outputBytes, errorBytes).close();
+		if(streams != null)
+			streams.close();
 	}
 
 	public void flush()
 	{
-		try
-		{
-			output.flush();
-			error.flush();
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e);
-		}
+		if(streams != null)
+			streams.flush();
 	}
 
 
@@ -209,14 +112,7 @@ public class JsCtx implements AutoCloseable
 	@SuppressWarnings("unchecked")
 	public void assign(ScriptContext ctx)
 	{
-		//=: reader
-		ctx.setReader(this.input);
-
-		//=: writer
-		ctx.setWriter(this.output);
-
-		//=: error writer
-		ctx.setErrorWriter(this.error);
+		this.getStreams().assign(ctx);
 
 		//~: set the variables
 		for(Map.Entry<String, Object> e : this.vars.entrySet())
@@ -226,74 +122,54 @@ public class JsCtx implements AutoCloseable
 
 	/* protected: initialization */
 
-	protected void initVoidStreams()
-	{
-		this.output = new PrintWriter(new NullWriter());
-		this.error  = new PrintWriter(new NullWriter());
-	}
-
 	protected void initStreams(Perks ps)
-	  throws Throwable
 	{
-		//?: {has no error stream}
-		if(ps.when(XERR))
-			this.error = new PrintWriter(new NullWriter());
-			//~: create the default error
-		else
+		ps.find(JsStreams.class, s -> streams = s);
+		if(streams == null)
+			streams = new JsStreams();
+
+		//?: {void streams}
+		if(ps.when(VOID))
 		{
-			this.errorBytes = new BytesStream();
-			this.error = new PrintWriter(
-			  new OutputStreamWriter(this.errorBytes, "UTF-8"));
+			streams.output((Writer) null).
+			  error((Writer) null);
+			return;
 		}
 
+		//?: {has no error stream}
+		if(ps.when(XERR))
+			streams.error((Writer) null);
+
 		//~: bytes -> input reader
-		ps.find(byte[].class, bs -> this.input =
-			 new InputStreamReader(new ByteArrayInputStream(bs), "UTF-8")
-		);
+		ps.find(byte[].class, streams::input);
 
 		//~: input stream -> input reader
-		ps.find(InputStream.class, is -> this.input =
-			 new InputStreamReader(is, "UTF-8")
-		);
+		ps.find(InputStream.class, streams::input);
 
 		//~: reader -> input reader
-		ps.find(Reader.class, r -> this.input = r);
+		ps.find(Reader.class, streams::input);
 
 		//~: output stream -> output writer
-		ps.find(OutputStream.class, os -> this.output =
-			 new PrintWriter(new OutputStreamWriter(os, "UTF-8"))
-		);
+		ps.find(OutputStream.class, streams::output);
 
 		//~: writer -> output writer
-		ps.find(Writer.class, w -> this.output =
-			 (w instanceof PrintWriter)?((PrintWriter) w):(new PrintWriter(w, true))
-		);
-	}
+		ps.find(Writer.class, streams::output);
 
-	protected void initDefaultOutput()
-	  throws Throwable
-	{
-		this.outputBytes = new BytesStream();
-		this.output = new PrintWriter(new OutputStreamWriter(
-		  this.outputBytes, "UTF-8"));
-	}
+		//~: default output
+		streams.output();
 
-	protected void initDefaultError()
-	  throws Throwable
-	{
-		this.errorBytes = new BytesStream();
-		this.error = new PrintWriter(new OutputStreamWriter(
-		  this.errorBytes, "UTF-8"));
+		//~: default error
+		streams.error();
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void initVars(Perks ps)
 	{
 		Map<?,?> vars = ps.find(Map.class);
+		if(vars == null) return;
 
-		if(vars != null)
-			for(Map.Entry<?,?> e : vars.entrySet())
-				if(e.getKey() instanceof String)
-					this.vars.put((String) e.getKey(), e.getValue());
+		for(Map.Entry<?,?> e : vars.entrySet())
+			if(e.getKey() instanceof String)
+				this.vars.put((String) e.getKey(), e.getValue());
 	}
 }
