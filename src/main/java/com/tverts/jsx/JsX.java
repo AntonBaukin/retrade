@@ -2,8 +2,6 @@ package com.tverts.jsx;
 
 /* Java Scripting */
 
-import javax.script.ScriptEngineManager;
-
 /* com.tverts: support */
 
 import com.tverts.support.EX;
@@ -41,18 +39,20 @@ public class JsX
 
 	/* Static Interface */
 
-	public static Object eval(String script, Object... perks)
+	public static Object invoke(String script, String function, Object... perks)
 	{
+		EX.asserts(script);
+		EX.asserts(function);
+
 		try(JsCtx ctx = new JsCtx().init(perks))
 		{
-			JsX.INSTANCE.execute(script, ctx);
-			return ctx.result;
+			return JsX.INSTANCE.execute(script, function, ctx);
 		}
 	}
 
-	public static void   eval(String script, JsCtx ctx)
+	public static Object invoke(String script, String function, JsCtx ctx, Object... args)
 	{
-		JsX.INSTANCE.execute(script, ctx);
+		return JsX.INSTANCE.execute(script, function, ctx, args);
 	}
 
 
@@ -100,15 +100,16 @@ public class JsX
 	 * Executes script by it's path related to
 	 * one of the roots configured.
 	 */
-	public void execute(String path, JsCtx ctx)
+	public Object execute(String script, String function, JsCtx ctx, Object... args)
 	{
 		EX.assertn(ctx);
+		EX.asserts(function);
 
 		//~: search for the scripting file
-		JsFile file = files.cached(path);
+		JsFile file = files.cached(script);
 
 		//?: {found it not}
-		EX.assertn(file, "No script script file is found by the path [", path, "]!");
+		EX.assertn(file, "No script script file is found by the path [", script, "]!");
 
 		//~: allocate the engine
 		JsEngine engine = this.engines.take(file);
@@ -116,7 +117,7 @@ public class JsX
 		//~: execute the script
 		try
 		{
-			engine.execute(ctx);
+			return engine.invoke(function, ctx, args);
 		}
 		finally
 		{

@@ -29,7 +29,7 @@ public class TestJsX
 		StringWriter s = new StringWriter();
 		final String T = "Hello, World!\n";
 
-		JsX.eval("HelloWorld", s);
+		JsX.invoke("HelloWorld", "helloWorld", s);
 		EX.assertx(CMP.eq(T, s.toString()));
 	}
 }

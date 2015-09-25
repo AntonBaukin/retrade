@@ -117,12 +117,6 @@ public class JsCtx implements AutoCloseable
 	protected final Map<String, Object> vars =
 	  new HashMap<>(3);
 
-	/**
-	 * The result object of the
-	 * script execution (if any).
-	 */
-	public Object result;
-
 
 	/* Streams */
 
@@ -213,10 +207,8 @@ public class JsCtx implements AutoCloseable
 	/* Scripts Execution */
 
 	@SuppressWarnings("unchecked")
-	public ScriptContext create(JsEngine jse)
+	public void assign(ScriptContext ctx)
 	{
-		ScriptContext ctx = jse.createContext();
-
 		//=: reader
 		ctx.setReader(this.input);
 
@@ -229,12 +221,6 @@ public class JsCtx implements AutoCloseable
 		//~: set the variables
 		for(Map.Entry<String, Object> e : this.vars.entrySet())
 			ctx.setAttribute(e.getKey(), e.getValue(), ScriptContext.ENGINE_SCOPE);
-
-		//=: JsX variable
-		ctx.setAttribute(JsGlobal.NAME,
-		  new JsGlobal(jse), ScriptContext.ENGINE_SCOPE);
-
-		return ctx;
 	}
 
 

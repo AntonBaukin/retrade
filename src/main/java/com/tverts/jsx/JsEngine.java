@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.script.Bindings;
 import javax.script.Compilable;
 import javax.script.CompiledScript;
+import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -42,51 +43,71 @@ public class JsEngine
 			throw EX.wrap(e, "Error creating Nashorn engine instance!");
 		}
 
-		//~: compile the initial script
-		this.file = file;
-		this.files = files;
-		this.compile(file);
+		this.file   = EX.assertn(file);
+		this.files  = EX.assertn(files);
+
+		//~: execute the root script
+		this.prepare();
 	}
 
 	/**
 	 * The root script file to execute.
 	 */
-	public final JsFile file;
+	public final JsFile   file;
 
 
 	/* Engine */
 
-	public ScriptContext createContext()
-	{
-		Bindings      b = engine.createBindings();
-		ScriptContext c = new SimpleScriptContext();
-
-		//~: temporary bindings for the engine
-		c.setBindings(b, ScriptContext.ENGINE_SCOPE);
-
-		return c;
-	}
-
 	/**
-	 * Executes the compiled root script by the context given.
-	 * Note that the context is not closed within this operation!
+	 * The root script compiled and executed in the
+	 * constructor leaves the engine in it's final
+	 * state. This method allows to execute a global
+	 * function of the root script.
+	 *
+	 * Note that the context is not closed here!
 	 */
-	public void          execute(JsCtx ctx)
+	public Object        invoke(String function, JsCtx ctx, Object... args)
 	{
-		//~: create the context
-		ScriptContext sc = ctx.create(this);
+		EX.assertn(ctx);
+		EX.asserts(function);
+		EX.assertx(this.stack == null);
 
-		//~: evaluate the script
+		//~: create the context
+		ScriptContext sc = new SimpleScriptContext();
+		sc.setBindings(this.globalScope, ScriptContext.GLOBAL_SCOPE);
+
+		//~: scope for the root script
+		this.stack = new Nested(this.file);
+		this.stack.current = sc.getBindings(ScriptContext.ENGINE_SCOPE);
+
+		//~: invoke the script's function
 		try
 		{
-			EX.assertn(this.scripts.get(this.file)).eval(sc);
+			this.engine.setContext(sc);
+			return ((Invocable) this.engine).invokeFunction(function, args);
 		}
 		catch(Throwable e)
 		{
-			throw EX.wrap(e, "Error during execution of script [", file.uri(), "]!");
+			throw EX.wrap(e, "Error during execution of script [", file.uri(),
+			  "] function ", function, "() with arguments: ", args);
+		}
+		finally
+		{
+			this.cleanup(false);
 		}
 	}
 
+	/**
+	 * Pointer to the current execution context.
+	 */
+	protected Nested stack;
+
+	/**
+	 * On the first demand, loads and compiles the script given.
+	 * Executes it in the context of existing engine thus affecting
+	 * it's present state. Optional variables may be given to
+	 * provide them to the script.
+	 */
 	public Object        nest(String script, Map<String, Object> vars)
 	{
 		return null;
@@ -95,7 +116,91 @@ public class JsEngine
 
 	/* protected: scripts execution */
 
-	protected void       compile(JsFile file)
+	/**
+	 * Item (and stack) of scripts invocation.
+	 */
+	protected static class Nested
+	{
+		/**
+		 * The script file.
+		 */
+		public final JsFile file;
+
+		public Nested(JsFile file)
+		{
+			this.file = file;
+		}
+
+		public Nested previous;
+
+		/**
+		 * Previous scope variables.
+		 */
+		public Bindings outer;
+
+		/**
+		 * Current scope variables.
+		 */
+		public Bindings current;
+	}
+
+	/**
+	 * Evaluates the root script. After this call
+	 * all the compiled scripts would be cleared,
+	 * but client code may require them again,
+	 * what is not forbidden.
+	 *
+	 * Hint: the initial script is executed in
+	 * VOID context, {@link JsCtx#VOID}.
+	 */
+	protected void prepare()
+	{
+		//~: compile the root
+		compile(this.file);
+
+		//~: execute it in void context
+		try(JsCtx ctx = new JsCtx().init(JsCtx.VOID))
+		{
+			//~: create the initial scope
+			ScriptContext sc = new SimpleScriptContext();
+			this.globalScope = engine.createBindings();
+
+			//HINT: here we use them as engine' scope
+			sc.setBindings(this.globalScope, ScriptContext.ENGINE_SCOPE);
+			prepareGlobalScope();
+
+			//~: assign the void streams
+			ctx.assign(sc);
+
+			//~: evaluate the script
+			EX.assertn(this.scripts.get(this.file)).eval(sc);
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e, "Error during the initial execution of script [",
+			  file.uri(), "]!");
+		}
+		finally
+		{
+			this.cleanup(true);
+		}
+	}
+
+	protected void prepareGlobalScope()
+	{
+		//=: JsX global variable
+		globalScope.put(JsGlobal.NAME, new JsGlobal(this));
+	}
+
+	/**
+	 * The global variables of this engine
+	 * that are generated during the initial
+	 * execution of the script and then
+	 * used in each invocation.
+	 */
+	protected Bindings globalScope;
+
+	protected void compile(JsFile file)
 	{
 		//~: access the file content
 		String code = file.content();
@@ -114,6 +219,21 @@ public class JsEngine
 		scripts.put(file, script);
 	}
 
+	protected void cleanup(boolean initial)
+	{
+		//HINT: we clear the script compiled during
+		// the initial execution as they will likely
+		// will not be needed more
+		if(initial)
+			this.scripts.clear();
+
+		//~: don't store all that variables
+		this.engine.setContext(new SimpleScriptContext());
+
+		//~: invocation stack
+		this.stack = null;
+	}
+
 	/**
 	 * Scripting Engine private for this instance.
 	 */
@@ -129,4 +249,10 @@ public class JsEngine
 	 */
 	protected final Map<JsFile, CompiledScript> scripts =
 	  new HashMap<>();
+
+
+	/* Supporting Streams */
+
+	protected static class WriteWrapper
+	{}
 }

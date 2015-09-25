@@ -13,7 +13,9 @@ import java.io.Writer;
 public class NullWriter extends Writer
 {
 	public void write(char[] cbuf, int off, int len)
-	{}
+	{
+		int a = 0;
+	}
 
 	public void flush()
 	{}

@@ -9,6 +9,12 @@ import java.util.Map;
  * This Java object is available for all
  * JavaScripts by the name 'JsX'.
  *
+ * The instance of JsX-global is private
+ * for each engine. It is created with
+ * the initial script execution and
+ * never changed after it.
+ *
+ *
  * @author anton.baukin@gmail.com.
  */
 public class JsGlobal
@@ -33,6 +39,10 @@ public class JsGlobal
 	 * as of Node.js require. Here the path uses
 	 * URI's '/' separators. If the file name
 	 * doesn't contain '.', '.js' suffix is added.
+	 *
+	 * If the path starts with './' it is assumed
+	 * to be local and related to the script is
+	 * being currently executed.
 	 */
 	public Object include(String script)
 	{
