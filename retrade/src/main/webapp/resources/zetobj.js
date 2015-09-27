@@ -998,7 +998,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	xeval            : function(script)
 	{
 		if(ZeTS.ises(script)) return
-		eval('((function(){'.concat(script, '})())'))
+		return eval('((function(){'.concat(script, '})())'))
 	},
 
 	/**
