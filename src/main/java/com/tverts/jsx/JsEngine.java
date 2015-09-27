@@ -18,6 +18,7 @@ import javax.script.SimpleScriptContext;
 
 /* com.tverts: support */
 
+import com.tverts.jsx.JsGlobal.Nesting;
 import com.tverts.support.EX;
 
 
@@ -57,7 +58,7 @@ public class JsEngine
 	public final JsFile file;
 
 
-	/* Engine */
+	/* Engine Interface */
 
 	/**
 	 * The root script compiled and executed in the
@@ -110,10 +111,109 @@ public class JsEngine
 		}
 	}
 
+
+	/* protected: scripts execution */
+
 	/**
-	 * Pointer to the current execution context.
+	 * Item (and stack) of scripts invocation.
 	 */
-	protected Nested stack;
+	protected static class Nested
+	{
+		/**
+		 * The script file.
+		 */
+		public final JsFile file;
+
+		public Nested(JsFile file)
+		{
+			this.file = file;
+		}
+
+		/**
+		 * Previous scope variables.
+		 */
+		public Bindings outer;
+
+		/**
+		 * Current scope variables.
+		 */
+		public Bindings current;
+	}
+
+	/**
+	 * Evaluates the root script. After this call
+	 * all the compiled scripts would be cleared,
+	 * but client code may require them again,
+	 * what is not forbidden.
+	 *
+	 * Hint: the initial script is executed in
+	 * VOID context, {@link JsCtx#VOID}.
+	 */
+	protected void   prepare()
+	{
+		//~: compile the root
+		compile(this.file);
+
+		//~: execute it in void context
+		try(JsCtx ctx = new JsCtx().init(this.streams))
+		{
+			//~: create the initial scope
+			ScriptContext sc = new SimpleScriptContext();
+			this.globalScope = engine.createBindings();
+
+			//HINT: here we use them as engine' scope
+			sc.setBindings(this.globalScope, ScriptContext.ENGINE_SCOPE);
+			prepareGlobalScope();
+
+			//~: assign the wrapping streams
+			ctx.assign(sc);
+
+			//~: evaluate the script
+			EX.assertn(this.scripts.get(this.file)).eval(sc);
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e, "Error during the initial execution of script [",
+			  file.uri(), "]!");
+		}
+		finally
+		{
+			this.cleanup(true);
+		}
+	}
+
+	protected void   prepareGlobalScope()
+	{
+		//=: JsX global variable
+		globalScope.put(JsGlobal.NAME, new JsGlobal(new Nesting()
+		{
+			public JsFile resolve(String path)
+			{
+				return JsEngine.this.resolve(path);
+			}
+
+			public Object nest(String script, Map<String, Object> vars)
+			{
+				return JsEngine.this.nest(script, vars);
+			}
+		}));
+	}
+
+	protected JsFile resolve(String script)
+	{
+		EX.asserts(script);
+		EX.assertn(this.stack);
+
+		//?: {script is relative}
+		if(script.startsWith("./"))
+			return EX.assertn(this.files.relate(this.stack.file, script),
+			  "Script [", script, "] relative to script [",
+			  this.stack.file.uri(), "] is not found!");
+		//~: script is global
+		else
+			return EX.assertn(this.files.cached(script),
+			  "Script file [", script, "] is not found!");
+	}
 
 	/**
 	 * On the first demand, loads and compiles the script given.
@@ -124,20 +224,9 @@ public class JsEngine
 	 * If the path starts with './' it is assumed to be local and
 	 * related to the script is being currently executed.
 	 */
-	public Object nest(String script, Map<String, Object> vars)
+	protected Object nest(String script, Map<String, Object> vars)
 	{
-		EX.asserts(script);
-		EX.assertn(this.stack);
-
-		//?: {script is relative}
-		JsFile file; if(script.startsWith("./"))
-			file = EX.assertn(this.files.relate(this.stack.file, script),
-			  "Script [", script, "] relative to script [",
-			  this.stack.file.uri(), "] is not found!");
-		//~: script is global
-		else
-			file = EX.assertn(this.files.cached(script),
-			  "Script file [", script, "] is not found!");
+		JsFile file = this.resolve(script);
 
 		//?: {script instance is not cached yet}
 		CompiledScript cs = this.scripts.get(file);
@@ -188,82 +277,10 @@ public class JsEngine
 		}
 	}
 
-
-	/* protected: scripts execution */
-
 	/**
-	 * Item (and stack) of scripts invocation.
+	 * Pointer to the current execution context.
 	 */
-	protected static class Nested
-	{
-		/**
-		 * The script file.
-		 */
-		public final JsFile file;
-
-		public Nested(JsFile file)
-		{
-			this.file = file;
-		}
-
-		/**
-		 * Previous scope variables.
-		 */
-		public Bindings outer;
-
-		/**
-		 * Current scope variables.
-		 */
-		public Bindings current;
-	}
-
-	/**
-	 * Evaluates the root script. After this call
-	 * all the compiled scripts would be cleared,
-	 * but client code may require them again,
-	 * what is not forbidden.
-	 *
-	 * Hint: the initial script is executed in
-	 * VOID context, {@link JsCtx#VOID}.
-	 */
-	protected void prepare()
-	{
-		//~: compile the root
-		compile(this.file);
-
-		//~: execute it in void context
-		try(JsCtx ctx = new JsCtx().init(this.streams))
-		{
-			//~: create the initial scope
-			ScriptContext sc = new SimpleScriptContext();
-			this.globalScope = engine.createBindings();
-
-			//HINT: here we use them as engine' scope
-			sc.setBindings(this.globalScope, ScriptContext.ENGINE_SCOPE);
-			prepareGlobalScope();
-
-			//~: assign the wrapping streams
-			ctx.assign(sc);
-
-			//~: evaluate the script
-			EX.assertn(this.scripts.get(this.file)).eval(sc);
-		}
-		catch(Throwable e)
-		{
-			throw EX.wrap(e, "Error during the initial execution of script [",
-			  file.uri(), "]!");
-		}
-		finally
-		{
-			this.cleanup(true);
-		}
-	}
-
-	protected void prepareGlobalScope()
-	{
-		//=: JsX global variable
-		globalScope.put(JsGlobal.NAME, new JsGlobal(this));
-	}
+	protected Nested stack;
 
 	/**
 	 * The global variables of this engine

@@ -1,11 +1,12 @@
 /*===============================================================+
  | 0-ZeT Library for Nashorn-JsX                        [ 1.0 ]  |
  |                                                               |
- |                       Assers & Errors                         |
+ |                       Asserts & Errors                        |
  |                                                               |
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
-var ZeT = JsX.global('ZeT')
+var ZeT  = JsX.global('ZeT')
+var ZeTS = JsX.global('ZeTS')
 
-JsX.include('./checks.js')
+

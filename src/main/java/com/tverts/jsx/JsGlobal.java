@@ -25,12 +25,24 @@ public class JsGlobal
 	 */
 	public static final String NAME = "JsX";
 
-	public JsGlobal(JsEngine engine)
+	public JsGlobal(Nesting engine)
 	{
-		this.engine  = engine;
+		this.engine = engine;
 	}
 
-	protected final JsEngine engine;
+	protected final Nesting engine;
+
+
+	/* Nesting */
+
+	public static interface Nesting
+	{
+		/* Scripts Nesting */
+
+		public JsFile resolve(String path);
+
+		public Object nest(String script, Map<String, Object> vars);
+	}
 
 
 	/* Scripting Interface */
@@ -49,6 +61,29 @@ public class JsGlobal
 	{
 		return engine.nest(script, null);
 	}
+
+	/**
+	 * Includes the given script once.
+	 * On the following calls returns
+	 * the object created before.
+	 */
+	public Object once(String script)
+	{
+		//~: resolve the absolute script
+		JsFile file = this.engine.resolve(script);
+
+		//?: {invoked it before}
+		if(this.onces.containsKey(file))
+			return this.onces.get(file);
+
+		//!: include the script
+		Object res = this.include(script);
+		this.onces.put(file, res);
+		return res;
+	}
+
+	protected Map<JsFile, Object> onces =
+	  new HashMap<>();
 
 	/**
 	 * The same as {@link #include(String)}, but allows
