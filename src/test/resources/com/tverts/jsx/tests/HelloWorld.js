@@ -1,7 +1,13 @@
 /**
  * The simplest test with the output.
  */
-var helloWorld = function()
+function helloWorld()
 {
 	print('Hello, World!')
+}
+
+function checkChecks()
+{
+	//~: include the checks
+	var ZeT = JsX.include('zet/checks.js')
 }

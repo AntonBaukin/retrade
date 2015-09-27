@@ -54,7 +54,7 @@ public class JsEngine
 	/**
 	 * The root script file to execute.
 	 */
-	public final JsFile   file;
+	public final JsFile file;
 
 
 	/* Engine */
@@ -120,10 +120,72 @@ public class JsEngine
 	 * Executes it in the context of existing engine thus affecting
 	 * it's present state. Optional variables may be given to
 	 * provide them to the script.
+	 *
+	 * If the path starts with './' it is assumed to be local and
+	 * related to the script is being currently executed.
 	 */
 	public Object nest(String script, Map<String, Object> vars)
 	{
-		return null;
+		EX.asserts(script);
+		EX.assertn(this.stack);
+
+		//?: {script is relative}
+		JsFile file; if(script.startsWith("./"))
+			file = EX.assertn(this.files.relate(this.stack.file, script),
+			  "Script [", script, "] relative to script [",
+			  this.stack.file.uri(), "] is not found!");
+		//~: script is global
+		else
+			file = EX.assertn(this.files.cached(script),
+			  "Script file [", script, "] is not found!");
+
+		//?: {script instance is not cached yet}
+		CompiledScript cs = this.scripts.get(file);
+		if(cs == null)
+		{
+			compile(file);
+			cs = EX.assertn(this.scripts.get(file));
+		}
+
+		//~: create stack entry
+		Nested current = this.stack;
+		Nested nested  = new Nested(file);
+		nested.outer = current.current;
+
+		//?: {has no variables} no scope
+		if(vars == null)
+			nested.current = nested.outer;
+		//~: copy nested scope
+		else
+		{
+			nested.current = this.engine.createBindings();
+			nested.current.putAll(nested.outer);
+			nested.current.putAll(vars);
+		}
+
+		//~: execute the nested scope
+		this.stack = nested;
+		try
+		{
+			//~: assign nested scope
+			if(nested.current != nested.outer)
+				this.engine.setBindings(nested.current, ScriptContext.ENGINE_SCOPE);
+
+			//~: invoke the compiled script
+			return cs.eval();
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e, "Error while executing script [", file.uri() ,"]!");
+		}
+		finally
+		{
+			//~: pop nested scope
+			if(nested.current != nested.outer)
+				this.engine.setBindings(nested.outer, ScriptContext.ENGINE_SCOPE);
+
+			this.stack = current;
+		}
 	}
 
 
@@ -143,8 +205,6 @@ public class JsEngine
 		{
 			this.file = file;
 		}
-
-		public Nested previous;
 
 		/**
 		 * Previous scope variables.

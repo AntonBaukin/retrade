@@ -2,6 +2,7 @@ package com.tverts.jsx;
 
 /* Java */
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -57,4 +58,19 @@ public class JsGlobal
 	{
 		return engine.nest(script, vars);
 	}
+
+	/**
+	 * Creates on first request a global variable
+	 * (an Map object), on following requests
+	 * returns the same instance.
+	 */
+	@SuppressWarnings("unchecked")
+	public Object global(String name)
+	{
+		return globals.computeIfAbsent(
+		  name, n -> new HashMap());
+	}
+
+	protected final Map<String, Object> globals =
+	  new HashMap<>();
 }
