@@ -6,7 +6,7 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
-var ZeT = JsX.once('./errors.js')
+var ZeT = JsX.once('./asserts.js')
 
 
 // +----: Programming with Objects: ----------------------------->
@@ -57,7 +57,7 @@ ZeT.extend(ZeT,
 		(function()
 		{
 			function U() {}
-			U.prototype = obj.prototype
+			U.prototype = Object.getPrototypeOf(obj)
 			res = new U()
 		})();
 
@@ -193,7 +193,7 @@ ZeT.extend(ZeT,
 
 		//?: {with this-context}
 		var i = 1; if(!ZeT.isi(that)) i = 2; else
-		that = undefined
+			that = undefined
 
 		//~: copy following arguments
 		while(i < arguments.length)
@@ -265,7 +265,6 @@ ZeT.extend(ZeT,
 			return r
 		}
 	}
-
 })
 
 
@@ -337,7 +336,7 @@ ZeT.extend(ZeT,
 		for(var i = 0;(i < a.length);i++)
 			if(f.call(a[i], a[i], i) === false)
 				return i
-		return undefined
+		return a.length
 	},
 
 	collect          : function(a, f)
@@ -354,6 +353,4 @@ ZeT.extend(ZeT,
 
 		return r
 	}
-
-
 }) //<-- return this value

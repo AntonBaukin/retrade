@@ -44,6 +44,18 @@ public class TestJsX
 	@Test
 	public void test01Checks()
 	{
-		JsX.invoke("HelloWorld", "checkChecks");
+		JsX.invoke("TestZeT", "testChecks");
+	}
+
+	@Test
+	public void test02Asserts()
+	{
+		JsX.invoke("TestZeT", "testAsserts");
+	}
+
+	@Test
+	public void test03BasicsObject()
+	{
+		JsX.invoke("TestZeT", "testBasicsObject");
 	}
 }

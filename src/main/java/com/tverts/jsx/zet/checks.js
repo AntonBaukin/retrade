@@ -8,6 +8,7 @@
 
 var ZeT = JsX.global('ZeT')
 
+
 ZeT.iss = function(s)
 {
 	return (typeof s === 'string')
@@ -42,12 +43,8 @@ ZeT.isi = function(i)
 
 ZeT.iso = function(o)
 {
-	return (o !== null) && (typeof o === 'object')
+	return (o !== null) && (typeof o === 'object') && !ZeT.isa(o)
 }
 
-ZeT.isb = function(b)
-{
-	return (typeof b === 'boolean')
-}
 
 ZeT //<-- return this value
