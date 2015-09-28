@@ -455,7 +455,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		(function()
 		{
 			function U() {}
-			U.prototype = obj.prototype
+			U.prototype = Object.getPrototypeOf(obj)
 			res = new U()
 		})()
 
@@ -707,7 +707,7 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		//?: {with this-context}
 		var i = 1; if(!ZeT.isi(that)) i = 2; else
-		that = undefined
+			that = undefined
 
 		//~: copy following arguments
 		while(i < arguments.length)
@@ -828,7 +828,7 @@ var ZeT = window.ZeT = window.ZeT || {
 
 	iso              : function(o)
 	{
-		return (o !== null) && (typeof o === 'object')
+		return (o !== null) && (typeof o === 'object') && !ZeT.isa(o)
 	},
 
 	isb              : function(b)
@@ -1022,7 +1022,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		for(var i = 0;(i < a.length);i++)
 			if(f.call(a[i], a[i], i) === false)
 				return i
-		return undefined
+		return a.length
 	},
 
 	collect          : function(a, f)
