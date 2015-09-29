@@ -1841,7 +1841,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		if(!ZeT.isf(f)) return undefined
 		if(!this._ons) this._ons = []
 
-		ZeTA.remove(this._ons, f)
+		ZeTA.del(this._ons, f)
 		if(remove !== true)
 			this._ons.push(f)
 		return this

@@ -232,7 +232,7 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 		{
 			for(i = 0;(i < arguments.length);i++)
 				if(ZeT.isa(arguments[i]))
-					ZeTA.remove.apply(this, arguments[i])
+					ZeTA.del.apply(this, arguments[i])
 				else if((j = this.indexOf(arguments[i])) != -1)
 					this.splice(j, 1)
 
@@ -243,7 +243,7 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 		{
 			for(i = 1;(i < arguments.length);i++)
 				if(ZeT.isa(arguments[i]))
-					ZeTA.remove.apply(arguments[0], arguments[i])
+					ZeTA.del.apply(arguments[0], arguments[i])
 				else if((j = arguments[0].indexOf(arguments[i])) != -1)
 					arguments[0].splice(j, 1)
 
@@ -594,7 +594,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var cls = ZeT.Class.apply(ZeT.Class, cargs)
 
 		//~: copy constructor arguments
-		var args = ZeTA.merge([cls], arguments, ZeT.isf(pcls)?(3):(2))
+		var args = ZeTA.concat([cls], arguments, ZeT.isf(pcls)?(3):(2))
 
 		//~: create and define the instance
 		var obj = ZeT.createInstance.apply(ZeT, args)
@@ -619,7 +619,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var cls  = ZeT.Class.call(ZeT.Class, pcls, body)
 
 		//~: copy constructor arguments
-		var args = ZeTA.merge([cls], arguments, 2)
+		var args = ZeTA.concat([cls], arguments, 2)
 
 		//~: create the instance
 		return ZeT.createInstance.apply(ZeT, args)
@@ -668,7 +668,7 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		return function()
 		{
-			var a = ZeTA.merge(ZeTA.copy(args), arguments)
+			var a = ZeTA.concat(ZeTA.copy(args), arguments)
 			return f.apply(that, a)
 		}
 	},
