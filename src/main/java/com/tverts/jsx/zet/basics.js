@@ -6,7 +6,8 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
-var ZeT = JsX.once('./asserts.js')
+var ZeT  = JsX.once('./asserts.js')
+var ZeTA = JsX.once('./arrays.js')
 
 
 // +----: Programming with Objects: ----------------------------->
@@ -100,38 +101,6 @@ ZeT.extend(ZeT,
 
 // +----: Programming with Functions: --------------------------->
 
-var ZeTA = JsX.global('ZeTS')
-
-/**
- * Creates a copy of array-like object given.
- * Optional [begin; end) range allows to copy
- * a part of the array. Negative values of
- * the range boundaries are not allowed.
- */
-ZeTA.copy = function(a, begin, end)
-{
-	//?: {has no range}
-	if(ZeT.isu(begin))
-		return ZeT.isa(a)?(a.slice()):ZeT.a(a)
-
-	//~: [begin; end)
-	ZeT.assert(ZeT.isn(begin))
-	ZeT.assert(begin >= 0)
-	if(ZeT.isu(end) || (end > a.length)) end = a.length
-	ZeT.assert(ZeT.isn(end))
-	ZeT.assert(begin <= end)
-
-	//?: has more than 50% items to copy
-	if((end - begin)*2 >= a.length)
-		return (ZeT.isa(a)?(a):ZeT.a(a)).slice(begin, end)
-
-	//~: manual copy
-	var r = new Array(end - begin)
-	for(var i = begin, j = 0;(i < end);i++, j++) r[j] = a[i]
-
-	return r
-}
-
 ZeT.extend(ZeT,
 {
 	/**
@@ -154,7 +123,7 @@ ZeT.extend(ZeT,
 
 		return function()
 		{
-			var a = ZeTA.merge(ZeTA.copy(args), arguments)
+			var a = ZeTA.concat(ZeTA.copy(args), arguments)
 			return f.apply(that, a)
 		}
 	},
@@ -273,38 +242,9 @@ ZeT.extend(ZeT,
 ZeT.extend(ZeT,
 {
 	/**
-	 * Takes any array-like object and returns true array.
-	 * If source object is an array, return it.
-	 *
-	 * Array-like objects do have integer length property
-	 * and values by the integer keys [0; length).
-	 *
-	 * If object given is not an array, wraps it to array.
-	 * Undefined or null value produces empty array.
-	 *
-	 * If source object has toArray() method, that method
-	 * is invoked with this-context is the object.
+	 * See ZeTA.a().
 	 */
-	a                : function(a)
-	{
-		if(ZeT.isa(a)) return a
-		if(ZeT.isu(a) || (a === null)) return []
-		if(ZeT.iss(a)) return [a]
-
-		if(ZeT.isf(a.toArray))
-		{
-			a = a.toArray()
-			ZeT.assert(ZeT.isa(a), 'ZeT.a(): .toArray() returned not an array!')
-			return a
-		}
-
-		//~: manually copy the items
-		var l = a.length; if(!ZeT.isi(l)) return [a]
-		var r = new Array(l)
-		for(var i = 0;(i < l);i++) r[i] = a[i]
-
-		return r
-	},
+	a                : ZeTA.a,
 
 	/**
 	 * Evaluates the script given in the function body.

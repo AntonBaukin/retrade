@@ -54,8 +54,20 @@ public class TestJsX
 	}
 
 	@Test
-	public void test03BasicsObject()
+	public void test03Arrays()
+	{
+		JsX.invoke("TestZeT", "testArrays");
+	}
+
+	@Test
+	public void test04BasicsObject()
 	{
 		JsX.invoke("TestZeT", "testBasicsObject");
+	}
+
+	@Test
+	public void test05BasicsFunction()
+	{
+		JsX.invoke("TestZeT", "testBasicsFunction");
 	}
 }

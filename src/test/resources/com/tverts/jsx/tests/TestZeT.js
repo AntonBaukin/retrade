@@ -15,7 +15,7 @@ function testChecks()
 {
 	var ZeT = JsX.include('zet/asserts.js')
 
-	//?: {not JsX}
+	//?: {not ZeT}
 	if(ZeT !== JsX.global('ZeT'))
 		throw new Error('asserts.js returned not ZeT!')
 
@@ -167,11 +167,61 @@ function testAsserts()
 	ZeT.asserts('ab c \n')
 }
 
+function testArrays()
+{
+	var ZeT  = JsX.include('zet/asserts.js')
+	var ZeTA = JsX.include('zet/arrays.js')
+
+	//?: {not ZeT arrays}
+	if(ZeTA !== JsX.global('ZeTA'))
+		throw new Error('arrays.js returned not ZeTA!')
+
+	//--> equals
+
+	ZeT.assert(ZeTA.eq([], []))
+	ZeT.assert(ZeTA.eq([1, 2, 3], [1, 2, 3]))
+	ZeT.assert(!ZeTA.eq([2, 1, 3], [1, 2, 3]))
+	ZeT.assert(ZeTA.eq('abc', "abc"))
+	ZeT.assert(!ZeTA.eq('abc', "aBc"))
+	ZeT.assert(ZeTA.eq('abc', ['a', 'b', 'c']))
+
+	//--> array-like
+
+	var A = { length: 3, 0: 'a', 1: 'b', 2: 'c' }
+	ZeT.assert(ZeT.isa(ZeTA.a(A)))
+	ZeT.assert(ZeTA.eq(ZeTA.a(A), ['a', 'b', 'c']))
+
+	//--> copy
+
+	var B = [0, 1, 2, 3, 4, 5]
+	ZeT.assert(ZeTA.copy(B) !== B)
+	ZeT.assert(ZeTA.eq(ZeTA.copy(B), B))
+	ZeT.assert(ZeTA.eq(ZeTA.copy(B, 3), [3, 4, 5]))
+	ZeT.assert(ZeTA.eq(ZeTA.copy(B, 2, 6), [2, 3, 4, 5]))
+	ZeT.assert(ZeTA.eq(ZeTA.copy(B, 2, 4), [2, 3]))
+
+	//--> delete
+
+	ZeT.assert(ZeTA.eq(B, ZeTA.del(ZeTA.copy(B))))
+	ZeT.assert(ZeTA.eq([1, 5], ZeTA.del(ZeTA.copy(B), 0, 2, 3, 4)))
+	ZeT.assert(ZeTA.eq([1, 5], ZeTA.del(ZeTA.copy(B), [0, 2, 3, 4])))
+	ZeT.assert(ZeTA.eq([1, 5], ZeTA.del(ZeTA.copy(B), [0, 2], [3, 4])))
+	ZeT.assert(ZeTA.eq([0, 1, 5], ZeTA.del.call(ZeTA.copy(B), 2, 3, 4)))
+	ZeT.assert(ZeTA.eq([0, 1, 5], ZeTA.del.call(ZeTA.copy(B), [2], [3, 4])))
+
+	//--> merge
+
+	ZeT.assert(ZeTA.eq([], ZeTA.concat([], [])))
+	ZeT.assert(ZeTA.eq(B, ZeTA.concat([0, 1, 2], [3, 4, 5])))
+	ZeT.assert(ZeTA.eq(B, ZeTA.concat([0, 1], B, 2)))
+	ZeT.assert(ZeTA.eq([0, 1, 3, 4], ZeTA.concat([0, 1], B, 3, 5)))
+}
+
 function testBasicsObject()
 {
 	var ZeT = JsX.include('zet/basics.js')
 
-	//?: {not JsX}
+	//?: {not ZeT}
 	if(ZeT !== JsX.global('ZeT'))
 		throw new Error('basics.js returned not ZeT!')
 
@@ -234,6 +284,25 @@ function testBasicsObject()
 function testBasicsFunction()
 {
 	var ZeT = JsX.include('zet/basics.js')
+
+	function one(a, b, c)
+	{
+		var r = ZeT.isn(this)?(this):(0)
+
+		for(var i = 0;(i < arguments.length);i++)
+			if(ZeT.isn(arguments[i]))
+				r += ((i%2 == 0)?(+1):(-1)) * arguments[i]
+
+		return r
+	}
+
+	ZeT.assert(4 == one.call(1, 2, 3, 4))
+
+	//--> function bind
+
+	var f = ZeT.fbind(one, -3)
+	ZeT.assert(0 == f.call(1, 2, 3, 4))
+
 
 	// ...
 }
