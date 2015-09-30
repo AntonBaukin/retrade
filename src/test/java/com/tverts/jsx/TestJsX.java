@@ -70,4 +70,10 @@ public class TestJsX
 	{
 		JsX.invoke("TestZeT", "testBasicsFunction");
 	}
+
+	@Test
+	public void test06BasicsHelper()
+	{
+		JsX.invoke("TestZeT", "testBasicsHelper");
+	}
 }

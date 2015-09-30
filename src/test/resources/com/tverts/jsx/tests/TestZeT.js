@@ -373,3 +373,39 @@ function testBasicsFunction()
 	f = ZeT.pipe(sum, mul, neg)
 	ZeT.assert(ZeTA.eq([+2, 0, -2], f.call(2, -3, -2, -1)))
 }
+
+function testBasicsHelper()
+{
+	var ZeT  = JsX.include('zet/basics.js')
+	var ZeTA = JsX.global('ZeTA')
+
+	//--> each
+
+	ZeT.each(['0', '1', '2', '3'], function(x, i)
+	{
+		//WARNING: here this somehow becomes an object!
+		ZeT.assert(x == this)
+		ZeT.assert(parseInt(x) === i)
+	})
+
+	//--> evaluate in function
+
+	ZeT.assert('abc' === ZeT.xeval("return 'abc'"))
+	ZeT.assert(3 === ZeT.xeval("return 1 + 2"))
+
+	//--> collect property
+
+	var A = [ { x: 'a' }, { x: 2 }, { x: 'b' } ]
+	ZeT.assert(ZeTA.eq(['a', 2, 'b'], ZeT.collect(A, 'x')))
+
+	//--> collect function
+
+	ZeT.assert(ZeTA.eq(['a', 'b'], ZeT.collect(A, function(x, i)
+	{
+		ZeT.assert(x == this)
+		ZeT.assert(ZeT.isi(i))
+
+		if(!ZeT.iss(x.x)) return undefined
+		return x.x
+	})))
+}
