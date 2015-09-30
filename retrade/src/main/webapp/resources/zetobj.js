@@ -688,7 +688,8 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		return function()
 		{
-			return f.apply(that, args)
+			var a = ZeTA.concat(ZeTA.copy(args), arguments)
+			return f.apply(that, a)
 		}
 	},
 
@@ -706,7 +707,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var that = arguments[1], iarg = []
 
 		//?: {with this-context}
-		var i = 1; if(!ZeT.isi(that)) i = 2; else
+		var i = 1; if(arguments.length%2 == 0) i = 2; else
 			that = undefined
 
 		//~: copy following arguments
@@ -760,7 +761,7 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		return function()
 		{
-			var r = arguments //<-- intermediate result
+			var r = ZeT.a(arguments) //<-- intermediate result
 
 			for(var i = 0;(i < fn.length);i++)
 			{
