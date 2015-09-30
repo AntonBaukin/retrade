@@ -106,6 +106,11 @@ public class JsGlobal
 		  name, n -> new HashMap());
 	}
 
+	public Object debug(Object... args)
+	{
+		return this;
+	}
+
 	protected final Map<String, Object> globals =
 	  new HashMap<>();
 }

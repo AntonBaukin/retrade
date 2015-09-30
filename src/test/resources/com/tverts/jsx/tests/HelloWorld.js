@@ -5,3 +5,5 @@ function helloWorld()
 {
 	print('Hello, World!')
 }
+
+print('This text is lost!')

@@ -14,11 +14,9 @@ import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.SimpleScriptContext;
 
 /* com.tverts: support */
 
-import com.tverts.jsx.JsGlobal.Nesting;
 import com.tverts.support.EX;
 
 
@@ -74,23 +72,17 @@ public class JsEngine
 		EX.asserts(function);
 		EX.assertx(this.stack == null);
 
-		//~: create the context
-		ScriptContext sc = new SimpleScriptContext();
-		sc.setBindings(this.globalScope, ScriptContext.GLOBAL_SCOPE);
-
 		//~: scope for the root script
 		this.stack = new Nested(this.file);
-		this.stack.current = sc.getBindings(ScriptContext.ENGINE_SCOPE);
+		this.stack.current = this.engine.getContext().
+		  getBindings(ScriptContext.ENGINE_SCOPE);
 
 		//~: wrap the context streams
-		ctx.assign(sc);
 		this.streams.wrap(ctx.getStreams());
-		this.streams.assign(sc);
 
 		//~: invoke the script's function
 		try
 		{
-			this.engine.setContext(sc);
 			return ((Invocable) this.engine).invokeFunction(function, args);
 		}
 		catch(Throwable e)
@@ -157,19 +149,15 @@ public class JsEngine
 		//~: execute it in void context
 		try(JsCtx ctx = new JsCtx().init(this.streams))
 		{
-			//~: create the initial scope
-			ScriptContext sc = new SimpleScriptContext();
-			this.globalScope = engine.createBindings();
-
-			//HINT: here we use them as engine' scope
-			sc.setBindings(this.globalScope, ScriptContext.ENGINE_SCOPE);
-			prepareGlobalScope();
+			//~: create global variables
+			prepareGlobalScope(engine.getContext().
+				 getBindings(ScriptContext.ENGINE_SCOPE));
 
 			//~: assign the wrapping streams
-			ctx.assign(sc);
+			ctx.assign(engine.getContext());
 
 			//~: evaluate the script
-			EX.assertn(this.scripts.get(this.file)).eval(sc);
+			EX.assertn(this.scripts.get(this.file)).eval();
 		}
 		catch(Throwable e)
 		{
@@ -182,10 +170,10 @@ public class JsEngine
 		}
 	}
 
-	protected void   prepareGlobalScope()
+	protected void   prepareGlobalScope(Bindings scope)
 	{
 		//=: JsX global variable
-		globalScope.put(JsGlobal.NAME, new JsGlobal(new Nesting()
+		scope.put(JsGlobal.NAME, new JsGlobal(new JsGlobal.Nesting()
 		{
 			public JsFile resolve(String path)
 			{
@@ -282,14 +270,6 @@ public class JsEngine
 	 */
 	protected Nested stack;
 
-	/**
-	 * The global variables of this engine
-	 * that are generated during the initial
-	 * execution of the script and then
-	 * used in each invocation.
-	 */
-	protected Bindings globalScope;
-
 	protected void compile(JsFile file)
 	{
 		//~: access the file content
@@ -316,9 +296,6 @@ public class JsEngine
 		// will not be needed more
 		if(initial)
 			this.scripts.clear();
-
-		//~: don't store all that variables
-		this.engine.setContext(new SimpleScriptContext());
 
 		//~: invocation stack
 		this.stack = null;
