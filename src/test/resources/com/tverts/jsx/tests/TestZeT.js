@@ -283,9 +283,10 @@ function testBasicsObject()
 
 function testBasicsFunction()
 {
-	var ZeT = JsX.include('zet/basics.js')
+	var ZeT  = JsX.include('zet/basics.js')
+	var ZeTA = JsX.global('ZeTA')
 
-	function one(a, b, c)
+	function xyz()
 	{
 		var r = ZeT.isn(this)?(this):(0)
 
@@ -296,13 +297,79 @@ function testBasicsFunction()
 		return r
 	}
 
-	ZeT.assert(4 == one.call(1, 2, 3, 4))
+	ZeT.assert(4 == xyz.call(1, 2, 3, 4))
 
 	//--> function bind
 
-	var f = ZeT.fbind(one, -3)
-	ZeT.assert(0 == f.call(1, 2, 3, 4))
+	var f = ZeT.fbind(xyz, -3)
+	ZeT.assert(0 == f.call(100, 2, 3, 4))
 
+	f = ZeT.fbind(xyz, -3, 2, 3)
+	ZeT.assert(0 == f.call(100, 4))
 
-	// ...
+	//--> function bind array
+
+	f = ZeT.fbinda(xyz, -3)
+	ZeT.assert(0 == f.call(100, 2, 3, 4))
+
+	f = ZeT.fbinda(xyz, -3, [2, 3])
+	ZeT.assert(0 == f.call(100, 4))
+
+	//--> function bind universal
+
+	f = ZeT.fbindu(xyz, -3)
+	ZeT.assert(0 == f.call(100, 2, 3, 4))
+
+	f = ZeT.fbindu(xyz, -3, 0, 2, 2, 4)
+	ZeT.assert(0 == f.call(100, 3))
+	ZeT.assert(1 == f.call(100, 3, 10, 11))
+
+	//--> functions pipe
+
+	function sum()
+	{
+		ZeT.assert(ZeT.isn(this))
+		var a = ZeT.a(arguments)
+		for(var i = 0;(i < a.length);i++)
+		{
+			ZeT.assert(ZeT.isn(a[i]))
+			a[i] += this
+		}
+		return a
+	}
+
+	ZeT.assert(ZeTA.eq([11, 12, 13], sum.call(10, 1, 2, 3)))
+
+	function mul()
+	{
+		ZeT.assert(ZeT.isn(this))
+		var a = ZeT.a(arguments)
+		for(var i = 0;(i < a.length);i++)
+		{
+			ZeT.assert(ZeT.isn(a[i]))
+			a[i] *= this
+		}
+		return a
+	}
+
+	ZeT.assert(ZeTA.eq([3, 6, 9], mul.call(3, 1, 2, 3)))
+
+	function neg()
+	{
+		var a = ZeT.a(arguments)
+		for(var i = 0;(i < a.length);i++)
+		{
+			ZeT.assert(ZeT.isn(a[i]))
+			a[i] = -a[i]
+		}
+		return a
+	}
+
+	ZeT.assert(ZeTA.eq([-1, 2, -3], neg(1, -2, 3)))
+
+	f = ZeT.pipe(sum)
+	ZeT.assert(ZeTA.eq([11, 12, 13], f.call(10, 1, 2, 3)))
+
+	f = ZeT.pipe(sum, mul, neg)
+	ZeT.assert(ZeTA.eq([+2, 0, -2], f.call(2, -3, -2, -1)))
 }
