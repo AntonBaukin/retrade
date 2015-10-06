@@ -28,8 +28,6 @@
       <output-path>$PROJECT_DIR$/retrade/target/web</output-path>
       <properties id="ant-postprocessing">
         <options enabled="true">
-          <file>file://$PROJECT_DIR$/retrade/build.xml</file>
-          <target>explode-rsync</target>
           <build-properties>
             <build-property name="server" value="192.168.64.14" />
             <build-property name="password" value="sqr4eq22!" />
@@ -712,13 +710,6 @@
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Anton" />
-    <dictionary name="abaukin">
-      <words>
-        <w>logins</w>
-        <w>messager</w>
-        <w>servicer</w>
-      </words>
-    </dictionary>
     <dictionary name="anton">
       <words>
         <w>aggr</w>
@@ -758,6 +749,13 @@
         <w>zetobj</w>
       </words>
     </dictionary>
+    <dictionary name="abaukin">
+      <words>
+        <w>logins</w>
+        <w>messager</w>
+        <w>servicer</w>
+      </words>
+    </dictionary>
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -770,7 +768,7 @@
     <resource url="http://tverts.com/retrade/webapp/response" location="$PROJECT_DIR$/prime/src/main/webapp/resources/schemas/response.xsd" />
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="Java" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ResourceManagerContainer">

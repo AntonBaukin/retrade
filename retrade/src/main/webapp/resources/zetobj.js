@@ -70,6 +70,7 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 
 	replace          : function(s, a, b)
 	{
+		ZeT.assert(ZeT.iss(s) && ZeT.iss(a) && ZeT.iss(b))
 		return s.split(a).join(b)
 	},
 
@@ -84,6 +85,8 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 
 	cati             : function(index, objs)
 	{
+
+
 		if(!objs || !ZeT.isi(objs.length)) return ''
 
 		for(var i = 0;(i < objs.length);i++)
