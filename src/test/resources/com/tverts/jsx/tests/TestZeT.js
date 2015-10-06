@@ -409,3 +409,74 @@ function testBasicsHelper()
 		return x.x
 	})))
 }
+
+function testStrings()
+{
+	var ZeT  = JsX.include('zet/asserts.js')
+	var ZeTS = JsX.include('zet/strings.js')
+
+	//--> is empty string
+
+	ZeT.assert(ZeTS.ises(''))
+	ZeT.assert(ZeTS.ises('  '))
+	ZeT.assert(ZeTS.ises(' \r \t\n'))
+	ZeT.assert(!ZeTS.ises('123'))
+	ZeT.assert(!ZeTS.ises(' 123 '))
+	ZeT.assert(!ZeTS.ises(' 1\t23 \n'))
+
+	//--> trim
+
+	ZeT.assert(ZeTS.trim(' abc') == 'abc')
+	ZeT.assert(ZeTS.trim('abc ') == 'abc')
+	ZeT.assert(ZeTS.trim(' abc ') == 'abc')
+	ZeT.assert(ZeTS.trim('\r abc \n\t') == 'abc')
+
+	//--> first letter
+
+	ZeT.assert(ZeTS.first('abc') == 'a')
+	ZeT.assert(ZeTS.first(' abc') == ' ')
+
+	//--> starts with
+
+	ZeT.assert(ZeTS.startsWith('abc', 'abc'))
+	ZeT.assert(ZeTS.startsWith(' abcde', ' abc'))
+	ZeT.assert(!ZeTS.startsWith(' abcde', 'abc'))
+
+	//--> ends with
+
+	ZeT.assert(ZeTS.endsWith('abc', 'abc'))
+	ZeT.assert(ZeTS.endsWith('abcde\t', 'de\t'))
+	ZeT.assert(ZeTS.endsWith('abcde\t', '\t'))
+	ZeT.assert(!ZeTS.endsWith(' abcde', 'cd'))
+
+	//--> substitution
+
+	ZeT.assert(ZeTS.sub('abc', 'b', '123') == 'a123c')
+	ZeT.assert(ZeTS.sub('abc', 'abc', '123') == '123')
+
+	//--> concatenate
+
+	var O = {toString: function() {return '!'}}
+
+	ZeT.assert(ZeTS.cat(10.0, null, ' != ', O) == '10 != !')
+	ZeT.assert(ZeTS.cati(2, 'abc', null, '-> ', O) == '-> !')
+
+	//--> concatenate if
+
+	ZeT.assert(ZeTS.catif(true, 'a', 2, 'b') == 'a2b')
+	ZeT.assert(ZeTS.catif(0, 'a', 2, 'b') == '')
+	ZeT.assert(ZeTS.catif('', 'a', 2, 'b') == '')
+	ZeT.assert(ZeTS.catif('0', 'a', 2, 'b') == 'a2b')
+
+	//--> concatenate if all
+
+	ZeT.assert(ZeTS.catifall('a', 2, 'b') == 'a2b')
+	ZeT.assert(ZeTS.catifall('a', null, 'b') == '')
+	ZeT.assert(ZeTS.catifall('a', 0, 'b') == '')
+	ZeT.assert(ZeTS.catifall('a', '', 'b') == '')
+
+	//--> concatenate with separator
+
+	ZeT.assert(ZeTS.catsep('-', 'a', 2, 'b') == 'a-2-b')
+	ZeT.assert(ZeTS.catsep('-', 'a', [1, 2, 3], 'b') == 'a-1-2-3-b')
+}

@@ -76,4 +76,10 @@ public class TestJsX
 	{
 		JsX.invoke("TestZeT", "testBasicsHelper");
 	}
+
+	@Test
+	public void test07Strings()
+	{
+		JsX.invoke("TestZeT", "testStrings");
+	}
 }
