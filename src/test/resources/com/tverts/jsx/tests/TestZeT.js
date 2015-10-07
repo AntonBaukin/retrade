@@ -480,3 +480,132 @@ function testStrings()
 	ZeT.assert(ZeTS.catsep('-', 'a', 2, 'b') == 'a-2-b')
 	ZeT.assert(ZeTS.catsep('-', 'a', [1, 2, 3], 'b') == 'a-1-2-3-b')
 }
+
+function testClasses()
+{
+	var ZeT = JsX.include('zet/asserts.js')
+	ZeT.assert(ZeT == JsX.include('zet/classes.js'))
+
+	//--> native function-class Root
+
+	function Root(a)
+	{
+		this.n = a
+	}
+
+	Root.prototype.calc = function(a)
+	{
+		return this.n + a
+	}
+
+	var root = new Root(10)
+	ZeT.assert(root.n == 10)
+	ZeT.assert(root.calc(5) == 15)
+
+
+	//--> ZeT Class One -> Root
+
+	var One = ZeT.Class(Root, {
+
+		init: function(a)
+		{
+			this.$applySuper(arguments)
+		},
+
+		calc: function(a)
+		{
+			return this.$applySuper(arguments)
+		}
+	})
+
+
+	var one = new One(1) //~> n = 1
+	ZeT.assert(one.n == 1)
+	ZeT.assert(one.calc(10) == 11) //~> 1 + 10
+
+	//--> ZeT Class Two -> One
+
+
+	var Two = ZeT.Class(One, {
+
+		//!: init() is missing here...
+
+		calc: function(a, b)
+		{
+			var x = this.$applySuper(arguments)
+			return b + x //= b + (n + a)
+		}
+	})
+
+	var two = new Two(1) //~> n = 1
+	ZeT.assert(two.n == 1)
+	ZeT.assert(two.calc(2, 3) == 6) //~> 3 + (1 + 2)
+
+	var Three = ZeT.Class(Two, {
+
+		init: function(a, b)
+		{
+			var self = this
+
+			function outer(x)
+			{
+				function inner(y)
+				{
+					self.$callSuper(y)
+					return a - self.n
+				}
+
+				return x + inner(a)
+			}
+
+			this.n = b + outer(a) //= b + a
+		}
+
+		//!: calc() is missing here for now...
+	})
+
+	var three = new Three(1, 2) //~> n = 3
+	ZeT.assert(three.n == 3)
+	ZeT.assert(three.calc(2, 3) == 8) //~> 3 + (3 + 2)
+
+	//!: rewrite One.calc()
+	One.addMethod('calc', function(a)
+	{
+		return this.n + a*2
+	})
+
+	ZeT.assert(one.calc(10) == 21) //~> 1 + 20
+	ZeT.assert(two.calc(2, 3) == 8) //~> 3 + (1 + 2*2)
+	ZeT.assert(three.calc(2, 3) == 10) //~> 3 + (3 + 2*2)
+
+
+	var Four = ZeT.Class(Three, {
+
+		init: function(a, b, c)
+		{
+			this.$applySuper(arguments)
+			this.n += c
+		},
+
+		calc: function(a, b, c)
+		{
+			//= 3*(b + (n + a*2)) + c
+			var x = this.$applySuper(arguments)
+			return 3*x + c
+		}
+	})
+
+	var four = Four.create(1, 2, 3) //~> n = 6
+	ZeT.assert(four.n == 6)
+	ZeT.assert(four.calc(4, 5, 7) == 64) //~> 3*(5 + (6 + 4*2)) + 7
+
+	//!: inject Three.calc()
+	Three.addMethod('calc', function(a, b, c)
+	{
+		var x = this.$applySuper(arguments)
+		return x - c //= (b + (n + a*2)) - c
+	})
+
+	ZeT.assert(three.calc(2, 5, 7) == 5) //~> (5 + (3 + 2*2)) - 7
+	ZeT.assert(four.calc(2, 5, 7) == 31) //~> 3*(5 + (6 + 2*2) - 7) + 7
+}
