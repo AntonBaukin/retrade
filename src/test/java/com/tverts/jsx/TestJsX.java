@@ -31,7 +31,7 @@ public class TestJsX
 		JsX.INSTANCE.setRoots("com.tverts.jsx com.tverts.jsx.tests");
 	}
 
-	//@Test
+	@Test
 	public void test00HelloWorld()
 	{
 		StringWriter s = new StringWriter();
@@ -41,43 +41,43 @@ public class TestJsX
 		EX.assertx(CMP.eq(T, s.toString()));
 	}
 
-	//@Test
+	@Test
 	public void test01Checks()
 	{
 		JsX.invoke("TestZeT", "testChecks");
 	}
 
-	//@Test
+	@Test
 	public void test02Asserts()
 	{
 		JsX.invoke("TestZeT", "testAsserts");
 	}
 
-	//@Test
+	@Test
 	public void test03Arrays()
 	{
 		JsX.invoke("TestZeT", "testArrays");
 	}
 
-	//@Test
+	@Test
 	public void test04BasicsObject()
 	{
 		JsX.invoke("TestZeT", "testBasicsObject");
 	}
 
-	//@Test
+	@Test
 	public void test05BasicsFunction()
 	{
 		JsX.invoke("TestZeT", "testBasicsFunction");
 	}
 
-	//@Test
+	@Test
 	public void test06BasicsHelper()
 	{
 		JsX.invoke("TestZeT", "testBasicsHelper");
 	}
 
-	//@Test
+	@Test
 	public void test07Strings()
 	{
 		JsX.invoke("TestZeT", "testStrings");
@@ -87,5 +87,22 @@ public class TestJsX
 	public void test08Classes()
 	{
 		JsX.invoke("TestZeT", "testClasses");
+	}
+
+	@Test
+	public void test09Console()
+	{
+		StringWriter o = new StringWriter();
+		StringWriter e = new StringWriter();
+
+		JsX.invoke("TestZeT", "testConsole",
+		  new JsStreams().output(o).error(e)
+		);
+
+		final String O = "This is 0-sample! Did you here 1,2,3?\n";
+		EX.assertx(O.equals(o.toString()));
+
+		final String E = "This is a sound of error...\n";
+		EX.assertx(E.equals(e.toString()));
 	}
 }

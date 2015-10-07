@@ -6,7 +6,8 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
-var ZeT = JsX.once('./checks.js')
+var ZeT  = JsX.once('./asserts.js')
+var ZeTA = JsX.once('./arrays.js')
 
 
 // +----: ZeT.Class: --------------------------------------------+
@@ -322,6 +323,43 @@ ZeT.Class = function()
 	Class.ZeT$Class = true
 
 	return Class
+}
+
+
+// +----: ZeT.Instance: -----------------------------------------+
+
+/**
+ * Creates anonymous ZeT.Class and returns single instance.
+ * The arguments are:
+ *
+ * 0   [optional] ZeT.Class or Function;
+ * 1   [required] class body (Object);
+ * 2.. [optional] arguments to pas to the cib
+ *
+ */
+ZeT.Instance = function()
+{
+	var args, cls = arguments[0], body = arguments[1]
+
+	if(!ZeT.isf(cls)) //--> ZeT.Class is also function
+	{
+		cls  = null
+		body = arguments[0]
+		args = ZeTA.copy(arguments, 1)
+	}
+
+	//?: {has no plain object body}
+	ZeT.assert(ZeT.iso(body),
+	  'ZeT.Instance body is not defined!')
+
+	//?: {arguments with class and body}
+	if(!args) args = ZeTA.copy(arguments, 2)
+
+	//~: create the class
+	cls = (cls)?ZeT.Class(cls, body):ZeT.Class(body)
+
+	//!: return new instance
+	return cls.create.apply(cls, args)
 }
 
 

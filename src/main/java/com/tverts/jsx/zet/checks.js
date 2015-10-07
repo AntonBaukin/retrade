@@ -29,6 +29,11 @@ ZeT.isu = function(o)
 	return (typeof o === 'undefined')
 }
 
+ZeT.isx = function(o)
+{
+	return (typeof o === 'undefined') || (o === null)
+}
+
 ZeT.isa = Array.isArray
 
 ZeT.isn = function(n)

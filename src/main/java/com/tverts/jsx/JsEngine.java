@@ -73,7 +73,7 @@ public class JsEngine
 		EX.assertx(this.stack == null);
 
 		//~: scope for the root script
-		this.stack = new Nested(this.file);
+		this.stack = new Nested(this.file, ctx);
 		this.stack.current = this.engine.getContext().
 		  getBindings(ScriptContext.ENGINE_SCOPE);
 
@@ -116,9 +116,12 @@ public class JsEngine
 		 */
 		public final JsFile file;
 
-		public Nested(JsFile file)
+		public final JsCtx  ctx;
+
+		public Nested(JsFile file, JsCtx ctx)
 		{
 			this.file = file;
+			this.ctx  = ctx;
 		}
 
 		/**
@@ -184,6 +187,11 @@ public class JsEngine
 			{
 				return JsEngine.this.nest(script, vars);
 			}
+
+			public JsCtx ctx()
+			{
+				return EX.assertn(stack).ctx;
+			}
 		}));
 	}
 
@@ -226,7 +234,7 @@ public class JsEngine
 
 		//~: create stack entry
 		Nested current = this.stack;
-		Nested nested  = new Nested(file);
+		Nested nested  = new Nested(file, current.ctx);
 		nested.outer = current.current;
 
 		//?: {has no variables} no scope

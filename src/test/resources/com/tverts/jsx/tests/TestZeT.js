@@ -483,8 +483,7 @@ function testStrings()
 
 function testClasses()
 {
-	var ZeT = JsX.include('zet/asserts.js')
-	ZeT.assert(ZeT == JsX.include('zet/classes.js'))
+	var ZeT = JsX.include('zet/classes.js')
 
 	//--> native function-class Root
 
@@ -578,8 +577,7 @@ function testClasses()
 	ZeT.assert(two.calc(2, 3) == 8) //~> 3 + (1 + 2*2)
 	ZeT.assert(three.calc(2, 3) == 10) //~> 3 + (3 + 2*2)
 
-
-	var Four = ZeT.Class(Three, {
+	var FourBody = {
 
 		init: function(a, b, c)
 		{
@@ -593,11 +591,17 @@ function testClasses()
 			var x = this.$applySuper(arguments)
 			return 3*x + c
 		}
-	})
+	}
+
+	var Four = ZeT.Class(Three, FourBody)
 
 	var four = Four.create(1, 2, 3) //~> n = 6
 	ZeT.assert(four.n == 6)
 	ZeT.assert(four.calc(4, 5, 7) == 64) //~> 3*(5 + (6 + 4*2)) + 7
+
+	var fourX = ZeT.Instance(Three, FourBody, 1, 2, 3)
+	ZeT.assert(fourX.n == 6)
+	ZeT.assert(fourX.calc(4, 5, 7) == 64) //~> same as four
 
 	//!: inject Three.calc()
 	Three.addMethod('calc', function(a, b, c)
@@ -608,4 +612,15 @@ function testClasses()
 
 	ZeT.assert(three.calc(2, 5, 7) == 5) //~> (5 + (3 + 2*2)) - 7
 	ZeT.assert(four.calc(2, 5, 7) == 31) //~> 3*(5 + (6 + 2*2) - 7) + 7
+	ZeT.assert(fourX.calc(2, 5, 7) == 31) //~> same as four
+}
+
+function testConsole()
+{
+	var ZeT = JsX.include('zet/console.js')
+
+	ZeT.Console.out.print('This is ', 0, '-sample!')
+	ZeT.Console.out.println(' Did you here ', [1, 2, 3], '?')
+
+	ZeT.Console.err.println('This ', 'is a sound', ' of ', 'error...')
 }

@@ -2,6 +2,7 @@ package com.tverts.jsx;
 
 /* Java */
 
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +43,11 @@ public class JsGlobal
 		public JsFile resolve(String path);
 
 		public Object nest(String script, Map<String, Object> vars);
+
+		/**
+		 * Returns current execution context.
+		 */
+		public JsCtx  ctx();
 	}
 
 
@@ -104,6 +110,16 @@ public class JsGlobal
 	{
 		return globals.computeIfAbsent(
 		  name, n -> new HashMap());
+	}
+
+	public Writer out()
+	{
+		return engine.ctx().getStreams().getOutput();
+	}
+
+	public Writer err()
+	{
+		return engine.ctx().getStreams().getError();
 	}
 
 	public Object debug(Object... args)
