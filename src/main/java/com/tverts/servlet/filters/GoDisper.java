@@ -30,7 +30,8 @@ public interface GoDisper
 	public String  isGoRequest(FilterTask task);
 
 	/**
-	 * Tries dispatch
+	 * Dispatches the request to the page given
+	 * if this is possible (returns true).
 	 */
-	public boolean dispatch(FilterTask task, String page);
+	public boolean dispatch(GoDispatch request);
 }

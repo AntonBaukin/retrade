@@ -96,11 +96,17 @@ public class JsX
 
 	/* Scripts Execution */
 
+	public boolean exists(String script)
+	{
+		EX.asserts(script);
+		return (files.cached(script) != null);
+	}
+
 	/**
 	 * Executes script by it's path related to
 	 * one of the roots configured.
 	 */
-	public Object execute(String script, String function, JsCtx ctx, Object... args)
+	public Object  execute(String script, String function, JsCtx ctx, Object... args)
 	{
 		EX.assertn(ctx);
 		EX.asserts(function);

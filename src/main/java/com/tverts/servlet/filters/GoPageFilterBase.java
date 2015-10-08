@@ -111,7 +111,12 @@ public abstract class GoPageFilterBase extends FilterBase
 	 */
 	protected boolean runForward(FilterTask task, String page)
 	{
-		if(getDisper().dispatch(task, page))
+		//~: prepare the dispatching request
+		GoDispatch request = new GoDispatch(task, page);
+		initGoDispatch(request);
+
+		//?: {dispatcher it} break the filter cycle
+		if(getDisper().dispatch(request))
 		{
 			//~: finish go-filtering
 			task.setBreaked();
@@ -123,6 +128,9 @@ public abstract class GoPageFilterBase extends FilterBase
 	}
 
 	protected void    runExactMatch(FilterTask task)
+	{}
+
+	protected void    initGoDispatch(GoDispatch request)
 	{}
 
 

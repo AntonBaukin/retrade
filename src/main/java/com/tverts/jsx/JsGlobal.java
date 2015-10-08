@@ -2,6 +2,7 @@ package com.tverts.jsx;
 
 /* Java */
 
+import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,24 @@ public class JsGlobal
 		 * Returns current execution context.
 		 */
 		public JsCtx  ctx();
+	}
+
+
+	/* Streams Access */
+
+	public Reader in()
+	{
+		return engine.ctx().getStreams().getInput();
+	}
+
+	public Writer out()
+	{
+		return engine.ctx().getStreams().getOutput();
+	}
+
+	public Writer err()
+	{
+		return engine.ctx().getStreams().getError();
 	}
 
 
@@ -110,16 +129,6 @@ public class JsGlobal
 	{
 		return globals.computeIfAbsent(
 		  name, n -> new HashMap());
-	}
-
-	public Writer out()
-	{
-		return engine.ctx().getStreams().getOutput();
-	}
-
-	public Writer err()
-	{
-		return engine.ctx().getStreams().getError();
 	}
 
 	public Object debug(Object... args)

@@ -44,13 +44,13 @@ public class GoDisperCached extends GoDisperBase
 		return res;
 	}
 
-	public boolean   dispatch(FilterTask task, String page)
+	public boolean   dispatch(GoDispatch request)
 	{
 		//~: do dispatch
-		boolean res = super.dispatch(task, page);
+		boolean res = super.dispatch(request);
 
 		//~: cache
-		put(task, (res)?(page):(null));
+		put(request.task, (res)?(request.page):(null));
 
 		return res;
 	}

@@ -33,26 +33,27 @@ public class GoDisperBase implements GoDisper
 		return preparePage(page, task);
 	}
 
-	public boolean    dispatch(FilterTask task, String page)
+	public boolean    dispatch(GoDispatch request)
 	{
 		//?: {the page doesn't exist}
-		if(!isPageExists(page, task))
+		if(!isPageExists(request))
 			return false;
 
 		try
 		{
 			//~: create request dispatcher
-			RequestDispatcher d = task.getRequest().
-			  getRequestDispatcher(page);
+			RequestDispatcher d = request.task.getRequest().
+			  getRequestDispatcher(request.page);
 
 			if(d == null)
 				return false;
 
 			//~: set cache options
-			cacheControl(task);
+			cacheControl(request.task);
 
 			//!: forward
-			d.forward(task.getRequest(), task.getResponse());
+			d.forward(request.task.getRequest(),
+			  request.task.getResponse());
 		}
 		catch(Throwable e)
 		{
@@ -84,10 +85,15 @@ public class GoDisperBase implements GoDisper
 		return p.toString();
 	}
 
-	protected boolean isPageExists(String page, FilterTask task)
+	protected boolean isPageExists(GoDispatch request)
 	{
+		//?: {the callee provided own strategy}
+		if(request.exists != null)
+			return request.exists.test(request);
+
 		//~: get the path in the file system
-		String path = task.getRequest().getServletContext().getRealPath(page);
+		String path = request.task.getRequest().
+		  getServletContext().getRealPath(request.page);
 		if(path == null) return false;
 
 		//~: check the file exists
