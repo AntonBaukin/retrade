@@ -67,7 +67,7 @@ public class JsCtx implements AutoCloseable
 
 	/* Variables */
 
-	public JsCtx put(String name, Object value)
+	public JsCtx  put(String name, Object value)
 	{
 		vars.put(name, value);
 		return this;
@@ -75,6 +75,11 @@ public class JsCtx implements AutoCloseable
 
 	protected final Map<String, Object> vars =
 	  new HashMap<>(3);
+
+	public Object get(String name)
+	{
+		return vars.get(name);
+	}
 
 
 	/* Streams & Closeable */

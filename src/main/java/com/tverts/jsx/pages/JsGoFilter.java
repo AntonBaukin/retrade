@@ -2,6 +2,7 @@ package com.tverts.jsx.pages;
 
 /* com.tverts: servlets */
 
+import com.tverts.jsx.JsX;
 import com.tverts.servlet.filters.FilterTask;
 import com.tverts.servlet.filters.GoDispatch;
 import com.tverts.servlet.filters.GoPageFilterBase;
@@ -33,6 +34,6 @@ public class JsGoFilter extends GoPageFilterBase
 
 	protected boolean isJsExists(GoDispatch request)
 	{
-		return false;
+		return JsX.INSTANCE.exists(request.page);
 	}
 }
