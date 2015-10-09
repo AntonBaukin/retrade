@@ -7,20 +7,6 @@
 
 
   <!--=================================================
-    =  Go Filter: JavaServer Faces (*.xhtml)          =
-    =================================================-->
-
-  <import resource = 'go-faces.xml'/>
-
-
-  <!--=================================================
-    =  Go Filter: JavaServer Pages (*.jsp[f])         =
-    =================================================-->
-
-  <import resource = 'go-pages.xml'/>
-
-
-  <!--=================================================
     =  Go Filters                                     =
     =================================================-->
 
@@ -44,13 +30,19 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Go JavaServer Faces
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'goServerFaces'/>
+        <bean class = 'com.tverts.faces.system.GoServerFaces'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Go JavaServer Pages
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <ref bean = 'goServerPages'/>
+        <bean class = 'com.tverts.servlet.filters.GoServerPages'/>
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Go JavaScripts
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.jsx.pages.JsGoFilter'/>
 
       </list>
     </property>

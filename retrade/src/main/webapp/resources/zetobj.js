@@ -226,7 +226,7 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 	 *
 	 * Returns the target array.
 	 */
-	remove           : function()
+	del              : function()
 	{
 		var i, j
 
@@ -265,7 +265,7 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 	 * If the target object is not an array,
 	 * makes it's array-copy, returns it.
 	 */
-	merge            : function(a, b, begin, end)
+	concat           : function(a, b, begin, end)
 	{
 		a = ZeT.a(a)
 
@@ -283,7 +283,7 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 	 * have the same length and the items each
 	 * strictly (===) equals.
 	 */
-	equals           : function(a, b)
+	eq               : function(a, b)
 	{
 		if(!a || !b) return (a == null) && (a == b)
 		if(a === b)  return true
