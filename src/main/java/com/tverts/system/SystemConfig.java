@@ -127,4 +127,16 @@ public class SystemConfig
 	{
 		this.userEventsFetch = userEventsFetch;
 	}
+
+	public String getGoPagePrefix()
+	{
+		return goPagePrefix;
+	}
+
+	private String goPagePrefix = "/go/";
+
+	public void setGoPagePrefix(String goPagePrefix)
+	{
+		this.goPagePrefix = goPagePrefix;
+	}
 }

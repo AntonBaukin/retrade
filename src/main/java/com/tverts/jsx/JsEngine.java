@@ -73,16 +73,20 @@ public class JsEngine
 		EX.assertx(this.stack == null);
 
 		//~: scope for the root script
-		this.stack = new Nested(this.file, ctx);
-		this.stack.current = this.engine.getContext().
+		Bindings scope = this.engine.getContext().
 		  getBindings(ScriptContext.ENGINE_SCOPE);
 
 		//~: wrap the context streams
 		this.streams.wrap(ctx.getStreams());
 
+		//~: assign the parameters
+		Map<String, Object> prev = new HashMap<>();
+		ctx.assign(scope, prev);
+
 		//~: invoke the script's function
 		try
 		{
+			this.stack = new Nested(this.file, ctx);
 			return ((Invocable) this.engine).invokeFunction(function, args);
 		}
 		catch(Throwable e)
@@ -92,6 +96,10 @@ public class JsEngine
 		}
 		finally
 		{
+			//~: return back original scope
+			scope.putAll(prev);
+
+			//~: flush streams & clean
 			try
 			{
 				this.streams.flush();
@@ -123,16 +131,6 @@ public class JsEngine
 			this.file = file;
 			this.ctx  = ctx;
 		}
-
-		/**
-		 * Previous scope variables.
-		 */
-		public Bindings outer;
-
-		/**
-		 * Current scope variables.
-		 */
-		public Bindings current;
 	}
 
 	/**
@@ -232,29 +230,32 @@ public class JsEngine
 			cs = EX.assertn(this.scripts.get(file));
 		}
 
+		//~: scope for the current script
+		Bindings scope = this.engine.getContext().
+		  getBindings(ScriptContext.ENGINE_SCOPE);
+
+		//~: previous scope state
+		Map<String, Object> prev = null;
+
 		//~: create stack entry
 		Nested current = this.stack;
 		Nested nested  = new Nested(file, current.ctx);
-		nested.outer = current.current;
 
-		//?: {has no variables} no scope
-		if(vars == null)
-			nested.current = nested.outer;
-		//~: copy nested scope
-		else
+		//?: {has variables} set them to scope
+		if((vars != null) && !vars.isEmpty())
 		{
-			nested.current = this.engine.createBindings();
-			nested.current.putAll(nested.outer);
-			nested.current.putAll(vars);
+			prev = new HashMap<>();
+			for(Map.Entry<String, Object> e : vars.entrySet())
+			{
+				prev.put(e.getKey(), scope.get(e.getKey()));
+				scope.put(e.getKey(), e.getValue());
+			}
 		}
 
 		//~: execute the nested scope
-		this.stack = nested;
 		try
 		{
-			//~: assign nested scope
-			if(nested.current != nested.outer)
-				this.engine.setBindings(nested.current, ScriptContext.ENGINE_SCOPE);
+			this.stack = nested;
 
 			//~: invoke the compiled script
 			return cs.eval();
@@ -266,9 +267,8 @@ public class JsEngine
 		finally
 		{
 			//~: pop nested scope
-			if(nested.current != nested.outer)
-				this.engine.setBindings(nested.outer, ScriptContext.ENGINE_SCOPE);
-
+			if(prev != null)
+				scope.putAll(prev);
 			this.stack = current;
 		}
 	}

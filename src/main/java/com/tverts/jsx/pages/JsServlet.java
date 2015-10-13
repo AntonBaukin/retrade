@@ -117,7 +117,7 @@ public class JsServlet extends GenericServlet
 
 			//?: {have error text} send error
 			BytesStream err = ctx.getStreams().getErrorBytes();
-			if(err.length() != 0L)
+			if((err != null) && (err.length() != 0L))
 			{
 				//~: stratus, type, length
 				res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -131,7 +131,7 @@ public class JsServlet extends GenericServlet
 
 			//?: {have output text}
 			BytesStream out = ctx.getStreams().getOutputBytes();
-			if(out.length() != 0L)
+			if((out != null) && (out.length() != 0L))
 			{
 				//~: content length
 				res.setContentLength((int) out.length());
@@ -155,9 +155,15 @@ public class JsServlet extends GenericServlet
 		String uri = req.getRequestURI();
 		EX.assertx(uri.endsWith(".jsx"));
 
+		//?: {has context path}
+		String cp = req.getContextPath();
+		if(uri.startsWith(cp))
+			uri = uri.substring(cp.length());
+
 		//?: {script is not found}
-		if(JsX.INSTANCE.exists(uri))
+		if(!JsX.INSTANCE.exists(uri))
 			return null;
+
 		return uri;
 	}
 
@@ -172,6 +178,9 @@ public class JsServlet extends GenericServlet
 
 		//~: assign the streams
 		assignInputStream(ctx, req);
+
+		//~: default output and error streams
+		ctx.getStreams().output().error();
 
 		//=: request variable
 		ctx.put("request", req);

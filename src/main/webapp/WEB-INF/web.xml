@@ -152,18 +152,33 @@
     =                      Servlets                      =
     ====================================================-->
 
-  <!-- JavaServer Faces 2 Servlet -->
+  <!-- JavaServer Faces Servlet -->
 
   <servlet>
     <display-name>JavaServer Faces 2.x Servlet</display-name>
-    <servlet-name>faces_FacesServlet</servlet-name>
+    <servlet-name>FacesServlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>faces_FacesServlet</servlet-name>
+    <servlet-name>FacesServlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- JavaScript Engine Servlet -->
+
+  <servlet>
+    <display-name>JavaScript Engine Servlet</display-name>
+    <servlet-name>JsXServlet</servlet-name>
+    <servlet-class>com.tverts.jsx.pages.JsServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>JsXServlet</servlet-name>
+    <url-pattern>*.jsx</url-pattern>
   </servlet-mapping>
 
 
@@ -171,12 +186,12 @@
 
   <servlet>
     <display-name>User Interface Models Servlet</display-name>
-    <servlet-name>retrade_ModelServlet</servlet-name>
+    <servlet-name>ModelServlet</servlet-name>
     <servlet-class>com.tverts.servlet.ModelServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>retrade_ModelServlet</servlet-name>
+    <servlet-name>ModelServlet</servlet-name>
     <url-pattern>/model</url-pattern>
   </servlet-mapping>
 
@@ -185,12 +200,12 @@
 
   <servlet>
     <display-name>Binary Data Download Servlet</display-name>
-    <servlet-name>retrade_DownloadServlet</servlet-name>
+    <servlet-name>DownloadServlet</servlet-name>
     <servlet-class>com.tverts.servlet.DownloadServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>retrade_DownloadServlet</servlet-name>
+    <servlet-name>DownloadServlet</servlet-name>
     <url-pattern>/download</url-pattern>
     <url-pattern>/download/*</url-pattern>
   </servlet-mapping>
@@ -200,12 +215,12 @@
 
   <servlet>
     <display-name>Files Upload Servlet</display-name>
-    <servlet-name>retrade_UploadServlet</servlet-name>
+    <servlet-name>UploadServlet</servlet-name>
     <servlet-class>com.tverts.servlet.UploadServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>retrade_UploadServlet</servlet-name>
+    <servlet-name>UploadServlet</servlet-name>
     <url-pattern>/upload</url-pattern>
   </servlet-mapping>
 
@@ -225,7 +240,7 @@
       XHTML (Java Server Faces) and JSP documents.
     </description>
 
-    <filter-name>filter_RequestBridge</filter-name>
+    <filter-name>RequestBridge</filter-name>
     <filter-class>
       com.tverts.servlet.filters.FilterBridge
     </filter-class>
@@ -253,7 +268,7 @@
   </filter>
   
   <filter-mapping>
-    <filter-name>filter_RequestBridge</filter-name>
+    <filter-name>RequestBridge</filter-name>
     <url-pattern>/go/*</url-pattern>
     <url-pattern>/model</url-pattern>
     <url-pattern>/download</url-pattern>
@@ -271,7 +286,7 @@
       container with the application-level filters.
     </description>
 
-    <filter-name>filter_IncludeBridge</filter-name>
+    <filter-name>IncludeBridge</filter-name>
     <filter-class>
       com.tverts.servlet.filters.FilterBridge
     </filter-class>
@@ -283,7 +298,7 @@
   </filter>
 
   <filter-mapping>
-    <filter-name>filter_IncludeBridge</filter-name>
+    <filter-name>IncludeBridge</filter-name>
     <url-pattern>*</url-pattern>
     <dispatcher>INCLUDE</dispatcher>
   </filter-mapping>
@@ -297,7 +312,7 @@
       container with the application-level filters.
     </description>
 
-    <filter-name>filter_ForwardBridge</filter-name>
+    <filter-name>ForwardBridge</filter-name>
     <filter-class>
       com.tverts.servlet.filters.FilterBridge
     </filter-class>
@@ -309,38 +324,10 @@
   </filter>
 
   <filter-mapping>
-    <filter-name>filter_ForwardBridge</filter-name>
+    <filter-name>ForwardBridge</filter-name>
     <url-pattern>*</url-pattern>
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
-
-
-  <!-- Error Filter Bridge -->
-
-  <!--
-  <filter>
-    <description>
-      Connects ERROR filtering ussued by the web
-      container with the application-level filters.
-    </description>
-
-    <filter-name>filter_ErrorBridge</filter-name>
-    <filter-class>
-      com.tverts.servlet.filters.FilterBridge
-    </filter-class>
-
-    <init-param>
-      <param-name>for</param-name>
-      <param-value>ERROR</param-value>
-    </init-param>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>filter_ErrorBridge</filter-name>
-    <url-pattern>*</url-pattern>
-    <dispatcher>ERROR</dispatcher>
-  </filter-mapping>
-  -->
 
 
   <!--====================================================

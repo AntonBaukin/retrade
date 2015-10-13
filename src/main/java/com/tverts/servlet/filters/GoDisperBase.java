@@ -1,12 +1,16 @@
 package com.tverts.servlet.filters;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.File;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.RequestDispatcher;
+
+/* com.tverts: system */
+
+import com.tverts.system.SystemConfig;
 
 /* com.tverts: support */
 
@@ -69,7 +73,13 @@ public class GoDisperBase implements GoDisper
 	protected String  getGoPrefix(FilterTask task)
 	{
 		if(goPrefix == null)
-			goPrefix = task.getRequest().getContextPath() + "/go/";
+		{
+			String p = EX.asserts(SystemConfig.INSTANCE.getGoPagePrefix());
+			if(!p.startsWith("/")) p  = "/" + p;
+			if(!p.endsWith("/"))   p += "/";
+			goPrefix = task.getRequest().getContextPath() + p;
+		}
+
 		return goPrefix;
 	}
 

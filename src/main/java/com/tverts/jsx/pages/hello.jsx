@@ -34,5 +34,17 @@
  */
 function get()
 {
+	response.setContentType('text/html;charset=UTF-8')
 
+	print("<!DOCTYPE html>")
+	print("<html lang = 'en'>")
+	print("  <head>")
+	print("     <title>Hello, World!</title>")
+	print("  </head>")
+	print("  <body>")
+
+	print("<h2>This is Hello, World!</h2>")
+
+	print("  </body>")
+	print("</html>")
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 
 /* Java Scripting */
 
+import javax.script.Bindings;
 import javax.script.ScriptContext;
 
 /* com.tverts: support */
@@ -79,6 +80,16 @@ public class JsCtx implements AutoCloseable
 	public Object get(String name)
 	{
 		return vars.get(name);
+	}
+
+	public void   assign(Bindings b, Map<String, Object> old)
+	{
+		for(Map.Entry<String, Object> e : vars.entrySet())
+		{
+			if(old != null)
+				old.put(e.getKey(), b.get(e.getKey()));
+			b.put(e.getKey(), e.getValue());
+		}
 	}
 
 
