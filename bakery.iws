@@ -5,23 +5,17 @@
       <artifact name="ReTrade RSync @64.14" />
     </artifacts-to-build>
   </component>
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/invoice/InvoiceGoodView.java" line="404" mnemonic="0" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/go/go-faces.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/go/go-pages.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperBase.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCtx.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCtx.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsGoFilter.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsGoFilter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/go/go-filters.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/go/go-filters.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/go/go-filters.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/go/go-filters.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/web.xml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,15 +41,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="JsServlet.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java">
+      <file leaf-file-name="hello.jsx" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.2564516" vertical-offset="2026" max-vertical-offset="3493">
-              <caret line="253" column="3" selection-start-line="253" selection-start-column="3" selection-end-line="253" selection-end-column="3" />
-              <folding>
-                <element signature="method#service#0;class#JsServlet#0" expanded="true" />
-                <element signature="method#isTextContent#0;class#JsServlet#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.99033815" vertical-offset="150" max-vertical-offset="1437">
+              <caret line="45" column="19" selection-start-line="45" selection-start-column="19" selection-end-line="45" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -70,12 +61,8 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/test/resources/com/tverts/jsx/tests/TestZeT.js" />
-        <option value="$PROJECT_DIR$/xroot/src/test/java/com/tverts/jsx/TestJsX.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsGlobal.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDispatch.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisper.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperBase.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperCached.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoPageFilterBase.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
@@ -83,10 +70,14 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/go/go-filters.xml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsGoFilter.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCtx.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperBase.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/web.xml" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCtx.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" />
       </list>
     </option>
   </component>
@@ -98,8 +89,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="332" />
-    <option name="y" value="23" />
+    <option name="x" value="424" />
+    <option name="y" value="31" />
     <option name="width" value="1130" />
     <option name="height" value="965" />
   </component>
@@ -231,6 +222,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -578,7 +570,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -663,27 +654,7 @@
       <recent name="com.tverts.retrade.web.views.firms" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.JsServlet">
-    <configuration default="false" name="JsServlet" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.tverts.jsx.pages.JsServlet" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="xroot" />
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Remote.Omicron @64.14">
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -745,20 +716,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="Omicron @64.14" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="192.168.64.14" />
-      <option name="PORT" value="5000" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="5000" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="false" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
     <configuration default="false" name="TestJsX" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
       <module name="xroot" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -787,16 +744,24 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <list size="3">
-      <item index="0" class="java.lang.String" itemvalue="Remote.Omicron @64.14" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.TestJsX" />
-      <item index="2" class="java.lang.String" itemvalue="Application.JsServlet" />
+    <configuration default="false" name="Omicron @64.14" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="192.168.64.14" />
+      <option name="PORT" value="5000" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="5000" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.TestJsX" />
+      <item index="1" class="java.lang.String" itemvalue="Remote.Omicron @64.14" />
     </list>
-    <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Application.JsServlet" />
-      </list>
-    </recent_temporary>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -878,10 +843,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="332" y="23" width="1130" height="965" extended-state="0" />
+    <frame x="424" y="31" width="1130" height="965" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30923247" sideWeight="0.5661765" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30812013" sideWeight="0.5661765" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31368187" sideWeight="0.5422794" order="8" side_tool="false" content_ui="tabs" />
@@ -961,29 +926,17 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperCached.java</url>
-          <line>31</line>
-          <properties />
-          <option name="timeStamp" value="509" />
-        </line-breakpoint>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperCached.java</url>
-          <line>104</line>
-          <properties />
-          <option name="timeStamp" value="510" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoPageFilterBase.java</url>
-          <line>27</line>
+          <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java</url>
+          <line>94</line>
           <properties />
-          <option name="timeStamp" value="511" />
+          <option name="timeStamp" value="533" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="518" />
+      <option name="time" value="534" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -1099,142 +1052,139 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39285713" vertical-offset="630" max-vertical-offset="2073">
+          <caret line="58" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperCached.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.85189307" vertical-offset="0" max-vertical-offset="2122">
-          <caret line="45" column="37" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/arrays.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18214285" vertical-offset="0" max-vertical-offset="1869">
-          <caret line="6" column="67" selection-start-line="0" selection-start-column="0" selection-end-line="6" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81964284" vertical-offset="918" max-vertical-offset="2090">
-          <caret line="125" column="26" selection-start-line="81" selection-start-column="26" selection-end-line="81" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5111359" vertical-offset="1700" max-vertical-offset="4349">
-          <caret line="147" column="3" selection-start-line="127" selection-start-column="3" selection-end-line="127" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.33214286" vertical-offset="647" max-vertical-offset="1920">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoPageFilterBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.389755" vertical-offset="891" max-vertical-offset="2836">
-          <caret line="82" column="26" selection-start-line="73" selection-start-column="26" selection-end-line="73" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.51428574" vertical-offset="35" max-vertical-offset="2243">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisper.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterBridge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49554566" vertical-offset="48" max-vertical-offset="1493">
-          <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.33214286" vertical-offset="1242" max-vertical-offset="4011">
+          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperBase.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterChainInvoker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14365256" vertical-offset="313" max-vertical-offset="2003">
-          <caret line="26" column="44" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.33214286" vertical-offset="290" max-vertical-offset="1308">
+          <caret line="32" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsGoFilter.java">
+    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/jsf-api-2.2.11.jar!/javax/faces/webapp/FacesServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4418079" vertical-offset="0" max-vertical-offset="1429">
-          <caret line="26" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.81785715" vertical-offset="7481" max-vertical-offset="9298">
+          <caret line="649" column="28" selection-start-line="467" selection-start-column="28" selection-end-line="467" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/javax.servlet-api-3.1.0.jar!/javax/servlet/http/HttpServletRequest.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5300668" vertical-offset="6936" max-vertical-offset="13597">
-          <caret line="436" column="18" selection-start-line="436" selection-start-column="18" selection-end-line="436" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.20824054" vertical-offset="2771" max-vertical-offset="6882">
+          <caret line="174" column="49" selection-start-line="174" selection-start-column="49" selection-end-line="174" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/DownloadServlet.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterCycle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4922049" vertical-offset="884" max-vertical-offset="5658">
-          <caret line="78" column="29" selection-start-line="78" selection-start-column="7" selection-end-line="78" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.34075725" vertical-offset="731" max-vertical-offset="2972">
+          <caret line="64" column="62" selection-start-line="61" selection-start-column="36" selection-end-line="61" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/javax.servlet-api-3.1.0.jar!/javax/servlet/ServletResponseWrapper.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsStreams.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.018930959" vertical-offset="1071" max-vertical-offset="5199">
-          <caret line="64" column="18" selection-start-line="64" selection-start-column="3" selection-end-line="64" selection-end-column="3" />
+        <state vertical-scroll-proportion="1.0625" vertical-offset="867" max-vertical-offset="2821">
+          <caret line="86" column="3" selection-start-line="86" selection-start-column="3" selection-end-line="86" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3062361" vertical-offset="31" max-vertical-offset="1476">
-          <caret line="18" column="36" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.7267857" vertical-offset="1055" max-vertical-offset="2175">
+          <caret line="125" column="26" selection-start-line="86" selection-start-column="26" selection-end-line="86" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCtx.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.96213806" vertical-offset="751" max-vertical-offset="3924">
-          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.11358575" vertical-offset="1445" max-vertical-offset="4111">
+          <caret line="91" column="41" selection-start-line="86" selection-start-column="6" selection-end-line="91" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.73830736" vertical-offset="289" max-vertical-offset="3533">
-          <caret line="125" column="61" selection-start-line="56" selection-start-column="61" selection-end-line="56" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/javax.servlet-api-3.1.0.jar!/javax/servlet/ServletResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6815145" vertical-offset="3451" max-vertical-offset="8650">
-          <caret line="239" column="16" selection-start-line="239" selection-start-column="16" selection-end-line="239" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/build/dev/srcX/javax.servlet-api-3.1.0.jar!/javax/servlet/http/HttpServletResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24610245" vertical-offset="6358" max-vertical-offset="13121">
-          <caret line="387" column="15" selection-start-line="387" selection-start-column="15" selection-end-line="387" selection-end-column="15" />
+        <state vertical-scroll-proportion="0.4857143" vertical-offset="1292" max-vertical-offset="6221">
+          <caret line="92" column="34" selection-start-line="92" selection-start-column="7" selection-end-line="92" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2564516" vertical-offset="2026" max-vertical-offset="3493">
-          <caret line="253" column="3" selection-start-line="253" selection-start-column="3" selection-end-line="253" selection-end-column="3" />
-          <folding>
-            <element signature="method#service#0;class#JsServlet#0" expanded="true" />
-            <element signature="method#isTextContent#0;class#JsServlet#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.33214286" vertical-offset="1412" max-vertical-offset="3365">
+          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/uievents.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4844">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/uievents.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1816">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.view-modes/page.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="2929">
+          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.99033815" vertical-offset="150" max-vertical-offset="1437">
+          <caret line="45" column="19" selection-start-line="45" selection-start-column="19" selection-end-line="45" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
