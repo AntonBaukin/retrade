@@ -29,11 +29,17 @@
       <properties id="ant-postprocessing">
         <options enabled="true">
           <file>file://$PROJECT_DIR$/retrade/build.xml</file>
-          <target>explode-rsync-general</target>
+          <target>explode-rsync</target>
           <build-properties>
             <build-property name="server" value="192.168.64.14" />
             <build-property name="password" value="sqr4eq22!" />
           </build-properties>
+        </options>
+      </properties>
+      <properties id="ant-preprocessing">
+        <options>
+          <file>file://$PROJECT_DIR$/retrade/build.xml</file>
+          <target>explode-rsync-general</target>
         </options>
       </properties>
       <root id="root">
