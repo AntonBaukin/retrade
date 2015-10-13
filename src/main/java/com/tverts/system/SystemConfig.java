@@ -64,8 +64,29 @@ public class SystemConfig
 		this.sessionTime = st;
 	}
 
+	/**
+	 * General parameter of number of milliseconds
+	 * that some internal components may wait to
+	 * check and invalidate internal state.
+	 *
+	 * In the debug mode defaults to 2 seconds, in
+	 * normal mode is always 10-times longer.
+	 */
+	public int getCheckInterval()
+	{
+		return (debug)?(checkInterval):(checkInterval * 10);
+	}
 
-	/* Data Fetch Sizes  */
+	private int checkInterval = 2000;
+
+	public void setCheckInterval(int checkInterval)
+	{
+		EX.assertx(checkInterval >= 100);
+		this.checkInterval = checkInterval;
+	}
+
+
+/* Database Access */
 
 	public int getDumpLimit()
 	{
@@ -79,6 +100,9 @@ public class SystemConfig
 		EX.assertx(dumpLimit >= 0);
 		this.dumpLimit = dumpLimit;
 	}
+
+
+	/* User Interface */
 
 	/**
 	 * Default UI grid size.

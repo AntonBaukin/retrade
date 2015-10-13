@@ -54,6 +54,12 @@
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <ref bean = 'modelsStoreService'/>
 
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · JavaScript Execution Service (JsX)
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'JsX'/>
+
       </list>
     </property>
   </bean>

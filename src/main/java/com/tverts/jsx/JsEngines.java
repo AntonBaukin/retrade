@@ -4,13 +4,14 @@ package com.tverts.jsx;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /* Java Scripting */
 
-import javax.script.ScriptEngineManager;
+import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 /* com.tverts: support */
 
@@ -28,7 +29,7 @@ public class JsEngines
 	public JsEngines(JsFiles files)
 	{
 		this.files   = EX.assertn(files);
-		this.manager = new ScriptEngineManager();
+		this.factory = new NashornScriptEngineFactory();
 	}
 
 
@@ -53,6 +54,18 @@ public class JsEngines
 
 	protected final Map<JsFile, Engines> engines =
 	  new ConcurrentHashMap<>();
+
+	/**
+	 * Checks and invalidates all the engines.
+	 */
+	public void     check()
+	{
+		//~: first, check the files
+		files.revalidate();
+
+		//~: then, check the engines
+		engines.values().forEach(Engines::check);
+	}
 
 
 	/* Engines */
@@ -87,11 +100,18 @@ public class JsEngines
 			return createEngine(this.file);
 		}
 
+		protected Reference<LinkedList<JsEngine>> engines;
+
 		public void     free(JsEngine engine)
 		{
 			EX.assertn(engine);
 			EX.assertx(engine.file.equals(this.file));
 
+			//?: {engine missed the last check}
+			if(engine.getCheckTime() < this.checkTime)
+				engine.check();
+
+			//~: return the engine back
 			synchronized(this)
 			{
 				LinkedList<JsEngine> es = (engines == null)?(null):(engines.get());
@@ -103,15 +123,50 @@ public class JsEngines
 			}
 		}
 
-		protected Reference<LinkedList<JsEngine>> engines;
+		public void     check()
+		{
+			this.checkTime = System.currentTimeMillis();
+
+			//~: take all existing engines
+			ArrayList<JsEngine> all = null;
+			synchronized(this)
+			{
+				LinkedList<JsEngine> es = (engines == null)?(null):(engines.get());
+				if(es != null)
+				{
+					all = new ArrayList<>(es);
+					es.clear();
+				}
+			}
+
+			//?: {has nothing}
+			if((all == null) || all.isEmpty())
+				return;
+
+			//~: check all them
+			all.forEach(JsEngine::check);
+
+			//~: return them back
+			synchronized(this)
+			{
+				LinkedList<JsEngine> es = (engines == null)?(null):(engines.get());
+				if(es == null)
+					engines = new WeakReference<LinkedList<JsEngine>>(
+					  es = new LinkedList<>());
+
+				es.addAll(all);
+			}
+		}
+
+		protected long checkTime;
 	}
 
 	protected JsEngine createEngine(JsFile file)
 	{
-		return new JsEngine(manager, this.files, file);
+		return new JsEngine(factory, this.files, file);
 	}
 
-	protected final ScriptEngineManager manager;
+	protected final NashornScriptEngineFactory factory;
 
 	protected final JsFiles files;
 }

@@ -155,7 +155,7 @@ public class JsFiles
 		//?: {is not a file}
 		if(f.file() == null) try
 		{
-			f.content();
+			f.content(null);
 		}
 		catch(Throwable e)
 		{

@@ -13,6 +13,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.misc.Hash;
 import com.tverts.support.streams.BytesStream;
 
 
@@ -86,7 +87,7 @@ public class JsFile implements AutoCloseable
 	 * Loads the file on the first demand
 	 * (also, after each clean request).
 	 */
-	public String  content()
+	public String  content(Hash hash)
 	{
 		//~: access cached content
 		contentRead.lock();
@@ -119,7 +120,16 @@ public class JsFile implements AutoCloseable
 				EX.assertn(is, "Resource file does not exist!");
 				bs.write(is);
 
-				res = new String(bs.bytes(), "UTF-8");
+				//~: raw bytes of the content
+				byte[] raw = bs.bytes();
+
+				//~: calculate the hash
+				this.hash = new Hash().update(raw, 0, raw.length);
+				if(hash != null)
+					hash.assign(this.hash);
+
+				//~: make the content string
+				res = new String(raw, "UTF-8");
 				content = new SoftReference<String>(res);
 				this.ts = System.currentTimeMillis();
 
@@ -137,6 +147,7 @@ public class JsFile implements AutoCloseable
 	}
 
 	protected Reference<String> content;
+	protected Hash              hash;
 	protected final Lock        contentRead;
 	protected final Lock        contentWrite;
 
@@ -149,6 +160,7 @@ public class JsFile implements AutoCloseable
 		try
 		{
 			this.content = null;
+			this.hash    = null;
 		}
 		finally
 		{
@@ -180,6 +192,11 @@ public class JsFile implements AutoCloseable
 	}
 
 	protected volatile long ts;
+
+	public Hash    hash()
+	{
+		return this.hash;
+	}
 
 
 	/* Object */

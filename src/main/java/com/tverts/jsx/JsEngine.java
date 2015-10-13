@@ -13,7 +13,9 @@ import javax.script.CompiledScript;
 import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+
+import com.tverts.support.misc.Hash;
+import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 /* com.tverts: support */
 
@@ -23,6 +25,7 @@ import com.tverts.support.EX;
 /**
  * Wrapper of JavaScript Engine bound with
  * the script previously compiled by it.
+ * Engine works in the scripting mode!
  *
  * Warning: engine is not thread-safe!
  *
@@ -30,12 +33,12 @@ import com.tverts.support.EX;
  */
 public class JsEngine
 {
-	public JsEngine(ScriptEngineManager em, JsFiles files, JsFile file)
+	public JsEngine(NashornScriptEngineFactory f, JsFiles files, JsFile file)
 	{
 		//~: create Nashorn engine
 		try
 		{
-			this.engine = em.getEngineByName("Nashorn");
+			this.engine = f.getScriptEngine("-scripting");
 		}
 		catch(Throwable e)
 		{
@@ -111,6 +114,51 @@ public class JsEngine
 		}
 	}
 
+	public void   invalidate()
+	{
+		//~: create new empty scope
+		Bindings scope = this.engine.createBindings();
+		this.engine.setBindings(scope, ScriptContext.ENGINE_SCOPE);
+
+		//~: remove all compiled scripts
+		this.cleanup(true);
+
+		//!: prepare again
+		this.prepare();
+	}
+
+	/**
+	 * Invalidates the engine if source
+	 * file content was changed.
+	 */
+	public void   check()
+	{
+		this.checkTime = System.currentTimeMillis();
+
+		//?: {main file differs}
+		EX.assertn(fileHash);
+		if(!fileHash.equals(file.hash()))
+		{
+			this.invalidate();
+			return;
+		}
+
+		//c: search for changed script file
+		for(Script s : this.scripts.values())
+			if(!s.file.hash().equals(s.hash))
+			{
+				this.invalidate();
+				return;
+			}
+	}
+
+	protected long checkTime;
+
+	public long   getCheckTime()
+	{
+		return checkTime;
+	}
+
 
 	/* protected: scripts execution */
 
@@ -157,8 +205,11 @@ public class JsEngine
 			//~: assign the wrapping streams
 			ctx.assign(engine.getContext());
 
+			//~: stack entry
+			this.stack = new Nested(this.file, ctx);
+
 			//~: evaluate the script
-			EX.assertn(this.scripts.get(this.file)).eval();
+			EX.assertn(this.scripts.get(this.file)).script.eval();
 		}
 		catch(Throwable e)
 		{
@@ -223,8 +274,8 @@ public class JsEngine
 		JsFile file = this.resolve(script);
 
 		//?: {script instance is not cached yet}
-		CompiledScript cs = this.scripts.get(file);
-		if(cs == null)
+		Script cs = this.scripts.get(file);
+		if((cs == null) || (cs.script == null))
 		{
 			compile(file);
 			cs = EX.assertn(this.scripts.get(file));
@@ -258,7 +309,7 @@ public class JsEngine
 			this.stack = nested;
 
 			//~: invoke the compiled script
-			return cs.eval();
+			return cs.script.eval();
 		}
 		catch(Throwable e)
 		{
@@ -281,7 +332,8 @@ public class JsEngine
 	protected void compile(JsFile file)
 	{
 		//~: access the file content
-		String code = file.content();
+		Hash   hash = new Hash();
+		String code = file.content(hash);
 		EX.assertn(code, "File [", file.uri(), "] has no content!");
 
 		CompiledScript script; try
@@ -294,7 +346,15 @@ public class JsEngine
 		}
 
 		//~: remember the script
-		scripts.put(file, script);
+		Script s = new Script();
+		scripts.put(file, s);
+
+		s.file   = file;
+		s.hash   = hash;
+		s.script = script;
+
+		if(this.file.equals(file))
+			this.fileHash = new Hash(hash);
 	}
 
 	protected void cleanup(boolean initial)
@@ -303,7 +363,8 @@ public class JsEngine
 		// the initial execution as they will likely
 		// will not be needed more
 		if(initial)
-			this.scripts.clear();
+			for(Script s : scripts.values())
+				s.script = null;
 
 		//~: invocation stack
 		this.stack = null;
@@ -322,6 +383,8 @@ public class JsEngine
 	 */
 	protected final JsFiles files;
 
+	protected Hash fileHash;
+
 	/**
 	 * Collection of wrapping streams.
 	 */
@@ -329,7 +392,16 @@ public class JsEngine
 
 	/**
 	 * The root script file with all the included ones.
+	 *
+	 * TODO eliminate Script and safe hashes in else map!
 	 */
-	protected final Map<JsFile, CompiledScript> scripts =
+	protected final Map<JsFile, Script> scripts =
 	  new HashMap<>();
+
+	protected static class Script
+	{
+		public JsFile         file;
+		public Hash           hash;
+		public CompiledScript script;
+	}
 }

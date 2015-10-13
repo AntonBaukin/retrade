@@ -3,6 +3,8 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
+var ZeT = JsX.once('zet/app.js')
+
 /**
  * Global variables are:
  *
@@ -44,6 +46,9 @@ function get()
 	print("  <body>")
 
 	print("<h2>This is Hello, World!</h2>")
+
+	//if(params.isEmpty())
+		print("<h3>There are no any parameters!</h3>")
 
 	print("  </body>")
 	print("</html>")

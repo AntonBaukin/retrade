@@ -8,10 +8,10 @@
   <bean name  = 'JsX' factory-method = 'getInstance'
         class = 'com.tverts.jsx.JsX'>
 
-    <property name = 'roots'>
-      <value>
-        com.tverts.jsx
-      </value>
-    </property>
+    <property name  = 'UID'
+              value = 'JavaScripting'/>
+
+    <property name  = 'roots'
+              value = 'com.tverts.jsx'/>
   </bean>
 </beans>

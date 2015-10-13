@@ -1,6 +1,11 @@
 package com.tverts.jsx;
 
-/* Java Scripting */
+/* com.tverts: system (services) */
+
+import com.tverts.system.SystemConfig;
+import com.tverts.system.services.Event;
+import com.tverts.system.services.ServiceBase;
+import com.tverts.system.services.events.SystemReady;
 
 /* com.tverts: support */
 
@@ -15,7 +20,7 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com.
  */
-public class JsX
+public class JsX extends ServiceBase
 {
 	/* Singleton  */
 
@@ -133,4 +138,56 @@ public class JsX
 	}
 
 	protected JsEngines engines;
+
+
+	/* Service */
+
+	public void    service(Event event)
+	{
+		//?: {startup}
+		if(event instanceof SystemReady)
+			startupPlan();
+		//?: {own event}
+		else if((event instanceof JsCheckEvent) && mine(event))
+			doCheck();
+	}
+
+
+	/* protected: events processing */
+
+	protected void startupPlan()
+	{
+		JsCheckEvent e = new JsCheckEvent();
+
+		//~: delay [1; 11) seconds
+		delay(e, 1000L + System.currentTimeMillis() % 10000L);
+
+		//~: sent to self
+		self(e);
+
+		LU.I(getLog(), logsig(), ": initiated JsX checks");
+	}
+
+	protected void doCheck()
+	{
+		try
+		{
+			engines.check();
+		}
+		finally
+		{
+			planNextCheck();
+		}
+	}
+
+	protected void planNextCheck()
+	{
+		JsCheckEvent e = new JsCheckEvent();
+
+		//~: delay to system check timeout
+		delay(e, SystemConfig.INSTANCE.getCheckInterval());
+
+		self(e);
+	}
+
 }
