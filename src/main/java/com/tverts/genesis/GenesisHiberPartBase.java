@@ -77,9 +77,10 @@ public abstract class GenesisHiberPartBase
 		//?: {there was generation for this day}
 		if(g.bool(p) != null)
 		{
-			LU.I(log(ctx), logsig(), " day [",
-			  ctx.get(DaysGenDisp.TIME, Date.class),
-			  "] marked as generated for entities with [", ut, ']');
+			LU.I(log(ctx), logsig(), " skip day [",
+			  DU.date2str(ctx.get(DaysGenDisp.TIME, Date.class)),
+			  "] as it's marked as generated"
+			);
 
 			ctx.set(key, false); //<-- cache the result
 			return false;

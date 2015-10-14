@@ -286,7 +286,6 @@ public class DaysGenDisp extends GenesisPartBase
 		{
 			//~: find present per-day index
 			int i = (Integer)inds.get(entries[ei]);
-			inds.put(entries[ei], i + 1);
 
 			//~: and store it in the context
 			ctx.set(DAYI, i + 1); //<-- starting from 1, not 0
@@ -295,7 +294,8 @@ public class DaysGenDisp extends GenesisPartBase
 			ctx.set(TIME, genDayTime(ctx, day, ei + 1, entries.length));
 
 			//!: call the genesis unit
-			callGenesis(ctx, entries[ei]);
+			if(callGenesis(ctx, entries[ei]))
+				inds.put(entries[ei], i + 1);
 
 			ctx.set(TIME, null);
 		}
@@ -304,36 +304,35 @@ public class DaysGenDisp extends GenesisPartBase
 		logGen(ctx, day, inds);
 	}
 
-	protected void    callGenesis(final GenCtx ctx, Entry e)
+	protected boolean callGenesis(final GenCtx ctx, Entry e)
 	  throws GenesisError
 	{
 		EX.assertn(e.getGenesis());
 
 		//~: clone the genesis before the invocation
-		final Genesis g = e.getGenesis().clone();
-		final Genesis s = this;
-		Throwable     x = null;
+		final Genesis   g = e.getGenesis().clone();
+		final Genesis   s = this;
+		Throwable       x = null;
+		final boolean[] r = new boolean[1];
 
 		try
 		{
-			bean(TxBean.class).setNew().execute(new Runnable()
+			bean(TxBean.class).setNew().execute(() ->
 			{
-				public void run()
-				{
-					//?: {there was generation for this day}
-					if(g instanceof DaysGenPart)
-						if(!((DaysGenPart)g).isDayClear(ctx))
-							return;
+				//?: {there was generation for this day}
+				if(g instanceof DaysGenPart)
+					if(!((DaysGenPart)g).isDayClear(ctx))
+						return;
 
-					//!: call it in the context stacked
-					try
-					{
-						g.generate(ctx.stack(s));
-					}
-					catch(GenesisError e)
-					{
-						throw EX.wrap(e);
-					}
+				//!: call it in the context stacked
+				try
+				{
+					g.generate(ctx.stack(s));
+					r[0] = true;
+				}
+				catch(GenesisError er)
+				{
+					throw EX.wrap(er);
 				}
 			});
 		}
@@ -347,15 +346,21 @@ public class DaysGenDisp extends GenesisPartBase
 			throw (GenesisError)x;
 		else if(x != null)
 			throw new GenesisError(this, ctx, x);
+
+		return r[0];
 	}
 
-	protected void    logGen(GenCtx ctx, Date day, Map inds)
+	protected void    logGen(GenCtx ctx, Date day, Map<Entry, Integer> inds)
 	{
-		if(LU.isI(log(ctx))) for(Entry e : getEntries())
-			LU.I(log(ctx), DU.date2str(day),
-			  " genesis ", e.getGenesis().getName(),
-			  " invoked times: ", inds.get(e)
-			);
+		if(!LU.isI(log(ctx)))
+			return;
+
+		for(Entry e : getEntries())
+			if(inds.get(e) != 0)
+				LU.I(log(ctx), DU.date2str(day),
+				  " genesis [", e.getGenesis().getName(),
+				  "] invoked times: ", inds.get(e)
+				);
 	}
 
 	protected int     genObjsNumber(GenCtx ctx)

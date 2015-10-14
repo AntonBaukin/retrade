@@ -9,7 +9,10 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 /* com.tverts: servlets, support */
 
 import com.tverts.servlet.RequestPoint;
-import static com.tverts.support.SU.s2s;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 /**
  * Point to access Spring context and the beans.
@@ -35,9 +38,7 @@ public class SpringPoint
 
 	public static Object         bean(String name)
 	{
-		if((name = s2s(name)) == null)
-			throw new IllegalArgumentException();
-
+		EX.asserts(name);
 		return getInstance().getSpringContext().getBean(name);
 	}
 
@@ -47,8 +48,7 @@ public class SpringPoint
 	 */
 	public static Object         beanOrNull(String name)
 	{
-		if((name = s2s(name)) == null)
-			throw new IllegalArgumentException();
+		EX.asserts(name);
 
 		try
 		{
@@ -93,22 +93,9 @@ public class SpringPoint
 
 	public WebApplicationContext getSpringContext()
 	{
-		WebApplicationContext res;
-
-		try
-		{
-			res = WebApplicationContextUtils.
-			  getWebApplicationContext(RequestPoint.context());
-
-			if(res == null)
-				throw new NullPointerException();
-		}
-		catch(Exception e)
-		{
-			throw new IllegalStateException(
-			  "Spring Framework web context does not exist!", e);
-		}
-
-		return res;
+		return EX.assertn(WebApplicationContextUtils.
+		  getWebApplicationContext(RequestPoint.context()),
+		  "Spring Framework web context does not exist!"
+		);
 	}
 }

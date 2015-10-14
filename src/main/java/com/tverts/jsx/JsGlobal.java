@@ -7,6 +7,12 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+/* com.tverts: spring */
+
+import com.tverts.spring.SpringPoint;
+
+/* com.tverts: support */
+
 import com.tverts.support.SU;
 
 
@@ -152,5 +158,13 @@ public class JsGlobal
 	public final String html(String s)
 	{
 		return SU.escapeXML(s);
+	}
+
+
+	/* Application Access */
+
+	public final Object bean(String name)
+	{
+		return SpringPoint.bean(name);
 	}
 }
