@@ -141,7 +141,9 @@ public abstract class GenInvoiceBase
 		return invoiceType;
 	}
 
-	public void   setInvoiceType(String invoiceType)
+	private String invoiceType;
+
+	public void setInvoiceType(String invoiceType)
 	{
 		if((invoiceType = s2s(invoiceType)) == null)
 			throw new IllegalArgumentException();
@@ -154,42 +156,50 @@ public abstract class GenInvoiceBase
 		return orderType;
 	}
 
-	public void   setOrderType(String orderType)
+	private String orderType;
+
+	public void setOrderType(String orderType)
 	{
 		this.orderType = orderType;
 	}
 
 	@Param
-	public int    getGoodsMax()
+	public int getGoodsMax()
 	{
 		return goodsMax;
 	}
 
-	public void   setGoodsMax(int v)
+	private int goodsMax = 10;
+
+	public void setGoodsMax(int v)
 	{
 		EX.assertx(v > 1);
 		this.goodsMax = v;
 	}
 
 	@Param
-	public int    getVolumeMin()
+	public int getVolumeMin()
 	{
 		return volumeMin;
 	}
 
-	public void   setVolumeMin(int v)
+	private int volumeMin = 1;
+
+	public void setVolumeMin(int v)
 	{
 		EX.assertx(v > 0);
 		this.volumeMin = v;
 	}
 
 	@Param
-	public int    getVolumeMax()
+	public int getVolumeMax()
 	{
 		return volumeMax;
 	}
 
-	public void   setVolumeMax(int v)
+	private int volumeMax = 100;
+
+	public void setVolumeMax(int v)
 	{
 		EX.assertx(v > 0);
 		this.volumeMax = v;
@@ -432,14 +442,4 @@ public abstract class GenInvoiceBase
 			return new BigDecimal("" + v + '.' + ctx.gen().nextInt(1000)).setScale(3);
 		return BigDecimal.valueOf(v);
 	}
-
-
-	/* private: parameters of the generator */
-
-	private String invoiceType;
-	private String orderType;
-
-	private int    goodsMax  = 10;
-	private int    volumeMin = 1;
-	private int    volumeMax = 100;
 }
