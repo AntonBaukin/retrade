@@ -4,6 +4,7 @@ package com.tverts.jsx.pages;
 
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -173,8 +174,17 @@ public class JsServlet extends GenericServlet
 		JsCtx ctx = new JsCtx();
 
 		//~: copy the request parameters into variable
-		ctx.put("params", new HashMap<String, Object>(
-		  req.getParameterMap()));
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.putAll(req.getParameterMap());
+		ctx.put("params", params);
+
+		//~: replace string arrays
+		for(Map.Entry<String, Object> e : params.entrySet())
+			if(e.getValue() instanceof String[])
+				if(((String[])e.getValue()).length == 1)
+					e.setValue(((String[])e.getValue())[0]);
+				else
+					e.setValue(Arrays.asList((String[])e.getValue()));
 
 		//~: assign the streams
 		assignInputStream(ctx, req);

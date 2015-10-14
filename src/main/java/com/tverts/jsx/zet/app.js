@@ -6,17 +6,24 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
-var ZeT = JsX.once('./console.js')
+var ZeT  = JsX.once('./basics.js')
+var ZeTS = JsX.once('./strings.js')
 
 
 // +----: print(): ---------------------------------------------->
 
-var ZeT_Console_out = ZeT.Console.out
+var _original_print_
+if(ZeT.isu(_original_print_))
+	_original_print_ = print
 
 /**
  * Overwrites Nashorn print() with Console implementation.
  */
-//function print(/* various objects */)
-//{
-//	//ZeT_Console_out.println.apply(ZeT_Console_out, arguments)
-//}
+var print = function(/* various objects */)
+{
+	var s = ZeTS.cat.apply(ZeTS, arguments)
+	if(s.length) _original_print_(s)
+}
+
+
+ZeT //<-- return this value

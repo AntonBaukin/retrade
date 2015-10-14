@@ -7,6 +7,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.tverts.support.SU;
+
 
 /**
  * This Java object is available for all
@@ -138,4 +140,17 @@ public class JsGlobal
 
 	protected final Map<String, Object> globals =
 	  new HashMap<>();
+
+
+	/* String Utilities */
+
+	public final String jss(String s)
+	{
+		return SU.jss(s);
+	}
+
+	public final String html(String s)
+	{
+		return SU.escapeXML(s);
+	}
 }

@@ -95,7 +95,11 @@ public class JsFile implements AutoCloseable
 		{
 			String res = (content == null)?(null):(content.get());
 			if(res != null)
+			{
+				if(hash != null)
+					hash.assign(this.hash);
 				return res;
+			}
 		}
 		finally
 		{
@@ -106,17 +110,22 @@ public class JsFile implements AutoCloseable
 		contentWrite.lock();
 		try
 		{
+			//?: {loaded it while lock access}
 			String res = (content == null)?(null):(content.get());
 			if(res != null)
+			{
+				if(hash != null)
+					hash.assign(this.hash);
 				return res;
+			}
 
-			//~: load the content bytes
 			try
 			(
 			  InputStream is = this.uri.toURL().openStream();
 			  BytesStream bs = new BytesStream()
 			)
 			{
+				//~: load the content bytes
 				EX.assertn(is, "Resource file does not exist!");
 				bs.write(is);
 
@@ -124,13 +133,13 @@ public class JsFile implements AutoCloseable
 				byte[] raw = bs.bytes();
 
 				//~: calculate the hash
-				this.hash = new Hash().update(raw, 0, raw.length);
+				this.hash.reset().update(raw, 0, raw.length);
 				if(hash != null)
 					hash.assign(this.hash);
 
 				//~: make the content string
 				res = new String(raw, "UTF-8");
-				content = new SoftReference<String>(res);
+				content = new SoftReference<>(res);
 				this.ts = System.currentTimeMillis();
 
 				return res;
@@ -147,7 +156,7 @@ public class JsFile implements AutoCloseable
 	}
 
 	protected Reference<String> content;
-	protected Hash              hash;
+	protected final Hash        hash = new Hash();
 	protected final Lock        contentRead;
 	protected final Lock        contentWrite;
 
@@ -160,7 +169,7 @@ public class JsFile implements AutoCloseable
 		try
 		{
 			this.content = null;
-			this.hash    = null;
+			this.hash.reset();
 		}
 		finally
 		{

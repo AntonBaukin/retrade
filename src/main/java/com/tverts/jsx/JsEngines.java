@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/* Java Scripting */
+/* Nashorn Engine */
 
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 

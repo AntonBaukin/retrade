@@ -77,7 +77,7 @@ public class SystemConfig
 		return (debug)?(checkInterval):(checkInterval * 10);
 	}
 
-	private int checkInterval = 2000;
+	private int checkInterval = 4000;
 
 	public void setCheckInterval(int checkInterval)
 	{
@@ -86,7 +86,7 @@ public class SystemConfig
 	}
 
 
-/* Database Access */
+	/* Database Access */
 
 	public int getDumpLimit()
 	{

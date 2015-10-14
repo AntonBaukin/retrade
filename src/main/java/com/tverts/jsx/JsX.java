@@ -92,7 +92,7 @@ public class JsX extends ServiceBase
 			rs[i] = EX.asserts(r);
 		}
 
-		LU.I(LU.cls(this), "Using the wollowing roots: ", rs);
+		LU.I(LU.cls(this), "using the following roots: ", rs);
 
 		this.files   = new JsFiles(rs);
 		this.engines = new JsEngines(this.files);

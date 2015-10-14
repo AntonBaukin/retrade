@@ -13,13 +13,17 @@ import javax.script.CompiledScript;
 import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
+import javax.script.SimpleScriptContext;
 
-import com.tverts.support.misc.Hash;
+/* Nashorn Engine */
+
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.LU;
+import com.tverts.support.misc.Hash;
 
 
 /**
@@ -116,12 +120,11 @@ public class JsEngine
 
 	public void   invalidate()
 	{
-		//~: create new empty scope
-		Bindings scope = this.engine.createBindings();
-		this.engine.setBindings(scope, ScriptContext.ENGINE_SCOPE);
-
 		//~: remove all compiled scripts
 		this.cleanup(true);
+
+		//~: create new scripting context
+		this.engine.setContext(new SimpleScriptContext());
 
 		//!: prepare again
 		this.prepare();
@@ -135,18 +138,20 @@ public class JsEngine
 	{
 		this.checkTime = System.currentTimeMillis();
 
-		//?: {main file differs}
-		EX.assertn(fileHash);
-		if(!fileHash.equals(file.hash()))
-		{
-			this.invalidate();
-			return;
-		}
-
-		//c: search for changed script file
-		for(Script s : this.scripts.values())
-			if(!s.file.hash().equals(s.hash))
+		//c: search for changed script files
+		for(Map.Entry<JsFile, Hash> e : hashes.entrySet())
+			if(!e.getKey().hash().equals(e.getValue()))
 			{
+				if(e.getKey().equals(this.file))
+					LU.I(LU.cls(this), "updating modified script [",
+					  this.file.uri().getPath(), "]");
+				else
+					LU.I(LU.cls(this), "updating script [",
+					  this.file.uri().getPath(),
+					  "] due the included script change [",
+					  e.getKey().uri().getPath(), "]"
+					);
+
 				this.invalidate();
 				return;
 			}
@@ -209,7 +214,7 @@ public class JsEngine
 			this.stack = new Nested(this.file, ctx);
 
 			//~: evaluate the script
-			EX.assertn(this.scripts.get(this.file)).script.eval();
+			EX.assertn(this.scripts.get(this.file)).eval();
 		}
 		catch(Throwable e)
 		{
@@ -274,8 +279,8 @@ public class JsEngine
 		JsFile file = this.resolve(script);
 
 		//?: {script instance is not cached yet}
-		Script cs = this.scripts.get(file);
-		if((cs == null) || (cs.script == null))
+		CompiledScript cs = this.scripts.get(file);
+		if(cs == null)
 		{
 			compile(file);
 			cs = EX.assertn(this.scripts.get(file));
@@ -309,7 +314,7 @@ public class JsEngine
 			this.stack = nested;
 
 			//~: invoke the compiled script
-			return cs.script.eval();
+			return cs.eval();
 		}
 		catch(Throwable e)
 		{
@@ -336,6 +341,7 @@ public class JsEngine
 		String code = file.content(hash);
 		EX.assertn(code, "File [", file.uri(), "] has no content!");
 
+		//~: compile the script
 		CompiledScript script; try
 		{
 			script = ((Compilable) engine).compile(code);
@@ -346,15 +352,10 @@ public class JsEngine
 		}
 
 		//~: remember the script
-		Script s = new Script();
-		scripts.put(file, s);
+		scripts.put(file, script);
 
-		s.file   = file;
-		s.hash   = hash;
-		s.script = script;
-
-		if(this.file.equals(file))
-			this.fileHash = new Hash(hash);
+		//~: update the hash
+		hashes.put(file, hash);
 	}
 
 	protected void cleanup(boolean initial)
@@ -363,8 +364,7 @@ public class JsEngine
 		// the initial execution as they will likely
 		// will not be needed more
 		if(initial)
-			for(Script s : scripts.values())
-				s.script = null;
+			scripts.clear();
 
 		//~: invocation stack
 		this.stack = null;
@@ -383,8 +383,6 @@ public class JsEngine
 	 */
 	protected final JsFiles files;
 
-	protected Hash fileHash;
-
 	/**
 	 * Collection of wrapping streams.
 	 */
@@ -392,16 +390,14 @@ public class JsEngine
 
 	/**
 	 * The root script file with all the included ones.
-	 *
-	 * TODO eliminate Script and safe hashes in else map!
 	 */
-	protected final Map<JsFile, Script> scripts =
+	protected final Map<JsFile, CompiledScript> scripts =
 	  new HashMap<>();
 
-	protected static class Script
-	{
-		public JsFile         file;
-		public Hash           hash;
-		public CompiledScript script;
-	}
+	/**
+	 * Hash of content of each compiled script file.
+	 * This mapping is never cleared.
+	 */
+	protected final Map<JsFile, Hash> hashes =
+	  new HashMap<>();
 }

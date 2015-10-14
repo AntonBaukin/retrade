@@ -38,18 +38,37 @@ function get()
 {
 	response.setContentType('text/html;charset=UTF-8')
 
-	print("<!DOCTYPE html>")
-	print("<html lang = 'en'>")
-	print("  <head>")
-	print("     <title>Hello, World!</title>")
-	print("  </head>")
-	print("  <body>")
+	print(<<Ω
+<!DOCTYPE html>
+<html lang = 'en'>
+	<head>
+		<title>Hello, World!</title>
+	</head>
+	<body>
+		<h2>This is Hello, World!</h2>
+	Ω)
 
-	print("<h2>This is Hello, World!</h2>")
+	if(params.isEmpty())
+		print("\t\t<h3>There are no parameters!</h3>")
+	else
+	{
+		print(<<Ω
+		<h2>Your parameters are:</h2>
+		<table cellspacing = '0' cellpadding = '4' border = '1'>
+		Ω)
 
-	//if(params.isEmpty())
-		print("<h3>There are no any parameters!</h3>")
+		ZeT.each(ZeT.keys(params), function(p)
+		{
+			print('\t\t\t<tr><td>', JsX.html(p),
+			  '</td><td>', JsX.html(params[p]), '</td></tr>'
+			)
+		})
 
-	print("  </body>")
-	print("</html>")
+		print('\t\t</table>')
+	}
+
+	print(<<Ω
+	</body>
+</html>
+	Ω)
 }
