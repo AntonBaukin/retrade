@@ -7,23 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/misc/Hash.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCheckEvent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngines.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngines.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFile.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFiles.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFiles.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsGlobal.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsGlobal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/misc/MultiPlaneSynch.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/misc/MultiPlaneSynch.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/basics.js" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/basics.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/jsx.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/jsx.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/jsx.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/jsx.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/system-config.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/system-config.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/services/xrootServices.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/services/xrootServices.xml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,15 +43,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="JsEngine.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java">
+      <file leaf-file-name="hello.jsx" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0341297" vertical-offset="2930" max-vertical-offset="4282">
-              <caret line="395" column="56" selection-start-line="395" selection-start-column="56" selection-end-line="395" selection-end-column="56" />
-              <folding>
-                <element signature="method#check#0;class#JsEngine#0" expanded="true" />
-                <element signature="method#nest#0;class#JsEngine#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.33279744" vertical-offset="490" max-vertical-offset="1846">
+              <caret line="41" column="1" selection-start-line="41" selection-start-column="1" selection-end-line="41" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -72,23 +63,23 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCtx.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/console.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/jsx.xml" />
-        <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/jsx.xml" />
         <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/services/xrootServices.xml" />
         <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/system-config.xml" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCheckEvent.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/misc/MultiPlaneSynch.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngines.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/misc/Hash.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFile.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFiles.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngines.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFile.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/console.js" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/basics.js" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsGlobal.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx" />
       </list>
     </option>
   </component>
@@ -100,9 +91,9 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="309" />
-    <option name="y" value="35" />
-    <option name="width" value="1130" />
+    <option name="x" value="418" />
+    <option name="y" value="37" />
+    <option name="width" value="1077" />
     <option name="height" value="965" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -233,7 +224,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -373,6 +363,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -584,43 +575,43 @@
     <option name="ACTIVE_ACTIONS" value=",SHOW_PROPERTIES" />
   </component>
   <component name="SvnConfiguration" maxAnnotateRevisions="256" cleanupOnStartRun="true">
-    <configuration>d:\Anton\AppData\Roaming\Subversion</configuration>
+    <configuration>$USER_HOME$/.subversion</configuration>
     <supportedVersion>125</supportedVersion>
   </component>
   <component name="SvnFileUrlMappingImpl">
     <option name="myMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\auth" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\auth" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/auth" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/auth" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\retrade" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\retrade" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/retrade" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/retrade" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\xroot\src" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\xroot\src" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/xroot/src" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/xroot/src" />
         </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\auth" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\auth" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/auth" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/auth" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\xroot\src" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\xroot\src" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/xroot/src" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/xroot/src" />
         </SvnCopyRootSimple>
       </list>
     </option>
@@ -646,33 +637,33 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="309" y="35" width="1130" height="965" extended-state="0" />
+    <frame x="418" y="37" width="1077" height="965" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30696577" sideWeight="0.5661765" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3070078" sideWeight="0.5661765" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31286895" sideWeight="0.5422794" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31256953" sideWeight="0.43290442" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32931727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32349467" sideWeight="0.5735294" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32480535" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32854405" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41054615" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40966183" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2937853" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3116883" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3114572" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24293785" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24899599" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37544274" sideWeight="0.57798165" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37486094" sideWeight="0.57798165" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32931727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24199623" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -699,7 +690,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-81 [stable]: fixed look of altered Move Invoices info and edit forms." />
     <MESSAGE value="ui-82 [stable]: completed Sell Invoice edit form." />
     <MESSAGE value="ui-83 [beta]: started Volume Check Document info and edit windows..." />
     <MESSAGE value="ui-83 [beta]: final version of Volume Check Document info window." />
@@ -724,22 +714,23 @@
     <MESSAGE value="system-19 [beta]: implemented and tested classes.js unit." />
     <MESSAGE value="system-19 [beta]: initiated JsX Servlet..." />
     <MESSAGE value="system-19 [beta]: implemented JsX Servlet, going to test it..." />
-    <option name="LAST_COMMIT_MESSAGE" value="system-19 [beta]: implemented JsX Servlet, going to test it..." />
+    <MESSAGE value="system-19 [beta]: implemented JsX Servlet, it works! Now implementing the scripts update..." />
+    <option name="LAST_COMMIT_MESSAGE" value="system-19 [beta]: implemented JsX Servlet, it works! Now implementing the scripts update..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java</url>
-          <line>248</line>
+          <line>129</line>
           <properties />
-          <option name="timeStamp" value="543" />
+          <option name="timeStamp" value="549" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="545" />
+      <option name="time" value="550" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -855,141 +846,139 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/misc/MultiPlaneSynch.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/misc/Hash.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79432625" vertical-offset="2656" max-vertical-offset="11326">
-          <caret line="350" column="35" selection-start-line="208" selection-start-column="0" selection-end-line="208" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/bin/java/jdk1.8/src.zip!/java/lang/Character.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15366146" vertical-offset="73968" max-vertical-offset="107409">
-          <caret line="4864" column="22" selection-start-line="4631" selection-start-column="22" selection-end-line="4631" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.43541202" vertical-offset="153" max-vertical-offset="1918">
+          <caret line="96" column="3" selection-start-line="32" selection-start-column="3" selection-end-line="32" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/build.xml">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/LU.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38415366" vertical-offset="2048" max-vertical-offset="3825">
-          <caret line="148" column="24" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.19131833" vertical-offset="2278" max-vertical-offset="3614">
+          <caret line="192" column="3" selection-start-line="141" selection-start-column="3" selection-end-line="141" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/src.zip!/java/net/PlainSocketImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.72727275" vertical-offset="1120" max-vertical-offset="3168">
-          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/bin/java/jdk1.8/jre/lib/rt.jar!/sun/misc/Unsafe.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5312" max-vertical-offset="6147">
-          <caret line="332" column="23" selection-start-line="332" selection-start-column="0" selection-end-line="333" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.43207127" vertical-offset="819" max-vertical-offset="2377">
+          <caret line="104" column="16" selection-start-line="71" selection-start-column="16" selection-end-line="71" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.54545456" vertical-offset="1152" max-vertical-offset="2128">
-          <caret line="174" column="19" selection-start-line="90" selection-start-column="19" selection-end-line="90" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/bin/java/jdk1.8/src.zip!/java/net/PlainSocketImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2672" max-vertical-offset="3424">
-          <caret line="316" column="9" selection-start-line="167" selection-start-column="9" selection-end-line="167" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/bin/java/jdk1.8/src.zip!/java/util/concurrent/locks/ReentrantReadWriteLock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4848485" vertical-offset="7040" max-vertical-offset="18768">
-          <caret line="726" column="0" selection-start-line="456" selection-start-column="0" selection-end-line="456" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.060606062" vertical-offset="1241" max-vertical-offset="2482">
+          <caret line="94" column="27" selection-start-line="75" selection-start-column="27" selection-end-line="75" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngines.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24242425" vertical-offset="656" max-vertical-offset="1904">
-          <caret line="63" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.15151516" vertical-offset="323" max-vertical-offset="1921">
+          <caret line="24" column="36" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsStreams.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09090909" vertical-offset="1921" max-vertical-offset="3009">
+          <caret line="228" column="13" selection-start-line="116" selection-start-column="13" selection-end-line="116" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsCtx.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3030303" vertical-offset="1020" max-vertical-offset="2482">
+          <caret line="135" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.54545456" vertical-offset="731" max-vertical-offset="2550">
+          <caret line="79" column="76" selection-start-line="61" selection-start-column="36" selection-end-line="61" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30260047" vertical-offset="1152" max-vertical-offset="3086">
-          <caret line="128" column="23" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/misc/Hash.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.203098" vertical-offset="240" max-vertical-offset="1493">
-          <caret line="95" column="18" selection-start-line="24" selection-start-column="3" selection-end-line="46" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsFiles.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7728055" vertical-offset="1071" max-vertical-offset="2693">
-          <caret line="157" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/test/resources/com/tverts/jsx/tests/TestZeT.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.062135924" vertical-offset="192" max-vertical-offset="1075">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/console.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.969697" vertical-offset="400" max-vertical-offset="1712">
-          <caret line="57" column="0" selection-start-line="40" selection-start-column="3" selection-end-line="42" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9456265" vertical-offset="0" max-vertical-offset="1694">
-          <caret line="50" column="6" selection-start-line="50" selection-start-column="6" selection-end-line="50" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30260047" vertical-offset="0" max-vertical-offset="1166">
-          <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
+        <state vertical-scroll-proportion="1.0790646" vertical-offset="340" max-vertical-offset="3431">
+          <caret line="117" column="38" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0341297" vertical-offset="2930" max-vertical-offset="4282">
-          <caret line="395" column="56" selection-start-line="395" selection-start-column="56" selection-end-line="395" selection-end-column="56" />
-          <folding>
-            <element signature="method#check#0;class#JsEngine#0" expanded="true" />
-            <element signature="method#nest#0;class#JsEngine#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="2.0256124" vertical-offset="901" max-vertical-offset="4706">
+          <caret line="273" column="30" selection-start-line="160" selection-start-column="30" selection-end-line="160" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/classes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34075725" vertical-offset="1972" max-vertical-offset="4366">
+          <caret line="197" column="3" selection-start-line="134" selection-start-column="3" selection-end-line="134" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/basics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34075725" vertical-offset="238" max-vertical-offset="3176">
+          <caret line="32" column="51" selection-start-line="15" selection-start-column="0" selection-end-line="25" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8181818" vertical-offset="1054" max-vertical-offset="2567">
+          <caret line="180" column="32" selection-start-line="89" selection-start-column="32" selection-end-line="89" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsGlobal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.030303031" vertical-offset="1462" max-vertical-offset="2584">
+          <caret line="114" column="26" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/console.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6666667" vertical-offset="0" max-vertical-offset="2567">
+          <caret line="22" column="32" selection-start-line="21" selection-start-column="6" selection-end-line="22" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6060606" vertical-offset="0" max-vertical-offset="1020">
+          <caret line="20" column="21" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/hello.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33279744" vertical-offset="490" max-vertical-offset="1846">
+          <caret line="41" column="1" selection-start-line="41" selection-start-column="1" selection-end-line="41" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
