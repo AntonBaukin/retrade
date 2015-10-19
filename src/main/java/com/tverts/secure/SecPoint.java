@@ -23,7 +23,9 @@ import static com.tverts.actions.ActionsPoint.actionRun;
 
 /* com.tverts: endure (core + auth + secure) */
 
+import com.tverts.endure.NumericIdentity;
 import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.GetDomain;
 import com.tverts.endure.auth.ActAuthSession;
 import com.tverts.endure.auth.AuthLogin;
@@ -38,8 +40,9 @@ import com.tverts.secure.session.SecSession;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -268,8 +271,9 @@ public final class SecPoint
 		if(isSystemLogin()) return true;
 
 		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
-		for(String key : keys) if((key = s2s(key)) != null)
-			skeys.add(SecKeys.secKey(key));
+		for(String key : keys)
+			if((key = SU.s2s(key)) != null)
+				skeys.add(SecKeys.secKey(key));
 
 		return bean(GetSecure.class).
 		  isAnySecure(login(), domain(), skeys);
@@ -280,8 +284,9 @@ public final class SecPoint
 		if(isSystemLogin()) return true;
 
 		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
-		for(String key : keys) if((key = s2s(key)) != null)
-			skeys.add(SecKeys.secKey(key));
+		for(String key : keys)
+			if((key = SU.s2s(key)) != null)
+				skeys.add(SecKeys.secKey(key));
 
 		return bean(GetSecure.class).
 		  isAnySecure(login(), target, skeys);
@@ -295,8 +300,9 @@ public final class SecPoint
 		if(isSystemLogin()) return true;
 
 		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
-		for(String key : keys) if((key = s2s(key)) != null)
-			skeys.add(SecKeys.secKey(key));
+		for(String key : keys)
+			if((key = SU.s2s(key)) != null)
+				skeys.add(SecKeys.secKey(key));
 
 		return bean(GetSecure.class).
 		  isAllSecure(login(), domain(), skeys);
@@ -307,11 +313,31 @@ public final class SecPoint
 		if(isSystemLogin()) return true;
 
 		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
-		for(String key : keys) if((key = s2s(key)) != null)
-			skeys.add(SecKeys.secKey(key));
+		for(String key : keys)
+			if((key = SU.s2s(key)) != null)
+				skeys.add(SecKeys.secKey(key));
 
 		return bean(GetSecure.class).
 		  isAllSecure(login(), target, skeys);
+	}
+
+	/**
+	 * Returns true when object is in the same Domain
+	 * as the user requesting; false, when not; or null
+	 * when target object may not be traced up to it's
+	 * Domain instance (can't tell).
+	 */
+	public static Boolean     isSameDomain(Object target)
+	{
+		//?: {not a database object}
+		if(!(target instanceof NumericIdentity))
+			return null;
+
+		//?: {not a domain instance}
+		if(!(target instanceof DomainEntity))
+			return null;
+
+		return CMP.eq(((DomainEntity)target).getDomain(), domain());
 	}
 
 
