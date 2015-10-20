@@ -4,12 +4,30 @@ var getUnity = ZeT.bean('GetUnity')
 
 var INFOS =
 {
-	'ReTrade: Invoice: Buy'          : '/invoices/info-buy',
-	'ReTrade: Invoice: Sell'         : '/invoices/info-sell',
-	'ReTrade: Invoice: Move'         : '/invoices/info-move',
-	'ReTrade: Invoice: Volume Check' : '/invoices/info-volume-check',
-	'ReTrade: Sells: Invoice'        : '/sells/invoice-info',
-	'ReTrade: Sells: Sells Session'  : '/sells/session-info'
+	'ReTrade: Invoice: Buy' : {
+		page: '/invoices/info-buy'
+	},
+
+	'ReTrade: Invoice: Sell' : {
+		page: '/invoices/info-sell',
+		box: { widthpt: 620, heightpt: 420 }
+	},
+
+	'ReTrade: Invoice: Move' : {
+		page: '/invoices/info-move'
+	},
+
+	'ReTrade: Invoice: Volume Check' : {
+		page: '/invoices/info-volume-check'
+	},
+
+	'ReTrade: Sells: Invoice' : {
+		page: '/sells/invoice-info'
+	},
+
+	'ReTrade: Sells: Sells Session' : {
+		page: '/sells/session-info'
+	}
 }
 
 function get()
@@ -27,7 +45,7 @@ function get()
 	x.typeName  = ut.getTypeName()
 
 	//~: select the info page
-	x.infoPage  = INFOS[x.typeName]
+	x.info = INFOS[x.typeName]
 
 	//~: write the result JSON
 	response.setContentType('application/json')

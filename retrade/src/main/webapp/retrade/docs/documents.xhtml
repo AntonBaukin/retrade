@@ -116,11 +116,14 @@ ${v.checkModelRequestedWithRedirect}
   {
     jQuery.get("${z:url('/go/unity')}", { entity: rec.getId() }, function(x)
     {
-      if(ZeTS.ises(x.infoPage)) return
+      if(!x || !x.info || ZeTS.ises(x.info.page)) return
 
-      retrade_open_window({ url: retrade_go_url(x.infoPage),
-        domainKey: "${z:vid(v, 'view_document')}", record: rec.getId(),
-        box: { widthpt: 580, heightpt: 420, '+xpt': -80, '-ypt': 20 }
+      var box = { '+xpt': -80, '-ypt': 20, widthpt: 580, heightpt: 420 }
+      if(x.info.box) ZeT.extend(box, x.info.box)
+      box.event = e
+
+      retrade_open_window({ url: retrade_go_url(x.info.page),
+        box: box, record: rec.getId(), domainKey: "${z:vid(v, 'view_document')}"
       })
     })
   })
