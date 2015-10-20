@@ -2808,11 +2808,11 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 
 	_ts             : ""+
 		"<div class='retrade-eventsnum-menu-area'>"+
-		"  <div class='retrade-eventsnum-menu-corner-rt'></div>"+
-		"  <div class='retrade-eventsnum-menu-corner-lt'></div>"+
-		"  <div class='retrade-eventsnum-menu-corner-lb'></div>"+
-		"  <div class='retrade-eventsnum-menu-corner-rb'></div>"+
-		"  <div class='retrade-eventsnum-menu-corner-bh'></div>"+
+		"  <div class='retrade-eventsnum-menu-a'></div>"+
+		"  <div class='retrade-eventsnum-menu-b'></div>"+
+		"  <div class='retrade-eventsnum-menu-v'></div>"+
+		"  <div class='retrade-eventsnum-menu-d'></div>"+
+		"  <div class='retrade-eventsnum-menu-e'></div>"+
 		"  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>@IC"+
 		"    <div class='script enabled' title='Выполнить действие для сообщения'>@IA</div>"+
 		"    <div class='N enabled' title='Отметить сообщение как неактивное'>@IN</div>"+
