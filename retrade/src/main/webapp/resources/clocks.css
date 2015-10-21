@@ -483,7 +483,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 
 .retrade-eventsnum-menu-a
 {
-  position: absolute; top: 52px; left: 2px;
+  position: absolute; top: 60px; left: 2px;
   bottom: 5px; right: 3px; z-index: -1;
   background-color: rgba(245, 245, 245, 0.75);
   border: 1px dashed #7c838f; border-top: none;
@@ -491,15 +491,17 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 
 .retrade-eventsnum-menu-b
 {
-  position: absolute; top: 52px; left: 0px;
+  position: absolute; top: 60px; left: 0px;
   bottom: 2px; right: 1px; z-index: -2;
-  border: 5px solid white; border-top: none;
+  border: 5px solid #B1CBE9; border-top: none;
   border-radius: 4px;
 }
 
 .retrade-eventsnum-menu-c
 {
-  position: absolute; display: none;
+  position: absolute; left: 3px; width: 286px; top: 17px; height: 36px;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xIEJhc2ljLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLWJhc2ljLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgYmFzZVByb2ZpbGU9ImJhc2ljIiBpZD0iTGF5ZXJfMSINCgkgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyODZweCIgaGVpZ2h0PSIzNnB4Ig0KCSB2aWV3Qm94PSIwIDAgMjg2IDM2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0IxQ0NFQSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik00NywyMi40MUM0NywyOC4yNiw0MS44NiwzMywzNS41MiwzM0gxNC40OA0KCQlDOC4xNCwzMywzLDI4LjI2LDMsMjIuNDF2LTguODJDMyw3Ljc0LDguMTQsMywxNC40OCwzaDIxLjA0QzQxLjg2LDMsNDcsNy43NCw0NywxMy41OVYyMi40MXoiLz4NCgk8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNCMUNDRUEiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNMjgzLDIyLjQxYzAsNS44NS01LjE0LDEwLjU5LTExLjQ4LDEwLjU5aC0yMS4wNA0KCQlDMjQ0LjE0LDMzLDIzOSwyOC4yNiwyMzksMjIuNDF2LTguODJDMjM5LDcuNzQsMjQ0LjE0LDMsMjUwLjQ4LDNoMjEuMDRDMjc3Ljg2LDMsMjgzLDcuNzQsMjgzLDEzLjU5VjIyLjQxeiIvPg0KCTxyZWN0IHg9IjQ2IiB5PSI1IiBmaWxsPSIjQjFDQ0VBIiB3aWR0aD0iMTk0IiBoZWlnaHQ9IjI2Ii8+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=);
+  background-size: 286px 36px; background-repeat: no-repeat;
 }
 
 .retrade-eventsnum-menu-d
@@ -514,12 +516,12 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 
 .retrade-eventsnum-controls
 {
-  padding: 6px 0 2px 0;
+  padding: 6px 0 12px 0;
 }
 
 .retrade-eventsnum-controls > div.left, .retrade-eventsnum-controls > div.right
 {
-  border: 2px solid #7c838f; border-radius: 4px;
+  border: 2px solid #7c838f; border-radius: 10px;
   position: relative; cursor: pointer;
 }
 
@@ -553,7 +555,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
   .retrade-eventsnum-controls > div.right.disabled,
   .retrade-eventsnum-controls > div.right.disabled:hover
 {
-  cursor: default; background-color: #9ea7b7; opacity: 0.25;
+  cursor: default; background-color: #D3D5DA;
 }
 
 .retrade-eventsnum-controls > div.right:hover

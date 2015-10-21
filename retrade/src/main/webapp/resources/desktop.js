@@ -2810,7 +2810,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 		"<div class='retrade-eventsnum-menu-area'>"+
 		"  <div class='retrade-eventsnum-menu-a'></div>"+
 		"  <div class='retrade-eventsnum-menu-b'></div>"+
-		"  <div class='retrade-eventsnum-menu-v'></div>"+
+		"  <div class='retrade-eventsnum-menu-c'></div>"+
 		"  <div class='retrade-eventsnum-menu-d'></div>"+
 		"  <div class='retrade-eventsnum-menu-e'></div>"+
 		"  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>@IC"+

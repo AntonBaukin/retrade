@@ -11,6 +11,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,11 +37,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="uievents.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html">
+      <file leaf-file-name="clocks.css" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.65880215" vertical-offset="117" max-vertical-offset="3335">
-              <caret line="30" column="50" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.4352" vertical-offset="8296" max-vertical-offset="13766">
+              <caret line="504" column="0" selection-start-line="504" selection-start-column="0" selection-end-line="504" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -71,8 +72,8 @@
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/unity.jsx" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/docs/documents.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
       </list>
     </option>
   </component>
@@ -84,8 +85,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="299" />
-    <option name="y" value="13" />
+    <option name="x" value="440" />
+    <option name="y" value="45" />
     <option name="width" value="1077" />
     <option name="height" value="965" />
   </component>
@@ -616,43 +617,43 @@
     <option name="ACTIVE_ACTIONS" value=",SHOW_PROPERTIES" />
   </component>
   <component name="SvnConfiguration" maxAnnotateRevisions="256" cleanupOnStartRun="true">
-    <configuration>d:\Anton\AppData\Roaming\Subversion</configuration>
+    <configuration>$USER_HOME$/.subversion</configuration>
     <supportedVersion>125</supportedVersion>
   </component>
   <component name="SvnFileUrlMappingImpl">
     <option name="myMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\auth" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\auth" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/auth" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/auth" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\retrade" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\retrade" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/retrade" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/retrade" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\xroot\src" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\xroot\src" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/xroot/src" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/xroot/src" />
         </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
       <list>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\auth" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\auth" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/auth" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/auth" />
         </SvnCopyRootSimple>
         <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="D:\Anton\Sources\bakery\xroot\src" />
-          <option name="myCopyRoot" value="D:\Anton\Sources\bakery\xroot\src" />
+          <option name="myVcsRoot" value="$PROJECT_DIR$/xroot/src" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/xroot/src" />
         </SvnCopyRootSimple>
       </list>
     </option>
@@ -678,17 +679,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="299" y="13" width="1077" height="965" extended-state="0" />
+    <frame x="440" y="45" width="1077" height="965" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30342385" sideWeight="0.5661765" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30367073" sideWeight="0.5661765" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31286895" sideWeight="0.5422794" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31256953" sideWeight="0.43290442" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32931727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32349467" sideWeight="0.5735294" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32480535" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32854405" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -704,6 +704,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32931727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2415459" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -731,7 +732,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-83 [stable]: completed splitting of info and edit forms of Move-based invoices." />
     <MESSAGE value="ui-83 [stable]: fixed collapsing of two-table Move invoices info-edit windows." />
     <MESSAGE value="ui-84 [stable]: fixed creation forms for the Invoices." />
     <MESSAGE value="system-18 [alpha]: moving JAXB implementation to JSON format support." />
@@ -756,7 +756,8 @@
     <MESSAGE value="domain-41 [stable]: replaced uievents.jsp with uievents.jsx. Works well and fast!" />
     <MESSAGE value="ui-85 [stable]: replaced docdisp.jsp with general unity.jsx that produces JSON about United objects." />
     <MESSAGE value="ui-85 [beta]: concepting the user events menu style..." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-85 [beta]: concepting the user events menu style..." />
+    <MESSAGE value="ui-85 [stable]: made new style for user events menu." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-85 [stable]: made new style for user events menu." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -887,13 +888,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24610245" vertical-offset="850" max-vertical-offset="2275">
-          <caret line="63" column="3" selection-start-line="63" selection-start-column="3" selection-end-line="63" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GetUnity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.18181819" vertical-offset="1139" max-vertical-offset="2822">
@@ -986,14 +980,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53781515" vertical-offset="12240" max-vertical-offset="15873">
-          <caret line="2814" column="45" selection-start-line="793" selection-start-column="45" selection-end-line="793" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.7565012" vertical-offset="8576" max-vertical-offset="13182">
@@ -1002,10 +988,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4896" vertical-offset="13141" max-vertical-offset="16486">
+          <caret line="2812" column="45" selection-start-line="791" selection-start-column="45" selection-end-line="791" selection-end-column="45" />
+          <folding>
+            <marker date="1445434155000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1445434155000" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.65880215" vertical-offset="117" max-vertical-offset="3335">
-          <caret line="30" column="50" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.31911263" vertical-offset="1513" max-vertical-offset="2643">
+          <caret line="102" column="25" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4352" vertical-offset="8296" max-vertical-offset="13766">
+          <caret line="504" column="0" selection-start-line="504" selection-start-column="0" selection-end-line="504" selection-end-column="0" />
           <folding />
         </state>
       </provider>

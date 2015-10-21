@@ -76,59 +76,6 @@ html
   <div id = "num-area" class="retrade-eventsnum-gray unselectable-text"></div>
 </div>
 
-<!--
-<div class='retrade-eventsnum-menu-area'>
-  <div class='retrade-eventsnum-menu-corner-rt'></div>
-  <div class='retrade-eventsnum-menu-corner-lt'></div>
-  <div class='retrade-eventsnum-menu-corner-lb'></div>
-  <div class='retrade-eventsnum-menu-corner-rb'></div>
-  <div class='retrade-eventsnum-menu-corner-bh'></div>
-  <div class='retrade-eventsnum-menu-item-controls' style='display:none'>
-    <div class='script enabled' title='Выполнить действие для сообщения'>@IA</div>
-    <div class='N enabled' title='Отметить сообщение как неактивное'>@IN</div>
-    <div class='G enabled' title='Отметить сообщение как успех'>@IG</div>
-    <div class='O enabled' title='Отметить сообщение как важное'>@IO</div>
-    <div class='R enabled' title='Отметить сообщение как срочное'>@IR</div>
-    <div class='delete enabled' title='Отметить сообщение как успех'>@ID</div>
-  </div>
-  <table id='menu' cellpadding='0' cellspacing='0' border='0' class='retrade-eventsnum-menu'>
-    <tbody>
-      <tr>
-        <td>
-          <div class='retrade-eventsnum-controls'>
-            <div class='left' title='Следующие сообщения'>@LT</div>
-            <div class='right' title='Предыдущие сообщения'>@RT</div>
-            <div class='numbers'>@NU
-              <table cellspacing='0' cellpadding='0' border='0'><tr>
-                <td class='N selected'><div title='Отображать все сообщения'>@FN</div></td>
-                <td class='G'><div title='Отображать сообщения об успехе'>@FG</div></td>
-                <td class='O'><div title='Отображать важные и срочные сообщения'>@FO</div></td>
-                <td class='R'><div title='Отображать срочные сообщения'>@FR</div></td>
-              </tr></table>
-            </div>
-            <div class='allitems' style='display:none'>
-              <div class='descr'>Для всей<br/>страницы</div>
-              <div class='gray' title='Отметить все собщения на странице как неактивные'>@AN</div>
-              <div class='delete' title='Удалить все собщения на странице'>@AD</div>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
--->
-
-<!--
-<table><tr class='retrade-eventsnum-menu-item'>
-  <td><div class='retrade-eventsnum-menu-data-ext'>
-    <div class='retrade-eventsnum-menu-data'>@I
-      <span><span>@T</span><span>@D</span></span>
-      <span>@M</span></div>
-</div></td></tr></table>
--->
-
-
 <script type = "text/javascript">
 //<![CDATA[
 
@@ -153,7 +100,7 @@ var ctl = new ReTrade.EventsControl({
 
 ctl.toggle(true).set({
 
- numbers: { N: 7, G: 3, O: 1, R: 1 }, newer: null, older: 58, txn: 100, firstid: 81, items: [
+ numbers: { N: 999, G: 66, O: 1, R: 1 }, newer: null, older: 58, txn: 100, firstid: 81, items: [
 
  { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.', script: "ZeT.log('script run 1+1 = ', 1+1)"},
  { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
