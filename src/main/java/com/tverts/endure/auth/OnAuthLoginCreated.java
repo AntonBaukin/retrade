@@ -37,10 +37,12 @@ public class OnAuthLoginCreated implements Reactor
 		if(Auth.SYSTEM_USER.equalsIgnoreCase(login.getCode()))
 			return;
 
-		//!: notify the domain
-		Msg.create().orange().types(Auth.MSG_LOGIN_CREATE).domain(login).title(
-		  "Добавлен пользователь [", login.getCode(), "]",
-		  SU.catif(login.getPerson(), ": ", Persons.name(login.getPerson()))
-		).send();
+		//~: message the domain
+		Msg.create().orange().
+			types(Auth.MSG_LOGIN_CREATE).
+			domain(login).title( "Добавлен пользователь [",
+			  login.getCode(), "]", SU.catif(login.getPerson(),
+			   ": ", Persons.name(login.getPerson()))
+			).send();
 	}
 }

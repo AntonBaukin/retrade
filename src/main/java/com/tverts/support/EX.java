@@ -169,6 +169,10 @@ public class EX
 			throw ass(msg);
 	}
 
+	/**
+	 * Forbids whitespace-empty strings, either
+	 * as strings having side-whitespaces.
+	 */
 	public static String asserts(String s, Object... msg)
 	{
 		if((s == null) || (s.length() != s.trim().length()))

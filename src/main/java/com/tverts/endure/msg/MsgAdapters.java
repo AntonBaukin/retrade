@@ -39,9 +39,13 @@ public class MsgAdapters
 
 	public Object adapter(String cls)
 	{
+		EX.asserts(cls, "Adapter class name is undefined!");
+
+		//~: lookup in the cache
 		Object a = adapters.get(cls);
 		if(a != null) return a;
 
+		//~: try to create an instance
 		try
 		{
 			adapters.put(cls, a = Thread.currentThread().
@@ -61,30 +65,66 @@ public class MsgAdapters
 
 	/* Support */
 
-	public static Object adapter(Message msg)
+	/**
+	 * Returns all adapter instances of the message.
+	 */
+	public static Object[] adapters(Message msg)
 	{
-		return (msg.getAdapter() == null)?(null):
-		  INSTANCE.adapter(msg.getAdapter());
+		EX.assertn(msg);
+		if(msg.getAdapters() == null)
+			return null;
+
+		int i = 0, size = msg.getAdapters().size();
+		if(size == 0) return null;
+
+		Object[] res = new Object[size];
+		for(String cls : msg.getAdapters())
+			res[i++] = INSTANCE.adapter(cls);
+
+		return res;
 	}
 
-	public static String oxSearch(Message msg)
+	/**
+	 * Searchers for the adapter implementing
+	 * the interface given.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <A> A    adapter(Message msg, Class<A> iface)
 	{
-		Object a = adapter(msg);
+		EX.assertn(msg);
+		EX.assertn(iface);
+
+		if(msg.getAdapters() == null)
+			return null;
+
+		for(String cls : msg.getAdapters())
+		{
+			Object a = INSTANCE.adapter(cls);
+			if(iface.isAssignableFrom(a.getClass()))
+				return (A)a;
+		}
+
+		return null;
+	}
+
+	public static String   oxSearch(Message msg)
+	{
+		MsgSearch a = adapter(msg, MsgSearch.class);
 
 		//?: {adapter supports ox-search}
-		if(a instanceof MsgSearch)
+		if(a != null)
 			return ((MsgSearch)a).getOxSearch(msg);
 
 		//?: {message has no title}
 		return SU.sXe(msg.getTitle())?(null):SU.oxtext(msg.getTitle());
 	}
 
-	public static String msgScript(Message msg)
+	public static String   msgScript(Message msg)
 	{
-		Object a = adapter(msg);
+		MsgScript a = adapter(msg, MsgScript.class);
 
 		//?: {adapter supports scripts generation}
-		if(a instanceof MsgScript)
+		if(a != null)
 			return ((MsgScript)a).makeScript(msg);
 
 		return "";

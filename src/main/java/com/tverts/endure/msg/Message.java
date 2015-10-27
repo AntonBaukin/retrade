@@ -3,11 +3,13 @@ package com.tverts.endure.msg;
 /* Java */
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -29,7 +31,7 @@ import com.tverts.support.jaxb.DateTimeAdapter;
  */
 @XmlRootElement(name = "message")
 @XmlType(name = "message", propOrder = {
-  "time", "color", "title", "adapter", "data"
+  "time", "color", "title", "adapters", "data"
 })
 public class Message
 {
@@ -63,16 +65,21 @@ public class Message
 		this.color = c;
 	}
 
-	public String getAdapter()
+	/**
+	 * Set-like list of Java class names.
+	 * Details are in {@link MsgAdapters}.
+	 */
+	@XmlElement(name = "adapter")
+	public List<String> getAdapters()
 	{
-		return adapter;
+		return adapters;
 	}
 
-	private String adapter;
+	private List<String> adapters;
 
-	public void setAdapter(String adapter)
+	public void setAdapters(List<String> adapters)
 	{
-		this.adapter = adapter;
+		this.adapters = adapters;
 	}
 
 	public String getTitle()
@@ -87,14 +94,14 @@ public class Message
 		this.title = title;
 	}
 
-	public Map<String, Object> getData()
+	public Map<String, String> getData()
 	{
 		return data;
 	}
 
-	private Map<String, Object> data;
+	private Map<String, String> data;
 
-	public void setData(Map<String, Object> data)
+	public void setData(Map<String, String> data)
 	{
 		this.data = data;
 	}

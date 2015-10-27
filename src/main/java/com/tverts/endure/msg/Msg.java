@@ -2,7 +2,10 @@ package com.tverts.endure.msg;
 
 /* Java */
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 /* com.tverts: spring */
 
@@ -114,6 +117,62 @@ public class Msg
 	public Msg orange()
 	{
 		return color('O');
+	}
+
+	public Msg data(String k, String v)
+	{
+		EX.asserts(k, "Message data key is empty!");
+
+		if(v == null)
+		{
+			if(msg.getData() == null)
+				return this;
+
+			msg.getData().remove(k);
+			if(msg.getData().isEmpty())
+				msg.setData(null);
+		}
+		else
+		{
+			if(msg.getData() == null)
+				msg.setData(new HashMap<>(1));
+			msg.getData().put(k, v);
+		}
+
+		return this;
+	}
+
+	public Msg adapt(Class cls, Object... params)
+	{
+		//~: take the adapter instance
+		Object a = MsgAdapters.INSTANCE.adapter(
+		  EX.assertn(cls).getName());
+
+		//~: access the adapters set
+		List<String> as = msg.getAdapters();
+		if(as == null) msg.setAdapters(
+		  as = new ArrayList<String>(1));
+
+		//?: {it has the denoted adapter}
+		if(as.contains(cls.getName()))
+		{
+			//?: {has any parameters}
+			EX.assertx(!(a instanceof MsgAdapter),
+			  "Message is already adapted with class [",
+			  cls.getName(), "]!");
+
+			return this; //<-- silently quit
+		}
+
+		//?: {it has processing}
+		if(a instanceof MsgAdapter)
+			((MsgAdapter)a).adapt(this.msg, params);
+
+		//~: add the adapter name
+		if(!as.contains(cls.getName()))
+			as.add(cls.getName());
+
+		return this;
 	}
 
 

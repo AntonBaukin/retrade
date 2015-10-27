@@ -12,8 +12,7 @@ import com.tverts.support.EX;
 
 /**
  * Message Box relates to an {@link AuthLogin}.
- * It is a container of messages sent to
- * the related login.
+ * It is a container of messages sent to the related login.
  *
  * @author anton.baukin@gmail.com.
  */
