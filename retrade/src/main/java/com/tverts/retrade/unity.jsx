@@ -38,7 +38,7 @@ function get()
 	var ut = ZeT.assertn(u.getUnity().getUnityType())
 
 	//~: response JSON
-	var x = {}
+	var x = { primaryKey: u.getPrimaryKey() }
 
 	//~: type class and name
 	x.typeClass = ut.getTypeClass().toString()

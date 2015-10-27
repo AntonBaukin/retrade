@@ -3066,8 +3066,6 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 	_do_action      : function(e)
 	{
-		ZeT.log('Item action: ', e.item.id, ' --> ')
-
 		if(!ZeTS.ises(e.item.script))
 			ZeT.xeval(e.item.script)
 	},

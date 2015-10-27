@@ -17,6 +17,7 @@ import com.tverts.retrade.domain.sells.Sells;
 
 /* com.tverts: support */
 
+import com.tverts.retrade.web.MsgOpen;
 import com.tverts.support.DU;
 
 
@@ -54,10 +55,11 @@ public class OnInvoiceCreated implements Reactor
 		else
 			return; //<-- do nothing
 
-		//!: notify system user
-		Msg.create().types(t).domain(i).title(
-		  "Создана ", u.getTitleLo().toLowerCase(), " №", i.getCode(),
-		  " от ", DU.datetime2str(i.getInvoiceDate())
-		).send();
+		//~: message that the invoice is created
+		Msg.create().types(t).domain(i).
+			adapt(MsgOpen.class, i).title(
+			  "Создана ", u.getTitleLo().toLowerCase(), " №", i.getCode(),
+			  " от ", DU.datetime2str(i.getInvoiceDate())).
+			send();
 	}
 }

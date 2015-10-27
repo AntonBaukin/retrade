@@ -124,6 +124,41 @@ function retrade_open_window(opts)
   return winmain
 }
 
+function retrade_msg_open(id)
+{
+  ZeT.assertn(id, 'Can not open user event object by unknown primary key!')
+
+  function openInfo(x)
+  {
+    var box = { widthpt: 580, heightpt: 420 }
+    if(x.info.box) ZeT.extend(box, x.info.box)
+
+    retrade_open_window({ url: retrade_go_url(x.info.page),
+      box: box, record: id, domainKey: "${z:vid(rootView, 'retrade_msg_open')}"
+    })
+  }
+
+  //~: access the unity description
+  var xr = jQuery.get("${z:url('/go/unity')}", { entity: id })
+
+  xr.done(function(x)
+  {
+    ZeT.assertn(x, 'Server could not return entity [', id, ']!')
+
+    //?: {got object info page}
+    if(x.info) openInfo(x)
+  })
+
+  xr.fail(function()
+  {
+    ZeT.log(xr)
+    if(xr.status == 404)
+      ReTrade.desktop.error('Выбранный объект был удалён из системы!')
+    else
+      ReTrade.desktop.error('Невозможно открыть объект!')
+  })
+}
+
 /**
  * Returns function that sequentially loads a content
  * into the components denoted by the options list.
