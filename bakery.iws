@@ -5,10 +5,16 @@
       <artifact name="ReTrade RSync @64.14" />
     </artifacts-to-build>
   </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" line="2740" mnemonic="0" />
+    <bookmark url="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" line="2659" mnemonic="9" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-85 [stable]: beter design of user events control background.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,13 +40,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="clocks.css" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+      <file leaf-file-name="desktop.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4812398" vertical-offset="8239" max-vertical-offset="13754">
-              <caret line="502" column="0" selection-start-line="502" selection-start-column="0" selection-end-line="502" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5702875" vertical-offset="13294" max-vertical-offset="16538">
+              <caret line="2841" column="63" selection-start-line="2841" selection-start-column="63" selection-end-line="2841" selection-end-column="63" />
               <folding>
-                <element signature="e#101193#108052#2" expanded="true" />
+                <marker date="1445939671000" expanded="true" signature="64156:64168" placeholder="..." />
+                <marker date="1445939671000" expanded="true" signature="65674:65686" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -64,15 +71,15 @@
         <option value="D:/../../#backup/MenuDemo/main.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/unity.jsx" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/docs/documents.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html" />
         <option value="$PROJECT_DIR$/../iMenu/main.css" />
         <option value="$PROJECT_DIR$/../iMenu/jquery-requestAnimationFrame.js" />
         <option value="$PROJECT_DIR$/../iMenu/model.css" />
         <option value="$PROJECT_DIR$/../iMenu/main.html" />
         <option value="$PROJECT_DIR$/../iMenu/main.js" />
         <option value="$PROJECT_DIR$/../iMenu/model.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
       </list>
     </option>
   </component>
@@ -887,6 +894,14 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="8534" max-vertical-offset="13192">
+          <caret line="502" column="0" selection-start-line="502" selection-start-column="0" selection-end-line="502" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/info-sell.xhtml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.41559952" vertical-offset="187" max-vertical-offset="7642">
@@ -908,35 +923,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4896" vertical-offset="13141" max-vertical-offset="16486">
-          <caret line="2812" column="45" selection-start-line="791" selection-start-column="45" selection-end-line="791" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../iMenu/model.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15144767" vertical-offset="0" max-vertical-offset="21094">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6926503" vertical-offset="6688" max-vertical-offset="14124">
+          <caret line="430" column="20" selection-start-line="430" selection-start-column="20" selection-end-line="430" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uievents.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.8137369" vertical-offset="448" max-vertical-offset="2916">
-          <caret line="120" column="57" selection-start-line="118" selection-start-column="5" selection-end-line="118" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.44935971" vertical-offset="1348" max-vertical-offset="2916">
+          <caret line="104" column="167" selection-start-line="102" selection-start-column="167" selection-end-line="102" selection-end-column="167" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4812398" vertical-offset="8239" max-vertical-offset="13754">
-          <caret line="502" column="0" selection-start-line="502" selection-start-column="0" selection-end-line="502" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.5702875" vertical-offset="13294" max-vertical-offset="16538">
+          <caret line="2841" column="63" selection-start-line="2841" selection-start-column="63" selection-end-line="2841" selection-end-column="63" />
           <folding>
-            <element signature="e#101193#108052#2" expanded="true" />
+            <marker date="1445939671000" expanded="true" signature="64156:64168" placeholder="..." />
+            <marker date="1445939671000" expanded="true" signature="65674:65686" placeholder="..." />
           </folding>
         </state>
       </provider>

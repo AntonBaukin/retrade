@@ -426,6 +426,11 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
   padding: 1px 1px; font-size: 11px;
 }
 
+.retrade-eventsnum-menu-item .retrade-eventsnum-menu-data > span:nth-child(2)
+{
+  padding-right: 2px;
+}
+
 .retrade-eventsnum-menu-item .retrade-eventsnum-menu-data > span:last-child
 {
   position: relative; top: -1px;
