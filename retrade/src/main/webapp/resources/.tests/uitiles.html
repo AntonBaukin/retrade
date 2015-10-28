@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang = 'ru'>
+<head>
+
+  <meta charset = 'UTF-8'/>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../jquery.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetobj.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetdom.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../zetbor.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../desktop.js"></script>
+
+  <link type = 'text/css' rel = 'stylesheet'
+     href = "../retrade.css"/>
+
+  <style type = "text/css">
+
+html
+{
+  height: 100%; background: linear-gradient(135deg, #fcf9f0 0%, #c1c1b3 75%);
+}
+
+#area
+{
+  position: absolute; left: 10%; right: 10%; top: 10%; bottom: 10%;
+  border: 1px dashed white;
+}
+
+  </style>
+
+</head>
+<body>
+
+  <div id = 'area'></div>
+
+  <script type = "text/javascript">
+
+   $(document).ready(function()
+   {
+      var tiles = new ReTrade.Tiles({
+        area  : 'area',
+        min   : [ -10, 30, 50, 0 ],
+        max   : [ -10, 50, 100, 0 ],
+        rows  : function(r, R) { return r }
+      })
+
+      tiles.layout()
+      //$(window).resize(ZeT.fbind(tiles.layout, tiles))
+   })
+
+  /*
+   Ext.onReady(ZeT.Layout.procPipe(
+
+     //~: take warning node
+     ZeT.Layout.Proc.Node, { node: "${z:vid(v, 'edit-warning')}" },
+
+     //~: wrap it with the shadow border
+     ZeT.Border.Shadow, ZeT.Border.shadow('retrade-boshadow-N-XYZ'),
+
+     //~: additionally wrap
+     ZeT.Layout.Proc.Wrap, { classes: 'retrade-warning-table' }
+   ))
+  */
+  </script>
+
+
+</body>
+</html>

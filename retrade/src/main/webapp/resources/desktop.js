@@ -3307,3 +3307,168 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 		return ZeTS.cat('>', f, ' ', c, '; ', str)
 	}
 })
+
+
+// +----: ReTrade Window Tiles :---------------------------------+
+
+/**
+ * Creates the tiles component. Each tile has content
+ * to place in the limited space of a tile. Tiles are
+ * re-sized from minimum width + height up to the
+ * maximum ones. Tiles are placed in the container
+ * from left-top corner to right and down. Layout
+ * is flexible, it's so to make the tiles appear
+ * uniformly in the area container.
+ *
+ * The following parameters are obligatory:
+ *
+ * · min   [w, h, w%, h%]
+ *
+ *   array of the minimum dimensions. First
+ *   two numbers are pixels, second two are
+ *   optional percents of the container
+ *   inner dimensions. Pixels are added
+ *   to the percent values;
+ *
+ * · max   [w, h, w%, h%]
+ *
+ *   the same as 'min', but for the maximum
+ *   dimensions of a tile. Defaults to minimum;
+ *
+ * · area  DOM node or ID
+ *
+ *   string ID or node of the container to place
+ *   the tiles into.
+ *
+ *
+ * Optional parameters are:
+ *
+ * · cellClass, cellStyle
+ *
+ *   CSS class name, see ZeTD.classes(); and
+ *   CSS styles object, see ZeTD.styles() of
+ *   every cell of the layout table;
+ *
+ * · tableClass, tableStyle
+ *
+ *   CSS class name and styles of the layout table
+ *   created in the container area each time the
+ *   layout geometry is updated;
+ *
+ * · rows    function(r, R) : integer
+ *
+ *   function that selects integer value of rows
+ *   number between the values range given. By
+ *   default the maximum value is selected.
+ */
+ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
+
+	init              : function(opts)
+	{
+		ZeT.assert(ZeT.iso(opts))
+		this.opts = opts
+
+		//~: inspect the dimensions range
+		this._check_min_max(opts.min)
+		if(opts.max)
+			this._check_min_max(opts.max)
+
+		//~: area
+		this.area = opts.area
+		if(ZeT.iss(this.area))
+			this.area = ZeTD.n(this.area)
+		ZeT.assert(ZeTD.isn(this.area),
+		  'Did not found valid ReTrade.Tiles area element!')
+
+		//~: assign this tiles
+		$(this.area).data('ReTrade.Tiles', this)
+
+		//?: {has has ID, save it}
+		if(!ZeTS.ises(ZeTD.attr(this.area, 'id')))
+			this.area = ZeTD.attr(this.area, 'id')
+	},
+
+	/**
+	 * Invoke each time you want to update the
+	 * geometry of the tiles layout table.
+	 */
+	layout            : function()
+	{
+		var a = $(ZeTD.n(this.area))
+		this.W = a.innerWidth()
+		this.H = a.innerHeight()
+
+		//?: {has no place}
+		if(!this.W || !this.H)
+			return ZeT.log('ReTrade.Tiles area [',
+			  this.area, '] has zero dimensions!')
+
+		//~: calculate cell min-max
+		this._min_max()
+
+		//~: grid dimensions
+		var grid = this._calc_grid()
+		ZeT.log(grid)
+
+	},
+
+	_check_min_max    : function(m)
+	{
+		ZeT.assert(ZeT.isa(m))
+		ZeT.assert(m.length >= 2)
+		ZeT.assert(ZeT.isn(m[0]))
+		ZeT.assert(ZeT.isn(m[1]))
+		ZeT.assert((m[1] >= 0) && (m[1] <= 100))
+
+		if(m.length == 2)
+			m.push(0, 0)
+		else
+		{
+			ZeT.assert(m.length == 4)
+			ZeT.assert(ZeT.isn(m[2]) && m[2] >= 0)
+			ZeT.assert(ZeT.isn(m[3]) && m[3] >= 0)
+			ZeT.assert((m[3] >= 0) && (m[3] <= 100))
+		}
+	},
+
+	_min_max          : function()
+	{
+		var m = this.opts.min
+		var M = this.opts.max
+		var W = this.W, H = this.H
+		ZeT.assert(ZeT.isn(W) && ZeT.isn(H))
+
+		this.min = [ W*m[2]*0.01 + m[0], W*m[3]*0.01 + m[1] ]
+		this.max = (!M)?(this.min):
+		  [ W*M[2]*0.01 + M[0], W*M[3]*0.01 + M[1] ]
+
+		this.min[0] = Math.min(this.min[0], this.max[0])
+		this.max[0] = Math.max(this.min[0], this.max[0])
+		this.min[1] = Math.min(this.min[1], this.max[1])
+		this.max[1] = Math.max(this.min[1], this.max[1])
+	},
+
+	/**
+	 * Finds the best number of columns
+	 * and rows in the table.
+	 */
+	_calc_grid        : function()
+	{
+		var c = Math.floor(this.W / this.min[0])
+		var C = Math.floor(this.W / this.max[0])
+
+		var R = Math.max(Math.floor(this.H / this.min[1]), 1)
+		var r = Math.max(Math.floor(this.H / this.max[1]), 1)
+
+		if(ZeT.isf(this.opts.rows) && (r != R))
+		{
+			var x = this.opts.rows(r, R)
+			ZeT.assert(ZeT.isi(x))
+			ZeT.assert((x >= r) && (x <= R))
+			r = R = x
+		}
+
+		return [ Math.max(Math.max(c, C), 1), Math.max(r, R) ]
+	}
+
+})
