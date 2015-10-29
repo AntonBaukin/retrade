@@ -47,14 +47,24 @@ html
    $(document).ready(function()
    {
       var tiles = new ReTrade.Tiles({
-        area  : 'area',
-        min   : [ -10, 30, 50, 0 ],
-        max   : [ -10, 50, 100, 0 ],
-        rows  : function(r, R) { return r }
+        area    : 'area',
+        min     : [ 150, 120, 0, 0 ],
+        rows    : function(r) { return r },
+        columns : function(c) { return c },
+
+        tableStyle : { width:'100%', height: '100%' }
       })
 
-      tiles.layout()
-      //$(window).resize(ZeT.fbind(tiles.layout, tiles))
+      function update()
+      {
+        tiles.layout().each(function(n, x, y)
+        {
+          n.text(y * tiles.columns() + x)
+        })
+      }
+
+      update()
+      $(window).resize(update)
    })
 
   /*

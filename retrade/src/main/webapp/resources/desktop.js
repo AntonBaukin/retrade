@@ -3309,7 +3309,7 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 })
 
 
-// +----: ReTrade Window Tiles :---------------------------------+
+// +----: ReTrade Tiles :----------------------------------------+
 
 /**
  * Creates the tiles component. Each tile has content
@@ -3355,13 +3355,20 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
  *   created in the container area each time the
  *   layout geometry is updated;
  *
- * · rows    function(r, R) : integer
+ * · rows    function(r, R, H) : integer
  *
  *   function that selects integer value of rows
  *   number between the values range given. By
- *   default the maximum value is selected.
+ *   default the maximum value is selected;
+ *
+ * · columns function(c, C, W) : integer
+ *
+ *   same as rows, but selects the number of
+ *   columns of the range given.
  */
 ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
+
+	ReTradeTiles      : true,
 
 	init              : function(opts)
 	{
@@ -3380,9 +3387,6 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 		ZeT.assert(ZeTD.isn(this.area),
 		  'Did not found valid ReTrade.Tiles area element!')
 
-		//~: assign this tiles
-		$(this.area).data('ReTrade.Tiles', this)
-
 		//?: {has has ID, save it}
 		if(!ZeTS.ises(ZeTD.attr(this.area, 'id')))
 			this.area = ZeTD.attr(this.area, 'id')
@@ -3394,22 +3398,66 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 	 */
 	layout            : function()
 	{
-		var a = $(ZeTD.n(this.area))
-		this.W = a.innerWidth()
-		this.H = a.innerHeight()
+		var g = this._get_grid()
+		this.W = g.innerWidth()
+		this.H = g.innerHeight()
 
 		//?: {has no place}
 		if(!this.W || !this.H)
 			return ZeT.log('ReTrade.Tiles area [',
-			  this.area, '] has zero dimensions!')
+			  this.area, '] grid has zero dimensions!')
 
 		//~: calculate cell min-max
 		this._min_max()
 
 		//~: grid dimensions
-		var grid = this._calc_grid()
-		ZeT.log(grid)
+		this.grid = this._calc_grid()
+		ZeT.assert(this.grid[0] >= 1)
+		ZeT.assert(this.grid[1] >= 1)
 
+		//~: place the grid
+		this._place_grid()
+
+		//~: and justify it
+		this._justify()
+
+		return this
+	},
+
+	columns           : function()
+	{
+		return this.grid[0]
+	},
+
+	rows              : function()
+	{
+		return this.grid[1]
+	},
+
+	/**
+	 * Callback that invoked for each grid cell.
+	 * Parameters are: $(node), x (column index)
+	 * and y (row index) starting with 0.
+	 * Return false to stop iteration.
+	 */
+	each              : function(f)
+	{
+		var x = 0, y = 0, br, self = this
+		ZeT.assert(ZeT.isf(f))
+
+		function ic()
+		{
+			return br = f($(this), x++, y)
+		}
+
+		function ir()
+		{
+			$(this).children('td').each(ic)
+			x = 0; y++; return br
+		}
+
+		this._get_grid().find('> tbody > tr').each(ir)
+		return this
 	},
 
 	_check_min_max    : function(m)
@@ -3418,7 +3466,6 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 		ZeT.assert(m.length >= 2)
 		ZeT.assert(ZeT.isn(m[0]))
 		ZeT.assert(ZeT.isn(m[1]))
-		ZeT.assert((m[1] >= 0) && (m[1] <= 100))
 
 		if(m.length == 2)
 			m.push(0, 0)
@@ -3426,6 +3473,7 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 		{
 			ZeT.assert(m.length == 4)
 			ZeT.assert(ZeT.isn(m[2]) && m[2] >= 0)
+			ZeT.assert((m[2] >= 0) && (m[2] <= 100))
 			ZeT.assert(ZeT.isn(m[3]) && m[3] >= 0)
 			ZeT.assert((m[3] >= 0) && (m[3] <= 100))
 		}
@@ -3454,21 +3502,145 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 	 */
 	_calc_grid        : function()
 	{
-		var c = Math.floor(this.W / this.min[0])
-		var C = Math.floor(this.W / this.max[0])
+		var C = Math.max(Math.floor(this.W / this.min[0]), 1)
+		var c = Math.max(Math.ceil(this.W / this.max[0]), 1)
+		if(c > C) c = C
+
+		if(ZeT.isf(this.opts.columns) && (c != C))
+		{
+			var x = this.opts.columns(c, C, this.W)
+			ZeT.assert(ZeT.isi(x))
+			ZeT.assert((x >= c) && (x <= C))
+			c = C = x
+		}
 
 		var R = Math.max(Math.floor(this.H / this.min[1]), 1)
-		var r = Math.max(Math.floor(this.H / this.max[1]), 1)
+		var r = Math.max(Math.ceil(this.H / this.max[1]), 1)
+		if(r > R) r = R
 
 		if(ZeT.isf(this.opts.rows) && (r != R))
 		{
-			var x = this.opts.rows(r, R)
-			ZeT.assert(ZeT.isi(x))
-			ZeT.assert((x >= r) && (x <= R))
-			r = R = x
+			var y = this.opts.rows(r, R, this.H)
+			ZeT.assert(ZeT.isi(y))
+			ZeT.assert((y >= r) && (y <= R))
+			r = R = y
 		}
 
-		return [ Math.max(Math.max(c, C), 1), Math.max(r, R) ]
-	}
+		return [ Math.max(c, C), Math.max(r, R) ]
+	},
 
+	_get_grid        : function()
+	{
+		var g, self = this
+
+		$(ZeTD.n(this.area)).children().each(function()
+		{
+			if($(this).data('ReTrade.Tiles') === self)
+				{ g = $(this); return false }
+		})
+
+		//?: {found it}
+		if(g) return g
+
+		//~: create the table
+		g = $('<table><tbody/></table>')
+		g.attr({ cellspacing: '0', cellpadding: '0' })
+
+		//~: classes + styles
+		ZeTD.classes(g[0], this.opts.tableClass)
+		ZeTD.styles (g[0], this.opts.tableStyle)
+
+		//~: forbid fat cells
+		ZeTD.styles(g[0], {
+			'border-spacing' : 0,
+			'border-collapse' : 'collapse'
+		})
+
+		//~: assign this tiles
+		g.data('ReTrade.Tiles', this)
+
+		//~: append the component
+		$(ZeTD.n(this.area)).append(g)
+		return g
+	},
+
+	_place_grid       : function()
+	{
+		//~: search for existing grid
+		var self = this, g = this._get_grid()
+
+		//~: select the rows
+		var body = g.children('tbody')
+		var rows = body.children('tr')
+
+		//?: {has to delete some}
+		if(rows.length > this.grid[1])
+			rows.slice(this.grid[1]).remove()
+		//~: insert new rows
+		else if(rows.length < this.grid[1])
+		{
+			for(var i = rows.length;(i < this.grid[1]);i++)
+				body.append($('<tr/>'))
+			rows = body.children('tr')
+		}
+
+		//c: update columns of each row
+		rows.each(function()
+		{
+			//~: select the columns
+			var cols = $(this).children('td')
+
+			//?: {has some to delete}
+			if(cols.length > self.grid[0])
+				cols.slice(self.grid[0]).remove()
+			//~: insert new columns
+			else for(i = cols.length;(i < self.grid[0]);i++)
+			{
+				var td = $('<td/>')
+				ZeTD.classes(td[0], self.opts.cellClass)
+				ZeTD.styles(td[0], self.opts.cellStyle)
+				$(this).append(td)
+			}
+		})
+	},
+
+	_justify          : function()
+	{
+		//~: cell width and height
+		var w = this.W / this.grid[0]
+		var h = this.H / this.grid[1]
+		w = Math.max(this.min[0], Math.min(this.max[0], w))
+		h = Math.max(this.min[1], Math.min(this.max[1], h))
+
+		//~: select all the cells
+		var cells = this._get_grid().find('> tbody > tr > td')
+
+		//~: assign the dimensions
+		cells.css({ width: w+'px', height: h+'px' })
+	}
+})
+
+
+// +----: ReTrade Tiles Control :-------------------------+
+
+/**
+ * Controller of Tiles component. Supports
+ * filling tiles, scrolling and navigation.
+ */
+ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
+
+	init              : function(opts)
+	{
+		ZeT.assert(ZeT.iso(opts))
+		this.opts = opts
+
+		//~: take tiles | create them
+		if(ZeT.iso(opts.tiles))
+			this.tiles = new ReTrade.Tiles(opts.tiles)
+		else
+		{
+			this.tiles = ZeT.assertn(opts.tiles)
+			ZeT.assert(true === this.tiles.ReTradeTiles)
+		}
+	}
 })
