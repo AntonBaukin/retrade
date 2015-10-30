@@ -845,6 +845,11 @@ var ZeT = window.ZeT = window.ZeT || {
 		return (typeof o === 'undefined')
 	},
 
+	isx              : function(o)
+	{
+		return (o === null) || (typeof o === 'undefined')
+	},
+
 	isa              : ('isArray' in Array)?(Array.isArray):function(a)
 	{
 		return (Object.prototype.toString.call(a) === '[object Array]')
@@ -862,6 +867,11 @@ var ZeT = window.ZeT = window.ZeT || {
 
 
 // +----: Helper Functions: ------------------------------------->
+
+	scope            : function(f)
+	{
+		if(ZeT.isf(f)) f()
+	},
 
 	/**
 	 * Takes any array-like object and returns true array.

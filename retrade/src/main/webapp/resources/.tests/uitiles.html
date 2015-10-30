@@ -35,6 +35,23 @@ html
   border: 1px dashed white;
 }
 
+#area > div
+{
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.tile-wrap
+{
+  position: absolute; left: 10px; top: 10px; right: 10px; bottom: 10px;
+  border-radius: 10px; background: linear-gradient(-45deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);
+}
+
+.tile-wrap > div
+{
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+  display: table-cell; vertical-align: middle; text-align: center;
+}
+
   </style>
 
 </head>
@@ -46,25 +63,18 @@ html
 
    $(document).ready(function()
    {
-      var tiles = new ReTrade.Tiles({
-        area    : 'area',
-        min     : [ 150, 120, 0, 0 ],
-        rows    : function(r) { return r },
-        columns : function(c) { return c },
+      var tiles = new ReTrade.TilesControl({
 
-        tableStyle : { width:'100%', height: '100%' }
+        tiles : { area: 'area', absolute: true,
+          min: [ 180, 144 ], max: [ 250, 200 ],
+          absolute: true, cellClass: 'tile-cell'
+        },
+
+        content : { wrapClass: 'tile-wrap' }
       })
 
-      function update()
-      {
-        tiles.layout().each(function(n, x, y)
-        {
-          n.text(y * tiles.columns() + x)
-        })
-      }
-
-      update()
-      $(window).resize(update)
+      tiles.update()
+      $(window).resize(ZeT.fbind(tiles.update, tiles))
    })
 
   /*
