@@ -3452,6 +3452,34 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 	},
 
 	/**
+	 * Installs callback for tile events.
+	 * Each event instance consists of:
+	 *
+	 * · type    type of event;
+	 * · event   jQuery event object;
+	 * · cell    tile cell node;
+	 * · column  tile cell column;
+	 * · row     tile cell row;
+	 * · tiles   this Tiles instance.
+	 *
+	 * Event types are: 0) mouse click,
+	 * 1) mouse enter, 2) mouse leave.
+	 */
+	on                : function(cb)
+	{
+		if(ZeT.isx(cb))
+		{
+			delete this._ontile
+			return this
+		}
+
+		ZeT.assert(ZeT.isf(cb))
+		this._ontile = cb
+
+		return this
+	},
+
+	/**
 	 * Callback that invoked for each grid cell.
 	 * Parameters are: $(node), x (column index)
 	 * and y (row index) starting with 0.
@@ -3595,7 +3623,7 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 			})
 
 		//c: update columns of each row
-		rows.each(function()
+		rows.each(function(y)
 		{
 			//~: select the columns
 			var cols = $(this).children()
@@ -3604,13 +3632,53 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 			if(cols.length > self.grid[0])
 				cols.slice(self.grid[0]).remove()
 			//~: insert new columns
-			else for(var i = cols.length;(i < self.grid[0]);i++)
+			else for(var x = cols.length;(x < self.grid[0]);x++)
 			{
-				var cell = $('<div/>')
-				ZeTD.classes(cell[0], self.opts.cellClass)
-				ZeTD.styles(cell[0], self.opts.cellStyle)
+				var cell = self._cell(x, y)
 				$(this).append(cell)
 			}
+		})
+	},
+
+	_cell             : function(x, y)
+	{
+		var self = this, cell = $('<div/>')
+
+		//~: assign the styles
+		ZeTD.classes(cell[0], this.opts.cellClass)
+		ZeTD.styles(cell[0], this.opts.cellStyle)
+
+		//~: this + coordinates
+		cell.data('ReTrade.Tiles', this)
+		cell.data('ReTrade.Tiles.XY', [x, y])
+
+		function cb(type)
+		{
+			return ZeT.fbindu(self._event, 0, self, 1, cell[0], 2, type)
+		}
+
+		//~: bind events
+		cell.on({ click: cb(0), mouseenter: cb(1), mouseleave: cb(2) })
+
+		return cell
+	},
+
+	_event            : function(self, cell, type, e)
+	{
+		//?: {not target cell node}
+		if(this !== cell) return
+
+		//~: access tile callback
+		var on = self._ontile
+		if(!ZeT.isf(on)) return
+
+		//~: cell xy
+		var xy = $(cell).data('ReTrade.Tiles.XY')
+		ZeT.assert(ZeT.isa(xy) && (xy.length == 2))
+
+		//!: invoke the callback
+		on({ type: type, event: e, cell: cell,
+		  column: xy[0], row: xy[1], tiles: self
 		})
 	},
 
@@ -3666,15 +3734,13 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
  *
  *   defines the Tiles or create options;
  *
- * · content  function(id, node, this),
- *            or TilesItem { options }
+ * · content  TilesItem or { options }
  *
- *   function that is invoked for each tile
- *   when updating. Provides the content of
- *   each tile of the component. The id is
- *   provided by the scrolling strategy, or
- *   it's simply sequential index starting
- *   from 0 and going top-right-down.
+ *   Provides the content of each tile of the
+ *   component. The id is provided by the
+ *   scrolling strategy, or it's simply
+ *   sequential index starting from 0
+ *   and going top-right-down.
  *
  *
  * Optional parameters are:
@@ -3702,11 +3768,15 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 			ZeT.assert(true === this.tiles.ReTradeTiles)
 		}
 
-		//~: content function
-		if(ZeT.iso(opts.content))
-			this.content = new ReTrade.TilesItem(opts.content).provider()
+		//~: content provider
+		ZeT.assert(ZeT.iso(opts.content))
+		if(opts.content.ReTradeTilesItem === true)
+			this.content = opts.content
 		else
-			ZeT.assert(ZeT.isf(this.content = opts.content))
+			this.content = new ReTrade.TilesItem(opts.content)
+
+		//~: attach tiles events listener
+		this.tiles.on(ZeT.fbind(this._ontiles, this))
 
 		//?: {has no scroll strategy}
 		if(!ZeT.isf(this.scroll = opts.scroll))
@@ -3725,7 +3795,7 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 		{
 			var id = self.scroll(x, y, self)
 			ZeT.assert(!ZeT.isx(id))
-			self.content(id, node, self)
+			self.content.provide(id, node, self)
 		})
 
 		return this
@@ -3739,6 +3809,15 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 	columns           : function()
 	{
 		return this.tiles.columns()
+	},
+
+	_ontiles          : function(e)
+	{
+		e.id = this.scroll(e.column, e.row, this)
+		e.control = this
+
+		//!: invoke content strategy
+		this.content.on(e)
 	}
 })
 
@@ -3756,49 +3835,102 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
  *   ZeTD.classes() and ZeTD.styles() arguments
  *   for each table-wrapper created.
  *
+ * · table
+ *
+ *   orders to create wrapped table instead of div.
  */
 ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 {
+	ReTradeTilesItem  : true,
+
 	init              : function(opts)
 	{
 		ZeT.assert(ZeT.iso(opts))
 		this.opts = opts
-	},
 
-	/**
-	 * Returns function of content provider
-	 * wrapping this instance.
-	 */
-	provider          : function()
-	{
-		return ZeT.fbind(this.content, this)
+		//?: {has shadow}
+		if(!opts.border && opts.shadow)
+			opts.border = new ZeT.Border.Shadow(
+			  ZeT.Border.shadow(opts.shadow))
 	},
 
 	/**
 	 * Provides content of the denoted tile.
 	 */
-	content           : function(id, tile)
+	provide           : function(id, tile)
 	{
-		var wr = this._get(tile)
+		var wr = this.node(tile, true)
 		wr.text(id)
 	},
 
-	_get              : function(tile)
+	/**
+	 * Returns node nested in the wrapping elements
+	 * that is a leaf element to insert tile content.
+	 */
+	node              : function(tile, create)
+	{
+		//~: first assume the tile is wrapper
+		var wr = $(tile)
+		if(wr.data('ReTrade.TilesItem') !== this)
+			var wr = this.wrapper(tile, create)
+
+		//?: {found it not}
+		if(!wr) if(!create) return undefined; else
+			throw ZeT.ass('Could not find tile wrapper!')
+
+		var cnt = wr.data('ReTrade.TilesItem.Content')
+		ZeT.assert(ZeTD.isn(cnt))
+		return $(cnt)
+	},
+
+	/**
+	 * Returns map-object of the content node data.
+	 */
+	data              : function(tile)
+	{
+		//~: assume tile is content node itself
+		var attr = 'ReTrade.TilesItem.Data'
+		var node = $(tile)
+		var data = node.data(attr)
+		if(data) return data
+
+		//~: search for the wrapping root in the tile
+		node = ZeT.assertn(this.wrapper(node))
+		return ZeT.assertn(node.data(attr))
+	},
+
+	/**
+	 * Returns wrapping node of the tile.
+	 */
+	wrapper           : function(tile, create)
 	{
 		var wr, self = this
-		tile.children().each(function()
+
+		$(tile).children().each(function()
 		{
 			if($(this).data('ReTrade.TilesItem') === self)
 				{ wr = $(this); return false }
 		})
 
-		if(wr) wr = wr.find('> tbody > tr > td').first()
-		return (wr)?(wr):(this._wrapper(tile))
+		if(!wr && create)
+			wr = this._wrap(tile)
+		return wr
 	},
 
-	_wrapper          : function(tile)
+	/**
+	 * Invoked by Tiles Control on a tile event.
+	 * The event object contains all the fields of
+	 * ReTrade.Tiles.on(), plus:
+	 *
+	 * · id        tile scroll id;
+	 * · control   Tiles Control strategy.
+	 */
+	on                : function(e)
+	{},
+
+	_wrap             : function(tile)
 	{
-		var wr = $('<div><div/></div>')
+		var wr = $('<div/>')
 
 		ZeTD.classes(wr[0], this.opts.wrapClass)
 		ZeTD.styles(wr[0], this.opts.wrapStyle)
@@ -3806,6 +3938,40 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		wr.data('ReTrade.TilesItem', this)
 		tile.append(wr)
 
-		return wr.children().first()
+		//~: create the content
+		var cnt = this._wrap_content(wr)
+
+		//~: install the data
+		wr.data('ReTrade.TilesItem.Content', cnt)
+		wr.data('ReTrade.TilesItem.Data', {})
+
+		return wr
+	},
+
+	_wrap_content     : function(wr)
+	{
+		var cnt, xcnt
+
+		//?: {content in div}
+		if(!this.opts.table)
+			xcnt = cnt = $('<div/>')
+		//~: create content table
+		else
+		{
+			xcnt = $('<table/>', { cellpadding: 0, cellspacing: 0 })
+			xcnt.html('<tbody><tr><td/></tr></tbody>')
+			cnt = xcnt.find('td')
+		}
+
+		//?: {border wrapping}
+		if(this.opts.border)
+		{
+			ZeT.assert(this.opts.border.ZeTBorder === true)
+			xcnt = $(this.opts.border.proc(xcnt[0]))
+		}
+
+		//~: append content root
+		wr.append(xcnt)
+		return cnt[0]
 	}
 })

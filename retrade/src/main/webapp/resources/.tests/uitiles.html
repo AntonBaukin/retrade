@@ -20,6 +20,9 @@
      src = "../desktop.js"></script>
 
   <link type = 'text/css' rel = 'stylesheet'
+     href = "../clocks.css"/>
+
+  <link type = 'text/css' rel = 'stylesheet'
      href = "../retrade.css"/>
 
   <style type = "text/css">
@@ -43,13 +46,22 @@ html
 .tile-wrap
 {
   position: absolute; left: 10px; top: 10px; right: 10px; bottom: 10px;
-  border-radius: 10px; background: linear-gradient(-45deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);
+  /*border-radius: 10px; background: linear-gradient(-45deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);*/
 }
 
-.tile-wrap > div
+.tile-wrap > .retrade-boshadow-N-area
 {
   position: absolute; left: 0; top: 0; right: 0; bottom: 0;
-  display: table-cell; vertical-align: middle; text-align: center;
+}
+
+.tile-wrap > .retrade-boshadow-N-area > .retrade-boshadow-N-main
+{
+  display: block;
+}
+
+.tile-wrap .retrade-boshadow-N-content > div
+{
+  font-size: xx-large;
 }
 
   </style>
@@ -63,33 +75,38 @@ html
 
    $(document).ready(function()
    {
+     var tileItem = ZeT.hiddenInstance('ReTrade.TilesItem',
+      [{ wrapClass: 'tile-wrap', shadow: 'retrade-boshadow-N-XYZ' }],
+      {
+        on: function(e)
+        {
+          var w = this.wrapper(e.cell)
+          var d = this.data(w)
+          var n = this.node(w)
+
+          if((e.type == 1) && !d.wrapped)
+          {
+//            ZeT.Layout.procPipeCall(
+//              ZeT.Layout.Proc.Node, { node: n[0] },
+//              ZeT.Border.Shadow, ZeT.Border.shadow('retrade-boshadow-N-XYZ')
+//            )
+          }
+        }
+      })
+
       var tiles = new ReTrade.TilesControl({
 
+        content : tileItem,
         tiles : { area: 'area', absolute: true,
           min: [ 180, 144 ], max: [ 250, 200 ],
           absolute: true, cellClass: 'tile-cell'
-        },
-
-        content : { wrapClass: 'tile-wrap' }
+        }
       })
 
       tiles.update()
       $(window).resize(ZeT.fbind(tiles.update, tiles))
    })
 
-  /*
-   Ext.onReady(ZeT.Layout.procPipe(
-
-     //~: take warning node
-     ZeT.Layout.Proc.Node, { node: "${z:vid(v, 'edit-warning')}" },
-
-     //~: wrap it with the shadow border
-     ZeT.Border.Shadow, ZeT.Border.shadow('retrade-boshadow-N-XYZ'),
-
-     //~: additionally wrap
-     ZeT.Layout.Proc.Wrap, { classes: 'retrade-warning-table' }
-   ))
-  */
   </script>
 
 

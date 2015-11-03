@@ -609,20 +609,45 @@ var ZeT = window.ZeT = window.ZeT || {
 	 * Class instance or the definition name, extends it with
 	 * the body methods given and passes the optional arguments
 	 * to the instance constructor.
+	 *
+	 * The first variant of the arguments is:
+	 *
+	 * 0) Class or definition key; 1) arguments array;
+	 * 2) sub-class definition body.
+	 *
+	 * The second variant is:
+	 *
+	 * 0) Class or definition key; 1) sub-class definition
+	 * body; 2..) arguments list.
 	 */
-	hiddenInstance   : function(pcls, body /* , constructor args */)
+	hiddenInstance   : function()
 	{
+		var cls = arguments[0]
+
 		//?: {parent class is a definition name}
-		if(ZeT.iss(pcls)) pcls = ZeT.assertn(ZeT.defined(pcls),
-		  'No definition is bound by the name [', pcls, ']!')
-		ZeT.assert(ZeT.isf(pcls), 'Can not create instance of not a Class or function!')
-		ZeT.assert(ZeT.iso(body), 'Anonymous class body is not an object!')
+		if(ZeT.iss(cls)) cls = ZeT.assertn(ZeT.defined(cls),
+		  'No definition is bound by the name [', cls, ']!')
+
+		ZeT.assert( ZeT.isf(cls), //?: {not a Class instance}
+		  'Can not create instance of not a Class or function!')
+
+		//~: take the body
+		var args, body = arguments[1]
+		if(ZeT.isa(body))
+		{
+			args = body
+			body = arguments[2]
+		}
+
+		ZeT.assert(ZeT.iso(body), //?: {body is not an object}
+		  'Anonymous class body is not an object!')
 
 		//~: create the anonymous class
-		var cls  = ZeT.Class.call(ZeT.Class, pcls, body)
+		var cls  = ZeT.Class.call(ZeT.Class, cls, body)
 
 		//~: copy constructor arguments
-		var args = ZeTA.concat([cls], arguments, 2)
+		if(args) args = ZeTA.concat([cls], args)
+		else     args = ZeTA.concat([cls], arguments, 2)
 
 		//~: create the instance
 		return ZeT.createInstance.apply(ZeT, args)
@@ -967,6 +992,11 @@ var ZeT = window.ZeT = window.ZeT || {
 		var x = ZeTS.cat(m, '\n', new Error().stack)
 
 		throw new Error(x)
+	},
+
+	stack            : function()
+	{
+		return '' + new Error().stack
 	},
 
 	/**

@@ -20,6 +20,8 @@ ZeT.Border = ZeT.define('ZeT.Border', {})
  */
 ZeT.Border.Base = ZeT.defineClass('ZeT.Border.Base', {
 
+	ZeTBorder         : true,
+
 	init              : function(opts)
 	{
 		this.opts = opts || {}
