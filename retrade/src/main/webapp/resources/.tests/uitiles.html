@@ -23,6 +23,9 @@
      href = "../clocks.css"/>
 
   <link type = 'text/css' rel = 'stylesheet'
+     href = "../icons.css"/>
+
+  <link type = 'text/css' rel = 'stylesheet'
      href = "../retrade.css"/>
 
   <style type = "text/css">
@@ -82,6 +85,32 @@ html
   font-size: xx-large;
 }
 
+.tile-wrap .retrade-tiles-delete
+{
+  position: absolute; z-index: 10;
+  right: -5px; top: -5px; cursor: pointer;
+}
+
+.tile-wrap .retrade-tiles-delete:hover
+{
+  width: 38px; height: 38px;
+  background-size: 38px 38px;
+  right: -8px; top: -8px;
+}
+
+.tile-wrap .retrade-tiles-edit
+{
+  position: absolute; z-index: 10;
+  left: -5px; top: -5px; cursor: pointer;
+}
+
+.tile-wrap .retrade-tiles-edit:hover
+{
+  width: 38px; height: 38px;
+  background-size: 38px 38px;
+  left: -8px; top: -8px;
+}
+
   </style>
 
 </head>
@@ -96,12 +125,28 @@ html
      var tileItem = ZeT.hiddenInstance('ReTrade.TilesItem',
       [{ wrapClass: 'tile-wrap', shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ', selectedClass: 'selected'}],
       {
-        on: function(e)
+        on     : function(e)
         {
           this.$applySuper(arguments)
 
-          //if(e.type == 'select')
-          //  ZeT.log(e.id, ' selected: ', e.selected)
+          if(e.type == 'select')
+          {
+            var de = $(e.cell).find('.retrade-tiles-delete')
+            var ed = $(e.cell).find('.retrade-tiles-edit')
+            de.toggle(e.selected)
+            ed.toggle(e.selected)
+
+          }
+        },
+
+        _wrap  : function()
+        {
+          var wr = this.$applySuper(arguments)
+
+          wr.append($('<div/>').hide().addClass('retrade-tiles-delete'))
+          wr.append($('<div/>').hide().addClass('retrade-tiles-edit'))
+
+          return wr
         }
       })
 
