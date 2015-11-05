@@ -45,21 +45,39 @@ html
 
 .tile-wrap
 {
-  position: absolute; left: 10px; top: 10px; right: 10px; bottom: 10px;
-  /*border-radius: 10px; background: linear-gradient(-45deg, #eaf4ff 0%,#d0d6e0 60%,#edf1f7 100%);*/
+  position: absolute; left: 13px; top: 13px; right: 10px; bottom: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: default;
 }
 
-.tile-wrap > .retrade-boshadow-N-area
+.tile-wrap.selected
+{
+  left: 10px; top: 10px;
+}
+
+.tile-wrap .retrade-boshadow-area
 {
   position: absolute; left: 0; top: 0; right: 0; bottom: 0;
 }
 
-.tile-wrap > .retrade-boshadow-N-area > .retrade-boshadow-N-main
+.tile-wrap .retrade-boshadow-main
 {
   display: block;
 }
 
-.tile-wrap .retrade-boshadow-N-content > div
+.tile-wrap .retrade-boshadow-shadow
+{
+  display: none;
+}
+
+.tile-wrap.selected .retrade-boshadow-shadow
+{
+  display: block;
+}
+
+.tile-wrap .retrade-boshadow-content > div
 {
   font-size: xx-large;
 }
@@ -76,21 +94,14 @@ html
    $(document).ready(function()
    {
      var tileItem = ZeT.hiddenInstance('ReTrade.TilesItem',
-      [{ wrapClass: 'tile-wrap', shadow: 'retrade-boshadow-N-XYZ' }],
+      [{ wrapClass: 'tile-wrap', shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ', selectedClass: 'selected'}],
       {
         on: function(e)
         {
-          var w = this.wrapper(e.cell)
-          var d = this.data(w)
-          var n = this.node(w)
+          this.$applySuper(arguments)
 
-          if((e.type == 1) && !d.wrapped)
-          {
-//            ZeT.Layout.procPipeCall(
-//              ZeT.Layout.Proc.Node, { node: n[0] },
-//              ZeT.Border.Shadow, ZeT.Border.shadow('retrade-boshadow-N-XYZ')
-//            )
-          }
+          //if(e.type == 'select')
+          //  ZeT.log(e.id, ' selected: ', e.selected)
         }
       })
 
@@ -98,8 +109,10 @@ html
 
         content : tileItem,
         tiles : { area: 'area', absolute: true,
-          min: [ 180, 144 ], max: [ 250, 200 ],
-          absolute: true, cellClass: 'tile-cell'
+          min: [ 180, 144, 100.0, 80.0 ],
+          max: [ 250, 200, 100.0, 80.0 ],
+          rows: 'max', columns: 'min',
+          cellClass: 'tile-cell'
         }
       })
 

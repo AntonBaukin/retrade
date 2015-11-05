@@ -271,7 +271,7 @@ ZeT.Border.create = ZeT.define('ZeT.Border.create()', function(opts)
 		res[k] = ZeT.extend(e, f)
 
 		var c  = fills['classes']
-		if(!c && clss) c = clss.replace(pat, k)
+		if(!c && clss) c = ZeTS.replace(clss, pat, k)
 
 		c = ZeTA.concat(ZeTA.copy(e.classes), c)
 		if(c.length) e.classes = c

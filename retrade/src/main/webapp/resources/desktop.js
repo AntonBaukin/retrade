@@ -15,6 +15,15 @@ jQuery.fx.interval = 41.6
 var ReTrade = ZeT.define('ReTrade', {})
 
 
+// +----: Is Touch Device :--------------------------------------+
+
+ReTrade.isTouch = ZeT.scope(function()
+{
+	return ('ontouchstart' in window) ||
+	  (navigator.msMaxTouchPoints > 0)
+})
+
+
 // +----: Desktop :----------------------------------------------+
 
 ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
@@ -3327,8 +3336,7 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
  *   array of the minimum dimensions. First
  *   two numbers are pixels, second two are
  *   optional percents of the container
- *   inner dimensions. Pixels are added
- *   to the percent values;
+ *   inner dimensions free space;
  *
  * · max   [w, h, w%, h%]
  *
@@ -3462,8 +3470,8 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 	 * · row     tile cell row;
 	 * · tiles   this Tiles instance.
 	 *
-	 * Event types are: 0) mouse click,
-	 * 1) mouse enter, 2) mouse leave.
+	 * Event types are: 'click' mouse click,
+	 * 'enter' mouse enter, 'leave' mouse leave.
 	 */
 	on                : function(cb)
 	{
@@ -3509,8 +3517,8 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 	{
 		ZeT.assert(ZeT.isa(m))
 		ZeT.assert(m.length >= 2)
-		ZeT.assert(ZeT.isn(m[0]))
-		ZeT.assert(ZeT.isn(m[1]))
+		ZeT.assert(ZeT.isn(m[0]) && (m[0] > 1))
+		ZeT.assert(ZeT.isn(m[1]) && (m[1] > 1))
 
 		if(m.length == 2)
 			m.push(0, 0)
@@ -3531,14 +3539,20 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 		var W = this.W, H = this.H
 		ZeT.assert(ZeT.isn(W) && ZeT.isn(H))
 
-		this.min = [ W*m[2]*0.01 + m[0], W*m[3]*0.01 + m[1] ]
-		this.max = (!M)?(this.min):
-		  [ W*M[2]*0.01 + M[0], W*M[3]*0.01 + M[1] ]
+		function calc(X, x, p)
+		{
+			var d = Math.floor(X / x)
+			if(d < 1) return X
+			var a = (X - x*d) * p / (100 * d)
+			return x + a
+		}
 
-		this.min[0] = Math.min(this.min[0], this.max[0])
-		this.max[0] = Math.max(this.min[0], this.max[0])
-		this.min[1] = Math.min(this.min[1], this.max[1])
-		this.max[1] = Math.max(this.min[1], this.max[1])
+		var min = [ calc(W, m[0], m[2]), calc(H, m[1], m[3]) ]
+		if(!M) return this.min = this.max = min
+		var max = [ calc(W, M[0], M[2]), calc(H, M[1], M[3]) ]
+
+		this.min = [ Math.min(min[0], max[0]), Math.min(min[1], max[1]) ]
+		this.max = [ Math.max(min[0], max[0]), Math.max(min[1], max[1]) ]
 	},
 
 	/**
@@ -3658,7 +3672,11 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 		}
 
 		//~: bind events
-		cell.on({ click: cb(0), mouseenter: cb(1), mouseleave: cb(2) })
+		cell.on({
+			click       : cb('click'),
+			mouseenter  : cb('enter'),
+			mouseleave  : cb('leave')
+		})
 
 		return cell
 	},
@@ -3926,7 +3944,38 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 	 * · control   Tiles Control strategy.
 	 */
 	on                : function(e)
-	{},
+	{
+		var T = ReTrade.isTouch
+		var w = this.wrapper(e.cell)
+		var d = this.data(w)
+
+		//?: {is click on touch}
+		if(T && (e.type == 'click'))
+			this.select(!d.selected, e)
+
+		//?: {mouse entered | leaved}
+		if(!T && ((e.type == 'enter') || (e.type == 'leave')))
+			this.select(!d.selected, e)
+	},
+
+	select            : function(selected, event)
+	{
+		var w = this.wrapper(event.cell)
+		var d = this.data(w)
+		d.selected = selected
+
+		//?: {has selection class}
+		if(ZeT.iss(this.opts.selectedClass))
+			if(selected)
+				w.addClass(this.opts.selectedClass)
+			else
+				w.removeClass(this.opts.selectedClass)
+
+		//~: trigger selected event
+		this.on(ZeT.extend(ZeT.clone(event),
+		  { type: 'select', selected: selected }
+		))
+	},
 
 	_wrap             : function(tile)
 	{

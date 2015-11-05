@@ -430,6 +430,16 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 	/**
+	 * Makes shallow copy of the source with
+	 * optional extension provided. Double
+	 * applies extend().s
+	 */
+	clone            : function(src, ext)
+	{
+		return ZeT.extend(ZeT.extend(null, src), ext)
+	},
+
+	/**
 	 * Allows to clone deeply object with prototype support.
 	 * It directly copies fields of this types: numbers, booleans,
 	 * functions, not a plain objects. Arrays are copied deeply.
@@ -893,9 +903,20 @@ var ZeT = window.ZeT = window.ZeT || {
 
 // +----: Helper Functions: ------------------------------------->
 
-	scope            : function(f)
+	/**
+	 * Invokes the function given. Optiona arguments
+	 * must go before the function-body.
+	 */
+	scope            : function()
 	{
-		if(ZeT.isf(f)) f()
+		var f = arguments[arguments.length - 1]
+		ZeT.assert(ZeT.isf(f))
+
+		//?: {has additional arguments}
+		var args; if(arguments.length > 1)
+			args = ZeTA.copy(arguments, 0, arguments.length - 1)
+
+		return (args)?(f.apply(this, args)):(f.call(this))
 	},
 
 	/**
