@@ -15,11 +15,22 @@
   left: 0; right: 0; top: 0; bottom: 0; padding: 0 3px 3px 0;
 }
 
-.retrade-boshadow-N-main > table, .retrade-boshadow-R-main > table,
-  .retrade-boshadow-G-main > table, .retrade-boshadow-O-main > table,
-  .retrade-boshadow-user-menu-main > table
+.retrade-boshadow-N-main > div:first-child, .retrade-boshadow-R-main > div:first-child,
+  .retrade-boshadow-G-main > div:first-child, .retrade-boshadow-O-main > div:first-child,
+  .retrade-boshadow-user-menu-main > div:first-child
 {
-  width: 100%; height: 100%; border-radius: 3px;
+  position: absolute; border-radius: 3px;
+  left: 0; top: 0; right: 3px; bottom: 3px;
+  overflow: hidden; z-index: 1;
+}
+
+.retrade-boshadow-N-main > div:first-child > table,
+  .retrade-boshadow-R-main > div:first-child > table,
+  .retrade-boshadow-G-main > div:first-child > table,
+  .retrade-boshadow-O-main > div:first-child > table,
+  .retrade-boshadow-user-menu-main > div:first-child > table
+{
+  width: 100%; height: 100%;
 }
 
 .retrade-boshadow-N-shadow, .retrade-boshadow-R-shadow,
@@ -343,8 +354,8 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
   .retrade-eventsnum-controls > div.allitems > div.gray,
   .retrade-eventsnum-menu-item-controls > div.N,
   .retrade-eventsnum-controls > div.numbers td.N > div,
-  .retrade-boshadow-user-menu-main > table,
-  .retrade-boshadow-N-main > table
+  .retrade-boshadow-user-menu-main > div,
+  .retrade-boshadow-N-main > div:first-child
 {
   background: #d0d6e0;
   background: -moz-linear-gradient(-45deg, #eaf4ff 0%, #d0d6e0 60%, #edf1f7 100%);
@@ -355,7 +366,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 .retrade-eventsnum-menu-item.G .retrade-eventsnum-menu-data,
   .retrade-eventsnum-menu-item-controls > div.G,
   .retrade-eventsnum-controls > div.numbers td.G > div,
-  .retrade-boshadow-G-main > table
+  .retrade-boshadow-G-main > div:first-child
 {
   background: #aedd9b;
   background: -moz-linear-gradient(-45deg, #e2e8a7 0%, #83ce79 60%, #aedd9b 100%);
@@ -366,7 +377,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 .retrade-eventsnum-menu-item.O .retrade-eventsnum-menu-data,
   .retrade-eventsnum-menu-item-controls > div.O,
   .retrade-eventsnum-controls > div.numbers td.O > div,
-  .retrade-boshadow-O-main > table
+  .retrade-boshadow-O-main > div:first-child
 {
   background: #ffd42b;
   background: -moz-linear-gradient(-45deg, #fff9e2 0%, #ffd42b 60%, #fff6ce 100%);
@@ -377,7 +388,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
 .retrade-eventsnum-menu-item.R .retrade-eventsnum-menu-data,
   .retrade-eventsnum-menu-item-controls > div.R,
   .retrade-eventsnum-controls > div.numbers td.R > div,
-  .retrade-boshadow-R-main > table
+  .retrade-boshadow-R-main > div:first-child
 {
   background: #ffdcd3;
   background: -moz-linear-gradient(-45deg, #ffdcd3 0%, #ffb9b5 60%, #efd6c9 100%);

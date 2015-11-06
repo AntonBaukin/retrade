@@ -199,8 +199,9 @@ ZeT.Border.Shadow = ZeT.defineClass('ZeT.Border.Shadow', 'ZeT.Border.Base', {
 
 	XYZ     : new ZeT.Layout.Template({ trace : ZeT.Layout.Template.Ways.traceAtNodes },
 
-	  "<div>@area<div>@main<table border='0' cellpadding='0' cellspacing='0'><tbody><tr>"+
-	  "<td>@content</td></tr></tbody></table><div>@ext</div><div>@shadow</div></div></div>"
+	  "<div>@area<div>@main<div><table border='0' cellpadding='0' "   +
+	  "cellspacing='0'><tbody><tr><td>@content</td></tr></tbody>"     +
+	  "</table></div><div>@ext</div><div>@shadow</div></div></div>"
 	)
 });
 

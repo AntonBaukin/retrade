@@ -48,7 +48,10 @@ html
 
 .tile-wrap
 {
-  position: absolute; left: 13px; top: 13px; right: 10px; bottom: 10px;
+  position: absolute;
+  left: 13px; top: 13px;
+  right: 10px; bottom: 10px;
+
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
@@ -58,6 +61,7 @@ html
 .tile-wrap.selected
 {
   left: 10px; top: 10px;
+  right: 13px; bottom: 13px;
 }
 
 .tile-wrap .retrade-boshadow-area
@@ -80,35 +84,34 @@ html
   display: block;
 }
 
-.tile-wrap .retrade-boshadow-content > div
+.tile-wrap .retrade-boshadow-content
 {
-  font-size: xx-large;
+  font-size: xx-large; padding: 2px 3px;
 }
 
-.tile-wrap .retrade-tiles-delete
+.tile-wrap .retrade-tiles-delete,
+  .tile-wrap .retrade-tiles-edit
 {
   position: absolute; z-index: 10;
   right: -5px; top: -5px; cursor: pointer;
 }
 
-.tile-wrap .retrade-tiles-delete:hover
+.tile-wrap .retrade-tiles-edit
+{
+  left: -5px;
+}
+
+.tile-wrap .retrade-tiles-delete:hover,
+  .tile-wrap .retrade-tiles-edit:hover
 {
   width: 38px; height: 38px;
   background-size: 38px 38px;
   right: -8px; top: -8px;
 }
 
-.tile-wrap .retrade-tiles-edit
-{
-  position: absolute; z-index: 10;
-  left: -5px; top: -5px; cursor: pointer;
-}
-
 .tile-wrap .retrade-tiles-edit:hover
 {
-  width: 38px; height: 38px;
-  background-size: 38px 38px;
-  left: -8px; top: -8px;
+  left: -8px;
 }
 
   </style>
@@ -120,10 +123,20 @@ html
 
   <script type = "text/javascript">
 
+   var DATA = [
+
+     { id: 100, text: 'This is a new world!' },
+     { id: 101, text: 'Better to be prepared...' },
+     { id: 102, text: 'Simple text' },
+     { id: 103, text: 'Take my hand and go on' },
+     { id: 104, text: 'This text is so long, it can\'t be inserted in a tiny tile area! Be aware and prepared...' },
+     { id: 105, text: 'Let\'s do it together!' }
+   ]
+
    $(document).ready(function()
    {
      var tileItem = ZeT.hiddenInstance('ReTrade.TilesItem',
-      [{ wrapClass: 'tile-wrap', shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ', selectedClass: 'selected'}],
+      [{ wrapClass: 'tile-wrap', data: { array: DATA }, shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ', selectedClass: 'selected' }],
       {
         on     : function(e)
         {

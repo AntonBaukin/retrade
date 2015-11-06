@@ -3831,7 +3831,7 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 
 	_ontiles          : function(e)
 	{
-		e.id = this.scroll(e.column, e.row, this)
+		e.index   = this.scroll(e.column, e.row, this)
 		e.control = this
 
 		//!: invoke content strategy
@@ -3845,6 +3845,14 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 /**
  * Content provider for Tiles. Creates wrapping
  * single-cell div element the content there.
+ *
+ * Required parameters are:
+ *
+ * · data
+ *
+ *   ReTrade.TilesData or { options }.
+ *   defines strategy of obtaining the content
+ *   and server-size updates.
  *
  * Optional parameters are:
  *
@@ -3870,15 +3878,31 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		if(!opts.border && opts.shadow)
 			opts.border = new ZeT.Border.Shadow(
 			  ZeT.Border.shadow(opts.shadow))
+
+		//~: data models access strategy
+		this._data = ZeT.assertn(opts.data)
+		ZeT.assert(ZeT.iso(this._data))
+		if(this._data.ReTradeTilesData !== true)
+			this._data = new ReTrade.TilesData(opts.data)
+		ZeT.assert(this._data.ReTradeTilesData === true)
 	},
 
 	/**
 	 * Provides content of the denoted tile.
+	 * Index is integer value starting from 0.
 	 */
-	provide           : function(id, tile)
+	provide           : function(index, tile)
 	{
-		var wr = this.node(tile, true)
-		wr.text(id)
+		var m = this._data.model(index)
+		tile.toggle(!!m); if(!m) return
+
+		var cnt = this.node(tile, true)
+//		var div =
+//		var w   = cnt.parent().innerWidth()
+//		var h   = cnt.parent().innerHeight()
+//		ZeT.log(w, ' x ', h)
+
+		cnt.text(m.text)
 	},
 
 	/**
@@ -3940,7 +3964,7 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 	 * The event object contains all the fields of
 	 * ReTrade.Tiles.on(), plus:
 	 *
-	 * · id        tile scroll id;
+	 * · index     tile scroll index;
 	 * · control   Tiles Control strategy.
 	 */
 	on                : function(e)
@@ -4022,5 +4046,37 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		//~: append content root
 		wr.append(xcnt)
 		return cnt[0]
+	}
+})
+
+
+// +----: ReTrade Tiles Data :----------------------------+
+
+/**
+ * Strategy of providing content for the tiles and
+ * issuing server-size requests: cut-paste, remove.
+ *
+ * Give 'array' array as option as the basic variant
+ * of mapping data models by scroll index.
+ */
+ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
+{
+	ReTradeTilesData  : true,
+
+	init              : function(opts)
+	{
+		ZeT.assert(ZeT.iso(opts))
+		this.opts = opts
+	},
+
+	/**
+	 * Returns data object (model) for the given
+	 * index of the tiles scroll. Index starts with
+	 * zero and is incremented from tile to tile.
+	 */
+	model             : function(index)
+	{
+		var a = this.opts.array
+		if(ZeT.isa(a)) return a[index]
 	}
 })
