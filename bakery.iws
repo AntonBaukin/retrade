@@ -10,10 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uitiles.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uitiles.html" />
     </list>
     <ignored path="bakery.iws" />
@@ -43,15 +41,9 @@
       <file leaf-file-name="uitiles.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uitiles.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.83136594" vertical-offset="3944" max-vertical-offset="6084">
-              <caret line="313" column="17" selection-start-line="313" selection-start-column="17" selection-end-line="313" selection-end-column="17" />
-              <folding>
-                <element signature="e#3769#4128#0" expanded="true" />
-                <element signature="e#4175#4368#0" expanded="true" />
-                <element signature="e#5837#6478#0" expanded="true" />
-                <element signature="e#6107#6182#0" expanded="true" />
-                <element signature="e#7977#8041#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.73693085" vertical-offset="2827" max-vertical-offset="4282">
+              <caret line="192" column="6" selection-start-line="192" selection-start-column="6" selection-end-line="192" selection-end-column="6" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -722,7 +714,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="system-19 [beta]: simple JsX.include() request works." />
     <MESSAGE value="system-19 [beta]: tested checks.js, asserts.js, and part of basics.js. Going to test more..." />
     <MESSAGE value="system-19 [beta]: implemented and tested arrays.js." />
     <MESSAGE value="system-19 [beta]: tested basic.js functions." />
@@ -747,7 +738,8 @@
     <MESSAGE value="ui-87 [alpha]: hovering over the tiles, better calculation of the dimensions." />
     <MESSAGE value="ui-87 [alpha]: providing content for the tiles with models." />
     <MESSAGE value="ui-87 [alpha]: refactored referring models and data of the tiles." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-87 [alpha]: refactored referring models and data of the tiles." />
+    <MESSAGE value="ui-87 [alpha]: implemented cut-paste of the tiles." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-87 [alpha]: implemented cut-paste of the tiles." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -991,33 +983,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.454343" vertical-offset="1275" max-vertical-offset="12220">
-          <caret line="231" column="30" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.9053452" vertical-offset="73103" max-vertical-offset="74848">
+          <caret line="4348" column="9" selection-start-line="4348" selection-start-column="0" selection-end-line="4348" selection-end-column="0" />
+          <folding>
+            <marker date="1447079754000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1447079754000" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="53.214924" vertical-offset="20638" max-vertical-offset="22573">
-          <caret line="4025" column="6" selection-start-line="1203" selection-start-column="3" selection-end-line="1259" selection-end-column="4" />
+        <state vertical-scroll-proportion="1.2494432" vertical-offset="3774" max-vertical-offset="12220">
+          <caret line="632" column="3" selection-start-line="288" selection-start-column="3" selection-end-line="288" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uitiles.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.83136594" vertical-offset="3944" max-vertical-offset="6084">
-          <caret line="313" column="17" selection-start-line="313" selection-start-column="17" selection-end-line="313" selection-end-column="17" />
-          <folding>
-            <element signature="e#3769#4128#0" expanded="true" />
-            <element signature="e#4175#4368#0" expanded="true" />
-            <element signature="e#5837#6478#0" expanded="true" />
-            <element signature="e#6107#6182#0" expanded="true" />
-            <element signature="e#7977#8041#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.73693085" vertical-offset="2827" max-vertical-offset="4282">
+          <caret line="192" column="6" selection-start-line="192" selection-start-column="6" selection-end-line="192" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>

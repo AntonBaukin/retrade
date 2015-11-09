@@ -4171,3 +4171,182 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 		ZeT.log('Goto model: ', m.id)
 	}
 })
+
+
+// +----: ReTrade Tiles Item Extended :-------------------+
+
+/**
+ * Content provider for tiles that supports
+ * editing and cut-paste (move) operations.
+ */
+ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem,
+{
+	provide : function(i, tile)
+	{
+		this.$applySuper(arguments)
+
+		//~: update the view
+		var w = this.wrapper(tile)
+		var d = w && this.data(w)
+		w && d && this._review(w, d)
+	},
+
+	_wrap  : function()
+	{
+		var self = this, wr = this.$applySuper(arguments)
+
+		function add(cls, f, title)
+		{
+			wr.append($('<div/>').hide().attr('title', title).
+			  addClass(cls).click(ZeT.fbind(f, self, wr[0])))
+		}
+
+		add('retrade-tiles-delete', this._delete, 'Удалить')
+		add('retrade-tiles-edit',   this._edit,   'Редактировать')
+		add('retrade-tiles-goto',   this._goto,   'Активировать ссылку')
+		add('retrade-tiles-move',   this._move,   'Вырезать')
+		add('retrade-tiles-insert', this._insert, 'Вставить')
+
+		return wr
+	},
+
+	_on_select : function(selected, d, wr)
+	{
+		wr.find('.retrade-tiles-delete').toggle(selected)
+		wr.find('.retrade-tiles-edit').toggle(selected)
+		wr.find('.retrade-tiles-move').toggle(selected)
+		wr.find('.retrade-tiles-goto').toggle(selected)
+
+		if(!d.moved && this._get_moved().length)
+			wr.find('.retrade-tiles-insert').toggle(selected)
+	},
+
+	_delete : function(wr)
+	{
+		//~: tile scroll index
+		var i = this.index(wr)
+		ZeT.assert(ZeT.isi(i))
+
+		//~: tile content model
+		var m = this._data.model(i)
+		ZeT.assertn(m)
+
+		//!: remove the model
+		this._data.remove(m, i)
+
+		//~: select the tile on the same position
+		if(m = this._data.data(i))
+			m.selected = true
+
+		this.control.update()
+	},
+
+	_edit : function(wr)
+	{
+		var d = this.data(wr = $(wr))
+		d.edited = !d.edited
+		this._review(wr, d)
+	},
+
+	_move : function(wr)
+	{
+		var d = this.data(wr = $(wr))
+		d.moved = !d.moved
+		this._review(wr, d)
+	},
+
+	_can_select : function(selected, d)
+	{
+		return selected || (!d.edited && !d.moved)
+	},
+
+	_get_moved : function(data)
+	{
+		var all = [], self = this
+
+		this.tiles.each(function(tile)
+		{
+			var d = self.data(tile)
+			if(d && d.moved)
+				all.push((data)?(d):(d.model))
+		})
+
+		return all
+	},
+
+	_insert : function(wr)
+	{
+		//~: insert target model
+		var m = this.data(wr)
+		ZeT.assertn(m && (m = m.model))
+
+		//~: collect all the models moved
+		var moved = this._get_moved()
+		if(!moved.length) return
+
+		function reset(x)
+		{
+			x.moved = false
+			x.selected = x.edited
+		}
+
+		reset(this.data(wr))
+		ZeT.each(this._get_moved(true), reset)
+		this._data.move(m, moved)
+
+		//~: select current item
+		var i = this.index(wr)
+		m = this._data.data(i)
+		if(m) m.selected = true
+
+		this.control.update()
+	},
+
+	_review : function(wr, d)
+	{
+		var c = this.node(wr = $(wr))
+		var e = wr.find('.retrade-tiles-edit')
+		var m = wr.find('.retrade-tiles-move')
+
+		wr.find('.retrade-tiles-goto').toggle(
+		  !!(d.selected && !d.edited & !d.moved))
+
+		wr.find('.retrade-tiles-insert').toggle(
+		  !!(d.selected && !d.moved && this._get_moved().length))
+
+		if(d.moved)
+		{
+			m.addClass('selected')
+			c.css('opacity', 0.25)
+		}
+		else
+		{
+			m.removeClass('selected')
+			!d.edited && c.css('opacity', 1.0)
+		}
+
+		if(d.edited)
+		{
+			e.addClass('selected')
+			c.css('opacity', 0.25)
+		}
+		else
+		{
+			e.removeClass('selected')
+			!d.moved && c.css('opacity', 1.0)
+		}
+
+		this._select(!!d.selected, wr)
+	},
+
+	_goto : function(wr)
+	{
+		var i = this.index(wr)
+		ZeT.assert(ZeT.isi(i))
+
+		var m = this._data.model(i)
+		ZeT.assertn(m)
+
+		this._data.goto(m)
+	}
+})
