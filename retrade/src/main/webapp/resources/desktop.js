@@ -3778,13 +3778,11 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 		this.opts = opts
 
 		//~: take tiles | create them
-		if(ZeT.iso(opts.tiles))
-			this.tiles = new ReTrade.Tiles(opts.tiles)
+		ZeT.assert(ZeT.iso(opts.tiles))
+		if(opts.tiles.ReTradeTiles === true)
+			this.tiles = opts.tiles
 		else
-		{
-			this.tiles = ZeT.assertn(opts.tiles)
-			ZeT.assert(true === this.tiles.ReTradeTiles)
-		}
+			this.tiles = new ReTrade.Tiles(opts.tiles)
 
 		//~: content provider
 		ZeT.assert(ZeT.iso(opts.content))
@@ -3792,6 +3790,10 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 			this.content = opts.content
 		else
 			this.content = new ReTrade.TilesItem(opts.content)
+
+		//~: bind self to the content provider
+		this.content.tiles   = this.tiles
+		this.content.control = this
 
 		//~: attach tiles events listener
 		this.tiles.on(ZeT.fbind(this._ontiles, this))
@@ -3958,7 +3960,8 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		//~: search for the wrapping root in the tile
 		if(ZeT.isx(id))
 		{
-			tile = ZeT.assertn(this.wrapper(tile))
+			tile = this.wrapper(tile)
+			if(!tile) return
 			id = $(tile).data(xa)
 			ZeT.assert(!ZeT.isx(id))
 		}
@@ -4011,14 +4014,15 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 			this._select(false, e)
 	},
 
-	_select           : function(selected, event)
+	_select           : function(selected, event_wrapper)
 	{
 		//~: access wrapper & data
-		var w = this.wrapper(event.cell)
+		var w = (!event_wrapper.cell)?(event_wrapper):
+			this.wrapper(event_wrapper.cell)
 		var d = this.data(w)
 
 		//?: {can't select}
-		if(!this._can_select(selected, d, w, event)) return
+		if(!this._can_select(selected, d, w)) return
 		d.selected = selected
 
 		//?: {has selection class}
@@ -4028,19 +4032,17 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 			else
 				w.removeClass(this.opts.selectedClass)
 
-		//~: trigger selected event
-		this.on(ZeT.extend(ZeT.clone(event),
-		  { type: 'select', selected: selected }
-		))
+		//~: react on selection
+		this._on_select(!!selected, d, w)
 	},
 
-	_can_select       : function(/* selected, data, wrapper, event */)
+	_on_select        : function(/* selected, data, wrapper */)
+	{},
+
+	_can_select       : function(/* selected, data, wrapper */)
 	{
 		return true
 	},
-
-	_erase            : function(/* wr, data, cnt, model, tile, index */)
-	{},
 
 	_wrap             : function(tile)
 	{
@@ -4147,6 +4149,21 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 
 		if(this._data)
 			delete this._data[m]
+	},
+
+	move              : function(where, items)
+	{
+		var a; if(ZeT.isa(a = this.opts.array))
+		{
+			var i = a.indexOf(where)
+			ZeT.assert(i >= 0)
+
+			ZeTA.del.apply(a, items)
+
+			var x = [i, 0]
+			x.push.apply(x, items)
+			a.splice.apply(a, x)
+		}
 	},
 
 	goto              : function(m)

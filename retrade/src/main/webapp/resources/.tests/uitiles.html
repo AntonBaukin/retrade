@@ -91,16 +91,32 @@ html
 
 .tile-wrap .retrade-tiles-delete,
   .tile-wrap .retrade-tiles-edit,
-  .tile-wrap .retrade-tiles-goto
+  .tile-wrap .retrade-tiles-goto,
+  .tile-wrap .retrade-tiles-move,
+  .tile-wrap .retrade-tiles-insert
 {
   position: absolute; z-index: 10;
-  right: -5px; top: -5px; cursor: pointer;
-  border-radius: 50%;
+  cursor: pointer; border-radius: 50%;
+}
+
+.tile-wrap .retrade-tiles-delete
+{
+  right: -5px; top: -5px;
 }
 
 .tile-wrap .retrade-tiles-edit
 {
-  left: -5px;
+  left: -5px; top: -5px;
+}
+
+.tile-wrap .retrade-tiles-move
+{
+  left: -5px; bottom: -5px;
+}
+
+.tile-wrap .retrade-tiles-insert
+{
+  right: -5px; bottom: -5px;
 }
 
 .tile-wrap .retrade-tiles-goto
@@ -110,20 +126,42 @@ html
   margin-top: -24px;
 }
 
+.tile-wrap .retrade-tiles-delete:hover,
+  .tile-wrap .retrade-tiles-edit:hover,
+  .tile-wrap .retrade-tiles-move:hover,
+  .tile-wrap .retrade-tiles-insert:hover
+
+{
+  width: 38px; height: 38px;
+  background-size: 38px 38px;
+}
+
+.tile-wrap .retrade-tiles-delete:hover
+{
+  right: -8px; top: -8px;
+}
+
+.tile-wrap .retrade-tiles-edit:hover
+{
+  left: -8px; top: -8px;
+}
+
+.tile-wrap .retrade-tiles-move:hover
+{
+  left: -8px; bottom: -8px;
+}
+
+.tile-wrap .retrade-tiles-insert:hover
+{
+  right: -8px; bottom: -8px;
+}
+
 .tile-wrap .retrade-tiles-goto:hover
 {
   width: 64px; height: 64px;
   background-size: 64px 64px;
   margin-left: -32px;
   margin-top: -32px;
-}
-
-.tile-wrap .retrade-tiles-delete:hover,
-  .tile-wrap .retrade-tiles-edit:hover
-{
-  width: 38px; height: 38px;
-  background-size: 38px 38px;
-  right: -8px; top: -8px;
 }
 
 .tile-wrap .retrade-tiles-edit:hover
@@ -152,19 +190,18 @@ html
 
    $(document).ready(function()
    {
-     var tiles, tileItem = ZeT.hiddenInstance('ReTrade.TilesItem',
+     var tileItem = ZeT.hiddenInstance('ReTrade.TilesItem',
       [{ wrapClass: 'tile-wrap', data: { array: DATA }, shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ', selectedClass: 'selected' }],
       {
-        on     : function(e)
+        _on_select : function(selected, d, wr)
         {
-          this.$applySuper(arguments)
+          wr.find('.retrade-tiles-delete').toggle(selected)
+          wr.find('.retrade-tiles-edit').toggle(selected)
+          wr.find('.retrade-tiles-move').toggle(selected)
+          wr.find('.retrade-tiles-goto').toggle(selected)
 
-          if(e.type == 'select')
-          {
-            $(e.cell).find('.retrade-tiles-delete').toggle(e.selected)
-            $(e.cell).find('.retrade-tiles-edit').toggle(e.selected)
-            $(e.cell).find('.retrade-tiles-goto').toggle(e.selected)
-          }
+          if(!d.moved && this._get_moved().length)
+            wr.find('.retrade-tiles-insert').toggle(selected)
         },
 
         provide : function(i, tile)
@@ -179,16 +216,19 @@ html
 
         _wrap  : function()
         {
-          var wr = this.$applySuper(arguments)
+          var self = this, wr = this.$applySuper(arguments)
 
-          wr.append($('<div/>').hide().addClass('retrade-tiles-delete').
-            click(ZeT.fbind(this._delete, this, wr[0])))
+          function add(cls, f, title)
+          {
+            wr.append($('<div/>').hide().attr('title', title).
+              addClass(cls).click(ZeT.fbind(f, self, wr[0])))
+          }
 
-          wr.append($('<div/>').hide().addClass('retrade-tiles-edit').
-            click(ZeT.fbind(this._edit, this, wr[0])))
-
-          wr.append($('<div/>').hide().addClass('retrade-tiles-goto').
-            click(ZeT.fbind(this._goto, this, wr[0])))
+          add('retrade-tiles-delete', this._delete, 'Удалить')
+          add('retrade-tiles-edit',   this._edit,   'Редактировать')
+          add('retrade-tiles-goto',   this._goto,   'Активировать ссылку')
+          add('retrade-tiles-move',   this._move,   'Вырезать')
+          add('retrade-tiles-insert', this._insert, 'Вставить')
 
           return wr
         },
@@ -210,7 +250,7 @@ html
           if(m = this._data.data(i))
             m.selected = true
 
-          tiles.update()
+          this.control.update()
         },
 
         _edit : function(wr)
@@ -220,12 +260,77 @@ html
           this._review(wr, d)
         },
 
+        _move : function(wr)
+        {
+          var d = this.data(wr = $(wr))
+          d.moved = !d.moved
+          this._review(wr, d)
+        },
+
+        _insert : function(wr)
+        {
+          //~: insert target model
+          var m = this.data(wr)
+          ZeT.assertn(m && (m = m.model))
+
+          //~: collect all the models moved
+          var moved = this._get_moved()
+          if(!moved.length) return
+
+          function reset(x)
+          {
+            x.moved = false
+            x.selected = x.edited
+          }
+
+          reset(this.data(wr))
+          ZeT.each(this._get_moved(true), reset)
+          this._data.move(m, moved)
+
+          //~: select current item
+          var i = this.index(wr)
+          m = this._data.data(i)
+          if(m) m.selected = true
+
+          this.control.update()
+        },
+
+        _get_moved : function(data)
+        {
+          var all = [], self = this
+
+          this.tiles.each(function(tile)
+          {
+            var d = self.data(tile)
+            if(d && d.moved)
+              all.push((data)?(d):(d.model))
+          })
+
+          return all
+        },
+
         _review : function(wr, d)
         {
           var c = this.node(wr = $(wr))
           var e = wr.find('.retrade-tiles-edit')
+          var m = wr.find('.retrade-tiles-move')
 
-          wr.find('.retrade-tiles-goto').toggle(!!(d.selected && !d.edited))
+          wr.find('.retrade-tiles-goto').toggle(
+            !!(d.selected && !d.edited & !d.moved))
+
+          wr.find('.retrade-tiles-insert').toggle(
+            !!(d.selected && !d.moved && this._get_moved().length))
+
+          if(d.moved)
+          {
+            m.addClass('selected')
+            c.css('opacity', 0.25)
+          }
+          else
+          {
+            m.removeClass('selected')
+            !d.edited && c.css('opacity', 1.0)
+          }
 
           if(d.edited)
           {
@@ -235,8 +340,10 @@ html
           else
           {
             e.removeClass('selected')
-            c.css('opacity', 1.0)
+            !d.moved && c.css('opacity', 1.0)
           }
+
+          this._select(!!d.selected, wr)
         },
 
         _goto : function(wr)
@@ -252,11 +359,11 @@ html
 
         _can_select : function(selected, d)
         {
-          return !d.edited
+          return selected || (!d.edited && !d.moved)
         }
       })
 
-      tiles = new ReTrade.TilesControl({
+      var tiles = new ReTrade.TilesControl({
 
         content : tileItem,
         tiles : { area: 'area', absolute: true,
