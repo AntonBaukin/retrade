@@ -3664,7 +3664,7 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 
 		//~: this + coordinates
 		cell.data('ReTrade.Tiles', this)
-		cell.data('ReTrade.Tiles.XY', [x, y])
+		cell.data('ReTrade.Tiles.xy', [x, y])
 
 		function cb(type)
 		{
@@ -3691,7 +3691,7 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 		if(!ZeT.isf(on)) return
 
 		//~: cell xy
-		var xy = $(cell).data('ReTrade.Tiles.XY')
+		var xy = $(cell).data('ReTrade.Tiles.xy')
 		ZeT.assert(ZeT.isa(xy) && (xy.length == 2))
 
 		//!: invoke the callback
@@ -3809,11 +3809,10 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 		var self = this
 
 		//~: make the layout, then traverse
-		this.tiles.layout().each(function(node, x, y)
+		this.tiles.layout().each(function(tile, x, y)
 		{
 			var id = self.scroll(x, y, self)
-			ZeT.assert(!ZeT.isx(id))
-			self.content.provide(id, node, self)
+			self.content.provide(id, tile, self)
 		})
 
 		return this
@@ -3893,16 +3892,20 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 	 */
 	provide           : function(index, tile)
 	{
+		//~: model of this tile
 		var m = this._data.model(index)
 		tile.toggle(!!m); if(!m) return
 
-		var cnt = this.node(tile, true)
-//		var div =
-//		var w   = cnt.parent().innerWidth()
-//		var h   = cnt.parent().innerHeight()
-//		ZeT.log(w, ' x ', h)
+		//~: content node
+		var w = this.wrapper(tile, true)
+		var c = this.node(w)
 
-		cnt.text(m.text)
+		//~: index of the tile
+		w.data('ReTrade.TilesItem.index', index)
+
+		//~: set the content text
+		if(ZeT.iss(m.text))
+			c.text(m.text)
 	},
 
 	/**
@@ -3914,31 +3917,53 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		//~: first assume the tile is wrapper
 		var wr = $(tile)
 		if(wr.data('ReTrade.TilesItem') !== this)
-			var wr = this.wrapper(tile, create)
+			wr = this.wrapper(tile, create)
 
 		//?: {found it not}
 		if(!wr) if(!create) return undefined; else
 			throw ZeT.ass('Could not find tile wrapper!')
 
-		var cnt = wr.data('ReTrade.TilesItem.Content')
+		var cnt = wr.data('ReTrade.TilesItem.content')
 		ZeT.assert(ZeTD.isn(cnt))
 		return $(cnt)
 	},
 
+	index             : function(tile)
+	{
+		//~: assume a wrapper is given
+		var a = 'ReTrade.TilesItem.index'
+		var i = $(tile).data(a)
+		if(ZeT.isi(i)) return i
+
+		//~: search for the wrapper
+		var w = this.wrapper(tile)
+		if(ZeT.isx(w)) return
+
+		i = w.data(a)
+		ZeT.log('Index:', i)
+		ZeT.assert(ZeT.isi(i))
+
+		return i
+	},
+
 	/**
-	 * Returns map-object of the content node data.
+	 * Returns map-object of the content model-related data.
 	 */
 	data              : function(tile)
 	{
-		//~: assume tile is content node itself
-		var attr = 'ReTrade.TilesItem.Data'
-		var node = $(tile)
-		var data = node.data(attr)
-		if(data) return data
+		//~: assume tile is the wrapping node
+		var xa = 'ReTrade.TilesItem.index'
+		var id = $(tile).data(xa)
 
 		//~: search for the wrapping root in the tile
-		node = ZeT.assertn(this.wrapper(node))
-		return ZeT.assertn(node.data(attr))
+		if(ZeT.isx(id))
+		{
+			tile = ZeT.assertn(this.wrapper(tile))
+			id = $(tile).data(xa)
+			ZeT.assert(!ZeT.isx(id))
+		}
+
+		return this._data.data(id)
 	},
 
 	/**
@@ -3975,17 +4000,25 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 
 		//?: {is click on touch}
 		if(T && (e.type == 'click'))
-			this.select(!d.selected, e)
+			this._select(!d.selected, e)
 
-		//?: {mouse entered | leaved}
-		if(!T && ((e.type == 'enter') || (e.type == 'leave')))
-			this.select(!d.selected, e)
+		//?: {mouse entered}
+		if(!T && (e.type == 'enter'))
+			this._select(true, e)
+
+		//?: {mouse leaved}
+		if(!T && (e.type == 'leave'))
+			this._select(false, e)
 	},
 
-	select            : function(selected, event)
+	_select           : function(selected, event)
 	{
+		//~: access wrapper & data
 		var w = this.wrapper(event.cell)
 		var d = this.data(w)
+
+		//?: {can't select}
+		if(!this._can_select(selected, d, w, event)) return
 		d.selected = selected
 
 		//?: {has selection class}
@@ -4001,6 +4034,14 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		))
 	},
 
+	_can_select       : function(/* selected, data, wrapper, event */)
+	{
+		return true
+	},
+
+	_erase            : function(/* wr, data, cnt, model, tile, index */)
+	{},
+
 	_wrap             : function(tile)
 	{
 		var wr = $('<div/>')
@@ -4013,10 +4054,7 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 
 		//~: create the content
 		var cnt = this._wrap_content(wr)
-
-		//~: install the data
-		wr.data('ReTrade.TilesItem.Content', cnt)
-		wr.data('ReTrade.TilesItem.Data', {})
+		wr.data('ReTrade.TilesItem.content', $(cnt)[0])
 
 		return wr
 	},
@@ -4076,7 +4114,43 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 	 */
 	model             : function(index)
 	{
-		var a = this.opts.array
-		if(ZeT.isa(a)) return a[index]
+		var a; if(ZeT.isa(a = this.opts.array))
+			return a[index]
+	},
+
+	data              : function(index_or_model)
+	{
+		//~: access the model
+		var m = index_or_model
+		if(ZeT.isi(m)) m = this.model(m)
+		if(ZeT.isx(m)) return
+
+		//~: assign the
+		var id; if(ZeT.isx(id = m.id))
+		{
+			if(!this._mid) this._mid = 0
+			m.id = this._mid++
+		}
+
+		//~: access the data
+		if(!this._data) this._data = {}
+		var d = this._data[id]
+
+		return (d)?(d):(this._data[id] =
+		  { id: m.id, model: m })
+	},
+
+	remove            : function(m, index)
+	{
+		var a; if(ZeT.isa(a = this.opts.array))
+			ZeTA.del(a, m)
+
+		if(this._data)
+			delete this._data[m]
+	},
+
+	goto              : function(m)
+	{
+		ZeT.log('Goto model: ', m.id)
 	}
 })
