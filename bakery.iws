@@ -9,10 +9,8 @@
     <bookmark url="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-87 [beta]: fully implemented Tiles components. Going to the server side...">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uitiles.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uitiles.html" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -714,7 +712,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="system-19 [beta]: tested checks.js, asserts.js, and part of basics.js. Going to test more..." />
     <MESSAGE value="system-19 [beta]: implemented and tested arrays.js." />
     <MESSAGE value="system-19 [beta]: tested basic.js functions." />
     <MESSAGE value="system-19 [beta]: fixed Js Engine invocation for JDK.60!" />
@@ -739,7 +736,8 @@
     <MESSAGE value="ui-87 [alpha]: providing content for the tiles with models." />
     <MESSAGE value="ui-87 [alpha]: refactored referring models and data of the tiles." />
     <MESSAGE value="ui-87 [alpha]: implemented cut-paste of the tiles." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-87 [alpha]: implemented cut-paste of the tiles." />
+    <MESSAGE value="ui-87 [beta]: fully implemented Tiles components. Going to the server side..." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-87 [beta]: fully implemented Tiles components. Going to the server side..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
