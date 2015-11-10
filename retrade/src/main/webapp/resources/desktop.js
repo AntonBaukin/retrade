@@ -4181,7 +4181,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
  */
 ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem,
 {
-	provide : function(i, tile)
+	provide           : function(i, tile)
 	{
 		this.$applySuper(arguments)
 
@@ -4191,7 +4191,7 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		w && d && this._review(w, d)
 	},
 
-	_wrap  : function()
+	_wrap             : function()
 	{
 		var self = this, wr = this.$applySuper(arguments)
 
@@ -4210,18 +4210,20 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		return wr
 	},
 
-	_on_select : function(selected, d, wr)
+	_on_select        : function(selected, d, wr)
 	{
-		wr.find('.retrade-tiles-delete').toggle(selected)
-		wr.find('.retrade-tiles-edit').toggle(selected)
-		wr.find('.retrade-tiles-move').toggle(selected)
-		wr.find('.retrade-tiles-goto').toggle(selected)
-
-		if(!d.moved && this._get_moved().length)
-			wr.find('.retrade-tiles-insert').toggle(selected)
+		this._review(wr, d, false)
 	},
 
-	_delete : function(wr)
+	_edit             : function(wr)
+	{
+		var d = this.data(wr = $(wr))
+		d.edited = !d.edited
+
+		this._review(wr, d)
+	},
+
+	_delete           : function(wr)
 	{
 		//~: tile scroll index
 		var i = this.index(wr)
@@ -4241,26 +4243,20 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		this.control.update()
 	},
 
-	_edit : function(wr)
-	{
-		var d = this.data(wr = $(wr))
-		d.edited = !d.edited
-		this._review(wr, d)
-	},
-
-	_move : function(wr)
+	_move             : function(wr)
 	{
 		var d = this.data(wr = $(wr))
 		d.moved = !d.moved
+		if(d.moved) d.edited = false
 		this._review(wr, d)
 	},
 
-	_can_select : function(selected, d)
+	_can_select       : function(selected, d)
 	{
 		return selected || (!d.edited && !d.moved)
 	},
 
-	_get_moved : function(data)
+	_get_moved        : function(data)
 	{
 		var all = [], self = this
 
@@ -4274,7 +4270,7 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		return all
 	},
 
-	_insert : function(wr)
+	_insert           : function(wr)
 	{
 		//~: insert target model
 		var m = this.data(wr)
@@ -4302,17 +4298,25 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		this.control.update()
 	},
 
-	_review : function(wr, d)
+	_review           : function(wr, d, doselect)
 	{
 		var c = this.node(wr = $(wr))
 		var e = wr.find('.retrade-tiles-edit')
 		var m = wr.find('.retrade-tiles-move')
 
+		wr.find('.retrade-tiles-edit').toggle(d.selected)
+
+		if(!d.moved && this._get_moved().length)
+			wr.find('.retrade-tiles-insert').toggle(d.selected)
+
 		wr.find('.retrade-tiles-goto').toggle(
-		  !!(d.selected && !d.edited & !d.moved))
+		  !!(d.selected && !d.edited && !d.moved))
 
 		wr.find('.retrade-tiles-insert').toggle(
 		  !!(d.selected && !d.moved && this._get_moved().length))
+
+		wr.find('.retrade-tiles-delete').toggle(!!d.edited)
+		wr.find('.retrade-tiles-move').toggle(!!(d.edited || d.moved))
 
 		if(d.moved)
 		{
@@ -4336,10 +4340,11 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 			!d.moved && c.css('opacity', 1.0)
 		}
 
-		this._select(!!d.selected, wr)
+		if(doselect !== false)
+			this._select(!!d.selected, wr)
 	},
 
-	_goto : function(wr)
+	_goto             : function(wr)
 	{
 		var i = this.index(wr)
 		ZeT.assert(ZeT.isi(i))
