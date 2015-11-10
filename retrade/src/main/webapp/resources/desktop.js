@@ -4195,10 +4195,12 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 	{
 		var self = this, wr = this.$applySuper(arguments)
 
-		function add(cls, f, title)
+		function add(cls, f, title, p)
 		{
-			wr.append($('<div/>').hide().attr('title', title).
-			  addClass(cls).click(ZeT.fbind(f, self, wr[0])))
+			var node; (p || wr).append(node = $('<div/>').
+			  hide().attr('title', title).addClass(cls).
+			  click(ZeT.fbind(f, self, wr[0])))
+			return node
 		}
 
 		add('retrade-tiles-delete', this._delete, 'Удалить')
@@ -4207,12 +4209,89 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		add('retrade-tiles-move',   this._move,   'Вырезать')
 		add('retrade-tiles-insert', this._insert, 'Вставить')
 
+		var co; wr.append(co = $('<div/>').hide().
+		  addClass('retrade-tiles-colors'))
+
+		function sco(color)
+		{
+			return ZeT.fbindu(self._set_color, 1, color, 2, true)
+		}
+
+		add('N', sco('N'), 'Серый',     co).show()
+		add('R', sco('R'), 'Красный',   co).show()
+		add('G', sco('G'), 'Зелёный',   co).show()
+		add('O', sco('O'), 'Оранжевый', co).show()
+
 		return wr
+	},
+
+	_can_select       : function(selected, d)
+	{
+		return selected || (!d.edited && !d.moved)
 	},
 
 	_on_select        : function(selected, d, wr)
 	{
 		this._review(wr, d, false)
+	},
+
+	_review           : function(wr, d, doselect)
+	{
+		var c = this.node(wr = $(wr))
+		var e = wr.find('.retrade-tiles-edit')
+		var m = wr.find('.retrade-tiles-move')
+
+		//<: show-hide the controls
+
+		wr.find('.retrade-tiles-edit').toggle(d.selected)
+		wr.find('.retrade-tiles-colors').toggle(!!d.edited)
+
+		if(!d.moved && this._get_moved().length)
+			wr.find('.retrade-tiles-insert').toggle(d.selected)
+
+		wr.find('.retrade-tiles-goto').toggle(
+			!!(d.selected && !d.edited && !d.moved))
+
+		wr.find('.retrade-tiles-insert').toggle(
+			!!(d.selected && !d.moved && this._get_moved().length))
+
+		wr.find('.retrade-tiles-delete').toggle(!!d.edited)
+		wr.find('.retrade-tiles-move').toggle(!!(d.edited || d.moved))
+
+		//>: show-hide the controls
+
+		if(d.moved) //<-- move related controls
+		{
+			m.addClass('selected')
+			c.css('opacity', 0.25)
+		}
+		else
+		{
+			m.removeClass('selected')
+			!d.edited && c.css('opacity', 1.0)
+		}
+
+		if(d.edited) //<-- edit related controls
+		{
+			e.addClass('selected')
+			c.css('opacity', 0.25)
+		}
+		else
+		{
+			e.removeClass('selected')
+			!d.moved && c.css('opacity', 1.0)
+		}
+
+		//~: paint the border
+		if(!d.model.color) d.model.color = 'N'
+		ZeT.assert(ZeT.iss(d.model.color))
+		ZeT.assert(['N', 'R', 'G', 'O'].indexOf(d.model.color) >= 0)
+		this._set_color(wr, d.model.color)
+		this._color_controls(wr, d)
+
+		//?: {refresh the selection}
+		if(doselect !== false)
+			this._select(!!d.selected, wr)
 	},
 
 	_edit             : function(wr)
@@ -4249,11 +4328,6 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		d.moved = !d.moved
 		if(d.moved) d.edited = false
 		this._review(wr, d)
-	},
-
-	_can_select       : function(selected, d)
-	{
-		return selected || (!d.edited && !d.moved)
 	},
 
 	_get_moved        : function(data)
@@ -4295,53 +4369,8 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		m = this._data.data(i)
 		if(m) m.selected = true
 
+		//!: update all the tiles
 		this.control.update()
-	},
-
-	_review           : function(wr, d, doselect)
-	{
-		var c = this.node(wr = $(wr))
-		var e = wr.find('.retrade-tiles-edit')
-		var m = wr.find('.retrade-tiles-move')
-
-		wr.find('.retrade-tiles-edit').toggle(d.selected)
-
-		if(!d.moved && this._get_moved().length)
-			wr.find('.retrade-tiles-insert').toggle(d.selected)
-
-		wr.find('.retrade-tiles-goto').toggle(
-		  !!(d.selected && !d.edited && !d.moved))
-
-		wr.find('.retrade-tiles-insert').toggle(
-		  !!(d.selected && !d.moved && this._get_moved().length))
-
-		wr.find('.retrade-tiles-delete').toggle(!!d.edited)
-		wr.find('.retrade-tiles-move').toggle(!!(d.edited || d.moved))
-
-		if(d.moved)
-		{
-			m.addClass('selected')
-			c.css('opacity', 0.25)
-		}
-		else
-		{
-			m.removeClass('selected')
-			!d.edited && c.css('opacity', 1.0)
-		}
-
-		if(d.edited)
-		{
-			e.addClass('selected')
-			c.css('opacity', 0.25)
-		}
-		else
-		{
-			e.removeClass('selected')
-			!d.moved && c.css('opacity', 1.0)
-		}
-
-		if(doselect !== false)
-			this._select(!!d.selected, wr)
 	},
 
 	_goto             : function(wr)
@@ -4353,5 +4382,64 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		ZeT.assertn(m)
 
 		this._data.goto(m)
+	},
+
+	_color_controls   : function(wr, d)
+	{
+		var co = d.model.color
+
+		function node(c)
+		{
+			return wr.find('.retrade-tiles-colors > .' + c)[0]
+		}
+
+		function cls(c)
+		{
+			return ((co == c)?('-'):('+')) + 'enabled'
+		}
+
+		ZeTD.classes(node('R'), cls('R'))
+		ZeTD.classes(node('G'), cls('G'))
+		ZeTD.classes(node('O'), cls('O'))
+		ZeTD.classes(node('N'), cls('N'))
+	},
+
+	_set_color        : function(wr, co, exit_edit)
+	{
+		var i = this.index(wr)
+		ZeT.assert(ZeT.isi(i))
+
+		//~: assign the color to the model
+		var m = this._data.model(i)
+		var x = (ZeT.assertn(m).color == co)
+		m.color = co
+
+		//~: paint the border
+		this._color_border(wr, co)
+
+		//~: exit edit mode
+		if(!x && (exit_edit === true))
+		{
+			var d = this.data(wr)
+			d.edited = false
+			this._review(wr, d, false)
+		}
+	},
+
+	_color_border     : function(wr, co)
+	{
+		//~: color replace arrays
+		var XR = [ '-N-', '-R-', '-G-', '-O-' ]
+		co = '-' + co + '-'
+
+		//~: replace the border color
+		$(wr).find('*').each(function()
+		{
+			var cls = $(this).attr('class')
+			if(ZeTS.ises(cls)) return
+			for(var i = 0;(i < 4);i++)
+				cls = ZeTS.replace(cls, XR[i], co)
+			$(this).attr('class', cls)
+		})
 	}
 })
