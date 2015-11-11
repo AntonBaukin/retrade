@@ -1,3 +1,8 @@
+/*===============================================================+
+ |                JSON Provider for United Objects               |
+ |                                   / anton.baukin@gmail.com /  |
+ +===============================================================*/
+
 var ZeT  = JsX.once('zet/app.js')
 var ZeTS = JsX.once('zet/strings.js')
 var getUnity = ZeT.bean('GetUnity')

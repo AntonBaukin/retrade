@@ -1,3 +1,9 @@
+/*===============================================================+
+ |                 JSON Provider for User Events                 |
+ |                                   / anton.baukin@gmail.com /  |
+ +===============================================================*/
+
+
 var ZeT    = JsX.once('zet/app.js')
 var ZeTS   = JsX.once('zet/strings.js')
 var getMsg = ZeT.bean('GetMsg')
