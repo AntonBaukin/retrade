@@ -3446,6 +3446,10 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 		//~: and justify it
 		this._justify()
 
+		//?: {has layout callback}
+		if(ZeT.isf(this.onlayout))
+			this.onlayout(this)
+
 		return this
 	},
 
@@ -3763,17 +3767,15 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
  *
  * Optional parameters are:
  *
- * · scroll   function(x, y, this)
+ * · onupdate function(this)
  *
- *   strategy that provides content indices
- *   for each row-column tile of the grid.
- *   By default, it's: x * columns + y,
- *   the linear index of tile.
+ *   invoked each time the tiles are updated.
  */
 ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 
 	init              : function(opts)
 	{
+		var self = this
 		ZeT.assert(ZeT.iso(opts))
 		this.opts = opts
 
@@ -3783,6 +3785,13 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 			this.tiles = opts.tiles
 		else
 			this.tiles = new ReTrade.Tiles(opts.tiles)
+
+		//~: tiles update
+		if(ZeT.isf(opts.onupdate))
+			this.tiles.onlayout = function()
+			{
+				opts.onupdate(self)
+			}
 
 		//~: content provider
 		ZeT.assert(ZeT.iso(opts.content))
@@ -3797,13 +3806,6 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 
 		//~: attach tiles events listener
 		this.tiles.on(ZeT.fbind(this._ontiles, this))
-
-		//?: {has no scroll strategy}
-		if(!ZeT.isf(this.scroll = opts.scroll))
-			this.scroll = function(x, y, control)
-			{
-				return y * control.columns() + x
-			}
 	},
 
 	update            : function()
@@ -3813,7 +3815,7 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 		//~: make the layout, then traverse
 		this.tiles.layout().each(function(tile, x, y)
 		{
-			var id = self.scroll(x, y, self)
+			var id = self.content.scroll(x, y, self)
 			self.content.provide(id, tile, self)
 		})
 
@@ -3830,10 +3832,32 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 		return this.tiles.columns()
 	},
 
+	scrollStart       : function(left, on)
+	{
+		var self = this
+
+		function scroll()
+		{
+			var data = self.content._data
+			data.offset(data.offset() + ((left)?(-1):(1)))
+			self.update()
+		}
+
+		if(on && ZeT.isx(this.scrollTimer))
+			this.scrollTimer = setInterval(
+			  scroll, this.opts.scrollInterval || 250)
+
+		if(!on && !ZeT.isx(this.scrollTimer))
+		{
+			clearInterval(this.scrollTimer)
+			delete this.scrollTimer
+		}
+	},
+
 	_ontiles          : function(e)
 	{
-		e.index   = this.scroll(e.column, e.row, this)
 		e.control = this
+		e.index   = this.content.scroll(e.column, e.row, this)
 
 		//!: invoke content strategy
 		this.content.on(e)
@@ -3908,6 +3932,11 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		//~: set the content text
 		if(ZeT.iss(m.text))
 			c.text(m.text)
+	},
+
+	scroll            : function()
+	{
+		return this._data.scroll.apply(this._data, arguments)
 	},
 
 	/**
@@ -4118,6 +4147,27 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 	{
 		var a; if(ZeT.isa(a = this.opts.array))
 			return a[index]
+
+		throw ZeT.ass('Unsupported!')
+	},
+
+	scroll            : function(x, y, ctl)
+	{
+		var w = ctl.columns(), h = ctl.rows()
+		var o = this._offset, wh = w * h
+
+		var a; if(ZeT.isa(a = this.opts.array))
+		{
+			if(!o) return w * y + x
+
+			var z = a.length - wh
+			if((z >= 0) && (o > z))
+				this._offset = o = z
+
+			return w * y + x + o
+		}
+
+		throw ZeT.ass('Unsupported!')
 	},
 
 	data              : function(index_or_model)
@@ -4127,7 +4177,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 		if(ZeT.isi(m)) m = this.model(m)
 		if(ZeT.isx(m)) return
 
-		//~: assign the
+		//~: assign the model id
 		var id; if(ZeT.isx(id = m.id))
 		{
 			if(!this._mid) this._mid = 0
@@ -4142,10 +4192,27 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 		  { id: m.id, model: m })
 	},
 
-	remove            : function(m, index)
+	each              : function(f)
+	{
+		ZeT.assert(ZeT.isf(f))
+
+		if(ZeT.isa(this.opts.array))
+			return ZeT.each(this.opts.array, f)
+
+		throw ZeT.ass('Unsupported!')
+	},
+
+	remove            : function(m)
 	{
 		var a; if(ZeT.isa(a = this.opts.array))
+		{
 			ZeTA.del(a, m)
+
+			//?: {has offset out of the length}
+			if(!ZeT.isx(this._offset))
+				if(this._offset > a.length)
+					this._offset = a.length
+		}
 
 		if(this._data)
 			delete this._data[m]
@@ -4169,6 +4236,19 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 	goto              : function(m)
 	{
 		ZeT.log('Goto model: ', m.id)
+	},
+
+	offset            : function(o)
+	{
+		if(ZeT.isx(o))
+			return ZeT.isx(this._offset)?(0):(this._offset)
+
+		var a; if(ZeT.isa(a = this.opts.array))
+		{
+			if(o < 0) o = 0
+			if(o > a.length) o = a.length
+			this._offset = o
+		}
 	}
 })
 
@@ -4334,11 +4414,11 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 	{
 		var all = [], self = this
 
-		this.tiles.each(function(tile)
+		this._data.each(function(m)
 		{
-			var d = self.data(tile)
+			var d = self._data.data(m)
 			if(d && d.moved)
-				all.push((data)?(d):(d.model))
+				all.push((data)?(d):(m))
 		})
 
 		return all

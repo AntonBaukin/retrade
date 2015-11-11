@@ -41,7 +41,7 @@ html
   border: 1px dashed white;
 }
 
-#area > div
+#area > div:last-child
 {
   position: absolute; left: 0; top: 0; right: 0; bottom: 0;
 }
@@ -240,12 +240,79 @@ html
   margin-left: 42px;
 }
 
+.retrade-tiles-scroll-right-outer,
+  .retrade-tiles-scroll-left-outer,
+  .retrade-tiles-scroll-up-outer,
+  .retrade-tiles-scroll-down-outer
+{
+  position: absolute; padding: 8px 2px;
+  z-index: 10; border-radius: 4px; cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-right: solid 3px rgba(124, 131, 143, 0.75);
+  border-bottom: solid 3px rgba(124, 131, 143, 0.75);
+}
+
+.retrade-tiles-scroll-right-outer
+{
+  right: -20px; bottom: 33px;
+}
+
+.retrade-tiles-scroll-right-outer:hover,
+  .retrade-tiles-scroll-right-outer.pressed
+{
+  right: -23px; bottom: 30px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-scroll-left-outer
+{
+  left: -23px; top: 30px;
+}
+
+.retrade-tiles-scroll-left-outer:hover,
+  .retrade-tiles-scroll-left-outer.pressed
+{
+  left: -20px; top: 33px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-scroll-up-outer
+{
+  left: 50%; margin-left: -33px;
+  top: -20px; padding: 2px 8px;
+}
+
+.retrade-tiles-scroll-up-outer:hover,
+  .retrade-tiles-scroll-up-outer.pressed
+{
+  margin-left: -30px; top: -17px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-scroll-down-outer
+{
+  left: 50%; margin-left: -33px;
+  bottom: -20px; padding: 2px 8px;
+}
+
+.retrade-tiles-scroll-down-outer:hover,
+  .retrade-tiles-scroll-down-outer.pressed
+{
+  margin-left: -30px; bottom: -22px;
+  border-right: none; border-bottom: none;
+}
+
   </style>
 
 </head>
 <body>
 
-  <div id = 'area'></div>
+  <div id = 'area'>
+    <div class = 'retrade-tiles-scroll-right-outer'><div class = 'retrade-tiles-scroll-right'></div></div>
+    <div class = 'retrade-tiles-scroll-left-outer'><div class = 'retrade-tiles-scroll-left'></div></div>
+    <div class = 'retrade-tiles-scroll-up-outer'><div class = 'retrade-tiles-scroll-up'></div></div>
+    <div class = 'retrade-tiles-scroll-down-outer'><div class = 'retrade-tiles-scroll-down'></div></div>
+  </div>
 
   <script type = "text/javascript">
 
@@ -276,25 +343,54 @@ html
 
    $(document).ready(function()
    {
-      var tileItem = ZeT.createInstance('ReTrade.TilesItemExt', {
-        wrapClass: 'retrade-tile-wrap', data: { array: DATA },
-        shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ',
-        selectedClass: 'selected'
-      })
+     function sc(dir)
+     {
+       return $('.retrade-tiles-scroll-' + dir + '-outer')
+     }
 
-      var tiles = new ReTrade.TilesControl({
+     function updateScrollers(tiles)
+     {
+       var single = (tiles.columns() == 1)
 
-        content : tileItem,
-        tiles : { area: 'area', absolute: true,
-          min: [ 180, 144, 100.0, 80.0 ],
-          max: [ 250, 200, 100.0, 80.0 ],
-          rows: 'max', columns: 'min',
-          cellClass: 'retrade-tile-cell'
-        }
-      })
+       sc('right').toggle(!single)
+       sc('left').toggle(!single)
+       sc('up').toggle(single)
+       sc('down').toggle(single)
+     }
 
-      tiles.update()
-      $(window).resize(ZeT.fbind(tiles.update, tiles))
+     var tileItem = new ReTrade.TilesItemExt({
+       wrapClass: 'retrade-tile-wrap', data: { array: DATA },
+       shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ',
+       selectedClass: 'selected'
+     })
+
+     var tiles = new ReTrade.TilesControl({
+       content : tileItem, onupdate: updateScrollers,
+       tiles : { area: 'area', absolute: true,
+         min: [ 180, 144, 100.0, 80.0 ],
+         max: [ 250, 200, 100.0, 80.0 ],
+         rows: 'max', columns: 'min',
+         cellClass: 'retrade-tile-cell'
+       }
+     })
+
+     function scbind(dir, left)
+     {
+       if(ReTrade.isTouch) sc(dir).
+         mousedown(ZeT.fbind(tiles.scrollStart, tiles, left, true)).
+         mouseup(ZeT.fbind(tiles.scrollStart, tiles, left, false))
+       else sc(dir).
+         mouseenter(ZeT.fbind(tiles.scrollStart, tiles, left, true)).
+         mouseleave(ZeT.fbind(tiles.scrollStart, tiles, left, false))
+     }
+
+     scbind('right', false)
+     scbind('left', true)
+     scbind('up', true)
+     scbind('down', false)
+
+     tiles.update()
+     $(window).resize(ZeT.fbind(tiles.update, tiles))
    })
 
   </script>

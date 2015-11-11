@@ -2011,12 +2011,14 @@ ZeT.Layout.Proc.Node = ZeT.defineClass('ZeT.Layout.Proc.Node', {
 
 	init              : function(opts)
 	{
-		this.opts = opts || {};
+		ZeT.log('Opts: ', opts)
+		if(ZeT.iss(opts) || ZeTD.isxn(opts))
+			opts = { node: opts }
+		this.opts = opts || {}
 	},
 
 	proc              : function(node)
 	{
-		ZeT.log(node)
 		if(!ZeTD.isxn(node))
 			node = this._wrap_nodes(this._create_node());
 
