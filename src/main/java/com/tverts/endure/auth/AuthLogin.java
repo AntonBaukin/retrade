@@ -152,4 +152,16 @@ public class AuthLogin extends Entity implements CatItem
 	{
 		this.descr = descr;
 	}
+
+	public String getUserLinks()
+	{
+		return userLinks;
+	}
+
+	private String userLinks;
+
+	public void setUserLinks(String userLinks)
+	{
+		this.userLinks = userLinks;
+	}
 }

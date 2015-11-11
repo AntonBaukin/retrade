@@ -142,6 +142,23 @@ ZeTA.concat = function(a, b, begin, end)
 }
 
 /**
+ * Takes all defined array arguments and individual
+ * items and concatenates them in single array.
+ */
+ZeTA.combine = function()
+{
+	var result = []
+
+	for(var i = 0;(i < arguments.length);i++)
+		if(ZeT.isa(arguments[i]))
+			Array.prototype.push.apply(result, arguments[i])
+		else if(!ZeT.isx(arguments[i]))
+			result.push(arguments[i])
+
+	return result
+}
+
+/**
  * Checks that two objects are array-like and
  * have the same length and the items each
  * strictly (===) equals.

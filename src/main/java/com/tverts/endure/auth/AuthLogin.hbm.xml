@@ -109,5 +109,20 @@
       </column>
     </property>
 
+
+    <!-- User Links [JSON string as compressed bytes] -->
+
+    <property name = 'userLinks'>
+
+      <column name = 'user_links' sql-type = 'bytea'>
+        <comment>
+          String (as compressed bytes) with JSON document
+          of the users collection of application links
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.StrBytesType'/>
+    </property>
+
   </union-subclass>
 </hibernate-mapping>
