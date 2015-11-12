@@ -112,7 +112,7 @@
 
     <!-- User Links [JSON string as compressed bytes] -->
 
-    <property name = 'userLinks'>
+    <property name = 'userLinks' lazy = 'true'>
 
       <column name = 'user_links' sql-type = 'bytea'>
         <comment>

@@ -57,7 +57,18 @@ public class JsX extends ServiceBase
 
 	public static Object invoke(String script, String function, JsCtx ctx, Object... args)
 	{
-		return JsX.INSTANCE.execute(script, function, ctx, args);
+		//~: create local context on demand
+		JsCtx local = (ctx != null)?(null):(ctx = new JsCtx().init());
+
+		try //!: run the script
+		{
+			return JsX.INSTANCE.execute(script, function, ctx, args);
+		}
+		finally
+		{
+			if(local != null)
+				local.close();
+		}
 	}
 
 
