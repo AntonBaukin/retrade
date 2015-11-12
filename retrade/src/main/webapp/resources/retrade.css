@@ -342,6 +342,274 @@ table.retrade-align-right.x-field
 }
 
 
+/* User Web Links (tiles) */
+
+.retrade-tiles-links-area
+{
+  position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;
+  background: linear-gradient(135deg, #ffffff 0%,#f3f3f3 53%,#ededed 57%,#ffffff 100%);
+}
+
+.retrade-tiles-links-area > div:last-child
+{
+  position: absolute; left: 10px; top: 10px; right: 10px; bottom: 10px;
+}
+
+.retrade-tile-links-wrap
+{
+  position: absolute;
+  left: 13px; top: 13px;
+  right: 10px; bottom: 10px;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+.retrade-tile-links-wrap.selected
+{
+  left: 10px; top: 10px;
+  right: 13px; bottom: 13px;
+}
+
+.retrade-tile-links-wrap .retrade-boshadow-area
+{
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.retrade-tile-links-wrap .retrade-boshadow-main
+{
+  display: block;
+}
+
+.retrade-tile-links-wrap .retrade-boshadow-shadow
+{
+  display: none;
+}
+
+.retrade-tile-links-wrap.selected .retrade-boshadow-shadow
+{
+  display: block;
+}
+
+.retrade-tile-links-wrap .retrade-boshadow-content
+{
+  padding: 2px 3px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-delete,
+  .retrade-tile-links-wrap .retrade-tiles-edit,
+  .retrade-tile-links-wrap .retrade-tiles-goto,
+  .retrade-tile-links-wrap .retrade-tiles-move,
+  .retrade-tile-links-wrap .retrade-tiles-insert
+{
+  position: absolute; z-index: 10;
+  cursor: pointer; border-radius: 50%;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-delete
+{
+  right: -5px; top: -5px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-edit
+{
+  left: -5px; top: -5px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-move
+{
+  left: -5px; bottom: -5px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-insert
+{
+  right: -5px; bottom: -5px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-goto
+{
+  left: 50%; top: 50%;
+  margin-left: -24px;
+  margin-top: -24px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-delete:hover,
+  .retrade-tile-links-wrap .retrade-tiles-edit:hover,
+  .retrade-tile-links-wrap .retrade-tiles-move:hover,
+  .retrade-tile-links-wrap .retrade-tiles-insert:hover
+
+{
+  width: 38px; height: 38px;
+  background-size: 38px 38px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-delete:hover
+{
+  right: -8px; top: -8px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-edit:hover
+{
+  left: -8px; top: -8px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-move:hover
+{
+  left: -8px; bottom: -8px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-insert:hover
+{
+  right: -8px; bottom: -8px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-goto:hover
+{
+  width: 64px; height: 64px;
+  background-size: 64px 64px;
+  margin-left: -32px;
+  margin-top: -32px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-edit:hover
+{
+  left: -8px;
+}
+
+.retrade-tile-links-wrap .retrade-tiles-colors
+{
+  position: absolute; z-index: 5;
+  left: 50%; top: 50%;
+  width: 156px; height: 36px;
+  margin-top: -18px;
+  margin-left: -78px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.retrade-tiles-colors > div.N,
+  .retrade-tiles-colors > div.R,
+  .retrade-tiles-colors > div.G,
+  .retrade-tiles-colors > div.O
+{
+  top: 50%; left: 50%;
+  margin-top: -14px;
+  width: 24px; height: 24px;
+  box-sizing: content-box;
+  border-color: white;
+}
+
+.retrade-tiles-colors > div.N.enabled:hover,
+  .retrade-tiles-colors > div.R.enabled:hover,
+  .retrade-tiles-colors > div.G.enabled:hover,
+  .retrade-tiles-colors > div.O.enabled:hover
+{
+  width: 30px; height: 30px;
+  margin-top: -17px;
+}
+
+.retrade-tiles-colors > div.N
+{
+  margin-left: -74px;
+}
+
+.retrade-tiles-colors > div.N.enabled:hover
+{
+  margin-left: -77px;
+}
+
+.retrade-tiles-colors > div.R
+{
+  margin-left: -34px;
+}
+
+.retrade-tiles-colors > div.R.enabled:hover
+{
+  margin-left: -37px;
+}
+
+.retrade-tiles-colors > div.G
+{
+  margin-left: 5px;
+}
+
+.retrade-tiles-colors > div.G.enabled:hover
+{
+  margin-left: 2px;
+}
+
+.retrade-tiles-colors > div.O
+{
+  margin-left: 45px;
+}
+
+.retrade-tiles-colors > div.O.enabled:hover
+{
+  margin-left: 42px;
+}
+
+.retrade-tiles-links-scroll-right-outer,
+  .retrade-tiles-links-scroll-left-outer,
+  .retrade-tiles-links-scroll-up-outer,
+  .retrade-tiles-links-scroll-down-outer
+{
+  position: absolute; padding: 8px 2px;
+  z-index: 10; border-radius: 4px; cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-right: solid 3px rgba(124, 131, 143, 0.75);
+  border-bottom: solid 3px rgba(124, 131, 143, 0.75);
+}
+
+.retrade-tiles-links-scroll-right-outer
+{
+  right: -20px; bottom: 33px;
+}
+
+.retrade-tiles-links-scroll-right-outer:hover,
+  .retrade-tiles-links-scroll-right-outer.pressed
+{
+  right: -23px; bottom: 30px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-links-scroll-left-outer
+{
+  left: -23px; top: 30px;
+}
+
+.retrade-tiles-links-scroll-left-outer:hover,
+  .retrade-tiles-links-scroll-left-outer.pressed
+{
+  left: -20px; top: 33px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-links-scroll-up-outer
+{
+  left: 50%; margin-left: -33px;
+  top: -20px; padding: 2px 8px;
+}
+
+.retrade-tiles-links-scroll-up-outer:hover,
+  .retrade-tiles-links-scroll-up-outer.pressed
+{
+  margin-left: -30px; top: -17px;
+  border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-links-scroll-down-outer
+{
+  left: 50%; margin-left: -33px;
+  bottom: -20px; padding: 2px 8px;
+}
+
+.retrade-tiles-links-scroll-down-outer:hover,
+  .retrade-tiles-links-scroll-down-outer.pressed
+{
+  margin-left: -30px; bottom: -22px;
+  border-right: none; border-bottom: none;
+}
 
 
 /* menus */
@@ -780,9 +1048,9 @@ hr.retrade-info-hr
 
 .x-grid-cell.retrade-grid-doc-state-edited span
 {
-  background-color: green; color: white;
+  background-color: rgba(72, 141, 72, 0.9);
   border-radius: 4px; padding: 3px 2px 2px 2px;
-  -moz-osx-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto; color: white;
 }
 
 

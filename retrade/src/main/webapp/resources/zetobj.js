@@ -1004,7 +1004,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cati(1, arguments)
 		if(ZeTS.ises(m)) m = 'Assertion failed!'
 
-		ZeT.ass(m)
+		throw ZeT.ass(m)
 	},
 
 	ass              : function(/* messages */)
@@ -1012,7 +1012,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cat.apply(ZeTS, arguments)
 		var x = ZeTS.cat(m, '\n', new Error().stack)
 
-		throw new Error(x)
+		return new Error(x)
 	},
 
 	stack            : function()
@@ -1032,7 +1032,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cati(1, arguments)
 		if(ZeTS.ises(m)) m = 'The object is undefined or null!'
 
-		ZeT.ass(m)
+		throw ZeT.ass(m)
 	},
 
 	/**
@@ -1047,7 +1047,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cati(1, arguments)
 		if(ZeTS.ises(m)) m = 'A non-empty array is required!'
 
-		ZeT.ass(m)
+		throw ZeT.ass(m)
 	},
 
 	/**
@@ -1062,7 +1062,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		var m = ZeTS.cati(1, arguments)
 		if(ZeTS.ises(m)) m = 'A not whitespace-empty string is required!'
 
-		ZeT.ass(m)
+		throw ZeT.ass(m)
 	},
 
 	/**

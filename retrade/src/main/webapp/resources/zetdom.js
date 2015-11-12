@@ -2011,7 +2011,6 @@ ZeT.Layout.Proc.Node = ZeT.defineClass('ZeT.Layout.Proc.Node', {
 
 	init              : function(opts)
 	{
-		ZeT.log('Opts: ', opts)
 		if(ZeT.iss(opts) || ZeTD.isxn(opts))
 			opts = { node: opts }
 		this.opts = opts || {}

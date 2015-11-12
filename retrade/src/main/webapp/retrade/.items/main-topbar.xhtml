@@ -129,6 +129,15 @@
             </x:component>
           </x:menu>
         </x:component>
+
+
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-my-links')}">
+
+          <f:facet name = "extjs-props">
+            text: 'Мои ссылки', xtype: 'menuitem',
+            iconCls: 'retrade-my-links'
+          </f:facet>
+        </x:component>
       </x:menu>
     </x:component>
 
@@ -621,6 +630,18 @@
       })
 
       winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    })
+
+    //:~ open data sources and reports root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-my-links')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:my-links:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/ui/my-links')}", {
+        'domain': domain
+      })
     })
 
     //:~ open settings - users
