@@ -11,32 +11,45 @@ var ZeTA = JsX.once('zet/arrays.js')
  * of application links with default items from
  * the standard menu. This function provides them.
  */
-function getUserLinks(domain, login)
+function genUserLinks(authLogin)
 {
-	var isSystem = (login.getCode() == 'System')
+	var isSystem = (authLogin.getCode() == 'System')
 
 	var main = [
 
 		{
+			id    : 'documents',
 			text  : 'Документы',
 			hint  : 'Основные документы',
 			icon  : 'retrade-document-icon',
-			color : 'G'
+			color : 'G',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:docs:',
+				link   : '/docs/documents'
+			}
 		},
 
 		{
+			id    : 'reprace-docs',
 			text  : 'Документы изменения цен',
-			icon  : 'retrade-price-delta-icon'
+			icon  : 'retrade-price-delta-icon',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:reprice-docs:',
+				link   : '/reprice-docs/list'
+			}
 		},
 
 		{
-			text  : 'Платёжные документы',
-			icon  : 'retrade-payment-icon'
-		},
-
-		{
+			id    : 'my-reports',
 			text  : 'Мои отчёты',
-			icon  : 'retrade-reports-icon'
+			icon  : 'retrade-reports-icon',
+			open  : {
+				domain : 'wnd:retrade-main-menu:my-reports:',
+				box    : { widthpt: 560, heightpt: 260 },
+				link   : '/datas/my-reports'
+			}
 		}
 	]
 
@@ -44,51 +57,87 @@ function getUserLinks(domain, login)
 	var catalogs = [
 
 		{
+			id    : 'goods-stores-prices',
 			text  : 'Товары',
 			hint  : 'Товары, товары на складах, цены товаров',
-			icon  : 'retrade-goods-icon'
+			icon  : 'retrade-goods-icon',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:goods-stores-prices:',
+				link   : '/goods/goods-stores-prices'
+			}
 		},
 
 		{
+			id    : 'goods-tree',
 			text  : 'Каталог товаров',
 			hint  : 'Иерархический каталог товаров',
-			icon  : 'retrade-goods-tree-icon'
+			icon  : 'retrade-goods-tree-icon',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:goods-tree:',
+				link   : '/goods/goods-tree'
+			}
 		},
 
 		{
+			id    : 'measures',
 			text  : 'Единицы измерения',
 			hint  : 'Справочник единиц измерения',
-			icon  : 'retrade-measure-icon'
+			icon  : 'retrade-measure-icon',
+			open  : {
+				domain : 'retrade-main-menu:measures',
+				box    : { widthpt: 400, heightpt: 240 },
+				link   : '/goods/list-measures'
+			}
 		},
 
 		{
+			id    : 'stores',
 			text  : 'Склады',
 			hint  : 'Справочник складов',
-			icon  : 'retrade-trade-store-icon'
+			icon  : 'retrade-trade-store-icon',
+			open  : {
+				domain : 'retrade-main-menu:stores',
+				box    : { widthpt: 360, heightpt: 240 },
+				link   : '/stores/list-win'
+			}
 		},
 
 		{
+			id    : 'firms',
 			text  : 'Контрагенты',
 			hint  : 'Справочник контрагентов',
-			icon  : 'retrade-contractor-icon'
+			icon  : 'retrade-contractor-icon',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:firms:',
+				link   : '/firms/list'
+			}
 		},
 
 		{
+			id    : 'price-lists',
 			text  : 'Прайс-листы',
 			hint  : 'Справочник прайс-листов',
-			icon  : 'retrade-prices-icon'
+			icon  : 'retrade-prices-icon',
+			open  : {
+				domain : 'retrade-main-menu:price-lists',
+				box    : { widthpt: 360, heightpt: 240 },
+				link   : '/price-lists/list-win'
+			}
 		},
 
 		{
+			id    : 'price-lists-firms',
 			text  : 'Прайс-листы контрагентов',
 			hint  : 'Справочник сопоставления прайс-листов контаргентам',
-			icon  : 'retrade-prices-icon'
-		},
-
-		{
-			text  : 'Прайс-листы контрагентов',
-			hint  : 'Справочник сопоставления прайс-листов контаргентам',
-			icon  : 'retrade-prices-icon'
+			icon  : 'retrade-prices-icon',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:firms-price-lists:',
+				link   : '/firms/list-lists'
+			}
 		}
 	]
 
@@ -96,27 +145,51 @@ function getUserLinks(domain, login)
 	var system = !isSystem?(null):[
 
 		{
+			id    : 'system: reports',
 			text  : 'Данные и отчёты',
 			icon  : 'retrade-reports-icon',
-			color : 'O'
+			color : 'O',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:datas:',
+				link   : '/datas/list'
+			}
 		},
 
 		{
+			id    : 'system: users',
 			text  : 'Пользователи',
 			icon  : 'retrade-user-icon',
-			color : 'O'
+			color : 'O',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:settings:users:',
+				link   : '/settings/users'
+			}
 		},
 
 		{
+			id    : 'system: secure rules',
 			text  : 'Правила доступа',
 			icon  : 'retrade-secrule-icon',
-			color : 'O'
+			color : 'O',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:settings:secure-rules:',
+				link   : '/settings/secure-rules'
+			}
 		},
 
 		{
+			id    : 'system: secure sets',
 			text  : 'Множества правил',
 			icon  : 'retrade-secset-icon',
-			color : 'O'
+			color : 'O',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:settings:secure-sets:',
+				link   : '/settings/secure-sets'
+			}
 		}
 	]
 

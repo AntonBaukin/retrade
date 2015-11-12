@@ -499,7 +499,7 @@
       '${rootView.extjsDomain}', function()
     {
       retrade_open_window({ url: '/goods/list-measures',
-        tempDomain: 'retrade-main-menu:measures', collapsible: true,
+        tempDomain: 'retrade-main-menu:measures',
         box: {widthpt: 400, heightpt: 240}, collapsible: true
       })
     })
@@ -588,11 +588,9 @@
     extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-my-reports')}",
       '${rootView.extjsDomain}', function()
     {
-      var domain  = 'wnd:retrade-main-menu:my-reports';
+      var domain  = 'wnd:retrade-main-menu:my-reports:';
 
       var box     = ReTrade.desktop.calcWindowBox({
-        x: (Ext.getBody().getWidth()  - extjsf.pt(560)) / 2,
-        y: (Ext.getBody().getHeight() - extjsf.pt(260)) / 2,
         widthpt: 560, heightpt: 260
       })
 

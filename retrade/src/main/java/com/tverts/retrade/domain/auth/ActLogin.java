@@ -18,6 +18,7 @@ import com.tverts.endure.tree.TreeDomain;
 
 /* com.tverts: retrade domain (firms + goods + selection sets) */
 
+import com.tverts.jsx.JsX;
 import com.tverts.retrade.domain.firm.Contractor;
 import com.tverts.retrade.domain.firm.GetContractor;
 import com.tverts.retrade.domain.goods.Goods;
@@ -49,6 +50,9 @@ public class ActLogin extends com.tverts.endure.auth.ActLogin
 
 		//~: ensure the goods tree
 		ensureClientFirmGoodsTree(abr);
+
+		//~: generate thye links
+		genUserLinks(abr);
 
 		//~: save the login
 		super.saveLogin(abr);
@@ -100,5 +104,18 @@ public class ActLogin extends com.tverts.endure.auth.ActLogin
 
 		//!: ensure
 		actionRun(ActionType.ENSURE, tree);
+	}
+
+	protected void genUserLinks(ActionBuildRec abr)
+	{
+		AuthLogin  login = target(abr, AuthLogin.class);
+
+		//~: generate the links via script call
+		String     links = (String) JsX.invoke(
+		  "web/UserInterface.js", "genUserLinks", null, login
+		);
+
+		//=: assign the links
+		login.setUserLinks(links);
 	}
 }

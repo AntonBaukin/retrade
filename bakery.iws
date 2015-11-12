@@ -10,17 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/StrBytesType.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/UserInterface.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.sql.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/ActLogin.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/ActLogin.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.hbm.xml" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.hbm.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytesType.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytesType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/arrays.js" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/arrays.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/UserInterface.js" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/UserInterface.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/uievents.jsx" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/uievents.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/unity.jsx" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/unity.jsx" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -46,12 +42,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AuthLogin.hbm.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.hbm.xml">
+      <file leaf-file-name="ActLogin.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/ActLogin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7041139" vertical-offset="1680" max-vertical-offset="2774">
-              <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.7531645" vertical-offset="816" max-vertical-offset="1941">
+              <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+              <folding>
+                <element signature="method#saveLogin#0;class#ActLogin#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,9 +64,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/clocks.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
@@ -76,13 +71,16 @@
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/GenReTradeDomain.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/uievents.jsx" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/unity.jsx" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/arrays.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/UserInterface.js" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytesType.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/StrBytesType.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.sql.xml" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.hbm.xml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/UserInterface.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/ActLogin.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
       </list>
     </option>
   </component>
@@ -227,7 +225,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -305,6 +302,62 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="hibery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="endure" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="endure" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="auth" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -477,6 +530,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -833,25 +887,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="ox instanceof Message&#13;com.tverts.endure.msg.Message&#13;JAVA" />
-          <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/OxBytes.java</url>
-          <line>205</line>
-          <properties />
-          <option name="timeStamp" value="556" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/XStreamer.java</url>
-          <line>191</line>
-          <properties />
-          <option name="timeStamp" value="557" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="559" />
+      <option name="time" value="560" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -967,67 +1006,10 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/core/GenReTradeDomain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3975501" vertical-offset="510" max-vertical-offset="2377">
-          <caret line="51" column="29" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/unity.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.056792874" vertical-offset="0" max-vertical-offset="1595">
-          <caret line="3" column="67" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/ActLogin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.018930959" vertical-offset="629" max-vertical-offset="1714">
-          <caret line="38" column="33" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/asserts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.64365256" vertical-offset="102" max-vertical-offset="1816">
-          <caret line="65" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/checks.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.454343" vertical-offset="136" max-vertical-offset="1799">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/uievents.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1325167" vertical-offset="0" max-vertical-offset="1816">
-          <caret line="7" column="39" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2924312" vertical-offset="3723" max-vertical-offset="10460">
-          <caret line="234" column="32" selection-start-line="234" selection-start-column="19" selection-end-line="234" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/secure/SecPoint.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.43207127" vertical-offset="1737" max-vertical-offset="4332">
           <caret line="187" column="56" selection-start-line="125" selection-start-column="56" selection-end-line="125" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1043,15 +1025,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.018930959" vertical-offset="2227" max-vertical-offset="3958">
           <caret line="132" column="0" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/UserInterface.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34075725" vertical-offset="0" max-vertical-offset="3006">
-          <caret line="18" column="9" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1059,7 +1032,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.88641423" vertical-offset="394" max-vertical-offset="2071">
           <caret line="116" column="25" selection-start-line="27" selection-start-column="25" selection-end-line="70" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1075,7 +1047,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.88641423" vertical-offset="1584" max-vertical-offset="3261">
           <caret line="140" column="46" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1095,11 +1066,77 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelRecord.sql.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.037861917" vertical-offset="0" max-vertical-offset="1170">
+          <caret line="2" column="7" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.hbm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7041139" vertical-offset="1680" max-vertical-offset="2774">
-          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.62806237" vertical-offset="1578" max-vertical-offset="3040">
+          <caret line="126" column="4" selection-start-line="126" selection-start-column="4" selection-end-line="126" selection-end-column="4" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.058486238" vertical-offset="8789" max-vertical-offset="10579">
+          <caret line="653" column="93" selection-start-line="520" selection-start-column="38" selection-end-line="520" selection-end-column="93" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.sql.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26892656" vertical-offset="0" max-vertical-offset="1157">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/UserInterface.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28396437" vertical-offset="0" max-vertical-offset="4247">
+          <caret line="15" column="3" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/ActLogin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.018930959" vertical-offset="1292" max-vertical-offset="4400">
+          <caret line="77" column="3" selection-start-line="77" selection-start-column="3" selection-end-line="77" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/genesis/GenesisSphere.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5151515" vertical-offset="2346" max-vertical-offset="3689">
+          <caret line="322" column="35" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36363637" vertical-offset="612" max-vertical-offset="2720">
+          <caret line="65" column="43" selection-start-line="48" selection-start-column="7" selection-end-line="48" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/auth/ActLogin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7531645" vertical-offset="816" max-vertical-offset="1941">
+          <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+          <folding>
+            <element signature="method#saveLogin#0;class#ActLogin#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
