@@ -29,6 +29,26 @@ ZeTS.cati = function(index, objs)
 	return String.prototype.concat.apply('', objs)
 }
 
+ZeTS.cat = function(/* various objects */)
+{
+	for(var i = 0;(i < arguments.length);i++)
+		if(ZeT.isu(arguments[i]) || (arguments[i] === null))
+			arguments[i] = ''
+
+	return String.prototype.concat.apply('', arguments)
+}
+
+/**
+ * Throws exception with given message.
+ * Appends the stack trace.
+ */
+ZeT.ass = function(/* messages */)
+{
+	var m = ZeTS.cat.apply(ZeTS, arguments)
+	var x = ZeTS.cat(m, '\n', new Error().stack)
+
+	throw new Error(x)
+}
 
 /**
  * First argument of assertion is an expression
