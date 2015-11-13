@@ -126,6 +126,11 @@
        tiles.tiles.updateLayout()
      }
 
+     function calcRows(r, R)
+     {
+       return (tiles.columns() == 1)?(R):(r)
+     }
+
      tileItem = new ReTrade.TilesItemExt({
        wrapClass: 'retrade-tile-links-wrap', data: { array: DATA },
        shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ',
@@ -133,13 +138,14 @@
      })
 
      tiles = new ReTrade.TilesControl({
-       content : tileItem, beforejustify: updateAreaInsets,
+       content : tileItem,
+       beforejustify: updateAreaInsets,
+       scrollInterval: 150,
        tiles : { area: "${z:vid(v, 'my-links-area')}",
-         absolute: true,
-         min: [ 180, 144, 100.0, 80.0 ],
-         max: [ 250, 200, 100.0, 80.0 ],
-         rows: 'max', columns: 'min',
-         cellClass: 'retrade-tile-cell'
+         absolute: true, cellClass: 'retrade-tile-cell',
+         rows: calcRows, columns: 'min',
+         min: [ 180, 90, 100.0, 100.0 ],
+         max: [ 245, 160, 100.0, 90.0 ]
        }
      })
 

@@ -733,8 +733,9 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		//~: insert the main content
 		this._insert_content()
 
-		this.desktop().controller(
-		  this.position(), this).triggerVoid()
+		//~: hide void panel
+		this.panelController().triggerVoid()
+
 	},
 
 	remove            : function(destroy)
@@ -748,8 +749,9 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		//~: clear registration of this controller
 		this._unregister()
 
-		this.desktop().controller(
-		  this.position(), this).triggerVoid()
+		//~: show void panel
+		var pc = this.panelController()
+		ZeT.timeout(100, ZeT.fbind(pc.triggerVoid, pc))
 	},
 
 	_register         : function()
@@ -3447,12 +3449,12 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 
 	columns           : function()
 	{
-		return this.grid[0]
+		return this.grid && this.grid[0]
 	},
 
 	rows              : function()
 	{
-		return this.grid[1]
+		return this.grid && this.grid[1]
 	},
 
 	/**
@@ -3593,7 +3595,7 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 
 		if(ZeT.isf(this.opts.columns) && (c != C))
 		{
-			var x = this.opts.columns(c, C, this.W)
+			var x = this.opts.columns(c, C, this)
 			ZeT.assert(ZeT.isi(x))
 			ZeT.assert((x >= c) && (x <= C))
 			c = C = x
@@ -3605,7 +3607,7 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 
 		if(ZeT.isf(this.opts.rows) && (r != R))
 		{
-			var y = this.opts.rows(r, R, this.H)
+			var y = this.opts.rows(r, R, this)
 			ZeT.assert(ZeT.isi(y))
 			ZeT.assert((y >= r) && (y <= R))
 			r = R = y
@@ -3797,7 +3799,12 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
  *
  *   invoked before tiles justification.
  *   Here rows and columns number iis known.
- *   Allows to assign the borders of the area.
+ *   Allows to assign the borders of the area;
+ *
+ * · scrollInterval     milliseconds
+ *
+ *   tels the repeat rate of scroll control
+ *   down (pressed) action. Defaults to 250 ms.
  */
 ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 

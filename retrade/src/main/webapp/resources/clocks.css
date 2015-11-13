@@ -354,7 +354,7 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
   .retrade-eventsnum-controls > div.allitems > div.gray,
   .retrade-eventsnum-menu-item-controls > div.N,
   .retrade-eventsnum-controls > div.numbers td.N > div,
-  .retrade-boshadow-user-menu-main > div,
+  .retrade-boshadow-user-menu-main > div:first-child,
   .retrade-boshadow-N-main > div:first-child,
   .retrade-tiles-colors > div.N
 {

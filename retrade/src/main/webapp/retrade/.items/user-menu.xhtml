@@ -138,12 +138,13 @@
     if(xmenu.extjsfBind.retradeUserMenuWrapped) return
     xmenu.extjsfBind.retradeUserMenuWrapped = true
 
-    var n = ZeTD.n("${z:vid(localView, 'user-menu-html')}");
+    var n = ZeTD.n("${z:vid(localView, 'user-menu-html')}")
 
     //!: invoke the border processing pipe
     ZeT.Layout.procPipeCall(
+
       //~: take the menu content component
-      ZeT.Layout.Proc.Node, { node: n },
+      ZeT.Layout.Proc.Node, n,
 
       //~: wrap it with the border
       ZeT.Border.Shadow, ZeT.Border.shadow('retrade-boshadow-user-menu-XYZ'),
