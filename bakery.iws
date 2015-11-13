@@ -10,18 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-87 [beta]: placed development version of tiles into ReTrade UI.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/userlinks.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/asserts.js" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/asserts.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/html.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/html.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/index.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/index.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,11 +40,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="retrade.css" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
+      <file leaf-file-name="my-links.xhtml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.72626585" vertical-offset="5559" max-vertical-offset="26472">
-              <caret line="354" column="70" selection-start-line="354" selection-start-column="70" selection-end-line="354" selection-end-column="70" />
+            <state vertical-scroll-proportion="0.20067453" vertical-offset="1564" max-vertical-offset="3109">
+              <caret line="115" column="6" selection-start-line="115" selection-start-column="6" selection-end-line="115" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -67,7 +60,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/StrBytesType.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.sql.xml" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.hbm.xml" />
@@ -76,14 +68,15 @@
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/asserts.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/userlinks.jsx" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/index.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/html.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml" />
       </list>
     </option>
   </component>
@@ -877,7 +870,6 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3362319" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2937853" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3114572" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24251208" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24899599" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -893,6 +885,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3114572" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1061,35 +1054,10 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.64365256" vertical-offset="374" max-vertical-offset="2275">
-          <caret line="59" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/auth/AuthLogin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.8824859" vertical-offset="1071" max-vertical-offset="2517">
-          <caret line="161" column="77" selection-start-line="88" selection-start-column="3" selection-end-line="98" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/secure/SecPoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07683616" vertical-offset="1020" max-vertical-offset="4030">
-          <caret line="64" column="19" selection-start-line="60" selection-start-column="39" selection-end-line="62" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/userlinks.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.32182628" vertical-offset="0" max-vertical-offset="1187">
           <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1097,7 +1065,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.2101694" vertical-offset="0" max-vertical-offset="4234">
           <caret line="63" column="27" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1121,7 +1088,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3158784" vertical-offset="68" max-vertical-offset="1357">
           <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1153,7 +1119,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.27293578" vertical-offset="1513" max-vertical-offset="3167">
           <caret line="103" column="98" selection-start-line="103" selection-start-column="2" selection-end-line="103" selection-end-column="98" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1161,41 +1126,64 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.29587156" vertical-offset="218" max-vertical-offset="1535">
           <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uitiles.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1207" max-vertical-offset="6526">
+          <caret line="71" column="45" selection-start-line="43" selection-start-column="0" selection-end-line="46" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3518931" vertical-offset="1452" max-vertical-offset="4485">
+          <caret line="159" column="67" selection-start-line="104" selection-start-column="67" selection-end-line="104" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetdom.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5033408" vertical-offset="1673" max-vertical-offset="19547">
+          <caret line="291" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.018930959" vertical-offset="1428" max-vertical-offset="11795">
+          <caret line="217" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14365256" vertical-offset="19982" max-vertical-offset="25038">
-          <caret line="3786" column="19" selection-start-line="1183" selection-start-column="19" selection-end-line="1183" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.6815145" vertical-offset="19040" max-vertical-offset="24035">
+          <caret line="3905" column="25" selection-start-line="1156" selection-start-column="25" selection-end-line="1156" selection-end-column="25" />
           <folding>
-            <marker date="1447245430000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1447245430000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1447410519000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1447410519000" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/uitiles.html">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39580908" vertical-offset="442" max-vertical-offset="6792">
-          <caret line="46" column="1" selection-start-line="43" selection-start-column="0" selection-end-line="46" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.4922049" vertical-offset="10081" max-vertical-offset="27197">
+          <caret line="619" column="52" selection-start-line="619" selection-start-column="0" selection-end-line="619" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.72293365" vertical-offset="790" max-vertical-offset="3171">
-          <caret line="83" column="28" selection-start-line="83" selection-start-column="28" selection-end-line="83" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.72626585" vertical-offset="5559" max-vertical-offset="26472">
-          <caret line="354" column="70" selection-start-line="354" selection-start-column="70" selection-end-line="354" selection-end-column="70" />
+        <state vertical-scroll-proportion="0.20067453" vertical-offset="1564" max-vertical-offset="3109">
+          <caret line="115" column="6" selection-start-line="115" selection-start-column="6" selection-end-line="115" selection-end-column="6" />
           <folding />
         </state>
       </provider>

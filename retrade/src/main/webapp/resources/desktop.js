@@ -3420,31 +3420,23 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 	/**
 	 * Invoke each time you want to update the
 	 * geometry of the tiles layout table.
+	 *
+	 * Returns false when layout was not possible.
 	 */
 	layout            : function()
 	{
-		var g = this._get_grid()
-		this.W = g.innerWidth()
-		this.H = g.innerHeight()
+		//~: do initial layout
+		if(this.updateLayout() === false)
+			return false
 
-		//?: {has no place}
-		if(!this.W || !this.H)
-			return ZeT.log('ReTrade.Tiles area [',
-			  this.area, '] grid has zero dimensions!')
-
-		//~: calculate cell min-max
-		this._min_max()
-
-		//~: grid dimensions
-		this.grid = this._calc_grid()
-		ZeT.assert(this.grid[0] >= 1)
-		ZeT.assert(this.grid[1] >= 1)
-
-		//~: place the grid
-		this._place_grid()
+		//?: {have justification callback}
+		if(ZeT.isf(this.beforejustify))
+			if(this.beforejustify(this) === false)
+				return false
 
 		//~: and justify it
-		this._justify()
+		if(!ZeT.isu(this._justify()))
+			return false
 
 		//?: {has layout callback}
 		if(ZeT.isf(this.onlayout))
@@ -3515,6 +3507,36 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 
 		this._get_grid().children().each(ir)
 		return this
+	},
+
+	updateLayout      : function()
+	{
+		//~: get the size of area
+		if(!ZeT.isu(this._area_size()))
+			return false
+
+		//~: calculate cell min-max
+		this._min_max()
+
+		//~: grid dimensions
+		this.grid = this._calc_grid()
+		ZeT.assert(this.grid[0] >= 1)
+		ZeT.assert(this.grid[1] >= 1)
+
+		//~: place the grid
+		this._place_grid()
+	},
+
+	_area_size        : function()
+	{
+		var g = this._get_grid()
+		this.W = g.innerWidth()
+		this.H = g.innerHeight()
+
+		//?: {has no place}
+		if(!this.W || !this.H)
+			return ZeT.log('ReTrade.Tiles area [',
+			  this.area, '] grid has zero dimensions!')
 	},
 
 	_check_min_max    : function(m)
@@ -3770,6 +3792,12 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
  * · onupdate function(this)
  *
  *   invoked each time the tiles are updated.
+ *
+ * · beforejustify function(this)
+ *
+ *   invoked before tiles justification.
+ *   Here rows and columns number iis known.
+ *   Allows to assign the borders of the area.
  */
 ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 
@@ -3791,6 +3819,13 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 			this.tiles.onlayout = function()
 			{
 				opts.onupdate(self)
+			}
+
+		//~: justification callback
+		if(ZeT.isf(opts.beforejustify))
+			this.tiles.beforejustify = function()
+			{
+				opts.beforejustify(self)
 			}
 
 		//~: content provider
@@ -3852,6 +3887,34 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 			clearInterval(this.scrollTimer)
 			delete this.scrollTimer
 		}
+	},
+
+	/**
+	 * Tells whether there are items on the left to scroll.
+	 */
+	isScrollLeft      : function()
+	{
+		return (this.content._data.offset() > 0)
+	},
+
+	isScrollRight     : function()
+	{
+		var wh = this.columns() * this.rows()
+		var s  = this.content._data.size()
+		var o  = this.content._data.offset()
+
+		return (s > o + wh)
+	},
+
+	/**
+	 * Returns true when the number of tiles
+	 * exceeds the number of data items.
+	 */
+	isScollNone       : function()
+	{
+		var wh = this.columns() * this.rows()
+		var s  = this.content._data.size()
+		return (s <= wh)
 	},
 
 	_ontiles          : function(e)
@@ -4166,6 +4229,14 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 
 			return w * y + x + o
 		}
+
+		throw ZeT.ass('Unsupported!')
+	},
+
+	size              : function()
+	{
+		var a; if(ZeT.isa(a = this.opts.array))
+			return a.length
 
 		throw ZeT.ass('Unsupported!')
 	},

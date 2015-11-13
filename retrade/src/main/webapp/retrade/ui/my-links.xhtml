@@ -72,30 +72,68 @@
    extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${rootView.extjsDomain}').
      on('afterrender', function()
    {
+     var areaid = '#' + "${z:vid(v, 'my-links-area')}"
+     var tileItem, tiles
+
      function sc(dir)
      {
-       return $("#${z:vid(v, 'my-links-area')} .retrade-tiles-links-scroll-" + dir + '-outer')
+       return $(areaid + ' .retrade-tiles-links-scroll-' + dir + '-outer')
      }
 
-     function updateScrollers(tiles)
+     function sctoggle()
      {
-       var single = (tiles.columns() == 1)
-
-       ZeT.log(sc('right')[0])
-       sc('right').toggle(!single)
-       sc('left').toggle(!single)
-       sc('up').toggle(single)
-       sc('down').toggle(single)
+       var flags = arguments
+       ZeT.each(['left', 'right', 'up', 'down'], function(dir, i)
+       {
+         sc(dir).toggle(!!flags[i])
+       })
      }
 
-     var tileItem = new ReTrade.TilesItemExt({
+     function updateAreaInsets()
+     {
+       var C = 'retrade-tiles-links-column'
+       var B = 'retrade-tiles-links-box'
+
+       var w, h, single, same = function()
+       {
+         if((w != tiles.columns()) || (h != tiles.rows()))
+         {
+           w = tiles.columns(); h = tiles.rows()
+           single = (w == 1); return false
+         }
+
+         return true
+       }
+
+       //~: turn off area scroll classes
+       ZeTD.classes($(areaid)[0], [ '-' + C, '-' + B ])
+       sctoggle(false, false, false, false)
+       tiles.tiles.updateLayout()
+       same() //<-- remember grid size
+
+       //?: {scroll is not needed}
+       var none; if(none = tiles.isScollNone())
+       {
+         tiles.tiles.updateLayout()
+         if(same()) return
+       }
+
+       var left  = tiles.isScrollLeft()
+       var right = tiles.isScrollRight()
+
+       ZeTD.classes($(areaid)[0], [ ((single)?'+':'-') + C, ((single)?'-':'+') + B ])
+       sctoggle(!single && left, !single && right, single && left, single && right)
+       tiles.tiles.updateLayout()
+     }
+
+     tileItem = new ReTrade.TilesItemExt({
        wrapClass: 'retrade-tile-links-wrap', data: { array: DATA },
        shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ',
        selectedClass: 'selected'
      })
 
-     var tiles = new ReTrade.TilesControl({
-       content : tileItem, onupdate: updateScrollers,
+     tiles = new ReTrade.TilesControl({
+       content : tileItem, beforejustify: updateAreaInsets,
        tiles : { area: "${z:vid(v, 'my-links-area')}",
          absolute: true,
          min: [ 180, 144, 100.0, 80.0 ],
