@@ -129,19 +129,22 @@
             </x:component>
           </x:menu>
         </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-my-links')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Мои ссылки', xtype: 'menuitem',
-            iconCls: 'retrade-my-links'
-          </f:facet>
-        </x:component>
       </x:menu>
     </x:component>
 
     <!-- retrade main menu] -->
+
+
+    <!-- [my links button] -->
+    <x:component coid = "${z:vid(localView, 'retrade-main-menu-my-links')}">
+
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Ссылки',
+        margin: extjsf.dpts(0, 6, 0, 0),
+        height: 30, iconCls: 'retrade-my-links',
+        componentCls: 'retrade-button-22pt'
+      </f:facet>
+    </x:component>
 
 
     <!-- [catalogues menu -->

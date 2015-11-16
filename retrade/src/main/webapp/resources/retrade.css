@@ -437,9 +437,8 @@ table.retrade-align-right.x-field
 
 .retrade-tile-links-wrap .retrade-tiles-goto
 {
-  left: 50%; top: 50%;
-  margin-left: -24px;
-  margin-top: -24px;
+  left: 12.5%; top: 12.5%;
+  width: 75%; height: 75%;
 }
 
 .retrade-tile-links-wrap .retrade-tiles-delete:hover,
@@ -470,14 +469,6 @@ table.retrade-align-right.x-field
 .retrade-tile-links-wrap .retrade-tiles-insert:hover
 {
   right: -8px; bottom: -8px;
-}
-
-.retrade-tile-links-wrap .retrade-tiles-goto:hover
-{
-  width: 64px; height: 64px;
-  background-size: 64px 64px;
-  margin-left: -32px;
-  margin-top: -32px;
 }
 
 .retrade-tile-links-wrap .retrade-tiles-edit:hover
@@ -616,6 +607,19 @@ table.retrade-align-right.x-field
 {
   margin-left: -30px; bottom: 2px;
   border-right: none; border-bottom: none;
+}
+
+.retrade-tiles-links-area .retrade-tile-links-wrap .retrade-boshadow-content
+{
+  font-family: 'Tahoma', sans-serif;
+  font-size: 13pt; font-style: normal;
+  font-weight: normal; line-height: normal;
+  -moz-osx-font-smoothing: auto;
+}
+
+.retrade-tiles-links-area.retrade-tiles-links-column .retrade-tile-links-wrap .retrade-boshadow-content
+{
+  font-size: 11.5pt;
 }
 
 

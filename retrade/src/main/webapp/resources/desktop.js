@@ -4205,7 +4205,8 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 	init              : function(opts)
 	{
 		ZeT.assert(ZeT.iso(opts))
-		this.opts = opts
+		this.opts   = opts
+		this._array = opts.array
 	},
 
 	/**
@@ -4215,7 +4216,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 	 */
 	model             : function(index)
 	{
-		var a; if(ZeT.isa(a = this.opts.array))
+		var a; if(ZeT.isa(a = this._array))
 			return a[index]
 
 		throw ZeT.ass('Unsupported!')
@@ -4226,7 +4227,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 		var w = ctl.columns(), h = ctl.rows()
 		var o = this._offset, wh = w * h
 
-		var a; if(ZeT.isa(a = this.opts.array))
+		var a; if(ZeT.isa(a = this._array))
 		{
 			if(!o) return w * y + x
 
@@ -4242,7 +4243,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 
 	size              : function()
 	{
-		var a; if(ZeT.isa(a = this.opts.array))
+		var a; if(ZeT.isa(a = this._array))
 			return a.length
 
 		throw ZeT.ass('Unsupported!')
@@ -4274,15 +4275,15 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 	{
 		ZeT.assert(ZeT.isf(f))
 
-		if(ZeT.isa(this.opts.array))
-			return ZeT.each(this.opts.array, f)
+		if(ZeT.isa(this._array))
+			return ZeT.each(this._array, f)
 
 		throw ZeT.ass('Unsupported!')
 	},
 
 	remove            : function(m)
 	{
-		var a; if(ZeT.isa(a = this.opts.array))
+		var a; if(ZeT.isa(a = this._array))
 		{
 			ZeTA.del(a, m)
 
@@ -4298,7 +4299,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 
 	move              : function(where, items)
 	{
-		var a; if(ZeT.isa(a = this.opts.array))
+		var a; if(ZeT.isa(a = this._array))
 		{
 			var i = a.indexOf(where)
 			ZeT.assert(i >= 0)
@@ -4311,9 +4312,10 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 		}
 	},
 
-	goto              : function(m)
+	goto              : function(/* model, tilesItem */)
 	{
-		ZeT.log('Goto model: ', m.id)
+		if(ZeT.isf(this.opts.goto))
+			this.opts.goto.apply(this, arguments)
 	},
 
 	offset            : function(o)
@@ -4321,7 +4323,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 		if(ZeT.isx(o))
 			return ZeT.isx(this._offset)?(0):(this._offset)
 
-		var a; if(ZeT.isa(a = this.opts.array))
+		var a; if(ZeT.isa(a = this._array))
 		{
 			if(o < 0) o = 0
 			if(o > a.length) o = a.length
@@ -4539,7 +4541,7 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		var m = this._data.model(i)
 		ZeT.assertn(m)
 
-		this._data.goto(m)
+		this._data.goto(m, this)
 	},
 
 	_color_controls   : function(wr, d)

@@ -44,31 +44,6 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    var DATA = [
-
-     { id: 100, color: 'G', text: 'This is a new world!' },
-     { id: 101, color: 'O', text: 'Better to be prepared...' },
-     { id: 102, color: 'N', text: 'Simple text' },
-     { id: 103, color: 'N', text: 'Take my hand and go on' },
-     { id: 104, color: 'N', text: 'This text is so long, it can\'t be inserted in a tiny tile area! Be aware and prepared...' },
-     { id: 105, color: 'N', text: 'Let\'s do it together!' },
-     { id: 106, color: 'N', text: 'Make it quick!' },
-     { id: 107, color: 'N', text: 'Startups forever' },
-     { id: 108, color: 'N', text: 'Young I want to be...' },
-     { id: 109, color: 'N', text: 'Hare and there, walk over it!' },
-     { id: 110, color: 'N', text: 'That is mine' },
-     { id: 111, color: 'N', text: 'I want it all, and now' },
-     { id: 112, color: 'N', text: 'Here you are: fake' },
-     { id: 113, color: 'N', text: 'Phony targets in make' },
-     { id: 114, color: 'N', text: 'Lost & found' },
-     { id: 115, color: 'N', text: 'Batman Vs Superman' },
-     { id: 116, color: 'N', text: 'Fargo' },
-     { id: 117, color: 'N', text: 'Walking are not dead' },
-     { id: 118, color: 'N', text: 'Better than life' },
-     { id: 119, color: 'N', text: 'X-rays for your brains' }
-
-   ]
-
    extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${rootView.extjsDomain}').
      on('afterrender', function()
    {
@@ -132,7 +107,8 @@
      }
 
      tileItem = new ReTrade.TilesItemExt({
-       wrapClass: 'retrade-tile-links-wrap', data: { array: DATA },
+       wrapClass: 'retrade-tile-links-wrap',
+       data: { array: [], goto: openWebLink },
        shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ',
        selectedClass: 'selected'
      })
@@ -171,6 +147,52 @@
          if(width && height)
            tiles.update()
        })
+
+     //~: link open procedure
+     function openWebLink(m)
+     {
+       if(!m.open) return
+
+       //?: {has no link}
+       ZeT.asserts(m.open.link)
+
+       //~: temporary domain
+       var domain = m.open.domain
+       if(ZeTS.ises(domain))
+         domain = extjsf.tempDomain('open-user-link')
+
+       //?: {open it in panel}
+       if(!ZeTS.ises(m.open.panel))
+       {
+         ReTrade.desktop.loadDesktopPanel(
+           retrade_go_url(m.open.link), {
+           domain: domain, position: m.open.panel,
+           params: m.open.params
+         })
+       }
+       //!: open it in window
+       else
+       {
+         retrade_open_window({ url: retrade_go_url(m.open.link),
+           box: m.open.box, record: m.open.recordId,
+           domainKey: domain, params: m.open.params
+         })
+       }
+     }
+
+     //~: load user web links function
+     function loadWebLinks()
+     {
+       jQuery.get("${z:url('/go/userlinks')}", function(x)
+       {
+         if(!ZeT.isa(x)) return
+         tileItem._data._array = x
+         tiles.update()
+       })
+     }
+
+     //!: load user web links now
+     loadWebLinks()
    })
 
     //]]>

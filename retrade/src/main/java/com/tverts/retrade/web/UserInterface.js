@@ -10,6 +10,12 @@ var ZeTA = JsX.once('zet/arrays.js')
  * Each user (login for a person) has collection
  * of application links with default items from
  * the standard menu. This function provides them.
+ *
+ * Format of open.box objects equals to one of
+ * retrade_open_window(), which passes it to
+ * ReTrade.desktop.calcWindowBox().
+ * See my-links.xhtml script for additional
+ * fields of open object.
  */
 function genUserLinks(authLogin)
 {
