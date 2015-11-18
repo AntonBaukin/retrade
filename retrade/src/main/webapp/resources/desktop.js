@@ -24,6 +24,188 @@ ReTrade.isTouch = ZeT.scope(function()
 })
 
 
+// +----: Repeated Task :----------------------------------------+
+
+/**
+ * Repeated task executes the task given with
+ * the configured interval and notifies each
+ * listener attached on the results of the
+ * task execution. It's also possible to
+ * assign the results externally and to
+ * notify the listener.
+ *
+ * Arguments of the constructor are: options, or
+ * the interval number (interval option) and the
+ * task function (task option).
+ *
+ * Listener callback is invoked with arguments:
+ *  0) current resulting value (object);
+ *  1) this RepeatedTask instance.
+ *
+ * Task function returns the result object on
+ * each invocation. If the result is undefined,
+ * current value is not changed, and listeners
+ * are not invoked. They are also not invoked
+ * when current value is undefined.
+ */
+ReTrade.RepeatedTask = ZeT.defineClass('ReTrade.RepeatedTask', {
+
+	init              : function()
+	{
+		if(ZeT.iso(arguments[0]))
+			this.opts = opts
+		else
+		{
+			var i = arguments[0]
+			var f = arguments[1]
+
+			if(ZeT.isf(i) && ZeT.isn(f))
+			{
+				i = arguments[1]
+				f = arguments[0]
+			}
+
+			this.opts = { interval: i }
+			if(!ZeT.isu(f)) this.opts.task = f
+		}
+
+		this.task     = this.opts.task
+		this.interval = this.opts.interval
+
+		ZeT.assert(ZeT.isn(this.interval))
+		ZeT.assert(this.interval > 0)
+		ZeT.assert(ZeT.isu(this.task) || ZeT.isf(this.task))
+
+		//~: the callbacks array
+		this._ls = [], this._istarted = 0
+	},
+
+	result            : function(value, notify)
+	{
+		if(ZeT.isu(value))
+			return this._result
+
+		//=: assign the result
+		this._result = value
+
+		//?: {has notification}
+		if(notify !== false)
+			this.notify()
+
+		return this
+	},
+
+	on                : function(/* now | delay, callback, detach */)
+	{
+		var cb   = arguments[0]
+		var de   = arguments[1]
+		var now  = cb
+		var self = this
+
+		//?: {invoke callback now}
+		if(!ZeT.isf(now))
+		{
+			cb  = arguments[1]
+			de  = arguments[2]
+			ZeT.assert(ZeT.isb(now) || (ZeT.isn(now) && now >= 0))
+		}
+
+		ZeT.assert(ZeT.isf(cb))
+
+		if(de === true)
+			ZeTA.del(this._ls, cb)
+		else if(this._ls.indexOf(cb) < 0)
+			this._ls.push(cb)
+
+		//?: {invoke callback now}
+		if((now === true) || (now === 0))
+			!ZeT.isu(this._result) && cb(this._result, this)
+		//?: {delayed invocation}
+		else if(ZeT.isn(now))
+			ZeT.timeout(now, function()
+			{
+				if(!ZeT.isu(self._result))
+					cb(self._result, self)
+			})
+
+		return this
+	},
+
+	isActive          : function()
+	{
+		return !!this._started
+	},
+
+	start             : function()
+	{
+		if(!ZeT.isx(this._started))
+		{
+			this._istarted++
+			return this
+		}
+
+		//?: {the first invocation}
+		if(this._istarted === 0)
+		{
+			//~: invoke right now
+			this.trigger()
+
+			//~: create the timer
+			if(!this._trigger_)
+				this._trigger_ = ZeT.fbind(this.trigger, this)
+			this._started = setInterval(this._trigger_, this.interval)
+		}
+
+		//~: increment
+		this._istarted++
+
+		return this
+	},
+
+	stop              : function(force)
+	{
+		if(ZeT.isx(this._started))
+			return this
+
+		//?: {last stop request}
+		if((force === true) || (this._istarted == 1))
+		{
+			clearInterval(this._started)
+			delete this._started
+			this._istarted = 0
+
+			return this
+		}
+
+		//~: decrement
+		ZeT.assert(this._istarted > 1)
+		this._istarted--
+	},
+
+	trigger           : function()
+	{
+		if(!ZeT.isf(this.task)) return
+
+		//!: invoke the task
+		var x = this.task()
+
+		//?: {has no new result}
+		if(ZeT.isu(x)) return
+		this._result = xs
+
+		//?: {has value} call back
+		if(!ZeT.isu(this._result))
+			this.notify()
+	},
+
+	notify            : function()
+	{
+		for(var i = 0;(i < this._ls.length);i++)
+			this._ls[i](this._result, this)
+	}
+})
+
+
 // +----: Desktop :----------------------------------------------+
 
 ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {

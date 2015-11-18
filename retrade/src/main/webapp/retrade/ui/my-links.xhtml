@@ -44,6 +44,30 @@
     <script type = "text/javascript">
     //<![CDATA[
 
+   //~: shared strategy to acces data from the server
+   ZeT.singleInstance('ReTrade.getUserWebLinks', ReTrade.RepeatedTask, {}, 10000, function()
+   {
+     var self = this
+     jQuery.get("${z:url('/go/userlinks')}", { task : 'txn' }, function(txn)
+     {
+       if(ZeTS.ises(txn)) return
+
+       txn = parseInt(txn)
+       ZeT.assert(ZeT.isn(txn))
+
+       //?: {tx-number is the same} do nothing
+       if(self.txn === txn) return
+       self.txn = txn
+
+       //~: access the records
+       jQuery.get("${z:url('/go/userlinks')}", function(x)
+       {
+         if(ZeT.isa(x)) self.result(x)
+       })
+     })
+   })
+
+   //~: build the tiles interface
    extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${rootView.extjsDomain}').
      on('afterrender', function()
    {
@@ -180,19 +204,19 @@
        }
      }
 
-     //~: load user web links function
-     function loadWebLinks()
+     //~: start loading the links
+     ZeT.defined('ReTrade.getUserWebLinks').start().on(100, function(data)
      {
-       jQuery.get("${z:url('/go/userlinks')}", function(x)
-       {
-         if(!ZeT.isa(x)) return
-         tileItem._data._array = x
-         tiles.update()
-       })
-     }
+       tileItem._data._array = data
+       tiles.update()
+     })
 
-     //!: load user web links now
-     loadWebLinks()
+     //~: stop the strategy
+     extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${rootView.extjsDomain}').
+       on('destroy', function()
+       {
+         ZeT.defined('ReTrade.getUserWebLinks').stop()
+       })
    })
 
     //]]>
