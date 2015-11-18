@@ -4404,6 +4404,13 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 		throw ZeT.ass('Unsupported!')
 	},
 
+	updated           : function(model)
+	{
+		if(ZeT.isf(this.opts.onupdate))
+			this.opts.onupdate(model, this)
+		return this
+	},
+
 	scroll            : function(x, y, ctl)
 	{
 		var w = ctl.columns(), h = ctl.rows()
@@ -4413,9 +4420,14 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 		{
 			if(!o) return w * y + x
 
+			//?: {got over the end}
 			var z = a.length - wh
 			if((z >= 0) && (o > z))
 				this._offset = o = z
+
+			//?: {got all visible}
+			if(a.length <= wh)
+				this._offset = o = 0
 
 			return w * y + x + o
 		}
@@ -4477,6 +4489,9 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 
 		if(this._data)
 			delete this._data[m]
+
+		if(ZeT.isf(this.opts.onremove))
+			this.opts.onremove(m, this)
 	},
 
 	move              : function(where, items)
@@ -4492,6 +4507,9 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 			x.push.apply(x, items)
 			a.splice.apply(a, x)
 		}
+
+		if(ZeT.isf(this.opts.onmove))
+			this.opts.onmove(where, items, this)
 	},
 
 	goto              : function(/* model, tilesItem */)
@@ -4754,7 +4772,11 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		//~: assign the color to the model
 		var m = this._data.model(i)
 		var x = (ZeT.assertn(m).color == co)
+
+		//~: update the model
 		m.color = co
+		if(exit_edit === true)
+			this._data.updated(m, this)
 
 		//~: paint the border
 		this._color_border(wr, co)

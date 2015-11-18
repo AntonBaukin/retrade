@@ -44,7 +44,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-   //~: shared strategy to acces data from the server
+   //~: shared strategy to access data from the server
    ZeT.singleInstance('ReTrade.getUserWebLinks', ReTrade.RepeatedTask, {}, 10000, function()
    {
      var self = this
@@ -62,7 +62,9 @@
        //~: access the records
        jQuery.get("${z:url('/go/userlinks')}", function(x)
        {
-         if(ZeT.isa(x)) self.result(x)
+         //?: {data are actual}
+         if(!ZeT.isa(x) && ZeT.isu(self.txn) || (self.txn === txn))
+           self.result(x)
        })
      })
    })
@@ -131,11 +133,11 @@
      }
 
      tileItem = new ReTrade.TilesItemExt({
-       wrapClass: 'retrade-tile-links-wrap',
-       data: { array: [], goto: openWebLink },
        shadow: 'retrade-boshadow-N-XYZ retrade-boshadow-XYZ',
-       selectedClass: 'selected'
-     })
+       wrapClass: 'retrade-tile-links-wrap', selectedClass: 'selected',
+       data: { array: [], goto: openWebLink, onupdate: updateColor,
+         onremove: removeItem, onmove: moveItems
+     }})
 
      tiles = new ReTrade.TilesControl({
        content : tileItem,
@@ -204,8 +206,37 @@
        }
      }
 
+     function updateRequest(req)
+     {
+       function updateTxn(txn)
+       {
+         ZeT.asserts(txn)
+         txn = parseInt(txn)
+         ZeT.assert(ZeT.isn(txn))
+         ZeT.defined('ReTrade.getUserWebLinks').txn = txn
+       }
+
+       jQuery.get("${z:url('/go/userlinks')}", req, updateTxn)
+     }
+
+     function updateColor(m)
+     {
+       updateRequest({ task: 'color', item: m.id, color: m.color })
+     }
+
+     function removeItem(m)
+     {
+       updateRequest({ task: 'remove', item: m.id })
+     }
+
+     function moveItems(where, items)
+     {
+       ZeT.each(items, function(x, i){ items[i] = x.id })
+       updateRequest({ task: 'move', item: where.id, moved: items.join(';') })
+     }
+
      //~: start loading the links
-     ZeT.defined('ReTrade.getUserWebLinks').start().on(100, function(data)
+     ZeT.defined('ReTrade.getUserWebLinks').start().on(250, function(data)
      {
        tileItem._data._array = data
        tiles.update()
