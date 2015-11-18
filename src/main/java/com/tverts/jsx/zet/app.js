@@ -57,6 +57,8 @@ ZeT.extend(ZeT,
 
 	sec              : Java.type('com.tverts.secure.SecPoint'),
 
+	tx               : Java.type('com.tverts.system.tx.TxPoint'),
+
 	/**
 	 * Returns bean registered in Spring
 	 */
@@ -90,6 +92,12 @@ ZeT.extend(ZeT,
 	o2s              : function(o)
 	{
 		return JSON.stringify(o)
+	},
+
+	s2o              : function(s)
+	{
+		ZeT.asserts(s)
+		return JSON.parse(s)
 	},
 
 	/**
