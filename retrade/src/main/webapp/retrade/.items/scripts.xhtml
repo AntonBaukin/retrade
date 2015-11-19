@@ -32,6 +32,34 @@ function retrade_go_url(url)
   return url
 }
 
+function retrade_add_user_web_link(wl)
+{
+  ZeT.assert(ZeT.iso(wl))
+  wl = ZeT.deepClone(wl)
+
+  //~: assign proper link
+  ZeT.asserts(wl.link)
+  wl.link = retrade_go_url(wl.link)
+
+  //~: issue add request
+  function updateTxn(txn)
+  {
+    ZeT.asserts(txn)
+    txn = parseInt(txn)
+    ZeT.assert(ZeT.isn(txn))
+    ZeT.defined('ReTrade.getUserWebLinks').txn = txn
+    ReTrade.desktop.event('Успешно создана ссылка на: ' + wl.text)
+  }
+
+  //!: issue add action
+  wl.task = 'add'
+  jQuery.get("${z:url('/go/userlinks')}", wl, updateTxn).fail(function(x)
+  {
+    if(!ZeTS.ises(x.responseText))
+      ReTrade.desktop.error(x.responseText)
+  })
+}
+
 function retrade_open_window(opts)
 {
   ZeT.assertn(opts)

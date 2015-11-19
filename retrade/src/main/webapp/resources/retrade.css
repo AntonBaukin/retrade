@@ -688,6 +688,11 @@ div.retrade-desktop-event
   min-width: 175pt; max-width: 200pt;
 }
 
+div.retrade-desktop-event > div:first-child > div:first-child > div:first-child
+{
+  position: relative;
+}
+
 div.retrade-desktop-event .retrade-boshadow-N-main,
   div.retrade-desktop-event .retrade-boshadow-R-main,
   div.retrade-desktop-event .retrade-boshadow-G-main,

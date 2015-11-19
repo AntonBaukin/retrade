@@ -16,6 +16,9 @@
     <co:attribute name = 'domainOwner' default = 'true'
        type = 'java.lang.Boolean'/>
 
+    <co:attribute name = 'webLink' default = 'true'
+       type = 'java.lang.Boolean'/>
+
     <co:facet name = 'extjs-props'/>
     <co:facet name = 'topbar'/>
     <co:facet name = 'toolbar-props'/>
@@ -56,13 +59,19 @@
     })
     panel.extjsPropsNode()
 
-    var position = '#{cc.attrs.position}';
-    if(ZeTS.ises(position)) position = 'center';
+    var position = '#{cc.attrs.position}'
+    if(ZeTS.ises(position)) position = 'center'
+
+    var wlink; if("#{cc.attrs.webLink}" === 'true') wlink = {
+      link: "#{rootView.requestURI}", panel: position,
+      text: panel.extjsPropsRaw().title,
+      domain: '${rootView.extjsDomain}'
+    }
 
     //~: install the desktop controller for the root panel
     ZeT.createInstance('ReTrade.DesktopRootPanelController', {
       domain: '${rootView.extjsDomain}', desktop: ReTrade.desktop,
-      'position': position, bind: panel,
+      'position': position, bind: panel, webLink: wlink,
       domainOwner: ('#{cc.attrs.domainOwner}' === 'true')
     })
 

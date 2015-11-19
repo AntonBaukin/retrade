@@ -23,6 +23,9 @@ function get()
 	//?: {move}
 	else if(params.task == 'move')
 		return updateModel(login, actionMove)
+	//?: {add}
+	else if(params.task == 'add')
+		return updateModel(login, actionAdd)
 
 	//~: return the web links
 	return getUserLinks(login)
@@ -47,7 +50,15 @@ function updateModel(login, action)
 	ZeT.assert(ZeT.isa(model))
 
 	//~: invoke the action on the model
-	action(model)
+	var error = action(model)
+
+	//?: {something wrong}
+	if(!ZeTS.ises(error))
+	{
+		response.setStatus(400)
+		response.setContentType('text/plain;encoding=UTF-8')
+		return print(error)
+	}
 
 	//~: save the model
 	login.setUserLinks(ZeT.o2s(model))
@@ -133,4 +144,68 @@ function actionMove(model)
 		var x = ZeTA.concat([i, 0], moved)
 		model.splice.apply(model, x)
 	}
+}
+
+function actionAdd(model)
+{
+	var link = ZeT.asserts(params.link)
+	var text = ZeT.asserts(params.text)
+	var rec  = {}
+
+	//~: search for the model with the same text
+	for(var i = 0;(i < model.length);i++)
+		if(model[i].text == text)
+			return 'Ссылка на данный объект уже создана!'
+
+	//~: map all the ids
+	var ids = {}; ZeT.each(model, function(m){ ids[m.id] = m })
+
+	//?: {has id provided}
+	if(ZeT.iss(params.id))
+	{
+		//?: {found the same id}
+		if(ids[params.id])
+			return 'Продублирован идентификатор ссылки'
+
+		rec.id = params.id
+	}
+	//~: generate id
+	else for(i = 1;;i++)
+	{
+		rec.id = '' + i
+		if(!ids[rec.id]) break
+	}
+
+	//=: text
+	rec.text = text
+
+	//=: hint
+	if(!ZeTS.ises(params.hint))
+		rec.hint = params.hint
+
+	//=: icon
+	if(!ZeTS.ises(params.icon))
+		rec.icon = params.icon
+
+	//=: color
+	rec.color = params.color
+	if(!rec.color) rec.color = 'N'
+	ZeT.assert([ 'N', 'R', 'G', 'O' ].indexOf(rec.color) >= 0)
+
+	//--> open procedure
+	rec.open = {}
+
+	//=: panel
+	if(!ZeTS.ises(params.panel))
+		rec.open.panel = params.panel
+
+	//=: domain
+	if(!ZeTS.ises(params.domain))
+		rec.open.domain = params.domain
+
+	//=: link
+	rec.open.link = link
+
+	//!: append the record
+	model.push(rec)
 }

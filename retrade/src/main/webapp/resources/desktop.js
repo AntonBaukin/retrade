@@ -964,8 +964,22 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 	_add_tools        : function(tools)
 	{
+		//~: add tool to save web link
+		this._add_link_tool(tools)
+
 		//~: add panel move left-right tools
 		this._add_move_tools(tools)
+	},
+
+	_add_link_tool    : function(tools)
+	{
+		if(!ZeT.iso(this.opts.webLink)) return
+
+		tools.push({ xtype: 'tool', cls: 'retrade-web-link-tool',
+		  handler: ZeT.fbind(this._web_link, this),
+		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',
+		  tooltip: 'Создать постоянную ссылку на панель'
+		})
 	},
 
 	_add_move_tools   : function(tools)
@@ -975,7 +989,8 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		//~: add <<
 		tools.push({ xtype: 'tool', type: 'left',
 		  handler: ZeT.fbind(this._move_left, this),
-		  margin: extjsf.pts(0, 8, 0, 2)
+		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',
+		  tooltip: 'Передвинуть панель в левую область'
 		})
 
 		var m = extjsf.pts(0, 0, 0, 2)
@@ -984,7 +999,9 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 		//~: add >>
 		tools.push({ xtype: 'tool', type: 'right',
-		  handler: ZeT.fbind(this._move_right, this), margin: m
+		  handler: ZeT.fbind(this._move_right, this),
+		  margin: m, tooltipType: 'title',
+		  tooltip: 'Передвинуть панель в правую область'
 		})
 	},
 
@@ -1103,6 +1120,13 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		if(cur === 'right')  nxt = 'left'
 
 		this.desktop().swapPanels(cur, nxt)
+	},
+
+	_web_link         : function()
+	{
+		if(ZeTS.ises(this.opts.webLink.panel))
+			this.opts.webLink.panel = 'center'
+		retrade_add_user_web_link(this.opts.webLink)
 	},
 
 	_on_destroy       : function()
@@ -1288,6 +1312,8 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 		if(!ZeTD.isgn(this.node()))
 			((this.opts.parent)?ZeTD.n(this.opts.parent):(document.body)).
 			  appendChild(this.node())
+
+		ZeT.log('Node: ', this.node())
 
 		//~: animate the message
 		this._animate()
