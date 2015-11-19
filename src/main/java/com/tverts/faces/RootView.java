@@ -1,6 +1,6 @@
 package com.tverts.faces;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 /* com.tverts: servlet */
 
 import static com.tverts.servlet.RequestPoint.request;
+import static com.tverts.servlet.RequestPoint.response;
 
 /* com.tverts: secure */
 
@@ -32,14 +33,16 @@ public class RootView extends ViewWithModes
 {
 	/* constants */
 
-	public static final String EXTJSDOMAIN_PARAM = "extjs_domain";
+	public static final String PARAM_DOMAIN   =
+	  "extjs_domain";
 
 	/**
 	 * Position within the desktop layout panels. The default
 	 * value is {@code null} string, and the real place is defined
 	 * by the implementation (the desktop center).
 	 */
-	public static final String EXTJSPOS_PARAM    = "extjs_desktop_position";
+	public static final String PARAM_POSITION =
+	  "extjs_desktop_position";
 
 
 	/* global actions */
@@ -66,7 +69,7 @@ public class RootView extends ViewWithModes
 
 	public String    getExtjsDomainParam()
 	{
-		return EXTJSDOMAIN_PARAM;
+		return PARAM_DOMAIN;
 	}
 
 	public String    getExtjsPosition()
@@ -76,7 +79,7 @@ public class RootView extends ViewWithModes
 
 	public String    getExtjsPositionParam()
 	{
-		return EXTJSPOS_PARAM;
+		return PARAM_POSITION;
 	}
 
 	public String    getExtjsDomain()
@@ -90,7 +93,16 @@ public class RootView extends ViewWithModes
 		return String.format("view_%x", VIEWID.incrementAndGet());
 	}
 
-
+	/**
+	 * Returns web context related URL
+	 * (starts with '/') to the page
+	 * current request was issued for.
+	 * It is already URL-encoded.
+	 */
+	public String    getRequestURI()
+	{
+		return response().encodeURL(request(0).getRequestURI());
+	}
 
 
 	/* protected: view support interface */

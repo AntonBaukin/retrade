@@ -65,7 +65,7 @@ public class RequestPoint
 	}
 
 	/**
-	 * Returns the request on the top of the stack.
+	 * Returns the request on the bottom of the stack.
 	 */
 	public static HttpServletRequest request()
 	{
