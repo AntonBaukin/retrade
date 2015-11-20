@@ -20,7 +20,7 @@ import com.tverts.secure.SecPoint;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.s2s;
+import com.tverts.support.SU;
 
 
 /**
@@ -104,6 +104,12 @@ public class RootView extends ViewWithModes
 		return response().encodeURL(request(0).getRequestURI());
 	}
 
+	public Long      getEntityKey()
+	{
+		String p = SU.s2s(request().getParameter(getEntityParam()));
+		return (p == null)?(null):Long.parseLong(p);
+	}
+
 
 	/* protected: view support interface */
 
@@ -115,12 +121,12 @@ public class RootView extends ViewWithModes
 
 	protected String obtainExtjsDomainFromRequest()
 	{
-		return s2s(request().getParameter(getExtjsDomainParam()));
+		return SU.s2s(request().getParameter(getExtjsDomainParam()));
 	}
 
 	protected String obtainExtjsPositionFromRequest()
 	{
-		return s2s(request().getParameter(getExtjsPositionParam()));
+		return SU.s2s(request().getParameter(getExtjsPositionParam()));
 	}
 
 
