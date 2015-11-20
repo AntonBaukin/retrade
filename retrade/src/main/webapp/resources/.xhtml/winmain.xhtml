@@ -16,6 +16,9 @@
     <co:attribute name = 'winmainName' default = 'winmain'
        type = 'java.lang.String'/>
 
+    <co:attribute name = 'webLink' default = 'true'
+       type = 'java.lang.Boolean'/>
+
     <co:facet name = 'extjs-props'/>
     <co:facet name = 'toolbar-props'/>
     <co:facet name = 'toolbar'/>
@@ -149,16 +152,17 @@
     <co:insertChildren/>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
-  (function()
+  ZeT.scope(function()
   {
-    var domain  = '${rootView.extjsDomain}';
-    var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain);
-    if(!winmain || !winmain.co()) return;
+    var domain  = '${rootView.extjsDomain}'
+    var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain)
+    if(!winmain || !winmain.co()) return
 
-    var panel   = extjsf.bind("#{cc.attrs.coid}", domain);
-    var toolbar = extjsf.bind('#{cc.attrs.coid}-toolbar', domain);
-    var status  = extjsf.bind('#{cc.attrs.coid}-status', domain);
+    var panel   = extjsf.bind("#{cc.attrs.coid}", domain)
+    var toolbar = extjsf.bind('#{cc.attrs.coid}-toolbar', domain)
+    var status  = extjsf.bind('#{cc.attrs.coid}-status', domain)
 
     //?: {toolbar has items} add it to the window
     if(toolbar.hasItems() || toolbar.hasHTML())
@@ -171,8 +175,47 @@
     //!: add the panel to the window
     winmain.co().add(panel.extjsProps())
 
-  })()
+    //~: install web link tool
+    ZeT.scope(function()
+    {
+      //?: {link is not allowed}
+      if("#{cc.attrs.webLink}" === 'false')
+      {
+        if(ZeT.isu(winmain.webLink))
+          winmain.webLink = false
+        return
+      }
 
+      //?: {tool is already installed}
+      if(!ZeT.isu(winmain.webLink)) return
+
+      var tool = winmain.webLink = {
+        xtype: 'tool', cls: 'retrade-web-link-tool',
+        tooltipType: 'title', tooltip: 'Создать постоянную ссылку на окно'
+      }
+
+      //~: web link + tool handler
+      tool.handler = ZeT.fbind(retrade_add_user_web_link, this, {
+        link: "#{rootView.requestURI}",
+        entity: "#{rootView.entityKey}",
+        text: winmain.co().title,
+        domain: domain, box: {
+          width: winmain.co().getWidth(),
+          height: winmain.co().getHeight() }
+      })
+
+      //~: insert tool in the window's header
+      var items = winmain.co().getHeader().items
+      for(var i = 0;(i < items.getCount());i++)
+        if(items.get(i).xtype == 'tool')
+          return winmain.co().getHeader().insert(i, tool)
+
+      //~: append a single tool
+      winmain.co().addTool([ tool ])
+    })
+  })
+
+    //]]>
     </script>
 
   </co:implementation>

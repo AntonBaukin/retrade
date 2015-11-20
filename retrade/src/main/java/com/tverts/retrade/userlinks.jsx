@@ -206,6 +206,10 @@ function actionAdd(model)
 	//=: link
 	rec.open.link = link
 
+	//=: window box
+	if(!ZeTS.ises(params.box))
+		rec.open.box = ZeT.s2o(params.box)
+
 	//!: append the record
 	model.push(rec)
 }

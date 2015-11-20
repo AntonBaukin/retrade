@@ -41,6 +41,18 @@ function retrade_add_user_web_link(wl)
   ZeT.asserts(wl.link)
   wl.link = retrade_go_url(wl.link)
 
+  //?: {has entity param}
+  if(wl.entity)
+  {
+    wl.link += (wl.link.indexOf('?') == -1)?('?'):('&')
+    wl.link += encodeURIComponent("${rootView.entityParam}") +
+      '=' + encodeURIComponent(wl.entity)
+    delete wl.entity
+  }
+
+  //?: {has box} encode to json text
+  if(ZeT.iso(wl.box)) wl.box = JSON.stringify(wl.box)
+
   //~: issue add request
   function updateTxn(txn)
   {
