@@ -22,7 +22,9 @@
     </f:facet>
 
     <!-- [area for the tiles] -->
-    <x:html coid = "${z:vid(v, 'my-links-html-content')}" table = "false">
+    <x:html coid = "${z:vid(v, 'my-links-html-content')}"
+      table = "false" boxClass = "retrade-tiles-links-area-out">
+
       <div id = "${z:vid(v, 'my-links-area')}"
         class = "retrade-tiles-links-area">
 
@@ -45,15 +47,11 @@
     //<![CDATA[
 
    //~: shared strategy to access data from the server
-   ZeT.singleInstance('ReTrade.getUserWebLinks', ReTrade.RepeatedTask, {}, 10000, function()
-   {
-     var self = this
-     jQuery.get("${z:url('/go/userlinks')}", { task : 'txn' }, function(txn)
-     {
-       if(ZeTS.ises(txn)) return
+   ZeT.singleInstance('ReTrade.getUserWebLinks', ReTrade.RepeatedTask, {
 
-       txn = parseInt(txn)
-       ZeT.assert(ZeT.isn(txn))
+     reload : function(txn)
+     {
+       var self = this
 
        //?: {tx-number is the same} do nothing
        if(self.txn === txn) return
@@ -66,6 +64,20 @@
          if(!ZeT.isa(x) && ZeT.isu(self.txn) || (self.txn === txn))
            self.result(x)
        })
+     }
+   }, 30000, function()
+   {
+     var self = this
+     jQuery.get("${z:url('/go/userlinks')}", { task : 'txn' }, function(txn)
+     {
+       if(ZeTS.ises(txn)) return
+
+       //~: parse server result
+       txn = parseInt(txn)
+       ZeT.assert(ZeT.isn(txn))
+
+       //!: reload data
+       self.reload(txn)
      })
    })
 
@@ -213,7 +225,6 @@
          ZeT.asserts(txn)
          txn = parseInt(txn)
          ZeT.assert(ZeT.isn(txn))
-         ZeT.defined('ReTrade.getUserWebLinks').txn = txn
        }
 
        jQuery.get("${z:url('/go/userlinks')}", req, updateTxn)
@@ -236,7 +247,7 @@
      }
 
      //~: start loading the links
-     ZeT.defined('ReTrade.getUserWebLinks').start().on(250, function(data)
+     ZeT.defined('ReTrade.getUserWebLinks').start().on(true, function(data)
      {
        tileItem._data._array = data
        tiles.update()

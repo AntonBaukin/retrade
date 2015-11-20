@@ -1313,8 +1313,6 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 			((this.opts.parent)?ZeTD.n(this.opts.parent):(document.body)).
 			  appendChild(this.node())
 
-		ZeT.log('Node: ', this.node())
-
 		//~: animate the message
 		this._animate()
 
@@ -3745,7 +3743,7 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 
 		//?: {has no place}
 		if(!this.W || !this.H)
-			return ZeT.log('ReTrade.Tiles area [',
+			return ZeTS.cat('ReTrade.Tiles area [',
 			  this.area, '] grid has zero dimensions!')
 	},
 
@@ -4060,10 +4058,10 @@ ReTrade.TilesControl = ZeT.defineClass('ReTrade.TilesControl', {
 
 	update            : function()
 	{
-		var self = this
+		var self = this, layout = this.tiles.layout()
 
 		//~: make the layout, then traverse
-		this.tiles.layout().each(function(tile, x, y)
+		layout && layout.each(function(tile, x, y)
 		{
 			var id = self.content.scroll(x, y, self)
 			self.content.provide(id, tile, self)
@@ -4329,7 +4327,7 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		var d = this.data(w)
 
 		//?: {can't select}
-		if(!this._can_select(selected, d, w)) return
+		if(!d || !this._can_select(selected, d, w)) return
 		d.selected = selected
 
 		//?: {has selection class}
@@ -4695,16 +4693,17 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		ZeT.assert(ZeT.isi(i))
 
 		//~: tile content model
-		var m = this._data.model(i)
-		ZeT.assertn(m)
+		var d = this.data(wr)
+		ZeT.assertn(d)
+
+		//~: un-select the model
+		d.edited = d.moved = false
+		this._select(false, $(wr))
 
 		//!: remove the model
-		this._data.remove(m, i)
+		this._data.remove(d.model, i)
 
-		//~: select the tile on the same position
-		if(m = this._data.data(i))
-			m.selected = true
-
+		//~: update the tiles
 		this.control.update()
 	},
 

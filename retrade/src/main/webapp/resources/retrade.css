@@ -344,13 +344,17 @@ table.retrade-align-right.x-field
 
 /* User Web Links (tiles) */
 
-.retrade-tiles-links-area
+.retrade-tiles-links-area, .retrade-tiles-links-area-out
 {
   position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;
+}
+
+.retrade-tiles-links-area
+{
   background: linear-gradient(135deg, #ffffff 0%,#f3f3f3 53%,#ededed 57%,#ffffff 100%);
 }
 
-.retrade-tiles-links-area > div:last-child
+.retrade-tiles-links-area > div
 {
   position: absolute; left: 0; right: 10px; top: 0; bottom: 10px;
 }
