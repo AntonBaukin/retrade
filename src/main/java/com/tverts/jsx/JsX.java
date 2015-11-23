@@ -55,7 +55,12 @@ public class JsX extends ServiceBase
 		}
 	}
 
-	public static Object invoke(String script, String function, JsCtx ctx, Object... args)
+	public static Object apply(String script, String function, Object... args)
+	{
+		return JsX.apply(script, function, null, args);
+	}
+
+	public static Object apply(String script, String function, JsCtx ctx, Object... args)
 	{
 		//~: create local context on demand
 		JsCtx local = (ctx != null)?(null):(ctx = new JsCtx().init());

@@ -59,6 +59,8 @@ ZeT.extend(ZeT,
 
 	tx               : Java.type('com.tverts.system.tx.TxPoint'),
 
+	xp               : Java.type('com.tverts.objects.XPoint'),
+
 	/**
 	 * Returns bean registered in Spring
 	 */
@@ -100,6 +102,23 @@ ZeT.extend(ZeT,
 		return JSON.parse(s)
 	},
 
+	JClass           : Java.type('java.lang.Class'),
+
+	/**
+	 * Builds JAXB-mapped Java class from JSON string.
+	 * The exact type of the class must be given!
+	 */
+	s2jo             : function(jtype, s)
+	{
+		ZeT.asserts(s)
+
+		//~: get the type of the object
+		if(ZeT.iss(jtype)) jtype = Java.type(jtype)
+		ZeT.assert(jtype.class instanceof ZeT.JClass)
+
+		return ZeT.xp.json().read(s, jtype.class)
+	},
+
 	/**
 	 * Creates Java array of the given type.
 	 */
@@ -107,7 +126,21 @@ ZeT.extend(ZeT,
 	{
 		ZeT.assert(ZeT.isi(length) && (length >= 0))
 		if(ZeT.iss(type)) type = Java.type(type)
-		ZeT.assertn(type.class)
+		ZeT.assert(type.class instanceof ZeT.JClass)
 		return java.lang.reflect.Array.newInstance(type.class, length)
+	},
+
+	BigDecimal       : Java.type('java.math.BigDecimal'),
+
+	jdecimal         : function(n)
+	{
+		if(ZeT.isx(n))
+			return null;
+
+		if(ZeT.isn(n))
+			n = '' + n
+
+		ZeT.asserts(n, 'Illegal Decimal string!')
+		return new ZeT.BigDecimal(n)
 	}
 }) //<-- return this value

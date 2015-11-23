@@ -1,11 +1,10 @@
 package com.tverts.support.streams;
 
-/* standard Java classes */
+/* Java */
 
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
-
 import java.math.BigDecimal;
 
 
@@ -19,18 +18,15 @@ import java.math.BigDecimal;
 public class   BigDecimalXMLEncoderPersistenceDelegate
        extends DefaultPersistenceDelegate
 {
-	/* BigDecimalXMLEncoderPersistenceDelegate Singleton */
+	/* Singleton */
 
 	public static BigDecimalXMLEncoderPersistenceDelegate getInstance()
 	{
 		return INSTANCE;
 	}
 
-	private static final BigDecimalXMLEncoderPersistenceDelegate INSTANCE =
+	public static final BigDecimalXMLEncoderPersistenceDelegate INSTANCE =
 	  new BigDecimalXMLEncoderPersistenceDelegate();
-
-	public BigDecimalXMLEncoderPersistenceDelegate()
-	{}
 
 
 	/* protected: DefaultPersistenceDelegate interface */

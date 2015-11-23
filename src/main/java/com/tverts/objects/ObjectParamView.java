@@ -74,7 +74,7 @@ public class ObjectParamView implements Serializable
 
 	private boolean readOnly;
 
-	public void setReadOnly(boolean readOnly)
+	public void setReadOnly(Boolean readOnly)
 	{
 		this.readOnly = Boolean.TRUE.equals(readOnly);
 	}

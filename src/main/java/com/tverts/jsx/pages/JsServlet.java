@@ -38,7 +38,7 @@ import com.tverts.support.streams.BytesStream;
  * JavaScript file having '.jsx' extension.
  *
  * It prepares the execution context and invokes
- * {@link JsX#invoke(String, String, JsCtx, Object...)}
+ * {@link JsX#apply(String, String, JsCtx, Object...)}
  * having the first argument the script requested,
  * second argument the name of the HTTP method
  * in the lower case (get, post, put, and else),
@@ -93,7 +93,7 @@ public class JsServlet extends GenericServlet
 		//!: invoke the script
 		try
 		{
-			JsX.invoke(script, req.getMethod().toLowerCase(), ctx);
+			JsX.apply(script, req.getMethod().toLowerCase(), ctx);
 		}
 		catch(Throwable e)
 		{

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.zip.GZIPOutputStream;
 /* Java for XML  */
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Result;
@@ -232,6 +234,10 @@ public class XStreamer
 			else
 				res = u.unmarshal(source, cls);
 
+			//?: {it's wrapped}
+			if(res instanceof JAXBElement)
+				res = ((JAXBElement)res).getValue();
+
 			//~: check the result
 			EX.assertx( (res == null) || cls.isAssignableFrom(res.getClass()),
 			  "JAXB-XML mapped object of class [", LU.cls(res),
@@ -249,6 +255,11 @@ public class XStreamer
 	public <T> T  read(Reader stream, Class<T> cls)
 	{
 		return read(new StreamSource(stream), cls);
+	}
+
+	public <T> T  read(String str, Class<T> cls)
+	{
+		return read(new StringReader(str), cls);
 	}
 
 	public <T> T  read(InputStream stream, Class<T> cls)

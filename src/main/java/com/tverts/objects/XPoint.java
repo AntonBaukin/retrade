@@ -44,6 +44,7 @@ public class XPoint
 		);
 	}
 
+
 	/* X-Point (bean) interface */
 
 	public void setStreamerXML(XStreamer streamerXML)

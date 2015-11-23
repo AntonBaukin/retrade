@@ -37,6 +37,14 @@
         <constructor-arg
           value = '#{jaxbConfigurationClasspathScanner.classesArray}'/>
 
+        <property name = 'readProps'>
+          <value>
+            eclipselink.media-type,                 application/json,
+            eclipselink.json.include-root,          false,
+            eclipselink.json.wrapper-as-array-name, true
+          </value>
+        </property>
+
         <property name = 'writeProps'>
           <value>
             jaxb.formatted.output,                  true,
