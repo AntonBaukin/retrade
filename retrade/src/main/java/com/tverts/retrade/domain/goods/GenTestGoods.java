@@ -3,7 +3,6 @@ package com.tverts.retrade.domain.goods;
 /* Java */
 
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +20,10 @@ import com.tverts.hibery.HiberPoint;
 
 import com.tverts.actions.ActionType;
 import static com.tverts.actions.ActionsPoint.actionRun;
+
+/* com.tverts: scripting */
+
+import com.tverts.jsx.JsX;
 
 /* com.tverts: genesis */
 
@@ -44,13 +47,12 @@ import com.tverts.endure.core.Domain;
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
-import com.tverts.support.xml.SaxProcessor;
 
 
 /**
  * Generates the test {@link MeasureUnit},
  * and {@link GoodUnit}s by reading file
- * 'GenTestGoods.xml'.
+ * 'GenTestGoods.js'.
  *
  *
  * @author anton.baukin@gmail.com
@@ -70,53 +72,9 @@ public class GenTestGoods extends GenesisHiberPartBase
 	}
 
 
-	/* protected: generation */
+	/* public: JS generation callbacks */
 
-	protected URL  getDataFile()
-	{
-		return EX.assertn(
-		  getClass().getResource("GenTestGoods.xml"),
-		  "No GenTestGoods.xml file found!"
-		);
-	}
-
-	protected void readTestData(GenCtx ctx)
-	  throws GenesisError
-	{
-		try
-		{
-			createProcessor(ctx).
-			  process(getDataFile().toString());
-		}
-		catch(Throwable e)
-		{
-			e = EX.xrt(e);
-
-			if(e instanceof GenesisError)
-				throw (GenesisError)e;
-			else
-				throw new GenesisError(e, this, ctx);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	protected void collectGoods(GenCtx ctx)
-	{
-		//~: get the goods
-		Map<String, GoodUnit> gum = (Map<String, GoodUnit>)
-		  EX.assertn(ctx.get((Object) GoodUnit.class));
-
-		EX.assertx(0 != gum.size(), "Test Goods were not generated!");
-
-		//~: the code-sorted
-		Map<String, GoodUnit> gtr =
-		  new TreeMap<String, GoodUnit>(gum);
-
-		//!: save into the genesis context
-		ctx.set(GoodUnit[].class, gtr.values().toArray(new GoodUnit[gtr.size()]));
-	}
-
-	protected void genMeasure(GenCtx ctx, Measure m)
+	public void takeMeasure(GenCtx ctx, Measure m)
 	{
 		//~: load existing measure unit
 		MeasureUnit mu = bean(GetGoods.class).getMeasureUnit(
@@ -159,22 +117,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		addMeasure(ctx, mu);
 	}
 
-	@SuppressWarnings("unchecked")
-	protected void addMeasure(GenCtx ctx, MeasureUnit mu)
-	{
-		Map<String, MeasureUnit> mum = (Map<String, MeasureUnit>)
-		  ctx.get((Object) MeasureUnit.class);
-
-		if(mum == null) ctx.set((Object) MeasureUnit.class,
-		  mum = new HashMap<String, MeasureUnit>(7)
-		);
-
-		EX.assertx( mum.put(mu.getCode(), mu) == null,
-		  "Measure Unit with code [", mu.getCode(), "] is generated twice!"
-		);
-	}
-
-	protected void genGood(GenCtx ctx, Good g, Calc c)
+	public void takeGood(GenCtx ctx, Good g, Calc c)
 	{
 		//~: load existing good unit
 		GoodUnit gu = bean(GetGoods.class).getGoodUnit(
@@ -218,6 +161,55 @@ public class GenTestGoods extends GenesisHiberPartBase
 				genDerived(ctx, gu, c);
 			else
 				genCalculation(ctx, gu, c);
+	}
+
+
+	/* protected: generation */
+
+	protected void readTestData(GenCtx ctx)
+	  throws GenesisError
+	{
+		//~: invoke GenTestMeasures.js
+		JsX.apply("domain/goods/GenTestMeasures.js",
+		  "genTestMeasures", ctx, this
+		);
+
+		//~: invoke GenTestGoods.js
+		JsX.apply("domain/goods/GenTestGoods.js",
+		  "genTestGoods", ctx, this
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void collectGoods(GenCtx ctx)
+	{
+		//~: get the goods
+		Map<String, GoodUnit> gum = (Map<String, GoodUnit>)
+		  EX.assertn(ctx.get((Object) GoodUnit.class));
+
+		EX.assertx(0 != gum.size(), "Test Goods were not generated!");
+
+		//~: the code-sorted
+		Map<String, GoodUnit> gtr = new TreeMap<>(gum);
+
+		//!: save into the genesis context
+		ctx.set(GoodUnit[].class, gtr.values().stream().
+		  toArray(GoodUnit[]::new));
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void addMeasure(GenCtx ctx, MeasureUnit mu)
+	{
+		Map<String, MeasureUnit> mum = (Map<String, MeasureUnit>)
+		  ctx.get((Object) MeasureUnit.class);
+
+		if(mum == null) ctx.set((Object) MeasureUnit.class,
+		  mum = new HashMap<String, MeasureUnit>(7)
+		);
+
+		EX.assertx( mum.put(mu.getCode(), mu) == null,
+		  "Measure Unit with code [", mu.getCode(), "] is generated twice!"
+		);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -404,131 +396,5 @@ public class GenTestGoods extends GenesisHiberPartBase
 		  "] has Calculation that refers unknown Good by code [",
 		  ci.getXGood(), "]!"
 		));
-	}
-
-
-	/* protected: XML Processor */
-
-	protected SaxProcessor<? extends GenState> createProcessor(GenCtx ctx)
-	{
-		return new ReadTestGoods(ctx);
-	}
-
-	protected static class GenState
-	{
-		public Measure measure;
-		public Good    good;
-		public Calc    calc;
-	}
-
-	protected class ReadTestGoods extends SaxProcessor<GenState>
-	{
-		public ReadTestGoods(GenCtx ctx)
-		{
-			this.ctx = ctx;
-			this.collectTags = true;
-		}
-
-
-		/* protected: SaxProcessor interface */
-
-		protected void createState()
-		{
-			//?: <measure>
-			if(istag(1, "measure"))
-			{
-				event().state(new GenState());
-				state().measure = new Measure();
-			}
-
-			//?: <good>
-			else if(istag(1, "good"))
-			{
-				event().state(new GenState());
-				state().good = new Good();
-			}
-
-			//?: <good> <calc>
-			else if(istag(2, "calc"))
-			{
-				EX.assertn(state(1).good);
-				EX.assertx(state(1).calc == null);
-				state(1).calc = new Calc();
-			}
-
-			else if(islevel(1))
-				throw wrong();
-		}
-
-		protected void open()
-		{
-			//?: <good> <calc> <good/>
-			if(istag(3, "good"))
-			{
-				Calc     c = EX.assertn(state(1).calc);
-				CalcItem i = new CalcItem();
-
-				//~: related good code
-				i.setXGood(EX.asserts(event().attr("code")));
-
-				//~: good volume
-				i.setVolume(new BigDecimal(EX.asserts(event().attr("volume"))));
-
-				//?: {already has this good}
-				for(CalcItem x : c.getItems())
-					if(x.getXGood().equals(i.getXGood()))
-						throw EX.ass("Generated Good with code [", tag("code"),
-						  "] already has Calculation part for good with code [",
-						  i.getXGood(), "]!"
-						);
-
-				//~: add the part
-				c.getItems().add(i);
-			}
-
-			//?: <good> <calc>
-			else if(istag(2, "calc"))
-				EX.assertn(state(1).calc).setSemiReady(
-				  "true".equals(event().attr("semi-ready")));
-		}
-
-		protected void close()
-		{
-			//?: <measure>
-			if(istag(1, "measure"))
-			{
-				//~: fill the measure
-				EX.assertn(state().measure);
-				requireFillClearTags(state().measure, true, "code", "name");
-
-				//~: generate it
-				genMeasure(ctx, state().measure);
-				state().measure = null;
-			}
-
-			//?: <good> <calc>
-			else if(istag(2, "calc"))
-			{
-				//~: fill the calculation
-				Calc c = EX.assertn(state(1).calc);
-				requireFillClearTags(c, false);
-			}
-
-			//?: <good>
-			else if(istag(1, "good"))
-			{
-				//~: fill the good
-				Good g = EX.assertn(state().good);
-				requireFillClearTags(g, true, "code", "name", "XMeasure");
-
-				//!: generate the good
-				genGood(ctx, g, state().calc);
-			}
-		}
-
-
-		/* genesis context */
-
-		private GenCtx ctx;
 	}
 }

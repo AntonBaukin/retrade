@@ -111,8 +111,8 @@ public class ActLogin extends com.tverts.endure.auth.ActLogin
 		AuthLogin  login = target(abr, AuthLogin.class);
 
 		//~: generate the links via script call
-		String     links = (String) JsX.invoke(
-		  "web/UserInterface.js", "genUserLinks", null, login
+		String     links = (String) JsX.apply(
+		  "web/UserInterface.js", "genUserLinks", login
 		);
 
 		//=: assign the links

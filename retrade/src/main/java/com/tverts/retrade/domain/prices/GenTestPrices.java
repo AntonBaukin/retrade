@@ -26,6 +26,10 @@ import com.tverts.actions.ActionsPoint;
 
 import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
+/* com.tverts: scripting */
+
+import com.tverts.jsx.JsX;
+
 /* com.tverts: genesis */
 
 import com.tverts.genesis.GenCtx;
@@ -52,12 +56,11 @@ import com.tverts.support.DU;
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
-import com.tverts.support.xml.SaxProcessor;
 
 
 /**
  * Generates Price Lists based on the test
- * goods file 'GenTestGoods.xml'.
+ * goods file 'GenTestGoods.js'.
  *
  * If Price List already exists, nothing is done.
  * The initial prices generation is made via Price
@@ -144,37 +147,11 @@ public class GenTestPrices extends GenesisHiberPartBase
 
 	/* protected: generation */
 
-	protected URL  getGoodsFile()
-	{
-		return EX.assertn(
-		  GenTestGoods.class.getResource("GenTestGoods.xml"),
-		  "No GenTestGoods.xml file found!"
-		);
-	}
-
 	protected void readTestPrices(GenCtx ctx, Map<String, BigDecimal> costs)
 	  throws GenesisError
 	{
-		try
-		{
-			//~: create the processor
-			ReadTestGoods p = createProcessor(ctx);
-
-			//~: do process
-			p.process(getGoodsFile().toString());
-
-			//~: add the resulting costs
-			costs.putAll(p.getCosts());
-		}
-		catch(Throwable e)
-		{
-			e = EX.xrt(e);
-
-			if(e instanceof GenesisError)
-				throw (GenesisError)e;
-			else
-				throw new GenesisError(e, this, ctx);
-		}
+		//~: invoke GenTestGoods.js
+		JsX.apply("domain/goods/GenTestGoods.js", "readTestPrices", costs);
 	}
 
 	protected void genPriceLists(GenCtx ctx, Map<String, BigDecimal> costs)
@@ -357,76 +334,5 @@ public class GenTestPrices extends GenesisHiberPartBase
 
 			e.setValue(c);
 		}
-	}
-
-
-	/* protected: XML Processor */
-
-	protected ReadTestGoods createProcessor(GenCtx ctx)
-	{
-		return new ReadTestGoods(ctx);
-	}
-
-	protected static class GenState
-	{
-		public BigDecimal cost;
-	}
-
-	protected static class ReadTestGoods extends SaxProcessor<GenState>
-	{
-		public ReadTestGoods(GenCtx ctx)
-		{
-			this.ctx = ctx;
-		}
-
-
-		/* Processing Data */
-
-		public Map<String, BigDecimal> getCosts()
-		{
-			return costs;
-		}
-
-
-		/* protected: SaxProcessor interface */
-
-		protected void createState()
-		{
-			//?: <measure>
-			if(istag(1, "good"))
-				event().state(new GenState());
-		}
-
-		protected void open()
-		{
-			//?: <good>
-			if(istag(1, "good"))
-			{
-				String cost = SU.s2s(event().attr("cost"));
-
-				if(cost != null)
-					event().state().cost =
-					  new BigDecimal(cost).setScale(2);
-			}
-		}
-
-		protected void close()
-		{
-			//?: <good> <code>
-			if(istag(1, "good", "code"))
-			{
-				EX.assertn(state(1));
-
-				//?: {has cost} add good
-				if(state(1).cost != null)
-					costs.put(EX.asserts(event().text()), state(1).cost);
-			}
-		}
-
-
-		/* Genesis Context */
-
-		protected final GenCtx            ctx;
-		protected Map<String, BigDecimal> costs = new HashMap<>(101);
 	}
 }
