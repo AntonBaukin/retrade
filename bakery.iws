@@ -10,17 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/CMP.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/CMP.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesAddGoodsTableView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesAddGoodsTableView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GenTestGoods.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GenTestGoods.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodUnit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodUnit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/exec/api/goods/InsertGood.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/exec/api/goods/InsertGood.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/OxEntity.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/OxEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/TxEntity.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/TxEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/UnitedBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/UnitedBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/UnitedTxBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/UnitedTxBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodUnit.hbm.xml" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodUnit.hbm.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
     </list>
     <ignored path="bakery.iws" />
@@ -47,11 +37,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TxEntity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/TxEntity.java">
+      <file leaf-file-name="GoodUnit.hbm.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodUnit.hbm.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47867298" vertical-offset="275" max-vertical-offset="1245">
-              <caret line="34" column="6" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
+            <state vertical-scroll-proportion="2.0947866" vertical-offset="306" max-vertical-offset="2860">
+              <caret line="96" column="4" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -67,7 +57,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/xmapping.xml" />
         <option value="$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/goods/GenTestMeasures.js" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/streams/BigDecimalXMLEncoderPersistenceDelegate.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js" />
@@ -84,6 +73,7 @@
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/OxEntity.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/UnitedTxBase.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/TxEntity.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodUnit.hbm.xml" />
       </list>
     </option>
   </component>
@@ -737,7 +727,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-85 [stable]: user events list also reacts on mouse enter." />
     <MESSAGE value="ui-86 [stable]: generating scripts for user event messages. Opening documents via the events." />
     <MESSAGE value="ui-87 [alpha]: started tiles component of ReTrade Desktop..." />
     <MESSAGE value="ui-87 [alpha]: implemented Desktop Tiles and going to the controller..." />
@@ -762,7 +751,8 @@
     <MESSAGE value="ui-87 [stable]: saving web links for the windows." />
     <MESSAGE value="ui-87 [stable]: fixed updating of the web links." />
     <MESSAGE value="domain-50 [stable]: generating test Measures, Goods, and prices from JSON, not XML data." />
-    <option name="LAST_COMMIT_MESSAGE" value="domain-50 [stable]: generating test Measures, Goods, and prices from JSON, not XML data." />
+    <MESSAGE value="domain-51 [stable]: prepared Good Units for Unity relation refactoring." />
+    <option name="LAST_COMMIT_MESSAGE" value="domain-51 [stable]: prepared Good Units for Unity relation refactoring." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -893,38 +883,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/Domain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11358575" vertical-offset="272" max-vertical-offset="1901">
-          <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3596882" vertical-offset="0" max-vertical-offset="1221">
-          <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GenCoreDomain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2244" max-vertical-offset="3162">
-          <caret line="191" column="0" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/tx/Tx.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8787879" vertical-offset="68" max-vertical-offset="1921">
-          <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/tx/SystemTx.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6060606" vertical-offset="816" max-vertical-offset="2652">
@@ -1025,6 +983,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.47867298" vertical-offset="275" max-vertical-offset="1245">
           <caret line="34" column="6" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodCalc.hbm.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2650334" vertical-offset="0" max-vertical-offset="2598">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/OxCatEntity.hbm.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1663">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/Entity.hbm.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5902004" vertical-offset="65" max-vertical-offset="1527">
+          <caret line="35" column="42" selection-start-line="9" selection-start-column="4" selection-end-line="35" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodUnit.hbm.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.0947866" vertical-offset="306" max-vertical-offset="2860">
+          <caret line="96" column="4" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="4" />
           <folding />
         </state>
       </provider>

@@ -5,15 +5,73 @@
 
 <hibernate-mapping package = 'com.tverts.retrade.domain.goods'>
 
-  <union-subclass name = 'GoodUnit' table = 'retrade_good_unit'
-    extends = 'com.tverts.endure.core.OxCatEntity'>
+  <class name = 'GoodUnit' table = 'retrade_good_unit'>
+
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_entity'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_good_unit_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity -->
+
+    <many-to-one name = 'unity' foreign-key = 'fk_good_unit_mirror'
+      cascade = 'save-update'>
+
+      <column name = 'fk_unity' not-null = 'true'
+        index = 'ix_good_unit_mirror'>
+
+        <comment>
+          Unified mirror of this Good Unit. Goods of the same
+          domain+code pair share the same unity over each measure
+        </comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_good_unit_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_good_unit'>
+
+        <comment>Domain where the entity is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'good_code' not-null = 'true' length = '255'
+        unique-key = 'ux_good_unit'>
+
+        <comment>Unique (for Domain-Measure pair) code of the entity</comment>
+      </column>
+    </property>
+
 
     <!-- Measure Unit -->
 
     <many-to-one name = 'measure' lazy = 'proxy'
-      foreign-key = 'fk_good_unit_measure'>
+      foreign-key = 'fk_measure'>
 
-      <column name = 'fk_measure_unit' not-null = 'true'>
+      <column name = 'fk_measure_unit' not-null = 'true'
+        unique-key = 'ux_good_unit'>
 
         <comment>The Measure unit of this Good Unit</comment>
       </column>
@@ -34,6 +92,16 @@
         </comment>
       </column>
     </many-to-one>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'good_name' not-null = 'true' length = '512'>
+        <comment>The name of the good</comment>
+      </column>
+    </property>
 
 
     <!-- Sort Name -->
@@ -61,6 +129,5 @@
         </comment>
       </column>
     </property>
-
-  </union-subclass>
+  </class>
 </hibernate-mapping>
