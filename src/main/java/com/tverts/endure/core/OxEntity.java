@@ -33,7 +33,7 @@ public abstract class OxEntity
 {
 	/* Object Extraction */
 
-	public Object  getOx()
+	public Object   getOx()
 	{
 		if(oxBytes != null)
 			return oxBytes.getOx();
@@ -46,7 +46,7 @@ public abstract class OxEntity
 
 	private OxBytes oxBytes;
 
-	public void    setOx(Object ox)
+	public void     setOx(Object ox)
 	{
 		if(oxBytes != null)
 			oxBytes.setOx(ox);
@@ -68,7 +68,7 @@ public abstract class OxEntity
 		this.updateOx();
 	}
 
-	public void    updateOx()
+	public void     updateOx()
 	{
 		//?: {has no bytes here}
 		if((oxBytes == null) && (getUnity() != null))
@@ -95,7 +95,7 @@ public abstract class OxEntity
 			getUnity().setOxSearch(((OxSearch)this).getOxSearch());
 	}
 
-	public boolean isUpdatedOx()
+	public boolean  isUpdatedOx()
 	{
 		return (oxBytes != null) && oxBytes.isUpdatedOx();
 	}
@@ -132,12 +132,17 @@ public abstract class OxEntity
 		//HINT: mirror may not me altered, if it is not a hibernate proxy
 
 		//?: {mirror is defined}
-		if(getUnity() != null) EX.assertx( HiberPoint.isProxy(getUnity()) &&
-		  CMP.eq(getUnity().getPrimaryKey(), unity.getPrimaryKey()),
+		if(getUnity() != null) EX.assertx(
+		  HiberPoint.isProxy(getUnity()) && CMP.eq(getUnity(), unity),
 		  "Unified mirror of Entity [", getPrimaryKey(), "] may not be altered!"
 		);
 
 		super.setUnity(unity);
+	}
+
+	protected void setUnityOx()
+	{
+		Unity unity = this.getUnity();
 
 		//~: assign ox-bytes
 		if((oxBytes != null) && (unity.getOxBytes() != oxBytes))
@@ -146,8 +151,15 @@ public abstract class OxEntity
 			unity.setOxBytes(oxBytes);
 		}
 
-		//?: {ox-search is not assigned}
-		if((unity.getOxSearch() == null) && (this instanceof OxSearch))
-			unity.setOxSearch(((OxSearch)this).getOxSearch());
+		//?: {ox-search is supported}
+		if(this instanceof OxSearch)
+			setUnityOxSearch();
+	}
+
+	protected void setUnityOxSearch()
+	{
+		//?: {ox-search is not assigned yet}
+		if(getUnity().getOxSearch() == null)
+			getUnity().setOxSearch(((OxSearch)this).getOxSearch());
 	}
 }

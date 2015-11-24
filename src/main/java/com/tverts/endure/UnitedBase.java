@@ -21,7 +21,7 @@ public abstract class UnitedBase
 {
 	/* Numeric Identity */
 
-	public Long  getPrimaryKey()
+	public Long    getPrimaryKey()
 	{
 		Long pk = super.getPrimaryKey();
 
@@ -36,7 +36,7 @@ public abstract class UnitedBase
 		return pk;
 	}
 
-	public void  setPrimaryKey(Long pk)
+	public void    setPrimaryKey(Long pk)
 	{
 		super.setPrimaryKey(pk);
 
@@ -48,20 +48,24 @@ public abstract class UnitedBase
 
 	/* United Interface */
 
-	public Unity getUnity()
+	public Unity   getUnity()
 	{
 		return unity;
 	}
 
-	private Unity unity;
+	private Unity  unity;
 
-	public void  setUnity(Unity unity)
+	public void    setUnity(Unity unity)
 	{
 		this.unity = unity;
+		setUnityKey();
+	}
 
-		//~: assign primary key
+	protected void setUnityKey()
+	{
 		Long pk = super.getPrimaryKey();
 		if((unity != null) && (pk != null))
+			//~: assign primary key
 			if(unity.getPrimaryKey() == null)
 				unity.setPrimaryKey(pk);
 			else

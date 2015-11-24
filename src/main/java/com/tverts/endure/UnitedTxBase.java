@@ -1,5 +1,7 @@
 package com.tverts.endure;
 
+import com.tverts.support.CMP;
+
 /**
  * Basic implementation of {@link United} classes
  * with {@link TxEntity} transaction number.
@@ -11,7 +13,7 @@ public abstract class UnitedTxBase
        extends        UnitedBase
        implements     TxEntity
 {
-	/* public: TxEntity Interface */
+	/* Tx-Entity */
 
 	public Long getTxn()
 	{
@@ -27,14 +29,18 @@ public abstract class UnitedTxBase
 	public void setTxn(Long txn)
 	{
 		this.txn = (txn == null)?(0L):(txn);
+		setUnityTxn();
+	}
 
-		//?: {has unity}
-		if((getUnity() != null) && (txn != null))
-			getUnity().setTxn(txn);
+	public void setUnityTxn()
+	{
+		//?: {has unity} assign to it
+		if(getUnity() != null)
+			getUnity().setTxn(this);
 	}
 
 
-	/* public: United Interface */
+	/* United */
 
 	public void setUnity(Unity unity)
 	{
@@ -44,15 +50,11 @@ public abstract class UnitedTxBase
 		if(unity == null)
 			return;
 
-		//~: assign the transaction number
-		Long ux = unity.getTxn();
-		Long tx = this.getTxn();
+		//~: update tx-number of the unity
+		setUnityTxn();
 
-		if((tx == null) && (ux != null))
-			this.txn = ux;
-		else if((tx != null) && (ux == null))
-			unity.setTxn(tx);
-		else if((ux != null) && (tx != null) && (ux > tx))
-			this.txn = ux;
+		//?: {update own tx-number}
+		if(CMP.txn(unity, this))
+			this.txn = unity.getTxn();
 	}
 }

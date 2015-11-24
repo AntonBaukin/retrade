@@ -1,11 +1,14 @@
 package com.tverts.support;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+/* com.tverts: endure */
+
 import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.TxEntity;
 
 
 /**
@@ -15,7 +18,7 @@ import com.tverts.endure.NumericIdentity;
  */
 public class CMP
 {
-	/* persistent objects */
+	/* Persistent Objects */
 
 	/**
 	 * Compares that two entities has the same key, or
@@ -27,28 +30,45 @@ public class CMP
 	 */
 	public static boolean eq(NumericIdentity a, NumericIdentity b)
 	{
-		if(((a == null) & (b == null)) | (a == b))
-			return true;
-
-		if((a == null) | (b == null))
-			return false;
-
-		return CMP.eq(a.getPrimaryKey(), b.getPrimaryKey());
+		return ((a == null) & (b == null)) | (a == b) ||
+		  !((a == null) | (b == null)) && CMP.eq(a.getPrimaryKey(), b.getPrimaryKey());
 	}
 
 	public static boolean eq(NumericIdentity a, Long b)
 	{
-		if((a == null) & (b == null))
-			return true;
+		return (a == null) & (b == null) ||
+		  !((a == null) | (b == null)) && CMP.eq(a.getPrimaryKey(), b);
+	}
 
-		if((a == null) | (b == null))
-			return false;
+	/**
+	 * Tells whether old transactional number may be
+	 * replaced with the new one.
+	 */
+	public static boolean txn(Long n, Long o)
+	{
+		return (n != null) && ((o == null) || (o.compareTo(n) < 0));
+	}
 
-		return CMP.eq(a.getPrimaryKey(), b);
+	public static boolean txn(TxEntity n, TxEntity o)
+	{
+		return CMP.txn(
+		  (n == null)?(null):n.getTxn(),
+		  (o == null)?(null):o.getTxn()
+		);
+	}
+
+	public static boolean txn(TxEntity n, Long o)
+	{
+		return CMP.txn((n == null)?(null):n.getTxn(), o);
+	}
+
+	public static boolean txn(Long n, TxEntity o)
+	{
+		return CMP.txn(n, (o == null)?(null):o.getTxn());
 	}
 
 
-	/* decimal values */
+	/* Decimal Values */
 
 	public static boolean grZero(BigDecimal n)
 	{
@@ -72,7 +92,7 @@ public class CMP
 	}
 
 
-	/* general equality */
+	/* General Equality */
 
 	public static boolean eq(Object a, Object b)
 	{
@@ -87,7 +107,7 @@ public class CMP
 	}
 
 
-	/* strings comparison */
+	/* Strings Comparison */
 
 	public static int cmp(String a, String b)
 	{

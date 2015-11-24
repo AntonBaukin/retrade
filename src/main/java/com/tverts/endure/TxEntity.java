@@ -1,5 +1,10 @@
 package com.tverts.endure;
 
+/* com.tverts: support */
+
+import com.tverts.support.CMP;
+
+
 /**
  * Defines an Entity having Transaction Number (txn).
  *
@@ -21,7 +26,13 @@ public interface TxEntity
 {
 	/* Transaction Number */
 
-	public Long getTxn();
+	public Long  getTxn();
 
-	public void setTxn(Long txn);
+	public void  setTxn(Long txn);
+
+	default void setTxn(TxEntity e)
+	{
+		if((e != null) && CMP.txn(e, this))
+			this.setTxn(e.getTxn());
+	}
 }
