@@ -9,6 +9,10 @@ import static com.tverts.spring.SpringPoint.bean;
 import com.tverts.actions.ActionType;
 import com.tverts.actions.ActionsPoint;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
 /* com.tverts: api execution */
 
 import com.tverts.api.core.Holder;
@@ -65,6 +69,10 @@ public class InsertGood extends InsertEntityBase
 	protected GoodUnit    createGood(Good g)
 	{
 		GoodUnit gu = new GoodUnit();
+
+		//=: primary key
+		HiberPoint.setPrimaryKey(session(), gu,
+		  HiberPoint.isTestInstance(domain()));
 
 		//=: domain
 		gu.setDomain(domain());

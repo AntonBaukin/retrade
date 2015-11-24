@@ -137,6 +137,9 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 		gu = new GoodUnit();
 
+		//=: primary key
+		HiberPoint.setPrimaryKey(ctx.session(), gu, true);
+
 		//=: domain
 		gu.setDomain(ctx.get(Domain.class));
 

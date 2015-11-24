@@ -4,7 +4,7 @@ package com.tverts.retrade.domain.goods;
 
 import com.tverts.api.retrade.goods.Good;
 
-/* com.tverts: endure (core + catalogues) */
+/* com.tverts: endure (core) */
 
 import com.tverts.endure.OxSearch;
 import com.tverts.endure.core.OxCatEntity;
@@ -16,6 +16,7 @@ import com.tverts.retrade.domain.prices.PriceListEntity;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.SU;
 
@@ -35,22 +36,30 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
-public class      GoodUnit
-       extends    OxCatEntity
-       implements OxSearch
+public class GoodUnit extends OxCatEntity implements OxSearch
 {
 	/* Object Extraction */
 
 	public Good   getOx()
 	{
+		EX.assertn(getPrimaryKey());
 		Good g = (Good) super.getOx();
-		if(g == null) setOx(g = new Good());
+
+		//?: {is a sub-good}
+		if(isSubGood())
+			return EX.assertn(g);
+		//?: {create initial good}
+		else if(g == null)
+			setOx(g = new Good());
+
 		return g;
 	}
 
 	public void   setOx(Object ox)
 	{
 		EX.assertx(ox instanceof Good);
+		EX.assertn(getPrimaryKey());
+
 		super.setOx(ox);
 	}
 
@@ -58,13 +67,17 @@ public class      GoodUnit
 	{
 		Good g = getOx();
 
-		//=: group
+		//=: update own group
 		this.group = g.getGroup();
 
-		//=: measure
+		//?: {is a sub-good} nothing else
+		if(isSubGood())
+			return;
+
+		//=: ox-good measure
 		g.setMeasure((measure == null)?(null):(measure.getPrimaryKey()));
 
-		//:= calc
+		//=: ox-good calculation key
 		g.setCalc((calc == null)?(null):(calc.getPrimaryKey()));
 
 		super.updateOx();
@@ -78,6 +91,11 @@ public class      GoodUnit
 
 
 	/* Good Unit */
+
+	public boolean isSubGood()
+	{
+		return (getUnity() != null) && !CMP.eq(getUnity(), this);
+	}
 
 	public MeasureUnit getMeasure()
 	{
@@ -119,9 +137,9 @@ public class      GoodUnit
 	public void setName(String name)
 	{
 		//?: {has name already assigned}
-		if((getName() != null) && !getName().equals(name))
-			this.sortName = null;
+		if(CMP.eq(getName(), name)) return;
 
+		this.sortName = null;
 		super.setName(name);
 	}
 
@@ -135,5 +153,27 @@ public class      GoodUnit
 	public void setGroup(String group)
 	{
 		this.group = group;
+	}
+
+
+	/* protected: sub-goods support */
+
+	public void    setUnityTxn()
+	{
+		if(!isSubGood())
+			super.setUnityTxn();
+	}
+
+	protected void setUnityKey()
+	{
+		EX.assertn(getPrimaryKey());
+		if(!isSubGood())
+			super.setUnityKey();
+	}
+
+	protected void setUnityOx()
+	{
+		if(!isSubGood())
+			super.setUnityOx();
 	}
 }

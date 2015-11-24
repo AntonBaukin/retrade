@@ -39,6 +39,14 @@ import com.tverts.actions.ActionType;
 
 import com.tverts.secure.SecPoint;
 
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
+
+/* com.tverts: transactions */
+
+import com.tverts.system.tx.TxPoint;
+
 /* com.tverts: api */
 
 import com.tverts.api.retrade.goods.Good;
@@ -168,6 +176,10 @@ public class FacesAddGoodsTableView extends ModelView
 
 			//=: domain
 			gu.setDomain(loadModelDomain());
+
+			//=: primary key
+			HiberPoint.setPrimaryKey(TxPoint.txSession(), gu,
+			  HiberPoint.isTestInstance(gu.getDomain()));
 
 			//=: good code
 			x.setCode(g.getGoodCode());
