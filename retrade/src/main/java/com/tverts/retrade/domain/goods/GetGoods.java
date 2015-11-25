@@ -83,8 +83,7 @@ public class GetGoods extends GetObjectBase
 
 	public GoodUnit       getGoodUnit(Long pk)
 	{
-		return (pk == null)?(null):
-		  (GoodUnit)session().get(GoodUnit.class, pk);
+		return get(GoodUnit.class, pk);
 	}
 
 	public GoodUnit       getGoodUnitStrict(Long pk)
@@ -101,11 +100,21 @@ public class GetGoods extends GetObjectBase
 		EX.assertn(domain);
 		EX.asserts(code);
 
-// from GoodUnit gu where (gu.domain.id = :domain) and (gu.code = :code)
+/*
+
+ Remark: sub-good has the same code as it's owner
+   and shares the same Unity instance. Hence,
+   an owner has it's own Unity (the same key).
+
+ from GoodUnit gu where (gu.domain.id = :domain) and
+   (gu.code = :code) and (gu.id = gu.unity.id)
+
+ */
 
 		return (GoodUnit) Q(
 
-"from GoodUnit gu where (gu.domain.id = :domain) and (gu.code = :code)"
+"from GoodUnit gu where (gu.domain.id = :domain) and " +
+"  (gu.code = :code) and (gu.id = gu.unity.id)"
 
 		).
 		  setLong  ("domain", domain).

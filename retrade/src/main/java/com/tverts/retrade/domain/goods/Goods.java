@@ -21,9 +21,10 @@ import com.tverts.endure.core.IncValues;
 
 import com.tverts.endure.aggr.AggrValue;
 
-/* com.tverts: retrade api (goods + prices) */
+/* com.tverts: retrade api (goods) */
 
 import com.tverts.api.retrade.goods.Good;
+import com.tverts.api.retrade.goods.Measure;
 
 /* com.tverts: retrade domain (stores) */
 
@@ -31,6 +32,8 @@ import com.tverts.retrade.domain.store.TradeStore;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
+import com.tverts.support.EX;
 import com.tverts.support.SU;
 
 
@@ -90,19 +93,19 @@ public class Goods
 
 	/* Support Routines */
 
-	public static String  getGoodUnitName(GoodUnit gu)
+	public static String     getGoodUnitName(GoodUnit gu)
 	{
 		return (gu == null)?(null):(gu.getName());
 	}
 
-	public static String  getStoreFullName(TradeStore store)
+	public static String     getStoreFullName(TradeStore store)
 	{
 		if(store == null) return null;
 		return String.format("%s; %s",
 		  store.getCode(), store.getName());
 	}
 
-	public static String  genNextGoodCode(Domain domain)
+	public static String     genNextGoodCode(Domain domain)
 	{
 		long code = bean(IncValues.class).txIncValue(
 		  domain, UnityTypes.unityType(
@@ -112,17 +115,43 @@ public class Goods
 		return SU.lenum(4, code);
 	}
 
-	public static boolean equals(GoodUnit a, GoodUnit b)
+	public static boolean    equals(GoodUnit a, GoodUnit b)
 	{
 		return (a == b) || ((a != null) && (b != null) &&
 		  (a.getPrimaryKey() != null) &&
 		  a.getPrimaryKey().equals(b.getPrimaryKey()));
 	}
 
-	public static boolean equals(GoodUnit a, Long b)
+	public static boolean    equals(GoodUnit a, Long b)
 	{
 		return (a != null) && (b != null) &&
 		  (a.getPrimaryKey() != null) && a.getPrimaryKey().equals(b);
+	}
+
+	/**
+	 * Takes two measures. If they have the same class code,
+	 * returns the coefficient of 1-unit of b-measure from
+	 * 1-unit of a-measure.
+	 */
+	public static BigDecimal coerce(MeasureUnit a, MeasureUnit b)
+	{
+		Measure ax = a.getOx();
+		Measure bx = b.getOx();
+		String  cc = ax.getClassCode();
+
+		//?: {has class codes differ}
+		if((cc == null) || !cc.equals(bx.getClassCode()))
+			return null;
+
+		//~: the volumes
+		BigDecimal av = ax.getClassUnit();
+		BigDecimal bv = bx.getClassUnit();
+		if(av == null) av = BigDecimal.ONE;
+		if(bv == null) bv = BigDecimal.ONE;
+
+		//~: transition coefficient
+		return bv.divide(av, 10, RoundingMode.HALF_EVEN).
+		  stripTrailingZeros();
 	}
 
 
@@ -203,5 +232,46 @@ public class Goods
 		//=: calculation
 		if(gu.getGoodCalc() != null)
 			g.setCalc(gu.getGoodCalc().getPrimaryKey());
+	}
+
+	public static void copySub(GoodUnit gu, GoodUnit sub)
+	{
+		//?: {has no keys}
+		EX.assertn(gu.getPrimaryKey());
+		EX.assertn(sub.getPrimaryKey());
+
+		//?: {have differ measures}
+		EX.assertn(gu.getMeasure());
+		EX.assertn(sub.getMeasure());
+		EX.assertx(!CMP.eq(gu.getMeasure(), sub.getMeasure()));
+
+		//?: {not a good owner}
+		EX.assertx(!gu.isSubGood());
+
+		//?: {share the same unity}
+		if(sub.getUnity() == null)
+			sub.setUnity(gu.getUnity());
+		else
+			EX.assertx(CMP.eq(gu.getUnity(), sub.getUnity()));
+
+		//=: domain
+		if(sub.getDomain() == null)
+			sub.setDomain(gu.getDomain());
+		else
+			EX.assertx(CMP.eq(gu.getDomain(), sub.getDomain()));
+
+		//=: tx-number
+		sub.setTxn(gu);
+		sub.setTxn(gu.getUnity());
+
+		//=: code
+		sub.setCode(gu.getCode());
+
+		//=: name
+		sub.setName(gu.getName());
+		sub.setSortName(gu.getSortName());
+
+		//=: group
+		sub.setGroup(gu.getGroup());
 	}
 }

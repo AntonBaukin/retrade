@@ -104,8 +104,9 @@ public class ActGoodUnit extends ActionBuilderReTrade
 		//~: save the good unit
 		chain(abr).first(new SaveNumericIdentified(task(abr)));
 
-		//~: set good unit' unity (is executed first!)
-		xnest(abr, ActUnity.CREATE, target(abr));
+		//?: {set good unit' unity}
+		if(target(abr, GoodUnit.class).getUnity() == null)
+			xnest(abr, ActUnity.CREATE, target(abr));
 
 		//?: {has save measure unit flag set}
 		if(flag(abr, SAVE_MEASURE_UNIT))
@@ -128,7 +129,7 @@ public class ActGoodUnit extends ActionBuilderReTrade
 		if((munit.getPrimaryKey() == null) && isTestTarget(abr))
 			setPrimaryKey(session(abr), munit, true);
 
-		//!: nest the name creation
+		//!: nest the measure creation
 		xnest(abr, ActMeasureUnit.SAVE, munit);
 	}
 

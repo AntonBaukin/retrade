@@ -44,6 +44,7 @@ import com.tverts.endure.core.Domain;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
@@ -139,6 +140,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 		//=: primary key
 		HiberPoint.setPrimaryKey(ctx.session(), gu, true);
+		g.setPkey(gu.getPrimaryKey());
 
 		//=: domain
 		gu.setDomain(ctx.get(Domain.class));
@@ -150,8 +152,9 @@ public class GenTestGoods extends GenesisHiberPartBase
 		gu.setOx(g); //<-- ox-update is there
 		actionRun(ActionType.SAVE, gu);
 
-		LU.I(log(ctx), logsig(), " created test Good Unit [",
-		  gu.getPrimaryKey(), "] with code: ", gu.getCode()
+		LU.I(log(ctx), logsig(), " generated good [",
+		  gu.getPrimaryKey(), "] with code: [", gu.getCode(),
+		  "], measure [", gu.getMeasure().getCode(), "]"
 		);
 
 		//~: add to the goods map
@@ -164,6 +167,57 @@ public class GenTestGoods extends GenesisHiberPartBase
 				genDerived(ctx, gu, c);
 			else
 				genCalculation(ctx, gu, c);
+	}
+
+	public void takeSubGood(GenCtx ctx, Good g, String m, BigDecimal v)
+	{
+		//?: {parent good was not generated}
+		EX.assertn(g.getPkey());
+
+		//~: load parent good
+		GoodUnit gu = EX.assertn(bean(GetGoods.class).
+		  getGoodUnit(g.getPkey()));
+
+		//?: {not an owner}
+		EX.assertx(!gu.isSubGood());
+
+		//~: create sub-good
+		GoodUnit sub = new GoodUnit();
+
+		//~: assign the measure
+		setMeasure(ctx, sub, EX.asserts(m));
+
+		//?: {has no coerce volume}
+		if(v == null) v = EX.assertn(Goods.coerce(gu.getMeasure(), sub.getMeasure()),
+			  "Can't auto-define measures coerce coefficient for measure [", m,
+			  "] of sub-good [", gu.getCode(), "]!");
+
+		//?: {illegal coefficient}
+		EX.assertx(CMP.grZero(v), "Illegal sub-good coerce coefficient for measure [",
+		  m, "] of sub-good [", gu.getCode(), "]!");
+
+		//=: primary key
+		HiberPoint.setPrimaryKey(ctx.session(), sub, true);
+
+		//~: assign the sub-good
+		Goods.copySub(gu, sub);
+
+		//!: save it
+		actionRun(ActionType.SAVE, sub);
+
+		//~: initialize calculation
+		Calc c = new Calc();
+		c.setXSuperGood(gu.getCode());
+		c.setSubCode(">" + m);
+		c.setSubVolume(v);
+
+		//!: create & save it
+		genDerived(ctx, sub, c);
+
+		LU.I(log(ctx), logsig(), " generated sub-good [",
+		  gu.getPrimaryKey(), "] with code: [", gu.getCode(),
+		  "], measure [", gu.getMeasure().getCode(), "]"
+		);
 	}
 
 
@@ -230,24 +284,29 @@ public class GenTestGoods extends GenesisHiberPartBase
 		);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void setMeasure(GenCtx ctx, GoodUnit gu, Good g)
 	{
-		Map<String, MeasureUnit> mum = (Map<String, MeasureUnit>)
-		  EX.assertn(ctx.get((Object) MeasureUnit.class));
-
-		MeasureUnit mu = mum.get(EX.asserts(
-		  g.getXMeasure(), "Good Unit with code [", g.getCode(),
-		  "] has no <XMeasure> tag defined!"
-		));
-
-		//=: measure
-		gu.setMeasure(EX.assertn(mu, "Good Unit with code [", g.getCode(),
-		  "] refers unknown measure by code [", g.getXMeasure(), "]!"
-		));
+		//~: load the measure
+		setMeasure(ctx, gu, EX.asserts(g.getXMeasure(),
+		  "Good Unit with code [", g.getCode(), "] has no measure defined!"));
 
 		//~: clear x-measure
 		g.setXMeasure(null);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void setMeasure(GenCtx ctx, GoodUnit gu, String m)
+	{
+		//~: existing measures map
+		Map<String, MeasureUnit> mum = (Map<String, MeasureUnit>)
+		  EX.assertn(ctx.get((Object) MeasureUnit.class));
+
+		//~: find it
+		MeasureUnit mu = EX.assertn(mum.get(EX.asserts(m)),
+		  "Good refers unknown measure code [", m, "]!");
+
+		//=: measure
+		gu.setMeasure(mu);
 	}
 
 	protected void genDerived(GenCtx ctx, GoodUnit gu, Calc c)
@@ -297,9 +356,10 @@ public class GenTestGoods extends GenesisHiberPartBase
 		//!: save the calc
 		actionRun(ActionType.SAVE, gc);
 
-		LU.I(log(ctx), logsig(), " created derived Good Calc [",
-		  gc.getPrimaryKey(), "] for test Good Unit [",
-		  gu.getPrimaryKey(), "], code [", gu.getCode(), "]"
+		if(!gu.isSubGood()) LU.I(log(ctx), logsig(),
+		  " created derived Good Calc [", gc.getPrimaryKey(),
+		  "] for test Good Unit [", gu.getPrimaryKey(),
+		  "], code [", gu.getCode(), "]"
 		);
 	}
 

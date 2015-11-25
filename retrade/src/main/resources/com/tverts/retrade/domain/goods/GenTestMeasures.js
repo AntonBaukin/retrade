@@ -44,6 +44,12 @@ function getTestMeasures()
 		},
 
 		{
+			code: 'бух',
+			name: 'буханка',
+			fractional: false
+		},
+
+		{
 			code: 'уп',
 			name: 'упаковка',
 			fractional: false,

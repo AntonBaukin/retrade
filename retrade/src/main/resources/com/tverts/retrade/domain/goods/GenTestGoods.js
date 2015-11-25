@@ -11,6 +11,10 @@ function genTestGoods(ctx, gen)
 		var c = g.calc
 		if(c) delete g.calc
 
+		//~: sub-goods
+		var subs = g.subs
+		if(subs) delete g.subs
+
 		//~: convert good object
 		var good = ZeT.s2jo(Good, ZeT.o2s(g))
 
@@ -19,6 +23,19 @@ function genTestGoods(ctx, gen)
 
 		//~: report it to the generator
 		gen.takeGood(ctx, good, calc)
+
+		//?: {have sub-goods}
+		if(subs) genTestGoodSubs(ctx, gen, good, subs)
+	})
+}
+
+function genTestGoodSubs(ctx, gen, good, subs)
+{
+	ZeT.each(ZeT.isa(subs)?(subs):[subs], function(s)
+	{
+		gen.takeSubGood(ctx, good, ZeT.asserts(s.xmeasure),
+		  ZeT.iss(s.value)?(ZeT.jdecimal(s.value)):(null)
+		)
 	})
 }
 
@@ -60,7 +77,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '52',
+			cost: '115',
 			code: '904',
 			name: 'апельсины (Египет)',
 			xmeasure: 'кг',
@@ -68,7 +85,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '48',
+			cost: '145',
 			code: '905',
 			name: 'апельсины (Морокко)',
 			xmeasure: 'кг',
@@ -76,7 +93,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '145.30',
+			cost: '245.0',
 			code: '906',
 			name: 'виноград (кардинал)',
 			xmeasure: 'кг',
@@ -84,7 +101,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '132.40',
+			cost: '232.50',
 			code: '907',
 			name: 'виноград (дамские пальчики)',
 			xmeasure: 'кг',
@@ -92,7 +109,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '110.50',
+			cost: '210.50',
 			code: '908',
 			name: 'виноград (киш-миш зеленый)',
 			xmeasure: 'кг',
@@ -100,7 +117,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '125.60',
+			cost: '225.60',
 			code: '909',
 			name: 'виноград (киш-миш черный)',
 			xmeasure: 'кг',
@@ -108,7 +125,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '112.55',
+			cost: '212.55',
 			code: '910',
 			name: 'ананасы',
 			xmeasure: 'шт',
@@ -116,7 +133,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '85.65',
+			cost: '185.65',
 			code: '911',
 			name: 'киви',
 			xmeasure: 'кг',
@@ -124,7 +141,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '34.20',
+			cost: '64',
 			code: '912',
 			name: 'бананы',
 			xmeasure: 'кг',
@@ -132,7 +149,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '399.50',
+			cost: '599.50',
 			code: '913',
 			name: 'клубника',
 			xmeasure: 'кг',
@@ -172,43 +189,47 @@ function getTestGoods()
 		},
 
 		{
-			cost: '16.58',
+			cost: '46.50',
 			code: '918',
 			name: 'петрушка',
-			xmeasure: '100 гр',
-			group: 'зелень'
+			xmeasure: 'кг',
+			group: 'зелень',
+			subs: { xmeasure: '100 гр' }
 		},
 
 		{
-			cost: '16.58',
+			cost: '46.50',
 			code: '919',
 			name: 'укроп',
-			xmeasure: '100 гр',
-			group: 'зелень'
+			xmeasure: 'кг',
+			group: 'зелень',
+			subs: { xmeasure: '100 гр' }
 		},
 
 		{
-			cost: '12.45',
+			cost: '32.45',
 			code: '920',
 			name: 'лук зелёный',
-			xmeasure: '100 гр',
-			group: 'зелень'
+			xmeasure: 'кг',
+			group: 'зелень',
+			subs: { xmeasure: '100 гр' }
 		},
 
 		{
 			cost: '22.20',
 			code: '921',
-			name: 'лук репчатый',
+			name: 'лук',
 			xmeasure: 'кг',
-			group: 'зелень'
+			group: 'овощи'
 		},
 
 		{
-			cost: '26.58',
+			cost: '66.58',
 			code: '922',
 			name: 'чеснок',
-			xmeasure: '100 гр',
-			group: 'зелень'
+			xmeasure: 'кг',
+			group: 'зелень',
+			subs: { xmeasure: '100 гр' }
 		},
 
 		{
@@ -220,7 +241,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '38.40',
+			cost: '78.40',
 			code: '924',
 			name: 'репа зеленая',
 			xmeasure: 'кг',
@@ -228,7 +249,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '89.90',
+			cost: '289.90',
 			code: '925',
 			name: 'перец (Краснодар)',
 			xmeasure: 'кг',
@@ -236,7 +257,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '115.80',
+			cost: '315.80',
 			code: '926',
 			name: 'перец чили',
 			xmeasure: 'кг',
@@ -244,7 +265,7 @@ function getTestGoods()
 		},
 
 		{
-			cost: '135.90',
+			cost: '275.90',
 			code: '927',
 			name: 'перец красный',
 			xmeasure: 'кг',
@@ -255,32 +276,36 @@ function getTestGoods()
 			cost: '9.50',
 			code: '928',
 			name: 'хлеб ржаной',
-			xmeasure: '100 гр',
-			group: 'хлеб'
+			xmeasure: 'кг',
+			group: 'хлеб',
+			subs: { xmeasure: 'бух', value: '0.4' }
 		},
 
 		{
 			cost: '24.60',
 			code: '929',
 			name: 'батон нарезной',
-			xmeasure: 'шт',
-			group: 'хлеб'
+			xmeasure: 'кг',
+			group: 'хлеб',
+			subs: { xmeasure: 'бух', value: '0.6' }
 		},
 
 		{
 			cost: '14.60',
 			code: '930',
 			name: 'хлеб отрубной',
-			xmeasure: '100 гр',
-			group: 'хлеб'
+			xmeasure: 'кг',
+			group: 'хлеб',
+			subs: { xmeasure: 'бух', value: '0.4' }
 		},
 
 		{
 			cost: '16.84',
 			code: '931',
 			name: 'хлеб бородинский',
-			xmeasure: '100 гр',
-			group: 'хлеб'
+			xmeasure: 'кг',
+			group: 'хлеб',
+			subs: { xmeasure: 'бух', value: '0.4' }
 		},
 
 		{
@@ -295,7 +320,7 @@ function getTestGoods()
 			cost: '24.15',
 			code: '933',
 			name: 'ватрушка с творогом',
-			xmeasure: '100 гр',
+			xmeasure: 'шт',
 			group: 'хлеб'
 		},
 
@@ -303,7 +328,7 @@ function getTestGoods()
 			cost: '18.10',
 			code: '934',
 			name: 'рогалик',
-			xmeasure: '100 гр',
+			xmeasure: 'шт',
 			group: 'хлеб'
 		},
 
@@ -311,7 +336,7 @@ function getTestGoods()
 			cost: '23.10',
 			code: '935',
 			name: 'круассан с шоколадом',
-			xmeasure: '100 гр',
+			xmeasure: 'шт',
 			group: 'хлеб'
 		},
 
@@ -319,7 +344,7 @@ function getTestGoods()
 			cost: '26.80',
 			code: '936',
 			name: 'круассан с повидлом',
-			xmeasure: '100 гр',
+			xmeasure: 'шт',
 			group: 'хлеб'
 		},
 
@@ -334,7 +359,7 @@ function getTestGoods()
 		{
 			cost: '368.75',
 			code: '802',
-			name: 'свинина (отбивная)',
+			name: 'свинина (без кости)',
 			xmeasure: 'кг',
 			group: 'мясо'
 		},
@@ -470,39 +495,15 @@ function getTestGoods()
 		},
 
 		{
-			cost: '55.00',
+			cost: '100.00',
 			code: '701',
 			name: 'кока-кола (розлив)',
 			xmeasure: 'л',
-			group: 'б/а напитки'
-		},
-
-		{
-			cost: '45.00',
-			code: '702',
-			name: 'кока-кола (0.5 стакан)',
-			xmeasure: 'ст 0.5',
 			group: 'б/а напитки',
-
-			calc: {
-				'xsuper-good': '701',
-				'sub-code': '0.5',
-				'sub-volume': '0.5'
-			}
-		},
-
-		{
-			cost: '39.00',
-			code: '703',
-			name: 'кока-кола (0.33 лёд)',
-			xmeasure: 'л',
-			group: 'б/а напитки',
-
-			calc: {
-				'xsuper-good': '701',
-				'sub-code': '0.33 лёд',
-				'sub-volume': '0.33'
-			}
+			subs: [
+				{ xmeasure: 'ст 0.5' },
+				{ xmeasure: 'ст 0.33' }
+			]
 		}
 	]
 }
