@@ -40,9 +40,10 @@ public abstract class UnitedBase
 	{
 		super.setPrimaryKey(pk);
 
-		//?: {has unity}
-		if((getUnity() != null) && (pk != null))
-			getUnity().setPrimaryKey(pk);
+		//?: {has unity with undefined key}
+		if((pk != null) && (getUnity() != null))
+			if(getUnity().getPrimaryKey() == null)
+				getUnity().setPrimaryKey(pk);
 	}
 
 

@@ -120,7 +120,7 @@ public abstract class OxEntity
 
 	/* public: United Interface */
 
-	public void setUnity(Unity unity)
+	public void    setUnity(Unity unity)
 	{
 		//?: {mirror is undefined}
 		EX.assertn(unity, "Unified mirror is required for Entity [",
