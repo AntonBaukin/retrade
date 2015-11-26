@@ -179,7 +179,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		  getGoodUnit(g.getPkey()));
 
 		//?: {not an owner}
-		EX.assertx(!gu.isSubGood());
+		EX.assertx(gu.getSuperGood() == null);
 
 		//~: create sub-good
 		GoodUnit sub = new GoodUnit();
@@ -359,7 +359,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		//!: save the calc
 		actionRun(ActionType.SAVE, gc);
 
-		if(!gu.isSubGood()) LU.I(log(ctx), logsig(),
+		if(gu.getSuperGood() == null) LU.I(log(ctx), logsig(),
 		  " created derived Good Calc [", gc.getPrimaryKey(),
 		  "] for test Good Unit [", gu.getPrimaryKey(),
 		  "], code [", gu.getCode(), "]"

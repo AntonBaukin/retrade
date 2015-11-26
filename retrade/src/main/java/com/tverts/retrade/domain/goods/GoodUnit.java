@@ -43,14 +43,29 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 	public Good   getOx()
 	{
 		EX.assertn(getPrimaryKey());
-		Good g = (Good) super.getOx();
 
 		//?: {is a sub-good}
-		if(isSubGood())
-			return EX.assertn(g);
+		if(getSuperGood() != null)
+			return getSuperGood().getOx();
+
 		//?: {create initial good}
-		else if(g == null)
-			setOx(g = new Good());
+		Good g = (Good) super.getOx();
+		if(g == null)
+			super.setOx(g = new Good());
+
+		return g;
+	}
+
+	public Good   getOxOwn()
+	{
+		//?: {this is not a sub-good}
+		if(getSuperGood() == null)
+			return this.getOx();
+
+		//?: {create initial good}
+		Good g = (Good) super.getOx();
+		if(g == null)
+			super.setOx(g = new Good());
 
 		return g;
 	}
@@ -60,6 +75,17 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 		EX.assertx(ox instanceof Good);
 		EX.assertn(getPrimaryKey());
 
+		//?: {allow for owner good only}
+		EX.assertx(getSuperGood() == null);
+		super.setOx(ox);
+	}
+
+	public void   setOxOwn(Object ox)
+	{
+		EX.assertx(ox instanceof Good);
+
+		//?: {allow for sub-good only}
+		EX.assertn(getSuperGood());
 		super.setOx(ox);
 	}
 
@@ -71,8 +97,21 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 		this.group = g.getGroup();
 
 		//?: {is a sub-good} nothing else
-		if(isSubGood())
+		if(getSuperGood() != null)
 			return;
+
+		//=: ox-good measure
+		g.setMeasure((measure == null)?(null):(measure.getPrimaryKey()));
+
+		//=: ox-good calculation key
+		g.setCalc((calc == null)?(null):(calc.getPrimaryKey()));
+
+		super.updateOx();
+	}
+
+	public void   updateOxOwn()
+	{
+		Good g = getOxOwn();
 
 		//=: ox-good measure
 		g.setMeasure((measure == null)?(null):(measure.getPrimaryKey()));
@@ -85,16 +124,27 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 
 	public String getOxSearch()
 	{
-		Good g = getOx();
-		return SU.catx(g.getCode(), group, g.getName());
+		//?: {is a sub-good}
+		if(getSuperGood() != null)
+			return getSuperGood().getOxSearch();
+
+		//~: code, group, name
+		return SU.catx(getOx().getCode(), group, getOx().getName());
 	}
 
 
 	/* Good Unit */
 
-	public boolean isSubGood()
+	public GoodUnit getSuperGood()
 	{
-		return (getUnity() != null) && !CMP.eq(getUnity(), this);
+		return superGood;
+	}
+
+	private GoodUnit superGood;
+
+	public void setSuperGood(GoodUnit superGood)
+	{
+		this.superGood = superGood;
 	}
 
 	public MeasureUnit getMeasure()
@@ -153,27 +203,5 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 	public void setGroup(String group)
 	{
 		this.group = group;
-	}
-
-
-	/* protected: sub-goods support */
-
-	public void    setUnityTxn()
-	{
-		if(!isSubGood())
-			super.setUnityTxn();
-	}
-
-	protected void setUnityKey()
-	{
-		EX.assertn(getPrimaryKey());
-		if(!isSubGood())
-			super.setUnityKey();
-	}
-
-	protected void setUnityOx()
-	{
-		if(!isSubGood())
-			super.setUnityOx();
 	}
 }

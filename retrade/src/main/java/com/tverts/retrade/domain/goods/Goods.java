@@ -160,7 +160,7 @@ public class Goods
 	 */
 	public static String     subCode(GoodUnit gu)
 	{
-		return !gu.isSubGood()?(gu.getCode()):
+		return (gu.getSuperGood() == null)?(gu.getCode()):
 		  SU.cats(gu.getCode(), " ÷ ", gu.getMeasure().getCode());
 	}
 
@@ -255,14 +255,8 @@ public class Goods
 		EX.assertn(sub.getMeasure());
 		EX.assertx(!CMP.eq(gu.getMeasure(), sub.getMeasure()));
 
-		//?: {not a good owner}
-		EX.assertx(!gu.isSubGood());
-
-		//?: {share the same unity}
-		if(sub.getUnity() == null)
-			sub.setUnity(gu.getUnity());
-		else
-			EX.assertx(CMP.eq(gu.getUnity(), sub.getUnity()));
+		//?: {source is a good owner}
+		EX.assertx(gu.getSuperGood() == null);
 
 		//=: domain
 		if(sub.getDomain() == null)
@@ -273,6 +267,12 @@ public class Goods
 		//=: tx-number
 		sub.setTxn(gu);
 		sub.setTxn(gu.getUnity());
+
+		//=: super good
+		if(sub.getSuperGood() == null)
+			sub.setSuperGood(gu);
+		else
+			EX.assertx(CMP.eq(gu, sub.getSuperGood()));
 
 		//=: code
 		sub.setCode(gu.getCode());

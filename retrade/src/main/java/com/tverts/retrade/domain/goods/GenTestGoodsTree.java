@@ -170,20 +170,17 @@ public class GenTestGoodsTree extends GenesisHiberPartBase
 		for(String sc : gmap.keySet())
 			if(sc.startsWith(code) && !sc.equals(code))
 			{
-				//?: {not sub-good}
+				//?: {not that sub-good}
 				GoodUnit sg = gmap.get(sc);
-				if(!sc.equals(Goods.subCode(sg)))
-					continue;
-
-				EX.assertx(sg.isSubGood());
-				EX.assertx(CMP.eq(g.getUnity(), sg.getUnity()));
+				if(!sc.equals(Goods.subCode(sg))) continue;
+				EX.assertx(CMP.eq(sg.getSuperGood(), g));
 
 				//!: add sub-good to the same folder
-//				actionRun(ActTreeFolder.ADD, f, ActTreeFolder.PARAM_ITEM, sg);
-//
-//				LU.I(log(ctx), logsig(), " added sub-good [",
-//				  g.getCode(), "] measure [", sg.getMeasure().getCode(),
-//				  "] into goods folder: [", f.getCode(), "]");
+				actionRun(ActTreeFolder.ADD, f, ActTreeFolder.PARAM_ITEM, sg);
+
+				LU.I(log(ctx), logsig(), " added sub-good [",
+				  g.getCode(), "] measure [", sg.getMeasure().getCode(),
+				  "] into goods folder: [", f.getCode(), "]");
 			}
 	}
 

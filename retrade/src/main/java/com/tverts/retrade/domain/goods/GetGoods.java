@@ -2,10 +2,8 @@ package com.tverts.retrade.domain.goods;
 
 /* Java */
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -99,18 +97,16 @@ public class GetGoods extends GetObjectBase
 	{
 /*
 
- Remark: sub-good has the same code as it's owner
-   and shares the same Unity instance. Hence,
-   an owner has it's own Unity (the same key).
+ Remark: sub-good has the same code as it's owner.
 
  from GoodUnit gu where (gu.domain.id = :domain) and
-   (gu.code = :code) and (gu.id = gu.unity.id)
+   (gu.code = :code) and (gu.superGood is null)
 
  */
 		final String Q =
 
 "from GoodUnit gu where (gu.domain.id = :domain) and " +
-"  (gu.code = :code) and (gu.id = gu.unity.id)";
+"  (gu.code = :code) and (gu.superGood is null)";
 
 		EX.assertn(domain);
 		EX.asserts(code);
@@ -123,7 +119,7 @@ public class GetGoods extends GetObjectBase
 	public List<GoodUnit> getSubGoods(Long gu)
 	{
 		final String Q =
-"  from GoodUnit gu where (gu.unity.id = :gu) and (gu.id != :gu)";
+"  from GoodUnit gu where (gu.superGood.id = :gu)";
 
 		EX.assertn(gu);
 		return list(GoodUnit.class, Q, "gu", gu);
@@ -355,7 +351,7 @@ from GoodUnit gu where
 		for(Object[] r : res)
 		{
 			q.setLong("good", (Long)r[2]);
-			r[2] = (BigDecimal) q.uniqueResult();
+			r[2] = q.uniqueResult();
 		}
 
 		return res;
@@ -583,13 +579,7 @@ from GoodUnit gu where
 		List<String> res = list(String.class, Q, "domain", domain);
 
 		//~: order
-		Collections.sort(res, new Comparator<String>()
-		{
-			public int compare(String l, String r)
-			{
-				return l.compareToIgnoreCase(r);
-			}
-		});
+		Collections.sort(res, (l, r) -> l.compareToIgnoreCase(r));
 
 		return res;
 	}

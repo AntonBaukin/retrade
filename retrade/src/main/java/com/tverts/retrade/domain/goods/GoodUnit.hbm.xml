@@ -78,6 +78,20 @@
     </many-to-one>
 
 
+    <!-- Super Good -->
+
+    <many-to-one name = 'superGood' foreign-key = 'fk_good_unit_super'>
+
+      <column name = 'fk_super_good' index = 'ix_good_unit_super'>
+
+        <comment>
+          Assigned only for sub-goods. They have all main attributes
+          the same as of its parent good referred from here
+        </comment>
+      </column>
+    </many-to-one>
+
+
     <!-- Good Calculation -->
 
     <many-to-one name = 'goodCalc' foreign-key = 'fk_good_calc'>
