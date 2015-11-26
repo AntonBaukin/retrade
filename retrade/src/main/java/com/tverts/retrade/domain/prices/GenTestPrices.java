@@ -47,6 +47,7 @@ import com.tverts.endure.core.Domain;
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GenTestGoods;
+import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 
 /* com.tverts: support */
@@ -251,14 +252,14 @@ public class GenTestPrices extends GenesisHiberPartBase
 			  "Good Unit with code [", gcode, "] is not found!"
 			);
 
-			//~: price change
+			//=: price change
 			PriceChange pc = new PriceChange();
 			rd.getChanges().add(pc);
 
-			//~: good unit
+			//=: good unit
 			pc.setGoodUnit(gu);
 
-			//~: cost
+			//~: validate the cost
 			BigDecimal c = EX.assertn(costs.get(gcode));
 			if(c.scale() < 2) c = c.setScale(2);
 
@@ -268,6 +269,29 @@ public class GenTestPrices extends GenesisHiberPartBase
 
 			//=: price (cost)
 			pc.setPriceNew(c);
+
+			//~: add prices for each sub-good
+			List<GoodUnit> sgs = bean(GetGoods.class).
+			  getSubGoods(gu.getPrimaryKey());
+			for(GoodUnit sg : sgs)
+			{
+				BigDecimal sv = EX.assertn(sg.getGoodCalc()).
+				  getOx().getSubVolume();
+
+				//~: volume-scaled sub-cost
+				sv = EX.assertn(sv).multiply(c).
+				  setScale(2, BigDecimal.ROUND_HALF_EVEN);
+
+				//=: price change
+				pc = new PriceChange();
+				rd.getChanges().add(pc);
+
+				//=: good unit
+				pc.setGoodUnit(sg);
+
+				//=: cost scaled
+				pc.setPriceNew(sv);
+			}
 		}
 
 		//!: fix the document prices

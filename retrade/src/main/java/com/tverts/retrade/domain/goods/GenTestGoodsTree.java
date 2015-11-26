@@ -36,6 +36,7 @@ import com.tverts.endure.tree.TreeItem;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.LU;
 import com.tverts.support.SU;
@@ -134,9 +135,12 @@ public class GenTestGoodsTree extends GenesisHiberPartBase
 
 		TreeFolder f = EX.assertn(s.folders.get(s.folders.size() - 1).folder);
 
+		//~: generated goods mapping
+		Map<String, GoodUnit> gmap = (Map<String, GoodUnit>)
+		  EX.assertn(ctx.get((Object) GoodUnit.class));
+
 		//~: get the good
-		GoodUnit   g = EX.assertn(((Map<String, GoodUnit>)
-		  EX.assertn(ctx.get((Object) GoodUnit.class))).get(code),
+		GoodUnit   g = EX.assertn(gmap.get(code),
 		  "Good Unit with code [", code, "] was not generated!"
 		);
 
@@ -159,9 +163,28 @@ public class GenTestGoodsTree extends GenesisHiberPartBase
 		//!: add good to the folder on the top of the stack
 		actionRun(ActTreeFolder.ADD, f, ActTreeFolder.PARAM_ITEM, g);
 
-		LU.I(log(ctx), logsig(), " added Good Unit [", g.getCode(),
-		  "] into goods Folder code: [", f.getCode(), "]"
-		);
+		LU.I(log(ctx), logsig(), " added good [", g.getCode(),
+		  "] into goods folder: [", f.getCode(), "]");
+
+		//~: add all sub-goods
+		for(String sc : gmap.keySet())
+			if(sc.startsWith(code) && !sc.equals(code))
+			{
+				//?: {not sub-good}
+				GoodUnit sg = gmap.get(sc);
+				if(!sc.equals(Goods.subCode(sg)))
+					continue;
+
+				EX.assertx(sg.isSubGood());
+				EX.assertx(CMP.eq(g.getUnity(), sg.getUnity()));
+
+				//!: add sub-good to the same folder
+//				actionRun(ActTreeFolder.ADD, f, ActTreeFolder.PARAM_ITEM, sg);
+//
+//				LU.I(log(ctx), logsig(), " added sub-good [",
+//				  g.getCode(), "] measure [", sg.getMeasure().getCode(),
+//				  "] into goods folder: [", f.getCode(), "]");
+			}
 	}
 
 

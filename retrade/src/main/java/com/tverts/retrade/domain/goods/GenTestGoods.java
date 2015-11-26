@@ -214,6 +214,9 @@ public class GenTestGoods extends GenesisHiberPartBase
 		//!: create & save it
 		genDerived(ctx, sub, c);
 
+		//~: add to the goods map
+		addGood(ctx, sub);
+
 		LU.I(log(ctx), logsig(), " generated sub-good [",
 		  gu.getPrimaryKey(), "] with code: [", gu.getCode(),
 		  "], measure [", gu.getMeasure().getCode(), "]"
@@ -276,11 +279,11 @@ public class GenTestGoods extends GenesisHiberPartBase
 		  ctx.get((Object) GoodUnit.class);
 
 		if(gum == null) ctx.set((Object) GoodUnit.class,
-		  gum = new HashMap<String, GoodUnit>(7)
+		  gum = new HashMap<String, GoodUnit>(37)
 		);
 
-		EX.assertx( gum.put(gu.getCode(), gu) == null,
-		  "Good Unit with code [", gu.getCode(), "] is generated twice!"
+		EX.assertx( gum.put(Goods.subCode(gu), gu) == null,
+		  "Good Unit with sub-code [", Goods.subCode(gu), "] is generated twice!"
 		);
 	}
 

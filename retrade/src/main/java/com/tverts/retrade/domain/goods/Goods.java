@@ -154,6 +154,16 @@ public class Goods
 		  stripTrailingZeros();
 	}
 
+	/**
+	 * Ordinary good has sub-code equals to it's code.
+	 * Sub-goods have their measure' code added.
+	 */
+	public static String     subCode(GoodUnit gu)
+	{
+		return !gu.isSubGood()?(gu.getCode()):
+		  SU.cats(gu.getCode(), " ÷ ", gu.getMeasure().getCode());
+	}
+
 
 	/* Unity Types of Aggregated Values */
 

@@ -97,9 +97,6 @@ public class GetGoods extends GetObjectBase
 
 	public GoodUnit       getGoodUnit(Long domain, String code)
 	{
-		EX.assertn(domain);
-		EX.asserts(code);
-
 /*
 
  Remark: sub-good has the same code as it's owner
@@ -110,33 +107,37 @@ public class GetGoods extends GetObjectBase
    (gu.code = :code) and (gu.id = gu.unity.id)
 
  */
-
-		return (GoodUnit) Q(
+		final String Q =
 
 "from GoodUnit gu where (gu.domain.id = :domain) and " +
-"  (gu.code = :code) and (gu.id = gu.unity.id)"
+"  (gu.code = :code) and (gu.id = gu.unity.id)";
 
-		).
-		  setLong  ("domain", domain).
-		  setString("code",   code).
-		  uniqueResult();
+		EX.assertn(domain);
+		EX.asserts(code);
+		return object(GoodUnit.class, Q, "domain", domain, "code", code);
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * Returns all sub-goods of the given owning good.
+	 */
+	public List<GoodUnit> getSubGoods(Long gu)
+	{
+		final String Q =
+"  from GoodUnit gu where (gu.unity.id = :gu) and (gu.id != :gu)";
+
+		EX.assertn(gu);
+		return list(GoodUnit.class, Q, "gu", gu);
+	}
+
 	public List<GoodUnit> getGoodUnits(Domain domain)
 	{
+		final String Q =
+"  from GoodUnit gu where (gu.domain = :domain)";
+
 		EX.assertn(domain);
-
-// from GoodUnit gu where (gu.domain = :domain)
-
-		return (List<GoodUnit>) Q(
-"  from GoodUnit gu where (gu.domain = :domain)"
-		).
-		  setParameter("domain", domain).
-		  list();
+		return list(GoodUnit.class, Q, "domain", domain);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Long>     getGoodUnitsKeys(Domain domain)
 	{
 		EX.assertn(domain);
@@ -148,16 +149,13 @@ select gu.id from GoodUnit gu
 order by gu.id
 
 */
-
-		return (List<Long>) Q(
+		final String Q =
 
 "select gu.id from GoodUnit gu\n" +
 "  where (gu.domain = :domain)\n" +
-"order by gu.id"
+"order by gu.id";
 
-		).
-		  setParameter("domain", domain).
-		  list();
+		return list(Long.class, Q, "domain", domain);
 	}
 
 	/**
@@ -185,7 +183,7 @@ order by gu.id
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Long> getSelectedGoodsKeys(String selset)
+	public List<Long>     getSelectedGoodsKeys(String selset)
 	{
 		QueryBuilder qb = new QueryBuilder();
 
