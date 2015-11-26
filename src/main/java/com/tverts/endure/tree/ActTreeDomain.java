@@ -35,7 +35,7 @@ import static com.tverts.hibery.HiberPoint.setPrimaryKey;
 
 import com.tverts.actions.Action;
 import com.tverts.actions.ActionBuildRec;
-import static com.tverts.actions.ActionsPoint.actionRun;
+import com.tverts.actions.ActionsPoint;
 import com.tverts.actions.ActionTask;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
@@ -388,8 +388,8 @@ public class ActTreeDomain extends ActionBuilderXRoot
 				f.setName(n.getName());
 
 				//!: save it
-				actionRun(ActTreeFolder.SAVE, f,
-				  ActTreeFolder.PARAM_TYPE, folderType
+				ActionsPoint.actionRun(ActTreeFolder.SAVE,
+				  f, ActTreeFolder.PARAM_TYPE, folderType
 				);
 
 				fkeys.put(f.getPrimaryKey().toString(), f);
