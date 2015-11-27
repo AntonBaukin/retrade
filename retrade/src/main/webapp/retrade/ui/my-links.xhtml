@@ -60,8 +60,8 @@
        //~: access the records
        jQuery.get("${z:url('/go/userlinks')}", function(x)
        {
-         //?: {data are actual}
-         if(!ZeT.isa(x) && ZeT.isu(self.txn) || (self.txn === txn))
+         //?: {this request is actual}
+         if(ZeT.isa(x) && (ZeT.isu(self.txn) || (self.txn === txn)))
            self.result(x)
        })
      }
@@ -225,6 +225,7 @@
          ZeT.asserts(txn)
          txn = parseInt(txn)
          ZeT.assert(ZeT.isn(txn))
+         ZeT.singleInstance('ReTrade.getUserWebLinks').txn = txn
        }
 
        jQuery.get("${z:url('/go/userlinks')}", req, updateTxn)

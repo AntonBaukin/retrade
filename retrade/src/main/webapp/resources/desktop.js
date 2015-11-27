@@ -1283,25 +1283,21 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 	options           : function(args)
 	{
 		ZeT.asserta(args)
-		if(args.length == 0) return undefined
+		if(args.length == 0) return
 
 		//~: find the options
-		var opts; if(args.length > 1)
-			if(ZeT.iso(args[0]))
-			{
-				opts = args[0]
-				args[0] = null
-			}
-			else if(ZeT.iso(args[args.length - 1]))
-			{
-				opts = args[args.length - 1]
-				args[args.length - 1] = null
-			}
+		var opts; ZeT.each([0, args.length - 1], function(i)
+		{
+			if(ZeT.iso(args[i])) { opts = args[i]; args[i] = null; return false }
+		})
 
-		//~: build the text
+		//~: message text
 		opts = opts || {}
 		if(!opts.text && !opts.html && !opts.node)
+		{
 			opts.text = ZeTS.cat.apply(ZeTS, args)
+			if(ZeTS.ises(opts.text)) return
+		}
 
 		return opts
 	},

@@ -354,7 +354,7 @@ table.retrade-align-right.x-field
   background: linear-gradient(135deg, #ffffff 0%,#f3f3f3 53%,#ededed 57%,#ffffff 100%);
 }
 
-.retrade-tiles-links-area > div
+.retrade-tiles-links-area > div:last-child
 {
   position: absolute; left: 0; right: 10px; top: 0; bottom: 10px;
 }

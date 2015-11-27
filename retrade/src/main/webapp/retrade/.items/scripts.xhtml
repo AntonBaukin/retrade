@@ -59,8 +59,8 @@ function retrade_add_user_web_link(wl)
     ZeT.asserts(txn)
     txn = parseInt(txn)
     ZeT.assert(ZeT.isn(txn))
-    ReTrade.desktop.event('Успешно создана ссылка на: ' + wl.text)
-    ZeT.defined('ReTrade.getUserWebLinks').reload()
+    ReTrade.desktop.event({ color: 'G' }, 'Успешно создана ссылка на: ', wl.text)
+    ZeT.defined('ReTrade.getUserWebLinks').reload(txn)
   }
 
   //!: issue add action
