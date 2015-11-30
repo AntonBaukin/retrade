@@ -22,6 +22,7 @@ html, body
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+  cursor: default;
 }
 
 
@@ -618,7 +619,6 @@ table.retrade-align-right.x-field
   font-family: 'Tahoma', sans-serif;
   font-size: 13pt; font-style: normal;
   font-weight: normal; line-height: normal;
-  -moz-osx-font-smoothing: auto;
 }
 
 .retrade-tiles-links-area.retrade-tiles-links-column .retrade-tile-links-wrap .retrade-boshadow-content
@@ -1070,7 +1070,7 @@ hr.retrade-info-hr
 {
   background-color: rgba(72, 141, 72, 0.9);
   border-radius: 4px; padding: 3px 2px 2px 2px;
-  -moz-osx-font-smoothing: auto; color: white;
+  color: white;
 }
 
 
@@ -1146,6 +1146,24 @@ table.retrade-info-table.retrade-info-table-good-edit-price-list caption
   margin-bottom: 2pt;
 }
 
+.retrade-good-edit-is-used td:first-child
+{
+  background-size: 32px 32px;
+  background-position: 0 center;
+}
+
+.retrade-good-edit-is-used td:first-child div
+{
+  width: 38px;  height: 34px;
+}
+
+
+.retrade-good-edit-is-used td:last-child
+{
+  font-size: 14px; line-height: 14px;
+  vertical-align: middle; color: #157FCC;
+}
+
 
 /* info panel [retrade/price-lists/history] */
 
@@ -1181,7 +1199,6 @@ table.retrade-info-table-price-history-good-price td.retrade-info-title:first-ch
 {
   padding: 3px; background-color: #F00; color: #FFF;
   border-radius: 4px; font-weight: bolder;
-  -moz-osx-font-smoothing: auto;
 }
 
 .retrade-reprice-doc-edit-good-removed-new-price-cell

@@ -255,7 +255,7 @@ ${v.checkModelRequestedWithRedirect}
         value  = "#{v.goodView.measureKey}">
 
         <f:facet name = "drop-props">
-          extjsfReadWrite: true, allowBlank: false,
+          readOnly: true, allowBlank: false,
           editable: false, matchFieldWidth: true, flex: 3,
           valueField: 'objectKey', displayField: 'code'
         </f:facet>
@@ -338,6 +338,31 @@ ${v.checkModelRequestedWithRedirect}
     <!-- group] -->
 
 
+    <!-- [good is used -->
+
+    <x:html coid = "${z:vid(v, 'good_used')}"
+      rendered = "#{not v.creating}">
+
+      <f:facet name = "extjs-props">
+        bodyCls: 'retrade-transparent-panel', border: false,
+        margin: extjsf.pts(8, 0, 4, 0), hidden: true
+      </f:facet>
+
+      <table class = "retrade-good-edit-is-used unselectable-text"
+        cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><div></div></td>
+          <td>
+            <div>Функции редактирования <span style = "white-space:nowrap">ограничены —</span>
+            товар <span id = "${z:vid(v, 'good-used')}"></span>!</div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+    <!-- good is used] -->
+
+
     <!-- [add to selection set] -->
     <x:component coid = "${z:vid(v, '_add_to_selset')}">
       <f:facet name = "extjs-props">
@@ -388,85 +413,6 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-  //~: toggle read-write
-  extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
-    retradeToggleReadWrite = function(isread)
-  {
-    //~: toggle the form fields
-    extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
-      toggleReadWrite(isread)
-
-    //~: toggle cancel-edit
-    extjsf.bind("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}').visible(!isread)
-
-    //~: toggle close
-    extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}').visible(isread)
-
-    //~: toggle submit
-    extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
-
-    //~: toggle do-edit
-    extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}').visible(isread)
-
-    //~: show go-to-calc
-    if(!isread) extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}').visible(true)
-
-    //~: window title
-    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').co()
-    if(isread) winmain.setTitle('${z:jss(v.infoWindowTitle)}')
-    else winmain.setTitle('${z:jss(v.editWindowTitle)}')
-
-    //~: load measures | set the text value
-    var measures = extjsf.co("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
-    var measure = extjsf.bind("${z:vid(v, 'measure')}", '${rootView.extjsDomain}')
-
-    if(isread) measure.value("#{z:jss(v.goodView.measureCode)}")
-    else measures.load({callback: function()
-    {
-      measure.value("#{v.goodView.measureKey}")
-    }})
-
-    //~: load groups
-    if(!isread) extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').load()
-
-    //~: edit mode field
-    extjsf.bind("${z:vid(v, 'edit')}", '${rootView.extjsDomain}').value(!isread)
-  }
-
-
-  //~: default read-only for existing
-  Ext.onReady(function()
-  {
-    extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
-      retradeToggleReadWrite("#{v.model.editMode}" == 'false')
-  })
-
-
-  //~: do-edit button
-  extjsf.bindHandler("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}', function()
-  {
-    extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
-      retradeToggleReadWrite(false)
-  })
-
-
-  //~: adjust window size
-  Ext.onReady(ZeT.timeouted(150, function()
-  {
-    //~: adjust window height
-    ReTrade.desktop.resizeToHeight('winmain',
-      { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true },
-      [ "${z:vid(v, '_add_to_selset')}", "${z:vid(v, '_group')}", "${z:vid(v, '_code_measure')}" ]
-    )
-
-    //~: set window width
-    ReTrade.desktop.applyWindowBox({
-      name: 'winmain', domain: '${rootView.extjsDomain}',
-      widthpt: 320, prevsize: ''
-    })
-  }))
-
-
   //~: validate on code change
   extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)
   {
@@ -491,6 +437,7 @@ ${v.checkModelRequestedWithRedirect}
        })
      })
   })
+
 
   //~: submit the form
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
@@ -520,6 +467,7 @@ ${v.checkModelRequestedWithRedirect}
     })
   })
 
+
   //~: go to the calculation
   extjsf.bindHandler("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}', function()
   {
@@ -547,6 +495,127 @@ ${v.checkModelRequestedWithRedirect}
            extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
        })
     })
+
+  ZeT.scope(function()
+  {
+    var isReadMode, checkGoodUsed
+
+    function adjustWindow()
+    {
+      //~: adjust window height
+      ReTrade.desktop.resizeToHeight('winmain',
+        { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true },
+        [ "${z:vid(v, '_add_to_selset')}",
+          "${z:vid(v, '_group')}",
+          "${z:vid(v, '_code_measure')}"
+        ]
+      )
+
+      //~: set window width
+      ReTrade.desktop.applyWindowBox({
+        name: 'winmain', domain: '${rootView.extjsDomain}',
+        widthpt: 320, prevsize: ''
+      })
+    }
+
+    //~: display notification about restricted editing
+    if(extjsf.bind("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}')) checkGoodUsed = function()
+    {
+      jQuery.get("${z:url('/go/web/views/goods/is-good-used')}",
+                 { entity: "#{v.goodView.objectKey}" },  function(x)
+        {
+          if(ZeTS.ises(x) || !ZeT.isi(x = parseInt(x)) || (x === 0))
+          {
+            //~: enable editing the measure
+            if(x === 0) extjsf.co("${z:vid(v, 'measure')}", '${rootView.extjsDomain}').setReadOnly(false)
+
+            return
+          }
+
+          var s = '', p; function add(mask, prefix, txt)
+          {
+            if(!(x & mask)) return
+            if(s.length) s += ', '
+            if(p !== prefix) s += prefix + ' '
+            p = prefix; s += txt
+          }
+
+          add(1, 'имеет', 'несколько ед. измерения')
+          add(2, 'используется', 'в рецептах')
+          add(4, 'находится в', 'пр.-листах')
+          add(8, 'находится в', 'накладных закупки')
+          add(16, 'находится в', 'накладных продажи')
+          add(32, 'находится в', 'накладных перемещения')
+          add(64, 'находится в', 'документах инвентаризации')
+          add(128, 'стал', 'промежуточным товаром в накладных')
+
+          $('#' + "${z:vid(v, 'good-used')}").text(s)
+          extjsf.co("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}').show()
+          adjustWindow()
+        })
+    }
+
+    function toggleReadWrite(isread)
+    {
+      isReadMode = isread
+
+      //~: toggle the form fields
+      extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
+        toggleReadWrite(isread)
+
+      //~: toggle cancel-edit
+      extjsf.bind("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}').visible(!isread)
+
+      //~: toggle close
+      extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}').visible(isread)
+
+      //~: toggle submit
+      extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
+
+      //~: toggle do-edit
+      extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}').visible(isread)
+
+      //~: show go-to-calc
+      if(!isread) extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}').visible(true)
+
+      //~: window title
+      var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').co()
+      if(isread) winmain.setTitle('${z:jss(v.infoWindowTitle)}')
+      else winmain.setTitle('${z:jss(v.editWindowTitle)}')
+
+      //~: set measure text value
+      var measure = extjsf.bind("${z:vid(v, 'measure')}", '${rootView.extjsDomain}')
+      if(isread) measure.value("#{z:jss(v.goodView.measureCode)}")
+
+      //~: allow editing when create
+      if(("#{v.creating}" == 'true') && !isread)
+        extjsf.co("${z:vid(v, 'measure')}", '${rootView.extjsDomain}').setReadOnly(false)
+
+      //~: load groups
+      if(!isread) extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').load()
+
+      //~: edit mode field
+      extjsf.bind("${z:vid(v, 'edit')}", '${rootView.extjsDomain}').value(!isread)
+
+      //~: check good usage
+      if(!isread && checkGoodUsed) checkGoodUsed()
+    }
+
+    //~: initial adjust
+    Ext.onReady(ZeT.timeouted(150, adjustWindow))
+
+    //~: default read-only for existing
+    Ext.onReady(function()
+    {
+      toggleReadWrite("#{v.model.editMode}" == 'false')
+    })
+
+    //~: do-edit button
+    extjsf.bindHandler("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}', function()
+    {
+      toggleReadWrite(false)
+    })
+  })
 
   //]]>
   </script>

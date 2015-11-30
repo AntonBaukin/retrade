@@ -534,6 +534,11 @@ public class FacesGoodEditView extends ModelView
 
 	/* public: edit interface */
 
+	public boolean isCreating()
+	{
+		return (getGoodView().getObjectKey() == null);
+	}
+
 	public String getEditWindowTitle()
 	{
 		if(getGoodView().getObjectKey() == null)

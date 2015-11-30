@@ -584,6 +584,79 @@ from GoodUnit gu where
 		return res;
 	}
 
+	/**
+	 * Checks whether this good is referred by distinct
+	 * entities of the domain: sub-Goods (flag 1),
+	 * Calculations (flag 2), Prices (flag 4),
+	 * Invoices (Buy 8, Sell or Sells 16, Move 32,
+	 * Volume Check 64, Resulting Good 128).
+	 *
+	 * Parameter 'stop' orders not to check all the items.
+	 */
+	public int            isGoodUsed(Long pk, boolean stop)
+	{
+		EX.assertn(pk);
+
+/*
+
+ select id from GoodUnit where (superGood.id = :pk)
+
+ select id from GoodCalc where (superGood.id = :pk)
+
+ select id from CalcPart where (goodUnit.id = :pk)
+
+ select id from GoodPrice where (goodUnit.id = :pk)
+
+ select id from BuyGood where (goodUnit.id = :pk)
+
+ select id from MoveGood where (goodUnit.id = :pk)
+
+ select id from SellGood where (goodUnit.id = :pk)
+
+ select id from VolGood where (goodUnit.id = :pk)
+
+ select id from ResGood where (goodUnit.id = :pk)
+
+ */
+		final Object[] Qs = new Object[]
+		{
+		  "select id from GoodUnit where (superGood.id = :pk)",  1,
+
+		  "select id from GoodCalc where (superGood.id = :pk)",  2,
+
+		  "select id from CalcPart where (goodUnit.id = :pk)",   2,
+
+		  "select id from GoodPrice where (goodUnit.id = :pk)",  4,
+
+		  "select id from BuyGood where (goodUnit.id = :pk)",    8,
+
+		  "select id from MoveGood where (goodUnit.id = :pk)",   32,
+
+		  "select id from SellGood where (goodUnit.id = :pk)",   16,
+
+		  "select id from VolGood where (goodUnit.id = :pk)",    64,
+
+		  "select id from ResGood where (goodUnit.id = :pk)",    128
+		};
+
+		int result = 0;
+
+		//c: for all the queries
+		for(int i = 0;(i < Qs.length);i += 2)
+		{
+			String  Q = (String)  Qs[i];
+			Integer F = (Integer) Qs[i+1];
+
+			if(first(Object.class, Q, "pk", pk) != null)
+				if(stop)
+					return F;
+				else
+					result |= F;
+		}
+
+		return result;
+	}
+
 
 	/* Get Aggregated Values */
 
