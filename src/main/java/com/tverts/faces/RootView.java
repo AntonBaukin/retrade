@@ -2,6 +2,9 @@ package com.tverts.faces;
 
 /* Java */
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 /* Spring Framework */
@@ -108,6 +111,52 @@ public class RootView extends ViewWithModes
 	{
 		String p = SU.s2s(request().getParameter(getEntityParam()));
 		return (p == null)?(null):Long.parseLong(p);
+	}
+
+	private static final List<String> STD_PARAMS = Arrays.asList(
+	  "_dc", RootView.PARAM_DOMAIN, ModelViewBase.MODEL_PARAM,
+	  ViewWithModes.VIEWID_PARAM,   ViewWithModes.ENTITY_PARAM
+	);
+
+	/**
+	 * Returns all additional parameters of the request
+	 * as JSON text excluding these one: entity key.
+	 */
+	public String    getRequestParams()
+	{
+		StringBuilder         s  = new StringBuilder(32);
+		Map<String, String[]> pm = request().getParameterMap();
+
+		s.append('{');
+		for(Map.Entry<String, String[]> e : pm.entrySet())
+		{
+			//?: {standard parameter}
+			if(STD_PARAMS.contains(e.getKey()))
+				continue;
+
+			if(s.length() != 1)
+				s.append(", ");
+
+			//~: parameter name as the key
+			s.append('"').append(SU.jss(e.getKey())).append("\": ");
+
+			//?: {has single value}
+			if(e.getValue().length == 1)
+				s.append('"').append(SU.jss(e.getValue()[0])).append('"');
+			//~: write an array
+			else
+			{
+				s.append('[');
+				for(int i = 0;(i < e.getValue().length);i++)
+					s.append((i == 0)?("\""):(", \"")).
+					  append(SU.jss(e.getValue()[i])).
+					  append('"');
+				s.append(']');
+			}
+		}
+		s.append('}');
+
+		return s.toString();
 	}
 
 

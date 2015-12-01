@@ -59,7 +59,7 @@ public abstract class ViewWithModes
 
 	/* View With Modes (ID) Interface */
 
-	public String  getId()
+	public String       getId()
 	{
 		return (this.id != null)?(this.id):
 		  (this.id = obtainViewId());
