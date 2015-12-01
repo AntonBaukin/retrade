@@ -35,7 +35,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  (function()
+  ZeT.scope(function()
   {
     //~: create delegate
     var delegate = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}')
@@ -62,7 +62,7 @@
     if(button) button.extjsProps({handler: delegate.handler})
     if(button && button.co()) button.co().setHandler(delegate.handler)
 
-  })()
+  })
 
     //]]>
     </script>

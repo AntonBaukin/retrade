@@ -45,6 +45,10 @@ import com.tverts.hibery.HiberPoint;
 
 import com.tverts.system.tx.TxPoint;
 
+/* com.tverts: scripting */
+
+import com.tverts.jsx.JsX;
+
 /* com.tverts: api */
 
 import com.tverts.api.retrade.goods.Calc;
@@ -276,6 +280,16 @@ public class FacesGoodEditView extends ModelView
 			getModel().setEditCalc(null);
 			return "edit";
 		}
+
+		if("measures".equals(where))
+		{
+			if("true".equals(request().getParameter("edit-mode")))
+				getModel().setEditMode(true);
+			return "measures";
+		}
+
+		if("measures-back".equals(where))
+			return "edit";
 
 		throw EX.state("How to go from where [", where, "]?");
 	}
@@ -531,6 +545,20 @@ public class FacesGoodEditView extends ModelView
 		return (getCalcView() != null) && getCalcView().isSemiReady();
 	}
 
+	public String getInfoWindowTitle()
+	{
+		return formatTitle("Товар",
+		  getGoodView().getGoodCode(),
+		  getGoodView().getGoodName());
+	}
+
+	public String getMeasuresWindowTitle()
+	{
+		return formatTitle("Ед. изм. товара",
+		  getGoodView().getGoodCode(),
+		  getGoodView().getGoodName());
+	}
+
 
 	/* public: edit interface */
 
@@ -545,13 +573,6 @@ public class FacesGoodEditView extends ModelView
 			return "Создание товара";
 
 		return formatTitle("Ред. товара",
-		  getGoodView().getGoodCode(),
-		  getGoodView().getGoodName());
-	}
-
-	public String getInfoWindowTitle()
-	{
-		return formatTitle("Товар",
 		  getGoodView().getGoodCode(),
 		  getGoodView().getGoodName());
 	}
@@ -647,6 +668,21 @@ public class FacesGoodEditView extends ModelView
 		return formatTitle("История формул товара",
 		  getGoodView().getGoodCode(), getGoodView().getGoodName()
 		);
+	}
+
+
+	/* public: measures interface */
+
+	public String getMeasuresEncoded()
+	{
+		//~: load the target good
+		EX.assertn(getGoodView().getObjectKey());
+		GoodUnit goodUnit = bean(GetGoods.class).
+		  getGoodUnitStrict(getGoodView().getObjectKey());
+
+		//~: invoke the coding script
+		return (String) JsX.apply("web/views/goods/Goods",
+		  "encodeGoodMeasures", goodUnit);
 	}
 
 

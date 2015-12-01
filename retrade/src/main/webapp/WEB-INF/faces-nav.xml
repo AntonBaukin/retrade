@@ -568,13 +568,30 @@
     <from-view-id>/retrade/goods/edit-good.xhtml</from-view-id>
 
     <navigation-case>
+      <from-outcome>measures</from-outcome>
+      <to-view-id>/retrade/goods/good-measures.xhtml</to-view-id>
+    </navigation-case>
+
+    <navigation-case>
       <from-outcome>calc</from-outcome>
       <to-view-id>/retrade/goods/good-calc-info.xhtml</to-view-id>
     </navigation-case>
-    
+
     <navigation-case>
       <from-outcome>calc-edit</from-outcome>
       <to-view-id>/retrade/goods/good-calc-edit.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- [retrade/goods/good-measures] -->
+
+  <navigation-rule>
+    <from-view-id>/retrade/goods/good-measures.xhtml</from-view-id>
+
+    <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/retrade/goods/edit-good.xhtml</to-view-id>
     </navigation-case>
   </navigation-rule>
 

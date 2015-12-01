@@ -36,7 +36,7 @@
 
     <script type = "text/javascript">
 
-  (function()
+  ZeT.scope(function()
   {
     //~: create button bind
     var button = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}');
@@ -66,8 +66,7 @@
     button.extjsProps({handler: submit_handler})
 
     extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}', button)
-
-  })()
+  })
 
     </script>
 

@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:z  = 'uri:tverts.com'>
+
+<c:set var = "v" scope = "request" value = "${facesGoodEditView}"/>
+
+<ui:decorate template = '/resources/.view-modes/body.xhtml'
+   xmlns    = 'http://www.w3.org/1999/xhtml'
+   xmlns:h  = 'http://java.sun.com/jsf/html'
+   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+
+<ui:define name = 'page_body'>
+
+<x:winmain coid = "${z:vid(v, 'root_panel')}">
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle("#{z:jss(v.measuresWindowTitle)}")
+
+  //]]>
+  </script>
+
+  <f:facet name = "extjs-props">
+    bodyCls: 'retrade-back-panel', scrollable: 'y',
+    layout: { type: 'vbox', align: 'stretch' }
+  </f:facet>
+
+  <f:facet name = "toolbar-props">
+    xtype: 'panel', bodyPadding: extjsf.pt(2),
+    layout: {type: 'hbox', align: 'middle'},
+    bodyCls: 'retrade-toolbar-panel'
+  </f:facet>
+
+
+  <!-- [toolbar -->
+
+  <f:facet name = "toolbar">
+
+    <!-- [goto good edit button] -->
+
+    <x:winaction-button coid = "${z:vid(v, 'goto_back')}"
+      action = "#{v.gotoWhere('measures-back')}">
+
+      <f:facet name = "extjs-props">
+        text: 'Назад'
+      </f:facet>
+
+      <f:facet name = "action-params">
+        '${v.modelParam}': '#{v.modelKeys}'
+      </f:facet>
+    </x:winaction-button>
+
+  </f:facet>
+
+  <!-- toolbar] -->
+
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  ZeT.scope(function()
+  {
+    ZeT.log('Measures: ', "#{z:jss(v.measuresEncoded)}")
+  })
+  //]]>
+  </script>
+
+</x:winmain>
+</ui:define>
+</ui:decorate>
+</ui:component>

@@ -56,6 +56,11 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 		return g;
 	}
 
+	/**
+	 * For ordinary goods this is the same ox-object.
+	 * For sub-goods this is distinct instance not
+	 * shared with it's super good.
+	 */
 	public Good   getOxOwn()
 	{
 		//?: {this is not a sub-good}

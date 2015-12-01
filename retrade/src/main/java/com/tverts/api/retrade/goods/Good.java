@@ -2,6 +2,8 @@ package com.tverts.api.retrade.goods;
 
 /* Java API for XML Binding */
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -20,7 +22,8 @@ import com.tverts.api.core.XKeyPair;
  */
 @XmlRootElement(name = "good")
 @XmlType(name = "good", propOrder = {
-  "measure", "XMeasure", "calc", "XCalc", "group"
+  "measure", "XMeasure", "visible", "calc", "XCalc",
+  "group", "barCode", "netWeight", "grossWeight"
 })
 public class Good extends CatItem
 {
@@ -51,6 +54,18 @@ public class Good extends CatItem
 	public void setXMeasure(String xmeasure)
 	{
 		this.xmeasure = xmeasure;
+	}
+
+	public boolean isVisible()
+	{
+		return visible;
+	}
+
+	private boolean visible = true;
+
+	public void setVisible(boolean visible)
+	{
+		this.visible = visible;
 	}
 
 	@XKeyPair(type = Calc.class)
@@ -89,5 +104,44 @@ public class Good extends CatItem
 	public void setGroup(String group)
 	{
 		this.group = group;
+	}
+
+	@XmlElement(name = "bar-code")
+	public String getBarCode()
+	{
+		return barCode;
+	}
+
+	private String barCode;
+
+	public void setBarCode(String barCode)
+	{
+		this.barCode = barCode;
+	}
+
+	@XmlElement(name = "net-weight")
+	public BigDecimal getNetWeight()
+	{
+		return netWeight;
+	}
+
+	private BigDecimal netWeight;
+
+	public void setNetWeight(BigDecimal netWeight)
+	{
+		this.netWeight = netWeight;
+	}
+
+	@XmlElement(name = "gross-weight")
+	public BigDecimal getGrossWeight()
+	{
+		return grossWeight;
+	}
+
+	private BigDecimal grossWeight;
+
+	public void setGrossWeight(BigDecimal grossWeight)
+	{
+		this.grossWeight = grossWeight;
 	}
 }

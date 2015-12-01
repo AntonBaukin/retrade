@@ -22,8 +22,8 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle("#{z:jss(v.editWindowTitle)}")
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle("#{z:jss(v.editWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp('winmain', '${rootView.extjsDomain}')
 
@@ -265,6 +265,20 @@ ${v.checkModelRequestedWithRedirect}
           margin: extjsf.pts(0, 4, 0, 6)
         </f:facet>
       </x:drop-list>
+
+
+      <!-- [goto measures] -->
+      <x:component coid = "${z:vid(v, 'goto-measures')}" rendered = "#{not v.creating}">
+
+        <f:facet name = "extjs-props">
+          xtype: 'button', iconCls: 'retrade-measure-icon', margin: extjsf.pts(0, 0, 0, 6),
+          tooltipType: 'title', tooltip: 'Просмотр и редактирование единиц измерения, заданных для данного товара',
+          handler: function() {
+            extjsf.bindHandler("${z:vid(v, 'goto-measures-script')}", '${rootView.extjsDomain}')()
+          }
+        </f:facet>
+      </x:component>
+
     </x:component>
 
     <!-- measure unit] -->
@@ -400,7 +414,7 @@ ${v.checkModelRequestedWithRedirect}
 
   </x:form-panel>
 
-
+  <!-- code exists checker -->
   <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
     action = "#{v.doCheckCodeExists}">
 
@@ -408,6 +422,20 @@ ${v.checkModelRequestedWithRedirect}
       '${v.modelParam}': '${v.modelKeys}'
     </f:facet>
   </x:action-call>
+
+
+  <!-- [goto measures script] -->
+  <x:winaction-delegate coid = "${z:vid(v, 'goto-measures-script')}"
+    action = "#{v.gotoWhere('measures')}" rendered = "#{not v.creating}">
+
+    <f:facet name = "action-params">
+      '${v.modelParam}': '#{v.modelKeys}',
+      'edit-mode': ZeT.delay(function()
+      {
+        return !extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').isReadMode
+      })
+    </f:facet>
+  </x:winaction-delegate>
 
 
   <script type = "text/javascript">
@@ -557,9 +585,9 @@ ${v.checkModelRequestedWithRedirect}
 
     function toggleReadWrite(isread)
     {
-      isReadMode = isread
-
       //~: toggle the form fields
+      extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
+        isReadMode = isReadMode = isread
       extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
         toggleReadWrite(isread)
 
