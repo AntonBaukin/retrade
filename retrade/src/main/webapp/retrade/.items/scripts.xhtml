@@ -41,17 +41,46 @@ function retrade_add_user_web_link(wl)
   ZeT.asserts(wl.link)
   wl.link = retrade_go_url(wl.link)
 
+  //?: {has parameters as string}
+  if(ZeT.iss(wl.params))
+    wl.params = ZeT.s2o(wl.params)
+
   //?: {has entity param}
   if(wl.entity)
   {
-    wl.link += (wl.link.indexOf('?') == -1)?('?'):('&')
-    wl.link += encodeURIComponent("${rootView.entityParam}") +
-      '=' + encodeURIComponent(wl.entity)
+    if(!wl.params) wl.params = {}
+    wl.params["${rootView.entityParam}"] = '' + wl.entity
     delete wl.entity
   }
 
+  //?: {has parameters}
+  if(wl.params)
+  {
+    var lnk = wl.link
+    lnk += (lnk.indexOf('?') == -1)?('?'):('&')
+
+    ZeT.each(ZeT.keys(wl.params), function(k, i)
+    {
+      //?: {has single value}
+      var p = wl.params[k]; if(ZeT.iss(p, i))
+      {
+        if(i) lnk += '&'
+        lnk += encodeURIComponent(k) + '=' + encodeURIComponent(''+p)
+      }
+      //?: {has arrays of values}
+      else if(ZeT.isa(p)) ZeT.each(p, function(v, j)
+      {
+        if(i+j) lnk += '&'
+        lnk += encodeURIComponent(k) + '=' + encodeURIComponent(''+p)
+      })
+    })
+
+    wl.link = lnk
+    delete wl.params
+  }
+
   //?: {has box} encode to json text
-  if(ZeT.iso(wl.box)) wl.box = JSON.stringify(wl.box)
+  if(ZeT.iso(wl.box)) wl.box = ZeT.o2s(wl.box)
 
   //~: issue add request
   function updateTxn(txn)

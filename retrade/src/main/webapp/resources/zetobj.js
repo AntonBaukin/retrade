@@ -5,7 +5,7 @@
  +===============================================================*/
 
 
-// +----: ZeT Strings : -----------------------------------------+
+// +----: ZeT Strings  :-----------------------------------------+
 
 var ZeTS = window.ZeTS = window.ZeTS ||
 {
@@ -177,7 +177,7 @@ if(!String.prototype.endsWith)
 }
 
 
-// +----: ZeT Arrays : ------------------------------------------+
+// +----: ZeT Arrays  :------------------------------------------+
 
 var ZeTA = window.ZeTA = window.ZeTA || {
 
@@ -304,11 +304,11 @@ if(!Array.prototype.indexOf)
 	throw new Error('Your browser has no Array.indexOf()!')
 
 
-// +----: ZeT Library : -----------------------------------------+
+// +----: ZeT Library  :-----------------------------------------+
 
 var ZeT = window.ZeT = window.ZeT || {
 
-// +----: Global Definitions: ----------------------------------->
+// +----: Global Definitions :----------------------------------->
 
 	define           : function(name, object)
 	{
@@ -414,7 +414,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Object Programming: ----------------------------------->
+// +----: Object Programming :----------------------------------->
 
 	extend           : function(obj, ext)
 	{
@@ -684,7 +684,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Function Helpers: ------------------------------------->
+// +----: Function Helpers :------------------------------------->
 
 	/**
 	 * Returns a function having 'this' assigned to 'that'
@@ -853,7 +853,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Test Functions: --------------------------------------->
+// +----: Test Functions :--------------------------------------->
 
 	iss              : function(s)
 	{
@@ -901,7 +901,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Helper Functions: ------------------------------------->
+// +----: Helper Functions :------------------------------------->
 
 	/**
 	 * Invokes the function given. Optiona arguments
@@ -990,6 +990,71 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 	/**
+	 * Converts given object to JSON formatted string.
+	 */
+	o2s              : function(o)
+	{
+		return JSON.stringify(o)
+	},
+
+	s2o              : function(s)
+	{
+		ZeT.asserts(s)
+		return JSON.parse(s)
+	},
+
+	/**
+	 * Evaluates the script given in the function body.
+	 */
+	xeval            : function(script)
+	{
+		if(ZeTS.ises(script)) return
+		return eval('((function(){'.concat(script, '})())'))
+	},
+
+	/**
+	 * Takes array-like object and invokes the
+	 * function given on each item. Function
+	 * receives arguments: [0] is the item,
+	 * [1] is the item index.
+	 *
+	 * This-context of the function call
+	 * is also the item iterated.
+	 *
+	 * If call on some item returns false, iteration
+	 * is breaked and that stop-index is returned.
+	 */
+	each             : function(a, f)
+	{
+		if(!a) return undefined
+		ZeT.assert(ZeT.isi(a.length))
+		ZeT.assert(ZeT.isf(f))
+
+		for(var i = 0;(i < a.length);i++)
+			if(f.call(a[i], a[i], i) === false)
+				return i
+		return a.length
+	},
+
+	collect          : function(a, f)
+	{
+		//?: {collect a property}
+		var p; if(ZeT.iss(p = f)) f = function(x) { return x[p] }
+		ZeT.assert(ZeT.isf(f))
+
+		var r = []; ZeT.each(a, function(x, i)
+		{
+			x = f.call(x, x, i)
+			if(!ZeT.isu(x)) r.push(x)
+		})
+
+		return r
+	},
+
+
+// +----: Assertions :------------------------------------------->
+
+	/**
 	 * First argument of assertion is an expression
 	 * evaluated as extended if-check. The following
 	 * optional arguments are the message components
@@ -1065,56 +1130,8 @@ var ZeT = window.ZeT = window.ZeT || {
 		throw ZeT.ass(m)
 	},
 
-	/**
-	 * Evaluates the script given in the function body.
-	 */
-	xeval            : function(script)
-	{
-		if(ZeTS.ises(script)) return
-		return eval('((function(){'.concat(script, '})())'))
-	},
 
-	/**
-	 * Takes array-like object and invokes the
-	 * function given on each item. Function
-	 * receives arguments: [0] is the item,
-	 * [1] is the item index.
-	 *
-	 * This-context of the function call
-	 * is also the item iterated.
-	 *
-	 * If call on some item returns false, iteration
-	 * is breaked and that stop-index is returned.
-	 */
-	each             : function(a, f)
-	{
-		if(!a) return undefined
-		ZeT.assert(ZeT.isi(a.length))
-		ZeT.assert(ZeT.isf(f))
-
-		for(var i = 0;(i < a.length);i++)
-			if(f.call(a[i], a[i], i) === false)
-				return i
-		return a.length
-	},
-
-	collect          : function(a, f)
-	{
-		//?: {collect a property}
-		var p; if(ZeT.iss(p = f)) f = function(x) { return x[p] }
-		ZeT.assert(ZeT.isf(f))
-
-		var r = []; ZeT.each(a, function(x, i)
-		{
-			x = f.call(x, x, i)
-			if(!ZeT.isu(x)) r.push(x)
-		})
-
-		return r
-	},
-
-
-// +----: Debug Logging: ----------------------------------------+
+// +----: Debug Logging :----------------------------------------+
 
 	/**
 	 * Logs the values provided and returns the value:
@@ -1189,7 +1206,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Te$t Functions: ---------------------------------------+
+// +----: Te$t Functions :---------------------------------------+
 
 	/**
 	 * Checks the value is undefined or null.
@@ -1312,7 +1329,7 @@ var ZeT = window.ZeT = window.ZeT || {
 }
 
 
-// +----: ZeT.Class: --------------------------------------------+
+// +----: ZeT.Class :--------------------------------------------+
 
 /**
  * Creates Class instance. The arguments are:
@@ -1628,7 +1645,7 @@ ZeT.Class = ZeT.Class || function()
 }
 
 
-// +----: ZeT XML : ---------------------------------------------+
+// +----: ZeT XML  :---------------------------------------------+
 
 var ZeTX = ZeT.define('ZeT XML Support',
 {

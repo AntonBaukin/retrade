@@ -44,7 +44,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  (function()
+  ZeT.scope(function()
   {
     var domain  = '${rootView.extjsDomain}'
     var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain)
@@ -95,7 +95,7 @@
     status.nodeId("#{cc.clientId}-#{cc.attrs.coid}-status")
     status.extjsProps({xtype: 'statusbar', dock: 'bottom', border: false})
     status.extjsPropsNode()
-  })()
+  })
 
     //]]>
     </script>
@@ -107,7 +107,7 @@
 
     <script type = "text/javascript">
 
-  (function()
+  ZeT.scope(function()
   {
     var domain  = '${rootView.extjsDomain}';
     var panel   = extjsf.bind("#{cc.attrs.coid}", domain);
@@ -118,7 +118,7 @@
 
     toolbar.replaceItems(panel.replaceItems())
 
-  })()
+  })
 
     </script>
 
@@ -131,7 +131,7 @@
 
     <script type = "text/javascript">
 
-  (function()
+  ZeT.scope(function()
   {
     var domain = '${rootView.extjsDomain}';
     var panel  = extjsf.bind("#{cc.attrs.coid}", domain);
@@ -142,7 +142,7 @@
 
     status.replaceItems(panel.replaceItems())
 
-  })()
+  })
 
     </script>
 
@@ -196,8 +196,9 @@
 
       //~: web link + tool handler
       tool.handler = ZeT.fbind(retrade_add_user_web_link, this, {
-        link: "#{rootView.requestURI}",
+        link: "#{z:jss(rootView.requestURI)}",
         entity: "#{rootView.entityKey}",
+        params: "#{z:jss(rootView.requestParams)}",
         text: winmain.co().title,
         domain: domain, box: {
           width: winmain.co().getWidth(),
