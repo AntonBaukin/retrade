@@ -102,6 +102,7 @@ ZeT.extend(ZeT,
 		return JSON.parse(s)
 	},
 
+	OClass           : Java.type('java.lang.Object'),
 	JClass           : Java.type('java.lang.Class'),
 
 	/**
@@ -117,6 +118,21 @@ ZeT.extend(ZeT,
 		ZeT.assert(jtype.class instanceof ZeT.JClass)
 
 		return ZeT.xp.json().read(s, jtype.class)
+	},
+
+	/**
+	 * Converts JAXB-mapped Java Object to JSON text,
+	 * then parses it back to JavaScript Object.
+	 */
+	jo2o             : function(jo)
+	{
+		ZeT.assert(jo instanceof ZeT.OClass)
+
+		//~: map to string with JAXB-JSON
+		var json = ZeT.xp.json().write(jo)
+
+		ZeT.asserts(json)
+		return ZeT.s2o(json)
 	},
 
 	/**

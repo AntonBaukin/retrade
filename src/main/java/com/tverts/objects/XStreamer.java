@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -204,6 +205,13 @@ public class XStreamer
 		{
 			bs.closeAlways();
 		}
+	}
+
+	public String write(Object object)
+	{
+		StringWriter sw = new StringWriter(512);
+		this.write(object, sw);
+		return sw.toString();
 	}
 
 
