@@ -194,7 +194,9 @@ function getTestGoods()
 			name: 'петрушка',
 			xmeasure: 'кг',
 			group: 'зелень',
-			subs: { xmeasure: '100 гр' }
+			'visible-sell': false,
+			subs: { xmeasure: '100 гр', 'visible-buy': false,
+				'visible-lists': false, 'visible-reports': false }
 		},
 
 		{
@@ -203,7 +205,9 @@ function getTestGoods()
 			name: 'укроп',
 			xmeasure: 'кг',
 			group: 'зелень',
-			subs: { xmeasure: '100 гр' }
+			'visible-sell': false,
+			subs: { xmeasure: '100 гр', 'visible-buy': false,
+				'visible-lists': false, 'visible-reports': false }
 		},
 
 		{
@@ -212,7 +216,9 @@ function getTestGoods()
 			name: 'лук зелёный',
 			xmeasure: 'кг',
 			group: 'зелень',
-			subs: { xmeasure: '100 гр' }
+			'visible-sell': false,
+			subs: { xmeasure: '100 гр', 'visible-buy': false,
+				'visible-lists': false, 'visible-reports': false }
 		},
 
 		{
@@ -229,7 +235,9 @@ function getTestGoods()
 			name: 'чеснок',
 			xmeasure: 'кг',
 			group: 'зелень',
-			subs: { xmeasure: '100 гр' }
+			'visible-sell': false,
+			subs: { xmeasure: '100 гр', 'visible-buy': false,
+				'visible-lists': false, 'visible-reports': false }
 		},
 
 		{
@@ -278,7 +286,8 @@ function getTestGoods()
 			name: 'хлеб ржаной',
 			xmeasure: 'кг',
 			group: 'хлеб',
-			subs: { xmeasure: 'бух', value: '0.4' }
+			'visible-sell': false,
+			subs: { xmeasure: 'бух', value: '0.4', 'visible-buy': false }
 		},
 
 		{
@@ -287,7 +296,8 @@ function getTestGoods()
 			name: 'батон нарезной',
 			xmeasure: 'кг',
 			group: 'хлеб',
-			subs: { xmeasure: 'бух', value: '0.6' }
+			'visible-sell': false,
+			subs: { xmeasure: 'бух', value: '0.6', 'visible-buy': false }
 		},
 
 		{
@@ -296,7 +306,8 @@ function getTestGoods()
 			name: 'хлеб отрубной',
 			xmeasure: 'кг',
 			group: 'хлеб',
-			subs: { xmeasure: 'бух', value: '0.4' }
+			'visible-sell': false,
+			subs: { xmeasure: 'бух', value: '0.4', 'visible-buy': false }
 		},
 
 		{
@@ -305,7 +316,8 @@ function getTestGoods()
 			name: 'хлеб бородинский',
 			xmeasure: 'кг',
 			group: 'хлеб',
-			subs: { xmeasure: 'бух', value: '0.4' }
+			'visible-sell': false,
+			subs: { xmeasure: 'бух', value: '0.4', 'visible-buy': false }
 		},
 
 		{
@@ -500,9 +512,12 @@ function getTestGoods()
 			name: 'кока-кола (розлив)',
 			xmeasure: 'л',
 			group: 'б/а напитки',
+			'visible-sell': false,
 			subs: [
-				{ xmeasure: 'ст 0.5' },
-				{ xmeasure: 'ст 0.33' }
+				{ xmeasure: 'ст 0.5', 'visible-buy': false,
+					'visible-lists': false, 'visible-reports': false },
+				{ xmeasure: 'ст 0.33', 'visible-buy': false,
+					'visible-lists': false, 'visible-reports': false }
 			]
 		}
 	]

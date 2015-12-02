@@ -218,22 +218,34 @@ public class Goods
 
 	/* Initialization and Copying */
 
-	public static void init(GoodUnit gu, Good g)
+	public static Good initOx(GoodUnit gu)
 	{
+		return initOx(gu, null);
+	}
+
+	public static Good initOx(GoodUnit gu, Good g)
+	{
+		if(g == null) g = new Good();
+
 		//=: primary key
-		g.setPkey(gu.getPrimaryKey());
+		if(gu.getPrimaryKey() != null)
+			g.setPkey(gu.getPrimaryKey());
 
 		//=: code
-		g.setCode(gu.getCode());
+		if(gu.getCode() != null)
+			g.setCode(gu.getCode());
 
 		//=: name
-		g.setName(gu.getName());
+		if(gu.getName() != null)
+			g.setName(gu.getName());
 
 		//=: group
-		g.setGroup(gu.getGroup());
+		if(gu.getGroup() != null)
+			g.setGroup(gu.getGroup());
 
 		//=: tx-number
-		g.setTx(gu.getTxn());
+		if(gu.getTxn() != null)
+			g.setTx(gu.getTxn());
 
 		//=: measure unit
 		if(gu.getMeasure() != null)
@@ -242,6 +254,8 @@ public class Goods
 		//=: calculation
 		if(gu.getGoodCalc() != null)
 			g.setCalc(gu.getGoodCalc().getPrimaryKey());
+
+		return g;
 	}
 
 	public static void copySub(GoodUnit gu, GoodUnit sub)

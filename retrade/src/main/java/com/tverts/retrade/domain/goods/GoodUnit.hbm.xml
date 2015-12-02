@@ -108,6 +108,33 @@
     </many-to-one>
 
 
+    <!-- Visibility Flags -->
+
+    <property name = 'visibleBuy'>
+      <column name = 'visible_buy' not-null = 'true'>
+        <comment>Good is visible in Buy Invoices</comment>
+      </column>
+    </property>
+
+    <property name = 'visibleSell'>
+      <column name = 'visible_sell' not-null = 'true'>
+        <comment>Good is visible in Sell Invoices</comment>
+      </column>
+    </property>
+
+    <property name = 'visibleLists'>
+      <column name = 'visible_lists' not-null = 'true'>
+        <comment>Good is visible in tables</comment>
+      </column>
+    </property>
+
+    <property name = 'visibleReports'>
+      <column name = 'visible_reports' not-null = 'true'>
+        <comment>Good is visible in printed reports</comment>
+      </column>
+    </property>
+
+
     <!-- Name -->
 
     <property name = 'name'>

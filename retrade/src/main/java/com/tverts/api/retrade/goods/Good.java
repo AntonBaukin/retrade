@@ -22,7 +22,8 @@ import com.tverts.api.core.XKeyPair;
  */
 @XmlRootElement(name = "good")
 @XmlType(name = "good", propOrder = {
-  "measure", "XMeasure", "visible", "calc", "XCalc",
+  "measure", "XMeasure", "calc", "XCalc",
+  "visibleSell", "visibleBuy", "visibleLists", "visibleReports",
   "group", "barCode", "netWeight", "grossWeight"
 })
 public class Good extends CatItem
@@ -54,18 +55,6 @@ public class Good extends CatItem
 	public void setXMeasure(String xmeasure)
 	{
 		this.xmeasure = xmeasure;
-	}
-
-	public boolean isVisible()
-	{
-		return visible;
-	}
-
-	private boolean visible = true;
-
-	public void setVisible(boolean visible)
-	{
-		this.visible = visible;
 	}
 
 	@XKeyPair(type = Calc.class)
@@ -143,5 +132,60 @@ public class Good extends CatItem
 	public void setGrossWeight(BigDecimal grossWeight)
 	{
 		this.grossWeight = grossWeight;
+	}
+
+
+	/* Visibility Flags */
+
+	@XmlElement(name = "visible-sell")
+	public boolean isVisibleSell()
+	{
+		return visibleSell;
+	}
+
+	private boolean visibleSell = true;
+
+	public void setVisibleSell(boolean visibleSell)
+	{
+		this.visibleSell = visibleSell;
+	}
+
+	@XmlElement(name = "visible-buy")
+	public boolean isVisibleBuy()
+	{
+		return visibleBuy;
+	}
+
+	private boolean visibleBuy = true;
+
+	public void setVisibleBuy(boolean visibleBuy)
+	{
+		this.visibleBuy = visibleBuy;
+	}
+
+	@XmlElement(name = "visible-lists")
+	public boolean isVisibleLists()
+	{
+		return visibleLists;
+	}
+
+	private boolean visibleLists = true;
+
+	public void setVisibleLists(boolean visibleLists)
+	{
+		this.visibleLists = visibleLists;
+	}
+
+	@XmlElement(name = "visible-reports")
+	public boolean isVisibleReports()
+	{
+		return visibleReports;
+	}
+
+	private boolean visibleReports = true;
+
+	public void setVisibleReports(boolean visibleReports)
+	{
+		this.visibleReports = visibleReports;
 	}
 }

@@ -28,6 +28,7 @@ import com.tverts.jsx.JsX;
 /* com.tverts: genesis */
 
 import com.tverts.genesis.GenCtx;
+import com.tverts.genesis.GenUtils;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
@@ -148,8 +149,11 @@ public class GenTestGoods extends GenesisHiberPartBase
 		//=: measure
 		setMeasure(ctx, gu, g);
 
+		//~: generate the fields
+		genGoodFields(ctx, gu, g);
+
 		//!: save the good
-		gu.setOx(g); //<-- ox-update is there
+		gu.setOx(Goods.initOx(gu, g)); //<-- ox-update is there
 		actionRun(ActionType.SAVE, gu);
 
 		LU.I(log(ctx), logsig(), " generated good [",
@@ -189,8 +193,8 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 		//?: {has no coerce volume}
 		if(v == null) v = EX.assertn(Goods.coerce(gu.getMeasure(), sub.getMeasure()),
-			  "Can't auto-define measures coerce coefficient for measure [", m,
-			  "] of sub-good [", gu.getCode(), "]!");
+		  "Can't auto-define measures coerce coefficient for measure [", m,
+		  "] of sub-good [", gu.getCode(), "]!");
 
 		//?: {illegal coefficient}
 		EX.assertx(CMP.grZero(v), "Illegal sub-good coerce coefficient for measure [",
@@ -213,6 +217,13 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 		//!: create & save it
 		genDerived(ctx, sub, c);
+
+		//~: generate the fields
+		genGoodFields(ctx, sub, sub.getOxOwn());
+
+		//~: update own ox
+		Goods.initOx(sub, sub.getOxOwn());
+		sub.updateOxOwn();
 
 		//~: add to the goods map
 		addGood(ctx, sub);
@@ -462,5 +473,51 @@ public class GenTestGoods extends GenesisHiberPartBase
 		  "] has Calculation that refers unknown Good by code [",
 		  ci.getXGood(), "]!"
 		));
+	}
+
+	protected void genGoodFields(GenCtx ctx, GoodUnit gu, Good g)
+	{
+		//~: bar code
+		if(g.getBarCode() == null)
+			g.setBarCode(GenUtils.number(ctx.gen(), 13));
+
+		//~: net weight
+		if(g.getNetWeight() == null)
+			if(g.getGrossWeight() != null)
+				g.setNetWeight(g.getGrossWeight());
+			//?: {generate for ordinary good}
+			else if(gu.getSuperGood() == null)
+			{
+				//?: {kg measure}
+				if("166".equals(gu.getMeasure().getOx().getClassCode()))
+				{
+					g.setNetWeight(gu.getMeasure().getOx().getClassUnit());
+					if(g.getNetWeight() == null)
+						g.setNetWeight(BigDecimal.ONE.setScale(2));
+				}
+				//~: generate random weight about 1 kg
+				else
+					g.setNetWeight(new BigDecimal(1.0 - 0.1 * ctx.gen().nextInt(6)).
+					  setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			}
+			//~: generate for a sub-good
+			else
+			{
+				BigDecimal nw = EX.assertn(gu.getSuperGood().getOx().getNetWeight());
+				BigDecimal  x = EX.assertn(gu.getGoodCalc()).getOx().getSubVolume();
+				g.setNetWeight(nw.multiply(EX.assertn(x)).
+				  setScale(2, BigDecimal.ROUND_HALF_EVEN));
+			}
+
+		//?: {gross weight is smaller}
+		if(g.getGrossWeight() != null)
+			EX.assertx(CMP.gre(g.getGrossWeight(), g.getNetWeight()));
+		//~: slightly more than net weight
+		else
+		{
+			BigDecimal nw = EX.assertn(g.getNetWeight());
+			g.setGrossWeight(nw.add(new BigDecimal(0.1 * ctx.gen().nextInt(4))).
+			  setScale(2, BigDecimal.ROUND_HALF_EVEN));
+		}
 	}
 }

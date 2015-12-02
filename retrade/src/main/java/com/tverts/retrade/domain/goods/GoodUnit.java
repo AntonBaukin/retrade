@@ -51,7 +51,7 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 		//?: {create initial good}
 		Good g = (Good) super.getOx();
 		if(g == null)
-			super.setOx(g = new Good());
+			super.setOx(g = Goods.initOx(this));
 
 		return g;
 	}
@@ -70,7 +70,7 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 		//?: {create initial good}
 		Good g = (Good) super.getOx();
 		if(g == null)
-			super.setOx(g = new Good());
+			super.setOx(g = Goods.initOx(this));
 
 		return g;
 	}
@@ -111,6 +111,12 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 		//=: ox-good calculation key
 		g.setCalc((calc == null)?(null):(calc.getPrimaryKey()));
 
+		//=: visibility flags
+		this.visibleBuy = g.isVisibleBuy();
+		this.visibleSell = g.isVisibleSell();
+		this.visibleLists = g.isVisibleLists();
+		this.visibleReports = g.isVisibleReports();
+
 		super.updateOx();
 	}
 
@@ -123,6 +129,12 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 
 		//=: ox-good calculation key
 		g.setCalc((calc == null)?(null):(calc.getPrimaryKey()));
+
+		//=: visibility flags
+		this.visibleBuy = g.isVisibleBuy();
+		this.visibleSell = g.isVisibleSell();
+		this.visibleLists = g.isVisibleLists();
+		this.visibleReports = g.isVisibleReports();
 
 		super.updateOx();
 	}
@@ -208,5 +220,56 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 	public void setGroup(String group)
 	{
 		this.group = group;
+	}
+
+
+	/* Visibility Flags */
+
+	public boolean isVisibleSell()
+	{
+		return visibleSell;
+	}
+
+	private boolean visibleSell = true;
+
+	public void setVisibleSell(boolean visibleSell)
+	{
+		this.visibleSell = visibleSell;
+	}
+
+	public boolean isVisibleBuy()
+	{
+		return visibleBuy;
+	}
+
+	private boolean visibleBuy = true;
+
+	public void setVisibleBuy(boolean visibleBuy)
+	{
+		this.visibleBuy = visibleBuy;
+	}
+
+	public boolean isVisibleLists()
+	{
+		return visibleLists;
+	}
+
+	private boolean visibleLists = true;
+
+	public void setVisibleLists(boolean visibleLists)
+	{
+		this.visibleLists = visibleLists;
+	}
+
+	public boolean isVisibleReports()
+	{
+		return visibleReports;
+	}
+
+	private boolean visibleReports = true;
+
+	public void setVisibleReports(boolean visibleReports)
+	{
+		this.visibleReports = visibleReports;
 	}
 }

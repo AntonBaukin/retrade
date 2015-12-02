@@ -27,11 +27,7 @@ public class DumpGoods extends EntitiesDumperBase
 {
 	protected Object createApiEntity(Object src)
 	{
-		GoodUnit u = (GoodUnit)src;
-		Good     g = new Good();
-
-		Goods.init(u, g);
-		return g;
+		return Goods.initOx((GoodUnit) src);
 	}
 
 	protected Class  getUnityClass()
