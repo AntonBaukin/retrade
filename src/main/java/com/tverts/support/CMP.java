@@ -91,6 +91,20 @@ public class CMP
 		  ((a != null) && (b != null) && (a.compareTo(b) == 0));
 	}
 
+	public static boolean gre(BigDecimal a, BigDecimal b)
+	{
+		EX.assertn(a);
+		EX.assertn(b);
+		return (a.compareTo(b) >= 0);
+	}
+
+	public static boolean gr(BigDecimal a, BigDecimal b)
+	{
+		EX.assertn(a);
+		EX.assertn(b);
+		return (a.compareTo(b) > 0);
+	}
+
 
 	/* General Equality */
 
