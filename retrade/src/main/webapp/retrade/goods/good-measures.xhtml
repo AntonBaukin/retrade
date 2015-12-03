@@ -22,11 +22,15 @@
     extjsf.co('winmain', '${rootView.extjsDomain}').
       setTitle("#{z:jss(v.measuresWindowTitle)}")
 
+    ReTrade.desktop.prevsizeComp({ marker: 'measures',
+      name: 'winmain', domain: '${rootView.extjsDomain}'
+    })
+
   //]]>
   </script>
 
   <f:facet name = "extjs-props">
-    bodyCls: 'retrade-back-panel', scrollable: 'y',
+    bodyCls: 'retrade-back-panel',
     layout: { type: 'vbox', align: 'stretch' }
   </f:facet>
 
@@ -60,12 +64,125 @@
   <!-- toolbar] -->
 
 
+  <!-- [measures list -->
+
+  <x:component coid = "${z:vid(v, 'measures-list-panel')}">
+    <f:facet name = "extjs-props">
+
+      flex: 1, scrollable: 'y',
+      bodyPadding: extjsf.pt(2),
+      bodyCls: 'retrade-transparent-panel',
+      layout: { type: 'vbox', align: 'stretch' }
+
+    </f:facet>
+  </x:component>
+
+  <!-- measures list] -->
+
+  <!-- [measure item template -->
+
+  <style type="text/css">
+
+.retrade-good-measures-item
+{
+  width: 100%; padding: 4pt;
+  border-radius: 4px;
+}
+
+.retrade-good-measures-item table
+{
+  width: 0%;
+}
+
+.retrade-good-measures-item > tbody > tr:first-child td
+{
+  text-align: center; padding-bottom: 4pt;
+}
+
+  </style>
+
+  <div style = "display:none">
+    <table id = "${z:vid(v, 'measure-item-template')}"
+      cellspacing = "0" cellpadding = "0" border = "0"
+      class = "retrade-good-measures-item retrade-item-panel">
+      <tbody>
+      <tr>
+        <td class = "retrade-info-title">
+          <div><span>@MT</span> единица измерения</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table cellspacing = "0" cellpadding = "0" border = "0">
+            <tr>
+              <td class = "retrade-info-title"><div>Код</div></td>
+              <td class = "retrade-info-value"><div>@MC</div></td>
+              <td class = "retrade-info-title"><div>Имя</div></td>
+              <td class = "retrade-info-value"><div>@MN</div></td>
+              <td class = "retrade-info-title"><div>ОКЕИ</div></td>
+              <td class = "retrade-info-value"><div>@CC</div></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- measure item template] -->
+
   <script type = "text/javascript">
   //<![CDATA[
 
   ZeT.scope(function()
   {
-    ZeT.log('Measures: ', "#{z:jss(v.measuresEncoded)}")
+    var measures = ZeT.s2o("#{z:jss(v.measuresEncoded)}")
+    var panel    = extjsf.bind("${z:vid(v, 'measures-list-panel')}", '${rootView.extjsDomain}')
+
+    panel.on('afterrender', fillMeasures)
+    ZeT.log(measures)
+
+    ReTrade.desktop.applyWindowBox({
+      name: 'winmain', domain: '${rootView.extjsDomain}',
+      heightpt: 320, prevsize: 'measures'
+    })
+
+    function fillMeasures()
+    {
+      //~: items template
+      var tx = new ZeT.Layout.Template(
+        { trace : ZeT.Layout.Template.Ways.traceAtNodes },
+        ZeTD.n("${z:vid(v, 'measure-item-template')}")
+      )
+
+      //~: clear the existing content
+      panel.co().removeAll(true)
+
+      //c: for each measures: add items
+      ZeT.each(ZeT.asserta(measures), function(m, index)
+      {
+        //~: panel container
+        var p = { xtype: 'panel', border: false, layout: 'fit',
+          margin: (index)?(extjsf.pts(6, 0, 0, 0)):(0),
+          bodyCls: 'retrade-transparent-panel'
+        }
+
+        //~: item content
+        var c = {
+          MT: (!index)?('Основная'):('Дополнительная'),
+          MC: m.measure.code, MN: m.measure.name,
+          CC: m.measure['class-code']
+        }
+
+        //~: clone & fill item
+        p.html = tx.cloneNode()
+        tx.fillWays(p.html, c)
+
+        //~: add it to the root
+        p.html = p.html.outerHTML
+        panel.co().add(p = Ext.create(p))
+      })
+    }
   })
   //]]>
   </script>

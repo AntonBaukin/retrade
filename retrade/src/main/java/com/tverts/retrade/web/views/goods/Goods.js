@@ -16,8 +16,9 @@ function encodeGoodMeasures(goodUnit)
 
 	function encode(gu)
 	{
+		var x = {}
+
 		//~: take ox-good, ox-measure
-		var x = { objectKey: gu.getPrimaryKey() }
 		x.good    = ZeT.jo2o(gu.getOxOwn())
 		x.measure = ZeT.jo2o(gu.getMeasure().getOx())
 

@@ -1406,8 +1406,15 @@ ZeT.extendClass('ZeT.Layout.Template', {
 			var n = self.walk(key, node);
 			res[key] = n;
 
-			if(n && fills[key])
-				new Fill(fills[key]).fill(n)
+			var f; if(n && (f = fills[key]))
+				if(f.ZeT_Layout_Fill === true)
+					f.fill(n)
+				else
+				{
+					if(ZeT.isn(f)) f = '' + f
+					ZeT.assert(ZeT.iss(f) || ZeT.iso(f))
+					new Fill(f).fill(n)
+				}
 		})
 
 		return res;
@@ -1477,7 +1484,7 @@ ZeT.Layout.Template.Ways = ZeT.define('ZeT.Layout.Template.Ways', {
  *
  *  string or array of class names. (See ZeTD.classes().);
  *
- *  · attrs, pattrs       (optional)
+ *  · attrs, pattrs      (optional)
  *
  *  object with attributes to set. (See ZeTD.attrs().);
  *
@@ -1506,9 +1513,12 @@ ZeT.Layout.Fill = ZeT.defineClass('ZeT.Layout.fill()',
 
 	/**
 	 * Creates fill operation with the options defined.
+	 * String value the same as { node: 'value' }.
 	 */
 	init             : function(opts)
 	{
+		if(ZeT.iss(opts))
+			opts = { node: opts }
 		this.opts = opts || {};
 	},
 
