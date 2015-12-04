@@ -96,7 +96,22 @@
 
 .retrade-good-measures-item > tbody > tr:first-child td
 {
+  text-align: center; padding-bottom: 2pt;
+}
+
+.retrade-good-measures-item tr table
+{
+  margin-top: 2pt;
+}
+
+.retrade-good-measures-item .item-caption
+{
   text-align: center; padding-bottom: 4pt;
+}
+
+.retrade-good-measures-item .check-title
+{
+  padding: 0 4pt 0 2pt;
 }
 
   </style>
@@ -105,9 +120,10 @@
     <table id = "${z:vid(v, 'measure-item-template')}"
       cellspacing = "0" cellpadding = "0" border = "0"
       class = "retrade-good-measures-item retrade-item-panel">
+
       <tbody>
       <tr>
-        <td class = "retrade-info-title">
+        <td class = "retrade-info-title item-caption">
           <div><span>@MT</span> единица измерения</div>
         </td>
       </tr>
@@ -119,8 +135,53 @@
               <td class = "retrade-info-value"><div>@MC</div></td>
               <td class = "retrade-info-title"><div>Имя</div></td>
               <td class = "retrade-info-value"><div>@MN</div></td>
-              <td class = "retrade-info-title"><div>ОКЕИ</div></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table cellspacing = "0" cellpadding = "0" border = "0">
+            <tr>
+              <td class = "retrade-info-title">@Cc<div>Океи</div></td>
               <td class = "retrade-info-value"><div>@CC</div></td>
+              <td class = "retrade-info-title">@Vo<div>Коэфф.</div></td>
+              <td class = "retrade-info-value retrade-info-red"><div>@VO</div></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table cellspacing = "0" cellpadding = "0" border = "0">
+            <tr>
+              <td class = "retrade-info-title"><div>Вес нетто</div></td>
+              <td class = "retrade-info-value"><div>@NW</div></td>
+              <td class = "retrade-info-title"><div>кг, брутто</div></td>
+              <td class = "retrade-info-value"><div>@GW</div></td>
+              <td class = "retrade-info-title"><div>кг</div></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table cellspacing = "0" cellpadding = "0" border = "0">
+            <tr>
+              <td class = "retrade-info-title"><div>Бар-код</div></td>
+              <td class = "retrade-info-value"><div>@BC</div></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table cellspacing = "0" cellpadding = "0" border = "0">
+            <tr>
+              <td>@XB</td> <td class = "check-title">@LB</td>
+              <td>@XS</td> <td class = "check-title">@LS</td>
+              <td>@XL</td> <td class = "check-title">@LL</td>
+              <td>@XR</td> <td class = "check-title">@LR</td>
             </tr>
           </table>
         </td>
@@ -139,9 +200,10 @@
     var measures = ZeT.s2o("#{z:jss(v.measuresEncoded)}")
     var panel    = extjsf.bind("${z:vid(v, 'measures-list-panel')}", '${rootView.extjsDomain}')
 
+    //~: apply the model items
     panel.on('afterrender', fillMeasures)
-    ZeT.log(measures)
 
+    //~: make the window higher
     ReTrade.desktop.applyWindowBox({
       name: 'winmain', domain: '${rootView.extjsDomain}',
       heightpt: 320, prevsize: 'measures'
@@ -149,6 +211,9 @@
 
     function fillMeasures()
     {
+      var _xid = 0, stime = 'measures-' + new Date().getTime() + '-'
+      function xid() { return stime + (_xid++) }
+
       //~: items template
       var tx = new ZeT.Layout.Template(
         { trace : ZeT.Layout.Template.Ways.traceAtNodes },
@@ -161,17 +226,31 @@
       //c: for each measures: add items
       ZeT.each(ZeT.asserta(measures), function(m, index)
       {
+        //ZeT.log(m.good)
+        //ZeT.log(m.measure)
+        //ZeT.log(m.calc)
+
         //~: panel container
         var p = { xtype: 'panel', border: false, layout: 'fit',
           margin: (index)?(extjsf.pts(6, 0, 0, 0)):(0),
           bodyCls: 'retrade-transparent-panel'
         }
 
+        var clcode = m.measure['class-code']
+        if(ZeTS.ises(clcode)) clcode = null
+
+        var volume = m.calc && m.calc['sub-volume']
+        if(volume) volume = '' + volume
+        if(ZeTS.ises(volume)) volume = null
+
         //~: item content
         var c = {
           MT: (!index)?('Основная'):('Дополнительная'),
           MC: m.measure.code, MN: m.measure.name,
-          CC: m.measure['class-code']
+          Cc: { hidden: !clcode }, CC: { phidden: !clcode, node: clcode },
+          Vo: { hidden: !volume }, VO: { phidden: !volume, node: volume },
+          NW: m.good['net-weight'], GW: m.good['gross-weight'],
+          BC: m.good['bar-code']
         }
 
         //~: clone & fill item
@@ -181,6 +260,28 @@
         //~: add it to the root
         p.html = p.html.outerHTML
         panel.co().add(p = Ext.create(p))
+
+        //~: process table components
+        p.on('afterrender', function()
+        {
+          var ways  = tx.walkAll(p.body.dom.firstChild)
+
+          var items = [
+            { way: ways.XB, lway: ways.LB, label: 'накл. зак.', id: xid(), index: 'visible-buy' },
+            { way: ways.XS, lway: ways.LS, label: 'накл. про.', id: xid(), index: 'visible-sell' },
+            { way: ways.XL, lway: ways.LL, label: 'списки', id: xid(), index: 'visible-lists' },
+            { way: ways.XR, lway: ways.LR, label: 'отчёты', id: xid(), index: 'visible-reports' }
+          ]
+
+          //~: visibility check boxes
+          ZeT.each(items, function(x)
+          {
+            Ext.create({ xtype: 'checkbox', renderTo: x.way, inputId: x.id,
+              margin: 0, padding: 0, value: m.good[x.index] })
+            Ext.create({ xtype: 'label', renderTo: x.lway, text: x.label,
+              forId: x.id, cls: 'retrade-form-light-label-cell' })
+          })
+        })
       })
     }
   })

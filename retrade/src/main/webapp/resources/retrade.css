@@ -103,7 +103,7 @@ span.retrade-inline-link
 
 .retrade-item-panel
 {
-  background: linear-gradient(to bottom, #EEF4FB 0%, #EAE8C1 101%);
+  background: linear-gradient(to bottom, #EEF4FB 0%, #F2EAE2 101%);
 }
 
 .retrade-form-inline-comment, .retrade-toolbar-inline-comment
@@ -235,17 +235,18 @@ span.retrade-currency-sep
 
 /* form fields */
 
-.retrade-form-label-cell
+.retrade-form-label-cell, .retrade-form-light-label-cell
 {
   white-space: nowrap; letter-spacing: 0.1pt;
   font-size: 10pt; cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .retrade-form-light-label-cell
 {
-  white-space: nowrap; letter-spacing: 0.08pt;
-  font-size: 10pt; font-weight: normal;
-  cursor: default;
+  letter-spacing: 0.08pt; font-weight: normal;
 }
 
 label.retrade-form-label-cell, .retrade-form-label-cell label,

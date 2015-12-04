@@ -205,6 +205,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 		//~: assign the sub-good
 		Goods.copySub(gu, sub);
+		initSubGoodsOwnOx(sub, g);
 
 		//!: save it
 		actionRun(ActionType.SAVE, sub);
@@ -473,6 +474,16 @@ public class GenTestGoods extends GenesisHiberPartBase
 		  "] has Calculation that refers unknown Good by code [",
 		  ci.getXGood(), "]!"
 		));
+	}
+
+	protected void initSubGoodsOwnOx(GoodUnit sub, Good g)
+	{
+		Good s = sub.getOxOwn();
+
+		s.setVisibleBuy(g.isVisibleBuy());
+		s.setVisibleSell(g.isVisibleSell());
+		s.setVisibleLists(g.isVisibleLists());
+		s.setVisibleReports(g.isVisibleReports());
 	}
 
 	protected void genGoodFields(GenCtx ctx, GoodUnit gu, Good g)

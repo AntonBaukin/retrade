@@ -1384,27 +1384,27 @@ ZeT.extendClass('ZeT.Layout.Template', {
 	 */
 	fillWays      : function()
 	{
-		var node  = arguments[0], fills, Fill;
+		var node  = arguments[0], fills, Fill
 
 		if(!ZeTD.isxn(node = ZeTD.xn(node)))
 		{
-			node  = this.node();
-			fills = arguments[0];
-			Fill  = arguments[1];
+			node  = this.node()
+			fills = arguments[0]
+			Fill  = arguments[1]
 		}
 		else
 		{
-			fills = arguments[1];
-			Fill  = arguments[2];
+			fills = arguments[1]
+			Fill  = arguments[2]
 		}
 
-		var self = this, res = {}; if(!fills) return res;
-		if(!ZeT.isf(Fill)) Fill = ZeT.Layout.Fill;
+		var self = this, res = {}; if(!fills) return res
+		if(!ZeT.isf(Fill)) Fill = ZeT.Layout.Fill
 
 		this._walk_all(function(key)
 		{
-			var n = self.walk(key, node);
-			res[key] = n;
+			var n = self.walk(key, node)
+			res[key] = n
 
 			var f; if(n && (f = fills[key]))
 				if(f.ZeT_Layout_Fill === true)
@@ -1417,7 +1417,7 @@ ZeT.extendClass('ZeT.Layout.Template', {
 				}
 		})
 
-		return res;
+		return res
 	},
 
 	_walk_all     : function(f)
@@ -1493,6 +1493,10 @@ ZeT.Layout.Template.Ways = ZeT.define('ZeT.Layout.Template.Ways', {
  *  for insert operation defines the reference node (or
  *  it's index) to insert before;
  *
+ *  · hidden, phidden    (undefined)
+ *
+ *  if set to true add display-hidden to the styles;
+ *
  *  · node      (-template)
  *
  *  single item (or an array) of DOM nodes or HTML content
@@ -1520,6 +1524,14 @@ ZeT.Layout.Fill = ZeT.defineClass('ZeT.Layout.fill()',
 		if(ZeT.iss(opts))
 			opts = { node: opts }
 		this.opts = opts || {};
+
+		//?: {node is hidden}
+		if(opts.hidden === true)
+			(this.opts.styles = this.opts.styles || {}).display = 'none'
+
+		//?: {parent node is hidden}
+		if(opts.phidden === true)
+			(this.opts.pstyles = this.opts.pstyles || {}).display = 'none'
 	},
 
 	/**

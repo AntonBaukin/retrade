@@ -31,9 +31,20 @@ function genTestGoods(ctx, gen)
 
 function genTestGoodSubs(ctx, gen, good, subs)
 {
+	function init(good, sub)
+	{
+		//~: visibility flags of a sub-good
+		good.setVisibleSell(sub['visible-sell'] !== false)
+		good.setVisibleBuy(sub['visible-buy'] !== false)
+		good.setVisibleLists(sub['visible-lists'] !== false)
+		good.setVisibleReports(sub['visible-reports'] !== false)
+
+		return good
+	}
+
 	ZeT.each(ZeT.isa(subs)?(subs):[subs], function(s)
 	{
-		gen.takeSubGood(ctx, good, ZeT.asserts(s.xmeasure),
+		gen.takeSubGood(ctx, init(good, s), ZeT.asserts(s.xmeasure),
 		  ZeT.iss(s.value)?(ZeT.jdecimal(s.value)):(null)
 		)
 	})
