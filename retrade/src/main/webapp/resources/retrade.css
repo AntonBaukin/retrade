@@ -235,6 +235,22 @@ span.retrade-currency-sep
 
 /* form fields */
 
+input.x-form-text-default.retarde-field-text-larger
+{
+  font-size: 17px;
+}
+
+input.x-form-text-default.retarde-field-text-sparce
+{
+  letter-spacing: 2pt;
+}
+
+input.x-form-text-default.retarde-field-text-compact
+{
+  padding-top: 2px; padding-bottom: 1px; min-height: 26px;
+}
+
+
 .retrade-form-label-cell, .retrade-form-light-label-cell
 {
   white-space: nowrap; letter-spacing: 0.1pt;

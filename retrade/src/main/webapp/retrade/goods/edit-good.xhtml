@@ -77,8 +77,8 @@ ${v.checkModelRequestedWithRedirect}
 
       xtype: 'button', text: 'Производство',
       hidden: ('true' != "#{v.model.editMode or not empty v.model.calc}"),
-      margin: extjsf.pts(0, 4, 0, 4),
-      tooltipType: 'title', tooltip: 'Перейти к формуле (рецепту) производства продукта или полуфабриката'
+      margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
+      tooltip: 'Перейти к формуле (рецепту) производства продукта или полуфабриката'
 
     </f:facet>
    </x:component>
@@ -103,7 +103,7 @@ ${v.checkModelRequestedWithRedirect}
    <!-- [submit button] -->
    <x:component coid = "${z:vid(v, 'submit')}">
     <f:facet name = "extjs-props">
-      xtype:'button', text: 'Сохранить',
+      xtype: 'button', text: 'Сохранить',
       cls: 'ux-btn-green'
     </f:facet>
    </x:component>
@@ -112,7 +112,7 @@ ${v.checkModelRequestedWithRedirect}
    <!-- [do-edit] -->
    <x:component coid = "${z:vid(v, 'do-edit')}">
      <f:facet name = "extjs-props">
-       xtype:'button', text: 'Редактировать',
+       xtype: 'button', text: 'Редактировать',
        disabled: ${not v.isSecure('edit: goods')}
      </f:facet>
    </x:component>

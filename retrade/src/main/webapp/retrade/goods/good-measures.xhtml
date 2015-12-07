@@ -46,9 +46,8 @@
   <f:facet name = "toolbar">
 
     <!-- [goto good edit button] -->
-
-    <x:winaction-button coid = "${z:vid(v, 'goto_back')}"
-      action = "#{v.gotoWhere('measures-back')}">
+    <x:winaction-button coid = "${z:vid(v, 'goto-back')}"
+     action = "#{v.gotoWhere('measures-back')}">
 
       <f:facet name = "extjs-props">
         text: 'Назад'
@@ -59,9 +58,59 @@
       </f:facet>
     </x:winaction-button>
 
+    <!-- [cancel edit button] -->
+    <x:component coid = "${z:vid(v, 'cancel')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Отмена',
+        cls: 'ux-btn-red', hidden: true
+      </f:facet>
+    </x:component>
+
+
+    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-toolbar-inline-panel'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [edit button] -->
+    <x:component coid = "${z:vid(v, 'start-edit')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Редактировать',
+        iconCls: 'retrade-edit-pencil', tooltipType: 'title',
+        tooltip: 'Начать редактировать сопоставление товару единиц измерения'
+      </f:facet>
+    </x:component>
+
+
+    <!-- [commit edit button] -->
+    <x:component coid = "${z:vid(v, 'submit')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Сохранить',
+        cls: 'ux-btn-green', hidden: true
+      </f:facet>
+    </x:component>
   </f:facet>
 
   <!-- toolbar] -->
+
+
+  <!-- [measures store] -->
+  <x:data-store storeId = "${z:vid(v, 'measures')}"
+    modelProvider = "facesGoodEditView" modelRequest  = "measures"
+    modelKey = "#{v.modelKeys}">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.MeasureUnitView', data: [],
+      autoLoad: ('true' == "#{v.model.editMode}"),
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.MeasureUnitView')
+    </f:facet>
+  </x:data-store>
 
 
   <!-- [measures list -->
@@ -85,33 +134,71 @@
 
 .retrade-good-measures-item
 {
-  width: 100%; padding: 4pt;
-  border-radius: 4px;
+  width: 100%; border-radius: 4px;
 }
 
-.retrade-good-measures-item table
+.retrade-good-measures-item > tbody > tr > td > table
 {
-  width: 0%;
+  margin: 0 4pt;
 }
 
-.retrade-good-measures-item > tbody > tr:first-child td
+.retrade-good-measures-item table table
 {
-  text-align: center; padding-bottom: 2pt;
+  width: 0%; margin-top: 3pt;
 }
 
-.retrade-good-measures-item tr table
+.retrade-good-measures-item table table tr:first-child td
 {
-  margin-top: 2pt;
+  padding-top: 0;
 }
 
 .retrade-good-measures-item .item-caption
 {
-  text-align: center; padding-bottom: 4pt;
+  text-align: center; padding: 4pt 0 4pt 0;
+}
+
+.retrade-good-measures-item .item-edit-area
+{
+  height: 100%;
+}
+
+.retrade-good-measures-item .item-edit-area table
+{
+  width: 0%;
+}
+
+.retrade-good-measures-item .item-edit-area tr td
+{
+  padding-top: 2pt;
+}
+
+.retrade-good-measures-item .item-edit-area tr:first-child td
+{
+  padding-top: 0;
+}
+
+.retrade-good-measures-item .item-caption .retrade-edit-pencil
+{
+  position: absolute; right: 4px; top: 10px;
+  width: 28px; height: 28px; background-size: 28px 28px;
+  border-radius: 50%; cursor: pointer;
+}
+
+.retrade-good-measures-item .item-caption .retrade-edit-pencil:hover
+{
+  right: 1px; top: 7px;
+  width: 34px; height: 34px;
+  background-size: 34px 34px;
 }
 
 .retrade-good-measures-item .check-title
 {
   padding: 0 4pt 0 2pt;
+}
+
+.retrade-good-measures-item input.retarde-field-text-larger
+{
+  text-align: center;
 }
 
   </style>
@@ -121,55 +208,84 @@
       cellspacing = "0" cellpadding = "0" border = "0"
       class = "retrade-good-measures-item retrade-item-panel">
 
-      <tbody>
       <tr>
         <td class = "retrade-info-title item-caption">
           <div><span>@MT</span> единица измерения</div>
+          <div class = "retrade-edit-pencil" style="display:none">@ED</div>
         </td>
       </tr>
-      <tr>
+      <tr><!--@INFO-->
         <td>
           <table cellspacing = "0" cellpadding = "0" border = "0">
             <tr>
-              <td class = "retrade-info-title"><div>Код</div></td>
-              <td class = "retrade-info-value"><div>@MC</div></td>
-              <td class = "retrade-info-title"><div>Имя</div></td>
-              <td class = "retrade-info-value"><div>@MN</div></td>
+              <td>
+                <table cellspacing = "0" cellpadding = "0" border = "0">
+                  <tr>
+                    <td class = "retrade-info-title"><div>Код</div></td>
+                    <td class = "retrade-info-value"><div>@MC</div></td>
+                    <td class = "retrade-info-title"><div>Имя</div></td>
+                    <td class = "retrade-info-value"><div>@MN</div></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table cellspacing = "0" cellpadding = "0" border = "0">
+                  <tr>
+                    <td class = "retrade-info-title">@Cc<div>Океи</div></td>
+                    <td class = "retrade-info-value"><div>@CC</div></td>
+                    <td class = "retrade-info-title">@Vo<div>Коэфф.</div></td>
+                    <td class = "retrade-info-value retrade-info-red"><div>@VO</div></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table cellspacing = "0" cellpadding = "0" border = "0">
+                  <tr>
+                    <td class = "retrade-info-title"><div>Вес нетто</div></td>
+                    <td class = "retrade-info-value"><div>@NW</div></td>
+                    <td class = "retrade-info-title"><div>кг, брутто</div></td>
+                    <td class = "retrade-info-value"><div>@GW</div></td>
+                    <td class = "retrade-info-title"><div>кг</div></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table cellspacing = "0" cellpadding = "0" border = "0">
+                  <tr>
+                    <td class = "retrade-info-title"><div>Бар-код</div></td>
+                    <td class = "retrade-info-value"><div>@BC</div></td>
+                  </tr>
+                </table>
+              </td>
             </tr>
           </table>
         </td>
       </tr>
-      <tr>
+      <tr class = "item-edit-area" style = "display:none"><!--@EDIT-->
         <td>
           <table cellspacing = "0" cellpadding = "0" border = "0">
-            <tr>
-              <td class = "retrade-info-title">@Cc<div>Океи</div></td>
-              <td class = "retrade-info-value"><div>@CC</div></td>
-              <td class = "retrade-info-title">@Vo<div>Коэфф.</div></td>
-              <td class = "retrade-info-value retrade-info-red"><div>@VO</div></td>
+            <tr style = "display:none"><!--@DROP-->
+              <td class = "retrade-info-title"><div>Ед. изм.</div></td>
+              <td ><div>@EDME</div></td>
+              <td class = "retrade-info-title"><div>коэфф.</div></td>
+              <td colspan = "3"><div>@EDVO</div></td>
             </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <table cellspacing = "0" cellpadding = "0" border = "0">
             <tr>
               <td class = "retrade-info-title"><div>Вес нетто</div></td>
-              <td class = "retrade-info-value"><div>@NW</div></td>
+              <td><div>@EDNW</div></td>
               <td class = "retrade-info-title"><div>кг, брутто</div></td>
-              <td class = "retrade-info-value"><div>@GW</div></td>
+              <td><div>@EDGW</div></td>
               <td class = "retrade-info-title"><div>кг</div></td>
             </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <table cellspacing = "0" cellpadding = "0" border = "0">
             <tr>
               <td class = "retrade-info-title"><div>Бар-код</div></td>
-              <td class = "retrade-info-value"><div>@BC</div></td>
+              <td colspan = "3"><div>@EDBC</div></td>
             </tr>
           </table>
         </td>
@@ -186,7 +302,6 @@
           </table>
         </td>
       </tr>
-      </tbody>
     </table>
   </div>
 
@@ -198,7 +313,10 @@
   ZeT.scope(function()
   {
     var measures = ZeT.s2o("#{z:jss(v.measuresEncoded)}")
+    var modelstr = ZeT.o2s(measures)
+    var store    = extjsf.bind("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
     var panel    = extjsf.bind("${z:vid(v, 'measures-list-panel')}", '${rootView.extjsDomain}')
+    var controls = []
 
     //~: apply the model items
     panel.on('afterrender', fillMeasures)
@@ -209,26 +327,28 @@
       heightpt: 320, prevsize: 'measures'
     })
 
+    //~: items template
+    var tx = new ZeT.Layout.Template(
+      { trace : ZeT.Layout.Template.Ways.traceAtNodes },
+      ZeTD.n("${z:vid(v, 'measure-item-template')}")
+    )
+
+    var rendered = false
     function fillMeasures()
     {
       var _xid = 0, stime = 'measures-' + new Date().getTime() + '-'
       function xid() { return stime + (_xid++) }
 
-      //~: items template
-      var tx = new ZeT.Layout.Template(
-        { trace : ZeT.Layout.Template.Ways.traceAtNodes },
-        ZeTD.n("${z:vid(v, 'measure-item-template')}")
-      )
-
       //~: clear the existing content
       panel.co().removeAll(true)
+      controls = []
 
       //c: for each measures: add items
       ZeT.each(ZeT.asserta(measures), function(m, index)
       {
-        //ZeT.log(m.good)
-        //ZeT.log(m.measure)
-        //ZeT.log(m.calc)
+        //~: controls
+        var control = { model: m, index: index }
+        controls.push(control)
 
         //~: panel container
         var p = { xtype: 'panel', border: false, layout: 'fit',
@@ -261,28 +381,199 @@
         p.html = p.html.outerHTML
         panel.co().add(p = Ext.create(p))
 
-        //~: process table components
-        p.on('afterrender', function()
-        {
-          var ways  = tx.walkAll(p.body.dom.firstChild)
+        //~: process or delay the initialization
+        if(rendered) initPanel(); else
+          p.on('afterrender', initPanel)
 
-          var items = [
+        //~: process table components
+        function initPanel()
+        {
+          rendered = true
+
+          //~: the template item real node
+          var ways = tx.walkAll(p.body.dom.firstChild)
+          control.node = p.body.dom.firstChild
+          control.ways = ways
+
+          //~: edit button
+          $(ways.ED).on('click', ZeT.fbind(editButton, control))
+
+          //~: visibility check boxes
+          control.visibles = []; var visibles = [
             { way: ways.XB, lway: ways.LB, label: 'накл. зак.', id: xid(), index: 'visible-buy' },
             { way: ways.XS, lway: ways.LS, label: 'накл. про.', id: xid(), index: 'visible-sell' },
             { way: ways.XL, lway: ways.LL, label: 'списки', id: xid(), index: 'visible-lists' },
             { way: ways.XR, lway: ways.LR, label: 'отчёты', id: xid(), index: 'visible-reports' }
           ]
 
-          //~: visibility check boxes
-          ZeT.each(items, function(x)
+          ZeT.each(visibles, function(x)
           {
-            Ext.create({ xtype: 'checkbox', renderTo: x.way, inputId: x.id,
-              margin: 0, padding: 0, value: m.good[x.index] })
+            //~: create the checkbox
+            var cx, cb = Ext.create({ xtype: 'checkbox', renderTo: x.way,
+              inputId: x.id, margin: 0, padding: 0,
+              value: m.good[x.index], readOnly: true })
+
+            //~: and it's label
             Ext.create({ xtype: 'label', renderTo: x.lway, text: x.label,
               forId: x.id, cls: 'retrade-form-light-label-cell' })
+
+            //~: save the edit model
+            control.visibles.push(cx = { check: cb, item: x, control: control })
+
+            //~: react on change
+            cb.on('change', ZeT.fbind(visibleCheck, cx))
           })
+        }
+      })
+    }
+
+    //~: toggle read-edit
+    function toggleReadEdit(isread)
+    {
+      isread = (isread === true)
+      extjsf.bind("${z:vid(v, 'goto-back')}", '${rootView.extjsDomain}').visible(isread)
+      extjsf.bind("${z:vid(v, 'start-edit')}", '${rootView.extjsDomain}').visible(isread)
+      extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}').visible(!isread)
+      extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
+
+      //?: {editing} update items
+      !isread && ZeT.each(controls, function(co)
+      {
+        //~: edit button
+        $(co.ways.ED).show()
+
+        //~: visibility check-boxes
+        ZeT.each(co.visibles, function(vi)
+        {
+          vi.check.setReadOnly(false)
         })
       })
+    }
+
+    //~: start edit click
+    extjsf.bindHandler("${z:vid(v, 'start-edit')}", '${rootView.extjsDomain}', toggleReadEdit)
+
+    //~: cancel edit click
+    extjsf.bindHandler("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}', function()
+    {
+      toggleReadEdit(true)
+
+      //~: restore the model
+      measures = ZeT.s2o(modelstr)
+      fillMeasures(true)
+    })
+
+    //~: visible check
+    function visibleCheck()
+    {
+      this.control.model.good[this.item.index] = this.check.getValue()
+    }
+
+    //~: edit item
+    function editButton()
+    {
+      //~: form items created
+      var me, vo, nw, gw, bc, control = this
+
+      //~: fix item height
+      $(this.node).height($(this.node).height())
+
+      //~: hide info table
+      $(this.ways.INFO).hide()
+
+      //~: show the edit form
+      $(this.ways.EDIT).show()
+
+      //~: edit button
+      $(this.ways.ED).hide()
+
+      //?: {not a default measure}
+      if(this.index) $(this.ways.DROP).show()
+
+      //~: then -> edit measure
+      if(this.index) me = Ext.create({ xtype: 'combobox', renderTo: this.ways.EDME,
+        margin: 0, width: extjsf.ex(12), store: "${z:vid(v, 'measures')}",
+        valueField: 'code', displayField: 'code', matchFieldWidth: false, editable: false,
+        value: this.model.measure.code, allowBlank: false,
+        validator: ZeT.fbind(validateMeasureUnit, this),
+        fieldCls: 'retarde-field-text-compact' })
+
+      me && me.on('change', function(f, v)
+      {
+        var me = store.co().query('code', v)
+        ZeT.assert(me.getCount() == 1)
+        me = ZeT.clone(ZeT.assertn(me.getAt(0).data))
+
+        me.pkey = me.objectKey
+        me['class-code'] = me.classCode
+        me['class-unit'] = me.classUnit
+
+        control.model.measure = me
+      })
+
+      //~: then -> edit coerce volume
+      if(this.index) vo = Ext.create({ xtype: 'textfield', renderTo: this.ways.EDVO,
+        margin: 0, width: extjsf.ex(12), value: this.model.calc['sub-volume'],
+        maskRe: retrade.rdecimal, validator: retrade.vvolume,
+        fieldCls: 'retarde-field-text-compact' })
+
+      vo && vo.on('change', function(f, v)
+      {
+        control.model.calc['sub-volume'] = v
+      })
+
+      var valw = ZeT.fbind(retrade.vvolume, retrade, { blank: true })
+
+      //~: edit net weight
+      nw = Ext.create({ xtype: 'textfield', renderTo: this.ways.EDNW,
+        margin: 0, width: extjsf.ex(12), value: this.model.good['net-weight'],
+        maskRe: retrade.rdecimal, validator: valw,
+        fieldCls: 'retarde-field-text-compact' })
+
+      nw.on('change', function(f, v)
+      {
+        control.model.good['net-weight'] = v
+      })
+
+      //~: edit gross weight
+      gw = Ext.create({ xtype: 'textfield', renderTo: this.ways.EDGW,
+        margin: 0, width: extjsf.ex(12), value: this.model.good['gross-weight'],
+        maskRe: retrade.rdecimal, validator: valw,
+        fieldCls: 'retarde-field-text-compact' })
+
+      gw.on('change', function(f, v)
+      {
+        control.model.good['gross-weight'] = v
+      })
+
+      //~: edit barcode
+      bc = Ext.create({ xtype: 'textfield', renderTo: this.ways.EDBC,
+        margin: 0, maskRe: retrade.rinteger, width: '100%', value: this.model.good['bar-code'],
+        fieldCls: 'retarde-field-text-compact retarde-field-text-larger retarde-field-text-sparce',
+        validator: ZeT.fbind(retrade.vinteger, retrade, { blank: true })
+      })
+
+      bc.on('change', function(f, v)
+      {
+        control.model.good['bar-code'] = v
+      })
+
+      this.editors = [ me, vo, nw, gw, bc ]
+    }
+
+    //~: measure unit drop-box validator
+    function validateMeasureUnit()
+    {
+      var er, control = this, mu = this.editors[0].getValue()
+      ZeT.each(controls, function(co, i)
+      {
+        if(control.index == i) return
+        if(co.model.measure.code != mu) return
+        er = 'Единица измерения уже выбрана в другой позиции!'
+        return false
+      })
+
+      return er?(er):(true)
     }
   })
   //]]>

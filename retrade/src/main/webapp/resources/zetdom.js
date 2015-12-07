@@ -911,7 +911,7 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 			ZeT.Layout.Treeters.cleanWs.proc(node)
 
 		if(x.rootless && ZeTD.isoc(node))
-		{	//<-- string (html) has one child
+		{  //<-- string (html) has one child
 			node = node.firstChild //!: not remove it:
 			x.rootless = false     // saved pages support
 		}
