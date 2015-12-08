@@ -70,6 +70,9 @@ function applyGoodMeasures(measures)
 	//sec: good of the same domain
 	ZeT.assert(ZeT.sec.isSameDomain(gu))
 
+	//?: {not a super good}
+	ZeT.assert(!gu.getSuperGood())
+
 	//~: select sub-goods
 	var subs = get.getSubGoods(gu.getPrimaryKey())
 	var subm = {}; ZeT.each(subs, function(sg){ subm[sg.getPrimaryKey()] = sg })
@@ -81,6 +84,19 @@ function applyGoodMeasures(measures)
 	//~: apply changes to the super ox-good
 	applyGoodOx(gu, measures[0])
 	gu.updateOx()
+
+	//~: remove sub-goods
+	var subx = {}; ZeT.each(measures, function(m){ subx[m.good.measure] = true })
+	ZeT.each(subs, function(sg)
+	{
+		if(subx[sg.getMeasure().getPrimaryKey()] === true)
+			return
+
+		valid = deleteSubGood(sg)
+		if(!ZeTS.ises(valid)) return false
+	})
+
+	if(!ZeTS.ises(valid)) return valid
 
 	//~: update existing sub-goods
 	ZeT.each(measures, function(m, i)
@@ -108,7 +124,15 @@ function applyGoodMeasures(measures)
 		sg.setMeasure(mu)
 	})
 
-	//return 'Test message: ' + gu.getCode()
+	//~: add new sub-goods
+	ZeT.each(measures, function(m, i)
+	{
+		if(i == 0) return //<-- that is super-good
+
+		var sg = subm[m.good.pkey]
+		if(!sg) addSubGood(gu, m)
+	})
+
 	return gu
 }
 
@@ -131,8 +155,17 @@ function checkGoodMeasures(gu, subm, measures)
 	{
 		if(i == 0) return //<-- that is super-good
 
-		var sg = subm[m.good.pkey]
-		if(!sg) return
+		//?: {sub-good to create}
+		var sg = subm[m.good.pkey]; if(!sg)
+		{
+			if(!ZeT.isi(m.good.measure))
+			{
+				valid = 'Единица измерения не выбрана! ' + (typeof m.good.measure)
+				return false
+			}
+
+			return
+		}
 
 		//?: {has measure the same}
 		if(sg.getMeasure().getPrimaryKey() == m.good.measure)
@@ -152,6 +185,85 @@ function checkGoodMeasures(gu, subm, measures)
 	if(ZeT.iss(valid)) return valid
 }
 
+function addSubGood(gu, m)
+{
+	var get          = ZeT.bean('GetGoods')
+	var Goods        = Java.type('com.tverts.retrade.domain.goods.Goods')
+	var GoodUnit     = Java.type('com.tverts.retrade.domain.goods.GoodUnit')
+	var GoodCalc     = Java.type('com.tverts.retrade.domain.goods.GoodCalc')
+	var CalcPart     = Java.type('com.tverts.retrade.domain.goods.CalcPart')
+	var HiberPoint   = Java.type('com.tverts.hibery.HiberPoint')
+	var ActionsPoint = Java.type('com.tverts.actions.ActionsPoint')
+	var ActionType   = Java.type('com.tverts.actions.ActionType')
+
+	//~: create sub-good instance
+	var sg = new GoodUnit()
+
+	//~: load the measure
+	var mu = ZeT.assertn(get.getMeasureUnit(m.good.measure))
+
+	//sec: measure of the same domain
+	ZeT.assert(ZeT.sec.isSameDomain(mu))
+
+	//=: assign measure of the unit
+	sg.setMeasure(mu)
+
+	//=: primary key
+	HiberPoint.setPrimaryKey(ZeT.tx.txSession(), sg,
+	  HiberPoint.isTestInstance(gu))
+
+	//~: assign the sub-good
+	Goods.copySub(gu, sg)
+
+	//!: save the good
+	ActionsPoint.actionRun(ActionType.SAVE, sg)
+
+	//~: create the calculation
+	var gc = new GoodCalc()
+
+	//=: target good
+	gc.setGoodUnit(sg)
+	sg.setGoodCalc(gc)
+
+	//~: assign good-calc-ox
+	applyGoodOx(sg, m)
+	sg.updateOxOwn()
+
+	//--> must clear the calculation here
+	sg.setGoodCalc(null)
+
+	//?: {has no sub-volume}
+	ZeT.assertn(gc.getOx().getSubVolume())
+
+	//=: calc sub-code
+	gc.getOx().setSubCode(">" + mu.getCode())
+
+	//~: create single calc part
+	var cp = new CalcPart()
+
+	//=: calc <-> part
+	gc.getParts().add(cp)
+	cp.setGoodCalc(gc)
+
+	//=: part good -> super good
+	cp.setGoodUnit(gu)
+
+	//~: part volume
+	cp.setVolume(gc.getOx().getSubVolume())
+
+	//!: save the calculation
+	ActionsPoint.actionRun(ActionType.SAVE, gc)
+
+	//~: update good-ox
+	Goods.initOx(sg, sg.getOxOwn())
+	sg.updateOxOwn()
+}
+
+function deleteSubGood(sg)
+{
+	return 'Функция удаления единиц измерения товаров не реализвована!'
+}
+
 function applyGoodOx(gu, m)
 {
 	var g = gu.getOxOwn()
@@ -169,7 +281,7 @@ function applyGoodOx(gu, m)
 	g.setGrossWeight(v2d(m.good['gross-weight']))
 
 	//=: bar code
-	g.setBarCode(m.good['bar-code'])
+	g.setBarCode(ZeTS.trim(m.good['bar-code']))
 
 	//?: {sub-good}
 	if(gu.getSuperGood())
@@ -187,7 +299,7 @@ function applyGoodOx(gu, m)
 
 	function v2d(v)
 	{
-		var d = ZeT.assertn(ZeT.jdecimal(v))
+		var d = ZeT.jdecimal(v)
 		if(ZeT.isx(d)) return null
 		ZeT.assert(ZeT.CMP.grZero(d) && (d.scale() < 4))
 		if(d.scale() == 0) d = d.setScale(1)

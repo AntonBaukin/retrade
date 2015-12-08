@@ -5,20 +5,12 @@
       <artifact name="ReTrade RSync @64.14" />
     </artifacts-to-build>
   </component>
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/desktop.js" mnemonic="9" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.js" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.jsx" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.jsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-measures.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-measures.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,10 +39,15 @@
       <file leaf-file-name="Goods.jsx" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.24056605" vertical-offset="510" max-vertical-offset="1962">
-              <caret line="81" column="23" selection-start-line="81" selection-start-column="23" selection-end-line="81" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.048742138" vertical-offset="1329" max-vertical-offset="3866">
+              <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
               <folding>
-                <element signature="e#2022#2498#0" expanded="true" />
+                <element signature="n#!!block;n#encodeGoodMeasures#0" expanded="true" />
+                <element signature="n#!!block;n#post#0" expanded="true" />
+                <element signature="n#!!block;n#checkGoodMeasures#0" expanded="true" />
+                <element signature="e#3478#4121#0" expanded="true" />
+                <element signature="n#!!block;n#deleteSubGood#0" expanded="true" />
+                <element signature="n#!!block;n#applyGoodOx#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -66,7 +63,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/PropInjector.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/PropReader.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/jaxb/s.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GenTestGoods.java" />
@@ -80,8 +76,9 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/Goods.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-measures.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-measures.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.jsx" />
       </list>
     </option>
@@ -946,8 +943,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="domain-49 [alpha]: zero implementation of creating and storing user application links (for the tiles) as JSON document." />
-    <MESSAGE value="domain-49 [stable]: saving web links (for tiles) to Auth Login." />
     <MESSAGE value="ui-87 [beta]: implemented scrolling of user links tiles in ReTrade." />
     <MESSAGE value="ui-87 [beta]: fixed desktop void panel trigger, user menu shadow. Set up the sizes of tiles of user web links." />
     <MESSAGE value="ui-87 [beta]: loading tiles and activating the links." />
@@ -971,14 +966,24 @@
     <MESSAGE value="ui-89 [beta]: designed and implemented editing form of sub-goods." />
     <MESSAGE value="domain-52 [stable]: fixed repeating generation of sub-goods." />
     <MESSAGE value="system-18 [stable]: implemented auto-generation of MOXy mapping files to inject global type adapter for Big Decimals to be used in JSON. It represents decimals as strings, not numbers." />
-    <option name="LAST_COMMIT_MESSAGE" value="system-18 [stable]: implemented auto-generation of MOXy mapping files to inject global type adapter for Big Decimals to be used in JSON. It represents decimals as strings, not numbers." />
+    <MESSAGE value="ui-89 [beta]: editing existing sub-goods." />
+    <MESSAGE value="ui-89 [beta]: implemented editing and removing (in form only) sub-goods." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-89 [beta]: implemented editing and removing (in form only) sub-goods." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodCalc.java</url>
+          <line>125</line>
+          <properties />
+          <option name="timeStamp" value="607" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="606" />
+      <option name="time" value="608" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -1094,82 +1099,10 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/build/dev/lib1/org.eclipse.persistence.moxy-2.6.0.jar!/org/eclipse/persistence/jaxb/eclipselink_oxm_2_6.xsd">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4418079" vertical-offset="0" max-vertical-offset="12241">
-          <caret line="23" column="34" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/Adapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30289534" vertical-offset="0" max-vertical-offset="1238">
-          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/jaxb/BigDecimalAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39774013" vertical-offset="22" max-vertical-offset="1361">
-          <caret line="22" column="3" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/PropResourceReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.037861917" vertical-offset="0" max-vertical-offset="1833">
-          <caret line="2" column="10" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/META-INF/eclipselink-oxm.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1051">
-          <caret line="0" column="38" selection-start-line="0" selection-start-column="38" selection-end-line="0" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/xmapping.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30289534" vertical-offset="459" max-vertical-offset="2598">
-          <caret line="43" column="43" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/jaxb/EclipseLinkOXMBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6363636" vertical-offset="595" max-vertical-offset="1649">
-          <caret line="62" column="114" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/objects/XStreamer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8553459" vertical-offset="952" max-vertical-offset="2710">
           <caret line="225" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1325167" vertical-offset="1326" max-vertical-offset="2853">
-          <caret line="103" column="3" selection-start-line="85" selection-start-column="3" selection-end-line="85" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21444954" vertical-offset="7871" max-vertical-offset="10137">
-          <caret line="552" column="0" selection-start-line="474" selection-start-column="0" selection-end-line="474" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1187,30 +1120,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05762712" vertical-offset="56270" max-vertical-offset="57359">
-          <caret line="3313" column="40" selection-start-line="3313" selection-start-column="40" selection-end-line="3313" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-measures.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.565367" vertical-offset="6562" max-vertical-offset="8335">
-          <caret line="621" column="31" selection-start-line="415" selection-start-column="31" selection-end-line="415" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/Goods.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.018930959" vertical-offset="884" max-vertical-offset="3533">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3975501" vertical-offset="3128" max-vertical-offset="5760">
@@ -1219,20 +1128,121 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9844098" vertical-offset="612" max-vertical-offset="2547">
+          <caret line="3313" column="40" selection-start-line="88" selection-start-column="40" selection-end-line="88" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.021789" vertical-offset="6749" max-vertical-offset="9882">
+          <caret line="552" column="0" selection-start-line="471" selection-start-column="2" selection-end-line="495" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37082404" vertical-offset="4138" max-vertical-offset="6814">
+          <caret line="263" column="43" selection-start-line="263" selection-start-column="24" selection-end-line="263" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.018930959" vertical-offset="1411" max-vertical-offset="2853">
+          <caret line="102" column="3" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GoodUnit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8140312" vertical-offset="646" max-vertical-offset="3159">
-          <caret line="173" column="13" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.018930959" vertical-offset="1071" max-vertical-offset="5539">
+          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/Goods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2271715" vertical-offset="2431" max-vertical-offset="4179">
+          <caret line="261" column="3" selection-start-line="155" selection-start-column="3" selection-end-line="155" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1785" max-vertical-offset="2870">
+          <caret line="130" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GenTestGoods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7572383" vertical-offset="1717" max-vertical-offset="5097">
+          <caret line="242" column="24" selection-start-line="139" selection-start-column="6" selection-end-line="141" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/tx/TxPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41648108" vertical-offset="425" max-vertical-offset="3312">
+          <caret line="55" column="34" selection-start-line="47" selection-start-column="25" selection-end-line="47" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/HiberPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.018930959" vertical-offset="986" max-vertical-offset="3176">
+          <caret line="68" column="3" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodCalc.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.57575756" vertical-offset="1275" max-vertical-offset="3723">
+          <caret line="124" column="17" selection-start-line="94" selection-start-column="17" selection-end-line="94" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/strings.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3975501" vertical-offset="34" max-vertical-offset="3295">
+          <caret line="23" column="3" selection-start-line="23" selection-start-column="3" selection-end-line="23" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-measures.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48738533" vertical-offset="7973" max-vertical-offset="9508">
+          <caret line="700" column="25" selection-start-line="494" selection-start-column="25" selection-end-line="494" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24056605" vertical-offset="510" max-vertical-offset="1962">
-          <caret line="81" column="23" selection-start-line="81" selection-start-column="23" selection-end-line="81" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.048742138" vertical-offset="1329" max-vertical-offset="3866">
+          <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
           <folding>
-            <element signature="e#2022#2498#0" expanded="true" />
+            <element signature="n#!!block;n#encodeGoodMeasures#0" expanded="true" />
+            <element signature="n#!!block;n#post#0" expanded="true" />
+            <element signature="n#!!block;n#checkGoodMeasures#0" expanded="true" />
+            <element signature="e#3478#4121#0" expanded="true" />
+            <element signature="n#!!block;n#deleteSubGood#0" expanded="true" />
+            <element signature="n#!!block;n#applyGoodOx#0" expanded="true" />
           </folding>
         </state>
       </provider>

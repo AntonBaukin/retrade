@@ -85,6 +85,15 @@
     </x:component>
 
 
+    <!-- [add item button] -->
+    <x:component coid = "${z:vid(v, 'add')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Добавить',
+        hidden: true, margin: extjsf.pts(0, 6, 0, 0)
+      </f:facet>
+    </x:component>
+
+
     <!-- [commit edit button] -->
     <x:component coid = "${z:vid(v, 'submit')}">
       <f:facet name = "extjs-props">
@@ -177,14 +186,16 @@
   padding-top: 0;
 }
 
-.retrade-good-measures-item .item-caption .retrade-edit-pencil
+.retrade-good-measures-item .item-caption .retrade-edit-pencil,
+  .retrade-good-measures-item .item-caption .retrade-edit-delete
 {
   position: absolute; right: 4px; top: 10px;
   width: 28px; height: 28px; background-size: 28px 28px;
   border-radius: 50%; cursor: pointer;
 }
 
-.retrade-good-measures-item .item-caption .retrade-edit-pencil:hover
+.retrade-good-measures-item .item-caption .retrade-edit-pencil:hover,
+  .retrade-good-measures-item .item-caption .retrade-edit-delete:hover
 {
   right: 1px; top: 7px;
   width: 34px; height: 34px;
@@ -212,6 +223,7 @@
         <td class = "retrade-info-title item-caption">
           <div><span>@MT</span> единица измерения</div>
           <div class = "retrade-edit-pencil" style="display:none">@ED</div>
+          <div class = "retrade-edit-delete" style="display:none">@DE</div>
         </td>
       </tr>
       <tr><!--@INFO-->
@@ -333,98 +345,113 @@
       ZeTD.n("${z:vid(v, 'measure-item-template')}")
     )
 
-    var rendered = false
     function fillMeasures()
     {
-      var _xid = 0, stime = 'measures-' + new Date().getTime() + '-'
-      function xid() { return stime + (_xid++) }
-
       //~: clear the existing content
       panel.co().removeAll(true)
       controls = []
 
       //c: for each measures: add items
-      ZeT.each(ZeT.asserta(measures), function(m, index)
+      ZeT.each(ZeT.asserta(measures), addPanel)
+    }
+
+    var _xid = 0, stime = 'measures-' + new Date().getTime() + '-'
+    function xid() { return stime + (_xid++) }
+
+    var rendered = false, panelHeight = 0
+    function addPanel(m, index)
+    {
+      //~: controls
+      var control = { model: m, index: index }
+      controls.push(control)
+
+      //~: panel container
+      var p = { xtype: 'panel', border: false, layout: 'fit',
+        margin: (index)?(extjsf.pts(6, 0, 0, 0)):(0),
+        bodyCls: 'retrade-transparent-panel'
+      }
+
+      var clcode = m.measure['class-code']
+      if(ZeTS.ises(clcode)) clcode = null
+
+      var volume = m.calc && m.calc['sub-volume']
+      if(volume) volume = '' + volume
+      if(ZeTS.ises(volume)) volume = null
+
+      //~: item content
+      var c = {
+        MT: (!index)?('Основная'):('Дополнительная'),
+        MC: m.measure.code, MN: m.measure.name,
+        Cc: { hidden: !clcode }, CC: { phidden: !clcode, node: clcode },
+        Vo: { hidden: !volume }, VO: { phidden: !volume, node: volume },
+        NW: m.good['net-weight'], GW: m.good['gross-weight'],
+        BC: m.good['bar-code']
+      }
+
+      //~: clone & fill item
+      p.html = tx.cloneNode()
+      tx.fillWays(p.html, c)
+
+      //~: add it to the root
+      p.html = p.html.outerHTML
+      panel.co().add(p = Ext.create(p))
+      control.panel = p
+
+      //~: process or delay the initialization
+      if(rendered) initPanel(); else
+        p.on('afterrender', initPanel)
+
+      //~: process table components
+      function initPanel()
       {
-        //~: controls
-        var control = { model: m, index: index }
-        controls.push(control)
+        rendered = true
 
-        //~: panel container
-        var p = { xtype: 'panel', border: false, layout: 'fit',
-          margin: (index)?(extjsf.pts(6, 0, 0, 0)):(0),
-          bodyCls: 'retrade-transparent-panel'
-        }
+        //~: the template item real node
+        var ways = tx.walkAll(p.body.dom.firstChild)
+        control.node = p.body.dom.firstChild
+        control.ways = ways
 
-        var clcode = m.measure['class-code']
-        if(ZeTS.ises(clcode)) clcode = null
+        //~: edit button
+        $(ways.ED).on('click', ZeT.fbind(editButton, control))
 
-        var volume = m.calc && m.calc['sub-volume']
-        if(volume) volume = '' + volume
-        if(ZeTS.ises(volume)) volume = null
+        //~: visibility check boxes
+        control.visibles = []; var visibles = [
+          { way: ways.XB, lway: ways.LB, label: 'накл. зак.', id: xid(), index: 'visible-buy' },
+          { way: ways.XS, lway: ways.LS, label: 'накл. про.', id: xid(), index: 'visible-sell' },
+          { way: ways.XL, lway: ways.LL, label: 'списки', id: xid(), index: 'visible-lists' },
+          { way: ways.XR, lway: ways.LR, label: 'отчёты', id: xid(), index: 'visible-reports' }
+        ]
 
-        //~: item content
-        var c = {
-          MT: (!index)?('Основная'):('Дополнительная'),
-          MC: m.measure.code, MN: m.measure.name,
-          Cc: { hidden: !clcode }, CC: { phidden: !clcode, node: clcode },
-          Vo: { hidden: !volume }, VO: { phidden: !volume, node: volume },
-          NW: m.good['net-weight'], GW: m.good['gross-weight'],
-          BC: m.good['bar-code']
-        }
-
-        //~: clone & fill item
-        p.html = tx.cloneNode()
-        tx.fillWays(p.html, c)
-
-        //~: add it to the root
-        p.html = p.html.outerHTML
-        panel.co().add(p = Ext.create(p))
-
-        //~: process or delay the initialization
-        if(rendered) initPanel(); else
-          p.on('afterrender', initPanel)
-
-        //~: process table components
-        function initPanel()
+        ZeT.each(visibles, function(x)
         {
-          rendered = true
+          //~: create the checkbox
+          var cx, cb = Ext.create({ xtype: 'checkbox', renderTo: x.way,
+            inputId: x.id, margin: 0, padding: 0,
+            value: m.good[x.index], readOnly: true })
 
-          //~: the template item real node
-          var ways = tx.walkAll(p.body.dom.firstChild)
-          control.node = p.body.dom.firstChild
-          control.ways = ways
+          //~: and it's label
+          Ext.create({ xtype: 'label', renderTo: x.lway, text: x.label,
+            forId: x.id, cls: 'retrade-form-light-label-cell' })
 
-          //~: edit button
-          $(ways.ED).on('click', ZeT.fbind(editButton, control))
+          //~: save the edit model
+          control.visibles.push(cx = { check: cb, item: x, control: control })
 
-          //~: visibility check boxes
-          control.visibles = []; var visibles = [
-            { way: ways.XB, lway: ways.LB, label: 'накл. зак.', id: xid(), index: 'visible-buy' },
-            { way: ways.XS, lway: ways.LS, label: 'накл. про.', id: xid(), index: 'visible-sell' },
-            { way: ways.XL, lway: ways.LL, label: 'списки', id: xid(), index: 'visible-lists' },
-            { way: ways.XR, lway: ways.LR, label: 'отчёты', id: xid(), index: 'visible-reports' }
-          ]
+          //~: react on change
+          cb.on('change', ZeT.fbind(visibleCheck, cx))
+        })
 
-          ZeT.each(visibles, function(x)
-          {
-            //~: create the checkbox
-            var cx, cb = Ext.create({ xtype: 'checkbox', renderTo: x.way,
-              inputId: x.id, margin: 0, padding: 0,
-              value: m.good[x.index], readOnly: true })
+        //~: panel height
+        if(p.getHeight() < panelHeight)
+          p.setHeight(panelHeight)
 
-            //~: and it's label
-            Ext.create({ xtype: 'label', renderTo: x.lway, text: x.label,
-              forId: x.id, cls: 'retrade-form-light-label-cell' })
+        //~: update the panels height
+        ZeT.timeout(100, function()
+        {
+          panelHeight = Math.max(panelHeight, p.getHeight())
+        })
+      }
 
-            //~: save the edit model
-            control.visibles.push(cx = { check: cb, item: x, control: control })
-
-            //~: react on change
-            cb.on('change', ZeT.fbind(visibleCheck, cx))
-          })
-        }
-      })
+      return control
     }
 
     //~: toggle read-edit
@@ -434,19 +461,23 @@
       extjsf.bind("${z:vid(v, 'goto-back')}", '${rootView.extjsDomain}').visible(isread)
       extjsf.bind("${z:vid(v, 'start-edit')}", '${rootView.extjsDomain}').visible(isread)
       extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}').visible(!isread)
+      extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}').visible(!isread)
       extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
 
       //?: {editing} update items
-      !isread && ZeT.each(controls, function(co)
-      {
-        //~: edit button
-        $(co.ways.ED).show()
+      !isread && ZeT.each(controls, turnEditControl)
+    }
 
-        //~: visibility check-boxes
-        ZeT.each(co.visibles, function(vi)
-        {
-          vi.check.setReadOnly(false)
-        })
+    //~: toggle read-edit
+    function turnEditControl(co)
+    {
+      //~: edit button
+      $(co.ways.ED).show()
+
+      //~: visibility check-boxes
+      ZeT.each(co.visibles, function(vi)
+      {
+        vi.check.setReadOnly(false)
       })
     }
 
@@ -487,6 +518,13 @@
       //~: edit button
       $(this.ways.ED).hide()
 
+      //~: delete button
+      if(this.index) ZeT.timeout(1000,
+        function(){ $(control.ways.DE).show() })
+
+      //~: delete button
+      $(control.ways.DE).click(ZeT.fbind(removeMeasure, this))
+
       //?: {not a default measure}
       if(this.index) $(this.ways.DROP).show()
 
@@ -504,7 +542,7 @@
         ZeT.assert(me.getCount() == 1)
         me = ZeT.clone(ZeT.assertn(me.getAt(0).data))
 
-        me.pkey = me.objectKey
+        me.pkey = parseInt(me.objectKey)
         me['class-code'] = me.classCode
         me['class-unit'] = me.classUnit
 
@@ -594,6 +632,18 @@
         'единиц измерения товара должны иметь корректные значения!'
     }
 
+    function removeMeasure()
+    {
+      //~: remove from the controls
+      ZeTA.del(controls, this)
+
+      //~: remove from the model
+      ZeTA.del(measures, this.model)
+
+      //~: delete the panel
+      this.panel.ownerCt.remove(this.panel, true)
+    }
+
     function submitEdit()
     {
       var reqstr = ZeT.o2s(measures)
@@ -634,6 +684,25 @@
           throw ZeT.ass('Error posting measures: ', x.responseText)
       })
     }
+
+    function addMeasure()
+    {
+      //~: create empty model
+      var i = measures.length
+      var m = { good: {}, measure: {}, calc: {} }
+      measures.push(m)
+
+      //~: add the panel
+      var co = addPanel(m, i)
+      co.panel.ownerCt.scrollTo(0, co.panel.getY() + co.panel.getHeight())
+
+      //~: edit it
+      turnEditControl(co)
+      editButton.apply(co)
+    }
+
+    //~: add measure
+    extjsf.bindHandler("${z:vid(v, 'add')}", '${rootView.extjsDomain}', addMeasure)
 
     //~: submit the edit
     extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', submitEdit)
