@@ -549,8 +549,8 @@ ${v.checkModelRequestedWithRedirect}
     //~: display notification about restricted editing
     if(extjsf.bind("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}')) checkGoodUsed = function()
     {
-      jQuery.get("${z:url('/go/web/views/goods/is-good-used')}",
-                 { entity: "#{v.goodView.objectKey}" },  function(x)
+        jQuery.get("${z:url('/go/web/views/goods/is-good-used')}",
+                   { entity: "#{v.goodView.objectKey}" },  function(x)
         {
           if(ZeTS.ises(x) || !ZeT.isi(x = parseInt(x)) || (x === 0))
           {
@@ -560,22 +560,8 @@ ${v.checkModelRequestedWithRedirect}
             return
           }
 
-          var s = '', p; function add(mask, prefix, txt)
-          {
-            if(!(x & mask)) return
-            if(s.length) s += ', '
-            if(p !== prefix) s += prefix + ' '
-            p = prefix; s += txt
-          }
-
-          add(1, 'имеет', 'несколько ед. измерения')
-          add(2, 'используется', 'в рецептах')
-          add(4, 'находится в', 'пр.-листах')
-          add(8, 'находится в', 'накладных закупки')
-          add(16, 'находится в', 'накладных продажи')
-          add(32, 'находится в', 'накладных перемещения')
-          add(64, 'находится в', 'документах инвентаризации')
-          add(128, 'стал', 'промежуточным товаром в накладных')
+          //~: usage description text
+          var s = retrade.goodUsageDescr(x)
 
           $('#' + "${z:vid(v, 'good-used')}").text(s)
           extjsf.co("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}').show()

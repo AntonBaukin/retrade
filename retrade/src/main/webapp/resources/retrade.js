@@ -3293,5 +3293,32 @@ var retrade = ZeT.define('retrade',
 		}
 
 		return node;
-	})
+	}),
+
+
+	//=        Specials          =//
+
+	goodUsageDescr   : function(flags)
+	{
+		var s = '', p
+
+		function add(mask, prefix, txt)
+		{
+			if(!(flags & mask)) return
+			if(s.length) s += ', '
+			if(p !== prefix) s += prefix + ' '
+			p = prefix; s += txt
+		}
+
+		add(1, 'имеет', 'несколько ед. измерения')
+		add(2, 'используется', 'в формулах')
+		add(4, 'находится в', 'пр.-листах')
+		add(8, 'находится в', 'накладных закупки')
+		add(16, 'находится в', 'накладных продажи')
+		add(32, 'находится в', 'накладных перемещения')
+		add(64, 'находится в', 'документах инвентаризации')
+		add(128, 'стал', 'промежуточным товаром в накладных')
+
+		return s
+	}
 })

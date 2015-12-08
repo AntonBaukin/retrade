@@ -509,6 +509,7 @@
         me['class-unit'] = me.classUnit
 
         control.model.measure = me
+        control.model.good.measure = me.pkey
       })
 
       //~: then -> edit coerce volume
@@ -575,6 +576,67 @@
 
       return er?(er):(true)
     }
+
+    function validateFields()
+    {
+      var valid; ZeT.each(controls, function(co)
+      {
+        ZeT.each(co.editors, function(e)
+        {
+          if(e && !e.isValid())
+            return valid = false
+        })
+
+        if(valid == false) return false
+      })
+
+      if(valid == false) return 'Все редактируемые свойства ' +
+        'единиц измерения товара должны иметь корректные значения!'
+    }
+
+    function submitEdit()
+    {
+      var reqstr = ZeT.o2s(measures)
+
+      //?: {has no changes}
+      if(reqstr == modelstr)
+        return ReTrade.desktop.event({ color: 'O' },
+          'Вы не произвели никаких изменений в свойствах единиц измерения товара!')
+
+      //?: {fields are not valid}
+      var val; if(!ZeTS.ises(val = validateFields()))
+        return ReTrade.desktop.error(val)
+
+      //ZeT.each(measures, function(m){ ZeT.log(ZeT.o2s(m)) })
+
+      //!: post the measures model
+      var post = jQuery.post("${z:url('/go/web/views/goods/Goods')}", { measures: reqstr })
+
+      //~: on success
+      post.done(function(x)
+      {
+        toggleReadEdit(true)
+
+        //~: apply the server response
+        measures = ZeT.asserta(x)
+        modelstr = ZeT.o2s(measures)
+
+        //~: apply the model
+        fillMeasures(true)
+      })
+
+      //~: on failure
+      post.fail(function(x)
+      {
+        if(!ZeTS.ises(x.responseText) && (x.status == 400))
+          ReTrade.desktop.error(x.responseText)
+        else
+          throw ZeT.ass('Error posting measures: ', x.responseText)
+      })
+    }
+
+    //~: submit the edit
+    extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', submitEdit)
   })
   //]]>
   </script>

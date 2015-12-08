@@ -703,8 +703,7 @@ from GoodUnit gu where
 
 	public MeasureUnit       getMeasureUnit(Long pk)
 	{
-		return (MeasureUnit) session().
-		  get(MeasureUnit.class, pk);
+		return get(MeasureUnit.class, pk);
 	}
 
 	public MeasureUnit       getMeasureUnit(Long domain, String code)
