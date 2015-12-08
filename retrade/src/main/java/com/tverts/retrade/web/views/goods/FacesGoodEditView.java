@@ -856,9 +856,14 @@ public class FacesGoodEditView extends ModelView
 			}
 			//~: load the good unit
 			else
+			{
 				gu = EX.assertn(bean(GetGoods.class).getGoodUnit(pk),
-				  "Good Unit [", pk, "] is not found!"
-				);
+				  "Good Unit [", pk, "] is not found!");
+
+				//?: {is a sub-good} retarget
+				if(gu.getSuperGood() != null)
+					gu = gu.getSuperGood();
+			}
 
 			//sec: check good of the same domain
 			if(!gu.getDomain().getPrimaryKey().equals(mb.domain()))
