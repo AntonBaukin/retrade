@@ -45,14 +45,26 @@ public class XStreamer
 
 	public XStreamer(Class[] classes)
 	{
+		this(classes, null);
+	}
+
+	public XStreamer(Class[] classes, PropInjector[] props)
+	{
 		String FP = JAXBContext.JAXB_CONTEXT_FACTORY;
 		String fp = System.getProperty(FP);
 		Class  XP = org.eclipse.persistence.jaxb.JAXBContextFactory.class;
 
 		try
 		{
+			Map<String, Object> pm = new HashMap<>();
+
+			//?: has property injectors
+			if(props != null)
+				for(PropInjector pi : props)
+					pi.injectProp(pm);
+
 			System.setProperty(FP, XP.getName());
-			this.ctx = JAXBContext.newInstance(classes);
+			this.ctx = JAXBContext.newInstance(classes, pm);
 		}
 		catch(Throwable e)
 		{
