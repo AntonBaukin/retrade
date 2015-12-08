@@ -113,6 +113,22 @@ public class GetGoods extends GetObjectBase
 		return object(GoodUnit.class, Q, "domain", domain, "code", code);
 	}
 
+	public GoodUnit       getSubGood(Long superGood, String measure)
+	{
+/*
+
+ from GoodUnit gu where (gu.superGood.id = :superGood)
+   and (gu.measure.code = :measure)
+
+ */
+		final String Q =
+"from GoodUnit gu where (gu.superGood.id = :superGood)\n" +
+"  and (gu.measure.code = :measure)";
+
+		return object(GoodUnit.class, Q,
+		  "superGood", superGood, "measure", measure);
+	}
+
 	/**
 	 * Returns all sub-goods of the given owning good.
 	 */

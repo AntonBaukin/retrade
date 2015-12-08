@@ -134,6 +134,10 @@ public class GenTestGoods extends GenesisHiberPartBase
 		{
 			//~: add to the goods map
 			addGood(ctx, HiberPoint.unproxyDeeply(ctx.session(), gu));
+
+			//--> needed for sub-goods
+			g.setPkey(gu.getPrimaryKey());
+
 			return;
 		}
 
@@ -185,8 +189,20 @@ public class GenTestGoods extends GenesisHiberPartBase
 		//?: {not an owner}
 		EX.assertx(gu.getSuperGood() == null);
 
+		//~: search for that sub-good
+		GoodUnit sub = bean(GetGoods.class).
+		  getSubGood(gu.getPrimaryKey(), m);
+
+		//?: {had found it} do not update
+		if(sub != null)
+		{
+			//~: add to the goods map
+			addGood(ctx, HiberPoint.unproxyDeeply(ctx.session(), sub));
+			return;
+		}
+
 		//~: create sub-good
-		GoodUnit sub = new GoodUnit();
+		sub = new GoodUnit();
 
 		//~: assign the measure
 		setMeasure(ctx, sub, EX.asserts(m));
