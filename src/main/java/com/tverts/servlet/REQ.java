@@ -123,6 +123,9 @@ public class REQ
 		return x.toString();
 	}
 
+	/**
+	 * Decodes URL-encoded parameters of the request body.
+	 */
 	public static void    decodeBodyParams(Reader r, String enc, Map<String, Object> ps)
 	  throws java.io.IOException
 	{

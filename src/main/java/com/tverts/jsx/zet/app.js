@@ -51,6 +51,11 @@ ZeT.extend(ZeT,
 	EX               : Java.type('com.tverts.support.EX'),
 
 	/**
+	 * Comparing.
+	 */
+	CMP              : Java.type('com.tverts.support.CMP'),
+
+	/**
 	 * Input-output.
 	 */
 	IO               : Java.type('com.tverts.support.IO'),
@@ -150,8 +155,8 @@ ZeT.extend(ZeT,
 
 	jdecimal         : function(n)
 	{
-		if(ZeT.isx(n))
-			return null;
+		if(ZeT.isx(n) || (ZeT.iss(n) && ZeTS.ises(n)))
+			return null
 
 		if(ZeT.isn(n))
 			n = '' + n
