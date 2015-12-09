@@ -170,7 +170,6 @@ public final class SecPoint
 		return SYSTEM_DOMAIN.equals(loadDomain().getCode());
 	}
 
-
 	private static final String SESSION_SYSTEM_ATTR =
 	  SecPoint.class.getName() + ": system login: ";
 
@@ -242,6 +241,31 @@ public final class SecPoint
 
 	private static final String ATTR_CLIENT_FIRM_SEARCHED =
 	  SecSession.ATTR_CLIENT_FIRM + " [Searched]";
+
+	public static void        checkSameDomain(Object target)
+	{
+		if(!Boolean.TRUE.equals(isSameDomain(target)))
+			throw EX.forbid("Entity processed has else Domain!");
+	}
+
+	/**
+	 * Returns true when object is in the same Domain
+	 * as the user requesting; false, when not; or null
+	 * when target object may not be traced up to it's
+	 * Domain instance (can't tell).
+	 */
+	public static Boolean     isSameDomain(Object target)
+	{
+		//?: {not a database object}
+		if(!(target instanceof NumericIdentity))
+			return null;
+
+		//?: {not a domain instance}
+		if(!(target instanceof DomainEntity))
+			return null;
+
+		return CMP.eq(((DomainEntity)target).getDomain(), domain());
+	}
 
 
 	/* public: SecPoint (security checks) interface */
@@ -319,25 +343,6 @@ public final class SecPoint
 
 		return bean(GetSecure.class).
 		  isAllSecure(login(), target, skeys);
-	}
-
-	/**
-	 * Returns true when object is in the same Domain
-	 * as the user requesting; false, when not; or null
-	 * when target object may not be traced up to it's
-	 * Domain instance (can't tell).
-	 */
-	public static Boolean     isSameDomain(Object target)
-	{
-		//?: {not a database object}
-		if(!(target instanceof NumericIdentity))
-			return null;
-
-		//?: {not a domain instance}
-		if(!(target instanceof DomainEntity))
-			return null;
-
-		return CMP.eq(((DomainEntity)target).getDomain(), domain());
 	}
 
 
