@@ -23,6 +23,7 @@ import com.tverts.endure.aggr.AggrValue;
 
 /* com.tverts: retrade api (goods) */
 
+import com.tverts.api.retrade.goods.CalcItem;
 import com.tverts.api.retrade.goods.Good;
 import com.tverts.api.retrade.goods.Measure;
 
@@ -297,5 +298,15 @@ public class Goods
 
 		//=: group
 		sub.setGroup(gu.getGroup());
+	}
+
+	public static void init(CalcItem i, CalcPart p)
+	{
+		//=: good primary key
+		if(p.getGoodUnit() != null)
+			i.setGood(p.getGoodUnit().getPrimaryKey());
+
+		//=: coerce volume
+		i.setVolume(p.getVolume());
 	}
 }

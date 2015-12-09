@@ -129,6 +129,8 @@ public class FacesGoodEditView extends ModelView
 
 		GoodUnit gu;
 		Good     g;
+		GetGoods get = bean(GetGoods.class);
+		boolean  u   = false;
 
 		//?: {create new good}
 		if(getGoodView().getObjectKey() == null)
@@ -147,12 +149,24 @@ public class FacesGoodEditView extends ModelView
 		//!: load it
 		else
 		{
-			gu = bean(GetGoods.class).
-			  getGoodUnitStrict(getGoodView().getObjectKey());
+			gu = EX.assertn(get.getGoodUnitStrict(getGoodView().getObjectKey()));
 
-			if(gu == null) throw EX.state();
-			g = gu.getOx();
+			//sec: the same domain
+			SecPoint.isSameDomain(gu);
+
+			g  = gu.getOx();
+
+			//?: {test is used}
+			u = (get.isGoodUsed(gu.getPrimaryKey(), true) != 0);
 		}
+
+		//~: load measure unit
+		MeasureUnit mu = EX.assertn(get.getMeasureUnit(
+		  getGoodView().getMeasureKey()));
+
+		//?: {changing measure of used good}
+		if(u && !CMP.eq(gu.getMeasure(), mu))
+			throw EX.state("Good Unit is used, Measure may not be updated!");
 
 		//=: good code
 		g.setCode(getGoodView().getGoodCode());
@@ -162,11 +176,6 @@ public class FacesGoodEditView extends ModelView
 
 		//~: good group
 		g.setGroup(SU.s2s(getGoodView().getGoodGroup()));
-
-		//~: load measure unit
-		MeasureUnit mu = bean(GetGoods.class).
-		  getMeasureUnit(getGoodView().getMeasureKey());
-		if(mu == null) throw EX.state();
 
 		//~: assign it
 		gu.setMeasure(mu);
@@ -181,7 +190,23 @@ public class FacesGoodEditView extends ModelView
 			goodAddedKey = gu.getPrimaryKey();
 		}
 		else
+		{
+			//~: update the good
 			actionRun(ActionType.UPDATE, gu);
+
+			//~: load, update the sub-goods
+			for(GoodUnit sub : get.getSubGoods(gu.getPrimaryKey()))
+			{
+				//~: copy parent fields
+				Goods.copySub(gu, sub);
+
+				//~: update own ox-good
+				sub.updateOxOwn();
+
+				//!: update sub
+				actionRun(ActionType.UPDATE, sub);
+			}
+		}
 
 		//?: {has calculation updated}
 		if(getModel().isCalcUpdated())

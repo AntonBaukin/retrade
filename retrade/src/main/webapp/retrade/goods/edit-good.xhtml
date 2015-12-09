@@ -556,7 +556,6 @@ ${v.checkModelRequestedWithRedirect}
           {
             //~: enable editing the measure
             if(x === 0) extjsf.co("${z:vid(v, 'measure')}", '${rootView.extjsDomain}').setReadOnly(false)
-
             return
           }
 
@@ -599,11 +598,14 @@ ${v.checkModelRequestedWithRedirect}
 
       //~: set measure text value
       var measure = extjsf.bind("${z:vid(v, 'measure')}", '${rootView.extjsDomain}')
-      if(isread) measure.value("#{z:jss(v.goodView.measureCode)}")
+      extjsf.co("${z:vid(v, 'measures')}", '${rootView.extjsDomain}').load({callback: function()
+      {
+        measure.value("#{v.goodView.measureKey}")
+      }})
 
       //~: allow editing when create
       if(("#{v.creating}" == 'true') && !isread)
-        extjsf.co("${z:vid(v, 'measure')}", '${rootView.extjsDomain}').setReadOnly(false)
+        measure.co().setReadOnly(false)
 
       //~: load groups
       if(!isread) extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').load()

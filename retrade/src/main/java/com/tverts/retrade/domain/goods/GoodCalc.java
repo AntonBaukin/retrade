@@ -12,10 +12,12 @@ import com.tverts.api.retrade.goods.Calc;
 
 /* com.tverts: endure (core) */
 
+import com.tverts.api.retrade.goods.CalcItem;
 import com.tverts.endure.OxNumericTxBase;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 
 
@@ -63,6 +65,33 @@ public class GoodCalc extends OxNumericTxBase
 
 			//=: semi-ready
 			semiReady = c.isSemiReady();
+
+			//?: {super-good} update sub-volumes
+			if(superGood != null)
+			{
+				//~: check calc parts
+				EX.asserte(getParts());
+				EX.assertx(getParts().size() == 1);
+				EX.assertx(CMP.eq(getParts().get(0).getGoodUnit(), superGood));
+
+				//?: {has no items}
+				if(c.getItems().isEmpty())
+				{
+					CalcItem ci = new CalcItem();
+					Goods.init(ci, getParts().get(0));
+					c.getItems().add(ci);
+				}
+
+				//~: check ox-calc items
+				EX.asserte(c.getItems());
+				EX.assertx(c.getItems().size() == 1);
+				c.getItems().get(0).setGood(superGood.getPrimaryKey());
+
+				//~: update the sub-volume
+				EX.assertn(c.getSubVolume());
+				getParts().get(0).setVolume(c.getSubVolume());
+				c.getItems().get(0).setVolume(c.getSubVolume());
+			}
 		}
 	}
 
