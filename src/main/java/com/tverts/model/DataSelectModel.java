@@ -27,11 +27,22 @@ public interface DataSelectModel
 
 	/* Data Select Model */
 
-	public Integer getDataStart();
+	public Integer  getDataStart();
 
-	public void    setDataStart(Integer start);
+	public void     setDataStart(Integer start);
 
-	public Integer getDataLimit();
+	public Integer  getDataLimit();
 
-	public void    setDataLimit(Integer start);
+	public void     setDataLimit(Integer start);
+
+	/**
+	 * Tells whether this selection model applies
+	 * the given restriction (may be a flag object,
+	 * string code, else). Returns restriction
+	 * object, or null or true in simple.
+	 */
+	default Object  getRestriction(Object flag)
+	{
+		return null;
+	}
 }
