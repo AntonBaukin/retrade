@@ -264,6 +264,9 @@ from GoodUnit gu where
 		  addPart("gu.domain.id = :domain").
 		  param("domain", mb.domain());
 
+		//~: general restriction
+		restrictGoodsGeneral(qb, mb);
+
 		//~: keywords search restrictions
 		gusSearch(qb, mb.searchNames());
 
@@ -335,6 +338,9 @@ from GoodUnit gu where
 		  "gu.domain.id = :domain"
 		).
 		  param("domain", mb.domain());
+
+		//~: general restriction
+		restrictGoodsGeneral(qb, mb);
 
 		//~: keywords search restrictions
 		gusSearch(qb, mb.searchNames());
@@ -475,6 +481,9 @@ from GoodUnit gu where
 		).
 		  param("list", mb.getObjectKey());
 
+		//~: general restriction
+		restrictGoodsGeneral(qb, mb);
+
 		//~: keywords search restrictions
 		gusSearch(qb, mb.searchNames());
 
@@ -500,6 +509,9 @@ from GoodUnit gu where
 		  "gp.priceList.id = :list"
 		).
 		  param("list", mb.getObjectKey());
+
+		//~: general restriction
+		restrictGoodsGeneral(qb, mb);
 
 		//~: keywords search restrictions
 		gusSearch(qb, mb.searchNames());
@@ -1046,6 +1058,10 @@ from MeasureUnit mu where
 		).
 		  param("domain", mb.domain());
 
+		//~: general restriction
+		if(mb instanceof DataSelectModelBean)
+			restrictGoodsGeneral(qb, mb);
+
 		//~: keywords search restrictions
 		gusSearch(qb, mb.searchNames());
 
@@ -1207,5 +1223,20 @@ from MeasureUnit mu where
 
 		//~: restrict
 		restrictGoodsBySelSet(p, selset, what);
+	}
+
+	protected void     restrictGoodsGeneral(QueryBuilder qb, DataSelectModel mb)
+	{
+		if(Boolean.TRUE.equals(mb.getRestriction("goods.buy")))
+			qb.getClauseWhere().addPart("gu.visibleBuy = true");
+
+		if(Boolean.TRUE.equals(mb.getRestriction("goods.sell")))
+			qb.getClauseWhere().addPart("gu.visibleSell = true");
+
+		if(Boolean.TRUE.equals(mb.getRestriction("goods.lists")))
+			qb.getClauseWhere().addPart("gu.visibleLists = true");
+
+		if(Boolean.TRUE.equals(mb.getRestriction("goods.reports")))
+			qb.getClauseWhere().addPart("gu.visibleReports = true");
 	}
 }

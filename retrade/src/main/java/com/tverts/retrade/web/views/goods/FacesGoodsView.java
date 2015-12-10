@@ -103,6 +103,9 @@ public class FacesGoodsView extends ModelView
 		//=: select aggregated values
 		mb.setAggrValues(true);
 
+		//=: lists-only restriction
+		mb.setRestriction("goods.lists");
+
 		return mb;
 	}
 

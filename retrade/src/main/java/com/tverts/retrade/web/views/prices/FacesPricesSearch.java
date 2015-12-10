@@ -66,6 +66,9 @@ public class FacesPricesSearch extends ModelView
 
 			//~: search words
 			gm.setSearchNames(sm.getSearchNames());
+
+			//~: additional restriction
+			gm.setRestriction(SU.s2s(request().getParameter("restriction")));
 		}
 		//~: search with prices
 		else
@@ -75,6 +78,9 @@ public class FacesPricesSearch extends ModelView
 
 			//~: search words
 			pm.setSearchNames(sm.getSearchNames());
+
+			//~: additional restriction
+			pm.setRestriction(SU.s2s(request().getParameter("restriction")));
 		}
 
 		//~: domain

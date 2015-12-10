@@ -38,7 +38,15 @@ public class PriceListModelBean extends NumericSelectModelBean
 	}
 
 
-	/* Price List Model (read) */
+	/* Data Select Model */
+
+	public Object getRestriction(Object flag)
+	{
+		return flag.equals(restriction)?(Boolean.TRUE):(null);
+	}
+
+
+	/* Price List Model */
 
 	public PriceListEntity priceList()
 	{
@@ -50,6 +58,18 @@ public class PriceListModelBean extends NumericSelectModelBean
 	{
 		return (priceList() == null)?(null):
 		  (priceList().getPrimaryKey());
+	}
+
+	public String getRestriction()
+	{
+		return restriction;
+	}
+
+	private String restriction;
+
+	public void setRestriction(String restriction)
+	{
+		this.restriction = restriction;
 	}
 
 

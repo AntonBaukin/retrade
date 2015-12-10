@@ -34,6 +34,14 @@ import com.tverts.support.IO;
 @XmlType(name = "goods-model")
 public class GoodsModelBean extends DataSelectModelBean
 {
+	/* Data Select Model */
+
+	public Object getRestriction(Object flag)
+	{
+		return flag.equals(restriction)?(Boolean.TRUE):(null);
+	}
+
+
 	/* Goods Model */
 
 	/**
@@ -65,6 +73,18 @@ public class GoodsModelBean extends DataSelectModelBean
 	public void setAggrValues(boolean aggrValues)
 	{
 		this.aggrValues = aggrValues;
+	}
+
+	public String getRestriction()
+	{
+		return restriction;
+	}
+
+	private String restriction;
+
+	public void setRestriction(String restriction)
+	{
+		this.restriction = restriction;
 	}
 
 

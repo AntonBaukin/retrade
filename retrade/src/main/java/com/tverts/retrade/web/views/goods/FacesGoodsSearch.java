@@ -46,6 +46,9 @@ public class FacesGoodsSearch extends ModelView
 		//~: search words
 		mb.setSearchNames(SU.urld(request().getParameter("searchGoods")));
 
+		//~: additional restriction
+		mb.setRestriction(SU.s2s(request().getParameter("restriction")));
+
 		return mb;
 	}
 

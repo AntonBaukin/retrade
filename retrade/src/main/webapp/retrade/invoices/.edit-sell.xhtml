@@ -401,7 +401,8 @@ ${v.forceSecureEdit()}
     </f:facet>
 
     <f:facet name = "proxy-props">
-      reader: ZeT.defined('retrade.readers.GoodUnitView')
+      reader: ZeT.defined('retrade.readers.GoodUnitView'),
+      extraParams: { restriction: 'goods.sell' }
     </f:facet>
   </x:data-store>
 
