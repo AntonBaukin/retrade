@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
+	 viewBox="0 0 16 16" xml:space="preserve">
+<g>
+	<rect x="2.19" y="1.87" fill="#FFFFFF" width="7.62" height="8.31"/>
+	<path fill="none" stroke="#5C5E5F" stroke-width="1.5" stroke-miterlimit="10" d="M1.5,3.42C1.5,2.08,3.52,1,6,1
+		c2.48,0,4.5,1.08,4.5,2.42"/>
+	<polyline fill="none" stroke="#5C5E5F" stroke-width="0.75" stroke-miterlimit="10" points="9.98,3.42 9.98,10.35 2.02,10.35 
+		2.02,3.42 	"/>
+	<rect x="4.75" y="5.67" fill="none" stroke="#5C5E5F" stroke-width="0.5" stroke-miterlimit="10" width="2.5" height="4"/>
+</g>
+<g id="Goods_Train_1_">
+	<ellipse fill="#FFFFFF" stroke="#5C5E5F" stroke-width="0.5" stroke-miterlimit="10" cx="7.47" cy="14.41" rx="1.06" ry="1.09"/>
+	<path fill="#FFFFFF" stroke="#5C5E5F" stroke-width="0.5" stroke-miterlimit="10" d="M10.3,13.33c0.58,0,1.06,0.49,1.06,1.08
+		s-0.47,1.09-1.06,1.09c-0.59,0-1.06-0.49-1.06-1.09S9.71,13.33,10.3,13.33z"/>
+	<path fill="#FFFFFF" stroke="#5C5E5F" stroke-width="0.75" stroke-miterlimit="10" d="M12.06,9.71v2.53c0,0.2-0.16,0.37-0.37,0.37
+		H6.23c-0.16,0-0.3-0.1-0.35-0.25L5.02,9.81c-0.02-0.06-0.02-0.13-0.01-0.2l0.28-1.07c0.04-0.16,0.19-0.27,0.36-0.27H11"/>
+	<path fill="#FFFFFF" stroke="#5C5E5F" stroke-width="0.5" stroke-miterlimit="10" d="M11.74,9.71l-0.78-1.04
+		C10.78,8.43,10.8,8.11,11,7.9l0.93-0.96c0.09-0.08,0.19-0.14,0.31-0.16l1.6-0.27c0.21-0.04,0.42,0.05,0.54,0.22l0.5,0.69
+		c0.19,0.26,0.13,0.64-0.14,0.82l-2.25,1.59C12.26,10.01,11.92,9.95,11.74,9.71z"/>
+</g>
+</svg>

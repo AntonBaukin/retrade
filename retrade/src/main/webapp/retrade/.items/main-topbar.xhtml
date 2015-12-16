@@ -154,7 +154,7 @@
         </f:facet>
 
 
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods')}">
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods-nav')}">
           <f:facet name = "extjs-props">
 
             text: 'Товары', xtype: 'menuitem',
@@ -165,10 +165,21 @@
         </x:component>
 
 
+        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods')}">
+          <f:facet name = "extjs-props">
+
+            text: 'Товары, склады, цены', xtype: 'menuitem',
+            iconCls: 'retrade-good-store-icon',
+            disabled: ${not rootView.isSecure('view: goods')}
+
+          </f:facet>
+        </x:component>
+
+
         <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods-tree')}">
           <f:facet name = "extjs-props">
 
-            text: 'Каталог товаров', xtype: 'menuitem',
+            text: 'Категории товаров', xtype: 'menuitem',
             iconCls: 'retrade-goods-tree-icon',
             disabled: ${not rootView.isSecure('view: goods')}
 

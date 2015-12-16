@@ -364,6 +364,12 @@ table.retrade-align-right.x-field
   border-right-color: #bfbfbf;  border-bottom-color: #bfbfbf;
 }
 
+.x-btn-default-small.retrade-button-white,
+  .x-btn-over.x-btn-default-small.retrade-button-white
+{
+  background: linear-gradient(to right, #FFF 0%, #EEE 101%);
+}
+
 
 /* User Web Links (tiles) */
 

@@ -63,8 +63,20 @@ function genUserLinks(authLogin)
 	var catalogs = [
 
 		{
-			id    : 'goods-stores-prices',
+			id    : 'goods-nav',
 			text  : 'Товары',
+			hint  : 'Таблица товаров с навигацией',
+			icon  : 'retrade-goods-icon',
+			open  : {
+				panel  : 'center',
+				domain : 'desktop-content:retrade-main-menu:goods-nav:',
+				link   : '/goods/goods-nav'
+			}
+		},
+
+		{
+			id    : 'goods-stores-prices',
+			text  : 'Товары, склады, цены',
 			hint  : 'Товары, товары на складах, цены товаров',
 			icon  : 'retrade-goods-icon',
 			open  : {
@@ -76,8 +88,8 @@ function genUserLinks(authLogin)
 
 		{
 			id    : 'goods-tree',
-			text  : 'Каталог товаров',
-			hint  : 'Иерархический каталог товаров',
+			text  : 'Категории товаров',
+			hint  : 'Иерархический каталог категорий товаров',
 			icon  : 'retrade-goods-tree-icon',
 			open  : {
 				panel  : 'center',
