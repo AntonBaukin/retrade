@@ -706,7 +706,7 @@ public class FacesGoodEditView extends ModelView
 		  getGoodUnitStrict(getGoodView().getObjectKey());
 
 		//~: invoke the coding script
-		return (String) JsX.apply("web/views/goods/Goods.jsx",
+		return (String) JsX.apply("web/views/goods/sub-goods.jsx",
 		  "encodeGoodMeasures", goodUnit);
 	}
 

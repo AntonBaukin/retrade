@@ -38,7 +38,13 @@ public class GoodsModelBean extends DataSelectModelBean
 
 	public Object getRestriction(Object flag)
 	{
-		return flag.equals(restriction)?(Boolean.TRUE):(null);
+		if(flag.equals(restriction))
+			return Boolean.TRUE;
+
+		if(flag.equals("goods-folder"))
+			return goodsFolder;
+
+		return null;
 	}
 
 
@@ -85,6 +91,18 @@ public class GoodsModelBean extends DataSelectModelBean
 	public void setRestriction(String restriction)
 	{
 		this.restriction = restriction;
+	}
+
+	public Long getGoodsFolder()
+	{
+		return goodsFolder;
+	}
+
+	private Long goodsFolder;
+
+	public void setGoodsFolder(Long goodsFolder)
+	{
+		this.goodsFolder = goodsFolder;
 	}
 
 

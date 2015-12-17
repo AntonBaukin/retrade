@@ -29,24 +29,15 @@ ${v.checkModelRequestedWithRedirect}
 
     <f:facet name = "toolbar">
 
+      <!-- [goods controls] -->
       <ui:decorate template = '.add-goods.xhtml'
         xmlns = 'http://www.w3.org/1999/xhtml'>
 
         <ui:param name = "treeTableLayout" value = "tree-table-layout"/>
-        <ui:param name = "tree" value = "tree"/>
+        <ui:param name = "tree" value = "tree-layout"/>
         <ui:param name = "goodsTreeSplitter" value = "goods-tree-splitter"/>
       </ui:decorate>
 
-      <script type = "text/javascript">
-      //<![CDATA[
-
-      extjsf.bind("${z:vid(v, 'toggle-good-view')}", '${rootView.extjsDomain}').onToggleGoodView =
-        function(mode)
-        {
-          ZeT.log('Active mode: ', mode)
-        }
-      //]]>
-      </script>
 
       <x:component coid = "${z:vid(v, '_tb_fill_0')}">
         <f:facet name = "extjs-props">
@@ -158,6 +149,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [goods tree + table -->
 
+    <!-- [goods store] -->
     <x:data-store storeId = "${z:vid(v, 'goodUnits')}"
       modelView = "${v}" pageSize = "10">
 
@@ -177,13 +169,78 @@ ${v.checkModelRequestedWithRedirect}
         border: false, layout: {type: 'hbox', align: 'stretch'}
       </f:facet>
 
-      <!-- [categories tree] -->
-      <x:component coid = "${z:vid(v, 'tree')}">
+
+      <!-- [categories tree -->
+
+      <x:component coid = "${z:vid(v, 'tree-layout')}">
         <f:facet name = "extjs-props">
-          xtype: 'panel', bodyCls: 'retrade-transparent-panel',
-          border: false, flex: 1, hidden: true
+          xtype: 'panel', bodyCls: 'retrade-transparent-panel', hidden: true,
+          border: false, flex: 1, layout: 'fit'
         </f:facet>
+
+        <x:component coid = "${z:vid(v, 'tree')}">
+          <f:facet name = "extjs-props">
+            xtype: 'treepanel', border: false, flex: 1,
+            rootVisible: false, allowDeselect: true,
+            cls: 'ux-tree-folders-only'
+          </f:facet>
+        </x:component>
       </x:component>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+      //~: assign tree store
+      extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('add', function(tree)
+      {
+        tree.setStore(new Ext.data.TreeStore({
+          autoDestroy: true, rootVisible: false, root: {
+            expanded: true, children: ZeT.s2o("${z:jss(v.goodFoldersTree)}")
+          }
+        }))
+      })
+
+      //~: add expand-collapse tree toggle button
+      extjsf.bind("${z:vid(v, 'tree-layout')}", '${rootView.extjsDomain}').on('afterrender', function(lay)
+      {
+        var expanded
+
+        Ext.create({ xtype: 'button',
+          iconCls: 'retrade-tree-end-plus-icon',
+          width: retrade_default('button-square-width'),
+          height: retrade_default('button-square-height'),
+          style: { position: 'absolute', top: '2px', right: '2px' },
+          renderTo: lay.getEl(), handler: function(btn)
+          {
+            var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+
+            if(expanded = !expanded)
+            {
+              btn.setIconCls('retrade-tree-end-minus-icon')
+              tree.getRootNode().expandChildren(true)
+            }
+            else
+            {
+              btn.setIconCls('retrade-tree-end-plus-icon')
+              extjsf.support.collapseTreeToSel(tree)
+            }
+          }
+        })
+      })
+
+      //~: good folder selection change
+      extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('selectionchange', function(tree, sel)
+      {
+        var goods = extjsf.co("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}')
+        if(!sel.length) sel = null; else  sel = sel[0]
+        goods.getProxy().setExtraParam('goodsFolder', (sel)?(sel.get('objectKey')):(''))
+        goods.loadPage(1)
+      })
+
+      //]]>
+      </script>
+
+      <!-- categories tree] -->
 
 
       <x:component coid = "${z:vid(rootView, 'goods-tree-splitter')}">

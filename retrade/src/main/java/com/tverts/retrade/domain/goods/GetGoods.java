@@ -1238,5 +1238,19 @@ from MeasureUnit mu where
 
 		if(Boolean.TRUE.equals(mb.getRestriction("goods.reports")))
 			qb.getClauseWhere().addPart("gu.visibleReports = true");
+
+		//~: restrict by the goods folder
+		Long folder = (Long) mb.getRestriction("goods-folder");
+		if(folder != null)
+		{
+			final String Q =
+"gu.id in (select c.item.item.id from TreeCross c where (c.folder.id = :folder))";
+
+			qb.nameEntity("TreeCross", TreeCross.class);
+
+			//~: restrict by the folder
+			qb.getClauseWhere().addPart(Q).
+			  param("folder", folder);
+		}
 	}
 }

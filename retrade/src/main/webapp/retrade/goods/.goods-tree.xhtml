@@ -300,18 +300,7 @@
   //~: expand the tree to the selection
   extjsf.bindHandler("${z:vid(v, 'collapse-tree')}", '${rootView.extjsDomain}', function()
   {
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
-    var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
-
-    tree.collapseAll(function()
-    {
-       if(sel) while(sel.parentNode)
-       {
-         sel.parentNode.expand()
-         sel = sel.parentNode;
-       }
-    })
-
+    extjsf.support.collapseTreeToSel("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
   })
 
   //]]>

@@ -1554,5 +1554,21 @@ extjsf.support = ZeT.singleInstance('extjsf.support', {
 			//?: {has no more update requests}
 			if(ui === b.updating) fn(grid)
 		})
+	},
+
+	collapseTreeToSel      : function()
+	{
+		var tree = extjsf.co.apply(extjsf, arguments)
+		var sel  = tree.getSelectionModel().getSelection()
+		sel = sel.length && sel[0]
+
+		tree.collapseAll(function()
+		{
+			if(sel) while(sel.parentNode)
+			{
+				sel.parentNode.expand()
+				sel = sel.parentNode
+			}
+		})
 	}
 })

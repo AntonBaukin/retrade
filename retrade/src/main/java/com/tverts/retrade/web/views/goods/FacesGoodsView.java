@@ -25,6 +25,10 @@ import static com.tverts.spring.SpringPoint.bean;
 
 import com.tverts.model.ModelBean;
 
+/* com.tverts: scripting */
+
+import com.tverts.jsx.JsX;
+
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
@@ -83,11 +87,16 @@ public class FacesGoodsView extends ModelView
 	}
 
 
-	/* public: FacesGoodsView (bean) interface */
+	/* public: view interface */
 
-	public GoodsModelBean    getModel()
+	public GoodsModelBean getModel()
 	{
 		return (GoodsModelBean)super.getModel();
+	}
+
+	public String getGoodFoldersTree()
+	{
+		return (String) JsX.apply("web/views/goods/Goods", "getGoodFoldersTree");
 	}
 
 

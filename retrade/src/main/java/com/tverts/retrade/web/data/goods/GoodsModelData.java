@@ -17,6 +17,10 @@ import javax.xml.bind.annotation.XmlType;
 
 import static com.tverts.spring.SpringPoint.bean;
 
+/* com.tverts: servlet */
+
+import static com.tverts.servlet.RequestPoint.request;
+
 /* com.tverts: model */
 
 import com.tverts.model.ModelData;
@@ -26,6 +30,10 @@ import com.tverts.model.ModelData;
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnitView;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
+
+/* com.tverts: support */
+
+import com.tverts.support.SU;
 
 
 /**
@@ -60,6 +68,7 @@ public class GoodsModelData implements ModelData
 	@XmlElement
 	public int getGoodsNumber()
 	{
+		assignGoodsFolder();
 		return bean(GetGoods.class).countGoodUnits(getModel());
 	}
 
@@ -68,6 +77,8 @@ public class GoodsModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<GoodUnitView> getGoods()
 	{
+		assignGoodsFolder();
+
 		List<Object[]>     sel = (List<Object[]>) bean(GetGoods.class).
 		  selectGoodUnits(getModel());
 		List<GoodUnitView> res = new ArrayList<GoodUnitView>(sel.size());
@@ -78,6 +89,12 @@ public class GoodsModelData implements ModelData
 			);
 
 		return res;
+	}
+
+	protected void assignGoodsFolder()
+	{
+		String p = SU.s2s(request().getParameter("goodsFolder"));
+		model.setGoodsFolder((p == null)?(null):Long.parseLong(p));
 	}
 
 
