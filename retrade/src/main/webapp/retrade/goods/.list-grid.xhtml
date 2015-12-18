@@ -1,0 +1,153 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+  xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
+  xmlns:f  = 'http://java.sun.com/jsf/core'
+  xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
+  xmlns:z  = 'uri:tverts.com'>
+
+    <!-- [goods tree + table -->
+
+    <!-- [goods store] -->
+    <x:data-store storeId = "${z:vid(v, 'goodUnits')}"
+      modelView = "${v}" pageSize = "${pageSize}">
+
+      <f:facet name = "store-props">
+        model: 'retrade.model.GoodUnitView', remoteSort: true,
+        sorters: [{ property: 'goodName', direction: 'ASC' }]
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        reader: ZeT.defined('retrade.readers.GoodUnitView')
+      </f:facet>
+    </x:data-store>
+
+    <x:component coid = "${z:vid(v, 'tree-table-layout')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', bodyCls: 'retrade-transparent-panel',
+        border: false, layout: {type: 'hbox', align: 'stretch'}
+      </f:facet>
+
+
+      <!-- [categories tree -->
+
+      <x:component coid = "${z:vid(v, 'tree-layout')}">
+        <f:facet name = "extjs-props">
+          xtype: 'panel', bodyCls: 'retrade-transparent-panel', hidden: true,
+          border: false, flex: 1, layout: 'fit'
+        </f:facet>
+
+        <x:component coid = "${z:vid(v, 'tree')}">
+          <f:facet name = "extjs-props">
+            xtype: 'treepanel', border: false, flex: 1,
+            rootVisible: false, allowDeselect: true,
+            cls: 'ux-tree-folders-only'
+          </f:facet>
+        </x:component>
+      </x:component>
+
+      <script type = "text/javascript">
+      //<![CDATA[
+
+      //~: assign tree store
+      extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('add', function(tree)
+      {
+        tree.setStore(new Ext.data.TreeStore({
+          autoDestroy: true, rootVisible: false, root: {
+            expanded: true, children: ZeT.s2o("${z:jss(v.goodFoldersTree)}")
+          }
+        }))
+      })
+
+      //~: add expand-collapse tree toggle button
+      extjsf.bind("${z:vid(v, 'tree-layout')}", '${rootView.extjsDomain}').on('afterrender', function(lay)
+      {
+        var expanded
+
+        Ext.create({ xtype: 'button',
+          iconCls: 'retrade-tree-end-plus-icon',
+          width: retrade_default('button-square-width'),
+          height: retrade_default('button-square-height'),
+          style: { position: 'absolute', top: '2px', right: '2px' },
+          renderTo: lay.getEl(), handler: function(btn)
+          {
+            var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+
+            if(expanded = !expanded)
+            {
+              btn.setIconCls('retrade-tree-end-minus-icon')
+              tree.getRootNode().expandChildren(true)
+            }
+            else
+            {
+              btn.setIconCls('retrade-tree-end-plus-icon')
+              extjsf.support.collapseTreeToSel(tree)
+            }
+          }
+        })
+      })
+
+      //~: good folder selection change
+      extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('selectionchange', function(tree, sel)
+      {
+        var goods = extjsf.co("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}')
+        if(!sel.length) sel = null; else  sel = sel[0]
+        goods.getProxy().setExtraParam('goodsFolder', (sel)?(sel.get('objectKey')):(''))
+        goods.loadPage(1)
+      })
+
+      //]]>
+      </script>
+
+      <!-- categories tree] -->
+
+
+      <x:component coid = "${z:vid(rootView, 'goods-tree-splitter')}">
+        <f:facet name = "extjs-props">
+          xtype: 'splitter', collapsible: false, hidden: true
+        </f:facet>
+      </x:component>
+
+
+      <!-- [goods tree] -->
+      <x:data-grid coid = "${z:vid(v, 'grid')}" selset = "true"
+       storeId = "${z:vid(v, 'goodUnits')}">
+
+        <f:facet name = "grid-props">
+          columns: ZeT.defined('retrade.columns.${columnModel}'),
+          selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+          flex: 2, pager: true, sortableColumns: true
+        </f:facet>
+      </x:data-grid>
+    </x:component>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').display_good = function(sel)
+  {}
+
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function(m, sel)
+  {
+    if(sel = ((sel.length)?(sel[0]):(null))) sel = {
+      pkey: sel.getId(),
+      code: sel.get('goodCode'),
+      name: sel.get('goodName')
+    }
+
+    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').display_good(sel)
+  })
+
+  //~: edit good unit
+  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    on('itemdblclick', function(comp, rec, node, row, event)
+  {
+    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
+      retradeOpenGoodWindow(rec, event)
+  })
+
+  //]]>
+  </script>
+
+  <!-- goods tree + table] -->
+</ui:component>

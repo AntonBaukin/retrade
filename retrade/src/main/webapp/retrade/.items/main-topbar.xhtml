@@ -493,6 +493,18 @@
       })
     })
 
+    //:~ open goods navigation root panel
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-goods-nav')}",
+      '${rootView.extjsDomain}', function()
+    {
+      var domain = extjsf.tempDomain('desktop-content:retrade-main-menu:goods-nav:');
+
+      ReTrade.desktop.loadDesktopPanel(
+        "${z:url('/go/retrade/goods/list-nav')}", {
+        'domain': domain
+      })
+    })
+
     //:~ open goods + stores + price lists root panel
     extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-goods')}",
       '${rootView.extjsDomain}', function()

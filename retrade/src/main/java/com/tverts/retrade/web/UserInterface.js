@@ -70,7 +70,7 @@ function genUserLinks(authLogin)
 			open  : {
 				panel  : 'center',
 				domain : 'desktop-content:retrade-main-menu:goods-nav:',
-				link   : '/goods/goods-nav'
+				link   : '/goods/list-nav'
 			}
 		},
 

@@ -14,9 +14,8 @@
       xtype: 'button', cls: 'retrade-button-white',
       width: retrade_default('button-square-width'),
       height: retrade_default('button-square-height'),
-      iconCls: 'retrade-tree-list', tooltipType: 'title',
-      tooltip: 'Показать дерево категорий товара слева',
-      margin: extjsf.dpts(0, 8, 0, 0)
+      iconCls: "${empty toggleTableView?('retrade-list-only'):(toggleTableView)}",
+      tooltipType: 'title', margin: extjsf.dpts(0, 8, 0, 0)
     </f:facet>
   </x:component>
 
@@ -26,14 +25,18 @@
   ZeT.scope(function()
   {
     var b = extjsf.bind("${z:vid(v, 'toggle-good-view')}", '${rootView.extjsDomain}')
-    var i = 0, c = [ 'retrade-tree-list', 'retrade-list-tree', 'retrade-list-only' ]
+    var i, c = [ 'retrade-tree-list', 'retrade-list-tree', 'retrade-list-only' ]
     var t = [ 'Показать дерево категорий товара слева',
       'Показать дерево категорий товара справа',
       'Показать только таблицу товаров' ]
 
-    b.on('click', function()
+    //~: initial index by the icon class
+    i = ZeT.asserts(b.extjsPropsRaw().iconCls)
+    ZeT.assert((i = c.indexOf(i)) >= 0)
+    i = (i + 1) % 3
+
+    function assignIndex()
     {
-      i = (i + 1) % 3
       b.co().setIconCls(c[i])
       b.co().setTooltip(t[i])
 
@@ -70,7 +73,17 @@
 
       if(ZeT.isf(b.onToggleGoodView))
         b.onToggleGoodView(m)
+    }
+
+    //~: react on the click
+    b.on('click', function()
+    {
+      i = (i + 1) % 3
+      assignIndex()
     })
+
+    //~: initial setup
+    b.on('added', assignIndex)
   })
   //]]>
   </script>

@@ -40,6 +40,7 @@ function getGoodFoldersTree(domain)
 			var p = fetch(f.getParent().getPrimaryKey())
 			p.leaf = false; if(!p.children) p.children = []
 			p.children.push(x)
+			x.parentKey = p.objectKey
 		}
 		else //<-- is a root
 			roots.push(x)
