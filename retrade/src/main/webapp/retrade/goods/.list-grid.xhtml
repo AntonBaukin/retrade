@@ -116,7 +116,13 @@
         <f:facet name = "grid-props">
           columns: ZeT.defined('retrade.columns.${columnModel}'),
           selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-          flex: 2, pager: true, sortableColumns: true
+          flex: 2, pager: true, sortableColumns: true, viewConfig: {
+            getRowClass: function()
+            {
+              var f = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getRowClass
+              return ZeT.isf(f)?(f.apply(this, arguments)):('')
+            }
+          }
         </f:facet>
       </x:data-grid>
     </x:component>

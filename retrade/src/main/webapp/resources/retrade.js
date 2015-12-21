@@ -753,7 +753,12 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 1
+		   text: "Наименование", dataIndex: 'goodName',
+		   sortable: true, flex: 1, renderer: function(v, meta)
+		   {
+				meta.tdCls = 'retrade-goods-grid-column-name'
+				return v
+		   }
 		 },
 
 		 {
@@ -798,7 +803,12 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'goodName', sortable: true, flex: 3
+		   text: "Наименование", dataIndex: 'goodName',
+		   sortable: true, flex: 3, renderer: function(v, meta)
+		   {
+				meta.tdCls = 'retrade-goods-grid-column-name'
+				return v
+		   }
 		 },
 
 		 {

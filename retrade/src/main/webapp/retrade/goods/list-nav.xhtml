@@ -58,26 +58,70 @@ ${v.checkModelRequestedWithRedirect}
     {
       //~: selected folder node
       var t = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
-      var f = t.getSelection()
-      if(!f || f.length != 1) return; else f = f[0]
+      var f = t.getSelection(); if(!f || f.length != 1) return; else f = f[0]
 
       //~: trace up to the root
-      var ms = []; while(true)
+      var ms = [], p = f; while(true)
       {
         //~: create model item
         ms.unshift(Ext.create('retrade.model.GoodUnitView', {
-          objectKey: 'folder$'+ f.get('objectKey'),
-          goodCode: f.get('code'), goodName: f.get('name')
+          objectKey: 'folder$'+ p.get('objectKey'),
+          goodCode: p.get('code'), goodName: p.get('name'),
+          uiRowClass: ZeTS.cat('retrade-goods-grid-row-', (f == p)?('selected'):('parent'))
         }))
 
         //?: {has parent node}
-        if(ZeT.isu(f = f.get('parentKey'))) break
-        f = ZeT.assertn(t.getStore().getAt(t.getStore().find('objectKey', f)))
+        if(ZeT.isu(p = p.get('parentKey'))) break
+        p = ZeT.assertn(t.getStore().getAt(t.getStore().find('objectKey', p)))
       }
+
+      //~: has the children
+      ZeT.each(f.get('children'), function(c)
+      {
+        ms.push(Ext.create('retrade.model.GoodUnitView', {
+          objectKey: 'folder$'+ c.objectKey, goodCode: c.code, goodName: c.name,
+          parentFolder : f, uiRowClass: 'retrade-goods-grid-row-child'
+        }))
+      })
 
       //~: insert the models
       store.insert(0, ms)
     })
+
+    //~: set special formatter of the grid rows
+    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getRowClass = function(record)
+    {
+      return record.get('uiRowClass')
+    }
+
+    //~: grid double click -> open good if not a folder
+    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow2 =
+      extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow
+    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow  = function(record, e)
+    {
+      var f = record.get('objectKey'); if(f.indexOf('folder$') != 0)
+        return extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow2(record, e)
+    }
+
+    //~: grid click -> open folder
+    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+      on('itemclick', function(grid, record)
+      {
+        var f = record.get('objectKey'); if(f.indexOf('folder$') != 0) return
+        var k = f.substring('folder$'.length)
+
+        //~: find the folder in the tree
+        var t = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+        f = t.getStore().query('objectKey', k)
+        if(f && (f.getCount() == 1))
+          return t.getSelectionModel().select([ f.getAt(0) ])
+
+        //~: expand the parent node
+        record.get('parentFolder').expand()
+        f = t.getStore().query('objectKey', k)
+        ZeT.assert(f && (f.getCount() == 1))
+        t.getSelectionModel().select([ f.getAt(0) ])
+      })
 
     //]]>
     </script>

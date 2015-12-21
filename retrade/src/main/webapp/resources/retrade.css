@@ -1589,3 +1589,31 @@ td.retrade-client-good-product-part-mucode,
 {
   padding: 2px 0 0 2px;
 }
+
+/* [retrade/goods/list] */
+
+/*x-grid-item-alt*/
+
+.x-grid-item .retrade-goods-grid-row-parent,
+  .x-grid-item .retrade-goods-grid-row-child,
+  .x-grid-item .retrade-goods-grid-row-selected
+{
+  background-color: rgba(231, 179, 216, 0.25)
+}
+
+.x-grid-item.x-grid-item-alt .retrade-goods-grid-row-parent,
+  .x-grid-item.x-grid-item-alt .retrade-goods-grid-row-child,
+  .x-grid-item.x-grid-item-alt .retrade-goods-grid-row-selected
+{
+  background-color: rgba(230, 156, 174, 0.4)
+}
+
+.x-grid-item .retrade-goods-grid-row-selected .retrade-goods-grid-column-name > div
+{
+  border: 2px dotted rgba(255, 0, 45, 0.67); padding: 6px 3px 5px;
+}
+
+.x-grid-item .retrade-goods-grid-row-child .retrade-goods-grid-column-name > div
+{
+  padding-left: 2em;
+}
