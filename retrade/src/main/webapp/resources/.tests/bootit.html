@@ -36,28 +36,35 @@
 
 
   <link type = 'text/css' rel = 'stylesheet'
+     href = "../bootstrap/bootstrap-light-blue.css"/>
+
+  <!--
+  <link type = 'text/css' rel = 'stylesheet'
      href = "../bootstrap/bootstrap.css"/>
 
   <link type = 'text/css' rel = 'stylesheet'
      href = "../bootstrap/bootstrap-theme.css"/>
+   -->
 </head>
 
-<body ng-controller = "rootCtrl">
+<body class = "background-dark" ng-controller = "rootCtrl">
 
-<div class = "container">
-  <div class = "page-header">
-    <h3>Welcome to AngularJS and Bootstrap Kick Demo!</h3>
-    Good day, <strong style = 'cursor:pointer' ng-click = "setUserName(true)">{{userName || 'Stranger'}}</strong>!
-  </div>
+<div class = "page-header">
+  <h3>Welcome to AngularJS and Bootstrap Kick Demo!</h3>
+  Good day, <strong style = 'cursor:pointer' ng-click = "setUserName(true)">{{userName || 'Stranger'}}</strong>!
 </div>
 
-<div class = "container" ng-show = "!userNameSet">
-  <form class = "form-inline">
-    <label>
-      Please, tell Your name here:
-      <input class = "input-small" ng-model = "userName" ng-blur = "setUserName()" focus-on = "force-update-user-name"/>
-    </label>
-  </form>
+<div class = "content container">
+
+  <div ng-show = "!userNameSet">
+    <form class = "form-inline">
+      <label>
+        Please, tell Your name here:
+        <input class = "form-control input-small" ng-model = "userName" ng-blur = "setUserName()" focus-on = "force-update-user-name"/>
+      </label>
+    </form>
+  </div>
+
 </div>
 
 </body>
