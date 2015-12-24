@@ -10,7 +10,7 @@
 
     <!-- Primary Key -->
 
-    <id name = 'primaryKey' column = 'pk_entity'/>
+    <id name = 'primaryKey' column = 'pk_msg_obj'/>
 
 
     <!-- Message Box -->

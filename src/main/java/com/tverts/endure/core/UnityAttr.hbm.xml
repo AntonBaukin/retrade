@@ -1,0 +1,81 @@
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <class name = 'UnityAttr' table = 'core_unity_attr'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_unity_attr'/>
+
+
+    <!-- Unity -->
+
+    <many-to-one name = 'unity' foreign-key = 'fk_attr_unity'
+      unique-key = 'ux_unity_attr'>
+
+      <column name = 'fk_unity' not-null = 'true'>
+        <comment>Reference to Unity owning attribute</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Attribute Type -->
+
+    <many-to-one name = 'attrType' foreign-key = 'fk_attr_type'
+      unique-key = 'ux_unity_attr'>
+
+      <column name = 'fk_type' not-null = 'true'>
+        <comment>Type of the attribute that is unique for a Unity</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Index -->
+
+    <property name = 'index' unique-key = 'ux_unity_attr'>
+
+      <column name = 'attr_index'>
+        <comment>Index for values of array or list types</comment>
+      </column>
+    </property>
+
+
+    <!-- Value Integer -->
+
+    <property name = 'integer'>
+      <column name = 'val_int'>
+        <comment>Value of 64-bit signed integer</comment>
+      </column>
+    </property>
+
+
+    <!-- Value Number -->
+
+    <property name = 'number'>
+      <column name = 'val_num' precision = '22' scale = '9'>
+        <comment>Decimal value</comment>
+      </column>
+    </property>
+
+
+    <!-- Value String -->
+
+    <property name = 'string' type = 'text'>
+      <column name = 'val_str'>
+        <comment>Text value</comment>
+      </column>
+    </property>
+
+
+    <!-- Value Bytes -->
+
+    <property name = 'bytes'>
+      <column name = 'val_bytes'>
+        <comment>Binary value</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
