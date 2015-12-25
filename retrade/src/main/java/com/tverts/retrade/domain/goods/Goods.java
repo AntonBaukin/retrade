@@ -51,6 +51,14 @@ public class Goods
 	public static final String TYPE_GOOD_UNIT    =
 	  "ReTrade: Goods: Good Unit";
 
+	/**
+	 * Unified attributes of Good Units.
+	 * Values are collected from the properties
+	 * nested in various ox-objects of Goods.
+	 */
+	public static final String TYPE_GOOD_ATTR    =
+	  TYPE_GOOD_UNIT;
+
 	public static final String TYPE_GOODS_TREE   =
 	  "ReTrade: Goods: Tree";
 
@@ -93,6 +101,17 @@ public class Goods
 
 
 	/* Support Routines */
+
+	public static UnityType  typeGoodUnit()
+	{
+		return UnityTypes.unityType(GoodUnit.class, TYPE_GOOD_UNIT);
+	}
+
+	public static UnityType  typeGoodAttr()
+	{
+		EX.assertx(TYPE_GOOD_UNIT.equals(TYPE_GOOD_ATTR));
+		return typeGoodUnit();
+	}
 
 	public static String     getGoodUnitName(GoodUnit gu)
 	{

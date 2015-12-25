@@ -36,7 +36,14 @@
                 WARNING: do not increase it on an existing database!
               -->
               <property name = 'daysBack' value = '45'/>
+            </bean>
 
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Attribute Types for Goods
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.retrade.domain.goods.GenGoodAttrTypes'>
+              <property name = 'name' value = 'Good Attr Types'/>
             </bean>
 
           </list>
