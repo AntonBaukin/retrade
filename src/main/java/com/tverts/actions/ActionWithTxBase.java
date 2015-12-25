@@ -87,7 +87,7 @@ public abstract class ActionWithTxBase extends ActionBase
 
 	/* protected: ActionBase interface */
 
-	protected void openValidate()
+	protected void  openValidate()
 	{
 		super.openValidate();
 

@@ -5,12 +5,8 @@
 
 <hibernate-mapping package = 'com.tverts.endure.core'>
 
-  <class name = 'AttrType' table = 'core_attr_type'>
-
-
-    <!-- Primary Key -->
-
-    <id name = 'primaryKey' column = 'pk_attr_type'/>
+  <union-subclass name = 'AttrType' table = 'core_attr_type'
+    extends = 'com.tverts.endure.OxNumericBase'>
 
 
     <!-- Domain -->
@@ -43,5 +39,16 @@
         <comment>Name of the attribute unique for (Domain, Type)</comment>
       </column>
     </property>
-  </class>
+
+
+    <!-- Is System -->
+
+    <property name = 'system'>
+      <column name = 'is_system' not-null = 'true'>
+
+        <comment>Tells whether this type may be altered or removed</comment>
+      </column>
+    </property>
+
+  </union-subclass>
 </hibernate-mapping>

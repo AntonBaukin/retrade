@@ -60,4 +60,19 @@ public class AttrType extends OxNumericBase
 	{
 		this.name = name;
 	}
+
+	/**
+	 * Tells whether this type may be altered or removed.
+	 */
+	public boolean isSystem()
+	{
+		return system;
+	}
+
+	private boolean system;
+
+	public void setSystem(boolean system)
+	{
+		this.system = system;
+	}
 }

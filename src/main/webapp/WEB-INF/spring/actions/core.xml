@@ -4,13 +4,6 @@
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
 
   <!--=================================================
-    =  Unity Type Action Bulders                      =
-    +================================================-->
-
-  <import resource = 'unityType.xml'/>
-
-
-  <!--=================================================
     =  Unity Action Bulders                           =
     +================================================-->
 
@@ -85,6 +78,7 @@
 
         <ref bean = 'coreUnityTypesBuilders'/>
         <ref bean = 'coreUnityBuilders'/>
+        <ref bean = 'coreAttrTypesBuilders'/>
 
 
         <!-- Aggregated Values -->

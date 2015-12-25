@@ -27,7 +27,7 @@ public abstract class NumericBase implements NumericIdentity
 	}
 
 
-	/* Object Interface */
+	/* Object */
 
 	public boolean equals(Object o)
 	{

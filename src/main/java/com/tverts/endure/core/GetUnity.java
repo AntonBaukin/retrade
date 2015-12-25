@@ -286,6 +286,45 @@ select ut from Unity u join u.unityType ut
 	}
 
 
+	/* Unified Attributes */
+
+	public AttrType getAttrType(Long domain, Long type, String name)
+	{
+		EX.assertn(domain);
+		EX.assertn(type);
+		EX.asserts(name);
+
+/*
+
+ from AttrType where (domain.id = :domain) and
+   (attrType.id = :type) and (name = :name)
+
+ */
+		final String Q =
+
+"from AttrType where (domain.id = :domain) and\n" +
+"  (attrType.id = :type) and (name = :name)";
+
+		return object(AttrType.class, Q, "domain", domain, "type", type, "name", name);
+	}
+
+	public List<AttrType> getAttrTypes(Long domain, Long type)
+	{
+		EX.assertn(domain);
+		EX.assertn(type);
+
+		/*
+
+ from AttrType where (domain.id = :domain) and (attrType.id = :type)
+
+ */
+		final String Q =
+"from AttrType where (domain.id = :domain) and (attrType.id = :type)";
+
+		return list(AttrType.class, Q, "domain", domain, "type", type);
+	}
+
+
 	/* Secured Operations */
 
 	/**
