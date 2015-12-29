@@ -1037,6 +1037,59 @@ ZeT.init('retrade.globals', function()
 	//>: good calc part view
 
 
+	//<: good attribute type view
+
+	Ext.define('retrade.model.GoodAttrView', {
+	  extend: 'Ext.data.Model',
+
+	  idProperty: 'pkey',
+
+	  fields: [
+
+	    {name: 'pkey',         type: 'string'},
+	    {name: 'name',         type: 'string'},
+	    {name: 'nameLo',       type: 'string'},
+	    {name: 'system',       type: 'boolean'},
+	    {name: 'object',       type: 'string'},
+	    {name: 'value',        type: 'string'},
+
+	    {name: 'ox', depends: [ 'object' ], calculate: function(r) {
+	      return ZeT.log(ZeT.s2o(r.object))
+	    }},
+
+	    {name: 'val', depends: [ 'value' ], calculate: function(r) {
+	      return ZeT.s2o(r.value)
+	    }}
+	  ]
+	})
+
+
+	ZeT.defineDelay('retrade.columns.GoodAttrView', function()
+	{
+		return [
+
+		 {
+		   text: "Имя атрибута", dataIndex: 'nameLo', sortable: true, flex: 1
+		 },
+
+		 {
+		   text: "Создатель", dataIndex: 'system', sortable: false,
+		   width: extjsf.ex(12), align: 'right', renderer: function(v)
+		   {
+				return (v)?('Система'):('Пользователь')
+		   }
+		 }
+		]
+	})
+
+
+	ZeT.define('retrade.readers.GoodAttrView', {
+	  type: 'xml', rootProperty: 'good-attrs', record: 'good-attr'
+	})
+
+	//>: good attribute type view
+
+
 	//<: measure unit view
 
 	Ext.define('retrade.model.MeasureUnitView', {

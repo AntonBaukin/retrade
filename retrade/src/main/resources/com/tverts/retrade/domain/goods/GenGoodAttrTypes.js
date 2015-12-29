@@ -12,6 +12,9 @@ function genGoodTypes(ctx, gen)
 		//=: name
 		type.setName(ZeT.asserts(g.name))
 
+		//=: name local
+		type.setNameLo(ZeT.asserts(g.nameLo))
+
 		//=: is-system
 		type.setSystem(!!g.system)
 

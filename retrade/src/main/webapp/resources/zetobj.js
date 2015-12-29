@@ -999,8 +999,7 @@ var ZeT = window.ZeT = window.ZeT || {
 
 	s2o              : function(s)
 	{
-		ZeT.asserts(s)
-		return JSON.parse(s)
+		return (ZeT.isx(s) || ZeTS.ises(s))?(null):JSON.parse(s)
 	},
 
 	/**

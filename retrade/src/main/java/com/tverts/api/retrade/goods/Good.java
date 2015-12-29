@@ -1,8 +1,10 @@
 package com.tverts.api.retrade.goods;
 
-/* Java API for XML Binding */
+/* Java */
 
 import java.math.BigDecimal;
+
+/* Java API for XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

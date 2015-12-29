@@ -163,6 +163,18 @@ function genUserLinks(authLogin)
 	var system = !isSystem?(null):[
 
 		{
+			id    : 'system: good attrs',
+			text  : 'Атрибуты товаров',
+			icon  : 'retrade-good-attrs-icon',
+			color : 'O',
+			open  : {
+				domain : 'retrade-main-menu:good-attrs',
+				box    : { widthpt: 360, heightpt: 240 },
+				link   : '/goods/attrs'
+			}
+		},
+
+		{
 			id    : 'system: reports',
 			text  : 'Данные и отчёты',
 			icon  : 'retrade-reports-icon',

@@ -93,6 +93,15 @@
             </f:facet>
 
 
+            <!-- [good attributes ]-->
+            <x:component coid = "${z:vid(localView, 'retrade-main-menu-good-attrs')}">
+
+              <f:facet name = "extjs-props">
+                text: 'Атрибуты товаров', xtype: 'menuitem',
+                iconCls: 'retrade-good-attrs-icon'
+              </f:facet>
+            </x:component>
+
             <x:component coid = "${z:vid(localView, 'retrade-main-menu-datas')}">
 
               <f:facet name = "extjs-props">
@@ -667,6 +676,16 @@
       ReTrade.desktop.loadDesktopPanel(
         "${z:url('/go/retrade/ui/my-links')}", {
         'domain': domain
+      })
+    })
+
+    //:~ open settings - good attributes
+    extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-good-attrs')}",
+      '${rootView.extjsDomain}', function()
+    {
+      retrade_open_window({ url: '/goods/attrs',
+        tempDomain: 'retrade-main-menu:good-attrs',
+        box: { widthpt: 360, heightpt: 240 }, collapsible: true
       })
     })
 
