@@ -29,7 +29,8 @@ ${v.checkModelRequestedWithRedirect}
     </script>
 
     <f:facet name = "extjs-props">
-      layout: 'fit', bodyCls: 'retrade-back-panel'
+      bodyCls: 'retrade-back-panel',
+      layout: { type: 'vbox', align: 'stretch' }
     </f:facet>
 
     <f:facet name = "toolbar-props">
@@ -44,7 +45,7 @@ ${v.checkModelRequestedWithRedirect}
     <f:facet name = "toolbar">
 
       <!-- [close window button] -->
-      <x:component coid = "${z:vid(v, 'close_window')}">
+      <x:component coid = "${z:vid(v, 'close')}">
         <f:facet name = "extjs-props">
           xtype: 'button', text: 'Закрыть', handler : function()
           {
@@ -54,6 +55,24 @@ ${v.checkModelRequestedWithRedirect}
       </x:component>
 
 
+      <!-- [save button] -->
+      <x:component coid = "${z:vid(v, 'cancel')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Отменить',
+          cls: 'ux-btn-red', hidden: true
+        </f:facet>
+      </x:component>
+
+
+      <!-- [back button] -->
+      <x:component coid = "${z:vid(v, 'back')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Назад', hidden: true
+        </f:facet>
+      </x:component>
+
+
+
       <x:component coid = "${z:vid(v, '_tb_fill_0')}">
         <f:facet name = "extjs-props">
           xtype: 'panel', flex: 1, frame: false, border: false,
@@ -61,6 +80,22 @@ ${v.checkModelRequestedWithRedirect}
         </f:facet>
       </x:component>
 
+
+      <!-- [add button] cls: 'ux-btn-red' -->
+      <x:component coid = "${z:vid(v, 'add')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Добавить'
+        </f:facet>
+      </x:component>
+
+
+      <!-- [save button] -->
+      <x:component coid = "${z:vid(v, 'save')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Сохранить',
+          cls: 'ux-btn-green', hidden: true
+        </f:facet>
+      </x:component>
     </f:facet>
 
 
@@ -82,27 +117,353 @@ ${v.checkModelRequestedWithRedirect}
       storeId = "${z:vid(v, 'goodAttrs')}">
 
       <f:facet name = "grid-props">
-        region: 'center', pager: false, sortableColumns: true,
+        flex: 1, pager: false, sortableColumns: true,
         columns: ZeT.defined('retrade.columns.GoodAttrView'),
         selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
       </f:facet>
     </x:data-grid>
 
-    <script type = "text/javascript">
-    //<![CDATA[
+    <!-- attributes table] -->
 
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
-      on('itemclick', function(grid, rec)
+
+    <!-- [add-edit form -->
+
+    <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'edit-form')}">
+      <f:facet name = "extjs-props">
+        flex: 1, border: false, hidden: true,
+        layout: { type: 'vbox', align: 'stretch' },
+        bodyCls: 'retrade-content-panel',
+        bodyPadding: extjsf.pt(4)
+      </f:facet>
+
+
+      <!-- [form fields -->
+
+      <x:component coid = "${z:vid(v, '_form_grid')}">
+        <f:facet name = "extjs-props">
+          border: false, layout: { type: 'vbox', align: 'stretch' },
+          bodyCls: 'retrade-transparent-panel'
+        </f:facet>
+
+
+        <!-- [attribute name -->
+
+        <x:component coid = "${z:vid(v, '_name')}">
+          <f:facet name = "extjs-props">
+            border: false, layout: { type: 'hbox', align: 'middle' },
+            bodyCls: 'retrade-transparent-panel'
+          </f:facet>
+
+          <x:text-field coid = "${z:vid(v, 'name')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "extjs-props">
+              flex: 1, validator: function()
+              {
+                return true
+              }
+            </f:facet>
+
+            <f:facet name = "label-props">
+              text: 'Имя атрибута', width: extjsf.ex(14),
+              cls: 'retrade-info-title-label'
+            </f:facet>
+          </x:text-field>
+        </x:component>
+
+
+        <!-- [attribute type + boxes -->
+
+        <x:data-store storeId = "${z:vid(v, 'types')}" modelView = "${v}">
+          <f:facet name = "store-props">
+            model: 'retrade.model.KeyValue', data: [
+              { key: 'string',   value: 'строка' },
+              { key: 'volume',   value: 'объём' },
+              { key: 'decimal',  value: 'десятичное' },
+              { key: 'integer',  value: 'целое' }
+            ]
+          </f:facet>
+
+          <f:facet name = "proxy-props">
+            noproxy: true
+          </f:facet>
+        </x:data-store>
+
+        <x:component coid = "${z:vid(v, '_type_boxes')}">
+          <f:facet name = "extjs-props">
+            border: false, layout: { type: 'hbox', align: 'middle' },
+            bodyCls: 'retrade-transparent-panel',
+            margin: extjsf.pts(4, 0, 0, 0)
+          </f:facet>
+
+          <!-- [attribute type] -->
+          <x:drop-list coid = "${z:vid(v, 'type')}"
+            storeId = "${z:vid(v, 'types')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "drop-props">
+              editable: false, matchFieldWidth: true,
+              valueField: 'key', displayField: 'value',
+              width: extjsf.ex(16), allowBlank: false
+            </f:facet>
+
+            <f:facet name = "label-props">
+              text: 'Тип значения', width: extjsf.ex(14),
+              cls: 'retrade-info-title-label'
+            </f:facet>
+          </x:drop-list>
+
+
+          <!-- [is array] -->
+          <x:checkbox-field coid = "${z:vid(v, 'is-array')}"
+            value = "#{v.phonyBoolFalse}">
+
+            <f:facet name = "extjs-props">
+              margin: extjsf.pts(0, 0, 0, 6)
+            </f:facet>
+
+            <f:facet name = "label-props">
+              cls: 'retrade-info-title-label', margin: extjsf.pts(0, 0, 0, 4),
+              html: "&lt;span title = 'Имеет ли атрибут несколько значений выранного типа?'&gt;массив&lt;/span&gt;"
+            </f:facet>
+          </x:checkbox-field>
+
+
+          <!-- [is array] -->
+          <x:checkbox-field coid = "${z:vid(v, 'is-list')}"
+            value = "#{v.phonyBoolFalse}">
+
+            <f:facet name = "extjs-props">
+              margin: extjsf.pts(0, 0, 0, 6)
+            </f:facet>
+
+            <f:facet name = "label-props">
+              cls: 'retrade-info-title-label', margin: extjsf.pts(0, 0, 0, 4),
+              html: "&lt;span title = 'Должны ли значения атрибута быть ограничены приведённым ниже списком?'&gt;список&lt;/span&gt;"
+            </f:facet>
+          </x:checkbox-field>
+
+          <!-- fixed values grid] -->
+
+        </x:component>
+        <!-- attribute type + boxes] -->
+
+      </x:component>
+      <!-- form fields] -->
+
+      <!-- [fixed values grid -->
+
+      <x:data-store storeId = "${z:vid(v, 'values')}" modelView = "${v}">
+        <f:facet name = "store-props">
+          model: 'retrade.model.KeyValue', data: []
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          noproxy: true
+        </f:facet>
+      </x:data-store>
+
+      <x:data-grid coid = "${z:vid(v, 'vgrid')}"
+        storeId = "${z:vid(v, 'values')}">
+
+        <f:facet name = "grid-props">
+          flex: 1, margin: extjsf.pts(4, 0, 0, 0),
+          pager: false, sortableColumns: false, hidden: true,
+          selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+
+          plugins: [{
+            ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
+            listeners : {
+              edit: function(ed, event)
+              {
+                var g = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
+                delete g.editEvent
+                g.columnEdited(ed, event)
+              },
+
+              beforeedit : function(ed, event)
+              {
+                var g = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
+                if(g.disabledEditing) return false; else g.editEvent = event
+              }}
+          }],
+
+          columns: ZeT.scope(function()
+          {
+            var result = [
+              { text: "Значение", dataIndex: 'value', flex: 1, menuDisabled: true },
+              { text: "Отобразить как", dataIndex: 'text', flex: 1, menuDisabled: true }
+            ]
+
+            result[0].editor = Ext.create('Ext.form.field.Text', {})
+            result[1].editor = Ext.create('Ext.form.field.Text', {})
+
+            return result
+          })
+        </f:facet>
+      </x:data-grid>
+      <!-- fixed values grid] -->
+
+    </x:form-panel>
+    <!-- add-edit form] -->
+
+  </x:winmain>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  ZeT.scope(function()
+  {
+    var close  = extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}')
+    var add    = extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}')
+    var cancel = extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')
+    var back   = extjsf.bind("${z:vid(v, 'back')}", '${rootView.extjsDomain}')
+    var save   = extjsf.bind("${z:vid(v, 'save')}", '${rootView.extjsDomain}')
+    var grid   = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var form   = extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}')
+    var name   = extjsf.bind("${z:vid(v, 'name')}", '${rootView.extjsDomain}')
+    var type   = extjsf.bind("${z:vid(v, 'type')}", '${rootView.extjsDomain}')
+    var isa    = extjsf.bind("${z:vid(v, 'is-array')}", '${rootView.extjsDomain}')
+    var isl    = extjsf.bind("${z:vid(v, 'is-list')}", '${rootView.extjsDomain}')
+    var values = extjsf.bind("${z:vid(v, 'values')}", '${rootView.extjsDomain}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
+    var record, ox
+
+    function setEditMode(x, rec)
+    {
+      ZeT.each([close, add, grid], function(b){ b.visible(!x) })
+      ZeT.each([cancel, save, form], function(b){ b.visible(x) })
+
+      clearEdit()
+      name.co().focus()
+
+      //?: {do not setup edit model}
+      if(!x || !(record = rec)) return
+
+      //~: system -> set read only
+      setReadOnly(!!rec.get('system'))
+
+      //~: ox
+      ox = ZeT.assertn(rec.get('ox'))
+
+      //=: name (local)
+      name.value(rec.get('nameLo'))
+
+      //=: type key
+      type.value(ZeT.asserts(ox.type))
+
+      //=: is array
+      isa.value(ox.array === true)
+
+      //?: is list
+      if(ZeT.isa(ox.values))
+      {
+        isl.value(true)
+        vgrid.visible(true)
+
+        //~: populate the values store
+        ZeT.each(ox.values, function(v)
+        {
+          values.co().add({ value: v.value, text: ZeT.isx(v.text)?('' + v.value):(v.text) })
+        })
+
+        //~: scroll top
+        vgrid.co().setScrollY(0)
+      }
+    }
+
+    function clearEdit()
+    {
+      rercord = ox = ronly = null
+
+      back.visible(false)
+      vgrid.visible(false)
+
+      ZeT.each([name, type, isa, isl], function(b) {
+        b.co().setReadOnly(false)
+      })
+
+      name.value('')
+      type.value('string')
+      isa.value(false)
+      isl.value(false)
+      values.co().removeAll()
+    }
+
+    function setReadOnly(ro)
+    {
+      vgrid.disabledEditing = ro
+
+      save.visible(!ro)
+      cancel.visible(!ro)
+      back.visible(ro)
+
+      ZeT.each([name, type, isa, isl], function(b) {
+        b.co().setReadOnly(ro)
+      })
+    }
+
+    //~: go to edit mode
+    add.on('click', ZeT.fbind(setEditMode, ZeT, true, null))
+
+    //~: cancel to list mode
+    cancel.on('click', ZeT.fbind(setEditMode, ZeT, false, null))
+
+    //~: back to list mode
+    back.on('click', ZeT.fbind(setEditMode, ZeT, false, null))
+
+    //~: set edit mode for grid record
+    grid.on('itemdblclick', function(grid, rec)
+    {
+      setEditMode(true, rec)
+    })
+
+    function startEdit(r)
+    {
+      ZeT.timeout(200, function()
+      {
+        if(vgrid.editEvent) return
+        vgrid.co().getPlugin('cellediting').startEditByPosition({ row: r, column: 0 })
+      })
+    }
+
+    //~: toggle is-list
+    isl.on('change', function(f, v)
+    {
+      vgrid.visible(v)
+      ZeT.timeout(200, addEmptyValuesRow)
+    })
+
+    function addEmptyValuesRow(focus)
+    {
+      //~: search for an empty record
+      var found; values.co().each(function(x) {
+        if(ZeTS.ises(x.get('value'))) { found = x; return false }
+      })
+
+      if(!found) //?: {found no empty record}
+      {
+        var m = values.co().add({ value: '' })[0]
+        if(focus || (values.co().getCount() == 1))
+            startEdit(values.co().indexOf(m), true)
+      }
+    }
+
+    //~: handle cell edit event
+    vgrid.columnEdited = function(ed, e)
+    {
+      addEmptyValuesRow(true)
+    }
+
+    //~: save the form
+    save.on('click', function()
     {
 
     })
+  })
 
-    //]]>
-    </script>
-
-    <!-- attributes table] -->
-
-</x:winmain>
+  //]]>
+  </script>
 </ui:define>
 </ui:decorate>
 </ui:component>

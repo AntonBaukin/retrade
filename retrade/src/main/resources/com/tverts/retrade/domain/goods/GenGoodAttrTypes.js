@@ -76,14 +76,23 @@ function getGoodTypes()
 			type:    'decimal',
 
 			/**
-			 * Tells that the list of values may not be changed.
-			 */
-			fixed:   true,
-
-			/**
 			 * The enumeration of the values from drop-down list.
 			 * The optional text is displayed instead of the value.
 			 */
+			values:  [
+
+				{ value: '18.0', text: '18%' },
+				{ value: '10.0', text: '10%' },
+				{ value: '0.0',  text: '0%' }
+			]
+		},
+
+		{
+			name:    'Testing',
+			nameLo:  'Тестовый',
+			type:    'string',
+			array:   true,
+
 			values:  [
 
 				{ value: '18.0', text: '18%' },

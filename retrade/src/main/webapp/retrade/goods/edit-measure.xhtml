@@ -20,10 +20,12 @@ ${v.checkModelRequested}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle("#{z:jss(v.editWindowTitle)}")
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle("#{z:jss(v.editWindowTitle)}")
 
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">

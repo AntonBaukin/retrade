@@ -250,27 +250,6 @@ input.x-form-text-default.retarde-field-text-compact
   padding-top: 2px; padding-bottom: 1px; min-height: 26px;
 }
 
-
-.retrade-form-label-cell, .retrade-form-light-label-cell
-{
-  white-space: nowrap; letter-spacing: 0.1pt;
-  font-size: 10pt; cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-
-.retrade-form-light-label-cell
-{
-  letter-spacing: 0.08pt; font-weight: normal;
-}
-
-label.retrade-form-label-cell, .retrade-form-label-cell label,
-  label.retrade-form-light-label-cell, .retrade-form-light-label-cell label
-{
-  cursor: pointer;
-}
-
 .retrade-form-fieldset-caption
 {
   font-family: 'Tahoma', sans-serif;
@@ -997,14 +976,25 @@ td.retrade-info-title
 
 td.retrade-info-title div, .retrade-info-title-label,
  div.retrade-info-div .retrade-info-title,
+ .retrade-form-label-cell, .retrade-form-light-label-cell,
  caption.retrade-info-title
 {
   white-space: nowrap; margin: 0 4pt 0 7pt;
   font-size: 12pt; cursor: default;
   letter-spacing: 0.1pt;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
-label.retrade-info-title-label
+.retrade-form-light-label-cell
+{
+  letter-spacing: 0.08pt; font-weight: normal;
+}
+
+label.retrade-form-label-cell, .retrade-form-label-cell label,
+  label.retrade-form-light-label-cell, .retrade-form-light-label-cell label,
+  label.retrade-info-title-label
 {
   cursor: pointer;
 }

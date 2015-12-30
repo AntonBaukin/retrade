@@ -1054,11 +1054,7 @@ ZeT.init('retrade.globals', function()
 	    {name: 'value',        type: 'string'},
 
 	    {name: 'ox', depends: [ 'object' ], calculate: function(r) {
-	      return ZeT.log(ZeT.s2o(r.object))
-	    }},
-
-	    {name: 'val', depends: [ 'value' ], calculate: function(r) {
-	      return ZeT.s2o(r.value)
+	      return ZeT.s2o(r.object)
 	    }}
 	  ]
 	})
@@ -1073,10 +1069,46 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Создатель", dataIndex: 'system', sortable: false,
-		   width: extjsf.ex(12), align: 'right', renderer: function(v)
+		   text: "Тип", dataIndex: 'ox', sortable: false,
+		   width: extjsf.ex(14), align: 'right', renderer: function(ox)
 		   {
-				return (v)?('Система'):('Пользователь')
+				if(ox.type == 'string')  return 'строка'
+				if(ox.type == 'volume')  return 'объём'
+				if(ox.type == 'decimal') return 'десятичное'
+				if(ox.type == 'integer') return 'целое'
+		   }
+		 },
+
+		 {
+		   text: "Массив", dataIndex: 'ox', sortable: false,
+		   width: extjsf.ex(9), align: 'center', renderer: function(ox, meta)
+		   {
+				meta.tdAttr = (ox.array)?
+				  ("title='Атрибут может хранить несколько значений данного типа'"):
+				  ("title='Атрибут может хранить только одно значение данного типа'")
+				return (ox.array)?('да'):('нет')
+		   }
+		 },
+
+		 {
+		   text: "Список", dataIndex: 'ox', sortable: false,
+		   width: extjsf.ex(9), align: 'center', renderer: function(ox, meta)
+		   {
+				meta.tdAttr = ZeT.isa(ox.values)?
+				  ("title='Значение атрибута выбираются из заданного списка'"):
+				  ("title='Значение атрибута указывается произвольно из возможных для данного типа'")
+				return ZeT.isa(ox.values)?('да'):('нет')
+		   }
+		 },
+
+		 {
+		   text: "Фикс.", dataIndex: 'system', sortable: false,
+		   width: extjsf.ex(6), align: 'center', renderer: function(v, meta)
+		   {
+				meta.tdAttr = (v)?
+				  ("title='Создан системой и фиксирован'"):
+				  ("title='Создан пользователем'")
+				return (v)?('да'):('нет')
 		   }
 		 }
 		]
