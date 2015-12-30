@@ -40,6 +40,13 @@
       </column>
     </property>
 
+    <property name = 'nameLo'>
+      <column name = 'attr_name_lo'>
+
+        <comment>Local name of the attribute</comment>
+      </column>
+    </property>
+
 
     <!-- Is System -->
 

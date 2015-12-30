@@ -1,9 +1,10 @@
 package com.tverts.endure.core;
 
-/* com.tverts: endure (core) */
+/* com.tverts: endure (core, catalogues) */
 
 import com.tverts.endure.OxNumericBase;
 import com.tverts.endure.UnityType;
+import com.tverts.endure.cats.NamedEntity;
 
 
 /**
@@ -11,7 +12,9 @@ import com.tverts.endure.UnityType;
  *
  * @author anton.baukin@gmail.com.
  */
-public class AttrType extends OxNumericBase
+public class      AttrType
+       extends    OxNumericBase
+       implements NamedEntity
 {
 	/**
 	 * Domain where this type is located.
@@ -59,6 +62,18 @@ public class AttrType extends OxNumericBase
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	public String getNameLo()
+	{
+		return nameLo;
+	}
+
+	private String nameLo;
+
+	public void setNameLo(String nameLo)
+	{
+		this.nameLo = nameLo;
 	}
 
 	/**

@@ -129,6 +129,12 @@ public abstract class ViewWithModes
 			throw EX.forbid();
 	}
 
+	public void    forceSameDomain(Object target)
+	{
+		if(!Boolean.TRUE.equals(SecPoint.isSameDomain(target)))
+			throw EX.forbid("Entity processed has else Domain!");
+	}
+
 	/**
 	 * Checks whether any of the keys given is secure.
 	 * All the keys are encoded into single string and
