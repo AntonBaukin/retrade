@@ -41,7 +41,7 @@
     </property>
 
     <property name = 'nameLo'>
-      <column name = 'attr_name_lo'>
+      <column name = 'attr_name_lo' index = 'ix_attr_type_name_lo'>
 
         <comment>Local name of the attribute</comment>
       </column>
