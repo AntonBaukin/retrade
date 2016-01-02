@@ -256,30 +256,41 @@ var extjsf = ZeT.define('extjsf',
 		  extjsf._gen_view_id++;
 	},
 
-	bindHandler      : function(name, domain, handler)
+	/**
+	 * Assigns handler function of a bind, or component.
+	 * Supported arguments are (check extjsf.asbind()):
+	 *
+	 *  · name, domain, handler
+	 *
+	 *  · bind or component, handler
+	 *
+	 */
+	bindHandler      : function()
 	{
-		var bind = this.bind(name, domain);
-		var comp = bind && bind.co();
+		var bind    = extjsf.asbind.apply(ZeT, arguments)
+		var comp    = bind && bind.co()
+		var handler = ZeT.isf(arguments[2])?(arguments[2]):
+		  ZeT.isf(arguments[1])?(arguments[1]):(null)
 
 		if(bind && ZeT.isf(handler))
 		{
-			bind.handler = handler;
+			bind.handler = handler
 			if(comp && ZeT.isf(comp.setHandler))
-				comp.setHandler(handler);
+				comp.setHandler(handler)
 
-			return this;
+			return this
 		}
 
 		if(bind && !ZeT.isf(bind.handler) && comp)
-			bind.handler = comp.handler;
+			bind.handler = comp.handler
 
-		return bind && bind.handler;
+		return bind && bind.handler
 	},
 
 	xbindHandler     : function()
 	{
-		var h = extjsf.bindHandler.apply(extjsf, arguments);
-		return h || Ext.emptyFn;
+		var h = extjsf.bindHandler.apply(extjsf, arguments)
+		return h || Ext.emptyFn
 	},
 
 	handlerCaller    : function(name, domain)

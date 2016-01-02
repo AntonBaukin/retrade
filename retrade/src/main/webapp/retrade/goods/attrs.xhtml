@@ -81,6 +81,16 @@ ${v.checkModelRequestedWithRedirect}
       </x:component>
 
 
+      <!-- [add value button] -->
+      <x:component coid = "${z:vid(v, 'addval')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Значение',
+          iconCls: 'retrade-button-add',
+          margin: extjsf.pts(0, 8, 0, 0), hidden: true
+        </f:facet>
+      </x:component>
+
+
       <!-- [add button] cls: 'ux-btn-red' -->
       <x:component coid = "${z:vid(v, 'add')}">
         <f:facet name = "extjs-props">
@@ -160,7 +170,8 @@ ${v.checkModelRequestedWithRedirect}
             <f:facet name = "extjs-props">
               flex: 1, validator: function()
               {
-                return true
+                var val = extjsf.bind("${z:vid(v, 'name')}", '${rootView.extjsDomain}').retradeValidator
+                return !ZeT.isf(val)?(true):val.apply(this, arguments)
               }
             </f:facet>
 
@@ -318,6 +329,7 @@ ${v.checkModelRequestedWithRedirect}
     var add    = extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}')
     var cancel = extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')
     var back   = extjsf.bind("${z:vid(v, 'back')}", '${rootView.extjsDomain}')
+    var addval = extjsf.bind("${z:vid(v, 'addval')}", '${rootView.extjsDomain}')
     var save   = extjsf.bind("${z:vid(v, 'save')}", '${rootView.extjsDomain}')
     var grid   = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     var form   = extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}')
@@ -327,7 +339,7 @@ ${v.checkModelRequestedWithRedirect}
     var isl    = extjsf.bind("${z:vid(v, 'is-list')}", '${rootView.extjsDomain}')
     var values = extjsf.bind("${z:vid(v, 'values')}", '${rootView.extjsDomain}')
     var vgrid  = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
-    var record, ox
+    var record, ox, ronly
 
     function setEditMode(x, rec)
     {
@@ -335,13 +347,15 @@ ${v.checkModelRequestedWithRedirect}
       ZeT.each([cancel, save, form], function(b){ b.visible(x) })
 
       clearEdit()
-      name.co().focus()
 
       //?: {do not setup edit model}
       if(!x || !(record = rec)) return
 
+      //~: set default focus
+      name.co().focus()
+
       //~: system -> set read only
-      setReadOnly(!!rec.get('system'))
+      setReadOnly(ronly = !!rec.get('system'))
 
       //~: ox
       ox = ZeT.assertn(rec.get('ox'))
@@ -360,6 +374,7 @@ ${v.checkModelRequestedWithRedirect}
       {
         isl.value(true)
         vgrid.visible(true)
+        addval.visible(!ronly)
 
         //~: populate the values store
         ZeT.each(ox.values, function(v)
@@ -374,9 +389,10 @@ ${v.checkModelRequestedWithRedirect}
 
     function clearEdit()
     {
-      rercord = ox = ronly = null
+      record = ox = ronly = null
 
       back.visible(false)
+      addval.visible(false)
       vgrid.visible(false)
 
       ZeT.each([name, type, isa, isl], function(b) {
@@ -427,38 +443,172 @@ ${v.checkModelRequestedWithRedirect}
       })
     }
 
+    //~: add value
+    extjsf.bindHandler(addval, function()
+    {
+      addEmptyValuesRow(true)
+    })
+
     //~: toggle is-list
     isl.on('change', function(f, v)
     {
       vgrid.visible(v)
-      ZeT.timeout(200, addEmptyValuesRow)
+      addval.visible(v)
+
+      ZeT.timeout(200, function()
+      {
+        if(values.co().getCount() == 0)
+          addEmptyValuesRow(true)
+      })
     })
 
-    function addEmptyValuesRow(focus)
+    function addEmptyValuesRow(force)
     {
-      //~: search for an empty record
-      var found; values.co().each(function(x) {
-        if(ZeTS.ises(x.get('value'))) { found = x; return false }
-      })
-
-      if(!found) //?: {found no empty record}
+      if(force !== true) //?: {search for empty record}
       {
-        var m = values.co().add({ value: '' })[0]
-        if(focus || (values.co().getCount() == 1))
-            startEdit(values.co().indexOf(m), true)
+        var found; values.co().each(function(x) {
+          if(ZeTS.ises(x.get('value'))) { found = x; return false }
+        })
+
+        //?: {found empty record} start edit it
+        if(found) return startEdit(values.co().indexOf(found), true)
       }
+
+      var m = { value: '' }
+      var s = vgrid.co().getSelection()
+      if(ZeT.isa(s) && s.length)
+        m = values.co().insert(values.co().indexOf(s[0]), m)[0]
+      else
+        m = values.co().add(m)[0]
+
+      startEdit(values.co().indexOf(m), true)
     }
 
     //~: handle cell edit event
     vgrid.columnEdited = function(ed, e)
     {
-      addEmptyValuesRow(true)
+      if(e.originalValue === e.value) return
+      if(!ZeTS.ises(e.value)) {
+        vgrid.co().getSelectionModel().deselectAll()
+        addEmptyValuesRow()
+      }
+    }
+
+    //~: name validator
+    name.retradeValidator = function(v)
+    {
+      //?: {has empty name}
+      if(ZeTS.ises(v)) return 'Укажите наименование атрибута!'
+      v = v.toLocaleLowerCase()
+
+      //~: search for entry with the same name
+      var m; grid.co().getStore().each(function(x) {
+        var a = x.get('name')
+        if(a) a = a.toLocaleLowerCase()
+        var b = x.get('nameLo')
+        if(b) b = b.toLocaleLowerCase()
+
+        if((v == a) || (v == b)) { m = x; return false }
+      })
+
+      if(m == record) return true
+      return (!m)?(true):'Атрибут с указанным именем уже существует!'
+    }
+
+    function validateValue(v)
+    {
+      var t = ZeT.asserts(type.value())
+
+      if(t == 'volume')  return retrade.vvolume(v)
+      if(t == 'decimal') return retrade.vdecimal(v)
+      if(t == 'integer') return retrade.vinteger(v)
+
+      ZeT.assert(t == 'string')
+    }
+
+    function collectValues()
+    {
+      //?: {box is not checked}
+      if(!isl.value()) return undefined
+
+      //~: collect the values
+      var result = []
+      values.co().each(function(x)
+      {
+        //?: {has empty value}
+        var v = x.get('value')
+        if(ZeTS.ises(v)) return
+        v = ZeTS.trim(v)
+
+        //~: get optional text
+        var t = x.get('text')
+        if(ZeTS.ises(t)) t = null; else
+          t = ZeTS.trim(t)
+
+        //?: {value is not valid}
+        var e = validateValue(v)
+        if(!ZeTS.ises(e)) {
+          result = ZeTS.cat('Исправьте значение [', v, ']! ', e)
+          return false
+        }
+
+        //~: add the value
+        x = { value: v }
+        if(t) x.text = t
+        result.push(x)
+      })
+
+      //?: {there are no values}
+      if(ZeT.isa(result) && !result.length)
+        return 'Должно быть указано хотя бы одно значение из списка!'
+
+      return result
     }
 
     //~: save the form
     save.on('click', function()
     {
+      //?: {form is not valid}
+      if(!form.co().isValid()) return
 
+      //~: collect the values
+      var vals = collectValues()
+      if(ZeT.iss(vals))
+        return ReTrade.desktop.error(vals)
+
+      //~: create the model
+      var m = { name: ZeTS.trim(name.value()), type: type.value() }
+
+      //?: {is array}
+      if(isa.value()) m.array = true
+
+      //?: {has list of values}
+      if(ZeT.isa(vals)) m.values = vals
+
+      //!: post model to the server
+      var post = jQuery.post("${z:url('/go/web/views/goods/good-attrs')}", { model: ZeT.o2s(m) })
+
+      //~: on success
+      post.done(function(x)
+      {
+        //?: {server worked}
+        ZeT.assert(m.name === ZeTS.trim(ZeT.asserts(x)))
+
+        //!: back to view mode
+        setEditMode(false)
+
+        //~: reload the types to see changes
+        grid.co().getStore().reload()
+      })
+
+      //~: on failure
+      post.fail(function(x)
+      {
+        if(!ZeTS.ises(x.responseText) && (x.status == 400))
+          ReTrade.desktop.error(x.responseText)
+        else
+          throw ZeT.ass('Error posting good attr type: ', x.responseText)
+      })
     })
   })
 

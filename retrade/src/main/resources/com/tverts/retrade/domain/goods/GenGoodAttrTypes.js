@@ -1,4 +1,5 @@
-var ZeT = JsX.once('zet/app.js')
+var ZeT  = JsX.once('zet/app.js')
+var ZeTS = JsX.once('zet/strings.js')
 
 function genGoodTypes(ctx, gen)
 {
@@ -13,7 +14,8 @@ function genGoodTypes(ctx, gen)
 		type.setName(ZeT.asserts(g.name))
 
 		//=: name local
-		type.setNameLo(ZeT.asserts(g.nameLo))
+		if(!ZeTS.ises(g.nameLo))
+			type.setNameLo(g.nameLo)
 
 		//=: is-system
 		type.setSystem(!!g.system)
@@ -88,8 +90,7 @@ function getGoodTypes()
 		},
 
 		{
-			name:    'Testing',
-			nameLo:  'Тестовый',
+			name:    'Тестовый',
 			type:    'string',
 			array:   true,
 
