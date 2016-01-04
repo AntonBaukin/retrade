@@ -291,9 +291,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		Map<String, MeasureUnit> mum = (Map<String, MeasureUnit>)
 		  ctx.get((Object) MeasureUnit.class);
 
-		if(mum == null) ctx.set((Object) MeasureUnit.class,
-		  mum = new HashMap<String, MeasureUnit>(7)
-		);
+		if(mum == null) ctx.set(MeasureUnit.class, mum = new HashMap<>(7));
 
 		EX.assertx( mum.put(mu.getCode(), mu) == null,
 		  "Measure Unit with code [", mu.getCode(), "] is generated twice!"
@@ -306,9 +304,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		Map<String, GoodUnit> gum = (Map<String, GoodUnit>)
 		  ctx.get((Object) GoodUnit.class);
 
-		if(gum == null) ctx.set((Object) GoodUnit.class,
-		  gum = new HashMap<String, GoodUnit>(37)
-		);
+		if(gum == null) ctx.set(GoodUnit.class, gum = new HashMap<>());
 
 		EX.assertx( gum.put(Goods.subCode(gu), gu) == null,
 		  "Good Unit with sub-code [", Goods.subCode(gu), "] is generated twice!"
@@ -504,46 +500,61 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 	protected void genGoodFields(GenCtx ctx, GoodUnit gu, Good g)
 	{
-		//~: bar code
-		if(g.getBarCode() == null)
-			g.setBarCode(GenUtils.number(ctx.gen(), 13));
+		//~: attributes map
+		Map<String, Object> ats = g.getAttrs();
+		if(ats == null) g.setAttrs(ats = new HashMap<>());
+
+		//~: bar codes (1 up to 3)
+		if(ats.get(Goods.AT_BARCODE) == null)
+		{
+			String[] cs = new String[1 + ctx.gen().nextInt(3)];
+			for(int i = 0;(i < cs.length);i++)
+				cs[i] = GenUtils.number(ctx.gen(), 13);
+
+			ats.put(Goods.AT_BARCODE, (cs.length == 1)?(cs[0]):(cs));
+		}
 
 		//~: net weight
-		if(g.getNetWeight() == null)
-			if(g.getGrossWeight() != null)
-				g.setNetWeight(g.getGrossWeight());
+		if(ats.get(Goods.AT_NET_WEIGHT) == null)
+			if(ats.get(Goods.AT_GROSS_WEIGHT) != null)
+				ats.put(Goods.AT_NET_WEIGHT, ats.get(Goods.AT_GROSS_WEIGHT));
 			//?: {generate for ordinary good}
 			else if(gu.getSuperGood() == null)
 			{
 				//?: {kg measure}
 				if("166".equals(gu.getMeasure().getOx().getClassCode()))
 				{
-					g.setNetWeight(gu.getMeasure().getOx().getClassUnit());
-					if(g.getNetWeight() == null)
-						g.setNetWeight(BigDecimal.ONE.setScale(2));
+					BigDecimal cu = gu.getMeasure().getOx().getClassUnit();
+					if(cu == null) cu = BigDecimal.ONE.setScale(2);
+
+					ats.put(Goods.AT_NET_WEIGHT, cu);
 				}
 				//~: generate random weight about 1 kg
 				else
-					g.setNetWeight(new BigDecimal(1.0 - 0.1 * ctx.gen().nextInt(6)).
-					  setScale(2, BigDecimal.ROUND_HALF_EVEN));
+					ats.put(Goods.AT_NET_WEIGHT, new BigDecimal(1.0 - 0.1 * ctx.gen().
+					  nextInt(6)).setScale(2, BigDecimal.ROUND_HALF_EVEN));
 			}
 			//~: generate for a sub-good
 			else
 			{
-				BigDecimal nw = EX.assertn(gu.getSuperGood().getOx().getNetWeight());
+				Map<String, Object> pats = EX.assertn(gu.getSuperGood().getOx().getAttrs());
+
+				BigDecimal nw = EX.assertn((BigDecimal) pats.get(Goods.AT_NET_WEIGHT));
 				BigDecimal  x = EX.assertn(gu.getGoodCalc()).getOx().getSubVolume();
-				g.setNetWeight(nw.multiply(EX.assertn(x)).
+
+				ats.put(Goods.AT_NET_WEIGHT, nw.multiply(EX.assertn(x)).
 				  setScale(2, BigDecimal.ROUND_HALF_EVEN));
 			}
 
 		//?: {gross weight is smaller}
-		if(g.getGrossWeight() != null)
-			EX.assertx(CMP.gre(g.getGrossWeight(), g.getNetWeight()));
+		if(ats.get(Goods.AT_GROSS_WEIGHT) != null)
+			EX.assertx(CMP.gre((BigDecimal) ats.get(Goods.AT_GROSS_WEIGHT),
+			  (BigDecimal) ats.get(Goods.AT_NET_WEIGHT)));
 		//~: slightly more than net weight
 		else
 		{
-			BigDecimal nw = EX.assertn(g.getNetWeight());
-			g.setGrossWeight(nw.add(new BigDecimal(0.1 * ctx.gen().nextInt(4))).
+			BigDecimal nw = EX.assertn((BigDecimal) ats.get(Goods.AT_NET_WEIGHT));
+			ats.put(Goods.AT_NET_WEIGHT, nw.add(new BigDecimal(0.1 * ctx.gen().nextInt(4))).
 			  setScale(2, BigDecimal.ROUND_HALF_EVEN));
 		}
 	}

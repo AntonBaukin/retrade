@@ -28,6 +28,10 @@ function genGoodTypes(ctx, gen)
 	})
 }
 
+/**
+ * Warning: update Goods class when changing
+ *   names of the system attributes!
+ */
 function getGoodTypes()
 {
 	return [

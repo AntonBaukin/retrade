@@ -1,13 +1,20 @@
 package com.tverts.api.retrade.goods;
 
+/* Java */
+
+import java.util.List;
+
 /* Java API for XML Binding */
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
 
 import com.tverts.api.core.JustObject;
+import com.tverts.api.core.Value;
 
 
 /**
@@ -18,7 +25,7 @@ import com.tverts.api.core.JustObject;
  */
 @XmlRootElement(name = "good-attr")
 @XmlType(name = "good-attr", propOrder = {
-  "name", "nameLo", "system", "object", "value"
+  "name", "nameLo", "system", "object", "value", "values"
 })
 public class GoodAttr extends JustObject
 {
@@ -80,18 +87,50 @@ public class GoodAttr extends JustObject
 	}
 
 	/**
-	 * Encoded attribute value. May be a string, string-coded
-	 * plain type, or JSON object for complex values.
+	 * Attribute value object: String, Integer,
+	 * BigDecimal, or JString.
+	 *
+	 * Excludes the values list having single object!
 	 */
-	public String getValue()
+	public Value getValue()
 	{
-		return value;
+		if(value != null)
+			return value;
+
+		if((values != null) && (values.size() == 1))
+			return values.get(0);
+
+		return null;
 	}
 
-	private String value;
+	private Value value;
 
-	public void setValue(String value)
+	public void setValue(Value value)
 	{
+		this.value = null;
 		this.value = value;
+	}
+
+	/**
+	 * The list of values. Has less priority
+	 * over a single value, or
+	 *
+	 */
+	@XmlElement(name = "value")
+	@XmlElementWrapper(name = "values")
+	public List<Value> getValues()
+	{
+		return ((values == null) || (values.size() == 1))?(null):(values);
+	}
+
+	private List<Value> values;
+
+	/**
+	 * Assigns the values list. Don't rely upon that
+	 * the list object set is returned in the future!
+	 */
+	public void setValues(List<Value> values)
+	{
+		this.values = values;
 	}
 }

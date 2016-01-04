@@ -65,6 +65,7 @@ public class Goods
 	public static final String TYPE_GOODS_FOLDER =
 	  "ReTrade: Goods: Tree Folder";
 
+
 	/* Types of Locks */
 
 	/**
@@ -98,6 +99,21 @@ public class Goods
 	 */
 	public static final String AGGR_CALC_VOL_CHECK     =
 	  "Aggr Calc: Volume: Volume Check";
+
+
+	/* System Attributes */
+
+	public static final String AT_BARCODE
+	  = "Barсode";
+
+	public static final String AT_NET_WEIGHT
+	  = "Net Weight";
+
+	public static final String AT_GROSS_WEIGHT
+	  = "Gross Weight";
+
+	public static final String AT_VAT
+	  = "VAT";
 
 
 	/* Support Routines */
