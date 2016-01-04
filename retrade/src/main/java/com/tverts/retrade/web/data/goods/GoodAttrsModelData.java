@@ -92,6 +92,8 @@ public class GoodAttrsModelData implements ModelData
 			//=: name
 			a.setName(at.getName());
 			a.setNameLo(at.getNameLo());
+			if(a.getNameLo() == null)
+				a.setNameLo(a.getName());
 
 			//=: system
 			a.setSystem(at.isSystem());

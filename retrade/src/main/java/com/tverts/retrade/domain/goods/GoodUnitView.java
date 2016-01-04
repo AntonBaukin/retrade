@@ -13,6 +13,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+/* com.tverts: objects */
+
+import com.tverts.objects.XPoint;
+
 /* tverts.com: aggregated values */
 
 import com.tverts.endure.aggr.AggrValue;
@@ -142,6 +146,14 @@ public class GoodUnitView implements Serializable
 
 	private String storeCode;
 
+	@XmlElement(name = "ox-json")
+	public String getOxString()
+	{
+		return oxString;
+	}
+
+	private String oxString;
+
 
 	/* Good Unit View Aggregated Values */
 
@@ -260,6 +272,15 @@ public class GoodUnitView implements Serializable
 		//~: is integer flag
 		this.integer = (gu.getMeasure() == null)?(false):
 		  (!gu.getMeasure().getOx().isFractional());
+
+		return this;
+	}
+
+	public GoodUnitView initOx(GoodUnit gu)
+	{
+		if(gu == null) return this;
+
+		this.oxString = XPoint.json().write(gu.getOx());
 
 		return this;
 	}

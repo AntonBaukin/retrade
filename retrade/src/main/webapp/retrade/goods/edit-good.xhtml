@@ -17,7 +17,7 @@ ${v.checkModelRequestedWithRedirect}
 
 <ui:define name = 'page_body'>
 
-<x:winmain coid = "${z:vid(v, 'root_panel')}">
+<x:winmain coid = "${z:vid(v, 'root-panel')}">
 
   <script type = "text/javascript">
   //<![CDATA[
@@ -25,13 +25,12 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.co('winmain', '${rootView.extjsDomain}').
       setTitle("#{z:jss(v.editWindowTitle)}")
 
-    ReTrade.desktop.prevsizeComp('winmain', '${rootView.extjsDomain}')
-
   //]]>
   </script>
 
   <f:facet name = "extjs-props">
-    layout: 'fit', bodyCls: 'retrade-back-panel'
+    layout: {type: 'vbox', align: 'stretch'},
+    bodyCls: 'retrade-back-panel'
   </f:facet>
 
   <f:facet name = "toolbar-props">
@@ -97,6 +96,17 @@ ${v.checkModelRequestedWithRedirect}
        xtype: 'panel', flex: 1, border: false,
        bodyCls: 'retrade-toolbar-inline-panel'
      </f:facet>
+   </x:component>
+
+
+   <x:component coid = "${z:vid(v, 'show-attrs')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'button', text: 'Атрибуты', enableToggle: true,
+      margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
+      tooltip: 'Отобразить дополнительные атрибуты товара'
+
+    </f:facet>
    </x:component>
 
 
@@ -194,12 +204,26 @@ ${v.checkModelRequestedWithRedirect}
   <!-- good status bar] -->
 
 
+  <!-- [good attributes grid] -->
+  <x:component coid = "${z:vid(v, 'good-attrs-ext')}">
+
+    <f:facet name = "extjs-props">
+      flex: 1, border: false, hidden: true, layout: 'fit',
+      bodyCls: 'retrade-transparent-panel'
+    </f:facet>
+
+    <ui:decorate template = '.good-attrs.xhtml'
+      xmlns = 'http://www.w3.org/1999/xhtml'/>
+
+   </x:component>
+
+
   <!-- [good edit form -->
 
   <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'good-form')}">
 
     <f:facet name = "extjs-props">
-      border: false, bodyPadding: extjsf.pt(4),
+      border: false, flex: 1, bodyPadding: extjsf.pt(4),
       layout: { type: 'vbox', align: 'stretch' },
       bodyCls: 'retrade-content-panel'
     </f:facet>
@@ -528,6 +552,13 @@ ${v.checkModelRequestedWithRedirect}
   {
     var isReadMode, checkGoodUsed
 
+    var status = extjsf.bind("${z:vid(v, 'root-panel-status')}", '${rootView.extjsDomain}')
+    var form   = extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}')
+    var atsext = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${rootView.extjsDomain}')
+    var atsbtn = extjsf.bind("${z:vid(v, 'show-attrs')}", '${rootView.extjsDomain}')
+    var submit = extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')
+    var gocalc = extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}')
+
     function adjustWindow()
     {
       //~: adjust window height
@@ -571,10 +602,8 @@ ${v.checkModelRequestedWithRedirect}
     function toggleReadWrite(isread)
     {
       //~: toggle the form fields
-      extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
-        isReadMode = isReadMode = isread
-      extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').
-        toggleReadWrite(isread)
+      form.isReadMode = isReadMode = isread
+      form.toggleReadWrite(isread)
 
       //~: toggle cancel-edit
       extjsf.bind("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}').visible(!isread)
@@ -583,13 +612,13 @@ ${v.checkModelRequestedWithRedirect}
       extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}').visible(isread)
 
       //~: toggle submit
-      extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
+      submit.visible(!isread)
 
       //~: toggle do-edit
       extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}').visible(isread)
 
       //~: show go-to-calc
-      if(!isread) extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}').visible(true)
+      if(!isread) gocalc.visible(true)
 
       //~: window title
       var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').co()
@@ -629,8 +658,44 @@ ${v.checkModelRequestedWithRedirect}
     //~: do-edit button
     extjsf.bindHandler("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}', function()
     {
+      toggleAttributes(false)
       toggleReadWrite(false)
     })
+
+    var ox = "#{z:jss(v.goodView.oxString)}"
+    ZeT.log(ox)
+
+    function toggleAttributes(on)
+    {
+      if(ZeT.isb(on)) atsbtn.co().setPressed(on); else
+        on = atsbtn.co().pressed
+
+      form.visible(!on)
+      status.visible(!on)
+      atsext.visible(on)
+
+      //~: adapt the height of the window
+      if(on)
+        ReTrade.desktop.applyWindowBox({
+          name: 'winmain', domain: '${rootView.extjsDomain}',
+          heightpt: 280, prevsize: 'good-attrs'
+        })
+      else
+        ReTrade.desktop.prevsizeComp({
+          name: 'winmain', domain: '${rootView.extjsDomain}',
+          marker: 'good-attrs'
+        })
+
+      //?: {turn on the table}
+      if(on)
+      {
+        if(!ZeTS.ises(ox)) ox = ZeT.s2o(ox)
+        //TODO: insert update of attributes table...
+      }
+    }
+
+    //~: toggle attributes view
+    atsbtn.on('toggle', toggleAttributes)
   })
 
   //]]>

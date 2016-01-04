@@ -680,7 +680,7 @@ public class FacesGoodEditView extends ModelView
 		if(getGoodView().getObjectKey() == null)
 			return "Формула создаваемого товара";
 
-		return formatTitle("Ред. ф-лы товара",
+		return formatTitle("Ред. формулы товара",
 		  getGoodView().getGoodCode(),
 		  getGoodView().getGoodName()
 		);
@@ -895,7 +895,7 @@ public class FacesGoodEditView extends ModelView
 				throw EX.forbid("Good Unit of else Domain!");
 
 			//!: init view with this good
-			mb.getView().init(gu);
+			mb.getView().init(gu).initOx(gu);
 
 			//?: {good has calculation} create it's view
 			if(gu.getGoodCalc() != null)

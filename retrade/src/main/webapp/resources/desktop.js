@@ -500,11 +500,12 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 			//?: {has nothing left}
 			if(i == 0) delete comp.extjsfBind.prevSize; else
 				stack.splice(i, stack.length - i)
+
 			return true
 		}
 
-		//?: {has no stack | clear it}
-		if(!(stack = comp.extjsfBind.prevSize) || !ZeTS.ises(opts.marker))
+		//?: {has no stack}
+		if(!(stack = comp.extjsfBind.prevSize))
 			comp.extjsfBind.prevSize = stack = []
 
 		//~: remember the size
@@ -512,8 +513,8 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		stack.push(box)
 
 		//?: {has marker}
-		if(!ZeTS.ises(opts.marker))
-			box.marker = opts.marker
+		if(!ZeTS.ises(opts.save))
+			box.marker = opts.save
 
 		return false
 	},
