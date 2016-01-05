@@ -22,7 +22,6 @@ import com.tverts.model.ModelData;
 
 /* com.tverts: api (core, retrade) */
 
-import com.tverts.api.core.JString;
 import com.tverts.api.retrade.goods.GoodAttr;
 
 /* com.tverts: endure (core) */
@@ -36,8 +35,6 @@ import com.tverts.retrade.domain.goods.GoodAttrsModelBean;
 import com.tverts.retrade.domain.goods.Goods;
 
 /* com.tverts: support */
-
-import com.tverts.support.EX;
 
 
 /**
@@ -75,41 +72,25 @@ public class GoodAttrsModelData implements ModelData
 	@SuppressWarnings("unchecked")
 	public List<GoodAttr> getGoodAttrs()
 	{
-		List<GoodAttr> res = new ArrayList<>();
-
 		//~: select the attribute types
 		List<AttrType> ats = bean(GetUnity.class).
 		  getAttrTypes(model.domain(), Goods.typeGoodAttr().getPrimaryKey());
 
-		for(AttrType at : ats)
-		{
-			GoodAttr a = new GoodAttr();
-			res.add(a);
+		//~: get attribute type objects
+		List<GoodAttr> res = new ArrayList<>(ats.size());
+		for(AttrType at : ats) res.add((GoodAttr) at.getOx());
 
-			//=: primary key
-			a.setPkey(at.getPrimaryKey());
-
-			//=: name
-			a.setName(at.getName());
-			a.setNameLo(at.getNameLo());
-			if(a.getNameLo() == null)
-				a.setNameLo(a.getName());
-
-			//=: system
-			a.setSystem(at.isSystem());
-
-			//=: object
-			EX.assertx(at.getOx() instanceof JString);
-			a.setObject(((JString) at.getOx()).getJson());
-		}
+		//~: set local names
+		for(GoodAttr ga : res)
+			if(ga.getNameLo() == null)
+				ga.setNameLo(ga.getName());
 
 		//?: {model good is not defined} attribute types only
-		if(model.getGoodUnit() == null)
-			return res;
+//		if(model.getGoodUnit() == null)
+//			return res;
 
 		return res;
 	}
-
 
 
 	/* private: model */

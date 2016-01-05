@@ -215,7 +215,7 @@ ${v.checkModelRequestedWithRedirect}
             <f:facet name = "drop-props">
               editable: false, matchFieldWidth: true,
               valueField: 'key', displayField: 'value',
-              width: extjsf.ex(16), allowBlank: false
+              width: extjsf.ex(14), allowBlank: false
             </f:facet>
 
             <f:facet name = "label-props">
@@ -225,31 +225,48 @@ ${v.checkModelRequestedWithRedirect}
           </x:drop-list>
 
 
-          <!-- [is array] -->
-          <x:checkbox-field coid = "${z:vid(v, 'is-array')}"
+          <!-- [is shared] -->
+          <x:checkbox-field coid = "${z:vid(v, 'is-shared')}"
             value = "#{v.phonyBoolFalse}">
 
             <f:facet name = "extjs-props">
-              margin: extjsf.pts(0, 0, 0, 6)
+              margin: extjsf.pts(0, 0, 0, 4)
             </f:facet>
 
             <f:facet name = "label-props">
-              cls: 'retrade-info-title-label', margin: extjsf.pts(0, 0, 0, 4),
-              html: "&lt;span title = 'Имеет ли атрибут несколько значений выранного типа?'&gt;массив&lt;/span&gt;"
+              cls: 'retrade-info-title-label', margin: extjsf.pts(0, 0, 0, 2),
+              html: "&lt;span title = 'Указывает, может ли данный атрибут, заданный для " +
+                "товара в основной ед. измерения, быть наследуемым в дополнительных " +
+                "ед. измерения'&gt;общий&lt;/span&gt;"
             </f:facet>
           </x:checkbox-field>
 
 
           <!-- [is array] -->
+          <x:checkbox-field coid = "${z:vid(v, 'is-array')}"
+            value = "#{v.phonyBoolFalse}">
+
+            <f:facet name = "extjs-props">
+              margin: extjsf.pts(0, 0, 0, 4)
+            </f:facet>
+
+            <f:facet name = "label-props">
+              cls: 'retrade-info-title-label', margin: extjsf.pts(0, 0, 0, 2),
+              html: "&lt;span title = 'Имеет ли атрибут несколько значений выранного типа?'&gt;массив&lt;/span&gt;"
+            </f:facet>
+          </x:checkbox-field>
+
+
+          <!-- [is fixed list] -->
           <x:checkbox-field coid = "${z:vid(v, 'is-list')}"
             value = "#{v.phonyBoolFalse}">
 
             <f:facet name = "extjs-props">
-              margin: extjsf.pts(0, 0, 0, 6)
+              margin: extjsf.pts(0, 0, 0, 4)
             </f:facet>
 
             <f:facet name = "label-props">
-              cls: 'retrade-info-title-label', margin: extjsf.pts(0, 0, 0, 4),
+              cls: 'retrade-info-title-label', margin: extjsf.pts(0, 0, 0, 2),
               html: "&lt;span title = 'Должны ли значения атрибута быть ограничены приведённым ниже списком?'&gt;список&lt;/span&gt;"
             </f:facet>
           </x:checkbox-field>
@@ -335,6 +352,7 @@ ${v.checkModelRequestedWithRedirect}
     var form   = extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}')
     var name   = extjsf.bind("${z:vid(v, 'name')}", '${rootView.extjsDomain}')
     var type   = extjsf.bind("${z:vid(v, 'type')}", '${rootView.extjsDomain}')
+    var iss    = extjsf.bind("${z:vid(v, 'is-shared')}", '${rootView.extjsDomain}')
     var isa    = extjsf.bind("${z:vid(v, 'is-array')}", '${rootView.extjsDomain}')
     var isl    = extjsf.bind("${z:vid(v, 'is-list')}", '${rootView.extjsDomain}')
     var values = extjsf.bind("${z:vid(v, 'values')}", '${rootView.extjsDomain}')
@@ -366,6 +384,9 @@ ${v.checkModelRequestedWithRedirect}
       //=: type key
       type.value(ZeT.asserts(ox.type))
 
+      //=: is shared
+      iss.value(ox.shared === true)
+
       //=: is array
       isa.value(ox.array === true)
 
@@ -395,12 +416,13 @@ ${v.checkModelRequestedWithRedirect}
       addval.visible(false)
       vgrid.visible(false)
 
-      ZeT.each([name, type, isa, isl], function(b) {
+      ZeT.each([name, type, iss, isa, isl], function(b) {
         b.co().setReadOnly(false)
       })
 
       name.value('')
       type.value('string')
+      iss.value(false)
       isa.value(false)
       isl.value(false)
       values.co().removeAll()
@@ -414,7 +436,7 @@ ${v.checkModelRequestedWithRedirect}
       cancel.visible(!ro)
       back.visible(ro)
 
-      ZeT.each([name, type, isa, isl], function(b) {
+      ZeT.each([name, type, iss, isa, isl], function(b) {
         b.co().setReadOnly(ro)
       })
     }
@@ -578,6 +600,9 @@ ${v.checkModelRequestedWithRedirect}
 
       //~: create the model
       var m = { name: ZeTS.trim(name.value()), type: type.value() }
+
+      //?: {is shared}
+      if(iss.value()) m.shared = true
 
       //?: {is array}
       if(isa.value()) m.array = true
