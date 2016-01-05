@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 /* Java XML Binding */
 
@@ -13,13 +15,23 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: objects */
 
 import com.tverts.objects.XPoint;
 
-/* tverts.com: aggregated values */
+/* tverts.com: endure (aggregated values + core) */
 
 import com.tverts.endure.aggr.AggrValue;
+import com.tverts.endure.core.AttrType;
+import com.tverts.endure.core.GetUnity;
+
+/* tverts.com: retrade api */
+
+import com.tverts.api.retrade.goods.GoodAttr;
 
 /* com.tverts: retrade domain (prices) */
 
@@ -270,8 +282,8 @@ public class GoodUnitView implements Serializable
 			this.semiReady = gu.getGoodCalc().isSemiReady();
 
 		//~: is integer flag
-		this.integer = (gu.getMeasure() == null)?(false):
-		  (!gu.getMeasure().getOx().isFractional());
+		this.integer = (gu.getMeasure() != null) &&
+		  !gu.getMeasure().getOx().isFractional();
 
 		return this;
 	}
@@ -280,6 +292,28 @@ public class GoodUnitView implements Serializable
 	{
 		if(gu == null) return this;
 
+		//~: load all the attributes
+		List<AttrType> atts = bean(GetUnity.class).
+		  getAttrTypes(gu.getDomain().getPrimaryKey(),
+		    Goods.typeGoodAttr().getPrimaryKey());
+
+		//~: map the names
+		HashMap<String, AttrType> map = new HashMap<>(atts.size());
+		for(AttrType a : atts) map.put(a.getName(), a);
+
+		//~: map local name of each attribute
+		List<GoodAttr> gatts = gu.getOx().getAttrValues();
+		gu.getOx().rewriteAttrValues(gatts);
+		for(GoodAttr ga : gatts)
+		{
+			AttrType at = map.get(ga.getName());
+
+			//=: local name
+			if(at != null)
+				ga.setNameLo(at.getNameLo());
+		}
+
+		//!: encode to JSON
 		this.oxString = XPoint.json().write(gu.getOx());
 
 		return this;

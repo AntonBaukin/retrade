@@ -123,12 +123,19 @@ public class Good extends CatItem
 	@XmlElementWrapper(name = "attributes")
 	public List<GoodAttr> getAttrValues()
 	{
-		return convert(attributes);
+		return (attrValues != null)?(attrValues):convert(attributes);
 	}
+
+	private List<GoodAttr> attrValues;
 
 	public void setAttrValues(List<GoodAttr> ats)
 	{
 		this.attributes = convert(ats);
+	}
+
+	public void rewriteAttrValues(List<GoodAttr> ats)
+	{
+		this.attrValues = ats;
 	}
 
 

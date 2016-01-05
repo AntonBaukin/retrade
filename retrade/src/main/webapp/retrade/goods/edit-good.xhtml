@@ -208,14 +208,15 @@ ${v.checkModelRequestedWithRedirect}
   <x:component coid = "${z:vid(v, 'good-attrs-ext')}">
 
     <f:facet name = "extjs-props">
-      flex: 1, border: false, hidden: true, layout: 'fit',
+      flex: 1, border: false, hidden: true,
+      layout: {type: 'vbox', align: 'stretch'},
       bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
     <ui:decorate template = '.good-attrs.xhtml'
       xmlns = 'http://www.w3.org/1999/xhtml'/>
 
-   </x:component>
+  </x:component>
 
 
   <!-- [good edit form -->
@@ -558,6 +559,7 @@ ${v.checkModelRequestedWithRedirect}
     var atsbtn = extjsf.bind("${z:vid(v, 'show-attrs')}", '${rootView.extjsDomain}')
     var submit = extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')
     var gocalc = extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}')
+    var sattrs = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
 
     function adjustWindow()
     {
@@ -663,7 +665,6 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     var ox = "#{z:jss(v.goodView.oxString)}"
-    ZeT.log(ox)
 
     function toggleAttributes(on)
     {
@@ -690,7 +691,7 @@ ${v.checkModelRequestedWithRedirect}
       if(on)
       {
         if(!ZeTS.ises(ox)) ox = ZeT.s2o(ox)
-        //TODO: insert update of attributes table...
+        sattrs.readGoodOx(ox)
       }
     }
 

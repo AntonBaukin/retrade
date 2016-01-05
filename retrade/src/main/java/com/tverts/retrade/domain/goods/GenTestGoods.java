@@ -554,7 +554,7 @@ public class GenTestGoods extends GenesisHiberPartBase
 		else
 		{
 			BigDecimal nw = EX.assertn((BigDecimal) ats.get(Goods.AT_NET_WEIGHT));
-			ats.put(Goods.AT_NET_WEIGHT, nw.add(new BigDecimal(0.1 * ctx.gen().nextInt(4))).
+			ats.put(Goods.AT_GROSS_WEIGHT, nw.add(new BigDecimal(0.1 * ctx.gen().nextInt(4))).
 			  setScale(2, BigDecimal.ROUND_HALF_EVEN));
 		}
 	}

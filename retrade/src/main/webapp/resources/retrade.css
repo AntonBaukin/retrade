@@ -5,7 +5,7 @@
  +===============================================================*/
 
 
-/* html items */
+/* HTML Items */
 
 html, body
 {
@@ -26,7 +26,7 @@ html, body
 }
 
 
-/* general */
+/* General */
 
 .retrade-almost-opaque
 {
@@ -658,7 +658,7 @@ div.retrade-menuitem-centered
 }
 
 
-/* grids */
+/* Grids */
 
 img.x-action-col-icon.x-item-disabled
 {
@@ -678,6 +678,14 @@ td.x-grid-cell.x-grid-cell-selected
 td.retrade-action-cell
 {
   cursor: pointer;
+}
+
+td.x-unselectable.retrade-selectable-column
+{
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+  cursor: text;
 }
 
 

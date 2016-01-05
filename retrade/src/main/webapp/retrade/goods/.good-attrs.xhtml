@@ -7,5 +7,98 @@
   xmlns:z  = 'uri:tverts.com'>
 
 
+  <!-- [attributes display table -->
+
+  <x:data-store storeId = "${z:vid(v, 'goodAttrs')}" modelView = "${v}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.KeyValue', data: []
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      noproxy: true
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'attrs-view')}"
+    storeId = "${z:vid(v, 'goodAttrs')}">
+
+    <f:facet name = "grid-props">
+      flex: 1, pager: false, sortableColumns: true,
+      selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+      sorters: [{ property: 'key', direction: 'ASC' }],
+      columns:  [
+
+        {
+          text: "Наименование", dataIndex: 'key',
+          flex: 1, sortable: true
+        },
+
+        {
+          text: "Значение", dataIndex: 'object', sortable: false, flex: 1,
+          menuDisabled: true, tdCls:'retrade-selectable-column', renderer: function(v)
+          {
+            if(!ZeT.isa(v)) return v
+
+            var s = ''; ZeT.each(v, function(x)
+            {
+              if(ZeTS.ises(x)) return
+              if(s.length) s += '&lt;br/&gt;'
+              s += x
+            })
+
+            return s
+          }
+        }
+      ]
+    </f:facet>
+  </x:data-grid>
+
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  //~: assign values from the attributes on good ox
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').readGoodOx = function(ox)
+  {
+    //~: clear the store
+    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    store.removeAll()
+
+    //?: {has nothing}
+    if(!ox || !ZeT.isa(ox.attributes)) return
+
+    function v2s(v)
+    {
+      if(v && v.text)    return v.text
+      if(v && v.integer) return '' + v.integer
+      if(v && v.decimal) return '' + v.decimal
+    }
+
+    //~: add items from the attributes
+    ZeT.each(ox.attributes, function(a)
+    {
+      var x = { key : ZeT.asserts(a.name) }
+      if(!ZeTS.ises(a.nameLo)) x.key = a.nameLo
+
+      //?: {has single value}
+      if(!ZeT.isa(a.values))
+        x.object = v2s(a.value)
+      //~: have array of values
+      else ZeT.each(a.values, function(v)
+      {
+        if(!x.object) x.object = []
+        x.object.push(v2s(v))
+      })
+
+      store.add(x)
+    })
+
+    store.sort('key', 'ASC')
+  }
+
+  //]]>
+  </script>
+
+  <!-- attributes display table] -->
+
 
 </ui:component>
