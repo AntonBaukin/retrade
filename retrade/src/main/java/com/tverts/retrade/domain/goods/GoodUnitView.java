@@ -4,6 +4,7 @@ package com.tverts.retrade.domain.goods;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,19 +29,26 @@ import com.tverts.objects.XPoint;
 import com.tverts.endure.aggr.AggrValue;
 import com.tverts.endure.core.AttrType;
 import com.tverts.endure.core.GetUnity;
+import com.tverts.endure.core.UnityAttr;
 
 /* tverts.com: retrade api */
 
+import com.tverts.api.core.Value;
+import com.tverts.api.retrade.goods.Good;
 import com.tverts.api.retrade.goods.GoodAttr;
 
-/* com.tverts: retrade domain (prices) */
+/* com.tverts: retrade domain (prices + stores) */
 
 import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.store.TradeStore;
 
+/* com.tverts: support */
+
+import com.tverts.support.OU;
+
 
 /**
- * Stores properties of a {@link GoodUnit}
+ * Stores properties of a Good Unit
  * and the related instances.
  *
  * @author anton.baukin@gmail.com
@@ -292,29 +300,50 @@ public class GoodUnitView implements Serializable
 	{
 		if(gu == null) return this;
 
-		//~: load all the attributes
-		List<AttrType> atts = bean(GetUnity.class).
-		  getAttrTypes(gu.getDomain().getPrimaryKey(),
-		    Goods.typeGoodAttr().getPrimaryKey());
+		//~: create deep copy of the ox-good
+		Good g = OU.cloneBest(gu.getOx());
 
-		//~: map the names
-		HashMap<String, AttrType> map = new HashMap<>(atts.size());
-		for(AttrType a : atts) map.put(a.getName(), a);
+		//~: load attribute values
+		List<UnityAttr> atts = bean(GetUnity.class).
+		  getAttrs(gu.getPrimaryKey());
 
-		//~: map local name of each attribute
-		List<GoodAttr> gatts = gu.getOx().getAttrValues();
-		gu.getOx().rewriteAttrValues(gatts);
-		for(GoodAttr ga : gatts)
+		//~: by the type mapping
+		HashMap<AttrType, GoodAttr> map = new HashMap<>(atts.size());
+		for(UnityAttr ua : atts)
 		{
-			AttrType at = map.get(ga.getName());
+			GoodAttr ga = map.get(ua.getAttrType());
+			if(ga == null) map.put(ua.getAttrType(), ga =
+			  OU.cloneBest((GoodAttr) ua.getAttrType().getOx()));
 
-			//=: local name
-			if(at != null)
-				ga.setNameLo(at.getNameLo());
+			//=: name local
+			if(ga.getNameLo() == null)
+				ga.setNameLo(ga.getName());
+
+			Value v = ga.getValue();
+
+			//?: {has no values}
+			if((v == null) && (ga.getValues() == null))
+				ga.setValue(Goods.value(ua));
+			//?: {has several values now}
+			else if(ga.getValues() != null)
+				ga.getValues().add(Goods.value(ua));
+			//?: {make two values}
+			else
+			{
+				ArrayList<Value> vs = new ArrayList<>(2);
+				vs.add(v); //<-- existing, first
+				vs.add(Goods.value(ua));
+
+				ga.setValue(null);
+				ga.setValues(vs);
+			}
 		}
 
+		//=: attribute values
+		g.setAttrValues(new ArrayList<>(map.values()));
+
 		//!: encode to JSON
-		this.oxString = XPoint.json().write(gu.getOx());
+		this.oxString = XPoint.json().write(g);
 
 		return this;
 	}

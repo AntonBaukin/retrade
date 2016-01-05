@@ -242,6 +242,9 @@ public class GenTestGoods extends GenesisHiberPartBase
 		Goods.initOx(sub, sub.getOxOwn());
 		sub.updateOxOwn();
 
+		//!: update action
+		actionRun(ActionType.UPDATE, gu);
+
 		//~: add to the goods map
 		addGood(ctx, sub);
 

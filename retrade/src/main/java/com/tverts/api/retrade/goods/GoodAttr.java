@@ -139,8 +139,8 @@ public class GoodAttr extends JustObject
 
 	public void setValue(Value value)
 	{
-		this.value = null;
-		this.value = value;
+		this.values = null;
+		this.value  = value;
 	}
 
 	/**

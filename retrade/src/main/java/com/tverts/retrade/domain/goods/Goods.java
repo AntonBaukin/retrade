@@ -4,6 +4,11 @@ package com.tverts.retrade.domain.goods;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /* com.tverts: spring */
 
@@ -11,24 +16,29 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: endure (core) */
 
+import com.tverts.api.core.JString;
 import com.tverts.endure.UnityType;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.Domain;
 import com.tverts.endure.core.Domains;
 import com.tverts.endure.core.IncValues;
 
-/* com.tverts: aggregation */
+/* com.tverts: endure (core + aggregation) */
 
 import com.tverts.endure.aggr.AggrValue;
+import com.tverts.endure.core.UnityAttr;
 
-/* com.tverts: retrade api (goods) */
+/* com.tverts: retrade api (core + goods) */
 
+import com.tverts.api.core.Value;
+import com.tverts.api.retrade.goods.GoodAttr;
 import com.tverts.api.retrade.goods.CalcItem;
 import com.tverts.api.retrade.goods.Good;
 import com.tverts.api.retrade.goods.Measure;
 
 /* com.tverts: retrade domain (stores) */
 
+import com.tverts.objects.XPoint;
 import com.tverts.retrade.domain.store.TradeStore;
 
 /* com.tverts: support */
@@ -343,5 +353,82 @@ public class Goods
 
 		//=: coerce volume
 		i.setVolume(p.getVolume());
+	}
+
+
+	/* Attributes */
+
+	@SuppressWarnings("unchecked")
+	public static List<GoodAttr>      convert(Map<String, Object> ats)
+	{
+		if((ats == null) || ats.isEmpty())
+			return null;
+
+		List<GoodAttr> res = new ArrayList<>(ats.size());
+		for(Map.Entry<String, Object> e : ats.entrySet())
+		{
+			GoodAttr a = new GoodAttr();
+			res.add(a);
+
+			a.setName(e.getKey());
+
+			Object   v = e.getValue();
+			if(v instanceof Object[])
+				v = Arrays.asList((Object[])v);
+
+			if(!(v instanceof List))
+				a.setValue(new Value().value(e.getValue()));
+			else
+			{
+				ArrayList<Value> vs = new ArrayList<>();
+				for(Object x : (List)v)
+					vs.add(new Value().value(x));
+
+				a.setValues(vs);
+			}
+		}
+
+		return res;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> convert(List<GoodAttr> ats)
+	{
+		if((ats == null) || ats.isEmpty())
+			return null;
+
+		Map<String, Object> res = new LinkedHashMap<>(ats.size());
+		for(GoodAttr a : ats)
+			if(a.getValues() == null)
+				res.put(EX.asserts(a.getName()), EX.assertn(a.getValue()).value());
+			else
+			{
+				ArrayList vs = new ArrayList();
+				for(Value v : a.getValues())
+					vs.add(v.value());
+
+				res.put(EX.asserts(a.getName()), vs);
+			}
+
+		return res;
+	}
+
+	public static Value               value(UnityAttr ut)
+	{
+		if(ut.getString() != null)
+			return new Value().value(ut.getString());
+
+		if(ut.getInteger() != null)
+			return new Value().value(ut.getInteger());
+
+		if(ut.getNumber() != null)
+			return new Value().value(ut.getNumber());
+
+		if(ut.getBytes() != null)
+			return new Value().value(new JString(XPoint.json().write(
+			  XPoint.xml().read(true, Object.class, ut.getBytes())
+			)));
+
+		return new Value();
 	}
 }

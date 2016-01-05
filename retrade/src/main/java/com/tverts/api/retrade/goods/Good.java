@@ -2,9 +2,6 @@ package com.tverts.api.retrade.goods;
 
 /* Java */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 /* com.tverts: api */
 
 import com.tverts.api.core.CatItem;
-import com.tverts.api.core.Value;
 import com.tverts.api.core.XKeyPair;
-import com.tverts.api.support.EX;
 
 
 /**
@@ -106,6 +101,13 @@ public class Good extends CatItem
 		this.group = group;
 	}
 
+	/**
+	 * Allows to add or update an attribute value.
+	 * Remove operation must be invoked directly.
+	 *
+	 * Note that this mapping is not stored in XML
+	 * or JSON, see {@link #getAttrValues()}.
+	 */
 	@XmlTransient
 	public Map<String, Object> getAttrs()
 	{
@@ -119,21 +121,22 @@ public class Good extends CatItem
 		this.attributes = attributes;
 	}
 
+	/**
+	 * Descriptors and values of this Good attributes.
+	 * Note that this collection is never stored in
+	 * the ReTrade database in XML-encoded objects of
+	 * Good Units. It's intended for data exchange.
+	 */
 	@XmlElement(name = "good-attr")
 	@XmlElementWrapper(name = "attributes")
 	public List<GoodAttr> getAttrValues()
 	{
-		return (attrValues != null)?(attrValues):convert(attributes);
+		return attrValues;
 	}
 
 	private List<GoodAttr> attrValues;
 
 	public void setAttrValues(List<GoodAttr> ats)
-	{
-		this.attributes = convert(ats);
-	}
-
-	public void rewriteAttrValues(List<GoodAttr> ats)
 	{
 		this.attrValues = ats;
 	}
@@ -191,63 +194,5 @@ public class Good extends CatItem
 	public void setVisibleReports(boolean visibleReports)
 	{
 		this.visibleReports = visibleReports;
-	}
-
-
-	/* Support Routines */
-
-	@SuppressWarnings("unchecked")
-	public static List<GoodAttr> convert(Map<String, Object> ats)
-	{
-		if((ats == null) || ats.isEmpty())
-			return null;
-
-		List<GoodAttr> res = new ArrayList<>(ats.size());
-		for(Map.Entry<String, Object> e : ats.entrySet())
-		{
-			GoodAttr a = new GoodAttr();
-			res.add(a);
-
-			a.setName(e.getKey());
-
-			Object   v = e.getValue();
-			if(v instanceof Object[])
-				v = Arrays.asList((Object[]) v);
-
-			if(!(v instanceof List))
-				a.setValue(new Value().value(e.getValue()));
-			else
-			{
-				ArrayList<Value> vs = new ArrayList<>();
-				for(Object x : (List)v)
-					vs.add(new Value().value(x));
-
-				a.setValues(vs);
-			}
-		}
-
-		return res;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static Map<String, Object> convert(List<GoodAttr> ats)
-	{
-		if((ats == null) || ats.isEmpty())
-			return null;
-
-		Map<String, Object> res = new LinkedHashMap<>(ats.size());
-		for(GoodAttr a : ats)
-			if(a.getValues() == null)
-				res.put(EX.asserts(a.getName()), EX.assertn(a.getValue()).value());
-			else
-			{
-				ArrayList vs = new ArrayList();
-				for(Value v : a.getValues())
-					vs.add(v.value());
-
-				res.put(EX.asserts(a.getName()), vs);
-			}
-
-		return res;
 	}
 }
