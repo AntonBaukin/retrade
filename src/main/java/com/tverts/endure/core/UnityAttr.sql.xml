@@ -3,7 +3,7 @@
 <tasks>
 
   <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-   · Create index (ix_exec_request_flags)
+   · Create index (ix_attr_unity_source_attr)
    · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
   <task class   = 'com.tverts.hibery.sql.QueryIf'
         dialect = 'PostgreSQLDialect'>
@@ -11,16 +11,16 @@
     <if empty = 'true'>
 
       select true from pg_indexes where
-        (tablename = 'exec_request') and
-        (indexname = 'ix_exec_request_flags')
+        (tablename = 'core_unity_attr') and
+        (indexname = 'ix_attr_unity_source_attr')
 
     </if>
 
     <query>
 
-      create index ix_exec_request_flags on exec_request (
-        is_executed, was_delivered, pk_exec_request
-      )
+      create index ix_attr_unity_source_attr on
+        core_unity_attr ( fk_source_attr )
+      where (fk_source_attr is not null)
 
     </query>
   </task>

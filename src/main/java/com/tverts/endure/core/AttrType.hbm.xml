@@ -57,5 +57,28 @@
       </column>
     </property>
 
+
+    <!-- Is Array -->
+
+    <property name = 'array'>
+      <column name = 'is_array' not-null = 'true'>
+
+        <comment>Tells that this attribute type supports array of values</comment>
+      </column>
+    </property>
+
+
+    <!-- Is Shared -->
+
+    <property name = 'shared'>
+      <column name = 'is_shared' not-null = 'true'>
+
+        <comment>
+          Tells that this attribute type may be shared
+          via UnityAttr.source property
+        </comment>
+      </column>
+    </property>
+
   </union-subclass>
 </hibernate-mapping>

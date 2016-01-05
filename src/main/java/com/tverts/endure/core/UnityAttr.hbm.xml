@@ -42,6 +42,19 @@
     </property>
 
 
+    <!-- Source Attribute -->
+
+    <many-to-one name = 'source' foreign-key = 'fk_attr_unity_source_attr'>
+
+      <column name = 'fk_source_attr'>
+        <comment>
+          Reference to Attribute parent to this one.
+          Referencing attributes share the same value
+        </comment>
+      </column>
+    </many-to-one>
+
+
     <!-- Value Integer -->
 
     <property name = 'integer'>

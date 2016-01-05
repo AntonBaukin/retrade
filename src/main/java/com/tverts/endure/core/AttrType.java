@@ -90,4 +90,35 @@ public class      AttrType
 	{
 		this.system = system;
 	}
+
+	/**
+	 * Tells that this attribute type supports array of values.
+	 */
+	public boolean isArray()
+	{
+		return array;
+	}
+
+	private boolean array;
+
+	public void setArray(boolean array)
+	{
+		this.array = array;
+	}
+
+	/**
+	 * Tells that this attribute type may be shared.
+	 * (Used for attributes of sub-goods.)
+	 */
+	public boolean isShared()
+	{
+		return shared;
+	}
+
+	private boolean shared;
+
+	public void setShared(boolean shared)
+	{
+		this.shared = shared;
+	}
 }

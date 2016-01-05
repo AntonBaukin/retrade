@@ -66,6 +66,23 @@ public class UnityAttr extends NumericBase
 		this.index = index;
 	}
 
+	/**
+	 * The source of the attribute defined
+	 * when it's taken from some else entity.
+	 * Valid for shared attribute types.
+	 */
+	public UnityAttr getSource()
+	{
+		return source;
+	}
+
+	private UnityAttr source;
+
+	public void setSource(UnityAttr source)
+	{
+		this.source = source;
+	}
+
 
 	/* Attribute Values */
 
