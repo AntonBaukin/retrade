@@ -9,9 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Adds {@link TxObject} to {@link JustObject}.
  */
-@XmlType(name = "just-tx-object",
-  propOrder = { "tx" }
-)
+@XmlType(name = "just-tx-object", propOrder = { "tx" })
 public abstract class JustTxObject
        extends        JustObject
        implements     TxObject
