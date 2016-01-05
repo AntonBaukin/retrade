@@ -106,6 +106,15 @@ public class CMP
 	}
 
 
+	/* Integers */
+
+	public static int     cmp(Integer a, Integer b)
+	{
+		return (a == null && b == null)?(0):(a == null)?(-1):
+		  (b == null)?(+1):Integer.compare(a, b);
+	}
+
+
 	/* General Equality */
 
 	public static boolean eq(Object a, Object b)

@@ -103,6 +103,30 @@ public class OU
 	}
 
 	@SuppressWarnings("unchecked")
+	public static <O> O  cloneBean(O obj)
+	{
+		BytesStream bs = new BytesStream();
+		bs.setNotClose(true);
+
+		try
+		{
+			//~: write the object to XML
+			obj2xml(bs, obj);
+
+			//~: read it back
+			return (O) xml2obj(bs.inputStream());
+		}
+		catch(Exception e)
+		{
+			throw EX.wrap(e);
+		}
+		finally
+		{
+			bs.closeAlways();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	public static <O> O  cloneBest(O obj)
 	{
 		if(obj == null)
@@ -114,7 +138,7 @@ public class OU
 		if(obj instanceof Serializable)
 			return (O)cloneDeep((Serializable)obj);
 
-		return null;
+		return cloneBean(obj);
 	}
 
 

@@ -324,6 +324,20 @@ select ut from Unity u join u.unityType ut
 		return list(AttrType.class, Q, "domain", domain, "type", type);
 	}
 
+	public List<UnityAttr> getAttrs(Long unity)
+	{
+		EX.assertn(unity);
+
+
+// from UnityAttr where (unity.id = :unity)
+
+		final String Q =
+
+"  from UnityAttr where (unity.id = :unity)";
+
+		return list(UnityAttr.class, Q, "unity", unity);
+	}
+
 
 	/* Secured Operations */
 

@@ -98,7 +98,13 @@ public class Value
 		else if(v instanceof Integer)
 			integer = ((Integer)v).longValue();
 		else if(v instanceof BigDecimal)
-			decimal = (BigDecimal)v;
+		{
+			decimal = ((BigDecimal)v).stripTrailingZeros();
+
+			//?: {has no '.0'} add them
+			if(decimal.scale() < 1)
+				decimal = decimal.setScale(1);
+		}
 		else if(v instanceof JString)
 			json = (JString)v;
 		else if(v != null)
