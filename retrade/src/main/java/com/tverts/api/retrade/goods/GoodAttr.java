@@ -25,7 +25,8 @@ import com.tverts.api.core.Value;
  */
 @XmlRootElement(name = "good-attr")
 @XmlType(name = "good-attr", propOrder = {
-  "name", "nameLo", "system", "object", "value", "values"
+  "name", "nameLo", "system", "array",
+  "shared", "object", "value", "values"
 })
 public class GoodAttr extends JustObject
 {
@@ -69,6 +70,37 @@ public class GoodAttr extends JustObject
 	public void setSystem(boolean system)
 	{
 		this.system = system;
+	}
+
+	/**
+	 * Tells that this attribute type supports array of values.
+	 */
+	public boolean isArray()
+	{
+		return array;
+	}
+
+	private boolean array;
+
+	public void setArray(boolean array)
+	{
+		this.array = array;
+	}
+
+	/**
+	 * Tells that this attribute type may be shared.
+	 * (Used for attributes of sub-goods.)
+	 */
+	public boolean isShared()
+	{
+		return shared;
+	}
+
+	private boolean shared;
+
+	public void setShared(boolean shared)
+	{
+		this.shared = shared;
 	}
 
 	/**

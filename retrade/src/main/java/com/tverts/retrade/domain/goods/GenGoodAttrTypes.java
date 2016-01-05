@@ -15,14 +15,14 @@ import com.tverts.genesis.GenCtx;
 import com.tverts.genesis.GenesisError;
 import com.tverts.genesis.GenesisHiberPartBase;
 
-/* com.tverts: api (core) */
-
-import com.tverts.api.core.JString;
-
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.core.AttrType;
 import com.tverts.endure.core.Domain;
+
+/* com.tverts: retrade api */
+
+import com.tverts.api.retrade.goods.GoodAttr;
 
 /* com.tverts: support */
 
@@ -52,9 +52,9 @@ public class GenGoodAttrTypes extends GenesisHiberPartBase
 
 	/* public: JS generation callbacks */
 
-	public void takeGoodType(GenCtx ctx, AttrType type)
+	public void takeGoodType(GenCtx ctx, GoodAttr attr)
 	{
-		EX.assertn(type);
+		AttrType type = new AttrType();
 
 		//=: domain
 		type.setDomain(ctx.get(Domain.class));
@@ -62,11 +62,26 @@ public class GenGoodAttrTypes extends GenesisHiberPartBase
 		//=: type of attribute
 		type.setAttrType(Goods.typeGoodAttr());
 
-		//?: {name}
-		EX.asserts(type.getName());
+		//=: name
+		type.setName(EX.asserts(attr.getName()));
 
-		//?: {ox-object} expect JSON string
-		EX.assertx(type.getOx() instanceof JString);
+		//=: local name
+		type.setNameLo(attr.getNameLo());
+
+		//=: is-system
+		type.setSystem(attr.isSystem());
+
+		//=: is-array
+		type.setArray(attr.isArray());
+
+		//=: is-shared
+		type.setShared(attr.isShared());
+
+		//?: {json prototype }
+		EX.asserts(attr.getObject());
+
+		//=: ox-object
+		type.setOx(attr);
 
 		//!: ensure the type
 		actionRun(ActionType.ENSURE, type);

@@ -3,28 +3,33 @@ var ZeTS = JsX.once('zet/strings.js')
 
 function genGoodTypes(ctx, gen)
 {
-	var AttrType = Java.type('com.tverts.endure.core.AttrType')
-	var JString  = Java.type('com.tverts.api.core.JString')
+	var GoodAttr = Java.type('com.tverts.api.retrade.goods.GoodAttr')
 
 	ZeT.each(getGoodTypes(), function(g)
 	{
-		var type = new AttrType()
+		var attr = new GoodAttr()
 
 		//=: name
-		type.setName(ZeT.asserts(g.name))
+		attr.setName(ZeT.asserts(g.name))
 
 		//=: name local
 		if(!ZeTS.ises(g.nameLo))
-			type.setNameLo(g.nameLo)
+			attr.setNameLo(g.nameLo)
 
 		//=: is-system
-		type.setSystem(!!g.system)
+		attr.setSystem(!!g.system)
+
+		//=: is-array
+		attr.setArray(!!g.array)
+
+		//=: is-shared
+		attr.setShared(!!g.shared)
 
 		//~: ox-object
-		type.setOx(new JString(ZeT.o2s(g)))
+		attr.setObject(ZeT.o2s(g))
 
 		//!: call back to the generator
-		gen.takeGoodType(ctx, type)
+		gen.takeGoodType(ctx, attr)
 	})
 }
 
@@ -41,6 +46,12 @@ function getGoodTypes()
 			 * System attributes may not be edited or removed.
 			 */
 			system:  true,
+
+			/**
+			 * Tells that this attribute is shared with sub-goods.
+			 */
+			shared:  true,
+
 			name:    'Barсode',
 			nameLo:  'Баркод',
 			type:    'string',
@@ -72,6 +83,7 @@ function getGoodTypes()
 
 		{
 			system:  true,
+			shared:  true,
 			name:    'VAT',
 			nameLo:  'НДС',
 
@@ -96,6 +108,7 @@ function getGoodTypes()
 		{
 			name:    'Тестовый',
 			type:    'string',
+			shared:  true,
 			array:   true,
 
 			values:  [
