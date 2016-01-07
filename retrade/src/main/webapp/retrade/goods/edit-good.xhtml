@@ -103,8 +103,7 @@ ${v.checkModelRequestedWithRedirect}
     <f:facet name = "extjs-props">
 
       xtype: 'button', text: 'Атрибуты', enableToggle: true,
-      margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
-      tooltip: 'Отобразить дополнительные атрибуты товара'
+      tooltipType: 'title', tooltip: 'Отобразить дополнительные атрибуты товара'
 
     </f:facet>
    </x:component>
@@ -113,8 +112,8 @@ ${v.checkModelRequestedWithRedirect}
    <!-- [submit button] -->
    <x:component coid = "${z:vid(v, 'submit')}">
     <f:facet name = "extjs-props">
-      xtype: 'button', text: 'Сохранить',
-      cls: 'ux-btn-green'
+      xtype: 'button', text: 'Сохранить', cls: 'ux-btn-green',
+      margin: extjsf.pts(0, 0, 0, 4)
     </f:facet>
    </x:component>
 
@@ -123,6 +122,7 @@ ${v.checkModelRequestedWithRedirect}
    <x:component coid = "${z:vid(v, 'do-edit')}">
      <f:facet name = "extjs-props">
        xtype: 'button', text: 'Редактировать',
+       margin: extjsf.pts(0, 0, 0, 4),
        disabled: ${not v.isSecure('edit: goods')}
      </f:facet>
    </x:component>
@@ -213,9 +213,7 @@ ${v.checkModelRequestedWithRedirect}
       bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
-    <ui:decorate template = '.good-attrs.xhtml'
-      xmlns = 'http://www.w3.org/1999/xhtml'/>
-
+    <ui:decorate template = '.good-attrs.xhtml'/>
   </x:component>
 
 
@@ -672,6 +670,8 @@ ${v.checkModelRequestedWithRedirect}
         on = atsbtn.co().pressed
 
       form.visible(!on)
+      gocalc.visible(!isReadMode && !on)
+      submit.visible(!isReadMode && !on)
       status.visible(!on)
       atsext.visible(on)
 
@@ -679,7 +679,8 @@ ${v.checkModelRequestedWithRedirect}
       if(on)
         ReTrade.desktop.applyWindowBox({
           name: 'winmain', domain: '${rootView.extjsDomain}',
-          heightpt: 280, prevsize: 'good-attrs'
+          prevsize: 'good-attrs', heightpt: 280,
+          widthpt: (isReadMode)?(undefined):(420)
         })
       else
         ReTrade.desktop.prevsizeComp({
@@ -691,7 +692,7 @@ ${v.checkModelRequestedWithRedirect}
       if(on)
       {
         if(!ZeTS.ises(ox)) ox = ZeT.s2o(ox)
-        sattrs.readGoodOx(ox)
+        sattrs.updateGoodOx(ox, isReadMode)
       }
     }
 

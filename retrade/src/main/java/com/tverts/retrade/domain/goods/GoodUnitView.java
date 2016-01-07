@@ -315,6 +315,9 @@ public class GoodUnitView implements Serializable
 			if(ga == null) map.put(ua.getAttrType(), ga =
 			  OU.cloneBest((GoodAttr) ua.getAttrType().getOx()));
 
+			//=: primary key
+			ga.setPkey(ua.getPrimaryKey());
+
 			//=: name local
 			if(ga.getNameLo() == null)
 				ga.setNameLo(ga.getName());

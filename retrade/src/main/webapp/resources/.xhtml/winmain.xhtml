@@ -82,7 +82,8 @@
     panel.extjsPropsNode()
 
     //~: install positioning strategy
-    new ReTrade.WinAlign({ window: '#{cc.attrs.winmainName}', domain: domain })
+    if(!winmain.WinAlign)
+      new ReTrade.WinAlign({ window: '#{cc.attrs.winmainName}', domain: domain })
 
     //~: create the toolbar
     var toolbar = extjsf.defineBind('#{cc.attrs.coid}-toolbar', domain);

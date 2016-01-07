@@ -1188,11 +1188,40 @@ table.retrade-info-table.retrade-info-table-good-edit-price-list caption
   width: 38px;  height: 34px;
 }
 
-
 .retrade-good-edit-is-used td:last-child
 {
   font-size: 14px; line-height: 14px;
   vertical-align: middle; color: #157FCC;
+}
+
+.retrade-good-attrs-edit-values-table-row td:last-child
+{
+  width: 24px;
+}
+
+tr.retrade-good-attrs-edit-values-table-row td:last-child div
+{
+  width: 16px; height: 16px; cursor: pointer;
+}
+
+tr.retrade-good-attrs-edit-values-table-row td
+{
+  padding: 4px 0 4px 8px;
+}
+
+tr.retrade-good-attrs-edit-values-table-row td:first-child
+{
+  padding-left: 0;
+}
+
+tr.retrade-good-attrs-edit-values-table-row:first-child td
+{
+  padding-top: 0;
+}
+
+tr.retrade-good-attrs-edit-values-table-row:last-child td
+{
+  padding-bottom: 0;
 }
 
 

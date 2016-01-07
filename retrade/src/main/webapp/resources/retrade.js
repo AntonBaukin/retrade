@@ -1051,7 +1051,6 @@ ZeT.init('retrade.globals', function()
 	    {name: 'nameLo',       type: 'string'},
 	    {name: 'system',       type: 'boolean'},
 	    {name: 'object',       type: 'string'},
-	    {name: 'value',        type: 'string'},
 
 	    {name: 'ox', depends: [ 'object' ], calculate: function(r) {
 	      return ZeT.s2o(r.object)

@@ -77,7 +77,7 @@ ReTrade.RepeatedTask = ZeT.defineClass('ReTrade.RepeatedTask', {
 		ZeT.assert(ZeT.isu(this.task) || ZeT.isf(this.task))
 
 		//~: the callbacks array
-		this._ls = [], this._istarted = 0
+		this._ls = []; this._istarted = 0
 	},
 
 	result            : function(value, notify)
@@ -403,22 +403,36 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	applyWindowBox    : function(opts)
 	{
 		var win = ZeT.assertn(extjsf.co(opts))
-		var xy  = win.getXY()
+		var box, xy = win.getXY()
 
+		if(opts.prevsize) //?: {remember current size}
+			this.prevsizeComp({ component: win, save: opts.prevsize })
+
+		//~: default settings
 		if(!opts.width)      opts.width  = win.getWidth()
 		if(!opts.height)     opts.height = win.getHeight()
 		if(!ZeT.isn(opts.x)) opts.x      = xy[0]
 		if(!ZeT.isn(opts.y)) opts.y      = xy[1]
 
-		var box = this.calcWindowBox(opts)
+		//?: {has align strategy}
+		if(win.extjsfBind && win.extjsfBind.WinAlign)
+		{
+			box = this.calcWindowSize(opts)
+			win.extjsfBind.WinAlign.resizeTo(box.width, box.height)
+			box.x = win.getX()
+			box.y = win.getY()
+		}
+		//~: general move-resize
+		else
+		{
+			box = this.calcWindowBox(opts)
+			win.setPosition(box.x, box.y).setSize(box.width, box.height)
+		}
 
-		if(opts.prevsize) //?: {remember current size}
-			this.prevsizeComp({component: win, save: opts.prevsize})
-
-		win.setPosition(box.x, box.y).setSize(box.width, box.height)
+		return box
 	},
 
-	calcWindowBox     : function(opts)
+	calcWindowSize    : function(opts)
 	{
 		var r = { width: extjsf.pt(480), height: extjsf.pt(360) }
 
@@ -426,8 +440,16 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		this._size_pt(opts)
 		if(opts.width)  r.width  = opts.width
 		if(opts.height) r.height = opts.height
+
 		ZeT.assert(ZeT.isn(r.width))
 		ZeT.assert(ZeT.isn(r.height))
+
+		return r
+	},
+
+	calcWindowBox     : function(opts)
+	{
+		var r = this.calcWindowSize(opts)
 
 		//~: x-position
 		var maxy = Ext.getBody().getViewSize()
@@ -571,17 +593,26 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 	resizeComp        : function(opts)
 	{
-		var comp = extjsf.co(opts)
-		if(!comp) return
+		var co = extjsf.co(opts)
+		if(!co) return
 
 		this._size_pt(opts)
 
-		if(opts.width && opts.height)
-			comp.setSize(opts.width, opts.height)
-		else if(opts.width)
-			comp.setWidth(opts.width)
-		else if(opts.height)
-			comp.setHeight(opts.height)
+		//?: {has align strategy}
+		if(co.extjsfBind && co.extjsfBind.WinAlign)
+		{
+			var box = this.calcWindowSize(opts)
+			co.extjsfBind.WinAlign.resizeTo(box.width, box.height)
+		}
+		else
+		{
+			if(ZeT.isn(opts.width) && ZeT.isn(opts.height))
+				co.setSize(opts.width, opts.height)
+			else if(ZeT.isn(opts.width))
+				co.setWidth(opts.width)
+			else if(ZeT.isn(opts.height))
+				co.setHeight(opts.height)
+		}
 
 		return this
 	},
@@ -1539,7 +1570,12 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 		//?: {is a bind}
 		if(extjsf.isbind(this._window = window))
+		{
 			this._listen()
+
+			//~: save this strategy reference
+			window.WinAlign = this
+		}
 		else
 		{
 			ZeT.assertn(window)
@@ -1549,10 +1585,45 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 			{
 				ZeT.assertn(window.zIndexManager)
 				this._listen()
+
+				//~: save this strategy reference
+				if(window.extjsfBind)
+					window.extjsfBind.WinAlign = this
 			}
 			//~: or a factory
 			else
 				ZeT.assert(ZeT.isf(window))
+		}
+	},
+
+	/**
+	 * Sets size the window and properly places it
+	 * according to the current alignment.
+	 */
+	resizeTo          : function(w, h)
+	{
+		var win = this.win()
+		if(!win) return
+
+		if(!ZeT.isn(w)) w = win.getWidth()
+		if(!ZeT.isn(h)) h = win.getHeight()
+
+		var xy = win.getXY()
+		var a  = this._align_to(xy, w, h)
+
+		try
+		{
+			this._skip_events = true
+
+			if((win.getWidth() != w) || (win.getHeight() != h))
+				win.setSize(w, h)
+
+			if(a) win.alignTo(document.body, a)
+			else  win.setXY(xy)
+		}
+		finally
+		{
+			delete this._skip_events
 		}
 	},
 
@@ -1773,6 +1844,8 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_wnd_move      : function(win, x, y)
 	{
+		if(this._skip_events) return
+
 		delete this._align
 		delete this._xy
 
@@ -1820,6 +1893,8 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_wnd_resize    : function(win, w, h)
 	{
+		if(this._skip_events) return
+
 		var xy = win.getXY()
 		this._wh = [w, h]
 		this._on_wnd_move(win, xy[0], xy[1])
@@ -1827,15 +1902,8 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_resize        : function()
 	{
-		var win; if(win = this.win())
-		{
-			var xy = win.getXY()
-			var a  = this._align_to(xy,
-			  win.getWidth(), win.getHeight())
-
-			if(a) win.alignTo(document.body, a)
-			else  win.setXY(xy)
-		}
+		if(this._skip_events) return
+		this.resizeTo()
 	}
 })
 
@@ -4244,7 +4312,6 @@ ReTrade.TilesItem = ZeT.defineClass('ReTrade.TilesItem',
 		if(ZeT.isx(w)) return
 
 		i = w.data(a)
-		ZeT.log('Index:', i)
 		ZeT.assert(ZeT.isi(i))
 
 		return i

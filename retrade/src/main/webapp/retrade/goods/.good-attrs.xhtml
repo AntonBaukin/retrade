@@ -1,17 +1,16 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 
-<ui:component xmlns:ui = 'http://java.sun.com/jsf/facelets'
+<ui:component xmlns = 'http://www.w3.org/1999/xhtml'
+  xmlns:ui = 'http://java.sun.com/jsf/facelets'
   xmlns:c  = 'http://java.sun.com/jsp/jstl/core'
   xmlns:f  = 'http://java.sun.com/jsf/core'
   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
   xmlns:z  = 'uri:tverts.com'>
 
 
-  <!-- [attributes display table -->
-
   <x:data-store storeId = "${z:vid(v, 'goodAttrs')}" modelView = "${v}">
     <f:facet name = "store-props">
-      model: 'retrade.model.KeyValue', data: []
+      model: 'retrade.model.GoodAttrView', data: []
     </f:facet>
 
     <f:facet name = "proxy-props">
@@ -19,22 +18,25 @@
     </f:facet>
   </x:data-store>
 
+
+  <!-- [attributes display table -->
+
   <x:data-grid coid = "${z:vid(v, 'attrs-view')}"
     storeId = "${z:vid(v, 'goodAttrs')}">
 
     <f:facet name = "grid-props">
-      flex: 1, pager: false, sortableColumns: true,
+      flex: 1, hidden: true, pager: false, sortableColumns: true,
       selModel: extjsf.delayCreate('Ext.ux.selection.No'),
       sorters: [{ property: 'key', direction: 'ASC' }],
       columns:  [
 
         {
-          text: "Наименование", dataIndex: 'key',
+          text: "Наименование", dataIndex: 'nameLo',
           flex: 1, sortable: true
         },
 
         {
-          text: "Значение", dataIndex: 'object', sortable: false, flex: 1,
+          text: "Значение", dataIndex: 'value', sortable: false, flex: 1,
           menuDisabled: true, tdCls:'retrade-selectable-column', renderer: function(v)
           {
             if(!ZeT.isa(v)) return v
@@ -53,21 +55,110 @@
     </f:facet>
   </x:data-grid>
 
+  <!-- attributes display table] -->
+
+
+  <!-- [attributes edit table -->
+
+  <x:data-grid coid = "${z:vid(v, 'attrs-edit')}"
+    storeId = "${z:vid(v, 'goodAttrs')}">
+
+    <f:facet name = "grid-props">
+      flex: 1, hidden: true, pager: false, sortableColumns: true,
+      selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+      sorters: [{ property: 'key', direction: 'ASC' }],
+      columns:  [
+
+        {
+          text: "Наименование", dataIndex: 'nameLo',
+          flex: 1, sortable: true
+        },
+
+        {
+          text: "Массив", dataIndex: 'ox', sortable: false,
+          width: extjsf.ex(9), align: 'center', renderer: function(ox, meta)
+          {
+            meta.tdAttr = (ox.array)?
+              ("title='Атрибут может хранить несколько значений данного типа'"):
+              ("title='Атрибут может хранить только одно значение данного типа'")
+              return (ox.array)?('да'):('нет')
+          }
+        },
+
+        {
+          text: "Значение", dataIndex: 'value', sortable: false, flex: 1,
+          menuDisabled: true, tdCls:'retrade-selectable-column', renderer: function(v, meta, model)
+          {
+            if(!ZeT.isa(v)) return v
+
+            var table = $('#' + "${z:vid(v, 'attrs-values-table')}").find('table').clone()
+            var row   = table.find('tr')
+            var body  = row.parent()
+            row.remove()
+
+            ZeT.each(v, function(x)
+            {
+              if(ZeTS.ises(x)) return
+
+              var xyz = row.clone()
+              body.append(xyz)
+
+              //:= array item value
+              xyz.find('td:first-child').text(x)
+
+              //~: on remove button click
+              xyz.find('.retrade-button-del').attr('onclick', ZeTS.cat(
+                "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${rootView.extjsDomain}').",
+                '_remove_model_value("', model.getId(), '", "', x, '")'
+              ))
+            })
+
+            return table[0].outerHTML
+          }
+        }
+      ]
+    </f:facet>
+  </x:data-grid>
+
+  <div style = "display:none" id = "${z:vid(v, 'attrs-values-table')}">
+
+    <table class = "retrade-good-attrs-edit-values-table"
+      cellpadding = "0" cellspacing = "0" border = "0">
+
+      <tr class = "retrade-good-attrs-edit-values-table-row">
+        <td></td>
+        <td><div class = "retrade-button-del"
+          title = "Удалить значение из массива"></div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- attributes edit table] -->
+
+
   <script type = "text/javascript">
   //<![CDATA[
 
   //~: assign values from the attributes on good ox
-  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').readGoodOx = function(ox)
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').updateGoodOx = function(ox, isReadMode)
   {
-    //~: clear the store
     var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var vgrid = extjsf.bind("${z:vid(v, 'attrs-view')}", '${rootView.extjsDomain}')
+    var egrid = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+
+    //~: clear the store
     store.removeAll()
+
+    //~: toggle tables
+    vgrid.visible(isReadMode)
+    egrid.visible(!isReadMode)
 
     //?: {has nothing}
     if(!ox || !ZeT.isa(ox.attributes)) return
 
     function v2s(v)
     {
+      if(ZeT.iss(v))     return v
       if(v && v.text)    return v.text
       if(v && v.integer) return '' + v.integer
       if(v && v.decimal) return '' + v.decimal
@@ -76,29 +167,42 @@
     //~: add items from the attributes
     ZeT.each(ox.attributes, function(a)
     {
-      var x = { key : ZeT.asserts(a.name) }
-      if(!ZeTS.ises(a.nameLo)) x.key = a.nameLo
-
       //?: {has single value}
-      if(!ZeT.isa(a.values))
-        x.object = v2s(a.value)
-      //~: have array of values
-      else ZeT.each(a.values, function(v)
+      if(!a.array)
       {
-        if(!x.object) x.object = []
-        x.object.push(v2s(v))
-      })
+        ZeT.assert(!ZeT.isa(a.values))
+        a.value = v2s(a.value)
+      }
+      //?: {not processed yet}
+      if(!ZeT.isa(a.value))
+        //?: {array with single value}
+        if(!ZeT.isa(a.values))
+          a.value = [ v2s(a.value) ]
+        //~: have array of values
+        else ZeT.each(a.values, function(v)
+        {
+          if(!a.value) a.value = []
+          a.value.push(v2s(v))
+        })
 
-      store.add(x)
+      store.add(a)
     })
 
-    store.sort('key', 'ASC')
+    store.sort('nameLo', 'ASC')
+  }
+
+
+  //~: callback function to remove value from array
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')._remove_model_value = function(id, v)
+  {
+    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var model = store.getById(id);  if(!model) return
+    var value = model.get('value'); if(!ZeT.isa(value)) return
+
+    ZeTA.del(value, v)
+    model.set('value', ZeTA.copy(value))
   }
 
   //]]>
   </script>
-
-  <!-- attributes display table] -->
-
-
 </ui:component>
