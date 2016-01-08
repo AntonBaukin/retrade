@@ -27,7 +27,7 @@
     <f:facet name = "grid-props">
       flex: 1, hidden: true, pager: false, sortableColumns: true,
       selModel: extjsf.delayCreate('Ext.ux.selection.No'),
-      sorters: [{ property: 'key', direction: 'ASC' }],
+      sorters: [{ property: 'nameLo', direction: 'ASC' }],
       columns:  [
 
         {
@@ -66,69 +66,108 @@
     <f:facet name = "grid-props">
       flex: 1, hidden: true, pager: false, sortableColumns: true,
       selModel: extjsf.delayCreate('Ext.ux.selection.No'),
-      sorters: [{ property: 'key', direction: 'ASC' }],
-      columns:  [
+      sorters: [{ property: 'nameLo', direction: 'ASC' }],
 
-        {
-          text: "Наименование", dataIndex: 'nameLo',
-          flex: 1, sortable: true
-        },
-
-        {
-          text: "Массив", dataIndex: 'ox', sortable: false,
-          width: extjsf.ex(9), align: 'center', renderer: function(ox, meta)
+      plugins: [{
+        ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
+        listeners : {
+          edit: function(ed, event)
           {
-            meta.tdAttr = (ox.array)?
-              ("title='Атрибут может хранить несколько значений данного типа'"):
-              ("title='Атрибут может хранить только одно значение данного типа'")
-              return (ox.array)?('да'):('нет')
-          }
-        },
+            var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+            delete g.editEvent
+            g.valueEdited(ed, event)
+          },
 
-        {
-          text: "Значение", dataIndex: 'value', sortable: false, flex: 1,
-          menuDisabled: true, tdCls:'retrade-selectable-column', renderer: function(v, meta, model)
+          beforeedit : function(ed, event)
           {
-            if(!ZeT.isa(v)) return v
+            var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+            g.editStarted(ed, g.editEvent = event)
+          }}
+      }],
 
-            var table = $('#' + "${z:vid(v, 'attrs-values-table')}").find('table').clone()
-            var row   = table.find('tr')
-            var body  = row.parent()
-            row.remove()
 
-            ZeT.each(v, function(x)
-            {
-              if(ZeTS.ises(x)) return
-
-              var xyz = row.clone()
-              body.append(xyz)
-
-              //:= array item value
-              xyz.find('td:first-child').text(x)
-
-              //~: on remove button click
-              xyz.find('.retrade-button-del').attr('onclick', ZeTS.cat(
-                "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${rootView.extjsDomain}').",
-                '_remove_model_value("', model.getId(), '", "', x, '")'
-              ))
-            })
-
-            return table[0].outerHTML
-          }
+      columns: ZeT.scope(function()
+      {
+        function renderArray(ox, meta)
+        {
+          meta.tdAttr = (ox.array)?
+            ("title='Атрибут может хранить несколько значений данного типа'"):
+            ("title='Атрибут может хранить только одно значение данного типа'")
+          return (ox.array)?('да'):('нет')
         }
-      ]
+
+        function renderValue(v, meta, model)
+        {
+          v = model.get('value')
+          if(!ZeT.isa(v)) return v
+
+          var table = $('#' + "${z:vid(v, 'attrs-values-table')}").find('table').clone()
+          var row   = table.find('tr')
+          var body  = row.parent()
+          row.remove()
+
+          ZeT.each(v, function(x)
+          {
+            if(ZeTS.ises(x)) return
+
+            var xyz = row.clone()
+            body.append(xyz)
+
+            //:= array item value
+            xyz.find('td:last-child span').text(x).attr('onclick', ZeTS.cat(
+              "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${rootView.extjsDomain}').",
+              'retradeEditArrayValue("', model.getId(), '", "', x,
+              '", event || window.event)'
+            ))
+
+            //~: on remove button click
+            xyz.find('.retrade-edit-delete').attr('onclick', ZeTS.cat(
+              "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${rootView.extjsDomain}').",
+              'retradeRemoveArrayValue("', model.getId(), '", "', x,
+              '", event || window.event)'
+            ))
+          })
+
+          return table[0].outerHTML
+        }
+
+        var valueEditor = Ext.create('Ext.form.field.Text', {})
+
+
+        return [
+
+          {
+            text: "Наименование", dataIndex: 'nameLo',
+            flex: 1, sortable: true
+          },
+
+          {
+            text: "Массив", dataIndex: 'ox', sortable: false,
+            width: extjsf.ex(9), align: 'center', renderer: renderArray
+          },
+
+          {
+            text: "Значение", dataIndex: 'temp', sortable: false, flex: 1,
+            menuDisabled: true, tdCls:'retrade-selectable-column',
+            renderer: renderValue, editor: valueEditor
+          }
+        ]
+      })
     </f:facet>
   </x:data-grid>
 
+
+  <!-- [template of array of values table] -->
   <div style = "display:none" id = "${z:vid(v, 'attrs-values-table')}">
 
     <table class = "retrade-good-attrs-edit-values-table"
       cellpadding = "0" cellspacing = "0" border = "0">
 
       <tr class = "retrade-good-attrs-edit-values-table-row">
-        <td></td>
-        <td><div class = "retrade-button-del"
+        <td><div class = "retrade-edit-delete"
           title = "Удалить значение из массива"></div></td>
+
+        <td><span title = "Изменить значение"/></td>
       </tr>
     </table>
   </div>
@@ -162,6 +201,7 @@
       if(v && v.text)    return v.text
       if(v && v.integer) return '' + v.integer
       if(v && v.decimal) return '' + v.decimal
+      return ''
     }
 
     //~: add items from the attributes
@@ -174,7 +214,7 @@
         a.value = v2s(a.value)
       }
       //?: {not processed yet}
-      if(!ZeT.isa(a.value))
+      else if(!ZeT.isa(a.value))
         //?: {array with single value}
         if(!ZeT.isa(a.values))
           a.value = [ v2s(a.value) ]
@@ -185,6 +225,13 @@
           a.value.push(v2s(v))
         })
 
+      //=: temporary edit
+      a.temp = (a.array)?(''):(a.value)
+
+      //=: self reference
+      a.self = a
+
+      //!: add to the store
       store.add(a)
     })
 
@@ -193,14 +240,64 @@
 
 
   //~: callback function to remove value from array
-  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')._remove_model_value = function(id, v)
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+    retradeRemoveArrayValue = function(id, v, e)
   {
+    e = Ext.create('Ext.event.Event', e)
+    e.stopEvent()
+
     var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
     var model = store.getById(id);  if(!model) return
     var value = model.get('value'); if(!ZeT.isa(value)) return
 
     ZeTA.del(value, v)
-    model.set('value', ZeTA.copy(value))
+    value = ZeTA.copy(value)
+
+    model.set('value', value)
+    model.get('self').values = value
+  }
+
+  //~: callback function to edit value in array
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+    retradeEditArrayValue = function(id, v)
+  {
+    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var model = store.getById(id);  if(!model) return
+    var value = model.get('value'); if(!ZeT.isa(value)) return
+
+    model.set('temp', v)
+    model.set('temp-edited', v)
+  }
+
+
+  //~: value edit start
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+    editStarted = function(ed, event)
+  {}
+
+
+  //~: value edit callback
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+    valueEdited = function(ed, event)
+  {
+    var v = event.record.get('value')
+    var x = event.record.get('temp')
+
+    if(ZeT.iss(v)) v = x; else if(ZeT.isa(v))
+    {
+      var te = event.record.get('temp-edited')
+      var  i = ZeTS.ises(te)?(-1):(v.indexOf(te))
+
+      if(v.indexOf(x) == -1)
+        if(i == -1) v.push(x)
+        else v[i] = x
+
+      event.record.set('temp',  '')
+      event.record.set('temp-edited',  '')
+    }
+
+    event.record.set('value', v)
+    event.record.get('self').values = v
   }
 
   //]]>
