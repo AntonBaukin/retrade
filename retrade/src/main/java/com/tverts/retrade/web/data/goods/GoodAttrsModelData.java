@@ -85,10 +85,6 @@ public class GoodAttrsModelData implements ModelData
 			if(ga.getNameLo() == null)
 				ga.setNameLo(ga.getName());
 
-		//?: {model good is not defined} attribute types only
-//		if(model.getGoodUnit() == null)
-//			return res;
-
 		return res;
 	}
 

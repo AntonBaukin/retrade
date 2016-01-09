@@ -8,6 +8,7 @@
   xmlns:z  = 'uri:tverts.com'>
 
 
+  <!-- [store of attribute values] -->
   <x:data-store storeId = "${z:vid(v, 'goodAttrs')}" modelView = "${v}">
     <f:facet name = "store-props">
       model: 'retrade.model.GoodAttrView', data: []
@@ -58,6 +59,20 @@
   <!-- attributes display table] -->
 
 
+  <!-- [attribute types store] -->
+  <x:data-store storeId = "${z:vid(v, 'attrTypes')}"
+    modelProvider = "facesGoodAttrsView" pageSize = "0">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodAttrView'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodAttrView')
+    </f:facet>
+  </x:data-store>
+
+
   <!-- [attributes edit table -->
 
   <x:data-grid coid = "${z:vid(v, 'attrs-edit')}"
@@ -65,7 +80,7 @@
 
     <f:facet name = "grid-props">
       flex: 1, hidden: true, pager: false, sortableColumns: true,
-      selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
       sorters: [{ property: 'nameLo', direction: 'ASC' }],
 
       plugins: [{
@@ -81,15 +96,15 @@
           beforeedit : function(ed, event)
           {
             var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
-            g.editStarted(ed, g.editEvent = event)
+            return g.editStarted(ed, g.editEvent = event)
           }}
       }],
-
 
       columns: ZeT.scope(function()
       {
         function renderArray(ox, meta)
         {
+          if(!ox) return ''
           meta.tdAttr = (ox.array)?
             ("title='Атрибут может хранить несколько значений данного типа'"):
             ("title='Атрибут может хранить только одно значение данного типа'")
@@ -131,6 +146,15 @@
           return table[0].outerHTML
         }
 
+
+        //~: attribute type select
+        var typeSelect = Ext.create('Ext.form.field.ComboBox', {
+          store: "${z:vid(v, 'attrTypes')}", editable: false,
+          valueField: 'pkey', displayField: 'nameLo'
+        })
+
+
+        //~: value editor
         var valueEditor = Ext.create('Ext.form.field.Text', {})
 
 
@@ -138,7 +162,7 @@
 
           {
             text: "Наименование", dataIndex: 'nameLo',
-            flex: 1, sortable: true
+            flex: 1, sortable: true, editor: typeSelect
           },
 
           {
@@ -179,7 +203,8 @@
   //<![CDATA[
 
   //~: assign values from the attributes on good ox
-  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').updateGoodOx = function(ox, isReadMode)
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+    updateGoodOx = function(ox, isReadMode)
   {
     var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
     var vgrid = extjsf.bind("${z:vid(v, 'attrs-view')}", '${rootView.extjsDomain}')
@@ -191,6 +216,9 @@
     //~: toggle tables
     vgrid.visible(isReadMode)
     egrid.visible(!isReadMode)
+
+    //~: connect the store to the model
+    store.extjsfBind.retradeOxModel = ox
 
     //?: {has nothing}
     if(!ox || !ZeT.isa(ox.attributes)) return
@@ -225,16 +253,23 @@
           a.value.push(v2s(v))
         })
 
+      //!: add to the store
+      var m = store.add(a)[0]
+
+      //=: id
+      m.setId('' + a.pkey)
+
       //=: temporary edit
-      a.temp = (a.array)?(''):(a.value)
+      m.set('temp', (a.array)?(''):(a.value))
 
       //=: self reference
-      a.self = a
+      m.set('self', a)
+      m.set('selfox', ox)
 
-      //!: add to the store
-      store.add(a)
+      m.commit(true)
     })
 
+    //~: sort the attributes
     store.sort('nameLo', 'ASC')
   }
 
@@ -257,6 +292,7 @@
     model.get('self').values = value
   }
 
+
   //~: callback function to edit value in array
   extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
     retradeEditArrayValue = function(id, v)
@@ -270,18 +306,94 @@
   }
 
 
+  //~: filter attribute types
+  extjsf.bind("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}').
+    filterAttrTypes = function()
+  {
+    var vstore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+
+    //~: exclude attributes that are already selected
+    astore.filterBy(function(a)
+    {
+      return !vstore.getById(a.getId())
+    })
+
+    return !!astore.getCount()
+  }
+
+
   //~: value edit start
   extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
     editStarted = function(ed, event)
-  {}
+  {
+    var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+
+    //?: {editing attribute type}
+    if(event.field == 'nameLo')
+    {
+      //?: {has type selected}
+      if(!ZeTS.ises(event.value) && !ZeT.isx(event.record.get('value')))
+        return false //<-- forbid to alter it
+
+      return
+    }
+
+    //?: {has no type selected}
+    if(ZeTS.ises(event.record.get('nameLo')))
+    {
+      ReTrade.desktop.error('До задания значения выберете атрибут!')
+      return false //<-- forbid to edit value of unknown type
+    }
+
+    //~: apply filter on the types
+    astore.filterAttrTypes()
+  }
+
+
+  //~: assign attribute type
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+    assignAttrType = function(m, attrId)
+  {
+    var s = extjsf.bind("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var a = ZeT.assertn(s.co().getById(attrId))
+    var d = a.getData(), ox = ZeT.assertn(m.get('selfox'))
+
+    if(a.get('ox').array) d.array = true
+    m.set(d); m.setId(a.getId())
+
+    //~: array value
+    m.set('value', d.value = ((d.array)?[]:('')))
+
+    //=: temporary edit
+    m.set('temp', d.value)
+
+    //~: bind to the attributes
+    m.set('self', d)
+    if(!ox.attributes) ox.attributes = []
+    ox.attributes.push(d)
+  }
 
 
   //~: value edit callback
   extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
     valueEdited = function(ed, event)
   {
+    var vgrid = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+
+    //?: {edited attribute type}
+    if(event.field == 'nameLo')
+    {
+      //?: {has value selected}
+      if(!ZeTS.ises(event.value))
+        vgrid.assignAttrType(event.record, event.value)
+
+      return
+    }
+
     var v = event.record.get('value')
     var x = event.record.get('temp')
+    var s = event.record.get('self')
 
     if(ZeT.iss(v)) v = x; else if(ZeT.isa(v))
     {
@@ -297,8 +409,71 @@
     }
 
     event.record.set('value', v)
-    event.record.get('self').values = v
+    if(s.array) s.values = v; else s.value = v
   }
+
+
+  //~: delete selected attributes
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+    deleteSelected = function()
+  {
+    var grid = extjsf.co("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var sel  = grid.getSelection()
+
+    grid.getSelectionModel().deselectAll()
+
+    ZeT.each(sel, function(m)
+    {
+      var ox = m.get('selfox')
+      var  a = m.get('self')
+
+      ZeTA.del(ox.attributes, a)
+    })
+
+    grid.getStore().remove(sel)
+  }
+
+
+  //~: add new attribute
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+    addAttribute = function()
+  {
+    var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var vstore = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+
+    function startEdit(x)
+    {
+      vgrid.co().getPlugin('cellediting').
+        startEditByPosition({ column: 0, row: vstore.co().indexOf(x) })
+    }
+
+    //~: search for empty attribute
+    var found; astore.co().each(function(x)
+    {
+      if(ZeTS.ises(x.get('nameLo'))) { found = x; return false }
+    })
+
+    //?: {found existing} start edit it
+    if(found) return startEdit(found)
+
+    //?: {has no more types}
+    if(!astore.filterAttrTypes()) return ReTrade.desktop.
+      error('Список аттрибутов товаров пуст!')
+
+    var ox = ZeT.assertn(vstore.retradeOxModel)
+
+    //~: insert new record
+    var m = vstore.co().add({ selfox: ox })[0]
+
+    //?: {has more than one option}
+    if(astore.co().getCount() > 1)
+      return startEdit(m)
+
+    var attrId = astore.co().getAt(0).getId()
+    vgrid.assignAttrType(m, attrId)
+  }
+
 
   //]]>
   </script>

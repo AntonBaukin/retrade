@@ -1,9 +1,9 @@
 package com.tverts.retrade.web.views.goods;
 
-/* JavaServer Faces */
+/* Spring Framework */
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /* com.tverts: spring */
 
@@ -33,7 +33,7 @@ import com.tverts.support.EX;
  *
  * @author anton.baukin@gmail.com.
  */
-@ManagedBean @RequestScoped
+@Component @Scope("request")
 public class FacesGoodAttrsView extends ModelView
 {
 	/* public: view interface */

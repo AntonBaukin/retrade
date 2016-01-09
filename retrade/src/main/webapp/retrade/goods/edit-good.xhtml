@@ -47,8 +47,7 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [cancel edit button] -->
     <x:component coid = "${z:vid(v, 'cancel-edit')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Отмена',
-        cls: 'ux-btn-red',
+        xtype: 'button', text: 'Отмена', cls: 'ux-btn-red',
         handler : function()
         {
           extjsf.co('winmain', '${rootView.extjsDomain}').close()
@@ -69,7 +68,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
-   <!-- [goto calculation button] -->
+   <!-- [goto calculation button -->
 
    <x:component coid = "${z:vid(v, 'goto-calc')}">
     <f:facet name = "extjs-props">
@@ -90,6 +89,20 @@ ${v.checkModelRequestedWithRedirect}
      </f:facet>
    </x:winaction-delegate>
 
+   <!-- goto calculation button] -->
+
+
+   <!-- [remove attributes button] -->
+   <x:component coid = "${z:vid(v, 'del-attrs')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'button', text: 'Удалить', hidden: true,
+      margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
+      tooltip: 'Удалить выбранные атрибуты'
+
+    </f:facet>
+   </x:component>
+
 
    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
      <f:facet name = "extjs-props">
@@ -99,6 +112,19 @@ ${v.checkModelRequestedWithRedirect}
    </x:component>
 
 
+   <!-- [add attribute button] -->
+   <x:component coid = "${z:vid(v, 'add-attr')}">
+    <f:facet name = "extjs-props">
+
+      xtype: 'button', text: 'Добавить', hidden: true,
+      margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
+      tooltip: 'Добавить атрибут'
+
+    </f:facet>
+   </x:component>
+
+
+   <!-- [show attributes toggle button] -->
    <x:component coid = "${z:vid(v, 'show-attrs')}">
     <f:facet name = "extjs-props">
 
@@ -558,6 +584,9 @@ ${v.checkModelRequestedWithRedirect}
     var submit = extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')
     var gocalc = extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}')
     var sattrs = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var delats = extjsf.bind("${z:vid(v, 'del-attrs')}", '${rootView.extjsDomain}')
+    var addat  = extjsf.bind("${z:vid(v, 'add-attr')}", '${rootView.extjsDomain}')
+    var attsed = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
 
     function adjustWindow()
     {
@@ -673,7 +702,10 @@ ${v.checkModelRequestedWithRedirect}
       gocalc.visible(!isReadMode && !on)
       submit.visible(!isReadMode && !on)
       status.visible(!on)
+
       atsext.visible(on)
+      delats.visible(!isReadMode && on)
+      addat.visible(!isReadMode && on)
 
       //~: adapt the height of the window
       if(on)
@@ -697,6 +729,12 @@ ${v.checkModelRequestedWithRedirect}
 
     //~: toggle attributes view
     atsbtn.on('toggle', toggleAttributes)
+
+    //~: remove selected attributes
+    extjsf.bindHandler(delats, attsed.deleteSelected)
+
+    //~: add new attribute
+    extjsf.bindHandler(addat, attsed.addAttribute)
   })
 
   //]]>

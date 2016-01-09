@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 /* com.tverts: api */
 
 import com.tverts.api.core.JustObject;
+import com.tverts.api.core.PkeyObject;
 import com.tverts.api.core.Value;
 
 
@@ -28,7 +29,7 @@ import com.tverts.api.core.Value;
   "name", "nameLo", "system", "array",
   "shared", "object", "value", "values"
 })
-public class GoodAttr extends JustObject
+public class GoodAttr extends JustObject implements PkeyObject
 {
 	/**
 	 * Name of the attribute up to 255 symbols.

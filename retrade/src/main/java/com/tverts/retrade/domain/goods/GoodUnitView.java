@@ -316,7 +316,7 @@ public class GoodUnitView implements Serializable
 			  OU.cloneBest((GoodAttr) ua.getAttrType().getOx()));
 
 			//=: primary key
-			ga.setPkey(ua.getPrimaryKey());
+			ga.setPkey(ua.getAttrType().getPrimaryKey());
 
 			//=: name local
 			if(ga.getNameLo() == null)
