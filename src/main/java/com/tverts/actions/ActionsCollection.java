@@ -15,10 +15,15 @@ import com.tverts.hibery.HiberPoint;
 import com.tverts.system.tx.Tx;
 import com.tverts.system.tx.TxPoint;
 
+/* com.tverts: api (core) */
+
+import com.tverts.api.core.PkeyObject;
+
 /* com.tverts: endure (core) */
 
 import com.tverts.endure.AltIdentity;
 import com.tverts.endure.NumericIdentity;
+import com.tverts.endure.Ox;
 import com.tverts.endure.United;
 import com.tverts.endure.core.DomainEntity;
 import com.tverts.endure.core.UnityView;
@@ -249,6 +254,16 @@ public class ActionsCollection
 			//?: {entity still has no primary key} generate it
 			if(e.getPrimaryKey() == null)
 				HiberPoint.setPrimaryKey(session(), e, isTestSaveTarget());
+
+			//?: {is ox-entity}
+			if(e instanceof Ox)
+			{
+				Object ox = ((Ox)e).getOx();
+
+				//?: {supports primary key}
+				if(ox instanceof PkeyObject)
+					((PkeyObject)ox).setPkey(e.getPrimaryKey());
+			}
 		}
 
 		protected boolean isTestSaveTarget()

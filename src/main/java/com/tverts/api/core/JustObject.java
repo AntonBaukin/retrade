@@ -2,7 +2,6 @@ package com.tverts.api.core;
 
 /* Java API for XML Binding */
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -10,16 +9,14 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Just a {@link TwoKeysObject}.
  */
-@XmlType(name = "just-object",
-  propOrder = { "pkey", "xkey" }
-)
+@XmlType(propOrder = { "pkey", "xkey" })
 public abstract class JustObject
 {
 	/**
 	 * The primary key of the object
 	 * in the source database.
 	 */
-	@XmlAttribute(name = "pkey")
+	@XmlElement(name = "pkey")
 	public Long getPkey()
 	{
 		return (pkey == 0L)?(null):(pkey);

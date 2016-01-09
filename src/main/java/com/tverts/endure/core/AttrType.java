@@ -14,7 +14,7 @@ import com.tverts.endure.cats.NamedEntity;
  */
 public class      AttrType
        extends    OxNumericBase
-       implements NamedEntity
+       implements NamedEntity, DomainEntity
 {
 	/**
 	 * Domain where this type is located.
