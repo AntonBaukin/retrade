@@ -102,6 +102,17 @@
 
       columns: ZeT.scope(function()
       {
+
+        function renderType(ox)
+        {
+          if(!ox)                  return ''
+          if(ZeT.isa(ox.values))   return 'список'
+          if(ox.type == 'string')  return 'строка'
+          if(ox.type == 'volume')  return 'объём'
+          if(ox.type == 'decimal') return 'десятичное'
+          if(ox.type == 'integer') return 'целое'
+        }
+
         function renderArray(ox, meta)
         {
           if(!ox) return ''
@@ -154,8 +165,47 @@
         })
 
 
-        //~: value editor
-        var valueEditor = Ext.create('Ext.form.field.Text', {})
+        //~: text value editor
+        var textEditor = Ext.create('Ext.form.field.Text', {})
+
+        //~: store with list values
+        var listStore = Ext.create('Ext.data.Store', {
+          model: 'retrade.model.KeyValue', data: []
+        })
+
+        //~: list value select editor
+        var listEditor = Ext.create('Ext.form.field.ComboBox', {
+          store: listStore, editable: false,
+          valueField: 'value', displayField: 'text'
+        })
+
+        //~: select the value editor
+        function getValueEditor(m)
+        {
+          var vs = m.get('ox').values
+          if(!ZeT.isa(vs)) return textEditor
+
+          //~: remove all current values
+          listStore.removeAll()
+
+          //~: current values
+          var xs = m.get('value')
+          if(!ZeT.isa(xs)) xs = []
+          ZeTA.del(xs, m.get('temp'))
+
+          //~: populate the store
+          ZeT.each(vs, function(x)
+          {
+            if(ZeTS.ises(x.value)) return
+            if(xs.indexOf(x.value) != -1) return
+
+            listStore.add({ value: x.value,
+              text: ZeTS.ises(x.text)?(x.value):(x.text)
+            })
+          })
+
+          return listEditor
+        }
 
 
         return [
@@ -171,9 +221,14 @@
           },
 
           {
+            text: "Тип", dataIndex: 'ox', sortable: false,
+            width: extjsf.ex(12), align: 'right', renderer: renderType
+          },
+
+          {
             text: "Значение", dataIndex: 'temp', sortable: false, flex: 1,
             menuDisabled: true, tdCls:'retrade-selectable-column',
-            renderer: renderValue, editor: valueEditor
+            renderer: renderValue, getEditor: getValueEditor
           }
         ]
       })
@@ -449,7 +504,7 @@
     }
 
     //~: search for empty attribute
-    var found; astore.co().each(function(x)
+    var found; vstore.co().each(function(x)
     {
       if(ZeTS.ises(x.get('nameLo'))) { found = x; return false }
     })
@@ -459,7 +514,7 @@
 
     //?: {has no more types}
     if(!astore.filterAttrTypes()) return ReTrade.desktop.
-      error('Список аттрибутов товаров пуст!')
+      error('Атрибуты товаров, для которых не установлены значения, отсутствуют!')
 
     var ox = ZeT.assertn(vstore.retradeOxModel)
 
