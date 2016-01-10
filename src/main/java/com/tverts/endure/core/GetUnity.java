@@ -329,11 +329,11 @@ select ut from Unity u join u.unityType ut
 		EX.assertn(unity);
 
 
-// from UnityAttr where (unity.id = :unity)
+// from UnityAttr where (unity.id = :unity) order by index
 
 		final String Q =
 
-"  from UnityAttr where (unity.id = :unity)";
+"  from UnityAttr where (unity.id = :unity) order by index";
 
 		return list(UnityAttr.class, Q, "unity", unity);
 	}
