@@ -68,10 +68,22 @@
     <x:component coid = "${z:vid(v, 'cancel-atts')}">
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Не изменять',
-        cls: 'ux-btn-red', hidden: true
+        cls: 'ux-btn-red', hidden: true, tooltipType: 'title',
+        tooltip: 'Скрыть атрибуты, не сохраняя внесённые изменения'
       </f:facet>
     </x:component>
 
+
+    <!-- [remove attributes button] -->
+    <x:component coid = "${z:vid(v, 'del-attrs')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', text: 'Удалить', hidden: true,
+        margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
+        tooltip: 'Удалить выбранные атрибуты'
+
+      </f:facet>
+    </x:component>
 
 
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">
@@ -110,12 +122,27 @@
     </x:component>
 
 
+    <!-- [add attribute button] -->
+    <x:component coid = "${z:vid(v, 'add-attr')}">
+      <f:facet name = "extjs-props">
+
+        xtype: 'button', text: 'Добавить', hidden: true,
+        margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
+        tooltip: 'Добавить атрибут'
+
+      </f:facet>
+    </x:component>
+
+
     <!-- [show attributes toggle button] -->
-   <x:component coid = "${z:vid(v, 'show-attrs')}">
-    <f:facet name = "extjs-props">
-      xtype: 'button', text: 'Атрибуты', enableToggle: true, hidden: true
-    </f:facet>
-   </x:component>
+    <x:component coid = "${z:vid(v, 'show-attrs')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Атрибуты', hidden: true,
+        enableToggle: true, tooltipType: 'title',
+        tooltip: 'Сохранить внесённые изменения и скрыть атрибуты'
+      </f:facet>
+    </x:component>
+
   </f:facet>
 
   <!-- toolbar] -->
@@ -270,8 +297,6 @@
     var rendered = false, panelHeight = 0
     function addPanel(m, index)
     {
-      ZeT.log('Model', m)
-
       //~: controls
       var control = { model: m, index: index }
       controls.push(control)
@@ -593,7 +618,11 @@
     var showatts  = extjsf.bind("${z:vid(v, 'show-attrs')}", '${rootView.extjsDomain}')
     var cancelats = extjsf.bind("${z:vid(v, 'cancel-atts')}", '${rootView.extjsDomain}')
     var atsext    = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${rootView.extjsDomain}')
+    var delattrs  = extjsf.bind("${z:vid(v, 'del-attrs')}", '${rootView.extjsDomain}')
+    var addattrs  = extjsf.bind("${z:vid(v, 'add-attr')}", '${rootView.extjsDomain}')
     var sattrs    = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var attsed    = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var currentModel
 
     function toggleAttributes(on)
     {
@@ -608,13 +637,36 @@
       showatts.visible(on)
       showatts.co().setPressed(on)
       cancelats.visible(on && editMode)
+      delattrs.visible(on && editMode)
+      addattrs.visible(on && editMode)
+
+      //~: adapt the height of the window
+      if(on)
+        ReTrade.desktop.applyWindowBox({
+          name: 'winmain', domain: '${rootView.extjsDomain}',
+          prevsize: 'good-attrs', widthpt: (editMode)?(480):(360)
+        })
+      else
+        ReTrade.desktop.prevsizeComp({
+          name: 'winmain', domain: '${rootView.extjsDomain}',
+          marker: 'good-attrs'
+        })
     }
 
     //~: displays attributes grid in display of edit mode
     function showAttributes(model)
     {
+      currentModel = model
       if(!ZeT.isa(model.attributes))
         model.attributes = []
+
+      //~: create back-copy
+      if(editMode) {
+        ZeT.each(model.attributes, function(x){
+          delete x.self; delete x.selfox
+        })
+        model.xattributes = ZeT.deepClone(model.attributes)
+      }
 
       toggleAttributes(true)
 
@@ -622,12 +674,29 @@
       sattrs.updateGoodOx(model, !editMode)
     }
 
+    //~: commit and hide attributes
     showatts.on('click', function()
     {
       //if(editMode)
+      delete currentModel.xattributes
 
       toggleAttributes(false)
     })
+
+    //~: cancel and hide attributes
+    cancelats.on('click', function()
+    {
+      currentModel.attributes = currentModel.xattributes
+      delete currentModel.xattributes
+
+      toggleAttributes(false)
+    })
+
+    //~: remove selected attributes
+    extjsf.bindHandler(delattrs, attsed.deleteSelected)
+
+    //~: add new attribute
+    extjsf.bindHandler(addattrs, attsed.addAttribute)
   })
   //]]>
   </script>
