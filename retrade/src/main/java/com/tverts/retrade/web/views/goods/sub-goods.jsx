@@ -8,6 +8,8 @@ var ZeTS = JsX.once('zet/strings.js')
  */
 function encodeGoodMeasures(goodUnit)
 {
+	var GoodUnitView = Java.type('com.tverts.retrade.domain.goods.GoodUnitView')
+
 	//?: {not a sub-good is given}
 	ZeT.assert(goodUnit && (goodUnit.getSuperGood() == null))
 
@@ -17,11 +19,13 @@ function encodeGoodMeasures(goodUnit)
 
 	function encode(gu)
 	{
-		var x = {}
+		var x = {}, guv = new GoodUnitView().initOx(gu)
 
-		//~: take ox-good, ox-measure
-		x.good    = ZeT.jo2o(gu.getOxOwn())
-		x.measure = ZeT.jo2o(gu.getMeasure().getOx())
+		//~: take ox-good, ox-measure, attributes
+		x.good       = ZeT.s2o(guv.getOxString())
+		x.measure    = ZeT.jo2o(gu.getMeasure().getOx())
+		x.attributes = x.good.attributes
+		delete x.good.attributes
 
 		//?: {is a sub-good}
 		if(gu.getSuperGood())

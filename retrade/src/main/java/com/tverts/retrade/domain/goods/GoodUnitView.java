@@ -301,7 +301,7 @@ public class GoodUnitView implements Serializable
 		if(gu == null) return this;
 
 		//~: create deep copy of the ox-good
-		Good g = OU.cloneBest(gu.getOx());
+		Good g = OU.cloneBest(gu.getOxOwn());
 
 		//~: load attribute values
 		List<UnityAttr> atts = bean(GetUnity.class).

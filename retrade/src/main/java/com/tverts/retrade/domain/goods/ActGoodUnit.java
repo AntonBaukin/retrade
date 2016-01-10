@@ -248,7 +248,7 @@ public class ActGoodUnit extends ActionBuilderReTrade
 		  throws Throwable
 		{
 			//~: ox-good
-			Good g = EX.assertn(target(GoodUnit.class).getOx());
+			Good g = EX.assertn(target(GoodUnit.class).getOxOwn());
 
 			//!: explicitly forbid to save attributes in ox-good
 			g.setAttrValues(null);

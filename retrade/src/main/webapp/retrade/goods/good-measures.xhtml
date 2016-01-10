@@ -54,6 +54,7 @@
       </f:facet>
     </x:winaction-button>
 
+
     <!-- [cancel edit button] -->
     <x:component coid = "${z:vid(v, 'cancel')}">
       <f:facet name = "extjs-props">
@@ -61,6 +62,16 @@
         cls: 'ux-btn-red', hidden: true
       </f:facet>
     </x:component>
+
+
+    <!-- [cancel edit attributes] -->
+    <x:component coid = "${z:vid(v, 'cancel-atts')}">
+      <f:facet name = "extjs-props">
+        xtype: 'button', text: 'Не изменять',
+        cls: 'ux-btn-red', hidden: true
+      </f:facet>
+    </x:component>
+
 
 
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">
@@ -97,6 +108,14 @@
         cls: 'ux-btn-green', hidden: true
       </f:facet>
     </x:component>
+
+
+    <!-- [show attributes toggle button] -->
+   <x:component coid = "${z:vid(v, 'show-attrs')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Атрибуты', enableToggle: true, hidden: true
+    </f:facet>
+   </x:component>
   </f:facet>
 
   <!-- toolbar] -->
@@ -118,8 +137,7 @@
   </x:data-store>
 
 
-  <!-- [measures list -->
-
+  <!-- [measures list] -->
   <x:component coid = "${z:vid(v, 'measures-list-panel')}">
     <f:facet name = "extjs-props">
 
@@ -131,85 +149,21 @@
     </f:facet>
   </x:component>
 
-  <!-- measures list] -->
+
+  <!-- [good attributes grid] -->
+  <x:component coid = "${z:vid(v, 'good-attrs-ext')}">
+
+    <f:facet name = "extjs-props">
+      flex: 1, border: false, hidden: true,
+      layout: {type: 'vbox', align: 'stretch'},
+      bodyCls: 'retrade-transparent-panel'
+    </f:facet>
+
+    <ui:decorate template = '.good-attrs.xhtml'/>
+  </x:component>
+
 
   <!-- [measure item template -->
-
-  <style type="text/css">
-
-.retrade-good-measures-item
-{
-  width: 100%; border-radius: 4px;
-}
-
-.retrade-good-measures-item > tbody > tr > td > table
-{
-  margin: 0 4pt;
-}
-
-.retrade-good-measures-item table table
-{
-  width: 0%; margin: 3pt 0 3pt 0;
-}
-
-.retrade-good-measures-item table table tr:first-child td
-{
-  padding-top: 0;
-}
-
-.retrade-good-measures-item .item-caption
-{
-  text-align: center; padding: 4pt 0 4pt 0;
-}
-
-.retrade-good-measures-item .item-edit-area
-{
-  height: 100%;
-}
-
-.retrade-good-measures-item .item-edit-area table
-{
-  width: 0%;
-}
-
-.retrade-good-measures-item .item-caption .retrade-edit-pencil,
-  .retrade-good-measures-item .item-caption .retrade-edit-delete
-{
-  position: absolute; right: 0; top: 6px;
-  width: 28px; height: 28px; background-size: 28px 28px;
-  border-radius: 50%; cursor: pointer;
-}
-
-.retrade-good-measures-item .item-caption .retrade-edit-pencil:hover,
-  .retrade-good-measures-item .item-caption .retrade-edit-delete:hover
-{
-  right: -3px; top: 3px;
-  width: 34px; height: 34px;
-  background-size: 34px 34px;
-}
-
-.retrade-attrs-button
-{
-  position: absolute; left: 4pt; top: 2pt;
-  width: 40px; height: 30px; text-align: left;
-}
-
-.retrade-good-measures-item .check-title
-{
-  padding: 0 6pt 0 2pt;
-}
-
-.retrade-good-measures-item input.retarde-field-text-larger
-{
-  text-align: center;
-}
-
-.retrade-good-measures-item .item-bar-code .retrade-info-value div
-{
-  letter-spacing: 2pt;
-}
-
-  </style>
 
   <div style = "display:none">
     <table id = "${z:vid(v, 'measure-item-template')}"
@@ -282,7 +236,8 @@
     var modelstr = ZeT.o2s(measures)
     var store    = extjsf.bind("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
     var panel    = extjsf.bind("${z:vid(v, 'measures-list-panel')}", '${rootView.extjsDomain}')
-    var controls = []
+    var controls = [], editMode
+
 
     //~: apply the model items
     panel.on('afterrender', fillMeasures)
@@ -315,6 +270,8 @@
     var rendered = false, panelHeight = 0
     function addPanel(m, index)
     {
+      ZeT.log('Model', m)
+
       //~: controls
       var control = { model: m, index: index }
       controls.push(control)
@@ -366,9 +323,9 @@
         $(ways.ED).on('click', ZeT.fbind(editButton, control))
 
         //~: create go-attributes button
-        var attrbtn = Ext.create({ xtype: 'button', renderTo: ways.AT,
-          margin: 0, text: 'Атр.', height: 26,  tooltipType: 'title',
-          tooltip: (index)?('Атрибуты ед. измерения'):('Атрибуты товара')
+        Ext.create({ xtype: 'button', renderTo: ways.AT, margin: 0, text: 'Атр.',
+          tooltip: (index)?('Атрибуты ед. измерения'):('Атрибуты товара'),
+          height: 26,  tooltipType: 'title', handler: ZeT.fbind(showAttributes, ZeT, m)
         })
 
         //~: visibility check boxes
@@ -414,7 +371,7 @@
     //~: toggle read-edit
     function toggleReadEdit(isread)
     {
-      isread = (isread === true)
+      editMode = !(isread = (isread === true))
       extjsf.bind("${z:vid(v, 'goto-back')}", '${rootView.extjsDomain}').visible(isread)
       extjsf.bind("${z:vid(v, 'start-edit')}", '${rootView.extjsDomain}').visible(isread)
       extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}').visible(!isread)
@@ -627,6 +584,50 @@
 
     //~: submit the edit
     extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', submitEdit)
+
+    var submit    = extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')
+    var cancel    = extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')
+    var addmeas   = extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}')
+    var goback    = extjsf.bind("${z:vid(v, 'goto-back')}", '${rootView.extjsDomain}')
+    var started   = extjsf.bind("${z:vid(v, 'start-edit')}", '${rootView.extjsDomain}')
+    var showatts  = extjsf.bind("${z:vid(v, 'show-attrs')}", '${rootView.extjsDomain}')
+    var cancelats = extjsf.bind("${z:vid(v, 'cancel-atts')}", '${rootView.extjsDomain}')
+    var atsext    = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${rootView.extjsDomain}')
+    var sattrs    = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+
+    function toggleAttributes(on)
+    {
+      submit.visible(!on && editMode)
+      cancel.visible(!on && editMode)
+      addmeas.visible(!on && editMode)
+      goback.visible(!on && !editMode)
+      started.visible(!on && !editMode)
+      panel.visible(!on)
+
+      atsext.visible(on)
+      showatts.visible(on)
+      showatts.co().setPressed(on)
+      cancelats.visible(on && editMode)
+    }
+
+    //~: displays attributes grid in display of edit mode
+    function showAttributes(model)
+    {
+      if(!ZeT.isa(model.attributes))
+        model.attributes = []
+
+      toggleAttributes(true)
+
+      //~: populate the attributes table
+      sattrs.updateGoodOx(model, !editMode)
+    }
+
+    showatts.on('click', function()
+    {
+      //if(editMode)
+
+      toggleAttributes(false)
+    })
   })
   //]]>
   </script>

@@ -1119,6 +1119,124 @@ hr.retrade-info-hr
 }
 
 
+/* good attributes */
+
+.retrade-good-attrs-edit-values-table-row td:last-child
+{
+  width: 24px;
+}
+
+tr.retrade-good-attrs-edit-values-table-row td:first-child div
+{
+  width: 16px; height: 16px; cursor: pointer;
+}
+
+tr.retrade-good-attrs-edit-values-table-row td
+{
+  padding: 4px 8px 4px 0;
+}
+
+tr.retrade-good-attrs-edit-values-table-row td:last-child
+{
+  padding-right: 0;
+}
+
+tr.retrade-good-attrs-edit-values-table-row td:last-child span
+{
+  cursor: pointer;
+}
+
+tr.retrade-good-attrs-edit-values-table-row td:last-child span:hover
+{
+  background-color: rgba(255, 251, 139, 0.80);
+}
+
+tr.retrade-good-attrs-edit-values-table-row:first-child td
+{
+  padding-top: 0;
+}
+
+tr.retrade-good-attrs-edit-values-table-row:last-child td
+{
+  padding-bottom: 0;
+}
+
+
+/* good measures */
+
+.retrade-good-measures-item
+{
+  width: 100%; border-radius: 4px;
+}
+
+.retrade-good-measures-item > tbody > tr > td > table
+{
+  margin: 0 4pt;
+}
+
+.retrade-good-measures-item table table
+{
+  width: 0%; margin: 3pt 0 3pt 0;
+}
+
+.retrade-good-measures-item table table tr:first-child td
+{
+  padding-top: 0;
+}
+
+.retrade-good-measures-item .item-caption
+{
+  text-align: center; padding: 4pt 0 4pt 0;
+}
+
+.retrade-good-measures-item .item-edit-area
+{
+  height: 100%;
+}
+
+.retrade-good-measures-item .item-edit-area table
+{
+  width: 0%;
+}
+
+.retrade-good-measures-item .item-caption .retrade-edit-pencil,
+  .retrade-good-measures-item .item-caption .retrade-edit-delete
+{
+  position: absolute; right: 0; top: 6px;
+  width: 28px; height: 28px; background-size: 28px 28px;
+  border-radius: 50%; cursor: pointer;
+}
+
+.retrade-good-measures-item .item-caption .retrade-edit-pencil:hover,
+  .retrade-good-measures-item .item-caption .retrade-edit-delete:hover
+{
+  right: -3px; top: 3px;
+  width: 34px; height: 34px;
+  background-size: 34px 34px;
+}
+
+.retrade-attrs-button
+{
+  position: absolute; left: 4pt; top: 2pt;
+  width: 40px; height: 30px; text-align: left;
+}
+
+.retrade-good-measures-item .check-title
+{
+  padding: 0 6pt 0 2pt;
+}
+
+.retrade-good-measures-item input.retarde-field-text-larger
+{
+  text-align: center;
+}
+
+.retrade-good-measures-item .item-bar-code .retrade-info-value div
+{
+  letter-spacing: 2pt;
+}
+
+
 /* info panel [retrade/invoices/info-*] */
 
 div.retrade-info-value-invoice-state,
@@ -1192,46 +1310,6 @@ table.retrade-info-table.retrade-info-table-good-edit-price-list caption
 {
   font-size: 14px; line-height: 14px;
   vertical-align: middle; color: #157FCC;
-}
-
-.retrade-good-attrs-edit-values-table-row td:last-child
-{
-  width: 24px;
-}
-
-tr.retrade-good-attrs-edit-values-table-row td:first-child div
-{
-  width: 16px; height: 16px; cursor: pointer;
-}
-
-tr.retrade-good-attrs-edit-values-table-row td
-{
-  padding: 4px 8px 4px 0;
-}
-
-tr.retrade-good-attrs-edit-values-table-row td:last-child
-{
-  padding-right: 0;
-}
-
-tr.retrade-good-attrs-edit-values-table-row td:last-child span
-{
-  cursor: pointer;
-}
-
-tr.retrade-good-attrs-edit-values-table-row td:last-child span:hover
-{
-  background-color: rgba(255, 251, 139, 0.80);
-}
-
-tr.retrade-good-attrs-edit-values-table-row:first-child td
-{
-  padding-top: 0;
-}
-
-tr.retrade-good-attrs-edit-values-table-row:last-child td
-{
-  padding-bottom: 0;
 }
 
 
