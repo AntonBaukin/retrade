@@ -351,9 +351,13 @@
   extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
     collectValues = function(ox)
   {
-    var res = []; ZeT.each(ox.attributes, function(x)
+    if(ZeT.iso(ox) && ZeT.isa(ox.attributes))
+      ox = ox.attributes
+    ZeT.assert(ZeT.isa(ox))
+
+    var res = []; ZeT.each(ox, function(x)
     {
-      res.push({ pkey: ZeT.asserts(x.pkey), value: ZeT.deepClone(x.value) })
+      res.push({ pkey: ZeT.asserts('' + x.pkey), value: ZeT.deepClone(x.value) })
     })
 
     //~: sort the results

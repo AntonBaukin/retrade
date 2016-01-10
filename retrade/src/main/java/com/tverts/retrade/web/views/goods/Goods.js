@@ -71,8 +71,8 @@ function assignGoodAttributes(gu, g, values)
 	var get   = ZeT.bean('GetUnity')
 
 	//~: check the attributes
-	ZeT.asserts(values)
-	values = ZeT.s2o(values)
+	if(ZeT.iss(values))
+		values = ZeT.s2o(values)
 	ZeT.assert(ZeT.isa(values))
 
 	//~: load existing attribute types
@@ -184,3 +184,9 @@ function validateGoodAttrValue(attrType, v)
 
 	throw ZeT.ass('Unknown type: ', attrType)
 }
+
+
+ZeT.extend({}, //<-- this resulting module object
+{
+	assignGoodAttributes : assignGoodAttributes
+})

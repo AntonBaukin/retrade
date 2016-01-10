@@ -1,5 +1,6 @@
-var ZeT  = JsX.once('zet/app.js')
-var ZeTS = JsX.once('zet/strings.js')
+var ZeT   = JsX.once('zet/app.js')
+var ZeTS  = JsX.once('zet/strings.js')
+var GoodS = JsX.once('./Goods.js')
 
 /**
  * For the given Good Unit that may not be a sub-good
@@ -63,7 +64,9 @@ function post()
 
 function applyGoodMeasures(measures)
 {
-	var get = ZeT.bean('GetGoods')
+	var ActionsPoint = Java.type('com.tverts.actions.ActionsPoint')
+	var ActionType   = Java.type('com.tverts.actions.ActionType')
+	var get          = ZeT.bean('GetGoods')
 
 	ZeT.assert(ZeT.isa(measures) && measures.length)
 
@@ -88,6 +91,9 @@ function applyGoodMeasures(measures)
 	//~: apply changes to the super ox-good
 	applyGoodOx(gu, measures[0])
 	gu.updateOx()
+
+	//!: update the main good unit
+	ActionsPoint.actionRun(ActionType.UPDATE, gu)
 
 	//~: remove sub-goods
 	var subx = {}; ZeT.each(measures, function(m){ subx[m.good.measure] = true })
@@ -278,14 +284,9 @@ function applyGoodOx(gu, m)
 	g.setVisibleLists(m.good['visible-lists'])
 	g.setVisibleReports(m.good['visible-reports'])
 
-	//=: net weight
-	g.setNetWeight(v2d(m.good['net-weight']))
-
-	//=: gross weight
-	g.setGrossWeight(v2d(m.good['gross-weight']))
-
-	//=: bar code
-	g.setBarCode(ZeTS.trim(m.good['bar-code']))
+	//?: {has attributes encoded}
+	if(ZeT.isa(m.attributes))
+		GoodS.assignGoodAttributes(gu, g, m.attributes)
 
 	//?: {sub-good}
 	if(gu.getSuperGood())

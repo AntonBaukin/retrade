@@ -260,10 +260,10 @@
   ZeT.scope(function()
   {
     var measures = ZeT.s2o("#{z:jss(v.measuresEncoded)}")
-    var modelstr = ZeT.o2s(measures)
     var store    = extjsf.bind("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
     var panel    = extjsf.bind("${z:vid(v, 'measures-list-panel')}", '${rootView.extjsDomain}')
-    var controls = [], editMode
+    var sattrs   = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var controls = [], editMode, modelstr
 
 
     //~: apply the model items
@@ -289,6 +289,9 @@
 
       //c: for each measures: add items
       ZeT.each(ZeT.asserta(measures), addPanel)
+
+      //~: copy to compare further
+      if(!modelstr) modelstr = ZeT.o2s(measures)
     }
 
     var _xid = 0, stime = 'measures-' + new Date().getTime() + '-'
@@ -298,8 +301,18 @@
     function addPanel(m, index)
     {
       //~: controls
-      var control = { model: m, index: index }
+      var control = { model: m, index: index, attributes: [] }
       controls.push(control)
+
+      //~: pre-process attributes
+      if(m.attributes)
+      {
+        //~: save the original value of the attributes
+        control.attributes = m.attributes
+
+        //~: encode the values only
+        m.attributes = sattrs.collectValues(control.attributes)
+      }
 
       //~: panel container
       var p = { xtype: 'panel', border: false, layout: 'fit',
@@ -350,7 +363,7 @@
         //~: create go-attributes button
         Ext.create({ xtype: 'button', renderTo: ways.AT, margin: 0, text: 'Атр.',
           tooltip: (index)?('Атрибуты ед. измерения'):('Атрибуты товара'),
-          height: 26,  tooltipType: 'title', handler: ZeT.fbind(showAttributes, ZeT, m)
+          height: 26,  tooltipType: 'title', handler: ZeT.fbind(showAttributes, ZeT, control)
         })
 
         //~: visibility check boxes
@@ -430,7 +443,7 @@
 
       //~: restore the model
       measures = ZeT.s2o(modelstr)
-      fillMeasures(true)
+      fillMeasures()
     })
 
     //~: visible check
@@ -560,6 +573,8 @@
       var val; if(!ZeTS.ises(val = validateFields()))
         return ReTrade.desktop.error(val)
 
+      ZeT.log(reqstr)
+
       //!: post the measures model
       var post = jQuery.post("${z:url('/go/web/views/goods/sub-goods')}", { measures: reqstr })
 
@@ -570,10 +585,10 @@
 
         //~: apply the server response
         measures = ZeT.asserta(x)
-        modelstr = ZeT.o2s(measures)
+        modelstr = null
 
         //~: apply the model
-        fillMeasures(true)
+        fillMeasures()
       })
 
       //~: on failure
@@ -618,9 +633,8 @@
     var atsext    = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${rootView.extjsDomain}')
     var delattrs  = extjsf.bind("${z:vid(v, 'del-attrs')}", '${rootView.extjsDomain}')
     var addattrs  = extjsf.bind("${z:vid(v, 'add-attr')}", '${rootView.extjsDomain}')
-    var sattrs    = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
     var attsed    = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
-    var currentModel
+    var attrControl
 
     function toggleAttributes(on)
     {
@@ -652,31 +666,41 @@
     }
 
     //~: displays attributes grid in display of edit mode
-    function showAttributes(model)
+    function showAttributes(co)
     {
-      currentModel = model
-      if(!ZeT.isa(model.attributes))
-        model.attributes = []
+      attrControl = co
+
+      if(!ZeT.isa(co.attributes))
+        co.attributes = []
 
       //~: create back-copy
-      if(editMode) {
-        ZeT.each(model.attributes, function(x){
+      if(editMode)
+      {
+        //~: clean-up cyclic references
+        ZeT.each(co.attributes, function(x){
           delete x.self; delete x.selfox
         })
-        model.xattributes = ZeT.deepClone(model.attributes)
+
+        co.attributesX = ZeT.deepClone(co.attributes)
       }
 
       toggleAttributes(true)
 
       //~: populate the attributes table
-      sattrs.updateGoodOx(model, !editMode)
+      sattrs.updateGoodOx(co, !editMode)
     }
 
     //~: commit and hide attributes
     showatts.on('click', function()
     {
-      //if(editMode)
-      delete currentModel.xattributes
+      if(editMode)
+      {
+        //~: save values to the model
+        attrControl.model.attributes =
+          sattrs.collectValues(attrControl.attributes)
+
+        delete attrControl.attributesX
+      }
 
       toggleAttributes(false)
     })
@@ -684,8 +708,8 @@
     //~: cancel and hide attributes
     cancelats.on('click', function()
     {
-      currentModel.attributes = currentModel.xattributes
-      delete currentModel.xattributes
+      attrControl.attributes = attrControl.attributesX
+      delete attrControl.attributesX
 
       toggleAttributes(false)
     })
