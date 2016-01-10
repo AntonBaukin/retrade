@@ -458,6 +458,9 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [read-edit mode]-->
     <x:hidden-field coid = "${z:vid(v, 'edit')}" value = "#{v.model.editMode}"/>
 
+    <!-- [resulting good attributes] -->
+    <x:hidden-field coid = "${z:vid(v, 'attributes')}" value = "#{v.goodAttributes}"/>
+
 
     <!-- [special: submit action] -->
     <h:commandButton id = "${z:vid(v, 'submit-action')}" value = "submit" style = "display: none;"
@@ -515,35 +518,6 @@ ${v.checkModelRequestedWithRedirect}
           }
        })
      })
-  })
-
-
-  //~: submit the form
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
-  {
-    var form = extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}');
-    if(!form.co().isValid()) return;
-
-
-    //?: {has selection set checked}
-    var addss = extjsf.co("${z:vid(v, 'add-to-selset')}", '${rootView.extjsDomain}');
-    var ssnam = extjsf.co("${z:vid(v, 'selset')}", '${rootView.extjsDomain}');
-
-    if(addss.getValue() && addss.isVisible())
-      ssnam.setValue(ReTrade.selset.selset)
-
-
-    //!: submit the form
-    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
-      command: "${z:vid(v, 'submit-action')}", success: function()
-      {
-        var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}');
-        winmain.retradeEditDone = true
-        winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
-
-        extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
-      }
-    })
   })
 
 
@@ -690,7 +664,7 @@ ${v.checkModelRequestedWithRedirect}
       toggleReadWrite(false)
     })
 
-    var ox = "#{z:jss(v.goodView.oxString)}"
+    var oxa, ox = "#{z:jss(v.goodView.oxString)}"
 
     function toggleAttributes(on)
     {
@@ -721,8 +695,14 @@ ${v.checkModelRequestedWithRedirect}
 
       if(on) //?: {turn on the table}
       {
-        if(!ZeTS.ises(ox)) ox = ZeT.s2o(ox)
+        //?: {decode the good model}
+        if(ZeT.iss(ox)) ox  = ZeT.s2o(ox)
+
         sattrs.updateGoodOx(ox, isReadMode)
+
+        //~: set initial attributes
+        if(!isReadMode && !oxa)
+          oxa = sattrs.collectValues(ox)
       }
     }
 
@@ -734,8 +714,44 @@ ${v.checkModelRequestedWithRedirect}
 
     //~: add new attribute
     extjsf.bindHandler(addat, attsed.addAttribute)
-  })
 
+    //~: submit the form
+    extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', submitForm)
+
+    function submitForm()
+    {
+      //?: {has selection set checked}
+      var addss = extjsf.co("${z:vid(v, 'add-to-selset')}", '${rootView.extjsDomain}')
+      var ssnam = extjsf.co("${z:vid(v, 'selset')}", '${rootView.extjsDomain}')
+      var attsf = extjsf.bind("${z:vid(v, 'attributes')}", '${rootView.extjsDomain}')
+
+      if(addss.getValue() && addss.isVisible())
+        ssnam.setValue(ReTrade.selset.selset)
+
+      //?: {save the attributes}
+      if(ZeT.isa(oxa))
+      {
+        var oxa2 = sattrs.collectValues(ox)
+        var oxaS = ZeT.o2s(oxa2)
+
+        //?: {has changes}
+        if(ZeT.o2s(oxa) != oxaS)
+          attsf.value(oxaS)
+      }
+
+      //!: submit the form
+      form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
+        command: "${z:vid(v, 'submit-action')}", success: function()
+        {
+          var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}');
+          winmain.retradeEditDone = true
+          winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
+
+          extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
+        }
+      })
+    }
+  })
   //]]>
   </script>
 

@@ -158,6 +158,9 @@ public class FacesGoodEditView extends ModelView
 
 			//?: {test is used}
 			u = (get.isGoodUsed(gu.getPrimaryKey(), true) != 0);
+
+			//?: {is not a sub-good}
+			EX.assertx(gu.getSuperGood() == null);
 		}
 
 		//~: load measure unit
@@ -179,6 +182,17 @@ public class FacesGoodEditView extends ModelView
 
 		//~: assign it
 		gu.setMeasure(mu);
+
+		//?: {has attributes}
+		if(!SU.sXe(getGoodAttributes())) try
+		{
+			JsX.apply("web/views/goods/Goods",
+			  "assignGoodAttributes", gu, g, getGoodAttributes());
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e);
+		}
 
 		//~: update ox
 		gu.updateOx();
@@ -655,6 +669,18 @@ public class FacesGoodEditView extends ModelView
 	public Long getGoodAddedKey()
 	{
 		return goodAddedKey;
+	}
+
+	public String getGoodAttributes()
+	{
+		return goodAttributes;
+	}
+
+	private String goodAttributes;
+
+	public void setGoodAttributes(String goodAttributes)
+	{
+		this.goodAttributes = goodAttributes;
 	}
 
 

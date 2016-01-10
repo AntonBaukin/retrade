@@ -102,7 +102,6 @@
 
       columns: ZeT.scope(function()
       {
-
         function renderType(ox)
         {
           if(!ox)                  return ''
@@ -165,8 +164,27 @@
         })
 
 
+        function validateTextValue(v)
+        {
+          var  g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+          if(!g.editEvent) return false
+          var  m = g.editEvent.record
+          var ox = m.get('ox')
+
+          if(ZeTS.ises(v)) return true
+
+          if(ox.type == 'volume')  return retrade.vvolume(v)
+          if(ox.type == 'decimal') return retrade.vdecimal(v)
+          if(ox.type == 'integer') return retrade.vinteger(v)
+
+          return true
+        }
+
+
         //~: text value editor
-        var textEditor = Ext.create('Ext.form.field.Text', {})
+        var textEditor = Ext.create('Ext.form.field.Text', {
+          validator: validateTextValue
+        })
 
         //~: store with list values
         var listStore = Ext.create('Ext.data.Store', {
@@ -326,6 +344,25 @@
 
     //~: sort the attributes
     store.sort('nameLo', 'ASC')
+  }
+
+
+  //~: collect attribute values
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+    collectValues = function(ox)
+  {
+    var res = []; ZeT.each(ox.attributes, function(x)
+    {
+      res.push({ pkey: ZeT.asserts(x.pkey), value: ZeT.deepClone(x.value) })
+    })
+
+    //~: sort the results
+    res.sort(function(a, b)
+    {
+      return a.pkey.localeCompare(b.pkey)
+    })
+
+    return res
   }
 
 

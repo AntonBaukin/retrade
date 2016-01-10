@@ -103,7 +103,7 @@ public class Good extends CatItem
 
 	/**
 	 * Allows to add or update an attribute value.
-	 * Remove operation must be invoked directly.
+	 * To remove an attribute assign Void.class value.
 	 *
 	 * Note that this mapping is not stored in XML
 	 * or JSON, see {@link #getAttrValues()}.
