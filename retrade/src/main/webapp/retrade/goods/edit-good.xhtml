@@ -25,6 +25,8 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.co('winmain', '${rootView.extjsDomain}').
       setTitle("#{z:jss(v.editWindowTitle)}")
 
+    ReTrade.desktop.prevsizeComp('winmain', '${rootView.extjsDomain}')
+
   //]]>
   </script>
 
@@ -593,10 +595,7 @@ ${v.checkModelRequestedWithRedirect}
       //~: adjust window height
       ReTrade.desktop.resizeToHeight('winmain',
         { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true },
-        [ "${z:vid(v, '_add_to_selset')}",
-          "${z:vid(v, '_group')}",
-          "${z:vid(v, '_code_measure')}"
-        ]
+        [ "${z:vid(v, '_add_to_selset')}", "${z:vid(v, '_group')}", "${z:vid(v, '_code_measure')}" ]
       )
 
       //~: set window width

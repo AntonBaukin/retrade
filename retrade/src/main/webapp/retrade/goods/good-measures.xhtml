@@ -22,10 +22,6 @@
     extjsf.co('winmain', '${rootView.extjsDomain}').
       setTitle("#{z:jss(v.measuresWindowTitle)}")
 
-    ReTrade.desktop.prevsizeComp({ marker: 'measures',
-      name: 'winmain', domain: '${rootView.extjsDomain}'
-    })
-
   //]]>
   </script>
 
@@ -153,7 +149,7 @@
 
 .retrade-good-measures-item table table
 {
-  width: 0%; margin-top: 3pt;
+  width: 0%; margin: 3pt 0 3pt 0;
 }
 
 .retrade-good-measures-item table table tr:first-child td
@@ -176,20 +172,10 @@
   width: 0%;
 }
 
-.retrade-good-measures-item .item-edit-area tr td
-{
-  padding-top: 2pt;
-}
-
-.retrade-good-measures-item .item-edit-area tr:first-child td
-{
-  padding-top: 0;
-}
-
 .retrade-good-measures-item .item-caption .retrade-edit-pencil,
   .retrade-good-measures-item .item-caption .retrade-edit-delete
 {
-  position: absolute; right: 4px; top: 10px;
+  position: absolute; right: 0; top: 6px;
   width: 28px; height: 28px; background-size: 28px 28px;
   border-radius: 50%; cursor: pointer;
 }
@@ -197,14 +183,20 @@
 .retrade-good-measures-item .item-caption .retrade-edit-pencil:hover,
   .retrade-good-measures-item .item-caption .retrade-edit-delete:hover
 {
-  right: 1px; top: 7px;
+  right: -3px; top: 3px;
   width: 34px; height: 34px;
   background-size: 34px 34px;
 }
 
+.retrade-attrs-button
+{
+  position: absolute; left: 4pt; top: 2pt;
+  width: 40px; height: 30px; text-align: left;
+}
+
 .retrade-good-measures-item .check-title
 {
-  padding: 0 4pt 0 2pt;
+  padding: 0 6pt 0 2pt;
 }
 
 .retrade-good-measures-item input.retarde-field-text-larger
@@ -229,6 +221,7 @@
           <div><span>@MT</span> единица измерения</div>
           <div class = "retrade-edit-pencil" style="display:none">@ED</div>
           <div class = "retrade-edit-delete" style="display:none">@DE</div>
+          <div class = "retrade-attrs-button">@AT</div>
         </td>
       </tr>
       <tr><!--@INFO-->
@@ -242,41 +235,8 @@
                     <td class = "retrade-info-value"><div>@MC</div></td>
                     <td class = "retrade-info-title"><div>Имя</div></td>
                     <td class = "retrade-info-value"><div>@MN</div></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <table cellspacing = "0" cellpadding = "0" border = "0">
-                  <tr>
-                    <td class = "retrade-info-title">@Cc<div>Океи</div></td>
-                    <td class = "retrade-info-value"><div>@CC</div></td>
                     <td class = "retrade-info-title">@Vo<div>Коэфф.</div></td>
                     <td class = "retrade-info-value retrade-info-red"><div>@VO</div></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <table cellspacing = "0" cellpadding = "0" border = "0">
-                  <tr>
-                    <td class = "retrade-info-title"><div>Вес нетто</div></td>
-                    <td class = "retrade-info-value"><div>@NW</div></td>
-                    <td class = "retrade-info-title"><div>кг, брутто</div></td>
-                    <td class = "retrade-info-value"><div>@GW</div></td>
-                    <td class = "retrade-info-title"><div>кг</div></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <table cellspacing = "0" cellpadding = "0" border = "0">
-                  <tr class = "item-bar-code">
-                    <td class = "retrade-info-title"><div>Бар-код</div></td>
-                    <td class = "retrade-info-value"><div>@BC</div></td>
                   </tr>
                 </table>
               </td>
@@ -291,18 +251,7 @@
               <td class = "retrade-info-title"><div>Ед. изм.</div></td>
               <td ><div>@EDME</div></td>
               <td class = "retrade-info-title"><div>коэфф.</div></td>
-              <td colspan = "3"><div>@EDVO</div></td>
-            </tr>
-            <tr>
-              <td class = "retrade-info-title"><div>Вес нетто</div></td>
-              <td><div>@EDNW</div></td>
-              <td class = "retrade-info-title"><div>кг, брутто</div></td>
-              <td><div>@EDGW</div></td>
-              <td class = "retrade-info-title"><div>кг</div></td>
-            </tr>
-            <tr>
-              <td class = "retrade-info-title"><div>Бар-код</div></td>
-              <td colspan = "3"><div>@EDBC</div></td>
+              <td><div>@EDVO</div></td>
             </tr>
           </table>
         </td>
@@ -387,10 +336,7 @@
       var c = {
         MT: (!index)?('Основная'):('Дополнительная'),
         MC: m.measure.code, MN: m.measure.name,
-        Cc: { hidden: !clcode }, CC: { phidden: !clcode, node: clcode },
-        Vo: { hidden: !volume }, VO: { phidden: !volume, node: volume },
-        NW: m.good['net-weight'], GW: m.good['gross-weight'],
-        BC: m.good['bar-code']
+        Vo: { hidden: !volume }, VO: { phidden: !volume, node: volume }
       }
 
       //~: clone & fill item
@@ -419,6 +365,12 @@
         //~: edit button
         $(ways.ED).on('click', ZeT.fbind(editButton, control))
 
+        //~: create go-attributes button
+        var attrbtn = Ext.create({ xtype: 'button', renderTo: ways.AT,
+          margin: 0, text: 'Атр.', height: 26,  tooltipType: 'title',
+          tooltip: (index)?('Атрибуты ед. измерения'):('Атрибуты товара')
+        })
+
         //~: visibility check boxes
         control.visibles = []; var visibles = [
           { way: ways.XB, lway: ways.LB, label: 'накл. зак.', id: xid(), index: 'visible-buy' },
@@ -436,7 +388,7 @@
 
           //~: and it's label
           Ext.create({ xtype: 'label', renderTo: x.lway, text: x.label,
-            forId: x.id, cls: 'retrade-form-light-label-cell' })
+            forId: x.id })
 
           //~: save the edit model
           control.visibles.push(cx = { check: cb, item: x, control: control })
@@ -477,7 +429,7 @@
     function turnEditControl(co)
     {
       //~: edit button
-      $(co.ways.ED).show()
+      if(co.index) $(co.ways.ED).show()
 
       //~: visibility check-boxes
       ZeT.each(co.visibles, function(vi)
@@ -509,7 +461,7 @@
     function editButton()
     {
       //~: form items created
-      var me, vo, nw, gw, bc, control = this
+      var me, vo, control = this
 
       //~: fix item height
       $(this.node).height($(this.node).height())
@@ -535,8 +487,8 @@
 
       //~: then -> edit measure
       if(this.index) me = Ext.create({ xtype: 'combobox', renderTo: this.ways.EDME,
-        margin: 0, width: extjsf.ex(12), store: "${z:vid(v, 'measures')}",
-        valueField: 'code', displayField: 'code', matchFieldWidth: false, editable: false,
+        margin: 0, width: extjsf.ex(18), store: "${z:vid(v, 'measures')}",
+        valueField: 'code', displayField: 'code', matchFieldWidth: true, editable: false,
         value: this.model.measure.code, allowBlank: false,
         validator: ZeT.fbind(validateMeasureUnit, this),
         fieldCls: 'retarde-field-text-compact' })
@@ -566,43 +518,7 @@
         control.model.calc['sub-volume'] = v
       })
 
-      var valw = ZeT.fbind(retrade.vvolume, retrade, { blank: true })
-
-      //~: edit net weight
-      nw = Ext.create({ xtype: 'textfield', renderTo: this.ways.EDNW,
-        margin: 0, width: extjsf.ex(12), value: this.model.good['net-weight'],
-        maskRe: retrade.rdecimal, validator: valw,
-        fieldCls: 'retarde-field-text-compact' })
-
-      nw.on('change', function(f, v)
-      {
-        control.model.good['net-weight'] = v
-      })
-
-      //~: edit gross weight
-      gw = Ext.create({ xtype: 'textfield', renderTo: this.ways.EDGW,
-        margin: 0, width: extjsf.ex(12), value: this.model.good['gross-weight'],
-        maskRe: retrade.rdecimal, validator: valw,
-        fieldCls: 'retarde-field-text-compact' })
-
-      gw.on('change', function(f, v)
-      {
-        control.model.good['gross-weight'] = v
-      })
-
-      //~: edit barcode
-      bc = Ext.create({ xtype: 'textfield', renderTo: this.ways.EDBC,
-        margin: 0, maskRe: retrade.rinteger, width: '100%', value: this.model.good['bar-code'],
-        fieldCls: 'retarde-field-text-compact retarde-field-text-larger retarde-field-text-sparce',
-        validator: ZeT.fbind(retrade.vinteger, retrade, { blank: true })
-      })
-
-      bc.on('change', function(f, v)
-      {
-        control.model.good['bar-code'] = v
-      })
-
-      this.editors = [ me, vo, nw, gw, bc ]
+      this.editors = [ me, vo ]
     }
 
     //~: measure unit drop-box validator

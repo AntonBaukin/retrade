@@ -518,6 +518,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 			var box = stack[i]
 			box.component = comp
 			this.resizeComp(box)
+			delete box.component
 
 			//?: {has nothing left}
 			if(i == 0) delete comp.extjsfBind.prevSize; else
