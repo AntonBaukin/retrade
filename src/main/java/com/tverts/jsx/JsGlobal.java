@@ -141,7 +141,8 @@ public class JsGlobal
 
 	public Object debug(Object... args)
 	{
-		return this;
+		Object res = JsX.debug(args);
+		return (res == null)?(this):(res);
 	}
 
 	protected final Map<String, Object> globals =

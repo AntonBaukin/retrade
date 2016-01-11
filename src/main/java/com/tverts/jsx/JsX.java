@@ -76,6 +76,11 @@ public class JsX extends ServiceBase
 		}
 	}
 
+	public static Object debug(Object... args)
+	{
+		return null;
+	}
+
 
 	/* Java Bean (configuration) */
 
