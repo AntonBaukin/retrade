@@ -106,16 +106,24 @@ function getGoodTypes()
 		},
 
 		{
-			name:    'Тестовый',
-			type:    'string',
+			system:  true,
+			shared:  true,
+			name:    'Test code',
+			nameLo:  'Тестовый код',
+			type:    'string'
+		},
+
+		{
+			name:    'Тестовый список',
+			type:    'integer',
 			shared:  true,
 			array:   true,
 
 			values:  [
 
-				{ value: '18.0', text: '18%' },
-				{ value: '10.0', text: '10%' },
-				{ value: '0.0',  text: '0%' }
+				{ value: '10', text: 'А-10' },
+				{ value: '20', text: 'Б-20' },
+				{ value: '30', text: 'И-30' }
 			]
 		}
 	]

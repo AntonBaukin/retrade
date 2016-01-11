@@ -37,8 +37,18 @@
         },
 
         {
+          text: "Ко.", dataIndex: 'taken', sortable: false, menuDisabled: true,
+          width: extjsf.ex(4), align: 'center', renderer: function(v, meta)
+          {
+            if(v !== true) return ''
+            meta.tdAttr = "title='Значение атрибута скопировано из товара (основной ед. измерения)'"
+            return 'да'
+          }
+        },
+
+        {
           text: "Значение", dataIndex: 'value', sortable: false, flex: 1,
-          menuDisabled: true, tdCls:'retrade-selectable-column', renderer: function(v)
+          menuDisabled: true, tdCls: 'retrade-selectable-column', renderer: function(v)
           {
             if(!ZeT.isa(v)) return v
 
@@ -295,6 +305,10 @@
     var egrid = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
     var v2s   = store.extjsfBind.valueToString
 
+    //~: show taken column for sub-goods only
+    extjsf.support.columnByDataIndex(vgrid, 'taken').
+      setVisible(ox.isub === true)
+
     //~: clear the store
     store.removeAll()
 
@@ -311,6 +325,9 @@
     //~: add items from the attributes
     ZeT.each(ox.attributes, function(a)
     {
+      //?: {this attribute is taken}
+      if(!isReadMode && (a.taken === true)) return
+
       //?: {has single value}
       if(!a.array)
       {
@@ -363,6 +380,9 @@
 
     var res = []; ZeT.each(ox, function(x)
     {
+      //?: {this valus is taken}
+      if(ZeT.iso(x) && (x.taken === true)) return
+
       //~: get the value
       var v = x.value
       if(ZeT.isx(v) && ZeT.isa(x.values)) v = x.values

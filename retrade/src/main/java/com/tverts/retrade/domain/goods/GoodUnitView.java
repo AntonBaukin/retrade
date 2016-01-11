@@ -322,9 +322,11 @@ public class GoodUnitView implements Serializable
 			if(ga.getNameLo() == null)
 				ga.setNameLo(ga.getName());
 
-			Value v = ga.getValue();
+			//=: {is taken value}
+			ga.setTaken(ua.getSource() != null);
 
 			//?: {has no values}
+			Value v = ga.getValue();
 			if((v == null) && (ga.getValues() == null))
 				ga.setValue(Goods.value(ua));
 			//?: {has several values now}

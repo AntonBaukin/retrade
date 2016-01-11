@@ -301,7 +301,7 @@
     function addPanel(m, index)
     {
       //~: controls
-      var control = { model: m, index: index, attributes: [] }
+      var control = { model: m, index: index, attributes: [], isub: !!index }
       controls.push(control)
 
       //~: pre-process attributes

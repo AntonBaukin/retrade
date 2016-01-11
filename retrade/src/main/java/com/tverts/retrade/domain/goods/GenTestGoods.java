@@ -507,15 +507,22 @@ public class GenTestGoods extends GenesisHiberPartBase
 		Map<String, Object> ats = g.getAttrs();
 		if(ats == null) g.setAttrs(ats = new HashMap<>());
 
+		//~: test code of a super-good
+		if(ats.get("Test code") == null)
+			if(gu.getSuperGood() == null)
+				ats.put("Test code", GenUtils.number(ctx.gen(), 10));
+
 		//~: bar codes (1 up to 3)
 		if(ats.get(Goods.AT_BARCODE) == null)
-		{
-			String[] cs = new String[1 + ctx.gen().nextInt(3)];
-			for(int i = 0;(i < cs.length);i++)
-				cs[i] = GenUtils.number(ctx.gen(), 13);
+			//?: {generating a super-good, or 50% of subs}
+			if((gu.getSuperGood() == null) || ctx.gen().nextBoolean())
+			{
+				String[] cs = new String[1 + ctx.gen().nextInt(3)];
+				for(int i = 0;(i < cs.length);i++)
+					cs[i] = GenUtils.number(ctx.gen(), 13);
 
-			ats.put(Goods.AT_BARCODE, (cs.length == 1)?(cs[0]):(cs));
-		}
+				ats.put(Goods.AT_BARCODE, (cs.length == 1)?(cs[0]):(cs));
+			}
 
 		//~: net weight
 		if(ats.get(Goods.AT_NET_WEIGHT) == null)

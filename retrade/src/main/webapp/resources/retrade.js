@@ -1050,6 +1050,8 @@ ZeT.init('retrade.globals', function()
 	    {name: 'name',         type: 'string'},
 	    {name: 'nameLo',       type: 'string'},
 	    {name: 'system',       type: 'boolean'},
+	    {name: 'shared',       type: 'boolean'},
+	    {name: 'taken',        type: 'boolean'},
 	    {name: 'object',       type: 'string'},
 
 	    {name: 'ox', depends: [ 'object' ], calculate: function(r) {

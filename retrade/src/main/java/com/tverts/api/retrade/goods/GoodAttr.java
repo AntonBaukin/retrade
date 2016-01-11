@@ -26,8 +26,8 @@ import com.tverts.api.core.Value;
  */
 @XmlRootElement(name = "good-attr")
 @XmlType(name = "good-attr", propOrder = {
-  "name", "nameLo", "system", "array",
-  "shared", "object", "value", "values"
+  "name", "nameLo", "system", "array", "shared",
+  "taken", "object", "value", "values"
 })
 public class GoodAttr extends JustObject implements PkeyObject
 {
@@ -102,6 +102,22 @@ public class GoodAttr extends JustObject implements PkeyObject
 	public void setShared(boolean shared)
 	{
 		this.shared = shared;
+	}
+
+	/**
+	 * This flag tells that the value of the attribute was
+	 * taken from the shared attribute of the super good.
+	 */
+	public boolean isTaken()
+	{
+		return taken;
+	}
+
+	private boolean taken;
+
+	public void setTaken(boolean taken)
+	{
+		this.taken = taken;
 	}
 
 	/**

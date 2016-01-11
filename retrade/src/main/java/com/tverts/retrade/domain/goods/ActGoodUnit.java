@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -268,6 +269,9 @@ public class ActGoodUnit extends ActionBuilderReTrade
 			HashMap<String, AttrType> n2at = new HashMap<>(atts.size());
 			for(AttrType a : atts) n2at.put(a.getName(), a);
 
+			//~: load attributes of super-sub good
+			superSubGoodAttrs();
+
 			//~: the values copy
 			Map<String, Object> vals = new LinkedHashMap<>(g.getAttrs());
 
@@ -276,25 +280,15 @@ public class ActGoodUnit extends ActionBuilderReTrade
 				EX.assertx(n2at.containsKey(e.getKey()), "Good Attribute [",
 				  e.getKey(), "] is not found in the database!");
 
-			//~: load all existing attribute values
-			List<UnityAttr> uas = get.getAttrs(
-			  target(GoodUnit.class).getPrimaryKey());
-
 			//~: map attributes by the types
-			Map<AttrType, List<UnityAttr>> a2vs = new HashMap<>();
-			for(UnityAttr ua : uas)
-			{
-				List<UnityAttr> x = a2vs.get(ua.getAttrType());
-				if(x == null) a2vs.put(ua.getAttrType(),
-				  x = new ArrayList<UnityAttr>(1));
+			Map<AttrType, List<UnityAttr>> amap =
+			  mapAttrs(target(GoodUnit.class));
 
-				x.add(ua);
-			}
-
-			List<UnityAttr> del = new ArrayList<>();
+			//~: list of attributes to delete
+			Map<AttrType, List<UnityAttr>> del = new HashMap<>();
 
 			//~: update existing attributes
-			for(Map.Entry<AttrType, List<UnityAttr>> e : a2vs.entrySet())
+			for(Map.Entry<AttrType, List<UnityAttr>> e : amap.entrySet())
 			{
 				String name = e.getKey().getName();
 
@@ -307,28 +301,159 @@ public class ActGoodUnit extends ActionBuilderReTrade
 				//?: {remove this attribute}
 				if(Void.class.equals(value))
 				{
-					del.addAll(e.getValue());
+					del.put(e.getKey(), e.getValue());
 					continue;
 				}
 
-				//~: emit value
-				updateAttrs(e.getValue(), value, e.getKey());
+				//~: update the value
+				List<UnityAttr> res = updateAttrs(e.getKey(),
+				  target(GoodUnit.class), e.getValue(), value);
+
+				amap.put(e.getKey(), res);
+
+				//?: {has sub-goods}
+				if((subAttrs != null) && e.getKey().isShared())
+					updateSubsAttrs(e.getKey(), res);
 			}
 
 			//~: insert new attributes
 			for(Map.Entry<String, Object> e : vals.entrySet())
-				if(!Void.class.equals(e.getValue()))
-					updateAttrs(new ArrayList<>(0), e.getValue(),
-					  EX.assertn(n2at.get(e.getKey())));
+			{
+				if(Void.class.equals(e.getValue()))
+					continue;
+
+				//~: target attribute type
+				AttrType type = EX.assertn(n2at.get(e.getKey()));
+
+				//~: update them
+				List<UnityAttr> res = updateAttrs(
+				  type, target(GoodUnit.class),
+				  new ArrayList<>(0), e.getValue());
+
+				amap.put(type, res);
+
+				//?: {has sub-goods}
+				if((subAttrs != null) && type.isShared())
+					updateSubsAttrs(type, res);
+			}
+
+			//?: {sub-good} insert missing shared attributes
+			if(superAttrs != null) for(AttrType type : superAttrs.keySet())
+			{
+				//?: {type is not shared}
+				if(!type.isShared()) continue;
+
+				//?: {has this attribute already}
+				if(amap.containsKey(type)) continue;
+
+				//?: {will remove it}
+				if(del.containsKey(type)) continue;
+
+				//~: seek in the super good
+				List<UnityAttr> suas = superAttrs.get(type);
+				if((suas == null) || suas.isEmpty()) continue;
+
+				//~: do insert
+				List<UnityAttr> res = updateAttrs(
+				  type, target(GoodUnit.class),
+				  new ArrayList<>(0), suas);
+
+				amap.put(type, res);
+			}
 
 			//~: delete attributes
-			for(UnityAttr ua : del)
+			for(Map.Entry<AttrType, List<UnityAttr>> e : del.entrySet())
+				deleteAttr(e.getKey(), e.getValue());
+		}
+
+		/**
+		 * Defined for derived goods: attributes
+		 * of parent Good Unit.
+		 */
+		protected Map<AttrType, List<UnityAttr>> superAttrs;
+
+		/**
+		 * Maps each sub-good to the list of it's attributes
+		 * (including the inherited ones). Defined for super-goods.
+		 */
+		protected Map<GoodUnit, Map<AttrType, List<UnityAttr>>> subAttrs;
+
+		protected void superSubGoodAttrs()
+		{
+			GoodUnit gu = target(GoodUnit.class);
+
+			//?: {is a sub-good}
+			if(gu.getSuperGood() != null)
+				this.superAttrs = mapAttrs(gu.getSuperGood());
+			else
+			{
+				//~: load the sub-goods
+				List<GoodUnit> subs = bean(GetGoods.class).
+				  getSubGoods(gu.getPrimaryKey());
+
+				//~: map their attributes
+				if(!subs.isEmpty())
+				{
+					this.subAttrs = new HashMap<>(subs.size());
+					for(GoodUnit sub : subs)
+						this.subAttrs.put(sub, mapAttrs(sub));
+				}
+			}
+		}
+
+		protected void deleteAttr(AttrType type, List<UnityAttr> uas)
+		{
+			GoodUnit gu = target(GoodUnit.class);
+
+			//?: {this is a sub-good}
+			if(gu.getSuperGood() != null)
+			{
+				//~: look-up for value in the super-good
+				List<UnityAttr> suas = (!type.isShared())?(null):
+				  this.superAttrs.get(type);
+
+				//?: {has no values up there}
+				if((suas == null) || suas.isEmpty())
+				{
+					//~: fully delete the attributes
+					for(UnityAttr ua : uas)
+						session().delete(ua);
+
+					return;
+				}
+
+				//~: update the attributes with the up-value
+				updateAttrs(type, gu, uas, suas);
+				return;
+			}
+
+			//?: {has sub-goods}
+			if(subAttrs != null)
+			{
+				HashSet<UnityAttr> suas = new HashSet<>(uas);
+
+				//~: remove each copy of shared attribute
+				for(Map<AttrType, List<UnityAttr>> xmap : subAttrs.values())
+				{
+					List<UnityAttr> xuas = xmap.get(type);
+
+					if(xuas != null) for(UnityAttr ua : xuas)
+						if(suas.contains(ua.getSource()))
+							session().delete(ua);
+				}
+			}
+
+			//~: delete target attributes
+			for(UnityAttr ua : uas)
 				session().delete(ua);
 		}
 
 		@SuppressWarnings("unchecked")
-		protected void updateAttrs(List<UnityAttr> uas, Object v, AttrType type)
+		protected List<UnityAttr> updateAttrs(
+		  AttrType type, GoodUnit gu, List<UnityAttr> uas, Object v)
 		{
+			List<UnityAttr> result = new ArrayList<>();
+
 			if(v instanceof Object[])
 				v = Arrays.asList((Object[]) v);
 			if(!(v instanceof Collection))
@@ -353,7 +478,7 @@ public class ActGoodUnit extends ActionBuilderReTrade
 				  type.getName(), "] may not contain multiple values!");
 
 				if(cr = uas.isEmpty())
-					initAttr(ua = new UnityAttr(), type);
+					initAttr(type, gu, ua = new UnityAttr());
 				else
 					ua = uas.set(0, null);
 
@@ -376,7 +501,7 @@ public class ActGoodUnit extends ActionBuilderReTrade
 			else for(int i = 0;(i < vs.size());i++)
 			{
 				if(cr = (i >= uas.size()))
-					initAttr(ua = new UnityAttr(), type);
+					initAttr(type, gu, ua = new UnityAttr());
 				else
 					ua = uas.set(i, null);
 
@@ -400,16 +525,39 @@ public class ActGoodUnit extends ActionBuilderReTrade
 			for(UnityAttr x : uas)
 				if(x != null)
 					session().delete(x);
+
+			this.result.addAll(result);
+			return result;
 		}
 
-		protected void initAttr(UnityAttr ua, AttrType type)
+		protected void updateSubsAttrs(AttrType type, List<UnityAttr> uas)
+		{
+			nextGood: for(GoodUnit sub : subAttrs.keySet())
+			{
+				//~: get existing attributes of that type
+				List<UnityAttr> suas = subAttrs.get(sub).get(type);
+				if(suas == null) subAttrs.get(sub).put(type,
+				  suas = new ArrayList<>(uas.size())
+				);
+
+				//?: {attribute has own values}
+				for(UnityAttr ua : suas)
+					if(ua.getSource() == null)
+						break nextGood; //<-- skip this good
+
+				//!: update them
+				updateAttrs(type, sub, suas, uas);
+			}
+		}
+
+		protected void initAttr(AttrType type, GoodUnit gu, UnityAttr ua)
 		{
 			//=: primary key
 			HiberPoint.setPrimaryKey(session(), ua,
-			  HiberPoint.isTestInstance(target(GoodUnit.class)));
+			  HiberPoint.isTestInstance(gu));
 
 			//=: good unity
-			ua.setUnity(EX.assertn(target(GoodUnit.class).getUnity()));
+			ua.setUnity(EX.assertn(gu.getUnity()));
 
 			//=: attribute type
 			ua.setAttrType(type);
@@ -417,6 +565,26 @@ public class ActGoodUnit extends ActionBuilderReTrade
 
 		protected void updateAttr(UnityAttr ua, Object v)
 		{
+			//?: {source attribute}
+			if(v instanceof UnityAttr)
+			{
+				UnityAttr sa = (UnityAttr)v;
+
+				//~: assign the value
+				ua.setString(sa.getString());
+				ua.setInteger(sa.getInteger());
+				ua.setNumber(sa.getNumber());
+				ua.setBytes(sa.getBytes());
+
+				//=: index
+				ua.setIndex(sa.getIndex());
+
+				//!: make it source
+				ua.setSource(sa);
+
+				return;
+			}
+
 			ua.setString(null);
 			ua.setInteger(null);
 			ua.setNumber(null);
@@ -437,6 +605,26 @@ public class ActGoodUnit extends ActionBuilderReTrade
 
 				ua.setBytes(XPoint.xml().write(true, v));
 			}
+		}
+
+		protected Map<AttrType, List<UnityAttr>> mapAttrs(GoodUnit gu)
+		{
+			//~: load all existing attribute values
+			List<UnityAttr> uas = bean(GetUnity.class).
+			  getAttrs(gu.getPrimaryKey());
+
+			//~: map attributes by the types
+			Map<AttrType, List<UnityAttr>> a2vs = new HashMap<>();
+			for(UnityAttr ua : uas)
+			{
+				List<UnityAttr> x = a2vs.get(ua.getAttrType());
+				if(x == null) a2vs.put(ua.getAttrType(),
+				  x = new ArrayList<UnityAttr>(1));
+
+				x.add(ua);
+			}
+
+			return a2vs;
 		}
 
 		protected List<UnityAttr> result =
