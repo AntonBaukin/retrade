@@ -573,8 +573,6 @@
       var val; if(!ZeTS.ises(val = validateFields()))
         return ReTrade.desktop.error(val)
 
-      ZeT.log(reqstr)
-
       //!: post the measures model
       var post = jQuery.post("${z:url('/go/web/views/goods/sub-goods')}", { measures: reqstr })
 

@@ -275,6 +275,17 @@
   <script type = "text/javascript">
   //<![CDATA[
 
+  //~: value to string
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+    valueToString = function(v)
+  {
+    if(ZeT.iss(v))     return v
+    if(v && v.text)    return v.text
+    if(v && v.integer) return '' + v.integer
+    if(v && v.decimal) return '' + v.decimal
+    return ''
+  }
+
   //~: assign values from the attributes on good ox
   extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
     updateGoodOx = function(ox, isReadMode)
@@ -282,6 +293,7 @@
     var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
     var vgrid = extjsf.bind("${z:vid(v, 'attrs-view')}", '${rootView.extjsDomain}')
     var egrid = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var v2s   = store.extjsfBind.valueToString
 
     //~: clear the store
     store.removeAll()
@@ -295,15 +307,6 @@
 
     //?: {has nothing}
     if(!ox || !ZeT.isa(ox.attributes)) return
-
-    function v2s(v)
-    {
-      if(ZeT.iss(v))     return v
-      if(v && v.text)    return v.text
-      if(v && v.integer) return '' + v.integer
-      if(v && v.decimal) return '' + v.decimal
-      return ''
-    }
 
     //~: add items from the attributes
     ZeT.each(ox.attributes, function(a)
@@ -351,13 +354,30 @@
   extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
     collectValues = function(ox)
   {
+    var store = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var v2s   = store.valueToString
+
     if(ZeT.iso(ox) && ZeT.isa(ox.attributes))
       ox = ox.attributes
     ZeT.assert(ZeT.isa(ox))
 
     var res = []; ZeT.each(ox, function(x)
     {
-      res.push({ pkey: ZeT.asserts('' + x.pkey), value: ZeT.deepClone(x.value) })
+      //~: get the value
+      var v = x.value
+      if(ZeT.isx(v) && ZeT.isa(x.values)) v = x.values
+
+      //?: {not an array}
+      if(!ZeT.isa(v)) v = v2s(v); else
+      {
+        var va = v, v = []; ZeT.each(va, function(xv)
+        {
+          ZeT.assert(!ZeT.isa(xv))
+          if(!ZeTS.ises(xv = v2s(xv))) v.push(xv)
+        })
+      }
+
+      res.push({ pkey: ZeT.asserts('' + x.pkey), value: ZeT.deepClone(v) })
     })
 
     //~: sort the results

@@ -89,11 +89,11 @@ function applyGoodMeasures(measures)
 	if(!ZeTS.ises(valid)) return valid
 
 	//~: apply changes to the super ox-good
-	applyGoodOx(gu, measures[0])
+	var u = applyGoodOx(gu, measures[0])
 	gu.updateOx()
 
 	//!: update the main good unit
-	ActionsPoint.actionRun(ActionType.UPDATE, gu)
+	if(u) ActionsPoint.actionRun(ActionType.UPDATE, gu)
 
 	//~: remove sub-goods
 	var subx = {}; ZeT.each(measures, function(m){ subx[m.good.measure] = true })
@@ -117,8 +117,11 @@ function applyGoodMeasures(measures)
 		if(!sg) return
 
 		//~: apply changes to the sub-ox-good
-		applyGoodOx(sg, m)
+		u = applyGoodOx(sg, m)
 		sg.updateOxOwn()
+
+		//!: update sub-good
+		if(u) ActionsPoint.actionRun(ActionType.UPDATE, sg)
 
 		//?: {has measure the same}
 		if(sg.getMeasure().getPrimaryKey() == m.good.measure)
@@ -274,9 +277,14 @@ function deleteSubGood(sg)
 	return 'Функция удаления единиц измерения товаров не реализвована!'
 }
 
+/**
+ * Returns 'true' if the Good Unit must be updated
+ * with UPDATE action.
+ */
 function applyGoodOx(gu, m)
 {
 	var g = gu.getOxOwn()
+	var u = false
 
 	//=: visibility flags
 	g.setVisibleBuy(m.good['visible-buy'])
@@ -285,7 +293,7 @@ function applyGoodOx(gu, m)
 	g.setVisibleReports(m.good['visible-reports'])
 
 	//?: {has attributes encoded}
-	if(ZeT.isa(m.attributes))
+	if(u = ZeT.isa(m.attributes))
 		GoodS.assignGoodAttributes(gu, g, m.attributes)
 
 	//?: {sub-good}
@@ -310,6 +318,8 @@ function applyGoodOx(gu, m)
 		if(d.scale() == 0) d = d.setScale(1)
 		return d
 	}
+
+	return u
 }
 
 function goodUsageDescr(flags)
