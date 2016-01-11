@@ -291,6 +291,8 @@ public class ActGoodUnit extends ActionBuilderReTrade
 				x.add(ua);
 			}
 
+			List<UnityAttr> del = new ArrayList<>();
+
 			//~: update existing attributes
 			for(Map.Entry<AttrType, List<UnityAttr>> e : a2vs.entrySet())
 			{
@@ -300,14 +302,28 @@ public class ActGoodUnit extends ActionBuilderReTrade
 				if(!vals.containsKey(name))
 					continue;
 
+				Object value = vals.remove(name);
+
+				//?: {remove this attribute}
+				if(Void.class.equals(value))
+				{
+					del.addAll(e.getValue());
+					continue;
+				}
+
 				//~: emit value
-				updateAttrs(e.getValue(), vals.remove(name), e.getKey());
+				updateAttrs(e.getValue(), value, e.getKey());
 			}
 
 			//~: insert new attributes
 			for(Map.Entry<String, Object> e : vals.entrySet())
-				updateAttrs(new ArrayList<>(0), e.getValue(),
-				  EX.assertn(n2at.get(e.getKey())));
+				if(!Void.class.equals(e.getValue()))
+					updateAttrs(new ArrayList<>(0), e.getValue(),
+					  EX.assertn(n2at.get(e.getKey())));
+
+			//~: delete attributes
+			for(UnityAttr ua : del)
+				session().delete(ua);
 		}
 
 		@SuppressWarnings("unchecked")

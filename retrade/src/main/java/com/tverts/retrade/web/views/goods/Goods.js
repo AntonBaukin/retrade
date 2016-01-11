@@ -90,7 +90,7 @@ function assignGoodAttributes(gu, g, values)
 
 	//~: first, mark all attributes to remove
 	ZeT.each(types, function(t){
-		//attrs.put(t.getName(), Void.class)
+		attrs.put(t.getName(), Void.class)
 	})
 
 	//c: decode and validate each value given
