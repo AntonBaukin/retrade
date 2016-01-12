@@ -149,7 +149,7 @@ public class FacesGoodEditView extends ModelView
 		//!: load it
 		else
 		{
-			gu = EX.assertn(get.getGoodUnitStrict(getGoodView().getObjectKey()));
+			gu = get.getGoodUnitStrict(getGoodView().getObjectKey());
 
 			//sec: the same domain
 			SecPoint.isSameDomain(gu);
@@ -328,7 +328,14 @@ public class FacesGoodEditView extends ModelView
 		}
 
 		if("measures-back".equals(where))
+		{
+			//?: {editing existing good}
+			if(getGoodView().getObjectKey() != null)
+				getGoodView().initOx(bean(GetGoods.class).
+				  getGoodUnitStrict(getGoodView().getObjectKey()));
+
 			return "edit";
+		}
 
 		throw EX.state("How to go from where [", where, "]?");
 	}
