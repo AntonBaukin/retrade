@@ -263,7 +263,7 @@
     var store    = extjsf.bind("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
     var panel    = extjsf.bind("${z:vid(v, 'measures-list-panel')}", '${rootView.extjsDomain}')
     var sattrs   = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var controls = [], editMode, modelstr
+    var controls = [], editMode, modelstr, modelback
 
 
     //~: apply the model items
@@ -286,6 +286,9 @@
       //~: clear the existing content
       panel.co().removeAll(true)
       controls = []
+
+      //~: backup the original model
+      if(!modelback) modelback = ZeT.o2s(measures)
 
       //c: for each measures: add items
       ZeT.each(ZeT.asserta(measures), addPanel)
@@ -442,7 +445,10 @@
       toggleReadEdit(true)
 
       //~: restore the model
-      measures = ZeT.s2o(modelstr)
+      measures = ZeT.s2o(modelback)
+      modelstr = null
+
+      //~: fill it
       fillMeasures()
     })
 
@@ -583,7 +589,7 @@
 
         //~: apply the server response
         measures = ZeT.asserta(x)
-        modelstr = null
+        modelstr = modelback = null
 
         //~: apply the model
         fillMeasures()
@@ -667,9 +673,6 @@
     function showAttributes(co)
     {
       attrControl = co
-
-      if(!ZeT.isa(co.attributes))
-        co.attributes = []
 
       //~: create back-copy
       if(editMode)
