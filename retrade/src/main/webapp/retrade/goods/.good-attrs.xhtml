@@ -48,15 +48,26 @@
 
         {
           text: "Значение", dataIndex: 'value', sortable: false, flex: 1,
-          menuDisabled: true, tdCls: 'retrade-selectable-column', renderer: function(v)
+          menuDisabled: true, tdCls: 'retrade-selectable-column', renderer: function(v, meta, rec)
           {
-            if(!ZeT.isa(v)) return v
+            var ox = ZeT.assertn(rec.get('ox'))
+
+            function v2s(x)
+            {
+              if(!ZeT.isa(ox.values)) return x
+              for(var i = 0;(i != ox.values.length);i++)
+                if(x == ox.values[i].value)
+                  return ZeTS.ises(ox.values[i].text)?(x):(ox.values[i].text)
+              return x
+            }
+
+            if(!ZeT.isa(v)) return v2s(v)
 
             var s = ''; ZeT.each(v, function(x)
             {
               if(ZeTS.ises(x)) return
               if(s.length) s += '&lt;br/&gt;'
-              s += x
+              s += v2s(x)
             })
 
             return s
@@ -133,8 +144,20 @@
 
         function renderValue(v, meta, model)
         {
+          var ox = model.get('ox')
+          if(ZeT.isx(ox)) return ''
+
+          function v2s(x)
+          {
+            if(!ZeT.isa(ox.values)) return x
+            for(var i = 0;(i != ox.values.length);i++)
+              if(x == ox.values[i].value)
+                return ZeTS.ises(ox.values[i].text)?(x):(ox.values[i].text)
+            return x
+          }
+
           v = model.get('value')
-          if(!ZeT.isa(v)) return v
+          if(!ZeT.isa(v)) return v2s(v)
 
           var table = $('#' + "${z:vid(v, 'attrs-values-table')}").find('table').clone()
           var row   = table.find('tr')
@@ -149,7 +172,7 @@
             body.append(xyz)
 
             //:= array item value
-            xyz.find('td:last-child span').text(x).attr('onclick', ZeTS.cat(
+            xyz.find('td:last-child span').text(v2s(x)).attr('onclick', ZeTS.cat(
               "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${rootView.extjsDomain}').",
               'retradeEditArrayValue("', model.getId(), '", "', x,
               '", event || window.event)'
