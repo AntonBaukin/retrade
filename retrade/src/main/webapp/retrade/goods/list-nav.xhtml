@@ -59,19 +59,33 @@ ${v.checkModelRequestedWithRedirect}
       //~: selected folder node
       var t = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
       var f = t.getSelection(); if(!f || f.length != 1) return; else f = f[0]
+      if(f.get('objectKey') == '$') return
 
-      //~: trace up to the root
-      var ms = [], p = f; while(true)
+      var ms = [], p = f
+      function addItem()
       {
-        //~: create model item
         ms.unshift(Ext.create('retrade.model.GoodUnitView', {
           objectKey: 'folder$'+ p.get('objectKey'),
           goodCode: p.get('code'), goodName: p.get('name'),
           uiRowClass: ZeTS.cat('retrade-goods-grid-row-', (f == p)?('selected'):('parent'))
         }))
+      }
 
-        //?: {has parent node}
-        if(ZeT.isu(p = p.get('parentKey'))) break
+      //~: trace up to the root
+      while(true)
+      {
+        //~: create model item
+        addItem()
+
+        //?: {has no parent node}
+        if(ZeT.isu(p = p.get('parentKey')))
+        {
+          p = t.getStore().getRoot()
+          addItem()
+          break
+        }
+
+        //~: go up
         p = ZeT.assertn(t.getStore().getAt(t.getStore().find('objectKey', p)))
       }
 

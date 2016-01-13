@@ -749,7 +749,7 @@ ZeT.init('retrade.globals', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(9)
+		   width: extjsf.ex(14)
 		 },
 
 		 {
@@ -799,7 +799,7 @@ ZeT.init('retrade.globals', function()
 
 		 {
 		   text: "Код", dataIndex: 'goodCode', sortable: true,
-		   width: extjsf.ex(9)
+		   width: extjsf.ex(14)
 		 },
 
 		 {

@@ -40,7 +40,7 @@
         <x:component coid = "${z:vid(v, 'tree')}">
           <f:facet name = "extjs-props">
             xtype: 'treepanel', border: false, flex: 1,
-            rootVisible: false, allowDeselect: true,
+            rootVisible: true, allowDeselect: true,
             cls: 'ux-tree-folders-only'
           </f:facet>
         </x:component>
@@ -53,8 +53,10 @@
       extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('add', function(tree)
       {
         tree.setStore(new Ext.data.TreeStore({
-          autoDestroy: true, rootVisible: false, root: {
-            expanded: true, children: ZeT.s2o("${z:jss(v.goodFoldersTree)}")
+          autoDestroy: true, rootVisible: true, root: {
+            objectKey: '$', expanded: true,
+            text: 'Товары', name: 'Товары',
+            children: ZeT.s2o("${z:jss(v.goodFoldersTree)}")
           }
         }))
       })
@@ -82,6 +84,7 @@
             {
               btn.setIconCls('retrade-tree-end-plus-icon')
               extjsf.support.collapseTreeToSel(tree)
+              tree.getRootNode().expand()
             }
           }
         })
@@ -90,10 +93,22 @@
       //~: good folder selection change
       extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('selectionchange', function(tree, sel)
       {
+        var grid  = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
         var goods = extjsf.co("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}')
-        if(!sel.length) sel = null; else  sel = sel[0]
+
+        //~: get current selection
+        if(!sel.length) sel = null; else sel = sel[0]
+
+        //?: {selected the root}
+        if(sel && sel.get('objectKey') == '$') sel = null
+
+        //=: folder filter parameter
         goods.getProxy().setExtraParam('goodsFolder', (sel)?(sel.get('objectKey')):(''))
-        goods.loadPage(1)
+
+        //~: load page and scroll to top
+        goods.loadPage(1, { callback: function(){
+          grid.getView().setScrollY(0)
+        }})
       })
 
       //]]>
@@ -133,6 +148,7 @@
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').display_good = function(sel)
   {}
 
+  //~: filter goods grid by the category selected
   extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function(m, sel)
   {
     if(sel = ((sel.length)?(sel[0]):(null))) sel = {
