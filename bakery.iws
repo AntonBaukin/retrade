@@ -6,11 +6,15 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="domain-53 [beta]: fixed cancel editing Good attributes in the measures list.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.list-grid.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.list-grid.xhtml" />
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/animate.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.my.css" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap-theme.css" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-nav.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-nav.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap-light-blue.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap-light-blue.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.css" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,18 +40,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="list-nav.xhtml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-nav.xhtml">
+      <file leaf-file-name="bootit.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1543859" vertical-offset="753" max-vertical-offset="3154">
-              <caret line="83" column="19" selection-start-line="83" selection-start-column="19" selection-end-line="83" selection-end-column="19" />
-              <folding>
-                <element signature="e#2001#2288#0" expanded="true" />
-                <element signature="e#2757#2989#0" expanded="true" />
-                <element signature="e#3204#3249#0" expanded="true" />
-                <element signature="e#3615#3806#0" expanded="true" />
-                <element signature="e#3961#4584#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.1454219" vertical-offset="1041" max-vertical-offset="2172">
+              <caret line="66" column="8" selection-start-line="66" selection-start-column="7" selection-end-line="66" selection-end-column="7" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -59,10 +57,12 @@
       <setting name="OPEN_NEW_TAB" value="true" />
     </FindUsagesManager>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/goods/GenGoodAttrTypes.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GenTestGoods.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodUnit.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/goods/GoodAttr.java" />
@@ -71,14 +71,15 @@
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/firms/lists-edit.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap-light-blue.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/font-opensans.css" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.good-attrs.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.list-grid.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-nav.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap-light-blue.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.my.css" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html" />
       </list>
     </option>
   </component>
@@ -90,8 +91,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="534" />
-    <option name="y" value="52" />
+    <option name="x" value="450" />
+    <option name="y" value="34" />
     <option name="width" value="1077" />
     <option name="height" value="955" />
   </component>
@@ -107,9 +108,6 @@
           </State>
           <State>
             <id>Assignment issues</id>
-          </State>
-          <State>
-            <id>Assignment issuesGroovy</id>
           </State>
           <State>
             <id>Assignment issuesJavaScript</id>
@@ -130,9 +128,6 @@
             <id>Code style issuesJavaScript</id>
           </State>
           <State>
-            <id>Control FlowGroovy</id>
-          </State>
-          <State>
             <id>Control flow issues</id>
           </State>
           <State>
@@ -142,9 +137,6 @@
             <id>Data flow issues</id>
           </State>
           <State>
-            <id>Data flow issuesGroovy</id>
-          </State>
-          <State>
             <id>Data flow issuesJavaScript</id>
           </State>
           <State>
@@ -152,9 +144,6 @@
           </State>
           <State>
             <id>GeneralJavaScript</id>
-          </State>
-          <State>
-            <id>Groovy</id>
           </State>
           <State>
             <id>Initialization issues</id>
@@ -170,9 +159,6 @@
           </State>
           <State>
             <id>Performance issues</id>
-          </State>
-          <State>
-            <id>Potentially confusing code constructsGroovy</id>
           </State>
           <State>
             <id>Potentially confusing code constructsJavaScript</id>
@@ -223,8 +209,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -331,7 +315,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="fonts" />
+              <option name="myItemId" value="bootstrap" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -361,7 +345,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="bootstrap" />
+              <option name="myItemId" value=".tests" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -385,6 +369,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -402,7 +388,7 @@
     <property name="dynamic.classpath" value="false" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
-    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="options.lastSelected" value="preferences.sourceCode.CSS" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -660,13 +646,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="534" y="52" width="1077" height="955" extended-state="0" />
+    <frame x="450" y="34" width="1077" height="955" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32845894" sideWeight="0.56618357" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31158605" sideWeight="0.5422794" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3739546" sideWeight="0.4281467" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -677,7 +662,6 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39033815" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2937853" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294686" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3104612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24251208" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24899599" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -690,9 +674,11 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24083251" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31158605" sideWeight="0.5422794" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3104612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -713,8 +699,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="domain-53 [alpha]: introduced unified attributes (having types) to use them for Good Units search (for now)." />
-    <MESSAGE value="domain-53 [alpha]: generating attribute types for goods." />
     <MESSAGE value="domain-53 [beta]: completed add-edit form of Good Attr Type (except the deletion)." />
     <MESSAGE value="domain-53 [alpha]: replaced specific Good Unit attributes with general ones." />
     <MESSAGE value="domain-53 [alpha]: prepared placeholder for Good Unit attributes table." />
@@ -738,7 +722,9 @@
     <MESSAGE value="domain-53 [beta]: fixed 24-size icons style." />
     <MESSAGE value="ui-91 [stable]: update Bootstrap night-blue theme. Now linking some CSS (and font) files to external CDN servers." />
     <MESSAGE value="domain-53 [beta]: fixed rendering of Good attributes values from a list having display texts." />
-    <option name="LAST_COMMIT_MESSAGE" value="domain-53 [beta]: fixed rendering of Good attributes values from a list having display texts." />
+    <MESSAGE value="ui-90 [stable]: added visible root node of Good categories navigation table." />
+    <MESSAGE value="ui-91 [stable]: used standard Bootstrap theme." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-91 [stable]: used standard Bootstrap theme." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -861,13 +847,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22972973" vertical-offset="0" max-vertical-offset="7416">
-          <caret line="12" column="7" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.23314285" vertical-offset="1598" max-vertical-offset="4785">
@@ -875,33 +854,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap-light-blue.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20411664" vertical-offset="0" max-vertical-offset="1348">
-          <caret line="7" column="271" selection-start-line="7" selection-start-column="271" selection-end-line="7" selection-end-column="271" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="4188" max-vertical-offset="115752">
-          <caret line="263" column="36" selection-start-line="263" selection-start-column="16" selection-end-line="263" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.97666067" vertical-offset="306" max-vertical-offset="1985">
-          <caret line="50" column="30" selection-start-line="50" selection-start-column="30" selection-end-line="50" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/goods/GenGoodAttrTypes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1445" max-vertical-offset="2571">
           <caret line="114" column="1" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -909,7 +865,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.60556847" vertical-offset="2164" max-vertical-offset="7254">
           <caret line="158" column="21" selection-start-line="158" selection-start-column="21" selection-end-line="158" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -917,7 +872,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="30332">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -925,7 +879,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.588964" vertical-offset="2805" max-vertical-offset="22920">
           <caret line="763" column="65" selection-start-line="248" selection-start-column="8" selection-end-line="248" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -933,7 +886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33178654" vertical-offset="326" max-vertical-offset="1933">
           <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -941,7 +893,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.40202704" vertical-offset="629" max-vertical-offset="2537">
           <caret line="58" column="48" selection-start-line="58" selection-start-column="48" selection-end-line="58" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -949,7 +900,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42117116" vertical-offset="714" max-vertical-offset="2180">
           <caret line="96" column="51" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -957,7 +907,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.536036" vertical-offset="0" max-vertical-offset="1653">
           <caret line="28" column="3" selection-start-line="21" selection-start-column="3" selection-end-line="25" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -965,7 +914,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="5.7623873" vertical-offset="9316" max-vertical-offset="12074">
           <caret line="849" column="6" selection-start-line="849" selection-start-column="6" selection-end-line="849" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -973,7 +921,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="21.211712" vertical-offset="6511" max-vertical-offset="8470">
           <caret line="1491" column="81" selection-start-line="403" selection-start-column="3" selection-end-line="405" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -981,21 +928,45 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.0058005" vertical-offset="442" max-vertical-offset="3055">
           <caret line="110" column="11" selection-start-line="77" selection-start-column="11" selection-end-line="77" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-nav.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1543859" vertical-offset="753" max-vertical-offset="3154">
-          <caret line="83" column="19" selection-start-line="83" selection-start-column="19" selection-end-line="83" selection-end-column="19" />
-          <folding>
-            <element signature="e#2001#2288#0" expanded="true" />
-            <element signature="e#2757#2989#0" expanded="true" />
-            <element signature="e#3204#3249#0" expanded="true" />
-            <element signature="e#3615#3806#0" expanded="true" />
-            <element signature="e#3961#4584#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="1.2958237" vertical-offset="5" max-vertical-offset="3446">
+          <caret line="66" column="52" selection-start-line="66" selection-start-column="52" selection-end-line="66" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.1080618" vertical-offset="3825" max-vertical-offset="117934">
+          <caret line="263" column="36" selection-start-line="263" selection-start-column="16" selection-end-line="263" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.my.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5831904" vertical-offset="0" max-vertical-offset="906">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap-light-blue.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.05831904" vertical-offset="0" max-vertical-offset="617">
+          <caret line="2" column="60039" selection-start-line="2" selection-start-column="60018" selection-end-line="2" selection-end-column="60039" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1454219" vertical-offset="1041" max-vertical-offset="2172">
+          <caret line="66" column="8" selection-start-line="66" selection-start-column="7" selection-end-line="66" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1068,6 +1039,17 @@
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
           <last-edited>runtime-xroot</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
           <splitter-proportions>
             <option name="proportions">
               <list>

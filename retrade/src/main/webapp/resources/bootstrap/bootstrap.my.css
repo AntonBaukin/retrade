@@ -1,0 +1,20 @@
+html
+{
+  min-height:100%
+}
+
+body
+{
+  background-image: radial-gradient(ellipse farthest-side at 10% 0px , rgba(222, 228, 231, 0.9), rgba(195, 225, 231, 0.9) 80%, rgba(224, 187, 184, 0.9) 120%);
+}
+
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .tooltip, .popover
+{
+  font-family: "Open Sans", sans-serif;
+  cursor: default;
+}
+
+.page-header
+{
+  cursor: default;
+}

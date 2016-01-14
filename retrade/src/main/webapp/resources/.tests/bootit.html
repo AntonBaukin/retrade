@@ -48,28 +48,40 @@
   <link type = 'text/css' rel = 'stylesheet'
     href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'/>
 
+  <!-- Animate CSS Library -->
+  <link type = 'text/css' rel = 'stylesheet'
+    href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'/>
+
   <!-- Bootstrap CSS Framework -->
   <link type = 'text/css' rel = 'stylesheet'
     href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'/>
 
-  <!-- Theme for Bootstrap -->
   <link type = 'text/css' rel = 'stylesheet'
-    href = "../bootstrap/bootstrap-light-blue.css"/>
+    href = '../bootstrap/bootstrap.css'/>
 
-  <!--
+  <!-- Theme for Bootstrap -->
+
   <link type = 'text/css' rel = 'stylesheet'
-     href = "../bootstrap/bootstrap-theme.css"/>
-  -->
+    href = "../bootstrap/bootstrap.my.css"/>
+
 </head>
 
-<body class = "background-dark" ng-controller = "rootCtrl">
+<body ng-controller = "rootCtrl">
+<div class = "container-fluid">
 
-<div class = "page-header">
-  <h3>Welcome to AngularJS and Bootstrap Kick Demo!</h3>
-  Good day, <strong style = 'cursor:pointer' ng-click = "setUserName(true)">{{userName || 'Stranger'}}</strong>!
-</div>
+  <div class = "page-header">
+    <h3>Welcome to AngularJS and Bootstrap Kick Demo!</h3>
 
-<div class = "content container">
+    <div ng-hide = "userNameSet">
+      Good day, <strong>Stranger</strong>!
+      Please, tell some info about Your below!
+    </div>
+
+    <div ng-show = "userNameSet">
+      Good day, <a href = "#stranger-form">{{userName}}</a>!
+    </div>
+
+  </div>
 
   <div ng-show = "!userNameSet">
     <form class = "form-inline">
@@ -81,6 +93,5 @@
   </div>
 
 </div>
-
 </body>
 </html>

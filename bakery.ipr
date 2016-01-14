@@ -713,13 +713,6 @@
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Anton" />
-    <dictionary name="abaukin">
-      <words>
-        <w>logins</w>
-        <w>messager</w>
-        <w>servicer</w>
-      </words>
-    </dictionary>
     <dictionary name="anton">
       <words>
         <w>aggr</w>
@@ -757,6 +750,13 @@
         <w>webapp</w>
         <w>whitespaces</w>
         <w>zetobj</w>
+      </words>
+    </dictionary>
+    <dictionary name="abaukin">
+      <words>
+        <w>logins</w>
+        <w>messager</w>
+        <w>servicer</w>
       </words>
     </dictionary>
   </component>
@@ -901,6 +901,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/prime/src/main/webapp/.xhtml/html.xhtml" value="file://$PROJECT_DIR$/prime/src/main/webapp/.xhtml" />
         <entry key="file://$PROJECT_DIR$/prime/src/main/webapp/index.xhtml" value="file://$PROJECT_DIR$/prime/src/main/webapp" />
+        <entry key="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html" value="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests" />
       </map>
     </option>
   </component>
