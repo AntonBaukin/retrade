@@ -288,6 +288,11 @@ select ut from Unity u join u.unityType ut
 
 	/* Unified Attributes */
 
+	public AttrType getAttrType(Long pk)
+	{
+		return get(AttrType.class, pk);
+	}
+
 	public AttrType getAttrType(Long domain, Long type, String name)
 	{
 		EX.assertn(domain);
