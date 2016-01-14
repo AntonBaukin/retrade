@@ -55,11 +55,21 @@ ${v.checkModelRequestedWithRedirect}
       </x:component>
 
 
-      <!-- [save button] -->
+      <!-- [cancel button] -->
       <x:component coid = "${z:vid(v, 'cancel')}">
         <f:facet name = "extjs-props">
           xtype: 'button', text: 'Отменить',
           cls: 'ux-btn-red', hidden: true
+        </f:facet>
+      </x:component>
+
+
+      <!-- [add value button] -->
+      <x:component coid = "${z:vid(v, 'delval')}">
+        <f:facet name = "extjs-props">
+          xtype: 'button', text: 'Значение',
+          iconCls: 'retrade-button-del',
+          margin: extjsf.pts(0, 0, 0, 6), hidden: true
         </f:facet>
       </x:component>
 
@@ -86,7 +96,7 @@ ${v.checkModelRequestedWithRedirect}
         <f:facet name = "extjs-props">
           xtype: 'button', text: 'Значение',
           iconCls: 'retrade-button-add',
-          margin: extjsf.pts(0, 8, 0, 0), hidden: true
+          margin: extjsf.pts(0, 6, 0, 0), hidden: true
         </f:facet>
       </x:component>
 
@@ -297,7 +307,7 @@ ${v.checkModelRequestedWithRedirect}
         <f:facet name = "grid-props">
           flex: 1, margin: extjsf.pts(4, 0, 0, 0),
           pager: false, sortableColumns: false, hidden: true,
-          selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
+          selModel: extjsf.delayCreate('Ext.ux.selection.No'),
 
           plugins: [{
             ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
@@ -305,6 +315,11 @@ ${v.checkModelRequestedWithRedirect}
               edit: function(ed, event)
               {
                 var g = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
+
+                var lr = g.lastEditRecord; ZeT.timeout(1000, function(){
+                  if(lr == g.lastEditRecord) delete g.lastEditRecord
+                })
+
                 delete g.editEvent
                 g.columnEdited(ed, event)
               },
@@ -312,8 +327,12 @@ ${v.checkModelRequestedWithRedirect}
               beforeedit : function(ed, event)
               {
                 var g = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
-                if(g.disabledEditing) return false; else g.editEvent = event
-              }}
+                if(g.disabledEditing) return false; else {
+                  g.editEvent = event
+                  g.lastEditRecord = event.record
+                }
+              }
+            }
           }],
 
           columns: ZeT.scope(function()
@@ -346,6 +365,7 @@ ${v.checkModelRequestedWithRedirect}
     var add    = extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}')
     var cancel = extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')
     var back   = extjsf.bind("${z:vid(v, 'back')}", '${rootView.extjsDomain}')
+    var delval = extjsf.bind("${z:vid(v, 'delval')}", '${rootView.extjsDomain}')
     var addval = extjsf.bind("${z:vid(v, 'addval')}", '${rootView.extjsDomain}')
     var save   = extjsf.bind("${z:vid(v, 'save')}", '${rootView.extjsDomain}')
     var grid   = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
@@ -372,11 +392,11 @@ ${v.checkModelRequestedWithRedirect}
       //~: set default focus
       name.co().focus()
 
-      //~: system -> set read only
-      setReadOnly(ronly = !!rec.get('system'))
-
       //~: ox
       ox = ZeT.assertn(rec.get('ox'))
+
+      //~: system -> set read only
+      setReadOnly(ronly = !!rec.get('system'), ZeT.isa(ox.values))
 
       //=: name (local)
       name.value(rec.get('nameLo'))
@@ -395,7 +415,8 @@ ${v.checkModelRequestedWithRedirect}
       {
         isl.value(true)
         vgrid.visible(true)
-        addval.visible(!ronly)
+        delval.visible(true)
+        addval.visible(true)
 
         //~: populate the values store
         ZeT.each(ox.values, function(v)
@@ -404,7 +425,7 @@ ${v.checkModelRequestedWithRedirect}
         })
 
         //~: scroll top
-        vgrid.co().setScrollY(0)
+        vgrid.co().getView().setScrollY(0)
       }
     }
 
@@ -413,6 +434,7 @@ ${v.checkModelRequestedWithRedirect}
       record = ox = ronly = null
 
       back.visible(false)
+      delval.visible(false)
       addval.visible(false)
       vgrid.visible(false)
 
@@ -428,13 +450,14 @@ ${v.checkModelRequestedWithRedirect}
       values.co().removeAll()
     }
 
-    function setReadOnly(ro)
+    function setReadOnly(ro, islist)
     {
-      vgrid.disabledEditing = ro
+      //Hint: allow editing of system lists
+      //vgrid.disabledEditing = ro
 
-      save.visible(!ro)
-      cancel.visible(!ro)
-      back.visible(ro)
+      save.visible(!ro || islist)
+      cancel.visible(!ro || islist)
+      back.visible(ro && !islist)
 
       ZeT.each([name, type, iss, isa, isl], function(b) {
         b.co().setReadOnly(ro)
@@ -460,8 +483,9 @@ ${v.checkModelRequestedWithRedirect}
     {
       ZeT.timeout(200, function()
       {
-        if(vgrid.editEvent) return
-        vgrid.co().getPlugin('cellediting').startEditByPosition({ row: r, column: 0 })
+        var p = vgrid.co().getPlugin('cellediting')
+        if(vgrid.editEvent || !p.grid) return
+        p.startEditByPosition({ row: r, column: 0 })
       })
     }
 
@@ -471,10 +495,18 @@ ${v.checkModelRequestedWithRedirect}
       addEmptyValuesRow(true)
     })
 
+    //~: remove currently edited value
+    extjsf.bindHandler(delval, function()
+    {
+      var s = vgrid.lastEditRecord
+      if(!ZeT.isx(s)) values.co().remove(s)
+    })
+
     //~: toggle is-list
     isl.on('change', function(f, v)
     {
       vgrid.visible(v)
+      delval.visible(v)
       addval.visible(v)
 
       ZeT.timeout(200, function()
@@ -486,9 +518,10 @@ ${v.checkModelRequestedWithRedirect}
 
     function addEmptyValuesRow(force)
     {
-      if(force !== true) //?: {search for empty record}
+      //?: {search for empty record}
+      var found; if(force !== true)
       {
-        var found; values.co().each(function(x) {
+        values.co().each(function(x) {
           if(ZeTS.ises(x.get('value'))) { found = x; return false }
         })
 
@@ -496,12 +529,16 @@ ${v.checkModelRequestedWithRedirect}
         if(found) return startEdit(values.co().indexOf(found), true)
       }
 
+      //~: remove all clear records
+      found = []; values.co().each(function(x) {
+        if(ZeTS.ises(x.get('value')) && ZeTS.ises(x.get('text'))) found.push(x)
+      })
+      values.co().remove(found)
+
       var m = { value: '' }
-      var s = vgrid.co().getSelection()
-      if(ZeT.isa(s) && s.length)
-        m = values.co().insert(values.co().indexOf(s[0]), m)[0]
-      else
-        m = values.co().add(m)[0]
+      var s = vgrid.lastEditRecord
+      if(ZeT.isx(s)) m = values.co().add(m)[0]; else
+        m = values.co().insert(values.co().indexOf(s), m)[0]
 
       startEdit(values.co().indexOf(m), true)
     }
@@ -510,10 +547,7 @@ ${v.checkModelRequestedWithRedirect}
     vgrid.columnEdited = function(ed, e)
     {
       if(e.originalValue === e.value) return
-      if(!ZeTS.ises(e.value)) {
-        vgrid.co().getSelectionModel().deselectAll()
-        addEmptyValuesRow()
-      }
+      if(!ZeTS.ises(e.value)) addEmptyValuesRow()
     }
 
     //~: name validator
