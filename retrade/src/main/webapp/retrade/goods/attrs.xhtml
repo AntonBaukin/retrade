@@ -516,7 +516,7 @@ ${v.checkModelRequestedWithRedirect}
       })
     })
 
-    function addEmptyValuesRow(force)
+    function addEmptyValuesRow(force, append)
     {
       //?: {search for empty record}
       var found; if(force !== true)
@@ -535,9 +535,9 @@ ${v.checkModelRequestedWithRedirect}
       })
       values.co().remove(found)
 
-      var m = { value: '' }
+      var m = { value: '', newone: true }
       var s = vgrid.lastEditRecord
-      if(ZeT.isx(s)) m = values.co().add(m)[0]; else
+      if(append || ZeT.isx(s)) m = values.co().add(m)[0]; else
         m = values.co().insert(values.co().indexOf(s), m)[0]
 
       startEdit(values.co().indexOf(m), true)
@@ -547,7 +547,13 @@ ${v.checkModelRequestedWithRedirect}
     vgrid.columnEdited = function(ed, e)
     {
       if(e.originalValue === e.value) return
-      if(!ZeTS.ises(e.value)) addEmptyValuesRow()
+
+      //?: {insert new values in the series}
+      if((e.field == 'text') && e.record.get('newone'))
+      {
+        if(!ZeTS.ises(e.value)) addEmptyValuesRow(false, true)
+        e.record.set('newone', false)
+      }
     }
 
     //~: name validator
@@ -635,6 +641,9 @@ ${v.checkModelRequestedWithRedirect}
       //~: create the model
       var m = { name: ZeTS.trim(name.value()), type: type.value() }
 
+      //?: {is record edited}
+      if(record) m.objectKey = record.getId()
+
       //?: {is shared}
       if(iss.value()) m.shared = true
 
@@ -643,6 +652,8 @@ ${v.checkModelRequestedWithRedirect}
 
       //?: {has list of values}
       if(ZeT.isa(vals)) m.values = vals
+
+      ZeT.log('Model ', ZeT.o2s(m))
 
       //!: post model to the server
       var post = jQuery.post("${z:url('/go/web/views/goods/good-attrs')}", { model: ZeT.o2s(m) })

@@ -174,13 +174,24 @@ function validateGoodAttrValue(attrType, v)
 	if(attrType == 'integer')
 		return Java.type('java.lang.Long').parseLong(v)
 
+	function xdecimal(d)
+	{
+		d = ZeT.jdecimal(d)
+
+		//?: {has no decimal part}
+		if(d && (d.scale() == 0))
+			d = d.setScale(1)
+
+		return d
+	}
+
 	//?: {decimal}
 	if(attrType == 'decimal')
-		return ZeT.jdecimal(v)
+		return xdecimal(v)
 
 	//?: {volume}
 	if(attrType == 'volume')
-		return ZeT.jdecimal(v)
+		return xdecimal(v)
 
 	throw ZeT.ass('Unknown type: ', attrType)
 }
@@ -188,5 +199,6 @@ function validateGoodAttrValue(attrType, v)
 
 ZeT.extend({}, //<-- this resulting module object
 {
-	assignGoodAttributes : assignGoodAttributes
+	validateGoodAttrValue  : validateGoodAttrValue,
+	assignGoodAttributes   : assignGoodAttributes
 })
