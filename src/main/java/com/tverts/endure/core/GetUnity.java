@@ -318,7 +318,7 @@ select ut from Unity u join u.unityType ut
 		EX.assertn(domain);
 		EX.assertn(type);
 
-		/*
+/*
 
  from AttrType where (domain.id = :domain) and (attrType.id = :type)
 
@@ -333,14 +333,57 @@ select ut from Unity u join u.unityType ut
 	{
 		EX.assertn(unity);
 
-
 // from UnityAttr where (unity.id = :unity) order by index
 
 		final String Q =
-
 "  from UnityAttr where (unity.id = :unity) order by index";
 
 		return list(UnityAttr.class, Q, "unity", unity);
+	}
+
+	public List<UnityAttr> getAllAttrs(AttrType type)
+	{
+		EX.assertn(type);
+
+// from UnityAttr where (attrType = :type) order by index
+
+		final String Q =
+"  from UnityAttr where (attrType = :type) order by index";
+
+		return list(UnityAttr.class, Q, "type", type);
+	}
+
+	/**
+	 * Removes all attribute values having the type given
+	 * and the source reference defined --- those are
+	 * copies of some original attributes.
+	 */
+	public void removeSharedAttributes(AttrType type)
+	{
+		EX.assertn(type);
+
+// delete from UnityAttr where (attrType = :type) and (source is not null)
+
+		final String Q =
+"  delete from UnityAttr where (attrType = :type) and (source is not null)";
+
+		Q(Q, "type", type).executeUpdate();
+	}
+
+	/**
+	 * Removes attribute values of previously array
+	 * type: all the records having index >= 1.
+	 */
+	public void removeArrayAttributes(AttrType type)
+	{
+		EX.assertn(type);
+
+// delete from UnityAttr where (attrType = :type) and (index > 0)
+
+		final String Q =
+"  delete from UnityAttr where (attrType = :type) and (index > 0)";
+
+		Q(Q, "type", type).executeUpdate();
 	}
 
 

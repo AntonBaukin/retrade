@@ -10,7 +10,7 @@ import com.tverts.actions.ActionBuildRec;
 import com.tverts.actions.ActionsCollection.SaveNumericIdentified;
 import com.tverts.actions.ActionType;
 
-/* com.tverts: retrade domain (core) */
+/* com.tverts: endure (core) */
 
 import com.tverts.endure.ActionBuilderXRoot;
 
