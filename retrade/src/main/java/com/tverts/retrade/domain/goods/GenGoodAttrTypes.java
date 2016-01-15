@@ -52,36 +52,20 @@ public class GenGoodAttrTypes extends GenesisHiberPartBase
 
 	/* public: JS generation callbacks */
 
-	public void takeGoodType(GenCtx ctx, GoodAttr attr)
+	public void takeGoodType(GenCtx ctx, AttrType type)
 	{
-		AttrType type = new AttrType();
+		//?: {name}
+		EX.asserts(type.getName());
+
+		//?: {attribute type}
+		EX.assertn(type.getAttrType());
+
+		//?: {ox-object}
+		EX.assertx(type.getOx() instanceof GoodAttr);
 
 		//=: domain
 		type.setDomain(ctx.get(Domain.class));
 
-		//=: type of attribute
-		type.setAttrType(Goods.typeGoodAttr());
-
-		//=: name
-		type.setName(EX.asserts(attr.getName()));
-
-		//=: local name
-		type.setNameLo(attr.getNameLo());
-
-		//=: is-system
-		type.setSystem(attr.isSystem());
-
-		//=: is-array
-		type.setArray(attr.isArray());
-
-		//=: is-shared
-		type.setShared(attr.isShared());
-
-		//?: {json prototype }
-		EX.asserts(attr.getObject());
-
-		//=: ox-object
-		type.setOx(attr);
 
 		//!: ensure the type
 		actionRun(ActionType.ENSURE, type);

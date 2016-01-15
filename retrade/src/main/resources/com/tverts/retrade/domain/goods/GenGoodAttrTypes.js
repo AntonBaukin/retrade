@@ -3,34 +3,80 @@ var ZeTS = JsX.once('zet/strings.js')
 
 function genGoodTypes(ctx, gen)
 {
-	var GoodAttr = Java.type('com.tverts.api.retrade.goods.GoodAttr')
-
 	ZeT.each(getGoodTypes(), function(g)
 	{
-		var attr = new GoodAttr()
-
-		//=: name
-		attr.setName(ZeT.asserts(g.name))
-
-		//=: name local
-		if(!ZeTS.ises(g.nameLo))
-			attr.setNameLo(g.nameLo)
-
-		//=: is-system
-		attr.setSystem(!!g.system)
-
-		//=: is-array
-		attr.setArray(!!g.array)
-
-		//=: is-shared
-		attr.setShared(!!g.shared)
-
-		//~: ox-object
-		attr.setObject(ZeT.o2s(g))
-
 		//!: call back to the generator
-		gen.takeGoodType(ctx, attr)
+		gen.takeGoodType(ctx, assignGoodAttr(g))
 	})
+}
+
+/**
+ * Takes JS-object of Good Unit attribute type,
+ * creates (if required), fills (except the Domain),
+ * and returns resulting AttrType instance.
+ */
+function assignGoodAttr(g, /* optional AttrType */ type)
+{
+	var GoodAttr = Java.type('com.tverts.api.retrade.goods.GoodAttr')
+	var AttrType = Java.type('com.tverts.endure.core.AttrType')
+	var Goods    = Java.type('com.tverts.retrade.domain.goods.Goods')
+
+
+	//<: initialize good attribute
+
+	var attr = new GoodAttr()
+
+	//=: name
+	attr.setName(ZeT.asserts(g.name))
+
+	//=: name local
+	if(!ZeTS.ises(g.nameLo))
+		attr.setNameLo(g.nameLo)
+
+	//=: is-system
+	attr.setSystem(!!g.system)
+
+	//=: is-array
+	attr.setArray(!!g.array)
+
+	//=: is-shared
+	attr.setShared(!!g.shared)
+
+	//~: ox-object
+	attr.setObject(ZeT.o2s(g))
+
+	//>: initialize good attribute
+
+
+	//<: initialize attribute type
+
+	if(!type) type = new AttrType()
+	ZeT.assert(type instanceof AttrType)
+
+	//=: type of attribute
+	type.setAttrType(Goods.typeGoodAttr())
+
+	//=: name
+	type.setName(attr.getName())
+
+	//=: local name
+	type.setNameLo(attr.getNameLo())
+
+	//=: is-system
+	type.setSystem(attr.isSystem())
+
+	//=: is-array
+	type.setArray(attr.isArray())
+
+	//=: is-shared
+	type.setShared(attr.isShared())
+
+	//=: ox-object
+	type.setOx(attr)
+
+	//>: initialize attribute type
+
+	return type
 }
 
 /**
@@ -128,3 +174,9 @@ function getGoodTypes()
 		}
 	]
 }
+
+
+ZeT.extend({}, //<-- this resulting module object
+{
+	assignGoodAttr : assignGoodAttr
+})

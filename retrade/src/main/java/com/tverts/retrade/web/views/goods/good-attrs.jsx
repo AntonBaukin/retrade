@@ -1,6 +1,8 @@
 var ZeT   = JsX.once('zet/app.js')
 var ZeTS  = JsX.once('zet/strings.js')
 var GoodS = JsX.once('./Goods.js')
+var GenGs = JsX.once('domain/goods/GenGoodAttrTypes')
+
 
 function post()
 {
@@ -46,12 +48,12 @@ function processModel(model)
 
 	//?: {attribute is system}
 	if(atype.isSystem())
-		return editSystemAttr(atype, model)
+		return updateSystemAttr(atype, model)
 
-	return editAttr(atype, model)
+	return updateAttr(atype, model)
 }
 
-function editSystemAttr(atype, model)
+function updateSystemAttr(atype, model)
 {
 	var ga = ZeT.s2o(atype.getOx().getObject())
 
@@ -59,7 +61,7 @@ function editSystemAttr(atype, model)
 	ZeT.assert(ZeT.isa(ga.values))
 
 	//~: validate values
-	var vs = validateListValues(ga, model)
+	var vs = validateListValues(ga.type, model)
 	if(!ZeTS.ises(vs)) return vs
 
 	//=: values
@@ -70,17 +72,33 @@ function editSystemAttr(atype, model)
 	atype.updateOx()
 }
 
-function editAttr(atype, model)
-{
-
-}
-
 function insertAttr(model)
 {
+	var ActionsPoint = Java.type('com.tverts.actions.ActionsPoint')
+	var ActionType   = Java.type('com.tverts.actions.ActionType')
 
+	//?: {is system}, may not be
+	ZeT.assert(!model.system)
+
+	//?: {has values}
+	if(ZeT.isa(model.values))
+	{
+		//~: validate them
+		var vs = validateListValues(model.type, model)
+		if(!ZeTS.ises(vs)) return vs
+	}
+
+	//~: create Attribute Type instance
+	var type = GenGs.assignGoodAttr(model)
+
+	//=: current domain
+	type.setDomain(ZeT.sec.loadDomain())
+
+	//!: insert the type
+	ActionsPoint.actionRun(ActionType.ENSURE, type)
 }
 
-function validateListValues(ga, model)
+function validateListValues(type, model)
 {
 	ZeT.assert(ZeT.isa(model.values))
 	for(var i = 0;(i < model.values.length);i++)
@@ -93,7 +111,7 @@ function validateListValues(ga, model)
 		//~: temporary convert it to proper type
 		try
 		{
-			v = GoodS.validateGoodAttrValue(ga.type, v)
+			v = GoodS.validateGoodAttrValue(type, v)
 		}
 		catch(e)
 		{
@@ -103,4 +121,9 @@ function validateListValues(ga, model)
 		//~: convert back to string
 		x.value = '' + v
 	}
+}
+
+function updateAttr(atype, model)
+{
+
 }
