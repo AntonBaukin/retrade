@@ -55,34 +55,51 @@
     href = '../bootstrap/bootstrap.css'/>
 
   <!-- Theme for Bootstrap -->
-
   <link type = 'text/css' rel = 'stylesheet'
     href = "../bootstrap/bootstrap.my.css"/>
 
+  <style type = "text/css">
+
+    body
+    {
+      padding-top: 45px;
+    }
+
+  </style>
 </head>
 
 <body ng-controller = "rootCtrl">
+
+<header class = "navbar navbar-inverse navbar-fixed-top" role = "banner">
+  <div class = "container-fluid">
+
+    <nav class = "collapse navbar-collapse bs-navbar-collapse" role = "navigation">
+      <div class = "nav navbar-nav navbar-right">
+
+        <div ng-show = "userNameSet" class = "navbar-text">
+          Good day, <a href ng-click = "showContent('stranger-form')">{{userName}}</a>!
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
 <div class = "container-fluid">
 
-  <div class = "page-header">
-    <h3>Welcome to AngularJS and Bootstrap Kick Demo!</h3>
+  <h3>Welcome to AngularJS and Bootstrap Kick Demo!</h3>
 
-    <div ng-hide = "userNameSet">
-      Good day, <strong>Stranger</strong>!
-      Please, tell some info about Your below!
-    </div>
-
-    <div ng-show = "userNameSet">
-      Good day, <a href = "#stranger-form">{{userName}}</a>!
-    </div>
+  <div ng-hide = "userNameSet">
+    Good day, <strong>Stranger</strong>!
+    Please, tell some info about Your below!
 
   </div>
 
-  <div ng-show = "!userNameSet">
+  <div ng-show = "!userNameSet || isShown('stranger-form')">
     <form class = "form-inline">
       <label>
         Please, tell Your name here:
-        <input class = "form-control input-small" ng-model = "userName" ng-blur = "setUserName()" focus-on = "force-update-user-name"/>
+        <input class = "form-control input-small" ng-model = "userName" ng-blur = "setUserName()"
+               focus-on = "show-stranger-form"/>
       </label>
     </form>
   </div>

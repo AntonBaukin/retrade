@@ -17,14 +17,30 @@ angular.module('bootit').directive('focus-on', function()
 //~: boot it, root controller
 angular.module('bootit').controller('rootCtrl', function($scope)
 {
-	$scope.setUserName = function(update)
+	var shownContent
+
+	$scope.isShown = function(id)
 	{
-		if(update === true)
-		{
-			$scope.userNameSet = false
-			$scope.$broadcast('force-update-user-name')
-		}
-		else
-			$scope.userNameSet = !ZeTS.ises($scope.userName)
+		ZeT.asserts(id)
+		return id == shownContent
+	}
+
+	var showContent = $scope.showContent = function(id)
+	{
+		shownContent = ZeT.asserts(id)
+		$scope.$broadcast('show-' + id)
+	}
+
+	var hideContent = $scope.hideContent = function(id)
+	{
+		ZeT.asserts(id)
+		if(id == shownContent)
+			shownContent = null
+	}
+
+	$scope.setUserName = function()
+	{
+		$scope.userNameSet = !ZeTS.ises($scope.userName)
+		if($scope.userNameSet) hideContent('stranger-form')
 	}
 })
