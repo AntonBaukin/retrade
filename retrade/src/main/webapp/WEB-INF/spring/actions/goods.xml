@@ -54,6 +54,22 @@
 
 
   <!--=================================================
+    =  Unified Attr Type Action Bulders               =
+    +================================================-->
+
+  <bean name  = 'retradeGoodAttrTypesBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.core.AttrType'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.retrade.domain.goods.ActGoodAttrType'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
     =  Action Bulders for Good Calculaions            =
     +================================================-->
 

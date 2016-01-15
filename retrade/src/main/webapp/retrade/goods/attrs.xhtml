@@ -653,8 +653,6 @@ ${v.checkModelRequestedWithRedirect}
       //?: {has list of values}
       if(ZeT.isa(vals)) m.values = vals
 
-      ZeT.log('Model ', ZeT.o2s(m))
-
       //!: post model to the server
       var post = jQuery.post("${z:url('/go/web/views/goods/good-attrs')}", { model: ZeT.o2s(m) })
 

@@ -218,8 +218,7 @@ public class ActGoodUnit extends ActionBuilderReTrade
 
 	/* Attribute Save-Update Action */
 
-	public static class GoodAttrsAction
-	       extends      ActionWithTxBase
+	public static class GoodAttrsAction extends GoodAttrsActionBase
 	{
 		/* public: constructor */
 
@@ -448,83 +447,10 @@ public class ActGoodUnit extends ActionBuilderReTrade
 				session().delete(ua);
 		}
 
-		@SuppressWarnings("unchecked")
 		protected List<UnityAttr> updateAttrs(
 		  AttrType type, GoodUnit gu, List<UnityAttr> uas, Object v)
 		{
-			List<UnityAttr> result = new ArrayList<>();
-
-			if(v instanceof Object[])
-				v = Arrays.asList((Object[]) v);
-			if(!(v instanceof Collection))
-				v = Collections.singletonList(v);
-			if(!(v instanceof List))
-				v = new ArrayList((Collection) v);
-
-			List      vs = (List)v;
-			UnityAttr ua;
-			boolean   cr;
-
-			EX.assertx(vs.size() != 0);
-
-			//~: sort existing attributes by index
-			Collections.sort(uas, (l, r) -> CMP.cmp(l.getIndex(), r.getIndex()));
-
-			//?: {type is not an array}
-			if(!type.isArray())
-			{
-				//?: {has multiple values}
-				EX.assertx(vs.size() == 1, "Good Attribute [",
-				  type.getName(), "] may not contain multiple values!");
-
-				if(cr = uas.isEmpty())
-					initAttr(type, gu, ua = new UnityAttr());
-				else
-					ua = uas.set(0, null);
-
-				//=: null-index
-				ua.setIndex(null);
-
-				//=: null-source
-				ua.setSource(null);
-
-				//~: assign the value
-				updateAttr(ua, vs.iterator().next());
-
-				//~: add to the result
-				result.add(ua);
-
-				//?: {created} save
-				if(cr) session().save(ua);
-			}
-			//~: persist multiple records
-			else for(int i = 0;(i < vs.size());i++)
-			{
-				if(cr = (i >= uas.size()))
-					initAttr(type, gu, ua = new UnityAttr());
-				else
-					ua = uas.set(i, null);
-
-				//=: i-index
-				ua.setIndex(i);
-
-				//=: null-source
-				ua.setSource(null);
-
-				//~: assign the value
-				updateAttr(ua, vs.get(i));
-
-				//~: add to the result
-				result.add(ua);
-
-				//?: {created} save
-				if(cr) session().save(ua);
-			}
-
-			//~: remove records not needed
-			for(UnityAttr x : uas)
-				if(x != null)
-					session().delete(x);
+			List<UnityAttr> result = super.updateAttrs(type, gu, uas, v);
 
 			this.result.addAll(result);
 			return result;
@@ -549,6 +475,22 @@ public class ActGoodUnit extends ActionBuilderReTrade
 				updateAttrs(type, sub, suas, uas);
 			}
 		}
+
+		protected List<UnityAttr> result =
+		  new ArrayList<>();
+	}
+
+	public abstract static class GoodAttrsActionBase extends ActionWithTxBase
+	{
+		/* public: constructor */
+
+		public GoodAttrsActionBase(ActionTask task)
+		{
+			super(task);
+		}
+
+
+		/* protected: processing */
 
 		protected void initAttr(AttrType type, GoodUnit gu, UnityAttr ua)
 		{
@@ -627,7 +569,85 @@ public class ActGoodUnit extends ActionBuilderReTrade
 			return a2vs;
 		}
 
-		protected List<UnityAttr> result =
-		  new ArrayList<>();
+		@SuppressWarnings("unchecked")
+		protected List<UnityAttr> updateAttrs(
+		  AttrType type, GoodUnit gu, List<UnityAttr> uas, Object v)
+		{
+			List<UnityAttr> result = new ArrayList<>();
+
+			if(v instanceof Object[])
+				v = Arrays.asList((Object[]) v);
+			if(!(v instanceof Collection))
+				v = Collections.singletonList(v);
+			if(!(v instanceof List))
+				v = new ArrayList((Collection) v);
+
+			List      vs = (List)v;
+			UnityAttr ua;
+			boolean   cr;
+
+			EX.assertx(vs.size() != 0);
+
+			//~: sort existing attributes by index
+			Collections.sort(uas, (l, r) -> CMP.cmp(l.getIndex(), r.getIndex()));
+
+			//?: {type is not an array}
+			if(!type.isArray())
+			{
+				//?: {has multiple values}
+				EX.assertx(vs.size() == 1, "Good Attribute [",
+				  type.getName(), "] may not contain multiple values!");
+
+				if(cr = uas.isEmpty())
+					initAttr(type, gu, ua = new UnityAttr());
+				else
+					ua = uas.set(0, null);
+
+				//=: null-index
+				ua.setIndex(null);
+
+				//=: null-source
+				ua.setSource(null);
+
+				//~: assign the value
+				updateAttr(ua, vs.iterator().next());
+
+				//~: add to the result
+				result.add(ua);
+
+				//?: {created} save
+				if(cr) session().save(ua);
+			}
+			//~: persist multiple records
+			else for(int i = 0;(i < vs.size());i++)
+			{
+				if(cr = (i >= uas.size()))
+					initAttr(type, gu, ua = new UnityAttr());
+				else
+					ua = uas.set(i, null);
+
+				//=: i-index
+				ua.setIndex(i);
+
+				//=: null-source
+				ua.setSource(null);
+
+				//~: assign the value
+				updateAttr(ua, vs.get(i));
+
+				//~: add to the result
+				result.add(ua);
+
+				//?: {created} save
+				if(cr) session().save(ua);
+			}
+
+			//~: remove records not needed
+			for(UnityAttr x : uas)
+				if(x != null)
+					session().delete(x);
+
+			return result;
+		}
 	}
 }

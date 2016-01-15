@@ -10,11 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GetUnity.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GetUnity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.js" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodAttrType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodUnit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodUnit.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/actionBuilders.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/actionBuilders.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/attrs.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/attrs.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/good-attrs.jsx" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/good-attrs.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/goods.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/goods.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/retrade.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/retrade.xml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,18 +45,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="good-attrs.jsx" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/good-attrs.jsx">
+      <file leaf-file-name="ActGoodAttrType.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodAttrType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.8238256" vertical-offset="1768" max-vertical-offset="2364">
-              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.78691274" vertical-offset="2608" max-vertical-offset="3656">
+              <caret line="209" column="21" selection-start-line="209" selection-start-column="1" selection-end-line="209" selection-end-column="1" />
               <folding>
-                <element signature="n#!!block;n#post#0" expanded="true" />
-                <element signature="n#!!block;n#processModel#0" expanded="true" />
-                <element signature="n#!!block;n#editSystemAttr#0" expanded="true" />
-                <element signature="n#!!block;n#editAttr#0" expanded="true" />
-                <element signature="n#!!block;n#insertAttr#0" expanded="true" />
-                <element signature="n#!!block;n#validateListValues#0" expanded="true" />
+                <element signature="method#execute#0;class#UpdateGoodAttrTypeAction#0;class#ActGoodAttrType#0" expanded="true" />
+                <element signature="method#insertSharedAttributes#0;class#UpdateGoodAttrTypeAction#0;class#ActGoodAttrType#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -70,23 +71,23 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/good-measures.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodEditView.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/icons.css" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/firms/lists-edit.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/font-opensans.css" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.good-attrs.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/retrade.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.list-grid.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-nav.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap-light-blue.css" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.my.css" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GetUnity.java" />
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/attrs.xhtml" />
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/good-attrs.jsx" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GenGoodAttrTypes.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/goods/GenGoodAttrTypes.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.good-attrs.xhtml" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/ActAttrType.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/goods.xml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/retrade.xml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/actions/actionBuilders.xml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/good-attrs.jsx" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/attrs.xhtml" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GetUnity.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodUnit.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.js" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodAttrType.java" />
       </list>
     </option>
   </component>
@@ -216,6 +217,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -245,6 +248,84 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -435,11 +516,81 @@
               <option name="myItemId" value="tverts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="domain" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="domain" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="goods" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -768,9 +919,6 @@
       <TodoPanelSettings />
     </option>
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="domain-53 [alpha]: prepared placeholder for Good Unit attributes table." />
-    <MESSAGE value="domain-53 [alpha]: displaying (for read only) attributes of the Good Units." />
-    <MESSAGE value="domain-53 [alpha]: generating precious Attribute Type for Goods." />
     <MESSAGE value="domain-53 [alpha]: supported in the UI the shared flag of Good Attribute Types." />
     <MESSAGE value="domain-53 [beta]: processing and displaying Good Attributes as of Unities." />
     <MESSAGE value="domain-53 [beta]: supported removing values from arrays of Good attributes." />
@@ -793,14 +941,25 @@
     <MESSAGE value="ui-91 [stable]: used standard Bootstrap theme." />
     <MESSAGE value="ui-91 [stable]: added Bootstrap Glyph Icons font." />
     <MESSAGE value="domain-53 [beta]: allowed editing list of values of system attribute types of the Goods." />
-    <option name="LAST_COMMIT_MESSAGE" value="domain-53 [beta]: allowed editing list of values of system attribute types of the Goods." />
+    <MESSAGE value="domain-53 [beta]: saving system Good attributes." />
+    <MESSAGE value="domain-53 [beta]: inserting new Good attributes. General update procedure is left only..." />
+    <MESSAGE value="ui-91 [stable]: variations of the header..." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-91 [stable]: variations of the header..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodAttrType.java</url>
+          <line>180</line>
+          <properties />
+          <option name="timeStamp" value="701" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="684" />
+      <option name="time" value="704" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -916,145 +1075,141 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.css">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/actions/ActionBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2915952" vertical-offset="4267" max-vertical-offset="117934">
-          <caret line="261" column="41" selection-start-line="261" selection-start-column="38" selection-end-line="261" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.33277026" vertical-offset="1027" max-vertical-offset="4043">
+          <caret line="81" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/bootstrap/bootstrap.my.css">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/UnityAttr.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5831904" vertical-offset="0" max-vertical-offset="906">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.019144144" vertical-offset="0" max-vertical-offset="2350">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/GetObjectBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.75618374" vertical-offset="463" max-vertical-offset="2379">
-          <caret line="65" column="48" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.24887387" vertical-offset="884" max-vertical-offset="2605">
+          <caret line="76" column="22" selection-start-line="65" selection-start-column="22" selection-end-line="65" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/extjs.ux/extjs_ux.js">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/HiberPoint.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36824325" vertical-offset="2546" max-vertical-offset="4203">
-          <caret line="350" column="31" selection-start-line="169" selection-start-column="12" selection-end-line="169" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.268018" vertical-offset="952" max-vertical-offset="3710">
+          <caret line="135" column="3" selection-start-line="70" selection-start-column="3" selection-end-line="70" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/userlinks.jsx">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/AttrType.hbm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="1908">
-          <caret line="60" column="21" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2282">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/UnityAttr.hbm.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.134009" vertical-offset="493" max-vertical-offset="2452">
+          <caret line="36" column="27" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/ActAttrType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26463965" vertical-offset="326" max-vertical-offset="1772">
+          <caret line="33" column="3" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/GetUnity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.038288288" vertical-offset="1445" max-vertical-offset="2809">
-          <caret line="290" column="30" selection-start-line="87" selection-start-column="19" selection-end-line="87" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.40202704" vertical-offset="5542" max-vertical-offset="8249">
+          <caret line="350" column="0" selection-start-line="347" selection-start-column="0" selection-end-line="347" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GenGoodAttrTypes.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/GetGoods.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.8423423" vertical-offset="748" max-vertical-offset="2452">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.7466216" vertical-offset="1309" max-vertical-offset="6107">
+          <caret line="155" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/api/retrade/goods/GoodAttr.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodUnit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.019144144" vertical-offset="1190" max-vertical-offset="3013">
-          <caret line="98" column="13" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.019144144" vertical-offset="3315" max-vertical-offset="4322">
+          <caret line="569" column="39" selection-start-line="196" selection-start-column="7" selection-end-line="196" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48489934" vertical-offset="119" max-vertical-offset="1004">
+          <caret line="44" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/bootit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.02982456" vertical-offset="1326" max-vertical-offset="2389">
+          <caret line="79" column="68" selection-start-line="79" selection-start-column="68" selection-end-line="79" selection-end-column="68" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/resources/com/tverts/retrade/domain/goods/GenGoodAttrTypes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1241" max-vertical-offset="2571">
-          <caret line="102" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.8327703" vertical-offset="697" max-vertical-offset="2037">
+          <caret line="18" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/AttrType.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/OxNumericBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3063063" vertical-offset="51" max-vertical-offset="2248">
-          <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/zet/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28716215" vertical-offset="1343" max-vertical-offset="2843">
-          <caret line="115" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/attrs.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79387516" vertical-offset="8727" max-vertical-offset="12528">
-          <caret line="553" column="61" selection-start-line="553" selection-start-column="61" selection-end-line="553" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/src.zip!/java/math/BigDecimal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3723" max-vertical-offset="45891">
-          <caret line="219" column="13" selection-start-line="219" selection-start-column="13" selection-end-line="219" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/sub-goods.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.038288288" vertical-offset="0" max-vertical-offset="1517">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1722973" vertical-offset="714" max-vertical-offset="2275">
-          <caret line="80" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/Goods.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3828829" vertical-offset="2669" max-vertical-offset="4322">
-          <caret line="177" column="45" selection-start-line="177" selection-start-column="4" selection-end-line="177" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.3445946" vertical-offset="391" max-vertical-offset="1493">
+          <caret line="38" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/good-attrs.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.8238256" vertical-offset="1768" max-vertical-offset="2364">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.43074325" vertical-offset="17" max-vertical-offset="2071">
+          <caret line="78" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/core/AttrType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.7466216" vertical-offset="680" max-vertical-offset="1952">
+          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/domain/goods/ActGoodAttrType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.78691274" vertical-offset="2608" max-vertical-offset="3656">
+          <caret line="209" column="21" selection-start-line="209" selection-start-column="1" selection-end-line="209" selection-end-column="1" />
           <folding>
-            <element signature="n#!!block;n#post#0" expanded="true" />
-            <element signature="n#!!block;n#processModel#0" expanded="true" />
-            <element signature="n#!!block;n#editSystemAttr#0" expanded="true" />
-            <element signature="n#!!block;n#editAttr#0" expanded="true" />
-            <element signature="n#!!block;n#insertAttr#0" expanded="true" />
-            <element signature="n#!!block;n#validateListValues#0" expanded="true" />
+            <element signature="method#execute#0;class#UpdateGoodAttrTypeAction#0;class#ActGoodAttrType#0" expanded="true" />
+            <element signature="method#insertSharedAttributes#0;class#UpdateGoodAttrTypeAction#0;class#ActGoodAttrType#0" expanded="true" />
           </folding>
         </state>
       </provider>

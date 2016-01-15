@@ -43,14 +43,17 @@ function processModel(model)
 	ZeT.assert(ZeT.isi(model.objectKey))
 
 	//~: load the attribute
-	var atype = ZeT.assertn(ZeT.bean('GetUnity').
+	var type = ZeT.assertn(ZeT.bean('GetUnity').
 	  getAttrType(model.objectKey))
 
-	//?: {attribute is system}
-	if(atype.isSystem())
-		return updateSystemAttr(atype, model)
+	//sec: same domain
+	ZeT.sec.checkSameDomain(type)
 
-	return updateAttr(atype, model)
+	//?: {attribute is system}
+	if(type.isSystem())
+		return updateSystemAttr(type, model)
+
+	return updateAttr(type, model)
 }
 
 function updateSystemAttr(atype, model)
@@ -123,7 +126,26 @@ function validateListValues(type, model)
 	}
 }
 
-function updateAttr(atype, model)
+function updateAttr(type, model)
 {
+	var ActionsPoint = Java.type('com.tverts.actions.ActionsPoint')
+	var ActionType   = Java.type('com.tverts.actions.ActionType')
 
+	//?: {is system}, may not be
+	ZeT.assert(!model.system)
+	ZeT.assert(!type.isSystem())
+
+	//?: {has values}
+	if(ZeT.isa(model.values))
+	{
+		//~: validate them
+		var vs = validateListValues(model.type, model)
+		if(!ZeTS.ises(vs)) return vs
+	}
+
+	//~: assign Attribute Type instance
+	GenGs.assignGoodAttr(model, type)
+
+	//!: update the type
+	ActionsPoint.actionRun(ActionType.UPDATE, type)
 }

@@ -150,6 +150,15 @@ public class GetGoods extends GetObjectBase
 		return list(GoodUnit.class, Q, "domain", domain);
 	}
 
+	public List<GoodUnit> getSubGoods(Domain domain)
+	{
+		final String Q =
+"  from GoodUnit gu where (gu.domain = :domain) and (gu.superGood is not null)";
+
+		EX.assertn(domain);
+		return list(GoodUnit.class, Q, "domain", domain);
+	}
+
 	public List<Long>     getGoodUnitsKeys(Domain domain)
 	{
 		EX.assertn(domain);
