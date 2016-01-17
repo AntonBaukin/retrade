@@ -54,15 +54,18 @@
   <link type = 'text/css' rel = 'stylesheet'
     href = '../bootstrap/bootstrap.css'/>
 
-  <!-- Theme for Bootstrap -->
-  <link type = 'text/css' rel = 'stylesheet'
-    href = "../bootstrap/bootstrap.my.css"/>
 
   <style type = "text/css">
+
+    html
+    {
+      min-height: 100%;
+    }
 
     body
     {
       padding-top: 45px;
+      background-image: radial-gradient(ellipse farthest-side at 10% 0px , rgba(222, 228, 231, 0.9), rgba(195, 225, 231, 0.9) 80%, rgba(224, 187, 184, 0.9) 120%);
     }
 
   </style>
@@ -90,7 +93,7 @@
 
   <div ng-hide = "userNameSet">
     Good day, <strong>Stranger</strong>!
-    Please, tell some info about Your below!
+    Please, tell some info about You below!
 
   </div>
 
