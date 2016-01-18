@@ -29,6 +29,14 @@
     src = "../bootstrap/bootstrap.js"></script>
 
 
+  <!-- SmartMenus Library -->
+  <link type = 'text/css' rel = 'stylesheet'
+    href = '../bootstrap/smartmenus/sm-blue.css'/>
+
+  <script type = 'text/javascript'
+    src = "../bootstrap/smartmenus/jquery.smartmenus.js"></script>
+
+
   <!-- ReTrade Styles -->
   <link type = 'text/css' rel = 'stylesheet'
     href = "../clocks.css"/>
@@ -45,10 +53,53 @@
 
 <body>
 
-<header class = "navbar navbar-default navbar-fixed-top" role = "banner">
-  <div class = "container-fluid">
+<div class = "container-fluid">
 
-    <ul class = "nav navbar-nav" role = "navigation">
+  <script>
+
+    $(document).ready(function()
+    {
+      $('.sm.sm-blue').smartmenus({
+        showFunction: function($ul, complete) { $ul.fadeIn(200, complete) }
+      })
+    })
+  </script>
+
+  <ul class = "sm sm-blue">
+
+    <li>
+      <a href = "#"><span class = "retrade-main-icon retrade-icon-strict-20 retrade-icon-left"></span>РеТрейд</a>
+      <ul>
+        <li><a href = "#">Документы изменения цен</a></li>
+        <li><a href = "#">Платёжные документы</a></li>
+        <li><a href = "#">Мои отчёты</a></li>
+        <li><a href = "#">Настройки</a></li>
+      </ul>
+    </li>
+
+    <li>
+      <a href = "#"><span class = "retrade-document-icon retrade-icon-strict-20 retrade-icon-left"></span>Основные документы</a>
+      <ul>
+        <li><a href = "#">Товары</a></li>
+        <li><a href = "#">Товары, склады, цены</a></li>
+        <li><a href = "#">Категории товаров</a></li>
+        <li><a href = "#">Единицы измерения</a></li>
+        <li><a href = "#">Склады</a></li>
+        <li><a href = "#">Контрагенты</a></li>
+        <li><a href = "#">Прайс-листы</a></li>
+        <li><a href = "#">Прайс-листы контрагентов</a></li>
+        <li><a href = "#" class = "disabled">Учётные счета</a></li>
+        <li><a href = "#" class = "disabled">Платёжные счета</a></li>
+      </ul>
+    </li>
+
+    <li><!-- [last child] --></li>
+  </ul>
+</div>
+
+<!--
+
+<ul class = "nav navbar-nav" role = "navigation">
 
       <li class = "dropdown">
         <a data-toggle = "dropdown" href = "#">
@@ -89,8 +140,8 @@
 
 
     </ul>
-  </div>
-</header>
+
+-->
 
 </body>
 </html>

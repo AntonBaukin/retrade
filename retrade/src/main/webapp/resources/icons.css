@@ -16,16 +16,6 @@
   position: relative; margin-right: 4px; top: 2.5px;
 }
 
-.retrade-icon-24
-{}
-
-.retrade-icon-strict-24
-{
-  background-size: 24px auto !important;
-  width: 24px; height: 24px;
-  display: inline-block;
-}
-
 .retrade-icon-strict-20
 {
   background-size: 20px auto !important;
@@ -36,6 +26,13 @@
 .retrade-icon-strict-20.retrade-icon-left
 {
   position: relative; margin-right: 3px; top: 3px;
+}
+
+.retrade-icon-strict-24
+{
+  background-size: 24px auto !important;
+  width: 24px; height: 24px;
+  display: inline-block;
 }
 
 .retrade-catalogues-icon
