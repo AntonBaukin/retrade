@@ -4,29 +4,6 @@
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================*/
 
-.retrade-icon-strict-16
-{
-  background-size: 16px auto !important;
-  width: 16px; height: 16px;
-  display: inline-block;
-}
-
-.retrade-icon-strict-16.retrade-icon-left
-{
-  position: relative; margin-right: 4px; top: 2.5px;
-}
-
-.retrade-icon-strict-20
-{
-  background-size: 20px auto !important;
-  width: 20px; height: 20px;
-  display: inline-block;
-}
-
-.retrade-icon-strict-20.retrade-icon-left
-{
-  position: relative; margin-right: 3px; top: 3px;
-}
 
 .retrade-icon-strict-24
 {
