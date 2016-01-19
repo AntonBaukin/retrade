@@ -9,7 +9,8 @@
 
 html, body
 {
-  overflow: hidden;
+  overflow: hidden; height: 100%;
+  padding: 0; margin: 0;
 }
 
 *:focus /* prevent field focus highlights */
@@ -739,7 +740,7 @@ div.retrade-desktop-event .retrade-boshadow-N-content,
 
 div.retrade-desktop-eventsnum-area
 {
-  height: 35px; margin-left: 2px; cursor: pointer;
+  height: 35px; margin-right: 2px; cursor: pointer;
 }
 
 td.retrade-eventsnum-number

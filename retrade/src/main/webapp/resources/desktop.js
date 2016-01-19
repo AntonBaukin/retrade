@@ -3267,12 +3267,15 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 
 		if(!show) m.hide(); else
 		{
+			var n = $(this.number.struct.node())
+			var o = this.menu.opts.offset
+			if(!ZeT.isn(o)) o = 0
+
 			this.menu.reset()
 
-			var n = $(this.number.struct.node())
 			m.show().offset({
-			  top : n.offset().top + n.outerHeight() + 2,
-			  left: n.offset().left + n.outerWidth() - m.outerWidth()
+			  top : n.offset().top  + n.outerHeight() + 2,
+			  left: n.offset().left + n.outerWidth()  - m.outerWidth() + o
 			})
 		}
 	},
@@ -3313,7 +3316,7 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 		var i = this.menu.COLORS.indexOf(c)
 		ZeT.assert(i >= 0)
 
-		var x; for(var j = 1;!x && (j < this.menu.COLORS.length);j++)
+		var x; for(var j = 0;!x && (j < this.menu.COLORS.length);j++)
 		{
 			if(++i >= this.menu.COLORS.length) i = 0
 			var n = ZeT.get(this.menu, 'model', 'numbers', this.menu.COLORS[i])

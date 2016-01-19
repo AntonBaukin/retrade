@@ -710,6 +710,7 @@
 			},
 			menuPosition: function($sub) {
 				var $a = $sub.dataSM('parent-a'),
+					$ap = $a.parent(),
 					$li = $a.closest('li'),
 					$ul = $li.parent(),
 					level = $sub.dataSM('level'),
@@ -725,6 +726,7 @@
 					winY = $win.scrollTop(),
 					winW = this.getViewportWidth(),
 					winH = this.getViewportHeight(),
+					parW = $ap.outerWidth(),
 					horizontalParent = $ul.hasClass('sm') && !$ul.hasClass('sm-vertical'),
 					rightToLeft = this.opts.rightToLeftSubMenus && !$li.is('[data-sm-reverse]') || !this.opts.rightToLeftSubMenus && $li.is('[data-sm-reverse]'),
 					subOffsetX = level == 2 ? this.opts.mainMenuSubOffsetX : this.opts.subMenusSubOffsetX,
@@ -743,7 +745,10 @@
 					if (rightToLeft && absX < winX) {
 						x = horizontalParent ? winX - absX + x : itemW - subOffsetX;
 					} else if (!rightToLeft && absX + subW > winX + winW) {
-						x = horizontalParent ? winX + winW - subW - absX + x : subOffsetX - subW;
+						if (horizontalParent && level == 2)
+							x = parW - subW
+						else
+							x = horizontalParent ? winX + winW - subW - absX + x : subOffsetX - subW;
 					}
 					if (!horizontalParent) {
 						if (subH < winH && absY + subH > winY + winH) {
@@ -801,7 +806,7 @@
 					}
 				}
 
-				$sub.css({ top: 'auto', left: '-1px', marginLeft: x, marginTop: y - itemH, minWidth: $a.parent().outerWidth() });
+				$sub.css({ top: 'auto', left: '-1px', marginLeft: x, marginTop: y - itemH, minWidth: parW });
 				// IE iframe shim
 				this.menuIframeShim($sub);
 				if ($sub.dataSM('ie-shim')) {
@@ -976,7 +981,7 @@
 						if (this.opts.subMenusMinWidth || this.opts.subMenusMaxWidth) {
 							$sub.css({ width: 'auto', minWidth: '', maxWidth: '' }).addClass('sm-nowrap');
 							if (this.opts.subMenusMinWidth) {
-							 	$sub.css('min-width', this.opts.subMenusMinWidth);
+								$sub.css('min-width', this.opts.subMenusMinWidth);
 							}
 							if (this.opts.subMenusMaxWidth) {
 							 	var noMaxWidth = this.getWidth($sub);
