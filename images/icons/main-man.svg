@@ -1,32 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 220 220" enable-background="new 0 0 220 220" xml:space="preserve">
-<g id="Main_Man">
-	<g>
-		<rect x="96.25" y="27.5" fill="#5C5D5D" width="27.5" height="55"/>
-		<rect x="82.5" y="41.25" fill="#5C5D5D" width="55" height="27.5"/>
-		<rect x="55" y="110" fill="#5C5D5D" width="110" height="27.5"/>
-		<rect x="96.25" y="96.25" fill="#5C5D5D" width="27.5" height="68.75"/>
-		<rect x="82.5" y="137.5" fill="#5C5D5D" width="55" height="13.75"/>
-		<rect x="123.75" y="165" fill="#5C5D5D" width="27.5" height="27.5"/>
-		<rect x="137.5" y="178.75" fill="#5C5D5D" width="27.5" height="27.5"/>
-		<rect x="68.75" y="165" fill="#5C5D5D" width="27.5" height="27.5"/>
-		<rect x="55" y="178.75" fill="#5C5D5D" width="27.5" height="27.5"/>
-		<rect x="41.25" y="192.5" fill="#5C5D5D" width="27.5" height="27.5"/>
-		<rect x="151.25" y="192.5" fill="#5C5D5D" width="27.5" height="27.5"/>
-	</g>
-	<g>
-		<rect x="27.5" fill="#5C5D5D" width="27.5" height="13.75"/>
-		<rect x="13.75" y="13.75" fill="#5C5D5D" width="27.5" height="13.75"/>
-		<rect y="27.5" fill="#5C5D5D" width="27.5" height="13.75"/>
-		<rect y="41.25" fill="#5C5D5D" width="13.75" height="55"/>
-	</g>
-	<g>
-		<rect x="165" fill="#5C5D5D" width="27.5" height="13.75"/>
-		<rect x="178.75" y="13.75" fill="#5C5D5D" width="27.5" height="13.75"/>
-		<rect x="192.5" y="27.5" fill="#5C5D5D" width="27.5" height="13.75"/>
-		<rect x="206.25" y="41.25" fill="#5C5D5D" width="13.75" height="55"/>
-	</g>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px"
+	 viewBox="0 0 16 16" xml:space="preserve">
+<g>
+	<path fill="#5B5C5C" d="M14.71,12.63l-0.05,0.07C12.88,14.83,10.52,16,8,16s-4.88-1.17-6.66-3.3l-0.05-0.07l0.01-0.08
+		c0.34-2.24,1.51-4.03,3.29-5.06l0.13-0.07l0.1,0.11C5.66,8.4,6.79,8.89,8,8.89s2.34-0.48,3.18-1.37l0.1-0.11l0.13,0.07
+		c1.78,1.03,2.95,2.82,3.29,5.06L14.71,12.63z"/>
+	<path fill="none" stroke="#5B5C5C" stroke-width="1.5" stroke-miterlimit="10" d="M8,6.75c1.65,0,3-1.35,3-3c0-1.65-1.35-3-3-3
+		s-3,1.35-3,3S6.35,6.75,8,6.75z"/>
 </g>
 </svg>
