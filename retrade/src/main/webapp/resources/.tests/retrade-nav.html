@@ -12,6 +12,10 @@
   <script type = 'text/javascript'
     src = "../jquery.js"></script>
 
+  <!-- Roboto Font -->
+  <link type = 'text/css' rel = 'stylesheet'
+    href = 'http://fonts.googleapis.com/css?family=Roboto:400,400italic,700&subset=latin,cyrillic'/>
+
 
   <!-- SmartMenus Library -->
   <link type = 'text/css' rel = 'stylesheet'
@@ -64,12 +68,300 @@
 
   $(document).ready(function()
   {
+    var MENU = [
+
+      {
+        title: 'РеТрейд', icon: 'retrade-main-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Основные документы', icon: 'retrade-document-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Документы изменения цен', icon: 'retrade-price-delta-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Платёжные документы', icon: 'retrade-payment-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Мои отчёты', icon: 'retrade-payment-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Настройки', icon: 'retrade-settings-icon', handler: function()
+          {
+
+          }
+        },
+
+        [
+          {
+            title: 'Атрибуты товаров', icon: 'retrade-good-attrs-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Данные и отчёты', icon: 'retrade-reports-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Пользователи', icon: 'retrade-user-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Правила доступа', icon: 'retrade-secrule-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Множества правил', icon: 'retrade-secset-icon', handler: function()
+            {
+
+            }
+          }
+        ]
+      ],
+
+      {
+        title: 'Справочники', icon: 'retrade-catalogues-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Товары', icon: 'retrade-goods-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Товары, склады, цены', icon: 'retrade-good-store-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Категории товаров', icon: 'retrade-goods-tree-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Единицы измерения', icon: 'retrade-measure-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Склады', icon: 'retrade-trade-store-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Контрагенты', icon: 'retrade-contractor-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Прайс-листы', icon: 'retrade-prices-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Прайс-листы контрагентов', icon: 'retrade-prices-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Учётные счета', icon: 'retrade-accounts-sum-icon',
+          disabled: true, handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Платёжные счета', icon: 'retrade-accounts-pay-icon',
+          disabled: true, handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        title: 'Создать', icon: 'retrade-issue-plus-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Накладную закупки', icon: 'retrade-listpad-plus-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную продажи', icon: 'retrade-listpad-minus-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную перемещения', icon: 'retrade-listpad-arrow-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную авто-производства', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Инвентаризацию остатков', icon: 'retrade-listpad-exclaim', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную корректировки', icon: 'retrade-listpad-delta-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'retrade-price-delta-icon', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        title: 'Ссылки', icon: 'retrade-my-links', handler: function()
+        {
+
+        }
+      },
+
+      {
+        icon: 'retrade-main-man-icon', class: 'pull-right last-child', handler: function()
+        {
+
+        }
+      }
+    ]
+
+    function createMenu(node, m, subs, level)
+    {
+      if(m)
+      {
+        var a = $('<a/>', { href: '#' })
+        var li = $('<li/>').append(a)
+        node.append(li); node = li
+
+        //?: {li class}
+        if(ZeT.iss(m.class))
+          li.addClass(m.class)
+
+        //?: {has icon}
+        if(ZeT.iss(m.icon)) a.append($('<span/>').addClass(m.icon).addClass(
+          (level == 1)?('retrade-icon-nav-20'):('retrade-icon-nav-16')
+        ))
+
+        //~: menu item text
+        if(!ZeTS.ises(m.title))
+          a.append($('<span/>').text(ZeT.asserts(m.title)))
+
+        //?: {disabled}
+        if((m.disabled === true) || (m.disabled === 'true'))
+          a.addClass('disabled')
+      }
+
+      if(ZeT.isa(subs))
+      {
+        if(level)
+        {
+          var ul = $('<ul/>')
+          node.append(ul)
+          node = ul
+        }
+
+        for(var i = 0;(i < subs.length);i++)
+        {
+          var sub = subs[i]
+          ZeT.assert(ZeT.iso(sub))
+
+          var next = subs[i+1]
+          if(ZeT.isa(next)) i++
+
+          createMenu(node, sub, next, (level)?(level+1):(1))
+        }
+      }
+    }
+
+    createMenu($('ul.sm.sm-retrade'), null, MENU)
+
     //~: initialize Smart Menus
-    $('.sm.sm-blue').smartmenus({
+    $('ul.sm.sm-retrade').smartmenus({
       subMenusMinWidth: null,
       showFunction: function($ul, complete) { $ul.fadeIn(200, complete) }
     })
 
+    /*
     //~: create the clocks
     new ReTrade.Clocks({ parent: $('.retrade-desktop-clocks-area')[0], node: 'clocks', start: true })
 
@@ -104,84 +396,23 @@
      { id: 65, time: '10:57', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №90/ПЕ.' },
      { id: 60, time: '10:50', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №87/ПЕ.' }
    ]})
+   */
 })
 
 
   //]]>
   </script>
 
-  <ul class = "sm sm-blue">
+  <ul class = "sm sm-retrade">
 
-    <!-- ReTrade Main Menu -->
-    <li>
-      <a href = "#"><span class = "retrade-main-icon retrade-icon-nav-20"></span><span>РеТрейд</span></a>
-      <ul>
-        <li><a href = "#"><span class = "retrade-document-icon retrade-icon-nav-16"></span><span>Основные документы</span></a></li>
-        <li><a href = "#"><span class = "retrade-price-delta-icon retrade-icon-nav-16"></span><span>Документы изменения цен</span></a></li>
-        <li><a href = "#"><span class = "retrade-payment-icon retrade-icon-nav-16"></span><span>Платёжные документы</span></a></li>
-        <li><a href = "#"><span class = "retrade-reports-icon retrade-icon-nav-16"></span><span>Мои отчёты</span></a></li>
-        <li>
-          <!-- Setting Sub-Menu -->
-          <a href = "#"><span class = "retrade-settings-icon retrade-icon-nav-16"></span><span>Настройки</span></a>
-          <ul>
-            <li><a href = "#"><span class = "retrade-good-attrs-icon retrade-icon-nav-16"></span><span>Атрибуты товаров</span></a></li>
-            <li><a href = "#"><span class = "retrade-reports-icon retrade-icon-nav-16"></span><span>Данные и отчёты</span></a></li>
-            <li><a href = "#"><span class = "retrade-user-icon retrade-icon-nav-16"></span><span>Пользователи</span></a></li>
-            <li><a href = "#"><span class = "retrade-secrule-icon retrade-icon-nav-16"></span><span>Правила доступа</span></a></li>
-            <li><a href = "#"><span class = "retrade-secset-icon retrade-icon-nav-16"></span><span>Множества правил</span></a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
+    <!--
 
-    <!-- Catalogues -->
-    <li>
-      <a href = "#"><span class = "retrade-catalogues-icon retrade-icon-nav-20"></span><span>Справочники</span></a>
-      <ul>
-        <li><a href = "#"><span class = "retrade-goods-icon retrade-icon-nav-16"></span><span>Товары</span></a></li>
-        <li><a href = "#"><span class = "retrade-good-store-icon retrade-icon-nav-16"></span><span>Товары, склады, цены</span></a></li>
-        <li><a href = "#"><span class = "retrade-goods-tree-icon retrade-icon-nav-16"></span><span>Категории товаров</span></a></li>
-        <li><a href = "#"><span class = "retrade-measure-icon retrade-icon-nav-16"></span><span>Единицы измерения</span></a></li>
-        <li><a href = "#"><span class = "retrade-trade-store-icon retrade-icon-nav-16"></span><span>Склады</span></a></li>
-        <li><a href = "#"><span class = "retrade-contractor-icon retrade-icon-nav-16"></span><span>Контрагенты</span></a></li>
-        <li><a href = "#"><span class = "retrade-prices-icon retrade-icon-nav-16"></span><span>Прайс-листы</span></a></li>
-        <li><a href = "#"><span class = "retrade-prices-icon retrade-icon-nav-16"></span><span>Прайс-листы контрагентов</span></a></li>
-        <li><a href = "#" class = "disabled"><span class = "retrade-accounts-sum-icon retrade-icon-nav-16"></span><span>Учётные счета</span></a></li>
-        <li><a href = "#" class = "disabled"><span class = "retrade-accounts-pay-icon retrade-icon-nav-16"></span><span>Платёжные счета</span></a></li>
-      </ul>
-    </li>
-
-    <!-- Create Menu -->
-    <li>
-      <a href = "#"><span class = "retrade-issue-plus-icon retrade-icon-nav-20"></span><span>Создать</span></a>
-      <ul>
-        <li><a href = "#"><span class = "retrade-listpad-plus-icon retrade-icon-nav-16"></span><span>Накладную закупки</span></a></li>
-        <li><a href = "#"><span class = "retrade-listpad-minus-icon retrade-icon-nav-16"></span><span>Накладную продажи</span></a></li>
-        <li><a href = "#"><span class = "retrade-listpad-arrow-icon retrade-icon-nav-16"></span><span>Накладную перемещения</span></a></li>
-        <li><a href = "#"><span class = "retrade-listpad-bottle-red-icon retrade-icon-nav-16"></span><span>Накладную авто-производства</span></a></li>
-        <li><a href = "#"><span class = "retrade-listpad-bottle-blue-icon retrade-icon-nav-16"></span><span>Накладную производства</span></a></li>
-        <li><a href = "#"><span class = "retrade-listpad-exclaim retrade-icon-nav-16"></span><span>Инвентаризацию остатков</span></a></li>
-        <li><a href = "#"><span class = "retrade-listpad-delta-icon retrade-icon-nav-16"></span><span>Накладную корректировки</span></a></li>
-        <li><a href = "#"><span class = "retrade-price-delta-icon retrade-icon-nav-16"></span><span>Документ изменения цен</span></a></li>
-      </ul>
-    </li>
-
-    <!-- My Links -->
-    <li>
-      <a href = "#"><span class = "retrade-my-links retrade-icon-nav-20"></span><span>Ссылки</span></a>
-    </li>
-
-    <!-- User Drop -->
-    <li class = "pull-right last-child">
-      <a href = "#"><span class = "retrade-main-man-icon retrade-icon-nav-20"></span></a>
-    </li>
-
-    <!-- Toggle Selection Set -->
+    &lt;!&ndash; Toggle Selection Set &ndash;&gt;
     <li class = "pull-right">
       <a href = "#"><span class = "retrade-selset-button-icon retrade-icon-nav-24x16"></span></a>
     </li>
 
-    <!-- Selection Set Menu -->
+    &lt;!&ndash; Selection Set Menu &ndash;&gt;
     <li class = "pull-right left-border">
       <a href = "#" class = "icon-only"><span class = "retrade-button-menu-arrow retrade-icon-nav-6x16"></span></a>
       <ul>
@@ -194,15 +425,15 @@
       </ul>
     </li>
 
-    <!-- ReTrade Clocks -->
+    &lt;!&ndash; ReTrade Clocks &ndash;&gt;
     <li class = "pull-right" style = "border-left: none; border-right: none;">
       <div class = "retrade-desktop-clocks-area" style = "position:relative; top: 2px; margin-right: 10px;"></div>
     </li>
 
-    <!-- ReTrade User Events Counter -->
+    &lt;!&ndash; ReTrade User Events Counter &ndash;&gt;
     <li class = "pull-right" style = "border-left: none; border-right: none;">
       <div class = "retrade-desktop-eventsnum-area" style = "position:relative; top: 2px;"></div>
-    </li>
+    </li>-->
   </ul>
 
 </body>
