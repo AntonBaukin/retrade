@@ -613,6 +613,8 @@
 					this.activatedItems.splice(level - 1, 1);
 					this.visibleSubMenus.splice($.inArray($sub, this.visibleSubMenus), 1);
 					this.$root.triggerHandler('hide.smapi', $sub[0]);
+
+					if(level == 2) this.$root.removeClass('first-menu last-menu')
 				}
 			},
 			menuHideAll: function() {
@@ -647,6 +649,7 @@
 				this.focusActivated = false;
 				// reset z-index increment
 				this.zIndexInc = 0;
+				this.$root.removeClass('first-menu last-menu')
 			},
 			menuHideSubMenus: function(level) {
 				for (var i = this.activatedItems.length - 1; i >= level; i--) {
@@ -968,7 +971,14 @@
 					.stop(true, true);
 				if (!$sub.is(':visible')) {
 					// highlight parent item
-					var $a = $sub.dataSM('parent-a');
+					var $a = $sub.dataSM('parent-a'),
+						level = $sub.dataSM('level')
+
+					if(level == 2 && !$a.parent().prev().length)
+						this.$root.addClass('first-menu')
+					if(level == 2 && $a.parent().hasClass('last-child'))
+						this.$root.addClass('last-menu')
+
 					if (this.opts.keepHighlighted || this.isCollapsible()) {
 						$a.addClass('highlighted');
 					}

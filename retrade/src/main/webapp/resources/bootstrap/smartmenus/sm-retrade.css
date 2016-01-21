@@ -79,8 +79,8 @@
   
   background-image: linear-gradient(to bottom, #EAF4FF 0%, #D0D6E0 60%, #EDF1F7 100%);
   color: black;
-  font-family: Roboto, Arial, Helvetica, sans-serif;
-  font-size: 16px;
+  font-family: 'PT Sans Narrow', Arial, Helvetica, sans-serif;
+  font-size: 18px;
   font-weight: 300;
   line-height: 28px;
   text-decoration: none;
@@ -249,6 +249,12 @@
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
+.sm-retrade.first-menu {
+  border-bottom-left-radius: 0;
+}
+.sm-retrade.last-menu {
+  border-bottom-right-radius: 0;
+}
 .sm-retrade a, .sm-retrade a:hover, .sm-retrade a:focus, .sm-retrade a:active, .sm-retrade a.highlighted {
   padding: 6px 12px;
   color: #404551;
@@ -307,6 +313,14 @@
   -moz-border-radius: 0 0 0 8px;
   -ms-border-radius: 0 0 0 8px;
   border-radius: 0 0 0 8px;
+}
+.sm-retrade.first-menu > li:first-child > a
+{
+  border-bottom-left-radius: 0;
+}
+.sm-retrade.last-menu > li:first-child > a
+{
+  border-bottom-right-radius: 0;
 }
 .sm-retrade > li, .sm-retrade > li.right-border {
   border-right: 1px solid #B1B6BF;
