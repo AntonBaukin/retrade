@@ -806,7 +806,7 @@
 					}
 				}
 
-				$sub.css({ top: 'auto', left: '-1px', marginLeft: x, marginTop: y - itemH, minWidth: parW });
+				$sub.css({ top: 'auto', left: '-0.5px', marginLeft: x, marginTop: y - itemH, minWidth: parW });
 				// IE iframe shim
 				this.menuIframeShim($sub);
 				if ($sub.dataSM('ie-shim')) {

@@ -62,6 +62,16 @@
   background-image: none; background-color: #C6CFDE;
 }
 
+.x-menu-item-checked .x-menu-item-checkbox
+{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAMFBMVEUAAACZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmy/KNBAAAAD3RSTlMAeFv9D8ncHAzZxugGcV9K92VUAAAAX0lEQVR4XmP4DwMMHxgggB/GYuiHsZj2w1jKMHVM9vJQlvJHoA6IkACQdQAsxMDP8Gk6WAjI+vWtACQEZH2JTwcKge1w/Xb5I8Q2lvj/AhAWg+tHmAtYHsBYMFf9hwEAUQYywuaILt0AAAAASUVORK5CYII=);
+}
+
+.x-menu-item-unchecked .x-menu-item-checkbox
+{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASAQMAAABsABwUAAAABlBMVEW4uLj///+rMStlAAAAEUlEQVR4XmMAgfr/DRRhIAAAe/Qf4UJ/BrMAAAAASUVORK5CYII=);
+}
+
 
 /* Menu Items */
 

@@ -340,7 +340,7 @@
 }
 .sm-retrade ul a, .sm-retrade ul a:hover, .sm-retrade ul a:focus, .sm-retrade ul a:active, .sm-retrade ul a.highlighted {
   border: 0 !important;
-  padding: 9px 28px;
+  padding: 5px 28px;
   background: transparent;
   color: #404551;
 }

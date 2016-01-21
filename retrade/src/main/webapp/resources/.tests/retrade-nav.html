@@ -30,6 +30,9 @@
   <link type = 'text/css' rel = 'stylesheet'
     href = "../../extjs/ext-theme-crisp-touch-all-debug.css"/>
 
+  <link type = 'text/css' rel = 'stylesheet'
+      href = "../../extjs.ux/extjs_ux.css"/>
+
 
   <!-- ReTrade Styles -->
   <link type = 'text/css' rel = 'stylesheet'
@@ -283,7 +286,7 @@
         },
 
         {
-          title: 'retrade-price-delta-icon', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          title: 'Документ изменения цен', icon: 'retrade-listpad-bottle-red-icon', handler: function()
           {
 
           }
@@ -302,14 +305,75 @@
         {
 
         }
+      },
+
+      {
+        icon: 'retrade-selset-button-icon retrade-icon-nav-24x16', class: 'pull-right',
+        handler: function()
+        {
+
+        }
+      },
+
+      {
+        icon: 'retrade-button-menu-arrow retrade-icon-nav-6x16',
+        class: 'pull-right left-border', aclass: 'icon-only'
+      },
+
+      [
+        {
+          title: 'Свойства', icon: 'retrade-selset-menu-edit', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Добавить', icon: 'retrade-selset-menu-plus', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Удалить', icon: 'retrade-selset-menu-minus', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Очистить', icon: 'retrade-selset-menu-clear', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'По умолчанию', icon: 'x-menu-item-checkbox',
+          aclass: 'x-menu-item-checked', handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        div: true, class: 'pull-right', style: 'border-left: none; border-right: none;',
+        dclass: 'retrade-desktop-clocks-area', dstyle: 'position: relative; top: 2.5px; margin-right: 10px;'
+      },
+
+      {
+        div: true, class: 'pull-right', style: 'border-left: none; border-right: none;',
+        dclass: 'retrade-desktop-eventsnum-area', dstyle: 'position: relative; top: 2.5px;'
       }
     ]
 
     function createMenu(node, m, subs, level)
     {
-      if(m)
+      if(m && !m.div)
       {
-        var a = $('<a/>', { href: '#' })
+        var  a = $('<a/>', { href: '#' })
         var li = $('<li/>').append(a)
         node.append(li); node = li
 
@@ -317,10 +381,19 @@
         if(ZeT.iss(m.class))
           li.addClass(m.class)
 
+        //?: {a class}
+        if(ZeT.iss(m.aclass))
+          a.addClass(m.aclass)
+
         //?: {has icon}
-        if(ZeT.iss(m.icon)) a.append($('<span/>').addClass(m.icon).addClass(
-          (level == 1)?('retrade-icon-nav-20'):('retrade-icon-nav-16')
-        ))
+        if(ZeT.iss(m.icon))
+        {
+          var ico = $('<span/>').addClass(m.icon)
+          a.append(ico)
+
+          if(m.icon.indexOf(' ') == -1)
+            ico.addClass((level == 1)?('retrade-icon-nav-20'):('retrade-icon-nav-16'))
+        }
 
         //~: menu item text
         if(!ZeTS.ises(m.title))
@@ -329,6 +402,29 @@
         //?: {disabled}
         if((m.disabled === true) || (m.disabled === 'true'))
           a.addClass('disabled')
+      }
+
+      if(m && m.div)
+      {
+        var div = $('<div/>')
+        var  li = $('<li/>').append(div)
+        node.append(li); node = li
+
+        //?: {li class}
+        if(ZeT.iss(m.class))
+          li.addClass(m.class)
+
+        //?: {li style}
+        if(ZeT.iss(m.style))
+          li.attr('style', m.style)
+
+        //?: {div class}
+        if(ZeT.iss(m.dclass))
+          div.addClass(m.dclass)
+
+        //?: {div style}
+        if(ZeT.iss(m.dstyle))
+          div.attr('style', m.dstyle)
       }
 
       if(ZeT.isa(subs))
@@ -361,7 +457,7 @@
       showFunction: function($ul, complete) { $ul.fadeIn(200, complete) }
     })
 
-    /*
+
     //~: create the clocks
     new ReTrade.Clocks({ parent: $('.retrade-desktop-clocks-area')[0], node: 'clocks', start: true })
 
@@ -396,7 +492,6 @@
      { id: 65, time: '10:57', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №90/ПЕ.' },
      { id: 60, time: '10:50', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №87/ПЕ.' }
    ]})
-   */
 })
 
 
@@ -406,24 +501,6 @@
   <ul class = "sm sm-retrade">
 
     <!--
-
-    &lt;!&ndash; Toggle Selection Set &ndash;&gt;
-    <li class = "pull-right">
-      <a href = "#"><span class = "retrade-selset-button-icon retrade-icon-nav-24x16"></span></a>
-    </li>
-
-    &lt;!&ndash; Selection Set Menu &ndash;&gt;
-    <li class = "pull-right left-border">
-      <a href = "#" class = "icon-only"><span class = "retrade-button-menu-arrow retrade-icon-nav-6x16"></span></a>
-      <ul>
-        <li><a href = "#"><span class = "retrade-selset-menu-edit retrade-icon-nav-16"></span><span>Свойства</span></a></li>
-        <li><a href = "#"><span class = "retrade-selset-menu-plus retrade-icon-nav-16"></span><span>Добавить</span></a></li>
-        <li><a href = "#"><span class = "retrade-selset-menu-minus retrade-icon-nav-16"></span><span>Удалить</span></a></li>
-        <li><a href = "#"><span class = "retrade-selset-menu-clear retrade-icon-nav-16"></span><span>Очистить</span></a></li>
-
-        <li><a href = "#" class = "x-menu-item-checked"><span class = "x-menu-item-checkbox retrade-icon-nav-16"></span><span>Выборка по умолчанию</span></a></li>
-      </ul>
-    </li>
 
     &lt;!&ndash; ReTrade Clocks &ndash;&gt;
     <li class = "pull-right" style = "border-left: none; border-right: none;">
