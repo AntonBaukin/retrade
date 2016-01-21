@@ -24,25 +24,18 @@
     </ui:define>
 
 
-    <!-- [load center content] -->
-    <ui:define name = "center_content">
+    <!-- [load the default scontent] -->
+    <ui:define name = "index-content">
+      <script type = "text/javascript">
+      //<![CDATA[
 
-      <ui:fragment>
-        <script type = "text/javascript">
+        ReTrade.desktop.onReady(function()
+        {
+          ReTrade.desktop.loadDesktopPanel("${z:url('/go/retrade/ui/my-links')}")
+        })
 
-ReTrade.desktop.onReady(function()
-{
-  ReTrade.desktop.loadDesktopPanel("${z:url('/go/retrade/ui/my-links')}")
-//ReTrade.desktop.loadDesktopPanel("${z:url('/go/retrade/docs/documents')}")
-//ReTrade.desktop.loadDesktopPanel("${z:url('/go/retrade/reprice-docs/list')}")
-//ReTrade.desktop.loadDesktopPanel("${z:url('/go/retrade/goods/goods-stores-prices')}")
-//ReTrade.desktop.loadDesktopPanel("${z:url('/go/retrade/goods/goods-tree')}")
-//ReTrade.desktop.loadDesktopPanel("${z:url('/go/retrade/firms/list-lists')}")
-})
-
-        </script>
-      </ui:fragment>
+      //]]>
+      </script>
     </ui:define>
-
   </ui:decorate>
 </ui:component>

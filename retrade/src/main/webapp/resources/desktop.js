@@ -633,39 +633,42 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		ZeT.assert(ZeT.isu(ready) || ZeT.isb(ready))
 
 		//~: add the point if it absents
-		if(!this._ready_points) this._ready_points = {};
-		var rp = this._ready_points[name];
-		if(rp) rp.ready = !!ready;
-		else this._ready_points[name] = { 'name': name, 'ready': ready };
+		if(!this._ready_points) this._ready_points = {}
+		var rp = this._ready_points[name]
+		if(rp) rp.ready = !!ready
+		else this._ready_points[name] = { 'name': name, 'ready': ready }
+
+		//ZeT.log('Ready point [', name, ']: ', ready)
 
 		//~: inspect whether all are ready
-		var keys = ZeT.keys(this._ready_points);
-		this._ready_go = true;
+		var keys = ZeT.keys(this._ready_points)
+		this._ready_go = true
 		for(var i = 0;(i < keys.length);i++)
 			if(!this._ready_points[keys[i]].ready)
-			{ this._ready_go = false; break; }
+				{ this._ready_go = false; break }
 
 		//?: {all are ready} go!
 		if(this._ready_go && this._ready_fs)
 		{
-			var fs = this._ready_fs;
-			this._ready_fs = null; //<-- !: clear ready callbacks list
+			var fs = this._ready_fs
+			this._ready_fs = null //<-- !: clear ready callbacks list
 
 			for(i = 0;(i < fs.length);i++)
 				fs[i]()
 		}
 
-		return this;
+		return this
 	},
 
 	onReady           : function(f)
 	{
-		if(this._ready_go !== false) { f(); return this; }
+		ZeT.assert(ZeT.isf(f))
+		if(this._ready_go !== false) return f()
 
-		if(!this._ready_fs) this._ready_fs = [];
+		if(!this._ready_fs) this._ready_fs = []
 		this._ready_fs.push(f)
 
-		return this;
+		return this
 	},
 
 	_size_pt          : function(opts)
@@ -2378,7 +2381,6 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 // +----: SelSet Instance :--------------------------------------+
 
 ReTrade.selset = ZeT.defineInstance('ReTrade.selset', ReTrade.SelSet)
-ReTrade.desktop.readyPoint('ReTrade.selset')
 
 
 // +----: ReTrade Visual :---------------------------------------+
