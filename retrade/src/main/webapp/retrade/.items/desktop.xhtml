@@ -14,6 +14,18 @@
   <ui:insert name = 'page-title'/>
 </ui:define>
 
+<ui:define name = 'page_head'>
+
+  <!-- SmartMenus Library -->
+  <link type = 'text/css' rel = 'stylesheet'
+    href = "${z:url('/resources/bootstrap/smartmenus/sm-retrade.css')}"/>
+
+  <script type = 'text/javascript'
+    src = "${z:url('/resources/bootstrap/smartmenus/jquery.smartmenus.js')}"></script>
+
+</ui:define>
+
+
 <ui:define name = 'page_body'>
 
 <ui:decorate template = "scripts.xhtml"/>
@@ -52,9 +64,10 @@
     <x:component coid = "${z:vid(desktopView, 'left-topbar')}">
       <f:facet name = "extjs-props">
         region: 'north', frame: false, border:false,
-        margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+        height: retrade_default('main-topbar-height'),
+        margin: extjsf.dpts(0, 2, 0, 2),
         bodyCls: 'retrade-desktop-panel-topbar',
-        layout: {type: 'hbox', align: 'middle'}
+        layout: { type: 'hbox', align: 'middle' }
       </f:facet>
     </x:component>
 
@@ -167,7 +180,8 @@
 
   <x:component coid = "${z:vid(desktopView, '_desktop_left_splitter')}">
     <f:facet name = "extjs-props">
-      xtype: 'splitter', collapsible: false
+      xtype: 'splitter', collapsible: false,
+      margin: retrade_default('main-topbar-height') + ' 0 0 0'
     </f:facet>
   </x:component>
 
@@ -220,7 +234,8 @@
 
   <x:component coid = "${z:vid(desktopView, '_desktop_right_splitter')}">
     <f:facet name = "extjs-props">
-      xtype: 'splitter', collapsible: false
+      xtype: 'splitter', collapsible: false,
+      margin: retrade_default('main-topbar-height') + ' 0 0 0'
     </f:facet>
   </x:component>
 
@@ -252,7 +267,8 @@
     <x:component coid = "${z:vid(desktopView, 'right-topbar')}">
       <f:facet name = "extjs-props">
         region: 'north', frame: false, border:false,
-        margin: extjsf.dpts(0, 2, 0, 2), height: extjsf.dpt(26),
+        height: retrade_default('main-topbar-height'),
+        margin: extjsf.dpts(0, 2, 0, 2),
         bodyCls: 'retrade-desktop-panel-topbar',
         layout: {type: 'hbox', align: 'middle'}
       </f:facet>

@@ -8,407 +8,18 @@
 
   <!-- [application main topbar -->
 
-  <x:component coid = "${z:vid(localView, 'main_topbar')}">
+  <x:html coid = "${z:vid(localView, 'main-topbar')}" table = "false">
 
     <f:facet name = "extjs-props">
-
       region: 'north', frame: false, border:false,
-      margin: extjsf.dpts(0, 2, 0, 2), height: 35,
-      bodyCls: 'retrade-desktop-panel-topbar retrade-transparent-panel',
+      height: retrade_default('main-topbar-height'),
+      margin: extjsf.dpts(0, 2, 0, 2),
+      bodyCls: 'retrade-transparent-panel',
       layout: {type: 'hbox', align: 'middle'}
-
     </f:facet>
 
-
-    <!-- [retrade main menu -->
-
-    <x:component coid = "${z:vid(localView, 'retrade-main-menu-button')}">
-
-      <f:facet name = "extjs-props">
-
-        xtype: 'button', flex: 0, text: 'РеТрейд',
-        margin: extjsf.dpts(0, 6, 0, 0), height: 30,
-        componentCls: 'retrade-button-22pt',
-        iconCls: 'retrade-main-icon',
-        arrowVisible: false
-
-      </f:facet>
-
-      <x:menu coid = "${z:vid(localView, 'retrade-main-menu')}">
-
-        <f:facet name = "extjs-props">
-          showSeparator: false
-        </f:facet>
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-docs')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Основные документы', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('view: documents')},
-            iconCls: 'retrade-document-icon'
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-reprice-docs')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Документы изменения цен', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('view: price change documents')},
-            iconCls: 'retrade-price-delta-icon'
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-payments')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Платёжные документы', xtype: 'menuitem',
-            disabled: true || ${not rootView.isSecure('view: payments')},
-            iconCls: 'retrade-payment-icon'
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-my-reports')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Мои отчёты', xtype: 'menuitem',
-            iconCls: 'retrade-reports-icon'
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Настройки', xtype: 'menuitem', hideOnClick: false,
-            iconCls: 'retrade-settings-icon'
-          </f:facet>
-
-          <x:menu coid = "${z:vid(localView, 'retrade-main-menu-settings-menu')}">
-
-            <f:facet name = "extjs-props">
-              showSeparator: false
-            </f:facet>
-
-
-            <!-- [good attributes ]-->
-            <x:component coid = "${z:vid(localView, 'retrade-main-menu-good-attrs')}">
-
-              <f:facet name = "extjs-props">
-                text: 'Атрибуты товаров', xtype: 'menuitem',
-                iconCls: 'retrade-good-attrs-icon'
-              </f:facet>
-            </x:component>
-
-            <x:component coid = "${z:vid(localView, 'retrade-main-menu-datas')}">
-
-              <f:facet name = "extjs-props">
-                text: 'Данные и отчёты', xtype: 'menuitem',
-                iconCls: 'retrade-reports-icon'
-              </f:facet>
-            </x:component>
-
-            <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings-users')}">
-
-              <f:facet name = "extjs-props">
-                text: 'Пользователи', xtype: 'menuitem',
-                disabled: ${not rootView.isSecure('secure: view: auth logins')},
-                iconCls: 'retrade-user-icon'
-              </f:facet>
-            </x:component>
-
-            <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings-secure-rules')}">
-
-              <f:facet name = "extjs-props">
-                text: 'Правила доступа', xtype: 'menuitem',
-                disabled: ${not rootView.isSecure('secure: view: rules')},
-                iconCls: 'retrade-secrule-icon'
-              </f:facet>
-            </x:component>
-
-            <x:component coid = "${z:vid(localView, 'retrade-main-menu-settings-secure-sets')}">
-
-              <f:facet name = "extjs-props">
-                text: 'Множества правил', xtype: 'menuitem',
-                disabled: ${not rootView.isSecure('secure: view: sets')},
-                iconCls: 'retrade-secset-icon'
-              </f:facet>
-            </x:component>
-          </x:menu>
-        </x:component>
-      </x:menu>
-    </x:component>
-
-    <!-- retrade main menu] -->
-
-
-    <!-- [catalogues menu -->
-
-    <x:component coid = "${z:vid(localView, 'retrade-catalogues-menu-button')}">
-
-      <f:facet name = "extjs-props">
-        xtype: 'button', flex: 0, text: 'Справочники',
-        margin: extjsf.dpts(0, 6, 0, 0), height: 30,
-        iconCls: 'retrade-catalogues-icon',
-        componentCls: 'retrade-button-22pt',
-        arrowVisible: false
-      </f:facet>
-
-      <x:menu coid = "${z:vid(localView, 'retrade-catalogues-menu')}">
-
-        <f:facet name = "extjs-props">
-          showSeparator: false
-        </f:facet>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods-nav')}">
-          <f:facet name = "extjs-props">
-
-            text: 'Товары', xtype: 'menuitem',
-            iconCls: 'retrade-goods-icon',
-            disabled: ${not rootView.isSecure('view: goods')}
-
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods')}">
-          <f:facet name = "extjs-props">
-
-            text: 'Товары, склады, цены', xtype: 'menuitem',
-            iconCls: 'retrade-good-store-icon',
-            disabled: ${not rootView.isSecure('view: goods')}
-
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods-tree')}">
-          <f:facet name = "extjs-props">
-
-            text: 'Категории товаров', xtype: 'menuitem',
-            iconCls: 'retrade-goods-tree-icon',
-            disabled: ${not rootView.isSecure('view: goods')}
-
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-goods-measures')}">
-          <f:facet name = "extjs-props">
-
-            text: 'Единицы измерения', xtype: 'menuitem',
-            iconCls: 'retrade-measure-icon',
-            disabled: ${not rootView.isSecure('view: goods')}
-
-           </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-trade-stores')}">
-          <f:facet name = "extjs-props">
-
-            text: 'Склады', xtype: 'menuitem',
-            iconCls: 'retrade-trade-store-icon',
-            disabled: ${not rootView.isSecure('view: stores')}
-
-           </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-firms')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Контрагенты', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('view: contractors')},
-            iconCls: 'retrade-contractor-icon'
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-price-lists')}">
-          <f:facet name = "extjs-props">
-
-            text: 'Прайс-листы', xtype: 'menuitem',
-            iconCls: 'retrade-prices-icon',
-            disabled: ${not rootView.isSecure('view: price-lists')}
-
-           </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-firms-price-lists')}">
-          <f:facet name = "extjs-props">
-
-            text: 'Прайс-листы контрагентов', xtype: 'menuitem',
-            iconCls: 'retrade-prices-icon'
-
-           </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-accounts')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Учётные счета', xtype: 'menuitem',
-            disabled: true || ${not rootView.isSecure('view: accounts')},
-            iconCls: 'retrade-accounts-sum-icon'
-          </f:facet>
-        </x:component>
-
-
-        <x:component coid = "${z:vid(localView, 'retrade-main-menu-pay-ways')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Платёжные счета', xtype: 'menuitem',
-            disabled: true || ${not rootView.isSecure('view: accounts')},
-            iconCls: 'retrade-accounts-pay-icon'
-          </f:facet>
-        </x:component>
-
-      </x:menu>
-    </x:component>
-
-    <!-- catalogues menu] -->
-
-
-    <!-- [create document menu -->
-
-    <x:component coid = "${z:vid(localView, 'retrade-create-doc-menu-button')}">
-
-      <f:facet name = "extjs-props">
-        xtype: 'button', flex: 0, height: 30,
-        text: 'Создать', componentCls: 'retrade-button-22pt',
-        iconCls: 'retrade-issue-plus-icon',
-        arrowVisible: false
-      </f:facet>
-
-      <x:menu coid = "${z:vid(localView, 'retrade-create-doc-menu')}">
-
-        <f:facet name = "extjs-props">
-          showSeparator: false
-        </f:facet>
-
-        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-buy')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Накладную закупки', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('create: invoice: buy')},
-            iconCls: 'retrade-listpad-plus-icon'
-          </f:facet>
-        </x:component>
-
-        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-sell')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Накладную продажи', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('create: invoice: sell')},
-            iconCls: 'retrade-listpad-minus-icon'
-          </f:facet>
-        </x:component>
-
-        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-move')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Накладную перемещения', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('create: invoice: move')},
-            iconCls: 'retrade-listpad-arrow-icon'
-          </f:facet>
-        </x:component>
-
-        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-auto-produce')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Накладную авто-производства', xtype: 'menuitem',
-            iconCls: 'retrade-listpad-bottle-red-icon'
-          </f:facet>
-        </x:component>
-
-        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-free-produce')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Накладную производства', xtype: 'menuitem',
-            iconCls: 'retrade-listpad-bottle-blue-icon'
-          </f:facet>
-        </x:component>
-
-        <x:component coid = "${z:vid(localView, 'retrade-create-doc-volume-check')}">
-          <f:facet name = "extjs-props">
-            text: 'Инвентаризацию остатков', xtype: 'menuitem',
-            iconCls: 'retrade-listpad-exclaim'
-          </f:facet>
-        </x:component>
-
-        <x:component coid = "${z:vid(localView, 'retrade-create-doc-invoice-correction')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Накладную корректировки', xtype: 'menuitem',
-            iconCls: 'retrade-listpad-delta-icon'
-          </f:facet>
-        </x:component>
-
-        <x:component coid = "${z:vid(localView, 'retrade-create-reprice-doc')}">
-
-          <f:facet name = "extjs-props">
-            text: 'Документ изменения цен', xtype: 'menuitem',
-            disabled: ${not rootView.isSecure('create: price change document')},
-            iconCls: 'retrade-price-delta-icon'
-          </f:facet>
-        </x:component>
-      </x:menu>
-    </x:component>
-
-    <!-- create document menu] -->
-
-
-    <!-- [my links button] -->
-    <x:component coid = "${z:vid(localView, 'retrade-main-menu-my-links')}">
-
-      <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Ссылки',
-        margin: extjsf.dpts(0, 0, 0, 6),
-        height: 30, iconCls: 'retrade-my-links',
-        componentCls: 'retrade-button-22pt'
-      </f:facet>
-    </x:component>
-
-
-    <!-- [topbar extention point -->
-
-
-    <x:component coid = "${z:vid(localView, 'main_topbar_ext')}">
-      <f:facet name = "extjs-props">
-
-        border: false, frame: false, flex: 1,
-        bodyCls: 'retrade-transparent-panel',
-        layout: {type: 'hbox', align: 'middle'}
-
-      </f:facet>
-    </x:component>
-
-
-    <!-- topbar extention point] -->
-
-
-    <!-- [right controls block -->
-
-    <x:component coid = "${z:vid(localView, 'desktop-topbar-right-block')}">
-      <f:facet name = "extjs-props">
-
-        border: false, frame: false,
-        bodyPadding: 0, margin: 0, height: 35,
-        bodyCls: 'retrade-transparent-panel',
-        layout: {type: 'hbox', align: 'middle'}
-
-      </f:facet>
-
-
-
-
-    </x:component>
-  </x:component>
+    <ul class = "sm sm-retrade" style = "z-index:1000"></ul>
+  </x:html>
 
   <!-- application main topbar] -->
 
@@ -416,12 +27,449 @@
   <!-- [topbar scripts -->
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    //~: attach top bar panel to the desktop
-    ReTrade.desktop.controller('center').mainTopbar(
-      "${z:vid(localView, 'main_topbar')}", '${rootView.extjsDomain}')
+  //~: attach top bar panel to the desktop
+  ReTrade.desktop.controller('center').mainTopbar(
+    "${z:vid(localView, 'main-topbar')}", '${rootView.extjsDomain}')
 
+  Ext.onReady(function()
+  {
+    var menuNode = $('#'+"${z:vid(localView, 'main-topbar-html')} ul.sm.sm-retrade")
 
+    createMenu(menuNode, null, [
+
+      {
+        title: 'РеТрейд', icon: 'retrade-main-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Основные документы', icon: 'retrade-document-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Документы изменения цен', icon: 'retrade-price-delta-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Платёжные документы', icon: 'retrade-payment-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Мои отчёты', icon: 'retrade-payment-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Настройки', icon: 'retrade-settings-icon', handler: function()
+          {
+
+          }
+        },
+
+        [
+          {
+            title: 'Атрибуты товаров', icon: 'retrade-good-attrs-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Данные и отчёты', icon: 'retrade-reports-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Пользователи', icon: 'retrade-user-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Правила доступа', icon: 'retrade-secrule-icon', handler: function()
+            {
+
+            }
+          },
+
+          {
+            title: 'Множества правил', icon: 'retrade-secset-icon', handler: function()
+            {
+
+            }
+          }
+        ]
+      ],
+
+      {
+        title: 'Справочники', icon: 'retrade-catalogues-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Товары', icon: 'retrade-goods-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Товары, склады, цены', icon: 'retrade-good-store-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Категории товаров', icon: 'retrade-goods-tree-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Единицы измерения', icon: 'retrade-measure-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Склады', icon: 'retrade-trade-store-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Контрагенты', icon: 'retrade-contractor-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Прайс-листы', icon: 'retrade-prices-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Прайс-листы контрагентов', icon: 'retrade-prices-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Учётные счета', icon: 'retrade-accounts-sum-icon',
+          disabled: true, handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Платёжные счета', icon: 'retrade-accounts-pay-icon',
+          disabled: true, handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        title: 'Создать', icon: 'retrade-issue-plus-icon', handler: function()
+        {
+
+        }
+      },
+
+      [
+        {
+          title: 'Накладную закупки', icon: 'retrade-listpad-plus-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную продажи', icon: 'retrade-listpad-minus-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную перемещения', icon: 'retrade-listpad-arrow-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную авто-производства', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Инвентаризацию остатков', icon: 'retrade-listpad-exclaim', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Накладную корректировки', icon: 'retrade-listpad-delta-icon', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Документ изменения цен', icon: 'retrade-listpad-bottle-red-icon', handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        title: 'Ссылки', icon: 'retrade-my-links', handler: function()
+        {
+          ReTrade.desktop.loadDesktopPanel( "${z:url('/go/retrade/ui/my-links')}", {
+            'domain': extjsf.tempDomain('desktop-content:retrade-main-menu:my-links:')
+          })
+        }
+      },
+
+      {
+        icon: 'retrade-main-man-icon', class: 'pull-right last-child', handler: function()
+        {
+
+        }
+      },
+
+      {
+        icon: 'retrade-selset-button-icon retrade-icon-nav-24x16', class: 'pull-right',
+        handler: function()
+        {
+
+        }
+      },
+
+      {
+        icon: 'retrade-button-menu-arrow retrade-icon-nav-6x16',
+        class: 'pull-right left-border', aclass: 'icon-only'
+      },
+
+      [
+        {
+          title: 'Свойства', icon: 'retrade-selset-menu-edit', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Добавить', icon: 'retrade-selset-menu-plus', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Удалить', icon: 'retrade-selset-menu-minus', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'Очистить', icon: 'retrade-selset-menu-clear', handler: function()
+          {
+
+          }
+        },
+
+        {
+          title: 'По умолчанию', icon: 'x-menu-item-checkbox',
+          aclass: 'x-menu-item-checked', handler: function()
+          {
+
+          }
+        }
+      ],
+
+      {
+        div: true, class: 'pull-right', style: 'border-left: none; border-right: none;',
+        dclass: 'retrade-desktop-clocks-area', dstyle: 'position: relative; top: 2.5px; margin-right: 10px;'
+      },
+
+      {
+        div: true, class: 'pull-right', style: 'border-left: none; border-right: none;',
+        dclass: 'retrade-desktop-eventsnum-area', dstyle: 'position: relative; top: 2.5px;'
+      }
+    ])
+
+    function createMenu(node, m, subs, level)
+    {
+      if(m && !m.div)
+      {
+        var  a = $('<a/>', { href: '#' })
+        var li = $('<li/>').append(a)
+        node.append(li); node = li
+
+        //?: {li class}
+        if(ZeT.iss(m.class))
+          li.addClass(m.class)
+
+        //?: {a class}
+        if(ZeT.iss(m.aclass))
+          a.addClass(m.aclass)
+
+        //?: {has icon}
+        if(ZeT.iss(m.icon))
+        {
+          var ico = $('<span/>').addClass(m.icon)
+          a.append(ico)
+
+          if(m.icon.indexOf(' ') == -1)
+            ico.addClass((level == 1)?('retrade-icon-nav-20'):('retrade-icon-nav-16'))
+        }
+
+        //~: menu item text
+        if(!ZeTS.ises(m.title))
+          a.append($('<span/>').text(ZeT.asserts(m.title)))
+
+        //?: {disabled}
+        if((m.disabled === true) || (m.disabled === 'true'))
+          a.addClass('disabled')
+
+        //~: click handler
+        if(ZeT.isf(m.handler)) a.click(function(e)
+        {
+          e.preventDefault()
+          e.stopPropagation()
+          m.handler()
+        })
+      }
+
+      if(m && m.div)
+      {
+        var div = $('<div/>')
+        var  li = $('<li/>').append(div)
+        node.append(li); node = li
+
+        //?: {li class}
+        if(ZeT.iss(m.class))
+          li.addClass(m.class)
+
+        //?: {li style}
+        if(ZeT.iss(m.style))
+          li.attr('style', m.style)
+
+        //?: {div class}
+        if(ZeT.iss(m.dclass))
+          div.addClass(m.dclass)
+
+        //?: {div style}
+        if(ZeT.iss(m.dstyle))
+          div.attr('style', m.dstyle)
+      }
+
+      if(ZeT.isa(subs))
+      {
+        if(level)
+        {
+          var ul = $('<ul/>')
+          node.append(ul)
+          node = ul
+        }
+
+        for(var i = 0;(i < subs.length);i++)
+        {
+          var sub = subs[i]
+          ZeT.assert(ZeT.iso(sub))
+
+          var next = subs[i+1]
+          if(ZeT.isa(next)) i++
+
+          createMenu(node, sub, next, (level)?(level+1):(1))
+        }
+      }
+    }
+
+    //~: initialize Smart Menus
+    menuNode.smartmenus({
+      subMenusMinWidth: null,
+      showFunction: function($ul, complete) { $ul.fadeIn(200, complete) }
+    })
+
+    /*
+    //~: create the clocks
+    new ReTrade.Clocks({ parent: $('.retrade-desktop-clocks-area')[0], node: 'clocks', start: true })
+
+    //~: create the events menu
+    var ctl = new ReTrade.EventsControl({
+      number: { parent: $('.retrade-desktop-eventsnum-area')[0], node: 'num', defcolor: 'N' },
+      menu: { node: 'menu-area', parent: document.body, length: 5, offset: 95 },
+
+      proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', {
+        request : function(task, query)
+        {
+          ZeT.log('Do ', task, ': ', query)
+        }
+    })})
+
+    ctl.set({
+
+     numbers: { N: 999, G: 66, O: 1, R: 1 }, newer: null, older: 58, txn: 100, firstid: 81, items: [
+
+     { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.', script: "alert('Scripting action...')"},
+     { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
+     { id: 95, time: '11:20', date: 'сегодня 04 Фев', color: 'G', text: 'Накладная перемещения №100/ПЕ успешно проведена!' },
+     { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система запущена!', script: "ZeT.log('script run 2+4 = ', 2+4)" },
+     { id: 87, time: '22:13', date: 'вчера 03 Фев', color: 'R', text: 'Производится остановка системы!' },
+
+     { id: 81, time: '10:15', date: 'вчера 03 Фев', color: 'G', text: 'Добавлен пользователь [ivanov] Иванов Иван Иванович.' },
+     { id: 71, time: '12:34', date: '02 Фев', color: 'G', text: 'Добавлен пользователь [navalniy] Навальный Алексей Александрович. Голосуем за Навального! Кому он не нравится: спи, красавица! Крепким вечным сном...' },
+     { id: 70, time: '12:15', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №98/ПЕ.' },
+     { id: 68, time: '12:10', date: '02 Фев', color: 'G', text: 'Пользователь [System] создал накладную продажи №95/ПР.' },
+     { id: 67, time: '12:07', date: '02 Фев', color: 'O', text: 'Пользователь [System] удалил накладную закупки №93/ЗК.' },
+
+     { id: 65, time: '10:57', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №90/ПЕ.' },
+     { id: 60, time: '10:50', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №87/ПЕ.' }
+   ]})
+   */
+  })
+
+  //]]>
   </script>
 
   <!-- topbar scripts] -->

@@ -4,17 +4,20 @@
 <script type = "text/javascript">
 //<![CDATA[
 
+ReTrade.Defaults =
+{
+  'main-topbar-height'     : 42,
+  'button-height'          : 30,
+  'button-square-width'    : 30,
+  'button-square-height'   : 30,
+  'button-selset-height'   : 30,
+  'button-selset-width'    : 34,
+  'inline-hdr-min-h'       : 32
+}
+
 function retrade_default(p)
 {
-  switch(p)
-  {
-    case 'button-height'          : return 30
-    case 'button-square-width'    : return 30
-    case 'button-square-height'   : return 30
-    case 'button-selset-height'   : return 30
-    case 'button-selset-width'    : return 34
-    case 'inline-hdr-min-h'       : return 32
-  }
+  return ReTrade.Defaults[p]
 }
 
 function retrade_go_url(url)

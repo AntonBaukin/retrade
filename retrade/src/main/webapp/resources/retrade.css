@@ -155,20 +155,18 @@ div.x-panel.retrade-toolbar-colour-line-one > div.x-panel-body
 
 /* Desktop Panels */
 
-.retrade-desktop-panel-center .retrade-desktop-panel-content
+body.x-body, div.x-border-layout-ct.retrade-desktop-panel-center,
+  div.x-panel-body-default.retrade-desktop-panel-left,
+  div.x-panel-body-default.retrade-desktop-panel-right
 {
-  background-color: #e0e0e0;
+  background-color: #F9F9F7;
 }
 
-.retrade-desktop-panel-left, .retrade-desktop-panel-right
-{
-  background-color: #cecece;
-}
-
-.retrade-desktop-panel-left .retrade-desktop-panel-content,
+div.retrade-desktop-panel-center div.retrade-desktop-panel-content,
+  .retrade-desktop-panel-left .retrade-desktop-panel-content,
   .retrade-desktop-panel-right .retrade-desktop-panel-content
 {
-  background-color: #f2f5f6;
+  background-color: transparent;
 }
 
 .retrade-desktop-panel-topbar

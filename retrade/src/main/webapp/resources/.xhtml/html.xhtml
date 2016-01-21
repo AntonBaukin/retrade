@@ -33,7 +33,7 @@
 
     <c:if test = "${cc.attrs.table}">
       <div style = "display:none">
-        <table id = "#{cc.clientId}-#{cc.attrs.coid}-html"
+        <table id = "#{cc.attrs.coid}-html"
           class = "x-hide-display extjsf-html-content #{cc.attrs.boxClass}"
           cellpadding = "0" cellspacing = "0" border = "0"
           style = "#{cc.attrs.boxStyle}">
@@ -47,7 +47,7 @@
 
     <c:if test = "${not cc.attrs.table}">
       <div style = "display:none">
-        <div id = "#{cc.clientId}-#{cc.attrs.coid}-html"
+        <div id = "#{cc.attrs.coid}-html"
           class = "x-hide-display extjsf-html-content #{cc.attrs.boxClass}"
           style = "#{cc.attrs.boxStyle}">
 
@@ -61,7 +61,7 @@
   extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
     nodeId("#{cc.clientId}-#{cc.attrs.coid}").
     extjsProps({xtype: 'component', margin: 0}).extjsPropsNode().
-    extjsProps({html: undefined, contentEl: "#{cc.clientId}-#{cc.attrs.coid}-html"})
+    extjsProps({html: undefined, contentEl: "#{cc.attrs.coid}-html"})
 
   extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}', '#{cc.attrs.coid}')
 
