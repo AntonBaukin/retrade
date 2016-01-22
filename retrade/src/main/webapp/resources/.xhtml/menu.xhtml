@@ -36,9 +36,8 @@
 
   Ext.onReady(function()
   {
-    extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
-      co(Ext.create('Ext.menu.Menu',
-        extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').extjsProps()))
+    extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').co(Ext.create(
+      'Ext.menu.Menu', extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}').extjsProps()))
   })
 
     </script>

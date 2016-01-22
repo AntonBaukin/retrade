@@ -47,13 +47,12 @@
       },
 
       //~: data access proxy
-      proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', { request: doRequest })
-    })
+      proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', { request: doRequest }),
 
-    //~: numbers resize callback
-    ReTrade.desktop.uievents.number.onresize(function(that, v)
-    {
-      extjsf.co("${z:vid(localView, 'main_topbar')}").doLayout()
+      //~: menu show callback
+      onshow: function() {
+        jQuery.SmartMenus.hideAll()
+      }
     })
 
     //!: issue initial empty request

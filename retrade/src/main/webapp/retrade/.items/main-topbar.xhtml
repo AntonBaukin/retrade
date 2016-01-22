@@ -334,7 +334,15 @@
       {
         icon: 'retrade-main-man-icon', class: 'pull-right last-child', handler: function()
         {
+          var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${rootView.extjsDomain}')
+          var xy   = menuNode.offset()
 
+          jQuery.SmartMenus.hideAll()
+
+          if(menu) menu.show().setXY([
+            xy.left + menuNode.outerWidth() - menu.getWidth(),
+            xy.top + menuNode.outerHeight()
+          ])
         }
       },
 
@@ -494,46 +502,17 @@
 
     //~: initialize Smart Menus
     menuNode.smartmenus({ subMenusMinWidth: null,
-      showFunction: function($ul, complete) { $ul.fadeIn(200, complete) }
+      showFunction: function($ul, complete)
+      {
+        if(ReTrade.desktop.uievents)
+          ReTrade.desktop.uievents.toggle(false)
+
+        var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${rootView.extjsDomain}')
+        if(menu) menu.hide()
+
+        $ul.fadeIn(200, complete)
+      }
     })
-
-    /*
-
-    //~: create the clocks
-    new ReTrade.Clocks({ parent: menuNode$('.retrade-desktop-clocks-area')[0], node: 'clocks', start: true })
-
-    //~: create the events menu
-    var ctl = new ReTrade.EventsControl({
-      number: { parent: $('.retrade-desktop-eventsnum-area')[0], node: 'num', defcolor: 'N' },
-      menu: { node: 'menu-area', parent: document.body, length: 5, offset: 95 },
-
-      proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', {
-        request : function(task, query)
-        {
-          ZeT.log('Do ', task, ': ', query)
-        }
-    })})
-
-    ctl.set({
-
-     numbers: { N: 999, G: 66, O: 1, R: 1 }, newer: null, older: 58, txn: 100, firstid: 81, items: [
-
-     { id: 105, time: '12:58', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную перемещения №102/ПЕ.', script: "alert('Scripting action...')"},
-     { id: 98, time: '12:35', date: 'сегодня 04 Фев', color: 'N', text: 'Пользователь [ivanov] создал накладную продажи №101/ПР.' },
-     { id: 95, time: '11:20', date: 'сегодня 04 Фев', color: 'G', text: 'Накладная перемещения №100/ПЕ успешно проведена!' },
-     { id: 91, time: '10:15', date: 'сегодня 04 Фев', color: 'O', text: 'Система запущена!', script: "ZeT.log('script run 2+4 = ', 2+4)" },
-     { id: 87, time: '22:13', date: 'вчера 03 Фев', color: 'R', text: 'Производится остановка системы!' },
-
-     { id: 81, time: '10:15', date: 'вчера 03 Фев', color: 'G', text: 'Добавлен пользователь [ivanov] Иванов Иван Иванович.' },
-     { id: 71, time: '12:34', date: '02 Фев', color: 'G', text: 'Добавлен пользователь [navalniy] Навальный Алексей Александрович. Голосуем за Навального! Кому он не нравится: спи, красавица! Крепким вечным сном...' },
-     { id: 70, time: '12:15', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №98/ПЕ.' },
-     { id: 68, time: '12:10', date: '02 Фев', color: 'G', text: 'Пользователь [System] создал накладную продажи №95/ПР.' },
-     { id: 67, time: '12:07', date: '02 Фев', color: 'O', text: 'Пользователь [System] удалил накладную закупки №93/ЗК.' },
-
-     { id: 65, time: '10:57', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №90/ПЕ.' },
-     { id: 60, time: '10:50', date: '02 Фев', color: 'N', text: 'Пользователь [System] создал накладную перемещения №87/ПЕ.' }
-   ]})
-   */
   })
 
   //]]>
@@ -543,6 +522,14 @@
 
   <!-- [user interface events] -->
   <ui:decorate template = "uievents.xhtml">
+
+    <ui:param name = "localView"  value = "${localView}"/>
+    <ui:param name = "mainTopbar" value = "${z:vid(localView, 'main-topbar')}"/>
+  </ui:decorate>
+
+
+  <!-- [user menu] -->
+  <ui:decorate template = "user-menu.xhtml">
 
     <ui:param name = "localView"  value = "${localView}"/>
     <ui:param name = "mainTopbar" value = "${z:vid(localView, 'main-topbar')}"/>

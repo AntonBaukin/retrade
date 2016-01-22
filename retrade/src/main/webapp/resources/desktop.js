@@ -3273,6 +3273,9 @@ ReTrade.EventsControl = ZeT.defineClass('ReTrade.EventsControl',
 			var o = this.menu.opts.offset
 			if(!ZeT.isn(o)) o = 0
 
+			if(ZeT.isf(this.opts.onshow))
+				this.opts.onshow(m, this)
+
 			this.menu.reset()
 
 			m.show().offset({

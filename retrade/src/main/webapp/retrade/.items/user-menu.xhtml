@@ -7,130 +7,107 @@
   xmlns:z  = 'uri:tverts.com'>
 
 
-      <!-- [main (user) button -->
+  <!-- [main (user) menu -->
 
-      <x:component coid = "${z:vid(localView, 'retrade-main-button')}">
-        <f:facet name = "extjs-props">
+  <x:menu coid = "${z:vid(localView, 'retrade-main-user-menu')}">
 
-          xtype: 'button', margin: extjsf.dpts(0, 0, 0, 4),
-          cls: 'retrade-button-menu-no-arrow',
-          iconCls: 'retrade-main-man-icon',
-          componentCls: 'retrade-button-22pt',
-          width: retrade_default('button-square-width'),
-          height: retrade_default('button-square-height')
+    <f:facet name = "extjs-props">
+      showSeparator: false, constrain: false, layout: 'fit',
+      shadow: false, border: false, bodyPadding: '20 0 0 0',
+      width: extjsf.dpt(200), height: extjsf.dpt(100),
+      bodyCls: 'retrade-transparent-panel',
+      cls: 'retrade-user-menu-frame'
+    </f:facet>
 
-        </f:facet>
+    <x:component coid = "${z:vid(localView, 'user-menu-host')}">
+      <f:facet name = "extjs-props">
+        border: 0, bodyPadding: 0, margin: 0, indent: false,
+        bodyCls: 'retrade-transparent-panel', layout: 'fit'
+      </f:facet>
 
-        <x:menu coid = "${z:vid(localView, 'retrade-main-button-menu')}">
+      <x:html coid = "${z:vid(localView, 'user-menu-html-host')}">
 
-          <f:facet name = "extjs-props">
+        <table id = "${z:vid(localView, 'user-menu-html')}"
+         cellpadding = "0" cellspacing = "0" border = "0"
+         style = "width:100%; height:100%">
 
-            showSeparator: false, constrain: false,
-            layout: 'fit', shadow: false, border: false,
-            width: extjsf.dpt(200), height: extjsf.dpt(100), bodyPadding: '20 0 0 0',
-            cls: 'retrade-user-menu-frame', bodyCls: 'retrade-transparent-panel'
+          <!-- [system user] -->
+          <ui:fragment rendered = "#{localView.systemLogin}">
+            <tr>
+              <td style = "height:100%; text-align:center; vertical-align:middle">
 
-          </f:facet>
+                <div class = "retrade-user-menu-system-login"
+                  title = "Внимание! Вы вошли как Системный [System] пользователь и имеете неограниченные права в домене [${localView.domain.code}]!">
 
-          <x:component coid = "${z:vid(localView, 'user-menu-host')}">
-            <f:facet name = "extjs-props">
-              border: 0, bodyPadding: 0, margin: 0, indent: false,
-              bodyCls: 'retrade-transparent-panel', layout: 'fit'
-            </f:facet>
+                  Системный
+                </div>
 
-            <x:html coid = "${z:vid(localView, 'user-menu-html-host')}">
+                <div class = "retrade-user-menu-system-domain">
+                  ${localView.domain.code}
+                </div>
+              </td>
+            </tr>
+          </ui:fragment>
 
-              <table id = "${z:vid(localView, 'user-menu-html')}"
-                cellpadding = "0" cellspacing = "0" border = "0"
-                style = "width:100%; height:100%">
+          <!-- [regular user] -->
+          <ui:fragment rendered = "#{not localView.systemLogin}">
+            <tr>
+              <td colspan = "#{(localView.domainStuff)?(2):(1)}"
+                  class = "retrade-user-menu-display-name">
 
-                <ui:fragment rendered = "#{localView.systemLogin}">
-                  <tr>
-                    <td style = "height:100%; text-align:center; vertical-align:middle">
+                <div>${localView.userDisplayName}</div>
+              </td>
+            </tr>
 
-                      <div class = "retrade-user-menu-system-login"
-                        title = "Внимание! Вы вошли как Системный [System] пользователь и имеете неограниченные права в домене [${localView.domain.code}]!">
-                        Системный
-                      </div>
+            <!-- [staff of the domain] -->
+            <ui:fragment rendered = "#{not localView.domainStuff}">
+              <tr>
+                <td class = "retrade-user-menu-firm-name">
+                  <div>${localView.userFirmName}</div>
+                </td>
+              </tr>
+            </ui:fragment>
+          </ui:fragment>
 
-                      <div class = "retrade-user-menu-system-domain">
-                        ${localView.domain.code}
-                      </div>
-                    </td>
-                  </tr>
-                </ui:fragment>
+          <tr>
+            <ui:fragment rendered = "#{not localView.systemLogin and localView.domainStuff}">
+              <td class = "retrade-user-menu-domain-staff">
+                <div>Сотрудник организации</div>
+              </td>
+            </ui:fragment>
 
-                <ui:fragment rendered = "#{not localView.systemLogin}">
-                  <tr>
-                    <td colspan="#{(localView.domainStuff)?(2):(1)}"
-                      class = "retrade-user-menu-display-name">
-
-                      <div>${localView.userDisplayName}</div>
-                    </td>
-                  </tr>
-
-                  <ui:fragment rendered = "#{not localView.domainStuff}">
-                    <tr>
-                      <td class = "retrade-user-menu-firm-name">
-                        <div>${localView.userFirmName}</div>
-                      </td>
-                    </tr>
-                  </ui:fragment>
-
-                </ui:fragment>
-
-                <tr>
-                  <ui:fragment rendered = "#{not localView.systemLogin and localView.domainStuff}">
-                    <td class = "retrade-user-menu-domain-staff">
-                        <div>Сотрудник организации</div>
-                    </td>
-                  </ui:fragment>
-
-                  <td class = "retrade-user-menu-logoff"
-                    id = "${z:vid(localView, 'user-menu-logout-cell')}"/>
-                </tr>
-              </table>
-            </x:html>
-          </x:component>
-        </x:menu>
-      </x:component>
+            <!-- [login button area] -->
+            <td class = "retrade-user-menu-logoff"
+                id = "${z:vid(localView, 'user-menu-logout-cell')}"/>
+          </tr>
+        </table>
+      </x:html>
+    </x:component>
+  </x:menu>
 
 
-      <!-- [logoff button] -->
-      <x:component coid = "${z:vid(localView, 'user-menu-logoff-button')}"
-        renderParent = "${z:vid(localView, 'retrade-main-button-menu')}"
-        renderTo = "${z:vid(localView, 'user-menu-logout-cell')}">
+  <!-- [logoff button] -->
+  <x:component coid = "${z:vid(localView, 'user-menu-logoff-button')}"
+    renderParent = "${z:vid(localView, 'retrade-main-user-menu')}"
+    renderTo = "${z:vid(localView, 'user-menu-logout-cell')}">
 
-        <f:facet name = "extjs-props">
-
-          xtype: 'ux.button-detached', width: 30, height: 30,
-          componentCls: 'retrade-button-22pt',
-          iconCls: 'retrade-main-logoff-icon'
-
-        </f:facet>
-      </x:component>
-
-
-      <!-- [logoff server call] -->
-      <x:action-call coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}"
-        action = "#{rootView.doLogoff}"/>
+    <f:facet name = "extjs-props">
+      xtype: 'ux.button-detached',
+      width: retrade_default('button-square-width'),
+      height: retrade_default('button-square-height'),
+      componentCls: 'retrade-button-22pt',
+      iconCls: 'retrade-main-logoff-icon'
+    </f:facet>
+  </x:component>
 
 
-      <script type = "text/javascript">
-      //<![CDATA[
+  <!-- [logoff server call] -->
+  <x:action-call action = "#{rootView.doLogoff}"
+    coid = "${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}"/>
 
-  //~: install special alignment for user main menu
-  extjsf.bind("${z:vid(localView, 'retrade-main-button')}", '${rootView.extjsDomain}').on('added', function(btn)
-  {
-    var al = btn.menu.getAlignToXY;
 
-    btn.menu.getAlignToXY = function()
-    {
-      var xy = al.apply(this, arguments)
-      xy[0] = btn.getX() + btn.getWidth() - btn.menu.getWidth()
-      return xy
-    }
-  })
+  <script type = "text/javascript">
+  //<![CDATA[
 
   //~: wrap user main menu with special border
   extjsf.bind("${z:vid(localView, 'user-menu-host')}", '${rootView.extjsDomain}').on('render', function(xmenu)
@@ -154,15 +131,15 @@
     )
   })
 
+
   //~: logout click
   extjsf.bindHandler("${z:vid(localView, 'user-menu-logoff-button')}", '${rootView.extjsDomain}', function(btn, e)
   {
     retrade_yes_no_ask_warning({
 
-      event: e, widthpt: 260, '+xpt': -220, '-y': 48,
-      title: 'Выйти из системы?',
-      message: 'После выхода из системы Вы будуте переадресованы ' +
-       'на страницу входа в систему для Вашей организации.',
+      widthpt: 260, title: 'Выйти из системы?',
+      message: 'После выхода из системы вы будуте переадресованы ' +
+       'на страницу входа в систему для вашей организации.',
 
       yes : function()
       {
@@ -176,9 +153,10 @@
       }
     })
   })
-      //]]>
-      </script>
 
-      <!-- main (user) button] -->
+  //]]>
+  </script>
+
+  <!-- main (user) menu] -->
 
 </ui:component>
