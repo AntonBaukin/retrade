@@ -6,31 +6,45 @@
   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
   xmlns:z  = 'uri:tverts.com'>
 
- <x:component coid = "${z:vid(localView, 'retrade-selset-place')}">
-   <f:facet name = "extjs-props">
+  <!-- [selection set hidden placeholder ] -->
+  <x:component coid = "${z:vid(localView, 'retrade-selset-place')}">
+    <f:facet name = "extjs-props">
+      style: { display: 'none' }
+    </f:facet>
+  </x:component>
 
-     border: false, frame: false,
-     padding: 0, margin: 0,
-     layout: { type: 'hbox', align: 'stretch'},
-     bodyCls: 'retrade-transparent-panel'
 
-   </f:facet>
- </x:component>
+  <script type = "text/javascript">
+  //<![CDATA[
 
- <script type = "text/javascript">
+  //~: domain and view
+  ReTrade.selset.domain('${rootView.extjsDomain}').view('${localView.id}')
 
-   //~: domain and view
-   ReTrade.selset.domain('${rootView.extjsDomain}').view('${localView.id}')
+  //~: bind selection set hidden placeholder
+  ReTrade.selset.place(extjsf.bind("${z:vid(localView, 'retrade-selset-place')}", '${rootView.extjsDomain}'))
 
-   //~: bind Selection Set UI place
-   ReTrade.selset.place(extjsf.bind("${z:vid(localView, 'retrade-selset-place')}", '${rootView.extjsDomain}'))
+  //~: toggle button node id
+  ReTrade.selset.button("${z:vid(localView, 'retrade-selset-toggle')}")
 
-   //~: delayed load Selection Set UI
-   extjsf.bind("${z:vid(localView, 'retrade-selset-place')}", '${rootView.extjsDomain}').on('added', function()
-   {
-     ReTrade.selset.loadPlace("${z:url('/go/retrade/items/selset-ui')}")
-   })
+  //~: menu ul-list node id
+  ReTrade.selset.menu("${z:vid(localView, 'retrade-selset-menu')}")
 
- </script>
+  //~: node ids of menu control items
+  ReTrade.selset.ctlitems({
+    'edit'    : "${z:vid(localView, 'retrade-selset-edit')}",
+    'add'     : "${z:vid(localView, 'retrade-selset-add')}",
+    'delete'  : "${z:vid(localView, 'retrade-selset-delete')}",
+    'clear'   : "${z:vid(localView, 'retrade-selset-clear')}",
+    'default' : "${z:vid(localView, 'retrade-selset-default')}"
+  })
 
+  //~: delayed load selection set processing UI
+  extjsf.bind("${z:vid(localView, 'retrade-selset-place')}", '${rootView.extjsDomain}').
+    on('added', function()
+  {
+    ReTrade.selset.loadPlace("${z:url('/go/retrade/items/selset-ui')}")
+  })
+
+  //]]>
+  </script>
 </ui:component>

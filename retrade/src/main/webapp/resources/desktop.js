@@ -1919,12 +1919,9 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
  */
 ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
-	init              : function(opts)
+	init              : function()
 	{},
 
-	/**
-	 * ExtJSF domain where the selection set is created.
-	 */
 	domain            : function(domain)
 	{
 		if(!ZeT.iss(domain))
@@ -1933,9 +1930,6 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		return this
 	},
 
-	/**
-	 * ReTrade view id where the selection set is created.
-	 */
 	view              : function(view)
 	{
 		if(ZeTS.ises(view))
@@ -1952,14 +1946,10 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		return this
 	},
 
-	/**
-	 * ExtJS Store ID of the store with SelSet model.
-	 */
 	storeId           : function(storeId)
 	{
-		if(ZeTS.ises(storeId))
-			return this._storeId
-		this._storeId = storeId
+		if(!storeId) return this._storeId
+		this._storeId = ZeT.asserts(storeId)
 		return this
 	},
 
@@ -1982,7 +1972,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	},
 
 	/**
-	 * Loads Selection Set controls into the place.
+	 * Loads Selection Set controls into the placeholder.
 	 */
 	loadPlace         : function(url)
 	{
@@ -1992,7 +1982,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		var self = this
 		Ext.create('Ext.ComponentLoader', {
 
-		  'url': url, target: this.place().co(),
+		  'url': url, target: self.place().co(),
 		  autoLoad: true, scripts: true,
 		  ajaxOptions: { method: 'GET' }, params: {
 		    mode: 'body', view: self.view(),
@@ -2001,27 +1991,27 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		})
 	},
 
-	toggleButton      : function(bind)
+	button            : function(nodeid)
 	{
-		if(ZeT.iss(bind))
-			bind = extjsf.bind(bind, this.domain())
-
-		if(!bind || !bind.extjsfBind)
-			return this._toggle_btn && this._toggle_btn.co()
-
-		this._toggle_btn = bind
+		if(!nodeid) return this._toggle_btn
+		this._toggle_btn = ZeT.asserts(nodeid)
 		return this
 	},
 
-	menu              : function(bind)
+	menu              : function(nodeid)
 	{
-		if(ZeT.iss(bind))
-			bind = extjsf.bind(bind, this.domain())
+		if(!nodeid) return this._main_menu
+		this._main_menu = ZeT.asserts(nodeid)
+		return this
+	},
 
-		if(!bind || !bind.extjsfBind)
-			return this._main_menu && this._main_menu.co()
+	ctlitems          : function(its)
+	{
+		if(ZeT.iss(its))
+			return this._ctl_items && this._ctl_items[its]
 
-		this._main_menu = bind
+		ZeT.assert(ZeT.iso(its))
+		this._ctl_items = its
 		return this
 	},
 

@@ -6,230 +6,104 @@
   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
   xmlns:z  = 'uri:tverts.com'>
 
- <c:set var = "v" scope = "request" value = "${facesSelSetView}"/>
+  <c:set var = "v" scope = "request" value = "${facesSelSetView}"/>
 
- ${v.checkModelRequestedWithRedirect}
+  ${v.checkModelRequestedWithRedirect}
 
- <ui:decorate template = '/resources/.view-modes/body.xhtml'
-   xmlns    = 'http://www.w3.org/1999/xhtml'
-   xmlns:h  = 'http://java.sun.com/jsf/html'
-   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
+  <ui:decorate template = '/resources/.view-modes/body.xhtml'
+    xmlns    = 'http://www.w3.org/1999/xhtml'
+    xmlns:h  = 'http://java.sun.com/jsf/html'
+    xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'>
 
- <ui:define name = 'page_body'>
+  <ui:define name = 'page_body'>
 
 
- <!-- [selection set button+menu -->
+  <!-- [selection set data store] -->
+  <x:data-store storeId = "${z:vid(v, 'selSetStore')}"
+    modelView = "${v}" pageSize = "0">
 
- <x:component coid = "${z:vid(v, 'retrade-selset-menu-button')}">
-
-   <f:facet name = "extjs-props">
-
-     xtype: 'button', width: 18, height: 30,
-     cls: 'retrade-selset-menu-button retrade-button-menu-no-arrow',
-     iconCls: 'retrade-button-menu-arrow',
-     componentCls: 'retrade-button-22pt',
-
+    <f:facet name = "store-props">
+      model: 'retrade.model.CatItemView', autoLoad: false
     </f:facet>
 
-    <x:menu coid = "${z:vid(v, 'retrade-selset-menu')}">
-
-      <f:facet name = "extjs-props">
-        showSeparator: false
-      </f:facet>
-
-
-      <x:component coid = "${z:vid(v, 'retrade-selset-edit')}">
-
-        <f:facet name = "extjs-props">
-          text: 'Свойства', xtype: 'menuitem',
-          iconCls: 'retrade-selset-menu-edit',
-          tooltipType: 'title', tooltip: 'Свойства текущей выборки'
-        </f:facet>
-      </x:component>
-
-      <x:component coid = "${z:vid(v, 'retrade-selset-add')}">
-
-        <f:facet name = "extjs-props">
-          text: 'Добавить', xtype: 'menuitem', hideOnClick: false,
-          iconCls: 'retrade-selset-menu-plus',
-          tooltipType: 'title', tooltip: 'Добавить новую выборку'
-        </f:facet>
-      </x:component>
-
-      <x:component coid = "${z:vid(v, 'retrade-selset-delete')}">
-
-        <f:facet name = "extjs-props">
-          text: 'Удалить', xtype: 'menuitem', hideOnClick: false,
-          iconCls: 'retrade-selset-menu-minus',
-          tooltipType: 'title', tooltip: 'Удалить текущую выборку'
-        </f:facet>
-      </x:component>
-
-      <x:component coid = "${z:vid(v, 'retrade-selset-clear')}">
-
-        <f:facet name = "extjs-props">
-          text: 'Очистить', xtype: 'menuitem',
-          iconCls: 'retrade-selset-menu-clear',
-          tooltipType: 'title', tooltip: 'Очистить текущую выборку'
-        </f:facet>
-      </x:component>
-
-      <x:component coid = "${z:vid(v, 'retrade-selset-sep')}">
-        <f:facet name = "extjs-props">
-          xtype: 'menuseparator'
-        </f:facet>
-      </x:component>
-
-    </x:menu>
- </x:component>
-
- <script type = "text/javascript">
- //<![CDATA[
-
- extjsf.bind("${z:vid(v, 'retrade-selset-menu-button')}", '${rootView.extjsDomain}').on('added', function(b1)
-  {
-    var b0 = extjsf.co("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}');
-    var al = b1.menu.getAlignToXY;
-
-    b1.menu.getAlignToXY = function()
-    {
-      var xy = al.apply(this, arguments);
-      //xy[0] -= (b1.getX() - b0.getX());
-      return xy;
-    }
-  })
-
- //]]>
- </script>
-
- <!-- selection set button+menu] -->
-
-
- <!-- [selection set button] -->
-
- <x:component coid = "${z:vid(v, 'retrade-selset-button')}">
-   <f:facet name = "extjs-props">
-
-     xtype: 'button', enableToggle: true,
-     width: retrade_default('button-selset-width'),
-     height: retrade_default('button-selset-height'),
-     iconCls: 'retrade-selset-button-icon',
-     componentCls: 'retrade-button-22pt retrade-icon-24',
-     margin: extjsf.dpts(0, 0, 0, 2),
-     tooltipType: 'title', tooltip: 'Режим выборки данных'
-
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.SelSetView')
     </f:facet>
- </x:component>
+  </x:data-store>
 
 
- <!-- [selection set data store -->
-
- <x:data-store storeId = "${z:vid(v, 'selSetStore')}"
-   modelView = "${v}" pageSize = "10">
-
-   <f:facet name = "store-props">
-     model: 'retrade.model.CatItemView', autoLoad: false
-   </f:facet>
-
-   <f:facet name = "proxy-props">
-     reader: ZeT.defined('retrade.readers.SelSetView')
-   </f:facet>
- </x:data-store>
-
- <!-- selection set data store] -->
-
-
- <!-- [script add object to selection -->
-
- <x:action-call coid = "${z:vid(v, 'script_selset_add_object')}"
-    action = "#{v.doAddObject}">
-
-  <f:facet name = "action-params">
-    '${v.modelParam}': '${v.modelKeys}'
-  </f:facet>
- </x:action-call>
-
- <!-- script add object to selection] -->
-
-
- <!-- [script delete object from selection -->
-
- <x:action-call coid = "${z:vid(v, 'script_selset_del_object')}"
-   action = "#{v.doDelObject}">
+  <!-- [script to add object to selection] -->
+  <x:action-call coid = "${z:vid(v, 'script_selset_add_object')}"
+     action = "#{v.doAddObject}">
 
    <f:facet name = "action-params">
      '${v.modelParam}': '${v.modelKeys}'
    </f:facet>
- </x:action-call>
-
- <!-- script delete object from selection] -->
+  </x:action-call>
 
 
- <!-- [script add new selection -->
+  <!-- [script to delete object from selection] -->
+  <x:action-call coid = "${z:vid(v, 'script_selset_del_object')}"
+    action = "#{v.doDelObject}">
 
- <x:action-call coid = "${z:vid(v, 'script_selset_add')}"
-    action = "#{v.doAddSelSet}">
-
-  <f:facet name = "action-params">
-    '${v.modelParam}': '${v.modelKeys}'
-  </f:facet>
- </x:action-call>
-
- <!-- script add new selection] -->
+    <f:facet name = "action-params">
+      '${v.modelParam}': '${v.modelKeys}'
+    </f:facet>
+  </x:action-call>
 
 
- <!-- [script clear the selection -->
+  <!-- [script to add new selection] -->
+  <x:action-call coid = "${z:vid(v, 'script_selset_add')}"
+     action = "#{v.doAddSelSet}">
 
- <x:action-call coid = "${z:vid(v, 'script_selset_clear')}"
-    action = "#{v.doClearSelSet}">
-
-  <f:facet name = "action-params">
-    '${v.modelParam}': '${v.modelKeys}'
-  </f:facet>
- </x:action-call>
-
- <!-- script clear the selection] -->
+   <f:facet name = "action-params">
+     '${v.modelParam}': '${v.modelKeys}'
+   </f:facet>
+  </x:action-call>
 
 
- <!-- [script change selection -->
+  <!-- [script to clear the selection] -->
+  <x:action-call coid = "${z:vid(v, 'script_selset_clear')}"
+     action = "#{v.doClearSelSet}">
 
- <x:action-call coid = "${z:vid(v, 'script_selset_change')}"
-    action = "#{v.doChangeSelSet}">
-
-  <f:facet name = "action-params">
-    '${v.modelParam}': '${v.modelKeys}'
-  </f:facet>
- </x:action-call>
-
- <!-- script change selection] -->
+   <f:facet name = "action-params">
+     '${v.modelParam}': '${v.modelKeys}'
+   </f:facet>
+  </x:action-call>
 
 
- <!-- [script delete selection set -->
+  <!-- [script to change selection] -->
+  <x:action-call coid = "${z:vid(v, 'script_selset_change')}"
+     action = "#{v.doChangeSelSet}">
 
- <x:action-call coid = "${z:vid(v, 'script_selset_delete')}"
-    action = "#{v.doDeleteSelSet}">
+   <f:facet name = "action-params">
+     '${v.modelParam}': '${v.modelKeys}'
+   </f:facet>
+  </x:action-call>
 
-  <f:facet name = "action-params">
-    '${v.modelParam}': '${v.modelKeys}'
-  </f:facet>
- </x:action-call>
 
- <!-- script delete selection set] -->
+  <!-- [script to delete selection set] -->
+  <x:action-call coid = "${z:vid(v, 'script_selset_delete')}"
+     action = "#{v.doDeleteSelSet}">
+
+   <f:facet name = "action-params">
+     '${v.modelParam}': '${v.modelKeys}'
+   </f:facet>
+  </x:action-call>
 
 
   <script type = "text/javascript">
   //<![CDATA[
 
-  //~: initialize selection set instance
+  //~: post-initialize selection set global instance
   ReTrade.selset.
     model('${v.modelKeys}').
     storeId("${z:vid(v, 'selSetStore')}").
-    toggleButton("${z:vid(v, 'retrade-selset-button')}").
-    menu("${z:vid(v, 'retrade-selset-menu')}").
-    buildMenu(#{v.selSetMenuModel}).
     url('winmain', "${z:url('/go/retrade/items/selset-win')}")
+    //buildMenu(#{v.selSetMenuModel})
 
-  //~: selection set add script
+
+  //~: selection set add script wrapper
   ReTrade.selset.adder(function(id, remove)
   {
      var script = (remove)?("${z:vid(v, 'script_selset_del_object')}"):("${z:vid(v, 'script_selset_add_object')}");
@@ -242,7 +116,8 @@
      })
   })
 
-  //~: selection set change script
+
+  //~: selection set change script wrapper
   ReTrade.selset.changer(function(selset, onsuccess)
   {
      extjsf.bindHandler("${z:vid(v, 'script_selset_change')}", '${rootView.extjsDomain}')({
@@ -250,75 +125,83 @@
      })
   })
 
-  //~: place the selection set menu button
-  Ext.onReady(function()
-  {
-    var place = ReTrade.selset.place(); if(!place) return;
-    var btn   = extjsf.bind("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}');
-    var menu  = extjsf.bind("${z:vid(v, 'retrade-selset-menu-button')}", '${rootView.extjsDomain}');
-
-    if(!place.co())
-      place.addItem(menu).addItem(btn)
-    else {
-      place.co().add(menu.extjsProps())
-      place.co().add(btn.extjsProps())
-    }
-
-    //!: synchronize on the desktop
-    ReTrade.desktop.readyPoint('ReTrade.selset', true)
-  })
 
   //~: selection set toggle button
-  extjsf.bind("${z:vid(v, 'retrade-selset-button')}", '${rootView.extjsDomain}').
-    on('toggle', ZeT.fbind(ReTrade.selset.toggle, ReTrade.selset))
+  $('#' + ReTrade.selset.button()).click(function()
+  {
+    ZeT.log('ReTrade.selset.toggle')
+    //ReTrade.selset.toggle()
+  })
+
 
   //~: edit selection
-  extjsf.bindHandler("${z:vid(v, 'retrade-selset-edit')}", '${rootView.extjsDomain}', function()
+  $('#' + ReTrade.selset.ctlitems('edit')).click(function()
   {
-     var winmain = ReTrade.selset.winmain();
+    ZeT.log('ReTrade.selset.edit')
 
-     if(!winmain)
-     {
-       ReTrade.selset.toggle({active: true, params: { 'selset-edit': 'true' }})
-       return;
-     }
-
-     var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
-     var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
-     if(!edit || !grid) throw 'Selection Set window has no content!'
-
-     grid.co().hide()
-     edit.co().show()
+//    var winmain = ReTrade.selset.winmain();
+//
+//     if(!winmain)
+//     {
+//       ReTrade.selset.toggle({active: true, params: { 'selset-edit': 'true' }})
+//       return;
+//     }
+//
+//     var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
+//     var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
+//     if(!edit || !grid) throw 'Selection Set window has no content!'
+//
+//     grid.co().hide()
+//     edit.co().show()
   })
+
 
   //~: add selection
-  extjsf.bindHandler("${z:vid(v, 'retrade-selset-add')}", '${rootView.extjsDomain}', function()
+  $('#' + ReTrade.selset.ctlitems('add')).click(function()
   {
-      extjsf.bindHandler("${z:vid(v, 'script_selset_add')}", '${rootView.extjsDomain}')()
+    ZeT.log('ReTrade.selset.add')
+    //extjsf.bindHandler("${z:vid(v, 'script_selset_add')}", '${rootView.extjsDomain}')()
   })
+
 
   //~: delete selection set
-  extjsf.bindHandler("${z:vid(v, 'retrade-selset-delete')}", '${rootView.extjsDomain}', function()
+  $('#' + ReTrade.selset.ctlitems('delete')).click(function()
   {
-    extjsf.bindHandler("${z:vid(v, 'script_selset_delete')}", '${rootView.extjsDomain}')({
-      success: function()
-      {
-         Ext.data.StoreManager.lookup(ReTrade.selset.storeId()).load()
-         ReTrade.selset.reload()
-      }
-    })
+    ZeT.log('ReTrade.selset.delete')
+
+//    extjsf.bindHandler("${z:vid(v, 'script_selset_delete')}", '${rootView.extjsDomain}')({
+//      success: function()
+//      {
+//         Ext.data.StoreManager.lookup(ReTrade.selset.storeId()).load()
+//         ReTrade.selset.reload()
+//      }
+//    })
   })
 
+
   //~: clear selection
-  extjsf.bindHandler("${z:vid(v, 'retrade-selset-clear')}", '${rootView.extjsDomain}', function()
+  $('#' + ReTrade.selset.ctlitems('clear')).click(function()
   {
-    extjsf.bindHandler("${z:vid(v, 'script_selset_clear')}", '${rootView.extjsDomain}')({
-      success: function()
-      {
-        Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)
-      }
-    })
+    ZeT.log('ReTrade.selset.clear')
+
+//    extjsf.bindHandler("${z:vid(v, 'script_selset_clear')}", '${rootView.extjsDomain}')({
+//      success: function()
+//      {
+//        Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)
+//      }
+//    })
   })
+
+
+  //~: set the default selection
+  $('#' + ReTrade.selset.ctlitems('default')).click(function()
+  {
+    ZeT.log('ReTrade.selset.default')
+  })
+
+
+  //!: synchronize on the desktop
+  //ReTrade.desktop.readyPoint('ReTrade.selset', true)
 
  //]]>
  </script>

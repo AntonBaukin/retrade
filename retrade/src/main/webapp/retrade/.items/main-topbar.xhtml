@@ -347,53 +347,46 @@
       },
 
       {
-        icon: 'retrade-selset-button-icon retrade-icon-nav-24x16', class: 'pull-right',
-        handler: function()
-        {
-
-        }
+        icon: 'retrade-selset-button-icon retrade-icon-nav-24x16',
+        class: 'pull-right', tooltip: 'Режим выборки данных',
+        id: "${z:vid(localView, 'retrade-selset-toggle')}"
       },
 
       {
         icon: 'retrade-button-menu-arrow retrade-icon-nav-6x16',
-        class: 'pull-right', aclass: 'icon-only align-menu-middle'
+        class: 'pull-right', aclass: 'icon-only align-menu-middle',
+        ulid: "${z:vid(localView, 'retrade-selset-menu')}"
       },
 
       [
         {
-          title: 'Свойства', icon: 'retrade-selset-menu-edit', handler: function()
-          {
-
-          }
+          title: 'Свойства', icon: 'retrade-selset-menu-edit',
+          id: "${z:vid(localView, 'retrade-selset-edit')}",
+          tooltip: 'Свойства текущей выборки'
         },
 
         {
-          title: 'Добавить', icon: 'retrade-selset-menu-plus', handler: function()
-          {
-
-          }
+          title: 'Добавить', icon: 'retrade-selset-menu-plus',
+          id: "${z:vid(localView, 'retrade-selset-add')}",
+          tooltip: 'Добавить новую выборку'
         },
 
         {
-          title: 'Удалить', icon: 'retrade-selset-menu-minus', handler: function()
-          {
-
-          }
+          title: 'Удалить', icon: 'retrade-selset-menu-minus',
+          id: "${z:vid(localView, 'retrade-selset-delete')}",
+          tooltip: 'Удалить текущую выборку'
         },
 
         {
-          title: 'Очистить', icon: 'retrade-selset-menu-clear', handler: function()
-          {
-
-          }
+          title: 'Очистить', icon: 'retrade-selset-menu-clear',
+          id: "${z:vid(localView, 'retrade-selset-clear')}",
+          tooltip: 'Очистить текущую выборку'
         },
 
         {
           title: 'По умолчанию', icon: 'x-menu-item-checkbox',
-          aclass: 'x-menu-item-checked', handler: function()
-          {
-
-          }
+          aclass: 'x-menu-item-checked', tooltip: 'Выборка по умолчанию',
+          id: "${z:vid(localView, 'retrade-selset-default')}"
         }
       ],
 
@@ -407,6 +400,7 @@
         dclass: 'retrade-desktop-eventsnum-area'
       }
     ])
+
 
     function createMenu(node, m, subs, level)
     {
@@ -441,6 +435,12 @@
         //?: {disabled}
         if((m.disabled === true) || (m.disabled === 'true'))
           a.addClass('disabled')
+
+        //~: a-id
+        if(ZeT.iss(m.id)) a.attr('id', m.id)
+
+        //~: tooltip
+        if(ZeT.iss(m.tooltip)) a.attr('title', m.tooltip)
 
         //~: click handler
         a.click(function(e)
@@ -485,6 +485,9 @@
           var ul = $('<ul/>')
           node.append(ul)
           node = ul
+
+          //~: a-id
+          if(ZeT.iss(m.ulid)) ul.attr('id', m.ulid)
         }
 
         for(var i = 0;(i < subs.length);i++)
@@ -499,6 +502,7 @@
         }
       }
     }
+
 
     //~: initialize Smart Menus
     menuNode.smartmenus({ subMenusMinWidth: null,
@@ -522,7 +526,6 @@
 
   <!-- [user interface events] -->
   <ui:decorate template = "uievents.xhtml">
-
     <ui:param name = "localView"  value = "${localView}"/>
     <ui:param name = "mainTopbar" value = "${z:vid(localView, 'main-topbar')}"/>
   </ui:decorate>
@@ -530,9 +533,12 @@
 
   <!-- [user menu] -->
   <ui:decorate template = "user-menu.xhtml">
-
     <ui:param name = "localView"  value = "${localView}"/>
-    <ui:param name = "mainTopbar" value = "${z:vid(localView, 'main-topbar')}"/>
   </ui:decorate>
 
+
+  <!-- [selection set button] -->
+  <ui:decorate template = "selset.xhtml">
+    <ui:param name = "localView" value = "#{localView}"/>
+  </ui:decorate>
 </ui:component>
