@@ -256,7 +256,7 @@
   border-bottom-right-radius: 0;
 }
 .sm-retrade a, .sm-retrade a:hover, .sm-retrade a:focus, .sm-retrade a:active, .sm-retrade a.highlighted {
-  padding: 4px 12px;
+  padding: 4px 12px 3px;
   color: #404551;
 }
 .sm-retrade a:hover, .sm-retrade a:focus, .sm-retrade a:active, .sm-retrade a.highlighted {

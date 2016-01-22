@@ -5,95 +5,63 @@
   xmlns:x  = 'http://java.sun.com/jsf/composite/.xhtml'
   xmlns:z  = 'uri:tverts.com'>
 
-  <!-- [desktop clocks -->
-
-  <x:html coid = "${z:vid(localView, 'desktop-topbar-clocks')}">
-    <f:facet name = "extjs-props">
-      bodyCls: 'retrade-transparent-panel',
-      margin: extjsf.dpts(0, 0, 0, 4)
-    </f:facet>
-
-    <div id = "${z:vid(localView, 'desktop-clocks-area')}"
-      class = "retrade-desktop-clocks-area"></div>
-  </x:html>
-
   <script type = "text/javascript">
   //<![CDATA[
 
-  //~: setup the desktop clocks
-  extjsf.bind("${z:vid(localView, 'desktop-topbar-clocks')}").on('afterrender', function()
+  extjsf.bind("${mainTopbar}", '${rootView.extjsDomain}').on('afterrender', function(tbar)
   {
-      //~: create the desktop clocks
-      ZeT.assert(!ReTrade.desktop.clocks)
-      ReTrade.desktop.clocks = new ReTrade.Clocks({
-        start: true, node: "${z:vid(rootView, 'desktop-clocks')}",
-        parent: "${z:vid(rootView, 'desktop-clocks-area')}"
-      })
+    //?: {have no clocks now}
+    ZeT.assert(!ReTrade.desktop.clocks)
+
+    //~: create the desktop clocks
+    ReTrade.desktop.clocks = new ReTrade.Clocks({
+      start: true, node: "${z:vid(localView, 'desktop-clocks')}",
+      parent: tbar.getEl().down('.retrade-desktop-clocks-area', true)
+    })
+
+
+    //<: setup the desktop events menu
+
+    ZeT.assert(!ReTrade.desktop.uievents)
+
+    //~: request function
+    function doRequest(task, query)
+    {
+      var p = {}; if(task) p.task = task; if(query) p.query = query
+      jQuery.get("${z:url('/go/uievents')}", p)
+    }
+
+    //~: create the desktop user events control
+    ReTrade.desktop.uievents = new ReTrade.EventsControl({
+
+      //~: numbering component
+      number: { defcolor: 'N',
+        parent : tbar.getEl().down('.retrade-desktop-eventsnum-area', true),
+        node   : "${z:vid(localView, 'desktop-eventsnum')}"
+      },
+
+      //~: events menu
+      menu: { length: parseInt("${systemConfig.userEventsPage}"),
+        parent : document.body,
+        node   : "${z:vid(localView, 'desktop-events-menu')}"
+      },
+
+      //~: data access proxy
+      proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', { request: doRequest })
+    })
+
+    //~: numbers resize callback
+    ReTrade.desktop.uievents.number.onresize(function(that, v)
+    {
+      extjsf.co("${z:vid(localView, 'main_topbar')}").doLayout()
+    })
+
+    //!: issue initial empty request
+    doRequest()
+
+    //>: setup the desktop events menu
   })
 
   //]]>
   </script>
-
-  <!-- desktop clocks] -->
-
-
-  <!-- [desktop events number -->
-
-  <x:html coid = "${z:vid(localView, 'desktop-topbar-eventsnum')}">
-    <f:facet name = "extjs-props">
-      bodyCls: 'retrade-transparent-panel'
-    </f:facet>
-
-    <div id = "${z:vid(localView, 'desktop-eventsnum-area')}"
-      class = "retrade-desktop-eventsnum-area"></div>
-  </x:html>
-
-  <script type = "text/javascript">
-  //<![CDATA[
-
-  //~: setup the desktop events menu
-  extjsf.bind("${z:vid(localView, 'desktop-topbar-eventsnum')}").on('afterrender', function()
-  {
-      //~: request function
-      function doRequest(task, query)
-      {
-        var p = {}; if(task) p.task = task; if(query) p.query = query
-        jQuery.get("${z:url('/go/uievents')}", p)
-      }
-
-      //~: create the desktop user events control
-      ZeT.assert(!ReTrade.desktop.uievents)
-      ReTrade.desktop.uievents = new ReTrade.EventsControl({
-
-        //~: numbering component
-        number: { defcolor: 'N',
-          parent : "${z:vid(rootView, 'desktop-eventsnum-area')}",
-          node   : "${z:vid(rootView, 'desktop-eventsnum')}"
-        },
-
-        //~: events menu
-        menu: { length: parseInt("${systemConfig.userEventsPage}"),
-          parent : document.body,
-          node   : "${z:vid(rootView, 'desktop-events-menu')}"
-        },
-
-        //~: data access proxy
-        proxy: ZeT.hiddenInstance('ReTrade.EventsDataProxy', { request: doRequest })
-      })
-
-      //~: numbers resize callback
-      ReTrade.desktop.uievents.number.onresize(function(that, v)
-      {
-        extjsf.co("${z:vid(localView, 'main_topbar')}").doLayout()
-      })
-
-      //!: issue initial empty request
-      doRequest()
-  })
-
-  //]]>
-  </script>
-
-  <!-- desktop events number] -->
-
- </ui:component>
+</ui:component>
