@@ -1079,15 +1079,11 @@ hr.retrade-info-hr
 /* documents */
 
 .x-grid-cell.retrade-grid-doc-state-fixed span
-{
-  padding-left: 2px;
-}
+{}
 
 .x-grid-cell.retrade-grid-doc-state-edited span
 {
-  background-color: rgba(72, 141, 72, 0.9);
-  border-radius: 4px; padding: 3px 2px 2px 2px;
-  color: white;
+  color: #488D48;
 }
 
 

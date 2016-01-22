@@ -37,150 +37,181 @@
   {
     var menuNode = $('#'+"${z:vid(localView, 'main-topbar-html')} ul.sm.sm-retrade")
 
-    createMenu(menuNode, null, [
-
+    createMenu(menuNode, null,
+    [
       {
-        title: 'РеТрейд', icon: 'retrade-main-icon', handler: function()
-        {
-
-        }
+        title: 'РеТрейд', icon: 'retrade-main-icon'
       },
 
       [
         {
           title: 'Основные документы', icon: 'retrade-document-icon', handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/docs/documents', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:docs:')
+            })
           }
         },
 
         {
           title: 'Документы изменения цен', icon: 'retrade-price-delta-icon', handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/reprice-docs/list', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:reprice-docs:')
+            })
           }
         },
 
         {
-          title: 'Платёжные документы', icon: 'retrade-payment-icon', handler: function()
+          title: 'Платёжные документы', icon: 'retrade-payment-icon',
+          disabled: true, handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/payments/list', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:payments:')
+            })
           }
         },
 
         {
           title: 'Мои отчёты', icon: 'retrade-payment-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/datas/my-reports',
+              tempDomain: 'wnd:retrade-main-menu:my-reports:',
+              box: { widthpt: 560, heightpt: 260 }
+            })
           }
         },
 
         {
-          title: 'Настройки', icon: 'retrade-settings-icon', handler: function()
-          {
-
-          }
+          title: 'Настройки', icon: 'retrade-settings-icon'
         },
 
         [
           {
             title: 'Атрибуты товаров', icon: 'retrade-good-attrs-icon', handler: function()
             {
-
+              retrade_open_window({ url: '/goods/attrs',
+                tempDomain: 'retrade-main-menu:good-attrs',
+                box: { widthpt: 380, heightpt: 240 }
+              })
             }
           },
 
           {
             title: 'Данные и отчёты', icon: 'retrade-reports-icon', handler: function()
             {
-
+              ReTrade.desktop.loadDesktopPanel( '/datas/list', {
+                domain: extjsf.tempDomain('desktop-content:retrade-main-menu:datas:')
+              })
             }
           },
 
           {
             title: 'Пользователи', icon: 'retrade-user-icon', handler: function()
             {
-
+              ReTrade.desktop.loadDesktopPanel( '/settings/users', {
+                domain: extjsf.tempDomain('desktop-content:retrade-main-menu:settings:users:')
+              })
             }
           },
 
           {
             title: 'Правила доступа', icon: 'retrade-secrule-icon', handler: function()
             {
-
+              ReTrade.desktop.loadDesktopPanel( '/settings/secure-rules', {
+                domain: extjsf.tempDomain('desktop-content:retrade-main-menu:settings:secure-rules:')
+              })
             }
           },
 
           {
             title: 'Множества правил', icon: 'retrade-secset-icon', handler: function()
             {
-
+              ReTrade.desktop.loadDesktopPanel( '/settings/secure-sets', {
+                domain: extjsf.tempDomain('desktop-content:retrade-main-menu:settings:secure-sets:')
+              })
             }
           }
         ]
       ],
 
       {
-        title: 'Справочники', icon: 'retrade-catalogues-icon', handler: function()
-        {
-
-        }
+        title: 'Справочники', icon: 'retrade-catalogues-icon'
       },
 
       [
         {
           title: 'Товары', icon: 'retrade-goods-icon', handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/goods/list-nav', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:goods-nav:')
+            })
           }
         },
 
         {
           title: 'Товары, склады, цены', icon: 'retrade-good-store-icon', handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/goods/goods-stores-prices', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:goods-stores-prices:')
+            })
           }
         },
 
         {
           title: 'Категории товаров', icon: 'retrade-goods-tree-icon', handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/goods/goods-tree', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:goods-tree:')
+            })
           }
         },
 
         {
           title: 'Единицы измерения', icon: 'retrade-measure-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/goods/list-measures',
+              tempDomain: 'retrade-main-menu:measures',
+              box: { widthpt: 400, heightpt: 240 }
+            })
           }
         },
 
         {
           title: 'Склады', icon: 'retrade-trade-store-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/stores/list-win',
+              tempDomain: 'retrade-main-menu:stores',
+              box: { widthpt: 360, heightpt: 240 }
+            })
           }
         },
 
         {
           title: 'Контрагенты', icon: 'retrade-contractor-icon', handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/firms/list', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:firms:')
+            })
           }
         },
 
         {
           title: 'Прайс-листы', icon: 'retrade-prices-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/price-lists/list-win',
+              tempDomain: 'retrade-main-menu:price-lists',
+              box: { widthpt: 360, heightpt: 240 }
+            })
           }
         },
 
         {
           title: 'Прайс-листы контрагентов', icon: 'retrade-prices-icon', handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/firms/list-lists', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:firms-price-lists:')
+            })
           }
         },
 
@@ -188,7 +219,9 @@
           title: 'Учётные счета', icon: 'retrade-accounts-sum-icon',
           disabled: true, handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/accounts/list', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:accounts:')
+            })
           }
         },
 
@@ -196,65 +229,95 @@
           title: 'Платёжные счета', icon: 'retrade-accounts-pay-icon',
           disabled: true, handler: function()
           {
-
+            ReTrade.desktop.loadDesktopPanel( '/accounts/list-ways', {
+              domain: extjsf.tempDomain('desktop-content:retrade-main-menu:pay-ways:')
+            })
           }
         }
       ],
 
       {
-        title: 'Создать', icon: 'retrade-issue-plus-icon', handler: function()
-        {
-
-        }
+        title: 'Создать', icon: 'retrade-issue-plus-icon'
       },
 
       [
         {
           title: 'Накладную закупки', icon: 'retrade-listpad-plus-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/invoices/create-buy',
+              tempDomain: 'retrade-create-doc:invoice-buy', 
+              box: { widthpt: 600, heightpt: 440 }
+            })
           }
         },
 
         {
           title: 'Накладную продажи', icon: 'retrade-listpad-minus-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/invoices/create-sell',
+              tempDomain: 'retrade-create-doc:invoice-sell', 
+              box: { widthpt: 680, heightpt: 440 }
+            })
           }
         },
 
         {
           title: 'Накладную перемещения', icon: 'retrade-listpad-arrow-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/invoices/create-move',
+              tempDomain: 'retrade-create-doc:invoice-move', 
+              box: { widthpt: 540, heightpt: 440 }
+            })
           }
         },
 
         {
           title: 'Накладную авто-производства', icon: 'retrade-listpad-bottle-red-icon', handler: function()
           {
+            retrade_open_window({ url: '/invoices/create-move',
+              tempDomain: 'retrade-create-doc:invoice-move-auto', 
+              box: { widthpt: 540, heightpt: 440 }, params: { 'invoice-type': 'auto' }
+            })
+          }
+        },
 
+        {
+          title: 'Накладную производства', icon: 'retrade-listpad-bottle-blue-icon', handler: function()
+          {
+            retrade_open_window({ url: '/invoices/create-move',
+              tempDomain: 'retrade-create-doc:invoice-move-free', 
+              box: { widthpt: 540, heightpt: 440 }, params: { 'invoice-type': 'free' }
+            })
           }
         },
 
         {
           title: 'Инвентаризацию остатков', icon: 'retrade-listpad-exclaim', handler: function()
           {
-
+            retrade_open_window({ url: '/invoices/create-volume-check',
+              tempDomain: 'retrade-create-doc:price-change', 
+              box: { widthpt: 580, heightpt: 420 }
+            })
           }
         },
 
         {
           title: 'Накладную корректировки', icon: 'retrade-listpad-delta-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/invoices/create-move',
+              tempDomain: 'retrade-create-doc:invoice-move-correct', 
+              box: { widthpt: 540, heightpt: 440 }, params: { 'invoice-type': 'correct' }
+            })
           }
         },
 
         {
           title: 'Документ изменения цен', icon: 'retrade-listpad-bottle-red-icon', handler: function()
           {
-
+            retrade_open_window({ url: '/reprice-docs/edit',
+              tempDomain: 'retrade-create-doc:price-change', 
+              box: {widthpt: 780, heightpt: 420}, params: { create: true }
+            })
           }
         }
       ],
@@ -262,7 +325,7 @@
       {
         title: 'Ссылки', icon: 'retrade-my-links', handler: function()
         {
-          ReTrade.desktop.loadDesktopPanel( "${z:url('/go/retrade/ui/my-links')}", {
+          ReTrade.desktop.loadDesktopPanel( '/ui/my-links', {
             'domain': extjsf.tempDomain('desktop-content:retrade-main-menu:my-links:')
           })
         }
@@ -372,11 +435,15 @@
           a.addClass('disabled')
 
         //~: click handler
-        if(ZeT.isf(m.handler)) a.click(function(e)
+        a.click(function(e)
         {
           e.preventDefault()
-          e.stopPropagation()
-          m.handler()
+
+          if(!m.disabled && ZeT.isf(m.handler))
+          {
+            jQuery.SmartMenus.hideAll()
+            m.handler()
+          }
         })
       }
 
@@ -426,8 +493,7 @@
     }
 
     //~: initialize Smart Menus
-    menuNode.smartmenus({
-      subMenusMinWidth: null,
+    menuNode.smartmenus({ subMenusMinWidth: null,
       showFunction: function($ul, complete) { $ul.fadeIn(200, complete) }
     })
 

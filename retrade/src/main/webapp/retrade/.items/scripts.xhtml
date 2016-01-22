@@ -180,7 +180,7 @@ function retrade_open_window(opts)
     xtype: 'window', title: 'Загрузка...',
     x: box.x, y: box.y, width: box.width, height: box.height,
     layout: opts.layout, autoShow: !opts.hidden,
-    collapsible: opts.collapsible,
+    collapsible: (opts.collapsible !== false),
 
     loader: { url: opts.url, autoLoad: true, scripts: true,
       ajaxOptions: { method: 'GET' }, params: opts.params

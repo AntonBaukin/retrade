@@ -374,7 +374,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		//!: load the content
 		Ext.create('Ext.ComponentLoader', {
 
-		  'url': url, 'params': params,
+		  url: retrade_go_url(url), 'params': params,
 		  target: panel, autoLoad: true, scripts: true,
 		  ajaxOptions: {'method': method}
 		})
