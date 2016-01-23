@@ -2017,55 +2017,48 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 	buildMenu         : function(model)
 	{
-		if(!this.menu()) throw 'Selection Set UI menu is not defined!'
+		//~: menu ul-node
+		var self = this, menu = $('#' + ZeT.asserts(this.menu()))
 
-		var item, items = this._menu_items
-
-		if(!items) this._menu_items = items = []
+		//~: menu model
+		ZeT.assert(ZeT.isa(model))
 		this._menu_model = model
 
-		//~: add or rename menu items
-		this._current_menu_item = 0
-		for(var i = 0;(i < model.length);i++)
+		//~: remove all menu items
+		menu.find('li.retrade-selset-menu-item').remove()
+
+		//~: insert all menu items
+		ZeT.each(model, function(mi)
 		{
-			//?: {has menu item for this index}
-			if(i < items.length)
-				item = items[i]
+			var txt = $('<span/>')
+			var ico = $('<span/>').addClass('x-menu-item-checkbox retrade-icon-nav-16')
+			var   a = $('<a/>', { href: '#' }).append(ico, txt)
+			var  li = $('<li/>').append(a)
+
+			//~: item title
+			if(!ZeTS.ises(mi.title))
+				txt.text(mi.title)
+			//~: item name
 			else
+				txt.text(ZeT.asserts(mi.name))
+
+			//?: {default item}
+			if(ZeTS.ises(mi.name))
+				a.attr('title', 'Выборка по умолчанию')
+
+			//?: {current item}
+			a.addClass((mi.current === true)?('x-menu-item-checked'):('x-menu-item-unchecked'))
+
+			//~: react on item click
+			a.click(function(e)
 			{
-				var vid  = this.view() + '_selset_menu_item' + i
-				item = extjsf.defineBind(vid, this.domain())
-				items.push(item)
+				e.preventDefault()
+				self._menu_item_click(mi)
+			})
 
-				//~: bind click listener
-				item.on('click', ZeT.fbind(this._menu_item_click, this, i))
-
-				//~: create item component
-				item.co(Ext.create('Ext.menu.CheckItem', item.extjsProps()))
-
-				//~: add it to the menu
-				this.menu().add(item.co())
-			}
-
-			//~: selection set name (or title for default set)
-			item.co().setText(model[i].title || model[i].name)
-
-			//~: current status
-			if(model[i].current)
-			{
-				this._current_menu_item = i
-				this.selset = model[i].name
-			}
-
-			item.co().setChecked(model[i].current, true)
-		}
-
-		//~: show-hide items
-		for(i = 0;(i < items.length);i++)
-			if(i < model.length)
-				items[i].co().show()
-			else
-				items[i].co().hide()
+			//!: add the item
+			menu.append(li.addClass('retrade-selset-menu-item'))
+		})
 
 		return this
 	},
@@ -2081,28 +2074,23 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			return this
 		}
 
-		url = this._urls[what]
-		if(ZeTS.ises(url))
-			throw 'No [' + what + '] URL is defined for Selection Set!'
-		return url
+		return ZeT.asserts(this._urls[what], 'No [', what,
+		  '] URL is defined for Selection Set!')
 	},
 
-	toggle            : function(opts)
+	toggle            : function(active, opts)
 	{
-		if(!opts) opts = {}
+		var btn = $('#' + ZeT.asserts(this.button()))
 
-		var act = opts.active
-		var btn = this.toggleButton()
+		//?: {has no option}
+		if(ZeT.isu(active)) active = !this.active
+		this.active = !!active
 
-		if(ZeT.isu(act) && btn)
-			act = btn.pressed
-		this.active = act
+		//~: update look of the toggle button
+		btn.blur().toggleClass('current', this.active)
 
-		if(btn && (btn.pressed != act))
-			btn.toggle(act, true)
-
-		if(act) this._open_wnd(opts)
-		else    this._close_wnd(opts)
+		if(active) this._open_wnd(opts)
+		else       this._close_wnd(opts)
 
 		this._onoff()
 		return this
@@ -2112,7 +2100,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	 * Adds on-off listener. To remove it,
 	 * set second argument true.
 	 */
-	onoff            : function(f, remove)
+	onoff             : function(f, remove)
 	{
 		if(!ZeT.isf(f)) return undefined
 		if(!this._ons) this._ons = []
@@ -2280,7 +2268,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		//~: close window listener
 		winmain.on('beforeclose', function()
 		{
-			self.toggle({ active: false, windowClosing: true })
+			self.toggle(false)
 		})
 
 		return winmain
@@ -2322,24 +2310,15 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			this._ons[i].call(window, ison)
 	},
 
-	_menu_item_click  : function(index)
+	_menu_item_click  : function(mi)
 	{
-		if(!this._menu_model || !this._menu_items) return
-		if(index >= this._menu_model.length) return
-
-		if(index == this._current_menu_item)
-		{
-			this._menu_items[index].co().setChecked(true, true)
-			return
-		}
-
-		this._menu_items[this._current_menu_item].co().setChecked(false, true)
-		this._menu_items[index].co().setChecked(true, true)
-		this._current_menu_item = index
-		this.selset = this._menu_model[index].name
-
 		var self = this
-		this._changer(this._menu_model[index].name, function()
+
+		//?: {has tis item checked} do nothing
+		if(mi.current === true) return
+
+		//~: invoke the change script
+		this._changer(mi.name, function()
 		{
 			Ext.data.StoreManager.lookup(self.storeId()).load()
 			if(self.winmain()) self.reload()

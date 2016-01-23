@@ -18,7 +18,7 @@
       layout: {type: 'hbox', align: 'middle'}
     </f:facet>
 
-    <ul class = "sm sm-retrade" style = "z-index:1000"></ul>
+    <ul class = "sm sm-retrade" style = "z-index:50000"></ul>
   </x:html>
 
   <!-- application main topbar] -->
@@ -381,12 +381,6 @@
           title: 'Очистить', icon: 'retrade-selset-menu-clear',
           id: "${z:vid(localView, 'retrade-selset-clear')}",
           tooltip: 'Очистить текущую выборку'
-        },
-
-        {
-          title: 'По умолчанию', icon: 'x-menu-item-checkbox',
-          aclass: 'x-menu-item-checked', tooltip: 'Выборка по умолчанию',
-          id: "${z:vid(localView, 'retrade-selset-default')}"
         }
       ],
 

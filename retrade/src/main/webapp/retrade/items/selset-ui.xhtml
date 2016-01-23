@@ -99,8 +99,8 @@
   ReTrade.selset.
     model('${v.modelKeys}').
     storeId("${z:vid(v, 'selSetStore')}").
-    url('winmain', "${z:url('/go/retrade/items/selset-win')}")
-    //buildMenu(#{v.selSetMenuModel})
+    url('winmain', "${z:url('/go/retrade/items/selset-win')}").
+    buildMenu(#{v.selSetMenuModel})
 
 
   //~: selection set add script wrapper
@@ -129,74 +129,58 @@
   //~: selection set toggle button
   $('#' + ReTrade.selset.button()).click(function()
   {
-    ZeT.log('ReTrade.selset.toggle')
-    //ReTrade.selset.toggle()
+    ReTrade.selset.toggle()
   })
 
 
   //~: edit selection
   $('#' + ReTrade.selset.ctlitems('edit')).click(function()
   {
-    ZeT.log('ReTrade.selset.edit')
+    //~: access active selection set window
+    var winmain = ReTrade.selset.winmain()
 
-//    var winmain = ReTrade.selset.winmain();
-//
-//     if(!winmain)
-//     {
-//       ReTrade.selset.toggle({active: true, params: { 'selset-edit': 'true' }})
-//       return;
-//     }
-//
-//     var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
-//     var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
-//     if(!edit || !grid) throw 'Selection Set window has no content!'
-//
-//     grid.co().hide()
-//     edit.co().show()
+    //?: {has it no} open in edit mode
+    if(!winmain) return ReTrade.selset.toggle(
+      true, { params: { 'selset-edit': 'true' }})
+
+    var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}')
+    var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}')
+    ZeT.assert(edit && grid, 'Selection Set window has no content!')
+
+    grid.co().hide()
+    edit.co().show()
   })
 
 
   //~: add selection
   $('#' + ReTrade.selset.ctlitems('add')).click(function()
   {
-    ZeT.log('ReTrade.selset.add')
-    //extjsf.bindHandler("${z:vid(v, 'script_selset_add')}", '${rootView.extjsDomain}')()
+    extjsf.bindHandler("${z:vid(v, 'script_selset_add')}", '${rootView.extjsDomain}')()
   })
 
 
   //~: delete selection set
   $('#' + ReTrade.selset.ctlitems('delete')).click(function()
   {
-    ZeT.log('ReTrade.selset.delete')
-
-//    extjsf.bindHandler("${z:vid(v, 'script_selset_delete')}", '${rootView.extjsDomain}')({
-//      success: function()
-//      {
-//         Ext.data.StoreManager.lookup(ReTrade.selset.storeId()).load()
-//         ReTrade.selset.reload()
-//      }
-//    })
+    extjsf.bindHandler("${z:vid(v, 'script_selset_delete')}", '${rootView.extjsDomain}')({
+      success: function()
+      {
+         Ext.data.StoreManager.lookup(ReTrade.selset.storeId()).load()
+         ReTrade.selset.reload()
+      }
+    })
   })
 
 
   //~: clear selection
   $('#' + ReTrade.selset.ctlitems('clear')).click(function()
   {
-    ZeT.log('ReTrade.selset.clear')
-
-//    extjsf.bindHandler("${z:vid(v, 'script_selset_clear')}", '${rootView.extjsDomain}')({
-//      success: function()
-//      {
-//        Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)
-//      }
-//    })
-  })
-
-
-  //~: set the default selection
-  $('#' + ReTrade.selset.ctlitems('default')).click(function()
-  {
-    ZeT.log('ReTrade.selset.default')
+    extjsf.bindHandler("${z:vid(v, 'script_selset_clear')}", '${rootView.extjsDomain}')({
+      success: function()
+      {
+        Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)
+      }
+    })
   })
 
 
