@@ -1,6 +1,6 @@
 package com.tverts.retrade.web.views.selset;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.List;
 
@@ -20,6 +20,10 @@ import static com.tverts.servlet.RequestPoint.request;
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
+
+/* com.tverts: hibery */
+
+import com.tverts.hibery.HiberPoint;
 
 /* com.tverts: transactions */
 
@@ -47,14 +51,12 @@ import com.tverts.retrade.domain.selset.ActSelSet;
 import com.tverts.retrade.domain.selset.GetSelSet;
 import com.tverts.retrade.domain.selset.SelSet;
 import com.tverts.retrade.domain.selset.SelSetModelBean;
-import com.tverts.support.SU;
+
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.jss;
-import static com.tverts.support.SU.s2s;
-import static com.tverts.support.SU.sXe;
-import static com.tverts.support.SU.urld;
+import com.tverts.support.EX;
+import com.tverts.support.SU;
 
 
 /**
@@ -135,7 +137,7 @@ public class FacesSelSetView extends ModelView
 	public String doEditSelSet()
 	{
 		//?: {this is the default set} skip it
-		if(sXe(getModel().getSelSet()))
+		if(SU.sXe(getModel().getSelSet()))
 			return null;
 
 		//?: {the name exists} invalid
@@ -153,12 +155,15 @@ public class FacesSelSetView extends ModelView
 		this.updatedMenu = true;
 		this.renderItems = false;
 
+		//!: flush the session
+		HiberPoint.flush(txSession());
+
 		return null;
 	}
 
 	public String doChangeSelSet()
 	{
-		String selset = s2s(request().getParameter("selset"));
+		String selset = SU.s2s(request().getParameter("selset"));
 		if(selset == null) selset = "";
 
 		//~: update the model
@@ -172,7 +177,7 @@ public class FacesSelSetView extends ModelView
 	public String doDeleteSelSet()
 	{
 		//?: {its is default set} just clear it
-		if(sXe(getModel().getSelSet()))
+		if(SU.sXe(getModel().getSelSet()))
 			return doClearSelSet();
 
 		//~: find previous selection set
@@ -180,7 +185,7 @@ public class FacesSelSetView extends ModelView
 		  getSelSets(getModel().getLogin());
 
 		int i = names.indexOf(getModel().getSelSet());
-		if(i == -1) throw new IllegalStateException();
+		EX.assertx(i != -1);
 
 		//!: remove selection set
 		SelSet set = getSelSet();
@@ -206,13 +211,13 @@ public class FacesSelSetView extends ModelView
 
 	public String getSelSetName()
 	{
-		String name = s2s(getModel().getSelSet());
+		String name = SU.s2s(getModel().getSelSet());
 		return (name != null)?(name):("По умолчанию");
 	}
 
 	public boolean isDefaultSelSet()
 	{
-		return sXe(getModel().getSelSet());
+		return SU.sXe(getModel().getSelSet());
 	}
 
 	public String getWindowTitle()
@@ -226,12 +231,8 @@ public class FacesSelSetView extends ModelView
 	public String getSelSetMenuModel()
 	{
 		//~: load the names
-		List<String> names = bean(GetSelSet.class).
-		  getSelSets(getModel().getLogin());
-
-		if(names.isEmpty()) throw new IllegalStateException(String.format(
-		  "Login [%d] has no Selection Sets!", getModel().getLogin()
-		));
+		List<String> names = bean(GetSelSet.class).getSelSets(getModel().getLogin());
+		EX.asserte(names, "Login [", getModel().getLogin(), "] has no Selection Sets!");
 
 		//~: create JSON object
 		StringBuilder s = new StringBuilder(128).append('[');
@@ -242,11 +243,11 @@ public class FacesSelSetView extends ModelView
 			s.append('{');
 
 			//~: title for the default set
-			if(sXe(name))
+			if(SU.sXe(name))
 				s.append("title: 'По умолчанию', ");
 
 			//~: name
-			s.append("name: '").append(jss(name)).append("', ");
+			s.append("name: '").append(SU.jss(name)).append("', ");
 
 			//~: default
 			s.append("current: ").append(getModel().getSelSet().equals(name));
@@ -302,7 +303,7 @@ public class FacesSelSetView extends ModelView
 
 	public void setSelSetNameEdit(String name)
 	{
-		this.selSetNameEdit = s2s(name);
+		this.selSetNameEdit = SU.s2s(name);
 	}
 
 	public boolean isEditNameExists()
@@ -310,7 +311,7 @@ public class FacesSelSetView extends ModelView
 		if(editNameExists != null)
 			return editNameExists;
 
-		return editNameExists = !sXe(getModel().getModelKey()) &&
+		return editNameExists = !SU.sXe(getModel().getModelKey()) &&
 		  (bean(GetSelSet.class).getSelSet(
 		    getModel().getLogin(),getSelSetNameEdit()) != null);
 	}
@@ -345,7 +346,7 @@ public class FacesSelSetView extends ModelView
 		mb.setDomain(SecPoint.domain());
 
 		//~: selection set parameter
-		String selset = urld(s2s(request().getParameter("selset")));
+		String selset = SU.urld(SU.s2s(request().getParameter("selset")));
 
 		//?: {has no selection set} take the default name
 		mb.setSelSet((selset == null)?(""):(selset));
@@ -364,15 +365,10 @@ public class FacesSelSetView extends ModelView
 	protected SelSet getSelSet()
 	{
 		//~: load the set
-		SelSet set = bean(GetSelSet.class).
-		  getSelSet(getModel().getLogin(), getModel().getSelSet());
-
-		//~: the set is not found
-		if(set == null) throw new IllegalStateException(String.format(
-		  "Selection Set named [%s] not found for user [%d]!",
-		  getModel().getSelSet(), getModel().getLogin()
-		));
-
-		return set;
+		return EX.assertn(bean(GetSelSet.class).
+		  getSelSet(getModel().getLogin(), getModel().getSelSet()),
+		  "Selection Set named [", getModel().getSelSet(),
+		  "] not found for user [", getModel().getLogin(), "]!"
+		);
 	}
 }

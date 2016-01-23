@@ -257,8 +257,8 @@ ReTrade.selset.items([#{v.selSetItems}])
       <script>
       //<![CDATA[
 
-extjsf.bind('winmain-selset', '${rootView.extjsDomain}').
-  co().setTitle('${z:jss(v.windowTitle)}')
+if(ReTrade.selset.winmain())
+  ReTrade.selset.winmain().co().setTitle('${z:jss(v.windowTitle)}')
 
 ReTrade.selset.buildMenu(#{v.selSetMenuModel})
 
