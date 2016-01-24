@@ -335,21 +335,27 @@
   border: 1px solid #a8a8a8;
   padding: 7px 0;
   background: white;
-  -webkit-border-radius: 0 0 4px 4px;
-  -moz-border-radius: 0 0 4px 4px;
-  -ms-border-radius: 0 0 4px 4px;
-
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 3px 4px;
   -webkit-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+  /*box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);*/
+}
+ul.sm-retrade ul:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 4px; top: 6px;
+  right: -4px; bottom: -4px;
+  border-radius: 0 4px 4px 4px;
+  border: 4px solid rgba(124, 131, 143, 0.7);
+  border-left-width: 0;
+  border-top-width: 0;
+}
+ul.sm-retrade > li > ul:before {
+  border-top-right-radius: 0;
 }
 .sm-retrade ul ul {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-
-  border-radius: 4px;
+  border-radius: 4px 4px 3px 4px;
   background: white;
 }
 .sm-retrade ul a, .sm-retrade ul a:hover, .sm-retrade ul a:focus, .sm-retrade ul a:active, .sm-retrade ul a.highlighted {

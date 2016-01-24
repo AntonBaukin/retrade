@@ -735,6 +735,7 @@
 					subOffsetX = level == 2 ? this.opts.mainMenuSubOffsetX : this.opts.subMenusSubOffsetX,
 					subOffsetY = level == 2 ? this.opts.mainMenuSubOffsetY : this.opts.subMenusSubOffsetY,
 					x, y;
+
 				if (horizontalParent) {
 					if(level == 2 && $a.hasClass('align-menu-middle'))
 						x = (parW - subW)/2
@@ -742,7 +743,7 @@
 						x = rightToLeft ? itemW - subW - subOffsetX : subOffsetX;
 					y = this.opts.bottomToTopSubMenus ? -subH - subOffsetY : itemH + subOffsetY;
 				} else {
-					x = rightToLeft ? subOffsetX - subW : itemW - subOffsetX;
+					x = rightToLeft ? subOffsetX - subW : itemW - subOffsetX + 6;
 					y = this.opts.bottomToTopSubMenus ? itemH - subOffsetY - subH : subOffsetY;
 				}
 				if (this.opts.keepInViewport) {
