@@ -570,6 +570,7 @@
 				}
 			},
 			menuHide: function($sub) {
+				if(this.menuShowTime + 100 > new Date().getTime()) return
 				if (this.$root.triggerHandler('beforehide.smapi', $sub[0]) === false) {
 					return;
 				}
@@ -1030,6 +1031,7 @@
 							$sub.show(this.opts.showDuration, complete);
 						}
 					}
+					this.menuShowTime = new Date().getTime()
 					// accessibility
 					$a.attr('aria-expanded', 'true');
 					$sub.attr({
