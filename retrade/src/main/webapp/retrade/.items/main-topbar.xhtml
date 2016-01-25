@@ -15,7 +15,7 @@
       height: retrade_default('main-topbar-height'),
       margin: extjsf.dpts(0, 2, 0, 2),
       bodyCls: 'retrade-transparent-panel',
-      layout: {type: 'hbox', align: 'middle'}
+      layout: { type: 'hbox', align: 'middle' }
     </f:facet>
 
     <ul class = "sm sm-retrade" style = "z-index:50000"></ul>
@@ -418,7 +418,7 @@
           var ico = $('<span/>').addClass(m.icon)
           a.append(ico)
 
-          if(m.icon.indexOf(' ') == -1)
+          if(m.icon.indexOf('retrade-icon-nav-') == -1)
             ico.addClass((level == 1)?('retrade-icon-nav-20'):('retrade-icon-nav-16'))
         }
 
@@ -472,30 +472,56 @@
           div.attr('style', m.dstyle)
       }
 
-      if(ZeT.isa(subs))
+      //?: {has no sub-items}
+      if(!ZeT.isa(subs)) return node
+
+      if(level)
       {
-        if(level)
-        {
-          var ul = $('<ul/>')
-          node.append(ul)
-          node = ul
+        var ul = $('<ul/>')
+        node.append(ul)
+        node = ul
 
-          //~: a-id
-          if(ZeT.iss(m.ulid)) ul.attr('id', m.ulid)
-        }
-
-        for(var i = 0;(i < subs.length);i++)
-        {
-          var sub = subs[i]
-          ZeT.assert(ZeT.iso(sub))
-
-          var next = subs[i+1]
-          if(ZeT.isa(next)) i++
-
-          createMenu(node, sub, next, (level)?(level+1):(1))
-        }
+        //~: a-id
+        if(ZeT.iss(m.ulid)) ul.attr('id', m.ulid)
       }
+
+      var result = []
+      for(var i = 0;(i < subs.length);i++)
+      {
+        var sub = subs[i]
+        ZeT.assert(ZeT.iso(sub))
+
+        var next = subs[i+1]
+        if(ZeT.isa(next)) i++
+
+        result.push(createMenu(node, sub, next, (level)?(level+1):(1)))
+      }
+
+      return result
     }
+
+
+    //~: menu extension point processing
+    ReTrade.desktop.controller('center').mainMenuProc(function(inserting, f)
+    {
+      ZeT.assert(ZeT.isf(f))
+      f(menuNode) //<-- invoke
+    })
+
+
+    //~: hide overlapped menu items
+    function show_hide()
+    {
+      menuNode.find('>li').each(function()
+      {
+        $(this).toggle($(this).position().top == 0)
+      })
+    }
+
+
+    //~: bind resize listener
+    extjsf.bind("${z:vid(localView, 'main-topbar')}", '${rootView.extjsDomain}').
+      on('resize', show_hide)
 
 
     //~: initialize Smart Menus
@@ -511,6 +537,30 @@
         $ul.fadeIn(200, complete)
       }
     })
+
+   /**
+    * Global function that inserts the menu in proper position
+    * of the desktop and returns jQuery selector object, or an
+    * array of selectors of the root li-nodes inserted.
+    *
+    * Menu argument may be a single object, or an array in the
+    * same format as the main system menu (see above).
+    */
+    window.retrade_topbar_menu_insert = function(menu)
+    {
+      var result
+
+      if(ZeT.iso(menu))
+        result = createMenu(menuNode, menu, null, 1)
+      else
+      {
+        ZeT.assert(ZeT.isa(menu))
+        result = createMenu(menuNode, null, menu)
+      }
+
+      show_hide()
+      return result
+    }
   })
 
   //]]>

@@ -21,6 +21,7 @@
 
     <co:facet name = 'extjs-props'/>
     <co:facet name = 'topbar'/>
+    <co:facet name = 'topbar-menu'/>
     <co:facet name = 'toolbar-props'/>
     <co:facet name = 'toolbar'/>
     <co:facet name = 'status-props'/>
@@ -45,7 +46,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  (function()
+  ZeT.scope(function()
   {
     var panel = extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}');
 
@@ -75,7 +76,7 @@
       domainOwner: ('#{cc.attrs.domainOwner}' === 'true')
     })
 
-  })()
+  })
 
     //]]>
     </script>
@@ -86,18 +87,19 @@
     <co:renderFacet name = "topbar"/>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
-  (function()
+  ZeT.scope(function()
   {
-    var panel = extjsf.bind("#{cc.attrs.coid}", '${rootView.extjsDomain}');
+    var panel = extjsf.bind("#{cc.attrs.coid}", '${rootView.extjsDomain}')
 
-    //HINT: we steal the items from the root panel
+    //HINT: we steal present items from the root panel
     //  and register them as for the top bar!
 
     panel.rootPanelController.topbarItems(panel.replaceItems())
+  })
 
-  })()
-
+    //]]>
     </script>
 
     <!-- insert topbar controls] -->
@@ -108,8 +110,9 @@
     <co:renderFacet name = "toolbar"/>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
-  (function()
+  ZeT.scope(function()
   {
     var domain  = '${rootView.extjsDomain}';
     var panel   = extjsf.bind("#{cc.attrs.coid}", domain);
@@ -125,8 +128,9 @@
 
     toolbar.replaceItems(panel.replaceItems())
 
-  })()
+  })
 
+    //]]>
     </script>
 
     <!-- insert toolbar controls] -->
@@ -137,8 +141,9 @@
     <co:renderFacet name = "status"/>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
-  (function()
+  ZeT.scope(function()
   {
     var domain = '${rootView.extjsDomain}';
     var panel  = extjsf.bind("#{cc.attrs.coid}", domain);
@@ -153,8 +158,9 @@
 
     status.replaceItems(panel.replaceItems())
 
-  })()
+  })
 
+    //]]>
     </script>
 
     <!-- insert status bar controls] -->

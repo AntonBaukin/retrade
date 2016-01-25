@@ -695,8 +695,11 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	{
 		if(panelBind.desktopPanelController) return
 
-		panelBind.desktopPanelController = ZeT.createInstance(
-		  'ReTrade.PanelController', { position: pos })
+		var opts = { desktop: this }
+		opts.position = ZeT.asserts(pos)
+
+		panelBind.desktopPanelController =
+		  ZeT.createInstance('ReTrade.PanelController', opts)
 		panelBind.desktopPanelController.rootBind(panelBind)
 	}
 })
@@ -738,6 +741,27 @@ ZeT.defineClass('ReTrade.PanelController', {
 		if(!bind.extjsfBind)
 			bind = extjsf.bind(bind, domain)
 		this._main_topbar = bind
+		return this
+	},
+
+	/**
+	 * Binds processor of inserting-removing the main
+	 * menu components dependend on the panel contents.
+	 * (Extension point for the main menus.)
+	 *
+	 * Callback function has the following arguments:
+	 *  0) inserting flag (true), or removing (false);
+	 *  1) callback function of the component that
+	 *     implements the required action (inserts,
+	 *     or removes).
+	 */
+	mainMenuProc      : function(f)
+	{
+		if(ZeT.isu(f))
+			return this._main_menu_proc
+
+		ZeT.assert(ZeT.isf(f))
+		this._main_menu_proc = f
 		return this
 	},
 
@@ -908,6 +932,33 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		return this
 	},
 
+	/**
+	 * Takes two forms. First, when the first arguments
+	 * is boolean: returns insert (true), or remove (false)
+	 * strategy of extending the main menu.
+	 *
+	 * Second, two arguments, both functions: to insert
+	 * and to remove the menus. Installed by the root panel.
+	 */
+	topbarMenu        : function()
+	{
+		if(arguments.length == 2)
+		{
+			var i = arguments[0], r = arguments[1]
+
+			ZeT.assert(ZeT.isf(i) && ZeT.isf(r))
+			this._topbar_menu = { insert: i, remove: r }
+
+			return this
+		}
+
+		ZeT.assert(arguments.length == 1)
+		ZeT.assert(ZeT.isb(arguments[0]))
+
+		if(!this._topbar_menu) return undefined
+		return this._topbar_menu[(arguments[0])?('insert'):('remove')]
+	},
+
 	toolbar           : function(bind)
 	{
 		if(!bind) return this._toolbar
@@ -953,7 +1004,6 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 		//~: hide void panel
 		this.panelController().triggerVoid()
-
 	},
 
 	remove            : function(destroy)
@@ -1107,7 +1157,13 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 	_insert_topbar    : function()
 	{
-		var ext  = this.panelController().mainTopbarExt()
+		var ctrl = this.panelController()
+
+		//?: {center & main menu}
+		if(this.topbarMenu(true) && (ctrl.position() == 'center') && ctrl.mainMenuProc())
+			return (ctrl.mainMenuProc())(true, this.topbarMenu(true))
+
+		var ext  = ctrl.mainTopbarExt()
 		if(!ext || !ext.co()) return //<-- no top bar to insert
 
 		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return
@@ -1115,8 +1171,8 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		for(var i = 0;(i < tbis.length);i++)
 		{
 			//?: {the bind has no component already created} create it now
-			if(!tbis[i].co()) tbis[i].co(
-			   Ext.ComponentManager.create(tbis[i].extjsProps()))
+			if(!tbis[i].co())
+				tbis[i].co(Ext.ComponentManager.create(tbis[i].extjsProps()))
 
 			ext.co().add(tbis[i].co())
 		}
@@ -1124,7 +1180,13 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 	_remove_topbar    : function(destroy)
 	{
-		var ext  = this.panelController().mainTopbarExt()
+		var ctrl = this.panelController()
+
+		//?: {center & main menu}
+		if(this.topbarMenu(false) && (ctrl.position() == 'center') && ctrl.mainMenuProc())
+			(ctrl.mainMenuProc())(false, this.topbarMenu(false))
+
+		var ext  = ctrl.mainTopbarExt()
 		if(!ext || !ext.co()) return //<-- no top bar to insert
 
 		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return

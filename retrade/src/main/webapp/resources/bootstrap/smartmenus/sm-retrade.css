@@ -240,10 +240,6 @@
   background-image: -moz-linear-gradient(to bottom, #EAF4FF 0%, #D0D6E0 60%, #EDF1F7 100%);
 
   background-image: linear-gradient(to bottom, #EAF4FF 0%, #D0D6E0 60%, #EDF1F7 100%);
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  -ms-border-radius: 8px;
-
   border-radius: 0 0 8px 8px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);

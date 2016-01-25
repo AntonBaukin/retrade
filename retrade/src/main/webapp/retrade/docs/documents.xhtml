@@ -26,29 +26,73 @@ ${v.checkModelRequestedWithRedirect}
       title: 'Документы'
     </f:facet>
 
-    <!-- [topbar buttons -->
+    <!-- [topbar controls -->
 
     <f:facet name = "topbar">
 
-      <!-- [show filter button -->
-
+      <!-- [show filter button] -->
       <x:component coid = "${z:vid(v, 'show-docs-filter')}">
         <f:facet name = "extjs-props">
-
           xtype: 'button', text: 'Фильтр',
           enableToggle: true, height: 30,
-          margin: extjsf.dpts(0, 2, 0, 0),
           iconCls: 'retrade-document-filter-icon',
           componentCls: 'retrade-button-22pt'
-
         </f:facet>
       </x:component>
-
-      <!-- show filter button] -->
-
     </f:facet>
 
-    <!-- topbar buttons] -->
+      <script type = "text/javascript">
+      //<![CDATA[
+      
+        ZeT.scope(function()
+        {
+          var root  = extjsf.bind("${z:vid(v, 'documents-root')}", '${rootView.extjsDomain}')
+          var btn   = extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}')
+          var panel = extjsf.bind("${z:vid(v, 'documents-root-toolbar')}", '${rootView.extjsDomain}')
+
+          var menuNode, pressed, menuObj = {
+            title: 'Фильтр', icon: 'retrade-document-filter-icon', handler: function()
+            {
+              menuNode.find('a').toggleClass('current', (pressed = !pressed))
+              if(!pressed) menuNode.find('a').blur()
+              panel.visible(pressed)
+            }
+          }
+
+          //~: toggle filter toolbar visibility
+          btn.on('toggle', function(b)
+          {
+            panel.visible(pressed = b.pressed)
+          })
+
+          //~: proper button reference
+          btn.on('added', function(b)
+          {
+            b.toggle(!!pressed)
+          })
+
+          //~: insert and remove the topbar menu
+          root.rootPanelController.topbarMenu(
+
+            function(ul) //<-- inserts menu item
+            {
+              menuNode = retrade_topbar_menu_insert(menuObj)
+              if(pressed) menuNode.find('a').addClass('current')
+            },
+
+            function(ul) //<-- removes menu item
+            {
+              if(menuNode) menuNode.remove()
+              menuNode = null
+            }
+          )
+        })
+
+      //]]>
+      </script>
+
+
+    <!-- topbar controls] -->
 
 
     <!-- [documents filter form -->
@@ -99,12 +143,6 @@ ${v.checkModelRequestedWithRedirect}
 
     <script type = "text/javascript">
     //<![CDATA[
-
-  //~: toggle filter toolbar visibility
-  extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}').on('toggle', function(btn)
-  {
-    extjsf.bind("${z:vid(v, 'documents-root-toolbar')}", '${rootView.extjsDomain}').visible(btn.pressed)
-  })
 
   extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${rootView.extjsDomain}').success(function()
   {
