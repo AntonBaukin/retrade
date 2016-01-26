@@ -224,7 +224,7 @@ div.retrade-desktop-panel-center div.retrade-desktop-panel-content,
 }
 
 
-/* formats */
+/* Formats */
 
 span.retrade-currency-sep
 {
@@ -232,7 +232,7 @@ span.retrade-currency-sep
 }
 
 
-/* form fields */
+/* Form Fields */
 
 input.x-form-text-default.retarde-field-text-larger
 {
@@ -281,6 +281,14 @@ table.retrade-align-right.x-field
 {
   font-size: 12pt; letter-spacing: 1pt;
   height: 22px; line-height: 22px;
+}
+
+.retrade-form-field-text-clear,
+  .x-form-trigger-default.x-form-trigger-focus.retrade-form-field-text-clear,
+  .x-form-trigger-default.x-form-trigger-over.retrade-form-field-text-clear
+{
+  width: 30px; background-size: 22px auto;
+  background-position: 4px center;
 }
 
 

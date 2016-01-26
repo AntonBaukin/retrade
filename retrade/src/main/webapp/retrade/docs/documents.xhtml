@@ -41,56 +41,55 @@ ${v.checkModelRequestedWithRedirect}
       </x:component>
     </f:facet>
 
-      <script type = "text/javascript">
-      //<![CDATA[
-      
-        ZeT.scope(function()
-        {
-          var root  = extjsf.bind("${z:vid(v, 'documents-root')}", '${rootView.extjsDomain}')
-          var btn   = extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}')
-          var panel = extjsf.bind("${z:vid(v, 'documents-root-toolbar')}", '${rootView.extjsDomain}')
+    <script type = "text/javascript">
+    //<![CDATA[
+    
+      ZeT.scope(function()
+      {
+        var root  = extjsf.bind("${z:vid(v, 'documents-root')}", '${rootView.extjsDomain}')
+        var btn   = extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}')
+        var panel = extjsf.bind("${z:vid(v, 'documents-root-toolbar')}", '${rootView.extjsDomain}')
 
-          var menuNode, pressed, menuObj = {
-            title: 'Фильтр', icon: 'retrade-document-filter-icon', handler: function()
-            {
-              menuNode.find('a').toggleClass('current', (pressed = !pressed))
-              if(!pressed) menuNode.find('a').blur()
-              panel.visible(pressed)
-            }
+        var menuNode, pressed, menuObj = {
+          title: 'Фильтр', icon: 'retrade-document-filter-icon', handler: function()
+          {
+            menuNode.find('a').toggleClass('current', (pressed = !pressed))
+            if(!pressed) menuNode.find('a').blur()
+            panel.visible(pressed)
           }
+        }
 
-          //~: toggle filter toolbar visibility
-          btn.on('toggle', function(b)
-          {
-            panel.visible(pressed = b.pressed)
-          })
-
-          //~: proper button reference
-          btn.on('added', function(b)
-          {
-            b.toggle(!!pressed)
-          })
-
-          //~: insert and remove the topbar menu
-          root.rootPanelController.topbarMenu(
-
-            function(ul) //<-- inserts menu item
-            {
-              menuNode = retrade_topbar_menu_insert(menuObj)
-              if(pressed) menuNode.find('a').addClass('current')
-            },
-
-            function(ul) //<-- removes menu item
-            {
-              if(menuNode) menuNode.remove()
-              menuNode = null
-            }
-          )
+        //~: toggle filter toolbar visibility
+        btn.on('toggle', function(b)
+        {
+          panel.visible(pressed = b.pressed)
         })
 
-      //]]>
-      </script>
+        //~: proper button reference
+        btn.on('added', function(b)
+        {
+          b.toggle(!!pressed)
+        })
 
+        //~: insert and remove the topbar menu
+        root.rootPanelController.topbarMenu(
+
+          function(ul) //<-- inserts menu item
+          {
+            menuNode = retrade_topbar_menu_insert(menuObj)
+            if(pressed) menuNode.find('a').addClass('current')
+          },
+
+          function(ul) //<-- removes menu item
+          {
+            if(menuNode) menuNode.remove()
+            menuNode = null
+          }
+        )
+      })
+
+    //]]>
+    </script>
 
     <!-- topbar controls] -->
 

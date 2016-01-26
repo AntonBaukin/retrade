@@ -130,6 +130,11 @@ td.x-form-item-body.x-form-cb-wrap
   padding: 4px 0 3px 6px;
 }
 
+.x-form-text-wrap .x-form-field.x-form-text.x-form-text-default
+{
+  padding-right: 0;
+}
+
 
 /* Drop Down List */
 

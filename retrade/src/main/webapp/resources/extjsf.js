@@ -1247,6 +1247,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 			if(list.indexOf(func) == -1)
 				list.push(func)
 		}
+
+		return this
 	},
 
 	on_create        : function(component)
