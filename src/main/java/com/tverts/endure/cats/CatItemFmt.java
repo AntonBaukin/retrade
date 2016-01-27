@@ -59,7 +59,7 @@ public class CatItemFmt extends FmtBase
 
 		//~: code
 		if(ctx.is(CODE))
-			s.append('[').append(c).append("] ");
+			s.append('№').append(c).append(' ');
 
 		//~: name
 		s.append(n);

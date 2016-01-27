@@ -1,8 +1,12 @@
 package com.tverts.support.fmt;
 
-/* standard Java classes  */
+/* Java */
 
 import java.util.List;
+
+/* com.tverts: support */
+
+import com.tverts.support.SU;
 
 
 /**
@@ -45,6 +49,16 @@ public class FmtPoint implements FmtUni
 
 	public String fmt(FmtCtx ctx)
 	{
+		String res;
+
+		//?: {target is self-formatter}
+		if(ctx.obj() instanceof FmtUni)
+		{
+			res = ((FmtUni)ctx.obj()).fmt(ctx);
+			if(!SU.sXe(res)) return res;
+		}
+
+		//~: proceed with sequence...
 		List<FmtUni> fmts = null;
 
 		if(reference != null)
@@ -52,8 +66,8 @@ public class FmtPoint implements FmtUni
 
 		if(fmts != null) for(FmtUni fmt : fmts)
 		{
-			String res = fmt.fmt(ctx);
-			if(res != null) return res;
+			res = fmt.fmt(ctx);
+			if(!SU.sXe(res)) return res;
 		}
 
 		return null;

@@ -42,7 +42,7 @@ public interface FmtUni
 	/**
 	 * Tells to name the object in long variant.
 	 */
-	public static final Object LONG   =
+	public static final Object LONG    =
 	  new Object[] { TYPE, CODE, LONGER };
 
 

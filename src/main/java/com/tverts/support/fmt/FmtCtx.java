@@ -51,7 +51,19 @@ public class FmtCtx
 
 	public boolean    is(Object flag)
 	{
-		return (flags == null)?(false):(flags.contains(flag));
+		//?: {no flags}
+		if(flags == null) return false;
+
+		//?: {scalar flag}
+		if(!(flag instanceof Object[]))
+			return flags.contains(flag);
+
+		//~: composite flag
+		for(Object f : (Object[]) flag)
+			if(!this.is(f))
+				return false;
+
+		return true;
 	}
 
 	/**
