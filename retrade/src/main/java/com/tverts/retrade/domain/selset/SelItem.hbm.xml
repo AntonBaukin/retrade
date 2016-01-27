@@ -24,15 +24,45 @@
     </many-to-one>
 
 
-    <!-- Object key -->
+    <!-- Object Key -->
 
     <property name = 'object' type = 'long'>
 
       <column name = 'object_key' not-null = 'true'
         unique-key = 'ux_sel_item'>
 
-        <comment>Copy of the primary key of an United entity</comment>
+        <comment>
+          Copy of the primary key of an United entity
+          this item refers
+        </comment>
       </column>
+    </property>
+
+
+    <!-- Ox-Class -->
+
+    <property name = 'oxClass'>
+
+      <column name = 'oxclass'>
+        <comment>
+          Long or short name of Java class of ox-instance assigned.
+          Assumed undefined when there is no ox-bytes
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Object Extraction -->
+
+    <property name = 'oxBytes' lazy = 'false'>
+
+      <column name = 'oxbytes' sql-type = 'bytea'>
+        <comment>
+          Entity-related data object written to XML and enflated with Gun-ZIP
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.OxBytesType'/>
     </property>
 
   </class>

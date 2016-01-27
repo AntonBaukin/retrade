@@ -14,7 +14,7 @@ import com.tverts.endure.auth.AuthLogin;
  */
 public class SelSet extends NumericBase
 {
-	/* public: SelSet (bean) interface */
+	/* Selection Set (bean) */
 
 	/**
 	 * The login this Selection Set is for.
@@ -23,6 +23,8 @@ public class SelSet extends NumericBase
 	{
 		return login;
 	}
+
+	private AuthLogin login;
 
 	public void setLogin(AuthLogin login)
 	{
@@ -42,14 +44,10 @@ public class SelSet extends NumericBase
 		return name;
 	}
 
+	private String name;
+
 	public void setName(String name)
 	{
 		this.name = name;
 	}
-
-
-	/* attributes of selection set */
-
-	private AuthLogin login;
-	private String    name;
 }

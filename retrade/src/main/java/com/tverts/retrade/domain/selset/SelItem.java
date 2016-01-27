@@ -2,7 +2,7 @@ package com.tverts.retrade.domain.selset;
 
 /* com.tverts: endure (core + auth) */
 
-import com.tverts.endure.NumericBase;
+import com.tverts.endure.OxNumericBase;
 
 
 /**
@@ -10,33 +10,46 @@ import com.tverts.endure.NumericBase;
  *
  * @author anton.baukin@gmail.com
  */
-public class SelItem extends NumericBase
+public class SelItem extends OxNumericBase
 {
-	/* public: SelItem (bean) interface */
+	/* Selection Set Item (bean) */
 
 	public SelSet getSelSet()
 	{
 		return selSet;
 	}
 
-	public void   setSelSet(SelSet selSet)
+	private SelSet selSet;
+
+	public void setSelSet(SelSet selSet)
 	{
 		this.selSet = selSet;
 	}
 
-	public long   getObject()
+	public long getObject()
 	{
 		return object;
 	}
 
-	public void   setObject(long object)
+	private long object;
+
+	public void setObject(long object)
 	{
 		this.object = object;
 	}
 
+	/**
+	 * Long or short name of Java class of ox-instance assigned.
+	 */
+	public String getOxClass()
+	{
+		return oxClass;
+	}
 
-	/* selection item attributes */
+	private String oxClass;
 
-	private SelSet selSet;
-	private long   object;
+	public void setOxClass(String oxClass)
+	{
+		this.oxClass = oxClass;
+	}
 }
