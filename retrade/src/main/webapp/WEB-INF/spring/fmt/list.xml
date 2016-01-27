@@ -15,6 +15,11 @@
       <list>
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Good Unit Formatter
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.retrade.domain.goods.GoodFmt'/>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Invoices Formatter
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
         <bean class = 'com.tverts.retrade.domain.invoice.InvoiceFmt'/>
