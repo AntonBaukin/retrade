@@ -129,4 +129,23 @@ order by ss.id asc
 
 		return (List<SelItem>) QB(qb).list();
 	}
+
+
+	/* Typed Objects Support */
+
+	public List<SelItem> getTypedItems(Long login, String name, String oxClass)
+	{
+/*
+
+ from SelSet where (login.id = :login) and (name = :name)
+   and (oxClass = :oxClass) and (oxBytes is not null)
+
+*/
+		final String Q =
+
+"from SelSet where (login.id = :login) and (name = :name)\n" +
+"  and (oxClass = :oxClass) and (oxBytes is not null)";
+
+		return list(SelItem.class, Q, "login", login, "name", name, "oxClass", oxClass);
+	}
 }
