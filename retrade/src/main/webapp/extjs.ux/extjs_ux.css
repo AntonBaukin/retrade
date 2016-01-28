@@ -135,6 +135,11 @@ td.x-form-item-body.x-form-cb-wrap
   padding-right: 0;
 }
 
+div.x-table-form-item
+{
+  margin-bottom: 0;
+}
+
 
 /* Drop Down List */
 

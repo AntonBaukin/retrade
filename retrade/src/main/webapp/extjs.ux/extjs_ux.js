@@ -112,6 +112,28 @@ Ext.form.field.ComboBox.override(
 	}
 })
 
+Ext.form.field.Picker.override(
+{
+	/**
+	 * Makes the picker to be not smaller than the field.
+	 */
+	expand            : function()
+	{
+		if(this.rendered && !this.isExpanded && !this.isDestroyed)
+		{
+			var picker = this.getPicker()
+
+			if(picker && !this.matchFieldWidth)
+			{
+				if(!ZeT.isn(picker.width) || (picker.width < this.bodyEl.getWidth()))
+					picker.width = this.bodyEl.getWidth()
+			}
+		}
+
+		return this.callParent(arguments)
+	}
+})
+
 Ext.resizer.Splitter.override(
 {
 	/**

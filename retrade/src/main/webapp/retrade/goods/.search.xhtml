@@ -8,6 +8,28 @@
 
   <!-- [search goods controls block -->
 
+  <!-- [attribute types store] -->
+  <x:data-store storeId = "${z:vid(v, 'search-goods-attrTypes')}"
+    modelProvider = "facesGoodAttrsView" pageSize = "0">
+
+    <f:facet name = "store-props">
+      model: 'retrade.model.GoodAttrView', autoLoad: false
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      reader: ZeT.defined('retrade.readers.GoodAttrView')
+    </f:facet>
+  </x:data-store>
+
+
+  <!-- [attribute values store] -->
+  <x:data-store storeId = "${z:vid(v, 'search-goods-attrValues')}" pageSize = "0">
+    <f:facet name = "store-props">
+      model: 'retrade.model.KeyValue', data: []
+    </f:facet>
+  </x:data-store>
+
+
   <x:component coid = "${z:vid(v, 'search-goods-layout')}">
     <f:facet name = "extjs-props">
       xtype: 'panel', border: false,
@@ -34,115 +56,11 @@
     </x:text-field>
 
 
-    <!-- [attribute types store] -->
-    <x:data-store storeId = "${z:vid(v, 'search-goods-attrTypes')}"
-      modelProvider = "facesGoodAttrsView" pageSize = "0">
-
-      <f:facet name = "store-props">
-        model: 'retrade.model.GoodAttrView', autoLoad: false
-      </f:facet>
-
-      <f:facet name = "proxy-props">
-        reader: ZeT.defined('retrade.readers.GoodAttrView')
-      </f:facet>
-    </x:data-store>
-
-
-    <!-- [attribute type drop list] -->
-    <x:drop-list coid = "${z:vid(v, 'search-goods-attr-type')}"
-      storeId = "${z:vid(v, 'search-goods-attrTypes')}"
-      value = "#{v.phonyString}">
-
-      <f:facet name = "drop-props">
-        hidden: true, editable: false, matchFieldWidth: false,
-        valueField: 'pkey', displayField: 'nameLo', width: extjsf.ex(18)
-      </f:facet>
-
-      <f:facet name = "label-props">
-        hidden: true, text: 'Атр.',
-        cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 0)
-      </f:facet>
-    </x:drop-list>
-
-
-    <!-- [attribute values store] -->
-    <x:data-store storeId = "${z:vid(v, 'search-goods-attrValues')}" pageSize = "0">
-      <f:facet name = "store-props">
-        model: 'retrade.model.KeyValue', data: []
-      </f:facet>
-    </x:data-store>
-
-
-    <!-- [attribute value selection list] -->
-    <x:drop-list coid = "${z:vid(v, 'search-goods-attr-value-list')}"
-      storeId = "${z:vid(v, 'search-goods-attrValues')}"
-      value = "#{v.phonyString}">
-
-      <f:facet name = "drop-props">
-        hidden: true, editable: false, matchFieldWidth: false,
-        valueField: 'value', displayField: 'text', width: extjsf.ex(16)
-      </f:facet>
-
-      <f:facet name = "label-props">
-        hidden: true, text: 'зн.',
-        cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 6)
-      </f:facet>
-    </x:drop-list>
-
-
-    <!-- [attribute value text field] -->
-    <x:text-field coid = "${z:vid(v, 'search-goods-attr-value-text')}"
-      value = "#{v.phonyString}">
-
-      <f:facet name = "extjs-props">
-        hidden: true, width: extjsf.ex(16)
-      </f:facet>
-
-      <f:facet name = "label-props">
-        hidden: true, text: 'зн.',
-        cls: 'retrade-info-title-label',
-        margin: extjsf.pts(0, 4, 0, 6)
-      </f:facet>
-    </x:text-field>
-
-
-    <!-- [OR-AND selector] -->
-    <x:checkbox-field coid = "${z:vid(v, 'search-goods-attr-or')}"
-      value = "#{v.phonyBoolTrue}">
-
-      <f:facet name = "extjs-props">
-        hidden: true, margin: extjsf.dpts(0, 2, 0, 4)
-      </f:facet>
-
-      <f:facet name = "label-props">
-        hidden: true, html: "&lt;span title = 'Добавить фильтр либо как ИЛИ (отмечено), либо как И (не отмечено)'&gt;ИЛИ&lt;/span&gt;"
-      </f:facet>
-    </x:checkbox-field>
-
-
-    <!-- [add filter button] -->
-    <x:component coid = "${z:vid(v, 'search-goods-add-filter')}">
-      <f:facet name = "extjs-props">
-
-        xtype: 'button', hidden: true,
-        width: retrade_default('button-selset-width'),
-        height: retrade_default('button-selset-height'),
-        margin: extjsf.dpts(0, 0, 0, 6),
-        componentCls: 'retrade-icon-24',
-        iconCls: 'retrade-button-add retrade-icon-strict-24',
-        tooltipType: 'title', tooltip: 'Добавить фильтр в текущую выборку'
-
-      </f:facet>
-    </x:component>
-
-
-    <!-- [toggle search by the attributes] -->
+    <!-- [display search by the attributes] -->
     <x:component coid = "${z:vid(v, 'search-goods-attrs')}">
       <f:facet name = "extjs-props">
 
-        xtype: 'button', enableToggle: true,
+        xtype: 'button', arrowVisible: false,
         width: retrade_default('button-selset-width'),
         height: retrade_default('button-selset-height'),
         margin: extjsf.dpts(0, 0, 0, 6),
@@ -151,7 +69,132 @@
         tooltipType: 'title', tooltip: 'Фильтр по атрибутам товара'
 
       </f:facet>
+
+
+      <!-- [attribute search block-menu -->
+
+      <x:menu coid = "${z:vid(v, 'search-goods-attr-menu')}">
+
+        <f:facet name = "extjs-props">
+          showSeparator: false, width: extjsf.pt(200),
+          layout: 'fit',  bodyCls: 'retrade-form-panel',
+          getAlignToXY: function(btn)
+          {
+            var b = btn.getBox(); return [
+              b.x + b.width - this.getWidth(), b.y + b.height + 4 ]
+          }
+        </f:facet>
+
+        <x:component coid = "${z:vid(v, 'search-goods-attrs-menu-layout')}">
+
+          <f:facet name = "extjs-props">
+            border: false, indent: false,
+            bodyPadding: extjsf.pts(8, 4, 4, 6),
+            bodyCls: 'retrade-transparent-panel retrade-table-form-layout',
+            layout: { type: 'table', columns: 2 },
+          </f:facet>
+
+
+          <!-- [attribute type drop list] -->
+          <x:drop-list coid = "${z:vid(v, 'search-goods-attr-type')}"
+            storeId = "${z:vid(v, 'search-goods-attrTypes')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "drop-props">
+              editable: false, matchFieldWidth: false,
+              valueField: 'pkey', displayField: 'nameLo',
+              cellCls: 'retrade-table-cell-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+            </f:facet>
+
+            <f:facet name = "label-props">
+              text: 'Атрибут',
+              cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:drop-list>
+
+
+          <!-- [attribute value selection list] -->
+          <x:drop-list coid = "${z:vid(v, 'search-goods-attr-value-list')}"
+            storeId = "${z:vid(v, 'search-goods-attrValues')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "drop-props">
+              hidden: true, editable: false, matchFieldWidth: false,
+              valueField: 'value', displayField: 'text',
+              cellCls: 'retrade-table-cell-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+            </f:facet>
+
+            <f:facet name = "label-props">
+              hidden: true, text: 'Равен',
+              cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:drop-list>
+
+
+          <!-- [attribute value text field] -->
+          <x:text-field coid = "${z:vid(v, 'search-goods-attr-value-text')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "extjs-props">
+              hidden: true, cellCls: 'retrade-table-cell-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+            </f:facet>
+
+            <f:facet name = "label-props">
+              hidden: true, text: 'Равен',
+              cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:text-field>
+
+
+          <!-- [OR-AND selector] -->
+          <x:component coid = "${z:vid(v, 'search-goods-attr-or-layout')}">
+            <f:facet name = "extjs-props">
+              border: false, colspan: 2,
+              bodyCls: 'retrade-transparent-panel',
+              layout: { type: 'hbox', align: 'middle' }
+            </f:facet>
+
+            <x:checkbox-field coid = "${z:vid(v, 'search-goods-attr-or')}"
+              value = "#{v.phonyBoolTrue}">
+
+              <f:facet name = "extjs-props">
+                hidden: true
+              </f:facet>
+
+              <f:facet name = "label-props">
+                hidden: true, cls: 'retrade-info-title-label',
+                html: "&lt;span title = 'Добавить фильтр либо как ИЛИ (отмечено), либо как И (не отмечено)'&gt;добавить как ИЛИ&lt;/span&gt;"
+              </f:facet>
+            </x:checkbox-field>
+          </x:component>
+
+
+          <!-- [add filter button] -->
+          <x:component coid = "${z:vid(v, 'search-goods-add-filter-layout')}">
+            <f:facet name = "extjs-props">
+              border: false, colspan: 2,
+              bodyCls: 'retrade-transparent-panel',
+              layout: { type: 'vbox', align: 'center' }
+            </f:facet>
+
+            <x:component coid = "${z:vid(v, 'search-goods-add-filter')}">
+              <f:facet name = "extjs-props">
+                xtype: 'button', hidden: true, cls: 'ux-btn-green', text: 'Добавить',
+                tooltipType: 'title', tooltip: 'Добавить фильтр в текущую выборку'
+              </f:facet>
+            </x:component>
+          </x:component>
+        </x:component>
+      </x:menu>
     </x:component>
+
+    <!-- attribute search block-menu] -->
 
 
     <!-- [restrict to selection set] -->
@@ -192,7 +235,6 @@
     var script = extjsf.bind("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')
     var attrs  = extjsf.bind("${z:vid(v, 'search-goods-attrs')}", '${rootView.extjsDomain}')
     var attrt  = extjsf.bind("${z:vid(v, 'search-goods-attr-type')}", '${rootView.extjsDomain}')
-    var attrtl = extjsf.bind("${z:vid(v, 'search-goods-attr-type-label')}", '${rootView.extjsDomain}')
     var attrl  = extjsf.bind("${z:vid(v, 'search-goods-attr-value-list')}", '${rootView.extjsDomain}')
     var attrll = extjsf.bind("${z:vid(v, 'search-goods-attr-value-list-label')}", '${rootView.extjsDomain}')
     var attrv  = extjsf.bind("${z:vid(v, 'search-goods-attr-value-text')}", '${rootView.extjsDomain}')
@@ -202,7 +244,7 @@
     var or     = extjsf.bind("${z:vid(v, 'search-goods-attr-or')}", '${rootView.extjsDomain}')
     var orl    = extjsf.bind("${z:vid(v, 'search-goods-attr-or-label')}", '${rootView.extjsDomain}')
     var add    = extjsf.bind("${z:vid(v, 'search-goods-add-filter')}", '${rootView.extjsDomain}')
-    var searchValue, focused
+    var searchValue
 
     function store()
     {
@@ -250,51 +292,32 @@
       })
     })
 
+    //~: expand name on focus gain
+    name.on('focus', function(f)
+    {
+      f.setWidth(extjsf.ex(22))
+      f.getTrigger('clear').show()
+    })
+
+    //~: contract name on focus lost
+    name.on('blur', function(f)
+    {
+      if(ZeTS.ises(f.getValue()))
+      {
+        f.setWidth(extjsf.ex(12))
+        f.getTrigger('clear').hide()
+      }
+    })
+
     function sh(visible, binds)
     {
       ZeT.each(binds,function(b){ b.visible(visible) })
     }
 
-    function expand(f)
-    {
-      focused = true
-
-      if(name.co() == f)
-      {
-        name.co().setWidth(extjsf.ex(22))
-        name.co().getTrigger('clear').show()
-      }
-    }
-
-    function contract()
-    {
-      focused = false
-
-      ZeT.timeout(1000, function()
-      {
-        if(focused) return
-
-        if(!attrs.co().getEl()) return
-        attrs.co().toggle(false)
-
-        if(ZeTS.ises(name.value()))
-        {
-          name.co().setWidth(extjsf.ex(12))
-          name.co().getTrigger('clear').hide()
-        }
-      })
-    }
-
-    //~: show-hide controls
-    ZeT.each([ name, selset, attrs, attrt, attrl, attrv, or, add ], function(b)
-    {
-      b.on('focus', expand).on('blur', contract)
-    })
-
     //~: toggle attributes view
     attrs.on('toggle', function(btn)
     {
-      sh( btn.pressed, [ attrt, attrtl ])
+      sh( btn.pressed, [ attrs ])
       sh(!btn.pressed, [ name, namel ])
       if(!btn.pressed) sh(false, [ attrl, attrll, attrv, attrvl, or, orl, add ])
 
@@ -337,6 +360,8 @@
         vstore.co().removeAll()
         attrv.value('')
       }
+
+      attrs.menu.co().updateLayout()
     })
 
     function validateValue(v, t)

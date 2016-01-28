@@ -757,31 +757,21 @@ div.retrade-desktop-clocks-area
 }
 
 
-/* table layouts */
-
-td.retrade-table-cell-top
-{
-  vertical-align: top;
-}
-
-td.retrade-table-cell-right
-{
-  text-align: right;
-}
-
-td.retrade-table-cell-bottom
-{
-  vertical-align: bottom;
-}
-
-td.retrade-table-cell-middle
-{
-  vertical-align: middle;
-}
+/* Table Layouts */
 
 td.retrade-table-cell-100pc
 {
   width: 100%;
+}
+
+.retrade-table-form-layout > table > tbody > tr > td
+{
+  padding-top: 4pt;
+}
+
+.retrade-table-form-layout > table > tbody > tr:first-child > td
+{
+  padding-top: 0;
 }
 
 
