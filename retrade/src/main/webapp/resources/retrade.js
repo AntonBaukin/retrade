@@ -3147,48 +3147,47 @@ var retrade = ZeT.define('retrade',
 	{
 		if(!ZeT.iss(v)) { v = o; o = null }
 		v = retrade._vinteger(v); o = o || {}
-
 		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
+
 		if(!v) return 'Требуется положительное целочисленное значение!'
 		return true
 	},
 
 	vcurrency        : function(o, v)
 	{
-		if(!ZeT.iss(v)) { v = o; o = null; }
-		v = retrade._vdecimal(v); o = o || {};
-
-		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!';
+		if(!ZeT.iss(v)) { v = o; o = null }
+		v = retrade._vdecimal(v); o = o || {}
+		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
 
 		if(v && !v.match(/^\d+(\.\d{1,2})?$/))
-			return "Точность цены должна быть до сотых долей!";
+			return "Точность цены должна быть до сотых долей!"
 
-		if(!v) return 'Требуется десятичное денежное значение!';
-		return true;
+		if(!v) return 'Требуется десятичное денежное значение!'
+		return true
 	},
 
 	vvcurrency       : function(o, v)
 	{
-		if(!ZeT.iss(v)) { v = o; o = null; }
-		v = retrade._vdecimal(v); o = o || {};
-
-		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!';
+		if(!ZeT.iss(v)) { v = o; o = null }
+		v = retrade._vdecimal(v); o = o || {}
+		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
 
 		if(v && !v.match(/^\d+(\.\d{1,5})?$/))
-			return "Точность стоимости обёма должна быть до пяти знаков после запятой!";
+			return "Точность стоимости обёма должна быть до пяти знаков после запятой!"
 
-		if(!v) return 'Требуется десятичное денежное значение стоимости обёма!';
-		return true;
+		if(!v) return 'Требуется десятичное денежное значение стоимости обёма!'
+		return true
 	},
 
 	vvolume          : function(o, v, l)
 	{
 		if(!ZeT.iso(o)) { l = v; v = o; o = null }
 		v = retrade._vdecimal(v); o = o || {}
+		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
+
 		if(ZeT.isu(l)) l = 3
 		ZeT.assert(ZeT.isi(l) && l > 0)
 
-		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
 		if(!v) return 'Требуется десятичное значение объёма!'
 		if(!v.match(new RegExp("^\\d+(\\.\\d{1," + l + "})?$")))
 			return 'Объём задаётся с точностью до ' + l +'-ого дробного знака!'
@@ -3198,19 +3197,20 @@ var retrade = ZeT.define('retrade',
 	vivolume         : function(o, v)
 	{
 		if(!ZeT.iss(v)) { v = o; o = null; }
-		v = retrade._vinteger(v); o = o || {};
+		v = retrade._vinteger(v); o = o || {}
+		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
 
-		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!';
-		if(!v) return 'Требуется целое значение объёма!';
-		return true;
+		if(!v) return 'Требуется целое значение объёма!'
+
+		return true
 	},
 
 	vpercentdelta    : function(o, v)
 	{
 		if(!ZeT.iss(v)) { v = o; o = null }
 		v = retrade._vndecimal(v); o = o || {}
-
 		if(ZeT.isu(v)) return !!o.blank || 'Поле должно быть заполнено!'
+
 		if(!v) return 'Требуется десятичное значение!'
 
 		var n = parseFloat(v)

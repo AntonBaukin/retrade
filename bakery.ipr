@@ -319,6 +319,7 @@
         <option name="processLiterals" value="false" />
         <option name="processComments" value="true" />
       </inspection_tool>
+      <inspection_tool class="UnnecessaryInterfaceModifier" enabled="true" level="INFO" enabled_by_default="true" />
     </profile>
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_PROFILE" value="true" />
