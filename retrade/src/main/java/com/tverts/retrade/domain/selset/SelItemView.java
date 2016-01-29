@@ -12,13 +12,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: endure (core + catalogues) */
+/* com.tverts: api */
+
+import com.tverts.api.core.JString;
+
+/* com.tverts: endure (core) */
 
 import com.tverts.endure.core.GetUnity;
-import com.tverts.endure.cats.CatItem;
 
 /* com.tverts: formatters */
 
+import com.tverts.objects.XPoint;
 import com.tverts.support.fmt.FmtPoint;
 
 
@@ -33,36 +37,70 @@ public class SelItemView implements Serializable
 	public static final long serialVersionUID = 0L;
 
 
-	/* public: SelItemView (bean) interface */
+	/* Selection Set Item View (bean) */
+
+	public Long getItemKey()
+	{
+		return itemKey;
+	}
+
+	private Long itemKey;
+
+	public void setItemKey(Long itemKey)
+	{
+		this.itemKey = itemKey;
+	}
 
 	public Long getObjectKey()
 	{
 		return objectKey;
 	}
 
+	private Long objectKey;
+
 	public void setObjectKey(Long objectKey)
 	{
 		this.objectKey = objectKey;
 	}
 
-	public String getName()
+	public String getTitle()
 	{
-		return name;
+		return title;
 	}
 
-	public void setName(String name)
+	private String title;
+
+	public void setTitle(String title)
 	{
-		this.name = name;
+		this.title = title;
 	}
 
-	public String getCode()
+	public String getOxClass()
 	{
-		return code;
+		return oxClass;
 	}
 
-	public void setCode(String code)
+	private String oxClass;
+
+	public void setOxClass(String oxClass)
 	{
-		this.code = code;
+		this.oxClass = oxClass;
+	}
+
+	/**
+	 * String of JSON encoded object stored under
+	 * {@link JString} or JAXB-annotated class.
+	 */
+	public String getOxString()
+	{
+		return oxString;
+	}
+
+	private String oxString;
+
+	public void setOxString(String oxString)
+	{
+		this.oxString = oxString;
 	}
 
 
@@ -72,37 +110,42 @@ public class SelItemView implements Serializable
 	{
 		if(obj instanceof SelItem)
 			return this.init((SelItem) obj);
-
-		if(obj instanceof CatItem)
-			this.init((CatItem) obj);
-
-		if(this.name == null)
-			this.name = FmtPoint.format(obj,
-			  FmtPoint.LONG, FmtPoint.TYPE, FmtPoint.DISPLAY
-			);
-
 		return this;
 	}
 
 	public SelItemView init(SelItem obj)
 	{
+		this.itemKey   = obj.getPrimaryKey();
 		this.objectKey = obj.getObject();
+		this.oxClass   = obj.getOxClass();
 
-		return this.init(bean(GetUnity.class).
-		  getUnited(this.objectKey));
-	}
+		//?: {has object key}
+		if(this.objectKey != null)
+		{
+			//~: load the united instance
+			Object u = bean(GetUnity.class).
+			  getUnited(this.objectKey);
 
-	public SelItemView init(CatItem obj)
-	{
-		this.code = obj.getCode();
+			//?: {found it} format
+			if(u != null)
+				this.title = FmtPoint.format(u, FmtPoint.LONG, FmtPoint.DISPLAY);
+		}
+
+		//?: {has ox-object}
+		if(obj.getOx() != null)
+		{
+			//?: {need format it}
+			if(this.title == null)
+				this.title = FmtPoint.format(obj.getOx(), FmtPoint.DISPLAY);
+
+			//?: {has JSON wrapper}
+			if(obj.getOx() instanceof JString)
+				this.oxString = ((JString)obj.getOx()).getJson();
+			//?: {supported by JAXB}
+			else if(XPoint.json().supported(obj.getOx()))
+				this.oxString = XPoint.json().write(obj.getOx());
+		}
 
 		return this;
 	}
-
-
-	/* properties of the item */
-
-	private Long   objectKey;
-	private String name;
-	private String code;
 }

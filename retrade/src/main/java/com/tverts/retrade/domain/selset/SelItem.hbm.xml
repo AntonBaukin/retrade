@@ -12,13 +12,11 @@
     <id name = 'primaryKey' column = 'pk_sel_item'/>
 
 
-    <!-- Selection Set reference -->
+    <!-- Selection Set -->
 
     <many-to-one name = 'selSet' foreign-key = 'fk_sel_set'>
 
-      <column name = 'fk_sel_set' not-null = 'true'
-        unique-key = 'ux_sel_item'>
-
+      <column name = 'fk_sel_set' not-null = 'true'>
         <comment>The Selection Set this Item is in</comment>
       </column>
     </many-to-one>
@@ -26,14 +24,13 @@
 
     <!-- Object Key -->
 
-    <property name = 'object' type = 'long'>
+    <property name = 'object'>
 
-      <column name = 'object_key' not-null = 'true'
-        unique-key = 'ux_sel_item'>
-
+      <column name = 'object_key'>
         <comment>
           Copy of the primary key of an United entity
-          this item refers
+          this item refers. Undefined for items having
+          object extractions
         </comment>
       </column>
     </property>
@@ -64,6 +61,5 @@
 
       <type name = 'com.tverts.hibery.OxBytesType'/>
     </property>
-
   </class>
 </hibernate-mapping>

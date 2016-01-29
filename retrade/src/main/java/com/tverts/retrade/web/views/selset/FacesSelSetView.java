@@ -83,11 +83,11 @@ public class FacesSelSetView extends ModelView
 
 	public String doDelObject()
 	{
-		Long   object = obtainEntityKeyFromRequestStrict();
+		Long   item   = obtainEntityKeyFromRequestStrict();
 		SelSet selset = getSelSet();
 
 		//!: add to the selection
-		actionRun(ActSelSet.CLEAR, selset, ActSelSet.OBJECTS, object);
+		actionRun(ActSelSet.CLEAR, selset, ActSelSet.ITEMS, item);
 
 		return null;
 	}

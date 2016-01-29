@@ -500,7 +500,7 @@
         return ReTrade.desktop.error('Выберете атрибут товара!')
 
       var e, v = attrv.value(), m = attrm.value(), M = attrM.value()
-      var f = { attribute: parseInt(attrt.value()), or: or.value() }
+      var f = { 'good-attr-type': parseInt(attrt.value()), 'is-or': or.value() }
 
       //~: has fixed list of values
       if(!ZeT.isa(aox.values))
@@ -533,17 +533,28 @@
       if(!ZeTS.ises(v)) //?: {has single value}
       {
         ZeT.assert(ZeTS.ises(m) && ZeTS.ises(M))
-        f.min = formatValue(v)
+        f['min-value'] = formatValue(v)
       }
       else  //<-- has ranged filter
       {
         ZeT.assert(!ZeTS.ises(m) || !ZeTS.ises(M))
 
-        f.min = ZeTS.ises(m)?{}:formatValue(m)
-        f.max = ZeTS.ises(M)?{}:formatValue(M)
+        f['min-value'] = ZeTS.ises(m)?{}:formatValue(m)
+        f['max-value'] = ZeTS.ises(M)?{}:formatValue(M)
       }
 
-      ZeT.log('Adding filter: ', ZeT.o2s(f))
+      var params = { selset:  ReTrade.selset.selset, filter: ZeT.o2s(f) }
+      if(ZeT.isx(params.selset)) params.selset = ''
+
+      //!: post filter to the server
+      jQuery.post("${z:url('/go/web/views/goods/goods-filter')}", params).
+        done(function(x)
+        {
+          x = parseInt(ZeT.asserts(x))
+          ZeT.assert(ZeT.isi(x)) //<-- primary key of the new item
+
+          ZeT.log('Saved filter: ', x)
+        })
     })
   })
   //]]>

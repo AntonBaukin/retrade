@@ -1882,16 +1882,31 @@ ZeT.init('retrade.globals', function()
 
 	//<: selection set
 
+	Ext.define('retrade.model.SelSetView', {
+	  extend: 'Ext.data.Model',
+
+	  idProperty: 'itemKey',
+
+	  fields: [
+
+	    {name: 'itemKey',    type: 'string'},
+	    {name: 'objectKey',  type: 'string'},
+	    {name: 'title',      type: 'string'},
+	    {name: 'oxClass',    type: 'string'},
+	    {name: 'oxString',   type: 'string'}
+	  ]
+	})
+
 	ZeT.defineDelay('retrade.columns.SelSetView', function()
 	{
 		return [
 
 		 {
-		   text: "Объект", dataIndex: 'name',
+		   text: "Объект", dataIndex: 'title',
 		   sortable: false, flex: 1, renderer: function(v, meta)
 		   {
-				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"';
-				return v;
+				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
+				return v
 		   }
 		 }
 		];

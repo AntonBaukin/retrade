@@ -1,11 +1,10 @@
 package com.tverts.retrade.domain.selset;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -86,6 +85,13 @@ public class ActSelSet extends ActionBuilderReTrade
 	public static final String OBJECTS    =
 	  ActSelSet.class.getName() + ": selected objects";
 
+	/**
+	 * The same as {@link #OBJECTS}, but contains the
+	 * keys of Selection Set Items.
+	 */
+	public static final String ITEMS      =
+	  ActSelSet.class.getName() + ": selected items";
+
 
 	/* public: ActionBuilder interface */
 
@@ -145,7 +151,8 @@ public class ActSelSet extends ActionBuilderReTrade
 		checkTargetClass(abr, SelSet.class);
 
 		//~: add remove (clear) action
-		chain(abr).first(new RemoveSelSetKeys(task(abr), this.objects(abr)));
+		chain(abr).first(new RemoveSelSetKeys(
+		  task(abr), objects(abr), items(abr)));
 
 		complete(abr);
 	}
@@ -172,13 +179,24 @@ public class ActSelSet extends ActionBuilderReTrade
 		Object objs = param(abr, OBJECTS);
 		if(objs == null) return null;
 
-		HashSet<Long> res = new HashSet<Long>(17);
-		objects(objs, res);
+		HashSet<Long> res = new HashSet<>();
+		ids(objs, res);
 
-		return res.isEmpty()?(null):(res);
+		return res;
 	}
 
-	protected void      objects(Object obj, Set<Long> res)
+	protected Set<Long> items(ActionBuildRec abr)
+	{
+		Object objs = param(abr, ITEMS);
+		if(objs == null) return null;
+
+		HashSet<Long> res = new HashSet<>();
+		ids(objs, res);
+
+		return res;
+	}
+
+	protected void      ids(Object obj, Set<Long> res)
 	{
 		if(obj instanceof Number)
 		{
@@ -204,7 +222,7 @@ public class ActSelSet extends ActionBuilderReTrade
 
 		if(obj instanceof Collection)
 			for(Object o : (Collection)obj)
-				objects(o, res);
+				ids(o, res);
 	}
 
 
@@ -242,13 +260,12 @@ public class ActSelSet extends ActionBuilderReTrade
 
 		@SuppressWarnings("unchecked")
 		protected void execute()
-		  throws Throwable
 		{
 			// select si.object from SelItem si where (si.selSet = :selSet)
 
 			//~: select existing items
 			SelSet    selset   = target(SelSet.class);
-			Set<Long> existing = new HashSet<Long>((List<Long>) session().
+			Set<Long> existing = new HashSet<>((List<Long>) session().
 			  createQuery("select si.object from SelItem si where (si.selSet = :selSet)").
 			  setParameter("selSet", selset).
 			  list());
@@ -291,15 +308,17 @@ public class ActSelSet extends ActionBuilderReTrade
 		{
 			super(task);
 			this.keys = null;
+			this.ids  = null;
 		}
 
 		/**
 		 * Removes the keys selected.
 		 */
-		public RemoveSelSetKeys(ActionTask task, Set<Long> keys)
+		public RemoveSelSetKeys(ActionTask task, Set<Long> keys, Set<Long> ids)
 		{
 			super(task);
 			this.keys = keys;
+			this.ids  = ids;
 		}
 
 
@@ -312,29 +331,26 @@ public class ActSelSet extends ActionBuilderReTrade
 
 		@SuppressWarnings("unchecked")
 		protected void execute()
-		  throws Throwable
 		{
-			// from SelItem where (selSet = :selSet)
+			GetSelSet get = bean(GetSelSet.class);
 
-			//~: select all the items
-			Iterator i = session().createQuery(
-			  "from SelItem where (selSet = :selSet)"
-			).
-			  setParameter("selSet", target(SelSet.class)).
-			  iterate();
+			//?: {clear all}
+			if((keys == null) && (ids == null))
+				get.clearSelSet(target(SelSet.class).getPrimaryKey());
 
-			//c: iterate all the items
-			while(i.hasNext())
-			{
-				SelItem si = (SelItem) i.next();
+			//?: {remove by the objects}
+			if(keys != null)
+				get.removeSelSetItemsByObjects(
+				  target(SelSet.class).getPrimaryKey(), keys);
 
-				if((keys == null) || keys.contains(si.getObject()))
-					session().delete(si);
-			}
+			//?: {remove directly}
+			if(ids != null)
+				get.removeSelSetItemsByIds(ids);
 		}
 
 		/* the keys to delete */
 
 		protected final Set<Long> keys;
+		protected final Set<Long> ids;
 	}
 }

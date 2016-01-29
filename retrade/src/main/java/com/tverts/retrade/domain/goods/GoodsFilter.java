@@ -21,6 +21,7 @@ import com.tverts.endure.core.GetUnity;
 
 /* com.tverts: support */
 
+import com.tverts.support.CMP;
 import com.tverts.support.EX;
 import com.tverts.support.fmt.SelfFmt;
 
@@ -105,25 +106,55 @@ public class GoodsFilter implements SelfFmt
 
 	/* Self Formatting */
 
-	public String toString()
+	public boolean isNull()
 	{
+		return (attrType == null) ||
+		  (((min == null) || min.isNull()) && ((max == null) || max.isNull()));
+	}
+
+	public String  toString()
+	{
+		if(isNull())
+			return "Фильтр товара пуст";
+
 		StringBuilder  s = new StringBuilder(92);
 		AttrType      at = bean(GetUnity.class).
 		  getAttrType(attrType);
 
 		s.append("Фильтр товара (").append((or)?("ИЛИ)"):("И)"));
 
-		if(at != null) s.append(" по атр. '").
+		if(at != null) s.append(": '").
 		  append((at.getNameLo() != null)?(at.getNameLo()):(at.getName())).
-		  append("'");
+		  append("' ");
 
 		Object m = (min == null)?(null):(min.value());
 		Object M = (max == null)?(null):(max.value());
 		EX.assertn(m);
 
-		s.append((M != null)?(": от ["):("равно [")).append(m);
+		s.append((M != null)?(": от ["):("равен [")).append(m);
 		if(M != null) s.append("] до [").append(M);
 
 		return s.append(']').toString();
+	}
+
+
+	/* Object Interface */
+
+	public boolean equals(Object o)
+	{
+		return (this == o) || !(o == null || getClass() != o.getClass()) &&
+		  CMP.eq(attrType, ((GoodsFilter)o).attrType) && (or == ((GoodsFilter)o).or) &&
+		  CMP.eq(min, ((GoodsFilter)o).min) && CMP.eq(max, ((GoodsFilter)o).max);
+	}
+
+	public int     hashCode()
+	{
+		int result = (attrType != null)?(attrType.hashCode()):0;
+
+		result = 31*result + (or?1:0);
+		result = 31*result + ((min != null)?(min.hashCode()):0);
+		result = 31*result + ((max != null)?(max.hashCode()):0);
+
+		return result;
 	}
 }

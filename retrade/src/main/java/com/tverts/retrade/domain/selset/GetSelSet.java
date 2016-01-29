@@ -1,18 +1,31 @@
 package com.tverts.retrade.domain.selset;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.List;
+import java.util.Set;
 
 /* Spring Framework */
 
 import org.springframework.stereotype.Component;
+
+/* Hibernate Persistence Layer */
+
+import org.hibernate.Query;
 
 /* com.tverts: hibery */
 
 import com.tverts.hibery.GetObjectBase;
 import com.tverts.hibery.HiberPoint;
 import com.tverts.hibery.qb.QueryBuilder;
+
+/* com.tverts: secure */
+
+import com.tverts.secure.SecPoint;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**
@@ -50,30 +63,30 @@ order by ss.id asc
 		  list();
 	}
 
-	public SelSet getSelSet(Long login, String name)
+	public SelSet getSelSet(String name)
 	{
-
-// from SelSet where (login.id = :login) and (name = :name)
-
-		return (SelSet) Q(
-		  "from SelSet where (login.id = :login) and (name = :name)"
-		).
-		  setLong  ("login", login).
-		  setString("name",  name).
-		  uniqueResult();
+		return getSelSet(SecPoint.login(), name);
 	}
 
-	@SuppressWarnings("unchecked")
+	public SelSet getSelSet(Long login, String name)
+	{
+		EX.assertn(login);
+		EX.assertn(name);
+
+		final String Q =
+"  from SelSet where (login.id = :login) and (name = :name)";
+
+		return object(SelSet.class, Q, "login", login, "name",  name);
+	}
+
 	public List<Long> getSelItems(SelSet set)
 	{
+		EX.assertn(set);
 
-// select si.object from SelItem si where (si.selSet = :sset)
+		final String Q =
+"  select si.object from SelItem si where (si.selSet = :sset)";
 
-		return (List<Long>) Q(
-"select si.object from SelItem si where (si.selSet = :sset)"
-		).
-		  setParameter("sset", set).
-		  list();
+		return list(Long.class, Q, "sset", set);
 	}
 
 	public int countSelSetSize(SelSetModelBean mb)
@@ -131,10 +144,71 @@ order by ss.id asc
 	}
 
 
+	/* Processing Selection Set Items */
+
+	public void clearSelSet(Long set)
+	{
+		EX.assertn(set);
+
+		final String Q =
+"  delete from SelItem si where (si.selSet.id = :sset)";
+
+		Q(Q, "sset", set).executeUpdate();
+	}
+
+	public void removeSelSetItemsByObjects(Long set, Set<Long> objects)
+	{
+		EX.assertn(set);
+		EX.assertn(objects);
+
+		final String Q =
+"  delete from SelItem si where (si.selSet.id = :sset) and (si.object = :obj)";
+
+		//~: create the query
+		Query q = Q(Q, "sset", set);
+
+		//c: each object given
+		for(Long obj : objects)
+			if(obj != null)
+			{
+				q.setLong("obj", obj);
+				q.executeUpdate();
+			}
+	}
+
+	public void removeSelSetItemsByIds(Set<Long> ids)
+	{
+		EX.assertn(ids);
+
+		final String Q =
+"  delete from SelItem si where (si.id = :iid)";
+
+		//~: create the query
+		Query q = Q(Q);
+
+		//c: each object given
+		for(Long id : ids)
+			if(id != null)
+			{
+				q.setLong("iid", id);
+				q.executeUpdate();
+			}
+	}
+
+
 	/* Typed Objects Support */
+
+	public List<SelItem> getTypedItems(String name, String oxClass)
+	{
+		return getTypedItems(SecPoint.login(), name, oxClass);
+	}
 
 	public List<SelItem> getTypedItems(Long login, String name, String oxClass)
 	{
+		EX.assertn(login);
+		EX.assertn(name);
+		EX.asserts(oxClass);
+
 /*
 
  from SelSet where (login.id = :login) and (name = :name)

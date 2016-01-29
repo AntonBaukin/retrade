@@ -26,16 +26,16 @@ public class SelItem extends OxNumericBase
 		this.selSet = selSet;
 	}
 
-	public long getObject()
+	public Long getObject()
 	{
-		return object;
+		return (object == 0L)?(null):(object);
 	}
 
 	private long object;
 
-	public void setObject(long object)
+	public void setObject(Long object)
 	{
-		this.object = object;
+		this.object = (object == null)?(0L):(object);
 	}
 
 	/**
