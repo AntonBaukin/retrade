@@ -25,20 +25,22 @@ public interface WherePartComposite extends WherePart
 	 * Add the part with auto-generated name.
 	 */
 	public WherePartComposite
-	              addPart(WherePart part);
+	               addPart(WherePart part);
 
 	/**
 	 * Adds, or replaces, or removes the part by the key given.
 	 * To remove just pass {@code null} value.
 	 */
 	public WherePartComposite
-	              addPart(String name, WherePart part);
+	               addPart(String name, WherePart part);
+
+	public boolean isEmpty();
 
 	/**
 	 * Returns the name of the last part had been added
 	 * and not removed yet.
 	 */
-	public String lastPartName();
+	public String  lastPartName();
 
 	/**
 	 * When adding this composite into the surrounding one,
@@ -51,7 +53,7 @@ public interface WherePartComposite extends WherePart
 	 * If no global prefix is set, this composite is a top-level,
 	 * and the prefix has the value of empty string.
 	 */
-	public void   setGlobalPrefix(String prefix);
+	public void    setGlobalPrefix(String prefix);
 
-	public void   collectParams(Map<String, Object> result);
+	public void    collectParams(Map<String, Object> result);
 }

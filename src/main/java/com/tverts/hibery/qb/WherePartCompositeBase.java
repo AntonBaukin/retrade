@@ -60,6 +60,11 @@ public abstract class WherePartCompositeBase
 		return this;
 	}
 
+	public boolean   isEmpty()
+	{
+		return getParts().isEmpty();
+	}
+
 	public WhereText addPart(String name, String query)
 	{
 		WhereText res;

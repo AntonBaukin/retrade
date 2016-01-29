@@ -33,33 +33,39 @@ public abstract class WhereSubqueryBase
 		return buildQueryText();
 	}
 
+
 	/* public: WherePartComposite interface */
 
 	public WhereSubqueryBase
-	              addPart(WherePart part)
+	               addPart(WherePart part)
 	{
 		getClauseWhere().addPart(part);
 		return this;
 	}
 
-	public String lastPartName()
+	public boolean isEmpty()
+	{
+		return getClauseWhere().isEmpty();
+	}
+
+	public String  lastPartName()
 	{
 		return getClauseWhere().lastPartName();
 	}
 
 	public WhereSubqueryBase
-	              addPart(String name, WherePart part)
+	               addPart(String name, WherePart part)
 	{
 		getClauseWhere().addPart(name, part);
 		return this;
 	}
 
-	public void   setGlobalPrefix(String prefix)
+	public void    setGlobalPrefix(String prefix)
 	{
 		getClauseWhere().setGlobalPrefix(prefix);
 	}
 
-	public void   collectParams(Map<String, Object> result)
+	public void    collectParams(Map<String, Object> result)
 	{
 		getClauseWhere().collectParams(result);
 	}
