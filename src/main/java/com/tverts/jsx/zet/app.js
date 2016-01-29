@@ -82,6 +82,7 @@ ZeT.extend(ZeT,
 	},
 
 	SpringPoint      : Java.type('com.tverts.spring.SpringPoint'),
+	HiberPoint       : Java.type('com.tverts.hibery.HiberPoint'),
 
 	jss              : function(s)
 	{

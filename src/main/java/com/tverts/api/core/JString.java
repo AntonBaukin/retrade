@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: support */
 
+import com.tverts.api.support.CMP;
 import com.tverts.api.support.EX;
 
 
@@ -51,5 +52,20 @@ public class JString
 	public void setJson(String json)
 	{
 		this.json = json;
+	}
+
+
+	/* Object Interface */
+
+	public boolean equals(Object o)
+	{
+		return (this == o) || !(o == null || getClass() != o.getClass()) &&
+		  CMP.eq(type, ((JString)o).type) && CMP.eq(json, ((JString)o).json);
+	}
+
+	public int     hashCode()
+	{
+		return 31 * ((type != null)?(type.hashCode()):0) +
+		  ((json != null)?(json.hashCode()):0);
 	}
 }

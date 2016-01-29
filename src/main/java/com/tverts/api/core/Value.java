@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: api */
 
+import com.tverts.api.support.CMP;
 import com.tverts.api.support.EX;
 
 
@@ -78,13 +79,13 @@ public class Value
 
 	/* Value Access */
 
-	public Object value()
+	public Object  value()
 	{
 		return (text != null)?(text):(integer != null)?(integer):
 		  (decimal != null)?(decimal):(json != null)?(json):(null);
 	}
 
-	public Value  value(Object v)
+	public Value   value(Object v)
 	{
 		text    = null;
 		integer = null;
@@ -111,5 +112,31 @@ public class Value
 			throw EX.ass("Unsupported value type!");
 
 		return this;
+	}
+
+	public boolean isNull()
+	{
+		return (value() == null);
+	}
+
+
+	/* Object Interface */
+
+	public boolean equals(Object o)
+	{
+		return (this == o) || !(o == null || getClass() != o.getClass()) &&
+		  CMP.eq(text, ((Value)o).text) && CMP.eq(integer, ((Value)o).integer) &&
+		  CMP.eq(decimal, ((Value)o).decimal) && CMP.eq(json, ((Value)o).json);
+	}
+
+	public int     hashCode()
+	{
+		int result = (text != null)?(text.hashCode()):0;
+
+		result = 31*result + ((integer != null)?(integer.hashCode()):0);
+		result = 31*result + ((decimal != null)?(decimal.hashCode()):0);
+		result = 31*result + ((json != null)?(json.hashCode()):0);
+
+		return result;
 	}
 }

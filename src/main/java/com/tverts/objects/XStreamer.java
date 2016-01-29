@@ -15,12 +15,13 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-/* Java for XML  */
+/* Java API for XML Binding */
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
@@ -104,7 +105,13 @@ public class XStreamer
 
 	/* Writing Objects */
 
-	public void   write(Object object, Result result)
+	public boolean supported(Object object)
+	{
+		return (object == null) ||
+		  (object.getClass().getAnnotation(XmlType.class) != null);
+	}
+
+	public void    write(Object object, Result result)
 	{
 		try
 		{
@@ -124,7 +131,7 @@ public class XStreamer
 		}
 	}
 
-	public void   write(Object object, Writer stream)
+	public void    write(Object object, Writer stream)
 	{
 		this.write(object, new StreamResult(stream));
 	}
@@ -133,7 +140,7 @@ public class XStreamer
 	 * Write the object to the raw stream given in UTF-8.
 	 * Note that the stream is closed (also, in the case of error).
 	 */
-	public void   write(Object object, OutputStream stream)
+	public void    write(Object object, OutputStream stream)
 	{
 		Throwable error  = null;
 		boolean   closed = false;
@@ -169,7 +176,7 @@ public class XStreamer
 			throw EX.wrap(error);
 	}
 
-	public void   write(Object object, BytesStream stream)
+	public void    write(Object object, BytesStream stream)
 	{
 		//~: prevent close on the exit
 		boolean notclose = stream.isNotCloseNext();
@@ -192,7 +199,7 @@ public class XStreamer
 		}
 	}
 
-	public byte[] write(boolean gzip, Object object)
+	public byte[]  write(boolean gzip, Object object)
 	{
 		BytesStream bs = new BytesStream();
 		bs.setNotClose(true);
@@ -219,7 +226,7 @@ public class XStreamer
 		}
 	}
 
-	public String write(Object object)
+	public String  write(Object object)
 	{
 		StringWriter sw = new StringWriter(512);
 		this.write(object, sw);
@@ -237,7 +244,7 @@ public class XStreamer
 	 * to {@code Object.class}.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T  read(Source source, Class<T> cls)
+	public <T> T   read(Source source, Class<T> cls)
 	{
 		EX.assertn(cls);
 
@@ -272,23 +279,23 @@ public class XStreamer
 		}
 	}
 
-	public <T> T  read(Reader stream, Class<T> cls)
+	public <T> T   read(Reader stream, Class<T> cls)
 	{
 		return read(new StreamSource(stream), cls);
 	}
 
-	public <T> T  read(String str, Class<T> cls)
+	public <T> T   read(String str, Class<T> cls)
 	{
 		return read(new StringReader(str), cls);
 	}
 
-	public <T> T  read(InputStream stream, Class<T> cls)
+	public <T> T   read(InputStream stream, Class<T> cls)
 	{
 		return read(new StreamSource(stream), cls);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T  read(boolean gzip, Class<T> cls, byte[] bytes)
+	public <T> T   read(boolean gzip, Class<T> cls, byte[] bytes)
 	{
 		InputStream is = new ByteArrayInputStream(bytes);
 
@@ -316,7 +323,7 @@ public class XStreamer
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T  clone(T obj)
+	public <T> T   clone(T obj)
 	{
 		if(obj == null)
 			return null;
@@ -337,6 +344,9 @@ public class XStreamer
 			s.closeAlways();
 		}
 	}
+
+
+	/* protected: support routines */
 
 	protected Object propertyValue(String v)
 	{
