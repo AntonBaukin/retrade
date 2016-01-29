@@ -26,7 +26,10 @@ function post()
 	var item = new SelItem()
 
 	//=: primary key
-	ZeT.HiberPoint.setPrimaryKey(ZeT.tx.txSession(), item)
+	ZeT.HiberPoint.setPrimaryKey(
+	  ZeT.tx.txSession(), item,
+	  ZeT.HiberPoint.isTestPrimaryKey(ZeT.sec.domain())
+	)
 
 	//=: selection set
 	item.setSelSet(selset)

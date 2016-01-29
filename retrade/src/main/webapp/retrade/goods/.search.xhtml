@@ -435,6 +435,13 @@
     //~: select attribute type
     attrt.on('change', function(cb, v)
     {
+      //?: {has nothing selected} clear and hide
+      if(ZeTS.ises(v)) {
+        aox = null; attrl.value(''); attrv.value(''); attrm.value(''); attrM.value('')
+        sh(false, [ attrl, attrll, attrv, attrvl, attrm, attrml, attrM, attrMl, or, orl, add ])
+        return
+      }
+
       aox = ZeT.assertn(astore.co().getById(v)).get('ox')
 
       //?: {has fixed list of values}
@@ -553,7 +560,24 @@
           x = parseInt(ZeT.asserts(x))
           ZeT.assert(ZeT.isi(x)) //<-- primary key of the new item
 
-          ZeT.log('Saved filter: ', x)
+          //~: reload the selection set
+          var s = ReTrade.selset.storeId()
+          if(!ZeTS.ises(s)) Ext.data.StoreManager.lookup(s).loadPage(1)
+
+          //~: clear the form, hide menu
+          attrt.value(''); attrs.menu.visible(false)
+
+          //~: build the message
+          var msg = 'Фильтр добавлен в текущую выборку'
+          if(selset.co().pressed) msg += ' и применён!'
+          else msg += '. Активирован режим фильтрации по выборке.'
+          ReTrade.desktop.event({ color: 'G' }, msg)
+
+          //~: filter by the set
+          selset.co().toggle(true)
+
+          //~: reload the goods grid
+          if(store()) store().loadPage(1)
         })
     })
   })

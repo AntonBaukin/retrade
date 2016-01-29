@@ -2,6 +2,7 @@ package com.tverts.retrade.domain.selset;
 
 /* Java */
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import org.hibernate.Query;
 
 import com.tverts.hibery.GetObjectBase;
 import com.tverts.hibery.HiberPoint;
+import com.tverts.hibery.OxBytes;
 import com.tverts.hibery.qb.QueryBuilder;
 
 /* com.tverts: secure */
@@ -198,28 +200,50 @@ order by ss.id asc
 
 	/* Typed Objects Support */
 
-	public List<SelItem> getTypedItems(String name, String oxClass)
+	public <T> List<T> getTypedItems(String name, Class<T> oxClass, boolean shortName)
 	{
-		return getTypedItems(SecPoint.login(), name, oxClass);
+		return getTypedItems(SecPoint.login(), name, oxClass, shortName);
 	}
 
-	public List<SelItem> getTypedItems(Long login, String name, String oxClass)
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getTypedItems(
+	  Long login, String name, Class<T> oxClass, boolean shortName)
 	{
 		EX.assertn(login);
 		EX.assertn(name);
-		EX.asserts(oxClass);
+		EX.assertn(oxClass);
 
 /*
 
- from SelSet where (login.id = :login) and (name = :name)
-   and (oxClass = :oxClass) and (oxBytes is not null)
+ select oxBytes from SelItem where (selSet.login.id = :login) and
+   (selSet.name = :name) and (oxClass = :oxClass) and (oxBytes is not null)
 
 */
 		final String Q =
 
-"from SelSet where (login.id = :login) and (name = :name)\n" +
-"  and (oxClass = :oxClass) and (oxBytes is not null)";
+"select oxBytes from SelItem where (selSet.login.id = :login) and\n" +
+"  (selSet.name = :name) and (oxClass = :oxClass) and (oxBytes is not null)";
 
-		return list(SelItem.class, Q, "login", login, "name", name, "oxClass", oxClass);
+		//~: class name
+		String cls = (shortName)?(oxClass.getSimpleName()):(oxClass.getName());
+
+		//~: load the object bytes
+		List<OxBytes> objs = list(OxBytes.class, Q,
+		  "login", login, "name", name, "oxClass", cls);
+
+		List<T> result = new ArrayList<>(objs.size());
+		for(OxBytes oxb : objs)
+		{
+			//~: decode the object
+			Object x = oxb.getOx();
+
+			//?: {not of interest}
+			if((x == null) || !oxClass.isAssignableFrom(x.getClass()))
+				continue;
+
+			result.add((T)x);
+		}
+
+		return result;
 	}
 }

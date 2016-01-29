@@ -501,6 +501,10 @@ public class GenTestGoods extends GenesisHiberPartBase
 		s.setVisibleReports(g.isVisibleReports());
 	}
 
+	protected static final BigDecimal[] VATS = new BigDecimal[] {
+	  new BigDecimal("0.0"), new BigDecimal("10.0"), new BigDecimal("18.0")
+	};
+
 	protected void genGoodFields(GenCtx ctx, GoodUnit gu, Good g)
 	{
 		//~: attributes map
@@ -511,6 +515,11 @@ public class GenTestGoods extends GenesisHiberPartBase
 		if(ats.get("Test code") == null)
 			if(gu.getSuperGood() == null)
 				ats.put("Test code", GenUtils.number(ctx.gen(), 10));
+
+		//~: generate the VAT code
+		if(ats.get(Goods.AT_VAT) == null)
+			if(gu.getSuperGood() == null)
+				ats.put(Goods.AT_VAT, VATS[ctx.gen().nextInt(VATS.length)]);
 
 		//~: bar codes (1 up to 3)
 		if(ats.get(Goods.AT_BARCODE) == null)

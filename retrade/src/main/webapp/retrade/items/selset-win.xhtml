@@ -186,7 +186,7 @@ ${v.checkModelRequestedWithRedirect}
           handler: function(grid, row)
           {
              var rec = grid.getStore().getAt(row);
-             extjsf.bindHandler("${z:vid(v, 'script_selset_del_object')}", '${rootView.extjsDomain}')({
+             extjsf.bindHandler("${z:vid(v, 'script_selset_del_item')}", '${rootView.extjsDomain}')({
               params: { '${v.entityParam}': rec.getId() }, success: function()
               {
                 Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").load()

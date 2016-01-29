@@ -52,6 +52,16 @@
   </x:action-call>
 
 
+  <!-- [script to delete item from selection] -->
+  <x:action-call coid = "${z:vid(v, 'script_selset_del_item')}"
+    action = "#{v.doDelItem}">
+
+    <f:facet name = "action-params">
+      '${v.modelParam}': '${v.modelKeys}'
+    </f:facet>
+  </x:action-call>
+
+
   <!-- [script to add new selection] -->
   <x:action-call coid = "${z:vid(v, 'script_selset_add')}"
      action = "#{v.doAddSelSet}">

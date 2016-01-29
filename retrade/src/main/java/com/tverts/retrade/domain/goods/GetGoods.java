@@ -2,14 +2,17 @@ package com.tverts.retrade.domain.goods;
 
 /* Java */
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /* Spring Framework */
 
+import com.tverts.hibery.qb.WhereText;
 import org.springframework.stereotype.Component;
 
 /* Hibernate Persistence Layer */
@@ -51,7 +54,7 @@ import com.tverts.endure.tree.GetTree;
 import com.tverts.endure.tree.TreeCross;
 import com.tverts.endure.tree.TreeItem;
 
-/* com.tverts: retrade domain (invoices, prices, stores) */
+/* com.tverts: retrade domain (invoices, prices, selections, stores) */
 
 import com.tverts.retrade.domain.invoice.BuyGood;
 import com.tverts.retrade.domain.invoice.MoveGood;
@@ -60,6 +63,7 @@ import com.tverts.retrade.domain.prices.GoodPrice;
 import com.tverts.retrade.domain.prices.GoodPriceModelBean;
 import com.tverts.retrade.domain.prices.PriceListModelBean;
 import com.tverts.retrade.domain.prices.RepriceDocsModelBean;
+import com.tverts.retrade.domain.selset.GetSelSet;
 import com.tverts.retrade.domain.store.TradeStoreModelBean;
 
 /* com.tverts: support */
@@ -225,28 +229,6 @@ order by gu.id
 		restrictGoodsBySelSet(qb, selset, "all");
 
 		return (List<Long>) QB(qb).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<GoodUnit> getTestGoodUnits(Domain domain)
-	{
-		EX.assertn(domain);
-
-/*
-
-from GoodUnit gu where
-  (gu.domain = :domain) and (gu.primaryKey < 0)
-
-*/
-
-		return (List<GoodUnit>) Q(
-
-"from GoodUnit gu where\n" +
-"  (gu.domain = :domain) and (gu.primaryKey < 0)"
-
-		).
-		  setParameter("domain", domain).
-		  list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -616,7 +598,7 @@ from GoodUnit gu where
 		List<String> res = list(String.class, Q, "domain", domain);
 
 		//~: order
-		Collections.sort(res, (l, r) -> l.compareToIgnoreCase(r));
+		Collections.sort(res, String::compareToIgnoreCase);
 
 		return res;
 	}
@@ -918,7 +900,7 @@ from MeasureUnit mu where
 	 * · moves     move invoices;
 	 * · reprices  price change documents.
 	 */
-	public void restrictGoodsBySelSet(WherePartLogic p, String selset, String... what)
+	public void restrictGoodsBySelSet(WherePartLogic or, String selset, String... what)
 	{
 		HashSet<String> w = new HashSet<>(Arrays.asList(what));
 		if(w.contains("all")) w.addAll(Arrays.asList(SU.s2aws(
@@ -932,7 +914,7 @@ from MeasureUnit mu where
 
  */
 
-		if(w.contains("goods")) p.addPart(
+		if(w.contains("goods")) or.addPart(
 
 "gu.id in (select si.object from SelItem si join si.selSet ss\n" +
 "  where (ss.name = :sset) and (ss.login.id = :login))"
@@ -951,7 +933,7 @@ from MeasureUnit mu where
 
  */
 
-		if(w.contains("folders")) p.addPart(
+		if(w.contains("folders")) or.addPart(
 
 "gu.id in (select ti.item.id from TreeCross tc join tc.item ti\n" +
 "  where tc.folder.id in (select si.object from\n" +
@@ -971,7 +953,7 @@ from MeasureUnit mu where
 
  */
 
-		if(w.contains("prices")) p.addPart(
+		if(w.contains("prices")) or.addPart(
 
 "gu.id in (select gpx.goodUnit.id from GoodPrice gpx where\n" +
 "  gpx.priceList.id in (select si.object from SelItem si join si.selSet ss\n" +
@@ -999,7 +981,7 @@ from MeasureUnit mu where
 
 // --> buy invoices
 
-		if(w.contains("buys")) p.addPart(
+		if(w.contains("buys")) or.addPart(
 		  IG.replace("InvGood", BuyGood.class.getName())
 		).
 		  param("sset", selset).
@@ -1008,7 +990,7 @@ from MeasureUnit mu where
 
 // --> sell, sells invoices
 
-		if(w.contains("sells")) p.addPart(
+		if(w.contains("sells")) or.addPart(
 		  IG.replace("InvGood", SellGood.class.getName())
 		).
 		  param("sset", selset).
@@ -1017,7 +999,7 @@ from MeasureUnit mu where
 
 // --> move invoices
 
-		if(w.contains("move")) p.addPart(
+		if(w.contains("move")) or.addPart(
 		  IG.replace("InvGood", MoveGood.class.getName())
 		).
 		  param("sset", selset).
@@ -1032,7 +1014,7 @@ from MeasureUnit mu where
 
  */
 
-		if(w.contains("reprices")) p.addPart(
+		if(w.contains("reprices")) or.addPart(
 
 "gu.id in (select pc.goodUnit.id from PriceChange pc where" +
 "  pc.repriceDoc.id in (select si.object from SelItem si join si.selSet ss" +
@@ -1041,6 +1023,88 @@ from MeasureUnit mu where
 		).
 		  param("sset", selset).
 		  param("login", SecPoint.login());
+	}
+
+	public void restrictGoodsByFilters(
+	  WherePartLogic or, WherePartLogic and, String selset)
+	{
+		//~: select current filters
+		Set<GoodsFilter> filters = new HashSet<>(bean(GetSelSet.class).
+		  getTypedItems(selset, GoodsFilter.class, true));
+
+/*
+
+ exists (from UnityAttr ua where (ua.unity.id = gu.id) and
+   (ua.attrType.id = :attrType) and (ua.XYZ))
+
+ */
+		final String Q =
+
+"exists (from UnityAttr ua where (ua.unity.id = gu.id) and\n" +
+"  (ua.attrType.id = :attrType) and (ua.XYZ))";
+
+		//c: for each filter
+		for(GoodsFilter f : filters)
+		{
+			String    q = Q;
+			Object    m = (f.getMin() == null)?(null):(f.getMin().value());
+			Object    M = (f.getMax() == null)?(null):(f.getMax().value());
+			Object    t = (m != null)?(m):(M);
+			WhereText w = null;
+
+			//?: {has no attribute type}
+			if(f.getAttrType() == null) continue;
+
+			//?: {is string type}
+			if(t instanceof String)
+			{
+				q = q.replace("XYZ", "string = :m");
+				w = new WhereText(q);
+				w.param("m", m);
+			}
+
+			//?: {is integer or decimal}
+			if((t instanceof Long) || (t instanceof BigDecimal))
+			{
+				String  field  = (t instanceof Long)?("integer "):("number ");
+				boolean ranged = (f.getMin() != null) && (f.getMax() != null);
+
+				//?: {between}
+				if((m != null) && (M != null))
+				{
+					q = q.replace("XYZ", field + "between :m and :M");
+					w = new WhereText(q);
+					w.param("m", m);
+					w.param("M", M);
+				}
+				//?: {greater}
+				else if(m != null)
+				{
+					q = q.replace("XYZ", field + ((ranged)?(">= :m"):("= :m")));
+					w = new WhereText(q);
+					w.param("m", m);
+				}
+				//?: {smaller}
+				else if(M != null)
+				{
+					q = q.replace("XYZ", field + ((ranged)?("<= :M"):("= :M")));
+					w = new WhereText(q);
+					w.param("M", M);
+				}
+			}
+
+			//?: {has no restriction}
+			if(w == null) continue;
+
+			//=: atribute type
+			w.param("attrType", f.getAttrType());
+
+			//~: add to destination
+			if(f.isOr())
+				or.addPart(w);
+			else
+				and.addPart(w);
+		}
 	}
 
 
@@ -1227,11 +1291,21 @@ from MeasureUnit mu where
 		if(selset == null) return;
 
 		//~: create OR
-		WherePartLogic p = new WherePartLogic().setOp(WhereLogic.OR);
-		qb.getClauseWhere().addPart(p);
+		WherePartLogic or = new WherePartLogic().setOp(WhereLogic.OR);
+		qb.getClauseWhere().addPart(or);
 
-		//~: restrict
-		restrictGoodsBySelSet(p, selset, what);
+		//~: restrict by the types
+		restrictGoodsBySelSet(or, selset, what);
+
+		//~: create and
+		WherePartLogic and = new WherePartLogic().setOp(WhereLogic.AND);
+
+		//~: restrict by the filters
+		restrictGoodsByFilters(or, and, selset);
+
+		//?: {has and filters}
+		if(!and.isEmpty())
+			qb.getClauseWhere().addPart(and);
 	}
 
 	protected void     restrictGoodsGeneral(QueryBuilder qb, DataSelectModel mb)
