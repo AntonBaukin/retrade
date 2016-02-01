@@ -1,7 +1,6 @@
-<%@page session = "false" pageEncoding = "UTF-8" contentType = "text/html;charset=UTF-8"%>
+<%@page session = "false" pageEncoding = "UTF-8" contentType = "text/html;charset=UTF-8" trimDirectiveWhitespaces = "true"%>
 <%@page import = "com.tverts.system.SystemConfig"%>
 <%@page import = "com.tverts.support.SU"%>
-
 ${"<!DOCTYPE html>"}
 <html>
 <head lang = 'ru'>
@@ -17,23 +16,10 @@ ${"<!DOCTYPE html>"}
 <% if(SystemConfig.getInstance().isDebug()) { %>
 
   <script type = 'text/javascript' charset = 'UTF-8'
-     src = '<%=request.getContextPath()%>/resources/jquery.js'></script>
-
-  <script type = 'text/javascript' charset = 'UTF-8'
-     src = '<%=request.getContextPath()%>/resources/jquery-ui.js'></script>
-
-<% } else { %>
-
-  <script type = 'text/javascript' charset = 'UTF-8'
-     src = '<%=request.getContextPath()%>/resources/jquery.min.js'></script>
-
-  <script type = 'text/javascript' charset = 'UTF-8'
-     src = '<%=request.getContextPath()%>/resources/jquery-ui.min.js'></script>
-
-<% } %>
-
-  <script type = 'text/javascript' charset = 'UTF-8'
      src = '<%=request.getContextPath()%>/resources/sha1.js'></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = '<%=request.getContextPath()%>/resources/jquery.js'></script>
 
   <script type = 'text/javascript' charset = 'UTF-8'
      src = '<%=request.getContextPath()%>/resources/login.js'></script>
@@ -41,19 +27,17 @@ ${"<!DOCTYPE html>"}
   <link type = 'text/css' rel = 'stylesheet'
      href = '<%=request.getContextPath()%>/resources/login.css'/>
 
-</head>
+<% } else { %>
 
+<% } %>
+</head>
 <body>
 
-  <!-- [no javascript image-message -->
-
+  <!-- [no javascript] -->
   <div id = "nojs-content"></div>
-
   <script type = "text/javascript">
     $('#nojs-content').hide()
   </script>
-
-  <!-- no javascript image-message] -->
 
 
   <!-- [no domain image-message -->

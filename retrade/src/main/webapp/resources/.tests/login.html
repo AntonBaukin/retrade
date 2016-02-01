@@ -1,270 +1,92 @@
-﻿<?xml version = '1.0' encoding = 'UTF-8'?>
+﻿<!DOCTYPE html>
+<head lang = 'ru'>
+  <meta charset    = 'UTF-8'/>
+  <meta http-equiv = 'Content-Type'     content = 'text/html;charset=UTF-8'/>
+  <meta http-equiv = 'X-UA-Compatible'  content = 'IE=edge'/>
+  <meta name       = 'viewport'         content = 'width=device-width, initial-scale=1, maximum-scale=8, user-scalable=yes'/>
+  <meta http-equiv = 'Cache-Control'    content = 'no-cache'/>
+  <meta http-equiv = 'Pragma'           content = 'no-cache'/>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
-<head>
-  <title>ТТС Ре Трейд™ : Вход в систему</title>
-
-  <script type = 'text/javascript' charset = 'UTF-8'
-     src = "../jquery.js"></script>
-
-  <script type = 'text/javascript' charset = 'UTF-8'
-     src = "../jquery-ui.js"></script>
+  <title>ТТС РеТрейд™ :: Вход в систему</title>
 
   <script type = 'text/javascript' charset = 'UTF-8'
-     src = "../sha1.js"></script>
+     src = "../scripts.js"></script>
 
   <script type = 'text/javascript' charset = 'UTF-8'
      src = "../login.js"></script>
 
-  <style type ="text/css">
-
-body
-{
-  background-color: #f8f8f8;
-  padding: 0; margin: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-}
-
-#nojs-content, #nodomain-content, #login-layout,
-  #login-enter-disabled, #login-enter-enabled
-{
-  position: absolute;
-  margin: -2.75in 0 0 -2.75in;
-  top: 50%; left: 50%;
-  width: 5.5in; height: 5.5in;
-}
-
-#nojs-content
-{
-  background: no-repeat url("../images/login/nojs.svg");
-}
-
-#nodomain-content
-{
-  background: no-repeat url("../images/login/nodomain.svg");
-  display: none;
-}
-
-#login-base
-{
-  position: relative; z-index: 16;
-  width: 5.5in; height: 5.5in;
-  background: no-repeat url("../images/login/base.svg");
-}
-
-#login-fields-area
-{
-  position: absolute; z-index: 32;
-  left: 0; top: 0;
-  width: 5.5in; height: 3in;
-}
-
-#login-enter-disabled
-{
-  background: no-repeat url("../images/login/enter-disabled.svg");
-  z-index: 20;
-}
-
-#login-enter-enabled
-{
-  background: no-repeat url("../images/login/enter-enabled.svg");
-  z-index: 22;
-}
-
-#login, #password, #password-shader
-{
-  position: absolute; left: 1.72in;
-  width: 2.04in; height: 0.25in;
-  border: none; text-align: center;
-  background-color: transparent;
-  margin: 0; padding: 0;
-  font-family: 'Georgia', serif;
-  font-size: 0.208in;
-}
-
-#login.notempty, #password.notempty
-{
-  background-color: #f8f8f8;
-}
-
-#login
-{
-  top: 2.095in;
-}
-
-#password, #password-shader
-{
-  top: 2.535in;
-}
-
-#password-shader
-{
-  background-color: #f8f8f8;
-}
-
-#password.shaked
-{
-  background-color: transparent;
-}
-
-#login-enter, #login-enter-title
-{
-  position: absolute;
-  left: 2.4in; top: 3.065in;
-  width: 0.68in; height: 0.32in;
-}
-
-#login-enter
-{
-  cursor: pointer;
-}
-
-  </style>
+  <link type = 'text/css' rel = 'stylesheet'
+     href = '../login.css'/>
 
 </head>
-
 <body>
 
-  <!-- [no javascript image-message -->
-
-  <div id = "nojs-content"></div>
+  <!-- [ No JavaScript ] -->
+  <table id = "nojs-content" cellpadding = "0" cellspacing = "0" border = "0">
+    <tr>
+      <td>
+        Вход в систему ТТС РеТрейд™ невозможен!<br/>
+        Выполнение скриптов в обозревателе<br/>
+        заблокировано.
+      </td>
+    </tr>
+  </table>
 
   <script type = "text/javascript">
+  //<![CDATA[
+
     $('#nojs-content').hide()
+    ReTradeLogin.domain = 'Test'
+
+  //]]>
   </script>
 
-  <!-- no javascript image-message] -->
+
+  <!-- [ No ReTrade Domain ] -->
+  <table id = "nodomain-content" cellpadding = "0" cellspacing = "0" border = "0">
+    <tr>
+      <td>
+        Вход в систему ТТС РеТрейд™ невозможен<br/>
+        по данной ссылке!<br/>
+        Обратитесь к администратору!
+      </td>
+    </tr>
+  </table>
 
 
-  <!-- [no domain image-message -->
+  <!-- [ Login Form ] -->
+  <table id = "login-layout" cellpadding = "0" cellspacing = "0" border = "0">
+    <tr>
+      <td>
+        <div id = "login-form">
 
-  <div id = "nodomain-content"></div>
+          <h4 class = "text-center">Вход в систему</h4>
 
-  <script type = "text/javascript">
+          <!-- [Username] -->
+          <div class = "form-group has-feedback has-feedback-left">
+            <input id = "login" type = "text" class = "form-control" placeholder = "Пользователь"/>
+            <div class = "form-control-feedback">
+              <i class = "fa fa-user text-muted"></i>
+            </div>
+          </div>
 
-    var RETRADE_DOMAIN = 'Test';
+          <!-- [Password] -->
+          <div class = "form-group has-feedback has-feedback-left">
+            <input id = "password" type = "password" class = "form-control" placeholder = "Пароль"/>
+            <div class = "form-control-feedback">
+              <i class = "fa fa-unlock-alt text-muted"></i>
+            </div>
+          </div>
 
-    if(!RETRADE_DOMAIN.length)
-      $('#nodomain-content').show()
-  </script>
-
-  <!-- no domain image-message] -->
-
-
-  <!-- [login form -->
-
-  <div id = "login-layout" style = "display: none;">
-
-    <div id = "login-base"></div>
-
-    <div id = "login-enter-disabled"></div>
-    <div id = "login-enter-enabled" style = "display: none;"></div>
-
-    <div id = "login-fields-area">
-
-      <input id = "login" type = "text" tabindex = "1"
-        title = "Имя пользователя"/>
-
-      <div id = "password-shader" style = "display: none;"></div>
-      <input id = "password" type = "password" tabindex = "2"
-        title = "Пароль"/>
-
-      <div id = "login-enter-title" title = "Введите имя пользователя и пароль!"></div>
-      <div id = "login-enter" tabindex = "3" style = "display: none;"
-        title = "Нажмите, чтобы войти в систему..."></div>
-
-    </div>
-  </div>
-
-  <script type = "text/javascript">
-
-    if(RETRADE_DOMAIN.length)
-      $('#login-layout').show()
-
-    function login_password_activate()
-    {
-      $('#login, #password').each(function()
-      {
-        var s = $.trim($(this).val());
-
-        if(s.length) $(this).addClass('notempty')
-        else $(this).removeClass('notempty')
-      })
-
-      enter_activate()
-    }
-
-    function enter_activate()
-    {
-      var enabled = ($('#login.notempty, #password.notempty').length == 2);
-
-      $('#login-enter').toggle(enabled)
-      $('#login-enter-title').toggle(!enabled)
-
-      $('#login-enter-disabled').toggle(!enabled)
-      $('#login-enter-enabled').toggle(enabled)
-    }
-
-    function enter_try()
-    {
-      var l = $.trim($('#login').val());
-      var p = $.trim($('#password').val());
-
-      if(!l.length || !p.length)
-      {
-        login_password_activate()
-        return
-      }
-
-      //?: failed enter
-      $('#password-shader').show()
-      $('#password').addClass('shaked').effect('shake',
-        { distance: 10, times: 2 },function()
-      {
-        $('#password-shader').hide()
-        $(this).removeClass('shaked')
-      })
-
-    }
-
-    //~: activate login, password
-    $('#login, #password').on('keydown keyup focus blur', login_password_activate).
-      on('cut paste', function() { setTimeout($.proxy(login_password_activate, this, arguments), 100) })
-
-    //~: try enter
-    $('#login-enter').on('click', enter_try)
-    $('#login, #password, #login-enter').on('keypress', function(e)
-    {
-      if(e.which == 13) enter_try()
-    })
-
-    //~: initial activation
-    $(document).ready(login_password_activate)
-
-//    $(document).ready(function()
-//    {
-//      var txt = 'Test';
-//      var bin = CryptoJS.enc.Utf8.parse(txt);
-//
-//      console.log('as txt -> ' + CryptoJS.SHA1(txt).toString())
-//      console.log('as bin -> ' + CryptoJS.SHA1(bin).toString())
-//
-//      var sha = CryptoJS.algo.SHA1.create();
-//      sha.update('Te')
-//      sha.update('st')
-//      console.log('as a+b -> ' + sha.finalize().toString())
-//
-//      var num = 8738938;
-//      console.log('long ' + num + ' -> hex ' + ReTradeLogin._long(num))
-//    })
-
-  </script>
-
-  <!-- login form] -->
-
+          <!-- [Button] -->
+          <div class = "form-group text-center">
+            <button id = "button" type = "submit" class = "btn btn-default animated">
+              Вход <i class="fa fa-arrow-circle-right position-right"></i>
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
