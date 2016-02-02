@@ -103,6 +103,16 @@ public class LoginFilter extends FilterBase
 			//!: send bound status
 			else
 			{
+				//~: is mobile parameter
+				String mobile = SU.s2s(task.getRequest().
+				  getParameter(getMobileParameter())
+				);
+
+				//~: update the cookie
+				if(mobile != null)
+					setMobileCookie(task, "true".equals(mobile));
+
+				//~: very simple response
 				task.getResponse().setStatus(200);
 				task.getResponse().setContentType("text/plain;charset=UTF-8");
 				task.getResponse().getOutputStream().print("bound");
@@ -115,10 +125,6 @@ public class LoginFilter extends FilterBase
 		{
 			throw new RuntimeException(e);
 		}
-
-		//?: {this is a localhost request} allow it
-		//if(REQ.isLocalhost(task.getRequest()))
-		//	return;
 
 		//!: redirect to login
 		redirectLogin(task);
@@ -151,6 +157,8 @@ public class LoginFilter extends FilterBase
 		return expireStrategy;
 	}
 
+	private ExpireStrategy expireStrategy = new TimeExpireStrategy();
+
 	public void setExpireStrategy(ExpireStrategy s)
 	{
 		if(s == null) throw new IllegalArgumentException();
@@ -162,16 +170,32 @@ public class LoginFilter extends FilterBase
 		return bindParameter;
 	}
 
+	private String bindParameter  = "bind";
+
 	public void setBindParameter(String s)
 	{
 		if(SU.sXe(s)) throw new IllegalArgumentException();
 		this.bindParameter = SU.s2s(s);
 	}
 
+	public String getMobileParameter()
+	{
+		return mobileParameter;
+	}
+
+	private String mobileParameter  = "mobile";
+
+	public void setMobileParameter(String mobileParameter)
+	{
+		this.mobileParameter = mobileParameter;
+	}
+
 	public String getLoginPage()
 	{
 		return loginPage;
 	}
+
+	private String loginPage = "/login.jsp";
 
 	public void setLoginPage(String s)
 	{
@@ -184,16 +208,32 @@ public class LoginFilter extends FilterBase
 		return domainAttr;
 	}
 
+	private String domainAttr = "retrade-domain";
+
 	public void setDomainAttr(String s)
 	{
 		if(SU.sXe(s)) throw new IllegalArgumentException();
 		this.domainAttr = SU.s2s(s);
 	}
 
+	public String getMobileAttr()
+	{
+		return mobileAttr;
+	}
+
+	private String mobileAttr = "retrade-mobile";
+
+	public void setMobileAttr(String mobileAttr)
+	{
+		this.mobileAttr = mobileAttr;
+	}
+
 	public String getLoginPath()
 	{
 		return loginPath;
 	}
+
+	private String loginPath = "/go/login/";
 
 	public void setLoginPath(String s)
 	{
@@ -279,13 +319,8 @@ public class LoginFilter extends FilterBase
 		final SecSession[] ses = new SecSession[1];
 
 		//~: bind the secure session
-		bean(TxBean.class).execute(new Runnable()
-		{
-			public void run()
-			{
-				ses[0] = bean(GetAuthLogin.class).checkBind(bind);
-			}
-		});
+		bean(TxBean.class).execute(() -> ses[0] =
+		  bean(GetAuthLogin.class).checkBind(bind));
 
 		//?: {not bound}
 		if(ses[0] == null)
@@ -366,6 +401,11 @@ public class LoginFilter extends FilterBase
 		//?: {thr domain is defined} save it in the request
 		if(!SU.sXe(dcode))
 			task.getRequest().setAttribute(getDomainAttr(), SU.s2s(dcode));
+
+		//~: is mobile cookie
+		Boolean mobile = getMobileCookie(task);
+		if(mobile != null)
+			task.getRequest().setAttribute(getMobileAttr(), mobile);
 	}
 
 	/**
@@ -377,13 +417,8 @@ public class LoginFilter extends FilterBase
 	{
 		final String[] res = new String[1];
 
-		bean(TxBean.class).execute(new Runnable()
-		{
-			public void run()
-			{
-				res[0] = bean(GetDomain.class).getDomainCode(pkey);
-			}
-		});
+		bean(TxBean.class).execute(() -> res[0] =
+		  bean(GetDomain.class).getDomainCode(pkey));
 
 		return res[0];
 	}
@@ -406,18 +441,28 @@ public class LoginFilter extends FilterBase
 			{
 				return Long.parseLong(cookie.getValue());
 			}
-			catch(Exception e)
+			catch(Exception ignored)
 			{}
 
 		return null;
 	}
 
+	protected void       setMobileCookie(FilterTask task, boolean mobile)
+	{
+		Cookie cookie = new Cookie("IsMobile", Boolean.toString(mobile));
 
-	/* filter parameters */
+		cookie.setSecure(task.getRequest().isSecure());
+		cookie.setPath(task.getRequest().getContextPath());
+		task.getResponse().addCookie(cookie);
+	}
 
-	private ExpireStrategy expireStrategy = new TimeExpireStrategy();
-	private String         bindParameter  = "retrade-session-bind";
-	private String         domainAttr     = "retrade-domain-name";
-	private String         loginPage      = "/login.jsp";
-	private String         loginPath      = "/go/login/";
+	protected Boolean    getMobileCookie(FilterTask task)
+	{
+		Cookie[] cookies = task.getRequest().getCookies();
+
+		if(cookies != null) for(Cookie cookie : cookies)
+			if("IsMobile".equals(cookie.getName()))
+				return Boolean.valueOf(cookie.getValue());
+		return null;
+	}
 }
