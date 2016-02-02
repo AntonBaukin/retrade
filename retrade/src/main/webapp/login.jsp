@@ -19,10 +19,10 @@ ${"<!DOCTYPE html>"}
 <% if(SystemConfig.getInstance().isDebug()) { %>
 
   <script type = 'text/javascript' charset = 'UTF-8'
-     src = '<%=request.getContextPath()%>/resources/login.js'></script>
+     src = '<%=request.getContextPath()%>/retrade/resources/login.js'></script>
 
   <link type = 'text/css' rel = 'stylesheet'
-     href = '<%=request.getContextPath()%>/resources/login.css'/>
+     href = '<%=request.getContextPath()%>/retrade/resources/login.css'/>
 
 <% } else { %>
 

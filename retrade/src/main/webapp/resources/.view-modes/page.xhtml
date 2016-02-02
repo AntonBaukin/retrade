@@ -16,8 +16,14 @@
 
   <title><ui:insert name = 'page_title'/></title>
 
+
+  <!-- JQuery Library -->
+
   <script type = 'text/javascript' charset = 'UTF-8'
       src = "${z:url('/resources/scripts.js')}"></script>
+
+
+  <!-- ExtJS Framework -->
 
   <c:if test = '${systemConfig.debug}'>
 
@@ -43,7 +49,7 @@
     src = "${z:url('/extjs/ext-locale-ru.js')}"></script>
 
 
-  <!-- Ext User Extentions -->
+  <!-- ExtJS User Extentions -->
 
   <script type = 'text/javascript' charset = 'UTF-8'
      src = "${z:url('/extjs.ux/extjs_ux.js')}"></script>
@@ -64,7 +70,7 @@
      src = "${z:url('/resources/zetbor.js')}"></script>
 
 
-  <!-- Ext JS for JavaServer Faces -->
+  <!-- ExtJS for JavaServer Faces -->
 
   <script type = 'text/javascript' charset = 'UTF-8'
      src = "${z:url('/resources/extjsf.js')}"></script>
@@ -73,19 +79,19 @@
   <!-- ReTrade Application -->
 
   <script type = 'text/javascript' charset = 'UTF-8'
-     src = "${z:url('/resources/retrade.js')}"></script>
+     src = "${z:url('/retrade/resources/retrade.js')}"></script>
 
   <script type = 'text/javascript' charset = 'UTF-8'
-     src = "${z:url('/resources/desktop.js')}"></script>
+     src = "${z:url('/retrade/resources/desktop.js')}"></script>
 
   <link type = 'text/css' rel = 'stylesheet'
-     href = "${z:url('/resources/icons.css')}"/>
+     href = "${z:url('/retrade/resources/icons.css')}"/>
 
   <link type = 'text/css' rel = 'stylesheet'
-     href = "${z:url('/resources/clocks.css')}"/>
+     href = "${z:url('/retrade/resources/clocks.css')}"/>
 
   <link type = 'text/css' rel = 'stylesheet'
-     href = "${z:url('/resources/retrade.css')}"/>
+     href = "${z:url('/retrade/resources/retrade.css')}"/>
 
 
   <!-- Page Specific Styles and Scripts -->
