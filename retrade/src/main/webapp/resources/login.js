@@ -10,6 +10,8 @@ var ReTradeLogin =
 
 	path        : '',
 
+	mobile      : '',
+
 	login       : function(opts)
 	{
 		var token = {}
@@ -266,8 +268,22 @@ $(document).ready(function()
 	function login_focus()
 	{
 		var f = login_status()
-		if(f) return f.focus()
+		if(f) return ani(f.focus(), 'flash')
 		$('#button').focus()
+	}
+
+	function ani(n, cls)
+	{
+		var ts = new Date().getTime()
+		n.data('anits', ts).addClass(cls).addClass('animated')
+
+		setTimeout(function()
+		{
+			if(n.data('anits') != ts) return
+			n.removeClass(cls).removeClass('animated')
+		}, 2000)
+
+		return n
 	}
 
 	function login_try()
@@ -275,25 +291,37 @@ $(document).ready(function()
 		if(login_focus()) return
 
 		//!: invoke secured login procedure
-		var token // = ReTradeLogin.login({
-		//	login: $.trim($('#login').val()),
-		//	password: $.trim($('#password').val())
-		//})
+		var token = ReTradeLogin.login({
+			login: $.trim($('#login').val()),
+			password: $.trim($('#password').val())
+		})
 
 		//?: {not logged in} shake the password
-		if(!token)
+		if(!token) return ani($('#button'), 'shake')
+
+		//~: send web-session bind request
+		var req = jQuery.ajax({ url: window.location.href.toString(),
+		  data: { bind: token.bind, mobile: $('#mobile').is(':checked') }
+		})
+
+		//~: proceed
+		req.done(function()
 		{
-			$('#button').addClass('shake')
-			setTimeout(function(){ $('#button').removeClass('shake') }, 2000)
-			return
-		}
+			//~: reload the requested page
+			var loc = window.location.toString()
+
+			//?: {had directly requested a page} reload it
+			if(loc.indexOf('/go/login/') == -1)
+				window.location.reload()
+			else
+				window.location = ReTradeLogin.path +
+				  ($('#mobile').is(':checked')?('/index.html'):('/go/index'))
+		})
 	}
 
 	//~: activate button on edit
-	$('#login, #password').
-	  on('keydown keyup focus blur', login_status).
+	$('#login, #password').on('keydown keyup focus blur', login_status).
 	  on('cut paste', function() { setTimeout($.proxy(login_status, this, arguments), 100) })
-
 
 	//~: login try on click
 	$('#button').on('click', login_try)
@@ -303,4 +331,15 @@ $(document).ready(function()
 	{
 		if(e.which == 13) login_try()
 	})
+
+	//?: {is mobile}
+	if(ReTradeLogin.mobile === 'true')
+		$('#mobile').prop('checked', true)
+
+	//?: {is not mobile}
+	else if(ReTradeLogin.mobile === 'false')
+		$('#mobile').prop('checked', false)
+
+	//~: detect is mobile
+	else $('#mobile').prop('checked', jQuery.browser.mobile)
 })

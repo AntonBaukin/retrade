@@ -10,22 +10,19 @@
 <h:head>
   <meta charset    = 'UTF-8'/>
   <meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'/>
-  <meta name       = 'viewport'     content = 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes'/>
+  <meta name       = 'viewport'     content = 'width=device-width, initial-scale=1, maximum-scale=4, user-scalable=yes'/>
 
   <link rel = 'icon' type = 'image/icon' href = "${z:url('/resources/favicon.ico')}"/>
 
   <title><ui:insert name = 'page_title'/></title>
 
+  <script type = 'text/javascript' charset = 'UTF-8'
+      src = "${z:url('/resources/scripts.js')}"></script>
+
   <c:if test = '${systemConfig.debug}'>
 
     <script type = 'text/javascript' charset = 'UTF-8'
       src = "${z:url('/extjs/ext-all-debug.js')}"></script>
-
-    <script type = 'text/javascript' charset = 'UTF-8'
-      src = "${z:url('/resources/jquery.js')}"></script>
-
-    <script type = 'text/javascript' charset = 'UTF-8'
-      src = "${z:url('/resources/jquery-ui.js')}"></script>
 
     <link type = 'text/css' rel = 'stylesheet'
       href = "${z:url('/extjs/ext-theme-crisp-touch-all-debug.css')}"/>
@@ -37,17 +34,10 @@
     <script type = 'text/javascript' charset = 'UTF-8'
       src = "${z:url('/extjs/ext-all.js')}"></script>
 
-    <script type = 'text/javascript' charset = 'UTF-8'
-      src = "${z:url('/resources/jquery.min.js')}"></script>
-
-    <script type = 'text/javascript' charset = 'UTF-8'
-      src = "${z:url('/resources/jquery-ui.min.js')}"></script>
-
     <link type = 'text/css' rel = 'stylesheet'
       href = "${z:url('/extjs/ext-theme-crisp-touch-all.css')}"/>
 
   </c:if>
-
 
   <script type = 'text/javascript' charset = 'UTF-8'
     src = "${z:url('/extjs/ext-locale-ru.js')}"></script>

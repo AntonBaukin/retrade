@@ -36,7 +36,10 @@
   //<![CDATA[
 
     $('#nojs-content').hide()
+
     ReTradeLogin.domain = 'Test'
+    ReTradeLogin.path   = ''
+    ReTradeLogin.mobile = ''
 
   //]]>
   </script>
@@ -60,7 +63,7 @@
       <td>
         <div id = "login-form">
 
-          <h4 class = "text-center">Вход в систему</h4>
+          <h3 class = "text-center">Вход в систему</h3>
 
           <!-- [Username] -->
           <div class = "form-group has-feedback has-feedback-left">
@@ -78,9 +81,18 @@
             </div>
           </div>
 
+
+          <!-- [Checkbox] -->
+          <div class = "form-group">
+            <div class = "checkbox">
+              <input id = "mobile" type = "checkbox"/>
+              <label for = "mobile">мобильная версия</label>
+            </div>
+          </div>
+
           <!-- [Button] -->
           <div class = "form-group text-center">
-            <button id = "button" type = "submit" class = "btn btn-default animated">
+            <button id = "button" type = "submit" class = "btn btn-default">
               Вход <i class="fa fa-arrow-circle-right position-right"></i>
             </button>
           </div>
