@@ -1,16 +1,14 @@
 angular.module('bootit', [])
 
 //~: focus-on
-angular.module('bootit').directive('focus-on', function()
+angular.module('bootit').directive('focusOn', function()
 {
-	return function(scope, elem, attr)
+	return function(scope, node, attr)
 	{
-		ZeT.log('Set focus?')
-		scope.$on(ZeT.asserts(attr['focus-on']), function()
+		scope.$on(ZeT.asserts(attr['focusOn']), ZeT.timeouted(100, function()
 		{
-			ZeT.log('focusing')
-			elem[0].focus()
-		})
+			node.focus()
+		}))
 	}
 })
 

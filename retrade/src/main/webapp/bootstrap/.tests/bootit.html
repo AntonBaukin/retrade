@@ -37,15 +37,6 @@
   <script type = 'text/javascript' charset = 'UTF-8'
      src = "bootit.js"></script>
 
-
-  <!-- Google Open Sans Font -->
-  <link type = 'text/css' rel = 'stylesheet'
-    href = 'https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,300italic,400italic'/>
-
-  <!-- Font Awesome -->
-  <link type = 'text/css' rel = 'stylesheet'
-    href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'/>
-
   <!-- Animate CSS Library -->
   <link type = 'text/css' rel = 'stylesheet'
     href = '../animate.css'/>
@@ -53,6 +44,10 @@
   <!-- Bootstrap CSS Framework -->
   <link type = 'text/css' rel = 'stylesheet'
     href = '../bootstrap.css'/>
+
+  <!-- Local Theme -->
+  <link type = 'text/css' rel = 'stylesheet'
+    href = '../theme.css'/>
 
 
   <style type = "text/css">
@@ -76,9 +71,8 @@
 <header class = "navbar navbar-inverse navbar-fixed-top" role = "banner">
   <div class = "container-fluid">
 
-    <nav class = "collapse navbar-collapse bs-navbar-collapse" role = "navigation">
+    <nav class = "navbar-collapse" role = "navigation">
       <div class = "nav navbar-nav navbar-right">
-
         <div ng-show = "userNameSet" class = "navbar-text">
           Good day, <a href ng-click = "showContent('stranger-form')">{{userName}}</a>!
         </div>
@@ -89,13 +83,13 @@
 
 <div class = "container-fluid">
 
-  <h3>Welcome to AngularJS and Bootstrap Kick Demo!</h3>
+  <h2>Welcome to AngularJS and Bootstrap Kick Demo!</h2>
 
-  <div ng-hide = "userNameSet">
+  <h4 ng-hide = "userNameSet">
     Good day, <strong>Stranger</strong>!
     Please, tell some info about You below!
 
-  </div>
+  </h4>
 
   <div ng-show = "!userNameSet || isShown('stranger-form')">
     <form class = "form-inline">
