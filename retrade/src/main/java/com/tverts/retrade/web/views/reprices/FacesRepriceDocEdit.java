@@ -13,6 +13,8 @@ import java.util.Map;
 
 /* Spring Framework */
 
+import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.support.CMP;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -87,7 +89,7 @@ public class FacesRepriceDocEdit extends ModelView
 	public String doSubmitReprice()
 	{
 		//~: read the changes from the request
-		ArrayList<PriceChangeEdit> changes = new ArrayList<PriceChangeEdit>(4);
+		ArrayList<PriceChangeEdit> changes = new ArrayList<>(4);
 		getModel().getView().setPriceChanges(changes);
 
 		//~: read the change positions
@@ -124,7 +126,7 @@ public class FacesRepriceDocEdit extends ModelView
 		}
 
 		//~: check for duplicated codes
-		HashSet<String> codes = new HashSet<String>(changes.size());
+		HashSet<String> codes = new HashSet<>(changes.size());
 		for(PriceChangeEdit pce : changes)
 			if(codes.contains(pce.getGoodCode()))
 				throw EX.state();
@@ -163,7 +165,7 @@ public class FacesRepriceDocEdit extends ModelView
 		rd.setPriceList(pl);
 
 		//~: read the group changes
-		rd.getOx().setGroupChanges(new HashMap<String, BigDecimal>());
+		rd.getOx().setGroupChanges(new HashMap<>());
 		for(int i = 0;;i++)
 		{
 			String gr = SU.s2s(request().getParameter("groupName" + i));
@@ -283,7 +285,7 @@ public class FacesRepriceDocEdit extends ModelView
 
 	public Map<String, String> getPriceListsLabels()
 	{
-		Map<String, String>   res = new LinkedHashMap<String, String>(11);
+		Map<String, String>   res = new LinkedHashMap<>(11);
 
 		List<PriceListEntity> pls = bean(GetPrices.class).
 		  getPriceLists(getModel().domain());
@@ -386,12 +388,13 @@ public class FacesRepriceDocEdit extends ModelView
 
 	protected String          jsonGoodsInfo(Map<String, Object[]> info)
 	{
-		StringBuilder s = new StringBuilder(512);
+		GetGoods      get = bean(GetGoods.class);
+		StringBuilder   s = new StringBuilder(512);
 		s.append('{');
 
 		for(Object code : info.keySet())
 		{
-			Object[]    o = info.get(code);
+			Object[]    o = info.get(code.toString());
 			GoodUnit    g = (GoodUnit)    o[0];
 			MeasureUnit m = (MeasureUnit) o[1];
 			BigDecimal  p = (BigDecimal)  o[2];
@@ -403,7 +406,8 @@ public class FacesRepriceDocEdit extends ModelView
 			s.append("'").append(SU.jss(g.getName())).append("', ");
 
 			//~: good group
-			s.append("'").append(SU.jss(g.getGroup())).append("', ");
+			s.append("'").append(SU.jss(get.getAttrString(g, Goods.AT_GROUP))).
+			  append("', ");
 
 			//~: measure code
 			s.append("'").append(SU.jss(m.getCode())).append("', ");
@@ -457,7 +461,7 @@ public class FacesRepriceDocEdit extends ModelView
 			throw EX.forbid();
 
 		//~: create the edit model
-		mb.setView((RepriceDocEdit) new RepriceDocEdit().
+		mb.setView(new RepriceDocEdit().
 		  init(Arrays.asList(rd, rd.getPriceList()))
 		);
 

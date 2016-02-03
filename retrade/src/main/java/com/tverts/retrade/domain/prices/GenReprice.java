@@ -39,6 +39,11 @@ import com.tverts.objects.Param;
 import com.tverts.endure.UnityTypes;
 import com.tverts.endure.core.Domain;
 
+/* com.tverts: retrade domain (goods) */
+
+import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.goods.Goods;
+
 /* com.tverts: support */
 
 import com.tverts.support.CMP;
@@ -205,8 +210,10 @@ public class      GenReprice
 
 	protected void genPriceChanges(GenCtx ctx, RepriceDoc rd)
 	{
-		//~: select the changes
-		List<GoodPrice> changes = genSelectGoods(ctx, rd);
+		GetGoods get = bean(GetGoods.class);
+
+		  //~: select the changes
+		  List < GoodPrice > changes = genSelectGoods(ctx, rd);
 		EX.asserte(changes);
 		EX.assertx(rd.getChanges().isEmpty());
 
@@ -242,10 +249,11 @@ public class      GenReprice
 			BigDecimal c; //<-- good new cost
 
 			//?: {good has group}
-			String g; if((g = pc.getGoodUnit().getGroup()) != null)
+			String g = get.getAttrString(pc.getGoodUnit(), Goods.AT_GROUP);
+			if(g != null)
 			{
 				if(rd.getOx().getGroupChanges() == null)
-					rd.getOx().setGroupChanges(new HashMap<String, BigDecimal>(11));
+					rd.getOx().setGroupChanges(new HashMap<>(11));
 
 				BigDecimal p; if((p = rd.getOx().getGroupChanges().get(g)) == null)
 				{

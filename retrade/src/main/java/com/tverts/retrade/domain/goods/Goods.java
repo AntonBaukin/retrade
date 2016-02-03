@@ -340,9 +340,6 @@ public class Goods
 		//=: name
 		sub.setName(gu.getName());
 		sub.setSortName(gu.getSortName());
-
-		//=: group
-		sub.setGroup(gu.getGroup());
 	}
 
 	public static void init(CalcItem i, CalcPart p)

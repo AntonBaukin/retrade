@@ -136,16 +136,6 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 		super.updateOx();
 	}
 
-	public String getOxSearch()
-	{
-		//?: {is a sub-good}
-		if(getSuperGood() != null)
-			return getSuperGood().getOxSearch();
-
-		//~: code, group, name
-		return SU.catx(getOx().getCode(), group, getOx().getName());
-	}
-
 
 	/* Good Unit */
 
@@ -205,18 +195,6 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 
 		this.sortName = null;
 		super.setName(name);
-	}
-
-	public String getGroup()
-	{
-		return group;
-	}
-
-	private String group;
-
-	public void setGroup(String group)
-	{
-		this.group = group;
 	}
 
 

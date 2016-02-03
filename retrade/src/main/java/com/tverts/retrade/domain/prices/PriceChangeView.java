@@ -14,12 +14,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* tverts.com: aggregated values */
 
 import com.tverts.endure.aggr.AggrValue;
 
 /* com.tverts: retrade domain (goods) */
 
+import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.goods.MeasureUnit;
@@ -338,7 +343,8 @@ public class PriceChangeView implements Serializable
 		goodName = gu.getName();
 
 		//~: good group
-		goodGroup = gu.getGroup();
+		goodGroup = bean(GetGoods.class).
+		  getAttrString(gu, Goods.AT_GROUP);
 
 		return this;
 	}
