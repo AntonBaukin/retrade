@@ -288,12 +288,12 @@ select ut from Unity u join u.unityType ut
 
 	/* Unified Attributes */
 
-	public AttrType getAttrType(Long pk)
+	public AttrType        getAttrType(Long pk)
 	{
 		return get(AttrType.class, pk);
 	}
 
-	public AttrType getAttrType(Long domain, Long type, String name)
+	public AttrType        getAttrType(Long domain, Long type, String name)
 	{
 		EX.assertn(domain);
 		EX.assertn(type);
@@ -313,7 +313,7 @@ select ut from Unity u join u.unityType ut
 		return object(AttrType.class, Q, "domain", domain, "type", type, "name", name);
 	}
 
-	public List<AttrType> getAttrTypes(Long domain, Long type)
+	public List<AttrType>  getAttrTypes(Long domain, Long type)
 	{
 		EX.assertn(domain);
 		EX.assertn(type);
@@ -358,7 +358,7 @@ select ut from Unity u join u.unityType ut
 	 * and the source reference defined --- those are
 	 * copies of some original attributes.
 	 */
-	public void removeSharedAttributes(AttrType type)
+	public void            removeSharedAttributes(AttrType type)
 	{
 		EX.assertn(type);
 
@@ -374,7 +374,7 @@ select ut from Unity u join u.unityType ut
 	 * Removes attribute values of previously array
 	 * type: all the records having index >= 1.
 	 */
-	public void removeArrayAttributes(AttrType type)
+	public void            removeArrayAttributes(AttrType type)
 	{
 		EX.assertn(type);
 
