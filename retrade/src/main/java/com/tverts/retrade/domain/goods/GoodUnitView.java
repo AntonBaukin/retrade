@@ -282,9 +282,6 @@ public class GoodUnitView implements Serializable
 		this.measureName = (gu.getMeasure() == null)?(null):
 		  (gu.getMeasure().getName());
 
-		//~: good group
-		this.goodGroup = gu.getGroup();
-
 		//~: semi-ready flag
 		if(gu.getGoodCalc() != null)
 			this.semiReady = gu.getGoodCalc().isSemiReady();
@@ -292,6 +289,16 @@ public class GoodUnitView implements Serializable
 		//~: is integer flag
 		this.integer = (gu.getMeasure() != null) &&
 		  !gu.getMeasure().getOx().isFractional();
+
+		return this;
+	}
+
+	public GoodUnitView initAttrs(GoodUnit gu)
+	{
+		GetGoods get = bean(GetGoods.class);
+
+		//~: select good group
+		this.goodGroup = get.getAttrString(gu, Goods.AT_GROUP);
 
 		return this;
 	}

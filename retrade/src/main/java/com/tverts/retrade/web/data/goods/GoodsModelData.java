@@ -28,6 +28,7 @@ import com.tverts.model.ModelData;
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.GoodUnitView;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
 
@@ -81,11 +82,12 @@ public class GoodsModelData implements ModelData
 
 		List<Object[]>     sel = (List<Object[]>) bean(GetGoods.class).
 		  selectGoodUnits(getModel());
-		List<GoodUnitView> res = new ArrayList<GoodUnitView>(sel.size());
+		List<GoodUnitView> res = new ArrayList<>(sel.size());
 
 		for(Object[] o : sel)
-			res.add(new GoodUnitView().
-			  init(o).initVolume((BigDecimal)o[2])
+			res.add(new GoodUnitView().init(o).
+			  initAttrs((GoodUnit) o[0]).
+			  initVolume((BigDecimal)o[2])
 			);
 
 		return res;

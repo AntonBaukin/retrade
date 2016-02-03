@@ -188,7 +188,7 @@ public class FacesAddGoodsTableView extends ModelView
 			x.setName(g.getGoodName());
 
 			//=: good group
-			x.setGroup(g.getGoodGroup());
+			Goods.attrs(x).put(Goods.AT_GROUP, g.getGoodGroup());
 
 			//~: measure unit
 			MeasureUnit mu = measures.get(g.getMeasureCode());

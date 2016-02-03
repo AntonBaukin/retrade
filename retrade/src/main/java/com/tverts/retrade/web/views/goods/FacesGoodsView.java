@@ -21,6 +21,11 @@ import static com.tverts.servlet.RequestPoint.request;
 
 import static com.tverts.spring.SpringPoint.bean;
 
+/* com.tverts: actions */
+
+import com.tverts.actions.ActionType;
+import com.tverts.actions.ActionsPoint;
+
 /* com.tverts: model */
 
 import com.tverts.model.ModelBean;
@@ -33,6 +38,7 @@ import com.tverts.jsx.JsX;
 
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodUnit;
+import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.goods.GoodsModelBean;
 
 /* com.tverts: support */
@@ -77,10 +83,13 @@ public class FacesGoodsView extends ModelView
 			GoodUnit gu = EX.assertn(get.getGoodUnit(id));
 
 			//:= good group
-			gu.getOx().setGroup(group);
+			Goods.attrs(gu.getOx()).put(Goods.AT_GROUP, group);
 
-			//!: update object extraction
+			//~: update object extraction
 			gu.updateOx();
+
+			//~: update the good
+			ActionsPoint.actionRun(ActionType.UPDATE, gu);
 		}
 
 		return null;

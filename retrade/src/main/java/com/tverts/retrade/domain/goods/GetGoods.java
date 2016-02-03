@@ -581,28 +581,6 @@ order by gu.id
 		return ((Number) QB(qb).uniqueResult()).intValue();
 	}
 
-	public List<String>   getGoodGroups(Long domain)
-	{
-/*
-
- select distinct gu.group from GoodUnit gu where
-   (gu.domain.id = :domain) and (gu.group is not null)
-
- */
-		final String Q =
-
-"select distinct gu.group from GoodUnit gu where\n" +
-"  (gu.domain.id = :domain) and (gu.group is not null)";
-
-		//~: select it
-		List<String> res = list(String.class, Q, "domain", domain);
-
-		//~: order
-		Collections.sort(res, String::compareToIgnoreCase);
-
-		return res;
-	}
-
 	/**
 	 * Checks whether this good is referred by distinct
 	 * entities of the domain: sub-Goods (flag 1),
@@ -880,6 +858,55 @@ from MeasureUnit mu where
 		gc.updateOx();
 
 		return gc;
+	}
+
+
+	/* Get Good Attributes */
+
+	public String          getAttrString(GoodUnit gu, String attr)
+	{
+		EX.assertn(gu);
+		EX.asserts(attr);
+
+/*
+
+ select ua.string from UnityAttr ua where (ua.unity.id = :gu) and
+   (ua.attrType.domain = :domain) and (ua.attrType.attrType = :type)
+   and (ua.attrType.name = :attr)
+
+*/
+
+		final String Q =
+
+"select ua.string from UnityAttr ua where (ua.unity.id = :gu) and\n" +
+"  (ua.attrType.domain = :domain) and (ua.attrType.attrType = :type)\n" +
+"  and (ua.attrType.name = :attr)";
+
+		return object(String.class, Q, "gu", gu.getPrimaryKey(),
+		  "domain", gu.getDomain(), "type", Goods.typeGoodAttr(), "attr", attr);
+	}
+
+	public List<String>    getAttrStrings(Long domain, String attr)
+	{
+		EX.assertn(domain);
+		EX.asserts(attr);
+
+/*
+
+ select distinct ua.string from UnityAttr ua where
+   (ua.attrType.domain.id = :domain) and (ua.attrType.attrType = :type)
+   and (ua.attrType.name = :attr)
+
+*/
+
+		final String Q =
+
+"select distinct ua.string from UnityAttr ua where\n" +
+"  (ua.attrType.domain.id = :domain) and (ua.attrType.attrType = :type)\n" +
+"  and (ua.attrType.name = :attr)";
+
+		return list(String.class, Q, "domain", domain,
+		  "type", Goods.typeGoodAttr(), "attr", attr);
 	}
 
 

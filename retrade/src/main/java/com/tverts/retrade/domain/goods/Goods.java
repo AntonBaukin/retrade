@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -288,10 +289,6 @@ public class Goods
 		if(gu.getName() != null)
 			g.setName(gu.getName());
 
-		//=: group
-		if(gu.getGroup() != null)
-			g.setGroup(gu.getGroup());
-
 		//=: tx-number
 		if(gu.getTxn() != null)
 			g.setTx(gu.getTxn());
@@ -433,5 +430,15 @@ public class Goods
 			)));
 
 		return new Value();
+	}
+
+	/**
+	 * Returns attributes mapping creating it on demand.
+	 */
+	public static Map<String, Object> attrs(Good ox)
+	{
+		if(ox.getAttrs() == null)
+			ox.setAttrs(new HashMap<>(3));
+		return ox.getAttrs();
 	}
 }

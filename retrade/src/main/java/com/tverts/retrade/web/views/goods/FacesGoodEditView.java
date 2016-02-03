@@ -178,7 +178,8 @@ public class FacesGoodEditView extends ModelView
 		g.setName(getGoodView().getGoodName());
 
 		//~: good group
-		g.setGroup(SU.s2s(getGoodView().getGoodGroup()));
+		Goods.attrs(g).put(Goods.AT_GROUP,
+		  SU.s2s(getGoodView().getGoodGroup()));
 
 		//~: assign it
 		gu.setMeasure(mu);

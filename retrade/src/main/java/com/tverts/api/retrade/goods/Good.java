@@ -30,7 +30,7 @@ import com.tverts.api.core.XKeyPair;
   "measure", "XMeasure", "calc", "XCalc",
   "visibleSell", "visibleBuy",
   "visibleLists", "visibleReports",
-  "group", "attrValues"
+  "attrValues"
 })
 public class Good extends CatItem
 {
@@ -87,18 +87,6 @@ public class Good extends CatItem
 	public void setXCalc(String XCalc)
 	{
 		this.xcalc = XCalc;
-	}
-
-	public String getGroup()
-	{
-		return group;
-	}
-
-	private String group;
-
-	public void setGroup(String group)
-	{
-		this.group = group;
 	}
 
 	/**

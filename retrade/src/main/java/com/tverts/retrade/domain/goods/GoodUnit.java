@@ -96,14 +96,11 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 
 	public void   updateOx()
 	{
-		Good g = getOx();
-
-		//=: update own group
-		this.group = g.getGroup();
-
 		//?: {is a sub-good} nothing else
 		if(getSuperGood() != null)
 			return;
+
+		Good g = getOx();
 
 		//=: ox-good measure
 		g.setMeasure((measure == null)?(null):(measure.getPrimaryKey()));

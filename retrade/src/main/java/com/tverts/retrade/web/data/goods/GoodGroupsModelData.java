@@ -28,6 +28,7 @@ import com.tverts.endure.cats.CatItemView;
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.goods.Goods;
 
 
 /**
@@ -71,7 +72,7 @@ public class GoodGroupsModelData implements SimpleModelData
 	public List<CatItemView> getGoodGroups()
 	{
 		List<String> gs = bean(GetGoods.class).
-		  getGoodGroups(getModel().domain());
+		  getAttrStrings(getModel().domain(), Goods.AT_GROUP);
 
 		List<CatItemView> res = new ArrayList<>(gs.size());
 		for(String g : gs)

@@ -41,7 +41,6 @@ public class DumpDerived extends EntitiesDumperBase
 		g.setCode(u.getCode());
 		g.setName(u.getName());
 		g.setMeasure(u.getMeasure().getPrimaryKey());
-		g.setGroup(u.getGroup());
 
 		EX.assertn(u.getGoodCalc());
 		g.setSuperGood(u.getGoodCalc().getSuperGood().getPrimaryKey());
