@@ -30,6 +30,7 @@ import com.tverts.endure.tree.TreeNodeView;
 /* com.tverts: retrade domain (goods) */
 
 import com.tverts.retrade.domain.goods.GetGoods;
+import com.tverts.retrade.domain.goods.GoodUnit;
 import com.tverts.retrade.domain.goods.GoodsTreeModelBean;
 import com.tverts.retrade.domain.goods.GoodUnitView;
 
@@ -83,7 +84,7 @@ public class GoodsTreeModelData implements ModelData
 		List res = new ArrayList(sel.size());
 
 		for(Object o : sel)
-			res.add(new GoodUnitView().init(o));
+			res.add(new GoodUnitView().init(o).initAttrs(o));
 
 		return res;
 	}

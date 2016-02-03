@@ -929,7 +929,7 @@ public class FacesGoodEditView extends ModelView
 				throw EX.forbid("Good Unit of else Domain!");
 
 			//!: init view with this good
-			mb.getView().init(gu).initOx(gu);
+			mb.getView().init(gu).initAttrs(gu).initOx(gu);
 
 			//?: {good has calculation} create it's view
 			if(gu.getGoodCalc() != null)

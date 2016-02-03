@@ -293,9 +293,31 @@ public class GoodUnitView implements Serializable
 		return this;
 	}
 
-	public GoodUnitView initAttrs(GoodUnit gu)
+	@SuppressWarnings("unchecked")
+	public GoodUnitView initAttrs(Object obj)
 	{
 		GetGoods get = bean(GetGoods.class);
+		GoodUnit  gu = null;
+
+		//?: {is a good}
+		if(obj instanceof GoodUnit)
+			gu = (GoodUnit) obj;
+
+		//?: {is an array}
+		if(obj instanceof Object[])
+			obj = Arrays.asList((Object[]) obj);
+
+		//?: {is a collection} search there
+		if(obj instanceof Collection)
+			for(Object x : (Collection)obj)
+				if(x instanceof GoodUnit)
+				{
+					gu = (GoodUnit)x;
+					break;
+				}
+
+		//?: {not found it}
+		if(gu == null) return this;
 
 		//~: select good group
 		this.goodGroup = get.getAttrString(gu, Goods.AT_GROUP);

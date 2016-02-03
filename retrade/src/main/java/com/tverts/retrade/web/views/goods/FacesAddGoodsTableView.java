@@ -172,7 +172,7 @@ public class FacesAddGoodsTableView extends ModelView
 		for(GoodUnitView g : goods)
 		{
 			GoodUnit gu = new GoodUnit();
-			Good      x = gu.getOx();
+			Good      x;
 
 			//=: domain
 			gu.setDomain(loadModelDomain());
@@ -180,6 +180,9 @@ public class FacesAddGoodsTableView extends ModelView
 			//=: primary key
 			HiberPoint.setPrimaryKey(TxPoint.txSession(), gu,
 			  HiberPoint.isTestInstance(gu.getDomain()));
+
+			//~: create ox-good
+			x = gu.getOx();
 
 			//=: good code
 			x.setCode(g.getGoodCode());

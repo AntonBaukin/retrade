@@ -762,7 +762,7 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
+		   text: "Группа", dataIndex: 'goodGroup', sortable: false,
 		   width: extjsf.ex(20)
 		 },
 
@@ -812,7 +812,7 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
+		   text: "Группа", dataIndex: 'goodGroup', sortable: false,
 		   width: extjsf.ex(16), flex: 1
 		 },
 
@@ -849,7 +849,7 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
+		   text: "Группа", dataIndex: 'goodGroup', sortable: false,
 		   width: extjsf.ex(16), tdCls: 'ux-grid-column-smaller'
 		 },
 
@@ -876,7 +876,12 @@ ZeT.init('retrade.globals', function()
 
 		 {
 		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   width: extjsf.ex(48), flex: 1
+		   width: extjsf.ex(48), flex: 2
+		 },
+
+		 {
+		   text: "Группа", dataIndex: 'goodGroup', sortable: false,
+		   flex: 1, tdCls: 'ux-grid-column-smaller'
 		 },
 
 		 {
@@ -1253,6 +1258,7 @@ ZeT.init('retrade.globals', function()
 	    {name: 'measureName',   type: 'string'},
 	    {name: 'price',         type: 'string'},
 	    {name: 'goodPrice',     type: 'string'},
+	    {name: 'goodGroup',     type: 'string'},
 	    {name: 'priceList',     type: 'string'},
 	    {name: 'priceListCode', type: 'string'},
 	    {name: 'priceListName', type: 'string'}
@@ -1355,7 +1361,7 @@ ZeT.init('retrade.globals', function()
 		   width: extjsf.ex(12), align: 'right', 
 		   renderer: retrade.fcurrency
 		 }
-		];
+		]
 	})
 
 	ZeT.define('retrade.readers.PriceListView', {
@@ -1459,7 +1465,7 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Группа", dataIndex: 'goodGroup', sortable: true,
+		   text: "Группа", dataIndex: 'goodGroup', sortable: false,
 		   flex: 1, tdCls: 'ux-grid-column-smaller'
 		 },
 

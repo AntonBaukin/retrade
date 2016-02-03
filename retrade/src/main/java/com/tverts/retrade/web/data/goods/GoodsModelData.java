@@ -85,8 +85,9 @@ public class GoodsModelData implements ModelData
 		List<GoodUnitView> res = new ArrayList<>(sel.size());
 
 		for(Object[] o : sel)
-			res.add(new GoodUnitView().init(o).
-			  initAttrs((GoodUnit) o[0]).
+			res.add(new GoodUnitView().
+			  init(o).
+			  initAttrs(o).
 			  initVolume((BigDecimal)o[2])
 			);
 

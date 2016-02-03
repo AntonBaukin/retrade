@@ -113,7 +113,8 @@ ${v.checkModelRequestedWithRedirect}
       extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow
     extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow  = function(record, e)
     {
-      var f = record.get('objectKey'); if(f.indexOf('folder$') != 0)
+      var f = record && record.get('objectKey')
+      if(!f || (f.indexOf('folder$') != 0))
         return extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow2(record, e)
     }
 

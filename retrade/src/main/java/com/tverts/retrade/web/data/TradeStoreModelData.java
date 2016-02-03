@@ -72,7 +72,7 @@ public class TradeStoreModelData implements ModelData
 		List res = new ArrayList(sel.size());
 
 		for(Object o : sel)
-			res.add(new GoodUnitView().init(o));
+			res.add(new GoodUnitView().init(o).initAttrs(o));
 
 		return res;
 	}

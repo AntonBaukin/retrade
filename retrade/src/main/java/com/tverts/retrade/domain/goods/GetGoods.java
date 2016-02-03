@@ -1187,8 +1187,6 @@ from MeasureUnit mu where
 				s.append("lower(gu.code)");
 			else if("goodName".equals(p))
 				s.append("gu.sortName");
-			else if("goodGroup".equals(p))
-				s.append("lower(gu.group), gu.sortName");
 			else
 				continue;
 

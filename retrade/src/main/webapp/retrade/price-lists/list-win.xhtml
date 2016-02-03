@@ -20,10 +20,12 @@ ${v.checkModelRequestedWithRedirect}
 <x:winmain coid = "${z:vid(v, 'root_panel')}">
 
   <script type = "text/javascript">
+  //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
-      co().setTitle('Прайс-листы')
+    extjsf.co('winmain', '${rootView.extjsDomain}').
+      setTitle('Прайс-листы')
 
+  //]]>
   </script>
 
   <f:facet name = "extjs-props">
@@ -44,14 +46,10 @@ ${v.checkModelRequestedWithRedirect}
 
     <x:component coid = "${z:vid(v, 'close_window')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Закрыть',
-
-        handler : function()
+        xtype: 'button', text: 'Закрыть', handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
-            co().close()
+          extjsf.co('winmain', '${rootView.extjsDomain}').close()
         }
-
       </f:facet>
     </x:component>
 

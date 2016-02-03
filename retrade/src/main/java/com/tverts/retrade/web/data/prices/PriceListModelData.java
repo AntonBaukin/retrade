@@ -72,7 +72,7 @@ public class PriceListModelData implements ModelData
 		List res = new ArrayList(sel.size());
 
 		for(Object o : sel)
-			res.add(new GoodPriceView().init(o));
+			res.add(new GoodPriceView().init(o).initAttrs(o));
 
 		return res;
 	}
