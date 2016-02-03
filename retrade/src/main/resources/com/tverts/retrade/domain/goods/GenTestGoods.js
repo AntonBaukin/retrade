@@ -15,8 +15,19 @@ function genTestGoods(ctx, gen)
 		var subs = g.subs
 		if(subs) delete g.subs
 
+		//~: good group
+		var group = g.group
+		if(group) delete g.group
+
 		//~: convert good object
 		var good = ZeT.s2jo(Good, ZeT.o2s(g))
+
+		//~: set the attributes
+		var attrs = good.getAttrs()
+		if(!attrs) good.setAttrs(attrs = {})
+
+		//~: assign the good attribute
+		attrs.Group = group
 
 		//~: convert calc object
 		var calc = (c)?ZeT.s2jo(Calc, ZeT.o2s(c)):(null)

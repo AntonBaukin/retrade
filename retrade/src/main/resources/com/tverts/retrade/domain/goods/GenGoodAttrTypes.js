@@ -98,6 +98,14 @@ function getGoodTypes()
 			 */
 			shared:  true,
 
+			name:    'Group',
+			nameLo:  'Группа',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			shared:  true,
 			name:    'Barсode',
 			nameLo:  'Баркод',
 			type:    'string',

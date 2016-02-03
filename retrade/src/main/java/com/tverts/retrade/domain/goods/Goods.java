@@ -113,6 +113,9 @@ public class Goods
 
 	/* System Attributes */
 
+	public static final String AT_GROUP
+	  = "Group";
+
 	public static final String AT_BARCODE
 	  = "Barсode";
 
