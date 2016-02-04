@@ -73,8 +73,8 @@
 
     <nav class = "navbar-collapse" role = "navigation">
       <div class = "nav navbar-nav navbar-right">
-        <div ng-show = "userNameSet" class = "navbar-text">
-          Good day, <a href ng-click = "showContent('stranger-form')">{{userName}}</a>!
+        <div visible-on = "user-set" class = "navbar-text">
+          Good day, <a href click-broadcast = "hide-forms edit-user">{{userName}}</a>!
         </div>
       </div>
     </nav>
@@ -85,18 +85,17 @@
 
   <h2>Welcome to AngularJS and Bootstrap Kick Demo!</h2>
 
-  <h4 ng-hide = "userNameSet">
+  <h4 visible-on = "!user-set">
     Good day, <strong>Stranger</strong>!
     Please, tell some info about You below!
-
   </h4>
 
-  <div ng-show = "!userNameSet || isShown('stranger-form')">
+  <div visible-on = "!hide-forms !user-set edit-user">
     <form class = "form-inline">
       <label>
         Please, tell Your name here:
-        <input class = "form-control input-small" ng-model = "userName" ng-blur = "setUserName()"
-               focus-on = "show-stranger-form"/>
+        <input class = "form-control input-small" ng-model = "userName" ng-blur = "$broadcast('user-set')"
+               focus-on = "edit-user"/>
       </label>
     </form>
   </div>

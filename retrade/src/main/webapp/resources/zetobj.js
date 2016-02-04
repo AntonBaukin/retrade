@@ -161,6 +161,23 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 		}
 
 		return s
+	},
+
+	/**
+	 * Invokes callback for each space-separated sub-string.
+	 * If callback returns false, breaks
+	 */
+	eachws           : function(s, f)
+	{
+		ZeT.assert(ZeT.isf(f))
+		if(ZeTS.ises(s)) return this
+
+		s = s.split(/\s+/)
+		for(var i = 0;(i < s.length);i++)
+			if(s[i].length)
+				if(f(s[i]) === false)
+					return this
+		return this
 	}
 }
 
