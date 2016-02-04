@@ -51,7 +51,7 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 
 	first            : function(s)
 	{
-		return s.length && s.charAt(0)
+		return s && s.length && s.charAt(0)
 	},
 
 	startsWith       : function(s, x)

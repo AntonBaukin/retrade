@@ -7,10 +7,14 @@ angular.module('bootit').directive('focusOn', function()
 	{
 		ZeTS.eachws(attr['focusOn'], function(s)
 		{
-			scope.$on(s, ZeT.timeouted(100, function()
+			scope.$on((ZeTS.first(s) != '?')?(s):(s.substring(1)), function(event)
 			{
-				node.focus()
-			}))
+				if((ZeTS.first(s) == '?') && !ZeTS.ises(node.val()))
+					return
+
+				event.preventDefault()
+				ZeT.timeout(100, function(){ node.focus() })
+			})
 		})
 	}
 })
@@ -58,4 +62,27 @@ angular.module('bootit').directive('clickBroadcast', function()
 //~: boot it, root controller
 angular.module('bootit').controller('rootCtrl', function($scope)
 {
+	$scope.$on('user-set', function(e, user)
+	{
+		$scope.user = user
+	})
+})
+
+//~: boot it, user form controller
+angular.module('bootit').controller('userFormCtrl', function($scope)
+{
+	angular.extend($scope,
+	{
+		setUser  : function()
+		{
+			ZeT.assert(ZeT.iso($scope.user))
+
+			$scope.user.displayName = ZeTS.cat(
+			  ZeTS.catif($scope.user.firstName, ZeTS.first($scope.user.firstName), '. '),
+			  $scope.user.lastName
+			)
+
+			$scope.$emit('user-set', $scope.user)
+		}
+	})
 })

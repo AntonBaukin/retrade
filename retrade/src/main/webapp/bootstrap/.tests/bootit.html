@@ -73,8 +73,8 @@
 
     <nav class = "navbar-collapse" role = "navigation">
       <div class = "nav navbar-nav navbar-right">
-        <div visible-on = "user-set" class = "navbar-text">
-          Good day, <a href click-broadcast = "hide-forms edit-user">{{userName}}</a>!
+        <div visible-on = "user-set" style = "display:none" class = "navbar-text">
+          Good day, <a href click-broadcast = "hide-forms edit-user">{{user.displayName}}</a>!
         </div>
       </div>
     </nav>
@@ -82,24 +82,63 @@
 </header>
 
 <div class = "container-fluid">
+  <div class = "row">
+    <div class = "col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+      <h2>Welcome to AngularJS and Bootstrap Kick Demo!</h2>
 
-  <h2>Welcome to AngularJS and Bootstrap Kick Demo!</h2>
-
-  <h4 visible-on = "!user-set">
-    Good day, <strong>Stranger</strong>!
-    Please, tell some info about You below!
-  </h4>
-
-  <div visible-on = "!hide-forms !user-set edit-user">
-    <form class = "form-inline">
-      <label>
-        Please, tell Your name here:
-        <input class = "form-control input-small" ng-model = "userName" ng-blur = "$broadcast('user-set')"
-               focus-on = "edit-user"/>
-      </label>
-    </form>
+      <h4 visible-on = "!user-set">
+        Good day, <strong>Stranger</strong>!
+        Please, tell us some info about You below!
+      </h4>
+    </div>
   </div>
 
+  <div class = "row" visible-on = "!hide-forms !user-set edit-user">
+    <div class = "col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+
+      <div class = "panel panel-default" ng-controller = "userFormCtrl">
+        <div class = "panel-heading">
+          <h4>User Information Form</h4>
+        </div>
+
+        <div class = "panel-body">
+          <div class = "row">
+            <fieldset class = "form-group col-sm-4">
+              <label class = "full-width">
+                First name
+                <input class = "form-control" ng-model = "user.firstName"
+                  autofocus focus-on = "?edit-user"/>
+              </label>
+            </fieldset>
+
+            <fieldset class = "form-group col-sm-4">
+              <label class = "full-width">
+                Last name
+                <input class = "form-control" ng-model = "user.lastName"
+                  focus-on = "?edit-user"/>
+              </label>
+            </fieldset>
+
+            <fieldset class = "form-group col-sm-4">
+              <label class = "full-width">
+                Middle name
+                <input class = "form-control" ng-model = "user.middleName"
+                  focus-on = "?edit-user"/>
+              </label>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class = "panel-footer">
+          <div class = "clearfix">
+            <a href class = "btn btn-primary pull-right"
+              ng-click = "setUser()">OK</a>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
 </div>
 </body>
 </html>
