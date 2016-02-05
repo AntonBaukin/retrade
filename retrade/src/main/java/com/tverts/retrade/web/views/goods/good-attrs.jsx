@@ -71,6 +71,14 @@ function updateSystemAttr(atype, model)
 	ga.values = model.values
 	atype.getOx().setObject(ZeT.o2s(ga))
 
+	//~: local name (is sent as name)
+	if(!ZeTS.ises(model.name))
+	{
+		ga.nameLo = model.name
+		atype.setNameLo(ga.nameLo)
+		atype.getOx().setNameLo(ga.nameLo)
+	}
+
 	//!: update ox-object
 	atype.updateOx()
 }

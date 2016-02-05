@@ -169,7 +169,7 @@ function genUserLinks(authLogin)
 			color : 'O',
 			open  : {
 				domain : 'retrade-main-menu:good-attrs',
-				box    : { widthpt: 380, heightpt: 240 },
+				box    : { widthpt: 460, heightpt: 380 },
 				link   : '/goods/attrs'
 			}
 		},

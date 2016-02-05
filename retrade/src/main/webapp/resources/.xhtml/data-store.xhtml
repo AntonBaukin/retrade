@@ -68,7 +68,7 @@
 
     var props = proxy.extjsPropsRaw()
     if(props.noproxy)
-      store.extjsProps({proxy: {type: 'memory', reader: 'json'}})
+      store.extjsProps({ autoLoad: false })
     else
     {
       //~: define model parameter or model provider

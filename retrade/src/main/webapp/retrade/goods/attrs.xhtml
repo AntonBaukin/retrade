@@ -74,21 +74,42 @@ ${v.checkModelRequestedWithRedirect}
       </x:component>
 
 
-      <!-- [back button] -->
-      <x:component coid = "${z:vid(v, 'back')}">
-        <f:facet name = "extjs-props">
-          xtype: 'button', text: 'Назад', hidden: true
-        </f:facet>
-      </x:component>
-
-
-
       <x:component coid = "${z:vid(v, '_tb_fill_0')}">
         <f:facet name = "extjs-props">
           xtype: 'panel', flex: 1, frame: false, border: false,
           bodyCls: 'retrade-toolbar-inline-panel'
         </f:facet>
       </x:component>
+
+
+      <!-- [groups drop list -->
+
+      <x:data-store storeId = "${z:vid(v, 'groups')}">
+        <f:facet name = "store-props">
+          model: 'retrade.model.KeyValue'
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          noproxy: true
+        </f:facet>
+      </x:data-store>
+
+      <x:drop-list coid = "${z:vid(v, 'groups-list')}"
+        storeId = "${z:vid(v, 'groups')}"
+        value = "#{v.phonyString}">
+
+        <f:facet name = "drop-props">
+          editable: false, matchFieldWidth: true,
+          valueField: 'value', displayField: 'text',
+          width: extjsf.ex(22), margin: extjsf.pts(0, 6, 0, 0)
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Группа', cls: 'retrade-info-title-label'
+        </f:facet>
+      </x:drop-list>
+
+      <!-- groups drop list] -->
 
 
       <!-- [add value button] -->
@@ -125,7 +146,8 @@ ${v.checkModelRequestedWithRedirect}
       modelView = "${v}" pageSize = "0">
 
       <f:facet name = "store-props">
-        model: 'retrade.model.GoodAttrView'
+        model: 'retrade.model.GoodAttrView',
+        sorters: [{ property: 'nameLo', direction: 'ASC' }]
       </f:facet>
 
       <f:facet name = "proxy-props">
@@ -193,6 +215,32 @@ ${v.checkModelRequestedWithRedirect}
         </x:component>
 
 
+        <!-- [select group drop-list] -->
+        <x:component coid = "${z:vid(v, '_group_select')}">
+          <f:facet name = "extjs-props">
+            border: false, layout: { type: 'hbox', align: 'middle' },
+            bodyCls: 'retrade-transparent-panel',
+            margin: extjsf.pts(4, 0, 0, 0)
+          </f:facet>
+
+          <x:drop-list coid = "${z:vid(v, 'group-select')}"
+            storeId = "${z:vid(v, 'groups')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "drop-props">
+              flex: 1, editable: false,
+              matchFieldWidth: true, allowBlank: false,
+              valueField: 'value', displayField: 'text'
+            </f:facet>
+
+            <f:facet name = "label-props">
+              text: 'Группа', width: extjsf.ex(14),
+              cls: 'retrade-info-title-label'
+            </f:facet>
+          </x:drop-list>
+        </x:component>
+
+
         <!-- [attribute type + boxes -->
 
         <x:data-store storeId = "${z:vid(v, 'types')}" modelView = "${v}">
@@ -225,7 +273,7 @@ ${v.checkModelRequestedWithRedirect}
             <f:facet name = "drop-props">
               editable: false, matchFieldWidth: true,
               valueField: 'key', displayField: 'value',
-              width: extjsf.ex(14), allowBlank: false
+              width: extjsf.ex(18), allowBlank: false
             </f:facet>
 
             <f:facet name = "label-props">
@@ -361,16 +409,20 @@ ${v.checkModelRequestedWithRedirect}
 
   ZeT.scope(function()
   {
+    var groups = extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
+    var groupf = extjsf.bind("${z:vid(v, 'groups-list')}", '${rootView.extjsDomain}')
+    var groupl = extjsf.bind("${z:vid(v, 'groups-list-label')}", '${rootView.extjsDomain}')
+    var attrs  = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
     var close  = extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}')
     var add    = extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}')
     var cancel = extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')
-    var back   = extjsf.bind("${z:vid(v, 'back')}", '${rootView.extjsDomain}')
     var delval = extjsf.bind("${z:vid(v, 'delval')}", '${rootView.extjsDomain}')
     var addval = extjsf.bind("${z:vid(v, 'addval')}", '${rootView.extjsDomain}')
     var save   = extjsf.bind("${z:vid(v, 'save')}", '${rootView.extjsDomain}')
     var grid   = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
     var form   = extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}')
     var name   = extjsf.bind("${z:vid(v, 'name')}", '${rootView.extjsDomain}')
+    var group  = extjsf.bind("${z:vid(v, 'group-select')}", '${rootView.extjsDomain}')
     var type   = extjsf.bind("${z:vid(v, 'type')}", '${rootView.extjsDomain}')
     var iss    = extjsf.bind("${z:vid(v, 'is-shared')}", '${rootView.extjsDomain}')
     var isa    = extjsf.bind("${z:vid(v, 'is-array')}", '${rootView.extjsDomain}')
@@ -381,13 +433,28 @@ ${v.checkModelRequestedWithRedirect}
 
     function setEditMode(x, rec)
     {
-      ZeT.each([close, add, grid], function(b){ b.visible(!x) })
+      ZeT.each([close, add, grid, groupf, groupl], function(b){ b.visible(!x) })
       ZeT.each([cancel, save, form], function(b){ b.visible(x) })
 
       clearEdit()
 
-      //?: {do not setup edit model}
-      if(!x || !(record = rec)) return
+      //?: {not edit mode}
+      if(!x) return fillGroups(true)
+
+      //?: {creating item}
+      if(!(record = rec))
+      {
+        //~: update the groups
+        fillGroups(false)
+
+        //~: assign the same group as the filter
+        group.value((groupf.value() == 'All')?(''):(groupf.value()))
+
+        //~: set default focus
+        name.co().focus()
+
+        return
+      }
 
       //~: set default focus
       name.co().focus()
@@ -400,6 +467,9 @@ ${v.checkModelRequestedWithRedirect}
 
       //=: name (local)
       name.value(rec.get('nameLo'))
+
+      //=: group
+      group.value(ox.group && ox.group.name)
 
       //=: type key
       type.value(ZeT.asserts(ox.type))
@@ -433,12 +503,11 @@ ${v.checkModelRequestedWithRedirect}
     {
       record = ox = ronly = null
 
-      back.visible(false)
       delval.visible(false)
       addval.visible(false)
       vgrid.visible(false)
 
-      ZeT.each([name, type, iss, isa, isl], function(b) {
+      ZeT.each([group, type, iss, isa, isl], function(b) {
         b.co().setReadOnly(false)
       })
 
@@ -455,23 +524,63 @@ ${v.checkModelRequestedWithRedirect}
       //Hint: allow editing of system lists
       //vgrid.disabledEditing = ro
 
-      save.visible(!ro || islist)
-      cancel.visible(!ro || islist)
-      back.visible(ro && !islist)
+      //Hint: local name os allowed to edit
 
-      ZeT.each([name, type, iss, isa, isl], function(b) {
+      ZeT.each([group, type, iss, isa, isl], function(b) {
         b.co().setReadOnly(ro)
       })
     }
+
+    function fillGroups(all)
+    {
+      var map = {}
+
+      //~: clear the groups
+      groups.co().removeAll()
+      if(all) groups.co().add({ value: 'All', text: 'Все' })
+
+      //~: for each attribute type
+      attrs.co().getUnfiltered().each(function(a)
+      {
+        var ox = a.get('ox')
+        if(!ZeT.iso(ox.group)) return
+
+        ZeT.asserts(ox.group.name)
+        if(map[ox.group.name]) return
+        map[ox.group.name] = ox.group
+
+        var gr = { value: ox.group.name, text: ox.group.nameLo }
+        if(ZeTS.ises(gr.text)) gr.text = gr.value
+
+        groups.co().add(gr)
+      })
+    }
+
+    //~: fill groups on attributres load
+    attrs.on('load', function()
+    {
+      fillGroups(true)
+      groupf.value('All')
+    })
+
+    //~: filter the list by the group
+    groupf.on('change', function(f, v)
+    {
+      attrs.co().clearFilter()
+      if(v == 'All') return
+
+      attrs.co().filterBy(function(x)
+      {
+        var ox = x.get('ox')
+        return ox && ox.group && (ox.group.name == v)
+      })
+    })
 
     //~: go to edit mode
     add.on('click', ZeT.fbind(setEditMode, ZeT, true, null))
 
     //~: cancel to list mode
     cancel.on('click', ZeT.fbind(setEditMode, ZeT, false, null))
-
-    //~: back to list mode
-    back.on('click', ZeT.fbind(setEditMode, ZeT, false, null))
 
     //~: set edit mode for grid record
     grid.on('itemdblclick', function(grid, rec)
@@ -652,6 +761,12 @@ ${v.checkModelRequestedWithRedirect}
 
       //?: {has list of values}
       if(ZeT.isa(vals)) m.values = vals
+
+      //~: group
+      var g = groups.co().find('value', group.value())
+      ZeT.assert(g >= 0)
+      g = groups.co().getAt(g)
+      m.group = { name: g.get('value'), nameLo: g.get('text') }
 
       //!: post model to the server
       var post = jQuery.post("${z:url('/go/web/views/goods/good-attrs')}", { model: ZeT.o2s(m) })

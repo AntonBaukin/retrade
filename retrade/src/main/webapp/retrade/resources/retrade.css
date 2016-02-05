@@ -558,7 +558,7 @@ table.retrade-align-right.x-field
   .retrade-tiles-links-scroll-up-outer,
   .retrade-tiles-links-scroll-down-outer
 {
-  position: absolute; padding: 8px 2px;
+  display: none; position: absolute; padding: 8px 2px;
   z-index: 10; border-radius: 4px; cursor: pointer;
   background-color: rgba(203, 217, 236, 0.70);
   border-right: solid 3px rgba(124, 131, 143, 0.75);

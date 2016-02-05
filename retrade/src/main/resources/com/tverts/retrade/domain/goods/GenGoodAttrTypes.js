@@ -85,6 +85,41 @@ function assignGoodAttr(g, /* optional AttrType */ type)
  */
 function getGoodTypes()
 {
+	var result = []
+
+	//~: main attributes
+	ZeT.each(getGoodTypesMain(), function(g)
+	{
+		g.group = { name: 'Main', nameLo: 'Основные' }
+		result.push(g)
+	})
+
+	//~: cooking attributes
+	ZeT.each(getGoodTypesCooking(), function(g)
+	{
+		g.group = { name: 'Cooking', nameLo: 'Изготовление' }
+		result.push(g)
+	})
+
+	//~: certification attributes
+	ZeT.each(getGoodTypesCertification(), function(g)
+	{
+		g.group = { name: 'Certification', nameLo: 'Сертификация' }
+		result.push(g)
+	})
+
+	//~: alcohol attributes
+	ZeT.each(getGoodTypesAlcohol(), function(g)
+	{
+		g.group = { name: 'Alcohol', nameLo: 'Алкоголь' }
+		result.push(g)
+	})
+
+	return result
+}
+
+function getGoodTypesMain()
+{
 	return [
 
 		{
@@ -106,14 +141,29 @@ function getGoodTypes()
 		{
 			system:  true,
 			shared:  true,
-			name:    'Barсode',
-			nameLo:  'Баркод',
+			name:    'Full Name',
+			nameLo:  'Полное наименование',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			name:    'Vendor Code',
+			nameLo:  'Артикул',
 			type:    'string',
 
 			/**
 			 * Tells that attribute values form an array
 			 * (list) that has distinct db-record for each.
 			 */
+			array:   true
+		},
+
+		{
+			system:  true,
+			name:    'Barсode',
+			nameLo:  'Баркод',
+			type:    'string',
 			array:   true
 		},
 
@@ -168,21 +218,166 @@ function getGoodTypes()
 		},
 
 		{
-			name:    'Тестовый список',
-			type:    'integer',
-			shared:  true,
-			array:   true,
-
-			values:  [
-
-				{ value: '10', text: 'А-10' },
-				{ value: '20', text: 'Б-20' },
-				{ value: '30', text: 'И-30' }
-			]
+			system:  true,
+			name:    'Rest Volume',
+			nameLo:  'Неснижаемый остаток',
+			type:    'volume'
 		}
 	]
 }
 
+function getGoodTypesCooking()
+{
+	return [
+
+		/**
+		 * Параметры обработки
+		 */
+		{
+			system:  true,
+			name:    'Cold Cooking',
+			nameLo:  'Холодная обработка',
+			type:    'decimal'
+		},
+
+		{
+			system:  true,
+			name:    'Hot Cooking',
+			nameLo:  'Горячая обработка',
+			type:    'decimal'
+		},
+
+		/**
+		 * Энергетическая ценность
+		 */
+		{
+			system:  true,
+			shared:  true,
+			name:    'Proteins',
+			nameLo:  'Белки',
+			type:    'decimal'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Fats',
+			nameLo:  'Жиры',
+			type:    'decimal'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Carbohydrates',
+			nameLo:  'Углеводы',
+			type:    'decimal'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Energy Value',
+			nameLo:  'Энергетическая ценность',
+			type:    'decimal'
+		}
+	]
+}
+
+function getGoodTypesCertification()
+{
+	return [
+
+		/**
+		 * Сертификация и сроки хранения
+		 */
+		{
+			system:  true,
+			shared:  true,
+			name:    'Quality Certificate',
+			nameLo:  'Номер сертификата качества',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Quality Certificate Start',
+			nameLo:  'Начало действия сертификата качества',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Quality Certificate End',
+			nameLo:  'Окончание действия сертификата качества',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Certificate Authority',
+			nameLo:  'Орган сертификации',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Compliance with Requirements',
+			nameLo:  'Соответствие требованиям / ТУ',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Storage Days',
+			nameLo:  'Срок хранения',
+			type:    'integer'
+		}
+	]
+}
+
+function getGoodTypesAlcohol()
+{
+	return [
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Alcohol Content',
+			nameLo:  'Содержание спирта %',
+			type:    'integer'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Producer / Importer',
+			nameLo:  'Производитель / Импортер',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'TIN Producer / Importer',
+			nameLo:  'ИНН Производителя / Импортера',
+			type:    'string'
+		},
+
+		{
+			system:  true,
+			shared:  true,
+			name:    'Code Type of Alcoholic Beverages',
+			nameLo:  'Код вида алкогольной продукции',
+			type:    'string'
+		}
+	]
+}
 
 ZeT.extend({}, //<-- this resulting module object
 {

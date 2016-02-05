@@ -93,12 +93,18 @@
        return $(areaid + ' .retrade-tiles-links-scroll-' + dir + '-outer')
      }
 
+     var scflags
      function sctoggle()
      {
-       var flags = arguments
-       ZeT.each(['left', 'right', 'up', 'down'], function(dir, i)
+       //Hint: actually, we need to hide the arrows with a small delay...
+
+       scflags = ZeT.a(arguments)
+       ZeT.timeout(100, function()
        {
-         sc(dir).toggle(!!flags[i])
+         ZeT.each(['left', 'right', 'up', 'down'], function(dir, i)
+         {
+           sc(dir).toggle(!!scflags[i])
+         })
        })
      }
 
@@ -131,12 +137,19 @@
          if(same()) return
        }
 
-       var left  = tiles.isScrollLeft()
-       var right = tiles.isScrollRight()
+       function updateArrows()
+       {
+         var left  = tiles.isScrollLeft()
+         var right = tiles.isScrollRight()
 
-       ZeTD.classes($(areaid)[0], [ ((single)?'+':'-') + C, ((single)?'-':'+') + B ])
-       sctoggle(!single && left, !single && right, single && left, single && right)
+         ZeTD.classes($(areaid)[0], [ ((single)?'+':'-') + C, ((single)?'-':'+') + B ])
+         sctoggle(!single && left, !single && right, single && left, single && right)
+       }
+
+       updateArrows()
        tiles.tiles.updateLayout()
+
+       if(!same()) updateArrows()
      }
 
      function calcRows(r, R)
