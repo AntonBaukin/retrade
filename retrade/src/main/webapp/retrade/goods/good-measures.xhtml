@@ -122,6 +122,16 @@
     </x:component>
 
 
+    <!-- [filter attributes by group area] -->
+    <x:component coid = "${z:vid(v, 'filter-attrs-select-area')}">
+      <f:facet name = "extjs-props">
+        hidden: true, border: false, layout: 'fit',
+        margin: extjsf.pts(0, 4, 0, 4),
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
+
+
     <!-- [add attribute button] -->
     <x:component coid = "${z:vid(v, 'add-attr')}">
       <f:facet name = "extjs-props">
@@ -186,7 +196,11 @@
       bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
-    <ui:decorate template = '.good-attrs.xhtml'/>
+    <ui:decorate template = '.good-attrs.xhtml'>
+
+      <ui:param name = "filterAttrsSelectArea"
+        value = "${z:vid(v, 'filter-attrs-select-area')}"/>
+    </ui:decorate>
   </x:component>
 
 
@@ -638,6 +652,7 @@
     var delattrs  = extjsf.bind("${z:vid(v, 'del-attrs')}", '${rootView.extjsDomain}')
     var addattrs  = extjsf.bind("${z:vid(v, 'add-attr')}", '${rootView.extjsDomain}')
     var attsed    = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var farea     = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${rootView.extjsDomain}')
     var attrControl
 
     function toggleAttributes(on)
@@ -655,6 +670,7 @@
       cancelats.visible(on && editMode)
       delattrs.visible(on && editMode)
       addattrs.visible(on && editMode)
+      farea.visible(on)
 
       //~: adapt the height of the window
       if(on)

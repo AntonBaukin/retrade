@@ -11,13 +11,51 @@
   <!-- [store of attribute values] -->
   <x:data-store storeId = "${z:vid(v, 'goodAttrs')}" modelView = "${v}">
     <f:facet name = "store-props">
-      model: 'retrade.model.GoodAttrView', data: []
+      model: 'retrade.model.GoodAttrView'
     </f:facet>
 
     <f:facet name = "proxy-props">
       noproxy: true
     </f:facet>
   </x:data-store>
+
+
+  <!-- [attribute groups filter -->
+
+  <x:data-store storeId = "${z:vid(v, 'goodAttrGroups')}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.KeyValue'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      noproxy: true
+    </f:facet>
+  </x:data-store>
+
+  <x:component coid = "${z:vid(v, '_filter-attrs-select')}"
+    parentId = "${filterAttrsSelectArea}">
+
+    <f:facet name = "extjs-props">
+      border: false, bodyCls: 'retrade-transparent-panel',
+      layout: {type: 'hbox', align: 'middle'}
+    </f:facet>
+
+    <x:drop-list coid = "${z:vid(v, 'filter-attrs-select')}"
+      storeId = "${z:vid(v, 'goodAttrGroups')}"
+      value = "#{v.phonyString}">
+
+      <f:facet name = "drop-props">
+        editable: false, width: extjsf.ex(22),
+        valueField: 'value', displayField: 'text'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Группа', cls: 'retrade-info-title-label'
+      </f:facet>
+    </x:drop-list>
+  </x:component>
+
+  <!-- attribute groups filter] -->
 
 
   <!-- [attributes display table -->
@@ -323,10 +361,12 @@
   extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
     updateGoodOx = function(ox, isReadMode)
   {
-    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var vgrid = extjsf.bind("${z:vid(v, 'attrs-view')}", '${rootView.extjsDomain}')
-    var egrid = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
-    var v2s   = store.extjsfBind.valueToString
+    var store  = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-view')}", '${rootView.extjsDomain}')
+    var egrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var groups = extjsf.bind("${z:vid(v, 'goodAttrGroups')}", '${rootView.extjsDomain}')
+    var v2s    = store.extjsfBind.valueToString
 
     //~: show taken column for sub-goods only
     extjsf.support.columnByDataIndex(vgrid, 'taken').
@@ -387,6 +427,17 @@
 
     //~: sort the attributes
     store.sort('nameLo', 'ASC')
+
+    if(isReadMode)
+      groups.retradeCollectAttrGroups(true)
+    else
+    {
+      astore.clearFilter()
+      astore.reload({ callback: function()
+      {
+        groups.retradeCollectAttrGroups(false)
+      }})
+    }
   }
 
 
@@ -462,6 +513,49 @@
 
     model.set('temp', v)
     model.set('temp-edited', v)
+  }
+
+
+  //~: collect groups of attributes
+  extjsf.bind("${z:vid(v, 'goodAttrGroups')}", '${rootView.extjsDomain}').
+    retradeCollectAttrGroups = function(isReadMode)
+  {
+    var groups = extjsf.co("${z:vid(v, 'goodAttrGroups')}", '${rootView.extjsDomain}')
+    var groupf = extjsf.bind("${z:vid(v, 'filter-attrs-select')}", '${rootView.extjsDomain}')
+    var egrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var vstore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var src, map = {}
+
+    //?: {not same read-edit mode}
+    if(!isReadMode && !egrid.visible()) return
+
+    //~: clear the groups
+    groups.removeAll()
+    groups.add({ value: 'All', text: 'Все' })
+
+    //?: {is edit mode}
+    if(egrid.visible()) src = astore.getUnfiltered()
+    else src = vstore.getUnfiltered()
+
+    //~: for each attribute type
+    src.each(function(a)
+    {
+      var ox = a.get('ox')
+      if(!ZeT.iso(ox.group)) return
+
+      ZeT.asserts(ox.group.name)
+      if(map[ox.group.name]) return
+      map[ox.group.name] = ox.group
+
+      var gr = { value: ox.group.name, text: ox.group.nameLo }
+      if(ZeTS.ises(gr.text)) gr.text = gr.value
+
+      groups.add(gr)
+    })
+
+    //~: set the default no-filter
+    groupf.value('All')
   }
 
 
@@ -633,6 +727,27 @@
     vgrid.assignAttrType(m, attrId)
   }
 
+
+  //~: filter by the attribute group
+  extjsf.bind("${z:vid(v, 'filter-attrs-select')}", '${rootView.extjsDomain}').
+    on('change', function(f, v)
+  {
+    var astore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var tstore = extjsf.co("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+
+    astore.clearFilter()
+    tstore.clearFilter()
+    if(v == 'All') return
+
+    function f(x)
+    {
+      var ox = x.get('ox')
+      return !ox || !ox.group || (ox.group.name == v)
+    }
+
+    astore.filterBy(f)
+    tstore.filterBy(f)
+  })
 
   //]]>
   </script>

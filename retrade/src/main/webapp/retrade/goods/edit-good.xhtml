@@ -97,11 +97,9 @@ ${v.checkModelRequestedWithRedirect}
    <!-- [remove attributes button] -->
    <x:component coid = "${z:vid(v, 'del-attrs')}">
     <f:facet name = "extjs-props">
-
       xtype: 'button', text: 'Удалить', hidden: true,
       margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
       tooltip: 'Удалить выбранные атрибуты'
-
     </f:facet>
    </x:component>
 
@@ -114,14 +112,22 @@ ${v.checkModelRequestedWithRedirect}
    </x:component>
 
 
+   <!-- [filter attributes by group area] -->
+   <x:component coid = "${z:vid(v, 'filter-attrs-select-area')}">
+    <f:facet name = "extjs-props">
+      hidden: true, border: false, layout: 'fit',
+      margin: extjsf.pts(0, 4, 0, 4),
+      bodyCls: 'retrade-transparent-panel'
+    </f:facet>
+   </x:component>
+
+
    <!-- [add attribute button] -->
    <x:component coid = "${z:vid(v, 'add-attr')}">
     <f:facet name = "extjs-props">
-
       xtype: 'button', text: 'Добавить', hidden: true,
       margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
       tooltip: 'Добавить атрибут'
-
     </f:facet>
    </x:component>
 
@@ -129,10 +135,8 @@ ${v.checkModelRequestedWithRedirect}
    <!-- [show attributes toggle button] -->
    <x:component coid = "${z:vid(v, 'show-attrs')}">
     <f:facet name = "extjs-props">
-
       xtype: 'button', text: 'Атрибуты', enableToggle: true,
       tooltipType: 'title', tooltip: 'Отобразить дополнительные атрибуты товара'
-
     </f:facet>
    </x:component>
 
@@ -241,7 +245,11 @@ ${v.checkModelRequestedWithRedirect}
       bodyCls: 'retrade-transparent-panel'
     </f:facet>
 
-    <ui:decorate template = '.good-attrs.xhtml'/>
+    <ui:decorate template = '.good-attrs.xhtml'>
+
+      <ui:param name = "filterAttrsSelectArea"
+        value = "${z:vid(v, 'filter-attrs-select-area')}"/>
+    </ui:decorate>
   </x:component>
 
 
@@ -563,6 +571,8 @@ ${v.checkModelRequestedWithRedirect}
     var delats = extjsf.bind("${z:vid(v, 'del-attrs')}", '${rootView.extjsDomain}')
     var addat  = extjsf.bind("${z:vid(v, 'add-attr')}", '${rootView.extjsDomain}')
     var attsed = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var doedit = extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}')
+    var farea  = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${rootView.extjsDomain}')
 
     function adjustWindow()
     {
@@ -675,17 +685,19 @@ ${v.checkModelRequestedWithRedirect}
       gocalc.visible(!isReadMode && !on)
       submit.visible(!isReadMode && !on)
       status.visible(!on)
+      doedit.visible(isReadMode && !on)
 
       atsext.visible(on)
       delats.visible(!isReadMode && on)
       addat.visible(!isReadMode && on)
+      farea.visible(on)
 
       //~: adapt the height of the window
       if(on)
         ReTrade.desktop.applyWindowBox({
           name: 'winmain', domain: '${rootView.extjsDomain}',
           prevsize: 'good-attrs', heightpt: 280,
-          widthpt: (isReadMode)?(undefined):(480)
+          widthpt: (isReadMode)?(360):(480)
         })
       else
         ReTrade.desktop.prevsizeComp({
