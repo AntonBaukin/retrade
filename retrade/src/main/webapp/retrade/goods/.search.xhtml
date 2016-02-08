@@ -13,7 +13,7 @@
     modelProvider = "facesGoodAttrsView" pageSize = "0">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.GoodAttrView', autoLoad: false
+      model: 'retrade.model.GoodAttrView', autoLoad: true
     </f:facet>
 
     <f:facet name = "proxy-props">
@@ -22,10 +22,26 @@
   </x:data-store>
 
 
+  <!-- attribute groups store -->
+  <x:data-store storeId = "${z:vid(v, 'search-goods-goodAttrGroups')}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.KeyValue'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      noproxy: true
+    </f:facet>
+  </x:data-store>
+
+
   <!-- [attribute values store] -->
   <x:data-store storeId = "${z:vid(v, 'search-goods-attrValues')}" pageSize = "0">
     <f:facet name = "store-props">
-      model: 'retrade.model.KeyValue', data: []
+      model: 'retrade.model.KeyValue'
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      noproxy: true
     </f:facet>
   </x:data-store>
 
@@ -37,6 +53,7 @@
       layout: { type: 'hbox', align: 'middle' },
       bodyCls: 'retrade-transparent-panel'
     </f:facet>
+
 
     <!-- [goods name] -->
     <x:text-field coid = "${z:vid(v, 'search-goods')}"
@@ -76,7 +93,7 @@
       <x:menu coid = "${z:vid(v, 'search-goods-attr-menu')}">
 
         <f:facet name = "extjs-props">
-          showSeparator: false, width: extjsf.pt(200),
+          showSeparator: false, width: extjsf.pt(250),
           layout: 'fit',  bodyCls: 'retrade-form-panel',
           getAlignToXY: function(btn)
           {
@@ -95,21 +112,37 @@
           </f:facet>
 
 
+          <!-- [attribute groups drop list] -->
+          <x:drop-list coid = "${z:vid(v, 'search-goods-group')}"
+            storeId = "${z:vid(v, 'search-goods-goodAttrGroups')}"
+            value = "#{v.phonyString}">
+
+            <f:facet name = "drop-props">
+              editable: false, valueField: 'value', displayField: 'text',
+              cellCls: 'retrade-table-cell-100pc',
+              fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+            </f:facet>
+
+            <f:facet name = "label-props">
+              text: 'Группа', cls: 'retrade-info-title-label',
+              margin: extjsf.pts(0, 4, 0, 0)
+            </f:facet>
+          </x:drop-list>
+
+
           <!-- [attribute type drop list] -->
           <x:drop-list coid = "${z:vid(v, 'search-goods-attr-type')}"
             storeId = "${z:vid(v, 'search-goods-attrTypes')}"
             value = "#{v.phonyString}">
 
             <f:facet name = "drop-props">
-              editable: false, matchFieldWidth: false,
-              valueField: 'pkey', displayField: 'nameLo',
+              editable: false, valueField: 'pkey', displayField: 'nameLo',
               cellCls: 'retrade-table-cell-100pc',
               fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
             </f:facet>
 
             <f:facet name = "label-props">
-              text: 'Атрибут',
-              cls: 'retrade-info-title-label',
+              text: 'Атрибут', cls: 'retrade-info-title-label',
               margin: extjsf.pts(0, 4, 0, 0)
             </f:facet>
           </x:drop-list>
@@ -291,6 +324,8 @@
     var namel  = extjsf.bind("${z:vid(v, 'search-goods-label')}", '${rootView.extjsDomain}')
     var selset = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}')
     var script = extjsf.bind("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')
+    var groups = extjsf.bind("${z:vid(v, 'search-goods-goodAttrGroups')}", '${rootView.extjsDomain}')
+    var group  = extjsf.bind("${z:vid(v, 'search-goods-group')}", '${rootView.extjsDomain}')
     var attrs  = extjsf.bind("${z:vid(v, 'search-goods-attrs')}", '${rootView.extjsDomain}')
     var attrt  = extjsf.bind("${z:vid(v, 'search-goods-attr-type')}", '${rootView.extjsDomain}')
     var attrl  = extjsf.bind("${z:vid(v, 'search-goods-attr-value-list')}", '${rootView.extjsDomain}')
@@ -312,6 +347,48 @@
     {
       return extjsf.co("${storeId}", '${rootView.extjsDomain}')
     }
+
+    //~: fill the groups on load
+    astore.on('load', function()
+    {
+      //~: clear the groups
+      groups.co().removeAll()
+      groups.co().add({ value: 'All', text: 'Все' })
+
+      var map = {}
+      astore.co().getUnfiltered().each(function(a)
+      {
+        var ox = a.get('ox')
+        if(!ZeT.iso(ox.group)) return
+
+        ZeT.asserts(ox.group.name)
+        if(map[ox.group.name]) return
+        map[ox.group.name] = ox.group
+
+        var gr = { value: ox.group.name, text: ox.group.nameLo }
+        if(ZeTS.ises(gr.text)) gr.text = gr.value
+
+        groups.co().add(gr)
+      })
+
+      //~: set the default no-filter
+      group.value('All')
+    })
+
+    //~: filter attributes bt the group
+    group.on('change', function(cb, v)
+    {
+      astore.co().clearFilter()
+      if(v == 'All') return
+
+      function f(x)
+      {
+        var ox = x.get('ox')
+        return !ox || !ox.group || (ox.group.name == v)
+      }
+
+      astore.co().filterBy(f)
+    })
 
     //~: react on name-code change
     name.on('change', function(f)
