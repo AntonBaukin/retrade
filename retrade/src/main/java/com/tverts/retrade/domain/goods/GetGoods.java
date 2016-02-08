@@ -1085,7 +1085,13 @@ from MeasureUnit mu where
 			//?: {is string type}
 			if(t instanceof String)
 			{
-				q = q.replace("XYZ", "string = :m");
+				String op = "string = :m";
+
+				//?: {substring}
+				if("substring".equals(f.getOp()))
+					op = "string like '%' || :m || '%'";
+
+				q = q.replace("XYZ", op);
 				w = new WhereText(q);
 				w.param("m", m);
 			}

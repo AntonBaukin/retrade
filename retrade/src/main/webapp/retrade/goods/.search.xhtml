@@ -243,6 +243,29 @@
           </x:text-field>
 
 
+          <!-- [substring checkbox] -->
+          <x:component coid = "${z:vid(v, 'search-goods-attr-substring-layout')}">
+            <f:facet name = "extjs-props">
+              border: false, colspan: 2,
+              bodyCls: 'retrade-transparent-panel',
+              layout: { type: 'hbox', align: 'middle' }
+            </f:facet>
+
+            <x:checkbox-field coid = "${z:vid(v, 'search-goods-substring')}"
+              value = "#{v.phonyBoolTrue}">
+
+              <f:facet name = "extjs-props">
+                hidden: true, value: true
+              </f:facet>
+
+              <f:facet name = "label-props">
+                hidden: true, cls: 'retrade-info-title-label',
+                html: "&lt;span title = 'Производить поиск товаров по подстроке значения атрибута'&gt;подстрока&lt;/span&gt;"
+              </f:facet>
+            </x:checkbox-field>
+          </x:component>
+
+
           <!-- [OR-AND selector] -->
           <x:component coid = "${z:vid(v, 'search-goods-attr-or-layout')}">
             <f:facet name = "extjs-props">
@@ -340,6 +363,8 @@
     var vstore = extjsf.bind("${z:vid(v, 'search-goods-attrValues')}", '${rootView.extjsDomain}')
     var or     = extjsf.bind("${z:vid(v, 'search-goods-attr-or')}", '${rootView.extjsDomain}')
     var orl    = extjsf.bind("${z:vid(v, 'search-goods-attr-or-label')}", '${rootView.extjsDomain}')
+    var subs   = extjsf.bind("${z:vid(v, 'search-goods-substring')}", '${rootView.extjsDomain}')
+    var subsl  = extjsf.bind("${z:vid(v, 'search-goods-substring-label')}", '${rootView.extjsDomain}')
     var add    = extjsf.bind("${z:vid(v, 'search-goods-add-filter')}", '${rootView.extjsDomain}')
     var searchValue, aox
 
@@ -372,7 +397,8 @@
       })
 
       //~: set the default no-filter
-      group.value('All')
+      if(ZeTS.ises(group.value()))
+        group.value('All')
     })
 
     //~: filter attributes bt the group
@@ -460,12 +486,22 @@
       ZeT.each(binds,function(b){ b.visible(visible) })
     }
 
+    function ranged()
+    {
+      return !!aox && ([ 'integer', 'decimal', 'volume' ].indexOf(aox.type) >= 0)
+    }
+
+    function substr()
+    {
+      return !!aox && (aox.type === 'string') && !ZeT.isa(aox.values)
+    }
+
     //~: toggle attributes view
     attrs.on('toggle', function(btn)
     {
       sh( btn.pressed, [ attrs ])
       sh(!btn.pressed, [ name, namel ])
-      if(!btn.pressed) sh(false, [ attrl, attrll, attrv, attrvl, or, orl, add ])
+      if(!btn.pressed) sh(false, [ attrl, attrll, attrv, attrvl, or, orl, subs, subsl, add ])
 
       //?: {display values list or text}
       if(btn.pressed) {
@@ -474,14 +510,10 @@
 
         sh(a, [ attrl, attrll ])
         sh(b, [ attrv, attrvl ])
-        sh(a || b,  [ or, orl, add ])
+        sh(a || b,   [ or, orl, add ])
+        sh(substr(), [ subs, subsl ])
       }
     })
-
-    function ranged()
-    {
-      return !!aox && ([ 'integer', 'decimal', 'volume' ].indexOf(aox.type) >= 0)
-    }
 
     //~: ranged-single field toggle
     function rsf(f)
@@ -520,6 +552,9 @@
       }
 
       aox = ZeT.assertn(astore.co().getById(v)).get('ox')
+
+      //?: {display substring}
+      sh(substr(), [ subs, subsl ])
 
       //?: {has fixed list of values}
       if(ZeT.isa(aox.values))
@@ -577,6 +612,22 @@
       return { text: v }
     }
 
+    //~: substring label text
+    subs.on('show', function()
+    {
+      attrvl.co().setText(subs.value()?('Подстр.'):('Равен'))
+    })
+
+    subs.on('hide', function()
+    {
+      attrvl.co().setText('Равен')
+    })
+
+    subs.on('change', function()
+    {
+      attrvl.co().setText(subs.value()?('Подстр.'):('Равен'))
+    })
+
     //~: add the filter
     extjsf.bindHandler(add, function()
     {
@@ -626,6 +677,9 @@
         f['min-value'] = ZeTS.ises(m)?{}:formatValue(m)
         f['max-value'] = ZeTS.ises(M)?{}:formatValue(M)
       }
+
+      //?: {substring operator}
+      if(substr() && subs.value()) f.op = 'substring'
 
       var params = { selset:  ReTrade.selset.selset, filter: ZeT.o2s(f) }
       if(ZeT.isx(params.selset)) params.selset = ''

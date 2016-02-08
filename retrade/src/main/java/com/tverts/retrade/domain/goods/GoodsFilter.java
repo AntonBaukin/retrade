@@ -34,7 +34,7 @@ import com.tverts.support.fmt.SelfFmt;
  */
 @XmlRootElement(name = "goods-filter")
 @XmlType(name = "goods-filter", propOrder = {
-  "attrType", "or", "min", "max"
+  "attrType", "or", "op", "min", "max"
 })
 public class GoodsFilter implements SelfFmt
 {
@@ -68,6 +68,19 @@ public class GoodsFilter implements SelfFmt
 	public void setOr(boolean or)
 	{
 		this.or = or;
+	}
+
+	@XmlElement(name = "op")
+	public String getOp()
+	{
+		return op;
+	}
+
+	private String op;
+
+	public void setOp(String op)
+	{
+		this.op = op;
 	}
 
 	/**
@@ -118,8 +131,8 @@ public class GoodsFilter implements SelfFmt
 			return "Фильтр товара пуст";
 
 		StringBuilder  s = new StringBuilder(92);
-		AttrType      at = bean(GetUnity.class).
-		  getAttrType(attrType);
+		AttrType      at = bean(GetUnity.class).getAttrType(attrType);
+		String        op = "substring".equals(this.op)?("подстрока ["):("равен [");
 
 		s.append("Фильтр товара (").append((or)?("ИЛИ)"):("И)"));
 
@@ -131,7 +144,7 @@ public class GoodsFilter implements SelfFmt
 		Object M = (max == null)?(null):(max.value());
 		EX.assertn(m);
 
-		s.append((M != null)?(": от ["):("равен [")).append(m);
+		s.append((M != null)?(": от ["):(op)).append(m);
 		if(M != null) s.append("] до [").append(M);
 
 		return s.append(']').toString();
