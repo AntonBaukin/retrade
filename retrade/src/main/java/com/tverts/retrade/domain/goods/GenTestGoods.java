@@ -511,11 +511,6 @@ public class GenTestGoods extends GenesisHiberPartBase
 		Map<String, Object> ats = g.getAttrs();
 		if(ats == null) g.setAttrs(ats = new HashMap<>());
 
-		//~: test code of a super-good
-		if(ats.get("Test code") == null)
-			if(gu.getSuperGood() == null)
-				ats.put("Test code", GenUtils.number(ctx.gen(), 10));
-
 		//~: generate the VAT code
 		if(ats.get(Goods.AT_VAT) == null)
 			if(gu.getSuperGood() == null)
