@@ -211,14 +211,6 @@ function getGoodTypesMain()
 
 		{
 			system:  true,
-			shared:  true,
-			name:    'Test code',
-			nameLo:  'Тестовый код',
-			type:    'string'
-		},
-
-		{
-			system:  true,
 			name:    'Rest Volume',
 			nameLo:  'Неснижаемый остаток',
 			type:    'volume'
