@@ -121,7 +121,7 @@ public final class SecPoint
 
 		//~: execute Auth Login close action
 		AuthSession session = bean(GetAuthLogin.class).
-		  getAuthSession((String) secSession().attr(SecSession.ATTR_AUTH_SESSION));
+		  getAuthSession(secSession().attr(SecSession.ATTR_AUTH_SESSION));
 
 		//?: {session exists and is not closed yet}
 		if((session != null) && (session.getCloseTime() == null))
@@ -142,7 +142,7 @@ public final class SecPoint
 	public static AuthSession loadAuthSession()
 	{
 		return EX.assertn(bean(GetAuthLogin.class).getAuthSession(
-		  (String) secSession().attr(SecSession.ATTR_AUTH_SESSION)),
+		  secSession().attr(SecSession.ATTR_AUTH_SESSION)),
 
 		  "Auth Session [", secSession().attr(SecSession.ATTR_AUTH_SESSION),
 		  "] is not found in the database!"
@@ -242,31 +242,6 @@ public final class SecPoint
 	private static final String ATTR_CLIENT_FIRM_SEARCHED =
 	  SecSession.ATTR_CLIENT_FIRM + " [Searched]";
 
-	public static void        checkSameDomain(Object target)
-	{
-		if(!Boolean.TRUE.equals(isSameDomain(target)))
-			throw EX.forbid("Entity processed has else Domain!");
-	}
-
-	/**
-	 * Returns true when object is in the same Domain
-	 * as the user requesting; false, when not; or null
-	 * when target object may not be traced up to it's
-	 * Domain instance (can't tell).
-	 */
-	public static Boolean     isSameDomain(Object target)
-	{
-		//?: {not a database object}
-		if(!(target instanceof NumericIdentity))
-			return null;
-
-		//?: {not a domain instance}
-		if(!(target instanceof DomainEntity))
-			return null;
-
-		return CMP.eq(((DomainEntity)target).getDomain(), domain());
-	}
-
 
 	/* public: SecPoint (security checks) interface */
 
@@ -294,7 +269,7 @@ public final class SecPoint
 	{
 		if(isSystemLogin()) return true;
 
-		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
+		HashSet<SecKey> skeys = new HashSet<>(keys.size());
 		for(String key : keys)
 			if((key = SU.s2s(key)) != null)
 				skeys.add(SecKeys.secKey(key));
@@ -307,7 +282,7 @@ public final class SecPoint
 	{
 		if(isSystemLogin()) return true;
 
-		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
+		HashSet<SecKey> skeys = new HashSet<>(keys.size());
 		for(String key : keys)
 			if((key = SU.s2s(key)) != null)
 				skeys.add(SecKeys.secKey(key));
@@ -323,7 +298,7 @@ public final class SecPoint
 	{
 		if(isSystemLogin()) return true;
 
-		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
+		HashSet<SecKey> skeys = new HashSet<>(keys.size());
 		for(String key : keys)
 			if((key = SU.s2s(key)) != null)
 				skeys.add(SecKeys.secKey(key));
@@ -336,13 +311,131 @@ public final class SecPoint
 	{
 		if(isSystemLogin()) return true;
 
-		HashSet<SecKey> skeys = new HashSet<SecKey>(keys.size());
+		HashSet<SecKey> skeys = new HashSet<>(keys.size());
 		for(String key : keys)
 			if((key = SU.s2s(key)) != null)
 				skeys.add(SecKeys.secKey(key));
 
 		return bean(GetSecure.class).
 		  isAllSecure(login(), target, skeys);
+	}
+
+	public static void        checkSameDomain(Object target)
+	{
+		if(!Boolean.TRUE.equals(isSameDomain(target)))
+			throw EX.forbid("Entity processed has else Domain!");
+	}
+
+	/**
+	 * Returns true when object is in the same Domain
+	 * as the user requesting; false, when not; or null
+	 * when target object may not be traced up to it's
+	 * Domain instance (can't tell).
+	 */
+	public static Boolean     isSameDomain(Object target)
+	{
+		//?: {not a database object}
+		if(!(target instanceof NumericIdentity))
+			return null;
+
+		//?: {not a domain instance}
+		if(!(target instanceof DomainEntity))
+			return null;
+
+		return CMP.eq(((DomainEntity)target).getDomain(), domain());
+	}
+
+
+	/* public: SecPoint (password protection) interface */
+
+	/**
+	 * Works with 20-byte source arrays. For given SHA-1 hash of the user
+	 * password, and the seed, and the source bytes, produces the resulting
+	 * bytes that may be decoded with the same password.
+	 *
+	 * Format of the seed may be any of supported by the sign
+	 * procedure of {@link DigestCache#sign(Object...)}.
+	 *
+	 * The decode procedure is the same call over the previously
+	 * encoded source bytes.
+	 */
+	public byte[] hashBytes(Object pass, Object seed, byte[] src)
+	{
+		byte[] d = DigestCache.INSTANCE.sign(pass, seed);
+
+		EX.assertx(d.length == 20);
+		EX.assertx(src.length == 20);
+		for(int i = 0;(i < 20);i++)
+			d[i] ^= src[i];
+
+		return d;
+	}
+
+	/**
+	 * Wrapper over {@link #hashBytes(Object, Object, byte[])}.
+	 * Takes user password hash, see {@link AuthLogin#getPasshash()},
+	 * and the seed object (some random string or bytes), covers the
+	 * given password string to secure send it over public wire.
+	 *
+	 * Warning. Password may not contain more than 20 UTF-8 bytes!
+	 */
+	public String encodePassword(char[] passHash, Object seed, String pass)
+	{
+		try
+		{
+			byte[] p = pass.getBytes("UTF-8");
+			EX.assertx(p.length <= 20);
+
+			byte[] s = new byte[20];
+			System.arraycopy(p, 0, s, 0, p.length);
+
+			byte[] h = hashBytes(passHash, seed, s);
+			return new String(SU.bytes2hex(h));
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e);
+		}
+	}
+
+	public String encodePassword(Object seed, String pass)
+	{
+		String ph = EX.assertn(loadLogin().getPasshash());
+		EX.assertx(ph.length() == 40);
+
+		return encodePassword(ph.toCharArray(), seed, pass);
+	}
+
+	public String decodePassword(char[] passHash, Object seed, String hash)
+	{
+		try
+		{
+			EX.assertx(hash.length() == 40);
+			byte[] h = SU.hex2bytes(hash);
+			EX.assertx(h.length == 20);
+
+			//~: decode the bytes back
+			h = hashBytes(passHash, seed, h);
+
+			//~: find ending zero
+			int end; for(end = 0;(end < h.length);end++)
+				if(h[end] == 0) break;
+
+			EX.assertx(end != 0);
+			return new String(h, 0, end, "UTF-8");
+		}
+		catch(Throwable e)
+		{
+			throw EX.wrap(e);
+		}
+	}
+
+	public String decodePassword(Object seed, String hash)
+	{
+		String ph = EX.assertn(loadLogin().getPasshash());
+		EX.assertx(ph.length() == 40);
+
+		return encodePassword(ph.toCharArray(), seed, hash);
 	}
 
 
@@ -365,5 +458,5 @@ public final class SecPoint
 	/* private: thread local state */
 
 	private ThreadLocal<SecSession> session =
-	  new ThreadLocal<SecSession>();
+	  new ThreadLocal<>();
 }

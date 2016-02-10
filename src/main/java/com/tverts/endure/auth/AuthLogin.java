@@ -105,6 +105,12 @@ public class AuthLogin extends Entity implements CatItem
 		this.name = name;
 	}
 
+	/**
+	 * HEX string with 20-byte SHA-1 hash of the password.
+	 *
+	 * Only this hash is stored in the database,
+	 * not the real text of the password.
+	 */
 	public String getPasshash()
 	{
 		return passhash;
