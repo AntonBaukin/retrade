@@ -187,7 +187,7 @@ ${v.checkEntityRequested}
     on('itemdblclick', function(comp, record, node, row, e)
   {
     retrade_open_window({ url: '/goods/edit-good',
-      box: retrade_default('good-box',  { event: e, '+xpt': 30, '-ypt': 10 }),
+      box: retrade_default('good-box',  { event: e }),
       domainKey: extjsf.globalDomain('view-edit-good'),
       collapsible: true, record: record.getId()
     })
