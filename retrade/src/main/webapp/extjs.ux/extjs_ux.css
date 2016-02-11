@@ -100,6 +100,19 @@
 }
 
 
+/* Tab Panels */
+
+.x-panel.retrade-compact-panel > .x-tab-bar-default.x-tab-bar-docked-top > .x-tab-bar-body-default
+{
+  padding: 7px 0 6px 0;
+}
+
+.x-tab-default-top
+{
+  background-color: rgba(245, 245, 245, 0.45);
+}
+
+
 /* Forms */
 
 textarea.x-form-textarea

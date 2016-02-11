@@ -264,12 +264,29 @@ ${v.checkModelRequestedWithRedirect}
     </f:facet>
 
 
-    <x:component coid = "${z:vid(v, '_form_fill_0')}">
+    <!-- [good is used -->
+
+    <x:html coid = "${z:vid(v, 'good_used')}"
+      rendered = "#{not v.creating}">
+
       <f:facet name = "extjs-props">
-        xtype: 'panel', flex: 1, border: false,
-        bodyCls: 'retrade-transparent-panel'
+        bodyCls: 'retrade-transparent-panel', border: false,
+        margin: extjsf.pts(0, 0, 4, 0), hidden: true
       </f:facet>
-    </x:component>
+
+      <table class = "retrade-good-edit-is-used unselectable-text"
+        cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><div></div></td>
+          <td>
+            <div>Функции редактирования <span style = "white-space:nowrap">ограничены —</span>
+            товар <span id = "${z:vid(v, 'good-used')}"></span>!</div>
+          </td>
+        </tr>
+      </table>
+    </x:html>
+
+    <!-- good is used] -->
 
 
     <!-- [code and measure unit -->
@@ -278,7 +295,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "extjs-props">
         bodyCls: 'retrade-transparent-panel', border: false,
         layout: {type: 'hbox', align: 'middle'},
-        margin: extjsf.pts(6, 0, 0, 0)
+        margin: extjsf.pts(0, 0, 0, 0)
       </f:facet>
 
 
@@ -288,7 +305,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "extjs-props">
           extjsfReadWrite: true, allowBlank: false,
-          flex: 2, validator: function()
+          flex: 3, validator: function()
           {
             return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
           }
@@ -323,7 +340,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "drop-props">
           readOnly: true, allowBlank: false,
-          editable: false, matchFieldWidth: true, flex: 3,
+          editable: false, matchFieldWidth: true, flex: 2,
           valueField: 'objectKey', displayField: 'code'
         </f:facet>
 
@@ -419,29 +436,48 @@ ${v.checkModelRequestedWithRedirect}
     <!-- group] -->
 
 
-    <!-- [good is used -->
+    <!-- [vat, rest volume -->
 
-    <x:html coid = "${z:vid(v, 'good_used')}"
-      rendered = "#{not v.creating}">
-
+    <x:component coid = "${z:vid(v, '_vat_')}">
       <f:facet name = "extjs-props">
         bodyCls: 'retrade-transparent-panel', border: false,
-        margin: extjsf.pts(8, 0, 4, 0), hidden: true
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.pts(0, 0, 0, 0)
       </f:facet>
 
-      <table class = "retrade-good-edit-is-used unselectable-text"
-        cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><div></div></td>
-          <td>
-            <div>Функции редактирования <span style = "white-space:nowrap">ограничены —</span>
-            товар <span id = "${z:vid(v, 'good-used')}"></span>!</div>
-          </td>
-        </tr>
-      </table>
-    </x:html>
 
-    <!-- good is used] -->
+      <!-- [vat] -->
+      <x:text-field coid = "${z:vid(v, 'vat')}"
+         value = "#{v.phonyString}">
+
+        <f:facet name = "extjs-props">
+          extjsfReadWrite: true, flex: 1
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'НДС', cls: 'retrade-info-title-label',
+          width: extjsf.ex(7), margin: extjsf.pts(0, 4, 0, 0)
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [rest volume] -->
+      <x:text-field coid = "${z:vid(v, 'rest-volume')}"
+         value = "#{v.phonyString}">
+
+        <f:facet name = "extjs-props">
+          extjsfReadWrite: true, flex: 1
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Несн. остаток',
+          cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6)
+        </f:facet>
+      </x:text-field>
+    </x:component>
+
+    <!-- vat, rest volume] -->
 
 
     <!-- [add to selection set] -->
@@ -468,11 +504,69 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
-    <x:component coid = "${z:vid(v, '_form_fill_1')}">
+    <x:component coid = "${z:vid(v, '_huge_fields')}">
       <f:facet name = "extjs-props">
-        xtype: 'panel', flex: 1, border: false,
-        bodyCls: 'retrade-transparent-panel'
+        xtype: 'tabpanel', frame: false, border: false,
+        flex: 1, cls: 'retrade-compact-panel'
       </f:facet>
+
+
+      <!-- [full name] -->
+      <x:component coid = "${z:vid(v, '_full-name')}">
+        <f:facet name = "extjs-props">
+          title: 'Полное наименование',
+          layout: 'fit', border: false, bodyPadding: 0,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel'
+        </f:facet>
+
+        <x:text-field coid = "${z:vid(v, 'full-name')}"
+          value = "#{v.phonyString}">
+
+          <f:facet name = "extjs-props">
+            xtype: 'textarea', extjsfReadWrite: true
+          </f:facet>
+        </x:text-field>
+      </x:component>
+
+
+      <!-- [vendor code] -->
+      <x:component coid = "${z:vid(v, '_vendor-code')}">
+        <f:facet name = "extjs-props">
+          title: 'Артикул',
+          layout: 'fit', border: false, bodyPadding: 0,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel'
+        </f:facet>
+
+        <x:text-field coid = "${z:vid(v, 'vendor-code')}"
+          value = "#{v.phonyString}">
+
+          <f:facet name = "extjs-props">
+            xtype: 'textarea', extjsfReadWrite: true
+          </f:facet>
+        </x:text-field>
+      </x:component>
+
+
+      <!-- [barcode] -->
+      <x:component coid = "${z:vid(v, '_barcode')}">
+        <f:facet name = "extjs-props">
+          title: 'Баркод',
+          layout: 'fit', border: false, bodyPadding: 0,
+          cls: 'retrade-inline-block-caption',
+          bodyCls: 'retrade-transparent-panel'
+        </f:facet>
+
+        <x:text-field coid = "${z:vid(v, 'barcode')}"
+          value = "#{v.phonyString}">
+
+          <f:facet name = "extjs-props">
+            xtype: 'textarea', extjsfReadWrite: true
+          </f:facet>
+        </x:text-field>
+      </x:component>
+
     </x:component>
 
 
@@ -561,17 +655,18 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: submit on enter for text fields
-  Ext.Array.forEach([ 'code', 'measure', 'name' ],
-    function(id)
-    {
-       extjsf.bind("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${rootView.extjsDomain}').on('specialkey', function(f, e)
-       {
-         if(e.getKey() == e.ENTER)
-           extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')()
-         else if(e.getKey() == e.ESC)
-           extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
-       })
-    })
+  Ext.Array.forEach([ 'code', 'measure', 'name' ], function(id)
+  {
+     extjsf.bind("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${rootView.extjsDomain}').
+       on('specialkey', function(f, e)
+     {
+       if(e.getKey() == e.ENTER)
+         extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')()
+       else if(e.getKey() == e.ESC)
+         extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
+     })
+  })
+
 
   ZeT.scope(function()
   {
@@ -590,14 +685,6 @@ ${v.checkModelRequestedWithRedirect}
     var doedit = extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}')
     var farea  = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${rootView.extjsDomain}')
 
-    function adjustWindow()
-    {
-      //~: adjust window height
-      ReTrade.desktop.resizeToHeight('winmain',
-        { domain: '${rootView.extjsDomain}', '+hpt': 16, move: false },
-        [ "${z:vid(v, '_add_to_selset')}", "${z:vid(v, '_group')}", "${z:vid(v, '_code_measure')}" ]
-      )
-    }
 
     //~: display notification about restricted editing
     if(extjsf.bind("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}')) checkGoodUsed = function()
@@ -617,7 +704,6 @@ ${v.checkModelRequestedWithRedirect}
 
           $('#' + "${z:vid(v, 'good-used')}").text(s)
           extjsf.co("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}').show()
-          adjustWindow()
         })
     }
 
