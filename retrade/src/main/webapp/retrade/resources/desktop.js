@@ -1860,10 +1860,12 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 		//~: set this listeners
 		ZeT.extend(wal, {
-			move    : ZeT.fbind(this._on_wnd_move, this),
-			resize  : ZeT.fbind(this._on_wnd_resize, this),
-			destroy : ZeT.fbind(this._destroy, this),
-			reframe : ZeT.fbind(this._on_resize, this)
+			move     : ZeT.fbind(this._on_wnd_move, this),
+			resize   : ZeT.fbind(this._on_wnd_resize, this),
+			destroy  : ZeT.fbind(this._destroy, this),
+			collapse : ZeT.fbind(this._on_collapse, this),
+			expand   : ZeT.fbind(this._on_expand, this),
+			reframe  : ZeT.fbind(this._on_resize, this)
 		})
 
 		//?: {has not bound them yet}
@@ -1877,6 +1879,12 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 			//~: target window destroy
 			this._on('beforedestroy', function(){ wal.destroy.apply(this, arguments) })
+
+			//~: target window collapsed
+			this._on('beforecollapse', function(){ wal.collapse.apply(this, arguments) })
+
+			//~: target window expanded
+			this._on('expand', function(){ wal.expand.apply(this, arguments) })
 
 			//~: browser window resize
 			if(!wal._reframe)
@@ -1977,9 +1985,14 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 			xy[1] = Math.floor(0.5*(H - h))
 	},
 
+	_is_skip          : function()
+	{
+		return this._skip_events || this._collapsing
+	},
+
 	_on_wnd_move      : function(win, x, y)
 	{
-		if(this._skip_events) return
+		if(this._is_skip()) return
 
 		delete this._align
 		delete this._xy
@@ -2036,7 +2049,7 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_wnd_resize    : function(win, w, h)
 	{
-		if(this._skip_events) return
+		if(this._is_skip()) return
 
 		//~: new size
 		this._wh = [w, h]
@@ -2049,9 +2062,19 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		this._on_wnd_move(win, xy[0], xy[1])
 	},
 
+	_on_collapse      : function()
+	{
+		this._collapsing = true
+	},
+
+	_on_expand        : function()
+	{
+		delete this._collapsing
+	},
+
 	_on_resize        : function()
 	{
-		if(this._skip_events) return
+		if(this._is_skip()) return
 		this.resizeTo()
 	},
 

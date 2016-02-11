@@ -107,7 +107,7 @@ ${v.checkModelRequestedWithRedirect}
    <x:component coid = "${z:vid(v, '_tb_fill_0')}">
      <f:facet name = "extjs-props">
        xtype: 'panel', flex: 1, border: false,
-       bodyCls: 'retrade-toolbar-inline-panel'
+       bodyCls: 'retrade-transparent-panel'
      </f:facet>
    </x:component>
 
@@ -258,10 +258,18 @@ ${v.checkModelRequestedWithRedirect}
   <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'good-form')}">
 
     <f:facet name = "extjs-props">
-      border: false, bodyPadding: extjsf.pt(4),
+      border: false, flex: 1, bodyPadding: extjsf.pt(4),
       layout: { type: 'vbox', align: 'stretch' },
       bodyCls: 'retrade-content-panel'
     </f:facet>
+
+
+    <x:component coid = "${z:vid(v, '_form_fill_0')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
 
 
     <!-- [code and measure unit -->
@@ -460,6 +468,14 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
 
+    <x:component coid = "${z:vid(v, '_form_fill_1')}">
+      <f:facet name = "extjs-props">
+        xtype: 'panel', flex: 1, border: false,
+        bodyCls: 'retrade-transparent-panel'
+      </f:facet>
+    </x:component>
+
+
     <!-- [selection set] -->
     <x:hidden-field coid = "${z:vid(v, 'selset')}" value = "#{v.selSet}"/>
 
@@ -578,7 +594,7 @@ ${v.checkModelRequestedWithRedirect}
     {
       //~: adjust window height
       ReTrade.desktop.resizeToHeight('winmain',
-        { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true, move: false },
+        { domain: '${rootView.extjsDomain}', '+hpt': 16, move: false },
         [ "${z:vid(v, '_add_to_selset')}", "${z:vid(v, '_group')}", "${z:vid(v, '_code_measure')}" ]
       )
     }

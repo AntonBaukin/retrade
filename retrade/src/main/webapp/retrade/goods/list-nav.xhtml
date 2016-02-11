@@ -111,11 +111,13 @@ ${v.checkModelRequestedWithRedirect}
     //~: grid double click -> open good if not a folder
     extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow2 =
       extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow  = function(record, e)
+    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow  =
+      function(record, e, opts)
     {
       var f = record && record.get('objectKey')
       if(!f || (f.indexOf('folder$') != 0))
-        return extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow2(record, e)
+        return extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
+          retradeOpenGoodWindow2(record, e, opts)
     }
 
     //~: grid click -> open folder

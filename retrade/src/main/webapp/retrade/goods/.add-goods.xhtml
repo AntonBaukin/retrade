@@ -104,17 +104,19 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow = function(record, e)
+  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow =
+    function(record, e, opts)
   {
     var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}')
 
     var dk  = extjsf.globalDomain('view-edit-good')
     if(!record) dk = "${z:vid(v, 'create-good')}:"
 
-    var ps = {}; if(!record) ps.create = true
+    var ps  = {}; if(!record) ps.create = true
+    var box = ZeT.extend(opts && opts.box, { event: e })
 
     var winmain; winmain = retrade_open_window({ url: '/goods/edit-good',
-      box: retrade_default('good-box',  { event: e }),
+      box: retrade_default('good-box',  box),
       domainKey: dk, params: ps, collapsible: true,
       record: record && record.getId(),
 
@@ -132,7 +134,7 @@
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function(btn, event)
   {
     extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
-      retradeOpenGoodWindow(null, event)
+      retradeOpenGoodWindow(null, event, { box: { '+xpt': 10, '-ypt': -10 }})
   })
 
   //]]>
