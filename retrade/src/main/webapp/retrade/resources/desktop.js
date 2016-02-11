@@ -588,8 +588,20 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		//~: remember the size
 		this.prevsizeComp({component: win, save: opts.prevsize || true})
 
+		//?: {forbid move}
+		var ske; if(opts.move === false)
+		{
+			ZeT.assertn(win.extjsfBind)
+			ZeT.assertn(win.extjsfBind.WinAlign)
+			ske = win.extjsfBind.WinAlign.skipEvents(true)
+		}
+
 		//~: set proper height
 		win.setHeight(win.getHeight() - (H - (Y - y + dH)))
+
+		//~: restore move reactions
+		if(opts.move === false)
+			win.extjsfBind.WinAlign.skipEvents(ske)
 	},
 
 	resizeComp        : function(opts)
@@ -1637,10 +1649,11 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		//?: {is a bind}
 		if(extjsf.isbind(this._window = window))
 		{
-			this._listen()
-
 			//~: save this strategy reference
 			window.WinAlign = this
+
+			//~: bind the listeners
+			this._listen()
 		}
 		else
 		{
@@ -1650,46 +1663,71 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 			if(window.isComponent === true)
 			{
 				ZeT.assertn(window.zIndexManager)
-				this._listen()
 
 				//~: save this strategy reference
 				if(window.extjsfBind)
 					window.extjsfBind.WinAlign = this
+
+				//~: bind the listeners
+				this._listen()
 			}
 			//~: or a factory
 			else
 				ZeT.assert(ZeT.isf(window))
 		}
+
+		//~: initial alignment
+		var win = this.win()
+		if(win && win.getWidth() && win.getHeight())
+		{
+			var xy = win.getXY()
+			this._on_wnd_move(win, xy[0], xy[1])
+		}
+	},
+
+	skipEvents        : function(ske)
+	{
+		var old = !!this._skip_events
+		if(ZeT.isu(ske)) return old
+
+		if(ske) this._skip_events = true
+		else delete this._skip_events
+
+		return old
 	},
 
 	/**
 	 * Sets size the window and properly places it
 	 * according to the current alignment.
 	 */
-	resizeTo          : function(w, h)
+	resizeTo          : function(w, h, doalign)
 	{
+		var xy, a
+
 		var win = this.win()
 		if(!win) return
 
 		if(!ZeT.isn(w)) w = win.getWidth()
 		if(!ZeT.isn(h)) h = win.getHeight()
 
-		var xy = win.getXY()
-		var a  = this._align_to(xy, w, h)
-
-		try
+		if(doalign !== false)
 		{
-			this._skip_events = true
+			xy = win.getXY()
+			a  = this._align_to(xy, w, h)
+		}
 
+		var ske = this.skipEvents(true); try
+		{
 			if((win.getWidth() != w) || (win.getHeight() != h))
 				win.setSize(w, h)
 
-			if(a) win.alignTo(document.body, a)
-			else  win.setXY(xy)
+			if(doalign !== false)
+				if(a) win.alignTo(document.body, a)
+				else  win.setXY(xy)
 		}
 		finally
 		{
-			delete this._skip_events
+			this.skipEvents(ske)
 		}
 	},
 
@@ -1807,35 +1845,66 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		}
 	},
 
+	/**
+	 * This implementation wraps the listeners of the
+	 * window object to allow to change further the align
+	 * strategy not attaching new listeners.
+	 */
 	_listen           : function()
 	{
-		var F = 'retradeDesktopWinAlignListening'
-		if(this[F] || (this.bind() && this.bind()[F])) return
-		this[F] = true; if(this.bind()) this.bind()[F] = true
+		//~: collection of listeners
+		var wal = (this.bind() && this.bind().WinAlignListeners) || {}
 
-		//~: target window move
-		this._on('move', ZeT.fbind(this._on_wnd_move, this))
+		//?: {need destroy previous strategy}
+		if(ZeT.isf(wal.destroy)) wal.destroy()
 
-		//~: target window resize
-		this._on('resize', ZeT.fbind(this._on_wnd_resize, this))
+		//~: set this listeners
+		ZeT.extend(wal, {
+			move    : ZeT.fbind(this._on_wnd_move, this),
+			resize  : ZeT.fbind(this._on_wnd_resize, this),
+			destroy : ZeT.fbind(this._destroy, this),
+			reframe : ZeT.fbind(this._on_resize, this)
+		})
 
-		//~: browser window resize
-		if(!this._on_resize_)
+		//?: {has not bound them yet}
+		if(!this.bind() || !this.bind().WinAlignListeners)
 		{
-			this._on_resize_ = ZeT.fbind(this._on_resize, this)
-			Ext.get(window).addListener('resize', this._on_resize_)
+			//~: target window move
+			this._on('move', function(){ wal.move.apply(this, arguments) })
+
+			//~: target window resize
+			this._on('resize', function(){ wal.resize.apply(this, arguments) })
+
+			//~: target window destroy
+			this._on('beforedestroy', function(){ wal.destroy.apply(this, arguments) })
+
+			//~: browser window resize
+			if(!wal._reframe)
+			{
+				wal._reframe = function(){ wal.reframe.apply(this, arguments) }
+				Ext.get(window).addListener('resize', wal._reframe)
+			}
 		}
 
-		//~: target window destroy
-		this._on('beforedestroy', ZeT.fbind(this._destroy, this))
+		//~: remember window resize listener
+		this._on_resize_ = wal._reframe
+
+		//~: remember the listeners
+		if(this.bind()) this.bind().WinAlignListeners = wal
 	},
 
 	_destroy          : function()
 	{
+		//~: collection of listeners
+		var wal = this.bind() && this.bind().WinAlignListeners
+
 		if(ZeT.isf(this._on_resize_))
 		{
 			Ext.get(window).removeListener('resize', this._on_resize_)
+			if(wal && (wal._reframe == this._on_resize_))
+				delete wal._reframe
 			delete this._on_resize_
+
 		}
 
 		delete this._window
@@ -1915,6 +1984,9 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		delete this._align
 		delete this._xy
 
+		//~: clear align class
+		this._align_cls()
+
 		var B = Ext.getBody().getViewSize()
 		var W = B.width, H = B.height
 		var w = win.getWidth()
@@ -1941,10 +2013,15 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		else if(Math.abs((H - h)* 0.5 - y) <= D)
 			{ ay = 'c'; y = Math.floor((H - h)* 0.5) }
 
+		//ZeT.log('Moved to align: ', ax + ay)
+
 		//?: {has some alignment}
 		if((a = ax + ay) != '00')
 		{
 			this._align = a
+
+			//~: assign align class
+			this._align_cls(a)
 
 			//?: {has fully defined}
 			a = this._align_to()
@@ -1961,8 +2038,14 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 	{
 		if(this._skip_events) return
 
-		var xy = win.getXY()
+		//~: new size
 		this._wh = [w, h]
+
+		//?: {has alignment}
+		if(ZeT.iss(this._align))
+			return this.resizeTo()
+
+		var xy = win.getXY()
 		this._on_wnd_move(win, xy[0], xy[1])
 	},
 
@@ -1970,6 +2053,24 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 	{
 		if(this._skip_events) return
 		this.resizeTo()
+	},
+
+	_align_cls        : function(a)
+	{
+		var win = ZeT.assertn(this.win())
+		var  el = ZeT.assertn(win.getEl())
+		var xcl = (a)?('retrade-winalign-' + a):('')
+
+		//~: remove all existing classes
+		ZeTD.eachc(el.dom, function(c)
+		{
+			if(ZeTS.startsWith(c, 'retrade-winalign-'))
+				if(c != xcl) el.removeCls(c)
+		})
+
+		//~: add new class
+		if(!ZeTS.ises(xcl))
+			el.addCls(xcl)
 	}
 })
 

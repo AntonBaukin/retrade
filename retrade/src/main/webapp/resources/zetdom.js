@@ -243,12 +243,35 @@ var ZeTD = ZeT.define('ZeTD',
 
 	hasclass          : function(node, c1ass)
 	{
-		if(!ZeTD.isn(node) || !node.className) return undefined;
+		if(!ZeTD.isn(node) || !node.className)
+			return undefined
 
-		var nc = ' '.concat(node.className, ' ');
-		var cn = ' '.concat(c1ass, ' ');
+		var nc = ' '.concat(node.className, ' ')
+		var cn = ' '.concat(c1ass, ' ')
 
-		return (nc.indexOf(cn) != -1);
+		return (nc.indexOf(cn) != -1)
+	},
+
+	/**
+	 * Returns the classes of the node as an array.
+	 * If optional functor is given, invokes it
+	 * as f(class, node).
+	 */
+	eachc             : function(node, f)
+	{
+		if(!ZeTD.isn(node) || !node.className)
+			return undefined
+
+		//~: split the classes
+		var cns = ZeTS.trim(node.className).split(/\s+/)
+
+		//~: invoke the functor
+		if(ZeT.isf(f)) ZeT.each(cns, function(cn)
+		{
+			f(cn, node)
+		})
+
+		return cns
 	},
 
 	/**

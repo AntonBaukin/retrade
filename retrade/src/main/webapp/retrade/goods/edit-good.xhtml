@@ -32,7 +32,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <f:facet name = "extjs-props">
     layout: {type: 'vbox', align: 'stretch'},
-    bodyCls: 'retrade-back-panel'
+    bodyCls: 'retrade-content-panel'
   </f:facet>
 
   <f:facet name = "toolbar-props">
@@ -258,7 +258,7 @@ ${v.checkModelRequestedWithRedirect}
   <x:form-panel modelView = "${v}" coid = "${z:vid(v, 'good-form')}">
 
     <f:facet name = "extjs-props">
-      border: false, flex: 1, bodyPadding: extjsf.pt(4),
+      border: false, bodyPadding: extjsf.pt(4),
       layout: { type: 'vbox', align: 'stretch' },
       bodyCls: 'retrade-content-panel'
     </f:facet>
@@ -578,22 +578,16 @@ ${v.checkModelRequestedWithRedirect}
     {
       //~: adjust window height
       ReTrade.desktop.resizeToHeight('winmain',
-        { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true },
+        { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true, move: false },
         [ "${z:vid(v, '_add_to_selset')}", "${z:vid(v, '_group')}", "${z:vid(v, '_code_measure')}" ]
       )
-
-      //~: set window width
-      ReTrade.desktop.applyWindowBox({
-        name: 'winmain', domain: '${rootView.extjsDomain}',
-        widthpt: 320, prevsize: ''
-      })
     }
 
     //~: display notification about restricted editing
     if(extjsf.bind("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}')) checkGoodUsed = function()
     {
         jQuery.get("${z:url('/go/web/views/goods/is-good-used')}",
-                   { entity: "#{v.goodView.objectKey}" },  function(x)
+          { entity: "#{v.goodView.objectKey}" },  function(x)
         {
           if(ZeTS.ises(x) || !ZeT.isi(x = parseInt(x)) || (x === 0))
           {
@@ -658,9 +652,6 @@ ${v.checkModelRequestedWithRedirect}
       if(!isread && checkGoodUsed) checkGoodUsed()
     }
 
-    //~: initial adjust
-    Ext.onReady(ZeT.timeouted(150, adjustWindow))
-
     //~: default read-only for existing
     Ext.onReady(function()
     {
@@ -678,6 +669,11 @@ ${v.checkModelRequestedWithRedirect}
 
     function toggleAttributes(on)
     {
+      //?: {the state was not changed}
+      if(ZeT.isb(on) && (atsbtn.co().pressed == on))
+        return
+
+      //~: assign the new state
       if(ZeT.isb(on)) atsbtn.co().setPressed(on); else
         on = atsbtn.co().pressed
 
