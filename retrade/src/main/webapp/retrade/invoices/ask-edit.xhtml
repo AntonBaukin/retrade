@@ -67,7 +67,7 @@
     <f:facet name = "extjs-props">
 
       border: false, frame: false, width: extjsf.pt(200),
-      height: retrade_default('button-height') + extjsf.pt(8),
+      height: retrade_default('button').height + extjsf.pt(8),
       bodyCls: 'retrade-transparent-panel',
       layout: {type: 'table', columns: 2}
     </f:facet>
@@ -78,7 +78,7 @@
 
       <f:facet name = "extjs-props">
         cls: 'ux-btn-red', margin: extjsf.pts(0, 26, 6, 0),
-        text: 'Отмена', height: retrade_default('button-height')
+        text: 'Отмена', height: retrade_default('button').height
       </f:facet>
 
       <f:facet name = "action-params">
@@ -91,7 +91,7 @@
 
       <f:facet name = "extjs-props">
         cls: 'ux-btn-green', text: 'Продолжить',
-        height: retrade_default('button-height'),
+        height: retrade_default('button').height,
         margin: extjsf.pts(0, 0, 6, 0)
       </f:facet>
 

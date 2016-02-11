@@ -12,8 +12,8 @@
   <x:component coid = "${z:vid(v, 'toggle-good-view')}">
     <f:facet name = "extjs-props">
       xtype: 'button', cls: 'retrade-button-white',
-      width: retrade_default('button-square-width'),
-      height: retrade_default('button-square-height'),
+      width: retrade_default('button-square').width,
+      height: retrade_default('button-square').height,
       iconCls: "${empty toggleTableView?('retrade-list-only'):(toggleTableView)}",
       tooltipType: 'title', margin: extjsf.dpts(0, 8, 0, 0)
     </f:facet>

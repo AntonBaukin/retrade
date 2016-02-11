@@ -64,7 +64,7 @@
     <x:component coid = "${z:vid(desktopView, 'left-topbar')}">
       <f:facet name = "extjs-props">
         region: 'north', frame: false, border:false,
-        height: retrade_default('main-topbar-height'),
+        height: retrade_default('main-topbar').height,
         margin: extjsf.dpts(0, 2, 0, 2),
         bodyCls: 'retrade-desktop-panel-topbar',
         layout: { type: 'hbox', align: 'middle' }
@@ -181,7 +181,7 @@
   <x:component coid = "${z:vid(desktopView, '_desktop_left_splitter')}">
     <f:facet name = "extjs-props">
       xtype: 'splitter', collapsible: false,
-      margin: retrade_default('main-topbar-height') + ' 0 0 0'
+      margin: retrade_default('main-topbar').height + ' 0 0 0'
     </f:facet>
   </x:component>
 
@@ -235,7 +235,7 @@
   <x:component coid = "${z:vid(desktopView, '_desktop_right_splitter')}">
     <f:facet name = "extjs-props">
       xtype: 'splitter', collapsible: false,
-      margin: retrade_default('main-topbar-height') + ' 0 0 0'
+      margin: retrade_default('main-topbar').height + ' 0 0 0'
     </f:facet>
   </x:component>
 
@@ -267,7 +267,7 @@
     <x:component coid = "${z:vid(desktopView, 'right-topbar')}">
       <f:facet name = "extjs-props">
         region: 'north', frame: false, border:false,
-        height: retrade_default('main-topbar-height'),
+        height: retrade_default('main-topbar').height,
         margin: extjsf.dpts(0, 2, 0, 2),
         bodyCls: 'retrade-desktop-panel-topbar',
         layout: {type: 'hbox', align: 'middle'}
