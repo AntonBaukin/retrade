@@ -10,12 +10,22 @@ ReTrade.Defaults =
   'button'                 : { height: 30 },
   'button-square'          : { width: 30, height: 30 },
   'button-selset'          : { width: 34, height: 30 },
-  'inline-hdr-min-h'       : 32
+  'inline-header'          : { minHeight: 32 },
+  'good-box'               : { widthpt: 320, heightpt: 240 }
 }
 
-function retrade_default(p)
+/**
+ * Rteurns the property (value, object) extending on demand.
+ */
+function retrade_default(p, ext)
 {
-  return ReTrade.Defaults[p]
+  var o = ReTrade.Defaults[p]
+  if(ZeT.isx(ext)) return o
+
+  ZeT.assert(ZeT.iso(o))
+  ZeT.assert(ZeT.iso(ext))
+
+  return ZeT.extend(ZeT.deepClone(o), ext)
 }
 
 function retrade_go_url(url)

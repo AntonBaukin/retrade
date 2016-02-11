@@ -658,7 +658,7 @@ ${v.forceSecureEdit()}
       <x:component coid = "${z:vid(v, 'grid_title')}">
         <f:facet name = "extjs-props">
           xtype: 'title', cls: 'retrade-toolbar-inline-title',
-          minHeight: retrade_default('inline-hdr-min-h'),
+          minHeight: retrade_default('inline-header').minHeight,
           text: "#{(not v.invoice.altered)?('Перемещаемые товары'):(v.correction)?('Заносимые товары'):('Производимые товары')}"
         </f:facet>
       </x:component>
@@ -814,7 +814,7 @@ ${v.forceSecureEdit()}
       <x:component coid = "${z:vid(v, 'taken_title')}">
         <f:facet name = "extjs-props">
           xtype: 'title', cls: 'retrade-toolbar-inline-title',
-          minHeight: retrade_default('inline-hdr-min-h'),
+          minHeight: retrade_default('inline-header').minHeight,
           text: "#{(v.freeProduce)?('Сырьё'):('Списываемые товары')}"
         </f:facet>
       </x:component>

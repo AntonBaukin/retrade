@@ -114,7 +114,7 @@
     var ps = {}; if(!record) ps.create = true
 
     var winmain; winmain = retrade_open_window({ url: '/goods/edit-good',
-      box: { event: e, widthpt: 320, heightpt: 240, '+xpt': 30, '-ypt': 10 },
+      box: retrade_default('good-box',  { event: e, '+xpt': 30, '-ypt': 10 }),
       domainKey: dk, params: ps, collapsible: true,
       record: record && record.getId(),
 
