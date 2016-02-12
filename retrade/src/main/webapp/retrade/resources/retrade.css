@@ -263,9 +263,19 @@ input.x-form-text-default.retarde-field-text-compact
   width: 100%;
 }
 
+.retrade-width-50pc
+{
+  width: 50%;
+}
+
 .retrade-width-25pc
 {
   width: 100%;
+}
+
+.retrade-width-0pc
+{
+  width: 0.01%;
 }
 
 table.retrade-align-right.x-field
@@ -775,8 +785,19 @@ td.retrade-table-cell-100pc
   padding-top: 0;
 }
 
+tr > td.retrade-form-label-cell, tr > td.retrade-form-value-cell
+{
+  padding-top: 4pt;
+}
 
-/* error area */
+tr:first-child > td.retrade-form-label-cell,
+  tr:first-child > td.retrade-form-value-cell
+{
+  padding-top: 0;
+}
+
+
+/* Error Area */
 
 .retrade-error-div
 {
@@ -787,7 +808,7 @@ td.retrade-table-cell-100pc
 }
 
 
-/* warning panel */
+/* Warning Panel */
 
 .retrade-warning-panel
 {
@@ -824,7 +845,7 @@ td.retrade-warning-table-buttons
 }
 
 
-/* user menu */
+/* User Menu */
 
 .retrade-user-menu-frame
 {
@@ -898,7 +919,7 @@ td.retrade-user-menu-logoff
 }
 
 
-/* selection set & window  */
+/* Selection Set & Window  */
 
 .retrade-selset-menu-button span.x-btn-icon-el
 {
@@ -928,7 +949,7 @@ td.retrade-user-menu-logoff
 }
 
 
-/* info panel */
+/* Info Panel */
 
 table.retrade-info-table
 {
@@ -1010,6 +1031,11 @@ td.retrade-info-title:first-child div,
 {
   white-space: nowrap; letter-spacing: 0.2pt;
   font-size: 12pt; cursor: default;
+}
+
+td > label.retrade-info-title-label
+{
+  display: block;
 }
 
 caption.retrade-info-title

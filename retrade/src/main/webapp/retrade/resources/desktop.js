@@ -1992,12 +1992,12 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_wnd_move      : function(win, x, y)
 	{
+		//?: {not need to react}
 		if(this._is_skip()) return
 
+		//~: clear align and the classes
 		delete this._align
 		delete this._xy
-
-		//~: clear align class
 		this._align_cls()
 
 		var B = Ext.getBody().getViewSize()
@@ -2062,14 +2062,46 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		this._on_wnd_move(win, xy[0], xy[1])
 	},
 
+	_align_save       : function()
+	{
+		if(!this._align) return
+
+		this._align_save = this._align
+		delete this._align
+
+		if(!this._xy && this.win(false))
+			this._xy = this.win().getXY()
+	},
+
+	_align_restore    : function()
+	{
+		if(!this._align_save) return
+
+		this._align = this._align_save
+		delete this._align_save
+
+		if(this._xy && this.win(false))
+		{
+			var xy = this.win().getXY()
+
+			if((xy[0] != this._xy[0]) || (xy[1] != this._xy[1]))
+			{
+				delete this._align
+				delete this._xy
+			}
+		}
+	},
+
 	_on_collapse      : function()
 	{
 		this._collapsing = true
+		this._align_save()
 	},
 
 	_on_expand        : function()
 	{
 		delete this._collapsing
+		this._align_restore()
 	},
 
 	_on_resize        : function()

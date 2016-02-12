@@ -266,21 +266,25 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [good is used -->
 
-    <x:html coid = "${z:vid(v, 'good_used')}"
+    <x:html coid = "${z:vid(v, 'good-used')}"
       rendered = "#{not v.creating}">
 
       <f:facet name = "extjs-props">
-        bodyCls: 'retrade-transparent-panel', border: false,
-        margin: extjsf.pts(0, 0, 4, 0), hidden: true
+        border: false, hidden: true,
+        margin: extjsf.pts(0, 0, 4, 0),
+        bodyCls: 'retrade-transparent-panel',
+        style: 'cursor:pointer'
       </f:facet>
 
-      <table class = "retrade-good-edit-is-used unselectable-text"
-        cellpadding="0" cellspacing="0" border="0">
+      <table class = "retrade-good-edit-is-used"
+        cellpadding = "0" cellspacing = "0" border = "0"
+        title = "Нажмите, чтобы скрыть сообщение">
+
         <tr>
           <td><div></div></td>
           <td>
             <div>Функции редактирования <span style = "white-space:nowrap">ограничены —</span>
-            товар <span id = "${z:vid(v, 'good-used')}"></span>!</div>
+            товар <span id = "${z:vid(v, 'good-used-text')}"></span>!</div>
           </td>
         </tr>
       </table>
@@ -436,13 +440,13 @@ ${v.checkModelRequestedWithRedirect}
     <!-- group] -->
 
 
-    <!-- [vat, rest volume -->
+    <!-- [vat, rest volume, weights -->
 
-    <x:component coid = "${z:vid(v, '_vat_')}">
+    <x:component coid = "${z:vid(v, '_vat_rest_volume')}">
       <f:facet name = "extjs-props">
-        bodyCls: 'retrade-transparent-panel', border: false,
-        layout: {type: 'hbox', align: 'middle'},
-        margin: extjsf.pts(0, 0, 0, 0)
+        border: false, margin: extjsf.pts(0, 0, 0, 0),
+        layout: { type: 'table', columns: 4 },
+        bodyCls: 'retrade-transparent-panel'
       </f:facet>
 
 
@@ -451,12 +455,15 @@ ${v.checkModelRequestedWithRedirect}
          value = "#{v.phonyString}">
 
         <f:facet name = "extjs-props">
-          extjsfReadWrite: true, flex: 1
+          extjsfReadWrite: true, width: '100%',
+          cellCls: 'retrade-form-value-cell retrade-width-50pc',
+          fieldCls: 'x-form-field retrade-width-100pc'
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'НДС', cls: 'retrade-info-title-label',
-          width: extjsf.ex(7), margin: extjsf.pts(0, 4, 0, 0)
+          text: 'НДС', margin: extjsf.pts(0, 4, 0, 0),
+          cellCls: 'retrade-form-label-cell retrade-width-0pc',
+          width: extjsf.ex(7)
         </f:facet>
       </x:text-field>
 
@@ -466,18 +473,60 @@ ${v.checkModelRequestedWithRedirect}
          value = "#{v.phonyString}">
 
         <f:facet name = "extjs-props">
-          extjsfReadWrite: true, flex: 1
+          extjsfReadWrite: true, width: '100%',
+          cellCls: 'retrade-form-value-cell retrade-width-50pc',
+          fieldCls: 'x-form-field retrade-width-100pc'
         </f:facet>
 
         <f:facet name = "label-props">
           text: 'Несн. остаток',
+          margin: extjsf.pts(0, 4, 0, 6),
           cls: 'retrade-info-title-label',
-          margin: extjsf.pts(0, 4, 0, 6)
+          cellCls: 'retrade-form-label-cell retrade-width-0pc'
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [net weight] -->
+      <x:text-field coid = "${z:vid(v, 'net-weight')}"
+         value = "#{v.phonyString}">
+
+        <f:facet name = "extjs-props">
+          extjsfReadWrite: true, width: '100%',
+          cellCls: 'retrade-form-value-cell retrade-width-50pc',
+          fieldCls: 'x-form-field retrade-width-100pc'
+        </f:facet>
+
+        <f:facet name = "label-props">
+          html: 'Нетто&lt;br/&gt;вес',
+          margin: extjsf.pts(0, 4, 0, 0),
+          cls: 'retrade-info-title-label',
+          cellCls: 'retrade-form-label-cell retrade-width-0pc',
+          width: extjsf.ex(7)
+        </f:facet>
+      </x:text-field>
+
+
+      <!-- [gross weight] -->
+      <x:text-field coid = "${z:vid(v, 'gross-weight')}"
+         value = "#{v.phonyString}">
+
+        <f:facet name = "extjs-props">
+          extjsfReadWrite: true, width: '100%',
+          cellCls: 'retrade-form-value-cell retrade-width-50pc',
+          fieldCls: 'x-form-field retrade-width-100pc'
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Брутто вес',
+          margin: extjsf.pts(0, 4, 0, 6),
+          cls: 'retrade-info-title-label',
+          cellCls: 'retrade-form-label-cell retrade-width-0pc'
         </f:facet>
       </x:text-field>
     </x:component>
 
-    <!-- vat, rest volume] -->
+    <!-- gross and net weights] -->
 
 
     <!-- [add to selection set] -->
@@ -485,7 +534,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "extjs-props">
         bodyCls: 'retrade-transparent-panel', border: false,
         layout: {type: 'hbox', align: 'middle'},
-        margin: extjsf.pts(0, 0, 6, 0)
+        margin: extjsf.pts(0, 0, 2, 0)
       </f:facet>
 
       <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}" value = "">
@@ -613,61 +662,6 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-  //~: validate on code change
-  extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)
-  {
-     var fb = f.extjsfBind;
-     fb.retradeCodeCheck = v; fb.validityStatus = true;
-
-     if(ZeTS.trim(v) != v)
-       fb.validityStatus = 'Код не может начинаться или оканчиваться пробелами!';
-     if(f.validate() !== true) return;
-
-     ZeT.timeout(1000, function()
-     {
-       if(fb.retradeCodeCheck != v) return;
-
-       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
-          params: { code : fb.retradeCodeCheck }, failure: function()
-          {
-            fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
-            if(ZeTS.ises(fb.validityStatus)) fb.validityStatus = true;
-            f.validate()
-          }
-       })
-     })
-  })
-
-
-  //~: go to the calculation
-  extjsf.bindHandler("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}', function()
-  {
-    var form = extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}');
-
-    //!: submit the form with go to
-    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
-      params: {immediate: true}, success: function()
-      {
-        extjsf.bindHandler("${z:vid(v, 'goto-calc-script')}", '${rootView.extjsDomain}')()
-      }
-    })
-  })
-
-
-  //~: submit on enter for text fields
-  Ext.Array.forEach([ 'code', 'measure', 'name' ], function(id)
-  {
-     extjsf.bind("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${rootView.extjsDomain}').
-       on('specialkey', function(f, e)
-     {
-       if(e.getKey() == e.ENTER)
-         extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')()
-       else if(e.getKey() == e.ESC)
-         extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
-     })
-  })
-
-
   ZeT.scope(function()
   {
     var isReadMode, checkGoodUsed
@@ -684,10 +678,49 @@ ${v.checkModelRequestedWithRedirect}
     var attsed = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
     var doedit = extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}')
     var farea  = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${rootView.extjsDomain}')
+    var code   = extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}')
+    var msure  = extjsf.bind("${z:vid(v, 'measure')}", '${rootView.extjsDomain}')
+    var gused  = extjsf.bind("${z:vid(v, 'good-used')}", '${rootView.extjsDomain}')
 
+    //~: go to the calculation
+    extjsf.bindHandler(gocalc, function()
+    {
+      //!: submit the form with go to
+      form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
+        params: {immediate: true}, success: function()
+        {
+          extjsf.bindHandler("${z:vid(v, 'goto-calc-script')}", '${rootView.extjsDomain}')()
+        }
+      })
+    })
+
+    //~: validate on code change
+    code.on('change', function(f, v)
+    {
+       var fb = f.extjsfBind;
+       fb.retradeCodeCheck = v; fb.validityStatus = true;
+
+       if(ZeTS.trim(v) != v)
+         fb.validityStatus = 'Код не может начинаться или оканчиваться пробелами!';
+       if(f.validate() !== true) return;
+
+       ZeT.timeout(1000, function()
+       {
+         if(fb.retradeCodeCheck != v) return;
+
+         extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+            params: { code : fb.retradeCodeCheck }, failure: function()
+            {
+              fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
+              if(ZeTS.ises(fb.validityStatus)) fb.validityStatus = true;
+              f.validate()
+            }
+         })
+       })
+    })
 
     //~: display notification about restricted editing
-    if(extjsf.bind("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}')) checkGoodUsed = function()
+    if(gused) checkGoodUsed = function()
     {
         jQuery.get("${z:url('/go/web/views/goods/is-good-used')}",
           { entity: "#{v.goodView.objectKey}" },  function(x)
@@ -695,17 +728,22 @@ ${v.checkModelRequestedWithRedirect}
           if(ZeTS.ises(x) || !ZeT.isi(x = parseInt(x)) || (x === 0))
           {
             //~: enable editing the measure
-            if(x === 0) extjsf.co("${z:vid(v, 'measure')}", '${rootView.extjsDomain}').setReadOnly(false)
+            if(x === 0) msure.co().setReadOnly(false)
             return
           }
 
           //~: usage description text
           var s = retrade.goodUsageDescr(x)
 
-          $('#' + "${z:vid(v, 'good-used')}").text(s)
-          extjsf.co("${z:vid(v, 'good_used')}", '${rootView.extjsDomain}').show()
+          $('#' + "${z:vid(v, 'good-used-text')}").text(s)
+          gused.co().show()
+          ZeT.timeout(10000, function(){ gused.co().hide() })
         })
     }
+
+    //~: hide good-is-used message on click
+    $('#' + "${z:vid(v, 'good-used-html')}").
+      click(function(){ gused.co().hide() })
 
     function toggleReadWrite(isread)
     {
@@ -880,7 +918,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <ui:fragment rendered = "#{v.codeExists}">
         <field target = "${z:vid(v, 'code')}">
-          <error>Указанный код уже используется в другом Товаре!</error>
+          <error>Указанный код уже используется в другом товаре!</error>
         </field>
       </ui:fragment>
 
