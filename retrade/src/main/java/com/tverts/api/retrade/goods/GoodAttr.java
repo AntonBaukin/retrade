@@ -162,8 +162,7 @@ public class GoodAttr extends JustObject implements PkeyObject
 
 	/**
 	 * The list of values. Has less priority
-	 * over a single value, or
-	 *
+	 * over a single value.
 	 */
 	@XmlElement(name = "value")
 	@XmlElementWrapper(name = "values")

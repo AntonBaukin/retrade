@@ -117,6 +117,12 @@ public class Goods
 	public static final String AT_GROUP
 	  = "Group";
 
+	public static final String AT_FULL_NAME
+	  = "Full Name";
+
+	public static final String AT_VENDOR_CODE
+	  = "Vendor Code";
+
 	public static final String AT_BARCODE
 	  = "Barсode";
 
@@ -128,6 +134,9 @@ public class Goods
 
 	public static final String AT_VAT
 	  = "VAT";
+
+	public static final String AT_REST_VOLUME
+	  = "Rest Volume";
 
 
 	/* Support Routines */
@@ -394,18 +403,11 @@ public class Goods
 		if((ats == null) || ats.isEmpty())
 			return null;
 
-		Map<String, Object> res = new LinkedHashMap<>(ats.size());
-		for(GoodAttr a : ats)
-			if(a.getValues() == null)
-				res.put(EX.asserts(a.getName()), EX.assertn(a.getValue()).value());
-			else
-			{
-				ArrayList vs = new ArrayList();
-				for(Value v : a.getValues())
-					vs.add(v.value());
+		Map<String, Object> res =
+		  new LinkedHashMap<>(ats.size());
 
-				res.put(EX.asserts(a.getName()), vs);
-			}
+		for(GoodAttr a : ats)
+			res.put(EX.asserts(a.getName()), value(a));
 
 		return res;
 	}
@@ -427,6 +429,29 @@ public class Goods
 			)));
 
 		return new Value();
+	}
+
+	public static Object              value(GoodAttr ga)
+	{
+		if(ga == null) return null;
+
+		//?: {has multiple values} form a list
+		if(ga.getValues() != null)
+		{
+			List<Object> vs = new ArrayList<>();
+			for(Value v : ga.getValues())
+				vs.add(v.value());
+			return vs;
+		}
+
+		//~: return single value
+		return (ga.getValue() == null)?(null):(ga.getValue().value());
+	}
+
+	public static String              string(GoodAttr ga)
+	{
+		Object v = value(ga);
+		return (v instanceof String)?((String)v):(null);
 	}
 
 	/**

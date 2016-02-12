@@ -937,6 +937,30 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 	/**
+	 * Trailing argument must be a function that
+	 * is invoked only when all leading arguments
+	 * are defined (not ZeT.isx). Boolean values
+	 * are treated as well: false value stops call.
+	 *
+	 * Returns null when callback was not invoked,
+	 * or the result of the function call.
+	 */
+	scopeif          : function(/* args, f */)
+	{
+		var a = ZeT.a(arguments)
+		ZeT.assert(arguments.length)
+
+		var f = a.pop()
+		ZeT.assert(ZeT.isf(f))
+
+		for(var i = 0;(i < a.length);i++)
+			if(ZeT.isx(a[i]) || (a[i] === false))
+				return null
+
+		return f.apply(this, a)
+	},
+
+	/**
 	 * Takes any array-like object and returns true array.
 	 * If source object is an array, return it.
 	 *

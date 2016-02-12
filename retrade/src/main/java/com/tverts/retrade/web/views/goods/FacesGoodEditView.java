@@ -49,6 +49,10 @@ import com.tverts.system.tx.TxPoint;
 
 import com.tverts.jsx.JsX;
 
+/* com.tverts: objects */
+
+import com.tverts.objects.XPoint;
+
 /* com.tverts: api */
 
 import com.tverts.api.retrade.goods.Calc;
@@ -163,6 +167,9 @@ public class FacesGoodEditView extends ModelView
 			EX.assertx(gu.getSuperGood() == null);
 		}
 
+		//=: edited good attributes
+		g.setAttrs(getGoodView().getAttrs());
+
 		//~: load measure unit
 		MeasureUnit mu = EX.assertn(get.getMeasureUnit(
 		  getGoodView().getMeasureKey()));
@@ -176,10 +183,6 @@ public class FacesGoodEditView extends ModelView
 
 		//~: good name
 		g.setName(getGoodView().getGoodName());
-
-		//~: good group
-		Goods.attrs(g).put(Goods.AT_GROUP,
-		  SU.s2s(getGoodView().getGoodGroup()));
 
 		//~: assign it
 		gu.setMeasure(mu);
@@ -606,6 +609,16 @@ public class FacesGoodEditView extends ModelView
 		  getGoodView().getGoodName());
 	}
 
+	/**
+	 * Returns JSON encoded object of Good Attribute Type.
+	 */
+	public String getAttrType(String code)
+	{
+		Object at = bean(GetGoods.class).
+		  getAttrType(getModel().domain(), code);
+		return (at == null)?(null):XPoint.json().write(at);
+	}
+
 
 	/* public: edit interface */
 
@@ -691,6 +704,65 @@ public class FacesGoodEditView extends ModelView
 		this.goodAttributes = goodAttributes;
 	}
 
+	public String getGroup()
+	{
+		return (String) getGoodView().getAttrs().get(Goods.AT_GROUP);
+	}
+
+	public void setGroup(String group)
+	{
+		getGoodView().getAttrs().put(Goods.AT_GROUP, group);
+	}
+
+	public BigDecimal getVat()
+	{
+		return (BigDecimal) getGoodView().getAttrs().get(Goods.AT_VAT);
+	}
+
+	public void setVat(BigDecimal vat)
+	{
+		getGoodView().getAttrs().put(Goods.AT_VAT, vat);
+	}
+
+	public String getFullName()
+	{
+		return (String) getGoodView().getAttrs().get(Goods.AT_FULL_NAME);
+	}
+
+	public void setFullName(String fullName)
+	{
+		getGoodView().getAttrs().put(Goods.AT_FULL_NAME, fullName);
+	}
+
+	public BigDecimal getRestVolume()
+	{
+		return (BigDecimal) getGoodView().getAttrs().get(Goods.AT_REST_VOLUME);
+	}
+
+	public void setRestVolume(BigDecimal restVolume)
+	{
+		getGoodView().getAttrs().put(Goods.AT_REST_VOLUME, restVolume);
+	}
+
+	public BigDecimal getNetWeight()
+	{
+		return (BigDecimal) getGoodView().getAttrs().get(Goods.AT_NET_WEIGHT);
+	}
+
+	public void setNetWeight(BigDecimal netWeight)
+	{
+		getGoodView().getAttrs().put(Goods.AT_NET_WEIGHT, netWeight);
+	}
+
+	public BigDecimal getGrossWeight()
+	{
+		return (BigDecimal) getGoodView().getAttrs().get(Goods.AT_GROSS_WEIGHT);
+	}
+
+	public void setGrossWeight(BigDecimal grossWeight)
+	{
+		getGoodView().getAttrs().put(Goods.AT_GROSS_WEIGHT, grossWeight);
+	}
 
 	/* public: calculation interface */
 
@@ -929,7 +1001,7 @@ public class FacesGoodEditView extends ModelView
 				throw EX.forbid("Good Unit of else Domain!");
 
 			//!: init view with this good
-			mb.getView().init(gu).initAttrs(gu).initOx(gu);
+			mb.getView().init(gu).initOx(gu);
 
 			//?: {good has calculation} create it's view
 			if(gu.getGoodCalc() != null)

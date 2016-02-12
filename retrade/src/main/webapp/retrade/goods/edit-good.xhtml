@@ -423,7 +423,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <x:drop-list coid = "${z:vid(v, 'group')}"
         storeId = "${z:vid(v, 'groups')}"
-        value = "#{v.goodView.goodGroup}">
+        value = "#{v.group}">
 
         <f:facet name = "drop-props">
           extjsfReadWrite: true, flex: 1,
@@ -451,14 +451,27 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
 
 
-      <!-- [vat] -->
-      <x:text-field coid = "${z:vid(v, 'vat')}"
-         value = "#{v.phonyString}">
+      <!-- [vat -->
 
-        <f:facet name = "extjs-props">
-          extjsfReadWrite: true, width: '100%',
+      <x:data-store storeId = "${z:vid(v, 'vats')}">
+        <f:facet name = "store-props">
+          model: 'retrade.model.KeyValue'
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          noproxy: true
+        </f:facet>
+      </x:data-store>
+
+      <x:drop-list coid = "${z:vid(v, 'vat')}"
+        storeId = "${z:vid(v, 'vats')}"
+        value = "#{v.vat}">
+
+        <f:facet name = "drop-props">
+          extjsfReadWrite: true, width: '100%', editable: false,
           cellCls: 'retrade-form-value-cell retrade-width-50pc',
-          fieldCls: 'x-form-field retrade-width-100pc'
+          fieldCls: 'x-form-field retrade-width-100pc',
+          valueField: 'value', displayField: 'text'
         </f:facet>
 
         <f:facet name = "label-props">
@@ -466,33 +479,43 @@ ${v.checkModelRequestedWithRedirect}
           cellCls: 'retrade-form-label-cell retrade-width-0pc',
           width: extjsf.ex(7)
         </f:facet>
-      </x:text-field>
+
+        <f:converter for = "valueInput"
+          converterId = "com.tverts:fmt:decimal"/>
+      </x:drop-list>
+
+      <!-- vat] -->
 
 
       <!-- [rest volume] -->
       <x:text-field coid = "${z:vid(v, 'rest-volume')}"
-         value = "#{v.phonyString}">
+         value = "#{v.restVolume}">
 
         <f:facet name = "extjs-props">
+          validator: ZeT.fbind(retrade.vvolume, retrade, {blank: true}),
           extjsfReadWrite: true, width: '100%',
           cellCls: 'retrade-form-value-cell retrade-width-50pc',
           fieldCls: 'x-form-field retrade-width-100pc'
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Несн. остаток',
+          html: 'Неснижаемый&lt;br/&gt;остаток',
           margin: extjsf.pts(0, 4, 0, 6),
           cls: 'retrade-info-title-label',
           cellCls: 'retrade-form-label-cell retrade-width-0pc'
         </f:facet>
+
+        <f:converter for = "valueInput"
+          converterId = "com.tverts:fmt:decimal"/>
       </x:text-field>
 
 
       <!-- [net weight] -->
       <x:text-field coid = "${z:vid(v, 'net-weight')}"
-         value = "#{v.phonyString}">
+         value = "#{v.netWeight}">
 
         <f:facet name = "extjs-props">
+          validator: ZeT.fbind(retrade.vvolume, retrade, {blank: true}),
           extjsfReadWrite: true, width: '100%',
           cellCls: 'retrade-form-value-cell retrade-width-50pc',
           fieldCls: 'x-form-field retrade-width-100pc'
@@ -505,14 +528,18 @@ ${v.checkModelRequestedWithRedirect}
           cellCls: 'retrade-form-label-cell retrade-width-0pc',
           width: extjsf.ex(7)
         </f:facet>
+
+        <f:converter for = "valueInput"
+          converterId = "com.tverts:fmt:decimal"/>
       </x:text-field>
 
 
       <!-- [gross weight] -->
       <x:text-field coid = "${z:vid(v, 'gross-weight')}"
-         value = "#{v.phonyString}">
+         value = "#{v.grossWeight}">
 
         <f:facet name = "extjs-props">
+          validator: ZeT.fbind(retrade.vvolume, retrade, {blank: true}),
           extjsfReadWrite: true, width: '100%',
           cellCls: 'retrade-form-value-cell retrade-width-50pc',
           fieldCls: 'x-form-field retrade-width-100pc'
@@ -524,6 +551,9 @@ ${v.checkModelRequestedWithRedirect}
           cls: 'retrade-info-title-label',
           cellCls: 'retrade-form-label-cell retrade-width-0pc'
         </f:facet>
+
+        <f:converter for = "valueInput"
+          converterId = "com.tverts:fmt:decimal"/>
       </x:text-field>
     </x:component>
 
@@ -571,7 +601,7 @@ ${v.checkModelRequestedWithRedirect}
         </f:facet>
 
         <x:text-field coid = "${z:vid(v, 'full-name')}"
-          value = "#{v.phonyString}">
+          value = "#{v.fullName}">
 
           <f:facet name = "extjs-props">
             xtype: 'textarea', extjsfReadWrite: true
@@ -745,6 +775,25 @@ ${v.checkModelRequestedWithRedirect}
     //~: hide good-is-used message on click
     $('#' + "${z:vid(v, 'good-used-html')}").
       click(function(){ gused.co().hide() })
+
+    //~: populate VATs store
+    ZeT.scope(ZeT.s2o("${z:jss(v.getAttrType('VAT'))}"), function(vat)
+    {
+      var s = extjsf.co("${z:vid(v, 'vats')}", '${rootView.extjsDomain}')
+      var f = extjsf.bind("${z:vid(v, 'vat')}", '${rootView.extjsDomain}')
+
+      if(ZeTS.ises(vat.object)) return
+      vat = ZeT.s2o(vat.object)
+
+      ZeT.each(vat.values, function(v)
+      {
+        if(ZeTS.ises(v.text))
+          v.text = '' + v.value
+        s.add(v)
+      })
+
+      f.value("#{v.vat}")
+    })
 
     function toggleReadWrite(isread)
     {

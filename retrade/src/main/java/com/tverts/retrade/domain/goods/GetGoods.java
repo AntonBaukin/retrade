@@ -12,7 +12,6 @@ import java.util.Set;
 
 /* Spring Framework */
 
-import com.tverts.hibery.qb.WhereText;
 import org.springframework.stereotype.Component;
 
 /* Hibernate Persistence Layer */
@@ -29,6 +28,7 @@ import com.tverts.hibery.GetObjectBase;
 import com.tverts.hibery.qb.QueryBuilder;
 import com.tverts.hibery.qb.WhereLogic;
 import com.tverts.hibery.qb.WherePartLogic;
+import com.tverts.hibery.qb.WhereText;
 
 /* com.tverts: secure */
 
@@ -45,10 +45,13 @@ import com.tverts.model.ModelBeanBase;
 /* com.tverts: api */
 
 import com.tverts.api.retrade.goods.Calc;
+import com.tverts.api.retrade.goods.GoodAttr;
 
 /* com.tverts: endure (core, aggregation, trees) */
 
+import com.tverts.endure.core.AttrType;
 import com.tverts.endure.core.Domain;
+import com.tverts.endure.core.GetUnity;
 import com.tverts.endure.aggr.AggrValue;
 import com.tverts.endure.tree.GetTree;
 import com.tverts.endure.tree.TreeCross;
@@ -862,6 +865,14 @@ from MeasureUnit mu where
 
 
 	/* Get Good Attributes */
+
+	public GoodAttr        getAttrType(Long domain, String code)
+	{
+		AttrType at = bean(GetUnity.class).getAttrType(
+		  domain, Goods.typeGoodAttr().getPrimaryKey(), code);
+
+		return (at == null)?(null):(GoodAttr)at.getOx();
+	}
 
 	public String          getAttrString(GoodUnit gu, String attr)
 	{

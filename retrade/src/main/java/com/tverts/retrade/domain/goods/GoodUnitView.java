@@ -8,12 +8,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /* Java XML Binding */
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /* com.tverts: spring */
@@ -27,7 +31,6 @@ import com.tverts.objects.XPoint;
 /* tverts.com: endure (aggregated values + core) */
 
 import com.tverts.endure.aggr.AggrValue;
-import com.tverts.endure.core.AttrType;
 import com.tverts.endure.core.GetUnity;
 import com.tverts.endure.core.UnityAttr;
 
@@ -57,7 +60,7 @@ import com.tverts.support.OU;
 @XmlType(name = "good-unit-view")
 public class GoodUnitView implements Serializable
 {
-	public static final long serialVersionUID = 20150318L;
+	public static final long serialVersionUID = 20160212L;
 
 
 	/* Good Unit View */
@@ -174,6 +177,23 @@ public class GoodUnitView implements Serializable
 
 	private String oxString;
 
+	@XmlElement(name = "good-attr")
+	@XmlElementWrapper(name = "attributes")
+	public List<GoodAttr> getAttrValues()
+	{
+		return attrValues;
+	}
+
+	private List<GoodAttr> attrValues;
+
+	@XmlTransient
+	public Map<String, Object> getAttrs()
+	{
+		return attrs;
+	}
+
+	private Map<String, Object> attrs = new HashMap<>();
+
 
 	/* Good Unit View Aggregated Values */
 
@@ -229,6 +249,25 @@ public class GoodUnitView implements Serializable
 
 
 	/* Initialization */
+
+	public GoodUnit     goodUnit(Object obj)
+	{
+		//?: {is a good}
+		if(obj instanceof GoodUnit)
+			return (GoodUnit)obj;
+
+		//?: {is an array}
+		if(obj instanceof Object[])
+			obj = Arrays.asList((Object[]) obj);
+
+		//?: {is a collection} search there
+		if(obj instanceof Collection)
+			for(Object x : (Collection)obj)
+				if(x instanceof GoodUnit)
+					return (GoodUnit)x;
+
+		return null;
+	}
 
 	public GoodUnitView init(Object obj)
 	{
@@ -297,52 +336,33 @@ public class GoodUnitView implements Serializable
 	public GoodUnitView initAttrs(Object obj)
 	{
 		GetGoods get = bean(GetGoods.class);
-		GoodUnit  gu = null;
-
-		//?: {is a good}
-		if(obj instanceof GoodUnit)
-			gu = (GoodUnit) obj;
-
-		//?: {is an array}
-		if(obj instanceof Object[])
-			obj = Arrays.asList((Object[]) obj);
-
-		//?: {is a collection} search there
-		if(obj instanceof Collection)
-			for(Object x : (Collection)obj)
-				if(x instanceof GoodUnit)
-				{
-					gu = (GoodUnit)x;
-					break;
-				}
+		GoodUnit  gu = goodUnit(obj);
 
 		//?: {not found it}
 		if(gu == null) return this;
 
 		//~: select good group
-		this.goodGroup = get.getAttrString(gu, Goods.AT_GROUP);
+		this.goodGroup = (this.attrs != null)
+			?((String) this.attrs.get(Goods.AT_GROUP))
+			:(get.getAttrString(gu, Goods.AT_GROUP));
 
 		return this;
 	}
 
-	public GoodUnitView initOx(GoodUnit gu)
+	@SuppressWarnings("unchecked")
+	public GoodUnitView initOxAttrs(GoodUnit gu)
 	{
-		if(gu == null) return this;
-
-		//~: create deep copy of the ox-good
-		Good g = OU.cloneBest(gu.getOxOwn());
-
 		//~: load attribute values
-		List<UnityAttr> atts = bean(GetUnity.class).
+		List<UnityAttr> uas = bean(GetUnity.class).
 		  getAttrs(gu.getPrimaryKey());
 
-		//~: by the type mapping
-		HashMap<AttrType, GoodAttr> map = new HashMap<>(atts.size());
-		for(UnityAttr ua : atts)
+		//~: create the type mapping
+		Map<Long, GoodAttr> map = new LinkedHashMap<>();
+		for(UnityAttr ua : uas)
 		{
-			GoodAttr ga = map.get(ua.getAttrType());
-			if(ga == null) map.put(ua.getAttrType(), ga =
-			  OU.cloneBest((GoodAttr) ua.getAttrType().getOx()));
+			GoodAttr ga = map.get(ua.getAttrType().getPrimaryKey());
+			if(ga == null) map.put(ua.getAttrType().getPrimaryKey(),
+			  ga = OU.cloneBest((GoodAttr) ua.getAttrType().getOx()));
 
 			//=: primary key
 			ga.setPkey(ua.getAttrType().getPrimaryKey());
@@ -373,8 +393,28 @@ public class GoodUnitView implements Serializable
 			}
 		}
 
+		//=: attributes list
+		this.attrValues = new ArrayList<>(map.values());
+
+		//=: attributes mapping
+		this.attrs = Goods.convert(this.attrValues);
+
+		return this;
+	}
+
+	public GoodUnitView initOx(GoodUnit gu)
+	{
+		if(gu == null) return this;
+
+		//?: {has no attributes} load them
+		if(this.attrValues == null)
+			this.initOxAttrs(gu);
+
+		//~: create deep copy of the ox-good
+		Good g = OU.cloneBest(gu.getOxOwn());
+
 		//=: attribute values
-		g.setAttrValues(new ArrayList<>(map.values()));
+		g.setAttrValues(this.attrValues);
 
 		//!: encode to JSON
 		this.oxString = XPoint.json().write(g);
