@@ -153,6 +153,14 @@ public class Functions
 		if(!(x instanceof BigDecimal))
 			x = new BigDecimal(x.toString());
 
-		return DecimalConverter.INSTANCE.format((BigDecimal)x);
+		//~: strip trailing zeros
+		BigDecimal d = (BigDecimal)x;
+		if(CMP.eqZero(d))
+			d = BigDecimal.ZERO;
+
+		if(d.scale() < 0)
+			d = d.setScale(0);
+
+		return d.toString();
 	}
 }

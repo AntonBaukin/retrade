@@ -1,12 +1,8 @@
 package com.tverts.faces.formatters;
 
-/* standard Java classes */
+/* Java */
 
 import java.math.BigDecimal;
-
-/* com.tverts: support */
-
-import com.tverts.support.CMP;
 
 
 /**
@@ -30,21 +26,9 @@ public class   DecimalConverter
 		return BigDecimal.class;
 	}
 
-	public String   format(BigDecimal d)
-	{
-		//~: strip trailing zeros
-		if(CMP.eqZero(d))
-			d = BigDecimal.ZERO;
-
-		if(d.scale() < 0)
-			d = d.setScale(0);
-
-		return d.toString();
-	}
-
 	protected void  format(Request<BigDecimal> request)
 	{
-		request.setString(format(request.getValue()));
+		request.setString(request.getValue().toString());
 	}
 
 	protected void  convert(Request<BigDecimal> request)
