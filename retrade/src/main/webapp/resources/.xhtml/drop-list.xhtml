@@ -7,22 +7,32 @@
    xmlns:h  = 'http://java.sun.com/jsf/html'
    xmlns:z  = 'uri:tverts.com'>
 
- <co:interface>
+  <co:interface>
 
     <co:attribute name = 'coid' required = 'true'
-       type = 'java.lang.Object'/>
+      type = 'java.lang.Object'/>
 
     <co:attribute name = 'value' required = 'true'
-       type = 'java.lang.String'/>
+      type = 'java.lang.String'/>
+
+    <!--
+      Use this attribute to temporary assign
+      the same visible value while the store
+      is loading. This eliminates temporary
+      displaying the store key instead of
+      the associated item title.
+    -->
+    <co:attribute name = 'displayValue' default = ""
+      type = 'java.lang.String'/>
 
     <co:attribute name = 'labels'
-       type = 'java.util.Map'/>
+      type = 'java.util.Map'/>
 
     <co:attribute name = 'storeId'
-       type = 'java.lang.String'/>
+      type = 'java.lang.String'/>
 
     <co:editableValueHolder name = 'valueInput'
-       targets = 'hidden'/>
+      targets = 'hidden'/>
 
     <co:facet name = 'drop-props'/>
     <co:facet name = 'label-props'/>
@@ -127,6 +137,13 @@
 
     //~: bind label first
     if(label) extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}', label)
+
+    //~: display value substitute
+    if("#{cc.attrs.displayValue}".length)
+      bind.on('afterrender', function(f)
+      {
+        if(f.inputEl) $(f.inputEl.dom).val("#{cc.attrs.displayValue}")
+      })
 
     //~: bind drop-list to the parent
     extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}', bind)

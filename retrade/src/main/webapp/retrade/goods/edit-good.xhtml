@@ -309,7 +309,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "extjs-props">
           extjsfReadWrite: true, allowBlank: false,
-          flex: 3, validator: function()
+          flex: 2, validator: function()
           {
             return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
           }
@@ -340,11 +340,12 @@ ${v.checkModelRequestedWithRedirect}
 
       <x:drop-list coid = "${z:vid(v, 'measure')}"
         storeId = "${z:vid(v, 'measures')}"
-        value  = "#{v.goodView.measureKey}">
+        value  = "#{v.goodView.measureKey}"
+        displayValue = "${v.goodView.measureCode}">
 
         <f:facet name = "drop-props">
           readOnly: true, allowBlank: false,
-          editable: false, matchFieldWidth: true, flex: 2,
+          editable: false, matchFieldWidth: true, flex: 3,
           valueField: 'objectKey', displayField: 'code'
         </f:facet>
 
