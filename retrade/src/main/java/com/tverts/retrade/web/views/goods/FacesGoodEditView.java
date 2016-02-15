@@ -776,6 +776,28 @@ public class FacesGoodEditView extends ModelView
 		getGoodView().getAttrs().put(Goods.AT_GROSS_WEIGHT, v);
 	}
 
+	public String getVendorCodes()
+	{
+		return SU.s2s(SU.scats("\f", getGoodView().getAttrs().get(Goods.AT_VENDOR_CODE)));
+	}
+
+	public void setVendorCodes(String vendorCodes)
+	{
+		getGoodView().getAttrs().put(Goods.AT_VENDOR_CODE,
+		  SU.sXe(vendorCodes)?(Void.class):(vendorCodes.split("\f")));
+	}
+
+	public String getBarcodes()
+	{
+		return SU.s2s(SU.scats("\f", getGoodView().getAttrs().get(Goods.AT_BARCODE)));
+	}
+
+	public void setBarcodes(String barcodes)
+	{
+		getGoodView().getAttrs().put(Goods.AT_BARCODE,
+		  SU.sXe(barcodes)?(Void.class):(barcodes.split("\f")));
+	}
+
 
 	/* public: calculation interface */
 
