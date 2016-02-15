@@ -283,12 +283,6 @@
     //~: apply the model items
     panel.on('afterrender', fillMeasures)
 
-    //~: make the window higher
-    ReTrade.desktop.applyWindowBox({
-      name: 'winmain', domain: '${rootView.extjsDomain}',
-      heightpt: 320, prevsize: 'measures'
-    })
-
     //~: items template
     var tx = new ZeT.Layout.Template(
       { trace : ZeT.Layout.Template.Ways.traceAtNodes },

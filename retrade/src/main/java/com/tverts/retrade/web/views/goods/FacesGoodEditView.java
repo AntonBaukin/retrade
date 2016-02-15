@@ -798,6 +798,17 @@ public class FacesGoodEditView extends ModelView
 		  SU.sXe(barcodes)?(Void.class):(barcodes.split("\f")));
 	}
 
+	public String getWeighted()
+	{
+		return (String) getGoodView().getAttrs().get(Goods.AT_WEIGHTED);
+	}
+
+	public void setWeighted(String weighted)
+	{
+		getGoodView().getAttrs().put(Goods.AT_WEIGHTED,
+		  SU.sXe(weighted)?(Void.class):(weighted.toString()));
+	}
+
 
 	/* public: calculation interface */
 

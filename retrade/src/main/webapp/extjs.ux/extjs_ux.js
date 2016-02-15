@@ -324,12 +324,20 @@ Ext.define('Ext.ux.form.TriCheckbox',
 		return (this.xchecked)?(null):(this.callParent(arguments));
 	},
 
+	initValue         : function()
+	{
+		if(Ext.get(this.name) && ZeTS.ises(Ext.get(this.name).getValue()))
+			this.setRawValue(this.xcheckedVal)
+		else
+			this.callParent(arguments)
+	},
+
 	setRawValue       : function(v)
 	{
 		if(this.xcheckedVal === v)
 		{
-			this.xchecked = true;
-			v = false;
+			this.xchecked = true
+			v = false
 		}
 
 		if(!this.xchecked)
@@ -341,24 +349,24 @@ Ext.define('Ext.ux.form.TriCheckbox',
 		{
 			this.callParent([v])
 			this.addCls(this.xcheckedClass)
-			return false;
+			return false
 		}
 	},
 
 	onBoxClick        : function(e)
 	{
-		if(this.disabled || this.readOnly) return;
+		if(this.disabled || this.readOnly) return
 
 		//?: {checked -> null-checked}
 		if(this.checked)
 		{
-			this.xchecked = true;
+			this.xchecked = true
 			this.setValue(false)
 		}
 		//?: {null-checked -> unchecked}
 		else if(this.xchecked)
 		{
-			this.xchecked = false;
+			this.xchecked = false
 			this.setValue(false)
 		}
 		//?: {unchecked -> checked}

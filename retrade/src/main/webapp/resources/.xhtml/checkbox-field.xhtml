@@ -13,7 +13,7 @@
        type = 'java.lang.String'/>
 
     <co:attribute name = 'value' required = 'false'
-       type = 'java.lang.Boolean'/>
+       type = 'java.lang.Object'/>
 
     <co:editableValueHolder name = 'valueInput'
        targets = 'checkbox'/>
@@ -44,9 +44,8 @@
     field.nodeId("#{cc.clientId}-checkbox")
     field.initialChecked = ('true' == Ext.getDom(field.nodeId()).value);
 
-    field.extjsProps({labelSeparator: ''})
+    field.extjsProps({labelSeparator: '', xtype: 'checkboxfield'})
     field.extjsPropsNode().extjsProps({
-      xtype   : 'checkboxfield',
       inputId : "#{cc.attrs.coid}",
       name    : "#{cc.clientId}-checkbox",
       inputValue : 'true', uncheckedValue: 'false'

@@ -126,6 +126,9 @@ public class Goods
 	public static final String AT_BARCODE
 	  = "Barсode";
 
+	public static final String AT_WEIGHTED
+	  = "Weighted";
+
 	public static final String AT_NET_WEIGHT
 	  = "Net Weight";
 

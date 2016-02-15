@@ -211,6 +211,19 @@ function getGoodTypesMain()
 
 		{
 			system:  true,
+			shared:  true,
+			name:    'Weighted',
+			nameLo:  'Весовой товар',
+			type:    'string',
+			values:  [
+
+				{ value: 'true', text: 'Да' },
+				{ value: 'false', text: 'Нет' }
+			]
+		},
+
+		{
+			system:  true,
 			name:    'Rest Volume',
 			nameLo:  'Неснижаемый остаток',
 			type:    'volume'

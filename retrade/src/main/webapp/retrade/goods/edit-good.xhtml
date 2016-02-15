@@ -439,6 +439,22 @@ ${v.checkModelRequestedWithRedirect}
           width: extjsf.ex(7), margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
       </x:drop-list>
+
+
+      <!-- [is weighted]-->
+      <x:checkbox-field coid = "${z:vid(v, 'weighted')}"
+        value = "#{v.weighted}">
+
+        <f:facet name = "extjs-props">
+          xtype: 'ux.tricheckbox', extjsfReadWrite: true
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'Весовой товар', labelAlign: 'left',
+          margin: extjsf.pts(0, 4, 0, 6),
+          cls: 'retrade-info-title-label'
+        </f:facet>
+      </x:checkbox-field>
     </x:component>
 
     <!-- group] -->
@@ -882,7 +898,7 @@ ${v.checkModelRequestedWithRedirect}
     }
 
     //~: hide good-is-used message on click
-    $('#' + "${z:vid(v, 'good-used-html')}").
+    if(gused) $('#' + "${z:vid(v, 'good-used-html')}").
       click(function(){ gused.co().hide() })
 
     //~: populate VATs store
@@ -996,23 +1012,23 @@ ${v.checkModelRequestedWithRedirect}
       submit.visible(!isReadMode && !on)
       status.visible(!on)
       doedit.visible(isReadMode && !on)
+      gused && gused.visible(false)
 
       atsext.visible(on)
       delats.visible(!isReadMode && on)
       addat.visible(!isReadMode && on)
       farea.visible(on)
 
-      //~: adapt the height of the window
-      if(on)
+      //~: save the window position or adapt it
+      if(on && !isReadMode)
         ReTrade.desktop.applyWindowBox({
           name: 'winmain', domain: '${rootView.extjsDomain}',
-          prevsize: 'good-attrs', heightpt: 280,
-          widthpt: (isReadMode)?(360):(480)
+          prevsize: 'good-attrs', widthpt: 480
         })
       else
         ReTrade.desktop.prevsizeComp({
           name: 'winmain', domain: '${rootView.extjsDomain}',
-          marker: 'good-attrs'
+          marker: 'good-attrs', save: !!on
         })
 
       if(on) //?: {turn on the table}
