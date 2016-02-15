@@ -671,7 +671,18 @@ ${v.checkModelRequestedWithRedirect}
       <!-- vendor code] -->
 
 
-      <!-- [barcode] -->
+      <!-- [barcode -->
+
+      <x:data-store storeId = "${z:vid(v, 'barcodes')}">
+        <f:facet name = "store-props">
+          model: 'retrade.model.KeyValue'
+        </f:facet>
+
+        <f:facet name = "proxy-props">
+          noproxy: true
+        </f:facet>
+      </x:data-store>
+
       <x:component coid = "${z:vid(v, '_barcode')}">
         <f:facet name = "extjs-props">
           title: 'Баркод',
@@ -680,14 +691,48 @@ ${v.checkModelRequestedWithRedirect}
           bodyCls: 'retrade-transparent-panel'
         </f:facet>
 
-        <x:text-field coid = "${z:vid(v, 'barcode')}"
-          value = "#{v.phonyString}">
+        <x:data-grid coid = "${z:vid(v, 'barcode')}"
+          storeId = "${z:vid(v, 'barcodes')}">
 
-          <f:facet name = "extjs-props">
-            xtype: 'textarea', extjsfReadWrite: true
+          <f:facet name = "grid-props">
+            pager: false, sortableColumns: false, hideHeaders: true,
+            selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+            plugins: [{ ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1 }],
+            columns: ZeT.scope(function()
+            {
+              return [
+
+                {
+                  xtype: 'actioncolumn', dataIndex: 'doAdd', hidden: true,
+                  width: 28, align: 'center', iconCls: 'retrade-button-add',
+                  handler: function(v, row)
+                  {
+                    extjsf.co("${z:vid(v, 'barcodes')}", '${rootView.extjsDomain}').
+                      insert(row, { value: '' })
+                  }
+                },
+
+                {
+                  dataIndex: 'value', flex: 1,
+                  editor: Ext.create('Ext.form.field.Text', {})
+                },
+
+                {
+                  xtype: 'actioncolumn', dataIndex: 'doDelete', hidden: true,
+                  width: 28, align: 'center', iconCls: 'retrade-edit-delete',
+                  handler: function(v, r, c, i, e, m)
+                  {
+                    var s = extjsf.co("${z:vid(v, 'barcodes')}", '${rootView.extjsDomain}')
+                    if(s.getCount() == 1) m.set('value', ''); else s.remove(m)
+                  }
+                }
+              ]
+            })
           </f:facet>
-        </x:text-field>
+        </x:data-grid>
       </x:component>
+
+      <!-- barcode] -->
     </x:component>
 
 
@@ -768,6 +813,8 @@ ${v.checkModelRequestedWithRedirect}
     var vcodes  = extjsf.bind("${z:vid(v, 'vendor-codes')}", '${rootView.extjsDomain}')
     var vcstore = extjsf.bind("${z:vid(v, 'vendorCodes')}", '${rootView.extjsDomain}')
     var vcodesh = extjsf.bind("${z:vid(v, 'vendor-codes-hidden')}", '${rootView.extjsDomain}')
+    var bcodes  = extjsf.bind("${z:vid(v, 'barcode')}", '${rootView.extjsDomain}')
+    var bcstore = extjsf.bind("${z:vid(v, 'barcodes')}", '${rootView.extjsDomain}')
     var bcodesh = extjsf.bind("${z:vid(v, 'barcodes-hidden')}", '${rootView.extjsDomain}')
 
 
@@ -898,13 +945,21 @@ ${v.checkModelRequestedWithRedirect}
       //~: check good usage
       if(!isread && checkGoodUsed) checkGoodUsed()
 
-      //?: {has no codes} add empty
+      //?: {has no vendor codes} add empty
       if(!isread && !vcstore.co().getCount())
         vcstore.co().add({ value: '' })
+
+      //?: {has no barcodes} add empty
+      if(!isread && !bcstore.co().getCount())
+        bcstore.co().add({ value: '' })
 
       //~: show-hide vendor codes action columns
       extjsf.support.columnByDataIndex(vcodes, 'doAdd').setVisible(!isread)
       extjsf.support.columnByDataIndex(vcodes, 'doDelete').setVisible(!isread)
+
+      //~: show-hide barcodes action columns
+      extjsf.support.columnByDataIndex(bcodes, 'doAdd').setVisible(!isread)
+      extjsf.support.columnByDataIndex(bcodes, 'doDelete').setVisible(!isread)
     }
 
     //~: default read-only for existing
@@ -984,15 +1039,36 @@ ${v.checkModelRequestedWithRedirect}
       if(isReadMode) return false
     })
 
-    //~: vendor codes store
+    //~: barcodes editing
+    bcodes.co().getPlugin('cellediting').on('beforeedit', function()
+    {
+      if(isReadMode) return false
+    })
+
+    //~: fill vendor codes store
     ZeT.each(vcodesh.value().split('\f'), function(x)
     {
       if(!ZeTS.ises(x)) vcstore.co().add({ value: x })
     })
 
+    //~: fill barcodes store
+    ZeT.each(bcodesh.value().split('\f'), function(x)
+    {
+      if(!ZeTS.ises(x)) bcstore.co().add({ value: x })
+    })
+
     function encodeVendors()
     {
       var r = []; vcstore.co().each(function(x)
+      {
+        if(!ZeTS.ises(x.get('value'))) r.push(ZeTS.trim(x.get('value')))
+      })
+      return r.join('\f')
+    }
+
+    function encodeBarcodes()
+    {
+      var r = []; bcstore.co().each(function(x)
       {
         if(!ZeTS.ises(x.get('value'))) r.push(ZeTS.trim(x.get('value')))
       })
@@ -1025,6 +1101,9 @@ ${v.checkModelRequestedWithRedirect}
 
       //~: vendor codes
       vcodesh.value(encodeVendors())
+
+      //~: barcodes
+      bcodesh.value(encodeBarcodes())
 
       //!: submit the form
       form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
