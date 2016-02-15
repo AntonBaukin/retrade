@@ -21,6 +21,9 @@
     <co:attribute name = 'table' default = 'true'
        type = 'java.lang.Boolean'/>
 
+    <co:attribute name = 'renderDelay' default = 'false'
+       type = 'java.lang.Boolean'/>
+
     <co:facet name = 'extjs-props'/>
 
   </co:interface>
@@ -57,15 +60,28 @@
     </c:if>
 
     <script type = "text/javascript">
+    //<![CDATA[
 
-  extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
-    nodeId("#{cc.clientId}-#{cc.attrs.coid}").
-    extjsProps({xtype: 'component', margin: 0}).extjsPropsNode().
-    extjsProps({html: undefined, contentEl: "#{cc.attrs.coid}-html"})
+      extjsf.defineBind('#{cc.attrs.coid}', '${rootView.extjsDomain}').
+        nodeId("#{cc.clientId}-#{cc.attrs.coid}").
+        extjsProps({xtype: 'component', margin: 0}).extjsPropsNode().
+        extjsProps({html: undefined, contentEl: "#{cc.attrs.coid}-html"})
 
-  extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}', '#{cc.attrs.coid}')
+      if("#{cc.attrs.renderDelay}" == "false")
+        extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}', '#{cc.attrs.coid}')
+      else extjsf.bind('#{cc.parent.attrs.coid}', '${rootView.extjsDomain}').
+        on('afterrender', function(parent)
+        {
+          var bind = extjsf.bind('#{cc.attrs.coid}', '${rootView.extjsDomain}')
 
+          //~: create the component
+          bind.co(Ext.ComponentManager.create(bind.extjsProps()))
+
+          //~: append to the parent
+          parent.add(bind.co())
+        })
+
+    //]]>
     </script>
-
   </co:implementation>
 </ui:fragment>

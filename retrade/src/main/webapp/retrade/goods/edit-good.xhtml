@@ -267,13 +267,16 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [good is used -->
 
     <x:html coid = "${z:vid(v, 'good-used')}"
+      table = "false" renderDelay = "true"
       rendered = "#{not v.creating}">
 
       <f:facet name = "extjs-props">
-        border: false, hidden: true,
-        margin: extjsf.pts(0, 0, 4, 0),
-        bodyCls: 'retrade-transparent-panel',
-        style: 'cursor:pointer'
+        hidden: true, border: false, shadow: false,
+        floating: true, defaultAlign: 'tl-tl',
+        renderTo: "${z:vid(v, 'good-form')}",
+        cls: 'retrade-warning-panel',
+        bodyPadding: extjsf.pts(4, 0, 4, 0),
+        style: 'cursor:pointer; padding: 4pt 2pt'
       </f:facet>
 
       <table class = "retrade-good-edit-is-used"
@@ -873,6 +876,7 @@ ${v.checkModelRequestedWithRedirect}
 
           $('#' + "${z:vid(v, 'good-used-text')}").text(s)
           gused.co().show()
+          gused.co().getEl().addCls('animated fadeInDown')
           ZeT.timeout(10000, function(){ gused.co().hide() })
         })
     }

@@ -102,6 +102,11 @@ span.retrade-inline-link
   background-color: transparent;
 }
 
+.retrade-warning-panel
+{
+  background-color: #fffbef;
+}
+
 .retrade-item-panel
 {
   background: linear-gradient(to bottom, #EEF4FB 0%, #F2EAE2 101%);
@@ -809,11 +814,6 @@ tr:first-child > td.retrade-form-label-cell,
 
 
 /* Warning Panel */
-
-.retrade-warning-panel
-{
-  background-color: #fffbef;
-}
 
 .retrade-warning-panel-sub
 {
