@@ -79,7 +79,8 @@
   
   background-image: linear-gradient(to bottom, #EAF4FF 0%, #D0D6E0 60%, #EDF1F7 100%);
   color: black;
-  font-family: 'PT Sans Narrow', Arial, Helvetica, sans-serif;
+  font-family: 'PT Sans', sans-serif;
+  letter-spacing: -0.25pt;
   font-size: 18px;
   font-weight: 300;
   line-height: 28px;

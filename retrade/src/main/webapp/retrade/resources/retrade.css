@@ -59,8 +59,8 @@ span.retrade-inline-link
 .retrade-toolbar-inline-title
 {
   cursor: default; color: #157FCC;
-  font-size: 17px; font-weight: 300;
-  font-family: helvetica,arial,verdana,sans-serif;
+  font-size: 17px; letter-spacing: -0.25pt;
+  font-family: 'PT Sans', sans-serif;
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -114,7 +114,7 @@ span.retrade-inline-link
 
 .retrade-form-inline-comment, .retrade-toolbar-inline-comment
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size: 9pt; line-height: 11pt;
   font-style: italic; cursor: default;
 }
@@ -257,7 +257,8 @@ input.x-form-text-default.retarde-field-text-compact
 
 .retrade-form-fieldset-caption
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
+  letter-spacing: -0.25pt;
   font-size: 10pt; cursor: default;
   white-space: nowrap; overflow: hidden;
   background-color: transparent;
@@ -633,7 +634,8 @@ table.retrade-align-right.x-field
 
 .retrade-tiles-links-area .retrade-tile-links-wrap .retrade-boshadow-content
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
+  letter-spacing: -0.25pt;
   font-size: 13pt; font-style: normal;
   font-weight: normal; line-height: normal;
 }
@@ -703,7 +705,7 @@ td.x-unselectable.retrade-selectable-column
 
 .retrade-message-box-ask-warning div.x-form-display-field
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size: 10pt; font-style: normal;
   font-weight: normal; line-height: normal;
   text-align: left;
@@ -735,7 +737,7 @@ div.retrade-desktop-event .retrade-boshadow-N-content,
   div.retrade-desktop-event .retrade-boshadow-G-content,
   div.retrade-desktop-event .retrade-boshadow-O-content
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size: 10pt; font-style: normal;
   padding: 2pt 4pt;
 }
@@ -743,7 +745,7 @@ div.retrade-desktop-event .retrade-boshadow-N-content,
 .retrade-desktop-eventsnum-area td.retrade-eventsnum-number
 {
   text-align: center; vertical-align: middle;
-  font-family: 'Tahoma', 'Arial', sans-serif;
+  font-family: 'PT Sans', 'Arial', sans-serif;
   font-size: 25px; color: black;
 }
 
@@ -806,7 +808,7 @@ tr:first-child > td.retrade-form-label-cell,
 
 .retrade-error-div
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-weight: normal; font-size: 10pt;
   padding: 2pt; color: #ff3333;
   background-color:white;
@@ -827,7 +829,7 @@ td.retrade-warning-table-icon
 
 td.retrade-warning-table-text div
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-weight: normal; font-size: 10pt;
   text-align: left; white-space: nowrap;
   margin: 4pt 12pt 4pt 10pt;
@@ -865,7 +867,7 @@ td.retrade-warning-table-buttons
 
 div.retrade-user-menu-system-login
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size: 14pt; letter-spacing: 2pt;
   text-transform: uppercase; color: #df0000;
   margin-top: 26px;
@@ -880,7 +882,7 @@ td.retrade-user-menu-display-name
 
 td.retrade-user-menu-display-name > div
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size: 12pt; letter-spacing: 0.5pt;
 }
 
@@ -892,7 +894,7 @@ td.retrade-user-menu-firm-name
 
 td.retrade-user-menu-firm-name > div
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size: 10pt;
 }
 
@@ -905,7 +907,7 @@ td.retrade-user-menu-domain-staff
 
 td.retrade-user-menu-domain-staff > div
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size: 8pt; letter-spacing: 0.5pt;
   text-transform: uppercase; color: #df0000;
   border: solid 1px #df0000; display: inline;
@@ -972,7 +974,7 @@ table.retrade-info-table.retrade-info-table-short
 table.retrade-info-table caption,
  div.retrade-info-div .retrade-info-caption
 {
-  font-family: 'Tahoma', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-weight: bolder; font-size: 10pt;
   text-align: left; white-space: nowrap;
   margin: 2pt 0 4pt 0;
@@ -994,7 +996,7 @@ td.retrade-info-title div, .retrade-info-title-label,
  caption.retrade-info-title
 {
   white-space: nowrap; margin: 0 4pt 0 7pt;
-  font-size: 12pt; cursor: default;
+  font-size: 12.5pt; cursor: default;
   letter-spacing: 0.1pt;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1047,6 +1049,7 @@ td.retrade-info-value > div,
  .retrade-info-div > .retrade-info-value,
  span.retrade-info-value
 {
+  font-family: Roboto, sans-serif;
   font-size: 12pt; white-space: nowrap;
   line-height: 16px; padding: 2pt 1pt 0 2pt;
   background-color: #EEF6FB; border-radius: 4px;
@@ -1094,7 +1097,7 @@ hr.retrade-info-hr
 
 .retrade-info-status-red
 {
-  font-family: 'Tahoma', sans-serif; font-size: 9pt;
+  font-family: 'PT Sans', sans-serif; font-size: 9pt;
   white-space: nowrap; overflow: hidden;
   color: #c61122; background-color: transparent;
   font-weight: bolder; text-transform: uppercase;
@@ -1532,7 +1535,7 @@ div.retrade-settings-users-data-comment
 
 div.retrade-settings-secure-rule-descr
 {
-  font-family: 'Tahoma', sans-serif; font-size: 10pt;
+  font-family: 'PT Sans', sans-serif; font-size: 10pt;
   padding: 2pt; position: absolute;
   height: 100%; width: 100%; cursor: default;
   overflow-y: auto; overflow-x: hidden;
