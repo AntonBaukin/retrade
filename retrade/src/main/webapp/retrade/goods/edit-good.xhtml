@@ -479,9 +479,6 @@ ${v.checkModelRequestedWithRedirect}
           cellCls: 'retrade-form-label-cell retrade-width-0pc',
           width: extjsf.ex(7)
         </f:facet>
-
-        <f:converter for = "valueInput"
-          converterId = "com.tverts:fmt:decimal"/>
       </x:drop-list>
 
       <!-- vat] -->
@@ -646,7 +643,6 @@ ${v.checkModelRequestedWithRedirect}
           </f:facet>
         </x:text-field>
       </x:component>
-
     </x:component>
 
 
@@ -785,6 +781,7 @@ ${v.checkModelRequestedWithRedirect}
       if(ZeTS.ises(vat.object)) return
       vat = ZeT.s2o(vat.object)
 
+      s.add({ value: '-', text: 'Нет значения' })
       ZeT.each(vat.values, function(v)
       {
         if(ZeTS.ises(v.text))

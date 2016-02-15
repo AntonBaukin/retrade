@@ -711,17 +711,21 @@ public class FacesGoodEditView extends ModelView
 
 	public void setGroup(String group)
 	{
-		getGoodView().getAttrs().put(Goods.AT_GROUP, group);
+		Object v = group;
+		if(SU.sXe(group)) v = Void.class;
+		getGoodView().getAttrs().put(Goods.AT_GROUP, v);
 	}
 
-	public BigDecimal getVat()
+	public String getVat()
 	{
-		return (BigDecimal) getGoodView().getAttrs().get(Goods.AT_VAT);
+		return SU.cats(getGoodView().getAttrs().get(Goods.AT_VAT));
 	}
 
-	public void setVat(BigDecimal vat)
+	public void setVat(String vat)
 	{
-		getGoodView().getAttrs().put(Goods.AT_VAT, vat);
+		Object v = vat;
+		if(SU.sXe(vat) || "-".equals(vat)) v = Void.class;
+		getGoodView().getAttrs().put(Goods.AT_VAT, v);
 	}
 
 	public String getFullName()
@@ -731,7 +735,9 @@ public class FacesGoodEditView extends ModelView
 
 	public void setFullName(String fullName)
 	{
-		getGoodView().getAttrs().put(Goods.AT_FULL_NAME, fullName);
+		Object v = fullName;
+		if(SU.sXe(fullName)) v = Void.class;
+		getGoodView().getAttrs().put(Goods.AT_FULL_NAME, v);
 	}
 
 	public BigDecimal getRestVolume()
@@ -741,7 +747,9 @@ public class FacesGoodEditView extends ModelView
 
 	public void setRestVolume(BigDecimal restVolume)
 	{
-		getGoodView().getAttrs().put(Goods.AT_REST_VOLUME, restVolume);
+		Object v = restVolume;
+		if(v == null) v = Void.class;
+		getGoodView().getAttrs().put(Goods.AT_REST_VOLUME, v);
 	}
 
 	public BigDecimal getNetWeight()
@@ -751,7 +759,9 @@ public class FacesGoodEditView extends ModelView
 
 	public void setNetWeight(BigDecimal netWeight)
 	{
-		getGoodView().getAttrs().put(Goods.AT_NET_WEIGHT, netWeight);
+		Object v = netWeight;
+		if(v == null) v = Void.class;
+		getGoodView().getAttrs().put(Goods.AT_NET_WEIGHT, v);
 	}
 
 	public BigDecimal getGrossWeight()
@@ -761,8 +771,11 @@ public class FacesGoodEditView extends ModelView
 
 	public void setGrossWeight(BigDecimal grossWeight)
 	{
-		getGoodView().getAttrs().put(Goods.AT_GROSS_WEIGHT, grossWeight);
+		Object v = grossWeight;
+		if(v == null) v = Void.class;
+		getGoodView().getAttrs().put(Goods.AT_GROSS_WEIGHT, v);
 	}
+
 
 	/* public: calculation interface */
 
