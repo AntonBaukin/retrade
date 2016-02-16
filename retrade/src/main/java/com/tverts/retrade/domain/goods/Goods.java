@@ -272,9 +272,20 @@ public class Goods
 
 	/* Special Checks */
 
-	public static boolean    canBuyGood(GoodUnit gu)
+	public static boolean canBuyGood(GoodUnit gu)
+	{
+		return !gu.isService() &&
+		  ((gu.getGoodCalc() == null) || gu.getGoodCalc().isSemiReady());
+	}
+
+	public static boolean canSellGood(GoodUnit gu)
 	{
 		return (gu.getGoodCalc() == null) || gu.getGoodCalc().isSemiReady();
+	}
+
+	public static boolean canMoveGood(GoodUnit gu)
+	{
+		return !gu.isService();
 	}
 
 

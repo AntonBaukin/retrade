@@ -1,9 +1,10 @@
 package com.tverts.retrade.domain.invoice.gen;
 
-/* standard Java class */
+/* Java */
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -363,7 +364,7 @@ public abstract class GenInvoiceBase
 		Set<Long> ids = (Set<Long>) ctx.get(CTX_GOODS_WITH_PRICES);
 
 		if(ids == null) ctx.set(CTX_GOODS_WITH_PRICES, ids =
-			  new HashSet<Long>(bean(GetPrices.class).
+			  new HashSet<>(bean(GetPrices.class).
 			   getGoodsWithPrices(ctx.get(Domain.class).getPrimaryKey())
 			));
 
@@ -387,7 +388,44 @@ public abstract class GenInvoiceBase
 
 	protected GoodUnit[]    selectGoods(GenCtx ctx, InvoiceData data)
 	{
-		return ctx.get(GoodUnit[].class);
+		//?: {have no filter}
+		if(getGoodsFilterKey() == null)
+			return ctx.get(GoodUnit[].class);
+
+		//~: lookup in the filter
+		GoodUnit[] res = (GoodUnit[]) ctx.get(getGoodsFilterKey());
+		if(res != null) return res;
+
+		//~: select all the goods first
+		ArrayList<GoodUnit> sel = new ArrayList<>(
+		  Arrays.asList(ctx.get(GoodUnit[].class))
+		);
+
+		//~: do filter
+		filterGoods(ctx, sel);
+
+		//~: cache the resulting array
+		res = sel.toArray(new GoodUnit[sel.size()]);
+		ctx.set(getGoodsFilterKey(), res);
+
+		return res;
+	}
+
+	protected String        getGoodsFilterKey()
+	{
+		return this.getClass().getSimpleName() + ": selected goods";
+	}
+
+	protected boolean       isGoodAllowed(GoodUnit gu)
+	{
+		return true;
+	}
+
+	protected void          filterGoods(GenCtx ctx, List<GoodUnit> goods)
+	{
+		for(Iterator<GoodUnit> i = goods.iterator();(i.hasNext());)
+			if(!isGoodAllowed(i.next()))
+				i.remove();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -400,7 +438,7 @@ public abstract class GenInvoiceBase
 		  (gunits.length < getGoodsMax())?(gunits.length):(getGoodsMax()));
 
 		//~: create good unit selection indices
-		ArrayList<Integer> selind = new ArrayList<Integer>(gunits.length);
+		ArrayList<Integer> selind = new ArrayList<>(gunits.length);
 		for(int i = 0;(i < gunits.length);i++) selind.add(i);
 		Collections.shuffle(selind, ctx.gen());
 
@@ -435,11 +473,13 @@ public abstract class GenInvoiceBase
 
 	protected BigDecimal    createGoodVolume(GenCtx ctx, InvGood good)
 	{
-		int v = volumeMin +
-		  ctx.gen().nextInt(volumeMax - volumeMin);
+		int v = volumeMin + ctx.gen().nextInt(volumeMax - volumeMin);
 
+		//?: {fractional measure}
 		if(good.getGoodUnit().getMeasure().getOx().isFractional())
-			return new BigDecimal("" + v + '.' + ctx.gen().nextInt(1000)).setScale(3);
+			return new BigDecimal("" + v + '.' + ctx.gen().
+			  nextInt(1000)).setScale(3);
+
 		return BigDecimal.valueOf(v);
 	}
 }

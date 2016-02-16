@@ -1,11 +1,9 @@
 package com.tverts.retrade.domain.invoice.gen;
 
-/* standard Java class */
+/* Java */
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.List;
 
 /* com.tverts: genesis */
 
@@ -34,30 +32,17 @@ public class GenInvoiceBuy extends GenInvoiceBase
 {
 	/* protected: GenInvoiceBase interface */
 
-	protected static final String CTX_GOODS =
-	  GenInvoiceBuy.class.getName() + ": selected goods";
-
-	protected GoodUnit[]  selectGoods(GenCtx ctx, InvoiceData data)
+	protected boolean     isGoodAllowed(GoodUnit gu)
 	{
-		GoodUnit[]          res = (GoodUnit[]) ctx.get(CTX_GOODS);
-		if(res != null) return res;
+		return Goods.canBuyGood(gu);
+	}
 
-		//~: select goods allowed for buy
-		ArrayList<GoodUnit> sel = new ArrayList<GoodUnit>(
-		  Arrays.asList(ctx.get(GoodUnit[].class))
-		);
-
-		for(Iterator<GoodUnit> i = sel.iterator();(i.hasNext());)
-			if(!Goods.canBuyGood(i.next()))
-				i.remove();
+	protected void        filterGoods(GenCtx ctx, List<GoodUnit> goods)
+	{
+		super.filterGoods(ctx, goods);
 
 		//~: retain only those having prices
-		retainGoodsWithPrices(ctx, sel);
-
-		res = sel.toArray(new GoodUnit[sel.size()]);
-		ctx.set(CTX_GOODS, res);
-
-		return res;
+		retainGoodsWithPrices(ctx, goods);
 	}
 
 	protected InvoiceData createInvoiceData(GenCtx ctx)
@@ -81,8 +66,6 @@ public class GenInvoiceBuy extends GenInvoiceBase
 		  setScale(2, BigDecimal.ROUND_HALF_DOWN);
 
 		//~: assign cost
-		((BuyGood)good).setCost(
-		  good.getVolume().multiply(p).setScale(5)
-		);
+		((BuyGood)good).setCost(good.getVolume().multiply(p).setScale(5));
 	}
 }

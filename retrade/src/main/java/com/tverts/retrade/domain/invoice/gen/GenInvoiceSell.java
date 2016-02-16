@@ -1,10 +1,11 @@
 package com.tverts.retrade.domain.invoice.gen;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /* com.tverts: spring */
 
@@ -27,6 +28,7 @@ import com.tverts.hibery.HiberPoint;
 import com.tverts.retrade.domain.goods.GetGoods;
 import com.tverts.retrade.domain.goods.GoodCalc;
 import com.tverts.retrade.domain.goods.GoodUnit;
+import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.prices.GoodPrice;
 
 /* com.tverts: retrade domain (invoices) */
@@ -88,7 +90,7 @@ public class GenInvoiceSell extends GenInvoiceBase
 		GoodUnit[] res = (GoodUnit[]) ctx.get(CTX_GOODS);
 		if(res != null) return res;
 
-		ArrayList<GoodUnit> sel = new ArrayList<GoodUnit>(
+		ArrayList<GoodUnit> sel = new ArrayList<>(
 		  Arrays.asList(ctx.get(GoodUnit[].class))
 		);
 
@@ -99,6 +101,19 @@ public class GenInvoiceSell extends GenInvoiceBase
 		ctx.set(CTX_GOODS, res);
 
 		return res;
+	}
+
+	protected boolean     isGoodAllowed(GoodUnit gu)
+	{
+		return Goods.canSellGood(gu);
+	}
+
+	protected void        filterGoods(GenCtx ctx, List<GoodUnit> goods)
+	{
+		super.filterGoods(ctx, goods);
+
+		//~: retain only those having prices
+		retainGoodsWithPrices(ctx, goods);
 	}
 
 	protected InvoiceData createInvoiceData(GenCtx ctx)

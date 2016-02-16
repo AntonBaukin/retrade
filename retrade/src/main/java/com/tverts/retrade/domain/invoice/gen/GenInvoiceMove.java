@@ -4,14 +4,17 @@ package com.tverts.retrade.domain.invoice.gen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /* com.tverts: genesis */
 
 import com.tverts.genesis.GenCtx;
 
-/* com.tverts: retrade domain (invoices) */
+/* com.tverts: retrade domain (goods, invoices) */
 
+import com.tverts.retrade.domain.goods.GoodUnit;
+import com.tverts.retrade.domain.goods.Goods;
 import com.tverts.retrade.domain.invoice.InvGood;
 import com.tverts.retrade.domain.invoice.Invoice;
 import com.tverts.retrade.domain.invoice.InvoiceData;
@@ -36,6 +39,11 @@ import com.tverts.support.EX;
 public class GenInvoiceMove extends GenInvoiceBase
 {
 	/* protected: GenInvoiceBase interface */
+
+	protected boolean     isGoodAllowed(GoodUnit gu)
+	{
+		return Goods.canMoveGood(gu);
+	}
 
 	protected InvoiceData createInvoiceData(GenCtx ctx)
 	{
