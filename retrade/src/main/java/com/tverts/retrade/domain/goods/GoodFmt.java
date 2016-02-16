@@ -23,7 +23,7 @@ public class GoodFmt extends FmtBase
 		GoodUnit      g = (GoodUnit) ctx.obj();
 		StringBuilder s = new StringBuilder(64);
 
-		s.append("Товар ");
+		s.append(g.isService()?("Услуга "):("Товар "));
 
 		//~: code
 		if(ctx.is(CODE))

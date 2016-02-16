@@ -214,8 +214,12 @@ ${v.checkModelRequestedWithRedirect}
         <tr>
           <td class = "retrade-info-value-small-text retrade-good-info-value-type">
             <div>
-              <ui:fragment rendered = "#{v.material}">
+              <ui:fragment rendered = "#{v.material and not v.goodView.service}">
                 СЫРЬЁ или ТОВАР
+              </ui:fragment>
+
+              <ui:fragment rendered = "#{v.material and v.goodView.service}">
+                УСЛУГА
               </ui:fragment>
 
               <ui:fragment rendered = "#{not v.material and not v.semiReady}">
@@ -446,13 +450,15 @@ ${v.checkModelRequestedWithRedirect}
         value = "#{v.weighted}">
 
         <f:facet name = "extjs-props">
-          xtype: 'ux.tricheckbox', extjsfReadWrite: true
+          xtype: 'ux.tricheckbox', extjsfReadWrite: true,
+          hidden: #{v.goodView.service}
         </f:facet>
 
         <f:facet name = "label-props">
           text: 'Весовой товар', labelAlign: 'left',
           margin: extjsf.pts(0, 4, 0, 6),
-          cls: 'retrade-info-title-label'
+          cls: 'retrade-info-title-label',
+          hidden: #{v.goodView.service}
         </f:facet>
       </x:checkbox-field>
     </x:component>
@@ -478,15 +484,16 @@ ${v.checkModelRequestedWithRedirect}
           validator: ZeT.fbind(retrade.vvolume, retrade, {blank: true}),
           extjsfReadWrite: true, width: '100%',
           cellCls: 'retrade-form-value-cell retrade-width-50pc',
-          fieldCls: 'x-form-field retrade-width-100pc'
+          fieldCls: 'x-form-field retrade-width-100pc',
+          hidden: #{v.goodView.service}
         </f:facet>
 
         <f:facet name = "label-props">
           html: 'Нетто&lt;br/&gt;вес',
           margin: extjsf.pts(0, 4, 0, 0),
           cls: 'retrade-info-title-label',
-          cellCls: 'retrade-form-label-cell retrade-width-0pc',
-          width: extjsf.ex(7)
+          cellCls: 'retrade-width-0pc',
+          width: extjsf.ex(7), hidden: #{v.goodView.service}
         </f:facet>
 
         <f:converter for = "valueInput"
@@ -502,14 +509,16 @@ ${v.checkModelRequestedWithRedirect}
           validator: ZeT.fbind(retrade.vvolume, retrade, {blank: true}),
           extjsfReadWrite: true, width: '100%',
           cellCls: 'retrade-form-value-cell retrade-width-50pc',
-          fieldCls: 'x-form-field retrade-width-100pc'
+          fieldCls: 'x-form-field retrade-width-100pc',
+          hidden: #{v.goodView.service}
         </f:facet>
 
         <f:facet name = "label-props">
           text: 'Брутто вес',
           margin: extjsf.pts(0, 4, 0, 6),
           cls: 'retrade-info-title-label',
-          cellCls: 'retrade-form-label-cell retrade-width-0pc'
+          cellCls: 'retrade-width-0pc',
+          hidden: #{v.goodView.service}
         </f:facet>
 
         <f:converter for = "valueInput"
@@ -534,15 +543,17 @@ ${v.checkModelRequestedWithRedirect}
         value = "#{v.vat}">
 
         <f:facet name = "drop-props">
-          extjsfReadWrite: true, width: '100%', editable: false,
+          extjsfReadWrite: true, editable: false,
           cellCls: 'retrade-form-value-cell retrade-width-50pc',
+          width: (#{v.goodView.service})?extjsf.ex(17):('100%'),
           fieldCls: 'x-form-field retrade-width-100pc',
           valueField: 'value', displayField: 'text'
         </f:facet>
 
         <f:facet name = "label-props">
           text: 'НДС', margin: extjsf.pts(0, 4, 0, 0),
-          cellCls: 'retrade-form-label-cell retrade-width-0pc',
+          cls: 'retrade-info-title-label',
+          cellCls: 'retrade-width-0pc',
           width: extjsf.ex(7)
         </f:facet>
       </x:drop-list>
@@ -558,14 +569,16 @@ ${v.checkModelRequestedWithRedirect}
           validator: ZeT.fbind(retrade.vvolume, retrade, {blank: true}),
           extjsfReadWrite: true, width: '100%',
           cellCls: 'retrade-form-value-cell retrade-width-50pc',
-          fieldCls: 'x-form-field retrade-width-100pc'
+          fieldCls: 'x-form-field retrade-width-100pc',
+          hidden: #{v.goodView.service}
         </f:facet>
 
         <f:facet name = "label-props">
           html: 'Неснижаемый&lt;br/&gt;остаток',
           margin: extjsf.pts(0, 4, 0, 6),
           cls: 'retrade-info-title-label',
-          cellCls: 'retrade-form-label-cell retrade-width-0pc'
+          cellCls: 'retrade-width-0pc',
+          hidden: #{v.goodView.service}
         </f:facet>
 
         <f:converter for = "valueInput"
@@ -643,7 +656,8 @@ ${v.checkModelRequestedWithRedirect}
           title: 'Артикул',
           layout: 'fit', border: false, bodyPadding: 0,
           cls: 'retrade-inline-block-caption',
-          bodyCls: 'retrade-transparent-panel'
+          bodyCls: 'retrade-transparent-panel',
+          hidden: #{v.goodView.service}
         </f:facet>
 
         <x:data-grid coid = "${z:vid(v, 'vendor-codes')}"
@@ -940,7 +954,8 @@ ${v.checkModelRequestedWithRedirect}
       doedit.visible(isread)
 
       //~: show go-to-calc
-      if(!isread) gocalc.visible(true)
+      if(!isread && ("#{v.goodView.service}" == 'false'))
+        gocalc.visible(true)
 
       //~: window title
       if(isread) winmain.co().setTitle('${z:jss(v.infoWindowTitle)}')
