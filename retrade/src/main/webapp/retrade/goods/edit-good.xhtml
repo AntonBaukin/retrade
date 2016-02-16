@@ -75,8 +75,7 @@ ${v.checkModelRequestedWithRedirect}
    <x:component coid = "${z:vid(v, 'goto-calc')}">
     <f:facet name = "extjs-props">
 
-      xtype: 'button', text: 'Производство',
-      hidden: ('true' != "#{v.model.editMode or not empty v.model.calc}"),
+      xtype: 'button', text: 'Производство', hidden: true,
       margin: extjsf.pts(0, 4, 0, 4), tooltipType: 'title',
       tooltip: 'Перейти к формуле (рецепту) производства продукта или полуфабриката'
 
@@ -135,7 +134,7 @@ ${v.checkModelRequestedWithRedirect}
    <!-- [show attributes toggle button] -->
    <x:component coid = "${z:vid(v, 'show-attrs')}">
     <f:facet name = "extjs-props">
-      xtype: 'button', text: 'Атрибуты', enableToggle: true,
+      xtype: 'button', text: 'Атрибуты', enableToggle: true, hidden: #{v.creating},
       tooltipType: 'title', tooltip: 'Отобразить дополнительные атрибуты товара'
     </f:facet>
    </x:component>
@@ -176,7 +175,9 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [derived] -->
 
-    <x:html coid = "${z:vid(v, '_derived')}" rendered = "#{v.calcView.derived}">
+    <x:html coid = "${z:vid(v, '_derived')}"
+      rendered = "#{v.calcView.derived and not v.creating}">
+
       <f:facet name = "extjs-props">
         xtype: 'panel', frame: false, border: false
       </f:facet>
@@ -193,7 +194,9 @@ ${v.checkModelRequestedWithRedirect}
     </x:html>
 
 
-    <x:component coid = "${z:vid(v, '_sb_fill_0')}">
+    <x:component coid = "${z:vid(v, '_sb_fill_0')}"
+      rendered = "#{not v.creating}">
+
      <f:facet name = "extjs-props">
        xtype: 'panel', flex: 1, border: false,
        bodyCls: 'retrade-status-panel'
@@ -203,7 +206,9 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [good type] -->
 
-    <x:html coid = "${z:vid(v, '_good_type')}">
+    <x:html coid = "${z:vid(v, '_good_type')}"
+      rendered = "#{not v.creating}">
+
       <f:facet name = "extjs-props">
         xtype: 'panel', frame: false, border: false
       </f:facet>
@@ -592,22 +597,43 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [add to selection set] -->
     <x:component coid = "${z:vid(v, '_add_to_selset')}">
       <f:facet name = "extjs-props">
+        hidden: ('false' == "#{v.model.selSetAble}"),
         bodyCls: 'retrade-transparent-panel', border: false,
         layout: {type: 'hbox', align: 'middle'},
-        margin: extjsf.pts(0, 0, 2, 0)
+        margin: extjsf.pts(0, 0, 0, 0)
       </f:facet>
 
-      <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}" value = "">
-
+      <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}">
         <f:facet name = "extjs-props">
-          hidden: ('false' == "#{v.model.selSetAble}"),
           checked: !!extjsf.bind('winmain', '${rootView.extjsDomain}').retradeAddSelSetChecked,
           cls: 'retrade-align-right', fieldStyle: { marginRight: '4pt' }
         </f:facet>
 
         <f:facet name = "label-props">
-          hidden: ('false' == "#{v.model.selSetAble}"),
           html: "&lt;span title = 'Добавить созданный товар в текущую выборку?'&gt;добавить в выборку&lt;/span&gt;"
+        </f:facet>
+      </x:checkbox-field>
+    </x:component>
+
+
+    <!-- [make service] -->
+    <x:component coid = "${z:vid(v, '_service')}">
+      <f:facet name = "extjs-props">
+        hidden: ('false' == "#{v.creating}"),
+        bodyCls: 'retrade-transparent-panel', border: false,
+        layout: {type: 'hbox', align: 'middle'},
+        margin: extjsf.pts(0, 0, 0, 0)
+      </f:facet>
+
+      <x:checkbox-field coid = "${z:vid(v, 'service')}"
+        value = "#{v.goodView.service}">
+
+        <f:facet name = "extjs-props">
+          cls: 'retrade-align-right', fieldStyle: { marginRight: '4pt' }
+        </f:facet>
+
+        <f:facet name = "label-props">
+          text: 'услуга (опция доступна только при создании)'
         </f:facet>
       </x:checkbox-field>
     </x:component>
@@ -616,7 +642,8 @@ ${v.checkModelRequestedWithRedirect}
     <x:component coid = "${z:vid(v, '_huge_fields')}">
       <f:facet name = "extjs-props">
         xtype: 'tabpanel', frame: false, border: false,
-        flex: 1, cls: 'retrade-compact-panel'
+        flex: 1, cls: 'retrade-compact-panel',
+        margin: extjsf.pts(4, 0, 0, 0)
       </f:facet>
 
 
@@ -849,6 +876,11 @@ ${v.checkModelRequestedWithRedirect}
     var bcodes  = extjsf.bind("${z:vid(v, 'barcode')}", '${rootView.extjsDomain}')
     var bcstore = extjsf.bind("${z:vid(v, 'barcodes')}", '${rootView.extjsDomain}')
     var bcodesh = extjsf.bind("${z:vid(v, 'barcodes-hidden')}", '${rootView.extjsDomain}')
+    var service = extjsf.bind("${z:vid(v, 'service')}", '${rootView.extjsDomain}')
+    var weight  = extjsf.bind("${z:vid(v, 'weighted')}", '${rootView.extjsDomain}')
+    var gweight = extjsf.bind("${z:vid(v, 'gross-weight')}", '${rootView.extjsDomain}')
+    var nweight = extjsf.bind("${z:vid(v, 'net-weight')}", '${rootView.extjsDomain}')
+    var rvol    = extjsf.bind("${z:vid(v, 'rest-volume')}", '${rootView.extjsDomain}')
 
 
     //~: go to the calculation
@@ -954,8 +986,8 @@ ${v.checkModelRequestedWithRedirect}
       doedit.visible(isread)
 
       //~: show go-to-calc
-      if(!isread && ("#{v.goodView.service}" == 'false'))
-        gocalc.visible(true)
+      if("#{v.goodView.service or v.creating}" == 'false')
+        gocalc.visible(!isread || ('true' == "#{not empty v.model.calc}"))
 
       //~: window title
       if(isread) winmain.co().setTitle('${z:jss(v.infoWindowTitle)}')
@@ -1068,6 +1100,23 @@ ${v.checkModelRequestedWithRedirect}
     //~: add new attribute
     extjsf.bindHandler(addat, attsed.addAttribute)
 
+    function disable(disabled, binds)
+    {
+      ZeT.each(binds, function(b){ b.co().setDisabled(disabled) })
+    }
+
+    function clean(binds)
+    {
+      ZeT.each(binds, function(b){ b.value('') })
+    }
+
+    //~: toggle service
+    if(service) service.on('change', function()
+    {
+      vcodes.visible(!service.value())
+      disable(service.value(), [ weight, gweight, nweight, rvol ])
+    })
+
     //~: vendor codes editing
     vcodes.co().getPlugin('cellediting').on('beforeedit', function()
     {
@@ -1139,6 +1188,10 @@ ${v.checkModelRequestedWithRedirect}
 
       //~: barcodes
       bcodesh.value(encodeBarcodes())
+
+      //?: {is a service}
+      if(service && service.value())
+        clean([ weight, gweight, nweight, rvol, vcodesh ])
 
       //!: submit the form
       form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',

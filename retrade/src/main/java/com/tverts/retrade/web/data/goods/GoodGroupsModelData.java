@@ -3,6 +3,7 @@ package com.tverts.retrade.web.data.goods;
 /* Java */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /* Java XML Binding */
@@ -73,6 +74,7 @@ public class GoodGroupsModelData implements SimpleModelData
 	{
 		List<String> gs = bean(GetGoods.class).
 		  getAttrStrings(getModel().domain(), Goods.AT_GROUP);
+		Collections.sort(gs, String::compareToIgnoreCase);
 
 		List<CatItemView> res = new ArrayList<>(gs.size());
 		for(String g : gs)

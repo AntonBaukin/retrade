@@ -201,6 +201,10 @@ function retrade_open_window(opts)
 
   //~: create the ExtJS Window component & return the bind
   winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+
+  //~: install positioning strategy
+  new ReTrade.WinAlign({ window: winmain })
+
   return winmain
 }
 

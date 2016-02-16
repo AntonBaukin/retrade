@@ -134,7 +134,9 @@
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function(btn, event)
   {
     extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
-      retradeOpenGoodWindow(null, event, { box: { '+xpt': 10, '-ypt': -10 }})
+      retradeOpenGoodWindow(null, event, { box: { '+xpt': 10, '-ypt': -10,
+        heightpt: retrade_default('good-box').heightpt + 40
+      }})
   })
 
   //]]>

@@ -149,6 +149,9 @@ public class FacesGoodEditView extends ModelView
 			  HiberPoint.isTestInstance(gu.getDomain()));
 
 			g = gu.getOx();
+
+			//=: is-service flag
+			g.setService(getGoodView().isService());
 		}
 		//!: load it
 		else
