@@ -64,8 +64,8 @@ function genUserLinks(authLogin)
 
 		{
 			id    : 'goods-nav',
-			text  : 'Товары',
-			hint  : 'Таблица товаров с навигацией',
+			text  : 'Товары и услуги',
+			hint  : 'Таблица товаров и услуг с навигацией',
 			icon  : 'retrade-goods-icon',
 			open  : {
 				panel  : 'center',

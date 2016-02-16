@@ -1,5 +1,12 @@
 <tree>
 
+  <folder code = "УС" name = "Услуги">
+
+    <good code = "781"/>
+    <good code = "782"/>
+
+  </folder>
+
   <folder code = "ФР" name = "Фрукты">
 
     <folder code = "ФР-ЯБЛ" name = "Яблоки">

@@ -170,11 +170,16 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 		//?: {good has calculation} generate it
 		if(c != null)
+		{
 			//?: {derived good}
 			if(c.getXSuperGood() != null)
 				genDerived(ctx, gu, c);
 			else
 				genCalculation(ctx, gu, c);
+
+			//!: update the good
+			actionRun(ActionType.UPDATE, gu);
+		}
 	}
 
 	public void takeSubGood(GenCtx ctx, Good g, String m, BigDecimal v)
@@ -343,6 +348,10 @@ public class GenTestGoods extends GenesisHiberPartBase
 	{
 		GoodCalc gc = new GoodCalc();
 
+		//~: update full name of the good
+		Goods.attrs(gu.getOx()).put(Goods.AT_FULL_NAME,
+		  "Производный товар " + gu.getName());
+
 		//=: destination good
 		gc.setGoodUnit(gu);
 
@@ -417,6 +426,11 @@ public class GenTestGoods extends GenesisHiberPartBase
 	protected void genCalculation(GenCtx ctx, GoodUnit gu, Calc c)
 	{
 		GoodCalc gc = new GoodCalc();
+
+		//~: update full name of the good
+		Goods.attrs(gu.getOx()).put(Goods.AT_FULL_NAME, SU.cats(
+		  c.isSemiReady()?("Полуфабрикат "):("Продукт "), gu.getName()
+		));
 
 		//=: destination good
 		gc.setGoodUnit(gu);
@@ -518,15 +532,25 @@ public class GenTestGoods extends GenesisHiberPartBase
 
 		//~: bar codes (1 up to 3)
 		if(ats.get(Goods.AT_BARCODE) == null)
-			//?: {generating a super-good, or 50% of subs}
-			if((gu.getSuperGood() == null) || ctx.gen().nextBoolean())
-			{
-				String[] cs = new String[1 + ctx.gen().nextInt(3)];
-				for(int i = 0;(i < cs.length);i++)
-					cs[i] = GenUtils.number(ctx.gen(), 13);
+		{
+			String[] cs = new String[1 + ctx.gen().nextInt(3)];
+			for(int i = 0;(i < cs.length);i++)
+				cs[i] = GenUtils.number(ctx.gen(), 13);
 
-				ats.put(Goods.AT_BARCODE, (cs.length == 1)?(cs[0]):(cs));
-			}
+			ats.put(Goods.AT_BARCODE, (cs.length == 1)?(cs[0]):(cs));
+		}
+
+		//~: full name
+		ats.put(Goods.AT_FULL_NAME, SU.cats(
+		  g.isService()?("Услуга "):("Товар "), g.getName()
+		));
+
+		//?: {is a service} skip the following
+		if(g.isService()) return;
+
+		//~: vendor code
+		if(ats.get(Goods.AT_VENDOR_CODE) == null)
+			ats.put(Goods.AT_VENDOR_CODE, GenUtils.number(ctx.gen(), 8));
 
 		//~: net weight
 		if(ats.get(Goods.AT_NET_WEIGHT) == null)

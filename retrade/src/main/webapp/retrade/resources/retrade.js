@@ -737,6 +737,7 @@ ZeT.init('retrade.globals', function()
 	    {name: 'volume',       type: 'string'},
 	    {name: 'semiReady',    type: 'string'},
 	    {name: 'integer',      type: 'boolean'},
+	    {name: 'service',      type: 'boolean'},
 	    {name: 'cost',         type: 'string'},
 	    {name: 'storeVolume',  type: 'string'},
 	    {name: 'storeCode',    type: 'string'}
@@ -754,7 +755,7 @@ ZeT.init('retrade.globals', function()
 
 		 {
 		   text: "Наименование", dataIndex: 'goodName',
-		   sortable: true, flex: 1, renderer: function(v, meta)
+		   sortable: true, flex: 2, renderer: function(v, meta)
 		   {
 				meta.tdCls = 'retrade-goods-grid-column-name'
 				return v
@@ -762,8 +763,7 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Группа", dataIndex: 'goodGroup', sortable: false,
-		   width: extjsf.ex(20)
+		   text: "Группа", dataIndex: 'goodGroup', sortable: false, flex: 1
 		 },
 
 		 {
@@ -804,7 +804,7 @@ ZeT.init('retrade.globals', function()
 
 		 {
 		   text: "Наименование", dataIndex: 'goodName',
-		   sortable: true, flex: 3, renderer: function(v, meta)
+		   sortable: true, flex: 2, renderer: function(v, meta)
 		   {
 				meta.tdCls = 'retrade-goods-grid-column-name'
 				return v
@@ -812,8 +812,7 @@ ZeT.init('retrade.globals', function()
 		 },
 
 		 {
-		   text: "Группа", dataIndex: 'goodGroup', sortable: false,
-		   width: extjsf.ex(16), flex: 1
+		   text: "Группа", dataIndex: 'goodGroup', sortable: false, flex: 1
 		 },
 
 		 {
@@ -845,12 +844,12 @@ ZeT.init('retrade.globals', function()
 
 		 {
 		   text: "Наименование", dataIndex: 'goodName', sortable: true,
-		   width: extjsf.ex(48), flex: 1
+		   width: extjsf.ex(48), flex: 2
 		 },
 
 		 {
 		   text: "Группа", dataIndex: 'goodGroup', sortable: false,
-		   width: extjsf.ex(16), tdCls: 'ux-grid-column-smaller'
+		   flex: 1, tdCls: 'ux-grid-column-smaller'
 		 },
 
 		 {

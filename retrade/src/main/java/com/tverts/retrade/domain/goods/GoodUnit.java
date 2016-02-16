@@ -98,7 +98,14 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 	{
 		//?: {is a sub-good} nothing else
 		if(getSuperGood() != null)
+		{
+			Good g = getOxOwn();
+
+			//=: is service flag
+			g.setService(this.service);
+
 			return;
+		}
 
 		Good g = getOx();
 
@@ -107,6 +114,9 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 
 		//=: ox-good calculation key
 		g.setCalc((calc == null)?(null):(calc.getPrimaryKey()));
+
+		//=: is service flag
+		this.service = g.isService();
 
 		//=: visibility flags
 		this.visibleBuy = g.isVisibleBuy();
@@ -173,6 +183,18 @@ public class GoodUnit extends OxCatEntity implements OxSearch
 	public void setGoodCalc(GoodCalc goodCalc)
 	{
 		this.calc = goodCalc;
+	}
+
+	public boolean isService()
+	{
+		return service;
+	}
+
+	private boolean service;
+
+	public void setService(boolean service)
+	{
+		this.service = service;
 	}
 
 	public String getSortName()

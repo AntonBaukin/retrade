@@ -22,6 +22,13 @@ function getTestMeasures()
 	return [
 
 		{
+			code: 'час',
+			name: 'час',
+			fractional: true,
+			'class-code': '356'
+		},
+
+		{
 			code: 'кг',
 			name: 'килограммы',
 			fractional: true,

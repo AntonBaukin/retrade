@@ -1063,7 +1063,7 @@
     var fid  = sel.get('modelId');
     var root = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}');
 
-    if(fid == '$') root.setTitle('Товары всех каталогов')
+    if(fid == '$') root.setTitle('Товары и услуги всех каталогов')
 
     if((fid != '$') && (fid.charAt(0) == '$'))
       root.setTitle(ZeTS.cat(
@@ -1072,7 +1072,7 @@
 
     if(fid.charAt(0) != '$')
       root.setTitle(ZeTS.cat(
-         'Товары каталога ● ', sel.get('code'), ' ● ',  sel.get('name')
+         'Товары и услуги каталога ● ', sel.get('code'), ' ● ',  sel.get('name')
       ))
   }
 
@@ -1236,7 +1236,7 @@
         Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
 
         ReTrade.desktop.event(ZeTS.cat(
-         'Товары текущей выборки были успешно ',
+         'Товары и услуги текущей выборки были успешно ',
          (copy)?('скопированы'):('перенесены'),
          ' в каталог [', sel.get('code'), '].'
         ))

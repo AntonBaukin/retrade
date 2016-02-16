@@ -108,6 +108,18 @@
     </many-to-one>
 
 
+    <!-- Is Service Flag -->
+
+    <property name = 'service'>
+      <column name = 'is_service' not-null = 'true'>
+        <comment>
+          Defines whteher this Good is a resource or a product,
+          or is a service that may not be stored
+        </comment>
+      </column>
+    </property>
+
+
     <!-- Visibility Flags -->
 
     <property name = 'visibleBuy'>

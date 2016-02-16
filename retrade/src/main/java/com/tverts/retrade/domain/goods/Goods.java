@@ -352,6 +352,9 @@ public class Goods
 		//=: name
 		sub.setName(gu.getName());
 		sub.setSortName(gu.getSortName());
+
+		//=: is service
+		sub.setService(gu.isService());
 	}
 
 	public static void init(CalcItem i, CalcPart p)

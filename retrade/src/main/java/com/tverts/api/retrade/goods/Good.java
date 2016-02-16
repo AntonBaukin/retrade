@@ -28,7 +28,7 @@ import com.tverts.api.core.XKeyPair;
 @XmlRootElement(name = "good")
 @XmlType(name = "good", propOrder = {
   "measure", "XMeasure", "calc", "XCalc",
-  "visibleSell", "visibleBuy",
+  "service", "visibleSell", "visibleBuy",
   "visibleLists", "visibleReports",
   "attrValues"
 })
@@ -87,6 +87,18 @@ public class Good extends CatItem
 	public void setXCalc(String XCalc)
 	{
 		this.xcalc = XCalc;
+	}
+
+	public boolean isService()
+	{
+		return service;
+	}
+
+	private boolean service;
+
+	public void setService(boolean service)
+	{
+		this.service = service;
 	}
 
 	/**

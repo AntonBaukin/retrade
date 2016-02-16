@@ -75,6 +75,24 @@ function getTestGoods()
 	return [
 
 		{
+			cost: '25.0',
+			code: '781',
+			name: 'упаковка',
+			xmeasure: 'шт',
+			service: true,
+			group: 'услуги'
+		},
+
+		{
+			cost: '250.0',
+			code: '782',
+			name: 'приготовление',
+			xmeasure: 'час',
+			service: true,
+			group: 'услуги'
+		},
+
+		{
 			cost: '45.50',
 			code: '901',
 			name: 'яблоки (Молдова)',

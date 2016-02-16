@@ -597,9 +597,10 @@ public class FacesGoodEditView extends ModelView
 
 	public String getInfoWindowTitle()
 	{
-		return formatTitle("Товар",
-		  getGoodView().getGoodCode(),
-		  getGoodView().getGoodName());
+		return formatTitle(
+		  getGoodView().isService()?("Услуга"):("Товар"),
+		  getGoodView().getGoodCode(), getGoodView().getGoodName()
+		);
 	}
 
 	public String getMeasuresWindowTitle()
@@ -630,11 +631,12 @@ public class FacesGoodEditView extends ModelView
 	public String getEditWindowTitle()
 	{
 		if(getGoodView().getObjectKey() == null)
-			return "Создание товара";
+			return "Создание товара или услуги";
 
-		return formatTitle("Ред. товара",
-		  getGoodView().getGoodCode(),
-		  getGoodView().getGoodName());
+		return formatTitle(
+		  getGoodView().isService()?("Ред. услуги"):("Ред. товара"),
+		  getGoodView().getGoodCode(), getGoodView().getGoodName()
+		);
 	}
 
 	public String getErrorEvent()

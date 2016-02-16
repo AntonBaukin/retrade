@@ -161,6 +161,18 @@ public class GoodUnitView implements Serializable
 
 	private boolean integer;
 
+	public boolean isService()
+	{
+		return service;
+	}
+
+	private boolean service;
+
+	public void setService(boolean service)
+	{
+		this.service = service;
+	}
+
 	@XmlElement
 	public String getStoreCode()
 	{
@@ -329,6 +341,9 @@ public class GoodUnitView implements Serializable
 		this.integer = (gu.getMeasure() != null) &&
 		  !gu.getMeasure().getOx().isFractional();
 
+		//~: is service flag
+		this.service = gu.isService();
+
 		return this;
 	}
 
@@ -342,7 +357,7 @@ public class GoodUnitView implements Serializable
 		if(gu == null) return this;
 
 		//~: select good group
-		this.goodGroup = (this.attrs != null)
+		this.goodGroup = !this.attrs.isEmpty()
 			?((String) this.attrs.get(Goods.AT_GROUP))
 			:(get.getAttrString(gu, Goods.AT_GROUP));
 
