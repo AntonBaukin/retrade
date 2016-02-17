@@ -136,7 +136,7 @@ public class JsGlobal
 	public Object global(String name)
 	{
 		return globals.computeIfAbsent(
-		  name, n -> new HashMap());
+		  name, n -> new JsPlain());
 	}
 
 	public Object debug(Object... args)
