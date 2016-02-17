@@ -137,7 +137,7 @@ function retrade_open_window(opts)
     if(!ZeT.isu(opts.record)) //?: {has record key}
       opts.domain += ':record:' + opts.record + ':'
 
-    if(!opts.domain.endsWith(':')) opts.domain += ':'
+    if(!ZeTS.endsWith(opts.domain, ':')) opts.domain += ':'
     opts.domain = extjsf.tempDomain(opts.domain)
   }
 

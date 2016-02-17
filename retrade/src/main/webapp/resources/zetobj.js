@@ -1,8 +1,11 @@
 /*===============================================================+
- |                                                     zetobj    |
- |   0-ZeT JavaScript Library for Browsers                       |
+ |                                                          zet  |
+ |                   0-ZeT JavaScript Library                    |
+ |                                                               |
  |                                   / anton.baukin@gmail.com /  |
- +===============================================================*/
+ +===============================================================+
+ | Requires [lodash 4.5]
+ +---------------------------------------------------------------*/
 
 
 // +----: ZeT Strings  :-----------------------------------------+
@@ -16,32 +19,6 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 	ises             : function(s)
 	{
 		return !ZeT.iss(s) || (s.length == 0) || !/\S/.test(s)
-	},
-
-	/**
-	 * Checks the value, or a property value is a string.
-	 * If the final property is not accessible, false
-	 * value is returned.
-	 *
-	 * Empty strings return false value! (Whitespaces are
-	 * not trimmed before the check.)
-	 */
-	i$s              : function(/* object, properties list */)
-	{
-		var o = arguments[0]
-
-		if(arguments.length == 1)
-			return ZeT.iss(o) && !!o.length
-
-		var a = ZeT.a(arguments); a.shift()
-
-		while(a.length)
-		{
-			o = o[a.shift()] //<-- access the next property
-			if(ZeT.i$x(o)) return false
-		}
-
-		return ZeT.iss(o) && !!o.length
 	},
 
 	trim             : function(s)
@@ -179,18 +156,6 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 					return this
 		return this
 	}
-}
-
-/**
- * For some browsers that do not have String.endsWith()...
- */
-if(!String.prototype.endsWith)
-  String.prototype.endsWith = function(s)
-{
-	if(!s || !s.length) return false
-
-	var i = this.lastIndexOf(s)
-	return (i == this.length - s.length)
 }
 
 
