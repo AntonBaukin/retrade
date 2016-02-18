@@ -9,6 +9,9 @@
   <meta http-equiv = 'Content-Type'   content = 'text/html;charset=UTF-8'/>
 
   <script type = 'text/javascript' charset = 'UTF-8'
+     src = "../lodash.js"></script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
      src = "../zetobj.js"></script>
 
 </head>
@@ -34,7 +37,8 @@ ZeT.assert(ZeTS.ises('   \t\n  \n'))
 ZeT.assert(!ZeTS.ises(' 0 '))
 ZeT.assert(!ZeTS.ises(' -'))
 ZeT.assert(!ZeTS.ises('- '))
-ZeT.assert("0123456789".endsWith('789'))
+ZeT.assert(ZeTS.endsWith("0123456789", '789'))
+ZeT.assert(ZeTS.startsWith("0123456789", '0123'))
 
 //>: string functions
 

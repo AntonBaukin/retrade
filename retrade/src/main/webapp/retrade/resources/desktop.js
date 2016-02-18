@@ -1676,13 +1676,19 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 				ZeT.assert(ZeT.isf(window))
 		}
 
-		//~: initial alignment
-		var win = this.win()
+		var win = this.win(false)
 		if(win && win.getWidth() && win.getHeight())
-		{
-			var xy = win.getXY()
-			this._on_wnd_move(win, xy[0], xy[1])
-		}
+			//?: initial alignment given
+			if(ZeT.iss(opts.align))
+			{
+				this._align = opts.align
+				this.resizeTo(null, null, true)
+			}
+			else
+			{
+				var xy = win.getXY()
+				this._on_wnd_move(win, xy[0], xy[1])
+			}
 	},
 
 	skipEvents        : function(ske)
@@ -1843,6 +1849,36 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 			if(!ZeT.isn(p.height))
 				p.height = this._wh[1]
 		}
+	},
+
+	/**
+	 * Returns existing alignment code.
+	 *
+	 * When xy is true, and the alignment is partial
+	 * (has '0' in one axis), returns not a string,
+	 * but { align: ..., x: ... | y: ... }
+	 */
+	align             : function()
+	{
+		//?: {has no alignment}
+		var a = this._align
+		if(!ZeT.iss(a))
+			return undefined
+
+		//?: {invalid code}
+		ZeT.assert(a != '00')
+		ZeT.assert(a.length == 2)
+
+		//?: {is not partial}
+		var i = a.indexOf('0')
+		if(i == -1) return a
+
+		//~: current window
+		var win = this.win(false)
+		if(!win) return undefined
+
+		return (i == 0)?{ align: a, x: win.getX() }:
+		  { align: a, y: win.getY() }
 	},
 
 	/**
@@ -2453,34 +2489,42 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 	_create_wnd       : function(opts)
 	{
+		opts = ZeT.deepClone(opts || {})
+
 		var self = this, params = {
 			mode: 'body', domain: self.domain(),
 			view: self.view(), model: self.model()
 		}
 
-		if(opts && opts.params) ZeT.extend(params, opts.params)
+		if(opts.params) {
+			ZeT.extend(params, opts.params)
+			delete opts.params
+		}
 
-		var props = { xtype: 'window', title: 'Загрузка выборки...',
-			layout: 'fit', collapsible: false, autoShow: true,
-			cls: 'retrade-selset-window', style: { opacity: 0.9 },
+		var props = ZeT.deepExtend(opts, {
+			xtype: 'window', layout: 'fit',
+			autoShow: false, cls: 'retrade-selset-window',
 
 			loader: { autoLoad: true, scripts: true, params: params,
 				url: self.url('winmain'), ajaxOptions: { method: 'GET' }
 			}
-		}
+		})
 
 		//~: assign previous position and size
-		if(!this._align_wnd) this._align_wnd =
-		  new ReTrade.WinAlign({ align: 'rc', window: function() {}})
-		this._align_wnd.pos(props)
+		ZeT.extend(props, this._wnd_pos)
 
 		//~: define the window bind
 		var winmain = extjsf.defineBind('winmain-selset', self.domain())
 		winmain.extjsProps(props)
 
 		//~: create positioning strategy
-		this._align_wnd = new ReTrade.WinAlign({
-		  window: winmain, align: 'rc'
+		winmain.on('show', function()
+		{
+			var b = self._wnd_pos
+			var a = ZeT.iss(b)?(b):(b && b.align)
+
+			new ReTrade.WinAlign({ window: winmain,
+			  align: ZeT.iss(a)?(a):(b)?(null):('rc') })
 		})
 
 		//~: close window listener
@@ -2496,27 +2540,42 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	{
 		var winmain = this.winmain()
 		if(!winmain) this._winmain = winmain =
-		  ZeT.assert(this._create_wnd(opts))
+		  ZeT.assertn(this._create_wnd(opts))
 
-		//!: load selection set window in the same (root) domain
-		if(winmain.co())
-			return winmain.co().toFront()
+		//?: {display existing window}
+		if(winmain.co()) return winmain.co().toFront()
 
-		//~: create window & load the content
+		//~: create window & display it
 		winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
-
-		//~: assign the position
-		this._align_wnd.pos()
+		winmain.co().show()
 	},
 
 	_close_wnd        : function(opts)
 	{
 		if(!this._winmain) return
+
 		var winmain = this._winmain
 		delete this._winmain
+		delete this._wnd_pos
 
 		if(winmain.co())
+		{
+			var p, wa = winmain.WinAlign
+			var box   = winmain.co().getBox()
+
+			//?: {has alignment code}
+			if(wa) p = wa.align()
+
+			//?: {save direct position}
+			if(!p) p = box; else {
+				if(ZeT.iss(p)) p = { align: p }
+				p.width  = box.width
+				p.height = box.height
+			}
+
+			this._wnd_pos = p
 			winmain.co().close()
+		}
 	},
 
 	_onoff            : function(ison)
