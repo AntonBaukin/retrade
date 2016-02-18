@@ -27,14 +27,14 @@ ZeT.extend = function(obj, ext)
 
 ZeT.extend(ZeT,
 {
+	JAVA_MAP         : Java.type("java.util.Map"),
+
 	keys             : function(o)
 	{
 		if(o instanceof ZeT.JAVA_MAP)
 			return new java.util.ArrayList(o.keySet())
 		return Object.keys(o)
 	},
-
-	JAVA_MAP         : Java.type("java.util.Map"),
 
 	/**
 	 * Allows to clone deeply object with prototype support.

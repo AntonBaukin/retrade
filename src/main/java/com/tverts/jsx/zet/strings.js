@@ -11,14 +11,7 @@ var ZeTS = JsX.global('ZeTS')
 
 ZeT.extend(ZeTS,
 {
-	/**
-	 * Returns false for string objects that are not
-	 * whitespace-trimmed empty.
-	 */
-	ises             : function(s)
-	{
-		return !ZeT.iss(s) || (s.length == 0) || !/\S/.test(s)
-	},
+	ises             : ZeT.ises,
 
 	trim             : function(s)
 	{
