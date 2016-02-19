@@ -23,13 +23,13 @@ ZeT.extend(ZeTS,
 		return s && s.length && s.charAt(0)
 	},
 
-	startsWith       : function(s, x)
+	starts           : function(s, x)
 	{
 		ZeT.assert(ZeT.iss(s) && ZeT.iss(x))
 		return (s.indexOf(x) == 0)
 	},
 
-	endsWith         : function(s, x)
+	ends             : function(s, x)
 	{
 		ZeT.assert(ZeT.iss(s) && ZeT.iss(x))
 		var i = s.lastIndexOf(x)
@@ -37,7 +37,7 @@ ZeT.extend(ZeTS,
 
 	},
 
-	sub              : function(s, a, b)
+	replace          : function(s, a, b)
 	{
 		ZeT.assert(ZeT.iss(s) && ZeT.iss(a) && ZeT.iss(b))
 		return s.split(a).join(b)

@@ -438,21 +438,21 @@ function testStrings()
 
 	//--> starts with
 
-	ZeT.assert(ZeTS.startsWith('abc', 'abc'))
-	ZeT.assert(ZeTS.startsWith(' abcde', ' abc'))
-	ZeT.assert(!ZeTS.startsWith(' abcde', 'abc'))
+	ZeT.assert(ZeTS.starts('abc', 'abc'))
+	ZeT.assert(ZeTS.starts(' abcde', ' abc'))
+	ZeT.assert(!ZeTS.starts(' abcde', 'abc'))
 
 	//--> ends with
 
-	ZeT.assert(ZeTS.endsWith('abc', 'abc'))
-	ZeT.assert(ZeTS.endsWith('abcde\t', 'de\t'))
-	ZeT.assert(ZeTS.endsWith('abcde\t', '\t'))
-	ZeT.assert(!ZeTS.endsWith(' abcde', 'cd'))
+	ZeT.assert(ZeTS.ends('abc', 'abc'))
+	ZeT.assert(ZeTS.ends('abcde\t', 'de\t'))
+	ZeT.assert(ZeTS.ends('abcde\t', '\t'))
+	ZeT.assert(!ZeTS.ends(' abcde', 'cd'))
 
 	//--> substitution
 
-	ZeT.assert(ZeTS.sub('abc', 'b', '123') == 'a123c')
-	ZeT.assert(ZeTS.sub('abc', 'abc', '123') == '123')
+	ZeT.assert(ZeTS.replace('abc', 'b', '123') == 'a123c')
+	ZeT.assert(ZeTS.replace('abc', 'abc', '123') == '123')
 
 	//--> concatenate
 
