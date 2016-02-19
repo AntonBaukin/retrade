@@ -36,7 +36,7 @@ function retrade_go_url(url)
   //?: {create relative go-address}
   if(url.indexOf('/go/retrade') == -1)
   {
-    if(ZeTS.startsWith(url, '/'))
+    if(ZeTS.starts(url, '/'))
       url = ZeT.asserts(url.substring(1))
     url = "${z:url('/go/retrade/XYZ')}".replace('XYZ', url)
   }
@@ -138,7 +138,7 @@ function retrade_open_window(opts)
     if(!ZeT.isu(opts.record)) //?: {has record key}
       opts.domain += ':record:' + opts.record + ':'
 
-    if(!ZeTS.endsWith(opts.domain, ':')) opts.domain += ':'
+    if(!ZeTS.ends(opts.domain, ':')) opts.domain += ':'
     opts.domain = extjsf.tempDomain(opts.domain)
   }
 

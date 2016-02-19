@@ -5,7 +5,7 @@ angular.module('bootit').directive('focusOn', function()
 {
 	return function(scope, node, attr)
 	{
-		ZeTS.eachws(attr['focusOn'], function(s)
+		ZeTS.each(attr['focusOn'], function(s)
 		{
 			scope.$on((ZeTS.first(s) != '?')?(s):(s.substring(1)), function(event)
 			{
@@ -24,7 +24,7 @@ angular.module('bootit').directive('visibleOn', function()
 {
 	return function(scope, node, attr)
 	{
-		ZeTS.eachws(attr['visibleOn'], function(s)
+		ZeTS.each(attr['visibleOn'], function(s)
 		{
 			scope.$on((ZeTS.first(s) != '!')?(s):(s.substring(1)), function()
 			{

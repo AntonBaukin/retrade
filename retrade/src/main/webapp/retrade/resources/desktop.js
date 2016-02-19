@@ -2155,7 +2155,7 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		//~: remove all existing classes
 		ZeTD.eachc(el.dom, function(c)
 		{
-			if(ZeTS.startsWith(c, 'retrade-winalign-'))
+			if(ZeTS.starts(c, 'retrade-winalign-'))
 				if(c != xcl) el.removeCls(c)
 		})
 

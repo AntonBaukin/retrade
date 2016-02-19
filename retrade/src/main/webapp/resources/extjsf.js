@@ -828,7 +828,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		}
 
 		if(prefix.charAt(prefix.length - 1) != '/') prefix += '/';
-		if(ZeTS.endsWith(action, '.xhtml'))
+		if(ZeTS.ends(action, '.xhtml'))
 			action = action.substring(0, action.length - 6);
 
 		node.set({'action': prefix + 'go/' + action})

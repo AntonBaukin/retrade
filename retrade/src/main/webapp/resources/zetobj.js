@@ -8,132 +8,432 @@
  +---------------------------------------------------------------*/
 
 
-// +----: ZeT Strings  :-----------------------------------------+
+// +----: Lodash Library  :--------------------------------------+
 
-var ZeTS = window.ZeTS = window.ZeTS ||
+/**
+ * Variable 'Lo' is used instead of '_'...
+ */
+var Lo = window._; if(!Lo)
+	throw new Error('Lodash library is not defined!')
+
+
+// +----: ZeT Mini-Core :----------------------------------------+
+
+if(window.ZeT)
+	throw new Error('Double defined ZeT library!')
+
+/**
+ * The sections of the listing are organized so that each
+ * following section may depend on items defined previously.
+ * This zero section depends only on Lodash library.
+ */
+var ZeT = window.ZeT =
+{
+	keys             : Lo.keys,
+
+	/**
+	 * Extends optional object with optional extension.
+	 * Assigns only own properties of the object.
+	 * Returns the extended object.
+	 */
+	extend           : function(obj, ext)
+	{
+		if(!obj) obj = {}
+		if(!ext) return obj
+
+		Lo.assign(obj, ext)
+		return obj
+	},
+
+	/**
+	 * Invokes the function given. Optiona arguments
+	 * must go before the function-body.
+	 */
+	scope            : function(/* [parameters] f */)
+	{
+		var f = arguments[arguments.length - 1]
+		if(!Lo.isFunction(f))
+			throw new Error('ZeT.scope() got not a function!')
+
+		//?: {has additional arguments}
+		for(var a = [], i = 0;(i < arguments.length - 1);i++)
+			a.push(arguments[i])
+
+		return (a.length)?(f.apply(this, a)):(f.call(this))
+	},
+
+	/**
+	 * Directly concatenates to string items of array-like
+	 * object starting with the index given.
+	 */
+	cati             : (function(/* index, array-like */)
+	{
+		var concat = String.prototype.concat
+
+		function isx(o)
+		{
+			return (o === null) || (typeof o === 'undefined')
+		}
+
+		return function(index, objs)
+		{
+			if(!objs || !Lo.isInteger(objs.length))
+				return ''
+
+			for(var i = 0;(i < objs.length);i++)
+				if((i < index) || isx(objs[i]))
+					objs[i] = ''
+
+			return concat.apply('', objs)
+		}
+	})(),
+
+	stack            : function()
+	{
+		return '' + new Error().stack
+	},
+}
+
+
+// +----: ZeT Checks :-------------------------------------------+
+
+ZeT.extend(ZeT,
 {
 	/**
-	 * Returns false for string objects that are not
-	 * whitespace-trimmed empty.
+	 * Strict testing of strings, not so wide as in Lo.isString().
+	 *
+	 * Note that this check also handles case when string is
+	 * coerced to raw object in calls like apply('s', ...)
+	 */
+	iss              : ZeT.scope(function(/* s */)
+	{
+		var s2s = String.prototype.toString
+
+		return function(s)
+		{
+			return (typeof s === 'string') || (s && (s.toString === s2s))
+		}
+	}),
+
+	/**
+	 * Returns false for not a string objects, or for
+	 * strings that are whitespace-trimmed empty.
 	 */
 	ises             : function(s)
 	{
-		return !ZeT.iss(s) || (s.length == 0) || !/\S/.test(s)
+		return !ZeT.iss(s) || !s.length || !/\S/.test(s)
 	},
 
+	isf              : Lo.isFunction,
+
+	iso              : Lo.isPlainObject,
+
+	isb              : Lo.isBoolean,
+
+	isu              : function(o)
+	{
+		return (typeof o === 'undefined')
+	},
+
+	isx              : function(o)
+	{
+		return (o === null) || (typeof o === 'undefined')
+	},
+
+	isa              : Lo.isArray,
+
+	isn              : Lo.isNumber,
+
+	/**
+	 * Is integer number.
+	 */
+	isi              : function(i)
+	{
+		return ZeT.isn(i) && (i === (i|0))
+	},
+
+	/**
+	 * Returns true if the argument is defined, not false, 0, not
+	 * ws-empty string or empty array, or array-like object having
+	 * an item like that. (Up to one level of recursion only!)
+	 *
+	 * Warning as a sample: if you test agains an array that
+	 * contains 0, false, null, undefined, ws-empty string,
+	 * or an empty array (just empty) — test fails!
+	 */
+	test             : ZeT.scope(function(/* x */)
+	{
+		function notdef(x)
+		{
+			return (x === null) || (x === false) ||
+			  (x === 0) || (typeof x === 'undefined') ||
+			  (ZeT.iss(x) && ZeT.ises(x)) ||
+			  (ZeT.isa(x) && !x.length)
+		}
+
+		return function(x)
+		{
+			//?: {root check is undefined}
+			if(notdef(x)) return false
+
+			//?: {root check is not array-like}
+			if(!ZeT.isi(x.length)) return true
+
+			//~: check all the items of array-like are defined
+			for(var i = 0;(i < x.length);i++)
+				if(notdef(x[i])) return false
+
+			return true
+		}
+	})
+})
+
+
+// +----: ZeT Asserts :------------------------------------------+
+
+ZeT.extend(ZeT,
+{
+	/**
+	 * Returns exception concatenating the optional
+	 * arguments into string message. The stack is
+	 * appended as string after the new line.
+	 */
+	ass              : function(/* messages */)
+	{
+		var m = ZeT.cati(0, arguments)
+		var x = ZeT.stack()
+
+		//?: {has message}
+		if(!ZeT.ises(m)) x = m.concat('\n', x)
+
+		//!: return error to throw later
+		return new Error(x)
+	},
+
+	/**
+	 * First argument of assertion tested with ZeT.test().
+	 * The following optional arguments are the message
+	 * components concatenated to string.
+	 *
+	 * The function returns the test argument.
+	 */
+	assert           : function(test /* messages */)
+	{
+		if(ZeT.test(test)) return test
+
+		var m = ZeT.cati(1, arguments)
+		if(ZeT.ises(m)) m = 'Assertion failed!'
+
+		throw ZeT.ass(m)
+	},
+
+	/**
+	 * Checks that given object is not null, or undefined.
+	 */
+	assertn          : function(obj /* messages */)
+	{
+		if(!ZeT.isx(obj)) return obj
+
+		var m = ZeT.cati(1, arguments)
+		if(ZeT.ises(m)) m = 'The object is undefined or null!'
+
+		throw ZeT.ass(m)
+	},
+
+	/**
+	 * Tests the the given object is a function
+	 * and returns it back.
+	 */
+	assertf          : function(f /* messages */)
+	{
+		if(ZeT.isf(f)) return f
+
+		var m = ZeTS.cati(1, arguments)
+		if(ZeT.ises(m)) m = 'A function is required!'
+
+		throw ZeT.ass(m)
+	},
+
+	/**
+	 * Tests that the first argument is a string
+	 * that is not whitespace-empty. Returns it.
+	 */
+	asserts          : function(str /* messages */)
+	{
+		if(!ZeT.ises(str)) return str
+
+		var m = ZeT.cati(1, arguments)
+		if(ZeT.ises(m)) m = 'Not a whitespace-empty string is required!'
+
+		throw ZeT.ass(m)
+	},
+
+	/**
+	 * Tests the the given object is a not-empty array
+	 * and returns it back.
+	 */
+	asserta          : function(array /* messages */)
+	{
+		if(ZeT.isa(array) && array.length)
+			return array
+
+		var m = ZeTS.cati(1, arguments)
+		if(ZeT.ises(m)) m = 'Not an empty array is required!'
+
+		throw ZeT.ass(m)
+	}
+})
+
+
+// +----: ZeT Basics :-------------------------------------------+
+
+ZeT.extend(ZeT,
+{
+	/**
+	 * Defines global object in the window scope.
+	 * If object is arguments is undefined, returns
+	 * previously defined instance.
+	 *
+	 * When name has '.', they are used to trace
+	 * the intermediate objects from the window top.
+	 * 'ZeT.S' means that 'S' object is nested into
+	 * 'ZeT' that is in the window (global) scope.
+	 * Each intermediate object must exist.
+	 *
+	 * The same object is never defined twice.
+	 * The initially defined object is returned.
+	 */
+	define           : function(name, object)
+	{
+		ZeT.asserts(name, 'ZeT difinitions are for string names only!')
+		var scope = window, xname = name, i = name.indexOf('.')
+
+		//~: trace the scope
+		while(i != -1)
+		{
+			var n = name.substring(0, i)
+			name = name.substring(i + 1)
+
+			//?: {has empty name parts}
+			ZeT.asserts(n, 'Empty intermediate name in ZeT.define(', xname, ')!')
+			ZeT.asserts(name, 'Empty terminating name in ZeT.define(', xname, ')!')
+
+			//?: {has the scope undefined}
+			ZeT.assertn(scope = scope[n], 'Undefined intermediate scope object ',
+			  'in ZeT.define(', xname, ') at [', n, ']!')
+
+			i = name.indexOf('.')
+		}
+
+		//?: {target exists in the scope}
+		var o = scope[name]
+		if(!ZeT.isx(o)) return o
+
+		//~: assign the target
+		if(!ZeT.isx(object))
+			scope[name] = object
+
+		return object
+	}
+})
+
+
+// +----: ZeT Strings  :-----------------------------------------+
+
+var ZeTS = ZeT.define('ZeT.S',
+{
+	iss              : ZeT.iss,
+
+	ises             : ZeT.ises,
+
+	/**
+	 * Trims side white spaces of the string given.
+	 * Returns empty string as a fallback.
+	 */
 	trim             : function(s)
 	{
-		return !(s && s.length)?(''):(s.replace(/^\s+|\s+$/g, ''))
+		return (!ZeT.iss(s) || !s.length)?(''):(s.replace(/^\s+|\s+$/g, ''))
 	},
 
 	first            : function(s)
 	{
-		return s && s.length && s.charAt(0)
+		return (ZeT.iss(s) && s.length)?(s.charAt(0)):(undefined)
 	},
 
-	startsWith       : function(s, x)
-	{
-		ZeT.assert(ZeT.iss(s) && ZeT.iss(x))
-		return (s.indexOf(x) == 0)
-	},
+	starts           : Lo.startsWith,
 
-	endsWith         : function(s, x)
-	{
-		ZeT.assert(ZeT.iss(s) && ZeT.iss(x))
-		var i = s.lastIndexOf(x)
-		return (i >= 0) && (i + x.length == s.length)
+	ends             : Lo.endsWith,
 
-	},
-
+	/**
+	 * Replaces plain string with else plain string.
+	 */
 	replace          : function(s, a, b)
 	{
-		ZeT.assert(ZeT.iss(s) && ZeT.iss(a) && ZeT.iss(b))
 		return s.split(a).join(b)
 	},
 
+	cati             : ZeT.cati,
+
+	/**
+	 * Directly concatenates given objects into a string.
+	 */
 	cat              : function(/* various objects */)
 	{
-		for(var i = 0;(i < arguments.length);i++)
-			if(ZeT.isu(arguments[i]) || (arguments[i] === null))
-				arguments[i] = ''
-
-		return String.prototype.concat.apply('', arguments)
+		return ZeTS.cati(0, arguments)
 	},
 
-	cati             : function(index, objs)
+	/**
+	 * Concatenates trailing objects if the first one
+	 * passes ZeT.test().
+	 */
+	catif            : function(x /* various objects */)
 	{
-
-
-		if(!objs || !ZeT.isi(objs.length)) return ''
-
-		for(var i = 0;(i < objs.length);i++)
-			if((i < index) || ZeT.isu(objs[i]) || (objs[i] === null))
-				objs[i] = ''
-
-		return String.prototype.concat.apply('', objs)
+		return ZeT.test(x)?ZeTS.cati(1, arguments):('')
 	},
 
-	catif            : function(x /*, various objects */)
+	/**
+	 * Shortcut for ZeTS.catif() that checks all the arguments.
+	 */
+	catifall         : function(/* various objects */)
 	{
-		if(!ZeT.isa(x)) x = [x]
-		for(var y, i = 0;(i < x.length);i++)
-			if(!(y = x[i]) || ZeT.iss(y) && !y.length) return ''
-
-		arguments[0] = ''
-		for(i = 1;(i < arguments.length);i++)
-			if(ZeT.isu(arguments[i]) || (arguments[i] === null))
-				arguments[i] = ''
-
-		return String.prototype.concat.apply('', arguments)
+		return ZeT.test(arguments)?ZeTS.cati(0, arguments):('')
 	},
 
-	catifall         : function(/*, various objects */)
+	/**
+	 * Concatenates the objects with the separator given
+	 * as the first argument, or as 'this' context object.
+	 * Note that arrays are processed deeply.
+	 */
+	catsep           : function(/* sep, various objects */)
 	{
-		for(var y, i = 0;(i < arguments.length);i++)
-			if(!(y = arguments[i]) || ZeT.iss(y) && !y.length) return ''
+		var x, b = 1, s = '', sep = arguments[0]
 
-		for(i = 0;(i < arguments.length);i++)
-			if(ZeT.isu(arguments[i]) || (arguments[i] === null))
-				arguments[i] = ''
+		//?: {invoked with string 'this'}
+		if(ZeT.iss(this)) { b = 0; sep = this }
 
-		return String.prototype.concat.apply('', arguments)
-	},
-
-	catsep           : function(sep /*, various objects */)
-	{
-		//~: invoked with this == separator
-		var b = 1; if(ZeT.iss(this))
+		//c: for each argument
+		for(var i = b;(i < arguments.length);i++)
 		{
-			b = 0; sep = this
-		}
-
-		ZeT.assert(!ZeTS.ises(sep), 'Separator may not be an ws-empty string!')
-
-		var s = ''; for(var i = b;(i < arguments.length);i++)
-		{
-			var x = arguments[i]
-
-			if(ZeT.isu(x) || (x === null))
+			if(ZeT.isx(x = arguments[i]))
 				continue
-
-			//?: {is an array}
-			if(ZeT.isa(x))
-				x = ZeTS.catsep.apply(sep, x)
-			//?: {has toString()}
-			else if(ZeT.isf(x.toString))
-				x = x.toString()
-			else
-				x = '' + x
 
 			if(!ZeT.iss(x))
-				continue
-			x = ZeTS.trim(x)
+			{
+				//?: {is an array}
+				if(ZeT.isa(x))
+					x = ZeTS.catsep.apply(sep, x)
+				//?: {toString()}
+				else if(ZeT.isf(x.toString))
+					x = x.toString()
+				else
+					x = Lo.toString(x)
+			}
 
-			if(ZeTS.ises(x))
+			//?: {empty string}
+			if(ZeT.ises(x))
 				continue
 
-			if(s.length)
-				s += sep
+			if(s.length) s += sep
 			s += x
 		}
 
@@ -141,22 +441,33 @@ var ZeTS = window.ZeTS = window.ZeTS ||
 	},
 
 	/**
-	 * Invokes callback for each space-separated sub-string.
-	 * If callback returns false, breaks
+	 * Invokes callback for each sub-string in the string.
+	 * If callback returns false, breaks. Optional separator
+	 * (defaults to /\s+/) argument to String.split().
 	 */
-	eachws           : function(s, f)
+	each             : function(/* [sep], s, f */)
 	{
-		ZeT.assert(ZeT.isf(f))
-		if(ZeTS.ises(s)) return this
+		var sep, s, f
 
-		s = s.split(/\s+/)
+		ZeT.scope(arguments.length, arguments, function(l, a)
+		{
+			ZeT.assert(l == 2 || l == 3)
+			if(l == 2) { sep = /\s+/; s = a[0]; f = a[1] }
+			else { sep = a[0]; s = a[1]; f = a[2] }
+		})
+
+		ZeT.assert(ZeT.iss(s))
+		ZeT.assertf(f)
+
+		s = s.split(sep)
 		for(var i = 0;(i < s.length);i++)
 			if(s[i].length)
 				if(f(s[i]) === false)
 					return this
+
 		return this
 	}
-}
+})
 
 
 // +----: ZeT Arrays  :------------------------------------------+
@@ -281,10 +592,6 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 	}
 }
 
-//!: require browsers to support Array.indexOf()!
-if(!Array.prototype.indexOf)
-	throw new Error('Your browser has no Array.indexOf()!')
-
 
 // +----: ZeT Library  :-----------------------------------------+
 
@@ -398,23 +705,9 @@ var ZeT = window.ZeT = window.ZeT || {
 
 // +----: Object Programming :----------------------------------->
 
-	extend           : function(obj, ext)
-	{
-		if(!obj) obj = {}
-		if(!ext) return obj
-
-		//~: copy all the keys existing
-		var keys = ZeT.keys(ext)
-		for(var i = 0;(i < keys.length);i++)
-			obj[keys[i]] = ext[keys[i]]
-
-		return obj
-	},
-
 	/**
 	 * Makes shallow copy of the source with
-	 * optional extension provided. Double
-	 * applies extend().s
+	 * optional extension provided.
 	 */
 	clone            : function(src, ext)
 	{
@@ -674,7 +967,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	 * the first arguments of each call.
 	 *
 	 * 0   [required] a function;
-	 * 1   [required] 'this' context tu use;
+	 * 1   [required] 'this' context to use;
 	 * 2.. [optional] first and the following arguments.
 	 */
 	fbind            : function(f, that)
@@ -835,71 +1128,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 
-// +----: Test Functions :--------------------------------------->
-
-	iss              : function(s)
-	{
-		return (typeof s === 'string')
-	},
-
-	isf              : function(f)
-	{
-		return (typeof f === 'function')
-	},
-
-	iso              : function(o)
-	{
-		return (o !== null) && (typeof o === 'object') && !ZeT.isa(o)
-	},
-
-	isb              : function(b)
-	{
-		return (typeof b === 'boolean')
-	},
-
-	isu              : function(o)
-	{
-		return (typeof o === 'undefined')
-	},
-
-	isx              : function(o)
-	{
-		return (o === null) || (typeof o === 'undefined')
-	},
-
-	isa              : ('isArray' in Array)?(Array.isArray):function(a)
-	{
-		return (Object.prototype.toString.call(a) === '[object Array]')
-	},
-
-	isn              : function(n)
-	{
-		return (n === +n)
-	},
-
-	isi              : function(i)
-	{
-		return (i === +i) && (i === (i|0))
-	},
-
-
 // +----: Helper Functions :------------------------------------->
-
-	/**
-	 * Invokes the function given. Optiona arguments
-	 * must go before the function-body.
-	 */
-	scope            : function()
-	{
-		var f = arguments[arguments.length - 1]
-		ZeT.assert(ZeT.isf(f))
-
-		//?: {has additional arguments}
-		var args; if(arguments.length > 1)
-			args = ZeTA.copy(arguments, 0, arguments.length - 1)
-
-		return (args)?(f.apply(this, args)):(f.call(this))
-	},
 
 	/**
 	 * Trailing argument must be a function that
@@ -946,8 +1175,9 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		if(ZeT.isf(a.toArray))
 		{
-			a = a.toArray()
-			ZeT.assert(ZeT.isa(a), 'ZeT.a(): .toArray() returned not an array!')
+			ZeT.assert(ZeT.isa(a = a.toArray()),
+			  'ZeT.a(): .toArray() returned not an array!')
+
 			return a
 		}
 
@@ -955,26 +1185,6 @@ var ZeT = window.ZeT = window.ZeT || {
 		var l = a.length; if(!ZeT.isi(l)) return [a]
 		var r = new Array(l)
 		for(var i = 0;(i < l);i++) r[i] = a[i]
-
-		return r
-	},
-
-	keys             : function(o)
-	{
-		if(ZeT.isf(Object.keys))
-			return Object.keys(o)
-
-		//~: find proper property checker
-		var q, r = [];
-		if(ZeT.isf(o.hasOwnProperty)) q = o.hasOwnProperty
-		else if(ZeT.isf(Object.prototype.hasOwnProperty))
-			q = Object.prototype.hasOwnProperty
-		else
-			q = function(){ return true; }
-
-		//c: for each object key
-		for(var p in o) if(q.call(o, p))
-			r.push(p)
 
 		return r
 	},
@@ -996,24 +1206,11 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 	/**
-	 * Converts given object to JSON formatted string.
-	 */
-	o2s              : function(o)
-	{
-		return JSON.stringify(o)
-	},
-
-	s2o              : function(s)
-	{
-		return (ZeT.isx(s) || ZeTS.ises(s))?(null):JSON.parse(s)
-	},
-
-	/**
 	 * Evaluates the script given in the function body.
 	 */
 	xeval            : function(script)
 	{
-		if(ZeTS.ises(script)) return
+		if(ZeT.ises(script)) return
 		return eval('((function(){'.concat(script, '})())'))
 	},
 
@@ -1059,82 +1256,6 @@ var ZeT = window.ZeT = window.ZeT || {
 
 // +----: Assertions :------------------------------------------->
 
-	/**
-	 * First argument of assertion is an expression
-	 * evaluated as extended if-check. The following
-	 * optional arguments are the message components
-	 * concatenated to string.
-	 *
-	 * The function returns the test value given.
-	 */
-	assert           : function(test /* messages */)
-	{
-		if(test) return test
-
-		var m = ZeTS.cati(1, arguments)
-		if(ZeTS.ises(m)) m = 'Assertion failed!'
-
-		throw ZeT.ass(m)
-	},
-
-	ass              : function(/* messages */)
-	{
-		var m = ZeTS.cat.apply(ZeTS, arguments)
-		var x = ZeTS.cat(m, '\n', new Error().stack)
-
-		return new Error(x)
-	},
-
-	stack            : function()
-	{
-		return '' + new Error().stack
-	},
-
-	/**
-	 * Checks that given object is not
-	 * null, or undefined.
-	 */
-	assertn          : function(obj /* messages */)
-	{
-		if((obj !== null) && !ZeT.isu(obj))
-			return obj
-
-		var m = ZeTS.cati(1, arguments)
-		if(ZeTS.ises(m)) m = 'The object is undefined or null!'
-
-		throw ZeT.ass(m)
-	},
-
-	/**
-	 * Tests the the given object is a not-empty array
-	 * and returns it back.
-	 */
-	asserta          : function(array /* messages */)
-	{
-		if(ZeT.isa(array) && array.length)
-			return array
-
-		var m = ZeTS.cati(1, arguments)
-		if(ZeTS.ises(m)) m = 'A non-empty array is required!'
-
-		throw ZeT.ass(m)
-	},
-
-	/**
-	 * Tests that the first argument is a string
-	 * that is not whitespace-empty. Returns it.
-	 */
-	asserts          : function(str /* messages */)
-	{
-		if(!ZeTS.ises(str))
-			return str
-
-		var m = ZeTS.cati(1, arguments)
-		if(ZeTS.ises(m)) m = 'A not whitespace-empty string is required!'
-
-		throw ZeT.ass(m)
-	},
-
 
 // +----: Debug Logging :----------------------------------------+
 
@@ -1159,7 +1280,7 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		//~: result --> last not a ws-empty string
 		if(!r) for(i = a.length - 1;(i >= 0);i--)
-			if(!ZeTS.ises(a[i]))
+			if(!ZeT.ises(a[i]))
 				{ r = a[i]; break }
 
 		function pack(i)
@@ -1177,7 +1298,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		function ise(x)
 		{
 			return ZeT.isu(x) || (x == null) ||
-			  (ZeT.iss(x) && ZeTS.ises(x))
+			  (ZeT.iss(x) && ZeT.ises(x))
 		}
 
 		for(i = 0;(i < a.length);i++)
@@ -1330,6 +1451,24 @@ var ZeT = window.ZeT = window.ZeT || {
 		}
 
 		return ZeT.isa(o)
+	},
+
+
+
+	/**
+	 * Converts given object to JSON formatted string.
+	 */
+	o2s              : function(o)
+	{
+		return JSON.stringify(o)
+	},
+
+	/**
+	 * Reverse to ZeT.o2s().
+	 */
+	s2o              : function(s)
+	{
+		return (ZeT.isx(s) || ZeT.ises(s))?(null):JSON.parse(s)
 	}
 }
 
