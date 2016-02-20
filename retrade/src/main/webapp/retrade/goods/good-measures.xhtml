@@ -565,10 +565,10 @@
     function removeMeasure()
     {
       //~: remove from the controls
-      ZeTA.del(controls, this)
+      ZeTA.remove(controls, this)
 
       //~: remove from the model
-      ZeTA.del(measures, this.model)
+      ZeTA.remove(measures, this.model)
 
       //~: delete the panel
       this.panel.ownerCt.remove(this.panel, true)

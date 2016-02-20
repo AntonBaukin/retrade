@@ -4,7 +4,7 @@
  |                                                               |
  |                                   / anton.baukin@gmail.com /  |
  +===============================================================+
- | Requires [lodash 4.5]
+ | Requires [ lodash ]
  +---------------------------------------------------------------*/
 
 
@@ -141,6 +141,17 @@ ZeT.extend(ZeT,
 	},
 
 	isa              : Lo.isArray,
+
+	/**
+	 * Test is array-like object. It is an array,
+	 * or object that has integer length property,
+	 * except string and functions.
+	 */
+	isax             : function(x)
+	{
+		return ZeT.isa(x) || (!ZeT.isx(x) &&
+		  ZeT.isi(x.length) && !ZeT.iss(x) && !ZeT.isf(x))
+	},
 
 	isn              : Lo.isNumber,
 
@@ -334,6 +345,43 @@ ZeT.extend(ZeT,
 			scope[name] = object
 
 		return object
+	},
+
+	/**
+	 * Takes any array-like object and returns true array.
+	 * If source object is an array, returns it as-is.
+	 *
+	 * Array-like objects do have integer length property
+	 * and values by the integer keys [0; length).
+	 *
+	 * Note that strings are not treated as array-like.
+	 * ZeT.a('...') returns ['...']. The same for functions.
+	 *
+	 * If object given is not an array, wraps it to array.
+	 * Undefined or null value produces empty array.
+	 *
+	 * If source object has toArray() method, that method
+	 * is invoked with this-context is the object.
+	 */
+	a                : function(a)
+	{
+		if(ZeT.isa(a)) return a
+		if(ZeT.isu(a) || (a === null)) return []
+		if(ZeT.iss(a) || ZeT.isf(a)) return [a]
+
+		if(ZeT.isf(a.toArray))
+		{
+			ZeT.assert(ZeT.isa(a = a.toArray()),
+			  'ZeT.a(): .toArray() returned not an array!')
+			return a
+		}
+
+		//~: manually copy the items
+		var l = a.length; if(!ZeT.isi(l)) return [a]
+		var r = new Array(l)
+		for(var i = 0;(i < l);i++) r[i] = a[i]
+
+		return r
 	}
 })
 
@@ -472,7 +520,8 @@ var ZeTS = ZeT.define('ZeT.S',
 
 // +----: ZeT Arrays  :------------------------------------------+
 
-var ZeTA = window.ZeTA = window.ZeTA || {
+var ZeTA = ZeT.define('ZeT.A',
+{
 
 	/**
 	 * Creates a copy of array-like object given.
@@ -486,21 +535,21 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 		if(ZeT.isu(begin))
 			return ZeT.isa(a)?(a.slice()):ZeT.a(a)
 
-		//~: [begin; end)
-		ZeT.assert(ZeT.isn(begin))
-		ZeT.assert(begin >= 0)
-		if(ZeT.isu(end) || (end > a.length)) end = a.length
-		ZeT.assert(ZeT.isn(end))
-		ZeT.assert(begin <= end)
+		//?: {end is undefined}
+		if(ZeT.isu(end) || (end > a.length))
+			end = a.length
 
-		//?: has more than 50% items to copy
-		if((end - begin)*2 >= a.length)
-			return (ZeT.isa(a)?(a):ZeT.a(a)).slice(begin, end)
+		//~: asserts on [begin; end)
+		ZeT.assert(ZeT.isi(begin) && ZeT.isi(end))
+		ZeT.assert((begin >= 0) && (begin <= end))
+
+		//?: {is an array exactly}
+		if(ZeT.isa(a)) return a.slice(begin, end)
 
 		//~: manual copy
 		var r = new Array(end - begin)
-		for(var i = begin, j = 0;(i < end);i++, j++) r[j] = a[i]
-
+		for(var i = begin;(i < end);i++)
+			r[i - begin] = a[i]
 		return r
 	},
 
@@ -517,35 +566,69 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 	 * If item is itself an array, recursively
 	 * invokes this function.
 	 *
+	 * Items are checked agains map-key equality
+	 * (put it to map, then check it is there).
+	 * Undefined and null items are supported.
+	 *
 	 * Returns the target array.
 	 */
-	del              : function()
+	remove           : ZeT.scope(function()
 	{
-		var i, j
+		var u = {}, n = {}
 
-		//?: {second form}
-		if(ZeT.isa(this))
+		function collect(m, a)
 		{
-			for(i = 0;(i < arguments.length);i++)
-				if(ZeT.isa(arguments[i]))
-					ZeTA.del.apply(this, arguments[i])
-				else if((j = this.indexOf(arguments[i])) != -1)
-					this.splice(j, 1)
+			if(ZeT.isu(a)) return m[u] = true
+			if(a === null) return m[n] = true
 
-			return this
+			if(!ZeT.isax(a))
+				return m[a] = true
+
+			for(var i = 0;(i < a.length);i++)
+				collect(m, a[i])
 		}
-		//~: first form
-		else
+
+		function test(m, x)
 		{
-			for(i = 1;(i < arguments.length);i++)
-				if(ZeT.isa(arguments[i]))
-					ZeTA.del.apply(arguments[0], arguments[i])
-				else if((j = arguments[0].indexOf(arguments[i])) != -1)
-					arguments[0].splice(j, 1)
-
-			return arguments[0]
+			if(ZeT.isu(x)) x = u
+			if(x === null) x = n
+			return (m[x] === true)
 		}
-	},
+
+		return function()
+		{
+			var a, m = {}, i = 1, r = []
+
+			//~: select the variant
+			if(!ZeT.isa(this)) a = arguments[0]
+			else { a = this; i = 0 }
+
+			//~: collect the keys
+			for(;(i < arguments.length);i++)
+				collect(m, arguments[i])
+
+			//console.log(m)
+
+			//~: scan for ranged splicing
+			for(i = 0;(i < a.length);i++)
+				if(test(m, a[i]))
+				{
+					//~: scan for the range
+					for(var j = i + 1;(j < a.length);j++)
+						if(!test(m, a[j])) break;
+
+					r.push(i)
+					r.push(j - i)
+					i = j //<-- advance
+				}
+
+			//~: back splicing
+			for(var i = r.length - 2;(i >= 0);i -= 2)
+				a.splice(r[i], r[i+1])
+
+			return a //<-- target array
+		}
+	}),
 
 	/**
 	 * Takes two array-like objects and optional
@@ -578,19 +661,25 @@ var ZeTA = window.ZeTA = window.ZeTA || {
 	 */
 	eq               : function(a, b)
 	{
-		if(!a || !b) return (a == null) && (a == b)
-		if(a === b)  return true
+		if(a === b) return true
+		if(ZeT.isx(a) || ZeT.isx(b))
+			return (ZeT.isx(a) == ZeT.isx(b))
 
+		//?: {not array-like}
 		if(!ZeT.isi(a.length) || !ZeT.isi(b.length))
 			return false
 
-		if(a.length != b.length) return false
-		for(var l = a.length, i = 0;(i < l);i++)
+		//?: {length differ}
+		var l = a.length
+		if(l != b.length)
+			return false
+
+		for(var i = 0;(i < l);i++)
 			if(a[i] !== b[i])
 				return false
 		return true
 	}
-}
+})
 
 
 // +----: ZeT Library  :-----------------------------------------+
@@ -1154,41 +1243,6 @@ var ZeT = window.ZeT = window.ZeT || {
 		return f.apply(this, a)
 	},
 
-	/**
-	 * Takes any array-like object and returns true array.
-	 * If source object is an array, return it.
-	 *
-	 * Array-like objects do have integer length property
-	 * and values by the integer keys [0; length).
-	 *
-	 * If object given is not an array, wraps it to array.
-	 * Undefined or null value produces empty array.
-	 *
-	 * If source object has toArray() method, that method
-	 * is invoked with this-context is the object.
-	 */
-	a                : function(a)
-	{
-		if(ZeT.isa(a)) return a
-		if(ZeT.isu(a) || (a === null)) return []
-		if(ZeT.iss(a)) return [a]
-
-		if(ZeT.isf(a.toArray))
-		{
-			ZeT.assert(ZeT.isa(a = a.toArray()),
-			  'ZeT.a(): .toArray() returned not an array!')
-
-			return a
-		}
-
-		//~: manually copy the items
-		var l = a.length; if(!ZeT.isi(l)) return [a]
-		var r = new Array(l)
-		for(var i = 0;(i < l);i++) r[i] = a[i]
-
-		return r
-	},
-
 	get              : function(/* object, properties list */)
 	{
 		var o = arguments[0]
@@ -1206,11 +1260,11 @@ var ZeT = window.ZeT = window.ZeT || {
 	},
 
 	/**
-	 * Evaluates the script given in the function body.
+	 * Evaluates the script given in a function body.
 	 */
 	xeval            : function(script)
 	{
-		if(ZeT.ises(script)) return
+		if(ZeT.ises(script)) return undefined
 		return eval('((function(){'.concat(script, '})())'))
 	},
 

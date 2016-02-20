@@ -113,7 +113,7 @@ ReTrade.RepeatedTask = ZeT.defineClass('ReTrade.RepeatedTask', {
 		ZeT.assert(ZeT.isf(cb))
 
 		if(de === true)
-			ZeTA.del(this._ls, cb)
+			ZeTA.remove(this._ls, cb)
 		else if(this._ls.indexOf(cb) < 0)
 			this._ls.push(cb)
 
@@ -2359,7 +2359,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		if(!ZeT.isf(f)) return undefined
 		if(!this._ons) this._ons = []
 
-		ZeTA.del(this._ons, f)
+		ZeTA.remove(this._ons, f)
 		if(remove !== true)
 			this._ons.push(f)
 		return this
@@ -4822,7 +4822,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 	{
 		var a; if(ZeT.isa(a = this._array))
 		{
-			ZeTA.del(a, m)
+			ZeTA.remove(a, m)
 
 			//?: {has offset out of the length}
 			if(!ZeT.isx(this._offset))
@@ -4844,7 +4844,7 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 			var i = a.indexOf(where)
 			ZeT.assert(i >= 0)
 
-			ZeTA.del.apply(a, items)
+			ZeTA.remove.apply(a, items)
 
 			var x = [i, 0]
 			x.push.apply(x, items)

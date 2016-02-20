@@ -116,7 +116,7 @@ function actionRemove(model)
 	var rec = ZeT.assertn(searchRecord(model))
 
 	//?: {found} remove it
-	if(rec) ZeTA.del(model, rec)
+	if(rec) ZeTA.remove(model, rec)
 }
 
 function actionMove(model)
@@ -130,7 +130,7 @@ function actionMove(model)
 	ZeT.assert(moved.indexOf(rec) == -1)
 
 	//~: take them out
-	ZeTA.del.apply(model, moved)
+	ZeTA.remove.apply(model, moved)
 
 	//~: index to insert
 	var i = model.indexOf(rec)

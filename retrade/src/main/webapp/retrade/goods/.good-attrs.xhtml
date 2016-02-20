@@ -280,7 +280,7 @@
           //~: current values
           var xs = m.get('value')
           if(!ZeT.isa(xs)) xs = []
-          ZeTA.del(xs, m.get('temp'))
+          ZeTA.remove(xs, m.get('temp'))
 
           //~: populate the store
           ZeT.each(vs, function(x)
@@ -495,7 +495,7 @@
     var model = store.getById(id);  if(!model) return
     var value = model.get('value'); if(!ZeT.isa(value)) return
 
-    ZeTA.del(value, v)
+    ZeTA.remove(value, v)
     value = ZeTA.copy(value)
 
     model.set('value', value)
@@ -680,7 +680,7 @@
       var ox = m.get('selfox')
       var  a = m.get('self')
 
-      ZeTA.del(ox.attributes, a)
+      ZeTA.remove(ox.attributes, a)
     })
 
     grid.getStore().remove(sel)
