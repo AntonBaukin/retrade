@@ -202,12 +202,12 @@ function testArrays()
 
 	//--> delete
 
-	ZeT.assert(ZeTA.eq(B, ZeTA.del(ZeTA.copy(B))))
-	ZeT.assert(ZeTA.eq([1, 5], ZeTA.del(ZeTA.copy(B), 0, 2, 3, 4)))
-	ZeT.assert(ZeTA.eq([1, 5], ZeTA.del(ZeTA.copy(B), [0, 2, 3, 4])))
-	ZeT.assert(ZeTA.eq([1, 5], ZeTA.del(ZeTA.copy(B), [0, 2], [3, 4])))
-	ZeT.assert(ZeTA.eq([0, 1, 5], ZeTA.del.call(ZeTA.copy(B), 2, 3, 4)))
-	ZeT.assert(ZeTA.eq([0, 1, 5], ZeTA.del.call(ZeTA.copy(B), [2], [3, 4])))
+	ZeT.assert(ZeTA.eq(B, ZeTA.remove(ZeTA.copy(B))))
+	ZeT.assert(ZeTA.eq([1, 5], ZeTA.remove(ZeTA.copy(B), 0, 2, 3, 4)))
+	ZeT.assert(ZeTA.eq([1, 5], ZeTA.remove(ZeTA.copy(B), [0, 2, 3, 4])))
+	ZeT.assert(ZeTA.eq([1, 5], ZeTA.remove(ZeTA.copy(B), [0, 2], [3, 4])))
+	ZeT.assert(ZeTA.eq([0, 1, 5], ZeTA.remove.call(ZeTA.copy(B), 2, 3, 4)))
+	ZeT.assert(ZeTA.eq([0, 1, 5], ZeTA.remove.call(ZeTA.copy(B), [2], [3, 4])))
 
 	//--> merge
 

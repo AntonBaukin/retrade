@@ -89,7 +89,7 @@ ZeTA.copy = function(a, begin, end)
  *
  * Returns the target array.
  */
-ZeTA.del = function()
+ZeTA.remove = function()
 {
 	var i, j
 
@@ -98,7 +98,7 @@ ZeTA.del = function()
 	{
 		for(i = 0;(i < arguments.length);i++)
 			if(ZeT.isa(arguments[i]))
-				ZeTA.del.apply(this, arguments[i])
+				ZeTA.remove.apply(this, arguments[i])
 			else if((j = this.indexOf(arguments[i])) != -1)
 				this.splice(j, 1)
 
@@ -109,7 +109,7 @@ ZeTA.del = function()
 	{
 		for(i = 1;(i < arguments.length);i++)
 			if(ZeT.isa(arguments[i]))
-				ZeTA.del.apply(arguments[0], arguments[i])
+				ZeTA.remove.apply(arguments[0], arguments[i])
 			else if((j = arguments[0].indexOf(arguments[i])) != -1)
 				arguments[0].splice(j, 1)
 
