@@ -3791,7 +3791,7 @@ ZeT.defineClass('ReTrade.EventsDataProxy',
 
 		//~: issue the request
 		this.request('delete', this._query(
-		  ZeT.collect(items, 'id').join(' ')
+		  ZeT.map(items, 'id').join(' ')
 		))
 	},
 

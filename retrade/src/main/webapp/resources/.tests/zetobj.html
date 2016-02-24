@@ -16,6 +16,7 @@ testAsserts()
 testBasics()
 testStrings()
 testArrays()
+testExtends()
 
 
 // +----: ZeT Mini-Core :----------------------------------------+
@@ -313,6 +314,18 @@ function testBasics()
   }
 
 
+  //--> init (once)
+
+  var that = ZeT.init('that',
+    function(){ return {} })
+
+  ZeT.assert(that === ZeT.init('that'))
+  ZeT.assert(that === ZeT.init('that', function()
+  {
+    throw ZeT.ass('Defined again!')
+  }))
+
+
   //--> define
 
   var a = {}, ab = {}, abc = {}
@@ -333,6 +346,29 @@ function testBasics()
   ZeT.assert(abc === ZeT.define('aaa.bb.c', abc))
   ZeT.assert(abc === ZeT.define('aaa.bb.c', {}))
   ZeT.assert(abc === ZeT.define('aaa.bb.c'))
+
+
+  //--> copy prototype
+
+  function A(x)
+  {
+    this.x = x
+  }
+
+  ZeT.extend(A.prototype, {
+    a: 'a', b: 'b', plus: function()
+    {
+      return this.a + this.x + this.b
+    }
+  })
+
+  var a = new A('+')
+  ZeT.assert('a+b' === a.plus())
+
+  var b = ZeT.proto(a)
+  ZeT.assert(ZeT.isu(x))
+  b.x = '?'
+  ZeT.assert('a?b' === b.plus())
 
 
   //--> array-like
@@ -498,6 +534,154 @@ function testArrays()
   ZeT.assert(ZeTA.eq(B, ZeTA.concat([0, 1, 2], [3, 4, 5])))
   ZeT.assert(ZeTA.eq(B, ZeTA.concat([0, 1], B, 2)))
   ZeT.assert(ZeTA.eq([0, 1, 3, 4], ZeTA.concat([0, 1], B, 3, 5)))
+}
+
+function testExtends()
+{
+  function ks(obj)
+  {
+    return ZeT.keys(obj).join('')
+  }
+
+  function xyz()
+  {
+    var r = ZeT.isn(this)?(this):(0)
+
+    for(var i = 0;(i < arguments.length);i++)
+      if(ZeT.isn(arguments[i]))
+        r += ((i%2 == 0)?(+1):(-1)) * arguments[i]
+
+    return r
+  }
+
+  function args()
+  {
+    return arguments
+  }
+
+
+  //--> keys
+
+  ZeT.assert('a2c' == ['a', 2, 'c'].join(''))
+  ZeT.assert('abc' == ks({ a: 'a', b: 2, c: "c" }))
+
+
+  //--> clone
+
+  var A = { a: 'a', b: 'b' }
+  ZeT.assert('ab' == ks(A))
+
+  var B = ZeT.clone(A)
+  ZeT.assert('ab' == ks(A))
+
+
+  //--> deep clone
+
+  function Xu(obj)
+  {
+    ZeT.extend(this, obj)
+  }
+
+  ZeT.extend(Xu.prototype, { x: 1, y: 2 })
+
+  A = new Xu({ a: 'a', b: { c: [ '?', 'c' ], d: 'd' }})
+  ZeT.assert('ab' == ks(A))
+  ZeT.assert('cd' == ks(A.b))
+  ZeT.assert(Object.getPrototypeOf(A).x === 1)
+  ZeT.assert(A.x === 1 && A.y === 2)
+
+  B = ZeT.deepClone(A)
+  ZeT.assert(A != B)
+  ZeT.assert('ab' == ks(B))
+  ZeT.assert(A.b != B.b)
+  ZeT.assert('cd' == ks(B.b))
+  ZeT.assert(B.b.c[1] === 'c' && B.b.d === 'd')
+  ZeT.assert(B.x === 1 && B.y === 2)
+
+
+  //--> deep extend
+
+  var C = ZeT.deepExtend(B, { x: 'x', b: { c: 1, e: { f: 'f', g: 'g' }}})
+
+  ZeT.assert(C === B)
+  ZeT.assert(B.x === 1)
+  ZeT.assert('ab' == ks(B))
+  ZeT.assert(B.b.c[1] === 'c')
+  ZeT.assert('cde' == ks(B.b))
+  ZeT.assert('fg' == ks(B.b.e))
+  ZeT.assert(B.b.e.f === 'f' && B.b.e.g === 'g')
+
+
+  //--> get
+
+  ZeT.assert(ZeT.get(B, 'b', 'c', 1) === 'c')
+  ZeT.assert(ZeT.get(B, 'b', 'e', 'f') === 'f')
+
+
+  //--> function bind
+
+  var f = ZeT.fbind(xyz, -3)
+  ZeT.assert(4 == xyz.call(1, 2, 3, 4))
+  ZeT.assert(0 == f.call(100, 2, 3, 4))
+
+  f = ZeT.fbind(xyz, -3, 2, 3)
+  ZeT.assert(0 == f.call(100, 4))
+
+
+  //--> function bind array
+
+  f = ZeT.fbinda(xyz, -3)
+  ZeT.assert(0 == f.call(100, 2, 3, 4))
+
+  f = ZeT.fbinda(xyz, -3, [2, 3])
+  ZeT.assert(0 == f.call(100, 4))
+
+
+  //--> function bind universal
+
+  f = ZeT.fbindu(xyz, -3)
+  ZeT.assert(0 == f.call(100, 2, 3, 4))
+
+  f = ZeT.fbindu(xyz, -3, 0, 2, 2, 4)
+  ZeT.assert(0 == f.call(100, 3))
+  ZeT.assert(1 == f.call(100, 3, 10, 11))
+
+
+  //--> scope if
+
+  ZeT.assert(null === ZeT.scopeif(0, 1, 2, 3, xyz))
+  ZeT.assert(-2 === ZeT.scopeif(1, 2, 3, 4, xyz))
+
+
+  //--> evaluation
+
+  ZeT.assert('a2c' === ZeT.xeval(" return 'a' + 2 + 'c' "))
+
+
+  //--> each
+
+  ZeT.each(args('0', '1', '2', '3'), function(x, i)
+  {
+    ZeT.assert(x == this) //!: not ===
+    ZeT.assert(parseInt(x) === i)
+  })
+
+
+  //--> map (property, index, function)
+
+  var X = [ { x: 'a' }, { x: 2 }, { x: 'b' } ]
+  ZeT.assert(ZeTA.eq(['a', 2, 'b'], ZeT.map(X, 'x')))
+
+  var Y = [[ '?', 'a' ], [ '!', 2 ], [ '#', 'b' ]]
+  ZeT.assert(ZeTA.eq(['a', 2, 'b'], ZeT.map(Y, 1)))
+
+	ZeT.assert(ZeTA.eq(['a', 'b'], ZeT.map(X, function(x, i)
+	{
+		ZeT.assert(x == this)
+		ZeT.assert(ZeT.isi(i))
+		return ZeT.iss(x.x)?(x.x):(undefined)
+	})))
+
 }
 
 //]]>

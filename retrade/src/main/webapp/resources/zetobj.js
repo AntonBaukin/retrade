@@ -126,7 +126,18 @@ ZeT.extend(ZeT,
 
 	isf              : Lo.isFunction,
 
+	/**
+	 * Is plain object (having no prototype).
+	 */
 	iso              : Lo.isPlainObject,
+
+	/**
+	 * Is plain object, or an object having prototype.
+	 */
+	isox             : function(o)
+	{
+		return Lo.isObjectLike(o) && !ZeT.isa(o)
+	},
 
 	isb              : Lo.isBoolean,
 
@@ -302,19 +313,17 @@ ZeT.extend(ZeT,
 {
 	/**
 	 * Defines global object in the window scope.
-	 * If object is arguments is undefined, returns
-	 * previously defined instance.
+	 * If factory argument is undefined, returns
+	 * previously defined instance. The factory
+	 * is never called twice.
 	 *
 	 * When name has '.', they are used to trace
 	 * the intermediate objects from the window top.
 	 * 'ZeT.S' means that 'S' object is nested into
 	 * 'ZeT' that is in the window (global) scope.
 	 * Each intermediate object must exist.
-	 *
-	 * The same object is never defined twice.
-	 * The initially defined object is returned.
 	 */
-	define           : function(name, object)
+	init             : function(name, factory)
 	{
 		ZeT.asserts(name, 'ZeT difinitions are for string names only!')
 		var scope = window, xname = name, i = name.indexOf('.')
@@ -341,10 +350,42 @@ ZeT.extend(ZeT,
 		if(!ZeT.isx(o)) return o
 
 		//~: assign the target
-		if(!ZeT.isx(object))
-			scope[name] = object
+		if(!ZeT.isx(factory))
+			scope[name] = o = ZeT.assertf(factory)()
 
-		return object
+		return o
+	},
+
+	/**
+	 * Invokes ZeT.init() with the object instead of a factory.
+	 */
+	define           : function(name, object)
+	{
+		return ZeT.init(name, ZeT.isx(object)?(undefined):
+		  function(){ return object })
+	},
+
+	defined          : function(name)
+	{
+		ZeT.assert(arguments.length == 1)
+		return ZeT.init(name)
+	},
+
+	/**
+	 * Creates object having the same prototype.
+	 *
+	 * Warning! The class function of the object
+	 * is not the same!
+	 */
+	proto            : function(obj)
+	{
+		ZeT.assertn(obj)
+		var p = ZeT.assertn(Object.getPrototypeOf(obj))
+
+		function P(){}
+		P.prototype = p
+
+		return new P()
 	},
 
 	/**
@@ -682,61 +723,289 @@ var ZeTA = ZeT.define('ZeT.A',
 })
 
 
+// +----: ZeT Extends :------------------------------------------+
+
+ZeT.extend(ZeT,
+{
+	/**
+	 * Makes shallow copy of the source with
+	 * optional extension provided.
+	 */
+	clone            : function(src, ext)
+	{
+		ZeT.assertn(src)
+
+		var r = Lo.clone(src)
+
+		if(!ZeT.isx(ext))
+		{
+			ZeT.assert(ZeT.iso(r))
+			ZeT.extend(r, ext)
+		}
+
+		return r
+	},
+
+	/**
+	 * Clone deeply object with prototype support.
+	 *
+	 * It directly copies fields of this types: numbers,
+	 * booleans, functions, not a plain objects.
+	 * Arrays are copied deeply.
+	 */
+	deepClone        : function(obj)
+	{
+		//?: {undefined, null, false, zero}
+		if(!obj) return obj
+
+		//?: {is string} copy it
+		if(ZeT.iss(obj)) return '' + obj
+
+		//?: {is an array}
+		var i, res; if(ZeT.isa(obj))
+		{
+			res = new Array(obj.length)
+			for(i = 0;(i < obj.length);i++)
+				res[i] = ZeT.deepClone(obj[i])
+			return res
+		}
+
+		//?: {not a plain object}
+		if(!ZeT.isox(obj)) return obj
+
+		//~: extend
+		var res = ZeT.proto(obj), keys = ZeT.keys(obj)
+		for(i = 0;(i < keys.length);i++)
+			res[keys[i]] = ZeT.deepClone(obj[keys[i]])
+
+		return res
+	},
+
+	/**
+	 * Takes object and copies all the fields from the source
+	 * when the same fields are undefined (note that nulls are
+	 * not undefined). If field is a plain object, extends
+	 * it deeply. Note that arrays are not merged!
+	 * A deep clone of a field value is assigned.
+	 */
+	deepExtend       : function(obj, src)
+	{
+		if(!src) return obj
+		if(!obj) obj = {}
+
+		//?: {not an object}
+		ZeT.assert(ZeT.isox(obj),
+		  'ZeT.deepExtend(): not an object! ')
+
+		var k, keys = ZeT.keys(src)
+		for(var i = 0;(i < keys.length);i++)
+			//?: {field is undefined}
+			if(ZeT.isu(obj[k = keys[i]]))
+				obj[k] = ZeT.deepClone(src[k])
+			//?: {extend nested object}
+			else if(ZeT.isox(obj[k]))
+				ZeT.deepExtend(obj[k], src[k])
+
+		return obj
+	},
+
+	/**
+	 * Takes an object, or an array-like and goes
+	 * deeply in it by the names, or integer indices,
+	 * or else object-keys given as the arguments.
+	 */
+	get              : function(/* object, properties list */)
+	{
+		var o = arguments[0]
+		if(ZeT.isx(o)) return o
+
+		for(var k, o, i = 1;(i < arguments.length);i++)
+		{
+			//?: {has the key undefined}
+			if(ZeT.isx(k = arguments[i]))
+				return undefined
+
+			//?: {has the object undefined}
+			if(ZeT.isx(o = o[k]))
+				return undefined
+		}
+
+		return o
+	},
+
+	/**
+	 * Returns a function having 'this' assigned to 'that'
+	 * argument and the following arguments passed as
+	 * the first arguments of each call.
+	 *
+	 * 0   [required] a function;
+	 * 1   [required] 'this' context to use;
+	 * 2.. [optional] first and the following arguments.
+	 */
+	fbind            : Lo.bind,
+
+	/**
+	 * Works as ZeT.fbind(), but takes additional
+	 * arguments as a copy of array-like object given.
+	 */
+	fbinda           : function(f, that, args)
+	{
+		//?: {has function and the context}
+		ZeT.assertf(f)
+		ZeT.assertn(that)
+
+		//~: copy the arguments
+		args = ZeTA.copy(args)
+
+		return function()
+		{
+			var a = ZeTA.concat(ZeTA.copy(args), arguments)
+			return f.apply(that, a)
+		}
+	},
+
+	/**
+	 * Universal variant of ZeT.fbind(). Second argument
+	 * may be 'this' context. Else arguments are 0-indexed
+	 * followed by the value.
+	 */
+	fbindu           : function(f /*, [this], (i, arg)... */)
+	{
+		//?: {has function and the context}
+		ZeT.assert(ZeT.isf(f))
+
+		var that = arguments[1], iarg = []
+
+		//?: {with this-context}
+		var i = 1; if(arguments.length%2 == 0) i = 2; else
+			that = undefined
+
+		//~: copy following arguments
+		while(i < arguments.length)
+		{
+			ZeT.assert(ZeT.isi(arguments[i]))
+			ZeT.assert(arguments[i] >= 0)
+			iarg.push(arguments[i])
+			ZeT.assert(i + 1 < arguments.length)
+			iarg.push(arguments[i+1])
+			i += 2
+		}
+
+		return function()
+		{
+			var a = ZeT.a(arguments)
+			for(i = 0;(i < iarg.length);i += 2)
+				a.splice(iarg[i], 0, iarg[i+1])
+
+			return f.apply(ZeT.isu(that)?(this):(that), a)
+		}
+	},
+
+	/**
+	 * Trailing argument must be a function that
+	 * is invoked only when all leading arguments
+	 * do pass ZeT.test().
+	 *
+	 * Returns null when callback was not invoked,
+	 * or the result of the function call.
+	 */
+	scopeif          : function(/* args, f */)
+	{
+		var a = ZeT.a(arguments)
+		ZeT.assert(arguments.length)
+
+		var f = a.pop()
+		ZeT.assert(ZeT.isf(f))
+
+		for(var i = 0;(i < a.length);i++)
+			if(!ZeT.test(a[i])) return null
+
+		return f.apply(this, a)
+	},
+
+	/**
+	 * Evaluates the script given in a function body.
+	 */
+	xeval            : function(script)
+	{
+		if(ZeT.ises(script)) return undefined
+		return eval('((function(){'.concat(script, '})())'))
+	},
+
+	/**
+	 * Takes array-like object and invokes the
+	 * function given on each item. Function
+	 * receives arguments: [0] is the item,
+	 * [1] is the item index.
+	 *
+	 * This-context of the function call
+	 * is also the item iterated.
+	 *
+	 * If call on some item returns false, iteration
+	 * is breaked and that stop-index is returned.
+	 */
+	each             : function(a, f)
+	{
+		if(!a) return undefined
+		ZeT.assert(ZeT.isi(a.length))
+		ZeT.assert(ZeT.isf(f))
+
+		for(var i = 0;(i < a.length);i++)
+			if(f.call(a[i], a[i], i) === false)
+				return i
+
+		return a.length
+	},
+
+	/**
+	 * Invokes the factin given over each not
+	 * undefined item of the array-like object.
+	 * Returns array of not undefined results.
+	 *
+	 * Instead of a function you may give anything
+	 * like property-key object (name, index, ...).
+	 *
+	 * Callback has the same arguments as ZeT.each().
+	 */
+	map              : function(a, f)
+	{
+		//?: {collect a property}
+		var p; if(!ZeT.isf(p = f))
+			f = function(x) { return x[p] }
+
+		var r = []; ZeT.each(a, function(x, i)
+		{
+			if(ZeT.isu(x)) return
+			x = f.call(x, x, i)
+			if(!ZeT.isu(x)) r.push(x)
+		})
+
+		return r
+	},
+
+	/**
+	 * Converts given object to JSON formatted string.
+	 */
+	o2s              : function(o)
+	{
+		return JSON.stringify(o)
+	},
+
+	/**
+	 * Converts given JSON formatted string to an object.
+	 */
+	s2o              : function(s)
+	{
+		return (ZeT.isx(s) || ZeT.ises(s))?(null):JSON.parse(s)
+	}
+})
+
+
 // +----: ZeT Library  :-----------------------------------------+
 
 var ZeT = window.ZeT = window.ZeT || {
 
 // +----: Global Definitions :----------------------------------->
-
-	define           : function(name, object)
-	{
-		ZeT.asserts(name, 'ZeT difinitions are for string names only!')
-
-		if(!window.ZeT$Global)
-			window.ZeT$Global = {}
-
-		var o; if(o = window.ZeT$Global[name])
-			return o
-
-		window.ZeT$Global[name] = object
-		return object
-	},
-
-	/**
-	 * Returns the object defined. If object is given,
-	 * creates deep clone of the instance and extends
-	 * it deeply with the properties of that object.
-	 */
-	defined          : function(name /*, obj*/)
-	{
-		ZeT.asserts(name, 'ZeT difinitions are for string names only!')
-		var obj = window.ZeT$Global && window.ZeT$Global[name]
-
-		if(ZeT.iso(obj) && ZeT.iso(arguments[1]))
-		{
-			obj = ZeT.deepClone(obj)
-			obj = ZeT.deepExtend(obj, arguments[1])
-		}
-
-		return ZeT.delayedProp(obj)
-	},
-
-	init             : function(name, init)
-	{
-		ZeT.asserts(name, 'ZeT initializations are for string names only!')
-		ZeT.assert(ZeT.isf(init), 'Function is required for ZeT initialization!')
-
-		if(!window.ZeT$Init)
-			window.ZeT$Init = {}
-
-		if(!ZeT.isu(window.ZeT$Init[name]))
-			return window.ZeT$Init[name]
-
-		//!: invoke the initializer
-		window.ZeT$Init[name] = init() || true
-
-		return window.ZeT$Init[name]
-	},
 
 	delayed          : function(obj)
 	{
@@ -794,82 +1063,6 @@ var ZeT = window.ZeT = window.ZeT || {
 
 // +----: Object Programming :----------------------------------->
 
-	/**
-	 * Makes shallow copy of the source with
-	 * optional extension provided.
-	 */
-	clone            : function(src, ext)
-	{
-		return ZeT.extend(ZeT.extend(null, src), ext)
-	},
-
-	/**
-	 * Allows to clone deeply object with prototype support.
-	 * It directly copies fields of this types: numbers, booleans,
-	 * functions, not a plain objects. Arrays are copied deeply.
-	 */
-	deepClone        : function(obj)
-	{
-		//?: {undefined, null, false, zero}
-		if(!obj) return obj
-
-		//?: {is string} copy it
-		if(ZeT.iss(obj)) return '' + obj
-
-		//?: {is an array}
-		var i, res; if(ZeT.isa(obj))
-		{
-			res = new Array(obj.length)
-			for(i = 0;(i < obj.length);i++)
-				res[i] = ZeT.deepClone(obj[i])
-			return res
-		}
-
-		//?: {not a plain object}
-		if(!ZeT.iso(obj)) return obj; else
-
-		//~: create instance with same prototype
-		(function()
-		{
-			function U() {}
-			U.prototype = Object.getPrototypeOf(obj)
-			res = new U()
-		})()
-
-		//~: extend
-		var keys = ZeT.keys(obj)
-		for(i = 0;(i < keys.length);i++)
-			res[keys[i]] = ZeT.deepClone(obj[keys[i]])
-
-		return res
-	},
-
-	/**
-	 * Takes object and copies all the fields from the source
-	 * when the same fields are undefined (note that nulls are
-	 * not undefined). If field is a plain object, extends
-	 * it deeply. Note that arrays are not merged.
-	 * A deep clone of a field value is assigned.
-	 */
-	deepExtend       : function(obj, src)
-	{
-		if(!src) return obj
-		if(!obj) obj = {}
-
-		//?: {not an object}
-		ZeT.assert(ZeT.iso(obj), 'ZeT.deepExtend(): not an object! ', obj)
-
-		var k, keys = ZeT.keys(src)
-		for(var i = 0;(i < keys.length);i++)
-			//?: {field is undefined}
-			if(ZeT.isu(obj[k = keys[i]]))
-				obj[k] = ZeT.deepClone(src[k])
-			//?: {extend nested object}
-			else if(ZeT.iso(obj[k]))
-				ZeT.deepExtend(obj[k], src[k])
-
-		return obj
-	},
 
 	/**
 	 * ZeT.define() class by the name.
@@ -1050,88 +1243,6 @@ var ZeT = window.ZeT = window.ZeT || {
 
 // +----: Function Helpers :------------------------------------->
 
-	/**
-	 * Returns a function having 'this' assigned to 'that'
-	 * argument and the following arguments passed as
-	 * the first arguments of each call.
-	 *
-	 * 0   [required] a function;
-	 * 1   [required] 'this' context to use;
-	 * 2.. [optional] first and the following arguments.
-	 */
-	fbind            : function(f, that)
-	{
-		//?: {has function and the context}
-		ZeT.assert(ZeT.isf(f))
-		ZeT.assertn(that)
-
-		//~: copy the arguments
-		var args = ZeTA.copy(arguments, 2)
-
-		return function()
-		{
-			var a = ZeTA.concat(ZeTA.copy(args), arguments)
-			return f.apply(that, a)
-		}
-	},
-
-	/**
-	 * Works as ZeT.fbind(), but takes additional
-	 * arguments as a copy of array-like object given.
-	 */
-	fbinda           : function(f, that, args)
-	{
-		//?: {has function and the context}
-		ZeT.assert(ZeT.isf(f))
-		ZeT.assertn(that)
-
-		//~: copy the arguments
-		args = ZeTA.copy(args)
-
-		return function()
-		{
-			var a = ZeTA.concat(ZeTA.copy(args), arguments)
-			return f.apply(that, a)
-		}
-	},
-
-	/**
-	 * Universal variant of ZeT.fbind().
-	 * Second argument may be this context.
-	 * Else arguments are index (0-based)
-	 * followed by the value.
-	 */
-	fbindu           : function(f /*, [this], (i, arg)* */)
-	{
-		//?: {has function and the context}
-		ZeT.assert(ZeT.isf(f))
-
-		var that = arguments[1], iarg = []
-
-		//?: {with this-context}
-		var i = 1; if(arguments.length%2 == 0) i = 2; else
-			that = undefined
-
-		//~: copy following arguments
-		while(i < arguments.length)
-		{
-			ZeT.assert(ZeT.isi(arguments[i]))
-			ZeT.assert(arguments[i] >= 0)
-			iarg.push(arguments[i])
-			ZeT.assert(i + 1 < arguments.length)
-			iarg.push(arguments[i+1])
-			i += 2
-		}
-
-		return function()
-		{
-			var a = ZeT.a(arguments)
-			for(i = 0;(i < iarg.length);i += 2)
-				a.splice(iarg[i], 0, iarg[i+1])
-
-			return f.apply(ZeT.isu(that)?(this):(that), a)
-		}
-	},
 
 	/**
 	 * Creates a function that sequentially calls the
@@ -1215,100 +1326,6 @@ var ZeT = window.ZeT = window.ZeT || {
 			return ZeT.timeout.apply(ZeT, args)
 		}
 	},
-
-
-// +----: Helper Functions :------------------------------------->
-
-	/**
-	 * Trailing argument must be a function that
-	 * is invoked only when all leading arguments
-	 * are defined (not ZeT.isx). Boolean values
-	 * are treated as well: false value stops call.
-	 *
-	 * Returns null when callback was not invoked,
-	 * or the result of the function call.
-	 */
-	scopeif          : function(/* args, f */)
-	{
-		var a = ZeT.a(arguments)
-		ZeT.assert(arguments.length)
-
-		var f = a.pop()
-		ZeT.assert(ZeT.isf(f))
-
-		for(var i = 0;(i < a.length);i++)
-			if(ZeT.isx(a[i]) || (a[i] === false))
-				return null
-
-		return f.apply(this, a)
-	},
-
-	get              : function(/* object, properties list */)
-	{
-		var o = arguments[0]
-
-		for(var i = 1;(i < arguments.length);i++)
-		{
-			var k = ZeT.assertn(arguments[i],
-			  'ZeT.get() key at [', i, '] is undefined!')
-
-			if(ZeT.isu(o = o[k]) || (o === null))
-				return undefined
-		}
-
-		return o
-	},
-
-	/**
-	 * Evaluates the script given in a function body.
-	 */
-	xeval            : function(script)
-	{
-		if(ZeT.ises(script)) return undefined
-		return eval('((function(){'.concat(script, '})())'))
-	},
-
-	/**
-	 * Takes array-like object and invokes the
-	 * function given on each item. Function
-	 * receives arguments: [0] is the item,
-	 * [1] is the item index.
-	 *
-	 * This-context of the function call
-	 * is also the item iterated.
-	 *
-	 * If call on some item returns false, iteration
-	 * is breaked and that stop-index is returned.
-	 */
-	each             : function(a, f)
-	{
-		if(!a) return undefined
-		ZeT.assert(ZeT.isi(a.length))
-		ZeT.assert(ZeT.isf(f))
-
-		for(var i = 0;(i < a.length);i++)
-			if(f.call(a[i], a[i], i) === false)
-				return i
-		return a.length
-	},
-
-	collect          : function(a, f)
-	{
-		//?: {collect a property}
-		var p; if(ZeT.iss(p = f)) f = function(x) { return x[p] }
-		ZeT.assert(ZeT.isf(f))
-
-		var r = []; ZeT.each(a, function(x, i)
-		{
-			x = f.call(x, x, i)
-			if(!ZeT.isu(x)) r.push(x)
-		})
-
-		return r
-	},
-
-
-// +----: Assertions :------------------------------------------->
 
 
 // +----: Debug Logging :----------------------------------------+
@@ -1505,24 +1522,6 @@ var ZeT = window.ZeT = window.ZeT || {
 		}
 
 		return ZeT.isa(o)
-	},
-
-
-
-	/**
-	 * Converts given object to JSON formatted string.
-	 */
-	o2s              : function(o)
-	{
-		return JSON.stringify(o)
-	},
-
-	/**
-	 * Reverse to ZeT.o2s().
-	 */
-	s2o              : function(s)
-	{
-		return (ZeT.isx(s) || ZeT.ises(s))?(null):JSON.parse(s)
 	}
 }
 
