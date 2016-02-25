@@ -941,7 +941,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 				delete res.items[i].extjsfRawItem
 
 		//~: resolve delayed properties
-		ZeT.delayedProp(res)
+		ZeT.undelay(res)
 
 		//~: merge the listeners
 		res.listeners = this._xlisteners(res.listeners);
@@ -1382,7 +1382,7 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 		if(supform) this._form_params(supform, prms, this._button)
 
 		//~: resolve delayed parameters
-		ZeT.delayedProp(prms)
+		ZeT.undelay(prms)
 
 		//~: cleanup the domain
 		extjsf.deleteDomain(this._domain)

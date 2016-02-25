@@ -1047,19 +1047,47 @@ ZeT.extend(ZeT,
 	 *
 	 * If call on some item returns false, iteration
 	 * is breaked and that stop-index is returned.
+	 *
+	 * This function also supports general objects
+	 * that do pass ZeT.isox(). In this case iteration
+	 * takes place over all own ZeT.keys(), the key
+	 * is given as the second argument (as index).
+	 * The call returns all the keys processed as
+	 * and array, or single key had been rejected.
 	 */
-	each             : function(a, f)
+	each             : ZeT.scope(function(/* array | object, f */)
 	{
-		if(!a) return undefined
-		ZeT.assert(ZeT.isi(a.length))
-		ZeT.assert(ZeT.isf(f))
+		function eacha(a, f)
+		{
+			for(var i = 0;(i < a.length);i++)
+				if(f.call(a[i], a[i], i) === false)
+					return i
 
-		for(var i = 0;(i < a.length);i++)
-			if(f.call(a[i], a[i], i) === false)
-				return i
+			return a.length
+		}
 
-		return a.length
-	},
+		function eacho(o, f)
+		{
+			var keys = ZeT.keys(o), k = keys[0]
+
+			for(var i = 0;(i < keys.length);k = keys[++i])
+				if(f.call(o[k], o[k], k) === false)
+					return k
+
+			return keys
+		}
+
+		return function(o, f)
+		{
+			ZeT.assertf(f)
+
+			if(ZeT.isax(o))
+				return eacha(o, f)
+
+			if(ZeT.isox(o))
+				return eacho(o, f)
+		}
+	}),
 
 	/**
 	 * Invokes the factin given over each not
@@ -1594,13 +1622,15 @@ ZeT.extend(ZeT,
 	 *
 	 * The first variant of the arguments is:
 	 *
-	 * 0) Class or definition key; 1) arguments array;
-	 * 2) sub-class definition body.
+	 * [0] ZeT Class or definition key;
+	 * [1] arguments array;
+	 * [2] sub-class definition body.
 	 *
 	 * The second variant is:
 	 *
-	 * 0) Class or definition key; 1) sub-class definition
-	 * body; 2..) arguments list.
+	 * [0] ZeT Class or definition key;
+	 * [1] sub-class definition body;
+	 * ... arguments list (optional).
 	 */
 	hiddenInstance   : function()
 	{
@@ -1637,68 +1667,46 @@ ZeT.extend(ZeT,
 })
 
 
-// +----: ZeT Library  :-----------------------------------------+
+// +----: ZeT for Browser :--------------------------------------+
 
-var ZeT = window.ZeT = window.ZeT || {
-
-// +----: Global Definitions :----------------------------------->
-
-	delayed          : function(obj)
-	{
-		if(ZeT.isf(obj) && (obj.ZeT$delay === true))
-			obj = obj()
-		return obj
-	},
-
+ZeT.extend(ZeT,
+{
 	/**
-	 * If property is defined, resolves that delayed
-	 * property. If not, deeply resolves the object.
+	 * Marks function as a delayed property.
 	 */
-	delayedProp      : function(obj, prop)
-	{
-		if(!obj) return obj
-
-		//?: {process the whole object}
-		if(ZeT.isu(prop) || (prop === null))
-		{
-			for(var p in obj)
-				this.delayedProp(obj, ZeT.assertn(p))
-		}
-		//~: or just the property given
-		else
-		{
-			var val = obj[prop]
-			if(ZeT.isf(val) && (val.ZeT$delay === true))
-				obj[prop] = val()
-		}
-
-		return obj
-	},
-
-	isDelayed        : function(obj_or_val, prop)
-	{
-		//?: {property is specified}
-		if(prop && obj_or_val)
-			obj_or_val = obj_or_val[prop]
-
-		return !!obj_or_val && (obj_or_val.ZeT$delay === true)
-	},
-
 	delay            : function(f)
 	{
-		ZeT.assert(ZeT.isf(f), 'Zet.delay() may not delay not a function!')
+		ZeT.assertf(f, 'Zet.delay() may not delay not a function!')
 		f.ZeT$delay = true
 		return f
 	},
 
-	defineDelay      : function(name, func)
+	defineDelay      : function(name, f)
 	{
-		return this.define(name, this.delay(func))
+		return ZeT.define(name, ZeT.delay(f))
 	},
 
+	isDelayed        : function(obj)
+	{
+		return ZeT.isf(obj) && (obj.ZeT$delay === true)
+	},
 
-// +----: Function Helpers :------------------------------------->
+	/**
+	 * Deeply resolves all delayed (own) properties
+	 * of the object given.
+	 */
+	undelay          : function(obj)
+	{
+		if(ZeT.isox(obj)) ZeT.each(obj, function(x, k)
+		{
+			if(ZeT.isf(x) && (x.ZeT$delay === true))
+				obj[k] = x()
+			else if(ZeT.isox(x))
+				obj[k] = ZeT.undelay(x)
+		})
 
+		return obj
+	},
 
 	/**
 	 * Creates a function that sequentially calls the
@@ -1719,10 +1727,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	pipe             : function(/* functions */)
 	{
-		var fn = []; ZeT.each(arguments, function()
-		{
-			ZeT.assert(ZeT.isf(this)); fn.push(this)
-		})
+		var fn = ZeT.a(arguments)
 
 		//?: {has just one item in the pipe}
 		ZeT.assert(fn.length, 'ZeT.pipe() functions are not defined!')
@@ -1754,7 +1759,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	 * the function given and optionally binds it with
 	 * this-context and the arguments array given.
 	 *
-	 * Returns the argument function, or the bound one.
+	 * Returns setTimeout() id.
 	 */
 	timeout          : function(tm, f, that, args)
 	{
@@ -1764,8 +1769,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		//?: {do bind}
 		if(that) f = ZeT.fbinda(f, that, args)
 
-		setTimeout(f, tm)
-		return f
+		return setTimeout(f, tm)
 	},
 
 	/**
@@ -1775,16 +1779,13 @@ var ZeT = window.ZeT = window.ZeT || {
 	 */
 	timeouted        : function()
 	{
-		var args = arguments
+		var args = ZeT.a(arguments)
 
 		return function()
 		{
 			return ZeT.timeout.apply(ZeT, args)
 		}
 	},
-
-
-// +----: Debug Logging :----------------------------------------+
 
 	/**
 	 * Logs the values provided and returns the value:
@@ -1796,26 +1797,27 @@ var ZeT = window.ZeT = window.ZeT || {
 	 *
 	 * · the last not empty string.
 	 */
-	log              : function (/* objects */)
+	log              : ZeT.scope(function(/* objects */)
 	{
-		var j = 0, a = ZeT.a(arguments)
+		function isxlog(o)
+		{
+			if(!o) return false
 
-		//~: result --> last not a string
-		var r; for(var i = a.length - 1;(i >= 0);i--)
-			if(!ZeT.isx(a[i]) && !ZeT.iss(a[i]))
-				{ r = a[i]; break }
+			//?: {is plain object}
+			if(typeof o === 'object') return true
 
-		//~: result --> last not a ws-empty string
-		if(!r) for(i = a.length - 1;(i >= 0);i--)
-			if(!ZeT.ises(a[i]))
-				{ r = a[i]; break }
+			//?: {is an element}
+			if(o.nodeType === 1) return true
 
-		function pack(i)
+			return false
+		}
+
+		function pack(a, j, i)
 		{
 			if(j + 1 >= i) return i
 
 			for(var x = '', k = j;(k < i);k++)
-				if(!ZeT.isu(a[k]) && (a[k] !== null))
+				if(!ZeT.isx(a[k]))
 					x += a[k]
 
 			a[j] = x; a.splice(j + 1, i - j - 1)
@@ -1824,46 +1826,46 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		function ise(x)
 		{
-			return ZeT.isu(x) || (x == null) ||
-			  (ZeT.iss(x) && ZeT.ises(x))
+			return ZeT.isx(x) || (ZeT.iss(x) && ZeT.ises(x))
 		}
 
-		for(i = 0;(i < a.length);i++)
-			if(ZeT.isxlog(a[i]))
-			{
-				i = pack(i)
-				j = i + 1
-			}
+		return function()
+		{
+			var r, j = 0, a = ZeT.a(arguments)
 
-		pack(a.length)
+			//~: result --> last not a string
+			for(var i = a.length - 1;(i >= 0);i--)
+				if(!ZeT.isx(a[i]) && !ZeT.iss(a[i]))
+					{ r = a[i]; break }
 
-		var empty = true
-		for(j = 0;(j < a.length);j++)
-			if(!ise(a[j])) { empty = false; break }
+			//~: result --> last not a ws-empty string
+			if(!r) for(i = a.length - 1;(i >= 0);i--)
+				if(!ZeT.ises(a[i]))
+					{ r = a[i]; break }
 
-		if(!empty) console.log.apply(console, a)
-		return r
-	},
+			for(i = 0;(i < a.length);i++)
+				if(isxlog(a[i]))
+				{
+					i = pack(a, j, i)
+					j = i + 1
+				}
 
-	isxlog           : function(o)
-	{
-		if(!o) return false
+			pack(a, j, a.length)
 
-		//?: {is plain object}
-		if(typeof o === 'object') return true
+			var empty = true
+			for(j = 0;(j < a.length);j++)
+				if(!ise(a[j])) { empty = false; break }
 
-		//?: {is an element}
-		if(o.nodeType === 1) return true
-
-		return false
-	}
-}
-
+			if(!empty) console.log.apply(console, a)
+			return r
+		}
+	})
+})
 
 
 // +----: ZeT XML  :---------------------------------------------+
 
-var ZeTX = ZeT.define('ZeT XML Support',
+var ZeTX = ZeT.define('ZeT.X',
 {
 	nodes            : function(xml, name)
 	{

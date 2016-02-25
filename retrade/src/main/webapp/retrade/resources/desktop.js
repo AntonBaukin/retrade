@@ -357,7 +357,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 		//~: create the parameters
 		var params = opts.params || {};
-		ZeT.delayedProp(params) //<-- resolve delayed parameters
+		ZeT.undelay(params) //<-- resolve delayed parameters
 
 		//~: set the domain parameter
 		params.extjs_domain = domain;

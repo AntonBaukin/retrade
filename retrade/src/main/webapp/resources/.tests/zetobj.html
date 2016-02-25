@@ -701,13 +701,28 @@ function testExtends()
   ZeT.assert('a2c' === ZeT.xeval(" return 'a' + 2 + 'c' "))
 
 
-  //--> each
+  //--> each array
 
-  ZeT.each(args('0', '1', '2', '3'), function(x, i)
+  ZeT.assert(4 == ZeT.each(args('0', '1', '2', '3'), function(x, i)
   {
     ZeT.assert(x == this) //!: not ===
     ZeT.assert(parseInt(x) === i)
-  })
+  }))
+
+
+  //--> each object key
+
+  var E = { a: { x: 'a' }, b: { x: 2 }, c: { x: 'c' }}
+
+  ZeT.assert('abc' === ZeT.cati(0, ZeT.each(E, function(x, k)
+  {
+    ZeT.assert(E[k] === x)
+  })))
+
+  ZeT.assert('b' === ZeT.each(E, function(x, k)
+  {
+    if(x.x !== k) return false
+  }))
 
 
   //--> map (property, index, function)
@@ -718,12 +733,12 @@ function testExtends()
   var Y = [[ '?', 'a' ], [ '!', 2 ], [ '#', 'b' ]]
   ZeT.assert(ZeTA.eq(['a', 2, 'b'], ZeT.map(Y, 1)))
 
-	ZeT.assert(ZeTA.eq(['a', 'b'], ZeT.map(X, function(x, i)
-	{
-		ZeT.assert(x == this)
-		ZeT.assert(ZeT.isi(i))
-		return ZeT.iss(x.x)?(x.x):(undefined)
-	})))
+  ZeT.assert(ZeTA.eq(['a', 'b'], ZeT.map(X, function(x, i)
+  {
+    ZeT.assert(x == this)
+    ZeT.assert(ZeT.isi(i))
+    return ZeT.iss(x.x)?(x.x):(undefined)
+  })))
 }
 
 function testClasses()

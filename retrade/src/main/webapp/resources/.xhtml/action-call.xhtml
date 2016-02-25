@@ -70,7 +70,7 @@
             opts.params['${rootView.viewIdParam}'] = '${rootView.effectiveViewId}';
 
           //~: resolve delayed parameters
-          ZeT.delayedProp(prms)
+          ZeT.undelay(prms)
 
           var usersuc = opts.success;
           opts.success = function(response)
