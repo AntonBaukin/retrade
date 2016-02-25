@@ -3131,7 +3131,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 	_newer          : function()
 	{
 		if(!this.model) return undefined
-		if(!ZeT.i$x(this.model.newer)) return true
+		if(!ZeT.isx(this.model.newer)) return true
 
 		var f = this.first(); if(!f) return undefined
 		var i = this.model.items.indexOf(f)
@@ -3143,7 +3143,7 @@ ReTrade.EventsMenu = ZeT.defineClass('ReTrade.EventsMenu', ReTrade.Visual, {
 	_older          : function()
 	{
 		if(!this.model) return undefined
-		if(!ZeT.i$x(this.model.older)) return true
+		if(!ZeT.isx(this.model.older)) return true
 
 		var f = this.last(); if(!f) return undefined
 		var i = this.model.items.indexOf(f)

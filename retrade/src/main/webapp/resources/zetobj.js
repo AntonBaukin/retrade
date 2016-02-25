@@ -1698,7 +1698,7 @@ var ZeT = window.ZeT = window.ZeT || {
 
 		//~: result --> last not a string
 		var r; for(var i = a.length - 1;(i >= 0);i--)
-			if(!ZeT.i$x(a[i]) && !ZeT.iss(a[i]))
+			if(!ZeT.isx(a[i]) && !ZeT.iss(a[i]))
 				{ r = a[i]; break }
 
 		//~: result --> last not a ws-empty string
@@ -1789,7 +1789,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	i$xtrue           : function(/* object, properties list */)
 	{
 		var o = arguments[0]
-		var u = ZeT.i$x(o)
+		var u = ZeT.isx(o)
 
 		//?: {not need to check further}
 		if(u || (arguments.length == 1))
@@ -1800,7 +1800,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		while(a.length)
 		{
 			o = o[a.shift()] //<-- access the next property
-			if(ZeT.i$x(o)) return true
+			if(ZeT.isx(o)) return true
 		}
 
 		return (o !== false)
@@ -1813,7 +1813,7 @@ var ZeT = window.ZeT = window.ZeT || {
 	i$xfalse          : function(/* object, properties list */)
 	{
 		var o = arguments[0]
-		var u = ZeT.i$x(o)
+		var u = ZeT.isx(o)
 
 		//?: {not need to check further}
 		if(u || (arguments.length == 1))
@@ -1824,7 +1824,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		while(a.length)
 		{
 			o = o[a.shift()] //<-- access the next property
-			if(ZeT.i$x(o)) return true
+			if(ZeT.isx(o)) return true
 		}
 
 		return (o !== true)
@@ -1847,7 +1847,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		while(a.length)
 		{
 			o = o[a.shift()] //<-- access the next property
-			if(ZeT.i$x(o)) return false
+			if(ZeT.isx(o)) return false
 		}
 
 		return ZeT.isf(o)
@@ -1870,7 +1870,7 @@ var ZeT = window.ZeT = window.ZeT || {
 		while(a.length)
 		{
 			o = o[a.shift()] //<-- access the next property
-			if(ZeT.i$x(o)) return false
+			if(ZeT.isx(o)) return false
 		}
 
 		return ZeT.isa(o)

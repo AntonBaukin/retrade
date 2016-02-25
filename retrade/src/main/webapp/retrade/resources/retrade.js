@@ -400,7 +400,7 @@ ZeT.init('retrade.globals', function()
 
 	function needCalcRenderer(v, meta)
 	{
-		var t; if(ZeT.i$x(v) || ZeTS.ises(v))
+		var t; if(ZeT.isx(v) || ZeTS.ises(v))
 		{
 			v = '';
 			t = 'По умолчанию: производство через данную позицию будет продолжено, если указанный товар является продуктом, но не полуфабрикатом';
@@ -979,7 +979,7 @@ ZeT.init('retrade.globals', function()
 
 	function calcSemiReadyRenderer(v, meta)
 	{
-		var t; if(ZeT.i$x(v) || ZeTS.ises(v))
+		var t; if(ZeT.isx(v) || ZeTS.ises(v))
 		{
 			v = 'с';
 			t = 'Сырьё (закупаемые товары)';

@@ -63,7 +63,7 @@ var ZeTD = ZeT.define('ZeTD',
 
 	n                : function(id_or_node, dom)
 	{
-		if(ZeT.i$x(id_or_node))  return undefined;
+		if(ZeT.isx(id_or_node))  return undefined;
 		if(ZeTD.isn(id_or_node)) return id_or_node;
 		if(!ZeT.iss(id_or_node)) throw 'ZeTD: node ID is not a string!';
 
@@ -77,7 +77,7 @@ var ZeTD = ZeT.define('ZeTD',
 
 	xn               : function(id_or_node, dom)
 	{
-		if(ZeT.i$x(id_or_node))  return undefined;
+		if(ZeT.isx(id_or_node))  return undefined;
 		if(ZeTD.isn(id_or_node)) return id_or_node;
 		if(!ZeT.iss(id_or_node)) return undefined;
 
@@ -290,7 +290,7 @@ var ZeTD = ZeT.define('ZeTD',
 			if(!ZeT.iss(k = names[i])) continue
 
 			//?: {remove attribute}
-			if(ZeT.i$x(v = attrs[k])) node.removeAttribute(k); else
+			if(ZeT.isx(v = attrs[k])) node.removeAttribute(k); else
 			{
 				if(ZeT.isn(v)) v = '' + v
 				ZeT.assert(ZeT.iss(v), 'DOM Node attribute [', k,
@@ -753,7 +753,7 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 		if(!area && (this.opts['global'] === true))
 			area = ZeT.Layout.TemplateGlobal
 
-		if(ZeT.i$x(area)) area = this._create_area()
+		if(ZeT.isx(area)) area = this._create_area()
 
 		//?: {the area is string id} init it later
 		if(ZeT.iss(area)) { this._area_id = area; this._area_gl = true } else
