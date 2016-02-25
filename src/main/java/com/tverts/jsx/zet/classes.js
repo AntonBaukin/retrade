@@ -33,7 +33,7 @@ var ZeTA = JsX.once('./arrays.js')
  * the instances created.
  *
  * The returned Class instance is a Function having the following
- * instance methods:
+ * instance members:
  *
  * · static : empty Object
  *
@@ -96,9 +96,9 @@ var ZeTA = JsX.once('./arrays.js')
  *   · superFallback: function to invoke within $call-,
  *     $applySuper() when super method was not found.
  *
- *    Note that $callContext object is shared between the calls
- *    of the body method wrapped! (Each function in the method
- *    hierarchy still has it's own instance.)
+ *   Note that $callContext object is shared between the calls
+ *   of the body method wrapped! (Each function in the method
+ *   hierarchy still has it's own instance.)
  */
 ZeT.Class = function()
 {
@@ -147,12 +147,12 @@ ZeT.Class = function()
 	  (Class.$super.$plain):(Class.$super)
 
 	//?: {has parent class} use it as a prototype
-	if(!Class.$super) Class.prototype = {}; else (function()
+	Class.prototype = (!Class.$super)?{}:ZeT.scope(function()
 	{
 		function U() {}
 		U.prototype = Class.$super.prototype
 		Class.prototype = new U()
-	})();
+	})
 
 	//:: Class.create()
 	Class.create = function()
