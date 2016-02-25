@@ -164,6 +164,25 @@ function testChecks()
   assert(!ZeT.isu(1.0))
 
 
+  //--> is x-check
+
+  var X = { a: 'a', b: [ 0, null, true, 'b', false, { c: 'c' }]}
+
+  assert( ZeT.isx(X.xyz))
+  assert( ZeT.isx(null, X, 'xyz'))
+  assert( ZeT.isx(X.b[1]))
+  assert( ZeT.isx(null, X, 'b', 1))
+  assert(!ZeT.isx(null, X, 'b', 0))
+  assert(!ZeT.isx(null, X, 'b', 2))
+  assert( ZeT.isx(true, X, 'b', 2))
+  assert( ZeT.isx(1, X, 'b', 2))
+  assert( ZeT.isx(false, X, 'b', 4))
+  assert( ZeT.isx(0, X, 'b', 4))
+  assert(!ZeT.isx(1, X, 'b', 4))
+  assert( ZeT.isx('c', X, 'b', 5, 'c'))
+  assert( ZeT.isx(null, X, 'b', 5, 'xyz'))
+
+
   //--> is array
 
   assert(ZeT.isa([]))

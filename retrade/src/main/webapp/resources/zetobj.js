@@ -146,10 +146,76 @@ ZeT.extend(ZeT,
 		return (typeof o === 'undefined')
 	},
 
-	isx              : function(o)
+	/**
+	 * First variant of call takes single arguments
+	 * and returns true when it's undefined or null.
+	 *
+	 * Second, takes:
+	 *
+	 * [0] value to check;
+	 * [1] object to test;
+	 * ... properties path.
+	 *
+	 * If the object is undefined or null, returns true.
+	 * If the path to the destination property is given
+	 * (each path element as a distinct argument), goes
+	 * into the object. If any intermediate member is
+	 * undefined or null, or the final property is,
+	 * return true.
+	 *
+	 * When final member is defined checks it (soft ==)
+	 * against the given value: returns the check result.
+	 *
+	 * Sample. ZeT.isx(true, opts, 'a', 0, 'b')
+	 * returns true when opts, or opts.a, or opts.a[0],
+	 * or opts.a[0].b are undefined or null, or final
+	 * (opts.a[0].b == true).
+	 *
+	 * Also, if value to check is a function, invokes
+	 * it on the final member instead of equality.
+	 */
+	isx              : ZeT.scope(function()
 	{
-		return (o === null) || (typeof o === 'undefined')
-	},
+		function isux(o)
+		{
+			return (o === null) || (typeof o === 'undefined')
+		}
+
+		function i$x(check, o)
+		{
+			//?: {comparator}
+			if(ZeT.isf(check))
+				return check(o)
+
+			//~: soft equality
+			return (check == o)
+		}
+
+		return function()
+		{
+			//?: {single value to check}
+			var l = arguments.length
+			if(l <= 1) return isux(arguments[0])
+
+			//~: initial object to check
+			var o = arguments[1]
+			if(isux(o)) return true
+
+			//~: trace to the target member
+			for(var k, i = 2;(i < l);i++)
+			{
+				//?: {has the key undefined}
+				if(isux(k = arguments[i]))
+					return undefined
+
+				//?: {has the object undefined}
+				if(isux(o = o[k]))
+					return true
+			}
+
+			return i$x(arguments[0], o)
+		}
+	}),
 
 	isa              : Lo.isArray,
 
@@ -819,7 +885,7 @@ ZeT.extend(ZeT,
 		var o = arguments[0]
 		if(ZeT.isx(o)) return o
 
-		for(var k, o, i = 1;(i < arguments.length);i++)
+		for(var k, i = 1;(i < arguments.length);i++)
 		{
 			//?: {has the key undefined}
 			if(ZeT.isx(k = arguments[i]))
