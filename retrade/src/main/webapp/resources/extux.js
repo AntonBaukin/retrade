@@ -5,6 +5,9 @@
  +===============================================================*/
 
 
+//~: make animation slower
+Ext.fx.Manager.interval = 40 //<- 25 fps
+
 /**
  * Default timeout to 30 minutes.
  */

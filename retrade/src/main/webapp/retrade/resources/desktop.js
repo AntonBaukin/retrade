@@ -10,11 +10,6 @@
 jQuery.fx.interval = 41.6
 
 
-// +----: ReTrade Namespace :------------------------------------+
-
-var ReTrade = ZeT.define('ReTrade', {})
-
-
 // +----: Is Touch Device :--------------------------------------+
 
 ReTrade.isTouch = ZeT.scope(function()
