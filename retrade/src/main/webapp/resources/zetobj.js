@@ -172,7 +172,9 @@ ZeT.extend(ZeT,
 	 * (opts.a[0].b == true).
 	 *
 	 * Also, if value to check is a function, invokes
-	 * it on the final member instead of equality.
+	 * it on the final member instead of equality,
+	 * and with undefined value when intermediate
+	 * member is undefined or null.
 	 */
 	isx              : ZeT.scope(function()
 	{
@@ -187,8 +189,8 @@ ZeT.extend(ZeT,
 			if(ZeT.isf(check))
 				return check(o)
 
-			//~: soft equality
-			return (check == o)
+			//?: {is undefined | soft equality}
+			return ZeT.isu(o) || (check == o)
 		}
 
 		return function()
@@ -210,7 +212,7 @@ ZeT.extend(ZeT,
 
 				//?: {has the object undefined}
 				if(isux(o = o[k]))
-					return true
+					break
 			}
 
 			return i$x(arguments[0], o)
@@ -489,6 +491,42 @@ ZeT.extend(ZeT,
 		for(var i = 0;(i < l);i++) r[i] = a[i]
 
 		return r
+	},
+
+	not              : function(f)
+	{
+		return function()
+		{
+			return !f.apply(this, arguments)
+		}
+	},
+
+	and              : function(/* functions */)
+	{
+		var fs = ZeT.a(arguments)
+
+		return function()
+		{
+			for(var i = 0;(i < fs.length);i++)
+				if(!fs[i].apply(this, arguments))
+					return false
+
+			return true
+		}
+	},
+
+	or               : function(/* functions */)
+	{
+		var fs = ZeT.a(arguments)
+
+		return function()
+		{
+			for(var i = 0;(i < fs.length);i++)
+				if(fs[i].apply(this, arguments))
+					return true
+
+			return false
+		}
 	}
 })
 
@@ -1818,128 +1856,6 @@ var ZeT = window.ZeT = window.ZeT || {
 		if(o.nodeType === 1) return true
 
 		return false
-	},
-
-
-// +----: Te$t Functions :---------------------------------------+
-
-	/**
-	 * Checks the value is undefined or null.
-	 *
-	 * The following (optional) arguments define the keys in the
-	 * sequence of property access of the object.
-	 */
-	i$x               : function(/* object, properties list */)
-	{
-		var o = arguments[0]
-		var r = ZeT.isu(o) || (o === null)
-
-		//?: {not need to check further}
-		if(r || (arguments.length == 1)) return !!r
-
-		var a = ZeT.a(arguments); a.shift()
-
-		while(a.length)
-		{
-			o = o[a.shift()] //<-- access the next property
-			if(ZeT.isu(o) || (o === null)) return true
-		}
-
-		return false
-	},
-
-	/**
-	 * Returns true when the flag is undefined or
-	 * is not set (===) to false.
-	 */
-	i$xtrue           : function(/* object, properties list */)
-	{
-		var o = arguments[0]
-		var u = ZeT.isx(o)
-
-		//?: {not need to check further}
-		if(u || (arguments.length == 1))
-			return u || !(o === false)
-
-		var a = ZeT.a(arguments); a.shift()
-
-		while(a.length)
-		{
-			o = o[a.shift()] //<-- access the next property
-			if(ZeT.isx(o)) return true
-		}
-
-		return (o !== false)
-	},
-
-	/**
-	 * Returns true when the flag is undefined or
-	 * is not set (===) to true.
-	 */
-	i$xfalse          : function(/* object, properties list */)
-	{
-		var o = arguments[0]
-		var u = ZeT.isx(o)
-
-		//?: {not need to check further}
-		if(u || (arguments.length == 1))
-			return u || !(o === true)
-
-		var a = ZeT.a(arguments); a.shift()
-
-		while(a.length)
-		{
-			o = o[a.shift()] //<-- access the next property
-			if(ZeT.isx(o)) return true
-		}
-
-		return (o !== true)
-	},
-
-	/**
-	 * Checks the value, or a property value is a function.
-	 * If the final property is not accessible, false
-	 * value is returned.
-	 */
-	i$f               : function(/* object, properties list */)
-	{
-		var o = arguments[0]
-
-		if(arguments.length == 1)
-			return ZeT.isf(o)
-
-		var a = ZeT.a(arguments); a.shift()
-
-		while(a.length)
-		{
-			o = o[a.shift()] //<-- access the next property
-			if(ZeT.isx(o)) return false
-		}
-
-		return ZeT.isf(o)
-	},
-
-	/**
-	 * Checks the value, or a property value is an array.
-	 * If the final property is not accessible, false
-	 * value is returned.
-	 */
-	i$a               : function(/* object, properties list */)
-	{
-		var o = arguments[0]
-
-		if(arguments.length == 1)
-			return ZeT.isa(o)
-
-		var a = ZeT.a(arguments); a.shift()
-
-		while(a.length)
-		{
-			o = o[a.shift()] //<-- access the next property
-			if(ZeT.isx(o)) return false
-		}
-
-		return ZeT.isa(o)
 	}
 }
 

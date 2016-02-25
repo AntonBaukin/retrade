@@ -166,7 +166,11 @@ function testChecks()
 
   //--> is x-check
 
-  var X = { a: 'a', b: [ 0, null, true, 'b', false, { c: 'c' }]}
+  var X  = { a: 'a', b: [ 0, null, true, 'b', false, { c: 'c', d: [ 0, 1 ]}]}
+  var Xd = function(d)
+  {
+    return ZeT.isa(d) && (d[0] === 0) && (d[1] === 1)
+  }
 
   assert( ZeT.isx(X.xyz))
   assert( ZeT.isx(null, X, 'xyz'))
@@ -181,6 +185,7 @@ function testChecks()
   assert(!ZeT.isx(1, X, 'b', 4))
   assert( ZeT.isx('c', X, 'b', 5, 'c'))
   assert( ZeT.isx(null, X, 'b', 5, 'xyz'))
+  assert( ZeT.isx(Xd, X, 'b', 5, 'd'))
 
 
   //--> is array
@@ -241,6 +246,23 @@ function testChecks()
   assert(!ZeT.iso(1.0))
   assert(!ZeT.iso(0))
   assert(!ZeT.iso(10))
+
+
+  //--> not, and, or
+
+  var F   = { a: 'a', b: [ 0, function(){} ]}
+
+  ZeT.assert(!ZeT.isx(ZeT.isf, F, 'a'))
+  ZeT.assert( ZeT.isx(ZeT.not(ZeT.isf), F, 'a'))
+
+  ZeT.assert( ZeT.isx(null, F, 'xyz'))
+  ZeT.assert( ZeT.isx(ZeT.isu, F, 'xyz'))
+  ZeT.assert(!ZeT.isx(ZeT.not(ZeT.isu), F, 'xyz'))
+
+  ZeT.assert( ZeT.isx(ZeT.not(ZeT.isf), F, 'b', 0))
+  ZeT.assert( ZeT.isx(ZeT.isf, F, 'b', 1))
+  ZeT.assert( ZeT.isx(ZeT.or(ZeT.isf, ZeT.isu), F, 'b', 2))
+  ZeT.assert(!ZeT.isx(ZeT.and(ZeT.isf, ZeT.isu), F, 'b', 2))
 }
 
 function testAsserts()

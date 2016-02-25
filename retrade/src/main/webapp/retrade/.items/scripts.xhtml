@@ -435,7 +435,7 @@ function retrade_yes_no(opts, f)
   p.msg = opts.message
 
   //=: modal
-  p.modal = ZeT.i$xtrue(opts.modal)
+  p.modal = ZeT.isx(true, opts.modal)
 
   //~: user callback
   if(!f) f = opts.fn

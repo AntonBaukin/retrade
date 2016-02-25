@@ -67,7 +67,7 @@ var ZeTD = ZeT.define('ZeTD',
 		if(ZeTD.isn(id_or_node)) return id_or_node;
 		if(!ZeT.iss(id_or_node)) throw 'ZeTD: node ID is not a string!';
 
-		if(!dom || ZeT.i$f(dom, 'getElementById'))
+		if(!dom || ZeT.isf(ZeT.get(dom, 'getElementById')))
 			return (dom || document).getElementById(id_or_node);
 
 		var opts = {id: id_or_node};
@@ -81,7 +81,7 @@ var ZeTD = ZeT.define('ZeTD',
 		if(ZeTD.isn(id_or_node)) return id_or_node;
 		if(!ZeT.iss(id_or_node)) return undefined;
 
-		if(!dom || ZeT.i$f(dom, 'getElementById'))
+		if(!dom || ZeT.isf(ZeT.get(dom, 'getElementById')))
 			return (dom || document).getElementById(id_or_node);
 
 		var opts = {id: id_or_node};
@@ -432,7 +432,7 @@ ZeT.Struct = ZeT.defineClass('ZeT.Struct', {
 		var node = this._node;
 
 		//?: {is global node with ID} store by ID
-		if(ZeTD.isxn(node) && ZeT.i$xfalse(this.opts, 'nobyid'))
+		if(ZeTD.isxn(node) && ZeT.isx(false, this.opts, 'nobyid'))
 			if(!ZeTS.ises(node.id) && ZeTD.isgn(node))
 				this._node = node.id;
 
@@ -468,16 +468,16 @@ ZeT.Struct = ZeT.defineClass('ZeT.Struct', {
 	{
 		struct = ZeT.struct(struct, true);
 
-		if(ZeT.i$xtrue(opts, 'fields'))
+		if(ZeT.isx(true, opts, 'fields'))
 			this._assign_fields(struct, opts)
 
-		if(ZeT.i$xtrue(opts, 'template'))
+		if(ZeT.isx(true, opts, 'template'))
 			struct._template = this._template;
 
-		if(ZeT.i$xtrue(opts, 'func'))
+		if(ZeT.isx(true, opts, 'func'))
 			struct._funcs = ZeT.extend({}, this._funcs);
 
-		if(ZeT.i$xtrue(opts, 'share'))
+		if(ZeT.isx(true, opts, 'share'))
 			struct._share = this._share.slice();
 
 		return this;
@@ -572,7 +572,7 @@ ZeT.Struct = ZeT.defineClass('ZeT.Struct', {
 		var res = node;
 
 		//?: {is global node with ID} store by ID
-		if(ZeTD.isxn(node) && ZeT.i$xfalse(this.opts, 'nobyid'))
+		if(ZeTD.isxn(node) && ZeT.isx(false, this.opts, 'nobyid'))
 			if(!ZeTS.ises(node.id) && ZeTD.isgn(node))
 				res = node.id;
 
@@ -930,7 +930,7 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 	{
 		var x = node['ZeT_Layout_Template']; if(!x) x = {}
 
-		if(ZeT.i$xtrue(this.opts, 'clean'))
+		if(ZeT.isx(true, this.opts, 'clean'))
 			ZeT.Layout.Treeters.cleanWs.proc(node)
 
 		if(x.rootless && ZeTD.isoc(node))
@@ -981,19 +981,19 @@ ZeT.Layout.Template = ZeT.defineClass('ZeT.Layout.Template', {
 
 	_notify_first    : function()
 	{
-		if(ZeT.i$f(this.opts, 'first'))
+		if(ZeT.isf(ZeT.get(this.opts, 'first')))
 			this.opts['first'](this)
 	},
 
 	_notify_trace    : function()
 	{
-		if(ZeT.i$f(this.opts, 'trace'))
+		if(ZeT.isf(ZeT.get(this.opts, 'trace')))
 			this.ways(this.traceTree(this.opts['trace']))
 	},
 
 	_notify_last     : function()
 	{
-		if(ZeT.i$f(this.opts, 'last'))
+		if(ZeT.isf(ZeT.get(this.opts, 'last')))
 			this.opts['last'](this)
 	}
 })
@@ -1068,7 +1068,7 @@ ZeT.Layout.template = ZeT.define('ZeT.Layout.template()',
 		if(ra[j] && (ra[j].id === id))
 			return ra[j]
 
-	ZeT.assert(!ZeT.i$xtrue(opts, 'assert'), 'ZeT.Layout.template(): ',
+	ZeT.assert(!ZeT.isx(true, opts, 'assert'), 'ZeT.Layout.template(): ',
 	  'template id [', id, '] was not found in area: [',
 	  (area.id?(area.id):(area)), ']!')
 
@@ -1165,7 +1165,7 @@ ZeT.extendClass('ZeT.Layout.Template', {
 
 	_on_clone_done_t : function(node, opts, source)
 	{
-		var r; if(ZeT.i$f(this.opts, 'cloneDone'))
+		var r; if(ZeT.isf(ZeT.get(this.opts, 'cloneDone')))
 			r = this.opts['cloneDone'](node, opts, this)
 		return ZeTD.isxn(r)?(r):(node)
 	},
@@ -1182,7 +1182,7 @@ ZeT.extendClass('ZeT.Layout.Template', {
 
 	_on_clone_done_o : function(node, opts, source)
 	{
-		var r; if(ZeT.i$f(opts, 'cloneDone'))
+		var r; if(ZeT.isf(ZeT.get(opts, 'cloneDone')))
 			r = opts['cloneDone'](node, opts, this)
 		return ZeTD.isxn(r)?(r):(node)
 	}
@@ -1968,7 +1968,7 @@ ZeT.Layout.proc = ZeT.define('ZeT.Layout.proc()', function()
 	if(ZeT.isf(proc))
 		proc = new proc(arguments[1]);
 
-	if(!ZeT.i$f(proc, 'proc')) throw 'ZeT.Layout.proc(): ' +
+	if(!ZeT.isf(ZeT.get(proc, 'proc'))) throw 'ZeT.Layout.proc(): ' +
 		'can not wrap not a processor instance!';
 
 	return function()
@@ -1994,7 +1994,7 @@ ZeT.Layout.procPipe = ZeT.define('ZeT.Layout.procPipe()', function()
 				opts = arguments[i + 1];
 
 				//?: {next argument is not an options}
-				if(ZeT.isf(opts) || ZeT.i$f(opts, 'proc'))
+				if(ZeT.isf(opts) || ZeT.isf(ZeT.get(opts, 'proc')))
 					opts = null;
 				if(opts) i++; //<-- skip the options
 			}
@@ -2002,7 +2002,7 @@ ZeT.Layout.procPipe = ZeT.define('ZeT.Layout.procPipe()', function()
 			proc = (opts)?(new proc(opts)):(new proc());
 		}
 
-		if(!ZeT.i$f(proc, 'proc')) throw 'ZeT.Layout.procPipe(): ' +
+		if(!ZeT.isf(ZeT.get(proc, 'proc'))) throw 'ZeT.Layout.procPipe(): ' +
 			'can not wrap not a processor instance by index ' + i + '!';
 
 		pipe.push(ZeT.Layout.proc(proc))
