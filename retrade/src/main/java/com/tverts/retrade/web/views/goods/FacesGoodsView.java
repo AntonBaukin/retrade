@@ -83,7 +83,7 @@ public class FacesGoodsView extends ModelView
 			GoodUnit gu = EX.assertn(get.getGoodUnit(id));
 
 			//:= good group
-			Goods.attrs(gu.getOx()).put(Goods.AT_GROUP, group);
+			Goods.attrs(gu.getOxOwn()).put(Goods.AT_GROUP, group);
 
 			//~: update object extraction
 			gu.updateOx();

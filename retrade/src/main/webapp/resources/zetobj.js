@@ -1692,17 +1692,27 @@ ZeT.extend(ZeT,
 	},
 
 	/**
-	 * Deeply resolves all delayed (own) properties
-	 * of the object given.
+	 * Resolves all delayed (own) properties
+	 * of the object given without going deeply.
+	 *
+	 * If a property argument is defined, takes
+	 * only it without updating the source object.
 	 */
-	undelay          : function(obj)
+	undelay          : function(obj, p)
 	{
-		if(ZeT.isox(obj)) ZeT.each(obj, function(x, k)
+		if(!ZeT.isox(obj))
+			return obj
+
+		if(!ZeT.isx(p)) //?: {take single property}
+		{
+			var o = obj[p]
+			return (ZeT.isf(o) && (o.ZeT$delay === true))?o():(o)
+		}
+
+		ZeT.each(obj, function(x, k)
 		{
 			if(ZeT.isf(x) && (x.ZeT$delay === true))
 				obj[k] = x()
-			else if(ZeT.isox(x))
-				obj[k] = ZeT.undelay(x)
 		})
 
 		return obj
