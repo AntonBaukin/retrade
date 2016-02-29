@@ -24,7 +24,7 @@ import com.tverts.support.EX;
  */
 public class RequestPoint
 {
-	/* Singletone */
+	/* Singleton */
 
 	public static final RequestPoint INSTANCE =
 	  new RequestPoint();

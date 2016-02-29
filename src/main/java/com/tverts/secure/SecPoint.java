@@ -53,7 +53,7 @@ import com.tverts.support.SU;
  */
 public final class SecPoint
 {
-	/* Singletone */
+	/* Singleton */
 
 	public static final SecPoint INSTANCE =
 	  new SecPoint();

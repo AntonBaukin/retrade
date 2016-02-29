@@ -1,8 +1,13 @@
 package com.tverts.servlet;
 
-/* Java Servlet api */
+/* Java */
+
+import java.util.Locale;
+
+/* Java Servlets */
 
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * Provides access to a restricted subset of
@@ -19,7 +24,8 @@ public class ResponseWrapper
 		this.response = response;
 	}
 
-	/* public: Request subset */
+
+	/* Request Subset */
 
 	public String  encodeURL(String url)
 	{
@@ -46,11 +52,11 @@ public class ResponseWrapper
 		return getResponse().getCharacterEncoding();
 	}
 
-	public java.util.Locale
-	               getLocale()
+	public Locale  getLocale()
 	{
 		return getResponse().getLocale();
 	}
+
 
 	/* protected: response access */
 
@@ -58,8 +64,6 @@ public class ResponseWrapper
 	{
 		return response;
 	}
-
-	/* private: the response */
 
 	private HttpServletResponse response;
 }

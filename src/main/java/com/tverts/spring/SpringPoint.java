@@ -14,27 +14,29 @@ import com.tverts.servlet.RequestPoint;
 
 import com.tverts.support.EX;
 
+
 /**
- * Point to access Spring context and the beans.
+ * Point to access Spring Context and the beans.
  *
  * @author anton.baukin@gmail.com
  */
 public class SpringPoint
 {
-	/* public: Singleton SpringPoint */
+	/* Spring Point Singleton */
+
+	public static final SpringPoint INSTANCE =
+	  new SpringPoint();
 
 	public static SpringPoint getInstance()
 	{
 		return INSTANCE;
 	}
 
-	private static final SpringPoint INSTANCE =
-	  new SpringPoint();
-
-	protected SpringPoint()
+	private SpringPoint()
 	{}
 
-	/* public: Spring Framework access interface */
+
+	/* Spring Framework Access Interface */
 
 	public static Object         bean(String name)
 	{

@@ -23,7 +23,7 @@ import com.tverts.support.SU;
 
 
 /**
- * Java Server Faces functions.
+ * JavaServer Faces functions.
  *
  * @author anton.baukin@gmail.com
  */

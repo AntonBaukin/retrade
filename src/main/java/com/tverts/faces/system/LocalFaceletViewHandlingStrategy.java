@@ -1,6 +1,6 @@
 package com.tverts.faces.system;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.IOException;
 
@@ -12,9 +12,10 @@ import javax.faces.context.FacesContext;
 /* JavaServer Faces Reference Implementation */
 
 import com.sun.faces.application.view.FaceletViewHandlingStrategy;
-import com.tverts.support.EX;
 
 /* com.tverts: support */
+
+import com.tverts.support.EX;
 
 
 /**

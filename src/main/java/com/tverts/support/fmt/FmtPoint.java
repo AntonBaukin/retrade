@@ -16,7 +16,7 @@ import com.tverts.support.SU;
  */
 public class FmtPoint implements FmtUni
 {
-	/* Singletone */
+	/* Singleton */
 
 	public static final FmtPoint INSTANCE =
 	  new FmtPoint();

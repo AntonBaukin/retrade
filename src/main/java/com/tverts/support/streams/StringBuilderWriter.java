@@ -1,6 +1,6 @@
 package com.tverts.support.streams;
 
-/* standard Java classes */
+/* Java */
 
 import java.io.Writer;
 

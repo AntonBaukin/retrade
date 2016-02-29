@@ -17,7 +17,7 @@ import com.tverts.support.LU;
 
 
 /**
- * Main Service is always a Singletone.
+ * Main Service is always a Singleton.
  * It must be register din the system by
  * it's fixed name, or the system would
  * not start.

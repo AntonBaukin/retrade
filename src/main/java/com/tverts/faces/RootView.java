@@ -4,18 +4,19 @@ package com.tverts.faces;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 /* Spring Framework */
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/* com.tverts: spring */
+
+import static com.tverts.spring.SpringPoint.bean;
+
 /* com.tverts: servlet */
 
-import static com.tverts.servlet.RequestPoint.request;
-import static com.tverts.servlet.RequestPoint.response;
+import com.tverts.servlet.REQ;
 
 /* com.tverts: secure */
 
@@ -31,10 +32,10 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
-@Component("rootView") @Scope("request")
+@Component @Scope("request")
 public class RootView extends ViewWithModes
 {
-	/* constants */
+	/* Constants */
 
 	public static final String PARAM_DOMAIN   =
 	  "extjs_domain";
@@ -48,27 +49,16 @@ public class RootView extends ViewWithModes
 	  "extjs_desktop_position";
 
 
-	/* global actions */
+	/* Global Actions */
 
-	public String doLogoff()
+	public String    doLogoff()
 	{
 		SecPoint.closeSecSession();
 		return null;
 	}
 
 
-	/* public: access shared view state */
-
-	public String    getEffectiveViewId()
-	{
-		if(viewId == null)
-		{
-			viewId = obtainRequestedViewId();
-			if(viewId == null) viewId = getNewViewId();
-		}
-
-		return viewId;
-	}
+	/* Access Shared View State */
 
 	public String    getExtjsDomainParam()
 	{
@@ -91,26 +81,21 @@ public class RootView extends ViewWithModes
 		  (extjsDomain = obtainExtjsDomain());
 	}
 
-	public String    getNewViewId()
-	{
-		return String.format("view_%x", VIEWID.incrementAndGet());
-	}
-
-	/**
-	 * Returns web context related URL
-	 * (starts with '/') to the page
-	 * current request was issued for.
-	 * It is already URL-encoded.
-	 */
-	public String    getRequestURI()
-	{
-		return response().encodeURL(request(0).getRequestURI());
-	}
+	private String extjsDomain;
 
 	public Long      getEntityKey()
 	{
-		String p = SU.s2s(request().getParameter(getEntityParam()));
+		String p = getParam(getEntityParam());
 		return (p == null)?(null):Long.parseLong(p);
+	}
+
+	/**
+	 * Returns all additional parameters of the request
+	 * as JSON text excluding any of STD_PARAMS.
+	 */
+	public String    getRequestParams()
+	{
+		return REQ.jsonRequestParams(STD_PARAMS);
 	}
 
 	private static final List<String> STD_PARAMS = Arrays.asList(
@@ -118,74 +103,26 @@ public class RootView extends ViewWithModes
 	  ViewWithModes.VIEWID_PARAM,   ViewWithModes.ENTITY_PARAM
 	);
 
-	/**
-	 * Returns all additional parameters of the request
-	 * as JSON text excluding these one: entity key.
-	 */
-	public String    getRequestParams()
-	{
-		StringBuilder         s  = new StringBuilder(32);
-		Map<String, String[]> pm = request().getParameterMap();
-
-		s.append('{');
-		for(Map.Entry<String, String[]> e : pm.entrySet())
-		{
-			//?: {standard parameter}
-			if(STD_PARAMS.contains(e.getKey()))
-				continue;
-
-			if(s.length() != 1)
-				s.append(", ");
-
-			//~: parameter name as the key
-			s.append('"').append(SU.jss(e.getKey())).append("\": ");
-
-			//?: {has single value}
-			if(e.getValue().length == 1)
-				s.append('"').append(SU.jss(e.getValue()[0])).append('"');
-			//~: write an array
-			else
-			{
-				s.append('[');
-				for(int i = 0;(i < e.getValue().length);i++)
-					s.append((i == 0)?("\""):(", \"")).
-					  append(SU.jss(e.getValue()[i])).
-					  append('"');
-				s.append(']');
-			}
-		}
-		s.append('}');
-
-		return s.toString();
-	}
-
 
 	/* protected: view support interface */
 
+	protected String genNewViewId()
+	{
+		return bean(GenViewId.class).genViewId();
+	}
+
 	protected String obtainExtjsDomain()
 	{
-		String domain = obtainExtjsDomainFromRequest();
-		return (domain != null)?(domain):("");
+		return SU.sXs(obtainExtjsDomainFromRequest());
 	}
 
 	protected String obtainExtjsDomainFromRequest()
 	{
-		return SU.s2s(request().getParameter(getExtjsDomainParam()));
+		return getParam(getExtjsDomainParam());
 	}
 
 	protected String obtainExtjsPositionFromRequest()
 	{
-		return SU.s2s(request().getParameter(getExtjsPositionParam()));
+		return getParam(getExtjsPositionParam());
 	}
-
-
-	/* private: the state of the view */
-
-	private String   extjsDomain;
-	private String   viewId;
-
-	/* private static: view ids generator  */
-
-	private static AtomicLong VIEWID =
-	  new AtomicLong();
 }

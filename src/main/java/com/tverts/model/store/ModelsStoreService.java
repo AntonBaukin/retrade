@@ -43,7 +43,7 @@ public class      ModelsStoreService
        extends    ServiceBase
        implements ModelsStore, ModelsStoreAccess
 {
-	/* Models Store Service Singletone */
+	/* Models Store Service Singleton */
 
 	public static final ModelsStoreService INSTANCE =
 	  new ModelsStoreService();

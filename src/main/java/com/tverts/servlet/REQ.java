@@ -4,6 +4,7 @@ package com.tverts.servlet;
 
 import java.io.Reader;
 import java.net.URLDecoder;
+import java.util.Collection;
 import java.util.Map;
 
 /* Java Servlet */
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.tverts.support.EX;
 import com.tverts.support.SU;
+
+import static com.tverts.servlet.RequestPoint.request;
 
 
 /**
@@ -225,5 +228,46 @@ public class REQ
 		//?: {finish the last}
 		if(s == 1)
 			x.run();
+	}
+
+	/**
+	 * Returns all parameters of the request as JSON
+	 * excluding any of the optional argument.
+	 */
+	public static String  jsonRequestParams(Collection<String> exclude)
+	{
+		StringBuilder         s  = new StringBuilder(32);
+		Map<String, String[]> pm = request().getParameterMap();
+
+		s.append('{');
+		for(Map.Entry<String, String[]> e : pm.entrySet())
+		{
+			//?: {standard parameter}
+			if((exclude != null) && exclude.contains(e.getKey()))
+				continue;
+
+			if(s.length() != 1)
+				s.append(", ");
+
+			//~: parameter name as the key
+			s.append('"').append(SU.jss(e.getKey())).append("\": ");
+
+			//?: {has single value}
+			if(e.getValue().length == 1)
+				s.append('"').append(SU.jss(e.getValue()[0])).append('"');
+			//~: write an array
+			else
+			{
+				s.append('[');
+				for(int i = 0;(i < e.getValue().length);i++)
+					s.append((i == 0)?("\""):(", \"")).
+					  append(SU.jss(e.getValue()[i])).
+					  append('"');
+				s.append(']');
+			}
+		}
+		s.append('}');
+
+		return s.toString();
 	}
 }
