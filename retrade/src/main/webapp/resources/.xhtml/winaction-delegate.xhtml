@@ -52,7 +52,7 @@
         form('#{cc.clientId}-#{cc.attrs.coid}').button(true).
         addParams({'${rootView.extjsDomainParam}': '${rootView.extjsDomain}',
           '${rootView.viewModeParam}': '${rootView.viewModeStr}',
-          '${rootView.viewIdParam}': '${rootView.effectiveViewId}'}).
+          '${rootView.viewIdParam}': '${rootView.id}'}).
         addParams(params).addParams((opts && opts.params) || {}).
         setMethod(method).load()
     }
@@ -66,7 +66,5 @@
 
     //]]>
     </script>
-
-
   </co:implementation>
 </ui:fragment>

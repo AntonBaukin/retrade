@@ -67,7 +67,7 @@
 
           //~: set the default (requested) view id
           if(!opts.params['${rootView.viewIdParam}'])
-            opts.params['${rootView.viewIdParam}'] = '${rootView.effectiveViewId}';
+            opts.params['${rootView.viewIdParam}'] = '${rootView.id}';
 
           //~: resolve delayed parameters
           ZeT.undelay(prms)
