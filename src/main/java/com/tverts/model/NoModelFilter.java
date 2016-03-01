@@ -4,6 +4,10 @@ package com.tverts.model;
 
 import javax.servlet.http.Cookie;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* tverts.com: servlet */
 
 import static com.tverts.servlet.RequestPoint.request;
@@ -35,7 +39,7 @@ import com.tverts.support.EX;
  *
  * @author anton.baukin@gmail.com
  */
-@PickFilter(order = { 200 })
+@Component @PickFilter(order = { 200 })
 public class NoModelFilter extends FilterBase
 {
 	/* public: Filter interface */

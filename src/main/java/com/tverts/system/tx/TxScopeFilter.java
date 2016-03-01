@@ -1,5 +1,9 @@
 package com.tverts.system.tx;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* tverts.com: servlet filters */
 
 import com.tverts.servlet.filters.FilterBase;
@@ -18,7 +22,7 @@ import com.tverts.spring.SpringPoint;
  *
  * @author anton.baukin@gmail.com
  */
-@PickFilter(order = { 1000 })
+@Component @PickFilter(order = { 1000 })
 public class TxScopeFilter extends FilterBase
 {
 	/* public: Filter interface */
@@ -32,13 +36,7 @@ public class TxScopeFilter extends FilterBase
 		try
 		{
 			//!: run tx-scopes bean
-			createTxScopesBean().execute(new Runnable()
-			{
-				public void run()
-				{
-					task.continueCycle();
-				}
-			});
+			createTxScopesBean().execute(task::continueCycle);
 		}
 		catch(Throwable e)
 		{

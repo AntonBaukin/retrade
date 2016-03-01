@@ -1,5 +1,9 @@
 package com.tverts.servlet.filters;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* tverts.com: servlet */
 
 import com.tverts.servlet.RequestPoint;
@@ -11,7 +15,7 @@ import com.tverts.servlet.RequestPoint;
  *
  * @author anton.baukin@gmail.com
  */
-@PickFilter(order = { 0 })
+@Component @PickFilter(order = { 0 })
 public class WebApplicationRequestFilter extends FilterBase
 {
 	/* public: Filter interface */

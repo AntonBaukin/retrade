@@ -1,8 +1,12 @@
 package com.tverts.secure.system;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.http.Cookie;
+
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
 
 /* com.tverts: (spring + tx) */
 
@@ -45,7 +49,7 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
-@PickFilter(order = { 100 })
+@Component @PickFilter(order = { 100 })
 public class LoginFilter extends FilterBase
 {
 	/* public: FilterBase interface */

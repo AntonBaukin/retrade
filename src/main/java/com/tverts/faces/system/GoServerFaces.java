@@ -1,5 +1,9 @@
 package com.tverts.faces.system;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* com.tverts: servlet */
 
 import com.tverts.servlet.filters.FilterTask;
@@ -13,7 +17,7 @@ import com.tverts.servlet.go.GoPageFilterBase;
  *
  * @author anton.baukin@gmail.com
  */
-@PickFilter(order = { 5005 })
+@Component @PickFilter(order = { 5005 })
 public class GoServerFaces extends GoPageFilterBase
 {
 	/* protected: GoFilterBase interface */

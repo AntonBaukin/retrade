@@ -1,9 +1,14 @@
 package com.tverts.servlet.go;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* com.tverts: servlet */
 
 import com.tverts.servlet.filters.FilterTask;
 import com.tverts.servlet.filters.PickFilter;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -11,10 +16,9 @@ import com.tverts.servlet.filters.PickFilter;
  * if such exists. Tries to forward
  * initial go-requests.
  *
- *
  * @author anton.baukin@gmail.com
  */
-@PickFilter(order = { 5010 })
+@Component @PickFilter(order = { 5010 })
 public class GoServerPages extends GoPageFilterBase
 {
 	/* protected: GoFilterBase interface */

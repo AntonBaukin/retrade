@@ -1,5 +1,9 @@
 package com.tverts.secure.system;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* com.tverts: servlet (filters) */
 
 import com.tverts.servlet.REQ;
@@ -17,7 +21,7 @@ import com.tverts.servlet.filters.PickFilter;
  *
  * @author anton.baukin@gmail.com
  */
-@PickFilter(order = { 5000 })
+@Component @PickFilter(order = { 5000 })
 public class LocalLoginFilter extends FilterBase
 {
 	/* public: FilterBase interface */

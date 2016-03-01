@@ -1,5 +1,9 @@
 package com.tverts.jsx.pages;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* com.tverts: servlet */
 
 import com.tverts.servlet.filters.FilterTask;
@@ -17,7 +21,7 @@ import com.tverts.jsx.JsX;
  *
  * @author anton.baukin@gmail.com.
  */
-@PickFilter(order = { 5015 })
+@Component @PickFilter(order = { 5015 })
 public class JsGoFilter extends GoPageFilterBase
 {
 	/* protected: GoFilterBase interface */
