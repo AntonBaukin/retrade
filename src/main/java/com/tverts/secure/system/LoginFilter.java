@@ -17,6 +17,7 @@ import com.tverts.servlet.REQ;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterStage;
 import com.tverts.servlet.filters.FilterTask;
+import com.tverts.servlet.filters.PickFilter;
 
 /* com.tverts: endure (core + auth) */
 
@@ -44,6 +45,7 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
+@PickFilter(order = { 100 })
 public class LoginFilter extends FilterBase
 {
 	/* public: FilterBase interface */

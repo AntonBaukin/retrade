@@ -14,6 +14,7 @@ import com.tverts.servlet.REQ;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterStage;
 import com.tverts.servlet.filters.FilterTask;
+import com.tverts.servlet.filters.PickFilter;
 
 /* tverts.com: shunt (service) */
 
@@ -53,8 +54,8 @@ import com.tverts.support.streams.Base64Encoder;
  *
  * @author anton.baukin@gmail.com
  */
-public class   SelfShuntFilter
-       extends FilterBase
+@PickFilter(order = { 2000 })
+public class SelfShuntFilter extends FilterBase
 {
 	/* public: Filter interface */
 

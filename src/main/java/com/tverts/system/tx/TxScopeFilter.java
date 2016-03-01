@@ -5,6 +5,7 @@ package com.tverts.system.tx;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterStage;
 import com.tverts.servlet.filters.FilterTask;
+import com.tverts.servlet.filters.PickFilter;
 
 /* tverts.com: spring */
 
@@ -17,6 +18,7 @@ import com.tverts.spring.SpringPoint;
  *
  * @author anton.baukin@gmail.com
  */
+@PickFilter(order = { 1000 })
 public class TxScopeFilter extends FilterBase
 {
 	/* public: Filter interface */

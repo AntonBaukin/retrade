@@ -6,6 +6,7 @@ import com.tverts.servlet.REQ;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterStage;
 import com.tverts.servlet.filters.FilterTask;
+import com.tverts.servlet.filters.PickFilter;
 
 
 /**
@@ -16,6 +17,7 @@ import com.tverts.servlet.filters.FilterTask;
  *
  * @author anton.baukin@gmail.com
  */
+@PickFilter(order = { 5000 })
 public class LocalLoginFilter extends FilterBase
 {
 	/* public: FilterBase interface */

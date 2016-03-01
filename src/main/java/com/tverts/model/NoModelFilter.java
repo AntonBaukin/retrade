@@ -1,6 +1,6 @@
 package com.tverts.model;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.http.Cookie;
 
@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import static com.tverts.servlet.RequestPoint.request;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterTask;
+import com.tverts.servlet.filters.PickFilter;
 
 /* tverts.com: faces */
 
@@ -34,6 +35,7 @@ import com.tverts.support.EX;
  *
  * @author anton.baukin@gmail.com
  */
+@PickFilter(order = { 200 })
 public class NoModelFilter extends FilterBase
 {
 	/* public: Filter interface */

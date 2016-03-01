@@ -11,6 +11,7 @@ import com.tverts.servlet.RequestPoint;
  *
  * @author anton.baukin@gmail.com
  */
+@PickFilter(order = { 0 })
 public class WebApplicationRequestFilter extends FilterBase
 {
 	/* public: Filter interface */

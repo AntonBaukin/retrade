@@ -3,6 +3,7 @@ package com.tverts.servlet.go;
 /* com.tverts: servlet */
 
 import com.tverts.servlet.filters.FilterTask;
+import com.tverts.servlet.filters.PickFilter;
 
 
 /**
@@ -13,6 +14,7 @@ import com.tverts.servlet.filters.FilterTask;
  *
  * @author anton.baukin@gmail.com
  */
+@PickFilter(order = { 5010 })
 public class GoServerPages extends GoPageFilterBase
 {
 	/* protected: GoFilterBase interface */
