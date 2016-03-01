@@ -1,5 +1,9 @@
 package com.tverts.retrade.web;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
@@ -30,7 +34,7 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
-@PickFilter(order = { 4995 })
+@Component @PickFilter(order = { 4995 })
 public class GoDomainIndexPage extends GoFilterBase
 {
 	/* Go Domain Index Page */
