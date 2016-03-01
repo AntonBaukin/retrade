@@ -4,10 +4,9 @@ package com.tverts.retrade.web;
 
 import static com.tverts.spring.SpringPoint.bean;
 
-/* com.tverts: servlets + faces */
+/* com.tverts: servlet */
 
-import com.tverts.servlet.filters.GoFilterBase;
-import com.tverts.faces.Functions;
+import com.tverts.servlet.go.GoFilterBase;
 
 /* com.tverts: endure (core + login) */
 

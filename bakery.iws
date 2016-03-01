@@ -9,28 +9,22 @@
     <bookmark url="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" line="1246" mnemonic="0" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/GenViewId.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/LocalViewIds.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/SecureViewBase.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/ViewBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/fmt/FmtPoint.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/fmt/FmtPoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/Functions.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/Functions.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/LocalFaceletViewHandlingStrategy.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/LocalFaceletViewHandlingStrategy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/services/MainService.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/services/MainService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/RequestPoint.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/RequestPoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/ResponseWrapper.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/ResponseWrapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/RootView.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/RootView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/secure/SecPoint.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/secure/SecPoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/spring/SpringPoint.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/spring/SpringPoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/streams/StringBuilderWriter.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/streams/StringBuilderWriter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/ViewWithModes.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/ViewWithModes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/action-call.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/action-call.xhtml" />
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-100 [stable]: refactored View With Modes (extracted super-classes).">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDispatch.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDispatch.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisper.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDisper.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDisperBase.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoDisperCached.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDisperCached.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoFilterBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoFilterBase.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoPageFilterBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoPageFilterBase.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/GoServerPages.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoServerPages.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/GoDomainIndexPage.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/GoDomainIndexPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/GoServerFaces.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/GoServerFaces.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsGoFilter.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsGoFilter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-button.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-button.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-delegate.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-delegate.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/go/go-filters.xml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/go/go-filters.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/go/go-filters.xml" afterPath="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/go/go-filters.xml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -61,15 +55,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="winaction-delegate.xhtml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-delegate.xhtml">
+      <file leaf-file-name="FiltersList.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.720517">
-              <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-              <folding>
-                <element signature="e#1007#2149#0" expanded="true" />
-                <element signature="e#1247#1895#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.31627908">
+              <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -92,16 +83,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesGoodsView.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/Functions.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/SecureViewBase.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/GenViewId.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/LocalViewIds.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/LocalFaceletViewHandlingStrategy.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/streams/StringBuilderWriter.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/ResponseWrapper.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/ViewBase.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/spring/SpringPoint.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/RootView.java" />
@@ -109,6 +90,16 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/action-call.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-button.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-delegate.xhtml" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDispatch.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDisper.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDisperBase.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDisperCached.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/GoDomainIndexPage.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoFilterBase.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoPageFilterBase.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/GoServerFaces.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoServerPages.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsGoFilter.java" />
       </list>
     </option>
   </component>
@@ -195,8 +186,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -214,6 +203,54 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="META-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -248,62 +285,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="tverts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tverts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tverts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="system" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -333,9 +314,101 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="listeners" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="go" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tverts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="filters" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -347,7 +420,7 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="dynamic.classpath" value="false" />
@@ -632,12 +705,10 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30905077" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294686" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24899599" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983795" sideWeight="0.50441504" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33222958" sideWeight="0.57086223" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37306842" sideWeight="0.4281467" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983795" sideWeight="0.495585" order="9" side_tool="false" content_ui="tabs" />
@@ -647,17 +718,19 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24220374" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33471933" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44260487" sideWeight="0.5735294" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34199584" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24012475" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32735962" sideWeight="0.56618357" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44260487" sideWeight="0.5735294" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30905077" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33222958" sideWeight="0.57086223" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -677,7 +750,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-96 [alpha]: solved displaying initial value of a drop list while it's store is loading." />
     <MESSAGE value="ui-96 [beta]: supported all fields of Good Unit edit form except the arrays (tables)." />
     <MESSAGE value="ui-96 [beta]: supported undefined values for fields of Good Unit edit form." />
     <MESSAGE value="ui-96 [beta]: editing Vendor Code attribute on Good Unit edit form as a table." />
@@ -702,7 +774,8 @@
     <MESSAGE value="ui-99 [beta]: completed ZeT library refactoring with section for browsers." />
     <MESSAGE value="ui-99 [alpha]: fixing problems of ReTrade after ZeT refactoring..." />
     <MESSAGE value="ui-99 [stable]: ReTrade seems to work after ZeT refactoring!" />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-99 [stable]: ReTrade seems to work after ZeT refactoring!" />
+    <MESSAGE value="ui-100 [stable]: refactored View With Modes (extracted super-classes)." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-100 [stable]: refactored View With Modes (extracted super-classes)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -840,460 +913,285 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/LocalViewHandlingStrategyManager.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoDisperCached.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6004415">
-          <caret line="35" column="12" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="12" />
+        <state vertical-scroll-proportion="-0.42170542">
+          <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
           <folding>
-            <marker date="1327406202000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1327406202000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1327406202000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1327406202000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1327406202000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821581000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1456821581000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder="/unchecked/" />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder="/unchecked/" />
+            <marker date="1456821581000" expanded="false" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/LocalFaceletViewHandlingStrategy.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/GoDomainIndexPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.299117">
-          <caret line="27" column="19" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
-          <folding>
-            <marker date="1456742360000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456742360000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456742360000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/EX.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0507727">
-          <caret line="108" column="32" selection-start-line="108" selection-start-column="32" selection-end-line="108" selection-end-column="32" />
-          <folding>
-            <marker date="1445943126000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1445943126000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1445943126000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="/unchecked/" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1445943126000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/support/streams/StringBuilderWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.11258278">
+        <state vertical-scroll-proportion="0.052713178">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding>
-            <marker date="1456742552000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456742552000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821651000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1456821651000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821651000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821651000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821651000" expanded="false" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/spring/system/SpringTransactionManager.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoFilterBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22516556">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.15813954">
+          <caret line="6" column="25" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="25" />
           <folding>
-            <marker date="1392037252000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1392037252000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1392037252000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821669000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1456821669000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821669000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821669000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821669000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821669000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821669000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821669000" expanded="false" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/spring/system/SpringBoundPlatform.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoPageFilterBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15813954">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding>
+            <marker date="1456821678000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1456821678000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821678000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821678000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821678000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821678000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821678000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821678000" expanded="false" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/GoServerFaces.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.052713178">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+          <folding>
+            <marker date="1456821687000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1456821687000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821687000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821687000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821687000" expanded="false" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/go/GoServerPages.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.4744186">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding>
+            <marker date="1456821697000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821697000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821697000" expanded="false" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/pages/JsGoFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21085271">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+          <folding>
+            <marker date="1456821721000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1456821721000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1456821721000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1456821721000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1456821721000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821721000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1456821721000" expanded="false" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterStage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18449612">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding>
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/Filter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.53023255">
+          <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
+          <folding>
+            <marker date="1366543170000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1366543170000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1366543170000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterBase.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
-          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
+          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
           <folding>
-            <marker date="1392037424000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1392037424000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1392037424000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1392037424000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder=" }" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/ResponseWrapper.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterBridge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11258278">
-          <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.5178295">
+          <caret line="127" column="3" selection-start-line="127" selection-start-column="3" selection-end-line="127" selection-end-column="3" />
           <folding>
-            <marker date="1456743407000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456743407000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743407000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1396437908000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437908000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1396437908000" expanded="false" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/ViewBase.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterChainInvoker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6232558">
+          <caret line="29" column="3" selection-start-line="29" selection-start-column="3" selection-end-line="29" selection-end-column="3" />
+          <folding>
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterCycle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
-          <caret line="25" column="44" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
+          <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
           <folding>
-            <marker date="1456743569000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456743569000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743569000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743569000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743569000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743569000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743569000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743569000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743569000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743569000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743569000" expanded="true" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743569000" expanded="true" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743569000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743569000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="//..." />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="//..." />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="//..." />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="//..." />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder=" }" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/RequestPoint.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/spring/filters.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6887417">
-          <caret line="131" column="3" selection-start-line="131" selection-start-column="3" selection-end-line="131" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.43875968">
+          <caret line="19" column="2" selection-start-line="19" selection-start-column="2" selection-end-line="19" selection-end-column="2" />
           <folding>
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743774000" expanded="true" signature="-1:-1" placeholder="//..." />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="&lt;~&gt;" />
-            <marker date="1456743774000" expanded="false" signature="-1:-1" placeholder="&lt;~&gt;" />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1396437748000" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/store/ModelsStoreService.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterPoint.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31456953">
-          <caret line="44" column="7" selection-start-line="44" selection-start-column="1" selection-end-line="44" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.052713178">
+          <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
           <folding>
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="&lt;~&gt;" />
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="&lt;~&gt;" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="//..." />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743775000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1327406204000" expanded="false" signature="-1:-1" placeholder=" }" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/spring/SpringPoint.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterReference.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5441501">
-          <caret line="35" column="5" selection-start-line="24" selection-start-column="3" selection-end-line="35" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
           <folding>
-            <marker date="1456743937000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456743937000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743937000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456743937000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456743937000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743937000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743937000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743937000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743937000" expanded="false" signature="-1:-1" placeholder="/unchecked/" />
-            <marker date="1456743937000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743937000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456743937000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456743937000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1327406204000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/REQ.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1456745398000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456745398000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745398000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745398000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456745398000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456745398000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456745398000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745398000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/RootView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5584989">
-          <caret line="108" column="20" selection-start-line="108" selection-start-column="20" selection-end-line="108" selection-end-column="20" />
-          <folding>
-            <marker date="1456745589000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456745589000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745589000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456745589000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745589000" expanded="true" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745589000" expanded="true" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456745589000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/ViewWithModes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.672524">
-          <caret line="182" column="40" selection-start-line="182" selection-start-column="36" selection-end-line="182" selection-end-column="36" />
-          <folding>
-            <marker date="1456746022000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746022000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456746022000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456746022000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/action-call.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5733333">
-          <caret line="69" column="67" selection-start-line="69" selection-start-column="67" selection-end-line="69" selection-end-column="67" />
-          <folding>
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746385000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746385000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-button.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34666666">
-          <caret line="59" column="51" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="51" />
-          <folding>
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456746392000" expanded="true" signature="-1:-1" placeholder="{&quot;${rootView.extjsDomainParam}&quot;: '${rootView.extjsDomain}'...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winaction-delegate.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.720517">
-          <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-          <folding>
-            <element signature="e#1007#2149#0" expanded="true" />
-            <element signature="e#1247#1895#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.31627908">
+          <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1308,6 +1206,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -1351,7 +1250,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>retrade</last-edited>
+          <last-edited>Web|retrade</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

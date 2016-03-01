@@ -36,7 +36,7 @@
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
          · Go JavaServer Pages
          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.servlet.filters.GoServerPages'/>
+        <bean class = 'com.tverts.servlet.go.GoServerPages'/>
 
 
         <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
