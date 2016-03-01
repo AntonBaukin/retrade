@@ -5,13 +5,14 @@ package com.tverts.servlet.filters;
  * that may be invoked recursively without repeating
  * the already passed filters, an not loosing a one.
  *
- * Terminal filters mostly stands for Servlet Filter
- * Chain got by {@link FilterBridge}. (To call the next
- * Servlet Filters of the Web application.)
+ * Terminal filter is {@link FilterChainInvoker} that
+ * call the following Servlet filters configured
+ * in the web application.
+ *
  *
  * @author anton.baukin@gmail.com
  */
-public final class FilterCycle
+public class FilterCycle
 {
 	/* public: constructor */
 
@@ -21,62 +22,127 @@ public final class FilterCycle
 		this.filters = filters;
 	}
 
-	/* public: FilterCycle (entry point) */
+	protected final FilterTask task;
+	protected final Filter[]   filters;
+
+
+	/* Filter Cycle */
 
 	public void continueCycle()
 	{
-		//~: 'first' stores the position of the first
-		//   cycle invoked.
-		int first = position;
+		//  Note that all the filters in the range
+		//  [first; last] are invoked in this call,
+		//  but the filters after 'last' (if any) are
+		//  invoked when filter recursively continues
+		//  the cycle.
 
-		//~: 'last' points to the last filter invoked.
-		//   Note that all the filters in the range
-		//   [first; last] are invoked in this call,
-		//   but the filters after 'last' (if any) are
-		//   invoked when filter recursively continues
-		//   the cycle.
-		int last  = position;
+		//0: open the filters
+		Scope s = openFilters();
 
-		//open the filters left to call
+		//1: invoke the terminal
+		invokeTerminal(s);
+
+		//2: close the filters
+		closeFilters(s);
+	}
+
+	protected int position;
+
+	/**
+	 * Terminal filter is invoked in the cycle after passing
+	 * through all other filters. It is invoked if the cycle
+	 * was not breaked, and there were no error.
+	 *
+	 * Note that a terminal filter is not in the list
+	 * of the filters this cycle was created with.
+	 */
+	public Filter getTerminal()
+	{
+		return terminal;
+	}
+
+	protected Filter terminal;
+
+	public void setTerminal(Filter terminal)
+	{
+		this.terminal = terminal;
+	}
+
+
+	/* protected: details of processing */
+
+	protected class Scope
+	{
+		public int first;
+		public int last;
+	}
+
+	protected Scope openScope()
+	{
+		Scope s = new Scope();
+		s.first = s.last = position;
+		return s;
+	}
+
+	protected Scope openFilters()
+	{
+		Scope s = openScope();
+
+		//~: open the filters left to call
 		while(position < filters.length)
 		{
 			//?: {we need to break the cycle}
 			if(task.isBreaked())
 				break;
 
-			//save the position of last invoked filter
-			last = position++;
+			//~: save the position of last invoked filter
+			s.last = position++;
 
 			try
 			{
-				filters[last].openFilter(task);
+				filters[s.last].openFilter(task);
 			}
 			catch(Throwable e)
 			{
-				//!: this error is not pleased, we need to
-				//   break the cycle manually.
-
-				//?: {got no previous error}
-				if(task.getError() == null)
-					task.setError(e);
+				handleOpenError(s, e);
 			}
-
-			//?: {has error} do break
-			if(task.getError() != null)
-				task.doBreak();
 		}
 
-		//?: {have terminal & not breaked & got the tail} invoke terminal
-		if(!task.isBreaked() && (terminal != null) &&
-		   (last + 1 >= filters.length)
-		  )
+		return s;
+	}
+
+	protected void  handleOpenError(Scope s, Throwable e)
+	{
+		task.setError(e);
+
+		//!: break the cycle
+		task.doBreak();
+	}
+
+	protected void  invokeTerminal(Scope s)
+	{
+		//?: {chain is broken}
+		if(task.isBreaked())
+			return;
+
+		Filter terminal = getTerminal();
+
+		//?: {have no terminal}
+		if(terminal == null)
+			return;
+
+		//?: {current scope is not the tail}
+		if(s.last + 1 < filters.length)
+			return;
+
+		//~: invoke the terminal filter
 		try
 		{
 			terminal.openFilter(task);
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
-			task.setError(e);
+			handleTerminalError(s, e, false);
 		}
 		finally
 		{
@@ -84,50 +150,33 @@ public final class FilterCycle
 			{
 				terminal.closeFilter(task);
 			}
-			catch(Exception e)
+			catch(Throwable e)
 			{
-				if(task.getError() == null)
-					task.setError(e);
+				handleTerminalError(s, e, true);
 			}
 		}
+	}
 
-		//close the filters of our range [first; last]
-		for(int i = last;(i >= first);i--) try
+	protected void  handleTerminalError(Scope s, Throwable e, boolean closing)
+	{
+		task.setError(e);
+	}
+
+	protected void closeFilters(Scope s)
+	{
+		//~: close the filters of our range [first; last]
+		for(int i = s.last;(i >= s.first);i--) try
 		{
 			filters[i].closeFilter(task);
 		}
 		catch(Throwable e)
 		{
-			//!: error here must not occur, but we have
-			//   nothing to do, but to save it
-
-			//?: {got no previous error}
-			if(task.getError() == null)
-				task.setError(e);
+			handleCloseError(s, e);
 		}
 	}
 
-	/* public: FilterCycle (support) */
-
-	/**
-	 * Terminal filter is invoked in the cycle after passing
-	 * through all other filters. It is invoked if the
-	 * cycle was not breaked, and there were no error.
-	 */
-	public Filter getTerminal()
+	protected void  handleCloseError(Scope s, Throwable e)
 	{
-		return terminal;
+		task.setError(e);
 	}
-
-	public void   setTerminal(Filter terminal)
-	{
-		this.terminal = terminal;
-	}
-
-	/* private: the state of the cycle */
-
-	private FilterTask task;
-	private Filter[]   filters;
-	private Filter     terminal;
-	private int        position;
 }

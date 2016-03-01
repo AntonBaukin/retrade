@@ -1,14 +1,18 @@
 package com.tverts.servlet.filters;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.FilterChain;
+
+/* com.tverts: support */
+
+import com.tverts.support.EX;
+
 
 /**
  * Terminal filter that invokes Servlet
  * filter chain thus continuing request
  * processing.
- *
  *
  * @author anton.baukin@gmail.com
  */
@@ -16,11 +20,9 @@ public class FilterChainInvoker implements Filter
 {
 	/* public: constructor */
 
-	public FilterChainInvoker(FilterChain filterChain)
+	public FilterChainInvoker(FilterChain chain)
 	{
-		if(filterChain == null)
-			throw new IllegalArgumentException();
-		this.filterChain = filterChain;
+		this.chain = EX.assertn(chain);
 	}
 
 
@@ -30,8 +32,7 @@ public class FilterChainInvoker implements Filter
 	{
 		try
 		{
-			filterChain.doFilter(
-			  task.getRequest(), task.getResponse());
+			chain.doFilter(task.getRequest(), task.getResponse());
 		}
 		catch(Throwable e)
 		{
@@ -46,5 +47,5 @@ public class FilterChainInvoker implements Filter
 
 	/* protected: the chain */
 
-	protected final FilterChain filterChain;
+	protected final FilterChain chain;
 }

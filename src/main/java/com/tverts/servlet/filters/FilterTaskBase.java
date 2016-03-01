@@ -1,9 +1,10 @@
 package com.tverts.servlet.filters;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * Basic properties of a {@link FilterTask}.
@@ -14,65 +15,70 @@ public abstract class FilterTaskBase implements FilterTask
 {
 	/* public: constructor */
 
-	protected FilterTaskBase(FilterStage filterStage)
+	public FilterTaskBase(FilterStage stage)
 	{
-		this.filterStage = filterStage;
+		this.stage = stage;
 	}
 
-	/* public: FilterTask interface */
+
+	/* Filter Task */
 
 	public FilterStage getFilterStage()
 	{
-		return filterStage;
+		return stage;
 	}
 
-	public HttpServletRequest
-	                   getRequest()
-	{
-		return request;
-	}
+	protected final FilterStage stage;
 
-	public void        setRequest(HttpServletRequest request)
-	{
-		this.request = request;
-	}
-
-	public HttpServletResponse
-	                   getResponse()
-	{
-		return response;
-	}
-
-	public void        setResponse(HttpServletResponse response)
-	{
-		this.response = response;
-	}
-
-	public Throwable   getError()
+	public Throwable getError()
 	{
 		return error;
 	}
 
-	public void        setError(Throwable error)
+	protected Throwable error;
+
+	public void setError(Throwable error)
 	{
-		this.error = error;
+		if(this.error == null)
+			this.error = error;
 	}
 
-	public boolean     isBreaked()
+	public boolean isBreaked()
 	{
 		return breaked;
 	}
+
+	private boolean breaked;
 
 	public void doBreak()
 	{
 		this.breaked = true;
 	}
 
-	/* private: the state of the task */
 
-	private FilterStage         filterStage;
-	private HttpServletRequest  request;
-	private HttpServletResponse response;
-	private Throwable           error;
-	private boolean             breaked;
+	/* Filter Task (access the request) */
+
+	public HttpServletRequest getRequest()
+	{
+		return request;
+	}
+
+	protected HttpServletRequest  request;
+
+	public void setRequest(HttpServletRequest request)
+	{
+		this.request = request;
+	}
+
+	public HttpServletResponse getResponse()
+	{
+		return response;
+	}
+
+	protected HttpServletResponse response;
+
+	public void setResponse(HttpServletResponse response)
+	{
+		this.response = response;
+	}
 }
