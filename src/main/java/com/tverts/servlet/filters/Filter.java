@@ -32,7 +32,7 @@ public interface Filter
 	 * continue the cycle. Transaction scopes are created in this way.
 	 *
 	 * It is possible to break the cycle of filtering: call
-	 * {@link FilterTask#setBreaked()}. The breaking may not be
+	 * {@link FilterTask#doBreak()}. The breaking may not be
 	 * further cancelled.
 	 */
 	public void openFilter(FilterTask task);

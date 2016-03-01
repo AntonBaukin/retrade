@@ -63,7 +63,7 @@ public abstract class FilterTaskBase implements FilterTask
 		return breaked;
 	}
 
-	public void        setBreaked()
+	public void doBreak()
 	{
 		this.breaked = true;
 	}

@@ -36,7 +36,7 @@ public class FilterChainInvoker implements Filter
 		catch(Throwable e)
 		{
 			task.setError(e);
-			task.setBreaked();
+			task.doBreak();
 		}
 	}
 

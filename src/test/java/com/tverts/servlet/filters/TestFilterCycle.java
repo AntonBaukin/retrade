@@ -234,7 +234,7 @@ public class TestFilterCycle
 			if(breaking)
 			{
 				testure.append('!');
-				task.setBreaked();
+				task.doBreak();
 				return;
 			}
 

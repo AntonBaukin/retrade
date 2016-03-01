@@ -67,7 +67,7 @@ public abstract class GoFilterBase extends FilterBase
 		try
 		{
 			//~: finish go-filtering
-			task.setBreaked();
+			task.doBreak();
 
 			//~: create request dispatcher
 			RequestDispatcher d = task.getRequest().

@@ -34,7 +34,7 @@ public class LocalLoginFilter extends FilterBase
 		try
 		{
 			task.getResponse().sendError(403);
-			task.setBreaked();
+			task.doBreak();
 		}
 		catch(Exception e)
 		{

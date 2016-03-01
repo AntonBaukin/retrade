@@ -42,7 +42,7 @@ public class TxScopeFilter extends FilterBase
 		{
 			//~: do break the filters invocation
 			task.setError(e);
-			task.setBreaked();
+			task.doBreak();
 		}
 		finally
 		{

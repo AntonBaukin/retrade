@@ -82,7 +82,7 @@ public class LoginFilter extends FilterBase
 				return;
 
 			task.getResponse().sendError(403);
-			task.setBreaked();
+			task.doBreak();
 			return;
 		}
 		catch(Exception e)
@@ -118,7 +118,7 @@ public class LoginFilter extends FilterBase
 				task.getResponse().getOutputStream().print("bound");
 			}
 
-			task.setBreaked();
+			task.doBreak();
 			return;
 		}
 		catch(Exception e)
@@ -348,7 +348,7 @@ public class LoginFilter extends FilterBase
 			  forward(task.getRequest(), task.getResponse());
 
 			//!: do break the task
-			task.setBreaked();
+			task.doBreak();
 		}
 		catch(Exception e)
 		{

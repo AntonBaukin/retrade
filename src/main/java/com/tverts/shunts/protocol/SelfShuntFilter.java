@@ -63,7 +63,7 @@ public class   SelfShuntFilter
 		//?: {this request is not a shunt request} skip it
 		if(isShuntRequest(task)) try
 		{
-			task.setBreaked();
+			task.doBreak();
 			handleShuntRequest(task);
 		}
 		catch(Throwable e)

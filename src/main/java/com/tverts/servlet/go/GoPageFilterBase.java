@@ -124,7 +124,7 @@ public abstract class GoPageFilterBase extends FilterBase
 		if(getDisper().dispatch(request))
 		{
 			//~: finish go-filtering
-			task.setBreaked();
+			task.doBreak();
 
 			return true;
 		}

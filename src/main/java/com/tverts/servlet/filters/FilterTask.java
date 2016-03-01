@@ -1,9 +1,10 @@
 package com.tverts.servlet.filters;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * Aggregates all the parameters of {@link Filter}
@@ -14,19 +15,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface FilterTask
 {
-	/* public: FilterTask interface */
+	/* Filter Task */
 
 	public FilterStage getFilterStage();
 
-	public HttpServletRequest
-	                   getRequest();
-
-	public void        setRequest(HttpServletRequest request);
-
-	public HttpServletResponse
-	                   getResponse();
-
-	public void        setResponse(HttpServletResponse response);
+	/**
+	 * Call this method to continue the cycle from
+	 * {@link Filter#openFilter(FilterTask)} without
+	 * exiting the method.
+	 *
+	 * Allows to nest invocation context to create
+	 * transaction scopes and else needs.
+	 */
+	public void        continueCycle();
 
 	/**
 	 * Tells whether the cycle was breaked. Breaking
@@ -41,7 +42,7 @@ public interface FilterTask
 	 * If the filter sets or raises an exception,
 	 * the cycle is automatically breaked.
 	 */
-	public void        setBreaked();
+	public void        doBreak();
 
 	/**
 	 * Returns the exception saved (or raised) in the task
@@ -51,13 +52,14 @@ public interface FilterTask
 
 	public void        setError(Throwable error);
 
-	/**
-	 * Call this method to continue the cycle from
-	 * {@link Filter#openFilter(FilterTask)} without
-	 * exiting the method. The call may be done indirectly.
-	 *
-	 * Allows to nest invocation context to create
-	 * transaction scopes and else needs.
-	 */
-	public void        continueCycle();
+
+	/* Filter Task (access the request) */
+
+	public HttpServletRequest  getRequest();
+
+	public void setRequest(HttpServletRequest request);
+
+	public HttpServletResponse getResponse();
+
+	public void setResponse(HttpServletResponse response);
 }

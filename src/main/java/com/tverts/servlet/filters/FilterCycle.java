@@ -63,7 +63,7 @@ public final class FilterCycle
 
 			//?: {has error} do break
 			if(task.getError() != null)
-				task.setBreaked();
+				task.doBreak();
 		}
 
 		//?: {have terminal & not breaked & got the tail} invoke terminal
