@@ -39,7 +39,7 @@ public abstract class FilterTaskBase implements FilterTask
 
 	public void setError(Throwable error)
 	{
-		if(this.error == null)
+		if((this.error == null) || (error == null))
 			this.error = error;
 	}
 
