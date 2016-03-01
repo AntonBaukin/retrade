@@ -1,10 +1,14 @@
-package com.tverts.servlet.filters;
+package com.tverts.servlet.go;
 
-/* standard Java classes */
+/* Java */
 
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
+
+/* com.tverts: servlet */
+
+import com.tverts.servlet.filters.FilterTask;
 
 
 /**

@@ -1,8 +1,12 @@
-package com.tverts.servlet.filters;
+package com.tverts.servlet.go;
 
 /* Java */
 
 import java.util.function.Predicate;
+
+/* com.tverts: servlet */
+
+import com.tverts.servlet.filters.FilterTask;
 
 /* com.tverts: support */
 

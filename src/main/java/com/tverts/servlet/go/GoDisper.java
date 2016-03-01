@@ -1,4 +1,9 @@
-package com.tverts.servlet.filters;
+package com.tverts.servlet.go;
+
+/* com.tverts: servlet */
+
+import com.tverts.servlet.filters.FilterTask;
+
 
 /**
  * Dispatcher for go-requests.

@@ -1,8 +1,14 @@
-package com.tverts.servlet.filters;
+package com.tverts.servlet.go;
 
 /* Java Servlet */
 
 import javax.servlet.RequestDispatcher;
+
+/* com.tverts: servlet */
+
+import com.tverts.servlet.filters.FilterBase;
+import com.tverts.servlet.filters.FilterStage;
+import com.tverts.servlet.filters.FilterTask;
 
 /* com.tverts: support */
 

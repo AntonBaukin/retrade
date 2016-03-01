@@ -1,9 +1,9 @@
 package com.tverts.faces.system;
 
-/* com.tverts: servlets */
+/* com.tverts: servlet */
 
 import com.tverts.servlet.filters.FilterTask;
-import com.tverts.servlet.filters.GoPageFilterBase;
+import com.tverts.servlet.go.GoPageFilterBase;
 
 
 /**

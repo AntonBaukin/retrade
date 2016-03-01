@@ -1,11 +1,14 @@
 package com.tverts.jsx.pages;
 
-/* com.tverts: servlets */
+/* com.tverts: servlet */
+
+import com.tverts.servlet.filters.FilterTask;
+import com.tverts.servlet.go.GoDispatch;
+import com.tverts.servlet.go.GoPageFilterBase;
+
+/* com.tverts: scripting */
 
 import com.tverts.jsx.JsX;
-import com.tverts.servlet.filters.FilterTask;
-import com.tverts.servlet.filters.GoDispatch;
-import com.tverts.servlet.filters.GoPageFilterBase;
 
 
 /**
