@@ -6,6 +6,7 @@ import static com.tverts.spring.SpringPoint.bean;
 
 /* com.tverts: servlet */
 
+import com.tverts.servlet.filters.PickFilter;
 import com.tverts.servlet.go.GoFilterBase;
 
 /* com.tverts: endure (core + login) */
@@ -29,6 +30,7 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
+@PickFilter(order = { 4995 })
 public class GoDomainIndexPage extends GoFilterBase
 {
 	/* Go Domain Index Page */
