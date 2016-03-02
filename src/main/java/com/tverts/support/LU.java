@@ -187,7 +187,7 @@ public class LU
 	}
 
 
-    /* public: logging support */
+	/* public: logging support */
 
 	public static String sig(Object obj)
 	{

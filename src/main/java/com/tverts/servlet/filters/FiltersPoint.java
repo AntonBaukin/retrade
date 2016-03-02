@@ -79,7 +79,7 @@ public class FiltersPoint
 				  "] is registered by the occupied order [",
 				  o, "] at the stage ", s, "!");
 
-				m.put(o, (Filter)f);
+				m.put(o, f);
 			}
 		}
 

@@ -11,17 +11,8 @@ import java.util.List;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class FilterBase
-       implements     Filter, FilterReference
+public abstract class FilterBase implements Filter
 {
-	/* public: FilterReference interface */
-
-	public List<Filter> dereferObjects()
-	{
-		return Collections.<Filter>singletonList(this);
-	}
-
-
 	/* Filter */
 
 	public void openFilter(FilterTask task)
