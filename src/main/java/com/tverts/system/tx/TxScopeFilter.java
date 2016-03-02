@@ -51,9 +51,6 @@ public class TxScopeFilter extends FilterBase
 		}
 	}
 
-	public void closeFilter(FilterTask task)
-	{}
-
 
 	/* protected: access tx-scopes bean */
 

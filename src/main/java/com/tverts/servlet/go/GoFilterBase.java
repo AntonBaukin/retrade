@@ -39,9 +39,6 @@ public abstract class GoFilterBase extends FilterBase
 			goPage(task, page);
 	}
 
-	public void closeFilter(FilterTask task)
-	{}
-
 
 	/* protected: go-operation */
 

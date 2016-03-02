@@ -36,9 +36,6 @@ public abstract class GoPageFilterBase extends FilterBase
 		tryForward(task, page);
 	}
 
-	public void closeFilter(FilterTask task)
-	{}
-
 
 	/* public: GoFilterBase (bean) interface */
 

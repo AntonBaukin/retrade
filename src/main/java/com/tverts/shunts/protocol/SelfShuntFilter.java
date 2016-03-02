@@ -73,9 +73,6 @@ public class SelfShuntFilter extends FilterBase
 		}
 	}
 
-	public void closeFilter(FilterTask task)
-	{}
-
 
 	/* public: parameters of the filter */
 

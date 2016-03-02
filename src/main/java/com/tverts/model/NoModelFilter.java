@@ -42,9 +42,6 @@ public class NoModelFilter extends FilterBase
 {
 	/* public: Filter interface */
 
-	public void openFilter(FilterTask task)
-	{}
-
 	public void closeFilter(FilterTask task)
 	{
 		NoModelException nomoe = EX.search(
