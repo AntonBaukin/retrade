@@ -1,4 +1,4 @@
-package com.tverts.support.log4j;
+package com.tverts.support.logs;
 
 /* Java */
 
