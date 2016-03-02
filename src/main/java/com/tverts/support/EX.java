@@ -11,7 +11,6 @@ import com.tverts.secure.ForbiddenException;
 
 /* com.tverts: supports */
 
-import com.tverts.support.logs.TransparentException;
 import com.tverts.support.streams.StringBuilderWriter;
 
 
@@ -94,8 +93,7 @@ public class EX
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <E extends Throwable> E
-	                        search(Throwable e, Class<E> eclass)
+	public static <E> E     search(Throwable e, Class<E> eclass)
 	{
 		while(e != null)
 			if(eclass.isAssignableFrom(e.getClass()))
@@ -104,17 +102,6 @@ public class EX
 				e = e.getCause();
 
 		return null;
-	}
-
-	public static boolean   isTransparent(Throwable e)
-	{
-		while(e != null)
-			if(TransparentException.class.isAssignableFrom(e.getClass()))
-				return true;
-			else
-				e = e.getCause();
-
-		return false;
 	}
 
 

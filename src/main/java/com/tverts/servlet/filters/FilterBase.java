@@ -1,14 +1,13 @@
 package com.tverts.servlet.filters;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collections;
 import java.util.List;
 
+
 /**
- * Represents a {@link Filter} as a
- * {@link FilterReference} returning this instance.
- * It is convenient when registering filters in Spring.
+ * Implementation base for Filters.
  *
  * @author anton.baukin@gmail.com
  */
@@ -21,4 +20,13 @@ public abstract class FilterBase
 	{
 		return Collections.<Filter>singletonList(this);
 	}
+
+
+	/* Filter */
+
+	public void openFilter(FilterTask task)
+	{}
+
+	public void closeFilter(FilterTask task)
+	{}
 }

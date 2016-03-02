@@ -16,12 +16,12 @@ import com.sun.faces.application.view.FaceletViewHandlingStrategy;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.misc.HiddenError;
 
 
 /**
  * JSF system level class. It's present goal is
  * to treat exceptions during the JSF processing.
- *
  *
  * @author anton.baukin@gmail.com
  */
@@ -34,7 +34,7 @@ public class   LocalFaceletViewHandlingStrategy
 	  throws IOException
 	{
 		//?: {this error must be logged}
-		if(!EX.isTransparent(e))
+		if(EX.search(e, HiddenError.class) == null)
 		{
 			super.handleRenderException(context, e);
 			return;

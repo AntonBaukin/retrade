@@ -25,6 +25,7 @@ import com.tverts.secure.ForbiddenException;
 /* com.tverts: support */
 
 import com.tverts.support.EX;
+import com.tverts.support.misc.HiddenError;
 
 
 /**
@@ -36,6 +37,18 @@ import com.tverts.support.EX;
 public class      FiltersBridge
        implements javax.servlet.Filter
 {
+	/* Constants */
+
+	/**
+	 * Constant that defines atribute of a Hidden
+	 * Error ocurred during the processing of
+	 * a nested request (forwarded, included)
+	 * and reported to the outer level.
+	 */
+	public static final String HIDDEN_ERROR =
+	  FiltersBridge.class.getName() + ": Hidden Error";
+
+
 	/* Servlet Filter */
 
 	public void doFilter (
@@ -164,35 +177,60 @@ public class      FiltersBridge
 	                      )
 	  throws IOException, ServletException
 	{
-		//?: {is transparent error}
-		//if(EX.isTransparent(e))
-		//	return;
-
-		ForbiddenException fe = null;
-
-		//~: unwrap the error
-		e = EX.xrt(e);
-
-		//?: {forbidden | servlet wrapper}
-		if(e instanceof ForbiddenException)
-			fe = (ForbiddenException)e;
-		if(e instanceof ServletException)
+		//?: {hidden}
+		HiddenError he = EX.search(e, HiddenError.class);
+		if(he != null)
 		{
-			Throwable x = EX.xrt(e.getCause());
-			if(x instanceof ForbiddenException)
-				fe = (ForbiddenException)x;
+			handleError(task, req, res, he);
+			return;
 		}
 
-		//?: {not a forbidden | unable to reset}
-		if((fe == null) || res.isCommitted())
-			if(e instanceof ServletException)
-				throw (ServletException)e;
-			else if(e instanceof IOException)
-				throw (IOException)e;
-			else if(e instanceof RuntimeException)
-				throw (RuntimeException)e;
-			else
-				throw new ServletException(e);
+		//?: {forbidden}
+		ForbiddenException fe =
+		  EX.search(e, ForbiddenException.class);
+
+		if(fe != null)
+		{
+			handleError(task, req, res, fe);
+			return;
+		}
+
+		//~: unwrap and throw
+		fallbackError(task, req, res, e);
+	}
+
+	protected void        handleError (
+	                        FilterTask      task,
+	                        ServletRequest  req,
+	                        ServletResponse res,
+	                        HiddenError     he
+	                      )
+	  throws IOException, ServletException
+	{
+		//~: get filter stage
+		FilterStage stage = (task == null)?(null):(task.getFilterStage());
+		if(stage == null)
+			stage = getStage((HttpServletRequest)req);
+
+		//?: {has outer request}
+		if(FilterStage.REQUEST.equals(stage))
+			fallbackError(task, req, res, (Throwable)he);
+
+		//~: assign the attribute
+		req.setAttribute(HIDDEN_ERROR, he);
+	}
+
+	protected void        handleError (
+	                        FilterTask         task,
+	                        ServletRequest     req,
+	                        ServletResponse    res,
+	                        ForbiddenException fe
+	                      )
+	  throws IOException, ServletException
+	{
+		//?: {committed the response}
+		if(res.isCommitted())
+			throw new ServletException(fe);
 
 		res.reset(); //<-- reset the buffer
 
@@ -201,6 +239,26 @@ public class      FiltersBridge
 			((HttpServletResponse)res).sendError(
 			  HttpServletResponse.SC_FORBIDDEN, fe.getMessage()
 			);
+	}
+
+	protected void        fallbackError (
+	                        FilterTask      task,
+	                        ServletRequest  req,
+	                        ServletResponse res,
+	                        Throwable       e
+	                      )
+	  throws IOException, ServletException
+	{
+		e = EX.xrt(e);
+
+		if(e instanceof ServletException)
+			throw (ServletException)e;
+		else if(e instanceof IOException)
+			throw (IOException)e;
+		else if(e instanceof RuntimeException)
+			throw (RuntimeException)e;
+		else
+			throw new ServletException(e);
 	}
 
 

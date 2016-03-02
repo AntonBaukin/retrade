@@ -70,12 +70,10 @@ public abstract class GoFilterBase extends FilterBase
 			task.doBreak();
 
 			//~: create request dispatcher
-			RequestDispatcher d = task.getRequest().
-			  getRequestDispatcher(page);
-
-			if(d == null)
-				throw new IllegalStateException(String.format(
-				  "Can not go to the page [%s]!", page));
+			RequestDispatcher d = EX.assertn(
+			  task.getRequest().getRequestDispatcher(page),
+			  "Can not go to the page [", page, "]!", page
+			);
 
 			//?: {include request}
 			if(FilterStage.INCLUDE.equals(task.getFilterStage()))
@@ -86,7 +84,7 @@ public abstract class GoFilterBase extends FilterBase
 		}
 		catch(Throwable e)
 		{
-			throw new RuntimeException(EX.xrt(e));
+			throw EX.wrap(EX.xrt(e));
 		}
 	}
 }

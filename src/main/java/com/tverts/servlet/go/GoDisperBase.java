@@ -65,7 +65,7 @@ public class GoDisperBase implements GoDisper
 		}
 		catch(Throwable e)
 		{
-			throw new RuntimeException(EX.xrt(e));
+			throw EX.wrap(EX.xrt(e));
 		}
 
 		return true;

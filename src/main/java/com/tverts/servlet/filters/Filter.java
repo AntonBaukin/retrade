@@ -17,7 +17,7 @@ package com.tverts.servlet.filters;
  */
 public interface Filter
 {
-	/* public: Filter interface */
+	/* Filter */
 
 	/**
 	 * Does the main work of the filter. If the filter returns

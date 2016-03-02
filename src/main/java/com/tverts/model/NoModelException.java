@@ -2,7 +2,7 @@ package com.tverts.model;
 
 /* com.tverts: support */
 
-import com.tverts.support.logs.TransparentException;
+import com.tverts.support.misc.HiddenError;
 
 
 /**
@@ -21,7 +21,7 @@ import com.tverts.support.logs.TransparentException;
  */
 public class      NoModelException
        extends    RuntimeException
-       implements TransparentException
+       implements HiddenError
 {
 	/* public: constructor */
 

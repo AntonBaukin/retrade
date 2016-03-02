@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import static com.tverts.servlet.RequestPoint.request;
 import com.tverts.servlet.filters.FilterBase;
 import com.tverts.servlet.filters.FilterTask;
+import static com.tverts.servlet.filters.FilterStage.FORWARD;
 import com.tverts.servlet.filters.PickFilter;
 
 /* tverts.com: faces */
@@ -30,16 +31,13 @@ import com.tverts.support.EX;
  * to the actual model if such is defined in the exception.
  *
  * WARNING! As HTTP specifies, only GET requests may be
- *  redirected via 302 response! 307 response is not
- *  supported transparently for the user.
- *
- *  This implementation raises exception on POST redirect.
- *  Do not use redirect in such manner!
+ * redirected via 302 response! 307 response is not
+ * supported transparently for a user.
  *
  *
  * @author anton.baukin@gmail.com
  */
-@Component @PickFilter(order = { 200 })
+@Component @PickFilter(order = { 200 }, stage = { FORWARD })
 public class NoModelFilter extends FilterBase
 {
 	/* public: Filter interface */
