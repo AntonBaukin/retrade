@@ -8,10 +8,19 @@ import org.springframework.stereotype.Component;
 
 import com.tverts.servlet.RequestPoint;
 
+/* tverts.com: system */
+
+import com.tverts.system.JTAPoint;
+
+/* tverts.com: model */
+
+import com.tverts.model.ModelRequest;
+
 
 /**
  * Binds the response with Servlet related components.
  * Related to {@code WebApplicationRequestListener}.
+ * The first Filter invoked.
  *
  * @author anton.baukin@gmail.com
  */
@@ -22,6 +31,10 @@ public class WebApplicationRequestFilter extends FilterBase
 
 	public void openFilter(FilterTask task)
 	{
+		//?: {there are no requests in the stack}
+		if(RequestPoint.requests() == 0)
+			initRequest();
+
 		RequestPoint.getInstance().setRequest(task.getRequest());
 		RequestPoint.getInstance().setResponse(task.getResponse());
 	}
@@ -30,5 +43,26 @@ public class WebApplicationRequestFilter extends FilterBase
 	{
 		RequestPoint.getInstance().setResponse(null);
 		RequestPoint.getInstance().setRequest(null);
+
+		//?: {there are no requests in the stack}
+		if(RequestPoint.requests() == 0)
+			freeRequest();
+	}
+
+
+	/* protected: request initialization */
+
+	protected void initRequest()
+	{
+		freeRequest();
+	}
+
+	protected void freeRequest()
+	{
+		//~: clean JTA bindings
+		JTAPoint.jta().clean();
+
+		//~: clear the model
+		ModelRequest.getInstance().clear();
 	}
 }

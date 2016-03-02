@@ -49,25 +49,4 @@
       </list>
     </property>
   </bean>
-
-
-  <!--=================================================
-    =  Servlet Request Listeners                      =
-    =================================================-->
-
-  <bean name  = 'servletRequestListenerPoint' factory-method = 'getInstance'
-        class = 'com.tverts.servlet.listeners.ServletRequestListenerPoint'>
-
-    <property name = 'references'>
-      <list>
-
-        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-         · Binds the request to Servlet-related components           ·
-         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
-        <bean class = 'com.tverts.servlet.listeners.WebApplicationRequestListener'/>
-
-      </list>
-    </property>
-  </bean>
-
 </beans>

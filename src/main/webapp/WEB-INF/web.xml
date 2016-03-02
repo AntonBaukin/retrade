@@ -87,24 +87,6 @@
   </listener>
 
 
-  <!-- Web Application Request Initializer -->
-
-  <listener>
-    <description>
-      Binds the pending request with various runtime
-      structures of the application.
-
-      This listener is a bridge to the collection
-      of listeners defined within the application.
-    </description>
-
-    <display-name>Web Application Request Initializer</display-name>
-    <listener-class>
-      com.tverts.servlet.listeners.ServletRequestListenerBridge
-    </listener-class>
-  </listener>
-
-
   <!--====================================================
     =            Java Server Faces Configuration         =
     ====================================================-->
