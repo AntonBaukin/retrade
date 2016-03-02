@@ -14,7 +14,7 @@ public enum FilterStage
 	REQUEST,
 
 	/**
-	 * Internally included resource (subquery).
+	 * Internally included resource.
 	 */
 	INCLUDE,
 

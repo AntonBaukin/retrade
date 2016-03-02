@@ -51,42 +51,43 @@ public class      FiltersBridge
 
 	/* Servlet Filter */
 
-	public void doFilter (
-	              ServletRequest  req,
-	              ServletResponse res,
-	              FilterChain     chain
-	            )
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 	  throws IOException, ServletException
 	{
-		FilterTask task = null;
+		Job job = createJob();
+
+		//=: request
+		EX.assertx(req instanceof HttpServletRequest);
+		job.request  = (HttpServletRequest)req;
+
+		//=: response
+		EX.assertx(res instanceof HttpServletResponse);
+		job.response = (HttpServletResponse)res;
+
+		//=: filter chain
+		job.chain    = chain;
 
 		try
 		{
-			EX.assertx(req instanceof HttpServletRequest);
-			EX.assertx(res instanceof HttpServletResponse);
-
 			//~: create the filter task
-			task = createTask(
-			  (HttpServletRequest)req,
-			  (HttpServletResponse)res,
-			  chain
-			);
+			initTask(job);
 
 			//~: invoke the default
-			if(task == null)
+			if(job.task == null)
 				chain.doFilter(req, res);
 			else
 			{
-				processTask(task);
+				processTask(job);
 
 				//?: {has error}
-				if(task.getError() != null)
-					throw task.getError();
+				if(job.task.getError() != null)
+					throw job.task.getError();
 			}
 		}
 		catch(Throwable e)
 		{
-			handleError(task, req, res, e);
+			job.error = e;
+			handleError(job);
 		}
 	}
 
@@ -99,157 +100,121 @@ public class      FiltersBridge
 
 	/* protected: filter processing */
 
-	protected void        processTask(FilterTask task)
+	protected Job  createJob()
+	{
+		return new Job();
+	}
+
+	protected void  processTask(Job job)
 	{
 		try
 		{
-			task.continueCycle();
+			job.task.continueCycle();
 		}
 		catch(Throwable e)
 		{
-			task.setError(e);
+			job.task.setError(e);
 		}
 	}
 
-	protected FilterStage getStage(HttpServletRequest req)
+	protected void initStage(Job job)
 	{
-		switch(req.getDispatcherType())
-		{
-			case REQUEST : return FilterStage.REQUEST;
-			case INCLUDE : return FilterStage.INCLUDE;
-			case FORWARD : return FilterStage.FORWARD;
-			case ERROR   : return FilterStage.ERROR;
-		}
-
-		return null;
+		job.stage = FilterStage.valueOf(
+		  job.request.getDispatcherType().toString());
 	}
 
-	protected Filter[]    getFilters(FilterStage stage)
+	protected void initFilters(Job job)
 	{
-		return bean(FiltersPoint.class).getFilters(stage);
+		job.filters = bean(FiltersPoint.class).
+		  getFilters(job.stage);
 	}
 
-	protected FilterTask  createTask (
-	                        HttpServletRequest  req,
-	                        HttpServletResponse res,
-	                        FilterChain         chain
-	                      )
+	protected void initFilterCycle(Job job)
 	{
-		//~: get the filter stage
-		FilterStage stage = getStage(req);
-		if(stage == null) return null;
-
-		//~: get the filters
-		Filter[] filters = getFilters(stage);
-		if(filters == null) return null;
-
-		//~: create the task
-		Task task = new Task(stage);
-
-		task.setRequest(req);
-		task.setResponse(res);
-
-		//~: create the cycle strategy
-		task.setFilterCycle(createFilterCycle(task, chain, filters));
-
-		return task;
-	}
-
-	protected FilterCycle createFilterCycle (
-	                        FilterTask  task,
-	                        FilterChain chain,
-	                        Filter[]    filters
-	                      )
-	{
-		FilterCycle result = new FilterCycle(task, filters);
+		job.cycle = new FilterCycle(job.task, job.filters);
 
 		//~: install default terminal filter
-		result.setTerminal(new FilterChainInvoker(chain));
-
-		return result;
+		job.cycle.setTerminal(new FilterChainInvoker(job.chain));
 	}
 
-	protected void        handleError (
-	                        FilterTask      task,
-	                        ServletRequest  req,
-	                        ServletResponse res,
-	                        Throwable       e
-	                      )
+	protected void initTask(Job job)
+	{
+		//~: get the filter stage
+		initStage(job);
+		if(job.stage == null)
+			return;
+
+		//~: get the filters
+		initFilters(job);
+		if(job.filters == null)
+			return;
+
+		//~: create the task
+		job.task = new Task(job.stage);
+
+		//=: request
+		job.task.setRequest(job.request);
+
+		//=: response
+		job.task.setResponse(job.response);
+
+		//~: create the cycle strategy
+		initFilterCycle(job);
+		job.task.setFilterCycle(job.cycle);
+	}
+
+	protected void handleError(Job job)
 	  throws IOException, ServletException
 	{
 		//?: {hidden}
-		HiddenError he = EX.search(e, HiddenError.class);
-		if(he != null)
+		if(EX.search(job.error, HiddenError.class) != null)
 		{
-			handleError(task, req, res, he);
+			handleHiddenError(job);
 			return;
 		}
 
 		//?: {forbidden}
-		ForbiddenException fe =
-		  EX.search(e, ForbiddenException.class);
-
-		if(fe != null)
+		if(EX.search(job.error, ForbiddenException.class) != null)
 		{
-			handleError(task, req, res, fe);
+			handleForbiddenError(job);
 			return;
 		}
 
 		//~: unwrap and throw
-		fallbackError(task, req, res, e);
+		fallbackError(job);
 	}
 
-	protected void        handleError (
-	                        FilterTask      task,
-	                        ServletRequest  req,
-	                        ServletResponse res,
-	                        HiddenError     he
-	                      )
+	protected void handleHiddenError(Job job)
 	  throws IOException, ServletException
 	{
-		//~: get filter stage
-		FilterStage stage = (task == null)?(null):(task.getFilterStage());
-		if(stage == null)
-			stage = getStage((HttpServletRequest)req);
-
 		//?: {has outer request}
-		if(FilterStage.REQUEST.equals(stage))
-			fallbackError(task, req, res, (Throwable)he);
+		if(FilterStage.REQUEST.equals(job.stage))
+			fallbackError(job);
 
-		//~: assign the attribute
-		req.setAttribute(HIDDEN_ERROR, he);
+		//~: save error to the request
+		job.request.setAttribute(HIDDEN_ERROR,
+		  EX.search(job.error, HiddenError.class));
 	}
 
-	protected void        handleError (
-	                        FilterTask         task,
-	                        ServletRequest     req,
-	                        ServletResponse    res,
-	                        ForbiddenException fe
-	                      )
+	protected void handleForbiddenError(Job job)
 	  throws IOException, ServletException
 	{
-		//?: {committed the response}
-		if(res.isCommitted())
-			throw new ServletException(fe);
+		ForbiddenException e = EX.search(job.error, ForbiddenException.class);
 
-		res.reset(); //<-- reset the buffer
+		//?: {committed the response}
+		if(job.response.isCommitted() || (e == null))
+			throw new ServletException(e);
+
+		job.response.reset(); //<-- reset the buffer
 
 		//~: send 403 HTTP error
-		if(res instanceof HttpServletResponse)
-			((HttpServletResponse)res).sendError(
-			  HttpServletResponse.SC_FORBIDDEN, fe.getMessage()
-			);
+		job.response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
 	}
 
-	protected void        fallbackError (
-	                        FilterTask      task,
-	                        ServletRequest  req,
-	                        ServletResponse res,
-	                        Throwable       e
-	                      )
+	protected void fallbackError(Job job)
 	  throws IOException, ServletException
 	{
-		e = EX.xrt(e);
+		Throwable e = EX.xrt(job.error);
 
 		if(e instanceof ServletException)
 			throw (ServletException)e;
@@ -259,6 +224,24 @@ public class      FiltersBridge
 			throw (RuntimeException)e;
 		else
 			throw new ServletException(e);
+	}
+
+
+	/* Filter Job */
+
+	/**
+	 * Collection of request-related variables.
+	 */
+	protected static class Job
+	{
+		public HttpServletRequest  request;
+		public HttpServletResponse response;
+		public FilterChain         chain;
+		public FilterStage         stage;
+		public Task                task;
+		public FilterCycle         cycle;
+		public Filter[]            filters;
+		public Throwable           error;
 	}
 
 
