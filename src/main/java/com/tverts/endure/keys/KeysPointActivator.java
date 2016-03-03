@@ -50,7 +50,7 @@ public class   KeysPointActivator
 			  "Keys Generator (Binder) name is not specified!");
 
 			//?: {had already bound this name}
-			EX.assertx( gens.containsKey(b.getGeneratorName()),
+			EX.assertx(!gens.containsKey(b.getGeneratorName()),
 			  "Keys Generator (Binder) name [", b.getGeneratorName(),
 			  "] is already bound!");
 
