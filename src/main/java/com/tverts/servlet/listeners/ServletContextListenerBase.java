@@ -1,11 +1,11 @@
 package com.tverts.servlet.listeners;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collections;
 import java.util.List;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -21,18 +21,9 @@ import com.tverts.objects.ObjectsReference;
  * @author anton.baukin@gmail.com
  */
 public abstract class ServletContextListenerBase
-       implements     ServletContextListener,
-                      ObjectsReference<ServletContextListener>
+       implements     ServletContextListener
 {
-	/* public: ObjectsReference interface */
-
-	public List<ServletContextListener> dereferObjects()
-	{
-		return Collections.<ServletContextListener>singletonList(this);
-	}
-
-
-	/* public: ServletContextListener interface */
+	/* Servlet Context Listener */
 
 	public void contextInitialized(ServletContextEvent sce)
 	{

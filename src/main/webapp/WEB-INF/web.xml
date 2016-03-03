@@ -81,7 +81,7 @@
 
     <display-name>Web Application Context Initializer</display-name>
     <listener-class>
-      com.tverts.servlet.listeners.ContextListenerBridge
+      com.tverts.servlet.listeners.ContextListenersBridge
     </listener-class>
   </listener>
 

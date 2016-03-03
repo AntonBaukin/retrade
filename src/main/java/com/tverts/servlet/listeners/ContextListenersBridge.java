@@ -20,7 +20,7 @@ import com.tverts.support.LU;
  *
  * @author anton.baukin@gmail.com
  */
-public class      ContextListenerBridge
+public class ContextListenersBridge
        implements ServletContextListener
 {
 	/* public: ServletContextListener interface */
