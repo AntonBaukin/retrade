@@ -105,7 +105,7 @@ public class      FiltersBridge
 		return new Job();
 	}
 
-	protected void  processTask(Job job)
+	protected void processTask(Job job)
 	{
 		try
 		{

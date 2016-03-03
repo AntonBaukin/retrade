@@ -1,11 +1,5 @@
 package com.tverts.servlet.filters;
 
-/* Java */
-
-import java.util.Collections;
-import java.util.List;
-
-
 /**
  * Implementation base for Filters.
  *
