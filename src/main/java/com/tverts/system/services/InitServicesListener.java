@@ -1,13 +1,21 @@
 package com.tverts.system.services;
 
-/* com.tverts: servlet (servlet) */
+/* Sprint Framework */
 
-import com.tverts.servlet.listeners.ServletContextListenerBase;
+import org.springframework.stereotype.Component;
 
-/* com.tverts: (spring + tx) */
+/* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
+
+/* com.tverts: transactions */
+
 import com.tverts.system.tx.TxBean;
+
+/* com.tverts: servlet (servlet) */
+
+import com.tverts.servlet.listeners.PickListener;
+import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 
 /**
@@ -15,6 +23,7 @@ import com.tverts.system.tx.TxBean;
  *
  * @author anton.baukin@gmail.com
  */
+@Component @PickListener(order = 2500)
 public class   InitServicesListener
        extends ServletContextListenerBase
 {

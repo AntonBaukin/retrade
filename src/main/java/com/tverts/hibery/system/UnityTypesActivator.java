@@ -1,6 +1,6 @@
 package com.tverts.hibery.system;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,10 +11,17 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-/* com.tverts: (spring + tx) */
+/* com.tverts: spring */
 
 import static com.tverts.spring.SpringPoint.bean;
+
+/* com.tverts: transactions */
+
 import com.tverts.system.tx.TxBean;
+
+/* com.tverts: servlet (listeners) */
+
+import com.tverts.servlet.listeners.PickListener;
 
 /* com.tverts: endure */
 
@@ -39,6 +46,7 @@ import static com.tverts.support.SU.cat;
  *
  * @author anton.baukin@gmail.com
  */
+@PickListener(order = 1000)
 public class      UnityTypesActivator
        extends    UnityTypesInitHiberBase
        implements ServletContextListener,

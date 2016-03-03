@@ -1,12 +1,17 @@
 package com.tverts.endure.keys;
 
-/* standard Java classes */
+/* Java */
 
 import java.util.HashMap;
 import java.util.Map;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* com.tverts: servlet (listeners) */
 
+import com.tverts.servlet.listeners.PickListener;
 import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 /* com.tverts: support */
@@ -18,9 +23,9 @@ import static com.tverts.support.SU.sXe;
  * Builds database sequences used to create
  * primary keys of the entities.
  *
- *
  * @author anton.baukin@gmail.com
  */
+@Component @PickListener(order = 100)
 public class   KeysPointActivator
        extends ServletContextListenerBase
 {

@@ -1,6 +1,6 @@
 package com.tverts.hibery.sql;
 
-/* standard Java classes */
+/* Java */
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,6 +10,10 @@ import java.util.List;
 /* Hibernate Persistence Layer */
 
 import org.hibernate.mapping.PersistentClass;
+
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
 
 /* Java DOM */
 
@@ -25,6 +29,7 @@ import com.tverts.system.tx.TxPoint;
 
 /* com.tverts: servlet (listeners) */
 
+import com.tverts.servlet.listeners.PickListener;
 import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 /* com.tverts: hibery (system) */
@@ -49,6 +54,7 @@ import com.tverts.support.SU;
  *
  * @author anton.baukin@gmail.com
  */
+@Component @PickListener(order = 200)
 public class   HiberSQLActivator
        extends ServletContextListenerBase
 {
@@ -70,7 +76,7 @@ public class   HiberSQLActivator
 		}
 
 		//~: parse the tasks of the files
-		final List<SQLTask> tasks = new ArrayList<SQLTask>(16);
+		final List<SQLTask> tasks = new ArrayList<>(16);
 		for(String file : files) try
 		{
 			prepareFile(file, tasks);

@@ -1,7 +1,12 @@
 package com.tverts.system;
 
-/* com.tverts: webapp listeners */
+/* Sprint Framework */
 
+import org.springframework.stereotype.Component;
+
+/* com.tverts: servlet (servlet) */
+
+import com.tverts.servlet.listeners.PickListener;
 import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 /* com.tverts: z-services */
@@ -18,6 +23,7 @@ import com.tverts.system.services.events.SystemReady;
  *
  * @author anton.baukin@gmail.com
  */
+@Component @PickListener(order = 10000)
 public class   SystemReadyListener
        extends ServletContextListenerBase
 {

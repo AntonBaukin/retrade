@@ -1,7 +1,12 @@
 package com.tverts.exec;
 
+/* Sprint Framework */
+
+import org.springframework.stereotype.Component;
+
 /* com.tverts: servlet (listeners) */
 
+import com.tverts.servlet.listeners.PickListener;
 import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 
@@ -10,6 +15,7 @@ import com.tverts.servlet.listeners.ServletContextListenerBase;
  *
  * @author anton.baukin@gmail.com
  */
+@Component @PickListener(order = 2000)
 public class   ExecutorsActivator
        extends ServletContextListenerBase
 {
