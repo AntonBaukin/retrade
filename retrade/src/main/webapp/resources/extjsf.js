@@ -5,7 +5,80 @@
  +===============================================================*/
 
 
-var extjsf = ZeT.define('extjsf',
+var extjsf = ZeT.define('extjsf', {})
+
+
+// +----: Domain :-----------------------------------------------+
+
+/**
+ * Domain of ExtJSF Binds. Each domain has unique name
+ * that is empty string for the default global one.
+ */
+extjsf.Domain = ZeT.defineClass('extjsf.Domain', {
+
+	init             : function(name)
+	{
+		//=: domain name
+		ZeT.assert(ZeT.iss(name))
+		this.name = ZeT.iss(name)
+
+		//=: domain binds
+		this.binds = new ZeT.Map()
+
+		//=: destroy listeners
+		this.ondestr = new ZeT.Map()
+	},
+
+	/**
+	 * Returns the Bind registered by the name that
+	 * is unique within a Domain. Optional argument
+	 * allows to register the Bind. Error is raised
+	 * when a Bind is already registered.
+	 */
+	bind             : function(name /*, bind */)
+	{
+
+	},
+
+	/**
+	 * Returns the Bind previously registered and
+	 * clears it's registration. If second argument
+	 * is not false, destroys the Bind. Note that
+	 * destruction of a Bind does not mean it's
+	 * ExtJS component is being destroyed!
+	 */
+	unbind           : function(name, destroy)
+	{
+
+	},
+
+	/**
+	 * Destroys all currently registered Binds of
+	 * the Domain in the order reversed to the
+	 * registration one.
+	 *
+	 * Invokes all the Domain deletion callbacks
+	 * currently registered in the order of the
+	 * registration.
+	 */
+	destroy          : function()
+	{
+
+	},
+
+	/**
+	 * Registers a callback to invoke when Domain
+	 * is being destroyed. Give second argument true
+	 * to remove previously registered callback.
+	 */
+	onDelete         : function(f, remove)
+	{
+
+	}
+})
+
+
+ZeT.extend(extjsf,
 {
 	//=    Components Binding    =//
 
@@ -750,20 +823,21 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return eval(props);
 	},
 
+	destroy          : function()
+	{
+		var co; if(co = this.co()) try
+		{
+			co.destroy()
+		}
+		finally
+		{
+			delete this._component
+		}
+	},
+
 	boundDestroy     : function()
 	{
-		var self = this
-		return function()
-		{
-			var co; if(co = self.co()) try
-			{
-				co.destroy()
-			}
-			finally
-			{
-				delete self._component
-			}
-		}
+		return ZeT.fbind(this.destroy, this)
 	},
 
 
