@@ -9,16 +9,23 @@
     <bookmark url="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/edit-good.xhtml" line="1246" mnemonic="0" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ServletContextListenerBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenerBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/exec/ExecutorsActivator.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/exec/ExecutorsActivator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/sql/HiberSQLActivator.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/sql/HiberSQLActivator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/services/InitServicesListener.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/services/InitServicesListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/keys/KeysPointActivator.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/keys/KeysPointActivator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/SystemBootListener.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/SystemBootListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemReadyListener.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemReadyListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="system-21 [stable]:">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/zetobj.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/zet.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zetobj.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/zet.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterBase.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersBridge.java" afterPath="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersBridge.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/bootstrap/.tests/bootit.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/bootstrap/.tests/bootit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/borders.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.tests/clocks.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.tests/clocks.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/extjsf.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/extjsf.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/fills.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/fills.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.view-modes/page.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.view-modes/page.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.tests/retrade-nav.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.tests/retrade-nav.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/templates.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/templates.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/treeter.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.tests/treeter.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.tests/uievents.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.tests/uievents.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.tests/uitiles.html" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.tests/uitiles.html" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,16 +56,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="HiberSQLActivator.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/sql/HiberSQLActivator.java">
+      <file leaf-file-name="action-call.xhtml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/action-call.xhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.9007752">
-              <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.9612278">
+              <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
               <folding>
-                <element signature="method#init#0;class#HiberSQLActivator#0" expanded="true" />
-                <element signature="method#searchFiles#0;class#HiberSQLActivator#0" expanded="true" />
-                <element signature="method#parseXML#0;class#HiberSQLActivator#0" expanded="true" />
-                <element signature="method#executeTasksTx#0;class#HiberSQLActivator#0" expanded="true" />
+                <element signature="e#918#2915#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -83,23 +87,23 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersPoint.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenersPoint.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ServletContextListenerBridge.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/web.xml" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenerBridge.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/system/UnityTypesActivator.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/applicationContext.xml" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenersBridge.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ServletContextListenerBase.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenerBase.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/SystemBootListener.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/exec/ContextListenerBase.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/exec/ExecutorsActivator.java" />
-        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/keys/KeysPointActivator.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemReadyListener.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/services/InitServicesListener.java" />
         <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/sql/HiberSQLActivator.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/applicationContext.xml" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenersBridge.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/keys/KeysPointActivator.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/jsx/JsX.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterBase.java" />
+        <option value="$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersBridge.java" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/bootstrap/.tests/bootit.html" />
       </list>
     </option>
   </component>
@@ -125,8 +129,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="506" />
-    <option name="y" value="34" />
+    <option name="x" value="503" />
+    <option name="y" value="43" />
     <option name="width" value="1004" />
     <option name="height" value="972" />
   </component>
@@ -222,8 +226,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -238,6 +242,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bakery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -248,52 +266,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="retrade" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
@@ -314,11 +288,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="retrade" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -328,26 +314,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="retrade" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tverts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
@@ -355,84 +323,12 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tverts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="servlet" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tverts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="servlet" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="listeners" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bakery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tverts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="servlet" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="filters" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -712,36 +608,36 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="506" y="34" width="1004" height="972" extended-state="0" />
+    <frame x="503" y="43" width="1004" height="972" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34199584" sideWeight="0.5057851" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30905077" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294686" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24899599" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983795" sideWeight="0.50441504" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33222958" sideWeight="0.57086223" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37306842" sideWeight="0.4281467" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983795" sideWeight="0.495585" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28807947" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.307947" sideWeight="0.5422794" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2937853" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289183" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24220374" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34927234" sideWeight="0.49421486" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44260487" sideWeight="0.5735294" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24012475" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36382535" sideWeight="0.49421486" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32735962" sideWeight="0.56618357" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44260487" sideWeight="0.5735294" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24012475" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.49950346" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30905077" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33222958" sideWeight="0.57086223" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.307947" sideWeight="0.5422794" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -763,8 +659,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-99 [alpha]: refactored and tested ZeT for arrays." />
-    <MESSAGE value="ui-99 [alpha]: refactored ZeT's additional core utilities." />
     <MESSAGE value="ui-99 [alpha]: refactored ZeT Class definitions. Tested it well." />
     <MESSAGE value="ui-99 [alpha]: removed ZeT.is$x()." />
     <MESSAGE value="ui-99 [alpha]: extended ZeT.isx() check." />
@@ -788,29 +682,18 @@
     <MESSAGE value="system-22 [alpha]: started refactoring of Servlet Context Listener." />
     <MESSAGE value="system-22 [alpha]: registering Context Listener as Spring beans." />
     <MESSAGE value="system-22 [alpha]: removed obsolete Context Listeners registration." />
-    <option name="LAST_COMMIT_MESSAGE" value="system-22 [alpha]: removed obsolete Context Listeners registration." />
+    <MESSAGE value="system-22 [beta]: completed refactoring of Context Listeners." />
+    <MESSAGE value="system-22 [stable]: fixed Context Listeners activation." />
+    <option name="LAST_COMMIT_MESSAGE" value="system-22 [stable]: fixed Context Listeners activation." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/model/NoModelFilter.java</url>
-          <line>69</line>
-          <properties />
-          <option name="timeStamp" value="772" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="777" />
+      <option name="time" value="779" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Remote">
-        <watch expression="res.isCommitted()" language="JAVA" custom="" />
-        <watch expression="request.task.getResponse().isCommitted()" language="JAVA" custom="" />
-      </configuration>
-    </watches-manager>
+    <watches-manager />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -925,308 +808,129 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/PickListener.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/META-INF/context.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.57984495">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-          <folding>
-            <marker date="1456988859000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456988859000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456988859000" expanded="true" signature="-1:-1" placeholder="@{...}" />
-            <marker date="1456988859000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersPoint.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/META-INF/eclipselink-oxm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6997793">
-          <caret line="87" column="24" selection-start-line="82" selection-start-column="12" selection-end-line="87" selection-end-column="24" />
-          <folding>
-            <marker date="1456989193000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456989193000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456989193000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456989193000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456989193000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456989193000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersBridge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33774835">
-          <caret line="18" column="49" selection-start-line="16" selection-start-column="0" selection-end-line="18" selection-end-column="49" />
-          <folding>
-            <marker date="1456928371000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456928371000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456928371000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456928371000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456928371000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/faces-config.xml">
+      <provider editor-type-id="com.intellij.jsf.yfilesGraph.editor.FacesNavigationFileEditorProvider">
+        <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/WEB-INF/spring/endure/unityTypes.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35209712">
-          <caret line="30" column="48" selection-start-line="30" selection-start-column="48" selection-end-line="30" selection-end-column="48" />
-          <folding>
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1400853686000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/system/UnityTypesActivator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.90066224">
-          <caret line="48" column="27" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="27" />
-          <folding>
-            <marker date="1456992561000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456992561000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder="&lt;~&gt;" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456992561000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456992561000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/applicationContext.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.95695364">
-          <caret line="51" column="36" selection-start-line="51" selection-start-column="36" selection-end-line="51" selection-end-column="36" />
-          <folding>
-            <marker date="1456993006000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456993006000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456993006000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456993006000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456993006000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
+        <state vertical-scroll-proportion="1.4925884">
+          <caret line="77" column="6" selection-start-line="77" selection-start-column="6" selection-end-line="77" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
-          <folding>
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
+        <state vertical-scroll-proportion="0.7030905">
+          <caret line="83" column="49" selection-start-line="83" selection-start-column="49" selection-end-line="83" selection-end-column="49" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenersBridge.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/LocalViewDeclarationLanguageFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41280353">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding>
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994555000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456994555000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456994555000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
+        <state vertical-scroll-proportion="0.35651213">
+          <caret line="19" column="15" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenersPoint.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/LocalViewHandlingStrategyManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6379691">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-          <folding>
-            <marker date="1456990523000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456990523000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456990523000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456990523000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1456990523000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
+        <state vertical-scroll-proportion="0.31898454">
+          <caret line="17" column="15" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/SystemBootListener.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/faces/system/LocalFaceletViewHandlingStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5066225">
-          <caret line="27" column="3" selection-start-line="27" selection-start-column="3" selection-end-line="27" selection-end-column="3" />
-          <folding>
-            <marker date="1456994856000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994856000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456994856000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456994856000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
+        <state vertical-scroll-proportion="0.8697674">
+          <caret line="33" column="7" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/listeners/ContextListenerBase.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FilterBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1131783">
-          <caret line="6" column="39" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding>
-            <marker date="1456994783000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456994783000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456994783000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456994783000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456994783000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1456994783000" expanded="false" signature="-1:-1" placeholder=" }" />
-          </folding>
+        <state vertical-scroll-proportion="0.052713178">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/exec/ExecutorsActivator.java">
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/servlet/filters/FiltersBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.792248">
+          <caret line="107" column="18" selection-start-line="107" selection-start-column="18" selection-end-line="107" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xroot/src/main/webapp/WEB-INF/ejb-jar.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1456995376000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456995376000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456995376000" expanded="true" signature="-1:-1" placeholder=" { " />
-            <marker date="1456995376000" expanded="true" signature="-1:-1" placeholder=" }" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/endure/keys/KeysPointActivator.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/lodash.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7379845">
-          <caret line="28" column="15" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
-          <folding>
-            <marker date="1456995730000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456995730000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456995730000" expanded="true" signature="-1:-1" placeholder=" { " />
-            <marker date="1456995730000" expanded="true" signature="-1:-1" placeholder=" }" />
-            <marker date="1456995730000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456995730000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456995730000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456995730000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/SystemReadyListener.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/jquery.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15813954">
-          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-          <folding>
-            <marker date="1456995912000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456995912000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456995912000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456995912000" expanded="true" signature="-1:-1" placeholder=" { " />
-            <marker date="1456995912000" expanded="true" signature="-1:-1" placeholder=" }" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/system/services/InitServicesListener.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zetbor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1751938">
-          <caret line="35" column="68" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
-          <folding>
-            <marker date="1456995963000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1456995963000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1456995963000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1456995963000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/hibery/sql/HiberSQLActivator.java">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/zet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.9007752">
-          <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="1739" column="31" selection-start-line="1739" selection-start-column="31" selection-end-line="1739" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.73322684">
+          <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/bootstrap/.tests/bootit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46363637">
+          <caret line="70" column="20" selection-start-line="70" selection-start-column="20" selection-end-line="70" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/action-call.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9612278">
+          <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
           <folding>
-            <element signature="method#init#0;class#HiberSQLActivator#0" expanded="true" />
-            <element signature="method#searchFiles#0;class#HiberSQLActivator#0" expanded="true" />
-            <element signature="method#parseXML#0;class#HiberSQLActivator#0" expanded="true" />
-            <element signature="method#executeTasksTx#0;class#HiberSQLActivator#0" expanded="true" />
+            <element signature="e#918#2915#0" expanded="true" />
           </folding>
         </state>
       </provider>
