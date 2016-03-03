@@ -1,18 +1,9 @@
 package com.tverts.servlet.listeners;
 
-/* Java */
-
-import java.util.Collections;
-import java.util.List;
-
 /* Java Servlet */
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-/* com.tverts: objects */
-
-import com.tverts.objects.ObjectsReference;
 
 
 /**
@@ -20,7 +11,7 @@ import com.tverts.objects.ObjectsReference;
  *
  * @author anton.baukin@gmail.com
  */
-public abstract class ServletContextListenerBase
+public abstract class ContextListenerBase
        implements     ServletContextListener
 {
 	/* Servlet Context Listener */

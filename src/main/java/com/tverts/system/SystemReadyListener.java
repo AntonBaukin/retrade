@@ -4,10 +4,10 @@ package com.tverts.system;
 
 import org.springframework.stereotype.Component;
 
-/* com.tverts: servlet (servlet) */
+/* com.tverts: servlet */
 
+import com.tverts.servlet.listeners.ContextListenerBase;
 import com.tverts.servlet.listeners.PickListener;
-import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 /* com.tverts: z-services */
 
@@ -24,8 +24,7 @@ import com.tverts.system.services.events.SystemReady;
  * @author anton.baukin@gmail.com
  */
 @Component @PickListener(order = 10000)
-public class   SystemReadyListener
-       extends ServletContextListenerBase
+public class SystemReadyListener extends ContextListenerBase
 {
 	/* protected: ServletContextListenerBase interface */
 

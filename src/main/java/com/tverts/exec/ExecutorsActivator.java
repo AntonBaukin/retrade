@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 
 /* com.tverts: servlet (listeners) */
 
+import com.tverts.servlet.listeners.ContextListenerBase;
 import com.tverts.servlet.listeners.PickListener;
-import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 
 /**
@@ -17,7 +17,7 @@ import com.tverts.servlet.listeners.ServletContextListenerBase;
  */
 @Component @PickListener(order = 2000)
 public class   ExecutorsActivator
-       extends ServletContextListenerBase
+       extends ContextListenerBase
 {
 	/* protected: ServletContextListenerBase interface */
 

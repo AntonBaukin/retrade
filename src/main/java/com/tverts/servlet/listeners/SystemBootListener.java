@@ -1,6 +1,6 @@
 package com.tverts.servlet.listeners;
 
-/* Java Servlet api */
+/* Java Servlet */
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -13,8 +13,8 @@ import com.tverts.servlet.RequestPoint;
 /**
  * Prepares the system to work.
  *
- * Binds web application context with Servlet and
- * Java Server Faced support routines.
+ * Binds web application context with Servlet
+ * and JavaServer Faces support routines.
  *
  *
  * @author anton.baukin@gmail.com

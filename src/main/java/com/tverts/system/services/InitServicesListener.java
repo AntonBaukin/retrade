@@ -14,8 +14,8 @@ import com.tverts.system.tx.TxBean;
 
 /* com.tverts: servlet (servlet) */
 
+import com.tverts.servlet.listeners.ContextListenerBase;
 import com.tverts.servlet.listeners.PickListener;
-import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 
 /**
@@ -25,31 +25,19 @@ import com.tverts.servlet.listeners.ServletContextListenerBase;
  */
 @Component @PickListener(order = 2500)
 public class   InitServicesListener
-       extends ServletContextListenerBase
+       extends ContextListenerBase
 {
 	/* Servlet Context Listener Base */
 
 	protected void init()
 	{
-		bean(TxBean.class).execute(new Runnable()
-		{
-			public void run()
-			{
-				//!: init the services system
-				ServicesPoint.system().init();
-			}
-		});
+		//!: init the services system
+		bean(TxBean.class).execute(() -> ServicesPoint.system().init());
 	}
 
 	protected void destroy()
 	{
-		bean(TxBean.class).execute(new Runnable()
-		{
-			public void run()
-			{
-				//!: destroy the services system
-				ServicesPoint.system().destroy();
-			}
-		});
+		//!: destroy the services system
+		bean(TxBean.class).execute(() -> ServicesPoint.system().destroy());
 	}
 }

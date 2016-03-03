@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 
 /* com.tverts: servlet (listeners) */
 
+import com.tverts.servlet.listeners.ContextListenerBase;
 import com.tverts.servlet.listeners.PickListener;
-import com.tverts.servlet.listeners.ServletContextListenerBase;
 
 /* com.tverts: support */
 
-import static com.tverts.support.SU.sXe;
+import com.tverts.support.EX;
 
 
 /**
@@ -27,7 +27,7 @@ import static com.tverts.support.SU.sXe;
  */
 @Component @PickListener(order = 100)
 public class   KeysPointActivator
-       extends ServletContextListenerBase
+       extends ContextListenerBase
 {
 	/* protected: ServletContextListenerBase interface */
 
@@ -41,75 +41,69 @@ public class   KeysPointActivator
 
 	protected void bindKeysGenerators()
 	{
-		HashMap<String, KeysGenerator> generators =
-		  new HashMap<String, KeysGenerator>();
+		Map<String, KeysGenerator> gens = new HashMap<>();
 
-		for(KeysGeneratorBinder binder :
-		      KeysPoint.getInstance().getGeneratorBinders())
+		for(KeysGeneratorBinder b : KeysPoint.getInstance().getGeneratorBinders())
 		{
 			//?: {has no generator name}
-			if(sXe(binder.getGeneratorName()))
-				throw new IllegalArgumentException(
-				  "Keys Generator (Binder) name is not specified!");
+			EX.asserts(b.getGeneratorName(),
+			  "Keys Generator (Binder) name is not specified!");
 
 			//?: {had already bound this name}
-			if(generators.containsKey(binder.getGeneratorName()))
-				throw new IllegalArgumentException(String.format(
-				  "Keys Generator (Binder) name '%s' is already bound!",
-				  binder.getGeneratorName()));
+			EX.assertx( gens.containsKey(b.getGeneratorName()),
+			  "Keys Generator (Binder) name [", b.getGeneratorName(),
+			  "] is already bound!");
 
 			//~: do bind
-			binder.bindGenerator();
+			b.bindGenerator();
 
 			//?: {couldn't bind}
-			if(binder.getGeneratorBound() == null)
-				throw new IllegalArgumentException(String.format(
-				  "Keys Generator Binder with name '%s' could not" +
-				  "bound the generator!", binder.getGeneratorName()));
+			EX.assertn(b.getGeneratorBound(),
+			  "Keys Generator Binder with name [", b.getGeneratorName(),
+			  "] could not bound the generator!");
 
-			generators.put(binder.getGeneratorName(),
-			  binder.getGeneratorBound());
+			gens.put(b.getGeneratorName(),
+			  b.getGeneratorBound()
+			);
 		}
 
 		//!: assign the generators bound to the keys point
-		assignKeysGenerators(generators);
+		assignKeysGenerators(gens);
 	}
 
-	protected void assignKeysGenerators
-	  (Map<String, KeysGenerator> generators)
+	protected void assignKeysGenerators(Map<String, KeysGenerator> gens)
 	{
 		//~: the the whole mapping
-		KeysPoint.getInstance().setGenerators(generators);
+		KeysPoint.getInstance().setGenerators(gens);
 
-		assignMajorKeysGenerators(generators);
+		assignMajorKeysGenerators(gens);
 		assignFacadeKeysGenerator();
 	}
 
-	protected void assignMajorKeysGenerators
-	  (Map<String, KeysGenerator> generators)
+	protected void assignMajorKeysGenerators(Map<String, KeysGenerator> gens)
 	{
 		//?: {has no primary generator}
 		if((KeysPoint.getInstance().getPrimaryGenerator() == null) &&
-		   generators.containsKey(KeysPoint.GEN_PRIME)
+		    gens.containsKey(KeysPoint.GEN_PRIME)
 		  )
 			KeysPoint.getInstance().setPrimaryGenerator(
-			  generators.get(KeysPoint.GEN_PRIME));
+			  gens.get(KeysPoint.GEN_PRIME));
 
 
 		//?: {has no transactions numbers generator}
 		if((KeysPoint.getInstance().getTxnGenerator() == null) &&
-		   generators.containsKey(KeysPoint.GEN_TXN)
+		    gens.containsKey(KeysPoint.GEN_TXN)
 		  )
 			KeysPoint.getInstance().setTxnGenerator(
-			  generators.get(KeysPoint.GEN_TXN));
+			  gens.get(KeysPoint.GEN_TXN));
 
 
 		//?: {has no other generator}
 		if((KeysPoint.getInstance().getOtherGenerator() == null) &&
-		   generators.containsKey(KeysPoint.GEN_OTHER)
+		    gens.containsKey(KeysPoint.GEN_OTHER)
 		  )
 			KeysPoint.getInstance().setOtherGenerator(
-			  generators.get(KeysPoint.GEN_OTHER));
+			  gens.get(KeysPoint.GEN_OTHER));
 	}
 
 	protected void assignFacadeKeysGenerator()

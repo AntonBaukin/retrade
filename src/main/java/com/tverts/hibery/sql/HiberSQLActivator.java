@@ -30,7 +30,7 @@ import com.tverts.system.tx.TxPoint;
 /* com.tverts: servlet (listeners) */
 
 import com.tverts.servlet.listeners.PickListener;
-import com.tverts.servlet.listeners.ServletContextListenerBase;
+import com.tverts.servlet.listeners.ContextListenerBase;
 
 /* com.tverts: hibery (system) */
 
@@ -56,9 +56,8 @@ import com.tverts.support.SU;
  */
 @Component @PickListener(order = 200)
 public class   HiberSQLActivator
-       extends ServletContextListenerBase
+       extends ContextListenerBase
 {
-
 	/* protected: ServletContextListenerBase interface */
 
 	protected void init()
@@ -71,8 +70,7 @@ public class   HiberSQLActivator
 		catch(Throwable e)
 		{
 			throw EX.wrap(e, "Error occured while seaching '*.sql.xml'",
-			  " files with SQL tasks!"
-			);
+			  " files with SQL tasks!");
 		}
 
 		//~: parse the tasks of the files
@@ -89,30 +87,26 @@ public class   HiberSQLActivator
 		}
 
 		//!: execute the tasks
-		if(!tasks.isEmpty()) bean(TxBean.class).execute(new Runnable()
+		if(!tasks.isEmpty()) bean(TxBean.class).execute(() ->
 		{
-			public void run()
+			try
 			{
-				try
-				{
-					executeTasksTx(tasks);
-				}
-				catch(Throwable e)
-				{
-					throw EX.wrap(e, "Error occured when executing SQL task!");
-				}
+				executeTasksTx(tasks);
+			}
+			catch(Throwable e)
+			{
+				throw EX.wrap(e, "Error occured when executing SQL task!");
 			}
 		});
 	}
 
 
-	/* protected: sql tasks execution */
+	/* protected: SQL tasks execution */
 
 	protected List<String> searchFiles()
 	{
-		List<String>              res  = new ArrayList<String>(4);
-		Iterator<PersistentClass> icls = HiberSystem.
-		  config().getClassMappings();
+		List<String>               res = new ArrayList<>(4);
+		Iterator<PersistentClass> icls = HiberSystem.config().getClassMappings();
 
 		while(icls.hasNext())
 		{
@@ -150,9 +144,8 @@ public class   HiberSQLActivator
 				tcls = null;
 			}
 
-			if(tcls == null) throw EX.ass("SQL Tasks file [", url,
-			  "] <task> tag has unknown 'class' value: [", tclsn, "]!"
-			);
+			EX.assertn(tcls, "SQL Tasks file [", url,
+			  "] <task> tag has unknown 'class' value: [", tclsn, "]!");
 
 			//~: create the task instance
 			Object task; try
