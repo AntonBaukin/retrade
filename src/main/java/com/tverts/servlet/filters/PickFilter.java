@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to mark a Filter to be added
- * to the processing chain of the applciation.
+ * to the processing chain of the application.
  *
  * @author anton.baukin@gmail.com.
  */

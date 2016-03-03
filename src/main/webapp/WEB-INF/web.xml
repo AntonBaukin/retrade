@@ -75,14 +75,13 @@
   <listener>
     <description>
       Initializes the application's modules.
-
       This listener is a bridge to the collection
       of listeners defined within the application.
     </description>
 
     <display-name>Web Application Context Initializer</display-name>
     <listener-class>
-      com.tverts.servlet.listeners.ServletContextListenerBridge
+      com.tverts.servlet.listeners.ContextListenerBridge
     </listener-class>
   </listener>
 

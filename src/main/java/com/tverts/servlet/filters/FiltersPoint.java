@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+/* Java X */
+
+import javax.annotation.PostConstruct;
+
 /* Sprint Framework */
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +24,8 @@ import com.tverts.support.LU;
 
 
 /**
- * Collects all Filters registered via @PickFilter.
+ * Collects all Filters registered as
+ * Spring beans via @PickFilter.
  *
  * @author anton.baukin@gmail.com.
  */
@@ -44,6 +49,7 @@ public class FiltersPoint
 
 	/* protected: filters discovery */
 
+	@PostConstruct
 	protected void     findFilters()
 	{
 		//~: pick up the filters
