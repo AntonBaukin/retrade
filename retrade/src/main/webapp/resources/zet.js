@@ -1678,7 +1678,7 @@ ZeT.Map = ZeT.defineClass('ZeT.LinkedMap',
 	init             : function()
 	{
 		this.map   = {}
-		this.index = 1
+		this.lasti = 1
 		this.size  = 0
 	},
 
@@ -1742,8 +1742,13 @@ ZeT.Map = ZeT.defineClass('ZeT.LinkedMap',
 	 */
 	index            : function(k)
 	{
-		var x = this.map[ZeT.assertn(k)]
+		var x = this.map[k]
 		return x && x.index
+	},
+
+	contains         : function(k)
+	{
+		return !!this.map[k]
 	},
 
 	/**
@@ -1751,35 +1756,26 @@ ZeT.Map = ZeT.defineClass('ZeT.LinkedMap',
 	 * items in the order of putting them. The call
 	 * is exactly the same as in ZeT.each().
 	 */
-	each             : function(/* [reversed = false], f */)
+	each             : function(f)
 	{
-		var r = false, f = arguments[0]
+		for(var x = this.head;(x);x = x.next)
+			if(false === f.call(x.value, x.value, x.key))
+				return x.key
+	},
 
-		//?: {extended form of call}
-		if(arguments.length == 2)
-			{ r = f; f = arguments[1] }
-
-		ZeT.assertf(f)
-
-		if(r === false)
-		{
-			for(var x = this.head;(x);x = x.next)
-				if(false === f.call(x.value, x.value, x.key))
-					return x.key
-		}
-		else
-		{
-			ZeT.assert(r === true)
-
-			for(var x = this.tail;(x);x = x.prev)
-				if(false === f.call(x.value, x.value, x.key))
-					return x.key
-		}
+	/**
+	 * Iterates over entities in the reversed order.
+	 */
+	reverse          : function(f)
+	{
+		for(var x = this.tail;(x);x = x.prev)
+			if(false === f.call(x.value, x.value, x.key))
+				return x.key
 	},
 
 	$tail            : function(x)
 	{
-		x.index = ++this.index
+		x.index = ++this.lasti
 
 		if(!this.tail)
 		{
@@ -1817,6 +1813,8 @@ ZeT.Map = ZeT.defineClass('ZeT.LinkedMap',
 		}
 		else if(n)
 			n.prev = p
+
+		x.prev = x.next = null
 	}
 })
 
