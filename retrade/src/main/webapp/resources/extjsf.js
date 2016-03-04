@@ -73,6 +73,8 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		ZeT.asserts(name, 'Can not lookup a Bind by ',
 		  'not a string name: ', name)
 
+		ZeT.log('Unbind from [', this.name, '] ', name)
+
 		//~: remove the bind
 		var bind = this.binds.remove(name)
 		if(!bind) return
@@ -95,8 +97,11 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 	 * Invokes all the Domain deletion callbacks
 	 * currently registered in the order of the
 	 * registration as: callback(domain).
+	 *
+	 * Additional options may be given: they are
+	 * passed to each callback and destroy call.
 	 */
-	destroy          : function()
+	destroy          : function(opts)
 	{
 		var self = this
 
@@ -105,7 +110,7 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		{
 			try
 			{
-				f(self)
+				f(self, opts)
 			}
 			catch(e)
 			{
@@ -119,7 +124,7 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		{
 			try
 			{
-				bind.destroy()
+				bind.destroy(opts)
 			}
 			catch(e)
 			{
@@ -185,7 +190,7 @@ ZeT.extend(extjsf,
 	},
 
 	/**
-	 * Returns bind registered in the Domain.
+	 * Returns Bind registered in the Domain.
 	 */
 	bind             : function(name, domain)
 	{
@@ -197,25 +202,12 @@ ZeT.extend(extjsf,
 
 		ZeT.assert(domain.extjsfDomain === true)
 		return domain.bind(name)
-	},
-
-	/**
-	 * Returns bind registration in the Domain.
-	 * See ZeT.Domain.unbind().
-	 */
-	unbind           : function(name, domain, destroy)
-	{
-		if(ZeT.iss(domain))
-			domain = extjsf.domain(domain)
-
-		return domain && domain.unbind(name, destroy)
 	}
 })
 
 
 
-
-
+// +----: Components to Refactor :------------------------------->
 
 
 ZeT.extend(extjsf,
@@ -853,8 +845,12 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return eval(props);
 	},
 
-	destroy          : function()
+	destroy          : function(opts)
 	{
+		//?: {skip this component}
+		if(opts && ZeT.isa(opts.except) && (opts.except.indexOf(this) != -1))
+			return
+
 		var co; if(co = this.co()) try
 		{
 			co.destroy()
@@ -1365,10 +1361,24 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 			this.renderParent()
 	},
 
+	/**
+	 * This implementation tries to handle properly two
+	 * cases: when component is solely destroyed, or
+	 * it's being destroyed with the Domain.
+	 */
 	on_destroy       : function(component)
 	{
-		if(ZeT.iss(this.domain) && ZeT.iss(this.bindName))
-			extjsf.unbind(this.bindName, this.domain)
+		//?: {is not registered}
+		if(!ZeT.iss(this.bindName)) return
+		ZeT.assert(ZeT.iss(this.domain))
+
+		var self = this, domain = extjsf.domain(this.domain)
+		if(domain) ZeT.timeout(2000, function()
+		{
+			//?: {still have this bind registered}
+			var bind = domain.bind(self.bindName)
+			if(bind == self) domain.unbind(self.bindName, false)
+		})
 	},
 
 	_on              : function()
@@ -1490,7 +1500,9 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 
 		//~: cleanup the domain
 		if(extjsf.domain(this._domain))
-			extjsf.domain(this._domain).destroy()
+			extjsf.domain(this._domain).destroy({ except: [ winmain ]})
+
+		//~: create the domain with this window
 		extjsf.domain(this._domain).bind('winmain', winmain)
 
 		//~: clear the component

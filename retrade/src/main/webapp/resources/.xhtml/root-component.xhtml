@@ -153,15 +153,12 @@
     {
       //~: register domain destroyer
       if(!comp._domain_deleter) comp._domain_deleter =
-        ZeT.timeouted(1000, function()
+        function()
         {
           extjsf.domain(domain).destroy()
-        })
+        }
 
       comp.on('beforedestroy', comp._domain_deleter)
-
-      //~: register this bind by the global name
-      extjsf.domain(domain).bind('domain-owner', comp)
     }
   })
 

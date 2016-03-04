@@ -56,15 +56,12 @@
     {
       //~: create and attach remove listener
       if(!winmain._domain_deleter) winmain._domain_deleter =
-        ZeT.timeouted(1000, function()
+        function()
         {
           extjsf.domain(domain).destroy()
-        })
+        }
 
       winmain.on('beforedestroy', winmain._domain_deleter)
-
-      //~: register this bind by the global name
-      extjsf.domain(domain).bind('domain-owner', winmain)
     }
 
     //~: create the root panel
