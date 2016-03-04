@@ -1677,6 +1677,11 @@ ZeT.Map = ZeT.defineClass('ZeT.LinkedMap',
 {
 	init             : function()
 	{
+		this.clear()
+	},
+
+	clear            : function()
+	{
 		this.map   = {}
 		this.lasti = 1
 		this.size  = 0

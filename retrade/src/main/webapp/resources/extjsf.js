@@ -14,13 +14,15 @@ var extjsf = ZeT.define('extjsf', {})
  * Domain of ExtJSF Binds. Each domain has unique name
  * that is empty string for the default global one.
  */
-extjsf.Domain = ZeT.defineClass('extjsf.Domain', {
+extjsf.Domain = ZeT.defineClass('extjsf.Domain',
+{
+	extjsfDomain     : true,
 
 	init             : function(name)
 	{
 		//=: domain name
 		ZeT.assert(ZeT.iss(name))
-		this.name = ZeT.iss(name)
+		this.name = name
 
 		//=: domain binds
 		this.binds = new ZeT.Map()
@@ -32,12 +34,31 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain', {
 	/**
 	 * Returns the Bind registered by the name that
 	 * is unique within a Domain. Optional argument
-	 * allows to register the Bind. Error is raised
-	 * when a Bind is already registered.
+	 * allows to register a Bind instance. Error is
+	 * raised when a Bind is already registered.
 	 */
 	bind             : function(name /*, bind */)
 	{
+		ZeT.asserts(name, 'Can not define a Bind by ',
+		  'not a string name: ', name)
 
+		if(arguments.length == 1)
+			return this.binds.get(name)
+		ZeT.assert(arguments.length == 2)
+
+		//~: bind argument
+		var bind = arguments[1]
+		ZeT.assert(bind.extjsfBind === true)
+
+		//?: {bind with this name is already defined}
+		ZeT.assert(!this.binds.contains(name), 'Bind [', name,
+		  '] is already defined in Domain [', this.name, ']!')
+
+		//~: register the bind
+		this.binds.put(name, bind)
+		bind.defined(this.name, name)
+
+		return bind
 	},
 
 	/**
@@ -49,7 +70,21 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain', {
 	 */
 	unbind           : function(name, destroy)
 	{
+		ZeT.asserts(name, 'Can not lookup a Bind by ',
+		  'not a string name: ', name)
 
+		//~: remove the bind
+		var bind = this.binds.remove(name)
+		if(!bind) return
+
+		//?: {do not destroy}
+		if(destroy === false)
+			return bind
+
+		//!: do destroy
+		bind.destroy()
+
+		return bind
 	},
 
 	/**
@@ -59,99 +94,133 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain', {
 	 *
 	 * Invokes all the Domain deletion callbacks
 	 * currently registered in the order of the
-	 * registration.
+	 * registration as: callback(domain).
 	 */
 	destroy          : function()
 	{
+		var self = this
 
+		//c: invoke the callbacks
+		this.ondestr.each(function(f)
+		{
+			try
+			{
+				f(self)
+			}
+			catch(e)
+			{
+				ZeT.log('Error in callback while deleting Domain [',
+				  self.name, ']:\n', e)
+			}
+		})
+
+		//c: destroy the binds
+		this.binds.reverse(function(bind, name)
+		{
+			try
+			{
+				bind.destroy()
+			}
+			catch(e)
+			{
+				ZeT.log('Error destroying Bind [', name, ']:\n', e)
+			}
+		})
+
+		//~: clean-up
+		this.binds.clear()
+		this.ondestr.clear()
 	},
 
 	/**
 	 * Registers a callback to invoke when Domain
-	 * is being destroyed. Give second argument true
+	 * is being destroyed. Give second argument false
 	 * to remove previously registered callback.
 	 */
 	onDelete         : function(f, remove)
 	{
+		ZeT.assertf(f)
 
+		if(remove === false)
+			this.ondestr.remove(f)
+		else
+			this.ondestr.put(f)
+
+		return this
 	}
 })
 
 
 ZeT.extend(extjsf,
 {
-	//=    Components Binding    =//
+	/**
+	 * Creates ExtJSF Domain on the first demand and
+	 * registers it globally by the string name.
+	 *
+	 * Note that ''-empty name means the root Domain
+	 * of the entire web page that is never destroyed.
+	 */
+	domain           : function(name)
+	{
+		ZeT.assert(ZeT.iss(name),
+		  'Can not defined Domain by not a string name!')
+
+		//~: global registry of the domains
+		extjsf.domains = ZeT.define('extjsf.Domain.registry', {})
+
+		//~: lookup there
+		var domain = extjsf.domains[name]
+		if(domain) return domain
+
+		//~: create it
+		extjsf.domains[name] = domain = new extjsf.Domain(name)
+
+		//!: un-register on the destruction
+		domain.onDelete(function()
+		{
+			delete extjsf.domains[name]
+		})
+
+		return domain
+	},
 
 	/**
-	 * In the case the arguments are:
-	 *
-	 *  · name
-	 *   the string name of the bind;
-	 *
-	 *  · name, domain
-	 *   the string name of string name of the domain.
-	 *   The default domain name is ''$
-	 *
-	 *  · name, bind
-	 *   explicit instance of extjsf.Bind or it's subclass;
-	 *
-	 *  · name, domain, bind
-	 *   the full variant.
+	 * Returns bind registered in the Domain.
 	 */
-	defineBind       : function()
-	{
-		var name = arguments[0]
-		if(!ZeT.iss(name)) throw 'Can not define ' +
-		  'component bind by not a string name!'
-
-		var domn = arguments[1]
-		if(!ZeT.iss(domn)) domn = ''
-
-		var bind = arguments[2] || arguments[1]
-		if(!bind || ZeT.iss(bind))
-			bind = new extjsf.Bind()
-
-		bind.domain   = domn
-		bind.bindName = name
-
-		var domo = extjsf$domains[domn]
-		if(!domo) extjsf$domains[domn] = domo = {}
-
-		domo[name] = bind
-		//ZeT.log('!bind [', name, '] @ [', domn, ']')
-		return bind
-	},
-
 	bind             : function(name, domain)
 	{
-		ZeT.asserts(name, 'Can not define ',
-		  'component binds by not a string name!')
+		if(ZeT.iss(domain))
+			domain = extjsf.domain(domain)
 
-		if(!ZeT.iss(domain)) domain = ''
+		//?: {domain is not found}
+		if(ZeT.isu(domain)) return
 
-		var domo = extjsf$domains[domain]
-		var bind = domo && domo[name]
-
-		//ZeT.log(((domo && domo[name])?('+'):('-')), 'bind [', name, '] @ [', domain, ']: ')
-		//if(!bind) ZeT.log('missing bind: [', name, '] @ [', domain, ']')
-
-		return bind
+		ZeT.assert(domain.extjsfDomain === true)
+		return domain.bind(name)
 	},
 
-	unbind           : function(name, domain)
+	/**
+	 * Returns bind registration in the Domain.
+	 * See ZeT.Domain.unbind().
+	 */
+	unbind           : function(name, domain, destroy)
 	{
-		if(!ZeT.iss(name)) throw 'Can not define ' +
-		  'component binds by not a string name!';
+		if(ZeT.iss(domain))
+			domain = extjsf.domain(domain)
 
-		if(!ZeT.iss(domain)) domain = '';
-		var domo = extjsf$domains[domain];
-		if(!domo) return undefined;
+		return domain && domain.unbind(name, destroy)
+	}
+})
 
-		var bind = domo[name];
-		if(bind) delete domo[name];
 
-		return bind;
-	},
+
+
+
+
+
+ZeT.extend(extjsf,
+{
+	//=    Components Binding    =//
 
 	/**
 	 * Tries to get the ExtJS component from
@@ -210,7 +279,11 @@ ZeT.extend(extjsf,
 
 		//?: {is a string}
 		if(ZeT.iss(borc))
-			return extjsf.bind.apply(extjsf, arguments)
+		{
+			var domain = arguments[1]
+			ZeT.assert(ZeT.iss(domain))
+			return extjsf.bind(borc, domain)
+		}
 
 		//?: {is a component}
 		if(borc.isComponent && borc.extjsfBind)
@@ -224,7 +297,6 @@ ZeT.extend(extjsf,
 	},
 
 	/**
-	 * Arguments are the same as for defineBind().
 	 * Here the bind is not defined, but added as
 	 * an item to the bind defined by name (and
 	 * domain) pair. The bind argument may be
@@ -254,54 +326,6 @@ ZeT.extend(extjsf,
 
 		if(addb) bind.addItem(addb)
 		return this;
-	},
-
-	deleteDomain     : function(domain)
-	{
-		if(!ZeT.iss(domain)) throw 'Binds domain must ' +
-		  'be defined by it\'s string name!';
-
-		if(!domain.length) throw 'Default binds domain ' +
-		  'may not be deleted!';
-
-		var d = extjsf$domains[domain];
-		if(!d) return undefined;
-
-		var x = d._extjsf_on_domain_delete;
-		if(x) for(var i = 0;(i < x.length);i++) try
-		{
-			x[i]()
-		}
-		catch(e)
-		{
-			ZeT.log(e);
-		}
-
-		delete extjsf$domains[domain];
-		//ZeT.log('-domain [', domain, ']')
-		return this;
-	},
-
-	onDomainDelete   : function(d, f)
-	{
-		if(!ZeT.iss(d)) return undefined;
-		if(!ZeT.isf(f)) return undefined;
-		d = extjsf$domains[d]; if(!d) return undefined;
-
-		if(!d._extjsf_on_domain_delete)
-			d._extjsf_on_domain_delete = [];
-		d._extjsf_on_domain_delete.push(f)
-
-		return this;
-	},
-
-	domainDeleter    : function(domain)
-	{
-		if(!ZeT.iss(domain)) throw 'Binds domain must ' +
-		  'be defined by it\'s string name!';
-
-		if(!domain.length) return Ext.emptyFn;
-		return ZeT.fbind(this.deleteDomain, this, domain);
 	},
 
 	tempDomain       : function(prefix)
@@ -593,6 +617,12 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 		//WARNING: this prevents recursion in Ext.clone()!
 		this.constructor  = null
+	},
+
+	defined          : function(domain, name)
+	{
+		this.domain   = domain
+		this.bindName = name
 	},
 
 	co               : function(component)
@@ -1459,8 +1489,9 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 		ZeT.undelay(prms)
 
 		//~: cleanup the domain
-		extjsf.deleteDomain(this._domain)
-		extjsf.defineBind('winmain', this._domain, winmain)
+		if(extjsf.domain(this._domain))
+			extjsf.domain(this._domain).destroy()
+		extjsf.domain(this._domain).bind('winmain', winmain)
 
 		//~: clear the component
 		this._clear(winmain)

@@ -986,7 +986,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 
 		//?: {the domain must be destroyed}
 		if(this.opts['domainOwner'])
-			extjsf.deleteDomain(this.domain())
+			extjsf.domain(this.domain()).destroy()
 
 		return this
 	},
@@ -2509,7 +2509,8 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		ZeT.extend(props, this._wnd_pos)
 
 		//~: define the window bind
-		var winmain = extjsf.defineBind('winmain-selset', self.domain())
+		var winmain = extjsf.domain(self.domain()).
+			bind('winmain-selset', new extjsf.Bind())
 		winmain.extjsProps(props)
 
 		//~: create positioning strategy

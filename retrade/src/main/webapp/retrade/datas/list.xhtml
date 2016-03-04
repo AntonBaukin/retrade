@@ -339,7 +339,7 @@ ${v.checkModelRequestedWithRedirect}
     if(s) params.dataSource = s.getId();
     if(template) params['${v.entityParam}'] = template;
 
-    winmain = extjsf.defineBind('winmain', domain).extjsProps({
+    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
 
       xtype: 'window', title: 'Загрузка...', autoShow: true,
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -527,7 +527,7 @@ ${v.checkModelRequestedWithRedirect}
         ps.dataSource = '#{z:jss(v.dataSource)}';
       }
 
-      var winmain = extjsf.defineBind('winmain', domain).extjsProps({
+      var winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
 
         xtype: 'window', title: 'Загрузка...',
         x: box.x, y: box.y, width: box.width, height: box.height,

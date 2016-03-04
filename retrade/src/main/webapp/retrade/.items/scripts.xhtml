@@ -184,7 +184,7 @@ function retrade_open_window(opts)
   if(opts.record) opts.params['${rootView.entityParam}'] = '' + opts.record
 
   //~: create the window bind
-  winmain = extjsf.defineBind('winmain', opts.domain).extjsProps({
+  winmain = extjsf.domain(opts.domain).bind('winmain', new extjsf.Bind()).extjsProps({
 
     xtype: 'window', title: 'Загрузка...',
     x: box.x, y: box.y, width: box.width, height: box.height,
@@ -255,11 +255,12 @@ function retrade_chain_loader(/* [callback], options for each area */)
     var url = this.url, bind = this.bind,
       domain = this.domain, viewMode = this.viewMode
 
-    extjsf.defineBind('onload', domain, function(root)
-    {
-      bind.co().add(root.co())
-      if(ZeT.isf(next)) next()
-    })
+    extjsf.domain(domain).bind('onload', new extjsf.Bind()).
+      callback = function(root)
+      {
+        bind.co().add(root.co())
+        if(ZeT.isf(next)) next()
+      }
 
     Ext.create('Ext.ComponentLoader', {
       target: bind.co(), url: url,
@@ -325,7 +326,7 @@ function retrade_chain_on_load(domain, rootBind)
     rootBind = extjsf.bind(rootBind, domain)
   ZeT.assert(rootBind && rootBind.extjsfBind === true)
 
-  onload(rootBind)
+  onload.callback(rootBind)
 }
 
 function retrade_replicate_store(master, slave, domain)

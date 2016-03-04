@@ -163,7 +163,7 @@
     })
 
     //~: delete store on domain delete
-    extjsf.onDomainDelete('${rootView.extjsDomain}', function()
+    extjsf.domain('${rootView.extjsDomain}').onDelete(function()
     {
         Ext.data.StoreManager.unregister("${z:vid(v, 'goodsTreeStore')}")
     })
