@@ -229,7 +229,7 @@ ${v.checkModelRequestedWithRedirect}
         <script type = "text/javascript">
         //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-templates')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-templates')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -239,7 +239,7 @@ ${v.checkModelRequestedWithRedirect}
         //?: {search string was changed} discard
         if(f.extjsfBind.searchValue != sv) return;
 
-        extjsf.bindHandler("${z:vid(v, 'search-templates-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-templates-script')}", '${extDom}')({
           params: { searchWords: sv }, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'reportTemplates')}").loadPage(1)
         }})
@@ -293,25 +293,25 @@ ${v.checkModelRequestedWithRedirect}
       //<![CDATA[
 
   //~: invoke the data source to produce XML data
-  extjsf.bindHandler("${z:vid(v, 'invoke-data-source')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'invoke-data-source')}", '${extDom}', function()
   {
     //~: current selection
-    var g = extjsf.co("${z:vid(v, 'data-sources')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'data-sources')}", '${extDom}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s) return ReTrade.desktop.error("Выберете источник данных!");
 
     //~: invoke the action
-    extjsf.xbindHandler("${z:vid(v, 'invoke-data-source-script')}", '${rootView.extjsDomain}')({
+    extjsf.xbindHandler("${z:vid(v, 'invoke-data-source-script')}", '${extDom}')({
       params: { dataSource : s.getId() }})
 
   })
 
   //~: create | report implementation
-  extjsf.bind("${z:vid(v, 'create-template')}", '${rootView.extjsDomain}').createOrEditReportTemplate = function(box, template)
+  extjsf.bind("${z:vid(v, 'create-template')}", '${extDom}').createOrEditReportTemplate = function(box, template)
   {
     //~: current data source selection
-    var g = extjsf.co("${z:vid(v, 'data-sources')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'data-sources')}", '${extDom}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s && ZeT.isu(template))
@@ -363,34 +363,34 @@ ${v.checkModelRequestedWithRedirect}
   }
 
   //~: report template create
-  extjsf.bindHandler("${z:vid(v, 'create-template')}", '${rootView.extjsDomain}', function(btn)
+  extjsf.bindHandler("${z:vid(v, 'create-template')}", '${extDom}', function(btn)
   {
     var box = ReTrade.desktop.calcWindowBox({
       x: btn.getX(), y: btn.getY(),
       widthpt: 280, heightpt: 260, '+xpt': -270, '-ypt': -20
     })
 
-    extjsf.bind("${z:vid(v, 'create-template')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'create-template')}", '${extDom}').
       createOrEditReportTemplate(box)
   })
 
   //~: edit report template on table double-click
-  extjsf.bind("${z:vid(v, 'report-templates')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'report-templates')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, event)
   {
     var box = ReTrade.desktop.calcWindowBox({
       'event': event, widthpt: 280, heightpt: 260, '+xpt': -80, '-ypt': 20
     })
 
-    extjsf.bind("${z:vid(v, 'create-template')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'create-template')}", '${extDom}').
       createOrEditReportTemplate(box, rec.getId())
   })
 
   //~: delete template
-  extjsf.bindHandler("${z:vid(v, 'delete-template')}", '${rootView.extjsDomain}', function(btn, e)
+  extjsf.bindHandler("${z:vid(v, 'delete-template')}", '${extDom}', function(btn, e)
   {
     //~: current selection
-    var g = extjsf.co("${z:vid(v, 'report-templates')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'report-templates')}", '${extDom}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s) return ReTrade.desktop.error("Выберете шаблон отчёта!");
@@ -406,7 +406,7 @@ ${v.checkModelRequestedWithRedirect}
       yes : function()
       {
         //~: invoke the action
-        extjsf.xbindHandler("${z:vid(v, 'delete-template-script')}", '${rootView.extjsDomain}')({
+        extjsf.xbindHandler("${z:vid(v, 'delete-template-script')}", '${extDom}')({
           params: { reportTemplate : s.getId() }, success: function()
           {
             Ext.data.StoreManager.lookup("${z:vid(v, 'reportTemplates')}").reload()
@@ -416,17 +416,17 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: create report function
-  extjsf.bind("${z:vid(v, 'create-report')}", '${rootView.extjsDomain}').createReportRequest = function(format)
+  extjsf.bind("${z:vid(v, 'create-report')}", '${extDom}').createReportRequest = function(format)
   {
     //~: current selection
-    var g = extjsf.co("${z:vid(v, 'report-templates')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'report-templates')}", '${extDom}');
     var s = g.getSelectionModel().getSelection();
     if(s && (s.length == 1)) s = s[0]; else s = null;
     if(!s) return ReTrade.desktop.error("Выберете шаблон отчёта!");
 
     if(ZeTS.ises(format)) format = 'PDF';
 
-    extjsf.xbindHandler("${z:vid(v, 'create-report-script')}", '${rootView.extjsDomain}')({
+    extjsf.xbindHandler("${z:vid(v, 'create-report-script')}", '${extDom}')({
       params: { reportTemplate : s.getId(), reportFormat: format }, success: function()
       {
         if(s.get('hasUI') === false)
@@ -434,15 +434,15 @@ ${v.checkModelRequestedWithRedirect}
       }})
   }
 
-  extjsf.bindHandler("${z:vid(v, 'create-report')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'create-report')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'create-report')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'create-report')}", '${extDom}').
       createReportRequest()
   })
 
-  extjsf.bindHandler("${z:vid(v, 'create-report-xls')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'create-report-xls')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'create-report')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'create-report')}", '${extDom}').
       createReportRequest('XLS')
   })
 
@@ -499,9 +499,9 @@ ${v.checkModelRequestedWithRedirect}
    {
       var domain = extjsf.tempDomain('wnd:invoke-data-source:#{v.dataSource}:');
       var xy; if("#{v.dataOnly}" == 'true')
-        xy = extjsf.co("${z:vid(v, 'invoke-data-source')}", '${rootView.extjsDomain}').getXY();
+        xy = extjsf.co("${z:vid(v, 'invoke-data-source')}", '${extDom}').getXY();
       else
-        xy = extjsf.co("${z:vid(v, 'create-report')}", '${rootView.extjsDomain}').getXY();
+        xy = extjsf.co("${z:vid(v, 'create-report')}", '${extDom}').getXY();
 
       var box     = ReTrade.desktop.calcWindowBox({
         x: xy[0], y: xy[1], '+xpt': 36, '-ypt': -20,

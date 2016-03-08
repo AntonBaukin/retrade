@@ -63,14 +63,14 @@ ${v.checkModelRequestedWithRedirect}
         <script type = "text/javascript">
         //<![CDATA[
 
- extjsf.bind("${z:vid(v, 'min-date')}", '${rootView.extjsDomain}').on('change', function()
+ extjsf.bind("${z:vid(v, 'min-date')}", '${extDom}').on('change', function()
  {
-   extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+   extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm()
  })
 
- extjsf.bind("${z:vid(v, 'max-date')}", '${rootView.extjsDomain}').on('change', function()
+ extjsf.bind("${z:vid(v, 'max-date')}", '${extDom}').on('change', function()
  {
-   extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+   extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm()
  })
 
         //]]>
@@ -112,7 +112,7 @@ ${v.checkModelRequestedWithRedirect}
               <script type = "text/javascript">
               //<![CDATA[
 
-  extjsf.bind("${z:vid(v, menuid)}", '${rootView.extjsDomain}').on('checkchange', function(it, checked)
+  extjsf.bind("${z:vid(v, menuid)}", '${extDom}').on('checkchange', function(it, checked)
   {
     if(!checked) { it.setChecked(true, true); return; }
 
@@ -125,7 +125,7 @@ ${v.checkModelRequestedWithRedirect}
 
     //<: replace grid columns
 
-    var grid = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var grid = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
     var cols = extjsf.support.gridColumns(grid);
     var news = ZeT.defined('retrade.columns.PaymentView' + ZeTS.first('#{e.key}').toUpperCase() + '#{e.key}'.substring(1))();
 
@@ -145,8 +145,8 @@ ${v.checkModelRequestedWithRedirect}
     //>: replace grid columns
 
 
-    extjsf.bind("${z:vid(v, 'projection')}", '${rootView.extjsDomain}').value('#{e.key}')
-    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+    extjsf.bind("${z:vid(v, 'projection')}", '${extDom}').value('#{e.key}')
+    extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm()
   })
 
               //]]>
@@ -192,28 +192,28 @@ ${v.checkModelRequestedWithRedirect}
         <script type = "text/javascript">
         //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}').on('change', function(x)
+  extjsf.bind("${z:vid(v, 'with-income')}", '${extDom}').on('change', function(x)
   {
-    var y = extjsf.co("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}');
+    var y = extjsf.co("${z:vid(v, 'with-expense')}", '${extDom}');
     if(y.retradeSetValue) return;
 
     x.retradeSetValue = true;
     if(!y.retradeSetValue && !x.getRawValue() && !y.getRawValue()) y.setValue(true)
     x.retradeSetValue = false;
 
-    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+    extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm()
   })
 
-  extjsf.bind("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}').on('change', function(y)
+  extjsf.bind("${z:vid(v, 'with-expense')}", '${extDom}').on('change', function(y)
   {
-    var x = extjsf.co("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}');
+    var x = extjsf.co("${z:vid(v, 'with-income')}", '${extDom}');
     if(x.retradeSetValue) return;
 
     y.retradeSetValue = true;
     if(!x.retradeSetValue && !x.getRawValue() && !y.getRawValue()) x.setValue(true)
     y.retradeSetValue = false;
 
-    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+    extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm()
   })
 
         //]]>
@@ -240,7 +240,7 @@ ${v.checkModelRequestedWithRedirect}
         <script type = "text/javascript">
         //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'search-names')}", '${rootView.extjsDomain}').on('change', function(f, sv)
+  extjsf.bind("${z:vid(v, 'search-names')}", '${extDom}').on('change', function(f, sv)
   {
     sv = f.extjsfBind.searchValue = ZeTS.trim(sv);
 
@@ -249,7 +249,7 @@ ${v.checkModelRequestedWithRedirect}
       //?: {search string was changed} discard
       if(f.extjsfBind.searchValue != sv) return;
 
-      extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+      extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm()
     })
   })
 
@@ -285,10 +285,10 @@ ${v.checkModelRequestedWithRedirect}
         <script type = "text/javascript">
         //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').on('toggle', function(b, v)
+  extjsf.bind("${z:vid(v, 'search-by-selset')}", '${extDom}').on('toggle', function(b, v)
   {
-    extjsf.co("${z:vid(v, 'search-by-selset-with')}", '${rootView.extjsDomain}').setValue(v)
-    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm()
+    extjsf.co("${z:vid(v, 'search-by-selset-with')}", '${extDom}').setValue(v)
+    extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm()
   })
         //]]>
         </script>
@@ -300,25 +300,25 @@ ${v.checkModelRequestedWithRedirect}
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').submitSearchForm = function()
+  extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm = function()
   {
-    var grid = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var grid = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
     var cols = extjsf.support.gridColumns(grid);
 
     //?: display income column
     var i = extjsf.support.columnIndexByDataIndex(grid, 'income');
-    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.co("${z:vid(v, 'with-income')}", '${rootView.extjsDomain}').getValue())
+    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.co("${z:vid(v, 'with-income')}", '${extDom}').getValue())
 
     //?: display expense column
     i = extjsf.support.columnIndexByDataIndex(grid, 'expense');
-    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.co("${z:vid(v, 'with-expense')}", '${rootView.extjsDomain}').getValue())
+    if(!ZeT.isu(i)) cols[i].setVisible(extjsf.co("${z:vid(v, 'with-expense')}", '${extDom}').getValue())
 
 
     //~: with the selection set button checked
-    extjsf.bind("${z:vid(v, 'search-by-selset-field')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'search-by-selset-field')}", '${extDom}').
       value(ReTrade.selset.selset)
 
-    extjsf.bind("${z:vid(v, 'search')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'search')}", '${extDom}').
       submitForm({'${v.viewModeParam}': '${v.viewModePostStr}', success: function()
     {
       Ext.data.StoreManager.lookup("${z:vid(v, 'payments')}").loadPage(1)

@@ -19,7 +19,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.co('winmain', '${rootView.extjsDomain}').
+      extjsf.co('winmain', '${extDom}').
         setTitle('${z:jss(e.winmainTitleEditFirm)}')
 
     //]]>
@@ -101,7 +101,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bind("${z:vid(e, 'search-firms')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(e, 'search-firms')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -112,13 +112,13 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchFirms: sv };
-        var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(e, 'search-firms-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(e, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
 
-            extjsf.co("${z:vid(e, 'contractors')}", '${rootView.extjsDomain}').loadPage(1)
+            extjsf.co("${z:vid(e, 'contractors')}", '${extDom}').loadPage(1)
         }})
       }
 
@@ -126,18 +126,18 @@
     })
 
     //~: selection set only toggled
-    extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${extDom}').on('toggle', function()
     {
-        var names  = extjsf.bind("${z:vid(e, 'search-firms')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(e, 'search-firms')}", '${extDom}').value();
         var params = { searchFirms: names };
 
-        var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(e, 'search-firms-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(e, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
 
-            extjsf.co("${z:vid(e, 'contractors')}", '${rootView.extjsDomain}').loadPage(1)
+            extjsf.co("${z:vid(e, 'contractors')}", '${extDom}').loadPage(1)
         }})
     })
 
@@ -170,7 +170,7 @@
 
         contractor : ZeT.delay(function()
         {
-          var sel = extjsf.co("${z:vid(e, 'grid')}", '${rootView.extjsDomain}').
+          var sel = extjsf.co("${z:vid(e, 'grid')}", '${extDom}').
             getSelectionModel().getSelection()
 
           return (sel.length == 1)?(sel[0].getId()):('')
@@ -216,15 +216,15 @@
     <script type = "text/javascript">
 
   //~: submit on row double click
-  extjsf.bind("${z:vid(e, 'grid')}", '${rootView.extjsDomain}').on('itemdblclick', function()
+  extjsf.bind("${z:vid(e, 'grid')}", '${extDom}').on('itemdblclick', function()
   {
-    extjsf.bindHandler("${z:vid(e, 'submit')}", '${rootView.extjsDomain}')()
+    extjsf.bindHandler("${z:vid(e, 'submit')}", '${extDom}')()
   })
 
   //~: enable submit button on first selection
-  extjsf.bind("${z:vid(e, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function()
+  extjsf.bind("${z:vid(e, 'grid')}", '${extDom}').on('selectionchange', function()
   {
-    extjsf.bind("${z:vid(e, 'submit')}", '${rootView.extjsDomain}').co().enable()
+    extjsf.bind("${z:vid(e, 'submit')}", '${extDom}').co().enable()
   })
 
     </script>

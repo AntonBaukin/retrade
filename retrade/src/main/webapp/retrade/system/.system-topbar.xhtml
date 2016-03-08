@@ -127,17 +127,17 @@
 
     //~: attach top bar panel to the desktop
     ReTrade.desktop.controller('center').mainTopbar(
-      "${z:vid(localView, 'main_topbar')}", '${rootView.extjsDomain}')
+      "${z:vid(localView, 'main_topbar')}", '${extDom}')
 
     //~: set the top bar extension point
     ReTrade.desktop.controller('center').mainTopbarExt(
-      "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
+      "${z:vid(localView, 'main_topbar_ext')}", '${extDom}')
 
     //~: logoff
     extjsf.bindHandler("${z:vid(localView, 'system-main-menu-logoff-confirm')}",
-      '${rootView.extjsDomain}', function()
+      '${extDom}', function()
     {
-      extjsf.bindHandler("${z:vid(localView, 'system-main-menu-logoff-confirm-script')}", '${rootView.extjsDomain}')({
+      extjsf.bindHandler("${z:vid(localView, 'system-main-menu-logoff-confirm-script')}", '${extDom}')({
         success: ZeT.timeout(500, function()
         {
           window.location.replace("${z:url('/go/index')}")
@@ -147,7 +147,7 @@
 
     //~: open domains root panel
     extjsf.bindHandler("${z:vid(localView, 'system-main-menu-domains')}",
-      '${rootView.extjsDomain}', function()
+      '${extDom}', function()
     {
       var domain = extjsf.tempDomain('desktop-content:system-main-menu:domains:');
 

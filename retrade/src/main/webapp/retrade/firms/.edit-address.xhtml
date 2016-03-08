@@ -114,17 +114,17 @@
           //<![CDATA[
 
   //~: update address text field before menu show
-  extjsf.bind("${z:vid(localView, 'address-display-menu')}-${name}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(localView, 'address-display-menu')}-${name}", '${extDom}').
     on('beforeshow', function(menu)
     {
-      var i = extjsf.bind("${z:vid(localView, 'address-index')}-${name}", '${rootView.extjsDomain}').value()
-      var x = extjsf.bind("${z:vid(localView, 'address-country')}-${name}", '${rootView.extjsDomain}').value()
-      var p = extjsf.bind("${z:vid(localView, 'address-province')}-${name}", '${rootView.extjsDomain}').value()
-      var d = extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${rootView.extjsDomain}').value()
-      var c = extjsf.bind("${z:vid(localView, 'address-city')}-${name}", '${rootView.extjsDomain}').value()
-      var s = extjsf.bind("${z:vid(localView, 'address-street')}-${name}", '${rootView.extjsDomain}').value()
-      var b = extjsf.bind("${z:vid(localView, 'address-building')}-${name}", '${rootView.extjsDomain}').value()
-      var o = extjsf.bind("${z:vid(localView, 'address-office')}-${name}", '${rootView.extjsDomain}').value()
+      var i = extjsf.bind("${z:vid(localView, 'address-index')}-${name}", '${extDom}').value()
+      var x = extjsf.bind("${z:vid(localView, 'address-country')}-${name}", '${extDom}').value()
+      var p = extjsf.bind("${z:vid(localView, 'address-province')}-${name}", '${extDom}').value()
+      var d = extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${extDom}').value()
+      var c = extjsf.bind("${z:vid(localView, 'address-city')}-${name}", '${extDom}').value()
+      var s = extjsf.bind("${z:vid(localView, 'address-street')}-${name}", '${extDom}').value()
+      var b = extjsf.bind("${z:vid(localView, 'address-building')}-${name}", '${extDom}').value()
+      var o = extjsf.bind("${z:vid(localView, 'address-office')}-${name}", '${extDom}').value()
 
       if(!ZeTS.ises(b) &&  b.match(/^\d+$/))
         b = 'д. ' + b
@@ -135,35 +135,35 @@
       var a = ZeTS.catsep(', ', i, x, p, d, c, s, b, o)
       if(ZeTS.ises(a)) return false
 
-      var f = extjsf.co("${z:vid(localView, 'address-display-text')}-${name}", '${rootView.extjsDomain}')
+      var f = extjsf.co("${z:vid(localView, 'address-display-text')}-${name}", '${extDom}')
       f.setValue(a)
     })
 
 
    //~: clear all the fields
-   extjsf.bindHandler("${z:vid(localView, 'address-display-button-clear')}-${name}", '${rootView.extjsDomain}', function()
+   extjsf.bindHandler("${z:vid(localView, 'address-display-button-clear')}-${name}", '${extDom}', function()
    {
-     extjsf.bind("${z:vid(localView, 'address-index')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-country')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-province')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-city')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-street')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-building')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-office')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-phones')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-email')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.bind("${z:vid(localView, 'address-remarks')}-${name}", '${rootView.extjsDomain}').value('')
+     extjsf.bind("${z:vid(localView, 'address-index')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-country')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-province')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-city')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-street')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-building')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-office')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-phones')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-email')}-${name}", '${extDom}').value('')
+     extjsf.bind("${z:vid(localView, 'address-remarks')}-${name}", '${extDom}').value('')
 
-     extjsf.bind("${z:vid(localView, 'address-display-text')}-${name}", '${rootView.extjsDomain}').value('')
-     extjsf.co("${z:vid(localView, 'address-display-button')}-${name}", '${rootView.extjsDomain}').hideMenu()
+     extjsf.bind("${z:vid(localView, 'address-display-text')}-${name}", '${extDom}').value('')
+     extjsf.co("${z:vid(localView, 'address-display-button')}-${name}", '${extDom}').hideMenu()
    })
 
 
    //~: select the displayed address
-   extjsf.bindHandler("${z:vid(localView, 'address-display-button-copy')}-${name}", '${rootView.extjsDomain}', function()
+   extjsf.bindHandler("${z:vid(localView, 'address-display-button-copy')}-${name}", '${extDom}', function()
    {
-     var f = extjsf.co("${z:vid(localView, 'address-display-text')}-${name}", '${rootView.extjsDomain}')
+     var f = extjsf.co("${z:vid(localView, 'address-display-text')}-${name}", '${extDom}')
      if(ZeTS.ises(f.getValue())) return
      f.focus(true, 0)
    })
@@ -242,16 +242,16 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(localView, 'address-district')}-${name}", '${extDom}').
     on('resize', function(district, width)
   {
-    var country = extjsf.co("${z:vid(localView, 'address-country')}-${name}", '${rootView.extjsDomain}')
+    var country = extjsf.co("${z:vid(localView, 'address-country')}-${name}", '${extDom}')
     country && country.setWidth(width)
 
-    var building = extjsf.co("${z:vid(localView, 'address-building-layout')}-${name}", '${rootView.extjsDomain}')
+    var building = extjsf.co("${z:vid(localView, 'address-building-layout')}-${name}", '${extDom}')
     building && building.setWidth(width)
 
-    var office = extjsf.co("${z:vid(localView, 'address-office-layout')}-${name}", '${rootView.extjsDomain}')
+    var office = extjsf.co("${z:vid(localView, 'address-office-layout')}-${name}", '${extDom}')
     office && office.setWidth(width)
   })
 

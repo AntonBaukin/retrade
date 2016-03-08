@@ -48,7 +48,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(grid, rec, node, row, e)
   {
     retrade_open_window({ url: '/price-lists/info',
@@ -69,7 +69,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
 
   //~: invoke on-load callback of the loader
-  retrade_chain_on_load('${rootView.extjsDomain}', "${z:vid(v, 'prices_root_panel')}")
+  retrade_chain_on_load('${extDom}', "${z:vid(v, 'prices_root_panel')}")
 
   </script>
 

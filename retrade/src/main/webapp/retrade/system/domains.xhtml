@@ -81,7 +81,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${extDom}').
        retradeCreateDomain = function(isTestDomain)
     {
       //~: create the window
@@ -107,19 +107,19 @@
       winmain.co(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
 
       //~: place it
-      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
+      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');
       content.clearComponent()
       content.co().add(winmain.co())
     }
 
-    extjsf.bindHandler("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'domains-create-domain')}", '${extDom}', function()
     {
-        extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}').retradeCreateDomain()
+        extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${extDom}').retradeCreateDomain()
     })
 
-    extjsf.bindHandler("${z:vid(v, 'domains-create-test-domain')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'domains-create-test-domain')}", '${extDom}', function()
     {
-        extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${rootView.extjsDomain}').retradeCreateDomain(true)
+        extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${extDom}').retradeCreateDomain(true)
     })
 
       //]]>
@@ -141,10 +141,10 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bindHandler("${z:vid(v, 'self_shunt')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'self_shunt')}", '${extDom}', function()
     {
       //~: get the selected row
-      var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var grid = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var sel  = grid.co().getSelectionModel().getSelection();
       if(!sel || sel.length != 1) return;
       sel = sel[0].getId();
@@ -171,7 +171,7 @@
       winmain.compon.co(ate('Ext.panel.Panel', winmain.extjsProps()))
 
       //~: place it
-      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
+      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');
       content.clearComponent()
       content.co().add(winmain.co())
     })
@@ -195,10 +195,10 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bindHandler("${z:vid(v, 'show_logins')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'show_logins')}", '${extDom}', function()
     {
       //~: get the selected row
-      var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var grid = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var sel  = grid.co().getSelectionModel().getSelection();
       if(!sel || sel.length != 1) return;
       sel = sel[0].getId();
@@ -225,7 +225,7 @@
       winmain.co(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
 
       //~: place it
-      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${rootView.extjsDomain}');
+      var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');
       content.clearComponent()
       content.co().add(winmain.co())
     })
@@ -270,7 +270,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search_domains')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search_domains')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -280,7 +280,7 @@
         //?: {search string was changed} discard
         if(f.extjsfBind.searchValue != sv) return;
 
-        extjsf.bindHandler("${z:vid(v, 'search_domains_script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search_domains_script')}", '${extDom}')({
           params: {searchDomains: sv}, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'domainsStore')}").loadPage(1)
         }})
@@ -325,7 +325,7 @@
 
     <script type = "text/javascript">
 
-  extjsf.bind("${z:vid(v, 'search_domains_script')}", '${rootView.extjsDomain}').success(function()
+  extjsf.bind("${z:vid(v, 'search_domains_script')}", '${extDom}').success(function()
   {
     Ext.data.StoreManager.lookup("${z:vid(v, 'domainsStore')}").loadPage(1)
   })

@@ -109,32 +109,32 @@
     //<![CDATA[
 
     //~: secure set edit-add name field changed
-    extjsf.bind("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'secure-set-name')}", '${extDom}').on('change', function(f)
     {
       var s = ZeTS.trim(f.getValue());
-      var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+      var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
       if(!m || !m.length) m = null; else m = m[0];
 
       var D = ("${v.isSecure('secure: operate: sets')}" == "false");
 
-      extjsf.co("${z:vid(v, 'secure-set-edit-name')}", '${rootView.extjsDomain}').
+      extjsf.co("${z:vid(v, 'secure-set-edit-name')}", '${extDom}').
         setDisabled(D || !s.length || !m)
 
-      extjsf.co("${z:vid(v, 'add-secure-set')}", '${rootView.extjsDomain}').
+      extjsf.co("${z:vid(v, 'add-secure-set')}", '${extDom}').
         setDisabled(D || !s.length)
     })
 
     //~: add secure set handler
-    extjsf.bindHandler("${z:vid(v, 'add-secure-set')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'add-secure-set')}", '${extDom}', function()
     {
-       var field = extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
+       var field = extjsf.co("${z:vid(v, 'secure-set-name')}", '${extDom}');
        var name  = ZeTS.trim(field.getValue());
        if(!name.length) return;
 
-       extjsf.bindHandler("${z:vid(v, 'add-secure-set-script')}", '${rootView.extjsDomain}')({
+       extjsf.bindHandler("${z:vid(v, 'add-secure-set-script')}", '${extDom}')({
           params: { setName: name }, success : function() {
 
-            extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+            extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
               getSelectionModel().deselectAll()
 
             field.setValue('')
@@ -143,9 +143,9 @@
     })
 
     //~: delete secure set handler
-    extjsf.bindHandler("${z:vid(v, 'delete-secure-set')}", '${rootView.extjsDomain}', function(btn, e)
+    extjsf.bindHandler("${z:vid(v, 'delete-secure-set')}", '${extDom}', function(btn, e)
     {
-      var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection()
+      var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection()
       if(!m || !m.length) return; else m = m[0]
 
       retrade_yes_no_ask_warning({
@@ -159,9 +159,9 @@
         yes : function()
         {
           //~: invoke the action
-          extjsf.bindHandler("${z:vid(v, 'delete-secure-set-script')}", '${rootView.extjsDomain}')({
+          extjsf.bindHandler("${z:vid(v, 'delete-secure-set-script')}", '${extDom}')({
           params: { secSet: m.getId() }, success : function() {
-              extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}').setValue('')
+              extjsf.co("${z:vid(v, 'secure-set-name')}", '${extDom}').setValue('')
               Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
           }})
         }
@@ -169,17 +169,17 @@
     })
 
     //~: change secure set name button
-    extjsf.bindHandler("${z:vid(v, 'secure-set-edit-name')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'secure-set-edit-name')}", '${extDom}', function()
     {
-       var field = extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
+       var field = extjsf.co("${z:vid(v, 'secure-set-name')}", '${extDom}');
        var name  = ZeTS.trim(field.getValue());
 
-       var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+       var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
        if(!m || !m.length) m = null; else m = m[0];
 
        if(!name.length || !m) return;
 
-       extjsf.bindHandler("${z:vid(v, 'secure-set-edit-name-script')}", '${rootView.extjsDomain}')({
+       extjsf.bindHandler("${z:vid(v, 'secure-set-edit-name-script')}", '${extDom}')({
           params: { setName: name, secSet: m.getId() }, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
         }})
@@ -246,7 +246,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-sets')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-sets')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -257,25 +257,25 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchSets: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-sets-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-sets-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
         }})
       })
     })
 
-    extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${rootView.extjsDomain}').on('click', function()
+    extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${extDom}').on('click', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search-sets')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search-sets')}", '${extDom}').value();
         var params = { searchLogins: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-sets-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-sets-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-sets-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'setsStore')}").load()
         }})
@@ -491,7 +491,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-set-ables')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-set-ables')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -502,25 +502,25 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchAbles: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-set-ables-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-set-ables-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'setAblesStore')}").load()
         }})
       })
     })
 
-    extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${rootView.extjsDomain}').on('click', function()
+    extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${extDom}').on('click', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search-set-ables')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search-set-ables')}", '${extDom}').value();
         var params = { searchAbles: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-set-ables-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-set-ables-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-set-ables-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'setAblesStore')}").load()
         }})
@@ -679,9 +679,9 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function(grid, selected)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('selectionchange', function(grid, selected)
   {
-    var namef = extjsf.co("${z:vid(v, 'secure-set-name')}", '${rootView.extjsDomain}');
+    var namef = extjsf.co("${z:vid(v, 'secure-set-name')}", '${extDom}');
     var model = selected.length && selected[0];
 
     //~: update the field name
@@ -689,7 +689,7 @@
 
     //~: enable the delete button
     var D = ("${v.isSecure('secure: operate: sets')}" == "false");
-    extjsf.co("${z:vid(v, 'delete-secure-set')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'delete-secure-set')}", '${extDom}').
       setDisabled(D || !model)
 
     //~: secure set comment
@@ -706,25 +706,25 @@
     }
 
     //~: update panel title
-    var pn = extjsf.co("${z:vid(v, 'secure-set-rules')}", '${rootView.extjsDomain}');
+    var pn = extjsf.co("${z:vid(v, 'secure-set-rules')}", '${extDom}');
     if(!model) pn.setTitle('Выберете множество правил');
     else       pn.setTitle("Правила множества '" + model.get('name') + '\'');
 
     //~: show-hide toolbar
-    extjsf.co("${z:vid(v, 'secure-set-toolbar')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'secure-set-toolbar')}", '${extDom}').
       setVisible(!!model)
 
     //~: toggle off comment button
-    extjsf.co("${z:vid(v, 'secure-set-edit-comment')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'secure-set-edit-comment')}", '${extDom}').
       toggle(false, true)
 
 
     //~: rules of current set
-    var rules = extjsf.co("${z:vid(v, 'rules-grid')}", '${rootView.extjsDomain}');
+    var rules = extjsf.co("${z:vid(v, 'rules-grid')}", '${extDom}');
     rules.setVisible(!!model); if(!model) return;
 
     //~: change current secure set
-    extjsf.bindHandler("${z:vid(v, 'set-current-secure-set-script')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'set-current-secure-set-script')}", '${extDom}')({
       params: { secSet: model.getId() }, success: function()
       {
         rules.getStore().loadPage(1);
@@ -733,11 +733,11 @@
   })
 
   //~: toggle edit comment
-  extjsf.bind("${z:vid(v, 'secure-set-edit-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+  extjsf.bind("${z:vid(v, 'secure-set-edit-comment')}", '${extDom}').on('toggle', function(btn)
   {
-     var ct = extjsf.co("${z:vid(v, 'secure-set-comment')}", '${rootView.extjsDomain}');
-     var ce = extjsf.co("${z:vid(v, 'secure-set-comment-edit')}", '${rootView.extjsDomain}');
-     var m  = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var ct = extjsf.co("${z:vid(v, 'secure-set-comment')}", '${extDom}');
+     var ce = extjsf.co("${z:vid(v, 'secure-set-comment-edit')}", '${extDom}');
+     var m  = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
      //?: {go to edit mode}
@@ -763,19 +763,19 @@
        //~: update the model
        m.set('comment', cs)
 
-       extjsf.bindHandler("${z:vid(v, 'secure-set-edit-comment-script')}", '${rootView.extjsDomain}')({
+       extjsf.bindHandler("${z:vid(v, 'secure-set-edit-comment-script')}", '${extDom}')({
           params: { secSet: m.getId(), setComment: cs }
        })
      }
   })
 
   //~: add rules to secure set
-  extjsf.bindHandler("${z:vid(v, 'secure-set-add-ables-rules')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'secure-set-add-ables-rules')}", '${extDom}', function()
   {
-     var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
-     extjsf.bindHandler("${z:vid(v, 'add-rules-script')}", '${rootView.extjsDomain}')({
+     extjsf.bindHandler("${z:vid(v, 'add-rules-script')}", '${extDom}')({
       params: { secSet: m.getId(), selset: ReTrade.selset.selset } , success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'setAblesStore')}").load()
@@ -784,23 +784,23 @@
   })
 
   //~: rules table selection changed
-  extjsf.bind("${z:vid(v, 'rules-grid')}", '${rootView.extjsDomain}').on('selectionchange', function(grid, selected)
+  extjsf.bind("${z:vid(v, 'rules-grid')}", '${extDom}').on('selectionchange', function(grid, selected)
   {
     var D = ("${v.isSecure('secure: operate: sets')}" == "false");
 
-    extjsf.co("${z:vid(v, 'secure-set-delete-ables-rules')}", '${rootView.extjsDomain}').
+    extjsf.co("${z:vid(v, 'secure-set-delete-ables-rules')}", '${extDom}').
       setDisabled(D || !selected.length)
   })
 
   //~: delete rules from secure set
-  extjsf.bindHandler("${z:vid(v, 'secure-set-delete-ables-rules')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'secure-set-delete-ables-rules')}", '${extDom}', function()
   {
-     var m = extjsf.co("${z:vid(v, 'rules-grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'rules-grid')}", '${extDom}').getSelectionModel().getSelection();
 
      if(!m || !m.length) return; else m = ZeT.a(m);
      for(var i = 0;(i < m.length);i++) m[i] = m[i].getId();
 
-     extjsf.bindHandler("${z:vid(v, 'delete-rules-script')}", '${rootView.extjsDomain}')({
+     extjsf.bindHandler("${z:vid(v, 'delete-rules-script')}", '${extDom}')({
       params: { secAbles: m } , success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'setAblesStore')}").load()
@@ -809,12 +809,12 @@
   })
 
   //~: grant secure set to the users of current selection set
-  extjsf.bindHandler("${z:vid(v, 'secure-set-grant-to-selected-users')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'secure-set-grant-to-selected-users')}", '${extDom}', function()
   {
-     var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
-     extjsf.bindHandler("${z:vid(v, 'secure-set-grant-to-selected-users-script')}", '${rootView.extjsDomain}')({
+     extjsf.bindHandler("${z:vid(v, 'secure-set-grant-to-selected-users-script')}", '${extDom}')({
        params: { secSet: m.getId(), selset: ReTrade.selset.selset }, success: function()
        {
           ReTrade.desktop.event(ZeTS.cat(
@@ -826,12 +826,12 @@
   })
 
   //~: synchronize secure set with the able users of current selection set
-  extjsf.bindHandler("${z:vid(v, 'secure-set-synch-with-selected-users')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'secure-set-synch-with-selected-users')}", '${extDom}', function()
   {
-     var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
-     extjsf.bindHandler("${z:vid(v, 'secure-set-synch-with-selected-users-script')}", '${rootView.extjsDomain}')({
+     extjsf.bindHandler("${z:vid(v, 'secure-set-synch-with-selected-users-script')}", '${extDom}')({
        params: { secSet: m.getId(), selset: ReTrade.selset.selset }, success: function()
        {
           ReTrade.desktop.event(ZeTS.cat(
@@ -844,12 +844,12 @@
 
 
   //~: delete secure set from users of current selection set
-  extjsf.bindHandler("${z:vid(v, 'secure-set-delete-from-selected-users')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'secure-set-delete-from-selected-users')}", '${extDom}', function()
   {
-     var m = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getSelectionModel().getSelection();
+     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
      if(!m || !m.length) return; else m = m[0];
 
-     extjsf.bindHandler("${z:vid(v, 'secure-set-delete-from-selected-users-script')}", '${rootView.extjsDomain}')({
+     extjsf.bindHandler("${z:vid(v, 'secure-set-delete-from-selected-users-script')}", '${extDom}')({
        params: { secSet: m.getId(), selset: ReTrade.selset.selset }, success: function()
        {
           ReTrade.desktop.event(ZeTS.cat(

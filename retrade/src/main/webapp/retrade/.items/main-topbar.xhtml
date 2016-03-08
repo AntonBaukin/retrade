@@ -31,7 +31,7 @@
 
   //~: attach top bar panel to the desktop
   ReTrade.desktop.controller('center').mainTopbar(
-    "${z:vid(localView, 'main-topbar')}", '${rootView.extjsDomain}')
+    "${z:vid(localView, 'main-topbar')}", '${extDom}')
 
   Ext.onReady(function()
   {
@@ -334,7 +334,7 @@
       {
         icon: 'retrade-main-man-icon', class: 'pull-right last-child', handler: function()
         {
-          var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${rootView.extjsDomain}')
+          var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${extDom}')
           var xy   = menuNode.offset()
 
           jQuery.SmartMenus.hideAll()
@@ -520,7 +520,7 @@
 
 
     //~: bind resize listener
-    extjsf.bind("${z:vid(localView, 'main-topbar')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(localView, 'main-topbar')}", '${extDom}').
       on('resize', show_hide)
 
 
@@ -531,7 +531,7 @@
         if(ReTrade.desktop.uievents)
           ReTrade.desktop.uievents.toggle(false)
 
-        var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${rootView.extjsDomain}')
+        var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${extDom}')
         if(menu) menu.hide()
 
         $ul.fadeIn(200, complete)

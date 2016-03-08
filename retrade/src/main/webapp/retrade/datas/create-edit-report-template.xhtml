@@ -18,7 +18,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle("#{z:jss(v.winmainTitle)}")
 
   </script>
@@ -47,7 +47,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
+          extjsf.bind('winmain', '${extDom}').
             co().close()
         }
       </f:facet>
@@ -179,7 +179,7 @@ ${v.checkModelRequestedWithRedirect}
           width: extjsf.ex(24),
           allowBlank: false, validator: function()
           {
-            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+            return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true;
           }
         </f:facet>
 
@@ -356,18 +356,18 @@ ${v.checkModelRequestedWithRedirect}
   //<![CDATA[
 
   //~: adjust window height
-  extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').on('afterrender', function()
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').on('afterrender', function()
   {
-     var win = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
+     var win = extjsf.bind('winmain', '${extDom}').co();
      var wht = win.body.getHeight();
-     var frm = extjsf.co("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}');
+     var frm = extjsf.co("${z:vid(v, 'edit-form')}", '${extDom}');
      var fht = frm.getBox().height;
 
      win.setHeight(win.getHeight() - (wht - fht))
   })
 
   //~: validate on code change
-  extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)
+  extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
   {
      var fb = f.extjsfBind;
      fb.retradeCodeCheck = v; fb.validityStatus = true;
@@ -380,7 +380,7 @@ ${v.checkModelRequestedWithRedirect}
      {
        if(fb.retradeCodeCheck != v) return;
 
-       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
           params: { code : fb.retradeCodeCheck }, failure: function()
           {
             fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -392,33 +392,33 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: submit the form
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var form = extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}');
+    var form = extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}');
     if(!form.co().isValid()) return;
 
     //!: submit the form
     form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
       command: "${z:vid(v, 'submit-action')}", success: function()
       {
-        var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}');
+        var winmain = extjsf.bind('winmain', '${extDom}');
         winmain.retradeEditDone = true;
-        extjsf.bindHandler("${z:vid(v, 'close-window')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'close-window')}", '${extDom}')()
       }
     })
   })
 
   //~: react on data source change
-  extjsf.bind("${z:vid(v, 'change-datasource')}", '${rootView.extjsDomain}').on('change', function(vb, checked)
+  extjsf.bind("${z:vid(v, 'change-datasource')}", '${extDom}').on('change', function(vb, checked)
   {
     var v = (checked)?("#{z:jss(v.model.did)}"):("#{z:jss(v.view.did)}");
 
-    extjsf.bind("${z:vid(v, 'did')}", '${rootView.extjsDomain}').value(v)
-    extjsf.bind("${z:vid(v, 'datasource')}", '${rootView.extjsDomain}').value(v)
+    extjsf.bind("${z:vid(v, 'did')}", '${extDom}').value(v)
+    extjsf.bind("${z:vid(v, 'datasource')}", '${extDom}').value(v)
   })
 
   //~: download template button
-  extjsf.bindHandler("${z:vid(v, 'download-template')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'download-template')}", '${extDom}', function()
   {
     ZeT.timeout(500, function()
     {
@@ -427,9 +427,9 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: template file upload
-  extjsf.bind("${z:vid(v, 'file-upload')}", '${rootView.extjsDomain}').on('change', function(f, v)
+  extjsf.bind("${z:vid(v, 'file-upload')}", '${extDom}').on('change', function(f, v)
   {
-    var form = extjsf.co("${z:vid(v, 'file-upload-form')}", '${rootView.extjsDomain}');
+    var form = extjsf.co("${z:vid(v, 'file-upload-form')}", '${extDom}');
 
     //!: submit the form to the model
     form.submit({ url: "#{z:url('/upload')}?model=#{v.modelKey}",

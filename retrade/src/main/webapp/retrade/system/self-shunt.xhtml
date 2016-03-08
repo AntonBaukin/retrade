@@ -19,7 +19,7 @@
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('${z:jss(v.windowTitle)}')
 
   </script>
@@ -43,7 +43,7 @@
 
         handler : function()
         {
-          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
+          var cmp = extjsf.bind('winmain', '${extDom}').co();
           cmp.findParentByType('panel').remove(cmp, true)
         }
 
@@ -144,16 +144,16 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${rootView.extjsDomain}').GROUPS = [];
+  extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${extDom}').GROUPS = [];
 
   //~: form submit
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var form = extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${rootView.extjsDomain}');
+    var form = extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${extDom}');
 
     //~: submit the form
     form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
-      success: extjsf.bindHandler("${z:vid(v, 'submit_done')}", '${rootView.extjsDomain}')
+      success: extjsf.bindHandler("${z:vid(v, 'submit_done')}", '${extDom}')
     })
   })
 
@@ -165,7 +165,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${rootView.extjsDomain}').GROUPS.push({
+    extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${extDom}').GROUPS.push({
       name: "#{z:jss(g)}", checked: 'true' == "#{v.isGroupSelected(g)}"
     })
 
@@ -179,7 +179,7 @@
 
   Ext.onReady(function()
   {
-     var form = extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${rootView.extjsDomain}');
+     var form = extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${extDom}');
 
      Ext.Array.each(form.GROUPS, function(group, i)
      {

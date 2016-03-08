@@ -154,7 +154,7 @@
   Ext.onReady(function()
   {
     //~: store with tree flat data
-    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
 
     //~: create tree store
     var tree  = Ext.create('Ext.data.TreeStore', {
@@ -163,7 +163,7 @@
     })
 
     //~: delete store on domain delete
-    extjsf.domain('${rootView.extjsDomain}').onDestroy(function()
+    extjsf.domain('${extDom}').onDestroy(function()
     {
         Ext.data.StoreManager.unregister("${z:vid(v, 'goodsTreeStore')}")
     })
@@ -186,12 +186,12 @@
 
       m.set('parentKey', np.get('modelId'))
       np.sort(nodesSorter, true)
-      extjsf.co("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(false)
+      extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(false)
     }
 
     function doResizeColumn()
     {
-      var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+      var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
       var col  = extjsf.support.columnByType(tree, 'treecolumn');
       col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
     }
@@ -264,7 +264,7 @@
        store.retradeLastSelection = null;
        if(selNode)
        {
-         extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+         extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
            getSelectionModel().select([selNode])
 
          while(selNode.parentNode)
@@ -280,7 +280,7 @@
        //~: select the root
        ZeT.timeout(250, function()
        {
-         extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+         extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
            getSelectionModel().select(root)
        })
     })
@@ -291,16 +291,16 @@
   })
 
   //~: expand the tree
-  extjsf.bindHandler("${z:vid(v, 'expand-tree')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'expand-tree')}", '${extDom}', function()
   {
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
     tree.getRootNode().expandChildren(true)
   })
 
   //~: expand the tree to the selection
-  extjsf.bindHandler("${z:vid(v, 'collapse-tree')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'collapse-tree')}", '${extDom}', function()
   {
-    extjsf.support.collapseTreeToSel("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+    extjsf.support.collapseTreeToSel("${z:vid(v, 'tree')}", '${extDom}')
   })
 
   //]]>
@@ -323,10 +323,10 @@
   //<![CDATA[
 
   //~: add to the tree
-  extjsf.bindHandler("${z:vid(v, 'tree-add')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'tree-add')}", '${extDom}', function()
   {
-    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
-    var tree  = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
+    var tree  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
 
     var sel   = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
     if(!sel) sel = tree.getRootNode();
@@ -348,10 +348,10 @@
   })
 
   //~: commit the tree
-  extjsf.bindHandler("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'tree-commit')}", '${extDom}', function()
   {
     //~: store with tree flat data
-    var store   = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
+    var store   = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
 
     //~: collect modifications
     var records = store.getModifiedRecords(); if(!records.length) return;
@@ -400,14 +400,14 @@
     }
 
     //~: disable the commit button
-    extjsf.co("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(true)
+    extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(true)
 
     //~: current selection
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').getView();
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').getView();
     var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
 
     //!: send to the server
-    extjsf.bindHandler("${z:vid(v, 'tree-commit-script')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'tree-commit-script')}", '${extDom}')({
       params: params, success: function()
       {
         store.retradeLastSelection = sel && sel.get('code');
@@ -418,7 +418,7 @@
   })
 
   //~: tree cut show-hide
-  extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').retradeEnableCutPaste = function(x)
+  extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradeEnableCutPaste = function(x)
   {
     var BTNS = [
       "${z:vid(v, 'tree-cut-cancel')}",
@@ -426,26 +426,26 @@
       "${z:vid(v, 'tree-paste-prev')}"
     ];
 
-    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}');
+    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
 
     //~: hide cut button
     ctl.co().setVisible(!x)
 
     //show the related buttons
     for(var i = 0;(i < BTNS.length);i++)
-      extjsf.co(BTNS[i], '${rootView.extjsDomain}').setVisible(x)
+      extjsf.co(BTNS[i], '${extDom}').setVisible(x)
   }
 
-  extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').retradeShowNode = function(node, v)
+  extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradeShowNode = function(node, v)
   {
     if(v) node.getOwnerTree().getView().removeRowCls(node, 'retrade-almost-opaque')
     else  node.getOwnerTree().getView().addRowCls(node, 'retrade-almost-opaque')
   }
 
   //~: tree cut button
-  extjsf.bindHandler("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'tree-cut')}", '${extDom}', function()
   {
-    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}');
+    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
 
     //~: enable cut
     ctl.retradeEnableCutPaste(true)
@@ -455,7 +455,7 @@
     ctl.retradeNodeCut = null;
 
     //~: selected folder
-    var sel = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+    var sel = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
       getSelectionModel().getSelection();
     if(sel && (sel.length == 1)) sel = sel[0];
 
@@ -471,9 +471,9 @@
   })
 
   //~: tree cut cancel button
-  extjsf.bindHandler("${z:vid(v, 'tree-cut-cancel')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'tree-cut-cancel')}", '${extDom}', function()
   {
-    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}');
+    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
 
     //~: disable cut
     ctl.retradeEnableCutPaste(false)
@@ -484,9 +484,9 @@
   })
 
   //~: tree paste general function
-  extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').retradePasteNode = function(xyz)
+  extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').retradePasteNode = function(xyz)
   {
-    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}');
+    var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
 
     //~: disable cut
     ctl.retradeEnableCutPaste(false)
@@ -499,7 +499,7 @@
     ctl.retradeShowNode(cut, true)
 
     //~: selected folder
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
     var sel  = tree.getSelectionModel().getSelection();
     if(sel && (sel.length == 1)) sel = sel[0];
 
@@ -532,16 +532,16 @@
   }
 
   //~: tree paste down button
-  extjsf.bindHandler("${z:vid(v, 'tree-paste-child')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'tree-paste-child')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').
       retradePasteNode('child')
   })
 
   //~: tree paste before button
-  extjsf.bindHandler("${z:vid(v, 'tree-paste-prev')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'tree-paste-prev')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').
       retradePasteNode('prev')
   })
 
@@ -595,7 +595,7 @@
   //<![CDATA[
 
   //~: single click expand-collapse
-  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('add', function(tree)
+  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('add', function(tree)
   {
     var expandSelected, expandTime = 0;
 
@@ -655,17 +655,17 @@
   //<![CDATA[
 
   //~: after tree cell edited
-  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('edit', function(ed, e)
+  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('edit', function(ed, e)
   {
-    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
     var m = store.getById(e.record.get('modelId')); if(!m) return;
     var v = ZeTS.trim(e.value);
 
     if(m.get(e.field) == v) return;
 
     m.set(e.field, v)
-    extjsf.co("${z:vid(v, 'tree-commit')}", '${rootView.extjsDomain}').setDisabled(false)
-    extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle(e.record)
+    extjsf.co("${z:vid(v, 'tree-commit')}", '${extDom}').setDisabled(false)
+    extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeSetGoodsPanelTitle(e.record)
   })
 
   //]]>
@@ -711,8 +711,8 @@
         type: 'search', tooltipType: 'title', tooltip: 'Отобразить инструменты поиска',
         handler: function()
         {
-          var bs = extjsf.co("${z:vid(v, 'goods-edit-buttons')}", '${rootView.extjsDomain}')
-          var fi = extjsf.co("${z:vid(v, 'goods-filter')}", '${rootView.extjsDomain}')
+          var bs = extjsf.co("${z:vid(v, 'goods-edit-buttons')}", '${extDom}')
+          var fi = extjsf.co("${z:vid(v, 'goods-filter')}", '${extDom}')
 
           bs.setVisible(!bs.isVisible())
           fi.setVisible(!fi.isVisible())
@@ -723,7 +723,7 @@
         type: 'maximize', tooltipType: 'title', tooltip: 'Свернуть дерево товаров',
         handler: function()
         {
-          extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').collapse()
+          extjsf.co("${z:vid(v, 'tree')}", '${extDom}').collapse()
         }
       },
 
@@ -731,7 +731,7 @@
         type: 'restore', tooltipType: 'title', tooltip: 'Развернуть дерево товаров',
         hidden: true, handler: function()
         {
-          extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').expand()
+          extjsf.co("${z:vid(v, 'tree')}", '${extDom}').expand()
         }
       }]
     </f:facet>
@@ -814,7 +814,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow = function(record, e)
+  extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow = function(record, e)
   {
     var dk  = "${z:vid(v, 'add-good')}:"
     if(record) dk = dk.replace('add-', 'create-')
@@ -823,7 +823,7 @@
     if(!record) ps.create = true
 
     //~: add the folder selected
-    var fld  = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+    var fld  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
       getSelectionModel().getSelection()
     if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
     if(fld && fld.length && (fld.charAt(0) != '$'))
@@ -843,9 +843,9 @@
     })
   }
 
-  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
   {
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
       retradeOpenGoodWindow(null, event)
   })
 
@@ -869,13 +869,13 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}', function(btn, e)
+  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
   {
     var dk  = "${z:vid(v, 'add-goods-table')}:"
     var ps  = { disableSelSet: true }
 
     //~: add the folder selected
-    var fld  = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+    var fld  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
       getSelectionModel().getSelection()
     if(fld && (fld.length == 1)) fld = fld[0] && fld[0].get('modelId')
     if(fld && fld.length && (fld.charAt(0) != '$'))
@@ -971,7 +971,7 @@
         <script type = "text/javascript">
         //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -982,10 +982,10 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchGoods: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
         }})
@@ -995,15 +995,15 @@
     })
 
     //~: selection set only toggled
-    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').on('toggle', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').value();
         var params = { searchGoods: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
         }})
@@ -1054,14 +1054,14 @@
   Ext.onReady(function()
   {
     //~: connect tree (as grid) to selection set
-    ReTrade.selset.grid("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+    ReTrade.selset.grid("${z:vid(v, 'tree')}", '${extDom}')
   })
 
   //~: display goods of current selection
-  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle = function(sel)
+  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeSetGoodsPanelTitle = function(sel)
   {
     var fid  = sel.get('modelId');
-    var root = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}');
+    var root = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${extDom}');
 
     if(fid == '$') root.setTitle('Товары и услуги всех каталогов')
 
@@ -1076,47 +1076,47 @@
       ))
   }
 
-  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeShowFolderGoods = function()
+  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeShowFolderGoods = function()
   {
-    var sel  = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').
+    var sel  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}').
       getSelectionModel().getSelection();
 
-    var subf = extjsf.co("${z:vid(v, 'with-subfolders')}", '${rootView.extjsDomain}');
+    var subf = extjsf.co("${z:vid(v, 'with-subfolders')}", '${extDom}');
 
     //?: {the selection is empty} hide the panel
     sel = sel.length && sel[0]; if(!sel)
     {
-      extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').hide()
+      extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${extDom}').hide()
       return;
     }
 
     var fid = sel.get('modelId');
 
     //~: update the root title
-    extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeSetGoodsPanelTitle(sel)
+    extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeSetGoodsPanelTitle(sel)
 
     //?: {it is a new folder}
     if((fid != '$') && (fid.charAt(0) == '$'))
     {
-      extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').hide()
+      extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${extDom}').hide()
       return;
     }
 
-    extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'folder-goods-panel')}", '${extDom}').show()
 
     //~: disable controls when root node selected
     if('#{canEditTree}' == 'true')
     {
-      extjsf.co("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
-      extjsf.co("${z:vid(v, 'tree-move-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
-      extjsf.co("${z:vid(v, 'tree-unlink-goods')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
-      extjsf.co("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
-      extjsf.co("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'tree-add-goods')}", '${extDom}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'tree-move-goods')}", '${extDom}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'tree-unlink-goods')}", '${extDom}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'add-good')}", '${extDom}').setDisabled(fid == '$')
+      extjsf.co("${z:vid(v, 'add-goods-table')}", '${extDom}').setDisabled(fid == '$')
     }
 
 
     //!: run change action
-    extjsf.bindHandler("${z:vid(v, 'set-current-folder-script')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'set-current-folder-script')}", '${extDom}')({
       params: { currentFolder: fid, withSubFolders: subf.getValue() }, success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
@@ -1125,10 +1125,10 @@
   }
 
   //~: on tree selection change
-  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('selectionchange', function(tree, sel)
+  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('selectionchange', function(tree, sel)
   {
     //~: show the goods
-    extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeShowFolderGoods()
+    extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeShowFolderGoods()
 
     if('#{canEditTree}' == 'true')
     {
@@ -1137,52 +1137,52 @@
       sel = sel.length && sel[0];
 
       //?: {no selection | root}
-      extjsf.co("${z:vid(v, 'tree-cut')}", '${rootView.extjsDomain}').
+      extjsf.co("${z:vid(v, 'tree-cut')}", '${extDom}').
         setDisabled(!sel || (sel.get('modelId') == '$'))
     }
   })
 
   //~: with sub-folders changed
-  extjsf.bind("${z:vid(v, 'with-subfolders')}", '${rootView.extjsDomain}').on('change', function()
+  extjsf.bind("${z:vid(v, 'with-subfolders')}", '${extDom}').on('change', function()
   {
-    extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').retradeShowFolderGoods()
+    extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').retradeShowFolderGoods()
   })
 
   //~: collapse goods
-  extjsf.bind("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}').on('collapse', function()
+  extjsf.bind("${z:vid(v, 'folder-goods-layout')}", '${extDom}').on('collapse', function()
   {
-    extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').expand()
+    extjsf.co("${z:vid(v, 'tree')}", '${extDom}').expand()
 
-    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
+    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${extDom}')
     p.query('tool[type="maximize"]')[0].show()
     p.query('tool[type="restore"]')[0].hide()
   })
 
   //~: maximize goods == collapse tree
-  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('collapse', function()
+  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('collapse', function()
   {
-    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
+    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${extDom}')
     p.query('tool[type="maximize"]')[0].hide()
     p.query('tool[type="restore"]')[0].show()
     p.expand()
 
-    var s = extjsf.co("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'folderGoodsStore')}", '${extDom}')
     s.setPageSize(15); s.loadPage(1)
 
-    extjsf.co("${z:vid(v, 'goods-tree-panel-toolbar')}", '${rootView.extjsDomain}').hide()
+    extjsf.co("${z:vid(v, 'goods-tree-panel-toolbar')}", '${extDom}').hide()
   })
 
   //~: restore goods == expand tree
-  extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('expand', function()
+  extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('expand', function()
   {
-    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${rootView.extjsDomain}')
+    var p = extjsf.co("${z:vid(v, 'folder-goods-layout')}", '${extDom}')
     p.query('tool[type="maximize"]')[0].show()
     p.query('tool[type="restore"]')[0].hide()
 
-    var s = extjsf.co("${z:vid(v, 'folderGoodsStore')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'folderGoodsStore')}", '${extDom}')
     s.setPageSize(5); s.loadPage(1)
 
-    extjsf.co("${z:vid(v, 'goods-tree-panel-toolbar')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'goods-tree-panel-toolbar')}", '${extDom}').show()
   })
 
   //]]>
@@ -1212,10 +1212,10 @@
   //<![CDATA[
 
   //~: move or copy selected goods implementation
-  extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}').retradeMoveSelectedGoods = function(copy)
+  extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').retradeMoveSelectedGoods = function(copy)
   {
     //~: current selection
-    var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}');
+    var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
     var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
 
     //?: {not existing folder selected}
@@ -1230,7 +1230,7 @@
     if(copy) params.copyGoods = true;
 
     //!: invoke the action
-    extjsf.bindHandler("${z:vid(v, 'tree-move-goods-script')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'tree-move-goods-script')}", '${extDom}')({
       params: params, success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
@@ -1245,24 +1245,24 @@
   }
 
   //~: add selected goods handler
-  extjsf.bindHandler("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'tree-add-goods')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').
      retradeMoveSelectedGoods(true)
   })
 
   //~: move selected goods handler
-  extjsf.bindHandler("${z:vid(v, 'tree-move-goods')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'tree-move-goods')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').
      retradeMoveSelectedGoods(false)
   })
 
   //~: edit good unit
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, event)
   {
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
       retradeOpenGoodWindow(rec, event)
   })
 

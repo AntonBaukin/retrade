@@ -13,15 +13,15 @@
     <script type="text/javascript">
 
   //~: replace cancel button's handler
-  extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}', function()
   {
-    extjsf.co('winmain', '${rootView.extjsDomain}').close()
+    extjsf.co('winmain', '${extDom}').close()
   })
 
   //~: edit done action (close the window)
-  extjsf.bindHandler("${z:vid(v, 'submit-done')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit-done')}", '${extDom}', function()
   {
-    extjsf.co('winmain', '${rootView.extjsDomain}').close()
+    extjsf.co('winmain', '${extDom}').close()
   })
 
     </script>

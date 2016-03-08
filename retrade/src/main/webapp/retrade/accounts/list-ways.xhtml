@@ -64,7 +64,7 @@ ${v.checkModelRequestedWithRedirect}
           '${v.modelParam}': '${v.modelKeys}',
           'ownPayWaysOnly': ZeT.delay(function()
           {
-            return extjsf.bind("${z:vid(v, 'own-payways-only')}", '${rootView.extjsDomain}').value();
+            return extjsf.bind("${z:vid(v, 'own-payways-only')}", '${extDom}').value();
           })
 
         </f:facet>
@@ -102,24 +102,24 @@ ${v.checkModelRequestedWithRedirect}
       //<![CDATA[
 
 
-    extjsf.bind("${z:vid(v, 'own-payways-only')}", '${rootView.extjsDomain}').on('change', function()
+    extjsf.bind("${z:vid(v, 'own-payways-only')}", '${extDom}').on('change', function()
     {
-      extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').retradeSearchNames(false)
+      extjsf.bind("${z:vid(v, 'search_names')}", '${extDom}').retradeSearchNames(false)
     })
 
-    extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').on('change', function()
+    extjsf.bind("${z:vid(v, 'search_names')}", '${extDom}').on('change', function()
     {
-      extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').retradeSearchNames(true)
+      extjsf.bind("${z:vid(v, 'search_names')}", '${extDom}').retradeSearchNames(true)
     })
 
-    extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    extjsf.bind("${z:vid(v, 'search-by-selset')}", '${extDom}').on('toggle', function()
     {
-      extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').retradeSearchNames(false)
+      extjsf.bind("${z:vid(v, 'search_names')}", '${extDom}').retradeSearchNames(false)
     })
 
-    extjsf.bind("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}').retradeSearchNames = function(setdelay)
+    extjsf.bind("${z:vid(v, 'search_names')}", '${extDom}').retradeSearchNames = function(setdelay)
     {
-      var f  = extjsf.co("${z:vid(v, 'search_names')}", '${rootView.extjsDomain}');
+      var f  = extjsf.co("${z:vid(v, 'search_names')}", '${extDom}');
       var sv = f.extjsfBind.searchValue = ZeTS.trim(f.getValue());
 
       var fn = function()
@@ -129,10 +129,10 @@ ${v.checkModelRequestedWithRedirect}
 
         var params = { searchNames: sv };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-by-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-by-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search_payways_script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search_payways_script')}", '${extDom}')({
           params: params, success: function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'payways')}").loadPage(1)
         }})
@@ -177,7 +177,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <script type = "text/javascript">
 
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, event)
   {
     var domain  = 'wnd:' + "${z:vid(v, 'view_payway')}:" + rec.getId();

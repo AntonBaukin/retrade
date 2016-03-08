@@ -20,7 +20,7 @@ ${v.forceSecureModelEntity('view')}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('${z:jss(v.winmainTitleInfo)}')
 
   </script>
@@ -46,7 +46,7 @@ ${v.forceSecureModelEntity('view')}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
+          extjsf.bind('winmain', '${extDom}').
             co().close()
         }
 
@@ -200,9 +200,9 @@ ${v.forceSecureModelEntity('view')}
   //<![CDATA[
 
   //~: go to edit measure on double click row
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('itemdblclick', function(grid, rec)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('itemdblclick', function(grid, rec)
   {
-    extjsf.bindHandler("${z:vid(v, 'view-receipt')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'view-receipt')}", '${extDom}')({
       params: { '${v.entityParam}': rec.getId() }
     })
   })

@@ -147,14 +147,14 @@
         listeners : {
           edit: function(ed, event)
           {
-            var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+            var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
             delete g.editEvent
             g.valueEdited(ed, event)
           },
 
           beforeedit : function(ed, event)
           {
-            var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+            var g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
             return g.editStarted(ed, g.editEvent = event)
           }}
       }],
@@ -211,14 +211,14 @@
 
             //:= array item value
             xyz.find('td:last-child span').text(v2s(x)).attr('onclick', ZeTS.cat(
-              "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${rootView.extjsDomain}').",
+              "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${extDom}').",
               'retradeEditArrayValue("', model.getId(), '", "', x,
               '", event || window.event)'
             ))
 
             //~: on remove button click
             xyz.find('.retrade-edit-delete').attr('onclick', ZeTS.cat(
-              "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${rootView.extjsDomain}').",
+              "extjsf.bind(\"${z:vid(v, 'goodAttrs')}\", '${extDom}').",
               'retradeRemoveArrayValue("', model.getId(), '", "', x,
               '", event || window.event)'
             ))
@@ -237,7 +237,7 @@
 
         function validateTextValue(v)
         {
-          var  g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+          var  g = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
           if(!g.editEvent) return false
           var  m = g.editEvent.record
           var ox = m.get('ox')
@@ -347,7 +347,7 @@
   //<![CDATA[
 
   //~: value to string
-  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
     valueToString = function(v)
   {
     if(ZeT.iss(v))     return v
@@ -358,14 +358,14 @@
   }
 
   //~: assign values from the attributes on good ox
-  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
     updateGoodOx = function(ox, isReadMode)
   {
-    var store  = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
-    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-view')}", '${rootView.extjsDomain}')
-    var egrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
-    var groups = extjsf.bind("${z:vid(v, 'goodAttrGroups')}", '${rootView.extjsDomain}')
+    var store  = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${extDom}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-view')}", '${extDom}')
+    var egrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+    var groups = extjsf.bind("${z:vid(v, 'goodAttrGroups')}", '${extDom}')
     var v2s    = store.extjsfBind.valueToString
 
     //~: show taken column for sub-goods only
@@ -442,10 +442,10 @@
 
 
   //~: collect attribute values
-  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
     collectValues = function(ox)
   {
-    var store = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var store = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}')
     var v2s   = store.valueToString
 
     if(ZeT.iso(ox) && ZeT.isa(ox.attributes))
@@ -485,13 +485,13 @@
 
 
   //~: callback function to remove value from array
-  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
     retradeRemoveArrayValue = function(id, v, e)
   {
     e = Ext.create('Ext.event.Event', e)
     e.stopEvent()
 
-    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
     var model = store.getById(id);  if(!model) return
     var value = model.get('value'); if(!ZeT.isa(value)) return
 
@@ -504,10 +504,10 @@
 
 
   //~: callback function to edit value in array
-  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').
     retradeEditArrayValue = function(id, v)
   {
-    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var store = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
     var model = store.getById(id);  if(!model) return
     var value = model.get('value'); if(!ZeT.isa(value)) return
 
@@ -517,14 +517,14 @@
 
 
   //~: collect groups of attributes
-  extjsf.bind("${z:vid(v, 'goodAttrGroups')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'goodAttrGroups')}", '${extDom}').
     retradeCollectAttrGroups = function(isReadMode)
   {
-    var groups = extjsf.co("${z:vid(v, 'goodAttrGroups')}", '${rootView.extjsDomain}')
-    var groupf = extjsf.bind("${z:vid(v, 'filter-attrs-select')}", '${rootView.extjsDomain}')
-    var egrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
-    var vstore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var groups = extjsf.co("${z:vid(v, 'goodAttrGroups')}", '${extDom}')
+    var groupf = extjsf.bind("${z:vid(v, 'filter-attrs-select')}", '${extDom}')
+    var egrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+    var vstore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${extDom}')
     var src, map = {}
 
     //?: {not same read-edit mode}
@@ -560,11 +560,11 @@
 
 
   //~: filter attribute types
-  extjsf.bind("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}').
     filterAttrTypes = function()
   {
-    var vstore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var vstore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var astore = extjsf.co("${z:vid(v, 'attrTypes')}", '${extDom}')
 
     //~: exclude attributes that are already selected
     astore.filterBy(function(a)
@@ -577,10 +577,10 @@
 
 
   //~: value edit start
-  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
     editStarted = function(ed, event)
   {
-    var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}')
 
     //?: {editing attribute type}
     if(event.field == 'nameLo')
@@ -605,10 +605,10 @@
 
 
   //~: assign attribute type
-  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
     assignAttrType = function(m, attrId)
   {
-    var s = extjsf.bind("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var s = extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}')
     var a = ZeT.assertn(s.co().getById(attrId))
     var d = a.getData(), ox = ZeT.assertn(m.get('selfox'))
 
@@ -629,10 +629,10 @@
 
 
   //~: value edit callback
-  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
     valueEdited = function(ed, event)
   {
-    var vgrid = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var vgrid = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
 
     //?: {edited attribute type}
     if(event.field == 'nameLo')
@@ -667,10 +667,10 @@
 
 
   //~: delete selected attributes
-  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
     deleteSelected = function()
   {
-    var grid = extjsf.co("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var grid = extjsf.co("${z:vid(v, 'attrs-edit')}", '${extDom}')
     var sel  = grid.getSelection()
 
     grid.getSelectionModel().deselectAll()
@@ -688,12 +688,12 @@
 
 
   //~: add new attribute
-  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}').
     addAttribute = function()
   {
-    var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
-    var vstore = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
+    var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}')
+    var vstore = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
 
     function startEdit(x)
     {
@@ -729,11 +729,11 @@
 
 
   //~: filter by the attribute group
-  extjsf.bind("${z:vid(v, 'filter-attrs-select')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'filter-attrs-select')}", '${extDom}').
     on('change', function(f, v)
   {
-    var astore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var tstore = extjsf.co("${z:vid(v, 'attrTypes')}", '${rootView.extjsDomain}')
+    var astore = extjsf.co("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var tstore = extjsf.co("${z:vid(v, 'attrTypes')}", '${extDom}')
 
     astore.clearFilter()
     tstore.clearFilter()

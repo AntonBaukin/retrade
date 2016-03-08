@@ -20,7 +20,7 @@ ${v.checkEntityRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle('${z:jss(v.winmainTitleInfo)}')
 
   //]]>
@@ -48,7 +48,7 @@ ${v.checkEntityRequested}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
+          extjsf.bind('winmain', '${extDom}').
             co().close()
         }
 
@@ -407,50 +407,50 @@ ${v.checkEntityRequested}
     }
 
     //~: toggle change reason
-    extjsf.bind("${z:vid(v, 'toggle-reason')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+    extjsf.bind("${z:vid(v, 'toggle-reason')}", '${extDom}').on('toggle', function(btn)
     {
       toggleGroup(btn)
 
-      extjsf.bind("${z:vid(v, 'reason')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'reason')}", '${extDom}').
         visible(btn.pressed)
 
-      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${extDom}').
         visible("#{v.hasChanges}" == 'true' && toggleGroup())
 
-      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${extDom}').
         visible("#{v.hasGroups}" == 'true' && toggleGroup())
     })
 
     //~: toggle contractors list mode
-    extjsf.bind("${z:vid(v, 'toggle-contractors')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+    extjsf.bind("${z:vid(v, 'toggle-contractors')}", '${extDom}').on('toggle', function(btn)
     {
       toggleGroup(btn)
 
-      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${extDom}').
         visible("#{v.hasChanges}" == 'true' && toggleGroup())
 
-      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${extDom}').
         visible("#{v.hasGroups}" == 'true' && toggleGroup())
 
-      extjsf.bind("${z:vid(v, 'reprice-contractors-layout')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'reprice-contractors-layout')}", '${extDom}').
         visible(btn.pressed && ("#{v.oneContractor}" == 'false'))
 
-      extjsf.bind("${z:vid(v, 'reprice-contractor-changes-layout')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'reprice-contractor-changes-layout')}", '${extDom}').
         visible(btn.pressed && ("#{v.oneContractor}" == 'true'))
 
-      extjsf.co("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').hide()
+      extjsf.co("${z:vid(v, 'back-to-contractors')}", '${extDom}').hide()
 
       //?: {load the contractors}
       if(btn.pressed && ("#{v.oneContractor}" == 'false'))
       {
-        var s = extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}');
+        var s = extjsf.co("${z:vid(v, 'contractors')}", '${extDom}');
         if(!s.getCount() && !s.isLoading()) s.load()
       }
 
       //?: {load the changes for single contractor}
       if(btn.pressed && ("#{v.oneContractor}" == 'true'))
       {
-        var s  = extjsf.co("${z:vid(v, 'contractorChanges')}", '${rootView.extjsDomain}');
+        var s  = extjsf.co("${z:vid(v, 'contractorChanges')}", '${extDom}');
         var pk = "#{v.firstContractor.primaryKey}";
 
         if(!s.getCount() && !s.isLoading())
@@ -462,26 +462,26 @@ ${v.checkEntityRequested}
     })
 
     //~: toggle change groups
-    extjsf.bind("${z:vid(v, 'toggle-groups')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+    extjsf.bind("${z:vid(v, 'toggle-groups')}", '${extDom}').on('toggle', function(btn)
     {
       toggleGroup(btn)
 
-      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'reprice-changes-layout')}", '${extDom}').
         visible(btn.pressed || toggleGroup())
 
-      extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').visible(btn.pressed)
-      extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').visible(!btn.pressed)
-      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${rootView.extjsDomain}').visible(!btn.pressed)
+      extjsf.bind("${z:vid(v, 'groups')}", '${extDom}').visible(btn.pressed)
+      extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').visible(!btn.pressed)
+      extjsf.bind("${z:vid(v, 'filter-group-layout')}", '${extDom}').visible(!btn.pressed)
     })
   }))
 
 
   //~: click on the contractor in the table
-  extjsf.bind("${z:vid(v, 'cgrid')}", '${rootView.extjsDomain}').on('itemclick', function(cgrid, rec)
+  extjsf.bind("${z:vid(v, 'cgrid')}", '${extDom}').on('itemclick', function(cgrid, rec)
   {
-    extjsf.co("${z:vid(v, 'reprice-contractors-layout')}", '${rootView.extjsDomain}').hide()
-    extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${rootView.extjsDomain}').show()
-    extjsf.co("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'reprice-contractors-layout')}", '${extDom}').hide()
+    extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${extDom}').show()
+    extjsf.co("${z:vid(v, 'back-to-contractors')}", '${extDom}').show()
 
     //~: assign the info
     var n = Ext.get("${z:vid(v, 'contractor-info')}");
@@ -489,24 +489,24 @@ ${v.checkEntityRequested}
     n.down('.retrade-info-value.retrade-info-value-reprice-contractor-name div').update(rec.get('name'))
 
     //~: load the changes data
-    var s = extjsf.co("${z:vid(v, 'contractorChanges')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'contractorChanges')}", '${extDom}')
     s.getProxy().setExtraParam('contractor', rec.getId())
     s.load()
   })
 
   //~: click to go back to the contractors list
-  extjsf.bindHandler("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'back-to-contractors')}", '${extDom}', function()
   {
-    extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${rootView.extjsDomain}').hide()
-    extjsf.co("${z:vid(v, 'back-to-contractors')}", '${rootView.extjsDomain}').hide()
-    extjsf.co("${z:vid(v, 'reprice-contractors-layout')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${extDom}').hide()
+    extjsf.co("${z:vid(v, 'back-to-contractors')}", '${extDom}').hide()
+    extjsf.co("${z:vid(v, 'reprice-contractors-layout')}", '${extDom}').show()
   })
 
   //~: build filter groups on changes load
-  extjsf.bind("${z:vid(v, 'priceChanges')}", '${rootView.extjsDomain}').on('load', function(pcs)
+  extjsf.bind("${z:vid(v, 'priceChanges')}", '${extDom}').on('load', function(pcs)
   {
     //~: select all the groups
-    var fgs = extjsf.co("${z:vid(v, 'filterGroups')}", '${rootView.extjsDomain}')
+    var fgs = extjsf.co("${z:vid(v, 'filterGroups')}", '${extDom}')
     var grs = {}; pcs.each(function(m)
     {
       var g = m.get('goodGroup'); if(!ZeTS.ises(g)) grs[g] = true
@@ -520,14 +520,14 @@ ${v.checkEntityRequested}
     ZeT.each(grs, function(g) { fgs.add({ key: g }) })
 
     //~: select the default (all)
-    extjsf.bind("${z:vid(v, 'filter-group')}", '${rootView.extjsDomain}').value('ø')
+    extjsf.bind("${z:vid(v, 'filter-group')}", '${extDom}').value('ø')
   })
 
   //~: filter group value changed (apply grid filter)
-  extjsf.bind("${z:vid(v, 'filter-group')}", '${rootView.extjsDomain}').on('change', function(g, v)
+  extjsf.bind("${z:vid(v, 'filter-group')}", '${extDom}').on('change', function(g, v)
   {
     //~: remove current filter
-    var s = extjsf.co("${z:vid(v, 'priceChanges')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'priceChanges')}", '${extDom}')
     s.clearFilter()
 
     //?: {has no value}

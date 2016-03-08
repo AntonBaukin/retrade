@@ -17,7 +17,7 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle('${z:jss(e.winmainTitleEditDate)}')
 
   //]]>
@@ -114,7 +114,7 @@
       <f:facet name = "extjs-props">
 
         listeners : { change: { delay: 1000, fn: function() {
-          extjsf.bindHandler("${z:vid(e, 'date')}", '${rootView.extjsDomain}')()
+          extjsf.bindHandler("${z:vid(e, 'date')}", '${extDom}')()
         }}}
       </f:facet>
 
@@ -133,7 +133,7 @@
       <f:facet name = "extjs-props">
 
         listeners : { change: { delay: 1000, fn: function() {
-          extjsf.bindHandler("${z:vid(e, 'date')}", '${rootView.extjsDomain}')()
+          extjsf.bindHandler("${z:vid(e, 'date')}", '${extDom}')()
         }}}
       </f:facet>
 
@@ -154,20 +154,20 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(e, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(e, 'submit')}", '${extDom}', function()
   {
-    var form = extjsf.bind("${z:vid(e, 'invoice-date-form')}", '${rootView.extjsDomain}');
+    var form = extjsf.bind("${z:vid(e, 'invoice-date-form')}", '${extDom}');
 
     //~: set go-back handler on success
-    form.success(extjsf.bindHandler("${z:vid(e, 'cancel-edit')}", '${rootView.extjsDomain}'))
+    form.success(extjsf.bindHandler("${z:vid(e, 'cancel-edit')}", '${extDom}'))
 
     //!: submit
     form.submitForm({'${e.viewModeParam}': '${e.viewModePostStr}', command: 'submit_action'})
   })
 
-  extjsf.bindHandler("${z:vid(e, 'date')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(e, 'date')}", '${extDom}', function()
   {
-    var form = extjsf.bind("${z:vid(e, 'invoice-date-form')}", '${rootView.extjsDomain}');
+    var form = extjsf.bind("${z:vid(e, 'invoice-date-form')}", '${extDom}');
 
     //~: set reload order-close invoices on success
     form.success(function()
@@ -217,8 +217,8 @@
 
   (function()
   {
-    var s = extjsf.bind("${z:vid(e, 'dateCloseInvoices')}", '${rootView.extjsDomain}')
-    var g = extjsf.bind("${z:vid(e, 'date_close_invoices')}", '${rootView.extjsDomain}')
+    var s = extjsf.bind("${z:vid(e, 'dateCloseInvoices')}", '${extDom}')
+    var g = extjsf.bind("${z:vid(e, 'date_close_invoices')}", '${extDom}')
     var m = Ext.create('Ext.selection.RowModel')
     var x = '#{e.invoice.objectKey}'
 

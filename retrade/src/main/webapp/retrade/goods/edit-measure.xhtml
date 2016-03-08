@@ -22,7 +22,7 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle("#{z:jss(v.editWindowTitle)}")
 
   //]]>
@@ -118,7 +118,7 @@ ${v.checkModelRequested}
         <f:facet name = "extjs-props">
           allowBlank: false, width: extjsf.ex(16), validator: function()
           {
-            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+            return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true;
           }
         </f:facet>
 
@@ -239,7 +239,7 @@ ${v.checkModelRequested}
   //<![CDATA[
 
   //~: validate on code change
-  extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)
+  extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
   {
      var fb = f.extjsfBind;
      fb.retradeCodeCheck = v; fb.validityStatus = true;
@@ -252,7 +252,7 @@ ${v.checkModelRequested}
      {
        if(fb.retradeCodeCheck != v) return;
 
-       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
           params: { code : fb.retradeCodeCheck }, failure: function()
           {
             fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -265,24 +265,24 @@ ${v.checkModelRequested}
 
 
   //~: submit the form
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var form = extjsf.bind("${z:vid(v, 'measure-form')}", '${rootView.extjsDomain}');
+    var form = extjsf.bind("${z:vid(v, 'measure-form')}", '${extDom}');
     if(!form.co().isValid()) return;
 
     form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
       command: "${z:vid(v, 'submit-action')}", success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'cancel')}", '${extDom}')()
       }
     })
   })
 
 
   //~: toggle fractional checkbox
-  extjsf.bind("${z:vid(v, 'fractional')}", '${rootView.extjsDomain}').on('change', function(cb, v)
+  extjsf.bind("${z:vid(v, 'fractional')}", '${extDom}').on('change', function(cb, v)
   {
-    var cu = extjsf.co("${z:vid(v, 'class-unit')}", '${rootView.extjsDomain}')
+    var cu = extjsf.co("${z:vid(v, 'class-unit')}", '${extDom}')
 
     //?: {is fractional}
     if(v)
@@ -308,7 +308,7 @@ ${v.checkModelRequested}
   Ext.onReady(ZeT.timeouted(150, function()
   {
     ReTrade.desktop.resizeToHeight('winmain',
-      { domain: '${rootView.extjsDomain}', '+hpt': 16, force: true },
+      { domain: '${extDom}', '+hpt': 16, force: true },
       [ "${z:vid(v, '_code_name_line')}", "${z:vid(v, '_class_code_unit_line')}" ]
     )
   }))

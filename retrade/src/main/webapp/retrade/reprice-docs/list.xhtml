@@ -94,35 +94,35 @@ ${v.checkModelRequestedWithRedirect}
         <script type = "text/javascript">
         //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${rootView.extjsDomain}').success(function()
+  extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').success(function()
   {
     Ext.data.StoreManager.lookup("${z:vid(v, 'repriceDocs')}").loadPage(1)
   })
 
   //~: on min date change -> post the form
-  extjsf.bind("${z:vid(v, 'min_date')}", '${rootView.extjsDomain}').on('change',
-    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'min_date')}", '${extDom}').on('change',
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').
       bindSubmitForm({'${v.viewModeParam}': '${v.viewModePostStr}'}))
 
   //~: on max date change -> post the form
-  extjsf.bind("${z:vid(v, 'max_date')}", '${rootView.extjsDomain}').on('change',
-    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'max_date')}", '${extDom}').on('change',
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').
       bindSubmitForm({'${v.viewModeParam}': '${v.viewModePostStr}'}))
 
-  extjsf.bind("${z:vid(v, 'fixed_only')}", '${rootView.extjsDomain}').on('change', function(f, value)
+  extjsf.bind("${z:vid(v, 'fixed_only')}", '${extDom}').on('change', function(f, value)
   {
-    var min_date = extjsf.bind("${z:vid(v, 'min_date')}", '${rootView.extjsDomain}').co();
-    var max_date = extjsf.bind("${z:vid(v, 'max_date')}", '${rootView.extjsDomain}').co();
+    var min_date = extjsf.bind("${z:vid(v, 'min_date')}", '${extDom}').co();
+    var max_date = extjsf.bind("${z:vid(v, 'max_date')}", '${extDom}').co();
 
     min_date.setDisabled(!value)
     max_date.setDisabled(!value)
 
     //~: refresh the table
-    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').
       submitForm({'${v.viewModeParam}': '${v.viewModePostStr}'})
 
     //~: show/hide timestamp column
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').co().
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').co().
       headerCt.getGridColumns()[0].setVisible(value)
   })
 
@@ -165,7 +165,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, record, node, row, e)
   {
     retrade_open_window({ url: '/reprice-docs/info',

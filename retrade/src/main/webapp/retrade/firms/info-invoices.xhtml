@@ -18,7 +18,7 @@ ${i.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('${z:jss(i.winmainTitleInvoices)}')
 
   </script>
@@ -103,12 +103,12 @@ ${i.checkModelRequestedWithRedirect}
 
     <script type = "text/javascript">
 
-  extjsf.bind("${z:vid(i, 'docs_filter_form')}", '${rootView.extjsDomain}').success(function()
+  extjsf.bind("${z:vid(i, 'docs_filter_form')}", '${extDom}').success(function()
   {
     Ext.data.StoreManager.lookup("${z:vid(i, 'firmInvoices')}").loadPage(1)
   })
 
-  extjsf.bind("${z:vid(i, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(i, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, event)
   {
     var domain  = 'wnd:' + "${z:vid(i, 'view_invoice')}:" + rec.getId();

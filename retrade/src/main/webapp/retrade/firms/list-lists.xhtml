@@ -97,7 +97,7 @@ ${v.checkModelRequestedWithRedirect}
         <script type = "text/javascript">
         //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-firms')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-firms')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -108,10 +108,10 @@ ${v.checkModelRequestedWithRedirect}
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchNames: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
         }})
@@ -121,15 +121,15 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     //~: selection set only toggled
-    extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').on('toggle', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search-firms')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search-firms')}", '${extDom}').value();
         var params = { searchNames: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
              Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
         }})
@@ -169,7 +169,7 @@ ${v.checkModelRequestedWithRedirect}
         columns: (function()
         {
           var cols = ZeT.defined('retrade.columns.CatItemView')();
-          var clcf = "extjsf.bind('${z:vid(v, 'grid')}', '${rootView.extjsDomain}').priceListClick";
+          var clcf = "extjsf.bind('${z:vid(v, 'grid')}', '${extDom}').priceListClick";
 
           //~: add price lists display columns
           cols.push({
@@ -211,7 +211,7 @@ ${v.checkModelRequestedWithRedirect}
     //<![CDATA[
 
   //~: react on click in the price lists column underlined items
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').priceListClick = function(event, plkey)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').priceListClick = function(event, plkey)
   {
     event = Ext.create('Ext.EventObjectImpl', ZeT.assertn(event || window.event))
 
@@ -224,7 +224,7 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: show prices of the clicked contractor
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, e)
   {
     retrade_open_window({ url: '/price-lists/goods-prices-firm',
@@ -236,10 +236,10 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: contractor associated price list edit form
-  extjsf.bindHandler("${z:vid(v, 'associate-lists')}", '${rootView.extjsDomain}', function(btn, e)
+  extjsf.bindHandler("${z:vid(v, 'associate-lists')}", '${extDom}', function(btn, e)
   {
     //~: selected contractors
-    var s = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    var s = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
       getSelectionModel().getSelection()
     s = Ext.Array.map(s || [], function(i) { return i.getId() })
 
@@ -251,7 +251,7 @@ ${v.checkModelRequestedWithRedirect}
       onclose: function()
       {
         if(this.retradeEditDone)
-          extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
+          extjsf.co("${z:vid(v, 'contractors')}", '${extDom}').reload()
       }
     })
   })

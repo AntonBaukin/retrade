@@ -48,7 +48,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'add-user')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'add-user')}", '${extDom}', function(btn, event)
   {
     var domain  = 'wnd:' + "${z:vid(v, 'add-user')}";
     var winmain = extjsf.bind('winmain', domain);
@@ -92,7 +92,7 @@
       Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").reload()
 
       //~: clear current selection
-      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       gr.co().getSelectionModel().deselectAll()
 
       //~: create model instance
@@ -104,7 +104,7 @@
       gr.showUserInfo(m)
 
       //~: update the comment
-      extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').toggle(false)
+      extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${extDom}').toggle(false)
     })
 
     winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
@@ -172,7 +172,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search_logins')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search_logins')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -183,25 +183,25 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchLogins: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").load()
         }})
       })
     })
 
-    extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${rootView.extjsDomain}').on('click', function()
+    extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${extDom}').on('click', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search_logins')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search_logins')}", '${extDom}').value();
         var params = { searchLogins: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").load()
         }})
@@ -252,7 +252,7 @@
 
   <script type = "text/javascript">
 
-  extjsf.bind("${z:vid(v, 'search_logins_script')}", '${rootView.extjsDomain}').success(function()
+  extjsf.bind("${z:vid(v, 'search_logins_script')}", '${extDom}').success(function()
   {
     Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").loadPage(1)
   })
@@ -318,9 +318,9 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'edit-person')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'edit-person')}", '${extDom}', function(btn, event)
   {
-    var m = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').retradeLoginModel; if(!m) return;
+    var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
     var domain  = 'wnd:' + "${z:vid(v, 'edit-person')}:" + m.getId();
     var winmain = extjsf.bind('winmain', domain);
@@ -359,7 +359,7 @@
     winmain.on('close', function()
     {
       var pe = winmain.personEdit; if(!pe || pe.cancelled) return;
-      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var m  = gr.retradeLoginModel;
 
       //~: update the model if
@@ -414,9 +414,9 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'update-user-password')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'update-user-password')}", '${extDom}', function(btn, event)
   {
-    var m = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').retradeLoginModel; if(!m) return;
+    var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
     var domain  = 'wnd:' + "${z:vid(v, 'update-user-password')}:" + m.getId();
     var winmain = extjsf.bind('winmain', domain);
@@ -455,7 +455,7 @@
     winmain.on('close', function()
     {
       var pe = winmain.passwordEdit; if(!pe || pe.cancelled) return;
-      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var m  = gr.retradeLoginModel;
 
       //~: update the model if
@@ -492,9 +492,9 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'person-secure-ables')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'person-secure-ables')}", '${extDom}', function(btn, event)
   {
-    var m = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').retradeLoginModel; if(!m) return;
+    var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
     var domain  = 'wnd:' + "${z:vid(v, 'person-secure-ables')}:" + m.getId();
     var winmain = extjsf.bind('winmain', domain);
@@ -632,41 +632,41 @@
     //<![CDATA[
 
   //~: grid selection change
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function(grid, selected)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('selectionchange', function(grid, selected)
   {
     //~: show selected user info
     var m = (selected.length == 1) && selected[0];
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').showUserInfo(m)
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').showUserInfo(m)
 
     //~: disable login-password edit and view rules (enabled in set-current-callback)
-    extjsf.co("${z:vid(v, 'update-user-password')}", '${rootView.extjsDomain}').setDisabled(true)
-    extjsf.co("${z:vid(v, 'person-secure-ables')}", '${rootView.extjsDomain}').setDisabled(true)
+    extjsf.co("${z:vid(v, 'update-user-password')}", '${extDom}').setDisabled(true)
+    extjsf.co("${z:vid(v, 'person-secure-ables')}", '${extDom}').setDisabled(true)
 
     //~: update the current login selection
-    extjsf.bindHandler("${z:vid(v, 'change-current-login-script')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'change-current-login-script')}", '${extDom}')({
       params: { currentLogin: m.getId() }
     })
   })
 
   //~: user info selection display
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').showUserInfo = function(m)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').showUserInfo = function(m)
   {
-    var pn = extjsf.bind("${z:vid(v, 'user_data')}", '${rootView.extjsDomain}').co();
-    var tb = extjsf.bind("${z:vid(v, 'user-data-toolbar')}", '${rootView.extjsDomain}').co();
-    var ud = extjsf.bind("${z:vid(v, 'user-data-info')}", '${rootView.extjsDomain}').co();
-    var uc = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').co();
+    var pn = extjsf.bind("${z:vid(v, 'user_data')}", '${extDom}').co();
+    var tb = extjsf.bind("${z:vid(v, 'user-data-toolbar')}", '${extDom}').co();
+    var ud = extjsf.bind("${z:vid(v, 'user-data-info')}", '${extDom}').co();
+    var uc = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${extDom}').co();
 
     //~: toggle off comment button
-    extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').toggle(false, true)
+    extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${extDom}').toggle(false, true)
 
     //~: show comment text block
-    extjsf.co("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').show()
+    extjsf.co("${z:vid(v, 'user-data-comment')}", '${extDom}').show()
 
     //~: hide comment edit field
-    extjsf.co("${z:vid(v, 'user-data-comment-edit')}", '${rootView.extjsDomain}').hide()
+    extjsf.co("${z:vid(v, 'user-data-comment-edit')}", '${extDom}').hide()
 
     //~: remember the model
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').retradeLoginModel = m;
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel = m;
 
     //~: show-hide controls
     if(!m)
@@ -694,7 +694,7 @@
     //~: the comment (description)
     var nc = Ext.get("${z:vid(v, 'user-data-nocomment')}");
     var co = Ext.get("${z:vid(v, 'user-data-comment')}");
-    var gr = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
     var ds = ZeTS.trim(m.get('descr'));
 
     if(!ds.length) { co.hide(); nc.show(); } else
@@ -705,11 +705,11 @@
   }
 
   //~: toggle edit comment
-  extjsf.bind("${z:vid(v, 'user-data-edit-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+  extjsf.bind("${z:vid(v, 'user-data-edit-comment')}", '${extDom}').on('toggle', function(btn)
   {
-     var gr = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
-     var ct = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${rootView.extjsDomain}').co();
-     var ce = extjsf.bind("${z:vid(v, 'user-data-comment-edit')}", '${rootView.extjsDomain}').co();
+     var gr = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
+     var ct = extjsf.bind("${z:vid(v, 'user-data-comment')}", '${extDom}').co();
+     var ce = extjsf.bind("${z:vid(v, 'user-data-comment-edit')}", '${extDom}').co();
      var m  = gr.retradeLoginModel; if(!m) return;
 
      //?: {go to edit mode}
@@ -735,7 +735,7 @@
        //~: update the login
        m.set('descr', ds)
 
-       extjsf.bindHandler("${z:vid(v, 'update_comment_script')}", '${rootView.extjsDomain}')({
+       extjsf.bindHandler("${z:vid(v, 'update_comment_script')}", '${extDom}')({
           params: { '${v.entityParam}': m.getId(), comment: ds }
        })
      }
@@ -771,10 +771,10 @@
   var pass  = ('true' == "#{v.secureChangeCurrentPassword}");
   var ables = ('true' == "#{v.secureViewCurrentAbles}");
 
-  extjsf.co("${z:vid(v, 'update-user-password')}", '${rootView.extjsDomain}').
+  extjsf.co("${z:vid(v, 'update-user-password')}", '${extDom}').
     setDisabled(!login && !pass)
 
-  extjsf.co("${z:vid(v, 'person-secure-ables')}", '${rootView.extjsDomain}').
+  extjsf.co("${z:vid(v, 'person-secure-ables')}", '${extDom}').
     setDisabled(!ables)
 
 })()

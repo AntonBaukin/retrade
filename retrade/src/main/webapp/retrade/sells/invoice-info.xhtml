@@ -20,7 +20,7 @@ ${v.forceSecureModelEntity('view')}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('${z:jss(v.winmainTitleInfo)}')
 
   </script>
@@ -44,7 +44,7 @@ ${v.forceSecureModelEntity('view')}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
+          extjsf.bind('winmain', '${extDom}').
             co().close()
         }
 
@@ -279,12 +279,12 @@ ${v.forceSecureModelEntity('view')}
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle = function(btn, pressed)
+  extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').retradeResultsToggle = function(btn, pressed)
   {
-    var g = extjsf.co("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}');
-    var r = extjsf.co("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}');
-    var s = extjsf.co("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}');
-    var f = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'invoice-goods')}", '${extDom}');
+    var r = extjsf.co("${z:vid(v, 'result-goods')}", '${extDom}');
+    var s = extjsf.co("${z:vid(v, 'toggle-sources')}", '${extDom}');
+    var f = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${extDom}');
 
     //?: display invoice goods
     if(!pressed)
@@ -334,11 +334,11 @@ ${v.forceSecureModelEntity('view')}
     }
   }
 
-  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}').
-    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle)
+  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${extDom}').
+    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').retradeResultsToggle)
 
-  extjsf.bind("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}').
-    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle)
+  extjsf.bind("${z:vid(v, 'toggle-formulas')}", '${extDom}').
+    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').retradeResultsToggle)
 
   //]]>
   </script>

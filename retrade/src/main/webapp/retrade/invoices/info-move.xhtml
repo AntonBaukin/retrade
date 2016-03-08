@@ -21,7 +21,7 @@ ${v.forceSecureModelEntity('view')}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle('${z:jss(v.winmainTitleInfo)}')
 
   //]]>
@@ -50,7 +50,7 @@ ${v.forceSecureModelEntity('view')}
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть', handler : function()
         {
-          extjsf.co('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -314,12 +314,12 @@ ${v.forceSecureModelEntity('view')}
   //<![CDATA[
 
   //~: filter and tune the resulting goods table depending on the mode
-  extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle = function(btn, pressed)
+  extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').retradeResultsToggle = function(btn, pressed)
   {
-    var g = extjsf.co("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}');
-    var r = extjsf.co("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}');
-    var s = extjsf.co("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}');
-    var f = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'invoice-goods')}", '${extDom}');
+    var r = extjsf.co("${z:vid(v, 'result-goods')}", '${extDom}');
+    var s = extjsf.co("${z:vid(v, 'toggle-sources')}", '${extDom}');
+    var f = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${extDom}');
 
     //?: display invoice goods
     if(!pressed)
@@ -370,11 +370,11 @@ ${v.forceSecureModelEntity('view')}
   }
 
   //~: click the resulting good
-  extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, e)
   {
     //?: {displaying the formulas} open it
-    var tf = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}')
+    var tf = extjsf.co("${z:vid(v, 'toggle-formulas')}", '${extDom}')
     if(!ZeTS.ises(rec.get('calcKey')) && tf.pressed)
       retrade_open_window({ url: '/goods/good-calc-info',
         box: { event: e, widthpt: 540, heightpt: 280, '+xpt': 30, '-ypt': 50 },
@@ -384,21 +384,21 @@ ${v.forceSecureModelEntity('view')}
       })
   })
 
-  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${rootView.extjsDomain}').
-    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle)
+  extjsf.bind("${z:vid(v, 'toggle-sources')}", '${extDom}').
+    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').retradeResultsToggle)
 
-  extjsf.bind("${z:vid(v, 'toggle-formulas')}", '${rootView.extjsDomain}').
-    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').retradeResultsToggle)
+  extjsf.bind("${z:vid(v, 'toggle-formulas')}", '${extDom}').
+    on('toggle', extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').retradeResultsToggle)
 
   //~: collapse-expand two grids
-  extjsf.bind("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}').on('collapse', function()
+  extjsf.bind("${z:vid(v, 'invoice-goods')}", '${extDom}').on('collapse', function()
   {
-    extjsf.co("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').expand()
+    extjsf.co("${z:vid(v, 'result-goods')}", '${extDom}').expand()
   })
 
-  extjsf.bind("${z:vid(v, 'result-goods')}", '${rootView.extjsDomain}').on('collapse', function()
+  extjsf.bind("${z:vid(v, 'result-goods')}", '${extDom}').on('collapse', function()
   {
-    extjsf.co("${z:vid(v, 'invoice-goods')}", '${rootView.extjsDomain}').expand()
+    extjsf.co("${z:vid(v, 'invoice-goods')}", '${extDom}').expand()
   })
 
   //]]>

@@ -21,7 +21,7 @@ ${v.forceSecureModelEntity('view')}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle('${z:jss(v.winmainTitleInfo)}')
 
   //]]>
@@ -52,7 +52,7 @@ ${v.forceSecureModelEntity('view')}
         xtype: 'button', text: 'Закрыть',
         handler : function()
         {
-          extjsf.co('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${extDom}').close()
         }
       </f:facet>
     </x:component>

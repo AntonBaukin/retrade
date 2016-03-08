@@ -24,7 +24,7 @@
 
   ZeT.scope(function()
   {
-    var b = extjsf.bind("${z:vid(v, 'toggle-good-view')}", '${rootView.extjsDomain}')
+    var b = extjsf.bind("${z:vid(v, 'toggle-good-view')}", '${extDom}')
     var i, c = [ 'retrade-tree-list', 'retrade-list-tree', 'retrade-list-only' ]
     var t = [ 'Показать дерево категорий товара слева',
       'Показать дерево категорий товара справа',
@@ -40,9 +40,9 @@
       b.co().setIconCls(c[i])
       b.co().setTooltip(t[i])
 
-      var p = extjsf.bind("${z:vid(v, treeTableLayout)}", '${rootView.extjsDomain}')
-      var x = extjsf.bind("${z:vid(v, tree)}", '${rootView.extjsDomain}')
-      var s = extjsf.bind("${z:vid(v, goodsTreeSplitter)}", '${rootView.extjsDomain}')
+      var p = extjsf.bind("${z:vid(v, treeTableLayout)}", '${extDom}')
+      var x = extjsf.bind("${z:vid(v, tree)}", '${extDom}')
+      var s = extjsf.bind("${z:vid(v, goodsTreeSplitter)}", '${extDom}')
       var m = c[(i + 2) % 3]
 
       if(m == 'retrade-tree-list')
@@ -104,10 +104,10 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow =
+  extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow =
     function(record, e, opts)
   {
-    var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}')
+    var btn = extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}')
 
     var dk  = extjsf.globalDomain('view-edit-good')
     if(!record) dk = "${z:vid(v, 'create-good')}:"
@@ -131,9 +131,9 @@
     winmain.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked === true)
   }
 
-  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function(btn, event)
+  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
   {
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
       retradeOpenGoodWindow(null, event, { box: { '+xpt': 10, '-ypt': -10,
         heightpt: retrade_default('good-box').heightpt + 40
       }})
@@ -159,7 +159,7 @@
   <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${rootView.extjsDomain}', function(btn, e)
+  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
   {
     var winmain; winmain = retrade_open_window({ url: '/goods/create-goods',
       tempDomain: 'add-goods-table', collapsible: true,
@@ -257,28 +257,28 @@
     //~: toggle assign group
     Ext.onReady(ZeT.timeouted(250, function()
     {
-      extjsf.bind("${z:vid(v, 'toggle-assign-group')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+      extjsf.bind("${z:vid(v, 'toggle-assign-group')}", '${extDom}').on('toggle', function(btn)
       {
-        var ga = extjsf.co("${z:vid(v, 'assign-group-area')}", '${rootView.extjsDomain}').body.parent()
+        var ga = extjsf.co("${z:vid(v, 'assign-group-area')}", '${extDom}').body.parent()
         ga.removeCls(['retrade-toolbar-colour-line-none', 'retrade-toolbar-colour-line-one'])
         ga.addCls('retrade-toolbar-colour-line-' + ((btn.pressed)?('one'):('none')))
 
-        extjsf.bind("${z:vid(v, 'search-goods-layout')}", '${rootView.extjsDomain}').visible(!btn.pressed)
-        extjsf.bind("${z:vid(v, 'assign-group-layout')}", '${rootView.extjsDomain}').visible(btn.pressed)
+        extjsf.bind("${z:vid(v, 'search-goods-layout')}", '${extDom}').visible(!btn.pressed)
+        extjsf.bind("${z:vid(v, 'assign-group-layout')}", '${extDom}').visible(btn.pressed)
       })
     }))
 
     //~: do assign group
-    extjsf.bindHandler("${z:vid(v, 'assign-group-submit')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'assign-group-submit')}", '${extDom}', function()
     {
-      var group = extjsf.bind("${z:vid(v, 'group-to-assign')}", '${rootView.extjsDomain}').value()
+      var group = extjsf.bind("${z:vid(v, 'group-to-assign')}", '${extDom}').value()
       if(ZeTS.ises(group)) return ReTrade.desktop.error('Ценовая группа товара не может быть пустой!')
 
-      extjsf.bindHandler("${z:vid(v, 'assign-group-script')}", '${rootView.extjsDomain}')({
+      extjsf.bindHandler("${z:vid(v, 'assign-group-script')}", '${extDom}')({
         params: { goodsGroup: group, selset: ReTrade.selset.selset }, success : function() {
 
-          extjsf.co("${z:vid(v, 'toggle-assign-group')}", '${rootView.extjsDomain}').setPressed(false)
-          extjsf.co("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}').reload()
+          extjsf.co("${z:vid(v, 'toggle-assign-group')}", '${extDom}').setPressed(false)
+          extjsf.co("${z:vid(v, 'goodUnits')}", '${extDom}').reload()
       }})
     })
 

@@ -21,7 +21,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('Добавление товаров в табличной форме')
 
   </script>
@@ -50,7 +50,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
+          extjsf.bind('winmain', '${extDom}').
             co().close()
         }
 
@@ -67,10 +67,10 @@ ${v.checkModelRequestedWithRedirect}
 
       handler : function()
       {
-        extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+        extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
           getPlugin('cellediting').completeEdit()
 
-        extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
       }
     </f:facet>
    </x:component>
@@ -188,14 +188,14 @@ ${v.checkModelRequestedWithRedirect}
         ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
         listeners : { beforeedit : function(ed, event)
         {
-           var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+           var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}')
            if(g.retradeDisabledEditing) return false; else g.retradeEditEvent = event
         },
 
         edit: function(ed, event)
         {
-          var s = extjsf.co("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
-          var z = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
+          var s = extjsf.co("${z:vid(v, 'groups')}", '${extDom}')
+          var z = extjsf.co("${z:vid(v, 'store')}", '${extDom}')
           var g = ZeTS.trim(event.record.get('goodGroup'))
 
           z.extjsfBind.lastMeasureSelected = event.record.get('measureCode')
@@ -224,7 +224,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           if(e.getKey() == e.INSERT)
           {
-            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
           }
         }
       },
@@ -233,7 +233,7 @@ ${v.checkModelRequestedWithRedirect}
       {
         function onSpecialKey(f, e)
         {
-          var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+          var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}')
           var x = g.retradeEditEvent
           var p = g.co().getPlugin('cellediting')
           var c
@@ -251,7 +251,7 @@ ${v.checkModelRequestedWithRedirect}
           if(e.getKey() == e.INSERT)
           {
             commitEdit()
-            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
           }
 
           if(e.getKey() == e.TAB) if(x.colIdx == 3) c = [ x.rowIdx, 2 ];
@@ -273,7 +273,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           if(e.getKey() == e.INSERT)
           {
-            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
           }
         }
 
@@ -372,7 +372,7 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: add locally added good groups on store reload
-  extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}').on('load', function(store)
+  extjsf.bind("${z:vid(v, 'groups')}", '${extDom}').on('load', function(store)
   {
     var local = store.extjsfBind.locallyAdded
     if(local) ZeT.each(local, function(g)
@@ -383,10 +383,10 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: insert a new empty record
-  extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').retradeInsertRow = function(code)
+  extjsf.bind("${z:vid(v, 'store')}", '${extDom}').retradeInsertRow = function(code)
   {
-    var s = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}')
-    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var s = extjsf.co("${z:vid(v, 'store')}", '${extDom}')
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
     var p = g.getPlugin('cellediting')
     var m = Ext.create('retrade.model.GoodUnitView', {
       objectKey: code, goodCode: code
@@ -407,14 +407,14 @@ ${v.checkModelRequestedWithRedirect}
   //~: insert new record on window open
   Ext.onReady(function()
   {
-    extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${rootView.extjsDomain}')()
+    extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
   })
 
 
   //~: delete selected row
-  extjsf.bindHandler("${z:vid(v, 'delete-row')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'delete-row')}", '${extDom}', function()
   {
-     var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+     var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
 
      //~: commit current edit
      g.getPlugin('cellediting').completeEdit()
@@ -432,9 +432,9 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: commit the records
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var store = extjsf.co("${z:vid(v, 'store')}", '${rootView.extjsDomain}');
+    var store = extjsf.co("${z:vid(v, 'store')}", '${extDom}');
 
     //~: validate the records
     function validate()
@@ -482,16 +482,16 @@ ${v.checkModelRequestedWithRedirect}
     }
 
     //?: has selection set
-    if(extjsf.co("${z:vid(v, 'selset')}", '${rootView.extjsDomain}').getValue())
+    if(extjsf.co("${z:vid(v, 'selset')}", '${extDom}').getValue())
       params.selset = ReTrade.selset.selset;
 
 
     //!: send to the server
-    extjsf.bindHandler("${z:vid(v, 'commit-script')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'commit-script')}", '${extDom}')({
       params: params, success: function()
       {
-        extjsf.bind('winmain', '${rootView.extjsDomain}').retradeEditDone = true;
-        extjsf.bindHandler("${z:vid(v, 'close-window')}", '${rootView.extjsDomain}')()
+        extjsf.bind('winmain', '${extDom}').retradeEditDone = true;
+        extjsf.bindHandler("${z:vid(v, 'close-window')}", '${extDom}')()
       }
     })
   })
@@ -523,7 +523,7 @@ ${v.checkModelRequestedWithRedirect}
     <script>
     //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'store')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'store')}", '${extDom}').
     retradeInsertRow("#{v.nextGoodCode}")
 
     //]]>

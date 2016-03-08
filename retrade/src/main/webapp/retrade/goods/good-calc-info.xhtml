@@ -22,11 +22,11 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle("#{z:jss(v.calcWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-info',
-      name: 'winmain', domain: '${rootView.extjsDomain}'
+      name: 'winmain', domain: '${extDom}'
     })
 
   //]]>
@@ -338,16 +338,16 @@ ${v.checkModelRequestedWithRedirect}
   Ext.onReady(ZeT.timeouted(150, function()
   {
     ReTrade.desktop.applyWindowBox({
-      name: 'winmain', domain: '${rootView.extjsDomain}',
+      name: 'winmain', domain: '${extDom}',
       widthpt: 540, heightpt: 280, prevsize: 'calc-info'
     })
   }))
 
   //~: toggle edit comment
-  extjsf.bind("${z:vid(v, 'edit-comment')}", '${rootView.extjsDomain}').on('toggle', function(btn)
+  extjsf.bind("${z:vid(v, 'edit-comment')}", '${extDom}').on('toggle', function(btn)
   {
-    var ml = extjsf.co("${z:vid(v, 'main-layout')}", '${rootView.extjsDomain}');
-    var co = extjsf.co("${z:vid(v, 'calc-comment')}", '${rootView.extjsDomain}');
+    var ml = extjsf.co("${z:vid(v, 'main-layout')}", '${extDom}');
+    var co = extjsf.co("${z:vid(v, 'calc-comment')}", '${extDom}');
 
     ml.setVisible(!btn.pressed)
     co.setVisible(btn.pressed)
@@ -361,7 +361,7 @@ ${v.checkModelRequestedWithRedirect}
       //?: {not changed} not post
       if(v == co.retradeInitialValue) return;
 
-      extjsf.bindHandler("${z:vid(v, 'calc-comment-script')}", '${rootView.extjsDomain}')({
+      extjsf.bindHandler("${z:vid(v, 'calc-comment-script')}", '${extDom}')({
         params: { remarks: v }
       })
     }

@@ -53,7 +53,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-      ReTrade.desktop.bindPanel('left', "${z:vid(desktopView, 'desktop-left')}", '${rootView.extjsDomain}')
+      ReTrade.desktop.bindPanel('left', "${z:vid(desktopView, 'desktop-left')}", '${extDom}')
 
     //]]>
     </script>
@@ -75,8 +75,8 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  ReTrade.desktop.controller('left').mainTopbar("${z:vid(desktopView, 'left-topbar')}", '${rootView.extjsDomain}')
-  ReTrade.desktop.controller('left').mainTopbarExt("${z:vid(desktopView, 'left-topbar')}", '${rootView.extjsDomain}')
+  ReTrade.desktop.controller('left').mainTopbar("${z:vid(desktopView, 'left-topbar')}", '${extDom}')
+  ReTrade.desktop.controller('left').mainTopbarExt("${z:vid(desktopView, 'left-topbar')}", '${extDom}')
 
     //]]>
     </script>
@@ -121,23 +121,23 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    ReTrade.desktop.controller('left').voidPanel("${z:vid(desktopView, 'left-void')}", '${rootView.extjsDomain}')
+    ReTrade.desktop.controller('left').voidPanel("${z:vid(desktopView, 'left-void')}", '${extDom}')
 
     //~: collapse left on center component click
-    extjsf.bind("${z:vid(desktopView, 'left_void_1')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(desktopView, 'left_void_1')}", '${extDom}').
       on('afterrender', function(panel)
     {
       panel.getEl().on('click', function()
       {
-        extjsf.co("${z:vid(desktopView, 'desktop-left')}", '${rootView.extjsDomain}').collapse()
+        extjsf.co("${z:vid(desktopView, 'desktop-left')}", '${extDom}').collapse()
       })
     })
 
     //~: make background image square
-    extjsf.bind("${z:vid(desktopView, 'left-void')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(desktopView, 'left-void')}", '${extDom}').
       on('resize', function(p, w, h)
     {
-      var v = extjsf.co("${z:vid(desktopView, 'left_void_1')}", '${rootView.extjsDomain}')
+      var v = extjsf.co("${z:vid(desktopView, 'left_void_1')}", '${extDom}')
       var H = p.getViewRegion(); H = Math.round((H.bottom - H.top) / 3)
       var s = v.getSize()
 
@@ -164,7 +164,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-        ReTrade.desktop.controller('left').contentPanel("${z:vid(desktopView, 'left-panel')}", '${rootView.extjsDomain}')
+        ReTrade.desktop.controller('left').contentPanel("${z:vid(desktopView, 'left-panel')}", '${extDom}')
 
       //]]>
       </script>
@@ -199,7 +199,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-      ReTrade.desktop.bindPanel('center', "${z:vid(desktopView, 'desktop-center')}", '${rootView.extjsDomain}')
+      ReTrade.desktop.bindPanel('center', "${z:vid(desktopView, 'desktop-center')}", '${extDom}')
 
     //]]>
     </script>
@@ -222,7 +222,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-        ReTrade.desktop.controller('center').contentPanel("${z:vid(desktopView, 'desktop-root-panel')}", '${rootView.extjsDomain}')
+        ReTrade.desktop.controller('center').contentPanel("${z:vid(desktopView, 'desktop-root-panel')}", '${extDom}')
 
       //]]>
       </script>
@@ -256,7 +256,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-      ReTrade.desktop.bindPanel('right', "${z:vid(desktopView, 'desktop-right')}", '${rootView.extjsDomain}')
+      ReTrade.desktop.bindPanel('right', "${z:vid(desktopView, 'desktop-right')}", '${extDom}')
 
     //]]>
     </script>
@@ -278,8 +278,8 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  ReTrade.desktop.controller('right').mainTopbar("${z:vid(desktopView, 'right-topbar')}", '${rootView.extjsDomain}')
-  ReTrade.desktop.controller('right').mainTopbarExt("${z:vid(desktopView, 'right-topbar')}", '${rootView.extjsDomain}')
+  ReTrade.desktop.controller('right').mainTopbar("${z:vid(desktopView, 'right-topbar')}", '${extDom}')
+  ReTrade.desktop.controller('right').mainTopbarExt("${z:vid(desktopView, 'right-topbar')}", '${extDom}')
 
     //]]>
     </script>
@@ -324,23 +324,23 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    ReTrade.desktop.controller('right').voidPanel("${z:vid(desktopView, 'right-void')}", '${rootView.extjsDomain}')
+    ReTrade.desktop.controller('right').voidPanel("${z:vid(desktopView, 'right-void')}", '${extDom}')
 
     //~: collapse right on center component click
-    extjsf.bind("${z:vid(desktopView, 'right_void_1')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(desktopView, 'right_void_1')}", '${extDom}').
       on('afterrender', function(panel)
     {
       panel.getEl().on('click', function()
       {
-        extjsf.co("${z:vid(desktopView, 'desktop-right')}", '${rootView.extjsDomain}').collapse()
+        extjsf.co("${z:vid(desktopView, 'desktop-right')}", '${extDom}').collapse()
       })
     })
 
     //~: make background image square
-    extjsf.bind("${z:vid(desktopView, 'right-void')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(desktopView, 'right-void')}", '${extDom}').
       on('resize', function(p, w, h)
     {
-      var v = extjsf.co("${z:vid(desktopView, 'right_void_1')}", '${rootView.extjsDomain}')
+      var v = extjsf.co("${z:vid(desktopView, 'right_void_1')}", '${extDom}')
       var H = p.getViewRegion(); H = Math.round((H.bottom - H.top) / 3)
       var s = v.getSize()
 
@@ -367,7 +367,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-        ReTrade.desktop.controller('right').contentPanel("${z:vid(desktopView, 'right-panel')}", '${rootView.extjsDomain}')
+        ReTrade.desktop.controller('right').contentPanel("${z:vid(desktopView, 'right-panel')}", '${extDom}')
 
       //]]>
       </script>

@@ -22,7 +22,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.bind('winmain', '${rootView.extjsDomain}').
+      extjsf.bind('winmain', '${extDom}').
         co().setTitle("${z:jss(v.winmainTitle)}")
 
     //]]>
@@ -51,7 +51,7 @@ ${v.checkModelRequestedWithRedirect}
 
           handler : function()
           {
-            extjsf.bind('winmain', '${rootView.extjsDomain}').
+            extjsf.bind('winmain', '${extDom}').
               co().close()
           }
 
@@ -111,7 +111,7 @@ ${v.checkModelRequestedWithRedirect}
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -122,10 +122,10 @@ ${v.checkModelRequestedWithRedirect}
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchGoods: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").loadPage(1)
         }})
@@ -135,15 +135,15 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     //~: selection set only toggled
-    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').on('toggle', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').value();
         var params = { searchGoods: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
              Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").loadPage(1)
         }})

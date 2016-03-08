@@ -21,7 +21,7 @@ ${v.checkModelRequested}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle("#{z:jss(v.editWindowTitle)}")
 
   </script>
@@ -113,7 +113,7 @@ ${v.checkModelRequested}
         <f:facet name = "extjs-props">
           flex: 1, allowBlank: false, validator: function()
           {
-            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+            return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true;
           }
         </f:facet>
 
@@ -181,7 +181,7 @@ ${v.checkModelRequested}
   //<![CDATA[
 
   //~: validate on code change
-  extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)
+  extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
   {
      var fb = f.extjsfBind;
      fb.retradeCodeCheck = v; fb.validityStatus = true;
@@ -194,7 +194,7 @@ ${v.checkModelRequested}
      {
        if(fb.retradeCodeCheck != v) return;
 
-       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
           params: { code : fb.retradeCodeCheck }, failure: function()
           {
             fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -207,15 +207,15 @@ ${v.checkModelRequested}
 
 
   //~: submit the form
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var form = extjsf.bind("${z:vid(v, 'store-form')}", '${rootView.extjsDomain}');
+    var form = extjsf.bind("${z:vid(v, 'store-form')}", '${extDom}');
     if(!form.co().isValid()) return;
 
     form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
       command: "${z:vid(v, 'submit-action')}", success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'cancel')}", '${extDom}')()
       }
     })
   })

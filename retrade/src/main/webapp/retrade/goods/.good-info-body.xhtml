@@ -192,7 +192,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bind("${z:vid(v, gridId)}", '${rootView.extjsDomain}').retradeGridCellClick =
+  extjsf.bind("${z:vid(v, gridId)}", '${extDom}').retradeGridCellClick =
     function(grid, td, cellIndex, record, tr, rowIndex, e)
   {
     //?: {this is action column}
@@ -212,10 +212,10 @@
     })
 
     //~: the info window
-    var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}');
+    var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${extDom}');
 
     //~: request the info
-    extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${extDom}')({
       params: { goodUnit: record.getId() }
     })
 
@@ -283,7 +283,7 @@
     })
   }
 
-  extjsf.bind("${z:vid(v, gridId)}", '${rootView.extjsDomain}').on('add', function(grid)
+  extjsf.bind("${z:vid(v, gridId)}", '${extDom}').on('add', function(grid)
   {
     grid.getView().on('beforecellmousedown', grid.extjsfBind.retradeGridCellClick)
   })
@@ -294,9 +294,9 @@
    *  x.idg  {this is a derived good}
    *  x.ipr  {this is a regular product}
    */
-  extjsf.bind("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}').retardeInitInfoGood = function(x)
+  extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').retardeInitInfoGood = function(x)
   {
-    var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}');
+    var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${extDom}');
     var inf = Ext.get("${z:vid(v, 'goods-info')}");
     var ltr = inf.down('tr.retrade-client-good-loaded-layout');
     var ltd = ltr.down('td');

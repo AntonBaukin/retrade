@@ -22,7 +22,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.bind('winmain-selset', '${rootView.extjsDomain}').
+      extjsf.bind('winmain-selset', '${extDom}').
         co().setTitle('${z:jss(v.windowTitle)}')
 
     //]]>
@@ -126,20 +126,20 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-cancel')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-cancel')}", '${extDom}', function()
     {
-       var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
-       var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
+       var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
+       var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}');
 
        edit.co().hide()
        grid.co().show()
     })
 
-    extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-submit')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-submit')}", '${extDom}', function()
     {
-       var form = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
-       var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${rootView.extjsDomain}');
-       var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}');
+       var form = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
+       var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
+       var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}');
 
        //~: submit the form
        form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
@@ -175,7 +175,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'selset-grid')}", '${rootView.extjsDomain}').on('added', function(grid)
+    extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}').on('added', function(grid)
     {
       //~: add action column to remove items from teh set
       grid.headerCt.insert(0, Ext.create('Ext.grid.column.Action', {
@@ -186,7 +186,7 @@ ${v.checkModelRequestedWithRedirect}
           handler: function(grid, row)
           {
              var rec = grid.getStore().getAt(row);
-             extjsf.bindHandler("${z:vid(v, 'script_selset_del_item')}", '${rootView.extjsDomain}')({
+             extjsf.bindHandler("${z:vid(v, 'script_selset_del_item')}", '${extDom}')({
               params: { '${v.entityParam}': rec.getId() }, success: function()
               {
                 Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").load()

@@ -83,10 +83,10 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bind("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${extDom}').
     onDocTypeItemClick = function(item, event)
   {
-    var menu = extjsf.co("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}');
+    var menu = extjsf.co("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${extDom}');
     var subs = menu.query('menucheckitem');
 
     if(event.ctrlKey) Ext.Array.each(subs, function(i)
@@ -127,7 +127,7 @@
               tooltipType: 'title', tooltip: 'Удерживайте Ctrl (Meta), чтобы обратить выделение',
 
               listeners: { click:
-                extjsf.bind("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}').onDocTypeItemClick
+                extjsf.bind("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${extDom}').onDocTypeItemClick
               }
             </f:facet>
           </x:component>
@@ -225,11 +225,11 @@
     <script type = "text/javascript">
       //<![CDATA[
 
-      extjsf.bindHandler("${z:vid(localView, 'docs-filter-refresh')}", '${rootView.extjsDomain}', function()
+      extjsf.bindHandler("${z:vid(localView, 'docs-filter-refresh')}", '${extDom}', function()
       {
         //~: document types encoded
-        var doctstr = extjsf.bind("${z:vid(localView, 'filter-form-doc-types-str')}", '${rootView.extjsDomain}');
-        var docmenu = extjsf.co("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${rootView.extjsDomain}');
+        var doctstr = extjsf.bind("${z:vid(localView, 'filter-form-doc-types-str')}", '${extDom}');
+        var docmenu = extjsf.co("${z:vid(localView, 'filter-form-doc-types-menu-button')}", '${extDom}');
         var docsubs = docmenu.query('menucheckitem');
         var docsels = [];
 
@@ -245,14 +245,14 @@
         doctstr.value(docsels.join(','))
 
         //~: selection set
-        var cselset = extjsf.co("${z:vid(localView, 'with-selset-check')}", '${rootView.extjsDomain}');
-        var wselset = extjsf.bind("${z:vid(localView, 'with-selset-with')}", '${rootView.extjsDomain}');
-        var nselset = extjsf.bind("${z:vid(localView, 'with-selset-name')}", '${rootView.extjsDomain}');
+        var cselset = extjsf.co("${z:vid(localView, 'with-selset-check')}", '${extDom}');
+        var wselset = extjsf.bind("${z:vid(localView, 'with-selset-with')}", '${extDom}');
+        var nselset = extjsf.bind("${z:vid(localView, 'with-selset-name')}", '${extDom}');
 
         wselset.value(cselset.pressed)
         nselset.value(!cselset.pressed?(''):(ReTrade.selset.selset))
 
-        extjsf.bind("${z:vid(localView, 'docs_filter_form')}", '${rootView.extjsDomain}').
+        extjsf.bind("${z:vid(localView, 'docs_filter_form')}", '${extDom}').
           submitForm({'${localView.viewModeParam}': '${localView.viewModePostStr}'})
       })
 

@@ -156,11 +156,11 @@
 
   //~: attach top bar panel to the desktop
   ReTrade.desktop.controller('center').mainTopbar(
-    "${z:vid(localView, 'main_topbar')}", '${rootView.extjsDomain}')
+    "${z:vid(localView, 'main_topbar')}", '${extDom}')
 
   //~: set the top bar extension point
   ReTrade.desktop.controller('center').mainTopbarExt(
-    "${z:vid(localView, 'main_topbar_ext')}", '${rootView.extjsDomain}')
+    "${z:vid(localView, 'main_topbar_ext')}", '${extDom}')
 
   //~: setup the desktop clocks
   Ext.onReady(function()
@@ -176,7 +176,7 @@
 
   //~: open goods prices root panel
   extjsf.bindHandler("${z:vid(localView, 'retrade-goods-prices')}",
-    '${rootView.extjsDomain}', function()
+    '${extDom}', function()
   {
     var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-prices:');
 
@@ -189,7 +189,7 @@
 
   //~: open shared goods tree (for read-only)
   extjsf.bindHandler("${z:vid(localView, 'retrade-goods-tree')}",
-    '${rootView.extjsDomain}', function()
+    '${extDom}', function()
   {
     var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-tree:');
 
@@ -202,7 +202,7 @@
 
   //~: open goods tree own (for editing)
   extjsf.bindHandler("${z:vid(localView, 'retrade-goods-tree-own')}",
-    '${rootView.extjsDomain}', function()
+    '${extDom}', function()
   {
     var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-tree-own:');
 

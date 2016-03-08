@@ -7,7 +7,7 @@
       <script>
       //<![CDATA[
 
-      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').
         retardeInitInfoGood({ irg: true })
 
       //]]>
@@ -18,7 +18,7 @@
       <script>
       //<![CDATA[
 
-      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').
         retardeInitInfoGood({ idg: true,
           isr: ('true' == '#{v.infoGood.goodCalc.semiReady}'),
           sgc: '#{z:jss(v.infoGood.goodCalc.superGood.code)}',
@@ -34,14 +34,14 @@
     <ui:fragment rendered = "#{not empty v.infoGood and not empty v.infoGood.goodCalc and empty v.infoGood.goodCalc.superGood}">
 
       <script>
-        extjsf.bind("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}').retardeInitInfoGood.ITEMS = [];
+        extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').retardeInitInfoGood.ITEMS = [];
       </script>
 
       <ui:repeat var = "p" value = "#{v.infoGood.goodCalc.parts}">
         <script>
         //<![CDATA[
 
-        extjsf.bind("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}').retardeInitInfoGood.ITEMS.push({
+        extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').retardeInitInfoGood.ITEMS.push({
           volume: '#{z:trim(p.volume)}', code: '#{z:jss(p.goodUnit.code)}',
           name: '#{z:jss(p.goodUnit.name)}', mucode: '#{z:jss(p.goodUnit.measure.code)}'
         })
@@ -53,10 +53,10 @@
       <script>
       //<![CDATA[
 
-      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').
         retardeInitInfoGood({ ipr: true,
           isr: ('true' == '#{v.infoGood.goodCalc.semiReady}'),
-          pts: extjsf.bind("${z:vid(v, 'goods-info-window')}", '${rootView.extjsDomain}').retardeInitInfoGood.ITEMS
+          pts: extjsf.bind("${z:vid(v, 'goods-info-window')}", '${extDom}').retardeInitInfoGood.ITEMS
         })
 
       //]]>

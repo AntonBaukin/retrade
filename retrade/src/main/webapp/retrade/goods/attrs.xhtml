@@ -22,7 +22,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.co('winmain', '${rootView.extjsDomain}').
+      extjsf.co('winmain', '${extDom}').
         setTitle('Атрибуты товаров')
 
     //]]>
@@ -49,7 +49,7 @@ ${v.checkModelRequestedWithRedirect}
         <f:facet name = "extjs-props">
           xtype: 'button', text: 'Закрыть', handler : function()
           {
-            extjsf.co('winmain', '${rootView.extjsDomain}').close()
+            extjsf.co('winmain', '${extDom}').close()
           }
         </f:facet>
       </x:component>
@@ -202,7 +202,7 @@ ${v.checkModelRequestedWithRedirect}
             <f:facet name = "extjs-props">
               flex: 1, validator: function()
               {
-                var val = extjsf.bind("${z:vid(v, 'name')}", '${rootView.extjsDomain}').retradeValidator
+                var val = extjsf.bind("${z:vid(v, 'name')}", '${extDom}').retradeValidator
                 return !ZeT.isf(val)?(true):val.apply(this, arguments)
               }
             </f:facet>
@@ -362,7 +362,7 @@ ${v.checkModelRequestedWithRedirect}
             listeners : {
               edit: function(ed, event)
               {
-                var g = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
+                var g = extjsf.bind("${z:vid(v, 'vgrid')}", '${extDom}')
 
                 var lr = g.lastEditRecord; ZeT.timeout(1000, function(){
                   if(lr == g.lastEditRecord) delete g.lastEditRecord
@@ -374,7 +374,7 @@ ${v.checkModelRequestedWithRedirect}
 
               beforeedit : function(ed, event)
               {
-                var g = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
+                var g = extjsf.bind("${z:vid(v, 'vgrid')}", '${extDom}')
                 if(g.disabledEditing) return false; else {
                   g.editEvent = event
                   g.lastEditRecord = event.record
@@ -409,26 +409,26 @@ ${v.checkModelRequestedWithRedirect}
 
   ZeT.scope(function()
   {
-    var groups = extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
-    var groupf = extjsf.bind("${z:vid(v, 'groups-list')}", '${rootView.extjsDomain}')
-    var groupl = extjsf.bind("${z:vid(v, 'groups-list-label')}", '${rootView.extjsDomain}')
-    var attrs  = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var close  = extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}')
-    var add    = extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}')
-    var cancel = extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')
-    var delval = extjsf.bind("${z:vid(v, 'delval')}", '${rootView.extjsDomain}')
-    var addval = extjsf.bind("${z:vid(v, 'addval')}", '${rootView.extjsDomain}')
-    var save   = extjsf.bind("${z:vid(v, 'save')}", '${rootView.extjsDomain}')
-    var grid   = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
-    var form   = extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}')
-    var name   = extjsf.bind("${z:vid(v, 'name')}", '${rootView.extjsDomain}')
-    var group  = extjsf.bind("${z:vid(v, 'group-select')}", '${rootView.extjsDomain}')
-    var type   = extjsf.bind("${z:vid(v, 'type')}", '${rootView.extjsDomain}')
-    var iss    = extjsf.bind("${z:vid(v, 'is-shared')}", '${rootView.extjsDomain}')
-    var isa    = extjsf.bind("${z:vid(v, 'is-array')}", '${rootView.extjsDomain}')
-    var isl    = extjsf.bind("${z:vid(v, 'is-list')}", '${rootView.extjsDomain}')
-    var values = extjsf.bind("${z:vid(v, 'values')}", '${rootView.extjsDomain}')
-    var vgrid  = extjsf.bind("${z:vid(v, 'vgrid')}", '${rootView.extjsDomain}')
+    var groups = extjsf.bind("${z:vid(v, 'groups')}", '${extDom}')
+    var groupf = extjsf.bind("${z:vid(v, 'groups-list')}", '${extDom}')
+    var groupl = extjsf.bind("${z:vid(v, 'groups-list-label')}", '${extDom}')
+    var attrs  = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var close  = extjsf.bind("${z:vid(v, 'close')}", '${extDom}')
+    var add    = extjsf.bind("${z:vid(v, 'add')}", '${extDom}')
+    var cancel = extjsf.bind("${z:vid(v, 'cancel')}", '${extDom}')
+    var delval = extjsf.bind("${z:vid(v, 'delval')}", '${extDom}')
+    var addval = extjsf.bind("${z:vid(v, 'addval')}", '${extDom}')
+    var save   = extjsf.bind("${z:vid(v, 'save')}", '${extDom}')
+    var grid   = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}')
+    var form   = extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}')
+    var name   = extjsf.bind("${z:vid(v, 'name')}", '${extDom}')
+    var group  = extjsf.bind("${z:vid(v, 'group-select')}", '${extDom}')
+    var type   = extjsf.bind("${z:vid(v, 'type')}", '${extDom}')
+    var iss    = extjsf.bind("${z:vid(v, 'is-shared')}", '${extDom}')
+    var isa    = extjsf.bind("${z:vid(v, 'is-array')}", '${extDom}')
+    var isl    = extjsf.bind("${z:vid(v, 'is-list')}", '${extDom}')
+    var values = extjsf.bind("${z:vid(v, 'values')}", '${extDom}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'vgrid')}", '${extDom}')
     var record, ox, ronly
 
     function setEditMode(x, rec)

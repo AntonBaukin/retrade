@@ -18,7 +18,7 @@
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('Лог генерации домена')
 
   </script>
@@ -41,7 +41,7 @@
 
         handler : function()
         {
-          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
+          var cmp = extjsf.bind('winmain', '${extDom}').co();
           cmp.findParentByType('panel').remove(cmp, true)
         }
 
@@ -87,9 +87,9 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${rootView.extjsDomain}').updateGenesisLog = function()
+  extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}').updateGenesisLog = function()
   {
-      var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${rootView.extjsDomain}');
+      var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}');
       if(!script) return;                    //<-- the window is closed
       if(script.updated_genesis_log) return; //<-- already updated the script
 
@@ -116,7 +116,7 @@
       Ext.data.StoreManager.lookup("${z:vid(v, 'domainsStore')}").load()
   }
 
-  Ext.onReady(extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${rootView.extjsDomain}').updateGenesisLog)
+  Ext.onReady(extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}').updateGenesisLog)
 
   //]]>
   </script>
@@ -144,7 +144,7 @@
 
 (function()
 {
-  var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${rootView.extjsDomain}');
+  var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}');
   if(!script) return; //<-- the window is closed
   script.updateGenesisLog()
 
@@ -160,7 +160,7 @@
 
 (function()
 {
-  var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${rootView.extjsDomain}');
+  var script = extjsf.bind("${z:vid(v, 'get-genesis-log')}", '${extDom}');
   if(!script) return; //<-- the window is closed
 
   script.GENESIS_LOG = "#{z:jss(v.genesisLog)}";

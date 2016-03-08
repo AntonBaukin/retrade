@@ -19,7 +19,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle('Сопоставить прайс-листы отобранным контрагентам')
 
   //]]>
@@ -48,7 +48,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.co('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -83,24 +83,24 @@ ${v.checkModelRequestedWithRedirect}
     //<![CDATA[
 
     //~: submit the association
-    extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
     {
       //~: collect the contractors
-      var cst = extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}');
+      var cst = extjsf.co("${z:vid(v, 'contractors')}", '${extDom}');
       var cs  = []; cst.each(function(i) { cs.push(i.getId()) })
       if(!cs.length) return ReTrade.desktop.error('Добавьте хотя бы одного контрагента!')
 
       //~: collect the price lists
-      var pst = extjsf.co("${z:vid(v, 'priceLists')}", '${rootView.extjsDomain}');
+      var pst = extjsf.co("${z:vid(v, 'priceLists')}", '${extDom}');
       var ps  = []; pst.each(function(i) { ps.push(i.getId()) })
       if(!ps.length) return ReTrade.desktop.error('Добавьте хотя бы один прайс-лист!')
 
       //~: submit the form
-      extjsf.bindHandler("${z:vid(v, 'submit-script')}", '${rootView.extjsDomain}')({
+      extjsf.bindHandler("${z:vid(v, 'submit-script')}", '${extDom}')({
           params: { contractors: cs, priceLists: ps }, success: function()
       {
-        extjsf.bind('winmain', '${rootView.extjsDomain}').retradeEditDone = true;
-        extjsf.co('winmain', '${rootView.extjsDomain}').close()
+        extjsf.bind('winmain', '${extDom}').retradeEditDone = true;
+        extjsf.co('winmain', '${extDom}').close()
       }})
     })
 
@@ -239,9 +239,9 @@ ${v.checkModelRequestedWithRedirect}
       //<![CDATA[
 
       //~: delete the selected contractors button
-      extjsf.bindHandler("${z:vid(v, 'delete-firms')}", '${rootView.extjsDomain}', function()
+      extjsf.bindHandler("${z:vid(v, 'delete-firms')}", '${extDom}', function()
       {
-        var g = extjsf.co("${z:vid(v, 'cgrid')}", '${rootView.extjsDomain}');
+        var g = extjsf.co("${z:vid(v, 'cgrid')}", '${extDom}');
 
         //~: selected contractors
         var s = g.getSelectionModel().getSelection();
@@ -251,7 +251,7 @@ ${v.checkModelRequestedWithRedirect}
         var ids = Ext.Array.map(s, function(i) { return i.getId() })
 
         //~: remove the items on the server side
-        extjsf.bindHandler("${z:vid(v, 'delete-firms-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'delete-firms-script')}", '${extDom}')({
           params: { contractors: ids }})
 
         //~: remove from the store
@@ -259,23 +259,23 @@ ${v.checkModelRequestedWithRedirect}
       })
 
       //~: delete the selected contractors button
-      extjsf.bindHandler("${z:vid(v, 'add-firms')}", '${rootView.extjsDomain}', function()
+      extjsf.bindHandler("${z:vid(v, 'add-firms')}", '${extDom}', function()
       {
-        extjsf.bindHandler("${z:vid(v, 'add-firms-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'add-firms-script')}", '${extDom}')({
           params: { selset: ReTrade.selset.selset }, success: function()
         {
-          extjsf.co("${z:vid(v, 'contractors')}", '${rootView.extjsDomain}').reload()
+          extjsf.co("${z:vid(v, 'contractors')}", '${extDom}').reload()
         }})
       })
 
       //~: react on grid delete key
-      extjsf.bind("${z:vid(v, 'cgrid')}", '${rootView.extjsDomain}').on('added', function(grid)
+      extjsf.bind("${z:vid(v, 'cgrid')}", '${extDom}').on('added', function(grid)
       {
         grid.getView().on('itemkeydown', function(view, record, item, index, e)
         {
           //?: {delete | backspace}
           if((e.getKey() == e.DELETE) || (e.getKey() == e.BACKSPACE))
-            extjsf.bindHandler("${z:vid(v, 'delete-firms')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'delete-firms')}", '${extDom}')()
         })
       })
 
@@ -423,9 +423,9 @@ ${v.checkModelRequestedWithRedirect}
       //<![CDATA[
 
       //~: delete the selected price lists button
-      extjsf.bindHandler("${z:vid(v, 'delete-lists')}", '${rootView.extjsDomain}', function()
+      extjsf.bindHandler("${z:vid(v, 'delete-lists')}", '${extDom}', function()
       {
-        var g = extjsf.co("${z:vid(v, 'plgrid')}", '${rootView.extjsDomain}');
+        var g = extjsf.co("${z:vid(v, 'plgrid')}", '${extDom}');
 
         //~: selected price lists
         var s = g.getSelectionModel().getSelection();
@@ -438,70 +438,70 @@ ${v.checkModelRequestedWithRedirect}
         var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
 
         //~: assign the items on the server side
-        extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
           params: { priceLists: ids }, success: function()
           {
-            extjsf.co("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').reload()
+            extjsf.co("${z:vid(v, 'goods')}", '${extDom}').reload()
           }})
       })
 
       //~: delete the selected price lists button
-      extjsf.bindHandler("${z:vid(v, 'add-lists')}", '${rootView.extjsDomain}', function()
+      extjsf.bindHandler("${z:vid(v, 'add-lists')}", '${extDom}', function()
       {
-        extjsf.bindHandler("${z:vid(v, 'add-lists-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'add-lists-script')}", '${extDom}')({
           params: { selset: ReTrade.selset.selset }, success: function()
         {
-          extjsf.co("${z:vid(v, 'priceLists')}", '${rootView.extjsDomain}').reload()
-          extjsf.co("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').reload()
+          extjsf.co("${z:vid(v, 'priceLists')}", '${extDom}').reload()
+          extjsf.co("${z:vid(v, 'goods')}", '${extDom}').reload()
         }})
       })
 
       //~: move price-lists up
-      extjsf.bindHandler("${z:vid(v, 'lists-up')}", '${rootView.extjsDomain}', function()
+      extjsf.bindHandler("${z:vid(v, 'lists-up')}", '${extDom}', function()
       {
         extjsf.support.moveGridSelected(true,
-          extjsf.co("${z:vid(v, 'plgrid')}", '${rootView.extjsDomain}'),
+          extjsf.co("${z:vid(v, 'plgrid')}", '${extDom}'),
           function(g)
         {
           //~: collect all the ids
           var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
 
           //~: post to the server
-          extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
+          extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
             params: { priceLists: ids }, success : function()
           {
-            extjsf.co("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').reload()
+            extjsf.co("${z:vid(v, 'goods')}", '${extDom}').reload()
           }})
         })
       })
 
       //~: move price-lists down
-      extjsf.bindHandler("${z:vid(v, 'lists-down')}", '${rootView.extjsDomain}', function()
+      extjsf.bindHandler("${z:vid(v, 'lists-down')}", '${extDom}', function()
       {
         extjsf.support.moveGridSelected(false,
-          extjsf.co("${z:vid(v, 'plgrid')}", '${rootView.extjsDomain}'),
+          extjsf.co("${z:vid(v, 'plgrid')}", '${extDom}'),
           function(g)
         {
           //~: collect all the ids
           var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
 
           //~: post to the server
-          extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${rootView.extjsDomain}')({
+          extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
             params: { priceLists: ids }, success : function()
           {
-            extjsf.co("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').reload()
+            extjsf.co("${z:vid(v, 'goods')}", '${extDom}').reload()
           }})
         })
       })
 
       //~: react on grid delete key
-      extjsf.bind("${z:vid(v, 'plgrid')}", '${rootView.extjsDomain}').on('added', function(grid)
+      extjsf.bind("${z:vid(v, 'plgrid')}", '${extDom}').on('added', function(grid)
       {
         grid.getView().on('itemkeydown', function(view, record, item, index, e)
         {
           //?: {delete | backspace}
           if((e.getKey() == e.DELETE) || (e.getKey() == e.BACKSPACE))
-            extjsf.bindHandler("${z:vid(v, 'delete-lists')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'delete-lists')}", '${extDom}')()
         })
       })
 
@@ -598,7 +598,7 @@ ${v.checkModelRequestedWithRedirect}
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -609,13 +609,13 @@ ${v.checkModelRequestedWithRedirect}
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchGoods: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function()
         {
-            extjsf.co("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').loadPage(1)
+            extjsf.co("${z:vid(v, 'goods')}", '${extDom}').loadPage(1)
         }})
       }
 
@@ -623,18 +623,18 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     //~: selection set only toggled
-    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').on('toggle', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').value();
         var params = { searchGoods: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function()
         {
-          extjsf.co("${z:vid(v, 'goods')}", '${rootView.extjsDomain}').loadPage(1)
+          extjsf.co("${z:vid(v, 'goods')}", '${extDom}').loadPage(1)
         }})
     })
 

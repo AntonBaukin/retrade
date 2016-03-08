@@ -46,9 +46,9 @@ ${v.checkModelRequestedWithRedirect}
     
       ZeT.scope(function()
       {
-        var root  = extjsf.bind("${z:vid(v, 'documents-root')}", '${rootView.extjsDomain}')
-        var btn   = extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${rootView.extjsDomain}')
-        var panel = extjsf.bind("${z:vid(v, 'documents-root-toolbar')}", '${rootView.extjsDomain}')
+        var root  = extjsf.bind("${z:vid(v, 'documents-root')}", '${extDom}')
+        var btn   = extjsf.bind("${z:vid(v, 'show-docs-filter')}", '${extDom}')
+        var panel = extjsf.bind("${z:vid(v, 'documents-root-toolbar')}", '${extDom}')
 
         var menuNode, pressed, menuObj = {
           title: 'Фильтр', icon: 'retrade-document-filter-icon', handler: function()
@@ -143,12 +143,12 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${rootView.extjsDomain}').success(function()
+  extjsf.bind("${z:vid(v, 'docs_filter_form')}", '${extDom}').success(function()
   {
     Ext.data.StoreManager.lookup("${z:vid(v, 'documentsViews')}").loadPage(1)
   })
 
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, e)
   {
     jQuery.get("${z:url('/go/unity')}", { entity: rec.getId() }, function(x)

@@ -17,7 +17,7 @@ ${v.forceSecureEdit()}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle('${z:jss(v.winmainTitleEdit)}')
 
   //]]>
@@ -155,7 +155,7 @@ ${v.forceSecureEdit()}
         width: extjsf.ex(22), fieldStyle : { textAlign: 'center' },
         allowBlank: false, validator: function()
         {
-          return extjsf.bind("${z:vid(v, 'invoice-code')}", '${rootView.extjsDomain}').validityStatus || true;
+          return extjsf.bind("${z:vid(v, 'invoice-code')}", '${extDom}').validityStatus || true;
         }
       </f:facet>
 
@@ -168,7 +168,7 @@ ${v.forceSecureEdit()}
     //<![CDATA[
 
   //~: validate on code change
-  extjsf.bind("${z:vid(v, 'invoice-code')}", '${rootView.extjsDomain}').on('change', function(f, v)
+  extjsf.bind("${z:vid(v, 'invoice-code')}", '${extDom}').on('change', function(f, v)
   {
     var fb = f.extjsfBind;
     fb.retradeCodeCheck = v; fb.validityStatus = true;
@@ -181,7 +181,7 @@ ${v.forceSecureEdit()}
     {
       if(fb.retradeCodeCheck != v) return;
 
-      extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+      extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
       params: { code : fb.retradeCodeCheck }, failure: function()
       {
         fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -247,8 +247,8 @@ ${v.forceSecureEdit()}
         width: extjsf.ex(32), validator: function()
         {
           if("#{v.invoice.altered}" == 'true') return true;
-          var x = extjsf.bind("${z:vid(v, 'trade-store-source')}", '${rootView.extjsDomain}').value();
-          var y = extjsf.bind("${z:vid(v, 'trade-store')}", '${rootView.extjsDomain}').value();
+          var x = extjsf.bind("${z:vid(v, 'trade-store-source')}", '${extDom}').value();
+          var y = extjsf.bind("${z:vid(v, 'trade-store')}", '${extDom}').value();
           return (x != y) || 'Склады списания и назначения совпадают!';
         }
       </f:facet>
@@ -267,8 +267,8 @@ ${v.forceSecureEdit()}
         width: extjsf.ex(32), validator: function()
         {
           if("#{v.invoice.altered}" == 'true') return true;
-          var x = extjsf.bind("${z:vid(v, 'trade-store-source')}", '${rootView.extjsDomain}').value();
-          var y = extjsf.bind("${z:vid(v, 'trade-store')}", '${rootView.extjsDomain}').value();
+          var x = extjsf.bind("${z:vid(v, 'trade-store-source')}", '${extDom}').value();
+          var y = extjsf.bind("${z:vid(v, 'trade-store')}", '${extDom}').value();
           return (x != y) || 'Склады списания и назначения совпадают!';
         }
       </f:facet>
@@ -364,32 +364,32 @@ ${v.forceSecureEdit()}
   //<![CDATA[
 
   //~: submit form before going to date form
-  extjsf.bindHandler("${z:vid(v, 'edit-date')}", '${rootView.extjsDomain}',
-    extjsf.bind("${z:vid(v, 'invoice-form')}", '${rootView.extjsDomain}').
+  extjsf.bindHandler("${z:vid(v, 'edit-date')}", '${extDom}',
+    extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
       bindSubmitForm({'${v.viewModeParam}':'${v.viewModePostStr}',
       immediate: true, command: 'goods', success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'goto-edit-date')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'goto-edit-date')}", '${extDom}')()
       }}))
 
   //~: submit form with command button
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}',
-    extjsf.bind("${z:vid(v, 'invoice-form')}", '${rootView.extjsDomain}').
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}',
+    extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
       bindSubmitForm({'${v.viewModeParam}':'${v.viewModePostStr}',
       command: 'submit', success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'submit-done')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'submit-done')}", '${extDom}')()
       }}))
 
   //~: invoice form validation
-  extjsf.bind("${z:vid(v, 'invoice-form')}", '${rootView.extjsDomain}').validator(function(form, opts)
+  extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').validator(function(form, opts)
   {
     if(!form.isValid()) return false;
 
     //<: validate the goods
 
-    var s = extjsf.co("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}');
-    var t = extjsf.co("${z:vid(v, 'takenGoods')}", '${rootView.extjsDomain}');
+    var s = extjsf.co("${z:vid(v, 'invoiceGoods')}", '${extDom}');
+    var t = extjsf.co("${z:vid(v, 'takenGoods')}", '${extDom}');
 
     function validateVolume(m)
     {
@@ -468,11 +468,11 @@ ${v.forceSecureEdit()}
   })
 
   //~: insert new record in the empty table
-  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').on('load', function(store, recs)
+  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').on('load', function(store, recs)
   {
     //?: {creating invoice} insert new good
     if(!recs.length) return ZeT.timeout(500,
-      extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}'))
+      extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}'))
 
     //~: filter take-only records
     var taken = []; for(var i = 0;(i < recs.length);i++)
@@ -485,12 +485,12 @@ ${v.forceSecureEdit()}
       store.remove(taken)
       extjsf.support.refreshGridIndices(store)
       extjsf.support.refreshGridIndices(taken)
-      extjsf.co("${z:vid(v, 'takenGoods')}", '${rootView.extjsDomain}').add(taken)
+      extjsf.co("${z:vid(v, 'takenGoods')}", '${extDom}').add(taken)
     }
   })
 
   //~: columns editors
-  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns = function()
+  extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCreateColumns = function()
   {
     var cols = ZeT.defined('retrade.columns.InvoiceMoveGoodEdited')()
     var colCode = cols[1];
@@ -498,7 +498,7 @@ ${v.forceSecureEdit()}
 
     function selectGood(sel)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record;
 
       m.set('goodUnit', sel.get('objectKey'))
@@ -518,7 +518,7 @@ ${v.forceSecureEdit()}
 
     function validateVolume(v)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record;
 
       return (m.get('volumeInteger') === true)?
@@ -527,7 +527,7 @@ ${v.forceSecureEdit()}
 
     function onSpecialKey(f, e)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var x = g.retradeEditEvent;
       var p = g.co().getPlugin('cellediting');
       var c;
@@ -545,7 +545,7 @@ ${v.forceSecureEdit()}
       if(e.getKey() == e.INSERT)
       {
         commitEdit()
-        extjsf.bindHandler("${z:vid(v, 'add-part')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'add-part')}", '${extDom}')()
       }
 
       if(e.getKey() == e.TAB)
@@ -701,13 +701,13 @@ ${v.forceSecureEdit()}
         <f:facet name = "extjs-props">
           xtype: 'tool', type: 'up', margin: extjsf.pts(0, 0, 0, 4), callback: function()
           {
-            extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${rootView.extjsDomain}').callback()
-            extjsf.co("${z:vid(v, 'main-goods-layout')}", '${rootView.extjsDomain}').flex = 0
-            extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').hide()
+            extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${extDom}').callback()
+            extjsf.co("${z:vid(v, 'main-goods-layout')}", '${extDom}').flex = 0
+            extjsf.co("${z:vid(v, 'grid')}", '${extDom}').hide()
 
-            extjsf.co("${z:vid(v, 'grid-tool-collapse')}", '${rootView.extjsDomain}').hide()
-            extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${rootView.extjsDomain}').show()
-            extjsf.co("${z:vid(v, 'main-splitter')}", '${rootView.extjsDomain}').setDisabled(true)
+            extjsf.co("${z:vid(v, 'grid-tool-collapse')}", '${extDom}').hide()
+            extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${extDom}').show()
+            extjsf.co("${z:vid(v, 'main-splitter')}", '${extDom}').setDisabled(true)
           }
         </f:facet>
       </x:component>
@@ -720,13 +720,13 @@ ${v.forceSecureEdit()}
         <f:facet name = "extjs-props">
           xtype: 'tool', type: 'down', hidden: true, margin: extjsf.pts(0, 0, 0, 4), callback: function()
           {
-            extjsf.co("${z:vid(v, 'main-goods-layout')}", '${rootView.extjsDomain}').flex = 1
-            extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').show()
-            extjsf.co("${z:vid(v, 'root_panel')}", '${rootView.extjsDomain}').updateLayout()
+            extjsf.co("${z:vid(v, 'main-goods-layout')}", '${extDom}').flex = 1
+            extjsf.co("${z:vid(v, 'grid')}", '${extDom}').show()
+            extjsf.co("${z:vid(v, 'root_panel')}", '${extDom}').updateLayout()
 
-            extjsf.co("${z:vid(v, 'grid-tool-collapse')}", '${rootView.extjsDomain}').show()
-            extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${rootView.extjsDomain}').hide()
-            extjsf.co("${z:vid(v, 'main-splitter')}", '${rootView.extjsDomain}').setDisabled(false)
+            extjsf.co("${z:vid(v, 'grid-tool-collapse')}", '${extDom}').show()
+            extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${extDom}').hide()
+            extjsf.co("${z:vid(v, 'main-splitter')}", '${extDom}').setDisabled(false)
           }
         </f:facet>
       </x:component>
@@ -742,14 +742,14 @@ ${v.forceSecureEdit()}
       flex: 1, cls: 'ux-grid-not-mark-dirty',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
-      columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns(),
+      columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCreateColumns(),
 
       plugins: [{
         ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
         listeners : {
           beforeedit : function(ed, event)
           {
-             var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+             var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
              if(g.retradeDisabledEditing) return false; else g.retradeEditEvent = event;
           }}
       }],
@@ -759,15 +759,15 @@ ${v.forceSecureEdit()}
         cellkeydown: function(grid, td, cellIdx, m, tr, rowIdx, e)
         {
           if(e.getKey() == e.INSERT)
-            extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}')()
 
           if(e.getKey() == e.DELETE)
-            extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${extDom}')()
 
           if(e.getKey() == e.ENTER)
-            extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+            extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
               getPlugin('cellediting').startEditByPosition({ row: rowIdx,
-                column: extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}'), 'goodCode')})
+                column: extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'grid')}", '${extDom}'), 'goodCode')})
         }
       }
 
@@ -853,13 +853,13 @@ ${v.forceSecureEdit()}
         <f:facet name = "extjs-props">
           xtype: 'tool', type: 'down', margin: extjsf.pts(0, 0, 0, 4), callback: function()
           {
-            extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${rootView.extjsDomain}').callback()
-            extjsf.co("${z:vid(v, 'taken-goods-layout')}", '${rootView.extjsDomain}').flex = 0
-            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').hide()
+            extjsf.co("${z:vid(v, 'grid-tool-expand')}", '${extDom}').callback()
+            extjsf.co("${z:vid(v, 'taken-goods-layout')}", '${extDom}').flex = 0
+            extjsf.co("${z:vid(v, 'taken')}", '${extDom}').hide()
 
-            extjsf.co("${z:vid(v, 'taken-tool-collapse')}", '${rootView.extjsDomain}').hide()
-            extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${rootView.extjsDomain}').show()
-            extjsf.co("${z:vid(v, 'main-splitter')}", '${rootView.extjsDomain}').setDisabled(true)
+            extjsf.co("${z:vid(v, 'taken-tool-collapse')}", '${extDom}').hide()
+            extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${extDom}').show()
+            extjsf.co("${z:vid(v, 'main-splitter')}", '${extDom}').setDisabled(true)
           }
         </f:facet>
       </x:component>
@@ -870,13 +870,13 @@ ${v.forceSecureEdit()}
         <f:facet name = "extjs-props">
           xtype: 'tool', type: 'up', hidden: true, margin: extjsf.pts(0, 0, 0, 4), callback: function()
           {
-            extjsf.co("${z:vid(v, 'taken-goods-layout')}", '${rootView.extjsDomain}').flex = 1
-            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').show()
-            extjsf.co("${z:vid(v, 'root_panel')}", '${rootView.extjsDomain}').updateLayout()
+            extjsf.co("${z:vid(v, 'taken-goods-layout')}", '${extDom}').flex = 1
+            extjsf.co("${z:vid(v, 'taken')}", '${extDom}').show()
+            extjsf.co("${z:vid(v, 'root_panel')}", '${extDom}').updateLayout()
 
-            extjsf.co("${z:vid(v, 'taken-tool-collapse')}", '${rootView.extjsDomain}').show()
-            extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${rootView.extjsDomain}').hide()
-            extjsf.co("${z:vid(v, 'main-splitter')}", '${rootView.extjsDomain}').setDisabled(false)
+            extjsf.co("${z:vid(v, 'taken-tool-collapse')}", '${extDom}').show()
+            extjsf.co("${z:vid(v, 'taken-tool-expand')}", '${extDom}').hide()
+            extjsf.co("${z:vid(v, 'main-splitter')}", '${extDom}').setDisabled(false)
           }
         </f:facet>
       </x:component>
@@ -892,14 +892,14 @@ ${v.forceSecureEdit()}
       flex: 1, cls: 'ux-grid-not-mark-dirty',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true }),
-      columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${rootView.extjsDomain}').retradeCreateColumns(),
+      columns: extjsf.bind("${z:vid(v, 'invoiceGoods')}", '${extDom}').retradeCreateColumns(),
 
       plugins: [{
         ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
         listeners : {
           beforeedit : function(ed, event)
           {
-             var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+             var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
              if(g.retradeDisabledEditing) return false; else g.retradeEditEvent = event;
           }}
       }],
@@ -909,15 +909,15 @@ ${v.forceSecureEdit()}
         cellkeydown: function(grid, td, cellIdx, m, tr, rowIdx, e)
         {
           if(e.getKey() == e.INSERT)
-            extjsf.bindHandler("${z:vid(v, 'add-good-taken')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'add-good-taken')}", '${extDom}')()
 
           if(e.getKey() == e.DELETE)
-            extjsf.bindHandler("${z:vid(v, 'delete-goods-taken')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'delete-goods-taken')}", '${extDom}')()
 
           if(e.getKey() == e.ENTER)
-            extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}').
+            extjsf.co("${z:vid(v, 'taken')}", '${extDom}').
               getPlugin('cellediting').startEditByPosition({ row: rowIdx,
-                column: extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}'), 'goodCode')})
+                column: extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'taken')}", '${extDom}'), 'goodCode')})
         }
       }
 
@@ -934,7 +934,7 @@ ${v.forceSecureEdit()}
   //<![CDATA[
 
   //~: insert new record in the table
-  extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeAddGood = function(g)
+  extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeAddGood = function(g)
   {
     var c = extjsf.support.columnByDataIndex(g, 'goodCode');
 
@@ -953,15 +953,15 @@ ${v.forceSecureEdit()}
     })
   }
 
-  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeAddGood(
-      extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeAddGood(
+      extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
     )
   })
 
   //~: delete selected records from the table
-  extjsf.bind("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}').retradeDeleteGoods = function(g)
+  extjsf.bind("${z:vid(v, 'delete-goods')}", '${extDom}').retradeDeleteGoods = function(g)
   {
     var s = g.getSelectionModel().getSelection(); if(!s.length) return;
 
@@ -976,28 +976,28 @@ ${v.forceSecureEdit()}
     if(!ZeT.isx(m)) g.getSelectionModel().select(m)
   }
 
-  extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}').retradeDeleteGoods(
-      extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    extjsf.bind("${z:vid(v, 'delete-goods')}", '${extDom}').retradeDeleteGoods(
+      extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
     )
   })
 
   //~: insert new record in the taken table
   if("#{v.twoTables}" == 'true')
-    extjsf.bindHandler("${z:vid(v, 'add-good-taken')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'add-good-taken')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeAddGood(
-      extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}')
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeAddGood(
+      extjsf.co("${z:vid(v, 'taken')}", '${extDom}')
     )
   })
 
   //~: delete selected records from the taken table
   if("#{v.twoTables}" == 'true')
-    extjsf.bindHandler("${z:vid(v, 'delete-goods-taken')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'delete-goods-taken')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'delete-goods')}", '${rootView.extjsDomain}').retradeDeleteGoods(
-      extjsf.co("${z:vid(v, 'taken')}", '${rootView.extjsDomain}')
+    extjsf.bind("${z:vid(v, 'delete-goods')}", '${extDom}').retradeDeleteGoods(
+      extjsf.co("${z:vid(v, 'taken')}", '${extDom}')
     )
   })
 

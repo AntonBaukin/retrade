@@ -22,10 +22,10 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle("#{z:jss(v.editWindowTitle)}")
 
-    ReTrade.desktop.prevsizeComp('winmain', '${rootView.extjsDomain}')
+    ReTrade.desktop.prevsizeComp('winmain', '${extDom}')
 
   //]]>
   </script>
@@ -52,7 +52,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'button', text: 'Отмена', cls: 'ux-btn-red',
         handler : function()
         {
-          extjsf.co('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -64,7 +64,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'button', text: 'Закрыть',
         handler : function()
         {
-          extjsf.co('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -323,7 +323,7 @@ ${v.checkModelRequestedWithRedirect}
           extjsfReadWrite: true, allowBlank: false,
           flex: 2, validator: function()
           {
-            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+            return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true;
           }
         </f:facet>
 
@@ -375,7 +375,7 @@ ${v.checkModelRequestedWithRedirect}
           xtype: 'button', iconCls: 'retrade-measure-icon', margin: extjsf.pts(0, 0, 0, 6),
           tooltipType: 'title', tooltip: 'Просмотр и редактирование единиц измерения, заданных для данного товара',
           handler: function() {
-            extjsf.bindHandler("${z:vid(v, 'goto-measures-script')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'goto-measures-script')}", '${extDom}')()
           }
         </f:facet>
       </x:component>
@@ -605,7 +605,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}">
         <f:facet name = "extjs-props">
-          checked: !!extjsf.bind('winmain', '${rootView.extjsDomain}').retradeAddSelSetChecked,
+          checked: !!extjsf.bind('winmain', '${extDom}').retradeAddSelSetChecked,
           cls: 'retrade-align-right', fieldStyle: { marginRight: '4pt' }
         </f:facet>
 
@@ -703,7 +703,7 @@ ${v.checkModelRequestedWithRedirect}
                   width: 28, align: 'center', iconCls: 'retrade-button-add',
                   handler: function(v, row)
                   {
-                    extjsf.co("${z:vid(v, 'vendorCodes')}", '${rootView.extjsDomain}').
+                    extjsf.co("${z:vid(v, 'vendorCodes')}", '${extDom}').
                       insert(row, { value: '' })
                   }
                 },
@@ -718,7 +718,7 @@ ${v.checkModelRequestedWithRedirect}
                   width: 28, align: 'center', iconCls: 'retrade-edit-delete',
                   handler: function(v, r, c, i, e, m)
                   {
-                    var s = extjsf.co("${z:vid(v, 'vendorCodes')}", '${rootView.extjsDomain}')
+                    var s = extjsf.co("${z:vid(v, 'vendorCodes')}", '${extDom}')
                     if(s.getCount() == 1) m.set('value', ''); else s.remove(m)
                   }
                 }
@@ -767,7 +767,7 @@ ${v.checkModelRequestedWithRedirect}
                   width: 28, align: 'center', iconCls: 'retrade-button-add',
                   handler: function(v, row)
                   {
-                    extjsf.co("${z:vid(v, 'barcodes')}", '${rootView.extjsDomain}').
+                    extjsf.co("${z:vid(v, 'barcodes')}", '${extDom}').
                       insert(row, { value: '' })
                   }
                 },
@@ -782,7 +782,7 @@ ${v.checkModelRequestedWithRedirect}
                   width: 28, align: 'center', iconCls: 'retrade-edit-delete',
                   handler: function(v, r, c, i, e, m)
                   {
-                    var s = extjsf.co("${z:vid(v, 'barcodes')}", '${rootView.extjsDomain}')
+                    var s = extjsf.co("${z:vid(v, 'barcodes')}", '${extDom}')
                     if(s.getCount() == 1) m.set('value', ''); else s.remove(m)
                   }
                 }
@@ -836,7 +836,7 @@ ${v.checkModelRequestedWithRedirect}
       '${v.modelParam}': '#{v.modelKeys}',
       'edit-mode': ZeT.delay(function()
       {
-        return !extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}').isReadMode
+        return !extjsf.bind("${z:vid(v, 'good-form')}", '${extDom}').isReadMode
       })
     </f:facet>
   </x:winaction-delegate>
@@ -849,38 +849,38 @@ ${v.checkModelRequestedWithRedirect}
   {
     var isReadMode, checkGoodUsed
 
-    var status  = extjsf.bind("${z:vid(v, 'root-panel-status')}", '${rootView.extjsDomain}')
-    var form    = extjsf.bind("${z:vid(v, 'good-form')}", '${rootView.extjsDomain}')
-    var atsext  = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${rootView.extjsDomain}')
-    var atsbtn  = extjsf.bind("${z:vid(v, 'show-attrs')}", '${rootView.extjsDomain}')
-    var submit  = extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')
-    var gocalc  = extjsf.bind("${z:vid(v, 'goto-calc')}", '${rootView.extjsDomain}')
-    var sattrs  = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
-    var delats  = extjsf.bind("${z:vid(v, 'del-attrs')}", '${rootView.extjsDomain}')
-    var addat   = extjsf.bind("${z:vid(v, 'add-attr')}", '${rootView.extjsDomain}')
-    var attsed  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
-    var doedit  = extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}')
-    var farea   = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${rootView.extjsDomain}')
-    var code    = extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}')
-    var msure   = extjsf.bind("${z:vid(v, 'measure')}", '${rootView.extjsDomain}')
-    var msures  = extjsf.bind("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
-    var gused   = extjsf.bind("${z:vid(v, 'good-used')}", '${rootView.extjsDomain}')
-    var close   = extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}')
-    var cancel  = extjsf.bind("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')
-    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}')
-    var groups  = extjsf.bind("${z:vid(v, 'groups')}", '${rootView.extjsDomain}')
-    var edit    = extjsf.bind("${z:vid(v, 'edit')}", '${rootView.extjsDomain}')
-    var vcodes  = extjsf.bind("${z:vid(v, 'vendor-codes')}", '${rootView.extjsDomain}')
-    var vcstore = extjsf.bind("${z:vid(v, 'vendorCodes')}", '${rootView.extjsDomain}')
-    var vcodesh = extjsf.bind("${z:vid(v, 'vendor-codes-hidden')}", '${rootView.extjsDomain}')
-    var bcodes  = extjsf.bind("${z:vid(v, 'barcode')}", '${rootView.extjsDomain}')
-    var bcstore = extjsf.bind("${z:vid(v, 'barcodes')}", '${rootView.extjsDomain}')
-    var bcodesh = extjsf.bind("${z:vid(v, 'barcodes-hidden')}", '${rootView.extjsDomain}')
-    var service = extjsf.bind("${z:vid(v, 'service')}", '${rootView.extjsDomain}')
-    var weight  = extjsf.bind("${z:vid(v, 'weighted')}", '${rootView.extjsDomain}')
-    var gweight = extjsf.bind("${z:vid(v, 'gross-weight')}", '${rootView.extjsDomain}')
-    var nweight = extjsf.bind("${z:vid(v, 'net-weight')}", '${rootView.extjsDomain}')
-    var rvol    = extjsf.bind("${z:vid(v, 'rest-volume')}", '${rootView.extjsDomain}')
+    var status  = extjsf.bind("${z:vid(v, 'root-panel-status')}", '${extDom}')
+    var form    = extjsf.bind("${z:vid(v, 'good-form')}", '${extDom}')
+    var atsext  = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${extDom}')
+    var atsbtn  = extjsf.bind("${z:vid(v, 'show-attrs')}", '${extDom}')
+    var submit  = extjsf.bind("${z:vid(v, 'submit')}", '${extDom}')
+    var gocalc  = extjsf.bind("${z:vid(v, 'goto-calc')}", '${extDom}')
+    var sattrs  = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}')
+    var delats  = extjsf.bind("${z:vid(v, 'del-attrs')}", '${extDom}')
+    var addat   = extjsf.bind("${z:vid(v, 'add-attr')}", '${extDom}')
+    var attsed  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+    var doedit  = extjsf.bind("${z:vid(v, 'do-edit')}", '${extDom}')
+    var farea   = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${extDom}')
+    var code    = extjsf.bind("${z:vid(v, 'code')}", '${extDom}')
+    var msure   = extjsf.bind("${z:vid(v, 'measure')}", '${extDom}')
+    var msures  = extjsf.bind("${z:vid(v, 'measures')}", '${extDom}')
+    var gused   = extjsf.bind("${z:vid(v, 'good-used')}", '${extDom}')
+    var close   = extjsf.bind("${z:vid(v, 'close')}", '${extDom}')
+    var cancel  = extjsf.bind("${z:vid(v, 'cancel-edit')}", '${extDom}')
+    var winmain = extjsf.bind('winmain', '${extDom}')
+    var groups  = extjsf.bind("${z:vid(v, 'groups')}", '${extDom}')
+    var edit    = extjsf.bind("${z:vid(v, 'edit')}", '${extDom}')
+    var vcodes  = extjsf.bind("${z:vid(v, 'vendor-codes')}", '${extDom}')
+    var vcstore = extjsf.bind("${z:vid(v, 'vendorCodes')}", '${extDom}')
+    var vcodesh = extjsf.bind("${z:vid(v, 'vendor-codes-hidden')}", '${extDom}')
+    var bcodes  = extjsf.bind("${z:vid(v, 'barcode')}", '${extDom}')
+    var bcstore = extjsf.bind("${z:vid(v, 'barcodes')}", '${extDom}')
+    var bcodesh = extjsf.bind("${z:vid(v, 'barcodes-hidden')}", '${extDom}')
+    var service = extjsf.bind("${z:vid(v, 'service')}", '${extDom}')
+    var weight  = extjsf.bind("${z:vid(v, 'weighted')}", '${extDom}')
+    var gweight = extjsf.bind("${z:vid(v, 'gross-weight')}", '${extDom}')
+    var nweight = extjsf.bind("${z:vid(v, 'net-weight')}", '${extDom}')
+    var rvol    = extjsf.bind("${z:vid(v, 'rest-volume')}", '${extDom}')
 
 
     //~: go to the calculation
@@ -890,7 +890,7 @@ ${v.checkModelRequestedWithRedirect}
       form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
         params: {immediate: true}, success: function()
         {
-          extjsf.bindHandler("${z:vid(v, 'goto-calc-script')}", '${rootView.extjsDomain}')()
+          extjsf.bindHandler("${z:vid(v, 'goto-calc-script')}", '${extDom}')()
         }
       })
     })
@@ -909,7 +909,7 @@ ${v.checkModelRequestedWithRedirect}
        {
          if(fb.retradeCodeCheck != v) return;
 
-         extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+         extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
             params: { code : fb.retradeCodeCheck }, failure: function()
             {
               fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -950,8 +950,8 @@ ${v.checkModelRequestedWithRedirect}
     //~: populate VATs store
     ZeT.scope(ZeT.s2o("${z:jss(v.getAttrType('VAT'))}"), function(vat)
     {
-      var s = extjsf.co("${z:vid(v, 'vats')}", '${rootView.extjsDomain}')
-      var f = extjsf.bind("${z:vid(v, 'vat')}", '${rootView.extjsDomain}')
+      var s = extjsf.co("${z:vid(v, 'vats')}", '${extDom}')
+      var f = extjsf.bind("${z:vid(v, 'vat')}", '${extDom}')
 
       if(ZeTS.ises(vat.object)) return
       vat = ZeT.s2o(vat.object)
@@ -1069,12 +1069,12 @@ ${v.checkModelRequestedWithRedirect}
       //~: save the window position or adapt it
       if(on && !isReadMode)
         ReTrade.desktop.applyWindowBox({
-          name: 'winmain', domain: '${rootView.extjsDomain}',
+          name: 'winmain', domain: '${extDom}',
           prevsize: 'good-attrs', widthpt: 480
         })
       else
         ReTrade.desktop.prevsizeComp({
-          name: 'winmain', domain: '${rootView.extjsDomain}',
+          name: 'winmain', domain: '${extDom}',
           marker: 'good-attrs', save: !!on
         })
 
@@ -1160,14 +1160,14 @@ ${v.checkModelRequestedWithRedirect}
     }
 
     //~: submit the form
-    extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', submitForm)
+    extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', submitForm)
 
     function submitForm()
     {
       //?: {has selection set checked}
-      var addss = extjsf.co("${z:vid(v, 'add-to-selset')}", '${rootView.extjsDomain}')
-      var ssnam = extjsf.co("${z:vid(v, 'selset')}", '${rootView.extjsDomain}')
-      var attsf = extjsf.bind("${z:vid(v, 'attributes')}", '${rootView.extjsDomain}')
+      var addss = extjsf.co("${z:vid(v, 'add-to-selset')}", '${extDom}')
+      var ssnam = extjsf.co("${z:vid(v, 'selset')}", '${extDom}')
+      var attsf = extjsf.bind("${z:vid(v, 'attributes')}", '${extDom}')
 
       if(addss.getValue() && addss.isVisible())
         ssnam.setValue(ReTrade.selset.selset)
@@ -1197,11 +1197,11 @@ ${v.checkModelRequestedWithRedirect}
       form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
         command: "${z:vid(v, 'submit-action')}", success: function()
         {
-          var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}');
+          var winmain = extjsf.bind('winmain', '${extDom}');
           winmain.retradeEditDone = true
           winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
 
-          extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
+          extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
         }
       })
     }

@@ -18,7 +18,7 @@
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('${z:jss(v.logWindowTitle)}')
 
   </script>
@@ -41,7 +41,7 @@
 
         handler : function()
         {
-          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
+          var cmp = extjsf.bind('winmain', '${extDom}').co();
           cmp.findParentByType('panel').remove(cmp, true)
         }
 
@@ -87,9 +87,9 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${rootView.extjsDomain}').updateSelfShuntLog = function()
+  extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${extDom}').updateSelfShuntLog = function()
   {
-      var script = extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${rootView.extjsDomain}');
+      var script = extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${extDom}');
       if(!script) return;                       //<-- the window is closed
       if(script.updated_self_shunt_log) return; //<-- already updated the script
 
@@ -113,7 +113,7 @@
       Ext.get("${z:vid(v, 'self-shunt-log-text')}").show()
   }
 
-  Ext.onReady(extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${rootView.extjsDomain}').updateSelfShuntLog)
+  Ext.onReady(extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${extDom}').updateSelfShuntLog)
 
   //]]>
   </script>
@@ -141,7 +141,7 @@
 
 (function()
 {
-  var script = extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${rootView.extjsDomain}');
+  var script = extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${extDom}');
   if(!script) return; //<-- the window is closed
   script.updateSelfShuntLog()
 
@@ -157,7 +157,7 @@
 
 (function()
 {
-  var script = extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${rootView.extjsDomain}');
+  var script = extjsf.bind("${z:vid(v, 'get-self-shunt-log')}", '${extDom}');
   if(!script) return; //<-- the window is closed
 
   script.SHUNT_LOG = "#{z:jss(v.selfShuntLog)}";

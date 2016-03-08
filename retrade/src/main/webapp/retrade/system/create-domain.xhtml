@@ -19,7 +19,7 @@
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('${z:jss(v.windowTitle)}')
 
   </script>
@@ -43,7 +43,7 @@
 
         handler : function()
         {
-          var cmp = extjsf.bind('winmain', '${rootView.extjsDomain}').co();
+          var cmp = extjsf.bind('winmain', '${extDom}').co();
           cmp.findParentByType('panel').remove(cmp, true)
         }
 
@@ -160,13 +160,13 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}').REST_PARAMS = [];
+  extjsf.bind("${z:vid(v, 'create_domain_form')}", '${extDom}').REST_PARAMS = [];
 
   //~: form validation
-  extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}').is_form_valid = function()
+  extjsf.bind("${z:vid(v, 'create_domain_form')}", '${extDom}').is_form_valid = function()
   {
-    var d = extjsf.bind("${z:vid(v, 'domain-code')}", '${rootView.extjsDomain}');
-    var n = extjsf.bind("${z:vid(v, 'domain-name')}", '${rootView.extjsDomain}');
+    var d = extjsf.bind("${z:vid(v, 'domain-code')}", '${extDom}');
+    var n = extjsf.bind("${z:vid(v, 'domain-name')}", '${extDom}');
     var v = true;
 
 
@@ -186,16 +186,16 @@
   }
 
   //~: form submit
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var form = extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}');
+    var form = extjsf.bind("${z:vid(v, 'create_domain_form')}", '${extDom}');
 
     //~: validate the invoice
     if(!form.is_form_valid()) return;
 
     //~: submit the form
     form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
-      success: extjsf.bindHandler("${z:vid(v, 'submit_done')}", '${rootView.extjsDomain}')
+      success: extjsf.bindHandler("${z:vid(v, 'submit_done')}", '${extDom}')
     })
   })
 
@@ -207,7 +207,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}').REST_PARAMS.push({
+    extjsf.bind("${z:vid(v, 'create_domain_form')}", '${extDom}').REST_PARAMS.push({
        name: "#{z:jss(p)}", value: "#{v.getParam(p)}"
     })
 
@@ -221,7 +221,7 @@
 
   Ext.onReady(function()
   {
-     var form = extjsf.bind("${z:vid(v, 'create_domain_form')}", '${rootView.extjsDomain}');
+     var form = extjsf.bind("${z:vid(v, 'create_domain_form')}", '${extDom}');
      Ext.Array.each(form.REST_PARAMS, function(param, i)
      {
          var id = "${z:vid(v, 'create_domain_param_')}" + i;

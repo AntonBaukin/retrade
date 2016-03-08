@@ -22,7 +22,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle('Прайс-листы')
 
   //]]>
@@ -48,7 +48,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть', handler : function()
         {
-          extjsf.co('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -117,12 +117,12 @@ ${v.checkModelRequestedWithRedirect}
 
     <script type = "text/javascript">
 
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, event)
   {
     if('false' == "${rootView.isSecure('edit: price-lists')}") return;
 
-    extjsf.bindHandler("${z:vid(v, 'edit-price-list')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'edit-price-list')}", '${extDom}')({
       params: { '${v.entityParam}': rec.getId() }
     })
   })

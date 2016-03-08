@@ -22,11 +22,11 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle("#{z:jss(v.calcEditWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-edit',
-      name: 'winmain', domain: '${rootView.extjsDomain}'
+      name: 'winmain', domain: '${extDom}'
     })
 
   //]]>
@@ -204,24 +204,24 @@ ${v.checkModelRequested}
   //<![CDATA[
 
   //~: form commit script
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     //?: {derived good}
-    if(extjsf.bind("${z:vid(v, 'derived')}", '${rootView.extjsDomain}').value() === true)
+    if(extjsf.bind("${z:vid(v, 'derived')}", '${extDom}').value() === true)
     {
       //?: {the form is not valid}
-      var f = extjsf.bind("${z:vid(v, 'derived-form')}", '${rootView.extjsDomain}');
+      var f = extjsf.bind("${z:vid(v, 'derived-form')}", '${extDom}');
       if(!f.co().isValid()) return;
 
       //~: calculation semi-ready
       var ps = {};
-      ps.semiReady = extjsf.bind("${z:vid(v, 'semi-ready')}", '${rootView.extjsDomain}').value();
+      ps.semiReady = extjsf.bind("${z:vid(v, 'semi-ready')}", '${extDom}').value();
 
       //!: submit the derived form
       f.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
         params: ps, command: "${z:vid(v, 'submit-action')}", success: function()
         {
-          extjsf.bindHandler("${z:vid(v, 'submit-back')}", '${rootView.extjsDomain}')()
+          extjsf.bindHandler("${z:vid(v, 'submit-back')}", '${extDom}')()
         }
       })
 
@@ -229,7 +229,7 @@ ${v.checkModelRequested}
     }
 
 
-    var s = extjsf.co("${z:vid(v, 'calcParts')}", '${rootView.extjsDomain}');
+    var s = extjsf.co("${z:vid(v, 'calcParts')}", '${extDom}');
 
     function validateVolume(m)
     {
@@ -285,21 +285,21 @@ ${v.checkModelRequested}
     }
 
     //~: calculation semi-ready
-    params.semiReady = extjsf.bind("${z:vid(v, 'semi-ready')}", '${rootView.extjsDomain}').value();
+    params.semiReady = extjsf.bind("${z:vid(v, 'semi-ready')}", '${extDom}').value();
 
     //!: submit
-    extjsf.bindHandler("${z:vid(v, 'submit-script')}", '${rootView.extjsDomain}')({
+    extjsf.bindHandler("${z:vid(v, 'submit-script')}", '${extDom}')({
       params: params, success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'submit-back')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'submit-back')}", '${extDom}')()
       }
     })
   })
 
   //~: insert new record in the table
-  extjsf.bindHandler("${z:vid(v, 'add-part')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'add-part')}", '${extDom}', function()
   {
-    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
     var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
 
     var i, x = g.getSelectionModel().getSelection();
@@ -317,9 +317,9 @@ ${v.checkModelRequested}
   })
 
   //~: delete selected records from the table
-  extjsf.bindHandler("${z:vid(v, 'delete-part')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'delete-part')}", '${extDom}', function()
   {
-    var g = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
     var s = g.getSelectionModel().getSelection(); if(!s.length) return;
 
     var x, m = 0; for(var i = 0;(i < s.length);i++)
@@ -333,7 +333,7 @@ ${v.checkModelRequested}
   })
 
   //~: columns editors
-  extjsf.bind("${z:vid(v, 'calcParts')}", '${rootView.extjsDomain}').retradeCreateColumns = function()
+  extjsf.bind("${z:vid(v, 'calcParts')}", '${extDom}').retradeCreateColumns = function()
   {
     var cols = ZeT.defined('retrade.columns.GoodCalcPartView')()
     var colCode = cols[0]
@@ -342,7 +342,7 @@ ${v.checkModelRequested}
 
     function selectPartGood(sel)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record;
 
       m.set('goodUnit', sel.get('objectKey'))
@@ -355,7 +355,7 @@ ${v.checkModelRequested}
 
     function validateVolume(v)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}')
       var m = ZeT.assert(g.retradeEditEvent, 'There is no grid edit event!').record
 
       return (m.get('integer') === true)?
@@ -364,7 +364,7 @@ ${v.checkModelRequested}
 
     function onSpecialKey(f, e)
     {
-      var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+      var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
       var x = g.retradeEditEvent;
       var p = g.co().getPlugin('cellediting');
       var c;
@@ -382,7 +382,7 @@ ${v.checkModelRequested}
       if(e.getKey() == e.INSERT)
       {
         commitEdit()
-        extjsf.bindHandler("${z:vid(v, 'add-part')}", '${rootView.extjsDomain}')()
+        extjsf.bindHandler("${z:vid(v, 'add-part')}", '${extDom}')()
       }
 
       if(e.getKey() == e.TAB)
@@ -495,13 +495,13 @@ ${v.checkModelRequested}
       cls: 'ux-grid-not-mark-dirty ux-grid-smaller',
       pager: false, sortableColumns: false, enableColumnHide: false,
       selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'SINGLE', allowDeselect: true }),
-      columns: extjsf.bind("${z:vid(v, 'calcParts')}", '${rootView.extjsDomain}').retradeCreateColumns(),
+      columns: extjsf.bind("${z:vid(v, 'calcParts')}", '${extDom}').retradeCreateColumns(),
 
       plugins: [{
         ptype: 'cellediting', pluginId: 'cellediting', clicksToEdit: 1,
         listeners : { beforeedit : function(ed, event)
         {
-           var g = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}');
+           var g = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
            if(g.retradeDisabledEditing) return false; else g.retradeEditEvent = event;
         }}
       }],
@@ -511,10 +511,10 @@ ${v.checkModelRequested}
         cellkeydown: function(grid, td, cellIdx, m, tr, rowIdx, e)
         {
           if(e.getKey() == e.INSERT)
-            extjsf.bindHandler("${z:vid(v, 'add-part')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'add-part')}", '${extDom}')()
 
           if(e.getKey() == e.DELETE)
-            extjsf.bindHandler("${z:vid(v, 'delete-part')}", '${rootView.extjsDomain}')()
+            extjsf.bindHandler("${z:vid(v, 'delete-part')}", '${extDom}')()
         }
       }
 
@@ -565,7 +565,7 @@ ${v.checkModelRequested}
           width: extjsf.ex(24), flex: 2,
           allowBlank: false, validator: function()
           {
-            return extjsf.bind("${z:vid(v, 'sub-code')}", '${rootView.extjsDomain}').validityStatus || true;
+            return extjsf.bind("${z:vid(v, 'sub-code')}", '${extDom}').validityStatus || true;
           }
         </f:facet>
 
@@ -585,7 +585,7 @@ ${v.checkModelRequested}
           fieldStyle: {textAlign: 'right'}, flex: 1,
           allowBlank: false, validator: function(v)
           {
-            if(extjsf.bind("${z:vid(v, 'super-good-measure')}", '${rootView.extjsDomain}').retradeGoodInteger == 'true')
+            if(extjsf.bind("${z:vid(v, 'super-good-measure')}", '${extDom}').retradeGoodInteger == 'true')
               return retrade.vivolume(v);
             return retrade.vvolume(v);
           }
@@ -658,16 +658,16 @@ ${v.checkModelRequested}
             {
               if(!sel || ZeTS.ises(sel.get('goodCode'))) return;
 
-              extjsf.bind("${z:vid(v, 'super-good-name')}", '${rootView.extjsDomain}').
+              extjsf.bind("${z:vid(v, 'super-good-name')}", '${extDom}').
                 value(sel.get('goodName'))
 
-              extjsf.bind("${z:vid(v, 'super-good-measure')}", '${rootView.extjsDomain}').
+              extjsf.bind("${z:vid(v, 'super-good-measure')}", '${extDom}').
                 value(sel.get('measureCode'))
 
-              extjsf.bind("${z:vid(v, 'super-good-measure')}", '${rootView.extjsDomain}').
+              extjsf.bind("${z:vid(v, 'super-good-measure')}", '${extDom}').
                 retradeGoodInteger = '' + sel.get('integer');
 
-              extjsf.co("${z:vid(v, 'sub-volume')}", '${rootView.extjsDomain}').validate()
+              extjsf.co("${z:vid(v, 'sub-volume')}", '${extDom}').validate()
             }
           }
         </f:facet>
@@ -681,7 +681,7 @@ ${v.checkModelRequested}
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'super-good')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'super-good')}", '${extDom}').
     extjsPropsRaw().listConfig.tpl = new Ext.XTemplate(
 
       "<table class = 'x-grid-table' style = 'width: 100%'>",
@@ -723,7 +723,7 @@ ${v.checkModelRequested}
       <script type = "text/javascript">
       //<![CDATA[
 
-      extjsf.bind("${z:vid(v, 'super-good-measure')}", '${rootView.extjsDomain}').
+      extjsf.bind("${z:vid(v, 'super-good-measure')}", '${extDom}').
         retradeGoodInteger = '#{v.model.editCalc.superGoodInteger}';
 
       //]]>
@@ -750,23 +750,23 @@ ${v.checkModelRequested}
   //<![CDATA[
 
   //~: toggle derived flag
-  extjsf.bind("${z:vid(v, 'derived')}", '${rootView.extjsDomain}').on('change', function(cb, checked)
+  extjsf.bind("${z:vid(v, 'derived')}", '${extDom}').on('change', function(cb, checked)
   {
     //~: toggle grid
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').visible(!checked)
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').visible(!checked)
 
     //~: toggle add-remove buttons
-    extjsf.bind("${z:vid(v, 'delete-part')}", '${rootView.extjsDomain}').visible(!checked)
-    extjsf.bind("${z:vid(v, 'add-part')}", '${rootView.extjsDomain}').visible(!checked)
+    extjsf.bind("${z:vid(v, 'delete-part')}", '${extDom}').visible(!checked)
+    extjsf.bind("${z:vid(v, 'add-part')}", '${extDom}').visible(!checked)
 
     //~: toggle derived form
-    extjsf.bind("${z:vid(v, 'derived-form')}", '${rootView.extjsDomain}').visible(checked)
+    extjsf.bind("${z:vid(v, 'derived-form')}", '${extDom}').visible(checked)
   })
 
   //~: sub-volume changed
-  extjsf.bind("${z:vid(v, 'sub-volume')}", '${rootView.extjsDomain}').on('change', function(f, v, old)
+  extjsf.bind("${z:vid(v, 'sub-volume')}", '${extDom}').on('change', function(f, v, old)
   {
-    var sc = extjsf.bind("${z:vid(v, 'sub-code')}", '${rootView.extjsDomain}')
+    var sc = extjsf.bind("${z:vid(v, 'sub-code')}", '${extDom}')
 
     //?: {has sub-code equals to the volume}
     if((sc.value() == old) || (parseFloat(sc.value()) == parseFloat(old))) sc.value(v)
@@ -776,14 +776,14 @@ ${v.checkModelRequested}
   Ext.onReady(ZeT.timeouted(150, function()
   {
     //~: adjust super-good label width
-    var l0 = extjsf.co("${z:vid(v, 'sub-code-label')}", '${rootView.extjsDomain}');
-    var l1 = extjsf.co("${z:vid(v, 'super-good-label')}", '${rootView.extjsDomain}');
+    var l0 = extjsf.co("${z:vid(v, 'sub-code-label')}", '${extDom}');
+    var l1 = extjsf.co("${z:vid(v, 'super-good-label')}", '${extDom}');
     var w  = Math.max(l0.getWidth(), l1.getWidth());
     l0.setWidth(w); l1.setWidth(w)
 
     //~: adjust window size
     ReTrade.desktop.applyWindowBox({
-      name: 'winmain', domain: '${rootView.extjsDomain}',
+      name: 'winmain', domain: '${extDom}',
       widthpt: 540, heightpt: 280, prevsize: 'calc-edit'
     })
   }))

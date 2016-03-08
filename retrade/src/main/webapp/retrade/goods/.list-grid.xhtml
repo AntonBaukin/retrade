@@ -50,7 +50,7 @@
       //<![CDATA[
 
       //~: assign tree store
-      extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('add', function(tree)
+      extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('add', function(tree)
       {
         tree.setStore(new Ext.data.TreeStore({
           autoDestroy: true, rootVisible: true, root: {
@@ -62,7 +62,7 @@
       })
 
       //~: add expand-collapse tree toggle button
-      extjsf.bind("${z:vid(v, 'tree-layout')}", '${rootView.extjsDomain}').on('afterrender', function(lay)
+      extjsf.bind("${z:vid(v, 'tree-layout')}", '${extDom}').on('afterrender', function(lay)
       {
         var expanded
 
@@ -73,7 +73,7 @@
           style: { position: 'absolute', top: '2px', right: '2px' },
           renderTo: lay.getEl(), handler: function(btn)
           {
-            var tree = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+            var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
 
             if(expanded = !expanded)
             {
@@ -91,10 +91,10 @@
       })
 
       //~: good folder selection change
-      extjsf.bind("${z:vid(v, 'tree')}", '${rootView.extjsDomain}').on('selectionchange', function(tree, sel)
+      extjsf.bind("${z:vid(v, 'tree')}", '${extDom}').on('selectionchange', function(tree, sel)
       {
-        var grid  = extjsf.co("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
-        var goods = extjsf.co("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}')
+        var grid  = extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
+        var goods = extjsf.co("${z:vid(v, 'goodUnits')}", '${extDom}')
 
         //~: get current selection
         if(!sel.length) sel = null; else sel = sel[0]
@@ -134,7 +134,7 @@
           flex: 2, pager: true, sortableColumns: true, viewConfig: {
             getRowClass: function()
             {
-              var f = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getRowClass
+              var f = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').getRowClass
               return ZeT.isf(f)?(f.apply(this, arguments)):('')
             }
           }
@@ -145,11 +145,11 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').display_good = function(sel)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').display_good = function(sel)
   {}
 
   //~: filter goods grid by the category selected
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function(m, sel)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('selectionchange', function(m, sel)
   {
     if(sel = ((sel.length)?(sel[0]):(null))) sel = {
       pkey: sel.getId(),
@@ -157,14 +157,14 @@
       name: sel.get('goodName')
     }
 
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').display_good(sel)
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').display_good(sel)
   })
 
   //~: edit good unit
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, event)
   {
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
       retradeOpenGoodWindow(rec, event)
   })
 

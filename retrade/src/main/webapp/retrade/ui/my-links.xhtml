@@ -82,7 +82,7 @@
    })
 
    //~: build the tiles interface
-   extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${rootView.extjsDomain}').
+   extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${extDom}').
      on('afterrender', function()
    {
      var areaid = '#' + "${z:vid(v, 'my-links-area')}"
@@ -192,7 +192,7 @@
      scbind('down', false)
 
      //~: update them on area resize
-     extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${rootView.extjsDomain}').
+     extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${extDom}').
        on('resize', function(html, width, height)
        {
          if(width && height)
@@ -268,7 +268,7 @@
      })
 
      //~: stop the strategy
-     extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${rootView.extjsDomain}').
+     extjsf.bind("${z:vid(v, 'my-links-html-content')}", '${extDom}').
        on('destroy', function()
        {
          ZeT.defined('ReTrade.getUserWebLinks').stop()

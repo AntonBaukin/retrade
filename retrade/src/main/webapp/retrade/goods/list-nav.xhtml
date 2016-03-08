@@ -54,10 +54,10 @@ ${v.checkModelRequestedWithRedirect}
     //<![CDATA[
 
     //~: insert selected folders in the top
-    extjsf.bind("${z:vid(v, 'goodUnits')}", '${rootView.extjsDomain}').on('load', function(store, recs)
+    extjsf.bind("${z:vid(v, 'goodUnits')}", '${extDom}').on('load', function(store, recs)
     {
       //~: selected folder node
-      var t = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+      var t = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
       var f = t.getSelection(); if(!f || f.length != 1) return; else f = f[0]
       if(f.get('objectKey') == '$') return
 
@@ -103,32 +103,32 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     //~: set special formatter of the grid rows
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').getRowClass = function(record)
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').getRowClass = function(record)
     {
       return record.get('uiRowClass')
     }
 
     //~: grid double click -> open good if not a folder
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow2 =
-      extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow
-    extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').retradeOpenGoodWindow  =
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow2 =
+      extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow
+    extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow  =
       function(record, e, opts)
     {
       var f = record && record.get('objectKey')
       if(!f || (f.indexOf('folder$') != 0))
-        return extjsf.bind("${z:vid(v, 'add-good')}", '${rootView.extjsDomain}').
+        return extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
           retradeOpenGoodWindow2(record, e, opts)
     }
 
     //~: grid click -> open folder
-    extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
       on('itemclick', function(grid, record)
       {
         var f = record.get('objectKey'); if(f.indexOf('folder$') != 0) return
         var k = f.substring('folder$'.length)
 
         //~: find the folder in the tree
-        var t = extjsf.co("${z:vid(v, 'tree')}", '${rootView.extjsDomain}')
+        var t = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
         f = t.getStore().query('objectKey', k)
         if(f && (f.getCount() == 1))
           return t.getSelectionModel().select([ f.getAt(0) ])

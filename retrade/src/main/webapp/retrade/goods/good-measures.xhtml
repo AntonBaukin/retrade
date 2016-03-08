@@ -19,7 +19,7 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle("#{z:jss(v.measuresWindowTitle)}")
 
   //]]>
@@ -274,9 +274,9 @@
   ZeT.scope(function()
   {
     var measures = ZeT.s2o("#{z:jss(v.measuresEncoded)}")
-    var store    = extjsf.bind("${z:vid(v, 'measures')}", '${rootView.extjsDomain}')
-    var panel    = extjsf.bind("${z:vid(v, 'measures-list-panel')}", '${rootView.extjsDomain}')
-    var sattrs   = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${rootView.extjsDomain}')
+    var store    = extjsf.bind("${z:vid(v, 'measures')}", '${extDom}')
+    var panel    = extjsf.bind("${z:vid(v, 'measures-list-panel')}", '${extDom}')
+    var sattrs   = extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}')
     var controls = [], editMode, modelstr, modelback
 
 
@@ -421,11 +421,11 @@
     function toggleReadEdit(isread)
     {
       editMode = !(isread = (isread === true))
-      extjsf.bind("${z:vid(v, 'goto-back')}", '${rootView.extjsDomain}').visible(isread)
-      extjsf.bind("${z:vid(v, 'start-edit')}", '${rootView.extjsDomain}').visible(isread)
-      extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}').visible(!isread)
-      extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}').visible(!isread)
-      extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
+      extjsf.bind("${z:vid(v, 'goto-back')}", '${extDom}').visible(isread)
+      extjsf.bind("${z:vid(v, 'start-edit')}", '${extDom}').visible(isread)
+      extjsf.bind("${z:vid(v, 'cancel')}", '${extDom}').visible(!isread)
+      extjsf.bind("${z:vid(v, 'add')}", '${extDom}').visible(!isread)
+      extjsf.bind("${z:vid(v, 'submit')}", '${extDom}').visible(!isread)
 
       //?: {editing} update items
       !isread && ZeT.each(controls, turnEditControl)
@@ -445,10 +445,10 @@
     }
 
     //~: start edit click
-    extjsf.bindHandler("${z:vid(v, 'start-edit')}", '${rootView.extjsDomain}', toggleReadEdit)
+    extjsf.bindHandler("${z:vid(v, 'start-edit')}", '${extDom}', toggleReadEdit)
 
     //~: cancel edit click
-    extjsf.bindHandler("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}', function()
+    extjsf.bindHandler("${z:vid(v, 'cancel')}", '${extDom}', function()
     {
       toggleReadEdit(true)
 
@@ -630,23 +630,23 @@
     }
 
     //~: add measure
-    extjsf.bindHandler("${z:vid(v, 'add')}", '${rootView.extjsDomain}', addMeasure)
+    extjsf.bindHandler("${z:vid(v, 'add')}", '${extDom}', addMeasure)
 
     //~: submit the edit
-    extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', submitEdit)
+    extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', submitEdit)
 
-    var submit    = extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}')
-    var cancel    = extjsf.bind("${z:vid(v, 'cancel')}", '${rootView.extjsDomain}')
-    var addmeas   = extjsf.bind("${z:vid(v, 'add')}", '${rootView.extjsDomain}')
-    var goback    = extjsf.bind("${z:vid(v, 'goto-back')}", '${rootView.extjsDomain}')
-    var started   = extjsf.bind("${z:vid(v, 'start-edit')}", '${rootView.extjsDomain}')
-    var showatts  = extjsf.bind("${z:vid(v, 'show-attrs')}", '${rootView.extjsDomain}')
-    var cancelats = extjsf.bind("${z:vid(v, 'cancel-atts')}", '${rootView.extjsDomain}')
-    var atsext    = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${rootView.extjsDomain}')
-    var delattrs  = extjsf.bind("${z:vid(v, 'del-attrs')}", '${rootView.extjsDomain}')
-    var addattrs  = extjsf.bind("${z:vid(v, 'add-attr')}", '${rootView.extjsDomain}')
-    var attsed    = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${rootView.extjsDomain}')
-    var farea     = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${rootView.extjsDomain}')
+    var submit    = extjsf.bind("${z:vid(v, 'submit')}", '${extDom}')
+    var cancel    = extjsf.bind("${z:vid(v, 'cancel')}", '${extDom}')
+    var addmeas   = extjsf.bind("${z:vid(v, 'add')}", '${extDom}')
+    var goback    = extjsf.bind("${z:vid(v, 'goto-back')}", '${extDom}')
+    var started   = extjsf.bind("${z:vid(v, 'start-edit')}", '${extDom}')
+    var showatts  = extjsf.bind("${z:vid(v, 'show-attrs')}", '${extDom}')
+    var cancelats = extjsf.bind("${z:vid(v, 'cancel-atts')}", '${extDom}')
+    var atsext    = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${extDom}')
+    var delattrs  = extjsf.bind("${z:vid(v, 'del-attrs')}", '${extDom}')
+    var addattrs  = extjsf.bind("${z:vid(v, 'add-attr')}", '${extDom}')
+    var attsed    = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+    var farea     = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${extDom}')
     var attrControl
 
     function toggleAttributes(on)
@@ -669,12 +669,12 @@
       //~: adapt the height of the window
       if(on)
         ReTrade.desktop.applyWindowBox({
-          name: 'winmain', domain: '${rootView.extjsDomain}',
+          name: 'winmain', domain: '${extDom}',
           prevsize: 'good-attrs', widthpt: (editMode)?(480):(360)
         })
       else
         ReTrade.desktop.prevsizeComp({
-          name: 'winmain', domain: '${rootView.extjsDomain}',
+          name: 'winmain', domain: '${extDom}',
           marker: 'good-attrs'
         })
     }

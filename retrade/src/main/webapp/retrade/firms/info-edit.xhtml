@@ -17,7 +17,7 @@ ${v.forceSecure()}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${rootView.extjsDomain}').
+    extjsf.co('winmain', '${extDom}').
       setTitle('${z:jss(v.winmainTitle)}')
 
   //]]>
@@ -44,7 +44,7 @@ ${v.forceSecure()}
         xtype: 'button', text: 'Отмена',
         cls: 'ux-btn-red', handler : function()
         {
-          extjsf.co('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -54,7 +54,7 @@ ${v.forceSecure()}
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть', handler : function()
         {
-          extjsf.co('winmain', '${rootView.extjsDomain}').close()
+          extjsf.co('winmain', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -78,7 +78,7 @@ ${v.forceSecure()}
           enableToggle: true, extjsfBlock: 'main',
           handler : function()
           {
-            extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
             retradeShowBlock('main')
           }
         </f:facet>
@@ -92,7 +92,7 @@ ${v.forceSecure()}
           enableToggle: true, extjsfBlock: 'contacts',
           handler : function()
           {
-            extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
             retradeShowBlock('contacts')
           }
         </f:facet>
@@ -106,7 +106,7 @@ ${v.forceSecure()}
           enableToggle: true, extjsfBlock: 'addresses',
           handler : function()
           {
-            extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+            extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
             retradeShowBlock('addresses')
           }
         </f:facet>
@@ -177,7 +177,7 @@ ${v.forceSecure()}
           margin: extjsf.pts(0, 4, 0, 0), flex: 1,
           allowBlank: false, validator: function()
           {
-            return extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').validityStatus || true;
+            return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true;
           }
         </f:facet>
 
@@ -190,7 +190,7 @@ ${v.forceSecure()}
       //<![CDATA[
 
 //~: validate on code change
-extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', function(f, v)
+extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
 {
   var fb = f.extjsfBind;
   fb.retradeCodeCheck = v; fb.validityStatus = true;
@@ -203,7 +203,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
   {
     if(fb.retradeCodeCheck != v) return;
 
-    extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${rootView.extjsDomain}')({
+    extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
       params: { code : fb.retradeCodeCheck }, failure: function()
       {
         fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -543,7 +543,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
   //<![CDATA[
 
   //~: show-hide blocks
-  extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
     retradeShowBlock = function(block)
   {
     //~: toggle the buttons
@@ -552,38 +552,38 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
 
     ZeT.each(BUTTONS, function(b)
     {
-      var btn = extjsf.bind(b, '${rootView.extjsDomain}')
+      var btn = extjsf.bind(b, '${extDom}')
       if(btn.co()) btn.co().toggle(btn.extjsPropsRaw().extjsfBlock == block)
       else btn.extjsPropsRaw().pressed = (btn.extjsPropsRaw().extjsfBlock == block)
     })
 
     //~: toggle the inner components
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').toggleBlock(block)
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').toggleBlock(block)
   }
 
 
   //~: toggle read-write
-  extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
     retradeToggleReadWrite = function(isread)
   {
     //~: toggle the form fields
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
       toggleReadWrite(isread)
 
     //~: toggle cancel-edit
-    extjsf.bind("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}').visible(!isread)
+    extjsf.bind("${z:vid(v, 'cancel-edit')}", '${extDom}').visible(!isread)
 
     //~: toggle close
-    extjsf.bind("${z:vid(v, 'close')}", '${rootView.extjsDomain}').visible(isread)
+    extjsf.bind("${z:vid(v, 'close')}", '${extDom}').visible(isread)
 
     //~: toggle submit
-    extjsf.bind("${z:vid(v, 'submit')}", '${rootView.extjsDomain}').visible(!isread)
+    extjsf.bind("${z:vid(v, 'submit')}", '${extDom}').visible(!isread)
 
     //~: toggle do-edit
-    extjsf.bind("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}').visible(isread)
+    extjsf.bind("${z:vid(v, 'do-edit')}", '${extDom}').visible(isread)
 
     //~: window title
-    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}').co()
+    var winmain = extjsf.bind('winmain', '${extDom}').co()
     if(isread) winmain.setTitle('${z:jss(v.winmainTitle)}')
     else winmain.setTitle('${z:jss(v.winmainTitleEdit)}')
   }
@@ -592,33 +592,33 @@ extjsf.bind("${z:vid(v, 'code')}", '${rootView.extjsDomain}').on('change', funct
   //~: default read-only for existing
   Ext.onReady(function()
   {
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
       retradeShowBlock('main')
 
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
       retradeToggleReadWrite("#{v.create}" == 'false')
   })
 
 
   //~: do-edit button
-  extjsf.bindHandler("${z:vid(v, 'do-edit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'do-edit')}", '${extDom}', function()
   {
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
       retradeToggleReadWrite(false)
   })
 
 
   //~: submit form with command button
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${rootView.extjsDomain}', function()
+  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var winmain = extjsf.bind('winmain', '${rootView.extjsDomain}')
+    var winmain = extjsf.bind('winmain', '${extDom}')
     winmain.retradeEditSuccess = false
 
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${rootView.extjsDomain}').submitForm({
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').submitForm({
       '${v.viewModeParam}':'${v.viewModePostStr}', command: 'submit', success: function()
     {
       winmain.retradeEditSuccess = true
-      extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${rootView.extjsDomain}')()
+      extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
     }})
   })
 

@@ -19,7 +19,7 @@ ${v.checkEntityRequested}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${rootView.extjsDomain}').
+    extjsf.bind('winmain', '${extDom}').
       co().setTitle('${z:jss(v.winmainTitleInfo)}')
 
   </script>
@@ -41,7 +41,7 @@ ${v.checkEntityRequested}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${rootView.extjsDomain}').
+          extjsf.bind('winmain', '${extDom}').
             co().close()
         }
 
@@ -115,7 +115,7 @@ ${v.checkEntityRequested}
         <script type = "text/javascript">
         //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -126,10 +126,10 @@ ${v.checkEntityRequested}
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchGoods: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'listGoods')}").loadPage(1)
         }})
@@ -139,15 +139,15 @@ ${v.checkEntityRequested}
     })
 
     //~: selection set only toggled
-    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').on('toggle', function()
+    extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').on('toggle', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search-goods')}", '${extDom}').value();
         var params = { searchGoods: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
              Ext.data.StoreManager.lookup("${z:vid(v, 'listGoods')}").loadPage(1)
         }})
@@ -193,9 +193,9 @@ ${v.checkEntityRequested}
   //<![CDATA[
 
   //~: enable-disable history button
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('added', function(g)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('added', function(g)
   {
-    var b = extjsf.co("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}')
+    var b = extjsf.co("${z:vid(v, 'prices-history')}", '${extDom}')
 
     function x()
     {
@@ -207,7 +207,7 @@ ${v.checkEntityRequested}
   })
 
   //~: open window with prices history
-  extjsf.bind("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}').openPricesHistory = function(rec, e)
+  extjsf.bind("${z:vid(v, 'prices-history')}", '${extDom}').openPricesHistory = function(rec, e)
   {
     retrade_open_window({ url: '/price-lists/history',
       domainKey: "${z:vid(v, 'good_price_history')}",
@@ -217,21 +217,21 @@ ${v.checkEntityRequested}
   }
 
   //~: prices history click
-  extjsf.bindHandler("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}', function(btn, e)
+  extjsf.bindHandler("${z:vid(v, 'prices-history')}", '${extDom}', function(btn, e)
   {
-    var grid = extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}')
+    var grid = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}')
     var sel  = grid.co().getSelectionModel().getSelection()
     if(!sel || sel.length != 1) return
 
-    extjsf.bind("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'prices-history')}", '${extDom}').
       openPricesHistory(sel[0], e)
   })
 
   //~: prices history on grid click
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(grid, rec, node, row, e)
   {
-    extjsf.bind("${z:vid(v, 'prices-history')}", '${rootView.extjsDomain}').
+    extjsf.bind("${z:vid(v, 'prices-history')}", '${extDom}').
       openPricesHistory(rec, e)
   })
 

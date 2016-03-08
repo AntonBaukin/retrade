@@ -110,7 +110,7 @@
   //<![CDATA[
 
   //~: wrap user main menu with special border
-  extjsf.bind("${z:vid(localView, 'user-menu-host')}", '${rootView.extjsDomain}').on('render', function(xmenu)
+  extjsf.bind("${z:vid(localView, 'user-menu-host')}", '${extDom}').on('render', function(xmenu)
   {
     if(xmenu.extjsfBind.retradeUserMenuWrapped) return
     xmenu.extjsfBind.retradeUserMenuWrapped = true
@@ -133,7 +133,7 @@
 
 
   //~: logout click
-  extjsf.bindHandler("${z:vid(localView, 'user-menu-logoff-button')}", '${rootView.extjsDomain}', function(btn, e)
+  extjsf.bindHandler("${z:vid(localView, 'user-menu-logoff-button')}", '${extDom}', function(btn, e)
   {
     retrade_yes_no_ask_warning({
 
@@ -144,7 +144,7 @@
       yes : function()
       {
         //!: do server-side logout
-        extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${extDom}')({
           success: ZeT.timeouted(250, function()
           {
             window.location.replace("${z:go('login/')}${z:jss(localView.domain.code)}")

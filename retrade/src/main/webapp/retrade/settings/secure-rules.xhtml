@@ -89,7 +89,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'search-rules')}", '${rootView.extjsDomain}').on('change', function(f)
+    extjsf.bind("${z:vid(v, 'search-rules')}", '${extDom}').on('change', function(f)
     {
       var sv = ZeTS.trim(f.getValue());
       if(!f.extjsfBind) return; f.extjsfBind.searchValue = sv;
@@ -100,25 +100,25 @@
         if(f.extjsfBind.searchValue != sv) return;
 
         var params = { searchRules: sv };
-        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-rules-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-rules-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'rulesStore')}").load()
         }})
       })
     })
 
-    extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').on('click', function()
+    extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${extDom}').on('click', function()
     {
-        var names  = extjsf.bind("${z:vid(v, 'search-rules')}", '${rootView.extjsDomain}').value();
+        var names  = extjsf.bind("${z:vid(v, 'search-rules')}", '${extDom}').value();
         var params = { searchLogins: names };
 
-        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${rootView.extjsDomain}').co();
+        var selchk = extjsf.bind("${z:vid(v, 'search-rules-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-rules-script')}", '${rootView.extjsDomain}')({
+        extjsf.bindHandler("${z:vid(v, 'search-rules-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'rulesStore')}").load()
         }})
@@ -193,7 +193,7 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bind("${z:vid(v, 'grid')}", '${rootView.extjsDomain}').on('selectionchange', function(grid, selected)
+  extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('selectionchange', function(grid, selected)
   {
     var m = (selected.length == 1) && selected[0];
     var n = Ext.get("${z:vid(v, 'secure-rule-descr')}");
