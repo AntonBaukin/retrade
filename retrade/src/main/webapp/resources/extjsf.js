@@ -142,7 +142,7 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 	 * is being destroyed. Give second argument false
 	 * to remove previously registered callback.
 	 */
-	onDelete         : function(f, remove)
+	onDestroy        : function(f, remove)
 	{
 		ZeT.assertf(f)
 
@@ -181,7 +181,7 @@ ZeT.extend(extjsf,
 		extjsf.domains[name] = domain = new extjsf.Domain(name)
 
 		//!: un-register on the destruction
-		domain.onDelete(function()
+		domain.onDestroy(function()
 		{
 			delete extjsf.domains[name]
 		})

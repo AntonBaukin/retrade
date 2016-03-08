@@ -163,7 +163,7 @@
     })
 
     //~: delete store on domain delete
-    extjsf.domain('${rootView.extjsDomain}').onDelete(function()
+    extjsf.domain('${rootView.extjsDomain}').onDestroy(function()
     {
         Ext.data.StoreManager.unregister("${z:vid(v, 'goodsTreeStore')}")
     })
@@ -196,7 +196,7 @@
       col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
     }
 
-    var selNode;
+    var selNode
 
     function createNode(map, k, pn)
     {

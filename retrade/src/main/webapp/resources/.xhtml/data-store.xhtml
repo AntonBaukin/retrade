@@ -135,7 +135,7 @@
     }
 
     //~: delete store on domain delete
-    extjsf.domain('${rootView.extjsDomain}').onDelete(function()
+    extjsf.domain('${rootView.extjsDomain}').onDestroy(function()
     {
       Ext.data.StoreManager.unregister('#{cc.attrs.storeId}')
     })
