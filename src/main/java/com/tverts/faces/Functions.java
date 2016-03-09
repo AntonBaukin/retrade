@@ -127,7 +127,7 @@ public class Functions
 
 	public static String genViewId(ViewWithModes v, String name)
 	{
-		return v.getId() + '_' + name;
+		return v.getId() + '-' + name;
 	}
 
 
