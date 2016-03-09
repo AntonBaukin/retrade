@@ -241,13 +241,10 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	ids              : function(clientId, coid)
 	{
 		//~: JSF component id
-		this.clientId = ZeT.asserts(clientId)
+		this._client_id = ZeT.asserts(clientId)
 
 		//~: unique ExtJSF component id
 		this.coid = !ZeT.ises(coid)?(coid):ZeT.asserts(this.name)
-
-		//~: DOM node where ExtJSF facet is rendered
-		this._node_id = ZeTS.cat(this.clientId, '-', this.coid)
 
 		//~: ExtJS component id
 		this.props({ id: this.coid })
@@ -269,15 +266,15 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	 * points: you place component in node of else
 	 * sub-tree of JSF components tree.
 	 */
-	parent           : function(parentCoid, targetCoid)
+	parent           : function(parent_coid, target_coid)
 	{
 		//~: default parent
-		if(!ZeT.ises(parentCoid))
-			this.parentCoid = parentCoid
+		if(!ZeT.ises(parent_coid))
+			this._parent_coid = parent_coid
 
 		//~: targeted parent
-		if(!ZeT.ises(targetCoid))
-			this.targetCoid = targetCoid
+		if(!ZeT.ises(target_coid))
+			this._target_coid = target_coid
 
 		return this
 	},
@@ -315,7 +312,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	install          : function()
 	{
 		//?: {is not rendering to some else place}
-		if(ZeT.ises(this._render_to) && !this.targetCoid)
+		if(ZeT.ises(this._render_to) && !this._target_coid)
 			this.$install()
 
 		return this
@@ -346,14 +343,14 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 				if(self._render_parent)
 					self.renderParent()
 				//?: {has default render parent}
-				else if(!self.targetCoid)
-					extjsf.bind(self.targetCoid, self.domain).
+				else if(!self._target_coid)
+					extjsf.bind(self._target_coid, self.domain).
 					  on('beforedestroy', this.boundDestroy())
 			})
 
 		//?: {add to the container component}
-		else if(this.targetCoid)
-			extjsf.bind(this.targetCoid, this.domain).on('added', function(parent)
+		else if(this._target_coid)
+			extjsf.bind(this._target_coid, this.domain).on('added', function(parent)
 			{
 				//~: create the component
 				if(!self.co())
@@ -389,17 +386,31 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 	$install         : function()
 	{
-		if(!this.parentCoid)
+		if(!this._parent_coid)
 			return this
 
 		var d = ZeT.assertn(extjsf.domain(this.domain),
 		  'This Bind is not registered in any Domain!')
 
-		var p = ZeT.assertn(d.bind(this.parentCoid),
-		  'Parent Bind [', this.parentCoid, '] is not',
+		var p = ZeT.assertn(d.bind(this._parent_coid),
+		  'Parent Bind [', this._parent_coid, '] is not',
 		  ' found in the Domain [', this.domain, ']!')
 
 		p.addItem(this) //!: add this bind as a child
+	},
+
+	/**
+	 * Private. Returns ID of DOM node that
+	 * stores the properties of this component.
+	 */
+	$node_id         : function()
+	{
+		if(!ZeT.ises(this._node_id))
+			return this._node_id
+
+		//?: {form from the client id}
+		if(!ZeT.ises(this._client_id))
+			return ZeTS.cat(this._client_id, '-', ZeT.asserts(this.coid))
 	}
 })
 
@@ -827,8 +838,8 @@ extjsf.Bind.extend(
 
 	getPropsNode     : function(node_id)
 	{
-		if(!node_id && this.nodeId())
-			node_id = this.nodeId() + '-props';
+		if(!node_id && this.$node_id())
+			node_id = this.$node_id() + '-props';
 		return node_id && Ext.getDom(node_id);
 	},
 
@@ -844,8 +855,8 @@ extjsf.Bind.extend(
 	nodeId           : function(nodeId)
 	{
 		if(!ZeT.iss(nodeId))
-			return this._node_id;
-		this._node_id = nodeId;
+			return this.$node_id()
+		this._node_id = nodeId
 		return this;
 	},
 
@@ -1074,7 +1085,7 @@ extjsf.Bind.extend(
 
 	goFormAction     : function(nodeid, action)
 	{
-		if(ZeTS.ises(nodeid)) nodeid = this.nodeId();
+		if(ZeTS.ises(nodeid)) nodeid = this.$node_id();
 		if(ZeTS.ises(nodeid)) return this;
 
 		var node = Ext.get(nodeid);
@@ -1181,7 +1192,7 @@ extjsf.Bind.extend(
 	$props      : function()
 	{
 		var res  = this._extjs_props;
-		var node = this.nodeId() && Ext.get(this.nodeId());
+		var node = this.$node_id() && Ext.get(this.$node_id());
 		var self = this;
 
 		//~: get value from the DOM node
@@ -1266,7 +1277,7 @@ extjsf.Bind.extend(
 	{
 		opts = opts || {};
 
-		var jsf_form = this.nodeId() && Ext.get(this.nodeId());
+		var jsf_form = this.$node_id() && Ext.get(this.$node_id());
 		var ext_form = this.co() &&
 		  this.co().getForm && this.co().getForm();
 		if(!ext_form) throw 'Can not issue form submit as no form is found!';
