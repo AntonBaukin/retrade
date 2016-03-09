@@ -201,7 +201,7 @@ function retrade_open_window(opts)
     winmain.on('beforedestroy', ZeT.fbind(opts.onclose, winmain))
 
   //~: create the ExtJS Window component & return the bind
-  winmain.co(Ext.create('Ext.window.Window', winmain.props()))
+  winmain.co(Ext.create('Ext.window.Window', winmain.buildProps()))
 
   //~: install positioning strategy
   new ReTrade.WinAlign({ window: winmain })

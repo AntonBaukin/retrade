@@ -1045,7 +1045,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		if(this._tools_are_set) return
 		this._tools_are_set = true
 
-		var tools = this.bind().raw().tools
+		var tools = this.bind().$raw().tools
 		if(!ZeT.isa(tools)) tools = []
 
 		//~: add the tools of the panel
@@ -1087,7 +1087,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		})
 
 		var m = extjsf.pts(0, 0, 0, 2)
-		if(this.bind().raw()['closable'])
+		if(this.bind().$raw()['closable'])
 			m = extjsf.pts(0, 8, 0, 2)
 
 		//~: add >>
@@ -1108,14 +1108,14 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		{
 			//~: create the root panel component
 			this.bind().co(Ext.ComponentManager.create(
-			  this.bind().props()))
+			  this.bind().buildProps()))
 
 			//?: {has toolbar} dock it
 			if(this.toolbar()) this.bind().co().
-			  addDocked(this.toolbar().props())
+			  addDocked(this.toolbar().buildProps())
 			//?: {has status bar} dock it
 			if(this.statusbar()) this.bind().co().
-			  addDocked(this.statusbar().props())
+			  addDocked(this.statusbar().buildProps())
 		}
 
 		//~: add the component
@@ -1179,7 +1179,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		{
 			//?: {the bind has no component already created} create it now
 			if(!tbis[i].co())
-				tbis[i].co(Ext.ComponentManager.create(tbis[i].props()))
+				tbis[i].co(Ext.ComponentManager.create(tbis[i].buildProps()))
 
 			ext.co().add(tbis[i].co())
 		}
@@ -2542,7 +2542,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		if(winmain.co()) return winmain.co().toFront()
 
 		//~: create window & display it
-		winmain.co(Ext.create('Ext.window.Window', winmain.props()))
+		winmain.co(Ext.create('Ext.window.Window', winmain.buildProps()))
 		winmain.co().show()
 	},
 

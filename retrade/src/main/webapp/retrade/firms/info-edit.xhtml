@@ -553,8 +553,8 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
     ZeT.each(BUTTONS, function(b)
     {
       var btn = extjsf.bind(b, '${extDom}')
-      if(btn.co()) btn.co().toggle(btn.raw().extjsfBlock == block)
-      else btn.raw().pressed = (btn.raw().extjsfBlock == block)
+      if(btn.co()) btn.co().toggle(btn.$raw().extjsfBlock == block)
+      else btn.$raw().pressed = (btn.$raw().extjsfBlock == block)
     })
 
     //~: toggle the inner components
