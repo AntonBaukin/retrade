@@ -128,7 +128,7 @@ ${i.checkModelRequestedWithRedirect}
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
+    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -147,7 +147,7 @@ ${i.checkModelRequestedWithRedirect}
       }
     })
 
-    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.props()))
   })
 
     </script>

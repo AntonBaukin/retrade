@@ -65,7 +65,7 @@
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
+    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -107,7 +107,7 @@
       extjsf.co("${z:vid(v, 'user-data-edit-comment')}", '${extDom}').toggle(false)
     })
 
-    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.props()))
   })
 
     //]]>
@@ -337,7 +337,7 @@
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
+    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -381,7 +381,7 @@
       gr.co().getStore().reload()
     })
 
-    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.props()))
   })
 
       //]]>
@@ -433,7 +433,7 @@
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
+    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -470,7 +470,7 @@
       gr.co().getStore().reload()
     })
 
-    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.props()))
   })
 
       //]]>
@@ -511,7 +511,7 @@
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
+    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -530,7 +530,7 @@
       }
     })
 
-    winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+    winmain.co(Ext.create('Ext.window.Window', winmain.props()))
   })
 
       //]]>

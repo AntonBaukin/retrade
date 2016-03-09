@@ -184,7 +184,7 @@ function retrade_open_window(opts)
   if(opts.record) opts.params['${rootView.entityParam}'] = '' + opts.record
 
   //~: create the window bind
-  winmain = extjsf.domain(opts.domain).bind('winmain', new extjsf.Bind()).extjsProps({
+  winmain = extjsf.domain(opts.domain).bind('winmain', new extjsf.Bind()).props({
 
     xtype: 'window', title: 'Загрузка...',
     x: box.x, y: box.y, width: box.width, height: box.height,
@@ -201,7 +201,7 @@ function retrade_open_window(opts)
     winmain.on('beforedestroy', ZeT.fbind(opts.onclose, winmain))
 
   //~: create the ExtJS Window component & return the bind
-  winmain.co(Ext.create('Ext.window.Window', winmain.extjsProps()))
+  winmain.co(Ext.create('Ext.window.Window', winmain.props()))
 
   //~: install positioning strategy
   new ReTrade.WinAlign({ window: winmain })

@@ -86,7 +86,7 @@
     {
       //~: create the window
       var domain  = 'inline-wnd:' + "${z:vid(v, 'domains-create-domain')}:" + new Date().getTime();
-      var winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
+      var winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 
         title: 'Загрузка...', layout: 'fit',
 
@@ -104,7 +104,7 @@
         }
       })
 
-      winmain.co(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.panel.Panel', winmain.props()))
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');
@@ -151,7 +151,7 @@
 
       //~: create the window
       var domain  = 'inline-wnd:' + "${z:vid(v, 'self_shunt')}:" + sel + ':' + new Date().getTime();
-      var winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
+      var winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 
         title: 'Загрузка...', layout: 'fit',
 
@@ -168,7 +168,7 @@
         }
       })
 
-      winmain.compon.co(ate('Ext.panel.Panel', winmain.extjsProps()))
+      winmain.compon.co(ate('Ext.panel.Panel', winmain.props()))
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');
@@ -205,7 +205,7 @@
 
       //~: create the window
       var domain  = 'inline-wnd:' + "${z:vid(v, 'show_logins')}:" + sel + ':' + new Date().getTime();
-      var winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).extjsProps({
+      var winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 
         title: 'Загрузка...', layout: 'fit',
 
@@ -222,7 +222,7 @@
         }
       })
 
-      winmain.co(Ext.create('Ext.panel.Panel', winmain.extjsProps()))
+      winmain.co(Ext.create('Ext.panel.Panel', winmain.props()))
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');

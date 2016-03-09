@@ -223,7 +223,7 @@
     var x = '#{e.invoice.objectKey}'
 
     //~: set the selection model to the grid
-    g.extjsProps({selModel: m})
+    g.props({selModel: m})
 
     //~: disable selection of else rows
     m.on('beforeselect', function(that, record)
