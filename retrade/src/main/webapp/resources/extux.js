@@ -126,11 +126,9 @@ Ext.form.field.Picker.override(
 		{
 			var picker = this.getPicker()
 
-			if(picker && !this.matchFieldWidth)
-			{
+			if(picker && !this.matchFieldWidth && (this.pickerWidthAuto === true))
 				if(!ZeT.isn(picker.width) || (picker.width < this.bodyEl.getWidth()))
 					picker.width = this.bodyEl.getWidth()
-			}
 		}
 
 		return this.callParent(arguments)

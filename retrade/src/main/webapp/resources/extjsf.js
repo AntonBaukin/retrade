@@ -1416,7 +1416,7 @@ extjsf.Bind.extend(
 
 		//~: the handler
 		if(ZeT.isf(this.handler))
-			res.handler = this.handler;
+			res.handler = ZeT.fbind(this.handler, this)
 
 		//?: {is menu bound}
 		if(this.menu && this.menu.extjsfBind)
@@ -1654,7 +1654,7 @@ extjsf.Bind.extend(
 
 		//!: always support for component 'added' and destroy event
 		this._bind_on('added', result)
-		this._bind_on('beforedestroy', result)
+		this._bind_on('destroy', result)
 
 		return result;
 	},
@@ -1736,6 +1736,8 @@ extjsf.Bind.extend(
 	 */
 	on_destroy       : function(component)
 	{
+		delete this._component
+
 		//?: {is not registered}
 		if(!ZeT.iss(this.name)) return
 		ZeT.assert(ZeT.iss(this.domain))
@@ -1771,7 +1773,7 @@ extjsf.Bind.extend(
 		}
 
 		//?: {before destroy} unbind
-		if(ename === 'beforedestroy')
+		if(ename === 'destroy')
 			this.on_destroy(args[0])
 
 		return result

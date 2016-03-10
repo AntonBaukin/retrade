@@ -492,8 +492,8 @@ ${v.forceSecureEdit()}
   //~: insert new record in the table
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function()
   {
-    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
-    var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}'); if(!g) return
+    var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode')
 
     var i, x = g.getSelectionModel().getSelection();
     if(x && x.length) x = x[0]; else x = null;
@@ -506,7 +506,8 @@ ${v.forceSecureEdit()}
 
     ZeT.timeout(200, function()
     {
-      g.getPlugin('cellediting').startEdit(m, c)
+      var p = g.getPlugin('cellediting')
+      if(p && p.grid) p.startEdit(m, c)
     })
   })
 

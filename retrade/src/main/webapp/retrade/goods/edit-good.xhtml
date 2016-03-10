@@ -939,7 +939,9 @@ ${v.checkModelRequestedWithRedirect}
           $('#' + "${z:vid(v, 'good-used-text')}").text(s)
           gused.co().show()
           gused.co().getEl().addCls('animated fadeInDown')
-          ZeT.timeout(10000, function(){ gused.co().hide() })
+          ZeT.timeout(10000, function(){
+            if(gused.co()) gused.co().hide()
+          })
         })
     }
 

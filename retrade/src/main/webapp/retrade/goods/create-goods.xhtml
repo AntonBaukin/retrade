@@ -400,7 +400,9 @@ ${v.checkModelRequestedWithRedirect}
 
     s.add(m)
     p.completeEdit()
-    ZeT.timeout(200, function() { p.startEdit(m, 2) })
+    ZeT.timeout(200, function() {
+      if(p.grid) p.startEdit(m, 2)
+    })
   }
 
 

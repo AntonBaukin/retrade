@@ -535,8 +535,9 @@ ${v.checkModelRequestedWithRedirect}
             var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
             var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
             var s = g.getSelectionModel().getSelection();
+            var p = g.getPlugin('cellediting')
             if(s) if(s.length) s = s[0]; else s = null;
-            if(s) g.getPlugin('cellediting').startEdit(s, c)
+            if(s) if(p) if(p.grid) p.startEdit(s, c)
           }
         }
       },
@@ -1022,7 +1023,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function()
   {
     var s = extjsf.co("${z:vid(v, 'store')}", '${extDom}')
-    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
+    var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}'); if(!g) return
     var p = g.getPlugin('cellediting')
     var m = Ext.create('retrade.model.GoodPriceHistory', {
       objectKey: '$' + (new Date().getTime())
@@ -1040,7 +1041,9 @@ ${v.checkModelRequestedWithRedirect}
     var col = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
 
     p.completeEdit()
-    ZeT.timeout(200, function() { p.startEdit(row, col) })
+    ZeT.timeout(200, function() {
+      if(p.grid) p.startEdit(row, col)
+    })
   })
 
   //~: insert goods from the selection set

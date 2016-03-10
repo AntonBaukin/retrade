@@ -949,7 +949,8 @@ ${v.forceSecureEdit()}
 
     ZeT.timeout(200, function()
     {
-      g.getPlugin('cellediting').startEdit(m, c)
+      var p = g.getPlugin('cellediting')
+      if(p && p.grid) p.startEdit(m, c)
     })
   }
 
