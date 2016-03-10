@@ -35,6 +35,13 @@
     </h:form>
 
     <script type = "text/javascript">
+    //<![CDATA[
+
+//      extjsf.domain('${extDom}').
+//        bind('#{cc.attrs.coid}', new extjsf.ActionBind()).
+//        ids('#{cc.clientId}').readPropsNode().goAction().
+//        postMode('${rootView.viewModeParam}').
+//        viewId('${rootView.id}')
 
   ZeT.scope(function()
   {
@@ -69,9 +76,7 @@
     extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${extDom}', button)
   })
 
+    //]]>
     </script>
-
-    <co:insertChildren/>
-
   </co:implementation>
 </ui:fragment>

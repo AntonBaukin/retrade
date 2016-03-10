@@ -43,8 +43,8 @@
 
       extjsf.domain('${extDom}').
         bind('#{cc.attrs.coid}', new extjsf.ActionBind()).
-        ids('#{cc.clientId}').readPropsNode().goAction().
-        postMode('${rootView.viewModeParam}').
+        ids('#{cc.clientId}').readPropsNode('params').goAction().
+        postMode('${rootView.viewModePostStr}').
         viewId('${rootView.id}')
 
     //]]>
