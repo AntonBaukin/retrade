@@ -38,7 +38,7 @@ public class RootView extends ViewWithModes
 	/* Constants */
 
 	public static final String PARAM_DOMAIN   =
-	  "extjs_domain";
+	  "domain";
 
 	/**
 	 * Position within the desktop layout panels. The default
@@ -46,7 +46,7 @@ public class RootView extends ViewWithModes
 	 * by the implementation (the desktop center).
 	 */
 	public static final String PARAM_POSITION =
-	  "extjs_desktop_position";
+	  "desktop-position";
 
 
 	/* Global Actions */
