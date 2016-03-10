@@ -58,15 +58,14 @@ ${v.checkModelRequestedWithRedirect}
       <!-- [filter payways by names -->
 
       <x:action-call coid = "${z:vid(v, 'search_payways_script')}"
-        action = "#{v.doSearchPayWays}">
+        action = "#{v.doSearchPayWays}" modelView = "#{v}">
 
         <f:facet name = "action-params">
-          '${v.modelParam}': '${v.modelKeys}',
-          'ownPayWaysOnly': ZeT.delay(function()
+
+          ownPayWaysOnly: ZeT.delay(function()
           {
             return extjsf.bind("${z:vid(v, 'own-payways-only')}", '${extDom}').value();
           })
-
         </f:facet>
       </x:action-call>
 

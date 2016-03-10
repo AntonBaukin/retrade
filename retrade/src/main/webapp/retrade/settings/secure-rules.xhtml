@@ -45,12 +45,7 @@
     <!-- [filter rules field -->
 
     <x:action-call coid = "${z:vid(v, 'search-rules-script')}"
-      action = "#{v.doSearchRules}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doSearchRules}" modelView = "${v}"/>
 
     <x:text-field coid = "${z:vid(v, 'search-rules')}"
       value = "#{v.searchNames}">

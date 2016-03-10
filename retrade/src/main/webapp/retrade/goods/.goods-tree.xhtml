@@ -312,12 +312,7 @@
   <ui:fragment rendered = "#{canEditTree}">
 
   <x:action-call coid = "${z:vid(v, 'tree-commit-script')}"
-    action = "#{v.doCommitTreeEdit}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doCommitTreeEdit}" modelView = "${v}"/>
 
   <script type = "text/javascript">
   //<![CDATA[
@@ -961,12 +956,7 @@
 
 
         <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
-          action = "#{v.doSearchGoods}">
-
-          <f:facet name = "action-params">
-            '${v.modelParam}': '${v.modelKeys}'
-          </f:facet>
-        </x:action-call>
+          action = "#{v.doSearchGoods}" modelView = "${v}"/>
 
         <script type = "text/javascript">
         //<![CDATA[
@@ -1041,12 +1031,7 @@
 
 
   <x:action-call coid = "${z:vid(v, 'set-current-folder-script')}"
-    action = "#{v.doSetCurrentFolder}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doSetCurrentFolder}" modelView = "${v}"/>
 
   <script type = "text/javascript">
   //<![CDATA[
@@ -1192,20 +1177,10 @@
   <ui:fragment rendered = "#{canEditTree}">
 
   <x:action-call coid = "${z:vid(v, 'tree-move-goods-script')}"
-    action = "#{v.doMoveSelectedGoods}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doMoveSelectedGoods}" modelView = "${v}"/>
 
   <x:action-call coid = "${z:vid(v, 'tree-unlink-goods-script')}"
-    action = "#{v.doMoveSelectedGoods}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doMoveSelectedGoods}" modelView = "${v}"/>
 
 
   <script type = "text/javascript">

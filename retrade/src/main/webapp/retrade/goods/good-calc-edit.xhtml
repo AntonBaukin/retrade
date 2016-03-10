@@ -192,12 +192,7 @@ ${v.checkModelRequested}
   </x:data-store>
 
   <x:action-call coid = "${z:vid(v, 'submit-script')}"
-    action = "#{v.doSubmitCalc}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doSubmitCalc}" modelView = "${v}"/>
 
 
   <script type = "text/javascript">

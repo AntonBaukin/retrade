@@ -21,6 +21,13 @@
       method-signature = "java.lang.String action()"/>
 
     <!--
+         Provide Model View to send action parameter
+         with the model keys.
+    -->
+    <co:attribute name = 'modelView'
+      type = 'com.tverts.faces.ModelViewBase'/>
+
+    <!--
          Additional parameters of the action that
          are sent to the server.
     -->
@@ -43,8 +50,9 @@
 
       extjsf.domain('${extDom}').
         bind('#{cc.attrs.coid}', new extjsf.ActionBind()).
-        ids('#{cc.clientId}').readPropsNode('params').goAction().
-        postMode('${rootView.viewModePostStr}').
+        props('params', { model: "#{cc.attrs.modelView.modelKeys}" }).
+        ids('#{cc.clientId}').readPropsNode('params').
+        goAction().postMode('${rootView.viewModePostStr}').
         viewId('${rootView.id}')
 
     //]]>

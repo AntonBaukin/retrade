@@ -127,12 +127,7 @@
     <!-- [filter logins field -->
 
     <x:action-call coid = "${z:vid(v, 'search_logins_script')}"
-      action = "#{v.doSearchLogins}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doSearchLogins}" modelView = "${v}"/>
 
     <x:text-field coid = "${z:vid(v, 'search_logins')}"
       value = "#{v.searchNames}">
@@ -243,12 +238,7 @@
   </x:data-grid>
 
   <x:action-call coid = "${z:vid(v, 'change-current-login-script')}"
-    action = "#{v.doSetCurrentLogin}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doSetCurrentLogin}" modelView = "${v}"/>
 
   <script type = "text/javascript">
 
@@ -620,12 +610,7 @@
     </x:component>
 
     <x:action-call coid = "${z:vid(v, 'update_comment_script')}"
-      action = "#{v.doSetLoginComment}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doSetLoginComment}" modelView = "${v}"/>
 
 
     <script type = "text/javascript">

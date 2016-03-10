@@ -820,13 +820,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <!-- code exists checker -->
   <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
-    action = "#{v.doCheckCodeExists}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
-
+    action = "#{v.doCheckCodeExists}" modelView = "#{v}"/>
 
   <!-- [goto measures script] -->
   <x:winaction-delegate coid = "${z:vid(v, 'goto-measures-script')}"

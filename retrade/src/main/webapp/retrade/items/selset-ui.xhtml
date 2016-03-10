@@ -34,72 +34,37 @@
 
   <!-- [script to add object to selection] -->
   <x:action-call coid = "${z:vid(v, 'script_selset_add_object')}"
-     action = "#{v.doAddObject}">
-
-   <f:facet name = "action-params">
-     '${v.modelParam}': '${v.modelKeys}'
-   </f:facet>
-  </x:action-call>
+     action = "#{v.doAddObject}" modelView = "${v}"/>
 
 
   <!-- [script to delete object from selection] -->
   <x:action-call coid = "${z:vid(v, 'script_selset_del_object')}"
-    action = "#{v.doDelObject}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doDelObject}" modelView = "${v}"/>
 
 
   <!-- [script to delete item from selection] -->
   <x:action-call coid = "${z:vid(v, 'script_selset_del_item')}"
-    action = "#{v.doDelItem}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doDelItem}" modelView = "${v}"/>
 
 
   <!-- [script to add new selection] -->
   <x:action-call coid = "${z:vid(v, 'script_selset_add')}"
-     action = "#{v.doAddSelSet}">
-
-   <f:facet name = "action-params">
-     '${v.modelParam}': '${v.modelKeys}'
-   </f:facet>
-  </x:action-call>
+     action = "#{v.doAddSelSet}" modelView = "${v}"/>
 
 
   <!-- [script to clear the selection] -->
   <x:action-call coid = "${z:vid(v, 'script_selset_clear')}"
-     action = "#{v.doClearSelSet}">
-
-   <f:facet name = "action-params">
-     '${v.modelParam}': '${v.modelKeys}'
-   </f:facet>
-  </x:action-call>
+     action = "#{v.doClearSelSet}" modelView = "${v}"/>
 
 
   <!-- [script to change selection] -->
   <x:action-call coid = "${z:vid(v, 'script_selset_change')}"
-     action = "#{v.doChangeSelSet}">
-
-   <f:facet name = "action-params">
-     '${v.modelParam}': '${v.modelKeys}'
-   </f:facet>
-  </x:action-call>
+     action = "#{v.doChangeSelSet}" modelView = "${v}"/>
 
 
   <!-- [script to delete selection set] -->
   <x:action-call coid = "${z:vid(v, 'script_selset_delete')}"
-     action = "#{v.doDeleteSelSet}">
-
-   <f:facet name = "action-params">
-     '${v.modelParam}': '${v.modelKeys}'
-   </f:facet>
-  </x:action-call>
+     action = "#{v.doDeleteSelSet}" modelView = "${v}"/>
 
 
   <script type = "text/javascript">

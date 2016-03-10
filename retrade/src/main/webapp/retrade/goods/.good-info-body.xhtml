@@ -182,12 +182,7 @@
     </x:component>
 
     <x:action-call coid = "${z:vid(v, 'goods-info-script')}"
-      action = "#{v.doViewGoodInfo}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doViewGoodInfo}" modelView = "${v}"/>
 
     <script type = "text/javascript">
     //<![CDATA[

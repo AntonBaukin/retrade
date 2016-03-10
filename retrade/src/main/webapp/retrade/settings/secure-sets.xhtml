@@ -37,28 +37,13 @@
     <!-- [add set, edit set name -->
 
     <x:action-call coid = "${z:vid(v, 'add-secure-set-script')}"
-      action = "#{v.doAddSet}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doAddSet}" modelView = "${v}"/>
 
     <x:action-call coid = "${z:vid(v, 'delete-secure-set-script')}"
-      action = "#{v.doDeleteSet}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doDeleteSet}" modelView = "${v}"/>
 
     <x:action-call coid = "${z:vid(v, 'secure-set-edit-name-script')}"
-      action = "#{v.doEditSetName}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doEditSetName}" modelView = "${v}"/>
 
     <x:text-field coid = "${z:vid(v, 'secure-set-name')}" value = "">
 
@@ -202,12 +187,7 @@
     <!-- [filter sets field -->
 
     <x:action-call coid = "${z:vid(v, 'search-sets-script')}"
-      action = "#{v.doSearchSets}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doSearchSets}" modelView = "${v}"/>
 
     <x:text-field coid = "${z:vid(v, 'search-sets')}"
       value = "#{v.searchNames}">
@@ -481,12 +461,7 @@
       <!-- restrict to selection set] -->
 
       <x:action-call coid = "${z:vid(v, 'search-set-ables-script')}"
-        action = "#{v.doSearchSetAbles}">
-
-        <f:facet name = "action-params">
-          '${v.modelParam}': '${v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{v.doSearchSetAbles}" modelView = "${v}"/>
 
       <script type = "text/javascript">
       //<![CDATA[
@@ -584,12 +559,7 @@
     </x:component>
 
     <x:action-call coid = "${z:vid(v, 'secure-set-edit-comment-script')}"
-      action = "#{v.doCommentSet}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doCommentSet}" modelView = "${v}"/>
 
     <!-- secure set comment] -->
 
@@ -621,52 +591,22 @@
     </x:data-grid>
 
     <x:action-call coid = "${z:vid(v, 'set-current-secure-set-script')}"
-      action = "#{v.doChangeCurrentSet}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doChangeCurrentSet}" modelView = "${v}"/>
 
     <x:action-call coid = "${z:vid(v, 'add-rules-script')}"
-      action = "#{v.doAddRulesToCurrentSet}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doAddRulesToCurrentSet}" modelView = "${v}"/>
 
     <x:action-call coid = "${z:vid(v, 'delete-rules-script')}"
-      action = "#{v.doDeleteSelectedRules}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doDeleteSelectedRules}" modelView = "${v}"/>
 
     <x:action-call coid = "${z:vid(v, 'secure-set-grant-to-selected-users-script')}"
-      action = "#{v.doGrantSetToSelSetUsers}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doGrantSetToSelSetUsers}" modelView = "${v}"/>
 
     <x:action-call coid = "${z:vid(v, 'secure-set-synch-with-selected-users-script')}"
-      action = "#{v.doSynchSetWithSelSetUsers}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doSynchSetWithSelSetUsers}" modelView = "${v}"/>
 
     <x:action-call coid = "${z:vid(v, 'secure-set-delete-from-selected-users-script')}"
-      action = "#{v.doDeleteSetFromSelSetUsers}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doDeleteSetFromSelSetUsers}" modelView = "${v}"/>
 
     <!-- selected set ables (rules)] -->
 

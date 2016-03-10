@@ -77,12 +77,7 @@
   </x:html>
 
   <x:action-call coid = "${z:vid(v, 'get-self-shunt-log')}"
-    action = "#{v.doGetSelfShuntLog}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doGetSelfShuntLog}" modelView = "${v}"/>
 
   <script type = "text/javascript">
   //<![CDATA[

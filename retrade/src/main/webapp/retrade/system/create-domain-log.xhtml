@@ -77,12 +77,7 @@
   </x:html>
 
   <x:action-call coid = "${z:vid(v, 'get-genesis-log')}"
-    action = "#{v.doGetGenesisLog}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doGetGenesisLog}" modelView = "${v}"/>
 
   <script type = "text/javascript">
   //<![CDATA[

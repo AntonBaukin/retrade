@@ -351,20 +351,10 @@ ${v.checkModelRequestedWithRedirect}
   </x:data-grid>
 
   <x:action-call coid = "${z:vid(v, 'gen-next-code-script')}"
-    action = "#{v.doGenNextGoodCode}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doGenNextGoodCode}" modelView = "${v}"/>
 
   <x:action-call coid = "${z:vid(v, 'commit-script')}"
-    action = "#{v.doCommitCreate}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doCommitCreate}" modelView = "${v}"/>
 
 
   <script type = "text/javascript">

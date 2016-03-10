@@ -85,12 +85,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
     <x:action-call coid = "${z:vid(v, 'submit-script')}"
-     action = "#{v.doSubmit}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+     action = "#{v.doSubmit}" modelView = "#{v}"/>
 
     <!-- submit button] -->
 

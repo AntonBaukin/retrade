@@ -45,12 +45,7 @@
     <!-- [filter logins field -->
 
     <x:action-call coid = "${z:vid(v, 'search_logins_script')}"
-      action = "#{v.doSearchLogins}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doSearchLogins}" modelView = "${v}"/>
 
     <x:text-field coid = "${z:vid(v, 'search_logins')}"
       value = "#{v.searchNames}">

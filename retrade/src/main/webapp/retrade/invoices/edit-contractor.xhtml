@@ -91,12 +91,7 @@
 
 
       <x:action-call coid = "${z:vid(e, 'search-firms-script')}"
-        action = "#{e.doSearchFirms}">
-
-        <f:facet name = "action-params">
-          '${e.modelParam}': '${e.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{e.doSearchFirms}" modelView = "#{e}"/>
 
       <script type = "text/javascript">
       //<![CDATA[

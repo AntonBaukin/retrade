@@ -155,12 +155,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:text-field>
 
     <x:action-call coid = "${z:vid(v, 'search-ables-script')}"
-      action = "#{v.doSearchRules}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doSearchRules}" modelView = "${v}"/>
 
     <!-- filter ables field] -->
 
@@ -283,44 +278,19 @@ ${v.checkModelRequestedWithRedirect}
   </x:data-grid>
 
   <x:action-call coid = "${z:vid(v, 'secure-set-able-sets-and-rules-script')}"
-    action = "#{v.doGrantSelectedRulesAndSets}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doGrantSelectedRulesAndSets}" modelView = "${v}"/>
 
   <x:action-call coid = "${z:vid(v, 'secure-set-revoke-ables-from-table-script')}"
-    action = "#{v.doRevokeSelectedAbles}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doRevokeSelectedAbles}" modelView = "${v}"/>
 
   <x:action-call coid = "${z:vid(v, 'secure-set-revoke-ables-of-rules-script')}"
-    action = "#{v.doRevokeAblesOfDefaultSet}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doRevokeAblesOfDefaultSet}" modelView = "${v}"/>
 
   <x:action-call coid = "${z:vid(v, 'secure-set-revoke-ables-of-rules-anywhere-script')}"
-    action = "#{v.doRevokeAblesOfAllSets}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doRevokeAblesOfAllSets}" modelView = "${v}"/>
 
   <x:action-call coid = "${z:vid(v, 'secure-set-revoke-ables-of-sets-script')}"
-    action = "#{v.doRevokeSelectedSets}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doRevokeSelectedSets}" modelView = "${v}"/>
 
   <!-- secure ables list] -->
 

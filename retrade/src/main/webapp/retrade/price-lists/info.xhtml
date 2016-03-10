@@ -105,12 +105,7 @@ ${v.checkEntityRequested}
 
 
         <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
-          action = "#{v.doSearchGoods}">
-
-          <f:facet name = "action-params">
-            '${v.modelParam}': '${v.modelKeys}'
-          </f:facet>
-        </x:action-call>
+          action = "#{v.doSearchGoods}" modelView = "${v}"/>
 
         <script type = "text/javascript">
         //<![CDATA[

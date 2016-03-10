@@ -79,12 +79,7 @@
       <f:facet name = "extjs-props">
         cls: 'ux-btn-red', margin: extjsf.pts(0, 26, 6, 0),
         text: 'Отмена', height: retrade_default('button').height
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:winaction-button>
+      </f:facet><f:facet name = "action-params"/></x:winaction-button>
 
     <x:winaction-button coid = "${z:vid(v, 'goto-edit')}"
       action = "#{v.doEditInvoice}">

@@ -247,12 +247,7 @@
       <!-- [filter domains field -->
 
       <x:action-call coid = "${z:vid(v, 'search_domains_script')}"
-        action = "#{v.doSearchDomains}">
-
-        <f:facet name = "action-params">
-          '${v.modelParam}': '${v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{v.doSearchDomains}" modelView = "${v}"/>
 
       <x:text-field coid = "${z:vid(v, 'search_domains')}"
         value = "#{v.searchNames}">

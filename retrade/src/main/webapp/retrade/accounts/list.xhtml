@@ -58,15 +58,14 @@ ${v.checkModelRequestedWithRedirect}
       <!-- [filter accounts by names -->
 
       <x:action-call coid = "${z:vid(v, 'search_accounts_script')}"
-        action = "#{v.doSearchAccounts}">
+        action = "#{v.doSearchAccounts}" modelView = "#{v}">
 
         <f:facet name = "action-params">
-          '${v.modelParam}': '${v.modelKeys}',
-          'ownAccountsOnly': ZeT.delay(function()
+
+          ownAccountsOnly: ZeT.delay(function()
           {
             return extjsf.bind("${z:vid(v, 'own-accounts-only')}", '${extDom}').value();
           })
-
         </f:facet>
       </x:action-call>
 

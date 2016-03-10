@@ -169,12 +169,7 @@ ${v.checkModelRequested}
 
 
   <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
-    action = "#{v.doCheckCodeExists}">
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '${v.modelKeys}'
-    </f:facet>
-  </x:action-call>
+    action = "#{v.doCheckCodeExists}" modelView = "${v}"/>
 
 
   <script type = "text/javascript">

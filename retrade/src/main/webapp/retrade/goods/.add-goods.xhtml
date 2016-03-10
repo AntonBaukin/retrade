@@ -213,12 +213,7 @@
     </x:data-store>
 
     <x:action-call coid = "${z:vid(v, 'assign-group-script')}"
-      action = "#{v.doAssignGroup}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doAssignGroup}" modelView = "${v}"/>
 
     <x:component coid = "${z:vid(v, 'assign-group-layout')}">
       <f:facet name = "extjs-props">

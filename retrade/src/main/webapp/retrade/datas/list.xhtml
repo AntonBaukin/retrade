@@ -43,12 +43,7 @@ ${v.checkModelRequestedWithRedirect}
       </x:component>
 
       <x:action-call coid = "${z:vid(v, 'invoke-data-source-script')}"
-        action = "#{v.doInvokeXML}">
-
-        <f:facet name = "action-params">
-          '${v.modelParam}': '#{v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{v.doInvokeXML}" modelView = "#{v}"/>
 
       <!-- invoke data source to obtain xml] -->
 
@@ -157,12 +152,7 @@ ${v.checkModelRequestedWithRedirect}
         </x:component>
 
         <x:action-call coid = "${z:vid(v, 'delete-template-script')}"
-          action = "#{v.doDeleteTemplate}">
-
-          <f:facet name = "action-params">
-            '${v.modelParam}': '${v.modelKeys}'
-          </f:facet>
-        </x:action-call>
+          action = "#{v.doDeleteTemplate}" modelView = "${v}"/>
 
 
         <!-- [create XLS report button] -->
@@ -187,12 +177,7 @@ ${v.checkModelRequestedWithRedirect}
         </x:component>
 
         <x:action-call coid = "${z:vid(v, 'create-report-script')}"
-          action = "#{v.doCreateReport}">
-
-          <f:facet name = "action-params">
-            '${v.modelParam}': '${v.modelKeys}'
-          </f:facet>
-        </x:action-call>
+          action = "#{v.doCreateReport}" modelView = "${v}"/>
 
 
         <x:component coid = "${z:vid(v, '_tb_fill_templates')}">
@@ -219,12 +204,7 @@ ${v.checkModelRequestedWithRedirect}
         </x:text-field>
 
         <x:action-call coid = "${z:vid(v, 'search-templates-script')}"
-          action = "#{v.doSearchTemplates}">
-
-          <f:facet name = "action-params">
-            '${v.modelParam}': '${v.modelKeys}'
-          </f:facet>
-        </x:action-call>
+          action = "#{v.doSearchTemplates}" modelView = "${v}"/>
 
         <script type = "text/javascript">
         //<![CDATA[

@@ -79,12 +79,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:text-field>
 
     <x:action-call coid = "${z:vid(v, 'search-reports-script')}"
-      action = "#{v.doSearchReports}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doSearchReports}" modelView = "${v}"/>
 
     <script type = "text/javascript">
     //<![CDATA[

@@ -619,7 +619,7 @@ extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
 		opts.success = function(response)
 		{
 			if(extjsf.responseHandler.call(self, self.domain, response))
-				ZeT.isf(onsuccess) && usersuc.apply(self, arguments)
+				ZeT.isf(onsuccess) && onsuccess.apply(self, arguments)
 			else
 				ZeT.isf(opts.failure) && opts.failure.apply(self, arguments)
 		}
@@ -703,6 +703,12 @@ extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
 		//~: resolve delayed parameters
 		ZeT.undelay(params)
 
+		//~: additional parameters
+		return this.$add_params(params)
+	},
+
+	$add_params      : function(params)
+	{
 		//~: default ExtJSF domain
 		if(!ZeT.iss(params.extjs_domain))
 			params.extjs_domain = this.domain
@@ -716,7 +722,7 @@ extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
 			params.view = this._view_id
 
 		return params
-	}
+	},
 })
 
 

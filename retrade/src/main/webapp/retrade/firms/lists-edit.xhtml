@@ -72,12 +72,7 @@ ${v.checkModelRequestedWithRedirect}
     </x:component>
 
     <x:action-call coid = "${z:vid(v, 'submit-script')}"
-      action = "#{v.doCommitEdit}">
-
-      <f:facet name = "action-params">
-       '${v.modelParam}': '${v.modelKeys}'
-      </f:facet>
-    </x:action-call>
+      action = "#{v.doCommitEdit}" modelView = "${v}"/>
 
     <script type = "text/javascript">
     //<![CDATA[
@@ -219,20 +214,10 @@ ${v.checkModelRequestedWithRedirect}
       
 
       <x:action-call coid = "${z:vid(v, 'delete-firms-script')}"
-        action = "#{v.doDeleteContractors}">
-
-        <f:facet name = "action-params">
-          '${v.modelParam}': '${v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{v.doDeleteContractors}" modelView = "${v}"/>
 
       <x:action-call coid = "${z:vid(v, 'add-firms-script')}"
-        action = "#{v.doAddContractors}">
-
-        <f:facet name = "action-params">
-         '${v.modelParam}': '${v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{v.doAddContractors}" modelView = "${v}"/>
 
 
       <script type = "text/javascript">
@@ -404,20 +389,10 @@ ${v.checkModelRequestedWithRedirect}
 
 
       <x:action-call coid = "${z:vid(v, 'assign-lists-script')}"
-        action = "#{v.doAssignPriceLists}">
-
-        <f:facet name = "action-params">
-          '${v.modelParam}': '${v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{v.doAssignPriceLists}" modelView = "${v}"/>
 
       <x:action-call coid = "${z:vid(v, 'add-lists-script')}"
-        action = "#{v.doAddPriceLists}">
-
-        <f:facet name = "action-params">
-         '${v.modelParam}': '${v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{v.doAddPriceLists}" modelView = "${v}"/>
       
       <script type = "text/javascript">
       //<![CDATA[
@@ -588,12 +563,7 @@ ${v.checkModelRequestedWithRedirect}
 
 
       <x:action-call coid = "${z:vid(v, 'search-goods-script')}"
-        action = "#{v.doSearchGoods}">
-
-        <f:facet name = "action-params">
-          '${v.modelParam}': '${v.modelKeys}'
-        </f:facet>
-      </x:action-call>
+        action = "#{v.doSearchGoods}" modelView = "${v}"/>
 
       <script type = "text/javascript">
       //<![CDATA[
