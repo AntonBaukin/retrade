@@ -355,7 +355,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		ZeT.undelay(params) //<-- resolve delayed parameters
 
 		//~: set the domain parameter
-		params.extjs_domain = domain;
+		params.domain = domain;
 
 		//~: set the view id parameter
 		params.view = ZeT.iss(opts.view)?(opts.view):(extjsf.genViewId());
@@ -364,7 +364,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		params.mode = ZeT.iss(opts.mode)?(opts.mode):('body');
 
 		//~: set the position parameter
-		params.extjs_desktop_position = pos;
+		params['desktop-position'] = pos;
 
 		//!: load the content
 		Ext.create('Ext.ComponentLoader', {
@@ -2235,7 +2235,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		  autoLoad: true, scripts: true,
 		  ajaxOptions: { method: 'GET' }, params: {
 		    mode: 'body', view: self.view(),
-		    extjs_domain: self.domain()
+		    domain: self.domain()
 		  }
 		})
 	},

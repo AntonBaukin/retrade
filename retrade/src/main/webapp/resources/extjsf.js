@@ -710,8 +710,8 @@ extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
 	$add_params      : function(params)
 	{
 		//~: default ExtJSF domain
-		if(!ZeT.iss(params.extjs_domain))
-			params.extjs_domain = this.domain
+		if(!ZeT.iss(params.domain))
+			params.domain = this.domain
 
 		//~: default view mode
 		if(!ZeT.iss(params.mode))
@@ -1607,7 +1607,7 @@ extjsf.Bind.extend(
 		jsf_prms.mode = opts.mode || 'BODY_POST';
 
 		//~: set the domain
-		jsf_prms.extjs_domain = opts.domain || this.domain;
+		jsf_prms.domain = opts.domain || this.domain;
 
 		var bind = this;
 
@@ -1979,7 +1979,7 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 		  (supform)?('POST'):('GET');
 
 		//~: bind the domain
-		prms.extjs_domain = this._domain;
+		prms.domain = this._domain;
 
 		//!: reload content
 		Ext.create('Ext.ComponentLoader', {
