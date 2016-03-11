@@ -249,7 +249,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		this._client_id = ZeT.asserts(clientId)
 
 		//~: unique ExtJSF component id
-		this.coid = !ZeT.ises(coid)?(coid):ZeT.asserts(this.name)
+		this.coid = !ZeT.ises(coid)?(coid):
+		  ZeT.asserts(this.name)
 
 		//~: ExtJS component id
 		this.props({ id: this.coid })
@@ -329,6 +330,16 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return this
 	},
 
+	destroy          : function(opts)
+	{
+		//?: {skip this component}
+		if(opts && ZeT.isa(opts.except))
+			if(opts.except.indexOf(this) != -1)
+				return
+
+		return this.$destroy()
+	},
+
 	/**
 	 * Invoked always after the JSF facets with the
 	 * nested components are rendered, and always
@@ -361,7 +372,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 		//?: {add to the container component}
 		else if(this._target_coid)
-			extjsf.bind(this._target_coid, this.domain).on('added', function(parent)
+			extjsf.bind(this._target_coid, this.domain).
+			  on('added', function(parent)
 			{
 				//~: create the component
 				if(!self.co())
@@ -385,6 +397,61 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		a.splice(0, 0, this)
 
 		return ZeT.scope.apply(ZeT, a)
+	},
+
+	/**
+	 * Allows to define (and register in the same
+	 * domain) a Bind based on this one. The name
+	 * of the new Bind is: this bind name + '-' +
+	 * nested bind name. Note this when inserting
+	 * default facet with the properties!
+	 *
+	 * Optional second argument is a Bind instance,
+	 * or a factory function, or ZeT Class.
+	 *
+	 * Callback function is invoked with arguments
+	 * (this-context equals to [0]):
+	 *
+	 * [0] new (nested) Bind instance;
+	 * [1] this (nesting) Bind instance.
+	 */
+	nest             : function(/* name, [ Bind, ] callback */)
+	{
+		//?: {this bind is not registered}
+		ZeT.asserts(this.name)
+		ZeT.assert(ZeT.iss(this.domain))
+
+		var bind, callback = arguments[1]
+		var name = ZeT.asserts(arguments[0],
+		  'Nested Bind must have not an empty name!')
+
+		if(arguments.length != 2)
+		{
+			ZeT.assert(arguments.length == 3)
+			bind = callback; callback = arguments[2]
+		}
+
+		//?: {has no callback}
+		ZeT.assertf(callback)
+
+		//~: build the Bind instance
+		if(ZeT.isx(bind))
+			bind = new extjsf.Bind()
+		else if(ZeT.isclass(bind))
+			bind = bind.create()
+		else if(ZeT.isf(bind))
+			bind = bind()
+
+		//?: {not a Bind}
+		ZeT.assert(extjsf.isbind(bind))
+
+		//~: initialize
+		bind = this.$nest(name, bind)
+
+		//!: invoke the callback
+		if(bind) callback.call(bind, bind, this)
+
+		return this
 	},
 
 	/**
@@ -446,6 +513,21 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return Ext.ComponentManager.create(this.buildProps())
 	},
 
+	$destroy         : function()
+	{
+		var co; if(co = this.co()) try
+		{
+			if(ZeT.isf(co.destroy))
+				co.destroy()
+
+			return true
+		}
+		finally
+		{
+			delete this._component
+		}
+	},
+
 	/**
 	 * Private. Internals of install().
 	 */
@@ -475,7 +557,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 		//?: {form from the client id}
 		if(!ZeT.ises(this._client_id))
-			return ZeTS.cat(this._client_id, '-', ZeT.asserts(this.coid))
+			return ZeTS.cat(this._client_id, '-',
+			  ZeT.asserts(this.coid))
 	},
 
 	/**
@@ -486,8 +569,9 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	{
 		//~: lookup the node
 		var n = ZeT.assertn(this.$props_node(suffix),
-		  'No properties node for suffix [', suffix, '] is found for Bind [',
-		  this.name, '] and node id [', this.$node_id(), ']!'
+		  'No properties node for suffix [', suffix,
+		  '] is found for Bind [', this.name,
+		  '] and node id [', this.$node_id(), ']!'
 		)
 
 		//~: text content of the node
@@ -533,6 +617,28 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 			throw EX.ass('Illegal properties of Bind [',
 			  this.name, ']: \n', props, '\n', e)
 		}
+	},
+
+	/**
+	 * Private. Initializes the nested Bind.
+	 */
+	$nest            : function(name, bind)
+	{
+		//~: register the nested bind
+		extjsf.domain(this.domain).
+		  bind(ZeTS.cat(this.name, '-', name), bind)
+
+		//~: component id
+		var coid = ZeT.ises(this.coid)?(bind.name):
+		  ZeTS.cat(this.coid, '-', name)
+
+		//~: same client id, component id
+		bind.ids(this._client_id, coid)
+
+		//~: parent bind
+		bind.parent(this._parent_coid, this._target_coid)
+
+		return bind
 	}
 })
 
@@ -736,7 +842,8 @@ extjsf.LoadActionBind = ZeT.defineClass(
 	$handler        : function(opts)
 	{
 		//~: collect the parameters (omitting the form)
-		var params = this.$post_params(ZeT.get(opts, 'params'), false)
+		var params = this.$post_params(
+		  ZeT.get(opts, 'params'), false)
 
 		//~: GET or POST
 		var method = 'POST'; if(params.method === 'GET')
@@ -747,6 +854,139 @@ extjsf.LoadActionBind = ZeT.defineClass(
 		  form(this.$form_node()).button(true).
 		  addParams(params).setMethod(method).
 		  load()
+	}
+})
+
+
+// +----: Store Bind :------------------------------------------+
+
+extjsf.StoreBind = ZeT.defineClass(
+  'extjsf.StoreBind', extjsf.Bind,
+{
+	install          : function()
+	{
+		this.$install()
+
+		//~: create the component
+		var self = this; Ext.onReady(function()
+		{
+			//~: create the component
+			if(!self.co())
+				self.co(self.$create())
+
+			//~: set the proxy
+			self.proxy.co(self.co().getProxy())
+		})
+
+		return this
+	},
+
+	$install         : function()
+	{
+		//?: {has no page size}
+		var ps = this.$raw().pageSize
+		ZeT.assert(ZeT.isu(ps) || (ZeT.isi(ps) && (ps >= 0)))
+		if(ps === 0) delete this.$raw().pageSize
+
+		//!: install the proxy
+		this.$install_proxy()
+
+		//~: sort the store
+		this.on('beforeload', ZeT.fbind(this.$sort_store, this))
+	},
+
+	$create          : function()
+	{
+		return Ext.create('Ext.data.Store', this.buildProps())
+	},
+
+	$destroy         : function()
+	{
+		var destroyed = this.$applySuper(arguments)
+
+		//?: {component is destroyed}
+		if(destroyed === true)
+			Ext.data.StoreManager.unregister(this.coid)
+
+		return destroyed
+	},
+
+	$install_proxy   : function()
+	{
+		var proxy = ZeT.assertn(this.proxy)
+
+		//?: {empty proxy}
+		if(!ZeT.keys(proxy.$raw()).length)
+			this.props({ autoLoad: false })
+
+		//~: proxy parameters
+		this.$proxy_params(proxy)
+
+		//!: add proxy properties to the store
+		store.props({ proxy: proxy.$raw() })
+	},
+
+	$proxy_params    : function(proxy)
+	{
+		//~: proxy request parameters
+		var extra  = ZeT.assertn(proxy.$raw('extra'))
+		var params = proxy.$raw().extraParams
+		if(!params) proxy.props({ extraParams: (params = {})})
+		ZeT.assert(ZeT.iso(params))
+
+		//~: model key parameter
+		if(ZeT.ises(params.model))
+			//?: {direct model key}
+			if(!ZeT.ises(extra.key))
+				params.model = extra.key
+			//?: {model key from the view}
+			else if(!ZeT.ises(extra.viewKey))
+				params.model = extra.viewKey
+
+		//~: model provider parameter
+		if(ZeT.ises(params['model-provider']))
+			if(!ZeT.ises(extra.provider))
+				params['model-provider'] = extra.provider
+
+		//~: model request parameter
+		if(ZeT.ises(params['model-request']))
+			if(!ZeT.ises(extra.request))
+				params['model-request'] = extra.request
+
+		return params
+	},
+
+	$sort_store      : function()
+	{
+		var sp = {}, sos = this.co().sorters
+
+		//~: collect sorters
+		if(so) for(var i = 0;(i < sos.getCount());i++)
+		{
+			//~: check sort property
+			var so = sos.getAt(i)
+			if(ZeT.ises(so._property)) { sp = {}; break }
+
+			//[i]: sort property
+			sp['sortProperty' + i] = so._property
+
+			//[i]: is descending
+			if('DESC' === so._direction)
+				sp['sortDesc' + i] = true
+		}
+
+		//~: proxy parameters
+		var params = this.proxy.$raw().extraParams
+
+		//~: remove previous sort parameters
+		for(i = 0;(params['sortProperty' + i]);i++)
+		{
+			delete params['sortProperty' + i]
+			delete params['sortDesc' + i]
+		}
+
+		//~: add new parameters
+		ZeT.extend(params, sp)
 	}
 })
 
@@ -1321,22 +1561,6 @@ extjsf.Bind.extend(
 		var node = this.getPropsNode(node_id);
 		var text = ZeTX.text(node);
 		return ZeTS.ises(text)?({}):(this.$eval_props(text));
-	},
-
-	destroy          : function(opts)
-	{
-		//?: {skip this component}
-		if(opts && ZeT.isa(opts.except) && (opts.except.indexOf(this) != -1))
-			return
-
-		var co; if(co = this.co()) try
-		{
-			co.destroy()
-		}
-		finally
-		{
-			delete this._component
-		}
 	},
 
 	boundDestroy     : function()
