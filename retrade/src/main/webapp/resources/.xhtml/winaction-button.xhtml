@@ -54,44 +54,14 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-//      extjsf.domain('${extDom}').
-//        bind('#{cc.attrs.coid}', new extjsf.ActionBind()).
-//        ids('#{cc.clientId}').readPropsNode().goAction().
-//        postMode('${rootView.viewModeParam}').
-//        viewId('${rootView.id}')
-
-  ZeT.scope(function()
-  {
-    //~: create button bind
-    var button = extjsf.domain('${extDom}').
-      bind('#{cc.attrs.coid}', new extjsf.Bind())
-    button.nodeId('#{cc.clientId}-#{cc.attrs.coid}')
-    button.goFormAction()
-
-    //~: configure the bind
-    button.props({xtype: 'button'})
-    button.readPropsNode()
-
-    //~: submit handler
-    function submit_handler()
-    {
-      var params = button.evalPropsNode("#{cc.clientId}-#{cc.attrs.coid}-params");
-      var method = undefined; if(ZeT.iss(params.method)) { method = params.method; delete params.method; }
-
-      new extjsf.WinmainLoader('${extDom}').
-        form('#{cc.clientId}-#{cc.attrs.coid}').button(true).
-        addParams({'${rootView.extjsDomainParam}': '${extDom}',
-          '${rootView.viewModeParam}': '${rootView.viewModeStr}',
-          '${rootView.viewIdParam}': '${rootView.id}'}).
-        addParams(params).setMethod(method).
-        load()
-    }
-
-    button.handler = submit_handler;
-    button.props({handler: submit_handler})
-
-    extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${extDom}', button)
-  })
+      extjsf.domain('${extDom}').
+        bind('#{cc.attrs.coid}', new extjsf.ActionButtonBind()).
+        ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
+        goAction().props({ xtype: 'button' }).viewId('${rootView.id}').
+        props('params', { model: "#{cc.attrs.modelView.modelKeys}" }).
+        readPropsNode().readPropsNode('params').
+        postMode('${rootView.viewModeStr}').
+        install()
 
     //]]>
     </script>

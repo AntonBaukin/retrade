@@ -539,7 +539,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 // +----: Action Bind :------------------------------------------+
 
-extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
+extjsf.ActionBind = ZeT.defineClass(
+  'extjsf.ActionBind', extjsf.Bind,
 {
 	className        : 'extjsf.ActionBind',
 
@@ -612,7 +613,7 @@ extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
 		opts.url = this.$form_action()
 
 		//~: parameters of the request
-		opts.params = this.$post_params(opts.params, true)
+		opts.params = this.$post_params(opts.params, true, true)
 
 		//~: success callback
 		var onsuccess = opts.success
@@ -689,13 +690,14 @@ extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
 	/**
 	 * Private. Collects parameters for POST request.
 	 */
-	$post_params     : function(added, button)
+	$post_params     : function(added, form, button)
 	{
 		//~: request parameters from the facet
 		var params = ZeT.extend({}, this.$raw('params'))
 
 		//~: collect parameters from the form
-		ZeT.extend(params, this.$form_params(button))
+		if(form !== false)
+			ZeT.extend(params, this.$form_params(button))
 
 		//~: parameters from the options
 		ZeT.extend(params, added)
@@ -710,15 +712,15 @@ extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
 	$add_params      : function(params)
 	{
 		//~: default ExtJSF domain
-		if(!ZeT.iss(params.domain))
+		if(!ZeT.iss(params.domain) && !ZeT.ises(this.domain))
 			params.domain = this.domain
 
 		//~: default view mode
-		if(!ZeT.iss(params.mode))
+		if(!ZeT.iss(params.mode) && !ZeT.ises(this._post_mode))
 			params.mode = this._post_mode
 
 		//~: default view id
-		if(!ZeT.iss(params.view))
+		if(!ZeT.iss(params.view) && !ZeT.ises(this._view_id))
 			params.view = this._view_id
 
 		return params
@@ -726,11 +728,26 @@ extjsf.ActionBind = ZeT.defineClass('extjsf.ActionBind', extjsf.Bind,
 })
 
 
-// +----: Action Button :----------------------------------------+
+// +----: Action Button Bind :-----------------------------------+
 
-extjsf.ActionButton = ZeT.defineClass('extjsf.ActionButton', extjsf.ActionBind,
+extjsf.ActionButtonBind = ZeT.defineClass(
+  'extjsf.ActionButtonBind', extjsf.ActionBind,
 {
+	$handler        : function(opts)
+	{
+		//~: collect the parameters (omitting the form)
+		var params = this.$post_params(ZeT.get(opts, 'params'), false)
 
+		//~: GET or POST
+		var method = 'POST'; if(params.method === 'GET')
+			{ method = 'GET'; delete params.method }
+
+		//!: load the window
+		new extjsf.WinmainLoader(this.domain).
+		  form(this.$form_node()).button(true).
+		  addParams(params).setMethod(method).
+		  load()
+	}
 })
 
 
