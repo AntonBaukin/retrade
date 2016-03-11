@@ -895,7 +895,8 @@ extjsf.StoreBind = ZeT.defineClass(
 				self.co(self.$create())
 
 			//~: set the proxy
-			self.proxy.co(self.co().getProxy())
+			if(self.proxy)
+				self.proxy.co(self.co().getProxy())
 		})
 
 		return this
@@ -908,11 +909,11 @@ extjsf.StoreBind = ZeT.defineClass(
 		ZeT.assert(ZeT.isu(ps) || (ZeT.isi(ps) && (ps >= 0)))
 		if(ps === 0) delete this.$raw().pageSize
 
-		//!: install the proxy
-		if(this.proxy) this.$install_proxy()
+		if(this.proxy) //?: {has proxy configured}
+			this.$install_proxy()
 
-		//~: sort the store
-		this.on('beforeload', ZeT.fbind(this.$update_params, this))
+		//~: sort the store before each load
+		this.on('beforeload', ZeT.fbind(this.$before_load, this))
 	},
 
 	$create          : function()
@@ -973,6 +974,14 @@ extjsf.StoreBind = ZeT.defineClass(
 				params['model-request'] = extra.request
 
 		return this.$add_params(params)
+	},
+
+	$before_load     : function()
+	{
+		//?: {has no proxy} forbid load
+		if(!this.proxy) return false
+
+		this.$update_params()
 	},
 
 	$update_params   : function()
