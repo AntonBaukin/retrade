@@ -13,10 +13,6 @@
     <f:facet name = "store-props">
       model: 'retrade.model.GoodAttrView'
     </f:facet>
-
-    <f:facet name = "proxy-props">
-      noproxy: true
-    </f:facet>
   </x:data-store>
 
 
@@ -25,10 +21,6 @@
   <x:data-store storeId = "${z:vid(v, 'goodAttrGroups')}">
     <f:facet name = "store-props">
       model: 'retrade.model.KeyValue'
-    </f:facet>
-
-    <f:facet name = "proxy-props">
-      noproxy: true
     </f:facet>
   </x:data-store>
 
@@ -120,7 +112,7 @@
 
   <!-- [attribute types store] -->
   <x:data-store storeId = "${z:vid(v, 'attrTypes')}"
-    modelProvider = "facesGoodAttrsView" pageSize = "0">
+    modelProvider = "facesGoodAttrsView">
 
     <f:facet name = "store-props">
       model: 'retrade.model.GoodAttrView'

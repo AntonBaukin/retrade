@@ -93,10 +93,10 @@
   <!-- [logins table -->
 
   <x:data-store storeId = "${z:vid(v, 'loginsStore')}"
-    modelView = "${v}" pageSize = "15">
+    modelView = "${v}">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.AuthLoginView'
+      model: 'retrade.model.AuthLoginView', pageSize: 5
     </f:facet>
 
     <f:facet name = "proxy-props">

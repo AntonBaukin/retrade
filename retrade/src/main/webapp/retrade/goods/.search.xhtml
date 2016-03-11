@@ -10,7 +10,7 @@
 
   <!-- [attribute types store] -->
   <x:data-store storeId = "${z:vid(v, 'search-goods-attrTypes')}"
-    modelProvider = "facesGoodAttrsView" pageSize = "0">
+    modelProvider = "facesGoodAttrsView">
 
     <f:facet name = "store-props">
       model: 'retrade.model.GoodAttrView', autoLoad: true
@@ -27,21 +27,13 @@
     <f:facet name = "store-props">
       model: 'retrade.model.KeyValue'
     </f:facet>
-
-    <f:facet name = "proxy-props">
-      noproxy: true
-    </f:facet>
   </x:data-store>
 
 
   <!-- [attribute values store] -->
-  <x:data-store storeId = "${z:vid(v, 'search-goods-attrValues')}" pageSize = "0">
+  <x:data-store storeId = "${z:vid(v, 'search-goods-attrValues')}">
     <f:facet name = "store-props">
       model: 'retrade.model.KeyValue'
-    </f:facet>
-
-    <f:facet name = "proxy-props">
-      noproxy: true
     </f:facet>
   </x:data-store>
 

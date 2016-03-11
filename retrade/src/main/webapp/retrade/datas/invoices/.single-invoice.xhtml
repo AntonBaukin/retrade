@@ -97,10 +97,10 @@ ${v.checkModelRequestedWithRedirect}
   <!-- [invoices table -->
 
   <x:data-store storeId = "${z:vid(v, 'invoicesStore')}"
-    modelView = "${v}" pageSize = "10">
+    modelView = "${v}">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.InvoiceView'
+      model: 'retrade.model.InvoiceView', pageSize: 10
     </f:facet>
 
     <f:facet name = "proxy-props">

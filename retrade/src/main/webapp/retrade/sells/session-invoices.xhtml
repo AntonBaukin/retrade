@@ -76,8 +76,7 @@ ${i.checkModelRequestedWithRedirect}
 
   <!-- [documents (invoices) table -->
 
-  <x:data-store storeId = "${z:vid(i, 'firmInvoices')}"
-    pageSize = "10" modelRequest = "invoices"
+  <x:data-store storeId = "${z:vid(i, 'firmInvoices')}" modelRequest = "invoices"
     modelProvider = "facesSellsSessionView" modelKey = "#{i.modelKeys}">
 
     <f:facet name = "store-props">

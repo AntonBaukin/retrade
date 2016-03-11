@@ -88,10 +88,6 @@ ${v.checkModelRequestedWithRedirect}
         <f:facet name = "store-props">
           model: 'retrade.model.KeyValue'
         </f:facet>
-
-        <f:facet name = "proxy-props">
-          noproxy: true
-        </f:facet>
       </x:data-store>
 
       <x:drop-list coid = "${z:vid(v, 'groups-list')}"
@@ -143,7 +139,7 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [attributes table -->
 
     <x:data-store storeId = "${z:vid(v, 'goodAttrs')}"
-      modelView = "${v}" pageSize = "0">
+      modelView = "${v}">
 
       <f:facet name = "store-props">
         model: 'retrade.model.GoodAttrView',
@@ -252,10 +248,6 @@ ${v.checkModelRequestedWithRedirect}
               { key: 'integer',  value: 'целое' }
             ]
           </f:facet>
-
-          <f:facet name = "proxy-props">
-            noproxy: true
-          </f:facet>
         </x:data-store>
 
         <x:component coid = "${z:vid(v, '_type_boxes')}">
@@ -342,10 +334,6 @@ ${v.checkModelRequestedWithRedirect}
       <x:data-store storeId = "${z:vid(v, 'values')}" modelView = "${v}">
         <f:facet name = "store-props">
           model: 'retrade.model.KeyValue', data: []
-        </f:facet>
-
-        <f:facet name = "proxy-props">
-          noproxy: true
         </f:facet>
       </x:data-store>
 

@@ -133,7 +133,7 @@
   <!-- [tree (flat) data -->
 
   <x:data-store storeId = "${z:vid(v, 'goodsTreeData')}"
-    modelView = "${v}" modelRequest = "tree" pageSize = "0">
+    modelView = "${v}" modelRequest = "tree">
 
     <f:facet name = "store-props">
       model: 'retrade.model.CatItemTree', autoLoad: false
@@ -680,10 +680,10 @@
   <!-- [grid with folder goods -->
 
   <x:data-store storeId = "${z:vid(v, 'folderGoodsStore')}"
-    modelView = "${v}" modelRequest = "goods" pageSize = "5">
+    modelView = "${v}" modelRequest = "goods">
 
     <f:facet name = "store-props">
-      model: '#{goodsModel}',
+      model: '#{goodsModel}', pageSize: 5,
       autoLoad: false, remoteSort: true,
       sorters: [{ property: 'goodName', direction: 'ASC' }]
     </f:facet>

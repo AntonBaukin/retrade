@@ -295,10 +295,10 @@
     <!-- [domains table -->
 
     <x:data-store storeId = "${z:vid(v, 'domainsStore')}"
-      modelView = "${v}" pageSize = "5">
+      modelView = "${v}">
 
       <f:facet name = "store-props">
-        model: 'retrade.model.CatItemView'
+        model: 'retrade.model.CatItemView', pageSize: 5
       </f:facet>
 
       <f:facet name = "proxy-props">

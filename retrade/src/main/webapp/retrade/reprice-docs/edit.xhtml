@@ -198,12 +198,8 @@ ${v.checkModelRequestedWithRedirect}
 
     <x:data-store storeId = "${z:vid(v, 'groups')}" modelView = "${v}">
       <f:facet name = "store-props">
-        model: 'retrade.model.KeyValue', sorters: [{ property: 'key' }],
-        data: []
-      </f:facet>
-
-      <f:facet name = "proxy-props">
-        noproxy: true
+        model: 'retrade.model.KeyValue',
+        sorters: [{ property: 'key' }], data: []
       </f:facet>
     </x:data-store>
 
@@ -214,10 +210,6 @@ ${v.checkModelRequestedWithRedirect}
         model: 'retrade.model.KeyValue', filters: [
           function(m) { return m.get('key') != 'ø' }
         ]
-      </f:facet>
-
-      <f:facet name = "proxy-props">
-        noproxy: true
       </f:facet>
     </x:data-store>
 
@@ -395,7 +387,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <!-- [price changes store] -->
   <x:data-store storeId = "${z:vid(v, 'store')}"
-    modelView = "${v}" pageSize = "0">
+    modelView = "${v}">
 
     <f:facet name = "store-props">
       model: 'retrade.model.GoodPriceHistory',
@@ -411,7 +403,7 @@ ${v.checkModelRequestedWithRedirect}
   <!-- [goods store] -->
   <x:data-store storeId = "${z:vid(v, 'goodsStore')}"
     modelProvider = "facesRepriceDocEdit" modelRequest  = "goods"
-    modelKey = "#{v.modelKeys}" pageSize = "10">
+    modelKey = "#{v.modelKeys}">
 
     <f:facet name = "store-props">
       model: 'retrade.model.GoodUnitView'

@@ -132,11 +132,12 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [goods table -->
 
     <x:data-store storeId = "${z:vid(v, 'goodUnits')}"
-      modelView = "${v}" pageSize = "15">
+      modelView = "${v}">
 
       <f:facet name = "store-props">
-        model: 'retrade.model.GoodPriceView', remoteSort: true,
-        sorters: [{ property: 'goodName', direction: 'ASC' }]
+        model: 'retrade.model.GoodPriceView',
+        sorters: [{ property: 'goodName', direction: 'ASC' }],
+        remoteSort: true, pageSize: 5
       </f:facet>
 
       <f:facet name = "proxy-props">

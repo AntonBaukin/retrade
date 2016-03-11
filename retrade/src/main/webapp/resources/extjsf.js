@@ -69,13 +69,18 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 	 * destruction of a Bind does not mean it's
 	 * ExtJS component is being destroyed!
 	 */
-	unbind           : function(name, destroy)
+	unbind           : function(bind, destroy)
 	{
-		ZeT.asserts(name, 'Can not lookup a Bind by ',
-		  'not a string name: ', name)
+		//?: {bind instance}
+		if(extjsf.isbind(bind))
+			bind = bind.name
+
+		//?: {not a string name}
+		ZeT.asserts(bind, 'Can not lookup a Bind by ',
+		  'not a string name: ', bind)
 
 		//~: remove the bind
-		var bind = this.binds.remove(name)
+		var bind = this.binds.remove(bind)
 		if(!bind) return
 
 		//?: {do not destroy}
@@ -414,6 +419,9 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	 *
 	 * [0] new (nested) Bind instance;
 	 * [1] this (nesting) Bind instance.
+	 *
+	 * If callback returns false, nested bind is
+	 * unregistered from the domain.
 	 */
 	nest             : function(/* name, [ Bind, ] callback */)
 	{
@@ -449,7 +457,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		bind = this.$nest(name, bind)
 
 		//!: invoke the callback
-		if(bind) callback.call(bind, bind, this)
+		if(bind && (false === callback.call(bind, bind, this)))
+			extjsf.domain(this.domain).unbind(bind)
 
 		return this
 	},
@@ -639,6 +648,23 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		bind.parent(this._parent_coid, this._target_coid)
 
 		return bind
+	},
+
+	/**
+	 * Private. Adds request parameters to call
+	 * this component on the server side.
+	 */
+	$add_params      : function(params)
+	{
+		//~: default ExtJSF domain
+		if(!ZeT.iss(params.domain) && !ZeT.ises(this.domain))
+			params.domain = this.domain
+
+		//~: default view id
+		if(!ZeT.iss(params.view) && !ZeT.ises(this._view_id))
+			params.view = this._view_id
+
+		return params
 	}
 })
 
@@ -817,20 +843,14 @@ extjsf.ActionBind = ZeT.defineClass(
 
 	$add_params      : function(params)
 	{
-		//~: default ExtJSF domain
-		if(!ZeT.iss(params.domain) && !ZeT.ises(this.domain))
-			params.domain = this.domain
+		params = this.$applySuper(arguments)
 
 		//~: default view mode
 		if(!ZeT.iss(params.mode) && !ZeT.ises(this._post_mode))
 			params.mode = this._post_mode
 
-		//~: default view id
-		if(!ZeT.iss(params.view) && !ZeT.ises(this._view_id))
-			params.view = this._view_id
-
 		return params
-	},
+	}
 })
 
 
@@ -889,10 +909,10 @@ extjsf.StoreBind = ZeT.defineClass(
 		if(ps === 0) delete this.$raw().pageSize
 
 		//!: install the proxy
-		this.$install_proxy()
+		if(this.proxy) this.$install_proxy()
 
 		//~: sort the store
-		this.on('beforeload', ZeT.fbind(this.$sort_store, this))
+		this.on('beforeload', ZeT.fbind(this.$update_params, this))
 	},
 
 	$create          : function()
@@ -902,28 +922,27 @@ extjsf.StoreBind = ZeT.defineClass(
 
 	$destroy         : function()
 	{
-		var destroyed = this.$applySuper(arguments)
+		var co = this.co()
+		var de = this.$applySuper(arguments)
 
 		//?: {component is destroyed}
-		if(destroyed === true)
-			Ext.data.StoreManager.unregister(this.coid)
+		if(co && (de === true))
+			//?: {store is still registered}
+			if(co == Ext.data.StoreManager.lookup(this.coid))
+				Ext.data.StoreManager.unregister(this.coid)
 
-		return destroyed
+		return de
 	},
 
 	$install_proxy   : function()
 	{
 		var proxy = ZeT.assertn(this.proxy)
 
-		//?: {empty proxy}
-		if(!ZeT.keys(proxy.$raw()).length)
-			this.props({ autoLoad: false })
-
 		//~: proxy parameters
 		this.$proxy_params(proxy)
 
 		//!: add proxy properties to the store
-		store.props({ proxy: proxy.$raw() })
+		this.props({ proxy: proxy.$raw() })
 	},
 
 	$proxy_params    : function(proxy)
@@ -953,15 +972,15 @@ extjsf.StoreBind = ZeT.defineClass(
 			if(!ZeT.ises(extra.request))
 				params['model-request'] = extra.request
 
-		return params
+		return this.$add_params(params)
 	},
 
-	$sort_store      : function()
+	$update_params   : function()
 	{
 		var sp = {}, sos = this.co().sorters
 
 		//~: collect sorters
-		if(so) for(var i = 0;(i < sos.getCount());i++)
+		if(sos) for(var i = 0;(i < sos.getCount());i++)
 		{
 			//~: check sort property
 			var so = sos.getAt(i)
@@ -976,7 +995,7 @@ extjsf.StoreBind = ZeT.defineClass(
 		}
 
 		//~: proxy parameters
-		var params = this.proxy.$raw().extraParams
+		var params = this.proxy.co().getExtraParams()
 
 		//~: remove previous sort parameters
 		for(i = 0;(params['sortProperty' + i]);i++)
@@ -984,6 +1003,9 @@ extjsf.StoreBind = ZeT.defineClass(
 			delete params['sortProperty' + i]
 			delete params['sortDesc' + i]
 		}
+
+		//~: store bind name
+		sp.bind = this.name
 
 		//~: add new parameters
 		ZeT.extend(params, sp)

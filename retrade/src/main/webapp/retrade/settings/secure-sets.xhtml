@@ -271,11 +271,10 @@
 
   <!-- [secure sets list -->
 
-  <x:data-store storeId = "${z:vid(v, 'setsStore')}"
-    pageSize = "15" modelView = "${v}">
+  <x:data-store storeId = "${z:vid(v, 'setsStore')}" modelView = "${v}">
 
     <f:facet name = "store-props">
-      model: 'retrade.model.SecSetView'
+      model: 'retrade.model.SecSetView', pageSize: 5
     </f:facet>
 
     <f:facet name = "proxy-props">
@@ -566,7 +565,7 @@
 
     <!-- [selected set ables (rules) -->
 
-    <x:data-store storeId = "${z:vid(v, 'setAblesStore')}" pageSize = "10"
+    <x:data-store storeId = "${z:vid(v, 'setAblesStore')}"
       modelView = "${v}" modelProvider = "facesSettingsSecSetsView">
 
       <f:facet name = "store-props">

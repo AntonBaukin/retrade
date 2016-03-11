@@ -124,11 +124,8 @@ ${v.checkEntityRequested}
 
     <x:data-store storeId = "${z:vid(v, 'filterGroups')}" modelView = "${v}">
       <f:facet name = "store-props">
-        model: 'retrade.model.KeyValue', sorters: [{ property: 'key' }], data: []
-      </f:facet>
-
-      <f:facet name = "proxy-props">
-        noproxy: true
+        model: 'retrade.model.KeyValue',
+        sorters: [{ property: 'key' }], data: []
       </f:facet>
     </x:data-store>
 
@@ -291,12 +288,9 @@ ${v.checkEntityRequested}
 
     <x:data-store storeId = "${z:vid(v, 'changeGroups')}" modelView = "${v}">
       <f:facet name = "store-props">
-        model: 'retrade.model.KeyValue', sorters: [{ property: 'key' }],
+        model: 'retrade.model.KeyValue',
+        sorters: [{ property: 'key' }],
         data: [#{v.groupsData}]
-      </f:facet>
-
-      <f:facet name = "proxy-props">
-        noproxy: true
       </f:facet>
     </x:data-store>
 

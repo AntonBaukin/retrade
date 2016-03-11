@@ -241,11 +241,12 @@ ${v.checkModelRequestedWithRedirect}
       <!-- [report templates table -->
 
       <x:data-store storeId = "${z:vid(v, 'reportTemplates')}"
-        modelView = "${v}" modelRequest = "templates" pageSize = "15">
+        modelView = "${v}" modelRequest = "templates">
 
         <f:facet name = "store-props">
-          model: 'retrade.model.ReportTemplateView', remoteSort: true,
-          sorters: [{ property: 'did', direction: 'ASC' }]
+          model: 'retrade.model.ReportTemplateView',
+          sorters: [{ property: 'did', direction: 'ASC' }],
+          remoteSort: true, pageSize: 15
         </f:facet>
 
         <f:facet name = "proxy-props">

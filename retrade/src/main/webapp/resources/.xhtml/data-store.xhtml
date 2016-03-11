@@ -74,11 +74,21 @@
       bind('#{cc.attrs.storeId}', new extjsf.StoreBind()).
       ids('#{cc.clientId}').props({ autoLoad: true }).
       readPropsNode().props({ storeId: '#{cc.attrs.storeId}' }).
-        nest('proxy', function(store, proxy)
+        nest('proxy', function(proxy, store)
         {
+          proxy.readPropsNode()
+
+          //?: {empty proxy}
+          if(!ZeT.keys(proxy.$raw()).length)
+          {
+            store.props({ autoLoad: false })
+            return false
+          }
+
           store.proxy = proxy
+
           proxy.props({ type: 'ajax', url: "${z:url('/model')}" })
-          proxy.readPropsNode().props('extra', {
+          proxy.props('extra', {
             key      : '#{cc.attrs.modelKey}',
             viewKey  : '#{cc.attrs.modelView.modelKey}',
             provider : '#{cc.attrs.modelProvider}',
