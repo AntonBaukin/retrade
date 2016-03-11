@@ -164,7 +164,7 @@ ${v.checkEntityRequested}
     <c:if test = "${not v.documentFixed}">
 
       <!-- [fix price change document] -->
-      <x:winaction-button coid = "${z:vid(v, 'fix-doc')}"
+      <x:action-button coid = "${z:vid(v, 'fix-doc')}"
         action = "#{v.doFixReprice}">
 
         <f:facet name = "extjs-props">
@@ -174,11 +174,11 @@ ${v.checkEntityRequested}
         <f:facet name = "action-params">
           '${v.modelParam}'  : '${v.modelKey}'
         </f:facet>
-      </x:winaction-button>
+      </x:action-button>
 
 
       <!-- [goto edit button] -->
-      <x:winaction-button coid = "${z:vid(v, 'edit_reprice')}"
+      <x:action-button coid = "${z:vid(v, 'edit_reprice')}"
         action = "#{v.gotoEditReprice}">
 
         <f:facet name = "extjs-props">
@@ -191,7 +191,7 @@ ${v.checkEntityRequested}
           '${v.modelParam}'  : '${v.modelKey}',
           '${v.entityParam}' : '${v.model.primaryKey}'
         </f:facet>
-      </x:winaction-button>
+      </x:action-button>
     </c:if>
 
     <!-- price change document is not fixed] -->

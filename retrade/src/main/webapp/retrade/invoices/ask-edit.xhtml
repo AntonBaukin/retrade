@@ -73,15 +73,15 @@
     </f:facet>
 
 
-    <x:winaction-button coid = "${z:vid(v, 'cancel-edit')}"
+    <x:action-button coid = "${z:vid(v, 'cancel-edit')}"
       action = "#{v.gotoCancelEdit}">
 
       <f:facet name = "extjs-props">
         cls: 'ux-btn-red', margin: extjsf.pts(0, 26, 6, 0),
         text: 'Отмена', height: retrade_default('button').height
-      </f:facet><f:facet name = "action-params"/></x:winaction-button>
+      </f:facet><f:facet name = "action-params"/></x:action-button>
 
-    <x:winaction-button coid = "${z:vid(v, 'goto-edit')}"
+    <x:action-button coid = "${z:vid(v, 'goto-edit')}"
       action = "#{v.doEditInvoice}">
 
       <f:facet name = "extjs-props">
@@ -94,7 +94,7 @@
         '${v.modelParam}'  : '${v.modelKeys}',
         '${v.entityParam}' : '${v.invoiceKey}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
   </x:component>
 
   <script type = "text/javascript">

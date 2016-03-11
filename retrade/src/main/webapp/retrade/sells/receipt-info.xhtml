@@ -38,7 +38,7 @@ ${v.forceSecureSellsSession('view')}
 
     <!-- [goto sells session button] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'show_session')}"
+    <x:action-button coid = "${z:vid(v, 'show_session')}"
       action = "#{v.gotoSellsSession}">
 
       <f:facet name = "extjs-props">
@@ -49,7 +49,7 @@ ${v.forceSecureSellsSession('view')}
         'method'           : 'GET',
         '${v.modelParam}'  : '${v.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">

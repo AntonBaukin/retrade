@@ -64,7 +64,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [add price-list] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'add-price-list')}"
+    <x:action-button coid = "${z:vid(v, 'add-price-list')}"
        action = "#{v.gotoCreatePriceList}">
 
       <f:facet name = "extjs-props">
@@ -75,7 +75,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "action-params">
         '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
   </f:facet>
 

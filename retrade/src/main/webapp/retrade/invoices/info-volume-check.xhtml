@@ -69,7 +69,7 @@ ${v.forceSecureModelEntity('view')}
 
     <c:if test = "${v.invoiceEdited}">
 
-      <x:winaction-button coid = "${z:vid(v, 'fix_invoice')}"
+      <x:action-button coid = "${z:vid(v, 'fix_invoice')}"
         action = "#{v.doFixInvoice}">
 
         <f:facet name = "extjs-props">
@@ -80,9 +80,9 @@ ${v.forceSecureModelEntity('view')}
         <f:facet name = "action-params">
           '${v.modelParam}'  : '${v.modelKey}'
         </f:facet>
-      </x:winaction-button>
+      </x:action-button>
 
-      <x:winaction-button coid = "${z:vid(v, 'edit_invoice')}"
+      <x:action-button coid = "${z:vid(v, 'edit_invoice')}"
         action = "#{v.gotoEditInvoice}">
 
         <f:facet name = "extjs-props">
@@ -94,7 +94,7 @@ ${v.forceSecureModelEntity('view')}
           '${v.modelParam}'  : '${v.modelKey}',
           '${v.entityParam}' : '${v.entity.primaryKey}'
         </f:facet>
-      </x:winaction-button>
+      </x:action-button>
 
     </c:if>
 
@@ -105,7 +105,7 @@ ${v.forceSecureModelEntity('view')}
 
     <c:if test = "${v.invoiceFixed}">
 
-      <x:winaction-button coid = "${z:vid(v, 'edit_fixed_invoice')}"
+      <x:action-button coid = "${z:vid(v, 'edit_fixed_invoice')}"
         action = "#{v.gotoEditFixedInvoice}">
 
         <f:facet name = "extjs-props">
@@ -116,7 +116,7 @@ ${v.forceSecureModelEntity('view')}
         <f:facet name = "action-params">
           '${v.modelParam}'  : '${v.modelKey}'
         </f:facet>
-      </x:winaction-button>
+      </x:action-button>
 
     </c:if>
 

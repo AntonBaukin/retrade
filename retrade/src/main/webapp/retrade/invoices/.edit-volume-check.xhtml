@@ -43,7 +43,7 @@ ${v.forceSecureEdit()}
 
 
   <!-- [cancel edit button] -->
-  <x:winaction-button coid = "${z:vid(v, 'cancel-edit')}"
+  <x:action-button coid = "${z:vid(v, 'cancel-edit')}"
      action = "#{v.gotoCancelEditInvoice}">
 
     <f:facet name = "extjs-props">
@@ -54,7 +54,7 @@ ${v.forceSecureEdit()}
     <f:facet name = "action-params">
       '${v.modelParam}': '#{v.modelKeys}'
     </f:facet>
-  </x:winaction-button>
+  </x:action-button>
 
 
   <!-- [delete goods button] -->

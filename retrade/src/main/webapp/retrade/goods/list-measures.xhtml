@@ -70,7 +70,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [add measure] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'add_measure')}"
+    <x:action-button coid = "${z:vid(v, 'add_measure')}"
        action = "#{v.gotoCreateMeasureUnit}">
 
       <f:facet name = "extjs-props">
@@ -81,7 +81,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "action-params">
         '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
   </f:facet>
 

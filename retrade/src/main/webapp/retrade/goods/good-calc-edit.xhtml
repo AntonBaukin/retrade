@@ -49,7 +49,7 @@ ${v.checkModelRequested}
 
     <!-- [goto good edit button] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'goto_back')}"
+    <x:action-button coid = "${z:vid(v, 'goto_back')}"
       action = "#{v.gotoWhere('calc-edit-back')}">
 
       <f:facet name = "extjs-props">
@@ -59,7 +59,7 @@ ${v.checkModelRequested}
       <f:facet name = "action-params">
         '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
     <!-- [delete part button] -->

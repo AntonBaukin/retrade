@@ -49,7 +49,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [goto good edit button] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'goto_back')}"
+    <x:action-button coid = "${z:vid(v, 'goto_back')}"
       action = "#{v.gotoWhere('calc-back')}">
 
       <f:facet name = "extjs-props">
@@ -59,7 +59,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "action-params">
         '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
     <!-- [view-edit comment] -->
@@ -84,7 +84,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [goto calc history button] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'goto-calcs-history')}"
+    <x:action-button coid = "${z:vid(v, 'goto-calcs-history')}"
       action = "#{v.gotoWhere('calcs-history')}">
 
       <f:facet name = "extjs-props">
@@ -96,12 +96,12 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "action-params">
         '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
     <!-- [goto edit calculation button] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'goto-calc-edit')}"
+    <x:action-button coid = "${z:vid(v, 'goto-calc-edit')}"
       action = "#{v.gotoWhere('calc-edit')}">
 
       <f:facet name = "extjs-props">
@@ -113,7 +113,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "action-params">
         '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
   </f:facet>
 

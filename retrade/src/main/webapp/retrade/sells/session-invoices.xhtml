@@ -40,7 +40,7 @@ ${i.checkModelRequestedWithRedirect}
 
     <!-- [back to the sells session button] -->
 
-    <x:winaction-button coid = "${z:vid(i, 'back')}"
+    <x:action-button coid = "${z:vid(i, 'back')}"
       action = "#{i.gotoSessionBack}">
 
       <f:facet name = "extjs-props">
@@ -50,7 +50,7 @@ ${i.checkModelRequestedWithRedirect}
       <f:facet name = "action-params">
         '${i.modelParam}': '#{i.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
     <x:component coid = "${z:vid(i, '_tb_fill_0')}">

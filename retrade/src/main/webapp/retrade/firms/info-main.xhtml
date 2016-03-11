@@ -59,7 +59,7 @@ ${v.checkEntityRequested}
 
     <!-- [goto invoices button] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'show_invoices')}"
+    <x:action-button coid = "${z:vid(v, 'show_invoices')}"
       action = "#{v.gotoInvoices}">
 
       <f:facet name = "extjs-props">
@@ -70,7 +70,7 @@ ${v.checkEntityRequested}
         'method'           : 'GET',
         '${v.modelParam}'  : '${v.modelKey}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
     <x:component coid = "${z:vid(v, '_tb_fill_0')}">

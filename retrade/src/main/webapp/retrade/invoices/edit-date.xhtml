@@ -43,7 +43,7 @@
 
     <!-- [cancel edit button] -->
 
-    <x:winaction-button coid = "${z:vid(e, 'cancel-edit')}"
+    <x:action-button coid = "${z:vid(e, 'cancel-edit')}"
       action = "#{e.gotoCancelEdit}">
 
       <f:facet name = "extjs-props">
@@ -54,7 +54,7 @@
       <f:facet name = "action-params">
         '${e.modelParam}': '#{e.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
     <x:component coid = "${z:vid(e, '_tb_fill_0')}">

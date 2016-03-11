@@ -82,7 +82,7 @@ ${v.forceSecureModelEntity('view')}
 
     <!-- [goto sells session button] -->
 
-    <x:winaction-button coid = "${z:vid(v, 'show_session')}"
+    <x:action-button coid = "${z:vid(v, 'show_session')}"
       action = "#{v.gotoSellsSession}">
 
       <f:facet name = "extjs-props">
@@ -94,7 +94,7 @@ ${v.forceSecureModelEntity('view')}
         '${v.modelParam}'  : '${v.modelKeys}',
         '${v.entityParam}' : '${v.sellsSession.primaryKey}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
   </f:facet>
 

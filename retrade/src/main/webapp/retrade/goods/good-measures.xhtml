@@ -42,7 +42,7 @@
   <f:facet name = "toolbar">
 
     <!-- [goto good edit button] -->
-    <x:winaction-button coid = "${z:vid(v, 'goto-back')}"
+    <x:action-button coid = "${z:vid(v, 'goto-back')}"
      action = "#{v.gotoWhere('measures-back')}">
 
       <f:facet name = "extjs-props">
@@ -52,7 +52,7 @@
       <f:facet name = "action-params">
         '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
     <!-- [cancel edit button] -->

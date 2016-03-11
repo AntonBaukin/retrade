@@ -44,7 +44,7 @@
     <f:facet name = "toolbar">
 
     <!-- [cancel edit button] -->
-    <x:winaction-button coid = "${z:vid(e, 'cancel-edit')}"
+    <x:action-button coid = "${z:vid(e, 'cancel-edit')}"
       action = "#{e.gotoCancelEdit}">
 
       <f:facet name = "extjs-props">
@@ -55,7 +55,7 @@
       <f:facet name = "action-params">
         '${e.modelParam}': '#{e.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
 
       <!-- [filter firms field -->
@@ -152,7 +152,7 @@
 
     <!-- [submit button -->
 
-    <x:winaction-button coid = "${z:vid(e, 'submit')}"
+    <x:action-button coid = "${z:vid(e, 'submit')}"
       action = "#{e.doEditContractor}">
 
       <f:facet name = "extjs-props">
@@ -172,7 +172,7 @@
         })
 
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
     <!-- submit button] -->
 

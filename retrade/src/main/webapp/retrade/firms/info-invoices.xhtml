@@ -18,8 +18,8 @@ ${i.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${extDom}').
-      co().setTitle('${z:jss(i.winmainTitleInvoices)}')
+    extjsf.co('winmain', '${extDom}').
+      setTitle('${z:jss(i.winmainTitleInvoices)}')
 
   </script>
 
@@ -39,7 +39,7 @@ ${i.checkModelRequestedWithRedirect}
 
     <!-- [back to price list button -->
 
-    <x:winaction-button coid = "${z:vid(i, 'back')}"
+    <x:action-button coid = "${z:vid(i, 'back')}"
       action = "#{i.gotoInfoMain}">
 
       <f:facet name = "extjs-props">
@@ -49,7 +49,7 @@ ${i.checkModelRequestedWithRedirect}
       <f:facet name = "action-params">
         '${i.modelParam}': '#{i.modelKeys}'
       </f:facet>
-    </x:winaction-button>
+    </x:action-button>
 
     <!-- back to price list button] -->
 
