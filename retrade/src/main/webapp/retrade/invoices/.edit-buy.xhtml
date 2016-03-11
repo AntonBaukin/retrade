@@ -44,15 +44,10 @@ ${v.forceSecureEdit()}
 
   <!-- [cancel edit button] -->
   <x:action-button coid = "${z:vid(v, 'cancel-edit')}"
-     action = "#{v.gotoCancelEditInvoice}">
+    action = "#{v.gotoCancelEditInvoice}" modelView = "#{v}">
 
     <f:facet name = "extjs-props">
-      cls: 'ux-btn-red',
-      text: 'Отмена'
-    </f:facet>
-
-    <f:facet name = "action-params">
-      '${v.modelParam}': '#{v.modelKeys}'
+      cls: 'ux-btn-red', text: 'Отмена'
     </f:facet>
   </x:action-button>
 
@@ -115,8 +110,8 @@ ${v.forceSecureEdit()}
     </f:facet>
   </x:component>
 
-  <x:winaction-delegate coid = "${z:vid(v, 'submit-done')}"
-    action = "#{v.gotoDoneEditInvoice}"><f:facet name = "action-params"/></x:winaction-delegate>
+  <x:action-delegate coid = "${z:vid(v, 'submit-done')}"
+    action = "#{v.gotoDoneEditInvoice}" modelView = "#{v}"/>
 
   <!-- submit button] -->
 
@@ -322,11 +317,11 @@ ${v.forceSecureEdit()}
   <x:action-call coid = "${z:vid(v, 'check-code-exists-script')}"
     action = "#{v.doCheckCodeExists}" modelView = "${v}"/>
 
-  <x:winaction-delegate coid = "${z:vid(v, 'goto-edit-date')}"
-    action = "#{v.gotoEditInvoiceDate}"><f:facet name = "action-params"/></x:winaction-delegate>
+  <x:action-delegate coid = "${z:vid(v, 'goto-edit-date')}"
+    action = "#{v.gotoEditInvoiceDate}" modelView = "#{v}"/>
 
-  <x:winaction-delegate coid = "${z:vid(v, 'goto-edit-contractor')}"
-    action = "#{v.gotoEditContractor}"><f:facet name = "action-params"/></x:winaction-delegate>
+  <x:action-delegate coid = "${z:vid(v, 'goto-edit-contractor')}"
+    action = "#{v.gotoEditContractor}" modelView = "#{v}"/>
 
   <!-- support actions] -->
 

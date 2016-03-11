@@ -50,14 +50,10 @@ ${v.checkModelRequested}
     <!-- [goto good edit button] -->
 
     <x:action-button coid = "${z:vid(v, 'goto_back')}"
-      action = "#{v.gotoWhere('calcs-history-back')}">
+      action = "#{v.gotoWhere('calcs-history-back')}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
         text: 'Назад'
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
     </x:action-button>
 
@@ -110,13 +106,8 @@ ${v.checkModelRequested}
     </f:facet>
   </x:data-grid>
 
-  <x:winaction-delegate coid = "${z:vid(v, 'goto-history-calc')}"
-     action = "#{v.gotoHistoryCalc}">
-
-     <f:facet name = "action-params">
-       '${v.modelParam}': '#{v.modelKeys}'
-     </f:facet>
-   </x:winaction-delegate>
+  <x:action-delegate coid = "${z:vid(v, 'goto-history-calc')}"
+     action = "#{v.gotoHistoryCalc}" modelView = "#{v}"/>
 
   <!-- calc parts] -->
 
@@ -137,7 +128,7 @@ ${v.checkModelRequested}
     on('itemdblclick', function(comp, rec)
   {
     extjsf.bindHandler("${z:vid(v, 'goto-history-calc')}", '${extDom}')({
-      params: { '${v.entityParam}': rec.getId() }
+      params: { entity: rec.getId() }
     })
   })
 

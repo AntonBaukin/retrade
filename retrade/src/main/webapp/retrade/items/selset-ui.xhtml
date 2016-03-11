@@ -84,7 +84,7 @@
      var script = (remove)?("${z:vid(v, 'script_selset_del_object')}"):("${z:vid(v, 'script_selset_add_object')}");
 
      extjsf.bindHandler(script, '${extDom}')({
-       params: { '${v.entityParam}': id }, success: function()
+       params: { entity: id }, success: function()
        {
          Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)
        }

@@ -730,8 +730,8 @@ extjsf.ActionBind = ZeT.defineClass(
 
 // +----: Action Button Bind :-----------------------------------+
 
-extjsf.ActionButtonBind = ZeT.defineClass(
-  'extjsf.ActionButtonBind', extjsf.ActionBind,
+extjsf.LoadActionBind = ZeT.defineClass(
+  'extjsf.LoadActionBind', extjsf.ActionBind,
 {
 	$handler        : function(opts)
 	{

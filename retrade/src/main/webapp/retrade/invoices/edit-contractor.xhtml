@@ -45,15 +45,11 @@
 
     <!-- [cancel edit button] -->
     <x:action-button coid = "${z:vid(e, 'cancel-edit')}"
-      action = "#{e.gotoCancelEdit}">
+      action = "#{e.gotoCancelEdit}" modelView = "#{e}">
 
       <f:facet name = "extjs-props">
         cls: 'ux-btn-red', text: 'Отмена',
         margin: extjsf.dpts(0, 0, 0, 0)
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${e.modelParam}': '#{e.modelKeys}'
       </f:facet>
     </x:action-button>
 
@@ -153,15 +149,13 @@
     <!-- [submit button -->
 
     <x:action-button coid = "${z:vid(e, 'submit')}"
-      action = "#{e.doEditContractor}">
+      action = "#{e.doEditContractor}" modelView = "#{e}">
 
       <f:facet name = "extjs-props">
-        cls: 'ux-btn-green',
-        text: 'Применить', disabled: true
+        cls: 'ux-btn-green', text: 'Применить', disabled: true
       </f:facet>
 
       <f:facet name = "action-params">
-        '${e.modelParam}': '#{e.modelKeys}',
 
         contractor : ZeT.delay(function()
         {
@@ -170,7 +164,6 @@
 
           return (sel.length == 1)?(sel[0].getId()):('')
         })
-
       </f:facet>
     </x:action-button>
 

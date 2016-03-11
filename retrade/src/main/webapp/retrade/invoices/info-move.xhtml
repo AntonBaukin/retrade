@@ -102,20 +102,16 @@ ${v.forceSecureModelEntity('view')}
     <c:if test = "${v.invoiceEdited}">
 
       <x:action-button coid = "${z:vid(v, 'fix_invoice')}"
-        action = "#{v.doFixInvoice}">
+        action = "#{v.doFixInvoice}" modelView = "#{v}">
 
         <f:facet name = "extjs-props">
           margin: extjsf.pts(0, 4, 0, 0), text: 'Провести',
           disabled: #{not v.isSecureModelEntity('document: fix')}
         </f:facet>
-
-        <f:facet name = "action-params">
-          '${v.modelParam}'  : '${v.modelKey}'
-        </f:facet>
       </x:action-button>
 
       <x:action-button coid = "${z:vid(v, 'edit_invoice')}"
-        action = "#{v.gotoEditInvoice}">
+        action = "#{v.gotoEditInvoice}" modelView = "#{v}">
 
         <f:facet name = "extjs-props">
           text: 'Редактировать',
@@ -123,8 +119,7 @@ ${v.forceSecureModelEntity('view')}
         </f:facet>
 
         <f:facet name = "action-params">
-          '${v.modelParam}'  : '${v.modelKey}',
-          '${v.entityParam}' : '${v.entity.primaryKey}'
+          entity: '${v.entity.primaryKey}'
         </f:facet>
       </x:action-button>
 
@@ -138,15 +133,10 @@ ${v.forceSecureModelEntity('view')}
     <c:if test = "${v.invoiceFixed}">
 
       <x:action-button coid = "${z:vid(v, 'edit_fixed_invoice')}"
-        action = "#{v.gotoEditFixedInvoice}">
+        action = "#{v.gotoEditFixedInvoice}" modelView = "#{v}">
 
         <f:facet name = "extjs-props">
-          text: 'Редактировать',
-          disabled: #{not v.isSecureModelEntity('edit')}
-        </f:facet>
-
-        <f:facet name = "action-params">
-          '${v.modelParam}'  : '${v.modelKey}'
+          text: 'Редактировать', disabled: #{not v.isSecureModelEntity('edit')}
         </f:facet>
       </x:action-button>
 

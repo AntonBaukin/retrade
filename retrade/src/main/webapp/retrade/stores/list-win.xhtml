@@ -67,15 +67,10 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [add store] -->
 
     <x:action-button coid = "${z:vid(v, 'add-store')}"
-       action = "#{v.gotoCreateStore}">
+       action = "#{v.gotoCreateStore}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
-        text: 'Добавить',
-        disabled: ${not rootView.isSecure('edit: stores')}
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
+        text: 'Добавить', disabled: ${not rootView.isSecure('edit: stores')}
       </f:facet>
     </x:action-button>
 
@@ -109,13 +104,8 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
     </x:data-grid>
 
-    <x:winaction-delegate coid = "${z:vid(v, 'edit-store')}"
-      action = "#{v.gotoEditStore}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
-      </f:facet>
-    </x:winaction-delegate>
+    <x:action-delegate coid = "${z:vid(v, 'edit-store')}"
+      action = "#{v.gotoEditStore}" modelView = "#{v}"/>
 
     <script type = "text/javascript">
 
@@ -125,7 +115,7 @@ ${v.checkModelRequestedWithRedirect}
     if('false' == "${rootView.isSecure('edit: stores')}") return;
 
     extjsf.bindHandler("${z:vid(v, 'edit-store')}", '${extDom}')({
-      params: { '${v.entityParam}': rec.getId() }
+      params: { entity: rec.getId() }
     })
   })
 

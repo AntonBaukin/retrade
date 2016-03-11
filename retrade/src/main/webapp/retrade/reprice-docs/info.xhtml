@@ -165,31 +165,24 @@ ${v.checkEntityRequested}
 
       <!-- [fix price change document] -->
       <x:action-button coid = "${z:vid(v, 'fix-doc')}"
-        action = "#{v.doFixReprice}">
+        action = "#{v.doFixReprice}" modelView = "#{v}">
 
         <f:facet name = "extjs-props">
           margin: extjsf.pts(0, 4, 0, 8), text: 'Провести'
-        </f:facet>
-
-        <f:facet name = "action-params">
-          '${v.modelParam}'  : '${v.modelKey}'
         </f:facet>
       </x:action-button>
 
 
       <!-- [goto edit button] -->
       <x:action-button coid = "${z:vid(v, 'edit_reprice')}"
-        action = "#{v.gotoEditReprice}">
+        action = "#{v.gotoEditReprice}" modelView = "#{v}">
 
         <f:facet name = "extjs-props">
           text: 'Редактировать'
         </f:facet>
 
         <f:facet name = "action-params">
-
-          'method'           : 'GET',
-          '${v.modelParam}'  : '${v.modelKey}',
-          '${v.entityParam}' : '${v.model.primaryKey}'
+          method : 'GET', entity : '${v.model.primaryKey}'
         </f:facet>
       </x:action-button>
     </c:if>

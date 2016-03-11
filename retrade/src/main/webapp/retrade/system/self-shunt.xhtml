@@ -69,14 +69,8 @@
       </f:facet>
     </x:component>
 
-    <x:winaction-delegate coid = "${z:vid(v, 'submit_done')}"
-      action = "#{v.gotoSelfShuntLog}">
-
-      <f:facet name = "action-params">
-        ,
-        '${v.viewIdParam}': '${v.id}'
-      </f:facet>
-    </x:winaction-delegate>
+    <x:action-delegate coid = "${z:vid(v, 'submit_done')}"
+      action = "#{v.gotoSelfShuntLog}" modelView = "#{v}"/>
 
     <!-- submit button] -->
 

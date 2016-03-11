@@ -50,14 +50,10 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [goto good edit button] -->
 
     <x:action-button coid = "${z:vid(v, 'goto_back')}"
-      action = "#{v.gotoWhere('calc-back')}">
+      action = "#{v.gotoWhere('calc-back')}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
         text: 'Назад'
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
     </x:action-button>
 
@@ -85,16 +81,12 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [goto calc history button] -->
 
     <x:action-button coid = "${z:vid(v, 'goto-calcs-history')}"
-      action = "#{v.gotoWhere('calcs-history')}">
+      action = "#{v.gotoWhere('calcs-history')}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
         hidden: #{v.historyCalc or empty v.goodView.objectKey},
         text: 'История', margin: extjsf.dpts(0, 0, 0, 4),
         tooltipType: 'title', tooltip: 'Отобразить список прежних версий формулы'
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
     </x:action-button>
 
@@ -102,16 +94,12 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [goto edit calculation button] -->
 
     <x:action-button coid = "${z:vid(v, 'goto-calc-edit')}"
-      action = "#{v.gotoWhere('calc-edit')}">
+      action = "#{v.gotoWhere('calc-edit')}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
         disabled: #{not v.isSecure('edit: goods')},
         text: 'Изменить', margin: extjsf.dpts(0, 0, 0, 4),
         tooltipType: 'title', tooltip: 'Изменить (или создать новую) формулу на основе данной'
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
     </x:action-button>
 

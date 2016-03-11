@@ -57,14 +57,11 @@ ${v.forceSecureModelEntity('view')}
     <!-- [goto sells session button] -->
 
     <x:action-button coid = "${z:vid(v, 'back_to_invoice')}"
-      rendered = "#{v.fromInvoice}" action = "#{v.gotoSellsInvoice}">
+      rendered = "#{v.fromInvoice}" modelView = "#{v}"
+      action = "#{v.gotoSellsInvoice}">
 
       <f:facet name = "extjs-props">
         text: 'Назад'
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}' : '${v.modelKeys}'
       </f:facet>
     </x:action-button>
 
@@ -80,18 +77,14 @@ ${v.forceSecureModelEntity('view')}
     <!-- [goto session originated invoices button] -->
 
     <x:action-button coid = "${z:vid(v, 'session_invoices')}"
-      action = "#{v.gotoSessionInvoices}">
+      action = "#{v.gotoSessionInvoices}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
         text: 'Документы', margin: extjsf.pts(0, 0, 0, 4), tooltipType: 'title',
         tooltip: 'Просмотреть документы, созданные на основе данной сессии продаж'
       </f:facet>
 
-      <f:facet name = "action-params">
-        '${v.modelParam}' : '${v.modelKeys}'
-      </f:facet>
     </x:action-button>
-
   </f:facet>
 
   <!-- session toolbar] -->
@@ -187,14 +180,13 @@ ${v.forceSecureModelEntity('view')}
     </f:facet>
   </x:data-grid>
 
-  <x:winaction-delegate coid = "${z:vid(v, 'view-receipt')}"
-    action = "#{v.gotoSellReceipt}">
+  <x:action-delegate coid = "${z:vid(v, 'view-receipt')}"
+    action = "#{v.gotoSellReceipt}" modelView = "#{v}">
 
     <f:facet name = "action-params">
-      'method'         : 'GET',
-      '${v.modelParam}': '#{v.modelKeys}'
+      method: 'GET'
     </f:facet>
-  </x:winaction-delegate>
+  </x:action-delegate>
 
   <script type = "text/javascript">
   //<![CDATA[
@@ -203,7 +195,7 @@ ${v.forceSecureModelEntity('view')}
   extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('itemdblclick', function(grid, rec)
   {
     extjsf.bindHandler("${z:vid(v, 'view-receipt')}", '${extDom}')({
-      params: { '${v.entityParam}': rec.getId() }
+      params: { entity: rec.getId() }
     })
   })
 

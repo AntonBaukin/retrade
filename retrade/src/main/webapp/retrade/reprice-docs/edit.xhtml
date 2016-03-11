@@ -55,13 +55,8 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
     </x:component>
 
-    <x:winaction-delegate coid = "${z:vid(v, 'cancel-edit-script')}"
-      action = "#{v.gotoCancelEditReprice}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
-      </f:facet>
-    </x:winaction-delegate>
+    <x:action-delegate coid = "${z:vid(v, 'cancel-edit-script')}"
+      action = "#{v.gotoCancelEditReprice}" modelView = "#{v}"/>
 
     <script type = "text/javascript">
     //<![CDATA[

@@ -44,15 +44,10 @@ ${v.checkModelRequested}
     <!-- [cancel edit button] -->
 
     <x:action-button coid = "${z:vid(v, 'cancel')}"
-       action = "#{v.gotoCancelEdit}">
+      action = "#{v.gotoCancelEdit}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
-        cls: 'ux-btn-red',
-        text: 'Отмена'
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
+        cls: 'ux-btn-red', text: 'Отмена'
       </f:facet>
    </x:action-button>
 

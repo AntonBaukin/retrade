@@ -317,7 +317,7 @@ ${v.checkModelRequestedWithRedirect}
     };
 
     if(s) params.dataSource = s.getId();
-    if(template) params['${v.entityParam}'] = template;
+    if(template) params[entity] = template;
 
     winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
 

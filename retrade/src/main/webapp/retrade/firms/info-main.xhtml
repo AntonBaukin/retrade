@@ -60,15 +60,14 @@ ${v.checkEntityRequested}
     <!-- [goto invoices button] -->
 
     <x:action-button coid = "${z:vid(v, 'show_invoices')}"
-      action = "#{v.gotoInvoices}">
+      action = "#{v.gotoInvoices}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
         text: 'Накладные', margin: extjsf.pts(0, 0, 0, 4)
       </f:facet>
 
       <f:facet name = "action-params">
-        'method'           : 'GET',
-        '${v.modelParam}'  : '${v.modelKey}'
+        method: 'GET'
       </f:facet>
     </x:action-button>
 

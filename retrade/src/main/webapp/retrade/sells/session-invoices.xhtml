@@ -41,14 +41,10 @@ ${i.checkModelRequestedWithRedirect}
     <!-- [back to the sells session button] -->
 
     <x:action-button coid = "${z:vid(i, 'back')}"
-      action = "#{i.gotoSessionBack}">
+      action = "#{i.gotoSessionBack}" modelView = "#{i}">
 
       <f:facet name = "extjs-props">
         text: 'Назад'
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${i.modelParam}': '#{i.modelKeys}'
       </f:facet>
     </x:action-button>
 
@@ -142,7 +138,7 @@ ${i.checkModelRequestedWithRedirect}
         params: {
           '${v.viewModeParam}': 'body',
           '${rootView.extjsDomainParam}': domain,
-          '${v.entityParam}': rec.getId()
+          entity: rec.getId()
         }
       }
     })

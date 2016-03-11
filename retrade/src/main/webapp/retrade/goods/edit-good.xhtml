@@ -82,13 +82,8 @@ ${v.checkModelRequestedWithRedirect}
     </f:facet>
    </x:component>
 
-   <x:winaction-delegate coid = "${z:vid(v, 'goto-calc-script')}"
-     action = "#{v.gotoWhere('calc')}">
-
-     <f:facet name = "action-params">
-       '${v.modelParam}': '#{v.modelKeys}'
-     </f:facet>
-   </x:winaction-delegate>
+   <x:action-delegate coid = "${z:vid(v, 'goto-calc-script')}"
+     action = "#{v.gotoWhere('calc')}" modelView = "#{v}"/>
 
    <!-- goto calculation button] -->
 
@@ -823,17 +818,18 @@ ${v.checkModelRequestedWithRedirect}
     action = "#{v.doCheckCodeExists}" modelView = "#{v}"/>
 
   <!-- [goto measures script] -->
-  <x:winaction-delegate coid = "${z:vid(v, 'goto-measures-script')}"
-    action = "#{v.gotoWhere('measures')}" rendered = "#{not v.creating}">
+  <x:action-delegate coid = "${z:vid(v, 'goto-measures-script')}"
+    action = "#{v.gotoWhere('measures')}" modelView = "#{v}"
+    rendered = "#{not v.creating}">
 
     <f:facet name = "action-params">
-      '${v.modelParam}': '#{v.modelKeys}',
+
       'edit-mode': ZeT.delay(function()
       {
         return !extjsf.bind("${z:vid(v, 'good-form')}", '${extDom}').isReadMode
       })
     </f:facet>
-  </x:winaction-delegate>
+  </x:action-delegate>
 
 
   <script type = "text/javascript">

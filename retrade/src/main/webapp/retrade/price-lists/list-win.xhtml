@@ -65,18 +65,13 @@ ${v.checkModelRequestedWithRedirect}
     <!-- [add price-list] -->
 
     <x:action-button coid = "${z:vid(v, 'add-price-list')}"
-       action = "#{v.gotoCreatePriceList}">
+       action = "#{v.gotoCreatePriceList}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
         text: 'Добавить',
         disabled: ${not rootView.isSecure('edit: price-lists')}
       </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
-      </f:facet>
     </x:action-button>
-
   </f:facet>
 
   <!-- toolbar] -->
@@ -107,13 +102,8 @@ ${v.checkModelRequestedWithRedirect}
       </f:facet>
     </x:data-grid>
 
-    <x:winaction-delegate coid = "${z:vid(v, 'edit-price-list')}"
-      action = "#{v.gotoEditPriceList}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
-      </f:facet>
-    </x:winaction-delegate>
+    <x:action-delegate coid = "${z:vid(v, 'edit-price-list')}"
+      action = "#{v.gotoEditPriceList}" modelView = "#{v}"/>
 
     <script type = "text/javascript">
 
@@ -123,7 +113,7 @@ ${v.checkModelRequestedWithRedirect}
     if('false' == "${rootView.isSecure('edit: price-lists')}") return;
 
     extjsf.bindHandler("${z:vid(v, 'edit-price-list')}", '${extDom}')({
-      params: { '${v.entityParam}': rec.getId() }
+      params: { entity: rec.getId() }
     })
   })
 

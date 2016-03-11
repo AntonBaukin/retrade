@@ -50,14 +50,10 @@ ${v.checkModelRequested}
     <!-- [goto good edit button] -->
 
     <x:action-button coid = "${z:vid(v, 'goto_back')}"
-      action = "#{v.gotoWhere('calc-edit-back')}">
+      action = "#{v.gotoWhere('calc-edit-back')}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
         text: 'Отмена', cls: 'ux-btn-red'
-      </f:facet>
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
       </f:facet>
     </x:action-button>
 
@@ -104,13 +100,8 @@ ${v.checkModelRequested}
       </f:facet>
     </x:component>
 
-    <x:winaction-delegate coid = "${z:vid(v, 'submit-back')}"
-      action = "#{v.gotoWhere('calc-edit-submit')}">
-
-      <f:facet name = "action-params">
-        '${v.modelParam}': '#{v.modelKeys}'
-      </f:facet>
-    </x:winaction-delegate>
+    <x:action-delegate coid = "${z:vid(v, 'submit-back')}"
+      action = "#{v.gotoWhere('calc-edit-submit')}" modelView = "#{v}"/>
 
   </f:facet>
 
