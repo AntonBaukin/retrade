@@ -64,7 +64,7 @@ window.execScript   = function()
 }
 
 /**
- * ExtJS FIX: Component.setHtml()
+ * Ext JS FIX: Component.setHtml()
  */
 Ext.Component.override({
 
@@ -280,7 +280,7 @@ Ext.define('Ext.ux.picker.Time',
 
 /**
  * This special class is for buttons with render-to in menus.
- * In ExtJS 5.1 mouse pressing on them hides the menu before
+ * In Ext JS 5.1 mouse pressing on them hides the menu before
  * the click event occurs.
  */
 Ext.define('Ext.ux.button.Detached',
