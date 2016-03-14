@@ -18,7 +18,7 @@ var ReTradeLogin =
 	 */
 	login       : function(opts, callback)
 	{
-		var token = {}
+		var self = this, token = {}
 		//console.log('ReTradeLogin logging in...')
 
 		//~: domain
@@ -84,10 +84,16 @@ var ReTradeLogin =
 			var H   = sha.finalize().toString().toUpperCase()
 			//console.log('ReTradeLogin H  [' + H + ']')
 
+			var d   = { step: 'login', domain: domain, login: login, Rc: Rc, H: H }
+
+			function onfail(xhr)
+			{
+				self._fail(xhr, opts, d)
+			}
+
 			//~: login step
-			jQuery.get({ url: url + '?' + greet, data: {
-			  step: 'login', domain: domain, login: login, Rc: Rc, H: H }}).
-			  fail(this._fail).done(function(sid) { try
+			jQuery.get({ url: url + '?' + greet, data: d }).
+			  fail(onfail).done(function(sid) { try
 			{
 				if(!sid || !sid.length)
 					throw 'ReTradeLogin got no session ID! (Login failed.)'
@@ -116,7 +122,7 @@ var ReTradeLogin =
 
 				//!: issue test touch with bind
 				token.bind = true
-				ReTradeLogin.touch(token, callback)
+				ReTradeLogin.touch(token, opts, callback)
 			}
 			catch(e)
 			{
@@ -142,11 +148,13 @@ var ReTradeLogin =
 	/**
 	 * Does touch and returns the (same) token, or an Error.
 	 */
-	touch       : function(token, callback)
+	touch       : function(token, opts, callback)
 	{
+		var self = this
+
 		//~: digest H
-		var sha = CryptoJS.algo.SHA1.create()
-		var seq = ++token.sessionNum
+		var sha  = CryptoJS.algo.SHA1.create()
+		var seq  = ++token.sessionNum
 
 		sha.update(token.sessionId)
 		sha.update(CryptoJS.enc.Hex.parse(ReTradeLogin._long(seq)))
@@ -178,9 +186,14 @@ var ReTradeLogin =
 			//console.log('ReTradeLogin bind key [' + token.bind + ']')
 		}
 
+		function onfail(xhr)
+		{
+			self._fail(xhr, opts, params)
+		}
+
 		//~: touch step
 		jQuery.get({ url: token.url, data: params }).
-		  fail(this._fail).done(function(res)
+		  fail(onfail).done(function(res)
 		{
 			if('touched' != res)
 				res = new Error('ReTradeLogin touch request failed!')
@@ -191,13 +204,13 @@ var ReTradeLogin =
 		})
 	},
 
-	_fail       : function(xhr)
+	_fail       : function(xhr, opts, data)
 	{
 		var e = new Error('ReTradeLogin had failed! Code: [' +
 		  xhr.status + '] message: [' + xhr.statusText + ']')
 
 		if(opts.onerror)
-			opts.onerror(e)
+			opts.onerror(e, data)
 		else
 			throw e
 	},
@@ -281,20 +294,22 @@ $(document).ready(function()
 	{
 		if(login_focus()) return
 
-		var credentials = {
-			login: $.trim($('#login').val()),
-			password: $.trim($('#password').val())
+		var request = {
+			login    : $.trim($('#login').val()),
+			password : $.trim($('#password').val()),
+			onerror  : function(e)
+			{
+				ani($('#button'), 'shake')
+				if(e instanceof Error) console.log(e.message)
+			}
 		}
 
 		//!: invoke secured login procedure
-		ReTradeLogin.login(credentials, function(token)
+		ReTradeLogin.login(request, function(token)
 		{
 			//?: {not logged in} shake the button
 			if(!token || (token instanceof Error))
-			{
-				if(token) console.log(token)
-				return ani($('#button'), 'shake')
-			}
+				request.onerror(token)
 
 			//~: send web-session bind request
 			var req = jQuery.ajax({ url: window.location.href.toString(),
