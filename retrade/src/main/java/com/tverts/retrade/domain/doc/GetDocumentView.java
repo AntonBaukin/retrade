@@ -160,7 +160,9 @@ public class GetDocumentView extends GetObjectBase
 
 	private void restrictTypes(QueryBuilder qb, DocsSearchModelBean mb)
 	{
-		Long[] types = mb.selectDocTypes(); if(types == null) return;
+		Long[] types = mb.selectDocTypes();
+		if((types == null) || (types.length == 0))
+			return;
 
 		qb.getClauseWhere().addPart(
 		  "v.docType.id in (:docTypes)"
@@ -170,7 +172,9 @@ public class GetDocumentView extends GetObjectBase
 
 	private void restrictStates(QueryBuilder qb, DocsSearchModelBean mb)
 	{
-		Long[] states = mb.selectDocStates(); if(states == null) return;
+		Long[] states = mb.selectDocStates();
+		if((states == null) || (states.length == 0))
+			return;
 
 		qb.getClauseWhere().addPart(
 		  "v.ownerState.id in (:docStates)"

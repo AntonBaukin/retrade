@@ -722,15 +722,22 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	 * Private. Returns ID of DOM node that
 	 * stores the properties of this component.
 	 */
-	$node_id         : function()
+	$node_id         : function(suffix)
 	{
+		var nid
+
 		if(!ZeT.ises(this._node_id))
-			return this._node_id
+			nid = this._node_id
 
 		//?: {form from the client id}
 		if(!ZeT.ises(this._client_id))
-			return ZeTS.cat(this._client_id, '-',
+			nid = ZeTS.cat(this._client_id, '-',
 			  ZeT.asserts(this.coid))
+
+		if(ZeT.iss(suffix) && nid)
+			nid = ZeTS.cat(nid, '-', suffix)
+
+		return nid
 	},
 
 	/**
@@ -1017,7 +1024,226 @@ extjsf.ActionBind = ZeT.defineClass(
 })
 
 
-// +----: Action Button Bind :-----------------------------------+
+// +----: Form Bind :-------------------------------------------+
+
+extjsf.FormBind = ZeT.defineClass(
+  'extjsf.FormBind', extjsf.ActionBind,
+{
+	className        : 'extjsf.FormBind',
+
+	bindSubmitForm   : function(opts)
+	{
+		return ZeT.fbind(this.submitForm, this, opts);
+	},
+
+	/**
+	 * Set form before-submit validator invoked as:
+	 *
+	 *   v.call(bind, form, opts)
+	 *
+	 * Validation fails when callback returns false.
+	 */
+	validator        : function(v)
+	{
+		this._validator = undefined;
+		if(ZeT.isf(v)) this._validator = v;
+
+		return this;
+	},
+
+	submitForm       : function(opts)
+	{
+		opts = opts || {};
+
+		var jsf_form = this.$node_id() && Ext.get(this.$node_id());
+		var ext_form = this.co() &&
+		  this.co().getForm && this.co().getForm();
+		if(!ext_form) throw 'Can not issue form submit as no form is found!';
+
+		//~: {validate the form}
+		if(!this._validator && !ext_form.isValid())
+			return false;
+		else if(this._validator)
+			if(false === this._validator.call(this, ext_form, opts))
+				return false;
+
+		//~: detect what fields do present in Ext JS form
+		var ext_flds = {};
+		ext_form.getFields().each(function(f) {
+			ext_flds[f.getName()] = true;
+		})
+
+		//~: collect the (hidden) parameters present in JSF form only
+		var jsf_inps = jsf_form && jsf_form.select('input');
+		var jsf_prms = opts.params || {};
+
+		//~: define JSF command action
+		var jsf_cmd  = null;
+		if(ZeT.iss(opts.command)) jsf_cmd = this.$node_id(opts.command);
+
+		if(jsf_inps) for(var i = 0;(i < jsf_inps.getCount());i++)
+		{
+			var item  = jsf_inps.item(i);          if(!item) continue;
+			var name  = item.getAttribute('name'); if(!name) continue;
+			var value = item.getAttribute('value') || '';
+
+			//?: {this field is a submit button}
+			if(item.getAttribute('type') == 'submit')
+				//?: {it is not the command requested} skip this submit
+				if(name !== jsf_cmd) continue;
+
+			//?: {the field does not present in Ext JS form}
+			if(!ext_flds[name]) jsf_prms[name] = value;
+		}
+
+		//~: detect URL
+		var jsf_url = jsf_form && jsf_form.getAttribute('action');
+		if(!jsf_url || !jsf_url.length) jsf_url = window.location.toString();
+
+		//~: set view mode parameter
+		jsf_prms.mode = opts.mode || 'BODY_POST';
+
+		//~: set the domain
+		jsf_prms.domain = opts.domain || this.domain;
+
+		var bind = this;
+
+		//!: do submit
+		ext_form.submit({ url : jsf_url, params : jsf_prms,
+		  success : ZeT.fbind(bind._validate, bind, opts),
+		  failure : ZeT.fbind(bind._call_failure, bind, opts),
+		  clientValidation: false //<-- used special validation procedure
+		})
+
+		return this;
+	},
+
+	/**
+	 * Register the callback on success Ajax operation.
+	 * The context of the callback call is always this
+	 * bind instance.
+	 *
+	 * The arguments of the callback are:
+	 *
+	 *  · [this]  this Bind;
+	 *  · opts    the options given;
+
+	 *  · data    the data returned from the server.
+	 *    (XML Document in the most cases.)
+	 *
+	 *  · action  Ext JS action;
+	 *  · form    Ext JS form.
+	 */
+	success          : function(func)
+	{
+		if(!ZeT.isf(func)) return this._on_success;
+		this._on_success = func;
+		return this;
+	},
+
+	failure          : function(func)
+	{
+		if(!ZeT.isf(func)) return this._on_failure;
+		this._on_failure = func;
+		return this;
+	},
+
+	_validate        : function(opts, form, action)
+	{
+		if(!action.result) throw 'Ext JS submit action returns no response!';
+
+		var success = true;
+
+		//~: display errors of the fields
+		if(ZeT.isa(action.result.errors) && action.result.errors.length)
+		{
+			var ers = action.result.errors;
+			for(var i = 0;(i < ers.length);i++) if(!ZeTS.ises(ers[i].target))
+			{
+				var cmp = Ext.getCmp(ers[i].target);
+
+				if(!cmp)
+				{
+					var bind = extjsf.bind(ers[i].target, this.domain);
+					if(bind) cmp = bind.co();
+				}
+
+				if(cmp && cmp.isFormField)
+					cmp.markInvalid(ers[i].error)
+			}
+
+			success = false;
+		}
+
+		//~: read success status from the attribute
+		var xml = form.errorReader && form.errorReader.rawData; if(xml)
+		{
+			var status = ZeTX.attr(ZeTX.node(xml, 'validation'), 'success');
+			if(status) success = ('true' === status);
+		}
+
+		if(success)
+			this._call_success(opts, xml, action, form)
+		else
+			this._call_failure(opts, xml, action, form)
+	},
+
+	_call_success    : function(opts, xml)
+	{
+		//~: evaluate the scripts
+		this._call_scripts(opts, xml)
+
+		if(ZeT.isf(this._on_success))
+			this._on_success.apply(this, arguments)
+
+		if(ZeT.isf(opts.success))
+			opts.success.apply(this, arguments)
+	},
+
+	_call_failure    : function(opts, xml)
+	{
+		//~: evaluate the scripts
+		this._call_scripts(opts, xml)
+
+		if(ZeT.isf(this._on_failure))
+			this._on_failure.apply(this, arguments)
+
+		if(ZeT.isf(opts.failure))
+			opts.failure.apply(this, arguments)
+	},
+
+	_call_scripts    : function(opts, xml)
+	{
+		var scripts = ZeTX.nodes(xml, 'script')
+		if(scripts) for(var i = 0;(i < scripts.length);i++) try
+		{
+			eval('(function() {'.concat(ZeTX.text(scripts[i]), '})()'))
+		}
+		catch(e)
+		{
+			ZeT.log(e)
+		}
+	}
+})
+
+/**
+ * Form validation response model.
+ */
+Ext.define('extjsf.model.FormValidation',
+{
+	extend: 'Ext.data.Model',
+
+	idProperty: 'target',
+
+	fields: [
+
+		{name: 'target', type: 'string', mapping: '@target'},
+		{name: 'error',  type: 'string'}
+	]
+})
+
+
+// +----: Load Action Bind :------------------------------------+
 
 extjsf.LoadActionBind = ZeT.defineClass(
   'extjsf.LoadActionBind', extjsf.ActionBind,
@@ -1183,6 +1409,36 @@ extjsf.StoreBind = ZeT.defineClass(
 
 		//~: add new parameters
 		ZeT.extend(params, sp)
+	}
+})
+
+
+// +----: Menu Bind :-------------------------------------------+
+
+extjsf.MenuBind = ZeT.defineClass(
+  'extjsf.MenuBind', extjsf.Bind,
+{
+	className        : 'extjsf.MenuBind',
+
+	$install         : function()
+	{
+		ZeT.asserts(this._parent_coid)
+		var p = extjsf.bind(this._parent_coid, this.domain)
+
+		if(p.co()) this.$set_menu(p.co()); else
+			p.on('added', ZeT.fbind(this.$set_menu, this))
+	},
+
+	$set_menu        : function(pco)
+	{
+		//~: always create the component
+		var co = this.co(true)
+
+		//?: {parent supports menu setting}
+		if(ZeT.isf(pco.setMenu))
+			pco.setMenu(co)
+
+		co.fireEvent('added', co, pco)
 	}
 })
 
@@ -1598,15 +1854,6 @@ extjsf.Bind.extend(
 		return this;
 	},
 
-	prependId        : function(local_id)
-	{
-		if(!ZeT.iss(this._node_id)) throw 'Can not prepend local ID [' +
-		  local_id + '] as there is no Node ID bound the ExtJSF component!';
-
-		//NOTE: JSF prepend separator '-' must be configured in web.xml!
-		return this._node_id.concat('-', local_id);
-	},
-
 	value            : function(v)
 	{
 		var c = this.co()
@@ -1657,13 +1904,6 @@ extjsf.Bind.extend(
 		return this;
 	},
 
-	evalPropsNode    : function(node_id)
-	{
-		var node = this.getPropsNode(node_id);
-		var text = ZeTX.text(node);
-		return ZeTS.ises(text)?({}):(this.$eval_props(text));
-	},
-
 	boundDestroy     : function()
 	{
 		return ZeT.fbind(this.destroy, this)
@@ -1704,38 +1944,6 @@ extjsf.Bind.extend(
 	{
 		var html = this.$raw['html']
 		return ZeT.iss(html) || ZeT.isDelayed(html)
-	},
-
-	goFormAction     : function(nodeid, action)
-	{
-		if(ZeTS.ises(nodeid)) nodeid = this.$node_id();
-		if(ZeTS.ises(nodeid)) return this;
-
-		var node = Ext.get(nodeid);
-		if(!node || (node.dom.tagName.toLowerCase() != 'form')) return this;
-
-		if(ZeTS.ises(action))
-			action = node.getAttribute('action');
-		if(ZeTS.ises(action)) return this;
-
-		var prefix = ''; if(action.charAt(0) == '/')
-		{
-			prefix = '/';
-			action = action.substring(1);
-		}
-
-		var i = action.indexOf('/'); if(i != 0)
-		{
-			prefix += action.substring(0, i + 1);
-			action =  action.substring(i + 1);
-		}
-
-		if(prefix.charAt(prefix.length - 1) != '/') prefix += '/';
-		if(ZeTS.ends(action, '.xhtml'))
-			action = action.substring(0, action.length - 6);
-
-		node.set({'action': prefix + 'go/' + action})
-		return this;
 	},
 
 	toggleReadWrite  : function(isread)
@@ -1853,10 +2061,6 @@ extjsf.Bind.extend(
 		if(ZeT.isf(this.handler))
 			res.handler = ZeT.assertf(this.handler)
 
-		//?: {is menu bound}
-		if(this.menu && this.menu.extjsfBind)
-			res.menu = this.menu.co();
-
 		//?: {is data store bound}
 		if(this.store) if(!this.store.createStore)
 			res.store = this.store;
@@ -1872,204 +2076,6 @@ extjsf.Bind.extend(
 
 		return res;
 	},
-
-
-	//=       Form Submit        =//
-
-	bindSubmitForm   : function(opts)
-	{
-		return ZeT.fbind(this.submitForm, this, opts);
-	},
-
-	/**
-	 * Set form before-submit validator invoked as:
-	 *
-	 *   v.call(bind, form, opts)
-	 *
-	 * Validation fails when callback returns false.
-	 */
-	validator        : function(v)
-	{
-		this._validator = undefined;
-		if(ZeT.isf(v)) this._validator = v;
-
-		return this;
-	},
-
-	submitForm       : function(opts)
-	{
-		opts = opts || {};
-
-		var jsf_form = this.$node_id() && Ext.get(this.$node_id());
-		var ext_form = this.co() &&
-		  this.co().getForm && this.co().getForm();
-		if(!ext_form) throw 'Can not issue form submit as no form is found!';
-
-		//~: {validate the form}
-		if(!this._validator && !ext_form.isValid())
-			return false;
-		else if(this._validator)
-			if(false === this._validator.call(this, ext_form, opts))
-				return false;
-
-		//~: detect what fields do present in Ext JS form
-		var ext_flds = {};
-		ext_form.getFields().each(function(f) {
-			ext_flds[f.getName()] = true;
-		})
-
-		//~: collect the (hidden) parameters present in JSF form only
-		var jsf_inps = jsf_form && jsf_form.select('input');
-		var jsf_prms = opts.params || {};
-
-		//~: define JSF command action
-		var jsf_cmd  = null;
-		if(ZeT.iss(opts.command)) jsf_cmd = this.prependId(opts.command);
-
-		if(jsf_inps) for(var i = 0;(i < jsf_inps.getCount());i++)
-		{
-			var item  = jsf_inps.item(i);          if(!item) continue;
-			var name  = item.getAttribute('name'); if(!name) continue;
-			var value = item.getAttribute('value') || '';
-
-			//?: {this field is a submit button}
-			if(item.getAttribute('type') == 'submit')
-				//?: {it is not the command requested} skip this submit
-				if(name !== jsf_cmd) continue;
-
-			//?: {the field does not present in Ext JS form}
-			if(!ext_flds[name]) jsf_prms[name] = value;
-		}
-
-		//~: detect URL
-		var jsf_url = jsf_form && jsf_form.getAttribute('action');
-		if(!jsf_url || !jsf_url.length) jsf_url = window.location.toString();
-
-		//~: set view mode parameter
-		jsf_prms.mode = opts.mode || 'BODY_POST';
-
-		//~: set the domain
-		jsf_prms.domain = opts.domain || this.domain;
-
-		var bind = this;
-
-		//!: do submit
-		ext_form.submit({ url : jsf_url, params : jsf_prms,
-		  success : ZeT.fbind(bind._validate, bind, opts),
-		  failure : ZeT.fbind(bind._call_failure, bind, opts),
-		  clientValidation: false //<-- used special validation procedure
-		})
-
-		return this;
-	},
-
-	/**
-	 * Register the callback on success Ajax operation.
-	 * The context of the callback call is always this
-	 * bind instance.
-	 *
-	 * The arguments of the callback are:
-	 *
-	 *  · [this]  this Bind;
-	 *  · opts    the options given;
-
-	 *  · data    the data returned from the server.
-	 *    (XML Document in the most cases.)
-	 *
-	 *  · action  Ext JS action;
-	 *  · form    Ext JS form.
-	 */
-	success          : function(func)
-	{
-		if(!ZeT.isf(func)) return this._on_success;
-		this._on_success = func;
-		return this;
-	},
-
-	failure          : function(func)
-	{
-		if(!ZeT.isf(func)) return this._on_failure;
-		this._on_failure = func;
-		return this;
-	},
-
-	_validate        : function(opts, form, action)
-	{
-		if(!action.result) throw 'Ext JS submit action returns no response!';
-
-		var success = true;
-
-		//~: display errors of the fields
-		if(ZeT.isa(action.result.errors) && action.result.errors.length)
-		{
-			var ers = action.result.errors;
-			for(var i = 0;(i < ers.length);i++) if(!ZeTS.ises(ers[i].target))
-			{
-				var cmp = Ext.getCmp(ers[i].target);
-
-				if(!cmp)
-				{
-					var bind = extjsf.bind(ers[i].target, this.domain);
-					if(bind) cmp = bind.co();
-				}
-
-				if(cmp && cmp.isFormField)
-					cmp.markInvalid(ers[i].error)
-			}
-
-			success = false;
-		}
-
-		//~: read success status from the attribute
-		var xml = form.errorReader && form.errorReader.rawData; if(xml)
-		{
-			var status = ZeTX.attr(ZeTX.node(xml, 'validation'), 'success');
-			if(status) success = ('true' === status);
-		}
-
-		if(success)
-			this._call_success(opts, xml, action, form)
-		else
-			this._call_failure(opts, xml, action, form)
-	},
-
-	_call_success    : function(opts, xml)
-	{
-		//~: evaluate the scripts
-		this._call_scripts(opts, xml)
-
-		if(ZeT.isf(this._on_success))
-			this._on_success.apply(this, arguments)
-
-		if(ZeT.isf(opts.success))
-			opts.success.apply(this, arguments)
-	},
-
-	_call_failure    : function(opts, xml)
-	{
-		//~: evaluate the scripts
-		this._call_scripts(opts, xml)
-
-		if(ZeT.isf(this._on_failure))
-			this._on_failure.apply(this, arguments)
-
-		if(ZeT.isf(opts.failure))
-			opts.failure.apply(this, arguments)
-	},
-
-	_call_scripts    : function(opts, xml)
-	{
-		var scripts = ZeTX.nodes(xml, 'script')
-		if(scripts) for(var i = 0;(i < scripts.length);i++) try
-		{
-			eval('(function() {'.concat(ZeTX.text(scripts[i]), '})()'))
-		}
-		catch(e)
-		{
-			ZeT.log(e)
-		}
-	},
-
 
 	//=        Listeners         =//
 

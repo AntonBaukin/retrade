@@ -28,20 +28,6 @@ ZeT.init('ReTrade.init', function()
 	})
 
 
-	//~: form validation response model
-	Ext.define('retrade.model.FormValidation', {
-	  extend: 'Ext.data.Model',
-
-	  idProperty: 'target',
-
-	  fields: [
-
-	    {name: 'target', type: 'string', mapping: '@target'},
-	    {name: 'error',  type: 'string'}
-	  ]
-	})
-
-
 	//~: invoice good index
 	ZeT.define('retrade.columns.InvoiceGoodNumber',
 	{
