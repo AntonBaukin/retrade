@@ -1031,24 +1031,37 @@ extjsf.FormBind = ZeT.defineClass(
 {
 	className        : 'extjsf.FormBind',
 
-	bindSubmitForm   : function(opts)
-	{
-		return ZeT.fbind(this.submitForm, this, opts);
-	},
-
 	/**
-	 * Set form before-submit validator invoked as:
-	 *
-	 *   v.call(bind, form, opts)
-	 *
-	 * Validation fails when callback returns false.
+	 * Assigns additional validator of the form
+	 * that is invoked as v.call(bind, form, opts).
+	 * Returns this bind.
 	 */
 	validator        : function(v)
 	{
-		this._validator = undefined;
-		if(ZeT.isf(v)) this._validator = v;
+		delete this._validator
+		if(ZeT.isf(v)) this._validator = v
+		return this
+	},
 
-		return this;
+	/**
+	 * Binds form's submit() with the options given.
+	 * If no options given, returns the previously
+	 * bound function (if any), or creates a new one.
+	 */
+	submitBound      : function(opts)
+	{
+		if(arguments.length)
+		{
+			ZeT.assert(arguments.length == 1)
+			ZeT.assert(ZeT.iso(arguments[0]))
+
+			this._bound_submit = ZeT.fbind(
+			  this.submitForm, this, arguments[0])
+		}
+		else if(!this._bound_submit)
+			this._bound_submit = ZeT.fbind(this.submitForm, this)
+
+		return this._bound_submit
 	},
 
 	submitForm       : function(opts)

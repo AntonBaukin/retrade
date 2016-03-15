@@ -337,8 +337,7 @@ ${v.forceSecureEdit()}
   //~: submit form before going to date form
   extjsf.bindHandler("${z:vid(v, 'edit-date')}", '${extDom}',
     extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
-      bindSubmitForm({'${v.viewModeParam}':'${v.viewModePostStr}',
-      immediate: true, command: 'goods', success: function()
+      submitBound({immediate: true, command: 'goods', success: function()
       {
         extjsf.bindHandler("${z:vid(v, 'goto-edit-date')}", '${extDom}')()
       }}))
@@ -346,8 +345,7 @@ ${v.forceSecureEdit()}
   //~: submit form with command button
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}',
     extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
-      bindSubmitForm({'${v.viewModeParam}':'${v.viewModePostStr}',
-      command: 'submit', success: function()
+      submitBound({command: 'submit', success: function()
       {
         extjsf.bindHandler("${z:vid(v, 'submit-done')}", '${extDom}')()
       }}))

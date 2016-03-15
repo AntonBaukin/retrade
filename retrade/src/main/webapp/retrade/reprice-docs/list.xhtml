@@ -101,13 +101,11 @@ ${v.checkModelRequestedWithRedirect}
 
   //~: on min date change -> post the form
   extjsf.bind("${z:vid(v, 'min_date')}", '${extDom}').on('change',
-    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').
-      bindSubmitForm({'${v.viewModeParam}': '${v.viewModePostStr}'}))
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').submitBound())
 
   //~: on max date change -> post the form
   extjsf.bind("${z:vid(v, 'max_date')}", '${extDom}').on('change',
-    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').
-      bindSubmitForm({'${v.viewModeParam}': '${v.viewModePostStr}'}))
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').submitBound())
 
   extjsf.bind("${z:vid(v, 'fixed_only')}", '${extDom}').on('change', function(f, value)
   {
