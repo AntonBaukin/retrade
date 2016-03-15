@@ -1128,6 +1128,11 @@ hr.retrade-info-hr
   margin-top: -75px; margin-left: -220px;
 }
 
+.retrade-warning-table-invoice-ask-edit .retrade-warning-table > div > div > div:first-child
+{
+  position: relative;
+}
+
 
 /* good attributes */
 

@@ -9,11 +9,11 @@
     <!-- [goods tree + table -->
 
     <!-- [goods store] -->
-    <x:data-store storeId = "${z:vid(v, 'goodUnits')}"
-      modelView = "${v}" pageSize = "${pageSize}">
+    <x:data-store storeId = "${z:vid(v, 'goodUnits')}" modelView = "${v}">
 
       <f:facet name = "store-props">
-        model: 'retrade.model.GoodUnitView', remoteSort: true,
+        model: 'retrade.model.GoodUnitView',
+        pageSize: ${pageSize}, remoteSort: true,
         sorters: [{ property: 'goodName', direction: 'ASC' }]
       </f:facet>
 

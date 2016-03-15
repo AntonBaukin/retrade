@@ -677,12 +677,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	{
 		if(!extjsf.isbind(p)) return
 
-		var done; function doit(pco)
+		function doit(pco)
 		{
-			if(done) return; done = true
-
-			ZeT.log('Rendered? ', this)
-
 			//~: create the component
 			this.co(true)
 
@@ -690,8 +686,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 			if(callback) callback.call(this, pco)
 		}
 
-		//?: {parent is rendered}
-		if(p.co() && p.co().rendered)
+		//?: {parent is rendered, node exists}
+		if(p.co() && (p.co().rendered || Ext.getDom(this._render_to)))
 			return doit.call(this, p.co())
 
 		p.on('render', ZeT.fbind(doit, this))
