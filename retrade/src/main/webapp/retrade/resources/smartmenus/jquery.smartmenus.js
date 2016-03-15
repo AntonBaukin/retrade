@@ -378,6 +378,7 @@
 				var zIndex = parseInt(this[root ? '$root' : '$firstSub'].css('z-index'));
 				if (!root && isNaN(zIndex)) {
 					zIndex = parseInt(this.$root.css('z-index'));
+					if(isNaN(zIndex)) zIndex = this.$root[0].style.zIndex
 				}
 				return !isNaN(zIndex) ? zIndex : 1;
 			},
