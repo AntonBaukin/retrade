@@ -968,7 +968,7 @@ extjsf.ActionBind = ZeT.defineClass(
 	 * argument allows to specify form action button to include
 	 * into the result. (To invoke the action.)
 	 */
-	$form_params     : function(button)
+	$form_params     : function(button, except)
 	{
 		var res = {}
 
@@ -983,7 +983,8 @@ extjsf.ActionBind = ZeT.defineClass(
 				if((button !== true) && (button !== n))
 					return
 
-			res[n] = v
+			if(!except || !except[n])
+				res[n] = v
 		})
 
 		return res
@@ -1035,6 +1036,9 @@ extjsf.FormBind = ZeT.defineClass(
 	 * Assigns additional validator of the form
 	 * that is invoked as v.call(bind, form, opts).
 	 * Returns this bind.
+	 *
+	 * Note that this validator does supress
+	 * the built-in of the form component.
 	 */
 	validator        : function(v)
 	{
@@ -1064,71 +1068,41 @@ extjsf.FormBind = ZeT.defineClass(
 		return this._bound_submit
 	},
 
-	submit       : function(opts)
+	/**
+	 * Submits the form by sending POST request
+	 * to the back bean (JSF view) configured.
+	 *
+	 * The options may contain these fields:
+	 *
+	 *
+	 * Returns false when form is invalid, and
+	 * no post request was issued.
+	 */
+	submit           : function(opts)
 	{
-		opts = opts || {};
+		opts = ZeT.extend({}, opts)
 
-		var jsf_form = this.$node_id() && Ext.get(this.$node_id());
-		var ext_form = this.co() &&
-		  this.co().getForm && this.co().getForm();
-		if(!ext_form) throw 'Can not issue form submit as no form is found!';
+		//~: get the Ext form component
+		var fco = this.$form_co()
 
-		//~: {validate the form}
-		if(!this._validator && !ext_form.isValid())
-			return false;
-		else if(this._validator)
-			if(false === this._validator.call(this, ext_form, opts))
-				return false;
+		//~: {the form is not valid}
+		if(!this.$validate(opts))
+			return false
 
-		//~: detect what fields do present in Ext JS form
-		var ext_flds = {};
-		ext_form.getFields().each(function(f) {
-			ext_flds[f.getName()] = true;
-		})
+		//~: submit parameters
+		var ps  = this.$post_params(opts)
 
-		//~: collect the (hidden) parameters present in JSF form only
-		var jsf_inps = jsf_form && jsf_form.select('input');
-		var jsf_prms = opts.params || {};
+		//~: action url
+		var url = this.$form_action()
 
-		//~: define JSF command action
-		var jsf_cmd  = null;
-		if(ZeT.iss(opts.command)) jsf_cmd = this.$node_id(opts.command);
-
-		if(jsf_inps) for(var i = 0;(i < jsf_inps.getCount());i++)
-		{
-			var item  = jsf_inps.item(i);          if(!item) continue;
-			var name  = item.getAttribute('name'); if(!name) continue;
-			var value = item.getAttribute('value') || '';
-
-			//?: {this field is a submit button}
-			if(item.getAttribute('type') == 'submit')
-				//?: {it is not the command requested} skip this submit
-				if(name !== jsf_cmd) continue;
-
-			//?: {the field does not present in Ext JS form}
-			if(!ext_flds[name]) jsf_prms[name] = value;
-		}
-
-		//~: detect URL
-		var jsf_url = jsf_form && jsf_form.getAttribute('action');
-		if(!jsf_url || !jsf_url.length) jsf_url = window.location.toString();
-
-		//~: set view mode parameter
-		jsf_prms.mode = opts.mode || 'BODY_POST';
-
-		//~: set the domain
-		jsf_prms.domain = opts.domain || this.domain;
-
-		var bind = this;
-
-		//!: do submit
-		ext_form.submit({ url : jsf_url, params : jsf_prms,
-		  success : ZeT.fbind(bind._validate, bind, opts),
-		  failure : ZeT.fbind(bind._call_failure, bind, opts),
+		//!: do submit Ext JS form
+		fco.submit({ url: url, params: ps,
+		  success: ZeT.fbind(this._validate, this, opts),
+		  failure: ZeT.fbind(this._call_failure, this, opts),
 		  clientValidation: false //<-- used special validation procedure
 		})
 
-		return this;
+		return this
 	},
 
 	/**
@@ -1159,6 +1133,67 @@ extjsf.FormBind = ZeT.defineClass(
 		if(!ZeT.isf(func)) return this._on_failure;
 		this._on_failure = func;
 		return this;
+	},
+
+	$form_co         : function()
+	{
+		return ZeT.assert(this.co() &&
+		  ZeT.isf(this.co().getForm) && this.co().getForm(),
+		  'Can not process undefined form [', this.name,
+		  '] in domain [', this.domain, ']'
+		)
+	},
+
+	$post_params     : function(opts)
+	{
+		//~: form action command (JSF input id and name)
+		var button = ZeT.get(opts, 'command')
+		if(!ZeT.ises(button)) button = this.$node_id(button)
+
+		//~: additional parameters from the options
+		var params = ZeT.get(opts, 'params')
+
+		//~: collect all parameters of the action
+		return this.$callSuper(params, true, button)
+	},
+
+	$form_params     : function(button, except)
+	{
+		//~: add ext fields to exception
+		except = ZeT.extend(this.$ext_fields(), except)
+
+		return this.$callSuper(button, except)
+	},
+
+	/**
+	 * Private. Maps fields present in Ext JS form
+	 * component by their request (post) names.
+	 */
+	$ext_fields      : function()
+	{
+		var res = {}, fco = this.$form_co()
+
+		fco.getFields().each(function(f) {
+			res[f.getName()] = f
+		})
+
+		return res
+	},
+
+	$validate        : function(opts)
+	{
+		var fco = this.$form_co()
+
+		//?: {default is not valid}
+		if(!this._validator && !fco.isValid())
+			return false
+
+		//?: {external validator is not}
+		else if(this._validator)
+			if(false === this._validator.call(this, fco, opts))
+				return false
+
+		return true
 	},
 
 	_validate        : function(opts, form, action)

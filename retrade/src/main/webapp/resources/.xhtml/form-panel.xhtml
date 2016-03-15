@@ -12,6 +12,18 @@
   <co:interface>
 
     <!--
+         WARNING! It's not allowed to nest this component
+         in any component that is a JSF form container.
+         Either, nested components may not contain forms,
+         i.e., it's not allowed to nest x:action-call,
+         x:action-button, x:action-delegate, or h:form.
+
+         Note that you may nest regular JSF components.
+         Hidden fields and command buttons are useful.
+    -->
+
+
+    <!--
          Domain unique bind name of the form component.
     -->
     <co:attribute name = 'coid' required = 'true'
@@ -42,7 +54,7 @@
         ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
         props({ margin: 0, border: false }).readPropsNode().
         props({ xtype: 'form' }).viewId('${rootView.id}').
-        scope(function(form)
+        postMode('${rootView.viewModePostStr}').scope(function(form)
         {
           if(form.$raw().errorReader) return
           form.$raw().errorReader = Ext.create('Ext.data.reader.Xml',
