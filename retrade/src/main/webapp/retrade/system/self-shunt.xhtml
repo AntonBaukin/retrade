@@ -146,7 +146,7 @@
     var form = extjsf.bind("${z:vid(v, 'self_shunt_form')}", '${extDom}');
 
     //~: submit the form
-    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
+    form.submit({ command: 'submit_action',
       success: extjsf.bindHandler("${z:vid(v, 'submit_done')}", '${extDom}')
     })
   })

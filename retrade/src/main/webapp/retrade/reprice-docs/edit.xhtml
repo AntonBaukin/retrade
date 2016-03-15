@@ -1122,12 +1122,10 @@ ${v.checkModelRequestedWithRedirect}
       extjsf.bind("${z:vid(v, 'comment')}", '${extDom}').value())
 
     //!: submit the form
-    f.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
-      command: "${z:vid(v, 'submit-action')}", params: params, success: function()
-      {
-        extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
-      }
-    })
+    f.submit({ command: "${z:vid(v, 'submit-action')}", params: params, success: function()
+    {
+      extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
+    }})
   })
 
   //]]>

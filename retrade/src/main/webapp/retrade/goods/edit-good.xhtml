@@ -865,12 +865,10 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.bindHandler(gocalc, function()
     {
       //!: submit the form with go to
-      form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
-        params: {immediate: true}, success: function()
-        {
-          extjsf.bindHandler("${z:vid(v, 'goto-calc-script')}", '${extDom}')()
-        }
-      })
+      form.submit({params: { immediate: true }, success: function()
+      {
+        extjsf.bindHandler("${z:vid(v, 'goto-calc-script')}", '${extDom}')()
+      }})
     })
 
     //~: validate on code change
@@ -1174,7 +1172,7 @@ ${v.checkModelRequestedWithRedirect}
         clean([ weight, gweight, nweight, rvol, vcodesh ])
 
       //!: submit the form
-      form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
+      form.submit({ '${v.viewModeParam}': '${v.viewModePostStr}',
         command: "${z:vid(v, 'submit-action')}", success: function()
         {
           var winmain = extjsf.bind('winmain', '${extDom}');

@@ -252,8 +252,7 @@
         wselset.value(cselset.pressed)
         nselset.value(!cselset.pressed?(''):(ReTrade.selset.selset))
 
-        extjsf.bind("${z:vid(localView, 'docs_filter_form')}", '${extDom}').
-          submitForm({'${localView.viewModeParam}': '${localView.viewModePostStr}'})
+        extjsf.bind("${z:vid(localView, 'docs_filter_form')}", '${extDom}').submit()
       })
 
       //]]>

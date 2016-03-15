@@ -142,13 +142,10 @@ ${v.checkModelRequestedWithRedirect}
        var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}');
 
        //~: submit the form
-       form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}', command: 'submit_action',
-         success: function()
-         {
-           edit.co().hide()
-           grid.co().show()
-         }
-       })
+       form.submit({command: 'submit_action', success: function()
+       {
+         edit.co().hide(); grid.co().show()
+       }})
     })
 
     //]]>

@@ -318,8 +318,8 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.bind("${z:vid(v, 'search-by-selset-field')}", '${extDom}').
       value(ReTrade.selset.selset)
 
-    extjsf.bind("${z:vid(v, 'search')}", '${extDom}').
-      submitForm({'${v.viewModeParam}': '${v.viewModePostStr}', success: function()
+    extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submit({
+      success: function()
     {
       Ext.data.StoreManager.lookup("${z:vid(v, 'payments')}").loadPage(1)
     }})

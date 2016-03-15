@@ -157,7 +157,7 @@
     form.success(extjsf.bindHandler("${z:vid(e, 'cancel-edit')}", '${extDom}'))
 
     //!: submit
-    form.submitForm({'${e.viewModeParam}': '${e.viewModePostStr}', command: 'submit_action'})
+    form.submit({ command: 'submit_action' })
   })
 
   extjsf.bindHandler("${z:vid(e, 'date')}", '${extDom}', function()
@@ -171,7 +171,7 @@
     })
 
     //!: submit
-    form.submitForm({'${e.viewModeParam}': '${e.viewModePostStr}'})
+    form.submit()
   })
 
   //]]>

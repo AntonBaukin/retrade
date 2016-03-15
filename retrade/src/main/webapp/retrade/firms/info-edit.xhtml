@@ -609,8 +609,8 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
     var winmain = extjsf.bind('winmain', '${extDom}')
     winmain.retradeEditSuccess = false
 
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').submitForm({
-      '${v.viewModeParam}':'${v.viewModePostStr}', command: 'submit', success: function()
+    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').submit({
+      command: 'submit', success: function()
     {
       winmain.retradeEditSuccess = true
       extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}')()

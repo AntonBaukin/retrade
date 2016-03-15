@@ -260,12 +260,10 @@ ${v.checkModelRequested}
     var form = extjsf.bind("${z:vid(v, 'measure-form')}", '${extDom}');
     if(!form.co().isValid()) return;
 
-    form.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
-      command: "${z:vid(v, 'submit-action')}", success: function()
-      {
-        extjsf.bindHandler("${z:vid(v, 'cancel')}", '${extDom}')()
-      }
-    })
+    form.submit({ command: "${z:vid(v, 'submit-action')}", success: function()
+    {
+      extjsf.bindHandler("${z:vid(v, 'cancel')}", '${extDom}')()
+    }})
   })
 
 

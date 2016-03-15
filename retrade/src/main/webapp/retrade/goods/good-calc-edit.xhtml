@@ -204,12 +204,10 @@ ${v.checkModelRequested}
       ps.semiReady = extjsf.bind("${z:vid(v, 'semi-ready')}", '${extDom}').value();
 
       //!: submit the derived form
-      f.submitForm({ '${v.viewModeParam}': '${v.viewModePostStr}',
-        params: ps, command: "${z:vid(v, 'submit-action')}", success: function()
-        {
-          extjsf.bindHandler("${z:vid(v, 'submit-back')}", '${extDom}')()
-        }
-      })
+      f.submit({ params: ps, command: "${z:vid(v, 'submit-action')}", success: function()
+      {
+        extjsf.bindHandler("${z:vid(v, 'submit-back')}", '${extDom}')()
+      }})
 
       return;
     }

@@ -268,12 +268,11 @@ ${v.checkModelRequestedWithRedirect}
 
   extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-     extjsf.bind("${z:vid(v, 'form')}", '${extDom}').submitForm({
+     extjsf.bind("${z:vid(v, 'form')}", '${extDom}').submit({
        command: 'submit_action', success: function()
        {
          extjsf.co('winmain', '${extDom}').close()
-       }
-     })
+       }})
   })
 
   //~: adjust window height

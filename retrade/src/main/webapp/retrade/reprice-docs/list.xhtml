@@ -116,8 +116,7 @@ ${v.checkModelRequestedWithRedirect}
     max_date.setDisabled(!value)
 
     //~: refresh the table
-    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').
-      submitForm({'${v.viewModeParam}': '${v.viewModePostStr}'})
+    extjsf.bind("${z:vid(v, 'filter-form-dates')}", '${extDom}').submit()
 
     //~: show/hide timestamp column
     extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').co().

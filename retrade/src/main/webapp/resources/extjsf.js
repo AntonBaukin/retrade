@@ -1056,15 +1056,15 @@ extjsf.FormBind = ZeT.defineClass(
 			ZeT.assert(ZeT.iso(arguments[0]))
 
 			this._bound_submit = ZeT.fbind(
-			  this.submitForm, this, arguments[0])
+			  this.submit, this, arguments[0])
 		}
 		else if(!this._bound_submit)
-			this._bound_submit = ZeT.fbind(this.submitForm, this)
+			this._bound_submit = ZeT.fbind(this.submit, this)
 
 		return this._bound_submit
 	},
 
-	submitForm       : function(opts)
+	submit       : function(opts)
 	{
 		opts = opts || {};
 
