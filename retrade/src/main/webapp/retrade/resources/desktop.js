@@ -4273,16 +4273,16 @@ ReTrade.Tiles = ZeT.defineClass('ReTrade.Tiles', {
 		g.children().each(function(y)
 		{
 			$(this).css({ position: pos,
-			  left: '0px', top: (y*h + y*dy)+'px',
-			  height: h+'px', width: self.W+'px'
+			  left: '0px', top: Math.round(y*h + y*dy)+'px',
+			  height: Math.round(h)+'px', width: Math.round(self.W)+'px'
 			})
 
 			//~: place all the cells in the row
 			$(this).children().each(function(x)
 			{
 				$(this).css({ position: pos,
-				  left: (x*w + x*dx)+'px', top: '0px',
-				  height: h+'px', width: w+'px'
+				  left: Math.round(x*w + x*dx)+'px', top: '0px',
+				  height: Math.round(h)+'px', width: Math.round(w)+'px'
 				})
 			})
 		})
