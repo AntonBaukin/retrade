@@ -315,9 +315,21 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	 * Third optional argument (defaults to 'added')
 	 * tells the target event name when to add.
 	 * Works only in [1] case.
+	 *
+	 * When function is invoked wothout arguments,
+	 * returns the effective parent Bind.
 	 */
 	parent           : function(parent_coid, target_coid, when)
 	{
+		if(!arguments.length)
+		{
+			if(this._target_coid)
+				return extjsf.bind(this._target_coid, this.domain)
+			else if(this._parent_coid)
+				return extjsf.bind(this._parent_coid, this.domain)
+			return undefined
+		}
+
 		//~: default parent
 		delete this._parent_coid
 		if(!ZeT.ises(parent_coid))
@@ -433,6 +445,22 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		a.splice(0, 0, this)
 
 		ZeT.scope.apply(ZeT, a)
+		return this
+	},
+
+	/**
+	 * Analogue of scope(), but is invoked only
+	 * when the component bound is created (added
+	 * to the parent container).
+	 */
+	when             : function()
+	{
+		if(this.co())
+			this.scope.apply(this, arguments)
+		else
+			this.on('added', ZeT.fbinda(
+			  this.scope, this, arguments, true))
+
 		return this
 	},
 
@@ -1489,38 +1517,7 @@ extjsf.StoreBind = ZeT.defineClass(
 })
 
 
-// +----: Menu Bind :-------------------------------------------+
-
-extjsf.MenuBind = ZeT.defineClass(
-  'extjsf.MenuBind', extjsf.Bind,
-{
-	className        : 'extjsf.MenuBind',
-
-	$install         : function()
-	{
-		ZeT.asserts(this._parent_coid)
-		var p = extjsf.bind(this._parent_coid, this.domain)
-
-		if(p.co()) this.$set_menu(p.co()); else
-			p.on('added', ZeT.fbind(this.$set_menu, this))
-	},
-
-	$set_menu        : function(pco)
-	{
-		//~: always create the component
-		var co = this.co(true)
-
-		//?: {parent supports menu setting}
-		if(ZeT.isf(pco.setMenu))
-			pco.setMenu(co)
-
-		co.fireEvent('added', co, pco)
-	}
-})
-
-
 // +----: Components to Refactor :------------------------------->
-
 
 ZeT.extend(extjsf,
 {

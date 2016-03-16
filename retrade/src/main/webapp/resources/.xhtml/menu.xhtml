@@ -27,7 +27,7 @@
     //<![CDATA[
 
       extjsf.domain('${extDom}').
-        bind('#{cc.attrs.coid}', new extjsf.MenuBind()).
+        bind('#{cc.attrs.coid}', new extjsf.Bind()).
         ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
         readPropsNode().props({ xtype: 'menu' })
 
@@ -39,7 +39,12 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.bind('#{cc.attrs.coid}', '${extDom}').install()
+      extjsf.bind('#{cc.parent.attrs.coid}', '${extDom}').when(
+        extjsf.bind('#{cc.attrs.coid}', '${extDom}'),
+        function(parent, menu) {
+          if(ZeT.isf(parent.co().setMenu)) parent.co().setMenu(menu.co(true))
+          menu.co(true).fireEvent('added', menu.co(true), parent.co())
+        })
 
     //]]>
     </script>
