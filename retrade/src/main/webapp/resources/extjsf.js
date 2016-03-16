@@ -1071,12 +1071,23 @@ extjsf.FormBind = ZeT.defineClass(
 	/**
 	 * Submits the form by sending POST request
 	 * to the back bean (JSF view) configured.
+	 * Does validation before sending.
 	 *
 	 * The options may contain these fields:
 	 *
+	 *  · success   alternative callback on form
+	 *    submit request. See callback();
+	 *
+	 *  · failure   alternative callback on form
+	 *    submit failure. See failure();
+	 *
+	 *  · params    additional parameters of the
+	 *    form post request.
 	 *
 	 * Returns false when form is invalid, and
 	 * no post request was issued.
+	 *
+	 * Action is Ext.form.action.Action.
 	 */
 	submit           : function(opts)
 	{
@@ -1097,42 +1108,41 @@ extjsf.FormBind = ZeT.defineClass(
 
 		//!: do submit Ext JS form
 		fco.submit({ url: url, params: ps,
-		  success: ZeT.fbind(this._validate, this, opts),
-		  failure: ZeT.fbind(this._call_failure, this, opts),
-		  clientValidation: false //<-- used special validation procedure
+		  success: ZeT.fbind(this.$eval_result, this, opts),
+		  failure: ZeT.fbind(this.$call_failure, this, opts),
+		  clientValidation: false //<-- our validation instead
 		})
 
 		return this
 	},
 
 	/**
-	 * Register the callback on success Ajax operation.
-	 * The context of the callback call is always this
-	 * bind instance.
+	 * Register the callback on successfull form submit.
+	 * Callback is invoked as:
 	 *
-	 * The arguments of the callback are:
+	 *   cb.call(bind, submit opts, data, action, form)
 	 *
-	 *  · [this]  this Bind;
-	 *  · opts    the options given;
-
-	 *  · data    the data returned from the server.
-	 *    (XML Document in the most cases.)
-	 *
-	 *  · action  Ext JS action;
-	 *  · form    Ext JS form.
+	 * Data is object returned from the server (XML
+	 * document for body-post response format.)
 	 */
-	success          : function(func)
+	success          : function(cb)
 	{
-		if(!ZeT.isf(func)) return this._on_success;
-		this._on_success = func;
-		return this;
+		if(!ZeT.isf(cb))
+			return this._on_success
+		this._on_success = cb
+		return this
 	},
 
-	failure          : function(func)
+	/**
+	 * Register the callback on failed form submit,
+	 * of the validation failure.
+	 */
+	failure          : function(cb)
 	{
-		if(!ZeT.isf(func)) return this._on_failure;
-		this._on_failure = func;
-		return this;
+		if(!ZeT.isf(cb))
+			return this._on_failure
+		this._on_failure = cb
+		return this
 	},
 
 	$form_co         : function()
@@ -1196,50 +1206,55 @@ extjsf.FormBind = ZeT.defineClass(
 		return true
 	},
 
-	_validate        : function(opts, form, action)
+	$eval_result     : function(opts, form, action)
 	{
-		if(!action.result) throw 'Ext JS submit action returns no response!';
+		var self = this, success = true, xml
 
-		var success = true;
+		//?: {action has no result}
+		ZeT.assertn(action.result, 'Submit of form [', this.name,
+		  '] returned no action result! Check:', action)
 
 		//~: display errors of the fields
-		if(ZeT.isa(action.result.errors) && action.result.errors.length)
+		ZeT.each(action.result.errors, function(er)
 		{
-			var ers = action.result.errors;
-			for(var i = 0;(i < ers.length);i++) if(!ZeTS.ises(ers[i].target))
-			{
-				var cmp = Ext.getCmp(ers[i].target);
+			if(ZeTS.ises(er.target)) return
 
-				if(!cmp)
-				{
-					var bind = extjsf.bind(ers[i].target, this.domain);
-					if(bind) cmp = bind.co();
-				}
+			//~: get the bind in this domain
+			var bn = extjsf.bind(er.target, self.domain)
+			var co = bn && bn.co()
 
-				if(cmp && cmp.isFormField)
-					cmp.markInvalid(ers[i].error)
-			}
+			//?: {not found, try else}
+			if(!co) co = Ext.getCmp(er.target)
 
-			success = false;
+			//?: {component is field}
+			if(co && (co.isFormField === true))
+				co.markInvalid(er.error)
+
+			success = false
+		})
+
+		//~: success status in the response attribute
+		if(xml = ZeT.get(form, 'errorReader', 'rawData')) try
+		{
+			var root   = ZeTX.node(xml, 'validation')
+			var status = root && ZeTX.attr(root, 'success')
+			if(status) success = ('true' === status)
 		}
-
-		//~: read success status from the attribute
-		var xml = form.errorReader && form.errorReader.rawData; if(xml)
+		catch(e)
 		{
-			var status = ZeTX.attr(ZeTX.node(xml, 'validation'), 'success');
-			if(status) success = ('true' === status);
+			success = false
 		}
 
 		if(success)
-			this._call_success(opts, xml, action, form)
+			this.$call_success(opts, xml, action, form)
 		else
-			this._call_failure(opts, xml, action, form)
+			this.$call_failure(opts, xml, action, form)
 	},
 
-	_call_success    : function(opts, xml)
+	$call_success    : function(opts, xml)
 	{
 		//~: evaluate the scripts
-		this._call_scripts(opts, xml)
+		this.$call_scripts(xml)
 
 		if(ZeT.isf(this._on_success))
 			this._on_success.apply(this, arguments)
@@ -1248,10 +1263,10 @@ extjsf.FormBind = ZeT.defineClass(
 			opts.success.apply(this, arguments)
 	},
 
-	_call_failure    : function(opts, xml)
+	$call_failure    : function(opts, xml)
 	{
 		//~: evaluate the scripts
-		this._call_scripts(opts, xml)
+		this.$call_scripts(xml)
 
 		if(ZeT.isf(this._on_failure))
 			this._on_failure.apply(this, arguments)
@@ -1260,17 +1275,30 @@ extjsf.FormBind = ZeT.defineClass(
 			opts.failure.apply(this, arguments)
 	},
 
-	_call_scripts    : function(opts, xml)
+	/**
+	 * Private. Takes all script tags in the XML
+	 * document and evaluates them.
+	 */
+	$call_scripts    : function(xml)
 	{
 		var scripts = ZeTX.nodes(xml, 'script')
-		if(scripts) for(var i = 0;(i < scripts.length);i++) try
+		if(!scripts || !scripts.length) return
+
+		var self = this
+		ZeT.each(scripts, function(script)
 		{
-			eval('(function() {'.concat(ZeTX.text(scripts[i]), '})()'))
-		}
-		catch(e)
-		{
-			ZeT.log(e)
-		}
+			try
+			{
+				ZeT.xeval(script)
+			}
+			catch(e)
+			{
+				ZeT.log('Error evaluating script after form [',
+				  self.name, '] submit: \n', script, '\n',  e)
+
+				throw e
+			}
+		})
 	}
 })
 
@@ -1692,7 +1720,7 @@ ZeT.extend(extjsf,
 
 	/**
 	 * Handles the results of POST calls resulting the
-	 * 'http://tverts.com/retrade/webapp/response' XMLs.
+	 * 'http://extjs.jsf.java.net/response' XMLs.
 	 *
 	 * Returns true when the validation is correct.
 	 */
