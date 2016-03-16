@@ -1,7 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 
-<xs:schema targetNamespace = "http://tverts.com/retrade/webapp/response"
-           xmlns:xs = "http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs = "http://www.w3.org/2001/XMLSchema"
+  targetNamespace = "http://tverts.com/retrade/webapp/response">
 
   <xs:element name = "response">
     <xs:complexType>
