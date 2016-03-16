@@ -1354,9 +1354,21 @@ extjsf.FieldBind = ZeT.defineClass(
 		this.props({ inputId: this.$node_id(),
 		  name: this.$field_name() })
 
-		ZeT.log(this.name, ' : ', ZeT.o2s(this.$raw()) )
-
 		return this
+	},
+
+	buildProps       : function()
+	{
+		var res = this.$applySuper(arguments)
+
+		//~: field value
+		if(ZeT.isu(res.value))
+		{
+			var f = Ext.get(this.$field_name())
+			if(f) res.value = f.getValue()
+		}
+
+		return res
 	},
 
 	$field_name      : function()
@@ -2115,11 +2127,11 @@ extjsf.Bind.extend(
 	buildProps       : function()
 	{
 		var res  = this.$raw()
-		var node = this.$node_id() && Ext.get(this.$node_id())
 		var self = this
 
 		//~: get value from the DOM node
-		if(!res.value && node)
+		var node = this.$node_id() && Ext.get(this.$node_id())
+		if(!res.value && node) //!: deprecated
 		{
 			var value = node.getAttribute('value');
 			if(value && value.length)
