@@ -274,20 +274,16 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	},
 
 	/**
-	 * Tells JSF component ID and optional ExtJSF
-	 * component ID that by default is the bind name.
+	 * Tells JSF (facelet) component id and assigns
+	 * the id and Bind name related attributes.
 	 */
-	ids              : function(clientId, coid)
+	ids              : function(clientId)
 	{
 		//~: JSF component id
 		this._client_id = ZeT.asserts(clientId)
 
-		//~: unique ExtJSF component id
-		this.coid = !ZeT.ises(coid)?(coid):
-		  ZeT.asserts(this.name)
-
 		//~: Ext JS component id
-		this.props({ id: this.coid })
+		this.props({ id: this.name })
 
 		return this
 	},
@@ -760,7 +756,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		//?: {form from the client id}
 		if(!ZeT.ises(this._client_id))
 			nid = ZeTS.cat(this._client_id, '-',
-			  ZeT.asserts(this.coid))
+			  ZeT.asserts(this.name))
 
 		if(ZeT.iss(suffix) && nid)
 			nid = ZeTS.cat(nid, '-', suffix)
@@ -835,12 +831,8 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		extjsf.domain(this.domain).
 		  bind(ZeTS.cat(this.name, '-', name), bind)
 
-		//~: component id
-		var coid = ZeT.ises(this.coid)?(bind.name):
-		  ZeTS.cat(this.coid, '-', name)
-
 		//~: same client id, component id
-		bind.ids(this._client_id, coid)
+		bind.ids(this._client_id)
 
 		//~: parent bind
 		bind.parent(this._parent_coid, this._target_coid)
@@ -1347,6 +1339,33 @@ Ext.define('extjsf.model.FormValidation',
 })
 
 
+// +----: Field Bind :------------------------------------------+
+
+extjsf.FieldBind = ZeT.defineClass(
+  'extjsf.FieldBind', extjsf.Bind,
+{
+	className        : 'extjsf.FieldBind',
+
+	ids              : function()
+	{
+		this.$applySuper(arguments)
+
+		//~: JSF field related properties
+		this.props({ inputId: this.$node_id(),
+		  name: this.$field_name() })
+
+		ZeT.log(this.name, ' : ', ZeT.o2s(this.$raw()) )
+
+		return this
+	},
+
+	$field_name      : function()
+	{
+		return this.$node_id('field')
+	}
+})
+
+
 // +----: Load Action Bind :------------------------------------+
 
 extjsf.LoadActionBind = ZeT.defineClass(
@@ -1424,8 +1443,8 @@ extjsf.StoreBind = ZeT.defineClass(
 		//?: {component is destroyed}
 		if(co && (de === true))
 			//?: {store is still registered}
-			if(co == Ext.data.StoreManager.lookup(this.coid))
-				Ext.data.StoreManager.unregister(this.coid)
+			if(co == Ext.data.StoreManager.lookup(this.name))
+				Ext.data.StoreManager.unregister(this.name)
 
 		return de
 	},

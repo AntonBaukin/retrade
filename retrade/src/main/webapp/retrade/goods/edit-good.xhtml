@@ -823,12 +823,11 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-  ZeT.scope(function()
+  extjsf.bind("${z:vid(v, 'good-form')}", '${extDom}').when(function(form)
   {
     var isReadMode, checkGoodUsed
 
     var status  = extjsf.bind("${z:vid(v, 'root-panel-status')}", '${extDom}')
-    var form    = extjsf.bind("${z:vid(v, 'good-form')}", '${extDom}')
     var atsext  = extjsf.bind("${z:vid(v, 'good-attrs-ext')}", '${extDom}')
     var atsbtn  = extjsf.bind("${z:vid(v, 'show-attrs')}", '${extDom}')
     var submit  = extjsf.bind("${z:vid(v, 'submit')}", '${extDom}')
