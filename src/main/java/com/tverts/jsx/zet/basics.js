@@ -259,8 +259,8 @@ ZeT.extend(ZeT,
 	 */
 	xeval            : function(script)
 	{
-		ZeT.asserts(script)
-		return eval('((function(){'.concat(script, '})())'))
+		return ZeT.ises(script)?(undefined):
+		  eval('((function(){'.concat(script, '})());'))
 	},
 
 	/**
