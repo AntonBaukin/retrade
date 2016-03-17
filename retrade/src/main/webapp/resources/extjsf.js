@@ -1471,9 +1471,8 @@ extjsf.FieldBind = ZeT.defineClass(
 				self.co().focus()
 		})
 
-		//~: mouse entered (set cursor)
-		var cursor; this.label.co().getEl().
-		  addListener('mouseenter', function(e)
+		//~: label cursor
+		var cursor; function setCursor()
 		{
 			var el = self.label.co().getEl()
 
@@ -1484,7 +1483,14 @@ extjsf.FieldBind = ZeT.defineClass(
 			}
 			else if(cursor)
 				el.setStyle('cursor', cursor)
-		})
+		}
+
+		//~: set cursor now
+		setCursor()
+
+		//~: mouse entered (set cursor)
+		this.label.co().getEl().
+		  addListener('mouseenter', setCursor)
 	},
 
 	$field_name      : function()
