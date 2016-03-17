@@ -291,14 +291,14 @@
   })
 
   //~: expand the tree
-  extjsf.bindHandler("${z:vid(v, 'expand-tree')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'expand-tree')}", '${extDom}', function()
   {
     var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}')
     tree.getRootNode().expandChildren(true)
   })
 
   //~: expand the tree to the selection
-  extjsf.bindHandler("${z:vid(v, 'collapse-tree')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'collapse-tree')}", '${extDom}', function()
   {
     extjsf.support.collapseTreeToSel("${z:vid(v, 'tree')}", '${extDom}')
   })
@@ -318,7 +318,7 @@
   //<![CDATA[
 
   //~: add to the tree
-  extjsf.bindHandler("${z:vid(v, 'tree-add')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'tree-add')}", '${extDom}', function()
   {
     var store = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
     var tree  = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
@@ -343,7 +343,7 @@
   })
 
   //~: commit the tree
-  extjsf.bindHandler("${z:vid(v, 'tree-commit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'tree-commit')}", '${extDom}', function()
   {
     //~: store with tree flat data
     var store   = extjsf.co("${z:vid(v, 'goodsTreeData')}", '${extDom}');
@@ -402,7 +402,7 @@
     var sel  = tree.getSelectionModel().getSelection(); sel = sel.length && sel[0];
 
     //!: send to the server
-    extjsf.bindHandler("${z:vid(v, 'tree-commit-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'tree-commit-script')}", '${extDom}')({
       params: params, success: function()
       {
         store.retradeLastSelection = sel && sel.get('code');
@@ -438,7 +438,7 @@
   }
 
   //~: tree cut button
-  extjsf.bindHandler("${z:vid(v, 'tree-cut')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'tree-cut')}", '${extDom}', function()
   {
     var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
 
@@ -466,7 +466,7 @@
   })
 
   //~: tree cut cancel button
-  extjsf.bindHandler("${z:vid(v, 'tree-cut-cancel')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'tree-cut-cancel')}", '${extDom}', function()
   {
     var ctl = extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}');
 
@@ -527,14 +527,14 @@
   }
 
   //~: tree paste down button
-  extjsf.bindHandler("${z:vid(v, 'tree-paste-child')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'tree-paste-child')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').
       retradePasteNode('child')
   })
 
   //~: tree paste before button
-  extjsf.bindHandler("${z:vid(v, 'tree-paste-prev')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'tree-paste-prev')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'tree-cut')}", '${extDom}').
       retradePasteNode('prev')
@@ -838,7 +838,7 @@
     })
   }
 
-  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
+  extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
   {
     extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
       retradeOpenGoodWindow(null, event)
@@ -864,7 +864,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
+  extjsf.handler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
   {
     var dk  = "${z:vid(v, 'add-goods-table')}:"
     var ps  = { disableSelSet: true }
@@ -975,7 +975,7 @@
         var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
         }})
@@ -993,7 +993,7 @@
         var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
         }})
@@ -1101,7 +1101,7 @@
 
 
     //!: run change action
-    extjsf.bindHandler("${z:vid(v, 'set-current-folder-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'set-current-folder-script')}", '${extDom}')({
       params: { currentFolder: fid, withSubFolders: subf.getValue() }, success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
@@ -1205,7 +1205,7 @@
     if(copy) params.copyGoods = true;
 
     //!: invoke the action
-    extjsf.bindHandler("${z:vid(v, 'tree-move-goods-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'tree-move-goods-script')}", '${extDom}')({
       params: params, success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").loadPage(1)
@@ -1220,14 +1220,14 @@
   }
 
   //~: add selected goods handler
-  extjsf.bindHandler("${z:vid(v, 'tree-add-goods')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'tree-add-goods')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').
      retradeMoveSelectedGoods(true)
   })
 
   //~: move selected goods handler
-  extjsf.bindHandler("${z:vid(v, 'tree-move-goods')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'tree-move-goods')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'tree-add-goods')}", '${extDom}').
      retradeMoveSelectedGoods(false)

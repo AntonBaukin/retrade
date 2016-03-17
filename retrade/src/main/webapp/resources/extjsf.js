@@ -1686,45 +1686,61 @@ ZeT.extend(extjsf,
 	},
 
 	/**
-	 * Assigns handler function of a bind, or component.
-	 * Supported arguments are (check extjsf.asbind()):
+	 * Assigns handler function of a Bind and
+	 * the component bound. The arguments one
+	 * of two variants:
 	 *
-	 *  · name, domain, handler
+	 *  · name, domain, [ handler ];
 	 *
-	 *  · bind or component, handler
+	 *  · bind or component, [ handler ].
 	 *
+	 * If handler function is not given, returns
+	 * the function assigned to bind-component.
 	 */
-	bindHandler      : function()
+	handler          : function()
 	{
-		var bind    = extjsf.asbind.apply(ZeT, arguments)
-		var comp    = bind && bind.co()
-		var handler = ZeT.isf(arguments[2])?(arguments[2]):
+		//~: search for the bind
+		var b = extjsf.asbind.apply(ZeT, arguments)
+		if(!b) return undefined
+
+		//~: handler
+		var h = ZeT.isf(arguments[2])?(arguments[2]):
 		  ZeT.isf(arguments[1])?(arguments[1]):(null)
 
-		if(bind && ZeT.isf(handler))
+		//?: {assign the handler}
+		if(b && ZeT.isf(h))
 		{
-			bind.handler = ZeT.fbind(handler, bind)
+			b.handler = ZeT.fbind(h, b)
 
-			if(comp && ZeT.isf(comp.setHandler))
-				comp.setHandler(bind.handler)
+			if(b.co() && ZeT.isf(b.co().setHandler))
+				b.co().setHandler(b.handler)
 
 			return this
 		}
 
-		return bind && bind.handler
+		if(ZeT.isf(b.handler))
+			return b.handler
+
+		//?: {handler in the component}
+		if(b.co() && ZeT.isf(b.co().handler))
+			return b.handler = b.co().handler
 	},
 
-	xbindHandler     : function()
+	/**
+	 * Same as handler(), but returns Ext.emptyFn
+	 * function if component has it not assigned.
+	 */
+	xhandler         : function()
 	{
-		var h = extjsf.bindHandler.apply(extjsf, arguments)
-		return h || Ext.emptyFn
+		return extjsf.handler.
+		  apply(extjsf, arguments) || Ext.emptyFn
 	},
 
 	handlerCaller    : function(name, domain)
 	{
 		return function()
 		{
-			var f = extjsf.bindHandler(name, domain);
+			var f = extjsf.handler(name, domain);
 			if(ZeT.isf(f)) f.apply(this, arguments)
 		}
 	},

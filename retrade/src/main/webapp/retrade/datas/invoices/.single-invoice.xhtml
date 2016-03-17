@@ -122,7 +122,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     //~: current selection
     var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
@@ -137,7 +137,7 @@ ${v.checkModelRequestedWithRedirect}
     }
 
    //~: invoke the action
-   extjsf.xbindHandler("${z:vid(v, 'submit-script')}", '${extDom}')({
+   extjsf.xhandler("${z:vid(v, 'submit-script')}", '${extDom}')({
      params: { selectedInvoice : s.getId() }, success: function()
      {
        extjsf.co('winmain', '${extDom}').close()

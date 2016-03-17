@@ -109,7 +109,7 @@
       <f:facet name = "extjs-props">
 
         listeners : { change: { delay: 1000, fn: function() {
-          extjsf.bindHandler("${z:vid(e, 'date')}", '${extDom}')()
+          extjsf.handler("${z:vid(e, 'date')}", '${extDom}')()
         }}}
       </f:facet>
 
@@ -128,7 +128,7 @@
       <f:facet name = "extjs-props">
 
         listeners : { change: { delay: 1000, fn: function() {
-          extjsf.bindHandler("${z:vid(e, 'date')}", '${extDom}')()
+          extjsf.handler("${z:vid(e, 'date')}", '${extDom}')()
         }}}
       </f:facet>
 
@@ -149,18 +149,18 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(e, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(e, 'submit')}", '${extDom}', function()
   {
     var form = extjsf.bind("${z:vid(e, 'invoice-date-form')}", '${extDom}');
 
     //~: set go-back handler on success
-    form.success(extjsf.bindHandler("${z:vid(e, 'cancel-edit')}", '${extDom}'))
+    form.success(extjsf.handler("${z:vid(e, 'cancel-edit')}", '${extDom}'))
 
     //!: submit
     form.submit({ command: 'submit_action' })
   })
 
-  extjsf.bindHandler("${z:vid(e, 'date')}", '${extDom}', function()
+  extjsf.handler("${z:vid(e, 'date')}", '${extDom}', function()
   {
     var form = extjsf.bind("${z:vid(e, 'invoice-date-form')}", '${extDom}');
 

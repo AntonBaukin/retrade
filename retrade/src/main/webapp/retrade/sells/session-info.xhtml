@@ -194,7 +194,7 @@ ${v.forceSecureModelEntity('view')}
   //~: go to edit measure on double click row
   extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('itemdblclick', function(grid, rec)
   {
-    extjsf.bindHandler("${z:vid(v, 'view-receipt')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'view-receipt')}", '${extDom}')({
       params: { entity: rec.getId() }
     })
   })

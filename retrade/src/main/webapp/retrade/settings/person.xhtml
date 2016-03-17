@@ -176,7 +176,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'gender_male')}", '${extDom}', function(f, v)
+  extjsf.handler("${z:vid(v, 'gender_male')}", '${extDom}', function(f, v)
   {
     var other  = extjsf.co("${z:vid(v, 'gender_female')}", '${extDom}');
     var ismale = extjsf.co("${z:vid(v, 'ismale')}", '${extDom}');
@@ -190,7 +190,7 @@ ${v.checkModelRequestedWithRedirect}
     if(!v && !other.getValue()) ismale.setValue('')
   })
 
-  extjsf.bindHandler("${z:vid(v, 'gender_female')}", '${extDom}', function(f, v)
+  extjsf.handler("${z:vid(v, 'gender_female')}", '${extDom}', function(f, v)
   {
     var other  = extjsf.co("${z:vid(v, 'gender_male')}", '${extDom}');
     var ismale = extjsf.co("${z:vid(v, 'ismale')}", '${extDom}');
@@ -266,7 +266,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
      extjsf.bind("${z:vid(v, 'form')}", '${extDom}').submit({
        command: 'submit_action', success: function()
@@ -293,9 +293,9 @@ ${v.checkModelRequestedWithRedirect}
        extjsf.bind("${z:vid(v, 'XYZ')}".replace('XYZ', id), '${extDom}').on('specialkey', function(f, e)
        {
          if(e.getKey() == e.ENTER)
-           extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}')()
+           extjsf.handler("${z:vid(v, 'submit')}", '${extDom}')()
          else if(e.getKey() == e.ESC)
-           extjsf.bindHandler("${z:vid(v, 'close_window')}", '${extDom}')()
+           extjsf.handler("${z:vid(v, 'close_window')}", '${extDom}')()
        })
     })
 

@@ -196,7 +196,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-ables-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-ables-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-ables-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'ablesStore')}").load()
         }})
@@ -212,7 +212,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-ables-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-ables-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-ables-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'ablesStore')}").load()
         }})
@@ -313,9 +313,9 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: grant secure sets and rules of current selection set
-  extjsf.bindHandler("${z:vid(v, 'secure-set-able-sets-and-rules')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'secure-set-able-sets-and-rules')}", '${extDom}', function()
   {
-     extjsf.bindHandler("${z:vid(v, 'secure-set-able-sets-and-rules-script')}", '${extDom}')({
+     extjsf.handler("${z:vid(v, 'secure-set-able-sets-and-rules-script')}", '${extDom}')({
        params: { selset: ReTrade.selset.selset }, success: function()
        {
           ReTrade.desktop.event("Пользователю ${z:jss(v.loginTitle)} были успешно назначены правила и множества текущей выборки.")
@@ -325,14 +325,14 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: revoke the ables selected in the grid
-  extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-from-table')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'secure-set-revoke-ables-from-table')}", '${extDom}', function()
   {
     var m = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').getSelectionModel().getSelection();
 
     if(!m || !m.length) return; else m = ZeT.a(m);
     for(var i = 0;(i < m.length);i++) m[i] = m[i].getId();
 
-    extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-from-table-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'secure-set-revoke-ables-from-table-script')}", '${extDom}')({
       params: { secAbles: m } , success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'ablesStore')}").load()
@@ -341,9 +341,9 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: revoke the ables of the default set
-  extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-of-rules')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'secure-set-revoke-ables-of-rules')}", '${extDom}', function()
   {
-     extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-of-rules-script')}", '${extDom}')({
+     extjsf.handler("${z:vid(v, 'secure-set-revoke-ables-of-rules-script')}", '${extDom}')({
        params: { selset: ReTrade.selset.selset }, success: function()
        {
           ReTrade.desktop.event(ZeTS.cat(
@@ -357,9 +357,9 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: revoke the ables of all the sets
-  extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-of-rules-anywhere')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'secure-set-revoke-ables-of-rules-anywhere')}", '${extDom}', function()
   {
-     extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-of-rules-anywhere-script')}", '${extDom}')({
+     extjsf.handler("${z:vid(v, 'secure-set-revoke-ables-of-rules-anywhere-script')}", '${extDom}')({
        params: { selset: ReTrade.selset.selset }, success: function()
        {
           ReTrade.desktop.event(ZeTS.cat(
@@ -373,9 +373,9 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: revoke the ables of the selected sets
-  extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-of-sets')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'secure-set-revoke-ables-of-sets')}", '${extDom}', function()
   {
-     extjsf.bindHandler("${z:vid(v, 'secure-set-revoke-ables-of-sets-script')}", '${extDom}')({
+     extjsf.handler("${z:vid(v, 'secure-set-revoke-ables-of-sets-script')}", '${extDom}')({
        params: { selset: ReTrade.selset.selset }, success: function()
        {
           ReTrade.desktop.event(ZeTS.cat(

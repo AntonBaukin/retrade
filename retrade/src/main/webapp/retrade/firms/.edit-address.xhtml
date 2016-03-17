@@ -141,7 +141,7 @@
 
 
    //~: clear all the fields
-   extjsf.bindHandler("${z:vid(localView, 'address-display-button-clear')}-${name}", '${extDom}', function()
+   extjsf.handler("${z:vid(localView, 'address-display-button-clear')}-${name}", '${extDom}', function()
    {
      extjsf.bind("${z:vid(localView, 'address-index')}-${name}", '${extDom}').value('')
      extjsf.bind("${z:vid(localView, 'address-country')}-${name}", '${extDom}').value('')
@@ -161,7 +161,7 @@
 
 
    //~: select the displayed address
-   extjsf.bindHandler("${z:vid(localView, 'address-display-button-copy')}-${name}", '${extDom}', function()
+   extjsf.handler("${z:vid(localView, 'address-display-button-copy')}-${name}", '${extDom}', function()
    {
      var f = extjsf.co("${z:vid(localView, 'address-display-text')}-${name}", '${extDom}')
      if(ZeTS.ises(f.getValue())) return

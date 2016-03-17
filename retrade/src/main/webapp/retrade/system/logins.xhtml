@@ -73,7 +73,7 @@
         //?: {search string was changed} discard
         if(f.extjsfBind.searchValue != sv) return;
 
-        extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
           params: {searchLogins: sv}, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").loadPage(1)
         }})

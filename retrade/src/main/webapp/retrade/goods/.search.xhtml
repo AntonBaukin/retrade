@@ -422,7 +422,7 @@
           params.selset = ReTrade.selset.selset
 
         //~: issue the request
-        extjsf.bindHandler(script)({
+        extjsf.handler(script)({
           params: params, success : function(){ store().loadPage(1) }
         })
       })
@@ -439,7 +439,7 @@
         params.selset = ReTrade.selset.selset
 
       //~: issue the request
-      extjsf.bindHandler(script)({
+      extjsf.handler(script)({
         params: params, success : function(){ store().loadPage(1) }
       })
     })
@@ -616,7 +616,7 @@
     })
 
     //~: add the filter
-    extjsf.bindHandler(add, function()
+    extjsf.handler(add, function()
     {
       if(ZeTS.ises(attrt.value()))
         return ReTrade.desktop.error('Выберете атрибут товара!')

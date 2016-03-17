@@ -114,7 +114,7 @@ ${v.checkModelRequestedWithRedirect}
   {
     if('false' == "${rootView.isSecure('edit: stores')}") return;
 
-    extjsf.bindHandler("${z:vid(v, 'edit-store')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'edit-store')}", '${extDom}')({
       params: { entity: rec.getId() }
     })
   })

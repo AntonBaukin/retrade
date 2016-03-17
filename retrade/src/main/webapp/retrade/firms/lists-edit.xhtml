@@ -78,7 +78,7 @@ ${v.checkModelRequestedWithRedirect}
     //<![CDATA[
 
     //~: submit the association
-    extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
     {
       //~: collect the contractors
       var cst = extjsf.co("${z:vid(v, 'contractors')}", '${extDom}');
@@ -91,7 +91,7 @@ ${v.checkModelRequestedWithRedirect}
       if(!ps.length) return ReTrade.desktop.error('Добавьте хотя бы один прайс-лист!')
 
       //~: submit the form
-      extjsf.bindHandler("${z:vid(v, 'submit-script')}", '${extDom}')({
+      extjsf.handler("${z:vid(v, 'submit-script')}", '${extDom}')({
           params: { contractors: cs, priceLists: ps }, success: function()
       {
         extjsf.bind('winmain', '${extDom}').retradeEditDone = true;
@@ -224,7 +224,7 @@ ${v.checkModelRequestedWithRedirect}
       //<![CDATA[
 
       //~: delete the selected contractors button
-      extjsf.bindHandler("${z:vid(v, 'delete-firms')}", '${extDom}', function()
+      extjsf.handler("${z:vid(v, 'delete-firms')}", '${extDom}', function()
       {
         var g = extjsf.co("${z:vid(v, 'cgrid')}", '${extDom}');
 
@@ -236,7 +236,7 @@ ${v.checkModelRequestedWithRedirect}
         var ids = Ext.Array.map(s, function(i) { return i.getId() })
 
         //~: remove the items on the server side
-        extjsf.bindHandler("${z:vid(v, 'delete-firms-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'delete-firms-script')}", '${extDom}')({
           params: { contractors: ids }})
 
         //~: remove from the store
@@ -244,9 +244,9 @@ ${v.checkModelRequestedWithRedirect}
       })
 
       //~: delete the selected contractors button
-      extjsf.bindHandler("${z:vid(v, 'add-firms')}", '${extDom}', function()
+      extjsf.handler("${z:vid(v, 'add-firms')}", '${extDom}', function()
       {
-        extjsf.bindHandler("${z:vid(v, 'add-firms-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'add-firms-script')}", '${extDom}')({
           params: { selset: ReTrade.selset.selset }, success: function()
         {
           extjsf.co("${z:vid(v, 'contractors')}", '${extDom}').reload()
@@ -260,7 +260,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           //?: {delete | backspace}
           if((e.getKey() == e.DELETE) || (e.getKey() == e.BACKSPACE))
-            extjsf.bindHandler("${z:vid(v, 'delete-firms')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'delete-firms')}", '${extDom}')()
         })
       })
 
@@ -398,7 +398,7 @@ ${v.checkModelRequestedWithRedirect}
       //<![CDATA[
 
       //~: delete the selected price lists button
-      extjsf.bindHandler("${z:vid(v, 'delete-lists')}", '${extDom}', function()
+      extjsf.handler("${z:vid(v, 'delete-lists')}", '${extDom}', function()
       {
         var g = extjsf.co("${z:vid(v, 'plgrid')}", '${extDom}');
 
@@ -413,7 +413,7 @@ ${v.checkModelRequestedWithRedirect}
         var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
 
         //~: assign the items on the server side
-        extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
           params: { priceLists: ids }, success: function()
           {
             extjsf.co("${z:vid(v, 'goods')}", '${extDom}').reload()
@@ -421,9 +421,9 @@ ${v.checkModelRequestedWithRedirect}
       })
 
       //~: delete the selected price lists button
-      extjsf.bindHandler("${z:vid(v, 'add-lists')}", '${extDom}', function()
+      extjsf.handler("${z:vid(v, 'add-lists')}", '${extDom}', function()
       {
-        extjsf.bindHandler("${z:vid(v, 'add-lists-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'add-lists-script')}", '${extDom}')({
           params: { selset: ReTrade.selset.selset }, success: function()
         {
           extjsf.co("${z:vid(v, 'priceLists')}", '${extDom}').reload()
@@ -432,7 +432,7 @@ ${v.checkModelRequestedWithRedirect}
       })
 
       //~: move price-lists up
-      extjsf.bindHandler("${z:vid(v, 'lists-up')}", '${extDom}', function()
+      extjsf.handler("${z:vid(v, 'lists-up')}", '${extDom}', function()
       {
         extjsf.support.moveGridSelected(true,
           extjsf.co("${z:vid(v, 'plgrid')}", '${extDom}'),
@@ -442,7 +442,7 @@ ${v.checkModelRequestedWithRedirect}
           var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
 
           //~: post to the server
-          extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
+          extjsf.handler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
             params: { priceLists: ids }, success : function()
           {
             extjsf.co("${z:vid(v, 'goods')}", '${extDom}').reload()
@@ -451,7 +451,7 @@ ${v.checkModelRequestedWithRedirect}
       })
 
       //~: move price-lists down
-      extjsf.bindHandler("${z:vid(v, 'lists-down')}", '${extDom}', function()
+      extjsf.handler("${z:vid(v, 'lists-down')}", '${extDom}', function()
       {
         extjsf.support.moveGridSelected(false,
           extjsf.co("${z:vid(v, 'plgrid')}", '${extDom}'),
@@ -461,7 +461,7 @@ ${v.checkModelRequestedWithRedirect}
           var ids = []; g.getStore().each(function(i) { ids.push(i.getId()) })
 
           //~: post to the server
-          extjsf.bindHandler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
+          extjsf.handler("${z:vid(v, 'assign-lists-script')}", '${extDom}')({
             params: { priceLists: ids }, success : function()
           {
             extjsf.co("${z:vid(v, 'goods')}", '${extDom}').reload()
@@ -476,7 +476,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           //?: {delete | backspace}
           if((e.getKey() == e.DELETE) || (e.getKey() == e.BACKSPACE))
-            extjsf.bindHandler("${z:vid(v, 'delete-lists')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'delete-lists')}", '${extDom}')()
         })
       })
 
@@ -582,7 +582,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function()
         {
             extjsf.co("${z:vid(v, 'goods')}", '${extDom}').loadPage(1)
@@ -601,7 +601,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function()
         {
           extjsf.co("${z:vid(v, 'goods')}", '${extDom}').loadPage(1)

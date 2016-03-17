@@ -370,7 +370,7 @@ ${v.checkEntityRequested}
   }                               
                                                    
   //~: table by months
-  extjsf.bindHandler("${z:vid(v, 'display-aggregations-table-montly')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'display-aggregations-table-montly')}", '${extDom}', function()
   {
      extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${extDom}').hideAllDisplays()
 
@@ -379,7 +379,7 @@ ${v.checkEntityRequested}
   })
 
   //~: chart by months
-  extjsf.bindHandler("${z:vid(v, 'display-aggregations-chart-montly')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'display-aggregations-chart-montly')}", '${extDom}', function()
   {
      extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${extDom}').hideAllDisplays()
 
@@ -388,7 +388,7 @@ ${v.checkEntityRequested}
   })
 
   //~: table by weeks
-  extjsf.bindHandler("${z:vid(v, 'display-aggregations-table-weekly')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'display-aggregations-table-weekly')}", '${extDom}', function()
   {
      extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${extDom}').hideAllDisplays()
 
@@ -397,7 +397,7 @@ ${v.checkEntityRequested}
   })
 
   //~: chart by weeks
-  extjsf.bindHandler("${z:vid(v, 'display-aggregations-chart-weekly')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'display-aggregations-chart-weekly')}", '${extDom}', function()
   {
      extjsf.bind("${z:vid(v, 'display-aggregations-table-montly')}", '${extDom}').hideAllDisplays()
 

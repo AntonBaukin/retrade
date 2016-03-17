@@ -225,7 +225,7 @@
     <script type = "text/javascript">
       //<![CDATA[
 
-      extjsf.bindHandler("${z:vid(localView, 'docs-filter-refresh')}", '${extDom}', function()
+      extjsf.handler("${z:vid(localView, 'docs-filter-refresh')}", '${extDom}', function()
       {
         //~: document types encoded
         var doctstr = extjsf.bind("${z:vid(localView, 'filter-form-doc-types-str')}", '${extDom}');

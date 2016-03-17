@@ -344,7 +344,7 @@ ${v.checkModelRequestedWithRedirect}
       //?: {not changed} not post
       if(v == co.retradeInitialValue) return;
 
-      extjsf.bindHandler("${z:vid(v, 'calc-comment-script')}", '${extDom}')({
+      extjsf.handler("${z:vid(v, 'calc-comment-script')}", '${extDom}')({
         params: { remarks: v }
       })
     }

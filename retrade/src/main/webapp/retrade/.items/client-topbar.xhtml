@@ -175,7 +175,7 @@
 
 
   //~: open goods prices root panel
-  extjsf.bindHandler("${z:vid(localView, 'retrade-goods-prices')}",
+  extjsf.handler("${z:vid(localView, 'retrade-goods-prices')}",
     '${extDom}', function()
   {
     var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-prices:');
@@ -188,7 +188,7 @@
 
 
   //~: open shared goods tree (for read-only)
-  extjsf.bindHandler("${z:vid(localView, 'retrade-goods-tree')}",
+  extjsf.handler("${z:vid(localView, 'retrade-goods-tree')}",
     '${extDom}', function()
   {
     var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-tree:');
@@ -201,7 +201,7 @@
 
 
   //~: open goods tree own (for editing)
-  extjsf.bindHandler("${z:vid(localView, 'retrade-goods-tree-own')}",
+  extjsf.handler("${z:vid(localView, 'retrade-goods-tree-own')}",
     '${extDom}', function()
   {
     var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-tree-own:');

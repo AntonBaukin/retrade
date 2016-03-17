@@ -134,10 +134,10 @@
       "${z:vid(localView, 'main_topbar_ext')}", '${extDom}')
 
     //~: logoff
-    extjsf.bindHandler("${z:vid(localView, 'system-main-menu-logoff-confirm')}",
+    extjsf.handler("${z:vid(localView, 'system-main-menu-logoff-confirm')}",
       '${extDom}', function()
     {
-      extjsf.bindHandler("${z:vid(localView, 'system-main-menu-logoff-confirm-script')}", '${extDom}')({
+      extjsf.handler("${z:vid(localView, 'system-main-menu-logoff-confirm-script')}", '${extDom}')({
         success: ZeT.timeout(500, function()
         {
           window.location.replace("${z:url('/go/index')}")
@@ -146,7 +146,7 @@
     })
 
     //~: open domains root panel
-    extjsf.bindHandler("${z:vid(localView, 'system-main-menu-domains')}",
+    extjsf.handler("${z:vid(localView, 'system-main-menu-domains')}",
       '${extDom}', function()
     {
       var domain = extjsf.tempDomain('desktop-content:system-main-menu:domains:');

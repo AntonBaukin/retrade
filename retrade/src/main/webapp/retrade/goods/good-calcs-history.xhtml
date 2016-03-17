@@ -127,7 +127,7 @@ ${v.checkModelRequested}
   extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec)
   {
-    extjsf.bindHandler("${z:vid(v, 'goto-history-calc')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'goto-history-calc')}", '${extDom}')({
       params: { entity: rec.getId() }
     })
   })

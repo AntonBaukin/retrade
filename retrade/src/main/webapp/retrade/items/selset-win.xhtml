@@ -126,7 +126,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-cancel')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'winmain-selset-edit-cancel')}", '${extDom}', function()
     {
        var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
        var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}');
@@ -135,7 +135,7 @@ ${v.checkModelRequestedWithRedirect}
        grid.co().show()
     })
 
-    extjsf.bindHandler("${z:vid(v, 'winmain-selset-edit-submit')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'winmain-selset-edit-submit')}", '${extDom}', function()
     {
        var form = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
        var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
@@ -183,7 +183,7 @@ ${v.checkModelRequestedWithRedirect}
           handler: function(grid, row)
           {
              var rec = grid.getStore().getAt(row);
-             extjsf.bindHandler("${z:vid(v, 'script_selset_del_item')}", '${extDom}')({
+             extjsf.handler("${z:vid(v, 'script_selset_del_item')}", '${extDom}')({
               params: { entity: rec.getId() }, success: function()
               {
                 Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").load()

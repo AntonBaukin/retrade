@@ -203,7 +203,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
   {
     if(fb.retradeCodeCheck != v) return;
 
-    extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+    extjsf.xhandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
       params: { code : fb.retradeCodeCheck }, failure: function()
       {
         fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -596,7 +596,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
 
 
   //~: do-edit button
-  extjsf.bindHandler("${z:vid(v, 'do-edit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'do-edit')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
       retradeToggleReadWrite(false)
@@ -604,7 +604,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
 
 
   //~: submit form with command button
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     var winmain = extjsf.bind('winmain', '${extDom}')
     winmain.retradeEditSuccess = false
@@ -613,7 +613,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
       command: 'submit', success: function()
     {
       winmain.retradeEditSuccess = true
-      extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
+      extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
     }})
   })
 

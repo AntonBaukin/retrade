@@ -103,7 +103,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
         }})
@@ -121,7 +121,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
              Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
         }})
@@ -166,7 +166,7 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: create contractor view on click
-  extjsf.bindHandler("${z:vid(v, 'add-firm')}", '${extDom}', function(btn, e)
+  extjsf.handler("${z:vid(v, 'add-firm')}", '${extDom}', function(btn, e)
   {
     retrade_open_window({ url: '/firms/info-edit',
 

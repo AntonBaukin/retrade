@@ -61,8 +61,8 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-    if('false' == "#{v.create}") extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}',
-      extjsf.bindHandler("${z:vid(v, 'cancel-edit-script')}", '${extDom}')
+    if('false' == "#{v.create}") extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}',
+      extjsf.handler("${z:vid(v, 'cancel-edit-script')}", '${extDom}')
     )
 
     //]]>
@@ -510,7 +510,7 @@ ${v.checkModelRequestedWithRedirect}
         cellkeydown: function(grid, td, cellIdx, m, tr, rowIdx, e)
         {
           if(e.getKey() == e.INSERT)
-            extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}')()
 
           if(e.getKey() == e.ENTER)
           {
@@ -546,7 +546,7 @@ ${v.checkModelRequestedWithRedirect}
           if(e.getKey() == e.INSERT)
           {
             commitEdit()
-            extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}')()
           }
 
           if(e.getKey() == e.TAB)
@@ -762,7 +762,7 @@ ${v.checkModelRequestedWithRedirect}
      {
        if(fb.retradeCodeCheck != v) return;
 
-       extjsf.bindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+       extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
           params: { code : fb.retradeCodeCheck }, failure: function()
           {
             fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -777,7 +777,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'goods-info-script')}", '${extDom}').retradeRequestGoodsInfo =
     function(goodCodes, priceList)
   {
-     extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${extDom}')({
+     extjsf.handler("${z:vid(v, 'goods-info-script')}", '${extDom}')({
        params: { goodCode : goodCodes, priceList: priceList }
      })
   }
@@ -976,7 +976,7 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: remove selected goods
-  extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'delete-goods')}", '${extDom}', function()
   {
     var s = extjsf.co("${z:vid(v, 'store')}", '${extDom}')
     var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
@@ -992,7 +992,7 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: add good line
-  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function()
   {
     var s = extjsf.co("${z:vid(v, 'store')}", '${extDom}')
     var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}'); if(!g) return
@@ -1019,9 +1019,9 @@ ${v.checkModelRequestedWithRedirect}
   })
 
   //~: insert goods from the selection set
-  extjsf.bindHandler("${z:vid(v, 'add-goods-selset')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'add-goods-selset')}", '${extDom}', function()
   {
-    extjsf.bindHandler("${z:vid(v, 'add-goods-selset-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'add-goods-selset-script')}", '${extDom}')({
       params: { selset: ReTrade.selset.selset,
         priceList: extjsf.bind("${z:vid(v, 'price-list')}", '${extDom}').value()
     }})
@@ -1049,13 +1049,13 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'store')}", '${extDom}').on('load', function(store)
   {
     if(store.count() == 0)
-      extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}')()
+      extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}')()
     else
       extjsf.bind("${z:vid(v, 'groups')}", '${extDom}').retradeUpdateStore()
   })
 
   //~: submit the form
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     var f = extjsf.bind("${z:vid(v, 'form')}", '${extDom}')
     var s = extjsf.co("${z:vid(v, 'store')}", '${extDom}')
@@ -1124,7 +1124,7 @@ ${v.checkModelRequestedWithRedirect}
     //!: submit the form
     f.submit({ command: "${z:vid(v, 'submit-action')}", params: params, success: function()
     {
-      extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
+      extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
     }})
   })
 

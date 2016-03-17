@@ -48,7 +48,7 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'add-user')}", '${extDom}', function(btn, event)
+  extjsf.handler("${z:vid(v, 'add-user')}", '${extDom}', function(btn, event)
   {
     var domain  = 'wnd:' + "${z:vid(v, 'add-user')}";
     var winmain = extjsf.bind('winmain', domain);
@@ -181,7 +181,7 @@
         var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").load()
         }})
@@ -196,7 +196,7 @@
         var selchk = extjsf.bind("${z:vid(v, 'search-logins-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search_logins_script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'loginsStore')}").load()
         }})
@@ -308,7 +308,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'edit-person')}", '${extDom}', function(btn, event)
+  extjsf.handler("${z:vid(v, 'edit-person')}", '${extDom}', function(btn, event)
   {
     var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
@@ -404,7 +404,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'update-user-password')}", '${extDom}', function(btn, event)
+  extjsf.handler("${z:vid(v, 'update-user-password')}", '${extDom}', function(btn, event)
   {
     var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
@@ -482,7 +482,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'person-secure-ables')}", '${extDom}', function(btn, event)
+  extjsf.handler("${z:vid(v, 'person-secure-ables')}", '${extDom}', function(btn, event)
   {
     var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
@@ -628,7 +628,7 @@
     extjsf.co("${z:vid(v, 'person-secure-ables')}", '${extDom}').setDisabled(true)
 
     //~: update the current login selection
-    extjsf.bindHandler("${z:vid(v, 'change-current-login-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'change-current-login-script')}", '${extDom}')({
       params: { currentLogin: m.getId() }
     })
   })
@@ -720,7 +720,7 @@
        //~: update the login
        m.set('descr', ds)
 
-       extjsf.bindHandler("${z:vid(v, 'update_comment_script')}", '${extDom}')({
+       extjsf.handler("${z:vid(v, 'update_comment_script')}", '${extDom}')({
           params: { entity: m.getId(), comment: ds }
        })
      }

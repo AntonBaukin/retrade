@@ -370,7 +370,7 @@ ${v.checkModelRequestedWithRedirect}
           xtype: 'button', iconCls: 'retrade-measure-icon', margin: extjsf.pts(0, 0, 0, 6),
           tooltipType: 'title', tooltip: 'Просмотр и редактирование единиц измерения, заданных для данного товара',
           handler: function() {
-            extjsf.bindHandler("${z:vid(v, 'goto-measures-script')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'goto-measures-script')}", '${extDom}')()
           }
         </f:facet>
       </x:component>
@@ -861,12 +861,12 @@ ${v.checkModelRequestedWithRedirect}
 
 
     //~: go to the calculation
-    extjsf.bindHandler(gocalc, function()
+    extjsf.handler(gocalc, function()
     {
       //!: submit the form with go to
       form.submit({params: { immediate: true }, success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'goto-calc-script')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'goto-calc-script')}", '${extDom}')()
       }})
     })
 
@@ -884,7 +884,7 @@ ${v.checkModelRequestedWithRedirect}
        {
          if(fb.retradeCodeCheck != v) return;
 
-         extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+         extjsf.xhandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
             params: { code : fb.retradeCodeCheck }, failure: function()
             {
               fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -1013,7 +1013,7 @@ ${v.checkModelRequestedWithRedirect}
     })
 
     //~: do-edit button
-    extjsf.bindHandler(doedit, function()
+    extjsf.handler(doedit, function()
     {
       toggleAttributes(false)
       toggleReadWrite(false)
@@ -1072,10 +1072,10 @@ ${v.checkModelRequestedWithRedirect}
     atsbtn.on('toggle', toggleAttributes)
 
     //~: remove selected attributes
-    extjsf.bindHandler(delats, attsed.deleteSelected)
+    extjsf.handler(delats, attsed.deleteSelected)
 
     //~: add new attribute
-    extjsf.bindHandler(addat, attsed.addAttribute)
+    extjsf.handler(addat, attsed.addAttribute)
 
     function disable(disabled, binds)
     {
@@ -1137,7 +1137,7 @@ ${v.checkModelRequestedWithRedirect}
     }
 
     //~: submit the form
-    extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', submitForm)
+    extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', submitForm)
 
     function submitForm()
     {
@@ -1178,7 +1178,7 @@ ${v.checkModelRequestedWithRedirect}
           winmain.retradeEditDone = true
           winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
 
-          extjsf.bindHandler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
+          extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
         }
       })
     }

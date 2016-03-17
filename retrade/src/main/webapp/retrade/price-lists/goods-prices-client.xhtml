@@ -95,7 +95,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").loadPage(1)
         }})
@@ -113,7 +113,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
              Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").loadPage(1)
         }})

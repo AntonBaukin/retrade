@@ -133,7 +133,7 @@
 
 
   //~: logout click
-  extjsf.bindHandler("${z:vid(localView, 'user-menu-logoff-button')}", '${extDom}', function(btn, e)
+  extjsf.handler("${z:vid(localView, 'user-menu-logoff-button')}", '${extDom}', function(btn, e)
   {
     retrade_yes_no_ask_warning({
 
@@ -144,7 +144,7 @@
       yes : function()
       {
         //!: do server-side logout
-        extjsf.bindHandler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(localView, 'retrade-main-menu-logoff-confirm-script')}", '${extDom}')({
           success: ZeT.timeouted(250, function()
           {
             window.location.replace("${z:go('login/')}${z:jss(localView.domain.code)}")

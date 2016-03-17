@@ -482,7 +482,7 @@ ${v.checkEntityRequested}
   })
 
   //~: click to go back to the contractors list
-  extjsf.bindHandler("${z:vid(v, 'back-to-contractors')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'back-to-contractors')}", '${extDom}', function()
   {
     extjsf.co("${z:vid(v, 'reprice-contractor-changes-layout')}", '${extDom}').hide()
     extjsf.co("${z:vid(v, 'back-to-contractors')}", '${extDom}').hide()

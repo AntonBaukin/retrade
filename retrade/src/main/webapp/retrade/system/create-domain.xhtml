@@ -180,7 +180,7 @@
   }
 
   //~: form submit
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     var form = extjsf.bind("${z:vid(v, 'create_domain_form')}", '${extDom}');
 
@@ -189,7 +189,7 @@
 
     //~: submit the form
     form.submit({command: 'submit_action',
-      success: extjsf.bindHandler("${z:vid(v, 'submit_done')}", '${extDom}')
+      success: extjsf.handler("${z:vid(v, 'submit_done')}", '${extDom}')
     })
   })
 

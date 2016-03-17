@@ -94,7 +94,7 @@ ${v.checkModelRequestedWithRedirect}
         //?: {search string was changed} discard
         if(f.extjsfBind.searchValue != sv) return;
 
-        extjsf.bindHandler("${z:vid(v, 'search-reports-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-reports-script')}", '${extDom}')({
           params: { searchWords: sv }, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'reportRequests')}").loadPage(1)
         }})

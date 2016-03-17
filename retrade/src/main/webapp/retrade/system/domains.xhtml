@@ -112,12 +112,12 @@
       content.co().add(winmain.co())
     }
 
-    extjsf.bindHandler("${z:vid(v, 'domains-create-domain')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'domains-create-domain')}", '${extDom}', function()
     {
         extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${extDom}').retradeCreateDomain()
     })
 
-    extjsf.bindHandler("${z:vid(v, 'domains-create-test-domain')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'domains-create-test-domain')}", '${extDom}', function()
     {
         extjsf.bind("${z:vid(v, 'domains-create-domain')}", '${extDom}').retradeCreateDomain(true)
     })
@@ -141,7 +141,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bindHandler("${z:vid(v, 'self_shunt')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'self_shunt')}", '${extDom}', function()
     {
       //~: get the selected row
       var grid = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
@@ -195,7 +195,7 @@
       <script type = "text/javascript">
       //<![CDATA[
 
-    extjsf.bindHandler("${z:vid(v, 'show_logins')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'show_logins')}", '${extDom}', function()
     {
       //~: get the selected row
       var grid = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}');
@@ -275,7 +275,7 @@
         //?: {search string was changed} discard
         if(f.extjsfBind.searchValue != sv) return;
 
-        extjsf.bindHandler("${z:vid(v, 'search_domains_script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search_domains_script')}", '${extDom}')({
           params: {searchDomains: sv}, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'domainsStore')}").loadPage(1)
         }})

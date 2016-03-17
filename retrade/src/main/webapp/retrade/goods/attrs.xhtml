@@ -587,13 +587,13 @@ ${v.checkModelRequestedWithRedirect}
     }
 
     //~: add value
-    extjsf.bindHandler(addval, function()
+    extjsf.handler(addval, function()
     {
       addEmptyValuesRow(true)
     })
 
     //~: remove currently edited value
-    extjsf.bindHandler(delval, function()
+    extjsf.handler(delval, function()
     {
       var s = vgrid.lastEditRecord
       if(!ZeT.isx(s)) values.co().remove(s)

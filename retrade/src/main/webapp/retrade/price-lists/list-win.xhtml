@@ -112,7 +112,7 @@ ${v.checkModelRequestedWithRedirect}
   {
     if('false' == "${rootView.isSecure('edit: price-lists')}") return;
 
-    extjsf.bindHandler("${z:vid(v, 'edit-price-list')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'edit-price-list')}", '${extDom}')({
       params: { entity: rec.getId() }
     })
   })

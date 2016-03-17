@@ -106,7 +106,7 @@
         var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(e, 'search-firms-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(e, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
 
             extjsf.co("${z:vid(e, 'contractors')}", '${extDom}').loadPage(1)
@@ -125,7 +125,7 @@
         var selchk = extjsf.bind("${z:vid(e, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(e, 'search-firms-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(e, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
 
             extjsf.co("${z:vid(e, 'contractors')}", '${extDom}').loadPage(1)
@@ -206,7 +206,7 @@
   //~: submit on row double click
   extjsf.bind("${z:vid(e, 'grid')}", '${extDom}').on('itemdblclick', function()
   {
-    extjsf.bindHandler("${z:vid(e, 'submit')}", '${extDom}')()
+    extjsf.handler("${z:vid(e, 'submit')}", '${extDom}')()
   })
 
   //~: enable submit button on first selection

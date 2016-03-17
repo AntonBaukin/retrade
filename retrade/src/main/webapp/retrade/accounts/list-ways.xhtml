@@ -131,7 +131,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-by-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search_payways_script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search_payways_script')}", '${extDom}')({
           params: params, success: function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'payways')}").loadPage(1)
         }})

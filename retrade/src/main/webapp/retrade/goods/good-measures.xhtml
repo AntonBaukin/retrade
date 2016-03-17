@@ -441,10 +441,10 @@
     }
 
     //~: start edit click
-    extjsf.bindHandler("${z:vid(v, 'start-edit')}", '${extDom}', toggleReadEdit)
+    extjsf.handler("${z:vid(v, 'start-edit')}", '${extDom}', toggleReadEdit)
 
     //~: cancel edit click
-    extjsf.bindHandler("${z:vid(v, 'cancel')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'cancel')}", '${extDom}', function()
     {
       toggleReadEdit(true)
 
@@ -626,10 +626,10 @@
     }
 
     //~: add measure
-    extjsf.bindHandler("${z:vid(v, 'add')}", '${extDom}', addMeasure)
+    extjsf.handler("${z:vid(v, 'add')}", '${extDom}', addMeasure)
 
     //~: submit the edit
-    extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', submitEdit)
+    extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', submitEdit)
 
     var submit    = extjsf.bind("${z:vid(v, 'submit')}", '${extDom}')
     var cancel    = extjsf.bind("${z:vid(v, 'cancel')}", '${extDom}')
@@ -722,10 +722,10 @@
     })
 
     //~: remove selected attributes
-    extjsf.bindHandler(delattrs, attsed.deleteSelected)
+    extjsf.handler(delattrs, attsed.deleteSelected)
 
     //~: add new attribute
-    extjsf.bindHandler(addattrs, attsed.addAttribute)
+    extjsf.handler(addattrs, attsed.addAttribute)
   })
   //]]>
   </script>

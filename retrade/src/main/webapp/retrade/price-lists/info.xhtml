@@ -124,7 +124,7 @@ ${v.checkEntityRequested}
         var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'listGoods')}").loadPage(1)
         }})
@@ -142,7 +142,7 @@ ${v.checkEntityRequested}
         var selchk = extjsf.bind("${z:vid(v, 'search-goods-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-goods-script')}", '${extDom}')({
           params: params, success : function() {
              Ext.data.StoreManager.lookup("${z:vid(v, 'listGoods')}").loadPage(1)
         }})
@@ -212,7 +212,7 @@ ${v.checkEntityRequested}
   }
 
   //~: prices history click
-  extjsf.bindHandler("${z:vid(v, 'prices-history')}", '${extDom}', function(btn, e)
+  extjsf.handler("${z:vid(v, 'prices-history')}", '${extDom}', function(btn, e)
   {
     var grid = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}')
     var sel  = grid.co().getSelectionModel().getSelection()

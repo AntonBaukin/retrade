@@ -131,7 +131,7 @@
     winmain.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked === true)
   }
 
-  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
+  extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
   {
     extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').
       retradeOpenGoodWindow(null, event, { box: { '+xpt': 10, '-ypt': -10,
@@ -159,7 +159,7 @@
   <script type = "text/javascript">
     //<![CDATA[
 
-  extjsf.bindHandler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
+  extjsf.handler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
   {
     var winmain; winmain = retrade_open_window({ url: '/goods/create-goods',
       tempDomain: 'add-goods-table', collapsible: true,
@@ -264,12 +264,12 @@
     }))
 
     //~: do assign group
-    extjsf.bindHandler("${z:vid(v, 'assign-group-submit')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'assign-group-submit')}", '${extDom}', function()
     {
       var group = extjsf.bind("${z:vid(v, 'group-to-assign')}", '${extDom}').value()
       if(ZeTS.ises(group)) return ReTrade.desktop.error('Ценовая группа товара не может быть пустой!')
 
-      extjsf.bindHandler("${z:vid(v, 'assign-group-script')}", '${extDom}')({
+      extjsf.handler("${z:vid(v, 'assign-group-script')}", '${extDom}')({
         params: { goodsGroup: group, selset: ReTrade.selset.selset }, success : function() {
 
           extjsf.co("${z:vid(v, 'toggle-assign-group')}", '${extDom}').setPressed(false)

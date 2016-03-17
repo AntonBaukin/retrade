@@ -190,7 +190,7 @@ ${v.checkModelRequested}
   //<![CDATA[
 
   //~: form commit script
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     //?: {derived good}
     if(extjsf.bind("${z:vid(v, 'derived')}", '${extDom}').value() === true)
@@ -206,7 +206,7 @@ ${v.checkModelRequested}
       //!: submit the derived form
       f.submit({ params: ps, command: "${z:vid(v, 'submit-action')}", success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'submit-back')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'submit-back')}", '${extDom}')()
       }})
 
       return;
@@ -272,16 +272,16 @@ ${v.checkModelRequested}
     params.semiReady = extjsf.bind("${z:vid(v, 'semi-ready')}", '${extDom}').value();
 
     //!: submit
-    extjsf.bindHandler("${z:vid(v, 'submit-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'submit-script')}", '${extDom}')({
       params: params, success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'submit-back')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'submit-back')}", '${extDom}')()
       }
     })
   })
 
   //~: insert new record in the table
-  extjsf.bindHandler("${z:vid(v, 'add-part')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'add-part')}", '${extDom}', function()
   {
     var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}'); if(!g) return
     var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode')
@@ -302,7 +302,7 @@ ${v.checkModelRequested}
   })
 
   //~: delete selected records from the table
-  extjsf.bindHandler("${z:vid(v, 'delete-part')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'delete-part')}", '${extDom}', function()
   {
     var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
     var s = g.getSelectionModel().getSelection(); if(!s.length) return;
@@ -367,7 +367,7 @@ ${v.checkModelRequested}
       if(e.getKey() == e.INSERT)
       {
         commitEdit()
-        extjsf.bindHandler("${z:vid(v, 'add-part')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'add-part')}", '${extDom}')()
       }
 
       if(e.getKey() == e.TAB)
@@ -496,10 +496,10 @@ ${v.checkModelRequested}
         cellkeydown: function(grid, td, cellIdx, m, tr, rowIdx, e)
         {
           if(e.getKey() == e.INSERT)
-            extjsf.bindHandler("${z:vid(v, 'add-part')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'add-part')}", '${extDom}')()
 
           if(e.getKey() == e.DELETE)
-            extjsf.bindHandler("${z:vid(v, 'delete-part')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'delete-part')}", '${extDom}')()
         }
       }
 

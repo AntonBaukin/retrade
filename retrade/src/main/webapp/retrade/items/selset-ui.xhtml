@@ -83,7 +83,7 @@
   {
      var script = (remove)?("${z:vid(v, 'script_selset_del_object')}"):("${z:vid(v, 'script_selset_add_object')}");
 
-     extjsf.bindHandler(script, '${extDom}')({
+     extjsf.handler(script, '${extDom}')({
        params: { entity: id }, success: function()
        {
          Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)
@@ -95,7 +95,7 @@
   //~: selection set change script wrapper
   ReTrade.selset.changer(function(selset, onsuccess)
   {
-     extjsf.bindHandler("${z:vid(v, 'script_selset_change')}", '${extDom}')({
+     extjsf.handler("${z:vid(v, 'script_selset_change')}", '${extDom}')({
        params: { selset: selset }, success: onsuccess
      })
   })
@@ -130,14 +130,14 @@
   //~: add selection
   $('#' + ReTrade.selset.ctlitems('add')).click(function()
   {
-    extjsf.bindHandler("${z:vid(v, 'script_selset_add')}", '${extDom}')()
+    extjsf.handler("${z:vid(v, 'script_selset_add')}", '${extDom}')()
   })
 
 
   //~: delete selection set
   $('#' + ReTrade.selset.ctlitems('delete')).click(function()
   {
-    extjsf.bindHandler("${z:vid(v, 'script_selset_delete')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'script_selset_delete')}", '${extDom}')({
       success: function()
       {
          Ext.data.StoreManager.lookup(ReTrade.selset.storeId()).load()
@@ -150,7 +150,7 @@
   //~: clear selection
   $('#' + ReTrade.selset.ctlitems('clear')).click(function()
   {
-    extjsf.bindHandler("${z:vid(v, 'script_selset_clear')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'script_selset_clear')}", '${extDom}')({
       success: function()
       {
         Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)

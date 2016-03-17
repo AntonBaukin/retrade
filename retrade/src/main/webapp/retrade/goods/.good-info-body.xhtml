@@ -210,7 +210,7 @@
     var wnd = extjsf.co("${z:vid(v, 'goods-info-window')}", '${extDom}');
 
     //~: request the info
-    extjsf.bindHandler("${z:vid(v, 'goods-info-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'goods-info-script')}", '${extDom}')({
       params: { goodUnit: record.getId() }
     })
 

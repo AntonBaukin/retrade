@@ -70,7 +70,7 @@ ${v.checkModelRequestedWithRedirect}
         extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
           getPlugin('cellediting').completeEdit()
 
-        extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
       }
     </f:facet>
    </x:component>
@@ -219,7 +219,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           if(e.getKey() == e.INSERT)
           {
-            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
           }
         }
       },
@@ -246,7 +246,7 @@ ${v.checkModelRequestedWithRedirect}
           if(e.getKey() == e.INSERT)
           {
             commitEdit()
-            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
           }
 
           if(e.getKey() == e.TAB) if(x.colIdx == 3) c = [ x.rowIdx, 2 ];
@@ -268,7 +268,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           if(e.getKey() == e.INSERT)
           {
-            extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
           }
         }
 
@@ -394,12 +394,12 @@ ${v.checkModelRequestedWithRedirect}
   //~: insert new record on window open
   Ext.onReady(function()
   {
-    extjsf.bindHandler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
+    extjsf.handler("${z:vid(v, 'gen-next-code-script')}", '${extDom}')()
   })
 
 
   //~: delete selected row
-  extjsf.bindHandler("${z:vid(v, 'delete-row')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'delete-row')}", '${extDom}', function()
   {
      var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
 
@@ -419,7 +419,7 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: commit the records
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     var store = extjsf.co("${z:vid(v, 'store')}", '${extDom}');
 
@@ -474,11 +474,11 @@ ${v.checkModelRequestedWithRedirect}
 
 
     //!: send to the server
-    extjsf.bindHandler("${z:vid(v, 'commit-script')}", '${extDom}')({
+    extjsf.handler("${z:vid(v, 'commit-script')}", '${extDom}')({
       params: params, success: function()
       {
         extjsf.bind('winmain', '${extDom}').retradeEditDone = true;
-        extjsf.bindHandler("${z:vid(v, 'close-window')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'close-window')}", '${extDom}')()
       }
     })
   })

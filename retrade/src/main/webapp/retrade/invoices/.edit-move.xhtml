@@ -171,7 +171,7 @@ ${v.forceSecureEdit()}
     {
       if(fb.retradeCodeCheck != v) return;
 
-      extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+      extjsf.xhandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
       params: { code : fb.retradeCodeCheck }, failure: function()
       {
         fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -335,19 +335,19 @@ ${v.forceSecureEdit()}
   //<![CDATA[
 
   //~: submit form before going to date form
-  extjsf.bindHandler("${z:vid(v, 'edit-date')}", '${extDom}',
+  extjsf.handler("${z:vid(v, 'edit-date')}", '${extDom}',
     extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
       submitBound({immediate: true, command: 'goods', success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'goto-edit-date')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'goto-edit-date')}", '${extDom}')()
       }}))
 
   //~: submit form with command button
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}',
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}',
     extjsf.bind("${z:vid(v, 'invoice-form')}", '${extDom}').
       submitBound({command: 'submit', success: function()
       {
-        extjsf.bindHandler("${z:vid(v, 'submit-done')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'submit-done')}", '${extDom}')()
       }}))
 
   //~: invoice form validation
@@ -441,7 +441,7 @@ ${v.forceSecureEdit()}
   {
     //?: {creating invoice} insert new good
     if(!recs.length) return ZeT.timeout(500,
-      extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}'))
+      extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}'))
 
     //~: filter take-only records
     var taken = []; for(var i = 0;(i < recs.length);i++)
@@ -514,7 +514,7 @@ ${v.forceSecureEdit()}
       if(e.getKey() == e.INSERT)
       {
         commitEdit()
-        extjsf.bindHandler("${z:vid(v, 'add-part')}", '${extDom}')()
+        extjsf.handler("${z:vid(v, 'add-part')}", '${extDom}')()
       }
 
       if(e.getKey() == e.TAB)
@@ -728,10 +728,10 @@ ${v.forceSecureEdit()}
         cellkeydown: function(grid, td, cellIdx, m, tr, rowIdx, e)
         {
           if(e.getKey() == e.INSERT)
-            extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}')()
 
           if(e.getKey() == e.DELETE)
-            extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'delete-goods')}", '${extDom}')()
 
           if(e.getKey() == e.ENTER)
             extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
@@ -878,10 +878,10 @@ ${v.forceSecureEdit()}
         cellkeydown: function(grid, td, cellIdx, m, tr, rowIdx, e)
         {
           if(e.getKey() == e.INSERT)
-            extjsf.bindHandler("${z:vid(v, 'add-good-taken')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'add-good-taken')}", '${extDom}')()
 
           if(e.getKey() == e.DELETE)
-            extjsf.bindHandler("${z:vid(v, 'delete-goods-taken')}", '${extDom}')()
+            extjsf.handler("${z:vid(v, 'delete-goods-taken')}", '${extDom}')()
 
           if(e.getKey() == e.ENTER)
             extjsf.co("${z:vid(v, 'taken')}", '${extDom}').
@@ -923,7 +923,7 @@ ${v.forceSecureEdit()}
     })
   }
 
-  extjsf.bindHandler("${z:vid(v, 'add-good')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeAddGood(
       extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
@@ -946,7 +946,7 @@ ${v.forceSecureEdit()}
     if(!ZeT.isx(m)) g.getSelectionModel().select(m)
   }
 
-  extjsf.bindHandler("${z:vid(v, 'delete-goods')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'delete-goods')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'delete-goods')}", '${extDom}').retradeDeleteGoods(
       extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
@@ -955,7 +955,7 @@ ${v.forceSecureEdit()}
 
   //~: insert new record in the taken table
   if("#{v.twoTables}" == 'true')
-    extjsf.bindHandler("${z:vid(v, 'add-good-taken')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'add-good-taken')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeAddGood(
       extjsf.co("${z:vid(v, 'taken')}", '${extDom}')
@@ -964,7 +964,7 @@ ${v.forceSecureEdit()}
 
   //~: delete selected records from the taken table
   if("#{v.twoTables}" == 'true')
-    extjsf.bindHandler("${z:vid(v, 'delete-goods-taken')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'delete-goods-taken')}", '${extDom}', function()
   {
     extjsf.bind("${z:vid(v, 'delete-goods')}", '${extDom}').retradeDeleteGoods(
       extjsf.co("${z:vid(v, 'taken')}", '${extDom}')

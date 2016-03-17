@@ -106,7 +106,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
             Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
         }})
@@ -124,7 +124,7 @@ ${v.checkModelRequestedWithRedirect}
         var selchk = extjsf.bind("${z:vid(v, 'search-firms-selset')}", '${extDom}').co();
         if(selchk.pressed) params.selset = ReTrade.selset.selset;
 
-        extjsf.bindHandler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
+        extjsf.handler("${z:vid(v, 'search-firms-script')}", '${extDom}')({
           params: params, success : function() {
              Ext.data.StoreManager.lookup("${z:vid(v, 'contractors')}").loadPage(1)
         }})
@@ -231,7 +231,7 @@ ${v.checkModelRequestedWithRedirect}
 
 
   //~: contractor associated price list edit form
-  extjsf.bindHandler("${z:vid(v, 'associate-lists')}", '${extDom}', function(btn, e)
+  extjsf.handler("${z:vid(v, 'associate-lists')}", '${extDom}', function(btn, e)
   {
     //~: selected contractors
     var s = extjsf.co("${z:vid(v, 'grid')}", '${extDom}').

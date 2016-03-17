@@ -184,7 +184,7 @@ ${v.checkModelRequested}
      {
        if(fb.retradeCodeCheck != v) return;
 
-       extjsf.xbindHandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+       extjsf.xhandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
           params: { code : fb.retradeCodeCheck }, failure: function()
           {
             fb.validityStatus = ZeT.a(f.getActiveErrors())[0];
@@ -197,14 +197,14 @@ ${v.checkModelRequested}
 
 
   //~: submit the form
-  extjsf.bindHandler("${z:vid(v, 'submit')}", '${extDom}', function()
+  extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
     var form = extjsf.bind("${z:vid(v, 'store-form')}", '${extDom}');
     if(!form.co().isValid()) return;
 
     form.submit({command: "${z:vid(v, 'submit-action')}", success: function()
     {
-      extjsf.bindHandler("${z:vid(v, 'cancel')}", '${extDom}')()
+      extjsf.handler("${z:vid(v, 'cancel')}", '${extDom}')()
     }})
   })
 
