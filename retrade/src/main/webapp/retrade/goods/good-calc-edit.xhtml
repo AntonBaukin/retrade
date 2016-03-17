@@ -681,7 +681,7 @@ ${v.checkModelRequested}
       <!-- [super good name] -->
 
       <x:text-field coid = "${z:vid(v, 'super-good-name')}"
-         value = "#{v.model.editCalc.superGoodName}" readOnly = "true">
+         value = "#{v.model.editCalc.superGoodName}">
 
         <f:facet name = "extjs-props">
           width: extjsf.ex(24), flex: 2, readOnly: true,
@@ -693,10 +693,10 @@ ${v.checkModelRequested}
       <!-- [super good measure unit name] -->
 
       <x:text-field coid = "${z:vid(v, 'super-good-measure')}"
-         value = "#{v.model.editCalc.superGoodMeasure}" readOnly = "true">
+         value = "#{v.model.editCalc.superGoodMeasure}">
 
         <f:facet name = "extjs-props">
-          flex: 1
+          flex: 1, readOnly: true
         </f:facet>
 
         <f:facet name = "label-props">

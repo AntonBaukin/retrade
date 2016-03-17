@@ -272,12 +272,12 @@ ${v.checkModelRequestedWithRedirect}
       <!-- [report data source id (read-only)] -->
 
       <x:text-field coid = "${z:vid(v, 'datasource')}"
-         value = "#{v.did}" readOnly = "true">
+         value = "#{v.did}">
 
         <f:facet name = "extjs-props">
-           heght: extjsf.pt(18),
-           cellCls: 'retrade-table-cell-100pc',
-           fieldCls: 'x-form-field retrade-width-100pc', width: '100%'
+           heght: extjsf.pt(18), readOnly: true,
+           cellCls: 'retrade-table-cell-100pc', width: '100%',
+           fieldCls: 'x-form-field retrade-width-100pc'
         </f:facet>
 
         <f:facet name = "label-props">
