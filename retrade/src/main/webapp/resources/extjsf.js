@@ -843,7 +843,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		}
 		catch(e)
 		{
-			throw EX.ass('Illegal properties of Bind [',
+			throw ZeT.ass('Illegal properties of Bind [',
 			  this.name, ']: \n', props, '\n', e)
 		}
 	},
@@ -1501,6 +1501,11 @@ extjsf.FieldBind = ZeT.defineClass(
 
 	$field_focus     : function()
 	{
+		//?: {field has picker} expand it
+		if(ZeT.isf(this.co().getPicker))
+			if(this.co().getPicker())
+				return this.co().expand()
+
 		this.co().focus()
 	},
 
@@ -1559,11 +1564,6 @@ extjsf.DropFieldBind = ZeT.defineClass(
 		{
 			f.inputEl.set({ value: dv })
 		})
-	},
-
-	$field_focus     : function()
-	{
-		this.co().expand()
 	},
 
 	$refresh_delay   : 2000,

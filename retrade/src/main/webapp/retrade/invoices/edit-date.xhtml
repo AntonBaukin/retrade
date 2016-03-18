@@ -197,52 +197,18 @@
     </f:facet>
   </x:data-store>
 
-  <x:data-grid coid = "${z:vid(e, 'date_close_invoices')}"
+  <x:data-grid coid = "${z:vid(e, 'date-close-invoices')}"
     storeId = "${z:vid(e, 'dateCloseInvoices')}">
 
     <f:facet name = "grid-props">
 
       flex: 1, sortableColumns: false, enableColumnHide: false,
-      columns: ZeT.defined("retrade.columns.Invoice#{(e.moveInvoice)?('Move'):('')}View")
-
+      selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+      columns: ZeT.defined("retrade.columns.Invoice#{(e.moveInvoice)?('Move'):('')}View"),
+      viewConfig: { getRowClass: function(m) {
+        if(m.getId() == '#{e.invoice.objectKey}') return 'x-grid-item-selected'
+      }}
     </f:facet>
-
-    <script type = "text/javascript">
-    //<![CDATA[
-
-  (function()
-  {
-    var s = extjsf.bind("${z:vid(e, 'dateCloseInvoices')}", '${extDom}')
-    var g = extjsf.bind("${z:vid(e, 'date_close_invoices')}", '${extDom}')
-    var m = Ext.create('Ext.selection.RowModel')
-    var x = '#{e.invoice.objectKey}'
-
-    //~: set the selection model to the grid
-    g.props({selModel: m})
-
-    //~: disable selection of else rows
-    m.on('beforeselect', function(that, record)
-    {
-      if(record.getId() == x) return true
-
-      var xx; if(xx = s.co().getById(x))
-      {
-        m.select([xx])
-        return false
-      }
-    })
-
-    //~: select the row of the invoice edited
-    s.on('load', function()
-    {
-      var xx; if(xx = s.co().getById(x))
-        m.select([xx])
-    })
-  })()
-
-    //]]>
-    </script>
-
   </x:data-grid>
 
   <!-- invoices order preview panel] -->
