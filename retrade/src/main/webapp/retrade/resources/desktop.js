@@ -4837,12 +4837,19 @@ ReTrade.TilesData = ZeT.defineClass('ReTrade.TilesData',
 	{
 		var a; if(ZeT.isa(a = this._array))
 		{
+			//~: position to insert is correct
+			var j = a.indexOf(where)
+			ZeT.assert(j >= 0)
+			ZeT.assert(items.indexOf(where) == -1)
+
+			//~: remove the items
+			ZeTA.remove(a, items)
+
+			//~: guess position to insert
 			var i = a.indexOf(where)
-			ZeT.assert(i >= 0)
+			if(i) i++; if(i != j) i++
 
-			ZeTA.remove.apply(a, items)
-
-			var x = [i, 0]
+			var x = [ i, 0 ]
 			x.push.apply(x, items)
 			a.splice.apply(a, x)
 		}

@@ -712,25 +712,17 @@ var ZeTA = ZeT.define('ZeT.A',
 	},
 
 	/**
-	 * Has two forms of invocation:
-	 *
-	 * 0    target array;
-	 * 1..  items or arrays to remove.
-	 *
-	 * this target array;
-	 * 0..  items or arrays to remove.
-	 *
 	 * Removes the items from the target array.
 	 * If item is itself an array, recursively
 	 * invokes this function.
 	 *
-	 * Items are checked agains map-key equality
-	 * (put it to map, then check it is there).
+	 * Items are checked with indexOf() equality
+	 * (put it to array, then check it is there).
 	 * Undefined and null items are supported.
 	 *
 	 * Returns the target array.
 	 */
-	remove           : ZeT.scope(function()
+	remove           : ZeT.scope(function(/* array, item, ... */)
 	{
 		var u = {}, n = {}
 
@@ -740,7 +732,7 @@ var ZeTA = ZeT.define('ZeT.A',
 			if(a === null) return m[n] = true
 
 			if(!ZeT.isax(a))
-				return m[a] = true
+				return m.push(a)
 
 			for(var i = 0;(i < a.length);i++)
 				collect(m, a[i])
@@ -750,22 +742,16 @@ var ZeTA = ZeT.define('ZeT.A',
 		{
 			if(ZeT.isu(x)) x = u
 			if(x === null) x = n
-			return (m[x] === true)
+			return (m.indexOf(x) >= 0)
 		}
 
-		return function()
+		return function(a)
 		{
-			var a, m = {}, i = 1, r = []
-
-			//~: select the variant
-			if(!ZeT.isa(this)) a = arguments[0]
-			else { a = this; i = 0 }
+			var m = [], r = []
 
 			//~: collect the keys
-			for(;(i < arguments.length);i++)
+			for(var i = 1;(i < arguments.length);i++)
 				collect(m, arguments[i])
-
-			//console.log(m)
 
 			//~: scan for ranged splicing
 			for(i = 0;(i < a.length);i++)

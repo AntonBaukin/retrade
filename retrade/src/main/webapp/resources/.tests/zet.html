@@ -568,8 +568,6 @@ function testArrays()
   ZeT.assert(ZeTA.eq([1, 5], ZeTA.remove(ZeTA.copy(B), 0, 2, 3, 4)))
   ZeT.assert(ZeTA.eq([1, 5], ZeTA.remove(ZeTA.copy(B), [0, 2, 3, 4])))
   ZeT.assert(ZeTA.eq([1, 5], ZeTA.remove(ZeTA.copy(B), [0, 2, [3, 4]])))
-  ZeT.assert(ZeTA.eq([0, 1, 5], ZeTA.remove.call(ZeTA.copy(B), 2, 3, 4)))
-  ZeT.assert(ZeTA.eq([0, 1, 5], ZeTA.remove.apply(ZeTA.copy(B), [[2], [3, 4]])))
 
 
   //--> concatenate
