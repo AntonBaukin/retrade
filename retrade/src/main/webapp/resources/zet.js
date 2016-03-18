@@ -553,7 +553,20 @@ var ZeTS = ZeT.define('ZeT.S',
 		return (ZeT.iss(s) && s.length)?(s.charAt(0)):(undefined)
 	},
 
-	starts           : Lo.startsWith,
+	/**
+	 * The first arguments is a string to inspect.
+	 * The following (one or more) is the argument
+	 * strings: function returns true when inspected
+	 * string starts with any of the arguments.
+	 */
+	starts           : function(s)
+	{
+		if(!ZeT.iss(s)) return undefined
+		for(var i = 1;(i < arguments.length);i++)
+			if(Lo.startsWith(s, arguments[i]))
+				return true
+		return false
+	},
 
 	ends             : Lo.endsWith,
 

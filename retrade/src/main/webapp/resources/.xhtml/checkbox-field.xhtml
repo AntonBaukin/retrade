@@ -56,7 +56,8 @@
         ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
         props({ inputValue : 'true', uncheckedValue: 'false' }).
         props({ xtype: 'checkboxfield' }).readPropsNode().
-        buildLabel().install()
+        props('label', { labelAlign: 'right' }).buildLabel().
+        install()
 
     //]]>
     </script>

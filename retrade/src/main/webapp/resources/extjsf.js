@@ -831,7 +831,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 		if(!ZeTS.starts(props, '('))
 		{
-			if(!ZeTS.starts(props, '{'))
+			if(!ZeTS.starts(props, '{', '['))
 				props = ZeTS.cat('{', props, '}')
 
 			props = ZeTS.cat('(', props, ')')
@@ -1433,6 +1433,10 @@ extjsf.FieldBind = ZeT.defineClass(
 
 	$build_label     : function(label)
 	{
+		//~: take properties from the field bind
+		label.props(this.$raw('label') || {})
+
+		//~: label defaults
 		label.props({ xtype: 'label',
 		  forId: this.$node_id() })
 
@@ -1460,16 +1464,8 @@ extjsf.FieldBind = ZeT.defineClass(
 		var self = this
 
 		//~: click on the label
-		this.label.co().getEl().
-		  addListener('click', function(e)
-		{
-			var el = self.label.co().getEl()
-
-			if(self.co().readOnly)
-				e.stopEvent()
-			else
-				self.co().focus()
-		})
+		this.label.co().getEl().addListener('click',
+		  ZeT.fbind(this.$label_click, this))
 
 		//~: label cursor
 		var cursor; function setCursor()
@@ -1493,12 +1489,196 @@ extjsf.FieldBind = ZeT.defineClass(
 		  addListener('mouseenter', setCursor)
 	},
 
+	$label_click     : function(e)
+	{
+		var el = this.label.co().getEl()
+
+		if(this.co().readOnly)
+			e.stopEvent()
+		else
+			this.$field_focus()
+	},
+
+	$field_focus     : function()
+	{
+		this.co().focus()
+	},
+
 	$field_name      : function()
 	{
 		return this.$node_id('field')
 	}
 })
 
+
+// +----: Drop Field Bind :-------------------------------------+
+
+extjsf.DropFieldBind = ZeT.defineClass(
+  'extjsf.DropFieldBind', extjsf.FieldBind,
+{
+	className        : 'extjsf.DropFieldBind',
+
+	$install         : function()
+	{
+		//~: refresh on double-expand
+		this.$expand_refresh()
+
+		//~: label inline store
+		if(ZeT.isx(this.$raw().store))
+			this.$labels_store()
+
+		//~: set display value
+		this.$display_value()
+
+		this.$applySuper(arguments)
+	},
+
+	$labels_store    : function()
+	{
+		var labels = this.$eval_props_node('labels')
+		if(!ZeT.isa(labels)) return
+
+		//~: convert 2-array to pairs
+		for(var ls = [], i = 0;(i+1 < labels.length);i += 2)
+			ls.push([ labels[i], labels[i+1] ])
+
+		//!: set the inline store
+		this.props({ store: ls, queryMode: 'local' })
+	},
+
+	/**
+	 * Private. Directly assigns initial display
+	 * value to the input node of the drop list.
+	 */
+	$display_value   : function()
+	{
+		var dv = this.$raw().displayValue
+		delete this.$raw().displayValue
+
+		if(!ZeT.isu(dv)) this.on('afterrender', function(f)
+		{
+			f.inputEl.set({ value: dv })
+		})
+	},
+
+	$field_focus     : function()
+	{
+		this.co().expand()
+	},
+
+	$refresh_delay   : 2000,
+
+	$expand_refresh  : function()
+	{
+		var nrone = this.$raw().notRefreshOnExpand
+		delete this.$raw().notRefreshOnExpand
+		if(nrone) return
+
+		var et; this.on('expand', function()
+		{
+			var ts = new Date().getTime()
+			if(et && (ts - et < this.$refresh_delay))
+				bind.co().getStore().reload()
+			et = ts
+		})
+	}
+})
+
+/*
+
+(function()
+  {
+    //~: on change
+    function on_change(f, key)
+    {
+      var n = Ext.getDom('#{cc.clientId}-hidden');
+      if(!ZeT.iss(key) || !key.length) n.value = '';
+      else n.value = key;
+    }
+
+    //~: create component bind
+    var bind = extjsf.domain('${extDom}').
+      bind('#{cc.attrs.coid}', new extjsf.Bind())
+
+    bind.nodeId('#{cc.clientId}-hidden');
+    bind.on('change', on_change)
+
+    bind.props({ xtype: 'combobox', pickerWidthAuto: true })
+    bind.props({ nodeId: '#{cc.attrs.coid}', name: '#{cc.clientId}-#{cc.attrs.coid}' })
+    bind.props({ displayhidden: 'label', valuehidden: 'key' })
+    bind.readPropsNode()
+
+    //?: {external store is provided}
+    if("#{cc.attrs.storeId}".length)
+    {
+      bind.props({store: "#{cc.attrs.storeId}"})
+
+      //~: refresh source on repeated expand
+      var expandTime; if(!bind.$raw().notRefreshOnExpand)
+        bind.on('expand', function()
+      {
+        var ts = new Date().getTime()
+        if(expandTime && (ts - expandTime < 2000))
+          bind.co().getStore().reload()
+        expandTime = ts
+      })
+    }
+    //~: evaluate label mapping      !: it is array
+    else {
+
+      var labls = Ext.getDom("#{cc.clientId}-#{cc.attrs.coid}-labels").innerHTML;
+      labls = eval('('.concat(labls, ')'));
+
+      var items = [];
+      for(var i = 0;(i + 1 < labls.length);i += 2)
+        items.push([labls[i], labls[i + 1]])
+
+      //~: items as a store
+      bind.props({store: items, queryMode: 'local'})
+    }
+
+    var label = new extjsf.Bind();
+    label.nodeId("#{cc.clientId}-#{cc.attrs.coid}-label")
+
+    if(!label.isPropsNode()) label = null; else
+    {
+      extjsf.domain('${extDom}').bind('#{cc.attrs.coid}-label', label)
+      bind.props({hideLabel: true})
+
+      //~: label click expand-collapse support
+      bind.on('collapse', function()
+      { bind.collapseTime = new Date().getTime(); })
+
+      label.on('afterrender', function(l) { l.getEl().addListener('click', function()
+      {
+        var drop = bind.co()
+        if(drop.isDisabled() || drop.readOnly) return
+        var ct = bind.collapseTime; ct = new Date().getTime() - ((!ct)?(0):(ct))
+        if(ct > 500) bind.co().expand()
+      })})
+
+      label.readPropsNode().props({
+        xtype: 'label', forId: "#{cc.attrs.coid}"
+      })
+    }
+
+    //~: bind label first
+    if(label) extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${extDom}', label)
+
+    //~: display value substitute
+    if("#{cc.attrs.displayValue}".length)
+      bind.on('afterrender', function(f)
+      {
+        if(f.inputEl) $(f.inputEl.dom).val("#{cc.attrs.displayValue}")
+      })
+
+    //~: bind drop-list to the parent
+    extjsf.bindAddItem('#{cc.parent.attrs.coid}', '${extDom}', bind)
+
+  })()
+
+
+ */
 
 // +----: Load Action Bind :------------------------------------+
 
