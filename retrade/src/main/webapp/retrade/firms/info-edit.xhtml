@@ -276,11 +276,10 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
       </f:facet>
 
       <x:checkboxes coid = "${z:vid(v, 'org-type')}"
-        value = "#{v.firmType}" labels = "#{v.firmTypeLabels}"
-        allowNone = "false" onlyOne = "true">
+        value = "#{v.firmType}" labels = "#{v.firmTypeLabels}">
 
         <f:facet name = "check-props">
-          extjsfReadWrite: true
+          extjsfReadWrite: true, onlyOne: true, allowNone: false
         </f:facet>
 
         <f:facet name = "label-props">

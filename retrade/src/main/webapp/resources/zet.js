@@ -1412,6 +1412,11 @@ ZeT.Class = ZeT.define('ZeT.Class', function()
 		return Class
 	}
 
+	function isStaticMember(x)
+	{
+		return !ZeT.isf(x) || (x.ZeT$Class === true)
+	}
+
 	//:: Class.extend()
 	Class.extend = function(body)
 	{
@@ -1424,7 +1429,7 @@ ZeT.Class = ZeT.define('ZeT.Class', function()
 			for(var i = 0;(i < ks.length);i++)
 			{
 				k = ks[i]; v = b[k]
-				if(!ZeT.isf(v)) p[k] = v; else
+				if(isStaticMember(v)) p[k] = v; else
 					Class.addMethod(k, v)
 			}
 		}

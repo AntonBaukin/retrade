@@ -152,12 +152,16 @@
       </f:facet>
 
       <x:checkboxes coid = "${z:vid(localView, 'filter-form-doc-states')}"
-        value = "#{filterModel.docStates}" labels = "#{filterModel.docStatesLabels}"
-        allowNone = "false">
+        value = "#{filterModel.docStates}" labels = "#{filterModel.docStatesLabels}">
+
+        <f:facet name = "check-props">
+          allowNone: false
+        </f:facet>
 
         <f:facet name = "label-props">
           cls: 'retrade-info-title-label',
-          margin: extjsf.pts(0, 6, 0, 4)
+          margin: extjsf.pts(0, 6, 0, 4),
+          labelAlign: 'left'
         </f:facet>
       </x:checkboxes>
     </x:component>
