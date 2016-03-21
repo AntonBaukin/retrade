@@ -18,7 +18,7 @@
   //<![CDATA[
 
   //~: domain and view
-  ReTrade.selset.domain('${extDom}').view('${localView.id}')
+  ReTrade.selset.domain('${extDom}').view('${localView.id}', "${z:vid(localView, '')}")
 
   //~: bind selection set hidden placeholder
   ReTrade.selset.place(extjsf.bind("${z:vid(localView, 'retrade-selset-place')}", '${extDom}'))

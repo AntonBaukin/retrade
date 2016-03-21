@@ -2179,11 +2179,14 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		return this
 	},
 
-	view              : function(view)
+	view              : function(view, prefix)
 	{
 		if(ZeTS.ises(view))
 			return this._view
+
 		this._view = view
+		this._view_prefix = prefix
+
 		return this
 	},
 

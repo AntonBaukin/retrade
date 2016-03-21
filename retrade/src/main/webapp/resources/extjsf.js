@@ -59,6 +59,8 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		this.binds.put(name, bind)
 		bind.defined(this.name, name)
 
+		ZeT.log('@[', this.name, '] + Bind: ', name)
+
 		return bind
 	},
 
@@ -130,6 +132,9 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		//~: collect the binds
 		this.binds.reverse(function(b){ binds.push(b) })
 
+		ZeT.log('Destroy @[', this.name,
+		  ']: ', ZeT.map(binds, 'name'))
+
 		//~: and destroy them
 		ZeT.each(binds, function(bind)
 		{
@@ -145,6 +150,16 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 
 		//~: sweep all the binds
 		this.binds.clear()
+	},
+
+	/**
+	 * Invokes the callback for each Bind
+	 * in this Domain. See ZeT.Map.each().
+	 */
+	each             : function(f)
+	{
+		ZeT.assertf(f)
+		return this.binds.each(f)
 	},
 
 	/**
@@ -178,7 +193,7 @@ ZeT.extend(extjsf,
 	domain           : function(name, notcreate)
 	{
 		ZeT.assert(ZeT.iss(name),
-		  'Can not defined Domain by not a string name!')
+		  'Can not define Domain by not a string name!')
 
 		//~: global registry of the domains
 		extjsf.domains = ZeT.define('extjsf.Domain.registry', {})
@@ -453,7 +468,6 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 				return
 
 		//?: {internal destroyed}
-		this._destroyed = true
 		if(this.$destroy() === false)
 		{
 			delete this._destroyed
@@ -682,10 +696,10 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	$destroy         : function()
 	{
 		//?: {already destroyed}
-		if(this._destroyed === true)
-			return false
+		if(this._destroyed === true) return false
+		this._destroyed = true
 
-		//ZeT.log('Destroy ', this.name)
+		ZeT.log('@[', this.domain, '] - Bind: ', this.name)
 
 		var co; if(co = this._component) try
 		{
@@ -1898,15 +1912,9 @@ extjsf.StoreBind = ZeT.defineClass(
 	{
 		this.$install()
 
-		//~: create the component
-		var self = this; Ext.onReady(function()
-		{
-			self.co(true) //~: create the component
-
-			//~: set the proxy
-			if(self.proxy)
-				self.proxy.co(self.co().getProxy())
-		})
+		//~: create and destroy at a time
+		this.$create_when()
+		this.$destroy_when()
 
 		return this
 	},
@@ -1923,6 +1931,38 @@ extjsf.StoreBind = ZeT.defineClass(
 
 		//~: sort the store before each load
 		this.on('beforeload', ZeT.fbind(this.$before_load, this))
+	},
+
+	$create_when     : function()
+	{
+		//~: create store at the closest moment
+		Ext.onReady(ZeT.fbind(this.$create_all, this))
+	},
+
+	$destroy_when    : function()
+	{
+		var p = this._parent_coid
+
+		if(p && this.domain) //~: lookup the parent
+			p = extjsf.bind(p, this.domain)
+
+		if(!p) return
+
+		//~: destroy the store
+		p.on('destroy', this.boundDestroy())
+
+		//~: destroy the proxy
+		if(this.proxy)
+			p.on('destroy', this.proxy.boundDestroy())
+	},
+
+	$create_all      : function()
+	{
+		this.co(true) //~: create the component
+
+		//~: set the proxy
+		if(this.proxy)
+			this.proxy.co(this.co().getProxy())
 	},
 
 	$create          : function()

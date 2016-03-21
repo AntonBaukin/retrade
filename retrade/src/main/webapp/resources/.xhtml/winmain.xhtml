@@ -7,22 +7,56 @@
 
   <co:interface>
 
+    <!--
+         Winmain component is a panel to install
+         as a content of a Window that supports
+         optional toolbar and status bar panels
+         (that are regular Ext JS panels).
+    -->
+
+    <!--
+         Name of the Bind created for the content panel.
+    -->
     <co:attribute name = 'coid' required = 'true'
        type = 'java.lang.String'/>
 
-    <co:attribute name = 'domainOwner' default = 'true'
-       type = 'java.lang.Boolean'/>
-
+    <!--
+         Ordinary, each window is created in own Domain
+         with 'window' Bind name. If more than one window
+         may be created per Domain, alternate names must
+         be defined and told as this optional parameter.
+    -->
     <co:attribute name = 'windowBind' default = 'window'
        type = 'java.lang.String'/>
 
     <co:attribute name = 'webLink' default = 'true'
        type = 'java.lang.Boolean'/>
 
+    <!--
+         Properties of the root content panel.
+    -->
     <co:facet name = 'extjs-props'/>
+
+    <!--
+         Properties of the toolbar panel.
+    -->
     <co:facet name = 'toolbar-props'/>
+
+    <!--
+         Content of the toolbar.
+         Panel is not created if it has no children!
+    -->
     <co:facet name = 'toolbar'/>
+
+    <!--
+         Properties of the status bar panel.
+    -->
     <co:facet name = 'status-props'/>
+
+    <!--
+         Content of the status bar.
+         Panel is not created if it has no children!
+    -->
     <co:facet name = 'status'/>
 
   </co:interface>
@@ -44,47 +78,18 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  ZeT.scope(function()
-  {
-    var domain  = '${extDom}'
-    var window = extjsf.bind('#{cc.attrs.windowBind}', domain)
-    ZeT.assertn(window && window.co(), 'No window [#{cc.attrs.windowBind}] ',
-      ' was found in the domain [${rootView.extjsDomain}]!')
+      extjsf.domain('${extDom}').
+        bind('#{cc.attrs.coid}', new extjsf.Bind()).ids('#{cc.clientId}').
+        renderTo('#{cc.attrs.renderTo}', '#{cc.attrs.renderParent}').
+        parent('#{cc.parent.attrs.coid}').props({ xtype: 'panel' }).
+        props({ layout: 'border', region: 'center', border: false }).
+        props({ bodyPadding: extjsf.pt(1) }).readPropsNode().
+        scope(extjsf.bind('#{cc.attrs.windowBind}', '${extDom}'),
+          function(winmain, window)
+          {
+            //~: install positioning strategy
+            if(!window.WinAlign) new ReTrade.WinAlign({ window: window })
 
-    //~: add domain destructor (on the window close)
-    if('#{cc.attrs.domainOwner}' == 'true')
-    {
-      //~: create and attach remove listener
-      if(!window._domain_deleter) window._domain_deleter =
-        function()
-        {
-          extjsf.domain(domain).destroy()
-        }
-
-      window.on('destroy', window._domain_deleter)
-    }
-
-    //~: create the root panel
-    var panel = extjsf.domain(domain).bind('#{cc.attrs.coid}', new extjsf.Bind())
-    panel.nodeId("#{cc.clientId}-#{cc.attrs.coid}")
-
-    //~: configure it
-    panel.props({
-
-      xtype: 'panel',
-      layout: 'border', region: 'center',
-      border: false, preventHeader: true,
-      frame: false, shadow: false,
-      bodyPadding: extjsf.pt(1)
-
-    })
-
-    //~: user-defined properties
-    panel.readPropsNode()
-
-    //~: install positioning strategy
-    if(!window.WinAlign)
-      new ReTrade.WinAlign({ window: '#{cc.attrs.windowBind}', domain: domain })
 
     //~: create the toolbar
     var toolbar = extjsf.domain('${extDom}').
@@ -99,7 +104,8 @@
     status.nodeId("#{cc.clientId}-#{cc.attrs.coid}-status")
     status.props({xtype: 'statusbar', dock: 'bottom', border: false})
     status.readPropsNode()
-  })
+          })
+
 
     //]]>
     </script>
