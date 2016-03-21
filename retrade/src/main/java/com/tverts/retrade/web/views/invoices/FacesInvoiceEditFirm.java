@@ -76,7 +76,7 @@ public class   FacesInvoiceEditFirm
 
 	/* public: invoice [edit contractor] interface */
 
-	public String getWinmainTitleEditFirm()
+	public String getWindowTitleEditFirm()
 	{
 		return formatTitle("Выбор контрагента накладной",
 		  getInvoice().getInvoiceCode());

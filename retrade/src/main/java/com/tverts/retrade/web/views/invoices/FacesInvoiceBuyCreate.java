@@ -90,7 +90,7 @@ public class FacesInvoiceBuyCreate
 		return Invoices.typeInvoiceBuy();
 	}
 
-	public String    getWinmainTitleEdit()
+	public String    getWindowTitleEdit()
 	{
 		return "Создание накладной закупки";
 	}

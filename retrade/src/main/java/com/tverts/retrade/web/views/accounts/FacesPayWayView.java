@@ -90,7 +90,7 @@ public class FacesPayWayView extends UnityModelView
 		  getPayWayContractor(getModel().getPrimaryKey());
 	}
 
-	public String getWinmainTitleInfo()
+	public String getWindowTitleInfo()
 	{
 		FmtCtx ctx = new FmtCtx().obj(getEntity()).
 		  put(Contractor.class, getContractor()).

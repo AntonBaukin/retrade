@@ -45,7 +45,7 @@ public class FacesSellsInvoiceView extends FacesInvoiceViewBase
 
 	/* public: view shared interface */
 
-	public String       getWinmainTitleInfo()
+	public String       getWindowTitleInfo()
 	{
 		return formatTitle(
 		  getEntity().getInvoiceType().getTitleLo(),

@@ -76,7 +76,7 @@ public class FacesSellReceiptView extends NumericModelView
 			throw EX.forbid();
 	}
 
-	public String       getWinmainTitleInfo()
+	public String       getWindowTitleInfo()
 	{
 		return formatTitle(
 		  SU.cats("Чек №", getSellReceipt().getCode()),

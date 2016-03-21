@@ -73,7 +73,7 @@ public class FacesRepriceDocView extends UnityModelView
 
 	/* public: view [info] interface */
 
-	public String  getWinmainTitleInfo()
+	public String  getWindowTitleInfo()
 	{
 		return formatTitle("Документ изменения цен",
 		  getEntity().getCode(), DU.datetime2str(getEntity().getChangeTime())

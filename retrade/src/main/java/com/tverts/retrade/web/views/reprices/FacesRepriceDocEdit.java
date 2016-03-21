@@ -277,7 +277,7 @@ public class FacesRepriceDocEdit extends ModelView
 		return codeExists;
 	}
 
-	public String getWinmainTitle()
+	public String getWindowTitle()
 	{
 		return (isCreate())?("Создание документа изменения цен"):
 		  formatTitle("Ред. документа изменения цен", getModel().getView().getCode());

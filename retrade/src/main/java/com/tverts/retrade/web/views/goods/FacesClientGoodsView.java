@@ -89,7 +89,7 @@ public class FacesClientGoodsView extends FacesGoodsView
 
 	private GoodUnit infoSuperGood;
 
-	public String getWinmainTitle()
+	public String getWindowTitle()
 	{
 		Contractor c = bean(GetContractor.class).
 		  getContractor(EX.assertn(getModel().getContractor()));

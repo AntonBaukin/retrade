@@ -83,13 +83,13 @@ public class FacesContractorView extends UnityModelView
 
 	/* public: view [info] interface */
 
-	public String getWinmainTitleInfo()
+	public String getWindowTitleInfo()
 	{
 		return formatTitle("Контрагент",
 		  getEntity().getCode(), getEntity().getName());
 	}
 
-	public String getWinmainTitleInvoices()
+	public String getWindowTitleInvoices()
 	{
 		return formatTitle("Накладные к-та",
 		  getEntity().getCode(), getEntity().getName());

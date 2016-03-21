@@ -192,7 +192,7 @@ public class FacesFirmViewEdit extends UnityModelView
 		return (getModel().getPrimaryKey() == null);
 	}
 
-	public String getWinmainTitleEdit()
+	public String getWindowTitleEdit()
 	{
 		return (isCreate())?("Добавление контрагента"):
 		  formatTitle("Редактирование контрагента", getEntity().getCode());
@@ -267,12 +267,12 @@ public class FacesFirmViewEdit extends UnityModelView
 
 	/* public: view [info] interface */
 
-	public String getWinmainTitle()
+	public String getWindowTitle()
 	{
-		return isCreate()?(getWinmainTitleEdit()):(getWinmainTitleInfo());
+		return isCreate()?(getWindowTitleEdit()):(getWindowTitleInfo());
 	}
 
-	public String getWinmainTitleInfo()
+	public String getWindowTitleInfo()
 	{
 		return formatTitle("Контрагент",
 		  getEntity().getCode(), getEntity().getName());

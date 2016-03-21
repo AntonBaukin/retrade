@@ -72,7 +72,7 @@ public class   FacesVolumeCheckCreate
 		return Invoices.typeVolumeCheck();
 	}
 
-	public String    getWinmainTitleEdit()
+	public String    getWindowTitleEdit()
 	{
 		return "Создать инвентаризацию остатков";
 	}

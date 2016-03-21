@@ -205,7 +205,7 @@ public abstract class FacesInvoiceEditBase extends ModelView
 
 	/* public: [edit] interface */
 
-	public String      getWinmainTitleEdit()
+	public String      getWindowTitleEdit()
 	{
 		return formatTitle("Ред. накладной",
 		  getInvoice().getInvoiceCode(),

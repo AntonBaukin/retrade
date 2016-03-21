@@ -7,16 +7,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/invoices/.single-invoice.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/invoices/.single-invoice.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/accounts/FacesAccountView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/accounts/FacesAccountView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/goods/FacesClientGoodsView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/firms/FacesContractorView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/firms/FacesContractorView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/firms/FacesFirmViewEdit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/firms/FacesFirmViewEdit.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/FacesGoodPriceView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/FacesGoodPriceView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceAskEdit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceAskEdit.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceBuyCreate.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceBuyCreate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceEditBase.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceEditBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceEditDate.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceEditDate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceEditFirm.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceEditFirm.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceMoveCreate.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceMoveCreate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceMoveView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceMoveView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceSellCreate.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceSellCreate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceViewBase.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesInvoiceViewBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/accounts/FacesPayWayView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/accounts/FacesPayWayView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/prices/FacesPriceListView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/prices/FacesPriceListView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/FacesReportTemplateEdit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/datas/FacesReportTemplateEdit.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/reprices/FacesRepriceDocEdit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/reprices/FacesRepriceDocEdit.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/reprices/FacesRepriceDocView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/reprices/FacesRepriceDocView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/sells/FacesSellReceiptView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/sells/FacesSellReceiptView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/sells/FacesSellsInvoiceView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/sells/FacesSellsInvoiceView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/sells/FacesSellsSessionView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/sells/FacesSellsSessionView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/stores/FacesStoreView.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/stores/FacesStoreView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesVolumeCheckCreate.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesVolumeCheckCreate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesVolumeCheckEdit.java" afterPath="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/invoices/FacesVolumeCheckEdit.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/domains.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/domains.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/firms/info-invoices.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/firms/info-invoices.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list-ways.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list-ways.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/list.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/scripts.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/scripts.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/sells/session-invoices.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/sells/session-invoices.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/users.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/users.xhtml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,11 +63,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="self-shunt.xhtml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/self-shunt.xhtml">
+      <file leaf-file-name="FacesGoodPriceView.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/FacesGoodPriceView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334">
-              <caret line="21" column="11" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.46248084">
+              <caret line="55" column="64" selection-start-line="55" selection-start-column="41" selection-end-line="55" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -79,7 +95,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/drop-list.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/date-field.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/time-field.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/invoices/edit-date.xhtml" />
@@ -96,6 +111,7 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winmain.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/info-main.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/scripts.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/FacesGoodPriceView.java" />
       </list>
     </option>
   </component>
@@ -642,7 +658,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-101 [beta]: refactored x:data-grid." />
     <MESSAGE value="ui-101 [beta]: fixing rendering issues of x:component..." />
     <MESSAGE value="ui-92 [stable]: fixed menus z-indexing in WebKit." />
     <MESSAGE value="ui-87 [stable]: used rounding for the tiles to be hard in WebKit." />
@@ -667,7 +682,8 @@
     <MESSAGE value="ui-101 [alpha]: renamed 'winmain' to 'window'." />
     <MESSAGE value="ui-101 [alpha]: proper $destroy() implementation." />
     <MESSAGE value="ui-101 [alpha]: renamed 'winmain' variables to 'window'." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-101 [alpha]: renamed 'winmain' variables to 'window'." />
+    <MESSAGE value="ui-101 [alpha]: creating windows with Root Binds." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-101 [alpha]: creating windows with Root Binds." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -791,81 +807,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/sells/invoice-info.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34775373">
-          <caret line="22" column="11" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
-          <folding>
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458563323000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458563323000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458563323000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458563323000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458563323000" expanded="false" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/sells/receipt-info.xhtml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34775373">
@@ -1710,8 +1651,53 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/self-shunt.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="21" column="11" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.10227273">
+          <caret line="14" column="45" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="{&quot;command&quot;: 'submit_action'...}" />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="{&quot;name&quot;: &quot;#{z:jss(g)}&quot;...}" />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458557005000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="{&quot;cellCls&quot;: 'retrade-self-shunt-groups-checkbox-label-cell'...}" />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="{&quot;inputValue&quot;: 'true'...}" />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458557005000" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/FacesGoodPriceView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46248084">
+          <caret line="55" column="64" selection-start-line="55" selection-start-column="41" selection-end-line="55" selection-end-column="41" />
           <folding />
         </state>
       </provider>

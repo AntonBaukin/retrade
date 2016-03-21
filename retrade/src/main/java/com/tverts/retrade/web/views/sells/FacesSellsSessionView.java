@@ -72,7 +72,7 @@ public class FacesSellsSessionView extends UnityModelView
 		return (SellsSessionModelBean) super.getModel();
 	}
 
-	public String  getWinmainTitleInfo()
+	public String  getWindowTitleInfo()
 	{
 		return formatTitle(
 		  getEntity().getUnity().getUnityType().getTitleLo(),
@@ -80,9 +80,9 @@ public class FacesSellsSessionView extends UnityModelView
 		);
 	}
 
-	public String getWinmainTitleInvoices()
+	public String getWindowTitleInvoices()
 	{
-		return "Накладные, " + getWinmainTitleInfo();
+		return "Накладные, " + getWindowTitleInfo();
 	}
 
 	public boolean isFromInvoice()

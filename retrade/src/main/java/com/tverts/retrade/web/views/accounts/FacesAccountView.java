@@ -73,7 +73,7 @@ public class FacesAccountView extends UnityModelView
 		return (getEntity().getContractor() == null);
 	}
 
-	public String getWinmainTitleInfo()
+	public String getWindowTitleInfo()
 	{
 		if(isOwnAccount()) return SU.cats(
 		 "Собственный учётный счёт №", getEntity().getCode(),

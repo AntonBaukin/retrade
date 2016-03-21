@@ -70,7 +70,7 @@ public class FacesPriceListView extends NumericModelView
 
 	/* public: view [info] interface */
 
-	public String  getWinmainTitleInfo()
+	public String  getWindowTitleInfo()
 	{
 		return formatTitle("Прайс-лист",
 		  getNumeric().getCode(), getNumeric().getName()

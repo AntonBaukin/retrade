@@ -44,7 +44,7 @@ public class   FacesInvoiceMoveView
 		  ((MoveData)getEntity().getInvoiceData()).getSourceStore());
 	}
 
-	public String  getWinmainTitleInfo()
+	public String  getWindowTitleInfo()
 	{
 		return formatTitle(
 		  Invoices.getInvoiceEffectiveType(getEntity()).getTitleLo(),

@@ -21,7 +21,7 @@ public class   FacesVolumeCheckEdit
 {
 	/* public: [edit] interface */
 
-	public String getWinmainTitleEdit()
+	public String getWindowTitleEdit()
 	{
 		return formatTitle("Ред. инв. остатков",
 		  getInvoice().getInvoiceCode(),

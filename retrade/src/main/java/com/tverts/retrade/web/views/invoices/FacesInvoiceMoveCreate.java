@@ -86,7 +86,7 @@ public class   FacesInvoiceMoveCreate
 		return Invoices.typeInvoiceMove();
 	}
 
-	public String    getWinmainTitleEdit()
+	public String    getWindowTitleEdit()
 	{
 		if(isAutoProduce())
 			return "Создание накладной авто-производства";

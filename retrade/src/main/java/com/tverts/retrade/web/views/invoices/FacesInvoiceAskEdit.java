@@ -73,7 +73,7 @@ public class FacesInvoiceAskEdit extends ModelViewBase
 		return getViewInvoice().getPrimaryKey();
 	}
 
-	public String  getWinmainTitleAskEdit()
+	public String  getWindowTitleAskEdit()
 	{
 		Invoice i = getViewInvoice();
 

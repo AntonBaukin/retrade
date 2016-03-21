@@ -53,7 +53,7 @@ public class FacesGoodPriceView extends NumericModelView
 
 	/* public: view [history] interface */
 
-	public String  getWinmainTitleHistory()
+	public String  getWindowTitleHistory()
 	{
 		return formatTitles(
 		  formatTitle("История цен товара", getGood().getCode()),

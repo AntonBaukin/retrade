@@ -161,7 +161,7 @@ public class FacesReportTemplateEdit extends ModelView
 		return (getView().getObjectKey() == null);
 	}
 
-	public String getWinmainTitle()
+	public String getWindowTitle()
 	{
 		if(isCreate())
 			return "Создание шаблона отчёта";

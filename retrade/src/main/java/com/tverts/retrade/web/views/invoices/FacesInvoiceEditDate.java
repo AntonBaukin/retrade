@@ -45,7 +45,7 @@ public class   FacesInvoiceEditDate
 
 	/* public: invoice [edit date] interface */
 
-	public String  getWinmainTitleEditDate()
+	public String  getWindowTitleEditDate()
 	{
 		return formatTitle("Ред. даты накладной",
 		  getInvoice().getInvoiceCode()

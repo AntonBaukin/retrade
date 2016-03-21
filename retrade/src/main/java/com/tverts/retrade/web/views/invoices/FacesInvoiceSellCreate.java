@@ -91,7 +91,7 @@ public class FacesInvoiceSellCreate
 		return Invoices.typeInvoiceSell();
 	}
 
-	public String    getWinmainTitleEdit()
+	public String    getWindowTitleEdit()
 	{
 		return "Создание накладной продажи";
 	}
