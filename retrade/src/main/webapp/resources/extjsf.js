@@ -212,6 +212,11 @@ ZeT.extend(extjsf,
 
 // +----: Bind :-------------------------------------------------+
 
+/**
+ * ExtJSF Bind is a controller that connects Ext JS
+ * Component with supporting scripts related to JSF
+ * specific issues. This is the most general class.
+ */
 extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 {
 	className        : 'extjsf.Bind',
@@ -908,8 +913,60 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 })
 
 
+// +----: Root Bind :--------------------------------------------+
+
+/**
+ * Root Binds relate to the top-level components that has no
+ * parent Binds, or are owners of a Domain. They are:
+ * the viewport, root panels, and floating windows.
+ */
+extjsf.RootBind = ZeT.defineClass(
+  'extjsf.RootBind', extjsf.Bind,
+{
+	/**
+	 * Tells whether to install the callback on the owning
+	 * component destroy to also destroy the entire Domain.
+	 */
+	domainOwner      : function(isowner)
+	{
+		ZeT.assert(ZeT.isb(isowner))
+		ZeT.assert(ZeT.iss(this.domain))
+		this._domain_owner = isowner
+	},
+
+	$destroy         : function()
+	{
+		try
+		{
+			this.$applySuper(arguments)
+		}
+		finally
+		{
+			this.$destroy_domain()
+		}
+	},
+
+	$destroy_domain  : function()
+	{
+		if(this._domain_owner !== true) return
+		delete this._domain_owner
+
+		//?: {not a default domain}
+		ZeT.asserts(this.domain)
+
+		//!: destroy the domain
+		extjsf.domain(this.domain).destroy()
+	}
+})
+
+
 // +----: Action Bind :------------------------------------------+
 
+/**
+ * Action Bind is for components that has hidden JSF forms.
+ * It's the components that send JSF post request to the
+ * server and able to run various actions or commands.
+ */
 extjsf.ActionBind = ZeT.defineClass(
   'extjsf.ActionBind', extjsf.Bind,
 {

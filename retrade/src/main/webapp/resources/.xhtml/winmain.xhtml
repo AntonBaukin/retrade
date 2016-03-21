@@ -13,7 +13,7 @@
     <co:attribute name = 'domainOwner' default = 'true'
        type = 'java.lang.Boolean'/>
 
-    <co:attribute name = 'winmainName' default = 'winmain'
+    <co:attribute name = 'windowBind' default = 'winmain'
        type = 'java.lang.String'/>
 
     <co:attribute name = 'webLink' default = 'true'
@@ -47,8 +47,8 @@
   ZeT.scope(function()
   {
     var domain  = '${extDom}'
-    var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain)
-    ZeT.assertn(winmain && winmain.co(), 'No window [#{cc.attrs.winmainName}] ',
+    var winmain = extjsf.bind('#{cc.attrs.windowBind}', domain)
+    ZeT.assertn(winmain && winmain.co(), 'No window [#{cc.attrs.windowBind}] ',
       ' was found in the domain [${rootView.extjsDomain}]!')
 
     //~: add domain destructor (on the window close)
@@ -84,7 +84,7 @@
 
     //~: install positioning strategy
     if(!winmain.WinAlign)
-      new ReTrade.WinAlign({ window: '#{cc.attrs.winmainName}', domain: domain })
+      new ReTrade.WinAlign({ window: '#{cc.attrs.windowBind}', domain: domain })
 
     //~: create the toolbar
     var toolbar = extjsf.domain('${extDom}').
@@ -161,7 +161,7 @@
   ZeT.scope(function()
   {
     var domain  = '${extDom}'
-    var winmain = extjsf.bind('#{cc.attrs.winmainName}', domain)
+    var winmain = extjsf.bind('#{cc.attrs.windowBind}', domain)
     if(!winmain || !winmain.co()) return
 
     var panel   = extjsf.bind("#{cc.attrs.coid}", domain)
