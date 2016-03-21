@@ -51,7 +51,7 @@
   extjsf.handler("${z:vid(v, 'add-user')}", '${extDom}', function(btn, event)
   {
     var domain  = 'wnd:' + "${z:vid(v, 'add-user')}";
-    var winmain = extjsf.bind('winmain', domain);
+    var winmain = extjsf.bind('window', domain);
 
     var box     = ReTrade.desktop.calcWindowBox({
       event: event, widthpt: 240, heightpt: 180, '+xpt': 30, '-ypt': 40
@@ -65,7 +65,7 @@
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
+    winmain = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -313,7 +313,7 @@
     var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
     var domain  = 'wnd:' + "${z:vid(v, 'edit-person')}:" + m.getId();
-    var winmain = extjsf.bind('winmain', domain);
+    var winmain = extjsf.bind('window', domain);
 
     var box     = ReTrade.desktop.calcWindowBox({
       event: event, widthpt: 260, heightpt: 220, '+xpt': 30, '-ypt': 80
@@ -327,7 +327,7 @@
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
+    winmain = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -409,7 +409,7 @@
     var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
     var domain  = 'wnd:' + "${z:vid(v, 'update-user-password')}:" + m.getId();
-    var winmain = extjsf.bind('winmain', domain);
+    var winmain = extjsf.bind('window', domain);
 
     var box     = ReTrade.desktop.calcWindowBox({
       event: event, widthpt: 240, heightpt: 180, '+xpt': -280, '-ypt': 40
@@ -423,7 +423,7 @@
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
+    winmain = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -487,7 +487,7 @@
     var m = extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').retradeLoginModel; if(!m) return;
 
     var domain  = 'wnd:' + "${z:vid(v, 'person-secure-ables')}:" + m.getId();
-    var winmain = extjsf.bind('winmain', domain);
+    var winmain = extjsf.bind('window', domain);
 
     var box     = ReTrade.desktop.calcWindowBox({
       event: event, widthpt: 480, heightpt: 360, '+xpt': -500, '-ypt': 240
@@ -501,7 +501,7 @@
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
+    winmain = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,

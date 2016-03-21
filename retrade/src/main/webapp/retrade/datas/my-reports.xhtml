@@ -20,7 +20,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle('Мои отчёты')
 
   </script>
@@ -47,7 +47,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${extDom}').
+          extjsf.bind('window', '${extDom}').
             co().close()
         }
 

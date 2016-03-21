@@ -18,7 +18,7 @@
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle('${z:jss(v.logWindowTitle)}')
 
   </script>
@@ -41,7 +41,7 @@
 
         handler : function()
         {
-          var cmp = extjsf.bind('winmain', '${extDom}').co();
+          var cmp = extjsf.bind('window', '${extDom}').co();
           cmp.findParentByType('panel').remove(cmp, true)
         }
 

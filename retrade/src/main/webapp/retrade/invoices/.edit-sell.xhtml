@@ -17,7 +17,7 @@ ${v.forceSecureEdit()}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${extDom}').
+    extjsf.co('window', '${extDom}').
       setTitle('${z:jss(v.winmainTitleEdit)}')
 
     //~: adjust window size
@@ -25,7 +25,7 @@ ${v.forceSecureEdit()}
     {
       //~: set window width for columns
       ReTrade.desktop.applyWindowBox({
-        name: 'winmain', domain: '${extDom}',
+        name: 'window', domain: '${extDom}',
         widthpt: 680, prevsize: 'edit-sell'
       })
     }))
@@ -591,7 +591,7 @@ ${v.forceSecureEdit()}
 
     if(checked) //~: set window width for more columns
       ReTrade.desktop.applyWindowBox({
-        name: 'winmain', domain: '${extDom}',
+        name: 'window', domain: '${extDom}',
         widthpt: 680, prevsize: 'edit-sell'
       })
   })

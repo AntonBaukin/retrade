@@ -22,7 +22,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.co('winmain', '${extDom}').
+      extjsf.co('window', '${extDom}').
         setTitle('Атрибуты товаров')
 
     //]]>
@@ -49,7 +49,7 @@ ${v.checkModelRequestedWithRedirect}
         <f:facet name = "extjs-props">
           xtype: 'button', text: 'Закрыть', handler : function()
           {
-            extjsf.co('winmain', '${extDom}').close()
+            extjsf.co('window', '${extDom}').close()
           }
         </f:facet>
       </x:component>

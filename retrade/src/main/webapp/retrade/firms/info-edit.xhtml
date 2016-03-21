@@ -17,7 +17,7 @@ ${v.forceSecure()}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${extDom}').
+    extjsf.co('window', '${extDom}').
       setTitle('${z:jss(v.winmainTitle)}')
 
   //]]>
@@ -44,7 +44,7 @@ ${v.forceSecure()}
         xtype: 'button', text: 'Отмена',
         cls: 'ux-btn-red', handler : function()
         {
-          extjsf.co('winmain', '${extDom}').close()
+          extjsf.co('window', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -54,7 +54,7 @@ ${v.forceSecure()}
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Закрыть', handler : function()
         {
-          extjsf.co('winmain', '${extDom}').close()
+          extjsf.co('window', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -577,7 +577,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
     extjsf.bind("${z:vid(v, 'do-edit')}", '${extDom}').visible(isread)
 
     //~: window title
-    var winmain = extjsf.bind('winmain', '${extDom}').co()
+    var winmain = extjsf.bind('window', '${extDom}').co()
     if(isread) winmain.setTitle('${z:jss(v.winmainTitle)}')
     else winmain.setTitle('${z:jss(v.winmainTitleEdit)}')
   }
@@ -602,7 +602,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
   //~: submit form with command button
   extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var winmain = extjsf.bind('winmain', '${extDom}')
+    var winmain = extjsf.bind('window', '${extDom}')
     winmain.retradeEditSuccess = false
 
     extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').submit({

@@ -19,7 +19,7 @@ ${i.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle('${z:jss(i.winmainTitleInvoices)}')
 
   </script>
@@ -109,7 +109,7 @@ ${i.checkModelRequestedWithRedirect}
     on('itemdblclick', function(comp, rec, node, row, event)
   {
     var domain  = 'wnd:' + "${z:vid(i, 'view_invoice')}:" + rec.getId();
-    var winmain = extjsf.bind('winmain', domain);
+    var winmain = extjsf.bind('window', domain);
 
     var box     = ReTrade.desktop.calcWindowBox({
       'event': event, widthpt: 480, heightpt: 360
@@ -123,7 +123,7 @@ ${i.checkModelRequestedWithRedirect}
       return;
     }
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
+    winmain = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,

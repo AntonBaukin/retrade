@@ -20,7 +20,7 @@ ${v.checkEntityRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${extDom}').
+    extjsf.co('window', '${extDom}').
       setTitle('${z:jss(v.winmainTitleInfo)}')
 
   //]]>
@@ -48,7 +48,7 @@ ${v.checkEntityRequested}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${extDom}').
+          extjsf.bind('window', '${extDom}').
             co().close()
         }
 

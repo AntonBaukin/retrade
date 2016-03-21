@@ -22,7 +22,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    ReTrade.desktop.prevsizeComp('winmain', '${extDom}')
+    ReTrade.desktop.prevsizeComp('window', '${extDom}')
 
   //]]>
   </script>
@@ -49,7 +49,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'button', text: 'Отмена', cls: 'ux-btn-red',
         handler : function()
         {
-          extjsf.co('winmain', '${extDom}').close()
+          extjsf.co('window', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -61,7 +61,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'button', text: 'Закрыть',
         handler : function()
         {
-          extjsf.co('winmain', '${extDom}').close()
+          extjsf.co('window', '${extDom}').close()
         }
       </f:facet>
     </x:component>
@@ -593,7 +593,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}">
         <f:facet name = "extjs-props">
-          checked: !!extjsf.bind('winmain', '${extDom}').retradeAddSelSetChecked,
+          checked: !!extjsf.bind('window', '${extDom}').retradeAddSelSetChecked,
           cls: 'retrade-align-right', fieldStyle: { marginRight: '4pt' }
         </f:facet>
 
@@ -841,7 +841,7 @@ ${v.checkModelRequestedWithRedirect}
     var gused   = extjsf.bind("${z:vid(v, 'good-used')}", '${extDom}')
     var close   = extjsf.bind("${z:vid(v, 'close')}", '${extDom}')
     var cancel  = extjsf.bind("${z:vid(v, 'cancel-edit')}", '${extDom}')
-    var winmain = extjsf.bind('winmain', '${extDom}')
+    var winmain = extjsf.bind('window', '${extDom}')
     var groups  = extjsf.bind("${z:vid(v, 'groups')}", '${extDom}')
     var edit    = extjsf.bind("${z:vid(v, 'edit')}", '${extDom}')
     var vcodes  = extjsf.bind("${z:vid(v, 'vendor-codes')}", '${extDom}')
@@ -1043,12 +1043,12 @@ ${v.checkModelRequestedWithRedirect}
       //~: save the window position or adapt it
       if(on && !isReadMode)
         ReTrade.desktop.applyWindowBox({
-          name: 'winmain', domain: '${extDom}',
+          name: 'window', domain: '${extDom}',
           prevsize: 'good-attrs', widthpt: 480
         })
       else
         ReTrade.desktop.prevsizeComp({
-          name: 'winmain', domain: '${extDom}',
+          name: 'window', domain: '${extDom}',
           marker: 'good-attrs', save: !!on
         })
 
@@ -1171,7 +1171,7 @@ ${v.checkModelRequestedWithRedirect}
       form.submit({ '${v.viewModeParam}': '${v.viewModePostStr}',
         command: "${z:vid(v, 'submit-action')}", success: function()
         {
-          var winmain = extjsf.bind('winmain', '${extDom}');
+          var winmain = extjsf.bind('window', '${extDom}');
           winmain.retradeEditDone = true
           winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
 

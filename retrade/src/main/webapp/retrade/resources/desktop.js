@@ -2467,7 +2467,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 		//!: reload content
 		Ext.create('Ext.ComponentLoader', {
-		  target: window, url: self.url('winmain'),
+		  target: window, url: self.url('window'),
 		  ajaxOptions: { method: 'GET' },
 		  params: params, autoLoad: true, scripts: true
 		})
@@ -2501,7 +2501,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			autoShow: false, cls: 'retrade-selset-window',
 
 			loader: { autoLoad: true, scripts: true, params: params,
-				url: self.url('winmain'), ajaxOptions: { method: 'GET' }
+				url: self.url('window'), ajaxOptions: { method: 'GET' }
 			}
 		})
 

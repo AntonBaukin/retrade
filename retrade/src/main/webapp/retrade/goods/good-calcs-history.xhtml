@@ -22,11 +22,11 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle("#{z:jss(v.calcsHistoryWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-history',
-      name: 'winmain', domain: '${extDom}'
+      name: 'window', domain: '${extDom}'
     })
 
   //]]>
@@ -118,7 +118,7 @@ ${v.checkModelRequested}
   Ext.onReady(ZeT.timeouted(150, function()
   {
     ReTrade.desktop.applyWindowBox({
-      name: 'winmain', domain: '${extDom}',
+      name: 'window', domain: '${extDom}',
       widthpt: 360, prevsize: 'calc-info'
     })
   }))

@@ -22,10 +22,10 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle('Единицы измерения')
 
-    ReTrade.desktop.prevsizeComp('winmain', '${extDom}')
+    ReTrade.desktop.prevsizeComp('window', '${extDom}')
 
   //]]>
   </script>
@@ -52,7 +52,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${extDom}').
+          extjsf.bind('window', '${extDom}').
             co().close()
         }
 

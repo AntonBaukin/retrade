@@ -22,7 +22,7 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${extDom}').
+    extjsf.co('window', '${extDom}').
       setTitle("#{z:jss(v.editWindowTitle)}")
 
   //]]>
@@ -295,7 +295,7 @@ ${v.checkModelRequested}
   //~: adjust window size
   Ext.onReady(ZeT.timeouted(150, function()
   {
-    ReTrade.desktop.resizeToHeight('winmain',
+    ReTrade.desktop.resizeToHeight('window',
       { domain: '${extDom}', '+hpt': 16, force: true },
       [ "${z:vid(v, '_code_name_line')}", "${z:vid(v, '_class_code_unit_line')}" ]
     )

@@ -22,11 +22,11 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${extDom}').
+    extjsf.co('window', '${extDom}').
       setTitle("#{z:jss(v.calcWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-info',
-      name: 'winmain', domain: '${extDom}'
+      name: 'window', domain: '${extDom}'
     })
 
   //]]>
@@ -321,7 +321,7 @@ ${v.checkModelRequestedWithRedirect}
   Ext.onReady(ZeT.timeouted(150, function()
   {
     ReTrade.desktop.applyWindowBox({
-      name: 'winmain', domain: '${extDom}',
+      name: 'window', domain: '${extDom}',
       widthpt: 540, heightpt: 280, prevsize: 'calc-info'
     })
   }))

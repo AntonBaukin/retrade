@@ -18,7 +18,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle('${z:jss(v.winmainTitle)}')
 
   </script>
@@ -49,7 +49,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.co('winmain', '${extDom}').close()
+          extjsf.co('window', '${extDom}').close()
         }
 
       </f:facet>

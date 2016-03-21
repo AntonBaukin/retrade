@@ -2803,7 +2803,7 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 	load             : function()
 	{
 		//~: find the main window
-		var winmain = extjsf.bind('winmain', this._domain);
+		var winmain = extjsf.bind('window', this._domain);
 		if(!winmain) throw 'Can not find winmain in ' +
 		  'the domain: [' + this._domain + ']!';
 
@@ -2830,7 +2830,7 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 			extjsf.domain(this._domain).destroy({ except: [ winmain ]})
 
 		//~: create the domain with this window
-		extjsf.domain(this._domain).bind('winmain', winmain)
+		extjsf.domain(this._domain).bind('window', winmain)
 
 		//~: clear the component
 		this._clear(winmain)

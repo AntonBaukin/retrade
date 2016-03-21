@@ -19,7 +19,7 @@
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.co('winmain', '${extDom}').
+    extjsf.co('window', '${extDom}').
       setTitle("#{z:jss(v.measuresWindowTitle)}")
 
   //]]>
@@ -665,12 +665,12 @@
       //~: adapt the height of the window
       if(on)
         ReTrade.desktop.applyWindowBox({
-          name: 'winmain', domain: '${extDom}',
+          name: 'window', domain: '${extDom}',
           prevsize: 'good-attrs', widthpt: (editMode)?(480):(360)
         })
       else
         ReTrade.desktop.prevsizeComp({
-          name: 'winmain', domain: '${extDom}',
+          name: 'window', domain: '${extDom}',
           marker: 'good-attrs'
         })
     }

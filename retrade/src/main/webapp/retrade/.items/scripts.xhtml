@@ -145,7 +145,7 @@ function retrade_open_window(opts)
   ZeT.asserts(opts.domain, 'No ExtJSF window domain string is provided!')
 
   //~: lookup the window bind
-  var winmain = extjsf.bind('winmain', opts.domain)
+  var winmain = extjsf.bind('window', opts.domain)
 
   //?: {has no box provided}
   if(!opts.box) opts.box = { widthpt: 480, heightpt: 360 }
@@ -184,7 +184,7 @@ function retrade_open_window(opts)
   if(opts.record) opts.params['${rootView.entityParam}'] = '' + opts.record
 
   //~: create the window bind
-  winmain = extjsf.domain(opts.domain).bind('winmain', new extjsf.Bind()).props({
+  winmain = extjsf.domain(opts.domain).bind('window', new extjsf.Bind()).props({
 
     xtype: 'window', title: 'Загрузка...',
     x: box.x, y: box.y, width: box.width, height: box.height,

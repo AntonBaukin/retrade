@@ -21,7 +21,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle('Добавление товаров в табличной форме')
 
   </script>
@@ -50,7 +50,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${extDom}').
+          extjsf.bind('window', '${extDom}').
             co().close()
         }
 
@@ -477,7 +477,7 @@ ${v.checkModelRequestedWithRedirect}
     extjsf.handler("${z:vid(v, 'commit-script')}", '${extDom}')({
       params: params, success: function()
       {
-        extjsf.bind('winmain', '${extDom}').retradeEditDone = true;
+        extjsf.bind('window', '${extDom}').retradeEditDone = true;
         extjsf.handler("${z:vid(v, 'close-window')}", '${extDom}')()
       }
     })

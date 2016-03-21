@@ -19,7 +19,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle("Правила доступа п-ля ${z:jss(v.loginTitle)}")
 
   </script>
@@ -48,7 +48,7 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          extjsf.co('winmain', '${extDom}').close()
+          extjsf.co('window', '${extDom}').close()
         }
       </f:facet>
     </x:component>

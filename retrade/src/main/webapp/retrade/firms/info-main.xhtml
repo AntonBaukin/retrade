@@ -19,10 +19,10 @@ ${v.checkEntityRequested}
 
   <script type = "text/javascript">
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle('${z:jss(v.winmainTitleInfo)}')
 
-    ReTrade.desktop.prevsizeComp({name: 'winmain', domain: '${extDom}'})
+    ReTrade.desktop.prevsizeComp({name: 'window', domain: '${extDom}'})
 
   </script>
 
@@ -49,7 +49,7 @@ ${v.checkEntityRequested}
 
         handler : function()
         {
-          extjsf.bind('winmain', '${extDom}').
+          extjsf.bind('window', '${extDom}').
             co().close()
         }
 

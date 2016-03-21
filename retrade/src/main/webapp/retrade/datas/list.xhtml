@@ -303,7 +303,7 @@ ${v.checkModelRequestedWithRedirect}
     else
       domain = 'wnd:' + "${z:vid(v, 'edit-report-template')}:" + template;
 
-    var winmain = extjsf.bind('winmain', domain); if(winmain)
+    var winmain = extjsf.bind('window', domain); if(winmain)
     {
       winmain.co().toFront()
       winmain.co().setPagePosition(box.x, box.y)
@@ -320,7 +320,7 @@ ${v.checkModelRequestedWithRedirect}
     if(s) params.dataSource = s.getId();
     if(template) params[entity] = template;
 
-    winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
+    winmain = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
 
       xtype: 'window', title: 'Загрузка...', autoShow: true,
       x: box.x, y: box.y, width: box.width, height: box.height,
@@ -508,7 +508,7 @@ ${v.checkModelRequestedWithRedirect}
         ps.dataSource = '#{z:jss(v.dataSource)}';
       }
 
-      var winmain = extjsf.domain(domain).bind('winmain', new extjsf.Bind()).props({
+      var winmain = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
 
         xtype: 'window', title: 'Загрузка...',
         x: box.x, y: box.y, width: box.width, height: box.height,

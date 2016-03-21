@@ -22,11 +22,11 @@ ${v.checkModelRequested}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('winmain', '${extDom}').
+    extjsf.bind('window', '${extDom}').
       co().setTitle("#{z:jss(v.calcEditWindowTitle)}")
 
     ReTrade.desktop.prevsizeComp({ marker: 'calc-edit',
-      name: 'winmain', domain: '${extDom}'
+      name: 'window', domain: '${extDom}'
     })
 
   //]]>
@@ -768,7 +768,7 @@ ${v.checkModelRequested}
 
     //~: adjust window size
     ReTrade.desktop.applyWindowBox({
-      name: 'winmain', domain: '${extDom}',
+      name: 'window', domain: '${extDom}',
       widthpt: 540, heightpt: 280, prevsize: 'calc-edit'
     })
   }))

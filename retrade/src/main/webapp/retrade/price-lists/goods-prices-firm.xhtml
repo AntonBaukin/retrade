@@ -22,7 +22,7 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.bind('winmain', '${extDom}').
+      extjsf.bind('window', '${extDom}').
         co().setTitle("${z:jss(v.winmainTitle)}")
 
     //]]>
@@ -51,7 +51,7 @@ ${v.checkModelRequestedWithRedirect}
 
           handler : function()
           {
-            extjsf.bind('winmain', '${extDom}').
+            extjsf.bind('window', '${extDom}').
               co().close()
           }
 
