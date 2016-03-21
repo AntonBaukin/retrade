@@ -18,7 +18,7 @@ ${v.forceSecure()}
   //<![CDATA[
 
     extjsf.co('window', '${extDom}').
-      setTitle('${z:jss(v.winmainTitle)}')
+      setTitle('${z:jss(v.windowTitle)}')
 
   //]]>
   </script>
@@ -577,9 +577,9 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
     extjsf.bind("${z:vid(v, 'do-edit')}", '${extDom}').visible(isread)
 
     //~: window title
-    var winmain = extjsf.bind('window', '${extDom}').co()
-    if(isread) winmain.setTitle('${z:jss(v.winmainTitle)}')
-    else winmain.setTitle('${z:jss(v.winmainTitleEdit)}')
+    var window = extjsf.bind('window', '${extDom}').co()
+    if(isread) window.setTitle('${z:jss(v.windowTitle)}')
+    else window.setTitle('${z:jss(v.windowTitleEdit)}')
   }
 
 
@@ -602,13 +602,13 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
   //~: submit form with command button
   extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', function()
   {
-    var winmain = extjsf.bind('window', '${extDom}')
-    winmain.retradeEditSuccess = false
+    var window = extjsf.bind('window', '${extDom}')
+    window.retradeEditSuccess = false
 
     extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').submit({
       command: 'submit', success: function()
     {
-      winmain.retradeEditSuccess = true
+      window.retradeEditSuccess = true
       extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
     }})
   })

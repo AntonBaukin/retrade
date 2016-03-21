@@ -42,10 +42,10 @@ ${v.checkModelRequestedWithRedirect}
 
         handler : function()
         {
-          var winmain = extjsf.bind('window', '${extDom}');
+          var window = extjsf.bind('window', '${extDom}');
 
-          winmain.personEdit = { cancelled: true };
-          winmain.co().close()
+          window.personEdit = { cancelled: true };
+          window.co().close()
         }
 
       </f:facet>

@@ -17,12 +17,12 @@ ${v.checkModelRequestedWithRedirect}
   <ui:define name = 'page_body'>
 
   <x:winmain coid = "${z:vid(v, 'selset-panel')}"
-    webLink = "false" domainOwner = 'false' windowBind = 'winmain-selset'>
+    webLink = "false" domainOwner = 'false' windowBind = 'window-selset'>
 
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.bind('winmain-selset', '${extDom}').
+      extjsf.bind('window-selset', '${extDom}').
         co().setTitle('${z:jss(v.windowTitle)}')
 
     //]]>
@@ -35,7 +35,7 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [selection set edit form -->
 
-    <x:form-panel coid = "${z:vid(v, 'winmain-selset-edit')}"
+    <x:form-panel coid = "${z:vid(v, 'window-selset-edit')}"
       modelView = "${v}">
 
       <f:facet name = "extjs-props">
@@ -48,7 +48,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <!-- [cancel + save buttons -->
 
-      <x:component coid = "${z:vid(v, '_winmain-selset-edit-buttons')}">
+      <x:component coid = "${z:vid(v, '_window-selset-edit-buttons')}">
 
         <f:facet name = "extjs-props">
 
@@ -59,21 +59,21 @@ ${v.checkModelRequestedWithRedirect}
 
         </f:facet>
 
-        <x:component coid = "${z:vid(v, 'winmain-selset-edit-cancel')}">
+        <x:component coid = "${z:vid(v, 'window-selset-edit-cancel')}">
           <f:facet name = "extjs-props">
             xtype: 'button', text: 'Отмена',
             cls: 'ux-btn-red'
           </f:facet>
         </x:component>
 
-        <x:component coid = "${z:vid(v, '_winmain-selset-edit-buttons_fill')}">
+        <x:component coid = "${z:vid(v, '_window-selset-edit-buttons_fill')}">
           <f:facet name = "extjs-props">
             flex: 1, frame: false, border: false,
             bodyCls: 'retrade-transparent-panel'
           </f:facet>
         </x:component>
 
-        <x:component coid = "${z:vid(v, 'winmain-selset-edit-submit')}">
+        <x:component coid = "${z:vid(v, 'window-selset-edit-submit')}">
           <f:facet name = "extjs-props">
             xtype: 'button', text: 'Сохранить',
             cls: 'ux-btn-green'
@@ -87,7 +87,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <!-- [name field -->
 
-      <x:component coid = "${z:vid(v, '_winmain-selset-edit-name')}">
+      <x:component coid = "${z:vid(v, '_window-selset-edit-name')}">
         <f:facet name = "extjs-props">
 
           border: false, frame: false,
@@ -97,7 +97,7 @@ ${v.checkModelRequestedWithRedirect}
 
         </f:facet>
 
-        <x:text-field coid = "${z:vid(v, 'winmain-selset-edit-name')}"
+        <x:text-field coid = "${z:vid(v, 'window-selset-edit-name')}"
           value = "#{v.selSetNameEdit}">
 
           <f:facet name = "extjs-props">
@@ -114,7 +114,7 @@ ${v.checkModelRequestedWithRedirect}
       <!-- name field] -->
 
       <!-- [edit mode hidden] -->
-      <x:hidden-field coid = "${z:vid(v, 'winmain-selset-edit-mode')}"
+      <x:hidden-field coid = "${z:vid(v, 'window-selset-edit-mode')}"
          value = "true"/>
 
       <!-- [submit action] -->
@@ -126,19 +126,19 @@ ${v.checkModelRequestedWithRedirect}
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.handler("${z:vid(v, 'winmain-selset-edit-cancel')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'window-selset-edit-cancel')}", '${extDom}', function()
     {
-       var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
+       var edit = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}');
        var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}');
 
        edit.co().hide()
        grid.co().show()
     })
 
-    extjsf.handler("${z:vid(v, 'winmain-selset-edit-submit')}", '${extDom}', function()
+    extjsf.handler("${z:vid(v, 'window-selset-edit-submit')}", '${extDom}', function()
     {
-       var form = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
-       var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}');
+       var form = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}');
+       var edit = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}');
        var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}');
 
        //~: submit the form
@@ -227,7 +227,7 @@ ReTrade.selset.items([#{v.selSetItems}])
 
       <ui:fragment rendered = "#{v.editMode and v.editNameExists}">
 
-        <field target = "${z:vid(v, 'winmain-selset-edit-name')}">
+        <field target = "${z:vid(v, 'window-selset-edit-name')}">
           <error>
               Выборка с указанным именем существует!
               Имя не должно быть пустым.
@@ -254,8 +254,8 @@ ReTrade.selset.items([#{v.selSetItems}])
       <script>
       //<![CDATA[
 
-if(ReTrade.selset.winmain())
-  ReTrade.selset.winmain().co().setTitle('${z:jss(v.windowTitle)}')
+if(ReTrade.selset.window())
+  ReTrade.selset.window().co().setTitle('${z:jss(v.windowTitle)}')
 
 ReTrade.selset.buildMenu(#{v.selSetMenuModel})
 

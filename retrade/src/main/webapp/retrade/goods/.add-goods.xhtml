@@ -115,20 +115,20 @@
     var ps  = {}; if(!record) ps.create = true
     var box = ZeT.extend(opts && opts.box, { event: e })
 
-    var winmain; winmain = retrade_open_window({ url: '/goods/edit-good',
+    var window; window = retrade_open_window({ url: '/goods/edit-good',
       box: retrade_default('good-box',  box),
       domainKey: dk, params: ps, collapsible: true,
       record: record && record.getId(),
 
       onclose: function()
       {
-        if(!winmain.retradeEditDone) return
-        btn.retradeAddSelSetChecked = winmain.retradeAddSelSetChecked;
+        if(!window.retradeEditDone) return
+        btn.retradeAddSelSetChecked = window.retradeAddSelSetChecked;
         Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
       }
     })
 
-    winmain.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked === true)
+    window.retradeAddSelSetChecked = (btn.retradeAddSelSetChecked === true)
   }
 
   extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function(btn, event)
@@ -161,13 +161,13 @@
 
   extjsf.handler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
   {
-    var winmain; winmain = retrade_open_window({ url: '/goods/create-goods',
+    var window; window = retrade_open_window({ url: '/goods/create-goods',
       tempDomain: 'add-goods-table', collapsible: true,
       box: { event: e, widthpt: 480, heightpt: 240, '+xpt': 30, '-ypt': 10 },
 
       onclose: function()
       {
-        if(!winmain.retradeEditDone) return
+        if(!window.retradeEditDone) return
         Ext.data.StoreManager.lookup("${z:vid(v, 'goodUnits')}").reload()
       }
     })

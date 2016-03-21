@@ -145,7 +145,7 @@ function retrade_open_window(opts)
   ZeT.asserts(opts.domain, 'No ExtJSF window domain string is provided!')
 
   //~: lookup the window bind
-  var winmain = extjsf.bind('window', opts.domain)
+  var window = extjsf.bind('window', opts.domain)
 
   //?: {has no box provided}
   if(!opts.box) opts.box = { widthpt: 480, heightpt: 360 }
@@ -154,11 +154,11 @@ function retrade_open_window(opts)
   //~: calculate the box
   var box = ReTrade.desktop.calcWindowBox(opts.box)
 
-  if(winmain) //?: {has this window} show it
+  if(window) //?: {has this window} show it
   {
-    winmain.co().toFront()
-    winmain.co().setPagePosition(box.x, box.y)
-    winmain.co().expand()
+    window.co().toFront()
+    window.co().setPagePosition(box.x, box.y)
+    window.co().expand()
     return
   }
 
@@ -184,7 +184,7 @@ function retrade_open_window(opts)
   if(opts.record) opts.params['${rootView.entityParam}'] = '' + opts.record
 
   //~: create the window bind
-  winmain = extjsf.domain(opts.domain).bind('window', new extjsf.Bind()).props({
+  window = extjsf.domain(opts.domain).bind('window', new extjsf.Bind()).props({
 
     xtype: 'window', title: 'Загрузка...',
     x: box.x, y: box.y, width: box.width, height: box.height,
@@ -198,15 +198,15 @@ function retrade_open_window(opts)
 
   //?: {has on-close}
   if(ZeT.isf(opts.onclose))
-    winmain.on('beforedestroy', ZeT.fbind(opts.onclose, winmain))
+    window.on('beforedestroy', ZeT.fbind(opts.onclose, window))
 
   //~: create the Ext JS Window component & return the bind
-  winmain.co(Ext.create('Ext.window.Window', winmain.buildProps()))
+  window.co(Ext.create('Ext.window.Window', window.buildProps()))
 
   //~: install positioning strategy
-  new ReTrade.WinAlign({ window: winmain })
+  new ReTrade.WinAlign({ window: window })
 
-  return winmain
+  return window
 }
 
 function retrade_msg_open(id)

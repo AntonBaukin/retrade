@@ -841,7 +841,7 @@ ${v.checkModelRequestedWithRedirect}
     var gused   = extjsf.bind("${z:vid(v, 'good-used')}", '${extDom}')
     var close   = extjsf.bind("${z:vid(v, 'close')}", '${extDom}')
     var cancel  = extjsf.bind("${z:vid(v, 'cancel-edit')}", '${extDom}')
-    var winmain = extjsf.bind('window', '${extDom}')
+    var window = extjsf.bind('window', '${extDom}')
     var groups  = extjsf.bind("${z:vid(v, 'groups')}", '${extDom}')
     var edit    = extjsf.bind("${z:vid(v, 'edit')}", '${extDom}')
     var vcodes  = extjsf.bind("${z:vid(v, 'vendor-codes')}", '${extDom}')
@@ -964,8 +964,8 @@ ${v.checkModelRequestedWithRedirect}
         gocalc.visible(!isread || ('true' == "#{not empty v.model.calc}"))
 
       //~: window title
-      if(isread) winmain.co().setTitle('${z:jss(v.infoWindowTitle)}')
-      else winmain.co().setTitle('${z:jss(v.editWindowTitle)}')
+      if(isread) window.co().setTitle('${z:jss(v.infoWindowTitle)}')
+      else window.co().setTitle('${z:jss(v.editWindowTitle)}')
 
       //~: set measure text value
       msures.co().load({callback: function()
@@ -1171,9 +1171,9 @@ ${v.checkModelRequestedWithRedirect}
       form.submit({ '${v.viewModeParam}': '${v.viewModePostStr}',
         command: "${z:vid(v, 'submit-action')}", success: function()
         {
-          var winmain = extjsf.bind('window', '${extDom}');
-          winmain.retradeEditDone = true
-          winmain.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
+          var window = extjsf.bind('window', '${extDom}');
+          window.retradeEditDone = true
+          window.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
 
           extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
         }

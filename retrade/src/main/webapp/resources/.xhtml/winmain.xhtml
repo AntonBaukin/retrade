@@ -47,21 +47,21 @@
   ZeT.scope(function()
   {
     var domain  = '${extDom}'
-    var winmain = extjsf.bind('#{cc.attrs.windowBind}', domain)
-    ZeT.assertn(winmain && winmain.co(), 'No window [#{cc.attrs.windowBind}] ',
+    var window = extjsf.bind('#{cc.attrs.windowBind}', domain)
+    ZeT.assertn(window && window.co(), 'No window [#{cc.attrs.windowBind}] ',
       ' was found in the domain [${rootView.extjsDomain}]!')
 
     //~: add domain destructor (on the window close)
     if('#{cc.attrs.domainOwner}' == 'true')
     {
       //~: create and attach remove listener
-      if(!winmain._domain_deleter) winmain._domain_deleter =
+      if(!window._domain_deleter) window._domain_deleter =
         function()
         {
           extjsf.domain(domain).destroy()
         }
 
-      winmain.on('destroy', winmain._domain_deleter)
+      window.on('destroy', window._domain_deleter)
     }
 
     //~: create the root panel
@@ -83,7 +83,7 @@
     panel.readPropsNode()
 
     //~: install positioning strategy
-    if(!winmain.WinAlign)
+    if(!window.WinAlign)
       new ReTrade.WinAlign({ window: '#{cc.attrs.windowBind}', domain: domain })
 
     //~: create the toolbar
@@ -117,7 +117,7 @@
     var panel   = extjsf.bind("#{cc.attrs.coid}", domain);
     var toolbar = extjsf.bind('#{cc.attrs.coid}-toolbar', domain);
 
-    //HINT: we steal the items from the winmain panel
+    //HINT: we steal the items from the window panel
     //  and add them to the toolbar!
 
     toolbar.replaceItems(panel.replaceItems())
@@ -141,7 +141,7 @@
     var panel  = extjsf.bind("#{cc.attrs.coid}", domain);
     var status = extjsf.bind('#{cc.attrs.coid}-status', domain);
 
-    //HINT: we steal the items from the winmain panel
+    //HINT: we steal the items from the window panel
     //  and add them to the status bar (the same as for the toolbar)!
 
     status.replaceItems(panel.replaceItems())
@@ -161,8 +161,8 @@
   ZeT.scope(function()
   {
     var domain  = '${extDom}'
-    var winmain = extjsf.bind('#{cc.attrs.windowBind}', domain)
-    if(!winmain || !winmain.co()) return
+    var window = extjsf.bind('#{cc.attrs.windowBind}', domain)
+    if(!window || !window.co()) return
 
     var panel   = extjsf.bind("#{cc.attrs.coid}", domain)
     var toolbar = extjsf.bind('#{cc.attrs.coid}-toolbar', domain)
@@ -170,14 +170,14 @@
 
     //?: {toolbar has items} add it to the window
     if(toolbar.hasItems() || toolbar.hasHTML())
-      winmain.co().addDocked(toolbar.buildProps())
+      window.co().addDocked(toolbar.buildProps())
 
     //?: {status bar has items} add it to the window
     if(status.hasItems() || status.hasHTML())
-      winmain.co().addDocked(status.buildProps())
+      window.co().addDocked(status.buildProps())
 
     //!: add the panel to the window
-    winmain.co().add(panel.buildProps())
+    window.co().add(panel.buildProps())
 
     //~: install web link tool
     ZeT.scope(function()
@@ -185,15 +185,15 @@
       //?: {link is not allowed}
       if("#{cc.attrs.webLink}" === 'false')
       {
-        if(ZeT.isu(winmain.webLink))
-          winmain.webLink = false
+        if(ZeT.isu(window.webLink))
+          window.webLink = false
         return
       }
 
       //?: {tool is already installed}
-      if(!ZeT.isu(winmain.webLink)) return
+      if(!ZeT.isu(window.webLink)) return
 
-      var tool = winmain.webLink = {
+      var tool = window.webLink = {
         xtype: 'tool', cls: 'retrade-web-link-tool',
         tooltipType: 'title', tooltip: 'Создать постоянную ссылку на окно'
       }
@@ -203,20 +203,20 @@
         link: "#{z:jss(rootView.requestURI)}",
         entity: "#{rootView.entityKey}",
         params: "#{z:jss(rootView.requestParams)}",
-        text: winmain.co().title,
+        text: window.co().title,
         domain: domain, box: {
-          width: winmain.co().getWidth(),
-          height: winmain.co().getHeight() }
+          width: window.co().getWidth(),
+          height: window.co().getHeight() }
       })
 
       //~: insert tool in the window's header
-      var items = winmain.co().getHeader().items
+      var items = window.co().getHeader().items
       for(var i = 0;(i < items.getCount());i++)
         if(items.get(i).xtype == 'tool')
-          return winmain.co().getHeader().insert(i, tool)
+          return window.co().getHeader().insert(i, tool)
 
       //~: append a single tool
-      winmain.co().addTool([ tool ])
+      window.co().addTool([ tool ])
     })
   })
 

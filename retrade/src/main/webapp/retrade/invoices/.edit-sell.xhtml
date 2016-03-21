@@ -18,7 +18,7 @@ ${v.forceSecureEdit()}
   //<![CDATA[
 
     extjsf.co('window', '${extDom}').
-      setTitle('${z:jss(v.winmainTitleEdit)}')
+      setTitle('${z:jss(v.windowTitleEdit)}')
 
     //~: adjust window size
     if("#{v.altered}" == 'true') Ext.onReady(ZeT.timeouted(150, function()

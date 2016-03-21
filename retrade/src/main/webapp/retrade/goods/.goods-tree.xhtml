@@ -825,14 +825,14 @@
       ps.goodsFolder = fld
 
     //~: open the window
-    var winmain; winmain = retrade_open_window({ url: '/goods/edit-good',
+    var window; window = retrade_open_window({ url: '/goods/edit-good',
       box: retrade_default('good-box',  { event: e }),
       domainKey: dk, params: ps, collapsible: true,
       record: record && record.getId(),
 
       onclose: function()
       {
-        if(!winmain.retradeEditDone) return
+        if(!window.retradeEditDone) return
         Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
       }
     })
@@ -877,13 +877,13 @@
       ps.goodsFolder = fld
 
     //~: open the window
-    var winmain; winmain = retrade_open_window({ url: '/goods/create-goods',
+    var window; window = retrade_open_window({ url: '/goods/create-goods',
       tempDomain: 'add-goods-table', collapsible: true, params: ps,
       box: { event: e, widthpt: 480, heightpt: 240, '+xpt': -100, '-height': true },
 
       onclose: function()
       {
-        if(!winmain.retradeEditDone) return
+        if(!window.retradeEditDone) return
         Ext.data.StoreManager.lookup("${z:vid(v, 'folderGoodsStore')}").reload()
       }
     })

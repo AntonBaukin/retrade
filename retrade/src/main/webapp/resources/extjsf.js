@@ -2869,8 +2869,8 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 	load             : function()
 	{
 		//~: find the main window
-		var winmain = extjsf.bind('window', this._domain);
-		if(!winmain) throw 'Can not find winmain in ' +
+		var window = extjsf.bind('window', this._domain);
+		if(!window) throw 'Can not find window in ' +
 		  'the domain: [' + this._domain + ']!';
 
 		//~: get the support form
@@ -2882,7 +2882,7 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 
 		//?: {has no action url}
 		if(!this._url || !this._url.length)
-			throw 'Can not reload winmain with undefined URL!';
+			throw 'Can not reload window with undefined URL!';
 
 		//~: collect the parameters
 		var prms = ZeT.extend({}, this._params);
@@ -2893,16 +2893,16 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 
 		//~: cleanup the domain
 		if(extjsf.domain(this._domain))
-			extjsf.domain(this._domain).destroy({ except: [ winmain ]})
+			extjsf.domain(this._domain).destroy({ except: [ window ]})
 
 		//~: create the domain with this window
-		extjsf.domain(this._domain).bind('window', winmain)
+		extjsf.domain(this._domain).bind('window', window)
 
 		//~: clear the component
-		this._clear(winmain)
+		this._clear(window)
 
 		//~: set temporary title
-		winmain.co().setTitle('Выполняется запрос...')
+		window.co().setTitle('Выполняется запрос...')
 
 		var adr = this._url;
 		var mth = ZeT.iss(this._method)?(this._method):
@@ -2913,20 +2913,20 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 
 		//!: reload content
 		Ext.create('Ext.ComponentLoader', {
-		  target: winmain.co(), url: adr,
+		  target: window.co(), url: adr,
 		  ajaxOptions: { method: mth, timeout: 30 * 60 * 1000 }, //<-- 30 min
 		  params: prms, autoLoad: true, scripts: true
 		})
 	},
 
-	_clear           : function(winmain)
+	_clear           : function(window)
 	{
 		//~: clear the window
-		winmain.clearComponent({notListeners: true})
+		window.clearComponent({notListeners: true})
 
 		//~: rebind domain deleter
-		//if(winmain._domain_deleter)
-		//	winmain.on('beforedestroy', winmain._domain_deleter)
+		//if(window._domain_deleter)
+		//	window.on('beforedestroy', window._domain_deleter)
 	},
 
 	_form_params     : function(form, prms, button)

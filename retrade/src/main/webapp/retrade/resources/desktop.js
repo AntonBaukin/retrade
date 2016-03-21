@@ -2441,24 +2441,24 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		return this
 	},
 
-	winmain           : function()
+	window           : function()
 	{
 		//?: {has no bind attached}
-		if(!this._winmain)
-			this._winmain = extjsf.bind('winmain-selset', this.domain())
+		if(!this._window)
+			this._window = extjsf.bind('window-selset', this.domain())
 
-		return this._winmain
+		return this._window
 	},
 
 	reload            : function(opts)
 	{
 		var self    = this
-		var winmain = this.winmain()
-		var window  = winmain && winmain.co();
+		var window = this.window()
+		var window  = window && window.co();
 		if(!window) return
 
 		//~: clear the window
-		winmain.clearComponent({notListeners: true})
+		window.clearComponent({notListeners: true})
 
 		var params = {
 		  mode: 'body', domain: self.domain(),
@@ -2509,55 +2509,55 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		ZeT.extend(props, this._wnd_pos)
 
 		//~: define the window bind
-		var winmain = extjsf.domain(self.domain()).
-		  bind('winmain-selset', new extjsf.RootBind()).
+		var window = extjsf.domain(self.domain()).
+		  bind('window-selset', new extjsf.RootBind()).
 		  domainOwner(false).props(props)
 
 		//~: create positioning strategy
-		winmain.on('show', function()
+		window.on('show', function()
 		{
 			var b = self._wnd_pos
 			var a = ZeT.iss(b)?(b):(b && b.align)
 
-			new ReTrade.WinAlign({ window: winmain,
+			new ReTrade.WinAlign({ window: window,
 			  align: ZeT.iss(a)?(a):(b)?(null):('rc') })
 		})
 
 		//~: close window listener
-		winmain.on('beforeclose', function()
+		window.on('beforeclose', function()
 		{
 			self.toggle(false)
 		})
 
-		return winmain
+		return window
 	},
 
 	_open_wnd         : function(opts)
 	{
-		var winmain = this.winmain()
-		if(!winmain) this._winmain = winmain =
+		var window = this.window()
+		if(!window) this._window = window =
 		  ZeT.assertn(this._create_wnd(opts))
 
 		//?: {display existing window}
-		if(winmain.co()) return winmain.co().toFront()
+		if(window.co()) return window.co().toFront()
 
 		//~: create window & display it
-		winmain.co(Ext.create('Ext.window.Window', winmain.buildProps()))
-		winmain.co().show()
+		window.co(Ext.create('Ext.window.Window', window.buildProps()))
+		window.co().show()
 	},
 
 	_close_wnd        : function(opts)
 	{
-		if(!this._winmain) return
+		if(!this._window) return
 
-		var winmain = this._winmain
-		delete this._winmain
+		var window = this._window
+		delete this._window
 		delete this._wnd_pos
 
-		if(winmain.co())
+		if(window.co())
 		{
-			var p, wa = winmain.WinAlign
-			var box   = winmain.co().getBox()
+			var p, wa = window.WinAlign
+			var box   = window.co().getBox()
 
 			//?: {has alignment code}
 			if(wa) p = wa.align()
@@ -2570,7 +2570,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 			}
 
 			this._wnd_pos = p
-			winmain.co().close()
+			window.co().close()
 		}
 	},
 
@@ -2594,7 +2594,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		this._changer(mi.name, function()
 		{
 			Ext.data.StoreManager.lookup(self.storeId()).load()
-			if(self.winmain()) self.reload()
+			if(self.window()) self.reload()
 		})
 	},
 

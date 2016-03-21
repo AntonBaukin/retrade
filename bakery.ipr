@@ -322,7 +322,7 @@
       </inspection_tool>
       <inspection_tool class="ThrowableResultOfMethodCallIgnored" enabled="true" level="INFO" enabled_by_default="true" />
       <inspection_tool class="UnnecessaryInterfaceModifier" enabled="true" level="INFO" enabled_by_default="true" />
-      <inspection_tool class="UnterminatedStatementJS" enabled="true" level="INFO" enabled_by_default="true">
+      <inspection_tool class="UnterminatedStatementJS" enabled="false" level="INFO" enabled_by_default="false">
         <option name="ignoreSemicolonAtEndOfBlock" value="true" />
       </inspection_tool>
       <inspection_tool class="unused" enabled="true" level="INFO" enabled_by_default="true">
@@ -620,8 +620,6 @@
       </value>
     </option>
     <option name="PREFERRED_PROJECT_CODE_STYLE" value="Otill" />
-  </component>
-  <component name="ProjectDictionaryState">
   </component>
   <component name="ProjectModuleManager">
     <modules>

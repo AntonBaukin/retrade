@@ -19,7 +19,7 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
 
     extjsf.bind('window', '${extDom}').
-      co().setTitle("#{z:jss(v.winmainTitle)}")
+      co().setTitle("#{z:jss(v.windowTitle)}")
 
   </script>
 
@@ -395,8 +395,8 @@ ${v.checkModelRequestedWithRedirect}
     //!: submit the form
     form.submit({command: "${z:vid(v, 'submit-action')}", success: function()
     {
-      var winmain = extjsf.bind('window', '${extDom}');
-      winmain.retradeEditDone = true;
+      var window = extjsf.bind('window', '${extDom}');
+      window.retradeEditDone = true;
       extjsf.handler("${z:vid(v, 'close-window')}", '${extDom}')()
     }})
   })

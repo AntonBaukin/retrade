@@ -112,13 +112,13 @@
   $('#' + ReTrade.selset.ctlitems('edit')).click(function()
   {
     //~: access active selection set window
-    var winmain = ReTrade.selset.winmain()
+    var window = ReTrade.selset.window()
 
     //?: {has it no} open in edit mode
-    if(!winmain) return ReTrade.selset.toggle(
+    if(!window) return ReTrade.selset.toggle(
       true, { params: { 'selset-edit': 'true' }})
 
-    var edit = extjsf.bind("${z:vid(v, 'winmain-selset-edit')}", '${extDom}')
+    var edit = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}')
     var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}')
     ZeT.assert(edit && grid, 'Selection Set window has no content!')
 
@@ -192,8 +192,8 @@ ReTrade.selset.items([#{v.selSetItems}])
       <script>
       //<![CDATA[
 
-if(ReTrade.selset.winmain())
-  ReTrade.selset.winmain().co().setTitle('${z:jss(v.windowTitle)}')
+if(ReTrade.selset.window())
+  ReTrade.selset.window().co().setTitle('${z:jss(v.windowTitle)}')
 
 ReTrade.selset.buildMenu(#{v.selSetMenuModel})
 
