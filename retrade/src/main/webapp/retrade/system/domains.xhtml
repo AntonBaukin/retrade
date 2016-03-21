@@ -86,7 +86,7 @@
     {
       //~: create the window
       var domain  = 'inline-wnd:' + "${z:vid(v, 'domains-create-domain')}:" + new Date().getTime();
-      var window = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
+      var window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
 
         title: 'Загрузка...', layout: 'fit',
 
@@ -151,7 +151,7 @@
 
       //~: create the window
       var domain  = 'inline-wnd:' + "${z:vid(v, 'self_shunt')}:" + sel + ':' + new Date().getTime();
-      var window = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
+      var window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
 
         title: 'Загрузка...', layout: 'fit',
 
@@ -205,7 +205,7 @@
 
       //~: create the window
       var domain  = 'inline-wnd:' + "${z:vid(v, 'show_logins')}:" + sel + ':' + new Date().getTime();
-      var window = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
+      var window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
 
         title: 'Загрузка...', layout: 'fit',
 

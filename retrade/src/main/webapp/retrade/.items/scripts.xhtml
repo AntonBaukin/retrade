@@ -184,7 +184,7 @@ function retrade_open_window(opts)
   if(opts.record) opts.params['${rootView.entityParam}'] = '' + opts.record
 
   //~: create the window bind
-  window = extjsf.domain(opts.domain).bind('window', new extjsf.Bind()).props({
+  window = extjsf.domain(opts.domain).bind('window', new extjsf.RootBind()).props({
 
     xtype: 'window', title: 'Загрузка...',
     x: box.x, y: box.y, width: box.width, height: box.height,

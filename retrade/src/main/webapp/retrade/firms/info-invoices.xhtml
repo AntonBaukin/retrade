@@ -122,7 +122,7 @@ ${i.checkModelRequestedWithRedirect}
       return;
     }
 
-    window = extjsf.domain(domain).bind('window', new extjsf.Bind()).props({
+    window = extjsf.domain(domain).bind('window', new extjsf.RootBind()).props({
 
       xtype: 'window', title: 'Загрузка...',
       x: box.x, y: box.y, width: box.width, height: box.height,
