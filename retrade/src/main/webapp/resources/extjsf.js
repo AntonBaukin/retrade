@@ -1460,7 +1460,7 @@ extjsf.FieldBind = ZeT.defineClass(
 		  forId: this.$node_id() })
 
 		//?: {empty label}
-		if(!always && !label.readPropsNode(true))
+		if(!label.readPropsNode(true) && !always)
 			return false
 
 		//~: save label to install
@@ -1631,6 +1631,9 @@ extjsf.CheckboxesBind = ZeT.defineClass(
 		this.nest(''+i, bind, function()
 		{
 			self.$init_check(bind, i, key, label, checked)
+
+			if(!self.checks) self.checks = []
+			self.checks.push(bind)
 		})
 	},
 
@@ -1642,10 +1645,18 @@ extjsf.CheckboxesBind = ZeT.defineClass(
 		check.merge(ZeT.deepClone(this.$raw()))
 		check.props('label', ZeT.deepClone(this.$raw('label')))
 
+		//~: check box label
+		check.props({ inputValue: key, checked: checked })
+		delete check.$raw().value //<-- must have it not!
+
 		//~: label text
 		check.props('label', { text: label })
 
-		//!: install the check box
+		//~: check handler
+		check.on('change',
+		  ZeT.fbind(this.$check_changed, this, check))
+
+		//~: install the check box
 		check.buildLabel(true).install()
 	},
 
@@ -1674,137 +1685,46 @@ extjsf.CheckboxesBind = ZeT.defineClass(
 			r.put(ls[i], ls[i+1])
 
 		return r
+	},
+
+	$check_changed   : function(check)
+	{
+		if(this._checking) return
+		this._checking = check
+
+		var x = check.$raw().inputValue
+		var f = Ext.get(this.$node_id())
+		var v = ZeT.ises(f.getValue())?[]:
+		  f.getValue().split(',')
+
+		//~: remove or add the value
+		if(!check.value()) ZeTA.remove(v, x)
+		else if(v.indexOf(x) < 0) v.push(x)
+
+		//~: assign to the hidden field
+		v = this.$set_checked(check, v)
+		if(ZeT.isu(v)) v = [x]
+		f.set({ value: v.join(',') })
+
+		delete this._checking
+	},
+
+	$set_checked     : function(check, v)
+	{
+		//?: {unchecked all}
+		if(!v.length && (check.$raw().allowNone === false))
+			check.co().setValue(true)
+		//?: {checked two of a radio}
+		else if((v.length > 1) && check.$raw().onlyOne)
+			ZeT.each(this.checks, function(c)
+			{
+				if((c != check) && c.value()) c.value(false)
+			})
+		else
+			return v
 	}
 })
 
-/*
-
-
-(function()
-  {
-    var none = ("#{cc.attrs.allowNone}" == 'true')
-    var one  = ("#{cc.attrs.onlyOne}" == 'true')
-
-    //HINT: this bind is shared between all the checkboxes!
-
-    var bind = extjsf.domain('${extDom}').
-      bind('#{cc.attrs.coid}', new extjsf.Bind()).
-      nodeId('#{cc.clientId}-#{cc.attrs.coid}').
-      readPropsNode().props({extjsfRawItem: true}).
-      props({xtype: 'checkboxfield', name: '#{cc.attrs.coid}'})
-
-
-    //~: on check value change
-    bind.on('change', function(cb)
-    {
-      var n = Ext.getDom(bind.nodeId())
-      var v = (n.value.length)?(n.value.split(',')):[]
-      var i = v.indexOf(cb.inputValue)
-      if(i != -1) v.splice(i, 1)
-
-      if(cb.getValue()) v.push(cb.inputValue)
-      n.value = v.join(',')
-
-      //?: {has no value}
-      if(!none && (n.value == '')) {
-        n.value = cb.inputValue
-        cb.setValue(true)
-      }
-
-      //?: {one & checkbox checked}
-      if(one && cb.getValue())
-      {
-        n.value = cb.inputValue
-        ZeT.each(bind.checkboxes, function(x)
-        {
-          if(x != cb) x.setValue(false)
-        })
-      }
-    })
-
-    //~: set special create component listener
-    bind.checkboxes = []; bind.on_create = function(cb)
-    {
-      for(var i = 0;(i < bind.checkboxes.length);i++)
-        if(bind.checkboxes[i].inputValue == cb.inputValue) return
-      bind.checkboxes.push(cb)
-    }
-
-    //~: checkBoxes()
-    bind.checkBoxes = function(v)
-    {
-      var i, x = {}
-      var a = bind.checkboxes
-
-      if(v === 'all') for(i = 0;(i < a.length);i++)
-        x[a[i].inputValue] = true
-
-      if(ZeT.isa(v)) for(i = 0;(i < v.length);i++)
-        if(ZeT.iss(v[i])) x[v[i]] = true
-
-      var got = false
-      for(i = 0;(i < a.length);i++)
-        if(x[a[i].inputValue]) { got = true; break; }
-
-      ZeT.assert( !got && !none,
-        'Can not uncheck all ExtJSF checkboxes, ',
-        'it is forbidden for bind #{cc.attrs.coid}!')
-
-      var xv, xvs = []
-      for(i = 0;(i < a.length);i++)
-        if(!x[xv = a[i].inputValue]) a[i].setValue(false)
-        else { a[i].setValue(true); xvs.push(xv); }
-
-      Ext.getDom(bind.nodeId()).value = xvs.join(',')
-    }
-
-    //~: decode the items (codes) checked
-    var items = Ext.getDom('#{cc.clientId}-#{cc.attrs.coid}').value.split(',')
-    var itmap = {}
-
-    for(var i = 0;(i < items.length);i++)
-      itmap[items[i]] = true
-
-    //~: evaluate label mapping      !: it is array
-    var labls = Ext.getDom(bind.nodeId() + '-labels').innerHTML
-    labls = eval('('.concat(labls, ')'))
-
-    //~: labels phony bind
-    var label = new extjsf.Bind()
-    label.nodeId("#{cc.clientId}-#{cc.attrs.coid}-label")
-    label.readPropsNode().props({
-      xtype: 'label', style: lstyle, extjsfRawItem: true
-    })
-
-    var lstyle = label.$raw()['style'] || {};
-    if(!lstyle.whiteSpace) lstyle.whiteSpace = 'nowrap';
-
-    //c: create the items for all the labels
-    var parent = extjsf.bind('#{cc.parent.attrs.coid}', '${extDom}')
-    for(i = 0;(i + 1 < labls.length);i += 2)
-    {
-      //~: properties of the checkbox
-      var cb = ZeT.extend({}, bind.buildProps())
-      ZeT.extend(cb, { inputId : "#{cc.attrs.coid}-field-" + i,
-        id: "#{cc.attrs.coid}-" + i,
-        inputValue: labls[i], checked: !!itmap[labls[i]]
-      })
-
-      delete cb.value //<-- must have it not!
-
-      //~: properties of the label
-      var lb = ZeT.extend({}, label.buildProps())
-      ZeT.extend(lb, { forId: "#{cc.attrs.coid}-" + i,
-        id: "#{cc.attrs.coid}-label-" + i, text: labls[i + 1] })
-
-      //~: add directly to the parent
-      if(lb.labelAlign == 'left')
-      {      parent.addItem(lb); parent.addItem(cb); }
-      else { parent.addItem(cb); parent.addItem(lb); }
-    }
-  })()
-
- */
 
 // +----: Load Action Bind :------------------------------------+
 

@@ -36,7 +36,7 @@
          Configuration properties shared for each
          checkbox. Special properties are:
 
-         0) allowNone when set true tells that the
+         0) allowNone when set false tells that the
             last checked box may not be unchecked;
 
          1) onlyOne when set true tells to work
@@ -58,7 +58,7 @@
       <co:renderFacet name = "check-props"/>
     </div>
 
-    <div id = "#{cc.clientId}-#{cc.attrs.coid}-label-props" style = "display:none">
+    <div id = "#{cc.clientId}-#{cc.attrs.coid}-label" style = "display:none">
       <co:renderFacet name = "label-props"/>
     </div>
 
@@ -74,10 +74,9 @@
       extjsf.domain('${extDom}').
         bind('#{cc.attrs.coid}', new extjsf.CheckboxesBind()).
         ids('#{cc.clientId}').parent('#{cc.parent.attrs.coid}').
-        props({ inputValue : 'true', uncheckedValue: 'false' }).
-        props({ xtype: 'checkboxfield' }).readPropsNode().
-        props('label', { labelAlign: 'right' }).readPropsNode('label').
-        install()
+        props({ xtype: 'checkboxfield', uncheckedValue: '' }).
+        readPropsNode().props('label', { labelAlign: 'right' }).
+        readPropsNode('label').install()
 
     //]]>
     </script>

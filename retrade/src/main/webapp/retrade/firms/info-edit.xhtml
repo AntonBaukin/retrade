@@ -584,13 +584,10 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
 
 
   //~: default read-only for existing
-  Ext.onReady(function()
+  extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').when(function(form)
   {
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
-      retradeShowBlock('main')
-
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
-      retradeToggleReadWrite("#{v.create}" == 'false')
+    form.retradeShowBlock('main')
+    form.retradeToggleReadWrite("#{v.create}" == 'false')
   })
 
 
