@@ -107,10 +107,14 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 	 */
 	destroy          : function(opts)
 	{
-		var self = this
+		var self = this, ondestr = [], binds = []
 
-		//c: invoke the callbacks
-		this.ondestr.each(function(f)
+		//~: collect the callbacks
+		this.ondestr.each(function(f){ ondestr.push(f) })
+
+		//~: and invoke them
+		this.ondestr.clear()
+		ZeT.each(ondestr, function(f)
 		{
 			try
 			{
@@ -123,10 +127,13 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 			}
 		})
 
-		//c: destroy the binds
-		this.binds.reverse(function(bind, name)
+		//~: collect the binds
+		this.binds.reverse(function(b){ binds.push(b) })
+
+		//~: and destroy them
+		ZeT.each(binds, function(bind)
 		{
-			try
+			var name = bind.name; try
 			{
 				bind.destroy(opts)
 			}
@@ -136,9 +143,8 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 			}
 		})
 
-		//~: clean-up
+		//~: sweep all the binds
 		this.binds.clear()
-		this.ondestr.clear()
 	},
 
 	/**
@@ -169,7 +175,7 @@ ZeT.extend(extjsf,
 	 * Note that ''-empty name means the root Domain
 	 * of the entire web page that is never destroyed.
 	 */
-	domain           : function(name)
+	domain           : function(name, notcreate)
 	{
 		ZeT.assert(ZeT.iss(name),
 		  'Can not defined Domain by not a string name!')
@@ -179,7 +185,7 @@ ZeT.extend(extjsf,
 
 		//~: lookup there
 		var domain = extjsf.domains[name]
-		if(domain) return domain
+		if(domain || notcreate) return domain
 
 		//~: create it
 		extjsf.domains[name] = domain = new extjsf.Domain(name)
@@ -259,9 +265,21 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		var co = arguments[0]
 
 		if(!ZeT.isb(co)) //?: {a component-like}
-			this._component = ZeT.assertn(co)
+		{
+			if(!this._component)
+			{
+				this._component = ZeT.assertn(co)
+				this.$set_destroy()
+			}
+			else
+				ZeT.assert(this._component === co, 'Bind [',
+				  this.name, '] got else component assigned!')
+		}
 		else if(!this._component && (co === true))
+		{
 			this._component = this.$create()
+			this.$set_destroy()
+		}
 
 		return this._component
 	},
@@ -425,12 +443,22 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	 */
 	destroy          : function(opts)
 	{
+		//?: {already destroyed}
+		if(this._destroyed === true)
+			return false
+
 		//?: {skip this component}
 		if(opts && ZeT.isa(opts.except))
 			if(opts.except.indexOf(this) != -1)
 				return
 
-		return this.$destroy()
+		//?: {internal destroyed}
+		this._destroyed = true
+		if(this.$destroy() === false)
+		{
+			delete this._destroyed
+			return false
+		}
 	},
 
 	/**
@@ -634,19 +662,61 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return Ext.ComponentManager.create(this.buildProps())
 	},
 
+	$set_destroy     : function()
+	{
+		ZeT.assertn(this._component)
+
+		//~: remove listener to be safe
+		this._component.removeListener(
+		  'destroy', this.boundDestroy())
+
+		this._component.addListener(
+		  'destroy', this.boundDestroy())
+	},
+
+	/**
+	 * Private. Actually destroys the Bind and
+	 * the component attached. Returns false
+	 * if the destroy was not required.
+	 */
 	$destroy         : function()
 	{
-		var co; if(co = this.co()) try
-		{
-			if(ZeT.isf(co.destroy))
-				co.destroy()
+		//?: {already destroyed}
+		if(this._destroyed === true)
+			return false
 
-			return true
+		//ZeT.log('Destroy ', this.name)
+
+		var co; if(co = this._component) try
+		{
+			if(this.$is_destroy(co))
+			{
+				co.destroy()
+				return true
+			}
 		}
 		finally
 		{
 			delete this._component
 		}
+
+		this.$safe_unbind()
+	},
+
+	$is_destroy      : function(co)
+	{
+		return ZeT.isf(co.destroy) &&
+		  !co.isDestroyed && !co.destroying
+	},
+
+	$safe_unbind     : function()
+	{
+		if(!this.name) return
+		ZeT.assert(ZeT.iss(this.domain))
+
+		var d = extjsf.domain(this.domain, true)
+		var b = d && d.bind(this.name)
+		if(b == this) d.unbind(this, false)
 	},
 
 	$is_install      : function()
@@ -932,30 +1002,38 @@ extjsf.RootBind = ZeT.defineClass(
 		ZeT.assert(ZeT.isb(isowner))
 		ZeT.assert(ZeT.iss(this.domain))
 		this._domain_owner = isowner
+		return this
 	},
 
 	$destroy         : function()
 	{
-		try
+		var d; try
 		{
-			this.$applySuper(arguments)
+			d = this.$applySuper(arguments)
 		}
 		finally
 		{
-			this.$destroy_domain()
+			if(d !== false)
+				this.$destroy_domain()
 		}
 	},
 
 	$destroy_domain  : function()
 	{
-		if(this._domain_owner !== true) return
+		//?: {is not registered}
+		if(!ZeT.iss(this.name)) return
+
+		//?: {not a domain owner}
+		if(this._domain_owner === false) return
 		delete this._domain_owner
 
 		//?: {not a default domain}
-		ZeT.asserts(this.domain)
+		ZeT.asserts(this.domain, 'Root Bind [', this.name,
+		  '] tries to destroy the default Domain!')
 
 		//!: destroy the domain
-		extjsf.domain(this.domain).destroy()
+		var domain = extjsf.domain(this.domain, true)
+		if(domain) domain.destroy()
 	}
 })
 
@@ -2693,19 +2771,7 @@ extjsf.Bind.extend(
 	 */
 	on_destroy       : function()
 	{
-		delete this._component
-
-		//?: {is not registered}
-		if(!ZeT.iss(this.name)) return
-		ZeT.assert(ZeT.iss(this.domain))
-
-		var self = this, domain = extjsf.domain(this.domain)
-		if(domain) ZeT.timeout(2000, function()
-		{
-			//?: {still have this bind registered}
-			var bind = domain.bind(self.name)
-			if(bind == self) domain.unbind(self.name, false)
-		})
+		this.$destroy()
 	},
 
 	_on              : function()

@@ -2497,7 +2497,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		}
 
 		var props = ZeT.deepExtend(opts, {
-			xtype: 'window', layout: 'fit',
+			xtype: 'window', layout: 'fit', title: 'Загрузка выборки',
 			autoShow: false, cls: 'retrade-selset-window',
 
 			loader: { autoLoad: true, scripts: true, params: params,
@@ -2510,8 +2510,8 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 		//~: define the window bind
 		var winmain = extjsf.domain(self.domain()).
-			bind('winmain-selset', new extjsf.Bind())
-		winmain.props(props)
+		  bind('winmain-selset', new extjsf.RootBind()).
+		  domainOwner(false).props(props)
 
 		//~: create positioning strategy
 		winmain.on('show', function()
