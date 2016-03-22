@@ -57,6 +57,7 @@
             displayMsg: 'Записи {0}:{1} из {2}' }).readPropsNode()
 
           grid.props({ bbar: pager.$raw() })
+          grid.on('destroy', pager.boundDestroy())
         }).
         scope(function(grid)
         {

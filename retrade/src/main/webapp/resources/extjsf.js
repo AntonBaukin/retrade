@@ -59,7 +59,7 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		this.binds.put(name, bind)
 		bind.defined(this.name, name)
 
-		ZeT.log('@[', this.name, '] + Bind: ', name)
+		//ZeT.log('@[', this.name, '] + Bind: ', name)
 
 		return bind
 	},
@@ -132,8 +132,8 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		//~: collect the binds
 		this.binds.reverse(function(b){ binds.push(b) })
 
-		ZeT.log('Destroy @[', this.name,
-		  ']: ', ZeT.map(binds, 'name'))
+		//ZeT.log('Destroy @[', this.name,
+		//  ']: ', ZeT.map(binds, 'name'))
 
 		//~: and destroy them
 		ZeT.each(binds, function(bind)
@@ -231,7 +231,7 @@ ZeT.extend(extjsf,
 })
 
 
-// +----: Bind :-------------------------------------------------+
+// +----: Bind [ build ] :---------------------------------------+
 
 /**
  * ExtJSF Bind is a controller that connects Ext JS
@@ -245,58 +245,17 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 	init             : function()
 	{
-		//~: listeners by the names
-		this._listeners = {}
+		//~: properties
+		this._props = { 'props': {}}
 
 		//=: nested binds (child components)
 		this._items = []
 
-		//~: properties
-		this._props = { 'props': {}}
+		//~: listeners by the names
+		this._listeners = {}
 
 		//WARNING: this prevents recursion in Ext.clone()!
 		this.constructor = null
-	},
-
-	/**
-	 * Has three forms of a call:
-	 *
-	 * · returns the Ext JS component bound;
-	 *
-	 * · assigns the component if current
-	 *   is not defined;
-	 *
-	 * · when true, installs the component
-	 *   on the first demand.
-	 *
-	 * Always returns a component, or undefined.
-	 */
-	co               : function()
-	{
-		if(!arguments.length)
-			return this._component
-		ZeT.assert(arguments.length == 1)
-
-		var co = arguments[0]
-
-		if(!ZeT.isb(co)) //?: {a component-like}
-		{
-			if(!this._component)
-			{
-				this._component = ZeT.assertn(co)
-				this.$set_destroy()
-			}
-			else
-				ZeT.assert(this._component === co, 'Bind [',
-				  this.name, '] got else component assigned!')
-		}
-		else if(!this._component && (co === true))
-		{
-			this._component = this.$create()
-			this.$set_destroy()
-		}
-
-		return this._component
 	},
 
 	/**
@@ -489,38 +448,6 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	},
 
 	/**
-	 * Invokes ZeT.scope() giving the first
-	 * argument this Bind instance.
-	 */
-	scope            : function()
-	{
-		ZeT.assertf(arguments[arguments.length - 1])
-
-		//~: argument this bind
-		var a = ZeT.a(arguments)
-		a.splice(0, 0, this)
-
-		ZeT.scope.apply(ZeT, a)
-		return this
-	},
-
-	/**
-	 * Analogue of scope(), but is invoked only
-	 * when the component bound is created (added
-	 * to the parent container).
-	 */
-	when             : function()
-	{
-		if(this.co())
-			this.scope.apply(this, arguments)
-		else
-			this.on('added', ZeT.fbinda(
-			  this.scope, this, arguments, true))
-
-		return this
-	},
-
-	/**
 	 * Allows to define (and register in the same
 	 * domain) a Bind based on this one. The name
 	 * of the new Bind is: this bind name + '-' +
@@ -575,8 +502,6 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		//!: invoke the callback
 		if(bind && (false === callback.call(this, bind, this)))
 			extjsf.domain(this.domain).unbind(bind)
-		else
-			this.$when_nested(name, bind)
 
 		return this
 	},
@@ -676,18 +601,6 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return Ext.ComponentManager.create(this.buildProps())
 	},
 
-	$set_destroy     : function()
-	{
-		ZeT.assertn(this._component)
-
-		//~: remove listener to be safe
-		this._component.removeListener(
-		  'destroy', this.boundDestroy())
-
-		this._component.addListener(
-		  'destroy', this.boundDestroy())
-	},
-
 	/**
 	 * Private. Actually destroys the Bind and
 	 * the component attached. Returns false
@@ -699,7 +612,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		if(this._destroyed === true) return false
 		this._destroyed = true
 
-		ZeT.log('@[', this.domain, '] - Bind: ', this.name)
+		//ZeT.log('@[', this.domain, '] - Bind: ', this.name)
 
 		var co; if(co = this._component) try
 		{
@@ -766,6 +679,21 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 		p.addItem(this) //!: add this bind as a child
 		this._installed_to = ZeT.ises(p.coid)?(p):(p.coid)
+	},
+
+	$bind_to         : function()
+	{
+		var co = ZeT.assertn(this._component)
+		var cb = co.extjsfBind, bn = cb && cb.name
+
+		ZeT.assert(!cb || (cb == this),
+		  'Component already has a Bind assigned: [',
+		  bn, '] instead of: [ ', this.name, ']!')
+
+		co.extjsfBind = this
+
+		//~: also, set the events
+		this.$set_events()
 	},
 
 	$add_to          : function()
@@ -973,11 +901,6 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		return bind
 	},
 
-	$when_nested     : function(name, bind)
-	{
-		this.on('beforedestroy', bind.boundDestroy())
-	},
-
 	/**
 	 * Private. Adds request parameters to call
 	 * this component on the server side.
@@ -993,6 +916,280 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 			params.view = this._view_id
 
 		return params
+	}
+})
+
+
+// +----: Bind [ basics ] :--------------------------------------+
+
+extjsf.Bind.extend(
+{
+	/**
+	 * Has three forms of a call:
+	 *
+	 * · returns the Ext JS component bound;
+	 *
+	 * · assigns the component if current
+	 *   is not defined;
+	 *
+	 * · when true, installs the component
+	 *   on the first demand.
+	 *
+	 * Always returns a component, or undefined.
+	 */
+	co               : function()
+	{
+		if(!arguments.length)
+			return this._component
+		ZeT.assert(arguments.length == 1)
+
+		var co = arguments[0]
+
+		if(!ZeT.isb(co)) //?: {a component-like}
+		{
+			if(!this._component)
+			{
+				this._component = ZeT.assertn(co)
+				this.$bind_to()
+			}
+			else
+				ZeT.assert(this._component === co, 'Bind [',
+				  this.name, '] got else component assigned!')
+		}
+		else if(!this._component && (co === true))
+		{
+			this._component = this.$create()
+			this.$bind_to()
+		}
+
+		return this._component
+	},
+
+	/**
+	 * Invokes ZeT.scope() giving the first
+	 * argument this Bind instance.
+	 */
+	scope            : function()
+	{
+		ZeT.assertf(arguments[arguments.length - 1])
+
+		//~: argument this bind
+		var a = ZeT.a(arguments)
+		a.splice(0, 0, this)
+
+		ZeT.scope.apply(ZeT, a)
+		return this
+	},
+
+	/**
+	 * Analogue of scope(), but is invoked only
+	 * when the component bound is created (added
+	 * to the parent container).
+	 */
+	when             : function()
+	{
+		if(this.co())
+			this.scope.apply(this, arguments)
+		else
+			this.on('added', ZeT.fbinda(
+			  this.scope, this, arguments, true))
+
+		return this
+	}
+})
+
+
+// +----: Bind [ events ] :--------------------------------------+
+
+extjsf.Bind.extend(
+{
+	/**
+	 * Adds the callback function as an event listener
+	 * for the component related to this Bind (it may
+	 * not exist at the call time).
+	 *
+	 * Note that event if the component is already created,
+	 * callback is not added to it directly, but is saved
+	 * in the Bind-internal list of listeners. Component
+	 * has only one listener from the Bind for each event.
+	 *
+	 * Set remove argument true to delete previously
+	 * added listener.
+	 *
+	 * Second variant of call to this method is to
+	 * give object mapping event names to single
+	 * functions or array of functions.
+	 */
+	on               : function(ename, f, remove)
+	{
+		//?: {single call}
+		if(arguments.length > 1)
+			this.$on_one.apply(this, arguments)
+		else //~: process the object
+		{
+			var self = this, o = arguments[0]
+
+			ZeT.assert(ZeT.isox(o))
+			ZeT.each(o, function(ls, ename)
+			{
+				if(ZeT.isf(ls))
+					return self.$on_one(ename, ls)
+
+				ZeT.assert(ZeT.isa(ls))
+				for(var i = 0;(i < ls.length);i++)
+					self.$on_one(ename, ls[i])
+			})
+		}
+
+		return this
+	},
+
+	$on_one          : function(ename, f, remove)
+	{
+		ZeT.asserts(ename)
+		ZeT.assertf(f)
+
+		var l = this.$on_list(ename)
+		var i = l.indexOf(f)
+
+		//?: {removing}
+		if(remove === true)
+		{
+			if(i != -1) //?: {found it}
+				l.splice(i, 1)
+		}
+		else
+		{
+			if(i == -1) //?: {found it not}
+				l.push(f)
+		}
+	},
+
+	/**
+	 * Private. Returns internal list of listeners
+	 * mapped to the name of event.
+	 */
+	$on_list         : function(ename)
+	{
+		//~: side-effect
+		this.$on_bind(ename)
+
+		var list = this._listeners[ename]
+
+		//?: {event is registered}
+		if(list) return list
+
+		//~: register it
+		this._listeners[ename] = list = []
+
+		if(this.co()) //?: {component is ready}
+			this.co().on(ename, this.$on_bind(ename))
+
+		return list
+	},
+
+	/**
+	 * Private. Creates and caches bound $on().
+	 */
+	$on_bind         : function(ename)
+	{
+		if(!this._bound_on) this._bound_on = {}
+
+		//?: {already created it}
+		if(this._bound_on[ename])
+			return this._bound_on[ename]
+
+		return this._bound_on[ename] =
+		  ZeT.fbind(this.$on, this, ename)
+	},
+
+	/**
+	 * Private. Registers essential events for
+	 * the assigned component.
+	 */
+	$set_events      : function()
+	{
+		var co = ZeT.assertn(this._component)
+		var de = this.$on_bind('destroy')
+
+		//HINT: it's better for Bind's destroy
+		//  listener to be the last in the list!
+
+		co.removeListener('destroy', de)
+		co.addListener('destroy', de)
+	},
+
+	/**
+	 * Private. Returns a map of listeners to give
+	 * as Ext JS configuration property when
+	 * creating a Component.
+	 */
+	$listeners       : function()
+	{
+		//!: always create and destroy
+		this.$on_bind('added')
+		this.$on_bind('destroy')
+
+		return this._bound_on
+	},
+
+	/**
+	 * Private. Takes the external map of the listeners
+	 * (applied via the configuration facets) and merges
+	 * it with the listeners added via the Bind interface.
+	 *
+	 * Note that following calls with the same collection
+	 * of listeners (same functions) has no effect.
+	 */
+	$merge_listeners : function(external)
+	{
+		if(ZeT.isox(external))
+			this.on(external)
+
+		return this.$listeners()
+	},
+
+	/**
+	 * Private. Bound wrapper over the nested listeners.
+	 * Invokes them and returns the first defined result.
+	 */
+	$on              : function()
+	{
+		var args  = ZeT.a(arguments)
+		var ename = args.shift()
+
+		//?: {added} set the component
+		if(ename == 'added')
+			this.co(args[0])
+
+		var result = this.$on_invoke(ename, args)
+
+		//?: {after the destruction}
+		if(ename == 'destroy')
+			this.destroy()
+
+		return result
+	},
+
+	$on_invoke       : function(ename, args)
+	{
+		var ls = this._listeners[ename]
+		if(!ls) return undefined
+
+		for(var re, i = 0, l = ls.length;(i < l);i++) try
+		{
+			var r = ls[i].apply(this._component, args)
+			if(!ZeT.isu(r) && ZeT.isu(re)) re = r
+		}
+		catch(e)
+		{
+			ZeT.log('Error in Bind [', this.name, '] on event [',
+			  ename, '] in listener: ', ls[i])
+
+			throw e
+		}
+
+		return re
 	}
 })
 
@@ -1977,9 +2174,15 @@ extjsf.StoreBind = ZeT.defineClass(
 
 		//?: {component is destroyed}
 		if(co && (de === true))
+		{
 			//?: {store is still registered}
 			if(co == Ext.data.StoreManager.lookup(this.name))
 				Ext.data.StoreManager.unregister(this.name)
+
+			//~: destroy the proxy
+			if(this.proxy)
+				this.proxy.destroy()
+		}
 
 		return de
 	},
@@ -2693,7 +2896,7 @@ extjsf.Bind.extend(
 		ZeT.undelay(res)
 
 		//~: merge the listeners
-		res.listeners = this._xlisteners(res.listeners);
+		res.listeners = this.$merge_listeners(res.listeners)
 
 		//~: the handler
 		if(ZeT.isf(this.handler))
@@ -2713,144 +2916,6 @@ extjsf.Bind.extend(
 		res.extjsfBind = this;
 
 		return res;
-	},
-
-	//=        Listeners         =//
-
-	listeners        : function()
-	{
-		var funmap = this._listeners;
-		var result = {};
-		var fmkeys = ZeT.keys(funmap);
-
-		for(var i = 0;(i < fmkeys.length);i++)
-		{
-			var ename = fmkeys[i];
-			if(!ZeT.iss(ename) || !ZeT.isa(funmap[ename])) continue;
-
-			this._bind_on(ename, result)
-		}
-
-		//!: always support for component 'added' and destroy event
-		this._bind_on('added', result)
-		this._bind_on('destroy', result)
-
-		return result;
-	},
-
-	_xlisteners      : function(external)
-	{
-		var result = this.listeners();
-		if(!external) return result;
-
-		//c: for all external listeners
-		var l, ls, n, ns = ZeT.keys(external);
-		for(var i = 0;(i< ns.length);i++)
-		{
-			if(!ZeT.iss(n = ns[i])) continue;
-
-			//~: bind local event handler
-			this._bind_on(n, result)
-
-			//~: update listeners map
-			if(!(ls = this._listeners[n]))
-				this._listeners[n] = ls = [];
-
-			//?: {external listener is a function}
-			if(ZeT.isf(l = external[n]))
-			{
-				//?: {it is not the on-handler} add it
-				if(!l.extjsfBindOn) ls.push(l)
-				continue;
-			}
-
-			//!: it is Ext JS listener definition object
-
-			//~: swap on-handler with object
-			var fn = l.fn; l.fn = result[n]; result[n] = l;
-
-			//?: {fn is not the on-handler} add it
-			if(ZeT.isf(fn) && !fn.extjsfBindOn) ls.push(fn)
-		}
-
-		return result;
-	},
-
-	on               : function(ename, func)
-	{
-		ZeT.assert(ZeT.iss(ename))
-		ZeT.assert(ZeT.isf(func))
-
-		if(this.co())
-		{
-			this.co().removeListener(ename, func)
-			this.co().on(ename, func)
-		}
-		else
-		{
-			var list = this._listeners[ename]
-			if(!list) this._listeners[ename] = list = []
-
-			if(list.indexOf(func) == -1)
-				list.push(func)
-		}
-
-		return this
-	},
-
-	on_create        : function(co)
-	{
-		this._component = co
-		co.extjsfBind = this
-	},
-
-	/**
-	 * This implementation tries to handle properly two
-	 * cases: when component is solely destroyed, or
-	 * it's being destroyed with the Domain.
-	 */
-	on_destroy       : function()
-	{
-		this.$destroy()
-	},
-
-	_on              : function()
-	{
-		var args   = ZeT.a(arguments);
-		var ename  = args.shift();
-
-		//?: {added event} set the component
-		if(ename === 'added')
-			this.on_create(args[0])
-
-		var functs = this._listeners[ename] || [];
-		var target = this._component || this;
-
-		//HINT: we return the first defined result!
-
-		var result = undefined;
-		for(var i = 0, l = functs.length;(i < l);i++)
-		{
-			var r = functs[i].apply(target, args);
-			if(!ZeT.isu(r) && ZeT.isu(result)) result = r;
-		}
-
-		//?: {before destroy} unbind
-		if(ename === 'destroy')
-			this.on_destroy(args[0])
-
-		return result
-	},
-
-	_bind_on         : function(ename, res)
-	{
-		if(res && res[ename]) return undefined;
-
-		var f = ZeT.fbind(this._on, this, ename);
-		f.extjsfBindOn = true;
-
-		if(res) res[ename] = f;
-		return f;
 	}
 })
 
