@@ -578,10 +578,28 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		//~: evaluate the properties node
 		var props = this.$eval_props_node(suffix)
 
+		//~: properties of the node
+		if(!this._node_props) this._node_props = {}
+		if(ZeT.keys(props).length)
+			this._node_props[suffix] = props
+		else
+			delete this._node_props[suffix]
+
 		//!: update the properties now
 		this.props(suffix, props)
 
-		return (compare)?(!!ZeT.keys(props).length):(this)
+		return (compare)?(!!this._node_props[suffix]):(this)
+	},
+
+	/**
+	 * Returns properties previously read from the node
+	 * (where they were printed by JSF facet).
+	 */
+	getPropsNode     : function(suffix)
+	{
+		//?: {default suffix}
+		if(ZeT.ises(suffix)) suffix = 'props'
+		return ZeT.get(this._node_props, suffix)
 	},
 
 	/**

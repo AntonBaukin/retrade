@@ -711,7 +711,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String getGroup()
 	{
-		return (String) getGoodView().getAttrs().get(Goods.AT_GROUP);
+		Object v = getGoodView().getAttrs().get(Goods.AT_GROUP);
+		return Void.class.equals(v)?(null):(String)v;
 	}
 
 	public void setGroup(String group)
@@ -723,7 +724,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String getVat()
 	{
-		return SU.cats(getGoodView().getAttrs().get(Goods.AT_VAT));
+		Object v = getGoodView().getAttrs().get(Goods.AT_VAT);
+		return Void.class.equals(v)?(null):SU.cats(v);
 	}
 
 	public void setVat(String vat)
@@ -735,7 +737,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String getFullName()
 	{
-		return (String) getGoodView().getAttrs().get(Goods.AT_FULL_NAME);
+		Object v = getGoodView().getAttrs().get(Goods.AT_FULL_NAME);
+		return Void.class.equals(v)?(null):(String)v;
 	}
 
 	public void setFullName(String fullName)
@@ -747,7 +750,8 @@ public class FacesGoodEditView extends ModelView
 
 	public BigDecimal getRestVolume()
 	{
-		return (BigDecimal) getGoodView().getAttrs().get(Goods.AT_REST_VOLUME);
+		Object v = getGoodView().getAttrs().get(Goods.AT_REST_VOLUME);
+		return Void.class.equals(v)?(null):(BigDecimal)v;
 	}
 
 	public void setRestVolume(BigDecimal restVolume)
@@ -759,7 +763,8 @@ public class FacesGoodEditView extends ModelView
 
 	public BigDecimal getNetWeight()
 	{
-		return (BigDecimal) getGoodView().getAttrs().get(Goods.AT_NET_WEIGHT);
+		Object v = getGoodView().getAttrs().get(Goods.AT_NET_WEIGHT);
+		return Void.class.equals(v)?(null):(BigDecimal)v;
 	}
 
 	public void setNetWeight(BigDecimal netWeight)
@@ -771,7 +776,8 @@ public class FacesGoodEditView extends ModelView
 
 	public BigDecimal getGrossWeight()
 	{
-		return (BigDecimal) getGoodView().getAttrs().get(Goods.AT_GROSS_WEIGHT);
+		Object v = getGoodView().getAttrs().get(Goods.AT_GROSS_WEIGHT);
+		return Void.class.equals(v)?(null):(BigDecimal)v;
 	}
 
 	public void setGrossWeight(BigDecimal grossWeight)
@@ -783,7 +789,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String getVendorCodes()
 	{
-		return SU.s2s(SU.scats("\f", getGoodView().getAttrs().get(Goods.AT_VENDOR_CODE)));
+		Object v = getGoodView().getAttrs().get(Goods.AT_VENDOR_CODE);
+		return Void.class.equals(v)?(null):SU.s2s(SU.scats("\f", v));
 	}
 
 	public void setVendorCodes(String vendorCodes)
@@ -794,7 +801,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String getBarcodes()
 	{
-		return SU.s2s(SU.scats("\f", getGoodView().getAttrs().get(Goods.AT_BARCODE)));
+		Object v = getGoodView().getAttrs().get(Goods.AT_BARCODE);
+		return Void.class.equals(v)?(null):SU.s2s(SU.scats("\f", v));
 	}
 
 	public void setBarcodes(String barcodes)
@@ -805,7 +813,8 @@ public class FacesGoodEditView extends ModelView
 
 	public String getWeighted()
 	{
-		return (String) getGoodView().getAttrs().get(Goods.AT_WEIGHTED);
+		Object v = getGoodView().getAttrs().get(Goods.AT_WEIGHTED);
+		return Void.class.equals(v)?(null):(String)v;
 	}
 
 	public void setWeighted(String weighted)

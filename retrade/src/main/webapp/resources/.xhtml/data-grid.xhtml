@@ -63,6 +63,9 @@
         {
           grid.$raw().viewConfig = ZeT.extend(
             { preserveScrollOnRefresh: true }, grid.$raw().viewConfig)
+
+          if('true' == "#{cc.attrs.selset}")
+            ReTrade.selset.grid('#{cc.attrs.coid}', '${extDom}')
         }).
       install()
 

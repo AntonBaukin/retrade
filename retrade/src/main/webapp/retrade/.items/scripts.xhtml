@@ -113,6 +113,34 @@ function retrade_add_user_web_link(wl)
   })
 }
 
+function retrade_add_web_link_tool(window, link, entity, params)
+{
+  //?: {tool is already installed}
+  if(!ZeT.isu(window.webLink)) return
+
+  var tool = window.webLink = {
+    xtype: 'tool', cls: 'retrade-web-link-tool',
+    tooltipType: 'title', tooltip: 'Создать постоянную ссылку на окно'
+  }
+
+  //~: web link + tool handler
+  tool.handler = ZeT.fbind(retrade_add_user_web_link, this, {
+    link: link, entity: entity, params: params,
+    text: window.co().title, domain: window.domain, box: {
+      width: window.co().getWidth(),
+      height: window.co().getHeight() }
+  })
+
+  //~: insert tool in the window's header
+  var items = window.co().getHeader().items
+  for(var i = 0;(i < items.getCount());i++)
+    if(items.get(i).xtype == 'tool')
+      return window.co().getHeader().insert(i, tool)
+
+  //~: append a single tool
+  window.co().addTool([ tool ])
+}
+
 function retrade_open_window(opts)
 {
   ZeT.assertn(opts)
