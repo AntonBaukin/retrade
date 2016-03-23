@@ -7,14 +7,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/root-panel.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/desktop-panel.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.goods-tree.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/.goods-tree.xhtml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/docs/documents.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/docs/documents.xhtml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/domains.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/domains.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/extjsf.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/price-lists/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/price-lists/list.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/stores/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/stores/list.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/root-panel.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/root-panel.xhtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winmain.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winmain.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/price-lists/goods-prices-client.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/price-lists/goods-prices-client.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/goods-stores-prices.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/goods-stores-prices.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/firms/list-lists.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/firms/list-lists.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-nav.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list-nav.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list-ways.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list-ways.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/datas/list.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/firms/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/firms/list.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/payments/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/payments/list.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/reprice-docs/list.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/reprice-docs/list.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/ui/my-links.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/secure-rules.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/secure-rules.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/secure-sets.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/secure-sets.xhtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/users.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/settings/users.xhtml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,11 +62,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="list.xhtml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/stores/list.xhtml">
+      <file leaf-file-name="domains.xhtml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/domains.xhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.34713376">
-              <caret line="19" column="61" selection-start-line="19" selection-start-column="61" selection-end-line="19" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.5684713">
+              <caret line="21" column="2" selection-start-line="21" selection-start-column="2" selection-end-line="21" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -83,7 +94,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/info-main.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/java/com/tverts/retrade/web/views/FacesGoodPriceView.java" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/items/selset-win.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/zet.js" />
@@ -100,6 +110,7 @@
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/winmain.xhtml" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/desktop.js" />
         <option value="$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/root-panel.xhtml" />
+        <option value="$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list-ways.xhtml" />
       </list>
     </option>
   </component>
@@ -616,7 +627,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289183" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24186046" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36837208" sideWeight="0.49421486" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36837208" sideWeight="0.49421486" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44260487" sideWeight="0.5735294" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32735962" sideWeight="0.56618357" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -646,7 +657,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-101 [beta]: started x:form-panel refactoring..." />
     <MESSAGE value="ui-101 [beta]: renamed bindSubmitForm()." />
     <MESSAGE value="ui-101 [beta]: renamed extjsf.FormBind.submitForm()." />
     <MESSAGE value="ui-101 [beta]: refactored extjsf.FormBind.submit()." />
@@ -671,7 +681,8 @@
     <MESSAGE value="ui-101 [alpha]: fixed destruction of Store Binds." />
     <MESSAGE value="ui-101 [beta]: refactored extjsf.Bind listeners." />
     <MESSAGE value="ui-101 [stable]: refactored x:winmain." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-101 [stable]: refactored x:winmain." />
+    <MESSAGE value="ui-101 [beta]: refactored x:root-panel." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-101 [beta]: refactored x:root-panel." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -799,22 +810,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/data-store.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37603992">
-          <caret line="78" column="8" selection-start-line="78" selection-start-column="8" selection-end-line="78" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/scripts.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8284091">
-          <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xroot/src/main/java/com/tverts/api/core/Value.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
@@ -851,14 +846,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list-ways.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34775373">
-          <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list.xhtml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34775373">
@@ -889,113 +876,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/domains.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.029950082">
-          <caret line="21" column="2" selection-start-line="21" selection-start-column="2" selection-end-line="21" selection-end-column="2" />
-          <folding>
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;title&quot;: 'Загрузка...'...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;url&quot;: &quot;${z:url('/go/retrade/system/create-domain')}&quot;...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;${v.viewModeParam}&quot;: 'body'...}" />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;title&quot;: 'Загрузка...'...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;url&quot;: &quot;${z:url('/go/retrade/system/self-shunt')}&quot;...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;${v.viewModeParam}&quot;: 'body'...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;title&quot;: 'Загрузка...'...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;url&quot;: &quot;${z:url('/go/retrade/system/logins')}&quot;...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{&quot;${v.viewModeParam}&quot;: 'body'...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717573000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/docs/documents.xhtml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9079546">
           <caret line="47" column="6" selection-start-line="47" selection-start-column="6" selection-end-line="47" selection-end-column="6" />
           <folding>
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="{&quot;title&quot;: 'Фильтр'...}" />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="false" signature="-1:-1" placeholder="{...}" />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="{&quot;domainKey&quot;: &quot;${z:vid(v, 'view_document')}&quot;...}" />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458717078000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="{&quot;title&quot;: 'Фильтр'...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="{&quot;domainKey&quot;: &quot;${z:vid(v, 'view_document')}&quot;...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1952,9 +1868,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/root-panel.xhtml">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/stores/list.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.289809">
+        <state vertical-scroll-proportion="0.5374376">
+          <caret line="19" column="61" selection-start-line="19" selection-start-column="61" selection-end-line="19" selection-end-column="61" />
+          <folding>
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458717568000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="{&quot;url&quot;: '/stores/info'...}" />
+            <marker date="1458717568000" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/goods/list.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.27045456">
+          <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
+          <folding>
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458122051000" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/root-component.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="//..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="//..." />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1457531654000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1457531654000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1457531654000" expanded="false" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/resources/.xhtml/desktop-panel.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="4.780366">
           <caret line="185" column="0" selection-start-line="185" selection-start-column="0" selection-end-line="185" selection-end-column="0" />
           <folding>
             <marker date="1458720258000" expanded="true" signature="-1:-1" placeholder="..." />
@@ -1986,16 +1973,64 @@
             <marker date="1458720258000" expanded="true" signature="-1:-1" placeholder="..." />
             <marker date="1458720258000" expanded="true" signature="-1:-1" placeholder="..." />
             <marker date="1458720258000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1458720258000" expanded="true" signature="-1:-1" placeholder="..." />
             <marker date="1458720258000" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/stores/list.xhtml">
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/accounts/list-ways.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34713376">
-          <caret line="19" column="61" selection-start-line="19" selection-start-column="61" selection-end-line="19" selection-end-column="61" />
+        <state vertical-scroll-proportion="0.33280253">
+          <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
+          <folding>
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="false" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="{&quot;widthpt&quot;: 520...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="{&quot;xtype&quot;: 'window'...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="{&quot;url&quot;: &quot;${z:url('/go/retrade/accounts/info-way')}&quot;...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="{&quot;${v.viewModeParam}&quot;: 'body'...}" />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1458720580000" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/retrade/src/main/webapp/retrade/system/domains.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5684713">
+          <caret line="21" column="2" selection-start-line="21" selection-start-column="2" selection-end-line="21" selection-end-column="2" />
           <folding />
         </state>
       </provider>
