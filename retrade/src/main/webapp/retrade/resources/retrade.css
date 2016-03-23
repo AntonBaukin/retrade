@@ -158,6 +158,29 @@ div.x-panel.retrade-toolbar-colour-line-one > div.x-panel-body
 }
 
 
+/* Tabbed Panels */
+
+.x-panel.retrade-compact-panel .x-tab-bar-body-default
+{
+  padding: 6px 0 0 0;
+}
+
+.x-panel.retrade-compact-panel a.x-tab.x-tab-default-top:not(.x-tab-over)
+{
+  background-color: rgba(200, 221, 236, 0.40);
+}
+
+.x-panel.retrade-compact-panel a.x-tab.x-tab-active.x-tab-default-top
+{
+  border-color: #cecece;  background-color: #cecece;
+  border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+}
+
+.x-panel.retrade-compact-panel a.x-tab.x-tab-active.x-tab-default .x-tab-inner-default
+{
+  color: inherit;
+}
+
 /* Desktop Panels */
 
 body.x-body, div.x-border-layout-ct.retrade-desktop-panel-center,
