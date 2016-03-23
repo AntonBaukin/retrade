@@ -394,7 +394,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	 * Note that at this point Ext JS components
 	 * are still might be not available!
 	 */
-	ready            : function()
+	ready            : function(always)
 	{
 		//?: {installed or added} do nothing
 		if(this._installed_to || this._added_to)
@@ -407,6 +407,10 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		//?: {rendering to a node}
 		else if(this._render_to)
 			this.$render_to()
+
+		//?: {create always}
+		else if(always)
+			this.co(true)
 
 		return this
 	},

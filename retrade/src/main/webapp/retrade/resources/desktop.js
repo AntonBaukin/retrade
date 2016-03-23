@@ -970,7 +970,6 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 	{
 		if(!bind) return this._toolbar
 		this._toolbar = bind
-		bind.co(true) //<-- create it
 		return this
 	},
 
@@ -978,7 +977,6 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 	{
 		if(!bind) return this._statusbar
 		this._statusbar = bind
-		bind.co(true) //<-- create it
 		return this
 	},
 
@@ -1105,23 +1103,16 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 		var cnt = this.panelController().contentPanel()
 		if(!cnt || !cnt.co()) return //<-- no content panel
 
-		//?: the bind component is not created yet
-		if(!this.bind().co())
-		{
-			//~: create the root panel component
-			this.bind().co(Ext.ComponentManager.create(
-			  this.bind().buildProps()))
-
-			//?: {has toolbar} dock it
-			if(this.toolbar()) this.bind().co().
-			  addDocked(this.toolbar().buildProps())
-			//?: {has status bar} dock it
-			if(this.statusbar()) this.bind().co().
-			  addDocked(this.statusbar().buildProps())
-		}
-
 		//~: add the component
-		cnt.co().add(this.bind().co())
+		cnt.co().add(this.bind().co(true))
+
+		//?: {has toolbar} dock it
+		if(this.toolbar())
+			this.bind().co().addDocked(this.toolbar().co(true))
+
+		//?: {has status bar} dock it
+		if(this.statusbar())
+			this.bind().co().addDocked(this.statusbar().co(true))
 
 		//~: add the removed content nodes
 		var nodes = this._removed_content_nodes; if(ZeT.isa(nodes))
