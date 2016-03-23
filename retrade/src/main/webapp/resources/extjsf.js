@@ -1225,6 +1225,7 @@ extjsf.RootBind = ZeT.defineClass(
 	/**
 	 * Tells whether to install the callback on the owning
 	 * component destroy to also destroy the entire Domain.
+	 * By default, any root Bind is an owner.
 	 */
 	domainOwner      : function(isowner)
 	{

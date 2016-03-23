@@ -10,8 +10,7 @@
     <!--
          Winmain component is a panel to install
          as a content of a Window that supports
-         optional toolbar and status bar panels
-         (that are regular Ext JS panels).
+         optional toolbar and status bar panels.
     -->
 
     <!--
@@ -80,7 +79,6 @@
 
       extjsf.domain('${extDom}').
         bind('#{cc.attrs.coid}', new extjsf.Bind()).ids('#{cc.clientId}').
-        renderTo('#{cc.attrs.renderTo}', '#{cc.attrs.renderParent}').
         parent('#{cc.parent.attrs.coid}').props({ xtype: 'panel' }).
         props({ layout: 'border', region: 'center', border: false }).
         props({ bodyPadding: extjsf.pt(1) }).readPropsNode().
@@ -89,11 +87,11 @@
           }).
           nest('status', function(sb) {
             sb.props({ xtype: 'statusbar', dock: 'bottom', border: false }).readPropsNode()
-          }).
-        scope(extjsf.bind('#{cc.attrs.windowBind}', '${extDom}'),
-          function(winmain, window) {
-            if(!window.WinAlign) new ReTrade.WinAlign({ window: window })
           })
+
+      extjsf.bind('#{cc.attrs.windowBind}', '${extDom}').scope(function(window){
+        if(!window.WinAlign) new ReTrade.WinAlign({ window: window })
+      })
 
     //]]>
     </script>
@@ -106,9 +104,9 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
-      extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
-      function(p, tb){ tb.replaceItems(p.replaceItems()) })
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
+        function(p, tb){ tb.replaceItems(p.replaceItems()) })
 
     //]]>
     </script>
@@ -123,9 +121,9 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
-      extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
-      function(p, sb){ sb.replaceItems(p.replaceItems()) })
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
+        function(p, sb){ sb.replaceItems(p.replaceItems()) })
 
     //]]>
     </script>
@@ -140,28 +138,30 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
-      extjsf.bind('#{cc.attrs.windowBind}', '${extDom}'),
-      extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
-      extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
-      function(p, w, tb, sb)
-      {
-        w.co().add(p.co(true))
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        extjsf.bind('#{cc.attrs.windowBind}', '${extDom}'),
+        extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
+        extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
+        function(p, w, tb, sb)
+        {
+          w.co().add(p.co(true))
 
-        if(!tb.getPropsNode() || tb.hasItems() || tb.hasHTML())
-          w.co().addDocked(tb.co(true))
-        else tb.destroy()
+          if(!tb.getPropsNode() || tb.hasItems() || tb.hasHTML())
+            w.co().addDocked(tb.co(true))
+          else tb.destroy()
 
-        if(!sb.getPropsNode() || sb.hasItems() || sb.hasHTML())
-          w.co().addDocked(sb.co(true))
-        else sb.destroy()
+          if(!sb.getPropsNode() || sb.hasItems() || sb.hasHTML())
+            w.co().addDocked(sb.co(true))
+          else sb.destroy()
 
-        if("#{cc.attrs.webLink}" != 'false')
-          retrade_add_web_link_tool(w, "#{z:jss(rootView.requestURI)}",
-            "#{rootView.entityKey}", "#{z:jss(rootView.requestParams)}")
-      })
+          if("#{cc.attrs.webLink}" != 'false')
+            retrade_add_web_link_tool(w, "#{z:jss(rootView.requestURI)}",
+              "#{rootView.entityKey}", "#{z:jss(rootView.requestParams)}")
+        })
 
     //]]>
     </script>
+
+    <!-- window main panel] -->
   </co:implementation>
 </ui:fragment>

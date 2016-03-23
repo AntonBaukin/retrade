@@ -970,6 +970,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 	{
 		if(!bind) return this._toolbar
 		this._toolbar = bind
+		bind.co(true) //<-- create it
 		return this
 	},
 
@@ -977,6 +978,7 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 	{
 		if(!bind) return this._statusbar
 		this._statusbar = bind
+		bind.co(true) //<-- create it
 		return this
 	},
 

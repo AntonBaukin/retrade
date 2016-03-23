@@ -7,24 +7,67 @@
 
   <co:interface>
 
+    <!--
+         Root panel component is a panel to install
+         into named section of the desktop. It has
+         optional toolbar and status bar panels.
+    -->
+
+
+    <!--
+         Name of the bind of the root panel.
+    -->
     <co:attribute name = 'coid' required = 'true'
        type = 'java.lang.String'/>
 
+    <!--
+         Name of the section of the desktop
+         to place this panel into.
+    -->
     <co:attribute name = 'position' default = 'center'
        type = 'java.lang.String'/>
 
+    <!--
+         See RootBind.domainOwner()
+    -->
     <co:attribute name = 'domainOwner' default = 'true'
        type = 'java.lang.Boolean'/>
 
     <co:attribute name = 'webLink' default = 'true'
        type = 'java.lang.Boolean'/>
 
+    <!--
+         Properties of the panel.
+    -->
     <co:facet name = 'extjs-props'/>
+
+    <!--
+         Components to add to the top-bar panel
+         associated with the target section, or
+         into the main menu of the desktop.
+    -->
     <co:facet name = 'topbar'/>
-    <co:facet name = 'topbar-menu'/>
+
+    <!--
+         Properties of the toolbar panel.
+    -->
     <co:facet name = 'toolbar-props'/>
+
+    <!--
+         Content of the toolbar.
+         Panel is not created if it has no children!
+    -->
     <co:facet name = 'toolbar'/>
+
+    <!--
+         Properties of the status bar panel.
+    -->
     <co:facet name = 'status-props'/>
+
+    <!--
+         Content of the status bar.
+         Panel is not created if it has no children!
+    -->
     <co:facet name = 'status'/>
 
   </co:interface>
@@ -46,42 +89,34 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  ZeT.scope(function()
-  {
-    var panel = extjsf.domain('${extDom}').
-      bind('#{cc.attrs.coid}', new extjsf.Bind())
+      extjsf.domain('${extDom}').
+        bind('#{cc.attrs.coid}', new extjsf.RootBind()).ids('#{cc.clientId}').
+        domainOwner('#{cc.attrs.domainOwner}' == 'true').
+        parent('#{cc.parent.attrs.coid}').props({ xtype: 'panel' }).
+        props({ layout: 'border', region: 'center', border: false }).
+        props({ closable: true, minWidth: 256 }).readPropsNode().
+          nest('toolbar', function(tb) {
+            tb.props({ xtype: 'toolbar', dock: 'top', border: false }).readPropsNode()
+          }).
+          nest('status', function(sb) {
+            sb.props({ xtype: 'statusbar', dock: 'bottom', border: false }).readPropsNode()
+          }).
+        scope(function(panel) {
 
-    panel.nodeId("#{cc.clientId}-#{cc.attrs.coid}")
-    panel.props({
+          var wlink; if("#{cc.attrs.webLink}" == 'true') wlink = {
+            link: "#{rootView.requestURI}", domain: '${extDom}',
+            text: panel.$raw().title, panel: '#{cc.attrs.position}'
+          }
 
-      xtype: 'panel', layout: 'border', region: 'center',
-      border: false, frame: false, closable: true,
-      minWidth: 256
-
-    })
-    panel.readPropsNode()
-
-    var position = '#{cc.attrs.position}'
-    if(ZeTS.ises(position)) position = 'center'
-
-    var wlink; if("#{cc.attrs.webLink}" === 'true') wlink = {
-      link: "#{rootView.requestURI}", panel: position,
-      text: panel.$raw().title,
-      domain: '${extDom}'
-    }
-
-    //~: install the desktop controller for the root panel
-    ZeT.createInstance('ReTrade.DesktopRootPanelController', {
-      domain: '${extDom}', desktop: ReTrade.desktop,
-      'position': position, bind: panel, webLink: wlink,
-      domainOwner: ('#{cc.attrs.domainOwner}' === 'true')
-    })
-
-  })
+          ZeT.createInstance('ReTrade.DesktopRootPanelController', {
+            domain: '${extDom}', desktop: ReTrade.desktop, bind: panel,
+            position: '#{cc.attrs.position}', webLink: wlink,
+            domainOwner: ('#{cc.attrs.domainOwner}' === 'true')
+          })
+        })
 
     //]]>
     </script>
-
 
     <!-- [insert topbar controls -->
 
@@ -90,15 +125,8 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  ZeT.scope(function()
-  {
-    var panel = extjsf.bind("#{cc.attrs.coid}", '${extDom}')
-
-    //HINT: we steal present items from the root panel
-    //  and register them as for the top bar!
-
-    panel.rootPanelController.topbarItems(panel.replaceItems())
-  })
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        function(p){ p.rootPanelController.topbarItems(p.replaceItems()) })
 
     //]]>
     </script>
@@ -113,24 +141,9 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  ZeT.scope(function()
-  {
-    var domain  = '${extDom}';
-    var panel   = extjsf.bind("#{cc.attrs.coid}", domain);
-
-    //~: create the toolbar
-    var toolbar = extjsf.domain('${extDom}').
-      bind('#{cc.attrs.coid}-toolbar', new extjsf.Bind())
-    toolbar.nodeId("#{cc.clientId}-#{cc.attrs.coid}-toolbar")
-    toolbar.props({xtype: 'toolbar', dock: 'top', border: false}).
-      readPropsNode()
-
-    //HINT: we steal the items from the root panel
-    //  and add them to the toolbar!
-
-    toolbar.replaceItems(panel.replaceItems())
-
-  })
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
+        function(p, tb){ tb.replaceItems(p.replaceItems()) })
 
     //]]>
     </script>
@@ -145,56 +158,42 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-  ZeT.scope(function()
-  {
-    var domain = '${extDom}';
-    var panel  = extjsf.bind("#{cc.attrs.coid}", domain);
-
-    //~: create the status bar
-    var status = extjsf.domain('${extDom}').
-      bind('#{cc.attrs.coid}-status', new extjsf.Bind())
-    status.nodeId("#{cc.clientId}-#{cc.attrs.coid}-status")
-    status.props({xtype: 'statusbar', dock: 'bottom'}).readPropsNode()
-
-    //HINT: we steal the items from the root panel
-    //  and add them to the toolbar!
-
-    status.replaceItems(panel.replaceItems())
-
-  })
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
+        function(p, sb){ sb.replaceItems(p.replaceItems()) })
 
     //]]>
     </script>
 
     <!-- insert status bar controls] -->
 
+
+    <!-- [install the panel into the desktop -->
+
     <co:insertChildren/>
 
     <script type = "text/javascript">
     //<![CDATA[
 
-  Ext.onReady(function()
-  {
-    var domain  = '${extDom}';
-    var panel   = extjsf.bind('#{cc.attrs.coid}', domain);
-    var toolbar = extjsf.bind('#{cc.attrs.coid}-toolbar', domain);
-    var status  = extjsf.bind('#{cc.attrs.coid}-status', domain);
+      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
+        extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
+        extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
+        function(p, tb, sb)
+        {
+          p.rootPanelController.insert()
 
-    //?: {toolbar has items} add it to the window
-    if(toolbar.hasItems() || toolbar.hasHTML())
-      panel.rootPanelController.toolbar(toolbar)
+          if(!tb.getPropsNode() || tb.hasItems() || tb.hasHTML())
+            p.rootPanelController.toolbar(tb)
+          else tb.destroy()
 
-    //?: {status bar has items} add it to the window
-    if(status.hasItems() || status.hasHTML())
-      panel.rootPanelController.statusbar(status)
-
-    //~: insert via the controller call
-    panel.rootPanelController.insert()
-
-  })
+          if(!sb.getPropsNode() || sb.hasItems() || sb.hasHTML())
+            p.rootPanelController.statusbar(sb)
+          else sb.destroy()
+        })
 
     //]]>
     </script>
 
+    <!-- install the panel into the desktop] -->
   </co:implementation>
 </ui:fragment>
