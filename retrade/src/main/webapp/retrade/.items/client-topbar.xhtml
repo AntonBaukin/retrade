@@ -178,11 +178,9 @@
   extjsf.handler("${z:vid(localView, 'retrade-goods-prices')}",
     '${extDom}', function()
   {
-    var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-prices:');
-
     ReTrade.desktop.loadDesktopPanel(
       "${z:url('/go/retrade/price-lists/goods-prices-client')}", {
-      'domain': domain
+      domain: 'retrade-client-menu:goods-prices'
     })
   })
 
@@ -191,11 +189,9 @@
   extjsf.handler("${z:vid(localView, 'retrade-goods-tree')}",
     '${extDom}', function()
   {
-    var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-tree:');
-
     ReTrade.desktop.loadDesktopPanel(
       "${z:url('/go/retrade/goods/goods-tree-client')}", {
-      'domain': domain
+      domain: 'retrade-client-menu:goods-tree'
     })
   })
 
@@ -204,11 +200,9 @@
   extjsf.handler("${z:vid(localView, 'retrade-goods-tree-own')}",
     '${extDom}', function()
   {
-    var domain = extjsf.tempDomain('desktop-content:retrade-client-menu:goods-tree-own:');
-
     ReTrade.desktop.loadDesktopPanel(
       "${z:url('/go/retrade/goods/goods-tree-client-own')}", {
-      'domain': domain
+      domain: 'retrade-client-menu:goods-tree-own'
     })
   })
 

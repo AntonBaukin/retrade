@@ -299,9 +299,9 @@ ${v.checkModelRequestedWithRedirect}
       return ReTrade.desktop.error("Выберете источник данных!");
 
     var domain; if(ZeT.isu(template))
-      domain = 'wnd:' + "${z:vid(v, 'create-report-template')}:" + 'datasource-' + s.getId();
+      domain = 'window:' + "${z:vid(v, 'create-report-template')}:" + 'datasource-' + s.getId();
     else
-      domain = 'wnd:' + "${z:vid(v, 'edit-report-template')}:" + template;
+      domain = 'window:' + "${z:vid(v, 'edit-report-template')}:" + template;
 
     var window = extjsf.bind('window', domain); if(window)
     {
@@ -478,7 +478,7 @@ ${v.checkModelRequestedWithRedirect}
 
    (function()
    {
-      var domain = extjsf.tempDomain('wnd:invoke-data-source:#{v.dataSource}:');
+      var domain = extjsf.nameDomain('window:invoke-data-source#{v.dataSource}');
       var xy; if("#{v.dataOnly}" == 'true')
         xy = extjsf.co("${z:vid(v, 'invoke-data-source')}", '${extDom}').getXY();
       else

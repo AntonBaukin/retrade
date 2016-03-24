@@ -149,11 +149,9 @@
     extjsf.handler("${z:vid(localView, 'system-main-menu-domains')}",
       '${extDom}', function()
     {
-      var domain = extjsf.tempDomain('desktop-content:system-main-menu:domains:');
-
       ReTrade.desktop.loadDesktopPanel(
         "${z:url('/go/retrade/system/domains')}", {
-        'domain': domain
+        domain: 'system-main-menu:domains'
       })
     })
 

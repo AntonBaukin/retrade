@@ -160,7 +160,7 @@ ${v.checkModelRequestedWithRedirect}
       box.event = e
 
       retrade_open_window({ url: retrade_go_url(x.info.page),
-        box: box, record: rec.getId(), domainKey: "${z:vid(v, 'view_document')}"
+        box: box, record: rec.getId(), domain: 'view:document'
       })
     })
   })

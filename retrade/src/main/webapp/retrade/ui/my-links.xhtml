@@ -209,8 +209,8 @@
 
        //~: temporary domain
        var domain = m.open.domain
-       if(ZeTS.ises(domain))
-         domain = extjsf.tempDomain('open-user-link')
+       if(ZeTS.ises(domain)) domain = 'open-user-link'
+       domain = extjsf.nameDomain(domain)
 
        //?: {open it in panel}
        if(!ZeTS.ises(m.open.panel))
@@ -226,7 +226,7 @@
        {
          retrade_open_window({ url: retrade_go_url(m.open.link),
            box: m.open.box, record: m.open.recordId,
-           domainKey: domain, params: m.open.params
+           domain: domain, params: m.open.params
          })
        }
      }

@@ -811,7 +811,7 @@
 
   extjsf.bind("${z:vid(v, 'add-good')}", '${extDom}').retradeOpenGoodWindow = function(record, e)
   {
-    var dk  = "${z:vid(v, 'add-good')}:"
+    var dk  = 'add-good'
     if(record) dk = dk.replace('add-', 'create-')
 
     var ps = { disableSelSet: true }
@@ -827,7 +827,7 @@
     //~: open the window
     var window; window = retrade_open_window({ url: '/goods/edit-good',
       box: retrade_default('good-box',  { event: e }),
-      domainKey: dk, params: ps, collapsible: true,
+      domain: dk, params: ps, collapsible: true,
       record: record && record.getId(),
 
       onclose: function()
@@ -866,7 +866,6 @@
 
   extjsf.handler("${z:vid(v, 'add-goods-table')}", '${extDom}', function(btn, e)
   {
-    var dk  = "${z:vid(v, 'add-goods-table')}:"
     var ps  = { disableSelSet: true }
 
     //~: add the folder selected
@@ -878,7 +877,7 @@
 
     //~: open the window
     var window; window = retrade_open_window({ url: '/goods/create-goods',
-      tempDomain: 'add-goods-table', collapsible: true, params: ps,
+      domain: 'add:goods-table', collapsible: true, params: ps,
       box: { event: e, widthpt: 480, heightpt: 240, '+xpt': -100, '-height': true },
 
       onclose: function()

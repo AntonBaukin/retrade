@@ -25,6 +25,8 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		ZeT.assert(ZeT.iss(name))
 		this.name = name
 
+		ZeT.log('+@[', name, ']')
+
 		//=: domain binds
 		this.binds = new ZeT.Map()
 
@@ -110,6 +112,8 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 	destroy          : function(opts)
 	{
 		var self = this, ondestr = [], binds = []
+
+		ZeT.log('-@[', this.name, ']')
 
 		//~: collect the callbacks
 		this.ondestr.each(function(f){ ondestr.push(f) })
@@ -214,6 +218,47 @@ ZeT.extend(extjsf,
 		})
 
 		return domain
+	},
+
+	/**
+	 * Creates unique name to create a Domain
+	 * based on the definitive string given.
+	 *
+	 * If domain name starts with 'global:',
+	 * of has ':global:' infix, resulting name
+	 * has no counter (:xyz) appended. This is
+	 * applyed not to open several windows for
+	 * the same object (database key).
+	 */
+	nameDomain       : function(name)
+	{
+		ZeT.assert(ZeT.iss(name))
+
+		//?: {domain ends with number}
+		if(name.match(/:\d+$/))
+			return name
+
+		if(ZeTS.starts(name, ':'))
+			name = name.substring(1)
+
+		ZeT.asserts(name)
+
+		name = 'domain:' + name
+
+		//?: {is not global name} increment suffix
+		if(name.indexOf(':global:') == -1)
+		{
+			if(!extjsf._temp_domain_id)
+				extjsf._temp_domain_id = 0
+
+			if(!ZeTS.ends(name, ':'))
+				name = name + ':'
+			name += extjsf._temp_domain_id++
+		}
+		else if(ZeTS.ends(name, ':'))
+			name = name.substring(0, name.length - 1)
+
+		return name
 	},
 
 	isdomain         : function(d)
@@ -2490,56 +2535,6 @@ extjsf.StoreBind = ZeT.defineClass(
 ZeT.extend(extjsf,
 {
 	//=    Components Binding    =//
-
-
-	/**
-	 * Here the bind is not defined, but added as
-	 * an item to the bind defined by name (and
-	 * domain) pair. The bind argument may be
-	 * the bind string key registered in the same
-	 * domain.
-	 */
-	bindAddItem      : function()
-	{
-		var name = arguments[0];
-		var domn = arguments[1];
-		var addb = arguments[2];
-
-		if(!ZeT.iss(domn)) domn = '';
-
-		if(!addb)
-		{
-			addb = arguments[1];
-			domn = '';
-		}
-
-		var bind = this.bind(name, domn);
-		if(!bind || !ZeT.isf(bind.addItem))
-			return this;
-
-		if(ZeT.iss(addb))
-			addb = extjsf.bind(addb, domn);
-
-		if(addb) bind.addItem(addb)
-		return this;
-	},
-
-	tempDomain       : function(prefix)
-	{
-		if(!ZeT.iss(prefix)) prefix = ''
-		prefix = 'tmp:' + prefix
-
-		if(!this._temp_domain_id)
-			this._temp_domain_id = 0
-		prefix += this._temp_domain_id
-		this._temp_domain_id++
-		return prefix
-	},
-
-	globalDomain     : function(suffix)
-	{
-		return ZeTS.ises(suffix)?('Global'):('Global:' + suffix)
-	},
 
 	genViewId        : function()
 	{

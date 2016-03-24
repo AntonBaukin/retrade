@@ -344,7 +344,11 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 
 		//~: define the domain
 		var domain = opts.domain;
-		if(!ZeT.iss(domain)) domain = extjsf.tempDomain('desktop:root-panel:');
+		if(!ZeT.iss(domain)) domain = 'desktop:root-panel';
+		if((domain.indexOf(':desktop') == -1) &&
+		   (domain.indexOf('desktop:') == -1)
+		  )
+			domain = 'desktop:' + domain
 
 		//~: define the method
 		var method = 'GET';
@@ -355,7 +359,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		ZeT.undelay(params) //<-- resolve delayed parameters
 
 		//~: set the domain parameter
-		params.domain = domain;
+		params.domain = extjsf.nameDomain(domain)
 
 		//~: set the view id parameter
 		params.view = ZeT.iss(opts.view)?(opts.view):(extjsf.genViewId());

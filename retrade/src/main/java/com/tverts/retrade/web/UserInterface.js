@@ -31,7 +31,7 @@ function genUserLinks(authLogin)
 			color : 'G',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:docs:',
+				domain : 'desktop:main-menu:docs',
 				link   : '/docs/documents'
 			}
 		},
@@ -42,7 +42,7 @@ function genUserLinks(authLogin)
 			icon  : 'retrade-price-delta-icon',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:reprice-docs:',
+				domain : 'desktop:main-menu:reprice-docs',
 				link   : '/reprice-docs/list'
 			}
 		},
@@ -52,7 +52,7 @@ function genUserLinks(authLogin)
 			text  : 'Мои отчёты',
 			icon  : 'retrade-reports-icon',
 			open  : {
-				domain : 'wnd:retrade-main-menu:my-reports:',
+				domain : 'window:main-menu:my-reports',
 				box    : { widthpt: 560, heightpt: 260 },
 				link   : '/datas/my-reports'
 			}
@@ -69,7 +69,7 @@ function genUserLinks(authLogin)
 			icon  : 'retrade-goods-icon',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:goods-nav:',
+				domain : 'desktop:main-menu:goods-nav',
 				link   : '/goods/list-nav'
 			}
 		},
@@ -81,7 +81,7 @@ function genUserLinks(authLogin)
 			icon  : 'retrade-goods-icon',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:goods-stores-prices:',
+				domain : 'desktop:main-menu:goods-stores-prices',
 				link   : '/goods/goods-stores-prices'
 			}
 		},
@@ -93,7 +93,7 @@ function genUserLinks(authLogin)
 			icon  : 'retrade-goods-tree-icon',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:goods-tree:',
+				domain : 'desktop:main-menu:goods-tree',
 				link   : '/goods/goods-tree'
 			}
 		},
@@ -104,7 +104,7 @@ function genUserLinks(authLogin)
 			hint  : 'Справочник единиц измерения',
 			icon  : 'retrade-measure-icon',
 			open  : {
-				domain : 'retrade-main-menu:measures',
+				domain : 'window:main-menu:measures',
 				box    : { widthpt: 400, heightpt: 240 },
 				link   : '/goods/list-measures'
 			}
@@ -116,7 +116,7 @@ function genUserLinks(authLogin)
 			hint  : 'Справочник складов',
 			icon  : 'retrade-trade-store-icon',
 			open  : {
-				domain : 'retrade-main-menu:stores',
+				domain : 'window:main-menu:stores',
 				box    : { widthpt: 360, heightpt: 240 },
 				link   : '/stores/list-win'
 			}
@@ -129,7 +129,7 @@ function genUserLinks(authLogin)
 			icon  : 'retrade-contractor-icon',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:firms:',
+				domain : 'desktop:main-menu:firms',
 				link   : '/firms/list'
 			}
 		},
@@ -140,7 +140,7 @@ function genUserLinks(authLogin)
 			hint  : 'Справочник прайс-листов',
 			icon  : 'retrade-prices-icon',
 			open  : {
-				domain : 'retrade-main-menu:price-lists',
+				domain : 'window:main-menu:price-lists',
 				box    : { widthpt: 360, heightpt: 240 },
 				link   : '/price-lists/list-win'
 			}
@@ -153,7 +153,7 @@ function genUserLinks(authLogin)
 			icon  : 'retrade-prices-icon',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:firms-price-lists:',
+				domain : 'desktop:main-menu:firms-price-lists',
 				link   : '/firms/list-lists'
 			}
 		}
@@ -168,7 +168,7 @@ function genUserLinks(authLogin)
 			icon  : 'retrade-good-attrs-icon',
 			color : 'O',
 			open  : {
-				domain : 'retrade-main-menu:good-attrs',
+				domain : 'window:main-menu:good-attrs',
 				box    : { widthpt: 460, heightpt: 380 },
 				link   : '/goods/attrs'
 			}
@@ -181,7 +181,7 @@ function genUserLinks(authLogin)
 			color : 'O',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:datas:',
+				domain : 'desktop:main-menu:datas',
 				link   : '/datas/list'
 			}
 		},
@@ -193,7 +193,7 @@ function genUserLinks(authLogin)
 			color : 'O',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:settings:users:',
+				domain : 'desktop:main-menu:settings:users',
 				link   : '/settings/users'
 			}
 		},
@@ -205,7 +205,7 @@ function genUserLinks(authLogin)
 			color : 'O',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:settings:secure-rules:',
+				domain : 'desktop:main-menu:settings:secure-rules',
 				link   : '/settings/secure-rules'
 			}
 		},
@@ -217,7 +217,7 @@ function genUserLinks(authLogin)
 			color : 'O',
 			open  : {
 				panel  : 'center',
-				domain : 'desktop-content:retrade-main-menu:settings:secure-sets:',
+				domain : 'desktop:main-menu:settings:secure-sets',
 				link   : '/settings/secure-sets'
 			}
 		}

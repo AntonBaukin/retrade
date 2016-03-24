@@ -145,32 +145,29 @@ function retrade_open_window(opts)
 {
   ZeT.assertn(opts)
 
-  //?: {has domain key}
-  if(opts.domainKey)
+  //<: build the domain key
+
+  var d = opts.domain
+  if(!d) d = 'window:temporary'
+  ZeT.asserts(d)
+
+  if(!ZeTS.starts(d, 'window:') && (d.indexOf(':window:') == -1))
   {
-    ZeT.asserts(opts.domainKey)
-    ZeT.assert(ZeT.isu(opts.domain))
-
-    opts.domain = 'desktop-window:' + opts.domainKey
-
-    if(!ZeT.isu(opts.record)) //?: {has record key}
-      opts.domain += ':record:' + opts.record
+    if(ZeTS.starts(d, ':'))
+      d = d.substring(1)
+    d = 'window:' + d
   }
 
-  //?: {has no domain provided} make the default
-  if(!opts.domain)
+  if(!ZeT.isx(opts.record)) //?: {has record key}
   {
-    if(!opts.tempDomain) opts.domain = 'desktop-window:auto-domain:'
-      else opts.domain = 'desktop-window:' + opts.tempDomain
-
-    if(!ZeT.isu(opts.record)) //?: {has record key}
-      opts.domain += ':record:' + opts.record + ':'
-
-    if(!ZeTS.ends(opts.domain, ':')) opts.domain += ':'
-    opts.domain = extjsf.tempDomain(opts.domain)
+    if(!ZeTS.ends(d, ':')) d += ':'
+    d += ZeTS.cat('record:', opts.record, ':')
   }
 
-  ZeT.asserts(opts.domain, 'No ExtJSF window domain string is provided!')
+  //~: make domain name unique
+  opts.domain = extjsf.nameDomain(d)
+
+  //>: build the domain key
 
   //~: lookup the window bind
   var window = extjsf.bind('window', opts.domain)
@@ -187,7 +184,7 @@ function retrade_open_window(opts)
     window.co().toFront()
     window.co().setPagePosition(box.x, box.y)
     window.co().expand()
-    return
+    return window
   }
 
   //~: load url
@@ -247,7 +244,7 @@ function retrade_msg_open(id)
     if(x.info.box) ZeT.extend(box, x.info.box)
 
     retrade_open_window({ url: retrade_go_url(x.info.page),
-      box: box, record: id, domainKey: "${z:vid(rootView, 'retrade_msg_open')}"
+      box: box, record: id, domain: 'open:message'
     })
   }
 
@@ -317,17 +314,11 @@ function retrade_chain_loader(/* [callback], options for each area */)
     opts.url = retrade_go_url(opts.url)
 
     //?: {has no bind}
-    ZeT.assert(opts.bind && opts.bind.extjsfBind === true)
-
-    //~: select the content domain
-    if(opts.domain) ZeT.asserts(opts.domain); else if(opts.tempDomain)
-    {
-      ZeT.asserts(opts.tempDomain)
-      opts.domain = extjsf.tempDomain(opts.tempDomain)
-    }
+    ZeT.assert(extjsf.isbind(opts.bind))
 
     //?: {has no domain}
     ZeT.asserts(opts.domain)
+    opts.domain = extjsf.nameDomain(opts.domain)
 
     //~: view mode
     if(!opts.viewMode) opts.viewMode = 'body'

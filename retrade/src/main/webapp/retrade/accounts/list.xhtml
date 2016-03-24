@@ -179,7 +179,7 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').
     on('itemdblclick', function(comp, rec, node, row, event)
   {
-    var domain  = 'wnd:' + "${z:vid(v, 'view_account')}:" + rec.getId();
+    var domain  = 'window:' + "${z:vid(v, 'view_account')}:" + rec.getId();
     var window = extjsf.bind('window', domain);
 
     var box     = ReTrade.desktop.calcWindowBox({

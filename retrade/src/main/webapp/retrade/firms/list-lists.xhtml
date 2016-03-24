@@ -211,7 +211,7 @@ ${v.checkModelRequestedWithRedirect}
     event = Ext.create('Ext.EventObjectImpl', ZeT.assertn(event || window.event))
 
     retrade_open_window({ url: '/price-lists/info',
-      domainKey: extjsf.globalDomain('view-price-list'),
+      domain: 'view:global:price-list',
       box: { event: event, widthpt: 520, heightpt: 390, '+xpt': -240, '-ypt': -10},
       record: plkey, collapsible: true
     })
@@ -223,7 +223,7 @@ ${v.checkModelRequestedWithRedirect}
     on('itemdblclick', function(comp, rec, node, row, e)
   {
     retrade_open_window({ url: '/price-lists/goods-prices-firm',
-      domainKey: "${z:vid(v, 'view-price-list-for-firm')}",
+      domain: 'view:price-list-for-firm',
       box: { event: e, widthpt: 520, heightpt: 390, '-ypt': -16, '+xpt': -240},
       record: rec.getId(), collapsible: true
     })
@@ -239,7 +239,7 @@ ${v.checkModelRequestedWithRedirect}
     s = Ext.Array.map(s || [], function(i) { return i.getId() })
 
     retrade_open_window({ url: '/firms/lists-edit',
-      domainKey: "${z:vid(v, 'associate-firms-price-lists')}",
+      domain: 'associate-firms-price-lists',
       box: { event: e, widthpt: 560, heightpt: 560, '-ypt': -10, '+xpt': -20},
       collapsible: true, params:  { contractors: s.join(',') },
 

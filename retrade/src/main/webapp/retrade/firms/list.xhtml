@@ -170,7 +170,7 @@ ${v.checkModelRequestedWithRedirect}
   {
     retrade_open_window({ url: '/firms/info-edit',
 
-      domainKey: "${z:vid(v, 'add_contractor_firm')}",
+      domain: 'add:contractor-firm',
       box: { event: e, widthpt: 480, heightpt: 480}, collapsible: true,
 
       onclose: function()
@@ -187,7 +187,7 @@ ${v.checkModelRequestedWithRedirect}
   {
     retrade_open_window({ url: '/firms/info-edit',
 
-      domainKey: "${z:vid(v, 'view_contractor')}",
+      domain: 'view:contractor',
       box: { event: e, widthpt: 480, heightpt: 480},
       record: rec.getId(), collapsible: true,
 

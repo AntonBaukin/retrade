@@ -51,9 +51,8 @@ ${v.checkModelRequestedWithRedirect}
     on('itemdblclick', function(comp, rec, node, row, e)
   {
     retrade_open_window({ url: '/stores/info',
-      domainKey: "${z:vid(v, 'view_store')}",
-      box: { event: e, widthpt: 520, heightpt: 390, '-height': true},
-      record: rec.getId(), collapsible: true
+      domain: 'view:store', record: rec.getId(), collapsible: true,
+      box: { event: e, widthpt: 520, heightpt: 390, '-height': true}
     })
   })
     </script>

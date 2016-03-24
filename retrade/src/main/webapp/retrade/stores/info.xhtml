@@ -183,7 +183,7 @@ ${v.checkEntityRequested}
   {
     retrade_open_window({ url: '/goods/edit-good',
       box: retrade_default('good-box',  { event: e }),
-      domainKey: extjsf.globalDomain('view-edit-good'),
+      domain: 'edit:global:good',
       collapsible: true, record: record.getId()
     })
   })

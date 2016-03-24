@@ -52,7 +52,7 @@ ${v.checkModelRequestedWithRedirect}
     on('itemdblclick', function(grid, rec, node, row, e)
   {
     retrade_open_window({ url: '/price-lists/info',
-      domainKey: extjsf.globalDomain('view-price-list'),
+      domain: 'view:global:price-list',
       box: { event: e, widthpt: 520, heightpt: 390, '-height': true},
       record: rec.getId(), collapsible: true
     })
