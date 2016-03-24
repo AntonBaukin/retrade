@@ -54,10 +54,9 @@ window.execScript   = function()
 	}
 	catch(e)
 	{
-		if(extjsf)
-			extjsf.catchError(e, this, ZeT.a(arguments))
+		if(ZeT) ZeT.log('Caught unhandled exception: ', this, arguments, e)
 		else if(console && typeof console.log === 'function')
-			console.log('Unhandled script evaluation: ', e, this, arguments)
+			console.log('Unhandled script evaluation: ', this, arguments, e)
 
 		throw e
 	}
@@ -81,7 +80,9 @@ Ext.Component.override({
 		}
 		catch(e)
 		{
-			extjsf.catchError(e, this, ZeT.a(arguments))
+			if(ZeT) ZeT.log('Caught unhandled exception: ', this, arguments, e)
+			else if(console && typeof console.log === 'function')
+				console.log('Unhandled script evaluation: ', this, arguments, e)
 		}
 	}
 })
@@ -96,7 +97,9 @@ Ext.mixin.Observable.override(
 		}
 		catch(e)
 		{
-			extjsf.catchError(e, this, ZeT.a(arguments))
+			if(ZeT) ZeT.log('Caught unhandled exception: ', this, arguments, e)
+			else if(console && typeof console.log === 'function')
+				console.log('Unhandled script evaluation: ', this, arguments, e)
 		}
 	}
 })

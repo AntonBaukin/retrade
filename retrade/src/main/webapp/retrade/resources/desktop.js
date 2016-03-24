@@ -362,7 +362,7 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		params.domain = extjsf.nameDomain(domain)
 
 		//~: set the view id parameter
-		params.view = ZeT.iss(opts.view)?(opts.view):(extjsf.genViewId());
+		if(!ZeT.ises(opts.view)) params.view = opts.view
 
 		//~: set the view mode parameter (defaults to body)
 		params.mode = ZeT.iss(opts.mode)?(opts.mode):('body');

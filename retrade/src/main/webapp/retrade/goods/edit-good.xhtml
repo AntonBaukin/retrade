@@ -881,7 +881,7 @@ ${v.checkModelRequestedWithRedirect}
        {
          if(fb.retradeCodeCheck != v) return;
 
-         extjsf.xhandler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
+         extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}')({
             params: { code : fb.retradeCodeCheck }, failure: function()
             {
               fb.validityStatus = ZeT.a(f.getActiveErrors())[0];

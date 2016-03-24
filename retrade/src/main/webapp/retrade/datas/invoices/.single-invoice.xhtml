@@ -137,7 +137,7 @@ ${v.checkModelRequestedWithRedirect}
     }
 
    //~: invoke the action
-   extjsf.xhandler("${z:vid(v, 'submit-script')}", '${extDom}')({
+   extjsf.handler("${z:vid(v, 'submit-script')}", '${extDom}')({
      params: { selectedInvoice : s.getId() }, success: function()
      {
        extjsf.co('window', '${extDom}').close()
