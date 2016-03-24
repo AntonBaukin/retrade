@@ -1256,7 +1256,7 @@ ZeT.defineClass('ReTrade.DesktopCollapsing', {
 
 	onPanelAdded      : function(panel, pos)
 	{
-		var self = this, bind = extjsf.asbind(panel)
+		var self = this, bind = extjsf.bind(panel)
 		ZeT.assertn(bind, 'Desktop panel has no ExtJSF Bind!')
 		bind.desktopCollapsing = { position: pos }
 

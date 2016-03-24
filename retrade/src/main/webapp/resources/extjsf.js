@@ -181,6 +181,8 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 })
 
 
+// +----: ExtJSF Utilities :-------------------------------------+
+
 ZeT.extend(extjsf,
 {
 	/**
@@ -214,19 +216,82 @@ ZeT.extend(extjsf,
 		return domain
 	},
 
-	/**
-	 * Returns Bind registered in the Domain.
-	 */
-	bind             : function(name, domain)
+	isdomain         : function(d)
 	{
-		if(ZeT.iss(domain))
-			domain = extjsf.domain(domain)
+		return !!d && (d.extjsfDomain === true)
+	},
 
-		//?: {domain is not found}
-		if(ZeT.isu(domain)) return
+	/**
+	 * Tells whether the argument given
+	 * is an Ext JS Component.
+	 */
+	isco             : function(co)
+	{
+		return !!co && (co.isComponent === true)
+	},
 
-		ZeT.assert(domain.extjsfDomain === true)
-		return domain.bind(name)
+	/**
+	 * Tries to guess Bind instance from the arguments.
+	 * Supports name + domain pair, direct Bind instance,
+	 * and a bound Component as the arguments.
+	 */
+	bind             : function(/* name, domain | bind | co */)
+	{
+		var a0 = arguments[0], a1
+
+		if(ZeT.iss(a0))
+		{
+			a1 = arguments[1]
+			if(ZeT.iss(a1))
+			{
+				a1 = extjsf.domain(a1)
+				if(!a1) return
+			}
+
+			ZeT.assert(extjsf.isdomain(a1))
+			return a1.bind(a0)
+		}
+
+		if(extjsf.isbind(a0))
+			return a0
+
+		//?: {is a Component}
+		if(extjsf.isco(a0))
+			if(extjsf.isbind(a0.extjsfBind))
+				return a0.extjsfBind
+	},
+
+	isbind           : function(bind)
+	{
+		return !!bind && (bind.extjsfBind === true)
+	},
+
+	/**
+	 * Tries to get the Ext JS component from
+	 * the arguments given. See bind().
+	 */
+	co               : function()
+	{
+		var bind, a0 = arguments[0]
+
+		//?: {has nothing}
+		if(ZeT.isx(a0))
+			return undefined
+
+		//?: {is a Component}
+		if(extjsf.isco(a0))
+			return a0
+
+		//?: {refers a Component}
+		if(extjsf.isco(a0.component))
+			return a0.component
+
+		//~: access the bind
+		a0 = extjsf.bind.apply(extjsf, arguments)
+
+		//?: {is a bind}
+		if(extjsf.isbind(a0))
+			return a0.co()
 	}
 })
 
@@ -2426,79 +2491,6 @@ ZeT.extend(extjsf,
 {
 	//=    Components Binding    =//
 
-	/**
-	 * Tries to get the Ext JS component from
-	 * the arguments given.
-	 *
-	 * If arg[0] is a string, it defines the
-	 * bind name, and optional arg[1] defines
-	 * the domain. (Defaults to ''.)
-	 *
-	 * Second variant, arg[0] is a bind.
-	 *
-	 * Third variant, arg[0] is an options
-	 * object with 'name' and optional 'domain',
-	 * or 'bind' fields.
-	 *
-	 * Last, arg[0] may be a Component instance,
-	 * or has 'component' field.
-	 */
-	co               : function()
-	{
-		var bind, arg = arguments[0]
-		if(!arg) return undefined
-
-		if(arg.isComponent === true) return arg
-		if(arg.component && arg.component.isComponent === true)
-			return arg.component
-
-		if(ZeT.iss(arg))
-		{
-			bind = extjsf.bind(arg, arguments[1])
-			return bind && bind.co()
-		}
-
-		if(arg.extjsfBind) return arg.co()
-
-		if(ZeT.iss(arg.name))
-		{
-			bind = extjsf.bind(arg.name, arg.domain)
-			return bind && bind.co()
-		}
-
-		if(arg.bind && arg.bind.extjsfBind)
-			return arg.bind.co()
-
-		return undefined
-	},
-
-	isbind           : function(bind)
-	{
-		return !!bind && (bind.extjsfBind === true)
-	},
-
-	asbind           : function(borc)
-	{
-		if(!borc) return undefined
-
-		//?: {is a string}
-		if(ZeT.iss(borc))
-		{
-			var domain = arguments[1]
-			ZeT.assert(ZeT.iss(domain))
-			return extjsf.bind(borc, domain)
-		}
-
-		//?: {is a component}
-		if(borc.isComponent && borc.extjsfBind)
-			borc = borc.extjsfBind
-
-		//?: {is a bind}
-		if(borc.extjsfBind === true)
-			return borc
-
-		return undefined
-	},
 
 	/**
 	 * Here the bind is not defined, but added as
@@ -2572,7 +2564,7 @@ ZeT.extend(extjsf,
 	handler          : function()
 	{
 		//~: search for the bind
-		var b = extjsf.asbind.apply(ZeT, arguments)
+		var b = extjsf.bind.apply(ZeT, arguments)
 		if(!b) return undefined
 
 		//~: handler
@@ -3084,7 +3076,7 @@ extjsf.support = ZeT.singleInstance('extjsf.support',
 	 */
 	moveGridSelected       : function(up, grid, delay_fn, fn)
 	{
-		var b = extjsf.asbind(grid), g = extjsf.co(grid);
+		var b = extjsf.bind(grid), g = extjsf.co(grid);
 
 		//~: selected items
 		var s = g.getSelectionModel().getSelection();

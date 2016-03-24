@@ -361,12 +361,12 @@ function retrade_replicate_store(master, slave, domain)
 {
   if(ZeT.iss(master))
     master = extjsf.bind(master, domain)
-  master = extjsf.asbind(master)
+  master = extjsf.bind(master)
   ZeT.assert(master)
 
   if(ZeT.iss(slave))
     slave = extjsf.bind(slave, domain)
-  slave = extjsf.asbind(slave)
+  slave = extjsf.bind(slave)
   ZeT.assert(slave)
 
   function synch_data()
