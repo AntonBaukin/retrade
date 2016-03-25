@@ -641,7 +641,7 @@
     if(!ds.length) { ab.hide(); nc.show(); co.hide(); } else
     {
       ab.hide(); nc.hide(); co.show();
-      co.setHTML(Ext.String.htmlEncode(ds));
+      co.setHtml(Ext.String.htmlEncode(ds));
     }
 
     //~: update panel title
@@ -696,7 +696,7 @@
        if(!cs.length) { co.hide(); nc.show(); } else
        {
          co.show(); nc.hide();
-         co.setHTML(Ext.String.htmlEncode(cs));
+         co.setHtml(Ext.String.htmlEncode(cs));
        }
 
        //~: update the model

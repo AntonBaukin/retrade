@@ -667,14 +667,14 @@
     //~: set last-first-middle- names
     var ui = Ext.get("${z:vid(v, 'user-data-info-content')}");
     var vs = ui.select('.retrade-info-value');
-    vs.item(0).setHTML(Ext.String.htmlEncode(m.get('lastName')))
-    vs.item(1).setHTML(Ext.String.htmlEncode(m.get('firstName')))
-    vs.item(2).setHTML(Ext.String.htmlEncode(m.get('middleName')))
+    vs.item(0).setHtml(Ext.String.htmlEncode(m.get('lastName')))
+    vs.item(1).setHtml(Ext.String.htmlEncode(m.get('firstName')))
+    vs.item(2).setHtml(Ext.String.htmlEncode(m.get('middleName')))
     var ismale = m.get('genderMale');
-    vs.item(3).setHTML((ismale == 'true')?('Муж'):(ismale == 'false')?('Жен'):(''));
-    vs.item(4).setHTML(Ext.String.htmlEncode(m.get('email')))
-    vs.item(5).setHTML(Ext.String.htmlEncode(m.get('phoneMob')))
-    vs.item(6).setHTML(Ext.String.htmlEncode(m.get('phoneWork')))
+    vs.item(3).setHtml((ismale == 'true')?('Муж'):(ismale == 'false')?('Жен'):(''));
+    vs.item(4).setHtml(Ext.String.htmlEncode(m.get('email')))
+    vs.item(5).setHtml(Ext.String.htmlEncode(m.get('phoneMob')))
+    vs.item(6).setHtml(Ext.String.htmlEncode(m.get('phoneWork')))
 
     //~: the comment (description)
     var nc = Ext.get("${z:vid(v, 'user-data-nocomment')}");
@@ -685,7 +685,7 @@
     if(!ds.length) { co.hide(); nc.show(); } else
     {
       co.show(); nc.hide();
-      co.setHTML(Ext.String.htmlEncode(ds));
+      co.setHtml(Ext.String.htmlEncode(ds));
     }
   }
 
@@ -714,7 +714,7 @@
        if(!ds.length) { co.hide(); nc.show(); } else
        {
          co.show(); nc.hide();
-         co.setHTML(Ext.String.htmlEncode(ds));
+         co.setHtml(Ext.String.htmlEncode(ds));
        }
 
        //~: update the login
@@ -743,32 +743,31 @@
 
   <ui:define name = 'validation'>
     <validation success = "true"/>
+  </ui:define>
 
-    <scripts>
+  <ui:define name = 'scripts'>
 
-     <ui:fragment rendered = "#{v.setCurrentLogin}">
-       <script>
-       //<![CDATA[
+  <ui:fragment rendered = "#{v.setCurrentLogin}">
+  <script>
+  //<![CDATA[
 
-(function()
-{
-  var login = ('true' == "#{v.secureChangeCurrentLogin}");
-  var pass  = ('true' == "#{v.secureChangeCurrentPassword}");
-  var ables = ('true' == "#{v.secureViewCurrentAbles}");
+    ZeT.scope(function()
+    {
+      var login = ('true' == "#{v.secureChangeCurrentLogin}");
+      var pass  = ('true' == "#{v.secureChangeCurrentPassword}");
+      var ables = ('true' == "#{v.secureViewCurrentAbles}");
 
-  extjsf.co("${z:vid(v, 'update-user-password')}", '${extDom}').
-    setDisabled(!login && !pass)
+      extjsf.co("${z:vid(v, 'update-user-password')}", '${extDom}').
+        setDisabled(!login && !pass)
 
-  extjsf.co("${z:vid(v, 'person-secure-ables')}", '${extDom}').
-    setDisabled(!ables)
+      extjsf.co("${z:vid(v, 'person-secure-ables')}", '${extDom}').
+        setDisabled(!ables)
+    })
 
-})()
+  //]]>
+  </script>
+  </ui:fragment>
 
-       //]]>
-       </script>
-     </ui:fragment>
-
-    </scripts>
   </ui:define>
 </ui:decorate>
 </ui:component>

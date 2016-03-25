@@ -303,11 +303,11 @@ ${v.checkModelRequestedWithRedirect}
     var m = (selected.length == 1) && selected[0];
     var n = Ext.get("${z:vid(v, 'secure-rule-descr')}");
 
-    if(!m) n.setHTML(grid.retradeAboutComment); else
+    if(!m) n.setHtml(grid.retradeAboutComment); else
     {
       if(!grid.retradeAboutComment)
-        grid.retradeAboutComment = n.getHTML();
-      n.setHTML(Ext.String.htmlEncode(m.get('descr')))
+        grid.retradeAboutComment = n.getHtml();
+      n.setHtml(Ext.String.htmlEncode(m.get('descr')))
     }
 
   })

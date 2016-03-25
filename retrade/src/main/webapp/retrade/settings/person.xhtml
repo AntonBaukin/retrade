@@ -314,31 +314,30 @@ ${v.checkModelRequestedWithRedirect}
    xmlns:ui = 'http://java.sun.com/jsf/facelets'>
 
   <ui:define name = 'validation'>
-
     <validation success = "true"/>
+  </ui:define>
 
-    <scripts>
+  <ui:define name = 'scripts'>
 
-      <ui:fragment rendered = "#{v.personUpdated}">
-        <script>
-        //<![CDATA[
+  <ui:fragment rendered = "#{v.personUpdated}">
+  <script>
+  //<![CDATA[
 
- extjsf.bind('window', '${extDom}').personEdit = {
-   authLogin: '#{z:jss(v.model.primaryKey)}',
-   lastName: '#{z:jss(v.model.person.lastName)}',
-   firstName: '#{z:jss(v.model.person.firstName)}',
-   middleName: '#{z:jss(v.model.person.middleName)}',
-   genderMale: '#{v.model.male}',
-   email: '#{z:jss(v.model.person.email)}',
-   phoneMob: '#{z:jss(v.model.person.phoneMobile)}',
-   phoneWork: '#{z:jss(v.model.person.phoneWork)}'
- };
+    extjsf.bind('window', '${extDom}').personEdit = {
+      authLogin: '#{z:jss(v.model.primaryKey)}',
+      lastName: '#{z:jss(v.model.person.lastName)}',
+      firstName: '#{z:jss(v.model.person.firstName)}',
+      middleName: '#{z:jss(v.model.person.middleName)}',
+      genderMale: '#{v.model.male}',
+      email: '#{z:jss(v.model.person.email)}',
+      phoneMob: '#{z:jss(v.model.person.phoneMobile)}',
+      phoneWork: '#{z:jss(v.model.person.phoneWork)}'
+    }
 
-        //]]>
-        </script>
-      </ui:fragment>
+  //]]>
+  </script>
+  </ui:fragment>
 
-    </scripts>
   </ui:define>
 </ui:decorate>
 </ui:component>

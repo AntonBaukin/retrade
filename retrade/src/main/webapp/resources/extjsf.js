@@ -1699,6 +1699,35 @@ extjsf.ActionBind = ZeT.defineClass(
 		this.handler = ZeT.fbind(this.$handler, this)
 	},
 
+	/**
+	 * Register the callback on successfull submit.
+	 * Callback is invoked as:
+	 *
+	 *   cb.call(bind, submit opts, data, [action, form])
+	 *
+	 * Data is object returned from the server (XML
+	 * document for body-post response format.)
+	 */
+	success          : function(cb)
+	{
+		if(!ZeT.isf(cb))
+			return this._on_success
+		this._on_success = cb
+		return this
+	},
+
+	/**
+	 * Register the callback on failed submit,
+	 * or the validation failure.
+	 */
+	failure          : function(cb)
+	{
+		if(!ZeT.isf(cb))
+			return this._on_failure
+		this._on_failure = cb
+		return this
+	},
+
 	postMode         : function(mode)
 	{
 		this._post_mode = ZeT.asserts(mode)
@@ -1751,8 +1780,6 @@ extjsf.ActionBind = ZeT.defineClass(
 	 */
 	$handler         : function(opts)
 	{
-		var self = this
-
 		//~: copy the options
 		opts = ZeT.extend({}, opts)
 
@@ -1763,13 +1790,23 @@ extjsf.ActionBind = ZeT.defineClass(
 		opts.params = this.$post_params(opts.params, true, true)
 
 		//~: success callback
-		var onsuccess = opts.success
+		var self = this, ons = opts.success, onf = opts.failure
 		opts.success = function(response)
 		{
-			if(self.$handle_response(self.domain, response))
-				ZeT.isf(onsuccess) && onsuccess.apply(self, arguments)
+			opts.success = ons
+
+			//?: {response validation succeeded}
+			if(self.$handle_response(response))
+				self.$call_success(opts, response)
 			else
-				ZeT.isf(opts.failure) && opts.failure.apply(self, arguments)
+				self.$call_failure(opts, response)
+		}
+
+		//~: failure callback
+		opts.failure = function(response)
+		{
+			opts.failure = onf
+			self.$call_failure(opts, response)
 		}
 
 		//!: issue the request
@@ -1868,75 +1905,121 @@ extjsf.ActionBind = ZeT.defineClass(
 		return params
 	},
 
+	$response_xml    : function(x)
+	{
+		if(!x) return undefined
+
+		if(ZeTX.isnode(x))
+			return x
+
+		if(ZeTX.isnode(x.responseXML))
+			return x.responseXML
+	},
+
 	/**
 	 * Handles the results of POST calls resulting the
 	 * 'http://extjs.jsf.java.net/response' XMLs.
 	 *
 	 * Returns true when the validation is correct.
 	 */
-	$handle_response : function(domain, res)
+	$handle_response : function(ajaxres)
 	{
-		var xml = ZeT.assertn(res && res.responseXML,
+		//~: get the response document
+		var xml = ZeT.assertn(this.$response_xml(ajaxres),
 		  'Form [', this.name, '] got POST response not a XML!')
 
+		//~: response root node
+		var root = ZeT.assertn(ZeTX.node(xml, 'response'),
+		  'Form [', this.name, '] got POST response XML ',
+		  'having no <response> root tag!')
+
+		//HINT: global scripts are not executed in the case
+		//  of the validation failure, or absence of this block!
+
+		//~: validation root
+		var vnode = ZeT.assertn(ZeTX.node(root, 'validation'),
+		  'Form [', this.name, '] got POST response XML ',
+		  'having no <validation>  tag!')
+
 		//~: process validated fields
-		var val = ZeTX.node(xml, 'validation')
-		var scr, fds = val && ZeTX.nodes(val, 'field')
-		if(fds) for(var i = 0;(i < fds.length);i++)
+		var script, self = this
+		var fields = ZeTX.nodes(vnode, 'field')
+		ZeT.each(fields, function(fnode)
 		{
-			var target = ZeTX.attr(fds[i], 'target')
-			var field  = extjsf.co(target, domain)
+			var target = ZeTX.attr(fnode, 'target')
+			var field  = !ZeT.ises(target) &&
+			  extjsf.co(target, self.domain)
+			var error  = ZeTS.trim(ZeTX.text(
+			  ZeTX.node(fnode, 'error')))
 
-			if(field && field.isFormField)
-			{
-				var error = ZeTS.trim(ZeTX.text(
-				  ZeTX.node(fds[i], 'error')))
-				if(error.length) field.markInvalid(error)
-			}
+			//?: {field component is found}
+			if(field && field.isFormField && error.length)
+				field.markInvalid(error)
 
-			scr = ZeTX.node(fds[i], 'script')
-			if(scr) try
+			//~: evaluate the field script
+			self.$call_scripts(fnode)
+		})
+
+		//~: status of the validation
+		var success = ZeTX.attr(vnode, 'success')
+
+		//?: {validation success}
+		if('true' == ZeTS.trim(success))
+		{
+			//~: evaluate global scripts
+			this.$call_scripts(root)
+			return true
+		}
+
+		//~: failed, evaluate validation section script
+		this.$call_scripts(vnode)
+		return false
+	},
+
+	$call_success    : function(opts)
+	{
+		if(ZeT.isf(this._on_success))
+			this._on_success.apply(this, arguments)
+
+		if(ZeT.isf(opts.success))
+			opts.success.apply(this, arguments)
+	},
+
+	$call_failure    : function(opts)
+	{
+		if(ZeT.isf(this._on_failure))
+			this._on_failure.apply(this, arguments)
+
+		if(ZeT.isf(opts.failure))
+			opts.failure.apply(this, arguments)
+	},
+
+	/**
+	 * Private. Takes all script tags in the XML
+	 * document and evaluates them.
+	 */
+	$call_scripts    : function(xml)
+	{
+		//~: find each <script> node
+		var self = this, scripts = ZeTX.nodes(xml, 'script')
+
+		//~: and invoke them
+		ZeT.each(scripts, function(script)
+		{
+			script = ZeTX.text(script)
+
+			if(!ZeT.ises(script)) try
 			{
-				ZeT.xeval(ZeTX.text(scr))
+				ZeT.xeval(script)
 			}
 			catch(e)
 			{
-				ZeT.log('Error in evaluation script for field [',
-				  target, ']: \n', ZeTX.text(scr))
+				ZeT.log('Error evaluating submit response of [',
+				  self.name, '] script is: \n', script, '\n',  e)
 
 				throw e
 			}
-		}
-
-		//~: validation script
-		scr = val && ZeTX.node(val, 'script')
-		if(scr) try
-		{
-			ZeT.xeval(ZeTX.text(scr))
-		}
-		catch(e)
-		{
-			ZeT.log('Error in evaluation block script: \n',
-			  ZeTX.text(scr))
-
-			throw e
-		}
-
-		//~: process additional scripts
-		var scrs = ZeTX.nodes(ZeTX.node(xml, 'scripts'), 'script')
-		if(scrs) for(var si = 0;(si < scrs.length);si++) try
-		{
-			ZeT.xeval(ZeTX.text(scrs[si]))
-		}
-		catch(e)
-		{
-			ZeT.log('Error in evaluation response script: \n',
-			  ZeTX.text(scrs[si]))
-
-			throw e
-		}
-
-		return !val || (ZeTX.attr(val, 'success') == 'true')
+		})
 	}
 })
 
@@ -2032,35 +2115,6 @@ extjsf.FormBind = ZeT.defineClass(
 		return this
 	},
 
-	/**
-	 * Register the callback on successfull form submit.
-	 * Callback is invoked as:
-	 *
-	 *   cb.call(bind, submit opts, data, action, form)
-	 *
-	 * Data is object returned from the server (XML
-	 * document for body-post response format.)
-	 */
-	success          : function(cb)
-	{
-		if(!ZeT.isf(cb))
-			return this._on_success
-		this._on_success = cb
-		return this
-	},
-
-	/**
-	 * Register the callback on failed form submit,
-	 * of the validation failure.
-	 */
-	failure          : function(cb)
-	{
-		if(!ZeT.isf(cb))
-			return this._on_failure
-		this._on_failure = cb
-		return this
-	},
-
 	$form_co         : function()
 	{
 		return ZeT.assert(this.co() &&
@@ -2150,71 +2204,15 @@ extjsf.FormBind = ZeT.defineClass(
 		})
 
 		//~: success status in the response attribute
-		if(xml = ZeT.get(form, 'errorReader', 'rawData')) try
-		{
-			var root   = ZeTX.node(xml, 'validation')
-			var status = root && ZeTX.attr(root, 'success')
-			if(status) success = ('true' === status)
-		}
-		catch(e)
-		{
-			success = false
-		}
+		if(xml = ZeT.get(form, 'errorReader', 'rawData'))
+			//?: {got <response> of the document}
+			if(ZeTX.node(xml, 'response'))
+				success = this.$handle_response(xml)
 
 		if(success)
 			this.$call_success(opts, xml, action, form)
 		else
 			this.$call_failure(opts, xml, action, form)
-	},
-
-	$call_success    : function(opts, xml)
-	{
-		//~: evaluate the scripts
-		this.$call_scripts(xml)
-
-		if(ZeT.isf(this._on_success))
-			this._on_success.apply(this, arguments)
-
-		if(ZeT.isf(opts.success))
-			opts.success.apply(this, arguments)
-	},
-
-	$call_failure    : function(opts, xml)
-	{
-		//~: evaluate the scripts
-		this.$call_scripts(xml)
-
-		if(ZeT.isf(this._on_failure))
-			this._on_failure.apply(this, arguments)
-
-		if(ZeT.isf(opts.failure))
-			opts.failure.apply(this, arguments)
-	},
-
-	/**
-	 * Private. Takes all script tags in the XML
-	 * document and evaluates them.
-	 */
-	$call_scripts    : function(xml)
-	{
-		var scripts = ZeTX.nodes(xml, 'script')
-		if(!scripts || !scripts.length) return
-
-		var self = this
-		ZeT.each(scripts, function(script)
-		{
-			try
-			{
-				ZeT.xeval(script)
-			}
-			catch(e)
-			{
-				ZeT.log('Error evaluating script after form [',
-				  self.name, '] submit: \n', script, '\n',  e)
-
-				throw e
-			}
-		})
 	}
 })
 
