@@ -49,14 +49,14 @@ ${v.checkModelRequestedWithRedirect}
         <x:date-field coid = "${z:vid(v, 'min-date')}" value = "#{v.model.minDate}">
           <f:facet name = "label-props">
             text: 'От', cellCls: 'retrade-form-label-cell',
-            margin: extjsf.dpts(0, 2, 0, 0)
+            margin: extjsf.pts(0, 2, 0, 0)
           </f:facet>
         </x:date-field>
 
         <x:date-field coid = "${z:vid(v, 'max-date')}" value = "#{v.model.maxDate}">
           <f:facet name = "label-props">
             text: 'до', cellCls: 'retrade-form-label-cell',
-            margin: extjsf.dpts(0, 2, 0, 6)
+            margin: extjsf.pts(0, 2, 0, 6)
           </f:facet>
         </x:date-field>
 
@@ -88,7 +88,7 @@ ${v.checkModelRequestedWithRedirect}
             xtype: 'button', text: 'Тип выборки',
             tooltipType: 'title', tooltip: 'Выберете типы выборки отображаемых документов',
             icon: "${z:url('/resources/icons/payment_16.png')}",
-            margin: extjsf.dpts(0, 12, 0, 6)
+            margin: extjsf.pts(0, 12, 0, 6)
 
           </f:facet>
 
@@ -175,7 +175,7 @@ ${v.checkModelRequestedWithRedirect}
           value = "#{v.model.withIncome}">
 
           <f:facet name = "label-props">
-            labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 0),
+            labelAlign: 'left', margin: extjsf.pts(0, 2, 0, 0),
             html: "&lt;span title = 'Отобразить в таблице приходные платежи'&gt;приход&lt;/span&gt;"
           </f:facet>
         </x:checkbox-field>
@@ -184,7 +184,7 @@ ${v.checkModelRequestedWithRedirect}
           value = "#{v.model.withExpense}">
 
           <f:facet name = "label-props">
-            labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 6),
+            labelAlign: 'left', margin: extjsf.pts(0, 2, 0, 6),
             html: "&lt;span title = 'Отобразить в таблице расходные платежи'&gt;расход&lt;/span&gt;"
           </f:facet>
         </x:checkbox-field>
@@ -228,7 +228,7 @@ ${v.checkModelRequestedWithRedirect}
           value = "#{v.model.searchNames}">
 
           <f:facet name = "extjs-props">
-            margin: extjsf.dpts(1, 0, 1, 4),
+            margin: extjsf.pts(1, 0, 1, 4),
             width:  extjsf.ex(24)
           </f:facet>
 
@@ -268,7 +268,7 @@ ${v.checkModelRequestedWithRedirect}
             width: retrade_default('button-selset').width,
             height: retrade_default('button-selset').height,
             componentCls: 'retrade-icon-24',
-            margin: extjsf.dpts(1, 0, 1, 6),
+            margin: extjsf.pts(1, 0, 1, 6),
             iconCls: 'retrade-selset-button-icon',
             tooltipType: 'title', tooltip: 'Ограничить текущей выборкой по контрагентам, учётным и платёжным счетам',
             pressed: #{v.model.withSelSet}

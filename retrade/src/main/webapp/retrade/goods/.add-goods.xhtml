@@ -15,7 +15,7 @@
       width: retrade_default('button-square').width,
       height: retrade_default('button-square').height,
       iconCls: "${empty toggleTableView?('retrade-list-only'):(toggleTableView)}",
-      tooltipType: 'title', margin: extjsf.dpts(0, 8, 0, 0)
+      tooltipType: 'title', margin: extjsf.pts(0, 8, 0, 0)
     </f:facet>
   </x:component>
 
@@ -150,7 +150,7 @@
   <x:component coid = "${z:vid(v, 'add-goods-table')}">
     <f:facet name = "extjs-props">
       xtype: 'button', text: 'Создать +',
-      margin: extjsf.dpts(0, 0, 0, 4),
+      margin: extjsf.pts(0, 0, 0, 4),
       tooltipType: 'title', tooltip: 'Создать новые товары в табличной форме',
       disabled: ${not rootView.isSecure('edit: goods')}
     </f:facet>
@@ -229,7 +229,7 @@
 
         <f:facet name = "drop-props">
           width: extjsf.ex(32),
-          margin: extjsf.dpts(0, 4, 0, 4),
+          margin: extjsf.pts(0, 4, 0, 4),
           matchFieldWidth: true, autoSelect: false,
           valueField: 'code', displayField: 'code'
         </f:facet>

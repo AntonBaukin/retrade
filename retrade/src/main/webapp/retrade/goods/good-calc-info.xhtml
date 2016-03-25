@@ -64,7 +64,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "extjs-props">
         hidden: #{v.historyCalc or empty v.calcView},
         xtype: 'button', enableToggle: true,
-        text: 'Комментарий', margin: extjsf.dpts(0, 4, 0, 4),
+        text: 'Комментарий', margin: extjsf.pts(0, 4, 0, 4),
         tooltipType: 'title', tooltip: 'Просмотреть (и изменить) комментарий о формуле. Изменения вступят в силу при сохранении товара!'
       </f:facet>
     </x:component>
@@ -85,7 +85,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <f:facet name = "extjs-props">
         hidden: #{v.historyCalc or empty v.goodView.objectKey},
-        text: 'История', margin: extjsf.dpts(0, 0, 0, 4),
+        text: 'История', margin: extjsf.pts(0, 0, 0, 4),
         tooltipType: 'title', tooltip: 'Отобразить список прежних версий формулы'
       </f:facet>
     </x:action-button>
@@ -98,7 +98,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <f:facet name = "extjs-props">
         disabled: #{not v.isSecure('edit: goods')},
-        text: 'Изменить', margin: extjsf.dpts(0, 0, 0, 4),
+        text: 'Изменить', margin: extjsf.pts(0, 0, 0, 4),
         tooltipType: 'title', tooltip: 'Изменить (или создать новую) формулу на основе данной'
       </f:facet>
     </x:action-button>

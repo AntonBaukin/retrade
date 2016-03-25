@@ -2032,7 +2032,7 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		var W = B.width, H = B.height
 		var w = win.getWidth()
 		var h = win.getHeight()
-		var D = extjsf.inch(0.5) //<-- sticky tolerance
+		var D = extjsf.pt(20) //<-- sticky tolerance
 		var a, ax = '0', ay = '0'
 
 		//?: {touch left}

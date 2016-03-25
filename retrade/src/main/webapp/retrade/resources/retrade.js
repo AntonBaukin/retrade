@@ -32,7 +32,7 @@ ZeT.init('ReTrade.init', function()
 	ZeT.define('retrade.columns.InvoiceGoodNumber',
 	{
 		text: '№', dataIndex: 'index', sortable: true, align: 'right',
-		width: extjsf.dex(5), resizable: false, hideable: false,
+		width: extjsf.ex(5), resizable: false, hideable: false,
 		tdCls: 'x-grid-cell-row-numberer x-grid-cell-special',
 		cls: 'x-row-numberer', innerCls: 'x-grid-cell-inner-row-numberer'
 	})

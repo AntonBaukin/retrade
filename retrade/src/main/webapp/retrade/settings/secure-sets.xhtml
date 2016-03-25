@@ -48,7 +48,7 @@
     <x:text-field coid = "${z:vid(v, 'secure-set-name')}" value = "">
 
       <f:facet name = "extjs-props">
-        margin: extjsf.dpts(1, 0, 1, 4),
+        margin: extjsf.pts(1, 0, 1, 4),
         width:  extjsf.ex(24)
       </f:facet>
 
@@ -61,7 +61,7 @@
       <f:facet name = "extjs-props">
 
        text: 'Изменить', disabled: true,
-       xtype: 'button', margin: extjsf.dpts(1, 6, 1, 6),
+       xtype: 'button', margin: extjsf.pts(1, 6, 1, 6),
        disabled: ${not v.isSecure('secure: operate: sets')},
        tooltipType: 'title', tooltip: 'Изменить имя выбранного множества правил'
 
@@ -72,7 +72,7 @@
       <f:facet name = "extjs-props">
 
        text: 'Добавить', disabled: true,
-       xtype: 'button', margin: extjsf.dpts(1, 6, 1, 0),
+       xtype: 'button', margin: extjsf.pts(1, 6, 1, 0),
        disabled: ${not v.isSecure('secure: operate: sets')},
        tooltipType: 'title', tooltip: 'Добавить новое множество правил'
 
@@ -83,7 +83,7 @@
       <f:facet name = "extjs-props">
 
        text: 'Удалить', disabled: true,
-       xtype: 'button', margin: extjsf.dpts(1, 6, 1, 0),
+       xtype: 'button', margin: extjsf.pts(1, 6, 1, 0),
        disabled: ${not v.isSecure('secure: operate: sets')},
        tooltipType: 'title', tooltip: 'Удалить выбранное множество'
 
@@ -193,7 +193,7 @@
       value = "#{v.searchNames}">
 
       <f:facet name = "extjs-props">
-        margin: extjsf.dpts(1, 0, 1, 4),
+        margin: extjsf.pts(1, 0, 1, 4),
         width:  extjsf.ex(24)
       </f:facet>
 
@@ -214,7 +214,7 @@
        width: retrade_default('button-selset').width,
        height: retrade_default('button-selset').height,
        componentCls: 'retrade-icon-24',
-       margin: extjsf.dpts(1, 0, 1, 6),
+       margin: extjsf.pts(1, 0, 1, 6),
        iconCls: 'retrade-selset-button-icon',
        tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
 
@@ -335,7 +335,7 @@
         <f:facet name = "extjs-props">
 
          xtype: 'button', enableToggle: true,
-         text: 'Комментарий', margin: extjsf.dpts(1, 0, 1, 0),
+         text: 'Комментарий', margin: extjsf.pts(1, 0, 1, 0),
          disabled: ${not v.isSecure('secure: operate: sets')},
          tooltipType: 'title', tooltip: 'Изменить комментарий о множестве правил'
 
@@ -348,7 +348,7 @@
       <x:component coid = "${z:vid(v, 'secure-set-add-ables-rules')}">
         <f:facet name = "extjs-props">
 
-          xtype: 'button', text: 'Добавить', margin: extjsf.dpts(1, 0, 1, 6),
+          xtype: 'button', text: 'Добавить', margin: extjsf.pts(1, 0, 1, 6),
           disabled: ${not rootView.isSecure('secure: operate: sets')},
           tooltipType: 'title', tooltip: 'Добавить правила доступа из текущей выборки, ' +
             'а также множеств и пользователей текущей выборки. (Эта операция не добавит ' +
@@ -364,7 +364,7 @@
         <f:facet name = "extjs-props">
 
           xtype: 'button', text: 'Удалить',
-          margin: extjsf.dpts(1, 0, 1, 6), disabled: true,
+          margin: extjsf.pts(1, 0, 1, 6), disabled: true,
           disabled: ${not rootView.isSecure('secure: operate: sets')},
           tooltipType: 'title', tooltip: 'Удалить выбранные в таблице правила. ' +
           '(Эта операция не удалит правила у пользователей, которым ранее было назначено множество.)'
@@ -378,7 +378,7 @@
       <x:component coid = "${z:vid(v, 'secure-set-operate-to-users-menu-button')}">
 
         <f:facet name = "extjs-props">
-          xtype: 'button', margin: extjsf.dpts(1, 0, 1, 6),
+          xtype: 'button', margin: extjsf.pts(1, 0, 1, 6),
           disabled: ${not rootView.isSecure('secure: operate: rules')},
           text: 'Пользователи'
         </f:facet>
@@ -429,7 +429,7 @@
         value = "#{v.searchSetAblesNames}">
 
         <f:facet name = "extjs-props">
-          margin: extjsf.dpts(1, 0, 1, 4),
+          margin: extjsf.pts(1, 0, 1, 4),
           width:  extjsf.ex(24)
         </f:facet>
 
@@ -450,7 +450,7 @@
          width: retrade_default('button-selset').width,
          height: retrade_default('button-selset').height,
          componentCls: 'retrade-icon-24',
-         margin: extjsf.dpts(1, 0, 1, 6),
+         margin: extjsf.pts(1, 0, 1, 6),
          iconCls: 'retrade-selset-button-icon',
          tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
 

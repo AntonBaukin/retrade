@@ -59,7 +59,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "extjs-props">
 
         xtype: 'button', text: 'Добавить',
-        margin: extjsf.dpts(1, 0, 1, 6), tooltipType: 'title',
+        margin: extjsf.pts(1, 0, 1, 6), tooltipType: 'title',
         disabled: ${not v.isSecure('secure: operate: rules')},
         tooltip: 'Добавить правила и множества правил доступа из текущей выборки. ' +
           '(Выбранные правила будут добавлены в множество по умолчанию)'
@@ -74,7 +74,7 @@ ${v.checkModelRequestedWithRedirect}
 
       <f:facet name = "extjs-props">
 
-        xtype: 'button', margin: extjsf.dpts(1, 0, 1, 6),
+        xtype: 'button', margin: extjsf.pts(1, 0, 1, 6),
         text: 'Удалить', tooltipType: 'title',
         disabled: ${not v.isSecure('secure: operate: rules')},
         tooltip: 'Удалить правила у пользователя одним из методов:'
@@ -145,7 +145,7 @@ ${v.checkModelRequestedWithRedirect}
       value = "#{v.searchNames}">
 
       <f:facet name = "extjs-props">
-        margin: extjsf.dpts(1, 0, 1, 4),
+        margin: extjsf.pts(1, 0, 1, 4),
         width:  extjsf.ex(24)
       </f:facet>
 
@@ -169,7 +169,7 @@ ${v.checkModelRequestedWithRedirect}
        width: retrade_default('button-selset').width,
        height: retrade_default('button-selset').height,
        componentCls: 'retrade-icon-24',
-       margin: extjsf.dpts(1, 0, 1, 6),
+       margin: extjsf.pts(1, 0, 1, 6),
        iconCls: 'retrade-selset-button-icon',
        tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
 

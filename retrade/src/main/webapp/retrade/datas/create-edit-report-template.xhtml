@@ -60,7 +60,7 @@ ${v.checkModelRequestedWithRedirect}
       <f:facet name = "extjs-props">
         xtype: 'button', text: 'Скачать', tooltipType: 'title',
         tooltip: 'Скачать файл шаблона',
-        margin: extjsf.dpts(0, 0, 0, 4),
+        margin: extjsf.pts(0, 0, 0, 4),
         hidden: #{v.create or not v.view.ready}
       </f:facet>
     </x:component>
@@ -83,7 +83,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'form',
         border: false, frame: false,
         bodyCls: 'retrade-transparent-panel',
-        bodyPadding: extjsf.dpts(0, 4, 0, 0)
+        bodyPadding: extjsf.pts(0, 4, 0, 0)
 
       </f:facet>
 
@@ -165,7 +165,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'panel', border: false,
         layout: { type: 'table', columns: 2 },
         bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(8, 0, 0, 0)
+        margin: extjsf.pts(8, 0, 0, 0)
 
       </f:facet>
 
@@ -185,7 +185,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "label-props">
           text: 'Код', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(0, 4, 0, 0)
+          margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
       </x:text-field>
 
@@ -212,7 +212,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "label-props">
           text: 'Имя', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(0, 4, 0, 0)
+          margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
       </x:text-field>
 
@@ -229,7 +229,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'panel', border: false,
         layout: { type: 'table', columns: 1 },
         bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(4, 0, 0, 0)
+        margin: extjsf.pts(4, 0, 0, 0)
 
       </f:facet>
 
@@ -247,7 +247,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "label-props">
           text: 'Комментарий', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(0, 0, 2, 0)
+          margin: extjsf.pts(0, 0, 2, 0)
         </f:facet>
       </x:text-field>
 
@@ -264,7 +264,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'panel', border: false,
         layout: { type: 'table', columns: 1 },
         bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(4, 0, 0, 0)
+        margin: extjsf.pts(4, 0, 0, 0)
 
       </f:facet>
 
@@ -282,7 +282,7 @@ ${v.checkModelRequestedWithRedirect}
 
         <f:facet name = "label-props">
           text: 'Источник данных', cellCls: 'retrade-form-label-cell',
-          margin: extjsf.dpts(0, 0, 2, 0)
+          margin: extjsf.pts(0, 0, 2, 0)
         </f:facet>
       </x:text-field>
 
@@ -311,7 +311,7 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'panel', border: false,
         layout: { type: 'table', columns: 2 },
         bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(4, 0, 8, 0)
+        margin: extjsf.pts(4, 0, 8, 0)
 
       </f:facet>
 
@@ -322,7 +322,7 @@ ${v.checkModelRequestedWithRedirect}
         value = "#{v.resource}">
 
         <f:facet name = "label-props">
-          cellCls: 'retrade-form-label-cell', margin: extjsf.dpts(0, 0, 0, 4),
+          cellCls: 'retrade-form-label-cell', margin: extjsf.pts(0, 0, 0, 4),
           html: "&lt;span title = 'Установите, чтобы заменить источник данных на выбранный в таблице источников'&gt;заменить источник данных&lt;/span&gt;"
         </f:facet>
       </x:checkbox-field>

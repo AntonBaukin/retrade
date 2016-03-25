@@ -29,7 +29,7 @@
       <f:facet name = "extjs-props">
         xtype: 'panel', frame: false, border: false,
         bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(0, 12, 0, 0),
+        margin: extjsf.pts(0, 12, 0, 0),
         layout: {type: 'hbox', align: 'middle'}
       </f:facet>
 
@@ -75,7 +75,7 @@
 
         xtype: 'button', text: 'Тип документа', height: 30, arrowVisible: false,
         iconCls: 'retrade-document-icon', componentCls: 'retrade-button-22pt',
-        margin: extjsf.dpts(0, 8, 0, 0), tooltipType: 'title',
+        margin: extjsf.pts(0, 8, 0, 0), tooltipType: 'title',
         tooltip: 'Выберете типы отображаемых документов'
 
       </f:facet>
@@ -148,7 +148,7 @@
       <f:facet name = "extjs-props">
         layout: {type: 'hbox', align: 'middle'},
         border: false, bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(0, 12, 0, 0)
+        margin: extjsf.pts(0, 12, 0, 0)
       </f:facet>
 
       <x:checkboxes coid = "${z:vid(localView, 'filter-form-doc-states')}"
@@ -169,7 +169,7 @@
     <x:component coid = "${z:vid(localView, '_filter_form_doc_types_fill')}">
       <f:facet name = "extjs-props">
         xtype: 'panel', frame: false, border: false,
-        width: extjsf.dpt(8), flex: 3,
+        width: extjsf.pt(8), flex: 3,
         bodyCls: 'retrade-transparent-panel'
       </f:facet>
     </x:component>
@@ -220,7 +220,7 @@
         xtype: 'button', text : 'Применить', height: 30,
         iconCls: 'x-tbar-loading retrade-icon-smaller',
         componentCls: 'retrade-button-22pt',
-        margin: extjsf.dpts(0, 0, 0, 6)
+        margin: extjsf.pts(0, 0, 0, 6)
 
       </f:facet>
     </x:component>

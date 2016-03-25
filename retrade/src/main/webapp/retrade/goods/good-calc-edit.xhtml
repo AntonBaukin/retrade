@@ -64,7 +64,7 @@ ${v.checkModelRequested}
       <f:facet name = "extjs-props">
         xtype:'button', text: 'Удалить',
         hidden: #{v.model.editCalc.derived},
-        margin: extjsf.dpts(0, 4, 0, 4),
+        margin: extjsf.pts(0, 4, 0, 4),
         tooltipType: 'title', tooltip: 'Удалить из формулы выделенную составляющую'
       </f:facet>
     </x:component>
@@ -84,7 +84,7 @@ ${v.checkModelRequested}
       <f:facet name = "extjs-props">
         xtype:'button', text: 'Добавить',
         hidden: #{v.model.editCalc.derived},
-        margin: extjsf.dpts(0, 4, 0, 4),
+        margin: extjsf.pts(0, 4, 0, 4),
         tooltipType: 'title', tooltip: 'Добавить в формулу новую составляющую'
       </f:facet>
     </x:component>
@@ -124,7 +124,7 @@ ${v.checkModelRequested}
       value = "#{v.model.editCalc.derived}">
 
       <f:facet name = "label-props">
-        labelAlign: 'left', cls: 'retrade-info-title-label', margin: extjsf.dpts(0, 4, 0, 0),
+        labelAlign: 'left', cls: 'retrade-info-title-label', margin: extjsf.pts(0, 4, 0, 0),
         html: "&lt;span title = 'Установите, если производство данного товара основано только на одном другом товаре'&gt;производный&lt;/span&gt;"
       </f:facet>
     </x:checkbox-field>
@@ -144,7 +144,7 @@ ${v.checkModelRequested}
       value = "#{v.model.editCalc.semiReady}">
 
       <f:facet name = "label-props">
-        cls: 'retrade-info-title-label', margin: extjsf.dpts(0, 0, 0, 4),
+        cls: 'retrade-info-title-label', margin: extjsf.pts(0, 0, 0, 4),
         html: "&lt;span title = 'Установите, если продукт есть полуфабрикат. Полуфабрикаты доступны для закупок'&gt;полуфабрикат&lt;/span&gt;"
       </f:facet>
     </x:checkbox-field>
@@ -536,7 +536,7 @@ ${v.checkModelRequested}
         xtype: 'panel', border: false,
         layout: { type: 'hbox', align: 'middle' },
         bodyCls: 'retrade-transparent-panel',
-        margin: extjsf.dpts(8, 0, 4, 0)
+        margin: extjsf.pts(8, 0, 4, 0)
 
       </f:facet>
 
@@ -556,7 +556,7 @@ ${v.checkModelRequested}
 
         <f:facet name = "label-props">
           text: 'Суб-код', cls: 'retrade-info-title-label',
-          margin: extjsf.dpts(0, 4, 0, 0)
+          margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
       </x:text-field>
 
@@ -578,7 +578,7 @@ ${v.checkModelRequested}
 
         <f:facet name = "label-props">
           text: 'объём', cls: 'retrade-info-title-label',
-          margin: extjsf.dpts(0, 4, 0, 6)
+          margin: extjsf.pts(0, 4, 0, 6)
         </f:facet>
       </x:text-field>
 
@@ -659,7 +659,7 @@ ${v.checkModelRequested}
 
         <f:facet name = "label-props">
           text: 'Товар', cls: 'retrade-info-title-label',
-          margin: extjsf.dpts(0, 4, 0, 0)
+          margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
       </x:drop-list>
 
@@ -685,7 +685,7 @@ ${v.checkModelRequested}
 
         <f:facet name = "extjs-props">
           width: extjsf.ex(24), flex: 2, readOnly: true,
-          margin: extjsf.dpts(0, 0, 0, 4)
+          margin: extjsf.pts(0, 0, 0, 4)
         </f:facet>
       </x:text-field>
 
@@ -701,7 +701,7 @@ ${v.checkModelRequested}
 
         <f:facet name = "label-props">
           text: 'изм.', cls: 'retrade-info-title-label',
-          margin: extjsf.dpts(0, 4, 0, 6)
+          margin: extjsf.pts(0, 4, 0, 6)
         </f:facet>
       </x:text-field>
 

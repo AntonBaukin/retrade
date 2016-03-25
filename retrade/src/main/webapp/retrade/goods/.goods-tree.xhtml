@@ -855,7 +855,7 @@
       <x:component coid = "${z:vid(v, 'add-goods-table')}">
         <f:facet name = "extjs-props">
          xtype: 'button', text: 'Создать +',
-         margin: extjsf.dpts(0, 0, 0, 4),
+         margin: extjsf.pts(0, 0, 0, 4),
          tooltipType: 'title', tooltip: 'Создать новые товары в табличной форме поместить их в каталог (указанный на момент открытия формы)',
          disabled: ${not rootView.isSecure('edit: goods')}
        </f:facet>
@@ -906,7 +906,7 @@
       <!-- [with sub-folders checkbox] -->
       <x:checkbox-field coid = "${z:vid(v, 'with-subfolders')}" value = "#{true}">
         <f:facet name = "label-props">
-          labelAlign: 'left', margin: extjsf.dpts(0, 2, 0, 0), cls: 'retrade-info-title-label',
+          labelAlign: 'left', margin: extjsf.pts(0, 2, 0, 0), cls: 'retrade-info-title-label',
           html: "&lt;span title = 'Включить товары подкаталогов выбранного каталога'&gt;Подкаталоги&lt;/span&gt;"
         </f:facet>
       </x:checkbox-field>
@@ -926,7 +926,7 @@
           value = "#{v.model.searchNames}">
 
           <f:facet name = "extjs-props">
-            margin: extjsf.dpts(0, 0, 0, 4),
+            margin: extjsf.pts(0, 0, 0, 4),
             width:  extjsf.ex(24)
           </f:facet>
 
@@ -946,7 +946,7 @@
              width: retrade_default('button-selset').width,
              height: retrade_default('button-selset').height,
              componentCls: 'retrade-icon-24',
-             margin: extjsf.dpts(0, 0, 0, 6),
+             margin: extjsf.pts(0, 0, 0, 6),
              iconCls: 'retrade-selset-button-icon',
              tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
 

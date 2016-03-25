@@ -2677,33 +2677,6 @@ ZeT.extend(extjsf,
 		return this._css_sz(10, 'ex', v) + (ZeT.isn(vpx)?(vpx):(0));
 	},
 
-	dex              : function()
-	{
-		return ZeT.delay(ZeT.fbinda(this.ex, this, arguments));
-	},
-
-	exs              : function(ispx)
-	{
-		var s = '', a = arguments;
-		var x = (ispx === true);
-
-		if(ZeT.isb(ispx))
-			(a = ZeT.a(a)).shift();
-
-		for(var i = 0;(i < a.length);i++)
-		{
-			if(s.length) s += ' ';
-			s += this.ex(a[i]);
-			if(x) s += 'px';
-		}
-		return s;
-	},
-
-	dexs             : function()
-	{
-		return ZeT.delay(ZeT.fbinda(this.exs, this, arguments));
-	},
-
 	/**
 	 * Returns the integer number of pixels in
 	 * the given (float) number of CSS pt-size.
@@ -2714,11 +2687,6 @@ ZeT.extend(extjsf,
 	pt               : function(v, vpx)
 	{
 		return this._css_sz(100, 'pt', v) + (ZeT.isn(vpx)?(vpx):(0));
-	},
-
-	dpt              : function()
-	{
-		return ZeT.delay(ZeT.fbinda(this.pt, this, arguments));
 	},
 
 	pts              : function(ispx)
@@ -2736,16 +2704,6 @@ ZeT.extend(extjsf,
 			if(x) s += 'px';
 		}
 		return s;
-	},
-
-	dpts             : function()
-	{
-		return ZeT.delay(ZeT.fbinda(this.pts, this, arguments));
-	},
-
-	inch             : function(v, vpx)
-	{
-		return this._css_sz(2, 'in', v) + (ZeT.isn(vpx)?(vpx):(0));
 	},
 
 	_css_sz          : function(width, units, v)

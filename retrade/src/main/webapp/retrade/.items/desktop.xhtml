@@ -65,7 +65,7 @@
       <f:facet name = "extjs-props">
         region: 'north', frame: false, border:false,
         height: retrade_default('main-topbar').height,
-        margin: extjsf.dpts(0, 2, 0, 2),
+        margin: extjsf.pts(0, 2, 0, 2),
         bodyCls: 'retrade-desktop-panel-topbar',
         layout: { type: 'hbox', align: 'middle' }
       </f:facet>
@@ -268,7 +268,7 @@
       <f:facet name = "extjs-props">
         region: 'north', frame: false, border:false,
         height: retrade_default('main-topbar').height,
-        margin: extjsf.dpts(0, 2, 0, 2),
+        margin: extjsf.pts(0, 2, 0, 2),
         bodyCls: 'retrade-desktop-panel-topbar',
         layout: {type: 'hbox', align: 'middle'}
       </f:facet>
@@ -396,7 +396,6 @@
     //~: activate the desktop
     ReTrade.desktop.activate()
 
-    var inw = Ext.get(document.body).getWidth() / extjsf.inch(1);
     if($(window).innerWidth() < 1216) {
       ReTrade.desktop.panels.left.co().collapse()
       ReTrade.desktop.panels.right.co().collapse()

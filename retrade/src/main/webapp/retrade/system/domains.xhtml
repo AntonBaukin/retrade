@@ -133,7 +133,7 @@
       <x:component coid = "${z:vid(v, 'self_shunt')}">
 
         <f:facet name = "extjs-props">
-          xtype: 'button', text: 'Тест', margin: extjsf.dpts(0, 0, 0, 6),
+          xtype: 'button', text: 'Тест', margin: extjsf.pts(0, 0, 0, 6),
           tooltipType: 'title', tooltip: 'Выберете домен для тестирования и нажмите'
         </f:facet>
       </x:component>
@@ -187,7 +187,7 @@
       <x:component coid = "${z:vid(v, 'show_logins')}">
 
         <f:facet name = "extjs-props">
-          xtype: 'button', text: 'Пользователи', margin: extjsf.dpts(0, 0, 0, 6),
+          xtype: 'button', text: 'Пользователи', margin: extjsf.pts(0, 0, 0, 6),
           tooltipType: 'title', tooltip: 'Выберете домен и нажмите для просмотра пользователей'
         </f:facet>
       </x:component>
@@ -253,7 +253,7 @@
         value = "#{v.searchNames}">
 
         <f:facet name = "extjs-props">
-          margin: extjsf.dpts(1, 0, 1, 4),
+          margin: extjsf.pts(1, 0, 1, 4),
           width:  extjsf.ex(24)
         </f:facet>
 
@@ -311,7 +311,7 @@
 
       <f:facet name = "grid-props">
 
-        preventHeader: true, height: extjsf.dpt(160),
+        preventHeader: true, height: extjsf.pt(160),
         pager: true, sortableColumns: false,
         columns: ZeT.defined('retrade.columns.CatItemView'),
         selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})

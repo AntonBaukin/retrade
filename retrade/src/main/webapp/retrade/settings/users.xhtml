@@ -38,7 +38,7 @@
       <f:facet name = "extjs-props">
 
        xtype: 'button', text: 'Добавить',
-       margin: extjsf.dpts(1, 0, 1, 0),
+       margin: extjsf.pts(1, 0, 1, 0),
        tooltipType: 'title', tooltip: 'Добавить нового пользователя',
        disabled: ${not v.isSecure('secure: create: person login')}
 
@@ -133,7 +133,7 @@
       value = "#{v.searchNames}">
 
       <f:facet name = "extjs-props">
-        margin: extjsf.dpts(1, 0, 1, 4),
+        margin: extjsf.pts(1, 0, 1, 4),
         width:  extjsf.ex(24)
       </f:facet>
 
@@ -154,7 +154,7 @@
        width: retrade_default('button-selset').width,
        height: retrade_default('button-selset').height,
        componentCls: 'retrade-icon-24',
-       margin: extjsf.dpts(1, 0, 1, 6),
+       margin: extjsf.pts(1, 0, 1, 6),
        iconCls: 'retrade-selset-button-icon',
        tooltipType: 'title', tooltip: 'Ограничить текущей выборкой'
 
@@ -289,7 +289,7 @@
       <x:component coid = "${z:vid(v, 'user-data-edit-comment')}">
         <f:facet name = "extjs-props">
          xtype: 'button', enableToggle: true,
-         text: 'Комментарий', margin: extjsf.dpts(1, 0, 1, 0),
+         text: 'Комментарий', margin: extjsf.pts(1, 0, 1, 0),
          tooltipType: 'title', tooltip: 'Изменить комментарий о пользователе'
        </f:facet>
       </x:component>
@@ -300,7 +300,7 @@
       <x:component coid = "${z:vid(v, 'edit-person')}">
         <f:facet name = "extjs-props">
          xtype: 'button', text: 'Изменить',
-         margin: extjsf.dpts(1, 0, 1, 6),
+         margin: extjsf.pts(1, 0, 1, 6),
          tooltipType: 'title', tooltip: 'Изменить свойства персоны'
        </f:facet>
       </x:component>
@@ -395,7 +395,7 @@
         <f:facet name = "extjs-props">
 
          xtype: 'button', text: 'Логин &amp; пароль',
-         margin: extjsf.dpts(1, 0, 1, 6), disabled: true,
+         margin: extjsf.pts(1, 0, 1, 6), disabled: true,
          tooltipType: 'title', tooltip: 'Изменить логин и пароль пользователя'
 
        </f:facet>
@@ -474,7 +474,7 @@
       <x:component coid = "${z:vid(v, 'person-secure-ables')}">
         <f:facet name = "extjs-props">
          xtype: 'button', text: 'Правила',
-         margin: extjsf.dpts(1, 0, 1, 6),
+         margin: extjsf.pts(1, 0, 1, 6),
          tooltipType: 'title', tooltip: 'Отобразить правила доступа, назначенные персоне'
        </f:facet>
       </x:component>
