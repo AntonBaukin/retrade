@@ -395,6 +395,140 @@ ZeT.extend(extjsf,
 		{
 			return Ext.create(extClass, opts)
 		})
+	},
+
+	/**
+	 * Takes float or integer number of 'ex' units
+	 * and returns the float or integer number of
+	 * pixels they take. Optional second argument
+	 * tells the number of pixels to add.
+	 */
+	ex               : function(v, vpx)
+	{
+		return extjsf.$css_v('ex', v, vpx)
+	},
+
+	/**
+	 * Takes float or integer number of 'pt' units
+	 * (points), then works as ex().
+	 */
+	pt               : function(v, vpx)
+	{
+		return extjsf.$css_v('pt', v, vpx)
+	},
+
+	/**
+	 * Returns string that encodes 2, 3, or 4
+	 * numbers into margin-padding code that
+	 * Ext JS supports. (It's the same as
+	 * in CSS, but in pizels without 'px'.)
+	 *
+	 * All four numbers stand for: top, right,
+	 * bottom, left. Three numbers (x, y, z):
+	 * x-top, y-right, z-bottom, y-left. And
+	 * two numbers (x, y): x-top, y-right,
+	 * x-bottom, y-left.
+	 *
+	 * Samples. pts(1, 2, 3, 4) is '1 2 3 4'.
+	 * pts(1, 2, 3) is '1 2 3 2'. pts(1, 2)
+	 * is '1 2 1 2'.
+	 */
+	pts              : function()
+	{
+		return extjsf.$css_vs('pt', arguments)
+	},
+
+	$css_v           : function(unit, v, vpx)
+	{
+		if((v == 0) && !vpx) return 0
+
+		ZeT.assert(ZeT.isn(v))
+		ZeT.assert(ZeT.isx(vpx) || ZeT.isn(vpx))
+
+		var r = v * extjsf.$css_size(unit) * 0.001
+		if(vpx) r += vpx
+
+		//?: {need integer result}
+		if(ZeT.isi(v) && (ZeT.isx(vpx) || ZeT.isi(vpx)))
+			r = Math.round(r)
+
+		return r
+	},
+
+	$css_vs          : ZeT.scope(function(/* unit, a */)
+	{
+		function sv(s, v)
+		{
+			if(v == 0) return 0
+			ZeT.assert(ZeT.isn(v))
+			var r = v * s * 0.001
+			return ZeT.isi(v)?Math.round(r):(r)
+		}
+
+		return function(unit, a)
+		{
+			var s = extjsf.$css_size(unit)
+
+			switch(a.length)
+			{
+				case 4: return ZeTS.catsep(' ',
+				  sv(s, a[0]), sv(s, a[1]),
+				  sv(s, a[2]), sv(s, a[3])
+				)
+
+				case 3:
+				{
+					var sv1 = sv(s, a[1])
+
+					return ZeTS.catsep(' ',
+					  sv(s, a[0]), sv1,
+					  sv(s, a[2]), sv1
+					)
+				}
+
+				case 2:
+				{
+					var sv0 = sv(s, a[0])
+					var sv1 = sv(s, a[1])
+
+					return ZeTS.catsep(' ', sv0, sv1, sv0, sv1)
+				}
+			}
+		}
+	}),
+
+	/**
+	 * Returns float value with size in pixels
+	 * of 1000 given units named as in CSS.
+	 */
+	$css_size        : function(unit)
+	{
+		//~: cache map
+		var m = extjsf._css_size
+		if(!m) extjsf._css_size = m = {}
+
+		//~: lookup in the cache
+		var v; if(v = m[unit]) return v
+
+		//~: create invisible node
+		var d = document.createElement('div')
+		ZeT.extend(d.style, { visibility: 'hidden',
+		  width: '1000' + unit, height: '1px'
+		})
+
+		ZeT.assertn(document.body,
+		  'Document is not yet ready to find CSS size!')
+
+		//~: append, get the size, remove
+		document.body.appendChild(d)
+		m[unit] = v = d.offsetWidth
+		document.body.removeChild(d)
+
+		//~: inspect the result
+		ZeT.assert(ZeT.isn(v) && (v > 0),
+		  'Can\'t find pixel size of CSS unit [', unit, ']!')
+
+		return v
 	}
 })
 
@@ -2660,85 +2794,6 @@ extjsf.StoreBind = ZeT.defineClass(
 
 
 // +----: Components to Refactor :------------------------------->
-
-ZeT.extend(extjsf,
-{
-	//=       CSS  Support       =//
-
-	/**
-	 * Returns the integer number of pixels in
-	 * the given (float) number of CSS ex-size.
-	 *
-	 * Argument 'vpx' if defined just adds the
-	 * given number of plain pixels to the result.
-	 */
-	ex               : function(v, vpx)
-	{
-		return this._css_sz(10, 'ex', v) + (ZeT.isn(vpx)?(vpx):(0));
-	},
-
-	/**
-	 * Returns the integer number of pixels in
-	 * the given (float) number of CSS pt-size.
-	 *
-	 * Argument 'vpx' if defined just adds the
-	 * given number of plain pixels to the result.
-	 */
-	pt               : function(v, vpx)
-	{
-		return this._css_sz(100, 'pt', v) + (ZeT.isn(vpx)?(vpx):(0));
-	},
-
-	pts              : function(ispx)
-	{
-		var s = '', a = arguments;
-		var x = (ispx === true);
-
-		if(ZeT.isb(ispx))
-			(a = ZeT.a(a)).shift();
-
-		for(var i = 0;(i < a.length);i++)
-		{
-			if(s.length) s += ' ';
-			s += this.pt(a[i]);
-			if(x) s += 'px';
-		}
-		return s;
-	},
-
-	_css_sz          : function(width, units, v)
-	{
-		var key = '__css_sz_' + width + 'units';
-		var wds = this[key];
-
-		if(wds) return Math.round(wds * v / width);
-
-		var div = document.createElement('div');
-		div.style.visibility = 'hidden';
-		div.style.width  = '' + width + units;
-		div.style.height = '1px';
-
-		document.body.appendChild(div)
-		wds = 1.0; this[key] = wds = wds * div.offsetWidth;
-
-		if(wds == 0.0) throw 'Can not define ' +
-		  'DOM element offset width at this call time!';
-
-		return Math.round(wds * v / width);
-	},
-
-	_css_szs         : function(css_sz, args, ispx)
-	{
-		var s = ''; for(var i = 0;(i < args.length);i++)
-		{
-			if(s.length) s += ' ';
-			s += css_sz(args[i]);
-			if(ispx) s += 'px';
-		}
-		return s;
-	}
-
-})
 
 extjsf.Bind.extend(
 {

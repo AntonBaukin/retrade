@@ -29,12 +29,14 @@ ZeT.init('ReTrade.init', function()
 
 
 	//~: invoice good index
-	ZeT.define('retrade.columns.InvoiceGoodNumber',
+	ZeT.defineDelay('retrade.columns.InvoiceGoodNumber', function()
 	{
-		text: '№', dataIndex: 'index', sortable: true, align: 'right',
-		width: extjsf.ex(5), resizable: false, hideable: false,
-		tdCls: 'x-grid-cell-row-numberer x-grid-cell-special',
-		cls: 'x-row-numberer', innerCls: 'x-grid-cell-inner-row-numberer'
+		return {
+			text: '№', dataIndex: 'index', sortable: true, align: 'right',
+			width: extjsf.ex(5), resizable: false, hideable: false,
+			tdCls: 'x-grid-cell-row-numberer x-grid-cell-special',
+			cls: 'x-row-numberer', innerCls: 'x-grid-cell-inner-row-numberer'
+		}
 	})
 
 
@@ -267,7 +269,7 @@ ZeT.init('ReTrade.init', function()
 	{
 		return [
 
-		 ZeT.defined('retrade.columns.InvoiceGoodNumber'),
+		 ZeT.defined('retrade.columns.InvoiceGoodNumber')(),
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
@@ -344,7 +346,7 @@ ZeT.init('ReTrade.init', function()
 	{
 		return [
 
-		 ZeT.defined('retrade.columns.InvoiceGoodNumber'),
+		 ZeT.defined('retrade.columns.InvoiceGoodNumber')(),
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
@@ -476,7 +478,7 @@ ZeT.init('ReTrade.init', function()
 	{
 		return [
 
-		 ZeT.defined('retrade.columns.InvoiceGoodNumber'),
+		 ZeT.defined('retrade.columns.InvoiceGoodNumber')(),
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
@@ -504,7 +506,7 @@ ZeT.init('ReTrade.init', function()
 	{
 		return [
 
-		 ZeT.defined('retrade.columns.InvoiceGoodNumber'),
+		 ZeT.defined('retrade.columns.InvoiceGoodNumber')(),
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
@@ -568,7 +570,7 @@ ZeT.init('ReTrade.init', function()
 	{
 		return [
 
-		 ZeT.defined('retrade.columns.InvoiceGoodNumber'),
+		 ZeT.defined('retrade.columns.InvoiceGoodNumber')(),
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
@@ -629,7 +631,7 @@ ZeT.init('ReTrade.init', function()
 	{
 		return [
 
-		 ZeT.defined('retrade.columns.InvoiceGoodNumber'),
+		 ZeT.defined('retrade.columns.InvoiceGoodNumber')(),
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
@@ -656,7 +658,7 @@ ZeT.init('ReTrade.init', function()
 	{
 		return [
 
-		 ZeT.defined('retrade.columns.InvoiceGoodNumber'),
+		 ZeT.defined('retrade.columns.InvoiceGoodNumber')(),
 
 		 {
 		   text: "Код товара", dataIndex: 'goodCode', sortable: true,
