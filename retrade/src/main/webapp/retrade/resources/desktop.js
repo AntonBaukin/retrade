@@ -2458,7 +2458,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		if(!window) return
 
 		//~: clear the window
-		window.clearComponent({notListeners: true})
+		new extjsf.ClearCo(window, { notListeners: true }).run()
 
 		var params = {
 		  mode: 'body', domain: self.domain(),

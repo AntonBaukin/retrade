@@ -108,7 +108,7 @@
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');
-      content.clearComponent()
+      new extjsf.ClearCo(content).run()
       content.co().add(window.co())
     }
 
@@ -172,7 +172,7 @@
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');
-      content.clearComponent()
+      new extjsf.ClearCo(content).run()
       content.co().add(window.co())
     })
 
@@ -226,7 +226,7 @@
 
       //~: place it
       var content = extjsf.bind("${z:vid(v, 'operation-content')}", '${extDom}');
-      content.clearComponent()
+      new extjsf.ClearCo(content).run()
       content.co().add(window.co())
     })
 

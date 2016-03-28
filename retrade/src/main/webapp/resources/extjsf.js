@@ -273,6 +273,11 @@ ZeT.extend(extjsf,
 		return !!co && (co.isComponent === true)
 	},
 
+	isbind           : function(bind)
+	{
+		return !!bind && (bind.extjsfBind === true)
+	},
+
 	/**
 	 * Tries to guess Bind instance from the arguments.
 	 * Supports name + domain pair, direct Bind instance,
@@ -302,11 +307,19 @@ ZeT.extend(extjsf,
 		if(extjsf.isco(a0))
 			if(extjsf.isbind(a0.extjsfBind))
 				return a0.extjsfBind
-	},
 
-	isbind           : function(bind)
-	{
-		return !!bind && (bind.extjsfBind === true)
+		//?: {is options with name: and domain: )}
+		if(ZeT.isox(a0) && !ZeT.ises(a0.name))
+		{
+			if(ZeT.iss(a0.domain))
+			{
+				a1 = extjsf.domain(a0.domain)
+				if(!a1) return
+			}
+
+			ZeT.assert(extjsf.isdomain(a1))
+			return a1.bind(a0.name)
+		}
 	},
 
 	/**
@@ -326,7 +339,7 @@ ZeT.extend(extjsf,
 			return a0
 
 		//?: {refers a Component}
-		if(extjsf.isco(a0.component))
+		if(ZeT.isox(a0) && extjsf.isco(a0.component))
 			return a0.component
 
 		//~: access the bind
@@ -2791,32 +2804,83 @@ extjsf.StoreBind = ZeT.defineClass(
 })
 
 
+// +----: Clear Component :-------------------------------------+
+
+/**
+ * Strategy to clear a Component. Initialization method
+ * takes leading arguments of extjsf.co() or bind().
+ * The last argument is treated as options.
+ */
+extjsf.ClearCo = ZeT.defineClass('extjsf.ClearCo',
+{
+	className        : 'extjsf.ClearCo',
+
+	init             : function()
+	{
+		//~: see the bind
+		this.bind = extjsf.bind.apply(extjsf, arguments)
+
+		//~: see the component
+		if(!this.bind)
+			this.co = extjsf.bind.co(extjsf, arguments)
+
+		//~: options
+		var opts = arguments[arguments.length - 1]
+		this.opts = ZeT.extend({}, ZeT.isox(opts)?(opts):(null))
+	},
+
+	/**
+	 * Runs the strategy.
+	 */
+	run              : function()
+	{
+		ZeT.assertn(this.co(), 'Clear Component strategy',
+		  ' could not find the component!')
+
+		//~: remove child items
+		this.$rem_items()
+
+		//~: remove the listeners
+		this.$rem_listeners()
+
+		//~: remove the docked items
+		this.$rem_docked()
+	},
+
+	co               : function()
+	{
+		return this.bind?(this.bind.co()):(this.co)
+	},
+
+	$rem_items       : function()
+	{
+		this.co().removeAll()
+	},
+
+	$rem_listeners   : function()
+	{
+		if(this.opts.notListeners)
+			return
+
+		this.co().clearListeners()
+	},
+
+	$rem_docked      : function()
+	{
+		var d = this.co().getDockedItems('component[dock]')
+
+		//~: removing docked item created from binds
+		for(var i = 0;(i < d.length);i++)
+			if(extjsf.bind(d[i]))
+				this.co().removeDocked(d[i])
+	}
+})
+
+
 // +----: Components to Refactor :------------------------------->
 
 extjsf.Bind.extend(
 {
-	clearComponent   : function(opts)
-	{
-		var c = this.co(); if(!c) return this;
-
-		//~: remove the children
-		c.removeAll()
-
-		//~: clear all the listeners
-		if(!opts || !opts.notListeners)
-			c.clearListeners()
-
-		//~: remove docked panels
-		var d = c.getDockedItems('component[dock]');
-		for(var i = 0;(i < d.length);i++)
-		{
-			//ZeT.log('remove dock ', d[i].id)
-			if(d[i].extjsfBind) c.removeDocked(d[i])
-		}
-
-		return this;
-	},
-
 	toggleReadWrite  : function(isread)
 	{
 		ZeT.assertn(this.co())
@@ -2967,12 +3031,7 @@ extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
 
 	_clear           : function(window)
 	{
-		//~: clear the window
-		window.clearComponent({notListeners: true})
-
-		//~: rebind domain deleter
-		//if(window._domain_deleter)
-		//	window.on('beforedestroy', window._domain_deleter)
+		new extjsf.ClearCo(window, { notListeners: true }).run()
 	},
 
 	_form_params     : function(form, prms, button)
