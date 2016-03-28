@@ -515,7 +515,7 @@ ${v.checkModelRequestedWithRedirect}
           if(e.getKey() == e.ENTER)
           {
             var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
-            var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
+            var c = extjsf.u.columnIByDataInd(g, 'goodCode');
             var s = g.getSelectionModel().getSelection();
             var p = g.getPlugin('cellediting')
             if(s) if(s.length) s = s[0]; else s = null;
@@ -551,7 +551,7 @@ ${v.checkModelRequestedWithRedirect}
 
           if(e.getKey() == e.TAB)
           {
-            var cs = extjsf.support.gridColumns(g);
+            var cs = extjsf.u.gridColumns(g);
             for(var i = x.colIdx + 1;(i &lt; cs.length);i++)
               if(cs[i].retradeHasEditor) { c = [ x.rowIdx, i ]; break; }
 
@@ -985,7 +985,7 @@ ${v.checkModelRequestedWithRedirect}
     s.remove(g.getSelectionModel().getSelection())
 
     //~: assign new row numbers
-    extjsf.support.refreshGridIndices(g)
+    extjsf.u.reindexGrid(g)
 
     //~: update the groups store
     extjsf.bind("${z:vid(v, 'groups')}", '${extDom}').retradeUpdateStore()
@@ -1010,7 +1010,7 @@ ${v.checkModelRequestedWithRedirect}
     //~: add | insert the model
     if(ZeT.isu(i)) s.add(m); else s.insert(i+1, m)
     var row = s.indexOf(m);
-    var col = extjsf.support.columnIndexByDataIndex(g, 'goodCode');
+    var col = extjsf.u.columnIByDataInd(g, 'goodCode');
 
     p.completeEdit()
     ZeT.timeout(200, function() {

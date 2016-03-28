@@ -191,7 +191,7 @@
     function(grid, td, cellIndex, record, tr, rowIndex, e)
   {
     //?: {this is action column}
-    var column = extjsf.support.gridColumns(grid, true)[cellIndex];
+    var column = extjsf.u.gridColumns(grid, true)[cellIndex];
     if('actioncolumn' === column.xtype) return
 
     //?: {react on repeated selection}

@@ -239,7 +239,7 @@ ${v.forceSecureModelEntity('view')}
       columns: ZeT.delay(function()
       {
         var cols = ZeT.defined('retrade.columns.InvoiceSellGood')();
-        extjsf.support.columnByDataIndex(cols, 'priceListName').hidden = true;
+        extjsf.u.columnByDataInd(cols, 'priceListName').hidden = true;
         return cols;
       })
     </f:facet>
@@ -298,11 +298,11 @@ ${v.forceSecureModelEntity('view')}
       if(btn == s)
       {
         f.toggle(false, true)
-        extjsf.support.columnByDataIndex(r, 'calcDate').hide()
+        extjsf.u.columnByDataInd(r, 'calcDate').hide()
         r.setTitle('Товары, фактически списанные со склада')
 
         r.getStore().clearFilter(true)
-        extjsf.support.refreshGridIndices(r)
+        extjsf.u.reindexGrid(r)
         r.getStore().addFilter(function(m)
         {
           return !m.get('calcDate');
@@ -313,11 +313,11 @@ ${v.forceSecureModelEntity('view')}
       if(btn == f)
       {
         s.toggle(false, true)
-        extjsf.support.columnByDataIndex(r, 'calcDate').show()
+        extjsf.u.columnByDataInd(r, 'calcDate').show()
         r.setTitle('Промежуточные товары, возникшие при производстве')
 
         r.getStore().clearFilter(true)
-        extjsf.support.refreshGridIndices(r)
+        extjsf.u.reindexGrid(r)
         r.getStore().addFilter(function(m)
         {
           return !!m.get('calcDate');
@@ -327,7 +327,7 @@ ${v.forceSecureModelEntity('view')}
       //?: {not loaded yet} do load
       if(!r.getStore().getCount()) r.getStore().load({callback: function()
       {
-        extjsf.support.refreshGridIndices(r)
+        extjsf.u.reindexGrid(r)
       }})
     }
   }

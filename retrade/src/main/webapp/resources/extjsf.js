@@ -3110,100 +3110,152 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 })
 
 
-// +----: Components to Refactor :------------------------------->
+// +----: Utilities :-------------------------------------------+
 
-extjsf.Bind.extend(
+extjsf.u = ZeT.define('extjsf.utilities',
 {
-	toggleReadWrite  : function(isread)
+	/**
+	 * Makes fields marked with extjsfReadWrite
+	 * option (equal true) to be read-only or not.
+	 *
+	 * Takes leading arguments of extjsf.co() is a
+	 * root container of the fields.
+	 *
+	 * The last argument is boolean telling whether
+	 * to turn the fields to read-only (when true)
+	 * of editable states. Note that when not a field
+	 * is marked, it is set disabled instead.
+	 *
+	 * Returns the affected components.
+	 */
+	toggleReadWrite  : function(/* ... is read-only */)
 	{
-		ZeT.assertn(this.co())
-		var collect = []; ZeT.each(this.co().query(), function(f)
+		var co = extjsf.co.apply(extjsf, arguments)
+		var ro = !!arguments[arguments.length - 1]
+
+		var fs = []; ZeT.each(co.query(), function(f)
 		{
 			if(f.extjsfReadWrite !== true) return
 
 			//?: {read-write}
 			if(ZeT.isf(f.setReadOnly))
-				f.setReadOnly(isread)
+				f.setReadOnly(ro)
 			else if(ZeT.isf(f.setDisabled))
-				f.setDisabled(isread)
+				f.setDisabled(ro)
 			else
 				return
 
-			collect.push(f)
+			fs.push(f)
 		})
 
-		return collect
+		return fs
 	},
 
-	toggleBlock      : function(block)
+	/**
+	 * Components that are marked with extjsfBlock
+	 * string option are displayed by this call.
+	 * All components that are marked with else
+	 * block code are hidden.
+	 *
+	 * Takes leading arguments of extjsf.co() is a
+	 * root container of the components. The last
+	 * argument names the block.
+	 */
+	toggleBlock      : function(/* ... block */)
 	{
-		ZeT.asserts(block)
+		var co = extjsf.co.apply(extjsf, arguments)
+		var bl = ZeT.asserts(arguments[arguments.length - 1])
 
-		//~: access the component' children
-		var c = this.co()
-		if(c) c.items.each(function(c)
+		var bs = []; ZeT.each(co.query(), function(c)
 		{
 			if(!ZeT.iss(c.extjsfBlock)) return
-			c.setVisible(c.extjsfBlock == block)
+			c.setVisible(c.extjsfBlock == bl)
+			bs.push(c)
 		})
 
-		//?: {has no component yet}
-		if(!c) ZeT.each(this._items, function(i)
-		{
-			ZeT.assert(i.extjsfBind === true)
-			if(!ZeT.iss(i._props.extjsfBlock)) return
-			i._props.hidden = (i._props.extjsfBlock != block)
-		})
-	}
-})
-
-
-extjsf.support = ZeT.singleInstance('extjsf.support',
-{
-	gridColumns            : function(grid, visible)
-	{
-		if(grid.extjsfBind === true) grid = grid.co();
-		return (visible)?(grid.headerCt.getVisibleGridColumns()):
-		  (grid.headerCt.getGridColumns());
+		return bs
 	},
 
-	columnIndexByDataIndex : function(grid, dataIndex)
+	/**
+	 * Returns Columns of a Grid. Optional last argument
+	 * tells (when true) whether to return only visible
+	 * (by default is false, i.e., returns all).
+	 *
+	 * Leading arguments are of extjsf.co(), the grid.
+	 */
+	gridColumns      : function(/* ... visible only */)
 	{
-		var columns = ZeT.isa(grid)?(grid):(this.gridColumns(grid));
+		var grid = extjsf.co.apply(extjsf, arguments)
+		var viso = arguments[arguments.length - 1]
+		if(!ZeT.isb(viso)) viso = false
 
-		for(var i = 0;(i < columns.length);i++)
-			if(columns[i].dataIndex === dataIndex)
-				return i;
-
-		return undefined;
+		return (viso)?(grid.headerCt.getVisibleGridColumns()):
+		  (grid.headerCt.getGridColumns())
 	},
 
-	columnByDataIndex      : function(grid, dataIndex)
+	/**
+	 * Returns index of a grid column by it's daatIndex
+	 * configuration property.
+	 *
+	 * Leading arguments are of extjsf.co(), the grid.
+	 */
+	columnIByDataInd : function(/* ... dataIndex */)
 	{
-		var columns = ZeT.isa(grid)?(grid):(this.gridColumns(grid));
+		var grid = extjsf.co.apply(extjsf, arguments)
+		var dati = arguments[arguments.length - 1]
+		var cols = ZeT.isa(grid)?(grid):
+		  extjsf.u.gridColumns(grid)
 
-		for(var i = 0;(i < columns.length);i++)
-			if(columns[i].dataIndex === dataIndex)
-				return columns[i];
-
-		return undefined;
+		for(var i = 0;(i < cols.length);i++)
+			if(cols[i].dataIndex === dati)
+				return i
 	},
 
-	columnByType           : function(grid, xtype)
+	/**
+	 * Same as columnIByDataInd(), but returns
+	 * a Column component.
+	 */
+	columnByDataInd  : function(/* ... dataIndex */)
 	{
-		var columns = ZeT.isa(grid)?(grid):(this.gridColumns(grid));
+		var grid = extjsf.co.apply(extjsf, arguments)
+		var dati = arguments[arguments.length - 1]
+		var cols = ZeT.isa(grid)?(grid):
+		  extjsf.u.gridColumns(grid)
 
-		for(var i = 0;(i < columns.length);i++)
-			if(columns[i].xtype === xtype)
-				return columns[i];
-
-		return undefined
+		for(var i = 0;(i < cols.length);i++)
+			if(cols[i].dataIndex === dati)
+				return cols[i]
 	},
 
-	refreshGridIndices     : function(grid)
+	/**
+	 * Same as columnByDataInd(), but searches by
+	 * 'xtype' configuration property of the columns.
+	 * Returns the first column matching.
+	 */
+	columnByType     : function(/* ... xtype */)
 	{
+		var grid = extjsf.co.apply(extjsf, arguments)
+		var type = arguments[arguments.length - 1]
+		var cols = ZeT.isa(grid)?(grid):
+		  extjsf.u.gridColumns(grid)
+
+		for(var i = 0;(i < cols.length);i++)
+			if(cols[i].xtype === type)
+				return cols[i]
+	},
+
+	/**
+	 * Invalidates 'index' property of a grid row model
+	 * (record) that stores the internal index of the row.
+	 * Used for grids that display row index column.
+	 */
+	reindexGrid     : function(/* grid | store | array */)
+	{
+		var grid = extjsf.co.apply(extjsf, arguments)
+		if(!grid) grid = arguments[0]
+
 		if(ZeT.isa(grid))
-			return Ext.Array.forEach(grid, function(i) {i.index = null})
+			return ZeT.each(grid, function(i) {i.index = null})
 
 		var store = (grid.isStore === true)?(grid):(grid.getStore())
 		store.each(function(i) {i.index = null})
@@ -3211,55 +3263,58 @@ extjsf.support = ZeT.singleInstance('extjsf.support',
 	},
 
 	/**
-	 * Moves currently selected items of the grid up or
+	 * Moves currently selected item of the grid up or
 	 * down with optional callback notifier. The delay
 	 * timeout is optional and 1000 ms by the default.
 	 *
 	 * Returns false when no updates took place.
 	 */
-	moveGridSelected       : function(up, grid, delay_fn, fn)
+	moveGridSel     : function(up, grid, d_f, fn)
 	{
-		var b = extjsf.bind(grid), g = extjsf.co(grid);
+		var  b = extjsf.bind(grid), g = extjsf.co(grid)
+		var st = g.getStore()
 
 		//~: selected items
-		var s = g.getSelectionModel().getSelection();
-		if(!s || !s.length) return false
+		var se = g.getSelectionModel().getSelection()
+		if(!se || !se.length) return false
 
 		//?: {can't move up}
-		if(up && (g.getStore().indexOf(s[0]) == 0))
+
+		if(up && (st.indexOf(se[0]) == 0))
 			return false
 
 		//?: {can't move down}
-		if(!up && (g.getStore().indexOf(s[s.length - 1]) + 1 == g.getStore().getCount()))
+		if(!up && (st.getCount() ==
+			          st.indexOf(se[se.length - 1]) + 1))
 			return false
 
 		//~: deselect
 		g.getSelectionModel().deselectAll()
 
 		//~: move the selected up-down
-		Ext.Array.forEach(s, function(x)
+		ZeT.each(se, function(x)
 		{
-			var i = g.getStore().indexOf(x);
+			var i = st.indexOf(x)
 
 			if( up) ZeT.assert(i     > 0)
-			if(!up) ZeT.assert(i + 1 < g.getStore().getCount())
+			if(!up) ZeT.assert(i + 1 < st.getCount())
 
-			g.getStore().removeAt(i)
-			if( up) g.getStore().insert(i - 1, [x])
-			if(!up) g.getStore().insert(i + 1, [x])
+			st.removeAt(i)
+			if( up) st.insert(i - 1, [x])
+			if(!up) st.insert(i + 1, [x])
 		})
 
 		//~: select items back
-		g.getSelectionModel().select(s)
+		g.getSelectionModel().select(se)
 
 		//~: update delay
-		var dl = ZeT.isn(delay_fn)?(delay_fn):(1000);
-		    fn = ZeT.isf(delay_fn)?(delay_fn):ZeT.isf(fn)?(fn):(null);
-		if(!fn) return; //?: {has no callback}
+		var dl = ZeT.isn(d_f)?(d_f):(1000)
+		fn = ZeT.isf(d_f)?(d_f):ZeT.isf(fn)?(fn):(null)
+		if(!fn) return //?: {has no callback}
 
 		//~: update on the server with the delay
-		if(!b.updating) b.updating = 1;
-		var ui = ++b.updating;
+		if(!b.updating) b.updating = 1
+		var ui = ++b.updating
 
 		ZeT.timeout(dl, function()
 		{
@@ -3268,7 +3323,11 @@ extjsf.support = ZeT.singleInstance('extjsf.support',
 		})
 	},
 
-	collapseTreeToSel      : function()
+	/**
+	 * In the given tree (see extjsf.co()) expands
+	 * only paths to the currently selected nodes.
+	 */
+	showTreeToSel   : function(/* tree */)
 	{
 		var tree = extjsf.co.apply(extjsf, arguments)
 		var sel  = tree.getSelectionModel().getSelection()

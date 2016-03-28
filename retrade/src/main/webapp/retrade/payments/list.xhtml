@@ -126,7 +126,7 @@ ${v.checkModelRequestedWithRedirect}
     //<: replace grid columns
 
     var grid = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
-    var cols = extjsf.support.gridColumns(grid);
+    var cols = extjsf.u.gridColumns(grid);
     var news = ZeT.defined('retrade.columns.PaymentView' + ZeTS.first('#{e.key}').toUpperCase() + '#{e.key}'.substring(1))();
 
     for(var b = 0;(b < cols.length);b++)
@@ -303,14 +303,14 @@ ${v.checkModelRequestedWithRedirect}
   extjsf.bind("${z:vid(v, 'search')}", '${extDom}').submitSearchForm = function()
   {
     var grid = extjsf.co("${z:vid(v, 'grid')}", '${extDom}');
-    var cols = extjsf.support.gridColumns(grid);
+    var cols = extjsf.u.gridColumns(grid);
 
     //?: display income column
-    var i = extjsf.support.columnIndexByDataIndex(grid, 'income');
+    var i = extjsf.u.columnIByDataInd(grid, 'income');
     if(!ZeT.isu(i)) cols[i].setVisible(extjsf.co("${z:vid(v, 'with-income')}", '${extDom}').getValue())
 
     //?: display expense column
-    i = extjsf.support.columnIndexByDataIndex(grid, 'expense');
+    i = extjsf.u.columnIByDataInd(grid, 'expense');
     if(!ZeT.isu(i)) cols[i].setVisible(extjsf.co("${z:vid(v, 'with-expense')}", '${extDom}').getValue())
 
 

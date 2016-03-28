@@ -380,7 +380,7 @@ ${v.checkModelRequestedWithRedirect}
 
           columns: ZeT.defined('retrade.columns.CatItemView'),
           sortableColumns: false, border: false, region: 'center', hideHeaders: true,
-          selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'MULTI', allowDeselect: true })
+          selModel: extjsf.delayCreate('Ext.selection.RowModel', { mode: 'SINGLE', allowDeselect: true })
 
         </f:facet>
       </x:data-grid>
@@ -434,7 +434,7 @@ ${v.checkModelRequestedWithRedirect}
       //~: move price-lists up
       extjsf.handler("${z:vid(v, 'lists-up')}", '${extDom}', function()
       {
-        extjsf.support.moveGridSelected(true,
+        extjsf.u.moveGridSel(true,
           extjsf.co("${z:vid(v, 'plgrid')}", '${extDom}'),
           function(g)
         {
@@ -453,7 +453,7 @@ ${v.checkModelRequestedWithRedirect}
       //~: move price-lists down
       extjsf.handler("${z:vid(v, 'lists-down')}", '${extDom}', function()
       {
-        extjsf.support.moveGridSelected(false,
+        extjsf.u.moveGridSel(false,
           extjsf.co("${z:vid(v, 'plgrid')}", '${extDom}'),
           function(g)
         {

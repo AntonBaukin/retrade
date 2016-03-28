@@ -192,7 +192,7 @@
     function doResizeColumn()
     {
       var tree = extjsf.co("${z:vid(v, 'tree')}", '${extDom}');
-      var col  = extjsf.support.columnByType(tree, 'treecolumn');
+      var col  = extjsf.u.columnByType(tree, 'treecolumn');
       col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
     }
 
@@ -300,7 +300,7 @@
   //~: expand the tree to the selection
   extjsf.handler("${z:vid(v, 'collapse-tree')}", '${extDom}', function()
   {
-    extjsf.support.collapseTreeToSel("${z:vid(v, 'tree')}", '${extDom}')
+    extjsf.u.showTreeToSel("${z:vid(v, 'tree')}", '${extDom}')
   })
 
   //]]>
@@ -522,7 +522,7 @@
     }
 
     //~: resize the column
-    var col  = extjsf.support.columnByType(tree, 'treecolumn');
+    var col  = extjsf.u.columnByType(tree, 'treecolumn');
     col.setWidth(tree.getView().getMaxContentWidth(col) + 4)
   }
 
@@ -600,7 +600,7 @@
       var sel = tree.getSelectionModel().getLastSelected();
 
       //?: {is not a tree special column}
-      var cs = extjsf.support.gridColumns(tree, false)
+      var cs = extjsf.u.gridColumns(tree, false)
       if(cs[ci].xtype != 'treecolumn')
       {
         //?: {table cell second click to start editing}

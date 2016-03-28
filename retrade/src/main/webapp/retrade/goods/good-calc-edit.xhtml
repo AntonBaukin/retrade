@@ -284,7 +284,7 @@ ${v.checkModelRequested}
   extjsf.handler("${z:vid(v, 'add-part')}", '${extDom}', function()
   {
     var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}'); if(!g) return
-    var c = extjsf.support.columnIndexByDataIndex(g, 'goodCode')
+    var c = extjsf.u.columnIByDataInd(g, 'goodCode')
 
     var i, x = g.getSelectionModel().getSelection();
     if(x && x.length) x = x[0]; else x = null;
@@ -372,7 +372,7 @@ ${v.checkModelRequested}
 
       if(e.getKey() == e.TAB)
       {
-        var cs = extjsf.support.gridColumns(g);
+        var cs = extjsf.u.gridColumns(g);
         for(var i = x.colIdx + 1;(i < cs.length);i++)
           if(cs[i].retradeHasEditor) { c = [ x.rowIdx, i ]; break; }
 

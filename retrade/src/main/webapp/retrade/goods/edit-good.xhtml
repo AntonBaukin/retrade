@@ -945,7 +945,7 @@ ${v.checkModelRequestedWithRedirect}
     {
       //~: toggle the form fields
       form.isReadMode = isReadMode = isread
-      form.toggleReadWrite(isread)
+      extjsf.u.toggleReadWrite(form, isread)
 
       //~: toggle cancel-edit
       cancel.visible(!isread)
@@ -995,12 +995,12 @@ ${v.checkModelRequestedWithRedirect}
         bcstore.co().add({ value: '' })
 
       //~: show-hide vendor codes action columns
-      extjsf.support.columnByDataIndex(vcodes, 'doAdd').setVisible(!isread)
-      extjsf.support.columnByDataIndex(vcodes, 'doDelete').setVisible(!isread)
+      extjsf.u.columnByDataInd(vcodes, 'doAdd').setVisible(!isread)
+      extjsf.u.columnByDataInd(vcodes, 'doDelete').setVisible(!isread)
 
       //~: show-hide barcodes action columns
-      extjsf.support.columnByDataIndex(bcodes, 'doAdd').setVisible(!isread)
-      extjsf.support.columnByDataIndex(bcodes, 'doDelete').setVisible(!isread)
+      extjsf.u.columnByDataInd(bcodes, 'doAdd').setVisible(!isread)
+      extjsf.u.columnByDataInd(bcodes, 'doDelete').setVisible(!isread)
     }
 
     //~: default read-only for existing

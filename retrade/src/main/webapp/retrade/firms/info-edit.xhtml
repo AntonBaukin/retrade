@@ -73,13 +73,11 @@ ${v.forceSecure()}
       <!-- [show main content] -->
       <x:component coid = "${z:vid(v, 'show-main')}">
         <f:facet name = "extjs-props">
-          xtype: 'button', text: 'Основные',
-          margin: extjsf.pts(0, 4, 0, 0),
-          enableToggle: true, extjsfBlock: 'main',
-          handler : function()
+          xtype: 'button', text: 'Основные', margin: extjsf.pts(0, 4, 0, 0),
+          enableToggle: true, extjsfBlock: 'main', handler : function()
           {
             extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
-            retradeShowBlock('main')
+              retradeShowBlock('main')
           }
         </f:facet>
       </x:component>
@@ -87,13 +85,11 @@ ${v.forceSecure()}
       <!-- [show contacts] -->
       <x:component coid = "${z:vid(v, 'show-contacts')}">
         <f:facet name = "extjs-props">
-          xtype: 'button', text: 'Контакты',
-          margin: extjsf.pts(0, 4, 0, 0),
-          enableToggle: true, extjsfBlock: 'contacts',
-          handler : function()
+          xtype: 'button', text: 'Контакты', margin: extjsf.pts(0, 4, 0, 0),
+          enableToggle: true, extjsfBlock: 'contacts', handler : function()
           {
             extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
-            retradeShowBlock('contacts')
+              retradeShowBlock('contacts')
           }
         </f:facet>
       </x:component>
@@ -101,13 +97,11 @@ ${v.forceSecure()}
       <!-- [show addresses] -->
       <x:component coid = "${z:vid(v, 'show-addresses')}">
         <f:facet name = "extjs-props">
-          xtype: 'button', text: 'Адреса',
-          margin: extjsf.pts(0, 0, 0, 0),
-          enableToggle: true, extjsfBlock: 'addresses',
-          handler : function()
+          xtype: 'button', text: 'Адреса', margin: extjsf.pts(0, 0, 0, 0),
+          enableToggle: true, extjsfBlock: 'addresses', handler : function()
           {
             extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
-            retradeShowBlock('addresses')
+              retradeShowBlock('addresses')
           }
         </f:facet>
       </x:component>
@@ -552,7 +546,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
     })
 
     //~: toggle the inner components
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').toggleBlock(block)
+    extjsf.u.toggleBlock("${z:vid(v, 'edit-form')}", '${extDom}', block)
   }
 
 
@@ -561,8 +555,7 @@ extjsf.bind("${z:vid(v, 'code')}", '${extDom}').on('change', function(f, v)
     retradeToggleReadWrite = function(isread)
   {
     //~: toggle the form fields
-    extjsf.bind("${z:vid(v, 'edit-form')}", '${extDom}').
-      toggleReadWrite(isread)
+    extjsf.u.toggleReadWrite("${z:vid(v, 'edit-form')}", '${extDom}', isread)
 
     //~: toggle cancel-edit
     extjsf.bind("${z:vid(v, 'cancel-edit')}", '${extDom}').visible(!isread)

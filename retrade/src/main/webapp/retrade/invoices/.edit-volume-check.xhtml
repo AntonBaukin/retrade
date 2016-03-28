@@ -366,7 +366,7 @@ ${v.forceSecureEdit()}
   extjsf.handler("${z:vid(v, 'add-good')}", '${extDom}', function()
   {
     var g = extjsf.co("${z:vid(v, 'grid')}", '${extDom}')
-    var c = extjsf.support.columnByDataIndex(g, 'goodCode');
+    var c = extjsf.u.columnByDataInd(g, 'goodCode');
 
     var i, x = g.getSelectionModel().getSelection();
     if(x && x.length) x = x[0]; else x = null;
@@ -375,7 +375,7 @@ ${v.forceSecureEdit()}
     var m = Ext.create('retrade.model.InvoiceGood');
     if(ZeT.isu(i)) g.getStore().add(m)
     else g.getStore().insert(i + 1, m)
-    extjsf.support.refreshGridIndices(g)
+    extjsf.u.reindexGrid(g)
 
     ZeT.timeout(200, function()
     {
@@ -405,7 +405,7 @@ ${v.forceSecureEdit()}
     if(!ZeT.isu(m)) m = g.getStore().getAt(m);
 
     g.getStore().remove(s)
-    extjsf.support.refreshGridIndices(g)
+    extjsf.u.reindexGrid(g)
     if(!ZeT.isx(m)) g.getSelectionModel().select(m)
   })
 
@@ -470,7 +470,7 @@ ${v.forceSecureEdit()}
 
       if(e.getKey() == e.TAB)
       {
-        var cs = extjsf.support.gridColumns(g);
+        var cs = extjsf.u.gridColumns(g);
         for(var i = x.colIdx + 1;(i < cs.length);i++)
           if(cs[i].retradeHasEditor) { c = [ x.rowIdx, i ]; break; }
 
@@ -589,7 +589,7 @@ ${v.forceSecureEdit()}
           if(e.getKey() == e.ENTER)
             extjsf.co("${z:vid(v, 'grid')}", '${extDom}').
               getPlugin('cellediting').startEditByPosition({ row: rowIdx,
-                column: extjsf.support.columnByDataIndex(extjsf.co("${z:vid(v, 'grid')}", '${extDom}'), 'goodCode')})
+                column: extjsf.u.columnByDataInd(extjsf.co("${z:vid(v, 'grid')}", '${extDom}'), 'goodCode')})
         }
       }
 
