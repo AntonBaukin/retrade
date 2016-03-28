@@ -1653,6 +1653,9 @@ extjsf.RootBind = ZeT.defineClass(
 	 */
 	domainOwner      : function(isowner)
 	{
+		if(!arguments.length)
+			return (this._domain_owner !== false)
+
 		ZeT.assert(ZeT.isb(isowner))
 		ZeT.assert(ZeT.iss(this.domain))
 		this._domain_owner = isowner
@@ -1871,7 +1874,7 @@ extjsf.ActionBind = ZeT.defineClass(
 		this.$form_node().select('input').each(function(item)
 		{
 			var n = item.getAttribute('name'); if(!n) return
-			var v = item.getAttribute('value') || '';
+			var v = item.getAttribute('value') || ''
 
 			//?: {this field is a submit button} skip it
 			if(item.getAttribute('type') == 'submit')
@@ -2087,14 +2090,14 @@ extjsf.FormBind = ZeT.defineClass(
 	 *
 	 * The options may contain these fields:
 	 *
-	 *  · success   alternative callback on form
-	 *    submit request. See callback();
+	 * · success   alternative callback on form
+	 *   submit request. See callback();
 	 *
-	 *  · failure   alternative callback on form
-	 *    submit failure. See failure();
+	 * · failure   alternative callback on form
+	 *   submit failure. See failure();
 	 *
-	 *  · params    additional parameters of the
-	 *    form post request.
+	 * · params    additional parameters of the
+	 *   form post request.
 	 *
 	 * Returns false when form is invalid, and
 	 * no post request was issued.
@@ -2620,10 +2623,13 @@ extjsf.LoadActionBind = ZeT.defineClass(
 			{ method = 'GET'; delete params.method }
 
 		//!: load the window
-		new extjsf.WinmainLoader(this.domain).
-		  form(this.$form_node()).button(true).
-		  addParams(params).setMethod(method).
-		  load()
+		new extjsf.LoadCo({
+
+		  name: 'window', domain: this.domain,
+		  form: this.$form_node(), button: true,
+		  params: params, method: method
+
+		}).load()
 	}
 })
 
@@ -2876,6 +2882,233 @@ extjsf.ClearCo = ZeT.defineClass('extjsf.ClearCo',
 	}
 })
 
+// +----: Window Loader :---------------------------------------+
+
+/**
+ * Strategy to load content of a Component (a Window,
+ * Panel, or else) from a call to JSF. Implementation
+ * wraps Ext.ComponentLoader strategy.
+ *
+ * The options are:
+ *
+ * ·   ...   see extjsf.bind() or co();
+ *
+ * · domain  required name of ExtJSF domain;
+ *
+ * · url     address to send the request, not required
+ *           when form node is specified;
+ *
+ * · form    string with ID of DOM form node, also used
+ *           to take the request address. All fields
+ *           nested in the form are sent;
+ *
+ * · params  additional parameters to send;
+ *
+ * · method  default method of HTTP request. Defaults
+ *           to POST when form is set, of GET otherwise;
+ *
+ * · button  support for JSF command button when issuing
+ *           request. If value is true, takes eah button
+ *           (assumed only one). Else, must be a string
+ *           with the name of the button;
+ *
+ * · clear   tells to clean the window before loading,
+ *           by default is true;
+ *
+ * · to      timeout of the request in milliseconds.
+ *           Defaults to 30 minutes;
+ *
+ * · ajax    ajax options supported by Ext.ComponentLoader.
+ */
+extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
+{
+	init             : function(opts)
+	{
+		this.opts = ZeT.extend({}, opts)
+	},
+
+	/**
+	 * Component to load to. Also supports the default
+	 * window of a Domain named 'window'.
+	 */
+	co               : function()
+	{
+		//~: lookup the bind
+		var b = extjsf.bind(this.opts)
+		if(b) return b.co()
+
+		//~: lookup the component
+		var co = extjsf.co(this.opts)
+		if(co) return co
+
+		//~: take window in the domain
+		return ZeT.assertn(
+		  extjsf.bind('window', this.opts.domain),
+		  'Can not find window in the domain: [',
+		  this.opts.domain, ']!')
+	},
+
+	bind             : function()
+	{
+		var b = extjsf.bind(this.co())
+		return (b)?(b):extjsf.bind(this.opts)
+	},
+
+	load             : function()
+	{
+		var loader = this.$create()
+
+		//~: clear before loading
+		this.$clear()
+
+		//~: prepare before the loading
+		this.$prepare()
+
+		//!: reload content
+		Ext.create('Ext.ComponentLoader', loader)
+	},
+
+	$create          : function()
+	{
+		return {
+		  target: this.co(), url: this.$url(),
+		  params: this.$request_params(),
+		  ajaxOptions: this.$ajax_opts(),
+		  autoLoad: true, scripts: true
+		}
+	},
+
+	$form            : function()
+	{
+		return !ZeT.ises(this.opts.form)?
+		  Ext.get(this.opts.form):(this.opts.form)
+	},
+
+	$url             : function()
+	{
+		//?: {has option}
+		if(!ZeT.ises(this.opts.url))
+			return this.opts.url
+
+		//~: require a form
+		var form = ZeT.assertn(this.$form(),
+		  'Window Loader has neither URL option, nor form!')
+
+		//~: take action attribute
+		return ZeT.asserts(form.getAttribute('action'),
+		  'Form [', form, '] has no action attribute!')
+	},
+
+	$method          : function()
+	{
+		return !ZeT.ises(this.opts.method)?(this.opts.method):
+	     this.$form()?('POST'):('GET')
+	},
+
+	$clear           : function()
+	{
+		//~: clear the component
+		if(this.$is_clear_co())
+			this.$clear_co()
+
+		//~: clear the domain
+		if(this.$is_clear_domain())
+			this.$clear_domain()
+	},
+
+	$is_clear_co     : function()
+	{
+		return (this.opts.clear !== false)
+	},
+
+	$clear_co        : function()
+	{
+		new extjsf.ClearCo(this.co(),
+		  { notListeners: true }).run()
+	},
+
+	$is_clear_domain : function()
+	{
+		var b = this.bind()
+
+		return this.$is_clear_co() && !!b &&
+		  !ZeT.ises(b.domain) && !ZeT.ises(b.name) &&
+		  ZeT.isf(b.domainOwner) && b.domainOwner()
+	},
+
+	$clear_domain    : function()
+	{
+		var b = this.bind(), d = b.domain, n = b.name
+
+		//~: destroy the domain
+		extjsf.domain(d).destroy({ except: [ b ]})
+
+		//~: put the component back
+		extjsf.domain(d).bind(n, b)
+	},
+
+	$prepare         : function()
+	{
+		var co = this.co()
+
+		//~: set temporary title
+		if(ZeT.isf(co.setTitle) && !ZeT.ises(co.title))
+			co.setTitle('Выполняется запрос...')
+	},
+
+	$request_params  : function()
+	{
+		//~: copy parameters from the options
+		var ps = ZeT.extend({}, this.opts.params)
+
+		//~: add form parameters
+		if(this.$form())
+			this.$form_params(ps)
+
+		//~: resolve delayed parameters
+		ZeT.undelay(ps)
+
+		//~: domain parameter
+		var b = this.bind()
+		if(!ZeT.iss(ps.domain) && b.domain)
+			ps.domain = b.domain
+
+		return ps
+	},
+
+	$form_params     : function(params)
+	{
+		var button = this.opts.button
+
+		this.$form().select('input').each(function(item)
+		{
+			var n = item.getAttribute('name'); if(!n) return
+			var v = item.getAttribute('value') || ''
+
+			//?: {this field is a submit button} skip it
+			if(item.getAttribute('type') == 'submit')
+				if((button !== true) && (button !== n))
+					return
+
+			params[n] = v
+		})
+	},
+
+	$ajax_opts       : function()
+	{
+		var ao = ZeT.extend({}, this.opts.ajax)
+
+		//=: HTTP method
+		ao.method = this.$method()
+
+		//=: timeout
+		if(ZeT.isn(this.opts.to))
+			ao.timeout = opts.to
+
+		return ao
+	}
+})
+
 
 // +----: Components to Refactor :------------------------------->
 
@@ -2921,136 +3154,6 @@ extjsf.Bind.extend(
 			if(!ZeT.iss(i._props.extjsfBlock)) return
 			i._props.hidden = (i._props.extjsfBlock != block)
 		})
-	}
-})
-
-
-extjsf.WinmainLoader = ZeT.defineClass('extjsf.WinmainLoader',
-{
-	init             : function(domain)
-	{
-		if(!ZeT.iss(domain)) throw 'Can not create ' +
-		  'window loader as no ExtJSF domain is defined!';
-
-		this._domain = domain;
-		this._params = {};
-	},
-
-	url              : function(url)
-	{
-		if(!ZeT.iss(url)) return this;
-		this._url = url;
-		return this;
-	},
-
-	params           : function(params)
-	{
-		if(!params) return this._params;
-		this._params = params;
-		return this;
-	},
-
-	addParams        : function(params)
-	{
-		ZeT.extend(this._params, params)
-		return this;
-	},
-
-	form             : function(form)
-	{
-		if(!form) return this._form;
-		this._form = form;
-		return this;
-	},
-
-	button           : function(button)
-	{
-		if(!button) return this._button;
-		this._button = button;
-		return this;
-	},
-
-	setMethod        : function(m)
-	{
-		this._method = m;
-		return this;
-	},
-
-	load             : function()
-	{
-		//~: find the main window
-		var window = extjsf.bind('window', this._domain);
-		if(!window) throw 'Can not find window in ' +
-		  'the domain: [' + this._domain + ']!';
-
-		//~: get the support form
-		var supform = this._form && Ext.get(this._form);
-
-		//?: {has no specific url} take support form action
-		if(!this._url && supform)
-			this._url = supform.getAttribute('action');
-
-		//?: {has no action url}
-		if(!this._url || !this._url.length)
-			throw 'Can not reload window with undefined URL!';
-
-		//~: collect the parameters
-		var prms = ZeT.extend({}, this._params);
-		if(supform) this._form_params(supform, prms, this._button)
-
-		//~: resolve delayed parameters
-		ZeT.undelay(prms)
-
-		//~: cleanup the domain
-		if(extjsf.domain(this._domain))
-			extjsf.domain(this._domain).destroy({ except: [ window ]})
-
-		//~: create the domain with this window
-		extjsf.domain(this._domain).bind('window', window)
-
-		//~: clear the component
-		this._clear(window)
-
-		//~: set temporary title
-		window.co().setTitle('Выполняется запрос...')
-
-		var adr = this._url;
-		var mth = ZeT.iss(this._method)?(this._method):
-		  (supform)?('POST'):('GET');
-
-		//~: bind the domain
-		prms.domain = this._domain;
-
-		//!: reload content
-		Ext.create('Ext.ComponentLoader', {
-		  target: window.co(), url: adr,
-		  ajaxOptions: { method: mth, timeout: 30 * 60 * 1000 }, //<-- 30 min
-		  params: prms, autoLoad: true, scripts: true
-		})
-	},
-
-	_clear           : function(window)
-	{
-		new extjsf.ClearCo(window, { notListeners: true }).run()
-	},
-
-	_form_params     : function(form, prms, button)
-	{
-		var inputs = form.select('input');
-
-		if(inputs) for(var i = 0;(i < inputs.getCount());i++)
-		{
-			var item  = inputs.item(i);            if(!item) continue;
-			var name  = item.getAttribute('name'); if(!name) continue;
-			var value = item.getAttribute('value') || '';
-
-			//?: {this field is a submit button} skip it
-			if(item.getAttribute('type') == 'submit')
-				if(!(button === name) && !(button === true))
-					continue;
-
-			prms[name] = value;
-		}
 	}
 })
 

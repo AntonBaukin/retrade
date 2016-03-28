@@ -108,9 +108,10 @@
 
       <f:facet name = "extjs-props">
 
-        listeners : { change: { delay: 1000, fn: function() {
+        listeners : { change: ZeT.timeouted(1000, function(){
           extjsf.handler("${z:vid(e, 'date')}", '${extDom}')()
-        }}}
+        })}
+
       </f:facet>
 
       <f:facet name = "label-props">
@@ -127,9 +128,10 @@
 
       <f:facet name = "extjs-props">
 
-        listeners : { change: { delay: 1000, fn: function() {
+        listeners : { change: ZeT.timeouted(1000, function(){
           extjsf.handler("${z:vid(e, 'date')}", '${extDom}')()
-        }}}
+        })}
+
       </f:facet>
 
       <f:facet name = "label-props">
