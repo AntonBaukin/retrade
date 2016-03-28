@@ -44,7 +44,7 @@ ${"<!DOCTYPE html>"}
   <script type = "text/javascript">
   //<![CDATA[
 
-    $('#nojs-content').hide()
+    document.getElementById('nojs-content').style.display = 'none'
 
     ReTradeLogin.domain = '<%=SU.jss(request.getAttribute("retrade-domain"))%>'
     ReTradeLogin.mobile = '<%=SU.jss(request.getAttribute("retrade-mobile"))%>'
