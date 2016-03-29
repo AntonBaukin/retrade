@@ -134,6 +134,8 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		//~: collect the binds
 		this.binds.reverse(function(b){ binds.push(b) })
 
+		//ZeT.log('-@[', this.name, ']')
+
 		//ZeT.log('-@[', this.name,
 		//  ']: ', ZeT.map(binds, 'name'))
 
