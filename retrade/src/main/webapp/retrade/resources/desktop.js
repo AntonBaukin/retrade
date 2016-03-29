@@ -199,22 +199,10 @@ ReTrade.RepeatedTask = ZeT.defineClass('ReTrade.RepeatedTask', {
 
 // +----: Desktop :----------------------------------------------+
 
-ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
+ReTrade.Desktop = extjsf.Desktop
 
-	/**
-	 * The system panels (Binds) of the desktop created
-	 * on the page load. Available for read only.
-	 */
-	panels            : {},
-
-	init              : function(opts)
-	{
-		//~: set collapsing strategy
-		this.collapsing = (opts || {}).collapsing ||
-		  ZeT.createInstance('ReTrade.DesktopCollapsing');
-		this.collapsing.desktop(this)
-	},
-
+ReTrade.Desktop.extend(
+{
 	/**
 	 * The first (optional) or the last argument
 	 * may be plain object with the event options.
@@ -257,30 +245,6 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 	},
 
 	/**
-	 * Activates the desktop after installing
-	 * it's panels. Invoked on Ext-Ready.
-	 */
-	activate          : function()
-	{
-		var sf = this, ps = ZeT.keys(this.panels)
-		ZeT.each(ps, function(k) {
-			sf.controller(k).triggerVoid()
-		})
-	},
-
-	/**
-	 * Returns the controller of the panel defined
-	 * by it's bind or the position.
-	 */
-	controller        : function(panel)
-	{
-		if(ZeT.iss(panel)) panel = this.panels[panel]
-		if(!panel || (panel.extjsfBind !== true))
-			throw 'Not a panel argument!'
-		return ZeT.assertn(panel.desktopPanelController)
-	},
-
-	/**
 	 * Registers or returns the controller of root-panel
 	 * inserted into the desktop panel by the given position.
 	 */
@@ -302,30 +266,6 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 		}
 
 		return this
-	},
-
-	rootPanel         : function(bind, domain)
-	{
-		if(!bind) return this._root_panel
-		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain)
-		this._root_panel = bind
-		return this
-	},
-
-	bindPanel         : function(pos, bind, domain)
-	{
-		if(ZeT.iss(bind))
-			bind = extjsf.bind(bind, domain)
-
-		//~: register the bind of the panel
-		this.panels[pos] = bind
-
-		//~: assign the panel controller
-		this._bind_control(bind, pos)
-
-		//~: hook the component creation
-		bind.on('added', ZeT.fbind(this._on_panel_added, this, pos))
 	},
 
 	loadDesktopPanel  : function(url, opts)
@@ -691,179 +631,6 @@ ReTrade.Desktop = ZeT.defineClass('ReTrade.Desktop', {
 			opts.height = extjsf.pt(opts.heightpt)
 			delete opts.heightpt
 		}
-	},
-
-	_on_panel_added   : function(pos, panel)
-	{
-		this.collapsing.onPanelAdded(panel, pos)
-	},
-
-	_bind_control     : function(panelBind, pos)
-	{
-		if(panelBind.desktopPanelController) return
-
-		var opts = { desktop: this }
-		opts.position = ZeT.asserts(pos)
-
-		panelBind.desktopPanelController =
-		  ZeT.createInstance('ReTrade.PanelController', opts)
-		panelBind.desktopPanelController.rootBind(panelBind)
-	}
-})
-
-
-// +----: Desktop Panel Controller :------------------------------+
-
-/**
- * Controller of the desktop panel. Assigned to the
- * panel's bind by 'desktopPanelController' attribute.
- */
-ZeT.defineClass('ReTrade.PanelController', {
-
-	init              : function(opts)
-	{
-		this.opts = opts || {}
-	},
-
-	position          : function(pos)
-	{
-		if(!ZeT.iss(pos)) return this.opts.position
-		this.opts.position = pos
-		return this
-	},
-
-	rootBind          : function(panelBind)
-	{
-		if(!panelBind) return this._root_bind
-		this._root_bind = panelBind
-		return this
-	},
-
-	/**
-	 * Bind of the main controls area of the panel.
-	 */
-	mainTopbar        : function(bind, domain)
-	{
-		if(!bind) return this._main_topbar
-		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain)
-		this._main_topbar = bind
-		return this
-	},
-
-	/**
-	 * Binds processor of inserting-removing the main
-	 * menu components dependend on the panel contents.
-	 * (Extension point for the main menus.)
-	 *
-	 * Callback function has the following arguments:
-	 *  0) inserting flag (true), or removing (false);
-	 *  1) callback function of the component that
-	 *     implements the required action (inserts,
-	 *     or removes).
-	 */
-	mainMenuProc      : function(f)
-	{
-		if(ZeT.isu(f))
-			return this._main_menu_proc
-
-		ZeT.assert(ZeT.isf(f))
-		this._main_menu_proc = f
-		return this
-	},
-
-	/**
-	 * Extension point to add root panel controls
-	 * onto the top bar.
-	 */
-	mainTopbarExt     : function(bind, domain)
-	{
-		if(!bind) return this._main_topbar_ext
-		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain)
-		this._main_topbar_ext = bind
-		return this
-	},
-
-	/**
-	 * The panel to insert the content components of the panel.
-	 * It usually has fit layout.
-	 */
-	contentPanel      : function(bind, domain)
-	{
-		if(!bind) return this._content_panel
-		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain)
-		this._content_panel = bind
-		return this
-	},
-
-	/**
-	 * If set, void panel is displayed
-	 * when else panels have no content.
-	 */
-	voidPanel         : function(bind, domain)
-	{
-		if(!bind) return this._void_panel
-		if(!bind.extjsfBind)
-			bind = extjsf.bind(bind, domain)
-		this._void_panel = bind
-		return this
-	},
-
-	/**
-	 * Tells whether to show void panel: else panels
-	 * are empty and void panel is assigned.
-	 */
-	isVoid            : function()
-	{
-		if(!this._void_panel)
-			return undefined
-
-		if(!this._void_panel.co())
-			return undefined
-
-		if(this._main_topbar)
-		{
-			var c = this._main_topbar.co()
-			if(c && c.items.getCount()) return false
-		}
-
-		if(this._main_topbar_ext)
-		{
-			c = this._main_topbar_ext.co()
-			if(c && c.items.getCount()) return false
-		}
-
-		if(this._content_panel)
-		{
-			c = this._content_panel.co()
-			if(c && c.items.getCount()) return false
-		}
-
-		return true
-	},
-
-	/**
-	 * Checks whether the panel is void and
-	 * hides all content except the void panel.
-	 */
-	triggerVoid       : function()
-	{
-		//?: {has no void panel}
-		var vo = this.isVoid()
-		if(ZeT.isu(vo)) return
-
-		this._void_panel.visible(vo)
-		ZeT.each(this._all_panes(), function(p) {
-			p && p.visible(!vo)
-		})
-	},
-
-	_all_panes        : function()
-	{
-		return [ this._main_topbar,
-		  this._main_topbar_ext, this._content_panel ]
 	}
 })
 
@@ -1235,99 +1002,9 @@ ZeT.defineClass('ReTrade.DesktopRootPanelController', {
 })
 
 
-// +----: Desktop Collapsing :------------------------------------+
-
-/**
- * Strategy that handles collapsing of the desktop panels.
- */
-ZeT.defineClass('ReTrade.DesktopCollapsing', {
-
-	init              : function(opts)
-	{
-		this._structs = {}
-	},
-
-	desktop           : function(desktop)
-	{
-		if(!desktop) return this.desktop
-		this.desktop = desktop
-		return this
-	},
-
-	onPanelAdded      : function(panel, pos)
-	{
-		var self = this, bind = extjsf.bind(panel)
-		ZeT.assertn(bind, 'Desktop panel has no ExtJSF Bind!')
-		bind.desktopCollapsing = { position: pos }
-
-		panel.on({
-			beforecollapse : ZeT.fbind(self._before_collapse, self, bind),
-			collapse       : ZeT.fbind(self._after_collapse, self, bind),
-			beforeexpand   : ZeT.fbind(self._before_expand, self, bind),
-			expand         : ZeT.fbind(self._after_expand, self, bind),
-			afterlayout    : ZeT.fbind(self._after_layout, self, bind)
-		})
-	},
-
-	_collapsed_click  : function(panel)
-	{
-		panel.co().expand()
-	},
-
-	_before_collapse  : function(panel)
-	{
-		var w = panel.co().getWidth()
-		var W = panel.co().ownerCt.getWidth()
-
-		//~: original width is relative
-		panel.desktopCollapsing.originalWidth = (w / W)
-		panel.desktopCollapsing.setOriginalWidth = true
-	},
-
-	_after_collapse   : function(panel)
-	{
-		//?: {has no bound click handler}
-		if(!panel.desktopCollapsing.click)
-			panel.desktopCollapsing.click =
-			  ZeT.fbind(this._collapsed_click, this, panel)
-
-		ZeT.timeout(500, function()
-		{
-			panel.co().getEl().removeListener(
-			  'click', panel.desktopCollapsing.click)
-			panel.co().getEl().on(
-			  'click', panel.desktopCollapsing.click)
-		})
-	},
-
-	_before_expand    : function(panel)
-	{
-		if(panel.desktopCollapsing.click)
-			panel.co().getEl().removeListener(
-			  'click', panel.desktopCollapsing.click)
-	},
-
-	_after_expand     : function(panel)
-	{},
-
-	_after_layout     : function(panel)
-	{
-		if(panel.desktopCollapsing.setOriginalWidth)
-		{
-			var W = panel.co().ownerCt.getWidth()
-			var w = Math.round(W * panel.desktopCollapsing.originalWidth)
-
-			//!: prevents infinite recursion
-			panel.desktopCollapsing.setOriginalWidth = false
-			panel.co().setWidth(w)
-		}
-	}
-})
-
-
 // +----: Desktop Instance :-------------------------------------+
 
-ReTrade.desktop = ZeT.defineInstance('ReTrade.desktop', ReTrade.Desktop);
+ReTrade.desktop = ZeT.defineInstance('ReTrade.desktop', ReTrade.Desktop)
 
 
 // +----: Message :----------------------------------------------+

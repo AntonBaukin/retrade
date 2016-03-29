@@ -1981,7 +1981,10 @@ ZeT.extend(ZeT,
 			if(!o) return false
 
 			//?: {is plain object}
-			if(typeof o === 'object') return true
+			if(ZeT.isox(o)) return true
+
+			//?: {is class}
+			if(ZeT.isclass(o)) return true
 
 			//?: {is an element}
 			if(o.nodeType === 1) return true
