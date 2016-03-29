@@ -5,16 +5,12 @@
  +===============================================================*/
 
 
-// +----: Global Configurations :--------------------------------+
-
-jQuery.fx.interval = 41.6
-
-
 // +----: Is Touch Device :--------------------------------------+
 
 ReTrade.isTouch = ZeT.scope(function()
 {
-	return ('ontouchstart' in window) ||
+	return jQuery.browser.mobile ||
+	  ('ontouchstart' in window) ||
 	  (navigator.msMaxTouchPoints > 0)
 })
 
@@ -1536,7 +1532,7 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 
 			//?: {first click} stop
 			if(clicked == 1)
-				n.stop() //<-- stop moving down
+				n.velocity('stop') //<-- stop moving down
 
 			//?: {second click}
 			if((clicked == 2) && self.opts.removeOnSecondClick)
@@ -1549,11 +1545,11 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 		ZeT.assert(ZeT.isi(moveto))
 
 		//~: animate it's move down
-		n.animate({ top: moveto }, {
+		n.velocity({ top: moveto }, {
 
 		  duration: this.opts.animation.moveDuration,
 		  easing: this.opts.animation.moveEasing,
-		  always: function()
+		  complete: function()
 		  {
 				//?: {not clicked & auto-hide}
 				if(!clicked && self.opts.autoRemove)
@@ -1575,19 +1571,19 @@ ReTrade.Message = ZeT.defineClass('ReTrade.Message', {
 
 			var p = { top: '+=' + this.opts.animation.slideOffMove, opacity: 0 }
 
-			var o = { always: ZeT.fbind(self._ani_hide, self),
+			var o = { complete: ZeT.fbind(self._ani_hide, self),
 			  duration: this.opts.animation.slideOffDuration
 			}
 
-			n.animate(p, o)
+			n.velocity(p, o)
 		}
 		else
 		{
 			ZeT.assert(ZeT.isi(this.opts.animation.fadeDuration))
 
-			n.fadeOut({
+			n.velocity('transition.fadeOut', {
 			  duration: this.opts.animation.fadeDuration,
-			  always: ZeT.fbind(self._ani_hide, self)
+			  complete: ZeT.fbind(self._ani_hide, self)
 			})
 		}
 	},
