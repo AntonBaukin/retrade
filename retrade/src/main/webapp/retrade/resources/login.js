@@ -272,22 +272,8 @@ $(document).ready(function()
 	function login_focus()
 	{
 		var f = login_status()
-		if(f) return ani(f.focus(), 'flash')
+		if(f) return f.focus().velocity('callout.flash')
 		$('#button').focus()
-	}
-
-	function ani(n, cls)
-	{
-		var ts = new Date().getTime()
-		n.data('anits', ts).addClass(cls).addClass('animated')
-
-		setTimeout(function()
-		{
-			if(n.data('anits') != ts) return
-			n.removeClass(cls).removeClass('animated')
-		}, 2000)
-
-		return n
 	}
 
 	function login_try()
@@ -299,7 +285,7 @@ $(document).ready(function()
 			password : $.trim($('#password').val()),
 			onerror  : function(e)
 			{
-				ani($('#button'), 'shake')
+				$('#button').velocity('callout.shake')
 				if(e instanceof Error) console.log(e.message)
 			}
 		}

@@ -13,20 +13,9 @@ ${"<!DOCTYPE html>"}
 
   <title>ТТС РеТрейд™ :: Вход в систему</title>
 
-  <script type = 'text/javascript' charset = 'UTF-8'
-     src = '<%=request.getContextPath()%>/resources/scripts.js'></script>
-
-<% if(SystemConfig.getInstance().isDebug()) { %>
-
-  <script type = 'text/javascript' charset = 'UTF-8'
-     src = '<%=request.getContextPath()%>/retrade/resources/login.js'></script>
-
   <link type = 'text/css' rel = 'stylesheet'
      href = '<%=request.getContextPath()%>/retrade/resources/login.css'/>
 
-<% } else { %>
-
-<% } %>
 </head>
 <body>
 
@@ -45,6 +34,27 @@ ${"<!DOCTYPE html>"}
   //<![CDATA[
 
     document.getElementById('nojs-content').style.display = 'none'
+
+  //]]>
+  </script>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = '<%=request.getContextPath()%>/resources/scripts.js'></script>
+
+<% if(SystemConfig.getInstance().isDebug()) { %>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = '<%=request.getContextPath()%>/retrade/resources/login.js'></script>
+
+<% } else { %>
+
+  <script type = 'text/javascript' charset = 'UTF-8'
+     src = '<%=request.getContextPath()%>/retrade/resources/login.js'></script>
+
+<% } %>
+
+  <script type = "text/javascript">
+  //<![CDATA[
 
     ReTradeLogin.domain = '<%=SU.jss(request.getAttribute("retrade-domain"))%>'
     ReTradeLogin.mobile = '<%=SU.jss(request.getAttribute("retrade-mobile"))%>'
