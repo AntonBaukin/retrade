@@ -244,43 +244,23 @@ ReTrade.Desktop.extend(
 		return new ReTrade.Message(opts).trigger()
 	},
 
-	/**
-	 * Registers or returns the controller of desktop panel
-	 * inserted into the desktop region by the given position.
-	 */
-	contentController : function(position, controller)
+	loadPanel  : function(url, opts)
 	{
-		var rc = this._root_controllers
+		var pos = (opts = opts || {}).position
+		if(!pos) pos = 'center'
 
-		if(ZeTS.ises(position)) throw 'Not a position!'
-		if(!rc) this._root_controllers = rc = {}
+		//~: remove existing content
+		if(this.panelController(pos))
+			this.panelController(pos).remove()
 
-		if(ZeT.isu(controller)) return rc[position]
-		if(controller === null) delete rc[position]; else
-		{
-			ZeT.assert(!rc[position] || (rc[position] === controller),
-			  'Can not replace root controller in position [',
-			  position, '] as there is other instance registered!')
-
-			rc[position] = controller
-		}
-
-		return this
-	},
-
-	loadDesktopPanel  : function(url, opts)
-	{
-		var pos    = (opts = opts || {}).position;
-		if(!pos) pos = 'center';
-
-		var panel  = this.controller(pos).contentPanel();
-		panel = panel && panel.co();
-		if(!panel) throw 'Can not load root panel without the component!'
-		panel.removeAll(true) //<-- clean the component
+		var panel = ZeT.assertn(
+		  this.controller(pos).contentPanel(),
+		  'Not found Desktop content panel ', pos, ']!'
+		)
 
 		//~: define the domain
 		var domain = opts.domain;
-		if(!ZeT.iss(domain)) domain = 'desktop:root-panel';
+		if(!ZeT.iss(domain)) domain = 'desktop:panel';
 		if((domain.indexOf(':desktop') == -1) &&
 		   (domain.indexOf('desktop:') == -1)
 		  )
@@ -310,15 +290,15 @@ ReTrade.Desktop.extend(
 		Ext.create('Ext.ComponentLoader', {
 
 		  url: retrade_go_url(url), 'params': params,
-		  target: panel, autoLoad: true, scripts: true,
+		  target: panel.co(), autoLoad: true, scripts: true,
 		  ajaxOptions: {'method': method}
 		})
 	},
 
 	swapPanels        : function(one, two)
 	{
-		var cone = this.contentController(one)
-		var ctwo = this.contentController(two)
+		var cone = this.panelController(one)
+		var ctwo = this.panelController(two)
 
 		//~: temporarily remove the contents of the panels
 		if(cone) cone.remove(false)
@@ -641,6 +621,8 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 {
 	$add_link_tool   : function(tools)
 	{
+		if(!ZeT.iso(this.opts.webLink)) return
+
 		tools.push({ xtype: 'tool', cls: 'retrade-web-link-tool',
 		  handler: ZeT.fbind(this.$web_link, this),
 		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',

@@ -91,6 +91,34 @@ extjsf.Desktop = ZeT.defineClass('extjsf.Desktop',
 		return this
 	},
 
+	/**
+	 * Registers or returns the controller of desktop panel
+	 * inserted into the desktop region by the given position.
+	 */
+	panelController  : function(position)
+	{
+		//?: {wrong position}
+		ZeT.asserts(position)
+
+		//~: position -> controller
+		var rc = this._root_controllers
+		if(!rc) this._root_controllers = rc = {}
+
+		//?: {return controller}
+		if(arguments.length == 1)
+			return rc[position]
+
+		//?: {delete controller}
+		var c = arguments[1]
+		if(!c) delete rc[position]; else
+		{
+			ZeT.assert(c.desktopPanel === true)
+			rc[position] = c
+		}
+
+		return this
+	},
+
 	$data            : function(panel)
 	{
 		var d = panel.$desktop
@@ -486,6 +514,11 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 		this.position()
 
 		opts.bind.desktopPanelController = this
+
+		//~: clear content on destroy
+		this.bind().on('beforedestroy',
+		  ZeT.fbind(this.$destroy, this)
+		)
 	},
 
 	/**
@@ -668,14 +701,19 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 		ZeT.timeout(100, ZeT.fbind(rc.triggerVoid, rc))
 	},
 
+	$destroy         : function()
+	{
+		this.remove(false)
+	},
+
 	$register        : function()
 	{
-		this.desktop().contentController(this.position(), this)
+		this.desktop().panelController(this.position(), this)
 	},
 
 	$unregister      : function()
 	{
-		this.desktop().contentController(this.position(), null)
+		this.desktop().panelController(this.position(), null)
 	},
 
 	$set_tools       : function()
