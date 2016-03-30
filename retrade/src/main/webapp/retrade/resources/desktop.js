@@ -19,6 +19,9 @@
  */
 extjsf.Desktop = ZeT.defineClass('extjsf.Desktop',
 {
+	className        : 'extjsf.Desktop',
+	extjsfDesktop    : true,
+
 	init             : function(opts)
 	{
 		this.opts = opts || {}
@@ -129,7 +132,9 @@ extjsf.Desktop = ZeT.defineClass('extjsf.Desktop',
  * instance, but not to instance of a panel (Bind).
  * Effectively, this strategy is a Singleton.
  */
-ZeT.defineClass('extjsf.Desktop.Collapsing', {
+ZeT.defineClass('extjsf.Desktop.Collapsing',
+{
+	className        : 'extjsf.Desktop.Collapsing',
 
 	init             : function(opts)
 	{
@@ -248,6 +253,9 @@ ZeT.defineClass('extjsf.Desktop.Collapsing', {
  */
 ZeT.defineClass('extjsf.Desktop.Region',
 {
+	className        : 'extjsf.Desktop.Region',
+	desktopRegion    : true,
+
 	init             : function(opts)
 	{
 		ZeT.assert(ZeT.iso(opts))
@@ -301,10 +309,14 @@ ZeT.defineClass('extjsf.Desktop.Region',
 	 * (Extension point for the main menus.)
 	 *
 	 * Callback function has the following arguments:
+	 *
 	 *  0) inserting flag (true), or removing (false);
+	 *
 	 *  1) callback function of the component that
 	 *     implements the required action (inserts,
-	 *     or removes).
+	 *     or removes);
+	 *
+	 *  2) controller of the region panel.
 	 */
 	mainMenuProc     : function(f)
 	{
@@ -424,19 +436,45 @@ ZeT.defineClass('extjsf.Desktop.Region',
 })
 
 
-// +----: Desktop Root Panel :-----------------------------------+
+// +----: Desktop Panel :----------------------------------------+
 
 /**
  * Each root panel' Bind has has an instance of this class
  * as 'desktopPanelController' property. It is to control
  * the behaviour of the panel on the desktop.
+ * See x:desktop-panel component.
  */
 ZeT.defineClass('extjsf.Desktop.Panel',
 {
+	className        : 'extjsf.Desktop.Panel',
+	desktopPanel     : true,
+
+	/**
+	 * Required configuration options are:
+	 *
+	 * · domain   name of ExtJSF domain;
+	 *
+	 * · desktop  Desktop instance;
+	 *
+	 * · bind     Bind of the panel. If is given as object,
+	 *            domain option is not required;
+	 *
+	 * · position name of the position; one of the desktop
+	 *            region panels name.
+	 *
+	 *
+	 * Additional options are:
+	 *
+	 * · nomove   tells not to create header tools to move
+	 *            the content between the regions.
+	 */
 	init             : function(opts)
 	{
 		ZeT.assert(ZeT.iso(opts))
 		this.opts = opts
+
+		//~: check the root-panel bind
+		this.bind()
 
 		//~: check domain
 		this.domain()
@@ -444,62 +482,86 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 		//~: check desktop
 		this.desktop()
 
-		//~: check the root-panel bind
-		this.bind()
-
 		//~: check the position
 		this.position()
 
 		opts.bind.desktopPanelController = this
 	},
 
+	/**
+	 * Returns name of ExtJSF Domain.
+	 */
 	domain           : function()
 	{
-		return ZeT.asserts(
-		  this.opts.domain,
-		  'No Domain name specified!'
-		)
+		var d = this.opts.domain
+
+		//?: {find domain in the bind}
+		if(ZeT.ises(d) && extjsf.isbind(this.opts.bind))
+			d = this.opts.bind.domain
+
+		return ZeT.asserts(d, 'No Domain name specified!')
 	},
 
 	desktop          : function()
 	{
-		return ZeT.assertn(
-		  this.opts.desktop,
-		  'No Desktop instance!'
-		)
+		var d = this.opts.desktop
+
+		ZeT.assert(d && (d.extjsfDesktop === true),
+		  'No valid Desktop instance is defined!')
+
+		return d
 	},
 
-	panelController  : function()
-	{
-		return ZeT.assertn(
-		  this.desktop().controller(this.opts.position),
-		  'No Desktop panel controller at the position [',
-		  this.opts.position, ']!'
-		)
-	},
-
+	/**
+	 * Returns Bind of the panel this
+	 * controller is created for.
+	 */
 	bind             : function()
 	{
-		return ZeT.assertn(
-		  this.opts.bind,
-		  'No root-panel Bind instance!'
-		)
+		var b = this.opts.bind
+
+		if(ZeT.iss(b)) //?: {lookup by name}
+			b = extjsf.bind(b, this.domain())
+
+		ZeT.assert(extjsf.isbind(b),
+		  'Desktop panel Bind instance not found!')
+
+		return b
 	},
 
-	position         : function(pos)
+	/**
+	 * Assigns or returns the name of the desktop
+	 * region panel this panel is inserted in
+	 * as a content.
+	 */
+	position         : function()
 	{
-		if(ZeTS.ises(pos))
+		if(!arguments.length)
 			//?: {the position key is undefined}
 			return ZeT.asserts(this.opts.position,
-			  'No Desktop position key!')
+			  'No Desktop region position is defined!')
 
-		//~: there is no panel controller at that position
-		ZeT.assertn(this.desktop().controller(pos),
+		//=: set the position option
+		this.opts.position = ZeT.asserts(arguments[0])
+
+		//~: check the controller
+		this.regionController()
+
+		return this
+	},
+
+	/**
+	 * Returns controller of the related Desktop
+	 * region panel, instance of extjsf.Desktop.Region.
+	 */
+	regionController : function()
+	{
+		var pos = this.opts.position
+
+		//?: {no panel controller at that position}
+		return ZeT.assertn(this.desktop().controller(pos),
 		  'Desktop panel controller at position [',
 		   pos, '] was not found!')
-
-		this.opts.position = pos
-		return this
 	},
 
 	topbarItems      : function(items)
@@ -516,6 +578,14 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 	 *
 	 * Second, two arguments, both functions: to insert
 	 * and to remove the menus. Installed by the root panel.
+	 *
+	 * Inserting and removing strategies are invoked
+	 * with arguments depending on the implementation
+	 * of the main menu. For menus on nodes with CSS
+	 * (not of Ext JS) the first argument is menu node.
+	 *
+	 * If strategy returns false, menu is not supported
+	 * for the current region panel.
 	 */
 	topbarMenu       : function()
 	{
@@ -554,7 +624,7 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 
 	/**
 	 * Inserts the controls of this panel into the Desktop.
-	 * The panel to insert is defined by the position.
+	 * The region panel to insert is defined by the position.
 	 */
 	insert           : function()
 	{
@@ -571,9 +641,17 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 		this.$insert_content()
 
 		//~: hide void panel
-		this.panelController().triggerVoid()
+		this.regionController().triggerVoid()
 	},
 
+	/**
+	 * Removes the panel from the region panel of the Desktop
+	 * it was previously inserted in via insert().
+	 *
+	 * Optional destroy argument (false by default)
+	 * tells whether to destroy the panel and
+	 * it's domain (if it's domain owner).
+	 */
 	remove           : function(destroy)
 	{
 		//~: remove the main content
@@ -586,18 +664,18 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 		this.$unregister()
 
 		//~: show void panel
-		var pc = this.panelController()
-		ZeT.timeout(100, ZeT.fbind(pc.triggerVoid, pc))
+		var rc = this.regionController()
+		ZeT.timeout(100, ZeT.fbind(rc.triggerVoid, rc))
 	},
 
 	$register        : function()
 	{
-		this.desktop().rootController(this.position(), this)
+		this.desktop().contentController(this.position(), this)
 	},
 
 	$unregister      : function()
 	{
-		this.desktop().rootController(this.position(), null)
+		this.desktop().contentController(this.position(), null)
 	},
 
 	$set_tools       : function()
@@ -619,172 +697,268 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 	$add_tools       : function(tools)
 	{
 		//~: add tool to save web link
-		this.$add_link_tool(tools)
+		if(ZeT.isox(this.opts.webLink))
+			this.$add_link_tool(tools)
 
 		//~: add panel move left-right tools
 		this.$add_move_tools(tools)
 	},
 
+	/**
+	 * Override this method to add tool to create
+	 * persistent link to this panel in the header
+	 * of the bound panel.
+	 */
 	$add_link_tool   : function(tools)
-	{
-		if(!ZeT.iso(this.opts.webLink)) return
-
-		tools.push({ xtype: 'tool', cls: 'retrade-web-link-tool',
-		  handler: ZeT.fbind(this.$web_link, this),
-		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',
-		  tooltip: 'Создать постоянную ссылку на панель'
-		})
-	},
+	{},
 
 	$add_move_tools  : function(tools)
 	{
 		if(this.opts['nomove'] === true) return
 
-		//~: add <<
-		tools.push({ xtype: 'tool', type: 'left',
-		  handler: ZeT.fbind(this.$move_left, this),
-		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',
-		  tooltip: 'Передвинуть панель в левую область'
-		})
+		//~: add move <<
+		tools.push(this.$new_move_tool('left'))
 
 		var m = extjsf.pts(0, 0, 0, 2)
 		if(this.bind().$raw()['closable'])
 			m = extjsf.pts(0, 8, 0, 2)
 
-		//~: add >>
-		tools.push({ xtype: 'tool', type: 'right',
-		  handler: ZeT.fbind(this.$move_right, this),
-		  margin: m, tooltipType: 'title',
-		  tooltip: 'Передвинуть панель в правую область'
-		})
+		//~: add move >>
+		tools.push(this.$new_move_tool('right'))
+	},
+
+	$move_tips       : {
+	  left  : 'Передвинуть панель в левую область',
+	  right : 'Передвинуть панель в правую область'
+	},
+
+	$new_move_tool   : function(dir)
+	{
+		return { xtype: 'tool', type: dir,
+		  handler: ZeT.fbind(this['$move_' + dir], this),
+		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',
+		  tooltip: this.$move_tips[dir]
+		}
 	},
 
 	$insert_content  : function()
 	{
-		var cnt = this.panelController().contentPanel()
-		if(!cnt || !cnt.co()) return //<-- no content panel
+		//~: add the removed content nodes
+		this.$insert_nodes(this.$insert_target(),
+		  '_removed_content_nodes')
+
+		//~: insert the components
+		this.$insert_co()
+	},
+
+	$insert_target   : function()
+	{
+		var cnt = this.regionController().contentPanel()
+
+		ZeT.assert(extjsf.bind(cnt) && cnt.co(),
+		  'Content panel of region [', this.position(),
+		  'is not yet ready!')
+
+		return cnt
+	},
+
+	/**
+	 * Private. Inserts the components of panel.
+	 */
+	$insert_co       : function()
+	{
+		var cnt = this.$insert_target()
 
 		//~: add the component
 		cnt.co().add(this.bind().co(true))
 
 		//?: {has toolbar} dock it
-		if(this.toolbar())
-			this.bind().co().addDocked(this.toolbar().co(true))
+		this.$insert_docked(this.toolbar())
 
 		//?: {has status bar} dock it
-		if(this.status())
-			this.bind().co().addDocked(this.status().co(true))
+		this.$insert_docked(this.status())
+	},
 
-		//~: add the removed content nodes
-		var nodes = this._removed_content_nodes; if(ZeT.isa(nodes))
-		{
-			var body = cnt.co().getEl().down('.retrade-desktop-panel-content')
-			if(!body) throw 'No desktop panel content element found!'
+	/**
+	 * Private. Docks component (of the bind)
+	 * to the content panel.
+	 */
+	$insert_docked   : function(bind)
+	{
+		var co = bind && bind.co(true)
+		if(!co) return
 
-			for(var i = 0;(i < nodes.length);i++)
-				body.dom.appendChild(nodes[i])
+		var ds = this.bind().co().getDockedItems()
 
-			delete this._removed_content_nodes //<-- to not add them further
-		}
+		//?: {has no component docked}
+		if(ds && (ds.indexOf(co) == -1))
+			this.bind().co().addDocked(co)
+	},
+
+	/**
+	 * Private. Each ExtJSF component generates
+	 * additional DOM nodes for configuration facests
+	 * that are also inserted to the content panels
+	 * of the regions. This function inserts them back,
+	 * is being previously removed.
+	 */
+	$insert_nodes    : function(cnt, property)
+	{
+		if(!cnt || !cnt.co()) return
+
+		//~: take the nodes previously removed
+		var nodes = this[property]
+		if(!ZeT.isa(nodes)) return
+		delete this[property]
+
+		//~: get the body of the panel
+		var body = ZeT.assertn(cnt.co().
+		  getEl().down('.x-panel-body'))
+
+		//~: add the nodes previously removed
+		for(var i = 0;(i < nodes.length);i++)
+			body.dom.appendChild(nodes[i])
 	},
 
 	$remove_content  : function(destroy)
 	{
-		var cnt = this.panelController().contentPanel()
-		if(!cnt || !cnt.co()) return //<-- no content panel
+		//~: remove the component
+		var cnt = this.$insert_target()
+		cnt.co().remove(this.bind().co(), !!destroy)
 
-		//HINT: the component is automatically removed on destroy event
-		if(!this._on_destruction)
-			cnt.co().remove(this.bind().co(), destroy)
+		//~: remove content nodes
+		this.$remove_nodes(cnt, destroy,
+		  '_removed_content_nodes')
+	},
 
-		if(destroy) this.bind().co(null) //<-- remove reference
+	/**
+	 * Private. Removes nodes from the content panel
+	 * saving them by the property as $insert_nodes().
+	 */
+	$remove_nodes    : function(cnt, destroy, property)
+	{
+		if(!cnt || !cnt.co()) return
 
-		//~: remove plain DOM nodes left in the content panel
-		var body = cnt.co().getEl().down('.retrade-desktop-panel-content')
-		if(!body) throw 'No desktop panel content element found!'
+		//~: get the body of the panel
+		var body = ZeT.assertn(cnt.co().
+		  getEl().down('.x-panel-body'))
 
-		//~: collect all the child nodes
-		var node = body.dom.firstChild, nodes = []
-		while(node)
+		//~: collect all the nodes
+		var n, x = body.dom.firstChild
+		var a = []; while(n = x)
 		{
-			nodes.push(node)
-			var next = node.nextSibling
-			body.dom.removeChild(node)
-			node = next
+			a.push(n); x = n.nextSibling
+			body.dom.removeChild(n)
 		}
 
-		if(!destroy) this._removed_content_nodes = nodes
+		if(!destroy) this[property] = a
 	},
 
 	$insert_topbar   : function()
 	{
-		var ctrl = this.panelController()
+		//?: {inserted in main menu}
+		if(this.$topbar_menu(true)) return
 
-		//?: {center & main menu}
-		if(this.topbarMenu(true) && (ctrl.position() == 'center') && ctrl.mainMenuProc())
-			return (ctrl.mainMenuProc())(true, this.topbarMenu(true))
+		var tb = this.regionController().mainTopbarExt()
 
-		var ext  = ctrl.mainTopbarExt()
-		if(!ext || !ext.co()) return //<-- no top bar to insert
+		//~: add the removed content nodes
+		this.$insert_nodes(tb,
+		  '_removed_topbar_nodes')
 
-		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return
+		//~: insert previously removed nodes
+		this.$insert_items(tb, this._topbar_items)
+	},
 
-		for(var i = 0;(i < tbis.length);i++)
+	$insert_items    : function(ext, items)
+	{
+		//?: {no extension point bind}
+		if(!ext || !ext.co()) return
+
+		ZeT.each(items, function(item)
 		{
-			//?: {the bind has no component already created} create it now
-			if(!tbis[i].co())
-				tbis[i].co(Ext.ComponentManager.create(tbis[i].buildProps()))
+			if(!ext.co().contains(item.co(true)))
+				ext.co().add(item.co())
+		})
+	},
 
-			ext.co().add(tbis[i].co())
-		}
+	/**
+	 * Inserts or removes menu items to the top-bar
+	 * menu (if it's supported) of current region panel.
+	 *
+	 * When this function returns true, additional
+	 * controls are not inserted into the extension
+	 * panel. This supports top-bar of center region
+	 * when it has menu only (also, not of Ext JS).
+	 */
+	$topbar_menu     : function(insert)
+	{
+		var rc = this.regionController()
+
+		//?: {no main menu processor}
+		var f; if(!(f = rc.mainMenuProc())) return
+
+		//?: {has no top-bar menu}
+		var m; if(!(m = this.topbarMenu(insert))) return
+
+		//!: invoke the menu processor
+		return !f(insert, m, rc)
 	},
 
 	$remove_topbar   : function(destroy)
 	{
-		var ctrl = this.panelController()
+		//?: {removed from main menu}
+		if(this.$topbar_menu(false)) return
 
-		//?: {center & main menu}
-		if(this.topbarMenu(false) && (ctrl.position() == 'center') && ctrl.mainMenuProc())
-			(ctrl.mainMenuProc())(false, this.topbarMenu(false))
+		var tb = this.regionController().mainTopbarExt()
 
-		var ext  = ctrl.mainTopbarExt()
-		if(!ext || !ext.co()) return //<-- no top bar to insert
+		//~: insert previously removed nodes
+		this.$remove_items(tb, this._topbar_items, destroy)
 
-		var tbis = this._topbar_items; if(!ZeT.isa(tbis)) return
+		//~: add the removed content nodes
+		this.$remove_nodes(tb, destroy,
+		  '_removed_topbar_nodes')
+	},
 
-		for(var i = 0;(i < tbis.length);i++)
+	$remove_items    : function(ext, items, destroy)
+	{
+		//?: {no extension point bind}
+		if(!ext || !ext.co()) return
+
+		ZeT.each(items, function(item)
 		{
-			ext.co().remove(tbis[i].co(), destroy)
-			if(destroy) tbis[i].co(null) //<-- remove reference
-		}
+			if(item.co())
+				ext.co().remove(item.co(), !!destroy)
+		})
+	},
+
+	$move_sequence   : [ 'left', 'center', 'right' ],
+
+	$move_step       : function(pos, di)
+	{
+		var s = this.$move_sequence
+
+		var i = s.indexOf(pos)
+		ZeT.assert(i >= 0)
+
+		if((i += di) < 0) i += s.length
+		return s[i % s.length]
 	},
 
 	$move_left       : function()
 	{
-		var prv, cur = this.position()
+		var p = this.position()
+		var n = this.$move_step(p, -1)
 
-		if(cur === 'left')   prv = 'right'
-		if(cur === 'center') prv = 'left'
-		if(cur === 'right')  prv = 'center'
-
-		this.desktop().swapPanels(prv, cur)
+		ZeT.assert(p != n)
+		this.desktop().swapPanels(p, n)
 	},
 
 	$move_right      : function()
 	{
-		var nxt, cur = this.position()
+		var p = this.position()
+		var n = this.$move_step(p, +1)
 
-		if(cur === 'left')   nxt = 'center'
-		if(cur === 'center') nxt = 'right'
-		if(cur === 'right')  nxt = 'left'
-
-		this.desktop().swapPanels(cur, nxt)
-	},
-
-	$web_link        : function()
-	{
-		if(ZeTS.ises(this.opts.webLink.panel))
-			this.opts.webLink.panel = 'center'
-		retrade_add_user$web_link(this.opts.webLink)
+		ZeT.assert(p != n)
+		this.desktop().swapPanels(p, n)
 	}
 })

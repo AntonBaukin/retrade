@@ -245,10 +245,10 @@ ReTrade.Desktop.extend(
 	},
 
 	/**
-	 * Registers or returns the controller of root-panel
-	 * inserted into the desktop panel by the given position.
+	 * Registers or returns the controller of desktop panel
+	 * inserted into the desktop region by the given position.
 	 */
-	rootController    : function(position, controller)
+	contentController : function(position, controller)
 	{
 		var rc = this._root_controllers
 
@@ -317,8 +317,8 @@ ReTrade.Desktop.extend(
 
 	swapPanels        : function(one, two)
 	{
-		var cone = this.rootController(one)
-		var ctwo = this.rootController(two)
+		var cone = this.contentController(one)
+		var ctwo = this.contentController(two)
 
 		//~: temporarily remove the contents of the panels
 		if(cone) cone.remove(false)
@@ -639,13 +639,28 @@ ReTrade.Desktop.extend(
 
 ZeT.defined('extjsf.Desktop.Panel').extend(
 {
+	$add_link_tool   : function(tools)
+	{
+		tools.push({ xtype: 'tool', cls: 'retrade-web-link-tool',
+		  handler: ZeT.fbind(this.$web_link, this),
+		  margin: extjsf.pts(0, 8, 0, 2), tooltipType: 'title',
+		  tooltip: 'Создать постоянную ссылку на панель'
+		})
+	},
 
+	$web_link        : function()
+	{
+		if(ZeTS.ises(this.opts.webLink.panel))
+			this.opts.webLink.panel = 'center'
+		retrade_add_user$web_link(this.opts.webLink)
+	}
 })
 
 
 // +----: Desktop Instance :-------------------------------------+
 
-ReTrade.desktop = ZeT.defineInstance('ReTrade.desktop', ReTrade.Desktop)
+ReTrade.desktop = extjsf.desktop =
+  ZeT.defineInstance('ReTrade.desktop', ReTrade.Desktop)
 
 
 // +----: Message :----------------------------------------------+

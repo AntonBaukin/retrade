@@ -502,10 +502,13 @@
 
 
     //~: menu extension point processing
-    ReTrade.desktop.controller('center').mainMenuProc(function(inserting, f)
+    ReTrade.desktop.controller('center').mainMenuProc(function(inserting, f, rc)
     {
+      //?: {not a center panel}
+      if(rc.position() != 'center') return false
+
       ZeT.assert(ZeT.isf(f))
-      f(menuNode) //<-- invoke
+      return f(menuNode) //<-- invoke
     })
 
 
