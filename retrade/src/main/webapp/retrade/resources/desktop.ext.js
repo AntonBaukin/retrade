@@ -1205,8 +1205,48 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		return this._skip_events || this._collapsing
 	},
 
+	_prevent_out      : function(win, x, y)
+	{
+		if(arguments.length == 1)
+		{
+			var xy = win.getXY()
+			x = xy[0]; y = xy[1]
+		}
+
+		var x0 = x, y0 = y
+		var B = Ext.getBody().getViewSize()
+		var w = win.getWidth()
+		var D = extjsf.pt(50)
+
+		//?: {too far on the left}
+		if(x < -w + D) x = -w + D
+
+		//?: {over the right}
+		if(x + D > B.width) x = B.width - D
+
+		//?: {over the bottom}
+		if(y + D > B.height) y = B.height - D
+
+		//?: {over the top}
+		if(y < 0) y = 0
+
+		//?: {changed position}
+		if((x0 != x) || (y0 != y))
+		{
+			win.setXY([x, y])
+			return true
+		}
+	},
+
 	_on_wnd_move      : function(win, x, y)
 	{
+		//?: {prevented window to go out}
+		if(this._prevent_out(win, x, y))
+		{
+			var xy = win.getXY()
+			x = xy[0]; y = xy[1]
+		}
+
 		//?: {not need to react}
 		if(!this._is_on('move') || this._is_skip())
 			return
@@ -1220,7 +1260,7 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		var W = B.width, H = B.height
 		var w = win.getWidth()
 		var h = win.getHeight()
-		var D = extjsf.pt(20) //<-- sticky tolerance
+		var D = extjsf.pt(40) //<-- sticky tolerance
 		var a, ax = '0', ay = '0'
 
 		//?: {touch left}
@@ -1265,6 +1305,9 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_wnd_resize    : function(win, w, h)
 	{
+		//!: prevent window go-out
+		this._prevent_out(win)
+
 		if(!this._is_on('resize') || this._is_skip())
 			return
 
@@ -1323,6 +1366,11 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_resize        : function()
 	{
+		//!: prevent window go-out
+		//var win = this.win(false)
+		//if(win) this._prevent_out(win)
+		this._prevent_out(win)
+
 		if(!this._is_on('reframe') || this._is_skip())
 			return
 
