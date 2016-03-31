@@ -1267,3 +1267,9 @@ ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
 		ps['desktop-position'] = this.position()
 	}
 })
+
+
+// +----: Desktop Instance :-------------------------------------+
+
+extjsf.desktop = ZeT.defineInstance(
+  'extjsf.desktop', extjsf.Desktop)

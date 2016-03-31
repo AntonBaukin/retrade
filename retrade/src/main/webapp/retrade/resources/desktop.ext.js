@@ -200,6 +200,7 @@ ReTrade.RepeatedTask = ZeT.defineClass('ReTrade.RepeatedTask', {
 // +----: Desktop :----------------------------------------------+
 
 ReTrade.Desktop = extjsf.Desktop
+ReTrade.desktop = extjsf.desktop
 
 ReTrade.Desktop.extend(
 {
@@ -513,12 +514,6 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		retrade_add_user_web_link(this.opts.webLink)
 	}
 })
-
-
-// +----: Desktop Instance :-------------------------------------+
-
-ReTrade.desktop = extjsf.desktop =
-  ZeT.defineInstance('ReTrade.desktop', ReTrade.Desktop)
 
 
 // +----: Message :----------------------------------------------+
