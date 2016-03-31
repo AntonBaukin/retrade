@@ -1128,6 +1128,11 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 		delete this._window
 	},
 
+	_is_on            : function(action)
+	{
+		return (this.opts.behaviour == 'strict')
+	},
+
 	_on               : function()
 	{
 		ZeT.assertn(this._window)
@@ -1203,7 +1208,8 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 	_on_wnd_move      : function(win, x, y)
 	{
 		//?: {not need to react}
-		if(this._is_skip()) return
+		if(!this._is_on('move') || this._is_skip())
+			return
 
 		//~: clear align and the classes
 		delete this._align
@@ -1259,7 +1265,8 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_wnd_resize    : function(win, w, h)
 	{
-		if(this._is_skip()) return
+		if(!this._is_on('resize') || this._is_skip())
+			return
 
 		//~: new size
 		this._wh = [w, h]
@@ -1316,7 +1323,9 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 	_on_resize        : function()
 	{
-		if(this._is_skip()) return
+		if(!this._is_on('reframe') || this._is_skip())
+			return
+
 		this.resizeTo()
 	},
 

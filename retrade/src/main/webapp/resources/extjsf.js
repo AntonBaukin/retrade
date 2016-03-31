@@ -61,7 +61,7 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		this.binds.put(name, bind)
 		bind.defined(this.name, name)
 
-		//ZeT.log('@[', this.name, '] + Bind: ', name)
+		//ZeT.log('@[', this.name, '] + ', name)
 
 		return bind
 	},
@@ -977,7 +977,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		if(this._destroyed === true) return false
 		this._destroyed = true
 
-		//ZeT.log('@[', this.domain, '] - Bind: ', this.name)
+		//ZeT.log('@[', this.domain, '] - ', this.name)
 
 		var co; if(co = this._component) try
 		{

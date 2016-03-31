@@ -17,13 +17,14 @@ ${v.checkModelRequestedWithRedirect}
   <ui:define name = 'page_body'>
 
   <x:winmain coid = "${z:vid(v, 'selset-panel')}"
-    webLink = "false" windowBind = 'window-selset'>
+    webLink = "false" winAlign = "strict"
+    windowBind = 'window-selset'>
 
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.bind('window-selset', '${extDom}').
-        co().setTitle('${z:jss(v.windowTitle)}')
+      extjsf.co('window-selset', '${extDom}').
+        setTitle('${z:jss(v.windowTitle)}')
 
     //]]>
     </script>
