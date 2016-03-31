@@ -21,8 +21,8 @@ ${v.checkModelRequestedWithRedirect}
 
   <script type = "text/javascript">
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle('Склады')
+    extjsf.co('window', '${extDom}').
+      setTitle('Склады')
 
   </script>
 
@@ -85,7 +85,8 @@ ${v.checkModelRequestedWithRedirect}
       modelView = "${v}">
 
       <f:facet name = "store-props">
-        model: 'retrade.model.CatItemView'
+        model: 'retrade.model.CatItemView',
+        sorters: [{ property: 'code', direction: 'ASC' }]
       </f:facet>
 
       <f:facet name = "proxy-props">
@@ -100,7 +101,7 @@ ${v.checkModelRequestedWithRedirect}
         region: 'center',
         columns: ZeT.defined('retrade.columns.CatItemView'),
         selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'}),
-        pager: false, sortableColumns: false
+        pager: false, sortableColumns: true
       </f:facet>
     </x:data-grid>
 

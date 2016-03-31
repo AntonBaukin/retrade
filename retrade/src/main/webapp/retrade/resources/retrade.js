@@ -1140,21 +1140,20 @@ ZeT.init('ReTrade.init', function()
 		return [
 
 		 {
-		   text: "Код", dataIndex: 'code', sortable: false,
-		   width: extjsf.ex(14)
+		   text: "Наименование", dataIndex: 'code', sortable: true,
+		   width: extjsf.ex(16)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'name', sortable: false,
-		   width: extjsf.ex(48), flex: 1
+		   text: "Полное наименование", dataIndex: 'name', sortable: true,
+		   flex: 1
 		 },
 
 		 {
-		   text: "ОКЕИ", dataIndex: 'classCode', sortable: false,
-		   width: extjsf.ex(12)
+		   text: "ОКЕИ", dataIndex: 'classCode', sortable: true,
+		   width: extjsf.ex(12), align: 'right'
 		 }
-
-		];
+		]
 	})
 
 	ZeT.define('retrade.readers.MeasureUnitView', {
@@ -1195,16 +1194,15 @@ ZeT.init('ReTrade.init', function()
 		return [
 
 		 {
-		   text: "Код", dataIndex: 'code', sortable: false,
+		   text: "Код", dataIndex: 'code', sortable: true,
 		   width: extjsf.ex(14)
 		 },
 
 		 {
-		   text: "Наименование", dataIndex: 'name', sortable: false,
+		   text: "Наименование", dataIndex: 'name', sortable: true,
 		   width: extjsf.ex(48), flex: 1
 		 }
-
-		];
+		]
 	})
 
 	//>: catalogue items
