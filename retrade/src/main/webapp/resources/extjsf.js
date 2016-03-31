@@ -2884,7 +2884,8 @@ extjsf.ClearCo = ZeT.defineClass('extjsf.ClearCo',
 	}
 })
 
-// +----: Window Loader :---------------------------------------+
+
+// +----: Component Loader :------------------------------------+
 
 /**
  * Strategy to load content of a Component (a Window,
@@ -2945,7 +2946,7 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 
 		//~: take window in the domain
 		return ZeT.assertn(
-		  extjsf.bind('window', this.opts.domain),
+		  extjsf.co('window', this.opts.domain),
 		  'Can not find window in the domain: [',
 		  this.opts.domain, ']!')
 	},
@@ -2954,6 +2955,12 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 	{
 		var b = extjsf.bind(this.co())
 		return (b)?(b):extjsf.bind(this.opts)
+	},
+
+	domain           : function()
+	{
+		var b = this.bind()
+		return b && b.domain
 	},
 
 	load             : function()
@@ -3070,12 +3077,17 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 		//~: resolve delayed parameters
 		ZeT.undelay(ps)
 
-		//~: domain parameter
-		var b = this.bind()
-		if(!ZeT.iss(ps.domain) && b.domain)
-			ps.domain = b.domain
+		//~: additional parameters
+		this.$special_params(ps)
 
 		return ps
+	},
+
+	$special_params  : function(ps)
+	{
+		//~: domain parameter
+		if(!ZeT.iss(ps.domain) && this.domain())
+			ps.domain = this.domain()
 	},
 
 	$form_params     : function(params)

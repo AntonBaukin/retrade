@@ -244,77 +244,6 @@ ReTrade.Desktop.extend(
 		return new ReTrade.Message(opts).trigger()
 	},
 
-	loadPanel  : function(url, opts)
-	{
-		var pos = (opts = opts || {}).position
-		if(!pos) pos = 'center'
-
-		//~: remove existing content
-		if(this.panelController(pos))
-			this.panelController(pos).remove()
-
-		var panel = ZeT.assertn(
-		  this.controller(pos).contentPanel(),
-		  'Not found Desktop content panel ', pos, ']!'
-		)
-
-		//~: define the domain
-		var domain = opts.domain;
-		if(!ZeT.iss(domain)) domain = 'desktop:panel';
-		if((domain.indexOf(':desktop') == -1) &&
-		   (domain.indexOf('desktop:') == -1)
-		  )
-			domain = 'desktop:' + domain
-
-		//~: define the method
-		var method = 'GET';
-		if(ZeT.iss(opts.method)) method = opts.method;
-
-		//~: create the parameters
-		var params = opts.params || {};
-		ZeT.undelay(params) //<-- resolve delayed parameters
-
-		//~: set the domain parameter
-		params.domain = extjsf.nameDomain(domain)
-
-		//~: set the view id parameter
-		if(!ZeT.ises(opts.view)) params.view = opts.view
-
-		//~: set the view mode parameter (defaults to body)
-		params.mode = ZeT.iss(opts.mode)?(opts.mode):('body');
-
-		//~: set the position parameter
-		params['desktop-position'] = pos;
-
-		//!: load the content
-		Ext.create('Ext.ComponentLoader', {
-
-		  url: retrade_go_url(url), 'params': params,
-		  target: panel.co(), autoLoad: true, scripts: true,
-		  ajaxOptions: {'method': method}
-		})
-	},
-
-	swapPanels        : function(one, two)
-	{
-		var cone = this.panelController(one)
-		var ctwo = this.panelController(two)
-
-		//~: temporarily remove the contents of the panels
-		if(cone) cone.remove(false)
-		if(ctwo) ctwo.remove(false)
-
-		//~: swap the positions
-		if(cone) cone.position(two)
-		if(ctwo) ctwo.position(one)
-
-		//~: insert the contents back
-		if(cone) cone.insert()
-		if(ctwo) ctwo.insert()
-
-		return this
-	},
-
 	applyWindowBox    : function(opts)
 	{
 		var win = ZeT.assertn(extjsf.co(opts))
@@ -545,59 +474,6 @@ ReTrade.Desktop.extend(
 		return this
 	},
 
-	/**
-	 * Ready point is an extension point added to the desktop
-	 * to allow various nested components to tell the desktop
-	 * are they ready or not. When all the points are ready,
-	 * desktop fires ready event. This allows client code
-	 * to activate when all complex layout is ready.
-	 *
-	 * Note that the name of the point must be unique.
-	 * Ready argument must be a boolean, or undefined.
-	 */
-	readyPoint        : function(name, ready)
-	{
-		ZeT.assert(ZeT.isu(ready) || ZeT.isb(ready))
-
-		//~: add the point if it absents
-		if(!this._ready_points) this._ready_points = {}
-		var rp = this._ready_points[name]
-		if(rp) rp.ready = !!ready
-		else this._ready_points[name] = { 'name': name, 'ready': ready }
-
-		//ZeT.log('Ready point [', name, ']: ', ready)
-
-		//~: inspect whether all are ready
-		var keys = ZeT.keys(this._ready_points)
-		this._ready_go = true
-		for(var i = 0;(i < keys.length);i++)
-			if(!this._ready_points[keys[i]].ready)
-				{ this._ready_go = false; break }
-
-		//?: {all are ready} go!
-		if(this._ready_go && this._ready_fs)
-		{
-			var fs = this._ready_fs
-			this._ready_fs = null //<-- !: clear ready callbacks list
-
-			for(i = 0;(i < fs.length);i++)
-				fs[i]()
-		}
-
-		return this
-	},
-
-	onReady           : function(f)
-	{
-		ZeT.assert(ZeT.isf(f))
-		if(this._ready_go !== false) return f()
-
-		if(!this._ready_fs) this._ready_fs = []
-		this._ready_fs.push(f)
-
-		return this
-	},
-
 	_size_pt          : function(opts)
 	{
 		if(opts.widthpt)
@@ -634,7 +510,7 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 	{
 		if(ZeTS.ises(this.opts.webLink.panel))
 			this.opts.webLink.panel = 'center'
-		retrade_add_user$web_link(this.opts.webLink)
+		retrade_add_user_web_link(this.opts.webLink)
 	}
 })
 

@@ -527,6 +527,18 @@ ZeT.extend(ZeT,
 
 			return false
 		}
+	},
+
+	/**
+	 * Shortcut to (s.indexOf(x) >= 0).
+	 */
+	ii               : function(s /* x0, x1, ... */)
+	{
+		for(var i = 1;(i < arguments.length);i++)
+			if(s.indexOf(arguments[i]) >= 0)
+				return true
+
+		return false
 	}
 })
 

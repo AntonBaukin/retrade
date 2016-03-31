@@ -38,6 +38,48 @@ extjsf.Desktop = ZeT.defineClass('extjsf.Desktop',
 	},
 
 	/**
+	 * Loads content of ExtJSF generated Binds
+	 * by the URL wrapped with extjsf_go_url().
+	 * See extjsf.Desktop.Load strategy.
+	 */
+	loadPanel        : function(url, opts)
+	{
+		opts = ZeT.extend(opts, {
+		  desktop: this, url: url
+		})
+
+		//!: load via the strategy
+		ZeT.createInstance('extjsf.Desktop.Load', opts).load()
+	},
+
+	/**
+	 * Swaps the content of the panels given.
+	 * If panel has no content, it just recieves
+	 * one from the opposite panel of the swapped.
+	 */
+	swapPanels       : function(one, two)
+	{
+		ZeT.assert(one != two)
+
+		var cone = this.panelController(one)
+		var ctwo = this.panelController(two)
+
+		//~: temporarily remove the contents of the panels
+		if(cone) cone.remove(false)
+		if(ctwo) ctwo.remove(false)
+
+		//~: swap the positions
+		if(cone) cone.position(two)
+		if(ctwo) ctwo.position(one)
+
+		//~: insert the contents back
+		if(cone) cone.insert()
+		if(ctwo) ctwo.insert()
+
+		return this
+	},
+
+	/**
 	 * Returns the controller of the panel defined
 	 * by it's bind or the position.
 	 */
@@ -115,6 +157,94 @@ extjsf.Desktop = ZeT.defineClass('extjsf.Desktop',
 			ZeT.assert(c.desktopPanel === true)
 			rc[position] = c
 		}
+
+		return this
+	},
+
+	/**
+	 * Ready point is an extension point added to the desktop
+	 * to allow various nested components to tell the desktop
+	 * are they ready or not. When all the points are ready,
+	 * desktop fires ready event. This allows client code
+	 * to activate when all complex layout is ready.
+	 *
+	 * Note that the name of the point must be unique
+	 * not to mess them. Ready argument must be a boolean
+	 * (defaults to false).
+	 *
+	 * This is a Barrier pattern.
+	 */
+	readyPoint       : function(name, ready)
+	{
+		ZeT.asserts(name)
+		if(ZeT.isu(ready)) ready = false
+		ZeT.assert(ZeT.isb(ready))
+
+		//~: ready points map on the first demand
+		var rps = this._ready_points
+		if(!rps) this._ready_points = rps = {}
+
+		//~: add the point if it absents
+		var rp = rps[name]
+		if(rp) rp.ready = ready; else
+			rps[name] = { name: name, ready: ready }
+
+		//ZeT.log('Ready point [', name, ']: ', ready)
+
+		//~: inspect whether all are ready
+		var ready_go = true
+		ZeT.each(rps, function(x)
+		{
+			if(x.ready) return
+			ready_go = false
+			return false
+		})
+
+		//?: {all are ready} go!
+		if(this._ready_go = ready_go)
+		{
+			var fs = this._ready_fs
+
+			//!: clear ready callbacks list
+			delete this._ready_fs
+
+			if(fs) fs.each(function(f)
+			{
+				try
+				{
+					f()
+				}
+				catch(e)
+				{
+					ZeT.log('Error in Desktop onReady() ',
+					  'callback! \n', f, '\n', e)
+				}
+			})
+		}
+
+		return this
+	},
+
+	/**
+	 * Adds Desktop callback waiting all ready
+	 * point to become available. If Desktop
+	 * is now ready, invokes the callback
+	 * without adding it.
+	 */
+	onReady          : function(f)
+	{
+		ZeT.assertf(f)
+
+		//?: {desktop is now ready}
+		if(this._ready_go !== false)
+			return f()
+
+		//~: create callbacks on the first demand
+		if(!this._ready_fs)
+			this._ready_fs = new ZeT.Map()
+
+		//~: add the callback
+		this._ready_fs.put(f)
 
 		return this
 	},
@@ -998,5 +1128,142 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 
 		ZeT.assert(p != n)
 		this.desktop().swapPanels(p, n)
+	}
+})
+
+
+// +----: Desktop Loader :---------------------------------------+
+
+/**
+ * Strategy that extends component loader to load
+ * JSF pages generating components for Desktop
+ * region content panels.
+ *
+ * In options required 'desktop' refers the Desktop.
+ * Required option 'url' tells the requested address
+ * of the XHTML-page that generated ExtJSF binds.
+ *
+ * The parameters option 'params' may have:
+ *
+ * · view   ExtJSF view id;
+ * · mode   ExtJSF page mode (defaults to 'body').
+ */
+ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
+{
+	init             : function()
+	{
+		this.$applySuper(arguments)
+
+		//~: check desktop
+		this.desktop()
+
+		//~: check the url
+		this.$url()
+	},
+
+	desktop          : function()
+	{
+		var d = this.opts.desktop
+
+		ZeT.assert(d && d.extjsfDesktop,
+		  'No Desktop instance is given!')
+
+		return d
+	},
+
+	/**
+	 * Returns domain string from the options.
+	 * Creates default domain name, if not given.
+	 * Wraps result with extjsf.nameDomain().
+	 */
+	domain           : function()
+	{
+		if(this._domain)
+			return this._domain
+
+		var d = this.opts.domain
+
+		//?: {take the default name}
+		if(ZeT.ises(d))
+			d = 'desktop:panel'
+
+		//?: {add desktop prefix}
+		if(!ZeT.ii(d, ':desktop', 'desktop:'))
+			d = 'desktop:' + d
+
+		return this._domain =
+		  extjsf.nameDomain(d)
+	},
+
+	/**
+	 * Returns desktop region position from the options
+	 * having 'center' as the default value.
+	 */
+	position         : function()
+	{
+		var p = this.opts.position
+		return ZeT.ises(p)?('center'):(p)
+	},
+
+	/**
+	 * Component to load to is content panel of
+	 * destop region panel in the position().
+	 */
+	co               : function()
+	{
+		var p = this.position(), b = ZeT.assertn(
+		  this.desktop().controller(p).contentPanel(),
+		  'Not found Desktop content panel ', p, ']!'
+		)
+
+		return b.co()
+	},
+
+	/**
+	 * Override this method to add URL infix specific
+	 * to the layout of XHTML-files in your application.
+	 * This version just add prefix '/go/' that defaults
+	 * to the go-dispatching servlet.
+	 */
+	$url             : function()
+	{
+		var url = ZeT.asserts(this.opts.url,
+		  'URL of the Desktop panel content is not set!')
+
+		//HINT: see scripts.xhtml page
+		return extjsf_go_url(url)
+	},
+
+	$is_clear_domain : function()
+	{
+		return false
+	},
+
+	$is_clear_co     : function()
+	{
+		return !!this.desktop().
+		  panelController(this.position())
+	},
+
+	$clear_co        : function()
+	{
+		this.desktop().panelController(
+		  this.position()).remove()
+	},
+
+	$special_params  : function(ps)
+	{
+		this.$applySuper(arguments)
+
+		//~: set the view id parameter
+		if(!ps.view && !ZeT.ises(this.opts.view))
+			ps.view = this.opts.view
+
+		//~: set the view mode parameter (defaults to body)
+		if(!ps.mode) ps.mode = ZeT.iss(this.opts.mode)?
+		  (this.opts.mode):('body')
+
+		//~: set the position parameter
+		ps['desktop-position'] = this.position()
 	}
 })
