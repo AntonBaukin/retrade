@@ -253,17 +253,39 @@ function testChecks()
 
   var F   = { a: 'a', b: [ 0, function(){} ]}
 
-  ZeT.assert(!ZeT.isx(ZeT.isf, F, 'a'))
-  ZeT.assert( ZeT.isx(ZeT.not(ZeT.isf), F, 'a'))
+  assert(!ZeT.isx(ZeT.isf, F, 'a'))
+  assert( ZeT.isx(ZeT.not(ZeT.isf), F, 'a'))
 
-  ZeT.assert( ZeT.isx(null, F, 'xyz'))
-  ZeT.assert( ZeT.isx(ZeT.isu, F, 'xyz'))
-  ZeT.assert(!ZeT.isx(ZeT.not(ZeT.isu), F, 'xyz'))
+  assert( ZeT.isx(null, F, 'xyz'))
+  assert( ZeT.isx(ZeT.isu, F, 'xyz'))
+  assert(!ZeT.isx(ZeT.not(ZeT.isu), F, 'xyz'))
 
-  ZeT.assert( ZeT.isx(ZeT.not(ZeT.isf), F, 'b', 0))
-  ZeT.assert( ZeT.isx(ZeT.isf, F, 'b', 1))
-  ZeT.assert( ZeT.isx(ZeT.or(ZeT.isf, ZeT.isu), F, 'b', 2))
-  ZeT.assert(!ZeT.isx(ZeT.and(ZeT.isf, ZeT.isu), F, 'b', 2))
+  assert( ZeT.isx(ZeT.not(ZeT.isf), F, 'b', 0))
+  assert( ZeT.isx(ZeT.isf, F, 'b', 1))
+  assert( ZeT.isx(ZeT.or(ZeT.isf, ZeT.isu), F, 'b', 2))
+  assert(!ZeT.isx(ZeT.and(ZeT.isf, ZeT.isu), F, 'b', 2))
+
+
+  //--> test
+
+  assert(!ZeT.test())
+  assert(!ZeT.test(null))
+  assert(!ZeT.test(undefined))
+  assert(!ZeT.test(0))
+  assert(!ZeT.test(0.0))
+  assert( ZeT.test(1))
+  assert(!ZeT.test(''))
+  assert(!ZeT.test(' '))
+  assert( ZeT.test(' a bc'))
+  assert(!ZeT.test([]))
+  assert(!ZeT.test([ 0 ]))
+  assert( ZeT.test([ 1 ]))
+  assert( ZeT.test([ 0, 1 ]))
+  assert( ZeT.test(assert))
+  assert( ZeT.test([ assert ]))
+  assert(!ZeT.test([ null, 0, '' ]))
+  assert( ZeT.test([ null, 1, '' ]))
+  assert( ZeT.test([ null, 0, ' a ' ]))
 }
 
 function testAsserts()

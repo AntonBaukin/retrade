@@ -11,7 +11,8 @@
   <!-- [store of attribute values] -->
   <x:data-store storeId = "${z:vid(v, 'goodAttrs')}" modelView = "${v}">
     <f:facet name = "store-props">
-      model: 'retrade.model.GoodAttrView'
+      model: 'retrade.model.GoodAttrView',
+      sorters: [{ property: 'nameLo', direction: 'ASC' }]
     </f:facet>
   </x:data-store>
 
@@ -260,11 +261,16 @@
           valueField: 'value', displayField: 'text'
         })
 
+        var valueEditor = Ext.create('Ext.ux.field.Multi', {
+          items: [ textEditor, listEditor ]
+        })
+
         //~: select the value editor
         function getValueEditor(m)
         {
           var vs = m.get('ox').values
-          if(!ZeT.isa(vs)) return textEditor
+          if(!ZeT.isa(vs))
+            return valueEditor.setActive(textEditor)
 
           //~: remove all current values
           listStore.removeAll()
@@ -285,9 +291,8 @@
             })
           })
 
-          return listEditor
+          return valueEditor.setActive(listEditor)
         }
-
 
         return [
 
@@ -718,6 +723,41 @@
     var attrId = astore.co().getAt(0).getId()
     vgrid.assignAttrType(m, attrId)
   }
+
+
+  //~: special storted of the store
+  extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').on('beforesort', function(store, sorters)
+  {
+    if(!sorters.length) return
+    ZeT.assert(sorters.length == 1)
+
+    var sorter = sorters[0]
+    ZeT.assert('nameLo' == sorter.getProperty())
+
+    var sfn = sorter.sortFn
+    sorter.sortFn = function(a, b)
+    {
+      var sa = a.get('nameLo'), sb = b.get('nameLo')
+      var xa = ZeT.ises(sa), xb = ZeT.ises(sb)
+
+      if(xa && xb) return 0; else if(xa || xb) {
+        var asc = ('ASC' == sorter.getDirection())?(+1):(-1)
+        return asc * (xa?(-1):(+1))
+      }
+
+      var ab = sa.toLocaleLowerCase().localeCompare(sb.toLocaleLowerCase())
+      var va = a.get('value'), vb = b.get('value')
+      var ya = !ZeT.test(va) && a.dirty
+      var yb = !ZeT.test(vb) && b.dirty
+
+      if(ya && yb) return ab; else if(ya || yb) {
+        var asc = ('ASC' == sorter.getDirection())?(+1):(-1)
+        return asc * (ya?(-1):(+1))
+      }
+
+      return ab
+    }
+  })
 
 
   //~: filter by the attribute group

@@ -898,12 +898,20 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 
 		var ske = this.skipEvents(true); try
 		{
-			if((win.getWidth() != w) || (win.getHeight() != h))
-				win.setSize(w, h)
+			var dw = w - win.getWidth()
+			var dh = h - win.getHeight()
+
+			//?: {size is changed}
+			if(dw || dh) win.setSize(w, h)
 
 			if(doalign !== false)
-				if(a) win.alignTo(document.body, a)
-				else  win.setXY(xy)
+				//~: do align to | justify resize
+				if(a) win.alignTo(document.body, a); else
+				{
+					xy[0] -= Math.round(dw * 0.5)
+					xy[1] -= Math.round(dh * 0.5)
+					win.setXY(xy)
+				}
 		}
 		finally
 		{

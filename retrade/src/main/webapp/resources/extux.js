@@ -422,3 +422,207 @@ Ext.define('Ext.ux.column.ActionCell',
 		return res;
 	}
 })
+
+
+// +----: Multi Field :------------------------------------------+
+
+/**
+ * Container of fields that displays only one ov them.
+ * Primary used for grids cell editing when a column
+ * has values from different types.
+ *
+ * As a container the field may have not only a field
+ * components (but also labels, blocks). If a field
+ * is a direct child, you may use index of the child
+ * items. Be aware when adding-removing them.
+ */
+Ext.define('Ext.ux.field.Multi',
+{
+	extend            : 'Ext.Container',
+
+	mixins            : [ 'Ext.form.field.Field' ],
+
+	layout            : 'fit',
+
+	/**
+	 * Tells index of currently active field,
+	 * or directly refers child field component.
+	 */
+	active            : 0,
+
+	initComponent     : function()
+	{
+		this.callParent()
+
+		//~: show active field
+		this.$show_active()
+
+		//~: show-hide on added
+		this.on('added',
+		  ZeT.fbind(this.$show_active, this))
+	},
+
+	/**
+	 * Return currently active field.
+	 */
+	getActive         : function()
+	{
+		var field = this.active
+
+		//?: {take by the index}
+		if(ZeT.isi(field))
+			if(field < this.items.getCount())
+				field = this.items.getAt(field)
+
+		//?: {is not a component}
+		if(field && (field.isFormField !== true))
+			field = undefined
+
+		return field
+	},
+
+	setActive         : function(f)
+	{
+		//?: {clear active}
+		if(ZeT.isx(f))
+		{
+			delete this.active
+			this.$show_active()
+			return this
+		}
+
+		//?: {field is given by index}
+		if(ZeT.isi(f))
+			if(f < this.items.getCount())
+				f = this.items.getAt(f)
+
+		//?: {not a field}
+		ZeT.assert(f && (f.isFormField === true))
+
+		//?: {not within the descendants}
+		ZeT.assert(ZeT.ii(this.query(
+		  '[isFormField=true]'), f))
+
+		//~: assign and show
+		this.active = f
+		this.$show_active()
+
+		return this
+	},
+
+	/**
+	 * First, hides all the children. Then, traces
+	 * up from the active child and shows it and
+	 * all it's ancestor containers.
+	 */
+	$show_active      : function()
+	{
+		//~: hide all children
+		this.items.each(function(i){ i.hide() })
+
+		//~: take the active, show up
+		var a = this.getActive()
+		while(a && (a != this))
+		{
+			a.show()
+			a = a.ownerCt
+		}
+	},
+
+	/**
+	 * Applies call to currently active field.
+	 */
+	$apply            : function(method, args)
+	{
+		var m, field = this.getActive()
+
+		//?: {no field or not supports}
+		if(!field || !ZeT.isf(m = field[method]))
+			return undefined
+
+		return m.apply(field, args)
+	},
+
+	/**
+	 * Applies call to each nested field component.
+	 */
+	$each            : function(method, args)
+	{
+		var fs = this.query('[isFormField=true]')
+
+		for(var m, i = 0;(i < fs.length);i++)
+			if(ZeT.isf(m = fs[i][method]))
+				m.apply(fs[i], args)
+
+		return this
+	}
+})
+
+/**
+ * Wraps methods from field-related components
+ * and the mix-ins with $apply and $each.
+ */
+ZeT.scope(Ext.ux.field.Multi, function(Multi)
+{
+	var Mx = {}
+
+	var A_FIELD = [ 'batchChanges', 'checkChange',
+	  'checkDirty', 'extractFileInput', 'getErrors',
+	  'getModelData', 'getName', 'getSubmitData',
+	  'getValidation', 'getValue', 'initField',
+	  'initValue', 'isDirty', 'isEqual', 'isFileUpload',
+	  'isValid', 'markInvalid', 'setValidation',
+	  'setValue', 'validate'
+	]
+
+	var E_FIELD = [ 'clearInvalid', 'reset',
+	  'resetOriginalValue'
+	]
+
+	var A_BASE = [ 'getInputId', 'getRawValue',
+	  'getSubmitValue', 'processRawValue', 'rawToValue',
+	  'setFieldStyle', 'setRawValue', 'setReadOnly',
+	  'validateValue', 'valueToRaw'
+	]
+
+	var A_OBS = [ 'fireAction', 'fireEvent', 'fireEventArgs',
+	  'getConfig', 'getInitialConfig', 'hasListener',
+	  'isSuspended', 'relayEvents', 'setConfig'
+	]
+
+	var E_OBS = [ 'addListener', 'addManagedListener',
+	  'clearListeners', 'clearManagedListeners',
+	  'enableBubble', 'mon', 'mun', 'on', 'removeListener',
+	  'removeManagedListener', 'setListeners', 'resumeEvent',
+	  'resumeEvents', 'suspendEvent', 'suspendEvents', 'un'
+	]
+
+	var A_FO = [ 'focus', 'isFocusable',
+	  'getTabIndex', 'setTabIndex'
+	]
+
+	function apply(m)
+	{
+		Mx[m] = function()
+		{
+			return this.$apply(m, arguments)
+		}
+	}
+
+	function each(m)
+	{
+		Mx[m] = function()
+		{
+			return this.$each(m, arguments)
+		}
+	}
+
+	ZeT.each(A_FIELD, apply)
+	ZeT.each(E_FIELD, each)
+	ZeT.each(A_BASE,  apply)
+	ZeT.each(A_OBS,   apply)
+	ZeT.each(E_OBS,   each)
+	ZeT.each(A_FO,    apply)
+
+	Multi.addMembers(Mx)
+})

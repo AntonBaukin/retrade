@@ -27,7 +27,7 @@
 
 .x-btn-inner-default-small
 {
-  color: black; padding: 0 4px;
+  color: black; padding: 2px 4px 0 4px;
 }
 
 textarea.x-form-textarea

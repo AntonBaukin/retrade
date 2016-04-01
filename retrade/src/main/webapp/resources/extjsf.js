@@ -3129,6 +3129,48 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 extjsf.u = ZeT.define('extjsf.utilities',
 {
 	/**
+	 * Wraps named method of a Component instance
+	 * with the function given. Function is invoked
+	 * with the same arguments as the original, but
+	 * it's this-context differs! It's an object of:
+	 * 'co' referring the component; $callSuper and
+	 * $applySuper analogues of ZeT.Class.
+	 */
+	wrap             : function(co, method, f)
+	{
+		if(extjsf.isbind(co))
+			co = co.co()
+
+		ZeT.assertn(co)
+		ZeT.asserts(method)
+		ZeT.assertf(f)
+
+		//~: save existing method
+		var old  = ZeT.assertf(co[method], 'Property [',
+		  method, '] is not a method of object!')
+
+		var that = { co : co }
+
+		//~: $applySuper()
+		that.$applySuper = function(args)
+		{
+			return old.apply(co, args)
+		}
+
+		//~: $callSuper()
+		that.$callSuper  = function()
+		{
+			return old.apply(co, arguments)
+		}
+
+		//~: wrap it
+		co[method] = function()
+		{
+			return f.apply(that, arguments)
+		}
+	},
+
+	/**
 	 * Makes fields marked with extjsfReadWrite
 	 * option (equal true) to be read-only or not.
 	 *
