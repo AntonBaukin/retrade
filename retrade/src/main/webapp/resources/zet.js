@@ -46,8 +46,9 @@ var ZeT = window.ZeT =
 	},
 
 	/**
-	 * Invokes the function given. Optiona arguments
-	 * must go before the function-body.
+	 * Invokes the function given. Optional arguments
+	 * must go before the function-body. This-context
+	 * of the call is passed to the callback.
 	 */
 	scope            : function(/* [parameters] f */)
 	{

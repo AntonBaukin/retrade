@@ -1342,7 +1342,7 @@ extjsf.Bind.extend(
 		var a = ZeT.a(arguments)
 		a.splice(0, 0, this)
 
-		ZeT.scope.apply(ZeT, a)
+		ZeT.scope.apply(this, a)
 		return this
 	},
 
@@ -2820,6 +2820,56 @@ extjsf.StoreBind = ZeT.defineClass(
 
 		//~: add new parameters
 		ZeT.extend(params, sp)
+	}
+})
+
+
+// +----: Grid Bind :-------------------------------------------+
+
+extjsf.GridBind = ZeT.defineClass(
+  'extjsf.GridBind', extjsf.Bind,
+{
+	className        : 'extjsf.GridBind',
+
+	$install         : function()
+	{
+		//?: {build the pager}
+		if(this.$raw().pager === true)
+			this.nest('pager', this.$build_pager)
+
+		this.$applySuper(arguments)
+	},
+
+	$build_pager     : function(pager)
+	{
+		//~: delete pager required flag
+		delete this.$raw().pager
+
+		//~: default pager properties
+		pager.props({ xtype: 'pagingtoolbar',
+		  store: this.$raw().store, displayInfo: true,
+		  emptyMsg: 'Данные не найдены!',
+		  displayMsg: 'Записи {0}:{1} из {2}'
+		})
+
+		//~: read from the facet
+		pager.readPropsNode()
+
+		//~: assign pager as the bottom bar
+		this.props({ bbar: pager.$raw() })
+
+		//~: destroy pager bind
+		this.on('destroy', pager.boundDestroy())
+
+		//~: assign the pager component
+		this.when(function()
+		{
+			var pg = this.co().getDockedItems(
+			  'pagingtoolbar[dock=bottom]')
+
+			ZeT.assert(ZeT.isa(pg) && (pg.length == 1))
+			pager.co(pg[0])
+		})
 	}
 })
 
