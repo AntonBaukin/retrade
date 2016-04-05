@@ -42,6 +42,11 @@ public abstract class ViewBase
 	public void     setPhonyString(String s)
 	{}
 
+	public String   noAction()
+	{
+		return null;
+	}
+
 
 	/* Request Access */
 
