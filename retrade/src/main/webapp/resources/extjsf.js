@@ -1794,6 +1794,18 @@ extjsf.ActionBind = ZeT.defineClass(
 	},
 
 	/**
+	 * Requies single object argument, updates
+	 * the parameters with it's values.
+	 */
+	httpParams       : function(p)
+	{
+		ZeT.assert(arguments.length == 1)
+		ZeT.assert(ZeT.iso(p))
+		ZeT.extend(this.$raw('params'), p)
+		return this
+	},
+
+	/**
 	 * Call strategy of the action. Posts the form.
 	 */
 	$handler         : function(opts)
@@ -3071,7 +3083,7 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 		var ps = ZeT.extend({}, this.opts.params)
 
 		//~: add form parameters
-		if(this.$form())
+		if(this.$form() && (this.$method() != 'GET'))
 			this.$form_params(ps)
 
 		//~: resolve delayed parameters

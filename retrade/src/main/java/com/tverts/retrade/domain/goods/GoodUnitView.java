@@ -413,6 +413,7 @@ public class GoodUnitView implements Serializable
 
 		//=: attributes mapping
 		this.attrs = Goods.convert(this.attrValues);
+		if(this.attrs == null) this.attrs = new HashMap<>();
 
 		return this;
 	}

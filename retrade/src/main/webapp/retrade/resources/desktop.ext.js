@@ -1375,9 +1375,8 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 	_on_resize        : function()
 	{
 		//!: prevent window go-out
-		//var win = this.win(false)
-		//if(win) this._prevent_out(win)
-		this._prevent_out(win)
+		var win = this.win(false)
+		if(win) this._prevent_out(win)
 
 		if(!this._is_on('reframe') || this._is_skip())
 			return

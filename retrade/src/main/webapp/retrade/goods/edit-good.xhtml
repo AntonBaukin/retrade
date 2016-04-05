@@ -49,10 +49,21 @@ ${v.checkModelRequestedWithRedirect}
         xtype: 'button', text: 'Отмена', cls: 'ux-btn-red',
         handler : function()
         {
-          extjsf.co('window', '${extDom}').close()
+          if(${v.creating}) return extjsf.co('window', '${extDom}').close()
+          extjsf.handler("${z:vid(v, 'reload-window')}", '${extDom}')()
         }
       </f:facet>
     </x:component>
+
+
+    <!-- [reopen action] -->
+    <x:action-delegate coid = "${z:vid(v, 'reload-window')}"
+     action = "#{v.noAction}">
+
+      <f:facet name = "action-params">
+        method: 'GET', entity: '#{v.goodView.objectKey}'
+      </f:facet>
+    </x:action-delegate>
 
 
     <!-- [close window button] -->
@@ -1191,7 +1202,7 @@ ${v.checkModelRequestedWithRedirect}
           window.retradeEditDone = true
           window.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
 
-          extjsf.handler("${z:vid(v, 'cancel-edit')}", '${extDom}')()
+          extjsf.handler("${z:vid(v, 'reload-window')}", '${extDom}')()
         }
       })
     }
@@ -1223,14 +1234,18 @@ ${v.checkModelRequestedWithRedirect}
 
   <ui:define name = 'scripts'>
 
-   <ui:fragment rendered = "#{not empty v.goodAddedKey and v.model.selSetAble}">
-   <script>
-   //<![CDATA[
+    <ui:fragment rendered = "#{not empty v.goodAddedKey}">
+    <script>
+    //<![CDATA[
 
- ReTrade.selset.items([#{v.goodAddedKey}], true).reloadStore()
+      extjsf.bind("${z:vid(v, 'reload-window')}", '${extDom}').
+        httpParams({ entity: '#{v.goodAddedKey}' })
 
-   //]]>
-   </script>
+      if("#{v.model.selSetAble}" == 'true')
+        ReTrade.selset.items([ #{v.goodAddedKey} ], true).reloadStore()
+
+    //]]>
+    </script>
    </ui:fragment>
   </ui:define>
 </ui:decorate>
