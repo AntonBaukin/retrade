@@ -611,9 +611,10 @@ ${v.checkModelRequestedWithRedirect}
         margin: extjsf.pts(0, 0, 0, 0)
       </f:facet>
 
-      <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}">
+      <x:checkbox-field coid = "${z:vid(v, 'add-to-selset')}"
+        value = "#{v.model.selSetAble}">
+
         <f:facet name = "extjs-props">
-          checked: !!extjsf.bind('window', '${extDom}').retradeAddSelSetChecked,
           cls: 'retrade-align-right', fieldStyle: { marginRight: '4pt' }
         </f:facet>
 
@@ -862,7 +863,7 @@ ${v.checkModelRequestedWithRedirect}
     var gused   = extjsf.bind("${z:vid(v, 'good-used')}", '${extDom}')
     var close   = extjsf.bind("${z:vid(v, 'close')}", '${extDom}')
     var cancel  = extjsf.bind("${z:vid(v, 'cancel-edit')}", '${extDom}')
-    var window = extjsf.bind('window', '${extDom}')
+    var window  = extjsf.bind('window', '${extDom}')
     var groups  = extjsf.bind("${z:vid(v, 'groups')}", '${extDom}')
     var edit    = extjsf.bind("${z:vid(v, 'edit')}", '${extDom}')
     var vcodes  = extjsf.bind("${z:vid(v, 'vendor-codes')}", '${extDom}')
@@ -876,6 +877,7 @@ ${v.checkModelRequestedWithRedirect}
     var gweight = extjsf.bind("${z:vid(v, 'gross-weight')}", '${extDom}')
     var nweight = extjsf.bind("${z:vid(v, 'net-weight')}", '${extDom}')
     var rvol    = extjsf.bind("${z:vid(v, 'rest-volume')}", '${extDom}')
+    var addss   = extjsf.bind("${z:vid(v, 'add-to-selset')}", '${extDom}')
 
 
     //~: go to the calculation
@@ -1163,14 +1165,16 @@ ${v.checkModelRequestedWithRedirect}
     //~: submit the form
     extjsf.handler("${z:vid(v, 'submit')}", '${extDom}', submitForm)
 
+    //~: initial check status of the selection field
+    addss.value(!!extjsf.bind('window', '${extDom}').retradeAddSelSetChecked)
+
     function submitForm()
     {
       //?: {has selection set checked}
-      var addss = extjsf.co("${z:vid(v, 'add-to-selset')}", '${extDom}')
       var ssnam = extjsf.co("${z:vid(v, 'selset')}", '${extDom}')
       var attsf = extjsf.bind("${z:vid(v, 'attributes')}", '${extDom}')
 
-      if(addss.getValue() && addss.isVisible())
+      if(addss.value() && addss.visible())
         ssnam.setValue(ReTrade.selset.selset)
 
       //?: {save the attributes}
@@ -1200,7 +1204,7 @@ ${v.checkModelRequestedWithRedirect}
         {
           var window = extjsf.bind('window', '${extDom}');
           window.retradeEditDone = true
-          window.retradeAddSelSetChecked = (addss.getValue() && addss.isVisible())
+          window.retradeAddSelSetChecked = (addss.value() && addss.visible())
 
           extjsf.handler("${z:vid(v, 'reload-window')}", '${extDom}')()
         }
