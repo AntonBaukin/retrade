@@ -578,6 +578,7 @@
     editStarted = function(ed, event)
   {
     var astore = extjsf.bind("${z:vid(v, 'attrTypes')}", '${extDom}')
+    var vgrid  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
 
     //?: {editing attribute type}
     if(event.field == 'nameLo')
@@ -586,6 +587,7 @@
       if(!ZeTS.ises(event.value) && !ZeT.isx(event.record.get('value')))
         return false //<-- forbid to alter it
 
+      vgrid.co().getSelectionModel().select([ event.record ])
       return
     }
 
@@ -595,6 +597,8 @@
       ReTrade.desktop.error('До задания значения выберете атрибут!')
       return false //<-- forbid to edit value of unknown type
     }
+
+    vgrid.co().getSelectionModel().select([ event.record ])
 
     //~: apply filter on the types
     astore.filterAttrTypes()
@@ -725,7 +729,7 @@
   }
 
 
-  //~: special storted of the store
+  //~: special sorters of the store
   extjsf.bind("${z:vid(v, 'goodAttrs')}", '${extDom}').on('beforesort', function(store, sorters)
   {
     if(!sorters.length) return

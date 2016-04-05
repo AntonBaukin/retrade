@@ -86,6 +86,15 @@ ${v.checkModelRequestedWithRedirect}
 
 
    <!-- [remove attributes button] -->
+   <x:component coid = "${z:vid(v, 'attrs-back')}">
+    <f:facet name = "extjs-props">
+      xtype: 'button', text: 'Назад', hidden: true,
+      tooltipType: 'title', tooltip: 'Вернуться к товару'
+    </f:facet>
+   </x:component>
+
+
+   <!-- [remove attributes button] -->
    <x:component coid = "${z:vid(v, 'del-attrs')}">
     <f:facet name = "extjs-props">
       xtype: 'button', text: 'Удалить', hidden: true,
@@ -833,6 +842,7 @@ ${v.checkModelRequestedWithRedirect}
     var delats  = extjsf.bind("${z:vid(v, 'del-attrs')}", '${extDom}')
     var addat   = extjsf.bind("${z:vid(v, 'add-attr')}", '${extDom}')
     var attsed  = extjsf.bind("${z:vid(v, 'attrs-edit')}", '${extDom}')
+    var attsbk  = extjsf.bind("${z:vid(v, 'attrs-back')}", '${extDom}')
     var doedit  = extjsf.bind("${z:vid(v, 'do-edit')}", '${extDom}')
     var farea   = extjsf.bind("${z:vid(v, 'filter-attrs-select-area')}", '${extDom}')
     var code    = extjsf.bind("${z:vid(v, 'code')}", '${extDom}')
@@ -1031,10 +1041,13 @@ ${v.checkModelRequestedWithRedirect}
       form.visible(!on)
       gocalc.visible(!isReadMode && !on)
       submit.visible(!isReadMode && !on)
+      cancel.visible(!isReadMode && !on)
       status.visible(!on)
       doedit.visible(isReadMode && !on)
       gused && gused.visible(false)
+      close.visible(isReadMode && !on)
 
+      attsbk.visible(on)
       atsext.visible(on)
       delats.visible(!isReadMode && on)
       addat.visible(!isReadMode && on)
@@ -1064,6 +1077,9 @@ ${v.checkModelRequestedWithRedirect}
           oxa = sattrs.collectValues(ox)
       }
     }
+
+    //~: close attributes
+    extjsf.handler(attsbk, ZeT.fbindu(toggleAttributes, 0, false))
 
     //~: toggle attributes view
     atsbtn.on('toggle', toggleAttributes)
