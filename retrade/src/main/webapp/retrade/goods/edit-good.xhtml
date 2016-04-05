@@ -1013,6 +1013,18 @@ ${v.checkModelRequestedWithRedirect}
       extjsf.u.columnByDataInd(bcodes, 'doDelete').setVisible(!isread)
     }
 
+    //~: fill vendor codes store
+    ZeT.each(vcodesh.value().split('\f'), function(x)
+    {
+      if(!ZeTS.ises(x)) vcstore.co().add({ value: x })
+    })
+
+    //~: fill barcodes store
+    ZeT.each(bcodesh.value().split('\f'), function(x)
+    {
+      if(!ZeTS.ises(x)) bcstore.co().add({ value: x })
+    })
+
     //~: default read-only for existing
     Ext.onReady(function()
     {
@@ -1117,18 +1129,6 @@ ${v.checkModelRequestedWithRedirect}
     bcodes.co().getPlugin('cellediting').on('beforeedit', function()
     {
       if(isReadMode) return false
-    })
-
-    //~: fill vendor codes store
-    ZeT.each(vcodesh.value().split('\f'), function(x)
-    {
-      if(!ZeTS.ises(x)) vcstore.co().add({ value: x })
-    })
-
-    //~: fill barcodes store
-    ZeT.each(bcodesh.value().split('\f'), function(x)
-    {
-      if(!ZeTS.ises(x)) bcstore.co().add({ value: x })
     })
 
     function encodeVendors()
