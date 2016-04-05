@@ -2831,11 +2831,41 @@ extjsf.GridBind = ZeT.defineClass(
 {
 	className        : 'extjsf.GridBind',
 
+	/**
+	 * Returns Bind of the related Store.
+	 */
+	store            : function()
+	{
+		//~: access via the component
+		if(extjsf.bind(this.co() && this.co().getStore()))
+			return extjsf.bind(this.co().getStore())
+
+		var s = this.$raw().store
+
+		if(ZeT.iss(s)) //?: {store is bind name}
+			return extjsf.bind(s, this.domain)
+
+		//?: {store option is a Store}
+		if(s && (s.isStore === true))
+			return extjsf.bind(s)
+	},
+
 	$install         : function()
 	{
 		//?: {build the pager}
 		if(this.$raw().pager === true)
 			this.nest('pager', this.$build_pager)
+
+		//?: {auto size of pages}
+		if(this.store() && (this.$raw().autoPage !== false))
+		{
+			//?: {has page size}
+			var ps = this.store().$raw().pageSize
+
+			if(ZeT.isi(ps) && (ps > 0))
+				this.on('resize',
+				  ZeT.fbind(this.$auto_page, this))
+		}
 
 		this.$applySuper(arguments)
 	},
@@ -2870,6 +2900,55 @@ extjsf.GridBind = ZeT.defineClass(
 			ZeT.assert(ZeT.isa(pg) && (pg.length == 1))
 			pager.co(pg[0])
 		})
+	},
+
+	$auto_page       : function()
+	{
+		var s = this.store()
+
+		//?: {store is not yet loaded}
+		if(!s.co() || !s.co().isLoaded())
+			if(this._bound_store_load) return; else
+			{
+				this._bound_store_load = ZeT.fbind(
+				  this.$auto_page, this)
+
+				s.on('load', this._bound_store_load)
+				return
+			}
+
+		//~: define the matching
+		var v = this.co().getView()
+		var r = v.getEl().down('.x-grid-item')
+		if(!r || !r.getHeight()) return
+
+		//~: new size of the page
+		var h = Math.floor(v.getHeight() / r.getHeight())
+		if(h < 1) h = 1
+
+		//?: {page size is the same}
+		if(!h || (s.co().getPageSize() == h)) return
+
+		//~: un-register the load listener
+		if(this._bound_store_load)
+		{
+			s.co().un('load', this._bound_store_load)
+			delete this._bound_store_load
+		}
+
+		var p = s.co().currentPage
+		var x = s.co().getPageSize()
+
+		//!: assign the page size
+		s.co().setPageSize(h)
+
+		//~: calculate the new page
+		if(ZeT.isi(p) && (p > 0))
+			p = 1 + Math.floor(x * (p - 1) / h)
+
+		//!: reload the store
+		if(!ZeT.isi(p) || (p <= 0)) p = 1
+		s.co().loadPage(p)
 	}
 })
 
