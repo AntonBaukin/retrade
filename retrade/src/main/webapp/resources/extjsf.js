@@ -2983,6 +2983,9 @@ extjsf.GridBind = ZeT.defineClass(
 
 	$rows_number     : function()
 	{
+		if(!this.co() || !this.co().getView())
+			return
+
 		var vh = this.co().getView().getHeight()
 		var rh = this.$rows_height()
 
