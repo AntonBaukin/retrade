@@ -2857,17 +2857,32 @@ extjsf.GridBind = ZeT.defineClass(
 			this.nest('pager', this.$build_pager)
 
 		//?: {auto size of pages}
-		if(this.store() && (this.$raw().autoPage !== false))
-		{
-			//?: {has page size}
-			var ps = this.store().$raw().pageSize
-
-			if(ZeT.isi(ps) && (ps > 0))
-				this.on('resize',
-				  ZeT.fbind(this.$auto_page, this))
-		}
+		if(this.$is_auto_page())
+			this.$set_auto_page()
 
 		this.$applySuper(arguments)
+	},
+
+	$destroy         : function()
+	{
+		if(this.$applySuper(arguments) === false)
+			return false
+
+		//?: {still have the store}
+		var s = this.store(); if(s && s.co())
+		{
+			if(this._store_auto_page)
+			{
+				s.co().un('beforeload', this._store_auto_page)
+				delete this._store_auto_page
+			}
+
+			if(this._store_first_load)
+			{
+				s.co().un('load', this._store_first_load)
+				delete this._store_first_load
+			}
+		}
 	},
 
 	$build_pager     : function(pager)
@@ -2902,53 +2917,142 @@ extjsf.GridBind = ZeT.defineClass(
 		})
 	},
 
-	$auto_page       : function()
+	$is_auto_page    : function()
 	{
+		//?: {client forbids it}
+		if(this.$raw().autoPage === false)
+			return false
+
+		//?: {store is not used}
+		var s; if(!(s = this.store())) return
+
+		//?: {store has no paging}
+		if(s.co() && !s.co().getPageSize())
+			return false
+
+		//~: check the property
+		var ps = s.$raw().pageSize
+		return ZeT.isi(ps) && (ps > 0)
+	},
+
+	$set_auto_page   : function()
+	{
+		delete this.$raw().autoPage
+
+		//~: adapt store size on the grid height change
+		var $ap = ZeT.fbind(this.$auto_page, this, false)
+		this.on('resize', $ap)
+
+		//~: use it for the store
+		this._store_auto_page =
+		  ZeT.fbind(this.$auto_page, this, true)
+
+		//~: calculate store page size before loading
+		this.store().on('beforeload',
+		  this._store_auto_page)
+
+		//~: double-load as a fallback
+		this._store_first_load = $ap
+		this.store().on('load', $ap)
+	},
+
+	$auto_page       : function(loading)
+	{
+		//?: {unknown page size}
+		var ps = this.$rows_number()
+		if(!ZeT.isi(ps) || (ps <= 0)) return
+
+		//?: {store is not ready yet}
 		var s = this.store()
+		if(!s.co()) return
 
-		//?: {store is not yet loaded}
-		if(!s.co() || !s.co().isLoaded())
-			if(this._bound_store_load) return; else
-			{
-				this._bound_store_load = ZeT.fbind(
-				  this.$auto_page, this)
-
-				s.on('load', this._bound_store_load)
-				return
-			}
-
-		//~: define the matching
-		var v = this.co().getView()
-		var r = v.getEl().down('.x-grid-item')
-		if(!r || !r.getHeight()) return
-
-		//~: new size of the page
-		var h = Math.floor(v.getHeight() / r.getHeight())
-		if(h < 1) h = 1
-
-		//?: {page size is the same}
-		if(!h || (s.co().getPageSize() == h)) return
-
-		//~: un-register the load listener
-		if(this._bound_store_load)
+		//?: {has the first load listener}
+		if(this._store_first_load)
 		{
-			s.co().un('load', this._bound_store_load)
-			delete this._bound_store_load
+			s.co().un('load', this._store_first_load)
+			delete this._store_first_load
 		}
 
-		var p = s.co().currentPage
+		//?: {clear existing load request}
+		if(loading) delete this._page_load_ts
+
+		//?: {page size changed}
+		if(s.co().getPageSize() != ps)
+			this.$set_page_size(ps, !loading)
+	},
+
+	$rows_number     : function()
+	{
+		var vh = this.co().getView().getHeight()
+		var rh = this.$rows_height()
+
+		if(ZeT.isn(vh) && ZeT.isn(rh))
+			return Math.floor(vh / rh)
+	},
+
+	/**
+	 * Private. Assigns the page size given when
+	 * the related Store component is created.
+	 */
+	$set_page_size   : function(ps, reload)
+	{
+		//~: assign the new page size
+		var s = this.store()
 		var x = s.co().getPageSize()
+		s.co().setPageSize(ps)
 
-		//!: assign the page size
-		s.co().setPageSize(h)
+		//?: {do not reload}
+		if(!reload) return
 
-		//~: calculate the new page
+		//~: define page of the top row
+		var p = s.co().currentPage
 		if(ZeT.isi(p) && (p > 0))
-			p = 1 + Math.floor(x * (p - 1) / h)
-
-		//!: reload the store
+			p = 1 + Math.floor(x * (p - 1) / ps)
 		if(!ZeT.isi(p) || (p <= 0)) p = 1
+
+		//~: now is the most recent load time
+		var ts = new Date().getTime()
+		this._page_load_ts = ts
+
+		//!: reload the store with delay
+		ZeT.timeout(1000, this.$reload_page, this, [ p, ts ])
+	},
+
+	$reload_page     : function(p, ts)
+	{
+		var s = this.store()
+		if(!s || !s.co()) return
+
+		//?: {this request is obsolete}
+		if(this._page_load_ts != ts) return
+		delete this._page_load_ts
+
 		s.co().loadPage(p)
+	},
+
+	/**
+	 * Assumes that each grid has the same height of
+	 * the rows. If not so, do not allow auto-paging
+	 * for such a grids!
+	 */
+	$rows_height     : function()
+	{
+		//~: take the cached value
+		var rh = this.$class.static.rows_height
+		if(rh) return rh
+
+		//~: collect stats over all grid rows
+		var s = {}, maxn = 0
+		Ext.getBody().select('.x-grid-item').each(function(n)
+		{
+			var h = n.getHeight(); if(!h) return
+			s[h] = !s[h]?(1):(s[h] + 1)
+			if(s[h] > maxn) { maxn = s[h]; rh = h}
+		})
+
+		//~: take the most probable height
+		if(ZeT.isn(rh) && (rh > 0))
+			return (this.$class.static.rows_height = rh)
 	}
 })
 
