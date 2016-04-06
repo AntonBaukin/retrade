@@ -307,7 +307,7 @@
 					return;
 				}
 				// hide on any click outside the menu or on a menu link
-				if (this.visibleSubMenus.length && !$.contains(this.$root[0], e.target) || $(e.target).is('a')) {
+				if (this.visibleSubMenus.length && !$.contains(this.$root[0], e.target) /*|| $(e.target).is('a')*/) {
 					this.menuHideAll();
 				}
 			},
@@ -571,7 +571,6 @@
 				}
 			},
 			menuHide: function($sub) {
-				if(this.menuShowTime + 100 > new Date().getTime()) return
 				if (this.$root.triggerHandler('beforehide.smapi', $sub[0]) === false) {
 					return;
 				}
@@ -1032,7 +1031,6 @@
 							$sub.show(this.opts.showDuration, complete);
 						}
 					}
-					this.menuShowTime = new Date().getTime()
 					// accessibility
 					$a.attr('aria-expanded', 'true');
 					$sub.attr({
