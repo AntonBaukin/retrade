@@ -40,6 +40,27 @@ ZeT.init('ReTrade.init', function()
 	})
 
 
+	//<: measure unit class units catalogue (OKEI)
+
+	Ext.define('retrade.model.OKEI', {
+	  extend: 'Ext.data.Model',
+
+	  idProperty: 'c',
+
+	  fields: [
+
+	    {name: 'c',   type: 'string'},
+	    {name: 'n',   type: 'string'},
+	    {name: 'an',  type: 'string'},
+	    {name: 'ai',  type: 'string'},
+	    {name: 'cn',  type: 'string'},
+	    {name: 'ci',  type: 'string'}
+	  ]
+	})
+
+	//>: measure unit class units catalogue (OKEI)
+
+
 	//<: retrade documents view model, columns and reader
 
 	Ext.define('retrade.model.DocumentView', {

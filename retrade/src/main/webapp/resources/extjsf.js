@@ -2671,7 +2671,7 @@ extjsf.StoreBind = ZeT.defineClass(
 		//?: {has no page size}
 		var ps = this.$raw().pageSize
 		ZeT.assert(ZeT.isu(ps) || (ZeT.isi(ps) && (ps >= 0)))
-		if(ps === 0) delete this.$raw().pageSize
+		if(ZeT.isu(ps)) this.props({ pageSize: 0 })
 
 		if(this.proxy) //?: {has proxy configured}
 			this.$install_proxy()

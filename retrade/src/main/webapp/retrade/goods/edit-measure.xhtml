@@ -95,6 +95,19 @@ ${v.checkModelRequested}
     </x:component>
 
 
+    <!-- [class codes store] -->
+    <x:data-store storeId = "${z:vid(v, 'okei')}">
+      <f:facet name = "store-props">
+        model: 'retrade.model.OKEI'
+      </f:facet>
+
+      <f:facet name = "proxy-props">
+        type: 'ajax', reader: { type: 'json' },
+        url: "${z:url('/retrade/okei.json')}"
+      </f:facet>
+    </x:data-store>
+
+
     <x:component coid = "${z:vid(v, '_form_fields')}">
 
       <f:facet name = "extjs-props">
@@ -141,11 +154,20 @@ ${v.checkModelRequested}
 
 
       <!-- [class code] -->
-      <x:text-field coid = "${z:vid(v, 'class-code')}"
-         value = "#{v.measureView.classCode}">
+      <x:drop-list coid = "${z:vid(v, 'class-code')}"
+        storeId = "${z:vid(v, 'okei')}"
+        value = "#{v.measureView.classCode}">
 
-        <f:facet name = "extjs-props">
-          width: extjsf.ex(12), cellCls: 'retrade-form-value-cell'
+        <f:facet name = "drop-props">
+          width: extjsf.ex(12), cellCls: 'retrade-form-value-cell',
+          matchFieldWidth: false, pickerWidthAuto: false, queryMode: 'local',
+          valueField: 'c', displayField: 'c', maskRe: retrade.rinteger,
+          listConfig: { minWidth: extjsf.ex(32), maxWidth: extjsf.ex(64), tpl: [
+            "&lt;table class = 'x-grid-table' style = 'width:100%'&gt;",
+            "&lt;tpl for = '.'&gt;&lt;tr class = 'x-boundlist-item'&gt;",
+            "&lt;td style = 'padding-right:1ex;'&gt;{c}&lt;/td&gt;&lt;td style = 'padding-right:1ex;'&gt;{na}&lt;/td&gt;&lt;td&gt;{n}&lt;/td&gt;",
+            "&lt;/tr&gt;&lt;/tpl&gt;&lt;/table&gt;"
+          ]}
         </f:facet>
 
         <f:facet name = "label-props">
@@ -153,7 +175,7 @@ ${v.checkModelRequested}
           cellCls: 'retrade-form-label-cell',
           margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
-      </x:text-field>
+      </x:drop-list>
 
 
       <!-- [class unit + is fractional -->
@@ -243,14 +265,17 @@ ${v.checkModelRequested}
   ZeT.scope(
 
     extjsf.bind("${z:vid(v, 'measure-form')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'okei')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'code')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'name')}", '${extDom}'),
     extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'submit')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'cancel')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'fractional')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'class-unit')}", '${extDom}'),
 
-  function(form, code, codecheck, submit, cancel, fractional, cu)
+  function(form, okei, code, name, codecheck, submit, cancel, fractional, cc, cu)
   {
     //~: validate code on change
     code.on('change', function(f, v)
@@ -273,6 +298,7 @@ ${v.checkModelRequested}
       })
     })
 
+
     //~: submit the form
     extjsf.handler(submit, function()
     {
@@ -283,6 +309,25 @@ ${v.checkModelRequested}
       }})
     })
 
+
+    //~: class code changed -> assign the fields
+    cc.on('change', function(c, v)
+    {
+      //?: {not 1-to-1 unit}
+      if(!ZeT.ises(cu.value()) && (1 != parseFloat(cu.value()))) return
+
+      //~: get class code object
+      if(ZeT.ises(v)) return
+      var o = okei.co().getById(v)
+      if(!o) return
+
+      if(!ZeT.ises(o.get('na')))
+        code.value(pcode = o.get('na'))
+
+      if(!ZeT.ises(o.get('n')))
+        name.value(pname = o.get('n'))
+    })
+
     //~: toggle fractional checkbox
     fractional.on('change', function(f, v)
     {
@@ -291,12 +336,20 @@ ${v.checkModelRequested}
       {
         cu.co().validator = ZeT.fbind(retrade.vvolume, retrade, { blank: false })
         cu.co().maskRe = retrade.rdecimal
+
+        //?: {value is integer}
+        if(!ZeT.ises(cu.value()) || ZeT.isi(parseFloat(cu.value())))
+          cu.value(retrade.round2str(2, parseFloat(cu.value())))
       }
       //~: is integer
       else
       {
         cu.co().validator = ZeT.fbind(retrade.vivolume, retrade, { blank: false })
         cu.co().maskRe = retrade.rinteger
+
+        //?: {value is integer}
+        if(!ZeT.ises(cu.value()) || ZeT.isi(parseFloat(cu.value())))
+          cu.value(retrade.round2str(0, parseFloat(cu.value())))
       }
 
       cu.co().validate()
