@@ -73,8 +73,11 @@ public abstract class OxCatItemBase
 		//~: assign code+name from the ox-item
 		CatItem i; if((i = this.getOx()) != null)
 		{
-			setCode(EX.asserts(i.getCode()));
-			setName(EX.asserts(i.getName()));
+			if(!SU.sXe(i.getCode()))
+				setCode(i.getCode());
+
+			if(!SU.sXe(i.getName()))
+				setName(i.getName());
 		}
 
 		//~: update the search text
