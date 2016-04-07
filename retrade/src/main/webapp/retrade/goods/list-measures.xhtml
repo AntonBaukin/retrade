@@ -7,7 +7,7 @@
 
 <c:set var = "v" scope = "request" value = "${facesMeasuresView}"/>
 
-${rootView.forceSecure('view: goods')}
+${v.forceSecure('view: goods')}
 ${v.checkModelRequestedWithRedirect}
 
 <ui:decorate template = '/resources/.view-modes/body.xhtml'
@@ -22,10 +22,8 @@ ${v.checkModelRequestedWithRedirect}
   <script type = "text/javascript">
   //<![CDATA[
 
-    extjsf.bind('window', '${extDom}').
-      co().setTitle('Единицы измерения')
-
-    ReTrade.desktop.prevsizeComp('window', '${extDom}')
+    extjsf.co('window', '${extDom}').
+      setTitle('Единицы измерения')
 
   //]]>
   </script>
@@ -46,16 +44,12 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [close window button] -->
 
-    <x:component coid = "${z:vid(v, 'close_window')}">
+    <x:component coid = "${z:vid(v, 'close')}">
       <f:facet name = "extjs-props">
-        xtype: 'button', text: 'Закрыть',
-
-        handler : function()
+        xtype: 'button', text: 'Закрыть', handler : function()
         {
-          extjsf.bind('window', '${extDom}').
-            co().close()
+          extjsf.co('window', '${extDom}').close()
         }
-
       </f:facet>
     </x:component>
 
@@ -70,11 +64,11 @@ ${v.checkModelRequestedWithRedirect}
 
     <!-- [add measure] -->
 
-    <x:action-button coid = "${z:vid(v, 'add_measure')}"
+    <x:action-button coid = "${z:vid(v, 'add')}"
       action = "#{v.gotoCreateMeasureUnit}" modelView = "#{v}">
 
       <f:facet name = "extjs-props">
-        text: 'Добавить', disabled: ${not rootView.isSecure('edit: goods')}
+        text: 'Добавить', disabled: ${not v.isSecure('edit: goods')}
       </f:facet>
     </x:action-button>
   </f:facet>
@@ -82,7 +76,7 @@ ${v.checkModelRequestedWithRedirect}
 
   <!-- [measures table -->
 
-  <x:data-store storeId = "${z:vid(v, 'measureUnits')}"
+  <x:data-store storeId = "${z:vid(v, 'measures')}"
     modelView = "${v}">
 
     <f:facet name = "store-props">
@@ -96,7 +90,7 @@ ${v.checkModelRequestedWithRedirect}
   </x:data-store>
 
   <x:data-grid coid = "${z:vid(v, 'grid')}"
-    storeId = "${z:vid(v, 'measureUnits')}">
+    storeId = "${z:vid(v, 'measures')}">
 
     <f:facet name = "grid-props">
       columns: ZeT.defined('retrade.columns.MeasureUnitView'),
@@ -114,7 +108,7 @@ ${v.checkModelRequestedWithRedirect}
   //~: go to edit measure on double click row
   extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('itemdblclick', function(grid, rec)
   {
-    if('false' == "${rootView.isSecure('edit: goods')}") return;
+    if('false' == "${v.isSecure('edit: goods')}") return;
 
     extjsf.handler("${z:vid(v, 'edit-measure')}", '${extDom}')({
       params: { entity: rec.getId() }
@@ -125,8 +119,6 @@ ${v.checkModelRequestedWithRedirect}
   </script>
 
   <!-- measures table] -->
-
-
 
 </x:winmain>
 </ui:define>

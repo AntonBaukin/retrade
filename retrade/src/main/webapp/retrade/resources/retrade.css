@@ -802,11 +802,6 @@ div.retrade-desktop-clocks-area
 
 /* Table Layouts */
 
-td.retrade-table-cell-100pc
-{
-  width: 100%;
-}
-
 .retrade-table-form-layout > table > tbody > tr > td
 {
   padding-top: 4pt;
@@ -1022,7 +1017,7 @@ td.retrade-info-title div, .retrade-info-title-label,
 {
   white-space: nowrap; margin: 0 4pt 0 7pt;
   font-size: 12.5pt; cursor: default;
-  letter-spacing: 0.1pt;
+  line-height: 10pt; letter-spacing: 0.1pt;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
