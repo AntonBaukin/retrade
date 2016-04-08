@@ -117,15 +117,25 @@ ${v.checkModelRequested}
 
 
       <!-- [measure code] -->
-      <x:text-field coid = "${z:vid(v, 'code')}"
-         value = "#{v.measureView.code}">
+      <x:drop-list coid = "${z:vid(v, 'code')}"
+        storeId = "${z:vid(v, 'okei')}"
+        value = "#{v.measureView.code}">
 
-        <f:facet name = "extjs-props">
-          cellCls: 'retrade-form-value-cell retrade-width-50pc',
-          width: '50%', allowBlank: false, validator: function()
+        <f:facet name = "drop-props">
+          cellCls: 'retrade-form-value-cell retrade-width-50pc', width: '50%',
+          matchFieldWidth: false, pickerWidthAuto: false, queryMode: 'local',
+
+          valueField: 'na', displayField: 'na', allowBlank: false, validator: function()
           {
             return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true
-          }
+          },
+
+          listConfig: { minWidth: extjsf.ex(32), maxWidth: extjsf.ex(64), tpl: [
+            "&lt;table class = 'x-grid-table' style = 'width:100%'&gt;",
+            "&lt;tpl for = '.'&gt;&lt;tr class = 'x-boundlist-item'&gt;",
+            "&lt;td style = 'padding-right:1ex;'&gt;{c}&lt;/td&gt;&lt;td style = 'padding-right:1ex;'&gt;{na}&lt;/td&gt;&lt;td&gt;{n}&lt;/td&gt;",
+            "&lt;/tr&gt;&lt;/tpl&gt;&lt;/table&gt;"
+          ]}
         </f:facet>
 
         <f:facet name = "label-props">
@@ -133,7 +143,7 @@ ${v.checkModelRequested}
           cellCls: 'retrade-form-label-cell',
           margin: extjsf.pts(0, 4, 0, 0)
         </f:facet>
-      </x:text-field>
+      </x:drop-list>
 
 
       <!-- [measure name] -->
@@ -310,6 +320,58 @@ ${v.checkModelRequested}
     })
 
 
+    /*
+    //~: lookup class code by the name
+    code.on('change', filterByCode)
+    //code.on('focus',  filterByCode)
+
+    var dropFilters
+    function filterByCode()
+    {
+      var v = code.value().toLocaleLowerCase()
+      v = Lo.replace(v, /[^a-zа-я]+/, '')
+      if(v.length < 1) return
+
+      //ZeT.log('Filter by ', v)
+      //ZeT.log('Filters ', okei.co().getFilters())
+
+      if(!dropFilters) //~: copy own filters
+      {
+        dropFilters = okei.co().getFilters().getRange()
+        ZeT.log('Saved filters ', dropFilters.length)
+      }
+
+      okei.co().setFilters([function(m)
+      {
+        var x = m.get('x'); if(!x)
+        {
+          x = m.get('na')
+          if(!x) m.get('n')
+          if(!x) return false
+
+          x = x.toLocaleLowerCase()
+          x = Lo.replace(v, /[^a-zа-я]+/, '')
+          m.set('x', x)
+        }
+
+        return (x.indexOf(v) != -1)
+      }])
+
+      //cc.co().expand()
+    }
+
+    //~: clear store filter on class code focus
+    cc.on('focus', function()
+    {
+      ZeT.log('Restore filters ', dropFilters)
+      if(ZeT.isa(dropFilters))
+      {
+        okei.co().setFilters(dropFilters)
+        dropFilters = null
+      }
+    })
+    */
+
     //~: class code changed -> assign the fields
     cc.on('change', function(c, v)
     {
@@ -331,8 +393,7 @@ ${v.checkModelRequested}
     //~: toggle fractional checkbox
     fractional.on('change', function(f, v)
     {
-      //?: {is fractional}
-      if(v)
+      if(v) //?: {is fractional}
       {
         cu.co().validator = ZeT.fbind(retrade.vvolume, retrade, { blank: false })
         cu.co().maskRe = retrade.rdecimal
@@ -341,8 +402,7 @@ ${v.checkModelRequested}
         if(!ZeT.ises(cu.value()) || ZeT.isi(parseFloat(cu.value())))
           cu.value(retrade.round2str(2, parseFloat(cu.value())))
       }
-      //~: is integer
-      else
+      else //~: is integer
       {
         cu.co().validator = ZeT.fbind(retrade.vivolume, retrade, { blank: false })
         cu.co().maskRe = retrade.rinteger
