@@ -29,12 +29,13 @@ ${v.checkModelRequested}
   </script>
 
   <f:facet name = "extjs-props">
-    layout: 'fit', bodyCls: 'retrade-back-panel'
+    layout: { type: 'vbox', align: 'stretch' },
+    bodyCls: 'retrade-back-panel'
   </f:facet>
 
   <f:facet name = "toolbar-props">
     xtype: 'panel', bodyPadding: extjsf.pt(2),
-    layout: {type: 'hbox', align: 'middle'},
+    layout: { type: 'hbox', align: 'middle' },
     bodyCls: 'retrade-toolbar-panel'
   </f:facet>
 
@@ -83,178 +84,117 @@ ${v.checkModelRequested}
     <f:facet name = "extjs-props">
       border: false, bodyPadding: extjsf.pt(4),
       bodyCls: 'retrade-content-panel',
-      layout: { type: 'vbox', align: 'stretch' }
+      layout: { type: 'table', columns: 2 }
     </f:facet>
 
 
-    <x:component coid = "${z:vid(v, '_form_fill_0')}">
+    <!-- [measure code] -->
+    <x:text-field coid = "${z:vid(v, 'code')}"
+      value = "#{v.measureView.code}">
+
       <f:facet name = "extjs-props">
-        xtype: 'panel', flex: 1, border: false,
-        bodyCls: 'retrade-transparent-panel'
+        cellCls: 'retrade-form-value-cell retrade-width-50pc',
+        width: '50%', allowBlank: false, validator: function()
+        {
+          return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true
+        }
+      </f:facet>
+
+      <f:facet name = "label-props">
+        text: 'Наименование',
+        cellCls: 'retrade-form-label-cell',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [measure name] -->
+    <x:text-field coid = "${z:vid(v, 'name')}"
+      value = "#{v.measureView.name}">
+
+      <f:facet name = "extjs-props">
+        allowBlank: false, width: '100%',
+        cellCls: 'retrade-form-value-cell retrade-width-100pc'
+      </f:facet>
+
+      <f:facet name = "label-props">
+        html: 'Полное&lt;br/&gt;наименование',
+        cellCls: 'retrade-form-label-cell',
+        margin: extjsf.pts(0, 4, 0, 0)
+      </f:facet>
+    </x:text-field>
+
+
+    <!-- [class code, unit + is fractional -->
+
+    <!-- [class code detached label] -->
+    <x:component coid = "${z:vid(v, 'class-unit-xlabel')}">
+      <f:facet name = "extjs-props">
+        xtype: 'label', text: 'Код ОКЕИ', cellCls: 'retrade-form-label-cell',
+        margin: extjsf.pts(0, 4, 0, 0), forId: ZeT.delay(function()
+        {
+          return extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}').$node_id()
+        })
       </f:facet>
     </x:component>
 
 
-    <!-- [class codes store] -->
-    <x:data-store storeId = "${z:vid(v, 'okei')}">
-      <f:facet name = "store-props">
-        model: 'retrade.model.OKEI'
-      </f:facet>
-
-      <f:facet name = "proxy-props">
-        type: 'ajax', reader: { type: 'json' },
-        url: "${z:url('/retrade/okei.json')}"
-      </f:facet>
-    </x:data-store>
-
-
-    <x:component coid = "${z:vid(v, '_form_fields')}">
-
+    <x:component coid = "${z:vid(v, '_class_code_unit_fractional')}">
       <f:facet name = "extjs-props">
-        border: false, bodyCls: 'retrade-transparent-panel',
-        layout: { type: 'table', columns: 2 }
+        border: false, margin: extjsf.pts(4, 0, 0, 0),
+        bodyCls: 'retrade-transparent-panel',
+        layout: { type: 'hbox', align: 'middle' }
       </f:facet>
 
-
-      <!-- [measure code] -->
-      <x:drop-list coid = "${z:vid(v, 'code')}"
-        storeId = "${z:vid(v, 'okei')}"
-        value = "#{v.measureView.code}">
-
-        <f:facet name = "drop-props">
-          cellCls: 'retrade-form-value-cell retrade-width-50pc', width: '50%',
-          matchFieldWidth: false, pickerWidthAuto: false, queryMode: 'local',
-
-          valueField: 'na', displayField: 'na', allowBlank: false, validator: function()
-          {
-            return extjsf.bind("${z:vid(v, 'code')}", '${extDom}').validityStatus || true
-          },
-
-          listConfig: { minWidth: extjsf.ex(32), maxWidth: extjsf.ex(64), tpl: [
-            "&lt;table class = 'x-grid-table' style = 'width:100%'&gt;",
-            "&lt;tpl for = '.'&gt;&lt;tr class = 'x-boundlist-item'&gt;",
-            "&lt;td style = 'padding-right:1ex;'&gt;{c}&lt;/td&gt;&lt;td style = 'padding-right:1ex;'&gt;{na}&lt;/td&gt;&lt;td&gt;{n}&lt;/td&gt;",
-            "&lt;/tr&gt;&lt;/tpl&gt;&lt;/table&gt;"
-          ]}
-        </f:facet>
-
-        <f:facet name = "label-props">
-          text: 'Наименование',
-          cellCls: 'retrade-form-label-cell',
-          margin: extjsf.pts(0, 4, 0, 0)
-        </f:facet>
-      </x:drop-list>
-
-
-      <!-- [measure name] -->
-      <x:text-field coid = "${z:vid(v, 'name')}"
-         value = "#{v.measureView.name}">
+      <!-- [class code] -->
+      <x:text-field coid = "${z:vid(v, 'class-code')}"
+       value = "#{v.measureView.classCode}">
 
         <f:facet name = "extjs-props">
-          allowBlank: false, width: '100%',
-          cellCls: 'retrade-form-value-cell retrade-width-100pc'
-        </f:facet>
-
-        <f:facet name = "label-props">
-          html: 'Полное&lt;br/&gt;наименование',
-          cellCls: 'retrade-form-label-cell',
-          margin: extjsf.pts(0, 4, 0, 0)
+          flex: 1, maskRe: retrade.rinteger,
+          cls: 'retrade-info-title-label'
         </f:facet>
       </x:text-field>
 
 
-      <!-- [class code] -->
-      <x:drop-list coid = "${z:vid(v, 'class-code')}"
-        storeId = "${z:vid(v, 'okei')}"
-        value = "#{v.measureView.classCode}">
+      <!-- [class unit] -->
+      <x:text-field coid = "${z:vid(v, 'class-unit')}"
+        value = "#{v.measureView.classUnit}">
 
-        <f:facet name = "drop-props">
-          width: extjsf.ex(12), cellCls: 'retrade-form-value-cell',
-          matchFieldWidth: false, pickerWidthAuto: false, queryMode: 'local',
-          valueField: 'c', displayField: 'c', maskRe: retrade.rinteger,
-          listConfig: { minWidth: extjsf.ex(32), maxWidth: extjsf.ex(64), tpl: [
-            "&lt;table class = 'x-grid-table' style = 'width:100%'&gt;",
-            "&lt;tpl for = '.'&gt;&lt;tr class = 'x-boundlist-item'&gt;",
-            "&lt;td style = 'padding-right:1ex;'&gt;{c}&lt;/td&gt;&lt;td style = 'padding-right:1ex;'&gt;{na}&lt;/td&gt;&lt;td&gt;{n}&lt;/td&gt;",
-            "&lt;/tr&gt;&lt;/tpl&gt;&lt;/table&gt;"
-          ]}
+        <f:facet name = "extjs-props">
+          flex: 1, cls: 'retrade-info-title-label',
+          maskRe: retrade.#{(v.measureView.fractional)?('rdecimal'):('rinteger')},
+          validator: ZeT.fbind(retrade.#{(v.measureView.fractional)?('vvolume'):('vivolume')}, retrade, { blank: false })
         </f:facet>
 
         <f:facet name = "label-props">
-          text: 'Код ОКЕИ',
-          cellCls: 'retrade-form-label-cell',
-          margin: extjsf.pts(0, 4, 0, 0)
+          text: 'коэфф.', cls: 'retrade-info-title-label',
+          margin: extjsf.pts(0, 4, 0, 6)
         </f:facet>
-      </x:drop-list>
+
+        <f:converter for = "valueInput"
+          converterId = "com.tverts:fmt:decimal"/>
+      </x:text-field>
 
 
-      <!-- [class unit + is fractional -->
+      <!-- [is fractional] -->
+      <x:checkbox-field coid = "${z:vid(v, 'fractional')}"
+        value = "#{v.measureView.fractional}">
 
-      <x:component coid = "${z:vid(v, 'class-unit-xlabel')}">
         <f:facet name = "extjs-props">
-          xtype: 'label', text: 'Коэффициент',
-          cellCls: 'retrade-form-label-cell',
-          margin: extjsf.pts(0, 4, 0, 0),
-          forId: ZeT.delay(function()
-          {
-            return extjsf.bind("${z:vid(v, 'class-unit')}", '${extDom}').$node_id()
-          })
-        </f:facet>
-      </x:component>
-
-      <x:component coid = "${z:vid(v, '_class_unit_fractional')}">
-        <f:facet name = "extjs-props">
-          border: false, margin: extjsf.pts(4, 0, 0, 0),
-          bodyCls: 'retrade-transparent-panel',
-          layout: { type: 'hbox', align: 'middle' }
+          margin: extjsf.pts(0, 0, 0, 6)
         </f:facet>
 
-
-        <!-- [class unit] -->
-        <x:text-field coid = "${z:vid(v, 'class-unit')}"
-          value = "#{v.measureView.classUnit}">
-
-          <f:facet name = "extjs-props">
-            allowBlank: false, width: extjsf.ex(12), cls: 'retrade-info-title-label',
-            maskRe: retrade.#{(v.measureView.fractional)?('rdecimal'):('rinteger')},
-            validator: ZeT.fbind(retrade.#{(v.measureView.fractional)?('vvolume'):('vivolume')}, retrade, { blank: false })
-          </f:facet>
-
-          <f:converter for = "valueInput"
-            converterId = "com.tverts:fmt:decimal"/>
-        </x:text-field>
-
-
-        <!-- [is fractional] -->
-        <x:checkbox-field coid = "${z:vid(v, 'fractional')}"
-          value = "#{v.measureView.fractional}">
-
-          <f:facet name = "extjs-props">
-            margin: extjsf.pts(0, 0, 0, 6)
-          </f:facet>
-
-          <f:facet name = "label-props">
-            cls: 'retrade-info-title-label',
-            html: "&lt;span title = 'Десятичное значение позволяет задавать объём " +
-              "товара с точностью до тысячных долей. (Изменение значения не затронет " +
-              "существующие объёмы товаров.)'&gt;десятичное&lt;/span&gt;"
-          </f:facet>
-        </x:checkbox-field>
-      </x:component>
-
-      <!-- class unit + is fractional] -->
+        <f:facet name = "label-props">
+          cls: 'retrade-info-title-label',
+          html: "&lt;span title = 'Десятичное значение позволяет задавать объём " +
+          "товара с точностью до тысячных долей. (Изменение значения не затронет " +
+          "существующие объёмы товаров.)'&gt;десятичное&lt;/span&gt;"
+        </f:facet>
+      </x:checkbox-field>
     </x:component>
 
-
-    <!-- [class code and unit -->
-
-
-    <x:component coid = "${z:vid(v, '_form_fill_1')}">
-     <f:facet name = "extjs-props">
-       xtype: 'panel', flex: 1, border: false,
-       bodyCls: 'retrade-transparent-panel'
-     </f:facet>
-    </x:component>
+    <!-- class code, unit + is fractional] -->
 
 
     <!-- [special: submit action] -->
@@ -269,13 +209,38 @@ ${v.checkModelRequested}
     action = "#{v.doCheckCodeExists}" modelView = "${v}"/>
 
 
+  <!-- [class codes store + grid -->
+
+  <x:data-store storeId = "${z:vid(v, 'okei')}">
+    <f:facet name = "store-props">
+      model: 'retrade.model.OKEI',
+      sorters: [{ property: 'c', direction: 'ASC' }]
+    </f:facet>
+
+    <f:facet name = "proxy-props">
+      type: 'ajax', reader: { type: 'json' },
+      url: "${z:url('/retrade/okei.json')}"
+    </f:facet>
+  </x:data-store>
+
+  <x:data-grid coid = "${z:vid(v, 'grid')}"
+    storeId = "${z:vid(v, 'okei')}">
+
+    <f:facet name = "grid-props">
+      flex: 1, columns: ZeT.defined('retrade.columns.OKEI'), sortableColumns: true,
+      selModel: extjsf.delayCreate('Ext.selection.RowModel', {mode: 'SINGLE'})
+    </f:facet>
+  </x:data-grid>
+
+  <!-- class codes store + grid] -->
+
+
   <script type = "text/javascript">
   //<![CDATA[
 
   ZeT.scope(
 
     extjsf.bind("${z:vid(v, 'measure-form')}", '${extDom}'),
-    extjsf.bind("${z:vid(v, 'okei')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'code')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'name')}", '${extDom}'),
     extjsf.handler("${z:vid(v, 'check-code-exists-script')}", '${extDom}'),
@@ -284,8 +249,10 @@ ${v.checkModelRequested}
     extjsf.bind("${z:vid(v, 'fractional')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'class-code')}", '${extDom}'),
     extjsf.bind("${z:vid(v, 'class-unit')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'okei')}", '${extDom}'),
+    extjsf.bind("${z:vid(v, 'grid')}", '${extDom}'),
 
-  function(form, okei, code, name, codecheck, submit, cancel, fractional, cc, cu)
+  function(form, code, name, codecheck, submit, cancel, fractional, cc, cu, okei, grid)
   {
     //~: validate code on change
     code.on('change', function(f, v)
@@ -320,75 +287,121 @@ ${v.checkModelRequested}
     })
 
 
-    /*
-    //~: lookup class code by the name
-    code.on('change', filterByCode)
-    //code.on('focus',  filterByCode)
+    //<: filter the class codes grid
 
-    var dropFilters
-    function filterByCode()
+    var filters = []
+    nullFilters()
+
+    function xValue(x)
     {
-      var v = code.value().toLocaleLowerCase()
-      v = Lo.replace(v, /[^a-zа-я]+/, '')
-      if(v.length < 1) return
-
-      //ZeT.log('Filter by ', v)
-      //ZeT.log('Filters ', okei.co().getFilters())
-
-      if(!dropFilters) //~: copy own filters
-      {
-        dropFilters = okei.co().getFilters().getRange()
-        ZeT.log('Saved filters ', dropFilters.length)
-      }
-
-      okei.co().setFilters([function(m)
-      {
-        var x = m.get('x'); if(!x)
-        {
-          x = m.get('na')
-          if(!x) m.get('n')
-          if(!x) return false
-
-          x = x.toLocaleLowerCase()
-          x = Lo.replace(v, /[^a-zа-я]+/, '')
-          m.set('x', x)
-        }
-
-        return (x.indexOf(v) != -1)
-      }])
-
-      //cc.co().expand()
+      x = x.toLocaleLowerCase()
+      return Lo.replace(x, /[^a-zа-я]+/, '')
     }
 
-    //~: clear store filter on class code focus
-    cc.on('focus', function()
+    function xModel(m, p)
     {
-      ZeT.log('Restore filters ', dropFilters)
-      if(ZeT.isa(dropFilters))
+      var x = m.get('x' + p); if(x) return x
+      x = m.get(p); if(!x) return
+
+      m.set('x' + p, x = xValue(x))
+      return x
+    }
+
+    function nullFilters()
+    {
+      filters[0] = ZeT.fbindu(filterByClassCode, 0, null)
+      filters[1] = ZeT.fbindu(filterByCode, 0, null)
+      filters[2] = ZeT.fbindu(filterByName, 0, null)
+    }
+
+    function setFilters(f, i, s)
+    {
+      nullFilters()
+      filters[i] = ZeT.fbindu(f, 0, s)
+      okei.co().clearFilter()
+      okei.co().setFilters(filters)
+    }
+
+    function filterByClassCode(s, m)
+    {
+      if(!s) return true
+      return ZeTS.starts(m.get('c'), s)
+    }
+
+    function doFilterByClassCode()
+    {
+      var s = ZeTS.trim(cc.value())
+      if(ZeT.ises(s)) s = null
+      setFilters(filterByClassCode, 0, s)
+    }
+
+    function filterByCode(s, m)
+    {
+      if(!s) return true
+      var x = xModel(m, 'na')
+      return !!x && (x.indexOf(s) != -1)
+    }
+
+    function doFilterByCode()
+    {
+      var s = xValue(code.value())
+      if(ZeT.ises(s)) s = null
+      setFilters(filterByCode, 1, s)
+    }
+
+    function filterByName(s, m)
+    {
+      if(!s) return true
+      var x = xModel(m, 'n')
+      return !!x && (x.indexOf(s) != -1)
+    }
+
+    function doFilterByName()
+    {
+      var s = xValue(name.value())
+      if(ZeT.ises(s)) s = null
+      setFilters(filterByName, 2, s)
+    }
+
+    cc.on('focus',  doFilterByClassCode)
+    cc.on('change', doFilterByClassCode)
+
+    code.on('focus',  doFilterByCode)
+    code.on('change', doFilterByCode)
+
+    name.on('focus',  doFilterByName)
+    name.on('change', doFilterByName)
+
+    //>: filter the class codes grid
+
+
+    //~: assign fields by the grid
+    grid.on('select', function(g, m)
+    {
+      code.value(m.get('na'))
+      name.value(m.get('n'))
+      cc.value(m.get('c'))
+      if(ZeT.ises(cu.value()))
+        cu.value(fractional.value()?('1.00'):('1'))
+    })
+
+
+    function coerceClassUnit()
+    {
+      if(fractional.value())
       {
-        okei.co().setFilters(dropFilters)
-        dropFilters = null
+        //?: {value is integer}
+        if(!ZeT.ises(cu.value()) && ZeT.isi(parseFloat(cu.value())))
+          cu.value(retrade.round2str(2, parseFloat(cu.value())))
       }
-    })
-    */
+      else
+      {
+        //?: {value is integer}
+        if(!ZeT.ises(cu.value()) && ZeT.isi(parseFloat(cu.value())))
+          cu.value(retrade.round2str(0, parseFloat(cu.value())))
+      }
+    }
 
-    //~: class code changed -> assign the fields
-    cc.on('change', function(c, v)
-    {
-      //?: {not 1-to-1 unit}
-      if(!ZeT.ises(cu.value()) && (1 != parseFloat(cu.value()))) return
-
-      //~: get class code object
-      if(ZeT.ises(v)) return
-      var o = okei.co().getById(v)
-      if(!o) return
-
-      if(!ZeT.ises(o.get('na')))
-        code.value(pcode = o.get('na'))
-
-      if(!ZeT.ises(o.get('n')))
-        name.value(pname = o.get('n'))
-    })
 
     //~: toggle fractional checkbox
     fractional.on('change', function(f, v)
@@ -397,22 +410,34 @@ ${v.checkModelRequested}
       {
         cu.co().validator = ZeT.fbind(retrade.vvolume, retrade, { blank: false })
         cu.co().maskRe = retrade.rdecimal
-
-        //?: {value is integer}
-        if(!ZeT.ises(cu.value()) || ZeT.isi(parseFloat(cu.value())))
-          cu.value(retrade.round2str(2, parseFloat(cu.value())))
       }
       else //~: is integer
       {
         cu.co().validator = ZeT.fbind(retrade.vivolume, retrade, { blank: false })
         cu.co().maskRe = retrade.rinteger
-
-        //?: {value is integer}
-        if(!ZeT.ises(cu.value()) || ZeT.isi(parseFloat(cu.value())))
-          cu.value(retrade.round2str(0, parseFloat(cu.value())))
       }
 
+      coerceClassUnit()
       cu.co().validate()
+    })
+
+
+    //~: optimization: process class codes in the background
+    okei.on('load', function(store)
+    {
+      var xind = 0, all = store.getRange()
+      var xint = setInterval(xModelNext, 0)
+
+      function xModelNext()
+      {
+        if(xind >= all.length)
+          return clearInterval(xint)
+
+        var m = all[xind++]
+
+        xModel(m, 'na')
+        xModel(m, 'n')
+      }
     })
   })
 

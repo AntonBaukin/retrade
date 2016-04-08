@@ -105,7 +105,7 @@ function genUserLinks(authLogin)
 			icon  : 'retrade-measure-icon',
 			open  : {
 				domain : 'window:main-menu:measures',
-				box    : { widthpt: 400, heightpt: 240 },
+				box    : { widthpt: 400, heightpt: 320 },
 				link   : '/goods/list-measures'
 			}
 		},

@@ -51,11 +51,40 @@ ZeT.init('ReTrade.init', function()
 
 	    {name: 'c',   type: 'string'},
 	    {name: 'n',   type: 'string'},
-	    {name: 'an',  type: 'string'},
-	    {name: 'ai',  type: 'string'},
-	    {name: 'cn',  type: 'string'},
-	    {name: 'ci',  type: 'string'}
+	    {name: 'na',  type: 'string'},
+	    {name: 'ia',  type: 'string'},
+	    {name: 'nc',  type: 'string'},
+	    {name: 'ic',  type: 'string'}
 	  ]
+	})
+
+	ZeT.defineDelay('retrade.columns.OKEI', function()
+	{
+		return [
+
+		 {
+		   text: "Код", dataIndex: 'c', sortable: true,
+		   width: extjsf.ex(8), align: 'center'
+		 },
+
+		 {
+		   text: "Наименование", dataIndex: 'na', sortable: true,
+		   flex: 3, renderer: function(v, meta)
+		   {
+				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
+				return v
+		   }
+		 },
+
+		 {
+		   text: "Полное наименование", dataIndex: 'n', sortable: true,
+		   flex: 5, renderer: function(v, meta)
+		   {
+				meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
+				return v
+		   }
+		 }
+		]
 	})
 
 	//>: measure unit class units catalogue (OKEI)

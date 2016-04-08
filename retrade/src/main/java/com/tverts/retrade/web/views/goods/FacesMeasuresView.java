@@ -86,9 +86,9 @@ public class FacesMeasuresView extends ModelView
 		getModel().put(MeasureUnitView.class, new MeasureUnitView());
 
 		//~: default class unit
-		getMeasureView().setClassUnit(
-		  new java.math.BigDecimal("1.00")
-		);
+		//getMeasureView().setClassUnit(
+		//  new java.math.BigDecimal("1.00")
+		//);
 
 		return "create";
 	}
