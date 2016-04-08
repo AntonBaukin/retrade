@@ -2423,7 +2423,8 @@ extjsf.FieldBind = ZeT.defineClass(
 
 	$field_name      : function()
 	{
-		return this.$node_id('field')
+		ZeT.asserts(this._client_id)
+		return this._client_id + '-field'
 	}
 })
 
