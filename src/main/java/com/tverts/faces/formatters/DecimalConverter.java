@@ -28,7 +28,16 @@ public class   DecimalConverter
 
 	protected void  format(Request<BigDecimal> request)
 	{
-		request.setString(request.getValue().toString());
+		BigDecimal d = request.getValue();
+
+		//~: strip trailing zeros
+		d = d.stripTrailingZeros();
+
+		//?: {has no '.00'} add them
+		if(d.scale() < 2)
+			d = d.setScale(2);
+
+		request.setString(d.toString());
 	}
 
 	protected void  convert(Request<BigDecimal> request)
@@ -38,9 +47,9 @@ public class   DecimalConverter
 		//~: strip trailing zeros
 		d = d.stripTrailingZeros();
 
-		//?: {has no '.0'} add them
-		if(d.scale() < 1)
-			d = d.setScale(1);
+		//?: {has no '.00'} add them
+		if(d.scale() < 2)
+			d = d.setScale(2);
 
 		request.setValue(d);
 	}
