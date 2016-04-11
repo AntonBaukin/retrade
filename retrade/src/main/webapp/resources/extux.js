@@ -11,6 +11,13 @@
 Ext.Ajax.setTimeout(1000 * 60 * 30)
 
 /**
+ * Forbid sending '_dc' HTTP parameter.
+ */
+Ext.Loader.setConfig({ disableCaching: false })
+Ext.Ajax.setConfig({ disableCaching: false })
+Ext.data.proxy.Server.$config.add({ noCache: false })
+
+/**
  * Make window shadow to be on all the sides.
  */
 Ext.window.Window.override(
