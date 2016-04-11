@@ -142,11 +142,11 @@
     <script type = "text/javascript">
     //<![CDATA[
 
-      extjsf.bind("#{cc.attrs.coid}", '${extDom}').scope(
-        extjsf.bind('#{cc.attrs.windowBind}', '${extDom}'),
+    extjsf.bind('#{cc.attrs.windowBind}', '${extDom}').when(
+        extjsf.bind("#{cc.attrs.coid}", '${extDom}'),
         extjsf.bind('#{cc.attrs.coid}-toolbar', '${extDom}'),
         extjsf.bind('#{cc.attrs.coid}-status', '${extDom}'),
-        function(p, w, tb, sb)
+        function(w, p, tb, sb)
         {
           w.co().add(p.co(true))
 

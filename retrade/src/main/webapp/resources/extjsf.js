@@ -1059,6 +1059,27 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 
 		//~: also, set the events
 		this.$set_events()
+
+		//~: fire added event
+		this.$fire_added()
+	},
+
+	/**
+	 * Private. Fires added event for components
+	 * having no parent container and marked with
+	 * $fireAdded property equal true.
+	 */
+	$fire_added      : function()
+	{
+		var co = ZeT.assertn(this._component)
+
+		//?: {has parent component}
+		if(extjsf.isco(co.ownerCt)) return
+
+		//?: {has no marker option}
+		if(this.$raw().fireAdded !== true) return
+
+		co.fireEvent('added', co)
 	},
 
 	$add_to          : function()
@@ -1077,7 +1098,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 		this.$do_add(p) //!: do add
 	},
 
-	$do_add           : function(p)
+	$do_add          : function(p)
 	{
 		var self = this
 

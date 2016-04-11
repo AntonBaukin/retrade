@@ -1687,11 +1687,15 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		return this
 	},
 
-	window           : function()
+	window            : function(opts)
 	{
-		//?: {has no bind attached}
-		if(!this._window)
-			this._window = extjsf.bind('window-selset', this.domain())
+		//?: {has no bind attached, seek it created}
+		if(!this._window) this._window =
+		  extjsf.bind('window-selset', this.domain())
+
+		//?: {not found, define and create}
+		if(!this._window) this._window =
+		  ZeT.assertn(this._create_wnd(opts))
 
 		return this._window
 	},
@@ -1743,12 +1747,8 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		}
 
 		var props = ZeT.deepExtend(opts, {
-			xtype: 'window', layout: 'fit', title: 'Загрузка выборки',
-			autoShow: false, cls: 'retrade-selset-window',
-
-			loader: { autoLoad: true, scripts: true, params: params,
-				url: self.url('window'), ajaxOptions: { method: 'GET' }
-			}
+		  xtype: 'window', layout: 'fit', fireAdded: true,
+		  autoShow: false, cls: 'retrade-selset-window'
 		})
 
 		//~: assign previous position and size
@@ -1780,9 +1780,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
 	_open_wnd         : function(opts)
 	{
-		var window = this.window()
-		if(!window) this._window = window =
-		  ZeT.assertn(this._create_wnd(opts))
+		var window = this.window(opts)
 
 		//?: {hide in future}
 		this._hide = !!(opts && opts.hideOnToggle)
@@ -1851,8 +1849,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		//~: invoke the change script
 		this._changer(mi.name, function()
 		{
-			Ext.data.StoreManager.lookup(self.storeId()).load()
-			if(self.window()) self.reload()
+			self.reloadStore()
 		})
 	},
 
