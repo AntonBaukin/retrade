@@ -6,11 +6,8 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.ipr" afterPath="$PROJECT_DIR$/bakery.ipr" />
+    <list default="true" readonly="true" id="a895333c-2d28-4c9f-8f0a-ff8622d0a553" name="Default" comment="ui-103 [alpha]: created desktop history icon and placed it on the top-bar.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bakery.iws" afterPath="$PROJECT_DIR$/bakery.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/icons.css" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/resources/icons.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" afterPath="$PROJECT_DIR$/retrade/src/main/webapp/retrade/.items/main-topbar.xhtml" />
     </list>
     <ignored path="bakery.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -705,7 +702,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
     <option name="MAXIMUM_HISTORY_ROWS" value="256" />
-    <MESSAGE value="ui-101 [beta]: renamed desktop scripts." />
     <MESSAGE value="ui-101 [beta]: refactored Desktop Panel controller." />
     <MESSAGE value="ui-101 [beta]: started refactoring of Desktop loadPanel()..." />
     <MESSAGE value="ui-101 [stable]: completed refactoring of the Desktop!" />
@@ -730,7 +726,8 @@
     <MESSAGE value="ui-101 [stable]: fixed value input referencing from the fields, not formatters and converters are supported." />
     <MESSAGE value="ui-102 [stable]: displaying table with Measure classes instead of the drop lists." />
     <MESSAGE value="ui-102 [stable]: auto-paging of the grids by the center row, not top." />
-    <option name="LAST_COMMIT_MESSAGE" value="ui-102 [stable]: auto-paging of the grids by the center row, not top." />
+    <MESSAGE value="ui-103 [alpha]: created desktop history icon and placed it on the top-bar." />
+    <option name="LAST_COMMIT_MESSAGE" value="ui-103 [alpha]: created desktop history icon and placed it on the top-bar." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -952,6 +949,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.84051037">
           <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>
