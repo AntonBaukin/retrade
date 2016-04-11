@@ -3011,7 +3011,7 @@ extjsf.GridBind = ZeT.defineClass(
 		//~: define page of the top row
 		var p = s.co().currentPage
 		if(ZeT.isi(p) && (p > 0))
-			p = 1 + Math.floor(x * (p - 1) / ps)
+			p = 1 + Math.floor(x * (p - 0.5) / ps)
 		if(!ZeT.isi(p) || (p <= 0)) p = 1
 
 		//~: now is the most recent load time
