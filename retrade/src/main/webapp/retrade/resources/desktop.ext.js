@@ -1770,7 +1770,7 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		})
 
 		//~: close window listener
-		window.on('beforeclose', function()
+		window.on('close', function()
 		{
 			self.toggle(false)
 		})
@@ -1784,17 +1784,29 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		if(!window) this._window = window =
 		  ZeT.assertn(this._create_wnd(opts))
 
-		//?: {display existing window}
-		if(window.co()) return window.co().toFront()
+		//?: {hide in future}
+		this._hide = !!(opts && opts.hideOnToggle)
+		var ca = (this._hide)?('hide'):('destroy')
+
+		if(!window.co()) //?: {creating the window}
+			window.props({ closeAction: ca })
+		else //~: displaying existing window
+		{
+			window.co().closeAction = ca
+			return window.co().show().toFront()
+		}
 
 		//~: create window & display it
-		window.co(Ext.create('Ext.window.Window', window.buildProps()))
-		window.co().show()
+		window.co(true).show()
 	},
 
 	_close_wnd        : function(opts)
 	{
 		if(!this._window) return
+
+		//?: {hide instead of close}
+		if(this._hide === true)
+			return this._window.visible(false)
 
 		var window = this._window
 		delete this._window
