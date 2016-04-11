@@ -116,9 +116,9 @@
     var window = ReTrade.selset.window()
 
     //?: {has it no} open in edit mode
-    if(!window) return ReTrade.selset.toggle(true,
-      ZeT.deepExtend(retrade_default('selset-win'),
-      { params: { 'selset-edit': 'true' }}))
+    if(!window) return ReTrade.selset.toggle(true, ZeT.deepExtend(
+      ZeT.deepClone(retrade_default('selset-win')),
+        { params: { 'selset-edit': 'true' }}))
 
     var edit = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}')
     var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}')
