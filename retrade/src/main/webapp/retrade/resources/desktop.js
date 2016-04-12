@@ -35,6 +35,10 @@ extjsf.Desktop = ZeT.defineClass('extjsf.Desktop',
 
 		//~: bind the desktop with the collapsing startegy
 		this.collapsing.desktop(this)
+
+		//?: {extended}
+		if(ZeT.isf(this.init0))
+			this.init0.apply(this, arguments)
 	},
 
 	/**
@@ -1207,7 +1211,7 @@ ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
 
 	/**
 	 * Component to load to is content panel of
-	 * destop region panel in the position().
+	 * desktop region panel in the position().
 	 */
 	co               : function()
 	{
@@ -1217,6 +1221,15 @@ ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
 		)
 
 		return b.co()
+	},
+
+	load             : function()
+	{
+		var l = this.$applySuper(arguments)
+		var c = this.desktop().controller(this.position())
+
+		//~: save loading options in the desktop
+		return (c.loader = l)
 	},
 
 	/**
@@ -1263,5 +1276,9 @@ ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
 
 // +----: Desktop Instance :-------------------------------------+
 
-extjsf.desktop = ZeT.defineInstance(
-  'extjsf.desktop', extjsf.Desktop)
+/**
+ * Create Desktop instance only after all extended
+ * components and classes of the desktop are defined.
+ */
+//extjsf.desktop = ZeT.defineInstance(
+//  'extjsf.desktop', extjsf.Desktop)

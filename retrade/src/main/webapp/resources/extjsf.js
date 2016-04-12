@@ -3261,6 +3261,10 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 		return b && b.domain
 	},
 
+	/**
+	 * Loads the component and returns the options
+	 * object used for Ext.ComponentLoader.
+	 */
 	load             : function()
 	{
 		var loader = this.$create()
@@ -3273,6 +3277,8 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 
 		//!: reload content
 		Ext.create('Ext.ComponentLoader', loader)
+
+		return loader
 	},
 
 	$create          : function()

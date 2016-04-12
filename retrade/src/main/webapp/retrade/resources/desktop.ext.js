@@ -200,10 +200,15 @@ ReTrade.RepeatedTask = ZeT.defineClass('ReTrade.RepeatedTask', {
 // +----: Desktop :----------------------------------------------+
 
 ReTrade.Desktop = extjsf.Desktop
-ReTrade.desktop = extjsf.desktop
-
 ReTrade.Desktop.extend(
 {
+	init0             : function()
+	{
+		//~: create the desktop history
+		this.history =
+		  ZeT.createInstance('extjsf.Desktop.History')
+	},
+
 	/**
 	 * The first (optional) or the last argument
 	 * may be plain object with the event options.
@@ -496,7 +501,7 @@ ReTrade.Desktop.extend(
 
 ZeT.defined('extjsf.Desktop.Panel').extend(
 {
-	$add_link_tool   : function(tools)
+	$add_link_tool    : function(tools)
 	{
 		if(!ZeT.iso(this.opts.webLink)) return
 
@@ -507,11 +512,104 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		})
 	},
 
-	$web_link        : function()
+	$web_link         : function()
 	{
 		if(ZeTS.ises(this.opts.webLink.panel))
 			this.opts.webLink.panel = 'center'
 		retrade_add_user_web_link(this.opts.webLink)
+	},
+
+	$destroy          : function()
+	{
+		this.$save_history()
+		this.remove(false)
+
+	},
+
+	$save_history     : function()
+	{
+		var c = this.regionController()
+		var l = c.loader
+
+		//~: take loading options
+		if(!ZeT.iso(l)) return
+		delete c.loader
+
+		//~: check history action
+		var p = this.bind()
+		l.history = p.$raw().desktopHistory
+
+		//?: {desktop supports history}
+		if(this.desktop().history)
+			this.desktop().history.save(l, this)
+	}
+})
+
+
+// +----: Desktop History :--------------------------------------+
+
+ZeT.defineClass('extjsf.Desktop.History',
+{
+	init              : function()
+	{},
+
+	save              : function(o, saver)
+	{
+		//?: {not saving this}
+		if(!this.$is_save(o, saver))
+			return false
+
+		ZeT.log('Saving history: ', this.$save_opts(o, saver))
+	},
+
+	$is_save          : function(o, saver)
+	{
+		return !ZeT.ises(o.history) &&
+		  ZeT.ii(o.history.split(/\s+/), 'save')
+	},
+
+	$save_opts        : function(o, saver)
+	{
+		return ZeT.extend(
+		  this.$build_params(o, saver), {
+		  url    : ZeT.asserts(o.url),
+		  target : this.$target(o, saver),
+		})
+	},
+
+	$target           : function(o, saver)
+	{
+		if(saver.desktopPanel === true)
+			return 'desktop'
+	},
+
+	$build_params     : function(o, saver)
+	{
+		//~: loader parameters
+		var ps = ZeT.extend({}, o.params)
+
+		//?: {is desktop}
+		if(this.$target(o, saver) == 'desktop')
+			this.$ps_desktop(ps, o, saver)
+
+		return ps
+	},
+
+	$ps_desktop       : function(ps, o, saver)
+	{
+		var b = saver.bind()
+
+		//~: view id
+		if(ZeT.ises(ps.view) && !ZeT.ises(saver.opts.view))
+			ps.view = saver.opts.view
+
+		//~: panel title
+		if(ZeT.ises(ps.title) && b.co())
+			if(!ZeT.ises(b.co().getTitle()))
+				ps.title = b.co().getTitle()
+
+		if(ZeT.ises(ps.view) && !ZeT.ises(b.$raw().title))
+			ps.title = b.$raw().title
 	}
 })
 
@@ -4414,3 +4512,9 @@ ReTrade.TilesItemExt = ZeT.defineClass('ReTrade.TilesItemExt', ReTrade.TilesItem
 		})
 	}
 })
+
+
+// +----: Desktop Instance :-------------------------------------+
+
+ReTrade.desktop = extjsf.desktop =
+  ZeT.defineInstance('extjsf.desktop', extjsf.Desktop)

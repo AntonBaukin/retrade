@@ -2,8 +2,7 @@
 
 <ui:fragment xmlns = 'http://www.w3.org/1999/xhtml'
    xmlns:ui = 'http://java.sun.com/jsf/facelets'
-   xmlns:co = 'http://java.sun.com/jsf/composite'
-   xmlns:z  = 'uri:tverts.com'>
+   xmlns:co = 'http://java.sun.com/jsf/composite'>
 
   <co:interface>
 
@@ -35,6 +34,9 @@
 
     <co:attribute name = 'webLink' default = 'true'
        type = 'java.lang.Boolean'/>
+
+    <co:attribute name = 'desktopHistory' default = 'save'
+       type = 'java.lang.String'/>
 
     <!--
          Properties of the panel.
@@ -94,6 +96,7 @@
         domainOwner('#{cc.attrs.domainOwner}' == 'true').
         parent('#{cc.parent.attrs.coid}').props({ xtype: 'panel' }).
         props({ layout: 'border', region: 'center', border: false }).
+        props({ desktopHistory: '#{cc.attrs.desktopHistory}' }).
         props({ closable: true, minWidth: 256 }).readPropsNode().
           nest('toolbar', function(tb) {
             tb.props({ xtype: 'toolbar', dock: 'top', border: false }).readPropsNode()
@@ -110,7 +113,8 @@
 
           ZeT.createInstance('extjsf.Desktop.Panel', {
             bind: panel, desktop: extjsf.desktop,
-            webLink: wlink, position: '#{cc.attrs.position}'
+            view: '#{rootView.id}', webLink: wlink,
+            position: '#{cc.attrs.position}'
           })
         })
 
