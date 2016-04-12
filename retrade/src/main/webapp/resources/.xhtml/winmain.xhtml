@@ -34,6 +34,9 @@
     <co:attribute name = 'winAlign' default = 'lite'
        type = 'java.lang.String'/>
 
+    <co:attribute name = 'desktopHistory' default = 'save'
+       type = 'java.lang.String'/>
+
     <!--
          Properties of the root content panel.
     -->
@@ -93,6 +96,7 @@
           })
 
       extjsf.bind('#{cc.attrs.windowBind}', '${extDom}').scope(function(window){
+        window.props({ desktopHistory: '#{cc.attrs.desktopHistory}', extjsfView: '#{rootView.id}' })
         if(window.WinAlign) window.WinAlign.opts.behaviour = '#{cc.attrs.winAlign}'; else
           new ReTrade.WinAlign({window: window, behaviour: '#{cc.attrs.winAlign}' })
       })

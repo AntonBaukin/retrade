@@ -226,9 +226,15 @@ function retrade_open_window(opts)
     }
   })
 
-  //?: {has on-close}
-  if(ZeT.isf(opts.onclose))
-    window.on('beforedestroy', ZeT.fbind(opts.onclose, window))
+  //~: before the destruction
+  window.on('beforedestroy', function()
+  {
+    if(ReTrade.desktop.history)
+      ReTrade.desktop.history.save(opts, window)
+
+    if(ZeT.isf(opts.onclose)) //?: {has on-close}
+      opts.onclose.apply(window, arguments)
+  })
 
   //~: create the Ext JS Window component & return the bind
   window.co(Ext.create('Ext.window.Window', window.buildProps()))

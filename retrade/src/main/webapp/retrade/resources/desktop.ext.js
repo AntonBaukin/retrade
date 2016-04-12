@@ -523,7 +523,6 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 	{
 		this.$save_history()
 		this.remove(false)
-
 	},
 
 	$save_history     : function()
@@ -534,10 +533,6 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		//~: take loading options
 		if(!ZeT.iso(l)) return
 		delete c.loader
-
-		//~: check history action
-		var p = this.bind()
-		l.history = p.$raw().desktopHistory
 
 		//?: {desktop supports history}
 		if(this.desktop().history)
@@ -559,13 +554,30 @@ ZeT.defineClass('extjsf.Desktop.History',
 		if(!this.$is_save(o, saver))
 			return false
 
-		ZeT.log('Saving history: ', this.$save_opts(o, saver))
+		ZeT.log('+History: ', this.$save_opts(o, saver))
 	},
 
 	$is_save          : function(o, saver)
 	{
-		return !ZeT.ises(o.history) &&
-		  ZeT.ii(o.history.split(/\s+/), 'save')
+		var h = this.$history(o, saver)
+		return !ZeT.ises(h) && ZeT.ii(h.split(/\s+/), 'save')
+	},
+
+	$bind             : function(o, saver)
+	{
+		if(extjsf.isbind(saver))
+			return saver
+
+		if(ZeT.isf(saver.bind))
+			return saver.bind()
+
+		return extjsf.bind(o)
+	},
+
+	$history          : function(o, saver)
+	{
+		var b = this.$bind(o, saver)
+		return b && b.$raw().desktopHistory
 	},
 
 	$save_opts        : function(o, saver)
@@ -581,6 +593,10 @@ ZeT.defineClass('extjsf.Desktop.History',
 	{
 		if(saver.desktopPanel === true)
 			return 'desktop'
+
+		if(extjsf.isbind(saver) && saver.co())
+			if(saver.co().isWindow === true)
+				return 'window'
 	},
 
 	$build_params     : function(o, saver)
@@ -592,16 +608,20 @@ ZeT.defineClass('extjsf.Desktop.History',
 		if(this.$target(o, saver) == 'desktop')
 			this.$ps_desktop(ps, o, saver)
 
+		//?: {is window}
+		if(this.$target(o, saver) == 'window')
+			this.$ps_winmain(ps, o, saver)
+
 		return ps
 	},
 
-	$ps_desktop       : function(ps, o, saver)
+	$ps_desktop       : function(ps, o, pc)
 	{
-		var b = saver.bind()
+		var b = pc.bind()
 
 		//~: view id
-		if(ZeT.ises(ps.view) && !ZeT.ises(saver.opts.view))
-			ps.view = saver.opts.view
+		if(ZeT.ises(ps.view) && !ZeT.ises(pc.opts.view))
+			ps.view = pc.opts.view
 
 		//~: panel title
 		if(ZeT.ises(ps.title) && b.co())
@@ -610,6 +630,29 @@ ZeT.defineClass('extjsf.Desktop.History',
 
 		if(ZeT.ises(ps.view) && !ZeT.ises(b.$raw().title))
 			ps.title = b.$raw().title
+	},
+
+	$ps_winmain       : function(ps, o, w)
+	{
+		ZeT.log(o, w)
+
+		//~: view id
+		if(ZeT.ises(ps.view) && !ZeT.ises(w.$raw().extjsfView))
+			ps.view = w.$raw().extjsfView
+
+		//~: window title
+		if(ZeT.ises(ps.title) && w.co())
+			if(!ZeT.ises(w.co().getTitle()))
+				ps.title = w.co().getTitle()
+
+		if(ZeT.ises(ps.view) && !ZeT.ises(w.$raw().title))
+			ps.title = w.$raw().title
+
+		//~: window box
+		if(w.co()) {
+			ps.width  = w.co().getWidth()
+			ps.height = w.co().getHeight()
+		}
 	}
 })
 
@@ -982,7 +1025,7 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 	{
 		var xy, a
 
-		var win = this.win()
+		var win = this.win(false)
 		if(!win) return
 
 		if(!ZeT.isn(w)) w = win.getWidth()
