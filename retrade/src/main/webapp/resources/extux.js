@@ -54,7 +54,7 @@ window.execScript   = function()
 {
 	try
 	{
-		window._exec_script.apply(this, arguments)
+		return window._exec_script.apply(this, arguments)
 	}
 	catch(e)
 	{

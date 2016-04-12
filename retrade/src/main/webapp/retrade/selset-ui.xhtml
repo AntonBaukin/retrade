@@ -54,7 +54,7 @@
      extjsf.handler(script, '${extDom}')({
        params: { entity: id }, success: function()
        {
-         Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)
+         ReTrade.selset.reloadStore(1)
        }
      })
   })
@@ -79,17 +79,13 @@
   //~: edit selection
   $('#' + ReTrade.selset.ctlitems('edit')).click(function()
   {
-    //~: access active selection set window
     var window = ReTrade.selset.window()
+    var edit   = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}')
+    var grid   = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}')
 
-    //?: {has it no} open in edit mode
-    if(!window) return ReTrade.selset.toggle(true, ZeT.deepExtend(
+    ReTrade.selset.toggle(true, ZeT.deepExtend(
       ZeT.deepClone(retrade_default('selset-win')),
         { params: { 'selset-edit': 'true' }}))
-
-    var edit = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}')
-    var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}')
-    ZeT.assert(edit && grid, 'Selection Set window has no content!')
 
     grid.co().hide()
     edit.co().show()
@@ -109,8 +105,7 @@
     extjsf.handler("${z:vid(v, 'script_selset_delete')}", '${extDom}')({
       success: function()
       {
-         Ext.data.StoreManager.lookup(ReTrade.selset.storeId()).load()
-         ReTrade.selset.reload()
+         ReTrade.selset.onChange().call(ReTrade.selset)
       }
     })
   })
@@ -122,7 +117,7 @@
     extjsf.handler("${z:vid(v, 'script_selset_clear')}", '${extDom}')({
       success: function()
       {
-        Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").loadPage(1)
+        ReTrade.selset.reloadStore(1)
       }
     })
   })
@@ -181,9 +176,9 @@
   <!-- selection set calls] -->
 
 
- <!-- [selection set window -->
+  <!-- [selection set window -->
 
- <x:winmain coid = "${z:vid(v, 'selset-panel')}"
+  <x:winmain coid = "${z:vid(v, 'selset-panel')}"
     webLink = "false" winAlign = "strict"
     windowBind = 'window-selset'>
 
@@ -295,39 +290,10 @@
 
     </x:form-panel>
 
-    <script type = "text/javascript">
-    //<![CDATA[
-
-    extjsf.handler("${z:vid(v, 'window-selset-edit-cancel')}", '${extDom}', function()
-    {
-       var edit = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}');
-       var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}');
-
-       edit.co().hide()
-       grid.co().show()
-    })
-
-    extjsf.handler("${z:vid(v, 'window-selset-edit-submit')}", '${extDom}', function()
-    {
-       var form = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}');
-       var edit = extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}');
-       var grid = extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}');
-
-       //~: submit the form
-       form.submit({command: 'submit_action', success: function()
-       {
-         edit.co().hide(); grid.co().show()
-       }})
-    })
-
-    //]]>
-    </script>
-
     <!-- selection set edit form] -->
 
 
-    <!-- [selection set table -->
-
+    <!-- [selection set table] -->
     <x:data-grid coid = "${z:vid(v, 'selset-grid')}"
       storeId = "${z:vid(v, 'selSetStore')}">
 
@@ -340,35 +306,79 @@
       </f:facet>
     </x:data-grid>
 
-
     <script type = "text/javascript">
     //<![CDATA[
 
-    extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}').on('added', function(grid)
-    {
-      //~: add action column to remove items from teh set
-      grid.headerCt.insert(0, Ext.create('Ext.grid.column.Action', {
-        width: 28, flex:0, align: 'center',
-        hideable: false, draggable: false,
-        resizable: false, menuDisabled: true, items: [{
-          iconCls: 'retrade-selcol-del',
-          handler: function(grid, row)
+    ZeT.scope(
+      extjsf.bind("${z:vid(v, 'selset-grid')}", '${extDom}'),
+      extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}'),
+      extjsf.bind("${z:vid(v, 'window-selset-edit')}", '${extDom}'),
+      extjsf.bind("${z:vid(v, 'window-selset-edit-cancel')}", '${extDom}'),
+      extjsf.bind("${z:vid(v, 'window-selset-edit-submit')}", '${extDom}'),
+      extjsf.bind("${z:vid(v, 'window-selset-edit-name')}", '${extDom}'),
+
+      function(grid, form, edit, cancel, submit, name)
+      {
+        extjsf.handler(cancel, function()
+        {
+          edit.co().hide()
+          grid.co().show()
+        })
+
+
+        //~: submit the form
+        extjsf.handler(submit, function()
+        {
+          form.submit({command: 'submit_action', success: function()
           {
-             var rec = grid.getStore().getAt(row);
-             extjsf.handler("${z:vid(v, 'script_selset_del_item')}", '${extDom}')({
-              params: { entity: rec.getId() }, success: function()
+            edit.co().hide(); grid.co().show()
+          }})
+        })
+
+
+        //~: change the selection set
+        ReTrade.selset.onChange(function()
+        {
+          var n = this.selset
+
+          name.disable(ZeT.ises(n))
+          name.value(ZeT.ises(n)?('По умолчанию'):(n))
+          submit.disable(ZeT.ises(n))
+
+          this.reloadStore()
+        })
+
+
+        //~: add action column to remove items from the set
+        grid.when(function()
+        {
+          grid.co().headerCt.insert(0, Ext.create('Ext.grid.column.Action', {
+            width: 28, flex:0, align: 'center',
+            hideable: false, draggable: false,
+            resizable: false, menuDisabled: true, items: [{
+              iconCls: 'retrade-selcol-del',
+              handler: function(grid, row)
               {
-                Ext.data.StoreManager.lookup("${z:vid(v, 'selSetStore')}").load()
+                var rec = grid.getStore().getAt(row)
+                extjsf.handler("${z:vid(v, 'script_selset_del_item')}", '${extDom}')({
+                  params: { entity: rec.getId() }, success: function()
+                  {
+                    ReTrade.selset.reloadStore()
+                  }
+               })
               }
-            })
-          }
-        }]
-      }))
+            }]
+          }))
 
-      //~: reload the set store
-      ZeT.timeout(100, function() { grid.getStore().loadPage(1) })
-    })
-
+          //~: load the store
+          if(grid.co().getEl())
+            ReTrade.selset.reloadStore()
+          else grid.on('afterrender', function()
+          {
+            ReTrade.selset.reloadStore()
+          })
+        })
+      })
     //]]>
     </script>
 
@@ -376,13 +386,13 @@
 
   </x:winmain>
 
- <!-- selection set window] -->
+  <!-- selection set window] -->
 
- <ui:fragment rendered = "#{v.renderItems}">
+  <ui:fragment rendered = "#{v.renderItems}">
     <script type = "text/javascript">
     //<![CDATA[
 
-ReTrade.selset.items([#{v.selSetItems}])
+      ReTrade.selset.items([#{v.selSetItems}])
 
     //]]>
     </script>
@@ -433,6 +443,7 @@ ReTrade.selset.items([#{v.selSetItems}])
           else w.props({ title: '${z:jss(v.windowTitle)}' })
         })
 
+        ReTrade.selset.selset = '${z:jss(v.model.selSet)}'
         ReTrade.selset.buildMenu(#{v.selSetMenuModel})
 
       //]]>

@@ -1255,14 +1255,6 @@ ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
 	{
 		this.$applySuper(arguments)
 
-		//~: set the view id parameter
-		if(!ps.view && !ZeT.ises(this.opts.view))
-			ps.view = this.opts.view
-
-		//~: set the view mode parameter (defaults to body)
-		if(!ps.mode) ps.mode = ZeT.iss(this.opts.mode)?
-		  (this.opts.mode):('body')
-
 		//~: set the position parameter
 		ps['desktop-position'] = this.position()
 	}

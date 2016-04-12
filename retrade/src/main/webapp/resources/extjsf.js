@@ -310,8 +310,15 @@ ZeT.extend(extjsf,
 			if(extjsf.isbind(a0.extjsfBind))
 				return a0.extjsfBind
 
-		//?: {is options with name: and domain: )}
-		if(ZeT.isox(a0) && !ZeT.ises(a0.name))
+		//?: {options are not given}
+		if(!ZeT.isox(a0)) return
+
+		//?: {is bind given}
+		if(extjsf.isbind(a0.bind))
+			return a0.bind
+
+		//?: {name + domain pair}
+		if(!ZeT.ises(a0.name))
 		{
 			if(ZeT.iss(a0.domain))
 			{
@@ -1398,6 +1405,24 @@ extjsf.Bind.extend(
 
 		if(co) co.setVisible(!!v)
 		else p.hidden = !v
+
+		return this
+	},
+
+	/**
+	 * Makes component enabled or disabled.
+	 * Analogue of Bind.visible().
+	 */
+	disable          : function(v)
+	{
+		var co = this.co()
+		var  p = this.$raw()
+
+		if(ZeT.isu(v)) //?: {check is disabled}
+			return (co)?(co.isDisabled()):(!!p.disabled)
+
+		if(co) co.setDisabled(!!v)
+		else p.disabled = !!v
 
 		return this
 	}
@@ -3229,6 +3254,9 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 
 	domain           : function()
 	{
+		if(ZeT.iss(this.opts.domain))
+			return this.opts.domain
+
 		var b = this.bind()
 		return b && b.domain
 	},
@@ -3358,6 +3386,14 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 		//~: domain parameter
 		if(!ZeT.iss(ps.domain) && this.domain())
 			ps.domain = this.domain()
+
+		//~: set the view id parameter
+		if(!ps.view && !ZeT.ises(this.opts.view))
+			ps.view = this.opts.view
+
+		//~: set the view mode parameter (defaults to body)
+		if(!ps.mode) ps.mode = ZeT.iss(this.opts.mode)?
+		  (this.opts.mode):('body')
 	},
 
 	$form_params     : function(params)

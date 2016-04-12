@@ -679,8 +679,7 @@
           ZeT.assert(ZeT.isi(x)) //<-- primary key of the new item
 
           //~: reload the selection set
-          var s = ReTrade.selset.storeId()
-          if(!ZeTS.ises(s)) Ext.data.StoreManager.lookup(s).loadPage(1)
+          ReTrade.selset.reloadStore(1)
 
           //~: clear the form, hide menu
           attrt.value(''); attrs.menu.visible(false)

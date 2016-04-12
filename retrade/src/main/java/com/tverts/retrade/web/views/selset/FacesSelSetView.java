@@ -173,7 +173,7 @@ public class FacesSelSetView extends ModelView
 		//~: update the model
 		getModel().setSelSet(selset);
 		this.updatedMenu = true;
-		this.renderItems = false;
+		//this.renderItems = false;
 
 		return null;
 	}

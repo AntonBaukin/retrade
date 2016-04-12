@@ -1407,7 +1407,10 @@ ReTrade.WinAlign = ZeT.defineClass('ReTrade.WinAlign', {
 // +----: SelSet :-----------------------------------------------+
 
 /**
- * Selection Set implementation class.
+ * Selection Set UI controller class.
+ *
+ * Instance field 'selset' has the name
+ * of the currently selected Set.
  */
 ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 
@@ -1448,10 +1451,18 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		return this
 	},
 
-	reloadStore       : function()
+	reloadStore       : function(page)
 	{
-		if(!ZeTS.ises(this._storeId))
-			Ext.data.StoreManager.lookup(this._storeId).reload()
+		if(ZeTS.ises(this._storeId)) return
+
+		var store = ZeT.assertn(
+		  Ext.data.StoreManager.lookup(this._storeId),
+		  'Selection Set store is destroyed!')
+
+		if(ZeT.isi(page))
+			store.loadPage(page)
+		else
+			store.reload()
 	},
 
 	/**
@@ -1471,19 +1482,11 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 	 */
 	loadPlace         : function(url)
 	{
-		if(!this.place() || !this.place().co())
-			throw 'SelSet place is not specified or not built yet!'
+		ZeT.assert(this.place() && this.place().co(),
+		  'SelSet place is not specified or not built yet!')
 
-		var self = this
-		Ext.create('Ext.ComponentLoader', {
-
-		  'url': url, target: self.place().co(),
-		  autoLoad: true, scripts: true,
-		  ajaxOptions: { method: 'GET' }, params: {
-		    mode: 'body', view: self.view(),
-		    domain: self.domain()
-		  }
-		})
+		//~: load the place
+		new extjsf.LoadCo({ url: url, bind: this.place() }).load()
 	},
 
 	button            : function(nodeid)
@@ -1700,27 +1703,19 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		return this._window
 	},
 
-	reload            : function(opts)
+	/**
+	 * Invoked when Selection Set is changed (via the menu),
+	 * and the interface must be updated accordingly.
+	 * The name of the Set is given as the first
+	 * argument, callback function as the second.
+	 */
+	onChange          : function(f)
 	{
-		var self    = this
-		var window = this.window()
-		var window  = window && window.co();
-		if(!window) return
+		if(!arguments.length)
+			return this._on_change
 
-		//~: clear the window
-		new extjsf.ClearCo(window, { notListeners: true }).run()
-
-		var params = {
-		  mode: 'body', domain: self.domain(),
-		  view: self.view(), model: self.model()
-		}
-
-		//!: reload content
-		Ext.create('Ext.ComponentLoader', {
-		  target: window, url: self.url('window'),
-		  ajaxOptions: { method: 'GET' },
-		  params: params, autoLoad: true, scripts: true
-		})
+		this._on_change = ZeT.assertf(f)
+		return this
 	},
 
 	_add_object       : function()
@@ -1849,8 +1844,18 @@ ReTrade.SelSet = ZeT.defineClass('ReTrade.SelSet', {
 		//~: invoke the change script
 		this._changer(mi.name, function()
 		{
-			self.reloadStore()
+			self._menu_changed(mi.name)
 		})
+	},
+
+	_menu_changed     : function(name)
+	{
+		this.selset = name
+
+		if(!this._on_change)
+			return this.reloadStore()
+
+		this._on_change.call(this, this)
 	},
 
 	_sel_col_rnd      : function(col, rec)
