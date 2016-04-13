@@ -1301,7 +1301,7 @@ extjsf.Bind = ZeT.defineClass('extjsf.Bind',
 	$add_params      : function(params)
 	{
 		//~: default ExtJSF domain
-		if(!ZeT.iss(params.domain) && !ZeT.ises(this.domain))
+		if(!ZeT.iss(params.domain) && ZeT.iss(this.domain))
 			params.domain = this.domain
 
 		//~: default view id
@@ -2737,7 +2737,8 @@ extjsf.StoreBind = ZeT.defineClass(
 	{
 		var p = this._parent_coid
 
-		if(p && this.domain) //~: lookup the parent
+		//?: {lookup the parent}
+		if(p && ZeT.iss(this.domain))
 			p = extjsf.bind(p, this.domain)
 
 		if(!p) return
@@ -3390,7 +3391,7 @@ extjsf.LoadCo = ZeT.defineClass('extjsf.LoadCo',
 	$special_params  : function(ps)
 	{
 		//~: domain parameter
-		if(!ZeT.iss(ps.domain) && this.domain())
+		if(!ZeT.iss(ps.domain) && ZeT.iss(this.domain()))
 			ps.domain = this.domain()
 
 		//~: set the view id parameter

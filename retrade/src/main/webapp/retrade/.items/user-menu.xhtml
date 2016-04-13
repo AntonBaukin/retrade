@@ -112,9 +112,6 @@
   //~: wrap user main menu with special border
   extjsf.bind("${z:vid(localView, 'user-menu-host')}", '${extDom}').on('render', function(xmenu)
   {
-    if(xmenu.extjsfBind.retradeUserMenuWrapped) return
-    xmenu.extjsfBind.retradeUserMenuWrapped = true
-
     var n = ZeTD.n("${z:vid(localView, 'user-menu-html')}")
 
     //!: invoke the border processing pipe

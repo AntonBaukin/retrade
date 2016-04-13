@@ -337,10 +337,8 @@
           var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${extDom}')
           var xy   = menuNode.offset()
 
-          jQuery.SmartMenus.hideAll()
-
-          if(menu) menu.show().setXY([
-            xy.left + menuNode.outerWidth() - menu.getWidth(),
+          menu.show().setXY([
+            xy.left + menuNode.outerWidth() - menu.getWidth() + 3,
             xy.top + menuNode.outerHeight()
           ])
         }
@@ -349,7 +347,45 @@
       {
         icon: 'retrade-windows-icon retrade-icon-nav-24x16',
         class: 'pull-right', tooltip: 'История объектов центральной области',
-        id: "${z:vid(localView, 'retrade-desktop-windows')}"
+        onenter: true, handler: function(a, e)
+        {
+          var menu = extjsf.bind("${z:vid(localView, 'desktop-history-menu')}", '${extDom}')
+
+          if(e.type == 'click' || e.type == 'mouseenter')
+          {
+            ReTrade.desktop.uievents.toggle(false)
+
+            var xy = a.offset()
+            menu.co().show().setXY([
+              xy.left + a.outerWidth() - menu.co().getWidth() + 3,
+              xy.top + menuNode.outerHeight()
+            ])
+
+            menu.shownWithEnter = (e.type == 'mouseenter')
+
+            if(menu.shownWithEnter && !menu.setElMouseOver)
+            {
+              menu.setElMouseOver = true
+              menu.co().getEl().on('mouseenter', function()
+              {
+                var n = menu.mouseEnterCount
+                menu.mouseEnterCount = n?(n + 1):(1)
+              })
+            }
+          }
+
+          if(e.type == 'mouseleave')
+          {
+            if(!menu.shownWithEnter) return
+
+            var mec = menu.mouseEnterCount
+            ZeT.timeout(200, function()
+            {
+              if(menu.mouseEnterCount == mec)
+                menu.co().hide()
+            })
+          }
+        }
       },
 
       {
@@ -442,16 +478,27 @@
         //~: tooltip
         if(ZeT.iss(m.tooltip)) a.attr('title', m.tooltip)
 
+        function handler(e)
+        {
+          if(!m.disabled && ZeT.isf(m.handler))
+          {
+            jQuery.SmartMenus.hideAll()
+            m.handler(a, e)
+          }
+        }
+
+        //?: {mouse over handler}
+        if(m.onenter === true)
+        {
+          a.mouseenter(handler)
+          a.mouseleave(handler)
+        }
+
         //~: click handler
         a.click(function(e)
         {
           e.preventDefault()
-
-          if(!m.disabled && ZeT.isf(m.handler))
-          {
-            jQuery.SmartMenus.hideAll()
-            m.handler()
-          }
+          handler(e)
         })
       }
 
@@ -537,8 +584,8 @@
     menuNode.smartmenus({ subMenusMinWidth: null,
       showFunction: function($ul, complete)
       {
-        if(ReTrade.desktop.uievents)
-          ReTrade.desktop.uievents.toggle(false)
+        ReTrade.desktop.uievents.toggle(false)
+        extjsf.co("${z:vid(localView, 'desktop-history-menu')}", '${extDom}').hide()
 
         var menu = extjsf.co("${z:vid(localView, 'retrade-main-user-menu')}", '${extDom}')
         if(menu) menu.hide()
@@ -577,10 +624,17 @@
 
   <!-- topbar scripts] -->
 
+
   <!-- [user interface events] -->
   <ui:decorate template = "uievents.xhtml">
     <ui:param name = "localView"  value = "${localView}"/>
     <ui:param name = "mainTopbar" value = "${z:vid(localView, 'main-topbar')}"/>
+  </ui:decorate>
+
+
+  <!-- [desktop history] -->
+  <ui:decorate template = "history-menu.xhtml">
+    <ui:param name = "localView"  value = "${localView}"/>
   </ui:decorate>
 
 

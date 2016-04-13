@@ -554,7 +554,23 @@ ZeT.defineClass('extjsf.Desktop.History',
 		if(!this.$is_save(o, saver))
 			return false
 
-		ZeT.log('+History: ', this.$save_opts(o, saver))
+		//~: create the parameters
+		var ps = this.$save_opts(o, saver)
+
+		//~: create the model
+		var m = this.$new_model(ps)
+
+		//~: and save it
+		return this.$save_model(m)
+	},
+
+	storeId           : function(id)
+	{
+		if(!arguments.length)
+			return this._store_id
+
+		this._store_id = ZeT.asserts(id)
+		return this
 	},
 
 	$is_save          : function(o, saver)
@@ -572,6 +588,12 @@ ZeT.defineClass('extjsf.Desktop.History',
 			return saver.bind()
 
 		return extjsf.bind(o)
+	},
+
+	$store            : function()
+	{
+		return ZeT.ises(this._store_id)?(null):
+		  Ext.data.StoreManager.lookup(this._store_id)
 	},
 
 	$history          : function(o, saver)
@@ -634,8 +656,6 @@ ZeT.defineClass('extjsf.Desktop.History',
 
 	$ps_winmain       : function(ps, o, w)
 	{
-		ZeT.log(o, w)
-
 		//~: view id
 		if(ZeT.ises(ps.view) && !ZeT.ises(w.$raw().extjsfView))
 			ps.view = w.$raw().extjsfView
@@ -653,6 +673,51 @@ ZeT.defineClass('extjsf.Desktop.History',
 			ps.width  = w.co().getWidth()
 			ps.height = w.co().getHeight()
 		}
+	},
+
+	$save_model       : function(m)
+	{
+		var s = ZeT.assertn(this.$store())
+		var x = s.getById(m.id)
+
+		//?: {found existing record}
+		if(x) s.remove(x) //<-- delete it
+
+		//~: insert
+		x = s.insert(0, m)
+		return (ZeT.isa(x) && x.length)?(x[0]):(null)
+	},
+
+	$new_model        : function(ps)
+	{
+		var key = this.$gen_key(ps)
+		if(!key) return
+
+		//~: the model id (the key)
+		ps.key = key
+		return ps
+	},
+
+	/**
+	 * Generates a key that depends solely on the
+	 * parameters data (the history record to save).
+	 * Exactly the same record gives the same code.
+	 */
+	$gen_key          : function(ps)
+	{
+		if(ZeT.ises(ps.url)) return
+		if(ZeT.ises(ps.title)) return
+		if(ZeT.ises(ps.target)) return
+
+		var sha = CryptoJS.algo.SHA1.create()
+
+		sha.update(ps.url)
+		sha.update(ps.title)
+		sha.update(ps.target)
+		if(ZeT.iss(ps.entity))
+			sha.update(ps.entity)
+
+		return sha.finalize().toString().toUpperCase()
 	}
 })
 
