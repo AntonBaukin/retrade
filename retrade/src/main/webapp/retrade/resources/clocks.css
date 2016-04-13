@@ -51,13 +51,16 @@
 
 .retrade-boshadow-user-menu-ext
 {
-  position: absolute; right: 15px; top: -17px;
-  width: 26px; height: 17px; z-index: -1;
-
-  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xIEJhc2ljLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLWJhc2ljLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgYmFzZVByb2ZpbGU9ImJhc2ljIiBpZD0iTGF5ZXJfMSINCgkgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNnB4IiBoZWlnaHQ9IjE3cHgiDQoJIHZpZXdCb3g9IjAgMCAyNiAxNyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8ZyBvcGFjaXR5PSIwLjc1Ij4NCgk8cGF0aCBmaWxsPSIjN0M4MzhGIiBkPSJNMy41LDIwYzMuMDksMCw1LjkxLTEuMjYsNy41MS0zLjMxTDIxLjU1LDNsMy42NiwxNC4yNmMwLjM5LDEuNTksMi4yLDIuNzQsNC4yOCwyLjc0Ii8+DQo8L2c+DQo8Zz4NCgk8cGF0aCBmaWxsPSIjRDREQUU0IiBkPSJNMC41LDE3YzMuMDksMCw1LjkxLTEuMjYsNy41MS0zLjMxTDE4LjU1LDBsMy42NiwxNC4yNmMwLjM5LDEuNTksMi4yLDIuNzQsNC4yOCwyLjc0Ii8+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=);
-  background-size: 26px 17px;
+  position: absolute; right: 15px; top: -20px;
+  width: 24px; height: 22px; z-index: +1;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMjRweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMjQgMjIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDIyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGRpc3BsYXk9Im5vbmUiIG9wYWNpdHk9IjAuNyIgZmlsbD0iIzdDODM4RiIgZD0iTTIyLjQ4LDIwLjc1aDAuNjVjLTAuMDItMC4wNi0wLjA2LTAuMTItMC4wNy0wLjE4TDE4Ljc0LDIuNTJsLTIuMzQsMy4zMg0KCWwyLjQxLDExLjk0QzE5LjE3LDE5LjUxLDIwLjY5LDIwLjc1LDIyLjQ4LDIwLjc1eiIvPg0KPGc+DQoJPHBhdGggZmlsbD0iIzdDODM4RiIgZD0iTTI0LDIxaC0xYy0yLjA5LDAtMy44NS0xLjM1LTQuMjgtMy4yOEwxNS43NCwzLjc5TDcuMDUsMTcuMjhDNS41OCwxOS41NywyLjg4LDIxLDAsMjF2LTENCgkJYzIuNTQsMCw0LjkyLTEuMjUsNi4yMS0zLjI2bDEwLTE1LjUzTDE5LjcsMTcuNWMwLjMzLDEuNDcsMS42OSwyLjUsMy4zLDIuNWgxVjIxeiIvPg0KPC9nPg0KPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTE4LjcyLDE3LjcyTDE1Ljc0LDMuNzlMNy4wNSwxNy4yOEM1LjU4LDE5LjU3LDIuODgsMjEsMCwyMXYxaDI0di0xaC0xQzIwLjkyLDIxLDE5LjE2LDE5LjY1LDE4LjcyLDE3LjcyeiINCgkvPg0KPC9zdmc+DQo=);
+  background-size: 24px 22px;
 }
 
+.retrade-boshadow-user-menu-main > div:first-child
+{
+  background: white; border: 1px solid #7c838f;
+}
 
 
 /* Clocks Styles */
@@ -339,7 +342,6 @@ td.retrade-eventsnum-center > div > div, td.retrade-eventsnum-center > div > tab
   .retrade-eventsnum-controls > div.allitems > div.gray,
   .retrade-eventsnum-menu-item-controls > div.N,
   .retrade-eventsnum-controls > div.numbers td.N > div,
-  .retrade-boshadow-user-menu-main > div:first-child,
   .retrade-boshadow-N-main > div:first-child,
   .retrade-tiles-colors > div.N
 {
