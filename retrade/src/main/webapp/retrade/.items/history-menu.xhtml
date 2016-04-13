@@ -22,18 +22,31 @@
     <f:facet name = "extjs-props">
       showSeparator: false, constrain: false, layout: 'fit',
       shadow: false, border: false, bodyPadding: '20 0 0 0',
-      width: extjsf.pt(280), height: extjsf.pt(360),
+      width: extjsf.pt(280), height: extjsf.pt(240),
       bodyCls: 'retrade-transparent-panel',
       cls: 'retrade-user-menu-frame'
     </f:facet>
 
     <x:component coid = "${z:vid(localView, 'desktop-history-host')}">
       <f:facet name = "extjs-props">
-        border: false, bodyPadding: 0, margin: 0, indent: false,
+        border: false, bodyPadding: '5 10 10 5', margin: 0, indent: false,
         bodyCls: 'retrade-transparent-panel', layout: 'fit'
       </f:facet>
 
+      <x:data-grid coid = "${z:vid(desktopView, 'desktop-history-grid')}"
+        storeId = "${z:vid(desktopView, 'desktopHistory')}">
 
+        <f:facet name = "grid-props">
+          pager: false, hideHeaders: true, columns: [{
+          dataIndex: 'title', sortable: false, flex: 1,
+          renderer: function(v, meta)
+          {
+            meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
+            return v
+          }
+        }]
+      </f:facet>
+    </x:data-grid>
     </x:component>
   </x:menu>
 
