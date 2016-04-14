@@ -22,7 +22,7 @@
     <f:facet name = "extjs-props">
       showSeparator: false, constrain: false, layout: 'fit',
       shadow: false, border: false, bodyPadding: '20 0 0 0',
-      width: extjsf.pt(280), height: extjsf.pt(240),
+      width: extjsf.pt(280), height: extjsf.pt(250),
       bodyCls: 'retrade-transparent-panel',
       cls: 'retrade-user-menu-frame'
     </f:facet>
@@ -37,14 +37,16 @@
         storeId = "${z:vid(desktopView, 'desktopHistory')}">
 
         <f:facet name = "grid-props">
-          pager: false, hideHeaders: true, columns: [{
-          dataIndex: 'title', sortable: false, flex: 1,
-          renderer: function(v, meta)
-          {
-            meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
-            return v
-          }
-        }]
+          selModel: extjsf.delayCreate('Ext.ux.selection.No'),
+          viewConfig: { scrollable: false }, pager: false,
+          hideHeaders: true, columns: [{
+            dataIndex: 'title', sortable: false, flex: 1,
+            renderer: function(v, meta)
+            {
+              meta.tdAttr = 'title="' + Ext.String.htmlEncode(v) + '"'
+              return v
+            }
+          }]
       </f:facet>
     </x:data-grid>
     </x:component>
@@ -56,6 +58,7 @@
 
     //~: bind the history store
     ReTrade.desktop.history.storeId("${z:vid(desktopView, 'desktopHistory')}")
+    ReTrade.desktop.history.grid("${z:vid(desktopView, 'desktop-history-grid')}", '${extDom}')
 
 
     //~: hide menu with small delay
@@ -79,6 +82,18 @@
         })
       })
     })
+
+
+    //~: accommodate the grid height (up to 10 rows)
+    extjsf.bind("${z:vid(localView, 'desktop-history-menu')}", '${extDom}').on('show', function(menu)
+    {
+      var  g = extjsf.bind("${z:vid(localView, 'desktop-history-grid')}", '${extDom}')
+      var rh = g.$rows_height(true); if(!rh) return
+      var  n = g.co().getStore().getCount()
+      if(n < 4) n = 4; if(n > 10) n = 10
+
+      menu.setHeight(menu.getHeight() + Math.ceil(n * rh) - g.co().getView().getHeight())
+    })
   
 
     //~: wrap user main menu with special border
@@ -98,6 +113,14 @@
         //~: replace the content wrapped
         ZeT.Layout.Proc.Append, { parent: n.parentNode }
       )
+    })
+
+
+    //~: restore history model on grid click
+    extjsf.bind("${z:vid(localView, 'desktop-history-grid')}", '${extDom}').
+      on('itemclick', function(grid, m)
+    {
+      ReTrade.desktop.history.restore(m)
     })
 
   //]]>

@@ -134,7 +134,7 @@ extjsf.Domain = ZeT.defineClass('extjsf.Domain',
 		//~: collect the binds
 		this.binds.reverse(function(b){ binds.push(b) })
 
-		//ZeT.log('-@[', this.name, ']')
+		ZeT.log('-@[', this.name, ']')
 
 		//ZeT.log('-@[', this.name,
 		//  ']: ', ZeT.map(binds, 'name'))
@@ -2878,6 +2878,7 @@ extjsf.GridBind = ZeT.defineClass(
   'extjsf.GridBind', extjsf.Bind,
 {
 	className        : 'extjsf.GridBind',
+	gridBind         : true,
 
 	/**
 	 * Returns Bind of the related Store.
@@ -3086,11 +3087,11 @@ extjsf.GridBind = ZeT.defineClass(
 	 * the rows. If not so, do not allow auto-paging
 	 * for such a grids!
 	 */
-	$rows_height     : function()
+	$rows_height     : function(reset)
 	{
 		//~: take the cached value
 		var rh = this.$class.static.rows_height
-		if(rh) return rh
+		if(rh && !reset) return rh
 
 		//~: collect stats over all grid rows
 		var s = {}, maxn = 0

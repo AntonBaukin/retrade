@@ -226,8 +226,8 @@ function retrade_open_window(opts)
     }
   })
 
-  //~: before the destruction
-  window.on('beforedestroy', function()
+  //~: before the close action
+  window.on('beforeclose', function()
   {
     if(ReTrade.desktop.history)
       ReTrade.desktop.history.save(opts, window)

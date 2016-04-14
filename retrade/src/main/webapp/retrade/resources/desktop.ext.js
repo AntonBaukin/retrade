@@ -545,8 +545,10 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 
 ZeT.defineClass('extjsf.Desktop.History',
 {
-	init              : function()
-	{},
+	init              : function(opts)
+	{
+		this.opts = ZeT.extend({ limit: 10 }, opts)
+	},
 
 	save              : function(o, saver)
 	{
@@ -558,10 +560,30 @@ ZeT.defineClass('extjsf.Desktop.History',
 		var ps = this.$save_opts(o, saver)
 
 		//~: create the model
-		var m = this.$new_model(ps)
+		var  m = this.$new_model(ps)
 
 		//~: and save it
-		return this.$save_model(m)
+		m = this.$save_model(m)
+		if(!m) return
+
+		//~: save the component
+		this.$save_co(m, o, saver)
+
+		//~: remove models over the limit
+		this.$prune_rest()
+
+		return m
+	},
+
+	restore           : function(m)
+	{
+		//~: show the component
+		var s = this.$show_back(m)
+
+		//~: remove model from the store
+		this.$store().remove(m)
+
+		return !!s
 	},
 
 	storeId           : function(id)
@@ -570,6 +592,20 @@ ZeT.defineClass('extjsf.Desktop.History',
 			return this._store_id
 
 		this._store_id = ZeT.asserts(id)
+		return this
+	},
+
+	grid              : function(name, domain)
+	{
+		if(!arguments.length)
+			return (!this._grid)?(undefined):
+			  extjsf.bind(this._grid)
+
+		ZeT.assert(arguments.length == 2)
+		ZeT.asserts(name)
+		ZeT.assert(ZeT.iss(domain))
+
+		this._grid = { name: name, domain: domain }
 		return this
 	},
 
@@ -680,8 +716,8 @@ ZeT.defineClass('extjsf.Desktop.History',
 		var s = ZeT.assertn(this.$store())
 		var x = s.getById(m.id)
 
-		//?: {found existing record}
-		if(x) s.remove(x) //<-- delete it
+		//?: {found existing record} delete it
+		if(x) s.remove(this.$free_model(x))
 
 		//~: insert
 		x = s.insert(0, m)
@@ -718,6 +754,78 @@ ZeT.defineClass('extjsf.Desktop.History',
 			sha.update(ps.entity)
 
 		return sha.finalize().toString().toUpperCase()
+	},
+
+	$save_co          : function(m, o, saver)
+	{
+		//~: get the component of the bind
+		var  b = this.$bind(o, saver)
+		var co = b && b.co()
+		if(!co) return
+
+		//~: change the close action
+		co.closeAction = 'hide'
+		m.set('co', co)
+	},
+
+	$free_model       : function(m)
+	{
+		//~: close the component
+		var co = m.get('co'); if(co)
+		{
+			m.set('co', null)
+			co.destroy()
+		}
+
+		return m
+	},
+
+	$prune_rest       : function()
+	{
+		var lm = this.$models_limit()
+		var  s = this.$store()
+
+		while(s.getCount() > lm)
+			s.remove(this.$free_model(s.getAt(s.getCount() - 1)))
+	},
+
+	$models_limit     : function()
+	{
+		return this.opts.limit
+
+		//var lm, g = this.grid()
+		//
+		//if(g && g.co() && (g.gridBind === true))
+		//{
+		//	var m = g.co().up('menu')
+		//
+		//	//?: {menu is visible}
+		//	if(m.isVisible())
+		//		lm = g.$rows_number()
+		//	else //<-- it is hidden
+		//	{
+		//		m.show().setXY([-9999, -9999])
+		//		lm = g.$rows_number()
+		//		m.hide()
+		//	}
+		//}
+		//
+		//return (!lm)?(10):(lm < 50)?(lm):(50)
+	},
+
+	$show_back        : function(m)
+	{
+		var co = m.get('co')
+		m.set('co', null)
+		if(!co) return
+
+		//?: {is window} just show
+		if(co.isWindow === true)
+			return co.show()
+
+		//?: {is panel controller}
+		var b = co.extjsfBind
+		ZeT.log('Show', b)
 	}
 })
 
