@@ -440,6 +440,14 @@ ZeT.extend(extjsf,
 	},
 
 	/**
+	 * Works as pt(), but always returns float.
+	 */
+	ptf              : function(v, vpx)
+	{
+		return extjsf.$css_v('pt', v, vpx, true)
+	},
+
+	/**
 	 * Returns string that encodes 2, 3, or 4
 	 * numbers into margin-padding code that
 	 * Ext JS supports. (It's the same as
@@ -460,7 +468,7 @@ ZeT.extend(extjsf,
 		return extjsf.$css_vs('pt', arguments)
 	},
 
-	$css_v           : function(unit, v, vpx)
+	$css_v           : function(unit, v, vpx, nr)
 	{
 		if((v == 0) && !vpx) return 0
 
@@ -471,7 +479,7 @@ ZeT.extend(extjsf,
 		if(vpx) r += vpx
 
 		//?: {need integer result}
-		if(ZeT.isi(v) && (ZeT.isx(vpx) || ZeT.isi(vpx)))
+		if(!nr && ZeT.isi(v) && (ZeT.isx(vpx) || ZeT.isi(vpx)))
 			r = Math.round(r)
 
 		return r
