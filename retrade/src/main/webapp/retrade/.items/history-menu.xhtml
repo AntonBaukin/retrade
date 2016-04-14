@@ -121,6 +121,7 @@
       on('itemclick', function(grid, m)
     {
       ReTrade.desktop.history.restore(m)
+      extjsf.co("${z:vid(localView, 'desktop-history-menu')}", '${extDom}').hide()
     })
 
   //]]>

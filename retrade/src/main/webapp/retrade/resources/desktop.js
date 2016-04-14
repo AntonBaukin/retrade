@@ -649,10 +649,9 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 
 		opts.bind.desktopPanelController = this
 
-		//~: clear content on destroy
-		this.bind().on('beforedestroy',
-		  ZeT.fbind(this.$destroy, this)
-		)
+		//~: clear content on close
+		this.bind().on('beforeclose',
+		  ZeT.fbind(this.$close, this))
 	},
 
 	/**
@@ -835,7 +834,11 @@ ZeT.defineClass('extjsf.Desktop.Panel',
 		ZeT.timeout(100, ZeT.fbind(rc.triggerVoid, rc))
 	},
 
-	$destroy         : function()
+	/**
+	 * Before close callback just the registration of
+	 * the panel as it would be destroyed by Ext JS.
+	 */
+	$close           : function()
 	{
 		this.remove(false)
 	},
@@ -1260,8 +1263,14 @@ ZeT.defineClass('extjsf.Desktop.Load', extjsf.LoadCo,
 
 	$clear_co        : function()
 	{
-		this.desktop().panelController(
-		  this.position()).remove()
+		var pc = this.desktop().
+		  panelController(this.position())
+
+		//?: {close the component}
+		if(pc && pc.bind() && pc.bind().co())
+			pc.bind().co().close()
+		else
+			pc.remove()
 	},
 
 	$special_params  : function(ps)

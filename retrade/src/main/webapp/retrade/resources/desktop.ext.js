@@ -519,7 +519,7 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 		retrade_add_user_web_link(this.opts.webLink)
 	},
 
-	$destroy          : function()
+	$close            : function()
 	{
 		this.$save_history()
 		this.remove(false)
@@ -527,16 +527,19 @@ ZeT.defined('extjsf.Desktop.Panel').extend(
 
 	$save_history     : function()
 	{
-		var c = this.regionController()
-		var l = c.loader
+		var l; if(!(l = this._saved_loader))
+		{
+			var c = this.regionController()
+			this._saved_loader = l = c.loader
+			delete c.loader
+		}
 
 		//~: take loading options
 		if(!ZeT.iso(l)) return
-		delete c.loader
 
 		//?: {desktop supports history}
 		if(this.desktop().history)
-			this.desktop().history.save(l, this)
+			return this.desktop().history.save(l, this)
 	}
 })
 
@@ -705,16 +708,13 @@ ZeT.defineClass('extjsf.Desktop.History',
 			ps.title = w.$raw().title
 
 		//~: window box
-		if(w.co()) {
-			ps.width  = w.co().getWidth()
-			ps.height = w.co().getHeight()
-		}
+		if(w.co()) ps.box = w.co().getBox()
 	},
 
 	$save_model       : function(m)
 	{
 		var s = ZeT.assertn(this.$store())
-		var x = s.getById(m.id)
+		var x = s.getById(m.key)
 
 		//?: {found existing record} delete it
 		if(x) s.remove(this.$free_model(x))
@@ -750,10 +750,6 @@ ZeT.defineClass('extjsf.Desktop.History',
 		sha.update(ps.url)
 		sha.update(ps.title)
 		sha.update(ps.target)
-
-		//Hint: resolves problem with goods in measures
-		//if(ZeT.iss(ps.entity))
-		//	sha.update(ps.entity)
 
 		return sha.finalize().toString().toUpperCase()
 	},
@@ -794,25 +790,6 @@ ZeT.defineClass('extjsf.Desktop.History',
 	$models_limit     : function()
 	{
 		return this.opts.limit
-
-		//var lm, g = this.grid()
-		//
-		//if(g && g.co() && (g.gridBind === true))
-		//{
-		//	var m = g.co().up('menu')
-		//
-		//	//?: {menu is visible}
-		//	if(m.isVisible())
-		//		lm = g.$rows_number()
-		//	else //<-- it is hidden
-		//	{
-		//		m.show().setXY([-9999, -9999])
-		//		lm = g.$rows_number()
-		//		m.hide()
-		//	}
-		//}
-		//
-		//return (!lm)?(10):(lm < 50)?(lm):(50)
 	},
 
 	$show_back        : function(m)
@@ -823,11 +800,31 @@ ZeT.defineClass('extjsf.Desktop.History',
 
 		//?: {is window} just show
 		if(co.isWindow === true)
-			return co.show()
+			return this.$show_window(co, m)
 
 		//?: {is panel controller}
-		var b = co.extjsfBind
-		ZeT.log('Show', b)
+		var  b = co.extjsfBind
+		var pc = b && b.desktopPanelController
+		if(pc) return this.$show_panel(pc, m)
+	},
+
+	$show_window      : function(w, m)
+	{
+		w.show().setBox(m.get('box'))
+	},
+
+	$show_panel       : function(pc, m)
+	{
+		//~: take present controller of the panel
+		var xc = pc.desktop().panelController(pc.position())
+
+		//?: {has component} close it
+		if(xc && xc.bind() && xc.bind().co())
+			xc.bind().co().close()
+
+		//~: put the component back
+		pc.insert()
+		pc.bind().co().show()
 	}
 })
 
