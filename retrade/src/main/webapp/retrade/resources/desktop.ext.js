@@ -750,8 +750,10 @@ ZeT.defineClass('extjsf.Desktop.History',
 		sha.update(ps.url)
 		sha.update(ps.title)
 		sha.update(ps.target)
-		if(ZeT.iss(ps.entity))
-			sha.update(ps.entity)
+
+		//Hint: resolves problem with goods in measures
+		//if(ZeT.iss(ps.entity))
+		//	sha.update(ps.entity)
 
 		return sha.finalize().toString().toUpperCase()
 	},

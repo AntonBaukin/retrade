@@ -1559,7 +1559,7 @@ ZeT.init('ReTrade.init', function()
 		   renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
-				  rec.get('priceListOldCode'), ' ● ', v
+				  rec.get('priceListOldCode'), ' • ', v
 				)), '"' );
 
 				return v;
@@ -1573,7 +1573,7 @@ ZeT.init('ReTrade.init', function()
 		   renderer: function(v, meta, rec)
 		   {
 				meta.tdAttr = ZeTS.cat('title="', Ext.String.htmlEncode(ZeTS.cat(
-				  rec.get('priceListNewCode'), ' ● ', v
+				  rec.get('priceListNewCode'), ' • ', v
 				)), '"' );
 
 				return v;

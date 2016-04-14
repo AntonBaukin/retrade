@@ -190,11 +190,10 @@ ${v.checkEntityRequested}
   //~: enable-disable history button
   extjsf.bind("${z:vid(v, 'grid')}", '${extDom}').on('added', function(g)
   {
-    var b = extjsf.co("${z:vid(v, 'prices-history')}", '${extDom}')
-
     function x()
     {
-      b.setDisabled(g.getSelection().length == 0)
+      var b = extjsf.bind("${z:vid(v, 'prices-history')}", '${extDom}')
+      b.disable(g.getSelection().length == 0)
     }
 
     g.on('selectionchange', x)
