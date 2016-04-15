@@ -1,0 +1,35 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.person'>
+
+  <union-subclass name = 'PersonEntity' table = 'core_person'
+    extends = 'com.tverts.endure.core.Entity'>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_core_person_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        index = 'ix_core_person_domain'>
+
+        <comment>Domain where the Person is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Firm -->
+
+    <many-to-one name = 'firm' foreign-key = 'fk_core_person_firm'>
+
+      <column name = 'fk_firm' index = 'ix_core_person_firm'>
+
+        <comment>Firm the Person is assigned to (works there)</comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

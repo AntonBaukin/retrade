@@ -1,0 +1,34 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Root Module Data Sources                       =
+    +================================================-->
+
+  <import resource = 'xrootDatas.xml'/>
+
+
+  <!--=================================================
+    =  Top Level Data Sources List                    =
+    +==================================================
+    |
+    |  Overwrite this file in each module that adds
+    |  own data sources.
+    |
+    +================================================-->
+
+  <bean name  = 'datasList'
+        class = 'com.tverts.data.DataSourcesList'>
+
+    <property name = 'references'>
+      <list>
+
+        <ref bean = 'xrootDatasList'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

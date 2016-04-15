@@ -1,0 +1,70 @@
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr'>
+
+  <class name = 'AggrRequest' table = 'aggr_request' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_aggr_item'/>
+
+
+    <!-- Aggregated Value -->
+
+    <many-to-one name = 'aggrValue' foreign-key = 'fk_aggr_request_value'>
+
+      <column name = 'fk_aggr_value' not-null = 'true'
+        index = 'ix_aggr_request_value'>
+
+        <comment>The Aggregated Value this Request is assigned</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Source (Unity) -->
+
+    <many-to-one name = 'source' foreign-key = 'fk_aggr_request_source'
+      index = 'ix_aggr_request_source'>
+
+      <column name = 'fk_source'>
+        <comment>Source (Unity) of this request</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Aggregation Task (XML serialized) -->
+
+    <property name = 'aggrTaskXML' type = 'text'>
+
+      <column name = 'aggr_task_xml' not-null = 'true'>
+
+        <comment>XML-encoded Java Bean of the aggregation request task</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggregation Task Class -->
+
+    <property name = 'aggrTaskClass'>
+
+      <column name = 'aggr_task_class' not-null = 'true'>
+
+        <comment>Name of Java class of the Aggregated Task (written as XML)</comment>
+      </column>
+    </property>
+
+
+    <!-- Error Text -->
+
+    <property name = 'errorText' type = 'text'>
+
+      <column name = 'error_text'>
+
+        <comment>Text of error occured when aggregating</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

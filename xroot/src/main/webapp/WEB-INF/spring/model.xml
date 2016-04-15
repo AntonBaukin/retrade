@@ -1,0 +1,59 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Models Store Service                            =
+    =================================================-->
+
+  <bean name  = 'modelsStoreService' factory-method = 'getInstance'
+        class = 'com.tverts.model.store.ModelsStoreService'>
+
+    <property name = 'UID' value = 'Models Store'/>
+
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Model Keys Generator
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'keysGen'>
+       <bean class = 'com.tverts.model.store.ModelKeysGenHiber'/>
+    </property>
+
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · LRU Caching Models Store
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'modelsStore'>
+       <bean class = 'com.tverts.model.store.LinkedCacheModelsStore'>
+         <constructor-arg><value> 512 </value></constructor-arg>
+       </bean>
+    </property>
+
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Models Backend for Hibernate
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name = 'backend'>
+       <bean class = 'com.tverts.model.store.HiberModelsStore'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Model Access Point                             =
+    =================================================-->
+
+  <bean name  = 'modelAccessPoint' factory-method = 'getInstance'
+        class = 'com.tverts.model.ModelsAccessPoint'>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Model Access Strategy = Models Store Service
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'modelAccess' ref = 'modelsStoreService'/>
+  </bean>
+
+</beans>

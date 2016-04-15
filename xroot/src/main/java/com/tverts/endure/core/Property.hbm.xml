@@ -1,0 +1,74 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <class name = 'Property' table = 'core_property' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_inc_value'/>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' lazy = 'proxy'
+      foreign-key = 'fk_property_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_property' index = 'ix_property_domain'>
+
+        <comment>The Domain where the property set</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Property Name Area -->
+
+    <property name = 'area'>
+
+      <column name = 'property_area' length = '512' not-null = 'true'
+        unique-key = 'ux_property' index = 'ix_property_area'>
+
+        <comment>The (optional) area of the property names</comment>
+      </column>
+    </property>
+
+
+    <!-- Property Name -->
+
+    <property name = 'name'>
+
+      <column name = 'property_name' not-null = 'true' length = '2048'
+        unique-key = 'ux_property'>
+
+        <comment>The name of the property</comment>
+      </column>
+    </property>
+
+
+    <!-- Value (as string) -->
+
+    <property name = 'value'>
+
+      <column name = 'property_value' length = '2048'>
+
+        <comment>The property value as a string</comment>
+      </column>
+    </property>
+
+
+    <!-- Value (as serialized value) -->
+
+    <property name = 'object' type = 'text'>
+
+      <column name = 'property_object'>
+
+        <comment>The property value as a huge (object) string</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,47 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Sphere with Test Domain Core                   =
+    +==================================================
+    |
+    |  Genereates test data for data processing on
+    |  entities defined in XRoot module.
+    |
+    +================================================-->
+
+  <bean name  = 'coreTestDomainSphere'
+        class = 'com.tverts.genesis.GenesisSphere'>
+
+    <property name = 'name' value = 'Core Test'/>
+
+    <!-- the list of genesis units in this sphere -->
+    <constructor-arg>
+      <bean class = 'com.tverts.genesis.GenesisList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Create Test Domain
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.endure.core.GenCoreDomain'>
+              <property name = 'name' value = 'Domain'/>
+            </bean>
+
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Generate the test users
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.endure.auth.GenTestUsers'>
+              <property name = 'name' value = 'Users'/>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+    </constructor-arg>
+  </bean>
+</beans>

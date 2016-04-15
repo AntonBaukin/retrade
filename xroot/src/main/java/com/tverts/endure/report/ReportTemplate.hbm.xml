@@ -1,0 +1,102 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.report'>
+
+  <union-subclass name = 'ReportTemplate' table = 'report_template'
+    extends = 'com.tverts.endure.core.Entity' lazy = 'false'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_report_template_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_report_template_code'>
+
+        <comment>Domain where the Good Unit is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code'>
+
+      <column name = 'ux_code' not-null = 'true'
+        unique-key = 'ux_report_template_code'>
+
+        <comment>Unique (within the Domain) code of the Report Template</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'template_name' not-null = 'true' length = '512'>
+
+        <comment>The name of the report template</comment>
+      </column>
+    </property>
+
+
+    <!-- Is System Flag -->
+
+    <property name = 'system'>
+
+      <column name = 'is_system' not-null = 'true'>
+        <comment>
+          Flag telling that this report is required for the system,
+          and hence may not be removed by a user
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Remarks -->
+
+    <property name = 'remarks' type = 'text'>
+
+      <column name = 'remarks'>
+        <comment>The remarks on this template</comment>
+      </column>
+    </property>
+
+
+    <!-- Data Source ID -->
+
+    <property name = 'did'>
+
+      <column name = 'did' not-null = 'true'
+        index = 'ix_report_template_did'>
+
+        <comment>The Data Source ID (DID)</comment>
+      </column>
+    </property>
+
+
+    <!-- Is Ready Flag -->
+
+    <property name = 'ready'>
+
+      <column name = 'is_ready' not-null = 'true'>
+        <comment>Assigned when the template has the file attached</comment>
+      </column>
+    </property>
+
+
+    <!-- Template File -->
+
+    <property name = 'template' type = 'binary' lazy = 'true'>
+
+      <column name = 'template_file'>
+        <comment>The template file. Note, that it is Gun-ZIPped!</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

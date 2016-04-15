@@ -1,0 +1,102 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Object XML Mapping Point                       =
+    =================================================-->
+
+  <bean name  = 'objectXMLNappingPoint' factory-method = 'getInstance'
+        class = 'com.tverts.objects.XPoint'>
+
+
+    <!-- XML -->
+    <property name  = 'streamerXML'>
+      <bean class = 'com.tverts.objects.XStreamer'>
+
+        <constructor-arg
+          value = '#{jaxbConfigurationClasspathScanner.classesArray}'/>
+
+        <property name = 'writeProps'>
+          <value>
+            jaxb.formatted.output, true
+          </value>
+        </property>
+      </bean>
+    </property>
+
+
+    <!-- JSON -->
+    <property name  = 'streamerJSON'>
+      <bean class = 'com.tverts.objects.XStreamer'>
+
+        <constructor-arg
+          value = '#{jaxbConfigurationClasspathScanner.classesArray}'/>
+
+        <constructor-arg>
+          <array>
+            <bean class = 'com.tverts.support.jaxb.EclipseLinkOXMBuilder'>
+
+              <property name  = 'property'
+                value = 'eclipselink.oxm.metadata-source'/>
+
+              <property name  = 'resource'
+                value = 'META-INF/eclipselink-oxm.xml'/>
+
+              <property name  = 'classes'
+                value = '#{jaxbConfigurationClasspathScanner.classesArray}'/>
+            </bean>
+          </array>
+        </constructor-arg>
+
+        <property name = 'readProps'>
+          <value>
+            eclipselink.media-type,                 application/json,
+            eclipselink.json.include-root,          false,
+            eclipselink.json.wrapper-as-array-name, true
+          </value>
+        </property>
+
+        <property name = 'writeProps'>
+          <value>
+            jaxb.formatted.output,                  true,
+            eclipselink.media-type,                 application/json,
+            eclipselink.json.include-root,          false,
+            eclipselink.json.wrapper-as-array-name, true
+          </value>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  JAXB Configuration Classpath Scanner           =
+    =================================================-->
+
+  <bean name  = 'jaxbConfigurationClasspathScanner'
+        class = 'com.tverts.support.cpscan.ClasspathScanner'>
+
+    <property name = 'packages'>
+      <array><value> com.tverts </value></array>
+    </property>
+
+    <property name = 'filter'>
+      <bean class = 'com.tverts.support.cpscan.CPSFAnnotated'>
+
+        <property name  = 'annotations'>
+          <array>
+
+            <value>javax.xml.bind.annotation.XmlRootElement</value>
+            <value>javax.xml.bind.annotation.XmlType</value>
+
+          </array>
+        </property>
+      </bean>
+    </property>
+  </bean>
+</beans>

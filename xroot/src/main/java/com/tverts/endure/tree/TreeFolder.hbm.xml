@@ -1,0 +1,57 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.tree'>
+
+  <union-subclass name = 'TreeFolder' extends = 'com.tverts.endure.core.Entity'
+    table = 'tree_folder' lazy = 'true'>
+
+
+    <!-- Tree Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_tree_folder_domain'>
+
+      <column name = 'fk_tree_domain' not-null = 'true'
+        unique-key = 'ux_tree_folder_code'>
+
+        <comment>Tree Domain where the Folder is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Code -->
+
+    <property name = 'code' lazy = 'false'>
+
+      <column name = 'ux_code' not-null = 'true' length = '255'
+        unique-key = 'ux_tree_folder_code'>
+
+        <comment>Unique (within the Tree Domain) code of the Folder</comment>
+      </column>
+    </property>
+
+
+    <!-- Name -->
+
+    <property name = 'name'>
+
+      <column name = 'tree_folder_name' not-null = 'true' length = '1024'>
+        <comment>The name of the Folder</comment>
+      </column>
+    </property>
+
+
+    <!-- Parent Tree Folder reference -->
+
+    <many-to-one name = 'parent' foreign-key = 'fk_tree_folder_parent'>
+
+      <column name = 'fk_parent' index = 'ix_tree_folder_parent'>
+
+        <comment>Parent Folder of this Folder (not for roots) </comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

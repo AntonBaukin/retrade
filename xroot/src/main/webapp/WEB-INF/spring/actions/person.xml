@@ -1,0 +1,38 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Person Action Bulders                          =
+    +================================================-->
+
+  <bean name  = 'corePersonBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.person.PersonEntity'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.person.ActPerson'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Action Bulders for Firm                        =
+    +================================================-->
+
+  <bean name  = 'coreFirmBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.person.FirmEntity'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.person.ActFirm'/>
+    </property>
+  </bean>
+
+</beans>

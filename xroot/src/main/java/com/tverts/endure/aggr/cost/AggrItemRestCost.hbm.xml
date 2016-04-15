@@ -1,0 +1,75 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr.cost'>
+
+  <union-subclass name = 'AggrItemRestCost' table = 'aggr_item_rest_cost'
+    extends = 'com.tverts.endure.aggr.AggrItemBase' lazy = 'false'>
+
+    <!-- Good Volume -->
+
+    <property name = 'goodVolume' type = 'big_decimal'>
+
+      <column name = 'good_volume' precision = '18' scale = '8'>
+
+        <comment>
+          The volume (amount) added to or removed from the aggregated value
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Cost -->
+
+    <property name = 'volumeCost' type = 'big_decimal'>
+
+      <column name = 'volume_cost' precision = '20' scale = '10'>
+
+        <comment>The (price) cost of the volume (amount)</comment>
+      </column>
+    </property>
+
+
+    <!-- Rest Cost -->
+
+    <property name = 'restCost' type = 'string'>
+
+      <column name = 'rest_cost' length = '64'>
+
+        <comment>
+          Attribute of aggregated component: rest cost
+          decimal value stored as a string
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Aggregated Volume -->
+
+    <property name = 'aggrVolume' type = 'big_decimal'>
+
+      <column name = 'aggr_volume' precision = '20' scale = '8'>
+
+        <comment>Attribute of aggregated component: summary volume</comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Delta -->
+
+    <property name = 'deltaVolume' type = 'big_decimal'>
+
+      <column name = 'delta_volume' precision = '20' scale = '8'>
+
+        <comment>
+          Attribute of aggregated component:
+          summary volume of sell items between the
+          two nearest components
+        </comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

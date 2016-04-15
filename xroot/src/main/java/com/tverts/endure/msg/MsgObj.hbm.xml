@@ -1,0 +1,103 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.msg'>
+
+  <class name = 'MsgObj' table = 'message_obj' lazy = 'false'>
+
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_msg_obj'/>
+
+
+    <!-- Message Box -->
+
+    <many-to-one name = 'msgBox' foreign-key = 'fk_message_box'>
+
+      <column name = 'fk_message_box' not-null = 'true'
+        index = 'ix_message_box'>
+
+        <comment>The Message Box this Message is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Is Green -->
+
+    <property name = 'green'>
+
+      <column name = 'ix_green' index = 'ix_message_obj_green'>
+        <comment>
+          Equals to the primary key when this message has green color
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Is Red -->
+
+    <property name = 'red'>
+
+      <column name = 'ix_red' index = 'ix_message_obj_red'>
+        <comment>
+          Equals to the primary key when this message has red color
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Is Orange or Red -->
+
+    <property name = 'orangeRed'>
+
+      <column name = 'ix_orange_red' index = 'ix_message_obj_orange_red'>
+        <comment>
+          Equals to the primary key when this message has orange or red color
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Message Color -->
+
+    <property name = 'color'>
+
+      <column name = 'color' not-null = 'true'
+        sql-type = 'character(1)'>
+
+        <comment>
+          Message color is its emergency attribute: G means green,
+          O means orange, R means red (error), N means none;
+          other characters are also possible
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Object Extraction -->
+
+    <property name = 'oxBytes' lazy = 'false'>
+
+      <column name = 'oxbytes' sql-type = 'bytea' not-null = 'true'>
+        <comment>
+          Entity-related data object written to XML and enflated with Gun-ZIP
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.OxBytesType'/>
+    </property>
+
+
+    <!-- Object Extraction Search -->
+
+    <property name = 'oxSearch' type = 'text' lazy = 'true'>
+      <column name = 'oxsearch'>
+        <comment>Object extraction search text</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

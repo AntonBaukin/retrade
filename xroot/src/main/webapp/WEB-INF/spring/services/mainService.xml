@@ -1,0 +1,65 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  The Main Service                               =
+    +================================================-->
+
+  <bean name  = 'mainService' factory-method = 'getInstance'
+        class = 'com.tverts.system.services.MainService'>
+    <property name = 'reference'>
+      <bean class = 'com.tverts.system.services.events.EventRunList'>
+        <property name = 'references'>
+          <list>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Reacts on the System Start
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.system.services.events.SystemReadyRun'/>
+
+            <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+             · Generates System Domain
+             · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+            <bean class = 'com.tverts.system.services.events.EventRunOnSystemStart'>
+
+              <property name = 'service' value = 'Genesis Service'/>
+
+              <!-- the event to send -->
+              <property name = 'event'>
+                <bean class = 'com.tverts.genesis.GenesisEvent'>
+
+                  <!-- Genesis Spheres -->
+                  <property name = 'spheres'>
+                    <list>
+                      <value>System Domain</value>
+                    </list>
+                  </property>
+
+                  <!-- parameters -->
+                  <property name = 'params'>
+                    <map>
+
+                      <entry key   = 'System Domain (Seed)'
+                             value = '1'/>
+
+                      <entry key   = 'System Domain : Domain (DomainCode)'
+                             value = 'System'/>
+
+                      <entry key   = 'System Domain : Domain (DomainName)'
+                             value = 'System Tasks Domain'/>
+
+                    </map>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+</beans>

@@ -1,0 +1,49 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Services List                                  =
+    +================================================-->
+
+  <import resource = 'servicesList.xml'/>
+
+
+  <!--=================================================
+    =  Services System                                =
+    +==================================================
+    |
+    |  Overwrite this file in each module adding
+    |  own messenger component.
+    |
+    +================================================-->
+
+  <bean name  = 'servicesSystem'
+        class = 'com.tverts.system.services.ServicesSystem'>
+
+    <property name = 'reference' ref = 'servicesList'/>
+
+    <property name = 'messenger'>
+      <bean class  = 'com.tverts.system.services.queues.JMSMessenger'>
+
+        <property name  = 'connectionFactory'
+                  value = 'openejb:/Resource/ConnectLocalMemoryMessagesBroker'/>
+
+        <property name  = 'queueName'
+                  value = 'openejb:/Resource/ReTradeServiceBus'/>
+
+      </bean>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Listener of Z-Services Bus                     =
+    +================================================-->
+
+  <bean name  = 'servicesBusListener'
+        class = 'com.tverts.system.services.queues.PlainEventsListenerBean'/>
+
+</beans>

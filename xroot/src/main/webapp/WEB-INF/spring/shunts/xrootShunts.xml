@@ -1,0 +1,39 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Self Shunts of the Shunt Subsystem             =
+    +================================================-->
+
+  <import resource = 'selfTests.xml'/>
+
+
+  <!--=================================================
+    =  Self Shunts of the Domain Core                 =
+    +================================================-->
+
+  <import resource = 'domainCore.xml'/>
+
+
+  <!--=================================================
+    =  XRoot Module Shunts References                 =
+    +================================================-->
+
+  <bean name  = 'xrootShuntsList'
+        class = 'com.tverts.shunts.SelfShuntsList'>
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Run this shunts to test the shunt subsystem works.        ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <ref bean = 'systemShuntsSelfTests'/>
+
+        <ref bean = 'shuntsOnDomainCore'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

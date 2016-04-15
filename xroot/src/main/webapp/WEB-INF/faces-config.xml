@@ -1,0 +1,106 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<faces-config version = '2.0'
+  xmlns              = 'http://java.sun.com/xml/ns/javaee'
+  xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd'>
+
+
+  <!--=================================================
+    =  Application System Properties                  =
+    =================================================-->
+
+  <application>
+    <el-resolver>
+      org.springframework.web.jsf.el.SpringBeanFacesELResolver
+    </el-resolver>
+
+    <locale-config>
+      <default-locale>ru</default-locale>
+      <supported-locale>ru</supported-locale>
+    </locale-config>
+  </application>
+
+  <factory>
+    <view-declaration-language-factory>
+      com.tverts.faces.system.LocalViewDeclarationLanguageFactory
+    </view-declaration-language-factory>
+  </factory>
+
+
+  <!--=================================================
+    =  Converters + Formatters                        =
+    =================================================-->
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:date2str
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.DateToStr
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:time2str
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.TimeToStr
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:datetime2str
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.DateTimeToStr
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:s2a
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.S2AConverter
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:special:json-strings-map-list
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.JSONStringsMapListFormatter
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:special:bool-set-items
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.BoolSetItemsConverter
+    </converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>
+      com.tverts:fmt:decimal
+    </converter-id>
+
+    <converter-class>
+      com.tverts.faces.formatters.DecimalConverter
+    </converter-class>
+  </converter>
+
+</faces-config>

@@ -1,0 +1,117 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr.volume'>
+
+  <class name = 'DatePeriodVolumeCalcItem' lazy = 'true'
+    table = 'aggr_calc_volume_date_period_item'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_calc_item'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_aggr_calc_volume_date_period_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggregation Calculation -->
+
+    <many-to-one name = 'aggrCalc' foreign-key = 'fk_aggr_calc_volume_date_period'>
+
+      <column name = 'fk_aggr_calc' not-null = 'true'
+        unique-key = 'ux_aggr_calc_volume_date_period'>
+
+        <comment>The Aggregation Calculation this item is component of</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Year -->
+
+    <property name = 'year'>
+
+      <column name = 'calc_year' not-null = 'true' sql-type = 'smallint'
+        unique-key = 'ux_aggr_calc_volume_date_period'>
+
+        <comment>The year of the period</comment>
+      </column>
+    </property>
+
+
+    <!-- Start Day -->
+
+    <property name = 'day'>
+
+      <column name = 'calc_day' not-null = 'true' sql-type = 'smallint'
+        unique-key = 'ux_aggr_calc_volume_date_period'>
+
+        <comment>
+          The day of the period start within the year.
+          (Day 0 means January, 1st.)
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Length -->
+
+    <property name = 'length'>
+
+      <column name = 'calc_length' not-null = 'true' sql-type = 'smallint'>
+
+        <comment> Tells the period of grouping (in days)</comment>
+      </column>
+    </property>
+
+
+    <!-- Summary Volume Positive -->
+
+    <property name = 'volumePositive' type = 'big_decimal'>
+
+      <column name = 'volume_positive' precision = '22' scale = '10'>
+
+        <comment>The summary volume (amount) added within the period</comment>
+      </column>
+    </property>
+
+
+    <!-- Summary Volume Negative -->
+
+    <property name = 'volumeNegative' type = 'big_decimal'>
+
+      <column name = 'volume_negative' precision = '22' scale = '10'>
+
+        <comment>The summary volume (amount) taken within the period</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>
+
+<!--
+
+select ci.calc_day as "day", av.fk_owner as "owner", ut.title_lo as "title"
+
+from aggr_calc_volume_date_period_item ci
+  join aggr_calc ac
+  on ac.pk_entity = ci.fk_aggr_calc
+  join aggr_value av
+  on av.pk_entity = ac.fk_value
+  join core_unity u
+  on av.fk_owner = u.pk_unity
+  join core_unity_type ut
+  on u.fk_unity_type = ut.pk_unity_type
+order by "day"
+
+-->

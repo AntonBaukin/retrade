@@ -1,0 +1,44 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Genesis Point                                  =
+    =================================================-->
+
+  <bean name  = 'genesisPoint' factory-method = 'getInstance'
+        class = 'com.tverts.genesis.GenesisPoint'>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Genesis Service used by default in this Point.            ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'genesisService' ref = 'genesisService'/>
+  </bean>
+
+
+  <!--=================================================
+    =  Genesis Sphere                                 =
+    =================================================-->
+
+  <import resource = 'genesis/genesisSpheres.xml'/>
+
+
+  <!--=================================================
+    =  (Primary) Genesis Service                      =
+    =================================================-->
+
+  <bean name  = 'genesisService'
+        class = 'com.tverts.genesis.GenesisService'>
+
+    <property name  = 'UID' value = 'Genesis Service'/>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · These default Genesis Spheres would be invoked            ·
+     · on the Genesis Service startup.                           ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'genesisSpheres'
+              ref   = 'genesisSpheres'/>
+
+  </bean>
+</beans>

@@ -1,0 +1,84 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <union-subclass name = 'AttrType' table = 'core_attr_type'
+    extends = 'com.tverts.endure.OxNumericBase'>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_attr_type_domain'
+      unique-key = 'ux_attr_type'>
+
+      <column name = 'fk_domain' not-null = 'true'>
+        <comment>Domain where this type is located</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Attribute Unity Type -->
+
+    <many-to-one name = 'attrType' foreign-key = 'fk_attr_type'
+     unique-key = 'ux_attr_type' lazy = 'proxy'>
+
+      <column name = 'fk_type' not-null = 'true'>
+        <comment>Scope of the type names within a Domain</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Attribute Name -->
+
+    <property name = 'name' unique-key = 'ux_attr_type'>
+      <column name = 'attr_name' not-null = 'true'>
+
+        <comment>Name of the attribute unique for (Domain, Type)</comment>
+      </column>
+    </property>
+
+    <property name = 'nameLo'>
+      <column name = 'attr_name_lo' index = 'ix_attr_type_name_lo'>
+
+        <comment>Local name of the attribute</comment>
+      </column>
+    </property>
+
+
+    <!-- Is System -->
+
+    <property name = 'system'>
+      <column name = 'is_system' not-null = 'true'>
+
+        <comment>Tells whether this type may be altered or removed</comment>
+      </column>
+    </property>
+
+
+    <!-- Is Array -->
+
+    <property name = 'array'>
+      <column name = 'is_array' not-null = 'true'>
+
+        <comment>Tells that this attribute type supports array of values</comment>
+      </column>
+    </property>
+
+
+    <!-- Is Shared -->
+
+    <property name = 'shared'>
+      <column name = 'is_shared' not-null = 'true'>
+
+        <comment>
+          Tells that this attribute type may be shared
+          via UnityAttr.source property
+        </comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

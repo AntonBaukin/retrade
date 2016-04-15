@@ -1,0 +1,274 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<web-app version = '3.0'
+  xmlns              = 'http://java.sun.com/xml/ns/javaee'
+  xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation = 'http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd'>
+
+  <display-name>
+    Tver TS 'Re Trade' Execution Base (Abstract) Module
+  </display-name>
+
+
+  <!--====================================================
+    =                      Listeners                     =
+    ====================================================-->
+
+  <!-- System Boot Initializer -->
+
+  <listener>
+    <description>
+      The first listener activated during
+      the web application startup. Does not
+      connect components via Spring services.
+    </description>
+
+    <display-name>System Boot Initializer</display-name>
+    <listener-class>
+      com.tverts.servlet.listeners.SystemBootListener
+    </listener-class>
+  </listener>
+
+
+  <!-- Spring Context and Request Listeners -->
+
+  <listener>
+    <description>
+      Spring framework startup initialization.
+    </description>
+
+    <display-name>Spring Startup Context Listener</display-name>
+    <listener-class>
+      org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+  </listener>
+
+  <listener>
+    <description>
+      Initializes the request context for Spring framework.
+    </description>
+
+    <display-name>Spring Request Context Listener</display-name>
+    <listener-class>
+      org.springframework.web.context.request.RequestContextListener
+    </listener-class>
+  </listener>
+
+
+  <!-- Java Server Faces (Mojarra RI) Listener -->
+
+  <listener>
+    <description>
+      JavaServer Faces application lifecycle listener.
+    </description>
+
+    <display-name>Java Server Faces Configure</display-name>
+    <listener-class>
+      com.sun.faces.application.WebappLifecycleListener
+    </listener-class>
+  </listener>
+
+
+  <!-- Web Application Context Initializer -->
+
+  <listener>
+    <description>
+      Initializes the application's modules.
+      This listener is a bridge to the collection
+      of listeners defined within the application.
+    </description>
+
+    <display-name>Web Application Context Initializer</display-name>
+    <listener-class>
+      com.tverts.servlet.listeners.ContextListenersBridge
+    </listener-class>
+  </listener>
+
+
+  <!--====================================================
+    =            Java Server Faces Configuration         =
+    ====================================================-->
+
+  <context-param>
+    <param-name>javax.faces.CONFIG_FILES</param-name>
+    <param-value>
+      /WEB-INF/faces-config.xml,
+      /WEB-INF/faces-nav.xml
+    </param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>client</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+    <param-value>/WEB-INF/tverts.taglib.xml</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.SEPARATOR_CHAR</param-name>
+    <param-value>-</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.PROJECT_STAGE</param-name>
+    <param-value>Production</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+    <param-value>0</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>com.sun.faces.disableIdUniquenessCheck</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+
+  <!--====================================================
+    =                      Servlets                      =
+    ====================================================-->
+
+  <!-- JavaServer Faces Servlet -->
+
+  <servlet>
+    <display-name>JavaServer Faces 2.x Servlet</display-name>
+    <servlet-name>FacesServlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>FacesServlet</servlet-name>
+    <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- JavaScript Engine Servlet -->
+
+  <servlet>
+    <display-name>JavaScript Engine Servlet</display-name>
+    <servlet-name>JsXServlet</servlet-name>
+    <servlet-class>com.tverts.jsx.pages.JsServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>JsXServlet</servlet-name>
+    <url-pattern>*.jsx</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- User Interface Models Servlet -->
+
+  <servlet>
+    <display-name>User Interface Models Servlet</display-name>
+    <servlet-name>ModelServlet</servlet-name>
+    <servlet-class>com.tverts.servlet.ModelServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ModelServlet</servlet-name>
+    <url-pattern>/model</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- Binary Data Download Servlet -->
+
+  <servlet>
+    <display-name>Binary Data Download Servlet</display-name>
+    <servlet-name>DownloadServlet</servlet-name>
+    <servlet-class>com.tverts.servlet.DownloadServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>DownloadServlet</servlet-name>
+    <url-pattern>/download</url-pattern>
+    <url-pattern>/download/*</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- Files Upload Servlet -->
+
+  <servlet>
+    <display-name>Files Upload Servlet</display-name>
+    <servlet-name>UploadServlet</servlet-name>
+    <servlet-class>com.tverts.servlet.UploadServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>UploadServlet</servlet-name>
+    <url-pattern>/upload</url-pattern>
+  </servlet-mapping>
+
+
+  <!--===================================================
+   =                  Filters Bridge                    =
+   ====================================================-->
+
+  <filter>
+    <description>
+      Connects filters processing of the web container
+      with the application-level filters.
+    </description>
+
+    <filter-name>Filters Bridge</filter-name>
+
+    <filter-class>
+      com.tverts.servlet.filters.FiltersBridge
+    </filter-class>
+  </filter>
+
+
+  <!-- filter external requests -->
+  <filter-mapping>
+    <filter-name>Filters Bridge</filter-name>
+
+    <url-pattern>/go/*</url-pattern>
+    <url-pattern>/model</url-pattern>
+    <url-pattern>/download</url-pattern>
+    <url-pattern>/download/*</url-pattern>
+    <url-pattern>/upload</url-pattern>
+
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+
+  <!-- filter all internal requests -->
+  <filter-mapping>
+    <filter-name>Filters Bridge</filter-name>
+
+    <url-pattern>/*</url-pattern>
+
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+
+
+  <!--====================================================
+    = JSP Engine Configuration                           =
+    ====================================================-->
+
+  <welcome-file-list>
+    <welcome-file>/go/index</welcome-file>
+  </welcome-file-list>
+
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <url-pattern>*.jspf</url-pattern>
+
+      <page-encoding>UTF-8</page-encoding>
+    </jsp-property-group>
+  </jsp-config>
+
+  <session-config>
+    <!-- 5760 minutes = 4 days -->
+    <session-timeout>5760</session-timeout>
+  </session-config>
+</web-app>

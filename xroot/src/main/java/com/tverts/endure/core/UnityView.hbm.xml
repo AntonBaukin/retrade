@@ -1,0 +1,89 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <class name = 'UnityView' abstract = 'true' lazy = 'true'
+    table = 'core_unity_view'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_unity_view'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_unity_view_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity -->
+
+    <many-to-one name = 'unity' cascade = 'save-update'
+      foreign-key = 'fk_unity_view_mirror'>
+
+      <column name = 'fk_unity' unique-key = 'ux_unity_view_unity'>
+
+        <comment>The (unique) Unified Mirror of the Unity View</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Domain -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_unity_view_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        index = 'ix_unity_view'>
+
+        <comment>The Domain of Unity owning this View</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- View Owner (Unity) -->
+
+    <many-to-one name = 'viewOwner' foreign-key = 'fk_unity_view_owner'>
+
+      <column name = 'fk_view_owner' not-null = 'true'
+        index = 'ix_unity_view, ix_unity_view_owner'>
+
+        <comment>The Unity owning this View</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Owner (Unity) Type -->
+
+    <many-to-one name = 'ownerType' foreign-key = 'fk_unity_view_owner_type'
+      outer-join = 'false' lazy = 'false'>
+
+      <column name = 'fk_owner_type' not-null = 'true'>
+        <comment>The (Unity) Type of the view owner</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Owner State (Unity) Type -->
+
+    <many-to-one name = 'ownerState' foreign-key = 'fk_unity_view_owner_state'
+      outer-join = 'true' lazy = 'false'>
+
+      <column name = 'fk_owner_state'>
+        <comment>
+          The (Unity) Type of the state of the view owner.
+          (In the case a state is supposed by the owner.)
+        </comment>
+      </column>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>

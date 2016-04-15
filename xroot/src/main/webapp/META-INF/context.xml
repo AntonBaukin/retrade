@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!--================================================
+ =  Apache Tomcat Server Web Aplication Context    =
+ +================================================-->
+
+<Context sessionCookiePathUsesTrailingSlash = 'false'>
+
+  <Loader className = 'org.apache.tomee.catalina.ProvisioningWebappLoader'
+    loaderClass = 'org.springframework.instrument.classloading.tomcat.TomeeInstrumentableClassLoader'
+    searchVirtualFirst = 'true' virtualClasspath = '${catalina.base}/webapps/retrade/;${catalina.base}/webapps/retrade/META-INF/'/>
+
+</Context>

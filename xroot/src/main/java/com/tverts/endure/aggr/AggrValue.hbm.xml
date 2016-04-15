@@ -1,0 +1,112 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr'>
+
+  <union-subclass name = 'AggrValue' extends = 'com.tverts.endure.core.Entity'
+    table = 'aggr_value' lazy = 'false'>
+
+
+    <!-- Owner Unity -->
+
+    <many-to-one name = 'owner' foreign-key = 'fk_aggr_value_owner'>
+
+      <column name = 'fk_owner' not-null = 'true'
+        unique-key = 'ux_aggr_value_owner'>
+
+        <comment>Unity of the instance owning this aggregated value</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Aggregated Value (Unity) Type (de-normilizing) -->
+
+    <many-to-one name = 'aggrType' foreign-key = 'fk_aggr_value_type'
+      unique-key = 'ux_aggr_value_owner'>
+
+      <column name = 'fk_aggr_type' not-null = 'true'>
+        <comment>Duplicate of Aggregate Value Unity Type reference</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Selector ID -->
+
+    <property name = "selectorKey">
+
+      <column name = 'selector_key' index = 'ix_aggr_value_selector'
+        unique-key = 'ux_aggr_value_owner'>
+
+        <comment>
+          Copy of the primary key of the selector of this aggregated value
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Value -->
+
+    <property name = 'aggrValue' type = 'big_decimal'>
+
+      <column name = 'aggr_value' precision = '22' scale = '10'>
+        <comment>The aggregated value</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Value Denominator -->
+
+    <property name = 'aggrDenom' type = 'big_decimal'>
+
+      <column name = 'aggr_denom' precision = '22' scale = '10'>
+        <comment>The aggregated value plain fraction denominator</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Value Positive -->
+
+    <property name = 'aggrPositive' type = 'big_decimal'>
+
+      <column name = 'aggr_value_pos' precision = '22' scale = '10'>
+        <comment>The aggregated value positive part</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggr Value Negative -->
+
+    <property name = 'aggrNegative' type = 'big_decimal'>
+
+      <column name = 'aggr_value_neg' precision = '22' scale = '10'>
+        <comment>The aggregated value negative part</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>
+
+<!--
+
+select
+  u.pk_unity as "owner key",
+  av.pk_entity as "av key",
+  ut.title_lo as "owner type",
+  avt.type_name as "aggr type",
+  av.aggr_value, av.aggr_value_pos, aggr_value_neg
+    from
+  aggr_value av
+    join
+  core_unity_type avt
+    on avt.pk_unity_type = av.fk_aggr_type
+    join
+  core_unity u
+    on u.pk_unity = av.fk_owner
+    join
+  core_unity_type ut
+    on u.fk_unity_type = ut.pk_unity_type
+ order by ut.title_lo, avt.title_lo
+
+-->

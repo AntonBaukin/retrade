@@ -1,0 +1,39 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.core'>
+
+  <class name = 'Entity' abstract = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_entity'>
+
+      <generator class = 'foreign'>
+        <param name = 'property'>unity</param>
+      </generator>
+    </id>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = '_ix_entity_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity -->
+
+    <one-to-one name = 'unity' constrained = 'true'
+      outer-join = 'false' cascade = 'save-update'
+      foreign-key = 'fk_unified_mirror_'/>
+
+  </class>
+</hibernate-mapping>

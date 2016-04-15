@@ -1,0 +1,63 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure'>
+
+  <class name = 'Unity' table = 'core_unity'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_unity'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_unity_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Unity Type -->
+
+    <many-to-one name = 'unityType' outer-join = 'false'
+      foreign-key = 'fk_unity_type'>
+
+      <column name = 'fk_unity_type' not-null = 'true'
+        index = 'ix_unity_type'>
+
+        <comment>The Type of Unity</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Object Extraction Search -->
+
+    <property name = 'oxSearch' type = 'text' lazy = 'true'>
+      <column name = 'oxsearch'>
+        <comment>Object extraction search text</comment>
+      </column>
+    </property>
+
+
+    <!-- Object Extraction -->
+
+    <property name = 'oxBytes'>
+
+      <column name = 'oxbytes' sql-type = 'bytea'>
+        <comment>
+          Entity-related data object written to XML and enflated with Gun-ZIP
+        </comment>
+      </column>
+
+      <type name = 'com.tverts.hibery.OxBytesType'/>
+    </property>
+
+  </class>
+</hibernate-mapping>

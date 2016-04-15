@@ -1,0 +1,171 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Unity Types for XRoot Module                   =
+    +==================================================
+    |
+    |  Format of Unity Types encoding:
+    |
+    |    [ALE] class-name type-name;
+    |
+    |   A  attribute type, L  link type,
+    |   E  entity type (default).
+    |
+    +================================================-->
+
+  <bean name  = 'xrootCoreTypes'
+        class = 'com.tverts.objects.StringBean'>
+    <property name = 'string'>
+      <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Unity Type of Domain
+         ·
+         · WARNING: in present implementation only one type
+         ·  for a Domain may be defined!
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.core.Domain   Core: Domain;
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Record about a Human
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.person.PersonEntity   Core: Person;
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · External Computer System Client Registration
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.auth.ComputerEntity   Core: Auth: Computer;
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Authentication Login
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.auth.AuthLogin   Core: Auth: Login;
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Secure Rule
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.secure.SecRule   Secure: Rule;
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Secure Set
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.secure.SecSet   Secure: Set;
+
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Report Template
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.report.ReportTemplate   Report: Template;
+
+      </value>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Unity Types for XRoot Module Locks             =
+    +================================================-->
+
+  <bean name  = 'xrootLocksTypes'
+        class = 'com.tverts.objects.StringBean'>
+    <property name = 'string'>
+      <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Exclusive Goods and Stores Lock                           ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.locks.Lock   Locks: Domain: Exclusive Goods and Stores Lock;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Exclusive Codes Lock                                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.locks.Lock   Locks: Domain: Exclusive Codes Lock;
+
+
+      </value>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Unity Types for XRoot Module Aggregated Values =
+    +================================================-->
+
+  <bean name  = 'xrootAggrValuesTypes'
+        class = 'com.tverts.objects.StringBean'>
+
+    <property name = 'string'>
+      <value>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Groups the volume items by months
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.calc.AggrCalc   Aggr Calc: Volume: Monthly;
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Groups the volume items by weeks
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.endure.aggr.calc.AggrCalc   Aggr Calc: Volume: Weekly;
+
+      </value>
+    </property>
+  </bean>
+
+
+  <bean name  = 'xrootUnityTypes'
+        class = 'com.tverts.objects.StringsList'>
+
+    <property name = 'references'>
+      <list>
+
+        <!-- execution root module core types -->
+        <ref bean = 'xrootCoreTypes'/>
+
+        <!-- execution root module locks types -->
+        <ref bean = 'xrootLocksTypes'/>
+
+        <!-- execution root module aggregated values types -->
+        <ref bean = 'xrootAggrValuesTypes'/>
+
+      </list>
+    </property>
+  </bean>
+
+
+  <bean name  = 'xrootUnityTypeStructs'
+        class = 'com.tverts.endure.types.UnityTypeStructsList'>
+    <property name = 'references'>
+      <list>
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · Firm                                                      ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.endure.types.UnityTypeStruct'>
+
+          <property name  = 'typeClass'
+                    value = 'com.tverts.endure.person.FirmEntity'/>
+
+          <property name  = 'typeName'
+                    value = 'Core: Firm'/>
+
+          <property name  = 'title'
+                    value = 'Organization'/>
+
+          <property name  = 'titleLo'
+                    value = 'Организация'/>
+
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+</beans>

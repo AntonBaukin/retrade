@@ -1,0 +1,30 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Aggregation Strategies References              =
+    =================================================-->
+
+  <import resource = 'aggr/aggregators.xml'/>
+
+
+  <!--=================================================
+    =  Aggregation Point                              =
+    =================================================-->
+
+  <bean name  = 'aggrPoint' factory-method = 'getInstance'
+        class = 'com.tverts.aggr.AggrPoint'>
+
+    <property name = 'aggregator'>
+      <bean class = 'com.tverts.aggr.AggregatorsRoot'>
+
+        <property name = 'reference' ref = 'rootAggregatorReferences'/>
+      </bean>
+    </property>
+  </bean>
+</beans>

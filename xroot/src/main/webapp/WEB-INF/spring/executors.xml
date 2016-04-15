@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Top Level Executor Lists                       =
+    +================================================-->
+
+  <import resource = 'exec/executorsList.xml'/>
+
+
+  <!--=================================================
+    =  Executors Point                                =
+    =================================================-->
+
+  <bean name  = 'execPoint' factory-method = 'getInstance'
+        class = 'com.tverts.exec.ExecPoint'>
+
+    <property name  = 'executor'>
+      <bean   class = 'com.tverts.exec.RootExecutor'>
+
+        <property name = 'reference'
+                  ref  = 'executorsList'/>
+      </bean>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Execution Planning Service                     =
+    =================================================-->
+
+  <bean name  = 'execPlanService'
+        class = 'com.tverts.exec.service.PlainExecPlanService'>
+
+    <property name  = 'UID'
+              value = 'Execution Planning Service'/>
+
+    <property name  = 'execService'
+              value = 'Execution Run Service'/>
+
+    <property name  = 'threadsLimit'
+              value = '32'/>
+
+    <property name  = 'waitPause'
+              value = '250'/>
+  </bean>
+
+
+  <!--=================================================
+    =  Execution Run Service                          =
+    =================================================-->
+
+  <bean name  = 'execRunService'
+        class = 'com.tverts.exec.service.ExecRunService'>
+
+    <property name  = 'UID'
+              value = 'Execution Run Service'/>
+  </bean>
+
+</beans>

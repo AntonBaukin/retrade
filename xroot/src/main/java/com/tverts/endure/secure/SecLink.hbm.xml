@@ -1,0 +1,58 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.secure'>
+
+  <class name = 'SecLink' table = 'sec_link' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_sec_link'/>
+
+
+    <!-- Security Rule reference -->
+
+    <many-to-one name = 'rule' foreign-key = 'fk_sec_link_rule'>
+
+      <column name = 'fk_rule' not-null = 'true'
+        index = 'ix_sec_link_rule'>
+
+        <comment>Security Rule linked</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Target Unity reference -->
+
+    <many-to-one name = 'target' foreign-key = 'fk_sec_link_target'>
+
+      <column name = 'fk_target' not-null = 'true'
+        index = 'ix_sec_link_target'>
+
+        <comment>Unified Mirror of the target entity</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Security Key reference -->
+
+    <many-to-one name = 'key' foreign-key = 'fk_sec_link_key'>
+
+      <column name = 'fk_key' not-null = 'true'>
+        <comment>Security Key this link allows (or denies)</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Allow-Deny flag -->
+
+    <property name = 'deny'>
+      <column name = 'is_deny' not-null = 'true' default = '0'>
+        <comment>Allow when 0, deny when 1</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

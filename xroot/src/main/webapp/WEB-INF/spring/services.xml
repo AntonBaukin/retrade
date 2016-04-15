@@ -1,0 +1,22 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Z-Services System                              =
+    =================================================-->
+
+  <import resource = 'services/servicesSystem.xml'/>
+
+
+  <bean name  = 'servicesPoint' factory-method = 'getInstance'
+        class = 'com.tverts.system.services.ServicesPoint'>
+
+    <property name = 'system' ref = 'servicesSystem'/>
+  </bean>
+
+</beans>

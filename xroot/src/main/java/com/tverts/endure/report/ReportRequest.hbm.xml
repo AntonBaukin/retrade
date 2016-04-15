@@ -1,0 +1,128 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.report'>
+
+  <class name = 'ReportRequest' table = 'report_request' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_report_request'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_report_request_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+
+    <!-- Report Template -->
+
+    <many-to-one name = 'template' foreign-key = 'fk_report_request_template'>
+
+      <column name = 'fk_template' not-null = 'true'
+        index = 'ix_report_request_template'>
+
+        <comment>The template of this report request</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Authentication Session -->
+
+    <many-to-one name = 'authSession' foreign-key = 'fk_report_request_auth'>
+
+      <column name = 'fk_auth_session' not-null = 'true'
+        index = 'ix_report_request_auth'>
+
+        <comment>The Authentication Session of the user created the request</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Request Time -->
+
+    <property name = 'time' type = 'timestamp'>
+
+      <column name = 'request_time' index = 'ix_report_request_time'>
+
+        <comment>The time this request had been issued</comment>
+      </column>
+    </property>
+
+
+    <!-- Data Source Model -->
+
+    <property name = 'model' type = 'text' lazy = 'true'>
+
+      <column name = 'model_object'>
+
+        <comment>
+          The XML-serialized UI Model Java Bean created by
+          the Data Source of the template from a configuration
+          interface. Used to build the data object of the report
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Report Format -->
+
+    <property name = 'format'>
+
+      <column name = 'report_format' not-null = 'true'>
+        <comment>The format of the report file to produce</comment>
+      </column>
+
+      <type name = 'org.hibernate.type.EnumType'>
+
+        <param name = 'enumClass'>
+          com.tverts.data.ReportFormat
+        </param>
+
+        <param name = 'useNamed'>true</param>
+      </type>
+    </property>
+
+
+    <!-- Load Time -->
+
+    <property name = 'loadTime' type = 'timestamp'>
+
+      <column name = 'load_time' index = 'ix_report_request_load_time'>
+
+        <comment>The time this request had been loaded by the user</comment>
+      </column>
+    </property>
+
+
+    <!-- Is Ready Flag -->
+
+    <property name = 'ready'>
+
+      <column name = 'is_ready' not-null = 'true'>
+        <comment>Set to true when the report file is assigned</comment>
+      </column>
+    </property>
+
+
+    <!-- The Report File -->
+
+    <property name = 'report' type = 'binary' lazy = 'true'>
+
+      <column name = 'report_file'>
+        <comment>The resulting report file</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

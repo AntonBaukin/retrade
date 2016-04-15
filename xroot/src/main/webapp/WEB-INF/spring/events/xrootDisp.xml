@@ -1,0 +1,25 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Root Events Dispatcher                         =
+    +================================================-->
+
+  <bean name  = 'xrootEventsDisp'
+        class = 'com.tverts.event.EventsDisp'>
+    <property name = 'registryAsText'>
+      <value>
+
+       <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+        · Auth Login created reaction
+        · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        com.tverts.event.CreatedEvent;
+        com.tverts.endure.auth.OnAuthLoginCreated;
+
+      </value>
+    </property>
+  </bean>
+</beans>

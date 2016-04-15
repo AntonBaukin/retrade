@@ -1,0 +1,49 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.tree'>
+
+  <union-subclass name = 'TreeDomain' table = 'tree_domain'
+    extends = 'com.tverts.endure.core.Entity'>
+
+
+    <!-- Domain  -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_tree_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_tree_domain'>
+
+        <comment>Domain where the Tree Domain is registered</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Tree Unity Type -->
+
+    <many-to-one name = 'treeType' foreign-key = 'fk_tree_type'>
+
+      <column name = 'fk_tree_type' not-null = 'true'
+        unique-key = 'ux_tree_domain'>
+
+        <comment>Tree Unity Type (unique within Domain)</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Owner Unity -->
+
+    <many-to-one name = 'owner' lazy = 'proxy'
+      foreign-key = 'fk_tree_owner'>
+
+      <column name = 'fk_owner'
+        unique-key = 'ux_tree_domain'>
+
+        <comment>Optional entity this Tree Domain is attached to</comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

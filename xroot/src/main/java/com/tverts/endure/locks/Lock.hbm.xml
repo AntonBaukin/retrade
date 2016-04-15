@@ -1,0 +1,39 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.locks'>
+
+  <class name = 'Lock' table = 'core_lock' lazy = 'false'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_lock'/>
+
+
+    <!-- Lock Owner reference -->
+
+    <many-to-one name = 'owner' foreign-key = 'fk_lock_owner'>
+
+      <column name = 'fk_owner' not-null = 'true'
+        unique-key = 'ux_lock_selector'>
+
+        <comment>The Unity instance Owner of this lock</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Lock Type reference -->
+
+    <many-to-one name = 'lockType' foreign-key = 'fk_lock_type'>
+
+      <column name = 'fk_type' not-null = 'true'
+        unique-key = 'ux_lock_selector'>
+
+        <comment>The (Unity) Type of this lock</comment>
+      </column>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>

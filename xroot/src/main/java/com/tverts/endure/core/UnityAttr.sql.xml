@@ -1,0 +1,27 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<tasks>
+
+  <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+   · Create index (ix_attr_unity_source_attr)
+   · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+  <task class   = 'com.tverts.hibery.sql.QueryIf'
+        dialect = 'PostgreSQLDialect'>
+
+    <if empty = 'true'>
+
+      select true from pg_indexes where
+        (tablename = 'core_unity_attr') and
+        (indexname = 'ix_attr_unity_source_attr')
+
+    </if>
+
+    <query>
+
+      create index ix_attr_unity_source_attr on
+        core_unity_attr ( fk_source_attr )
+      where (fk_source_attr is not null)
+
+    </query>
+  </task>
+</tasks>

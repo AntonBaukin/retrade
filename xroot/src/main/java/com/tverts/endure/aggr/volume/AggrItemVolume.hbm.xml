@@ -1,0 +1,114 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr.volume'>
+
+  <union-subclass name = 'AggrItemVolume' table = 'aggr_item_volume'
+    extends = 'com.tverts.endure.aggr.AggrItemBase' lazy = 'false'>
+
+    <!-- Volume Positive -->
+
+    <property name = 'volumePositive' type = 'big_decimal'>
+
+      <column name = 'volume_positive' precision = '20' scale = '10'>
+
+        <comment>The volume (amount) added to the aggregated value</comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Negative -->
+
+    <property name = 'volumeNegative' type = 'big_decimal'>
+
+      <column name = 'volume_negative' precision = '20' scale = '10'>
+
+        <comment>The volume (amount) taken from the aggregated value</comment>
+      </column>
+    </property>
+
+
+    <!-- Aggregated Positive -->
+
+    <property name = 'aggrPositive' type = 'big_decimal'>
+
+      <column name = 'aggr_positive' precision = '22' scale = '10'>
+
+        <comment>
+          Historical value aggregating positive volumes of the
+          items before this one
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Aggregated Negative -->
+
+    <property name = 'aggrNegative' type = 'big_decimal'>
+
+      <column name = 'aggr_negative' precision = '22' scale = '10'>
+
+        <comment>
+          Historical value aggregating negative volumes of the
+          items before this one
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Aggregated Fixed Flag -->
+
+    <property name = 'aggrFixed'>
+
+      <column name = 'is_fixed' not-null = 'true'>
+        <comment>
+          Tells that this historical aggregated value is fixed.
+          Fixed values are never modified when previous items are
+          inserted-updated-deleted. The aggregated value equals to
+          the last fixed historical value with updates of all the
+          following items.
+        </comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>
+
+
+<!--
+
+select
+  vi.order_index as "oi",
+  vi.history_index as "hi",
+  vi.is_fixed as "fx",
+  vi.volume_positive as "v+",
+  vi.volume_negative as "v-",
+  vi.aggr_positive as "s+",
+  vi.aggr_negative as "s-",
+  vi.source_key as "src"
+from aggr_item_volume vi
+where (vi.fk_aggr_value = -321)
+order by vi.order_index
+
+
+select
+  vi.fk_aggr_value as "AV",
+  vi.order_index as "vi-oi",
+  vi.volume_positive as "v+",
+  vi.volume_negative as "v-",
+  vi.source_key as "inv",
+  i.order_index as "inv-oi",
+  ut.title_lo as "inv type"
+from
+  aggr_item_volume vi
+    join
+  retrade_invoice i
+    on (vi.source_key = i.pk_entity)
+    join
+  core_unity_type ut
+    on (ut.pk_unity_type = i.fk_invoice_type)
+order by vi.fk_aggr_value desc, vi.order_index
+
+-->

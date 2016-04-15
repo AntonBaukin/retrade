@@ -1,0 +1,91 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.secure'>
+
+  <union-subclass name = 'SecRule' extends = 'com.tverts.endure.core.Entity'
+    table = 'sec_rule' lazy = 'true'>
+
+
+    <!-- Domain reference -->
+
+    <many-to-one name = 'domain' foreign-key = 'fk_sec_rule_domain'>
+
+      <column name = 'fk_domain' not-null = 'true'>
+        <comment>Domain where the Secure Rule is in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Related reference -->
+
+    <many-to-one name = 'related' foreign-key = 'fk_sec_rule_related'>
+
+      <column name = 'fk_related' not-null = 'true'
+        index = 'ix_sec_rule_related'>
+
+        <comment>The Unified Mirror of the related entity</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Security Force -->
+
+    <property name = 'force'>
+
+      <column name = 'sec_force' length = '2048' not-null = 'true'
+        index = 'ix_sec_rule_force'>
+
+        <comment>Secure Force Key (at the application runtime)</comment>
+      </column>
+    </property>
+
+
+    <!-- Hidden Rule flag -->
+
+    <property name = 'hidden' type = 'boolean'>
+
+      <column name = 'is_hidden' not-null = 'true'
+        index = 'ix_sec_rule_title_lo'>
+
+        <comment>
+          Hidden rules are not visible in UI and maintained by Forces for their
+          special needs. Hidden rules has system information titles.
+        </comment>
+      </column>
+    </property>
+
+
+    <!-- Title -->
+
+    <property name = 'title'>
+
+      <column name = 'title' length = '2048' not-null = 'true'>
+
+        <comment>The title of Secure Rule</comment>
+      </column>
+    </property>
+
+    <property name = 'titleLo'>
+
+      <column name = 'title_lo' length = '2048' not-null = 'true'
+        index = 'ix_sec_rule_title_lo'>
+
+        <comment>The lower-cased title of Secure Rule</comment>
+      </column>
+    </property>
+
+
+    <!-- Data XML Object -->
+
+    <property name = 'data' type = 'text'>
+
+      <column name = 'rule_data'>
+        <comment>Optional data object as XML text</comment>
+      </column>
+    </property>
+
+  </union-subclass>
+</hibernate-mapping>

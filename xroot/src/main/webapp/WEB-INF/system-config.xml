@@ -1,0 +1,36 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  System Configuration Properties                =
+    =================================================-->
+
+  <bean name  = 'systemConfig' factory-method = 'getInstance'
+        class = 'com.tverts.system.SystemConfig'>
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Default select limit for dump operations
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'dumpLimit' value = '128'/>
+
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Default grid size
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'gridSize' value = '15'/>
+
+
+    <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+     · Tells that the application runs in development (debug)    ·
+     · mode. It has the same functions that may be extended      ·
+     · to provide additional support for the developer           ·
+     · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+    <property name  = 'debug' value = 'true'/>
+
+  </bean>
+</beans>

@@ -1,0 +1,63 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr.volume'>
+
+  <class name = 'DatePeriodVolumeCalcLink' lazy = 'false'
+    table = 'aggr_calc_volume_date_period_link'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_calc_link'/>
+
+
+    <!-- Calc Item Reference -->
+
+    <many-to-one name = 'calcItem' lazy = 'proxy'
+      foreign-key = 'fk_calc_link_volume_date_period'>
+
+      <column name = 'fk_calc_item' not-null = 'true'
+        unique-key = 'ux_calc_link_volume_date_period'>
+
+        <comment>Aggregation Calculation Item reference</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Copy of the key of the Aggreggated Item Volume -->
+
+    <property name = 'aggrItem'>
+
+      <column name = 'aggr_item' not-null = 'true'
+        unique-key = 'ux_calc_link_volume_date_period'>
+
+        <comment>Aggregated Volume Item primary key copy</comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Positive -->
+
+    <property name = 'volumePositive' type = 'big_decimal'>
+
+      <column name = 'volume_positive' precision = '20' scale = '10'>
+
+        <comment>The volume (amount) added by the linked Aggr Item</comment>
+      </column>
+    </property>
+
+
+    <!-- Volume Negative -->
+
+    <property name = 'volumeNegative' type = 'big_decimal'>
+
+      <column name = 'volume_negative' precision = '20' scale = '10'>
+
+        <comment>The volume (amount) removed by the linked Aggr Item</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Ordering strategies of XRoot module            =
+    +================================================-->
+
+  <import resource = 'xrootOrderers.xml'/>
+
+
+  <!--=================================================
+    =  Root Ordering Strategies                       =
+    +==================================================
+    |
+    |  Overwrite this file in each module that adds
+    |  own ordering strategies.
+    |
+    +================================================-->
+
+  <bean name  = 'rootOrdererReferences'
+        class = 'com.tverts.endure.order.OrderersList'>
+    <property name = 'references'>
+      <list>
+
+        <ref bean = 'xrootOrderers'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

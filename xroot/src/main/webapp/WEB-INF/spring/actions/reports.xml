@@ -1,0 +1,34 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for Data Sources and Reports    =
+    +================================================-->
+
+  <bean name  = 'reportTemplatesBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.report.ReportTemplate'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.report.ActReportTemplate'/>
+    </property>
+  </bean>
+
+
+  <bean name  = 'reportRequestsBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.report.ReportRequest'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.report.ActReportRequest'/>
+    </property>
+  </bean>
+
+</beans>

@@ -1,0 +1,52 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.tree'>
+
+  <class name = 'TreeItem' lazy = 'true' table = 'tree_item'>
+
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_tree_item'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn' not-null = 'true'
+        index = 'ix_tree_item_txn'>
+
+        <comment>Transaction Number (txn)</comment>
+      </column>
+    </property>
+
+
+    <!-- Tree Folder reference -->
+
+    <many-to-one name = 'folder' foreign-key = 'fk_tree_item_folder'>
+
+      <column name = 'fk_folder' not-null = 'true'
+        unique-key = 'ux_tree_item_reference'>
+
+        <comment>Tree Folder where the Item is assigned in</comment>
+      </column>
+    </many-to-one>
+
+
+    <!-- Unity reference -->
+
+    <many-to-one name = 'item' foreign-key = 'fk_tree_item_unity'>
+
+      <column name = 'fk_unity' not-null = 'true'
+        unique-key = 'ux_tree_item_reference' index = 'ix_tree_item_unity'>
+
+        <comment>Tree Unity instance reference</comment>
+      </column>
+    </many-to-one>
+
+  </class>
+</hibernate-mapping>

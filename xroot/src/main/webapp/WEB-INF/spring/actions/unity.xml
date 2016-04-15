@@ -1,0 +1,52 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+  <!--=================================================
+    =  Unity Type Action Bulders                      =
+    +================================================-->
+
+  <bean name  = 'coreUnityTypesBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.UnityType'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.core.ActUnityType'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Unity Action Bulders                           =
+    +================================================-->
+
+  <bean name  = 'coreUnityBuilders'
+        class = 'com.tverts.actions.ActionBuilderActionChecker'>
+
+    <property name  = 'goalClass'
+              value = 'com.tverts.endure.Unity'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.core.ActUnity'/>
+    </property>
+  </bean>
+
+
+  <!--=================================================
+    =  Unified Attr Type Action Bulders               =
+    +================================================-->
+
+  <bean name  = 'coreAttrTypesBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.core.AttrType'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.core.ActAttrType'/>
+    </property>
+  </bean>
+</beans>

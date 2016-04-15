@@ -1,0 +1,24 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.aggr.calc'>
+
+  <union-subclass name = 'AggrCalc' extends = 'com.tverts.endure.core.Entity'
+    table = 'aggr_calc' lazy = 'false'>
+
+
+    <!-- Aggregated Value -->
+
+    <many-to-one name = 'aggrValue' foreign-key = 'fk_aggr_calc_value'>
+
+      <column name = 'fk_value' not-null = 'true'
+        index = 'ix_aggr_calc_value'>
+
+        <comment>The Aggregated Value being the source of this calculation</comment>
+      </column>
+    </many-to-one>
+
+  </union-subclass>
+</hibernate-mapping>

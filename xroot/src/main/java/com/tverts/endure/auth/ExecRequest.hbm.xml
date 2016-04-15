@@ -1,0 +1,122 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.auth'>
+
+  <class name = 'ExecRequest' table = 'exec_request' lazy = 'true'>
+
+    <!-- Primary Key -->
+
+    <id name = 'primaryKey' column = 'pk_exec_request'/>
+
+
+    <!-- Transaction Number -->
+
+    <property name = 'txn'>
+
+      <column name = 'txn'>
+        <comment>Transaction Number (txn), set when executed</comment>
+      </column>
+    </property>
+
+
+    <!-- Domain -->
+
+    <property name = 'domain'>
+
+      <column name = 'fk_domain' not-null = 'true'
+        unique-key = 'ux_exec_request'>
+
+        <comment>Copy of the primary key of the Domain</comment>
+      </column>
+    </property>
+
+
+    <!-- Session ID -->
+
+    <property name = 'sessionId' type = 'string' lazy = 'false'>
+
+      <column name = 'session_id' not-null = 'true' length = '16'
+        unique-key = 'ux_exec_request'>
+
+        <comment>Copy of the primary key of the AuthSession object</comment>
+      </column>
+    </property>
+
+
+    <!-- Client Key -->
+
+    <property name = 'clientKey' type = 'string' lazy = 'false'>
+
+      <column name = 'client_key' not-null = 'true' length = '255'
+        unique-key = 'ux_exec_request'>
+
+        <comment>The key assigned by the client, or the primary key combined string</comment>
+      </column>
+    </property>
+
+
+    <!-- Executed Flag -->
+
+    <property name = 'executed'>
+
+      <column name = 'is_executed' not-null = 'true' default = 'false'>
+        <comment>Flag indicating that respone was executed</comment>
+      </column>
+    </property>
+
+
+    <!-- Delivered Flag -->
+
+    <property name = 'delivered'>
+
+      <column name = 'was_delivered' not-null = 'true' default = 'false'>
+
+        <comment>Flag indicating that respone Pong object was sent to the client</comment>
+      </column>
+    </property>
+
+
+    <!-- Request Time -->
+
+    <property name = 'requestTime' type = 'timestamp'>
+
+      <column name = 'request_time' not-null = 'true'>
+        <comment>The timestamp of the request</comment>
+      </column>
+    </property>
+
+
+    <!-- Response Time -->
+
+    <property name = 'responseTime' type = 'timestamp'>
+
+      <column name = 'response_time'>
+        <comment>The timestamp of the response</comment>
+      </column>
+    </property>
+
+
+    <!-- Request Object (bytes) -->
+
+    <property name = 'request' type = 'binary'>
+
+      <column name = 'request_object' not-null = 'true'>
+        <comment>The request Ping object as UTF-8 XML text</comment>
+      </column>
+    </property>
+
+
+    <!-- Response Object (bytes) -->
+
+    <property name = 'response' type = 'binary'>
+
+      <column name = 'response_object'>
+        <comment>The response Pong object as UTF-8 XML text</comment>
+      </column>
+    </property>
+
+  </class>
+</hibernate-mapping>

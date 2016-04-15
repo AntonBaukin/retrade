@@ -1,0 +1,41 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Sphere with System Domain                      =
+    +===============================================-->
+
+  <import resource = 'systemDomainSphere.xml'/>
+
+
+  <!--=================================================
+    =  Sphere with Test Domain Core                   =
+    +===============================================-->
+
+  <import resource = 'coreTestDomainSphere.xml'/>
+
+
+  <!--=================================================
+    =  Genesis Spheres of XRoot module                =
+    +==================================================
+    |
+    |  Genereates test data for data processing on
+    |  entities defined in XRoot module.
+    |
+    +================================================-->
+
+  <bean name  = 'xrootGenesisSpheres'
+        class = 'com.tverts.genesis.GenesisSpheres'>
+    <property name = 'references'>
+      <list>
+
+        <ref bean = 'systemDomainSphere'/>
+        <ref bean = 'coreTestDomainSphere'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>

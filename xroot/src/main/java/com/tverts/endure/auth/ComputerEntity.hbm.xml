@@ -1,0 +1,11 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+   'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+
+<hibernate-mapping package = 'com.tverts.endure.auth'>
+
+  <union-subclass name = 'ComputerEntity' table = 'auth_computer'
+    extends = 'com.tverts.endure.core.OxCatEntity'/>
+
+</hibernate-mapping>

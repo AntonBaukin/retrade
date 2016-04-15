@@ -1,0 +1,74 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Self Shunts of the Shunt Subsystem             =
+    +==================================================
+    |
+    |  Shunts the self-shunting subsystem itself.
+    |  (Better to be the first shunt unit registered.)
+    |
+    +================================================-->
+
+  <bean name  = 'systemShuntsSelfTests'
+        class = 'com.tverts.shunts.SelfShuntsList'>
+    <property name = 'references'>
+      <list>
+
+        <!-- system:shunts:success -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfSuccess'/>
+          </property>
+        </bean>
+
+
+        <!-- system:shunts:failure -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfFailure'/>
+          </property>
+        </bean>
+
+
+        <!-- system:shunts:critical-failure -->
+
+        <!-- · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+         · As this shunt unit would stop the shunts invocation       ·
+         · with critical error, include it for debugging only!       ·
+         · · · · · · · · · · · · · · · · · · · · · · · · · · · · · -->
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfCriticalFailure'/>
+          </property>
+        </bean>
+
+
+        <!-- system:shunts:context -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntTarget'>
+          <property name = 'target'>
+            <bean class = 'com.tverts.shunts.ShuntSelfContext'/>
+          </property>
+        </bean>
+
+
+        <!-- system:tx:scopes -->
+
+        <bean class = 'com.tverts.shunts.SelfShuntBean'>
+
+          <property name = 'beanName'>
+            <idref bean = 'shuntTxScopes'/>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+
+</beans>

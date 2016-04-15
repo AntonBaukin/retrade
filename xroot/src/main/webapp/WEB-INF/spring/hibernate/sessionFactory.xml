@@ -1,0 +1,32 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Hibernate Session Factory                      =
+    +================================================-->
+
+  <bean name  = 'sessionFactory' depends-on = 'transactionManager'
+        class = 'org.springframework.orm.hibernate4.LocalSessionFactoryBean'>
+
+    <property name = 'configLocations'>
+      <array>
+        <value>/WEB-INF/hibernate/conn.hbm.xml</value>
+        <value>/WEB-INF/hibernate/opts.hbm.xml</value>
+        <value>/WEB-INF/hibernate/tune.hbm.xml</value>
+        <value>/WEB-INF/hibernate/txns.hbm.xml</value>
+      </array>
+    </property>
+
+    <property name = 'mappingDirectoryLocations'>
+      <array>
+        <value>classpath:com/tverts</value>
+      </array>
+    </property>
+  </bean>
+
+</beans>

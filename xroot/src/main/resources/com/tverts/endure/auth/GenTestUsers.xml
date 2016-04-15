@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<users>
+  <person>
+    <gender>M</gender>
+    <last-name>Иванов</last-name>
+    <first-name>Максим</first-name>
+    <middle-name>Николаевич</middle-name>
+    <initials>М. Н.</initials>
+
+    <email>mivanov@gmail.com</email>
+    <phone-mobile>+79206589536</phone-mobile>
+    <phone-work>+74822365785</phone-work>
+
+    <login code = "Ivanov" password = "password"/>
+
+    <secure force = 'domain: view: goods'/>
+    <secure force = 'domain: view: stores'/>
+    <secure force = 'domain: view: documents'/>
+    <secure force = 'domain: view: all invoices'/>
+    <secure force = 'domain: forbid view: sell invoices'/>
+    <secure force = 'domain: edit: all invoices'/>
+    <secure force = 'domain: forbid edit: sell invoices'/>
+    <secure force = 'domain: forbid edit: fixed move invoices'/>
+    <secure force = 'domain: fix: buy invoices'/>
+
+    <messages type = 'invoice: buy: create'/>
+    <messages type = 'invoice: sell: create'/>
+  </person>
+
+
+  <person>
+    <gender>F</gender>
+    <last-name>Толстая</last-name>
+    <first-name>Фёкла</first-name>
+    <middle-name>Никитична</middle-name>
+    <initials>Ф. Н.</initials>
+
+    <email>ftolstaya@mail.ru</email>
+    <phone-mobile>+79042568741</phone-mobile>
+    <phone-work>+74822589621</phone-work>
+
+    <login code = "Tolstaya" password = "password"/>
+    <XFirmKey>Ф-01</XFirmKey>
+  </person>
+
+
+  <person>
+    <gender>M</gender>
+    <last-name>Навальный</last-name>
+    <first-name>Алексей</first-name>
+    <middle-name>Анатольевич</middle-name>
+    <initials>А. А.</initials>
+
+    <email>alaxei.navalny@mail.google.com</email>
+    <phone-work>+74822459861</phone-work>
+
+    <login code = "Navalny" password = "password"/>
+    <XFirmKey>Ф-00</XFirmKey>
+  </person>
+
+
+  <computer>
+    <code>Integrator</code>
+    <name>Intergation Client</name>
+
+    <comment>
+      Used to import data into the system, or export it.
+    </comment>
+
+    <login code = "Integrator" password = "password"/>
+  </computer>
+</users>

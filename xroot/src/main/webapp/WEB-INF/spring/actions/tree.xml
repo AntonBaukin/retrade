@@ -1,0 +1,34 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Action Bulders for Trees                       =
+    +================================================-->
+
+  <bean name  = 'treeDomainBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.tree.TreeDomain'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.tree.ActTreeDomain'/>
+    </property>
+  </bean>
+
+
+  <bean name  = 'treeFolderBuilders'
+        class = 'com.tverts.actions.ActionBuilderTypeChecker'>
+
+    <property name  = 'typeClass'
+              value = 'com.tverts.endure.tree.TreeFolder'/>
+
+    <property name = 'reference'>
+      <bean class = 'com.tverts.endure.tree.ActTreeFolder'/>
+    </property>
+  </bean>
+
+</beans>

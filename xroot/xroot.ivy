@@ -1,0 +1,34 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ivy-module version = '2.0'
+  xmlns:xsi = 'http://www.w3.org/2001/XMLSchema-instance'
+  xsi:noNamespaceSchemaLocation = 'http://ant.apache.org/ivy/schemas/ivy.xsd'>
+
+  <info organisation = 'com.tverts' module = 'xroot'
+        revision = '1.0' status = 'integration'>
+
+    <ivyauthor name = 'Anton Baukin'
+       url = 'mailto:anton.baukin@gmail.com'/>
+
+    <description>
+      'Re Trade' System execution root module.
+    </description>
+  </info>
+
+  <configurations>
+
+    <conf name    = 'runtime'
+      description = 'The runtime modules not needed to compile.'/>
+
+    <conf name    = 'compile'/>
+
+    <conf name    = 'test'
+      extends     = 'compile, runtime'
+      visibility  = 'private'/>
+
+    <conf name    = 'sources'
+      visibility  = 'private'
+      description = 'The sources retrieved during the initialization.'/>
+
+  </configurations>
+</ivy-module>

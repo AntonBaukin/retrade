@@ -1,0 +1,34 @@
+<beans xmlns          = 'http://www.springframework.org/schema/beans'
+   xmlns:xsi          = 'http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation = 'http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd'>
+
+
+  <!--=================================================
+    =  Root Executors                                 =
+    +================================================-->
+
+  <import resource = 'xrootExecutors.xml'/>
+
+
+  <!--=================================================
+    =  Top Level Executor Lists                       =
+    +==================================================
+    |
+    |  Overwrite this file in each module that adds
+    |  own executors.
+    |
+    +================================================-->
+
+  <bean name  = 'executorsList'
+        class = 'com.tverts.exec.ExecutorsList'>
+
+    <property name = 'references'>
+      <list>
+
+        <ref bean = 'xrootExecutorsList'/>
+
+      </list>
+    </property>
+  </bean>
+</beans>
