@@ -1,0 +1,45 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<ivysettings>
+
+  <!-- Ivy cache (private repository) -->
+
+  <property name  = 'user.cache' override = 'false'
+            value = '${ivycache}'/>
+ 
+  <caches defaultCacheDir = '${user.cache}'/>
+
+
+  <!-- resolvers -->
+
+  <settings defaultResolver = 'default'/>
+
+  <resolvers>
+
+    <!-- repository: JBoss.org -->
+
+    <ibiblio name = 'jboss.org' m2compatible = 'true' useMavenMetadata = 'false'
+             root = 'http://repository.jboss.org/nexus/content/groups/public/'/>
+
+
+    <!-- repository: Java.net -->
+
+    <ibiblio name = 'java.net' m2compatible = 'true' useMavenMetadata = 'false'
+             root = 'https://maven.java.net/content/repositories/releases/'/>
+
+
+    <!-- repository: Maven.org -->
+
+    <ibiblio name = 'maven.org' m2compatible = 'true' useMavenMetadata = 'false'
+             root = 'http://repo1.maven.org/maven2/'/>
+
+
+    <!-- Repositories List -->
+
+    <chain name = 'default' returnFirst = 'true'>
+      <resolver ref = 'jboss.org'/>
+      <resolver ref = 'java.net'/>
+      <resolver ref = 'maven.org'/>
+    </chain>
+  </resolvers>
+</ivysettings>

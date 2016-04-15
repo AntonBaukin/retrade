@@ -1,0 +1,494 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<project xmlns:ivy = 'antlib:org.apache.ivy.ant'
+         name = 'bldmd'>
+
+  <condition property = '?debug'>
+    <not><isset property = 'release'/></not>
+  </condition>
+
+
+  <!--=================================================
+    = Project shared variables                        =
+    =================================================-->
+
+  <property  name  = 'shared'
+             value = 'true'/>
+
+  <property  name  = 'rootdir'
+             value = '${basedir}/..'/>
+
+  <property  name  = 'buildir'
+             value = '${rootdir}/build'/>
+
+  <property  name  = 'cmplibs'
+             value = '${buildir}/.libscmp'/>
+
+  <property  name  = 'tstlibs'
+             value = '${buildir}/.libstst'/>
+
+  <property  name  = 'runlibs'
+             value = '${buildir}/.libsrun'/>
+
+  <property  name  = 'devdir'
+             value = '${buildir}/dev'/>
+
+  <property  name  = 'ivydir'
+             value = '${buildir}'/>
+
+  <property  name  = 'ivycache'
+             value = '${ivydir}/.ivy-cache'/>
+
+  <property  name  = 'javav'
+             value = '1.8'/>
+
+
+  <!--=================================================
+    = Module dependent variables                      =
+    =================================================-->
+
+  <property  name  = 'module'
+             value = '${ant.project.name}'/>
+
+  <property  name  = 'module-base'
+             value = '${rootdir}/${module}'/>
+
+  <property  name  = 'module-target'
+             value = '${module-base}/target'/>
+
+  <property  name  = 'module-classes'
+             value = '${module-target}/classes'/>
+
+  <property  name  = 'module-test-classes'
+             value = '${module-target}/test-classes'/>
+
+  <property  name  = 'module-package'
+             value = '${module-target}/${module}.war'/>
+
+  <property  name  = 'module-package-dir'
+             value = '${module-target}/${module}_war'/>
+
+  <property  name  = 'delete-web-dir'
+             value = 'false'/>
+
+
+  <!--=================================================
+    = tasks:  init-ivy*                               =
+    =================================================-->
+
+  <!-- shared task + overwrite -->
+  <target name    = 'init-ivy'
+          depends = 'init-ivy-module'/>
+
+  <target name    = 'init-ivy-module'
+          depends = 'init-ivy-base, init-ivy-share'>
+
+    <ivy:resolve resolveId = '${module}'
+      file = '${module-base}/${module}.ivy'/>
+  </target>
+
+  <target name    = 'init-ivy-share'
+          depends = 'init-ivy-base'
+          if      = '${shared}'>
+
+    <ivy:resolve resolveId = 'share'
+      file = '${ivydir}/share.ivy'/>
+  </target>
+
+  <target name    = 'init-ivy-base'>
+
+    <mkdir dir = '${ivycache}'/>
+    <ivy:configure file = '${ivydir}/setup.ivy'/>
+  </target>
+
+
+  <!--=================================================
+    = tasks:  init-cmp*                               =
+    =================================================-->
+
+  <!-- shared task + overwrite -->
+  <target name    = 'init-cmp'
+          depends = 'init-cmp-module'/>
+
+  <target name    = 'init-cmp-module'
+          depends = 'init-cmp-base, init-cmp-share'>
+
+    <ivy:retrieve conf = 'compile'
+       resolveId = '${module}' type = 'jar, bundle'
+       pattern = '${cmplibs}/[artifact]-[revision].[ext]'/>
+  </target>
+
+  <target name    = 'init-cmp-share'
+          depends = 'init-cmp-base'
+          if      = '${shared}'>
+
+    <ivy:retrieve conf = 'compile'
+       resolveId = 'share' type = 'jar, bundle'
+       pattern = '${cmplibs}/[artifact]-[revision].[ext]'/>
+  </target>
+
+  <target name    = 'init-cmp-base'
+          depends = 'init-ivy'>
+
+    <mkdir dir = '${cmplibs}'/>
+    <mkdir dir = '${module-target}'/>
+    <mkdir dir = '${module-classes}'/>
+  </target>
+
+
+  <!--=================================================
+    = tasks:  init-tst*                               =
+    =================================================-->
+
+  <!-- shared task + overwrite -->
+  <target name    = 'init-tst'
+          depends = 'init-tst-module'/>
+
+  <target name    = 'init-tst-module'
+          depends = 'init-tst-base, init-tst-share'>
+
+    <ivy:retrieve conf = 'test'
+       resolveId = '${module}' type = 'jar, bundle'
+       pattern = '${tstlibs}/[artifact]-[revision].[ext]'/>
+  </target>
+
+  <target name    = 'init-tst-share'
+          depends = 'init-tst-base'
+          if      = '${shared}'>
+
+    <ivy:retrieve conf = 'test'
+       resolveId = 'share' type = 'jar, bundle'
+       pattern = '${tstlibs}/[artifact]-[revision].[ext]'/>
+  </target>
+
+  <target name    = 'init-tst-base'
+          depends = 'init-ivy'>
+
+    <mkdir dir = '${tstlibs}'/>
+    <mkdir dir = '${module-target}'/>
+    <mkdir dir = '${module-test-classes}'/>
+  </target>
+
+
+  <!--=================================================
+    = tasks:  init-run*                               =
+    =================================================-->
+
+  <!-- shared task + overwrite -->
+  <target name    = 'init-run'
+          depends = 'init-run-module'/>
+
+  <target name    = 'init-run-module'
+          depends = 'init-run-base, init-run-share'>
+
+    <ivy:retrieve conf = 'runtime'
+       resolveId = '${module}' type = 'jar, bundle'
+       pattern = '${runlibs}/[artifact]-[revision].[ext]'/>
+  </target>
+
+  <target name    = 'init-run-share'
+          depends = 'init-run-base'
+          if      = '${shared}'>
+
+    <ivy:retrieve conf = 'runtime'
+       resolveId = 'share' type = 'jar, bundle'
+       pattern = '${runlibs}/[artifact]-[revision].[ext]'/>
+  </target>
+
+  <target name    = 'init-run-base'
+          depends = 'init-ivy'>
+
+    <mkdir dir = '${runlibs}'/>
+    <mkdir dir = '${module-target}'/>
+  </target>
+
+
+  <!--=================================================
+    = tasks:  init-dev*                               =
+    =================================================-->
+
+  <target name    = 'init-dev'
+          depends = 'init-dev-retrieve, init-dev-merge-libs'/>
+
+
+  <target name    = 'init-dev-retrieve'
+          depends = 'init-ivy, init-dev-retrieve-share'>
+
+    <!--
+
+     HINT: this complex Ant stript solves a problem of removing
+     the files already present in the specified directory. Here:
+
+      lib0  contains runtime jars;
+      lib1  has compile-time jars only (to add to the runtime ones).
+    -->
+
+    <!-- libraries (runtime) -->
+    <ivy:retrieve conf = 'runtime'
+       resolveId = '${module}' type = 'jar, bundle'
+       pattern = '${devdir}/lib0/[artifact]-[revision].[ext]'/>
+
+    <!-- libraries (all compile) -->
+    <ivy:retrieve conf = 'compile, test'
+       resolveId = '${module}' type = 'jar, bundle'
+       pattern = '${devdir}/lib1/[artifact]-[revision].[ext]'/>
+
+    <!-- sources (shared for runtime and compile) -->
+    <ivy:retrieve resolveId = '${module}' type = 'sources, source, src'
+       pattern = '${devdir}/srcX/[artifact]-[revision].[ext]'/>
+
+  </target>
+
+
+  <target name    = 'init-dev-merge-libs-condition'>
+
+    <condition property = 'init_dev_merge_libs_condition'>
+      <and>
+
+        <available file = '${devdir}/lib0' type = 'dir'/>
+        <available file = '${devdir}/lib1' type = 'dir'/>
+
+      </and>
+    </condition>
+  </target>
+
+
+  <target name    = 'init-dev-merge-libs'
+          depends = 'init-dev-merge-libs-condition'
+          if      = 'init_dev_merge_libs_condition'>
+
+    <!-- !: remove the files from compile are at runtime  -->
+    <copy todir = '${devdir}/lib-'>
+      <fileset dir = '${devdir}/lib0' includes = '*.jar'/>
+    </copy>
+
+    <truncate>
+      <fileset dir = '${devdir}/lib-'/>
+    </truncate>
+
+    <move todir = '${devdir}/lib1'>
+      <fileset dir = '${devdir}/lib-'/>
+    </move>
+
+    <delete>
+      <fileset dir = '${devdir}/lib1'>
+        <size value = '0' when = 'eq'/>
+      </fileset>
+    </delete>
+
+  </target>
+
+
+  <target name    = 'init-dev-retrieve-share'
+          depends = 'init-ivy'
+          if      = '${shared}'>
+
+    <!-- libraries (runtime) -->
+    <ivy:retrieve conf = 'runtime'
+       resolveId = 'share' type = 'jar, bundle'
+       pattern = '${devdir}/lib0/[artifact]-[revision].[ext]'/>
+
+    <!-- libraries (all compile) -->
+    <ivy:retrieve conf = 'compile, test'
+       resolveId = 'share' type = 'jar, bundle'
+       pattern = '${devdir}/lib1/[artifact]-[revision].[ext]'/>
+
+    <!-- sources (shared for runtime and compile) -->
+    <ivy:retrieve resolveId = 'share' type = 'sources, source, src'
+       pattern = '${devdir}/srcX/[artifact]-[revision].[ext]'/>
+
+  </target>
+
+
+  <!--=================================================
+    = tasks:  clean                                   =
+    =================================================-->
+
+  <target name    = 'clean-all'
+          depends = 'clean, clean-caches'/>
+
+  <target name    = 'clean'
+          depends = 'clean-target, clean-libs, clean-dev'/>
+
+  <target name    = 'clean-caches'
+          depends = 'clean-libs, clean-dev'>
+
+    <delete failonerror = 'false' dir = '${ivycache}'/>
+  </target>
+
+  <target name    = 'clean-dev'>
+
+    <delete failonerror = 'false' dir = '${devdir}/'/>
+  </target>
+
+  <target name    = 'clean-libs'>
+
+    <delete failonerror = 'false' dir = '${cmplibs}'/>
+    <delete failonerror = 'false' dir = '${tstlibs}'/>
+    <delete failonerror = 'false' dir = '${runlibs}'/>
+  </target>
+
+  <target name    = 'clean-target'
+          depends = 'clean-classes'>
+
+    <delete failonerror = 'false' dir = '${module-target}'/>
+  </target>
+
+  <target name    = 'clean-classes'>
+
+    <delete failonerror = 'false' dir = '${module-classes}'/>
+    <delete failonerror = 'false' dir = '${module-test-classes}'/>
+  </target>
+
+
+  <!--=================================================
+    = tasks:  compile, resources                      =
+    =================================================-->
+
+  <!-- shared task + overwrite -->
+  <target name    = 'compile'
+          depends = 'compile-module'/>
+
+  <target name    = 'compile-module'
+          depends = 'init-cmp'>
+
+    <javac srcdir   = '${module-base}/src/main/java'
+           destdir  = '${module-classes}'
+           encoding = 'UTF-8'
+           debug    = '${?debug}' includeAntRuntime = 'false'
+           source   = '${javav}' target = '${javav}'>
+
+      <classpath refid = 'module-classpath'/>
+    </javac>
+
+    <copy todir = '${module-classes}' overwrite = 'true'>
+      <fileset dir = '${module-base}/src/main/java'
+        erroronmissingdir = 'false'>
+
+        <exclude name = '**/*.java'/>
+        <include name = '**/*'/>
+      </fileset>
+    </copy>
+  </target>
+
+  <path id = 'module-classpath'>
+    <fileset dir = '${cmplibs}' includes = '*.jar'/>
+  </path>
+
+  <!-- shared task + overwrite -->
+  <target name    = 'compile-tests'
+          depends = 'compile-tests-module'/>
+
+  <target name    = 'compile-tests-module'
+          depends = 'compile, init-tst'>
+
+    <javac srcdir   = '${module-base}/src/test/java'
+           destdir  = '${module-test-classes}'
+           encoding = 'UTF-8'
+           debug    = 'true' includeAntRuntime = 'false'
+           source   = '${javav}'  target = '${javav}'>
+
+      <classpath refid = 'module-tests-classpath'/>
+    </javac>
+
+    <copy todir = '${module-test-classes}' overwrite = 'true'>
+      <fileset dir = '${module-base}/src/test/java'
+        erroronmissingdir = 'false'>
+
+        <exclude name = '**/*.java'/>
+        <include name = '**/*'/>
+      </fileset>
+    </copy>
+  </target>
+
+  <path id = 'module-tests-classpath'>
+    <fileset dir = '${cmplibs}' includes = '*.jar'/>
+    <fileset dir  = '${tstlibs}' includes = '*.jar'/>
+    <path    path = '${module-classes}'/>
+  </path>
+
+  <!-- shared task + overwrite -->
+  <target name    = 'resources'
+          depends = 'resources-module'/>
+
+  <target name    = 'resources-module'
+          depends = 'init-cmp'>
+
+    <copy todir = '${module-classes}' overwrite = 'true'>
+      <fileset dir = '${module-base}/src/main/resources'
+        erroronmissingdir = 'false'>
+
+        <include name = '**/*'/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- shared task + overwrite -->
+  <target name    = 'resources-tests'
+          depends = 'resources-tests-module'/>
+
+  <target name    = 'resources-tests-module'
+          depends = 'init-tst'>
+
+    <copy todir = '${module-test-classes}' overwrite = 'true'>
+      <fileset dir = '${module-base}/src/test/resources'
+        erroronmissingdir = 'false'>
+
+        <include name = '**/*'/>
+      </fileset>
+    </copy>
+  </target>
+
+
+  <!--=================================================
+    = tasks:  package                                 =
+    =================================================-->
+
+  <!-- shared task & overwrite -->
+  <target name    = 'package'
+          depends = 'copy-web-module, package-web-module'/>
+
+
+  <target name = 'package-web-module'>
+
+    <!-- jar the webapp, + libraries -->
+    <zip destfile  = '${module-package}'
+         encoding  = 'UTF-8'
+         update    = 'false'>
+
+      <!-- webapp -->
+      <fileset dir = '${module-package-dir}'/>
+
+      <!-- + all runtime libs -->
+      <zipfileset prefix = 'WEB-INF/lib'
+                  dir    = '${runlibs}'/>
+    </zip>
+  </target>
+
+
+  <target name    = 'copy-web-module'
+          depends = 'init-run, compile, delete-web-dir'>
+
+    <copy todir = '${module-package-dir}'
+      overwrite = 'true'>
+
+      <fileset dir = '${module-base}/src/main/webapp'/>
+    </copy>
+
+    <copy todir = '${module-package-dir}/WEB-INF/classes'
+      overwrite = 'true' failonerror = 'false'>
+
+      <fileset dir = '${module-classes}'/>
+      <fileset dir = '${module-base}/src/main/resources'/>
+    </copy>
+  </target>
+
+
+  <target name = 'delete-web-dir'
+          if   = '${delete-web-dir}'>
+
+    <delete dir   = '${module-package-dir}'
+      failonerror = 'false'/>
+  </target>
+
+</project>
